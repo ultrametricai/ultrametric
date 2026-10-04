@@ -93,10 +93,9 @@ export default function sitemap(): MetadataRoute.Sitemap {
 
     for (const battle of data.rankings.battles) {
       const slug = battleSlug(battle.a, battle.b)
+      // The battle page is the canonical head-to-head URL; /vs/{slug} is a permanent redirect
+      // to it (see app/vs/[slug]/page.tsx) and redirect stubs don't belong in the sitemap.
       entries.push({ url: `${SITE_URL}/arena/${data.category.id}/battle/${slug}`, lastModified: generatedAt })
-      // /vs/{slug} is the canonical top-level mirror of the same battle (see
-      // app/vs/[slug]/page.tsx) — listed separately since it's a distinct indexable URL.
-      entries.push({ url: `${SITE_URL}/vs/${slug}`, lastModified: generatedAt })
     }
   }
 

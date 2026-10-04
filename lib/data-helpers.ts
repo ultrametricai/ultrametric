@@ -74,10 +74,12 @@ export function parseBattleSlug(slug: string, products: Product[]): { a: string;
   return null
 }
 
-// Resolves a globally-unique `/vs/{slug}` slug (see app/vs/[slug]/page.tsx) to whichever
-// category's battle it belongs to — product ids are unique across every category, so at most
-// one category's product list can ever parse the slug into a real (a, b) pair with a matching
-// battle. Returns null if no category recognizes it (unknown slug / stale link).
+// Resolves a `/vs/{slug}` slug (now a permanent redirect to the arena battle page — see
+// app/vs/[slug]/page.tsx) to a category's battle. Product ids are globally unique, so a slug
+// parses into a real (a, b) pair in at most the categories that rank BOTH products; for the
+// few pairs that battle in two arenas, the first category in `categories` order wins — the
+// same battle the /vs page rendered before it became a redirect. Returns null if no category
+// recognizes the slug (unknown slug / stale link).
 export function findBattleBySlug(
   categories: CategoryData[],
   slug: string,
@@ -92,7 +94,7 @@ export function findBattleBySlug(
 }
 
 // The #1-vs-#2 battle for a category's Arena-Score leaderboard — the homepage's "Leading
-// battles" section and llms.txt's example /vs/ links. Null only for a category with fewer than
+// battles" section and llms.txt's example battle links. Null only for a category with fewer than
 // two products (every populated category has at least two — see lib/data.ts's expectedPairs
 // check — so this is purely a defensive fallback, not an expected runtime case).
 export function leadingBattle(data: CategoryData): Rankings['battles'][number] | null {

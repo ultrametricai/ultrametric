@@ -251,7 +251,7 @@ export default function ArenaTable({ data, logoMap, pricing, hotReasons }: { dat
                       {/* BusinessModelChip removed (founder 2026-09-24: too much info in the
                           ranking rows) — the model still shows on the product page. */}
                       {/* Per-row "vs …" battle link removed (founder 2026-09-30) — battles stay
-                          reachable from /overall's Leading battles cards and the /vs/ routes. */}
+                          reachable from /overall's Leading battles cards and the arena battle routes. */}
                       <ShutdownBadge shutdown={product.shutdown} source={product.shutdownSource} />
                     </div>
                   </td>

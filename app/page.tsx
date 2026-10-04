@@ -37,7 +37,7 @@ export default function Home() {
 
       <section>
         {/* Founder 2026-09-30: no explainer line under the heading — the podium cards below
-            speak for themselves; each links to its /vs/ page. */}
+            speak for themselves; each links to its arena battle page. */}
         <h2 className="font-display leading-[1.1] text-xl font-semibold tracking-tight">Leading battles</h2>
         <div className="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {/* Hardware-class arenas excluded here too (founder 2026-09-25) — a CPU 'battle' under
@@ -60,7 +60,7 @@ export default function Home() {
             return (
               <Link
                 key={data.category.id}
-                href={`/vs/${battleSlug(battle.a, battle.b)}`}
+                href={`/arena/${data.category.id}/battle/${battleSlug(battle.a, battle.b)}`}
                 className="group rounded-xl border border-zinc-800 p-4 transition hover:border-emerald-400/60"
               >
                 <p className="text-xs uppercase tracking-widest text-zinc-400">{data.category.name}</p>

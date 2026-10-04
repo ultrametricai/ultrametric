@@ -25,7 +25,7 @@ import {
 // aggregates side by side (lib/stackBattle.ts). State lives in `?a=…&b=…` (a preset id or a
 // comma-separated id list per side), same Suspense-wrapped useSearchParams +
 // history.replaceState pattern as /compare. The one place a REAL judged battle exists — both
-// sides fielding one product in the same arena — the slot row links to its /vs/ page.
+// sides fielding one product in the same arena — the slot row links to its arena battle page.
 
 const MAX_SUGGESTIONS = 8
 
@@ -258,7 +258,7 @@ export default function StackBattle({
   presets: BattlePreset[]
   /** 'a|b' sorted-pair keys of every verified integration edge (lib/integrations.ts). */
   verifiedPairs: string[]
-  /** Every live `/vs/` slug, so slot rows only link to battles that exist. */
+  /** Every live battle page as an `{arenaId}/{slug}` key, so slot rows only link to battles that exist. */
   battleSlugs: string[]
 }) {
   const searchParams = useSearchParams()

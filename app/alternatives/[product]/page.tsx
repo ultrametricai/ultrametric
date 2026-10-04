@@ -135,7 +135,7 @@ export default async function AlternativesPage({ params }: { params: Promise<{ p
                   Overall score <AiEraBadge value={rival.entry.aiEra} size="xs" />
                 </span>
                 <Link
-                  href={`/vs/${rival.battleSlug}`}
+                  href={`/arena/${data.category.id}/battle/${rival.battleSlug}`}
                   className="rounded-full border border-zinc-800 px-3 py-1 text-xs hover:border-emerald-400 hover:text-emerald-300"
                 >
                   vs {product.name} →
