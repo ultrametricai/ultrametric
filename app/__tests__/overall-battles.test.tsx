@@ -24,7 +24,9 @@ describe('/overall Leading battles podium (founder 2026-09-30)', () => {
     for (const data of battled) {
       const battle = leadingBattle(data)
       if (!battle) continue
-      const card = container.querySelector(`a[href="/vs/${battleSlug(battle.a, battle.b)}"]`)
+      const card = container.querySelector(
+        `a[href="/arena/${data.category.id}/battle/${battleSlug(battle.a, battle.b)}"]`,
+      )
       expect(card).not.toBeNull()
       const text = card!.textContent ?? ''
       // The old "· 2–1" record count no longer renders anywhere on the card.
