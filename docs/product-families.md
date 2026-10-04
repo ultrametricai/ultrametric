@@ -318,7 +318,7 @@ re-probe and supersede it.
   stamping it busts no caches). `lib/__tests__/families.test.ts` keeps stamps and family
   structure in sync both directions and every ref resolving.
 - `/family/[id]` pulls rank + Overall score live from each ref's `rankings.json` at build time and
-  links each judged line's `/vs/` battles; page-only lines render their honest `note`, never a
+  links each judged line's arena battle pages; page-only lines render their honest `note`, never a
   score. `components/FamilySection.tsx` renders the "Product lines" block on every member
   product's page (generic — no vendor special-casing). Both are in the sitemap via
   `loadFamilies()`.
