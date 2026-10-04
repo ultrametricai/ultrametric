@@ -154,6 +154,54 @@ not prop fixes:
 `.next/cache` (Turbopack) was ~300-360 MB across builds — not part of the problem, and
 fine to keep persisted in CI/Vercel build caching.
 
+### 2c. Round 3 (2026-10-04): segment hardlinks + /vs becomes a redirect
+
+Two changes since round 2 (the first is round 2's segment lever; the second replaces a
+duplicate route family outright):
+
+1. **Segment dedup** (`scripts/dedupe-segments.mjs`, postbuild): every page's
+   `_full.segment.rsc` is byte-compared against its sibling `.rsc` and replaced with a
+   hardlink when identical. This build: 6,459 pages linked, 1.60 GB freed, 0 skipped.
+2. **`/vs/{slug}` is a permanent redirect, battle pages are canonical**
+   (`app/vs/[slug]/page.tsx`). The route used to prerender a full second copy of every
+   arena battle (5,077 MB in round 2). It keeps `generateStaticParams` +
+   `dynamicParams = false`, but the page body is now
+   `permanentRedirect('/arena/{category}/battle/{slug}')`: the prerendered artifact is a
+   308 with a `location` header in its `.meta` (verified on `vs/claude-vs-gemini.meta`).
+   The slug audit behind the flip: 1,876 battle pages, 1,872 unique pair-slugs. Every
+   /vs slug has a battle twin; the four extra battle pages are pairs that battle in TWO
+   arenas (claude/gemini, claude/grok, gemini/grok in ai-assistants + frontier-models;
+   temporal/trigger-dev in workflow-automation + durable-workflows), and those slugs
+   redirect to the first category in `loadAll` order — the battle the /vs page rendered
+   before the flip. `app/vs/__tests__/vs-redirect.test.ts` pins all of this. The battle
+   page inherits the canonical, the SEO title/description, and the FAQPage JSON-LD the
+   mirror carried; every internal link (home podium cards, CompareRivals chips,
+   alternatives rows, family cards, stack-battle slots, llms.txt, sitemap) points at the
+   battle URL directly, and the sitemap delists the redirect stubs.
+
+Measured 2026-10-04 on this worktree (7,340 pages; the corpus has grown since round 2 —
+PT/CA jurisdiction content and gov-rail regeneration — so round-2 numbers are a baseline,
+not an exact like-for-like):
+
+| route group | round 2 after | round 3 |
+|---|---|---|
+| `vs/` (1,872 pages, now redirect stubs) | 5,077 MB | 205 MB |
+| `arena/*/battle` (1,876 pages) | 5,074 MB | 4,058 MB (hardlinked segments) |
+| `arena/*/product` | 1,801 MB | 1,466 MB |
+| `arena/` total | — | 5,727 MB |
+| `processes/` | 249 MB | 201 MB |
+| everything else | — | ~645 MB |
+| **`.next/server/app` total** | **13,336,168 KB (12.72 GB)** | **6,577 MB (6.42 GB)** |
+
+`.next` overall: 6,877 MB (`.next/server` 6,603 MB, `.next/cache` 265 MB). Battle page
+content itself is unchanged: `cursor-vs-cline.html` is 1,742,515 B vs round 2's
+1,740,652 B (corpus drift, not markup changes).
+
+A redirect stub still costs ~110 KB across its artifacts (39 KB html + 31 KB rsc +
+segments): the root layout's flight payload (nav, menus) serializes into every page, even
+one that only redirects. 205 MB for the whole stub family is acceptable; dropping the
+stubs entirely would 404 every published /vs URL, so they stay.
+
 ## The include exceptions (preview routes)
 
 Only three routes render at request time (`force-dynamic`); everything else is
