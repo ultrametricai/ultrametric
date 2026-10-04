@@ -112,42 +112,6 @@ const NAV_LABELS: Record<string, string> = {
   "startup-immigration": "Immigration",
 };
 
-// Build-time only, best-effort: repo is currently private so this 404s and we fall back to
-// a plain link. Never let a network hiccup fail the build.
-async function fetchStarCount(): Promise<number | null> {
-  try {
-    const res = await fetch(`https://api.github.com/repos/${REPO}`, { cache: "force-cache" });
-    if (res.ok) {
-      const json = await res.json();
-      if (typeof json.stargazers_count === "number") return json.stargazers_count;
-    }
-  } catch {
-    /* fall through to env fallback */
-  }
-  // While the repo is private, the anonymous API can't see it — a deploy-time env var
-  // (refreshed from an authenticated fetch before each deploy) carries the count instead.
-  const fallback = Number(process.env.GITHUB_STARS_FALLBACK);
-  return Number.isFinite(fallback) && fallback >= 0 ? fallback : null;
-}
-
-// Compact star-count formatting (1.2k, 3m) — Firecrawl-nav style, lowercase suffix.
-function formatCompact(n: number): string {
-  if (n < 1000) return String(n);
-  const units: [number, string][] = [
-    [1_000_000_000, "b"],
-    [1_000_000, "m"],
-    [1_000, "k"],
-  ];
-  for (const [threshold, suffix] of units) {
-    if (n >= threshold) {
-      const value = n / threshold;
-      const rounded = value >= 100 ? Math.round(value).toString() : value.toFixed(1).replace(/\.0$/, "");
-      return `${rounded}${suffix}`;
-    }
-  }
-  return String(n);
-}
-
 const GA_ID = process.env.NEXT_PUBLIC_GA_ID || "G-WWC2ZJRDCB";
 
 const inter = Inter({
@@ -217,7 +181,6 @@ export default async function RootLayout({ children }: LayoutProps<"/">) {
     }),
     })),
   ];
-  const stars = await fetchStarCount();
   // The ⌘K palette index is NOT built or passed here anymore: as client-component props it was
   // serialized into every prerendered page (~160 KB × ~4 artifacts × ~7k pages ≈ 4.5 GB of
   // .next/server/app, and 160 KB of every page's wire HTML — docs/BUILD-SIZE.md problem 2).
@@ -356,13 +319,9 @@ export default async function RootLayout({ children }: LayoutProps<"/">) {
                     d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"
                   />
                 </svg>
-                {stars !== null ? (
-                  <span className="flex items-center gap-1 tabular-nums text-emerald-400">
-                    ★ {formatCompact(stars)}
-                  </span>
-                ) : (
-                  <span className="font-mono">GitHub</span>
-                )}
+                {/* Label only — the star count is gone (founder 2026-10-04: "you don't need to
+                    show the star count on the github link"). */}
+                <span className="font-mono">GitHub</span>
               </a>
               {/* Mobile repo mark (founder 2026-10-01: "the GitHub icon is missing top-right on
                   mobile") — the star chip above is desktop-only (hidden sm:flex), so below sm a
