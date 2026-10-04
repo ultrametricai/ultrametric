@@ -15,15 +15,19 @@ set -euo pipefail
 REPO=/Users/judegomila/Documents/GitHub/productarena
 DEPLOY=/tmp/pa-deploy
 
-if [ ! -d "$DEPLOY/.git" ]; then
-  git clone --depth 1 https://github.com/ultrametricai/ultrametric.git "$DEPLOY"
-fi
-rm -rf "$DEPLOY/.vercel" && cp -R "$REPO/.vercel" "$DEPLOY/.vercel"
+# Always a FRESH clone: macOS purges /tmp entries across days, and a half-purged clone once
+# passed the old [ -d .git ] check and deployed a 19MB remnant of the site (2026-10-04).
+rm -rf "$DEPLOY"
+git clone --depth 1 https://github.com/ultrametricai/ultrametric.git "$DEPLOY"
+cp -R "$REPO/.vercel" "$DEPLOY/.vercel"
 cd "$DEPLOY"
-git fetch origin -q && git reset --hard origin/main -q
-echo "deploying $(git log --oneline -1)"
+# Sentinel: a real checkout has the workspace pnpmfile; abort rather than deploy a partial tree.
+[ -f scripts/pnpmfile.cjs ] && [ -f processes/corpus.json ] || { echo "ABORT: clone incomplete"; exit 1; }
+HEAD_LINE=$(git log --oneline -1)
+echo "deploying $HEAD_LINE"
 
-STAMP=/tmp/pa-deploy/.last-deploy-epoch
+# Stamp lives OUTSIDE the clone dir (the clone is nuked every run).
+STAMP=/tmp/pa-last-deploy-epoch
 NOW=$(date +%s)
 if [ "${FORCE:-0}" != "1" ] && [ -f "$STAMP" ]; then
   LAST=$(cat "$STAMP"); AGE=$(( NOW - LAST ))
