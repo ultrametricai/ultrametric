@@ -13,7 +13,7 @@ import type { CategoryData } from '@/lib/data-helpers'
 // 2 above + 2 below, edge-filled), a deliberately FOCUSED slice of the arena leaderboard — same
 // judged numbers, same n/a rules, none of ArenaTable's sorting/filtering/preset machinery.
 // Shutdown rivals keep their row with the Closing tag (list semantics, lib/shutdown.ts). The
-// judged /vs/ head-to-heads live in the prominent "Compare head-to-head" strip below the table
+// judged battle-page head-to-heads live in the prominent "Compare head-to-head" strip below the table
 // (founder 2026-10-02: the battle affordance gets real visual weight — full chip buttons, house
 // idiom, each carrying its judged record where one exists). Renders nothing for arenas with
 // fewer than 2 products.
@@ -210,7 +210,7 @@ export default function CompareRivals({ data, productId }: { data: CategoryData;
               return (
                 <Link
                   key={rival.id}
-                  href={`/vs/${vsSlugFor(data, productId, rival.id)}`}
+                  href={`/arena/${data.category.id}/battle/${vsSlugFor(data, productId, rival.id)}`}
                   title={
                     rivalRow?.record
                       ? `${selfName} ${rivalRow.record.wins} – ${rivalRow.record.losses} ${rival.name}${rivalRow.record.draws > 0 ? ` (${rivalRow.record.draws} drawn)` : ''} — judged story by story; click for every round`

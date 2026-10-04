@@ -17,7 +17,7 @@ export async function GET() {
     .map((c) => `- [${c.name}](${SITE}/arena/${c.id}/llms.md): full leaderboard, business models, and story-verdict matrix for "${c.id}" as markdown.`)
     .join('\n')
 
-  // One concrete example per arena (its #1-vs-#2 battle) so an agent sees the /vs/{slug}
+  // One concrete example per arena (its #1-vs-#2 battle) so an agent sees the battle-URL
   // pattern in action, not just a description of it — same picks as the homepage's "Leading
   // battles" section (see lib/data-helpers.ts's leadingBattle).
   const all = loadAll()
@@ -27,7 +27,7 @@ export async function GET() {
       if (!battle) return null
       const a = data.products.find((p) => p.id === battle.a)!
       const b = data.products.find((p) => p.id === battle.b)!
-      return `- [${a.name} vs ${b.name}](${SITE}/vs/${battleSlug(battle.a, battle.b)}) (${data.category.name}'s #1 vs #2)`
+      return `- [${a.name} vs ${b.name}](${SITE}/arena/${data.category.id}/battle/${battleSlug(battle.a, battle.b)}) (${data.category.name}'s #1 vs #2)`
     })
     .filter((l): l is string => l !== null)
     .join('\n')
@@ -44,13 +44,12 @@ Ultrametric crawls vendor docs, GitHub, and community sources for ${categories.l
 
 ${arenaLinks}
 
-## Head-to-head comparisons (\`/vs/\` pages)
+## Head-to-head comparisons (battle pages)
 
-Every battle between two products in the same arena also has its own top-level page:
-\`${SITE}/vs/{productA}-vs-{productB}\` (product ids are globally unique, so no category segment
-is needed). Rich side-by-side layout — Overall score, AGENT-READY, MCP/CLI/API access, business
-model, claims-verified — followed by every judged round. Full list in \`${SITE}/sitemap.xml\`;
-one example per arena below.
+Every battle between two products in the same arena has its own page:
+\`${SITE}/arena/{category}/battle/{productA}-vs-{productB}\` — the verdict, the judged record,
+and every judged round with its cited evidence. (The old top-level \`${SITE}/vs/{productA}-vs-{productB}\`
+URLs permanently redirect here.) Full list in \`${SITE}/sitemap.xml\`; one example per arena below.
 
 ${leadingBattleLinks}
 

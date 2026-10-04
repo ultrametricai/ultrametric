@@ -23,7 +23,7 @@ export interface CompareRivalRow {
   agenticApp: number | null
   apiQuality: number | null
   /**
-   * Slug for the /vs/[slug] head-to-head against the section's own product — null only on the
+   * Slug for the arena battle-page head-to-head against the section's own product — null only on the
    * self row. Uses the stored battle's (a, b) order when the battle exists, else the same
    * data.products-index ordering lib/scoring.ts builds battles with (ArenaTable's idiom).
    */
@@ -102,8 +102,9 @@ export function compareRivalsFor(data: CategoryData, productId: string, rivalCou
   return [...self, ...rivals]
 }
 
-// The /vs slug for self-vs-rival, ordered by each product's position in data.products (the
-// ordering rankings.battles uses) so the link resolves whether or not a stored battle exists.
+// The battle-page slug for self-vs-rival, ordered by each product's position in data.products
+// (the ordering rankings.battles uses) so the link resolves whether or not a stored battle
+// exists. Callers link it as /arena/{data.category.id}/battle/{slug}.
 export function vsSlugFor(data: CategoryData, selfId: string, rivalId: string): string {
   const idx = (pid: string) => data.products.findIndex((p) => p.id === pid)
   const [a, b] = idx(selfId) <= idx(rivalId) ? [selfId, rivalId] : [rivalId, selfId]
