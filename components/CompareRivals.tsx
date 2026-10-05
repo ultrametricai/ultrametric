@@ -229,11 +229,9 @@ export default function CompareRivals({ data, productId }: { data: CategoryData;
               )
             })}
         </div>
-        <p className="mt-2 text-xs">
-          <Link href={`/alternatives/${productId}`} className="text-zinc-400 hover:text-emerald-300">
-            Alternatives to {data.products.find((p) => p.id === productId)?.name ?? productId} →
-          </Link>
-        </p>
+        {/* Founder 2026-10-05: the "Alternatives to <X> →" link is gone from product pages —
+            "full arena →" below is the one outbound link here. The /alternatives/[product]
+            route stays alive for old links, same posture as other removals. */}
       </div>
       <div className="mt-2 text-xs">
         <Link
