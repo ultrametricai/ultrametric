@@ -521,7 +521,7 @@ describe('geoScope glyphs (founder batch 2026-10-02: the 🇺🇸 flag keys STRI
   })
 })
 
-describe('the country-view filter + hidden-rows disclosure (founder 2026-10-02, tightened 2026-10-05: an explicit country view shows NO US-scoped row — analogs included; the disclosure is their discoverability path)', () => {
+describe('the country-view filter (founder 2026-10-02, tightened 2026-10-05: an explicit country view shows NO US-scoped row — analogs included; the filter just filters since the same-day removal of the hidden-rows disclosure — the per-country analog detail lives on the process detail pages)', () => {
   afterEach(() => setGeoChoice(null))
 
   // A miniature of the real curation: one global row, a full-analog row, the EIN row (absorbed
@@ -590,44 +590,27 @@ describe('the country-view filter + hidden-rows disclosure (founder 2026-10-02, 
     act(() => setGeoChoice('UK'))
     expect(titles(container)).toEqual(['Pick a company name'])
     // Under 🇩🇪 Get EIN carries a real ELSTER analog — it stays hidden all the same; its
-    // committed German path lives in the disclosure below the table.
+    // committed German path lives on the process detail page (ProcessGeoNotes).
     act(() => setGeoChoice('DE'))
     expect(titles(container)).toEqual(['Pick a company name'])
   })
 
-  it('the disclosure line counts honestly (analogs and absorbed named), expands to the hidden titles with their committed one-liners, and keeps every page reachable', () => {
-    const { container, getByRole } = mountFilter()
+  it("PIN (founder 2026-10-05): a country view renders NO disclosure line — no 'hidden in the' counts, no committed-note summaries under the table; the filter just filters", () => {
+    const { container, queryByRole } = mountFilter()
     act(() => setGeoChoice('IN'))
-    const toggle = getByRole('button', { name: /hidden in the India view/ })
-    expect(toggle.textContent).toContain('4 US-specific processes hidden in the India view')
-    expect(toggle.textContent).toContain('2 have a local analog there')
-    expect(toggle.textContent).toContain('1 is handled inside other processes there')
-    fireEvent.click(toggle)
-    // The analog rows are the discoverability path now: each carries its committed analog
-    // summary and still links to its page.
-    expect(within(container).getByText('Incorporate C-Corp').closest('a')?.getAttribute('href')).toBe('/processes/incorporate-c-corp')
-    expect(container.textContent).toContain('Incorporate through MCA’s SPICe+ integrated form.')
-    expect(within(container).getByText('Issue 1099s').closest('a')?.getAttribute('href')).toBe('/processes/issue-1099s')
-    expect(container.textContent).toContain('TDS: deduct tax at source')
-    // The absorbed row carries its committed note summary; the note-less situation says so
-    // honestly instead of inventing a reason — and both titles still link to their pages.
-    expect(within(container).getByText('Get EIN').closest('a')?.getAttribute('href')).toBe('/processes/get-ein')
-    expect(container.textContent).toContain('PAN and TAN are allotted automatically')
-    expect(within(container).getByText('Visa is held up').closest('a')?.getAttribute('href')).toBe('/processes/visa-is-held-up')
-    expect(container.textContent).toContain('no India note is curated yet')
-    // Collapse again — the list goes away, the counts stay.
-    fireEvent.click(toggle)
-    expect(container.textContent).not.toContain('PAN and TAN')
-    expect(container.textContent).toContain('4 US-specific processes hidden')
+    expect(container.textContent).not.toContain('hidden in the')
+    expect(queryByRole('button', { name: /hidden in the/ })).toBeNull()
+    // The committed note one-liners live on the detail pages, never under this table.
+    expect(container.textContent).not.toContain('Incorporate through MCA’s SPICe+ integrated form.')
+    expect(container.textContent).not.toContain('PAN and TAN are allotted automatically')
+    expect(container.textContent).not.toContain('no India note is curated yet')
   })
 
-  it('under 🇬🇧 the counts re-speak the UK truth (4 hidden — 1 analog, 1 absorbed), and clearing the selection restores everything', () => {
-    const { container, getByRole } = mountFilter()
+  it('under 🇬🇧 the same global-only row set renders (no disclosure), and clearing the selection restores everything', () => {
+    const { container } = mountFilter()
     act(() => setGeoChoice('UK'))
-    const toggle = getByRole('button', { name: /hidden in the United Kingdom view/ })
-    expect(toggle.textContent).toContain('4 US-specific processes hidden in the United Kingdom view')
-    expect(toggle.textContent).toContain('1 has a local analog there')
-    expect(toggle.textContent).toContain('1 is handled inside other processes there')
+    expect(titles(container)).toEqual(['Pick a company name'])
+    expect(container.textContent).not.toContain('hidden in the')
     act(() => setGeoChoice(null))
     expect(titles(container)).toHaveLength(FILTER_ROWS.length)
     expect(container.textContent).not.toContain('hidden in the')

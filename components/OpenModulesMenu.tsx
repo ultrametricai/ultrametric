@@ -5,8 +5,8 @@ import type { OpenModuleChip } from '@/lib/businessLogicMap'
 
 // The process page's 'Open modules' line as a compact collapsible (founder 2026-10-05): the
 // always-visible chip row read as page noise, so the same chips now live behind a small
-// disclosure button — the house idiom (a real <button> with aria-expanded, the ProcessesTable
-// hidden-rows line / JurisdictionToggle family), never a bare clickable span. Collapsed by
+// disclosure button — the house idiom (a real <button> with aria-expanded, the
+// JurisdictionToggle family), never a bare clickable span. Collapsed by
 // default on the server AND the first client render (plain useState, no mount effect, no stored
 // state), so the static HTML is deterministic and hydrates mismatch-free. The chips themselves
 // are unchanged: the committed registry's modules (processes/business-logic-map.json via

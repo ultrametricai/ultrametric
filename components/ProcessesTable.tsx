@@ -12,7 +12,7 @@ import TableControls from '@/components/TableControls'
 import UrgencyChip from '@/components/UrgencyChip'
 import { useGeoSelection } from '@/components/useGeoSelection'
 import {
-  GEO_GLOBAL, GEO_PREF_META, hiddenInCountryView, usFlagGlyph, type GeoNotesByCountry,
+  GEO_GLOBAL, hiddenInCountryView, usFlagGlyph, type GeoNotesByCountry,
 } from '@/lib/geoPreference'
 import { phaseEmoji, phaseIcon, phaseTooltip } from '@/lib/processIcons'
 import { URGENCY_TIERS, type ProcessKind, type Urgency } from '@/lib/processSim'
@@ -73,7 +73,8 @@ export interface ProcessRow {
   geoScope: 'global' | 'us' | 'us-state'
   // The country-view filter data (founder 2026-10-02: "?geo=in should hide the processes that
   // are not used in that country"): per country, the committed note's curated kind + its own
-  // summary (the hidden-rows disclosure one-liner). {} on global rows — they never filter.
+  // summary (rendered on the detail pages — ProcessGeoNotes; the table's hidden-rows
+  // disclosure is gone, founder 2026-10-05). {} on global rows — they never filter.
   geoNotesByCountry: GeoNotesByCountry
   pct: number
   agentSteps: number
@@ -294,18 +295,10 @@ export default function ProcessesTable({
   // render and under any selection. Never re-sorts; since the country-view filter (founder
   // 2026-10-02, tightened 2026-10-05: a non-global view must not show US-only processes) a
   // COUNTRY selection hides EVERY US-scoped row (hiddenInCountryView — 'analog' notes
-  // included) — the no-selection default and 🌐 Global keep the full corpus, and the muted
-  // disclosure line under the table keeps the hidden titles (and their committed analog
-  // summaries) reachable.
+  // included) — the no-selection default and 🌐 Global keep the full corpus. The country
+  // filter just filters (founder 2026-10-05: the hidden-rows disclosure line is gone) — the
+  // per-country analog story lives on each process detail page (ProcessGeoNotes).
   const geo = useGeoSelection()
-  // What the active country view hides, for the honesty disclosure under the table — computed
-  // over the WHOLE row set (the country view as such; the phase/text filters narrow the table
-  // above it, never this line), in founder-timeline order so the list reads deterministically.
-  const [hiddenOpen, setHiddenOpen] = useState(false)
-  const hiddenRows = useMemo(
-    () => (geo === null ? [] : rows.filter((r) => hiddenInCountryView(r, geo)).sort(timelineCompare)),
-    [rows, geo],
-  )
 
   // Shareable-view URL state (lib/urlState.ts), read once on mount so the static HTML is
   // untouched: ?order=<preset>, ?phase=<phase>, ?pq=<text> (pq, not q — this table co-mounts
@@ -372,8 +365,8 @@ export default function ProcessesTable({
     return rows.filter(
       (r) =>
         // The country-view filter (founder 2026-10-02, tightened 2026-10-05): under a country
-        // selection every US-scoped row hides — committed analogs surface in the disclosure
-        // below the table. No selection / 🌐 Global ⇒ geo is null ⇒ the full corpus, as before.
+        // selection every US-scoped row hides — the committed analogs live on the process
+        // detail pages. No selection / 🌐 Global ⇒ geo is null ⇒ the full corpus, as before.
         (geo === null || !hiddenInCountryView(r, geo))
         && (phase === 'all' || r.phase === phase)
         && (cadence === null || r.cadenceLabel === cadence)
@@ -790,60 +783,9 @@ export default function ProcessesTable({
           </tbody>
         </table>
       </div>
-      {/* The country view's honesty disclosure (founder 2026-10-02, house disclosure idiom):
-          hiding a US-specific row must never destroy the information — one muted line says how
-          many rows this country view hides (and, per the committed note kinds, how many have a
-          local analog there and how many are handled inside other processes there), and expands
-          to the hidden titles with their committed one-liner summaries, each still linking to
-          its process page. Since every US-scoped row hides under a country view (founder
-          2026-10-05), this line is the discoverability path for the curated analogs. */}
-      {geo !== null && hiddenRows.length > 0 && (() => {
-        const country = GEO_PREF_META[geo].label
-        const analogs = hiddenRows.filter((r) => r.geoNotesByCountry[geo]?.kind === 'analog').length
-        const absorbed = hiddenRows.filter((r) => r.geoNotesByCountry[geo]?.kind === 'absorbed').length
-        return (
-          <div className="px-2 text-xs text-zinc-500">
-            <button
-              type="button"
-              aria-expanded={hiddenOpen}
-              onClick={() => setHiddenOpen((v) => !v)}
-              className="text-left transition hover:text-emerald-300"
-            >
-              {hiddenRows.length} US-specific {hiddenRows.length === 1 ? 'process' : 'processes'} hidden in the {country} view
-              {(analogs > 0 || absorbed > 0) && (
-                <>
-                  {' — '}
-                  {analogs > 0 && <>{analogs} {analogs === 1 ? 'has' : 'have'} a local analog there</>}
-                  {analogs > 0 && absorbed > 0 && ', '}
-                  {absorbed > 0 && <>{absorbed} {absorbed === 1 ? 'is' : 'are'} handled inside other processes there</>}
-                </>
-              )}
-              <span aria-hidden className="ml-1 text-[10px]">{hiddenOpen ? '▴' : '▾'}</span>
-            </button>
-            {hiddenOpen && (
-              <ul className="mt-2 space-y-1.5">
-                {hiddenRows.map((r) => {
-                  const note = r.geoNotesByCountry[geo]
-                  return (
-                    <li key={r.slug} className="leading-snug">
-                      <Link href={`/processes/${r.slug}`} className="text-zinc-400 underline decoration-zinc-800 underline-offset-2 transition hover:text-emerald-300">
-                        {r.title}
-                      </Link>{' '}
-                      <span className="text-zinc-400">
-                        {/* The committed note summary is the one-liner; a row with no note for
-                            this country says so honestly instead of inventing a reason. Readable
-                            tier (zinc-400, matching the row's title link) — this is prose the
-                            reader needs, not a decorative annotation. */}
-                        — {note ? note.summary : `US-specific — no ${country} note is curated yet.`}
-                      </span>
-                    </li>
-                  )
-                })}
-              </ul>
-            )}
-          </div>
-        )
-      })()}
+      {/* No hidden-rows disclosure under the table (founder 2026-10-05: the country filter
+          just filters) — the per-country analog detail lives on each process detail page
+          (ProcessGeoNotes). */}
     </div>
   )
 }

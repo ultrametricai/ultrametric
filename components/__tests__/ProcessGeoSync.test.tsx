@@ -125,9 +125,11 @@ describe('detail → index (one stored preference, founder 2026-10-05)', () => {
     setUrl('/processes')
     const index = render(<IndexSurface />)
     expect(trigger(index).textContent).toContain('United Kingdom')
-    // The UK country view applied: the US-scoped row is out of the table, in the disclosure.
+    // The UK country view applied: the US-scoped row is out of the table — and no disclosure
+    // line renders under it (founder 2026-10-05: the filter just filters; the committed UK
+    // analog lives on the detail page, asserted above).
     expect([...index.container.querySelectorAll('tbody td:first-child')].some((c) => c.textContent?.includes('Get EIN'))).toBe(false)
-    expect(index.container.textContent).toContain('1 US-specific process hidden in the United Kingdom view')
+    expect(index.container.textContent).not.toContain('hidden in the')
   })
 })
 

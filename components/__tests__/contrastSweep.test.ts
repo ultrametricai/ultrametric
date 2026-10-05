@@ -23,9 +23,9 @@ const CLASS_PINS: Array<[string, string]> = [
   ['app/rankings/law-firms/page.tsx', '<>{score(value)}<span className="text-zinc-500">/100</span></>'],
   ['app/rankings/law-firms/page.tsx', '<>{score(row.entry.agentReady)}<span className="text-zinc-500">/100</span></>'],
   ['components/VendorProcesses.tsx', '<span className="text-zinc-500">/100</span>'],
-  // The wrong-country row's note summary is prose the reader needs — secondary tier, matching
-  // the row's title link (ProcessGeoBanner renders the same field at zinc-300).
-  ['components/ProcessesTable.tsx', 'className="text-zinc-400">\n                        {/* The committed note summary'],
+  // (The /processes hidden-rows disclosure pin left with the disclosure itself — founder
+  // 2026-10-05: the country filter just filters; the note summaries render on the detail
+  // pages, where ProcessGeoBanner carries the same field at zinc-300.)
   // StepVendorRow's "use" control label sits at the same tier as its sibling clear button.
   ['components/StepVendorRow.tsx', 'text-[10px] text-zinc-500 transition hover:text-emerald-300'],
 ]
