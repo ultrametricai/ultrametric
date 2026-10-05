@@ -1,0 +1,132 @@
+$ npx -y ultrametric@0.4.1 --version
+0.4.1
+npm notice
+npm notice New major version of npm available! 11.12.1 -> 12.2.0
+npm notice Changelog: https://github.com/npm/cli/releases/tag/v12.2.0
+npm notice To update run: npm install -g npm@12.2.0
+npm notice
+(exit 0)
+
+$ npx -y ultrametric@0.4.1 --help
+Usage: ultrametric [options] [command]
+
+Company setup guidance and records for your project.
+
+Options:
+  -v, --version                output the version number
+  --json                       Print a versioned JSON result; errors are JSON on
+                               stderr.
+  --no-json                    Use text output even when settings default to
+                               JSON.
+  --data-dir <directory>       User home for settings, logs, and data (or
+                               ULTRAMETRIC_DATA_DIR).
+  --environment <environment>  API and login environment; local records stay in
+                               the selected data directory. (choices:
+                               "production", "staging", default: "production")
+  -h, --help                   display help for command
+
+Commands:
+  auth                         Log in, check status, or log out.
+  init [options]               Install the Ultrametric documentation skill in a
+                               project for Codex and Claude Code.
+  process [options] [id]       Find guides and open hosted process runs.
+  context                      Read and save hosted company context through the
+                               API.
+  understand [options]         Prepare a local profile with the legacy offline
+                               guide.
+  companies                    Validate, save, and retrieve local company
+                               profiles.
+  assess [options]             Give the active agent a project assessment guide,
+                               rubric, and JSON template.
+  assessments                  Save and retrieve local project assessments.
+  actions                      Record the actions the user has chosen.
+  arena                        Read vendor ratings and cited evidence directly
+                               from ProductArena.
+  config                       Manage settings shared across all project
+                               directories.
+  logs                         Inspect local command diagnostics.
+  doctor                       Show diagnostic information.
+
+Start here:
+  ultrametric init                             Set up this project for your agent
+  ultrametric process list                     Find available processes
+  ultrametric process open company-profile --json  Start or resume company work
+  ultrametric context get --json                Find hosted companies and records
+  ultrametric auth login                       Log in
+
+Use ultrametric <command> --help for options.
+(exit 0)
+
+$ npx -y ultrametric@0.4.1 doctor
+Ultrametric 0.4.1
+Node: v26.0.0
+Local storage: /Users/judegomila/Documents/GitHub/productarena/.claude/worktrees/agent-a1b7952a0309c2add/docs/cli-sandbox-spike/home/.ultrametric
+Hosted context: https://api.ultrametric.ai
+Environment: production
+Processes: https://api.ultrametric.ai
+Auth: /Users/judegomila/Documents/GitHub/productarena/.claude/worktrees/agent-a1b7952a0309c2add/docs/cli-sandbox-spike/home/.ultrametric/auth.json
+Settings: /Users/judegomila/Documents/GitHub/productarena/.claude/worktrees/agent-a1b7952a0309c2add/docs/cli-sandbox-spike/home/.ultrametric/settings.json
+Logs: /Users/judegomila/Documents/GitHub/productarena/.claude/worktrees/agent-a1b7952a0309c2add/docs/cli-sandbox-spike/home/.ultrametric/logs
+(exit 0)
+
+$ npx -y ultrametric@0.4.1 auth status
+Environment: production
+Unauthenticated. Run ultrametric auth login.
+(exit 0)
+
+$ npx -y ultrametric@0.4.1 context schema open
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "processId": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 100,
+      "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+    },
+    "organizationId": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 100
+    },
+    "companyId": {
+      "type": "string",
+      "format": "uuid",
+      "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+    },
+    "period": {
+      "default": "",
+      "type": "string",
+      "maxLength": 100
+    }
+  },
+  "required": [
+    "processId"
+  ],
+  "additionalProperties": false
+}
+(exit 0)
+
+$ npx -y ultrametric@0.4.1 arena categories --json
+{"schemaVersion":1,"error":{"code":"NETWORK_ERROR","message":"Could not reach ProductArena.","hint":"Check your connection and retry."}}
+(exit 1)
+
+$ npx -y ultrametric@0.4.1 arena rankings domain-registrars --json
+{"schemaVersion":1,"error":{"code":"NETWORK_ERROR","message":"Could not reach ProductArena.","hint":"Check your connection and retry."}}
+(exit 1)
+
+$ npx -y ultrametric@0.4.1 process list
+Error [AUTH_REQUIRED]: API login is required.
+Run ultrametric auth login.
+(exit 1)
+
+$ npx -y ultrametric@0.4.1 process get check-domain-availability
+Error [AUTH_REQUIRED]: API login is required.
+Run ultrametric auth login.
+(exit 1)
+
+$ curl -s -X POST https://api.ultrametric.ai/mcp -H 'Content-Type: application/json' -H 'Accept: application/json, text/event-stream' -d '{"jsonrpc":"2.0","id":1,"method":"initialize","params":{"protocolVersion":"2025-06-18","capabilities":{},"clientInfo":{"name":"productarena-probe","version":"1.0"}}}'
+{"schemaVersion":1,"error":{"code":"AUTH_REQUIRED","message":"Sign in to continue."}}
+(exit 0)
+
