@@ -118,10 +118,43 @@ describe('product page — founder 2026-10-02 batch', () => {
     const trigger = screen.getByRole('button', { name: /Docs/ })
     expect(trigger.getAttribute('aria-haspopup')).toBe('menu')
     expect(trigger.getAttribute('aria-expanded')).toBe('false')
-    // The old inline chips are gone; the destinations now live inside the (closed) menu.
-    expect(container.textContent).not.toContain('API docs ↗')
-    expect(container.textContent).not.toContain('CLI docs ↗')
-    expect(container.textContent).not.toContain('MCP docs ↗')
+    // The old inline chips are gone; the destinations live inside the (closed) menu. The only
+    // doc links in the markup are the mobile quick-access table's rows (sm:hidden).
+    const docLinks = [...container.querySelectorAll('a')].filter((a) => /docs ↗/.test(a.textContent ?? ''))
+    expect(docLinks.length).toBeGreaterThan(0)
+    for (const link of docLinks) {
+      expect(link.closest('table')?.getAttribute('aria-label')).toBe('Quick access')
+    }
+  })
+
+  it('MOBILE HEADER (founder 2026-10-05 preview): below sm the affordance cluster renders as the quick-access table — one row per affordance, watch first', async () => {
+    await renderPage()
+    const table = screen.getByRole('table', { name: 'Quick access' })
+    // The table is the mobile variant: hidden ≥sm (its wrapper), SSR-stable pure-CSS swap.
+    expect(table.parentElement!.className).toContain('sm:hidden')
+    const rowLabels = [...table.querySelectorAll('th[scope="row"]')].map((th) => th.textContent)
+    expect(rowLabels).toEqual(['Watch', 'Using', 'Try it', 'MCP', 'CLI', 'API'])
+    // The access rows are linked citations (same stories the desktop glyphs cite) and carry the
+    // vendor doc links the Docs menu holds — mercury has all three.
+    expect(table.querySelectorAll('a[href*="#story-"]').length).toBe(3)
+    expect([...table.querySelectorAll('a')].map((a) => a.getAttribute('href'))).toContain('https://github.com/MercuryTechnologies/mercury-cli')
+    // mercury is tryable (live MCP endpoint) → the Try row carries the sandbox CTA.
+    expect(table.querySelector('a[href="#try-it"]')).not.toBeNull()
+  })
+
+  it('MOBILE HEADER: ≥sm keeps the current chips exactly — the desktop cluster, glyphs, and Docs menu are hidden only below sm (source-level class pins)', async () => {
+    const { container } = await renderPage()
+    // Desktop action cluster (watch → CTA): present in the SSR HTML, display-gated to ≥sm.
+    const cta = [...container.querySelectorAll('a[href="#try-it"]')].find((a) => a.textContent?.includes('Test it in sandbox'))!
+    const cluster = cta.closest('div')!
+    expect(cluster.className).toContain('ml-auto')
+    expect(cluster.className).toContain('hidden')
+    expect(cluster.className).toContain('sm:flex')
+    // Glyph strip and the Docs dropdown keep their desktop slots behind hidden sm:block wrappers.
+    const docsTrigger = screen.getByRole('button', { name: /Docs/ })
+    expect(docsTrigger.closest('.hidden.sm\\:block')).not.toBeNull()
+    const glyphStrip = [...container.querySelectorAll('div.hidden.sm\\:block')]
+    expect(glyphStrip.some((el) => el.querySelector('a[href*="#story-"]'))).toBe(true)
   })
 
   it('generateMetadata preserves the agent-discovery pointers as alternates (llms.md + data JSON)', async () => {

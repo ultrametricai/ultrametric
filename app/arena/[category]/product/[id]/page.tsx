@@ -21,6 +21,7 @@ import OpportunitiesSection from '@/components/OpportunitiesSection'
 import OssPill from '@/components/OssPill'
 import ProductLinkChips from '@/components/ProductLinkChips'
 import PricingSignals from '@/components/PricingSignals'
+import ProductHeaderMobileFacts from '@/components/ProductHeaderMobileFacts'
 import ProductLogo from '@/components/ProductLogo'
 import ProductShowcase from '@/components/ProductShowcase'
 import ProofsSection from '@/components/ProofsSection'
@@ -240,7 +241,10 @@ export default async function ProductPage({
               </a>
             </p>
           </div>
-          <div className="ml-auto flex shrink-0 items-center gap-3">
+          {/* Desktop-only (founder 2026-10-05 mobile header): below sm these affordances render
+              as rows of the quick-access table below instead — this cluster wrapped badly on
+              phones. ≥sm is unchanged. */}
+          <div className="ml-auto hidden shrink-0 items-center gap-3 sm:flex">
             <WatchButton productId={id} productName={product.name} />
             <ImUsing arenaId={category} productId={id} productName={product.name} />
             {tryable ? (
@@ -267,6 +271,11 @@ export default async function ProductPage({
             )}
           </div>
         </div>
+        {/* Mobile quick-access table (founder 2026-10-05, preview): the affordance cluster —
+            watch through the doc links — as one compact label | value table below sm;
+            components/ProductHeaderMobileFacts.tsx. Hidden ≥sm, where the chips above/below
+            render exactly as before. */}
+        <ProductHeaderMobileFacts data={data} product={product} tryable={tryable} />
         {/* PRIMARY metrics row — the "should I care" read: Overall score (+68% band), the three
             agenticness indexes, and the MCP/CLI/API access glyphs. Everything below this row
             is deliberately quieter (secondary: momentum/vendor responses; then the arenas
@@ -290,17 +299,21 @@ export default async function ProductPage({
           )}
           {/* Founder 2026-09-23: when the api-quality pill above shows an actual score, the API
               glyph is redundant — the score IS the tick. The glyph stays only when the pill has
-              no number to show (n/a arena, untested, or no judged score). MCP/CLI always render. */}
-          <AgentAccessGlyphs
-            data={data}
-            productId={id}
-            size="md"
-            omit={
-              !naDims.has('apiQuality') && !isGroupUntested(data, id, 'api-quality') && entry.apiQuality !== null
-                ? ['API']
-                : undefined
-            }
-          />
+              no number to show (n/a arena, untested, or no judged score). MCP/CLI always render.
+              Desktop-only since 2026-10-05: below sm the glyphs are rows of the quick-access
+              table above. */}
+          <div className="hidden sm:block">
+            <AgentAccessGlyphs
+              data={data}
+              productId={id}
+              size="md"
+              omit={
+                !naDims.has('apiQuality') && !isGroupUntested(data, id, 'api-quality') && entry.apiQuality !== null
+                  ? ['API']
+                  : undefined
+              }
+            />
+          </div>
         </div>
         {/* SECONDARY row — adoption signals (registry data, never part of the Overall score), the
             evidence-depth flag (how hard we've looked, founder 2026-09-23), and the
@@ -313,8 +326,11 @@ export default async function ProductPage({
               components/SpikeDepthChip.tsx remains for any surface that wants it back). */}
           {/* Vendor doc links — inline here since the old top rail's lone "Access" box read as
               an empty frame (founder 2026-09-23). One "Docs" dropdown since 2026-10-05
-              (components/DocsMenu.tsx) instead of the separate API/CLI/MCP docs chips. */}
-          <ProductLinkChips product={product} />
+              (components/DocsMenu.tsx) instead of the separate API/CLI/MCP docs chips.
+              Desktop-only: below sm the doc links are rows of the quick-access table above. */}
+          <div className="hidden sm:block">
+            <ProductLinkChips product={product} />
+          </div>
           {vendorResponseCount > 0 && (
             <a
               href="#story-verdicts"
