@@ -79,11 +79,13 @@ const row = (
 )
 
 // Vendor names in on-screen chip order (the .truncate span holds the bare name — the logo
-// fallback initial and score digits live in sibling spans).
+// fallback initial lives in a sibling span). Since the score became its own receipts link
+// (founder 2026-10-05) each chip carries TWO /product/ links — only the body link has the
+// .truncate name, so score links filter out here.
 const chipNames = (root: ParentNode) =>
-  [...root.querySelectorAll('a[href^="/arena/"][href*="/product/"]')].map(
-    (a) => a.querySelector('span.truncate')?.textContent ?? '',
-  )
+  [...root.querySelectorAll('a[href^="/arena/"][href*="/product/"]')]
+    .map((a) => a.querySelector('span.truncate')?.textContent)
+    .filter((t): t is string => t !== undefined && t !== null)
 
 describe('static-HTML contract (SSR ↔ empty client state)', () => {
   beforeEach(() => stubLocalStorage())
@@ -113,6 +115,17 @@ describe('static-HTML contract (SSR ↔ empty client state)', () => {
       await act(async () => root?.unmount())
       container.remove()
     }
+  })
+
+  it("every chip score is its own receipts link — the product page's judged story verdicts (founder 2026-10-05: a visible score answers 'why?' in one click)", () => {
+    const { container } = render(row)
+    const scoreLinks = [...container.querySelectorAll('a[href$="#story-verdicts"]')]
+    expect(scoreLinks.map((a) => a.getAttribute('href'))).toEqual([
+      '/arena/startup-banking/product/best-bank#story-verdicts',
+      '/arena/startup-banking/product/mid-bank#story-verdicts',
+      '/arena/ai-assistants/product/chatgpt#story-verdicts',
+    ])
+    expect(scoreLinks[0].textContent).toBe('90/100')
   })
 })
 

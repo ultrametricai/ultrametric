@@ -110,30 +110,39 @@ function VendorChipButton({
       : `${vendor.name} — #${rank} for this step · ${vendor.score.toFixed(0)}/100 from judged verdicts on ${vendor.citesTotal} mapped ${vendor.arenaName} stories (${vendor.citesFull} full, ${vendor.citesPartial} partial) — click "how these are ranked" below for the per-story citations, or open the judged product page`
   return (
     <span className="inline-flex min-w-0 items-center gap-0.5">
-      <Link
-        href={`/arena/${vendor.arenaId}/product/${vendor.productId}`}
-        title={title}
-        className={selected ? CHIP_SELECTED : geoMuted ? CHIP_GEO_MUTED : CHIP_DEFAULT}
-      >
-        <ProductLogoView product={{ id: vendor.productId, name: vendor.name }} size={28} hasLogo={vendor.hasLogo} />
-        {selected && <SelectedTag source={selected} />}
-        {!selected && alsoYours && (
-          <span
-            className="rounded bg-zinc-800 px-1 py-px text-[9px] font-semibold text-zinc-400"
-            title={'Also one of your "I\'m using" picks — your best-scoring pick is pinned first'}
-          >
-            yours
-          </span>
-        )}
-        <span className="truncate">{vendor.name}</span>
-        {vendor.cross && (
-          <span className="rounded bg-zinc-800 px-1 py-px text-[9px] uppercase tracking-wide text-zinc-500">
-            {vendor.arenaName}
-          </span>
-        )}
-        <span className="font-mono text-[10px] tabular-nums text-emerald-400/80">{vendor.score.toFixed(0)}<span className="text-zinc-500">/100</span></span>
+      {/* The chip is a bordered container of two links (founder 2026-10-05: every visible score
+          answers 'why?' in one click): the body keeps opening the judged product page; the
+          score itself deep-links to the judged story verdicts that produced it. */}
+      <span className={selected ? CHIP_SELECTED : geoMuted ? CHIP_GEO_MUTED : CHIP_DEFAULT}>
+        <Link
+          href={`/arena/${vendor.arenaId}/product/${vendor.productId}`}
+          title={title}
+          className="inline-flex min-w-0 items-center gap-1.5 transition hover:text-emerald-300"
+        >
+          <ProductLogoView product={{ id: vendor.productId, name: vendor.name }} size={28} hasLogo={vendor.hasLogo} />
+          {selected && <SelectedTag source={selected} />}
+          {!selected && alsoYours && (
+            <span
+              className="rounded bg-zinc-800 px-1 py-px text-[9px] font-semibold text-zinc-400"
+              title={'Also one of your "I\'m using" picks — your best-scoring pick is pinned first'}
+            >
+              yours
+            </span>
+          )}
+          <span className="truncate">{vendor.name}</span>
+          {vendor.cross && (
+            <span className="rounded bg-zinc-800 px-1 py-px text-[9px] uppercase tracking-wide text-zinc-500">
+              {vendor.arenaName}
+            </span>
+          )}
+        </Link>
+        <Link
+          href={`/arena/${vendor.arenaId}/product/${vendor.productId}#story-verdicts`}
+          title={`${vendor.score.toFixed(0)}/100 — open the judged story verdicts this score derives from`}
+          className="font-mono text-[10px] tabular-nums text-emerald-400/80 transition hover:text-emerald-300"
+        >{vendor.score.toFixed(0)}<span className="text-zinc-500">/100</span></Link>
         <VendorGeoMark geo={geo} />
-      </Link>
+      </span>
       {selected === 'lens' ? (
         <button
           type="button"
@@ -296,7 +305,12 @@ export default function StepVendorRow({
           className="text-amber-300/90"
           title={`Your selected vendor has no judged evidence on the ${checkStep.storyCount} stories mapped to this step — the step's best-scored vendor is shown instead of guessing`}
         >
-          not covered by {gapName} — best here: {checkStep.best.name} {checkStep.best.score.toFixed(0)}/100
+          not covered by {gapName} — best here: {checkStep.best.name}{' '}
+          <Link
+            href={`/arena/${checkStep.best.arenaId}/product/${checkStep.best.productId}#story-verdicts`}
+            title={`${checkStep.best.score.toFixed(0)}/100 — open the judged story verdicts this score derives from`}
+            className="underline decoration-amber-300/40 underline-offset-2 transition hover:text-amber-200"
+          >{checkStep.best.score.toFixed(0)}/100</Link>
         </span>
       )}
       {arenaLink && (

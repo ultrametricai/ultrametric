@@ -125,13 +125,16 @@ function VendorChip({ info }: { info: VendorChipInfo }) {
     <>
       <ProductLogoView product={{ id: logoId, name: info.label }} size={28} hasLogo={hasLogo(logoId)} />
       <span className="truncate">{info.label}</span>
-      {info.agentReady !== null && (
-        <span className="font-mono text-[10px] tabular-nums text-emerald-400/80">
-          {info.agentReady.toFixed(0)}
-          <span className="text-zinc-500">/100</span>
-        </span>
-      )}
     </>
+  )
+  // The agent-ready number clicks through to its receipts — the /score page that derives it
+  // (founder 2026-10-05: every visible score answers 'why?' in one click). Untracked vendors
+  // have no judged number, so only the tracked branch renders a score at all.
+  const score = info.agentReady !== null && (
+    <span className="font-mono text-[10px] tabular-nums text-emerald-400/80">
+      {info.agentReady.toFixed(0)}
+      <span className="text-zinc-500">/100</span>
+    </span>
   )
   // The vendor's own start-here page (lib/processes.ts VENDOR_SIGNUP_URL) — a tiny external ↗
   // beside the chip, so "sign up for payroll"-style steps are actionable in one click. Distinct
@@ -150,15 +153,26 @@ function VendorChip({ info }: { info: VendorChipInfo }) {
   if (info.productId && info.arenaId) {
     return (
       <span className="inline-flex min-w-0 items-center gap-0.5">
-        <Link
-          href={`/arena/${info.arenaId}/product/${info.productId}`}
-          title={`${info.label} — #${info.rank} by agent-readiness in ${info.arenaName}${
-            info.agentReady !== null ? ` · ${info.agentReady.toFixed(0)}/100 agent-ready` : ''
-          } — see the judged product page`}
-          className="inline-flex min-w-0 items-center gap-1.5 rounded-md border border-zinc-700 bg-zinc-900/60 py-0.5 pl-0.5 pr-2 text-zinc-200 transition hover:border-emerald-400/60 hover:text-emerald-300"
-        >
-          {body}
-        </Link>
+        <span className="inline-flex min-w-0 items-center gap-1.5 rounded-md border border-zinc-700 bg-zinc-900/60 py-0.5 pl-0.5 pr-2 text-zinc-200 transition hover:border-emerald-400/60">
+          <Link
+            href={`/arena/${info.arenaId}/product/${info.productId}`}
+            title={`${info.label} — #${info.rank} by agent-readiness in ${info.arenaName}${
+              info.agentReady !== null ? ` · ${info.agentReady.toFixed(0)}/100 agent-ready` : ''
+            } — see the judged product page`}
+            className="inline-flex min-w-0 items-center gap-1.5 transition hover:text-emerald-300"
+          >
+            {body}
+          </Link>
+          {score && (
+            <Link
+              href={`/arena/${info.arenaId}/product/${info.productId}/score`}
+              title={`${info.agentReady!.toFixed(0)}/100 agent-ready in ${info.arenaName} — open the score receipts`}
+              className="transition hover:text-emerald-300"
+            >
+              {score}
+            </Link>
+          )}
+        </span>
         {signup}
       </span>
     )
@@ -170,6 +184,7 @@ function VendorChip({ info }: { info: VendorChipInfo }) {
         className="inline-flex min-w-0 items-center gap-1.5 rounded-md border border-zinc-800 bg-zinc-900/60 py-0.5 pl-0.5 pr-2 text-zinc-400"
       >
         {body}
+        {score}
       </span>
       {signup}
     </span>
@@ -327,7 +342,14 @@ function StepRankingRow({
                     <Link href={`/arena/${v.arenaId}/product/${v.productId}`} className="text-zinc-300 transition hover:text-emerald-300">
                       {v.name}
                     </Link>{' '}
-                    <span className="font-mono tabular-nums text-emerald-400/80">{v.score.toFixed(0)}<span className="text-zinc-500">/100</span></span>{' '}
+                    {/* The score itself clicks through to the judged verdicts table that
+                        produced it (founder 2026-10-05) — the per-story links beside it keep
+                        targeting each verdict's own #story- anchor. */}
+                    <Link
+                      href={`/arena/${v.arenaId}/product/${v.productId}#story-verdicts`}
+                      title={`${v.score.toFixed(0)}/100 — open the judged story verdicts this score derives from`}
+                      className="font-mono tabular-nums text-emerald-400/80 transition hover:text-emerald-300"
+                    >{v.score.toFixed(0)}<span className="text-zinc-500">/100</span></Link>{' '}
                     — <VendorCiteLine vendor={v} />
                   </li>
                 ))}
@@ -561,13 +583,14 @@ function NodeBlock({
                 {o.name}
               </Link>
               {o.agentReady !== null && (
-                <span
-                  className="ml-1 font-mono text-[10px] tabular-nums text-emerald-400/80"
-                  title={`${o.agentReady.toFixed(0)}/100 agent-ready`}
+                <Link
+                  href={`/arena/${o.arenaId}/product/${o.id}/score`}
+                  className="ml-1 font-mono text-[10px] tabular-nums text-emerald-400/80 transition hover:text-emerald-300"
+                  title={`${o.agentReady.toFixed(0)}/100 agent-ready — open the score receipts`}
                 >
                   {o.agentReady.toFixed(0)}
                   <span className="text-zinc-500">/100</span>
-                </span>
+                </Link>
               )}
             </span>
           ))}
