@@ -51,7 +51,7 @@ describe('composed canonical previews', () => {
     expect(el.container.querySelectorAll('article')).toHaveLength(26)
     const bookkeeping = el.container.querySelector('[id="get-paid:part-4"]')!
     expect(bookkeeping.querySelector('h3 a')?.textContent).toBe('Bookkeeping close')
-    expect(bookkeeping.querySelector('h3 a')?.getAttribute('href')).toBe('/processes/preview/bookkeeping-close')
+    expect(bookkeeping.querySelector('h3 a')?.getAttribute('href')).toBe('/processes/bookkeeping-close')
     expect(within(bookkeeping as HTMLElement).queryByRole('link', { name: /^Open / })).toBeNull()
     expect(bookkeeping.querySelector('summary a')).toBeNull()
     const ids = [...el.container.querySelectorAll('[id]')].map(element => element.id)

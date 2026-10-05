@@ -149,6 +149,6 @@ describe('canonical shared process reader', () => {
     const chain = findSharedRecord(records, 'first-hire')!
     const el = mount(renderToStaticMarkup(<SharedProcessReader record={chain} records={records} />))
     expect(el.querySelectorAll('a[href^="#"]')).toHaveLength(0)
-    expect(el.querySelectorAll('article a[href^="/processes/preview/"]')).toHaveLength(4)
+    expect(el.querySelectorAll('article a[href^="/processes/"]')).toHaveLength(4)
   })
 })

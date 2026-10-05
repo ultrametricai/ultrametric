@@ -1,6 +1,6 @@
 # Shared process source
 
-These records are the additive successor to the operational corpus, chains, and jurisdiction workflows. Existing pages and manifests keep their current loaders. `lib/shared-processes/load.ts` is the opt-in reader.
+These records supply the authored content for canonical `/processes/<slug>` pages through `lib/shared-processes/load.ts`. Existing operational corpus, chain, ranking, simulator, and manifest loaders retain their execution contracts during the transition. They do not supply a second authored description catalog. Route, anchor, and selection compatibility are described in `docs/PROCESS-ROUTE-CUTOVER.md`.
 
 Edit one JSON file per record under `records/`. Guidance and notes support Markdown. A record can be a situation or a process; the importer does not infer that a legacy chain is a situation. Outcomes describe useful results. `when` is optional prose applicability, interpreted by the agent. User selections and company context stay in API memory.
 

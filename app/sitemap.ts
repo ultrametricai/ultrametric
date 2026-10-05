@@ -3,7 +3,8 @@ import { loadArenaSections } from '@/lib/arenaSections'
 import { battleSlug, loadAll } from '@/lib/data'
 import { collectGlobalStories } from '@/lib/globalStories'
 import { loadBusinessLogicMap } from '@/lib/businessLogicMap'
-import { loadArtifacts, loadChains, loadProcesses, processSlug } from '@/lib/processes'
+import { loadArtifacts, loadChains } from '@/lib/processes'
+import { readSharedCatalog, sharedProcessHref } from '@/lib/shared-processes/reader'
 import { loadFamilies } from '@/lib/families'
 import { loadIcpTypes } from '@/lib/icp'
 import { SITE_URL } from '@/lib/site'
@@ -119,8 +120,9 @@ export default function sitemap(): MetadataRoute.Sitemap {
   entries.push({ url: `${SITE_URL}/open-documents`, lastModified: now })
   entries.push({ url: `${SITE_URL}/processes/operating-rhythm`, lastModified: now })
   entries.push({ url: `${SITE_URL}/startup-sim`, lastModified: now })
-  for (const task of loadProcesses()) {
-    entries.push({ url: `${SITE_URL}/processes/${processSlug(task.title)}`, lastModified: now })
+  const processRecords = readSharedCatalog()
+  for (const record of processRecords) {
+    entries.push({ url: `${SITE_URL}${sharedProcessHref(record.id, processRecords)}`, lastModified: now })
   }
   for (const chain of loadChains()) {
     entries.push({ url: `${SITE_URL}/processes/chains/${chain.id}`, lastModified: now })
