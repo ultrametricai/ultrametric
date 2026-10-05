@@ -496,8 +496,9 @@ function NodeBlock({
         {node.cost && <StepCostChip cost={node.cost} />}
       </div>
 
-      {/* The primary action row — [⚡ run with AFK (staff)] → [do it yourself ↗]. Steps
-          without an actionUrl render nothing extra. */}
+      {/* The primary action row — [⚡ run with Ultrametric (staff, → /get-started; the
+          2026-10-05 rename of 'run with AFK')] → [do it yourself ↗]. Steps without an
+          actionUrl render nothing extra. */}
       {node.actionUrl && (
         <div className="mt-2 flex flex-wrap items-center gap-1.5 text-[11px]">
           {afkChip}
