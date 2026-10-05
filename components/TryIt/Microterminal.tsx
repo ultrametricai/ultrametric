@@ -70,7 +70,6 @@ export default function Microterminal({
   const [liveBusy, setLiveBusy] = useState(false)
   const [liveResult, setLiveResult] = useState<McpProbeResult | null>(null) // last completed probe
   const startRef = useRef(0)
-  const skippedRef = useRef(false)
   const runRef = useRef(0) // invalidates in-flight probe responses on story switch
   const authRef = useRef<AuthChoice>({}) // the tier the CURRENT liveResult was produced under
   const preRef = useRef<HTMLPreElement>(null)
@@ -80,7 +79,6 @@ export default function Microterminal({
 
   const beginRun = useCallback((text: string) => {
     startRef.current = performance.now()
-    skippedRef.current = false
     setTarget(text)
     setShown(0)
   }, [])
@@ -179,13 +177,10 @@ export default function Microterminal({
     beginRun(story?.transcript ?? '')
   }, [beginRun, runProbe, stories])
 
-  // Character-paced typing (~8ms/char, lib/tryitReplay.ts). Skip renders everything at once.
+  // Character-paced typing (~8ms/char, lib/tryitReplay.ts). The 'skip ⏭' fast-forward control
+  // and its skippedRef branch were removed with it (founder 2026-10-05) — nothing else read it.
   useEffect(() => {
     if (shown >= target.length) return
-    if (skippedRef.current) {
-      setShown(target.length)
-      return
-    }
     if (startRef.current === 0) startRef.current = performance.now() // mount-time replay start
     const timer = setInterval(() => {
       setShown(replayCharCount(performance.now() - startRef.current, target.length))
@@ -199,12 +194,6 @@ export default function Microterminal({
     if (el) el.scrollTop = el.scrollHeight
   }, [shown])
 
-  const skip = () => {
-    skippedRef.current = true
-    setShown(target.length)
-  }
-
-  const typing = shown < target.length || liveBusy
   const menuButton = (selected: boolean) =>
     `rounded-full border px-3 py-1 text-left text-xs transition ${
       selected
@@ -322,14 +311,8 @@ export default function Microterminal({
           ) : null}
           {/* Founder 2026-10-02: the footer "replay ↺ / run again ▶" button went first, then the
               title-bar ▶ replay/run control it duplicated — the story-menu chips are the one
-              play/replay affordance. Skip stays (the only way to fast-forward a replay). */}
-          <span className="ml-auto flex shrink-0 gap-2">
-            {typing && !liveBusy && (
-              <button type="button" onClick={skip} className="rounded border border-zinc-700 px-2 py-0.5 text-zinc-400 transition hover:border-emerald-400 hover:text-emerald-300">
-                skip ⏭
-              </button>
-            )}
-          </span>
+              play/replay affordance. Founder 2026-10-05: the 'skip ⏭' fast-forward went too;
+              replays simply type out. */}
         </div>
       </div>
 

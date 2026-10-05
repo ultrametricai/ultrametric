@@ -212,5 +212,8 @@ describe('Microterminal live tiers', () => {
     }
     // Long combined titles never render as chip text anymore.
     expect(screen.queryByText(/docs an agent can fetch/)).toBeNull()
+    // Founder 2026-10-05: the 'skip ⏭' fast-forward control is gone while a replay types out
+    // (these transcripts are mid-replay at render time — exactly when skip used to show).
+    expect(screen.queryByRole('button', { name: /skip/ })).toBeNull()
   })
 })
