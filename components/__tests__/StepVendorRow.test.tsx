@@ -79,13 +79,11 @@ const row = (
 )
 
 // Vendor names in on-screen chip order (the .truncate span holds the bare name — the logo
-// fallback initial lives in a sibling span). Since the score became its own receipts link
-// (founder 2026-10-05) each chip carries TWO /product/ links — only the body link has the
-// .truncate name, so score links filter out here.
+// fallback initial lives in a sibling span). Since the founder batch 2026-10-05 the chip BODY
+// is the pick toggle <button aria-pressed> (no 'use'/'✕' side buttons) and the score is its own
+// receipts link — so ranked chips are the aria-pressed buttons; untracked chips stay spans.
 const chipNames = (root: ParentNode) =>
-  [...root.querySelectorAll('a[href^="/arena/"][href*="/product/"]')]
-    .map((a) => a.querySelector('span.truncate')?.textContent)
-    .filter((t): t is string => t !== undefined && t !== null)
+  [...root.querySelectorAll('button[aria-pressed] span.truncate')].map((s) => s.textContent ?? '')
 
 describe('static-HTML contract (SSR ↔ empty client state)', () => {
   beforeEach(() => stubLocalStorage())
@@ -133,14 +131,19 @@ describe('lens + stack selection', () => {
   beforeEach(() => stubLocalStorage())
   afterEach(() => window.localStorage.clear())
 
-  it('clicking "use" pins the vendor first with the ✓ via tag; ✕ clears it', () => {
+  it('clicking a chip pins the vendor first with the ✓ via tag (aria-pressed); clicking it again clears — and no visible "use"/"✕" control renders (founder 2026-10-05)', () => {
     const { container } = render(row)
+    // The pick affordance is the chip body itself — accessible name/title, no 'use' word.
+    expect(container.textContent).not.toMatch(/\buse\b/)
     fireEvent.click(within(container).getByTitle(/See this process via Mid Bank/))
     expect(chipNames(container)[0]).toContain('Mid Bank')
     expect(container.textContent).toContain('✓ via')
-    fireEvent.click(within(container).getByTitle('Stop viewing this process via Mid Bank'))
+    const pressed = within(container).getByTitle(/Stop viewing this process via Mid Bank/)
+    expect(pressed.getAttribute('aria-pressed')).toBe('true')
+    fireEvent.click(pressed)
     expect(chipNames(container)[0]).toContain('Best Bank')
     expect(container.textContent).not.toContain('✓ via')
+    expect(container.textContent).not.toContain('✕')
   })
 
   it('a stack pick below the display cap still pins, tagged "yours" (uncapped checkStep row)', () => {
