@@ -113,6 +113,17 @@ describe('product page — founder 2026-10-02 batch', () => {
     expect(container.querySelector('#story-map-experiment')).toBeNull()
   })
 
+  it('the header carries ONE Docs dropdown instead of separate doc chips (founder 2026-10-05)', async () => {
+    const { container } = await renderPage()
+    const trigger = screen.getByRole('button', { name: /Docs/ })
+    expect(trigger.getAttribute('aria-haspopup')).toBe('menu')
+    expect(trigger.getAttribute('aria-expanded')).toBe('false')
+    // The old inline chips are gone; the destinations now live inside the (closed) menu.
+    expect(container.textContent).not.toContain('API docs ↗')
+    expect(container.textContent).not.toContain('CLI docs ↗')
+    expect(container.textContent).not.toContain('MCP docs ↗')
+  })
+
   it('generateMetadata preserves the agent-discovery pointers as alternates (llms.md + data JSON)', async () => {
     const meta = await generateMetadata({ params })
     const types = meta.alternates?.types as Record<string, unknown>
