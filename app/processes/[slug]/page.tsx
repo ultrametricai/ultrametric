@@ -7,7 +7,6 @@ import GeoDropdown from '@/components/GeoDropdown'
 import IconChip from '@/components/IconChip'
 import JurisdictionToggle from '@/components/JurisdictionToggle'
 import ProcessGeoBanner from '@/components/ProcessGeoBanner'
-import MineLink from '@/components/MineLink'
 import OpenModulesMenu from '@/components/OpenModulesMenu'
 import ProcessDag from '@/components/ProcessDag'
 import ProcessGeoNotes from '@/components/ProcessGeoNotes'
@@ -190,20 +189,10 @@ export default async function ProcessPage({ params }: { params: Promise<{ slug: 
           collapsed (it repeated every step's computer-use chips at the top of the page). */}
       <ProcessLeaderboard task={task} mineHref={mineHref} />
 
-      {/* Founder ask: "Check my process" — the personalized run (your vendor per step vs the
-          best, upgrade flags) lives at its own noindex route so this shared SEO page stays the
-          one static version for everyone; the /mine page handles sign-up and stack setup. */}
-      <p className="text-sm">
-        {/* Signed-out clicks route through sign-up with a deep link back to THIS process's
-            personalized run (founder 2026-09-23) — components/MineLink.tsx. */}
-        <MineLink
-          mineHref={mineHref}
-          className="inline-block rounded-lg border border-emerald-400/60 px-3 py-1.5 text-xs font-medium text-emerald-300 transition hover:bg-emerald-400/10"
-          title="Run this process with the vendors you actually use — sign up, set your stack once, and see your step scores vs the market's best"
-        >
-          Check my process — run it with your stack →
-        </MineLink>
-      </p>
+      {/* The standalone 'Check my process — run it with your stack →' CTA is gone (founder
+          2026-10-05) — display only: the /mine route, MineLink, and the per-step "yours"
+          affordances (StepYourPick, ProcessYourVendor, the leaderboard's mineHref) still carry
+          readers into the personalized run. */}
 
       <section>
         <h2 className="font-display leading-[1.1] text-xl font-semibold tracking-tight">Step-by-step: what an agent can do vs you</h2>
