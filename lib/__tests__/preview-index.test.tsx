@@ -5,7 +5,7 @@ import { existsSync, readFileSync } from 'node:fs'
 import path from 'node:path'
 import { buildPreviewIndex } from '../shared-processes/index-rows'
 import { buildPreviewRoutes, findSharedRecord, readSharedCatalog, sharedPreviewHref } from '../shared-processes/reader'
-import PreviewIndex from '@/app/processes/preview/page'
+import ProcessIndex from '@/components/ProcessIndex'
 import { buildProcessRows } from '../processRows'
 import bindings from '../shared-processes/index-icons.json'
 
@@ -35,16 +35,16 @@ describe('existing index presentation over shared records', () => {
       expect(existsSync(file)).toBe(true)
       expect(readFileSync(file, 'utf8')).toContain('<svg')
     }
-    expect(sharedPreviewHref('opp_002', records)).toBe('/processes/preview/add-a-contractor-1099')
-    expect(sharedPreviewHref('first-hire', records)).toBe('/processes/preview/first-hire')
+    expect(sharedPreviewHref('opp_002', records)).toBe('/processes/add-a-contractor-1099')
+    expect(sharedPreviewHref('first-hire', records)).toBe('/processes/first-hire')
   })
 
   it('retains sorting, filtering, search, and canonical-only records without fabricated metrics', () => {
-    const el = render(<PreviewIndex />)
+    const el = render(<ProcessIndex tableRows={buildPreviewIndex().rows} phases={buildPreviewIndex().phases} playbooks={buildPreviewIndex().playbooks} />)
     const table = el.getByRole('table')
     expect(table.querySelectorAll('tbody tr')).toHaveLength(172)
     expect(el.getByRole('searchbox', { name: 'Search processes' }).getAttribute('placeholder')).toContain('172')
-    const contractor = table.querySelector('a[href="/processes/preview/add-a-contractor-1099"]')!
+    const contractor = table.querySelector('a[href="/processes/add-a-contractor-1099"]')!
     expect(contractor.textContent).toBe('Add a contractor (1099)')
     for (const record of records) {
       expect(table.querySelector(`a[href="${sharedPreviewHref(record.id, records)}"]`)?.textContent).toBe(record.title)
@@ -63,7 +63,7 @@ describe('existing index presentation over shared records', () => {
     const search = el.getByRole('searchbox', { name: 'Search processes' })
     fireEvent.focus(search)
     fireEvent.change(search, { target: { value: 'contractor' } })
-    expect(el.getAllByRole('link').some(link => link.getAttribute('href') === '/processes/preview/add-a-contractor-1099')).toBe(true)
+    expect(el.getAllByRole('link').some(link => link.getAttribute('href') === '/processes/add-a-contractor-1099')).toBe(true)
   })
 
   it('reserves existing IDs/aliases and resolves synthetic title collisions deterministically', () => {

@@ -1,31 +1,45 @@
 'use client'
 
-import { createContext, useContext, useState, type ReactNode } from 'react'
+import { createContext, useCallback, useContext, useReducer, type ReactNode } from 'react'
 import Link from 'next/link'
 import type { CapabilityEvidence } from '@/lib/shared-processes/vendor-preview'
 
 const VendorContext = createContext<{
   picks: Record<string, string>
   overrides: Record<string, string | null>
+  revision: number
+  restore: (picks: Record<string, string>, overrides: Record<string, string | null>) => void
   override: (scope: string, candidateId: string | null | undefined) => void
   toggle: (scope: string, candidateId: string) => void
 } | null>(null)
 
-// Deliberately transient: no account stack, storage, URL parameters, or source writes.
+type SelectionState = { picks: Record<string, string>; overrides: Record<string, string | null>; revision: number }
+type SelectionAction = { type: 'restore'; picks: Record<string, string>; overrides: Record<string, string | null> }
+  | { type: 'toggle'; scope: string; candidateId: string }
+  | { type: 'override'; scope: string; candidateId: string | null | undefined }
+
+function selectionReducer(state: SelectionState, action: SelectionAction): SelectionState {
+  if (action.type === 'restore') return { picks: action.picks, overrides: action.overrides, revision: 0 }
+  if (action.type === 'toggle') {
+    const picks = { ...state.picks }
+    if (picks[action.scope] === action.candidateId) delete picks[action.scope]
+    else picks[action.scope] = action.candidateId
+    return { ...state, picks, revision: state.revision + 1 }
+  }
+  const overrides = { ...state.overrides }
+  if (action.candidateId === undefined) delete overrides[action.scope]
+  else overrides[action.scope] = action.candidateId
+  return { ...state, overrides, revision: state.revision + 1 }
+}
+
+// Persistence is opt-in through the canonical page's compatibility bridge.
 export function VendorSelectionProvider({ children }: { children: ReactNode }) {
-  const [picks, setPicks] = useState<Record<string, string>>({})
-  const [overrides, setOverrides] = useState<Record<string, string | null>>({})
-  return <VendorContext.Provider value={{ picks, overrides, override: (scope, candidateId) => setOverrides(current => {
-    const next = { ...current }
-    if (candidateId === undefined) delete next[scope]
-    else next[scope] = candidateId
-    return next
-  }), toggle: (scope, candidateId) => setPicks(current => {
-    const next = { ...current }
-    if (next[scope] === candidateId) delete next[scope]
-    else next[scope] = candidateId
-    return next
-  }) }}>{children}</VendorContext.Provider>
+  const [state, dispatch] = useReducer(selectionReducer, { picks: {}, overrides: {}, revision: 0 })
+  const restore = useCallback((picks: Record<string, string>, overrides: Record<string, string | null>) => dispatch({ type: 'restore', picks, overrides }), [])
+  return <VendorContext.Provider value={{ ...state, restore,
+    override: (scope, candidateId) => dispatch({ type: 'override', scope, candidateId }),
+    toggle: (scope, candidateId) => dispatch({ type: 'toggle', scope, candidateId }),
+  }}>{children}</VendorContext.Provider>
 }
 
 export function useVendorSelection() { return useContext(VendorContext) }

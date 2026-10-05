@@ -8,9 +8,9 @@ import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 
 export const targets = [
-  { trace: 'processes/preview/page.js.nft.json', route: '/processes/preview', marker: '/processes/preview/get-paid' },
-  { trace: 'processes/preview/[id]/page.js.nft.json', route: '/processes/preview/get-paid', marker: 'data-shared-record="get-paid"' },
-  { trace: 'processes/incorporate-c-corp/v2/page.js.nft.json', route: '/processes/incorporate-c-corp/v2', marker: 'data-shared-record="form_001"' },
+  { trace: 'processes/preview/page.js.nft.json', route: '/processes/preview', destination: '/processes', status: 308 },
+  { trace: 'processes/preview/[id]/page.js.nft.json', route: '/processes/preview/get-paid', destination: '/processes/get-paid', status: 308 },
+  { trace: 'processes/incorporate-c-corp/v2/page.js.nft.json', route: '/processes/incorporate-c-corp/v2', destination: '/processes/incorporate-c-corp', status: 308 },
 ]
 const requiredFiles = ['processes/corpus.json', 'journeys/chains.json', 'processes/business-logic-map.json']
 
@@ -45,6 +45,7 @@ export const staticTargets = [
   // buildAllSearchEntries() fs reads happen at build time only and its deployment trace must
   // stay data-free like every other static route's.
   { trace: 'search-index.json/route.js.nft.json', route: '/search-index.json' },
+  { trace: 'processes/[slug]/page.js.nft.json', route: '/processes/[slug]' },
 ]
 const excludedDirs = ['data', 'public', 'pipeline', 'docs', 'content', 'processes', 'journeys', 'vendors']
 
@@ -119,11 +120,22 @@ export async function smokeRuntime(root, traces) {
       child.once('error', error => { clearTimeout(timer); reject(error) })
       child.once('exit', code => { clearTimeout(timer); reject(new Error(`Packaged runtime exited ${code}:\n${logs}`)) })
     })
-    for (const target of [...targets, { route: '/processes/preview/unknown-runtime-smoke-route', status: 404 }]) {
+    for (const target of [...targets,
+      { route: '/processes/get-paid', marker: 'data-shared-record="get-paid"' },
+      { route: '/processes/incorporate-c-corp', marker: 'data-shared-record="form_001"' },
+      { route: '/processes/preview/form_001?via=legal-ops:clerky&via=payments:stripe&geo=IN&extra=a&extra=b', destination: '/processes/incorporate-c-corp', status: 308 },
+      { route: '/processes/preview/unknown-runtime-smoke-route', status: 404 },
+    ]) {
       const response = await fetch(`http://127.0.0.1:${port}${target.route}`, { signal: AbortSignal.timeout(30_000), redirect: 'manual' })
       const body = await response.text()
       assert.equal(response.status, target.status ?? 200, `${target.route}: unexpected status\n${logs}`)
       if (target.marker) assert(body.includes(target.marker), `${target.route}: missing rendered content\n${logs}`)
+      if (target.destination) {
+        const source = new URL(target.route, 'http://localhost')
+        const destination = new URL(response.headers.get('location'), 'http://localhost')
+        assert.equal(destination.pathname, target.destination)
+        assert.deepEqual([...destination.searchParams], [...source.searchParams], `${target.route}: query values changed`)
+      }
       console.log(`Packaged preview ${response.status}: ${target.route}`)
     }
     assert(!logs.includes('ENOENT'), `Packaged runtime accessed untraced files:\n${logs}`)

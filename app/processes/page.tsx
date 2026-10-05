@@ -1,6 +1,6 @@
 import type { Metadata } from 'next'
 import ProcessIndex from '@/components/ProcessIndex'
-import { buildPlaybookRows, buildProcessRows } from '@/lib/processRows'
+import { buildCanonicalProcessIndex } from '@/lib/shared-processes/index-rows'
 
 export const metadata: Metadata = {
   title: 'Going agentic with company processes — Ultrametric',
@@ -9,6 +9,6 @@ export const metadata: Metadata = {
 }
 
 export default function ProcessesPage() {
-  const { rows, phases } = buildProcessRows()
-  return <ProcessIndex tableRows={rows} phases={phases} playbooks={buildPlaybookRows()} />
+  const { rows, phases, playbooks } = buildCanonicalProcessIndex()
+  return <ProcessIndex tableRows={rows} phases={phases} playbooks={playbooks} />
 }

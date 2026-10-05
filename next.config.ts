@@ -1,4 +1,6 @@
 import type { NextConfig } from "next";
+import { loadSharedProcesses } from './lib/shared-processes/load';
+import { processRouteRedirects } from './lib/shared-processes/routes';
 
 // Repo directories that pages read with fs ONLY while prerendering (every route except the
 // three preview routes below is static: force-static or generateStaticParams with
@@ -77,6 +79,8 @@ const nextConfig: NextConfig = {
   // permanent redirect, the same old-links-stay-alive posture as the proxy-layer
   // /productarena/* redirects (which remain at infra/cloudflare-proxy, not here).
   redirects: async () => [
+    // Next preserves query values. Fragment-free destinations inherit the old hash.
+    ...processRouteRedirects(loadSharedProcesses()),
     {
       source: '/documents',
       destination: '/open-documents',

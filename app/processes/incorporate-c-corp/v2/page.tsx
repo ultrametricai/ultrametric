@@ -1,13 +1,9 @@
-import type { Metadata } from 'next'
-import SharedProcessPreview from '@/components/shared-processes/SharedProcessPreview'
+import { permanentRedirect } from 'next/navigation'
+import { sharedProcessHref } from '@/lib/shared-processes/reader'
+import { withProcessSearchParams, type ProcessSearchParams } from '@/lib/shared-processes/redirect-query'
 
 export const dynamic = 'force-dynamic'
-export const metadata: Metadata = {
-  title: 'Incorporate C-Corp — Preview — Ultrametric',
-  robots: { index: false, follow: false },
-}
 
-// Preserve the approved live URL; all process content uses the generic shared reader.
-export default function IncorporationPreview() {
-  return <SharedProcessPreview id="form_001" />
+export default async function IncorporationPreview({ searchParams }: { searchParams: Promise<ProcessSearchParams> }) {
+  permanentRedirect(withProcessSearchParams(sharedProcessHref('form_001'), await searchParams))
 }

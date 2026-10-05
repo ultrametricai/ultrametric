@@ -25,7 +25,7 @@ function ProductRow({ product, selected, inherited, onSelect, scores }: { produc
   </ScoredProductRow>
 }
 
-export default function StepComparisonTable({ comparison, choiceScope, parentChoiceScope, scope, bordered = true }: { comparison: StepComparison; choiceScope?: string; parentChoiceScope?: string; scope?: string; bordered?: boolean }) {
+function ComparisonGroup({ comparison, choiceScope, parentChoiceScope, scope, bordered = true, arenaName, allowReset = true }: { comparison: StepComparison; choiceScope?: string; parentChoiceScope?: string; scope?: string; bordered?: boolean; arenaName?: string; allowReset?: boolean }) {
   const selection = useVendorSelection()
   const region = useRegionalVariant()
   const foreign = !!region?.decision && region.selected !== 'default'
@@ -40,11 +40,18 @@ export default function StepComparisonTable({ comparison, choiceScope, parentCho
   const selected = comparison.products.find(product => product.id === selectedId && product.score > 0 && product.stories.some(story => story.quality > 0))
   const products = selected ? [selected, ...comparison.products.filter(product => product !== selected)] : comparison.products
   return <section aria-label="Step product comparison" className="space-y-2 border-t border-zinc-800/50 pt-3">
-    <p className="text-sm text-zinc-400">Products · {comparison.storyCount} coverage stories</p>
+    <p className="text-sm text-zinc-400">{arenaName ?? 'Products'} · {comparison.storyCount} coverage stories</p>
     <div className={bordered ? "overflow-hidden rounded-2xl border border-zinc-800" : "overflow-hidden"}>
       <ul>{products.map((product) => <ProductRow scores={comparison.products.map(item => item.score)} key={product.id} product={product} selected={product.id === selectedId} inherited={inherited} onSelect={overrideScope && selection ? () => selection.override(overrideScope, product.id === selectedId ? null : product.id) : undefined} />)}</ul>
     </div>
-    {hasOverride && inheritedScope && <button type="button" onClick={() => selection?.override(overrideScope!, undefined)} className="text-sm text-zinc-400 underline underline-offset-4 hover:text-zinc-200">Use process choice</button>}
+    {allowReset && hasOverride && inheritedScope && <button type="button" onClick={() => selection?.override(overrideScope!, undefined)} className="text-sm text-zinc-400 underline underline-offset-4 hover:text-zinc-200">Use process choice</button>}
 
   </section>
+}
+
+export default function StepComparisonTable(props: { comparison: StepComparison; choiceScope?: string; parentChoiceScope?: string; scope?: string; bordered?: boolean }) {
+  return <>
+    <ComparisonGroup {...props} />
+    {props.comparison.additionalComparisons?.map(comparison => <ComparisonGroup {...props} key={comparison.arenaId} comparison={comparison} arenaName={comparison.arenaName} allowReset={false} />)}
+  </>
 }

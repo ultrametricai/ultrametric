@@ -108,7 +108,7 @@ it('shows scoped aggregate evidence independently of selection and preserves lin
   scopes.open = true
   fireEvent(scopes, new Event('toggle'))
   const link = graph.getByRole('link', { name: 'Bookkeeping close' })
-  expect(link.getAttribute('href')).toBe('/processes/preview/bookkeeping-close')
+  expect(link.getAttribute('href')).toBe('/processes/bookkeeping-close')
   expect(el.getByRole('region', { name: 'Process parts' })).toBeDefined()
   expect(providers.getByRole('button', { name: 'Use Stripe' }).getAttribute('aria-pressed')).toBe('true')
 })

@@ -1,15 +1,20 @@
 'use client'
 
-import { createContext, useContext, useId, useState, type ReactNode } from 'react'
+import { createContext, useCallback, useContext, useId, useState, type ReactNode } from 'react'
 import { GEO_COUNTRIES, GEO_PREF_META, type GeoCountry } from '@/lib/geoPreference'
 import type { regionalDecision } from '@/lib/shared-processes/regions'
+import { markProcessScopeHydrated } from '@/lib/shared-processes/open-target'
 
 type Decision = ReturnType<typeof regionalDecision>
-const RegionContext = createContext<{ decision: Decision; selected: string; select: (id: string) => void } | null>(null)
+const RegionContext = createContext<{ decision: Decision; selected: string; revision: number; select: (id: string) => void; restore: (id: string) => void } | null>(null)
 
 export function RegionalVariantProvider({ decision, children }: { decision: Decision; children: ReactNode }) {
-  const [selected, select] = useState('default')
-  return <RegionContext.Provider value={{ decision, selected, select }}>{children}</RegionContext.Provider>
+  const [state, setState] = useState({ selected: 'default', revision: 0 })
+  const restore = useCallback((id: string) => setState({ selected: id, revision: 0 }), [])
+  const select = (id: string) => {
+    if (decision?.options.some(option => option.id === id)) setState(current => ({ selected: id, revision: current.revision + 1 }))
+  }
+  return <RegionContext.Provider value={{ decision, ...state, select, restore }}>{children}</RegionContext.Provider>
 }
 
 export function useRegionalVariant() { return useContext(RegionContext) }
@@ -71,9 +76,9 @@ export function RegionalOption({ scope, optionId, id, heading, children }: {
   const state = useRegionalVariant()
   const bound = state?.decision?.scope === scope && state.decision.options.some(option => option.id === optionId)
   if (bound) return state.selected === optionId
-    ? <div id={id} className="min-w-0 space-y-3">{children}</div>
+    ? <div ref={markProcessScopeHydrated} data-process-scope="" id={id} className="min-w-0 space-y-3">{children}</div>
     : null
-  return <details id={id} open={optionId === 'default'} className="min-w-0 px-3 py-3 sm:px-4"><summary className="cursor-pointer break-words font-medium text-zinc-100">{heading}</summary><div className="mt-3 space-y-3">{children}</div></details>
+  return <details ref={markProcessScopeHydrated} data-process-scope="" id={id} open={optionId === 'default'} className="min-w-0 px-3 py-3 sm:px-4"><summary className="cursor-pointer break-words font-medium text-zinc-100">{heading}</summary><div className="mt-3 space-y-3">{children}</div></details>
 }
 
 // Qualify the existing scores without changing their calculation or ordering.

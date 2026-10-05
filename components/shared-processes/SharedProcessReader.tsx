@@ -100,8 +100,12 @@ const stepIcons: Record<string, string> = { 'form_001:n1': '/step-icons/compare.
 
 function anchor(scope: string, id: string) { return `${scope}:${id}` }
 
-function Parts({ parts, records, scope, vendorPreview, processChoice, comparisons = {}, nested = false, sourceId = scope, ancestors = [] }: {
-  parts: Part[]; records: SharedRecord[]; scope: string; vendorPreview?: VendorPreview; processChoice?: ProcessProviderChoice; comparisons?: StepComparisons; nested?: boolean; sourceId?: string; ancestors?: string[]
+function AnchorAliases({ scope, aliases }: { scope: string; aliases?: Record<string, string[]> }) {
+  return [...new Set(aliases?.[scope] ?? [])].filter(id => id !== scope).map(id => <span key={id} id={id} aria-hidden="true" className="absolute scroll-mt-6" />)
+}
+
+function Parts({ parts, records, scope, vendorPreview, processChoice, comparisons = {}, nested = false, sourceId = scope, ancestors = [], stepAnchorAliases }: {
+  parts: Part[]; records: SharedRecord[]; scope: string; vendorPreview?: VendorPreview; processChoice?: ProcessProviderChoice; comparisons?: StepComparisons; nested?: boolean; sourceId?: string; ancestors?: string[]; stepAnchorAliases?: Record<string, string[]>
 }) {
   return <StepFlow scope={scope}>
     {parts.map(part => {
@@ -119,6 +123,7 @@ function Parts({ parts, records, scope, vendorPreview, processChoice, comparison
       const icon = stepIcons[anchor(scope, part.id)]
       const jurisdictions = Array.isArray(part.metadata.jurisdictions) ? part.metadata.jurisdictions.filter((value): value is string => typeof value === 'string' && value.toLowerCase() !== 'multi') : []
       return <PreviewScope key={part.id} context={previewContext(part.metadata)} recordScope={scope}><article id={anchor(scope, part.id)} className={`min-w-0 scroll-mt-6 rounded-xl border border-zinc-800 bg-zinc-900/40 ${nested ? 'p-3 sm:p-4' : 'p-5 sm:p-6'}`}>
+        <AnchorAliases scope={anchor(scope, part.id)} aliases={stepAnchorAliases} />
         <div className="flex flex-wrap items-center justify-between gap-x-4 gap-y-2">
         <h3 className="flex min-w-0 items-start gap-2.5 break-words text-xl font-medium leading-snug text-zinc-100">{icon && <Image src={icon} alt="" width={24} height={24} className="mt-0.5 shrink-0" />}<span>{referenced ? <Link href={sharedPreviewHref(referenced.id, records)} className="rounded-sm hover:text-emerald-300 focus-visible:outline-2 focus-visible:outline-emerald-300">{part.title ?? referenced.title}</Link> : <RegionalDecisionTitle scope={anchor(scope, part.id)} title={part.title ?? part.id} />}</span></h3>
         <RegionalStepAssessment scope={anchor(scope, part.id)} fallback={<StepAssessment metadata={part.metadata} unverified={`${sourceId}:${part.id}` === 'form_001:n3'} />} options={part.options.map(option => ({ id: option.id, assessment: <StepAssessment metadata={option.metadata} /> }))} />
@@ -138,10 +143,11 @@ function Parts({ parts, records, scope, vendorPreview, processChoice, comparison
           {referenced && <details open className="space-y-4 border-t border-zinc-800/50 pt-3">
             <summary className="cursor-pointer text-sm font-medium text-zinc-200">Steps in {referenced.title}</summary>
             {referenced.guidance && <Guidance text={referenced.guidance} />}
-            <Parts parts={referenced.parts} records={records} scope={`${scope}:${part.id}:ref`} sourceId={referenced.id} vendorPreview={buildVendorPreview(referenced, `${scope}:${part.id}:ref`, processChoice?.stepScopes)} ancestors={[...ancestors, sourceId]} processChoice={processChoice} comparisons={comparisons} nested />
+            <Parts parts={referenced.parts} records={records} scope={`${scope}:${part.id}:ref`} sourceId={referenced.id} vendorPreview={buildVendorPreview(referenced, `${scope}:${part.id}:ref`, processChoice?.stepScopes)} ancestors={[...ancestors, sourceId]} processChoice={processChoice} comparisons={comparisons} stepAnchorAliases={stepAnchorAliases} nested />
           </details>}
           {visibleOptions.length > 0 && <RegionalOptions scope={anchor(scope, part.id)}>
             {visibleOptions.map(option => <RegionalOption key={option.id} scope={anchor(scope, part.id)} optionId={option.id} id={anchor(anchor(scope, part.id), option.id)} heading={<>{option.title}<StepAssessment metadata={option.metadata} spaced /></>}>
+                <AnchorAliases scope={anchor(anchor(scope, part.id), option.id)} aliases={stepAnchorAliases} />
                 <PreviewGuidance guidance={option.summary} scope={anchor(anchor(scope, part.id), option.id)} />
                 {isSourcePart && <ComputerUseLinks options={computerUseForPart(sourceId, part, option.id)} />}
                 <StepMetadata metadata={option.metadata} sourceId={sourceId} records={records} />
@@ -150,7 +156,7 @@ function Parts({ parts, records, scope, vendorPreview, processChoice, comparison
                 {comparisons[anchor(anchor(scope, part.id), option.id)] ? <StepComparisonTable parentChoiceScope={vendorPreview?.parentChoiceScope} scope={anchor(anchor(scope, part.id), option.id)} comparison={comparisons[anchor(anchor(scope, part.id), option.id)]} choiceScope={vendorPreview?.choiceScope ?? processChoice?.stepScopes[anchor(anchor(scope, part.id), option.id)]} /> : vendorPreview && <SelectedCapability parentChoiceScope={vendorPreview?.parentChoiceScope} choiceScope={vendorPreview.choiceScope} evidence={vendorPreview.evidence[anchor(anchor(scope, part.id), option.id)] ?? []} />}
                 <ServiceCandidates references={option.references} separated excludeIds={comparisons[anchor(anchor(scope, part.id), option.id)]?.products.map(product => product.id)} />
                 <StepResources references={option.references.filter(ref => comparisons[anchor(anchor(scope, part.id), option.id)] || !isServiceCandidate(ref))} documents={<SharedDocuments metadata={option.metadata} />} />
-                {(option.parts.length > 0 || option.links?.length) && <Parts parts={option.parts} records={records} scope={anchor(anchor(scope, part.id), option.id)} sourceId={sourceId} ancestors={ancestors} vendorPreview={vendorPreview} processChoice={processChoice} comparisons={comparisons} nested />}
+                {(option.parts.length > 0 || option.links?.length) && <Parts parts={option.parts} records={records} scope={anchor(anchor(scope, part.id), option.id)} sourceId={sourceId} ancestors={ancestors} vendorPreview={vendorPreview} processChoice={processChoice} comparisons={comparisons} stepAnchorAliases={stepAnchorAliases} nested />}
             </RegionalOption>)}
           </RegionalOptions>}
           {providerGroup ? <ProviderChoice choice={providerGroup} /> : <ServiceCandidates details={providerDetails} references={part.references} separated excludeIds={comparison?.products.map(product => product.id)} choiceScope={vendorPreview?.choiceScope === anchor(scope, part.id) ? vendorPreview.choiceScope : processChoice?.groups.find(group => group.partScope === anchor(scope, part.id))?.scope} coverage={vendorPreview?.choiceScope === anchor(scope, part.id) ? vendorPreview.coverage : undefined} parentChoiceScope={vendorPreview?.choiceScope === anchor(scope, part.id) ? vendorPreview.parentChoiceScope : undefined} evidence={vendorPreview?.choiceScope === anchor(scope, part.id) ? vendorPreview.evidence : undefined} />}
@@ -163,22 +169,24 @@ function Parts({ parts, records, scope, vendorPreview, processChoice, comparison
   </StepFlow>
 }
 
-export default function SharedProcessReader({ record, records, supplementary, vendorPreview, comparisons, processChoice }: {
+export default function SharedProcessReader({ record, records, supplementary, vendorPreview, comparisons, processChoice, compatibility, stepAnchorAliases }: {
   record: SharedRecord
   records: SharedRecord[]
   supplementary?: ReactNode
   vendorPreview?: VendorPreview
   comparisons?: StepComparisons
   processChoice?: ProcessProviderChoice
+  compatibility?: ReactNode
+  stepAnchorAliases?: Record<string, string[]>
 }) {
   const icon = record.id === 'form_001' ? '/process-icons/incorporate.svg' : undefined
   const related = relatedProcesses(record, records)
   const phase = typeof record.metadata.phase === 'string' ? record.metadata.phase : record.kind
-  return <RegionalVariantProvider key={record.id} decision={regionalDecision(record)}><VendorSelectionProvider key={record.id}><StepFlowProvider record={record} records={referencedCatalog(record, records)}><div className="min-w-0 space-y-6" data-shared-record={record.id}>
+  return <RegionalVariantProvider key={record.id} decision={regionalDecision(record)}><VendorSelectionProvider key={record.id}>{compatibility}<StepFlowProvider record={record} records={referencedCatalog(record, records)}><div className="min-w-0 space-y-6" data-shared-record={record.id}>
     <header className={`grid items-start gap-6 ${icon ? 'md:grid-cols-[minmax(0,1fr)_256px] md:gap-12' : ''}`}>
       <div className="min-w-0">
         <p className="text-sm uppercase tracking-widest text-zinc-400">
-          <Link href="/processes/preview" className="hover:text-emerald-300">Processes</Link><span className="mx-1 text-zinc-600">/</span>{phase}
+          <Link href="/processes" className="hover:text-emerald-300">Processes</Link><span className="mx-1 text-zinc-600">/</span>{phase}
         </p>
         {icon && <Image src="/process-icons/incorporate-64.svg" alt="" width={64} height={64} className="mt-4 h-16 w-16 md:hidden" />}
         <h1 className="mt-4 break-words font-display text-3xl font-semibold leading-[1.1] tracking-tight sm:text-4xl">{record.title}</h1>
@@ -203,9 +211,9 @@ export default function SharedProcessReader({ record, records, supplementary, ve
       <summary className="cursor-pointer">How coverage scores work</summary>
       <p className="mt-2 max-w-2xl leading-relaxed">Scores measure the mapped stories, weighted by importance, assessed quality, and verdict. Stories can describe manual workflows or APIs; scores are not automation probabilities or confirmation of a complete service. Zero means no credited coverage in these assessments; not-applicable judgments are excluded. Product links and evidence controls do not change selections.</p>
     </details>}
-    <section aria-label="Process parts" className="space-y-5">
+    <section id="steps" aria-label="Process parts" className="space-y-5">
       <h2 className="text-xl font-medium text-zinc-100">Process Steps</h2>
-      <Parts parts={record.parts} records={records} scope={record.id} vendorPreview={vendorPreview} processChoice={processChoice} comparisons={comparisons} />
+      <Parts parts={record.parts} records={records} scope={record.id} vendorPreview={vendorPreview} processChoice={processChoice} comparisons={comparisons} stepAnchorAliases={stepAnchorAliases} />
     </section>
     {supplementary}
     {related.length > 0 && <section aria-labelledby="related-processes-heading" className="space-y-4">

@@ -14,7 +14,8 @@ import { describe, expect, it } from 'vitest'
 import ProcessesPage from '@/app/processes/page'
 import { usFlagGlyph } from '@/lib/geoPreference'
 import { loadProcesses, processSlug } from '@/lib/processes'
-import { areaOf, buildPlaybookRows, buildProcessRows } from '@/lib/processRows'
+import { areaOf, buildPlaybookRows } from '@/lib/processRows'
+import { buildCanonicalProcessIndex } from '@/lib/shared-processes/index-rows'
 
 describe('/processes — one combined table, one processes vocabulary', () => {
   it("renders ONE table with no 'All processes' heading, flat in founder-timeline order, chain rows linked after the processes (no 'Playbooks' group or label)", () => {
@@ -28,8 +29,8 @@ describe('/processes — one combined table, one processes vocabulary', () => {
     expect(within(container).queryByText('All processes')).toBeNull()
 
     const table = container.querySelector('table') as HTMLElement
-    const playbooks = buildPlaybookRows()
-    const { rows } = buildProcessRows()
+    const { playbooks } = buildCanonicalProcessIndex()
+    const { rows } = buildCanonicalProcessIndex()
     // No leading 'Playbooks' group header and no 'playbook' chip — one vocabulary.
     expect(within(table).queryByText('Playbooks')).toBeNull()
     expect(within(table).queryByText('playbook')).toBeNull()
@@ -75,7 +76,7 @@ describe('/processes — one combined table, one processes vocabulary', () => {
     expect(within(container).queryByText('Situations')).toBeNull()
     // The row set is exactly processes + playbooks (count pins above already derive from
     // buildProcessRows, which excludes situations by construction).
-    const { rows } = buildProcessRows()
+    const { rows } = buildCanonicalProcessIndex()
     expect(rows.some((r) => r.kind === 'situation')).toBe(false)
   })
 
@@ -88,8 +89,8 @@ describe('/processes — one combined table, one processes vocabulary', () => {
 
   it('the fat search counts chains in the one processes N; the simulator card and the footer line are gone (founder 2026-10-02)', () => {
     const { container } = render(<ProcessesPage />)
-    const playbooks = buildPlaybookRows()
-    const { rows } = buildProcessRows()
+    const { playbooks } = buildCanonicalProcessIndex()
+    const { rows } = buildCanonicalProcessIndex()
 
     const input = within(container).getByLabelText('Search processes') as HTMLInputElement
     expect(input.placeholder).toBe(`Search ${rows.length + playbooks.length} processes — payroll, SOC 2, EIN…`)
@@ -122,9 +123,9 @@ describe('/processes defaults onto the GLOBAL view (founder 2026-09-30: "default
     // us AND us-state rows wear the 🇺🇸 flag (keyed strictly on geoScope — the label still
     // tells federal from state work); global rows wear NO scope glyph, and no 🌐/🏛 ever
     // follows a title.
-    const { rows } = buildProcessRows()
+    const { rows } = buildCanonicalProcessIndex()
     const table = doc.querySelector('table') as HTMLElement
-    expect(table.querySelectorAll('tbody tr').length).toBe(rows.length + buildPlaybookRows().length)
+    expect(table.querySelectorAll('tbody tr').length).toBe(rows.length + buildCanonicalProcessIndex().playbooks.length)
     const countByTitle = (label: string) => table.querySelectorAll(`span[title="${label}"]`).length
     for (const scope of ['us', 'us-state'] as const) {
       const expected = rows.filter((r) => r.geoScope === scope).length
@@ -133,7 +134,7 @@ describe('/processes defaults onto the GLOBAL view (founder 2026-09-30: "default
     }
     const titleCells = [...table.querySelectorAll('tbody td:first-child')]
     expect(titleCells.filter((c) => c.textContent?.includes('🇺🇸')).length).toBe(
-      rows.filter((r) => r.geoScope !== 'global').length,
+      rows.filter((r) => r.geoScope === 'us' || r.geoScope === 'us-state').length,
     )
     expect(titleCells.some((c) => c.textContent?.includes('🌐'))).toBe(false)
     expect(titleCells.some((c) => c.textContent?.includes('🏛'))).toBe(false)
@@ -150,7 +151,7 @@ describe('/processes defaults onto the GLOBAL view (founder 2026-09-30: "default
     const { container } = render(<ProcessesPage />)
     const geoTrigger = [...container.querySelectorAll('button')].find((b) => b.title.includes('Where you operate'))
     expect(geoTrigger?.textContent).toContain('Global')
-    const { rows } = buildProcessRows()
-    expect((container.querySelector('table') as HTMLElement).querySelectorAll('tbody tr').length).toBe(rows.length + buildPlaybookRows().length)
+    const { rows } = buildCanonicalProcessIndex()
+    expect((container.querySelector('table') as HTMLElement).querySelectorAll('tbody tr').length).toBe(rows.length + buildCanonicalProcessIndex().playbooks.length)
   })
 })
