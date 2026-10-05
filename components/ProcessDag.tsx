@@ -23,6 +23,7 @@ import { hasLogo } from '@/lib/logos'
 import type { DagNode, VendorChipInfo } from '@/lib/processes'
 import { stepVendorOptions, vendorAlternatives, vendorChipInfo } from '@/lib/processes'
 import { crossArenaStepRankings, stepRanking, type StepCite, type StepRanking, type StepVendorScore } from '@/lib/processRankings'
+import { guidanceParagraphs, stepGuidanceFor } from '@/lib/shared-processes/step-guidance'
 import { VERDICT_FACTORS } from '@/lib/scoring'
 import { buildStepMethodViews } from '@/lib/stepMethodData'
 import { stepMethodNodeKey } from '@/lib/stepMethods'
@@ -362,6 +363,36 @@ function StepRankingRow({
   )
 }
 
+// The committed step description under the label (founder 2026-10-05): short guidance is one
+// muted line; longer guidance collapses behind the page's details/summary idiom (the evidence
+// expandable's ▶ marker), the lead line truncated until opened. Server-rendered, committed
+// text only — guidanceParagraphs strips markdown markers, it never rewrites.
+const GUIDANCE_ONE_LINE_MAX = 220
+
+export function StepGuidance({ text }: { text: string }) {
+  const paragraphs = guidanceParagraphs(text)
+  if (paragraphs.length === 0) return null
+  const lead = paragraphs[0]
+  if (paragraphs.length === 1 && lead.length <= GUIDANCE_ONE_LINE_MAX) {
+    return <p className="mt-1 text-[11px] leading-relaxed text-zinc-400">{lead}</p>
+  }
+  return (
+    <details className="group mt-1">
+      <summary className="flex cursor-pointer list-none items-start gap-1.5 text-[11px] leading-relaxed text-zinc-400 transition hover:text-zinc-200 [&::-webkit-details-marker]:hidden">
+        <span aria-hidden className="mt-1 inline-block text-[9px] text-zinc-500 transition-transform group-open:rotate-90">▶</span>
+        <span className="min-w-0 truncate group-open:whitespace-normal">{lead}</span>
+      </summary>
+      {paragraphs.length > 1 && (
+        <div className="mt-1 space-y-1.5 border-l border-zinc-800 pl-3 text-[11px] leading-relaxed text-zinc-400">
+          {paragraphs.slice(1).map((p, i) => (
+            <p key={i}>{p}</p>
+          ))}
+        </div>
+      )}
+    </details>
+  )
+}
+
 function NodeBlock({
   node,
   taskId,
@@ -405,6 +436,9 @@ function NodeBlock({
   // arena-rank order) plus curated extras — lib/processes.ts stepVendorOptions.
   const options = ranking ? [] : stepVendorOptions(node)
   const calls = node.functionCalls ?? []
+  // Committed per-step description (founder 2026-10-05) — the shared record's node-bound part
+  // guidance; null for the many steps without one (lib/shared-processes/step-guidance.ts).
+  const guidance = taskId ? stepGuidanceFor(taskId, node.id) : null
   // The '⚡ agentic workaround:' line left the step blocks (founder 2026-10-05) — display only:
   // lib/gapClosers.ts and its resolution stay data (the chain pages' ProcessVerdict/
   // ProcessSimulator and the gap analyses still consume resolveGapStep).
@@ -673,6 +707,11 @@ function NodeBlock({
         </p>
         {methodViews ? <StepMethodDefault nodeKey={nodeKey}>{routeBadge}</StepMethodDefault> : routeBadge}
       </div>
+      {/* The step's committed description (founder 2026-10-05): the shared record part bound to
+          this node id (content/processes/records — the same guidance the preview pages render),
+          muted under the label, one line expanding to the full committed paragraphs when long.
+          Steps without committed guidance render exactly as before — nothing is invented. */}
+      {guidance && <StepGuidance text={guidance} />}
       {methodViews && (
         <StepMethodPicker
           nodeKey={nodeKey}
