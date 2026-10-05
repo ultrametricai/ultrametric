@@ -8,6 +8,7 @@ import IconChip from '@/components/IconChip'
 import JurisdictionToggle from '@/components/JurisdictionToggle'
 import ProcessGeoBanner from '@/components/ProcessGeoBanner'
 import MineLink from '@/components/MineLink'
+import OpenModulesMenu from '@/components/OpenModulesMenu'
 import ProcessDag from '@/components/ProcessDag'
 import ProcessGeoNotes from '@/components/ProcessGeoNotes'
 import ProcessLeaderboard from '@/components/ProcessLeaderboard'
@@ -161,27 +162,11 @@ export default async function ProcessPage({ params }: { params: Promise<{ slug: 
         <ArtifactChips rows={artifactChipRows(task)} />
         {/* Business-logic ↔ process wiring (founder 2026-10-02): the open lib/openstartup
             modules that serve this process, from the committed registry
-            processes/business-logic-map.json — a muted line of chips deep-linking to the
-            module's section in open-modules/README.md on GitHub (the modules are a repo
-            library by design, no site pages). Renders nothing for the many unmapped tasks. */}
-        {openModules.length > 0 && (
-          <p className="mt-3 flex max-w-2xl flex-wrap items-center gap-1.5 text-xs text-zinc-500">
-            <span title="The open modules (open-source lib/openstartup/ code in the repo) whose cited, tested math serves this process — cap tables, deadlines, tax mechanics, and friends. Each chip opens the module's documentation.">
-              Open modules:
-            </span>
-            {openModules.map((m) => (
-              <a
-                key={m.id}
-                href={m.href}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="rounded-full border border-zinc-800 px-2 py-0.5 text-zinc-400 transition hover:border-emerald-400/60 hover:text-emerald-300"
-              >
-                {m.label} ↗
-              </a>
-            ))}
-          </p>
-        )}
+            processes/business-logic-map.json — chips deep-linking to the module's section in
+            open-modules/README.md on GitHub (the modules are a repo library by design, no site
+            pages). A compact collapsible since 2026-10-05 (components/OpenModulesMenu.tsx);
+            renders nothing for the many unmapped tasks. */}
+        <OpenModulesMenu modules={openModules} />
         {/* The per-page situation posture banner was removed (founder 2026-10-02) — the
             sitewide footer line and /terms carry the not-legal-advice posture. */}
         {/* GEO as a top-level driver (founder 2026-09-28: "make GEO a top-level process driver
