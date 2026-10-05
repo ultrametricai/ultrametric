@@ -3,7 +3,7 @@
 // static-HTML contract: the SSR output (empty lens + empty stack server snapshots) hydrates
 // with ZERO mismatches against the empty client state and shows the serialized default order —
 // no flash of personalized content, the SEO page stays the one shared default view. Then the
-// lens semantics: clicking "use" pins the vendor first ("✓ via"), a stack pick pins as "yours"
+// lens semantics: clicking a chip pins the vendor first ("✓ via"), a stack pick pins as "yours"
 // even from below the display cap, and a lens pick with no step evidence yields the honest
 // "not covered by" note instead of a silent swap.
 import { render, fireEvent, act, within } from '@testing-library/react'
@@ -79,9 +79,10 @@ const row = (
 )
 
 // Vendor names in on-screen chip order (the .truncate span holds the bare name — the logo
-// fallback initial lives in a sibling span). Since the founder batch 2026-10-05 the chip BODY
-// is the pick toggle <button aria-pressed> (no 'use'/'✕' side buttons) and the score is its own
-// receipts link — so ranked chips are the aria-pressed buttons; untracked chips stay spans.
+// fallback initial lives in a sibling span). Since the founder batch 2026-10-05 the WHOLE chip
+// is the pick toggle <button aria-pressed> with no interactive children (no 'use'/'✕' side
+// buttons, no score link) — so ranked chips are the aria-pressed buttons; untracked chips
+// stay spans.
 const chipNames = (root: ParentNode) =>
   [...root.querySelectorAll('button[aria-pressed] span.truncate')].map((s) => s.textContent ?? '')
 
@@ -115,20 +116,29 @@ describe('static-HTML contract (SSR ↔ empty client state)', () => {
     }
   })
 
-  it("every chip score is its own receipts link — the product page's judged story verdicts (founder 2026-10-05: a visible score answers 'why?' in one click)", () => {
+  it('the chip is ONE click target: a pick-toggle button with no interactive children — the sub-step score links and the cross-arena tag are gone (founder 2026-10-05)', () => {
     const { container } = render(row)
-    const scoreLinks = [...container.querySelectorAll('a[href$="#story-verdicts"]')]
-    expect(scoreLinks.map((a) => a.getAttribute('href'))).toEqual([
-      '/arena/startup-banking/product/best-bank#story-verdicts',
-      '/arena/startup-banking/product/mid-bank#story-verdicts',
-      '/arena/ai-assistants/product/chatgpt#story-verdicts',
-    ])
-    expect(scoreLinks[0].textContent).toBe('90/100')
-    // The tooltip states THIS number's derivation — the real arena and verdict counts, never a
-    // canned sentence (founder 2026-10-05).
-    expect(scoreLinks[0].getAttribute('title')).toBe(
-      '90/100 · #1 for this step — from 3 judged Startup banking stories mapped to this step (2 full, 1 partial); click for the verdicts',
+    // The earlier round's per-chip receipts links flipped for sub-steps: no score links here
+    // (process-level scores and the product pages keep their receipts links).
+    expect(container.querySelector('a[href*="#story-verdicts"]')).toBeNull()
+    const chips = [...container.querySelectorAll('button[aria-pressed]')]
+    expect(chips).toHaveLength(3)
+    // Structural a11y pin: no nested interactive elements anywhere in the row — no
+    // button-in-button, no link-in-button, no link-in-link.
+    for (const el of container.querySelectorAll('a, button')) {
+      expect(el.parentElement?.closest('a, button')).toBeNull()
+    }
+    // The score renders INSIDE the chip as plain text; the tooltip states THIS number's
+    // derivation — the real arena and verdict counts, never a canned sentence.
+    const score = chips[0].querySelector('span[title]')
+    expect(score?.textContent).toBe('90/100')
+    expect(score?.getAttribute('title')).toBe(
+      '90/100 · #1 for this step — from 3 judged Startup banking stories mapped to this step (2 full, 1 partial)',
     )
+    // The cross-arena tag no longer renders beside the ChatGPT chip — the arena name lives
+    // only in the score tooltip.
+    expect(container.textContent).not.toContain('AI assistants')
+    expect(chips[2].querySelector('span[title]')?.getAttribute('title')).toContain('AI assistants')
   })
 })
 
@@ -187,6 +197,8 @@ describe('lens + stack selection', () => {
     )
     const { container } = render(row)
     expect(container.textContent).toContain('not covered by Ghost Bank — best here: Best Bank 90')
+    // The best-here score is plain text too (founder 2026-10-05: no sub-step score links).
+    expect(container.querySelector('a[href*="#story-verdicts"]')).toBeNull()
     // Default order preserved — nothing pinned.
     expect(chipNames(container)[0]).toContain('Best Bank')
     expect(container.textContent).not.toContain('✓ via')
