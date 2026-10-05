@@ -29,7 +29,7 @@ export interface MegaTableRow {
   productId: string
   name: string
   vendor: string
-  type: 'oss' | 'commercial'
+  type: 'oss' | 'commercial' | 'government'
   arenaId: string
   arenaName: string
   hasLogo: boolean

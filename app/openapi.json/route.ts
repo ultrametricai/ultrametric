@@ -48,7 +48,7 @@ const SCHEMAS = {
       id: { type: 'string' },
       name: { type: 'string' },
       vendor: { type: 'string' },
-      type: { type: 'string', enum: ['oss', 'commercial'] },
+      type: { type: 'string', enum: ['oss', 'commercial', 'government'] },
       urls: {
         type: 'object',
         required: ['site'],

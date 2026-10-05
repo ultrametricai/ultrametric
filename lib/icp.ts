@@ -124,7 +124,7 @@ export function icpTopThemes(icp: IcpType, limit = 3): string[] {
 export interface IcpRankingRow {
   productId: string
   productName: string
-  type: 'oss' | 'commercial'
+  type: 'oss' | 'commercial' | 'government'
   arenaId: string
   arenaName: string
   score: number

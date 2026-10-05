@@ -29,7 +29,7 @@ export interface MyStackProduct {
   vendor: string
   arenaId: string
   arenaName: string
-  type: 'oss' | 'commercial'
+  type: 'oss' | 'commercial' | 'government'
   /** Overall score from the arena leaderboard (null = not scored yet). */
   aiEra: number | null
   agentReady: number | null

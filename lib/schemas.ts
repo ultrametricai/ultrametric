@@ -17,7 +17,12 @@ export const ProductSchema = z.object({
   id: z.string().min(1),
   name: z.string().min(1),
   vendor: z.string().min(1),
-  type: z.enum(['oss', 'commercial']),
+  // 'government' (added at the government-services bring-up, founder 2026-10-05 "test the
+  // untested — e.g. the IRS as a vendor"): a public agency judged as a vendor. Neither 'oss'
+  // nor 'commercial' is honest for a statutory monopoly — fees are set by statute, there is no
+  // pricing posture to extract, and no OSS pill applies. Display code treats it like
+  // 'commercial' (no pill) except where the type itself is rendered (lib/markdown.ts).
+  type: z.enum(['oss', 'commercial', 'government']),
   urls: z.object({
     site: z.string().url(),
     docs: z.string().url().optional(),

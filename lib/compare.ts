@@ -11,7 +11,7 @@ export interface CompareProduct {
   name: string
   arenaId: string
   arenaName: string
-  type: 'oss' | 'commercial'
+  type: 'oss' | 'commercial' | 'government'
   aiEra: number | null
   agentReady: number | null
   agenticApp: number | null
