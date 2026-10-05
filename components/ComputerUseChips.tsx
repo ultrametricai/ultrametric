@@ -30,11 +30,14 @@ export default function ComputerUseChips({ taskId, nodeId }: { taskId: string; n
   if (options.length === 0) return null
   return (
     <span className="mt-1 flex flex-wrap items-center gap-1.5">
+      {/* The 'could attempt it today:' label text is gone (founder 2026-10-05) — the 🖥 glyph
+          keeps the row recognizable and its tooltip keeps the honest framing; the step's
+          routing is untouched. */}
       <span
-        className="text-[10px] uppercase tracking-wide text-zinc-500"
+        className="text-[10px] text-zinc-500"
         title="Judged computer-use agents (browser agents + assistants with judged computer-use verdicts) ranked by their verdicts on this step's mapped stories. The step stays manual — this is who could attempt the mechanical part."
       >
-        🖥 could attempt it today:
+        🖥
       </span>
       {options.map((o) => (
         // The score is its own click-through to the judged verdicts behind it (founder
