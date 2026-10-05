@@ -24,7 +24,7 @@ import { artifactChipRows } from '@/lib/processDeps'
 import { phaseIcon, phaseTooltip, processIcon } from '@/lib/processIcons'
 import { processManifestPath, processManifestUrl } from '@/lib/processManifest'
 import {
-  findProcessBySlug, jurisdictionStepViews, knownCostUsd, loadProcesses, processSlug,
+  findProcessBySlug, jurisdictionStepViews, loadProcesses, processSlug,
   slugAliasFor, taskCeiling,
 } from '@/lib/processes'
 import { SITE_URL } from '@/lib/site'
@@ -87,10 +87,6 @@ export default async function ProcessPage({ params }: { params: Promise<{ slug: 
   // Jurisdiction-conditional steps (stripped from every default surface by loadProcesses) —
   // serialized for the client-side toggle; [] for the many processes that don't branch.
   const jurisSteps = jurisdictionStepViews(task.id)
-  // Sum of the DATED per-step government fees only (depth wave pt 1, lib/processes.ts) —
-  // derived, never hand-stored; vendor prices deliberately excluded so the headline never
-  // implies a completeness the curation doesn't claim. 0 for most processes → no chip.
-  const knownFees = knownCostUsd(task.dag.nodes)
   // Open modules serving this process (processes/business-logic-map.json).
   const openModules = modulesForProcess(task.id)
 
@@ -139,18 +135,10 @@ export default async function ProcessPage({ params }: { params: Promise<{ slug: 
               corpus data for sorting; the chip told a reader nothing actionable. */}
           {/* The support-level ('fully automatable') and cadence ('once'/'as needed') chips are
               gone too (founder 2026-10-02) — both fields stay corpus data (sorting, the rhythm
-              board); the urgency and known-government-fees chips stay. */}
-          {task.hasAsyncSteps && (
-            <span className="rounded-full border border-zinc-800 px-2 py-0.5 text-zinc-500">⏳ has async waits</span>
-          )}
-          {knownFees > 0 && (
-            <span
-              title="Sum of this process's per-step government fees that carry a published, dated source (each step's cost chip links to its fee schedule). Vendor prices are excluded — this is the known government minimum, not a total cost; fees change, each chip carries its as-of date."
-              className="rounded-full border border-zinc-800 px-2 py-0.5 text-zinc-500"
-            >
-              Known government fees: ${knownFees.toLocaleString('en-US')}
-            </span>
-          )}
+              board). The '⏳ has async waits' and 'Known government fees: $…' chips followed
+              (founder 2026-10-05) — display only: hasAsyncSteps and the dated per-step fees
+              (lib/processes.ts knownCostUsd) stay corpus/derived data; the per-step cost chips
+              still carry each fee with its source and as-of date. The urgency chip stays. */}
           {/* Admin-only (session allowlist or the pa-admin localStorage switch) — renders nothing
               for everyone else. The manifest it hands off is public regardless. */}
           <DoViaAfk manifestUrl={processManifestUrl(slug)} />
