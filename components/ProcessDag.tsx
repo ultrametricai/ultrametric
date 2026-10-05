@@ -16,7 +16,6 @@ import { StepCostChip, StepFailureModes, StepVerifyLine } from '@/components/Ste
 import { computeChipsForStep } from '@/lib/businessLogicMap'
 import { layerNodes, type DagEdge } from '@/lib/dagLayers'
 import StepDocuments from '@/components/StepDocuments'
-import { resolveGapStep } from '@/lib/gapClosers'
 import { humanStepAudit } from '@/lib/humanSteps'
 import { showComputerUseChips } from '@/lib/humanStepsUi'
 import type { ProcessCheckStep } from '@/lib/processCheck'
@@ -41,8 +40,8 @@ import { vendorGeoLookup } from '@/lib/vendorGeo'
 //
 // Every mapped-vendor block also surfaces the market: beneath the canonical vendor chip, an
 // "or:" row lists the arena's top alternatives by agent-readiness (lib/processes.ts swap-options
-// machinery). Non-agent steps with an agentic gap-closer (lib/gapClosers.ts, resolved at build
-// time against live arenas) keep their compact "⚡ agentic workaround" line inside the block.
+// machinery). The per-block "⚡ agentic workaround" line is gone (founder 2026-10-05) —
+// lib/gapClosers.ts stays data for the chain pages' verdict/simulator surfaces.
 
 // Re-exported from the shared layout helper (lib/dagLayers.ts) so existing importers keep
 // working — the layering itself lives there (the mini strip that once shared it left the
@@ -405,10 +404,9 @@ function NodeBlock({
   // arena-rank order) plus curated extras — lib/processes.ts stepVendorOptions.
   const options = ranking ? [] : stepVendorOptions(node)
   const calls = node.functionCalls ?? []
-  const gap = resolveGapStep(node)
-  // A legally-required signature act never gets a workaround — the e-sign medium may be
-  // electronic, but the signing human is not replaceable (founder 2026-09-21).
-  const closer = !node.legalSignature && gap?.kind === 'closer' ? gap.closer : null
+  // The '⚡ agentic workaround:' line left the step blocks (founder 2026-10-05) — display only:
+  // lib/gapClosers.ts and its resolution stay data (the chain pages' ProcessVerdict/
+  // ProcessSimulator and the gap analyses still consume resolveGapStep).
   // Evidence-grounded per-vendor calls for this step (data/step-vendor-calls.json) — when
   // present they take over the API-calls block, with the node's own functionCalls kept as the
   // canonical reference flow.
@@ -643,23 +641,6 @@ function NodeBlock({
         <div className="mt-2 text-[11px]">
           <ComputerUseChips taskId={taskId} nodeId={node.id} />
         </div>
-      )}
-
-      {closer && (
-        <p className="mt-2 text-[11px] text-zinc-400">
-          <span className="text-emerald-300/90">⚡ agentic workaround:</span> {closer.blurb} —{' '}
-          <Link
-            href={`/arena/${closer.arenaId}/product/${closer.topProduct.id}`}
-            className="text-zinc-300 underline decoration-zinc-700 underline-offset-2 transition hover:text-emerald-300"
-          >
-            {closer.topProduct.name}
-          </Link>
-          {', '}
-          <Link href={`/arena/${closer.arenaId}`} className="transition hover:text-emerald-300">
-            top of {closer.arenaName} →
-          </Link>
-          {closer.caution && <span className="text-amber-400/80"> · {closer.caution}</span>}
-        </p>
       )}
 
       {/* "How do I know it worked?" (depth wave pt 1) — the step's concrete external check,
