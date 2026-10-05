@@ -60,9 +60,12 @@ export const GEO_GLOBAL_META = { label: 'Global', flag: '🌐', prose: 'a geo-ne
 // always-on scope glyphs keep saying which rows are US-specific). DISPLAY FRAMING ONLY: the
 // store stays null,
 // the param/storage codec is untouched, and an explicit choice (param, stored pref, dropdown)
-// wins exactly as before. SEAM: process DETAIL pages keep the sitewide US default — their
-// byte-identical US SSR contract (GeoSwitcher tests) is deliberately NOT re-pinned this round;
-// flipping them means threading this constant into GeoSwitcher and consciously re-pinning it.
+// wins exactly as before. SEAM (closed, founder batch 2026-10-05): process DETAIL pages render
+// the SAME dropdown (components/GeoDropdown.tsx, defaultChoice=GEO_GLOBAL as trigger framing
+// only) over the SAME ?geo=/pa-geo preference and per-tab store — pick the UK on a process page
+// and the /processes index opens in the UK view, and vice versa (pinned in
+// components/__tests__/ProcessGeoSync.test.tsx). Their US-default SSR stays byte-identical:
+// the framing prop is server-rendered, the stored choice lands mount-only.
 export const PROCESSES_INDEX_DEFAULT_GEO: typeof GEO_GLOBAL = GEO_GLOBAL
 
 /** parseGeo plus the 'global' token — everything else (incl. 'us') behaves exactly as parseGeo. */
