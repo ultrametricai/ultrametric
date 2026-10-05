@@ -11,7 +11,7 @@ import { selectedVendor, useVendorSelection } from './VendorSelection'
 function ProductRow({ product, selected, inherited, onSelect, scores }: { product: StepComparisonProduct; selected: boolean; inherited: boolean; onSelect?: () => void; scores: readonly number[] }) {
   return <ScoredProductRow scoreHref={vendorEvidenceHref(product.href, product.stories.map(story => story.id))} scores={scores} product={product} selected={selected} inherited={inherited} onSelect={onSelect} selectionLabel={`Use ${product.name} for this step`} evidenceLabel="story evidence" scoreTitle={`Story coverage ${product.score}/100 from this step's mapped stories`}>
       {product.stories.map(story => <details key={story.id} className="min-w-0">
-        <summary className="cursor-pointer break-words leading-relaxed text-zinc-300"><Link href={`${product.href}#story-${story.id}`} className="underline underline-offset-4 hover:text-emerald-300 focus-visible:outline-2 focus-visible:outline-emerald-300">{story.title}</Link><span className="ml-2 text-zinc-500">{story.verdict} · {story.quality}/10 · weight {story.weight}</span></summary>
+        <summary className="cursor-pointer break-words leading-relaxed text-zinc-300"><Link href={`${product.href}#story-${story.id}`} className="rounded-sm text-zinc-300 hover:text-zinc-100 focus-visible:outline-2 focus-visible:outline-zinc-300">{story.title}</Link><span className="ml-2 text-zinc-500">{story.verdict} · {story.quality}/10 · weight {story.weight}</span></summary>
         <div className="mt-2 space-y-2 break-words leading-relaxed [overflow-wrap:anywhere]">
           <p>{story.rationale}</p>
           <p>Confidence: {story.confidence}</p>

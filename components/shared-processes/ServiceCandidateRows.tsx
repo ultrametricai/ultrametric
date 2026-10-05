@@ -43,7 +43,7 @@ export default function ServiceCandidateRows({ candidates, choiceScope, parentCh
           selectionLabel={`Use ${candidate.name}`} evidenceLabel="story evidence" scores={scores}
           scoreHref={detail ? vendorEvidenceHref(detail.href, detail.stories.map(story => story.id)) : undefined}
           scoreTitle={assessment ? `Filing story coverage ${assessment.score}/100 across ${assessment.storyCount} mapped stories for the default filing option.` : ''}>
-          {(providerDetail || detail) ? <>{providerDetail}{detail && <ul className="space-y-2">{detail.stories.map(story => <li key={story.id}><a href={`${detail.href}#story-${story.id}`} className="text-zinc-300 underline underline-offset-4">{story.title}</a><span className="ml-2">{story.verdict} · {story.quality}/10 · weight {story.weight}</span></li>)}</ul>}</> : undefined}
+          {(providerDetail || detail) ? <>{providerDetail}{detail && <ul className="space-y-2">{detail.stories.map(story => <li key={story.id}><a href={`${detail.href}#story-${story.id}`} className="rounded-sm text-zinc-300 hover:text-zinc-100 focus-visible:outline-2 focus-visible:outline-zinc-300">{story.title}</a><span className="ml-2">{story.verdict} · {story.quality}/10 · weight {story.weight}</span></li>)}</ul>}</> : undefined}
         </ScoredProductRow>
       })}
     </ul>

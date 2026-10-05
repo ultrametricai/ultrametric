@@ -7,6 +7,9 @@ import type { SharedRecord } from '@/lib/shared-processes/schema'
 import { sharedPreviewHref } from '@/lib/shared-processes/reader'
 
 const strings = (value: unknown): string[] => Array.isArray(value) ? value.filter((item): item is string => typeof item === 'string') : []
+export function SharedDocuments({ metadata }: { metadata: Record<string, unknown> }) {
+  return <StepDocuments readable column documents={strings(metadata.documents)} squareExternalLinks />
+}
 export function SharedArtifacts({ metadata, sourceId, records }: { metadata: Record<string, unknown>; sourceId: string; records: SharedRecord[] }) {
   const registry = loadArtifacts()
   const chip = (id: string): ArtifactChip[] => {
@@ -21,7 +24,6 @@ export default function StepMetadata({ metadata, sourceId, records }: { metadata
   const cost = StepCostSchema.safeParse(metadata.cost)
   return <>
     {cost.success && <div className="space-y-2"><StepCostChip readable cost={cost.data} squareExternalLinks />{cost.data.note && <details className="text-sm text-zinc-400"><summary className="cursor-pointer">Cost details</summary><p className="mt-2 leading-relaxed">{cost.data.note}</p></details>}</div>}
-    <StepDocuments readable documents={strings(metadata.documents)} squareExternalLinks />
     <SharedArtifacts metadata={metadata} sourceId={sourceId} records={records} />
   </>
 }

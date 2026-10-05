@@ -89,8 +89,8 @@ describe('scoped regional presentation', () => {
     corporation.parts.find(part => part.id === 'n4')!.options.find(option => option.id === 'default')!.metadata.reversibility = 'irreversible'
     const el = render(<SharedProcessReader record={corporation} records={records} />)
     const filing = el.container.querySelector('[id="form_001:n4"]')!
-    expect(filing.querySelector(':scope > div:first-child')?.textContent).not.toContain('Irreversible')
-    expect(filing.querySelector('[id="form_001:n4:default"]')?.textContent).toContain('Irreversible')
+    expect(filing.querySelector(':scope > div:first-child')?.textContent).toContain('Irreversible')
+    expect(filing.querySelector('[id="form_001:n4:default"]')?.textContent).not.toContain('Irreversible')
     expect(el.container.querySelector('[id="form_001:n1"]')?.textContent).not.toContain('Irreversible')
     fireEvent.click(el.container.querySelector('input[type="radio"][value="india-spice-plus"]')!)
     expect(within(filing as HTMLElement).queryByText('Irreversible')).toBeNull()

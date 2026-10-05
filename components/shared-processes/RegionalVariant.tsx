@@ -47,19 +47,31 @@ export function RegionalDecisionTitle({ scope, title }: { scope: string; title: 
 }
 
 // Only the explicitly bound choice changes. Other decisions/nested graphs keep their UI.
+export function RegionalStepAssessment({ scope, fallback, options }: { scope: string; fallback: ReactNode; options: Array<{ id: string; assessment: ReactNode }> }) {
+  const state = useRegionalVariant()
+  return <>{state?.decision?.scope === scope ? options.find(option => option.id === state.selected)?.assessment ?? fallback : fallback}</>
+}
+
+export function RegionalBaseResources({ scope, children }: { scope: string; children: ReactNode }) {
+  const state = useRegionalVariant()
+  // A selected route supplies its own scoped resources. Generic decision
+  // references can include other jurisdictions and remain in the source record.
+  return state?.decision?.scope === scope ? null : <>{children}</>
+}
+
 export function RegionalOptions({ scope, children }: { scope: string; children: ReactNode }) {
   const state = useRegionalVariant()
   const bound = state?.decision?.scope === scope
   return <div className={bound ? 'space-y-3' : 'divide-y divide-zinc-800/70 overflow-hidden rounded-xl border border-zinc-800'}>{children}</div>
 }
 
-export function RegionalOption({ scope, optionId, id, heading, assessment, children }: {
-  scope: string; optionId: string; id: string; heading: ReactNode; assessment?: ReactNode; children: ReactNode
+export function RegionalOption({ scope, optionId, id, heading, children }: {
+  scope: string; optionId: string; id: string; heading: ReactNode; children: ReactNode
 }) {
   const state = useRegionalVariant()
   const bound = state?.decision?.scope === scope && state.decision.options.some(option => option.id === optionId)
   if (bound) return state.selected === optionId
-    ? <div id={id} className="min-w-0 space-y-3"><div>{assessment}</div>{children}</div>
+    ? <div id={id} className="min-w-0 space-y-3">{children}</div>
     : null
   return <details id={id} open={optionId === 'default'} className="min-w-0 px-3 py-3 sm:px-4"><summary className="cursor-pointer break-words font-medium text-zinc-100">{heading}</summary><div className="mt-3 space-y-3">{children}</div></details>
 }

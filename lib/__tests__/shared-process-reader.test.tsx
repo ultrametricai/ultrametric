@@ -75,8 +75,8 @@ describe('canonical shared process reader', () => {
     expect(risks).toHaveLength(6)
     expect([...risks].every(risk => risk.textContent === 'High risk')).toBe(true)
     const filing = el.querySelector('[id="form_001:n4"]')!
-    expect(filing.querySelector(':scope > div:first-child [title="Existing source risk assessment"]')).toBeNull()
-    expect(filing.querySelector('[id="form_001:n4:default"] [title="Existing source risk assessment"]')).not.toBeNull()
+    expect(filing.querySelector(':scope > div:first-child [title="Existing source risk assessment"]')).not.toBeNull()
+    expect(filing.querySelector('[id="form_001:n4:default"] [title="Existing source risk assessment"]')).toBeNull()
     const synthetic = structuredClone(record)
     synthetic.parts = [{ ...synthetic.parts[0], metadata: { reversibility: 'irreversible', riskLevel: 'medium' } }]
     synthetic.links = []
@@ -91,8 +91,8 @@ describe('canonical shared process reader', () => {
     expect(el.querySelector('[id="form_001:n1"] [title="Existing source route assessment"]')?.textContent).toBe('Human or computer use')
     expect(el.querySelector('[id="form_001:n7b"] [title="Existing source route assessment"]')?.textContent).toBe('Signature — legally human')
     const filing = el.querySelector('[id="form_001:n4"]')!
-    expect(filing.querySelector(':scope > div:first-child [title="Existing source route assessment"]')).toBeNull()
-    expect(filing.querySelector('[id="form_001:n4:default"]')?.textContent).toContain('Manual form')
+    expect(filing.querySelector(':scope > div:first-child [title="Existing source route assessment"]')?.textContent).toBe('Manual form')
+    expect(filing.querySelector('[id="form_001:n4:default"]')?.textContent).not.toContain('Manual form')
     expect(filing.querySelector('[id="form_001:n4:india-spice-plus"]')).toBeNull()
     expect(filing.querySelector('[id="form_001:n4:germany-notary-gmbh"]')).toBeNull()
   })

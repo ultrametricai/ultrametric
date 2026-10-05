@@ -51,7 +51,7 @@ function ScopeGraph({ graph, open, href, titleHidden = false }: { titleHidden?: 
         </svg>
         {graph.nodes.filter(node => positions.has(node.id)).map(node => { const pos = positions.get(node.id)!; return <div key={node.id} ref={element => { if (element) elements.current.set(node.scope, element); else elements.current.delete(node.scope) }} data-graph-node={node.scope} className="absolute flex items-center gap-1.5 rounded-xl border border-zinc-700 bg-zinc-900 px-2 py-1" style={{ left: pos.x, top: pos.y, width: nodeWidth }}>
           <TypeIcon node={node} />
-          <button type="button" onClick={() => open(node.scope)} title={node.when ? `Applies when: ${node.when}` : undefined} className="min-h-11 min-w-0 flex-1 self-stretch break-words text-left text-sm font-medium leading-snug text-zinc-100 hover:text-emerald-300 focus-visible:outline-2 focus-visible:outline-emerald-300">{node.title}<span className="sr-only"> — open step details{node.when ? `; applies when: ${node.when}` : ''}</span></button>
+          <button type="button" onClick={() => open(node.scope)} title={node.when ? `Applies when: ${node.when}` : undefined} className="min-h-11 min-w-0 flex-1 cursor-pointer self-stretch break-words text-left text-sm font-medium leading-snug text-zinc-100 hover:text-emerald-300 focus-visible:outline-2 focus-visible:outline-emerald-300">{node.title}<span className="sr-only"> — open step details{node.when ? `; applies when: ${node.when}` : ''}</span></button>
         </div> })}
       </div>
     </div>
@@ -59,7 +59,7 @@ function ScopeGraph({ graph, open, href, titleHidden = false }: { titleHidden?: 
       <p className="text-sm text-zinc-400">Other actions</p>
       <div className="flex max-w-full gap-4 overflow-x-auto pb-3">{graph.unlinked.map(node => <div key={node.id} data-graph-node={node.scope} className="relative flex w-60 shrink-0 items-center gap-2 rounded-xl border border-zinc-800 bg-zinc-900 px-2 py-1">
         <TypeIcon node={node} />
-        <button type="button" onClick={() => open(node.scope)} title={node.when ? `Applies when: ${node.when}` : undefined} className="min-h-11 min-w-0 flex-1 self-stretch break-words text-left text-sm font-medium leading-snug text-zinc-100 hover:text-emerald-300 focus-visible:outline-2 focus-visible:outline-emerald-300">{node.title}<span className="sr-only"> — open step details{node.when ? `; applies when: ${node.when}` : ''}</span></button>
+        <button type="button" onClick={() => open(node.scope)} title={node.when ? `Applies when: ${node.when}` : undefined} className="min-h-11 min-w-0 flex-1 cursor-pointer self-stretch break-words text-left text-sm font-medium leading-snug text-zinc-100 hover:text-emerald-300 focus-visible:outline-2 focus-visible:outline-emerald-300">{node.title}<span className="sr-only"> — open step details{node.when ? `; applies when: ${node.when}` : ''}</span></button>
       </div>)}</div>
     </div>}
   </section>
