@@ -314,9 +314,10 @@ export default function Microterminal({
         </pre>
 
         <div className="flex flex-wrap items-center gap-x-3 gap-y-1.5 border-t border-zinc-800 px-3 py-1.5 text-[10px] text-zinc-500">
-          {isLive ? (
-            <span>real JSON-RPC against the vendor&rsquo;s documented MCP endpoint — read-only, nothing is written</span>
-          ) : active ? (
+          {/* Founder 2026-10-05: the live-probe caption ("real JSON-RPC against the vendor's
+              documented MCP endpoint — read-only, nothing is written") is gone — caption only;
+              the probe itself, its result lines, and the recorded provenance footer stay. */}
+          {!isLive && active ? (
             <span>
               recorded {active.recordedAt?.slice(0, 10)} · exit {active.exitCode} · captured verbatim by our probe harness, secrets redacted
               {active.live ? ' · pure-HTTP probe — ▶ run live re-runs it from our edge' : ''}

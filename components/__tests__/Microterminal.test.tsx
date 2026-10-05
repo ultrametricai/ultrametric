@@ -78,6 +78,9 @@ describe('Microterminal live tiers', () => {
     // Live output wears the live badge — the one per-run badge left after the recorded badge
     // was removed (founder 2026-10-02).
     expect(screen.getByText(/live — run just now from our edge/)).toBeTruthy()
+    // Founder 2026-10-05: the live-probe footer caption is gone (caption only — the probe and
+    // its result lines stay).
+    expect(screen.queryByText(/read-only, nothing is written/)).toBeNull()
     const runCall = await screen.findByRole('button', { name: /run a real call — search the docs/ })
     expect(sent[0]).toEqual({ arena: 'payments', product: 'stripe' }) // keyless probe: no token, no action
     fireEvent.click(runCall)
