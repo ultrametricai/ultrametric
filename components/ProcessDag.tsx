@@ -306,59 +306,9 @@ function StepRankingRow({
         checkStep={checkStep}
         vendorGeo={vendorGeo}
       />
-      <details className="group mt-1.5">
-        <summary className="flex cursor-pointer list-none items-center gap-1.5 text-[11px] text-zinc-500 transition hover:text-zinc-300 [&::-webkit-details-marker]:hidden">
-          <span aria-hidden className="inline-block text-[9px] transition-transform group-open:rotate-90">▶</span>
-          {/* One quiet word (founder 2026-10-02: drop the 'how these are ranked — N judged
-              stories · N vendors' line) — the expandable per-story receipts stay. */}
-          <span title={`${storyCount} judged stories · ${merged.length} vendors${extras.length > 0 ? ` · ${blocks.length} arenas` : ''} — expand for the per-story citations`}>evidence</span>
-        </summary>
-        <div className="mt-1.5 space-y-1.5 border-l border-zinc-800 pl-3 text-[11px] text-zinc-500">
-          <p>
-            Score = story-weighted verdicts on the stories mapped to this step
-            {/* Interpolated from lib/scoring.ts VERDICT_FACTORS (SSOT audit 2026-09-30) — the
-                prose can never drift from the weights the recompute actually uses. */}
-            {` (full=${VERDICT_FACTORS.full}, partial=${VERDICT_FACTORS.partial}, disputed=${VERDICT_FACTORS.disputed}, none=${VERDICT_FACTORS.none} · n/a excluded)`}{' '}
-            — every number below traces to a judged verdict on the vendor&rsquo;s product page.
-            {extras.length > 0
-              && ' Cross-arena vendors are scored on THEIR arena’s mapped stories and appear only with at least one judged full/partial verdict.'}
-          </p>
-          {blocks.map((b) => (
-            <div key={b.arenaId} className="space-y-0.5">
-              <p className="text-[10px] uppercase tracking-wide text-zinc-500">
-                {b.arenaName}
-                {b.kind === 'extra' && ' (cross-arena)'}
-              </p>
-              <ul className="space-y-0.5">
-                {b.stories.map((s) => (
-                  <li key={s.id} className="text-zinc-400">
-                    <span className="text-zinc-500">w{s.weight}</span> {s.title}
-                  </li>
-                ))}
-              </ul>
-              <ul className="space-y-0.5">
-                {b.vendors.map((v) => (
-                  <li key={v.productId}>
-                    <Link href={`/arena/${v.arenaId}/product/${v.productId}`} className="text-zinc-300 transition hover:text-emerald-300">
-                      {v.name}
-                    </Link>{' '}
-                    {/* The score itself clicks through to the judged verdicts table that
-                        produced it (founder 2026-10-05) — the per-story links beside it keep
-                        targeting each verdict's own #story- anchor. The tooltip states THIS
-                        number's derivation: the arena and the real verdict counts. */}
-                    <Link
-                      href={`/arena/${v.arenaId}/product/${v.productId}#story-verdicts`}
-                      title={`${v.score.toFixed(0)}/100 — story-weighted ${b.arenaName} verdicts on the ${v.cites.length} ${v.cites.length === 1 ? 'story' : 'stories'} mapped to this step (${v.cites.filter((c) => c.verdict === 'full').length} full, ${v.cites.filter((c) => c.verdict === 'partial').length} partial); click for the verdicts`}
-                      className="font-mono tabular-nums text-emerald-400/80 transition hover:text-emerald-300"
-                    >{v.score.toFixed(0)}<span className="text-zinc-500">/100</span></Link>{' '}
-                    — <VendorCiteLine vendor={v} />
-                  </li>
-                ))}
-              </ul>
-            </div>
-          ))}
-        </div>
-      </details>
+      {/* The per-step 'evidence' expandable was removed (founder 2026-10-05) — every score
+          and chip above already clicks through to the judged verdicts, so the accordion
+          duplicated the receipts. The scoring data and per-story mappings stay untouched. */}
     </>
   )
 }
