@@ -165,7 +165,7 @@ function VendorChip({ info }: { info: VendorChipInfo }) {
           {score && (
             <Link
               href={`/arena/${info.arenaId}/product/${info.productId}/score`}
-              title={`${info.agentReady!.toFixed(0)}/100 agent-ready in ${info.arenaName} — open the score receipts`}
+              title={`${info.agentReady!.toFixed(0)}/100 — ${info.label}'s judged agent-readiness in the ${info.arenaName} arena (#${info.rank} there); click for the score receipts`}
               className="transition hover:text-emerald-300"
             >
               {score}
@@ -343,10 +343,11 @@ function StepRankingRow({
                     </Link>{' '}
                     {/* The score itself clicks through to the judged verdicts table that
                         produced it (founder 2026-10-05) — the per-story links beside it keep
-                        targeting each verdict's own #story- anchor. */}
+                        targeting each verdict's own #story- anchor. The tooltip states THIS
+                        number's derivation: the arena and the real verdict counts. */}
                     <Link
                       href={`/arena/${v.arenaId}/product/${v.productId}#story-verdicts`}
-                      title={`${v.score.toFixed(0)}/100 — open the judged story verdicts this score derives from`}
+                      title={`${v.score.toFixed(0)}/100 — story-weighted ${b.arenaName} verdicts on the ${v.cites.length} ${v.cites.length === 1 ? 'story' : 'stories'} mapped to this step (${v.cites.filter((c) => c.verdict === 'full').length} full, ${v.cites.filter((c) => c.verdict === 'partial').length} partial); click for the verdicts`}
                       className="font-mono tabular-nums text-emerald-400/80 transition hover:text-emerald-300"
                     >{v.score.toFixed(0)}<span className="text-zinc-500">/100</span></Link>{' '}
                     — <VendorCiteLine vendor={v} />
@@ -585,7 +586,7 @@ function NodeBlock({
                 <Link
                   href={`/arena/${o.arenaId}/product/${o.id}/score`}
                   className="ml-1 font-mono text-[10px] tabular-nums text-emerald-400/80 transition hover:text-emerald-300"
-                  title={`${o.agentReady.toFixed(0)}/100 agent-ready — open the score receipts`}
+                  title={`${o.agentReady.toFixed(0)}/100 — ${o.name}'s judged agent-readiness on the ${o.arenaId} arena leaderboard; click for the score receipts`}
                 >
                   {o.agentReady.toFixed(0)}
                   <span className="text-zinc-500">/100</span>

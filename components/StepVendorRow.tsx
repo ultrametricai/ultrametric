@@ -305,7 +305,7 @@ export default function StepVendorRow({
           not covered by {gapName} — best here: {checkStep.best.name}{' '}
           <Link
             href={`/arena/${checkStep.best.arenaId}/product/${checkStep.best.productId}#story-verdicts`}
-            title={`${checkStep.best.score.toFixed(0)}/100 — open the judged story verdicts this score derives from`}
+            title={`${checkStep.best.score.toFixed(0)}/100 — ${checkStep.best.name}'s judged verdicts on the ${checkStep.storyCount} ${checkStep.storyCount === 1 ? 'story' : 'stories'} mapped to this step; click for the verdicts`}
             className="underline decoration-amber-300/40 underline-offset-2 transition hover:text-amber-200"
           >{checkStep.best.score.toFixed(0)}/100</Link>
         </span>

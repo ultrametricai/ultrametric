@@ -124,6 +124,11 @@ describe('static-HTML contract (SSR ↔ empty client state)', () => {
       '/arena/ai-assistants/product/chatgpt#story-verdicts',
     ])
     expect(scoreLinks[0].textContent).toBe('90/100')
+    // The tooltip states THIS number's derivation — the real arena and verdict counts, never a
+    // canned sentence (founder 2026-10-05).
+    expect(scoreLinks[0].getAttribute('title')).toBe(
+      '90/100 · #1 for this step — from 3 judged Startup banking stories mapped to this step (2 full, 1 partial); click for the verdicts',
+    )
   })
 })
 

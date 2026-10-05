@@ -61,10 +61,11 @@ export default function ProcessYourVendor({
           —{' '}
           <span className="text-emerald-300">{ordinal(yours.rank)}</span> for this process, {yours.stepsServed} of{' '}
           {rankableSteps} steps, score{' '}
-          {/* The score clicks through to the judged verdicts behind it (founder 2026-10-05). */}
+          {/* The score clicks through to the judged verdicts behind it (founder 2026-10-05),
+              and the tooltip states this number's own derivation with the row's real counts. */}
           <Link
             href={`/arena/${yours.arenaId}/product/${yours.productId}#story-verdicts`}
-            title={`${yours.processScore.toFixed(0)}/100 — open the judged story verdicts this score derives from`}
+            title={`${yours.processScore.toFixed(0)}/100 — ${yours.name}'s judged step scores summed over ${rankableSteps} rankable ${rankableSteps === 1 ? 'step' : 'steps'} (${yours.stepsServed} served, unserved count 0); click for the verdicts`}
             className="transition hover:text-emerald-200"
           >
             <span className="tabular-nums text-emerald-300">{yours.processScore.toFixed(0)}</span>
@@ -85,7 +86,7 @@ export default function ProcessYourVendor({
           at{' '}
           <Link
             href={`/arena/${leader.arenaId}/product/${leader.productId}#story-verdicts`}
-            title={`${leader.processScore.toFixed(0)}/100 — open the judged story verdicts this score derives from`}
+            title={`${leader.processScore.toFixed(0)}/100 — ${leader.name}'s judged step scores summed over ${rankableSteps} rankable ${rankableSteps === 1 ? 'step' : 'steps'} (${leader.stepsServed} served, unserved count 0); click for the verdicts`}
             className="transition hover:text-emerald-300"
           >
             <span className="tabular-nums">{leader.processScore.toFixed(0)}</span>

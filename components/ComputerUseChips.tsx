@@ -56,7 +56,7 @@ export default function ComputerUseChips({ taskId, nodeId }: { taskId: string; n
           </Link>
           <Link
             href={`/arena/${o.arenaId}/product/${o.productId}#story-verdicts`}
-            title={`${o.score.toFixed(0)}/100 — open the judged story verdicts this score derives from`}
+            title={`${o.score.toFixed(0)}/100 — ${o.name}'s judged ${o.arenaName} computer-use verdicts on the ${o.cites.length} ${o.cites.length === 1 ? 'story' : 'stories'} mapped to this step; click for the verdicts`}
             className="font-mono text-[10px] tabular-nums text-emerald-400/80 transition hover:text-emerald-300"
           >{o.score.toFixed(0)}<span className="text-zinc-500">/100</span></Link>
         </span>
