@@ -148,11 +148,13 @@ describe('display metadata', () => {
   })
 })
 
-// The /processes country-view filter rule (founder ask 2026-10-02: "?geo=in should hide the
-// processes that are not used in that country"). Pure and pinned per kind here; the table's
-// integration (row set + disclosure) lives in components/__tests__/ProcessesTable.test.tsx.
+// The /processes country-view filter rule (founder ask 2026-10-02, tightened by founder
+// override 2026-10-05: an explicit country view shows NO US-scoped row — 'analog' notes
+// included; the hidden-rows disclosure is the analogs' discoverability path). Pure and pinned
+// per kind here; the table's integration (row set + disclosure) lives in
+// components/__tests__/ProcessesTable.test.tsx.
 describe('hiddenInCountryView (the country-view filter rule)', () => {
-  const row = (geoScope: 'global' | 'us' | 'us-state', geoNotesByCountry: GeoNotesByCountry = {}) =>
+  const row = (geoScope: 'global' | 'us' | 'us-state' | null, geoNotesByCountry: GeoNotesByCountry = {}) =>
     ({ geoScope, geoNotesByCountry })
 
   it('global rows never hide — with or without a note slice', () => {
@@ -160,11 +162,16 @@ describe('hiddenInCountryView (the country-view filter rule)', () => {
     expect(hiddenInCountryView(row('global'), 'DE')).toBe(false)
   })
 
-  it("US-scoped rows show only on an 'analog' note for the selected country", () => {
+  it('null-scope rows (shared-catalog previews, no geo dimension yet) never hide', () => {
+    expect(hiddenInCountryView(row(null), 'UK')).toBe(false)
+    expect(hiddenInCountryView(row(null), 'IN')).toBe(false)
+  })
+
+  it("US-scoped rows hide even on an 'analog' note — the 2026-10-05 override of the 2026-10-02 rule", () => {
     const analog = { kind: 'analog' as const, summary: 'Register with Companies House.' }
-    expect(hiddenInCountryView(row('us', { UK: analog }), 'UK')).toBe(false)
-    expect(hiddenInCountryView(row('us-state', { UK: analog }), 'UK')).toBe(false)
-    // The same row hides under a country its notes don't cover.
+    expect(hiddenInCountryView(row('us', { UK: analog }), 'UK')).toBe(true)
+    expect(hiddenInCountryView(row('us-state', { UK: analog }), 'UK')).toBe(true)
+    // And, as before, under a country the notes don't cover.
     expect(hiddenInCountryView(row('us', { UK: analog }), 'IN')).toBe(true)
   })
 

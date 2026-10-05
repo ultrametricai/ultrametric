@@ -1,7 +1,9 @@
 // @vitest-environment jsdom
 // ProcessVendorPicker — the top-of-page 'Select vendor for process test' control as the house
 // listbox dropdown (founder 2026-10-02: the GeoDropdown/SimRolePicker idiom replaces the flat
-// chip rows; presentation only — same buildArenas market, same setPick lens writes). Pins:
+// chip rows; presentation only — same buildArenas market, same setPick lens writes). Since the
+// founder batch 2026-10-05 only CHAIN pages render it — process detail pages dropped the
+// section (app/processes/[slug]/page.tsx carries the removal note). Pins:
 //   1. the static default: SSR is deterministic and every arena trigger reads 'No vendor' —
 //      the SEO page stays byte-identical for readers with no lens/stack;
 //   2. the listbox: trigger wears aria-haspopup/aria-expanded, options are role="option" rows

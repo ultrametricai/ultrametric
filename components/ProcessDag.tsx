@@ -16,7 +16,6 @@ import { StepCostChip, StepFailureModes, StepVerifyLine } from '@/components/Ste
 import { computeChipsForStep } from '@/lib/businessLogicMap'
 import { layerNodes, type DagEdge } from '@/lib/dagLayers'
 import StepDocuments from '@/components/StepDocuments'
-import { resolveGapStep } from '@/lib/gapClosers'
 import { humanStepAudit } from '@/lib/humanSteps'
 import { showComputerUseChips } from '@/lib/humanStepsUi'
 import type { ProcessCheckStep } from '@/lib/processCheck'
@@ -24,6 +23,7 @@ import { hasLogo } from '@/lib/logos'
 import type { DagNode, VendorChipInfo } from '@/lib/processes'
 import { stepVendorOptions, vendorAlternatives, vendorChipInfo } from '@/lib/processes'
 import { crossArenaStepRankings, stepRanking, type StepCite, type StepRanking, type StepVendorScore } from '@/lib/processRankings'
+import { guidanceParagraphs, stepGuidanceFor } from '@/lib/shared-processes/step-guidance'
 import { VERDICT_FACTORS } from '@/lib/scoring'
 import { buildStepMethodViews } from '@/lib/stepMethodData'
 import { stepMethodNodeKey } from '@/lib/stepMethods'
@@ -41,8 +41,8 @@ import { vendorGeoLookup } from '@/lib/vendorGeo'
 //
 // Every mapped-vendor block also surfaces the market: beneath the canonical vendor chip, an
 // "or:" row lists the arena's top alternatives by agent-readiness (lib/processes.ts swap-options
-// machinery). Non-agent steps with an agentic gap-closer (lib/gapClosers.ts, resolved at build
-// time against live arenas) keep their compact "⚡ agentic workaround" line inside the block.
+// machinery). The per-block "⚡ agentic workaround" line is gone (founder 2026-10-05) —
+// lib/gapClosers.ts stays data for the chain pages' verdict/simulator surfaces.
 
 // Re-exported from the shared layout helper (lib/dagLayers.ts) so existing importers keep
 // working — the layering itself lives there (the mini strip that once shared it left the
@@ -125,13 +125,16 @@ function VendorChip({ info }: { info: VendorChipInfo }) {
     <>
       <ProductLogoView product={{ id: logoId, name: info.label }} size={28} hasLogo={hasLogo(logoId)} />
       <span className="truncate">{info.label}</span>
-      {info.agentReady !== null && (
-        <span className="font-mono text-[10px] tabular-nums text-emerald-400/80">
-          {info.agentReady.toFixed(0)}
-          <span className="text-zinc-500">/100</span>
-        </span>
-      )}
     </>
+  )
+  // The agent-ready number clicks through to its receipts — the /score page that derives it
+  // (founder 2026-10-05: every visible score answers 'why?' in one click). Untracked vendors
+  // have no judged number, so only the tracked branch renders a score at all.
+  const score = info.agentReady !== null && (
+    <span className="font-mono text-[10px] tabular-nums text-emerald-400/80">
+      {info.agentReady.toFixed(0)}
+      <span className="text-zinc-500">/100</span>
+    </span>
   )
   // The vendor's own start-here page (lib/processes.ts VENDOR_SIGNUP_URL) — a tiny external ↗
   // beside the chip, so "sign up for payroll"-style steps are actionable in one click. Distinct
@@ -150,15 +153,26 @@ function VendorChip({ info }: { info: VendorChipInfo }) {
   if (info.productId && info.arenaId) {
     return (
       <span className="inline-flex min-w-0 items-center gap-0.5">
-        <Link
-          href={`/arena/${info.arenaId}/product/${info.productId}`}
-          title={`${info.label} — #${info.rank} by agent-readiness in ${info.arenaName}${
-            info.agentReady !== null ? ` · ${info.agentReady.toFixed(0)}/100 agent-ready` : ''
-          } — see the judged product page`}
-          className="inline-flex min-w-0 items-center gap-1.5 rounded-md border border-zinc-700 bg-zinc-900/60 py-0.5 pl-0.5 pr-2 text-zinc-200 transition hover:border-emerald-400/60 hover:text-emerald-300"
-        >
-          {body}
-        </Link>
+        <span className="inline-flex min-w-0 items-center gap-1.5 rounded-md border border-zinc-700 bg-zinc-900/60 py-0.5 pl-0.5 pr-2 text-zinc-200 transition hover:border-emerald-400/60">
+          <Link
+            href={`/arena/${info.arenaId}/product/${info.productId}`}
+            title={`${info.label} — #${info.rank} by agent-readiness in ${info.arenaName}${
+              info.agentReady !== null ? ` · ${info.agentReady.toFixed(0)}/100 agent-ready` : ''
+            } — see the judged product page`}
+            className="inline-flex min-w-0 items-center gap-1.5 transition hover:text-emerald-300"
+          >
+            {body}
+          </Link>
+          {score && (
+            <Link
+              href={`/arena/${info.arenaId}/product/${info.productId}/score`}
+              title={`${info.agentReady!.toFixed(0)}/100 — ${info.label}'s judged agent-readiness in the ${info.arenaName} arena (#${info.rank} there); click for the score receipts`}
+              className="transition hover:text-emerald-300"
+            >
+              {score}
+            </Link>
+          )}
+        </span>
         {signup}
       </span>
     )
@@ -170,6 +184,7 @@ function VendorChip({ info }: { info: VendorChipInfo }) {
         className="inline-flex min-w-0 items-center gap-1.5 rounded-md border border-zinc-800 bg-zinc-900/60 py-0.5 pl-0.5 pr-2 text-zinc-400"
       >
         {body}
+        {score}
       </span>
       {signup}
     </span>
@@ -327,7 +342,15 @@ function StepRankingRow({
                     <Link href={`/arena/${v.arenaId}/product/${v.productId}`} className="text-zinc-300 transition hover:text-emerald-300">
                       {v.name}
                     </Link>{' '}
-                    <span className="font-mono tabular-nums text-emerald-400/80">{v.score.toFixed(0)}<span className="text-zinc-500">/100</span></span>{' '}
+                    {/* The score itself clicks through to the judged verdicts table that
+                        produced it (founder 2026-10-05) — the per-story links beside it keep
+                        targeting each verdict's own #story- anchor. The tooltip states THIS
+                        number's derivation: the arena and the real verdict counts. */}
+                    <Link
+                      href={`/arena/${v.arenaId}/product/${v.productId}#story-verdicts`}
+                      title={`${v.score.toFixed(0)}/100 — story-weighted ${b.arenaName} verdicts on the ${v.cites.length} ${v.cites.length === 1 ? 'story' : 'stories'} mapped to this step (${v.cites.filter((c) => c.verdict === 'full').length} full, ${v.cites.filter((c) => c.verdict === 'partial').length} partial); click for the verdicts`}
+                      className="font-mono tabular-nums text-emerald-400/80 transition hover:text-emerald-300"
+                    >{v.score.toFixed(0)}<span className="text-zinc-500">/100</span></Link>{' '}
                     — <VendorCiteLine vendor={v} />
                   </li>
                 ))}
@@ -337,6 +360,36 @@ function StepRankingRow({
         </div>
       </details>
     </>
+  )
+}
+
+// The committed step description under the label (founder 2026-10-05): short guidance is one
+// muted line; longer guidance collapses behind the page's details/summary idiom (the evidence
+// expandable's ▶ marker), the lead line truncated until opened. Server-rendered, committed
+// text only — guidanceParagraphs strips markdown markers, it never rewrites.
+const GUIDANCE_ONE_LINE_MAX = 220
+
+export function StepGuidance({ text }: { text: string }) {
+  const paragraphs = guidanceParagraphs(text)
+  if (paragraphs.length === 0) return null
+  const lead = paragraphs[0]
+  if (paragraphs.length === 1 && lead.length <= GUIDANCE_ONE_LINE_MAX) {
+    return <p className="mt-1 text-[11px] leading-relaxed text-zinc-400">{lead}</p>
+  }
+  return (
+    <details className="group mt-1">
+      <summary className="flex cursor-pointer list-none items-start gap-1.5 text-[11px] leading-relaxed text-zinc-400 transition hover:text-zinc-200 [&::-webkit-details-marker]:hidden">
+        <span aria-hidden className="mt-1 inline-block text-[9px] text-zinc-500 transition-transform group-open:rotate-90">▶</span>
+        <span className="min-w-0 truncate group-open:whitespace-normal">{lead}</span>
+      </summary>
+      {paragraphs.length > 1 && (
+        <div className="mt-1 space-y-1.5 border-l border-zinc-800 pl-3 text-[11px] leading-relaxed text-zinc-400">
+          {paragraphs.slice(1).map((p, i) => (
+            <p key={i}>{p}</p>
+          ))}
+        </div>
+      )}
+    </details>
   )
 }
 
@@ -383,10 +436,12 @@ function NodeBlock({
   // arena-rank order) plus curated extras — lib/processes.ts stepVendorOptions.
   const options = ranking ? [] : stepVendorOptions(node)
   const calls = node.functionCalls ?? []
-  const gap = resolveGapStep(node)
-  // A legally-required signature act never gets a workaround — the e-sign medium may be
-  // electronic, but the signing human is not replaceable (founder 2026-09-21).
-  const closer = !node.legalSignature && gap?.kind === 'closer' ? gap.closer : null
+  // Committed per-step description (founder 2026-10-05) — the shared record's node-bound part
+  // guidance; null for the many steps without one (lib/shared-processes/step-guidance.ts).
+  const guidance = taskId ? stepGuidanceFor(taskId, node.id) : null
+  // The '⚡ agentic workaround:' line left the step blocks (founder 2026-10-05) — display only:
+  // lib/gapClosers.ts and its resolution stay data (the chain pages' ProcessVerdict/
+  // ProcessSimulator and the gap analyses still consume resolveGapStep).
   // Evidence-grounded per-vendor calls for this step (data/step-vendor-calls.json) — when
   // present they take over the API-calls block, with the node's own functionCalls kept as the
   // canonical reference flow.
@@ -474,8 +529,9 @@ function NodeBlock({
         {node.cost && <StepCostChip cost={node.cost} />}
       </div>
 
-      {/* The primary action row — [⚡ run with AFK (staff)] → [do it yourself ↗]. Steps
-          without an actionUrl render nothing extra. */}
+      {/* The primary action row — [⚡ run with Ultrametric (staff, → /get-started; the
+          2026-10-05 rename of 'run with AFK')] → [do it yourself ↗]. Steps without an
+          actionUrl render nothing extra. */}
       {node.actionUrl && (
         <div className="mt-2 flex flex-wrap items-center gap-1.5 text-[11px]">
           {afkChip}
@@ -561,13 +617,14 @@ function NodeBlock({
                 {o.name}
               </Link>
               {o.agentReady !== null && (
-                <span
-                  className="ml-1 font-mono text-[10px] tabular-nums text-emerald-400/80"
-                  title={`${o.agentReady.toFixed(0)}/100 agent-ready`}
+                <Link
+                  href={`/arena/${o.arenaId}/product/${o.id}/score`}
+                  className="ml-1 font-mono text-[10px] tabular-nums text-emerald-400/80 transition hover:text-emerald-300"
+                  title={`${o.agentReady.toFixed(0)}/100 — ${o.name}'s judged agent-readiness on the ${o.arenaId} arena leaderboard; click for the score receipts`}
                 >
                   {o.agentReady.toFixed(0)}
                   <span className="text-zinc-500">/100</span>
-                </span>
+                </Link>
               )}
             </span>
           ))}
@@ -621,23 +678,6 @@ function NodeBlock({
         </div>
       )}
 
-      {closer && (
-        <p className="mt-2 text-[11px] text-zinc-400">
-          <span className="text-emerald-300/90">⚡ agentic workaround:</span> {closer.blurb} —{' '}
-          <Link
-            href={`/arena/${closer.arenaId}/product/${closer.topProduct.id}`}
-            className="text-zinc-300 underline decoration-zinc-700 underline-offset-2 transition hover:text-emerald-300"
-          >
-            {closer.topProduct.name}
-          </Link>
-          {', '}
-          <Link href={`/arena/${closer.arenaId}`} className="transition hover:text-emerald-300">
-            top of {closer.arenaName} →
-          </Link>
-          {closer.caution && <span className="text-amber-400/80"> · {closer.caution}</span>}
-        </p>
-      )}
-
       {/* "How do I know it worked?" (depth wave pt 1) — the step's concrete external check,
           curated only where a real one exists; renders nothing for the many steps without. */}
       {node.verify && <StepVerifyLine verify={node.verify} />}
@@ -667,6 +707,11 @@ function NodeBlock({
         </p>
         {methodViews ? <StepMethodDefault nodeKey={nodeKey}>{routeBadge}</StepMethodDefault> : routeBadge}
       </div>
+      {/* The step's committed description (founder 2026-10-05): the shared record part bound to
+          this node id (content/processes/records — the same guidance the preview pages render),
+          muted under the label, one line expanding to the full committed paragraphs when long.
+          Steps without committed guidance render exactly as before — nothing is invented. */}
+      {guidance && <StepGuidance text={guidance} />}
       {methodViews && (
         <StepMethodPicker
           nodeKey={nodeKey}

@@ -60,9 +60,12 @@ export const GEO_GLOBAL_META = { label: 'Global', flag: '🌐', prose: 'a geo-ne
 // always-on scope glyphs keep saying which rows are US-specific). DISPLAY FRAMING ONLY: the
 // store stays null,
 // the param/storage codec is untouched, and an explicit choice (param, stored pref, dropdown)
-// wins exactly as before. SEAM: process DETAIL pages keep the sitewide US default — their
-// byte-identical US SSR contract (GeoSwitcher tests) is deliberately NOT re-pinned this round;
-// flipping them means threading this constant into GeoSwitcher and consciously re-pinning it.
+// wins exactly as before. SEAM (closed, founder batch 2026-10-05): process DETAIL pages render
+// the SAME dropdown (components/GeoDropdown.tsx, defaultChoice=GEO_GLOBAL as trigger framing
+// only) over the SAME ?geo=/pa-geo preference and per-tab store — pick the UK on a process page
+// and the /processes index opens in the UK view, and vice versa (pinned in
+// components/__tests__/ProcessGeoSync.test.tsx). Their US-default SSR stays byte-identical:
+// the framing prop is server-rendered, the stored choice lands mount-only.
 export const PROCESSES_INDEX_DEFAULT_GEO: typeof GEO_GLOBAL = GEO_GLOBAL
 
 /** parseGeo plus the 'global' token — everything else (incl. 'us') behaves exactly as parseGeo. */
@@ -108,7 +111,9 @@ export function usFlagGlyph(
 //                      India: PAN/TAN arrive with the SPICe+ incorporation filing; the
 //                      registered office is declared at formation everywhere).
 //   'not-applicable' — the need genuinely doesn't exist there (the UK has no 1099 regime).
-// This is the /processes country-view filter's vocabulary — see hiddenInCountryView below.
+// Since the founder override 2026-10-05 the kinds no longer drive the /processes country-view
+// FILTER (every US-scoped row hides — hiddenInCountryView below); they still drive what the
+// hidden-rows disclosure and the detail-page banner SAY about each note.
 export const GEO_NOTE_KINDS = ['analog', 'absorbed', 'not-applicable'] as const
 export type GeoNoteKind = (typeof GEO_NOTE_KINDS)[number]
 
@@ -132,22 +137,25 @@ export interface GeoAnalogNote {
 // global rows never filter, so they carry none.
 export type GeoNotesByCountry = Partial<Record<GeoSelection, { kind: GeoNoteKind; summary: string }>>
 
-// The /processes country-view filter rule (founder ask 2026-10-02). Under a country selection C:
+// The /processes country-view filter rule (founder ask 2026-10-02; tightened by founder
+// override 2026-10-05: "an explicit country view must not show US-only processes, full stop").
+// Under a country selection C:
 //   - global-scope rows always show (the work is the same everywhere);
-//   - us/us-state rows show ONLY when their C note says the need exists there as its own doable
-//     process (kind 'analog');
-//   - us/us-state rows with no C note, or whose C note says the need is absorbed into another
-//     process there or genuinely doesn't exist, HIDE — the EIN row hides under ?geo=in because
-//     PAN/TAN arrive inside the SPICe+ incorporation filing.
+//   - EVERY us/us-state row hides — an 'analog' C note no longer keeps the row in the table.
+//     The hidden-rows disclosure under the table (components/ProcessesTable.tsx) is the
+//     discoverability path: it lists each hidden row with its committed note summary (the
+//     analog story included) and its process-page link.
 // The no-selection default and the explicit 🌐 Global view never call this — they keep the full
 // corpus (the geo dimension only FILTERS inside a country view; it still never re-ranks).
+// `country` stays in the signature: it is the rule's vocabulary (a row hides IN a country view),
+// and the disclosure reads the same per-country note slice this function used to branch on.
 export function hiddenInCountryView(
   // geoScope null = a shared-catalog preview row (no geo dimension yet) — never hidden.
   row: { geoScope: 'global' | 'us' | 'us-state' | null; geoNotesByCountry: GeoNotesByCountry },
   country: GeoSelection,
 ): boolean {
-  if (row.geoScope === null || row.geoScope === 'global') return false
-  return row.geoNotesByCountry[country]?.kind !== 'analog'
+  void country
+  return row.geoScope === 'us' || row.geoScope === 'us-state'
 }
 
 // One (product, country) availability cell of jurisdictions/vendor-geo.json, pre-serialized

@@ -6,7 +6,8 @@ import { REPO } from './site'
 // Open-modules ↔ process map (founder 2026-10-02, deepened same day): the committed registry
 // processes/business-logic-map.json names which lib/openstartup modules serve which corpus
 // processes — and, per STEP, which module FUNCTION genuinely computes which step's math. The
-// task-level hits render as the process page's muted "Open modules" chip line; the step-level
+// task-level hits render as the process page's compact "Open modules" disclosure (collapsed by
+// default since founder 2026-10-05 — components/OpenModulesMenu.tsx); the step-level
 // entries render as tiny "compute: <module>.<function>" chips inside the step blocks
 // (components/ProcessDag.tsx), both deep-linking to the module's section in
 // open-modules/README.md on GitHub (repo-first — the modules are a library by design, no new

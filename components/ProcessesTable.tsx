@@ -291,11 +291,11 @@ export default function ProcessesTable({
   // us/us-state rows always wear the 🇺🇸 flag (usFlagGlyph — strictly geoScope-keyed, the label
   // telling federal from state work) and global rows wear nothing, identically in the server
   // render and under any selection. Never re-sorts; since the country-view filter (founder
-  // 2026-10-02: "?geo=in should hide the processes that are not used in that country") a
-  // COUNTRY selection also hides the US-scoped rows whose committed note says the need is
-  // absorbed into another process there or doesn't exist (hiddenInCountryView) — the
-  // no-selection default and 🌐 Global keep the full corpus, and the muted disclosure line
-  // under the table keeps the hidden titles reachable.
+  // 2026-10-02, tightened 2026-10-05: a non-global view must not show US-only processes) a
+  // COUNTRY selection hides EVERY US-scoped row (hiddenInCountryView — 'analog' notes
+  // included) — the no-selection default and 🌐 Global keep the full corpus, and the muted
+  // disclosure line under the table keeps the hidden titles (and their committed analog
+  // summaries) reachable.
   const geo = useGeoSelection()
   // What the active country view hides, for the honesty disclosure under the table — computed
   // over the WHOLE row set (the country view as such; the phase/text filters narrow the table
@@ -370,9 +370,9 @@ export default function ProcessesTable({
     const q = query.trim().toLowerCase()
     return rows.filter(
       (r) =>
-        // The country-view filter (founder 2026-10-02): under a country selection, US-scoped
-        // rows stay only where the committed note says the need exists there as its own doable
-        // process. No selection / 🌐 Global ⇒ geo is null ⇒ the full corpus, exactly as before.
+        // The country-view filter (founder 2026-10-02, tightened 2026-10-05): under a country
+        // selection every US-scoped row hides — committed analogs surface in the disclosure
+        // below the table. No selection / 🌐 Global ⇒ geo is null ⇒ the full corpus, as before.
         (geo === null || !hiddenInCountryView(r, geo))
         && (phase === 'all' || r.phase === phase)
         && (cadence === null || r.cadenceLabel === cadence)
@@ -497,8 +497,10 @@ export default function ProcessesTable({
       // A situation has no slot on the founder timeline — an honest dash, not an invented
       // number (the same convention as the playbook rows' missing per-process metrics).
       if (r.timeOrder === null) {
+        // zinc-500 (founder 2026-10-05 contrast lift) — the dash carries a real tooltip, so it
+        // sits at the tertiary tier rather than the decorative one.
         return (
-          <span className="text-xs text-zinc-600" title="Situation — reactive, trigger-driven: it has no slot on the founder timeline; the urgency chip carries its clock">
+          <span className="text-xs text-zinc-500" title="Situation — reactive, trigger-driven: it has no slot on the founder timeline; the urgency chip carries its clock">
             —
           </span>
         )
@@ -558,7 +560,9 @@ export default function ProcessesTable({
             <span className="mt-0.5 block pl-6 text-[11px] leading-snug text-zinc-500">{r.trigger}</span>
           )}
         </td>
-        <td className="hidden px-2 py-2 text-xs text-zinc-500 md:table-cell">
+        {/* zinc-400, not 500 (founder 2026-10-05 contrast lift: the area cells read
+            dark-on-dark on the hover-tinted rows). */}
+        <td className="hidden px-2 py-2 text-xs text-zinc-400 md:table-cell">
           {/* Founder 2026-09-18: the phase is the filter — click it to scope the table
               to that phase; click again (or pick All) to clear. */}
           {r.phase && <button
@@ -578,32 +582,39 @@ export default function ProcessesTable({
             step-by-step carries the per-step story. */}
         <td className="whitespace-nowrap px-2 py-2">{metricCell(r)}</td>
         <td className="hidden px-2 py-2 lg:table-cell">
-          <span className="flex flex-wrap gap-1">
-            {r.vendors.slice(0, 3).map((v) =>
-              v.arena ? (
-                // Founder 2026-09-25: a vendor chip opens the PROCESS through that
-                // vendor (?via= lens, lib/processLens.ts) — not the vendor's own page.
-                <Link key={v.label} href={r.href ? href : `${href}?via=${v.arena}:${v.id}`} title={r.href ? `Open ${r.title} — view ${v.label} alongside the other options` : `Open ${r.title} viewed via ${v.label} — every step resolved to it where it serves`} className="inline-flex items-center gap-1 rounded-full border border-zinc-700 py-px pl-0.5 pr-1.5 text-[10px] text-zinc-300 transition hover:border-emerald-400/60 hover:text-emerald-300">
-                  <ProductLogoView product={{ id: v.id, name: v.label }} size={14} hasLogo={v.hasLogo} />
-                  {v.label}
-                </Link>
-              ) : (
-                <span key={v.label} title={`${v.label} — not yet judged on Ultrametric`} className="inline-flex items-center gap-1 rounded-full border border-zinc-800 py-px pl-0.5 pr-1.5 text-[10px] text-zinc-500">
-                  <ProductLogoView product={{ id: v.id, name: v.label }} size={14} hasLogo={v.hasLogo} />
-                  {v.label}
-                </span>
-              ),
-            )}
-            {r.vendors.length > 3 && (
+          {/* The vendor cell fills its width (founder 2026-10-05): EVERY vendor renders as a
+              chip in one visual row — the flex-wrap + one-chip-row max-height + overflow-hidden
+              trick hides whatever doesn't fit — and the '→' (replacing '+N') opens the process
+              for the full roster. Chip contract unchanged: ?via= lens links and tooltips. */}
+          {r.vendors.length > 0 && (
+            <span className="flex items-center gap-1.5">
+              <span className="flex min-w-0 flex-1 flex-wrap gap-1 overflow-hidden max-h-[28px]">
+                {r.vendors.map((v) =>
+                  v.arena ? (
+                    // Founder 2026-09-25: a vendor chip opens the PROCESS through that
+                    // vendor (?via= lens, lib/processLens.ts) — not the vendor's own page.
+                    <Link key={v.label} href={r.href ? href : `${href}?via=${v.arena}:${v.id}`} title={r.href ? `Open ${r.title} — view ${v.label} alongside the other options` : `Open ${r.title} viewed via ${v.label} — every step resolved to it where it serves`} className="inline-flex items-center gap-1 whitespace-nowrap rounded-full border border-zinc-700 py-px pl-0.5 pr-1.5 text-[10px] text-zinc-300 transition hover:border-emerald-400/60 hover:text-emerald-300">
+                      <ProductLogoView product={{ id: v.id, name: v.label }} size={18} hasLogo={v.hasLogo} />
+                      {v.label}
+                    </Link>
+                  ) : (
+                    <span key={v.label} title={`${v.label} — not yet judged on Ultrametric`} className="inline-flex items-center gap-1 whitespace-nowrap rounded-full border border-zinc-800 py-px pl-0.5 pr-1.5 text-[10px] text-zinc-500">
+                      <ProductLogoView product={{ id: v.id, name: v.label }} size={18} hasLogo={v.hasLogo} />
+                      {v.label}
+                    </span>
+                  ),
+                )}
+              </span>
               <Link
                 href={href}
-                className="text-[10px] text-zinc-500 transition hover:text-emerald-300"
-                title={`${r.vendors.slice(3).map((v) => v.label).join(', ')} — see the full per-step rankings`}
+                aria-label={`All vendors and steps — open ${r.title}`}
+                title="All vendors and steps — open the process"
+                className="shrink-0 text-xs text-zinc-400 transition hover:text-emerald-300"
               >
-                +{r.vendors.length - 3}
+                →
               </Link>
-            )}
-          </span>
+            </span>
+          )}
         </td>
       </tr>
     )
@@ -642,38 +653,44 @@ export default function ProcessesTable({
         </td>
         {/* The aggregate Steps cell left with its column (founder 2026-10-02). */}
         <td className="whitespace-nowrap px-2 py-2">
-          <span className="text-xs text-zinc-600" title="Multi-process row — the constituent processes carry the timeline/cadence/annoyance/risk/growth values; the combined row ranks by its aggregate ceiling">
+          {/* zinc-500 (founder 2026-10-05 contrast lift) — a tooltip-carrying dash, tertiary
+              tier like the situation rows' timeline dash. */}
+          <span className="text-xs text-zinc-500" title="Multi-process row — the constituent processes carry the timeline/cadence/annoyance/risk/growth values; the combined row ranks by its aggregate ceiling">
             —
           </span>
         </td>
         <td className="hidden px-2 py-2 lg:table-cell">
           {/* The vendors themselves (founder 2026-10-02) — the constituents' chips in journey
-              order, the exact process-row cell contract: a chip opens the PLAYBOOK through that
-              vendor (?via= lens), the +x overflow opens the playbook plain. */}
-          <span className="flex flex-wrap gap-1">
-            {p.vendors.slice(0, 3).map((v) =>
-              v.arena ? (
-                <Link key={v.label} href={`${p.href}?via=${v.arena}:${v.id}`} title={`Open ${p.title} viewed via ${v.label} — every step resolved to it where it serves`} className="inline-flex items-center gap-1 rounded-full border border-zinc-700 py-px pl-0.5 pr-1.5 text-[10px] text-zinc-300 transition hover:border-emerald-400/60 hover:text-emerald-300">
-                  <ProductLogoView product={{ id: v.id, name: v.label }} size={14} hasLogo={v.hasLogo} />
-                  {v.label}
-                </Link>
-              ) : (
-                <span key={v.label} title={`${v.label} — not yet judged on Ultrametric`} className="inline-flex items-center gap-1 rounded-full border border-zinc-800 py-px pl-0.5 pr-1.5 text-[10px] text-zinc-500">
-                  <ProductLogoView product={{ id: v.id, name: v.label }} size={14} hasLogo={v.hasLogo} />
-                  {v.label}
-                </span>
-              ),
-            )}
-            {p.vendors.length > 3 && (
+              order, the exact process-row cell contract (?via= lens). Same 2026-10-05 fill-the-
+              width idiom as the process rows: every chip renders, the one-row clip hides the
+              overflow, and '→' opens the playbook for the full roster. */}
+          {p.vendors.length > 0 && (
+            <span className="flex items-center gap-1.5">
+              <span className="flex min-w-0 flex-1 flex-wrap gap-1 overflow-hidden max-h-[28px]">
+                {p.vendors.map((v) =>
+                  v.arena ? (
+                    <Link key={v.label} href={`${p.href}?via=${v.arena}:${v.id}`} title={`Open ${p.title} viewed via ${v.label} — every step resolved to it where it serves`} className="inline-flex items-center gap-1 whitespace-nowrap rounded-full border border-zinc-700 py-px pl-0.5 pr-1.5 text-[10px] text-zinc-300 transition hover:border-emerald-400/60 hover:text-emerald-300">
+                      <ProductLogoView product={{ id: v.id, name: v.label }} size={18} hasLogo={v.hasLogo} />
+                      {v.label}
+                    </Link>
+                  ) : (
+                    <span key={v.label} title={`${v.label} — not yet judged on Ultrametric`} className="inline-flex items-center gap-1 whitespace-nowrap rounded-full border border-zinc-800 py-px pl-0.5 pr-1.5 text-[10px] text-zinc-500">
+                      <ProductLogoView product={{ id: v.id, name: v.label }} size={18} hasLogo={v.hasLogo} />
+                      {v.label}
+                    </span>
+                  ),
+                )}
+              </span>
               <Link
                 href={p.href}
-                className="text-[10px] text-zinc-500 transition hover:text-emerald-300"
-                title={`${p.vendors.slice(3).map((v) => v.label).join(', ')} — see the full per-step rankings`}
+                aria-label={`All vendors and steps — open ${p.title}`}
+                title="All vendors and steps — open the playbook"
+                className="shrink-0 text-xs text-zinc-400 transition hover:text-emerald-300"
               >
-                +{p.vendors.length - 3}
+                →
               </Link>
-            )}
-          </span>
+            </span>
+          )}
         </td>
       </tr>
     )
@@ -710,14 +727,20 @@ export default function ProcessesTable({
       />
       {/* The old "← grouped by area" reset pill is gone (founder 2026-09-30): the grouped view
           lives in the rank-by dropdown as its top entry, so the way back is always visible. */}
-      <div className="-mx-5 overflow-x-auto border-y border-zinc-800 sm:mx-0 sm:rounded-2xl sm:border md:overflow-x-visible">
+      {/* The rounded-2xl border wrapper matches the other tables (HomeProcessesMini idiom) —
+          founder 2026-10-05: the edge-to-edge mobile variant lost the corners. */}
+      <div className="overflow-x-auto rounded-2xl border border-zinc-800 md:overflow-x-visible">
         <table className="w-full border-collapse text-sm">
           <thead>
             {/* In the grouped view no column is sorted-on (current=null, aria-sort none) —
-                clicking any header sorts that column and flattens the table. */}
-            <tr className="border-b border-zinc-800 text-left text-[10px] uppercase tracking-widest text-zinc-400">
+                clicking any header sorts that column and flattens the table. Headers are
+                sentence case at a readable size (founder 2026-10-05: one case style, no ALL
+                CAPS; text-xs minimum) — still under the body's text-sm. */}
+            <tr className="border-b border-zinc-800 text-left text-xs tracking-wide text-zinc-400">
               <SortableTh col="title" current={grouped ? null : column} direction={direction} onSort={handleSort}><span title="A real startup operating process, mapped step by step">Process</span></SortableTh>
-              <SortableTh col="phase" current={grouped ? null : column} direction={direction} onSort={handleSort} className="hidden md:table-cell"><span title="Where in the life of the company this process happens (formation, finance, hiring…)">Phase</span></SortableTh>
+              {/* 'Area' (founder 2026-10-05): the sitewide Phase→Area doctrine reaches the
+                  header — the column/filter mechanics still key on the internal phase field. */}
+              <SortableTh col="phase" current={grouped ? null : column} direction={direction} onSort={handleSort} className="hidden md:table-cell"><span title="Where in the life of the company this process happens (formation, finance, hiring…)">Area</span></SortableTh>
               <SortableTh col="pct" current={grouped ? null : column} direction={direction} onSort={handleSort}><span title="Agentic %: the share of this process's steps an AI agent can run today — the rest still needs forms or people">Agentic %</span></SortableTh>
               {/* The Steps column is gone (founder 2026-10-02) — the detail pages carry the
                   per-step story; the Agentic % bar is the honest summary here. */}
@@ -769,11 +792,14 @@ export default function ProcessesTable({
       </div>
       {/* The country view's honesty disclosure (founder 2026-10-02, house disclosure idiom):
           hiding a US-specific row must never destroy the information — one muted line says how
-          many rows this country view hides (and how many of those are handled inside other
-          processes there, per the committed note kinds), and expands to the hidden titles with
-          their committed one-liner summaries, each still linking to its process page. */}
+          many rows this country view hides (and, per the committed note kinds, how many have a
+          local analog there and how many are handled inside other processes there), and expands
+          to the hidden titles with their committed one-liner summaries, each still linking to
+          its process page. Since every US-scoped row hides under a country view (founder
+          2026-10-05), this line is the discoverability path for the curated analogs. */}
       {geo !== null && hiddenRows.length > 0 && (() => {
         const country = GEO_PREF_META[geo].label
+        const analogs = hiddenRows.filter((r) => r.geoNotesByCountry[geo]?.kind === 'analog').length
         const absorbed = hiddenRows.filter((r) => r.geoNotesByCountry[geo]?.kind === 'absorbed').length
         return (
           <div className="px-2 text-xs text-zinc-500">
@@ -784,7 +810,14 @@ export default function ProcessesTable({
               className="text-left transition hover:text-emerald-300"
             >
               {hiddenRows.length} US-specific {hiddenRows.length === 1 ? 'process' : 'processes'} hidden in the {country} view
-              {absorbed > 0 && <> — {absorbed} {absorbed === 1 ? 'is' : 'are'} handled inside other processes there</>}
+              {(analogs > 0 || absorbed > 0) && (
+                <>
+                  {' — '}
+                  {analogs > 0 && <>{analogs} {analogs === 1 ? 'has' : 'have'} a local analog there</>}
+                  {analogs > 0 && absorbed > 0 && ', '}
+                  {absorbed > 0 && <>{absorbed} {absorbed === 1 ? 'is' : 'are'} handled inside other processes there</>}
+                </>
+              )}
               <span aria-hidden className="ml-1 text-[10px]">{hiddenOpen ? '▴' : '▾'}</span>
             </button>
             {hiddenOpen && (
