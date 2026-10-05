@@ -95,6 +95,7 @@ const CATEGORIES = [
   'startup-banking',
   'startup-immigration',
   'startup-law-firms',
+  'government-services',
   'tax-automation',
   'team-chat',
   'terminals',
