@@ -65,8 +65,8 @@ it('reuses sourced metadata without treating a vendor package as a process-wide 
   const filing = within(el.container.querySelector('[id="form_001:n4:default"]') as HTMLElement)
   expect(filing.getByText('$109 government fee · as of 2026-10-01')).toBeDefined()
   expect(filing.getByText('open docs:')).toBeDefined()
-  expect(filing.getByText('✓ verify:')).toBeDefined()
-  expect(filing.getByText('⚠ if it goes wrong').closest('details')?.open).toBe(false)
+  expect(filing.queryByText('✓ verify:')).toBeNull()
+  expect(filing.queryByText('⚠ if it goes wrong')).toBeNull()
   expect(el.container.querySelector('[id="form_001:n5"]')?.textContent).toContain('Certificate of Incorporation')
   // Current main renders produced artifacts only; prerequisites stay in source.
   expect(el.queryByText('Needs:')).toBeNull()
@@ -79,17 +79,45 @@ it('reuses sourced metadata without treating a vendor package as a process-wide 
 })
 
 
-it('renders corrected verification alongside the authored briefs while retaining source provenance', () => {
+it('omits verification and failure displays while retaining authored guidance and source metadata', () => {
   const record = records.find(record => record.id === 'form_001')!
   const el = render(<SharedProcessReader record={record} records={records} />)
   const name = el.container.querySelector('[id="form_001:n3"]')!
-  expect(name.textContent).toContain('dedicated name-availability checker')
+  expect(name.textContent).toContain('dedicated name checker')
+  expect(el.queryByText('✓ verify:')).toBeNull()
+  expect(el.queryByText('⚠ if it goes wrong')).toBeNull()
+  expect(record.parts.find(part => part.id === 'n3')?.metadata.verify).toBeDefined()
+  expect(record.parts.find(part => part.id === 'n3')?.metadata.failureModes).toBeDefined()
   expect(name.querySelector('a[href="https://icis.corp.delaware.gov/Ecorp/NameReserv/NameReservation.aspx"]')).not.toBeNull()
   const filing = el.container.querySelector('[id="form_001:n4:default"]')!
   expect(filing.textContent).not.toContain('with a file number and Good Standing status')
-  expect(filing.textContent).toContain('returned Certificate of Incorporation')
+  expect(filing.textContent).toContain('Retain submission evidence')
   const certificate = el.container.querySelector('[id="form_001:n5"]')!
   expect(certificate.textContent).not.toContain('every bank and investor')
   expect(certificate.textContent).not.toContain('accepted wherever')
   expect(record.source?.sha256).toMatch(/^[a-f0-9]{64}$/)
+})
+
+it('places existing source links and open documents together after vendors without empty columns', () => {
+  const record = records.find(record => record.id === 'form_001')!
+  const el = render(<SharedProcessReader record={record} records={records} comparisons={buildStepComparisons(record)} />)
+  const heading = el.getByRole('heading', { name: 'Process Steps', level: 2 })
+  expect(el.getAllByRole('heading', { name: 'Process Steps' })).toHaveLength(1)
+  expect(heading.compareDocumentPosition(el.container.querySelector('[aria-label="Process parts"] article')!) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy()
+  expect(within(el.getByRole('region', { name: 'Process overview graph' })).queryByText('Produces:')).toBeNull()
+  const certificate = el.getByText('Certificate of Incorporation', { exact: true })
+  expect(certificate.closest('article')?.id).toBe('form_001:n5')
+  const step = el.container.querySelector('[id="form_001:n6"]')!
+  const vendors = step.querySelector('[aria-label="Step product comparison"]')!
+  const resources = step.querySelector('[data-step-resources]')!
+  expect(vendors.compareDocumentPosition(resources) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy()
+  expect(resources.querySelector('[aria-label="Related links"]')?.querySelectorAll('a')).toHaveLength(3)
+  expect(within(resources as HTMLElement).getByText('open docs:')).toBeDefined()
+  expect(resources.children).toHaveLength(2)
+  expect(resources.querySelectorAll('a')).toHaveLength(5)
+  const linksOnly = el.container.querySelector('[id="form_001:n3"] [data-step-resources]')!
+  expect(linksOnly.children).toHaveLength(1)
+  expect(linksOnly.querySelector('[aria-label="Related links"]')).not.toBeNull()
+  const docs = record.parts.find(part => part.id === 'n6')!.metadata.documents
+  expect(Array.isArray(docs) && docs.length).toBe(2)
 })

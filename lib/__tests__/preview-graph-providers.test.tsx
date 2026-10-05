@@ -60,9 +60,9 @@ describe('canonical preview graph and grouped process providers', () => {
     const el = render(<SharedProcessReader record={record} records={records} comparisons={comparisons} processChoice={choice} />)
     const payroll = el.getByRole('region', { name: 'Payroll & HR Ops' })
     const chat = el.getByRole('region', { name: 'Team Chat' })
-    expect(within(payroll).getAllByRole('button', { name: /^Use / })).toHaveLength(3)
+    expect(within(payroll).getAllByRole('button', { name: /^Use / })).toHaveLength(choice.groups.find(group => group.arenaId === 'payroll')!.candidates.length)
     fireEvent.click(within(payroll).getByRole('button', { name: 'Use Gusto' }))
-    fireEvent.click(within(chat).getByRole('button', { name: '+ 2 more' }))
+    expect(within(chat).queryByRole('button', { name: /more|fewer/ })).toBeNull()
     fireEvent.click(within(chat).getByRole('button', { name: 'Use Slack' }))
     const step = el.container.querySelector('[id="hr_012:n4"]') as HTMLElement
     expect(within(step).getByText('Process choice')).toBeDefined()

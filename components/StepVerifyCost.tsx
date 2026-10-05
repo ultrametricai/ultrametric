@@ -88,7 +88,7 @@ export function costChipText(cost: StepCost): string {
 // Muted suffix chip carrying the step's sourced cost. The chip links to the cited primary
 // source (fee schedule / pricing page) and the tooltip carries the honesty contract: the asOf
 // date is when the number was read — fees change, currentness is never claimed.
-export function StepCostChip({ cost, squareExternalLinks = false }: { cost: StepCost; squareExternalLinks?: boolean }) {
+export function StepCostChip({ cost, squareExternalLinks = false, readable = false }: { cost: StepCost; squareExternalLinks?: boolean; readable?: boolean }) {
   const host = new URL(cost.source).hostname.replace(/^www\./, '')
   return (
     <a
@@ -96,7 +96,7 @@ export function StepCostChip({ cost, squareExternalLinks = false }: { cost: Step
       target="_blank"
       rel="noopener noreferrer"
       title={`${COST_KIND_LABELS[cost.kind]} — read from ${host} on ${cost.asOf} (fees change; the as-of date is the contract, not a currentness claim).${cost.note ? ` ${cost.note}` : ''}`}
-      className="whitespace-nowrap rounded border border-zinc-800 px-1.5 py-0.5 text-[10px] text-zinc-500 transition hover:border-emerald-400/60 hover:text-emerald-300"
+      className={`${readable ? "inline-block max-w-full whitespace-normal break-words text-sm" : "whitespace-nowrap text-[10px]"} rounded border border-zinc-800 px-1.5 py-0.5 text-zinc-500 transition hover:border-emerald-400/60 hover:text-emerald-300`}
     >
       {costChipText(cost)}{squareExternalLinks && <ExternalLinkMark href={cost.source} label="" />}
     </a>

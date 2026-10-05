@@ -1,5 +1,5 @@
 // @vitest-environment jsdom
-import { afterEach, expect, it } from 'vitest'
+import { afterEach, expect, it, vi } from 'vitest'
 import { cleanup, fireEvent, render, within } from '@testing-library/react'
 import { buildProcessProviderChoice } from '../shared-processes/provider-choice'
 import { buildComposedComparisons } from '../shared-processes/composed-preview'
@@ -9,6 +9,67 @@ import type { StepComparisonProduct } from '../shared-processes/step-comparisons
 import SharedProcessReader from '@/components/shared-processes/SharedProcessReader'
 const records = loadSharedProcesses()
 afterEach(cleanup)
+it('links scores directly to vendor evidence and keeps the inline expander independent of selection', async () => {
+  const record = records.find(record => record.id === 'qs_044')!
+  const comparisons = buildComposedComparisons(record, records)
+  const choice = buildProcessProviderChoice(record, comparisons)!
+  const scroll = vi.fn()
+  const previousScroll = HTMLElement.prototype.scrollIntoView
+  HTMLElement.prototype.scrollIntoView = scroll
+  try {
+    const el = render(<SharedProcessReader record={record} records={records} comparisons={comparisons} processChoice={choice} />)
+    const providers = within(el.getByRole('region', { name: 'Process providers' }))
+    const score = providers.getByRole('link', { name: 'VirtualPostMail process coverage: 45/100 — vendor evidence' })
+    expect(score.getAttribute('href')).toBe('/arena/virtual-mailboxes/product/virtualpostmail#story-verdicts')
+    fireEvent.click(providers.getByRole('button', { name: 'Show VirtualPostMail process coverage' }))
+    const breakdown = await providers.findByRole('region', { name: 'VirtualPostMail process coverage' })
+    const title = within(breakdown).getByRole('link', { name: 'Choose mailing address provider' })
+    expect(title.getAttribute('href')).toBe('#qs_044%3An1')
+    expect(document.getElementById(decodeURIComponent(title.getAttribute('href')!.slice(1)))).not.toBeNull()
+    fireEvent.click(title)
+    expect(document.activeElement?.id).toBe('qs_044:n1')
+    const stepScore = within(breakdown).getByRole('link', { name: 'VirtualPostMail: Choose mailing address provider coverage 45.1/100 — vendor evidence' })
+    expect(stepScore.getAttribute('href')).toBe('/arena/virtual-mailboxes/product/virtualpostmail#story-verdicts')
+    fireEvent.click(el.getByRole('button', { name: 'Show VirtualPostMail story evidence' }))
+    const evidence = await el.findByRole('region', { name: 'VirtualPostMail story evidence' })
+    const product = comparisons['qs_044:n1'].products.find(product => product.productId === 'virtualpostmail')!
+    for (const story of product.stories) {
+      expect(within(evidence).getByRole('link', { name: story.title }).getAttribute('href')).toBe(`${product.href}#story-${story.id}`)
+    }
+    expect(providers.getByRole('button', { name: 'Use VirtualPostMail' }).getAttribute('aria-pressed')).toBe('false')
+    expect(el.container.querySelector('a a')).toBeNull()
+    expect(scroll).toHaveBeenCalled()
+  } finally {
+    cleanup()
+    window.history.replaceState(null, '', window.location.pathname)
+    HTMLElement.prototype.scrollIntoView = previousScroll
+  }
+})
+it('shows every provider without expansion and preserves selection, ranking, and evidence for lower-ranked entries', () => {
+  for (const id of ['qs_044', 'get-paid']) {
+    const record = records.find(record => record.id === id)!
+    const comparisons = buildComposedComparisons(record, records)
+    const choice = buildProcessProviderChoice(record, comparisons)!
+    const el = render(<SharedProcessReader record={record} records={records} comparisons={comparisons} processChoice={choice} />)
+    const providers = el.getByRole('region', { name: 'Process providers' })
+    expect(within(providers).queryByRole('button', { name: /more|fewer/ })).toBeNull()
+    for (const group of choice.groups.filter(group => !group.partScope)) {
+      const section = within(providers).getByRole('region', { name: group.title })
+      const names = () => within(section).getAllByRole('button', { name: /^Use / }).map(button => button.getAttribute('aria-label'))
+      expect(names()).toEqual(group.candidates.map(candidate => `Use ${candidate.name}`))
+      expect(group.candidates.length).toBeGreaterThan(3)
+      const last = group.candidates.at(-1)!
+      fireEvent.click(within(section).getByRole('button', { name: `Use ${last.name}` }))
+      expect(within(section).getByRole('button', { name: `Use ${last.name}` }).getAttribute('aria-pressed')).toBe('true')
+      expect(names()).toEqual([last, ...group.candidates.slice(0, -1)].map(candidate => `Use ${candidate.name}`))
+      fireEvent.click(within(section).getByRole('button', { name: `Show ${last.name} process coverage` }))
+      expect(within(section).getByRole('region', { name: `${last.name} process coverage` })).toBeDefined()
+      fireEvent.click(within(section).getByRole('button', { name: `Use ${last.name}` }))
+      expect(names()).toEqual(group.candidates.map(candidate => `Use ${candidate.name}`))
+    }
+    cleanup()
+  }
+})
 it('shares the existing coverage formula and preserves missing versus zero across category-scoped steps', () => {
   const record = records.find(record => record.id === 'get-paid')!
   const product = (id: string, score: number): StepComparisonProduct => ({ id: `payments/${id}`, productId: id, name: id, href: `/arena/payments/product/${id}`, hasLogo: false, score, stories: [] })

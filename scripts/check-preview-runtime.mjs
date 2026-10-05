@@ -12,7 +12,7 @@ export const targets = [
   { trace: 'processes/preview/[id]/page.js.nft.json', route: '/processes/preview/get-paid', marker: 'data-shared-record="get-paid"' },
   { trace: 'processes/incorporate-c-corp/v2/page.js.nft.json', route: '/processes/incorporate-c-corp/v2', marker: 'data-shared-record="form_001"' },
 ]
-const requiredFiles = ['processes/corpus.json', 'journeys/chains.json']
+const requiredFiles = ['processes/corpus.json', 'journeys/chains.json', 'processes/business-logic-map.json']
 
 export async function readTraces(root) {
   return Promise.all(targets.map(async target => {
@@ -28,7 +28,7 @@ export async function verifyTraces(root, traces) {
     assert(trace.files.has(absolute), `${trace.route}: deployment trace omits ${file}`)
     assert((await stat(absolute)).isFile(), `${trace.route}: traced file is not a file: ${file}`)
   }
-  console.log('Preview traces include both runtime data files for all three routes.')
+  console.log('Preview traces include required runtime data files for all three routes.')
 }
 
 // Static routes are fully prerendered (force-static, or generateStaticParams with

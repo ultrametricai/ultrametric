@@ -9,7 +9,7 @@ export default function ServiceCandidates({ references, separated = false, choic
   if (coverage) candidates.sort((a, b) => (coverage[b.id]?.score ?? -1) - (coverage[a.id]?.score ?? -1))
   if (!candidates.length) return null
   return <div className={separated ? 'border-t border-zinc-800/50 pt-3' : undefined}>
-    {excludeIds.length > 0 && <p className="mb-2 text-xs text-zinc-400">Other listed options</p>}
+    {excludeIds.length > 0 && <p className="mb-2 text-sm text-zinc-400">Other listed options</p>}
     <ServiceCandidateRows candidates={candidates} choiceScope={choiceScope} parentChoiceScope={parentChoiceScope} coverage={coverage} evidence={evidence} details={details} />
   </div>
 }

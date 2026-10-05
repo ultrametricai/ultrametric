@@ -7,6 +7,7 @@ import { renderToStaticMarkup } from 'react-dom/server'
 import { findSharedRecord, readSharedCatalog, sharedPreviewHref } from '../shared-processes/reader'
 import { validateCatalog } from '../shared-processes/schema'
 import SharedProcessReader from '@/components/shared-processes/SharedProcessReader'
+import { modulesForProcess } from '../businessLogicMap'
 
 function mount(markup: string) {
   const el = document.createElement('div')
@@ -74,8 +75,8 @@ describe('canonical shared process reader', () => {
     expect(risks).toHaveLength(6)
     expect([...risks].every(risk => risk.textContent === 'High risk')).toBe(true)
     const filing = el.querySelector('[id="form_001:n4"]')!
-    expect(filing.querySelector(':scope > div:first-child [title="Existing source risk assessment"]')).toBeNull()
-    expect(filing.querySelector('[id="form_001:n4:default"] [title="Existing source risk assessment"]')).not.toBeNull()
+    expect(filing.querySelector(':scope > div:first-child [title="Existing source risk assessment"]')).not.toBeNull()
+    expect(filing.querySelector('[id="form_001:n4:default"] [title="Existing source risk assessment"]')).toBeNull()
     const synthetic = structuredClone(record)
     synthetic.parts = [{ ...synthetic.parts[0], metadata: { reversibility: 'irreversible', riskLevel: 'medium' } }]
     synthetic.links = []
@@ -90,8 +91,8 @@ describe('canonical shared process reader', () => {
     expect(el.querySelector('[id="form_001:n1"] [title="Existing source route assessment"]')?.textContent).toBe('Human or computer use')
     expect(el.querySelector('[id="form_001:n7b"] [title="Existing source route assessment"]')?.textContent).toBe('Signature — legally human')
     const filing = el.querySelector('[id="form_001:n4"]')!
-    expect(filing.querySelector(':scope > div:first-child [title="Existing source route assessment"]')).toBeNull()
-    expect(filing.querySelector('[id="form_001:n4:default"]')?.textContent).toContain('Manual form')
+    expect(filing.querySelector(':scope > div:first-child [title="Existing source route assessment"]')?.textContent).toBe('Manual form')
+    expect(filing.querySelector('[id="form_001:n4:default"]')?.textContent).not.toContain('Manual form')
     expect(filing.querySelector('[id="form_001:n4:india-spice-plus"]')).toBeNull()
     expect(filing.querySelector('[id="form_001:n4:germany-notary-gmbh"]')).toBeNull()
   })
@@ -138,7 +139,10 @@ describe('canonical shared process reader', () => {
     expect(findSharedRecord(records, 'fund_007')?.title).toBe('Apply to Y Combinator')
     for (const record of records) {
       const el = mount(renderToStaticMarkup(<SharedProcessReader record={record} records={records} />))
-      expect(el.querySelector('h1')?.textContent?.startsWith(record.title)).toBe(true)
+      expect(el.querySelector('h1')?.textContent).toBe(record.title)
+      const modules = modulesForProcess(record.id)
+      expect([...el.querySelectorAll('a[href*="/open-modules/README.md#"]')].map(link => ({ label: link.textContent?.replace(' ↗', ''), href: link.getAttribute('href') }))).toEqual(modules.map(module => ({ label: module.label, href: module.href })))
+      expect(el.textContent?.includes('Open modules:')).toBe(modules.length > 0)
       const ids = [...el.querySelectorAll('[id]')].map(element => element.id)
       expect(new Set(ids).size).toBe(ids.length)
     }
