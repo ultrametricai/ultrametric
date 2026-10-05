@@ -25,7 +25,9 @@ export default function HomeProcessesMini({ rows }: { rows: ProcessRow[] }) {
         <div className="mt-8 overflow-x-auto rounded-2xl border border-zinc-800">
           <table className="w-full border-collapse text-[15px]">
             <thead>
-              <tr className="border-b border-zinc-800 text-left text-[10px] uppercase tracking-widest text-zinc-400">
+              {/* Sentence-case headers at a readable size (founder 2026-10-05 — the
+                  ProcessesTable header idiom, applied wherever it repeats). */}
+              <tr className="border-b border-zinc-800 text-left text-xs tracking-wide text-zinc-400">
                 <th scope="col" className="px-3 py-2 font-normal">Process</th>
                 <th scope="col" className="hidden px-3 py-2 font-normal sm:table-cell">Area</th>
                 <th scope="col" className="hidden px-3 py-2 font-normal lg:table-cell">
@@ -47,29 +49,35 @@ export default function HomeProcessesMini({ rows }: { rows: ProcessRow[] }) {
                   </td>
                   <td className="hidden whitespace-nowrap px-2 py-2 text-xs text-zinc-500 sm:table-cell">{r.area}</td>
                   <td className="hidden px-2 py-2 lg:table-cell">
-                    <span className="flex flex-wrap gap-1">
-                      {r.vendors.slice(0, 3).map((v) =>
+                    {/* Same 2026-10-05 fill-the-width idiom as the full /processes table: every
+                        chip renders, the one-row clip hides the overflow, and '→' opens the
+                        process for the full roster (the '+N' affordance is gone). */}
+                    <span className="flex items-center gap-1.5">
+                      <span className="flex min-w-0 flex-1 flex-wrap gap-1 overflow-hidden max-h-[28px]">
+                      {r.vendors.map((v) =>
                         v.arena ? (
                           // Same contract as the full /processes table: a vendor chip opens the
                           // PROCESS through that vendor (?via= lens), not the vendor's own page.
-                          <Link key={v.label} href={`/processes/${r.slug}?via=${v.arena}:${v.id}`} title={`Open ${r.title} viewed via ${v.label} — every step resolved to it where it serves`} className="inline-flex items-center gap-1 rounded-full border border-zinc-700 py-px pl-0.5 pr-1.5 text-[10px] text-zinc-300 transition hover:border-emerald-400/60 hover:text-emerald-300">
-                            <ProductLogoView product={{ id: v.id, name: v.label }} size={14} hasLogo={v.hasLogo} />
+                          <Link key={v.label} href={`/processes/${r.slug}?via=${v.arena}:${v.id}`} title={`Open ${r.title} viewed via ${v.label} — every step resolved to it where it serves`} className="inline-flex items-center gap-1 whitespace-nowrap rounded-full border border-zinc-700 py-px pl-0.5 pr-1.5 text-[10px] text-zinc-300 transition hover:border-emerald-400/60 hover:text-emerald-300">
+                            <ProductLogoView product={{ id: v.id, name: v.label }} size={18} hasLogo={v.hasLogo} />
                             {v.label}
                           </Link>
                         ) : (
-                          <span key={v.label} title={`${v.label} — not yet judged on Ultrametric`} className="inline-flex items-center gap-1 rounded-full border border-zinc-800 py-px pl-0.5 pr-1.5 text-[10px] text-zinc-500">
-                            <ProductLogoView product={{ id: v.id, name: v.label }} size={14} hasLogo={v.hasLogo} />
+                          <span key={v.label} title={`${v.label} — not yet judged on Ultrametric`} className="inline-flex items-center gap-1 whitespace-nowrap rounded-full border border-zinc-800 py-px pl-0.5 pr-1.5 text-[10px] text-zinc-500">
+                            <ProductLogoView product={{ id: v.id, name: v.label }} size={18} hasLogo={v.hasLogo} />
                             {v.label}
                           </span>
                         ),
                       )}
-                      {r.vendors.length > 3 && (
+                      </span>
+                      {r.vendors.length > 0 && (
                         <Link
                           href={`/processes/${r.slug}`}
-                          className="text-[10px] text-zinc-500 transition hover:text-emerald-300"
-                          title={`${r.vendors.slice(3).map((v) => v.label).join(', ')} — see the full per-step rankings`}
+                          aria-label={`All vendors and steps — open ${r.title}`}
+                          title="All vendors and steps — open the process"
+                          className="shrink-0 text-xs text-zinc-400 transition hover:text-emerald-300"
                         >
-                          +{r.vendors.length - 3}
+                          →
                         </Link>
                       )}
                     </span>

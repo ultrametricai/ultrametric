@@ -110,6 +110,29 @@ describe('mount applies URL params (invalids fall back silently)', () => {
     expect(container.querySelector('[role="img"]')?.getAttribute('aria-label')).toMatch(/% of steps agent-runnable$/)
   })
 
+  it("styling pins (founder 2026-10-05): 'Area' header (not 'Phase'), sentence-case headers (no uppercase transform), rounded-2xl wrapper, and the vendor cell's '→' replacing '+N'", () => {
+    const manyVendors = [
+      row({
+        slug: 'open-bank-account', title: 'Open a bank account', phase: 'formation',
+        vendors: ['Mercury', 'Brex', 'Ramp', 'Relay', 'Novo'].map((label) => ({ id: label.toLowerCase(), label, arena: 'startup-banking', hasLogo: false })),
+      }),
+    ]
+    const { container } = render(<ProcessesTable rows={manyVendors} phases={PHASES} />)
+    const headerRow = container.querySelector('thead tr') as HTMLElement
+    expect(headerRow.textContent).toContain('Area')
+    expect(headerRow.textContent).not.toContain('Phase')
+    expect(headerRow.className).not.toContain('uppercase')
+    expect(headerRow.className).toContain('text-xs')
+    expect(container.querySelector('.rounded-2xl.border')).toBeTruthy()
+    // Every vendor renders as a chip (the one-row clip is CSS; jsdom sees all five) and the
+    // overflow affordance is the accessible '→', never '+N'.
+    expect(within(container).getAllByTitle(/viewed via/).length).toBe(5)
+    expect(container.textContent).not.toMatch(/\+\d/)
+    const arrow = within(container).getByLabelText('All vendors and steps — open Open a bank account')
+    expect(arrow.getAttribute('href')).toBe('/processes/open-bank-account')
+    expect(arrow.textContent).toBe('→')
+  })
+
   it('?order=steps (the retired column) falls back silently to the default timeline view', () => {
     setUrl('?order=steps')
     const { container } = mount()
