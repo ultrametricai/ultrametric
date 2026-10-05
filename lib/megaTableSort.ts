@@ -57,7 +57,8 @@ export interface MegaTableRow {
   // field existed stay valid without every one needing an update.
   ycBatch?: string
   // Enterprise-motion flag (lib/schemas.ts ProductSchema.enterprise) — optional for the same
-  // fixture-compat reason as ycBatch. Rendered as EnterpriseBadge next to the name.
+  // fixture-compat reason as ycBatch. Data only in this table since the founder 2026-10-05
+  // batch (no next-to-title pill here); the product page still renders EnterpriseBadge.
   enterprise?: boolean
   // Verified shutdown note (lib/schemas.ts ProductSchema.shutdown) — optional for the same
   // fixture-compat reason as ycBatch. Rendered as the compact ShutdownBadge next to the name

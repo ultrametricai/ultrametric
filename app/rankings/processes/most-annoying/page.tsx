@@ -6,6 +6,7 @@ import { EXPLORE_SECTION_ICONS } from '@/lib/arenaIcons'
 import RankingsNav from '@/components/RankingsNav'
 import { buildProcessRows } from '@/lib/processRows'
 import { ordinal } from '@/lib/ordinal'
+import { TABLE_HEADER_ROW, TABLE_SHELL } from '@/components/tableStyles'
 
 // 🔁 PROCESS ranking (founder 2026-09-21). Ranks processes by the corpus's curated `annoyance`
 // ordering (processes/corpus.json, 1–5: how much of a toil the process is by hand). Ties break
@@ -55,10 +56,10 @@ export default function MostAnnoyingProcessesPage() {
           monthly 5/5 outranks a once-ever 5/5.
         </p>
       </div>
-      <div className="overflow-x-auto rounded-xl border border-zinc-800">
+      <div className={TABLE_SHELL}>
         <table className="w-full border-collapse text-sm">
           <thead>
-            <tr className="border-b border-zinc-800 text-left text-xs uppercase tracking-widest text-zinc-500">
+            <tr className={TABLE_HEADER_ROW}>
               <th className="w-10 px-3 py-2 font-normal">#</th>
               <th className="px-3 py-2 font-normal">Process</th>
               <th className="px-3 py-2 font-normal" title="Curated drudgery score: 1 (painless) to 5 (pure toil by hand)">

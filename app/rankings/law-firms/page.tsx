@@ -14,6 +14,7 @@ import {
   type VendorGeoEntry,
   type VendorGeoStatus,
 } from '@/lib/vendorGeo'
+import { TABLE_HEADER_ROW, TABLE_SHELL } from '@/components/tableStyles'
 
 // A focused VIEW of the judged startup-law-firms arena (founder ask 2026-10-02: "we need a
 // ranking table for law firms"). Everything on this page is read from committed data at build
@@ -183,10 +184,10 @@ export default function LawFirmsRankingPage() {
           English-law practice really is marked unavailable in the UK.
         </p>
       </div>
-      <div className="overflow-x-auto rounded-xl border border-zinc-800">
+      <div className={TABLE_SHELL}>
         <table className="w-full border-collapse text-sm">
           <thead>
-            <tr className="border-b border-zinc-800 text-left text-xs uppercase tracking-widest text-zinc-500">
+            <tr className={TABLE_HEADER_ROW}>
               <th className="w-10 px-3 py-2 font-normal">#</th>
               <th className="px-3 py-2 font-normal">Firm</th>
               <th

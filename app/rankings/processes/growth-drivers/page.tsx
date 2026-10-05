@@ -6,6 +6,7 @@ import { EXPLORE_SECTION_ICONS } from '@/lib/arenaIcons'
 import RankingsNav from '@/components/RankingsNav'
 import { buildProcessRows } from '@/lib/processRows'
 import { ordinal } from '@/lib/ordinal'
+import { TABLE_HEADER_ROW, TABLE_SHELL } from '@/components/tableStyles'
 
 // 🔁 PROCESS ranking (founder 2026-09-21). Ranks processes by the corpus's curated
 // `growthImpact` ordering (processes/corpus.json, 1–5: how directly the process drives
@@ -53,10 +54,10 @@ export default function GrowthDriverProcessesPage() {
           at 1). Ties break on title; the phase column says when in a company&rsquo;s life each one lands.
         </p>
       </div>
-      <div className="overflow-x-auto rounded-xl border border-zinc-800">
+      <div className={TABLE_SHELL}>
         <table className="w-full border-collapse text-sm">
           <thead>
-            <tr className="border-b border-zinc-800 text-left text-xs uppercase tracking-widest text-zinc-500">
+            <tr className={TABLE_HEADER_ROW}>
               <th className="w-10 px-3 py-2 font-normal">#</th>
               <th className="px-3 py-2 font-normal">Process</th>
               <th className="px-3 py-2 font-normal" title="Curated growth impact: 1 (compliance) to 5 (directly drives revenue/user growth)">

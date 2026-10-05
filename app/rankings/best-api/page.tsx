@@ -8,6 +8,7 @@ import RankingsNav from '@/components/RankingsNav'
 import { loadAll, type CategoryData } from '@/lib/data'
 import { isGroupUntested } from '@/lib/data-helpers'
 import { rankingJsonLd } from '@/lib/rankingJsonLd'
+import { TABLE_HEADER_ROW, TABLE_SHELL } from '@/components/tableStyles'
 
 interface ApiRow {
   data: CategoryData
@@ -120,10 +121,10 @@ export default function BestApiRankingPage() {
           different claim from a scored 0 (judged, and the evidence came up short), so they sort last, unranked.
         </p>
       </div>
-      <div className="overflow-x-auto rounded-xl border border-zinc-800">
+      <div className={TABLE_SHELL}>
         <table className="w-full border-collapse text-sm">
           <thead>
-            <tr className="border-b border-zinc-800 text-left text-xs uppercase tracking-widest text-zinc-500">
+            <tr className={TABLE_HEADER_ROW}>
               <th className="w-10 px-3 py-2 font-normal">#</th>
               <th className="px-3 py-2 font-normal">Product</th>
               <th className="px-3 py-2 font-normal" title="API quality (0–100): machine-readable spec, sandbox, versioning policy, interactive docs — agent tested. 'untested' = no evidence either way, unscored rather than zero.">

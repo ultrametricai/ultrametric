@@ -21,6 +21,7 @@ import {
 } from '@/lib/popularRanking'
 import { rankingJsonLd } from '@/lib/rankingJsonLd'
 import type { Product } from '@/lib/schemas'
+import { TABLE_HEADER_ROW, TABLE_SHELL } from '@/components/tableStyles'
 
 // The fairness rule this page is built around: stars, installs, and closed-SaaS adoption are
 // DIFFERENT instruments measuring different populations, so they are never blended into one
@@ -234,10 +235,10 @@ export default function PopularRankingPage() {
           Every product with a tracked public repo — open source and open-repo commercial products alike; the counter
           measures the repo. Velocity (stars/yr = stars ÷ repo age) shown alongside, never blended into the rank.
         </p>
-        <div className="overflow-x-auto rounded-xl border border-zinc-800">
+        <div className={TABLE_SHELL}>
           <table className="w-full border-collapse text-sm">
             <thead>
-              <tr className="border-b border-zinc-800 text-left text-xs uppercase tracking-widest text-zinc-500">
+              <tr className={TABLE_HEADER_ROW}>
                 <th className="w-10 px-3 py-2 font-normal">#</th>
                 <th className="px-3 py-2 font-normal">Product</th>
                 <th className="px-3 py-2 font-normal" title="GitHub stars — absolute count from api.github.com at the last pipeline fetch">
@@ -282,10 +283,10 @@ export default function PopularRankingPage() {
           Products with a measured npm and/or PyPI package, ranked by combined weekly downloads — the two registries
           share a unit, so the sum is honest. A blank registry column means not published there, not zero.
         </p>
-        <div className="overflow-x-auto rounded-xl border border-zinc-800">
+        <div className={TABLE_SHELL}>
           <table className="w-full border-collapse text-sm">
             <thead>
-              <tr className="border-b border-zinc-800 text-left text-xs uppercase tracking-widest text-zinc-500">
+              <tr className={TABLE_HEADER_ROW}>
                 <th className="w-10 px-3 py-2 font-normal">#</th>
                 <th className="px-3 py-2 font-normal">Product</th>
                 <th className="px-3 py-2 font-normal" title="npm weekly downloads + PyPI weekly downloads (api.npmjs.org / pypistats.org)">

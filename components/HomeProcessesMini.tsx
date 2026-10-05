@@ -3,6 +3,7 @@ import CeilingBar from '@/components/CeilingBar'
 import { IconGlyph } from '@/components/IconChip'
 import ProductLogoView from '@/components/ProductLogoView'
 import type { ProcessRow } from '@/components/ProcessesTable'
+import { TABLE_HEADER_ROW, TABLE_SHELL } from '@/components/tableStyles'
 
 // Homepage "Automating founder processes" section (founder 2026-09-30): a compact, static mini
 // table of ~20 processes from the same server-side rows /processes renders (lib/processRows.ts),
@@ -22,12 +23,12 @@ export default function HomeProcessesMini({ rows }: { rows: ProcessRow[] }) {
         </h2>
         {/* Founder 2026-10-02: the "mapped step-by-step … In the order a founder hits them:"
             intro paragraph is gone — the heading and the table stand alone. */}
-        <div className="mt-8 overflow-x-auto rounded-2xl border border-zinc-800">
+        <div className={`mt-8 ${TABLE_SHELL}`}>
           <table className="w-full border-collapse text-[15px]">
             <thead>
               {/* Sentence-case headers at a readable size (founder 2026-10-05 — the
                   ProcessesTable header idiom, applied wherever it repeats). */}
-              <tr className="border-b border-zinc-800 text-left text-xs tracking-wide text-zinc-400">
+              <tr className={TABLE_HEADER_ROW}>
                 <th scope="col" className="px-3 py-2 font-normal">Process</th>
                 <th scope="col" className="hidden px-3 py-2 font-normal sm:table-cell">Area</th>
                 <th scope="col" className="hidden px-3 py-2 font-normal lg:table-cell">
@@ -58,12 +59,12 @@ export default function HomeProcessesMini({ rows }: { rows: ProcessRow[] }) {
                         v.arena ? (
                           // Same contract as the full /processes table: a vendor chip opens the
                           // PROCESS through that vendor (?via= lens), not the vendor's own page.
-                          <Link key={v.label} href={`/processes/${r.slug}?via=${v.arena}:${v.id}`} title={`Open ${r.title} viewed via ${v.label} — every step resolved to it where it serves`} className="inline-flex items-center gap-1 whitespace-nowrap rounded-full border border-zinc-700 py-px pl-0.5 pr-1.5 text-[10px] text-zinc-300 transition hover:border-emerald-400/60 hover:text-emerald-300">
+                          <Link key={v.label} href={`/processes/${r.slug}?via=${v.arena}:${v.id}`} aria-label={`Open ${r.title} viewed via ${v.label}`} className="inline-flex items-center gap-1 whitespace-nowrap rounded-full border border-zinc-700 py-px pl-0.5 pr-1.5 text-[10px] text-zinc-300 transition hover:border-emerald-400/60 hover:text-emerald-300">
                             <ProductLogoView product={{ id: v.id, name: v.label }} size={18} hasLogo={v.hasLogo} />
                             {v.label}
                           </Link>
                         ) : (
-                          <span key={v.label} title={`${v.label} — not yet judged on Ultrametric`} className="inline-flex items-center gap-1 whitespace-nowrap rounded-full border border-zinc-800 py-px pl-0.5 pr-1.5 text-[10px] text-zinc-500">
+                          <span key={v.label} className="inline-flex items-center gap-1 whitespace-nowrap rounded-full border border-zinc-800 py-px pl-0.5 pr-1.5 text-[10px] text-zinc-500">
                             <ProductLogoView product={{ id: v.id, name: v.label }} size={18} hasLogo={v.hasLogo} />
                             {v.label}
                           </span>
@@ -74,7 +75,6 @@ export default function HomeProcessesMini({ rows }: { rows: ProcessRow[] }) {
                         <Link
                           href={`/processes/${r.slug}`}
                           aria-label={`All vendors and steps — open ${r.title}`}
-                          title="All vendors and steps — open the process"
                           className="shrink-0 text-xs text-zinc-400 transition hover:text-emerald-300"
                         >
                           →

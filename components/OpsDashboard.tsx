@@ -10,6 +10,7 @@ import type {
   DepthCoverage,
   NewsCoverage,
 } from '@/lib/opsCoverage'
+import { TABLE_HEADER_ROW, TABLE_SHELL } from '@/components/tableStyles'
 
 // The /ops coverage dashboard body — ADMIN-GATED like components/DoViaAfk.tsx (the precedent):
 // a WorkOS session email on NEXT_PUBLIC_ADMIN_EMAILS, ANY verified @ultrametric.ai session
@@ -149,18 +150,18 @@ export default function OpsDashboard({ data }: { data: OpsData }) {
             title={`Median evidence/product: ${depth.fleet.medianEvidencePerProduct} · oldest spike ${depth.fleet.oldestSpikeDays ?? '—'}d`}
           />
         </div>
-        <div className="overflow-x-auto rounded-xl border border-zinc-800">
+        <div className={TABLE_SHELL}>
           <table className="w-full min-w-[860px] text-left text-sm">
             <thead>
-              <tr className="border-b border-zinc-800 text-xs uppercase tracking-wide text-zinc-500">
-                <th className="px-3 py-2">Arena</th>
-                <th className="px-3 py-2">Products</th>
-                <th className="px-3 py-2" title="Median evidence items per product">Med. ev</th>
-                <th className="px-3 py-2" title="Thinnest product's evidence count">Min ev</th>
-                <th className="px-3 py-2" title="% of non-na verdicts citing probe/github-tier evidence">Probe-backed</th>
-                <th className="px-3 py-2" title={`Products at/below the fleet bottom-decile evidence count (≤${depth.fleet.bottomDecileThreshold})`}>Thin tail</th>
-                <th className="px-3 py-2" title="Queue products never deep-refreshed by the spike engine">Never spiked</th>
-                <th className="px-3 py-2" title="Age of the arena's stalest lastSpiked product">Oldest spike</th>
+              <tr className={TABLE_HEADER_ROW}>
+                <th className="px-3 py-2 font-normal">Arena</th>
+                <th className="px-3 py-2 font-normal">Products</th>
+                <th className="px-3 py-2 font-normal" title="Median evidence items per product">Med. ev</th>
+                <th className="px-3 py-2 font-normal" title="Thinnest product's evidence count">Min ev</th>
+                <th className="px-3 py-2 font-normal" title="% of non-na verdicts citing probe/github-tier evidence">Probe-backed</th>
+                <th className="px-3 py-2 font-normal" title={`Products at/below the fleet bottom-decile evidence count (≤${depth.fleet.bottomDecileThreshold})`}>Thin tail</th>
+                <th className="px-3 py-2 font-normal" title="Queue products never deep-refreshed by the spike engine">Never spiked</th>
+                <th className="px-3 py-2 font-normal" title="Age of the arena's stalest lastSpiked product">Oldest spike</th>
               </tr>
             </thead>
             <tbody>
@@ -238,13 +239,13 @@ export default function OpsDashboard({ data }: { data: OpsData }) {
             </p>
           </div>
         )}
-        <div className="overflow-x-auto rounded-xl border border-zinc-800">
+        <div className={TABLE_SHELL}>
           <table className="w-full min-w-[640px] text-left text-sm">
             <thead>
-              <tr className="border-b border-zinc-800 text-xs uppercase tracking-wide text-zinc-500">
-                <th className="px-3 py-2">Untracked vendor</th>
-                <th className="px-3 py-2" title="Process-corpus steps naming this vendor as canonical vendor or vendorOption">Steps</th>
-                <th className="px-3 py-2" title="Most common optionsArenaId among those steps — where this vendor would slot if tracked">Implied arena</th>
+              <tr className={TABLE_HEADER_ROW}>
+                <th className="px-3 py-2 font-normal">Untracked vendor</th>
+                <th className="px-3 py-2 font-normal" title="Process-corpus steps naming this vendor as canonical vendor or vendorOption">Steps</th>
+                <th className="px-3 py-2 font-normal" title="Most common optionsArenaId among those steps — where this vendor would slot if tracked">Implied arena</th>
               </tr>
             </thead>
             <tbody>
@@ -278,12 +279,12 @@ export default function OpsDashboard({ data }: { data: OpsData }) {
           blurb="Schedules as configured in .github/workflows, and last-run evidence inferred from committed artifacts — a static export can't call the GitHub API, so every date here is as of last build."
         />
         <div className="grid gap-4 md:grid-cols-2">
-          <div className="overflow-x-auto rounded-xl border border-zinc-800">
+          <div className={TABLE_SHELL}>
             <table className="w-full text-left text-sm">
               <thead>
-                <tr className="border-b border-zinc-800 text-xs uppercase tracking-wide text-zinc-500">
-                  <th className="px-3 py-2">Workflow</th>
-                  <th className="px-3 py-2">Schedule</th>
+                <tr className={TABLE_HEADER_ROW}>
+                  <th className="px-3 py-2 font-normal">Workflow</th>
+                  <th className="px-3 py-2 font-normal">Schedule</th>
                 </tr>
               </thead>
               <tbody>
@@ -301,12 +302,12 @@ export default function OpsDashboard({ data }: { data: OpsData }) {
               </tbody>
             </table>
           </div>
-          <div className="overflow-x-auto rounded-xl border border-zinc-800">
+          <div className={TABLE_SHELL}>
             <table className="w-full text-left text-sm">
               <thead>
-                <tr className="border-b border-zinc-800 text-xs uppercase tracking-wide text-zinc-500">
-                  <th className="px-3 py-2">Engine</th>
-                  <th className="px-3 py-2" title="Newest date in the committed artifact — as of last build">Last evidence</th>
+                <tr className={TABLE_HEADER_ROW}>
+                  <th className="px-3 py-2 font-normal">Engine</th>
+                  <th className="px-3 py-2 font-normal" title="Newest date in the committed artifact — as of last build">Last evidence</th>
                 </tr>
               </thead>
               <tbody>
@@ -405,13 +406,13 @@ export default function OpsDashboard({ data }: { data: OpsData }) {
             seed <span className="font-mono">data/vendor-news.json</span>.
           </div>
         ) : (
-          <div className="overflow-x-auto rounded-xl border border-zinc-800">
+          <div className={TABLE_SHELL}>
             <table className="w-full min-w-[760px] text-left text-sm">
               <thead>
-                <tr className="border-b border-zinc-800 text-xs uppercase tracking-wide text-zinc-500">
-                  <th className="px-3 py-2">Date</th>
-                  <th className="px-3 py-2">Vendor</th>
-                  <th className="px-3 py-2">Post</th>
+                <tr className={TABLE_HEADER_ROW}>
+                  <th className="px-3 py-2 font-normal">Date</th>
+                  <th className="px-3 py-2 font-normal">Vendor</th>
+                  <th className="px-3 py-2 font-normal">Post</th>
                 </tr>
               </thead>
               <tbody>

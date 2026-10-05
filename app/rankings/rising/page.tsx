@@ -12,6 +12,7 @@ import { rankingJsonLd } from '@/lib/rankingJsonLd'
 import { loadScoreHistory } from '@/lib/scoreHistory'
 import { seriesFor, trendDelta, TREND_WINDOW_DAYS } from '@/lib/scoreTrend'
 import { ordinal } from '@/lib/ordinal'
+import { TABLE_HEADER_ROW, TABLE_SHELL } from '@/components/tableStyles'
 
 interface TrendRow {
   data: CategoryData
@@ -82,10 +83,10 @@ export const dynamic = 'force-static'
 
 function TrendTable({ rows, direction }: { rows: TrendRow[]; direction: 'up' | 'down' }) {
   return (
-    <div className="overflow-x-auto rounded-xl border border-zinc-800">
+    <div className={TABLE_SHELL}>
       <table className="w-full border-collapse text-sm">
         <thead>
-          <tr className="border-b border-zinc-800 text-left text-xs uppercase tracking-widest text-zinc-500">
+          <tr className={TABLE_HEADER_ROW}>
             <th className="w-10 px-3 py-2 font-normal">#</th>
             <th className="px-3 py-2 font-normal">Product</th>
             <th className="px-3 py-2 font-normal" title={`Overall score change over the last ${TREND_WINDOW_DAYS} days: latest recorded value minus the value in effect ${TREND_WINDOW_DAYS} days ago`}>

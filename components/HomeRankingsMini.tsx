@@ -5,6 +5,7 @@ import ProductLogoView from '@/components/ProductLogoView'
 import { arenaIcon } from '@/lib/arenaIcons'
 import type { MegaTableRow } from '@/lib/megaTableSort'
 import { ordinal } from '@/lib/ordinal'
+import { TABLE_HEADER_ROW, TABLE_SHELL } from '@/components/tableStyles'
 
 // Homepage "Rankings" section (founder 2026-09-30): a compact, static mini table of the TOP 15
 // rows of the /overall rankings — the same default companies view MegaTable opens with (rows
@@ -24,10 +25,10 @@ export default function HomeRankingsMini({ rows }: { rows: MegaTableRow[] }) {
         <p className="mt-3 max-w-2xl text-sm leading-relaxed text-zinc-400 sm:text-base">
           We tested the vendors so you don&rsquo;t have to. The top {HOME_RANKINGS_COUNT} across all arenas:
         </p>
-        <div className="mt-8 overflow-x-auto rounded-2xl border border-zinc-800">
+        <div className={`mt-8 ${TABLE_SHELL}`}>
           <table className="w-full border-collapse text-[15px]">
             <thead>
-              <tr className="border-b border-zinc-800 text-left text-[10px] uppercase tracking-widest text-zinc-400">
+              <tr className={TABLE_HEADER_ROW}>
                 <th scope="col" className="px-3 py-2 font-normal"># / Product</th>
                 <th scope="col" className="hidden px-3 py-2 font-normal md:table-cell">Arena</th>
                 <th scope="col" className="px-3 py-2 font-normal">Overall score</th>

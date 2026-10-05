@@ -5,6 +5,7 @@ import ProductLogo from '@/components/ProductLogo'
 import ShutdownBadge from '@/components/ShutdownBadge'
 import { compareRivalsFor, vsSlugFor, type CompareRivalRow } from '@/lib/compareRivals'
 import type { CategoryData } from '@/lib/data-helpers'
+import { TABLE_HEADER_ROW, TABLE_SHELL } from '@/components/tableStyles'
 
 // Server component: "Alternatives comparison" (renamed from "How it compares", founder
 // 2026-10-02; the explainer sentence under the heading and the table's VS column went with it) —
@@ -108,10 +109,10 @@ export default function CompareRivals({ data, productId }: { data: CategoryData;
       </h2>
       {/* Founder 2026-10-02: no explainer sentence under the heading — the GeoMark title and the
           column tooltips carry the framing. */}
-      <div className="overflow-x-auto rounded-2xl border border-zinc-800">
+      <div className={TABLE_SHELL}>
         <table className="w-full border-collapse text-sm">
           <thead>
-            <tr className="border-b border-zinc-800 text-left text-[10px] uppercase tracking-widest text-zinc-400">
+            <tr className={TABLE_HEADER_ROW}>
               <th scope="col" className="px-2 py-1.5 font-normal">
                 <span title="This product (highlighted) plus its nearest rivals — # = rank in the full arena leaderboard">Product</span>
               </th>

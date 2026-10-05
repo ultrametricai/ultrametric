@@ -6,6 +6,7 @@ import YcBadge from '@/components/YcBadge'
 import { loadAll } from '@/lib/data'
 import { hasLogo } from '@/lib/logos'
 import { buildYcRows, ycBatchSummaries } from '@/lib/yc'
+import { TABLE_HEADER_ROW, TABLE_SHELL } from '@/components/tableStyles'
 
 // Index of YC batches with tracked products: per-batch counts plus each batch's most agent-ready
 // product, newest batch first. Honest framing up front: this is the YC companies WE track, judged
@@ -52,10 +53,10 @@ export default function YcIndexPage() {
         </p>
       </div>
 
-      <div className="overflow-x-auto rounded-xl border border-zinc-800">
+      <div className={TABLE_SHELL}>
         <table className="w-full border-collapse text-sm">
           <thead>
-            <tr className="border-b border-zinc-800 text-left text-xs uppercase tracking-widest text-zinc-500">
+            <tr className={TABLE_HEADER_ROW}>
               <th className="px-3 py-2 font-normal">Batch</th>
               <th className="px-3 py-2 font-normal" title="How many products from this batch we track">Tracked</th>
               <th className="px-3 py-2 font-normal" title="The batch's most agent-ready product — highest agent-readiness score, agent tested">

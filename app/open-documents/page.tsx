@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import { DOCUMENT_USE_CASES, loadDocumentRegistry, type DocumentUseCase } from '@/lib/documents'
 import { REPO } from '@/lib/site'
+import { TABLE_HEADER_ROW, TABLE_SHELL } from '@/components/tableStyles'
 
 // /open-documents (founder 2026-10-03, with the documents/ → open-documents/ rename): the
 // open-documents registry as a browsable index. Same policy as the repo layer it renders
@@ -50,10 +51,10 @@ export default function OpenDocumentsPage() {
             <h2 className="font-display text-xl font-semibold tracking-tight">
               {USE_CASE_LABELS[useCase]}
             </h2>
-            <div className="mt-3 rounded-2xl border border-zinc-800">
+            <div className={`mt-3 ${TABLE_SHELL}`}>
               <table className="w-full border-collapse text-sm">
                 <thead>
-                  <tr className="border-b border-zinc-800 text-left text-[10px] uppercase tracking-widest text-zinc-400">
+                  <tr className={TABLE_HEADER_ROW}>
                     <th scope="col" className="px-3 py-2 font-normal">
                       <span title="Opens the publisher's live page — the document itself stays on the publisher's site">Document</span>
                     </th>

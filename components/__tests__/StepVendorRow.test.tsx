@@ -138,12 +138,17 @@ describe('lens + stack selection', () => {
 
   it('clicking a chip pins the vendor first with the ✓ via tag (aria-pressed); clicking it again clears — and no visible "use"/"✕" control renders (founder 2026-10-05)', () => {
     const { container } = render(row)
-    // The pick affordance is the chip body itself — accessible name/title, no 'use' word.
+    // The pick affordance is the chip body itself — aria-label names the action (no tooltip
+    // on vendor chips, founder 2026-10-05: the chip button and the untracked chip carry no
+    // title; only the SCORE link keeps its derivation tooltip), no 'use' word.
     expect(container.textContent).not.toMatch(/\buse\b/)
-    fireEvent.click(within(container).getByTitle(/See this process via Mid Bank/))
+    for (const b of container.querySelectorAll('button[aria-pressed]')) {
+      expect(b.getAttribute('title')).toBeNull()
+    }
+    fireEvent.click(within(container).getByLabelText(/See this process via Mid Bank/))
     expect(chipNames(container)[0]).toContain('Mid Bank')
     expect(container.textContent).toContain('✓ via')
-    const pressed = within(container).getByTitle(/Stop viewing this process via Mid Bank/)
+    const pressed = within(container).getByLabelText(/Stop viewing this process via Mid Bank/)
     expect(pressed.getAttribute('aria-pressed')).toBe('true')
     fireEvent.click(pressed)
     expect(chipNames(container)[0]).toContain('Best Bank')
@@ -157,7 +162,7 @@ describe('lens + stack selection', () => {
     expect(chipNames(container)[0]).toContain('Deep Bank')
     expect(container.textContent).toContain('yours')
     // The lens click still beats the stack pick.
-    fireEvent.click(within(container).getByTitle(/See this process via Best Bank/))
+    fireEvent.click(within(container).getByLabelText(/See this process via Best Bank/))
     expect(chipNames(container)[0]).toContain('Best Bank')
     expect(container.textContent).toContain('✓ via')
   })

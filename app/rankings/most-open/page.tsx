@@ -10,6 +10,7 @@ import VerdictBadge from '@/components/VerdictBadge'
 import { loadAll, verdictFor, type CategoryData } from '@/lib/data'
 import { rankingJsonLd } from '@/lib/rankingJsonLd'
 import type { Verdict } from '@/lib/schemas'
+import { TABLE_HEADER_ROW, TABLE_SHELL } from '@/components/tableStyles'
 
 // The four canonical openness stories every arena carries (they're what the openness theme
 // score is computed over — see lib/scoring.ts's themeScores).
@@ -129,10 +130,10 @@ export default function MostOpenRankingPage() {
           citations. Products with no applicable openness product user stories are unscored (never zero) and sort last.
         </p>
       </div>
-      <div className="overflow-x-auto rounded-xl border border-zinc-800">
+      <div className={TABLE_SHELL}>
         <table className="w-full border-collapse text-sm">
           <thead>
-            <tr className="border-b border-zinc-800 text-left text-xs uppercase tracking-widest text-zinc-500">
+            <tr className={TABLE_HEADER_ROW}>
               <th className="w-10 px-3 py-2 font-normal">#</th>
               <th className="px-3 py-2 font-normal">Product</th>
               <th className="px-3 py-2 font-normal" title="Openness theme score (0–100): weighted share of full/partial verdicts across the openness stories">

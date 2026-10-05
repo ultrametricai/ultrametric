@@ -8,6 +8,7 @@
 import type { ReactNode } from 'react'
 import { useMemo, useState } from 'react'
 import raw from '@/data/experiments/processors.json'
+import { TABLE_HEADER_ROW, TABLE_SHELL } from '@/components/tableStyles'
 
 type Chip = {
   id: string
@@ -151,10 +152,10 @@ export default function ProcessorTable() {
   }
 
   return (
-    <div className="overflow-x-auto rounded-xl border border-zinc-800">
+    <div className={TABLE_SHELL}>
       <table className="w-full border-collapse text-sm">
         <thead>
-          <tr className="border-b border-zinc-800 text-left text-[10px] uppercase tracking-widest text-zinc-400">
+          <tr className={TABLE_HEADER_ROW}>
             <Th col="default" current={column} direction={direction} onSort={handleSort} className="w-8">
               #
             </Th>

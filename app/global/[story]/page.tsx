@@ -10,6 +10,7 @@ import { hasLogo } from '@/lib/logos'
 import { adoptionNow, diffusionCurve, firstTrackedLookup } from '@/lib/diffusion'
 import { collectGlobalStories, findGlobalStory } from '@/lib/globalStories'
 import { parseStoryPersona } from '@/lib/storyText'
+import { TABLE_HEADER_ROW, TABLE_SHELL } from '@/components/tableStyles'
 
 // Cross-arena comparison page for one global story (scope: 'global', present in ≥2 arenas —
 // see lib/globalStories.ts): every ranked product's verdict on the same capability, across
@@ -117,13 +118,13 @@ export default async function GlobalStoryPage({
         </details>
       </section>
 
-      <div className="overflow-x-auto rounded-xl border border-zinc-800">
+      <div className={TABLE_SHELL}>
         {/* Arena is the one column that can go below sm — the verdict is this page's whole
             point, so it must stay on-screen at phone widths instead of behind a sideways
             scroll. min-w only applies once the Arena column is back. */}
         <table className="w-full border-collapse text-sm sm:min-w-[640px]">
           <thead>
-            <tr className="border-b border-zinc-800 text-left text-xs uppercase tracking-widest text-zinc-400">
+            <tr className={TABLE_HEADER_ROW}>
               <th scope="col" className="px-3 py-2 font-normal">Product</th>
               <th scope="col" className="hidden px-3 py-2 font-normal sm:table-cell"><span title="The product category (arena) it competes in">Arena</span></th>
               <th scope="col" className="px-3 py-2 font-normal"><span title="Does the product deliver this capability? full / partial / none — judged from cited evidence">Verdict</span></th>

@@ -13,6 +13,7 @@ import { isPricingUnavailable, loadPricing, pricingCellFor } from '@/lib/pricing
 import { loadProofIndex } from '@/lib/proofs'
 import { SITE_URL } from '@/lib/site'
 import { isCloseRace, isUncertain } from '@/lib/uncertainty'
+import { TABLE_HEADER_ROW, TABLE_SHELL } from '@/components/tableStyles'
 
 // Procurement-grade arena report: one static, print-optimized page per arena assembling the
 // evidence a buying process actually asks for — leaderboard, buyer checklist (lib/checklist.ts),
@@ -127,16 +128,16 @@ export default async function ArenaReportPage({ params }: { params: Promise<{ ca
       {/* Leaderboard */}
       <section>
         <h2 className="font-display leading-[1.1] mb-3 text-lg font-semibold">Leaderboard</h2>
-        <div className="overflow-x-auto rounded-xl border border-zinc-800">
+        <div className={TABLE_SHELL}>
           <table className="w-full text-sm">
             <thead>
-              <tr className="border-b border-zinc-800 bg-zinc-900/60 text-left text-xs text-zinc-400">
-                <th className="px-3 py-2 font-medium">#</th>
-                <th className="px-3 py-2 font-medium">Product</th>
-                <th className="px-3 py-2 text-right font-medium"><span title="Overall score (0–100): the blended headline score — mostly agent-readiness and API quality, plus openness and built-in AI">Overall score</span></th>
-                <th className="px-3 py-2 text-right font-medium"><span title="Story coverage (0–100): how much of the arena's judged story set the product delivers, weighted by importance">Coverage score</span></th>
-                <th className="px-3 py-2 text-right font-medium"><span title="Judged (product, story) product user stories that apply to this product — n/a stories excluded">Applicable product user stories</span></th>
-                <th className="px-3 py-2 text-right font-medium"><span title="Mean judge confidence across this product's verdicts">Confidence</span></th>
+              <tr className={TABLE_HEADER_ROW}>
+                <th className="px-3 py-2 font-normal">#</th>
+                <th className="px-3 py-2 font-normal">Product</th>
+                <th className="px-3 py-2 text-right font-normal"><span title="Overall score (0–100): the blended headline score — mostly agent-readiness and API quality, plus openness and built-in AI">Overall score</span></th>
+                <th className="px-3 py-2 text-right font-normal"><span title="Story coverage (0–100): how much of the arena's judged story set the product delivers, weighted by importance">Coverage score</span></th>
+                <th className="px-3 py-2 text-right font-normal"><span title="Judged (product, story) product user stories that apply to this product — n/a stories excluded">Applicable product user stories</span></th>
+                <th className="px-3 py-2 text-right font-normal"><span title="Mean judge confidence across this product's verdicts">Confidence</span></th>
               </tr>
             </thead>
             <tbody>
@@ -243,14 +244,14 @@ export default async function ArenaReportPage({ params }: { params: Promise<{ ca
             Extracted verbatim from each vendor&apos;s own pricing page — never converted, averaged, or
             derived. Products whose page prints no unit price are recorded as unclear.
           </p>
-          <div className="overflow-x-auto rounded-xl border border-zinc-800">
+          <div className={TABLE_SHELL}>
             <table className="w-full text-sm">
               <thead>
-                <tr className="border-b border-zinc-800 bg-zinc-900/60 text-left text-xs text-zinc-400">
-                  <th className="px-3 py-2 font-medium">Product</th>
-                  <th className="px-3 py-2 font-medium"><span title="The lead price from the vendor's public pricing page — a signal, not a quote">Headline price</span></th>
-                  <th className="px-3 py-2 font-medium"><span title="What that price buys (per seat/month, per 1k calls…)">Unit</span></th>
-                  <th className="px-3 py-2 text-right font-medium"><span title="When we last read the vendor's pricing page">As of</span></th>
+                <tr className={TABLE_HEADER_ROW}>
+                  <th className="px-3 py-2 font-normal">Product</th>
+                  <th className="px-3 py-2 font-normal"><span title="The lead price from the vendor's public pricing page — a signal, not a quote">Headline price</span></th>
+                  <th className="px-3 py-2 font-normal"><span title="What that price buys (per seat/month, per 1k calls…)">Unit</span></th>
+                  <th className="px-3 py-2 text-right font-normal"><span title="When we last read the vendor's pricing page">As of</span></th>
                 </tr>
               </thead>
               <tbody>

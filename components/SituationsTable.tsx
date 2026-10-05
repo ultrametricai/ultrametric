@@ -5,6 +5,7 @@ import UrgencyChip from '@/components/UrgencyChip'
 import type { ProcessRow } from '@/components/ProcessesTable'
 import { usFlagGlyph } from '@/lib/geoPreference'
 import { phaseIcon, phaseTooltip } from '@/lib/processIcons'
+import { TABLE_HEADER_ROW, TABLE_SHELL } from '@/components/tableStyles'
 
 // The /situations index table (founder 2026-10-02: situations get their own area — the rows
 // moved OUT of the /processes table). Deliberately a LEAN DEDICATED server component rather
@@ -22,12 +23,12 @@ import { phaseIcon, phaseTooltip } from '@/lib/processIcons'
 
 export default function SituationsTable({ rows }: { rows: ProcessRow[] }) {
   return (
-    <div className="-mx-5 overflow-x-auto border-y border-zinc-800 sm:mx-0 sm:rounded-2xl sm:border md:overflow-x-visible">
+    <div className={`${TABLE_SHELL} md:overflow-x-visible`}>
       <table className="w-full border-collapse text-sm">
         <thead>
           {/* Sentence-case headers at a readable size (founder 2026-10-05 — the ProcessesTable
               header idiom, applied wherever it repeats). */}
-          <tr className="border-b border-zinc-800 text-left text-xs tracking-wide text-zinc-400">
+          <tr className={TABLE_HEADER_ROW}>
             <th scope="col" className="px-2 py-2 font-normal">
               <span title="A reactive, trigger-driven situation — the event that puts a founder here is the subtitle">Situation</span>
             </th>

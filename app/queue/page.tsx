@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 import fs from 'node:fs'
 import path from 'node:path'
+import { TABLE_HEADER_ROW, TABLE_SHELL } from '@/components/tableStyles'
 
 // UNLINKED founder-review page for the spike engine (pipeline/scripts/spike-engine.ts — see
 // its header for the ranking formula and churn policy). Deliberately not in app/sitemap.ts,
@@ -126,25 +127,25 @@ export default function QueuePage() {
           rank the fleet.
         </div>
       ) : (
-        <div className="overflow-x-auto rounded-xl border border-zinc-800">
+        <div className={TABLE_SHELL}>
           <table className="w-full min-w-[900px] text-left text-sm">
             <thead>
-              <tr className="border-b border-zinc-800 text-xs uppercase tracking-wide text-zinc-500">
-                <th className="px-3 py-2" title="Queue position — priority desc, deterministic tiebreaks">#</th>
-                <th className="px-3 py-2">Product</th>
-                <th className="px-3 py-2">Arena</th>
-                <th className="px-3 py-2" title="staleness × popularityBoost × founderBoost — work prioritization only, never a Overall score input">
+              <tr className={TABLE_HEADER_ROW}>
+                <th className="px-3 py-2 font-normal" title="Queue position — priority desc, deterministic tiebreaks">#</th>
+                <th className="px-3 py-2 font-normal">Product</th>
+                <th className="px-3 py-2 font-normal">Arena</th>
+                <th className="px-3 py-2 font-normal" title="staleness × popularityBoost × founderBoost — work prioritization only, never a Overall score input">
                   Priority
                 </th>
-                <th className="px-3 py-2" title="0 fresh → 100 stale; from the weekly staleness report when one stands, else median evidence age">
+                <th className="px-3 py-2 font-normal" title="0 fresh → 100 stale; from the weekly staleness report when one stands, else median evidence age">
                   Staleness
                 </th>
-                <th className="px-3 py-2" title="1.25× when in the curated popular set · founder multiplier from data/spike-priorities.json">
+                <th className="px-3 py-2 font-normal" title="1.25× when in the curated popular set · founder multiplier from data/spike-priorities.json">
                   Boosts
                 </th>
-                <th className="px-3 py-2">Status</th>
-                <th className="px-3 py-2">Last spiked</th>
-                <th className="px-3 py-2">What changed last run</th>
+                <th className="px-3 py-2 font-normal">Status</th>
+                <th className="px-3 py-2 font-normal">Last spiked</th>
+                <th className="px-3 py-2 font-normal">What changed last run</th>
               </tr>
             </thead>
             <tbody>
