@@ -172,12 +172,16 @@ describe('README.md "Use it from an agent" (founder batch 2026-10-03)', () => {
     }
   })
 
-  it('does not document an MCP server or CLI (none exists); one roadmap line only', () => {
-    expect(section).toContain('no Ultrametric MCP server or CLI today')
-    expect(section).toContain('on the roadmap')
-    // No install/connect instructions for surfaces that do not exist.
-    for (const invented of ['npx ultrametric', 'claude mcp add', 'pnpm dlx', 'mcp.ultrametric']) {
-      expect(section).not.toContain(invented)
+  it('documents the real CLI/MCP (the shipped ultrametric npm package) and points at /get-started', () => {
+    // Correction 2026-10-05: an earlier pass wrongly claimed no CLI existed — the `ultrametric`
+    // npm package (CLI + MCP server) shipped 2026-09-30 with /get-started as its install page
+    // and lib/ultrametricCli.ts mapping the corpus steps it drives.
+    expect(section).toContain('https://ultrametric.ai/get-started')
+    expect(section).toContain('lib/ultrametricCli.ts')
+    expect(section).not.toContain('no Ultrametric MCP server or CLI today')
+    // Install mechanics live on /get-started, not inlined here.
+    for (const inlined of ['npx ultrametric', 'claude mcp add', 'pnpm dlx', 'mcp.ultrametric']) {
+      expect(section).not.toContain(inlined)
     }
   })
 })

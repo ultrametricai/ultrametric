@@ -2,38 +2,35 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import ArtifactChips from '@/components/ArtifactChips'
-import OpenModuleChips from '@/components/OpenModuleChips'
 import DoViaAfk from '@/components/DoViaAfk'
 import GeoDropdown from '@/components/GeoDropdown'
 import IconChip from '@/components/IconChip'
 import JurisdictionToggle from '@/components/JurisdictionToggle'
 import ProcessGeoBanner from '@/components/ProcessGeoBanner'
-import MineLink from '@/components/MineLink'
+import OpenModulesMenu from '@/components/OpenModulesMenu'
 import ProcessDag from '@/components/ProcessDag'
 import ProcessGeoNotes from '@/components/ProcessGeoNotes'
 import ProcessLeaderboard from '@/components/ProcessLeaderboard'
 import ProcessLensBanner from '@/components/ProcessLensBanner'
-import ProcessVendorPicker from '@/components/ProcessVendorPicker'
-import ProductLogoView from '@/components/ProductLogoView'
 import UrgencyChip from '@/components/UrgencyChip'
 import UsFlowLabel from '@/components/UsFlowLabel'
 import { modulesForProcess } from '@/lib/businessLogicMap'
 import { GEO_GLOBAL } from '@/lib/geoPreference'
-import { hasLogo } from '@/lib/logos'
 import { buildProcessCheckSteps } from '@/lib/processCheckData'
 import { artifactChipRows } from '@/lib/processDeps'
 import { phaseIcon, phaseTooltip, processIcon } from '@/lib/processIcons'
 import { processManifestPath, processManifestUrl } from '@/lib/processManifest'
 import {
-  findProcessBySlug, jurisdictionStepViews, knownCostUsd, loadProcesses, processSlug,
+  findProcessBySlug, jurisdictionStepViews, loadProcesses, processSlug,
   slugAliasFor, taskCeiling,
 } from '@/lib/processes'
 import { SITE_URL } from '@/lib/site'
 
 // One founder process: the DAG as it really runs, with the market resolved live from arena
-// leaderboards per step. Founder 2026-09-30: the page slimmed — the vendor selector moved to
-// the top ('Select vendor for process test'), and the bottom 'Agent ceiling' verdict box and
-// 'Simulate this process' section are gone from process pages (chain pages keep both).
+// leaderboards per step. Founder 2026-09-30: the page slimmed — the bottom 'Agent ceiling'
+// verdict box and 'Simulate this process' section are gone from process pages (chain pages
+// keep both). The top 'Select vendor for process test' section followed (founder 2026-10-05) —
+// chain pages keep ProcessVendorPicker; the ?via= lens and per-step "use" affordances remain.
 //
 // Renamed processes (founder rule: vendor-neutral names — "Send an invoice", not "Send Stripe
 // invoice") also prerender their old vendor-flavored slugs (slugAliases): static export has no
@@ -88,10 +85,6 @@ export default async function ProcessPage({ params }: { params: Promise<{ slug: 
   // Jurisdiction-conditional steps (stripped from every default surface by loadProcesses) —
   // serialized for the client-side toggle; [] for the many processes that don't branch.
   const jurisSteps = jurisdictionStepViews(task.id)
-  // Sum of the DATED per-step government fees only (depth wave pt 1, lib/processes.ts) —
-  // derived, never hand-stored; vendor prices deliberately excluded so the headline never
-  // implies a completeness the curation doesn't claim. 0 for most processes → no chip.
-  const knownFees = knownCostUsd(task.dag.nodes)
   // Open modules serving this process (processes/business-logic-map.json).
   const openModules = modulesForProcess(task.id)
 
@@ -140,18 +133,10 @@ export default async function ProcessPage({ params }: { params: Promise<{ slug: 
               corpus data for sorting; the chip told a reader nothing actionable. */}
           {/* The support-level ('fully automatable') and cadence ('once'/'as needed') chips are
               gone too (founder 2026-10-02) — both fields stay corpus data (sorting, the rhythm
-              board); the urgency and known-government-fees chips stay. */}
-          {task.hasAsyncSteps && (
-            <span className="rounded-full border border-zinc-800 px-2 py-0.5 text-zinc-500">⏳ has async waits</span>
-          )}
-          {knownFees > 0 && (
-            <span
-              title="Sum of this process's per-step government fees that carry a published, dated source (each step's cost chip links to its fee schedule). Vendor prices are excluded — this is the known government minimum, not a total cost; fees change, each chip carries its as-of date."
-              className="rounded-full border border-zinc-800 px-2 py-0.5 text-zinc-500"
-            >
-              Known government fees: ${knownFees.toLocaleString('en-US')}
-            </span>
-          )}
+              board). The '⏳ has async waits' and 'Known government fees: $…' chips followed
+              (founder 2026-10-05) — display only: hasAsyncSteps and the dated per-step fees
+              (lib/processes.ts knownCostUsd) stay corpus/derived data; the per-step cost chips
+              still carry each fee with its source and as-of date. The urgency chip stays. */}
           {/* Admin-only (session allowlist or the pa-admin localStorage switch) — renders nothing
               for everyone else. The manifest it hands off is public regardless. */}
           <DoViaAfk manifestUrl={processManifestUrl(slug)} />
@@ -174,10 +159,11 @@ export default async function ProcessPage({ params }: { params: Promise<{ slug: 
         <ArtifactChips rows={artifactChipRows(task)} />
         {/* Business-logic ↔ process wiring (founder 2026-10-02): the open lib/openstartup
             modules that serve this process, from the committed registry
-            processes/business-logic-map.json — a muted line of chips deep-linking to the
-            module's section in open-modules/README.md on GitHub (the modules are a repo
-            library by design, no site pages). Renders nothing for the many unmapped tasks. */}
-        <OpenModuleChips modules={openModules} />
+            processes/business-logic-map.json — chips deep-linking to the module's section in
+            open-modules/README.md on GitHub (the modules are a repo library by design, no site
+            pages). A compact collapsible since 2026-10-05 (components/OpenModulesMenu.tsx);
+            renders nothing for the many unmapped tasks. */}
+        <OpenModulesMenu modules={openModules} />
         {/* The per-page situation posture banner was removed (founder 2026-10-02) — the
             sitewide footer line and /terms carry the not-legal-advice posture. */}
         {/* GEO as a top-level driver (founder 2026-09-28: "make GEO a top-level process driver
@@ -191,10 +177,9 @@ export default async function ProcessPage({ params }: { params: Promise<{ slug: 
           <GeoDropdown defaultChoice={GEO_GLOBAL} />
         </div>
         <ProcessGeoBanner geoScope={task.geoScope} notes={task.geoNotes ?? []} />
-        {/* Vendor selection at the TOP of the page (founder 2026-09-30: 'Select vendor for
-            process test', no vendor selected by default) — the same lens the per-step "use"
-            affordances and ?via= drive; picking one re-resolves the whole step-by-step below. */}
-        <ProcessVendorPicker steps={checkStepList} lensKey={task.id} />
+        {/* The 'Select vendor for process test' section is gone from process pages (founder
+            2026-10-05) — chain pages keep ProcessVendorPicker. The lens itself lives on: the
+            per-step "use" affordances and the ?via= share param still drive it here. */}
       </section>
 
       {/* Founder 2026-09-18: the process ITSELF leads — who covers it, then the step-by-step
@@ -202,23 +187,16 @@ export default async function ProcessPage({ params }: { params: Promise<{ slug: 
           collapsed (it repeated every step's computer-use chips at the top of the page). */}
       <ProcessLeaderboard task={task} mineHref={mineHref} />
 
-      {/* Founder ask: "Check my process" — the personalized run (your vendor per step vs the
-          best, upgrade flags) lives at its own noindex route so this shared SEO page stays the
-          one static version for everyone; the /mine page handles sign-up and stack setup. */}
-      <p className="text-sm">
-        {/* Signed-out clicks route through sign-up with a deep link back to THIS process's
-            personalized run (founder 2026-09-23) — components/MineLink.tsx. */}
-        <MineLink
-          mineHref={mineHref}
-          className="inline-block rounded-lg border border-emerald-400/60 px-3 py-1.5 text-xs font-medium text-emerald-300 transition hover:bg-emerald-400/10"
-          title="Run this process with the vendors you actually use — sign up, set your stack once, and see your step scores vs the market's best"
-        >
-          Check my process — run it with your stack →
-        </MineLink>
-      </p>
+      {/* The standalone 'Check my process — run it with your stack →' CTA is gone (founder
+          2026-10-05) — display only: the /mine route, MineLink, and the per-step "yours"
+          affordances (StepYourPick, ProcessYourVendor, the leaderboard's mineHref) still carry
+          readers into the personalized run. */}
 
       <section>
-        <h2 className="font-display leading-[1.1] text-xl font-semibold tracking-tight">Step-by-step: what an agent can do vs you</h2>
+        {/* 'Process breakdown' (founder 2026-10-05 functional-title rename of 'Step-by-step:
+            what an agent can do vs you') — situations render through this same page, so the
+            rename covers both; chain pages head their diagram 'The full run' separately. */}
+        <h2 className="font-display leading-[1.1] text-xl font-semibold tracking-tight">Process breakdown</h2>
         {/* The wrong-country-flow guard's flow label (founder 2026-10-02): under an explicit
             country choice a US-scoped flow wears the 'US flow' badge — the geo banner up top
             leads with the committed country note, so the steps below are never presented as the
@@ -230,7 +208,8 @@ export default async function ProcessPage({ params }: { params: Promise<{ slug: 
             run via it). Renders nothing in the static HTML — hydrates in only for readers with
             a clicked vendor or an "I'm using" stack pick. */}
         <ProcessLensBanner steps={checkStepList} pageKey={task.id} />
-        {/* The vendor picker itself sits at the top of the page now (founder 2026-09-30). */}
+        {/* The top-of-page vendor picker left process pages (founder 2026-10-05) — the per-step
+            "use" affordances below are the lens writers here. */}
         <div className="mt-4 rounded-2xl border border-zinc-800 p-4 sm:p-5">
           <div id="steps" className="scroll-mt-4" />
           <ProcessDag

@@ -27,10 +27,21 @@ const VISIBLE_ROWS = 8
 // Founder 2026-10-02: the column is named for what the number IS — how well the product fits
 // its best-matching step of this process (its highest judged per-step relevance score here),
 // not a process-wide coverage number.
-// One clause (founder tooltip sweep 2026-10-02) — the derivation detail lives on /methodology
-// and the process page the row links to.
+// The COLUMN header keeps the one-clause description; each ROW's tooltip states that number's
+// own derivation — the actual best step and its real mapped-story count (founder 2026-10-05:
+// never a canned sentence where the concrete counts exist).
 const BEST_SCORE_TITLE =
   'Highest judged step score /100 for this process — derived purely from the arena\'s judged verdicts'
+
+function bestScoreTitle(a: VendorProcessAppearance): string {
+  // servedSteps are best-first; computer-use-only appearances carry a score but no served
+  // steps — their number comes from the mapped computer-use stories instead.
+  const top = a.servedSteps[0]
+  if (top && top.score === a.bestStepScore) {
+    return `${a.bestStepScore}/100 — its best judged step here is “${top.label}” (${top.storyCount} mapped ${top.storyCount === 1 ? 'story' : 'stories'}); the receipts lines below link each judged step`
+  }
+  return `${a.bestStepScore}/100 — its best judged score here is on this process's mapped computer-use stories`
+}
 
 // A computer-use-ONLY appearance: the vendor never serves a step here, it could merely attempt
 // a manual one. These never take a visible row — collapsed, counted honestly.
@@ -65,9 +76,11 @@ function roleTitle(a: VendorProcessAppearance): string {
   return `How this product comes up here: ${a.kinds.map((k) => why[k]).join('; ')}.`
 }
 
-// Per-step tooltip: the same judged number BEST_SCORE_TITLE describes, one step at a time.
-const STEP_SCORE_TITLE =
-  'This step\'s judged relevance score /100 — derived purely from the arena\'s judged verdicts'
+// Per-step tooltip: the same judged number BEST_SCORE_TITLE describes, one step at a time —
+// with the step's own real mapped-story count (founder 2026-10-05).
+function stepScoreTitle(s: { score: number; storyCount: number }): string {
+  return `${s.score}/100 — judged verdicts on the ${s.storyCount} ${s.storyCount === 1 ? 'story' : 'stories'} mapped to this step`
+}
 
 // The per-step receipts under each process row (founder 2026-10-02: "go deeper on what each
 // vendor can do process-wise" — this re-introduces the per-step view the earlier declutter
@@ -92,7 +105,7 @@ function ServedStepLines({ a }: { a: VendorProcessAppearance }) {
                 {s.label}
               </Link>
               {' — '}
-              <span className="font-mono tabular-nums" title={STEP_SCORE_TITLE}>
+              <span className="font-mono tabular-nums" title={stepScoreTitle(s)}>
                 {s.score}
                 <span className="text-zinc-500">/100</span>
               </span>
@@ -133,7 +146,7 @@ function AppearanceRows({ rows }: { rows: VendorProcessAppearance[] }) {
               {a.bestStepScore === null ? (
                 <span className="italic text-zinc-500">—</span>
               ) : (
-                <span title={BEST_SCORE_TITLE}>
+                <span title={bestScoreTitle(a)}>
                   {a.bestStepScore}
                   <span className="text-zinc-500">/100</span>
                 </span>

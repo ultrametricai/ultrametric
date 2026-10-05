@@ -110,6 +110,29 @@ describe('mount applies URL params (invalids fall back silently)', () => {
     expect(container.querySelector('[role="img"]')?.getAttribute('aria-label')).toMatch(/% of steps agent-runnable$/)
   })
 
+  it("styling pins (founder 2026-10-05): 'Area' header (not 'Phase'), sentence-case headers (no uppercase transform), rounded-2xl wrapper, and the vendor cell's '→' replacing '+N'", () => {
+    const manyVendors = [
+      row({
+        slug: 'open-bank-account', title: 'Open a bank account', phase: 'formation',
+        vendors: ['Mercury', 'Brex', 'Ramp', 'Relay', 'Novo'].map((label) => ({ id: label.toLowerCase(), label, arena: 'startup-banking', hasLogo: false })),
+      }),
+    ]
+    const { container } = render(<ProcessesTable rows={manyVendors} phases={PHASES} />)
+    const headerRow = container.querySelector('thead tr') as HTMLElement
+    expect(headerRow.textContent).toContain('Area')
+    expect(headerRow.textContent).not.toContain('Phase')
+    expect(headerRow.className).not.toContain('uppercase')
+    expect(headerRow.className).toContain('text-xs')
+    expect(container.querySelector('.rounded-2xl.border')).toBeTruthy()
+    // Every vendor renders as a chip (the one-row clip is CSS; jsdom sees all five) and the
+    // overflow affordance is the accessible '→', never '+N'.
+    expect(within(container).getAllByTitle(/viewed via/).length).toBe(5)
+    expect(container.textContent).not.toMatch(/\+\d/)
+    const arrow = within(container).getByLabelText('All vendors and steps — open Open a bank account')
+    expect(arrow.getAttribute('href')).toBe('/processes/open-bank-account')
+    expect(arrow.textContent).toBe('→')
+  })
+
   it('?order=steps (the retired column) falls back silently to the default timeline view', () => {
     setUrl('?order=steps')
     const { container } = mount()
@@ -397,8 +420,9 @@ describe('chain rows in the combined table (founder 2026-09-29: one view under t
 describe('geoScope glyphs (founder batch 2026-10-02: the 🇺🇸 flag keys STRICTLY on geoScope us/us-state; global rows wear no scope glyph; no 🌐/🏛 ever follows a title)', () => {
   // The module-level geo store outlives unmounts — always reset.
   afterEach(() => setGeoSelection(null))
-  // The US-scoped rows carry UK ANALOG notes so a UK selection keeps them visible — this
-  // describe pins the GLYPHS; the country-view FILTER (rows without an analog hide) has its
+  // The US-scoped rows carry UK ANALOG notes — since the founder override 2026-10-05 a UK
+  // selection hides them anyway (a country view shows no US-scoped row); this describe pins
+  // the GLYPHS on the no-selection and Global framings, and the country-view FILTER has its
   // own describe below.
   const GEO_ROWS: ProcessRow[] = [
     row({ slug: 'open-bank-account', title: 'Open a bank account', phase: 'formation', geoScope: 'global' }),
@@ -426,19 +450,18 @@ describe('geoScope glyphs (founder batch 2026-10-02: the 🇺🇸 flag keys STRI
     expect(cellFor(container, 'Incorporate the company')?.querySelector('span[title*="US state-level"]')?.textContent).toBe('🇺🇸')
   })
 
-  it('a non-US selection changes NO glyph and never re-sorts — the flag is selection-independent', () => {
+  it('a non-US selection hides the US-scoped rows entirely (founder override 2026-10-05 — analog notes included); clearing it restores them with their flags', () => {
     const { container } = render(<ProcessesTable rows={GEO_ROWS} phases={PHASES} />)
     act(() => setGeoSelection('UK'))
-    const cells = [...container.querySelectorAll('tbody td:first-child')]
-    const byTitle = (t: string) => cells.find((c) => c.textContent?.includes(t))
-    expect(byTitle('Open a bank account')?.textContent).not.toContain('🌐')
-    expect(byTitle('Incorporate the company')?.textContent).toContain('🇺🇸')
-    expect(byTitle('Incorporate the company')?.textContent).not.toContain('🏛')
-    expect(byTitle('Get an EIN')?.textContent).toContain('🇺🇸')
-    // Annotation only — the timeOrder sort is exactly the no-selection order.
-    expect(cells.map((c) => c.textContent?.includes('Open a bank account') ? 'bank' : c.textContent?.includes('Incorporate') ? 'inc' : 'ein')).toEqual(['bank', 'inc', 'ein'])
+    // Only the global row survives the UK view — and it still wears no scope glyph.
+    expect(cellFor(container, 'Open a bank account')?.textContent).not.toContain('🌐')
+    expect(cellFor(container, 'Incorporate the company')).toBeUndefined()
+    expect(cellFor(container, 'Get an EIN')).toBeUndefined()
+    // Clearing the selection restores the full corpus and the selection-independent flags.
     act(() => setGeoSelection(null))
     expect(cellFor(container, 'Incorporate the company')?.textContent).toContain('🇺🇸')
+    expect(cellFor(container, 'Get an EIN')?.textContent).toContain('🇺🇸')
+    expect(cellFor(container, 'Incorporate the company')?.textContent).not.toContain('🏛')
   })
 
   it('PIN: a geoScope-global record can NEVER render the flag (the qs_023 audit, founder 2026-10-02) — in any framing or selection', () => {
@@ -480,10 +503,10 @@ describe('geoScope glyphs (founder batch 2026-10-02: the 🇺🇸 flag keys STRI
       expect(titleCells.some((c) => c.textContent?.includes('🌐'))).toBe(false)
     })
 
-    it('a country selection keeps analog-noted rows flagged (dropdown shows the country); without defaultGeo the homepage surface reads USA', () => {
+    it('a country selection hides analog-noted rows too (founder override 2026-10-05; dropdown shows the country); without defaultGeo the homepage surface reads USA', () => {
       const withGlobal = render(<ProcessesTable rows={GEO_ROWS} phases={PHASES} defaultGeo={GEO_GLOBAL} />)
       act(() => setGeoSelection('UK'))
-      expect(cellFor(withGlobal.container, 'Incorporate the company')?.textContent).toContain('🇺🇸')
+      expect(cellFor(withGlobal.container, 'Incorporate the company')).toBeUndefined()
       expect(withGlobal.getByTitle(/Where you operate/).textContent).toContain('United Kingdom')
       withGlobal.unmount()
       act(() => setGeoSelection(null))
@@ -496,7 +519,7 @@ describe('geoScope glyphs (founder batch 2026-10-02: the 🇺🇸 flag keys STRI
   })
 })
 
-describe('the country-view filter + hidden-rows disclosure (founder 2026-10-02: "?geo=in should hide the processes that are not used in that country — an EIN for India doesn\'t make sense")', () => {
+describe('the country-view filter + hidden-rows disclosure (founder 2026-10-02, tightened 2026-10-05: an explicit country view shows NO US-scoped row — analogs included; the disclosure is their discoverability path)', () => {
   afterEach(() => setGeoChoice(null))
 
   // A miniature of the real curation: one global row, a full-analog row, the EIN row (absorbed
@@ -550,30 +573,40 @@ describe('the country-view filter + hidden-rows disclosure (founder 2026-10-02: 
     expect(container.textContent).not.toContain('hidden in the')
   })
 
-  it('under 🇮🇳 India the EIN row hides (absorbed into SPICe+) and the note-less situation hides; global + analog rows stay', () => {
+  it('under 🇮🇳 India EVERY US-scoped row hides — the IN analogs (incorporation, TDS) included; only the global row stays', () => {
     const { container } = mountFilter()
     act(() => setGeoChoice('IN'))
-    expect(titles(container)).toEqual(['Pick a company name', 'Incorporate C-Corp', 'Issue 1099s'])
+    expect(titles(container)).toEqual(['Pick a company name'])
     expect(within(container).queryByText('Get EIN')).toBeNull()
+    expect(within(container).queryByText('Incorporate C-Corp')).toBeNull()
+    expect(within(container).queryByText('Issue 1099s')).toBeNull()
     expect(within(container).queryByText('Visa is held up')).toBeNull()
   })
 
-  it('under 🇬🇧 the UK incorporation analog stays visible; the not-applicable 1099 row hides', () => {
+  it('under 🇬🇧 and 🇩🇪 the row set is the same global-only view — an analog note no longer re-admits a row (the 2026-10-05 override)', () => {
     const { container } = mountFilter()
     act(() => setGeoChoice('UK'))
-    expect(titles(container)).toEqual(['Pick a company name', 'Incorporate C-Corp'])
-    // Under 🇩🇪 the EIN row RETURNS — Germany's ELSTER registration is a real filing (analog).
+    expect(titles(container)).toEqual(['Pick a company name'])
+    // Under 🇩🇪 Get EIN carries a real ELSTER analog — it stays hidden all the same; its
+    // committed German path lives in the disclosure below the table.
     act(() => setGeoChoice('DE'))
-    expect(titles(container)).toEqual(['Pick a company name', 'Incorporate C-Corp', 'Get EIN'])
+    expect(titles(container)).toEqual(['Pick a company name'])
   })
 
-  it('the disclosure line counts honestly, expands to the hidden titles with their committed one-liners, and keeps every page reachable', () => {
+  it('the disclosure line counts honestly (analogs and absorbed named), expands to the hidden titles with their committed one-liners, and keeps every page reachable', () => {
     const { container, getByRole } = mountFilter()
     act(() => setGeoChoice('IN'))
     const toggle = getByRole('button', { name: /hidden in the India view/ })
-    expect(toggle.textContent).toContain('2 US-specific processes hidden in the India view')
+    expect(toggle.textContent).toContain('4 US-specific processes hidden in the India view')
+    expect(toggle.textContent).toContain('2 have a local analog there')
     expect(toggle.textContent).toContain('1 is handled inside other processes there')
     fireEvent.click(toggle)
+    // The analog rows are the discoverability path now: each carries its committed analog
+    // summary and still links to its page.
+    expect(within(container).getByText('Incorporate C-Corp').closest('a')?.getAttribute('href')).toBe('/processes/incorporate-c-corp')
+    expect(container.textContent).toContain('Incorporate through MCA’s SPICe+ integrated form.')
+    expect(within(container).getByText('Issue 1099s').closest('a')?.getAttribute('href')).toBe('/processes/issue-1099s')
+    expect(container.textContent).toContain('TDS: deduct tax at source')
     // The absorbed row carries its committed note summary; the note-less situation says so
     // honestly instead of inventing a reason — and both titles still link to their pages.
     expect(within(container).getByText('Get EIN').closest('a')?.getAttribute('href')).toBe('/processes/get-ein')
@@ -583,14 +616,15 @@ describe('the country-view filter + hidden-rows disclosure (founder 2026-10-02: 
     // Collapse again — the list goes away, the counts stay.
     fireEvent.click(toggle)
     expect(container.textContent).not.toContain('PAN and TAN')
-    expect(container.textContent).toContain('2 US-specific processes hidden')
+    expect(container.textContent).toContain('4 US-specific processes hidden')
   })
 
-  it('under 🇬🇧 the counts re-speak the UK truth (3 hidden — 1 absorbed), and clearing the selection restores everything', () => {
+  it('under 🇬🇧 the counts re-speak the UK truth (4 hidden — 1 analog, 1 absorbed), and clearing the selection restores everything', () => {
     const { container, getByRole } = mountFilter()
     act(() => setGeoChoice('UK'))
     const toggle = getByRole('button', { name: /hidden in the United Kingdom view/ })
-    expect(toggle.textContent).toContain('3 US-specific processes hidden in the United Kingdom view')
+    expect(toggle.textContent).toContain('4 US-specific processes hidden in the United Kingdom view')
+    expect(toggle.textContent).toContain('1 has a local analog there')
     expect(toggle.textContent).toContain('1 is handled inside other processes there')
     act(() => setGeoChoice(null))
     expect(titles(container)).toHaveLength(FILTER_ROWS.length)
@@ -602,10 +636,11 @@ describe('the country-view filter + hidden-rows disclosure (founder 2026-10-02: 
     const { container } = mountFilter()
     act(() => setGeoChoice('IN'))
     const formation = within(container).getByText('Formation').closest('tr') as HTMLElement
-    // The fixture rows all carry the Formation area: of the 5, Get EIN (absorbed) and the
-    // note-less visa situation hide under IN, so the header honestly counts 3 — never 5.
-    expect(formation.textContent).toContain('3 processes')
+    // All four US-scoped fixture rows hide under IN (analogs included since 2026-10-05), so
+    // the Formation header honestly counts the one global row — never 5.
+    expect(formation.textContent).toContain('1 process')
     expect(within(container).queryByText('Get EIN')).toBeNull()
+    expect(within(container).queryByText('Incorporate C-Corp')).toBeNull()
   })
 })
 

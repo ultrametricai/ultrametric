@@ -619,9 +619,10 @@ today, no keys, no install:
   [METHODOLOGY.md](./METHODOLOGY.md) (evidence tiers, judging, scoring, Overall score weights,
   story provenance, re-judge stability, bias disclosure), linked from the header next to
   Arenas and from `/llms.txt`.
-- **MCP / CLI**: there is no Ultrametric MCP server or CLI today; the simulator's MCP calls
-  are labeled demos. A first-party MCP server is on the roadmap; until then the surfaces
-  above are the supported ways in.
+- **MCP / CLI**: the `ultrametric` package on npm ships the CLI and MCP server —
+  [/get-started](https://ultrametric.ai/get-started) is the install page, and
+  [`lib/ultrametricCli.ts`](lib/ultrametricCli.ts) maps the corpus steps it can drive. The
+  simulator's MCP calls remain labeled demos.
 - **schema.org**: arena pages embed an `ItemList` of `SoftwareApplication` entries and product
   pages embed a `SoftwareApplication`, both with `additionalProperty` entries for our own
   metrics (`aiEra`, `score`, etc). No `aggregateRating`: we don't have star ratings and won't

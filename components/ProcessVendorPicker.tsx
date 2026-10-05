@@ -6,12 +6,14 @@ import { stackPicks } from '@/lib/myStack'
 import { useProcessLens } from '@/lib/processLens'
 import type { ProcessCheckStep } from '@/lib/processCheck'
 
-// Top-of-page vendor picker for process and chain pages (founder 2026-09-22: "a button next to
+// Top-of-page vendor picker for CHAIN pages (founder 2026-09-22: "a button next to
 // the company logo so IF the user clicks on something like Mercury it will drive the process by
 // that being the actual vendor selected — the DAG below adjusts; it starts generic with no
 // vendors selected"). One pick sets the process lens (lib/processLens.ts) for that vendor's
 // arena, and every step block, API-call panel, and agent prompt below re-resolves through it —
 // the exact same lens the per-step "use" affordances and the ?via= share param drive.
+// Process DETAIL pages dropped this section (founder 2026-10-05) — only the chain pages
+// (app/processes/chains/[chain]/page.tsx) render it now; their lens mechanics are unchanged.
 //
 // Presentation (founder 2026-10-02): one house listbox dropdown per covering arena — the
 // GeoDropdown/SimRolePicker idiom (trigger button + role="listbox" popover, logos in the rows,

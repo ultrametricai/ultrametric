@@ -79,11 +79,11 @@ const row = (
 )
 
 // Vendor names in on-screen chip order (the .truncate span holds the bare name — the logo
-// fallback initial and score digits live in sibling spans).
+// fallback initial lives in a sibling span). Since the founder batch 2026-10-05 the chip BODY
+// is the pick toggle <button aria-pressed> (no 'use'/'✕' side buttons) and the score is its own
+// receipts link — so ranked chips are the aria-pressed buttons; untracked chips stay spans.
 const chipNames = (root: ParentNode) =>
-  [...root.querySelectorAll('a[href^="/arena/"][href*="/product/"]')].map(
-    (a) => a.querySelector('span.truncate')?.textContent ?? '',
-  )
+  [...root.querySelectorAll('button[aria-pressed] span.truncate')].map((s) => s.textContent ?? '')
 
 describe('static-HTML contract (SSR ↔ empty client state)', () => {
   beforeEach(() => stubLocalStorage())
@@ -114,20 +114,41 @@ describe('static-HTML contract (SSR ↔ empty client state)', () => {
       container.remove()
     }
   })
+
+  it("every chip score is its own receipts link — the product page's judged story verdicts (founder 2026-10-05: a visible score answers 'why?' in one click)", () => {
+    const { container } = render(row)
+    const scoreLinks = [...container.querySelectorAll('a[href$="#story-verdicts"]')]
+    expect(scoreLinks.map((a) => a.getAttribute('href'))).toEqual([
+      '/arena/startup-banking/product/best-bank#story-verdicts',
+      '/arena/startup-banking/product/mid-bank#story-verdicts',
+      '/arena/ai-assistants/product/chatgpt#story-verdicts',
+    ])
+    expect(scoreLinks[0].textContent).toBe('90/100')
+    // The tooltip states THIS number's derivation — the real arena and verdict counts, never a
+    // canned sentence (founder 2026-10-05).
+    expect(scoreLinks[0].getAttribute('title')).toBe(
+      '90/100 · #1 for this step — from 3 judged Startup banking stories mapped to this step (2 full, 1 partial); click for the verdicts',
+    )
+  })
 })
 
 describe('lens + stack selection', () => {
   beforeEach(() => stubLocalStorage())
   afterEach(() => window.localStorage.clear())
 
-  it('clicking "use" pins the vendor first with the ✓ via tag; ✕ clears it', () => {
+  it('clicking a chip pins the vendor first with the ✓ via tag (aria-pressed); clicking it again clears — and no visible "use"/"✕" control renders (founder 2026-10-05)', () => {
     const { container } = render(row)
+    // The pick affordance is the chip body itself — accessible name/title, no 'use' word.
+    expect(container.textContent).not.toMatch(/\buse\b/)
     fireEvent.click(within(container).getByTitle(/See this process via Mid Bank/))
     expect(chipNames(container)[0]).toContain('Mid Bank')
     expect(container.textContent).toContain('✓ via')
-    fireEvent.click(within(container).getByTitle('Stop viewing this process via Mid Bank'))
+    const pressed = within(container).getByTitle(/Stop viewing this process via Mid Bank/)
+    expect(pressed.getAttribute('aria-pressed')).toBe('true')
+    fireEvent.click(pressed)
     expect(chipNames(container)[0]).toContain('Best Bank')
     expect(container.textContent).not.toContain('✓ via')
+    expect(container.textContent).not.toContain('✕')
   })
 
   it('a stack pick below the display cap still pins, tagged "yours" (uncapped checkStep row)', () => {

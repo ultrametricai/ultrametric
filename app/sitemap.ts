@@ -2,7 +2,8 @@ import type { MetadataRoute } from 'next'
 import { loadArenaSections } from '@/lib/arenaSections'
 import { battleSlug, loadAll } from '@/lib/data'
 import { collectGlobalStories } from '@/lib/globalStories'
-import { loadChains, loadProcesses, processSlug } from '@/lib/processes'
+import { loadBusinessLogicMap } from '@/lib/businessLogicMap'
+import { loadArtifacts, loadChains, loadProcesses, processSlug } from '@/lib/processes'
 import { loadFamilies } from '@/lib/families'
 import { loadIcpTypes } from '@/lib/icp'
 import { SITE_URL } from '@/lib/site'
@@ -123,6 +124,18 @@ export default function sitemap(): MetadataRoute.Sitemap {
   }
   for (const chain of loadChains()) {
     entries.push({ url: `${SITE_URL}/processes/chains/${chain.id}`, lastModified: now })
+  }
+
+  // Open-module and artifact page families (founder 2026-10-05): the committed registries
+  // (processes/business-logic-map.json, processes/artifacts.json) are the param sources — the
+  // same ids app/open-modules/[id] and app/artifacts/[id] prerender.
+  entries.push({ url: `${SITE_URL}/open-modules`, lastModified: now })
+  for (const id of Object.keys(loadBusinessLogicMap())) {
+    entries.push({ url: `${SITE_URL}/open-modules/${id}`, lastModified: now })
+  }
+  entries.push({ url: `${SITE_URL}/artifacts`, lastModified: now })
+  for (const artifact of loadArtifacts()) {
+    entries.push({ url: `${SITE_URL}/artifacts/${artifact.id}`, lastModified: now })
   }
 
   // Product-family breakdown pages — one per multi-product vendor (see lib/families.ts and

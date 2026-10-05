@@ -5,7 +5,6 @@ import type { ReactNode } from 'react'
 import { useContext, useEffect, useMemo, useState } from 'react'
 import { HomeModeContext } from '@/components/HomeModes'
 import AiEraBadge from '@/components/AiEraBadge'
-import ConfidenceChip from '@/components/ConfidenceChip'
 import HotChip from '@/components/HotChip'
 import MomentumChip from '@/components/MomentumChip'
 import TableControls from '@/components/TableControls'
@@ -330,7 +329,9 @@ export default function MegaTable({ rows, arenas }: { rows: MegaTableRow[]; aren
                         }}
                       />
                       <TrendArrow delta={row.trendDelta} />
-                      {row.confidence && <ConfidenceChip confidence={row.confidence} />}
+                      {/* The A–D confidence letter chip left the score cell (founder
+                          2026-10-05) — row.confidence stays data (lib/megaTable.ts; the
+                          grades still feed /rankings/most-tested and the D-gap rule). */}
                     </span>
                   </td>
                   <td className="px-2 py-2 font-mono tabular-nums text-zinc-300">

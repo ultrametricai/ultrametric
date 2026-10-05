@@ -6,7 +6,6 @@ import { useMemo, useState } from 'react'
 import AgentAccessGlyphs from '@/components/AgentAccessGlyphs'
 import AiEraBadge from '@/components/AiEraBadge'
 import ClaimsChip from '@/components/ClaimsChip'
-import ConfidenceChip from '@/components/ConfidenceChip'
 import HotChip from '@/components/HotChip'
 import MomentumChip from '@/components/MomentumChip'
 import PopularTag, { isNotablyPopular } from '@/components/PopularTag'
@@ -14,7 +13,6 @@ import ProductLogoView from '@/components/ProductLogoView'
 import ShutdownBadge from '@/components/ShutdownBadge'
 import TableControls from '@/components/TableControls'
 import { claimsIntegrity } from '@/lib/claimsIntegrity'
-import { confidenceFor } from '@/lib/confidence'
 import { belowCompactStarsFloor } from '@/lib/popularity'
 import type { PricingCell } from '@/lib/pricing'
 import { isGroupUntested, isThemeUntested, type CategoryData } from '@/lib/data-helpers'
@@ -129,11 +127,6 @@ export default function ArenaTable({ data, logoMap, pricing, hotReasons }: { dat
   const [query, setQuery] = useState('')
 
   const productById = useMemo(() => new Map(data.products.map((p) => [p.id, p])), [data])
-  // Confidence grades are pure over `data` — compute once per product, not per render pass.
-  const confidenceOf = useMemo(
-    () => new Map(data.products.map((p) => [p.id, confidenceFor(data, p.id)])),
-    [data],
-  )
   const allRows = useMemo(() => buildRows(data), [data])
   const filtered = useMemo(() => filterArenaRows(allRows, query), [allRows, query])
   const sorted = useMemo(() => sortArenaRows(filtered, column, direction), [filtered, column, direction])
@@ -269,7 +262,9 @@ export default function ArenaTable({ data, logoMap, pricing, hotReasons }: { dat
                           automation: row.automation,
                         }}
                       />
-                      <ConfidenceChip confidence={confidenceOf.get(row.productId)!} />
+                      {/* The A–D confidence letter chip left the score cell (founder
+                          2026-10-05) — the grades stay data (lib/confidence.ts feeds
+                          /rankings/most-tested, the D-gap rule, and the arena report). */}
                     </div>
                   </td>
                   <td className="px-2 py-2 font-mono tabular-nums text-zinc-300">

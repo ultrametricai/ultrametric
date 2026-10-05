@@ -1,10 +1,12 @@
 // @vitest-environment jsdom
-// StepAfkChip — the staff-gated per-step AFK computer-use trigger (founder 2026-09-25: "make
-// 'do it yourself' able to trigger a computer-use session"). Gate = the DoViaAfk pattern
-// (NEXT_PUBLIC_ADMIN_EMAILS allowlist + the pa-admin localStorage switch) PLUS OpsDashboard's
-// @ultrametric.ai company rule. The load-bearing assertions: non-staff readers get literally
-// NOTHING in the DOM (the OpsDashboard.test contract), and the run URL carries the manifest
-// plus the additive &node= scoping param.
+// StepAfkChip — the staff-gated per-step chip (founder 2026-09-25 as the AFK computer-use
+// trigger; renamed 'run with Ultrametric' and pointed at the /get-started CLI/MCP install page
+// by the founder 2026-10-05). Gate = the DoViaAfk pattern (NEXT_PUBLIC_ADMIN_EMAILS allowlist
+// + the pa-admin localStorage switch) PLUS OpsDashboard's @ultrametric.ai company rule. The
+// load-bearing assertions: non-staff readers get literally NOTHING in the DOM (the
+// OpsDashboard.test contract), the label says Ultrametric (never AFK), the destination is the
+// real on-site install page, and the AFK manifest-handoff codec (afkStepRunUrl) stays pinned
+// for the executor contract.
 import { act, render, screen } from '@testing-library/react'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import type { Session } from '@/lib/session'
@@ -78,33 +80,37 @@ describe('StepAfkChip staff gating', () => {
   it('renders for a verified @ultrametric.ai session even with no allowlist (the isCompanyEmail rule)', async () => {
     sessionStub.current = { state: 'authenticated', email: 'anyone@ultrametric.ai' }
     render(<StepAfkChip manifestUrl={MANIFEST_URL} nodeId={NODE_ID} />)
-    expect(await screen.findByRole('link', { name: /run with AFK/ })).toBeTruthy()
+    expect(await screen.findByRole('link', { name: /run with Ultrametric/ })).toBeTruthy()
   })
 
   it('renders for an allowlisted admin email outside the company domain', async () => {
     vi.stubEnv('NEXT_PUBLIC_ADMIN_EMAILS', 'contractor@example.com')
     sessionStub.current = { state: 'authenticated', email: 'contractor@example.com' }
     render(<StepAfkChip manifestUrl={MANIFEST_URL} nodeId={NODE_ID} />)
-    expect(await screen.findByRole('link', { name: /run with AFK/ })).toBeTruthy()
+    expect(await screen.findByRole('link', { name: /run with Ultrametric/ })).toBeTruthy()
   })
 
   it("renders for the founder's local pa-admin=1 switch even while anonymous", async () => {
     window.localStorage.setItem(ADMIN_FLAG_KEY, '1')
     sessionStub.current = { state: 'anonymous' }
     render(<StepAfkChip manifestUrl={MANIFEST_URL} nodeId={NODE_ID} />)
-    expect(await screen.findByRole('link', { name: /run with AFK/ })).toBeTruthy()
+    expect(await screen.findByRole('link', { name: /run with Ultrametric/ })).toBeTruthy()
   })
 
-  it('links to the step-scoped AFK run URL and carries the affiliation disclosure tooltip', async () => {
+  it("says 'run with Ultrametric' and links to the on-site CLI/MCP install page with the affiliation disclosure (founder rename 2026-10-05)", async () => {
     window.localStorage.setItem(ADMIN_FLAG_KEY, '1')
     sessionStub.current = { state: 'anonymous' }
     render(<StepAfkChip manifestUrl={MANIFEST_URL} nodeId={NODE_ID} />)
-    const link = await screen.findByRole('link', { name: /run with AFK/ })
-    expect(link.getAttribute('href')).toBe(afkStepRunUrl(MANIFEST_URL, NODE_ID))
-    expect(link.getAttribute('target')).toBe('_blank')
-    expect(link.getAttribute('rel')).toBe('noopener noreferrer')
+    const link = await screen.findByRole('link', { name: /run with Ultrametric/ })
+    expect(link.textContent).toContain('run with Ultrametric')
+    expect(link.textContent).not.toContain('AFK')
+    expect(link.getAttribute('href')).toBe('/get-started')
     expect(link.getAttribute('title')).toBe(
-      'runs a computer-use session via AFK — an Ultrametric product (ours)',
+      'Run steps like this with Ultrametric — the CLI/MCP install page (our own product)',
     )
+  })
+
+  it('the AFK manifest handoff codec survives the rename (docs/AFK-HANDOFF.md — the DoViaAfk admin affordance still consumes it)', () => {
+    expect(afkStepRunUrl(MANIFEST_URL, NODE_ID)).toContain(AFK_RUN_URL)
   })
 })

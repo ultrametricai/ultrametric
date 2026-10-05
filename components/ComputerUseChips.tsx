@@ -30,23 +30,36 @@ export default function ComputerUseChips({ taskId, nodeId }: { taskId: string; n
   if (options.length === 0) return null
   return (
     <span className="mt-1 flex flex-wrap items-center gap-1.5">
+      {/* The 'could attempt it today:' label text is gone (founder 2026-10-05) — the 🖥 glyph
+          keeps the row recognizable and its tooltip keeps the honest framing; the step's
+          routing is untouched. */}
       <span
-        className="text-[10px] uppercase tracking-wide text-zinc-500"
+        className="text-[10px] text-zinc-500"
         title="Judged computer-use agents (browser agents + assistants with judged computer-use verdicts) ranked by their verdicts on this step's mapped stories. The step stays manual — this is who could attempt the mechanical part."
       >
-        🖥 could attempt it today:
+        🖥
       </span>
       {options.map((o) => (
-        <Link
+        // The score is its own click-through to the judged verdicts behind it (founder
+        // 2026-10-05); the chip body keeps opening the product page as before.
+        <span
           key={`${o.arenaId}-${o.productId}`}
-          href={`/arena/${o.arenaId}/product/${o.productId}`}
-          title={citeSummary(o)}
-          className="inline-flex min-w-0 items-center gap-1.5 rounded-md border border-zinc-700 bg-zinc-900/60 py-0.5 pl-0.5 pr-2 text-[11px] text-zinc-300 transition hover:border-emerald-400/60 hover:text-emerald-300"
+          className="inline-flex min-w-0 items-center gap-1.5 rounded-md border border-zinc-700 bg-zinc-900/60 py-0.5 pl-0.5 pr-2 text-[11px] text-zinc-300 transition hover:border-emerald-400/60"
         >
-          <ProductLogoView product={{ id: o.productId, name: o.name }} size={14} hasLogo={hasLogo(o.productId)} />
-          <span className="truncate">{o.name}</span>
-          <span className="font-mono text-[10px] tabular-nums text-emerald-400/80">{o.score.toFixed(0)}<span className="text-zinc-500">/100</span></span>
-        </Link>
+          <Link
+            href={`/arena/${o.arenaId}/product/${o.productId}`}
+            title={citeSummary(o)}
+            className="inline-flex min-w-0 items-center gap-1.5 transition hover:text-emerald-300"
+          >
+            <ProductLogoView product={{ id: o.productId, name: o.name }} size={14} hasLogo={hasLogo(o.productId)} />
+            <span className="truncate">{o.name}</span>
+          </Link>
+          <Link
+            href={`/arena/${o.arenaId}/product/${o.productId}#story-verdicts`}
+            title={`${o.score.toFixed(0)}/100 — ${o.name}'s judged ${o.arenaName} computer-use verdicts on the ${o.cites.length} ${o.cites.length === 1 ? 'story' : 'stories'} mapped to this step; click for the verdicts`}
+            className="font-mono text-[10px] tabular-nums text-emerald-400/80 transition hover:text-emerald-300"
+          >{o.score.toFixed(0)}<span className="text-zinc-500">/100</span></Link>
+        </span>
       ))}
       <span className="text-[10px] text-zinc-500">assisted, still human-owned</span>
     </span>

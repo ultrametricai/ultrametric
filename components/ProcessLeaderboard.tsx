@@ -102,13 +102,18 @@ export default function ProcessLeaderboard({ task, mineHref, scopeNote }: {
               {/* ✓/◐/✕ + the vendor's own note under a non-US selection — nothing otherwise. */}
               <VendorGeoMark geo={geoLookup[e.productId]} />
             </span>
-            <span
-              className="w-16 shrink-0 text-right font-mono text-sm tabular-nums text-emerald-400"
-              title="Process score: sum of step scores over ALL rankable steps (unserved steps count 0), 0-100 — coverage × step quality"
+            {/* The score clicks through to its evidence (founder 2026-10-05: every visible
+                score answers 'why?' in one click) — the product page's judged story verdicts,
+                the receipts every step score here derives from — and the tooltip states THIS
+                number's derivation with the row's real counts (founder, same day). */}
+            <Link
+              href={`/arena/${e.arenaId}/product/${e.productId}#story-verdicts`}
+              className="w-16 shrink-0 text-right font-mono text-sm tabular-nums text-emerald-400 transition hover:text-emerald-300"
+              title={`${e.processScore.toFixed(0)}/100 — ${e.name}'s judged ${e.arenaName} step scores summed over ${lb.rankableSteps} rankable ${lb.rankableSteps === 1 ? 'step' : 'steps'} (${e.stepsServed} served, unserved count 0); click for the verdicts`}
             >
               {e.processScore.toFixed(0)}
               <span className="text-zinc-500">/100</span>
-            </span>
+            </Link>
           </div>
           </VendorGeoShade>
         ))}

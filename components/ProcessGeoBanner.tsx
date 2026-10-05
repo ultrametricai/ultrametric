@@ -34,28 +34,12 @@ export default function ProcessGeoBanner({
   if (geo === null) return null
 
   // 🌐 Global (founder 2026-09-30: "show the GENERAL process without country-specifics"): the
-  // country-agnostic lens — per-country analogs are summarized as AVAILABILITY ONLY (which
-  // countries carry a curated mapping, nothing promoted), and the page's country-conditional
-  // UI (jurisdiction steps, geo auto-preselects, vendor availability marks) stands down. A
-  // display lens over the same committed data: no judged number moves.
-  if (geo === GEO_GLOBAL) {
-    // No explainer banner in the Global view (founder 2026-10-02) — the view speaks for
-    // itself; only the availability line survives, and only when mappings exist.
-    if (notes.length === 0) return null
-    return (
-      <p className="mt-3 max-w-2xl text-xs text-zinc-400">
-        Country mappings exist for{' '}
-        {notes.map((n, i) => (
-          <span key={n.country} title={`${GEO_PREF_META[n.country].label} — pick the country to see its curated mapping`}>
-            {i > 0 && ' · '}
-            <span aria-hidden className="mr-0.5">{GEO_PREF_META[n.country].flag}</span>
-            {GEO_PREF_META[n.country].label}
-          </span>
-        ))}{' '}
-        — pick a country above for the detail.
-      </p>
-    )
-  }
+  // country-agnostic lens — the page's country-conditional UI (jurisdiction steps, geo
+  // auto-preselects, vendor availability marks) stands down and the banner renders NOTHING.
+  // The 'Country mappings exist for …' availability line left with the founder batch
+  // 2026-10-05: the geo dropdown itself communicates which countries exist, so the line said
+  // nothing the control doesn't. A country pick still renders the committed detail below.
+  if (geo === GEO_GLOBAL) return null
 
   const meta = GEO_PREF_META[geo]
 
