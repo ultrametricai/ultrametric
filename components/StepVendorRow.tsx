@@ -112,14 +112,16 @@ function VendorChipButton({
   const lensSelected = selected === 'lens'
   return (
     <span className={`${selected ? CHIP_SELECTED : geoMuted ? CHIP_GEO_MUTED : CHIP_DEFAULT} min-w-0`}>
+      {/* No vendor-chip tooltip (founder 2026-10-05) — the aria-label keeps the action named
+          for assistive tech; the score link beside it keeps its derivation tooltip. */}
       <button
         type="button"
         aria-pressed={lensSelected}
         onClick={lensSelected ? onClear : onSelect}
-        title={
+        aria-label={
           lensSelected
-            ? `Stop viewing this process via ${vendor.name} — back to the generic best-per-step view`
-            : `See this process via ${vendor.name} — pins it on every step its ${vendor.arenaName} evidence covers and adapts prompts and API calls (stored in this browser only)`
+            ? `Stop viewing this process via ${vendor.name}`
+            : `See this process via ${vendor.name}`
         }
         className="inline-flex min-w-0 cursor-pointer items-center gap-1.5 transition hover:text-emerald-300"
       >
@@ -166,8 +168,9 @@ export function scoreTitle(
 function UntrackedChip({ info }: { info: StepRowUntracked }) {
   return (
     <span className="inline-flex min-w-0 items-center gap-0.5">
+      {/* Unranked chip, no tooltip (founder 2026-10-05) — unlinked and scoreless already says
+          "not yet judged"; the visible label is the whole content. */}
       <span
-        title={`${info.label} — not yet judged on Ultrametric`}
         className="inline-flex min-w-0 items-center gap-1.5 rounded-md border border-zinc-800 bg-zinc-900/60 py-0.5 pl-0.5 pr-2 text-zinc-400"
       >
         <ProductLogoView product={{ id: info.vendor, name: info.label }} size={28} hasLogo={info.hasLogo} />
@@ -178,7 +181,7 @@ function UntrackedChip({ info }: { info: StepRowUntracked }) {
           href={info.signupUrl}
           target="_blank"
           rel="noopener noreferrer"
-          title={`Open ${info.label}'s own start page — ${new URL(info.signupUrl).hostname.replace(/^www\./, '')} (external)`}
+          aria-label={`Open ${info.label}'s own start page — ${new URL(info.signupUrl).hostname.replace(/^www\./, '')} (external)`}
           className="shrink-0 rounded px-0.5 text-[10px] text-zinc-500 transition hover:text-emerald-300"
         >
           ↗
@@ -274,8 +277,9 @@ export default function StepVendorRow({
 
   return (
     // No 'ranked for this step:' label (founder 2026-09-30): the step's vendors are ONE line,
-    // highest score left→right — each chip's tooltip still carries the ranked-for-this-step
-    // story. The row's flex-wrap only breaks the line where the viewport forces it.
+    // highest score left→right — each chip's SCORE link keeps the concrete-derivation tooltip
+    // (the vendor-name tooltips are gone, founder 2026-10-05). The row's flex-wrap only breaks
+    // the line where the viewport forces it.
     <div
       className="mt-1.5 flex flex-wrap items-center gap-1.5 text-[11px]"
       title={`Vendors ranked for THIS step, highest score first — scored from their judged verdicts on the ${storyCount} stories mapped to it${

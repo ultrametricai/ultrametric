@@ -116,9 +116,10 @@ function Connector() {
   )
 }
 
-// One vendor as a chip: tracked vendors (judged in an arena) link to their product page with a
-// rank/agent-readiness tooltip; untracked vendors render as an honest unlinked chip. Logos are
-// resolved server-side via hasLogo(product id).
+// One vendor as a chip: tracked vendors (judged in an arena) link to their product page —
+// no vendor-name tooltip (founder 2026-10-05); the agent-ready score link keeps its derivation
+// tooltip. Untracked vendors render as an honest unlinked chip. Logos are resolved server-side
+// via hasLogo(product id).
 function VendorChip({ info }: { info: VendorChipInfo }) {
   const logoId = info.productId ?? info.vendor
   const body = (
@@ -144,7 +145,7 @@ function VendorChip({ info }: { info: VendorChipInfo }) {
       href={info.signupUrl}
       target="_blank"
       rel="noopener noreferrer"
-      title={`Open ${info.label}'s own start page — ${new URL(info.signupUrl).hostname.replace(/^www\./, '')} (external)`}
+      aria-label={`Open ${info.label}'s own start page — ${new URL(info.signupUrl).hostname.replace(/^www\./, '')} (external)`}
       className="shrink-0 rounded px-0.5 text-[10px] text-zinc-500 transition hover:text-emerald-300"
     >
       ↗
@@ -154,11 +155,10 @@ function VendorChip({ info }: { info: VendorChipInfo }) {
     return (
       <span className="inline-flex min-w-0 items-center gap-0.5">
         <span className="inline-flex min-w-0 items-center gap-1.5 rounded-md border border-zinc-700 bg-zinc-900/60 py-0.5 pl-0.5 pr-2 text-zinc-200 transition hover:border-emerald-400/60">
+          {/* No vendor-name tooltip (founder 2026-10-05) — the visible label names the link;
+              the score link beside it keeps its concrete-derivation tooltip. */}
           <Link
             href={`/arena/${info.arenaId}/product/${info.productId}`}
-            title={`${info.label} — #${info.rank} by agent-readiness in ${info.arenaName}${
-              info.agentReady !== null ? ` · ${info.agentReady.toFixed(0)}/100 agent-ready` : ''
-            } — see the judged product page`}
             className="inline-flex min-w-0 items-center gap-1.5 transition hover:text-emerald-300"
           >
             {body}
@@ -180,7 +180,6 @@ function VendorChip({ info }: { info: VendorChipInfo }) {
   return (
     <span className="inline-flex min-w-0 items-center gap-0.5">
       <span
-        title={`${info.label} — not yet judged on Ultrametric`}
         className="inline-flex min-w-0 items-center gap-1.5 rounded-md border border-zinc-800 bg-zinc-900/60 py-0.5 pl-0.5 pr-2 text-zinc-400"
       >
         {body}

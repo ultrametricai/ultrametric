@@ -586,7 +586,8 @@ export default function ProcessesTable({
           {/* The vendor cell fills its width (founder 2026-10-05): EVERY vendor renders as a
               chip in one visual row — the flex-wrap + one-chip-row max-height + overflow-hidden
               trick hides whatever doesn't fit — and the '→' (replacing '+N') opens the process
-              for the full roster. Chip contract unchanged: ?via= lens links and tooltips. */}
+              for the full roster. Chips keep their ?via= lens links; no tooltips on vendor
+              chips (founder 2026-10-05) — aria-labels carry the destination instead. */}
           {r.vendors.length > 0 && (
             <span className="flex items-center gap-1.5">
               <span className="flex min-w-0 flex-1 flex-wrap gap-1 overflow-hidden max-h-[28px]">
@@ -594,12 +595,12 @@ export default function ProcessesTable({
                   v.arena ? (
                     // Founder 2026-09-25: a vendor chip opens the PROCESS through that
                     // vendor (?via= lens, lib/processLens.ts) — not the vendor's own page.
-                    <Link key={v.label} href={r.href ? href : `${href}?via=${v.arena}:${v.id}`} title={r.href ? `Open ${r.title} — view ${v.label} alongside the other options` : `Open ${r.title} viewed via ${v.label} — every step resolved to it where it serves`} className="inline-flex items-center gap-1 whitespace-nowrap rounded-full border border-zinc-700 py-px pl-0.5 pr-1.5 text-[10px] text-zinc-300 transition hover:border-emerald-400/60 hover:text-emerald-300">
+                    <Link key={v.label} href={r.href ? href : `${href}?via=${v.arena}:${v.id}`} aria-label={r.href ? `Open ${r.title} — view ${v.label} alongside the other options` : `Open ${r.title} viewed via ${v.label}`} className="inline-flex items-center gap-1 whitespace-nowrap rounded-full border border-zinc-700 py-px pl-0.5 pr-1.5 text-[10px] text-zinc-300 transition hover:border-emerald-400/60 hover:text-emerald-300">
                       <ProductLogoView product={{ id: v.id, name: v.label }} size={18} hasLogo={v.hasLogo} />
                       {v.label}
                     </Link>
                   ) : (
-                    <span key={v.label} title={`${v.label} — not yet judged on Ultrametric`} className="inline-flex items-center gap-1 whitespace-nowrap rounded-full border border-zinc-800 py-px pl-0.5 pr-1.5 text-[10px] text-zinc-500">
+                    <span key={v.label} className="inline-flex items-center gap-1 whitespace-nowrap rounded-full border border-zinc-800 py-px pl-0.5 pr-1.5 text-[10px] text-zinc-500">
                       <ProductLogoView product={{ id: v.id, name: v.label }} size={18} hasLogo={v.hasLogo} />
                       {v.label}
                     </span>
@@ -609,7 +610,6 @@ export default function ProcessesTable({
               <Link
                 href={href}
                 aria-label={`All vendors and steps — open ${r.title}`}
-                title="All vendors and steps — open the process"
                 className="shrink-0 text-xs text-zinc-400 transition hover:text-emerald-300"
               >
                 →
@@ -670,12 +670,12 @@ export default function ProcessesTable({
               <span className="flex min-w-0 flex-1 flex-wrap gap-1 overflow-hidden max-h-[28px]">
                 {p.vendors.map((v) =>
                   v.arena ? (
-                    <Link key={v.label} href={`${p.href}?via=${v.arena}:${v.id}`} title={`Open ${p.title} viewed via ${v.label} — every step resolved to it where it serves`} className="inline-flex items-center gap-1 whitespace-nowrap rounded-full border border-zinc-700 py-px pl-0.5 pr-1.5 text-[10px] text-zinc-300 transition hover:border-emerald-400/60 hover:text-emerald-300">
+                    <Link key={v.label} href={`${p.href}?via=${v.arena}:${v.id}`} aria-label={`Open ${p.title} viewed via ${v.label}`} className="inline-flex items-center gap-1 whitespace-nowrap rounded-full border border-zinc-700 py-px pl-0.5 pr-1.5 text-[10px] text-zinc-300 transition hover:border-emerald-400/60 hover:text-emerald-300">
                       <ProductLogoView product={{ id: v.id, name: v.label }} size={18} hasLogo={v.hasLogo} />
                       {v.label}
                     </Link>
                   ) : (
-                    <span key={v.label} title={`${v.label} — not yet judged on Ultrametric`} className="inline-flex items-center gap-1 whitespace-nowrap rounded-full border border-zinc-800 py-px pl-0.5 pr-1.5 text-[10px] text-zinc-500">
+                    <span key={v.label} className="inline-flex items-center gap-1 whitespace-nowrap rounded-full border border-zinc-800 py-px pl-0.5 pr-1.5 text-[10px] text-zinc-500">
                       <ProductLogoView product={{ id: v.id, name: v.label }} size={18} hasLogo={v.hasLogo} />
                       {v.label}
                     </span>
@@ -685,7 +685,6 @@ export default function ProcessesTable({
               <Link
                 href={p.href}
                 aria-label={`All vendors and steps — open ${p.title}`}
-                title="All vendors and steps — open the playbook"
                 className="shrink-0 text-xs text-zinc-400 transition hover:text-emerald-300"
               >
                 →

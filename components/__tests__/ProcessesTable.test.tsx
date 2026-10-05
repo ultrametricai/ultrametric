@@ -125,8 +125,10 @@ describe('mount applies URL params (invalids fall back silently)', () => {
     expect(headerRow.className).toContain('text-xs')
     expect(container.querySelector('.rounded-2xl.border')).toBeTruthy()
     // Every vendor renders as a chip (the one-row clip is CSS; jsdom sees all five) and the
-    // overflow affordance is the accessible '→', never '+N'.
-    expect(within(container).getAllByTitle(/viewed via/).length).toBe(5)
+    // overflow affordance is the accessible '→', never '+N'. No tooltip on vendor chips
+    // (founder 2026-10-05) — the ?via= destination lives in the aria-label instead.
+    expect(within(container).getAllByLabelText(/viewed via/).length).toBe(5)
+    expect(container.querySelector('a[title*="viewed via"]')).toBeNull()
     expect(container.textContent).not.toMatch(/\+\d/)
     const arrow = within(container).getByLabelText('All vendors and steps — open Open a bank account')
     expect(arrow.getAttribute('href')).toBe('/processes/open-bank-account')
