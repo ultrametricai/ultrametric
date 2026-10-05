@@ -15,7 +15,10 @@ describe('founder repro: selecting Global on a process page', () => {
     expect(globalPill.getAttribute('aria-pressed')).toBe('true')
     expect(window.location.search).toContain('geo=global')
     expect(window.localStorage.getItem('pa-geo')).toBe('global')
-    expect(document.body.textContent).toContain('Country mappings exist for')
+    // The Global banner renders nothing since founder 2026-10-05 (the availability line left —
+    // the geo control itself names the mapped countries); no country content leaks either.
+    expect(document.body.textContent).not.toContain('Country mappings exist for')
+    expect(document.body.textContent).not.toContain('German analog')
   })
   it('DE → Global: banner leaves the DE view', () => {
     render(<><GeoSwitcher /><ProcessGeoBanner geoScope="us" notes={[{ country: 'DE', kind: 'analog', summary: 'German analog', actionUrl: 'https://example.de', actionLabel: 'Handelsregister' }]} /></>)
@@ -23,6 +26,7 @@ describe('founder repro: selecting Global on a process page', () => {
     expect(document.body.textContent).toContain('German analog')
     fireEvent.click(screen.getByRole('button', { name: /Global/ }))
     expect(document.body.textContent).not.toContain('German analog')
-    expect(document.body.textContent).toContain('Country mappings exist for')
+    // No availability line either (founder 2026-10-05) — the Global banner is empty.
+    expect(document.body.textContent).not.toContain('Country mappings exist for')
   })
 })

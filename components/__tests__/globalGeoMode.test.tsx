@@ -156,23 +156,15 @@ describe('default byte-identical (the static HTML never learns about ?geo=global
 })
 
 describe('?geo=global hides the country specifics (the country-agnostic lens)', () => {
-  it('banner: no explainer in the Global view (founder 2026-10-02) — availability line only, nothing promoted', () => {
-    const { container } = render(<ProcessGeoBanner geoScope="us" notes={NOTES} />)
+  it('banner: the Global view renders NOTHING (founder 2026-10-05 — the availability line left; the geo dropdown names the countries), with or without mappings', () => {
+    const withNotes = render(<ProcessGeoBanner geoScope="us" notes={NOTES} />)
     act(() => setGeoChoice(GEO_GLOBAL))
-    // The '🌐 Global view — …country-agnostic form…' explainer no longer renders.
-    expect(container.textContent).not.toContain('Global view')
-    expect(container.textContent).not.toContain('country-agnostic form')
-    // Availability only: the countries are named, the substance is not.
-    expect(container.textContent).toContain('United Kingdom')
-    expect(container.textContent).toContain('India')
-    expect(container.textContent).not.toContain('Companies House')
-    expect(container.textContent).not.toContain('SPICe+')
-  })
-
-  it('banner: Global view with no mappings renders nothing at all', () => {
-    const { container } = render(<ProcessGeoBanner geoScope="us" notes={[]} />)
-    act(() => setGeoChoice(GEO_GLOBAL))
-    expect(container.textContent).toBe('')
+    expect(withNotes.container.innerHTML).toBe('')
+    const withoutNotes = render(<ProcessGeoBanner geoScope="us" notes={[]} />)
+    expect(withoutNotes.container.innerHTML).toBe('')
+    // A country pick still renders the committed detail — the line's removal costs nothing.
+    act(() => setGeoChoice('UK'))
+    expect(withNotes.container.textContent).toContain('Register a private limited company with Companies House.')
   })
 
   it('geoNotes: the "Outside the US" block renders NOTHING in the Global view (founder 2026-10-02)', () => {
@@ -222,10 +214,10 @@ describe('manual country still wins; the switcher writes the shareable token', (
   it('Global → UK → US default: every block restores its country behavior unchanged', () => {
     const { container } = render(geoAware)
     act(() => setGeoChoice(GEO_GLOBAL))
-    // The geoNotes block is gone entirely under Global (founder 2026-10-02); the banner's
-    // availability line still names the mapped countries.
+    // The geoNotes block AND the banner are gone entirely under Global (founder 2026-10-02;
+    // the availability line followed 2026-10-05).
     expect(container.textContent).not.toContain('Outside the US')
-    expect(container.textContent).toContain('United Kingdom')
+    expect(container.textContent).not.toContain('United Kingdom')
     expect(container.textContent).not.toContain('Delaware-only')
     act(() => setGeoChoice('UK'))
     // The wrong-country-flow guard (founder 2026-10-02): the committed UK note LEADS the banner.
