@@ -80,6 +80,17 @@ rankings: most-automatable, best-covered, riskiest, most-annoying, growth-driver
 linked from every process page. Example:
 [${SITE}/processes/${processSlug(loadProcesses()[0].title)}](${SITE}/processes/${processSlug(loadProcesses()[0].title)}).
 
+## Open modules & artifacts
+
+- [Open modules](${SITE}/open-modules): the open business-logic modules (lib/openstartup/ — cap
+tables, vesting, 83(b) math, deadlines, franchise tax). One page per module at
+\`${SITE}/open-modules/{moduleId}\` naming the processes it serves and the judged vendor markets
+covering their steps (derived from the same arena leaderboards, never hand-picked).
+- [Artifacts](${SITE}/artifacts): the canonical business artifacts flowing between processes
+(processes/artifacts.json — the EIN, the stamped certificate, the opened bank account). One page
+per artifact at \`${SITE}/artifacts/{artifactId}\` with its canonical producer, every consumer
+process, and the judged vendor markets around the step that creates it.
+
 ## Data API (JSON, no auth)
 
 - [Categories](${SITE}/data/categories.json): every arena's id/name/description/personas/themes.
