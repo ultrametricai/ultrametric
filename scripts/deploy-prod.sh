@@ -35,8 +35,10 @@ if [ "${FORCE:-0}" != "1" ] && [ -f "$STAMP" ]; then
     echo "SKIP: last deploy ${AGE}s ago (<2h). Batch more merges or FORCE=1." ; exit 0
   fi
 fi
-# --turbo: the Turbo build machine (30 vCPU, 64 GB disk vs Standard's 32 GB). The 32 GB disk
-# is what every post-team-transfer deploy overflowed (ENOSPC packaging ~13 GB of static output
-# twice); Elastic machine selection kept right-sizing us DOWN to Standard. Billed per CPU-minute.
-vercel deploy --prod --archive=tgz --yes --turbo
+# No --turbo: the flag never produced a Turbo build (silently downgraded to 4-core, then
+# started refusing outright with "Not authorized" on 2026-10-05) — enabling bigger build
+# machines is a team-dashboard action, and the project-level setting applies server-side
+# without any flag. Deploys FIT the Standard 32 GB machine since the /vs→battle dedup.
+# npx pins a current CLI (the global install once sent a malformed turbo override).
+npx -y vercel@latest deploy --prod --archive=tgz --yes
 echo "$NOW" > "$STAMP"
