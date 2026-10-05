@@ -10,6 +10,7 @@ import { processIcon } from '@/lib/processIcons'
 import { loadProcesses, processSlug } from '@/lib/processes'
 import { processLeaderboard, type ProcessLeaderboardEntry } from '@/lib/processRankings'
 import { ordinal } from '@/lib/ordinal'
+import { TABLE_HEADER_ROW, TABLE_SHELL } from '@/components/tableStyles'
 
 // 🔁 PROCESS ranking (founder 2026-09-21). Ranks processes by how well the market already
 // serves them: each process's TOP processLeaderboard entry (lib/processRankings.ts) — the best
@@ -85,10 +86,10 @@ export default function BestCoveredProcessesPage() {
           step are unscored (never zero) and sort last.
         </p>
       </div>
-      <div className="overflow-x-auto rounded-xl border border-zinc-800">
+      <div className={TABLE_SHELL}>
         <table className="w-full border-collapse text-sm">
           <thead>
-            <tr className="border-b border-zinc-800 text-left text-xs uppercase tracking-widest text-zinc-500">
+            <tr className={TABLE_HEADER_ROW}>
               <th className="w-10 px-3 py-2 font-normal">#</th>
               <th className="px-3 py-2 font-normal">Process</th>
               <th className="px-3 py-2 font-normal" title="The single vendor with the highest process score (coverage × judged step quality)">

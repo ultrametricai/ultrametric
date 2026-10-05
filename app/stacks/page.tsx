@@ -5,6 +5,7 @@ import ProductLogoView from '@/components/ProductLogoView'
 import { loadAll } from '@/lib/data'
 import { hasLogo } from '@/lib/logos'
 import { metricLabel, resolveAllStacks } from '@/lib/aiStacks'
+import { TABLE_HEADER_ROW, TABLE_SHELL } from '@/components/tableStyles'
 
 export const metadata: Metadata = {
   title: 'AI Stacks — Ultrametric',
@@ -77,10 +78,10 @@ export default function StacksPage() {
           </div>
           <p className="mt-1 text-sm text-zinc-400">{stack.tagline}</p>
           <p className="mt-0.5 text-xs text-zinc-500">For: {stack.audience}</p>
-          <div className="mt-4 rounded-2xl border border-zinc-800">
+          <div className={`mt-4 ${TABLE_SHELL}`}>
             <table className="w-full border-collapse text-sm">
               <thead>
-                <tr className="border-b border-zinc-800 text-left text-[10px] uppercase tracking-widest text-zinc-400">
+                <tr className={TABLE_HEADER_ROW}>
                   <th scope="col" className="px-3 py-2 font-normal"><span title="The role this slot fills in the stack">Layer</span></th>
                   <th scope="col" className="px-3 py-2 font-normal"><span title="The product filling this slot — scored picks resolve live from the arena leaderboard; unscored slots are labeled AI judgement">Pick</span></th>
                   <th scope="col" className="hidden px-3 py-2 font-normal md:table-cell"><span title="The curators' one-line reason this slot exists">Why this pick</span></th>

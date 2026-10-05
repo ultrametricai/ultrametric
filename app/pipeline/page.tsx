@@ -18,6 +18,7 @@ import {
   nextUpArenas,
   sitePipelineTotals,
 } from '@/lib/testingPipeline'
+import { TABLE_HEADER_ROW, TABLE_SHELL } from '@/components/tableStyles'
 
 export const metadata: Metadata = {
   title: 'Testing pipeline — what we have NOT tested — Ultrametric',
@@ -127,10 +128,10 @@ export default function PipelinePage() {
           the most — heaviest stories on the most-watched products (capped at two per product so
           one giant can&rsquo;t fill the board). Have first-hand evidence for one? <Link href="/submit" className="text-emerald-400 underline decoration-emerald-400/40 hover:text-emerald-300">Send it in</Link>.
         </p>
-        <div className="mt-4 overflow-x-auto rounded-xl border border-zinc-800">
+        <div className={`mt-4 ${TABLE_SHELL}`}>
           <table className="w-full border-collapse text-sm">
             <thead>
-              <tr className="border-b border-zinc-800 text-left text-[10px] uppercase tracking-widest text-zinc-400">
+              <tr className={TABLE_HEADER_ROW}>
                 <th scope="col" className="px-3 py-2 font-normal">Product</th>
                 <th scope="col" className="px-3 py-2 font-normal"><span title="A judged story whose verdict has no hands-on tested evidence yet — the next probe to run">Untested story</span></th>
                 <th scope="col" className="hidden px-3 py-2 font-normal sm:table-cell"><span title="The product category (arena) it competes in">Arena</span></th>
@@ -178,10 +179,10 @@ export default function PipelinePage() {
           Sorted worst-first: the arenas with the largest untested share are where the rankings
           deserve the most skepticism — and the most contributed evidence.
         </p>
-        <div className="mt-4 overflow-x-auto rounded-xl border border-zinc-800">
+        <div className={`mt-4 ${TABLE_SHELL}`}>
           <table className="w-full border-collapse text-sm">
             <thead>
-              <tr className="border-b border-zinc-800 text-left text-[10px] uppercase tracking-widest text-zinc-400">
+              <tr className={TABLE_HEADER_ROW}>
                 <th scope="col" className="px-3 py-2 font-normal">Arena</th>
                 <th scope="col" className="hidden px-3 py-2 font-normal sm:table-cell"><span title="Judged products in this arena">Products</span></th>
                 <th scope="col" className="px-3 py-2 font-normal"><span title="Judged (product, story) verdict product user stories in this arena">Product user stories</span></th>
@@ -238,10 +239,10 @@ export default function PipelinePage() {
               surface answered its last check.
             </p>
           ) : (
-            <div className="mt-4 overflow-x-auto rounded-xl border border-zinc-800">
+            <div className={`mt-4 ${TABLE_SHELL}`}>
               <table className="w-full border-collapse text-sm">
                 <thead>
-                  <tr className="border-b border-zinc-800 text-left text-[10px] uppercase tracking-widest text-zinc-400">
+                  <tr className={TABLE_HEADER_ROW}>
                     <th scope="col" className="px-3 py-2 font-normal">Product</th>
                     <th scope="col" className="hidden px-3 py-2 font-normal sm:table-cell"><span title="The product category (arena) it competes in">Arena</span></th>
                     <th scope="col" className="px-3 py-2 font-normal"><span title="The monitored agent surface: llms.txt, MCP endpoint, or openapi.json">Surface</span></th>

@@ -37,6 +37,7 @@ import {
   type MegaTableRow,
   type SortDirection,
 } from '@/lib/megaTableSort'
+import { TABLE_HEADER_ROW, TABLE_SHELL } from '@/components/tableStyles'
 
 // The homepage's single global table over every product in every arena — replaces the old
 // three-preview-tables-plus-arena-cards-first layout (see app/page.tsx: hero → this → compact
@@ -237,12 +238,12 @@ export default function MegaTable({ rows, arenas }: { rows: MegaTableRow[]; aren
 
       {/* lg (not md): with every sm/md column visible the table needs ~810px, so a 768–1023px
           viewport still gets the horizontal scroll container instead of page-level overflow.
-          Mobile (founder 2026-09-24): the table bleeds edge-to-edge (-mx-5 cancels main's px-5;
-          side borders and corner radius drop so no space is wasted). */}
-      <div className="-mx-5 overflow-x-auto border-y border-zinc-800 sm:mx-0 sm:rounded-2xl sm:border lg:overflow-x-visible">
+          The old -mx-5 edge-to-edge mobile bleed is gone (founder 2026-10-05: one table shell
+          sitewide — components/tableStyles.ts). */}
+      <div className={`${TABLE_SHELL} lg:overflow-x-visible`}>
         <table className="w-full border-collapse text-[15px]">
           <thead>
-            <tr className="border-b border-zinc-800 text-left text-[10px] uppercase tracking-widest text-zinc-400">
+            <tr className={TABLE_HEADER_ROW}>
               <SortableTh col="name" current={column} direction={direction} onSort={handleSort}>
                 # / Product
               </SortableTh>

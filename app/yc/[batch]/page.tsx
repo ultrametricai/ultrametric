@@ -10,6 +10,7 @@ import { hasLogo } from '@/lib/logos'
 import { rankingJsonLd } from '@/lib/rankingJsonLd'
 import { batchLabel, buildYcRows, sortYcRows, type YcRow } from '@/lib/yc'
 import { ordinal } from '@/lib/ordinal'
+import { TABLE_HEADER_ROW, TABLE_SHELL } from '@/components/tableStyles'
 
 // Per-batch ranking of every TRACKED product carrying this verified ycBatch stamp, ordered by
 // agent readiness (rankings-page pattern: same table markup + JSON-LD as /rankings/most-open,
@@ -90,10 +91,10 @@ export default async function YcBatchPage({ params }: { params: Promise<{ batch:
         </p>
       </div>
 
-      <div className="overflow-x-auto rounded-xl border border-zinc-800">
+      <div className={TABLE_SHELL}>
         <table className="w-full border-collapse text-sm">
           <thead>
-            <tr className="border-b border-zinc-800 text-left text-xs uppercase tracking-widest text-zinc-500">
+            <tr className={TABLE_HEADER_ROW}>
               <th className="w-10 px-3 py-2 font-normal">#</th>
               <th className="px-3 py-2 font-normal">Product</th>
               <th className="px-3 py-2 font-normal" title="Agent-readiness score (0–100): can an agent drive it? MCP, API, docs an agent can consume — agent tested">

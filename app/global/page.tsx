@@ -8,6 +8,7 @@ import { parseStoryPersona } from '@/lib/storyText'
 import { adoptionNow } from '@/lib/diffusion'
 import { collectGlobalStories } from '@/lib/globalStories'
 import { canonGraphStoryIds } from '@/lib/storyGraph'
+import { TABLE_HEADER_ROW, TABLE_SHELL } from '@/components/tableStyles'
 
 // THE industry-stats page: every global story (capability comparable across ≥2 arenas — see
 // lib/globalStories.ts) with its adoption share among all tracked products, sorted most-adopted
@@ -81,10 +82,10 @@ export default function GlobalIndexPage() {
         />
       </section>
 
-      <div className="overflow-x-auto rounded-xl border border-zinc-800">
+      <div className={TABLE_SHELL}>
         <table className="w-full border-collapse text-sm">
           <thead>
-            <tr className="border-b border-zinc-800 text-left text-[10px] uppercase tracking-widest text-zinc-400">
+            <tr className={TABLE_HEADER_ROW}>
               <th scope="col" className="px-3 py-2 font-normal"><span title="An industry-wide capability judged in every arena (MCP server, llms.txt, agent docs…)">Capability</span></th>
               <th scope="col" className="hidden px-3 py-2 font-normal sm:table-cell"><span title="How many product categories (arenas) this capability was judged across">Arenas</span></th>
               <th scope="col" className="hidden px-3 py-2 font-normal sm:table-cell"><span title="Products with a full or partial verdict / all judged products">Products</span></th>

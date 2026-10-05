@@ -15,6 +15,7 @@ import { humanizeTheme, themeTooltip } from '@/lib/icons'
 import type { Story, Verdict } from '@/lib/schemas'
 import { cellAuthGated, verificationLevel } from '@/lib/verification'
 import AuthGatedMarker from '@/components/AuthGatedMarker'
+import { TABLE_HEADER_ROW } from '@/components/tableStyles'
 
 // Tooltip text for a matrix cell: the verdict plus a truncated excerpt of the first cited
 // evidence item (not necessarily the strongest tier — just the judge's first citation, kept
@@ -125,22 +126,24 @@ function StoryMatrixGroup({
     // max-h + overflow-auto gives the sticky thead below an actual scrolling ancestor to stick
     // within for this group's own rows, on top of the existing horizontal scroll for narrow
     // viewports — column identity (logos/names) stays visible while scrolling a long group.
-    <div className="max-h-[70vh] overflow-auto rounded-xl border border-zinc-800">
+    // Same rounded-2xl border as TABLE_SHELL (components/tableStyles.ts); the two-axis
+    // overflow-auto here is why the shell constant itself isn't used.
+    <div className="max-h-[70vh] overflow-auto rounded-2xl border border-zinc-800">
       {/* Group section name (e.g. "Caching") — secondary tier (zinc-400), never darker
           (founder 2026-09-30 readability sweep). */}
       {group !== theme && (
-        <p className="sticky left-0 border-b border-zinc-800 bg-zinc-950 px-4 py-2 text-xs text-zinc-400">{humanizeTheme(group)}</p>
+        <p className="sticky left-0 border-b border-zinc-800 bg-zinc-950 px-3 py-2 text-xs text-zinc-400">{humanizeTheme(group)}</p>
       )}
       <table className="w-full min-w-[560px] border-collapse text-sm">
         <thead className="sticky top-0 z-10 bg-zinc-950">
-          <tr className="border-b border-zinc-800 text-left text-xs text-zinc-500">
-            <th className="sticky left-0 z-20 bg-zinc-950 px-4 py-2 font-normal"><span title="The real buyer/user scenario every product in this arena is judged on">Story</span></th>
+          <tr className={TABLE_HEADER_ROW}>
+            <th className="sticky left-0 z-20 bg-zinc-950 px-3 py-2 font-normal"><span title="The real buyer/user scenario every product in this arena is judged on">Story</span></th>
             <th className="bg-zinc-950 px-2 py-2 font-normal"><span title="Whose perspective the story is told from — the kind of user who needs it">Persona</span></th>
             {data.products.map((p) => (
               <th key={p.id} className="bg-zinc-950 px-3 py-2 text-center font-normal">
                 <div className="flex flex-col items-center gap-1">
                   <ProductLogoView product={p} size={24} hasLogo={logoMap[p.id] ?? false} />
-                  <span className="text-[10px] text-zinc-400">{p.name}</span>
+                  <span className="text-xs text-zinc-400">{p.name}</span>
                   {/* Column-header honesty marker: verdicts below stay judged as-is, but the
                       vendor announced this product is closing (lib/shutdown.ts). */}
                   <ShutdownBadge shutdown={p.shutdown} source={p.shutdownSource} />
@@ -154,7 +157,7 @@ function StoryMatrixGroup({
             <tr key={s.id} id={`story-${s.id}`} className="scroll-mt-4">
               {/* Founder 2026-09-15: each story leads with its theme icon — a muted glyph that
                   tells the story's type at a glance without re-reading the group header. */}
-              <td className="sticky left-0 z-[5] bg-zinc-950 px-4 py-3 text-zinc-300">
+              <td className="sticky left-0 z-[5] bg-zinc-950 px-3 py-2.5 text-zinc-300">
                 <span className="flex items-start gap-2">
                   <span title={themeTooltip(s.theme)} className="mt-px shrink-0 text-zinc-600">
                     <ThemeIcon theme={s.theme} />
@@ -162,13 +165,13 @@ function StoryMatrixGroup({
                   {stripPersonaPrefix(s.title)}
                 </span>
               </td>
-              <td className="px-2 py-3 text-center">
+              <td className="px-2 py-2.5 text-center">
                 <PersonaChip persona={s.persona} />
               </td>
               {data.products.map((p) => {
                 const v = verdictFor(data, p.id, s.id)
                 return (
-                  <td key={p.id} className="px-3 py-3 text-center">
+                  <td key={p.id} className="px-3 py-2.5 text-center">
                     <Link
                       href={`/arena/${data.category.id}/product/${p.id}#story-${s.id}`}
                       title={cellTitle(v, s, evidence)}

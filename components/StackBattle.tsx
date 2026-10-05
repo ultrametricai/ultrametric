@@ -19,6 +19,7 @@ import {
   type BattleSideState,
   type StackAggregates,
 } from '@/lib/stackBattle'
+import { TABLE_HEADER_ROW, TABLE_SHELL } from '@/components/tableStyles'
 
 // /stacks/battle's client half: pick stack A and stack B — curated presets (data/ai-stacks.json,
 // resolved to product ids server-side) and/or custom product lists — and compare their
@@ -352,10 +353,10 @@ export default function StackBattle({
 
           <section className="space-y-2">
             <h2 className="font-display leading-[1.1] text-lg font-semibold tracking-tight">Slot by slot</h2>
-            <div className="overflow-x-auto rounded-2xl border border-zinc-800">
+            <div className={TABLE_SHELL}>
               <table className="w-full border-collapse text-sm">
                 <thead>
-                  <tr className="border-b border-zinc-800 text-left text-[10px] uppercase tracking-widest text-zinc-400">
+                  <tr className={TABLE_HEADER_ROW}>
                     <th scope="col" className="px-3 py-2 font-normal"><span title="The product category (arena) this slot fills — each side's pick for it is compared on the same judged scores">Arena</span></th>
                     <th scope="col" className="px-3 py-2 font-normal"><span title={`Stack A's pick for each arena slot`}>{aLabel}</span></th>
                     <th scope="col" className="px-3 py-2 font-normal">

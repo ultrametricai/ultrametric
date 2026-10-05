@@ -2,6 +2,7 @@ import Link from 'next/link'
 import AiEraBadge from '@/components/AiEraBadge'
 import { loadCategory } from '@/lib/data'
 import { familyForProduct, loadFamilies } from '@/lib/families'
+import { TABLE_HEADER_ROW, TABLE_SHELL } from '@/components/tableStyles'
 
 // "Products" block on a product page — rendered for EVERY product that belongs to a
 // family in data/product-families.json (parent or judged sub-product — see lib/families.ts),
@@ -59,10 +60,10 @@ export default function FamilySection({ arenaId, productId }: { arenaId: string;
         on the same stories as everyone else.
       </p>
       {judged.length > 0 && (
-        <div className="mt-3 overflow-x-auto rounded-lg border border-zinc-800/70 md:overflow-x-visible">
+        <div className={`mt-3 ${TABLE_SHELL} md:overflow-x-visible`}>
           <table className="w-full border-collapse text-sm">
             <thead>
-              <tr className="border-b border-zinc-800 text-left text-[10px] uppercase tracking-widest text-zinc-400">
+              <tr className={TABLE_HEADER_ROW}>
                 <th scope="col" className="px-2 py-1.5 font-normal"><span title="One of the company's individual products — each is judged separately in its own arena">Line</span></th>
                 <th scope="col" className="px-2 py-1.5 font-normal"><span title="The product category (arena) this line competes in">Arena</span></th>
                 <th scope="col" className="px-2 py-1.5 font-normal"><span title="Rank in its own arena's leaderboard">Rank</span></th>

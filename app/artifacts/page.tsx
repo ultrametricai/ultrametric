@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 import { artifactsByProducingArea } from '@/lib/artifactPages'
 import { REPO } from '@/lib/site'
+import { TABLE_HEADER_ROW, TABLE_SHELL } from '@/components/tableStyles'
 
 // /artifacts (founder 2026-10-05): the artifact registry (processes/artifacts.json) as a
 // browsable index — the canonical business things that flow between the founder processes (the
@@ -35,10 +36,10 @@ export default function ArtifactsPage() {
       {groups.map((g) => (
         <section key={g.area}>
           <h2 className="font-display text-xl font-semibold tracking-tight">{g.area}</h2>
-          <div className="mt-3 rounded-2xl border border-zinc-800">
+          <div className={`mt-3 ${TABLE_SHELL}`}>
             <table className="w-full border-collapse text-sm">
               <thead>
-                <tr className="border-b border-zinc-800 text-left text-[10px] uppercase tracking-widest text-zinc-400">
+                <tr className={TABLE_HEADER_ROW}>
                   <th scope="col" className="px-3 py-2 font-normal">Artifact</th>
                   <th scope="col" className="hidden px-3 py-2 font-normal sm:table-cell">
                     <span title="The one canonical producer process — where this artifact comes into existence">Produced by</span>

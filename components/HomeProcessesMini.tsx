@@ -3,6 +3,7 @@ import CeilingBar from '@/components/CeilingBar'
 import { IconGlyph } from '@/components/IconChip'
 import ProductLogoView from '@/components/ProductLogoView'
 import type { ProcessRow } from '@/components/ProcessesTable'
+import { TABLE_HEADER_ROW, TABLE_SHELL } from '@/components/tableStyles'
 
 // Homepage "Automating founder processes" section (founder 2026-09-30): a compact, static mini
 // table of ~20 processes from the same server-side rows /processes renders (lib/processRows.ts),
@@ -22,12 +23,12 @@ export default function HomeProcessesMini({ rows }: { rows: ProcessRow[] }) {
         </h2>
         {/* Founder 2026-10-02: the "mapped step-by-step … In the order a founder hits them:"
             intro paragraph is gone — the heading and the table stand alone. */}
-        <div className="mt-8 overflow-x-auto rounded-2xl border border-zinc-800">
+        <div className={`mt-8 ${TABLE_SHELL}`}>
           <table className="w-full border-collapse text-[15px]">
             <thead>
               {/* Sentence-case headers at a readable size (founder 2026-10-05 — the
                   ProcessesTable header idiom, applied wherever it repeats). */}
-              <tr className="border-b border-zinc-800 text-left text-xs tracking-wide text-zinc-400">
+              <tr className={TABLE_HEADER_ROW}>
                 <th scope="col" className="px-3 py-2 font-normal">Process</th>
                 <th scope="col" className="hidden px-3 py-2 font-normal sm:table-cell">Area</th>
                 <th scope="col" className="hidden px-3 py-2 font-normal lg:table-cell">

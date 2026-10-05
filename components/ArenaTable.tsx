@@ -25,6 +25,7 @@ import {
   filterArenaRows,
   sortArenaRows,
 } from '@/lib/arenaTableSort'
+import { TABLE_HEADER_ROW, TABLE_SHELL } from '@/components/tableStyles'
 
 // Single dense, sortable/filterable table that replaces the old leaderboard + two "question
 // strip" trio (see docs history: LeaderboardTable + QuestionRankStrip×2) — same underlying
@@ -164,12 +165,12 @@ export default function ArenaTable({ data, logoMap, pricing, hotReasons }: { dat
         onQuery={setQuery}
       />
 
-      <div className="-mx-5 overflow-x-auto border-y border-zinc-800 sm:mx-0 sm:rounded-xl sm:border">
+      <div className={TABLE_SHELL}>
         {/* The visible "Leaderboard" heading dropped (founder 2026-09-30: self-evident); the
             aria-label keeps an accessible name on the table itself. */}
         <table aria-label={`${data.category.name} rankings`} className="w-full border-collapse text-sm">
           <thead>
-            <tr className="border-b border-zinc-800 text-left text-[10px] uppercase tracking-widest text-zinc-400">
+            <tr className={TABLE_HEADER_ROW}>
               <SortableTh col="rank" current={column} direction={direction} onSort={handleSort} className="w-8">
                 #
               </SortableTh>

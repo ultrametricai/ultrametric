@@ -10,6 +10,7 @@ import { humanizeTheme } from '@/lib/icons'
 import { hasLogo } from '@/lib/logos'
 import { buildIcpRanking, icpTopThemes, loadIcpTypes, MIN_ICP_APPLICABLE } from '@/lib/icp'
 import { ordinal } from '@/lib/ordinal'
+import { TABLE_HEADER_ROW, TABLE_SHELL } from '@/components/tableStyles'
 
 // Cross-arena ranking through one ICP lens (see lib/icp.ts): every in-scope product across
 // every arena, ordered by the lens-weighted score. Fully static — params come from
@@ -64,10 +65,10 @@ export default async function IcpPage({ params }: { params: Promise<{ type: stri
         </p>
       </div>
 
-      <div className="overflow-x-auto rounded-xl border border-zinc-800">
+      <div className={TABLE_SHELL}>
         <table className="w-full border-collapse text-sm sm:min-w-[640px]">
           <thead>
-            <tr className="border-b border-zinc-800 text-left text-[10px] uppercase tracking-widest text-zinc-400">
+            <tr className={TABLE_HEADER_ROW}>
               <th scope="col" className="px-3 py-2 font-normal"># / Product</th>
               <th scope="col" className="hidden px-3 py-2 font-normal sm:table-cell"><span title="The product category (arena) it competes in">Arena</span></th>
               <th scope="col" className="px-3 py-2 font-normal"><span title="The product's theme scores re-weighted for this buyer type — same evidence, this lens's priorities">Lens score</span></th>

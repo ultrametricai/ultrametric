@@ -18,6 +18,7 @@ import {
   type StackConstraints,
   type StackMetric,
 } from '@/lib/stackBuilder'
+import { TABLE_HEADER_ROW, TABLE_SHELL } from '@/components/tableStyles'
 
 // /stacks/builder's client half: choose roles + constraints, get an evidence-backed stack —
 // every pick is the live leaderboard winner of its role's arena under the chosen constraints
@@ -190,10 +191,10 @@ export default function StackBuilder({
             </div>
           </div>
 
-          <div className="overflow-x-auto rounded-2xl border border-zinc-800">
+          <div className={TABLE_SHELL}>
             <table className="w-full border-collapse text-sm">
               <thead>
-                <tr className="border-b border-zinc-800 text-left text-[10px] uppercase tracking-widest text-zinc-400">
+                <tr className={TABLE_HEADER_ROW}>
                   <th scope="col" className="px-3 py-2 font-normal"><span title="The job this slot does in your stack">Role</span></th>
                   <th scope="col" className="px-3 py-2 font-normal"><span title="The top product for this role under your constraints — resolved live from the arena leaderboard">Pick</span></th>
                   <th scope="col" className="px-3 py-2 font-normal"><span title="The judged score the pick rests on — click through for the evidence">Evidence</span></th>

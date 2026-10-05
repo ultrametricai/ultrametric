@@ -11,6 +11,7 @@ import {
 } from '@/lib/controlSurfaces'
 import { readParam, setParams } from '@/lib/urlState'
 import { ordinal } from '@/lib/ordinal'
+import { TABLE_HEADER_ROW, TABLE_SHELL } from '@/components/tableStyles'
 
 // The /technologies ranking table: canonical control surfaces re-ranked client-side by the
 // toggle pills, each row expandable to its editorial pros/cons + the computed fleet stats +
@@ -174,10 +175,10 @@ export default function ControlSurfacesTable({ surfaces, emerging }: { surfaces:
         ))}
       </div>
 
-      <div className="-mx-5 overflow-x-auto border-y border-zinc-800 sm:mx-0 sm:rounded-xl sm:border">
+      <div className={TABLE_SHELL}>
         <table className="w-full border-collapse text-sm">
           <thead>
-            <tr className="border-b border-zinc-800 text-left text-[10px] uppercase tracking-widest text-zinc-400">
+            <tr className={TABLE_HEADER_ROW}>
               <th scope="col" className="px-3 py-2 font-normal">#</th>
               <th scope="col" className="px-3 py-2 font-normal">
                 <span title="An abstract way of controlling software — not a vendor. Click a row for pros, cons and the evidence behind the numbers">Surface</span>
@@ -212,7 +213,7 @@ export default function ControlSurfacesTable({ surfaces, emerging }: { surfaces:
             canonical surfaces would be dishonest. Counts below are real but cover only the arenas that judge them; the
             readiness-lift stat is withheld on small samples.
           </p>
-          <div className="-mx-5 overflow-x-auto border-y border-zinc-800 sm:mx-0 sm:rounded-xl sm:border">
+          <div className={TABLE_SHELL}>
             <table className="w-full border-collapse text-sm">
               <tbody className="divide-y divide-zinc-800/70">
                 {emerging.map((row) => (

@@ -17,6 +17,7 @@ import {
 import { phaseEmoji, phaseIcon, phaseTooltip } from '@/lib/processIcons'
 import { URGENCY_TIERS, type ProcessKind, type Urgency } from '@/lib/processSim'
 import { readParams, setParams } from '@/lib/urlState'
+import { TABLE_HEADER_ROW, TABLE_SHELL } from '@/components/tableStyles'
 
 // The /processes controller: one dense sortable/filterable table over the whole founder-process
 // corpus (mega-table pattern — see components/MegaTable.tsx), replacing the phase-grouped card
@@ -727,16 +728,16 @@ export default function ProcessesTable({
       />
       {/* The old "← grouped by area" reset pill is gone (founder 2026-09-30): the grouped view
           lives in the rank-by dropdown as its top entry, so the way back is always visible. */}
-      {/* The rounded-2xl border wrapper matches the other tables (HomeProcessesMini idiom) —
-          founder 2026-10-05: the edge-to-edge mobile variant lost the corners. */}
-      <div className="overflow-x-auto rounded-2xl border border-zinc-800 md:overflow-x-visible">
+      {/* The shared table shell (components/tableStyles.ts) — founder 2026-10-05: one wrapper
+          and header treatment sitewide; this table is the reference. */}
+      <div className={`${TABLE_SHELL} md:overflow-x-visible`}>
         <table className="w-full border-collapse text-sm">
           <thead>
             {/* In the grouped view no column is sorted-on (current=null, aria-sort none) —
                 clicking any header sorts that column and flattens the table. Headers are
                 sentence case at a readable size (founder 2026-10-05: one case style, no ALL
                 CAPS; text-xs minimum) — still under the body's text-sm. */}
-            <tr className="border-b border-zinc-800 text-left text-xs tracking-wide text-zinc-400">
+            <tr className={TABLE_HEADER_ROW}>
               <SortableTh col="title" current={grouped ? null : column} direction={direction} onSort={handleSort}><span title="A real startup operating process, mapped step by step">Process</span></SortableTh>
               {/* 'Area' (founder 2026-10-05): the sitewide Phase→Area doctrine reaches the
                   header — the column/filter mechanics still key on the internal phase field. */}
@@ -759,7 +760,7 @@ export default function ProcessesTable({
                     {/* Area header: friendly name + row count (chain rows count as processes —
                         founder 2026-09-29). colSpan spans whatever columns the breakpoint shows
                         (hidden columns collapse it), so the header reads fine at the homepage
-                        width and in the mobile edge-to-edge table. */}
+                        width and inside the mobile scroll shell. */}
                     <tr className="bg-zinc-900/50">
                       <th colSpan={5} scope="colgroup" className="px-2 pb-1.5 pt-3 text-left font-normal">
                         <span className="flex flex-wrap items-baseline gap-x-2 gap-y-0.5">

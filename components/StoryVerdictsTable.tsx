@@ -29,6 +29,7 @@ import {
   isStoryUntested,
   sortStoryVerdictRows,
 } from '@/lib/storyVerdictsSort'
+import { TABLE_HEADER_ROW, TABLE_SHELL } from '@/components/tableStyles'
 
 // Sortable/filterable replacement for the product page's old vertical "Story verdicts" list
 // (same data, one dense view instead of a long theme-grouped scroll). Every row keeps the old
@@ -353,10 +354,10 @@ export default function StoryVerdictsTable({
         {sorted.length}/{rows.length} stories · click a row&rsquo;s chevron for the rationale and evidence
       </p>
 
-      <div className="overflow-x-auto rounded-xl border border-zinc-800">
+      <div className={TABLE_SHELL}>
         <table className="w-full min-w-[760px] border-collapse text-sm">
           <thead>
-            <tr className="border-b border-zinc-800 text-left text-xs uppercase tracking-widest text-zinc-400">
+            <tr className={TABLE_HEADER_ROW}>
               <SortableTh col="title" current={column} direction={direction} onSort={handleSort}>
                 <span title="The real buyer/user scenario the product was judged on — expand a row for the rationale and evidence">Story</span>
               </SortableTh>

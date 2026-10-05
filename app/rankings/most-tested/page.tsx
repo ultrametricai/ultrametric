@@ -11,6 +11,7 @@ import { confidenceFor, type ProductConfidence } from '@/lib/confidence'
 import { loadAll, type CategoryData } from '@/lib/data'
 import { rankingJsonLd } from '@/lib/rankingJsonLd'
 import { ordinal } from '@/lib/ordinal'
+import { TABLE_HEADER_ROW, TABLE_SHELL } from '@/components/tableStyles'
 
 interface TestedRow {
   data: CategoryData
@@ -104,10 +105,10 @@ export default function MostTestedRankingPage() {
           page leads with exactly those gaps.
         </p>
       </div>
-      <div className="overflow-x-auto rounded-xl border border-zinc-800">
+      <div className={TABLE_SHELL}>
         <table className="w-full border-collapse text-sm">
           <thead>
-            <tr className="border-b border-zinc-800 text-left text-xs uppercase tracking-widest text-zinc-500">
+            <tr className={TABLE_HEADER_ROW}>
               <th className="w-10 px-3 py-2 font-normal">#</th>
               <th className="px-3 py-2 font-normal">Product</th>
               <th className="px-3 py-2 font-normal" title="Share of applicable verdict product user stories whose strongest cited evidence is tested (hands-on probe or inspectable source)">

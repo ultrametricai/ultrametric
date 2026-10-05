@@ -4,6 +4,7 @@ import GeoMark from '@/components/GeoMark'
 import { IconGlyph } from '@/components/IconChip'
 import { phaseIcon, phaseTooltip } from '@/lib/processIcons'
 import { processesForVendor, type VendorProcessAppearance } from '@/lib/vendorProcesses'
+import { TABLE_HEADER_ROW, TABLE_SHELL } from '@/components/tableStyles'
 
 // Server component: "Processes this product serves" — the founder ask (2026-09-21): every
 // company/product page lists the founder processes it comes up in, clicking through to the
@@ -162,10 +163,10 @@ function AppearanceRows({ rows }: { rows: VendorProcessAppearance[] }) {
 
 function AppearanceTable({ rows }: { rows: VendorProcessAppearance[] }) {
   return (
-    <div className="overflow-x-auto rounded-2xl border border-zinc-800 md:overflow-x-visible">
+    <div className={`${TABLE_SHELL} md:overflow-x-visible`}>
       <table className="w-full border-collapse text-sm">
         <thead>
-          <tr className="border-b border-zinc-800 text-left text-[10px] uppercase tracking-widest text-zinc-400">
+          <tr className={TABLE_HEADER_ROW}>
             <th scope="col" className="px-2 py-1.5 font-normal"><span title="The founder process this product comes up in — links to its process page">Process</span></th>
             <th scope="col" className="px-2 py-1.5 font-normal"><span title="Company-lifecycle phase the process belongs to">Phase</span></th>
             <th scope="col" className="px-2 py-1.5 font-normal"><span title="How this product comes up: its process-leaderboard rank and step coverage, or a cross-arena / computer-use / canonical role">Role</span></th>

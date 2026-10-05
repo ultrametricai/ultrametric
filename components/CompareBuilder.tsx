@@ -39,6 +39,7 @@ import { stripPersonaPrefix } from '@/lib/data-helpers'
 import { metricIcon, metricTooltip, themeIcon, themeTooltip } from '@/lib/icons'
 import { parseStoryPersona } from '@/lib/storyText'
 import { withBase } from '@/lib/site'
+import { TABLE_HEADER_ROW, TABLE_SHELL } from '@/components/tableStyles'
 
 // /compare's client half: pick up to MAX_COMPARE products from anywhere on the site and see
 // them side by side. Selection state lives in `?p=stripe,mercury,claude-code` — read via
@@ -366,15 +367,15 @@ export default function CompareBuilder({ products }: { products: CompareProduct[
         </p>
       ) : (
         <>
-        <div className="overflow-x-auto rounded-2xl border border-zinc-800">
+        <div className={TABLE_SHELL}>
           <table className="w-full border-collapse text-sm">
             <thead>
-              <tr className="border-b border-zinc-800 text-left">
-                <th scope="col" className="px-3 py-3 text-[10px] font-normal uppercase tracking-widest text-zinc-400">
+              <tr className={TABLE_HEADER_ROW}>
+                <th scope="col" className="px-3 py-2 font-normal">
                   <span className="sr-only">Metric</span>
                 </th>
                 {selected.map((p) => (
-                  <th key={p.id} scope="col" className="min-w-[140px] px-3 py-3 font-normal align-top">
+                  <th key={p.id} scope="col" className="min-w-[140px] px-3 py-2 font-normal align-top">
                     <div className="flex flex-col items-start gap-1">
                       <Link
                         href={`/arena/${p.arenaId}/product/${p.id}`}
@@ -472,7 +473,7 @@ export default function CompareBuilder({ products }: { products: CompareProduct[
                 <th
                   colSpan={selected.length + 1}
                   scope="colgroup"
-                  className="bg-zinc-900/40 px-3 py-2 text-left text-[10px] font-normal uppercase tracking-widest text-zinc-400"
+                  className="bg-zinc-900/40 px-3 py-2 text-left text-xs font-normal tracking-wide text-zinc-400"
                 >
                   <span title="Judged scenarios every selected product's arena shares — the most important (weight-3) first">Key stories</span>
                 </th>
@@ -547,7 +548,7 @@ export default function CompareBuilder({ products }: { products: CompareProduct[
                     <th
                       colSpan={selected.length + 1}
                       scope="colgroup"
-                      className="bg-zinc-900/40 px-3 py-2 text-left text-[10px] font-normal uppercase tracking-widest text-zinc-400"
+                      className="bg-zinc-900/40 px-3 py-2 text-left text-xs font-normal tracking-wide text-zinc-400"
                     >
                       <span title="Extra judged scenarios you added from the story picker below">Added stories</span>
                     </th>

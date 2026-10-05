@@ -100,6 +100,7 @@ import {
   type VsPricingMap,
   type VsRunState,
 } from '@/lib/virtualStartupRun'
+import { TABLE_HEADER_ROW } from '@/components/tableStyles'
 
 // The Virtual Startup timeline (see lib/virtualStartup.ts for the honesty contract): the reader
 // picks the starting decisions, then a synthetic company replays the REAL selected processes in
@@ -2221,13 +2222,13 @@ export default function VirtualStartup({
               <div className="mt-4 overflow-x-auto">
                 <table className="w-full border-collapse text-sm">
                   <thead>
-                    <tr className="border-b border-zinc-800 text-left text-[10px] uppercase tracking-widest text-zinc-400">
+                    <tr className={TABLE_HEADER_ROW}>
                       <th scope="col" className="py-2 pr-3 font-normal">Process</th>
                       <th scope="col" className="py-2 pr-3 font-normal">Cadence</th>
                       <th scope="col" className="py-2 pr-3 font-normal">
                         <span className="flex gap-1" aria-label="January through December">
                           {MONTH_LABELS.map((m) => (
-                            <span key={m} title={m} className="w-2 text-center normal-case">{m[0]}</span>
+                            <span key={m} title={m} className="w-2 text-center">{m[0]}</span>
                           ))}
                         </span>
                       </th>
@@ -2276,7 +2277,7 @@ export default function VirtualStartup({
                           lastCadence = row.cadenceLabel
                           nodes.push(
                             <tr key={`group-${row.cadenceLabel}`} data-testid="vs-cadence-group" className="bg-zinc-900/40">
-                              <th colSpan={6} scope="colgroup" className="py-1.5 pr-3 text-left text-[10px] font-normal uppercase tracking-widest text-zinc-400">
+                              <th colSpan={6} scope="colgroup" className="py-1.5 pr-3 text-left text-xs font-normal tracking-wide text-zinc-400">
                                 {row.cadenceLabel}
                               </th>
                             </tr>,
@@ -2311,7 +2312,7 @@ export default function VirtualStartup({
                   <div className="mt-4 overflow-x-auto">
                     <table className="w-full border-collapse text-sm">
                       <thead>
-                        <tr className="border-b border-zinc-800 text-left text-[10px] uppercase tracking-widest text-zinc-400">
+                        <tr className={TABLE_HEADER_ROW}>
                           <th scope="col" className="py-2 pr-3 font-normal">Process</th>
                           <th scope="col" className="py-2 pr-3 font-normal">Cadence</th>
                           <th scope="col" className="py-2 pr-3 text-right font-normal">First run</th>
