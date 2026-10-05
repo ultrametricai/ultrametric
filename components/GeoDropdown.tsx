@@ -103,7 +103,7 @@ export default function GeoDropdown({ defaultChoice = null }: { defaultChoice?: 
         aria-haspopup="listbox"
         aria-expanded={open}
         onClick={() => setOpen((v) => !v)}
-        title="Where you operate — a country view keeps the processes with a real analog there (committed evidence) and lists what it hides below the table; never re-ranks"
+        title="Where you operate — a country view keeps the global processes and lists the US-specific ones it hides (with their committed local analogs) below the table; never re-ranks"
         className="flex items-center gap-1.5 rounded-lg border border-zinc-800 px-2 py-1 text-xs text-zinc-300 transition hover:border-emerald-400/60 hover:text-emerald-300"
       >
         <span aria-hidden>{current ? current.flag : '🇺🇸'}</span>

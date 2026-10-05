@@ -291,11 +291,11 @@ export default function ProcessesTable({
   // us/us-state rows always wear the 🇺🇸 flag (usFlagGlyph — strictly geoScope-keyed, the label
   // telling federal from state work) and global rows wear nothing, identically in the server
   // render and under any selection. Never re-sorts; since the country-view filter (founder
-  // 2026-10-02: "?geo=in should hide the processes that are not used in that country") a
-  // COUNTRY selection also hides the US-scoped rows whose committed note says the need is
-  // absorbed into another process there or doesn't exist (hiddenInCountryView) — the
-  // no-selection default and 🌐 Global keep the full corpus, and the muted disclosure line
-  // under the table keeps the hidden titles reachable.
+  // 2026-10-02, tightened 2026-10-05: a non-global view must not show US-only processes) a
+  // COUNTRY selection hides EVERY US-scoped row (hiddenInCountryView — 'analog' notes
+  // included) — the no-selection default and 🌐 Global keep the full corpus, and the muted
+  // disclosure line under the table keeps the hidden titles (and their committed analog
+  // summaries) reachable.
   const geo = useGeoSelection()
   // What the active country view hides, for the honesty disclosure under the table — computed
   // over the WHOLE row set (the country view as such; the phase/text filters narrow the table
@@ -370,9 +370,9 @@ export default function ProcessesTable({
     const q = query.trim().toLowerCase()
     return rows.filter(
       (r) =>
-        // The country-view filter (founder 2026-10-02): under a country selection, US-scoped
-        // rows stay only where the committed note says the need exists there as its own doable
-        // process. No selection / 🌐 Global ⇒ geo is null ⇒ the full corpus, exactly as before.
+        // The country-view filter (founder 2026-10-02, tightened 2026-10-05): under a country
+        // selection every US-scoped row hides — committed analogs surface in the disclosure
+        // below the table. No selection / 🌐 Global ⇒ geo is null ⇒ the full corpus, as before.
         (geo === null || !hiddenInCountryView(r, geo))
         && (phase === 'all' || r.phase === phase)
         && (cadence === null || r.cadenceLabel === cadence)
@@ -769,11 +769,14 @@ export default function ProcessesTable({
       </div>
       {/* The country view's honesty disclosure (founder 2026-10-02, house disclosure idiom):
           hiding a US-specific row must never destroy the information — one muted line says how
-          many rows this country view hides (and how many of those are handled inside other
-          processes there, per the committed note kinds), and expands to the hidden titles with
-          their committed one-liner summaries, each still linking to its process page. */}
+          many rows this country view hides (and, per the committed note kinds, how many have a
+          local analog there and how many are handled inside other processes there), and expands
+          to the hidden titles with their committed one-liner summaries, each still linking to
+          its process page. Since every US-scoped row hides under a country view (founder
+          2026-10-05), this line is the discoverability path for the curated analogs. */}
       {geo !== null && hiddenRows.length > 0 && (() => {
         const country = GEO_PREF_META[geo].label
+        const analogs = hiddenRows.filter((r) => r.geoNotesByCountry[geo]?.kind === 'analog').length
         const absorbed = hiddenRows.filter((r) => r.geoNotesByCountry[geo]?.kind === 'absorbed').length
         return (
           <div className="px-2 text-xs text-zinc-500">
@@ -784,7 +787,14 @@ export default function ProcessesTable({
               className="text-left transition hover:text-emerald-300"
             >
               {hiddenRows.length} US-specific {hiddenRows.length === 1 ? 'process' : 'processes'} hidden in the {country} view
-              {absorbed > 0 && <> — {absorbed} {absorbed === 1 ? 'is' : 'are'} handled inside other processes there</>}
+              {(analogs > 0 || absorbed > 0) && (
+                <>
+                  {' — '}
+                  {analogs > 0 && <>{analogs} {analogs === 1 ? 'has' : 'have'} a local analog there</>}
+                  {analogs > 0 && absorbed > 0 && ', '}
+                  {absorbed > 0 && <>{absorbed} {absorbed === 1 ? 'is' : 'are'} handled inside other processes there</>}
+                </>
+              )}
               <span aria-hidden className="ml-1 text-[10px]">{hiddenOpen ? '▴' : '▾'}</span>
             </button>
             {hiddenOpen && (
