@@ -9,7 +9,7 @@ import { staticTargets, stopRuntime } from '../check-preview-runtime.mjs'
 const roots: string[] = []
 const checker = path.resolve('scripts/check-preview-runtime.mjs')
 const traces = ['processes/preview/page.js.nft.json', 'processes/preview/[id]/page.js.nft.json', 'processes/incorporate-c-corp/v2/page.js.nft.json']
-const inputs = ['processes/corpus.json', 'journeys/chains.json']
+const inputs = ['processes/corpus.json', 'journeys/chains.json', 'processes/business-logic-map.json']
 function fixture(omit?: { trace: number; file: string }, staticExtras: string[] = []) {
   const root = mkdtempSync(path.join(tmpdir(), 'preview-trace-test-'))
   roots.push(root)
@@ -41,10 +41,10 @@ function check(root: string) {
 afterEach(() => { for (const root of roots.splice(0)) rmSync(root, { recursive: true, force: true }) })
 
 describe('preview deployment trace regression gate', () => {
-  it('accepts both existing runtime files in every preview trace', () => {
+  it('accepts all required runtime files in every preview trace', () => {
     expect(check(fixture()).status).toBe(0)
   })
-  it.each(traces.map((trace, index) => ({ trace, index })))('rejects either omitted runtime file in $trace', ({ index }) => {
+  it.each(traces.map((trace, index) => ({ trace, index })))('rejects any omitted runtime file in $trace', ({ index }) => {
     for (const file of inputs) {
       const result = check(fixture({ trace: index, file }))
       expect(result.status).not.toBe(0)

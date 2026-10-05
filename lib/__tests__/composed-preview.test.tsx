@@ -14,7 +14,7 @@ afterEach(cleanup)
 
 describe('composed canonical previews', () => {
   it('counts resolved default subprocess scopes, approvals and human work without inventing completion estimates', () => {
-    expect(processSummary(record, records)).toEqual({ steps: 22, subprocesses: 4, agent: 18, approvals: 7, person: 3, manual: 1, signature: null, unverified: null, completionTime: null, automation: null, cost: null })
+    expect(processSummary(record, records)).toEqual({ steps: 22, subprocesses: 4, agent: 18, approvals: 7, person: 3, manual: 1, signature: null, unverified: null, completionTime: null, automation: null, cost: null, agentCeiling: 82 })
     expect(processSummary(record).steps).toBeNull()
     const cycle = { ...record, parts: [{ ...record.parts[0], ref: record.id }] }
     expect(processSummary(cycle, [cycle]).steps).toBeNull()
@@ -47,9 +47,7 @@ describe('composed canonical previews', () => {
     expect(processChoice.groups.map(group => group.title)).toEqual(['Accounting & Bookkeeping', 'Online Payments', 'Startup Banking'])
     const el = render(<SharedProcessReader record={record} records={records} comparisons={comparisons} processChoice={processChoice} />)
     const summary = el.container.querySelector('[aria-label="Process summary"]')!
-    expect(summary.textContent).toContain('22Steps across 4 subprocesses')
-    expect(summary.textContent).toContain('18Agent')
-    expect(summary.textContent).toContain('7Agent-step approvals')
+    expect(summary.textContent).toBe('82%Agentic ceiling')
     expect(el.container.querySelectorAll('article')).toHaveLength(26)
     const bookkeeping = el.container.querySelector('[id="get-paid:part-4"]')!
     expect(bookkeeping.querySelector('h3 a')?.textContent).toBe('Bookkeeping close')
@@ -59,9 +57,9 @@ describe('composed canonical previews', () => {
     const ids = [...el.container.querySelectorAll('[id]')].map(element => element.id)
     expect(new Set(ids).size).toBe(ids.length)
     const payments = el.getByRole('region', { name: 'Online Payments' })
-    const expand = within(payments).queryByRole('button', { name: /^\+ / })
-    if (expand) fireEvent.click(expand)
+    expect(within(payments).queryByRole('button', { name: /^\+ / })).toBeNull()
     fireEvent.click(within(payments).getByRole('button', { name: 'Use Stripe' }))
+    expect(summary.textContent).toBe('82%Agentic ceiling')
     expect(el.container.querySelectorAll('article [aria-pressed="true"]').length).toBeGreaterThan(1)
     expect(el.queryByRole('button', { name: 'Graph' })).toBeNull()
     expect(el.getByRole('region', { name: 'Process overview graph' })).toBeDefined()

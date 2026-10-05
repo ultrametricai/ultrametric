@@ -15,7 +15,7 @@ export function PreviewGuidance({ guidance, briefs = [], scope, choiceScope, par
   const provider = selection && Object.hasOwn(selection.overrides, scope) ? selection.overrides[scope]
     : choiceScope ? selectedVendor(selection, choiceScope, parentChoiceScope) : undefined
   const text = briefs.find(brief => brief.candidateId === provider)?.guidance ?? guidance
-  return text ? <p className="whitespace-pre-line break-words leading-relaxed text-zinc-400">{text}</p> : null
+  return text ? <p className="whitespace-pre-line break-words text-base leading-relaxed text-zinc-400">{text}</p> : null
 }
 
 export function ProviderScope({ candidateId, choiceScope, parentChoiceScope, children }: { candidateId: string; choiceScope?: string; parentChoiceScope?: string; children: ReactNode }) {

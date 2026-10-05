@@ -45,7 +45,10 @@ describe('existing index presentation over shared records', () => {
     expect(table.querySelectorAll('tbody tr')).toHaveLength(172)
     expect(el.getByRole('searchbox', { name: 'Search processes' }).getAttribute('placeholder')).toContain('172')
     const contractor = table.querySelector('a[href="/processes/preview/add-a-contractor-1099"]')!
-    expect(contractor.textContent).toBe('Add a contractor (1099) using AI')
+    expect(contractor.textContent).toBe('Add a contractor (1099)')
+    for (const record of records) {
+      expect(table.querySelector(`a[href="${sharedPreviewHref(record.id, records)}"]`)?.textContent).toBe(record.title)
+    }
     expect(contractor.closest('tr')?.querySelector('img')?.getAttribute('width')).toBe('24')
     const equity = table.querySelector('a[href*="review-common-stock"]')!.closest('tr')!
     expect(equity.querySelectorAll('td')[2].textContent).toBe('')

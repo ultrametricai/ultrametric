@@ -43,6 +43,7 @@ const PREVIEW_RUNTIME = [
   "./processes/corpus.json",
   "./processes/artifacts.json",
   "./processes/vendor-registry.json",
+  "./processes/business-logic-map.json",
   "./journeys/chains.json",
   "./content/processes/**",
   "./docs/assets/**",

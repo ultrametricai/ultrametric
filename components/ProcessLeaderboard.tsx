@@ -2,12 +2,12 @@ import type { ReactNode } from 'react'
 import Link from 'next/link'
 import ProcessYourVendor from '@/components/ProcessYourVendor'
 import ProductLogoView from '@/components/ProductLogoView'
+import RankOrdinal from '@/components/RankOrdinal'
 import VendorGeoMark, { VendorGeoShade } from '@/components/VendorGeoMark'
 import { hasLogo } from '@/lib/logos'
 import type { ProcessTask } from '@/lib/processes'
 import { processLeaderboard } from '@/lib/processRankings'
 import { vendorGeoLookup } from '@/lib/vendorGeo'
-import { ordinal } from '@/lib/ordinal'
 
 // "Who covers this process best" — the process-level, story-derived ranking (founder ask:
 // don't assume the user has a vendor; look at what stories the vendors support for the process
@@ -84,7 +84,7 @@ export default function ProcessLeaderboard({ task, mineHref, scopeNote }: {
               are gone — vendor, score, and the links carry the row; the per-step citations live
               in the step blocks of the diagram below. */}
           <div className="flex items-center gap-3 px-4 py-2.5 transition hover:bg-zinc-900/60">
-            <span className="w-7 shrink-0 font-mono text-xs tabular-nums text-zinc-500">{ordinal(i + 1)}</span>
+            <RankOrdinal rank={i + 1} />
             <span className="flex min-w-0 grow items-center gap-2">
               <ProductLogoView product={{ id: e.productId, name: e.name }} size={18} hasLogo={hasLogo(e.productId)} />
               <Link
@@ -95,7 +95,7 @@ export default function ProcessLeaderboard({ task, mineHref, scopeNote }: {
               </Link>
               <Link
                 href={`/arena/${e.arenaId}`}
-                className="hidden truncate text-[11px] text-zinc-500 transition hover:text-emerald-300 sm:inline"
+                className="hidden truncate text-sm text-zinc-500 transition hover:text-emerald-300 sm:inline"
               >
                 {e.arenaName}
               </Link>

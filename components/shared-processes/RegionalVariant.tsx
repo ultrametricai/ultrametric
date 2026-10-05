@@ -29,13 +29,13 @@ export function RegionalVariantSelector() {
     <div className="inline-flex max-w-full flex-wrap items-center gap-0.5 rounded-full border border-zinc-800 p-1 sm:gap-1">
       {options.map(option => <label key={option.id} className="relative cursor-pointer">
         <input type="radio" name={id} value={option.id} aria-label={option.title} checked={state.selected === option.id} onChange={() => state.select(option.id)} className="peer sr-only" />
-        <span className={`inline-flex min-h-9 items-center whitespace-nowrap rounded-full px-2 py-1 text-xs transition peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-emerald-300 sm:px-3 ${state.selected === option.id ? 'bg-emerald-400/15 font-medium text-emerald-300 ring-1 ring-emerald-400/50' : 'text-zinc-400 hover:text-zinc-200'}`} title={option.title}>
+        <span className={`inline-flex min-h-9 items-center whitespace-nowrap rounded-full px-2 py-1 text-sm transition peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-emerald-300 sm:px-3 ${state.selected === option.id ? 'bg-emerald-400/15 font-medium text-emerald-300 ring-1 ring-emerald-400/50' : 'text-zinc-400 hover:text-zinc-200'}`} title={option.title}>
           {option.countries.map(country => <span aria-hidden="true" key={country} className="mr-1">{GEO_PREF_META[country as GeoCountry]?.flag}</span>)}
           {option.countries.length ? option.countries.join(' / ') : option.id === 'default' ? 'Default' : option.title}
         </span>
       </label>)}
     </div>
-    <p id={`${id}-scope`} className={hasUnadaptedSteps ? "text-xs text-zinc-400" : "sr-only"}><span className="sr-only">Changes “{state.decision.title}” only.</span>{hasUnadaptedSteps && ' Other steps have not been adapted to this region.'}</p>
+    <p id={`${id}-scope`} className={hasUnadaptedSteps ? "text-sm text-zinc-400" : "sr-only"}><span className="sr-only">Changes “{state.decision.title}” only.</span>{hasUnadaptedSteps && ' Other steps have not been adapted to this region.'}</p>
   </fieldset>
 }
 
@@ -47,13 +47,19 @@ export function RegionalDecisionTitle({ scope, title }: { scope: string; title: 
 }
 
 // Only the explicitly bound choice changes. Other decisions/nested graphs keep their UI.
+export function RegionalOptions({ scope, children }: { scope: string; children: ReactNode }) {
+  const state = useRegionalVariant()
+  const bound = state?.decision?.scope === scope
+  return <div className={bound ? 'space-y-3' : 'divide-y divide-zinc-800/70 overflow-hidden rounded-xl border border-zinc-800'}>{children}</div>
+}
+
 export function RegionalOption({ scope, optionId, id, heading, assessment, children }: {
   scope: string; optionId: string; id: string; heading: ReactNode; assessment?: ReactNode; children: ReactNode
 }) {
   const state = useRegionalVariant()
   const bound = state?.decision?.scope === scope && state.decision.options.some(option => option.id === optionId)
   if (bound) return state.selected === optionId
-    ? <div id={id} className="min-w-0 px-3 py-3 sm:px-4"><div>{assessment}</div><div className="mt-3 space-y-3">{children}</div></div>
+    ? <div id={id} className="min-w-0 space-y-3"><div>{assessment}</div>{children}</div>
     : null
   return <details id={id} open={optionId === 'default'} className="min-w-0 px-3 py-3 sm:px-4"><summary className="cursor-pointer break-words font-medium text-zinc-100">{heading}</summary><div className="mt-3 space-y-3">{children}</div></details>
 }

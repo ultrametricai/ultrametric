@@ -98,6 +98,6 @@ export default function GraphTypeTooltip({ label, symbol, color }: { label: stri
       onPointerEnter={event => { if (event.pointerType !== 'touch') { hovered.current = true; clearTimeout(timer.current) } }}
       onPointerLeave={leave}
       style={{ position: 'fixed', zIndex: 100, left: position?.left ?? 0, top: position?.top ?? 0, visibility: position ? 'visible' : 'hidden', maxWidth: 'min(18rem, calc(100vw - 16px))' }}
-      className="w-max rounded-lg border border-zinc-700 bg-zinc-950 p-2 text-xs leading-relaxed text-zinc-200 shadow-xl">{label}</div>, document.body)}
+      className="w-max rounded-lg border border-zinc-700 bg-zinc-950 p-2 text-sm leading-relaxed text-zinc-200 shadow-xl">{label}</div>, document.body)}
   </>
 }

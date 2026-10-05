@@ -65,8 +65,8 @@ it('reuses sourced metadata without treating a vendor package as a process-wide 
   const filing = within(el.container.querySelector('[id="form_001:n4:default"]') as HTMLElement)
   expect(filing.getByText('$109 government fee · as of 2026-10-01')).toBeDefined()
   expect(filing.getByText('open docs:')).toBeDefined()
-  expect(filing.getByText('✓ verify:')).toBeDefined()
-  expect(filing.getByText('⚠ if it goes wrong').closest('details')?.open).toBe(false)
+  expect(filing.queryByText('✓ verify:')).toBeNull()
+  expect(filing.queryByText('⚠ if it goes wrong')).toBeNull()
   expect(el.container.querySelector('[id="form_001:n5"]')?.textContent).toContain('Certificate of Incorporation')
   // Current main renders produced artifacts only; prerequisites stay in source.
   expect(el.queryByText('Needs:')).toBeNull()
@@ -79,15 +79,19 @@ it('reuses sourced metadata without treating a vendor package as a process-wide 
 })
 
 
-it('renders corrected verification alongside the authored briefs while retaining source provenance', () => {
+it('omits verification and failure displays while retaining authored guidance and source metadata', () => {
   const record = records.find(record => record.id === 'form_001')!
   const el = render(<SharedProcessReader record={record} records={records} />)
   const name = el.container.querySelector('[id="form_001:n3"]')!
-  expect(name.textContent).toContain('dedicated name-availability checker')
+  expect(name.textContent).toContain('dedicated name checker')
+  expect(el.queryByText('✓ verify:')).toBeNull()
+  expect(el.queryByText('⚠ if it goes wrong')).toBeNull()
+  expect(record.parts.find(part => part.id === 'n3')?.metadata.verify).toBeDefined()
+  expect(record.parts.find(part => part.id === 'n3')?.metadata.failureModes).toBeDefined()
   expect(name.querySelector('a[href="https://icis.corp.delaware.gov/Ecorp/NameReserv/NameReservation.aspx"]')).not.toBeNull()
   const filing = el.container.querySelector('[id="form_001:n4:default"]')!
   expect(filing.textContent).not.toContain('with a file number and Good Standing status')
-  expect(filing.textContent).toContain('returned Certificate of Incorporation')
+  expect(filing.textContent).toContain('Retain submission evidence')
   const certificate = el.container.querySelector('[id="form_001:n5"]')!
   expect(certificate.textContent).not.toContain('every bank and investor')
   expect(certificate.textContent).not.toContain('accepted wherever')

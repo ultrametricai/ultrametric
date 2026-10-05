@@ -19,7 +19,7 @@ describe('step overrides and related processes', () => {
     let scope = el.container.querySelector('[id="form_001:n6"]') as HTMLElement
     fireEvent.click(el.getByRole('button', { name: 'Use Clerky' }))
     expect(within(scope).getByText('Process choice')).toBeDefined()
-    fireEvent.click(within(scope).getByRole('button', { name: '+ 4 more' }))
+    expect(within(scope).queryByRole('button', { name: /more|fewer/ })).toBeNull()
     fireEvent.click(within(scope).getByRole('button', { name: 'Use Firstbase for this step' }))
     expect(within(scope).getByText('Selected')).toBeDefined()
     expect(el.getByRole('button', { name: 'Use Clerky' }).getAttribute('aria-pressed')).toBe('true')

@@ -1,21 +1,20 @@
 'use client'
 
-import { useId, useState } from 'react'
 import Link from 'next/link'
 import ExternalLinkMark from './ExternalLinkMark'
 import ScoredProductRow from './ScoredProductRow'
 import type { StepComparison, StepComparisonProduct } from '@/lib/shared-processes/step-comparisons'
+import { vendorEvidenceHref } from '@/lib/shared-processes/coverage-links'
 import { useRegionalVariant } from './RegionalVariant'
 import { selectedVendor, useVendorSelection } from './VendorSelection'
 
-function ProductRow({ product, selected, inherited, onSelect, hidden, scores }: { product: StepComparisonProduct; selected: boolean; inherited: boolean; onSelect?: () => void; hidden: boolean; scores: readonly number[] }) {
-  return <ScoredProductRow scores={scores} product={product} selected={selected} inherited={inherited} onSelect={onSelect} hidden={hidden} selectionLabel={`Use ${product.name} for this step`} evidenceLabel="story evidence" scoreTitle={`Story coverage ${product.score}/100 from this step's mapped stories`}>
+function ProductRow({ product, selected, inherited, onSelect, scores }: { product: StepComparisonProduct; selected: boolean; inherited: boolean; onSelect?: () => void; scores: readonly number[] }) {
+  return <ScoredProductRow scoreHref={vendorEvidenceHref(product.href, product.stories.map(story => story.id))} scores={scores} product={product} selected={selected} inherited={inherited} onSelect={onSelect} selectionLabel={`Use ${product.name} for this step`} evidenceLabel="story evidence" scoreTitle={`Story coverage ${product.score}/100 from this step's mapped stories`}>
       {product.stories.map(story => <details key={story.id} className="min-w-0">
-        <summary className="cursor-pointer break-words leading-relaxed text-zinc-300">{story.title}<span className="ml-2 text-zinc-500">{story.verdict} · {story.quality}/10 · weight {story.weight}</span></summary>
+        <summary className="cursor-pointer break-words leading-relaxed text-zinc-300"><Link href={`${product.href}#story-${story.id}`} className="underline underline-offset-4 hover:text-emerald-300 focus-visible:outline-2 focus-visible:outline-emerald-300">{story.title}</Link><span className="ml-2 text-zinc-500">{story.verdict} · {story.quality}/10 · weight {story.weight}</span></summary>
         <div className="mt-2 space-y-2 break-words leading-relaxed [overflow-wrap:anywhere]">
           <p>{story.rationale}</p>
           <p>Confidence: {story.confidence}</p>
-          <Link href={`${product.href}#story-${story.id}`} className="inline-block text-emerald-300 underline underline-offset-4">View product assessment</Link>
           {story.evidence.length > 0 && <ul className="space-y-3">{story.evidence.map(source => <li key={source.id}>
             <a href={source.url} target="_blank" rel="noopener noreferrer" className="text-zinc-300 underline underline-offset-4">{source.url}<ExternalLinkMark href={source.url} label={source.url} /></a>
             <p className="mt-1">{source.excerpt}</p>
@@ -32,8 +31,6 @@ export default function StepComparisonTable({ comparison, choiceScope, parentCho
   const foreign = !!region?.decision && region.selected !== 'default'
   const overrideScope = scope && foreign ? `${scope}:regional:${region!.decision!.scope}:${region!.selected}` : scope
   const inheritedScope = foreign ? undefined : choiceScope
-  const [expanded, setExpanded] = useState(false)
-  const listId = useId()
   if (!comparison.products.length) return null
   const hasOverride = !!overrideScope && !!selection && Object.hasOwn(selection.overrides, overrideScope)
   const processPick = inheritedScope ? selectedVendor(selection, inheritedScope, parentChoiceScope) : undefined
@@ -42,14 +39,12 @@ export default function StepComparisonTable({ comparison, choiceScope, parentCho
   const inherited = !hasOverride && selectedId !== undefined
   const selected = comparison.products.find(product => product.id === selectedId && product.score > 0 && product.stories.some(story => story.quality > 0))
   const products = selected ? [selected, ...comparison.products.filter(product => product !== selected)] : comparison.products
-  const remaining = Math.max(0, products.length - 3)
   return <section aria-label="Step product comparison" className="space-y-2 border-t border-zinc-800/50 pt-3">
-    <p className="text-xs text-zinc-400">Products · {comparison.storyCount} coverage stories</p>
+    <p className="text-sm text-zinc-400">Products · {comparison.storyCount} coverage stories</p>
     <div className={bordered ? "overflow-hidden rounded-2xl border border-zinc-800" : "overflow-hidden"}>
-      <ul id={listId}>{products.map((product, index) => <ProductRow scores={comparison.products.map(item => item.score)} key={product.id} product={product} selected={product.id === selectedId} inherited={inherited} onSelect={overrideScope && selection ? () => selection.override(overrideScope, product.id === selectedId ? null : product.id) : undefined} hidden={!expanded && index >= 3} />)}</ul>
-      {remaining > 0 && <button type="button" aria-expanded={expanded} aria-controls={listId} onClick={() => setExpanded(value => !value)} className="w-full border-t border-zinc-800/70 px-4 py-2.5 text-center text-xs text-zinc-400 hover:bg-zinc-900/60 hover:text-zinc-200">{expanded ? 'Show fewer' : `+ ${remaining} more`}</button>}
+      <ul>{products.map((product) => <ProductRow scores={comparison.products.map(item => item.score)} key={product.id} product={product} selected={product.id === selectedId} inherited={inherited} onSelect={overrideScope && selection ? () => selection.override(overrideScope, product.id === selectedId ? null : product.id) : undefined} />)}</ul>
     </div>
-    {hasOverride && inheritedScope && <button type="button" onClick={() => selection?.override(overrideScope!, undefined)} className="text-xs text-zinc-400 underline underline-offset-4 hover:text-zinc-200">Use process choice</button>}
+    {hasOverride && inheritedScope && <button type="button" onClick={() => selection?.override(overrideScope!, undefined)} className="text-sm text-zinc-400 underline underline-offset-4 hover:text-zinc-200">Use process choice</button>}
 
   </section>
 }

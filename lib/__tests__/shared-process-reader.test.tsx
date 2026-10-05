@@ -7,6 +7,7 @@ import { renderToStaticMarkup } from 'react-dom/server'
 import { findSharedRecord, readSharedCatalog, sharedPreviewHref } from '../shared-processes/reader'
 import { validateCatalog } from '../shared-processes/schema'
 import SharedProcessReader from '@/components/shared-processes/SharedProcessReader'
+import { modulesForProcess } from '../businessLogicMap'
 
 function mount(markup: string) {
   const el = document.createElement('div')
@@ -138,7 +139,10 @@ describe('canonical shared process reader', () => {
     expect(findSharedRecord(records, 'fund_007')?.title).toBe('Apply to Y Combinator')
     for (const record of records) {
       const el = mount(renderToStaticMarkup(<SharedProcessReader record={record} records={records} />))
-      expect(el.querySelector('h1')?.textContent?.startsWith(record.title)).toBe(true)
+      expect(el.querySelector('h1')?.textContent).toBe(record.title)
+      const modules = modulesForProcess(record.id)
+      expect([...el.querySelectorAll('a[href*="/open-modules/README.md#"]')].map(link => ({ label: link.textContent?.replace(' ↗', ''), href: link.getAttribute('href') }))).toEqual(modules.map(module => ({ label: module.label, href: module.href })))
+      expect(el.textContent?.includes('Open modules:')).toBe(modules.length > 0)
       const ids = [...el.querySelectorAll('[id]')].map(element => element.id)
       expect(new Set(ids).size).toBe(ids.length)
     }

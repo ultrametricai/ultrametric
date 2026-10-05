@@ -44,8 +44,7 @@ describe('canonical step comparisons', () => {
   it('shows full comparisons without selection and scopes filing evidence to the default option', () => {
     const el = render(<SharedProcessReader record={record} records={records} comparisons={comparisons} vendorPreview={buildVendorPreview(record)} />)
     const scope = el.container.querySelector('[id="form_001:n6"]') as HTMLElement
-    expect(within(scope).getAllByRole('button', { name: /Show .* story evidence/ })).toHaveLength(3)
-    fireEvent.click(within(scope).getByRole('button', { name: '+ 4 more' }))
+    expect(within(scope).queryByRole('button', { name: /more|fewer/ })).toBeNull()
     expect(within(scope).getAllByRole('button', { name: /Show .* story evidence/ })).toHaveLength(7)
     expect(el.container.querySelectorAll('[aria-label="Step product comparison"]')).toHaveLength(3)
     expect(el.container.querySelector('[id="form_001:n4:default"] [aria-label="Step product comparison"]')).not.toBeNull()
@@ -53,7 +52,9 @@ describe('canonical step comparisons', () => {
     fireEvent.click(within(scope).getByRole('button', { name: 'Show Docusign story evidence' }))
     const evidence = within(scope).getByRole('region', { name: 'Docusign story evidence' })
     expect(evidence.querySelectorAll(':scope > details')).toHaveLength(4)
-    expect(within(evidence).getAllByRole('link', { name: 'View product assessment' }).every(a => a.getAttribute('href')?.startsWith('/arena/legal-ops/product/docusign#story-'))).toBe(true)
+    const storyLinks = [...evidence.querySelectorAll('summary a')]
+    expect(storyLinks).toHaveLength(4)
+    expect(storyLinks.every(a => a.getAttribute('href')?.startsWith('/arena/legal-ops/product/docusign#story-'))).toBe(true)
     const choice = el.container.querySelector('[id="form_001:n1"]') as HTMLElement
     expect(within(choice).queryByRole('button', { name: 'Use Docusign' })).toBeNull()
     expect(el.container.querySelector('[aria-label="Step product comparison"] [data-selected-provider]')).toBeNull()
@@ -76,24 +77,20 @@ describe('canonical step comparisons', () => {
     const choice = el.container.querySelector('[id="form_001:n1"]') as HTMLElement
     const bylaws = el.container.querySelector('[id="form_001:n6"]') as HTMLElement
     const stock = el.container.querySelector('[id="form_001:n7"]') as HTMLElement
-    const names = (scope: HTMLElement) => within(scope).getAllByRole('link').filter(a => a.closest('[aria-label="Step product comparison"] ul') && !a.closest('[role="region"]')).map(a => a.textContent)
+    const names = (scope: HTMLElement) => within(scope).getAllByRole('link').filter(a => a.getAttribute('href')?.startsWith('/arena/') && !a.hasAttribute('aria-label') && a.closest('[aria-label="Step product comparison"] ul') && !a.closest('[role="region"]')).map(a => a.textContent)
     fireEvent.click(within(choice).getByRole('button', { name: 'Use Firstbase' }))
-    expect(names(bylaws)).toEqual(['Firstbase', ...comparisons['form_001:n6'].products.filter(p => p.name !== 'Firstbase').slice(0, 2).map(p => p.name)])
-    expect(names(stock)).toEqual(comparisons['form_001:n7'].products.slice(0, 3).map(p => p.name))
-    fireEvent.click(within(stock).getByRole('button', { name: '+ 4 more' }))
+    expect(names(bylaws)).toEqual(['Firstbase', ...comparisons['form_001:n6'].products.filter(p => p.name !== 'Firstbase').map(p => p.name)])
+    expect(names(stock)).toEqual(comparisons['form_001:n7'].products.map(p => p.name))
     expect(names(stock).at(-1)).toBe('Firstbase')
     expect(stock.querySelector('[data-selected-provider]')).toBeNull()
     expect(stock.textContent).toContain('0/100')
-    fireEvent.click(within(bylaws).getByRole('button', { name: '+ 4 more' }))
     expect(names(bylaws)).toHaveLength(7)
-    fireEvent.click(within(bylaws).getByRole('button', { name: 'Show fewer' }))
-    expect(names(bylaws)).toHaveLength(3)
     fireEvent.click(within(choice).getByRole('button', { name: 'Use Firstbase' }))
-    expect(names(bylaws)).toEqual(comparisons['form_001:n6'].products.slice(0, 3).map(p => p.name))
+    expect(names(bylaws)).toEqual(comparisons['form_001:n6'].products.map(p => p.name))
     for (const name of ['Doola', 'Northwest Registered Agent']) {
       const button = within(choice).queryByRole('button', { name: `Use ${name}` })
       if (button) fireEvent.click(button)
-      expect(names(bylaws)).toEqual(comparisons['form_001:n6'].products.slice(0, 3).map(p => p.name))
+      expect(names(bylaws)).toEqual(comparisons['form_001:n6'].products.map(p => p.name))
     }
   })
 

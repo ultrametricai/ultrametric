@@ -30,6 +30,10 @@ export function processSummary(record: SharedRecord, records: SharedRecord[] = [
   const supported = resolved && classified
   return {
     automation: null, completionTime: null, cost: null,
+    // Same default-path route arithmetic as lib/processes.ts computeCeiling.
+    // Retained agent classifications include unverified bindings; this is not
+    // a provider coverage score or a verified execution percentage.
+    agentCeiling: supported && steps > 0 ? Math.round(((agent + unverified) / steps) * 100) : null,
     steps: resolved && steps > 0 ? steps : null,
     subprocesses: resolved && subprocesses > 0 ? subprocesses : null,
     approvals: supported && approvals > 0 ? approvals : null,
