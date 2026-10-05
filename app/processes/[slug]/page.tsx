@@ -12,7 +12,6 @@ import ProcessDag from '@/components/ProcessDag'
 import ProcessGeoNotes from '@/components/ProcessGeoNotes'
 import ProcessLeaderboard from '@/components/ProcessLeaderboard'
 import ProcessLensBanner from '@/components/ProcessLensBanner'
-import ProcessVendorPicker from '@/components/ProcessVendorPicker'
 import ProductLogoView from '@/components/ProductLogoView'
 import UrgencyChip from '@/components/UrgencyChip'
 import UsFlowLabel from '@/components/UsFlowLabel'
@@ -30,9 +29,10 @@ import {
 import { SITE_URL } from '@/lib/site'
 
 // One founder process: the DAG as it really runs, with the market resolved live from arena
-// leaderboards per step. Founder 2026-09-30: the page slimmed — the vendor selector moved to
-// the top ('Select vendor for process test'), and the bottom 'Agent ceiling' verdict box and
-// 'Simulate this process' section are gone from process pages (chain pages keep both).
+// leaderboards per step. Founder 2026-09-30: the page slimmed — the bottom 'Agent ceiling'
+// verdict box and 'Simulate this process' section are gone from process pages (chain pages
+// keep both). The top 'Select vendor for process test' section followed (founder 2026-10-05) —
+// chain pages keep ProcessVendorPicker; the ?via= lens and per-step "use" affordances remain.
 //
 // Renamed processes (founder rule: vendor-neutral names — "Send an invoice", not "Send Stripe
 // invoice") also prerender their old vendor-flavored slugs (slugAliases): static export has no
@@ -195,10 +195,9 @@ export default async function ProcessPage({ params }: { params: Promise<{ slug: 
           <GeoDropdown defaultChoice={GEO_GLOBAL} />
         </div>
         <ProcessGeoBanner geoScope={task.geoScope} notes={task.geoNotes ?? []} />
-        {/* Vendor selection at the TOP of the page (founder 2026-09-30: 'Select vendor for
-            process test', no vendor selected by default) — the same lens the per-step "use"
-            affordances and ?via= drive; picking one re-resolves the whole step-by-step below. */}
-        <ProcessVendorPicker steps={checkStepList} lensKey={task.id} />
+        {/* The 'Select vendor for process test' section is gone from process pages (founder
+            2026-10-05) — chain pages keep ProcessVendorPicker. The lens itself lives on: the
+            per-step "use" affordances and the ?via= share param still drive it here. */}
       </section>
 
       {/* Founder 2026-09-18: the process ITSELF leads — who covers it, then the step-by-step
@@ -234,7 +233,8 @@ export default async function ProcessPage({ params }: { params: Promise<{ slug: 
             run via it). Renders nothing in the static HTML — hydrates in only for readers with
             a clicked vendor or an "I'm using" stack pick. */}
         <ProcessLensBanner steps={checkStepList} pageKey={task.id} />
-        {/* The vendor picker itself sits at the top of the page now (founder 2026-09-30). */}
+        {/* The top-of-page vendor picker left process pages (founder 2026-10-05) — the per-step
+            "use" affordances below are the lens writers here. */}
         <div className="mt-4 rounded-2xl border border-zinc-800 p-4 sm:p-5">
           <div id="steps" className="scroll-mt-4" />
           <ProcessDag
