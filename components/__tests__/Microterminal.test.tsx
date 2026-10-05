@@ -146,7 +146,12 @@ describe('Microterminal live tiers', () => {
     fireEvent.click(screen.getByRole('button', { name: /run live/i }))
     await waitFor(() => expect(urls).toHaveLength(1))
     expect(urls[0]).toBe('https://ultrametric.ai/api/try/payments/stripe/llms-txt')
-    expect(await screen.findByText(/recorded replay \+ live re-run/)).toBeTruthy()
+    // Founder 2026-10-05: the 'recorded replay + live re-run — see the LIVE divider' caption is
+    // gone; the LIVE divider itself (inside the transcript) stays the honest marker. The divider
+    // types out character-paced, so poll the terminal text.
+    expect(screen.queryByText(/recorded replay \+ live re-run/)).toBeNull()
+    const pre = document.querySelector('pre')!
+    await waitFor(() => expect(pre.textContent).toContain('LIVE ── re-running this exact probe'), { timeout: 10_000 })
     // Founder 2026-10-02 (two passes): the footer "replay ↺ / run again ▶" duplicate AND the
     // title-bar ▶ replay/run control are both gone — the story chips are the play affordance.
     expect(screen.queryByRole('button', { name: /replay ↺/ })).toBeNull()

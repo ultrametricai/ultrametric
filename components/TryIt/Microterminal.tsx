@@ -69,7 +69,6 @@ export default function Microterminal({
   const [shown, setShown] = useState(0) // how many chars are visible
   const [liveBusy, setLiveBusy] = useState(false)
   const [liveResult, setLiveResult] = useState<McpProbeResult | null>(null) // last completed probe
-  const [liveRanIds, setLiveRanIds] = useState<Set<string>>(new Set()) // stories whose terminal currently shows a live re-run
   const startRef = useRef(0)
   const skippedRef = useRef(false)
   const runRef = useRef(0) // invalidates in-flight probe responses on story switch
@@ -163,7 +162,6 @@ export default function Microterminal({
       .then((result) => {
         if (runRef.current !== run) return // user switched stories mid-flight
         setLiveBusy(false)
-        setLiveRanIds((prev) => new Set(prev).add(story.id))
         setTarget((prev) => `${prev}${tryResultLines(result).join('\n')}\n`)
       })
   }, [activeId, arena, product, stories])
@@ -177,12 +175,6 @@ export default function Microterminal({
     runRef.current += 1
     setActiveId(id)
     setLiveBusy(false)
-    setLiveRanIds((prev) => {
-      if (!prev.has(id)) return prev
-      const next = new Set(prev)
-      next.delete(id) // a fresh replay wipes any appended live output — the badge must follow
-      return next
-    })
     const story = stories.find((s) => s.id === id)
     beginRun(story?.transcript ?? '')
   }, [beginRun, runProbe, stories])
@@ -289,13 +281,13 @@ export default function Microterminal({
             {/* Founder 2026-10-02: the per-run 'recorded session — replayed, not live' badge is
                 gone. The recorded-vs-live distinction stays visible without it: the provenance
                 footer below leads with "recorded <date> · exit <code> · captured verbatim…" on
-                every recording, while live output is marked by this badge's presence (live run /
-                LIVE-divider re-run states only) — a replay simply carries no live badge. */}
-            {(isLive || liveRanIds.has(activeId ?? '')) && (
+                every recording, while live output is marked by this badge (live-probe runs) or
+                by the LIVE divider inside the transcript (per-story re-runs — the
+                'recorded replay + live re-run' caption that used to restate it was removed,
+                founder 2026-10-05). */}
+            {isLive && (
               <span className="shrink-0 rounded border border-emerald-400/60 px-1.5 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-emerald-300">
-                {isLive
-                  ? 'live — run just now from our edge'
-                  : 'recorded replay + live re-run — see the LIVE divider'}
+                live — run just now from our edge
               </span>
             )}
           </span>
