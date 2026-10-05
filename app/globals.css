@@ -185,3 +185,46 @@ html {
     display: table-header-group; /* repeat table headers across page breaks */
   }
 }
+
+/* Shared chip/round classes for the highest-repetition markup on the prerendered pages. Every
+   judged round on the ~3,600 battle//vs pages (and every row of the product/arena tables)
+   repeats the same verdict-chip and round-scaffold utility strings, and each occurrence is
+   materialized into five build artifacts per page (html markup + inline flight + .rsc + two
+   whole-page segment files — docs/BUILD-SIZE.md problem 2). Naming one class per string keeps
+   the rendered styles byte-identical while cutting ~10% off each battle/vs artifact. Keep these
+   as straight @apply bundles of the utilities they replaced — color/display modifiers stay
+   literal at the call sites (components/VerdictBadge.tsx, VerificationBadge.tsx,
+   PersonaChip.tsx, BattleView.tsx) so variants keep composing. */
+@layer components {
+  /* VerdictBadge/VerificationBadge pill geometry; color ring/bg/text classes are appended. */
+  .um-pill {
+    @apply rounded-full px-2 py-0.5 text-xs font-medium ring-1;
+  }
+  /* Hover affordance for a pill (or a link wrapping one). */
+  .um-pill-hover {
+    @apply transition hover:brightness-125 hover:ring-emerald-400/60;
+  }
+  /* Link wrapper around a pill that carries its own ring colors — adds the hover ring. */
+  .um-pill-link {
+    @apply inline-flex rounded-full transition hover:brightness-125 hover:ring-1 hover:ring-emerald-400/60;
+  }
+  /* PersonaChip body (components/PersonaChip.tsx). */
+  .um-persona-chip {
+    @apply inline-flex max-w-full shrink-0 items-center rounded border border-zinc-800 bg-zinc-900/60 px-1.5 py-0.5 align-middle text-[10px] leading-4 text-zinc-500;
+  }
+  /* A judged round's <summary> row and its title (components/BattleView.tsx). */
+  .um-round-summary {
+    @apply flex cursor-pointer select-none items-baseline gap-2 px-4 py-2.5 transition hover:bg-zinc-900/50 [&::-webkit-details-marker]:hidden;
+  }
+  .um-round-title {
+    @apply min-w-0 flex-1 truncate text-sm font-medium group-open:whitespace-normal;
+  }
+  /* Citation link inside a round's evidence list. */
+  .um-cite-link {
+    @apply underline decoration-zinc-700 hover:text-emerald-300;
+  }
+  /* The sticky per-theme section bar on battle//vs pages. */
+  .um-theme-bar {
+    @apply sticky top-0 z-10 -mx-5 flex items-center gap-1.5 border-b border-zinc-800 bg-zinc-950/95 px-5 py-2 text-sm font-semibold uppercase tracking-widest text-emerald-400 backdrop-blur;
+  }
+}

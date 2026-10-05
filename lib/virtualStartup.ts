@@ -33,7 +33,8 @@ import type { Cadence, SimStep } from './processSim'
 // unchanged. HONESTY: the step corpus is US-shaped — a non-US entity keeps the EXACT corpus
 // incorporation composition of the C-Corp path (never a fake corpus branch) and frames it with
 // the committed geoNotes country analog (terminal line + entity label).
-export type EntityChoice = 'c-corp' | 'llc' | 'ltd' | 'gmbh' | 'ug' | 'sas' | 'sarl' | 'pvt-ltd'
+export type EntityChoice =
+  | 'c-corp' | 'llc' | 'ltd' | 'gmbh' | 'ug' | 'sas' | 'sarl' | 'pvt-ltd' | 'lda' | 'ca-corp'
 export type FundingChoice = 'bootstrap' | 'seed'
 // Business models (founder round 5, item 2). Codec rule: 'subscriptions'/'invoices' keep indices
 // 0/1; 'marketplace'/'usage'/'ecommerce' append. Only compositions the corpus honestly supports:
@@ -215,6 +216,14 @@ export const ENTITY_META: Record<EntityChoice, EntityMeta> = {
     label: 'Pvt Ltd', suffix: ' Pvt Ltd', country: 'IN',
     filing: { label: 'Certificate of Incorporation', register: 'MCA CIN U00000-DL-0000-PTC-000000 (placeholder)' },
   },
+  lda: {
+    label: 'Lda', suffix: ', Lda.', country: 'PT',
+    filing: { label: 'Formation filing', register: 'Registo Comercial NIPC 000000000 (placeholder)' },
+  },
+  'ca-corp': {
+    label: 'Federal corporation (CBCA)', suffix: ' Inc.', country: 'CA',
+    filing: { label: 'Certificate of Incorporation', register: 'Corporations Canada no. 0000000 (placeholder)' },
+  },
 }
 
 // The Entity dropdown's roster follows the geo selection; the FIRST option per country is the
@@ -226,6 +235,8 @@ export const ENTITY_OPTIONS_BY_COUNTRY: Record<GeoCountry, EntityChoice[]> = {
   DE: ['gmbh', 'ug'],
   FR: ['sas', 'sarl'],
   IN: ['pvt-ltd'],
+  PT: ['lda'],
+  CA: ['ca-corp'],
 }
 
 export function defaultEntityFor(country: GeoCountry): EntityChoice {
@@ -247,7 +258,8 @@ export interface DecisionDef {
 
 // The decision tree, derived from what the corpus actually contains:
 //   entity     — form_001 "Incorporate C-Corp" vs form_011 "Set up an LLC"; non-US entities
-//                (Ltd / GmbH / UG / SAS / SARL / Pvt Ltd) keep the form_001 composition framed
+//                (Ltd / GmbH / UG / SAS / SARL / Pvt Ltd / Lda / CBCA corp) keep the form_001
+//                composition framed
 //                with the committed geoNotes country analog — never a fake corpus branch
 //   team       — startup_002 "Founder agreement & equity split" included only with cofounders
 //   funding    — the raise-a-seed-round chain (fund_005, fund_001, qs_052) included only on raise
@@ -287,6 +299,8 @@ export const DECISIONS: DecisionDef[] = [
       { value: 'sas', label: 'SAS', detail: 'the same corpus incorporation composition as the C-Corp path (form_001), framed for France with the committed formalités/RCS analog — the corpus is US-shaped; no steps invented' },
       { value: 'sarl', label: 'SARL', detail: 'the same corpus incorporation composition as the C-Corp path (form_001), framed for France with the committed formalités/RCS analog — the corpus is US-shaped; no steps invented' },
       { value: 'pvt-ltd', label: 'Pvt Ltd', detail: 'the same corpus incorporation composition as the C-Corp path (form_001), framed for India with the committed MCA analog — the corpus is US-shaped; no steps invented' },
+      { value: 'lda', label: 'Lda', detail: 'the same corpus incorporation composition as the C-Corp path (form_001), framed for Portugal with the committed Empresa Online analog — the corpus is US-shaped; no steps invented' },
+      { value: 'ca-corp', label: 'Federal corporation (CBCA)', detail: 'the same corpus incorporation composition as the C-Corp path (form_001), framed for Canada with the committed Corporations Canada analog — the corpus is US-shaped; no steps invented' },
     ],
   },
   {

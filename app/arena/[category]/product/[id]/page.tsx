@@ -317,7 +317,7 @@ export default async function ProductPage({
           {vendorResponseCount > 0 && (
             <a
               href="#story-verdicts"
-              title="Verified official statements from the vendor on specific verdicts — published verbatim, they never change a verdict by themselves. Expand the story's row below to read them."
+              title="Verified official vendor statements, published verbatim — they never change a verdict by themselves"
               className="inline-flex items-center gap-1.5 rounded-full border border-sky-400/40 bg-sky-400/5 px-2.5 py-0.5 text-xs text-sky-300 transition hover:border-sky-400/70"
             >
               <span className="rounded border border-sky-400/60 px-1 text-[9px] font-semibold uppercase tracking-wide">
@@ -336,10 +336,11 @@ export default async function ProductPage({
             <span className="text-[10px] uppercase tracking-widest text-zinc-500">Also ranked in</span>
           )}
           {memberships.filter((m) => m.arenaId !== category).map((m) => (
+            // No tooltip (founder sweep 2026-10-02): the chip already shows the arena name and
+            // #rank/field — the old title restated all of it.
             <Link
               key={m.arenaId}
               href={`/arena/${m.arenaId}`}
-              title={`${m.arenaName} — ${product.name} is ranked #${m.rank} of ${m.fieldSize} in this arena. See the full leaderboard.`}
               className={`inline-flex items-center gap-1.5 rounded-full border px-2.5 py-0.5 text-xs transition ${
                 m.arenaId === category
                   ? 'border-emerald-400/50 bg-emerald-400/5 text-emerald-300 hover:border-emerald-400/80'
@@ -472,7 +473,7 @@ export default async function ProductPage({
           <p className="mb-3 text-xs text-zinc-400">
             <Link
               href="/methodology#story-tiers"
-              title="Pricing-tier annotation, classified from each verdict's cited evidence and the vendor's pricing evidence only — 'unknown' means the evidence never states gating. Never affects verdicts or scores."
+              title="Classified from the cited evidence only ('unknown' = gating never stated) — never affects verdicts or scores"
               className="uppercase tracking-widest text-zinc-500 underline decoration-zinc-800 underline-offset-2 transition hover:text-emerald-300"
             >
               What&rsquo;s free
@@ -545,7 +546,7 @@ export default async function ProductPage({
           }).toString()}`}
           target="_blank"
           rel="noopener noreferrer"
-          title="Think a verdict is wrong? Opens a prefilled GitHub issue — or use the ⚑ next to any verdict above."
+          title="Opens a prefilled GitHub issue — or use the ⚑ next to any verdict above"
           className="rounded-lg border border-zinc-800 px-3 py-1.5 text-xs text-zinc-400 transition hover:border-emerald-400/60 hover:text-emerald-300"
         >
           ⚑ Flag a verdict

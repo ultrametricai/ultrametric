@@ -116,7 +116,7 @@ describe('rivalsFor', () => {
     expect(r2.wins).toEqual([])
   })
 
-  it('carries the battle slug in stored a/b order for /vs/ links', () => {
+  it('carries the battle slug in stored a/b order for battle-page links', () => {
     const [r1] = rivalsFor(pay, 'x')
     expect(r1.battleSlug).toBe('x-vs-r1')
   })

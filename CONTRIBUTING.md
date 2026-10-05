@@ -1,9 +1,11 @@
 # Contributing to Ultrametric
 
 Ultrametric's whole premise is that every score should trace back to cited evidence, and
-that anyone can contest a verdict. This document covers the four contribution paths (contest
-a verdict, add evidence, [add your product](#3-add-your-product) to an arena, or
-[submit a stack](#4-submit-a-stack)) plus local setup and style rules.
+that anyone can contest a verdict. This document covers the contribution paths — contest
+a verdict, add evidence, [add your product](#add-your-vendor) to an arena,
+[submit a stack](#4-submit-a-stack), [add a process](#add-a-process),
+[add a jurisdiction](#add-a-jurisdiction), or [add an open module](#add-an-open-module) —
+plus local setup and style rules.
 
 Contributing to the **founder-ops corpus** (jurisdiction-scoped workflows, rule cards, sources,
 vendor reviews, open modules) has its own workflow and review bar — see
@@ -25,7 +27,7 @@ for your proposed verdict, evidence URLs, and quotes. It's the fast path for fla
 something that looks wrong; it does not itself change any data. A maintainer (or, eventually,
 a GitHub Action) still has to do the deeper check described below: add the evidence, run
 `pnpm pipeline judge --category <category> --product <product>`, then
-`pnpm pipeline derive --category <category>` to actually update the verdict.
+`pnpm pipeline derive --category <category>` to update the verdict.
 
 If you'd rather skip the prefilled link, you can also open an issue manually using the
 [Contest a Verdict](./.github/ISSUE_TEMPLATE/contest-verdict.md) template. Fill in:
@@ -46,7 +48,7 @@ If you'd rather skip the prefilled link, you can also open an issue manually usi
    pnpm pipeline judge --category <category> --product <product>
    pnpm pipeline derive --category <category>
    ```
-   Note this re-judges **every** cell for that product, not just the one you're contesting —
+   This re-judges **every** cell for that product, not only the one you're contesting —
    see the cache note below.
 4. The updated `verdicts.json` and `rankings.json` are committed with a reference to the
    issue.
@@ -105,32 +107,34 @@ verdict, you can propose it directly as a PR:
 3. Commit **both** the evidence file and the resulting `verdicts.json` / `rankings.json`
    changes in the same PR — never hand-edit `verdicts.json` or `rankings.json` directly.
 4. Open the PR describing what the new evidence shows and which cell(s) you expect to change.
-   A maintainer will sanity-check the diff (does the new verdict actually follow from the
+   A maintainer will sanity-check the diff (does the new verdict follow from the
    cited excerpt?) before merging.
 
 ### About the judge cache and re-judge cost
 
 The judge cache (`pipeline/cache/judge/`) **is committed** to the repo, keyed by a hash of
-`(storyId, story title, the product's full evidence array, prompt version)` — note that's the
-*whole* evidence pack, not just the item(s) you cite. This has two consequences:
+`(storyId, story title, the product's full evidence array, prompt version)` — the
+*whole* evidence pack, not only the item(s) you cite. This has two consequences:
 
 - **If you haven't touched a product's evidence, re-running `judge` for it is free** (all
   cells are cache hits — no LLM calls, no `ANTHROPIC_API_KEY` even needed to hit the fast
   path). This is why the judge cache is tracked in git: everyone shares the same cache and
   doesn't re-pay for verdicts nobody changed.
 - **If you add/edit/remove even one evidence item for a product, every cell hash for that
-  product changes** — because the hash covers the full pack, not just the changed item. A
+  product changes** — because the hash covers the full pack, not only the changed item. A
   `judge --product <product>` run will therefore re-send **all** of that product's stories to
-  the LLM, not just the one your new evidence supports. Approximate cost: one LLM call per
+  the LLM, not only the one your new evidence supports. Approximate cost: one LLM call per
   story in the category (currently ~42–57 depending on category — see
   `data/{category}/stories.json` length), each a small JSON-mode call. This is expected
-  and intentional (it keeps the judge honest about re-evaluating the whole pack), just budget
+  and intentional (it keeps the judge honest about re-evaluating the whole pack); budget
   for it — a single-evidence-item PR is not a single-LLM-call PR.
+
+<a id="add-your-vendor"></a>
 
 ## 3. Add your product
 
 Founders and vendors: this is how you get your product into an arena — and how you make sure
-the pipeline actually *sees* what you've built. Scores only credit cited evidence, so the single
+the pipeline *sees* what you've built. Scores only credit cited evidence, so the single
 biggest failure mode is not "the judge was harsh," it's "the crawl never saw your best pages."
 (Real precedent: both Asana and Linear sat at API-quality **0** — despite shipping OpenAPI specs
 and full rate-limit docs — until their deep developer-docs URLs were added to `urls.extra`.)
@@ -249,21 +253,57 @@ issue form (the "Submit your stack" link on /stacks opens the same form). It ask
 
 - the stack's name (and who it's for),
 - the picks per arena (arena id + product id, one line each; unjudged layers marked editorial),
-- what you actually shipped with it — the proof it's proven, not a wishlist,
+- what you shipped with it — the proof it's proven, not a wishlist,
 - an affiliations disclosure (any relationship to any pick; "none" is an answer).
 
 Submissions feed curation review — a maintainer checks the picks against the arena
 leaderboards and composes accepted stacks into the committed data by PR. The form never
 auto-publishes anything.
 
+<a id="add-a-process"></a>
+
+## 5. Add a process
+
+The step-by-step founder processes (and the reactive situations) live in
+`processes/corpus.json`, contract in `schemas/operational-process.schema.json`. Start from a
+blank, schema-valid record in [`templates/`](templates/), follow the curation rules in
+[`processes/README.md`](processes/README.md) — routing, reversibility, verification checks;
+a situation additionally carries a `trigger` and an `urgency` tier (see
+[`processes/SITUATIONS.md`](processes/SITUATIONS.md)) — and validate with `pnpm test`, which
+tells you immediately whether the record holds up. Chained founder paths go in
+[`journeys/chains.json`](journeys/). Changes to the shared process schema or catalog
+(`content/processes/`) also run `pnpm shared:check`.
+
+<a id="add-a-jurisdiction"></a>
+
+## 6. Add a jurisdiction
+
+The highest-leverage contribution for founders outside the US. Four PR shapes, smallest
+first — vendor availability rows for your country, a country analog for a process, rule cards
+citing primary sources, a full jurisdiction-scoped workflow — with exact file paths and the
+gates that validate them in the README's
+["Add your country or state"](README.md#add-your-country-or-state). Register the jurisdiction
+in [`jurisdictions/registry.json`](jurisdictions/) with a deliberately narrow scope; `pnpm
+test` validates every record.
+
+<a id="add-an-open-module"></a>
+
+## 7. Add an open module
+
+Open modules are pure, source-cited TypeScript under [`lib/openstartup/`](lib/openstartup/).
+The bar — pure functions, a citation on every formula, tests that double as documentation,
+`needs_review` wherever facts decide — and the candidate-module backlog live in
+[`open-modules/README.md`](open-modules/README.md).
+
 ## Local setup
 
 ```bash
-git clone <repo>
-cd ultrametric
+git clone https://github.com/ultrametricai/ultrametric.git && cd ultrametric
 pnpm install
 cp .env.example .env    # fill in ANTHROPIC_API_KEY if you need to run extract/normalize/collect-community/judge
 pnpm dev                # http://localhost:3000
+pnpm test
+pnpm build
 ```
 
 `ANTHROPIC_API_KEY` is only needed for the LLM-driven pipeline stages (`extract`,

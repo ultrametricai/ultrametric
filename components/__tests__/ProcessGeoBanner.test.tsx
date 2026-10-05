@@ -9,14 +9,35 @@ import { renderToString } from 'react-dom/server'
 import { afterEach, describe, expect, it } from 'vitest'
 import GeoStepMark from '@/components/GeoStepMark'
 import ProcessGeoBanner from '@/components/ProcessGeoBanner'
-import { setGeoSelection, type GeoAnalogNote } from '@/lib/geoPreference'
+import UsFlowLabel from '@/components/UsFlowLabel'
+import { GEO_GLOBAL, setGeoChoice, setGeoSelection, type GeoAnalogNote } from '@/lib/geoPreference'
 
 const NOTES: GeoAnalogNote[] = [
   {
     country: 'UK',
+    kind: 'analog',
     summary: 'Register a private limited company with Companies House.',
     actionUrl: 'https://www.gov.uk/limited-company-formation',
     actionLabel: 'Companies House — set up a limited company',
+  },
+]
+
+// The non-analog note kinds (the wrong-country-flow guard, founder 2026-10-02): the committed
+// summary IS the local answer — stated plainly, nothing promoted as a doable local flow.
+const ABSORBED_NOTES: GeoAnalogNote[] = [
+  {
+    country: 'IN',
+    kind: 'absorbed',
+    summary: 'PAN and TAN are allotted automatically as part of the SPICe+ incorporation filing.',
+    actionUrl: 'https://www.nsws.gov.in/',
+    actionLabel: 'NSWS — incorporate a company',
+  },
+  {
+    country: 'UK',
+    kind: 'not-applicable',
+    summary: 'No 1099 regime — ordinary contractors self-assess.',
+    actionUrl: 'https://www.gov.uk/self-assessment-tax-returns',
+    actionLabel: 'HMRC — Self Assessment',
   },
 ]
 
@@ -58,16 +79,36 @@ describe('the honesty matrix (geoScope × notes)', () => {
     expect(container.querySelector('a[href^="https://"]')).toBeNull()
   })
 
-  it('us + note for the country: US-centric + the promoted analog with its verified link', () => {
+  it("us + analog note: the committed note LEADS — 'In {country}, this runs as:' + the verified link (the wrong-country-flow guard, founder 2026-10-02)", () => {
     const { container } = render(<ProcessGeoBanner geoScope="us" notes={NOTES} />)
     select('UK')
-    expect(container.textContent).toContain('US-centric process.')
-    expect(container.textContent).toContain('In the United Kingdom:')
+    // The US flow is never presented as the local answer: the country note leads the banner.
+    expect(container.textContent).toContain('In the United Kingdom, this runs as:')
     expect(container.textContent).toContain('Register a private limited company with Companies House.')
+    expect(container.textContent).not.toContain('US-centric process.')
     const analog = container.querySelector('a[href="https://www.gov.uk/limited-company-formation"]')
     expect(analog?.textContent).toContain('Companies House — set up a limited company')
     // The banner links DOWN to the full multi-country block, which stays on the page.
     expect(container.querySelector('a[href="#outside-the-us"]')).not.toBeNull()
+  })
+
+  it("us + absorbed note: the committed summary stated plainly — no 'runs as' promotion, no portal link", () => {
+    const { container } = render(<ProcessGeoBanner geoScope="us" notes={ABSORBED_NOTES} />)
+    select('IN')
+    expect(container.textContent).toContain('PAN and TAN are allotted automatically as part of the SPICe+ incorporation filing.')
+    expect(container.textContent).not.toContain('this runs as:')
+    expect(container.textContent).not.toContain('US-centric process.')
+    // Nothing promoted as a doable local flow — the committed summary is the whole answer.
+    expect(container.querySelector('a[href^="https://"]')).toBeNull()
+    expect(container.querySelector('a[href="#outside-the-us"]')).not.toBeNull()
+  })
+
+  it('us + not-applicable note: the committed summary stated plainly', () => {
+    const { container } = render(<ProcessGeoBanner geoScope="us" notes={ABSORBED_NOTES} />)
+    select('UK')
+    expect(container.textContent).toContain('No 1099 regime — ordinary contractors self-assess.')
+    expect(container.textContent).not.toContain('this runs as:')
+    expect(container.querySelector('a[href^="https://"]')).toBeNull()
   })
 
   it('us + NO note for the country: the honest no-mapping line — an analog is never invented', () => {
@@ -95,6 +136,37 @@ describe('the honesty matrix (geoScope × notes)', () => {
     expect(container.textContent).toContain('Global process')
     select(null)
     expect(container.innerHTML).toBe('')
+  })
+})
+
+describe("UsFlowLabel — the 'US flow' badge on the step flow (the wrong-country-flow guard, founder 2026-10-02)", () => {
+  afterEach(() => setGeoChoice(null))
+
+  it('renders NOTHING in the static HTML and for the US default — the SSR output stays byte-identical', () => {
+    const tree = <UsFlowLabel geoScope="us" />
+    expect(renderToString(tree)).toBe('')
+    const { container } = render(tree)
+    expect(container.innerHTML).toBe('')
+  })
+
+  it("labels the flow 'US flow' under an explicit country choice, for us AND us-state scope", () => {
+    const us = render(<UsFlowLabel geoScope="us" />)
+    const usState = render(<UsFlowLabel geoScope="us-state" />)
+    select('IN')
+    expect(us.container.textContent).toContain('US flow')
+    expect(usState.container.textContent).toContain('US flow')
+    // Clearing back to the US default removes the badge again.
+    select(null)
+    expect(us.container.innerHTML).toBe('')
+  })
+
+  it('renders nothing for a global-scope process and under the explicit 🌐 Global choice', () => {
+    const globalScope = render(<UsFlowLabel geoScope="global" />)
+    select('DE')
+    expect(globalScope.container.innerHTML).toBe('')
+    const usScope = render(<UsFlowLabel geoScope="us" />)
+    act(() => setGeoChoice(GEO_GLOBAL))
+    expect(usScope.container.innerHTML).toBe('')
   })
 })
 

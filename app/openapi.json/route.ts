@@ -238,7 +238,7 @@ export async function GET() {
       '/data/{category}/verdicts.json': {
         get: {
           operationId: 'getVerdicts',
-          summary: 'Get every (product, story) judged verdict for one category — the full evidence-graded matrix.',
+          summary: 'Get every (product, story) judged verdict for one category — the full agent-tested matrix.',
           parameters: [categoryParam(categoryIds)],
           responses: {
             '200': {

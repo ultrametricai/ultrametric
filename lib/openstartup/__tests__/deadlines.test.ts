@@ -2,7 +2,7 @@
 // day-count arithmetic matches the cited rule card's statement, re-derived in comments;
 // (2) every ruleId in DEADLINE_RULE_IDS resolves to a committed card in rules/<jurisdiction>/
 // whose id and jurisdiction match — the module never hardcodes a day count without a dated,
-// primary-sourced card behind it (business-logic/README.md contract).
+// primary-sourced card behind it (open-modules/README.md contract).
 
 import { describe, expect, it } from 'vitest'
 import fs from 'node:fs'

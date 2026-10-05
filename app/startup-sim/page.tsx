@@ -35,7 +35,7 @@ export const metadata: Metadata = {
   // vocabulary.
   title: 'The open startup simulator — Ultrametric',
   description:
-    'The open startup simulator — watch an AI-native company incorporate, bank, hire, and launch: every step routed agent or human, vendors picked from evidence-graded rankings, decisions yours in semi-auto mode.',
+    'The open startup simulator — watch an AI-native company incorporate, bank, hire, and launch: every step routed agent or human, vendors picked from agent-tested rankings, decisions yours in semi-auto mode.',
 }
 
 // DAG route mix of one corpus process — the year view's per-row honesty payload.

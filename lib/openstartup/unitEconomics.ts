@@ -7,7 +7,7 @@
 // comparing against, and every comparison is needsReview).
 //
 // Pure, client-safe (no node builtins), deterministic. Registered in
-// business-logic/README.md; tested in lib/openstartup/__tests__/unitEconomics.test.ts.
+// open-modules/README.md; tested in lib/openstartup/__tests__/unitEconomics.test.ts.
 // The adjacent runway module owns cash trajectories (Paul Graham's default-alive model);
 // this module owns the efficiency RATIOS computed over the same explicit inputs.
 //

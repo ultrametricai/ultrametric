@@ -93,10 +93,9 @@ export default function sitemap(): MetadataRoute.Sitemap {
 
     for (const battle of data.rankings.battles) {
       const slug = battleSlug(battle.a, battle.b)
+      // The battle page is the canonical head-to-head URL; /vs/{slug} is a permanent redirect
+      // to it (see app/vs/[slug]/page.tsx) and redirect stubs don't belong in the sitemap.
       entries.push({ url: `${SITE_URL}/arena/${data.category.id}/battle/${slug}`, lastModified: generatedAt })
-      // /vs/{slug} is the canonical top-level mirror of the same battle (see
-      // app/vs/[slug]/page.tsx) — listed separately since it's a distinct indexable URL.
-      entries.push({ url: `${SITE_URL}/vs/${slug}`, lastModified: generatedAt })
     }
   }
 
@@ -114,6 +113,9 @@ export default function sitemap(): MetadataRoute.Sitemap {
   // /processes/<slug> rows in the loadProcesses loop below.
   entries.push({ url: `${SITE_URL}/processes`, lastModified: now })
   entries.push({ url: `${SITE_URL}/situations`, lastModified: now })
+  // The open-documents registry index (founder 2026-10-03, with the open-documents/ rename);
+  // /documents 308s here via next.config.ts.
+  entries.push({ url: `${SITE_URL}/open-documents`, lastModified: now })
   entries.push({ url: `${SITE_URL}/processes/operating-rhythm`, lastModified: now })
   entries.push({ url: `${SITE_URL}/startup-sim`, lastModified: now })
   for (const task of loadProcesses()) {

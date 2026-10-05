@@ -22,7 +22,7 @@ describe('CompareRivals', () => {
     const rampRow = [...rows].find((r) => r.textContent?.includes('Ramp'))!
     expect(rampRow.querySelector('a[href="/arena/startup-banking/product/ramp"]')).not.toBeNull()
     expect([...container.querySelectorAll('th')].some((th) => th.textContent === 'vs')).toBe(false)
-    expect(rampRow.querySelector('a[href="/vs/mercury-vs-ramp"]')).toBeNull()
+    expect(rampRow.querySelector('a[href="/arena/startup-banking/battle/mercury-vs-ramp"]')).toBeNull()
     // Overall score cells link to each product's /score receipt page.
     expect(rows[0].querySelector('a[href="/arena/startup-banking/product/mercury/score"]')).not.toBeNull()
     expect(rampRow.querySelector('a[href="/arena/startup-banking/product/ramp/score"]')).not.toBeNull()
@@ -45,15 +45,16 @@ describe('CompareRivals', () => {
   it('the Compare head-to-head strip is the prominent battle affordance: chip buttons with the judged record where known', () => {
     const { container } = render(<CompareRivals data={banking} productId="mercury" />)
     expect([...container.querySelectorAll('h3')].some((h) => h.textContent === 'Compare head-to-head')).toBe(true)
-    // Every same-arena rival gets a /vs chip; the ramp chip carries the stored judged record
-    // (mercury 16 – 28 ramp in data/startup-banking/rankings.json, self-first) since ramp is a
-    // leaderboard-adjacent rival row.
-    const rampChip = container.querySelector('a[href="/vs/mercury-vs-ramp"]')!
+    // Every same-arena rival gets a battle-page chip (direct link, no /vs redirect hop); the
+    // ramp chip carries the stored judged record (mercury 16 – 28 ramp in
+    // data/startup-banking/rankings.json, self-first) since ramp is a leaderboard-adjacent
+    // rival row.
+    const rampChip = container.querySelector('a[href="/arena/startup-banking/battle/mercury-vs-ramp"]')!
     expect(rampChip).not.toBeNull()
     expect(rampChip.className).toContain('rounded-full')
     expect(rampChip.textContent).toContain('vs Ramp')
     expect(rampChip.textContent).toContain('16–28')
-    const vsChips = container.querySelectorAll('a[href^="/vs/"]')
+    const vsChips = container.querySelectorAll('a[href^="/arena/startup-banking/battle/"]')
     expect(vsChips.length).toBe(banking.products.length - 1)
   })
 
@@ -66,7 +67,8 @@ describe('CompareRivals', () => {
     expect(rows.length).toBeGreaterThanOrEqual(2)
     // Every row shows the arena-class n/a cell (with its explanatory tooltip) for BOTH na
     // dimensions — never a number, never a /score link for those columns.
-    const naCells = container.querySelectorAll('td [title^="Not meaningful for this arena"]')
+    // Tooltip shortened in the founder 2026-10-02 sweep: "… for this product class".
+    const naCells = container.querySelectorAll('td [title^="Not meaningful for this product class"]')
     expect(naCells).toHaveLength(rows.length * 2)
   })
 

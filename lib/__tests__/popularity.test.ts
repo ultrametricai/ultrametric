@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { daysSincePush, formatCompact, hasSignal, starsPerYear } from '@/lib/popularity'
+import { belowCompactStarsFloor, COMPACT_STARS_FLOOR, daysSincePush, formatCompact, hasSignal, starsPerYear } from '@/lib/popularity'
 
 describe('starsPerYear', () => {
   it('divides stars by years since creation', () => {
@@ -52,6 +52,17 @@ describe('formatCompact', () => {
 
   it('preserves sign for negative input', () => {
     expect(formatCompact(-1_500)).toBe('-1.5k')
+  })
+})
+
+describe('belowCompactStarsFloor (founder 2026-10-02, the ByteAsk case)', () => {
+  it('flags a stars-only record under the floor', () => {
+    expect(belowCompactStarsFloor({ stars: 24, starsPerYear: 89.099, fetchedAt: '2026-09-25T18:15:55.776Z' })).toBe(true)
+  })
+
+  it('keeps records at/above the floor, or with any npm signal', () => {
+    expect(belowCompactStarsFloor({ stars: COMPACT_STARS_FLOOR, fetchedAt: '2026-09-25T00:00:00.000Z' })).toBe(false)
+    expect(belowCompactStarsFloor({ stars: 24, npmWeekly: 5_000, fetchedAt: '2026-09-25T00:00:00.000Z' })).toBe(false)
   })
 })
 

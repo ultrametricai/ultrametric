@@ -1,5 +1,6 @@
 'use client'
 
+import Link from 'next/link'
 import { isPicked } from '@/lib/myStack'
 import { useProcessLens, type LensSource } from '@/lib/processLens'
 
@@ -47,7 +48,15 @@ function VendorGroup({ vendor, yours }: { vendor: VendorApiCalls; yours: LensSou
   return (
     <div>
       <p className="text-[10px] uppercase tracking-wide text-zinc-500">
-        {vendor.name}
+        {/* The receipt heading clicks through to the vendor's judged product page — the
+            productId/arenaId ride along from lib/stepVendorCalls.ts. */}
+        <Link
+          href={`/arena/${vendor.arenaId}/product/${vendor.productId}`}
+          title={`${vendor.name} on Ultrametric — the judged product page`}
+          className="transition hover:text-emerald-300"
+        >
+          {vendor.name}
+        </Link>
         {yours && (
           <span
             className="ml-1.5 rounded bg-emerald-400/10 px-1 py-px text-[9px] font-semibold text-emerald-300"

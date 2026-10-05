@@ -29,9 +29,11 @@ export default function StackBattlePage() {
     name: stack.name,
     productIds: [...new Set(stack.slots.flatMap((s) => (s.productId ? [s.productId] : [])))],
   }))
-  // Every live /vs/ slug, in the battles' stored order — so slot rows only link to judged
-  // battle pages that actually exist in the static export.
-  const battleSlugs = categories.flatMap((data) => data.rankings.battles.map((b) => battleSlug(b.a, b.b)))
+  // Every live battle page as an `{arenaId}/{a}-vs-{b}` key, in the battles' stored order — so
+  // slot rows only link to judged battle pages that actually exist in the static export.
+  const battleSlugs = categories.flatMap((data) =>
+    data.rankings.battles.map((b) => `${data.category.id}/${battleSlug(b.a, b.b)}`),
+  )
 
   return (
     <div className="space-y-8">

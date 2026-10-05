@@ -15,6 +15,7 @@ import ProcessLensBanner from '@/components/ProcessLensBanner'
 import ProcessVendorPicker from '@/components/ProcessVendorPicker'
 import ProductLogoView from '@/components/ProductLogoView'
 import UrgencyChip from '@/components/UrgencyChip'
+import UsFlowLabel from '@/components/UsFlowLabel'
 import { modulesForProcess } from '@/lib/businessLogicMap'
 import { GEO_GLOBAL } from '@/lib/geoPreference'
 import { hasLogo } from '@/lib/logos'
@@ -90,7 +91,7 @@ export default async function ProcessPage({ params }: { params: Promise<{ slug: 
   // derived, never hand-stored; vendor prices deliberately excluded so the headline never
   // implies a completeness the curation doesn't claim. 0 for most processes → no chip.
   const knownFees = knownCostUsd(task.dag.nodes)
-  // Open business-logic modules serving this process (processes/business-logic-map.json).
+  // Open modules serving this process (processes/business-logic-map.json).
   const openModules = modulesForProcess(task.id)
 
   return (
@@ -117,11 +118,13 @@ export default async function ProcessPage({ params }: { params: Promise<{ slug: 
         <h1 className="font-display leading-[1.1] mt-1 flex items-center gap-2.5 text-3xl font-bold tracking-tight">
           <IconChip icon={processIcon(task.id)} title={`${task.title} — ${task.phase} ${task.kind === 'situation' ? 'situation' : 'process'}`} />
           {task.title}
-          {task.region === 'us' && (
+          {task.geoScope !== 'global' && (
             <span
               aria-label="US-specific process"
-              // geoScope (founder GEO ask 2026-09-28) sharpens the flag's story: state-level
-              // work names the state as the counterparty, federal work names the agencies.
+              // The flag keys STRICTLY on geoScope (founder 2026-10-02 audit — a geoScope
+              // 'global' record can never wear it; `region` stays corpus metadata, consistency
+              // corpus-tested). geoScope also sharpens the flag's story: state-level work names
+              // the state as the counterparty, federal work names the agencies.
               title={task.geoScope === 'us-state'
                 ? 'US state-level: the counterparty here is a US state (Delaware filings, state portals, state registrations)'
                 : 'US-specific: this flow is written around US federal law and agencies (IRS, USPTO, SEC, immigration)'}
@@ -162,16 +165,16 @@ export default async function ProcessPage({ params }: { params: Promise<{ slug: 
         <p className="mt-3 max-w-2xl text-zinc-400">{task.description}</p>
         {/* supportReason no longer renders as a second description line (founder 2026-10-02) —
             it stays corpus data (the ceiling chip's tooltip territory, and the honesty record). */}
-        {/* The typed-I/O layer (founder depth wave part 2, 2026-10-01): what this process Needs
-            and Produces as registry artifacts (processes/artifacts.json), each Needs chip
-            linking to the canonical producer process — contextNeeded prose below the DAG stays
-            the human context; these chips are the machine truth the cross-process dependency
-            graph (lib/processDeps.ts) is built from. */}
+        {/* The typed-I/O layer (founder depth wave part 2, 2026-10-01): what this process
+            Produces as registry artifacts (processes/artifacts.json). The 'Needs:' row no
+            longer renders (founder 2026-10-02 — display only: the requires data and
+            lib/processDeps.ts are untouched); these chips are the machine truth the
+            cross-process dependency graph (lib/processDeps.ts) is built from. */}
         <ArtifactChips rows={artifactChipRows(task)} />
         {/* Business-logic ↔ process wiring (founder 2026-10-02): the open lib/openstartup
             modules that serve this process, from the committed registry
             processes/business-logic-map.json — a muted line of chips deep-linking to the
-            module's section in business-logic/README.md on GitHub (the modules are a repo
+            module's section in open-modules/README.md on GitHub (the modules are a repo
             library by design, no site pages). Renders nothing for the many unmapped tasks. */}
         {openModules.length > 0 && (
           <p className="mt-3 flex max-w-2xl flex-wrap items-center gap-1.5 text-xs text-zinc-500">
@@ -232,6 +235,11 @@ export default async function ProcessPage({ params }: { params: Promise<{ slug: 
 
       <section>
         <h2 className="font-display leading-[1.1] text-xl font-semibold tracking-tight">Step-by-step: what an agent can do vs you</h2>
+        {/* The wrong-country-flow guard's flow label (founder 2026-10-02): under an explicit
+            country choice a US-scoped flow wears the 'US flow' badge — the geo banner up top
+            leads with the committed country note, so the steps below are never presented as the
+            local answer. Client-side only; the static HTML renders nothing. */}
+        <UsFlowLabel geoScope={task.geoScope} />
         {/* The route-coded legend sentence is gone (founder 2026-10-02) — the route colors keep
             their per-badge labels and tooltips inside the diagram itself. */}
         {/* Client-side lens banner (founder 2026-09-21: click a vendor → the process adapts to

@@ -10,14 +10,14 @@ import { loadProcesses } from '../processes'
 // Totality gate for the open-modules ↔ process map (founder 2026-10-02, deepened same day):
 // every mapped module id is a real lib/openstartup file, every mapped process id exists in the
 // corpus, every chip target (label/anchor) resolves to a real heading in
-// business-logic/README.md — and, for the per-step layer, every entry's node id exists in that
+// open-modules/README.md — and, for the per-step layer, every entry's node id exists in that
 // process's DAG, its (module, process) pair is also task-level mapped, and its named function
 // is a REAL exported function of the module (a misspelled name fails the suite). The map is
 // curation; these tests make sure the curation can never point at nothing. The README "Serves"
 // sync direction lives in businessLogicServes.test.ts.
 
 const ROOT = path.resolve(__dirname, '..', '..')
-const README = fs.readFileSync(path.join(ROOT, 'business-logic', 'README.md'), 'utf8')
+const README = fs.readFileSync(path.join(ROOT, 'open-modules', 'README.md'), 'utf8')
 
 // GitHub's heading slug (github-slugger behavior for these headings): lowercase, strip
 // everything but letters/numbers/spaces/hyphens, spaces → hyphens. The registry anchors are
@@ -58,7 +58,7 @@ describe('processes/business-logic-map.json totality', () => {
 
   it('every label is a real README heading and every anchor is its GitHub slug', () => {
     for (const [id, m] of Object.entries(map)) {
-      expect(README.includes(`### ${m.label}`), `module ${id}: no "### ${m.label}" heading in business-logic/README.md`).toBe(true)
+      expect(README.includes(`### ${m.label}`), `module ${id}: no "### ${m.label}" heading in open-modules/README.md`).toBe(true)
       expect(githubSlug(m.label), `module ${id}: anchor drifted from the heading slug`).toBe(m.anchor)
     }
   })
@@ -71,7 +71,7 @@ describe('processes/business-logic-map.json totality', () => {
     expect(cure).toContain('deFranchiseTax')
     // Chip hrefs deep-link into the README on GitHub.
     expect(modulesForProcess('tax_001')[0].href).toBe(moduleReadmeHref(loadBusinessLogicMap()[modulesForProcess('tax_001')[0].id].anchor))
-    expect(moduleReadmeHref('cap-table')).toMatch(/^https:\/\/github\.com\/.+\/business-logic\/README\.md#cap-table$/)
+    expect(moduleReadmeHref('cap-table')).toMatch(/^https:\/\/github\.com\/.+\/open-modules\/README\.md#cap-table$/)
     // Unmapped tasks render nothing.
     expect(modulesForProcess('ops_001')).toEqual([])
   })

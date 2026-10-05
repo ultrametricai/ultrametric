@@ -1,7 +1,7 @@
 // Regenerates the table block in processes/SITUATIONS.md from processes/corpus.json (the
 // kind=situation records), between the markers lib/situationsDoc.ts defines. The prose around
 // the block is authored; only the block is machine-owned. Drift gate:
-// __tests__/situations.test.ts (same README-sync pattern documents/ uses).
+// __tests__/situations.test.ts (same README-sync pattern open-documents/ uses).
 //
 // Usage: pnpm exec tsx scripts/generate-situations-md.ts
 import fs from 'node:fs'

@@ -166,7 +166,7 @@ quoted by agents; voice drift compounds.
    adds nothing.
 2. **Do not assert trustworthiness; demonstrate it.** The words "honest" and
    "honesty" appear only for the two named conventions (the Methodology honesty
-   mechanics and the business-logic "Honesty boundaries"). Elsewhere, show the
+   mechanics and the open-modules "Honesty boundaries"). Elsewhere, show the
    mechanism: dated evidence, confidence grades, bias audits. Repeatedly calling
    the work honest reads as the opposite.
 3. **Em-dash discipline.** In prose, use commas, colons, parentheses, or sentence

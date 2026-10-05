@@ -18,6 +18,16 @@ const CLASS_PINS: Array<[string, string]> = [
   ['components/StoryMatrix.tsx', 'text-zinc-400">{humanizeTheme(group)}'],
   // The visible theme one-liner under StoryMap headings reads as a sentence — secondary tier.
   ['components/StoryMap.tsx', 'text-zinc-400">{themeExplanation(theme)}'],
+  // 2026-10-02 round: the "/100" units that lagged the sweep — tertiary tier like the other
+  // eighteen "/100" renders sitewide (e.g. app/yc/page.tsx, components/MegaTable.tsx).
+  ['app/rankings/law-firms/page.tsx', '<>{score(value)}<span className="text-zinc-500">/100</span></>'],
+  ['app/rankings/law-firms/page.tsx', '<>{score(row.entry.agentReady)}<span className="text-zinc-500">/100</span></>'],
+  ['components/VendorProcesses.tsx', '<span className="text-zinc-500">/100</span>'],
+  // The wrong-country row's note summary is prose the reader needs — secondary tier, matching
+  // the row's title link (ProcessGeoBanner renders the same field at zinc-300).
+  ['components/ProcessesTable.tsx', 'className="text-zinc-400">\n                        {/* The committed note summary'],
+  // StepVendorRow's "use" control label sits at the same tier as its sibling clear button.
+  ['components/StepVendorRow.tsx', 'text-[10px] text-zinc-500 transition hover:text-emerald-300'],
 ]
 
 describe('contrast sweep (founder 2026-09-30)', () => {

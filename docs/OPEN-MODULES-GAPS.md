@@ -3,7 +3,7 @@
 Founder ask (2026-10-02): *"what open modules can we improve logic-wise? can we go deep
 here and see how they connect to our processes?"* This is the corpus-wide walk: every
 process family checked against the open modules (`lib/openstartup/`,
-registry `business-logic/README.md`, wiring `processes/business-logic-map.json`) for steps
+registry `open-modules/README.md`, wiring `processes/business-logic-map.json`) for steps
 with **real computable math that no module served**. The house bar for a BUILD verdict is
 fixed: a citation per formula, a published worked example replayed number-for-number (or an
 honest hand-derived derivation where the canonical source publishes the formula without
@@ -84,7 +84,7 @@ revenue — see "Built" below), the rest assessed with verdicts.
 
 ## Notes for the coordinator (out of this lane's scope)
 
-- **Root `README.md`**: add bullets for the three new modules under the business-logic
+- **Root `README.md`**: add bullets for the three new modules under the open-modules
   section (priced-round composer; unit economics; deferred revenue).
 - **`resources/registry.json`**: consider entries for the four new citations (Skok
   definitions page, Sacks burn-multiple post, Feld Rule-of-40 post, O'Driscoll magic-number

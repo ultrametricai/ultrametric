@@ -1,7 +1,9 @@
 // The reader's country preference (founder GEO ask 2026-09-28: "make GEO a top-level process
 // driver at the top of a particular process page or a vendor, so we know how it works across
-// the globe"). One preference, five countries — the same set the vendor-geo spike judged
-// (lib/vendorGeo.ts) and the process geo notes cover (lib/processes.ts GeoNoteSchema).
+// the globe"). One preference, one country list — the original five are the set the vendor-geo
+// spike judged (lib/vendorGeo.ts); the process geo notes (lib/processes.ts GeoNoteSchema) cover
+// every listed country, PT and CA included (founder new-countries wave 2026-10-03). Vendor geo
+// stays evidence-gated per country: products the spike has not judged are absent, never guessed.
 //
 // This module is the CLIENT-SAFE half (no node:fs — the lib/jurisdictions.ts split convention):
 // the country list, labels/flags, the ?geo= URL/localStorage codec, and a tiny per-tab store so
@@ -9,13 +11,13 @@
 // annotations) shares ONE selection without a context provider re-plumbing the server pages.
 //
 // URL/localStorage contract (lib/urlState.ts conventions, the JurisdictionToggle precedent):
-// the default — 🇺🇸 US — NEVER appears in the URL; ?geo=uk / ?geo=in / ?geo=de / ?geo=fr is the
-// shareable non-default state, mirrored to localStorage under `pa-geo`. Components read it on
+// the default — 🇺🇸 US — NEVER appears in the URL; ?geo=uk / ?geo=in / ?geo=de / ?geo=fr /
+// ?geo=pt / ?geo=ca is the shareable non-default state, mirrored to localStorage under `pa-geo`. Components read it on
 // MOUNT ONLY, so the static HTML always renders the US default byte-identically and hydrates
 // with zero mismatches — geo-conditional UI appears only after the reader (or their stored
 // preference) opts in, and no judged number ever moves.
 
-export const GEO_COUNTRIES = ['US', 'UK', 'IN', 'DE', 'FR'] as const
+export const GEO_COUNTRIES = ['US', 'UK', 'IN', 'DE', 'FR', 'PT', 'CA'] as const
 export type GeoCountry = (typeof GEO_COUNTRIES)[number]
 
 /** The non-default selections — everything a ?geo= param can carry. */
@@ -29,6 +31,8 @@ export const GEO_PREF_META: Record<GeoCountry, { label: string; flag: string; pr
   IN: { label: 'India', flag: '🇮🇳', prose: 'India' },
   DE: { label: 'Germany', flag: '🇩🇪', prose: 'Germany' },
   FR: { label: 'France', flag: '🇫🇷', prose: 'France' },
+  PT: { label: 'Portugal', flag: '🇵🇹', prose: 'Portugal' },
+  CA: { label: 'Canada', flag: '🇨🇦', prose: 'Canada' },
 }
 
 export const GEO_PARAM = 'geo'
@@ -82,6 +86,18 @@ export const GEO_SCOPE_GLYPH: Record<'global' | 'us' | 'us-state', { glyph: stri
   'us-state': { glyph: '🏛', label: 'US state-level process — a US state is the counterparty' },
 }
 
+// The one title-trailing scope glyph (founder batch 2026-10-02): the 🇺🇸 flag, keyed STRICTLY
+// on geoScope — 'us' AND 'us-state' wear it (the label still tells federal from state work);
+// 'global' (and the shared-catalog null) wears no scope glyph at all. The 🌐 globe and 🏛
+// state glyphs no longer follow titles — they read as duplicate icons next to the row's own
+// icon ('Set up registered agent 🏛'). A geoScope-'global' record can never render the flag.
+export function usFlagGlyph(
+  scope: 'global' | 'us' | 'us-state' | null,
+): { glyph: string; label: string } | null {
+  if (scope !== 'us' && scope !== 'us-state') return null
+  return { glyph: GEO_PREF_META.US.flag, label: GEO_SCOPE_GLYPH[scope].label }
+}
+
 // What a committed geo note SAYS about the need behind a US-scoped process in its country
 // (founder ask 2026-10-02: "changing the country should hide the processes that are not used in
 // that country — e.g. an EIN number for India doesn't make sense"). Required on every committed
@@ -99,8 +115,12 @@ export type GeoNoteKind = (typeof GEO_NOTE_KINDS)[number]
 // One curated per-country analog of a US-scoped process (the client-safe shape of
 // lib/processes.ts GeoNote — same fields, so the server page passes task.geoNotes straight
 // through to components/ProcessGeoBanner.tsx without the client bundle touching node:fs).
+// `kind` rides along since the wrong-country-flow guard (founder 2026-10-02): the banner's
+// copy branches on what the committed note SAYS — an analog is promoted as the local answer,
+// an absorbed/not-applicable need is stated plainly.
 export interface GeoAnalogNote {
   country: GeoSelection
+  kind: GeoNoteKind
   summary: string
   actionUrl: string
   actionLabel: string

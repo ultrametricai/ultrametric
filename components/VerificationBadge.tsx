@@ -57,7 +57,7 @@ export default function VerificationBadge({
       <Link
         href={href}
         title={`${TITLES[level]} — how evidence tiers work, on /methodology`}
-        className="inline-flex rounded-full transition hover:brightness-125 hover:ring-1 hover:ring-emerald-400/60"
+        className="um-pill-link"
       >
         {node}
       </Link>
@@ -81,14 +81,14 @@ export default function VerificationBadge({
           <Link
             href={href}
             title={`${TITLES[level]} — how evidence tiers work, on /methodology`}
-            className={`hidden rounded-full px-2 py-0.5 text-xs font-medium ring-1 transition hover:brightness-125 hover:ring-emerald-400/60 sm:inline-flex ${STYLES[level]}`}
+            className={`um-pill um-pill-hover hidden sm:inline-flex ${STYLES[level]}`}
           >
             {LABELS[level]}
           </Link>
         ) : (
           <span
             title={TITLES[level]}
-            className={`hidden rounded-full px-2 py-0.5 text-xs font-medium ring-1 sm:inline-flex ${STYLES[level]}`}
+            className={`um-pill hidden sm:inline-flex ${STYLES[level]}`}
           >
             {LABELS[level]}
           </span>
@@ -101,7 +101,7 @@ export default function VerificationBadge({
       <Link
         href={href}
         title={`${TITLES[level]} — how evidence tiers work, on /methodology`}
-        className={`inline-flex rounded-full px-2 py-0.5 text-xs font-medium ring-1 transition hover:brightness-125 hover:ring-emerald-400/60 ${STYLES[level]}`}
+        className={`um-pill um-pill-hover inline-flex ${STYLES[level]}`}
       >
         {LABELS[level]}
       </Link>
@@ -110,7 +110,7 @@ export default function VerificationBadge({
   return (
     <span
       title={TITLES[level]}
-      className={`inline-flex rounded-full px-2 py-0.5 text-xs font-medium ring-1 ${STYLES[level]}`}
+      className={`um-pill inline-flex ${STYLES[level]}`}
     >
       {LABELS[level]}
     </span>

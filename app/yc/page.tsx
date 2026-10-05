@@ -17,7 +17,7 @@ export function generateMetadata(): Metadata {
   const batches = ycBatchSummaries(rows)
   return {
     title: `YC companies — agentic winners per batch (${rows.length} products, ${batches.length} batches) — Ultrametric`,
-    description: `Y Combinator alumni we track, ranked by evidence-graded agent readiness and built-in AI — ${rows.length} products from ${batches.length} batches, ${batches[0] ? `${batches[0].label} back to ${batches[batches.length - 1].label}` : ''}. Not a YC-wide census: coverage grows batch by batch.`,
+    description: `Y Combinator alumni we track, ranked by agent readiness and built-in AI, both agent tested — ${rows.length} products from ${batches.length} batches, ${batches[0] ? `${batches[0].label} back to ${batches[batches.length - 1].label}` : ''}. Not a YC-wide census: coverage grows batch by batch.`,
   }
 }
 
@@ -40,12 +40,11 @@ export default function YcIndexPage() {
         <p className="mt-2 max-w-2xl text-zinc-400">
           Every YC alum among the products we track — {rows.length} products across {batches.length} batches —
           verified against YC&rsquo;s public directory by website domain, never by name, and ranked by the same
-          evidence-graded scores as everything else: agent readiness, built-in AI, Overall score.
+          agent-tested scores as everything else: agent readiness, built-in AI, Overall score.
         </p>
         <p className="mt-2 max-w-2xl text-xs text-zinc-500">
-          Honest framing: this is the YC companies <span className="text-zinc-300">we track</span>, judged on
-          evidence — not a YC-wide census (yet). Coverage grows batch by batch from a ranked queue of active YC
-          companies whose products an agent could plausibly control. See{' '}
+          The table lists the YC companies <span className="text-zinc-300">we track</span>; coverage grows batch by
+          batch from a ranked queue of active YC companies whose products an agent could plausibly control. See{' '}
           <Link href="/methodology" className="text-emerald-400 underline decoration-emerald-400/40 hover:text-emerald-300">
             methodology
           </Link>
@@ -59,7 +58,7 @@ export default function YcIndexPage() {
             <tr className="border-b border-zinc-800 text-left text-xs uppercase tracking-widest text-zinc-500">
               <th className="px-3 py-2 font-normal">Batch</th>
               <th className="px-3 py-2 font-normal" title="How many products from this batch we track">Tracked</th>
-              <th className="px-3 py-2 font-normal" title="The batch's most agent-ready product — highest evidence-graded agent-readiness score">
+              <th className="px-3 py-2 font-normal" title="The batch's most agent-ready product — highest agent-readiness score, agent tested">
                 Most agent-ready
               </th>
               <th className="hidden px-3 py-2 font-normal sm:table-cell" title="Agent-readiness score of the batch leader">Agent-ready</th>

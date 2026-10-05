@@ -11,7 +11,7 @@ import { confidenceFor } from './confidence'
 import type { CategoryData } from './data-helpers'
 import type { EverythingRow } from './everythingFacets'
 import { loadIcpTypes } from './icp'
-import { loadProcesses, processSlug, taskCeiling, phaseRank, VENDOR_ARENA, vendorLabel } from './processes'
+import { loadProcesses, processSlug, taskCeiling, phaseRank, VENDOR_ARENA, vendorLabel, vendorProductId } from './processes'
 import { metricTrendDelta } from './scoreHistory'
 
 // Rows come out in categories.json order, each arena's slice in leaderboard order — the
@@ -53,8 +53,8 @@ export interface EverythingProcessRow {
   pct: number
   agentSteps: number
   totalSteps: number
-  /** Up to two vendor chips — mapped-to-arena vendors first (they link to a live leaderboard). */
-  vendors: Array<{ label: string; arenaId: string | null }>
+  /** Up to two vendor chips — mapped-to-arena vendors first (they link to the judged product page). */
+  vendors: Array<{ label: string; arenaId: string | null; productId: string }>
 }
 
 export function buildEverythingProcessRows(dir?: string): EverythingProcessRow[] {
@@ -75,7 +75,7 @@ export function buildEverythingProcessRows(dir?: string): EverythingProcessRow[]
       pct: c.pct,
       agentSteps: c.agentSteps,
       totalSteps: c.totalSteps,
-      vendors: chips.map((v) => ({ label: vendorLabel(v), arenaId: VENDOR_ARENA[v] ?? null })),
+      vendors: chips.map((v) => ({ label: vendorLabel(v), arenaId: VENDOR_ARENA[v] ?? null, productId: vendorProductId(v) })),
     }
   })
 }

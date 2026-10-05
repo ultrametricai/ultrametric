@@ -148,7 +148,7 @@ function VendorChipButton({
           type="button"
           onClick={onSelect}
           title={`See this process via ${vendor.name} — pins it on every step its ${vendor.arenaName} evidence covers and adapts prompts and API calls (stored in this browser only)`}
-          className="shrink-0 rounded px-0.5 text-[10px] text-zinc-600 transition hover:text-emerald-300"
+          className="shrink-0 rounded px-0.5 text-[10px] text-zinc-500 transition hover:text-emerald-300"
         >
           use
         </button>

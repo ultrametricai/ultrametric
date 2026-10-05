@@ -12,7 +12,7 @@ import TableControls from '@/components/TableControls'
 import UrgencyChip from '@/components/UrgencyChip'
 import { useGeoSelection } from '@/components/useGeoSelection'
 import {
-  GEO_GLOBAL, GEO_PREF_META, GEO_SCOPE_GLYPH, hiddenInCountryView, type GeoNotesByCountry,
+  GEO_GLOBAL, GEO_PREF_META, hiddenInCountryView, usFlagGlyph, type GeoNotesByCountry,
 } from '@/lib/geoPreference'
 import { phaseEmoji, phaseIcon, phaseTooltip } from '@/lib/processIcons'
 import { URGENCY_TIERS, type ProcessKind, type Urgency } from '@/lib/processSim'
@@ -40,7 +40,7 @@ import { readParams, setParams } from '@/lib/urlState'
 // folds into its DOMINANT area (its first constituent process's area) at that constituent's
 // timeOrder position; the constituent icon chips + route-dot strip signal composition without a
 // category label. The flat view keeps its semantics: interleaved where the sort applies to the
-// aggregate ceiling/steps/title, appended after the processes on the per-process orderings.
+// aggregate ceiling/title, appended after the processes on the per-process orderings.
 // The /processes page passes `playbooks`; surfaces that omit it (the homepage's process mode)
 // render exactly the process-only table they always did.
 //
@@ -65,10 +65,10 @@ export interface ProcessRow {
   // server-side so this client component never imports the node-only builder.
   area: string
   areaRank: number
-  // The GEO dimension (founder 2026-09-28) — required on every corpus process. While a non-US
-  // country is selected (GeoSwitcher / lib/geoPreference.ts) each row wears its scope glyph
-  // (🌐 global / 🇺🇸 US / 🏛 state); the default view is untouched. Never re-sorts — and since
-  // the country-view filter (founder 2026-10-02) the scope also feeds hiddenInCountryView.
+  // The GEO dimension (founder 2026-09-28) — required on every corpus process. us/us-state
+  // rows wear the 🇺🇸 flag after the title (usFlagGlyph — keyed strictly on geoScope, founder
+  // 2026-10-02); global rows wear no scope glyph. Never re-sorts — and since the country-view
+  // filter (founder 2026-10-02) the scope also feeds hiddenInCountryView.
   geoScope: 'global' | 'us' | 'us-state'
   // The country-view filter data (founder 2026-10-02: "?geo=in should hide the processes that
   // are not used in that country"): per country, the committed note's curated kind + its own
@@ -140,7 +140,9 @@ function compareValues(a: number | string | null, b: number | string | null, dir
   return direction === 'desc' ? -result : result
 }
 
-type Column = 'title' | 'phase' | 'pct' | 'steps' | 'order' | 'cadence' | 'annoyance' | 'risk' | 'growth'
+// The Steps column is gone (founder 2026-10-02 — the detail pages carry the per-step story);
+// agentSteps/totalSteps stay row DATA (tooltips, other surfaces), just not a column or sort axis.
+type Column = 'title' | 'phase' | 'pct' | 'order' | 'cadence' | 'annoyance' | 'risk' | 'growth'
 type Direction = 'asc' | 'desc'
 
 // Columns whose preset/default direction is ascending (timeline runs first→last; regularity
@@ -155,7 +157,7 @@ const defaultDirection = (col: Column): Direction => (ASC_DEFAULT.has(col) ? 'as
 // no-param default is the flat FOUNDER-TIMELINE sort — so the UI elides ?order= for timeline
 // (the new default) and writes every other ordering, pct now included; the grouped-by-area
 // view (the former 2026-09-28 default) is shareable as ?order=grouped.
-const ALL_COLUMNS: readonly Column[] = ['title', 'phase', 'pct', 'steps', 'order', 'cadence', 'annoyance', 'risk', 'growth']
+const ALL_COLUMNS: readonly Column[] = ['title', 'phase', 'pct', 'order', 'cadence', 'annoyance', 'risk', 'growth']
 const columnToParam = (col: Column): string => (col === 'order' ? 'timeline' : col)
 function paramToColumn(value: string | null): Column | null {
   if (value === null) return null
@@ -171,7 +173,6 @@ const PRESETS: Array<{ col: PresetCol; label: string; icon: string }> = [
   { col: 'grouped', label: 'Grouped by area', icon: '🗂️' },
   { col: 'order', label: 'Founder timeline', icon: '🗓️' },
   { col: 'pct', label: 'Most automatable', icon: '⚡' },
-  { col: 'steps', label: 'Most steps', icon: '🪜' },
   { col: 'cadence', label: 'Regularity', icon: '🔁' },
   { col: 'annoyance', label: 'Most annoying', icon: '😤' },
   { col: 'risk', label: 'Riskiest', icon: '⚠️' },
@@ -207,17 +208,7 @@ function fieldOf(row: ProcessTableRow, col: Column): number | string | null {
   if (col === 'cadence') return row.cadenceRank
   if (col === 'annoyance') return row.annoyance
   if (col === 'risk') return row.risk
-  if (col === 'growth') return row.growthImpact
-  return row.totalSteps
-}
-
-// The no-selection geo glyphs (founder 2026-09-30: every row shows its geo glyph ALWAYS,
-// "default on USA"): us AND us-state rows wear the flag, global rows the globe. A non-US
-// selection swaps to the sharper GEO_SCOPE_GLYPH set (🏛 distinguishes state-level work).
-const DEFAULT_GEO_GLYPH: Record<ProcessRow['geoScope'], { glyph: string; label: string }> = {
-  global: GEO_SCOPE_GLYPH.global,
-  us: GEO_SCOPE_GLYPH.us,
-  'us-state': GEO_SCOPE_GLYPH.us,
+  return row.growthImpact
 }
 
 // 1–5 score rendered as dots, tooltip carries the number.
@@ -257,14 +248,13 @@ function SortableTh({
   )
 }
 
-// The columns a playbook honestly has a value for (aggregate ceiling/steps, its name). On any
+// The columns a playbook honestly has a value for (aggregate ceiling, its name). On any
 // other sort — the five curated per-process orderings and phase — playbooks lack the field, so
 // the flat view lists them AFTER the sorted processes (missing values last), ceiling-desc.
-const PLAYBOOK_SORTABLE = new Set<Column>(['title', 'pct', 'steps'])
+const PLAYBOOK_SORTABLE = new Set<Column>(['title', 'pct'])
 function playbookFieldOf(row: PlaybookRow, col: Column): number | string {
   if (col === 'title') return row.title
-  if (col === 'pct') return row.pct
-  return row.totalSteps
+  return row.pct
 }
 
 // The flat view's union row type: process and playbook rows sorted through one comparator.
@@ -292,20 +282,21 @@ export default function ProcessesTable({
   const [direction, setDirection] = useState<Direction>('asc')
   const [phase, setPhase] = useState('all')
   const [query, setQuery] = useState('')
+  // Cadence click-to-filter (founder 2026-10-02): clicking a cadence value in a row scopes the
+  // table to that cadence; clicking the same value again clears it. Client state only — the
+  // cadence cell is the control and the visible active state, no URL param.
+  const [cadence, setCadence] = useState<string | null>(null)
   // Non-null while the reader has a non-US country selected (GeoSwitcher seeds the shared
-  // store). Every row ALWAYS wears a geo glyph now (founder 2026-09-30: "processes need to
-  // have a global icon, default on USA") — with no selection us/us-state rows default to 🇺🇸
-  // and global rows to 🌐; a selection sharpens to the full scope glyphs (🏛 for state-level).
-  // Under the GLOBAL surface default (founder 2026-09-30: /processes opens on the global view)
-  // the no-selection glyphs are the sharp set from the server render on — every row still
-  // present, US-specific work told apart as 🇺🇸 (federal) vs 🏛 (state) from the global vantage.
-  // Never re-sorts; since the country-view filter (founder 2026-10-02: "?geo=in should hide the
-  // processes that are not used in that country") a COUNTRY selection also hides the US-scoped
-  // rows whose committed note says the need is absorbed into another process there or doesn't
-  // exist (hiddenInCountryView) — the no-selection default and 🌐 Global keep the full corpus,
-  // and the muted disclosure line under the table keeps the hidden titles reachable.
+  // store). The scope glyph is selection-independent since the founder batch 2026-10-02:
+  // us/us-state rows always wear the 🇺🇸 flag (usFlagGlyph — strictly geoScope-keyed, the label
+  // telling federal from state work) and global rows wear nothing, identically in the server
+  // render and under any selection. Never re-sorts; since the country-view filter (founder
+  // 2026-10-02: "?geo=in should hide the processes that are not used in that country") a
+  // COUNTRY selection also hides the US-scoped rows whose committed note says the need is
+  // absorbed into another process there or doesn't exist (hiddenInCountryView) — the
+  // no-selection default and 🌐 Global keep the full corpus, and the muted disclosure line
+  // under the table keeps the hidden titles reachable.
   const geo = useGeoSelection()
-  const scopeGlyphs = geo !== null || defaultGeo === GEO_GLOBAL ? GEO_SCOPE_GLYPH : DEFAULT_GEO_GLYPH
   // What the active country view hides, for the honesty disclosure under the table — computed
   // over the WHOLE row set (the country view as such; the phase/text filters narrow the table
   // above it, never this line), in founder-timeline order so the list reads deterministically.
@@ -384,15 +375,19 @@ export default function ProcessesTable({
         // process. No selection / 🌐 Global ⇒ geo is null ⇒ the full corpus, exactly as before.
         (geo === null || !hiddenInCountryView(r, geo))
         && (phase === 'all' || r.phase === phase)
+        && (cadence === null || r.cadenceLabel === cadence)
         && (q === '' || r.title.toLowerCase().includes(q) || r.vendors.some((v) => v.label.toLowerCase().includes(q))),
     )
-  }, [rows, phase, query, geo])
+  }, [rows, phase, cadence, query, geo])
 
   // Playbooks live in the same table under the same controls (founder 2026-09-29): the phase
   // filter keeps a playbook while any of its constituent processes is in that phase; the text
   // filter matches its name, tagline, and constituent process titles.
   const filteredPlaybooks = useMemo(() => {
     const q = query.trim().toLowerCase()
+    // A chain row has no cadence of its own (its metric cell is the honest dash), so an active
+    // cadence filter scopes to process rows only.
+    if (cadence !== null) return []
     return playbooks.filter(
       (p) =>
         (phase === 'all' || p.phases.includes(phase))
@@ -401,7 +396,7 @@ export default function ProcessesTable({
           || p.tagline.toLowerCase().includes(q)
           || p.processes.some((t) => t.title.toLowerCase().includes(q))),
     )
-  }, [playbooks, phase, query])
+  }, [playbooks, phase, cadence, query])
 
   const sorted = useMemo(() => {
     return [...filtered].sort((a, b) => {
@@ -417,7 +412,7 @@ export default function ProcessesTable({
   }, [filtered, column, direction])
 
   // The flat sorted view over BOTH row kinds. Where the active column applies to playbooks
-  // (title, aggregate ceiling, steps) they interleave with the processes through one comparator;
+  // (title, aggregate ceiling) they interleave with the processes through one comparator;
   // on the per-process orderings (timeline, cadence, annoyance, risk, growth, phase) they lack
   // the field, so they follow the sorted processes — missing values last, ceiling-desc.
   const flatItems = useMemo<FlatItem[]>(() => {
@@ -510,7 +505,22 @@ export default function ProcessesTable({
       }
       return <span className="font-mono text-xs tabular-nums text-zinc-400">#{r.timeOrder}</span>
     }
-    if (metric === 'cadence') return <span className="text-xs text-zinc-400">{r.cadenceLabel}</span>
+    if (metric === 'cadence') {
+      // The cadence value is the filter (founder 2026-10-02, the in-row phase button idiom):
+      // click it to scope the table to that cadence; click the same value again to clear.
+      const active = cadence === r.cadenceLabel
+      return (
+        <button
+          type="button"
+          aria-pressed={active}
+          onClick={() => setCadence(active ? null : r.cadenceLabel)}
+          title={`${r.cadenceLabel} cadence — click to ${active ? 'clear the cadence filter' : `filter to ${r.cadenceLabel}`}`}
+          className={`cursor-pointer text-xs transition hover:text-emerald-300 ${active ? 'text-emerald-300' : 'text-zinc-400'}`}
+        >
+          {r.cadenceLabel}
+        </button>
+      )
+    }
     if (metric === 'annoyance') return <ScoreDots value={r.annoyance!} label="Annoyance" />
     if (metric === 'risk') return <ScoreDots value={r.risk!} label="Risk" />
     return <ScoreDots value={r.growthImpact!} label="Growth impact" />
@@ -528,13 +538,18 @@ export default function ProcessesTable({
             <Link href={href} className="font-medium hover:text-emerald-300">
               <ProcessTitle title={r.title} agent={r.agentClassified ?? null} />
             </Link>
-            {r.geoScope !== null && <span
-              aria-hidden
-              className="text-[10px] opacity-70"
-              title={scopeGlyphs[r.geoScope].label}
-            >
-              {scopeGlyphs[r.geoScope].glyph}
-            </span>}
+            {(() => {
+              // Only US-scoped work wears a title-trailing glyph (founder 2026-10-02): the 🇺🇸
+              // flag, keyed strictly on geoScope; global rows wear no scope glyph at all.
+              const flag = usFlagGlyph(r.geoScope)
+              return flag !== null && <span
+                aria-hidden
+                className="text-[10px] opacity-70"
+                title={flag.label}
+              >
+                {flag.glyph}
+              </span>
+            })()}
             {r.urgency !== null && <UrgencyChip tier={r.urgency} />}
           </span>
           {/* Situations (founder 2026-10-01): the trigger — the event that puts a founder
@@ -559,15 +574,8 @@ export default function ProcessesTable({
         <td className="px-2 py-2">
           {r.pct !== null && <CeilingBar pct={r.pct} />}
         </td>
-        <td className="hidden px-2 py-2 font-mono text-xs tabular-nums text-zinc-400 sm:table-cell">
-          <Link
-            href={r.href ? href : `${href}#steps`}
-            title={r.agentSteps === null ? `${r.totalSteps} top-level parts — open this process` : `${r.agentSteps} of ${r.totalSteps} steps are agent-runnable — open the step-by-step breakdown`}
-            className="underline decoration-zinc-800 underline-offset-2 transition hover:text-emerald-300"
-          >
-            {r.agentSteps === null ? r.totalSteps : `${r.agentSteps}/${r.totalSteps}`}
-          </Link>
-        </td>
+        {/* The Steps cell left with its column (founder 2026-10-02) — the detail page's
+            step-by-step carries the per-step story. */}
         <td className="whitespace-nowrap px-2 py-2">{metricCell(r)}</td>
         <td className="hidden px-2 py-2 lg:table-cell">
           <span className="flex flex-wrap gap-1">
@@ -632,17 +640,7 @@ export default function ProcessesTable({
         <td className="px-2 py-2">
           <CeilingBar pct={p.pct} />
         </td>
-        <td className="hidden px-2 py-2 sm:table-cell">
-          <span className="flex items-center gap-1.5 whitespace-nowrap font-mono text-xs tabular-nums text-zinc-400">
-            <Link
-              href={p.href}
-              title={`${p.agentSteps} of ${p.totalSteps} combined steps are agent-runnable — open the start-to-finish walkthrough`}
-              className="underline decoration-zinc-800 underline-offset-2 transition hover:text-emerald-300"
-            >
-              {p.agentSteps}/{p.totalSteps}
-            </Link>
-          </span>
-        </td>
+        {/* The aggregate Steps cell left with its column (founder 2026-10-02). */}
         <td className="whitespace-nowrap px-2 py-2">
           <span className="text-xs text-zinc-600" title="Multi-process row — the constituent processes carry the timeline/cadence/annoyance/risk/growth values; the combined row ranks by its aggregate ceiling">
             —
@@ -721,11 +719,12 @@ export default function ProcessesTable({
               <SortableTh col="title" current={grouped ? null : column} direction={direction} onSort={handleSort}><span title="A real startup operating process, mapped step by step">Process</span></SortableTh>
               <SortableTh col="phase" current={grouped ? null : column} direction={direction} onSort={handleSort} className="hidden md:table-cell"><span title="Where in the life of the company this process happens (formation, finance, hiring…)">Phase</span></SortableTh>
               <SortableTh col="pct" current={grouped ? null : column} direction={direction} onSort={handleSort}><span title="Agentic %: the share of this process's steps an AI agent can run today — the rest still needs forms or people">Agentic %</span></SortableTh>
-              <SortableTh col="steps" current={grouped ? null : column} direction={direction} onSort={handleSort} className="hidden sm:table-cell"><span title="Agent-runnable steps out of the total steps in the process">Steps</span></SortableTh>
+              {/* The Steps column is gone (founder 2026-10-02) — the detail pages carry the
+                  per-step story; the Agentic % bar is the honest summary here. */}
               {/* Adaptive metric column: shows whichever of the five orderings is active (falls
                   back to cadence) — the ranked-on number is always on screen. */}
               <SortableTh col={metric} current={grouped ? null : column} direction={direction} onSort={handleSort}><span title={METRIC_META[metric].tooltip}>{METRIC_META[metric].header}</span></SortableTh>
-              <SortableTh col="title" current={grouped ? null : column} direction={direction} onSort={handleSort} sortable={false} className="hidden lg:table-cell"><span title="The main vendors this process runs on — judged vendors link to their product page">Vendor</span></SortableTh>
+              <SortableTh col="title" current={grouped ? null : column} direction={direction} onSort={handleSort} sortable={false} className="hidden lg:table-cell"><span title="The main vendors this process runs on — judged vendors open this process viewed through that vendor">Vendor</span></SortableTh>
             </tr>
           </thead>
           <tbody className="divide-y divide-zinc-800/70">
@@ -739,7 +738,7 @@ export default function ProcessesTable({
                         (hidden columns collapse it), so the header reads fine at the homepage
                         width and in the mobile edge-to-edge table. */}
                     <tr className="bg-zinc-900/50">
-                      <th colSpan={6} scope="colgroup" className="px-2 pb-1.5 pt-3 text-left font-normal">
+                      <th colSpan={5} scope="colgroup" className="px-2 pb-1.5 pt-3 text-left font-normal">
                         <span className="flex flex-wrap items-baseline gap-x-2 gap-y-0.5">
                           <span className="font-display text-sm font-semibold tracking-tight text-zinc-100">{g.area}</span>
                           <span className="text-[11px] text-zinc-500">
@@ -758,10 +757,10 @@ export default function ProcessesTable({
               : flatItems.map((it) => (it.kind === 'playbook' ? playbookRow(it.row) : processRow(it.row)))}
             {sorted.length === 0 && filteredPlaybooks.length === 0 && (
               <tr>
-                <td colSpan={6} className="px-3 py-6 text-center text-zinc-500">
+                <td colSpan={5} className="px-3 py-6 text-center text-zinc-500">
                   {/* Echo the active filters — same convention as the product tables. One
                       vocabulary (founder 2026-09-29): chain rows are processes too. */}
-                  No processes match{query.trim() ? <> &ldquo;{query}&rdquo;</> : ''}{phase !== 'all' ? ` in the ${phase} phase` : ''}.
+                  No processes match{query.trim() ? <> &ldquo;{query}&rdquo;</> : ''}{phase !== 'all' ? ` in the ${phase} phase` : ''}{cadence !== null ? ` at the ${cadence} cadence` : ''}.
                 </td>
               </tr>
             )}
@@ -797,9 +796,11 @@ export default function ProcessesTable({
                       <Link href={`/processes/${r.slug}`} className="text-zinc-400 underline decoration-zinc-800 underline-offset-2 transition hover:text-emerald-300">
                         {r.title}
                       </Link>{' '}
-                      <span className="text-zinc-600">
+                      <span className="text-zinc-400">
                         {/* The committed note summary is the one-liner; a row with no note for
-                            this country says so honestly instead of inventing a reason. */}
+                            this country says so honestly instead of inventing a reason. Readable
+                            tier (zinc-400, matching the row's title link) — this is prose the
+                            reader needs, not a decorative annotation. */}
                         — {note ? note.summary : `US-specific — no ${country} note is curated yet.`}
                       </span>
                     </li>

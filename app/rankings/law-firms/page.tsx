@@ -30,25 +30,25 @@ const FIRM_DIMENSIONS = [
   {
     key: 'venture-financing',
     label: 'Venture financing',
-    title: 'VENTURE FINANCING (0–100): priced rounds, SAFEs, term-sheet and cap-table counsel — evidence-graded theme score.',
+    title: 'VENTURE FINANCING (0–100): priced rounds, SAFEs, term-sheet and cap-table counsel — agent-tested theme score.',
     hide: '',
   },
   {
     key: 'formation-incorporation',
     label: 'Formation',
-    title: 'FORMATION & INCORPORATION (0–100): entity formation, standard startup paperwork, post-incorporation hygiene — evidence-graded theme score.',
+    title: 'FORMATION & INCORPORATION (0–100): entity formation, standard startup paperwork, post-incorporation hygiene — agent-tested theme score.',
     hide: 'hidden sm:table-cell',
   },
   {
     key: 'ip-protection',
     label: 'IP protection',
-    title: 'IP PROTECTION (0–100): patents, trademarks, IP assignment and litigation muscle — evidence-graded theme score.',
+    title: 'IP PROTECTION (0–100): patents, trademarks, IP assignment and litigation muscle — agent-tested theme score.',
     hide: 'hidden sm:table-cell',
   },
   {
     key: 'startup-program',
     label: 'Startup program',
-    title: 'STARTUP PROGRAM (0–100): dedicated emerging-companies programs, deferred-fee packages, founder resources — evidence-graded theme score.',
+    title: 'STARTUP PROGRAM (0–100): dedicated emerging-companies programs, deferred-fee packages, founder resources — agent-tested theme score.',
     hide: 'hidden md:table-cell',
   },
 ] as const
@@ -241,7 +241,7 @@ export default function LawFirmsRankingPage() {
                       {value === null ? (
                         <span className="font-sans text-xs text-zinc-500">n/a</span>
                       ) : (
-                        <>{score(value)}<span className="text-zinc-600">/100</span></>
+                        <>{score(value)}<span className="text-zinc-500">/100</span></>
                       )}
                     </td>
                   )
@@ -250,7 +250,7 @@ export default function LawFirmsRankingPage() {
                   {row.entry.agentReady === null ? (
                     <span className="font-sans text-xs text-zinc-500">n/a</span>
                   ) : (
-                    <>{score(row.entry.agentReady)}<span className="text-zinc-600">/100</span></>
+                    <>{score(row.entry.agentReady)}<span className="text-zinc-500">/100</span></>
                   )}
                 </td>
                 <td className="px-3 py-2">

@@ -50,8 +50,9 @@ export const ExtraOptionRefSchema = z.object({
 export type ExtraOptionRef = z.infer<typeof ExtraOptionRefSchema>
 
 // Declared ahead of the node schema so method contexts can reference it — see the GEO dimension
-// block below (founder ask 2026-09-28) for the full story of these four countries.
-export const GEO_NOTE_COUNTRIES = ['IN', 'UK', 'DE', 'FR'] as const
+// block below (founder ask 2026-09-28) for the full story of these countries (PT and CA joined
+// in the new-countries wave, founder 2026-10-03).
+export const GEO_NOTE_COUNTRIES = ['IN', 'UK', 'DE', 'FR', 'PT', 'CA'] as const
 export type GeoNoteCountry = (typeof GEO_NOTE_COUNTRIES)[number]
 
 export const DagNodeBaseSchema = z.object({
@@ -272,7 +273,7 @@ export const DagNodeSchema = DagNodeBaseSchema.extend({
   // Optional and deliberately sparse: absence means no sourced/structurally-certain failure
   // mode is curated yet, never that the step can't fail.
   failureModes: StepFailureModeSchema.array().min(1).optional(),
-  // Canonical open documents for THIS step — ids into documents/registry.json (the Cooley GO
+  // Canonical open documents for THIS step — ids into open-documents/registry.json (the Cooley GO
   // incorporation package for the bylaws-drafting step, IRS Form 15620 for the 83(b) steps).
   // Added by the founder spike 2026-10-02 after confirming NO prior mechanism linked corpus
   // steps to the documents registry; extended across the corpus and RENDERED the same day
@@ -337,6 +338,8 @@ export const GEO_COUNTRY_META: Record<GeoNoteCountry, { label: string; flag: str
   UK: { label: 'United Kingdom', flag: '🇬🇧' },
   DE: { label: 'Germany', flag: '🇩🇪' },
   FR: { label: 'France', flag: '🇫🇷' },
+  PT: { label: 'Portugal', flag: '🇵🇹' },
+  CA: { label: 'Canada', flag: '🇨🇦' },
 }
 
 // Proven runs (founder spike 2026-10-02 — EXECUTED-PROOF SLOT, design only): a dated record

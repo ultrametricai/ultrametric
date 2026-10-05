@@ -27,8 +27,10 @@ export default function ProductLinkChips({ product, variant }: { product: Produc
   return (
     <div className="flex flex-wrap items-center gap-1.5">
       {present.map((k) => (
-        // Letter chips are bare glyphs ("A") — the title carries the full functional label.
-        <a key={k} href={links[k]} target="_blank" rel="noopener noreferrer" title={LABEL[k].replace(' ↗', '')} className={chipClass}>
+        // Letter chips are bare glyphs ("A") — only they need the title carrying the functional
+        // label; the label variant's chip text already says it (founder tooltip sweep
+        // 2026-10-02: no tooltips that restate the visible label).
+        <a key={k} href={links[k]} target="_blank" rel="noopener noreferrer" title={variant === 'letter' ? LABEL[k].replace(' ↗', '') : undefined} className={chipClass}>
           {text[k]}
         </a>
       ))}

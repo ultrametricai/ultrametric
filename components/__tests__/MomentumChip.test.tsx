@@ -35,6 +35,33 @@ describe('MomentumChip', () => {
     expect(container.innerHTML).toBe('')
   })
 
+  it('compact suppresses a stars-only record under the noise floor (founder 2026-10-02, the ByteAsk case)', () => {
+    // The real committed shape that read as "$89/yr pricing next to 24 stars" on /arena/ai-coding.
+    const { container } = render(
+      <MomentumChip popularity={{ stars: 24, starsPerYear: 89.099, fetchedAt: '2026-09-25T18:15:55.776Z' }} compact />,
+    )
+    expect(container.innerHTML).toBe('')
+  })
+
+  it('compact keeps rendering at/above the floor, and for small-stars records with an npm signal', () => {
+    const { container: above } = render(
+      <MomentumChip popularity={{ stars: 100, starsPerYear: 89, fetchedAt: '2026-09-25T00:00:00.000Z' }} compact />,
+    )
+    expect(above.textContent).toContain('★ 100')
+    const { container: withNpm } = render(
+      <MomentumChip popularity={{ stars: 24, npmWeekly: 5_000, fetchedAt: '2026-09-25T00:00:00.000Z' }} compact />,
+    )
+    expect(withNpm.textContent).toContain('npm 5k/wk')
+  })
+
+  it('the full-size (product page) variant still shows every signal of a tiny-stars record', () => {
+    const { container } = render(
+      <MomentumChip popularity={{ stars: 24, starsPerYear: 89.099, fetchedAt: '2026-09-25T18:15:55.776Z' }} />,
+    )
+    expect(container.textContent).toContain('★ 24')
+    expect(container.textContent).toContain('▲ 89/yr')
+  })
+
   it('renders nothing (compact) when there is no signal', () => {
     const { container } = render(<MomentumChip popularity={undefined} compact />)
     expect(container.textContent).toBe('')

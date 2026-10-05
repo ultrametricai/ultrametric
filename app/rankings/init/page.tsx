@@ -31,7 +31,7 @@ export default function InitRankingPage() {
         <h1 className="font-display leading-[1.1] mt-1 text-3xl font-bold tracking-tight">Highest Overall score</h1>
         <p className="mt-2 max-w-2xl text-zinc-400">
           All {totalProducts} products across every arena, ranked by the blended Overall score — agent-ready, API
-          quality, openness, agentic app, and automation, all evidence-graded. Ties break on the raw coverage score.
+          quality, openness, agentic app, and automation, all agent tested. Ties break on the raw coverage score.
         </p>
         <p className="mt-2 text-xs text-zinc-500">
           This is the deep-linkable form of the homepage table&rsquo;s &ldquo;Highest Overall score&rdquo; preset —{' '}
@@ -48,7 +48,7 @@ export default function InitRankingPage() {
         </p>
         <p className="mt-2 text-sm text-zinc-400">
           {maxScore > 50
-            ? `At least one product has broken 50/100 — the evidence-graded ceiling is climbing.`
+            ? `At least one product has broken 50/100 — the agent-tested ceiling is climbing.`
             : `No product scores above 50/100 yet — the AI-ready era is young.`}
         </p>
       </div>

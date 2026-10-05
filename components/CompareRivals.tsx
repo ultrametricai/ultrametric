@@ -13,7 +13,7 @@ import type { CategoryData } from '@/lib/data-helpers'
 // 2 above + 2 below, edge-filled), a deliberately FOCUSED slice of the arena leaderboard — same
 // judged numbers, same n/a rules, none of ArenaTable's sorting/filtering/preset machinery.
 // Shutdown rivals keep their row with the Closing tag (list semantics, lib/shutdown.ts). The
-// judged /vs/ head-to-heads live in the prominent "Compare head-to-head" strip below the table
+// judged battle-page head-to-heads live in the prominent "Compare head-to-head" strip below the table
 // (founder 2026-10-02: the battle affordance gets real visual weight — full chip buttons, house
 // idiom, each carrying its judged record where one exists). Renders nothing for arenas with
 // fewer than 2 products.
@@ -32,14 +32,14 @@ const DIMS: Array<{
     label: 'Agent-ready',
     anchor: 'agent-ready',
     headerTitle:
-      'AGENT-READY = outside-in: can YOUR agent drive this product? Measures the access surface — API, MCP, CLI, headless runs, agent docs. Click a score for its judged receipt.',
+      'Outside-in: can YOUR agent drive this product — click a score for its judged receipt',
   },
   {
     key: 'agenticApp',
     label: 'Built-in AI',
     anchor: 'built-in-ai',
     headerTitle:
-      'BUILT-IN AI = inside-out: how agentic the product itself is FOR its users — built-in assistants, autonomous features, AI-first workflows. Click a score for its judged receipt.',
+      'Inside-out: how agentic the product itself is for its users — click a score for its judged receipt',
     hideBelow: 'sm',
   },
   {
@@ -47,13 +47,14 @@ const DIMS: Array<{
     label: 'API',
     anchor: 'api-quality',
     headerTitle:
-      'API quality /100 — machine-readable spec, interactive docs, sandbox, versioning discipline. Click a score for its judged receipt.',
+      'API quality /100 — machine-readable spec, docs, sandbox, versioning; click a score for its judged receipt',
     hideBelow: 'md',
   },
 ]
 
+// One clause (founder tooltip sweep 2026-10-02), same text as ArenaTable's naCell.
 const NA_CELL_TITLE =
-  "Not meaningful for this arena's product class — a physical part has no agent-drivable surface or API of its own. The Overall score still applies; see the arena methodology note."
+  'Not meaningful for this product class — no agent-drivable surface of its own; the Overall score still applies.'
 
 function ScoreCell({
   row,
@@ -78,7 +79,7 @@ function ScoreCell({
   return (
     <Link
       href={`/arena/${arenaId}/product/${row.productId}/score#${dim.anchor}`}
-      title={`${row.name}'s ${dim.label} score — click for the judged receipt: the exact stories, verdicts, and evidence behind it`}
+      title={`${row.name}'s ${dim.label} score — click for the judged receipt`}
       className="hover:text-emerald-300"
     >
       {value.toFixed(0)}
@@ -99,7 +100,7 @@ export default function CompareRivals({ data, productId }: { data: CategoryData;
       <h2 className="font-display leading-[1.1] mb-3 flex items-center gap-2 text-lg font-semibold">
         <GeoMark
           seed="compare-rivals"
-          title="Alternatives comparison — this product against its nearest arena rivals by leaderboard rank, from the same judged scores as the full leaderboard"
+          title="Alternatives comparison — nearest arena rivals by leaderboard rank, same judged scores"
           size={18}
           className="text-zinc-500"
         />
@@ -112,10 +113,10 @@ export default function CompareRivals({ data, productId }: { data: CategoryData;
           <thead>
             <tr className="border-b border-zinc-800 text-left text-[10px] uppercase tracking-widest text-zinc-400">
               <th scope="col" className="px-2 py-1.5 font-normal">
-                <span title="This product (highlighted) plus its nearest rivals by arena leaderboard rank — # is each product's rank in the full arena">Product</span>
+                <span title="This product (highlighted) plus its nearest rivals — # = rank in the full arena leaderboard">Product</span>
               </th>
               <th scope="col" className="px-2 py-1.5 font-normal">
-                <span title="Overall score /100 — the blended headline score: agent-ready ×0.30, API quality ×0.20, openness ×0.20, Built-in AI ×0.15, automation ×0.15. Click a score for its full receipt.">Overall score</span>
+                <span title="Overall score /100 — blended headline score; click a score for its full receipt">Overall score</span>
               </th>
               {DIMS.map((dim) => (
                 <th key={dim.key} scope="col" className={`px-2 py-1.5 font-normal ${dim.hideBelow ? hide[dim.hideBelow] : ''}`}>
@@ -137,10 +138,9 @@ export default function CompareRivals({ data, productId }: { data: CategoryData;
               >
                 <td className="min-w-[200px] max-w-[300px] px-2 py-2">
                   <div className="flex items-center gap-2">
-                    <span
-                      className="w-6 shrink-0 font-mono text-xs tabular-nums text-zinc-500"
-                      title={`#${row.rank} in the ${data.category.name} arena leaderboard`}
-                    >
+                    {/* No tooltip on the rank cell (founder sweep 2026-10-02) — it restated the
+                        visible #N; the Product column header explains what # means. */}
+                    <span className="w-6 shrink-0 font-mono text-xs tabular-nums text-zinc-500">
                       #{row.rank}
                     </span>
                     {row.isSelf ? (
@@ -170,7 +170,7 @@ export default function CompareRivals({ data, productId }: { data: CategoryData;
                   ) : (
                     <Link
                       href={`/arena/${data.category.id}/product/${row.productId}/score`}
-                      title={`${row.name}'s Overall score — click for the full receipt: every dimension, story, verdict, and evidence behind it`}
+                      title={`${row.name}'s Overall score — click for the full receipt`}
                       className="hover:text-emerald-300"
                     >
                       {row.aiEra.toFixed(0)}
@@ -210,7 +210,7 @@ export default function CompareRivals({ data, productId }: { data: CategoryData;
               return (
                 <Link
                   key={rival.id}
-                  href={`/vs/${vsSlugFor(data, productId, rival.id)}`}
+                  href={`/arena/${data.category.id}/battle/${vsSlugFor(data, productId, rival.id)}`}
                   title={
                     rivalRow?.record
                       ? `${selfName} ${rivalRow.record.wins} – ${rivalRow.record.losses} ${rival.name}${rivalRow.record.draws > 0 ? ` (${rivalRow.record.draws} drawn)` : ''} — judged story by story; click for every round`

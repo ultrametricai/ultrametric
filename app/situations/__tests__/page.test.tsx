@@ -7,7 +7,7 @@ import { render, within } from '@testing-library/react'
 import { describe, expect, it } from 'vitest'
 import SituationsPage from '@/app/situations/page'
 import { buildSituationRows } from '@/lib/processRows'
-import { GEO_SCOPE_GLYPH } from '@/lib/geoPreference'
+import { usFlagGlyph } from '@/lib/geoPreference'
 import { loadProcesses, processSlug } from '@/lib/processes'
 import { URGENCY_META, URGENCY_TIERS } from '@/lib/processSim'
 
@@ -43,14 +43,21 @@ describe('/situations', () => {
     expect(tiers[0]).toBe(URGENCY_TIERS.indexOf('hours'))
   })
 
-  it('every row wears its sharp geo-scope glyph (🌐 / 🇺🇸 / 🏛) from the server render', () => {
+  it('US-scoped rows wear the 🇺🇸 flag (keyed strictly on geoScope); global rows wear NO scope glyph (founder batch 2026-10-02)', () => {
     const { container } = render(<SituationsPage />)
     const table = container.querySelector('table') as HTMLElement
     const countByTitle = (label: string) => table.querySelectorAll(`span[title="${label}"]`).length
-    for (const scope of ['global', 'us', 'us-state'] as const) {
+    for (const scope of ['us', 'us-state'] as const) {
       const expected = situations.filter((t) => t.geoScope === scope).length
-      expect(countByTitle(GEO_SCOPE_GLYPH[scope].label), `${scope} rows glyph-marked`).toBe(expected)
+      expect(countByTitle(usFlagGlyph(scope)!.label), `${scope} rows flag-marked`).toBe(expected)
     }
+    const titleCells = [...table.querySelectorAll('tbody td:first-child')]
+    expect(titleCells.filter((c) => c.textContent?.includes('🇺🇸')).length).toBe(
+      situations.filter((t) => t.geoScope !== 'global').length,
+    )
+    // No 🌐/🏛 ever follows a title — a global record can never render the flag.
+    expect(titleCells.some((c) => c.textContent?.includes('🌐'))).toBe(false)
+    expect(titleCells.some((c) => c.textContent?.includes('🏛'))).toBe(false)
   })
 
   it('reads as its own area: a Situations h1 with NO intro paragraph (founder 2026-10-02)', () => {

@@ -58,7 +58,7 @@ path in `collect-build-traces.js`, which DOES NOT RUN under Turbopack):
 - Excludes do not disturb the `next-server.js.nft.json` trace (it contains only
   `node_modules` files).
 
-### 2. Prerender artifacts are huge (measured, reported, NOT fixed here)
+### 2. Prerender artifacts are huge (the palette-index share fixed 2026-10-02)
 
 `.next/server/app` holds the prerendered output: 11.7 GB of `.rsc` (31,304 files,
 avg 372 KB) + 6.9 GB of `.html` (6,261 files, avg 1.1 MB). Each page is materialized
@@ -66,18 +66,141 @@ avg 372 KB) + 6.9 GB of `.html` (6,261 files, avg 1.1 MB). Each page is material
 (+ per-segment files). By directory: `arena/` 9.5 GB, `vs/` 6.5 GB, `alternatives/`
 0.5 GB, `processes/` 0.5 GB.
 
-The single biggest shared cost: `app/layout.tsx` passes the full command-palette search
+The single biggest shared cost: `app/layout.tsx` passed the full command-palette search
 index (`buildSearchIndex(loadAll(), ...)` — every arena, every product, all alias
-keywords) as props to the `CommandPalette` **client** component. That serializes a
-~160 KB flight blob into every artifact of every page: ~160 KB x 4 copies x 7,118 pages
-≈ 4.5 GB of the 17 GB, and ~160 KB of every page's wire HTML. A near-empty page
-(`/about`) is 215 KB of HTML + 172 KB rsc + 348 KB segments mostly because of it.
-Candidate fix (own change, not done here): stop passing the index as props; serve it as
-a static JSON (it is already buildable at `public/`-time) and fetch it when the palette
-opens.
+keywords) as props to the `CommandPalette` **client** component. That serialized a
+~160 KB flight blob into every artifact of every page, and ~160 KB of every page's
+wire HTML. A near-empty page (`/about`) was 215 KB of HTML + 172 KB rsc + 348 KB
+segments mostly because of it.
+
+Fixed by moving the index out of props: `lib/search-entries.ts` builds it,
+`app/search-index.json/route.ts` (force-static, rendered once at build: a 140 KB
+`.body` file) serves it, and `CommandPalette` fetches it on first open with a visible
+loading row. Measured on 2026-10-02 (same machine, same corpus, 7,338 pages):
+`.next/server/app` 18,841,528 KB → 15,107,488 KB (−3.6 GB); `/about` 218,559 B html +
+176,148 B rsc + 356 KB segments → 55,580 B + 33,258 B + 76 KB. The cost that remains
+is one JSON round-trip on the palette's first open per page load (state-cached after;
+browser HTTP cache covers reloads). `scripts/check-preview-runtime.mjs` guards the new
+route's trace alongside the other static routes.
+
+`.next/server/app` still holds ~14.4 GB of per-page prerender volume (the arena/vs
+page bodies themselves); any further reduction has to come from the pages' own markup,
+not shared layout props.
+
+### 2b. Round 2 (2026-10-02, same day): the pages' own payloads
+
+Starting point: the measured 15,111,188 KB (14.41 GB) above. 6,458 prerendered pages;
+the volume is battle/vs (1,876 + 1,872 pages). Every byte of a page's rendered tree is
+materialized ~5×: the HTML markup, the inline flight blob in that HTML, `.rsc`,
+`.segments/_full.segment.rsc` (byte-identical to `.rsc`), and
+`.segments/.../__PAGE__.segment.rsc` (the page subtree again). So tree bytes are the
+multiplier that matters.
+
+What was actually in the trees (sampled across 240 `.rsc` files): Tailwind `className`
+strings ~28%, `title` tooltip attributes ~9.6%, the ⚑ flag links' prefilled-GitHub-issue
+URLs ~7-9%, the rest real judged-round content (rationale, citations, element structure).
+Battle/vs pages carry **no** fat client props (the palette was the last one); arena index
+pages carried one (full CategoryData, 1.66 MB) and product pages a purpose-built 334 KB
+`rows` prop (all of it rendered — left alone).
+
+Three fixes, none changing a rendered pixel or the static posture:
+
+1. **Flag links** (`lib/contestUrl.ts`): the issue URL carried a ~600-byte markdown
+   `body` param that GitHub *ignores* for issue-form templates — it never prefilled
+   anything. Now ~230 bytes of per-field form params that actually prefill
+   (`.github/ISSUE_TEMPLATE/flag-verdict.yml` field ids), two links per judged round.
+2. **Arena pages** (`lib/arenaClientData.ts`): ArenaTable/StoryMatrix/stacks sections get
+   CategoryData minus `verdict.rationale` and `rankings.battles`, neither read anywhere
+   in those trees: 1.66 MB → 0.68 MB of flight per artifact on ai-coding.
+3. **Chip class dedup** (`app/globals.css` `um-*`): the per-round/per-row verdict-chip,
+   verification-pill, persona-chip and round-scaffold utility strings became one class
+   each, `@apply`ing exactly the utilities they replaced (pinned byte-for-byte by
+   `app/__tests__/globals-chip-classes.test.ts`).
+
+Measured (same corpus, both builds this worktree, `du -sm`):
+
+| route group | before | after |
+|---|---|---|
+| `arena/*/battle` (1,876 pages) | 5,870 MB | 5,074 MB |
+| `vs/` (1,872 pages) | 5,873 MB | 5,077 MB |
+| `arena/*/product` | 1,828 MB | 1,801 MB |
+| `arena/` index + checklist/report/llms (95 arenas) | 372 MB | 270 MB |
+| `processes/` | 249 MB | 249 MB |
+| everything else | 565 MB | 552 MB |
+| **`.next/server/app` total** | **15,111,188 KB (14.41 GB)** | **13,336,168 KB (12.72 GB)** |
+
+Sample pages: battle `cursor-vs-cline.html` 2,002,670 B → 1,740,652 B (`.rsc` 1,028,177 →
+895,769); arena `ai-coding.html` 3,123,409 → 2,017,681; product `cursor.html` 1,621,569 →
+1,574,507.
+
+**Honest remainder.** This round's −1.69 GB leaves 12.72 GB — above the ~9 GB that gives
+Vercel's ~2× packaging comfortable headroom. What's left in the 10.2 GB of battle/vs
+artifacts is, in order: the judged-round content itself (rationale + citations — the
+product), the remaining non-deduped class strings, and ~1 GB of `title` hover text that
+is user-visible vocabulary (shortening it changes what readers see — founder call, not a
+payload fix). The two levers big enough to reach ~9 GB are posture or framework calls,
+not prop fixes:
+
+- The segment files: `_full.segment.rsc` is byte-identical to `.rsc` on every page
+  (~2.9 GB of pure duplication) and `__PAGE__.segment.rsc` nearly so. This Next fork
+  generates them unconditionally (`collectSegmentData` has no config gate; the
+  prefetchInlining doc calls segment prefetching "a permanent part of the App Router").
+  Deduplicating them (hardlinks, or an upstream flag) would pass ~9 GB on its own.
+- The header menus: ArenaMenu/MobileNav props + SSR markup cost every one of the 6,458
+  pages ~50 KB across artifacts (~0.35 GB). The search-index.json idiom fits, but it
+  would remove the arena menu links from every page's served HTML — an internal-link-graph
+  (SEO) change that needs a founder call.
 
 `.next/cache` (Turbopack) was ~300-360 MB across builds — not part of the problem, and
 fine to keep persisted in CI/Vercel build caching.
+
+### 2c. Round 3 (2026-10-04): segment hardlinks + /vs becomes a redirect
+
+Two changes since round 2 (the first is round 2's segment lever; the second replaces a
+duplicate route family outright):
+
+1. **Segment dedup** (`scripts/dedupe-segments.mjs`, postbuild): every page's
+   `_full.segment.rsc` is byte-compared against its sibling `.rsc` and replaced with a
+   hardlink when identical. This build: 6,459 pages linked, 1.60 GB freed, 0 skipped.
+2. **`/vs/{slug}` is a permanent redirect, battle pages are canonical**
+   (`app/vs/[slug]/page.tsx`). The route used to prerender a full second copy of every
+   arena battle (5,077 MB in round 2). It keeps `generateStaticParams` +
+   `dynamicParams = false`, but the page body is now
+   `permanentRedirect('/arena/{category}/battle/{slug}')`: the prerendered artifact is a
+   308 with a `location` header in its `.meta` (verified on `vs/claude-vs-gemini.meta`).
+   The slug audit behind the flip: 1,876 battle pages, 1,872 unique pair-slugs. Every
+   /vs slug has a battle twin; the four extra battle pages are pairs that battle in TWO
+   arenas (claude/gemini, claude/grok, gemini/grok in ai-assistants + frontier-models;
+   temporal/trigger-dev in workflow-automation + durable-workflows), and those slugs
+   redirect to the first category in `loadAll` order — the battle the /vs page rendered
+   before the flip. `app/vs/__tests__/vs-redirect.test.ts` pins all of this. The battle
+   page inherits the canonical, the SEO title/description, and the FAQPage JSON-LD the
+   mirror carried; every internal link (home podium cards, CompareRivals chips,
+   alternatives rows, family cards, stack-battle slots, llms.txt, sitemap) points at the
+   battle URL directly, and the sitemap delists the redirect stubs.
+
+Measured 2026-10-04 on this worktree (7,340 pages; the corpus has grown since round 2 —
+PT/CA jurisdiction content and gov-rail regeneration — so round-2 numbers are a baseline,
+not an exact like-for-like):
+
+| route group | round 2 after | round 3 |
+|---|---|---|
+| `vs/` (1,872 pages, now redirect stubs) | 5,077 MB | 205 MB |
+| `arena/*/battle` (1,876 pages) | 5,074 MB | 4,058 MB (hardlinked segments) |
+| `arena/*/product` | 1,801 MB | 1,466 MB |
+| `arena/` total | — | 5,727 MB |
+| `processes/` | 249 MB | 201 MB |
+| everything else | — | ~645 MB |
+| **`.next/server/app` total** | **13,336,168 KB (12.72 GB)** | **6,577 MB (6.42 GB)** |
+
+`.next` overall: 6,877 MB (`.next/server` 6,603 MB, `.next/cache` 265 MB). Battle page
+content itself is unchanged: `cursor-vs-cline.html` is 1,742,515 B vs round 2's
+1,740,652 B (corpus drift, not markup changes).
+
+A redirect stub still costs ~110 KB across its artifacts (39 KB html + 31 KB rsc +
+segments): the root layout's flight payload (nav, menus) serializes into every page, even
+one that only redirects. 205 MB for the whole stub family is acceptable; dropping the
+stubs entirely would 404 every published /vs URL, so they stay.
 
 ## The include exceptions (preview routes)
 

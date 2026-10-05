@@ -2,7 +2,7 @@
 // direction 2026-10-01: "go further on the business modules").
 //
 // Pure, client-safe (no node builtins), deterministic. Registered in
-// business-logic/README.md; tested in lib/openstartup/__tests__/convertibleNote.test.ts,
+// open-modules/README.md; tested in lib/openstartup/__tests__/convertibleNote.test.ts,
 // which replays the cited published worked examples number-for-number.
 //
 // Sources for the mechanics (each formula's doc comment cites the specific one; all
@@ -34,7 +34,7 @@
 //   revisions to negotiate), and §F.5 (notes are indebtedness with priority over safes;
 //   mixing the two instruments is "generally not advisable").
 // - The Convertible Note Financing Term Sheet itself is a Cooley GO generated document —
-//   documents/registry.json id `cooley-convertible-note-term-sheet`.
+//   open-documents/registry.json id `cooley-convertible-note-term-sheet`.
 //
 // Honest-scope notes:
 // - Simple interest only, on an actual-day count over an explicit basis (365 by default).

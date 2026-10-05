@@ -2,7 +2,7 @@
 // open-startup toolkit (founder direction 2026-10-01: "go super deep on business logic").
 //
 // Pure, client-safe (no node builtins), deterministic. Registered in
-// business-logic/README.md; tested in lib/openstartup/__tests__/round.test.ts. This module
+// open-modules/README.md; tested in lib/openstartup/__tests__/round.test.ts. This module
 // deliberately REUSES the cap-table module's types and helpers (CapTableRow, floorShares,
 // roundPrice, the pool algebra) and the anti-dilution module's adjustments — no parallel
 // cap-table representation.

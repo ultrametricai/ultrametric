@@ -14,9 +14,13 @@ import { GEO_GLOBAL, GEO_PREF_META, type GeoAnalogNote } from '@/lib/geoPreferen
 //   'global', note found        → same core-steps line PLUS the country's curated local flavor
 //                                 (the 2026-09-29 mapping expansion: a global process can be
 //                                 jurisdictionally flavored — stamp duty, e-invoicing, GDPR).
-//   'us'/'us-state', note found → "US-centric process." + the country's curated analog
-//                                 (summary + verified actionUrl), promoted from the buried
-//                                 "Outside the US" block, with a link down to it.
+//   'us'/'us-state', note found → the wrong-country-flow guard (founder 2026-10-02): the
+//                                 committed note LEADS, so the US step flow below is never
+//                                 presented as the local answer. kind 'analog' promotes the
+//                                 local path — "In {country}, this runs as: {summary}" + the
+//                                 verified actionUrl; 'absorbed'/'not-applicable' states the
+//                                 note's summary plainly. The flow below wears the 'US flow'
+//                                 label (components/UsFlowLabel.tsx). Committed copy only.
 //   'us'/'us-state', no note    → "No {country} mapping yet — this workflow is US-specific."
 //                                 An analog is never fabricated.
 export default function ProcessGeoBanner({
@@ -118,29 +122,53 @@ export default function ProcessGeoBanner({
     )
   }
 
+  // The wrong-country-flow guard (founder 2026-10-02): the committed note leads the banner —
+  // the US step flow below is never presented as the local answer (UsFlowLabel badges it).
+  if (note.kind === 'analog') {
+    return (
+      <div className="mt-3 max-w-2xl rounded-lg border border-emerald-400/30 bg-emerald-400/5 px-3 py-2 text-sm">
+        <p className="text-zinc-300">
+          <span aria-hidden className="mr-1.5">{meta.flag}</span>
+          In {meta.prose}, this runs as:{' '}
+          <span className="font-medium text-zinc-100">{note.summary}</span>
+        </p>
+        <p className="mt-1.5 text-xs">
+          <a
+            href={note.actionUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-emerald-300 underline decoration-emerald-400/40 underline-offset-2 transition hover:text-emerald-200"
+            title={`${meta.label} — the canonical portal for this work (verified live)`}
+          >
+            {note.actionLabel} ↗
+          </a>
+          {/* The "Outside the US" block below always exists here — this process has notes. */}
+          <span className="mx-1.5 text-zinc-700">·</span>
+          <a
+            href="#outside-the-us"
+            className="text-zinc-400 underline decoration-zinc-700 underline-offset-2 transition hover:text-emerald-300"
+            title="The full multi-country detail — every curated per-country analog of this process"
+          >
+            all countries ↓
+          </a>
+        </p>
+      </div>
+    )
+  }
+
+  // 'absorbed' / 'not-applicable': the committed summary, stated plainly — there is no local
+  // flow to promote and none is invented; the note itself is the whole local answer.
   return (
     <div className="mt-3 max-w-2xl rounded-lg border border-emerald-400/30 bg-emerald-400/5 px-3 py-2 text-sm">
       <p className="text-zinc-300">
         <span aria-hidden className="mr-1.5">{meta.flag}</span>
-        <span className="font-medium text-zinc-100">US-centric process.</span> In {meta.prose}:{' '}
-        <span className="text-zinc-300">{note.summary}</span>
+        <span className="font-medium text-zinc-100">{note.summary}</span>
       </p>
       <p className="mt-1.5 text-xs">
         <a
-          href={note.actionUrl}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="text-emerald-300 underline decoration-emerald-400/40 underline-offset-2 transition hover:text-emerald-200"
-          title={`${meta.label} — the canonical portal for this work (verified live)`}
-        >
-          {note.actionLabel} ↗
-        </a>
-        {/* The "Outside the US" block below always exists here — this process has notes. */}
-        <span className="mx-1.5 text-zinc-700">·</span>
-        <a
           href="#outside-the-us"
           className="text-zinc-400 underline decoration-zinc-700 underline-offset-2 transition hover:text-emerald-300"
-          title="The full multi-country detail — every curated per-country analog of this process"
+          title="The full multi-country detail — every curated per-country note on this process"
         >
           all countries ↓
         </a>

@@ -9,14 +9,13 @@ import ClaimsChip from '@/components/ClaimsChip'
 import ConfidenceChip from '@/components/ConfidenceChip'
 import HotChip from '@/components/HotChip'
 import MomentumChip from '@/components/MomentumChip'
-import OssPill from '@/components/OssPill'
 import PopularTag, { isNotablyPopular } from '@/components/PopularTag'
 import ProductLogoView from '@/components/ProductLogoView'
 import ShutdownBadge from '@/components/ShutdownBadge'
 import TableControls from '@/components/TableControls'
-import VerificationMixChip from '@/components/VerificationMixChip'
 import { claimsIntegrity } from '@/lib/claimsIntegrity'
 import { confidenceFor } from '@/lib/confidence'
+import { belowCompactStarsFloor } from '@/lib/popularity'
 import type { PricingCell } from '@/lib/pricing'
 import { isGroupUntested, isThemeUntested, type CategoryData } from '@/lib/data-helpers'
 import { ordinal } from '@/lib/ordinal'
@@ -121,7 +120,7 @@ export default function ArenaTable({ data, logoMap, pricing, hotReasons }: { dat
   // arenas): render n/a instead of a number, before any untested check.
   const naDims = new Set(data.category.naDimensions ?? [])
   const naCell = (
-    <span className="text-zinc-500" title="Not meaningful for this arena's product class — a physical part has no agent-drivable surface or API of its own. The Overall score still applies; see the arena methodology note.">
+    <span className="text-zinc-500" title="Not meaningful for this product class — no agent-drivable surface of its own; the Overall score still applies.">
       n/a
     </span>
   )
@@ -185,16 +184,18 @@ export default function ArenaTable({ data, logoMap, pricing, hotReasons }: { dat
                 Product
               </SortableTh>
               <SortableTh col="initScore" current={column} direction={direction} onSort={handleSort}>
-                <span title="Overall score /100 — the blended headline score: agent-ready ×0.30, API quality ×0.20, openness ×0.20, Built-in AI ×0.15, automation ×0.15. Click a badge for the methodology.">Overall score</span>
+                {/* Tooltip sweep (founder 2026-10-02): one clause — each badge's own tooltip
+                    carries the full blend formula and component breakdown. */}
+                <span title="Overall score /100 — blended headline score; hover a badge for the formula, click for the methodology">Overall score</span>
               </SortableTh>
               <SortableTh col="agentReady" current={column} direction={direction} onSort={handleSort}>
-                <span title="AGENT-READY = outside-in: can YOUR agent drive this product? Measures the access surface — API, MCP, CLI, headless runs, agent docs. A product can score high here with zero AI features of its own (think Stripe).">Agent-ready</span>
+                <span title="Outside-in: can YOUR agent drive this product — API, MCP, CLI, headless runs, agent docs">Agent-ready</span>
               </SortableTh>
               <SortableTh col="agenticApp" current={column} direction={direction} onSort={handleSort} className="hidden sm:table-cell">
-                <span title="BUILT-IN AI = inside-out: how agentic the product itself is FOR its users — built-in assistants, autonomous features, AI-first workflows. A walled-garden AI app can score high here while being hard for YOUR agent to drive.">Built-in AI</span>
+                <span title="Inside-out: how agentic the product itself is for its users — assistants, autonomous features">Built-in AI</span>
               </SortableTh>
               <SortableTh col="apiQuality" current={column} direction={direction} onSort={handleSort} className="hidden md:table-cell">
-                <span title="API quality /100 — machine-readable spec, interactive docs, sandbox, versioning discipline. Untested = no evidence either way.">API</span>
+                <span title="API quality /100 — machine-readable spec, docs, sandbox, versioning discipline">API</span>
               </SortableTh>
               <SortableTh col="openness" current={column} direction={direction} onSort={handleSort} className="hidden xl:table-cell">
                 {/* Full word, not "Open" — abbreviated it reads as an action verb, not the metric. */}
@@ -214,17 +215,14 @@ export default function ArenaTable({ data, logoMap, pricing, hotReasons }: { dat
               <SortableTh col="rank" current={column} direction={direction} onSort={handleSort} sortable={false} className="hidden sm:table-cell">
                 <span title="Agent access surfaces — MCP server / CLI / API, from judged evidence: ✓ full, ~ partial, ! disputed, — none found">Access</span>
               </SortableTh>
-              <SortableTh col="rank" current={column} direction={direction} onSort={handleSort} sortable={false} className="hidden lg:table-cell">
-                <span title="How verdicts were proven: T probed by us · X community-backed · C vendor claim only · D contradicted">Verification</span>
-              </SortableTh>
+              {/* Verification column removed (founder 2026-10-02, display only) — the mix data
+                  stays committed; the product page's #story-verdicts table and /rankings/
+                  most-tested still render VerificationMixChip. */}
               <SortableTh col="claimsIntegrity" current={column} direction={direction} onSort={handleSort} className="hidden lg:table-cell">
                 <span title="Claims integrity /100 — how much of what the vendor claims held up when tested; click a score for the breakdown">Claims</span>
               </SortableTh>
-              {/* Founder 2026-09-23: an evidence column at the end — every ranking clicks
-                  through to the receipt that produced it (the product's /score page). */}
-              <SortableTh col="rank" current={column} direction={direction} onSort={handleSort} sortable={false} className="w-8">
-                <span title="The evidence behind this ranking — click a row's 'view' for the full receipt: every story, verdict, and cited evidence item">Evidence</span>
-              </SortableTh>
+              {/* Evidence 'view' column removed (founder 2026-10-02, display only) — the
+                  per-product receipt (/score) stays reachable from the product page. */}
             </tr>
           </thead>
           <tbody className="divide-y divide-zinc-800/70">
@@ -246,23 +244,14 @@ export default function ArenaTable({ data, logoMap, pricing, hotReasons }: { dat
                       {hotReasons?.[row.productId] && <HotChip reason={hotReasons[row.productId]} />}
                     </Link>
                     <div className="mt-1 flex flex-wrap items-center gap-1.5">
-                      {/* The pill doubles as the OSS sort affordance — this table has no OSS
-                          column header, so the indicator itself is the click target. */}
-                      {product.type === 'oss' && (
-                        <button
-                          type="button"
-                          onClick={() => handleSort('oss')}
-                          title="Open source — the product's code is publicly available. Click to sort open-source products first."
-                          aria-label="Sort open-source products first"
-                          className="cursor-pointer"
-                        >
-                          <OssPill variant="compact" />
-                        </button>
-                      )}
+                      {/* The 'Open source' chip is gone from the product column (founder
+                          2026-10-02 chip-noise sweep) — product.type stays committed data (it
+                          feeds the lowest-lock-in rankings and the product page's OssPill);
+                          lib/arenaTableSort keeps the 'oss' column for any future affordance. */}
                       {/* BusinessModelChip removed (founder 2026-09-24: too much info in the
                           ranking rows) — the model still shows on the product page. */}
                       {/* Per-row "vs …" battle link removed (founder 2026-09-30) — battles stay
-                          reachable from /overall's Leading battles cards and the /vs/ routes. */}
+                          reachable from /overall's Leading battles cards and the arena battle routes. */}
                       <ShutdownBadge shutdown={product.shutdown} source={product.shutdownSource} />
                     </div>
                   </td>
@@ -325,8 +314,12 @@ export default function ArenaTable({ data, logoMap, pricing, hotReasons }: { dat
                   <td className="hidden px-2 py-2 md:table-cell">
                     {/* PyPI installs dropped from the leaderboard's popularity display (founder
                         2026-09-30) — the data stays committed and still shows on product pages;
-                        a pypi-only product falls through to the PopularTag / empty cell. */}
-                    {data.popularity[row.productId]?.stars !== undefined || data.popularity[row.productId]?.npmWeekly !== undefined ? (
+                        a pypi-only product falls through to the PopularTag / empty cell.
+                        belowCompactStarsFloor (founder 2026-10-02, the ByteAsk case): a tiny
+                        stars-only record also falls through — checked HERE as well as inside
+                        MomentumChip so no empty GitHub <a> wrapper is left behind. */}
+                    {(data.popularity[row.productId]?.stars !== undefined || data.popularity[row.productId]?.npmWeekly !== undefined) &&
+                    !belowCompactStarsFloor(data.popularity[row.productId]!) ? (
                       productById.get(row.productId)?.urls.github ? (
                         <a href={productById.get(row.productId)!.urls.github} target="_blank" rel="noopener noreferrer" title="Open the GitHub repo" className="hover:text-emerald-300">
                           <MomentumChip popularity={data.popularity[row.productId]} compact />
@@ -375,41 +368,18 @@ export default function ArenaTable({ data, logoMap, pricing, hotReasons }: { dat
                     <AgentAccessGlyphs data={data} productId={row.productId} />
                   </td>
                   <td className="hidden px-2 py-2 lg:table-cell">
-                    {/* showDisputed={false}: no 'disputed' datum inside the leaderboard (founder
-                        2026-09-30, display only) — the dispute data stays committed and still
-                        shows on the product page this chip links to. */}
-                    <VerificationMixChip
-                      data={data}
-                      productId={row.productId}
-                      href={`/arena/${data.category.id}/product/${row.productId}#story-verdicts`}
-                      showDisputed={false}
-                    />
-                  </td>
-                  <td className="hidden px-2 py-2 lg:table-cell">
                     <ClaimsChip
                       data={data}
                       productId={row.productId}
                       href={`/arena/${data.category.id}/product/${row.productId}#claims`}
                     />
                   </td>
-                  <td className="w-12 px-2 py-2 text-center">
-                    {/* Plain word, not a glyph (founder 2026-09-30: "the evidence column icon
-                        is unclear") — the cell says what clicking it does. */}
-                    <Link
-                      href={`/arena/${data.category.id}/product/${row.productId}/score`}
-                      title={`The evidence behind ${product.name}'s ranking — every story, verdict, and cited evidence item, with the arithmetic`}
-                      aria-label={`Evidence behind ${product.name}'s ranking`}
-                      className="inline-block rounded border border-zinc-800 px-1.5 text-[10px] leading-4 text-zinc-400 transition hover:border-emerald-400/40 hover:text-emerald-300"
-                    >
-                      view
-                    </Link>
-                  </td>
                 </tr>
               )
             })}
             {sorted.length === 0 && (
               <tr>
-                <td colSpan={pricing ? 14 : 13} className="px-3 py-6 text-center text-zinc-500">
+                <td colSpan={pricing ? 12 : 11} className="px-3 py-6 text-center text-zinc-500">
                   No products match &ldquo;{query}&rdquo;.
                 </td>
               </tr>

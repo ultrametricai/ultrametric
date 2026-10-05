@@ -1,7 +1,7 @@
 import fs from 'node:fs'
 import path from 'node:path'
 
-// Loader + validator for the open-documents map (documents/registry.json + documents/README.md).
+// Loader + validator for the open-documents map (open-documents/registry.json + open-documents/README.md).
 // Same doctrine as lib/resources.ts: structural/referential invariants as a flat error list for
 // the vitest gate (__tests__/documents.test.ts); pure validators take data so failure modes are
 // testable; no network I/O — URL liveness is an editorial duty recorded via checked_on.
@@ -123,7 +123,7 @@ export function validateDocumentReadme(readme: string, registry: DocumentRegistr
 const ROOT = process.cwd()
 
 export function loadDocumentRegistry(): DocumentRegistry {
-  return JSON.parse(fs.readFileSync(path.join(ROOT, 'documents/registry.json'), 'utf8')) as DocumentRegistry
+  return JSON.parse(fs.readFileSync(path.join(ROOT, 'open-documents/registry.json'), 'utf8')) as DocumentRegistry
 }
 
 // Cached id → record lookup for the render path (ProcessDag's per-step document chips read it
@@ -138,13 +138,13 @@ export function openDocumentById(id: string): OpenDocument {
     byIdCache = new Map(loadDocumentRegistry().documents.map((d) => [d.id, d]))
   }
   const doc = byIdCache.get(id)
-  if (!doc) throw new Error(`Unknown document id ${id} — not in documents/registry.json`)
+  if (!doc) throw new Error(`Unknown document id ${id} — not in open-documents/registry.json`)
   return doc
 }
 
 /** The full gate: registry invariants + README/registry sync. Empty array = pass. */
 export function validateDocuments(asOf?: Date): string[] {
   const registry = loadDocumentRegistry()
-  const readme = fs.readFileSync(path.join(ROOT, 'documents/README.md'), 'utf8')
+  const readme = fs.readFileSync(path.join(ROOT, 'open-documents/README.md'), 'utf8')
   return [...validateDocumentRegistry(registry, asOf ?? new Date()), ...validateDocumentReadme(readme, registry)]
 }

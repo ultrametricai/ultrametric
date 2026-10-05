@@ -76,3 +76,58 @@ describe('leaderboard display removals (founder 2026-09-30)', () => {
     expect(container.textContent).not.toContain('Leaderboard')
   })
 })
+
+// Founder batch 2026-10-02: more display-only removals inside the arena leaderboards. The
+// underlying data and components stay (VerificationMixChip still renders on /rankings/
+// most-tested; the /score receipt pages stay live and linked from product pages).
+describe('leaderboard display removals (founder 2026-10-02)', () => {
+  const load = () => loadCategory('vector-databases', path.resolve(__dirname, '../../data'))
+
+  it('renders no Verification column (header and VerificationMixChip cells gone)', () => {
+    const { container } = render(<ArenaTable data={load()} logoMap={{}} />)
+    const headers = [...container.querySelectorAll('th')].map((th) => th.textContent)
+    expect(headers).not.toContain('Verification')
+    // The chip's ratio cells linked to #story-verdicts — none of those links remain.
+    expect(container.querySelector('a[href*="#story-verdicts"]')).toBeNull()
+  })
+
+  it('renders no Evidence column (header and per-row "view" /score links gone)', () => {
+    const { container } = render(<ArenaTable data={load()} logoMap={{}} />)
+    const headers = [...container.querySelectorAll('th')].map((th) => th.textContent)
+    expect(headers).not.toContain('Evidence')
+    expect(container.querySelector('a[href$="/score"]')).toBeNull()
+  })
+
+  it('claims cells render "{score}/100" with no trailing "integrity" word', () => {
+    const { container } = render(<ArenaTable data={load()} logoMap={{}} />)
+    expect(container.textContent).not.toContain('integrity')
+    // The Claims column itself stays.
+    const headers = [...container.querySelectorAll('th')].map((th) => th.textContent)
+    expect(headers).toContain('Claims')
+  })
+
+  it('renders no "Open source" chip in the product column (the type data stays committed)', () => {
+    const data = load()
+    // Non-vacuous: this arena's committed data really has open-source products.
+    expect(data.products.some((p) => p.type === 'oss')).toBe(true)
+    const { container } = render(<ArenaTable data={data} logoMap={{}} />)
+    expect(container.textContent).not.toContain('Open source')
+  })
+
+  it('suppresses a tiny stars-only popularity record — no lonely star count, no orphaned GitHub link (the ByteAsk case)', () => {
+    const data = loadCategory('ai-coding', path.resolve(__dirname, '../../data'))
+    // Non-vacuous: the committed record that read as "$89/yr pricing next to 24 stars".
+    const byteask = data.popularity['byteask']
+    expect(byteask?.stars).toBeLessThan(100)
+    expect(byteask?.npmWeekly).toBeUndefined()
+    const { container } = render(<ArenaTable data={data} logoMap={{}} />)
+    expect(container.textContent).not.toContain('★ 24')
+    expect(container.textContent).not.toContain('89/yr')
+    // No empty <a> shell left where the chip was suppressed.
+    for (const a of container.querySelectorAll('a[title="Open the GitHub repo"]')) {
+      expect(a.textContent?.trim()).not.toBe('')
+    }
+    // Healthy records in the same table keep rendering.
+    expect(container.textContent).toContain('★')
+  })
+})

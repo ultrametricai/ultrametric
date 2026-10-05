@@ -30,8 +30,10 @@ describe('VendorProcesses — founder 2026-10-02 declutter', () => {
     const headers = screen.getAllByText('Best step fit')
     expect(headers.length).toBeGreaterThan(0)
     for (const h of headers) {
-      expect(h.getAttribute('title')).toMatch(/best-matching step/)
-      expect(h.getAttribute('title')).toMatch(/judged/)
+      // One-clause tooltip since the founder 2026-10-02 sweep — still says the number is the
+      // highest judged per-step score, derived from judged verdicts.
+      expect(h.getAttribute('title')).toMatch(/Highest judged step score/)
+      expect(h.getAttribute('title')).toMatch(/judged verdicts/)
     }
     expect(screen.queryByText('Best step score')).toBeNull()
   })

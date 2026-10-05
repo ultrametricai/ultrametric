@@ -29,7 +29,7 @@ interface OpenRow {
 }
 
 // Every product ranked by its openness theme score (self-hosting, full data export, open
-// license, API parity — evidence-graded like everything else). Null openness means no
+// license, API parity — agent-tested like everything else). Null openness means no
 // applicable openness cells (unscored, never zero) and sorts last. Ties break open-source
 // first (the flag is a fact, not a score), then Overall score.
 function buildOpenRows(categories: CategoryData[]): OpenRow[] {
@@ -89,7 +89,7 @@ export default function MostOpenRankingPage() {
   const rows = buildOpenRows(categories)
   const jsonLd = rankingJsonLd(
     'Lowest lock-in — self-hosting, export, licenses, API parity',
-    'Products ranked by evidence-graded openness: self-hosting, full data export, open licensing, and API parity.',
+    'Products ranked by agent-tested openness: self-hosting, full data export, open licensing, and API parity.',
     rows.map((row) => ({
       name: row.product.name,
       path: `/arena/${row.data.category.id}/product/${row.product.id}`,
@@ -116,7 +116,7 @@ export default function MostOpenRankingPage() {
           Lowest lock-in — self-hosting, export, licenses, API parity
         </h1>
         <p className="mt-2 max-w-2xl text-zinc-400">
-          All {rows.length} products across every arena, ranked by the openness theme score — evidence-graded
+          All {rows.length} products across every arena, ranked by the openness theme score — agent-tested
           verdicts on self-hosting, full data export, open licensing, and API parity, the four questions that decide
           whether you own your setup or rent it. Ties break open-source first, then Overall score. Full definitions on{' '}
           <Link href="/methodology" className="text-zinc-300 underline decoration-zinc-700 hover:text-emerald-300">

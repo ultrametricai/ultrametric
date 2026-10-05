@@ -6,7 +6,9 @@ export default function CeilingBar({ pct, className = '' }: { pct: number; class
       <span className="h-1.5 w-20 overflow-hidden rounded-full bg-zinc-800" role="img" aria-label={`${pct}% of steps agent-runnable`}>
         <span className="block h-full rounded-full bg-emerald-400/80" style={{ width: `${pct}%` }} />
       </span>
-      <span className="whitespace-nowrap font-mono text-xs tabular-nums text-emerald-300">{pct}% agent</span>
+      {/* Bare percentage (founder 2026-10-02: drop the word 'agent' — the aria-label and the
+          column header carry the concept). */}
+      <span className="whitespace-nowrap font-mono text-xs tabular-nums text-emerald-300">{pct}%</span>
     </span>
   )
 }

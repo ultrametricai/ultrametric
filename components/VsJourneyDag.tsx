@@ -1,6 +1,6 @@
 'use client'
 
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
 import Link from 'next/link'
 import { IconGlyph } from '@/components/IconChip'
 import ProductLogoView from '@/components/ProductLogoView'
@@ -276,6 +276,9 @@ const FOLLOW_SLACK_PX = 24
 // mobile viewport) the strip oscillated between the two layouts on every 240ms reveal commit —
 // the reported flicker. Equal footprints make the swap layout-neutral, so the measurement
 // converges in one pass and the reveal/pulse animations stay (nothing animated was the cause).
+// Both also carry the same mb-4 (= the under-node h-3.5 marker row + gap-0.5): self-center
+// centres the connector's MARGIN box on the whole li, so without it every arrow pointed at the
+// node's bottom border instead of the node box (founder 2026-10-02: the wrap read unclear).
 function Edge({ lit }: { lit: boolean }) {
   return (
     <svg
@@ -284,7 +287,7 @@ function Edge({ lit }: { lit: boolean }) {
       width="16"
       height="8"
       viewBox="0 0 16 8"
-      className="mx-0.5 w-4 shrink-0 self-center"
+      className="mx-0.5 mb-4 w-4 shrink-0 self-center"
     >
       <line x1="0" y1="4" x2="10" y2="4" strokeWidth="1.5" className={lit ? 'stroke-emerald-400/70' : 'stroke-zinc-700'} />
       <path d="M10 1 L15.5 4 L10 7 Z" className={lit ? 'fill-emerald-400/70' : 'fill-zinc-700'} />
@@ -307,7 +310,7 @@ function WrapHint({ lit }: { lit: boolean }) {
       width="16"
       height="14"
       viewBox="0 0 16 14"
-      className="mx-0.5 w-4 shrink-0 self-center"
+      className="mx-0.5 mb-4 w-4 shrink-0 self-center"
     >
       {/* The elbow: down from the row above, then a quarter-curve into the arrowhead. */}
       <path d="M8 0.5 V5 Q8 9 11.5 9" fill="none" strokeWidth="1.5" className={lit ? 'stroke-emerald-400/70' : 'stroke-zinc-600'} />
@@ -393,8 +396,11 @@ export default function VsJourneyDag({
     setWrapStarts((cur) => (cur.size === next.size && [...next].every((id) => cur.has(id)) ? cur : next))
   }, [])
   // Deliberately dependency-less: it must re-measure after EVERY commit; the equality guard
-  // above makes it settle immediately when nothing moved.
-  useEffect(() => {
+  // above makes it settle immediately when nothing moved. useLayoutEffect, not useEffect: the
+  // Edge -> WrapHint swap must land BEFORE paint, or every node that opens a new row (each
+  // 240ms reveal commit, and hydration) flashes a stranded right-arrow at the line start for
+  // one frame. The footprint invariant keeps the pre-paint swap layout-neutral.
+  useLayoutEffect(() => {
     measureWraps()
   })
   useEffect(() => {
@@ -456,9 +462,9 @@ export default function VsJourneyDag({
           const el = e.currentTarget
           followRef.current = el.scrollTop + el.clientHeight >= el.scrollHeight - FOLLOW_SLACK_PX
         }}
-        className="max-h-[min(45vh,380px)] overflow-y-auto px-2 py-2 sm:px-3"
+        className="max-h-[min(45vh,380px)] overflow-x-hidden overflow-y-auto px-2 py-2 sm:px-3"
       >
-        <ol className="flex w-full flex-wrap items-start gap-y-2" aria-label="Journey processes in run order">
+        <ol className="flex w-full flex-wrap items-start gap-x-1 gap-y-2" aria-label="Journey processes in run order">
           {/* Run-press pauses (row 0, before any node) float at the flow's leading edge. */}
           {(markersByTask.get(null) ?? []).length > 0 && (
             <li className="mr-1 flex shrink-0 items-center gap-1 self-center">

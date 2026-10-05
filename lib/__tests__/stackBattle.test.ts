@@ -77,19 +77,22 @@ describe('slotComparisons', () => {
   ]
 
   it('builds one row per arena (union of both sides), sorted by arena name, with per-slot winners', () => {
-    const slots = slotComparisons(a, b, ['stripe-vs-adyen'])
+    const slots = slotComparisons(a, b, ['payments/stripe-vs-adyen'])
     expect(slots.map((s) => s.arenaId)).toEqual(['payments', 'project-management', 'startup-banking'])
     const payments = slots[0]
     expect(payments.winner).toBe('a')
-    expect(payments.battleHref).toBe('/vs/stripe-vs-adyen')
+    expect(payments.battleHref).toBe('/arena/payments/battle/stripe-vs-adyen')
     // Arenas only one side covers have no winner — an empty slot isn't a loss.
     expect(slots[1].winner).toBeNull()
     expect(slots[2].winner).toBeNull()
   })
 
   it('finds the judged battle in either stored order, and never links a battle that does not exist', () => {
-    expect(slotComparisons(a, b, ['adyen-vs-stripe'])[0].battleHref).toBe('/vs/adyen-vs-stripe')
+    expect(slotComparisons(a, b, ['payments/adyen-vs-stripe'])[0].battleHref).toBe('/arena/payments/battle/adyen-vs-stripe')
     expect(slotComparisons(a, b, [])[0].battleHref).toBeNull()
+    // The arena prefix is part of the key: another arena's battle for the same pair never
+    // links this slot (a few pairs battle in two arenas).
+    expect(slotComparisons(a, b, ['frontier-models/stripe-vs-adyen'])[0].battleHref).toBeNull()
   })
 
   it('declares a tie on equal best scores and no winner when a side is unscored', () => {

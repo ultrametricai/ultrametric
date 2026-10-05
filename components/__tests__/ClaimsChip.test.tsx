@@ -13,9 +13,11 @@ describe('ClaimsChip', () => {
     const data = loadCategory('code-hosting', DATA_DIR)
     const { score } = claimsIntegrity(data, 'github')
     expect(score).not.toBeNull() // sanity: github's real data has testable claims
-    render(<ClaimsChip data={data} productId="github" />)
+    const { container } = render(<ClaimsChip data={data} productId="github" />)
     expect(screen.getByText(String(score))).toBeDefined()
-    expect(screen.getByText('/100 integrity')).toBeDefined()
+    expect(screen.getByText('/100')).toBeDefined()
+    // No trailing "integrity" word in the cell (founder 2026-10-02) — tooltip carries the name.
+    expect(container.textContent).not.toContain('integrity')
   })
 
   it('renders an italic "untested" (unscored, not zero) when nothing is claimed for the product', () => {

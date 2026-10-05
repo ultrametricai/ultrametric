@@ -48,10 +48,10 @@ function judgedCard(ref: FamilyProductRef | null) {
     const product = data.products.find((p) => p.id === entry.productId)
     if (!product) return null
     // Head-to-head links against this line's arena rivals, leaderboard order — the canonical
-    // /vs mirror of the arena battle pages (see app/sitemap.ts's comment). /vs/[slug] only
-    // prerenders the slug in the battle record's stored (a, b) order (dynamicParams = false),
-    // so resolve each pair against rankings.battles — forward or reverse — and drop pairs with
-    // no battle page rather than emitting a guessed link that 404s.
+    // arena battle pages (/vs/[slug] is now a permanent redirect to them). The battle route
+    // only prerenders the slug in the battle record's stored (a, b) order (dynamicParams =
+    // false), so resolve each pair against rankings.battles — forward or reverse — and drop
+    // pairs with no battle page rather than emitting a guessed link that 404s.
     const liveSlugs = new Set(data.rankings.battles.map((b) => battleSlug(b.a, b.b)))
     const battles = data.rankings.leaderboard
       .filter((e) => e.productId !== entry.productId)
@@ -62,7 +62,7 @@ function judgedCard(ref: FamilyProductRef | null) {
         if (!slug) return []
         return [{
           rivalName: data.products.find((p) => p.id === rival.productId)?.name ?? rival.productId,
-          href: `/vs/${slug}`,
+          href: `/arena/${data.category.id}/battle/${slug}`,
         }]
       })
     return {

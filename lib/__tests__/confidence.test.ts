@@ -102,7 +102,10 @@ describe('confidenceFor', () => {
     expect(c.coverage).toBe(0.5)
     expect(c.testedShare).toBe(0.5)
     expect(c.grade).toBe('D')
-    expect(confidenceTitle(c)).toContain('Score confidence D')
+    // One-sentence tooltip (founder sweep 2026-10-02): grade + evidence-footing facts +
+    // the "score unchanged" honesty line.
+    expect(confidenceTitle(c)).toContain('Confidence D')
     expect(confidenceTitle(c)).toContain('50%')
+    expect(confidenceTitle(c)).toContain('score is unchanged')
   })
 })

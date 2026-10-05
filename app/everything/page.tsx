@@ -140,7 +140,12 @@ export default function EverythingPage() {
               <span className="hidden w-40 shrink-0 gap-1.5 truncate text-[11px] text-zinc-500 md:flex">
                 {p.vendors.map((v) =>
                   v.arenaId ? (
-                    <Link key={v.label} href={`/arena/${v.arenaId}`} className="truncate hover:text-emerald-300">
+                    <Link
+                      key={v.label}
+                      href={`/arena/${v.arenaId}/product/${v.productId}`}
+                      title={`${v.label} on Ultrametric — the judged product page`}
+                      className="truncate hover:text-emerald-300"
+                    >
                       {v.label}
                     </Link>
                   ) : (

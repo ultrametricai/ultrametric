@@ -1,7 +1,8 @@
 // @vitest-environment jsdom
-// The Needs/Produces header rows on /processes/[slug] (founder depth wave part 2, 2026-10-01):
-// the typed artifact layer rendered as house chips — Needs chips link to the canonical producer
-// process, Produces chips on the producer's own page stay unlinked, and a documented exception
+// The Produces header row on /processes/[slug] (founder depth wave part 2, 2026-10-01): the
+// typed artifact layer rendered as house chips. The 'Needs:' row no longer renders (founder
+// 2026-10-02 — display only: artifactChipRows still serializes the requires side untouched).
+// Produces chips on the producer's own page stay unlinked, and a documented exception
 // producer's chip points back at the canonical page (the LLC page's EIN → Get EIN).
 import { render, within } from '@testing-library/react'
 import { describe, expect, it } from 'vitest'
@@ -13,13 +14,15 @@ const tasks = loadProcesses()
 const byId = new Map(tasks.map((t) => [t.id, t]))
 
 describe('ArtifactChips', () => {
-  it('renders Needs chips linking each required artifact to its producer process (Get EIN page)', () => {
+  it("never renders the 'Needs:' row (founder 2026-10-02) — the requires DATA still rides in the rows prop untouched", () => {
     const task = byId.get('form_002')!
-    const { container } = render(<ArtifactChips rows={artifactChipRows(task)} />)
-    expect(within(container).getByText('Needs:')).toBeTruthy()
-    // Get EIN requires the Certificate of Incorporation — the chip links to Incorporate C-Corp.
-    const chip = within(container).getByText('Certificate of Incorporation')
-    expect(chip.closest('a')?.getAttribute('href')).toBe('/processes/incorporate-c-corp')
+    const rows = artifactChipRows(task)
+    // The underlying typed layer is intact — this is a display-only removal.
+    expect(rows.needs.length).toBeGreaterThan(0)
+    const { container } = render(<ArtifactChips rows={rows} />)
+    expect(within(container).queryByText('Needs:')).toBeNull()
+    // No chip from the needs side leaks in: Get EIN requires the Certificate of Incorporation.
+    expect(within(container).queryByText('Certificate of Incorporation')).toBeNull()
   })
 
   it('renders the Produces chip unlinked on the canonical producer page itself', () => {
@@ -38,10 +41,15 @@ describe('ArtifactChips', () => {
     expect(ein.closest('a')?.getAttribute('href')).toBe('/processes/get-ein')
   })
 
-  it('renders nothing for a process with no typed I/O', () => {
+  it('renders nothing for a process that produces no registry artifact — even when it still NEEDS some', () => {
     const empty = tasks.find((t) => t.requires.length === 0 && t.produces.length === 0)
     expect(empty, 'corpus honesty: some processes genuinely have no registry I/O').toBeTruthy()
     const { container } = render(<ArtifactChips rows={artifactChipRows(empty!)} />)
     expect(container.innerHTML).toBe('')
+    // Produces-only gate: a consumer-only process (requires without produces) renders nothing.
+    const consumerOnly = tasks.find((t) => t.requires.length > 0 && t.produces.length === 0)
+    expect(consumerOnly, 'corpus honesty: some processes only consume artifacts').toBeTruthy()
+    const consumer = render(<ArtifactChips rows={artifactChipRows(consumerOnly!)} />)
+    expect(consumer.container.innerHTML).toBe('')
   })
 })

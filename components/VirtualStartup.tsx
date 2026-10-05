@@ -1997,7 +1997,7 @@ export default function VirtualStartup({
                             <Link
                               data-testid="vs-step-assistant"
                               href={`/arena/${VS_AI_FIRM_ARENA}/product/${aiPinned.id}`}
-                              className="inline-flex items-center gap-1.5 rounded-full border border-emerald-400/50 px-2 py-px text-[11px] text-emerald-300 hover:border-emerald-400 hover:text-emerald-200"
+                              className="inline-flex items-center gap-1.5 rounded-full border border-emerald-400/50 px-2 py-0.5 text-[11px] leading-none text-emerald-300 hover:border-emerald-400 hover:text-emerald-200"
                             >
                               <ProductLogoView
                                 product={{ id: aiPinned.id, name: aiPinned.name }}
@@ -2017,7 +2017,7 @@ export default function VirtualStartup({
                         <Link
                           href={`/arena/${row.top.arenaId}/product/${row.top.productId}`}
                           title={`Top judged vendor for this step — ${row.top.arenaName}, scored over the step's mapped stories`}
-                          className="inline-flex items-center gap-1.5 rounded-full border border-zinc-700 px-2 py-px text-[11px] text-zinc-300 hover:border-emerald-400/60 hover:text-emerald-300"
+                          className="inline-flex items-center gap-1.5 rounded-full border border-zinc-700 px-2 py-0.5 text-[11px] leading-none text-zinc-300 hover:border-emerald-400/60 hover:text-emerald-300"
                         >
                           <ProductLogoView
                             product={{ id: row.top.productId, name: row.top.name }}

@@ -2,7 +2,7 @@
 // 2026-09-29: broaden business-logic beyond the cap-table engine).
 //
 // Pure, client-safe (no node builtins), deterministic. Registered in
-// business-logic/README.md; exhaustively tested in lib/openstartup/__tests__/runway.test.ts
+// open-modules/README.md; exhaustively tested in lib/openstartup/__tests__/runway.test.ts
 // with the arithmetic re-derived in comments.
 //
 // Source for the model (cited per function below): Paul Graham, "Default Alive or Default

@@ -141,11 +141,11 @@ export default function VsStateGraph({
             ) : (
               <ul className="space-y-1.5">
                 {vendors.map((v) => (
-                  <li key={v.productId} data-testid="vs-sg-vendor" className="flex items-center gap-2 text-[12px]">
+                  <li key={v.productId} data-testid="vs-sg-vendor" className="flex min-w-0 items-center gap-2 text-[12px]">
                     <ProductLogoView product={{ id: v.productId, name: v.name }} size={20} hasLogo={v.hasLogo === true} />
                     <Link
                       href={`/arena/${v.arenaId}/product/${v.productId}`}
-                      className="font-medium text-zinc-200 hover:text-emerald-300"
+                      className="min-w-0 truncate font-medium text-zinc-200 hover:text-emerald-300"
                     >
                       {v.name}
                     </Link>

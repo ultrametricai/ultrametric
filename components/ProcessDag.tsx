@@ -484,7 +484,7 @@ function NodeBlock({
       )}
 
       {/* The step's canonical open documents (founder 2026-10-02): small chips linking OUT to
-          the registry record's real URL (documents/registry.json — link, never redistribute),
+          the registry record's real URL (open-documents/registry.json — link, never redistribute),
           labeled with the registry title. External-link hygiene matches 'do it yourself' above;
           an unknown id throws at build time (lib/documents.ts openDocumentById). Most steps
           carry none and render nothing. */}
@@ -494,12 +494,12 @@ function NodeBlock({
           entries as tiny muted "compute: <module>.<function>" chips — the document-chip row
           idiom above, one shade quieter (this is library code, not an action). Tooltip carries
           the honest 'what' clause; the chip deep-links to the module's section in
-          business-logic/README.md on GitHub (lib/businessLogicMap.ts computeChipsForStep). */}
+          open-modules/README.md on GitHub (lib/businessLogicMap.ts computeChipsForStep). */}
       {computeChips.length > 0 && (
         <div className="mt-2 flex flex-wrap items-center gap-1.5 text-[11px]">
           <span
             className="text-[10px] uppercase tracking-wide text-zinc-500"
-            title="The open-module function whose cited, tested math computes this step — each chip opens the module's section in business-logic/README.md on GitHub"
+            title="The open-module function whose cited, tested math computes this step — each chip opens the module's section in open-modules/README.md on GitHub"
           >
             compute:
           </span>
@@ -509,7 +509,7 @@ function NodeBlock({
               href={c.href}
               target="_blank"
               rel="noopener noreferrer"
-              title={`${c.module}.${c.fn} — ${c.what} (open module, business-logic/README.md on GitHub)`}
+              title={`${c.module}.${c.fn} — ${c.what} (open module, open-modules/README.md on GitHub)`}
               className="inline-flex items-center gap-1 rounded-md border border-zinc-800 px-1.5 py-0.5 font-mono text-[10px] text-zinc-500 transition hover:border-emerald-400/60 hover:text-emerald-300"
             >
               {c.module}.{c.fn} ↗

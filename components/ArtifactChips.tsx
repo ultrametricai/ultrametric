@@ -1,13 +1,15 @@
 import Link from 'next/link'
 import type { ArtifactChipRows } from '@/lib/processDeps'
 
-// The typed-I/O header rows on /processes/[slug] (founder depth wave part 2, 2026-10-01):
-// 'Needs:' names the registry artifacts this process consumes, 'Produces:' the ones it brings
-// into existence — the machine-truth layer (produces/requires in processes/corpus.json against
-// processes/artifacts.json) rendered as the house chip idiom. Each chip links to the artifact's
-// CANONICAL producer process (a Needs chip answers "where do I get this?"; a Produces chip on a
-// documented exception producer — the LLC page's EIN — points back at the canonical page).
-// Chips for artifacts this very page produces render unlinked: the producer is right here.
+// The typed-I/O header row on /processes/[slug] (founder depth wave part 2, 2026-10-01):
+// 'Produces:' names the registry artifacts this process brings into existence — the
+// machine-truth layer (produces/requires in processes/corpus.json against
+// processes/artifacts.json) rendered as the house chip idiom. The 'Needs:' row no longer
+// renders (founder 2026-10-02: the line read as noise on the page) — DISPLAY ONLY: the
+// requires data, lib/processDeps.ts, and the rows prop shape are untouched, so the dependency
+// graph and any other consumer keep the full typed layer. A Produces chip on a documented
+// exception producer — the LLC page's EIN — points back at the canonical page; chips for
+// artifacts this very page produces render unlinked: the producer is right here.
 // Purely presentational and serializable — props come from lib/processDeps.ts artifactChipRows.
 
 const CHIP =
@@ -47,14 +49,11 @@ function ChipRow({ heading, title, chips }: {
 }
 
 export default function ArtifactChips({ rows }: { rows: ArtifactChipRows }) {
-  if (rows.needs.length === 0 && rows.produces.length === 0) return null
+  // Produces only (founder 2026-10-02): rows.needs stays in the prop shape untouched — the
+  // typed requires layer is data, just not a header row here anymore.
+  if (rows.produces.length === 0) return null
   return (
     <div className="mt-3 space-y-1.5 text-xs">
-      <ChipRow
-        heading="Needs:"
-        title="Business artifacts this process consumes — each chip links to the process that produces it (the typed layer behind the prose: processes/artifacts.json)"
-        chips={rows.needs}
-      />
       <ChipRow
         heading="Produces:"
         title="Business artifacts this process brings into existence — the step where each one is born carries it in the flow below"

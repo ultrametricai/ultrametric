@@ -46,8 +46,9 @@ export default function ClaimsChip({ data, productId, href }: { data: CategoryDa
       title={`${title}${linkable ? '. Click for the claim-by-claim breakdown.' : ''}`}
       className="text-xs tabular-nums"
     >
+      {/* No trailing "integrity" word (founder 2026-10-02) — the N/100 + tooltip suffice. */}
       <span className={colorClass}>{score}</span>
-      <span className="text-zinc-500">/100 integrity</span>
+      <span className="text-zinc-500">/100</span>
     </span>
   )
   return linkable ? (

@@ -102,9 +102,9 @@ describe('decision → journey mapping (against the live corpus)', () => {
     for (const id of VS_CHAIN_IDS) expect(chainIds.has(id), `chain ${id} missing`).toBe(true)
   })
 
-  it('covers every decision combo, derived straight from DECISIONS (8 entities × 5 models × 6 compliance options × 4 ICPs × 5 launches × 2 workplaces × the rest)', () => {
+  it('covers every decision combo, derived straight from DECISIONS (10 entities × 5 models × 6 compliance options × 4 ICPs × 5 launches × 2 workplaces × the rest)', () => {
     const expected = DECISIONS.reduce((acc, d) => acc * d.options.length, 1)
-    expect(expected).toBe(153600) // 8 × 2 × 2 × 5 × 2 × 2 × 6 × 4 × 5 × 2 ('x' launch appended 2026-10-01)
+    expect(expected).toBe(192000) // 10 × 2 × 2 × 5 × 2 × 2 × 6 × 4 × 5 × 2 (PT/CA entities appended 2026-10-03)
     expect(combos.length).toBe(expected)
     expect(new Set(combos.map(comboKey)).size).toBe(expected)
     expect(DECISIONS.length).toBe(10)
@@ -145,22 +145,24 @@ describe('decision → journey mapping (against the live corpus)', () => {
   it('country-aware entities (round 5, item 1): a non-US entity NEVER creates a corpus branch — task-identical to the C-Corp path; the country frame rides the phase note; codec order pins c-corp/llc at 0/1', () => {
     const entity = DECISIONS.find((d) => d.id === 'entity')!
     // Codec compat: the original values keep indices 0/1; non-US values are appended.
-    expect(entity.options.map((o) => o.value)).toEqual(['c-corp', 'llc', 'ltd', 'gmbh', 'ug', 'sas', 'sarl', 'pvt-ltd'])
+    expect(entity.options.map((o) => o.value)).toEqual(['c-corp', 'llc', 'ltd', 'gmbh', 'ug', 'sas', 'sarl', 'pvt-ltd', 'lda', 'ca-corp'])
     // The dropdown roster follows the geo pick; each country's FIRST option is its default-asserted value.
     expect(ENTITY_OPTIONS_BY_COUNTRY).toEqual({
-      US: ['c-corp', 'llc'], UK: ['ltd'], DE: ['gmbh', 'ug'], FR: ['sas', 'sarl'], IN: ['pvt-ltd'],
+      US: ['c-corp', 'llc'], UK: ['ltd'], DE: ['gmbh', 'ug'], FR: ['sas', 'sarl'], IN: ['pvt-ltd'], PT: ['lda'], CA: ['ca-corp'],
     })
     expect(defaultEntityFor('US')).toBe('c-corp')
     expect(defaultEntityFor('UK')).toBe('ltd')
     expect(defaultEntityFor('DE')).toBe('gmbh')
     expect(defaultEntityFor('FR')).toBe('sas')
     expect(defaultEntityFor('IN')).toBe('pvt-ltd')
+    expect(defaultEntityFor('PT')).toBe('lda')
+    expect(defaultEntityFor('CA')).toBe('ca-corp')
     // Every DECISIONS entity value exists in exactly one country roster, and vice versa.
     const rosterValues = Object.values(ENTITY_OPTIONS_BY_COUNTRY).flat()
     expect([...rosterValues].sort()).toEqual(entity.options.map((o) => o.value).sort())
     // HONESTY: composition is byte-identical to the C-Corp path for every non-US entity.
     const ccorpIds = journeyTaskIds({ ...DEFAULT_CHOICES, entity: 'c-corp' }, chains)
-    for (const value of ['ltd', 'gmbh', 'ug', 'sas', 'sarl', 'pvt-ltd'] as const) {
+    for (const value of ['ltd', 'gmbh', 'ug', 'sas', 'sarl', 'pvt-ltd', 'lda', 'ca-corp'] as const) {
       const combo = { ...DEFAULT_CHOICES, entity: value }
       expect(journeyTaskIds(combo, chains)).toEqual(ccorpIds)
       const note = journeyPhases(combo, chains).find((p) => p.id === 'form')!.note!

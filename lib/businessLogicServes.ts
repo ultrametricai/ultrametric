@@ -6,7 +6,7 @@ import {
 import { loadProcesses, processSlug } from '@/lib/processes'
 import { SITE_URL } from '@/lib/site'
 
-// business-logic/README.md "Serves" lines ↔ map sync (founder 2026-10-02: each module's
+// open-modules/README.md "Serves" lines ↔ map sync (founder 2026-10-02: each module's
 // section names the processes/steps it serves, generated-or-synced so it can't go stale — the
 // SITUATIONS.md drift-gate pattern, lib/situationsDoc.ts). The truth lives in
 // processes/business-logic-map.json (modules + the per-step function entries); every module's
@@ -15,7 +15,7 @@ import { SITE_URL } from '@/lib/site'
 // (lib/__tests__/businessLogicServes.test.ts). Pure validators take data so failure modes are
 // testable; no network I/O.
 
-export const BUSINESS_LOGIC_README = 'business-logic/README.md'
+export const BUSINESS_LOGIC_README = 'open-modules/README.md'
 export const SERVES_PREFIX = '**Serves:**'
 
 /** Everything the renderer needs, loaded once (the map plus corpus titles/slugs). */

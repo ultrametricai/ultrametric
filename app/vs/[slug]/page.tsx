@@ -1,160 +1,28 @@
-import type { Metadata } from 'next'
-import Link from 'next/link'
-import { notFound } from 'next/navigation'
-import AgentAccessGlyphs from '@/components/AgentAccessGlyphs'
-import AgenticBadge from '@/components/AgenticBadge'
-import AiEraBadge from '@/components/AiEraBadge'
-import BattleView from '@/components/BattleView'
-import { BusinessModelChip } from '@/components/BusinessModel'
-import ClaimsChip from '@/components/ClaimsChip'
-import ProductLogo from '@/components/ProductLogo'
-import ShutdownBadge from '@/components/ShutdownBadge'
-import { battleSlug, findBattleBySlug, loadAll, type CategoryData } from '@/lib/data'
-import type { BattleRecord, Product } from '@/lib/schemas'
-import { SITE_URL } from '@/lib/site'
+import { notFound, permanentRedirect } from 'next/navigation'
+import { battleSlug, findBattleBySlug, loadAll } from '@/lib/data'
 
-// Top-level mirror of every arena battle (`/arena/{category}/battle/{slug}` also still resolves
-// — see that page's generateMetadata for the canonical pointer back here). Product ids are
-// globally unique, so the slug alone (`{a}-vs-{b}`) is enough to resolve a battle across all
-// categories with no category segment in the URL — see lib/data-helpers.ts's findBattleBySlug.
+// Redirect stub (docs/BUILD-SIZE.md round 3). /vs/{slug} used to prerender a full mirror of
+// every arena battle (~5 GB of artifacts, half the build output); the arena battle page
+// (/arena/{category}/battle/{slug}) is now the canonical URL and every /vs slug serves a
+// permanent (308) redirect to it. generateStaticParams + dynamicParams=false keep the route
+// fully static — each prerendered artifact is a tiny redirect payload — so old /vs links and
+// bookmarks keep working with no runtime data reads.
 export function generateStaticParams() {
   return loadAll().flatMap((data) => data.rankings.battles.map((b) => ({ slug: battleSlug(b.a, b.b) })))
 }
 
 export const dynamicParams = false
 
-// Honest FAQPage JSON-LD, same discipline as the arena page's arenaFaqJsonLd — both answers
-// come straight from this battle's own computed record, never a fabricated rating.
-function vsFaqJsonLd(data: CategoryData, battle: BattleRecord, a: Product, b: Product) {
-  const winnerName = battle.winner === 'draw' ? null : battle.winner === a.id ? a.name : b.name
-  const record = `${battle.record.aWins}–${battle.record.bWins}${battle.record.draws > 0 ? ` (${battle.record.draws} drawn)` : ''}`
-  return {
-    '@context': 'https://schema.org',
-    '@type': 'FAQPage',
-    mainEntity: [
-      {
-        '@type': 'Question',
-        name: `${a.name} vs ${b.name}: which is more AI-ready?`,
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: winnerName
-            ? `${winnerName} wins the head-to-head ${record} across ${data.category.name}'s evidence-graded user stories — see ${SITE_URL}/vs/${battleSlug(battle.a, battle.b)}.`
-            : `${a.name} and ${b.name} draw the head-to-head ${record} across ${data.category.name}'s evidence-graded user stories.`,
-        },
-      },
-      {
-        '@type': 'Question',
-        name: 'How is this measured?',
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: `Every user story is judged independently for both products using cited evidence (vendor docs, GitHub, community sources, or a hands-on probe) — never opinion — and the higher-scoring product wins that round. See ${SITE_URL}/methodology for the full scoring writeup.`,
-        },
-      },
-    ],
-  }
-}
-
-function resolve(slug: string): { data: CategoryData; battle: BattleRecord; a: Product; b: Product } | null {
-  const found = findBattleBySlug(loadAll(), slug)
-  if (!found) return null
-  const { data, battle } = found
-  const a = data.products.find((p) => p.id === battle.a)!
-  const b = data.products.find((p) => p.id === battle.b)!
-  return { data, battle, a, b }
-}
-
-export async function generateMetadata({
-  params,
-}: {
-  params: Promise<{ slug: string }>
-}): Promise<Metadata> {
-  const { slug } = await params
-  const found = resolve(slug)
-  if (!found) return { title: 'Comparison — Ultrametric' }
-  const { data, a, b } = found
-  const year = new Date().getFullYear()
-  return {
-    title: `${a.name} vs ${b.name} (${year}): which is more AI-ready? Evidence-tested comparison`,
-    description: `Head-to-head, evidence-graded comparison of ${a.name} and ${b.name} across ${data.category.name} — Overall score, agent-readiness, business model, vendor claims verified, and every judged round.`,
-    alternates: { canonical: `${SITE_URL}/vs/${slug}` },
-  }
-}
+// No generateMetadata: a redirecting page's metadata is never surfaced, and the battle page
+// carries the title/description/canonical/FAQ JSON-LD this route used to own.
 
 export default async function VsPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params
-  const found = resolve(slug)
-  if (!found) notFound()
-  const { data, battle, a, b } = found
-  const aEntry = data.rankings.leaderboard.find((e) => e.productId === a.id)!
-  const bEntry = data.rankings.leaderboard.find((e) => e.productId === b.id)!
-
-  return (
-    <div className="space-y-8">
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(vsFaqJsonLd(data, battle, a, b)) }}
-      />
-      <div className="text-center">
-        <p className="text-sm uppercase tracking-widest text-emerald-400">
-          <Link href={`/arena/${data.category.id}`} className="hover:text-emerald-300">
-            {data.category.name} Arena
-          </Link>
-        </p>
-        <h1 className="font-display leading-[1.1] mt-1 text-3xl font-bold tracking-tight">
-          {a.name} <span className="text-zinc-400">vs</span> {b.name}
-        </h1>
-      </div>
-
-      <div className="grid gap-4 sm:grid-cols-2">
-        {[{ p: a, entry: aEntry }, { p: b, entry: bEntry }].map(({ p, entry }) => (
-          <div key={p.id} className="rounded-xl border border-zinc-800 p-5">
-            <Link
-              href={`/arena/${data.category.id}/product/${p.id}`}
-              className="flex items-center gap-3 hover:text-emerald-300"
-            >
-              <ProductLogo product={p} size={40} />
-              <div>
-                <p className="font-semibold">{p.name}</p>
-                <p className="text-xs text-zinc-500">{p.vendor}</p>
-              </div>
-            </Link>
-            <div className="mt-3 flex flex-wrap items-center gap-2">
-              <span className="text-[10px] uppercase tracking-widest text-zinc-400">Arena</span>
-              <AiEraBadge
-                value={entry.aiEra}
-                href="/methodology#arena-score"
-                components={{
-                  agentReady: entry.agentReady,
-                  apiQuality: entry.apiQuality,
-                  openness: entry.themeScores['openness'] ?? null,
-                  agenticApp: entry.agenticApp,
-                  automation: entry.themeScores['automation-depth'] ?? null,
-                }}
-              />
-              <AgenticBadge kind="agent-ready" value={entry.agentReady} size="sm" href="/methodology#ai-era" />
-              <AgenticBadge kind="agentic-app" value={entry.agenticApp} size="sm" href="/methodology#ai-era" />
-            </div>
-            <div className="mt-2">
-              <AgentAccessGlyphs data={data} productId={p.id} />
-            </div>
-            <div className="mt-2 flex flex-wrap items-center gap-2">
-              <BusinessModelChip product={p} />
-              {/* Honesty marker (lib/shutdown.ts): the judged record stands, but a reader
-                  weighing this head-to-head must see the vendor announced it is closing. */}
-              <ShutdownBadge shutdown={p.shutdown} source={p.shutdownSource} />
-              <ClaimsChip
-                data={data}
-                productId={p.id}
-                href={`/arena/${data.category.id}/product/${p.id}#claims`}
-              />
-            </div>
-          </div>
-        ))}
-      </div>
-
-      {/* standalone={false}: the header + cards above already carry the names, business models
-          and agentic badges — BattleView contributes only the verdict line and judged rounds. */}
-      <BattleView data={data} battle={battle} standalone={false} />
-    </div>
-  )
+  // Four pair-slugs exist in two arenas (the same two products battle in e.g. both
+  // ai-assistants and frontier-models). findBattleBySlug resolves those to the first category
+  // in loadAll order — the same resolution this page used when it rendered, so each redirect
+  // lands on the battle the /vs page previously showed.
+  const found = findBattleBySlug(loadAll(), slug)
+  if (!found) notFound() // unreachable under dynamicParams=false; defensive for direct renders
+  permanentRedirect(`/arena/${found.data.category.id}/battle/${slug}`)
 }

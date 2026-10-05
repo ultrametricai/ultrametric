@@ -109,7 +109,14 @@ describe('canonical shared process reader', () => {
     expect(name.textContent).not.toContain('GET /api')
     expect(el.textContent).not.toContain('References (')
     expect(el.textContent).not.toContain('Source details')
-    expect(el.querySelector('[id="form_001:n6"] a[href="https://delcode.delaware.gov/title8/c001/sc04/index.html"]')).not.toBeNull()
+    const bylaws = el.querySelector('[id="form_001:n6"]')!
+    const citations = [...bylaws.querySelectorAll('[aria-label="Related links"] a')]
+    expect(citations.map(link => [link.textContent, link.getAttribute('href')])).toEqual([
+      ['Delaware directors, officers and consents', 'https://delcode.delaware.gov/title8/c001/sc04/index.html'],
+      ['Delaware incorporation and bylaws law', 'https://delcode.delaware.gov/title8/c001/sc01/index.html'],
+      ['Delaware formation document package', 'https://www.cooleygo.com/documents/incorporation-package-delaware/'],
+    ])
+    expect(citations.every(link => link.getAttribute('rel') === 'noopener noreferrer')).toBe(true)
     expect(record.parts.find(part => part.id === 'n6')?.references).toContainEqual({ kind: 'vendor', id: 'clerky', role: 'stated-vendor' })
     const certificate = el.querySelector('[id="form_001:n5"]')!
     expect(certificate.querySelector('details')?.open).toBe(false)

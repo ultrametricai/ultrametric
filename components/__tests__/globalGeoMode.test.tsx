@@ -4,10 +4,11 @@
 // country-specifics"). The contract, in the site-wide personalization order:
 //   1. default byte-identical: the static HTML — even with ?geo=global in the URL — renders the
 //      US default of every geo-aware block, and ?geo=global never changes a committed number;
-//   2. under the explicit Global choice: the banner shows the country-agnostic lens, geoNotes
-//      collapse to availability only, jurisdiction-conditional steps (the jca1/jmu1 family)
-//      disappear, geo method variants are NOT auto-preselected, and vendor-geo annotations
-//      render nothing (Global reads as null to every country-consumer);
+//   2. under the explicit Global choice: the banner shows the country-agnostic lens, the
+//      "Outside the US" geoNotes block renders NOTHING at all (founder 2026-10-02 — supersedes
+//      the earlier availability-only collapse), jurisdiction-conditional steps (the jca1/jmu1
+//      family) disappear, geo method variants are NOT auto-preselected, and vendor-geo
+//      annotations render nothing (Global reads as null to every country-consumer);
 //   3. a manual country still wins: picking a country after Global restores every country
 //      behavior unchanged, and the US default clears everything.
 import { render, fireEvent, act } from '@testing-library/react'
@@ -33,12 +34,14 @@ import { resetMethodSelections, stepMethodNodeKey, type StepMethodView } from '@
 const NOTES: GeoAnalogNote[] = [
   {
     country: 'UK',
+    kind: 'analog',
     summary: 'Register a private limited company with Companies House.',
     actionUrl: 'https://www.gov.uk/limited-company-formation',
     actionLabel: 'Companies House — set up a limited company',
   },
   {
     country: 'IN',
+    kind: 'analog',
     summary: 'Incorporate via MCA SPICe+ on the NSWS portal.',
     actionUrl: 'https://www.nsws.gov.in/',
     actionLabel: 'NSWS — incorporate a company',
@@ -172,18 +175,17 @@ describe('?geo=global hides the country specifics (the country-agnostic lens)', 
     expect(container.textContent).toBe('')
   })
 
-  it('geoNotes: the "Outside the US" block collapses to availability only', () => {
+  it('geoNotes: the "Outside the US" block renders NOTHING in the Global view (founder 2026-10-02)', () => {
     const { container } = render(<ProcessGeoNotes notes={NOTES} geoScope="us" />)
     // Default (and static HTML): the full per-country detail.
     expect(container.textContent).toContain('Register a private limited company with Companies House.')
     act(() => setGeoChoice(GEO_GLOBAL))
-    expect(container.textContent).toContain('country specifics hidden')
-    expect(container.textContent).toContain('United Kingdom')
-    expect(container.textContent).toContain('India')
-    // No country-specific substance — summaries gone; the verified portals remain as links.
-    expect(container.textContent).not.toContain('Register a private limited company')
-    expect(container.textContent).not.toContain('SPICe+')
-    expect(container.querySelector('a[href="https://www.gov.uk/limited-company-formation"]')).not.toBeNull()
+    // Nothing from the block — no heading, no availability line, no portal links.
+    expect(container.innerHTML).toBe('')
+    // A manual country restores the full per-country detail unchanged.
+    act(() => setGeoChoice('UK'))
+    expect(container.textContent).toContain('Outside the US')
+    expect(container.textContent).toContain('Register a private limited company with Companies House.')
   })
 
   it('jurisdiction-conditional steps (jca1 family): the whole control disappears', () => {
@@ -220,15 +222,19 @@ describe('manual country still wins; the switcher writes the shareable token', (
   it('Global → UK → US default: every block restores its country behavior unchanged', () => {
     const { container } = render(geoAware)
     act(() => setGeoChoice(GEO_GLOBAL))
-    expect(container.textContent).toContain('Global view')
+    // The geoNotes block is gone entirely under Global (founder 2026-10-02); the banner's
+    // availability line still names the mapped countries.
+    expect(container.textContent).not.toContain('Outside the US')
+    expect(container.textContent).toContain('United Kingdom')
     expect(container.textContent).not.toContain('Delaware-only')
     act(() => setGeoChoice('UK'))
-    expect(container.textContent).toContain('US-centric process.')
+    // The wrong-country-flow guard (founder 2026-10-02): the committed UK note LEADS the banner.
+    expect(container.textContent).toContain('In the United Kingdom, this runs as:')
     expect(container.textContent).toContain('Register a private limited company with Companies House.')
     expect(container.textContent).toContain('Delaware-only')
     act(() => setGeoChoice(null))
     expect(container.textContent).not.toContain('Global view')
-    expect(container.textContent).not.toContain('US-centric process.')
+    expect(container.textContent).not.toContain('this runs as:')
     expect(container.textContent).toContain('Delaware-only')
   })
 

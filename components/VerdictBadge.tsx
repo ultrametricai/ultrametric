@@ -56,7 +56,7 @@ export default function VerdictBadge({
   const chip = (
     <span
       title={href ? undefined : TITLES[verdict]}
-      className={`inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-xs font-medium ring-1 ${STYLES[verdict]}`}
+      className={`um-pill inline-flex items-center gap-1 ${STYLES[verdict]}`}
     >
       {glyph && (
         <span aria-hidden className="font-mono not-italic">
@@ -71,7 +71,7 @@ export default function VerdictBadge({
     <Link
       href={href}
       title={`${TITLES[verdict]} — ${hrefTitle ?? 'see the full rationale and cited evidence'}`}
-      className="inline-flex rounded-full transition hover:brightness-125 hover:ring-1 hover:ring-emerald-400/60"
+      className="um-pill-link"
     >
       {chip}
     </Link>

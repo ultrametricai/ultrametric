@@ -82,7 +82,7 @@ export default function BestApiRankingPage() {
   const untestedCount = rows.filter((r) => r.apiUntested).length
   const jsonLd = rankingJsonLd(
     'Best API — API quality ranking',
-    'Products ranked by evidence-graded API quality: machine-readable specs, sandboxes, versioning policy, and interactive docs. Untested APIs are unscored, never zero.',
+    'Products ranked by agent-tested API quality: machine-readable specs, sandboxes, versioning policy, and interactive docs. Untested APIs are unscored, never zero.',
     rows
       .filter((r) => !r.apiUntested)
       .map((row) => ({
@@ -126,7 +126,7 @@ export default function BestApiRankingPage() {
             <tr className="border-b border-zinc-800 text-left text-xs uppercase tracking-widest text-zinc-500">
               <th className="w-10 px-3 py-2 font-normal">#</th>
               <th className="px-3 py-2 font-normal">Product</th>
-              <th className="px-3 py-2 font-normal" title="API quality (0–100): machine-readable spec, sandbox, versioning policy, interactive docs — evidence-graded. 'untested' = no evidence either way, unscored rather than zero.">
+              <th className="px-3 py-2 font-normal" title="API quality (0–100): machine-readable spec, sandbox, versioning policy, interactive docs — agent tested. 'untested' = no evidence either way, unscored rather than zero.">
                 <span className="inline-flex items-center gap-1.5">API quality<ColumnsHelpLink /></span>
               </th>
               <th className="hidden px-3 py-2 font-normal sm:table-cell" title="AGENT-READY (0–100): can an agent reach the product at all — API/CLI/MCP/webhooks/SDKs/docs">

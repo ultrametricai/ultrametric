@@ -4,7 +4,7 @@ import { AboutFractal } from '@/components/fx/lazy'
 export const metadata: Metadata = {
   title: 'About — Ultrametric',
   description:
-    'Ultrametric, Inc. builds the open startup repo: agent-runnable founder processes, evidence-graded tool rankings, and the open startup simulator — everything evidence-driven, affiliations disclosed.',
+    'Ultrametric, Inc. builds the open startup repo: agent-runnable founder processes, agent-tested tool rankings, and the open startup simulator — everything evidence-driven, affiliations disclosed.',
 }
 
 // Static page, deliberately minimal (founder 2026-09-30: "just make it simple — 1 paragraph

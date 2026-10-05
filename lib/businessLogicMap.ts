@@ -9,7 +9,7 @@ import { REPO } from './site'
 // task-level hits render as the process page's muted "Open modules" chip line; the step-level
 // entries render as tiny "compute: <module>.<function>" chips inside the step blocks
 // (components/ProcessDag.tsx), both deep-linking to the module's section in
-// business-logic/README.md on GitHub (repo-first — the modules are a library by design, no new
+// open-modules/README.md on GitHub (repo-first — the modules are a library by design, no new
 // site pages). Same SSOT posture as the vendor registry (lib/processes.ts): facts live in the
 // open corpus file, this module only reads them back, and the honesty invariants are
 // data-tested — every module id is a real lib/openstartup file, every mapped process id exists
@@ -22,7 +22,7 @@ import { REPO } from './site'
 
 export const BusinessLogicModuleSchema = z
   .object({
-    // Display name — mirrors the module's `###` heading in business-logic/README.md.
+    // Display name — mirrors the module's `###` heading in open-modules/README.md.
     label: z.string().min(1),
     // The module source file, repo-relative — must exist (totality-tested).
     file: z.string().regex(/^lib\/openstartup\/[A-Za-z0-9]+\.ts$/),
@@ -82,7 +82,7 @@ export interface OpenModuleChip {
 }
 
 export function moduleReadmeHref(anchor: string): string {
-  return `https://github.com/${REPO}/blob/main/business-logic/README.md#${anchor}`
+  return `https://github.com/${REPO}/blob/main/open-modules/README.md#${anchor}`
 }
 
 /** The open modules serving one process, in registry order ([] for the many unmapped tasks). */

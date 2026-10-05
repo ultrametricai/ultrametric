@@ -102,3 +102,26 @@ describe('scoped regional presentation', () => {
     expect(low.queryByText('Needs approval')).toBeNull()
   })
 })
+
+// Exercise every authored country choice, including records with unresolved
+// downstream applicability. A selected country must not inherit default totals.
+for (const source of records.filter(record => regionalDecision(record))) {
+  it(`qualifies regional choices and suppresses default totals for ${source.id}`, () => {
+    const decision = regionalDecision(source)!
+    const el = render(<SharedProcessReader record={source} records={records} />)
+    for (const option of decision.options.filter(option => option.id !== 'default')) {
+      fireEvent.click(el.container.querySelector(`input[type="radio"][value="${option.id}"]`)!)
+      expect(el.container.querySelector('[aria-label="Process summary"]')).toBeNull()
+      const warning = el.queryByText(/Other steps have not been adapted/)
+      if (option.hasUnadaptedSteps) {
+        expect(warning?.className).toBe('text-xs text-zinc-400')
+      } else {
+        expect(warning).toBeNull()
+      }
+      expect(el.container.querySelector(`[id="${decision.scope}:${option.id}"]`)).not.toBeNull()
+      expect(el.container.querySelector(`[id="${decision.scope}:default"]`)).toBeNull()
+    }
+    fireEvent.click(el.container.querySelector('input[type="radio"][value="default"]')!)
+    expect(el.queryByText(/Other steps have not been adapted/)).toBeNull()
+  })
+}

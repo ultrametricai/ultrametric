@@ -12,7 +12,7 @@ import { render, within } from '@testing-library/react'
 import { renderToString } from 'react-dom/server'
 import { describe, expect, it } from 'vitest'
 import ProcessesPage from '@/app/processes/page'
-import { GEO_SCOPE_GLYPH } from '@/lib/geoPreference'
+import { usFlagGlyph } from '@/lib/geoPreference'
 import { loadProcesses, processSlug } from '@/lib/processes'
 import { areaOf, buildPlaybookRows, buildProcessRows } from '@/lib/processRows'
 
@@ -118,17 +118,32 @@ describe('/processes defaults onto the GLOBAL view (founder 2026-09-30: "default
     expect(geoTrigger?.textContent).toContain('🌐')
     expect(geoTrigger?.textContent).not.toContain('USA')
     // "Include the US specific ones in the first view": the row set is the FULL corpus — the
-    // geo dimension annotates, never filters — and each row wears its scope glyph, the sharp
-    // set (🇺🇸 federal vs 🏛 state vs 🌐 global) from the server render on.
+    // geo dimension annotates, never filters. Scope glyphs since the founder batch 2026-10-02:
+    // us AND us-state rows wear the 🇺🇸 flag (keyed strictly on geoScope — the label still
+    // tells federal from state work); global rows wear NO scope glyph, and no 🌐/🏛 ever
+    // follows a title.
     const { rows } = buildProcessRows()
     const table = doc.querySelector('table') as HTMLElement
     expect(table.querySelectorAll('tbody tr').length).toBe(rows.length + buildPlaybookRows().length)
     const countByTitle = (label: string) => table.querySelectorAll(`span[title="${label}"]`).length
-    for (const scope of ['global', 'us', 'us-state'] as const) {
+    for (const scope of ['us', 'us-state'] as const) {
       const expected = rows.filter((r) => r.geoScope === scope).length
       expect(expected, `corpus should carry ${scope} rows for the pin to bite`).toBeGreaterThan(0)
-      expect(countByTitle(GEO_SCOPE_GLYPH[scope].label), `every ${scope} row glyph-marked`).toBe(expected)
+      expect(countByTitle(usFlagGlyph(scope)!.label), `every ${scope} row flag-marked`).toBe(expected)
     }
+    const titleCells = [...table.querySelectorAll('tbody td:first-child')]
+    expect(titleCells.filter((c) => c.textContent?.includes('🇺🇸')).length).toBe(
+      rows.filter((r) => r.geoScope !== 'global').length,
+    )
+    expect(titleCells.some((c) => c.textContent?.includes('🌐'))).toBe(false)
+    expect(titleCells.some((c) => c.textContent?.includes('🏛'))).toBe(false)
+    // The qs_023 audit (founder 2026-10-02): 'Open bank account' is geoScope GLOBAL in the
+    // corpus — its row must wear NO flag. A global record can never render the flag.
+    const bank = rows.find((r) => r.slug === 'open-bank-account')
+    expect(bank?.geoScope).toBe('global')
+    const bankCell = titleCells.find((c) => c.querySelector('a[href="/processes/open-bank-account"]'))
+    expect(bankCell, 'the qs_023 row must render').toBeTruthy()
+    expect(bankCell!.textContent).not.toContain('🇺🇸')
   })
 
   it('the client render matches (hydrated default = Global framing, all rows still present)', () => {

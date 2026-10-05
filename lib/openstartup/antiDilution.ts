@@ -2,7 +2,7 @@
 // toolkit (founder direction 2026-10-01: "go super deep on business logic").
 //
 // Pure, client-safe (no node builtins), deterministic. Registered in
-// business-logic/README.md; tested in lib/openstartup/__tests__/antiDilution.test.ts,
+// open-modules/README.md; tested in lib/openstartup/__tests__/antiDilution.test.ts,
 // which replays the cited published worked examples number-for-number and property-tests
 // the ordering invariants (full ratchet <= narrow-based <= broad-based conversion price;
 // an adjustment never raises the conversion price).

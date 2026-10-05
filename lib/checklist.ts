@@ -82,7 +82,7 @@ export function checklistMarkdown(data: CategoryData): string {
   const lines: string[] = [
     `# ${data.category.name} — buyer checklist (RFP)`,
     '',
-    `Derived from Ultrametric's evidence-graded user-story taxonomy for ${data.category.name}: ${data.stories.length} judged requirements. Priorities mirror story weights (3 = must-have, 2 = should-have, 1 = nice-to-have).`,
+    `Derived from Ultrametric's agent-tested user-story taxonomy for ${data.category.name}: ${data.stories.length} judged requirements. Priorities mirror story weights (3 = must-have, 2 = should-have, 1 = nice-to-have).`,
     '',
   ]
   for (const [theme, stories] of checklistThemes(data.stories)) {
@@ -95,7 +95,7 @@ export function checklistMarkdown(data: CategoryData): string {
   lines.push(
     '---',
     '',
-    `Source: ${SITE_URL}/arena/${data.category.id} (evidence-graded verdicts for ${data.products.length} products) · methodology: ${SITE_URL}/methodology`,
+    `Source: ${SITE_URL}/arena/${data.category.id} (agent-tested verdicts for ${data.products.length} products) · methodology: ${SITE_URL}/methodology`,
     '',
   )
   return lines.join('\n')

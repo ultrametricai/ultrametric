@@ -2,7 +2,7 @@
 // direction 2026-10-01: "go further on the business modules").
 //
 // Pure, client-safe (no node builtins), deterministic. Registered in
-// business-logic/README.md; tested in lib/openstartup/__tests__/waterfall.test.ts, which
+// open-modules/README.md; tested in lib/openstartup/__tests__/waterfall.test.ts, which
 // replays the YC Post-Money Safe User Guide's liquidity-event worked examples
 // number-for-number and property-tests the invariants (proceeds sum to the price, no
 // negative payouts, non-participating holders take the greater side).

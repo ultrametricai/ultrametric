@@ -12,11 +12,10 @@ const readFixture = (name: string) =>
 
 describe('founder-ops corpus validation', () => {
   it('the committed corpus passes every invariant', () => {
-    // Pinned to the newest checked_on in sources/registry.json (2026-10-02 — the
-    // situations-wave-3 GDPR source: the EUR-Lex Art. 12(3) one-month deadline behind
-    // eu.gdpr-dsar-response-deadline) so the "checked date is in the future" invariant
-    // stays meaningful.
-    expect(validateFounderOps(new Date('2026-10-02T00:00:00Z'))).toEqual([])
+    // Pinned to the newest checked_on in sources/registry.json (2026-10-03 — the
+    // state-coverage wave's CA/NV/TX sources) so the "checked date is in the future"
+    // invariant stays meaningful.
+    expect(validateFounderOps(new Date('2026-10-03T00:00:00Z'))).toEqual([])
   })
 
   it('all fixtures are synthetic with full scenario dimensions', () => {

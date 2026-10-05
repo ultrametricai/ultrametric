@@ -27,6 +27,12 @@ describe('sitewide footer (app/layout.tsx)', () => {
     expect(anchor).toContain('rel="noopener noreferrer"')
   })
 
+  it('links the live Discord invite in the footer (founder supplied 2026-10-02)', () => {
+    const footer = layoutSrc.slice(layoutSrc.indexOf('<footer'))
+    expect(footer).toContain('href="https://discord.com/invite/3aHky836qP"')
+    expect(footer).not.toContain('DISCORD_INVITE_URL')
+  })
+
   it('carries ONE muted disclaimer line near the © line, linking /terms (founder liability pass 2026-10-02)', () => {
     const footer = layoutSrc.slice(layoutSrc.indexOf('<footer'))
     // The exact line — research content, not advice — and nothing louder than text-xs zinc-600.

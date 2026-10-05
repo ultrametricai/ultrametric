@@ -2,11 +2,15 @@
 
 **Everything a founder (or their agent) needs to start and run a company: every
 [process](#processes) step by step, the [vendors](#vendors) ranked, and the
-[open modules](#business-logic) underneath.**
+[open modules](#open-modules) underneath.**
 
 - **Use it:** [ultrametric.ai](https://ultrametric.ai) has [the processes](https://ultrametric.ai/processes) · [the rankings](https://ultrametric.ai/overall) · [the simulator](https://ultrametric.ai/startup-sim)
 - **Improve it:** the open startup repo, [CONTRIBUTING.md](./CONTRIBUTING.md). Contest a verdict, add your country, add a module.
-- **For agents:** open data, no keys. `curl https://ultrametric.ai/data/categories.json` ([for AI agents](#for-ai-agents))
+- **For agents:** open data, no keys. `curl https://ultrametric.ai/data/categories.json` ([use it from an agent](#use-it-from-an-agent))
+
+**Contribution guides:** [Add your vendor](CONTRIBUTING.md#add-your-vendor) · [Add a process](CONTRIBUTING.md#add-a-process) · [Add a jurisdiction](CONTRIBUTING.md#add-a-jurisdiction) · [Add an open module](CONTRIBUTING.md#add-an-open-module)
+
+**Talk:** [Discord](https://discord.com/invite/3aHky836qP) — founders and contributors
 
 ## Start here
 
@@ -15,11 +19,15 @@
 | What you need | Where |
 | --- | --- |
 | Startup processes | [/processes](https://ultrametric.ai/processes): every founder process with its Agentic %, plus the chained playbooks |
+| A situation hits | [/situations](https://ultrametric.ai/situations): reactive, trigger-driven work (a breach, served papers, a tax notice), hottest clock first; doctrine in [`processes/SITUATIONS.md`](processes/SITUATIONS.md) |
 | Vendor rankings | [/overall](https://ultrametric.ai/overall) · [per-arena leaderboards](https://ultrametric.ai/arenas) · [/compare](https://ultrametric.ai/compare) |
 | Stacks | [/stacks](https://ultrametric.ai/stacks): proven toolchains to use and improve |
-| Open modules | [`business-logic/`](business-logic/README.md): cap table, runway, deadlines, equity comp, convertible notes, exit waterfalls, 409A sanity, ISO/NSO exercise tax, 83(b) math, QSBS, DE franchise tax, R&D tax mechanics, payroll tax; source-cited code in [`lib/openstartup/`](lib/openstartup/) |
+| Open modules | [`open-modules/README.md`](open-modules/README.md): the cap-table, runway, deadline, equity, and tax math as source-cited code in [`lib/openstartup/`](lib/openstartup/) |
 | The simulator | [/startup-sim](https://ultrametric.ai/startup-sim): a simulated company runs the corpus end to end |
 | Your context | the geo switcher on process/product pages (US · UK · IN · DE · FR) |
+
+This table is tasks only; the single structural overview of the repo is
+[Map of the repo](#map-of-the-repo) below.
 
 **You're an agent or developer consuming the data.** Nothing to install, no auth:
 
@@ -32,9 +40,8 @@ curl https://ultrametric.ai/llms.txt                       # the index for agent
 
 Every shape is published as a JSON Schema in [`schemas/`](schemas/), the endpoints are
 described by [/openapi.json](https://ultrametric.ai/openapi.json), and the ground rules are in
-[governance/AGENT_POLICY.md](governance/AGENT_POLICY.md). More in
-[For AI agents](#for-ai-agents) below. (A first-party Ultrametric MCP server + API is coming;
-the JSON data API and llms.txt/llms.md surfaces are the supported ways in.)
+[governance/AGENT_POLICY.md](governance/AGENT_POLICY.md). More surfaces (process manifests,
+the search index, the RSS feed) in [Use it from an agent](#use-it-from-an-agent) below.
 
 ## Processes
 
@@ -45,11 +52,45 @@ the JSON data API and llms.txt/llms.md surfaces are the supported ways in.)
 The operational corpus: step-by-step founder processes, each a DAG whose
 every step is routed agent / manual form / human, with per-step reversibility
 (reversible / painful / irreversible), vendor options drawn from the judged rankings, time
-estimates, and, where routes genuinely differ, named method variants (e.g. the per-country
+estimates, and, where routes differ, named method variants (e.g. the per-country
 filing routes). Every process carries an **Agentic %**, the share of steps an agent can
 run today (`full` / `partial` / `manual_guide`), with per-country geo notes (UK, India,
 Germany, France; the US is the baseline). Playbooks chain processes into founder paths
 (incorporate → launch, the VC raise, the agent-run back office).
+
+One slice of [Incorporate C-Corp](https://ultrametric.ai/processes/incorporate-c-corp)
+(record `form_001` in [`processes/corpus.json`](processes/corpus.json)): the opening step
+"Choose formation service" carries the ranked vendor options, and the later step "Receive
+Certificate of Incorporation" produces the `certificate-of-incorporation` artifact that the
+EIN, banking, and state-registration processes consume
+([`processes/artifacts.json`](processes/artifacts.json)):
+
+```json
+{ "id": "n1", "label": "Choose formation service", "route": "person",
+  "vendorOptions": ["clerky", "stripe_atlas", "firstbase", "legalzoom", "northwest", "doola"] }
+{ "id": "n5", "label": "Receive Certificate of Incorporation", "route": "person",
+  "producesArtifact": "certificate-of-incorporation" }
+```
+
+The corpus also carries **situations**, the reactive layer: trigger-driven records for the
+work nobody schedules (a breach is live, a summons lands, a tax notice arrives). Each
+situation names its **trigger** (the event, not the task) and an **urgency** tier
+(`hours` / `days` / `weeks`), holds no slot on the founder timeline, and routes only the
+mechanical core to agents; the counsel/CPA judgment calls and signature acts stay human.
+The index is [/situations](https://ultrametric.ai/situations), sorted hottest clock first,
+and the doctrine is [`processes/SITUATIONS.md`](processes/SITUATIONS.md).
+
+One situation end to end:
+[Respond to a cease-and-desist](https://ultrametric.ai/processes/respond-to-a-cease-and-desist)
+(record `sit_001` in [`processes/corpus.json`](processes/corpus.json)) names its trigger and
+clock, and routes the response to counsel:
+
+```json
+{ "trigger": "A cease-and-desist letter claiming trademark or IP infringement arrives by mail or email.",
+  "urgency": "days" }
+{ "id": "n4", "label": "Choose counsel for the response (IP/trademark litigation)",
+  "route": "person", "optionsArenaId": "startup-law-firms" }
+```
 
 The data lives in [`processes/`](processes/) (`corpus.json` + the jurisdiction-scoped legal
 workflows), [`journeys/`](journeys/) (`chains.json`), and
@@ -70,9 +111,23 @@ The evidence layer: head-to-head, agent-tested rankings of the tools
 startups run on, arena by arena (current counts under
 [Data releases & freshness](#data-releases--freshness)). Every verdict cites dated evidence (vendor docs, GitHub,
 community sources, hands-on probes), rankings recompute bit-identically and carry HMAC
-`_provenance`, negative results count as much as positive ones, and owner-affiliated products are
+`_provenance`, honest negatives count as much as positives, and owner-affiliated products are
 disclosed and adversarially bias-audited
 ([evidence doctrine](governance/REVIEW_POLICY.md) · [METHODOLOGY.md](./METHODOLOGY.md)).
+
+One judged cell: in [Online Payments](https://ultrametric.ai/arena/payments), Stripe's verdict
+on the story "As a founder, I can accept an online card payment within a day of signing up"
+([`data/payments/stories.json`](data/payments/stories.json)) is `full`, and its rationale leans
+on a hands-on community report, "up and running and accepting recurring payments in less than
+an hour" (evidence `stripe-comm-9` in
+[`data/payments/evidence/stripe.json`](data/payments/evidence/stripe.json)). The cell renders on
+[the Stripe product page](https://ultrametric.ai/arena/payments/product/stripe) from
+[`data/payments/verdicts.json`](data/payments/verdicts.json):
+
+```json
+{ "productId": "stripe", "storyId": "accept-card-payment-online",
+  "verdict": "full", "quality": 8, "confidence": "medium" }
+```
 
 The data lives in [`data/`](data/) (per-arena products, stories, evidence, verdicts,
 rankings), [`vendors/`](vendors/) (the doctrine + `reviews/generated/`, one dated interchange
@@ -85,95 +140,96 @@ To contribute: contest a verdict, add evidence, prove a story, or submit a produ
 [Contributing](#contributing--how-the-community-can-help)). Start at
 [`vendors/README.md`](vendors/README.md).
 
+<!-- Legacy anchor: external links to #business-logic predate the open-modules/ rename. -->
 <a id="business-logic"></a>
 
 ## Open modules
 
 The open modules and the rule cards beneath them: the rules and calculations
-a startup actually runs on, as open, source-cited, exhaustively tested records and code:
+a startup runs on, as open, source-cited, exhaustively tested records and code:
 
 - **Rule cards** — [`rules/`](rules/): dated legal propositions (US federal and Delaware to
   start), one stable ID each, every `kind: legal` card citing a primary authority in
   [`sources/`](sources/) with an exact provision locator. Status is `demonstration`, the
   current maturity level, stated on each card.
 - **Open modules** — [`lib/openstartup/`](lib/openstartup/), indexed in
-  [`business-logic/README.md`](business-logic/README.md), all pure, deterministic, and tested
-  against published worked examples:
-  - `capTable.ts` (+ `capTableCodec.ts`) — founder issuance and vesting, option pools and the
+  [`open-modules/README.md`](open-modules/README.md) — pure, deterministic functions, each
+  tested against published worked examples:
+  - [`capTable.ts`](open-modules/README.md#cap-table) (+ `capTableCodec.ts`) — founder issuance and vesting, option pools and the
     in-round pool shuffle, post-money SAFE conversion per the YC Post-Money Safe User Guide
     (Appendix II examples reproduced number-for-number), priced-round PPS solving, dilution
     waterfalls. The module is repo-only.
-  - `runway.ts` — Paul Graham's default-alive test as code (constant expenses, compounding
+  - [`runway.ts`](open-modules/README.md#runway--burn) — Paul Graham's default-alive test as code (constant expenses, compounding
     revenue, month-by-month trajectory), plus growth-adjusted runway and hiring impact.
-  - `deadlines.ts` — the founder compliance clock (DE franchise tax, Form 1120, Form 941,
+  - [`deadlines.ts`](open-modules/README.md#deadline-calendar) — the founder compliance clock (DE franchise tax, Form 1120, Form 941,
     the 83(b) 30-day window); every deadline cites a dated rule card by ID and flags
     `needsReview` whenever the true legal date can differ.
-  - `equityComp.ts` — offer and equity-comp scenarios (grant % of fully diluted, option
+  - [`equityComp.ts`](open-modules/README.md#offer--equity-comp-scenarios) — offer and equity-comp scenarios (grant % of fully diluted, option
     spread, exit outcomes under future dilution), cited to the Holloway Guide and Index
     Ventures' Rewarding Talent; it takes the 409A FMV as input rather than inventing one.
     All outputs are pre-tax.
-  - `convertibleNote.ts` — convertible promissory notes: simple-interest accrual, best-of
+  - [`convertibleNote.ts`](open-modules/README.md#convertible-notes) — convertible promissory notes: simple-interest accrual, best-of
     cap/discount conversion (the cap denominator comes from the note's own capitalization
     definition, not a guessed convention), maturity surfaced rather than decided, the three
     Cooley GO series-pricing methods, and the note-vs-SAFE differences stated plainly.
-  - `waterfall.ts` — liquidity-event waterfalls: the SAFE cash-out-vs-convert choice per
+  - [`waterfall.ts`](open-modules/README.md#liquidity-event-waterfall) — liquidity-event waterfalls: the SAFE cash-out-vs-convert choice per
     the YC User Guide, one preferred series (non-participating vs participating), a pari
     passu preference tier, proceeds that sum to the sale price exactly, and the
     conversion-indifference point.
-  - `grant409aSanity.ts` — 409A grant sanity checks (strike floor, FMV staleness,
+  - [`grant409aSanity.ts`](open-modules/README.md#409a-grant-sanity) — 409A grant sanity checks (strike floor, FMV staleness,
     appraisal-presumption timing), every check citing a dated rule card; a sanity model
     that takes the FMV as input and does not itself value a company. It now includes the three §409A
     valuation presumptions as structured cited data, method-eligibility checks over
     explicit inputs, a refresh-trigger checklist, and the penalty mechanics as a labeled
     arithmetic illustration.
-  - `vesting.ts` — vesting schedules and mechanics with real date math: cliff + periodic
+  - [`vesting.ts`](open-modules/README.md#vesting-mechanics) — vesting schedules and mechanics with real date math: cliff + periodic
     schedules per the Cooley GO convention, back-loaded tranches (Amazon's published
     5/15/40/40), departure and unvested-repurchase summaries, single- and double-trigger
     acceleration outcomes, refresh grants as additive composition, the FAST advisor grid,
     and an early-exercise interface that hands the 83(b) and tax questions to the modules
     that own them.
-  - `antiDilution.ts` — round-protection mechanics: the NVCA model weighted-average
+  - [`antiDilution.ts`](open-modules/README.md#anti-dilution) — round-protection mechanics: the NVCA model weighted-average
     formula (broad- and narrow-based, the denominator difference stated), full ratchet,
     conversion-price-to-ratio mechanics, pay-to-play as explanation, and a stated interface
     into the waterfall module; published worked examples are replayed number-for-number.
-  - `round.ts` — priced-round mechanics on top of the cap table: pro rata math (maintaining
+  - [`round.ts`](open-modules/README.md#priced-round-mechanics) — priced-round mechanics on top of the cap table: pro rata math (maintaining
     ownership is buying your pro rata, shown by algebra), option-pool sizing bottom-up from
     a hiring plan, down-round modeling that composes the anti-dilution adjustments, and
-    founder secondaries (which dilute no one; the shares just change hands).
-  - `optionTax.ts` — ISO vs NSO exercise mechanics: NSO spread-at-exercise income and the
+    founder secondaries (which dilute no one; the shares change hands, none are issued).
+  - [`optionTax.ts`](open-modules/README.md#iso--nso-exercise-tax) — ISO vs NSO exercise mechanics: NSO spread-at-exercise income and the
     published supplemental-withholding rates, ISO no-regular-tax-at-exercise with the AMT
     adjustment, the $100,000 ISO limit replaying the regulation's own examples,
     qualifying/disqualifying disposition math with the loss cap, and a clearly-labeled AMT
     exposure illustration with asOf-dated parameters.
-  - `election83b.ts` — the 83(b) money math (the deadline clock stays in `deadlines.ts`):
+  - [`election83b.ts`](open-modules/README.md#83b-election-math) — the 83(b) money math (the deadline clock stays in `deadlines.ts`):
     tax-at-grant vs tax-at-vesting scenarios from explicit inputs, the zero-spread founder
     case, forfeiture outcomes with the cited no-refund risk, and the early-exercise
     interplay; all six of the IRS revenue procedure's examples are replayed.
-  - `qsbs.ts` — § 1202 mechanics: eligibility as cited conditions (needs review wherever
+  - [`qsbs.ts`](open-modules/README.md#qsbs--1202) — § 1202 mechanics: eligibility as cited conditions (needs review wherever
     facts decide), the holding clock with the 83(b)/vesting interplay, exclusion
     percentages by acquisition date across both statutory regimes, the per-issuer cap
     (greater of the dollar cap or 10× basis), and the § 1045 rollover explained and cited
     but not computed.
-  - `deFranchiseTax.ts` — both published Delaware franchise-tax methods computed exactly
+  - [`deFranchiseTax.ts`](open-modules/README.md#delaware-franchise-tax) — both published Delaware franchise-tax methods computed exactly
     (the Division of Corporations' worked examples replayed number-for-number), the
     which-method-is-cheaper comparator for the annual March recalculation, and the Large
     Corporate Filer amount surfaced.
-  - `rdCredit.ts` — R&D tax mechanics at a stated, narrow scope: § 174/§ 174A
+  - [`rdCredit.ts`](open-modules/README.md#rd-tax-mechanics) — R&D tax mechanics at a stated, narrow scope: § 174/§ 174A
     capitalization/amortization arithmetic with the midpoint convention, and the § 41
     payroll-tax-offset election mechanics (eligibility conditions, the cap, quarterly
     application); computation is over explicit inputs and eligibility always needs review.
-  - `payrollTax.ts` — employer-side federal payroll mechanics: FICA with the asOf-dated
+  - [`payrollTax.ts`](open-modules/README.md#employer-payroll-tax) — employer-side federal payroll mechanics: FICA with the asOf-dated
     wage base, Additional Medicare labeled employee-only, FUTA with the bounded state
     credit, and per-employee annual cost with a stated state-tax out-of-scope boundary.
-  - `roundComposer.ts` — a priced round replayed end to end (term-sheet economics →
+  - [`roundComposer.ts`](open-modules/README.md#priced-round-composer) — a priced round replayed end to end (term-sheet economics →
     conversions and pro rata → the post-close table), composing the cap-table, round,
     anti-dilution, and waterfall modules with zero parallel arithmetic.
-  - `unitEconomics.ts` — LTV/CAC and payback, the burn multiple, Rule of 40, and the magic
+  - [`unitEconomics.ts`](open-modules/README.md#unit-economics) — LTV/CAC and payback, the burn multiple, Rule of 40, and the magic
     number, each cited to its canonical formulation; benchmarks are inputs, not encoded
     constants.
-  - `deferredRevenue.ts` — subscription revenue recognition and plan-change proration,
+  - [`deferredRevenue.ts`](open-modules/README.md#deferred-revenue-subscriptions) — subscription revenue recognition and plan-change proration,
     cents-exact, replaying the published worked examples.
-- **Open documents** — [`documents/`](documents/): the canonical, openly licensed startup legal
+- **Open documents** — [`open-documents/`](open-documents/): the canonical, openly licensed startup legal
   documents (SAFEs, board consents, offer letters, …) as dated records that link rather than
   redistribute; every URL is verified on its `checked_on` date.
 - **Resources** — [`resources/`](resources/): the canonical startup resources plus
@@ -187,12 +243,12 @@ transfer, and anything leaning on a legal threshold references a dated rule card
 `needs_review` when the locale or date is unknown. Educational, not legal advice.
 
 The data lives in [`rules/`](rules/), [`sources/`](sources/), [`lib/openstartup/`](lib/openstartup/),
-[`documents/`](documents/), [`resources/`](resources/), and [`jurisdictions/`](jurisdictions/).
+[`open-documents/`](open-documents/), [`resources/`](resources/), and [`jurisdictions/`](jurisdictions/).
 The modules are repo-first: pure libraries usable from tests, scripts, or your own agent, and
 the processes and site consume the same rule cards and jurisdiction data.
 
-To contribute, start at [`business-logic/README.md`](business-logic/README.md): the module
-index, the contribution bar, and the honesty rules.
+To contribute, start at [`open-modules/README.md`](open-modules/README.md): the module
+index, the contribution bar, and each module's Honesty boundaries.
 
 ## How it works
 
@@ -219,14 +275,15 @@ raw: the `/data` JSON API and the agent endpoints (`/llms.txt`, per-arena `llms.
 
 ## Map of the repo
 
-Everything in the tree. The **knowledge layer** is the product: plain JSON
+The single structural overview: everything in the tree ([Start here](#start-here) stays
+task-oriented; this map owns structure). The **knowledge layer** is the product: plain JSON
 and markdown, schema-validated in CI, usable without running any code.
 
 **Processes**
 
 | Path | What lives there | Contract / gate |
 | --- | --- | --- |
-| [`processes/`](processes/) | `corpus.json` (the operational processes: DAGs, routing, geo scope, time estimates), the per-step vendor registry, and jurisdiction-scoped legal workflows (`equity/us-de/…`) | [`schemas/operational-process.schema.json`](schemas/) · [`schemas/process.schema.json`](schemas/) |
+| [`processes/`](processes/) | `corpus.json` (the operational processes and the reactive situations: DAGs, routing, geo scope, time estimates; situations doctrine in [`SITUATIONS.md`](processes/SITUATIONS.md)), the per-step vendor registry, and jurisdiction-scoped legal workflows (`equity/us-de/…`) | [`schemas/operational-process.schema.json`](schemas/) · [`schemas/process.schema.json`](schemas/) |
 | [`journeys/`](journeys/) | `chains.json` — multi-process founder paths | corpus schema + loader tests |
 
 **Vendors**
@@ -243,22 +300,23 @@ and markdown, schema-validated in CI, usable without running any code.
 | --- | --- | --- |
 | [`rules/`](rules/) | Dated, source-locked legal rule cards with stable IDs, one dir per jurisdiction (`US-FED/`, `US-DE/`) | `schemas/rule.schema.json` + validator |
 | [`sources/`](sources/) | Primary authorities: publisher, exact provision locator, issued/checked dates | `schemas/source.schema.json` |
-| [`business-logic/`](business-logic/) | The index of the open modules (code in `lib/openstartup/`), the contribution bar, the honesty rules | worked-example + property tests |
+| [`open-modules/`](open-modules/) | The index of the open modules (code in `lib/openstartup/`), the contribution bar, the Honesty boundaries | worked-example + property tests |
 | [`jurisdictions/`](jurisdictions/) | Jurisdiction registry + `vendor-geo.json` (dated per-country vendor availability, source-cited; also feeds the site's geo switcher) | exact-dimension matching; unknown maps to `unsupported` |
-| [`documents/`](documents/) | Open documents — the canonical startup legal documents as dated, link-only records | `lib/documents.ts` + registry/README sync test |
+| [`open-documents/`](open-documents/) | Open documents — the canonical startup legal documents as dated, link-only records | `lib/documents.ts` + registry/README sync test |
 | [`resources/`](resources/) | The canonical startup resources + `LAWS.md` (cited distilled principles) + `LORE.md` (veracity-graded startup history) | `lib/resources.ts` / `lib/lore.ts` + invariant tests |
+| [`lore/`](lore/) | The startup-lore registry: schooled heuristics as sourced claims, with the cross-school tensions mapped on both sides | `__tests__/lore-registry.test.ts` schema + referential invariants |
 
 **Contracts & infrastructure** — the layer everything above validates against, plus the site
 that renders it. Three directories confuse newcomers, so to be explicit: **`schemas/`** holds the JSON
 contracts every record validates against; **`catalog/`** is the coverage map
-(`domains.json` = what the corpus intends to cover, `coverage.json` = what it actually covers
+(`domains.json` = what the corpus intends to cover, `coverage.json` = what it covers
 today, at what maturity); **`rules/`** is cited law the open-modules layer consumes; it
-belongs to [Open modules](#business-logic) above, listed there.
+belongs to [Open modules](#open-modules) above, listed there.
 
 | Path | What lives there | Contract / gate |
 | --- | --- | --- |
 | [`schemas/`](schemas/) | JSON Schema contracts for processes, rules, sources, vendor reviews | drift-gated against the zod source |
-| [`catalog/`](catalog/) | Domain taxonomy, lifecycle map, machine-readable coverage data | `lib/founderOps.ts` coverage checks |
+| [`catalog/`](catalog/) | Domain taxonomy, lifecycle map, machine-readable coverage with its maturity stated | `lib/founderOps.ts` coverage checks |
 | [`templates/`](templates/) | Blank, schema-valid starting points for contributions | — |
 | [`fixtures/`](fixtures/) | Wholly fictional companies/events that exercise the planner | `synthetic: true` enforced |
 | [`governance/`](governance/) | Review policy + maturity ladder, evidence doctrine, agent policy, security | — |
@@ -276,7 +334,7 @@ every externally-effectful workflow step requires a named, scoped human approval
 answers `unsupported` rather than guessing; and no jurisdiction is called covered because a
 few playbooks exist ([maturity ladder](governance/REVIEW_POLICY.md)).
 
-## The arenas
+## Arena index — every market we rank
 
 <!-- arenas:start -->
 | Arena | Products |
@@ -437,17 +495,6 @@ version. For plain-language answers ("what does `na` mean," "how do I disagree")
   applied in both directions, and documented cell-by-cell in
   [METHODOLOGY.md § Bias disclosure](./METHODOLOGY.md#bias-disclosure--the-judge-is-an-anthropic-model).
 
-## Local development
-
-[![CI](https://github.com/ultrametricai/ultrametric/actions/workflows/ci.yml/badge.svg)](https://github.com/ultrametricai/ultrametric/actions/workflows/ci.yml)
-
-```bash
-pnpm install
-pnpm dev        # http://localhost:3000
-pnpm test       # vitest — schema and scoring unit tests
-pnpm build      # next build (static)
-```
-
 ## Pipeline refresh workflow
 
 The pipeline is local-only (not run on Vercel). Each stage accepts `--category <id>` to
@@ -486,7 +533,7 @@ and does not call the Anthropic API at build or request time.
 `pnpm tsx pipeline/scripts/generate-arena-notes.ts` drafts a short signed-POV essay (5
 paragraphs max: the week's rank flip that matters, an unfilled gap in the arena, the vendor
 move to watch, one self-critique of our own data, a closing line) into
-`drafts/arena-notes/YYYY-MM-DD.md`. It is LLM-drafted but constrained in code: the model only
+`drafts/arena-notes/YYYY-MM-DD.md`. It is LLM-drafted but citation-gated in code: the model only
 sees a fact sheet derived from the committed changelog/report/uncertainty/gap-closers data, and
 every paragraph must cite its site source inline (`(source: /changelog)`, `(source:
 /arena/...)`) from that fact sheet; violations fail schema validation and are retried.
@@ -521,8 +568,8 @@ a score" in [METHODOLOGY.md](./METHODOLOGY.md). Neither file is read by the scor
 `pnpm pipeline derive --category <id>` after any verdict change.
 
 `pnpm run build`/`pnpm run dev` mirror all of `data/` verbatim to `public/data/` (a gitignored
-build artifact, via `scripts/copy-data.mjs`) so it's served at stable URLs (see "For AI
-agents" below).
+build artifact, via `scripts/copy-data.mjs`) so it's served at stable URLs (see "Use it
+from an agent" below).
 
 **Dataset releases.** Point-in-time snapshots of `data/` are periodically tagged and published
 as [GitHub releases](https://github.com/ultrametricai/ultrametric/releases) (e.g.
@@ -530,9 +577,12 @@ as [GitHub releases](https://github.com/ultrametricai/ultrametric/releases) (e.g
 arena/product/verdict counts at that snapshot; useful if you want a stable dataset to build
 against instead of tracking `main`.
 
-## For AI agents
+<a id="for-ai-agents"></a>
 
-Ultrametric is built to be read by agents as much as by humans:
+## Use it from an agent
+
+Ultrametric is built to be read by agents as much as by humans. Every surface here is live
+today, no keys, no install:
 
 - **[/llms.txt](https://ultrametric.ai/llms.txt)**: the top-level index per the
   [llms.txt convention](https://llmstxt.org): site purpose, methodology one-liner, and links to
@@ -541,25 +591,41 @@ Ultrametric is built to be read by agents as much as by humans:
   `/arena/{category}/llms.md` (leaderboard, business models, grouped story matrix with proof
   URLs), and every product has a deep-dive at `/arena/{category}/product/{productId}/llms.md`
   (every verdict, rationale, and proof URL). These are the pages an agent should read first.
+- **Process manifests**: every process page declares a machine-readable manifest as its
+  metadata alternate: `/processes/{slug}/manifest.json` (chains at
+  `/processes/chains/{chain}/manifest.json`), the published corpus reshaped into the executor
+  handoff contract ([docs/AFK-HANDOFF.md](docs/AFK-HANDOFF.md)): per-step routing, tool
+  calls, vendor options with their MCP endpoints, approval gates, and time estimates. Example:
+  [/processes/incorporate-c-corp/manifest.json](https://ultrametric.ai/processes/incorporate-c-corp/manifest.json).
 - **Data API**: the same JSON the site renders from is mirrored verbatim to stable URLs at
   build time (`scripts/copy-data.mjs`, a `prebuild` step): `/data/categories.json`,
   `/data/{category}/{products,stories,verdicts,rankings}.json`,
   `/data/{category}/evidence/{productId}.json`. `public/data/` is a build artifact
   (gitignored); it doesn't exist until `pnpm run build` or `pnpm run dev` regenerates it.
+- **Raw committed data**: the same records straight from the repo, no site in between:
+  [`data/`](data/) (arenas), [`processes/corpus.json`](processes/corpus.json) and
+  [`journeys/chains.json`](journeys/chains.json) (processes, situations, chains),
+  [`rules/`](rules/) and [`sources/`](sources/) (cited law), each validating against
+  [`schemas/`](schemas/).
 - **[/openapi.json](https://ultrametric.ai/openapi.json)**: an OpenAPI 3.1 document
   describing every data endpoint above, with hand-written JSON Schema summaries of each shape
   (mirrors `lib/schemas.ts`).
+- **[/search-index.json](https://ultrametric.ai/search-index.json)**: the site's complete
+  search index as one JSON fetch (every arena, product, stack, process, chain, and tool page
+  with its href), the same file the on-site palette loads.
+- **[/feed.xml](https://ultrametric.ai/feed.xml)**: RSS over the derived changelog
+  (overtakes, score moves, launches), re-derived from committed history on each build.
 - **[/methodology](https://ultrametric.ai/methodology)**: a tight, on-site summary of
   [METHODOLOGY.md](./METHODOLOGY.md) (evidence tiers, judging, scoring, Overall score weights,
   story provenance, re-judge stability, bias disclosure), linked from the header next to
   Arenas and from `/llms.txt`.
-- **MCP / CLI**: Ultrametric is not served over its own MCP server or CLI; a first-party
-  Ultrametric MCP + API is coming instead. The MCP/CLI packages live in their own dedicated
-  repo and are not published entry points.
+- **MCP / CLI**: there is no Ultrametric MCP server or CLI today; the simulator's MCP calls
+  are labeled demos. A first-party MCP server is on the roadmap; until then the surfaces
+  above are the supported ways in.
 - **schema.org**: arena pages embed an `ItemList` of `SoftwareApplication` entries and product
   pages embed a `SoftwareApplication`, both with `additionalProperty` entries for our own
-  metrics (`aiEra`, `score`, etc). No `aggregateRating`: we don't have star ratings, and faking
-  one would be misleading.
+  metrics (`aiEra`, `score`, etc). No `aggregateRating`: we don't have star ratings and won't
+  fabricate one.
 - **sitemap.xml / robots.txt**: `app/sitemap.ts` lists every route including the `llms.md`
   endpoints; `public/robots.txt` explicitly allows `GPTBot`, `ClaudeBot`, `Claude-Web`,
   `PerplexityBot`, `Googlebot`, and `Bingbot`, with a `Sitemap:` pointer.
@@ -610,18 +676,14 @@ The quick index:
 | Add evidence or prove a story hands-on | [CONTRIBUTING.md](./CONTRIBUTING.md) · [`docs/PROVE-IT.md`](./docs/PROVE-IT.md) |
 | Add your product to an arena | [/submit](https://ultrametric.ai/submit) or [CONTRIBUTING.md § Add your product](./CONTRIBUTING.md#3-add-your-product) |
 | Add your country or state | [Add your country or state](#add-your-country-or-state) below; four PR shapes, smallest first |
-| Add an open module | [`business-logic/README.md`](business-logic/README.md): the bar is pure functions, a citation on every formula, tests that double as documentation |
+| Add an open module | [`open-modules/README.md`](open-modules/README.md): the bar is pure functions, a citation on every formula, tests that double as documentation |
 | Submit a stack | the [Submit a stack](https://github.com/ultrametricai/ultrametric/issues/new?template=submit-stack.yml) issue form (linked from [/stacks](https://ultrametric.ai/stacks)). Stacks stay curated committed data; submissions feed review and are not auto-published |
 | Understand the review bar | [governance/REVIEW_POLICY.md](governance/REVIEW_POLICY.md) |
 
-Working on the repo itself:
+[![CI](https://github.com/ultrametricai/ultrametric/actions/workflows/ci.yml/badge.svg)](https://github.com/ultrametricai/ultrametric/actions/workflows/ci.yml)
 
-```bash
-git clone https://github.com/ultrametricai/ultrametric.git && cd ultrametric
-pnpm install
-pnpm dev        # http://localhost:3000
-pnpm test
-```
+Working on the repo itself: setup, the test gate, and style rules live in
+[CONTRIBUTING.md § Local setup](./CONTRIBUTING.md#local-setup).
 
 Ways to contribute:
 
@@ -645,7 +707,7 @@ Ways to contribute:
 - **Add your country or state**: the most valuable contribution for founders outside the
   US; see [the subsection below](#add-your-country-or-state).
 - **Add an open module**: pure, source-cited TypeScript under `lib/openstartup/`;
-  the bar and candidate modules are in [`business-logic/README.md`](business-logic/README.md).
+  the bar and candidate modules are in [`open-modules/README.md`](open-modules/README.md).
 - **Make a prediction**: `/predictions` auto-generates yes/no questions from live close
   races ("will the #2 overtake the #1 within 30 days?") and settles them mechanically from
   the committed rank-flip history. The "Predict" link opens a prefilled issue
@@ -669,7 +731,7 @@ Found a verdict you think is wrong, or evidence we missed? See
 first-class, expected contribution paths: a maintainer (or, in the future, a GitHub Action)
 does the deeper check, adding evidence and then running
 `pnpm pipeline judge --category <category> --product <product>` followed
-by `pnpm pipeline derive --category <category>`, before any verdict actually changes.
+by `pnpm pipeline derive --category <category>`, before any verdict changes.
 
 ### Add your country or state
 
@@ -683,8 +745,8 @@ immediately whether your records hold up:
 1. **Vendor availability in your country** — add rows to
    [`jurisdictions/vendor-geo.json`](jurisdictions/): `{productId, country, status:
    available|unavailable|partial, sourceUrl, note}`. The source must be the vendor's own page
-   (or an official register) stating the fact; negative answers ("US entities only") are as
-   valuable as positive ones. These rows drive the geo switcher and "Where it works" on the site.
+   (or an official register) stating the fact; honest negatives ("US entities only") are as
+   valuable as positives. These rows drive the geo switcher and "Where it works" on the site.
 2. **A country analog for a process** — add a `geoNotes` entry to the process in
    [`processes/corpus.json`](processes/): `{country, summary, actionUrl, actionLabel}` with a
    live, official actionUrl (Companies House, MCA/NSWS, Handelsregister, INPI…). This is what

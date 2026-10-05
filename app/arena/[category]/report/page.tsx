@@ -38,7 +38,7 @@ export async function generateMetadata({
   const year = new Date().getFullYear()
   return {
     title: `${data.category.name} procurement report (${year}) — Ultrametric`,
-    description: `A print-ready ${data.category.name} procurement report: the evidence-graded leaderboard for ${data.products.length} products, the ${data.stories.length}-requirement buyer checklist, pricing signals, recorded probes, and honest uncertainty notes.`,
+    description: `A print-ready ${data.category.name} procurement report: the agent-tested leaderboard for ${data.products.length} products, the ${data.stories.length}-requirement buyer checklist, pricing signals, recorded probes, and honest uncertainty notes.`,
     alternates: { canonical: `${SITE_URL}/arena/${category}/report` },
   }
 }

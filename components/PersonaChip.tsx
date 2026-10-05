@@ -11,7 +11,7 @@ export default function PersonaChip({ persona, className = '' }: { persona: stri
   return (
     <span
       title="Told from this persona's perspective"
-      className={`inline-flex max-w-full shrink-0 items-center rounded border border-zinc-800 bg-zinc-900/60 px-1.5 py-0.5 align-middle text-[10px] leading-4 text-zinc-500 ${className}`}
+      className={`um-persona-chip ${className}`}
     >
       <span className="truncate">{persona}</span>
     </span>

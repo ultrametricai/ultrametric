@@ -68,7 +68,9 @@ it('reuses sourced metadata without treating a vendor package as a process-wide 
   expect(filing.getByText('✓ verify:')).toBeDefined()
   expect(filing.getByText('⚠ if it goes wrong').closest('details')?.open).toBe(false)
   expect(el.container.querySelector('[id="form_001:n5"]')?.textContent).toContain('Certificate of Incorporation')
-  expect(el.getAllByText('Needs:')).toHaveLength(1)
+  // Current main renders produced artifacts only; prerequisites stay in source.
+  expect(el.queryByText('Needs:')).toBeNull()
+  expect(record.metadata.requires).toEqual(['company-name', 'registered-agent'])
   fireEvent.click(el.container.querySelector('input[value="uk-companies-house"]')!)
   expect(el.queryByText('$109 government fee · as of 2026-10-01')).toBeNull()
   const uk = within(el.container.querySelector('[id="form_001:n4:uk-companies-house"]') as HTMLElement)

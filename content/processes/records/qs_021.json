@@ -11,14 +11,14 @@
       "id": "n1",
       "kind": "decision",
       "title": "Choose a payment processor",
-      "guidance": null,
+      "guidance": "Compare payment routes against the product, customer locations, currencies, billing pattern and expected volume. Examine eligibility, responsibilities, full fees, payout terms, support and engineering effort with finance and engineering. Choose a processor, merchant-of-record service or invoice-first approach that fits those needs, with unresolved commercial or integration questions visible before contracting.",
       "when": null,
       "ref": null,
       "options": [
         {
           "id": "default",
           "title": "Default — Choose a payment processor",
-          "summary": "",
+          "summary": "Check that a direct processor supports the company, business model and required payment methods. Compare fees, reserves, settlement currencies, refunds, disputes and accounting reconciliation. Identify the tax, invoicing and customer obligations the company would retain. Use those findings to select the provider and evaluate its contract before opening the live account.",
           "when": null,
           "parts": [],
           "notes": [],
@@ -43,7 +43,7 @@
         {
           "id": "merchant-of-record",
           "title": "Merchant of record (MoR)",
-          "summary": "A merchant of record sits between you and the buyer: it is the legal seller, so global VAT/sales-tax registration, remittance, and chargebacks are its problem - traded for a higher take rate.",
+          "summary": "Read the merchant-of-record contract to establish who is the seller and how invoicing, tax, refunds and disputes are allocated for the intended products and markets. Compare total cost, payout terms and customer experience with direct processing. Resolve exclusions with finance and counsel so the operating team knows which responsibilities the service takes and which remain with the company.",
           "when": "Selling software globally without a tax/entity footprint - the MoR is the seller of record",
           "parts": [],
           "notes": [],
@@ -68,7 +68,7 @@
         {
           "id": "invoice-first",
           "title": "Invoice-first (no checkout)",
-          "summary": "Skip checkout integration entirely: raise invoices from the accounting system and take bank transfers; add a processor when self-serve volume justifies it.",
+          "summary": "For a small number of contract customers, design collection around invoices and bank transfers. Establish the seller, required invoice details, billing terms, currencies and verified payment instructions, then decide how receipts and overdue balances will be tracked. Assign billing and customer-query ownership. Identify what change in sales volume or customer needs would make a checkout integration worthwhile.",
           "when": "B2B with a handful of large contracts - invoice and bank transfer before a checkout exists",
           "parts": [],
           "notes": [],
@@ -105,7 +105,7 @@
       "id": "n2",
       "kind": "step",
       "title": "Activate the account (business details, KYC)",
-      "guidance": null,
+      "guidance": "Complete the provider’s onboarding from corporate records: legal entity, ownership, authorized representative, activity and payout account. The company representative submits the application and attestations through the verified channel, supplying requested identity evidence securely. Resolve follow-up questions and check the account’s actual live capabilities and restrictions before treating it as activated.",
       "when": null,
       "ref": null,
       "options": [],
@@ -126,7 +126,7 @@
       "id": "n3",
       "kind": "step",
       "title": "Integrate the API keys and SDK",
-      "guidance": null,
+      "guidance": "Implement the selected payment flow from the provider’s current documentation, separating test and live credentials and storing secrets in the application’s secret store. Handle final payment states, verification, failures and duplicate requests relevant to the integration. Test those paths and use the project’s production-release process before enabling real transactions, with a clear owner for payment failures.",
       "when": null,
       "ref": null,
       "options": [],
@@ -153,7 +153,7 @@
       "id": "n4",
       "kind": "step",
       "title": "Run a test charge and confirm the payout schedule",
-      "guidance": null,
+      "guidance": "Exercise success, decline, authentication, refunds and delayed outcomes in the provider’s documented test environment. Check that application state and accounting references follow the final status. Separately inspect the live payout schedule, bank destination and restrictions. If verifying the live flow requires a production transaction, the finance owner must authorize that charge.",
       "when": null,
       "ref": null,
       "options": [],
@@ -163,6 +163,13 @@
           "kind": "vendor",
           "id": "stripe",
           "role": "stated-vendor"
+        },
+        {
+          "kind": "url",
+          "url": "https://docs.stripe.com/testing",
+          "title": "Stripe testing documentation",
+          "description": null,
+          "role": "authored-guidance-source"
         }
       ],
       "metadata": {

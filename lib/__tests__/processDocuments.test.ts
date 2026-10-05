@@ -5,7 +5,7 @@ import { loadDocumentRegistry, openDocumentById } from '@/lib/documents'
 
 // Step documents (founder spike 2026-10-02, form_001 reference depth; extended the same day —
 // "Processes link to the open documents"): corpus nodes may carry `documents: string[]` — ids
-// into documents/registry.json (processes/README.md "Step documents"), now RENDERED as
+// into open-documents/registry.json (processes/README.md "Step documents"), now RENDERED as
 // external-link chips on the process pages (components/ProcessDag.tsx). This is the
 // referential-integrity gate the house standard demands for every cross-registry link
 // (producesArtifact → artifacts.json, rule source_ids → sources/): a typo'd document id must
@@ -22,7 +22,7 @@ const tagged = RAW.flatMap((t) =>
 )
 
 describe('step documents cross-reference', () => {
-  it('every node documents id resolves in documents/registry.json', () => {
+  it('every node documents id resolves in open-documents/registry.json', () => {
     const known = new Set(loadDocumentRegistry().documents.map((d) => d.id))
     for (const t of tagged) {
       expect(t.documents.length, `${t.task}/${t.node}`).toBeGreaterThan(0)

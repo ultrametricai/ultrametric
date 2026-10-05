@@ -27,11 +27,10 @@ const VISIBLE_ROWS = 8
 // Founder 2026-10-02: the column is named for what the number IS — how well the product fits
 // its best-matching step of this process (its highest judged per-step relevance score here),
 // not a process-wide coverage number.
+// One clause (founder tooltip sweep 2026-10-02) — the derivation detail lives on /methodology
+// and the process page the row links to.
 const BEST_SCORE_TITLE =
-  'How well this product fits its best-matching step of this process — its highest judged '
-  + 'step score here: weightedPercent over the stories our step→story mapping deems relevant '
-  + 'to the step, derived purely from the arena\'s judged verdicts (full/partial/disputed/none), '
-  + '/100. Same number the process page\'s step pills show.'
+  'Highest judged step score /100 for this process — derived purely from the arena\'s judged verdicts'
 
 // A computer-use-ONLY appearance: the vendor never serves a step here, it could merely attempt
 // a manual one. These never take a visible row — collapsed, counted honestly.
@@ -68,9 +67,7 @@ function roleTitle(a: VendorProcessAppearance): string {
 
 // Per-step tooltip: the same judged number BEST_SCORE_TITLE describes, one step at a time.
 const STEP_SCORE_TITLE =
-  'This step\'s judged relevance score for this product, /100 — weightedPercent over the stories '
-  + 'our committed step→story mapping deems relevant to the step, derived purely from the arena\'s '
-  + 'judged verdicts. Same number the process page\'s step pills show.'
+  'This step\'s judged relevance score /100 — derived purely from the arena\'s judged verdicts'
 
 // The per-step receipts under each process row (founder 2026-10-02: "go deeper on what each
 // vendor can do process-wise" — this re-introduces the per-step view the earlier declutter
@@ -89,7 +86,7 @@ function ServedStepLines({ a }: { a: VendorProcessAppearance }) {
             <li key={s.nodeId} className="text-[11px] leading-relaxed text-zinc-500">
               <Link
                 href={`/processes/${a.slug}#step-${a.taskId}-${s.nodeId}`}
-                title={`${s.label} — open this step on the process page: its ranked vendors, citations, and the ${s.storyCount} mapped ${s.storyCount === 1 ? 'story' : 'stories'} behind this score`}
+                title={`${s.label} — open this step on the process page (${s.storyCount} mapped ${s.storyCount === 1 ? 'story' : 'stories'} behind this score)`}
                 className="text-zinc-400 underline decoration-zinc-800 underline-offset-2 transition hover:text-emerald-300"
               >
                 {s.label}
@@ -97,7 +94,7 @@ function ServedStepLines({ a }: { a: VendorProcessAppearance }) {
               {' — '}
               <span className="font-mono tabular-nums" title={STEP_SCORE_TITLE}>
                 {s.score}
-                <span className="text-zinc-600">/100</span>
+                <span className="text-zinc-500">/100</span>
               </span>
             </li>
           ))}
@@ -116,7 +113,7 @@ function AppearanceRows({ rows }: { rows: VendorProcessAppearance[] }) {
             <td className="max-w-[280px] px-2 py-1.5">
               <Link
                 href={`/processes/${a.slug}`}
-                title={`${a.title} — see the full process page: the step DAG, ranked vendors per step, and the process leaderboard`}
+                title={`${a.title} — see the full process page`}
                 className="flex items-center gap-1.5 font-medium hover:text-emerald-300"
               >
                 {a.icon && <span aria-hidden><IconGlyph icon={a.icon} /></span>}

@@ -5,14 +5,14 @@ import {
   writeServesLines,
 } from '../businessLogicServes'
 
-// business-logic/README.md "Serves" ↔ map drift gate (founder 2026-10-02): every module's
+// open-modules/README.md "Serves" ↔ map drift gate (founder 2026-10-02): every module's
 // section carries exactly one machine-owned Serves line, byte-identical to what
 // processes/business-logic-map.json renders (scripts/generate-business-logic-serves.ts) — so
 // the README can never go stale against the map, in either direction: a map edit without a
 // regenerated README fails, and a stray/edited README line fails too. This is the second half
 // of the two-way totality bar (the map-side totality lives in businessLogicMap.test.ts).
 
-describe('business-logic/README.md Serves sync', () => {
+describe('open-modules/README.md Serves sync', () => {
   const src = servesSource()
 
   it('the committed README passes the drift gate', () => {

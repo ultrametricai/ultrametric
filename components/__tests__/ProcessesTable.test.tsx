@@ -75,7 +75,7 @@ beforeEach(() => setUrl(''))
 
 // The rank-by presets live in ONE dropdown (founder 2026-09-30) — open it, pick the option.
 const pickPreset = (scope: { getByRole: (role: string, opts?: object) => HTMLElement }, label: string) => {
-  fireEvent.click(scope.getByRole('button', { name: /Rank by|Grouped by area|Most automatable|Most steps|Founder timeline|Regularity|Most annoying|Riskiest|Growth-focused/ }))
+  fireEvent.click(scope.getByRole('button', { name: /Rank by|Grouped by area|Most automatable|Founder timeline|Regularity|Most annoying|Riskiest|Growth-focused/ }))
   // Scope to the LISTBOX — the mobile fallback <select>'s options share the role in jsdom.
   const listbox = scope.getByRole('listbox', { name: 'Rank by' })
   fireEvent.click(within(listbox).getByRole('option', { name: new RegExp(label) }))
@@ -92,6 +92,29 @@ describe('mount applies URL params (invalids fall back silently)', () => {
     // The rank-by control visibly shows the default selection (founder 2026-09-30).
     expect(getByRole('button', { name: /Founder timeline/ })).toBeDefined()
     expect((within(container).getByLabelText('Filter by phase') as HTMLSelectElement).value).toBe('all')
+  })
+
+  it("the Steps column is GONE (founder 2026-10-02): no header, no N/M cell, no 'Most steps' preset — and the ceiling chip reads the bare percentage", () => {
+    const { container, getByRole } = mount()
+    expect([...container.querySelectorAll('thead th')].some((th) => th.textContent?.includes('Steps'))).toBe(false)
+    expect(container.textContent).not.toContain('2/4') // the fixture rows' agentSteps/totalSteps
+    expect(container.querySelector('a[href$="#steps"]')).toBeNull()
+    // The rank-by dropdown no longer offers 'Most steps', and ?order=steps falls back silently.
+    fireEvent.click(getByRole('button', { name: /Founder timeline/ }))
+    const listbox = getByRole('listbox', { name: 'Rank by' })
+    expect(within(listbox).queryByRole('option', { name: /Most steps/ })).toBeNull()
+    // The ceiling chip dropped the word 'agent' (founder 2026-10-02) — aria-label keeps the
+    // concept.
+    expect(container.textContent).not.toContain('% agent')
+    expect(within(container).getAllByText('40%').length).toBeGreaterThan(0) // bank row's ceiling chip
+    expect(container.querySelector('[role="img"]')?.getAttribute('aria-label')).toMatch(/% of steps agent-runnable$/)
+  })
+
+  it('?order=steps (the retired column) falls back silently to the default timeline view', () => {
+    setUrl('?order=steps')
+    const { container } = mount()
+    expect(thFor(container, 'Timeline')?.getAttribute('aria-sort')).toBe('ascending')
+    expect(within(container).queryByText('Formation')).toBeNull() // flat default, no grouped leak
   })
 
   it('?order=risk sorts by risk in its preset direction (desc)', () => {
@@ -306,7 +329,7 @@ describe('chain rows in the combined table (founder 2026-09-29: one view under t
     const tr = within(container).getByText('Company in a day').closest('tr') as HTMLElement
     expect(within(tr).queryByText('playbook')).toBeNull() // the chip is gone (founder 2026-09-29)
     expect(within(tr).getByText('Company in a day').closest('a')?.getAttribute('href')).toBe('/processes/chains/company-in-a-day')
-    expect(tr.textContent).toContain('7/10') // aggregate agent/total steps
+    expect(tr.textContent).not.toContain('7/10') // the aggregate Steps cell left with its column (founder 2026-10-02)
     // Route-dot strip removed (founder 2026-09-29) — no per-step dots render.
     expect(within(tr).queryByTitle('File the charter — agent-runnable')).toBeNull()
     // No timeline/cadence/risk value to show — the metric cell is an honest dash.
@@ -371,7 +394,7 @@ describe('chain rows in the combined table (founder 2026-09-29: one view under t
   })
 })
 
-describe('geoScope glyphs (founder GEO ask 2026-09-28; always-on defaults founder 2026-09-30)', () => {
+describe('geoScope glyphs (founder batch 2026-10-02: the 🇺🇸 flag keys STRICTLY on geoScope us/us-state; global rows wear no scope glyph; no 🌐/🏛 ever follows a title)', () => {
   // The module-level geo store outlives unmounts — always reset.
   afterEach(() => setGeoSelection(null))
   // The US-scoped rows carry UK ANALOG notes so a UK selection keeps them visible — this
@@ -391,41 +414,49 @@ describe('geoScope glyphs (founder GEO ask 2026-09-28; always-on defaults founde
   const cellFor = (root: HTMLElement, title: string) =>
     [...root.querySelectorAll('tbody td:first-child')].find((c) => c.textContent?.includes(title))
 
-  it('no selection: every row still wears its DEFAULT glyph — 🇺🇸 for us AND us-state, 🌐 for global (no 🏛)', () => {
+  it('no selection: us AND us-state rows wear 🇺🇸; the GLOBAL row wears NO scope glyph at all (no 🌐, no 🏛)', () => {
     const { container } = render(<ProcessesTable rows={GEO_ROWS} phases={PHASES} />)
-    expect(cellFor(container, 'Open a bank account')?.textContent).toContain('🌐')
+    expect(cellFor(container, 'Open a bank account')?.textContent).not.toContain('🌐')
+    expect(cellFor(container, 'Open a bank account')?.textContent).not.toContain('🇺🇸')
     expect(cellFor(container, 'Incorporate the company')?.textContent).toContain('🇺🇸')
     expect(cellFor(container, 'Get an EIN')?.textContent).toContain('🇺🇸')
-    // The sharper state glyph waits for a selection (the title CELL — the phase column's own
-    // 🏛️ phase icon is a different, unrelated glyph).
+    // 🏛 never follows a title (founder 2026-10-02: 'Set up registered agent 🏛' read as a
+    // duplicate icon) — the us-state flag's LABEL still tells state from federal work.
     expect(cellFor(container, 'Incorporate the company')?.textContent).not.toContain('🏛')
+    expect(cellFor(container, 'Incorporate the company')?.querySelector('span[title*="US state-level"]')?.textContent).toBe('🇺🇸')
   })
 
-  it('a non-US selection sharpens each row to its scope glyph (🌐 / 🇺🇸 / 🏛) without re-sorting', () => {
+  it('a non-US selection changes NO glyph and never re-sorts — the flag is selection-independent', () => {
     const { container } = render(<ProcessesTable rows={GEO_ROWS} phases={PHASES} />)
     act(() => setGeoSelection('UK'))
     const cells = [...container.querySelectorAll('tbody td:first-child')]
     const byTitle = (t: string) => cells.find((c) => c.textContent?.includes(t))
-    expect(byTitle('Open a bank account')?.textContent).toContain('🌐')
-    expect(byTitle('Incorporate the company')?.textContent).toContain('🏛')
+    expect(byTitle('Open a bank account')?.textContent).not.toContain('🌐')
+    expect(byTitle('Incorporate the company')?.textContent).toContain('🇺🇸')
+    expect(byTitle('Incorporate the company')?.textContent).not.toContain('🏛')
     expect(byTitle('Get an EIN')?.textContent).toContain('🇺🇸')
     // Annotation only — the timeOrder sort is exactly the no-selection order.
     expect(cells.map((c) => c.textContent?.includes('Open a bank account') ? 'bank' : c.textContent?.includes('Incorporate') ? 'inc' : 'ein')).toEqual(['bank', 'inc', 'ein'])
     act(() => setGeoSelection(null))
-    // Back to the default glyphs — us-state returns to the 🇺🇸 default.
     expect(cellFor(container, 'Incorporate the company')?.textContent).toContain('🇺🇸')
-    expect(cellFor(container, 'Incorporate the company')?.textContent).not.toContain('🏛')
+  })
+
+  it('PIN: a geoScope-global record can NEVER render the flag (the qs_023 audit, founder 2026-10-02) — in any framing or selection', () => {
+    const { container } = render(<ProcessesTable rows={GEO_ROWS} phases={PHASES} defaultGeo={GEO_GLOBAL} />)
+    expect(cellFor(container, 'Open a bank account')?.textContent).not.toContain('🇺🇸')
+    act(() => setGeoSelection('UK'))
+    expect(cellFor(container, 'Open a bank account')?.textContent).not.toContain('🇺🇸')
   })
 
   describe('the GLOBAL surface default (founder 2026-09-30: /processes opens on the global view — defaultGeo threads in from app/processes/page.tsx)', () => {
-    it('no selection: every row still renders (annotates, never filters) with the SHARP glyphs — 🌐 global, 🇺🇸 federal, 🏛 state — and the geo dropdown trigger reads Global', () => {
+    it('no selection: every row still renders (annotates, never filters) — flags on US-scoped rows only — and the geo dropdown trigger reads Global', () => {
       const { container, getByTitle } = render(<ProcessesTable rows={GEO_ROWS} phases={PHASES} defaultGeo={GEO_GLOBAL} />)
       // Nothing filtered out: the US-specific rows are in the first view.
       expect(container.querySelectorAll('tbody tr').length).toBe(GEO_ROWS.length)
-      expect(cellFor(container, 'Open a bank account')?.textContent).toContain('🌐')
+      expect(cellFor(container, 'Open a bank account')?.textContent).not.toContain('🌐')
       expect(cellFor(container, 'Get an EIN')?.textContent).toContain('🇺🇸')
-      expect(cellFor(container, 'Incorporate the company')?.textContent).toContain('🏛')
-      expect(cellFor(container, 'Incorporate the company')?.textContent).not.toContain('🇺🇸')
+      expect(cellFor(container, 'Incorporate the company')?.textContent).toContain('🇺🇸')
+      expect(cellFor(container, 'Incorporate the company')?.textContent).not.toContain('🏛')
       // The dropdown's no-selection framing is 🌐 Global on this surface.
       expect(getByTitle(/Where you operate/).textContent).toContain('Global')
       // Annotation only — the timeOrder sort is untouched by the framing.
@@ -434,21 +465,29 @@ describe('geoScope glyphs (founder GEO ask 2026-09-28; always-on defaults founde
       )).toEqual(['bank', 'inc', 'ein'])
     })
 
-    it('SSR honesty: the server HTML already carries the global framing (Global trigger, 🏛 state glyph) — no mount flash', () => {
+    it('SSR honesty: the server HTML already carries the Global trigger and the flags — and no title-trailing 🏛/🌐', () => {
       const ssr = renderToString(<ProcessesTable rows={GEO_ROWS} phases={PHASES} defaultGeo={GEO_GLOBAL} />)
       expect(ssr).toContain('Global')
-      expect(ssr).toContain('🏛')
+      // The us-state LABEL still tells the state story; its glyph is the flag.
       expect(ssr).toContain('US state-level process — a US state is the counterparty')
+      const doc = document.createElement('div')
+      doc.innerHTML = ssr
+      const titleCells = [...doc.querySelectorAll('tbody td:first-child')]
+      // Title cells carry 🇺🇸 on the US-scoped rows only — never 🏛 or 🌐 (the phase select's
+      // own 🏛️ area emoji is a different, unrelated glyph outside the table).
+      expect(titleCells.filter((c) => c.textContent?.includes('🇺🇸'))).toHaveLength(2)
+      expect(titleCells.some((c) => c.textContent?.includes('🏛'))).toBe(false)
+      expect(titleCells.some((c) => c.textContent?.includes('🌐'))).toBe(false)
     })
 
-    it('a country selection keeps analog-noted rows with sharp glyphs (dropdown shows the country); without defaultGeo the homepage surface keeps its 🇺🇸 defaults', () => {
+    it('a country selection keeps analog-noted rows flagged (dropdown shows the country); without defaultGeo the homepage surface reads USA', () => {
       const withGlobal = render(<ProcessesTable rows={GEO_ROWS} phases={PHASES} defaultGeo={GEO_GLOBAL} />)
       act(() => setGeoSelection('UK'))
-      expect(cellFor(withGlobal.container, 'Incorporate the company')?.textContent).toContain('🏛')
+      expect(cellFor(withGlobal.container, 'Incorporate the company')?.textContent).toContain('🇺🇸')
       expect(withGlobal.getByTitle(/Where you operate/).textContent).toContain('United Kingdom')
       withGlobal.unmount()
       act(() => setGeoSelection(null))
-      // The homepage's process mode (no defaultGeo) is byte-for-byte the pre-existing default.
+      // The homepage's process mode (no defaultGeo) renders the same glyph rule.
       const plain = render(<ProcessesTable rows={GEO_ROWS} phases={PHASES} />)
       expect(cellFor(plain.container, 'Incorporate the company')?.textContent).toContain('🇺🇸')
       expect(cellFor(plain.container, 'Incorporate the company')?.textContent).not.toContain('🏛')
@@ -567,5 +606,83 @@ describe('the country-view filter + hidden-rows disclosure (founder 2026-10-02: 
     // note-less visa situation hide under IN, so the header honestly counts 3 — never 5.
     expect(formation.textContent).toContain('3 processes')
     expect(within(container).queryByText('Get EIN')).toBeNull()
+  })
+})
+
+describe("cadence click-to-filter (founder 2026-10-02: clicking a row's cadence value scopes the table to that cadence; the same value again clears)", () => {
+  // Two Monthly rows (the fixture default) and one Once row; the cadence cell renders while the
+  // metric column shows Cadence — any non-five-axis sort (ceiling, title) and the grouped view
+  // fall back to it.
+  const CAD_ROWS: ProcessRow[] = [
+    row({ slug: 'close-books', title: 'Close the books', phase: 'formation', timeOrder: 1 }),
+    row({ slug: 'run-payroll', title: 'Run payroll', phase: 'growth', area: 'Growth & sales', areaRank: 8, timeOrder: 2 }),
+    row({ slug: 'incorporate', title: 'Incorporate the company', phase: 'formation', cadenceLabel: 'Once', cadenceRank: 7, timeOrder: 3 }),
+  ]
+  const CAD_PLAYBOOK: PlaybookRow[] = [{
+    id: 'company-in-a-day',
+    title: 'Company in a day',
+    tagline: 'From zero to a running company',
+    icon: '🚀',
+    href: '/processes/chains/company-in-a-day',
+    dominantArea: 'Formation',
+    areaRank: 0,
+    timeOrder: 1,
+    processes: [{ id: 'file-delaware', icon: '🏷️', title: 'File with Delaware', phase: 'formation' }],
+    phases: ['formation'],
+    pct: 70,
+    agentSteps: 7,
+    totalSteps: 10,
+    vendors: [],
+    steps: [],
+  }]
+
+  it('clicking a cadence value filters to it — a real button with aria-pressed and a visible active state — and the same value again clears', () => {
+    const { container, getByRole } = render(<ProcessesTable rows={CAD_ROWS} phases={PHASES} />)
+    pickPreset({ getByRole }, 'Most automatable') // the metric column falls back to Cadence
+    const monthly = within(container).getAllByRole('button', { name: 'Monthly' })[0]
+    expect(monthly.getAttribute('aria-pressed')).toBe('false')
+    fireEvent.click(monthly)
+    expect(within(container).getByText('Close the books')).toBeDefined()
+    expect(within(container).getByText('Run payroll')).toBeDefined()
+    expect(within(container).queryByText('Incorporate the company')).toBeNull()
+    const active = within(container).getAllByRole('button', { name: 'Monthly' })[0]
+    expect(active.getAttribute('aria-pressed')).toBe('true')
+    expect(active.className).toContain('text-emerald-300') // the visible active state
+    // The same value again clears the filter.
+    fireEvent.click(active)
+    expect(within(container).getByText('Incorporate the company')).toBeDefined()
+    expect(within(container).getAllByRole('button', { name: 'Monthly' })[0].getAttribute('aria-pressed')).toBe('false')
+  })
+
+  it('works in the grouped view (?order=grouped): rows filter, empty areas collapse, header counts stay honest', () => {
+    setUrl('?order=grouped')
+    const { container } = render(<ProcessesTable rows={CAD_ROWS} phases={PHASES} />)
+    fireEvent.click(within(container).getAllByRole('button', { name: 'Once' })[0])
+    expect(within(container).getByText('Incorporate the company')).toBeDefined()
+    expect(within(container).queryByText('Run payroll')).toBeNull()
+    expect(within(container).queryByText('Growth & sales')).toBeNull() // the emptied area collapses
+    const header = within(container).getByText('Formation').closest('tr') as HTMLElement
+    expect(header.textContent).toContain('1 process')
+    fireEvent.click(within(container).getAllByRole('button', { name: 'Once' })[0])
+    expect(within(container).getByText('Run payroll')).toBeDefined()
+  })
+
+  it('an active cadence filter scopes to process rows — chain rows (no cadence of their own, the honest dash) hide until it clears', () => {
+    setUrl('?order=grouped') // the grouped view shows the cadence cells without a preset pick
+    const { container } = render(<ProcessesTable rows={CAD_ROWS} phases={PHASES} playbooks={CAD_PLAYBOOK} />)
+    expect(within(container).getByText('Company in a day')).toBeDefined()
+    fireEvent.click(within(container).getAllByRole('button', { name: 'Monthly' })[0])
+    expect(within(container).queryByText('Company in a day')).toBeNull()
+    fireEvent.click(within(container).getAllByRole('button', { name: 'Monthly' })[0])
+    expect(within(container).getByText('Company in a day')).toBeDefined()
+  })
+
+  it('the empty state echoes the active cadence', () => {
+    setUrl('?order=grouped')
+    const { container } = render(<ProcessesTable rows={CAD_ROWS} phases={PHASES} />)
+    fireEvent.click(within(container).getAllByRole('button', { name: 'Once' })[0])
+    const search = within(container).getByLabelText('Filter products by name or vendor')
+    fireEvent.change(search, { target: { value: 'payroll' } }) // a Monthly-only match, filtered out
+    expect(container.textContent).toContain('at the Once cadence')
   })
 })

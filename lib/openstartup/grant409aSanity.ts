@@ -10,7 +10,7 @@
 // carries `needsReview: true` and the rule card it leans on.
 //
 // Pure, client-safe, deterministic; UTC ISO-date arithmetic only. Registered in
-// business-logic/README.md; the vitest gate (lib/openstartup/__tests__/grant409aSanity.test.ts)
+// open-modules/README.md; the vitest gate (lib/openstartup/__tests__/grant409aSanity.test.ts)
 // asserts every ruleId in RULE_IDS_409A resolves to a committed card in rules/US-FED/.
 //
 // Rule cards (all citing IRS final regulations under section 409A — source
@@ -270,7 +270,7 @@ const LEVEL_RANK: Record<SanityLevel, number> = { pass: 0, flag: 1, fail: 2 }
 /**
  * Run every applicable check for one intended grant. Output is decision support for a
  * conversation with counsel and the valuation firm — it never authorizes a grant, never
- * computes an FMV, and keeps `needsReview: true` on every finding (the business-logic
+ * computes an FMV, and keeps `needsReview: true` on every finding (the open-modules
  * README contract).
  */
 export function grantSanityReport(inputs: GrantSanityInputs): GrantSanityReport {

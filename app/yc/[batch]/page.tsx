@@ -38,7 +38,7 @@ export async function generateMetadata({
   const leader = rows[0]
   return {
     title: `YC ${code} (${batchLabel(code)}) — ${rows.length} tracked ${rows.length === 1 ? 'product' : 'products'} ranked by agent readiness — Ultrametric`,
-    description: `The Y Combinator ${batchLabel(code)} companies we track, ranked on evidence-graded agent readiness and built-in AI.${leader && leader.agentReady !== null ? ` ${leader.productName} leads at ${leader.agentReady.toFixed(0)}/100 agent-ready.` : ''} Not a batch-wide census — coverage grows batch by batch.`,
+    description: `The Y Combinator ${batchLabel(code)} companies we track, ranked on agent readiness and built-in AI, both agent tested.${leader && leader.agentReady !== null ? ` ${leader.productName} leads at ${leader.agentReady.toFixed(0)}/100 agent-ready.` : ''} Not a batch-wide census — coverage grows batch by batch.`,
   }
 }
 
@@ -50,7 +50,7 @@ export default async function YcBatchPage({ params }: { params: Promise<{ batch:
 
   const jsonLd = rankingJsonLd(
     `YC ${code} — tracked products ranked by agent readiness`,
-    `Y Combinator ${batchLabel(code)} alumni tracked on Ultrametric, ranked by evidence-graded agent readiness, built-in AI, and Overall score.`,
+    `Y Combinator ${batchLabel(code)} alumni tracked on Ultrametric, ranked by agent readiness, built-in AI, and Overall score, all agent tested.`,
     rows.map((row) => ({
       name: row.productName,
       path: `/arena/${row.arenaId}/product/${row.productId}`,
@@ -77,11 +77,11 @@ export default async function YcBatchPage({ params }: { params: Promise<{ batch:
         </h1>
         <p className="mt-2 max-w-2xl text-zinc-400">
           The {rows.length} {batchLabel(code)} {rows.length === 1 ? 'company' : 'companies'} we track, ranked by
-          evidence-graded agent readiness — can an agent actually drive this product? — then built-in AI and Overall score.
+          agent-tested agent readiness — can an agent actually drive this product? — then built-in AI and Overall score.
         </p>
         <p className="mt-2 max-w-2xl text-xs text-zinc-500">
-          This is the YC {code} companies <span className="text-zinc-300">we track</span>, judged on evidence — not a
-          batch-wide census (yet). Coverage grows batch by batch. Scores come from each product&rsquo;s arena verdicts —
+          The table lists the YC {code} companies <span className="text-zinc-300">we track</span>; coverage grows
+          batch by batch. Scores come from each product&rsquo;s arena verdicts —
           see{' '}
           <Link href="/methodology" className="text-emerald-400 underline decoration-emerald-400/40 hover:text-emerald-300">
             methodology
@@ -96,7 +96,7 @@ export default async function YcBatchPage({ params }: { params: Promise<{ batch:
             <tr className="border-b border-zinc-800 text-left text-xs uppercase tracking-widest text-zinc-500">
               <th className="w-10 px-3 py-2 font-normal">#</th>
               <th className="px-3 py-2 font-normal">Product</th>
-              <th className="px-3 py-2 font-normal" title="Agent-readiness score (0–100): can an agent drive it? MCP, API, docs an agent can consume — evidence-graded">
+              <th className="px-3 py-2 font-normal" title="Agent-readiness score (0–100): can an agent drive it? MCP, API, docs an agent can consume — agent tested">
                 <span className="inline-flex items-center gap-1.5">Agent-ready<ColumnsHelpLink /></span>
               </th>
               <th className="hidden px-3 py-2 font-normal sm:table-cell" title="Built-in AI score (0–100): does the product itself act agentically for its users?">

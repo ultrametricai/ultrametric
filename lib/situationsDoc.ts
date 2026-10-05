@@ -3,7 +3,7 @@ import path from 'node:path'
 import { loadProcesses } from '@/lib/processes'
 
 // processes/SITUATIONS.md ↔ corpus sync (founder 2026-10-02: situations get their own repo
-// surface). Same doctrine as the documents/README.md gate (lib/documents.ts): the listing
+// surface). Same doctrine as the open-documents/README.md gate (lib/documents.ts): the listing
 // lives in markdown for humans, the truth lives in processes/corpus.json (kind: 'situation'),
 // and a drift test (__tests__/situations.test.ts) keeps the two byte-identical — the table
 // block between the markers is GENERATED (scripts/generate-situations-md.ts), so the list can

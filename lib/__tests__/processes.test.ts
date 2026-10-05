@@ -248,7 +248,8 @@ describe('corpus', () => {
       const notes = t.geoNotes ?? []
       if (notes.length === 0) continue
       if (t.geoScope === 'global') globalWithNotes++
-      // At most one note per country per process, IN/UK/DE/FR only (schema re-checks the enum).
+      // At most one note per country per process, the committed country enum only (the schema
+      // re-checks it: IN/UK/DE/FR plus PT/CA since the 2026-10-03 new-countries wave).
       expect(new Set(notes.map((n) => n.country)).size).toBe(notes.length)
       for (const n of notes) {
         expect(n.actionUrl).toMatch(/^https:\/\//)
@@ -263,7 +264,7 @@ describe('corpus', () => {
     // data protection, accounting…). Honest coverage, not completeness theater — a country
     // with no real analog carries no note, so the band stays wide.
     expect(total).toBeGreaterThanOrEqual(120)
-    expect(total).toBeLessThanOrEqual(400)
+    expect(total).toBeLessThanOrEqual(500)
     // Global notes exist (the flavored set) but stay the minority of note-carrying processes.
     expect(globalWithNotes).toBeGreaterThan(0)
     const usWithNotes = tasks.filter((t) => t.geoScope !== 'global' && (t.geoNotes ?? []).length > 0).length
@@ -273,7 +274,7 @@ describe('corpus', () => {
     // no India note") carries all four too — stamp duty in India, share classes in the UK.
     for (const id of ['form_001', 'startup_002']) {
       const t = tasks.find((x) => x.id === id)!
-      expect((t.geoNotes ?? []).map((n) => n.country).sort(), id).toEqual(['DE', 'FR', 'IN', 'UK'])
+      expect((t.geoNotes ?? []).map((n) => n.country).sort(), id).toEqual(['CA', 'DE', 'FR', 'IN', 'PT', 'UK'])
     }
   })
 
@@ -308,11 +309,11 @@ describe('corpus', () => {
     expect(noteKind('form_002', 'UK')).toBe('absorbed')
     expect(noteKind('form_002', 'FR')).toBe('absorbed')
     expect(noteKind('form_002', 'DE')).toBe('analog')
-    // Incorporation has a true doable analog in all four countries.
-    for (const c of ['IN', 'UK', 'DE', 'FR']) expect(noteKind('form_001', c), `form_001/${c}`).toBe('analog')
+    // Incorporation has a true doable analog in every covered country.
+    for (const c of ['IN', 'UK', 'DE', 'FR', 'PT', 'CA']) expect(noteKind('form_001', c), `form_001/${c}`).toBe('analog')
     // No country has a US-style registered-agent industry — the registered office is declared
     // inside formation everywhere.
-    for (const c of ['IN', 'UK', 'DE', 'FR']) expect(noteKind('qs_043', c), `qs_043/${c}`).toBe('absorbed')
+    for (const c of ['IN', 'UK', 'DE', 'FR', 'PT', 'CA']) expect(noteKind('qs_043', c), `qs_043/${c}`).toBe('absorbed')
     // The need genuinely absent: no UK 1099 regime; nothing to foreign-qualify for inside the
     // UK; no German franchise-tax ritual (the IHK-Beitrag arrives automatically).
     expect(noteKind('tax_003', 'UK')).toBe('not-applicable')
@@ -321,33 +322,68 @@ describe('corpus', () => {
   })
 
   // Geo coverage to totality (founder boost 2026-10-02: "close EVERY gap … pin totality:
-  // uncovered = 0"). Every US-scoped record — processes and situations alike — now says what
-  // the need becomes in all four countries, with the honesty carried by the note KIND (a
-  // not-applicable note is a closed gap too: sit_002 is inherently US-inbound, Germany has no
-  // 409A ritual and no 1099 regime). The four-country set is the whole enum, so this is the
-  // uncovered=0 pin.
-  it('geo totality: every US-scoped record carries all four countries (uncovered = 0)', () => {
+  // uncovered = 0"; PT and CA joined the enum in the 2026-10-03 new-countries wave). Every
+  // US-scoped record — processes and situations alike — says what the need becomes in all six
+  // countries, with the honesty carried by the note KIND (a not-applicable note is a closed gap
+  // too: sit_002 is inherently US-inbound, Germany has no 409A ritual and no 1099 regime,
+  // Canada has no LLC). The six-country set is the whole enum, so this is the uncovered=0 pin.
+  it('geo totality: every US-scoped record carries all six countries (uncovered = 0)', () => {
     const tasks = loadProcesses(DATA_DIR)
     for (const t of tasks.filter((x) => x.geoScope !== 'global')) {
       expect(
         (t.geoNotes ?? []).map((n) => n.country).sort(),
-        `${t.id} (${t.title}): four-country geo totality`,
-      ).toEqual(['DE', 'FR', 'IN', 'UK'])
+        `${t.id} (${t.title}): six-country geo totality`,
+      ).toEqual(['CA', 'DE', 'FR', 'IN', 'PT', 'UK'])
     }
-    // The worked decisions of the closing pass, pinned: bank-account analogs exist in all four
-    // countries (vendor-geo-aligned); 409A and 1099s honestly have no DE equivalent; the visa
-    // situation is honestly not-applicable everywhere (inherently US-inbound).
+    // The worked decisions of the closing passes, pinned: bank-account analogs exist in the four
+    // original countries (vendor-geo-aligned; qs_023 is global-scoped, so PT/CA notes are not
+    // required of it); 409A and 1099s honestly have no DE equivalent and no PT/CA appraisal
+    // ritual exists either; the visa situation is honestly not-applicable everywhere (inherently
+    // US-inbound); Canada's LLC gap is a real not-applicable, not a missing note.
     const noteKind = (id: string, country: string) =>
       tasks.find((t) => t.id === id)!.geoNotes!.find((n) => n.country === country)?.kind
     for (const c of ['IN', 'UK', 'DE', 'FR']) {
       expect(noteKind('qs_023', c), `qs_023/${c}`).toBe('analog')
+    }
+    for (const c of ['IN', 'UK', 'DE', 'FR', 'PT', 'CA']) {
       expect(noteKind('sit_002', c), `sit_002/${c}`).toBe('not-applicable')
     }
     expect(noteKind('fund_003', 'DE')).toBe('not-applicable')
     expect(noteKind('fund_003', 'FR')).toBe('not-applicable')
     expect(noteKind('fund_003', 'UK')).toBe('analog') // the EMI valuation precedent
+    expect(noteKind('fund_003', 'PT')).toBe('not-applicable') // no safe-harbor appraisal; Lei 21/2023 defers tax instead
+    expect(noteKind('fund_003', 'CA')).toBe('not-applicable') // CCPC deferral, no appraisal ritual
     expect(noteKind('tax_003', 'DE')).toBe('not-applicable')
+    expect(noteKind('tax_003', 'PT')).toBe('not-applicable') // e-Fatura already reports invoices
+    expect(noteKind('tax_003', 'CA')).toBe('analog') // the T4A slip is a real information return
+    expect(noteKind('form_011', 'CA')).toBe('not-applicable') // Canada has no LLC form at all
+    expect(noteKind('qs_045', 'CA')).toBe('analog') // extra-provincial registration genuinely exists
     expect(noteKind('vc_002', 'DE')).toBe('analog') // AIFMD/BaFin is real, doable work
+  })
+
+  // US state coverage (founder state wave 2026-10-03): where founders actually diverge from the
+  // DE-corp default, the state-scoped records cite dated rule cards against primary sources —
+  // CA SOI + FTB minimum tax, NV annual list/license + commerce tax, TX margin tax + foreign
+  // registration. Same contract as the situations' rule-card pins: the id appears in the
+  // description AND the card is committed on disk.
+  it('state-coverage records cite their US-CA/US-NV/US-TX rule cards, committed on disk', () => {
+    const tasks = loadProcesses(DATA_DIR)
+    const byId = (id: string) => tasks.find((t) => t.id === id)!
+    for (const [pid, dir, ruleId] of [
+      ['form_005', 'US-CA', 'us-ca.minimum-franchise-tax'],
+      ['form_005', 'US-NV', 'us-nv.commerce-tax-threshold'],
+      ['form_005', 'US-TX', 'us-tx.franchise-tax-report'],
+      ['qs_045', 'US-CA', 'us-ca.foreign-qualification'],
+      ['qs_045', 'US-TX', 'us-tx.foreign-registration'],
+      ['qs_047', 'US-CA', 'us-ca.statement-of-information'],
+      ['qs_047', 'US-NV', 'us-nv.annual-list-business-license'],
+      ['qs_047', 'US-TX', 'us-tx.franchise-tax-report'],
+    ] as const) {
+      expect(byId(pid).description, `${pid} cites ${ruleId}`).toContain(ruleId)
+      const file = path.join(__dirname, '..', '..', 'rules', dir, `${ruleId.replace(/\./g, '-')}.json`)
+      expect(fs.existsSync(file), `${ruleId} card committed at ${file}`).toBe(true)
+      expect(JSON.parse(fs.readFileSync(file, 'utf8')).id).toBe(ruleId)
+    }
   })
 
   it('cadence display helpers cover every bucket in board order', () => {
@@ -421,10 +457,11 @@ describe('corpus', () => {
     expect(breach.reversibility).toBe('irreversible')
     expect(breach.dag.nodes.filter((n) => n.reversibility === 'irreversible').length).toBe(2)
     // Geo honesty: the breach clocks are US-state statutes with real non-US analogs mapped —
-    // four-country total since the totality pass (the CNIL teleservice URL verified live
-    // 2026-10-02 closed the FR gap the first pass couldn't).
+    // country-total since the totality passes (the CNIL teleservice URL verified live
+    // 2026-10-02 closed the FR gap the first pass couldn't; CNPD and the OPC closed PT/CA
+    // in the 2026-10-03 wave).
     expect(breach.geoScope).toBe('us-state')
-    expect((breach.geoNotes ?? []).map((n) => n.country).sort()).toEqual(['DE', 'FR', 'IN', 'UK'])
+    expect((breach.geoNotes ?? []).map((n) => n.country).sort()).toEqual(['CA', 'DE', 'FR', 'IN', 'PT', 'UK'])
     expect(breach.geoNotes!.find((n) => n.country === 'FR')!.actionUrl).toContain('cnil.fr')
   })
 

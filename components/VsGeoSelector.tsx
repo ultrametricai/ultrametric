@@ -19,7 +19,8 @@ import { readParam, setParams } from '@/lib/urlState'
 // DROPDOWN, not toggle pills — the house listbox pattern (components/VsDecisionSelect.tsx /
 // SimRolePicker.tsx, never a native <select>). Closed, the trigger shows the CURRENT country
 // (flag + name, default 🇺🇸 USA); open, the list is 🌐 Global · 🇺🇸 USA · 🇬🇧 UK · 🇮🇳 India ·
-// 🇩🇪 Germany · 🇫🇷 France. The STATE CONTRACT is exactly the pill row's (GeoSwitcher doctrine):
+// 🇩🇪 Germany · 🇫🇷 France · 🇵🇹 Portugal · 🇨🇦 Canada. The STATE CONTRACT is exactly the pill
+// row's (GeoSwitcher doctrine):
 // the ?geo= param + the pa-geo localStorage copy, read on MOUNT ONLY so the static HTML stays
 // byte-identical, plus the 'global' token (lib/geoPreference.ts GEO_GLOBAL, additive). Interop
 // is deliberate: a UK pick here is the same ?geo=uk / pa-geo=uk the process and product pages

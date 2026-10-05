@@ -20,12 +20,44 @@ const MAX_RESULTS = 40
 // Global ⌘K/Ctrl+K search over every arena, product, and story (see lib/search-index.ts).
 // Self-contained: renders both its own header trigger button and the overlay, so it can be
 // dropped into the (server-component) layout without lifting open-state elsewhere.
-export default function CommandPalette({ entries }: { entries: SearchEntry[] }) {
+//
+// The index is NOT passed as props: serializing it from the layout baked a ~160 KB flight blob
+// into every prerendered page (~4.5 GB of .next/server/app and 160 KB of every page's wire
+// HTML — docs/BUILD-SIZE.md problem 2). Instead the force-static /search-index.json route
+// serves it once from the CDN and the palette fetches it lazily on FIRST open, keeping it in
+// state for the component's lifetime (the layout never unmounts it, so that is one fetch per
+// page load, and the browser HTTP cache covers reloads). Honest first-open cost: one small
+// JSON round-trip behind a visible loading row.
+export default function CommandPalette() {
   const [open, setOpen] = useState(false)
   const [query, setQuery] = useState('')
   const [activeIndex, setActiveIndex] = useState(0)
+  // null = not loaded yet (never fetched, in flight, or failed — `failed` disambiguates).
+  const [entries, setEntries] = useState<SearchEntry[] | null>(null)
+  const [failed, setFailed] = useState(false)
+  // Guards the in-flight fetch across open/close cycles and React strict-mode double effects;
+  // reset on failure so the next open retries.
+  const fetchStarted = useRef(false)
   const inputRef = useRef<HTMLInputElement>(null)
   const router = useRouter()
+
+  // Lazy index load, SSR-safe by construction: an effect only ever runs in the browser, and
+  // only once the palette is actually opened.
+  useEffect(() => {
+    if (!open || fetchStarted.current) return
+    fetchStarted.current = true
+    setFailed(false)
+    fetch('/search-index.json')
+      .then((res) => {
+        if (!res.ok) throw new Error(`search index: HTTP ${res.status}`)
+        return res.json() as Promise<SearchEntry[]>
+      })
+      .then(setEntries)
+      .catch(() => {
+        fetchStarted.current = false
+        setFailed(true)
+      })
+  }, [open])
 
   useEffect(() => {
     function onKeyDown(e: KeyboardEvent) {
@@ -46,9 +78,9 @@ export default function CommandPalette({ entries }: { entries: SearchEntry[] }) 
     return () => cancelAnimationFrame(id)
   }, [open])
 
-  // Lowercased + plural-folded haystacks, computed once per mount so each keystroke is pure
+  // Lowercased + plural-folded haystacks, computed once per index load so each keystroke is pure
   // substring checks (see lib/search-index.ts).
-  const prepared = useMemo(() => prepareSearchEntries(entries), [entries])
+  const prepared = useMemo(() => prepareSearchEntries(entries ?? []), [entries])
 
   // Results are pre-grouped by type (arena, stack, page, product, story) so rendering can walk
   // one flat array in display order — no index bookkeeping needed at render time. Within each
@@ -153,7 +185,14 @@ export default function CommandPalette({ entries }: { entries: SearchEntry[] }) 
               className="w-full border-b border-zinc-800 bg-transparent px-4 py-3 text-sm text-zinc-100 placeholder:text-zinc-400 focus:outline-none"
             />
             <div className="max-h-96 overflow-y-auto py-2">
-              {results.length === 0 && (
+              {/* Until the lazily-fetched index lands, the results area narrates the load — the
+                  input stays usable, and the pending query ranks the moment entries arrive. */}
+              {entries === null && (
+                <p className="px-4 py-6 text-center text-sm text-zinc-400">
+                  {failed ? 'Search is unavailable — close and reopen to retry.' : 'Loading search…'}
+                </p>
+              )}
+              {entries !== null && results.length === 0 && (
                 <p className="px-4 py-6 text-center text-sm text-zinc-400">
                   {query.trim() ? <>No matches for &ldquo;{query}&rdquo;</> : 'No matches'}
                 </p>

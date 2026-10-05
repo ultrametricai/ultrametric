@@ -1,6 +1,6 @@
 // Offer / equity-comp scenarios — the third module of the open-startup toolkit (founder
 // direction 2026-09-29). Pure, client-safe, deterministic; registered in
-// business-logic/README.md; tested in lib/openstartup/__tests__/equityComp.test.ts with
+// open-modules/README.md; tested in lib/openstartup/__tests__/equityComp.test.ts with
 // every worked example's arithmetic re-derived in comments.
 //
 // Sources for the conventions (cited per function):

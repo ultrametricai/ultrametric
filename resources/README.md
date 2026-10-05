@@ -2,7 +2,7 @@
 
 The curated registry of canonical, openly readable startup resources (`registry.json`), the
 laws distilled from them (`LAWS.md`), and the lore behind them (`LORE.md`). This is the
-reading-path layer of the founder-ops corpus: `documents/` holds the usable legal forms,
+reading-path layer of the founder-ops corpus: `open-documents/` holds the usable legal forms,
 `rules/` holds the legal propositions, and this directory holds the knowledge those layers
 assume.
 

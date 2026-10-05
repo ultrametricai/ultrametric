@@ -6,7 +6,7 @@ import {
 
 // processes/SITUATIONS.md ↔ corpus drift gate (founder 2026-10-02: the situations concept gets
 // its own repo surface, generated-or-synced so the list can't go stale — the README-sync
-// pattern documents/ uses). The table block is machine-owned (scripts/generate-situations-md.ts);
+// pattern open-documents/ uses). The table block is machine-owned (scripts/generate-situations-md.ts);
 // this gate fails on any divergence between the committed block and the live corpus.
 
 describe('processes/SITUATIONS.md', () => {

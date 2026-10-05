@@ -238,7 +238,10 @@ describe('VsJourneyDag — rendering', () => {
       const view = render(<VsJourneyDag rows={UNIT_ROWS} revealed={revealed} running={false} />)
       const strip = screen.getByTestId('vs-journeydag-strip')
       // Vertical-only: capped natural height with internal Y scroll — NEVER a sideways scroll.
-      expect(strip.className).not.toContain('overflow-x')
+      // overflow-x-hidden is load-bearing: with overflow-y-auto alone, overflow-x COMPUTES to
+      // auto, so an unshrinkable cluster-led item on a narrow phone grew a sideways scrollbar.
+      expect(strip.className).toContain('overflow-x-hidden')
+      expect(strip.className).not.toContain('overflow-x-auto')
       expect(strip.className).toContain('overflow-y-auto')
       expect(strip.className).toContain('max-h-[min(45vh,380px)]')
       const row = strip.querySelector('ol')!
@@ -461,7 +464,8 @@ describe('VsJourneyDag inside VirtualStartup — the live viewer above the termi
     const body = screen.getByTestId('vs-journeydag-strip')
     expect(body.className).toContain('max-h-[min(45vh,380px)]')
     expect(body.className).toContain('overflow-y-auto')
-    expect(body.className).not.toContain('overflow-x')
+    expect(body.className).toContain('overflow-x-hidden') // explicit: overflow-y-auto alone computes overflow-x to auto
+    expect(body.className).not.toContain('overflow-x-auto')
     expect(body.className).not.toContain('h-[140px]')
     expect(body.querySelector('ol')!.className).toContain('flex-wrap')
   })

@@ -72,12 +72,13 @@ export function confidenceFor(data: CategoryData, productId: string): ProductCon
 }
 
 // Shared tooltip copy for the grade chip (MegaTable + ArenaTable render the same chip).
+// One sentence (founder tooltip sweep 2026-10-02) — keeps the load-bearing evidence-footing
+// facts (coverage + tested share + "score unchanged"); the full explainer lives at the link's
+// /methodology#confidence destination.
 export function confidenceTitle(c: ProductConfidence): string {
   const pct = (n: number) => `${Math.round(n * 100)}%`
   return (
-    `Score confidence ${c.grade}: how much of this score rests on tested vs claimed evidence. ` +
-    `${pct(c.coverage)} of ${c.applicable} applicable cells cite any evidence; ` +
-    `${pct(c.testedShare)} are backed by tested evidence (hands-on probe or inspectable source). ` +
-    `The published score itself is unchanged — the grade only says how solid its footing is.`
+    `Confidence ${c.grade} — ${pct(c.coverage)} of ${c.applicable} applicable cells cite evidence, ` +
+    `${pct(c.testedShare)} tested by us; the published score is unchanged.`
   )
 }

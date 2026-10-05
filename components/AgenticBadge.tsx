@@ -30,10 +30,12 @@ const LABELS: Record<AgenticBadgeKind, string> = {
 // Hover text spelling out the distinction the short labels can't carry — the two indexes are
 // easy to conflate ("agent-ready vs agentic sounds like the same thing") but measure opposite
 // directions: can YOUR agent drive the product, vs does the product itself act agentically.
+// One clause each (founder tooltip sweep 2026-10-02) — the long contrast essays moved to
+// /methodology, which every click-through lands on.
 const TITLES: Record<AgenticBadgeKind, string> = {
-  'agent-ready': 'AGENT-READY = outside-in: can YOUR agent drive this product? Measures the access surface — API, MCP, CLI, headless runs, agent docs. A product can score high here with zero AI features of its own (think Stripe).',
-  'agentic-app': 'BUILT-IN AI = inside-out: how agentic the product itself is FOR its users — built-in assistants, autonomous features, AI-first workflows. A walled-garden AI app can score high here while being hard for YOUR agent to drive.',
-  'api-quality': 'API QUALITY = the programmable surface once an agent (or developer) is there — machine-readable spec, interactive docs, sandbox, versioning discipline. Untested = no evidence either way.',
+  'agent-ready': 'Outside-in: can YOUR agent drive this product — API, MCP, CLI, headless runs, agent docs',
+  'agentic-app': 'Inside-out: how agentic the product itself is for its users — assistants, autonomous features',
+  'api-quality': 'The programmable surface — machine-readable spec, docs, sandbox, versioning discipline',
 }
 
 const COLORS: Record<AgenticBadgeKind, keyof typeof PALETTES> = {
@@ -88,7 +90,7 @@ export default function AgenticBadge({
       <Link
         href={href}
         title={hrefTitle}
-        className="inline-flex w-fit rounded-full transition hover:brightness-125 hover:ring-1 hover:ring-emerald-400/60"
+        className="um-pill-link w-fit"
       >
         {badge}
       </Link>

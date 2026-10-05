@@ -26,8 +26,10 @@ export default function VerificationMixChip({ data, productId, href, showDispute
   }
   const chip = (
     <span title={title} className="whitespace-nowrap text-xs tabular-nums">
+      {/* No trailing "verified" word (founder 2026-10-02) — the ratio + tooltip suffice; the
+          surrounding column header / section labels the figure. */}
       <span className="text-emerald-400">{verified}</span>
-      <span className="text-zinc-500">/{total} verified</span>
+      <span className="text-zinc-500">/{total}</span>
       {showDisputed && mix.disputed > 0 && <span className="text-red-400"> · {mix.disputed} disputed</span>}
     </span>
   )

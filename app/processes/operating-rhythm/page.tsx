@@ -52,8 +52,8 @@ function ProcessCard({ task }: { task: ProcessTask }) {
             v.arena ? (
               <Link
                 key={v.label}
-                href={`/arena/${v.arena}`}
-                title={`${v.label} — judged in the ${v.arena} arena`}
+                href={`/arena/${v.arena}/product/${v.id}`}
+                title={`${v.label} on Ultrametric — the judged product page`}
                 className="inline-flex items-center gap-1 rounded-full border border-zinc-700 py-px pl-0.5 pr-1.5 text-[10px] text-zinc-300 transition hover:border-emerald-400/60 hover:text-emerald-300"
               >
                 <ProductLogoView product={{ id: v.id, name: v.label }} size={14} hasLogo={v.hasLogo} />

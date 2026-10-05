@@ -10,7 +10,7 @@ import { loadAll } from '@/lib/data'
 import { humanizeTheme } from '@/lib/icons'
 import { SITE_URL } from '@/lib/site'
 
-// "Alternatives to <X>": X's arena rivals ranked by the same evidence-graded leaderboard,
+// "Alternatives to <X>": X's arena rivals ranked by the same agent-tested leaderboard,
 // each with its top story-level wins over X (from the derived battle rounds — see
 // lib/alternatives.ts), plus a few adjacent-arena products. One page per unique product id
 // (a duplicated id — square — resolves to its first arena, same rule as the badge generator).
@@ -88,7 +88,7 @@ export default async function AlternativesPage({ params }: { params: Promise<{ p
           Alternatives to {product.name}
         </h1>
         <p className="mt-2 max-w-2xl text-zinc-400">
-          {rivals.length} {data.category.name} rivals, ranked by the same evidence-graded leaderboard —{' '}
+          {rivals.length} {data.category.name} rivals, ranked by the same agent-tested leaderboard —{' '}
           {product.name} itself ranks{' '}
           <Link href={`/arena/${data.category.id}/product/${product.id}`} className="text-emerald-300 hover:underline">
             #{baseRank} with a Overall score of {fmtScore(baseEntry?.aiEra ?? null)}
@@ -118,14 +118,24 @@ export default async function AlternativesPage({ params }: { params: Promise<{ p
                 {/* The rival list is the judged arena field, honestly complete — but a rival
                     whose vendor announced a shutdown is tagged, never silently offered. */}
                 <ShutdownBadge shutdown={rival.product.shutdown} source={rival.product.shutdownSource} className="ml-2" />
-                <p className="text-xs text-zinc-500">{rival.product.vendor}</p>
+                {/* The company name clicks through to the same judged product page as the
+                    product name above it (founder 2026-10-02: vendor names like
+                    "Intercom (Fin…)" lead somewhere). */}
+                <p className="text-xs text-zinc-500">
+                  <Link
+                    href={`/arena/${data.category.id}/product/${rival.product.id}`}
+                    className="transition hover:text-emerald-300"
+                  >
+                    {rival.product.vendor}
+                  </Link>
+                </p>
               </div>
               <div className="ml-auto flex shrink-0 items-center gap-3">
                 <span className="inline-flex items-center gap-1.5 text-xs text-zinc-400">
                   Overall score <AiEraBadge value={rival.entry.aiEra} size="xs" />
                 </span>
                 <Link
-                  href={`/vs/${rival.battleSlug}`}
+                  href={`/arena/${data.category.id}/battle/${rival.battleSlug}`}
                   className="rounded-full border border-zinc-800 px-3 py-1 text-xs hover:border-emerald-400 hover:text-emerald-300"
                 >
                   vs {product.name} →

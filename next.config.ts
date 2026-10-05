@@ -25,8 +25,9 @@ const BUILD_TIME_ONLY = [
 
 // What the three force-dynamic preview routes read at REQUEST time (so it must survive the
 // excludes below — in this tracer, includes are applied after excludes and win; verified
-// empirically, see docs/BUILD-SIZE.md). The root layout they render reads data/** (palette
-// index via loadAll()) and lists public/logos (hasLogo); the pages read the legacy corpus,
+// empirically, see docs/BUILD-SIZE.md). The root layout they render reads data/** (nav:
+// loadCategories/loadArenaSections/loadIcpTypes — the palette index moved to the force-static
+// /search-index.json route 2026-10-02); the pages read the legacy corpus,
 // chains, and the shared records. Kept tight on purpose: over-including would push the
 // preview functions toward the per-function size limit (the auto-trace's 34 pipeline
 // judge-cache files were dropped — './pipeline/cache/judge/**' re-includes all 34k files /
@@ -70,6 +71,17 @@ const nextConfig: NextConfig = {
   outputFileTracingExcludes: {
     '*': BUILD_TIME_ONLY,
   },
+  // In-app route renames only. /documents became /open-documents with the documents/ →
+  // open-documents/ directory rename (founder 2026-10-03); the old path stays alive as a
+  // permanent redirect, the same old-links-stay-alive posture as the proxy-layer
+  // /productarena/* redirects (which remain at infra/cloudflare-proxy, not here).
+  redirects: async () => [
+    {
+      source: '/documents',
+      destination: '/open-documents',
+      permanent: true,
+    },
+  ],
 };
 
 export default nextConfig;

@@ -164,7 +164,7 @@ is. Curation rules, stricter than coverage:
 ## Step documents (`documents`)
 
 Steps that are genuinely done ON a canonical open document may carry `documents: string[]` —
-ids into `documents/registry.json` (the Cooley GO Delaware incorporation package for the
+ids into `open-documents/registry.json` (the Cooley GO Delaware incorporation package for the
 bylaws/stock-paperwork drafting steps, IRS Form 15620 for the 83(b) election). Added by the
 form_001 spike after confirming no prior mechanism linked corpus steps to the documents
 registry; extended across the corpus the same day (founder 2026-10-02: SAFEs on the SAFE-prep
@@ -238,9 +238,9 @@ re-sort.
 
 ## The Open-modules map
 
-`business-logic-map.json` (founder 2026-10-02; the file name keeps the `business-logic/`
-directory's id) wires the repo's open modules
-(`lib/openstartup/`, indexed in `business-logic/README.md`) to the processes they serve — the
+`business-logic-map.json` (founder 2026-10-02; the file name keeps the legacy
+`business-logic` id from before the directory became `open-modules/`) wires the repo's open modules
+(`lib/openstartup/`, indexed in `open-modules/README.md`) to the processes they serve — the
 Delaware franchise-tax math to `tax_001` and the `sit_010` delinquency cure, the 83(b)/deadline
 modules to the 83(b)-carrying processes, the cap-table/vesting/round/anti-dilution/waterfall
 family to the founder agreement, option grants, and SAFE/priced rounds. Keyed by module id
@@ -260,7 +260,7 @@ appear in that module's `processes` list.
 Read back by `lib/businessLogicMap.ts`; process pages render the task-level hits as a muted
 "Open modules" chip line, and mapped step blocks get a tiny `compute: <module>.<function>`
 chip (`components/ProcessDag.tsx`) whose tooltip carries the `what` clause — both deep-linking
-into `business-logic/README.md` (repo-first — the modules are a library by design, no site
+into `open-modules/README.md` (repo-first — the modules are a library by design, no site
 pages). That README's per-module **Serves** lines are generated from this file
 (`scripts/generate-business-logic-serves.ts`) and drift-gated. Totality gates, both ways:
 `lib/__tests__/businessLogicMap.test.ts` (every module file exists, every process id exists,

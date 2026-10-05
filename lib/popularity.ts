@@ -11,6 +11,19 @@ const MS_PER_YEAR = 365.25 * MS_PER_DAY
 // younger than ~2 weeks reports no stars/yr rather than a misleading spike.
 const MIN_YEARS = 14 / 365.25
 
+// Ranking-table noise floor (founder 2026-10-02, the ByteAsk case): a stars-only record under
+// this floor renders nothing in the compact table cells. A brand-new companion repo's "★ 24
+// ▲ 89/yr" juxtaposed a column over from real scores read as pricing ("$89/yr") and the
+// annualized rate is pure extrapolation at that sample size. The committed data is untouched
+// and the product page's full-size chip still shows every signal.
+export const COMPACT_STARS_FLOOR = 100
+
+// True when a record's only registry signal is a star count under the floor — the compact
+// (ranking-table) variant suppresses exactly these; any npm signal keeps the chip.
+export function belowCompactStarsFloor(p: Popularity): boolean {
+  return p.npmWeekly === undefined && (p.stars ?? 0) < COMPACT_STARS_FLOOR
+}
+
 // stars ÷ years since the repo's created_at. `now` is injectable for tests; defaults to the
 // real clock at call time (always a fresh pipeline run, never cached).
 export function starsPerYear(stars: number, createdAt: string, now: Date = new Date()): number | undefined {

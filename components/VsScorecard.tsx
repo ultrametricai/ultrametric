@@ -1,5 +1,6 @@
 'use client'
 
+import Link from 'next/link'
 import { useState } from 'react'
 import { formatMinutes } from '@/lib/processSim'
 import { setParams } from '@/lib/urlState'
@@ -163,7 +164,17 @@ export default function VsScorecard({
                 data-pick-source={userPickedArenas?.has(l.arenaId) ? 'user' : 'judged'}
                 className="text-zinc-400"
               >
-                {l.productName} ({l.arenaName}){' '}
+                {/* The vendor name clicks through to its judged product page (founder
+                    2026-10-02: names like "Intercom (Fin…)" lead somewhere); the arena name
+                    stays plain text. */}
+                <Link
+                  href={`/arena/${l.arenaId}/product/${l.productId}`}
+                  title={`${l.productName} on Ultrametric — the judged product page`}
+                  className="transition hover:text-emerald-300"
+                >
+                  {l.productName}
+                </Link>{' '}
+                ({l.arenaName}){' '}
                 {/* Who chose this vendor (founder addendum #3): the reader's own pick vs the
                     default judged-top — no score changes, the label is provenance only. */}
                 {userPickedArenas?.has(l.arenaId) ? (

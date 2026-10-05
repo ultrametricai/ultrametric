@@ -24,7 +24,9 @@ export default function PersonaStacksSection({ data }: { data: CategoryData }) {
       <div className="mt-4 grid gap-4 sm:grid-cols-2">
         {results.map((r) => {
           const winner = productById.get(r.winner!.productId)!
-          const runnerUp = r.runnerUp ? productById.get(r.runnerUp.productId) : null
+          // Winner only (founder 2026-10-02): the runner-up line and the "N {persona} stories
+          // scored" caption are gone — lib/personaStacks.ts still computes both (data stays;
+          // display only).
           return (
             <div key={r.persona} className="rounded-xl border border-zinc-800 p-5">
               <p className="text-xs uppercase tracking-widest text-zinc-400">Best for {r.persona}</p>
@@ -38,14 +40,6 @@ export default function PersonaStacksSection({ data }: { data: CategoryData }) {
                   <p className="text-xs tabular-nums text-emerald-300">{r.winner!.score.toFixed(0)}/100</p>
                 </div>
               </Link>
-              {runnerUp && (
-                <p className="mt-3 flex items-center gap-1.5 text-xs text-zinc-500">
-                  Runner-up: <ProductLogo product={runnerUp} size={16} /> {runnerUp.name} ({r.runnerUp!.score.toFixed(0)}/100)
-                </p>
-              )}
-              <p className="mt-2 text-xs text-zinc-500">
-                {r.storyCount} {r.persona} {r.storyCount === 1 ? 'story' : 'stories'} scored
-              </p>
             </div>
           )
         })}

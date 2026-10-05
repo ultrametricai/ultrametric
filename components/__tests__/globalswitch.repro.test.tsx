@@ -9,7 +9,7 @@ describe('founder repro: selecting Global on a process page', () => {
   beforeEach(() => { window.history.replaceState(null, '', '/processes/incorporate-c-corp'); window.localStorage.clear(); setGeoChoice(null) })
   afterEach(cleanup)
   it('US default → click Global: pill activates, URL+storage written, banner goes global', () => {
-    render(<><GeoSwitcher /><ProcessGeoBanner geoScope="us" notes={[{ country: 'DE', summary: 'German analog', actionUrl: 'https://example.de', actionLabel: 'Handelsregister' }]} /></>)
+    render(<><GeoSwitcher /><ProcessGeoBanner geoScope="us" notes={[{ country: 'DE', kind: 'analog', summary: 'German analog', actionUrl: 'https://example.de', actionLabel: 'Handelsregister' }]} /></>)
     const globalPill = screen.getByRole('button', { name: /Global/ })
     fireEvent.click(globalPill)
     expect(globalPill.getAttribute('aria-pressed')).toBe('true')
@@ -18,7 +18,7 @@ describe('founder repro: selecting Global on a process page', () => {
     expect(document.body.textContent).toContain('Country mappings exist for')
   })
   it('DE → Global: banner leaves the DE view', () => {
-    render(<><GeoSwitcher /><ProcessGeoBanner geoScope="us" notes={[{ country: 'DE', summary: 'German analog', actionUrl: 'https://example.de', actionLabel: 'Handelsregister' }]} /></>)
+    render(<><GeoSwitcher /><ProcessGeoBanner geoScope="us" notes={[{ country: 'DE', kind: 'analog', summary: 'German analog', actionUrl: 'https://example.de', actionLabel: 'Handelsregister' }]} /></>)
     fireEvent.click(screen.getByRole('button', { name: /Germany|DE/ }))
     expect(document.body.textContent).toContain('German analog')
     fireEvent.click(screen.getByRole('button', { name: /Global/ }))

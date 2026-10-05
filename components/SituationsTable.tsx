@@ -3,7 +3,7 @@ import CeilingBar from '@/components/CeilingBar'
 import IconChip from '@/components/IconChip'
 import UrgencyChip from '@/components/UrgencyChip'
 import type { ProcessRow } from '@/components/ProcessesTable'
-import { GEO_SCOPE_GLYPH } from '@/lib/geoPreference'
+import { usFlagGlyph } from '@/lib/geoPreference'
 import { phaseIcon, phaseTooltip } from '@/lib/processIcons'
 
 // The /situations index table (founder 2026-10-02: situations get their own area — the rows
@@ -16,8 +16,9 @@ import { phaseIcon, phaseTooltip } from '@/lib/processIcons'
 // CeilingBar), so the two indexes read as one system.
 //
 // Rows link to the detail pages, which STAY at /processes/<slug> this round (URL stability).
-// Every row always wears its SHARP geo-scope glyph (🌐 / 🇺🇸 / 🏛): there is no geo dropdown
-// here, so the server render carries the full honesty up front.
+// Scope glyphs follow the /processes rule (founder batch 2026-10-02): us/us-state rows wear
+// the 🇺🇸 flag (usFlagGlyph — keyed strictly on geoScope, the label telling federal from state
+// work); global rows wear no scope glyph at all.
 
 export default function SituationsTable({ rows }: { rows: ProcessRow[] }) {
   return (
@@ -46,6 +47,7 @@ export default function SituationsTable({ rows }: { rows: ProcessRow[] }) {
         <tbody className="divide-y divide-zinc-800/70">
           {rows.map((r) => {
             const href = `/processes/${r.slug}`
+            const flag = usFlagGlyph(r.geoScope)
             return (
               <tr key={r.slug} className="transition hover:bg-zinc-800/70">
                 <td className="max-w-[320px] px-2 py-2">
@@ -54,9 +56,11 @@ export default function SituationsTable({ rows }: { rows: ProcessRow[] }) {
                     <Link href={href} className="font-medium hover:text-emerald-300">
                       {r.title}
                     </Link>
-                    <span aria-hidden className="text-[10px] opacity-70" title={GEO_SCOPE_GLYPH[r.geoScope].label}>
-                      {GEO_SCOPE_GLYPH[r.geoScope].glyph}
-                    </span>
+                    {flag !== null && (
+                      <span aria-hidden className="text-[10px] opacity-70" title={flag.label}>
+                        {flag.glyph}
+                      </span>
+                    )}
                   </span>
                   {/* The trigger — the event that puts a founder here — is the row's subtitle,
                       the same presentation the situation rows had on /processes. */}

@@ -11,7 +11,7 @@
 // Pure, client-safe (no node builtins); UTC ISO-date arithmetic only, like deadlines.ts
 // and vesting.ts. Cents-exact allocation REUSES the waterfall module's allocateCents
 // (largest remainder — cited there); no parallel rounding scheme. Registered in
-// business-logic/README.md; tested in lib/openstartup/__tests__/deferredRevenue.test.ts.
+// open-modules/README.md; tested in lib/openstartup/__tests__/deferredRevenue.test.ts.
 //
 // Source (verified 2026-10-02): Stripe Docs, "Revenue Recognition examples" and
 // "Subscription examples" (https://docs.stripe.com/revenue-recognition/examples,

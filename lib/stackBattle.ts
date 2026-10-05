@@ -5,7 +5,7 @@
 // per-arena evidence scores (means, coverage counts, verified-interconnect counts), NOT a
 // judged head-to-head. Scores are computed within each product's own arena, so cross-arena
 // aggregates are directional; the one place a real judged battle exists — two products in the
-// SAME arena — the slot row links to its /vs/ page instead of pretending this page judged it.
+// SAME arena — the slot row links to its arena battle page instead of pretending this page judged it.
 import type { MyStackProduct } from './myStack'
 import { stackPairKey } from './stackBuilder'
 
@@ -67,7 +67,7 @@ export interface SlotComparison {
   b: MyStackProduct[]
   /** Which side's best Overall score wins this slot — null when a side is empty or unscored. */
   winner: 'a' | 'b' | 'tie' | null
-  /** `/vs/{slug}` when exactly one product per side and their judged battle page exists. */
+  /** `/arena/{arenaId}/battle/{slug}` when exactly one product per side and their judged battle page exists. */
   battleHref: string | null
 }
 
@@ -76,9 +76,11 @@ const bestScore = (products: MyStackProduct[]): number | null => {
   return scores.length > 0 ? Math.max(...scores) : null
 }
 
-// battleSlugs: every existing `/vs/` slug (`{a}-vs-{b}` in the battle's stored order) — passed
-// down from the server (lib/data.ts battles) because the client can't know which order a
-// pair's battle was generated in, and a dead /vs/ link would be worse than no link.
+// battleSlugs: every existing battle page as an `{arenaId}/{a}-vs-{b}` key (`{a}-vs-{b}` in the
+// battle's stored order) — passed down from the server (lib/data.ts battles) because the client
+// can't know which order a pair's battle was generated in, and a dead battle link would be
+// worse than no link. The arena prefix matters: the same pair battles in two arenas in a few
+// cases, and the slot row must link its own arena's battle.
 export function slotComparisons(
   aProducts: MyStackProduct[],
   bProducts: MyStackProduct[],
@@ -105,7 +107,8 @@ export function slotComparisons(
       if (a.length === 1 && b.length === 1 && a[0].id !== b[0].id) {
         const forward = `${a[0].id}-vs-${b[0].id}`
         const backward = `${b[0].id}-vs-${a[0].id}`
-        battleHref = slugs.has(forward) ? `/vs/${forward}` : slugs.has(backward) ? `/vs/${backward}` : null
+        const slug = slugs.has(`${arenaId}/${forward}`) ? forward : slugs.has(`${arenaId}/${backward}`) ? backward : null
+        battleHref = slug ? `/arena/${arenaId}/battle/${slug}` : null
       }
       return { arenaId, arenaName, a, b, winner, battleHref }
     })

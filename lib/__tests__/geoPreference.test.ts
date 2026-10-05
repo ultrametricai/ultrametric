@@ -15,6 +15,7 @@ import {
   setGeoChoice,
   setGeoSelection,
   subscribeGeoSelection,
+  usFlagGlyph,
   type GeoNotesByCountry,
 } from '@/lib/geoPreference'
 
@@ -31,6 +32,8 @@ describe('?geo= codec', () => {
     expect(parseGeo(' de ')).toBe('DE')
     expect(parseGeo('in')).toBe('IN')
     expect(parseGeo('fr')).toBe('FR')
+    expect(parseGeo('pt')).toBe('PT')
+    expect(parseGeo('ca')).toBe('CA')
   })
 
   it('collapses the default and junk to null — never a crash, never an invalid country', () => {
@@ -47,7 +50,7 @@ describe('?geo= codec', () => {
     expect(serializeGeo('FR')).toBe('fr')
     expect(serializeGeo(null)).toBeNull()
     // Round trip: everything serializable parses back to itself.
-    for (const c of ['UK', 'IN', 'DE', 'FR'] as const) {
+    for (const c of ['UK', 'IN', 'DE', 'FR', 'PT', 'CA'] as const) {
       expect(parseGeo(serializeGeo(c))).toBe(c)
     }
   })
@@ -72,7 +75,7 @@ describe('the GeoChoice codec (countries + the explicit 🌐 Global)', () => {
     expect(serializeGeoChoice(GEO_GLOBAL)).toBe('global')
     expect(serializeGeoChoice('UK')).toBe('uk')
     expect(serializeGeoChoice(null)).toBeNull()
-    for (const c of ['UK', 'IN', 'DE', 'FR', GEO_GLOBAL] as const) {
+    for (const c of ['UK', 'IN', 'DE', 'FR', 'PT', 'CA', GEO_GLOBAL] as const) {
       expect(parseGeoChoice(serializeGeoChoice(c))).toBe(c)
     }
     // Default byte-identical guarantee for existing consumers: a stored/URL 'global' is the
@@ -122,8 +125,8 @@ describe('the shared per-tab store', () => {
 })
 
 describe('display metadata', () => {
-  it('covers all five countries and all three geo scopes', () => {
-    expect(GEO_COUNTRIES).toEqual(['US', 'UK', 'IN', 'DE', 'FR'])
+  it('covers all seven countries and all three geo scopes', () => {
+    expect(GEO_COUNTRIES).toEqual(['US', 'UK', 'IN', 'DE', 'FR', 'PT', 'CA'])
     for (const c of GEO_COUNTRIES) {
       expect(GEO_PREF_META[c].label).toBeTruthy()
       expect(GEO_PREF_META[c].flag).toBeTruthy()
@@ -132,6 +135,16 @@ describe('display metadata', () => {
       expect(GEO_SCOPE_GLYPH[s].glyph).toBeTruthy()
       expect(GEO_SCOPE_GLYPH[s].label).toBeTruthy()
     }
+  })
+
+  // The title-trailing scope glyph rule (founder batch 2026-10-02): keys STRICTLY on geoScope.
+  it('usFlagGlyph: 🇺🇸 for us AND us-state (labels telling them apart); NEVER for global or the shared-catalog null', () => {
+    expect(usFlagGlyph('us')?.glyph).toBe('🇺🇸')
+    expect(usFlagGlyph('us-state')?.glyph).toBe('🇺🇸')
+    expect(usFlagGlyph('us')!.label).not.toBe(usFlagGlyph('us-state')!.label)
+    // A geoScope-'global' record can never render the flag (the qs_023 audit).
+    expect(usFlagGlyph('global')).toBeNull()
+    expect(usFlagGlyph(null)).toBeNull()
   })
 })
 
@@ -163,7 +176,7 @@ describe('hiddenInCountryView (the country-view filter rule)', () => {
   })
 
   it('a US-scoped row with no notes at all hides under every country view', () => {
-    for (const c of ['IN', 'UK', 'DE', 'FR'] as const) {
+    for (const c of ['IN', 'UK', 'DE', 'FR', 'PT', 'CA'] as const) {
       expect(hiddenInCountryView(row('us'), c)).toBe(true)
       expect(hiddenInCountryView(row('us-state'), c)).toBe(true)
     }

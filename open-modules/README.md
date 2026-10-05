@@ -1,6 +1,6 @@
 # Open modules — decision support, calculations, calendars, comparisons
 
-Part of [the open startup repo](../README.md#business-logic): the open modules — reusable
+Part of [the open startup repo](../README.md#open-modules): the open modules — reusable
 decision support, calculations, calendars, and comparisons — separate from law (`rules/`)
 and the vendor evidence layer (`vendors/`, `data/`). The modules live in `lib/openstartup/`
 and are indexed in the table below; every one is pure, client-safe, deterministic, and

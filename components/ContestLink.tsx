@@ -1,11 +1,9 @@
+import { flagVerdictUrl } from '@/lib/contestUrl'
 import type { Verdict } from '@/lib/schemas'
-import { REPO } from '@/lib/site'
-
-const REPO_ISSUES_URL = `https://github.com/${REPO}/issues/new`
 
 // A quick, always-available "something's wrong here" flag on every verdict. It's just a
-// prefilled GitHub issue link — the deeper check (adding evidence, re-judging, deriving)
-// is still a maintainer/PR flow, documented in CONTRIBUTING.md.
+// prefilled GitHub issue link (lib/contestUrl.ts) — the deeper check (adding evidence,
+// re-judging, deriving) is still a maintainer/PR flow, documented in CONTRIBUTING.md.
 export default function ContestLink({
   category,
   productId,
@@ -17,19 +15,9 @@ export default function ContestLink({
   storyId: string
   verdict: Verdict
 }) {
-  const title = `[flag] ${category}/${productId}/${storyId}`
-  const body = `**Category**\n${category}\n\n**Product**\n${productId}\n\n**Story id**\n${storyId}\n\n**Current verdict**\n${verdict.verdict}, quality ${verdict.quality}\n\n**Proposed verdict**\n<!-- what you think it should be, and why -->\n\n**Evidence URLs**\n<!-- one or more source URLs supporting your proposed verdict -->\n\n**Quotes**\n<!-- verbatim excerpt(s) from each URL above -->\n`
-
-  const params = new URLSearchParams({
-    template: 'flag-verdict.yml',
-    title,
-    labels: 'contest',
-    body,
-  })
-
   return (
     <a
-      href={`${REPO_ISSUES_URL}?${params.toString()}`}
+      href={flagVerdictUrl({ category, productId, storyId, verdict: verdict.verdict, quality: verdict.quality })}
       target="_blank"
       rel="noopener noreferrer"
       title="Think this verdict is wrong? Flag it — opens a prefilled public GitHub issue with the evidence attached"

@@ -41,6 +41,10 @@ export const staticTargets = [
   { trace: 'vs/[slug]/page.js.nft.json', route: '/vs/[slug]' },
   { trace: 'arena/[category]/product/[id]/page.js.nft.json', route: '/arena/[category]/product/[id]' },
   { trace: 'ops/page.js.nft.json', route: '/ops' },
+  // The ⌘K palette index route (app/search-index.json/route.ts): force-static, so its
+  // buildAllSearchEntries() fs reads happen at build time only and its deployment trace must
+  // stay data-free like every other static route's.
+  { trace: 'search-index.json/route.js.nft.json', route: '/search-index.json' },
 ]
 const excludedDirs = ['data', 'public', 'pipeline', 'docs', 'content', 'processes', 'journeys', 'vendors']
 

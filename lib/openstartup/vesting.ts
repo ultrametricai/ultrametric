@@ -8,7 +8,7 @@
 // summaries at departure, back-loaded and quarterly/annual variants, advisor grants per the
 // published FAST grid, single- and double-trigger acceleration outcomes, and additive
 // composition of refresh grants. Pure, client-safe (no node builtins), deterministic;
-// registered in business-logic/README.md; tested in
+// registered in open-modules/README.md; tested in
 // lib/openstartup/__tests__/vesting.test.ts (worked examples replayed from the cited
 // sources, properties checked: cumulative vesting never decreases, totals are exact).
 //

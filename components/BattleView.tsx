@@ -60,11 +60,11 @@ export default function BattleView({
     return (
       <li key={round.storyId} className="overflow-hidden rounded-xl border border-zinc-800">
         <details className="group">
-          <summary className="flex cursor-pointer select-none items-baseline gap-2 px-4 py-2.5 transition hover:bg-zinc-900/50 [&::-webkit-details-marker]:hidden">
+          <summary className="um-round-summary">
             <span aria-hidden className="text-xs text-zinc-600 transition group-open:rotate-90">
               ▸
             </span>
-            <h4 className="min-w-0 flex-1 truncate text-sm font-medium group-open:whitespace-normal">
+            <h4 className="um-round-title">
               <PersonaChip persona={parsed.persona ?? story.persona} className="mr-1.5" />
               {parsed.action}
             </h4>
@@ -112,7 +112,7 @@ export default function BattleView({
                     const e = evidence.get(id)!
                     return (
                       <li key={id} className="text-xs text-zinc-500">
-                        <a href={e.url} target="_blank" rel="noopener noreferrer" title={`Open the cited source (tier ${e.tier} evidence)`} className="underline decoration-zinc-700 hover:text-emerald-300">
+                        <a href={e.url} target="_blank" rel="noopener noreferrer" title={`Open the cited source (tier ${e.tier} evidence)`} className="um-cite-link">
                           [{e.tier}]
                         </a>{' '}
                         &ldquo;{e.excerpt.length > 140 ? e.excerpt.slice(0, 140) + '…' : e.excerpt}&rdquo;
@@ -191,7 +191,7 @@ export default function BattleView({
           const byGroup = groupInOrder(rounds, (r) => storyById.get(r.storyId)!.group)
           return (
             <div key={theme}>
-              <h2 className="sticky top-0 z-10 -mx-5 flex items-center gap-1.5 border-b border-zinc-800 bg-zinc-950/95 px-5 py-2 text-sm font-semibold uppercase tracking-widest text-emerald-400 backdrop-blur">
+              <h2 className="um-theme-bar">
                 <ThemeIcon theme={theme} />
                 {humanizeTheme(theme)}
               </h2>

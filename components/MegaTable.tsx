@@ -17,6 +17,7 @@ import TrendArrow from '@/components/TrendArrow'
 import WatchButton from '@/components/WatchButton'
 import EnterpriseBadge from '@/components/EnterpriseBadge'
 import YcBadge from '@/components/YcBadge'
+import { belowCompactStarsFloor } from '@/lib/popularity'
 import { useSession } from '@/lib/session'
 import { readParams, setParams } from '@/lib/urlState'
 import { arenaIcon } from '@/lib/arenaIcons'
@@ -371,7 +372,11 @@ export default function MegaTable({ rows, arenas }: { rows: MegaTableRow[]; aren
                     )}
                   </td>
                   <td className="hidden px-2 py-2 md:table-cell">
-                    {row.popularity === null ? (
+                    {/* Tiny stars-only records fall through with the null branch (founder
+                        2026-10-02, the ByteAsk case — see lib/popularity.ts's
+                        belowCompactStarsFloor): the guard here keeps an empty GitHub <a>
+                        wrapper from rendering around a suppressed chip. */}
+                    {row.popularity === null || belowCompactStarsFloor({ fetchedAt: '', stars: row.popularity }) ? (
                       isNotablyPopular(row.productId) ? <PopularTag /> : null
                     ) : (
                       row.githubUrl ? (

@@ -34,7 +34,7 @@ export interface Rival {
   rank: number
   /** Top story-level wins over X, widest margin first (at most `maxWins`). */
   wins: RivalWin[]
-  /** Slug for the /vs/[slug] battle page covering this pair. */
+  /** Slug for the arena battle page (/arena/{category}/battle/{slug}) covering this pair. */
   battleSlug: string
 }
 

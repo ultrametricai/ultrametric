@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useRef, useState } from 'react'
-import { REPO } from '@/lib/site'
+import { flagVerdictUrl } from '@/lib/contestUrl'
 
 // The ⋯ menu at the right end of every story-verdict row (founder 2026-09-18): one tap-able
 // home for per-row actions so they don't crowd the row. First (and currently only) action:
@@ -39,14 +39,7 @@ export default function RowMenu({
     }
   }, [open])
 
-  const title = `[flag] ${category}/${productId}/${storyId}`
-  const body = `**Category**\n${category}\n\n**Product**\n${productId}\n\n**Story id**\n${storyId}\n\n**Current verdict**\n${verdict}, quality ${quality}\n\n**Proposed verdict**\n<!-- what you think it should be, and why -->\n\n**Evidence URLs**\n<!-- one or more source URLs supporting your proposed verdict -->\n\n**Quotes**\n<!-- verbatim excerpt(s) from each URL above -->\n`
-  const flagUrl = `https://github.com/${REPO}/issues/new?${new URLSearchParams({
-    template: 'flag-verdict.yml',
-    title,
-    labels: 'contest',
-    body,
-  }).toString()}`
+  const flagUrl = flagVerdictUrl({ category, productId, storyId, verdict, quality })
 
   return (
     <div ref={rootRef} className="relative inline-block">

@@ -219,7 +219,7 @@ describe('VirtualStartup — control icons never move an accessible name', () =>
 })
 
 describe('VirtualStartup — the Geo dropdown (founder round 4, item 3: a house listbox, not pills)', () => {
-  it('closed, the trigger shows the current country (default 🇺🇸 USA); open, the list is Global/USA/UK/India/Germany/France', () => {
+  it('closed, the trigger shows the current country (default 🇺🇸 USA); open, the list is Global/USA/UK/India/Germany/France/Portugal/Canada', () => {
     renderIt()
     const trigger = screen.getByTestId('vs-geo-trigger')
     expect(trigger.getAttribute('aria-haspopup')).toBe('listbox')
@@ -228,13 +228,13 @@ describe('VirtualStartup — the Geo dropdown (founder round 4, item 3: a house 
     fireEvent.click(trigger)
     const list = screen.getByRole('listbox', { name: 'Country view options' })
     expect(within(list).getAllByRole('option').map((o) => o.getAttribute('aria-label'))).toEqual([
-      'Global', 'USA', 'UK', 'India', 'Germany', 'France',
+      'Global', 'USA', 'UK', 'India', 'Germany', 'France', 'Portugal', 'Canada',
     ])
     // The flags still render, and each option carries its honesty sublabel (item 3: the removed
     // tooltips' copy moved into the list).
     const optionText = within(list).getAllByRole('option').map((o) => o.textContent ?? '').join(' ')
-    for (const flag of ['🌐', '🇺🇸', '🇬🇧', '🇮🇳', '🇩🇪', '🇫🇷']) expect(optionText).toContain(flag)
-    expect(within(list).getAllByTestId('vs-geo-detail').length).toBe(6)
+    for (const flag of ['🌐', '🇺🇸', '🇬🇧', '🇮🇳', '🇩🇪', '🇫🇷', '🇵🇹', '🇨🇦']) expect(optionText).toContain(flag)
+    expect(within(list).getAllByTestId('vs-geo-detail').length).toBe(8)
     expect(screen.getByTestId('vs-geo-usa').getAttribute('aria-selected')).toBe('true')
     // Picking a country closes the list and the trigger takes its flag + name.
     fireEvent.click(screen.getByTestId('vs-geo-in'))

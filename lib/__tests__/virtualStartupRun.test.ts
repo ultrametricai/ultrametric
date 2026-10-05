@@ -569,12 +569,14 @@ describe('permalink — the whole run state round-trips through ?run= (v2), and 
       base[i] = digit
       return base.join('')
     }
-    // Entity: c-corp/llc keep 0/1; the six country entities append as 2–7; 8 rejects.
+    // Entity: c-corp/llc keep 0/1; the country entities append as 2–9 (PT/CA took 8/9 in the
+    // 2026-10-03 new-countries wave — old digits still mean what they always meant).
     expect(decodeCombo(digitAt('entity', '0'))!.entity).toBe('c-corp')
     expect(decodeCombo(digitAt('entity', '1'))!.entity).toBe('llc')
     expect(decodeCombo(digitAt('entity', '2'))!.entity).toBe('ltd')
     expect(decodeCombo(digitAt('entity', '7'))!.entity).toBe('pvt-ltd')
-    expect(decodeCombo(digitAt('entity', '8'))).toBeNull()
+    expect(decodeCombo(digitAt('entity', '8'))!.entity).toBe('lda')
+    expect(decodeCombo(digitAt('entity', '9'))!.entity).toBe('ca-corp')
     // Business model: subscriptions/invoices keep 0/1; marketplace/usage/ecommerce append.
     expect(decodeCombo(digitAt('product', '0'))!.product).toBe('subscriptions')
     expect(decodeCombo(digitAt('product', '1'))!.product).toBe('invoices')

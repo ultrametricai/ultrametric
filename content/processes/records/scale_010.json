@@ -11,14 +11,14 @@
       "id": "n1",
       "kind": "decision",
       "title": "Set up the data warehouse",
-      "guidance": null,
+      "guidance": "Use representative source data and reporting queries to choose the warehouse. Compare expected refresh delay, query behavior, access controls, operating effort and billing model, with data-location constraints explicit. Provision the selected account and initial resources within the data owner's access and budget scope. Start with a limited dataset that can reveal ingestion and modeling problems before copying production history or building executive reports on it.",
       "when": null,
       "ref": null,
       "options": [
         {
           "id": "default",
           "title": "Default — Set up the data warehouse",
-          "summary": "",
+          "summary": "For Snowflake, choose the account, region, database/schema and warehouse compute settings for the trial workload. Review size, suspension/resumption and query timeouts within the data owner's authorized resource scope. Test loading and reporting with separate limited identities, then inspect query behavior and measured usage. Adjust compute from the observed workload; keep warehouse compute cost visible alongside storage and other costs when comparing the trial with the proposed budget.",
           "when": null,
           "parts": [],
           "notes": [],
@@ -37,6 +37,13 @@
               "kind": "category",
               "id": "data-warehouses",
               "role": "rankings"
+            },
+            {
+              "kind": "url",
+              "url": "https://docs.snowflake.com/en/user-guide/warehouses-overview?lang=en",
+              "title": "Snowflake warehouse overview",
+              "description": null,
+              "role": "authored-guidance-source"
             }
           ],
           "metadata": {
@@ -51,7 +58,7 @@
         {
           "id": "bigquery-gcp",
           "title": "BigQuery (GCP-standardized)",
-          "summary": "On a GCP-standardized stack the warehouse is serverless BigQuery - no cluster to size, billing by query.",
+          "summary": "Use the intended Google Cloud project and dataset location, with ingestion and reader permissions limited to their jobs. Check which BigQuery pricing model the company selected before choosing cost controls. For on-demand queries, inspect estimated bytes processed and set suitable limits before running an expensive trial. Test a small load and a representative report under the data owner's authorized scope. Limit ingestion to authorized data locations.",
           "when": "GCP-standardized stack - the warehouse is serverless BigQuery",
           "parts": [],
           "notes": [],
@@ -60,6 +67,20 @@
               "kind": "vendor",
               "id": "bigquery",
               "role": "stated-vendor"
+            },
+            {
+              "kind": "url",
+              "url": "https://docs.cloud.google.com/bigquery/docs/best-practices-costs",
+              "title": "Estimate and control BigQuery costs",
+              "description": null,
+              "role": "authored-guidance-source"
+            },
+            {
+              "kind": "url",
+              "url": "https://docs.cloud.google.com/docs/get-started.md.txt",
+              "title": "Get started with Google Cloud",
+              "description": null,
+              "role": "authored-guidance-source"
             }
           ],
           "metadata": {
@@ -71,7 +92,7 @@
         {
           "id": "motherduck-small-data",
           "title": "MotherDuck (small data)",
-          "summary": "At seed-stage data volumes a DuckDB-based warehouse is cheaper and simpler than enterprise platforms - and migrates cleanly later if volumes demand it.",
+          "summary": "Trial MotherDuck with the data volume, queries and client connections the team expects to use. Check its current region, organization access and billing arrangement, then load a representative subset within the data owner's authorized scope. Test a report, a changed source record and an export that another tool can read. Compare measured cost and operating effort with the alternatives using the same workload.",
           "when": "Seed-stage data volumes - a DuckDB-based warehouse over an enterprise platform",
           "parts": [],
           "notes": [],
@@ -80,6 +101,13 @@
               "kind": "vendor",
               "id": "motherduck",
               "role": "stated-vendor"
+            },
+            {
+              "kind": "url",
+              "url": "https://motherduck.com/docs/key-tasks/managing-organizations/",
+              "title": "MotherDuck organizations",
+              "description": null,
+              "role": "authored-guidance-source"
             }
           ],
           "metadata": {
@@ -90,14 +118,36 @@
         }
       ],
       "notes": [],
-      "references": [],
+      "references": [
+        {
+          "kind": "url",
+          "url": "https://docs.snowflake.com/en/user-guide/warehouses-overview?lang=en",
+          "title": "Snowflake warehouse overview",
+          "description": null,
+          "role": "authored-guidance-source"
+        },
+        {
+          "kind": "url",
+          "url": "https://docs.cloud.google.com/bigquery/docs/best-practices-costs",
+          "title": "Estimate and control BigQuery costs",
+          "description": null,
+          "role": "authored-guidance-source"
+        },
+        {
+          "kind": "url",
+          "url": "https://motherduck.com/docs/key-tasks/managing-organizations/",
+          "title": "MotherDuck organizations",
+          "description": null,
+          "role": "authored-guidance-source"
+        }
+      ],
       "metadata": {}
     },
     {
       "id": "n2",
       "kind": "step",
       "title": "Configure CDP event sources",
-      "guidance": null,
+      "guidance": "Map each application source to its event names, identifiers and permitted properties. Keep development and production traffic distinguishable. Send synthetic records through the customer-data platform and inspect the actual payload, including timestamps, user/account identity and unexpected personal fields. Enable live collection only within the data owner's approved source and destination scope. Check how a renamed event or duplicate submission will appear before downstream models depend on those fields.",
       "when": null,
       "ref": null,
       "options": [],
@@ -117,6 +167,20 @@
           "kind": "category",
           "id": "customer-data-platforms",
           "role": "rankings"
+        },
+        {
+          "kind": "url",
+          "url": "https://www.twilio.com/docs/segment/connections",
+          "title": "Segment Connections overview",
+          "description": null,
+          "role": "authored-guidance-source"
+        },
+        {
+          "kind": "url",
+          "url": "https://posthog.com/docs/product-analytics/privacy",
+          "title": "PostHog product analytics privacy controls",
+          "description": null,
+          "role": "authored-guidance-source"
         }
       ],
       "metadata": {
@@ -131,12 +195,20 @@
       "id": "n3",
       "kind": "step",
       "title": "Draft the warehouse data models",
-      "guidance": null,
+      "guidance": "Define what one row represents before joining tables: an account, event, invoice or line item can produce very different totals. Map keys and fields to their sources, and specify how updates, duplicates, late arrivals, missing values and timezones are handled. Build a small sample and trace representative rows through each transformation. Label unsettled definitions for measures such as revenue or active customers and show how each proposed definition changes the result.",
       "when": null,
       "ref": null,
       "options": [],
       "notes": [],
-      "references": [],
+      "references": [
+        {
+          "kind": "url",
+          "url": "https://www.twilio.com/docs/segment/connections",
+          "title": "Segment Connections overview",
+          "description": null,
+          "role": "authored-guidance-source"
+        }
+      ],
       "metadata": {
         "route": "agent",
         "reversibility": "reversible",
@@ -149,7 +221,7 @@
       "id": "n4",
       "kind": "step",
       "title": "Connect the CDP to the warehouse",
-      "guidance": null,
+      "guidance": "Configure the documented connector for the chosen source and warehouse using a limited ingestion identity. Check supported types, destination tables and historical-load behavior before enabling the data owner's authorized transfer scope. Start with a small load and compare source records with destination rows, keys and timestamps. For Segment warehouse connections, evaluate freshness against the documented batch-loading behavior. Establish how operators will detect a failed sync and restart it safely.",
       "when": null,
       "ref": null,
       "options": [],
@@ -159,6 +231,13 @@
           "kind": "vendor",
           "id": "segment",
           "role": "stated-vendor"
+        },
+        {
+          "kind": "url",
+          "url": "https://www.twilio.com/docs/segment/connections",
+          "title": "Segment Connections overview",
+          "description": null,
+          "role": "authored-guidance-source"
         }
       ],
       "metadata": {
@@ -173,12 +252,20 @@
       "id": "n5",
       "kind": "step",
       "title": "Verify data pipelines",
-      "guidance": null,
+      "guidance": "Reconcile a known source interval after its load should have completed. Compare counts and totals, then inspect duplicates, missing keys, updates and timezone boundaries that aggregate counts can conceal. Replay a controlled failed or delayed load and check whether recovery omits or duplicates records. Investigate discrepancies before dashboards rely on the tables, and expose the last successful refresh so report readers can recognize stale data.",
       "when": null,
       "ref": null,
       "options": [],
       "notes": [],
-      "references": [],
+      "references": [
+        {
+          "kind": "url",
+          "url": "https://www.twilio.com/docs/segment/connections",
+          "title": "Segment Connections overview",
+          "description": null,
+          "role": "authored-guidance-source"
+        }
+      ],
       "metadata": {
         "route": "agent",
         "reversibility": "reversible",
@@ -191,7 +278,7 @@
       "id": "n6",
       "kind": "step",
       "title": "Set up Metabase dashboards",
-      "guidance": null,
+      "guidance": "Connect Metabase with the authorized reporting identity and expose the models needed by its audience. Check data permissions and dashboard/collection permissions separately, then view the result as an ordinary reader. Reconcile chart totals with direct warehouse queries and test filters on known records. Share or schedule notifications only for the intended recipients, checking which fields and links they can see in the delivered report.",
       "when": null,
       "ref": null,
       "options": [],
@@ -201,6 +288,13 @@
           "kind": "vendor",
           "id": "metabase",
           "role": "stated-vendor"
+        },
+        {
+          "kind": "url",
+          "url": "https://www.metabase.com/docs/latest/permissions/start",
+          "title": "Metabase permissions overview",
+          "description": null,
+          "role": "authored-guidance-source"
         }
       ],
       "metadata": {
@@ -214,12 +308,20 @@
       "id": "n7",
       "kind": "step",
       "title": "Create executive dashboard",
-      "guidance": null,
+      "guidance": "Select metrics tied to the executive team's recurring decisions, with a definition, period, source and business owner for each. Show the comparison that makes a change interpretable, such as the previous period or plan. Reconcile financial numbers with the finance report before distributing the dashboard through its authorized audience. Label freshness and exclusions, and link unexpected movements to the supporting account, cohort or transaction detail.",
       "when": null,
       "ref": null,
       "options": [],
       "notes": [],
-      "references": [],
+      "references": [
+        {
+          "kind": "url",
+          "url": "https://www.metabase.com/docs/latest/permissions/start",
+          "title": "Metabase permissions overview",
+          "description": null,
+          "role": "authored-guidance-source"
+        }
+      ],
       "metadata": {
         "route": "person",
         "reversibility": "reversible",
