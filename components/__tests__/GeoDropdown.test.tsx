@@ -173,6 +173,45 @@ describe('picks write the param/storage exactly as before (the codec is untouche
   })
 })
 
+describe('the menu stays attached to its trigger (founder bug 2026-10-05: "the geo menu is disconnected from the initial clickable dropdown Global")', () => {
+  it('walks the founder sequence inside a block container: Global → open → India → reopen (India ✓) → Global — the trigger label tracks every pick', () => {
+    // The detail-page shape that exposed the bug: the dropdown as the only child of a
+    // full-width block container (app/processes/[slug] renders it inside a plain div).
+    const r = render(
+      <div>
+        <GeoDropdown defaultChoice={GEO_GLOBAL} />
+      </div>,
+    )
+    expect(trigger(r).textContent).toContain('Global')
+    let list = openList(r)
+    const option = (name: string) =>
+      [...list.querySelectorAll('[role="option"]')].find((o) => o.textContent?.includes(name)) as HTMLElement
+    expect(option('Global').getAttribute('aria-selected')).toBe('true')
+    fireEvent.click(option('India'))
+    expect(trigger(r).textContent).toContain('India')
+    expect(url()).toBe(`${PATH}?geo=in`)
+    list = openList(r)
+    expect(option('India').getAttribute('aria-selected')).toBe('true')
+    fireEvent.click(option('Global'))
+    expect(trigger(r).textContent).toContain('Global')
+    expect(url()).toBe(`${PATH}?geo=global`)
+  })
+
+  it('the popover anchors to the trigger, not the surrounding container: shrink-to-fit root (inline-flex) + top-full, sharing the trigger parent', () => {
+    const r = render(<GeoDropdown defaultChoice={GEO_GLOBAL} />)
+    const list = openList(r)
+    const root = trigger(r).parentElement!
+    // jsdom computes no layout, so the pin is structural: the listbox is positioned against the
+    // same `relative` box the trigger fills. A block-level root in a block container spans the
+    // full content width and sends the right-0 menu a page-width away from the trigger (the
+    // founder's "disconnected" report); inline-flex shrinks the anchor box to the trigger.
+    expect(list.parentElement).toBe(root)
+    expect(root.className).toContain('relative')
+    expect(root.className).toContain('inline-flex')
+    expect(list.className).toContain('top-full')
+  })
+})
+
 describe('the detail-page seam (flipped this round — founder 2026-10-02: detail pages render the dropdown, Global-first)', () => {
   it('defaultChoice=GEO_GLOBAL is trigger framing ONLY: after mount with no param/storage the shared store still reads null, so ProcessGeoBanner/notes/toggles keep the US-default no-selection render', () => {
     const r = render(<GeoDropdown defaultChoice={GEO_GLOBAL} />)

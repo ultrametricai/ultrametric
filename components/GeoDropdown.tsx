@@ -97,7 +97,13 @@ export default function GeoDropdown({ defaultChoice = null }: { defaultChoice?: 
   ]
 
   return (
-    <div ref={rootRef} className="relative">
+    // Shrink-to-fit root (founder bug 2026-10-05: "the geo menu is disconnected from the
+    // clickable 'Global' dropdown" — in a block container, a plain `relative` div spans the full
+    // content width, so the right-0 popover rendered at the container's far edge, a page-width
+    // away from the trigger). inline-flex sizes the anchor box to the trigger itself and
+    // top-full pins the list under it — the VsGeoSelector idiom (PR #90), right-aligned here
+    // because this dropdown usually sits at a controls row's right end.
+    <div ref={rootRef} className="relative inline-flex">
       <button
         type="button"
         aria-haspopup="listbox"
@@ -111,7 +117,7 @@ export default function GeoDropdown({ defaultChoice = null }: { defaultChoice?: 
         <span aria-hidden className="text-[10px] text-zinc-500">▾</span>
       </button>
       {open && (
-        <ul role="listbox" aria-label="Country" className="absolute right-0 z-40 mt-1 w-40 overflow-hidden rounded-lg border border-zinc-800 bg-zinc-900 py-1 shadow-2xl">
+        <ul role="listbox" aria-label="Country" className="absolute right-0 top-full z-40 mt-1 w-40 overflow-hidden rounded-lg border border-zinc-800 bg-zinc-900 py-1 shadow-2xl">
           {options.map((o) => {
             const active = effective === o.value
             return (

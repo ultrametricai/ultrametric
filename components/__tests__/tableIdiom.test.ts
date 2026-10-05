@@ -30,6 +30,8 @@ const ADOPTERS = [
   'components/MegaTable.tsx',
   'components/OpsDashboard.tsx',
   'components/ProcessesTable.tsx',
+  'components/ProcessOpenModulesTable.tsx',
+  'components/ProcessProducesTable.tsx',
   'components/SituationsTable.tsx',
   'components/StackBattle.tsx',
   'components/StackBuilder.tsx',

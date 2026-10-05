@@ -1,23 +1,23 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
-import ArtifactChips from '@/components/ArtifactChips'
 import DoViaAfk from '@/components/DoViaAfk'
 import GeoDropdown from '@/components/GeoDropdown'
 import IconChip from '@/components/IconChip'
 import JurisdictionToggle from '@/components/JurisdictionToggle'
 import ProcessGeoBanner from '@/components/ProcessGeoBanner'
-import OpenModulesMenu from '@/components/OpenModulesMenu'
 import ProcessDag from '@/components/ProcessDag'
 import ProcessGeoNotes from '@/components/ProcessGeoNotes'
 import ProcessLeaderboard from '@/components/ProcessLeaderboard'
 import ProcessLensBanner from '@/components/ProcessLensBanner'
+import ProcessOpenModulesTable from '@/components/ProcessOpenModulesTable'
+import ProcessProducesTable from '@/components/ProcessProducesTable'
 import UrgencyChip from '@/components/UrgencyChip'
 import UsFlowLabel from '@/components/UsFlowLabel'
-import { modulesForProcess } from '@/lib/businessLogicMap'
 import { GEO_GLOBAL } from '@/lib/geoPreference'
+import { processOpenModuleRows } from '@/lib/openModulePages'
 import { buildProcessCheckSteps } from '@/lib/processCheckData'
-import { artifactChipRows } from '@/lib/processDeps'
+import { producedArtifactRows } from '@/lib/processDeps'
 import { phaseIcon, phaseTooltip, processIcon } from '@/lib/processIcons'
 import { processManifestPath, processManifestUrl } from '@/lib/processManifest'
 import {
@@ -85,8 +85,11 @@ export default async function ProcessPage({ params }: { params: Promise<{ slug: 
   // Jurisdiction-conditional steps (stripped from every default surface by loadProcesses) —
   // serialized for the client-side toggle; [] for the many processes that don't branch.
   const jurisSteps = jurisdictionStepViews(task.id)
-  // Open modules serving this process (processes/business-logic-map.json).
-  const openModules = modulesForProcess(task.id)
+  // Open modules serving this process (processes/business-logic-map.json) — the bottom table's
+  // rows, and the condition for the header's anchor affordance.
+  const openModuleRows = processOpenModuleRows(task)
+  // Registry artifacts this process produces — the bottom 'Artifacts it produces' table.
+  const producesRows = producedArtifactRows(task)
 
   return (
     <div className="space-y-10">
@@ -151,19 +154,27 @@ export default async function ProcessPage({ params }: { params: Promise<{ slug: 
         <p className="mt-3 max-w-2xl text-zinc-400">{task.description}</p>
         {/* supportReason no longer renders as a second description line (founder 2026-10-02) —
             it stays corpus data (the ceiling chip's tooltip territory, and the honesty record). */}
-        {/* The typed-I/O layer (founder depth wave part 2, 2026-10-01): what this process
-            Produces as registry artifacts (processes/artifacts.json). The 'Needs:' row no
-            longer renders (founder 2026-10-02 — display only: the requires data and
-            lib/processDeps.ts are untouched); these chips are the machine truth the
-            cross-process dependency graph (lib/processDeps.ts) is built from. */}
-        <ArtifactChips rows={artifactChipRows(task)} />
-        {/* Business-logic ↔ process wiring (founder 2026-10-02): the open lib/openstartup
-            modules that serve this process, from the committed registry
-            processes/business-logic-map.json — chips deep-linking to the module's section in
-            open-modules/README.md on GitHub (the modules are a repo library by design, no site
-            pages). A compact collapsible since 2026-10-05 (components/OpenModulesMenu.tsx);
-            renders nothing for the many unmapped tasks. */}
-        <OpenModulesMenu modules={openModules} />
+        {/* The header 'Produces:' chip row moved to the bottom 'Artifacts it produces' table
+            (founder 2026-10-05) — display only: the typed produces/requires layer and
+            lib/processDeps.ts stay the machine truth the dependency graph is built from. */}
+        {/* Business-logic ↔ process wiring: the 2026-10-05 chip-menu disclosure
+            (OpenModulesMenu, retired same day) became a plain anchor onto the bottom
+            'Open modules' table — the founder's "go to a different table at the bottom of the
+            page to see how it links to those modules there". Renders nothing for the many
+            unmapped tasks. */}
+        {openModuleRows.length > 0 && (
+          <p className="mt-3 text-xs">
+            <a
+              href="#open-modules"
+              title="The open modules (open-source lib/openstartup/ code in the repo) whose cited, tested math serves this process — the table at the bottom of this page shows how each one links to the steps here"
+              className="inline-flex items-center gap-1.5 rounded-lg border border-zinc-800 px-2 py-1 text-zinc-400 transition hover:border-emerald-400/60 hover:text-emerald-300"
+            >
+              <span aria-hidden className="text-[10px]">☰</span>
+              Open modules
+              <span aria-hidden className="text-[10px] text-zinc-500">↓</span>
+            </a>
+          </p>
+        )}
         {/* The per-page situation posture banner was removed (founder 2026-10-02) — the
             sitewide footer line and /terms carry the not-legal-advice posture. */}
         {/* GEO as a top-level driver (founder 2026-09-28: "make GEO a top-level process driver
@@ -242,6 +253,12 @@ export default async function ProcessPage({ params }: { params: Promise<{ slug: 
           US-scoped process — or the local flavor of a flavored global one — curated in the
           corpus (geoNotes); renders nothing for the many processes without. */}
       <ProcessGeoNotes notes={task.geoNotes ?? []} geoScope={task.geoScope} />
+
+      {/* The two bottom tables (founder 2026-10-05): the typed produces layer and the
+          open-module wiring, each rendering nothing where the corpus carries nothing. Produces
+          leads — what the process leaves behind — then the library math that serves its steps. */}
+      <ProcessProducesTable rows={producesRows} />
+      <ProcessOpenModulesTable rows={openModuleRows} />
 
       {/* The 'Agent ceiling' verdict box and the 'Simulate this process' section are gone from
           process pages (founder 2026-09-30) — the per-step route badges and the leaderboard

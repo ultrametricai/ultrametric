@@ -6,7 +6,7 @@ import { DEFAULT_METHOD_ID, methodSelection, subscribeMethodSelections } from '@
 // Default-method content gate for one method-bearing step block (founder 2026-09-30 method
 // variants): wraps the parts of the server-rendered step that describe the DEFAULT method —
 // the route badge, the vendor market rows, the action row, the API calls — and hides them while
-// a variant is selected in components/StepMethodPicker.tsx, whose panel shows the variant's own
+// a variant is selected in components/StepMethodGeo.tsx, whose panel shows the variant's own
 // route/vendors/calls/time instead.
 //
 // The personalization contract holds: the server (and initial-hydration) snapshot is always the

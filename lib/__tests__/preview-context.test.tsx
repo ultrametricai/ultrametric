@@ -66,7 +66,9 @@ it('reuses sourced metadata without treating a vendor package as a process-wide 
   expect(filing.getByText('$109 government fee · as of 2026-10-01')).toBeDefined()
   expect(filing.getByText('open docs:')).toBeDefined()
   expect(filing.getByText('✓ verify:')).toBeDefined()
-  expect(filing.getByText('⚠ if it goes wrong').closest('details')?.open).toBe(false)
+  // The '⚠ if it goes wrong' block no longer renders on steps (founder 2026-10-05) — the
+  // failureModes metadata stays in the record, display only.
+  expect(filing.queryByText('⚠ if it goes wrong')).toBeNull()
   expect(el.container.querySelector('[id="form_001:n5"]')?.textContent).toContain('Certificate of Incorporation')
   // Current main renders produced artifacts only; prerequisites stay in source.
   expect(el.queryByText('Needs:')).toBeNull()

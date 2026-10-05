@@ -1,6 +1,6 @@
 // Method variants, SERVER half (node:fs — the lib/jurisdictions.ts split convention; client
 // shapes + the selection store live in lib/stepMethods.ts). Builds the serializable
-// StepMethodView props components/StepMethodPicker.tsx renders: every vendor chip is resolved
+// StepMethodView props components/StepMethodGeo.tsx renders: every vendor chip is resolved
 // against the live judged market at build time (lib/processes.ts vendorChipInfo /
 // stepVendorOptions — the same machinery the default "via:" rows use), logos are resolved here
 // so the client bundle never touches disk, and each variant's "with this method" ceiling is
