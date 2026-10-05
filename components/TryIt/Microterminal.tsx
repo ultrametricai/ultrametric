@@ -3,7 +3,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import CopyButton from '@/components/CopyButton'
 import {
-  callResultLines, mcpClientConfig, probeResultLines, replayCharCount, tryResultLines,
+  buildRunOptions, callResultLines, mcpClientConfig, probeResultLines, replayCharCount, tryResultLines,
   type McpCallResult, type McpProbeResult, type TryItStory, type TryProbeResult,
 } from '@/lib/tryitReplay'
 
@@ -220,21 +220,26 @@ export default function Microterminal({
 
   return (
     <div className="space-y-3">
-      {/* Story menu: the prefixed user stories each recording proves, plus the one live probe. */}
+      {/* Run-type selector (founder 2026-10-05 redesign): one chip per distinct run type with a
+          short functional label ("Install locally", "MCP handshake", …) instead of the long
+          combined story titles; variants that run the same command path are merged
+          (lib/tryitReplay.ts buildRunOptions). The full story title(s) move into the tooltip,
+          and live-capable recordings wear a small 'live' badge instead of inline text. What
+          runs is unchanged — every chip plays exactly one real recorded story. */}
       <div className="flex flex-wrap items-center gap-2">
-        {stories.map((story) => (
+        {buildRunOptions(stories).map(({ story, label, titles }) => (
           <button
             key={story.id}
             type="button"
             onClick={() => runStory(story.id)}
-            title={story.live ? `Play the recorded proof: ${story.title} — this one can also re-run live from our edge` : `Play the recorded proof: ${story.title}`}
+            title={story.live ? `Play the recorded proof: ${titles.join(' · ')} — this one can also re-run live from our edge` : `Play the recorded proof: ${titles.join(' · ')}`}
             className={menuButton(activeId === story.id)}
           >
             <span aria-hidden className="mr-1 text-[10px]">▶</span>
-            {story.title}
+            {label}
             {story.live && (
               <span className="ml-1.5 rounded border border-emerald-400/40 px-1 text-[9px] font-semibold uppercase tracking-wide text-emerald-300/80">
-                live-capable
+                live
               </span>
             )}
           </button>

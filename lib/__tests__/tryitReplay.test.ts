@@ -4,8 +4,71 @@
 import { describe, expect, it } from 'vitest'
 import { mcpEndpointFor } from '../mcpEndpoints'
 import { buildRecordedStories, hasTryIt, mcpDocsUrlFor, processesFeaturing } from '../tryit'
-import { callResultLines, mcpClientConfig, probeResultLines, replayCharCount, stripSgr, tryResultLines } from '../tryitReplay'
+import { buildRunOptions, callResultLines, deriveRunLabel, mcpClientConfig, probeResultLines, replayCharCount, stripSgr, tryResultLines, type TryItStory } from '../tryitReplay'
 import { loadCategory } from '../data'
+import { loadProofIndex } from '../proofs'
+import fs from 'node:fs'
+import path from 'node:path'
+
+describe('run-type selector options (founder 2026-10-05)', () => {
+  const story = (id: string, title: string, command: string, live = false): TryItStory =>
+    ({ id, title, kind: 'recorded', command, live })
+
+  it('deriveRunLabel maps committed command shapes to short functional labels', () => {
+    expect(deriveRunLabel('curl -s https://resend.com/llms.txt | head -3')).toBe('llms.txt discovery')
+    expect(deriveRunLabel('curl -s https://resend.com/.well-known/agent-skills/index.json | head -c 200')).toBe('Skills registry')
+    expect(deriveRunLabel('curl -s https://resend.com/.well-known/mcp.json | head -c 200')).toBe('MCP discovery')
+    expect(deriveRunLabel("curl -si -X POST https://mcp.resend.com/mcp -H 'Content-Type: application/json' -d '<jsonrpc initialize>'")).toBe('MCP handshake')
+    expect(deriveRunLabel("curl -s -X POST https://catalog.shopify.com/api/ucp/mcp -d '<tools/call search_catalog without agent profile>'")).toBe('MCP tool call')
+    expect(deriveRunLabel('mktemp -d && npm install @shopify/ucp-cli && ucp --version && ucp --help')).toBe('Install locally')
+    expect(deriveRunLabel('npm view resend version')).toBe('Package registry')
+    expect(deriveRunLabel('curl -s https://resend.com/openapi.json | head -c 200')).toBe('Public API')
+    expect(deriveRunLabel('curl -sL https://www.mintlify.com/docs/quickstart.md | head -8')).toBe('Markdown docs')
+    expect(deriveRunLabel('curl -s https://api.example.com/v1/ping')).toBe('Public API')
+    expect(deriveRunLabel('npx -y mint --help | head -16')).toBe('CLI')
+    expect(deriveRunLabel('claude --version')).toBe('CLI')
+  })
+
+  it('merges same-command variants into one option carrying every title; distinct commands stay apart', () => {
+    const options = buildRunOptions([
+      story('a', 'agent docs · machine index', 'curl -s https://x.dev/llms.txt'),
+      story('b', 'docs an agent can read', 'curl -s https://x.dev/llms.txt'),
+      story('c', 'install the CLI', 'npm install x-cli && x --version'),
+    ])
+    expect(options).toHaveLength(2)
+    expect(options[0].story.id).toBe('a') // representative = first story, selection unchanged
+    expect(options[0].titles).toEqual(['agent docs', 'machine index', 'docs an agent can read'])
+    expect(options.map((o) => o.label)).toEqual(['llms.txt discovery', 'Install locally'])
+  })
+
+  it('same run type over different commands gets host-qualified labels — never two identical chips', () => {
+    const options = buildRunOptions([
+      story('m1', 'admin MCP', "curl -si -X POST https://mcp.x.dev -d '<jsonrpc initialize>'"),
+      story('m2', 'docs MCP', "curl -s -X POST https://www.x.dev/docs/mcp -d '<jsonrpc initialize>'"),
+    ])
+    expect(options.map((o) => o.label)).toEqual(['MCP handshake · mcp.x.dev', 'MCP handshake · www.x.dev'])
+  })
+
+  it('CORPUS PIN: every product with terminal proofs gets unique labels, each mapping to a real recorded proof', () => {
+    const dataDir = path.join(process.cwd(), 'data')
+    const categories = fs.readdirSync(dataDir).filter((c) => fs.existsSync(path.join(dataDir, c, 'proofs', 'index.json')))
+    expect(categories.length).toBeGreaterThan(0)
+    for (const category of categories) {
+      const proofs = loadProofIndex(category).filter((p) => p.kind === 'terminal')
+      const byProduct = new Map<string, typeof proofs>()
+      for (const p of proofs) byProduct.set(p.productId, [...(byProduct.get(p.productId) ?? []), p])
+      for (const [productId, productProofs] of byProduct) {
+        const stories = productProofs.map((p) => story(p.probeId, p.storyIds.join(' · '), p.command))
+        const options = buildRunOptions(stories)
+        const labels = options.map((o) => o.label)
+        expect(new Set(labels).size, `${category}/${productId}: duplicate labels ${labels.join(', ')}`).toBe(labels.length)
+        for (const o of options) {
+          expect(productProofs.some((p) => p.probeId === o.story.id), `${category}/${productId}: option ${o.label} must map to a real proof`).toBe(true)
+        }
+      }
+    }
+  })
+})
 
 describe('replayCharCount', () => {
   it('is clamped, monotonic, and paced at msPerChar', () => {
