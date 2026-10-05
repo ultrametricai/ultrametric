@@ -193,7 +193,10 @@ export default async function ProcessPage({ params }: { params: Promise<{ slug: 
           readers into the personalized run. */}
 
       <section>
-        <h2 className="font-display leading-[1.1] text-xl font-semibold tracking-tight">Step-by-step: what an agent can do vs you</h2>
+        {/* 'Process breakdown' (founder 2026-10-05 functional-title rename of 'Step-by-step:
+            what an agent can do vs you') — situations render through this same page, so the
+            rename covers both; chain pages head their diagram 'The full run' separately. */}
+        <h2 className="font-display leading-[1.1] text-xl font-semibold tracking-tight">Process breakdown</h2>
         {/* The wrong-country-flow guard's flow label (founder 2026-10-02): under an explicit
             country choice a US-scoped flow wears the 'US flow' badge — the geo banner up top
             leads with the committed country note, so the steps below are never presented as the
