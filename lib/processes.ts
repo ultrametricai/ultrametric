@@ -229,8 +229,9 @@ export type StepMethod = z.infer<typeof StepMethodSchema>
 // primary page/statute/fee schedule backing the entry (curl-verified live, like every corpus
 // URL); legal claims additionally cite a dated rule card in rules/ by id inside the prose, the
 // situations-house precedent. 3–6 QUALITY entries per deep process, not coverage — see
-// processes/README.md "Failure modes". Display: ONE collapsed '⚠ if it goes wrong' line per
-// affected step (components/ProcessDag.tsx); no judged number reads the field.
+// processes/README.md "Failure modes". Display: none since founder 2026-10-05 (the collapsed
+// '⚠ if it goes wrong' step line was removed) — the field stays corpus data, carried by the
+// manifests; no judged number reads it.
 export const StepFailureModeSchema = z.object({
   what: z.string().min(1),
   then: z.string().min(1),

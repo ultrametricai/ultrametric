@@ -72,7 +72,7 @@ export function stepMethodNodeKey(taskId: string | undefined, nodeId: string): s
 
 // ---------------------------------------------------------------------------------------------
 // The per-tab selection store — module-level client state, the lib/geoPreference.ts pattern:
-// every subscriber sees the same selection, StepMethodPicker is the only writer, and the server
+// every subscriber sees the same selection, StepMethodGeo (the geo auto-select) is the only writer, and the server
 // render never touches it (the server/initial snapshot is always the default method).
 
 type Listener = () => void

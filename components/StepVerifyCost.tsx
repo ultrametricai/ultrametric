@@ -1,5 +1,5 @@
 import ExternalLinkMark from './shared-processes/ExternalLinkMark'
-import type { StepCost, StepFailureMode, StepVerify } from '@/lib/processes'
+import type { StepCost, StepVerify } from '@/lib/processes'
 
 // Depth wave part 1 (founder 2026-10-01): the two per-step cited fields, rendered minimally in
 // the house zinc/emerald idiom — no layout rework. Server components, no state, render nothing
@@ -31,44 +31,9 @@ export function StepVerifyLine({ verify, squareExternalLinks = false }: { verify
   )
 }
 
-// "⚠ if it goes wrong" (founder spike 2026-10-02, form_001 reference depth) — the step's
-// curated failure modes, collapsed by default in the house <details> idiom (same summary
-// pattern as the "N API calls" block in components/ProcessDag.tsx). Server component, no
-// state; renders nothing when the node carries no entries (the overwhelmingly common case),
-// so most step blocks stay byte-identical. Curation rules in processes/README.md "Failure
-// modes": sourced or structurally certain only, 3–6 quality entries per deep process.
-export function StepFailureModes({ failureModes, squareExternalLinks = false }: { failureModes: StepFailureMode[]; squareExternalLinks?: boolean }) {
-  return (
-    <details className="group mt-2">
-      <summary className="flex cursor-pointer list-none items-center gap-1.5 text-[11px] text-zinc-500 transition hover:text-zinc-300 [&::-webkit-details-marker]:hidden">
-        <span aria-hidden className="inline-block text-[9px] transition-transform group-open:rotate-90">▶</span>
-        <span className="text-amber-300/90">⚠ if it goes wrong</span>
-        {failureModes.length > 1 && ` — ${failureModes.length} known failure modes`}
-      </summary>
-      <ul className="mt-1.5 space-y-1.5 border-l border-zinc-800 pl-3 text-[11px] text-zinc-400">
-        {failureModes.map((fm) => (
-          <li key={fm.what}>
-            <span className="text-zinc-200">{fm.what}</span> {fm.then}
-            {fm.source && (
-              <>
-                {' '}
-                <a
-                  href={fm.source}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  title={`Primary source: ${new URL(fm.source).hostname.replace(/^www\./, '')} (external site)`}
-                  className="whitespace-nowrap text-zinc-300 underline decoration-zinc-700 underline-offset-2 transition hover:text-emerald-300"
-                >
-                  {new URL(fm.source).hostname.replace(/^www\./, '')}{squareExternalLinks ? <ExternalLinkMark href={fm.source} label="" /> : ' ↗'}
-                </a>
-              </>
-            )}
-          </li>
-        ))}
-      </ul>
-    </details>
-  )
-}
+// The '⚠ if it goes wrong' failure-modes block lived here 2026-10-02 → 2026-10-05 (founder
+// removal; display only — failureModes stays corpus data under the processes/README.md
+// curation rules; no judged number ever read it).
 
 const COST_KIND_LABELS: Record<StepCost['kind'], string> = {
   'government-fee': 'government fee',

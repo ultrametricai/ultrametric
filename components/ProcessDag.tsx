@@ -10,9 +10,9 @@ import StepYourPick from '@/components/StepYourPick'
 import StepAfkChip from '@/components/StepAfkChip'
 import StepApiCalls from '@/components/StepApiCalls'
 import StepMethodDefault from '@/components/StepMethodDefault'
-import StepMethodPicker from '@/components/StepMethodPicker'
+import StepMethodGeo from '@/components/StepMethodGeo'
 import StepVendorRow, { type StepRowUntracked, type StepRowVendor } from '@/components/StepVendorRow'
-import { StepCostChip, StepFailureModes, StepVerifyLine } from '@/components/StepVerifyCost'
+import { StepCostChip, StepVerifyLine } from '@/components/StepVerifyCost'
 import { computeChipsForStep } from '@/lib/businessLogicMap'
 import { layerNodes, type DagEdge } from '@/lib/dagLayers'
 import StepDocuments from '@/components/StepDocuments'
@@ -432,12 +432,14 @@ function NodeBlock({
     </a>
   )
 
-  // Method variants (founder 2026-09-30): a method-bearing step gets the compact selector
-  // (components/StepMethodPicker.tsx) and its default-method content — the route badge and the
-  // whole body below the header — hides client-side while a variant is selected, whose panel
-  // shows the variant's own route/vendors/calls/time and sub-DAG instead. Nodes without methods
-  // render EXACTLY the pre-variant output (no wrapper, no picker), and the static HTML of a
-  // method-bearing step is byte-stable too: the server snapshot is always the default method.
+  // Method variants (founder 2026-09-30; picker UI removed 2026-10-05): a method-bearing step's
+  // default content — the route badge and the whole body below the header — hides client-side
+  // while the reader's COUNTRY choice resolves a geo method (components/StepMethodGeo.tsx),
+  // whose panel shows the variant's own route/vendors/calls/time and sub-DAG instead. The
+  // visible per-step "method:" selector is gone; situational/vendor variants stay data with no
+  // on-page affordance. Nodes without methods render EXACTLY the pre-variant output (no
+  // wrapper), and the static HTML of a method-bearing step is byte-stable too: the server
+  // snapshot is always the default method.
   const methodViews = node.methods && node.methods.length > 0 ? buildStepMethodViews(node, taskId) : null
   const nodeKey = stepMethodNodeKey(taskId, node.id)
 
@@ -631,11 +633,9 @@ function NodeBlock({
           curated only where a real one exists; renders nothing for the many steps without. */}
       {node.verify && <StepVerifyLine verify={node.verify} />}
 
-      {/* "⚠ if it goes wrong" (founder spike 2026-10-02) — the step's curated failure modes,
-          collapsed by default; renders nothing for the many steps without entries. */}
-      {node.failureModes && node.failureModes.length > 0 && (
-        <StepFailureModes failureModes={node.failureModes} />
-      )}
+      {/* The '⚠ if it goes wrong' failure-modes line is gone (founder 2026-10-05) — display
+          only: failureModes stays corpus data (lib/processes.ts StepFailureModeSchema, the
+          curation rules in processes/README.md), just no per-step rendering. */}
     </>
   )
 
@@ -662,7 +662,7 @@ function NodeBlock({
           Steps without committed guidance render exactly as before — nothing is invented. */}
       {guidance && <StepGuidance text={guidance} />}
       {methodViews && (
-        <StepMethodPicker
+        <StepMethodGeo
           nodeKey={nodeKey}
           defaultView={methodViews.defaultView}
           methods={methodViews.variants}
