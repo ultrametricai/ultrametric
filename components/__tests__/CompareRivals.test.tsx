@@ -26,9 +26,12 @@ describe('CompareRivals', () => {
     // Overall score cells link to each product's /score receipt page.
     expect(rows[0].querySelector('a[href="/arena/startup-banking/product/mercury/score"]')).not.toBeNull()
     expect(rampRow.querySelector('a[href="/arena/startup-banking/product/ramp/score"]')).not.toBeNull()
-    // Footer: the full-arena link.
+    // Footer: the full-arena link is the one outbound link — the "Alternatives to <X> →" link
+    // is gone (founder 2026-10-05; the /alternatives route itself stays alive for old links).
     const footer = [...container.querySelectorAll('a')].find((a) => a.getAttribute('href') === '/arena/startup-banking')
     expect(footer?.textContent).toContain('full arena')
+    expect(container.querySelector('a[href^="/alternatives/"]')).toBeNull()
+    expect(container.textContent).not.toContain('Alternatives to Mercury')
   })
 
   it('renamed heading "Alternatives comparison", no explainer sentence (founder 2026-10-02)', () => {

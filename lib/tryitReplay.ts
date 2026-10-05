@@ -20,6 +20,75 @@ export interface TryItStory {
   live?: boolean
 }
 
+// One entry in the microterminal's run-type selector (founder 2026-10-05 redesign): the long
+// combined story titles move into the tooltip, the chip shows a short functional label derived
+// from the command, and stories that run the same command path collapse into one option.
+export interface RunOption {
+  /** Representative story — its id is what the menu plays; command/live/transcript come from it. */
+  story: TryItStory
+  /** Short functional label ("Install locally", "MCP handshake", …), unique within one menu. */
+  label: string
+  /** Every full story title behind this option (merged variants included) — the tooltip copy. */
+  titles: string[]
+}
+
+// Short functional label for one recorded command — what KIND of run this is, not which stories
+// it substantiates (those stay in the tooltip). Heuristics over the committed probe commands;
+// the fallback is honest: anything that isn't an HTTP fetch or an install is a CLI run.
+export function deriveRunLabel(command: string): string {
+  const c = command.toLowerCase()
+  if (c.includes('llms.txt')) return 'llms.txt discovery'
+  if (c.includes('agent-skills')) return 'Skills registry'
+  if (c.includes('.well-known/mcp')) return 'MCP discovery'
+  if (c.includes('jsonrpc') && c.includes('initialize')) return 'MCP handshake'
+  if (c.includes('mcp') && c.includes('tools/call')) return 'MCP tool call'
+  if (/(^|[\s&(;])(npm (install|i) |pnpm add |yarn add |pip3? install |pipx install |uv add |brew install |cargo install |go install |gem install )/.test(c)) return 'Install locally'
+  if (/\bnpm (view|info)\b/.test(c)) return 'Package registry'
+  if (c.includes('openapi')) return 'Public API'
+  if (c.startsWith('curl') && /\.md\b/.test(c)) return 'Markdown docs'
+  if (c.startsWith('curl')) return 'Public API'
+  return 'CLI'
+}
+
+// First URL host in a command — the natural qualifier when two options share a run type
+// (e.g. three MCP handshakes against different endpoints of one vendor).
+function commandHost(command: string): string | null {
+  const m = command.match(/https?:\/\/([^/\s'"]+)/)
+  return m ? m[1] : null
+}
+
+// The selector's options: one per distinct command path (combined-story variants that run the
+// same command merge into one option; all their titles ride the tooltip), labeled by run type.
+// Labels are made unique deterministically — first by the command's host, then by the probe id —
+// so the menu never shows two identical chips. Selection semantics are unchanged: every option
+// plays exactly one real recorded story.
+export function buildRunOptions(stories: TryItStory[]): RunOption[] {
+  const byCommand = new Map<string, TryItStory[]>()
+  for (const s of stories) {
+    const group = byCommand.get(s.command)
+    if (group) group.push(s)
+    else byCommand.set(s.command, [s])
+  }
+  const options: RunOption[] = [...byCommand.values()].map((group) => ({
+    story: group[0],
+    label: deriveRunLabel(group[0].command),
+    titles: [...new Set(group.flatMap((s) => s.title.split(' · ')))],
+  }))
+  // Two disambiguation passes: host qualifier for same-run-type options, probe id if the hosts
+  // collide too (probe ids are unique per product, so this terminates unique).
+  for (const qualify of [
+    (o: RunOption) => commandHost(o.story.command) ?? o.story.id,
+    (o: RunOption) => o.story.id,
+  ]) {
+    const counts = new Map<string, number>()
+    for (const o of options) counts.set(o.label, (counts.get(o.label) ?? 0) + 1)
+    for (const o of options) {
+      if ((counts.get(o.label) ?? 0) > 1) o.label = `${o.label} · ${qualify(o)}`
+    }
+  }
+  return options
+}
+
 export const REPLAY_MS_PER_CHAR = 8
 
 // How many characters of a transcript are visible `elapsedMs` after replay start. Pure and

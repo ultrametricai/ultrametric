@@ -311,9 +311,10 @@ export default async function ProductPage({
           {/* Founder 2026-10-02: the '◉ deep-spiked · N ev' verification-depth chip is gone from
               this page (display only — evidence counts and spike dates stay committed data;
               components/SpikeDepthChip.tsx remains for any surface that wants it back). */}
-          {/* Vendor doc links (API/CLI/MCP docs ↗) — inline here since the old top rail's
-              lone "Access" box read as an empty frame (founder 2026-09-23). */}
-          <ProductLinkChips product={product} variant="label" />
+          {/* Vendor doc links — inline here since the old top rail's lone "Access" box read as
+              an empty frame (founder 2026-09-23). One "Docs" dropdown since 2026-10-05
+              (components/DocsMenu.tsx) instead of the separate API/CLI/MCP docs chips. */}
+          <ProductLinkChips product={product} />
           {vendorResponseCount > 0 && (
             <a
               href="#story-verdicts"

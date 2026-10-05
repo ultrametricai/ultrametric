@@ -66,12 +66,47 @@ export default function IntegrationChips({ chips }: { chips: IntegrationChipData
       >
         Verified integrations
       </h2>
-      {/* Founder 2026-10-02: no explainer sentence — the chips speak for themselves and each
-          one's tooltip still quotes the verbatim evidence behind the edge. */}
-      <div className="mt-3 flex flex-wrap gap-2">
-        {chips.map((chip) => (
-          <IntegrationChip key={chip.productId} chip={chip} />
-        ))}
+      {/* Founder 2026-10-05: table form (house idiom — rounded-2xl border wrapper, text-xs
+          sentence-case headers) instead of the pill chips; content unchanged. Columns carry
+          exactly what the chips carried: the integration (logo + name, linking to its product
+          page), its arena, and the evidence affordance (the verbatim excerpt(s) the edge rests
+          on, full text in the tooltip). The arena column yields below sm so the table renders
+          sanely on phones. /integrations still composes IntegrationChip directly. */}
+      <div className="mt-3 overflow-x-auto rounded-2xl border border-zinc-800">
+        <table className="w-full border-collapse text-sm">
+          <thead>
+            <tr className="border-b border-zinc-800 text-left text-xs text-zinc-400">
+              <th scope="col" className="px-3 py-2 font-normal">Integration</th>
+              <th scope="col" className="hidden px-3 py-2 font-normal sm:table-cell">Arena</th>
+              <th scope="col" className="px-3 py-2 font-normal">
+                <span title="The verbatim evidence excerpt(s) this edge rests on, with which side's evidence said it — hover a row's excerpt for the full quote.">Evidence</span>
+              </th>
+            </tr>
+          </thead>
+          <tbody className="divide-y divide-zinc-800/70">
+            {chips.map((chip) => (
+              <tr key={chip.productId} className="transition hover:bg-zinc-800/70">
+                <td className="px-3 py-2">
+                  <Link
+                    href={`/arena/${chip.arenaId}/product/${chip.productId}`}
+                    className="flex min-w-0 items-center gap-2 font-medium text-zinc-300 hover:text-emerald-300"
+                  >
+                    <ProductLogoView product={{ id: chip.productId, name: chip.name }} size={18} hasLogo={chip.hasLogo} />
+                    <span className="truncate">{chip.name}</span>
+                  </Link>
+                </td>
+                <td className="hidden px-3 py-2 sm:table-cell">
+                  <span className="whitespace-nowrap text-[10px] uppercase tracking-wide text-zinc-500">{chip.arenaName}</span>
+                </td>
+                <td className="max-w-[260px] px-3 py-2 sm:max-w-[420px]">
+                  <span title={chip.title} className="block truncate text-xs text-zinc-500">
+                    {chip.title.split('\n')[0]}
+                  </span>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
       </div>
     </div>
   )

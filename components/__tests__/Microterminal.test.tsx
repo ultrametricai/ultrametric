@@ -78,6 +78,9 @@ describe('Microterminal live tiers', () => {
     // Live output wears the live badge — the one per-run badge left after the recorded badge
     // was removed (founder 2026-10-02).
     expect(screen.getByText(/live — run just now from our edge/)).toBeTruthy()
+    // Founder 2026-10-05: the live-probe footer caption is gone (caption only — the probe and
+    // its result lines stay).
+    expect(screen.queryByText(/read-only, nothing is written/)).toBeNull()
     const runCall = await screen.findByRole('button', { name: /run a real call — search the docs/ })
     expect(sent[0]).toEqual({ arena: 'payments', product: 'stripe' }) // keyless probe: no token, no action
     fireEvent.click(runCall)
@@ -138,12 +141,22 @@ describe('Microterminal live tiers', () => {
     // and no live badge renders until a live re-run actually happens.
     expect(screen.queryByText(/recorded session — replayed, not live/)).toBeNull()
     expect(screen.getByText(/recorded 2026-09-01 · exit 0 · captured verbatim/)).toBeTruthy()
-    expect(screen.getByText('live-capable')).toBeTruthy()
+    // Founder 2026-10-05 selector redesign: a small 'live' badge, never inline 'live-capable'
+    // text; the chip label is the short run type, with the story title in the tooltip.
+    expect(screen.queryByText('live-capable')).toBeNull()
+    expect(screen.getByText('live')).toBeTruthy()
+    const chip = screen.getByRole('button', { name: /llms\.txt discovery/ })
+    expect(chip.getAttribute('title')).toContain('read the docs')
 
     fireEvent.click(screen.getByRole('button', { name: /run live/i }))
     await waitFor(() => expect(urls).toHaveLength(1))
     expect(urls[0]).toBe('https://ultrametric.ai/api/try/payments/stripe/llms-txt')
-    expect(await screen.findByText(/recorded replay \+ live re-run/)).toBeTruthy()
+    // Founder 2026-10-05: the 'recorded replay + live re-run — see the LIVE divider' caption is
+    // gone; the LIVE divider itself (inside the transcript) stays the honest marker. The divider
+    // types out character-paced, so poll the terminal text.
+    expect(screen.queryByText(/recorded replay \+ live re-run/)).toBeNull()
+    const pre = document.querySelector('pre')!
+    await waitFor(() => expect(pre.textContent).toContain('LIVE ── re-running this exact probe'), { timeout: 10_000 })
     // Founder 2026-10-02 (two passes): the footer "replay ↺ / run again ▶" duplicate AND the
     // title-bar ▶ replay/run control are both gone — the story chips are the play affordance.
     expect(screen.queryByRole('button', { name: /replay ↺/ })).toBeNull()
@@ -162,11 +175,45 @@ describe('Microterminal live tiers', () => {
       />,
     )
     expect(screen.queryByRole('button', { name: /run live/i })).toBeNull()
+    // No 'live' badge of any kind on a replay-only story (and no legacy 'live-capable' text).
     expect(screen.queryByText('live-capable')).toBeNull()
+    expect(screen.queryByText('live')).toBeNull()
     // No recorded badge (founder 2026-10-02) — the provenance footer is the recording's marker.
     expect(screen.queryByText(/recorded session — replayed, not live/)).toBeNull()
     expect(screen.getByText(/captured verbatim by our probe harness/)).toBeTruthy()
     expect(screen.queryByText(/live — run just now/)).toBeNull()
   })
 
+  it('run-type selector (founder 2026-10-05): same-command variants merge into ONE chip, titles demoted to the tooltip', () => {
+    const base = { kind: 'recorded' as const, recordedAt: '2026-09-01T00:00:00Z', exitCode: 0, live: false }
+    render(
+      <Microterminal
+        arena="payments"
+        product="stripe"
+        productName="Stripe"
+        stories={[
+          { ...base, id: 'llms-a', title: 'agent-readable docs', command: 'curl -s https://stripe.com/llms.txt | head -4', transcript: 'a' },
+          { ...base, id: 'llms-b', title: 'docs an agent can fetch · machine-readable index', command: 'curl -s https://stripe.com/llms.txt | head -4', transcript: 'b' },
+          { ...base, id: 'install', title: 'install the SDK locally', command: 'npm install stripe && node -e "console.log(1)"', transcript: 'c' },
+        ]}
+        probe={null}
+      />,
+    )
+    const chips = screen.getAllByRole('button').filter((b) => b.textContent?.includes('▶'))
+    // The two llms.txt variants run the same command path → one option; install keeps its own.
+    expect(chips).toHaveLength(2)
+    const labels = chips.map((c) => c.textContent?.replace('▶', '').trim())
+    expect(labels).toEqual(['llms.txt discovery', 'Install locally'])
+    expect(new Set(labels).size).toBe(labels.length) // no duplicate labels
+    // The merged chip's tooltip carries EVERY full story title it stands for.
+    const merged = screen.getByRole('button', { name: /llms\.txt discovery/ })
+    for (const t of ['agent-readable docs', 'docs an agent can fetch', 'machine-readable index']) {
+      expect(merged.getAttribute('title')).toContain(t)
+    }
+    // Long combined titles never render as chip text anymore.
+    expect(screen.queryByText(/docs an agent can fetch/)).toBeNull()
+    // Founder 2026-10-05: the 'skip ⏭' fast-forward control is gone while a replay types out
+    // (these transcripts are mid-replay at render time — exactly when skip used to show).
+    expect(screen.queryByRole('button', { name: /skip/ })).toBeNull()
+  })
 })

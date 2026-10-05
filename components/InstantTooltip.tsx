@@ -1,5 +1,6 @@
 'use client'
 
+import { usePathname } from 'next/navigation'
 import { useEffect, useRef } from 'react'
 
 // Site-wide instant tooltips. Native `title` attributes carry a browser-controlled ~1s hover
@@ -15,6 +16,10 @@ const SHOW_DELAY_MS = 80 // near-instant but ignores drive-by cursor passes
 
 export default function InstantTooltip() {
   const ref = useRef<HTMLDivElement>(null)
+  // Exposes the current hide() to the route-change effect below — the main effect mounts once,
+  // so the pathname effect can't live inside it.
+  const hideRef = useRef<() => void>(() => {})
+  const pathname = usePathname()
 
   useEffect(() => {
     const tip = ref.current
@@ -49,7 +54,18 @@ export default function InstantTooltip() {
       current = target
       tip!.textContent = text
       place(target)
+      // Watch for the anchor's removal only while a tooltip is visible (hide() disconnects).
+      removalObserver.observe(document.body, { childList: true, subtree: true })
     }
+
+    // Sticky-tooltip guard (founder bug 2026-10-05): client-side navigation never fires
+    // mouseleave on an element React removed, so a tooltip shown over a clicked link used to
+    // survive the navigation. While a tooltip is up, this observer watches for its anchor
+    // leaving the DOM and hides immediately — covers route transitions, table re-sorts, and any
+    // other removal the mouse events can't see.
+    const removalObserver = new MutationObserver(() => {
+      if (current && !current.isConnected) hide()
+    })
 
     function hide() {
       if (current) {
@@ -58,9 +74,11 @@ export default function InstantTooltip() {
         current.removeAttribute('data-tip')
         current = null
       }
+      removalObserver.disconnect()
       tip!.style.display = 'none'
       clearTimeout(showTimer)
     }
+    hideRef.current = hide
 
     function onOver(e: MouseEvent) {
       const target = (e.target as HTMLElement | null)?.closest?.('[title]') as HTMLElement | null
@@ -99,14 +117,30 @@ export default function InstantTooltip() {
     document.addEventListener('mouseout', onOut, true)
     document.addEventListener('touchstart', onTouchStart, { passive: true, capture: true })
     document.addEventListener('scroll', hide, true)
+    // Sticky-tooltip guard (founder bug 2026-10-05): a click means "activate", so the tooltip
+    // goes down with the pointer — client-side navigation after the click can't strand it.
+    // pointerdown covers mouse, pen, and touch alike, before any click handler runs.
+    document.addEventListener('pointerdown', hide, true)
+    // Back/forward restores a page the tooltip was never anchored to.
+    window.addEventListener('popstate', hide)
     return () => {
       document.removeEventListener('mouseover', onOverGuarded, true)
       document.removeEventListener('mouseout', onOut, true)
       document.removeEventListener('touchstart', onTouchStart, true)
       document.removeEventListener('scroll', hide, true)
+      document.removeEventListener('pointerdown', hide, true)
+      window.removeEventListener('popstate', hide)
+      clearTimeout(touchTimer)
       hide()
     }
   }, [])
+
+  // Route-change guard (founder bug 2026-10-05): the pointerdown/removal guards above cover the
+  // common paths, but any client-side navigation that slips past both (e.g. a programmatic
+  // router.push while a tooltip is up) still hides on the pathname flip.
+  useEffect(() => {
+    hideRef.current()
+  }, [pathname])
 
   return (
     <div

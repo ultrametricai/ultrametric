@@ -51,9 +51,11 @@ describe('TryItSection — founder 2026-10-02 batch', () => {
     // verbatim-capture line, and NO live badge renders for a pure replay.
     expect(screen.getByText(/recorded 2026-09-01 · exit 0 · captured verbatim by our probe harness/)).toBeTruthy()
     expect(container.textContent).not.toContain('live — run just now')
-    // …and the live-capable story keeps its ▶ run live affordance and tag.
+    // …and the live-capable story keeps its ▶ run live affordance and its badge (the small
+    // 'live' badge — the inline 'live-capable' text went with the 2026-10-05 selector redesign).
     expect(screen.getByRole('button', { name: /run live/i })).toBeTruthy()
-    expect(screen.getByText('live-capable')).toBeTruthy()
+    expect(screen.queryByText('live-capable')).toBeNull()
+    expect(screen.getByText('live')).toBeTruthy()
   })
 
   it('the title-bar ▶ replay/run control is gone too (second founder ask) — the story chips are the play affordance', () => {
@@ -61,7 +63,9 @@ describe('TryItSection — founder 2026-10-02 batch', () => {
     expect(screen.queryByRole('button', { name: /replay ↺/ })).toBeNull()
     expect(screen.queryByRole('button', { name: /run again/ })).toBeNull()
     expect(screen.queryByRole('button', { name: /▶ replay/ })).toBeNull()
-    // The story-menu chip (auto-plays on mount, re-plays on click) remains.
-    expect(screen.getByRole('button', { name: /read the docs/ })).toBeTruthy()
+    // The story-menu chip (auto-plays on mount, re-plays on click) remains — labeled by run
+    // type since the 2026-10-05 selector redesign, with the story title in its tooltip.
+    const chip = screen.getByRole('button', { name: /llms\.txt discovery/ })
+    expect(chip.getAttribute('title')).toContain('read the docs')
   })
 })

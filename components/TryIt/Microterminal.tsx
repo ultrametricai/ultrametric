@@ -3,7 +3,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import CopyButton from '@/components/CopyButton'
 import {
-  callResultLines, mcpClientConfig, probeResultLines, replayCharCount, tryResultLines,
+  buildRunOptions, callResultLines, mcpClientConfig, probeResultLines, replayCharCount, tryResultLines,
   type McpCallResult, type McpProbeResult, type TryItStory, type TryProbeResult,
 } from '@/lib/tryitReplay'
 
@@ -69,9 +69,7 @@ export default function Microterminal({
   const [shown, setShown] = useState(0) // how many chars are visible
   const [liveBusy, setLiveBusy] = useState(false)
   const [liveResult, setLiveResult] = useState<McpProbeResult | null>(null) // last completed probe
-  const [liveRanIds, setLiveRanIds] = useState<Set<string>>(new Set()) // stories whose terminal currently shows a live re-run
   const startRef = useRef(0)
-  const skippedRef = useRef(false)
   const runRef = useRef(0) // invalidates in-flight probe responses on story switch
   const authRef = useRef<AuthChoice>({}) // the tier the CURRENT liveResult was produced under
   const preRef = useRef<HTMLPreElement>(null)
@@ -81,7 +79,6 @@ export default function Microterminal({
 
   const beginRun = useCallback((text: string) => {
     startRef.current = performance.now()
-    skippedRef.current = false
     setTarget(text)
     setShown(0)
   }, [])
@@ -163,7 +160,6 @@ export default function Microterminal({
       .then((result) => {
         if (runRef.current !== run) return // user switched stories mid-flight
         setLiveBusy(false)
-        setLiveRanIds((prev) => new Set(prev).add(story.id))
         setTarget((prev) => `${prev}${tryResultLines(result).join('\n')}\n`)
       })
   }, [activeId, arena, product, stories])
@@ -177,23 +173,14 @@ export default function Microterminal({
     runRef.current += 1
     setActiveId(id)
     setLiveBusy(false)
-    setLiveRanIds((prev) => {
-      if (!prev.has(id)) return prev
-      const next = new Set(prev)
-      next.delete(id) // a fresh replay wipes any appended live output — the badge must follow
-      return next
-    })
     const story = stories.find((s) => s.id === id)
     beginRun(story?.transcript ?? '')
   }, [beginRun, runProbe, stories])
 
-  // Character-paced typing (~8ms/char, lib/tryitReplay.ts). Skip renders everything at once.
+  // Character-paced typing (~8ms/char, lib/tryitReplay.ts). The 'skip ⏭' fast-forward control
+  // and its skippedRef branch were removed with it (founder 2026-10-05) — nothing else read it.
   useEffect(() => {
     if (shown >= target.length) return
-    if (skippedRef.current) {
-      setShown(target.length)
-      return
-    }
     if (startRef.current === 0) startRef.current = performance.now() // mount-time replay start
     const timer = setInterval(() => {
       setShown(replayCharCount(performance.now() - startRef.current, target.length))
@@ -207,12 +194,6 @@ export default function Microterminal({
     if (el) el.scrollTop = el.scrollHeight
   }, [shown])
 
-  const skip = () => {
-    skippedRef.current = true
-    setShown(target.length)
-  }
-
-  const typing = shown < target.length || liveBusy
   const menuButton = (selected: boolean) =>
     `rounded-full border px-3 py-1 text-left text-xs transition ${
       selected
@@ -228,21 +209,26 @@ export default function Microterminal({
 
   return (
     <div className="space-y-3">
-      {/* Story menu: the prefixed user stories each recording proves, plus the one live probe. */}
+      {/* Run-type selector (founder 2026-10-05 redesign): one chip per distinct run type with a
+          short functional label ("Install locally", "MCP handshake", …) instead of the long
+          combined story titles; variants that run the same command path are merged
+          (lib/tryitReplay.ts buildRunOptions). The full story title(s) move into the tooltip,
+          and live-capable recordings wear a small 'live' badge instead of inline text. What
+          runs is unchanged — every chip plays exactly one real recorded story. */}
       <div className="flex flex-wrap items-center gap-2">
-        {stories.map((story) => (
+        {buildRunOptions(stories).map(({ story, label, titles }) => (
           <button
             key={story.id}
             type="button"
             onClick={() => runStory(story.id)}
-            title={story.live ? `Play the recorded proof: ${story.title} — this one can also re-run live from our edge` : `Play the recorded proof: ${story.title}`}
+            title={story.live ? `Play the recorded proof: ${titles.join(' · ')} — this one can also re-run live from our edge` : `Play the recorded proof: ${titles.join(' · ')}`}
             className={menuButton(activeId === story.id)}
           >
             <span aria-hidden className="mr-1 text-[10px]">▶</span>
-            {story.title}
+            {label}
             {story.live && (
               <span className="ml-1.5 rounded border border-emerald-400/40 px-1 text-[9px] font-semibold uppercase tracking-wide text-emerald-300/80">
-                live-capable
+                live
               </span>
             )}
           </button>
@@ -289,13 +275,13 @@ export default function Microterminal({
             {/* Founder 2026-10-02: the per-run 'recorded session — replayed, not live' badge is
                 gone. The recorded-vs-live distinction stays visible without it: the provenance
                 footer below leads with "recorded <date> · exit <code> · captured verbatim…" on
-                every recording, while live output is marked by this badge's presence (live run /
-                LIVE-divider re-run states only) — a replay simply carries no live badge. */}
-            {(isLive || liveRanIds.has(activeId ?? '')) && (
+                every recording, while live output is marked by this badge (live-probe runs) or
+                by the LIVE divider inside the transcript (per-story re-runs — the
+                'recorded replay + live re-run' caption that used to restate it was removed,
+                founder 2026-10-05). */}
+            {isLive && (
               <span className="shrink-0 rounded border border-emerald-400/60 px-1.5 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-emerald-300">
-                {isLive
-                  ? 'live — run just now from our edge'
-                  : 'recorded replay + live re-run — see the LIVE divider'}
+                live — run just now from our edge
               </span>
             )}
           </span>
@@ -314,9 +300,10 @@ export default function Microterminal({
         </pre>
 
         <div className="flex flex-wrap items-center gap-x-3 gap-y-1.5 border-t border-zinc-800 px-3 py-1.5 text-[10px] text-zinc-500">
-          {isLive ? (
-            <span>real JSON-RPC against the vendor&rsquo;s documented MCP endpoint — read-only, nothing is written</span>
-          ) : active ? (
+          {/* Founder 2026-10-05: the live-probe caption ("real JSON-RPC against the vendor's
+              documented MCP endpoint — read-only, nothing is written") is gone — caption only;
+              the probe itself, its result lines, and the recorded provenance footer stay. */}
+          {!isLive && active ? (
             <span>
               recorded {active.recordedAt?.slice(0, 10)} · exit {active.exitCode} · captured verbatim by our probe harness, secrets redacted
               {active.live ? ' · pure-HTTP probe — ▶ run live re-runs it from our edge' : ''}
@@ -324,14 +311,8 @@ export default function Microterminal({
           ) : null}
           {/* Founder 2026-10-02: the footer "replay ↺ / run again ▶" button went first, then the
               title-bar ▶ replay/run control it duplicated — the story-menu chips are the one
-              play/replay affordance. Skip stays (the only way to fast-forward a replay). */}
-          <span className="ml-auto flex shrink-0 gap-2">
-            {typing && !liveBusy && (
-              <button type="button" onClick={skip} className="rounded border border-zinc-700 px-2 py-0.5 text-zinc-400 transition hover:border-emerald-400 hover:text-emerald-300">
-                skip ⏭
-              </button>
-            )}
-          </span>
+              play/replay affordance. Founder 2026-10-05: the 'skip ⏭' fast-forward went too;
+              replays simply type out. */}
         </div>
       </div>
 
