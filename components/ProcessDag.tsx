@@ -117,9 +117,10 @@ function Connector() {
 }
 
 // One vendor as a chip: tracked vendors (judged in an arena) link to their product page —
-// no vendor-name tooltip (founder 2026-10-05); the agent-ready score link keeps its derivation
-// tooltip. Untracked vendors render as an honest unlinked chip. Logos are resolved server-side
-// via hasLogo(product id).
+// no vendor-name tooltip (founder 2026-10-05); the agent-ready score is plain text wearing its
+// derivation tooltip (the sub-step score click-throughs are gone, founder 2026-10-05 — the
+// process-level scores and the product pages keep their receipts links). Untracked vendors
+// render as an honest unlinked chip. Logos are resolved server-side via hasLogo(product id).
 function VendorChip({ info }: { info: VendorChipInfo }) {
   const logoId = info.productId ?? info.vendor
   const body = (
@@ -128,9 +129,9 @@ function VendorChip({ info }: { info: VendorChipInfo }) {
       <span className="truncate">{info.label}</span>
     </>
   )
-  // The agent-ready number clicks through to its receipts — the /score page that derives it
-  // (founder 2026-10-05: every visible score answers 'why?' in one click). Untracked vendors
-  // have no judged number, so only the tracked branch renders a score at all.
+  // The agent-ready number is plain text on sub-step rows (founder 2026-10-05: the per-step
+  // vendor score links are gone; the derivation tooltip stays on the tracked branch below).
+  // Untracked vendors have no judged number, so only the tracked branch renders a score at all.
   const score = info.agentReady !== null && (
     <span className="font-mono text-[10px] tabular-nums text-emerald-400/80">
       {info.agentReady.toFixed(0)}
@@ -164,13 +165,11 @@ function VendorChip({ info }: { info: VendorChipInfo }) {
             {body}
           </Link>
           {score && (
-            <Link
-              href={`/arena/${info.arenaId}/product/${info.productId}/score`}
-              title={`${info.agentReady!.toFixed(0)}/100 — ${info.label}'s judged agent-readiness in the ${info.arenaName} arena (#${info.rank} there); click for the score receipts`}
-              className="transition hover:text-emerald-300"
+            <span
+              title={`${info.agentReady!.toFixed(0)}/100 — ${info.label}'s judged agent-readiness in the ${info.arenaName} arena (#${info.rank} there)`}
             >
               {score}
-            </Link>
+            </span>
           )}
         </span>
         {signup}
@@ -566,14 +565,13 @@ function NodeBlock({
                 {o.name}
               </Link>
               {o.agentReady !== null && (
-                <Link
-                  href={`/arena/${o.arenaId}/product/${o.id}/score`}
-                  className="ml-1 font-mono text-[10px] tabular-nums text-emerald-400/80 transition hover:text-emerald-300"
-                  title={`${o.agentReady.toFixed(0)}/100 — ${o.name}'s judged agent-readiness on the ${o.arenaId} arena leaderboard; click for the score receipts`}
+                <span
+                  className="ml-1 font-mono text-[10px] tabular-nums text-emerald-400/80"
+                  title={`${o.agentReady.toFixed(0)}/100 — ${o.name}'s judged agent-readiness on the ${o.arenaId} arena leaderboard`}
                 >
                   {o.agentReady.toFixed(0)}
                   <span className="text-zinc-500">/100</span>
-                </Link>
+                </span>
               )}
             </span>
           ))}

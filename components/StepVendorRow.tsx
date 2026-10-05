@@ -22,8 +22,9 @@ import { lensGapFor, useProcessLens, type LensSource } from '@/lib/processLens'
 // the one shared default view. Only clicks ("use") and "I'm using" stacks change anything,
 // entirely client-side via lib/processLens.ts (lens > stack > default).
 //
-// Each chip keeps its product-page LINK (the judged evidence) and gains a small "use" button —
-// the select affordance. The selected vendor pins FIRST: emerald ring + "✓ via" when it came
+// Each chip is ONE interactive element (founder 2026-10-05): a single pick-toggle
+// <button aria-pressed> with no interactive children — clicking it only selects the vendor.
+// The selected vendor pins FIRST: emerald ring + "✓ via" when it came
 // from a click, "yours" when it came from the reader's stack. Shutdown vendors never appear in
 // these rows (lib/processRankings.ts rankVendors filters offers) and the lens itself refuses to
 // resolve to one (lib/processLens.ts) — so nothing shutdown is ever selectable here.
@@ -104,57 +105,48 @@ function VendorChipButton({
   // the ✕ mark still names the availability problem.
   const geoHit = useVendorGeoCell(geo)
   const geoMuted = !selected && geoHit?.cell.status === 'unavailable'
-  // The visible 'use'/'✕' side buttons are gone (founder 2026-10-05): the chip BODY is the
-  // pick affordance now — a real toggle <button> (aria-pressed for an explicit lens pick,
-  // the action named in its title/accessible name), clicking a lens-selected chip clears it.
-  // The judged evidence stays one click away through the score link (the product page's
-  // verdicts table) — founder 2026-10-05, item 7.
+  // The chip is ONE click target (founder 2026-10-05): the whole chip is the pick toggle
+  // <button> (aria-pressed for an explicit lens pick, the action named in its accessible
+  // name; clicking a lens-selected chip clears it) with NO interactive children — the score
+  // is plain text wearing its concrete-derivation tooltip (the sub-step receipts click-through
+  // is gone; process-level scores and the product pages keep theirs) and the cross-arena tag
+  // no longer renders (the tooltip still names the evidence arena).
   const lensSelected = selected === 'lens'
   return (
-    <span className={`${selected ? CHIP_SELECTED : geoMuted ? CHIP_GEO_MUTED : CHIP_DEFAULT} min-w-0`}>
-      {/* No vendor-chip tooltip (founder 2026-10-05) — the aria-label keeps the action named
-          for assistive tech; the score link beside it keeps its derivation tooltip. */}
-      <button
-        type="button"
-        aria-pressed={lensSelected}
-        onClick={lensSelected ? onClear : onSelect}
-        aria-label={
-          lensSelected
-            ? `Stop viewing this process via ${vendor.name}`
-            : `See this process via ${vendor.name}`
-        }
-        className="inline-flex min-w-0 cursor-pointer items-center gap-1.5 transition hover:text-emerald-300"
-      >
-        <ProductLogoView product={{ id: vendor.productId, name: vendor.name }} size={28} hasLogo={vendor.hasLogo} />
-        {selected && <SelectedTag source={selected} />}
-        {!selected && alsoYours && (
-          <span
-            className="rounded bg-zinc-800 px-1 py-px text-[9px] font-semibold text-zinc-400"
-            title={'Also one of your "I\'m using" picks — your best-scoring pick is pinned first'}
-          >
-            yours
-          </span>
-        )}
-        <span className="truncate">{vendor.name}</span>
-        {vendor.cross && (
-          <span className="rounded bg-zinc-800 px-1 py-px text-[9px] uppercase tracking-wide text-zinc-500">
-            {vendor.arenaName}
-          </span>
-        )}
-      </button>
-      <Link
-        href={`/arena/${vendor.arenaId}/product/${vendor.productId}#story-verdicts`}
+    <button
+      type="button"
+      aria-pressed={lensSelected}
+      onClick={lensSelected ? onClear : onSelect}
+      aria-label={
+        lensSelected
+          ? `Stop viewing this process via ${vendor.name}`
+          : `See this process via ${vendor.name}`
+      }
+      className={`${selected ? CHIP_SELECTED : geoMuted ? CHIP_GEO_MUTED : CHIP_DEFAULT} min-w-0 cursor-pointer`}
+    >
+      <ProductLogoView product={{ id: vendor.productId, name: vendor.name }} size={28} hasLogo={vendor.hasLogo} />
+      {selected && <SelectedTag source={selected} />}
+      {!selected && alsoYours && (
+        <span
+          className="rounded bg-zinc-800 px-1 py-px text-[9px] font-semibold text-zinc-400"
+          title={'Also one of your "I\'m using" picks — your best-scoring pick is pinned first'}
+        >
+          yours
+        </span>
+      )}
+      <span className="truncate">{vendor.name}</span>
+      <span
         title={scoreTitle(vendor, rank)}
-        className="font-mono text-[10px] tabular-nums text-emerald-400/80 transition hover:text-emerald-300"
-      >{vendor.score.toFixed(0)}<span className="text-zinc-500">/100</span></Link>
+        className="font-mono text-[10px] tabular-nums text-emerald-400/80"
+      >{vendor.score.toFixed(0)}<span className="text-zinc-500">/100</span></span>
       <VendorGeoMark geo={geo} />
-    </span>
+    </button>
   )
 }
 
 // The score tooltip says the concrete derivation for THIS number (founder 2026-10-05: never a
 // canned sentence): the arena whose judged verdicts produced it, the step rank, and the real
-// mapped-story counts — the click-through carries the deep dive.
+// mapped-story counts. The score itself is plain text on sub-step rows — no click-through.
 export function scoreTitle(
   vendor: Pick<StepRowVendor, 'score' | 'arenaName' | 'citesTotal' | 'citesFull' | 'citesPartial'>,
   rank: number | null,
@@ -162,7 +154,7 @@ export function scoreTitle(
   const cites = vendor.citesTotal > 0
     ? `${vendor.citesTotal} judged ${vendor.arenaName} ${vendor.citesTotal === 1 ? 'story' : 'stories'} mapped to this step (${vendor.citesFull} full, ${vendor.citesPartial} partial)`
     : `the judged ${vendor.arenaName} stories mapped to this step`
-  return `${vendor.score.toFixed(0)}/100${rank !== null ? ` · #${rank} for this step` : ''} — from ${cites}; click for the verdicts`
+  return `${vendor.score.toFixed(0)}/100${rank !== null ? ` · #${rank} for this step` : ''} — from ${cites}`
 }
 
 function UntrackedChip({ info }: { info: StepRowUntracked }) {
@@ -277,14 +269,14 @@ export default function StepVendorRow({
 
   return (
     // No 'ranked for this step:' label (founder 2026-09-30): the step's vendors are ONE line,
-    // highest score left→right — each chip's SCORE link keeps the concrete-derivation tooltip
+    // highest score left→right — each chip's SCORE text keeps the concrete-derivation tooltip
     // (the vendor-name tooltips are gone, founder 2026-10-05). The row's flex-wrap only breaks
     // the line where the viewport forces it.
     <div
       className="mt-1.5 flex flex-wrap items-center gap-1.5 text-[11px]"
       title={`Vendors ranked for THIS step, highest score first — scored from their judged verdicts on the ${storyCount} stories mapped to it${
-        hasExtras ? '; vendors from another arena carry a tag naming where their evidence lives' : ''
-      } — not the arena's overall Overall score. Click a chip's "use" to see the whole process via that vendor.`}
+        hasExtras ? '; score tooltips name the arena whose evidence produced each number' : ''
+      } — not the arena's overall Overall score. Click a vendor chip to see the whole process via it.`}
     >
       {ordered.map((e) => (
         <VendorChipButton
@@ -307,11 +299,9 @@ export default function StepVendorRow({
           title={`Your selected vendor has no judged evidence on the ${checkStep.storyCount} stories mapped to this step — the step's best-scored vendor is shown instead of guessing`}
         >
           not covered by {gapName} — best here: {checkStep.best.name}{' '}
-          <Link
-            href={`/arena/${checkStep.best.arenaId}/product/${checkStep.best.productId}#story-verdicts`}
-            title={`${checkStep.best.score.toFixed(0)}/100 — ${checkStep.best.name}'s judged verdicts on the ${checkStep.storyCount} ${checkStep.storyCount === 1 ? 'story' : 'stories'} mapped to this step; click for the verdicts`}
-            className="underline decoration-amber-300/40 underline-offset-2 transition hover:text-amber-200"
-          >{checkStep.best.score.toFixed(0)}/100</Link>
+          <span
+            title={`${checkStep.best.score.toFixed(0)}/100 — ${checkStep.best.name}'s judged verdicts on the ${checkStep.storyCount} ${checkStep.storyCount === 1 ? 'story' : 'stories'} mapped to this step`}
+          >{checkStep.best.score.toFixed(0)}/100</span>
         </span>
       )}
       {arenaLink && (
