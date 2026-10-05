@@ -50,13 +50,9 @@ export default function WatchlistPage() {
   const products = buildWatchlistProducts()
   return (
     <div className="mx-auto max-w-3xl space-y-6">
-      <div>
-        <h1 className="font-display leading-[1.1] text-3xl font-bold tracking-tight">Watchlist</h1>
-        <p className="mt-1 text-sm text-zinc-500">
-          Products you starred (☆ → ★) anywhere on Ultrametric, with their current scores and
-          score trend. Saved to your account.
-        </p>
-      </div>
+      {/* Founder 2026-10-05: no explainer line under the title — the list says what it is. The
+          metadata description above keeps the one-line summary for crawlers. */}
+      <h1 className="font-display leading-[1.1] text-3xl font-bold tracking-tight">Watchlist</h1>
 
       <WatchlistGate>
         <WatchlistClient products={products} />
