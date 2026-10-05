@@ -11,7 +11,7 @@
       "id": "n1",
       "kind": "step",
       "title": "Write the spec",
-      "guidance": null,
+      "guidance": "Describe who needs the feature, the task they are trying to complete and what currently prevents it. Give a before-and-after example with concrete inputs and expected behavior. Turn that example into acceptance checks, including failure or permission cases that could change the design. Define the affected surfaces, compatibility constraints and non-goals. Link the relevant design or code, and separate unresolved product decisions from implementation choices so work can proceed where the intended behavior is already clear.",
       "when": null,
       "ref": null,
       "options": [],
@@ -63,7 +63,7 @@
       "id": "n2",
       "kind": "step",
       "title": "Create the tracking issue",
-      "guidance": null,
+      "guidance": "Create the issue from the spec's concrete outcome and acceptance checks, linking the relevant design or investigation. Use the project's authorized workspace and assignment scope, search for duplicate work, and include only real prerequisites. Keep confidential examples out of broadly visible fields. Link the issue from the implementation branch or pull request so reviewers can follow the requested behavior through to the change.",
       "when": null,
       "ref": null,
       "options": [],
@@ -73,6 +73,13 @@
           "kind": "vendor",
           "id": "linear",
           "role": "stated-vendor"
+        },
+        {
+          "kind": "url",
+          "url": "https://docs.github.com/en/organizations/collaborating-with-groups-in-organizations/best-practices-for-organizations",
+          "title": "Best practices for GitHub organizations",
+          "description": null,
+          "role": "authored-guidance-source"
         }
       ],
       "metadata": {
@@ -85,14 +92,14 @@
       "id": "n3",
       "kind": "decision",
       "title": "Implement with a coding agent",
-      "guidance": null,
+      "guidance": "Give the agent the spec, repository instructions and the code paths likely to matter. Work in an isolated branch and use the repository's checks to test the requested behavior, including failure cases. Let reversible implementation proceed within the delegated scope; escalate product decisions or changes to data, permissions and production effects that were not authorized. Inspect the diff for unrelated edits and invented requirements before preparing it for review.",
       "when": null,
       "ref": null,
       "options": [
         {
           "id": "default",
           "title": "Default — Implement with a coding agent",
-          "summary": "",
+          "summary": "Use a supervised coding session for a bounded change with a clear expected result. Read the relevant code and repository instructions, implement in an isolated branch, and inspect the diff as the approach develops. Run checks that exercise the behavior being changed. Keep publication and production effects within the delegated authority; resolve new product or access decisions when they arise. Bring the reviewer the resulting patch and any behavior still unverified.",
           "when": null,
           "parts": [],
           "notes": [],
@@ -132,7 +139,7 @@
         {
           "id": "cloud-autonomous-agent",
           "title": "Autonomous cloud-agent run",
-          "summary": "Delegate the whole implementation to an autonomous agent run and review the resulting PR - works when the spec is tight and CI is trustworthy.",
+          "summary": "Choose a cloud-agent run when the task has a precise outcome and checks that can evaluate the returned implementation. Supply the necessary repository context and limited access, and define whether the authorized output is a branch or a pull request. Review the returned diff, dependencies and test results against the expected behavior. Resolve missing evidence or invented requirements before integrating it.",
           "when": "Well-scoped, well-tested task - hand it to an autonomous agent and review the PR",
           "parts": [],
           "notes": [],
@@ -157,7 +164,7 @@
         {
           "id": "ide-pair",
           "title": "IDE pairing session",
-          "summary": "Pair with the agent in the IDE for exploratory or design-heavy changes - tighter feedback loop, human steering every edit.",
+          "summary": "Pair in the editor when the work needs exploration or frequent design feedback. Follow one behavior through the code, make a small change and try it before expanding the approach. Use the agent to explain unfamiliar paths and compare alternatives, while keeping product choices with the person responsible for them. Before opening review, remove abandoned experiments and unrelated edits, then run the checks for the approach actually kept.",
           "when": "Exploratory or design-heavy change - pair in the IDE instead of delegating",
           "parts": [],
           "notes": [],
@@ -183,7 +190,7 @@
       "id": "n4",
       "kind": "step",
       "title": "Open the pull request",
-      "guidance": null,
+      "guidance": "Review the diff against the intended base branch and remove accidental files, secrets and unrelated changes. Explain the concrete before/after behavior in the pull request, link the issue and report checks actually run. Add migration or rollout instructions only where the change needs them. Publish within the maintainer's delegated repository scope, then inspect the hosted diff and CI result; select reviewers who can assess the affected area.",
       "when": null,
       "ref": null,
       "options": [],
@@ -193,6 +200,20 @@
           "kind": "vendor",
           "id": "github",
           "role": "stated-vendor"
+        },
+        {
+          "kind": "url",
+          "url": "https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/managing-protected-branches/about-protected-branches",
+          "title": "About protected branches",
+          "description": null,
+          "role": "authored-guidance-source"
+        },
+        {
+          "kind": "url",
+          "url": "https://docs.github.com/en/actions/reference/security/secure-use",
+          "title": "GitHub Actions secure use reference",
+          "description": null,
+          "role": "authored-guidance-source"
         }
       ],
       "metadata": {
@@ -205,7 +226,7 @@
       "id": "n5",
       "kind": "step",
       "title": "AI code review pass",
-      "guidance": null,
+      "guidance": "Review the actual diff with the approved assistant, giving it the spec and repository rules. Ask for defects with code locations and a reproducible failure or reason, especially around permissions, error handling and missing coverage. Check each finding yourself before applying it. Re-run affected tests after fixes and leave unresolved findings visible for the human reviewer. Complete the repository's required review and merge process after the automated pass.",
       "when": null,
       "ref": null,
       "options": [],
@@ -235,6 +256,20 @@
           "kind": "category",
           "id": "ai-code-review",
           "role": "rankings"
+        },
+        {
+          "kind": "url",
+          "url": "https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/managing-protected-branches/about-protected-branches",
+          "title": "About protected branches",
+          "description": null,
+          "role": "authored-guidance-source"
+        },
+        {
+          "kind": "url",
+          "url": "https://docs.github.com/en/actions/reference/security/secure-use",
+          "title": "GitHub Actions secure use reference",
+          "description": null,
+          "role": "authored-guidance-source"
         }
       ],
       "metadata": {
@@ -247,12 +282,20 @@
       "id": "n6",
       "kind": "step",
       "title": "Human review and approval",
-      "guidance": null,
+      "guidance": "Review the final revision against the spec and test evidence. Trace the changed behavior through its callers and failure paths, giving extra attention to data migrations, permission changes and new dependencies. Request a reproduction or additional check where the result remains uncertain. Submit the repository's required review on the revision actually assessed, with unresolved issues clearly stated. If later edits change the reviewed behavior, reassess them before the merge decision.",
       "when": null,
       "ref": null,
       "options": [],
       "notes": [],
-      "references": [],
+      "references": [
+        {
+          "kind": "url",
+          "url": "https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/managing-protected-branches/about-protected-branches",
+          "title": "About protected branches",
+          "description": null,
+          "role": "authored-guidance-source"
+        }
+      ],
       "metadata": {
         "route": "person",
         "reversibility": "reversible",
@@ -263,7 +306,7 @@
       "id": "n7",
       "kind": "step",
       "title": "Merge and deploy via CI",
-      "guidance": null,
+      "guidance": "Check the approved revision, required checks, target branch and deployment environment, including any migration order. Confirm that the recorded authorization covers this merge and deployment; obtain additional approval only for effects outside that scope. Use the protected merge and release path, then follow the resulting build and deployment to its actual status. Match the deployed revision to the reviewed change. If a required stage fails, diagnose it and use the agreed recovery path before continuing.",
       "when": null,
       "ref": null,
       "options": [],
@@ -288,6 +331,20 @@
           "kind": "category",
           "id": "code-hosting",
           "role": "rankings"
+        },
+        {
+          "kind": "url",
+          "url": "https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/managing-protected-branches/about-protected-branches",
+          "title": "About protected branches",
+          "description": null,
+          "role": "authored-guidance-source"
+        },
+        {
+          "kind": "url",
+          "url": "https://docs.github.com/actions/deployment/environments",
+          "title": "Managing deployment environments",
+          "description": null,
+          "role": "authored-guidance-source"
         }
       ],
       "metadata": {
@@ -302,7 +359,7 @@
       "id": "n8",
       "kind": "step",
       "title": "Verify in production",
-      "guidance": null,
+      "guidance": "Confirm the intended revision is live, then exercise the feature's main journey and important permission or failure cases with an authorized test account. Verify the integration output or stored state produced by that journey. Compare errors and latency with the release baseline. Give the release responder any unexpected behavior with a reproducible example and deployment identifier so they can decide whether to fix, roll back or continue observing.",
       "when": null,
       "ref": null,
       "options": [],
@@ -327,6 +384,20 @@
           "kind": "category",
           "id": "error-tracking",
           "role": "rankings"
+        },
+        {
+          "kind": "url",
+          "url": "https://docs.sentry.io/product/releases/setup/",
+          "title": "Set up Sentry releases",
+          "description": null,
+          "role": "authored-guidance-source"
+        },
+        {
+          "kind": "url",
+          "url": "https://sre.google/workbook/implementing-slos/",
+          "title": "Google SRE implementing SLOs",
+          "description": null,
+          "role": "authored-guidance-source"
         }
       ],
       "metadata": {

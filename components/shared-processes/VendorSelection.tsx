@@ -30,9 +30,14 @@ export function VendorSelectionProvider({ children }: { children: ReactNode }) {
 
 export function useVendorSelection() { return useContext(VendorContext) }
 
-export function SelectedCapability({ choiceScope, evidence }: { choiceScope: string; evidence: CapabilityEvidence[] }) {
+export function selectedVendor(selection: { picks: Record<string, string>; overrides: Record<string, string | null> } | null, scope: string, parentScope?: string) {
+  if (parentScope && selection && Object.hasOwn(selection.overrides, scope)) return selection.overrides[scope]
+  return selection?.picks[scope] ?? (parentScope ? selection?.picks[parentScope] : undefined)
+}
+
+export function SelectedCapability({ choiceScope, parentChoiceScope, evidence }: { choiceScope: string; parentChoiceScope?: string; evidence: CapabilityEvidence[] }) {
   const selection = useVendorSelection()
-  const selected = evidence.find(item => item.candidateId === selection?.picks[choiceScope])
+  const selected = evidence.find(item => item.candidateId === selectedVendor(selection, choiceScope, parentChoiceScope))
   if (!selected) return null
   return <div data-capability-evidence className="space-y-2 border-t border-zinc-800/50 pt-3 text-sm">
     <p className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">

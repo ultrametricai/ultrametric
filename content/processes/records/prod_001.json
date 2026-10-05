@@ -11,12 +11,27 @@
       "id": "n1",
       "kind": "step",
       "title": "Design infrastructure",
-      "guidance": null,
+      "guidance": "Trace one request and one background job from entry point to storage and external services. Sketch which components need public access and which can remain private. Size the first deployment from expected traffic, data growth and recovery needs; compare a small managed setup with the extra components the team would have to operate. Note environment separation, likely recurring costs and the reason for each service choice. Leave uncertain capacity assumptions visible for the first deployment test.",
       "when": null,
       "ref": null,
       "options": [],
       "notes": [],
-      "references": [],
+      "references": [
+        {
+          "kind": "url",
+          "url": "https://docs.cloud.google.com/docs/get-started.md.txt",
+          "title": "Get started with Google Cloud",
+          "description": null,
+          "role": "authored-guidance-source"
+        },
+        {
+          "kind": "url",
+          "url": "https://docs.aws.amazon.com/vpc/latest/userguide/vpc-security-best-practices.md",
+          "title": "AWS VPC security best practices",
+          "description": null,
+          "role": "authored-guidance-source"
+        }
+      ],
       "metadata": {
         "route": "person",
         "reversibility": "reversible",
@@ -29,14 +44,14 @@
       "id": "n2",
       "kind": "decision",
       "title": "Create AWS account + billing",
-      "guidance": null,
+      "guidance": "Check whether the company already has an account, organization or subscription on the selected cloud. Identify the administrator, billing arrangement and recovery contact, then create or join the workload account within their authorized scope. Separate production and test ownership and spending visibility in the chosen account structure. Before provisioning resources, verify that an operator can sign in and that billing and security notices reach maintained company contacts.",
       "when": null,
       "ref": null,
       "options": [
         {
           "id": "default",
           "title": "Default — Create AWS account + billing",
-          "summary": "",
+          "summary": "Use the company's AWS account structure and authorized billing arrangement. Protect root credentials and recovery, enable MFA, and establish everyday operator access through federation or appropriately scoped roles. Check that the workload account is the intended one before creating resources. An operator should be able to perform the setup without sharing root credentials; the account owner should retain control of recovery and billing notifications.",
           "when": null,
           "parts": [],
           "notes": [],
@@ -70,6 +85,13 @@
               "kind": "category",
               "id": "cloud-platforms",
               "role": "rankings"
+            },
+            {
+              "kind": "url",
+              "url": "https://docs.aws.amazon.com/IAM/latest/UserGuide/best-practices.html",
+              "title": "AWS IAM security best practices",
+              "description": null,
+              "role": "authored-guidance-source"
             }
           ],
           "metadata": {
@@ -83,7 +105,7 @@
         {
           "id": "google-cloud",
           "title": "Google Cloud account",
-          "summary": "Stand the stack up on GCP instead of AWS - the natural default when the data platform is BigQuery or the team standardizes on GKE/Vertex.",
+          "summary": "Use the company's Google Cloud organization and authorized billing arrangement to create or select the workload project. Confirm its administrator, project identifier and access roles. Make production and test ownership and spending visible in the chosen project structure, then check operator access and billing contacts. This account setup leaves the downstream AWS-specific VPC, RDS and ECS route unresolved.",
           "when": "Standardizing on GCP (BigQuery, GKE, Vertex)",
           "parts": [],
           "notes": [],
@@ -92,6 +114,13 @@
               "kind": "vendor",
               "id": "google_cloud",
               "role": "stated-vendor"
+            },
+            {
+              "kind": "url",
+              "url": "https://docs.cloud.google.com/docs/get-started.md.txt",
+              "title": "Get started with Google Cloud",
+              "description": null,
+              "role": "authored-guidance-source"
             }
           ],
           "metadata": {
@@ -103,7 +132,7 @@
         {
           "id": "azure",
           "title": "Microsoft Azure account",
-          "summary": "Stand the stack up on Azure - the default for Microsoft-stack teams and enterprise-agreement shops.",
+          "summary": "Locate the intended Azure tenant, billing agreement and subscription. Confirm its administrator, access roles and company-controlled recovery contact. Use the authorized subscription structure to separate production and test ownership and make spending visible. Verify that operators can enter the correct tenant and subscription and that billing notices reach maintained company contacts. The downstream AWS-specific VPC, RDS and ECS route remains unresolved for Azure.",
           "when": "Microsoft-stack team or enterprise-agreement pricing",
           "parts": [],
           "notes": [],
@@ -112,6 +141,13 @@
               "kind": "vendor",
               "id": "azure",
               "role": "stated-vendor"
+            },
+            {
+              "kind": "url",
+              "url": "https://learn.microsoft.com/en-us/azure/cloud-adoption-framework/ready/azure-setup-guide/initial-subscriptions",
+              "title": "Create and scale Azure subscriptions",
+              "description": null,
+              "role": "authored-guidance-source"
             }
           ],
           "metadata": {
@@ -122,14 +158,36 @@
         }
       ],
       "notes": [],
-      "references": [],
+      "references": [
+        {
+          "kind": "url",
+          "url": "https://docs.cloud.google.com/docs/get-started.md.txt",
+          "title": "Get started with Google Cloud",
+          "description": null,
+          "role": "authored-guidance-source"
+        },
+        {
+          "kind": "url",
+          "url": "https://learn.microsoft.com/en-us/azure/cloud-adoption-framework/ready/azure-setup-guide/initial-subscriptions",
+          "title": "Create and scale Azure subscriptions",
+          "description": null,
+          "role": "authored-guidance-source"
+        },
+        {
+          "kind": "url",
+          "url": "https://docs.aws.amazon.com/IAM/latest/UserGuide/best-practices.html",
+          "title": "AWS IAM security best practices",
+          "description": null,
+          "role": "authored-guidance-source"
+        }
+      ],
       "metadata": {}
     },
     {
       "id": "n3",
       "kind": "step",
       "title": "Configure VPC and networking",
-      "guidance": null,
+      "guidance": "Draw the permitted paths between the public entry point, application, database and outside services. Choose address ranges that do not overlap networks this deployment must reach. For AWS, configure the VPC routes and security groups within the infrastructure owner's authorized change scope; use the selected platform's network design on other clouds. Test from the application's actual location: required connections should work, and a probe from an unauthorized location should fail. Keep the prior configuration available when changing live connectivity.",
       "when": null,
       "ref": null,
       "options": [],
@@ -139,6 +197,13 @@
           "kind": "vendor",
           "id": "aws",
           "role": "stated-vendor"
+        },
+        {
+          "kind": "url",
+          "url": "https://docs.aws.amazon.com/vpc/latest/userguide/vpc-security-best-practices.md",
+          "title": "AWS VPC security best practices",
+          "description": null,
+          "role": "authored-guidance-source"
         }
       ],
       "metadata": {
@@ -153,7 +218,7 @@
       "id": "n4",
       "kind": "step",
       "title": "Set up RDS database",
-      "guidance": null,
+      "guidance": "Match the database engine and version to the application's driver, migrations and expected data. For AWS, configure RDS using the chosen capacity, network access, backup and maintenance settings; another cloud needs its own database implementation. Provision within the database owner's access and spending authority. From the application environment, test a connection, a sample migration and a write/read cycle using nonproduction data. Exercise the intended restore procedure before relying on the database for recoverable production storage.",
       "when": null,
       "ref": null,
       "options": [],
@@ -168,6 +233,20 @@
           "kind": "category",
           "id": "edge-platforms",
           "role": "additional-rankings"
+        },
+        {
+          "kind": "url",
+          "url": "https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/CHAP_GettingStarted.html",
+          "title": "Getting started with Amazon RDS",
+          "description": null,
+          "role": "authored-guidance-source"
+        },
+        {
+          "kind": "url",
+          "url": "https://docs.aws.amazon.com/IAM/latest/UserGuide/best-practices.html",
+          "title": "AWS IAM security best practices",
+          "description": null,
+          "role": "authored-guidance-source"
         }
       ],
       "metadata": {
@@ -182,7 +261,7 @@
       "id": "n5",
       "kind": "step",
       "title": "Configure ECS cluster",
-      "guidance": null,
+      "guidance": "Run a versioned container image with its actual startup command, ports, health check, configuration and resource needs. On AWS, translate these into the chosen ECS task and service setup; use the selected provider's deployment design elsewhere. Create resources within the service owner's authorized account and spending scope. Inspect startup failures and logs, reach the exposed endpoint, then replace the test image with another version and back again. Keep the image and configuration versions paired so recovery restores the intended application.",
       "when": null,
       "ref": null,
       "options": [],
@@ -197,6 +276,13 @@
           "kind": "category",
           "id": "edge-platforms",
           "role": "additional-rankings"
+        },
+        {
+          "kind": "url",
+          "url": "https://docs.aws.amazon.com/AmazonECS/latest/developerguide/getting-started.html",
+          "title": "Getting started with Amazon ECS",
+          "description": null,
+          "role": "authored-guidance-source"
         }
       ],
       "metadata": {
@@ -211,7 +297,7 @@
       "id": "n6",
       "kind": "step",
       "title": "Set up IAM roles",
-      "guidance": null,
+      "guidance": "Separate access for people, deployment jobs and the running application. For each identity, list the resources and actions it needs and who may assume its role. Use temporary credentials where supported, and have the cloud or security administrator authorize the resulting grants. Test a required action and a forbidden one from the identity itself. Remove permissions added only for diagnosis once the working policy is understood, and keep credentials out of source control.",
       "when": null,
       "ref": null,
       "options": [],
@@ -221,6 +307,13 @@
           "kind": "vendor",
           "id": "aws",
           "role": "stated-vendor"
+        },
+        {
+          "kind": "url",
+          "url": "https://docs.aws.amazon.com/IAM/latest/UserGuide/best-practices.html",
+          "title": "AWS IAM security best practices",
+          "description": null,
+          "role": "authored-guidance-source"
         }
       ],
       "metadata": {
@@ -235,7 +328,7 @@
       "id": "n7",
       "kind": "step",
       "title": "Configure monitoring",
-      "guidance": null,
+      "guidance": "Cover failures a user would notice: an unreachable endpoint, failed job, database error or exhausted resource. Choose measurements that distinguish those cases and label them by service and environment. Check what sensitive data enters logs before enabling collection under the service's data-access authority. Route actionable alerts to the responsible responder with a useful diagnostic link. Trigger a controlled failure and recovery; adjust thresholds or routing if the test creates noise without explaining what needs attention.",
       "when": null,
       "ref": null,
       "options": [],
@@ -250,6 +343,20 @@
           "kind": "category",
           "id": "observability",
           "role": "additional-rankings"
+        },
+        {
+          "kind": "url",
+          "url": "https://sre.google/workbook/implementing-slos/",
+          "title": "Google SRE implementing SLOs",
+          "description": null,
+          "role": "authored-guidance-source"
+        },
+        {
+          "kind": "url",
+          "url": "https://docs.sentry.io/platforms/javascript/data-management/sensitive-data/",
+          "title": "Sentry sensitive data scrubbing",
+          "description": null,
+          "role": "authored-guidance-source"
         }
       ],
       "metadata": {
@@ -265,7 +372,7 @@
       "id": "n8",
       "kind": "step",
       "title": "Test deployment",
-      "guidance": null,
+      "guidance": "Deploy a known image or build into the test environment through the normal configuration path. Exercise a request through the network, application and database, then test a failed request and a restart. Check that diagnostics identify the deployed version and that access restrictions still hold. Recover the previous version and repeat the main journey. Keep failures tied to the build and configuration that produced them; any production trial must fit the service owner's release authorization.",
       "when": null,
       "ref": null,
       "options": [],
@@ -275,6 +382,20 @@
           "kind": "vendor",
           "id": "aws",
           "role": "stated-vendor"
+        },
+        {
+          "kind": "url",
+          "url": "https://docs.aws.amazon.com/AmazonECS/latest/developerguide/getting-started.html",
+          "title": "Getting started with Amazon ECS",
+          "description": null,
+          "role": "authored-guidance-source"
+        },
+        {
+          "kind": "url",
+          "url": "https://docs.github.com/actions/deployment/environments",
+          "title": "Managing deployment environments",
+          "description": null,
+          "role": "authored-guidance-source"
         }
       ],
       "metadata": {

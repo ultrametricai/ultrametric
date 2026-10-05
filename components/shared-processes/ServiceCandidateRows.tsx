@@ -1,41 +1,50 @@
 'use client'
 
-import Link from 'next/link'
-import ProductLogoView from '@/components/ProductLogoView'
+import type { ReactNode } from 'react'
 import type { ServiceCandidate } from '@/lib/shared-processes/service-candidates'
-import type { VendorCoverage } from '@/lib/shared-processes/vendor-preview'
+import type { CapabilityEvidence, VendorCoverage } from '@/lib/shared-processes/vendor-preview'
+import ScoredProductRow from './ScoredProductRow'
 import { useRegionalVariant } from './RegionalVariant'
-import { useVendorSelection } from './VendorSelection'
+import { selectedVendor, useVendorSelection } from './VendorSelection'
 
-function CandidateRow({ candidate, choiceScope, coverage }: { candidate: ServiceCandidate; choiceScope?: string; coverage?: VendorCoverage }) {
+export default function ServiceCandidateRows({ candidates, choiceScope, parentChoiceScope, coverage, evidence, details }: {
+  candidates: ServiceCandidate[]; details?: Record<string, ReactNode>; choiceScope?: string; parentChoiceScope?: string; coverage?: Record<string, VendorCoverage>; evidence?: Record<string, CapabilityEvidence[]>
+}) {
   const selection = useVendorSelection()
   const region = useRegionalVariant()
-  if (region && `${region.decision?.scope}:default` === coverage?.scope && region.selected !== 'default') coverage = undefined
-  const selected = choiceScope !== undefined && selection?.picks[choiceScope] === candidate.id
-  const logo = <ProductLogoView product={{ id: candidate.logoId ?? candidate.id, name: candidate.name }} size={18} hasLogo={candidate.logoId !== null} />
-  return <li className="border-b border-zinc-800/70 last:border-b-0">
-    <div className={`flex flex-wrap items-center gap-x-3 gap-y-2 px-4 py-2.5 transition hover:bg-zinc-900/60 ${selected ? 'bg-zinc-900/60' : ''}`}>
-      {choiceScope && selection && <button type="button" aria-pressed={selected} aria-label={`Use ${candidate.name}`} onClick={() => selection.toggle(choiceScope, candidate.id)} className="-ml-1 flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-zinc-500 hover:text-zinc-200"><span aria-hidden="true" className={`flex h-4 w-4 items-center justify-center rounded-full border text-[10px] ${selected ? 'border-emerald-400 text-emerald-300' : 'border-zinc-600'}`}>{selected ? '✓' : ''}</span></button>}
-      <span className="flex min-w-0 grow basis-20 items-center gap-2">
-        {logo}
-        {candidate.href ? <Link href={candidate.href} aria-label={`${candidate.name} profile`} className="min-w-0 break-words text-sm font-medium text-zinc-100 hover:text-emerald-300">{candidate.name}</Link> : <span className="min-w-0 break-words text-sm font-medium text-zinc-100">{candidate.name}</span>}
-      </span>
-      {coverage && <span className="ml-auto flex shrink-0 items-center justify-end gap-3">
-        <span className="w-12 text-right font-mono text-sm tabular-nums text-emerald-400" title={`Filing story coverage ${coverage.score}/100 across ${coverage.storyCount} mapped stories for the default filing option.`}>{coverage.score.toFixed(0)}</span>
-      </span>}
-    </div>
-
-  </li>
-}
-
-export default function ServiceCandidateRows({ candidates, choiceScope, coverage }: { candidates: ServiceCandidate[]; choiceScope?: string; coverage?: Record<string, VendorCoverage> }) {
-  const region = useRegionalVariant()
-  const isForeign = region?.decision && region.selected !== 'default'
-  const hasScores = !isForeign && coverage && Object.keys(coverage).length > 0
+  const foreign = !!region?.decision && region.selected !== 'default'
+  const overrideScope = choiceScope && foreign ? `${choiceScope}:regional:${region!.decision!.scope}:${region!.selected}` : choiceScope
+  const hasOverride = !!parentChoiceScope && !!overrideScope && !!selection && Object.hasOwn(selection.overrides, overrideScope)
+  const selectedId = hasOverride ? selection!.overrides[overrideScope!] : choiceScope ? selectedVendor(selection, choiceScope, foreign ? undefined : parentChoiceScope) : undefined
+  const selected = candidates.find(candidate => candidate.id === selectedId)
+  const ordered = selected ? [selected, ...candidates.filter(candidate => candidate !== selected)] : candidates
+  const visibleCoverage = (id: string) => {
+    const value = coverage?.[id]
+    return foreign && `${region?.decision?.scope}:default` === value?.scope ? undefined : value
+  }
   return <>
-    {hasScores && <p className="mb-2 text-xs text-zinc-400" title="Weighted coverage of the default filing step’s mapped stories, including manual workflows and APIs; not an automation probability or a whole-process score.">Filing coverage · /100</p>}
+    {!foreign && coverage && Object.keys(coverage).length > 0 && <p className="mb-2 text-xs text-zinc-400" title="Weighted coverage of the default filing step’s mapped stories, including manual workflows and APIs; not an automation probability or a whole-process score.">Filing coverage · /100</p>}
     <ul aria-label="Service options" className="overflow-hidden rounded-2xl border border-zinc-800">
-      {candidates.map(candidate => <CandidateRow key={candidate.id} candidate={candidate} choiceScope={choiceScope} coverage={coverage?.[candidate.id]} />)}
+      {ordered.map(candidate => {
+        const assessment = visibleCoverage(candidate.id)
+        const providerDetail = foreign ? undefined : details?.[candidate.id]
+        const detail = assessment && evidence?.[assessment.scope]?.find(item => item.candidateId === candidate.id)
+        const scores = candidates.flatMap(item => {
+          const value = visibleCoverage(item.id)
+          return value && value.scope === assessment?.scope ? [value.score] : []
+        })
+        return <ScoredProductRow key={candidate.id}
+          product={{ productId: candidate.logoId ?? candidate.id, name: candidate.name, href: candidate.href, hasLogo: candidate.logoId !== null, score: assessment?.score ?? null }}
+          profileLabel={`${candidate.name} profile`} selected={candidate.id === selectedId} inherited={!!parentChoiceScope && !hasOverride && !foreign}
+          onSelect={choiceScope && selection ? () => parentChoiceScope && overrideScope
+            ? selection.override(overrideScope, candidate.id === selectedId ? null : candidate.id)
+            : selection.toggle(choiceScope, candidate.id) : undefined}
+          selectionLabel={`Use ${candidate.name}`} evidenceLabel="story evidence" scores={scores}
+          scoreTitle={assessment ? `Filing story coverage ${assessment.score}/100 across ${assessment.storyCount} mapped stories for the default filing option.` : ''}>
+          {(providerDetail || detail) ? <>{providerDetail}{detail && <ul className="space-y-2">{detail.stories.map(story => <li key={story.id}><a href={`${detail.href}#story-${story.id}`} className="text-zinc-300 underline underline-offset-4">{story.title}</a><span className="ml-2">{story.verdict} · {story.quality}/10 · weight {story.weight}</span></li>)}</ul>}</> : undefined}
+        </ScoredProductRow>
+      })}
     </ul>
+    {hasOverride && !foreign && <button type="button" onClick={() => selection?.override(overrideScope!, undefined)} className="text-xs text-zinc-400 underline underline-offset-4 hover:text-zinc-200">Use process choice</button>}
   </>
 }

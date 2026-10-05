@@ -11,7 +11,7 @@
       "id": "n1",
       "kind": "step",
       "title": "Create the CI workflow in your code host",
-      "guidance": null,
+      "guidance": "Build the workflow around the repository's existing package manager, lockfile, runtime and check commands. Specify branch and pull-request triggers and start with the permissions each job needs. Examine third-party actions and untrusted contributions before introducing secrets or write access. Run the workflow from a clean checkout on a small branch; its logs should show the same install and checks a contributor can reproduce locally. Changes to repository credentials or deployment authority belong in the maintainer's security review.",
       "when": null,
       "ref": null,
       "options": [],
@@ -31,6 +31,13 @@
           "kind": "category",
           "id": "code-hosting",
           "role": "rankings"
+        },
+        {
+          "kind": "url",
+          "url": "https://docs.github.com/en/actions/reference/security/secure-use",
+          "title": "GitHub Actions secure use reference",
+          "description": null,
+          "role": "authored-guidance-source"
         }
       ],
       "metadata": {
@@ -46,7 +53,7 @@
       "id": "n2",
       "kind": "step",
       "title": "Configure test and lint jobs",
-      "guidance": null,
+      "guidance": "Run linting, type checking and tests as distinct checks with recognizable, unique names. Reuse the repository's commands and verify that command failures reach CI as failed checks. Try one passing change and one deliberate failure, then remove the test failure. For checks required by branch protection, confirm the configured names match the jobs that actually report results. Separate existing failures from regressions introduced by the branch.",
       "when": null,
       "ref": null,
       "options": [],
@@ -56,6 +63,20 @@
           "kind": "vendor",
           "id": "github",
           "role": "stated-vendor"
+        },
+        {
+          "kind": "url",
+          "url": "https://docs.github.com/en/actions/reference/security/secure-use",
+          "title": "GitHub Actions secure use reference",
+          "description": null,
+          "role": "authored-guidance-source"
+        },
+        {
+          "kind": "url",
+          "url": "https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/managing-protected-branches/about-protected-branches",
+          "title": "About protected branches",
+          "description": null,
+          "role": "authored-guidance-source"
         }
       ],
       "metadata": {
@@ -68,7 +89,7 @@
       "id": "n3",
       "kind": "step",
       "title": "Connect the deploy platform to the code host",
-      "guidance": null,
+      "guidance": "Connect the intended repository to the hosting project using the repository and hosting owners' authorized integration scope. Inspect requested access before installation, particularly if the connection covers more repositories than this project needs. Push a test branch and follow its preview deployment back to the triggering commit. Check preview visibility and confirm that the connection has not enabled an unintended production deployment path. Keep a usable way to revoke the integration.",
       "when": null,
       "ref": null,
       "options": [],
@@ -78,6 +99,20 @@
           "kind": "vendor",
           "id": "vercel",
           "role": "stated-vendor"
+        },
+        {
+          "kind": "url",
+          "url": "https://docs.github.com/actions/deployment/environments",
+          "title": "Managing deployment environments",
+          "description": null,
+          "role": "authored-guidance-source"
+        },
+        {
+          "kind": "url",
+          "url": "https://docs.github.com/en/actions/reference/security/secure-use",
+          "title": "GitHub Actions secure use reference",
+          "description": null,
+          "role": "authored-guidance-source"
         }
       ],
       "metadata": {
@@ -92,7 +127,7 @@
       "id": "n4",
       "kind": "step",
       "title": "Set up env variables",
-      "guidance": null,
+      "guidance": "List the variables needed at build time and runtime, separating public configuration from secrets and development from production values. Put secrets in the platform's protected configuration within the application owner's authorized scope; commit names and setup instructions only. Test that a preview connects to test resources. On Vercel, changed values apply to subsequent deployments, so deploy again before checking the result. Inspect behavior without printing secret values into build logs.",
       "when": null,
       "ref": null,
       "options": [],
@@ -102,6 +137,20 @@
           "kind": "vendor",
           "id": "vercel",
           "role": "stated-vendor"
+        },
+        {
+          "kind": "url",
+          "url": "https://vercel.com/docs/environment-variables",
+          "title": "Vercel environment variables",
+          "description": null,
+          "role": "authored-guidance-source"
+        },
+        {
+          "kind": "url",
+          "url": "https://docs.github.com/en/actions/reference/security/secure-use",
+          "title": "GitHub Actions secure use reference",
+          "description": null,
+          "role": "authored-guidance-source"
         }
       ],
       "metadata": {
@@ -116,7 +165,7 @@
       "id": "n5",
       "kind": "step",
       "title": "Configure deploy settings",
-      "guidance": null,
+      "guidance": "Match the hosting configuration to the repository's root directory, build command, output and runtime. Specify which branch or action creates a preview and which reaches production. Include database migrations in the release plan where the application needs them, with recovery consequences made explicit. Verify that the chosen plan supports the protection controls being relied on. Apply live settings within the release owner's authority and inspect a resulting deployment for the correct commit and environment.",
       "when": null,
       "ref": null,
       "options": [],
@@ -126,6 +175,20 @@
           "kind": "vendor",
           "id": "vercel",
           "role": "stated-vendor"
+        },
+        {
+          "kind": "url",
+          "url": "https://docs.github.com/actions/deployment/environments",
+          "title": "Managing deployment environments",
+          "description": null,
+          "role": "authored-guidance-source"
+        },
+        {
+          "kind": "url",
+          "url": "https://vercel.com/docs/environment-variables",
+          "title": "Vercel environment variables",
+          "description": null,
+          "role": "authored-guidance-source"
         }
       ],
       "metadata": {
@@ -140,7 +203,7 @@
       "id": "n6",
       "kind": "step",
       "title": "Test pipeline end-to-end",
-      "guidance": null,
+      "guidance": "Take a small change from branch to pull request, successful checks and preview deployment. Introduce a controlled failing check and verify that the configured merge path blocks it. Then use the authorized release path to test deployment and recovery in the designated environment. Compare the live revision with the reviewed commit and exercise the application. The useful result is a working path plus the manual steps or failures that still prevent a repeatable release.",
       "when": null,
       "ref": null,
       "options": [],
@@ -150,6 +213,20 @@
           "kind": "vendor",
           "id": "github",
           "role": "stated-vendor"
+        },
+        {
+          "kind": "url",
+          "url": "https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/managing-protected-branches/about-protected-branches",
+          "title": "About protected branches",
+          "description": null,
+          "role": "authored-guidance-source"
+        },
+        {
+          "kind": "url",
+          "url": "https://docs.github.com/actions/deployment/environments",
+          "title": "Managing deployment environments",
+          "description": null,
+          "role": "authored-guidance-source"
         }
       ],
       "metadata": {

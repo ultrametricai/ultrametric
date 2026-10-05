@@ -57,7 +57,7 @@ describe('canonical shared process reader', () => {
     const record = findSharedRecord(records, 'form_001')!
     const el = mount(renderToStaticMarkup(<SharedProcessReader record={record} records={records} />))
     expect(el.querySelectorAll('article')).toHaveLength(12) // only the selected default geographic option is rendered
-    expect(el.textContent).toContain('India - MCA SPICe+ filing')
+    expect(el.querySelector('input[aria-label="India - MCA SPICe+ filing"]')).not.toBeNull()
     expect(el.textContent).toContain('Jurisdictions: CA')
     expect(el.textContent).not.toContain('Jurisdictions: MULTI')
     expect(el.querySelectorAll('a[href^="#"]')).toHaveLength(0)
@@ -86,7 +86,7 @@ describe('canonical shared process reader', () => {
     const records = readSharedCatalog()
     const record = findSharedRecord(records, 'form_001')!
     const el = mount(renderToStaticMarkup(<SharedProcessReader record={record} records={records} />))
-    expect(el.querySelector('[id="form_001:n3"] [title="Legacy agent classification; no verified API or tool binding"]')?.textContent).toBe('Agent · unverified')
+    expect(el.querySelector('[id="form_001:n3"] [title="Legacy agent classification; no verified API or tool binding"]')?.textContent).toBe('Agent')
     expect(el.querySelector('[id="form_001:n1"] [title="Existing source route assessment"]')?.textContent).toBe('Human or computer use')
     expect(el.querySelector('[id="form_001:n7b"] [title="Existing source route assessment"]')?.textContent).toBe('Signature — legally human')
     const filing = el.querySelector('[id="form_001:n4"]')!
@@ -101,24 +101,32 @@ describe('canonical shared process reader', () => {
     const record = findSharedRecord(records, 'form_001')!
     const el = mount(renderToStaticMarkup(<SharedProcessReader record={record} records={records} />))
     const name = el.querySelector('[id="form_001:n3"]')!
-    const link = name.querySelector('a')!
+    const link = name.querySelector('[aria-label="Related links"] a')!
     expect(link.textContent).toBe('Delaware name search')
+    expect(link.querySelectorAll('svg[aria-hidden="true"] path')).toHaveLength(2)
     expect(link.getAttribute('href')).toBe('https://icis.corp.delaware.gov/ecorp/entitysearch/namesearch.aspx')
     expect(link.closest('details')).toBeNull()
     expect(name.textContent).not.toContain('GET /api')
     expect(el.textContent).not.toContain('References (')
     expect(el.textContent).not.toContain('Source details')
-    expect(el.querySelector('[id="form_001:n6"] [aria-label="Related links"]')).toBeNull()
+    const bylaws = el.querySelector('[id="form_001:n6"]')!
+    const citations = [...bylaws.querySelectorAll('[aria-label="Related links"] a')]
+    expect(citations.map(link => [link.textContent, link.getAttribute('href')])).toEqual([
+      ['Delaware directors, officers and consents', 'https://delcode.delaware.gov/title8/c001/sc04/index.html'],
+      ['Delaware incorporation and bylaws law', 'https://delcode.delaware.gov/title8/c001/sc01/index.html'],
+      ['Delaware formation document package', 'https://www.cooleygo.com/documents/incorporation-package-delaware/'],
+    ])
+    expect(citations.every(link => link.getAttribute('rel') === 'noopener noreferrer')).toBe(true)
     expect(record.parts.find(part => part.id === 'n6')?.references).toContainEqual({ kind: 'vendor', id: 'clerky', role: 'stated-vendor' })
     const certificate = el.querySelector('[id="form_001:n5"]')!
-    expect(certificate.querySelector('details')).toBeNull()
-    expect(certificate.querySelector('[aria-label="Related links"]')).toBeNull()
+    expect(certificate.querySelector('details')?.open).toBe(false)
+    expect(certificate.querySelector('a[href="https://corp.delaware.gov/howtoform/"]')).not.toBeNull()
     expect(record.parts.find(part => part.id === 'n5')?.references.length).toBeGreaterThan(0)
     const synthetic = structuredClone(record)
     synthetic.parts = [{ ...synthetic.parts[0], kind: 'step', options: [], guidance: 'Detailed authored guidance. '.repeat(20), references: [], notes: [{ text: 'Authored qualification' }] }]
     synthetic.links = []
     const long = mount(renderToStaticMarkup(<SharedProcessReader record={synthetic} records={[synthetic]} />))
-    expect([...long.querySelectorAll('article summary')].map(x => x.textContent)).toEqual(['Guidance', 'Notes (1)'])
+    expect([...long.querySelectorAll('article summary')].map(x => x.textContent)).toEqual(['Notes (1)'])
     expect(long.textContent).toContain(synthetic.parts[0].guidance)
     expect(long.textContent).toContain('Authored qualification')
   })

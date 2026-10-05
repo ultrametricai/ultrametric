@@ -10,7 +10,7 @@ import ProcessLeaderboard from '@/components/ProcessLeaderboard'
 const records = loadSharedProcesses()
 afterEach(cleanup)
 
-it('opens the non-geographic default on arrival, keeps alternatives closed and preserves manual collapse across views', () => {
+it('opens the non-geographic default on arrival, keeps alternatives closed and preserves manual collapse with the overview always visible', () => {
   const record = records.find(record => record.id === 'qs_021')!
   const el = render(<SharedProcessReader record={record} records={records} comparisons={buildStepComparisons(record)} />)
   const defaults = [...el.container.querySelectorAll<HTMLDetailsElement>('details[id$=":default"]')]
@@ -20,8 +20,9 @@ it('opens the non-geographic default on arrival, keeps alternatives closed and p
   expect(defaults.some(item => item.querySelector('a[href*="/arena/"]'))).toBe(true)
   fireEvent.click(defaults[0].querySelector('summary')!)
   expect(defaults[0].open).toBe(false)
-  fireEvent.click(el.getByRole('button', { name: 'Graph' }))
-  fireEvent.click(el.getByRole('button', { name: 'Details' }))
+  expect(el.queryByRole('button', { name: 'Graph' })).toBeNull()
+    expect(el.getByRole('region', { name: 'Process overview graph' })).toBeDefined()
+  expect(el.getByRole('region', { name: 'Process parts' })).toBeDefined()
   expect(defaults[0].open).toBe(false)
 })
 
@@ -39,10 +40,10 @@ it('qualifies the real supplementary leaderboard without changing its scores or 
   expect(before.length).toBeGreaterThan(0)
   expect(section.textContent).toContain('Default-scope coverage')
   expect(section.textContent).not.toContain('selected regional variant not assessed')
-  fireEvent.change(el.getByRole('combobox', { name: 'Regional variant' }), { target: { value: 'germany-notary-gmbh' } })
+  fireEvent.click(el.container.querySelector('input[type="radio"][value="germany-notary-gmbh"]')!)
   expect(section.textContent).toContain('Default-scope coverage · selected regional variant not assessed')
   expect(rows()).toEqual(before)
-  fireEvent.change(el.getByRole('combobox', { name: 'Regional variant' }), { target: { value: 'default' } })
+  fireEvent.click(el.container.querySelector('input[type="radio"][value="default"]')!)
   expect(section.textContent).not.toContain('selected regional variant not assessed')
   expect(rows()).toEqual(before)
 })

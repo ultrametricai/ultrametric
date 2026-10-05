@@ -15,7 +15,7 @@ import StepVendorRow, { type StepRowUntracked, type StepRowVendor } from '@/comp
 import { StepCostChip, StepFailureModes, StepVerifyLine } from '@/components/StepVerifyCost'
 import { computeChipsForStep } from '@/lib/businessLogicMap'
 import { layerNodes, type DagEdge } from '@/lib/dagLayers'
-import { openDocumentById } from '@/lib/documents'
+import StepDocuments from '@/components/StepDocuments'
 import { resolveGapStep } from '@/lib/gapClosers'
 import { humanStepAudit } from '@/lib/humanSteps'
 import { showComputerUseChips } from '@/lib/humanStepsUi'
@@ -488,31 +488,7 @@ function NodeBlock({
           labeled with the registry title. External-link hygiene matches 'do it yourself' above;
           an unknown id throws at build time (lib/documents.ts openDocumentById). Most steps
           carry none and render nothing. */}
-      {node.documents && node.documents.length > 0 && (
-        <div className="mt-2 flex flex-wrap items-center gap-1.5 text-[11px]">
-          <span
-            className="text-[10px] uppercase tracking-wide text-zinc-500"
-            title="The canonical open documents this step is done on — each chip opens the publisher's live page (open-documents/registry.json; link, never redistribute)"
-          >
-            open docs:
-          </span>
-          {node.documents.map((id) => {
-            const doc = openDocumentById(id)
-            return (
-              <a
-                key={id}
-                href={doc.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                title={`${doc.name} — ${doc.publisher}, checked ${doc.checked_on} (external site)`}
-                className="inline-flex items-center gap-1 rounded-md border border-zinc-700/80 px-1.5 py-0.5 text-[10px] text-zinc-300 transition hover:border-emerald-400/60 hover:text-emerald-300"
-              >
-                {doc.name} ↗
-              </a>
-            )
-          })}
-        </div>
-      )}
+      {node.documents && <StepDocuments documents={node.documents} />}
 
       {/* The step's open-module functions (founder 2026-10-02): the registry's per-step
           entries as tiny muted "compute: <module>.<function>" chips — the document-chip row

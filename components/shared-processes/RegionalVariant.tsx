@@ -1,6 +1,7 @@
 'use client'
 
 import { createContext, useContext, useId, useState, type ReactNode } from 'react'
+import { GEO_COUNTRIES, GEO_PREF_META, type GeoCountry } from '@/lib/geoPreference'
 import type { regionalDecision } from '@/lib/shared-processes/regions'
 
 type Decision = ReturnType<typeof regionalDecision>
@@ -17,13 +18,25 @@ export function RegionalVariantSelector() {
   const state = useRegionalVariant()
   const id = useId()
   if (!state?.decision) return null
-  return <div className="space-y-2">
-    <label htmlFor={id} className="block text-sm text-zinc-400">Regional variant</label>
-    <select id={id} value={state.selected} onChange={event => state.select(event.target.value)} aria-describedby={`${id}-scope`} className="w-full max-w-xl rounded-xl border border-zinc-700 bg-zinc-900 px-3 py-2 text-sm text-zinc-200">
-      {state.decision.options.map(option => <option key={option.id} value={option.id}>{option.title}</option>)}
-    </select>
-    <p id={`${id}-scope`} className="max-w-2xl text-xs leading-relaxed text-zinc-400">Changes “{state.decision.title}” only.{state.selected !== 'default' && ' Other steps have not been adapted to this region.'}</p>
-  </div>
+  const hasUnadaptedSteps = state.decision.options.find(option => option.id === state.selected)?.hasUnadaptedSteps === true
+  const countryOrder = (countries: string[]) => Math.min(...countries.map(country => {
+    const index = GEO_COUNTRIES.indexOf(country as GeoCountry)
+    return index === -1 ? GEO_COUNTRIES.length : index
+  }), GEO_COUNTRIES.length)
+  const options = [...state.decision.options].sort((a, b) => a.id === 'default' ? -1 : b.id === 'default' ? 1 : countryOrder(a.countries) - countryOrder(b.countries))
+  return <fieldset aria-describedby={`${id}-scope`} className="min-w-0 space-y-2">
+    <legend className="mb-2 text-sm text-zinc-400">Regional variant</legend>
+    <div className="inline-flex max-w-full flex-wrap items-center gap-0.5 rounded-full border border-zinc-800 p-1 sm:gap-1">
+      {options.map(option => <label key={option.id} className="relative cursor-pointer">
+        <input type="radio" name={id} value={option.id} aria-label={option.title} checked={state.selected === option.id} onChange={() => state.select(option.id)} className="peer sr-only" />
+        <span className={`inline-flex min-h-9 items-center whitespace-nowrap rounded-full px-2 py-1 text-xs transition peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-emerald-300 sm:px-3 ${state.selected === option.id ? 'bg-emerald-400/15 font-medium text-emerald-300 ring-1 ring-emerald-400/50' : 'text-zinc-400 hover:text-zinc-200'}`} title={option.title}>
+          {option.countries.map(country => <span aria-hidden="true" key={country} className="mr-1">{GEO_PREF_META[country as GeoCountry]?.flag}</span>)}
+          {option.countries.length ? option.countries.join(' / ') : option.id === 'default' ? 'Default' : option.title}
+        </span>
+      </label>)}
+    </div>
+    <p id={`${id}-scope`} className={hasUnadaptedSteps ? "text-xs text-zinc-400" : "sr-only"}><span className="sr-only">Changes “{state.decision.title}” only.</span>{hasUnadaptedSteps && ' Other steps have not been adapted to this region.'}</p>
+  </fieldset>
 }
 
 export function RegionalDecisionTitle({ scope, title }: { scope: string; title: string }) {
@@ -49,5 +62,5 @@ export function RegionalOption({ scope, optionId, id, heading, assessment, child
 export function RegionalCoverageNote() {
   const state = useRegionalVariant()
   if (!state?.decision) return null
-  return <p className="mt-2 text-xs text-zinc-400">Default-scope coverage{state.selected !== 'default' && ' · selected regional variant not assessed'}</p>
+  return <p className="sr-only">Default-scope coverage{state.selected !== 'default' && ' · selected regional variant not assessed'}</p>
 }

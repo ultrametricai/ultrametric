@@ -50,7 +50,7 @@ describe('canonical preview graph and grouped process providers', () => {
     expect(graphExecutionType({ ...node, metadata: { route: 'person' } }).symbol).not.toBe(graphExecutionType({ ...node, metadata: { route: 'form' } }).symbol)
   })
 
-  it('keeps payroll and team chat choices independent, scoped to mapped steps, with local overrides across view switches', () => {
+  it('keeps payroll and team chat choices independent, scoped to mapped steps, with local overrides with the overview always visible', () => {
     const record = records.find(record => record.id === 'hr_012')!
     const comparisons = buildStepComparisons(record)
     const choice = buildProcessProviderChoice(record, comparisons)!
@@ -68,9 +68,10 @@ describe('canonical preview graph and grouped process providers', () => {
     expect(within(step).getByText('Process choice')).toBeDefined()
     expect(el.container.querySelector('[id="hr_012:n1"] [aria-pressed="true"]')).toBeNull()
     fireEvent.click(within(step).getByRole('button', { name: 'Use Deel for this step' }))
-    fireEvent.click(el.getByRole('button', { name: 'Graph' }))
-    expect(el.getByRole('region', { name: 'Process graph' })).toBeDefined()
-    fireEvent.click(el.getByRole('button', { name: 'Details' }))
+    expect(el.queryByRole('button', { name: 'Graph' })).toBeNull()
+    expect(el.getByRole('region', { name: 'Process overview graph' })).toBeDefined()
+    expect(el.getByRole('region', { name: 'Process overview graph' })).toBeDefined()
+    expect(el.getByRole('region', { name: 'Process parts' })).toBeDefined()
     expect(within(step).getByRole('button', { name: 'Use Deel for this step' }).getAttribute('aria-pressed')).toBe('true')
     expect(within(payroll).getByRole('button', { name: 'Use Gusto' }).getAttribute('aria-pressed')).toBe('true')
     expect(within(chat).getByRole('button', { name: 'Use Slack' }).getAttribute('aria-pressed')).toBe('true')

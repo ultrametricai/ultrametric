@@ -1,3 +1,4 @@
+import ExternalLinkMark from './shared-processes/ExternalLinkMark'
 import type { StepCost, StepFailureMode, StepVerify } from '@/lib/processes'
 
 // Depth wave part 1 (founder 2026-10-01): the two per-step cited fields, rendered minimally in
@@ -8,7 +9,7 @@ import type { StepCost, StepFailureMode, StepVerify } from '@/lib/processes'
 // "✓ verify:" — the step's concrete "how do I know it worked?" check, plain text plus the
 // primary-source link of the checking tool where one exists (every URL curl-verified live
 // before it shipped; the honesty rules live in processes/README.md "Verification checks").
-export function StepVerifyLine({ verify }: { verify: StepVerify }) {
+export function StepVerifyLine({ verify, squareExternalLinks = false }: { verify: StepVerify; squareExternalLinks?: boolean }) {
   return (
     <p className="mt-2 text-[11px] text-zinc-400">
       <span className="text-emerald-300/90">✓ verify:</span> {verify.how}
@@ -22,7 +23,7 @@ export function StepVerifyLine({ verify }: { verify: StepVerify }) {
             title={`Check it at ${new URL(verify.url).hostname.replace(/^www\./, '')} (external site)`}
             className="whitespace-nowrap text-zinc-300 underline decoration-zinc-700 underline-offset-2 transition hover:text-emerald-300"
           >
-            {new URL(verify.url).hostname.replace(/^www\./, '')} ↗
+            {new URL(verify.url).hostname.replace(/^www\./, '')}{squareExternalLinks ? <ExternalLinkMark href={verify.url} label="" /> : ' ↗'}
           </a>
         </>
       )}
@@ -36,7 +37,7 @@ export function StepVerifyLine({ verify }: { verify: StepVerify }) {
 // state; renders nothing when the node carries no entries (the overwhelmingly common case),
 // so most step blocks stay byte-identical. Curation rules in processes/README.md "Failure
 // modes": sourced or structurally certain only, 3–6 quality entries per deep process.
-export function StepFailureModes({ failureModes }: { failureModes: StepFailureMode[] }) {
+export function StepFailureModes({ failureModes, squareExternalLinks = false }: { failureModes: StepFailureMode[]; squareExternalLinks?: boolean }) {
   return (
     <details className="group mt-2">
       <summary className="flex cursor-pointer list-none items-center gap-1.5 text-[11px] text-zinc-500 transition hover:text-zinc-300 [&::-webkit-details-marker]:hidden">
@@ -58,7 +59,7 @@ export function StepFailureModes({ failureModes }: { failureModes: StepFailureMo
                   title={`Primary source: ${new URL(fm.source).hostname.replace(/^www\./, '')} (external site)`}
                   className="whitespace-nowrap text-zinc-300 underline decoration-zinc-700 underline-offset-2 transition hover:text-emerald-300"
                 >
-                  {new URL(fm.source).hostname.replace(/^www\./, '')} ↗
+                  {new URL(fm.source).hostname.replace(/^www\./, '')}{squareExternalLinks ? <ExternalLinkMark href={fm.source} label="" /> : ' ↗'}
                 </a>
               </>
             )}
@@ -87,7 +88,7 @@ export function costChipText(cost: StepCost): string {
 // Muted suffix chip carrying the step's sourced cost. The chip links to the cited primary
 // source (fee schedule / pricing page) and the tooltip carries the honesty contract: the asOf
 // date is when the number was read — fees change, currentness is never claimed.
-export function StepCostChip({ cost }: { cost: StepCost }) {
+export function StepCostChip({ cost, squareExternalLinks = false }: { cost: StepCost; squareExternalLinks?: boolean }) {
   const host = new URL(cost.source).hostname.replace(/^www\./, '')
   return (
     <a
@@ -97,7 +98,7 @@ export function StepCostChip({ cost }: { cost: StepCost }) {
       title={`${COST_KIND_LABELS[cost.kind]} — read from ${host} on ${cost.asOf} (fees change; the as-of date is the contract, not a currentness claim).${cost.note ? ` ${cost.note}` : ''}`}
       className="whitespace-nowrap rounded border border-zinc-800 px-1.5 py-0.5 text-[10px] text-zinc-500 transition hover:border-emerald-400/60 hover:text-emerald-300"
     >
-      {costChipText(cost)}
+      {costChipText(cost)}{squareExternalLinks && <ExternalLinkMark href={cost.source} label="" />}
     </a>
   )
 }

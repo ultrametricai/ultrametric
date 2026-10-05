@@ -16,6 +16,7 @@ export interface VendorCoverage {
 }
 export interface VendorPreview {
   choiceScope: string
+  parentChoiceScope?: string
   evidence: Record<string, CapabilityEvidence[]>
   coverage: Record<string, VendorCoverage>
 }
@@ -23,7 +24,7 @@ export interface VendorPreview {
 // Explicit preview bridge: these source node mappings describe these canonical scopes.
 // The filing mapping belongs to the repaired default option, never its foreign alternatives.
 // No graph, instructions, route, or risk assessment is projected from the legacy loader.
-export function buildVendorPreview(record: SharedRecord): VendorPreview | undefined {
+export function buildVendorPreview(record: SharedRecord, scope = record.id, parentScopes: Record<string, string> = {}): VendorPreview | undefined {
   if (record.id !== 'form_001') return undefined
   const choice = record.parts.find(part => part.id === 'n1')
   if (!choice) return undefined
@@ -52,5 +53,11 @@ export function buildVendorPreview(record: SharedRecord): VendorPreview | undefi
   for (const item of evidence[filingScope] ?? []) {
     coverage[item.candidateId] = { score: item.score, scope: filingScope, storyCount: item.stories.length }
   }
-  return { coverage, choiceScope: `${record.id}:${choice.id}`, evidence }
+  const remap = (key: string) => scope + key.slice(record.id.length)
+  return {
+    choiceScope: `${scope}:${choice.id}`,
+    parentChoiceScope: parentScopes[remap(filingScope)],
+    coverage: Object.fromEntries(Object.entries(coverage).map(([id, value]) => [id, { ...value, scope: remap(value.scope) }])),
+    evidence: Object.fromEntries(Object.entries(evidence).map(([key, value]) => [remap(key), value])),
+  }
 }

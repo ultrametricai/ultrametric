@@ -10,6 +10,8 @@ Notes use `{ "text": "...", "references": [] }`; references are optional. They c
 
 `metadata` preserves temporary legacy annotations. It is not included in API instructions. Unverified operation strings are retained only in `legacy-audit.json`. Six standalone legal decisions remain in metadata because the source does not specify their graph position. No decisions, outcomes, vendor claims, or instructions are invented during import. Source provenance is optional for new records. It identifies copied content, not factual support.
 
+The manifest’s `generatedHash` records generated output. Authored records retain that baseline so the importer can detect conflicting source changes. The reconciliation audit is retained in [the migration report](../../docs/PROCESS-MIGRATION-2026-10-02.md).
+
 ## Commands
 
 - `pnpm shared:import` imports new or unedited generated records from committed legacy sources. Commit legacy edits first: unstaged, staged-but-uncommitted, and untracked source files are rejected. The importer reads the pinned Git tree so the recorded revision and values agree. It preserves authored edits; if their legacy source changes, it reports conflicts before writing any file. Removed source records also require reconciliation.

@@ -56,9 +56,9 @@ describe('canonical step comparisons', () => {
     expect(within(evidence).getAllByRole('link', { name: 'View product assessment' }).every(a => a.getAttribute('href')?.startsWith('/arena/legal-ops/product/docusign#story-'))).toBe(true)
     const choice = el.container.querySelector('[id="form_001:n1"]') as HTMLElement
     expect(within(choice).queryByRole('button', { name: 'Use Docusign' })).toBeNull()
-    expect(el.container.querySelector('[data-selected-provider]')).toBeNull()
+    expect(el.container.querySelector('[aria-label="Step product comparison"] [data-selected-provider]')).toBeNull()
     fireEvent.click(within(choice).getByRole('button', { name: 'Use Clerky' }))
-    expect(el.container.querySelectorAll('[data-selected-provider]')).toHaveLength(3)
+    expect(el.container.querySelectorAll('[aria-label="Step product comparison"] [data-selected-provider]')).toHaveLength(3)
     expect(within(scope).getByText('Process choice')).toBeDefined()
     expect(within(scope).getAllByText('✓').every(mark => mark.getAttribute('aria-hidden') === 'true')).toBe(true)
     expect(within(scope).getByRole('button', { name: 'Use Clerky for this step' }).getAttribute('aria-pressed')).toBe('true')
@@ -66,7 +66,7 @@ describe('canonical step comparisons', () => {
     fireEvent.click(within(scope).getByRole('button', { name: 'Hide Docusign story evidence' }))
     expect(within(choice).getByRole('button', { name: 'Use Clerky' }).getAttribute('aria-pressed')).toBe('true')
     fireEvent.click(within(choice).getByRole('button', { name: 'Use Doola' }))
-    expect(el.container.querySelector('[data-selected-provider]')).toBeNull()
+    expect(el.container.querySelector('[aria-label="Step product comparison"] [data-selected-provider]')).toBeNull()
     expect(within(scope).getAllByRole('button', { name: /Show .* story evidence/ })).toHaveLength(7)
   })
 

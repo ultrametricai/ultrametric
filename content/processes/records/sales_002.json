@@ -11,7 +11,7 @@
       "id": "n1",
       "kind": "step",
       "title": "Look up or create customer",
-      "guidance": null,
+      "guidance": "Find the customer’s existing billing record from the contract or order before creating another. Check legal name, address, relevant tax identifiers, currency, purchase-order requirements and billing contact. Resolve conflicts with the account owner or customer through the established channel, leaving a billing record that matches the agreed commercial relationship.",
       "when": null,
       "ref": null,
       "options": [],
@@ -33,14 +33,14 @@
       "id": "n2",
       "kind": "decision",
       "title": "Create invoice with line items",
-      "guidance": null,
+      "guidance": "Draft the invoice from the contract or order and the billable milestone or service period. Check quantities, prices, discounts, currency, payment terms and tax treatment, using the applicable local invoice route. Recalculate totals and compare earlier invoices to avoid duplicate billing. Resolve exceptions with the billing owner before the document is issued.",
       "when": null,
       "ref": null,
       "options": [
         {
           "id": "default",
-          "title": "Default \u2014 Create invoice with line items",
-          "summary": "",
+          "title": "Default — Create invoice with line items",
+          "summary": "Describe line items so the customer can recognize what was delivered and when. Match quantities, prices, discounts and service periods to the order, with the correct tax treatment, payment terms and purchase-order reference. Check the total and any departure from agreed terms so the draft is ready for the billing owner to issue.",
           "when": null,
           "parts": [],
           "notes": [],
@@ -62,7 +62,7 @@
         {
           "id": "india-gst-irn",
           "title": "India - GST e-invoice (IRN)",
-          "summary": "Invoices are GST documents: registered businesses past the turnover threshold must clear every B2B invoice through the government IRP to get an IRN and QR code - an invoice without one simply isn't valid.",
+          "summary": "Establish GST treatment and e-invoicing applicability with the Indian tax owner for this supplier and document. Where an IRN is required, the authorized billing user submits accurate seller, buyer, supply and amount data through an eligible route. Match the returned IRN, signed data and QR information to the invoice and resolve validation errors before delivery.",
           "when": "Invoicing from an Indian entity",
           "parts": [],
           "notes": [],
@@ -73,6 +73,13 @@
               "role": "legacy-action-link",
               "title": "GST e-Invoice portal (IRP)",
               "description": null
+            },
+            {
+              "kind": "url",
+              "url": "https://einvoice1.gst.gov.in/",
+              "title": "NIC GST e-Invoice System",
+              "description": null,
+              "role": "authored-guidance-source"
             }
           ],
           "metadata": {
@@ -88,7 +95,7 @@
         {
           "id": "uk-vat-invoice",
           "title": "UK - statutory VAT invoice",
-          "summary": "Invoices must carry the statutory particulars (and full VAT-invoice fields once registered); late payers owe statutory interest at 8% over base under the late-payment legislation.",
+          "summary": "For the UK invoice, check party details, unique number, supply and issue dates, descriptions, charges and total against the transaction. Determine whether a VAT invoice is required and apply its fields and treatment. Use the agreed payment terms, resolving any proposed late-payment charge before the billing owner issues the final document.",
           "when": "Invoicing from a UK entity",
           "parts": [],
           "notes": [],
@@ -99,6 +106,13 @@
               "role": "legacy-action-link",
               "title": "Invoicing and taking payment",
               "description": null
+            },
+            {
+              "kind": "url",
+              "url": "https://www.gov.uk/invoicing-and-taking-payment-from-customers/invoices-what-they-must-include",
+              "title": "GOV.UK invoice requirements",
+              "description": null,
+              "role": "authored-guidance-source"
             }
           ],
           "metadata": {
@@ -113,7 +127,7 @@
         {
           "id": "germany-e-rechnung",
           "title": "Germany - s.14 UStG e-invoice",
-          "summary": "s.14 UStG fixes the mandatory invoice fields (sequential number, Steuernummer/USt-IdNr, ...) - and since January 2025 every German business must be able to receive structured e-invoices (XRechnung/ZUGFeRD).",
+          "summary": "Establish the German invoice particulars, VAT treatment and electronic format required for the parties and transaction. Populate the invoice from the contract and delivery evidence, checking identifiers, dates and amounts. Validate structured output where required alongside its readable presentation, then issue it through the billing owner’s accounting workflow.",
           "when": "Invoicing from a German entity",
           "parts": [],
           "notes": [],
@@ -138,7 +152,7 @@
         {
           "id": "france-mentions-obligatoires",
           "title": "France - mentions obligatoires",
-          "summary": "French invoices carry a long list of mentions obligatoires (SIREN, RCS, per-line detail, late-payment penalty terms...), with mandatory B2B e-invoicing via accredited platforms phasing in.",
+          "summary": "Check the French invoice’s party identities, transaction details, price, tax presentation and applicable payment statements against current requirements. Establish the electronic-invoicing channel and obligations for the company’s size and transaction with the accountant. Validate the document or structured submission, then follow platform acknowledgments or correction requests against the issued invoice.",
           "when": "Invoicing from a French entity",
           "parts": [],
           "notes": [],
@@ -149,6 +163,13 @@
               "role": "legacy-action-link",
               "title": "Mentions obligatoires sur une facture",
               "description": null
+            },
+            {
+              "kind": "url",
+              "url": "https://entreprendre.service-public.gouv.fr/vosdroits/F31808",
+              "title": "Service Public invoice particulars",
+              "description": null,
+              "role": "authored-guidance-source"
             }
           ],
           "metadata": {
@@ -169,7 +190,7 @@
       "id": "n3",
       "kind": "step",
       "title": "Send invoice",
-      "guidance": null,
+      "guidance": "The billing owner sends the final invoice to the verified contact or required customer portal with the correct attachments, purchase-order reference and payment instructions. Check the delivery acknowledgment and resolve rejected or failed submissions. Link corrections and re-delivery to the original invoice to preserve a single receivable for the charge.",
       "when": null,
       "ref": null,
       "options": [],
@@ -193,7 +214,7 @@
       "id": "n4",
       "kind": "step",
       "title": "Track payment status",
-      "guidance": null,
+      "guidance": "Match receipts to the invoice by customer, reference, amount and currency, accounting for partial payments, credits and fees. Keep unpaid, disputed and settled balances distinct. Investigate mismatches and follow the agreed collection process for overdue amounts, using the account owner’s customer context to resolve disputes or arrange the next action.",
       "when": null,
       "ref": null,
       "options": [],
@@ -251,28 +272,28 @@
       {
         "country": "IN",
         "kind": "analog",
-        "summary": "Invoices are GST documents: registered businesses past \u20b95 crore turnover must clear every B2B invoice through the government IRP (e-invoicing) to get an IRN and QR code \u2014 an invoice without one simply isn't valid.",
+        "summary": "Invoices are GST documents: registered businesses past ₹5 crore turnover must clear every B2B invoice through the government IRP (e-invoicing) to get an IRN and QR code — an invoice without one simply isn't valid.",
         "actionUrl": "https://einvoice.gst.gov.in/",
         "actionLabel": "GST e-Invoice portal (IRP)"
       },
       {
         "country": "UK",
         "kind": "analog",
-        "summary": "Invoices must carry the statutory particulars (and full VAT-invoice fields once registered); late payers owe statutory interest at 8% over base under the late-payment legislation \u2014 gov.uk documents both.",
+        "summary": "Invoices must carry the statutory particulars (and full VAT-invoice fields once registered); late payers owe statutory interest at 8% over base under the late-payment legislation — gov.uk documents both.",
         "actionUrl": "https://www.gov.uk/invoicing-and-taking-payment-from-customers",
         "actionLabel": "Invoicing and taking payment"
       },
       {
         "country": "DE",
         "kind": "analog",
-        "summary": "\u00a7 14 UStG fixes the mandatory invoice fields (sequential number, Steuernummer/USt-IdNr, \u2026) \u2014 and since January 2025 every German business must be able to RECEIVE structured e-invoices (XRechnung/ZUGFeRD) for domestic B2B, with issuing phasing in.",
+        "summary": "§ 14 UStG fixes the mandatory invoice fields (sequential number, Steuernummer/USt-IdNr, …) — and since January 2025 every German business must be able to RECEIVE structured e-invoices (XRechnung/ZUGFeRD) for domestic B2B, with issuing phasing in.",
         "actionUrl": "https://www.gesetze-im-internet.de/ustg_1980/__14.html",
-        "actionLabel": "\u00a7 14 UStG \u2014 invoice requirements"
+        "actionLabel": "§ 14 UStG — invoice requirements"
       },
       {
         "country": "FR",
         "kind": "analog",
-        "summary": "French invoices carry a long list of mentions obligatoires (SIREN, RCS, per-line detail, late-payment penalty terms\u2026), and mandatory B2B e-invoicing via accredited platforms (PDP) phases in from September 2026 \u2014 receiving first, issuing by 2027.",
+        "summary": "French invoices carry a long list of mentions obligatoires (SIREN, RCS, per-line detail, late-payment penalty terms…), and mandatory B2B e-invoicing via accredited platforms (PDP) phases in from September 2026 — receiving first, issuing by 2027.",
         "actionUrl": "https://entreprendre.service-public.fr/vosdroits/F31808",
         "actionLabel": "Mentions obligatoires sur une facture"
       }

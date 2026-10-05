@@ -15,32 +15,50 @@ describe('scoped regional presentation', () => {
   it('switches only authored regional options, hides default filing scores, retains nested content and resets', () => {
     const corporation = record('form_001')
     const el = render(<SharedProcessReader record={corporation} records={records} vendorPreview={buildVendorPreview(corporation)} comparisons={buildStepComparisons(corporation)} />)
-    const select = el.getByRole('combobox', { name: 'Regional variant' })
-    const chooser = el.container.querySelector('[id="form_001:n1"]')!
-    expect(chooser.querySelectorAll('[title^="Filing story coverage"]')).toHaveLength(4)
-    fireEvent.change(select, { target: { value: 'germany-notary-gmbh' } })
+    const select = el.getByRole('group', { name: 'Regional variant' })
+    const chooser = () => el.container.querySelector('[id="form_001:n1"]')!
+    expect(chooser().querySelectorAll('[title^="Filing story coverage"]')).toHaveLength(4)
+    fireEvent.click(select.querySelector('input[value="germany-notary-gmbh"]')!)
     expect(el.container.querySelector('[id="form_001:n4:default"]')).toBeNull()
-    expect(chooser.querySelector('[title^="Filing story coverage"]')).toBeNull()
+    expect(chooser()).toBeNull()
     expect(el.container.querySelector('[id="form_001:n4:germany-notary-gmbh"]')?.querySelectorAll('article')).toHaveLength(4)
     expect(el.container.querySelector('[id="form_001:n4:germany-notary-gmbh"] [aria-label="Step product comparison"]')).toBeNull()
-    expect(el.getByText(/Other steps have not been adapted/)).toBeDefined()
+    expect(el.queryByText(/Other steps have not been adapted/)).toBeNull()
     expect(el.queryByRole('definition', { name: 'Agent' })).toBeNull()
-    fireEvent.change(select, { target: { value: 'default' } })
-    expect(chooser.querySelectorAll('[title^="Filing story coverage"]')).toHaveLength(4)
+    fireEvent.click(select.querySelector('input[value="default"]')!)
+    expect(chooser().querySelectorAll('[title^="Filing story coverage"]')).toHaveLength(4)
     expect(el.container.querySelector('[id="form_001:n4:default"]')).not.toBeNull()
-    fireEvent.change(select, { target: { value: 'uk-companies-house' } })
+    fireEvent.click(select.querySelector('input[value="uk-companies-house"]')!)
     el.rerender(<SharedProcessReader record={record('opp_002')} records={records} />)
-    expect((el.getByRole('combobox', { name: 'Regional variant' }) as HTMLSelectElement).value).toBe('default')
+    expect((el.container.querySelector('input[value="default"]') as HTMLInputElement).checked).toBe(true)
+  })
+
+  it('visibly qualifies UK/EU banking while unadapted application steps remain, and clears the warning on default', () => {
+    const banking = record('qs_023')
+    const el = render(<SharedProcessReader record={banking} records={records} />)
+    expect(el.queryByText(/Other steps have not been adapted/)).toBeNull()
+    fireEvent.click(el.container.querySelector('input[value="uk-eu-multicurrency"]')!)
+    const warning = el.getByText(/Other steps have not been adapted/)
+    expect(warning.className).toBe('text-xs text-zinc-400')
+    expect(warning.closest('fieldset')?.getAttribute('aria-describedby')).toBe(warning.id)
+    expect(el.container.querySelector('[id="qs_023:n3"]')?.textContent).toContain('EIN')
+    expect(el.container.querySelector('[id="qs_023:n5"]')).not.toBeNull()
+    expect(regionalDecision(banking)?.options.find(option => option.id === 'uk-eu-multicurrency')?.hasUnadaptedSteps).toBe(true)
+    fireEvent.click(el.container.querySelector('input[value="default"]')!)
+    expect(el.queryByText(/Other steps have not been adapted/)).toBeNull()
+    expect(regionalDecision(record('form_001'))?.options.every(option => !option.hasUnadaptedSteps)).toBe(true)
   })
 
   it('preserves non-geographic choices and does not assume one country per option', () => {
     const payroll = render(<SharedProcessReader record={record('qs_063')} records={records} />)
     expect(payroll.container.querySelector('[id="qs_063:n3:eor-international"] summary')).not.toBeNull()
-    fireEvent.change(payroll.getByRole('combobox'), { target: { value: 'uk-paye-rti' } })
+    fireEvent.click(payroll.container.querySelector('input[type="radio"][value="uk-paye-rti"]')!)
     expect(payroll.container.querySelector('[id="qs_063:n3:uk-paye-rti"]')?.querySelectorAll('article')).toHaveLength(3)
     expect(payroll.container.querySelector('[id="qs_063:n3:eor-international"] summary')).not.toBeNull()
     const multi = regionalDecision(record('qs_023'))!
     expect(multi.options.filter(option => option.id === 'uk-eu-multicurrency')).toHaveLength(1)
+    expect(multi.options.find(option => option.id === 'uk-eu-multicurrency')?.countries).toEqual(['UK', 'DE', 'FR'])
+    expect(regionalDecision(record('form_001'))?.options.find(option => option.id === 'default')?.countries).toEqual(['US'])
     expect(records.filter(record => regionalDecision(record))).toHaveLength(18)
   })
 
@@ -54,7 +72,7 @@ describe('scoped regional presentation', () => {
     expect(el.container.querySelector('[id="opp_002:n3"]')?.textContent).toContain('Automatic')
     expect(el.getByText('Agent-step approvals')).toBeDefined()
     expect(el.container.querySelector('[id="opp_002:n2:default"]')?.textContent).not.toContain('Automatic')
-    fireEvent.change(el.getByRole('combobox'), { target: { value: 'india-pan-tds' } })
+    fireEvent.click(el.container.querySelector('input[type="radio"][value="india-pan-tds"]')!)
     expect(el.queryByText('Agent-step approvals')).toBeNull()
     expect(el.container.querySelector('[aria-label="Process summary"]')).toBeNull()
     expect(el.getByRole('heading', { level: 1 }).textContent).toBe(contractor.title)
@@ -72,7 +90,7 @@ describe('scoped regional presentation', () => {
     expect(filing.querySelector(':scope > div:first-child')?.textContent).not.toContain('Irreversible')
     expect(filing.querySelector('[id="form_001:n4:default"]')?.textContent).toContain('Irreversible')
     expect(el.container.querySelector('[id="form_001:n1"]')?.textContent).not.toContain('Irreversible')
-    fireEvent.change(el.getByRole('combobox'), { target: { value: 'india-spice-plus' } })
+    fireEvent.click(el.container.querySelector('input[type="radio"][value="india-spice-plus"]')!)
     expect(within(filing as HTMLElement).queryByText('Irreversible')).toBeNull()
     cleanup()
     const simple = record('opp_002')
@@ -84,3 +102,26 @@ describe('scoped regional presentation', () => {
     expect(low.queryByText('Needs approval')).toBeNull()
   })
 })
+
+// Exercise every authored country choice, including records with unresolved
+// downstream applicability. A selected country must not inherit default totals.
+for (const source of records.filter(record => regionalDecision(record))) {
+  it(`qualifies regional choices and suppresses default totals for ${source.id}`, () => {
+    const decision = regionalDecision(source)!
+    const el = render(<SharedProcessReader record={source} records={records} />)
+    for (const option of decision.options.filter(option => option.id !== 'default')) {
+      fireEvent.click(el.container.querySelector(`input[type="radio"][value="${option.id}"]`)!)
+      expect(el.container.querySelector('[aria-label="Process summary"]')).toBeNull()
+      const warning = el.queryByText(/Other steps have not been adapted/)
+      if (option.hasUnadaptedSteps) {
+        expect(warning?.className).toBe('text-xs text-zinc-400')
+      } else {
+        expect(warning).toBeNull()
+      }
+      expect(el.container.querySelector(`[id="${decision.scope}:${option.id}"]`)).not.toBeNull()
+      expect(el.container.querySelector(`[id="${decision.scope}:default"]`)).toBeNull()
+    }
+    fireEvent.click(el.container.querySelector('input[type="radio"][value="default"]')!)
+    expect(el.queryByText(/Other steps have not been adapted/)).toBeNull()
+  })
+}

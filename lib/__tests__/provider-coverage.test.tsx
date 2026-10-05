@@ -39,24 +39,30 @@ it('shows scoped aggregate evidence independently of selection and preserves lin
   expect(providers.getByRole('region', { name: 'Stripe process coverage' }).textContent).toContain('Assessed on 12 of 12')
   expect(providers.getByRole('button', { name: 'Use Stripe' }).getAttribute('aria-pressed')).toBe('false')
   fireEvent.click(providers.getByRole('button', { name: 'Use Stripe' }))
-  fireEvent.click(el.getByRole('button', { name: 'Graph' }))
-  const graph = within(el.getByRole('region', { name: 'Process graph' }))
-  expect(graph.getByRole('heading', { name: 'Get paid' }).className).toContain('text-xl')
+  expect(el.queryByRole('button', { name: 'Graph' })).toBeNull()
+    expect(el.getByRole('region', { name: 'Process overview graph' })).toBeDefined()
+  const graph = within(el.getByRole('region', { name: 'Process overview graph' }))
+  expect(graph.getByRole('heading', { name: 'Get paid' }).className).toContain('sr-only')
+  const scopes = el.getByText(/^Subprocesses and option scopes/).closest('details')!
+  scopes.open = true
+  fireEvent(scopes, new Event('toggle'))
   const link = graph.getByRole('link', { name: 'Bookkeeping close' })
   expect(link.getAttribute('href')).toBe('/processes/preview/bookkeeping-close')
-  fireEvent.click(el.getByRole('button', { name: 'Details' }))
+  expect(el.getByRole('region', { name: 'Process parts' })).toBeDefined()
   expect(providers.getByRole('button', { name: 'Use Stripe' }).getAttribute('aria-pressed')).toBe('true')
 })
 
-it('labels existing aggregate scores as default-scope when a regional option changes', () => {
+it('hides default-scope aggregate scores for an unassessed regional option', () => {
   const record = records.find(record => record.id === 'sales_002')!
   const comparisons = buildComposedComparisons(record, records)
   const choice = buildProcessProviderChoice(record, comparisons)!
   const el = render(<SharedProcessReader record={record} records={records} comparisons={comparisons} processChoice={choice} />)
-  const selector = el.getByRole('combobox', { name: 'Regional variant' }) as HTMLSelectElement
-  const alternate = [...selector.options].find(option => option.value !== 'default')!
-  fireEvent.change(selector, { target: { value: alternate.value } })
+  const selector = el.getByRole('group', { name: 'Regional variant' })
+  const alternate = selector.querySelector('input:not([value="default"])')!
+  fireEvent.click(alternate)
   const providers = within(el.getByRole('region', { name: 'Process providers' }))
-  expect(providers.getAllByText('These scores do not assess the selected regional variant.').length).toBeGreaterThan(0)
-  expect(providers.getAllByText(/Default-scope coverage across/).length).toBeGreaterThan(0)
+  expect(providers.queryByText('These scores do not assess the selected regional variant.')).toBeNull()
+  expect(el.getByRole('region', { name: 'Process providers' }).querySelector('[title*="rated default-scope"]')).toBeNull()
+  fireEvent.click(selector.querySelector('input[value="default"]')!)
+  expect(el.getByRole('region', { name: 'Process providers' }).querySelector('[title*="rated default-scope"]')).not.toBeNull()
 })

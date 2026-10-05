@@ -16,7 +16,7 @@ const tree = (record = corporation) => <SharedProcessReader record={record} reco
 describe('step overrides and related processes', () => {
   it('keeps step selection independent, inherited choices visible, and geographic choices isolated', () => {
     const el = render(tree())
-    const scope = el.container.querySelector('[id="form_001:n6"]') as HTMLElement
+    let scope = el.container.querySelector('[id="form_001:n6"]') as HTMLElement
     fireEvent.click(el.getByRole('button', { name: 'Use Clerky' }))
     expect(within(scope).getByText('Process choice')).toBeDefined()
     fireEvent.click(within(scope).getByRole('button', { name: '+ 4 more' }))
@@ -25,9 +25,10 @@ describe('step overrides and related processes', () => {
     expect(el.getByRole('button', { name: 'Use Clerky' }).getAttribute('aria-pressed')).toBe('true')
     fireEvent.click(el.getByRole('button', { name: 'Use Stripe Atlas' }))
     expect(within(scope).getByRole('button', { name: 'Use Firstbase for this step' }).getAttribute('aria-pressed')).toBe('true')
-    fireEvent.change(el.getByRole('combobox', { name: 'Regional variant' }), { target: { value: 'germany-notary-gmbh' } })
-    expect(scope.querySelector('[aria-pressed="true"]')).toBeNull()
-    fireEvent.change(el.getByRole('combobox', { name: 'Regional variant' }), { target: { value: 'default' } })
+    fireEvent.click(el.container.querySelector('input[type="radio"][value="germany-notary-gmbh"]')!)
+    expect(el.container.querySelector('[id="form_001:n6"]')).toBeNull()
+    fireEvent.click(el.container.querySelector('input[type="radio"][value="default"]')!)
+    scope = el.container.querySelector('[id="form_001:n6"]') as HTMLElement
     expect(within(scope).getByRole('button', { name: 'Use Firstbase for this step' }).getAttribute('aria-pressed')).toBe('true')
     fireEvent.click(within(scope).getByRole('button', { name: 'Use process choice' }))
     expect(within(scope).getByRole('button', { name: 'Use Stripe Atlas for this step' }).getAttribute('aria-pressed')).toBe('true')

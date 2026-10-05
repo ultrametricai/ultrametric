@@ -2,13 +2,14 @@
 
 import { useId, useState } from 'react'
 import Link from 'next/link'
+import ExternalLinkMark from './ExternalLinkMark'
 import ScoredProductRow from './ScoredProductRow'
 import type { StepComparison, StepComparisonProduct } from '@/lib/shared-processes/step-comparisons'
 import { useRegionalVariant } from './RegionalVariant'
-import { useVendorSelection } from './VendorSelection'
+import { selectedVendor, useVendorSelection } from './VendorSelection'
 
-function ProductRow({ product, selected, inherited, onSelect, hidden }: { product: StepComparisonProduct; selected: boolean; inherited: boolean; onSelect?: () => void; hidden: boolean }) {
-  return <ScoredProductRow product={product} selected={selected} inherited={inherited} onSelect={onSelect} hidden={hidden} selectionLabel={`Use ${product.name} for this step`} evidenceLabel="story evidence" scoreTitle={`Story coverage ${product.score}/100 from this step's mapped stories`}>
+function ProductRow({ product, selected, inherited, onSelect, hidden, scores }: { product: StepComparisonProduct; selected: boolean; inherited: boolean; onSelect?: () => void; hidden: boolean; scores: readonly number[] }) {
+  return <ScoredProductRow scores={scores} product={product} selected={selected} inherited={inherited} onSelect={onSelect} hidden={hidden} selectionLabel={`Use ${product.name} for this step`} evidenceLabel="story evidence" scoreTitle={`Story coverage ${product.score}/100 from this step's mapped stories`}>
       {product.stories.map(story => <details key={story.id} className="min-w-0">
         <summary className="cursor-pointer break-words leading-relaxed text-zinc-300">{story.title}<span className="ml-2 text-zinc-500">{story.verdict} · {story.quality}/10 · weight {story.weight}</span></summary>
         <div className="mt-2 space-y-2 break-words leading-relaxed [overflow-wrap:anywhere]">
@@ -16,7 +17,7 @@ function ProductRow({ product, selected, inherited, onSelect, hidden }: { produc
           <p>Confidence: {story.confidence}</p>
           <Link href={`${product.href}#story-${story.id}`} className="inline-block text-emerald-300 underline underline-offset-4">View product assessment</Link>
           {story.evidence.length > 0 && <ul className="space-y-3">{story.evidence.map(source => <li key={source.id}>
-            <a href={source.url} target="_blank" rel="noopener noreferrer" className="text-zinc-300 underline underline-offset-4">{source.url}</a>
+            <a href={source.url} target="_blank" rel="noopener noreferrer" className="text-zinc-300 underline underline-offset-4">{source.url}<ExternalLinkMark href={source.url} label={source.url} /></a>
             <p className="mt-1">{source.excerpt}</p>
             <p className="mt-1 text-zinc-500">{source.tier} · fetched {source.fetchedAt.slice(0, 10)}</p>
           </li>)}</ul>}
@@ -25,7 +26,7 @@ function ProductRow({ product, selected, inherited, onSelect, hidden }: { produc
   </ScoredProductRow>
 }
 
-export default function StepComparisonTable({ comparison, choiceScope, scope }: { comparison: StepComparison; choiceScope?: string; scope?: string }) {
+export default function StepComparisonTable({ comparison, choiceScope, parentChoiceScope, scope, bordered = true }: { comparison: StepComparison; choiceScope?: string; parentChoiceScope?: string; scope?: string; bordered?: boolean }) {
   const selection = useVendorSelection()
   const region = useRegionalVariant()
   const foreign = !!region?.decision && region.selected !== 'default'
@@ -35,7 +36,7 @@ export default function StepComparisonTable({ comparison, choiceScope, scope }: 
   const listId = useId()
   if (!comparison.products.length) return null
   const hasOverride = !!overrideScope && !!selection && Object.hasOwn(selection.overrides, overrideScope)
-  const processPick = inheritedScope ? selection?.picks[inheritedScope] : undefined
+  const processPick = inheritedScope ? selectedVendor(selection, inheritedScope, parentChoiceScope) : undefined
   const inheritedPick = comparison.products.find(product => product.id === processPick && product.score > 0 && product.stories.some(story => story.quality > 0))?.id
   const selectedId = hasOverride ? selection!.overrides[overrideScope!] : inheritedPick
   const inherited = !hasOverride && selectedId !== undefined
@@ -44,8 +45,8 @@ export default function StepComparisonTable({ comparison, choiceScope, scope }: 
   const remaining = Math.max(0, products.length - 3)
   return <section aria-label="Step product comparison" className="space-y-2 border-t border-zinc-800/50 pt-3">
     <p className="text-xs text-zinc-400">Products · {comparison.storyCount} coverage stories</p>
-    <div className="overflow-hidden rounded-2xl border border-zinc-800">
-      <ul id={listId}>{products.map((product, index) => <ProductRow key={product.id} product={product} selected={product.id === selectedId} inherited={inherited} onSelect={overrideScope && selection ? () => selection.override(overrideScope, product.id === selectedId ? null : product.id) : undefined} hidden={!expanded && index >= 3} />)}</ul>
+    <div className={bordered ? "overflow-hidden rounded-2xl border border-zinc-800" : "overflow-hidden"}>
+      <ul id={listId}>{products.map((product, index) => <ProductRow scores={comparison.products.map(item => item.score)} key={product.id} product={product} selected={product.id === selectedId} inherited={inherited} onSelect={overrideScope && selection ? () => selection.override(overrideScope, product.id === selectedId ? null : product.id) : undefined} hidden={!expanded && index >= 3} />)}</ul>
       {remaining > 0 && <button type="button" aria-expanded={expanded} aria-controls={listId} onClick={() => setExpanded(value => !value)} className="w-full border-t border-zinc-800/70 px-4 py-2.5 text-center text-xs text-zinc-400 hover:bg-zinc-900/60 hover:text-zinc-200">{expanded ? 'Show fewer' : `+ ${remaining} more`}</button>}
     </div>
     {hasOverride && inheritedScope && <button type="button" onClick={() => selection?.override(overrideScope!, undefined)} className="text-xs text-zinc-400 underline underline-offset-4 hover:text-zinc-200">Use process choice</button>}

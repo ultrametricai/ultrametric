@@ -1,6 +1,7 @@
 import { layerNodes } from '../dagLayers'
 import type { Connection, Part, SharedRecord } from './schema'
 import { regionalDecision } from './regions'
+import { previewContext } from './preview-context'
 
 export interface GraphNode { id: string; title: string; metadata: Record<string, unknown>; when: string | null; scope: string; sourceScope?: string }
 export interface GraphEdge extends Connection { conditional: boolean; description: string }
@@ -11,7 +12,8 @@ export function processGraphs(record: SharedRecord, records: SharedRecord[], sel
   const result: GraphScope[] = []
   const regional = regionalDecision(record)
   function visit(parts: Part[], links: Connection[], scope: string, title: string, ancestors = new Set([record.id]), sourceId = record.id, sourceRecordId: string | undefined = record.id, annotation?: string) {
-    const nodes = parts.map(part => {
+    const visibleParts = parts.filter(part => { const context = previewContext(part.metadata); return !context || regional?.scope !== `${scope}:${context.decision}` || selected === context.option })
+    const nodes = visibleParts.map(part => {
       const bound = regional?.scope === `${scope}:${part.id}`
       const option = bound ? part.options.find(option => option.id === selected) : undefined
       return { id: part.id, scope: `${scope}:${part.id}`, sourceScope: `${sourceId}:${part.id}`, title: bound && selected !== 'default' ? option?.title ?? part.title ?? part.id : part.title ?? records.find(record => record.id === part.ref)?.title ?? part.id,
@@ -21,7 +23,7 @@ export function processGraphs(record: SharedRecord, records: SharedRecord[], sel
     let unresolved = 0
     const edges: GraphEdge[] = []
     for (const link of links) {
-      if (!ids.has(link.from) || !ids.has(link.to)) { unresolved++; continue }
+      if (!ids.has(link.from) || !ids.has(link.to)) { if (!parts.some(part => part.id === link.from) || !parts.some(part => part.id === link.to)) unresolved++; continue }
       const source = parts.find(part => part.id === link.from)!
       const bound = regional?.scope === `${scope}:${source.id}`
       if (bound && link.option && regional.options.some(option => option.id === link.option) && link.option !== selected) continue
@@ -34,11 +36,11 @@ export function processGraphs(record: SharedRecord, records: SharedRecord[], sel
     const linkedIds = new Set(edges.flatMap(edge => [edge.from, edge.to]))
     const unlinked = edges.length ? nodes.filter(node => !linkedIds.has(node.id)) : []
     if (nodes.length) result.push({ id: scope, title, sourceRecordId, annotation, nodes, edges, layers: edges.length ? layerNodes(nodes.filter(node => linkedIds.has(node.id)), edges) : [nodes], unlinked, unresolved })
-    for (const part of parts) {
+    for (const part of visibleParts) {
       const referenced = records.find(record => record.id === part.ref)
       if (referenced && !ancestors.has(referenced.id)) visit(referenced.parts, referenced.links, `${scope}:${part.id}:ref`, part.title ?? referenced.title, new Set(ancestors).add(referenced.id), referenced.id, referenced.id, "Subprocess")
     }
-    for (const part of parts) for (const option of part.options) {
+    for (const part of visibleParts) for (const option of part.options) {
       const bound = regional?.scope === `${scope}:${part.id}` && regional.options.some(candidate => candidate.id === option.id)
       if (bound && option.id !== selected) continue
       visit(option.parts, option.links ?? [], `${scope}:${part.id}:${option.id}`, `${part.title ?? part.id} / ${option.title}`, ancestors, sourceId, undefined, `${option.when ? `${option.when} · ` : ''}${bound ? 'Selected regional variant' : 'Option scope; applicability not selected'}`)

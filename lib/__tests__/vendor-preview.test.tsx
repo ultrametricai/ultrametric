@@ -33,10 +33,10 @@ describe('local vendor preview', () => {
     const el = render(<SharedProcessReader record={corporation} records={records} vendorPreview={preview} />)
     const chooser = el.container.querySelector('[id="form_001:n1"]') as HTMLElement
     expect(within(chooser).getByText('Filing coverage · /100')).toBeDefined()
-    expect(chooser.querySelector('[aria-expanded]')).toBeNull()
+    expect(chooser.querySelectorAll('button[aria-expanded]')).toHaveLength(4)
     expect(chooser.textContent).not.toContain('avg')
     expect(chooser.textContent).not.toContain('Profile')
-    expect(within(chooser).getAllByRole('button')).toHaveLength(6)
+    expect(chooser.querySelectorAll('button[aria-pressed]')).toHaveLength(6)
     for (const candidate of candidates.filter(candidate => candidate.href)) {
       const link = within(chooser).getByRole('link', { name: `${candidate.name} profile` })
       expect(link.getAttribute('href')).toBe(candidate.href)

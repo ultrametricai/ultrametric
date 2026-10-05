@@ -117,5 +117,31 @@ class ImportTests(unittest.TestCase):
         result = self.check_preservation(expected=1)
         self.assertIn('Quarantined source values', result.stderr)
 
+    def test_formation_chooser_manifest_protects_authored_guidance_on_source_change(self):
+        # Exercise the committed migration receipt, not an invented authored hash.
+        # Re-blessing the authored chooser as generated makes this regression fail:
+        # a later corpus edit would silently replace its guidance and option scope.
+        repository = SCRIPT.parents[1]
+        corpus = json.loads((repository / 'processes/corpus.json').read_text())
+        source = next(record for record in corpus if record['id'] == 'form_001')
+        self.records.append(source)
+        self.source.write_text(json.dumps(self.records))
+        self.commit_sources()
+        target = self.root / 'content/processes/records/form_001.json'
+        shutil.copy(repository / 'content/processes/records/form_001.json', target)
+        manifest_path = self.root / 'content/processes/import-manifest.json'
+        manifest = json.loads(manifest_path.read_text())
+        receipt = json.loads((repository / 'content/processes/import-manifest.json').read_text())
+        manifest['records']['form_001'] = receipt['records']['form_001']
+        manifest_path.write_text(json.dumps(manifest))
+        self.run_import(expected=0)
+        source['description'] += ' Synthetic later source change.'
+        self.source.write_text(json.dumps(self.records))
+        self.commit_sources()
+        before = {str(p): p.read_bytes() for p in (self.root / 'content/processes').rglob('*.json')}
+        result = self.run_import('--write', expected=1)
+        self.assertIn('form_001', result.stderr)
+        self.assertEqual({str(p): p.read_bytes() for p in (self.root / 'content/processes').rglob('*.json')}, before)
+
 if __name__ == '__main__':
     unittest.main()

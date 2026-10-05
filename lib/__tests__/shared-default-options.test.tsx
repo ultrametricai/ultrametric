@@ -62,14 +62,22 @@ describe('explicit defaults in migrated method decisions', () => {
     expect(alternatives).toBe(97)
   })
 
+  it('preserves authored incorporation option summaries separately from generated defaults', () => {
+    const copy = JSON.parse(readFileSync('docs/INCORPORATION-SHOWCASE-COPY.json', 'utf8')).items as Array<{ partId: string; optionId: string | null; text: string }>
+    const record = records.find(record => record.id === 'form_001')!
+    for (const part of record.parts) for (const option of part.options) {
+      expect(option.summary).toBe(copy.find(item => item.partId === part.id && item.optionId === option.id)?.text)
+    }
+  })
+
   it('renders the authored default and preserves every regional alternative in the page selector', () => {
     const record = records.find(record => record.id === 'form_001')!
     const el = document.createElement('div')
     el.innerHTML = renderToStaticMarkup(<SharedProcessReader record={record} records={records} />)
     const filing = el.querySelector('[id="form_001:n4"]')!
-    const select = el.querySelector('select') as HTMLSelectElement
-    expect(select.value).toBe('default')
-    expect([...select.options].map(option => ({ id: option.value, title: option.textContent }))).toEqual(record.parts.find(part => part.id === 'n4')!.options.map(option => ({ id: option.id, title: option.title })))
+    const radios = [...el.querySelectorAll<HTMLInputElement>('input[type="radio"]')]
+    expect(radios.find(radio => radio.checked)?.value).toBe('default')
+    expect(radios.map(option => ({ id: option.value, title: option.getAttribute('aria-label') })).sort((a, b) => a.id.localeCompare(b.id))).toEqual(record.parts.find(part => part.id === 'n4')!.options.map(option => ({ id: option.id, title: option.title })).sort((a, b) => a.id.localeCompare(b.id)))
     expect(filing.querySelector('[id="form_001:n4:default"]')).not.toBeNull()
     expect(filing.querySelector('[id="form_001:n4:germany-notary-gmbh"]')).toBeNull()
     expect(filing.querySelector('a[href="https://corp.delaware.gov/howtoform/"]')).not.toBeNull()
