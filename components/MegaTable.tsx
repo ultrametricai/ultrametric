@@ -14,7 +14,6 @@ import ProductLogoView from '@/components/ProductLogoView'
 import ShutdownBadge from '@/components/ShutdownBadge'
 import TrendArrow from '@/components/TrendArrow'
 import WatchButton from '@/components/WatchButton'
-import EnterpriseBadge from '@/components/EnterpriseBadge'
 import YcBadge from '@/components/YcBadge'
 import { belowCompactStarsFloor } from '@/lib/popularity'
 import { useSession } from '@/lib/session'
@@ -295,7 +294,8 @@ export default function MegaTable({ rows, arenas }: { rows: MegaTableRow[]; aren
                       </Link>
                       {row.hotReason && <HotChip reason={row.hotReason} />}
                       <YcBadge ycBatch={row.ycBatch} />
-                      <EnterpriseBadge enterprise={row.enterprise} />
+                      {/* No Enterprise pill next to the name (founder 2026-10-05) —
+                          row.enterprise stays data; the product page carries the badge. */}
                       <ShutdownBadge shutdown={row.shutdown} />
                     </div>
                   </td>
