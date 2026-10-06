@@ -64,9 +64,13 @@ export const REMAINS_HUMAN_RE = /remains a human step/i
 export const IMPERSONATION_RE =
   /\b(?:sign|approve|accept|submit|agree(?:\s+to)?|authorize|consent(?:\s+to)?)\b[^.!?]{0,80}\bon\s+(?:my|our|the|their|your)\s+(?:user'?s?\s+|human'?s?\s+|founder'?s?\s+|owner'?s?\s+|officer'?s?\s+)?behalf\b|\bimpersonat/i
 const NEGATED_SPAN_RE = /\b(?:not|never|don'?t|do not|must not|without|instead of)\b[^.!?]*/gi
+// Talking ABOUT impersonation as the risk being defended against is not the agent
+// impersonating anyone (sit_015:n2 trap 2026-10-05: the step's own subject is "stop
+// impersonation" in a DSAR identity check, so every faithful prompt tripped `\bimpersonat`).
+const ANTI_IMPERSONATION_SPAN_RE = /\b(?:prevent|stop|avoid|detect|block|against|anti|flag|rule out|screen for)\b[^.!?]{0,60}\bimpersonat\w*/gi
 
 export function instructsImpersonation(prompt: string): boolean {
-  return IMPERSONATION_RE.test(prompt.replace(NEGATED_SPAN_RE, ''))
+  return IMPERSONATION_RE.test(prompt.replace(NEGATED_SPAN_RE, '').replace(ANTI_IMPERSONATION_SPAN_RE, ''))
 }
 
 // No secrets handling beyond "use your configured credentials". Verbs are the clearly-bad
@@ -149,7 +153,13 @@ export function validatePrompt(t: PromptTarget, prompt: string): string | null {
       return `step has a vendor market — the literal placeholder ${VENDOR_PLACEHOLDER} is required wherever the vendor name would go`
     }
     const label = t.vendor ? vendorLabel(t.vendor) : null
-    if (label && prompt.toLowerCase().includes(label.toLowerCase())) {
+    // Word-boundary match, not a bare substring: short labels otherwise forbid unrelated
+    // words that contain them (label "IRS" matched "first"/"theirs" and made the rule
+    // unsatisfiable — surfaced when the irs vendor key gained a market at the
+    // government-services bring-up, 2026-10-05).
+    const namesLabel = label
+      && new RegExp(`(?<![a-z0-9])${label.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}(?![a-z0-9])`, 'i').test(prompt)
+    if (namesLabel) {
       return `prompt names the canonical vendor "${label}" — use only the ${VENDOR_PLACEHOLDER} placeholder (the reader's pick may differ)`
     }
   } else if (prompt.includes(VENDOR_PLACEHOLDER)) {
@@ -338,8 +348,12 @@ async function generateOne(t: PromptTarget): Promise<{ prompt: string; calls: nu
       // scale_004 Slack-in-the-label trap 2026-09-28: when the step LABEL itself names the
       // canonical vendor the model kept echoing it, so the reminder now covers that case;
       // scale_010 warehouse-credentials trap 2026-09-28: the model kept writing connection
-      // set-up prose like "copy the API key", so the reminder now spells the secrets rule out).
-      prompt: generationPrompt(t, `\n\nYour previous answer violated a rule: ${violation}. Rewrite the prompt correcting it; every other rule still applies. CRITICAL REMINDERS: never write ANY vendor's actual name — not even the canonical/top-ranked vendor for this step, and not even when the step's own label names it (paraphrase the label generically: "Configure Slack notifications" → "configure notifications in {{vendor}}") — always the literal {{vendor}} token wherever the vendor is meant; keep every other vendor mention generic ("your registrar", "your CRM", "your team chat"). NEVER give credential-handling instructions — no pasting/sharing/copying/embedding of API keys, tokens, passwords, secrets or credentials anywhere in the prompt, even as connection-setup steps; the ONLY allowed credential sentence is "use your configured credentials".`),
+      // set-up prose like "copy the API key", so the reminder now spells the secrets rule out;
+      // sit_015 over-budget trap 2026-10-05: the model kept landing a few words over the
+      // 350-word cap across all correction rounds, so the reminder now spells the budget out;
+      // sit_015:n2 impersonation trap 2026-10-05: on person-route steps the model kept telling
+      // the agent to perform the human act itself, so the reminder restates the audit rule).
+      prompt: generationPrompt(t, `\n\nYour previous answer violated a rule: ${violation}. Rewrite the prompt correcting it; every other rule still applies. CRITICAL REMINDERS: never write ANY vendor's actual name — not even the canonical/top-ranked vendor for this step, and not even when the step's own label names it (paraphrase the label generically: "Configure Slack notifications" → "configure notifications in {{vendor}}") — always the literal {{vendor}} token wherever the vendor is meant; keep every other vendor mention generic ("your registrar", "your CRM", "your team chat"). NEVER give credential-handling instructions — no pasting/sharing/copying/embedding of API keys, tokens, passwords, secrets or credentials anywhere in the prompt, even as connection-setup steps; the ONLY allowed credential sentence is "use your configured credentials". HARD WORD BUDGET: the final prompt must be between ${MIN_PROMPT_WORDS} and ${MAX_PROMPT_WORDS} words — if your draft runs long, delete whole secondary sentences rather than trimming required phrases; aim for about ${MAX_PROMPT_WORDS - 50} words. If a HUMAN-STEP AUDIT applies, the agent only PREPARES and monitors: never instruct it to sign, approve, submit, decide, or verify/confirm anything on my behalf — the human act stays mine, and the verdict's required exact phrase must appear.`),
     })
     calls += 1
     violation = validatePrompt(t, raw.prompt)
