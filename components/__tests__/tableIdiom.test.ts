@@ -33,6 +33,7 @@ const ADOPTERS = [
   'components/ProcessOpenModulesTable.tsx',
   'components/ProcessProducesTable.tsx',
   'components/SituationsTable.tsx',
+  'components/shared-processes/ProcessBottomTables.tsx',
   'components/StackBattle.tsx',
   'components/StackBuilder.tsx',
   'components/StoryMatrix.tsx',

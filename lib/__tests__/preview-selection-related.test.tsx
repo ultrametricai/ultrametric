@@ -62,7 +62,8 @@ describe('step overrides and related processes', () => {
     expect(related.map(record => record.id)).toEqual(['go-global'])
     for (const record of related) expect(within(section).getByRole('link', { name: record.title }).getAttribute('href')).toBe(sharedPreviewHref(record.id, records))
     expect(section.querySelector('details')).toBeNull()
-    expect(section.previousElementSibling?.textContent).toBe('Who covers this process best')
+    expect(section.compareDocumentPosition(el.getByText('Who covers this process best')) & Node.DOCUMENT_POSITION_PRECEDING).toBeTruthy()
+    expect(section.previousElementSibling?.getAttribute('aria-labelledby')).toBe('opp_002:produces-heading')
     expect(el.queryByText(/Connections \(/)).toBeNull()
     cleanup()
     const chain = records.find(record => record.id === 'first-hire')!

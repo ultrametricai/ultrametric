@@ -97,7 +97,9 @@ it('shows scoped aggregate evidence independently of selection and preserves lin
   const el = render(<SharedProcessReader record={record} records={records} comparisons={comparisons} processChoice={choice} />)
   const providers = within(el.getByRole('region', { name: 'Process providers' }))
   fireEvent.click(providers.getByRole('button', { name: 'Show Stripe process coverage' }))
-  expect(providers.getByRole('region', { name: 'Stripe process coverage' }).textContent).toContain('Assessed on 12 of 12')
+  const coveragePanel = providers.getByRole('region', { name: 'Stripe process coverage' })
+  expect(coveragePanel.querySelector('p')).toBeNull()
+  expect(within(coveragePanel).getByRole('list', { name: `${payments.title} default-scope step scores` }).children).toHaveLength(12)
   expect(providers.getByRole('button', { name: 'Use Stripe' }).getAttribute('aria-pressed')).toBe('false')
   fireEvent.click(providers.getByRole('button', { name: 'Use Stripe' }))
   expect(el.queryByRole('button', { name: 'Graph' })).toBeNull()
@@ -107,7 +109,7 @@ it('shows scoped aggregate evidence independently of selection and preserves lin
   const scopes = el.getByText(/^Subprocesses and option scopes/).closest('details')!
   scopes.open = true
   fireEvent(scopes, new Event('toggle'))
-  const link = graph.getByRole('link', { name: 'Bookkeeping close' })
+  const link = within(graph.getByRole('heading', { name: 'Bookkeeping close' })).getByRole('link', { name: 'Bookkeeping close' })
   expect(link.getAttribute('href')).toBe('/processes/bookkeeping-close/v2')
   expect(el.getByRole('region', { name: 'Process parts' })).toBeDefined()
   expect(providers.getByRole('button', { name: 'Use Stripe' }).getAttribute('aria-pressed')).toBe('true')
@@ -118,7 +120,7 @@ it('hides default-scope aggregate scores for an unassessed regional option', () 
   const comparisons = buildComposedComparisons(record, records)
   const choice = buildProcessProviderChoice(record, comparisons)!
   const el = render(<SharedProcessReader record={record} records={records} comparisons={comparisons} processChoice={choice} />)
-  const selector = el.getByRole('group', { name: 'Regional variant' })
+  const selector = el.getByRole('group', { name: 'Select your country' })
   const alternate = selector.querySelector('input:not([value="default"])')!
   fireEvent.click(alternate)
   const providers = within(el.getByRole('region', { name: 'Process providers' }))

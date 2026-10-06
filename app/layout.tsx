@@ -212,7 +212,7 @@ export default async function RootLayout({ children }: LayoutProps<"/">) {
           Skip to content
         </a>
         <header className="border-b border-zinc-800">
-          <div className="mx-auto flex max-w-7xl flex-nowrap items-center justify-between gap-x-3 px-3 py-3 sm:gap-x-4 sm:px-5 sm:py-4">
+          <div className="mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-x-3 gap-y-3 px-3 py-3 sm:flex-nowrap sm:gap-x-4 sm:px-5 sm:py-4">
             <div className="flex shrink-0 items-center gap-2">
               {/* One top-bar standard sitewide (founder 2026-09-29): the landing's wordmark SVG
                   leads the product bar too, so ultrametric.ai/ and the product pages share the
