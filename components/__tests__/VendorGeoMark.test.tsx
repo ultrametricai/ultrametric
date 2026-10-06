@@ -99,16 +99,12 @@ describe('StepVendorRow chip annotation', () => {
   it('UK selected: the mercury chip mutes with ✕ + note; the row order and scores never move', () => {
     const { container } = render(tree({ mercury: MERCURY_GEO }))
     select('UK')
-    // Since the founder batch 2026-10-05 the chip is a bordered container: the body is the
-    // pick toggle <button aria-pressed> and the only anchors are the score receipts links
-    // (#story-verdicts). The mute styling and the geo mark live on the container.
-    expect([...container.querySelectorAll('a[href^="/arena/"]')].map((c) => c.getAttribute('href'))).toEqual([
-      '/arena/startup-banking/product/mercury#story-verdicts',
-      '/arena/startup-banking/product/relay#story-verdicts',
-    ])
-    const chips = [...container.querySelectorAll('button[aria-pressed]')].map(
-      (b) => b.parentElement as HTMLElement,
-    )
+    // Since the founder batch 2026-10-05 the WHOLE chip is the pick toggle
+    // <button aria-pressed> with no interactive children — the sub-step score links are gone,
+    // so the row renders no anchors at all; the mute styling and the geo mark live on the
+    // button itself.
+    expect(container.querySelector('a')).toBeNull()
+    const chips = [...container.querySelectorAll('button[aria-pressed]')] as HTMLElement[]
     const mercuryChip = chips[0]
     const relayChip = chips[1]
     // Annotation only — mercury still first, both scores untouched.

@@ -25,6 +25,8 @@ export function SharedArtifacts({ metadata, sourceId, records }: { metadata: Rec
 
 export default function StepMetadata({ metadata, sourceId, records }: { metadata: Record<string, unknown>; sourceId: string; records: SharedRecord[] }) {
   const cost = StepCostSchema.safeParse(metadata.cost)
+  // The '⚠ if it goes wrong' failure-modes block no longer renders on steps (founder
+  // 2026-10-05) — display only: metadata.failureModes stays in the shared records untouched.
   return <>
     {cost.success && <div className="space-y-2 text-sm leading-5 text-zinc-300 [overflow-wrap:anywhere]">
       <p className="text-base leading-relaxed"><span className="font-normal text-zinc-400">Costs:</span>{' '}{costSummary(cost.data)}</p>

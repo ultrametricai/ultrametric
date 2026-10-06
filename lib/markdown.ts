@@ -164,7 +164,7 @@ export function renderProductMarkdown(
   lines.push(`# ${product.name} — ${data.category.name} Arena`)
   lines.push('')
   lines.push(
-    `${product.vendor} · ${product.type === 'oss' ? 'open source' : 'commercial'} · [site](${product.urls.site}) · [full arena](${siteUrl}/arena/${data.category.id}/llms.md)`,
+    `${product.vendor} · ${product.type === 'oss' ? 'open source' : product.type === 'government' ? 'government service' : 'commercial'} · [site](${product.urls.site}) · [full arena](${siteUrl}/arena/${data.category.id}/llms.md)`,
   )
   lines.push('')
   lines.push(

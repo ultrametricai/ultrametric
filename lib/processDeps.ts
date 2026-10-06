@@ -219,3 +219,49 @@ export function artifactChipRows(task: ProcessTask, dir?: string): ArtifactChipR
   }
   return { needs: task.requires.map(chip), produces: task.produces.map(chip) }
 }
+
+// ---------------------------------------------------------------------------
+// Display: the 'Artifacts it produces' table at the bottom of /processes/[slug]
+// (founder 2026-10-05: the header 'Produces:' chip row became a table section
+// beside the open-modules table — same typed layer, richer columns).
+// ---------------------------------------------------------------------------
+
+export interface ProducedArtifactRow {
+  id: string
+  label: string
+  // The registry's committed description (processes/artifacts.json).
+  description: string
+  // The artifact's site page — /artifacts/{id}.
+  href: string
+  // The step on this page that brings the artifact into existence: the node tagged
+  // producesArtifact (corpus-tested set-equal to the task's produces, never on a
+  // jurisdiction-conditional node, so it always renders in the default view).
+  bornAt: { nodeId: string; label: string; anchor: string }
+  // The canonical producer when it is NOT this page (the LLC page's EIN) — the honest
+  // pointer the old header chip carried.
+  canonicalProducer: { title: string; href: string } | null
+}
+
+export function producedArtifactRows(task: ProcessTask, dir?: string): ProducedArtifactRow[] {
+  const byId = artifactsById()
+  const tasks = new Map(loadProcesses(dir).map((t) => [t.id, t]))
+  return task.produces.map((artifactId) => {
+    const artifact = byId.get(artifactId)
+    if (!artifact) throw new Error(`${task.id}: unknown artifact ${artifactId}`)
+    const node = task.dag.nodes.find((n) => n.producesArtifact === artifactId)
+    if (!node) throw new Error(`${task.id}: no step tagged producesArtifact ${artifactId}`)
+    const producer = tasks.get(artifact.producedBy)
+    if (!producer) throw new Error(`artifact ${artifactId}: unknown producer ${artifact.producedBy}`)
+    return {
+      id: artifact.id,
+      label: artifact.label,
+      description: artifact.description,
+      href: `/artifacts/${artifact.id}`,
+      bornAt: { nodeId: node.id, label: node.label, anchor: `#step-${task.id}-${node.id}` },
+      canonicalProducer:
+        producer.id === task.id
+          ? null
+          : { title: producer.title, href: `/processes/${processSlug(producer.title)}` },
+    }
+  })
+}

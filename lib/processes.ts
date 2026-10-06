@@ -229,8 +229,9 @@ export type StepMethod = z.infer<typeof StepMethodSchema>
 // primary page/statute/fee schedule backing the entry (curl-verified live, like every corpus
 // URL); legal claims additionally cite a dated rule card in rules/ by id inside the prose, the
 // situations-house precedent. 3–6 QUALITY entries per deep process, not coverage — see
-// processes/README.md "Failure modes". Display: ONE collapsed '⚠ if it goes wrong' line per
-// affected step (components/ProcessDag.tsx); no judged number reads the field.
+// processes/README.md "Failure modes". Display: none since founder 2026-10-05 (the collapsed
+// '⚠ if it goes wrong' step line was removed) — the field stays corpus data, carried by the
+// manifests; no judged number reads it.
 export const StepFailureModeSchema = z.object({
   what: z.string().min(1),
   then: z.string().min(1),
@@ -1003,6 +1004,15 @@ export const ArtifactSchema = z
     // published reports, the dissolution certificate). Mutually exclusive with having consumers;
     // both directions corpus-tested.
     terminal: z.literal(true).optional(),
+    // Registered open templates (open-documents/registry.json ids) a document genuinely IS this
+    // artifact's form — the filed 83(b)'s IRS Form 15620, the executed SAFE's YC forms, the
+    // bylaws' incorporation packages (founder 2026-10-06: classic document objects; the
+    // deliberate flip of the 2026-10-05 absence pin in app/artifacts/__tests__/page.test.tsx).
+    // Deliberately sparse: an artifact with no registered template carries no field — honest
+    // absence, never an invented mapping. Referential integrity against the document registry
+    // is tested in lib/__tests__/processArtifacts.test.ts; the render path
+    // (lib/artifactPages.ts → lib/documents.ts openDocumentById) throws on an unknown id.
+    documents: z.string().min(1).array().min(1).optional(),
   })
   .strict()
 export type Artifact = z.infer<typeof ArtifactSchema>

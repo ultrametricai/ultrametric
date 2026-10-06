@@ -1,4 +1,5 @@
 import type { NextConfig } from "next";
+import { loadProcesses, processSlug } from "./lib/processes";
 
 // Repo directories that pages read with fs ONLY while prerendering (every route except the
 // shared-reader routes below is static: force-static or generateStaticParams with
@@ -76,6 +77,20 @@ const nextConfig: NextConfig = {
   // permanent redirect, the same old-links-stay-alive posture as the proxy-layer
   // /productarena/* redirects (which remain at infra/cloudflare-proxy, not here).
   redirects: async () => [
+    // Stable-ID process URLs (docs/PR171-EXTRACTION.md, port plan item 1): the immutable
+    // corpus id — the identity manifests and agents carry — reaches the canonical page
+    // directly: /processes/form_001 → /processes/incorporate-c-corp. Derived from the
+    // corpus (lib/processes.ts), no route registry; query values pass through (Next
+    // redirect semantics), fragments stay in the browser. Alias SLUGS are not redirects:
+    // they keep prerendering as full alias pages (app/processes/[slug]/page.tsx).
+    ...loadProcesses().flatMap((t) => {
+      const slug = processSlug(t.title)
+      return t.id === slug ? [] : [{
+        source: `/processes/${t.id}`,
+        destination: `/processes/${slug}`,
+        permanent: true,
+      }]
+    }),
     {
       source: '/processes/preview',
       destination: '/processes/v2',

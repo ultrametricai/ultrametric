@@ -1,4 +1,5 @@
 import { arenaVendorBlocks, type ArenaVendors } from './arenaLeaders'
+import { openDocumentById, type OpenDocument } from './documents'
 import { coveringArenaId } from './processRankings'
 import { loadArtifacts, loadProcesses, processSlug, VENDOR_ARENA, type Artifact, type ProcessTask } from './processes'
 import { areaOfTask, AREA_ORDER, type Area } from './processRows'
@@ -16,12 +17,14 @@ import { areaOfTask, AREA_ORDER, type Area } from './processRows'
 // vendor-derivation source. Artifacts whose producing steps have no populated covering arena
 // (state filings, signature acts) keep an honest empty state.
 //
-// Checked and deliberately absent (founder ask 2026-10-05): the artifact registry has NO
-// mapping field onto open-documents/registry.json entries (artifact records carry only
-// id/label/description/producedBy/alsoProducedBy/terminal), so no "registered document" link
-// renders — inventing one would be a fabricated mapping. Candidate follow-up: add an optional
-// `documents` field to processes/artifacts.json with corpus-tested referential integrity, then
-// render it here.
+// The registered-document joint (founder 2026-10-06: classic document objects — the deliberate
+// flip of the 2026-10-05 absence pin): artifact records may now carry a sparse `documents`
+// field of open-documents/registry.json ids whose registered template genuinely IS the
+// artifact's form (the filed 83(b)'s IRS Form 15620, the executed SAFE's YC forms). Resolution
+// goes through lib/documents.ts openDocumentById — an unknown id fails the build loudly, and
+// the referential integrity is corpus-tested in lib/__tests__/processArtifacts.test.ts. Links
+// render to the canonical publisher URLs only (link, never redistribute); artifacts with no
+// registered template keep the honest absence — no field, no section, never an invention.
 
 export interface ArtifactProcessLink {
   id: string
@@ -41,6 +44,29 @@ export interface ArtifactPageData {
   // The display grouping axis: the canonical producer's area.
   producingArea: Area
   arenas: ArenaVendors[]
+  // The registered templates this artifact is executed on (registry `documents` ids resolved
+  // into open-documents records), in committed mapping order — empty for the honest absence.
+  documents: OpenDocument[]
+  // Mapped documents sharing an open-documents `family`, in mapping order — the SAFE's
+  // cap/discount/MFN/international forms read as one object with variants on the page. Only
+  // genuine groups (two or more mapped members) count; a lone family member stays a plain row.
+  documentFamilies: ArtifactDocumentFamily[]
+}
+
+export interface ArtifactDocumentFamily {
+  family: string
+  docs: OpenDocument[]
+}
+
+function documentFamilies(docs: OpenDocument[]): ArtifactDocumentFamily[] {
+  const groups: ArtifactDocumentFamily[] = []
+  for (const d of docs) {
+    if (!d.family) continue
+    const existing = groups.find((g) => g.family === d.family)
+    if (existing) existing.docs.push(d)
+    else groups.push({ family: d.family, docs: [d] })
+  }
+  return groups.filter((g) => g.docs.length > 1)
 }
 
 function processLink(task: ProcessTask): ArtifactProcessLink {
@@ -81,6 +107,7 @@ export function loadArtifactPages(dir?: string): ArtifactPageData[] {
     const producerTask = byId.get(artifact.producedBy)
     if (!producerTask) throw new Error(`artifact ${artifact.id}: unknown producer ${artifact.producedBy}`)
     const producer = processLink(producerTask)
+    const documents = (artifact.documents ?? []).map(openDocumentById)
     return {
       artifact,
       producer,
@@ -92,6 +119,8 @@ export function loadArtifactPages(dir?: string): ArtifactPageData[] {
       neededBy: tasks.filter((t) => t.requires.includes(artifact.id)).map(processLink),
       producingArea: producer.area,
       arenas: arenaVendorBlocks(producingStepArenaIds(artifact, byId), dir),
+      documents,
+      documentFamilies: documentFamilies(documents),
     }
   })
 }

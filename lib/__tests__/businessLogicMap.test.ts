@@ -3,8 +3,8 @@ import path from 'node:path'
 import { describe, expect, it } from 'vitest'
 import {
   computeChipsForStep, loadBusinessLogicMap, loadBusinessLogicSteps, moduleReadmeHref,
-  modulesForProcess,
 } from '../businessLogicMap'
+import { processOpenModuleRows } from '../openModulePages'
 import { loadProcesses } from '../processes'
 
 // Totality gate for the open-modules ↔ process map (founder 2026-10-02, deepened same day):
@@ -63,17 +63,20 @@ describe('processes/business-logic-map.json totality', () => {
     }
   })
 
-  it('modulesForProcess resolves the franchise-tax wiring (process + delinquency situation)', () => {
-    const tax = modulesForProcess('tax_001').map((c) => c.id)
+  it('processOpenModuleRows resolves the franchise-tax wiring (process + delinquency situation)', () => {
+    // The process page's bottom-table read-back (lib/openModulePages.ts, founder 2026-10-05 —
+    // the retired modulesForProcess chip helper's successor) resolves the same registry truth.
+    const byId = new Map(loadProcesses().map((t) => [t.id, t]))
+    const tax = processOpenModuleRows(byId.get('tax_001')!).map((r) => r.id)
     expect(tax).toContain('deFranchiseTax')
     expect(tax).toContain('deadlines')
-    const cure = modulesForProcess('sit_010').map((c) => c.id)
+    const cure = processOpenModuleRows(byId.get('sit_010')!).map((r) => r.id)
     expect(cure).toContain('deFranchiseTax')
-    // Chip hrefs deep-link into the README on GitHub.
-    expect(modulesForProcess('tax_001')[0].href).toBe(moduleReadmeHref(loadBusinessLogicMap()[modulesForProcess('tax_001')[0].id].anchor))
+    // Module rows link the module's site page; the README deep link stays the compute chips'.
+    expect(processOpenModuleRows(byId.get('tax_001')!)[0].href).toBe(`/open-modules/${tax[0]}`)
     expect(moduleReadmeHref('cap-table')).toMatch(/^https:\/\/github\.com\/.+\/open-modules\/README\.md#cap-table$/)
     // Unmapped tasks render nothing.
-    expect(modulesForProcess('ops_001')).toEqual([])
+    expect(processOpenModuleRows(byId.get('ops_001')!)).toEqual([])
   })
 })
 
@@ -142,5 +145,26 @@ describe('processes/business-logic-map.json step-level totality', () => {
     ])
     expect(computeChipsForStep('form_001', 'n1')).toEqual([])
     expect(computeChipsForStep('ops_001', 'n1')).toEqual([])
+  })
+})
+
+describe("the step chips' rendered label (founder 2026-10-06: 'compute:' read as jargon from nowhere)", () => {
+  const dagSrc = fs.readFileSync(path.join(ROOT, 'components', 'ProcessDag.tsx'), 'utf8')
+
+  it("the row label is 'Open module:' — the chip itself shows the object/function name", () => {
+    expect(dagSrc).toContain('Open module:')
+    // The old label is gone from the render (comments may still tell its history).
+    expect(dagSrc).not.toMatch(/>\s*compute:\s*</)
+  })
+
+  it('the chip tooltip/aria says what it is in one clause and keeps the GitHub deep link + ↗', () => {
+    expect(dagSrc).toContain(
+      'title={`${c.module}.${c.fn} — the open-source module function serving this step`}',
+    )
+    expect(dagSrc).toContain(
+      'aria-label={`${c.module}.${c.fn} — the open-source module function serving this step`}',
+    )
+    expect(dagSrc).toContain('{c.module}.{c.fn} ↗')
+    expect(dagSrc).toContain('href={c.href}')
   })
 })

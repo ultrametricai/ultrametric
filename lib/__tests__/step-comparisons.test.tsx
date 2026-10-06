@@ -18,7 +18,9 @@ afterEach(cleanup)
 describe('canonical step comparisons', () => {
   it('includes every judged function product, exact scores and its own cited evidence', () => {
     const source = buildProcessCheckSteps(loadProcesses().find(task => task.id === record.id)!)
-    expect(Object.keys(comparisons)).toEqual(['form_001:n4:default', 'form_001:n6', 'form_001:n7'])
+    // n8 joined the list at the government-services bring-up (2026-10-05): the 83(b) step's
+    // vendor (irs) now resolves to a judged arena, so the step carries a function comparison.
+    expect(Object.keys(comparisons)).toEqual(['form_001:n4:default', 'form_001:n6', 'form_001:n7', 'form_001:n8'])
     for (const step of source) {
       const arena = step.arenas.find(arena => arena.kind === 'function')!
       const scope = `${record.id}:${step.nodeId}${step.nodeId === 'n4' ? ':default' : ''}`
@@ -46,7 +48,7 @@ describe('canonical step comparisons', () => {
     const scope = el.container.querySelector('[id="form_001:n6"]') as HTMLElement
     expect(within(scope).queryByRole('button', { name: /more|fewer/ })).toBeNull()
     expect(within(scope).getAllByRole('button', { name: /Show .* story evidence/ })).toHaveLength(7)
-    expect(el.container.querySelectorAll('[aria-label="Step product comparison"]')).toHaveLength(3)
+    expect(el.container.querySelectorAll('[aria-label="Step product comparison"]')).toHaveLength(4)
     expect(el.container.querySelector('[id="form_001:n4:default"] [aria-label="Step product comparison"]')).not.toBeNull()
     expect(el.container.querySelector('[id="form_001:n4:india-spice-plus"] [aria-label="Step product comparison"]')).toBeNull()
     fireEvent.click(within(scope).getByRole('button', { name: 'Show Docusign story evidence' }))
@@ -138,8 +140,11 @@ describe('canonical step comparisons', () => {
     // sit_013 x4, sit_019/sit_020 x2 each, sit_014/015/017/018/022 x1 each).
     // Immigration wiring (2026-10-02): hr_011 gains its first function-mapped step (n1,
     // startup-immigration) and sit_002 adds n6 — +1 record, +2 scopes.
-    expect(recordCount).toBe(130)
-    expect(scopes).toBe(388)
+    // Government-services wiring (2026-10-05): the irs/uspto vendor keys resolve to the new
+    // arena, so the agency steps across those tasks gain function comparisons — +1 record (the
+    // other covered tasks already carried function-mapped steps), +12 scopes.
+    expect(recordCount).toBe(131)
+    expect(scopes).toBe(400)
   })
 
   it('works beyond the formation preview and never scores linked or unmapped parts by inheritance', () => {

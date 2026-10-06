@@ -35,7 +35,7 @@ function HighRisk({ metadata }: { metadata: Record<string, unknown> }) {
     : null
 }
 
-// Same categorical wording as ProcessDag/StepMethodPicker; no numeric conversion.
+// Same categorical wording as ProcessDag/StepMethodGeo; no numeric conversion.
 const routeLabels: Record<string, { label: string; symbol: string; color: string }> = {
   agent: { label: 'Agent', symbol: '✦', color: 'border-emerald-400/25 bg-emerald-400/10 text-emerald-300' },
   form: { label: 'Manual form', symbol: '▤', color: 'border-amber-400/25 bg-amber-400/10 text-amber-300' },

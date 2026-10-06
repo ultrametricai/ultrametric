@@ -124,6 +124,14 @@ describe('hasAgentDocsContradiction (the cline signature)', () => {
       'acme',
     )).toBe(false)
   })
+
+  it('ignores a positive probe at a shared code-host origin (the llama-cpp false positive)', () => {
+    const foreign = ev('llms', {
+      url: 'https://github.com/llms.txt',
+      excerpt: 'PROBE llms.txt: HTTP 200 at https://github.com/llms.txt # GitHub',
+    })
+    expect(hasAgentDocsContradiction([foreign], [verdict('agentic-agent-docs', 'none')], 'acme')).toBe(false)
+  })
 })
 
 describe('isLlmsFlipCandidate', () => {

@@ -40,8 +40,9 @@ export default function ComputerUseChips({ taskId, nodeId }: { taskId: string; n
         🖥
       </span>
       {options.map((o) => (
-        // The score is its own click-through to the judged verdicts behind it (founder
-        // 2026-10-05); the chip body keeps opening the product page as before.
+        // The score is plain text (founder 2026-10-05: no per-sub-step vendor score links) —
+        // its tooltip keeps the concrete derivation; the chip body keeps opening the product
+        // page as before.
         <span
           key={`${o.arenaId}-${o.productId}`}
           className="inline-flex min-w-0 items-center gap-1.5 rounded-md border border-zinc-700 bg-zinc-900/60 py-0.5 pl-0.5 pr-2 text-[11px] text-zinc-300 transition hover:border-emerald-400/60"
@@ -54,14 +55,15 @@ export default function ComputerUseChips({ taskId, nodeId }: { taskId: string; n
             <ProductLogoView product={{ id: o.productId, name: o.name }} size={14} hasLogo={hasLogo(o.productId)} />
             <span className="truncate">{o.name}</span>
           </Link>
-          <Link
-            href={`/arena/${o.arenaId}/product/${o.productId}#story-verdicts`}
-            title={`${o.score.toFixed(0)}/100 — ${o.name}'s judged ${o.arenaName} computer-use verdicts on the ${o.cites.length} ${o.cites.length === 1 ? 'story' : 'stories'} mapped to this step; click for the verdicts`}
-            className="font-mono text-[10px] tabular-nums text-emerald-400/80 transition hover:text-emerald-300"
-          >{o.score.toFixed(0)}<span className="text-zinc-500">/100</span></Link>
+          <span
+            title={`${o.score.toFixed(0)}/100 — ${o.name}'s judged ${o.arenaName} computer-use verdicts on the ${o.cites.length} ${o.cites.length === 1 ? 'story' : 'stories'} mapped to this step`}
+            className="font-mono text-[10px] tabular-nums text-emerald-400/80"
+          >{o.score.toFixed(0)}<span className="text-zinc-500">/100</span></span>
         </span>
       ))}
-      <span className="text-[10px] text-zinc-500">assisted, still human-owned</span>
+      {/* The trailing 'assisted, still human-owned' caption is gone (founder 2026-10-06) —
+          display only: the step keeps its non-agent route/classification data, and the 🖥
+          label's tooltip keeps the honest framing (the step stays manual). */}
     </span>
   )
 }

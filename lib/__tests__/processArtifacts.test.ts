@@ -1,6 +1,7 @@
 import fs from 'node:fs'
 import path from 'node:path'
 import { describe, expect, it } from 'vitest'
+import { loadDocumentRegistry } from '@/lib/documents'
 import { loadArtifacts, loadProcesses } from '@/lib/processes'
 
 // The artifact layer (founder depth wave part 2, 2026-10-01: typed inputs/outputs between
@@ -130,5 +131,51 @@ describe('no invented artifacts — committed steps and real consumers', () => {
     // loadProcesses throws on any record missing produces/requires — totality by construction;
     // the assertions above exist to name offenders precisely.
     expect(loadProcesses(DATA_DIR).length).toBe(146)
+  })
+})
+
+// The registered-document joint (founder 2026-10-06: classic document objects — the deliberate
+// flip of the 2026-10-05 absence pin in app/artifacts/__tests__/page.test.tsx): an artifact may
+// name the open-documents/registry.json records whose registered template genuinely IS its form.
+// Same referential-integrity bar as every cross-registry link (step documents → registry,
+// producesArtifact → artifacts.json): a typo'd id fails loudly, and the mapping stays sparse —
+// honest absence for every artifact with no registered template, never an invented
+// correspondence.
+describe('artifact documents — registered templates', () => {
+  const registered = new Set(loadDocumentRegistry().documents.map((d) => d.id))
+  const mapped = artifacts.filter((a) => a.documents)
+
+  it('every artifact documents id resolves in open-documents/registry.json, no duplicates per artifact', () => {
+    for (const a of mapped) {
+      expect(a.documents!.length, a.id).toBeGreaterThan(0)
+      expect(new Set(a.documents).size, `${a.id}: duplicate document ids`).toBe(a.documents!.length)
+      for (const id of a.documents!) {
+        expect(registered.has(id), `${a.id}: unknown document id ${id}`).toBe(true)
+      }
+    }
+  })
+
+  it('the mapping stays sparse — only artifacts whose template is genuinely registered carry the field', () => {
+    // Band, not an exact count: new registry templates may map, but a mapping sweep that claims
+    // most of the registry (bank accounts and chat workspaces have no document template) is a
+    // fabrication signal.
+    expect(mapped.length).toBeGreaterThanOrEqual(10)
+    expect(mapped.length).toBeLessThanOrEqual(25)
+    for (const id of ['domain', 'bank-account', 'company-email', 'payroll-account', 'cloud-infrastructure']) {
+      expect(byId.get(id)!.documents, `${id} has no registered template — honest absence`).toBeUndefined()
+    }
+  })
+
+  it('the founder-named anchors landed: the 83(b), the SAFE with variants, the bylaws packages, the NDA standards', () => {
+    expect(byId.get('83b-election')!.documents).toEqual(['irs-form-15620'])
+    expect(byId.get('executed-safes')!.documents).toEqual([
+      'yc-postmoney-safe-cap',
+      'yc-postmoney-safe-discount',
+      'yc-postmoney-safe-mfn',
+      'yc-safe-intl-variants',
+    ])
+    expect(byId.get('bylaws')!.documents).toEqual(['cooley-incorporation-package-de', 'orrick-incorporation-toolkit'])
+    expect(byId.get('executed-nda')!.documents).toContain('onenda')
+    expect(byId.get('ein')!.documents).toEqual(['irs-form-ss4'])
   })
 })

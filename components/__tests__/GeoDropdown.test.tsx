@@ -11,17 +11,20 @@
 //   3. picks write as before: a country/Global writes BOTH ?geo= and pa-geo; 🇺🇸 USA clears both
 //      (the US default never appears in the URL) — on a global-default surface the trigger then
 //      settles back on the surface's Global framing (the index rows are identical either way);
-//   4. the detail-page seam (flipped 2026-10-02: process detail pages now render THIS dropdown
-//      with defaultChoice=GEO_GLOBAL): the surface default is trigger FRAMING only — the shared
-//      store stays null, so the page's banner/notes/toggles keep their US-default no-selection
-//      render byte-identical. GeoSwitcher (the WhereItWorks pill row) keeps its US default.
+//   4. the detail-page seam (2026-10-02: process detail pages render THIS dropdown;
+//      2026-10-06: with NO defaultChoice — null is their US-default view, so the trigger reads
+//      🇺🇸 USA and a USA pick visibly lands): the defaultChoice framing stays trigger-only — the
+//      shared store stays null, so the page's banner/notes/toggles keep their US-default
+//      no-selection render byte-identical. GeoSwitcher (WhereItWorks) keeps its US default.
 import { render, fireEvent, act } from '@testing-library/react'
 import { renderToString } from 'react-dom/server'
 import { hydrateRoot, type Root } from 'react-dom/client'
 import { afterEach, beforeEach, describe, expect, it } from 'vitest'
+import ProcessPage from '@/app/processes/[slug]/page'
 import GeoDropdown from '@/components/GeoDropdown'
 import GeoSwitcher from '@/components/GeoSwitcher'
 import { GEO_GLOBAL, PROCESSES_INDEX_DEFAULT_GEO, getGeoChoice, setGeoChoice } from '@/lib/geoPreference'
+import { findProcessBySlug } from '@/lib/processes'
 
 // Same in-memory localStorage stand-in as components/__tests__/GeoSwitcher.test.tsx.
 function stubLocalStorage() {
@@ -173,7 +176,113 @@ describe('picks write the param/storage exactly as before (the codec is untouche
   })
 })
 
-describe('the detail-page seam (flipped this round — founder 2026-10-02: detail pages render the dropdown, Global-first)', () => {
+describe('the menu stays attached to its trigger (founder bug 2026-10-05: "the geo menu is disconnected from the initial clickable dropdown Global")', () => {
+  it('walks the founder sequence inside a block container: Global → open → India → reopen (India ✓) → Global — the trigger label tracks every pick', () => {
+    // The container shape that exposed the bug: the dropdown as a child of a full-width block
+    // container (the detail page's controls row — which since 2026-10-06 passes no
+    // defaultChoice; the Global framing here keeps this pin on the index contract).
+    const r = render(
+      <div>
+        <GeoDropdown defaultChoice={GEO_GLOBAL} />
+      </div>,
+    )
+    expect(trigger(r).textContent).toContain('Global')
+    let list = openList(r)
+    const option = (name: string) =>
+      [...list.querySelectorAll('[role="option"]')].find((o) => o.textContent?.includes(name)) as HTMLElement
+    expect(option('Global').getAttribute('aria-selected')).toBe('true')
+    fireEvent.click(option('India'))
+    expect(trigger(r).textContent).toContain('India')
+    expect(url()).toBe(`${PATH}?geo=in`)
+    list = openList(r)
+    expect(option('India').getAttribute('aria-selected')).toBe('true')
+    fireEvent.click(option('Global'))
+    expect(trigger(r).textContent).toContain('Global')
+    expect(url()).toBe(`${PATH}?geo=global`)
+  })
+
+  it('the popover anchors to the trigger, not the surrounding container: shrink-to-fit root (inline-flex) + top-full, sharing the trigger parent', () => {
+    const r = render(<GeoDropdown defaultChoice={GEO_GLOBAL} />)
+    const list = openList(r)
+    const root = trigger(r).parentElement!
+    // jsdom computes no layout, so the pin is structural: the listbox is positioned against the
+    // same `relative` box the trigger fills. A block-level root in a block container spans the
+    // full content width and sends the right-0 menu a page-width away from the trigger (the
+    // founder's "disconnected" report); inline-flex shrinks the anchor box to the trigger.
+    expect(list.parentElement).toBe(root)
+    expect(root.className).toContain('relative')
+    expect(root.className).toContain('inline-flex')
+    expect(list.className).toContain('top-full')
+  })
+})
+
+describe('menu alignment follows the trigger position (founder bug 2026-10-06: on detail pages "the dropdown menu opens in the wrong area")', () => {
+  // The residual half of the 2026-10-05 fix: inline-flex re-anchored the menu to the trigger,
+  // but the menu stayed right-0-aligned — correct in the /processes controls row (trigger at
+  // the row's RIGHT end), wrong on detail pages where the trigger sits at the content's LEFT:
+  // a right-aligned w-40 (160px) menu over a ~80px trigger juts a menu-width-minus-trigger-width
+  // off the content column's left edge. jsdom computes no layout, so the pins are structural:
+  // the alignment class on the open listbox, in each surface's real container shape.
+  it('the real detail page (app/processes/[slug]) opens the menu LEFT-aligned to its content-left trigger', async () => {
+    const task = findProcessBySlug('set-up-an-llc')!
+    const page = await ProcessPage({ params: Promise.resolve({ slug: 'set-up-an-llc' }) })
+    expect(task).toBeTruthy()
+    const r = render(page)
+    const list = openList(r)
+    expect(list.className).toContain('left-0')
+    expect(list.className).not.toContain('right-0')
+    // Still the 2026-10-05 anchor contract: the listbox shares the trigger's shrink-to-fit root.
+    expect(list.parentElement).toBe(trigger(r).parentElement)
+    expect(trigger(r).parentElement!.className).toContain('inline-flex')
+  })
+
+  it('with no align prop the menu stays right-0 (the /processes index controls row, trigger at the row\'s right end — unchanged)', () => {
+    const r = render(<GeoDropdown defaultChoice={GEO_GLOBAL} />)
+    const list = openList(r)
+    expect(list.className).toContain('right-0')
+    expect(list.className).not.toContain('left-0')
+  })
+})
+
+describe("detail pages: a 🇺🇸 USA pick DISPLAYS as USA (founder bug 2026-10-06: 'selecting USA doesn't switch the display — it stays showing Global')", () => {
+  // The cause: picking USA clears the choice to null (the committed codec — the US default
+  // never appears in the URL or storage), and a null choice renders the surface's
+  // defaultChoice framing. Global framing is correct for the /processes INDEX (its rows are
+  // identical either way); on a DETAIL page null IS the US-default view, so the page now
+  // renders the dropdown with NO defaultChoice — the trigger honestly reads 🇺🇸 USA whenever
+  // the choice is null/US, pristine or picked. Display state only: the store, the ?geo=/pa-geo
+  // codec, and the page's no-selection banner render are untouched.
+  const pick = (list: HTMLElement, name: string) =>
+    fireEvent.click(
+      [...list.querySelectorAll('[role="option"]')].find((o) => o.textContent?.includes(name)) as Element,
+    )
+
+  it('walks the founder sequence on the real page (set-up-cap-table): Global → USA shows USA; Germany → USA shows USA', async () => {
+    const page = await ProcessPage({ params: Promise.resolve({ slug: 'set-up-cap-table' }) })
+    const r = render(page)
+    // Pristine: null is the US-default view here — the trigger says so.
+    expect(trigger(r).textContent).toContain('USA')
+    pick(openList(r), 'Global')
+    expect(trigger(r).textContent).toContain('Global')
+    pick(openList(r), 'USA')
+    expect(trigger(r).textContent).toContain('USA') // the founder bug: this stayed 'Global'
+    expect(url()).toBe(PATH) // the codec is untouched — the US default never enters the URL
+    pick(openList(r), 'Germany')
+    expect(trigger(r).textContent).toContain('Germany')
+    pick(openList(r), 'USA')
+    expect(trigger(r).textContent).toContain('USA')
+    expect(window.localStorage.getItem('pa-geo')).toBeNull()
+  })
+
+  it('the /processes index framing is untouched: PROCESSES_INDEX_DEFAULT_GEO stays Global and a USA pick settles back on it there (the pick-writes pin above carries the sequence)', () => {
+    expect(PROCESSES_INDEX_DEFAULT_GEO).toBe(GEO_GLOBAL)
+    const r = render(<GeoDropdown defaultChoice={GEO_GLOBAL} />)
+    pick(openList(r), 'USA')
+    expect(trigger(r).textContent).toContain('Global')
+  })
+})
+
+describe('the detail-page seam (founder 2026-10-02: detail pages render the dropdown; 2026-10-06: with the US framing — null is their US-default view)', () => {
   it('defaultChoice=GEO_GLOBAL is trigger framing ONLY: after mount with no param/storage the shared store still reads null, so ProcessGeoBanner/notes/toggles keep the US-default no-selection render', () => {
     const r = render(<GeoDropdown defaultChoice={GEO_GLOBAL} />)
     expect(trigger(r).textContent).toContain('Global')

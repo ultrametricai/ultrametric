@@ -5,7 +5,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Canva is a design tool, so advanced prototyping behavior is a fair question to ask of it. However, the evidence pack covers only developer APIs, the MCP server, the Apps SDK, admin/SCIM tooling, and export formats. Nothing in it mentions prototype interactions, animation between states, conditions or variables, or scroll effects.",
+    "rationale": "Advanced prototyping is a fair question for a design tool like Canva, so the axis applies. The evidence pack covers only developer surfaces: Apps SDK, Connect APIs, MCP server, SCIM, audit logs and exports. Nothing documents animation between states, conditional logic or variables, or scroll effects in prototypes.",
     "evidenceIds": []
   },
   {
@@ -16,7 +16,7 @@
     "confidence": "medium",
     "rationale": "Canva's first-party docs describe three write-capable surfaces. The official MCP server supports design generation from text, targeted edits to existing designs through natural-language commands, resizing, and asset uploads. The Connect APIs let integrations create and sync designs and assets, and the Apps SDK can add elements to a user's design and automate design tasks. Missing for 10: independent or hands-on corroboration that agent-driven create/edit works as documented, and clarity on plan gating (resizing requires Pro or above; private integrations require Enterprise).",
     "evidenceIds": [
-      "canva-docs-17",
+      "canva-docs-33",
       "canva-docs-18",
       "canva-docs-6",
       "canva-docs-20",
@@ -33,15 +33,15 @@
     "verdict": "full",
     "quality": 8,
     "confidence": "medium",
-    "rationale": "Canva's official MCP server, built for AI assistants, documents design export in multiple production formats (PDF, PNG, JPG, PPTX, MP4) and resizing for different channels, which gives an agent a documented programmatic render/export surface. The Connect APIs add a separate integration surface, though its export capability isn't spelled out here. missing for 10: independent or hands-on corroboration that exports work via the agent surface, detailed endpoint-level export documentation (e.g. Connect API export jobs), explicit screenshot/preview rendering.",
+    "rationale": "Canva's official MCP server is a documented surface that lets AI assistants interact with Canva. It explicitly lists 'Design export' to multiple formats (PDF, PNG, JPG, PPTX, MP4) and resizing for different channels, with a documented `resize-design` tool and rate limits. The Connect APIs add a documented REST/OpenAPI surface for integrating design workflows. missing for 10: no independent or hands-on corroboration of export working via agents, no explicit Connect API export endpoint details or screenshot/thumbnail rendering evidence, and resize is gated to Pro-and-above plans.",
     "evidenceIds": [
-      "canva-docs-21",
       "canva-docs-35",
       "canva-docs-28",
-      "canva-probe-4",
-      "canva-docs-16",
       "canva-docs-6",
-      "canva-docs-26"
+      "canva-docs-16",
+      "canva-probe-4",
+      "canva-docs-26",
+      "canva-docs-31"
     ]
   },
   {
@@ -50,14 +50,14 @@
     "verdict": "partial",
     "quality": 4,
     "confidence": "medium",
-    "rationale": "Canva ships an official MCP server for AI assistants and Connect APIs. Through them an agent can search and retrieve designs and pages, export PNG/JPG images that work as screenshots, and access brand kits and templates. That gives some design context, but the tooling is aimed at generating and editing designs, not handing structured context to a coding agent for implementation. Missing for 10: frame/layer structure retrieval, design variables/tokens, component-to-code mappings, any documented design-to-code workflow, and independent or hands-on corroboration.",
+    "rationale": "Canva ships an official MCP server for AI assistants. Its tools can search and retrieve designs and pages, export them as PNG, JPG or PDF (screenshot-like images), and give access to brand kits and templates. The Connect APIs also sync designs and assets. However, the MCP server is aimed at generating and editing designs, not at handing structured design context to a coding agent. Missing for 10: structured frame/layer data, design variables or tokens, component-to-code mappings, any documented design-to-code workflow, and independent or hands-on corroboration.",
     "evidenceIds": [
       "canva-docs-28",
-      "canva-probe-4",
-      "canva-docs-19",
-      "canva-docs-21",
+      "canva-docs-34",
+      "canva-docs-35",
       "canva-docs-20",
-      "canva-docs-37"
+      "canva-docs-37",
+      "canva-probe-4"
     ]
   },
   {
@@ -66,16 +66,15 @@
     "verdict": "full",
     "quality": 9,
     "confidence": "high",
-    "rationale": "A live probe returned HTTP 200 for https://www.canva.dev/llms.txt, which indexes Canva's developer documentation. Section-level llms.txt files exist for SCIM, Admin and audit logs, and doc pages are served as Markdown (mcp.md, connect.md, apps.md), so an agent can be pointed directly at agent-oriented docs. Missing for 10: independent or community corroboration of agents using these docs, and the root docs Markdown path (/docs/.md) returned 404.",
+    "rationale": "A live probe confirms a root llms.txt at canva.dev (HTTP 200) indexing Canva's developer documentation. Section-level llms.txt files exist for SCIM, Admin and audit logs, and docs pages are served as agent-friendly .md (connect.md, apps.md, apps/mcp.md), so an agent can be pointed straight at machine-readable docs. Missing for 10: independent or hands-on corroboration of agents actually consuming these docs; the probed /docs/.md path returned 404, which leaves the scope of markdown coverage less certain.",
     "evidenceIds": [
       "canva-probe-1",
       "canva-docs-38",
       "canva-docs-39",
       "canva-docs-40",
-      "canva-docs-28",
-      "canva-docs-26",
+      "canva-docs-13",
       "canva-docs-24",
-      "canva-probe-2"
+      "canva-docs-28"
     ]
   },
   {
@@ -84,7 +83,7 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "The evidence shows an in-product Canva AI that can take user content, such as pasted links from other platforms, as context for designing. Imported third-party data can also feed design generation. That is AI working on the user's data inside the product, but it produces designs rather than insights or suggestions. Missing for 10: any documented AI-generated insights or analysis of user data, any in-product AI suggestions or recommendations, and independent or hands-on corroboration.",
+    "rationale": "The evidence shows an in-product Canva AI that can pull in content via pasted links from other platforms for design context, and data imported from third-party sources can feed design generation. That is AI acting on user data inside the product, but it produces designs rather than analysis. Nothing documents AI-generated insights, analysis, or recommendations drawn from the user's data. Missing for 10: any documented AI insight or analysis feature over user data, in-product suggestions or recommendations derived from data, depth of documentation on how Canva AI uses imported data, and independent or hands-on corroboration.",
     "evidenceIds": [
       "canva-docs-10",
       "canva-docs-32"
@@ -112,10 +111,9 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "The only evidence of a built-in assistant is a single mention of 'Canva AI' that accepts pasted links for design context, plus a passing reference to design generation from imported data. Most of the agentic evidence describes the MCP server and AI Connector, which let external AI assistants drive Canva rather than providing an assistant inside the product. Missing for 10: documentation of the in-product Canva AI assistant's task-delegation capabilities (multi-step editing, generation, actions), its scope and limits, and independent or hands-on corroboration.",
+    "rationale": "The only evidence of an in-product assistant is a single mention of \"Canva AI\", where users paste links from other platforms to design with more context. That implies a built-in AI design assistant but says nothing about what tasks it can take on. The MCP server material (natural-language design generation and editing) is about external AI assistants connecting to Canva, so it is not a built-in assistant and is not credited here. Missing for 10: documentation of the built-in Canva AI's capabilities, evidence of multi-step task delegation inside the editor, and any hands-on or independent corroboration.",
     "evidenceIds": [
-      "canva-docs-10",
-      "canva-docs-32"
+      "canva-docs-10"
     ]
   },
   {
@@ -124,17 +122,19 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Canva has no headless runtime or CI-oriented CLI; the only CLI creates and manages Apps SDK apps. Headless automation is possible through the Connect REST APIs, which ship an OpenAPI description for generating client SDKs and support autofilling Brand Templates, bulk generation, resizing and exports. Private integrations, however, are limited to Enterprise plans. Missing for 10: a CLI or runner for scripted/CI execution of design tasks, documented non-interactive (service-account) authentication for pipelines, CI integration guides or examples, and independent hands-on corroboration.",
+    "rationale": "Canva has no headless mode for the product itself. Its Connect APIs (REST with an OpenAPI description for generating client SDKs) and the MCP server let you drive designs, autofill Brand Templates, bulk-create, resize and export programmatically, which covers API-driven automation. The official CLI is only for building Canva apps, not running Canva in CI, and private integrations are gated to Enterprise plans, with some MCP tools limited to Pro and above. Missing for 10: documented CI/pipeline usage, non-interactive service-account auth for unattended runs, independent hands-on corroboration of headless automation, and ungated availability across plans.",
     "evidenceIds": [
-      "canva-docs-2",
+      "canva-docs-26",
+      "canva-docs-37",
+      "canva-docs-31",
       "canva-docs-7",
       "canva-docs-8",
       "canva-docs-16",
-      "canva-docs-26",
-      "canva-docs-31",
-      "canva-docs-37",
-      "canva-docs-14",
-      "canva-docs-41"
+      "canva-docs-33",
+      "canva-docs-35",
+      "canva-docs-41",
+      "canva-docs-6",
+      "canva-docs-14"
     ]
   },
   {
@@ -143,7 +143,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Canva has AI features (Canva AI), so acting as an MCP client is a fair question to ask, and the axis applies. The evidence only documents Canva's own official MCP server, which lets external AI assistants call Canva. That is the server role. Nothing shows Canva or Canva AI connecting to third-party MCP servers to use their tools.",
+    "rationale": "Canva has its own AI (Canva AI), so acting as an MCP client is a fair question for this product. The evidence, however, only documents Canva publishing its own MCP server for external AI assistants to call (the server role). Nothing shows Canva or Canva AI connecting to third-party MCP servers or using their tools.",
     "evidenceIds": []
   },
   {
@@ -158,11 +158,11 @@
       "canva-probe-4",
       "canva-docs-5",
       "canva-docs-30",
-      "canva-docs-17",
+      "canva-docs-33",
       "canva-docs-18",
-      "canva-docs-19",
+      "canva-docs-34",
       "canva-docs-20",
-      "canva-docs-21",
+      "canva-docs-35",
       "canva-docs-22",
       "canva-docs-6"
     ]
@@ -173,17 +173,17 @@
     "verdict": "full",
     "quality": 8,
     "confidence": "medium",
-    "rationale": "Canva's official MCP server and AI Connector let users drive Canva through natural language from their AI assistants. Documented operations include generating designs from text descriptions, applying targeted edits via natural-language commands, searching the library, managing assets and brand kits, exporting, resizing and commenting. Missing for 10: independent or hands-on corroboration that natural-language editing works as claimed, in-product Canva AI command support beyond a passing mention, and clarity on plan gating (resizing requires Pro and above).",
+    "rationale": "Canva's first-party docs describe an official MCP server and AI Connector that let users operate Canva through natural language from their own AI assistants. Documented capabilities include text-to-design generation, targeted design edits via natural-language commands, search and discovery, export and resize, asset and brand management, and comments. A probe also confirms the MCP docs exist. missing for 10: independent or hands-on corroboration that natural-language operation works as claimed, and detail on Canva's native in-editor AI commands (only a thin Canva AI mention); some tools are also gated to Pro and above.",
     "evidenceIds": [
       "canva-docs-5",
-      "canva-docs-17",
       "canva-docs-18",
-      "canva-docs-19",
-      "canva-docs-20",
-      "canva-docs-21",
-      "canva-docs-22",
       "canva-docs-28",
       "canva-docs-30",
+      "canva-docs-33",
+      "canva-docs-34",
+      "canva-docs-35",
+      "canva-docs-20",
+      "canva-docs-22",
       "canva-docs-6",
       "canva-docs-10",
       "canva-probe-4"
@@ -195,7 +195,7 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Canva documents an official command line tool, referenced in its Apps quickstart, but it is scoped to creating and managing Canva apps rather than driving designs, exports, or assets from the terminal. Agent-facing design operations are exposed through the MCP server and Connect APIs, not the CLI. Missing for 10: CLI coverage of core design and asset workflows, detailed command reference, scripting/agent-oriented usage docs, independent or hands-on corroboration.",
+    "rationale": "Canva documents an official command-line tool, but it is scoped to creating and managing Canva Apps SDK apps (canva-docs-14, canva-probe-5), not to driving core Canva work like designs, exports, or assets from the terminal. The evidence describes it only in a single line, with no detail on commands, authentication, or scripted or agent use. Missing for 10: a CLI covering core Canva operations, documented command reference and agent/automation-friendly usage, independent or hands-on corroboration.",
     "evidenceIds": [
       "canva-docs-14",
       "canva-probe-5"
@@ -207,17 +207,18 @@
     "verdict": "full",
     "quality": 8,
     "confidence": "high",
-    "rationale": "Canva documents public REST APIs: the Connect APIs for designs, assets, comments, exports and Brand Template autofill, plus the SCIM, Admin and audit-log APIs. It also publishes an OpenAPI description for generating client SDKs, and an llms.txt index is live. The probe's 404s at standard OpenAPI paths do not contradict the documented spec; it is simply hosted elsewhere. Missing for 10: independent or hands-on corroboration of API use, the OpenAPI spec at a discoverable standard path, and private integrations being limited to Enterprise plans.",
+    "rationale": "Canva documents public Connect APIs for creating and syncing designs, assets, comments, autofill, resize and export, and publishes an OpenAPI description for generating client SDKs. Admin, SCIM and audit-log APIs, an official MCP server and an llms.txt index round out programmatic control. The probe misses on guessed OpenAPI paths only show the spec isn't at a standard well-known location, not that it doesn't exist. Missing for 10: independent or hands-on corroboration of API usage, an OpenAPI spec at a discoverable standard path, and broad access without plan gating (private integrations require Enterprise; some MCP tools require Pro and above).",
     "evidenceIds": [
       "canva-docs-2",
       "canva-docs-26",
       "canva-docs-37",
       "canva-docs-31",
       "canva-docs-13",
-      "canva-docs-7",
-      "canva-docs-38",
       "canva-docs-39",
+      "canva-docs-38",
+      "canva-docs-28",
       "canva-docs-41",
+      "canva-docs-6",
       "canva-probe-1",
       "canva-probe-3"
     ]
@@ -228,7 +229,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Canva offers Connect APIs, an Admin API, and an official MCP server, so scoped agent credentials are a fair question for this product. However, nothing in the pack describes issuing scoped or least-privilege tokens, OAuth scopes, or per-agent credential controls. Team-app distribution controls (who can use an app) and Enterprise-only private integrations concern app access, not credential scoping, so they don't count here.",
+    "rationale": "Canva offers APIs for agents to use: the Connect APIs, private integrations, and an official MCP server. That makes scoped credentials a fair question, but none of the evidence describes credential issuance, OAuth scopes, permission scoping or least-privilege tokens for agents. Absence of evidence for an applicable capability is \"none\".",
     "evidenceIds": []
   },
   {
@@ -237,7 +238,7 @@
     "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Canva documents an official Apps SDK for building in-editor apps that import content, add elements and automate design tasks. It pairs this with a CLI for creating and managing apps, and offers private or public distribution. For the Connect APIs, Canva provides an OpenAPI description from which developers generate their own client SDKs rather than shipping official prebuilt ones. Missing for 10: official prebuilt Connect API client SDKs in named languages, a discoverable OpenAPI file (common paths probed 404), and independent or hands-on corroboration of the SDK developer experience.",
+    "rationale": "Canva ships an official Apps SDK for building apps inside the editor, with a quickstart and an official CLI for creating and managing apps, plus distribution via the Apps Marketplace or private team sharing. For the Connect APIs, however, Canva provides only an OpenAPI description that developers run through code-generation tools to produce their own client SDKs, rather than first-party language SDKs. Missing for 10: official prebuilt client SDKs for the Connect APIs, documented language coverage, and independent or hands-on corroboration of the SDK developer experience.",
     "evidenceIds": [
       "canva-docs-1",
       "canva-docs-24",
@@ -246,8 +247,7 @@
       "canva-probe-5",
       "canva-docs-13",
       "canva-docs-31",
-      "canva-docs-26",
-      "canva-probe-3"
+      "canva-docs-26"
     ]
   },
   {
@@ -268,10 +268,10 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "The evidence only glancingly shows built-in AI: one mention of a 'Canva AI' that users can feed pasted links to design with more context. The design-generation and natural-language editing capabilities are documented through the MCP server for external AI assistants, not as in-editor tools for a designer. missing for 10: evidence of in-editor image generation, background removal, content-aware fill, copy/text suggestions, first-party product docs for these AI editor features, and any independent or hands-on corroboration.",
+    "rationale": "The evidence only glancingly shows a built-in \"Canva AI\" that users can feed pasted links to \"design with more context\" (canva-docs-10). Natural-language design generation and editing are documented, but through the MCP server for external AI assistants rather than inside the editor (canva-docs-33, canva-docs-18). Missing for 10: evidence of in-editor image generation, background removal, content-aware fill, and copy/text suggestions, plus any first-party product docs or hands-on corroboration of the editor's AI features.",
     "evidenceIds": [
       "canva-docs-10",
-      "canva-docs-17",
+      "canva-docs-33",
       "canva-docs-18"
     ]
   },
@@ -281,7 +281,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Canva publishes Connect API docs and an OpenAPI description that can be fed to code generators. However, nothing in the evidence shows an interactive API reference, an in-browser 'try it' console, or runnable examples. The probe also found no OpenAPI spec at common public paths, so there is no evidence of a ready explorer surface.",
+    "rationale": "Canva publishes developer APIs (Connect, SCIM, Admin) and an OpenAPI description of the Connect APIs for generating client SDKs, so this axis applies. However, nothing in the evidence describes an interactive API explorer, a 'try it' console, or runnable examples. Probes of common OpenAPI paths also returned 404. A spec meant for code generation is not the interactive, runnable reference the story asks for.",
     "evidenceIds": []
   },
   {
@@ -304,7 +304,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Canva is a SaaS platform with developer APIs (Connect APIs, Apps SDK, MCP server), so a sandbox or test environment is a fair question for this product. Nothing in the evidence mentions a sandbox, test tenant, or way to develop against non-production data. Team apps and private integrations only limit who can use an integration; they do not isolate it from production data.",
+    "rationale": "A sandbox or test environment is a fair ask for a SaaS platform with developer APIs (Connect APIs, Apps SDK, MCP server), so the axis applies. Nothing in the evidence pack mentions a sandbox, test tenant, or isolated non-production environment. Team apps, private integrations and the app-creation CLI are distribution and development tooling, not data isolation from production.",
     "evidenceIds": []
   },
   {
@@ -313,7 +313,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Canva offers several developer APIs (Connect, SCIM, Admin, Apps SDK) and an OpenAPI description, so asking about API versioning and deprecation policy is fair for this product. However, nothing in the evidence pack mentions API version numbers, versioning schemes, changelogs, or a documented deprecation policy. Absence of evidence for this applicable capability yields none.",
+    "rationale": "Canva clearly ships public APIs (Connect, SCIM, Admin, Apps SDK, MCP server), so API versioning and deprecation policy is a fair question for this product. However, nothing in the evidence pack mentions API versioning, version identifiers, or a documented deprecation or sunset policy. The OpenAPI description and the API listings do not establish either.",
     "evidenceIds": []
   },
   {
@@ -322,12 +322,13 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Canva's docs describe bulk generation: \"generate personalized content in bulk\" from your own data, Bulk create fed by third-party data imports, and automatic population of Brand Templates. Automatic resizing into new dimensions is also documented. These are bulk content-creation features rather than general bulk operations across many existing items, such as batch editing, exporting, moving or deleting designs. The MCP and Connect API evidence describes per-design actions. Missing for 10: documented batch or multi-item endpoints in Connect API or MCP, bulk edit/export/organize across many existing designs, limits and scale details, and independent or hands-on corroboration.",
+    "rationale": "Canva's docs mention generating personalized content in bulk from your own data (canva-docs-8), importing third-party data for 'Bulk create' (canva-docs-32), autofilling Brand Templates from data sources (canva-docs-7), and automatically creating resized versions of designs (canva-docs-16). That covers bulk design generation, but the evidence is one-line marketing mentions, and the MCP resize tool is rate-limited to 20 req/min (canva-docs-6), which suggests per-item calls rather than true batch operations. Missing for 10: documented batch API endpoints, bulk edit/move/delete/export across many existing designs or assets, AI/MCP-driven bulk workflows, detailed docs on Bulk create limits, and independent or hands-on corroboration.",
     "evidenceIds": [
       "canva-docs-8",
       "canva-docs-32",
       "canva-docs-7",
-      "canva-docs-16"
+      "canva-docs-16",
+      "canva-docs-6"
     ]
   },
   {
@@ -336,7 +337,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Event-triggered automation is a fair question for a design SaaS platform, but the evidence never documents a rules engine, webhooks, or event triggers that start actions automatically. The cited capabilities are programmatic integrations invoked by the caller: Connect APIs, Autofill of Brand Templates, bulk create, resizing and MCP tools. Receiving comments from other platforms and audit logs record or relay activity but do not let users define rules that act on events.",
+    "rationale": "Event-driven automation such as rules, triggers, or webhooks is a fair axis for a SaaS design platform like Canva. However, the evidence pack documents no rule engine, no webhook or event subscription mechanism, and no way to define triggers that run actions automatically. The cited capabilities (Connect APIs, Autofill and Bulk create, MCP tools, audit logs) are all on-demand or programmatic calls. A vague mention of receiving comments from other platforms does not show user-defined event-to-action rules.",
     "evidenceIds": []
   },
   {
@@ -345,7 +346,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Scheduling recurring jobs or workflows is a fair question for a design SaaS platform with automation APIs, so the axis applies. The evidence covers programmatic automation (Connect APIs, Autofill, Bulk create, MCP-driven design generation and export), but nothing documents a native scheduler, recurring triggers, or cron-style workflow execution. Any recurrence would have to come from external tooling calling the APIs, which the evidence never describes.",
+    "rationale": "Scheduling recurring jobs or workflows is a fair question for a design and automation SaaS platform, so the axis applies. The evidence covers on-demand automation only: Connect APIs, autofill of Brand Templates, bulk create, resize and MCP tools. Nothing in the pack mentions scheduling, cron-like triggers or recurring execution.",
     "evidenceIds": []
   },
   {
@@ -354,7 +355,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The axis applies: Canva offers automation surfaces such as Autofill, Bulk create, the Apps SDK and the MCP server, so versioning and rollback of those automations is a fair question. The evidence contains nothing about versioning, reviewing or rolling back automations. Audit logs record general user activity (for example, installing apps or exporting designs), and comments apply to designs, not automation definitions, so neither counts here.",
+    "rationale": "Canva offers automation surfaces such as Autofill, Bulk create, the Apps SDK, the Connect APIs and the MCP server, so versioning and rolling back automations is a fair question for it. The evidence shows no way to version, review diffs of, or roll back those automations. Audit logs only record user activities like app installs and exports, and the CLI only creates and manages apps; neither describes automation version history or rollback.",
     "evidenceIds": []
   },
   {
@@ -363,15 +364,15 @@
     "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Canva's Apps SDK is a documented extension API for adding design and editing experiences inside the Canva editor, such as importing content, adding elements and automating tasks. A CLI supports creating and managing apps, and apps can be distributed publicly through the Apps Marketplace or privately to a team, with a monetization path. Missing for 10: explicit evidence of TypeScript typings, sample/starter code, and independent or hands-on corroboration of the developer experience.",
+    "rationale": "Canva's first-party docs describe an Apps SDK for building apps that run inside the Canva editor, adding elements, importing content and automating design tasks. A CLI supports creating and managing these apps, and they can be distributed publicly via the Apps Marketplace or privately to a team, with a monetization path. Missing for 10: no evidence of TypeScript typings or sample/starter code, and no independent or hands-on corroboration of the SDK developer experience.",
     "evidenceIds": [
       "canva-docs-1",
       "canva-docs-24",
       "canva-docs-25",
-      "canva-docs-14",
-      "canva-probe-5",
       "canva-docs-12",
       "canva-docs-29",
+      "canva-docs-14",
+      "canva-probe-5",
       "canva-docs-11"
     ]
   },
@@ -381,7 +382,7 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "The evidence shows only scattered tier-gating notes in developer docs: MCP design resizing is limited to \"Canva Pro and above\", and private Connect integrations require a Canva Enterprise plan. That shows some tiers and feature gating exist, but nothing shows a published pricing page that lays out prices, seat types or AI-feature gating before procurement. Missing for 10: published plan pricing/prices, seat-type definitions, a full tier comparison, explicit AI-feature gating per plan, independent corroboration.",
+    "rationale": "The developer docs name Canva's plan tiers (Pro, Business, Enterprise) and show some per-feature gating. An MCP/AI-connector tool is marked \"Pro and above,\" and private Connect integrations are limited to Enterprise. This is only a glancing view of tiering inside technical docs, not a published pricing page. Missing for 10: a published pricing page with prices, seat types and per-seat structure, a comprehensive AI-feature gating matrix across plans, and independent corroboration.",
     "evidenceIds": [
       "canva-docs-6",
       "canva-docs-41"
@@ -393,7 +394,7 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Developer docs show that Canva designs have comments: you can add comments to designs (MCP), sync comments via the Connect APIs, and receive and reply to Canva comments from other platforms. This confirms commenting and threaded replies exist, but nothing in the pack documents mentioning teammates or resolving threads. Missing for 10: evidence of @mentioning teammates, thread resolution, first-party docs on in-editor commenting for reviewers (current evidence is developer/API-oriented), independent or hands-on corroboration.",
+    "rationale": "Canva's developer docs confirm that designs carry comments. Users can receive and reply to comments (threaded replies), add comments to designs, and sync comments via the Connect APIs. However, the evidence is integration-focused and never mentions @-mentioning teammates or resolving threads. Missing for 10: evidence of @mentions, thread resolution, first-party in-editor commenting docs, independent or hands-on corroboration.",
     "evidenceIds": [
       "canva-docs-9",
       "canva-docs-22",
@@ -406,7 +407,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Design-to-code handoff is a fair question for a design tool, so the axis applies. However, the evidence only documents exports to PDF, PNG, JPG, PPTX and MP4, plus programmatic design generation via the Connect APIs and MCP. Nothing shows component-to-code mappings or shippable code output, and the OpenAPI code generation produces API client SDKs, not code from designs.",
+    "rationale": "Design-to-code handoff is a fair question for a design tool, so the axis applies. However, the evidence shows no component-to-code mapping and no code output from designs. The documented exports are PDF, PNG, JPG, PPTX and MP4 assets, and the OpenAPI-based SDK generation produces API client libraries rather than code derived from designs.",
     "evidenceIds": []
   },
   {
@@ -415,7 +416,7 @@
     "verdict": "partial",
     "quality": 2,
     "confidence": "low",
-    "rationale": "The only related evidence is that Canva lets users access brand kits and keep teams on-brand with Brand Templates. That loosely suggests centrally managed brand styling, but none of the evidence describes tokens or variables for colors, spacing or typography, nor modes or themes applied across designs. missing for 10: documented design tokens/variables for color, spacing and typography, mode/theme switching, propagation of variable changes across designs, any hands-on or independent corroboration.",
+    "rationale": "The only related evidence is that brand kits can be accessed and managed through the MCP server (canva-docs-20), and that Brand Templates help teams produce on-brand designs (canva-docs-15). That loosely suggests centrally managed brand styles, but nothing describes token or variable management. missing for 10: explicit color/spacing/typography tokens or variables, modes/themes (e.g., light/dark) applied across designs, documentation of how brand kit values propagate to designs, independent or hands-on corroboration.",
     "evidenceIds": [
       "canva-docs-20",
       "canva-docs-15"
@@ -429,7 +430,6 @@
     "confidence": "medium",
     "rationale": "Canva's docs describe design export in multiple formats (PDF, PNG, JPG, PPTX, MP4) through its MCP server and automated resizing to new dimensions and formats. That covers whole-design, multi-format export, but nothing in the evidence shows the per-layer production-asset workflow the story asks for. Missing for 10: SVG export evidence, per-layer/element export presets, export scale multipliers, slices, and any independent or hands-on corroboration.",
     "evidenceIds": [
-      "canva-docs-21",
       "canva-docs-35",
       "canva-docs-16"
     ]
@@ -440,7 +440,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence pack is developer documentation (Apps SDK, Connect APIs, MCP server, SCIM, audit logs) and says nothing about what the free tier includes for the editor or collaboration. The only plan-gating mentions, design resizing being Pro-and-above and private integrations requiring Enterprise, concern paid features, not free-tier usability.",
+    "rationale": "Free-tier capability is a fair question for a design SaaS like Canva, but the evidence pack is almost entirely developer and API documentation. Nothing in it describes what the free plan includes for editing or collaboration. The only plan-related item says the resize tool is limited to Pro and above, which does not show the free tier supports real design work.",
     "evidenceIds": []
   },
   {
@@ -449,7 +449,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Developer handoff (inspecting layers for measurements, styles, assets, and CSS/iOS/Android code) is a fair question for a design tool like Canva, so the axis applies. The evidence covers only the Apps SDK, Connect APIs, MCP server, exports, and comments. Nothing shows a layer-inspect mode, measurement or style extraction, platform code snippets, or a viewer-only (no editor seat) developer access path.",
+    "rationale": "Developer handoff is a fair question for a design tool like Canva. The evidence pack covers the Apps SDK, Connect APIs, MCP server, exports and asset management. Nothing in it describes a layer-inspect mode, measurements, style extraction, or CSS/iOS/Android code snippets, and nothing shows such access is available without an editor seat.",
     "evidenceIds": []
   },
   {
@@ -458,7 +458,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Canva is a design product, so wiring screens into clickable prototypes is a fair question to ask of it. However, nothing in the evidence pack covers prototyping, interaction triggers, screen transitions, or overlays. The cited docs deal only with developer APIs, the MCP server, brand templates, resizing, export and admin tooling.",
+    "rationale": "Clickable prototyping is a fair question for a visual design tool like Canva, so the axis applies. However, the evidence pack covers only developer surfaces: the Apps SDK, Connect APIs, the MCP server, SCIM/admin APIs and audit logs. Nothing in it mentions linking screens, interaction triggers, transitions or overlays.",
     "evidenceIds": []
   },
   {
@@ -467,14 +467,13 @@
     "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Canva's first-party MCP docs state it can create designs from text descriptions and apply targeted edits to existing designs through natural-language commands. They also describe natural-language access to Canva's design capabilities, and the main docs reference designing with Canva AI. The evidence covers the core story, but every claim is a single bullet-level vendor statement, and generation is documented mainly through AI assistants connected via MCP. Missing for 10: detailed docs on what drafts, layouts or mockups are actually produced, any hands-on or independent corroboration of output quality, and documentation of in-editor prompt-to-design generation beyond a passing Canva AI mention.",
+    "rationale": "Canva's first-party MCP docs say it supports design generation, creating designs \"from text descriptions and specifications,\" and design editing, applying \"targeted modifications to existing designs through natural language commands.\" Separate docs also reference Canva AI designing with pasted-link context. Together these cover both halves of the story, generating and editing designs from prompts. Missing for 10: the evidence is only one-line feature bullets centred on the MCP/AI-assistant route, with no depth on layout or mockup quality and no independent or hands-on proof that the generated designs are usable.",
     "evidenceIds": [
-      "canva-docs-17",
+      "canva-docs-33",
       "canva-docs-18",
       "canva-docs-5",
       "canva-docs-28",
-      "canva-docs-10",
-      "canva-docs-6"
+      "canva-docs-10"
     ]
   },
   {
@@ -483,12 +482,11 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "medium",
-    "rationale": "Nothing in the evidence shows Canva's native design file format is open or documented. Portability rests only on exporting to standard formats (PDF, PNG, JPG, PPTX, MP4) and on Connect APIs that create and sync designs. These are flattened or converted outputs, not a toolable source format. Missing for 10: a documented or open native design file format, round-trip editable export outside Canva, a public schema or spec for design documents, and independent corroboration of portability.",
+    "rationale": "Nothing in the evidence shows Canva's native design format is open or documented. Portability outside the editor comes only through exports to standard formats (PDF, PNG, JPG, PPTX, MP4) via the MCP server and the Connect APIs, which can create and sync designs. These exports give some toolability but are converted outputs, not the editable native format. Missing for 10: a documented or open native design file format, lossless round-trip import/export of editable designs, and independent corroboration of how well exports preserve design structure.",
     "evidenceIds": [
-      "canva-docs-21",
       "canva-docs-35",
       "canva-docs-37",
-      "canva-docs-16"
+      "canva-docs-26"
     ]
   },
   {
@@ -497,24 +495,23 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Canva exposes a broad programmatic surface. The Connect APIs cover syncing assets, designs and comments, autofilling Brand Templates, resizing and exporting. The MCP server adds natural-language design generation, targeted editing, discovery, asset/brand management, export and comments. Admin, SCIM and audit-log APIs cover org management. However, nothing documents parity with the full editor UI: in-editor element manipulation runs through the Apps SDK inside the editor, not a headless API, and some capabilities are plan-gated (resize on Pro+, private integrations on Enterprise). Missing for 10: any documented claim or evidence of UI-to-API parity, headless fine-grained element-level editing, availability not gated by plan, and independent or hands-on corroboration of coverage.",
+    "rationale": "Canva exposes a broad programmatic surface. The Connect APIs create and sync assets, designs and comments, and support Brand Template autofill, bulk creation, resizing, and send-to-platform. The official MCP server covers design generation, natural-language editing, discovery, export, asset and brand management, and comments. Admin, SCIM and audit-log APIs handle team management. Nothing in the evidence claims or shows UI parity, though: editing is limited to targeted natural-language modifications, the Apps SDK runs inside the editor rather than as a headless API, and some capabilities are plan-gated (resize is Pro and above; private integrations require Enterprise). Missing for 10: an explicit API/UI parity claim, element-level design editing via an external API, ungated access to all features across plans, and hands-on or independent corroboration of coverage.",
     "evidenceIds": [
       "canva-docs-37",
       "canva-docs-26",
+      "canva-docs-28",
+      "canva-docs-33",
+      "canva-docs-18",
+      "canva-docs-34",
+      "canva-docs-35",
+      "canva-docs-20",
+      "canva-docs-22",
       "canva-docs-7",
       "canva-docs-16",
-      "canva-docs-17",
-      "canva-docs-18",
-      "canva-docs-19",
-      "canva-docs-20",
-      "canva-docs-21",
-      "canva-docs-22",
-      "canva-docs-24",
+      "canva-docs-39",
       "canva-docs-6",
       "canva-docs-41",
-      "canva-docs-39",
-      "canva-docs-38",
-      "canva-docs-31"
+      "canva-docs-24"
     ]
   },
   {
@@ -525,10 +522,9 @@
     "confidence": "medium",
     "rationale": "Canva documents exporting designs in multiple widely used formats (PDF, PNG, JPG, PPTX, MP4) through its MCP server. Its Connect APIs and design discovery tools can retrieve and sync designs and assets, so a scripted per-design export path exists. However, nothing shows a full-account or bulk data export, and the formats listed are rendered outputs rather than an open, editable design source format, so leaving with everything intact is only partly supported. Missing for 10: documented bulk or full-account export, export of editable designs in an open native format, coverage of non-design data (comments, brand kits, folders), independent or hands-on corroboration.",
     "evidenceIds": [
-      "canva-docs-21",
       "canva-docs-35",
       "canva-docs-37",
-      "canva-docs-19",
+      "canva-docs-34",
       "canva-docs-27"
     ]
   },
@@ -538,7 +534,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Whether a design tool's source is published under an open license is a fair question, since open-source design tools exist, so the axis applies. Nothing in the evidence pack says Canva's source code is published or openly licensed. The pack covers only proprietary APIs, SDKs, a CLI, an MCP server and an OpenAPI description for generating client SDKs, none of which is product source under an open license.",
+    "rationale": "Whether a software product's source is available under an open license is a fair question for any SaaS design tool, so the axis applies. Nothing in the evidence pack says Canva's source is published or openly licensed. The evidence covers APIs, an SDK, a CLI, an MCP server and an OpenAPI description, but none of these is product source code.",
     "evidenceIds": []
   },
   {
@@ -547,7 +543,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Self-hosting is a fair deployment question for a design platform like Canva, so the axis applies. The evidence only describes cloud-hosted integration surfaces (Apps SDK, Connect APIs, MCP server, SCIM/Admin APIs) and shows no self-hosted or on-premises deployment of the core product.",
+    "rationale": "Self-hosting is a fair axis for a design SaaS like Canva, but the evidence pack contains nothing showing the core editor can be deployed on your own infrastructure. All cited material describes cloud-hosted integration surfaces: the Apps SDK, Connect APIs, the MCP server, SCIM, Admin API and audit logs.",
     "evidenceIds": []
   },
   {
@@ -556,13 +552,14 @@
     "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Canva's Apps SDK brings new design and editing experiences into the editor, and apps can be distributed publicly through the Apps Marketplace. Those apps can import content, add elements and automate design tasks, and audit logs record users installing Canva Apps, so a marketplace-based extension path clearly exists. Missing for 10: evidence that the marketplace is large or has an active community, specific examples of icon, data-filler or accessibility-checker apps, and independent or hands-on corroboration.",
+    "rationale": "Canva's Apps SDK brings new design and editing experiences into the editor, including importing content, adding elements and automating tasks. Apps can be published publicly through an Apps Marketplace, with a monetization path and a CLI for building apps, so marketplace-based editor extensibility is clearly documented. missing for 10: evidence of the marketplace's size or community breadth, concrete examples of icon, data-filler or accessibility-checker apps, and independent or hands-on corroboration.",
     "evidenceIds": [
       "canva-docs-1",
       "canva-docs-24",
       "canva-docs-25",
       "canva-docs-11",
-      "canva-docs-40"
+      "canva-docs-12",
+      "canva-docs-14"
     ]
   },
   {
@@ -571,7 +568,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Data residency and region selection is a fair privacy-posture question for a cloud SaaS design platform like Canva, so the axis applies. Nothing in the evidence pack mentions storage regions, residency options, or data location controls. The docs cover the Apps SDK, Connect APIs, the MCP server, SCIM, the Admin API and audit logs, none of which address where data is stored.",
+    "rationale": "Choosing a data-storage region is a fair question for a cloud SaaS design platform like Canva, so the axis applies. However, nothing in the evidence pack mentions data residency or region selection. The cited docs cover the Apps SDK, Connect APIs, SCIM, audit logs, the Admin API and the MCP server, none of which address where data is stored.",
     "evidenceIds": []
   },
   {
@@ -580,7 +577,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Canva is a SaaS design platform with AI features, so a training opt-out is a fair question to ask of it. Nothing in the evidence pack covers AI-training data use, opt-out settings or privacy controls. The items provided are about the Apps SDK, Connect APIs, MCP server, SCIM, admin and audit logs, and none of them address preventing user data from being used for model training.",
+    "rationale": "Canva is a SaaS design platform with AI features, so an AI-training opt-out is a fair question. However, nothing in the evidence pack covers data-use or training controls. The pack covers only developer APIs, the MCP server, SCIM, audit logs and app tooling, so there is no evidence that users can stop their data being used to train AI models.",
     "evidenceIds": []
   },
   {
@@ -589,7 +586,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Data retention and deletion controls are a fair privacy question for a SaaS design platform like Canva, so the axis applies. The evidence pack covers APIs, the MCP server, SCIM provisioning, audit logs and admin user management, but none of it documents retention policies, data deletion controls, or how long AI-related data is kept.",
+    "rationale": "Data retention and deletion controls are a fair privacy question for a SaaS design platform like Canva, so the axis applies. The evidence pack covers the Apps SDK, Connect APIs, the MCP server, SCIM provisioning, the Admin API and audit logs. None of it documents retention policies, data deletion, or controls over how AI features use or keep user data.",
     "evidenceIds": []
   },
   {
@@ -598,7 +595,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Opting out of telemetry and usage tracking is a fair privacy question for a SaaS design platform like Canva, so the axis applies. The evidence pack covers developer APIs, the MCP server, the CLI and audit logs, but contains nothing about telemetry controls, usage-tracking settings or any opt-out mechanism. The audit-log docs describe recording user activity, which is not an opt-out.",
+    "rationale": "Opting out of telemetry and usage tracking is a fair privacy question for a SaaS design platform like Canva, so the axis applies. The evidence pack covers APIs, the MCP server, SCIM, and audit logs, but contains nothing about user-facing telemetry, analytics opt-out, or tracking controls. The audit logs record team activity for admins and are not an opt-out mechanism.",
     "evidenceIds": []
   },
   {
@@ -607,7 +604,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Real-time co-editing is a fair axis for a design tool, but the evidence pack never documents simultaneous multi-user editing, live cursors, or instant sync. The collaboration evidence covers only comments, teams editing Brand Templates, and API-level syncing of assets and designs with external platforms, none of which shows live multiplayer editing.",
+    "rationale": "Real-time co-editing is a fair question for a design tool, so the axis applies. However, the evidence pack is developer documentation that only mentions comments, audit logs, and teams editing brand templates. Nothing documents simultaneous editing, live cursors, or instant sync; the 'sync' in the Connect APIs refers to integrations syncing assets, not live multiplayer.",
     "evidenceIds": []
   },
   {
@@ -620,7 +617,7 @@
     "evidenceIds": [
       "canva-docs-16",
       "canva-docs-6",
-      "canva-docs-21"
+      "canva-docs-35"
     ]
   },
   {
@@ -629,7 +626,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Reusable components with variants and linked instances are a fair question for a design tool like Canva, so the axis applies. The evidence only describes Brand Templates (reusable starting points that teams create from and that can be auto-populated with data). Nothing shows components with variants, per-instance overrides, or instances that stay linked to and update from a source.",
+    "rationale": "Reusable linked components with variants are a fair question for a design tool like Canva, so the axis applies. The evidence covers only Brand Templates, autofill and bulk creation. Templates spawn independent copies, and nothing in the pack shows components with variants, per-instance overrides, or a live link back to a source component.",
     "evidenceIds": []
   },
   {
@@ -638,7 +635,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Self-hosting under an open-source license is a fair question for a design platform, so the axis applies. The evidence pack never mentions a self-hostable distribution or an open-source license. It describes only integrations against Canva's hosted service: the Apps SDK, Connect APIs, the MCP server, and Enterprise-plan private integrations.",
+    "rationale": "Self-hosting under an open-source license is a fair question for a design platform, since open-source self-hostable design tools exist, so the axis applies. The evidence pack only documents cloud-hosted integration surfaces: the Apps SDK, Connect APIs, MCP server, SCIM and audit logs. Nothing shows a self-hostable or open-source distribution of the platform.",
     "evidenceIds": []
   },
   {
@@ -647,7 +644,7 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "The evidence shows only thin, adjacent support: Brand Templates can be made accessible so teams create on-brand designs, and brand kits and templates can be accessed and managed, which amounts to sharing styles and templates across a team. Nothing shows reusable components published across files and projects, or any mechanism for controlled updates when the source changes. Missing for 10: component publishing across files/projects, controlled update propagation from source (accept/review changes), first-party docs on library behavior, independent or hands-on corroboration.",
+    "rationale": "The evidence shows only adjacent capabilities. Brand Templates can be made accessible to teams for on-brand design (canva-docs-15), and brand kits and templates can be accessed and managed (canva-docs-20), which partly covers sharing styles and templates across a team. Nothing describes publishing reusable components into a shared library that links into other files, or propagating updates when the source changes. Missing for 10: a shared component library linked across files and projects, a controlled update or versioning flow when the source changes, and hands-on or independent corroboration.",
     "evidenceIds": [
       "canva-docs-15",
       "canva-docs-20"
@@ -659,7 +656,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Canva is a design product, so professional vector editing is a fair question to ask of it. The evidence pack, however, covers only developer surfaces: the Apps SDK, Connect APIs, the MCP server, SCIM, and audit logs. Nothing in it mentions a pen tool, path or node editing, boolean operations, or precise alignment, and the natural-language design editing via MCP does not amount to vector tooling.",
+    "rationale": "Canva is a design product, so professional vector tooling is a fair question to ask of it. However, the evidence pack covers only developer APIs, the MCP server, brand templates, resizing and natural-language design editing. It never mentions pen/path editing, boolean operations or precise alignment tools.",
     "evidenceIds": []
   },
   {
@@ -668,7 +665,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Version history is a fair question for a design editor like Canva, so the axis applies. The evidence pack only covers developer surfaces: Apps SDK, Connect APIs, MCP server, audit logs and export. Nothing in it documents version history, named milestones, comparing versions, or restoring earlier states. The audit logs record user activity, not design versions, so they cannot be credited here.",
+    "rationale": "Version history is a fair axis for a design tool like Canva, but the evidence pack contains nothing about version history, named milestones, comparing versions, or restoring earlier states. The audit logs it mentions record team activity such as exports and settings changes, which is not file-level versioning.",
     "evidenceIds": []
   },
   {
@@ -738,7 +735,7 @@
     "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Probes confirm a live llms.txt at support.claude.com and a Markdown rendering of the 'Get started with Claude Design' help article, so an agent can be pointed at machine-readable, agent-friendly docs that cover the product. The llms.txt covers the whole Claude Help Center rather than Claude Design specifically, and nothing shows how deep the Design-specific coverage goes. Missing for 10: a Claude Design–specific llms.txt or llms-full.txt, first-party documentation promoting agent-oriented docs, and independent or hands-on confirmation of agents consuming them.",
+    "rationale": "Probes confirm a live llms.txt at support.claude.com and a Markdown rendering of the 'Get started with Claude Design' help article, so an agent can be pointed at machine-readable, agent-friendly docs that cover the product. The llms.txt covers the whole Claude Help Center rather than Claude Design specifically, and nothing shows how deep the Design-specific coverage goes. Missing for 10: a Claude Design\u2013specific llms.txt or llms-full.txt, first-party documentation promoting agent-oriented docs, and independent or hands-on confirmation of agents consuming them.",
     "evidenceIds": [
       "claude-design-probe-1",
       "claude-design-probe-2"
@@ -993,7 +990,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence pack shows product features, an enterprise admin toggle, and usage-bar mentions, but contains no documentation of seat types, pricing tiers, or explicit AI-feature gating tables for procurement decisions. [2026-09-30 judge-migration owner-product bias audit: reverted opus-5-5 partial q2 -> the committed sonnet-5 baseline none q0. The rationale concedes no published plan pricing appears in the pack; an enterprise off-by-default toggle and community usage-bar observations are adjacency, not evidence ABOUT published pricing/tiers/gating. Anthropic-affiliation governance, README §9.]",
+    "rationale": "The evidence pack shows product features, an enterprise admin toggle, and usage-bar mentions, but contains no documentation of seat types, pricing tiers, or explicit AI-feature gating tables for procurement decisions. [2026-09-30 judge-migration owner-product bias audit: reverted opus-5-5 partial q2 -> the committed sonnet-5 baseline none q0. The rationale concedes no published plan pricing appears in the pack; an enterprise off-by-default toggle and community usage-bar observations are adjacency, not evidence ABOUT published pricing/tiers/gating. Anthropic-affiliation governance, README \u00a79.]",
     "evidenceIds": []
   },
   {
@@ -1075,7 +1072,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Evidence shows Claude Design can export handoff bundles and code (HTML/CSS/JS) to Claude Code or as PPTX/PDF/HTML, but there is no mention of a layer-level 'inspect' mode giving measurements, styles, assets, and platform-specific (CSS/iOS/Android) code snippets for viewers without an editor seat — the axis is applicable to a design/dev-handoff tool but unevidenced here. [2026-09-30 judge-migration owner-product bias audit: reverted opus-5-5 partial q3 -> the committed sonnet-5 baseline none q0. The rationale concedes there is no layer inspect mode; exports and Claude Code handoff bundles are a different mechanism than per-layer measurements/styles/snippets, so the story's core artifact is unevidenced. Anthropic-affiliation governance, README §9.]",
+    "rationale": "Evidence shows Claude Design can export handoff bundles and code (HTML/CSS/JS) to Claude Code or as PPTX/PDF/HTML, but there is no mention of a layer-level 'inspect' mode giving measurements, styles, assets, and platform-specific (CSS/iOS/Android) code snippets for viewers without an editor seat \u2014 the axis is applicable to a design/dev-handoff tool but unevidenced here. [2026-09-30 judge-migration owner-product bias audit: reverted opus-5-5 partial q3 -> the committed sonnet-5 baseline none q0. The rationale concedes there is no layer inspect mode; exports and Claude Code handoff bundles are a different mechanism than per-layer measurements/styles/snippets, so the story's core artifact is unevidenced. Anthropic-affiliation governance, README \u00a79.]",
     "evidenceIds": [
       "claude-design-docs-7",
       "claude-design-docs-8",
@@ -1103,7 +1100,7 @@
     "verdict": "full",
     "quality": 7,
     "confidence": "high",
-    "rationale": "First-party docs say Claude builds a first version from a described visual, can generate a dozen directions in minutes, and supports refinement through conversation, inline comments, direct edits, and Claude-made sliders. Hands-on users corroborate this: one shipped a landing page in a few hours, another praised its quick variations, and another called the designs beautiful. Some users found output from simple prompts underwhelming or boring, which is a quality complaint rather than evidence the capability is missing. Missing for 10: consistent hands-on evidence of high output quality (mixed reports on prompt-generated results), and evidence of the final 20% of polish without manual judgment. [2026-09-30 judge-migration owner-product bias audit: quality trimmed q9 -> q7. The verdict itself is clearly supported (rich on-story first-party docs plus positive hands-on corroboration), but three cited negative hands-on reports (comm-3 'very underwhelming', comm-9 'boring' output, comm-15 unmaintainable generated code) are more than the 'exactly one minor gap' q9 requires — same bar as the claude-code natural-language-feature-implementation trim in this wave. Anthropic-affiliation governance, README §9.]",
+    "rationale": "First-party docs say Claude builds a first version from a described visual, can generate a dozen directions in minutes, and supports refinement through conversation, inline comments, direct edits, and Claude-made sliders. Hands-on users corroborate this: one shipped a landing page in a few hours, another praised its quick variations, and another called the designs beautiful. Some users found output from simple prompts underwhelming or boring, which is a quality complaint rather than evidence the capability is missing. Missing for 10: consistent hands-on evidence of high output quality (mixed reports on prompt-generated results), and evidence of the final 20% of polish without manual judgment. [2026-09-30 judge-migration owner-product bias audit: quality trimmed q9 -> q7. The verdict itself is clearly supported (rich on-story first-party docs plus positive hands-on corroboration), but three cited negative hands-on reports (comm-3 'very underwhelming', comm-9 'boring' output, comm-15 unmaintainable generated code) are more than the 'exactly one minor gap' q9 requires \u2014 same bar as the claude-code natural-language-feature-implementation trim in this wave. Anthropic-affiliation governance, README \u00a79.]",
     "evidenceIds": [
       "claude-design-docs-13",
       "claude-design-docs-2",
@@ -1140,7 +1137,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "No evidence of a Claude Design API; the only API-related probe found openapi.json/swagger.json endpoints all returning 404, and no docs mention programmatic access to Design's prototyping, handoff, or editing features. All capabilities (prototyping, handoff, design-system sync) are described only as UI/Claude Code slash-command workflows. [2026-09-30 judge-migration owner-product bias audit: reverted opus-5-5 partial q3 -> the committed sonnet-5 baseline none q0. The rationale concedes there is no documented public API and the OpenAPI probe found nothing at any candidate path — affirmative counter-evidence; slash-command handoffs and file exports are not API parity. Anthropic-affiliation governance, README §9.]",
+    "rationale": "No evidence of a Claude Design API; the only API-related probe found openapi.json/swagger.json endpoints all returning 404, and no docs mention programmatic access to Design's prototyping, handoff, or editing features. All capabilities (prototyping, handoff, design-system sync) are described only as UI/Claude Code slash-command workflows. [2026-09-30 judge-migration owner-product bias audit: reverted opus-5-5 partial q3 -> the committed sonnet-5 baseline none q0. The rationale concedes there is no documented public API and the OpenAPI probe found nothing at any candidate path \u2014 affirmative counter-evidence; slash-command handoffs and file exports are not API parity. Anthropic-affiliation governance, README \u00a79.]",
     "evidenceIds": [
       "claude-design-probe-3",
       "claude-design-docs-6",
@@ -1253,7 +1250,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Claude Design is described as a prompt-driven design/prototyping tool that can 'apply your team's design system' and import components, but there is no evidence of a structured component system with defined variants and per-instance overrides that stay linked to a master source, as in tools like Figma. The one related community mention (comm-7) is about exporting to PenPot's component system, not a native capability of Claude Design itself. [2026-09-30 judge-migration owner-product bias audit: reverted opus-5-5 partial q3 -> the committed sonnet-5 baseline none q0. The rationale concedes nothing shows a native component model with variants or linked per-instance overrides; importing a team's existing design system is the opposite direction (consuming components, not building reusable ones), and the PenPot report shows components built in another tool. Anthropic-affiliation governance, README §9.]",
+    "rationale": "Claude Design is described as a prompt-driven design/prototyping tool that can 'apply your team's design system' and import components, but there is no evidence of a structured component system with defined variants and per-instance overrides that stay linked to a master source, as in tools like Figma. The one related community mention (comm-7) is about exporting to PenPot's component system, not a native capability of Claude Design itself. [2026-09-30 judge-migration owner-product bias audit: reverted opus-5-5 partial q3 -> the committed sonnet-5 baseline none q0. The rationale concedes nothing shows a native component model with variants or linked per-instance overrides; importing a team's existing design system is the opposite direction (consuming components, not building reusable ones), and the PenPot report shows components built in another tool. Anthropic-affiliation governance, README \u00a79.]",
     "evidenceIds": [
       "claude-design-docs-3",
       "claude-design-docs-5",
@@ -1288,7 +1285,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Claude Design is a prompt-driven design/prototyping generator with only basic layout controls (drag, resize, align, sliders for spacing/color) — there is no evidence of pen/path vector editing, boolean path operations, or precision alignment tooling akin to professional vector editors. Community feedback even notes the underlying output is HTML/CSS/JS, not vector paths, and code is not maintainable, reinforcing it's not a vector design tool. [2026-09-30 judge-migration owner-product bias audit: reverted opus-5-5 partial q3 -> the committed sonnet-5 baseline none q0. The rationale concedes the evidence covers only the alignment part; drag/resize/align layout controls are not pen/path editing or boolean operations, and the only vector-specific community report documents the absence of geometry control. Anthropic-affiliation governance, README §9.]",
+    "rationale": "Claude Design is a prompt-driven design/prototyping generator with only basic layout controls (drag, resize, align, sliders for spacing/color) \u2014 there is no evidence of pen/path vector editing, boolean path operations, or precision alignment tooling akin to professional vector editors. Community feedback even notes the underlying output is HTML/CSS/JS, not vector paths, and code is not maintainable, reinforcing it's not a vector design tool. [2026-09-30 judge-migration owner-product bias audit: reverted opus-5-5 partial q3 -> the committed sonnet-5 baseline none q0. The rationale concedes the evidence covers only the alignment part; drag/resize/align layout controls are not pen/path editing or boolean operations, and the only vector-specific community report documents the absence of geometry control. Anthropic-affiliation governance, README \u00a79.]",
     "evidenceIds": [
       "claude-design-docs-9",
       "claude-design-comm-15",
@@ -3291,7 +3288,7 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Penpot documents several programmatic surfaces: an API reachable with access tokens, a plugin API offering 'extensive access to objects and properties', outbound webhooks, and an official MCP server where design is 'expressed as code' so agents can read and interact with files. However, nothing claims or demonstrates that the API matches everything the UI can do, and probes found no published OpenAPI/Swagger spec to verify coverage. Missing for 10: an explicit UI–API parity claim, a published API reference/OpenAPI spec showing coverage of UI features (components, prototyping, tokens, export), and independent hands-on confirmation of agent-driven full workflows.",
+    "rationale": "Penpot documents several programmatic surfaces: an API reachable with access tokens, a plugin API offering 'extensive access to objects and properties', outbound webhooks, and an official MCP server where design is 'expressed as code' so agents can read and interact with files. However, nothing claims or demonstrates that the API matches everything the UI can do, and probes found no published OpenAPI/Swagger spec to verify coverage. Missing for 10: an explicit UI\u2013API parity claim, a published API reference/OpenAPI spec showing coverage of UI features (components, prototyping, tokens, export), and independent hands-on confirmation of agent-driven full workflows.",
     "evidenceIds": [
       "penpot-docs-3",
       "penpot-docs-6",
@@ -3340,7 +3337,7 @@
     "verdict": "full",
     "quality": 9,
     "confidence": "high",
-    "rationale": "First-party docs describe several self-hosting paths: Docker Compose, an official Helm chart, and OpenShift and Rancher deployments for private cloud or on-prem environments. Community users independently confirm running self-hosted instances successfully (Docker/Portainer, 'self-deploy'). Missing for 10: consistent stability — some self-hosters report crashes and lag on their own instances, though this does not contradict that self-hosting is delivered.",
+    "rationale": "First-party docs describe several self-hosting paths: Docker Compose, an official Helm chart, and OpenShift and Rancher deployments for private cloud or on-prem environments. Community users independently confirm running self-hosted instances successfully (Docker/Portainer, 'self-deploy'). Missing for 10: consistent stability \u2014 some self-hosters report crashes and lag on their own instances, though this does not contradict that self-hosting is delivered.",
     "evidenceIds": [
       "penpot-docs-7",
       "penpot-docs-8",
@@ -3956,7 +3953,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence pack has no first-party documentation of a free tier or of what a free plan includes, such as editor access, collaboration, or export limits. Revision history and multi-user editing are documented, but nothing ties them to an unpaid seat. Community comments mention paying $25–$39/month for the editor, which points against a capable free tier rather than for one.",
+    "rationale": "The evidence pack has no first-party documentation of a free tier or of what a free plan includes, such as editor access, collaboration, or export limits. Revision history and multi-user editing are documented, but nothing ties them to an unpaid seat. Community comments mention paying $25\u2013$39/month for the editor, which points against a capable free tier rather than for one.",
     "evidenceIds": []
   },
   {
@@ -4977,7 +4974,7 @@
     "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Spline documents an official MCP server, bundled in the desktop app, that lets Claude, Cursor, Codex and other clients \"drive Spline… straight into your open editor tab\". Its built-in AI Agent also creates and edits scenes and Hana screens through the editor, so agent-driven creation and modification is clearly supported. The Code API only changes object properties at runtime in exported scenes, and probes found no OpenAPI or REST write API. missing for 10: documented list of MCP write tools/operations, headless or browser MCP access (it is desktop-only and needs an open editor tab), a REST/file-level write API, independent hands-on corroboration.",
+    "rationale": "Spline documents an official MCP server, bundled in the desktop app, that lets Claude, Cursor, Codex and other clients \"drive Spline\u2026 straight into your open editor tab\". Its built-in AI Agent also creates and edits scenes and Hana screens through the editor, so agent-driven creation and modification is clearly supported. The Code API only changes object properties at runtime in exported scenes, and probes found no OpenAPI or REST write API. missing for 10: documented list of MCP write tools/operations, headless or browser MCP access (it is desktop-only and needs an open editor tab), a REST/file-level write API, independent hands-on corroboration.",
     "evidenceIds": [
       "spline-docs-13",
       "spline-docs-36",

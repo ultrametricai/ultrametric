@@ -110,6 +110,7 @@ const NAV_LABELS: Record<string, string> = {
   "cloud-platforms": "Clouds",
   "startup-law-firms": "Law firms",
   "startup-immigration": "Immigration",
+  "government-services": "Gov services",
 };
 
 const GA_ID = process.env.NEXT_PUBLIC_GA_ID || "G-WWC2ZJRDCB";

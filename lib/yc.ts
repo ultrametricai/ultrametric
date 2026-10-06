@@ -9,7 +9,7 @@ import type { CategoryData } from './data'
 export interface YcRow {
   productId: string
   productName: string
-  type: 'oss' | 'commercial'
+  type: 'oss' | 'commercial' | 'government'
   ycBatch: string
   arenaId: string
   arenaName: string

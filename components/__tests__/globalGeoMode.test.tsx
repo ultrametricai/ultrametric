@@ -18,7 +18,7 @@ import GeoSwitcher from '@/components/GeoSwitcher'
 import JurisdictionToggle from '@/components/JurisdictionToggle'
 import ProcessGeoBanner from '@/components/ProcessGeoBanner'
 import ProcessGeoNotes from '@/components/ProcessGeoNotes'
-import StepMethodPicker from '@/components/StepMethodPicker'
+import StepMethodGeo from '@/components/StepMethodGeo'
 import VendorGeoMark from '@/components/VendorGeoMark'
 import { useGeoSelection } from '@/components/useGeoSelection'
 import {
@@ -187,15 +187,16 @@ describe('?geo=global hides the country specifics (the country-agnostic lens)', 
     expect(container.innerHTML).toBe('')
   })
 
-  it('geo method variants are NOT auto-preselected under Global', () => {
+  it('geo method variants are NOT auto-selected under Global', () => {
     const { container } = render(
-      <StepMethodPicker nodeKey={NODE_KEY} defaultView={defaultView} methods={[ukMethod]} />,
+      <StepMethodGeo nodeKey={NODE_KEY} defaultView={defaultView} methods={[ukMethod]} />,
     )
     act(() => setGeoChoice(GEO_GLOBAL))
-    // Global reads as geo-neutral to the auto-preselect: the Default method stays selected.
-    expect(container.textContent).toContain('Default')
+    // Global reads as geo-neutral to the auto-select: the default method stays, and — with the
+    // per-step picker UI gone (founder 2026-10-05) — the component renders nothing at all.
+    expect(container.innerHTML).toBe('')
     expect(container.textContent).not.toContain('Companies House')
-    // A country pick (the reader not having clicked a method) still auto-preselects.
+    // A country pick still resolves the geo variant silently.
     act(() => setGeoChoice('UK'))
     expect(container.textContent).toContain('UK — Companies House filing')
   })

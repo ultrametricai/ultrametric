@@ -1,23 +1,24 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
-import ArtifactChips from '@/components/ArtifactChips'
 import DoViaAfk from '@/components/DoViaAfk'
 import GeoDropdown from '@/components/GeoDropdown'
 import IconChip from '@/components/IconChip'
 import JurisdictionToggle from '@/components/JurisdictionToggle'
 import ProcessGeoBanner from '@/components/ProcessGeoBanner'
-import OpenModulesMenu from '@/components/OpenModulesMenu'
 import ProcessDag from '@/components/ProcessDag'
 import ProcessGeoNotes from '@/components/ProcessGeoNotes'
 import ProcessLeaderboard from '@/components/ProcessLeaderboard'
 import ProcessLensBanner from '@/components/ProcessLensBanner'
+import OpenModulesControl from '@/components/OpenModulesControl'
+import ProcessOpenModulesTable from '@/components/ProcessOpenModulesTable'
+import ProcessProducesTable from '@/components/ProcessProducesTable'
 import UrgencyChip from '@/components/UrgencyChip'
 import UsFlowLabel from '@/components/UsFlowLabel'
 import { modulesForProcess } from '@/lib/businessLogicMap'
-import { GEO_GLOBAL } from '@/lib/geoPreference'
+import { processOpenModuleRows } from '@/lib/openModulePages'
 import { buildProcessCheckSteps } from '@/lib/processCheckData'
-import { artifactChipRows } from '@/lib/processDeps'
+import { producedArtifactRows } from '@/lib/processDeps'
 import { phaseIcon, phaseTooltip, processIcon } from '@/lib/processIcons'
 import { processManifestPath, processManifestUrl } from '@/lib/processManifest'
 import {
@@ -85,8 +86,12 @@ export default async function ProcessPage({ params }: { params: Promise<{ slug: 
   // Jurisdiction-conditional steps (stripped from every default surface by loadProcesses) —
   // serialized for the client-side toggle; [] for the many processes that don't branch.
   const jurisSteps = jurisdictionStepViews(task.id)
-  // Open modules serving this process (processes/business-logic-map.json).
-  const openModules = modulesForProcess(task.id)
+  // Open modules serving this process (processes/business-logic-map.json) — the bottom table's
+  // rows; the header's inline control reads the same registry via modulesForProcess (repo
+  // README links, founder 2026-10-06).
+  const openModuleRows = processOpenModuleRows(task)
+  // Registry artifacts this process produces — the bottom 'Artifacts it produces' table.
+  const producesRows = producedArtifactRows(task)
 
   return (
     <div className="space-y-10">
@@ -151,30 +156,31 @@ export default async function ProcessPage({ params }: { params: Promise<{ slug: 
         <p className="mt-3 max-w-2xl text-zinc-400">{task.description}</p>
         {/* supportReason no longer renders as a second description line (founder 2026-10-02) —
             it stays corpus data (the ceiling chip's tooltip territory, and the honesty record). */}
-        {/* The typed-I/O layer (founder depth wave part 2, 2026-10-01): what this process
-            Produces as registry artifacts (processes/artifacts.json). The 'Needs:' row no
-            longer renders (founder 2026-10-02 — display only: the requires data and
-            lib/processDeps.ts are untouched); these chips are the machine truth the
-            cross-process dependency graph (lib/processDeps.ts) is built from. */}
-        <ArtifactChips rows={artifactChipRows(task)} />
-        {/* Business-logic ↔ process wiring (founder 2026-10-02): the open lib/openstartup
-            modules that serve this process, from the committed registry
-            processes/business-logic-map.json — chips deep-linking to the module's section in
-            open-modules/README.md on GitHub (the modules are a repo library by design, no site
-            pages). A compact collapsible since 2026-10-05 (components/OpenModulesMenu.tsx);
-            renders nothing for the many unmapped tasks. */}
-        <OpenModulesMenu modules={openModules} />
+        {/* The header 'Produces:' chip row moved to the bottom 'Artifacts it produces' table
+            (founder 2026-10-05) — display only: the typed produces/requires layer and
+            lib/processDeps.ts stay the machine truth the dependency graph is built from. */}
+        {/* Business-logic ↔ process wiring: the title-adjacent affordance moved INLINE with the
+            geo control below (founder 2026-10-06 — no own line, no expanding disclosure; the
+            2026-10-05 '#open-modules ↓' anchor and the earlier OpenModulesMenu are both
+            retired). OpenModulesControl: one module = plain text repo link, several = the small
+            house menu. The bottom 'Open modules' receipts table stays as-is. */}
         {/* The per-page situation posture banner was removed (founder 2026-10-02) — the
             sitewide footer line and /terms carry the not-legal-advice posture. */}
         {/* GEO as a top-level driver (founder 2026-09-28: "make GEO a top-level process driver
             at the top of a particular process page … so we know how it works across the
-            globe"), as the house dropdown with 🌐 Global leading (founder 2026-10-02 — the
-            /processes idiom replaces the pill row; defaultChoice is trigger FRAMING only). The
-            selection is global (?geo= + pa-geo, lib/geoPreference.ts); the banner below renders
-            the selected country's committed story — nothing without an explicit choice, so the
-            static HTML stays the one shared US-default view and no judged number moves. */}
-        <div className="mt-4">
-          <GeoDropdown defaultChoice={GEO_GLOBAL} />
+            globe"), as the house dropdown (founder 2026-10-02 — the /processes idiom replaces
+            the pill row; align="left" because the trigger sits at the content's LEFT here —
+            founder bug 2026-10-06, the right-aligned menu opened off the column's left edge).
+            NO defaultChoice on this surface (founder bug 2026-10-06, round 2: with the Global
+            framing a 🇺🇸 USA pick "stays showing Global" — the pick clears the choice to null
+            per the committed codec, and null IS this page's US-default view, so the trigger
+            reads USA; the /processes index keeps its Global framing). The selection is global
+            (?geo= + pa-geo, lib/geoPreference.ts); the banner below renders the selected
+            country's committed story — nothing without an explicit choice, so the flow shown
+            stays the one shared US-default view and no judged number moves. */}
+        <div className="mt-4 flex flex-wrap items-center gap-2">
+          <GeoDropdown align="left" />
+          <OpenModulesControl modules={modulesForProcess(task.id)} />
         </div>
         <ProcessGeoBanner geoScope={task.geoScope} notes={task.geoNotes ?? []} />
         {/* The 'Select vendor for process test' section is gone from process pages (founder
@@ -242,6 +248,12 @@ export default async function ProcessPage({ params }: { params: Promise<{ slug: 
           US-scoped process — or the local flavor of a flavored global one — curated in the
           corpus (geoNotes); renders nothing for the many processes without. */}
       <ProcessGeoNotes notes={task.geoNotes ?? []} geoScope={task.geoScope} />
+
+      {/* The two bottom tables (founder 2026-10-05): the typed produces layer and the
+          open-module wiring, each rendering nothing where the corpus carries nothing. Produces
+          leads — what the process leaves behind — then the library math that serves its steps. */}
+      <ProcessProducesTable rows={producesRows} />
+      <ProcessOpenModulesTable rows={openModuleRows} />
 
       {/* The 'Agent ceiling' verdict box and the 'Simulate this process' section are gone from
           process pages (founder 2026-09-30) — the per-step route badges and the leaderboard

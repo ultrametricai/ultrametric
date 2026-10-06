@@ -10,10 +10,15 @@ import { findArtifactPage, loadArtifactPages } from '@/lib/artifactPages'
 // judged vendor markets around the steps that bring it into existence. Vendor lists are
 // COMPUTED (lib/artifactPages.ts → lib/arenaLeaders.ts) from the producing steps' covering
 // arenas and the arenas' committed leaderboards — never hand-picked; artifacts born in state
-// portals or signature acts keep an honest empty state. No registered-document link renders:
-// the registry has no artifact→open-documents mapping field, and inventing one is out
-// (see the lib/artifactPages.ts header for the candidate follow-up). Fully static, params from
-// the registry, unknown ids 404.
+// portals or signature acts keep an honest empty state. The Document section (founder
+// 2026-10-06: classic document objects — the flip of the 2026-10-05 absence pin) renders the
+// registry's committed `documents` mapping onto open-documents/registry.json: name, publisher,
+// and license note straight from the registry record, every link the publisher's canonical URL
+// (link, never redistribute — the open-documents deep-link rule). Where the mapped documents
+// share an open-documents `family` (the YC SAFE's cap/discount/MFN/international forms), a
+// Variants line renders them as one object — the labels are the registry's committed `variant`
+// fields, never invented prose. Artifacts with no registered template render no section: honest
+// absence, never an invented mapping. Fully static, params from the registry, unknown ids 404.
 
 export function generateStaticParams() {
   return loadArtifactPages().map((a) => ({ id: a.artifact.id }))
@@ -38,7 +43,7 @@ export default async function ArtifactPage({ params }: { params: Promise<{ id: s
   const { id } = await params
   const page = findArtifactPage(id)
   if (!page) notFound()
-  const { artifact, producer, exceptionProducers, neededBy, arenas } = page
+  const { artifact, producer, exceptionProducers, neededBy, arenas, documents } = page
 
   return (
     <div className="space-y-8">
@@ -53,6 +58,61 @@ export default async function ArtifactPage({ params }: { params: Promise<{ id: s
         </h1>
         <p className="mt-2 max-w-2xl text-zinc-400">{artifact.description}</p>
       </section>
+
+      {documents.length > 0 && (
+        <section>
+          <h2 className="font-display leading-[1.1] text-xl font-semibold tracking-tight">
+            Document
+          </h2>
+          <p className="mt-1 max-w-2xl text-sm text-zinc-500">
+            The registered open template{documents.length > 1 ? 's' : ''} this artifact is
+            executed on — a committed mapping (processes/artifacts.json onto the{' '}
+            <Link href="/open-documents" className="underline decoration-zinc-800 underline-offset-2 transition hover:text-emerald-300">
+              open-documents registry
+            </Link>
+            ). Each link opens the publisher&rsquo;s canonical page; the documents stay on the
+            publisher&rsquo;s site.
+          </p>
+          {page.documentFamilies.map((g) => (
+            <p key={g.family} className="mt-2 text-sm text-zinc-400">
+              <span title={`One document object in ${g.docs.length} registered variants (open-documents family: ${g.family}) — the variant labels are the registry's committed \`variant\` fields`}>
+                Variants:
+              </span>{' '}
+              {g.docs.map((d, i) => (
+                <span key={d.id}>
+                  {i > 0 && ' · '}
+                  <a
+                    href={d.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    title={`${d.name} — ${d.publisher}, checked ${d.checked_on} (external site)`}
+                    className="text-zinc-300 underline decoration-zinc-800 underline-offset-2 transition hover:text-emerald-300"
+                  >
+                    {d.variant}
+                  </a>
+                </span>
+              ))}
+            </p>
+          ))}
+          <ul className="mt-3 space-y-3 text-sm">
+            {documents.map((d) => (
+              <li key={d.id}>
+                <a
+                  href={d.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  title={`${d.name} — ${d.publisher}, checked ${d.checked_on} (external site)`}
+                  className="text-zinc-200 underline decoration-zinc-800 underline-offset-2 transition hover:text-emerald-300"
+                >
+                  {d.name} ↗
+                </a>
+                <span className="ml-2 text-xs text-zinc-600">{d.publisher}</span>
+                <p className="mt-1 max-w-2xl text-xs text-zinc-500">{d.license_note}</p>
+              </li>
+            ))}
+          </ul>
+        </section>
+      )}
 
       <section>
         <h2 className="font-display leading-[1.1] text-xl font-semibold tracking-tight">

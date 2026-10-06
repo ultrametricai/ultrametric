@@ -10,9 +10,9 @@ import StepYourPick from '@/components/StepYourPick'
 import StepAfkChip from '@/components/StepAfkChip'
 import StepApiCalls from '@/components/StepApiCalls'
 import StepMethodDefault from '@/components/StepMethodDefault'
-import StepMethodPicker from '@/components/StepMethodPicker'
+import StepMethodGeo from '@/components/StepMethodGeo'
 import StepVendorRow, { type StepRowUntracked, type StepRowVendor } from '@/components/StepVendorRow'
-import { StepCostChip, StepFailureModes, StepVerifyLine } from '@/components/StepVerifyCost'
+import { StepCostChip, StepVerifyLine } from '@/components/StepVerifyCost'
 import { computeChipsForStep } from '@/lib/businessLogicMap'
 import { layerNodes, type DagEdge } from '@/lib/dagLayers'
 import StepDocuments from '@/components/StepDocuments'
@@ -101,6 +101,17 @@ const SIGNATURE_STYLE: { block: string; badge: string; label: string } = {
   label: '✍ signature — legally human',
 }
 
+// The step's committed risk level as a tag beside the route tag (founder 2026-10-06: the grey
+// '{level} risk' body text was hard to see — promote it to the step tags' chip idiom). Quiet
+// hue family like the urgency tags, a label not an alarm: red-ish high, amber-ish medium,
+// muted-but-readable zinc low (the contrast-sweep floor). Display-only corpus data — no judged
+// number reads it.
+const RISK_STYLE: Record<'low' | 'medium' | 'high', string> = {
+  high: 'bg-red-400/10 text-red-300',
+  medium: 'bg-amber-400/10 text-amber-300',
+  low: 'bg-zinc-400/10 text-zinc-400',
+}
+
 // Kahn layering: lib/dagLayers.ts layerNodes — one topological layer per row of the diagram,
 // shared with the mini horizontal strip so both views always agree on the layout.
 
@@ -117,9 +128,10 @@ function Connector() {
 }
 
 // One vendor as a chip: tracked vendors (judged in an arena) link to their product page —
-// no vendor-name tooltip (founder 2026-10-05); the agent-ready score link keeps its derivation
-// tooltip. Untracked vendors render as an honest unlinked chip. Logos are resolved server-side
-// via hasLogo(product id).
+// no vendor-name tooltip (founder 2026-10-05); the agent-ready score is plain text wearing its
+// derivation tooltip (the sub-step score click-throughs are gone, founder 2026-10-05 — the
+// process-level scores and the product pages keep their receipts links). Untracked vendors
+// render as an honest unlinked chip. Logos are resolved server-side via hasLogo(product id).
 function VendorChip({ info }: { info: VendorChipInfo }) {
   const logoId = info.productId ?? info.vendor
   const body = (
@@ -128,9 +140,9 @@ function VendorChip({ info }: { info: VendorChipInfo }) {
       <span className="truncate">{info.label}</span>
     </>
   )
-  // The agent-ready number clicks through to its receipts — the /score page that derives it
-  // (founder 2026-10-05: every visible score answers 'why?' in one click). Untracked vendors
-  // have no judged number, so only the tracked branch renders a score at all.
+  // The agent-ready number is plain text on sub-step rows (founder 2026-10-05: the per-step
+  // vendor score links are gone; the derivation tooltip stays on the tracked branch below).
+  // Untracked vendors have no judged number, so only the tracked branch renders a score at all.
   const score = info.agentReady !== null && (
     <span className="font-mono text-[10px] tabular-nums text-emerald-400/80">
       {info.agentReady.toFixed(0)}
@@ -164,13 +176,11 @@ function VendorChip({ info }: { info: VendorChipInfo }) {
             {body}
           </Link>
           {score && (
-            <Link
-              href={`/arena/${info.arenaId}/product/${info.productId}/score`}
-              title={`${info.agentReady!.toFixed(0)}/100 — ${info.label}'s judged agent-readiness in the ${info.arenaName} arena (#${info.rank} there); click for the score receipts`}
-              className="transition hover:text-emerald-300"
+            <span
+              title={`${info.agentReady!.toFixed(0)}/100 — ${info.label}'s judged agent-readiness in the ${info.arenaName} arena (#${info.rank} there)`}
             >
               {score}
-            </Link>
+            </span>
           )}
         </span>
         {signup}
@@ -397,7 +407,8 @@ function NodeBlock({
   const vendorCalls = taskId ? stepVendorCallsFor(taskId, node.id) : []
   // The step's function-level open-module mappings (founder 2026-10-02: "go deeper on the
   // mapping of the logic") — processes/business-logic-map.json steps, rendered as tiny muted
-  // "compute: <module>.<function>" chips below. Most steps carry none and render nothing.
+  // "Open module: <module>.<function>" chips below (the 2026-10-06 rename of the 'compute:'
+  // label, which read as jargon from nowhere). Most steps carry none and render nothing.
   const computeChips = taskId ? computeChipsForStep(taskId, node.id) : []
   // Authored root cause + computer-use feasibility for human/manual steps (founder 2026-09-21:
   // "get to the bottom of why, and why computer use can't be used there"). Null until the
@@ -432,20 +443,31 @@ function NodeBlock({
     </a>
   )
 
-  // Method variants (founder 2026-09-30): a method-bearing step gets the compact selector
-  // (components/StepMethodPicker.tsx) and its default-method content — the route badge and the
-  // whole body below the header — hides client-side while a variant is selected, whose panel
-  // shows the variant's own route/vendors/calls/time and sub-DAG instead. Nodes without methods
-  // render EXACTLY the pre-variant output (no wrapper, no picker), and the static HTML of a
-  // method-bearing step is byte-stable too: the server snapshot is always the default method.
+  // Method variants (founder 2026-09-30; picker UI removed 2026-10-05): a method-bearing step's
+  // default content — the route badge and the whole body below the header — hides client-side
+  // while the reader's COUNTRY choice resolves a geo method (components/StepMethodGeo.tsx),
+  // whose panel shows the variant's own route/vendors/calls/time and sub-DAG instead. The
+  // visible per-step "method:" selector is gone; situational/vendor variants stay data with no
+  // on-page affordance. Nodes without methods render EXACTLY the pre-variant output (no
+  // wrapper), and the static HTML of a method-bearing step is byte-stable too: the server
+  // snapshot is always the default method.
   const methodViews = node.methods && node.methods.length > 0 ? buildStepMethodViews(node, taskId) : null
   const nodeKey = stepMethodNodeKey(taskId, node.id)
 
   // The route badge, plus the step's reversibility marker (founder 2026-09-30) — the marker
-  // renders nothing for reversible steps, so most blocks are byte-identical to before.
+  // renders nothing for reversible steps — and the risk tag (founder 2026-10-06: the risk level
+  // moved up from the body's grey text line to sit next to the route tag, every tier rendered).
   const routeBadge = (
     <span className="mt-px flex shrink-0 items-center gap-1.5">
       <ReversibilityBadge tier={node.reversibility} />
+      {node.riskLevel && (
+        <span
+          className={`rounded px-1.5 py-0.5 text-[10px] font-semibold uppercase tracking-wide ${RISK_STYLE[node.riskLevel]}`}
+          title="This step's committed risk level (processes corpus data) — display only, no judged number reads it"
+        >
+          {node.riskLevel} risk
+        </span>
+      )}
       <span
         className={`rounded px-1.5 py-0.5 text-[10px] font-semibold uppercase tracking-wide ${style.badge}`}
       >
@@ -467,12 +489,9 @@ function NodeBlock({
           </span>
         )}
         {/* The '⏳ async' chip is gone (founder 2026-09-30) — the route badge alone carries the
-            step's nature; async-ness stays data (manifests, simulator) without a per-step chip. */}
-        {node.riskLevel && node.riskLevel !== 'low' && (
-          <span className={node.riskLevel === 'high' ? 'font-semibold text-red-300/90' : 'text-zinc-500'}>
-            {node.riskLevel} risk
-          </span>
-        )}
+            step's nature; async-ness stays data (manifests, simulator) without a per-step chip.
+            The '{level} risk' grey text line moved up to the header tag row (founder
+            2026-10-06: hard to see as body text) — see routeBadge above. */}
         {/* The step's sourced real cost (depth wave pt 1) — a muted suffix chip linking to the
             cited fee schedule / pricing page, as-of date on its face. Most steps carry none. */}
         {node.cost && <StepCostChip cost={node.cost} />}
@@ -496,17 +515,19 @@ function NodeBlock({
       {node.documents && <StepDocuments documents={node.documents} />}
 
       {/* The step's open-module functions (founder 2026-10-02): the registry's per-step
-          entries as tiny muted "compute: <module>.<function>" chips — the document-chip row
-          idiom above, one shade quieter (this is library code, not an action). Tooltip carries
-          the honest 'what' clause; the chip deep-links to the module's section in
-          open-modules/README.md on GitHub (lib/businessLogicMap.ts computeChipsForStep). */}
+          entries as tiny muted chips — the document-chip row idiom above, one shade quieter
+          (this is library code, not an action). The row label is 'Open module:' (founder
+          2026-10-06 rename of 'compute:', which read as jargon from nowhere — the chip itself
+          shows the object/function name); the chip's tooltip/aria says what it is in one
+          clause, and the chip keeps its GitHub deep link into the module's section of
+          open-modules/README.md (lib/businessLogicMap.ts computeChipsForStep). */}
       {computeChips.length > 0 && (
         <div className="mt-2 flex flex-wrap items-center gap-1.5 text-[11px]">
           <span
             className="text-[10px] uppercase tracking-wide text-zinc-500"
-            title="The open-module function whose cited, tested math computes this step — each chip opens the module's section in open-modules/README.md on GitHub"
+            title="The open-source module function serving this step — each chip opens the module's section in open-modules/README.md on GitHub"
           >
-            compute:
+            Open module:
           </span>
           {computeChips.map((c) => (
             <a
@@ -514,7 +535,8 @@ function NodeBlock({
               href={c.href}
               target="_blank"
               rel="noopener noreferrer"
-              title={`${c.module}.${c.fn} — ${c.what} (open module, open-modules/README.md on GitHub)`}
+              title={`${c.module}.${c.fn} — the open-source module function serving this step`}
+              aria-label={`${c.module}.${c.fn} — the open-source module function serving this step`}
               className="inline-flex items-center gap-1 rounded-md border border-zinc-800 px-1.5 py-0.5 font-mono text-[10px] text-zinc-500 transition hover:border-emerald-400/60 hover:text-emerald-300"
             >
               {c.module}.{c.fn} ↗
@@ -566,14 +588,13 @@ function NodeBlock({
                 {o.name}
               </Link>
               {o.agentReady !== null && (
-                <Link
-                  href={`/arena/${o.arenaId}/product/${o.id}/score`}
-                  className="ml-1 font-mono text-[10px] tabular-nums text-emerald-400/80 transition hover:text-emerald-300"
-                  title={`${o.agentReady.toFixed(0)}/100 — ${o.name}'s judged agent-readiness on the ${o.arenaId} arena leaderboard; click for the score receipts`}
+                <span
+                  className="ml-1 font-mono text-[10px] tabular-nums text-emerald-400/80"
+                  title={`${o.agentReady.toFixed(0)}/100 — ${o.name}'s judged agent-readiness on the ${o.arenaId} arena leaderboard`}
                 >
                   {o.agentReady.toFixed(0)}
                   <span className="text-zinc-500">/100</span>
-                </Link>
+                </span>
               )}
             </span>
           ))}
@@ -631,11 +652,9 @@ function NodeBlock({
           curated only where a real one exists; renders nothing for the many steps without. */}
       {node.verify && <StepVerifyLine verify={node.verify} />}
 
-      {/* "⚠ if it goes wrong" (founder spike 2026-10-02) — the step's curated failure modes,
-          collapsed by default; renders nothing for the many steps without entries. */}
-      {node.failureModes && node.failureModes.length > 0 && (
-        <StepFailureModes failureModes={node.failureModes} />
-      )}
+      {/* The '⚠ if it goes wrong' failure-modes line is gone (founder 2026-10-05) — display
+          only: failureModes stays corpus data (lib/processes.ts StepFailureModeSchema, the
+          curation rules in processes/README.md), just no per-step rendering. */}
     </>
   )
 
@@ -662,7 +681,7 @@ function NodeBlock({
           Steps without committed guidance render exactly as before — nothing is invented. */}
       {guidance && <StepGuidance text={guidance} />}
       {methodViews && (
-        <StepMethodPicker
+        <StepMethodGeo
           nodeKey={nodeKey}
           defaultView={methodViews.defaultView}
           methods={methodViews.variants}
