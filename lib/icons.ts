@@ -230,6 +230,16 @@ const THEME_EXACT: Record<string, string> = {
   'employer-sponsor-support': '🏢',
   'origin-country-reach': '🌏',
   'credentialed-expertise': '🎖️',
+  // government-services arena (agency-rail vocabulary; 'status-visibility' must not land on the
+  // reliability siren and 'front-door-access' must not land on the generic network globe)
+  'online-filing': '🗳️',
+  'machine-rails': '🔌',
+  'delegated-access': '🤝',
+  'identity-walls': '🪪',
+  'status-visibility': '🔎',
+  'fees-deadlines': '🧾',
+  'founder-guidance': '🧭',
+  'front-door-access': '🚪',
 }
 
 // Emoji for a story theme id — every live theme in data/*/stories.json must resolve to a
@@ -445,6 +455,15 @@ const THEME_DESCRIPTIONS: Record<string, string> = {
   'employer-sponsor-support': 'the company side — H-1B transfers and registrations, LCA compliance, team-scale mobility',
   'origin-country-reach': 'where founders come from — origin-country guidance, consulate specifics, honest plan-B counsel',
   'credentialed-expertise': 'who signs the petition — licensed attorneys of record, government-data-grounded claims',
+  // government-services arena
+  'online-filing': 'whether the core transaction can be done online — entry paths, fallback rails, operating windows',
+  'machine-rails': 'the documented machine channels — public data APIs, specs, bulk downloads, transmitter programs',
+  'delegated-access': 'who may act for you — sanctioned designees, authorized providers, registered agents, and their limits',
+  'identity-walls': 'what stands before filing — stated account, credential, and identity-proofing requirements',
+  'status-visibility': 'seeing where a filing stands — public status lookups and published processing times',
+  'fees-deadlines': 'the statutory numbers — exact fees, filing deadlines, penalty and interest schedules',
+  'founder-guidance': 'plain-language help — step-by-step explainers and downloadable forms with instructions',
+  'front-door-access': 'what a keyless agent can reach — published pages without bot walls, plus a real robots.txt',
 }
 
 // Honest fallback for an arena-specific niche theme no bespoke line covers.

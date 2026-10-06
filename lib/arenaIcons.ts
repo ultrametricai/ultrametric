@@ -144,6 +144,7 @@ export const ARENA_ICONS: Record<string, string> = {
   'legal-ops': pi('scales', 'amber'), // ⚖️ same scales as the legal phase
   'startup-law-firms': pi('columns', 'amber'), // 🏛️ the firm's columns
   'startup-immigration': pi('passport', 'amber'), // 🗽 same passport as hr_011's visa sponsorship
+  'government-services': pi('form', 'amber'), // 🏛️ the government form — same glyph comp_014 wears
   'compliance-automation': pi('clipboard', 'amber'), // 📋 same clipboard as the compliance phase
   'security-keys': pi('hardware-key', 'amber'), // 🗝️ the hardware key
   'authenticator-apps': pi('otp-code', 'amber'), // 🔢 the one-time code

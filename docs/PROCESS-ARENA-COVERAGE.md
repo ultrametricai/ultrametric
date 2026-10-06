@@ -7,9 +7,9 @@ Doctrine: every corpus vendor resolves through the registry to a live arena, or 
 ## Summary
 
 - 176 distinct corpus vendor keys across 146 processes
-- 127 arena-tracked · 36 deliberately untracked (registry entry, no arena) · 13 unregistered (gap list below)
+- 129 arena-tracked · 34 deliberately untracked (registry entry, no arena) · 13 unregistered (gap list below)
 - 0 mechanical gaps (registry arenaId pointing at no arena)
-- 8 of 146 processes resolve to zero arenas (no tracked vendor and no direct arena claim on any step)
+- 6 of 146 processes resolve to zero arenas (no tracked vendor and no direct arena claim on any step)
 
 ## Mechanical gaps (0)
 
@@ -35,7 +35,7 @@ Each is a real supplier referenced somewhere the registry never heard of — eit
 | `vouch` | `ins_001` |
 | `zoho_mail` | `ops_004` |
 
-## Deliberately untracked vendors (36)
+## Deliberately untracked vendors (34)
 
 Registry entries without an `arenaId` — honest unlinked chips by design (government counterparties, suppliers whose market has no judged arena yet). Listed for review, not as gaps; the registry `note` carries the reason where one is recorded.
 
@@ -59,7 +59,6 @@ Registry entries without an `arenaId` — honest unlinked chips by design (gover
 | `hackernews` |  | `growth_010` |
 | `harbor_compliance` |  | `qs_045`, `qs_047` |
 | `human_interest` |  | `hr_012` |
-| `irs` |  | `form_001`, `form_002`, `form_011`, `form_012`, `shutdown_001`, `startup_002`, `tax_002`, `tax_010`, `vc_001` |
 | `iubenda` |  | `comp_010` |
 | `jamf` |  | `ops_013` |
 | `juniper_square` |  | `vc_003` |
@@ -73,20 +72,17 @@ Registry entries without an `arenaId` — honest unlinked chips by design (gover
 | `producthunt` |  | `growth_010` |
 | `remote` |  | `hr_001`, `hr_013`, `qs_063` |
 | `sec` |  | `fund_001`, `fund_002` |
-| `state_sos` |  | `form_005`, `qs_047`, `shutdown_001`, `tax_001` |
+| `state_sos` | Deliberately unlinked: the corpus key is generic across all states, while the government-services arena judges specific registries (delaware-doc, california-sos, new-york-dos, texas-sos) — no single judged product can stand for the key. | `form_005`, `qs_047`, `shutdown_001`, `tax_001` |
 | `statuspage` |  | `prod_011` |
 | `sydecar` |  | `vc_001`, `vc_002`, `vc_003` |
-| `uspto` |  | `legal_002`, `opp_012` |
 
-## Processes resolving to zero arenas (8)
+## Processes resolving to zero arenas (6)
 
 No vendor on these resolves to an arena and no step claims one directly (`optionsArenaId`/`extraOptionArenas`). Some are honestly market-less (government and program counterparties — the USPTO is not a vendor market); others mark arenas the site does not judge yet. Curation calls, never auto-placed.
 
 | Process | kind | vendor references |
 |---|---|---|
-| File trademark `legal_002` | process | `uspto` |
 | Set up a password manager `ops_005` | process | `bitwarden`, `dashlane`, `onepassword` |
-| Monitor trademark / handle availability `opp_012` | process | `corsearch`, `markify`, `uspto` |
 | Apply to Y Combinator `fund_007` | process | — none — |
 | Cure a Delaware franchise tax delinquency `sit_010` | situation | — none — |
 | Migrate off a shutting-down vendor `sit_012` | situation | — none — |
