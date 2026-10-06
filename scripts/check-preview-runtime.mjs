@@ -8,9 +8,14 @@ import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 
 export const targets = [
-  { trace: 'processes/preview/page.js.nft.json', route: '/processes/preview', marker: '/processes/preview/get-paid' },
-  { trace: 'processes/preview/[id]/page.js.nft.json', route: '/processes/preview/get-paid', marker: 'data-shared-record="get-paid"' },
-  { trace: 'processes/incorporate-c-corp/v2/page.js.nft.json', route: '/processes/incorporate-c-corp/v2', marker: 'data-shared-record="form_001"' },
+  { trace: 'processes/v2/page.js.nft.json', route: '/processes/v2', marker: '/processes/get-paid/v2' },
+  { trace: 'processes/[slug]/v2/page.js.nft.json', route: '/processes/get-paid/v2', marker: 'data-shared-record="get-paid"' },
+]
+export const redirectTargets = [
+  { route: '/processes/preview?geo=IN&via=legal-ops:clerky&via=payments:stripe&unknown=a&unknown=b', destination: '/processes/v2' },
+  { route: '/processes/preview/form_001?geo=IN&via=legal-ops:clerky&via=payments:stripe&unknown=a&unknown=b', destination: '/processes/form_001/v2' },
+  { route: '/processes/form_001/v2?geo=IN&via=legal-ops:clerky&via=payments:stripe&unknown=a&unknown=b', destination: '/processes/incorporate-c-corp/v2' },
+  { route: '/processes/preview/unknown-runtime-smoke-route', destination: '/processes/unknown-runtime-smoke-route/v2' },
 ]
 const requiredFiles = ['processes/corpus.json', 'journeys/chains.json', 'processes/business-logic-map.json']
 
@@ -28,7 +33,7 @@ export async function verifyTraces(root, traces) {
     assert(trace.files.has(absolute), `${trace.route}: deployment trace omits ${file}`)
     assert((await stat(absolute)).isFile(), `${trace.route}: traced file is not a file: ${file}`)
   }
-  console.log('Preview traces include required runtime data files for all three routes.')
+  console.log(`Shared-reader traces include required runtime data files for all ${traces.length} routes.`)
 }
 
 // Static routes are fully prerendered (force-static, or generateStaticParams with
@@ -119,12 +124,22 @@ export async function smokeRuntime(root, traces) {
       child.once('error', error => { clearTimeout(timer); reject(error) })
       child.once('exit', code => { clearTimeout(timer); reject(new Error(`Packaged runtime exited ${code}:\n${logs}`)) })
     })
-    for (const target of [...targets, { route: '/processes/preview/unknown-runtime-smoke-route', status: 404 }]) {
+    for (const target of [...targets, { route: '/processes/incorporate-c-corp/v2', marker: 'data-shared-record="form_001"' }, { route: '/processes/unknown-runtime-smoke-route/v2', status: 404 }]) {
       const response = await fetch(`http://127.0.0.1:${port}${target.route}`, { signal: AbortSignal.timeout(30_000), redirect: 'manual' })
       const body = await response.text()
       assert.equal(response.status, target.status ?? 200, `${target.route}: unexpected status\n${logs}`)
       if (target.marker) assert(body.includes(target.marker), `${target.route}: missing rendered content\n${logs}`)
       console.log(`Packaged preview ${response.status}: ${target.route}`)
+    }
+    for (const target of redirectTargets) {
+      const source = new URL(target.route, `http://127.0.0.1:${port}`)
+      const response = await fetch(source, { signal: AbortSignal.timeout(30_000), redirect: 'manual' })
+      assert.equal(response.status, 308, `${target.route}: expected a permanent redirect`)
+      const destination = new URL(response.headers.get('location'), source)
+      assert.equal(destination.pathname, target.destination)
+      assert.deepEqual([...destination.searchParams], [...source.searchParams], `${target.route}: query values changed`)
+      assert.equal(destination.hash, '', 'Redirects leave fragment inheritance to the browser')
+      console.log(`Packaged preview redirect ${response.status}: ${target.route}`)
     }
     assert(!logs.includes('ENOENT'), `Packaged runtime accessed untraced files:\n${logs}`)
   } finally {

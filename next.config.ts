@@ -1,7 +1,7 @@
 import type { NextConfig } from "next";
 
 // Repo directories that pages read with fs ONLY while prerendering (every route except the
-// three preview routes below is static: force-static or generateStaticParams with
+// shared-reader routes below is static: force-static or generateStaticParams with
 // dynamicParams=false, and every route handler is force-static). Without these excludes,
 // the tracer puts lib/data.ts & friends' fs reads into EVERY page trace: measured
 // 2026-10-02 at 10.17 GB of traced bytes across 94 .nft.json files (data/ 6.64 GB,
@@ -23,7 +23,7 @@ const BUILD_TIME_ONLY = [
   "./vendors/**",
 ];
 
-// What the three force-dynamic preview routes read at REQUEST time (so it must survive the
+// What the force-dynamic shared-reader routes read at REQUEST time (so it must survive the
 // excludes below — in this tracer, includes are applied after excludes and win; verified
 // empirically, see docs/BUILD-SIZE.md). The root layout they render reads data/** (nav:
 // loadCategories/loadArenaSections/loadIcpTypes — the palette index moved to the force-static
@@ -60,9 +60,8 @@ const nextConfig: NextConfig = {
   // node_modules/next/dist/build/collect-build-traces.js does; that file never runs under
   // Turbopack, which traces in Rust).
   outputFileTracingIncludes: {
-    '/processes/preview': PREVIEW_RUNTIME,
-    '/processes/preview/*': PREVIEW_RUNTIME,
-    '/processes/incorporate-c-corp/v2': PREVIEW_RUNTIME,
+    '/processes/v2': PREVIEW_RUNTIME,
+    '/processes/*/v2': PREVIEW_RUNTIME,
   },
   // '*' is the global route key in the Turbopack tracer. Also verified empirically
   // (probe builds 2026-10-02, see docs/BUILD-SIZE.md): exact keys ('/ops') work, brace
@@ -77,6 +76,16 @@ const nextConfig: NextConfig = {
   // permanent redirect, the same old-links-stay-alive posture as the proxy-layer
   // /productarena/* redirects (which remain at infra/cloudflare-proxy, not here).
   redirects: async () => [
+    {
+      source: '/processes/preview',
+      destination: '/processes/v2',
+      permanent: true,
+    },
+    {
+      source: '/processes/preview/:key',
+      destination: '/processes/:key/v2',
+      permanent: true,
+    },
     {
       source: '/documents',
       destination: '/open-documents',

@@ -178,7 +178,7 @@ export default function SharedProcessReader({ record, records, supplementary, ve
     <header className={`grid items-start gap-6 ${icon ? 'md:grid-cols-[minmax(0,1fr)_256px] md:gap-12' : ''}`}>
       <div className="min-w-0">
         <p className="text-sm uppercase tracking-widest text-zinc-400">
-          <Link href="/processes/preview" className="hover:text-emerald-300">Processes</Link><span className="mx-1 text-zinc-600">/</span>{phase}
+          <Link href="/processes/v2" className="hover:text-emerald-300">Processes</Link><span className="mx-1 text-zinc-600">/</span>{phase}
         </p>
         {icon && <Image src="/process-icons/incorporate-64.svg" alt="" width={64} height={64} className="mt-4 h-16 w-16 md:hidden" />}
         <h1 className="mt-4 break-words font-display text-3xl font-semibold leading-[1.1] tracking-tight sm:text-4xl">{record.title}</h1>

@@ -46,5 +46,5 @@ export function readSharedCatalog(root = process.cwd()) {
 }
 
 export function sharedPreviewHref(id: string, records: SharedRecord[] = readSharedCatalog()) {
-  return `/processes/preview/${encodeURIComponent(buildPreviewRoutes(records).get(id) ?? id)}`
+  return `/processes/${encodeURIComponent(buildPreviewRoutes(records).get(id) ?? id)}/v2`
 }
