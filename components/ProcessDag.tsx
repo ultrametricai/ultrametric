@@ -101,6 +101,17 @@ const SIGNATURE_STYLE: { block: string; badge: string; label: string } = {
   label: '✍ signature — legally human',
 }
 
+// The step's committed risk level as a tag beside the route tag (founder 2026-10-06: the grey
+// '{level} risk' body text was hard to see — promote it to the step tags' chip idiom). Quiet
+// hue family like the urgency tags, a label not an alarm: red-ish high, amber-ish medium,
+// muted-but-readable zinc low (the contrast-sweep floor). Display-only corpus data — no judged
+// number reads it.
+const RISK_STYLE: Record<'low' | 'medium' | 'high', string> = {
+  high: 'bg-red-400/10 text-red-300',
+  medium: 'bg-amber-400/10 text-amber-300',
+  low: 'bg-zinc-400/10 text-zinc-400',
+}
+
 // Kahn layering: lib/dagLayers.ts layerNodes — one topological layer per row of the diagram,
 // shared with the mini horizontal strip so both views always agree on the layout.
 
@@ -444,10 +455,19 @@ function NodeBlock({
   const nodeKey = stepMethodNodeKey(taskId, node.id)
 
   // The route badge, plus the step's reversibility marker (founder 2026-09-30) — the marker
-  // renders nothing for reversible steps, so most blocks are byte-identical to before.
+  // renders nothing for reversible steps — and the risk tag (founder 2026-10-06: the risk level
+  // moved up from the body's grey text line to sit next to the route tag, every tier rendered).
   const routeBadge = (
     <span className="mt-px flex shrink-0 items-center gap-1.5">
       <ReversibilityBadge tier={node.reversibility} />
+      {node.riskLevel && (
+        <span
+          className={`rounded px-1.5 py-0.5 text-[10px] font-semibold uppercase tracking-wide ${RISK_STYLE[node.riskLevel]}`}
+          title="This step's committed risk level (processes corpus data) — display only, no judged number reads it"
+        >
+          {node.riskLevel} risk
+        </span>
+      )}
       <span
         className={`rounded px-1.5 py-0.5 text-[10px] font-semibold uppercase tracking-wide ${style.badge}`}
       >
@@ -469,12 +489,9 @@ function NodeBlock({
           </span>
         )}
         {/* The '⏳ async' chip is gone (founder 2026-09-30) — the route badge alone carries the
-            step's nature; async-ness stays data (manifests, simulator) without a per-step chip. */}
-        {node.riskLevel && node.riskLevel !== 'low' && (
-          <span className={node.riskLevel === 'high' ? 'font-semibold text-red-300/90' : 'text-zinc-500'}>
-            {node.riskLevel} risk
-          </span>
-        )}
+            step's nature; async-ness stays data (manifests, simulator) without a per-step chip.
+            The '{level} risk' grey text line moved up to the header tag row (founder
+            2026-10-06: hard to see as body text) — see routeBadge above. */}
         {/* The step's sourced real cost (depth wave pt 1) — a muted suffix chip linking to the
             cited fee schedule / pricing page, as-of date on its face. Most steps carry none. */}
         {node.cost && <StepCostChip cost={node.cost} />}
