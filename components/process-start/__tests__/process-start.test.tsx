@@ -135,6 +135,29 @@ describe('inline process picker', () => {
     expect((screen.getByRole('radio', { name: 'Claude' }) as HTMLInputElement).checked).toBe(true)
   })
 
+  it('waits for a delayed close navigation before accepting another open', () => {
+    const back = vi.spyOn(window.history, 'back').mockImplementation(() => {})
+    const { trigger } = picker()
+    fireEvent.click(screen.getByRole('radio', { name: 'India - MCA SPICe+ filing' }))
+    for (let cycle = 0; cycle < 2; cycle++) {
+      fireEvent.click(screen.getByRole('button', { name: 'Close agent picker' }))
+      expect(document.activeElement).toBe(trigger)
+      expect(trigger.getAttribute('aria-disabled')).toBe('true')
+      fireEvent.click(trigger)
+      expect(screen.queryByRole('dialog')).toBeNull()
+      expect(back).toHaveBeenCalledTimes(cycle + 1)
+      window.history.replaceState({}, '', publicHref)
+      fireEvent(window, new PopStateEvent('popstate'))
+      expect(trigger.getAttribute('aria-disabled')).toBeNull()
+      fireEvent.click(trigger)
+      expect(screen.getByRole('dialog')).toBeTruthy()
+      expect(window.location.hash).toBe('#run-process')
+    }
+    fireEvent.click(screen.getByRole('button', { name: 'Copy prompt' }))
+    expect(writeText).toHaveBeenCalledExactlyOnceWith(startPrompt(target, 'india-spice-plus', 'claude'))
+    back.mockRestore()
+  })
+
   it('wraps keyboard focus and closes on Escape', () => {
     const { trigger } = picker()
     const first = screen.getByRole('button', { name: 'Close agent picker' })

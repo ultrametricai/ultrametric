@@ -11,10 +11,12 @@ export default function ProcessRunCTA({ target }: { target: StartTarget }) {
   const trigger = useRef<HTMLButtonElement>(null)
   const manualCopy = useRef<HTMLTextAreaElement>(null)
   const ownsHistory = useRef(false)
+  const returningHistory = useRef(false)
   const copyAttempt = useRef(0)
   const heading = useId()
   const choices = useId()
   const [selected, setSelected] = useState<StartAgent>('claude')
+  const [returning, setReturning] = useState(false)
   const prompt = startPrompt(target, region?.selected, selected)
   const [copy, setCopy] = useState<{ text: string; failed: boolean }>()
   const currentCopy = copy?.text === prompt ? copy : undefined
@@ -22,6 +24,8 @@ export default function ProcessRunCTA({ target }: { target: StartTarget }) {
 
   useEffect(() => {
     function onBack() {
+      returningHistory.current = false
+      setReturning(false)
       ownsHistory.current = false
       copyAttempt.current++
       if (dialog.current?.open) dialog.current.close()
@@ -43,7 +47,11 @@ export default function ProcessRunCTA({ target }: { target: StartTarget }) {
   function close() {
     copyAttempt.current++
     dialog.current?.close()
-    if (ownsHistory.current && window.location.hash === '#run-process') window.history.back()
+    if (ownsHistory.current && window.location.hash === '#run-process') {
+      returningHistory.current = true
+      setReturning(true)
+      window.history.back()
+    }
     ownsHistory.current = false
   }
 
@@ -59,14 +67,14 @@ export default function ProcessRunCTA({ target }: { target: StartTarget }) {
 
   return <div className="mt-6">
     <button ref={trigger} type="button" onClick={() => {
-      if (dialog.current?.open) return
+      if (dialog.current?.open || returningHistory.current) return
       copyAttempt.current++
       setCopy(undefined)
       setSelected('claude')
       window.history.pushState(window.history.state, '', '#run-process')
       ownsHistory.current = true
       dialog.current?.showModal()
-    }} aria-haspopup="dialog" className="inline-flex min-h-12 max-w-full items-center justify-center rounded-full bg-emerald-300 px-6 py-3 text-center font-medium leading-snug text-zinc-950 shadow-[0_0_30px_-15px_#6ee7b7] transition hover:bg-emerald-200 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-emerald-300">
+    }} aria-haspopup="dialog" aria-disabled={returning || undefined} className="inline-flex min-h-12 max-w-full items-center justify-center rounded-full bg-emerald-300 px-6 py-3 text-center font-medium leading-snug text-zinc-950 shadow-[0_0_30px_-15px_#6ee7b7] transition hover:bg-emerald-200 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-emerald-300">
       Run this process with Ultrametric
     </button>
     <dialog ref={dialog} aria-labelledby={heading} onKeyDown={event => {
