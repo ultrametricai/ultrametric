@@ -67,7 +67,7 @@ describe('step overrides and related processes', () => {
     cleanup()
     const chain = records.find(record => record.id === 'first-hire')!
     const referenced = render(tree(chain))
-    expect(referenced.container.querySelectorAll('article a[href^="/processes/preview/"]')).toHaveLength(4)
+    expect(referenced.container.querySelectorAll('article a[href^="/processes/"][href$="/v2"]')).toHaveLength(4)
     const cloned = structuredClone(chain)
     cloned.parts.push(structuredClone(cloned.parts[0]))
     expect(new Set(relatedProcesses(cloned, records).map(record => record.id)).size).toBe(relatedProcesses(cloned, records).length)

@@ -1,14 +1,14 @@
 import { buildPlaybookRows, buildProcessRows, buildSituationRows, AREA_ORDER } from '../processRows'
 import { loadProcesses, processSlug } from '../processes'
 import type { ProcessTableRow } from '@/components/ProcessesTable'
-import { buildPreviewRoutes, readSharedCatalog } from './reader'
+import { buildPreviewRoutes, readSharedCatalog, sharedPreviewHref } from './reader'
 import iconBindings from './index-icons.json'
 
 export function buildPreviewIndex() {
   const records = readSharedCatalog()
   const byId = new Map(records.map(record => [record.id, record]))
   const routes = buildPreviewRoutes(records)
-  const href = (id: string) => `/processes/preview/${encodeURIComponent(routes.get(id)!)}`
+  const href = (id: string) => sharedPreviewHref(id, records)
   const used = new Set<string>()
   const original = buildProcessRows()
   // The preview table keeps FULL corpus coverage: /processes proper excludes kind=situation
