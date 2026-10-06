@@ -33,7 +33,10 @@ import { readParam, setParams } from '@/lib/urlState'
 // the stored pref (the US default never appears in the URL) — so after picking it the trigger
 // settles back on the surface's default framing; the index rows are identical either way (USA,
 // Global and the pristine default all show the full corpus — only a COUNTRY view filters, per
-// the committed note kinds, founder 2026-10-02), and detail pages return to their US default.
+// the committed note kinds, founder 2026-10-02). Which is exactly why the Global framing fits
+// ONLY the index: on a process DETAIL page null IS the US-default view, so a USA pick framed as
+// Global read as "nothing happened" (founder bug 2026-10-06) — detail pages pass no
+// defaultChoice and their trigger reads 🇺🇸 USA whenever the choice is null/US.
 
 export default function GeoDropdown({
   defaultChoice = null,
