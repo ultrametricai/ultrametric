@@ -371,7 +371,7 @@ few playbooks exist ([maturity ladder](governance/REVIEW_POLICY.md)).
 | Startup Legal & Incorporation (`legal-ops`) | stripe-atlas, clerky, docusign, firstbase, ironclad, beglaubigt, legalzoom |
 | Robotics Software Platforms (`robotics-platforms`) | formant, gazebo, nvidia-isaac, ros2, viam |
 | Terminals (`terminals`) | warp, ghostty, iterm2, alacritty, wezterm, kitty |
-| AI Assistants (`ai-assistants`) | chatgpt, claude, gemini, perplexity, copilot, grok, muse, poke, martin, jo, dots, grok-bot, kimi, perplexity-computer |
+| AI Assistants (`ai-assistants`) | chatgpt, claude, gemini, perplexity, copilot, grok, muse, poke, martin, jo, dots, grok-bot, kimi, perplexity-computer, instinct |
 | AI Research Agents (`ai-research-agents`) | elicit, consensus, futurehouse, undermind, sakana-marlin, notebooklm |
 | Package & Toolchain Managers (`package-managers`) | homebrew, nix, pnpm, uv, bun, mise |
 | Vector Databases & Memory Stores (`vector-databases`) | pinecone, weaviate, qdrant, chroma, milvus, helixdb, lancedb |
@@ -444,12 +444,12 @@ See `data/categories.json` for each arena's full description, personas, and them
 
 <!-- stat-badges:start -->
 [![arenas](https://img.shields.io/badge/arenas-95-34d399)](https://ultrametric.ai)
-[![products](https://img.shields.io/badge/products-608-34d399)](https://ultrametric.ai/everything)
-[![judged verdicts](https://img.shields.io/badge/judged_verdicts-34591-34d399)](https://ultrametric.ai/methodology)
+[![products](https://img.shields.io/badge/products-609-34d399)](https://ultrametric.ai/everything)
+[![judged verdicts](https://img.shields.io/badge/judged_verdicts-34643-34d399)](https://ultrametric.ai/methodology)
 <!-- stat-badges:end -->
 
 <!-- stats:start -->
-As of the last full pipeline run: **95 arenas, 608 products, 34,591 judged verdicts.**
+As of the last full pipeline run: **95 arenas, 609 products, 34,643 judged verdicts.**
 <!-- stats:end -->
 
 These counts (and the badges) are regenerated from `data/` by `pnpm stats`, not maintained
