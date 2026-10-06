@@ -1004,6 +1004,15 @@ export const ArtifactSchema = z
     // published reports, the dissolution certificate). Mutually exclusive with having consumers;
     // both directions corpus-tested.
     terminal: z.literal(true).optional(),
+    // Registered open templates (open-documents/registry.json ids) a document genuinely IS this
+    // artifact's form — the filed 83(b)'s IRS Form 15620, the executed SAFE's YC forms, the
+    // bylaws' incorporation packages (founder 2026-10-06: classic document objects; the
+    // deliberate flip of the 2026-10-05 absence pin in app/artifacts/__tests__/page.test.tsx).
+    // Deliberately sparse: an artifact with no registered template carries no field — honest
+    // absence, never an invented mapping. Referential integrity against the document registry
+    // is tested in lib/__tests__/processArtifacts.test.ts; the render path
+    // (lib/artifactPages.ts → lib/documents.ts openDocumentById) throws on an unknown id.
+    documents: z.string().min(1).array().min(1).optional(),
   })
   .strict()
 export type Artifact = z.infer<typeof ArtifactSchema>

@@ -55,6 +55,40 @@ describe('documents corpus', () => {
       expect(d.license_note.length, `${d.id} license_note`).toBeGreaterThan(30)
     }
   })
+
+  // Document families (founder 2026-10-06: the SAFE note with variants): rows sharing a
+  // `family` are one document object in several registered forms, each carrying its committed
+  // `variant` label — the two committed families and their exact memberships are pinned so a
+  // membership edit is a deliberate act.
+  it('the committed families: the YC SAFE set and the NVCA model suite, every member labeled', () => {
+    const registry = loadDocumentRegistry()
+    const byFamily = new Map<string, string[]>()
+    for (const d of registry.documents) {
+      if (d.family) {
+        byFamily.set(d.family, [...(byFamily.get(d.family) ?? []), d.id])
+        expect(d.variant, `${d.id} needs its committed variant label`).toBeTruthy()
+      }
+    }
+    expect([...byFamily.keys()].sort()).toEqual(['nvca', 'yc-safe'])
+    expect(byFamily.get('yc-safe')).toEqual([
+      'yc-postmoney-safe-cap',
+      'yc-postmoney-safe-discount',
+      'yc-postmoney-safe-mfn',
+      'yc-pro-rata-side-letter',
+      'yc-safe-intl-variants',
+      'yc-safe-user-guide',
+    ])
+    expect(byFamily.get('nvca')).toEqual([
+      'nvca-certificate-of-incorporation',
+      'nvca-stock-purchase-agreement',
+      'nvca-investors-rights-agreement',
+      'nvca-voting-agreement',
+      'nvca-rofr-cosale-agreement',
+      'nvca-management-rights-letter',
+      'nvca-indemnification-agreement',
+      'nvca-model-legal-opinion',
+    ])
+  })
 })
 
 describe('documents validators (failure modes)', () => {
@@ -86,6 +120,31 @@ describe('documents validators (failure modes)', () => {
       validateDocumentRegistry(reg(record({ format: 'zip' as unknown as 'pdf' })), AS_OF).join(';'),
     ).toContain('unknown format')
     expect(validateDocumentRegistry(reg(record({ checked_on: '2027-01-01' })), AS_OF).join(';')).toContain('future')
+  })
+
+  it('enforces the family invariants: family pairs with a variant label, no one-member families, no duplicate labels', () => {
+    // A variant label without its family (or vice versa) is incoherent.
+    expect(validateDocumentRegistry(reg(record({ variant: 'cap' })), AS_OF).join(';')).toContain('family must be a registry-style slug')
+    expect(validateDocumentRegistry(reg(record({ family: 'solo-family', variant: 'only' })), AS_OF).join(';')).toContain(
+      'family solo-family: needs at least two members',
+    )
+    const unlabeled = record({ family: 'f' }) as DocumentRegistry['documents'][number]
+    expect(validateDocumentRegistry(reg(unlabeled, record({ id: 'two', family: 'f', variant: 'two' })), AS_OF).join(';')).toContain(
+      'needs a committed variant label',
+    )
+    expect(
+      validateDocumentRegistry(
+        reg(record({ family: 'f', variant: 'same' }), record({ id: 'two', family: 'f', variant: 'same' })),
+        AS_OF,
+      ).join(';'),
+    ).toContain('family f: duplicate variant labels')
+    // A well-formed two-member family passes clean.
+    expect(
+      validateDocumentRegistry(
+        reg(record({ family: 'f', variant: 'one' }), record({ id: 'two', family: 'f', variant: 'two' })),
+        AS_OF,
+      ),
+    ).toEqual([])
   })
 
   it('enforces the currency invariant: checked_on within the stated review window', () => {

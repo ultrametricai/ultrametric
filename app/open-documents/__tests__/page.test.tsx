@@ -23,6 +23,28 @@ describe('/open-documents', () => {
     }
   })
 
+  it('family rows group together in their table and carry their committed variant labels', () => {
+    const { container } = render(<OpenDocumentsPage />)
+    // Contiguity: the rows of one family sit adjacent (pulled to the family's first registry
+    // position inside its use-case table) — the SAFE reads as one object with variants.
+    const rowNames = [...container.querySelectorAll('tbody tr td:first-child a')].map((a) => a.textContent)
+    const families = new Map<string, string[]>()
+    for (const d of registry.documents) {
+      if (d.family) families.set(d.family, [...(families.get(d.family) ?? []), d.name])
+    }
+    expect(families.size).toBeGreaterThan(0)
+    for (const [family, names] of families) {
+      const positions = names.map((n) => rowNames.indexOf(n))
+      expect(Math.min(...positions), `${family}: every member renders a row`).toBeGreaterThanOrEqual(0)
+      expect(Math.max(...positions) - Math.min(...positions), `${family}: rows must be contiguous`).toBe(names.length - 1)
+    }
+    // Every family row shows its committed variant label — never invented, never missing.
+    const chips = [...container.querySelectorAll('span[title^="Variant in the"]')].map((s) => s.textContent)
+    expect(chips.sort()).toEqual(
+      registry.documents.filter((d) => d.variant).map((d) => d.variant!).sort(),
+    )
+  })
+
   it('groups records under their use_case headings, registry order within each group', () => {
     const { container } = render(<OpenDocumentsPage />)
     const headings = [...container.querySelectorAll('h2')].map((h) => h.textContent)

@@ -1,5 +1,5 @@
 import type { Metadata } from 'next'
-import { DOCUMENT_USE_CASES, loadDocumentRegistry, type DocumentUseCase } from '@/lib/documents'
+import { DOCUMENT_USE_CASES, loadDocumentRegistry, type DocumentUseCase, type OpenDocument } from '@/lib/documents'
 import { REPO } from '@/lib/site'
 import { TABLE_HEADER_ROW, TABLE_SHELL } from '@/components/tableStyles'
 
@@ -7,13 +7,33 @@ import { TABLE_HEADER_ROW, TABLE_SHELL } from '@/components/tableStyles'
 // open-documents registry as a browsable index. Same policy as the repo layer it renders
 // (open-documents/registry.json via lib/documents.ts): link, never redistribute — every row
 // opens the publisher's live page, verified on its checked_on date. /documents 308s here
-// (next.config.ts redirects) so old links stay alive.
+// (next.config.ts redirects) so old links stay alive. Document families (founder 2026-10-06):
+// rows sharing a registry `family` (the YC SAFE variants, the NVCA suite) group together in
+// their use-case table — pulled adjacent at the family's first registry position — and each
+// family row shows its committed `variant` label, so the SAFE reads as one object with variants
+// while the table idiom stays.
 export const dynamic = 'force-static'
 
 export const metadata: Metadata = {
   title: 'Open documents — the canonical startup legal documents — Ultrametric',
   description:
     'Openly licensed and freely published startup legal documents — SAFEs, incorporation packages, offer letters, board consents — as dated, link-only records. Every URL is verified on its checked_on date; the documents stay on the publisher’s site.',
+}
+
+// Registry order with family members pulled adjacent at the family's first position — pure
+// reordering, no row invented or dropped (the per-table row-count test pins that).
+function groupFamilies(docs: OpenDocument[]): OpenDocument[] {
+  const out: OpenDocument[] = []
+  const emitted = new Set<string>()
+  for (const d of docs) {
+    if (!d.family) {
+      out.push(d)
+    } else if (!emitted.has(d.family)) {
+      emitted.add(d.family)
+      out.push(...docs.filter((x) => x.family === d.family))
+    }
+  }
+  return out
 }
 
 const USE_CASE_LABELS: Record<DocumentUseCase, string> = {
@@ -44,7 +64,7 @@ export default function OpenDocumentsPage() {
         </p>
       </section>
       {DOCUMENT_USE_CASES.map((useCase) => {
-        const docs = registry.documents.filter((d) => d.use_case === useCase)
+        const docs = groupFamilies(registry.documents.filter((d) => d.use_case === useCase))
         if (docs.length === 0) return null
         return (
           <section key={useCase}>
@@ -84,6 +104,14 @@ export default function OpenDocumentsPage() {
                           {d.name}
                         </a>
                         <span className="ml-1.5 text-[10px] text-zinc-500">{d.format}</span>
+                        {d.variant && (
+                          <span
+                            className="ml-1.5 rounded-full border border-zinc-800 px-1.5 py-0.5 text-[10px] text-zinc-400"
+                            title={`Variant in the ${d.family} document family — grouped rows are one object in several registered forms`}
+                          >
+                            {d.variant}
+                          </span>
+                        )}
                       </td>
                       <td className="px-3 py-2.5 align-top text-zinc-400">{d.publisher}</td>
                       <td className="hidden px-3 py-2.5 align-top text-zinc-400 sm:table-cell">{d.jurisdiction}</td>

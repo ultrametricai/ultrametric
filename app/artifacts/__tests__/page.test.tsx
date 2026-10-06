@@ -99,14 +99,65 @@ describe('/artifacts/[id] — producers, consumers, computed vendors', () => {
     }
   })
 
-  it('no registered-document link renders — the registry has no artifact→open-documents mapping field (candidate follow-up, never invented)', async () => {
+  it('the registered-document mapping landed (the deliberate flip of the 2026-10-05 absence pin): `documents` joins the registry fields and resolves through lib', () => {
+    // The 2026-10-05 lane pinned the field's ABSENCE as a candidate follow-up; the founder named
+    // it on 2026-10-06 ("pages for classic document objects … to track that"), so the pin flips:
+    // the field exists, stays sparse (referential integrity + honest-absence bands in
+    // lib/__tests__/processArtifacts.test.ts), and resolves to real registry records here.
     for (const a of loadArtifacts()) {
       expect(Object.keys(a).every((k) =>
-        ['id', 'label', 'description', 'producedBy', 'alsoProducedBy', 'terminal'].includes(k),
+        ['id', 'label', 'description', 'producedBy', 'alsoProducedBy', 'terminal', 'documents'].includes(k),
       ), a.id).toBe(true)
     }
-    const { container } = render(await ArtifactDetailPage({ params: params('certificate-of-incorporation') }))
-    expect(container.querySelector('a[href^="/open-documents"]')).toBeNull()
+    const page = findArtifactPage('83b-election')!
+    expect(page.documents.map((d) => d.id)).toEqual(['irs-form-15620'])
+    expect(page.documents[0].publisher).toBe('Internal Revenue Service')
+    // Unmapped artifacts resolve to the honest empty list, never an invention.
+    expect(findArtifactPage('domain')!.documents).toEqual([])
+  })
+
+  it('a mapped artifact renders the Document section: the registry record linked at its canonical publisher URL, with publisher + license note', async () => {
+    const { container } = render(await ArtifactDetailPage({ params: params('83b-election') }))
+    const doc = findArtifactPage('83b-election')!.documents[0]
+    const link = container.querySelector(`a[href="${doc.url}"]`)
+    expect(link, 'template must link its canonical publisher URL').not.toBeNull()
+    expect(link!.textContent).toContain(doc.name)
+    expect(container.textContent).toContain(doc.publisher)
+    expect(container.textContent).toContain(doc.license_note)
+  })
+
+  it('every rendered template link is the registry record’s canonical publisher URL (the open-documents deep-link rule)', async () => {
+    const page = loadArtifactPages().find((p) => p.documents.length > 1)!
+    const { container } = render(await ArtifactDetailPage({ params: params(page.artifact.id) }))
+    for (const doc of page.documents) {
+      expect(
+        container.querySelector(`a[href="${doc.url}"]`),
+        `${doc.id} must link ${doc.url}`,
+      ).not.toBeNull()
+    }
+  })
+
+  it('mapped documents sharing a registry family render as one object with variants — the SAFE note: cap · discount · MFN · international', async () => {
+    const page = findArtifactPage('executed-safes')!
+    expect(page.documentFamilies.map((g) => g.family)).toEqual(['yc-safe'])
+    // The variant labels are the registry's committed `variant` fields, in mapping order.
+    expect(page.documentFamilies[0].docs.map((d) => d.variant)).toEqual(['cap', 'discount', 'MFN', 'international'])
+    const { container } = render(await ArtifactDetailPage({ params: params('executed-safes') }))
+    expect(container.textContent).toContain('Variants:')
+    for (const d of page.documentFamilies[0].docs) {
+      const links = [...container.querySelectorAll(`a[href="${d.url}"]`)]
+      expect(links.some((a) => a.textContent === d.variant), `${d.id} must link its variant label`).toBe(true)
+    }
+    // A single-template page has no family group and no Variants line.
+    expect(findArtifactPage('83b-election')!.documentFamilies).toEqual([])
+    const single = render(await ArtifactDetailPage({ params: params('83b-election') }))
+    expect(single.container.textContent).not.toContain('Variants:')
+  })
+
+  it('an unmapped artifact renders no Document section — honest absence, nothing invented', async () => {
+    expect(findArtifactPage('domain')!.documents).toEqual([])
+    const { container } = render(await ArtifactDetailPage({ params: params('domain') }))
+    expect([...container.querySelectorAll('h2')].map((h) => h.textContent)).not.toContain('Document')
   })
 })
 

@@ -180,6 +180,7 @@ export function buildContentAudit(files, metadata) {
     presence(record, 'Description', nonempty(value.description))
     link(record, processTarget(value.producedBy), 'produced by')
     for (const id of value.alsoProducedBy ?? []) link(record, processTarget(id), 'also produced by')
+    for (const id of value.documents ?? []) link(record, recordKey('documents', id), 'registered template')
     if (value.terminal) check(record, 'Terminal artifact', 'present', 'No downstream consumer is required by the source.')
   }
   const modules = json('processes/business-logic-map.json').modules
