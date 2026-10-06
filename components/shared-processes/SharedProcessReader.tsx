@@ -3,6 +3,7 @@ import ComputerUseLinks from './ComputerUseLinks'
 import StepFlow, { StepFlowProvider } from './StepFlow'
 import { computerUseForPart } from '@/lib/shared-processes/computer-use'
 import { processBottomTables } from '@/lib/shared-processes/bottom-tables'
+import { processIllustration } from '@/lib/shared-processes/process-illustrations'
 import ProcessBottomTables from './ProcessBottomTables'
 import ExternalLinkMark from './ExternalLinkMark'
 import StepMetadata, { SharedDocuments, hasSharedDocuments } from './StepMetadata'
@@ -179,22 +180,22 @@ export default function SharedProcessReader({ record, records, supplementary, ve
   comparisons?: StepComparisons
   processChoice?: ProcessProviderChoice
 }) {
-  const icon = record.id === 'form_001' ? '/process-icons/incorporate.svg' : undefined
+  const illustration = processIllustration(record.id)
   const related = relatedProcesses(record, records)
   const phase = typeof record.metadata.phase === 'string' ? record.metadata.phase : record.kind
   return <RegionalVariantProvider key={record.id} decision={regionalDecision(record)}><VendorSelectionProvider key={record.id}><StepFlowProvider record={record} records={referencedCatalog(record, records)}><div className="min-w-0 space-y-6" data-shared-record={record.id}>
-    <header className={`grid items-start gap-6 ${icon ? 'md:grid-cols-[minmax(0,1fr)_256px] md:gap-12' : ''}`}>
+    <header className={`grid items-start gap-6 ${illustration ? 'md:grid-cols-[minmax(0,1fr)_256px] md:gap-12' : ''}`}>
       <div className="min-w-0">
         <p className="text-sm uppercase tracking-widest text-zinc-400">
           <Link href="/processes/v2" className="hover:text-emerald-300">Processes</Link><span className="mx-1 text-zinc-600">/</span>{phase}
         </p>
-        {icon && <Image src="/process-icons/incorporate-64.svg" alt="" width={64} height={64} className="mt-4 h-16 w-16 md:hidden" />}
+        {illustration && <Image src={illustration.mobile} alt="" width={64} height={64} className="mt-4 h-16 w-16 md:hidden" />}
         <h1 className="mt-4 break-words font-display text-3xl font-semibold leading-[1.1] tracking-tight sm:text-4xl">{record.title}</h1>
         {record.summary && <p className="mt-5 max-w-2xl whitespace-pre-line text-base leading-relaxed text-zinc-400">{record.summary}</p>}
         <ProcessSummary record={record} records={referencedCatalog(record, records)} />
         {record.kind === 'process' && <ProcessRunCTA target={processStartTarget(record)} />}
       </div>
-      {icon && <Image src={icon} alt="" width={256} height={256} priority className="hidden h-64 w-64 justify-self-end md:block" />}
+      {illustration && <Image src={illustration.desktop} alt="" width={256} height={256} priority className="hidden h-64 w-64 justify-self-end md:block" />}
     </header>
     <RegionalVariantSelector />
     <ProcessOverview processHrefs={Object.fromEntries(records.map(item => [item.id, sharedPreviewHref(item.id, records)]))} record={record} records={referencedCatalog(record, records)} />
