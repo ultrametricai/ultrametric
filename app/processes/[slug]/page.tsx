@@ -180,12 +180,14 @@ export default async function ProcessPage({ params }: { params: Promise<{ slug: 
         {/* GEO as a top-level driver (founder 2026-09-28: "make GEO a top-level process driver
             at the top of a particular process page … so we know how it works across the
             globe"), as the house dropdown with 🌐 Global leading (founder 2026-10-02 — the
-            /processes idiom replaces the pill row; defaultChoice is trigger FRAMING only). The
+            /processes idiom replaces the pill row; defaultChoice is trigger FRAMING only;
+            align="left" because the trigger sits at the content's LEFT here — founder bug
+            2026-10-06, the right-aligned menu opened off the column's left edge). The
             selection is global (?geo= + pa-geo, lib/geoPreference.ts); the banner below renders
             the selected country's committed story — nothing without an explicit choice, so the
             static HTML stays the one shared US-default view and no judged number moves. */}
         <div className="mt-4">
-          <GeoDropdown defaultChoice={GEO_GLOBAL} />
+          <GeoDropdown defaultChoice={GEO_GLOBAL} align="left" />
         </div>
         <ProcessGeoBanner geoScope={task.geoScope} notes={task.geoNotes ?? []} />
         {/* The 'Select vendor for process test' section is gone from process pages (founder

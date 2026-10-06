@@ -19,9 +19,11 @@ import { render, fireEvent, act } from '@testing-library/react'
 import { renderToString } from 'react-dom/server'
 import { hydrateRoot, type Root } from 'react-dom/client'
 import { afterEach, beforeEach, describe, expect, it } from 'vitest'
+import ProcessPage from '@/app/processes/[slug]/page'
 import GeoDropdown from '@/components/GeoDropdown'
 import GeoSwitcher from '@/components/GeoSwitcher'
 import { GEO_GLOBAL, PROCESSES_INDEX_DEFAULT_GEO, getGeoChoice, setGeoChoice } from '@/lib/geoPreference'
+import { findProcessBySlug } from '@/lib/processes'
 
 // Same in-memory localStorage stand-in as components/__tests__/GeoSwitcher.test.tsx.
 function stubLocalStorage() {
@@ -209,6 +211,34 @@ describe('the menu stays attached to its trigger (founder bug 2026-10-05: "the g
     expect(root.className).toContain('relative')
     expect(root.className).toContain('inline-flex')
     expect(list.className).toContain('top-full')
+  })
+})
+
+describe('menu alignment follows the trigger position (founder bug 2026-10-06: on detail pages "the dropdown menu opens in the wrong area")', () => {
+  // The residual half of the 2026-10-05 fix: inline-flex re-anchored the menu to the trigger,
+  // but the menu stayed right-0-aligned — correct in the /processes controls row (trigger at
+  // the row's RIGHT end), wrong on detail pages where the trigger sits at the content's LEFT:
+  // a right-aligned w-40 (160px) menu over a ~80px trigger juts a menu-width-minus-trigger-width
+  // off the content column's left edge. jsdom computes no layout, so the pins are structural:
+  // the alignment class on the open listbox, in each surface's real container shape.
+  it('the real detail page (app/processes/[slug]) opens the menu LEFT-aligned to its content-left trigger', async () => {
+    const task = findProcessBySlug('set-up-an-llc')!
+    const page = await ProcessPage({ params: Promise.resolve({ slug: 'set-up-an-llc' }) })
+    expect(task).toBeTruthy()
+    const r = render(page)
+    const list = openList(r)
+    expect(list.className).toContain('left-0')
+    expect(list.className).not.toContain('right-0')
+    // Still the 2026-10-05 anchor contract: the listbox shares the trigger's shrink-to-fit root.
+    expect(list.parentElement).toBe(trigger(r).parentElement)
+    expect(trigger(r).parentElement!.className).toContain('inline-flex')
+  })
+
+  it('with no align prop the menu stays right-0 (the /processes index controls row, trigger at the row\'s right end — unchanged)', () => {
+    const r = render(<GeoDropdown defaultChoice={GEO_GLOBAL} />)
+    const list = openList(r)
+    expect(list.className).toContain('right-0')
+    expect(list.className).not.toContain('left-0')
   })
 })
 
