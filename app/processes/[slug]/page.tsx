@@ -10,10 +10,12 @@ import ProcessDag from '@/components/ProcessDag'
 import ProcessGeoNotes from '@/components/ProcessGeoNotes'
 import ProcessLeaderboard from '@/components/ProcessLeaderboard'
 import ProcessLensBanner from '@/components/ProcessLensBanner'
+import OpenModulesControl from '@/components/OpenModulesControl'
 import ProcessOpenModulesTable from '@/components/ProcessOpenModulesTable'
 import ProcessProducesTable from '@/components/ProcessProducesTable'
 import UrgencyChip from '@/components/UrgencyChip'
 import UsFlowLabel from '@/components/UsFlowLabel'
+import { modulesForProcess } from '@/lib/businessLogicMap'
 import { GEO_GLOBAL } from '@/lib/geoPreference'
 import { processOpenModuleRows } from '@/lib/openModulePages'
 import { buildProcessCheckSteps } from '@/lib/processCheckData'
@@ -86,7 +88,8 @@ export default async function ProcessPage({ params }: { params: Promise<{ slug: 
   // serialized for the client-side toggle; [] for the many processes that don't branch.
   const jurisSteps = jurisdictionStepViews(task.id)
   // Open modules serving this process (processes/business-logic-map.json) — the bottom table's
-  // rows, and the condition for the header's anchor affordance.
+  // rows; the header's inline control reads the same registry via modulesForProcess (repo
+  // README links, founder 2026-10-06).
   const openModuleRows = processOpenModuleRows(task)
   // Registry artifacts this process produces — the bottom 'Artifacts it produces' table.
   const producesRows = producedArtifactRows(task)
@@ -157,24 +160,11 @@ export default async function ProcessPage({ params }: { params: Promise<{ slug: 
         {/* The header 'Produces:' chip row moved to the bottom 'Artifacts it produces' table
             (founder 2026-10-05) — display only: the typed produces/requires layer and
             lib/processDeps.ts stay the machine truth the dependency graph is built from. */}
-        {/* Business-logic ↔ process wiring: the 2026-10-05 chip-menu disclosure
-            (OpenModulesMenu, retired same day) became a plain anchor onto the bottom
-            'Open modules' table — the founder's "go to a different table at the bottom of the
-            page to see how it links to those modules there". Renders nothing for the many
-            unmapped tasks. */}
-        {openModuleRows.length > 0 && (
-          <p className="mt-3 text-xs">
-            <a
-              href="#open-modules"
-              title="The open modules (open-source lib/openstartup/ code in the repo) whose cited, tested math serves this process — the table at the bottom of this page shows how each one links to the steps here"
-              className="inline-flex items-center gap-1.5 rounded-lg border border-zinc-800 px-2 py-1 text-zinc-400 transition hover:border-emerald-400/60 hover:text-emerald-300"
-            >
-              <span aria-hidden className="text-[10px]">☰</span>
-              Open modules
-              <span aria-hidden className="text-[10px] text-zinc-500">↓</span>
-            </a>
-          </p>
-        )}
+        {/* Business-logic ↔ process wiring: the title-adjacent affordance moved INLINE with the
+            geo control below (founder 2026-10-06 — no own line, no expanding disclosure; the
+            2026-10-05 '#open-modules ↓' anchor and the earlier OpenModulesMenu are both
+            retired). OpenModulesControl: one module = plain text repo link, several = the small
+            house menu. The bottom 'Open modules' receipts table stays as-is. */}
         {/* The per-page situation posture banner was removed (founder 2026-10-02) — the
             sitewide footer line and /terms carry the not-legal-advice posture. */}
         {/* GEO as a top-level driver (founder 2026-09-28: "make GEO a top-level process driver
@@ -186,8 +176,9 @@ export default async function ProcessPage({ params }: { params: Promise<{ slug: 
             selection is global (?geo= + pa-geo, lib/geoPreference.ts); the banner below renders
             the selected country's committed story — nothing without an explicit choice, so the
             static HTML stays the one shared US-default view and no judged number moves. */}
-        <div className="mt-4">
+        <div className="mt-4 flex flex-wrap items-center gap-2">
           <GeoDropdown defaultChoice={GEO_GLOBAL} align="left" />
+          <OpenModulesControl modules={modulesForProcess(task.id)} />
         </div>
         <ProcessGeoBanner geoScope={task.geoScope} notes={task.geoNotes ?? []} />
         {/* The 'Select vendor for process test' section is gone from process pages (founder
