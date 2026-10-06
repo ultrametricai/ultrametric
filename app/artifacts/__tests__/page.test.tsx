@@ -115,6 +115,33 @@ describe('/artifacts/[id] — producers, consumers, computed vendors', () => {
     // Unmapped artifacts resolve to the honest empty list, never an invention.
     expect(findArtifactPage('domain')!.documents).toEqual([])
   })
+
+  it('a mapped artifact renders the Document section: the registry record linked at its canonical publisher URL, with publisher + license note', async () => {
+    const { container } = render(await ArtifactDetailPage({ params: params('83b-election') }))
+    const doc = findArtifactPage('83b-election')!.documents[0]
+    const link = container.querySelector(`a[href="${doc.url}"]`)
+    expect(link, 'template must link its canonical publisher URL').not.toBeNull()
+    expect(link!.textContent).toContain(doc.name)
+    expect(container.textContent).toContain(doc.publisher)
+    expect(container.textContent).toContain(doc.license_note)
+  })
+
+  it('every rendered template link is the registry record’s canonical publisher URL (the open-documents deep-link rule)', async () => {
+    const page = loadArtifactPages().find((p) => p.documents.length > 1)!
+    const { container } = render(await ArtifactDetailPage({ params: params(page.artifact.id) }))
+    for (const doc of page.documents) {
+      expect(
+        container.querySelector(`a[href="${doc.url}"]`),
+        `${doc.id} must link ${doc.url}`,
+      ).not.toBeNull()
+    }
+  })
+
+  it('an unmapped artifact renders no Document section — honest absence, nothing invented', async () => {
+    expect(findArtifactPage('domain')!.documents).toEqual([])
+    const { container } = render(await ArtifactDetailPage({ params: params('domain') }))
+    expect([...container.querySelectorAll('h2')].map((h) => h.textContent)).not.toContain('Document')
+  })
 })
 
 describe('sitemap registration — artifacts family', () => {
