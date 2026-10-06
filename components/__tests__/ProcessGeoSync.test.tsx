@@ -45,11 +45,12 @@ const NOTES: GeoAnalogNote[] = [
 ]
 
 // The process DETAIL page's geo surface, as app/processes/[slug]/page.tsx composes it: the
-// house dropdown (Global trigger framing) over the banner that renders the selected country's
-// committed story.
+// house dropdown (no defaultChoice — founder bug 2026-10-06: null IS the detail page's
+// US-default view, so the trigger reads 🇺🇸 USA and a USA pick visibly lands) over the banner
+// that renders the selected country's committed story.
 const DetailSurface = () => (
   <div>
-    <GeoDropdown defaultChoice={GEO_GLOBAL} />
+    <GeoDropdown align="left" />
     <ProcessGeoBanner geoScope="us" notes={NOTES} />
   </div>
 )
@@ -193,8 +194,11 @@ describe('the US-default SSR contract survives the connection', () => {
     setUrl('/processes/get-ein?geo=uk')
     window.localStorage.setItem(GEO_STORAGE_KEY, 'uk')
     expect(renderToString(<DetailSurface />)).toBe(pristine)
-    // And the pristine HTML carries no country banner — the Global trigger framing only.
+    // And the pristine HTML carries no country banner — the trigger wears the honest US-default
+    // framing (founder bug 2026-10-06: Global framing on a detail page made a USA pick read as
+    // "nothing happened").
     expect(pristine).not.toContain('Companies House')
-    expect(pristine).toContain('Global')
+    expect(pristine).toContain('USA')
+    expect(pristine).not.toContain('Global')
   })
 })

@@ -16,7 +16,6 @@ import ProcessProducesTable from '@/components/ProcessProducesTable'
 import UrgencyChip from '@/components/UrgencyChip'
 import UsFlowLabel from '@/components/UsFlowLabel'
 import { modulesForProcess } from '@/lib/businessLogicMap'
-import { GEO_GLOBAL } from '@/lib/geoPreference'
 import { processOpenModuleRows } from '@/lib/openModulePages'
 import { buildProcessCheckSteps } from '@/lib/processCheckData'
 import { producedArtifactRows } from '@/lib/processDeps'
@@ -169,15 +168,18 @@ export default async function ProcessPage({ params }: { params: Promise<{ slug: 
             sitewide footer line and /terms carry the not-legal-advice posture. */}
         {/* GEO as a top-level driver (founder 2026-09-28: "make GEO a top-level process driver
             at the top of a particular process page … so we know how it works across the
-            globe"), as the house dropdown with 🌐 Global leading (founder 2026-10-02 — the
-            /processes idiom replaces the pill row; defaultChoice is trigger FRAMING only;
-            align="left" because the trigger sits at the content's LEFT here — founder bug
-            2026-10-06, the right-aligned menu opened off the column's left edge). The
-            selection is global (?geo= + pa-geo, lib/geoPreference.ts); the banner below renders
-            the selected country's committed story — nothing without an explicit choice, so the
-            static HTML stays the one shared US-default view and no judged number moves. */}
+            globe"), as the house dropdown (founder 2026-10-02 — the /processes idiom replaces
+            the pill row; align="left" because the trigger sits at the content's LEFT here —
+            founder bug 2026-10-06, the right-aligned menu opened off the column's left edge).
+            NO defaultChoice on this surface (founder bug 2026-10-06, round 2: with the Global
+            framing a 🇺🇸 USA pick "stays showing Global" — the pick clears the choice to null
+            per the committed codec, and null IS this page's US-default view, so the trigger
+            reads USA; the /processes index keeps its Global framing). The selection is global
+            (?geo= + pa-geo, lib/geoPreference.ts); the banner below renders the selected
+            country's committed story — nothing without an explicit choice, so the flow shown
+            stays the one shared US-default view and no judged number moves. */}
         <div className="mt-4 flex flex-wrap items-center gap-2">
-          <GeoDropdown defaultChoice={GEO_GLOBAL} align="left" />
+          <GeoDropdown align="left" />
           <OpenModulesControl modules={modulesForProcess(task.id)} />
         </div>
         <ProcessGeoBanner geoScope={task.geoScope} notes={task.geoNotes ?? []} />
