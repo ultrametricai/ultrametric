@@ -396,7 +396,8 @@ function NodeBlock({
   const vendorCalls = taskId ? stepVendorCallsFor(taskId, node.id) : []
   // The step's function-level open-module mappings (founder 2026-10-02: "go deeper on the
   // mapping of the logic") — processes/business-logic-map.json steps, rendered as tiny muted
-  // "compute: <module>.<function>" chips below. Most steps carry none and render nothing.
+  // "Open module: <module>.<function>" chips below (the 2026-10-06 rename of the 'compute:'
+  // label, which read as jargon from nowhere). Most steps carry none and render nothing.
   const computeChips = taskId ? computeChipsForStep(taskId, node.id) : []
   // Authored root cause + computer-use feasibility for human/manual steps (founder 2026-09-21:
   // "get to the bottom of why, and why computer use can't be used there"). Null until the
@@ -497,17 +498,19 @@ function NodeBlock({
       {node.documents && <StepDocuments documents={node.documents} />}
 
       {/* The step's open-module functions (founder 2026-10-02): the registry's per-step
-          entries as tiny muted "compute: <module>.<function>" chips — the document-chip row
-          idiom above, one shade quieter (this is library code, not an action). Tooltip carries
-          the honest 'what' clause; the chip deep-links to the module's section in
-          open-modules/README.md on GitHub (lib/businessLogicMap.ts computeChipsForStep). */}
+          entries as tiny muted chips — the document-chip row idiom above, one shade quieter
+          (this is library code, not an action). The row label is 'Open module:' (founder
+          2026-10-06 rename of 'compute:', which read as jargon from nowhere — the chip itself
+          shows the object/function name); the chip's tooltip/aria says what it is in one
+          clause, and the chip keeps its GitHub deep link into the module's section of
+          open-modules/README.md (lib/businessLogicMap.ts computeChipsForStep). */}
       {computeChips.length > 0 && (
         <div className="mt-2 flex flex-wrap items-center gap-1.5 text-[11px]">
           <span
             className="text-[10px] uppercase tracking-wide text-zinc-500"
-            title="The open-module function whose cited, tested math computes this step — each chip opens the module's section in open-modules/README.md on GitHub"
+            title="The open-source module function serving this step — each chip opens the module's section in open-modules/README.md on GitHub"
           >
-            compute:
+            Open module:
           </span>
           {computeChips.map((c) => (
             <a
@@ -515,7 +518,8 @@ function NodeBlock({
               href={c.href}
               target="_blank"
               rel="noopener noreferrer"
-              title={`${c.module}.${c.fn} — ${c.what} (open module, open-modules/README.md on GitHub)`}
+              title={`${c.module}.${c.fn} — the open-source module function serving this step`}
+              aria-label={`${c.module}.${c.fn} — the open-source module function serving this step`}
               className="inline-flex items-center gap-1 rounded-md border border-zinc-800 px-1.5 py-0.5 font-mono text-[10px] text-zinc-500 transition hover:border-emerald-400/60 hover:text-emerald-300"
             >
               {c.module}.{c.fn} ↗
