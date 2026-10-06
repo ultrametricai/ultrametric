@@ -20,9 +20,15 @@
 # (pipeline/cache/judge/<arena>/<product>/<story>.json — hash kept, verdict object
 # replaced) so a future judge run does not resurrect the churn.
 #
+# When a REMOVED id was a pure duplicate of a surviving item (same claim, same page —
+# the canva plain/starred extraction twins), pass --remap old=survivor so the baseline
+# row can be restored with its citation pointed at the surviving id instead of keeping
+# a re-roll flip alive solely because the old row cites a retired id.
+#
 # Usage: python3 pipeline/scripts/settle-issue-85-staleness-wave.py \
 #            <arena> <product> <baseline-verdicts.json> \
-#            [--added id,id] [--removed id,id] [--changed-material id,id] [--write]
+#            [--added id,id] [--removed id,id] [--changed-material id,id] \
+#            [--remap old=new,old=new] [--write]
 import json
 import os
 import sys
@@ -32,7 +38,7 @@ ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..'))
 
 def parse_args(argv):
     arena, product, baseline = argv[1], argv[2], argv[3]
-    opts = {'added': set(), 'removed': set(), 'changed': set(), 'write': False}
+    opts = {'added': set(), 'removed': set(), 'changed': set(), 'remap': {}, 'write': False}
     i = 4
     while i < len(argv):
         a = argv[i]
@@ -47,6 +53,9 @@ def parse_args(argv):
         elif a == '--changed-material':
             i += 1
             opts['changed'] |= set(argv[i].split(','))
+        elif a == '--remap':
+            i += 1
+            opts['remap'].update(dict(pair.split('=') for pair in argv[i].split(',')))
         else:
             raise SystemExit(f'unknown arg: {a}')
         i += 1
@@ -68,6 +77,14 @@ def main():
         if ov['verdict'] == nv['verdict'] and ov['quality'] == nv['quality']:
             continue
         old_ids, new_ids = set(ov['evidenceIds']), set(nv['evidenceIds'])
+        if opts['remap']:
+            remapped = []
+            for i_ in ov['evidenceIds']:
+                m = opts['remap'].get(i_, i_)
+                if m not in remapped:
+                    remapped.append(m)
+            ov = dict(ov, evidenceIds=remapped)
+            old_ids = set(remapped)
         keep = bool(new_ids & opts['added']) or bool(old_ids & opts['removed']) \
             or bool((old_ids | new_ids) & opts['changed'])
         line = (f"{k[1]}: {ov['verdict']} q{ov['quality']} -> {nv['verdict']} q{nv['quality']}")
