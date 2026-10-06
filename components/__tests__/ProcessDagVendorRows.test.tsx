@@ -13,14 +13,24 @@ import { loadProcesses } from '@/lib/processes'
 
 describe('ProcessDag — sub-step vendor rows (founder 2026-10-05)', () => {
   const tasks = loadProcesses()
+  // One render per task, shared across the pins below.
+  const rendered = new Map<string, HTMLDivElement>()
+  const renderTask = (task: (typeof tasks)[number]) => {
+    let div = rendered.get(task.id)
+    if (!div) {
+      div = document.createElement('div')
+      div.innerHTML = renderToString(
+        <ProcessDag nodes={task.dag.nodes} edges={task.dag.edges} taskId={task.id} lensKey={task.id} />,
+      )
+      rendered.set(task.id, div)
+    }
+    return div
+  }
 
   it('renders no per-vendor score links and no nested interactive elements, corpus-wide', () => {
     expect(tasks.length).toBeGreaterThan(0)
     for (const task of tasks) {
-      const div = document.createElement('div')
-      div.innerHTML = renderToString(
-        <ProcessDag nodes={task.dag.nodes} edges={task.dag.edges} taskId={task.id} lensKey={task.id} />,
-      )
+      const div = renderTask(task)
       // The per-sub-step vendor score links are gone: no /score receipts links and no
       // #story-verdicts anchors anywhere in the step blocks.
       expect(div.querySelector('a[href$="/score"]'), task.id).toBeNull()
@@ -32,6 +42,14 @@ describe('ProcessDag — sub-step vendor rows (founder 2026-10-05)', () => {
           `${task.id}: nested interactive <${el.tagName.toLowerCase()}> "${(el.textContent ?? '').slice(0, 40)}"`,
         ).toBeNull()
       }
+    }
+  })
+
+  it("the 🖥 row's 'assisted, still human-owned' caption is gone (founder 2026-10-06), corpus-wide", () => {
+    // Display only: the step keeps its non-agent route/classification data; the 🖥 label's
+    // tooltip keeps the honest framing (components/ComputerUseChips.tsx).
+    for (const task of tasks) {
+      expect(renderTask(task).textContent, task.id).not.toContain('assisted, still human-owned')
     }
   })
 })
