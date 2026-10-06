@@ -137,6 +137,23 @@ describe('/artifacts/[id] — producers, consumers, computed vendors', () => {
     }
   })
 
+  it('mapped documents sharing a registry family render as one object with variants — the SAFE note: cap · discount · MFN · international', async () => {
+    const page = findArtifactPage('executed-safes')!
+    expect(page.documentFamilies.map((g) => g.family)).toEqual(['yc-safe'])
+    // The variant labels are the registry's committed `variant` fields, in mapping order.
+    expect(page.documentFamilies[0].docs.map((d) => d.variant)).toEqual(['cap', 'discount', 'MFN', 'international'])
+    const { container } = render(await ArtifactDetailPage({ params: params('executed-safes') }))
+    expect(container.textContent).toContain('Variants:')
+    for (const d of page.documentFamilies[0].docs) {
+      const links = [...container.querySelectorAll(`a[href="${d.url}"]`)]
+      expect(links.some((a) => a.textContent === d.variant), `${d.id} must link its variant label`).toBe(true)
+    }
+    // A single-template page has no family group and no Variants line.
+    expect(findArtifactPage('83b-election')!.documentFamilies).toEqual([])
+    const single = render(await ArtifactDetailPage({ params: params('83b-election') }))
+    expect(single.container.textContent).not.toContain('Variants:')
+  })
+
   it('an unmapped artifact renders no Document section — honest absence, nothing invented', async () => {
     expect(findArtifactPage('domain')!.documents).toEqual([])
     const { container } = render(await ArtifactDetailPage({ params: params('domain') }))

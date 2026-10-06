@@ -14,9 +14,11 @@ import { findArtifactPage, loadArtifactPages } from '@/lib/artifactPages'
 // 2026-10-06: classic document objects — the flip of the 2026-10-05 absence pin) renders the
 // registry's committed `documents` mapping onto open-documents/registry.json: name, publisher,
 // and license note straight from the registry record, every link the publisher's canonical URL
-// (link, never redistribute — the open-documents deep-link rule). Artifacts with no registered
-// template render no section: honest absence, never an invented mapping. Fully static, params
-// from the registry, unknown ids 404.
+// (link, never redistribute — the open-documents deep-link rule). Where the mapped documents
+// share an open-documents `family` (the YC SAFE's cap/discount/MFN/international forms), a
+// Variants line renders them as one object — the labels are the registry's committed `variant`
+// fields, never invented prose. Artifacts with no registered template render no section: honest
+// absence, never an invented mapping. Fully static, params from the registry, unknown ids 404.
 
 export function generateStaticParams() {
   return loadArtifactPages().map((a) => ({ id: a.artifact.id }))
@@ -71,6 +73,27 @@ export default async function ArtifactPage({ params }: { params: Promise<{ id: s
             ). Each link opens the publisher&rsquo;s canonical page; the documents stay on the
             publisher&rsquo;s site.
           </p>
+          {page.documentFamilies.map((g) => (
+            <p key={g.family} className="mt-2 text-sm text-zinc-400">
+              <span title={`One document object in ${g.docs.length} registered variants (open-documents family: ${g.family}) — the variant labels are the registry's committed \`variant\` fields`}>
+                Variants:
+              </span>{' '}
+              {g.docs.map((d, i) => (
+                <span key={d.id}>
+                  {i > 0 && ' · '}
+                  <a
+                    href={d.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    title={`${d.name} — ${d.publisher}, checked ${d.checked_on} (external site)`}
+                    className="text-zinc-300 underline decoration-zinc-800 underline-offset-2 transition hover:text-emerald-300"
+                  >
+                    {d.variant}
+                  </a>
+                </span>
+              ))}
+            </p>
+          ))}
           <ul className="mt-3 space-y-3 text-sm">
             {documents.map((d) => (
               <li key={d.id}>

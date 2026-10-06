@@ -47,6 +47,26 @@ export interface ArtifactPageData {
   // The registered templates this artifact is executed on (registry `documents` ids resolved
   // into open-documents records), in committed mapping order — empty for the honest absence.
   documents: OpenDocument[]
+  // Mapped documents sharing an open-documents `family`, in mapping order — the SAFE's
+  // cap/discount/MFN/international forms read as one object with variants on the page. Only
+  // genuine groups (two or more mapped members) count; a lone family member stays a plain row.
+  documentFamilies: ArtifactDocumentFamily[]
+}
+
+export interface ArtifactDocumentFamily {
+  family: string
+  docs: OpenDocument[]
+}
+
+function documentFamilies(docs: OpenDocument[]): ArtifactDocumentFamily[] {
+  const groups: ArtifactDocumentFamily[] = []
+  for (const d of docs) {
+    if (!d.family) continue
+    const existing = groups.find((g) => g.family === d.family)
+    if (existing) existing.docs.push(d)
+    else groups.push({ family: d.family, docs: [d] })
+  }
+  return groups.filter((g) => g.docs.length > 1)
 }
 
 function processLink(task: ProcessTask): ArtifactProcessLink {
@@ -87,6 +107,7 @@ export function loadArtifactPages(dir?: string): ArtifactPageData[] {
     const producerTask = byId.get(artifact.producedBy)
     if (!producerTask) throw new Error(`artifact ${artifact.id}: unknown producer ${artifact.producedBy}`)
     const producer = processLink(producerTask)
+    const documents = (artifact.documents ?? []).map(openDocumentById)
     return {
       artifact,
       producer,
@@ -98,7 +119,8 @@ export function loadArtifactPages(dir?: string): ArtifactPageData[] {
       neededBy: tasks.filter((t) => t.requires.includes(artifact.id)).map(processLink),
       producingArea: producer.area,
       arenas: arenaVendorBlocks(producingStepArenaIds(artifact, byId), dir),
-      documents: (artifact.documents ?? []).map(openDocumentById),
+      documents,
+      documentFamilies: documentFamilies(documents),
     }
   })
 }

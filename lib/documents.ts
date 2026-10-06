@@ -32,6 +32,15 @@ export interface OpenDocument {
   /** Descriptive, not a jurisdictions/-registry code: many standards are deliberately neutral. */
   jurisdiction: string
   format: DocumentFormat
+  /** Document family id (founder 2026-10-06): groups the variants of one document object — the
+   * YC SAFE's cap/discount/MFN/international forms plus its user guide and pro rata side letter
+   * ('yc-safe'), the NVCA model financing suite ('nvca'). Always paired with `variant`; a family
+   * needs at least two members (validated below). Family rows group on /open-documents and
+   * mapped variants collapse into one object on /artifacts pages. */
+  family?: string
+  /** The short committed variant label a family member renders under ('cap', 'MFN', 'voting
+   * agreement') — committed here so no page invents prose. Unique within its family. */
+  variant?: string
   checked_on: string
 }
 
@@ -73,6 +82,12 @@ export function validateDocumentRegistry(doc: DocumentRegistry, asOf: Date): str
     if (typeof d.url !== 'string' || !d.url.startsWith('https://')) errors.push(`${where}: require HTTPS URL`)
     if (!DOCUMENT_USE_CASES.includes(d.use_case)) errors.push(`${where}: unknown use_case ${JSON.stringify(d.use_case)}`)
     if (!DOCUMENT_FORMATS.includes(d.format)) errors.push(`${where}: unknown format ${JSON.stringify(d.format)}`)
+    // family ⇔ variant: a family member must carry its committed short label (pages render the
+    // label, never invent one), and a variant label is meaningless outside a family.
+    if (d.family !== undefined || d.variant !== undefined) {
+      if (typeof d.family !== 'string' || !ID_RE.test(d.family)) errors.push(`${where}: family must be a registry-style slug`)
+      if (typeof d.variant !== 'string' || d.variant.trim().length === 0) errors.push(`${where}: family member needs a committed variant label`)
+    }
     if (typeof d.checked_on !== 'string' || !isIsoDate(d.checked_on)) errors.push(`${where}: invalid checked_on`)
     else {
       if (new Date(`${d.checked_on}T00:00:00Z`) > asOf) errors.push(`${where}: checked_on is in the future`)
@@ -87,6 +102,17 @@ export function validateDocumentRegistry(doc: DocumentRegistry, asOf: Date): str
         }
       }
     }
+  }
+  // Family invariants across the registry: a one-member family is a typo'd group, and duplicate
+  // variant labels inside a family would render two identical chips for different documents.
+  const families = new Map<string, Array<{ id: string; variant?: string }>>()
+  for (const d of doc.documents) {
+    if (typeof d.family === 'string') families.set(d.family, [...(families.get(d.family) ?? []), d])
+  }
+  for (const [family, members] of families) {
+    if (members.length < 2) errors.push(`family ${family}: needs at least two members, got ${members.length}`)
+    const labels = members.map((m) => m.variant).filter((v): v is string => typeof v === 'string')
+    if (new Set(labels).size !== labels.length) errors.push(`family ${family}: duplicate variant labels`)
   }
   return errors
 }
