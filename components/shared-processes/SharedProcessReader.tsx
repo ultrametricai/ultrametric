@@ -1,9 +1,9 @@
 import Link from 'next/link'
-import OpenModuleChips from '@/components/OpenModuleChips'
 import ComputerUseLinks from './ComputerUseLinks'
 import StepFlow, { StepFlowProvider } from './StepFlow'
 import { computerUseForPart } from '@/lib/shared-processes/computer-use'
-import { modulesForProcess } from '@/lib/businessLogicMap'
+import { processBottomTables } from '@/lib/shared-processes/bottom-tables'
+import ProcessBottomTables from './ProcessBottomTables'
 import ExternalLinkMark from './ExternalLinkMark'
 import StepMetadata, { SharedDocuments } from './StepMetadata'
 import { PreviewGuidance, PreviewScope, ProviderScope } from './PreviewContent'
@@ -12,6 +12,8 @@ import { referencedCatalog } from '@/lib/shared-processes/composed-preview'
 import { ProcessOverview } from './ProcessViews'
 import Image from 'next/image'
 import type { ReactNode } from 'react'
+import ProcessRunCTA from '@/components/process-start/ProcessRunCTA'
+import { processStartTarget } from '@/lib/shared-processes/start'
 import type { Note, Part, Reference, SharedRecord } from '@/lib/shared-processes/schema'
 import { sharedPreviewHref } from '@/lib/shared-processes/reader'
 import { isServiceCandidate, resolveServiceCandidates } from '@/lib/shared-processes/service-candidates'
@@ -34,19 +36,19 @@ function HighRisk({ metadata }: { metadata: Record<string, unknown> }) {
 }
 
 // Same categorical wording as ProcessDag/StepMethodPicker; no numeric conversion.
-const routeLabels: Record<string, { label: string; color: string }> = {
-  agent: { label: 'Agent', color: 'text-emerald-300' },
-  form: { label: 'Manual form', color: 'text-amber-300' },
-  person: { label: 'Human or computer use', color: 'text-sky-300' },
+const routeLabels: Record<string, { label: string; symbol: string; color: string }> = {
+  agent: { label: 'Agent', symbol: '✦', color: 'border-emerald-400/25 bg-emerald-400/10 text-emerald-300' },
+  form: { label: 'Manual form', symbol: '▤', color: 'border-amber-400/25 bg-amber-400/10 text-amber-300' },
+  person: { label: 'Human or computer use', symbol: '♙', color: 'border-sky-400/25 bg-sky-400/10 text-sky-300' },
 }
 function StepAssessment({ metadata, spaced = false, unverified = false }: { metadata: Record<string, unknown>; spaced?: boolean; unverified?: boolean }) {
   const route = typeof metadata.route === 'string' && Object.hasOwn(routeLabels, metadata.route)
     ? routeLabels[metadata.route] : null
   const assessment = route && metadata.legalSignature === true
-    ? { label: 'Signature — legally human', color: 'text-violet-300' } : route
+    ? { label: 'Signature — legally human', symbol: '✎', color: 'border-violet-400/25 bg-violet-400/10 text-violet-300' } : route
   if (!assessment && metadata.riskLevel !== 'high' && metadata.reversibility !== 'irreversible') return null
   return <span className={`inline-flex flex-wrap items-center gap-x-3 gap-y-1 align-middle ${spaced ? 'ml-3' : ''}`}>
-    {assessment && <span className={`text-sm font-medium ${assessment.color}`} title={unverified ? 'Legacy agent classification; no verified API or tool binding' : 'Existing source route assessment'}>{assessment.label}</span>}
+    {assessment && <span className={`inline-flex max-w-full items-center gap-2 rounded-lg border px-3 py-1.5 text-sm font-medium leading-5 ${assessment.color}`} title={unverified ? 'Legacy agent classification; no verified API or tool binding' : 'Existing source route assessment'}><span aria-hidden="true" data-route-symbol={assessment.symbol} className="shrink-0 text-lg leading-5 before:content-[attr(data-route-symbol)]" /><span className="min-w-0 [overflow-wrap:anywhere]">{assessment.label}</span></span>}
     {metadata.route === 'agent' && metadata.legalSignature !== true && metadata.approvalRequired === true && <span className="text-sm font-medium text-amber-300" title="Source setting: a human approves before this agent-classified step runs">Needs approval</span>}
     {metadata.route === 'agent' && metadata.legalSignature !== true && metadata.approvalRequired === false && !unverified && <span className="text-sm text-zinc-400" title="Source setting: no approval gate; execution integration is not verified">Automatic</span>}
     <HighRisk metadata={metadata} />
@@ -184,13 +186,11 @@ export default function SharedProcessReader({ record, records, supplementary, ve
         <h1 className="mt-4 break-words font-display text-3xl font-semibold leading-[1.1] tracking-tight sm:text-4xl">{record.title}</h1>
         {record.summary && <p className="mt-5 max-w-2xl whitespace-pre-line text-lg leading-relaxed text-zinc-400">{record.summary}</p>}
         <ProcessSummary record={record} records={referencedCatalog(record, records)} />
+        {record.kind === 'process' && <ProcessRunCTA target={processStartTarget(record)} />}
       </div>
       {icon && <Image src={icon} alt="" width={256} height={256} priority className="hidden h-64 w-64 justify-self-end md:block" />}
     </header>
     <RegionalVariantSelector />
-    <PreviewScope recordScope={record.id} context={record.id === 'form_001' ? { decision: 'n4', option: 'default' } : undefined}>
-      <OpenModuleChips modules={modulesForProcess(record.id)} />
-    </PreviewScope>
     <ProcessOverview processHrefs={Object.fromEntries(records.map(item => [item.id, sharedPreviewHref(item.id, records)]))} record={record} records={referencedCatalog(record, records)} />
     {processChoice && <ProcessProviderSelector choice={processChoice} />}
     {(record.when || record.guidance || record.outcomes.length > 0 || record.notes.length > 0) && <section aria-label="Process overview" className="space-y-4">
@@ -208,6 +208,7 @@ export default function SharedProcessReader({ record, records, supplementary, ve
       <Parts parts={record.parts} records={records} scope={record.id} vendorPreview={vendorPreview} processChoice={processChoice} comparisons={comparisons} />
     </section>
     {supplementary}
+    <ProcessBottomTables recordId={record.id} variants={processBottomTables(record, records)} />
     {related.length > 0 && <section aria-labelledby="related-processes-heading" className="space-y-4">
       <h2 id="related-processes-heading" className="text-xl font-medium text-zinc-100">Related processes</h2>
       <ul className="divide-y divide-zinc-800 rounded-xl border border-zinc-800">{related.map(other => <li key={other.id}><Link href={sharedPreviewHref(other.id, records)} className="block break-words px-4 py-3 text-zinc-200 hover:text-emerald-300">{other.title}</Link></li>)}</ul>

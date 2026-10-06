@@ -105,7 +105,7 @@ it('places existing source links and open documents together after vendors witho
   expect(el.getAllByRole('heading', { name: 'Process Steps' })).toHaveLength(1)
   expect(heading.compareDocumentPosition(el.container.querySelector('[aria-label="Process parts"] article')!) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy()
   expect(within(el.getByRole('region', { name: 'Process overview graph' })).queryByText('Produces:')).toBeNull()
-  const certificate = el.getByText('Certificate of Incorporation', { exact: true })
+  const certificate = within(el.container.querySelector('[id="form_001:n5"]') as HTMLElement).getByText('Certificate of Incorporation', { exact: true })
   expect(certificate.closest('article')?.id).toBe('form_001:n5')
   const step = el.container.querySelector('[id="form_001:n6"]')!
   const vendors = step.querySelector('[aria-label="Step product comparison"]')!

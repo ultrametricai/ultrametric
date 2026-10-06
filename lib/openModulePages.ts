@@ -45,7 +45,7 @@ const README_FILE = () => path.join(process.cwd(), 'open-modules', 'README.md')
 // prose (house SSOT posture, like the Serves lines) — the page reads it back rather than
 // duplicating a second description that could drift.
 let computesCache: Map<string, string> | null = null
-function readmeComputes(): Map<string, string> {
+export function readmeComputes(): Map<string, string> {
   if (!computesCache) {
     const markdown = fs.readFileSync(README_FILE(), 'utf8')
     const out = new Map<string, string>()

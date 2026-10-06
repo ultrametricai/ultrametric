@@ -49,7 +49,7 @@ describe('canonical shared process reader', () => {
     expect(el.textContent).toContain(records[0].outcomes[0])
     expect(el.querySelector(`a[href="${sharedPreviewHref(records[1].id, records)}"]`)).not.toBeNull()
     const links = [...el.querySelectorAll('a[href^="#"]')]
-    expect(links).toHaveLength(0) // graph edges remain data, not a reader accordion
+    expect(links.length).toBeGreaterThan(0) // usable server-rendered graph fallback
     for (const link of links) expect([...el.querySelectorAll('[id]')].some(e => `#${e.id}` === link.getAttribute('href'))).toBe(true)
   })
 
@@ -61,7 +61,7 @@ describe('canonical shared process reader', () => {
     expect(el.querySelector('input[aria-label="India - MCA SPICe+ filing"]')).not.toBeNull()
     expect(el.textContent).toContain('Jurisdictions: CA')
     expect(el.textContent).not.toContain('Jurisdictions: MULTI')
-    expect(el.querySelectorAll('a[href^="#"]')).toHaveLength(0)
+    expect(el.querySelectorAll('[data-overview-fallback] li')).toHaveLength(record.links.length)
     expect(record.links).toHaveLength(9) // source edges are unchanged
     expect(el.textContent).not.toContain('No connections specified.') // no empty graph chrome
     expect(el.textContent).not.toContain('runs in parallel')
@@ -140,15 +140,18 @@ describe('canonical shared process reader', () => {
     for (const record of records) {
       const el = mount(renderToStaticMarkup(<SharedProcessReader record={record} records={records} />))
       expect(el.querySelector('h1')?.textContent).toBe(record.title)
+      expect(el.textContent?.includes('Run this process with Ultrametric')).toBe(record.kind === 'process')
       const modules = modulesForProcess(record.id)
-      expect([...el.querySelectorAll('a[href*="/open-modules/README.md#"]')].map(link => ({ label: link.textContent?.replace(' ↗', ''), href: link.getAttribute('href') }))).toEqual(modules.map(module => ({ label: module.label, href: module.href })))
-      expect(el.textContent?.includes('Open modules:')).toBe(modules.length > 0)
+      const moduleTable = el.querySelector('[aria-label="Open modules serving this process"]')
+      expect([...moduleTable?.querySelectorAll('a[href^="/open-modules/"]') ?? []].map(link => ({ label: link.textContent, href: link.getAttribute('href') }))).toEqual(modules.map(module => ({ label: module.label, href: `/open-modules/${module.id}` })))
+      expect(Boolean(moduleTable)).toBe(modules.length > 0)
+      expect(el.textContent).not.toContain('Open modules:')
       const ids = [...el.querySelectorAll('[id]')].map(element => element.id)
       expect(new Set(ids).size).toBe(ids.length)
     }
     const chain = findSharedRecord(records, 'first-hire')!
     const el = mount(renderToStaticMarkup(<SharedProcessReader record={chain} records={records} />))
-    expect(el.querySelectorAll('a[href^="#"]')).toHaveLength(0)
+    for (const link of el.querySelectorAll('a[href^="#"]')) expect(el.querySelector(`[id="${link.getAttribute('href')!.slice(1)}"]`)).not.toBeNull()
     expect(el.querySelectorAll('article a[href^="/processes/"][href$="/v2"]')).toHaveLength(4)
   })
 })

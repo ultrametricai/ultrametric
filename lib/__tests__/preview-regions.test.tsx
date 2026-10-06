@@ -15,7 +15,7 @@ describe('scoped regional presentation', () => {
   it('switches only authored regional options, hides default filing scores, retains nested content and resets', () => {
     const corporation = record('form_001')
     const el = render(<SharedProcessReader record={corporation} records={records} vendorPreview={buildVendorPreview(corporation)} comparisons={buildStepComparisons(corporation)} />)
-    const select = el.getByRole('group', { name: 'Regional variant' })
+    const select = el.getByRole('group', { name: 'Select your country' })
     expect(el.queryByText(corporation.parts.find(part => part.id === 'n4')!.guidance!)).toBeNull()
     expect(el.getByText(corporation.parts.find(part => part.id === 'n4')!.options.find(option => option.id === 'default')!.summary)).toBeDefined()
     const chooser = () => el.container.querySelector('[id="form_001:n1"]')!

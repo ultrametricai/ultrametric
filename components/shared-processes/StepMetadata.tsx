@@ -1,6 +1,8 @@
 import ArtifactChips from '@/components/ArtifactChips'
 import StepDocuments from '@/components/StepDocuments'
-import { StepCostChip } from '@/components/StepVerifyCost'
+import { costChipText } from '@/components/StepVerifyCost'
+import { processMetadataLabel } from '@/components/processMetadataStyles'
+import ExternalLinkMark from './ExternalLinkMark'
 import { loadArtifacts, StepCostSchema } from '@/lib/processes'
 import type { ArtifactChip } from '@/lib/processDeps'
 import type { SharedRecord } from '@/lib/shared-processes/schema'
@@ -23,7 +25,14 @@ export function SharedArtifacts({ metadata, sourceId, records }: { metadata: Rec
 export default function StepMetadata({ metadata, sourceId, records }: { metadata: Record<string, unknown>; sourceId: string; records: SharedRecord[] }) {
   const cost = StepCostSchema.safeParse(metadata.cost)
   return <>
-    {cost.success && <div className="space-y-2"><StepCostChip readable cost={cost.data} squareExternalLinks />{cost.data.note && <details className="text-sm text-zinc-400"><summary className="cursor-pointer">Cost details</summary><p className="mt-2 leading-relaxed">{cost.data.note}</p></details>}</div>}
+    {cost.success && <div className="space-y-2 text-sm leading-5 text-zinc-300 [overflow-wrap:anywhere]">
+      <p><span className={processMetadataLabel}>Costs:</span>{' '}{costChipText(cost.data)}</p>
+      <details className="text-sm text-zinc-400">
+        <summary className="cursor-pointer rounded-sm focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-zinc-300">Cost details</summary>
+        {cost.data.note && <p className="mt-2 leading-relaxed">{cost.data.note}</p>}
+        <p className="mt-2 leading-relaxed"><a href={cost.data.source} target="_blank" rel="noopener noreferrer" className="rounded-sm text-zinc-300 underline underline-offset-4 hover:text-emerald-300 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-zinc-300">{new URL(cost.data.source).hostname.replace(/^www\./, '')}<ExternalLinkMark href={cost.data.source} label="" /></a>{' · '}as of {cost.data.asOf}</p>
+      </details>
+    </div>}
     <SharedArtifacts metadata={metadata} sourceId={sourceId} records={records} />
   </>
 }

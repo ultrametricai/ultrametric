@@ -27,11 +27,12 @@ it('has an existing producing-step association for every process-level output', 
   for (const record of records) expect(outputs(record.metadata).filter(output => !bound(record).includes(output)), record.id).toEqual([])
 })
 
-it('shows the corporate-card output only on its authored application step', () => {
+it('retains the corporate-card output on its authored application step and links it from the bottom table', () => {
   const record = records.find(record => record.id === 'qs_024')!
   const el = render(<SharedProcessReader record={record} records={records} />)
-  const chips = el.getAllByText('Corporate card', { exact: true })
+  const chips = [...el.container.querySelectorAll('article')].flatMap(article => [...article.querySelectorAll('span, a')].filter(chip => chip.textContent === 'Corporate card'))
   expect(chips).toHaveLength(1)
   expect(chips[0].closest('article')?.id).toBe('qs_024:n2')
   expect(el.getAllByText('Produces:')).toHaveLength(1)
+  expect(el.container.querySelector('[aria-label="Artifacts produced by this process"] a[href="#qs_024:n2"]')).not.toBeNull()
 })

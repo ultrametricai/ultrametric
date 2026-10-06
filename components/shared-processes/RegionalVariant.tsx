@@ -25,7 +25,7 @@ export function RegionalVariantSelector() {
   }), GEO_COUNTRIES.length)
   const options = [...state.decision.options].sort((a, b) => a.id === 'default' ? -1 : b.id === 'default' ? 1 : countryOrder(a.countries) - countryOrder(b.countries))
   return <fieldset aria-describedby={`${id}-scope`} className="min-w-0 space-y-2">
-    <legend className="mb-2 text-sm text-zinc-400">Regional variant</legend>
+    <legend className="mb-2 text-sm text-zinc-400">Select your country</legend>
     <div className="inline-flex max-w-full flex-wrap items-center gap-0.5 rounded-full border border-zinc-800 p-1 sm:gap-1">
       {options.map(option => <label key={option.id} className="relative cursor-pointer">
         <input type="radio" name={id} value={option.id} aria-label={option.title} checked={state.selected === option.id} onChange={() => state.select(option.id)} className="peer sr-only" />
