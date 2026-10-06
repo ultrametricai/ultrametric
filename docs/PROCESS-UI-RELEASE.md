@@ -13,8 +13,8 @@ The original Mac repository and task-2 checkout remain untouched.
 Additive preview routes first. Existing public process routes remain. Preview metadata
 stays noindex; only preview ID/alias URLs redirect to their readable preview slug.
 
-- `/processes/preview`: existing index presentation with all 162 canonical records.
-- `/processes/preview/[readable-slug]`: canonical preview detail and graph.
+- `/processes/v2`: existing index presentation over the shared catalog; `/processes/preview` redirects here.
+- `/processes/[readable-slug]/v2`: shared detail and graph; old `/processes/preview/[slug-or-ID]` links redirect here with their query and fragment.
 - `/processes/incorporate-c-corp/v2`: original incorporation experiment remains available.
 
 No new schema fields, dependencies, lockfile edits, legacy source-data or ranking-formula changes. The existing equal-step coverage calculation
@@ -105,7 +105,7 @@ Assessed zero means no credited coverage; not-applicable judgments are excluded.
 
 ## Verification
 
-Integrated preview: `http://127.0.0.1:3221/processes/preview`.
+Integrated preview: `http://127.0.0.1:3221/processes/v2`.
 Preserved prototype: `http://127.0.0.1:3220/processes/preview`.
 Evidence is in sibling `../evidence/`, outside the repository:
 

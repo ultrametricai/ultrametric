@@ -3,7 +3,7 @@ import ProcessIndex from '@/components/ProcessIndex'
 import { buildPreviewIndex } from '@/lib/shared-processes/index-rows'
 
 export const dynamic = 'force-dynamic'
-export const metadata: Metadata = { title: 'Process previews — Ultrametric', robots: { index: false, follow: false } }
+export const metadata: Metadata = { title: 'Process previews — Ultrametric', alternates: { canonical: '/processes/v2' }, robots: { index: false, follow: false } }
 
 export default function SharedPreviewIndex() {
   const { rows, phases, playbooks } = buildPreviewIndex()

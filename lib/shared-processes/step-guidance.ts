@@ -2,7 +2,7 @@ import { readSharedCatalog } from './reader'
 import type { Part, SharedRecord } from './schema'
 
 // Committed per-step descriptions for the CORPUS process pages (founder 2026-10-05: steps like
-// 'Set primary logo' rendered with no description while the /processes/preview pages carry
+// 'Set primary logo' rendered with no description while the shared-reader pages carry
 // per-part guidance). The source is the shared catalog (content/processes/records/*.json):
 // every corpus task has a shared record, and the record parts whose id matches a corpus DAG
 // node id (n1, n2, …) carry that step's authored guidance — their metadata mirrors the node's

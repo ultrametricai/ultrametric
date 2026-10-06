@@ -4,11 +4,11 @@ import { mkdtempSync, mkdirSync, writeFileSync, rmSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import path from 'node:path'
 import { once } from 'node:events'
-import { staticTargets, stopRuntime } from '../check-preview-runtime.mjs'
+import { staticTargets, stopRuntime, targets } from '../check-preview-runtime.mjs'
 
 const roots: string[] = []
 const checker = path.resolve('scripts/check-preview-runtime.mjs')
-const traces = ['processes/preview/page.js.nft.json', 'processes/preview/[id]/page.js.nft.json', 'processes/incorporate-c-corp/v2/page.js.nft.json']
+const traces = targets.map(target => target.trace)
 const inputs = ['processes/corpus.json', 'journeys/chains.json', 'processes/business-logic-map.json']
 function fixture(omit?: { trace: number; file: string }, staticExtras: string[] = []) {
   const root = mkdtempSync(path.join(tmpdir(), 'preview-trace-test-'))

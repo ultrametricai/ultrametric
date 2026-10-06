@@ -8,7 +8,7 @@ export function buildPreviewIndex() {
   const records = readSharedCatalog()
   const byId = new Map(records.map(record => [record.id, record]))
   const routes = buildPreviewRoutes(records)
-  const href = (id: string) => `/processes/preview/${encodeURIComponent(routes.get(id)!)}`
+  const href = (id: string) => `/processes/${encodeURIComponent(routes.get(id)!)}/v2`
   const used = new Set<string>()
   const original = buildProcessRows()
   // The preview table keeps FULL corpus coverage: /processes proper excludes kind=situation
