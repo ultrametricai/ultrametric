@@ -1,8 +1,7 @@
 // @vitest-environment jsdom
 // The process detail page's two bottom tables (founder 2026-10-05):
-//   1. 'Open modules' — the affordance near the title is now a plain #open-modules anchor link
-//      onto a bottom table ("go to a different table at the bottom of the page to see how it
-//      links to those modules there"): one row per registry-mapped module, linking the
+//   1. 'Open modules' — the bottom table ("go to a different table at the bottom of the page to
+//      see how it links to those modules there"): one row per registry-mapped module, linking the
 //      /open-modules/{id} page (the computed vendor context lives there, never duplicated
 //      here), the committed README "What it computes" cell, the exact steps the module's
 //      functions compute for as in-page #step anchors, and the GitHub source file. Unmapped
@@ -11,9 +10,10 @@
 //      registry artifact links its /artifacts page, carries the registry description, and names
 //      the step on this page where it is born (#step anchor); exception producers keep the
 //      honest canonical-producer pointer.
-import { render } from '@testing-library/react'
+import { fireEvent, render } from '@testing-library/react'
 import { describe, expect, it } from 'vitest'
 import ProcessPage from '@/app/processes/[slug]/page'
+import { modulesForProcess } from '@/lib/businessLogicMap'
 import { processOpenModuleRows } from '@/lib/openModulePages'
 import { producedArtifactRows } from '@/lib/processDeps'
 import { loadProcesses, processSlug } from '@/lib/processes'
@@ -73,23 +73,62 @@ describe('the bottom Open modules table (founder 2026-10-05)', () => {
     expect(section.textContent).toContain('this process as a whole')
   })
 
-  it('the title-adjacent affordance is a plain anchor link onto the table — no expandable chip menu left', async () => {
-    const { container } = await renderPage('tax_001')
-    const top = container.querySelector('a[href="#open-modules"]') as HTMLElement
-    expect(top, 'the compact Open modules anchor affordance must render').toBeTruthy()
-    expect(top.textContent).toContain('Open modules')
-    expect(top.textContent).toContain('↓')
-    // The 2026-10-05 OpenModulesMenu disclosure is retired: no aria-expanded chip-menu button.
-    const disclosure = [...container.querySelectorAll('button')].find((b) =>
+  it('the header affordance sits INLINE with the geo control (founder 2026-10-06): several modules = a small house menu of repo links, no #open-modules anchor left', async () => {
+    const { task, container } = await renderPage('tax_001')
+    // The 2026-10-05 '↓' anchor onto the bottom table is retired.
+    expect(container.querySelector('a[href="#open-modules"]')).toBeNull()
+    // tax_001 maps two modules → the dropdown form: a menu-button trigger at the geo control's
+    // visual weight, in the SAME controls row as the geo dropdown.
+    const trigger = [...container.querySelectorAll('button')].find((b) =>
       b.textContent?.includes('Open modules'),
-    )
-    expect(disclosure).toBeUndefined()
+    ) as HTMLElement
+    expect(trigger, 'the Open modules menu trigger must render').toBeTruthy()
+    expect(trigger.getAttribute('aria-haspopup')).toBe('menu')
+    expect(trigger.getAttribute('aria-expanded')).toBe('false')
+    const row = trigger.closest('div.flex') as HTMLElement
+    expect(
+      row?.querySelector('button[title^="Where you operate"]'),
+      'the control must share the geo dropdown’s controls row',
+    ).toBeTruthy()
+    // Open it: one repo link per registry module — the module's open-modules/README.md section
+    // on GitHub (moduleReadmeHref), external-link hygiene intact.
+    fireEvent.click(trigger)
+    const menu = container.querySelector('[role="menu"][aria-label="Open modules"]') as HTMLElement
+    expect(menu).toBeTruthy()
+    const chips = modulesForProcess(task.id)
+    expect(chips.length).toBeGreaterThan(1)
+    for (const chip of chips) {
+      const entry = menu.querySelector(`a[href="${chip.href}"]`) as HTMLElement
+      expect(entry, `${chip.id} must link its README section`).toBeTruthy()
+      expect(chip.href).toContain('/open-modules/README.md#')
+      expect(entry.textContent).toContain(chip.label)
+      expect(entry.getAttribute('target')).toBe('_blank')
+      expect(entry.getAttribute('rel')).toContain('noopener')
+    }
   })
 
-  it('an unmapped process (ops_001) renders neither the top link nor the table', async () => {
+  it("a single-module process (tax_002) renders plain inline text — 'Open module: Deadline calendar' linking the repo, no button, no menu", async () => {
+    const { task, container } = await renderPage('tax_002')
+    const [chip, ...rest] = modulesForProcess(task.id)
+    expect(rest).toEqual([])
+    const link = container.querySelector(`a[href="${chip.href}"]`) as HTMLElement
+    expect(link, 'the inline Open module link must render').toBeTruthy()
+    expect(link.textContent).toContain(`Open module: ${chip.label}`)
+    expect(link.getAttribute('target')).toBe('_blank')
+    // In the geo controls row, not on its own line above.
+    expect(link.closest('div.flex')?.querySelector('button[title^="Where you operate"]')).toBeTruthy()
+    // No expanding behavior anywhere near the title: no menu trigger.
+    expect(
+      [...container.querySelectorAll('button')].find((b) => b.textContent?.includes('Open module')),
+    ).toBeUndefined()
+  })
+
+  it('an unmapped process (ops_001) renders neither the inline control nor the table', async () => {
     const { task, container } = await renderPage('ops_001')
     expect(processOpenModuleRows(task)).toEqual([])
+    expect(modulesForProcess(task.id)).toEqual([])
     expect(container.querySelector('a[href="#open-modules"]')).toBeNull()
+    expect(container.textContent).not.toContain('Open module')
     expect(container.querySelector('section#open-modules')).toBeNull()
     expect(container.querySelector('a[href^="/open-modules/"]')).toBeNull()
   })

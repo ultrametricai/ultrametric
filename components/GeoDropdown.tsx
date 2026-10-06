@@ -35,7 +35,10 @@ import { readParam, setParams } from '@/lib/urlState'
 // Global and the pristine default all show the full corpus — only a COUNTRY view filters, per
 // the committed note kinds, founder 2026-10-02), and detail pages return to their US default.
 
-export default function GeoDropdown({ defaultChoice = null }: { defaultChoice?: typeof GEO_GLOBAL | null } = {}) {
+export default function GeoDropdown({
+  defaultChoice = null,
+  align = 'right',
+}: { defaultChoice?: typeof GEO_GLOBAL | null; align?: 'left' | 'right' } = {}) {
   const [geo, setGeo] = useState<GeoChoice | null>(null)
   const [open, setOpen] = useState(false)
   const rootRef = useRef<HTMLDivElement>(null)
@@ -101,8 +104,11 @@ export default function GeoDropdown({ defaultChoice = null }: { defaultChoice?: 
     // clickable 'Global' dropdown" — in a block container, a plain `relative` div spans the full
     // content width, so the right-0 popover rendered at the container's far edge, a page-width
     // away from the trigger). inline-flex sizes the anchor box to the trigger itself and
-    // top-full pins the list under it — the VsGeoSelector idiom (PR #90), right-aligned here
-    // because this dropdown usually sits at a controls row's right end.
+    // top-full pins the list under it — the VsGeoSelector idiom (PR #90). `align` picks which
+    // trigger edge the menu hugs (founder bug 2026-10-06: the menu is wider than the trigger,
+    // so the alignment must follow the trigger's position in its row): right for the /processes
+    // index controls row (trigger at the row's right end), left for detail pages (trigger at
+    // the content's left — a right-aligned menu juts off the column's left edge there).
     <div ref={rootRef} className="relative inline-flex">
       <button
         type="button"
@@ -117,7 +123,7 @@ export default function GeoDropdown({ defaultChoice = null }: { defaultChoice?: 
         <span aria-hidden className="text-[10px] text-zinc-500">▾</span>
       </button>
       {open && (
-        <ul role="listbox" aria-label="Country" className="absolute right-0 top-full z-40 mt-1 w-40 overflow-hidden rounded-lg border border-zinc-800 bg-zinc-900 py-1 shadow-2xl">
+        <ul role="listbox" aria-label="Country" className={`absolute ${align === 'left' ? 'left-0' : 'right-0'} top-full z-40 mt-1 w-40 overflow-hidden rounded-lg border border-zinc-800 bg-zinc-900 py-1 shadow-2xl`}>
           {options.map((o) => {
             const active = effective === o.value
             return (

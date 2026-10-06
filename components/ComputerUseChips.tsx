@@ -61,7 +61,9 @@ export default function ComputerUseChips({ taskId, nodeId }: { taskId: string; n
           >{o.score.toFixed(0)}<span className="text-zinc-500">/100</span></span>
         </span>
       ))}
-      <span className="text-[10px] text-zinc-500">assisted, still human-owned</span>
+      {/* The trailing 'assisted, still human-owned' caption is gone (founder 2026-10-06) —
+          display only: the step keeps its non-agent route/classification data, and the 🖥
+          label's tooltip keeps the honest framing (the step stays manual). */}
     </span>
   )
 }
