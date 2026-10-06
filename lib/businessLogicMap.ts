@@ -105,3 +105,20 @@ export function computeChipsForStep(taskId: string, nodeId: string): StepCompute
       return { module: s.module, fn: s.function, what: s.what, href: moduleReadmeHref(m.anchor) }
     })
 }
+
+// Restored 2026-10-06: the shared-process reader (codex) consumes these; the 2026-10-05
+// retirement only meant to remove the title-adjacent chip MENU, not the lib helpers.
+export function modulesForProcess(taskId: string): OpenModuleChip[] {
+  return Object.entries(loadBusinessLogicMap())
+    .filter(([, m]) => m.processes.includes(taskId))
+    .map(([id, m]) => ({ id, label: m.label, href: moduleReadmeHref(m.anchor) }))
+}
+
+/** One step's "compute: <module>.<fn>" chip: the function that computes the step's math, the
+ * plain `what` clause for the tooltip, and the module's README deep link on GitHub. */
+
+export interface OpenModuleChip {
+  id: string
+  label: string
+  href: string
+}
