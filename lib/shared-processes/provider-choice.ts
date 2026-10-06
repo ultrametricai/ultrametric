@@ -3,8 +3,9 @@ import { loadCategories } from '../data'
 import type { SharedRecord } from './schema'
 import type { StepComparisons } from './step-comparisons'
 import { resolveServiceCandidates, type ServiceCandidate } from './service-candidates'
+import { vendorEvidenceHref } from './coverage-links'
 
-export interface ProviderScore { score: number; assessedSteps: number; steps: Array<{ scope: string; title: string; score: number | null }> }
+export interface ProviderScore { score: number; assessedSteps: number; evidenceHref?: string; steps: Array<{ scope: string; title: string; score: number | null; evidenceHref?: string }> }
 export interface ProviderGroup { scope: string; arenaId: string; title: string; candidates: ServiceCandidate[]; scores: Record<string, ProviderScore>; stepCount: number; partScope?: string }
 export interface ProcessProviderChoice { groups: ProviderGroup[]; stepScopes: Record<string, string> }
 
@@ -32,9 +33,13 @@ export function buildProcessProviderChoice(record: SharedRecord, comparisons: St
     const partScope = authoredChoices.length === 1 && !comparisons[`${record.id}:${authoredChoices[0].id}`] ? `${record.id}:${authoredChoices[0].id}` : undefined
     const steps = Object.entries(comparisons).filter(([scope]) => stepScopes[scope] === `${record.id}:provider:${arenaId}`)
     const scores = Object.fromEntries([...candidates.keys()].map(id => {
-      const breakdown = steps.map(([scope, comparison]) => ({ scope, title: comparison.title ?? scope, score: comparison.products.find(product => product.id === id)?.score ?? null }))
+      const breakdown = steps.map(([scope, comparison]) => {
+        const product = comparison.products.find(product => product.id === id)
+        return { scope, title: comparison.title ?? scope, score: product?.score ?? null, evidenceHref: product ? vendorEvidenceHref(product.href, product.stories.map(story => story.id)) : undefined }
+      })
       const assessed = breakdown.flatMap(step => step.score === null ? [] : [step.score])
-      return [id, { score: aggregateStepCoverage(assessed, steps.length), assessedSteps: assessed.length, steps: breakdown }]
+      const stories = steps.flatMap(([, comparison]) => comparison.products.find(product => product.id === id)?.stories.map(story => story.id) ?? [])
+      return [id, { score: aggregateStepCoverage(assessed, steps.length), assessedSteps: assessed.length, steps: breakdown, evidenceHref: vendorEvidenceHref(candidates.get(id)!.href, stories) }]
     }))
     return { scores, stepCount: steps.length, scope: `${record.id}:provider:${arenaId}`, arenaId, title: categories.get(arenaId) ?? arenaId,
       candidates: [...candidates.values()].sort((a, b) => scores[b.id].score - scores[a.id].score || scores[b.id].assessedSteps - scores[a.id].assessedSteps || a.name.localeCompare(b.name)), partScope }

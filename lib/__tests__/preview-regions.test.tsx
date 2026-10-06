@@ -16,6 +16,8 @@ describe('scoped regional presentation', () => {
     const corporation = record('form_001')
     const el = render(<SharedProcessReader record={corporation} records={records} vendorPreview={buildVendorPreview(corporation)} comparisons={buildStepComparisons(corporation)} />)
     const select = el.getByRole('group', { name: 'Regional variant' })
+    expect(el.queryByText(corporation.parts.find(part => part.id === 'n4')!.guidance!)).toBeNull()
+    expect(el.getByText(corporation.parts.find(part => part.id === 'n4')!.options.find(option => option.id === 'default')!.summary)).toBeDefined()
     const chooser = () => el.container.querySelector('[id="form_001:n1"]')!
     expect(chooser().querySelectorAll('[title^="Filing story coverage"]')).toHaveLength(4)
     fireEvent.click(select.querySelector('input[value="germany-notary-gmbh"]')!)
@@ -39,7 +41,7 @@ describe('scoped regional presentation', () => {
     expect(el.queryByText(/Other steps have not been adapted/)).toBeNull()
     fireEvent.click(el.container.querySelector('input[value="uk-eu-multicurrency"]')!)
     const warning = el.getByText(/Other steps have not been adapted/)
-    expect(warning.className).toBe('text-xs text-zinc-400')
+    expect(warning.className).toBe('text-sm text-zinc-400')
     expect(warning.closest('fieldset')?.getAttribute('aria-describedby')).toBe(warning.id)
     expect(el.container.querySelector('[id="qs_023:n3"]')?.textContent).toContain('EIN')
     expect(el.container.querySelector('[id="qs_023:n5"]')).not.toBeNull()
@@ -67,13 +69,13 @@ describe('scoped regional presentation', () => {
     contractor.parts[0].metadata.approvalRequired = true
     contractor.parts[2].metadata.approvalRequired = false
     const el = render(<SharedProcessReader record={contractor} records={[contractor]} />)
-    expect(el.getByRole('heading', { level: 1 }).textContent).toBe('Add a contractor (1099) using AI')
+    expect(el.getByRole('heading', { level: 1 }).textContent).toBe('Add a contractor (1099)')
     expect(el.container.querySelector('[id="opp_002:n1"]')?.textContent).toContain('Needs approval')
     expect(el.container.querySelector('[id="opp_002:n3"]')?.textContent).toContain('Automatic')
-    expect(el.getByText('Agent-step approvals')).toBeDefined()
+    expect(el.getByText('Agentic ceiling')).toBeDefined()
     expect(el.container.querySelector('[id="opp_002:n2:default"]')?.textContent).not.toContain('Automatic')
     fireEvent.click(el.container.querySelector('input[type="radio"][value="india-pan-tds"]')!)
-    expect(el.queryByText('Agent-step approvals')).toBeNull()
+    expect(el.queryByText('Agentic ceiling')).toBeNull()
     expect(el.container.querySelector('[aria-label="Process summary"]')).toBeNull()
     expect(el.getByRole('heading', { level: 1 }).textContent).toBe(contractor.title)
     cleanup()
@@ -87,8 +89,8 @@ describe('scoped regional presentation', () => {
     corporation.parts.find(part => part.id === 'n4')!.options.find(option => option.id === 'default')!.metadata.reversibility = 'irreversible'
     const el = render(<SharedProcessReader record={corporation} records={records} />)
     const filing = el.container.querySelector('[id="form_001:n4"]')!
-    expect(filing.querySelector(':scope > div:first-child')?.textContent).not.toContain('Irreversible')
-    expect(filing.querySelector('[id="form_001:n4:default"]')?.textContent).toContain('Irreversible')
+    expect(filing.querySelector(':scope > div:first-child')?.textContent).toContain('Irreversible')
+    expect(filing.querySelector('[id="form_001:n4:default"]')?.textContent).not.toContain('Irreversible')
     expect(el.container.querySelector('[id="form_001:n1"]')?.textContent).not.toContain('Irreversible')
     fireEvent.click(el.container.querySelector('input[type="radio"][value="india-spice-plus"]')!)
     expect(within(filing as HTMLElement).queryByText('Irreversible')).toBeNull()
@@ -114,11 +116,19 @@ for (const source of records.filter(record => regionalDecision(record))) {
       expect(el.container.querySelector('[aria-label="Process summary"]')).toBeNull()
       const warning = el.queryByText(/Other steps have not been adapted/)
       if (option.hasUnadaptedSteps) {
-        expect(warning?.className).toBe('text-xs text-zinc-400')
+        expect(warning?.className).toBe('text-sm text-zinc-400')
       } else {
         expect(warning).toBeNull()
       }
-      expect(el.container.querySelector(`[id="${decision.scope}:${option.id}"]`)).not.toBeNull()
+      const selected = el.container.querySelector(`[id="${decision.scope}:${option.id}"]`)!
+      expect(selected).not.toBeNull()
+      expect(selected.className).toBe('min-w-0 space-y-3')
+      expect(selected.parentElement?.className).toBe('space-y-3')
+      const sourcePart = source.parts.find(part => `${source.id}:${part.id}` === decision.scope)!
+      const sourceOption = sourcePart.options.find(candidate => candidate.id === option.id)!
+      expect(selected.textContent).toContain(sourceOption.summary)
+      expect(selected.querySelectorAll('article')).toHaveLength(sourceOption.parts.length)
+      if (source.id !== 'form_001' && sourcePart.guidance) expect(el.getByText(sourcePart.guidance)).toBeDefined()
       expect(el.container.querySelector(`[id="${decision.scope}:default"]`)).toBeNull()
     }
     fireEvent.click(el.container.querySelector('input[type="radio"][value="default"]')!)

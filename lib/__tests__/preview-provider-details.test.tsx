@@ -35,14 +35,20 @@ it('moves only the existing Clerky context above its filing stories without chan
   expect(JSON.stringify(record)).toBe(before)
 })
 
-it('removes only the innermost filing comparison card border and preserves its controls and source link', () => {
+it('keeps the selected filing option inside one step card with its controls and source link', () => {
   const el = render(<SharedProcessReader record={record} records={records} vendorPreview={buildVendorPreview(record)} comparisons={buildStepComparisons(record)} />)
   const filing = el.container.querySelector('[id="form_001:n4"]')!
   const option = filing.querySelector('[id="form_001:n4:default"]')!
   const comparison = option.querySelector('[aria-label="Step product comparison"]')!
-  expect(comparison.querySelector(':scope > div')?.className).toBe('overflow-hidden')
+  const ordinary = el.container.querySelector('[id="form_001:n6"] [aria-label="Step product comparison"] > div')!
+  expect(comparison.querySelector(':scope > div')?.className).toBe(ordinary.className)
   expect(filing.className).toContain('border')
-  expect(option.parentElement?.className).toContain('border')
+  expect(option.parentElement?.className).not.toContain('border')
+  expect(option.className).not.toContain('border')
+  expect(filing.querySelector(':scope > div:first-child')?.textContent).toContain('Manual form')
+  expect(filing.querySelector(':scope > div:first-child')?.textContent).toContain('High risk')
+  expect(filing.querySelectorAll('[data-step-resources]')).toHaveLength(1)
+  expect(within(filing as HTMLElement).queryByText('Companies House registration')).toBeNull()
   expect(within(comparison as HTMLElement).getByRole('button', { name: 'Use Clerky for this step' })).toBeDefined()
   expect(option.querySelector('a[href="https://corp.delaware.gov/howtoform/"]')).not.toBeNull()
 })

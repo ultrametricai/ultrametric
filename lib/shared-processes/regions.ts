@@ -20,7 +20,13 @@ export function regionalDecision(record: SharedRecord) {
       // Unbound surrounding steps remain on their original path. A part explicitly
       // bound to this decision is either hidden or reviewed for its selected option.
       const hasUnadaptedSteps = option.id !== 'default' && record.parts.some(other => other.id !== part.id && previewContext(other.metadata)?.decision !== part.id)
-      return { id: option.id, title: option.title, countries, hasUnadaptedSteps }
+      // These are the same subtrees unmounted by RegionalOption and PreviewScope.
+      // Descendant anchors inherit their containing scope's availability.
+      const hiddenScopes = [
+        ...part.options.filter(other => (other.id === 'default' || isGeographicOption(other)) && other.id !== option.id).map(other => `${record.id}:${part.id}:${other.id}`),
+        ...record.parts.filter(other => { const context = previewContext(other.metadata); return context?.decision === part.id && context.option !== option.id }).map(other => `${record.id}:${other.id}`),
+      ]
+      return { id: option.id, title: option.title, countries, hasUnadaptedSteps, hiddenScopes }
     }),
   }
 }

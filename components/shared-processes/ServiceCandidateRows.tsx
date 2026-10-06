@@ -4,6 +4,7 @@ import type { ReactNode } from 'react'
 import type { ServiceCandidate } from '@/lib/shared-processes/service-candidates'
 import type { CapabilityEvidence, VendorCoverage } from '@/lib/shared-processes/vendor-preview'
 import ScoredProductRow from './ScoredProductRow'
+import { vendorEvidenceHref } from '@/lib/shared-processes/coverage-links'
 import { useRegionalVariant } from './RegionalVariant'
 import { selectedVendor, useVendorSelection } from './VendorSelection'
 
@@ -23,7 +24,7 @@ export default function ServiceCandidateRows({ candidates, choiceScope, parentCh
     return foreign && `${region?.decision?.scope}:default` === value?.scope ? undefined : value
   }
   return <>
-    {!foreign && coverage && Object.keys(coverage).length > 0 && <p className="mb-2 text-xs text-zinc-400" title="Weighted coverage of the default filing step’s mapped stories, including manual workflows and APIs; not an automation probability or a whole-process score.">Filing coverage · /100</p>}
+    {!foreign && coverage && Object.keys(coverage).length > 0 && <p className="mb-2 text-sm text-zinc-400" title="Weighted coverage of the default filing step’s mapped stories, including manual workflows and APIs; not an automation probability or a whole-process score.">Filing coverage · /100</p>}
     <ul aria-label="Service options" className="overflow-hidden rounded-2xl border border-zinc-800">
       {ordered.map(candidate => {
         const assessment = visibleCoverage(candidate.id)
@@ -40,11 +41,12 @@ export default function ServiceCandidateRows({ candidates, choiceScope, parentCh
             ? selection.override(overrideScope, candidate.id === selectedId ? null : candidate.id)
             : selection.toggle(choiceScope, candidate.id) : undefined}
           selectionLabel={`Use ${candidate.name}`} evidenceLabel="story evidence" scores={scores}
+          scoreHref={detail ? vendorEvidenceHref(detail.href, detail.stories.map(story => story.id)) : undefined}
           scoreTitle={assessment ? `Filing story coverage ${assessment.score}/100 across ${assessment.storyCount} mapped stories for the default filing option.` : ''}>
-          {(providerDetail || detail) ? <>{providerDetail}{detail && <ul className="space-y-2">{detail.stories.map(story => <li key={story.id}><a href={`${detail.href}#story-${story.id}`} className="text-zinc-300 underline underline-offset-4">{story.title}</a><span className="ml-2">{story.verdict} · {story.quality}/10 · weight {story.weight}</span></li>)}</ul>}</> : undefined}
+          {(providerDetail || detail) ? <>{providerDetail}{detail && <ul className="space-y-2">{detail.stories.map(story => <li key={story.id}><a href={`${detail.href}#story-${story.id}`} className="rounded-sm text-zinc-300 hover:text-zinc-100 focus-visible:outline-2 focus-visible:outline-zinc-300">{story.title}</a><span className="ml-2">{story.verdict} · {story.quality}/10 · weight {story.weight}</span></li>)}</ul>}</> : undefined}
         </ScoredProductRow>
       })}
     </ul>
-    {hasOverride && !foreign && <button type="button" onClick={() => selection?.override(overrideScope!, undefined)} className="text-xs text-zinc-400 underline underline-offset-4 hover:text-zinc-200">Use process choice</button>}
+    {hasOverride && !foreign && <button type="button" onClick={() => selection?.override(overrideScope!, undefined)} className="text-sm text-zinc-400 underline underline-offset-4 hover:text-zinc-200">Use process choice</button>}
   </>
 }

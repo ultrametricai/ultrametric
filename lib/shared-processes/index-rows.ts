@@ -2,7 +2,6 @@ import { buildPlaybookRows, buildProcessRows, buildSituationRows, AREA_ORDER } f
 import { loadProcesses, processSlug } from '../processes'
 import type { ProcessTableRow } from '@/components/ProcessesTable'
 import { buildPreviewRoutes, readSharedCatalog } from './reader'
-import { processSummary } from './summary'
 import iconBindings from './index-icons.json'
 
 export function buildPreviewIndex() {
@@ -23,7 +22,7 @@ export function buildPreviewIndex() {
     const record = byId.get(task.id)
     if (!record) throw new Error(`Missing shared record for index process ${task.id}`)
     used.add(record.id)
-    return { ...row, title: record.title, agentClassified: processSummary(record).agent, href: href(record.id), icon: bindings[record.id]?.icon ?? row.icon }
+    return { ...row, title: record.title, href: href(record.id), icon: bindings[record.id]?.icon ?? row.icon }
   })
   const playbooks = buildPlaybookRows().map(row => {
     const record = byId.get(row.id)

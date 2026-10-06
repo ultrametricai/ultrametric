@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import type { ArtifactChipRows } from '@/lib/processDeps'
+import { processMetadataChip, processMetadataLabel, processMetadataLink } from './processMetadataStyles'
 
 // The typed-I/O header row on /processes/[slug] (founder depth wave part 2, 2026-10-01):
 // 'Produces:' names the registry artifacts this process brings into existence — the
@@ -17,7 +18,8 @@ const CHIP =
 const LINKED_CHIP =
   `${CHIP} transition hover:border-emerald-400/60 hover:text-emerald-300`
 
-function ChipRow({ heading, title, chips }: {
+function ChipRow({ heading, title, chips, readable }: {
+  readable: boolean
   heading: string
   title: string
   chips: ArtifactChipRows['needs']
@@ -25,12 +27,12 @@ function ChipRow({ heading, title, chips }: {
   if (chips.length === 0) return null
   return (
     <p className="flex flex-wrap items-center gap-1.5">
-      <span title={title} className="text-[10px] uppercase tracking-widest text-zinc-400">
+      <span title={title} className={readable ? processMetadataLabel : 'text-[10px] uppercase tracking-widest text-zinc-400'}>
         {heading}
       </span>
       {chips.map((c) =>
         c.producedHere ? (
-          <span key={c.id} title={`${c.description} Produced right here, by this process.`} className={CHIP}>
+          <span key={c.id} title={`${c.description} Produced right here, by this process.`} className={readable ? processMetadataChip : CHIP}>
             {c.label}
           </span>
         ) : (
@@ -38,7 +40,7 @@ function ChipRow({ heading, title, chips }: {
             key={c.id}
             href={c.producerHref}
             title={`${c.description} Produced by ${c.producerTitle} →`}
-            className={LINKED_CHIP}
+            className={readable ? processMetadataLink : LINKED_CHIP}
           >
             {c.label}
           </Link>
@@ -48,13 +50,14 @@ function ChipRow({ heading, title, chips }: {
   )
 }
 
-export default function ArtifactChips({ rows }: { rows: ArtifactChipRows }) {
+export default function ArtifactChips({ rows, readable = false }: { rows: ArtifactChipRows; readable?: boolean }) {
   // Produces only (founder 2026-10-02): rows.needs stays in the prop shape untouched — the
   // typed requires layer is data, just not a header row here anymore.
   if (rows.produces.length === 0) return null
   return (
-    <div className="mt-3 space-y-1.5 text-xs">
+    <div className={`mt-3 space-y-1.5 ${readable ? "text-sm" : "text-xs"}`}>
       <ChipRow
+        readable={readable}
         heading="Produces:"
         title="Business artifacts this process brings into existence — the step where each one is born carries it in the flow below"
         chips={rows.produces}

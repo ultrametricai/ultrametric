@@ -3,7 +3,6 @@
 import Link from 'next/link'
 import type { ReactNode } from 'react'
 import { Fragment, useEffect, useMemo, useState } from 'react'
-import { ProcessTitle } from '@/components/shared-processes/ProcessSummary'
 import CeilingBar from '@/components/CeilingBar'
 import IconChip from '@/components/IconChip'
 import ProductLogoView from '@/components/ProductLogoView'
@@ -56,7 +55,6 @@ import { TABLE_HEADER_ROW, TABLE_SHELL } from '@/components/tableStyles'
 
 export interface ProcessRow {
   slug: string
-  agentClassified?: number | null
   title: string
   // Curated emoji for this process (lib/processIcons.ts), resolved server-side by task id.
   icon: string
@@ -532,7 +530,7 @@ export default function ProcessesTable({
           <span className="flex items-center gap-1.5">
             <IconChip icon={r.icon} title={`${r.title} — ${r.phase} ${r.kind === 'situation' ? 'situation' : 'process'}`} />
             <Link href={href} className="font-medium hover:text-emerald-300">
-              <ProcessTitle title={r.title} agent={r.agentClassified ?? null} />
+              {r.title}
             </Link>
             {(() => {
               // Only US-scoped work wears a title-trailing glyph (founder 2026-10-02): the 🇺🇸
