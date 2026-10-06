@@ -110,6 +110,11 @@ it('places existing source links and open documents together after vendors witho
   const step = el.container.querySelector('[id="form_001:n6"]')!
   const vendors = step.querySelector('[aria-label="Step product comparison"]')!
   const resources = step.querySelector('[data-step-resources]')!
+  const disclosure = resources.closest('details')!
+  expect(disclosure.open).toBe(false)
+  expect(disclosure.querySelector('summary')?.textContent).toBe('Resources')
+  fireEvent.click(disclosure.querySelector('summary')!)
+  expect(disclosure.open).toBe(true)
   expect(vendors.compareDocumentPosition(resources) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy()
   expect(resources.querySelector('[aria-label="Related links"]')?.querySelectorAll('a')).toHaveLength(3)
   expect(within(resources as HTMLElement).getByText('open docs:')).toBeDefined()
@@ -120,4 +125,33 @@ it('places existing source links and open documents together after vendors witho
   expect(linksOnly.querySelector('[aria-label="Related links"]')).not.toBeNull()
   const docs = record.parts.find(part => part.id === 'n6')!.metadata.documents
   expect(Array.isArray(docs) && docs.length).toBe(2)
+})
+
+it('omits empty resources and resets a single disclosure to the current regional links', () => {
+  const record = structuredClone(records.find(record => record.id === 'form_001')!)
+  const name = record.parts.find(part => part.id === 'n3')!
+  name.references = []
+  name.metadata.documents = []
+  const el = render(<SharedProcessReader record={record} records={records} />)
+  expect(within(el.container.querySelector('[id="form_001:n3"]') as HTMLElement).queryByText('Resources')).toBeNull()
+  const filing = el.container.querySelector('[id="form_001:n4"]') as HTMLElement
+  const links = () => [...filing.querySelectorAll('[data-step-resources] a')].map(link => link.getAttribute('href'))
+  const initial = links()
+  const resources = () => within(filing).getByText('Resources').closest('details')!
+  expect(filing.querySelectorAll('[data-step-resources]')).toHaveLength(1)
+  fireEvent.click(resources().querySelector('summary')!)
+  expect(resources().open).toBe(true)
+  for (let i = 0; i < 2; i++) {
+    fireEvent.click(el.container.querySelector('input[value="uk-companies-house"]')!)
+    expect(filing.querySelectorAll('[data-step-resources]')).toHaveLength(1)
+    expect(resources().open).toBe(false)
+    expect(links()).not.toEqual(initial)
+    expect(links()).toContain('https://www.gov.uk/limited-company-formation/register-your-company')
+    expect(filing.querySelector('[id="form_001:n4:default"]')).toBeNull()
+    fireEvent.click(resources().querySelector('summary')!)
+    expect(resources().open).toBe(true)
+    fireEvent.click(el.container.querySelector('input[value="default"]')!)
+    expect(resources().open).toBe(false)
+    expect(links()).toEqual(initial)
+  }
 })

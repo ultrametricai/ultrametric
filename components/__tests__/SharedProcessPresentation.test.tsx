@@ -11,6 +11,7 @@ import SharedProcessReader from '@/components/shared-processes/SharedProcessRead
 import { buildStepComparisons } from '@/lib/shared-processes/step-comparisons'
 import { buildVendorPreview } from '@/lib/shared-processes/vendor-preview'
 import { costChipText } from '@/components/StepVerifyCost'
+import { costSummary } from '@/lib/shared-processes/cost-summary'
 import type { StepCost } from '@/lib/processes'
 
 const records = loadSharedProcesses()
@@ -23,7 +24,7 @@ describe('shared process presentation', () => {
     { usd: null, kind: 'typical-vendor-price', source: 'https://example.com/pricing', asOf: '2026-10-01', note: 'Local fees: €50–€100 depending on service; no USD quote.' },
   ])('keeps cost text unlinked and preserves its full source and conditions in one disclosure', cost => {
     const el = render(<StepMetadata metadata={{ cost }} sourceId="form_011" records={records} />)
-    const amount = el.getByText((_, node) => node?.tagName === 'P' && node.textContent === `Costs: ${costChipText(cost)}`)
+    const amount = el.getByText((_, node) => node?.tagName === 'P' && node.textContent === `Costs: ${costSummary(cost)}`)
     expect(amount.querySelector('a')).toBeNull()
     expect(amount.className).not.toMatch(/border|rounded/)
     const details = el.getByText('Cost details').closest('details')!
@@ -33,9 +34,31 @@ describe('shared process presentation', () => {
     expect(source.href).toBe(cost.source)
     expect(source.className).toContain('focus-visible:')
     expect(details.textContent).toContain(cost.asOf)
+    expect(details.textContent).toContain(costChipText(cost))
     if (cost.note) expect(details.textContent).toContain(cost.note)
     fireEvent.click(el.getByText('Cost details'))
     expect(details.open).toBe(true)
+  })
+
+  it.each([
+    ['form_001', 'n5', null, '$50'],
+    ['form_001', 'n8', null, '$5.55'],
+    ['form_001', 'n4', 'default', 'From $109'],
+    ['form_001', 'n4', 'uk-companies-house', 'Varies'],
+    ['form_011', 'n7', null, 'Free'],
+    ['prod_012', 'n1', null, '$99 / year'],
+    ['legal_002', 'n5', 'default', '$350 / class'],
+  ])('keeps the actual fee shape for %s:%s:%s in a compact summary', (id, partId, optionId, expected) => {
+    const part = records.find(record => record.id === id)!.parts.find(part => part.id === partId)!
+    const metadata = optionId ? part.options.find(option => option.id === optionId)!.metadata : part.metadata
+    const cost = metadata.cost as StepCost
+    const el = render(<StepMetadata metadata={metadata} sourceId={id!} records={records} />)
+    expect(el.getByText((_, node) => node?.tagName === 'P' && node.textContent === `Costs: ${expected}`)).toBeDefined()
+    const details = el.getByText('Cost details').closest('details')!
+    expect(details.open).toBe(false)
+    expect(details.textContent).toContain(cost.note)
+    expect(details.textContent).toContain(cost.asOf)
+    expect(details.querySelector('a')?.href).toBe(cost.source)
   })
 
   it('renders only real branch edges and keeps long node labels keyboard navigable', () => {

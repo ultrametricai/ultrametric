@@ -55,7 +55,7 @@ export default function ArtifactChips({ rows, readable = false }: { rows: Artifa
   // typed requires layer is data, just not a header row here anymore.
   if (rows.produces.length === 0) return null
   return (
-    <div className={`mt-3 space-y-1.5 ${readable ? "text-sm" : "text-xs"}`}>
+    <div className={`mt-3 space-y-1.5 ${readable ? "text-base [&_span]:text-base [&_a]:text-base" : "text-xs"}`}>
       <ChipRow
         readable={readable}
         heading="Produces:"
