@@ -99,14 +99,21 @@ describe('/artifacts/[id] — producers, consumers, computed vendors', () => {
     }
   })
 
-  it('no registered-document link renders — the registry has no artifact→open-documents mapping field (candidate follow-up, never invented)', async () => {
+  it('the registered-document mapping landed (the deliberate flip of the 2026-10-05 absence pin): `documents` joins the registry fields and resolves through lib', () => {
+    // The 2026-10-05 lane pinned the field's ABSENCE as a candidate follow-up; the founder named
+    // it on 2026-10-06 ("pages for classic document objects … to track that"), so the pin flips:
+    // the field exists, stays sparse (referential integrity + honest-absence bands in
+    // lib/__tests__/processArtifacts.test.ts), and resolves to real registry records here.
     for (const a of loadArtifacts()) {
       expect(Object.keys(a).every((k) =>
-        ['id', 'label', 'description', 'producedBy', 'alsoProducedBy', 'terminal'].includes(k),
+        ['id', 'label', 'description', 'producedBy', 'alsoProducedBy', 'terminal', 'documents'].includes(k),
       ), a.id).toBe(true)
     }
-    const { container } = render(await ArtifactDetailPage({ params: params('certificate-of-incorporation') }))
-    expect(container.querySelector('a[href^="/open-documents"]')).toBeNull()
+    const page = findArtifactPage('83b-election')!
+    expect(page.documents.map((d) => d.id)).toEqual(['irs-form-15620'])
+    expect(page.documents[0].publisher).toBe('Internal Revenue Service')
+    // Unmapped artifacts resolve to the honest empty list, never an invention.
+    expect(findArtifactPage('domain')!.documents).toEqual([])
   })
 })
 
