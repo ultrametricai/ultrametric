@@ -34,6 +34,7 @@
 import fs from 'node:fs'
 import path from 'node:path'
 import { MCP_ENDPOINTS } from '../../lib/mcpEndpoints'
+import { isSharedCodeHostOrigin } from '../stages/probe'
 import {
   EvidenceSchema, ProductSchema, StorySchema, VerdictSchema,
   type Evidence, type Product, type Story, type Verdict,
@@ -137,10 +138,13 @@ export function hasApiQualityGap(stories: Story[], verdicts: Verdict[], productI
 
 // The cline signature: a positive llms.txt probe already sits in the evidence pack, but the
 // agent-docs verdict is still a zero-evidence none — the judge never saw (or never cited) it.
+// A positive probe at a shared code-host origin is excluded: github.com/llms.txt is GitHub's
+// platform file, not the product's, and counting it produced the llama-cpp false contradiction
+// (issue #85). Legacy packs may still carry such items until their next probe run drops them.
 export function hasAgentDocsContradiction(evidence: Evidence[], verdicts: Verdict[], productId: string): boolean {
   const agentDocs = verdictFor(verdicts, productId, 'agentic-agent-docs')
   if (!agentDocs || agentDocs.verdict !== 'none' || agentDocs.evidenceIds.length > 0) return false
-  return evidence.some((e) => e.tier === 'probe' && e.excerpt.startsWith(LLMS_POSITIVE_PREFIX))
+  return evidence.some((e) => e.tier === 'probe' && e.excerpt.startsWith(LLMS_POSITIVE_PREFIX) && !isSharedCodeHostOrigin(e.url))
 }
 
 // Candidate for the LIVE llms.txt re-check: agent-docs none AND no positive probe recorded
@@ -395,6 +399,9 @@ async function run(): Promise<void> {
       if (!isLlmsFlipCandidate(item.evidence, item.verdicts, item.product.id)) continue
       try {
         const origin = new URL(item.product.urls.docs ?? item.product.urls.site).origin
+        // A shared code-host origin serves the HOST's llms.txt, not the product's — probing it
+        // would flag a false flip for every repo-hosted product (see pipeline/stages/probe.ts).
+        if (isSharedCodeHostOrigin(origin)) continue
         llmsUrls.add(`${origin}/llms.txt`)
       } catch { /* malformed product URL — skip */ }
     }
@@ -419,9 +426,10 @@ async function run(): Promise<void> {
     let llmsTxtFlip: LiveFlip | null = null
     if (!args.offline && isLlmsFlipCandidate(evidence, verdicts, product.id)) {
       try {
-        const url = `${new URL(product.urls.docs ?? product.urls.site).origin}/llms.txt`
+        const origin = new URL(product.urls.docs ?? product.urls.site).origin
+        const url = `${origin}/llms.txt`
         const res = llmsByUrl.get(url)
-        if (res?.found) llmsTxtFlip = { url, status: res.status }
+        if (!isSharedCodeHostOrigin(origin) && res?.found) llmsTxtFlip = { url, status: res.status }
       } catch { /* malformed product URL */ }
     }
 

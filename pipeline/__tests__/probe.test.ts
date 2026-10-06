@@ -52,6 +52,20 @@ describe('runProbeChecks', () => {
     expect(results.find((r) => r.key === 'llms-txt')).toBeUndefined()
   })
 
+  it('llms-txt + openapi: skipped entirely at a shared code-host origin (github.com is not the product)', async () => {
+    const repoProduct: Product = {
+      ...baseProduct,
+      urls: { site: 'https://github.com/acme/acme' },
+    }
+    const fetcher = fakeFetcher({
+      'https://github.com/llms.txt': txt('# GitHub\n\nGitHub is a developer platform.'),
+      'https://github.com/openapi.json': openapiDoc(),
+    })
+    const results = await runProbeChecks(repoProduct, fetcher)
+    expect(results.find((r) => r.key === 'llms-txt')).toBeUndefined()
+    expect(results.find((r) => r.key === 'openapi')).toBeUndefined()
+  })
+
   it('llms-txt: no item when the fetcher throws (network error)', async () => {
     const fetcher: ProbeFetcher = async (url) => {
       if (url === 'https://docs.acme.example/llms.txt') throw new Error('ECONNRESET')

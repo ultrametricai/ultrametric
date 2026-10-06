@@ -41,6 +41,22 @@ function originOf(url: string): string | null {
   }
 }
 
+// Origins that belong to a shared code host, not to the product. Anything served at the
+// origin root there (llms.txt, /openapi.json) is the HOST's file: github.com/llms.txt is
+// GitHub's platform index, and crediting it to a repo-hosted product produced the llama-cpp
+// false agent-docs contradiction (accuracy-engine work queue 2026-09-30, issue #85).
+// Product-owned pages sites (*.github.io etc.) are deliberately NOT listed.
+const SHARED_CODE_HOSTS = ['github.com', 'gitlab.com', 'bitbucket.org', 'codeberg.org', 'sourceforge.net']
+
+export function isSharedCodeHostOrigin(url: string): boolean {
+  try {
+    const host = new URL(url).hostname.toLowerCase()
+    return SHARED_CODE_HOSTS.some((h) => host === h || host.endsWith(`.${h}`))
+  } catch {
+    return false
+  }
+}
+
 async function safeFetch(fetcher: ProbeFetcher, url: string): Promise<ProbeFetchResult | null> {
   try {
     return await fetcher(url)
@@ -59,7 +75,7 @@ function isTextPlainish(contentType: string | null): boolean {
 // 5xx, network error) is ambiguous and yields no evidence item at all.
 async function probeLlmsTxt(fetcher: ProbeFetcher, baseUrl: string): Promise<ProbeResult | null> {
   const origin = originOf(baseUrl)
-  if (!origin) return null
+  if (!origin || isSharedCodeHostOrigin(origin)) return null
   const url = `${origin}/llms.txt`
   const res = await safeFetch(fetcher, url)
   if (!res) return null
@@ -95,7 +111,7 @@ const OPENAPI_PATHS = ['/openapi.json', '/swagger.json', '/api/openapi.json', '/
 // a 403 from a WAF) is ambiguous and produces no item.
 async function probeOpenapi(fetcher: ProbeFetcher, baseUrl: string): Promise<ProbeResult | null> {
   const origin = originOf(baseUrl)
-  if (!origin) return null
+  if (!origin || isSharedCodeHostOrigin(origin)) return null
   const attempted: string[] = []
   let sawNon404NonPositive = false
   for (const p of OPENAPI_PATHS) {

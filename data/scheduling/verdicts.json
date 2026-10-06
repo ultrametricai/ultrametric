@@ -1862,7 +1862,7 @@
     "verdict": "partial",
     "quality": 4,
     "confidence": "medium",
-    "rationale": "Motion has built-in event-driven behaviors: projects advance when blocking tasks complete, user-set daily meeting limits are enforced automatically, forwarded emails become tasks, and an 'AI Workflow Builder' builds workflows from SOPs. General trigger→action rules, however, appear to depend on the external Zapier integration. Missing for 10: documented native user-defined rule/trigger engine, choice of trigger events and actions, details on how the AI Workflow Builder configures automations, and hands-on corroboration.",
+    "rationale": "Motion has built-in event-driven behaviors: projects advance when blocking tasks complete, user-set daily meeting limits are enforced automatically, forwarded emails become tasks, and an 'AI Workflow Builder' builds workflows from SOPs. General trigger\u2192action rules, however, appear to depend on the external Zapier integration. Missing for 10: documented native user-defined rule/trigger engine, choice of trigger events and actions, details on how the AI Workflow Builder configures automations, and hands-on corroboration.",
     "evidenceIds": [
       "motion-docs-14",
       "motion-docs-6",
@@ -2240,20 +2240,28 @@
   {
     "productId": "reclaim",
     "storyId": "agent-books-meeting",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "Reclaim is a SaaS scheduling product, so an API or MCP for agent-driven booking is a fair question. The evidence pack documents no public API, MCP server, or programmatic way to check availability, book, reschedule, or cancel. The docs describe only dashboard, calendar, add-on, and in-app AI Assistant workflows, and the OpenAPI probes all returned 404.",
-    "evidenceIds": []
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "Runtime probes show a live first-party remote MCP server at mcp.reclaim.ai, auth-gated via spec-compliant OAuth discovery advertising read/write/mcp scopes, so an agent channel plausibly exists. However, no vendor documentation describes the server or its tools, no OpenAPI spec was found, and nothing shows that availability checks, booking, rescheduling, or cancellation are exposed to agents; the scheduling features in the docs are all dashboard or calendar-driven. Missing for 10: documented MCP/API tool list, evidenced availability-check, book, reschedule and cancel operations via API/MCP, public API reference, hands-on end-to-end agent corroboration.",
+    "evidenceIds": [
+      "reclaim-probe-rt-1",
+      "reclaim-probe-rt-2",
+      "reclaim-probe-3",
+      "reclaim-docs-49"
+    ]
   },
   {
     "productId": "reclaim",
     "storyId": "agent-scheduling-tool",
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "partial",
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Reclaim is a scheduling SaaS, so exposing availability, bookings and event types to external agents through an MCP server or tool-calling API is a fair axis. The evidence shows only an in-app AI Assistant, Google/Outlook add-ons and Slack integrations, with no MCP server or public tool-calling surface. The OpenAPI probes returned 404, and the llms.txt file is a help-center docs index, not an agent tool interface.",
-    "evidenceIds": []
+    "rationale": "Runtime probes confirm a live, first-party remote MCP server at mcp.reclaim.ai. It is OAuth-gated per the MCP spec and publishes RFC 9728 discovery metadata with read/write/mcp scopes, so agents can plausibly use the scheduling account as a tool. However, no vendor documentation was found, and the probes stop at the auth handshake, so the exposed tools are unverified. Missing for 10: documentation of the MCP server, evidence of which tools it exposes (availability, bookings, scheduling-link/event types), and hands-on or independent confirmation of tool calls working end to end.",
+    "evidenceIds": [
+      "reclaim-probe-rt-1",
+      "reclaim-probe-rt-2"
+    ]
   },
   {
     "productId": "reclaim",
@@ -2261,13 +2269,13 @@
     "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "A live probe confirms an llms.txt (HTTP 200) at help.reclaim.ai that indexes the help center. Many cited help articles are served as markdown (.md URLs), so an agent can ingest the docs directly. Missing for 10: any first-party documentation or announcement of the agent-oriented docs, an llms-full.txt or API-level agent docs (the OpenAPI probes all returned 404), a working docs-root markdown index (/en/.md returned 404), and independent or hands-on corroboration.",
+    "rationale": "A live llms.txt is served at help.reclaim.ai and returns an indexed Markdown listing of help-center articles. Individual help articles are also available as .md URLs, so an agent can be pointed at machine-readable docs. missing for 10: llms.txt covers only the end-user help center (no developer/API docs), no OpenAPI spec (all candidate paths 404), root docs .md endpoint 404s, no first-party documentation describing agent-oriented docs, no independent corroboration.",
     "evidenceIds": [
       "reclaim-probe-1",
-      "reclaim-probe-2",
-      "reclaim-probe-3",
       "reclaim-docs-30",
-      "reclaim-docs-51"
+      "reclaim-docs-33",
+      "reclaim-probe-2",
+      "reclaim-probe-3"
     ]
   },
   {
@@ -2276,7 +2284,7 @@
     "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Reclaim documents an in-product Schedule Assistant that \"highlights what needs attention and suggests what to do next\" and an AI Assistant chat that helps plan, prioritize, and optimize the schedule from the user's calendar data. It also offers time analytics and auto-categorized stats on where time goes, plus previews of proposed changes. Missing for 10: in-depth docs on what the AI insights actually contain, evidence that the analytics are AI-generated rather than plain stats, and independent or hands-on corroboration of the AI Assistant's suggestions.",
+    "rationale": "Reclaim's docs describe an in-product Schedule Assistant that 'highlights what needs attention and suggests what to do next' and an AI Assistant chat for planning, prioritizing, and optimizing your schedule. Time analytics on meetings, tasks, and work-life balance are drawn from auto-categorized calendar data. missing for 10: in-depth documentation of what insights and suggestions are actually generated, evidence that the analytics are AI-generated rather than plain stats, and independent or hands-on corroboration of the AI suggestion features.",
     "evidenceIds": [
       "reclaim-docs-51",
       "reclaim-docs-11",
@@ -2291,21 +2299,20 @@
     "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Reclaim's core design is autonomous background calendar automation. Users configure Habits, Focus Time goals, Tasks, buffers, travel time and Calendar Sync. The system then schedules and reschedules events on its own when conflicts arise, keeps synced copies updated, and syncs Slack status without manual intervention. Community users confirm the bot proactively adds items and 'stays completely out of the way.' Missing for 10: a general user-defined automation builder (custom triggers and actions beyond preset features and hashtag rules), any API or programmatic way to define automations, and more extensive independent hands-on corroboration.",
+    "rationale": "Reclaim's core design is background autonomy. Users configure Habits, Tasks, Focus Time goals, priorities, buffers and Calendar Sync, and Reclaim then schedules, reschedules, syncs, adds travel and decompression time, auto-locks events, and updates Slack status without manual work (docs-34, docs-29, docs-33, docs-18, docs-21, docs-36, docs-41). Users corroborate that the bot adds things proactively and 'stays completely out of the way' (comm-3, comm-4, comm-9). Missing for 10: a general-purpose, user-defined automation/rule builder beyond the fixed calendar features, and documented visibility or logs of background actions.",
     "evidenceIds": [
       "reclaim-docs-34",
       "reclaim-docs-29",
-      "reclaim-docs-30",
-      "reclaim-docs-31",
-      "reclaim-docs-32",
+      "reclaim-docs-33",
       "reclaim-docs-18",
-      "reclaim-docs-14",
+      "reclaim-docs-21",
       "reclaim-docs-36",
-      "reclaim-docs-42",
-      "reclaim-docs-43",
+      "reclaim-docs-41",
+      "reclaim-docs-32",
+      "reclaim-docs-30",
       "reclaim-comm-3",
-      "reclaim-comm-9",
-      "reclaim-comm-4"
+      "reclaim-comm-4",
+      "reclaim-comm-9"
     ]
   },
   {
@@ -2326,11 +2333,15 @@
   {
     "productId": "reclaim",
     "storyId": "agentic-headless",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "Headless or CI-driven automation is a fair question for a SaaS scheduling service, which could expose an API or CLI, so the axis applies. The evidence pack documents no API, CLI, SDK, or headless mode. The OpenAPI probe found nothing at any candidate path. The product's background auto-scheduling is a built-in feature, not user-scriptable headless operation.",
-    "evidenceIds": []
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "Reclaim is a SaaS calendar assistant, so headless or programmatic automation is a fair question to ask of it. The only programmatic surface in evidence is a live, first-party remote MCP endpoint at mcp.reclaim.ai: it requires OAuth bearer-token auth and advertises read/write scopes (probe-rt-1, rt-2). That offers a plausible route to non-UI automation, but no vendor docs for it exist, OpenAPI paths all 404, and nothing shows a CLI or CI usage. missing for 10: documented public API or CLI, non-interactive/service-account auth suitable for CI, vendor docs for the MCP server, any hands-on evidence of headless or CI automation.",
+    "evidenceIds": [
+      "reclaim-probe-rt-1",
+      "reclaim-probe-rt-2",
+      "reclaim-probe-3"
+    ]
   },
   {
     "productId": "reclaim",
@@ -2338,17 +2349,20 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Reclaim.ai has a chat-based AI Assistant, so letting users plug in MCP servers as tool sources is a fair question for this kind of product. The evidence pack never mentions MCP client support or connecting external tool servers. Its integrations are fixed first-party ones: task sync, Slack, and calendar add-ons.",
+    "rationale": "Reclaim ships an in-product AI Assistant, so asking whether that assistant can consume external MCP servers is a fair question; the axis applies. The evidence pack has nothing showing users can plug MCP servers into Reclaim. The runtime probes show only that Reclaim hosts its own auth-gated MCP server at mcp.reclaim.ai, which is the server role and does not count toward this client-side story.",
     "evidenceIds": []
   },
   {
     "productId": "reclaim",
     "storyId": "agentic-mcp-server",
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "partial",
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Reclaim.ai is a SaaS calendar and scheduling service, so publishing an official MCP server is a fair question and the axis applies. Nothing in the evidence pack mentions an MCP server or MCP endpoint. The llms.txt file on the help center and the in-app AI Assistant do not count as an MCP server, and the OpenAPI probes all returned 404.",
-    "evidenceIds": []
+    "rationale": "Runtime probes, re-verified a month apart, show a live first-party remote MCP server at mcp.reclaim.ai. It returns a spec-compliant 401 Bearer challenge and publishes RFC 9728 OAuth protected-resource metadata with read/write/mcp scopes, so a standard MCP client can plausibly connect. However, the vendor publishes no documentation for the server, and the probes stop at the auth gate, so the exposed tools and an end-to-end agent connection are unverified. Missing for 10: vendor documentation of the MCP server and its setup, a published tool list or capabilities, hands-on evidence of an authenticated session with working tool calls, and independent community corroboration.",
+    "evidenceIds": [
+      "reclaim-probe-rt-1",
+      "reclaim-probe-rt-2"
+    ]
   },
   {
     "productId": "reclaim",
@@ -2356,11 +2370,13 @@
     "verdict": "full",
     "quality": 6,
     "confidence": "medium",
-    "rationale": "Reclaim says users can chat with an AI Assistant to plan, prioritize and optimize their schedule (reclaim-docs-11). The 2.0 Schedule Assistant acts as a control center that suggests next actions and lets users preview calendar changes before deploying them (reclaim-docs-51, reclaim-docs-52). This covers the core of operating the product through natural language, but the evidence is thin marketing and overview copy. Missing for 10: detailed docs on which actions can be performed by chat (creating or editing tasks, habits, meetings, settings), examples of supported commands, and independent or hands-on confirmation that the chat assistant works as claimed.",
+    "rationale": "Reclaim documents a chat-based AI Assistant that lets users plan, prioritize, and optimize their schedule in natural language. Its 2.0 Schedule Assistant acts as a control center that suggests next actions and previews calendar changes before deploying them. A live first-party MCP endpoint with read/write scopes also suggests external agents could drive it conversationally, though that server is undocumented. Missing for 10: detailed docs on which commands or actions the assistant can execute, hands-on or community corroboration of natural-language operation, and official documentation of the MCP server.",
     "evidenceIds": [
       "reclaim-docs-11",
       "reclaim-docs-51",
-      "reclaim-docs-52"
+      "reclaim-docs-52",
+      "reclaim-probe-rt-1",
+      "reclaim-probe-rt-2"
     ]
   },
   {
@@ -2369,26 +2385,33 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Reclaim.ai is a SaaS calendar assistant, and such a product could plausibly ship an official CLI, so the axis applies. Nothing in the evidence mentions a CLI: the docs cover web UI features, add-ons, Slack integration and an in-app AI assistant, and the probes show only an llms.txt file.",
+    "rationale": "An official CLI is a plausible offering for a SaaS scheduling service, so the axis applies, but nothing in the evidence pack mentions a Reclaim command-line tool. The probes found a first-party remote MCP server, but that is a different interface and does not count as a CLI.",
     "evidenceIds": []
   },
   {
     "productId": "reclaim",
     "storyId": "agentic-public-api",
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "partial",
+    "quality": 3,
     "confidence": "medium",
-    "rationale": "A public API is a fair question for a SaaS calendar product, but nothing in the evidence documents one. The OpenAPI/Swagger probes all returned 404, and the help-center llms.txt is AI-readable documentation, not an API. The rest of the evidence covers only in-app features, first-party integrations, add-ons and calendar hashtags, none of which is a public programmatic API.",
-    "evidenceIds": []
+    "rationale": "No documented public API appears in the evidence, and the OpenAPI/Swagger probes all returned 404. Probes did find a live, first-party, OAuth-gated remote MCP endpoint at mcp.reclaim.ai, which publishes an RFC 9728 discovery document with read/write/mcp scopes, so programmatic driving appears possible. However, no vendor documentation for that endpoint was found on either probe date. Missing for 10: published API reference or OpenAPI spec, vendor docs for the MCP/API surface, documented endpoints and auth setup, and hands-on evidence of driving the product through the API beyond the auth handshake.",
+    "evidenceIds": [
+      "reclaim-probe-rt-1",
+      "reclaim-probe-rt-2",
+      "reclaim-probe-3"
+    ]
   },
   {
     "productId": "reclaim",
     "storyId": "agentic-scoped-keys",
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "partial",
+    "quality": 4,
     "confidence": "medium",
-    "rationale": "Reclaim.ai is a SaaS calendar assistant, so issuing scoped, least-privilege API credentials for agents is a fair question to ask of it. The evidence pack never mentions API keys, tokens, scopes or permissions, and the OpenAPI probe returned 404 at every candidate path. With no evidence for an applicable capability, the verdict is none.",
-    "evidenceIds": []
+    "rationale": "Runtime probes show Reclaim's first-party MCP endpoint is auth-gated with MCP-spec OAuth. Its RFC 9728 discovery document advertises coarse 'read', 'write' and 'mcp' scopes, so an agent could plausibly be granted a read-only, scoped token. However, no vendor documentation describes this, and there is no evidence of user-facing controls for issuing, scoping or revoking agent credentials. Missing for 10: first-party docs on credential scoping, fine-grained per-resource scopes, a user-facing token/API-key management UI with revocation, and hands-on confirmation that the scopes are actually enforced.",
+    "evidenceIds": [
+      "reclaim-probe-rt-1",
+      "reclaim-probe-rt-2"
+    ]
   },
   {
     "productId": "reclaim",
@@ -2396,7 +2419,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Reclaim.ai is a SaaS calendar assistant, so offering official SDKs is a fair question for it. The evidence pack shows no official SDK, API client library, or developer documentation, and the OpenAPI probe found nothing at any candidate path. Integrations such as task-tool sync, the Slack integration and the Google add-on are end-user connectors, not SDKs for building against.",
+    "rationale": "Reclaim is a SaaS scheduling platform, so official SDKs are a fair question, but nothing in the evidence pack mentions an SDK or client library, and the OpenAPI/Swagger probes all returned 404. The auth-gated first-party MCP endpoint is a separate agent-integration surface, not an SDK, so it is not credited here.",
     "evidenceIds": []
   },
   {
@@ -2405,7 +2428,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Webhooks are a plausible capability for a SaaS calendar assistant, but nothing in the evidence documents webhook or event-subscription support, and the OpenAPI probes all returned 404. Integrations shown (Slack, task sync) are first-party features, not user-configurable webhooks.",
+    "rationale": "Event webhooks are a fair axis for a SaaS calendar-automation service, but nothing in the evidence pack mentions webhook subscriptions or event callbacks. The docs cover scheduling features and integrations such as Slack and task sync, and the probes find an auth-gated MCP server plus no OpenAPI spec. Neither of those is a webhook event subscription.",
     "evidenceIds": []
   },
   {
@@ -2414,12 +2437,12 @@
     "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Reclaim's Smart Meetings are documented to find the best time to meet across all attendees' schedules (docs-5). Smart events are prioritized and automatically rescheduled as conflicts come up (docs-33, docs-34, docs-29), and Smart Meetings keep moving until they auto-lock at 4am on the day of the meeting (docs-41), which supports continuous optimization rather than first-open-slot booking. Missing for 10: detailed documentation of how the 'best' time is chosen across attendees (it appears only as a feature tagline), and independent or hands-on corroboration of Smart Meetings' cross-attendee optimization.",
+    "rationale": "Reclaim's Smart Meetings are documented to 'find the best time to meet across all attendees' schedules' and are part of its priority-based auto-scheduling. Docs also say it automatically reschedules events when conflicts arise. Smart Meetings auto-lock at 4am on the day they occur, which implies they keep moving to better slots until then. missing for 10: detailed docs on how attendee-wide optimization ranks slots beyond first-available, explicit first-party description of continuous re-optimization for multi-attendee meetings, independent or hands-on corroboration of Smart Meetings.",
     "evidenceIds": [
       "reclaim-docs-5",
-      "reclaim-docs-41",
-      "reclaim-docs-34",
       "reclaim-docs-33",
+      "reclaim-docs-34",
+      "reclaim-docs-41",
       "reclaim-docs-29"
     ]
   },
@@ -2428,19 +2451,18 @@
     "storyId": "ai-task-autoschedule",
     "verdict": "full",
     "quality": 9,
-    "confidence": "medium",
-    "rationale": "Reclaim's docs say it automatically blocks flexible time for Tasks before their due dates, working around existing meetings and splitting long projects into chunks. They also say it automatically reschedules events when conflicts arise or a meeting overbooks a lower-priority smart event, using P1–P4 priorities, and that it works on real Google/Outlook calendars with task sync from Todoist, Asana, Jira and others. Community users say they drag calendar boxes around less, but one early hands-on report saw no reaction when a conflicting invite was added. Missing for 10: independent corroboration that task-specific automatic re-planning works reliably (vs. the one early failure report).",
+    "confidence": "high",
+    "rationale": "First-party docs say Reclaim blocks flexible time for Tasks before their due dates, around everything else on the calendar, and splits long projects into chunks (reclaim-docs-32, reclaim-docs-7). It schedules by priority (reclaim-docs-33) and automatically reschedules when conflicts arise or meetings overbook lower-priority events (reclaim-docs-34, reclaim-docs-29), with users reporting they drag calendar blocks around less (reclaim-comm-4, reclaim-comm-10). missing for 10: independent hands-on corroboration specific to task auto-rescheduling (community reports are general and dated), detailed evidence of re-planning behavior when deadlines slip.",
     "evidenceIds": [
       "reclaim-docs-32",
       "reclaim-docs-7",
       "reclaim-docs-34",
       "reclaim-docs-29",
       "reclaim-docs-33",
-      "reclaim-docs-22",
-      "reclaim-docs-47",
+      "reclaim-docs-31",
+      "reclaim-docs-9",
       "reclaim-comm-4",
-      "reclaim-comm-10",
-      "reclaim-comm-5"
+      "reclaim-comm-10"
     ]
   },
   {
@@ -2449,7 +2471,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "An interactive API reference is a fair question for a SaaS scheduling product, so the axis applies. However, nothing in the evidence pack mentions a public API reference, a developer portal, or runnable examples. The OpenAPI/Swagger probe found no spec at any candidate path (all 404), and the llms.txt file only indexes help-center articles.",
+    "rationale": "A SaaS scheduling platform could plausibly publish an interactive API reference, so the axis applies. However, the evidence contains no API reference, no runnable examples, and no API playground. OpenAPI/Swagger probes on the help domain all returned 404, and the auth-gated MCP endpoint is not an explorable API reference.",
     "evidenceIds": []
   },
   {
@@ -2458,10 +2480,8 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Reclaim.ai is a SaaS scheduling platform, so a downloadable machine-readable API spec is a fair thing to expect. The pack shows no evidence of one. The OpenAPI probe returned 404 on every candidate path, and no docs mention a public API or spec. The llms.txt file covers only Help Center content and is not an API specification.",
-    "evidenceIds": [
-      "reclaim-probe-3"
-    ]
+    "rationale": "Reclaim is a SaaS scheduling platform, so publishing a machine-readable API spec is a fair question. The probe found no OpenAPI or Swagger document at any candidate path (all 404), and no docs mention a downloadable spec. The auth-gated MCP endpoint and its OAuth discovery metadata are not a downloadable API specification, and the probe was limited to help.reclaim.ai, hence medium confidence.",
+    "evidenceIds": []
   },
   {
     "productId": "reclaim",
@@ -2469,7 +2489,7 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "A sandbox or test environment is a fair question for a SaaS scheduling platform. The only relevant evidence is the Reclaim 2.0 note that you can \"preview changes in your calendar before deploying them,\" which works as a dry-run of AI scheduling changes rather than a true isolated sandbox. Missing for 10: a dedicated sandbox or test account/environment, isolated test data separate from real calendars, a developer/API test mode (no OpenAPI spec was found), detailed documentation of the preview feature, and independent hands-on corroboration.",
+    "rationale": "The only relevant evidence is the Reclaim 2.0 note that you can 'preview changes in your calendar before deploying them' [reclaim-docs-52]. That is a dry-run of schedule changes on your real calendar, not an isolated sandbox environment with non-production data. Nothing shows a test or sandbox tenant for the API or the first-party MCP server, which documents only read/write/mcp OAuth scopes. missing for 10: a dedicated sandbox or test environment, isolated test data for API/MCP agent testing, documentation of the preview mechanics, independent or hands-on corroboration.",
     "evidenceIds": [
       "reclaim-docs-52"
     ]
@@ -2480,7 +2500,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Reclaim.ai is a SaaS scheduling product, so versioned APIs with a deprecation policy are a fair question to ask of it. The evidence pack documents only end-user features, though. It never mentions a public API, API versioning, or a deprecation policy, and the OpenAPI/Swagger probes returned 404 on every candidate path.",
+    "rationale": "A SaaS scheduling platform could reasonably publish versioned APIs with a deprecation policy, so the axis applies. The pack contains no evidence of API versioning or a deprecation policy: OpenAPI/Swagger probes all returned 404, and the live MCP endpoint has no vendor documentation at all, let alone versioning or deprecation terms.",
     "evidenceIds": []
   },
   {
@@ -2489,12 +2509,14 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "Reclaim's AI Assistant can be asked in chat to plan and optimize the schedule, and Reclaim 2.0 lets you preview calendar changes before deploying them. Together these imply batched, multi-event changes, and the scheduler automatically reschedules many events as conflicts arise. However, no evidence shows a user explicitly selecting and acting on many tasks, habits or events at once. Missing for 10: documented user-initiated bulk edit/delete/reprioritize across many items, bulk actions via API or assistant commands, and independent or hands-on corroboration.",
+    "rationale": "Reclaim applies automation across many calendar items at once: it auto-schedules and reschedules events around priorities, auto-categorizes all events, and the 2.0 Schedule Assistant lets you preview a set of changes before deploying them. None of this is documented as user-initiated bulk editing of selected items, and the auth-gated MCP endpoint with a write scope has no documented bulk tools. Missing for 10: explicit bulk select/edit/delete of tasks or events, documented batch actions via the AI assistant or API/MCP, and hands-on corroboration of multi-item operations.",
     "evidenceIds": [
-      "reclaim-docs-11",
+      "reclaim-docs-34",
+      "reclaim-docs-36",
+      "reclaim-docs-33",
       "reclaim-docs-51",
       "reclaim-docs-52",
-      "reclaim-docs-34"
+      "reclaim-docs-11"
     ]
   },
   {
@@ -2503,7 +2525,7 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Reclaim runs many built-in event-triggered automations: it reschedules lower-priority smart events when a meeting overbooks them, adds travel time to events with a location, adds decompression buffers after meetings, syncs Slack status from event categories, and auto-locks Smart Meetings. Users can steer these through settings, priorities and hashtag directives (#reclaim_free, #reclaim_busy, #needs_travel). However, these are preset behaviors, not user-authored rules, so it only partly matches \"define rules that trigger actions\". Missing for 10: a general user-defined trigger→action rule builder, custom actions or webhooks/API for event-driven automation, and independent hands-on corroboration of rule-style automation.",
+    "rationale": "Reclaim runs many built-in event-triggered automations: it reschedules lower-priority smart events when a meeting overbooks them, adds travel time to events with a location, adds decompression buffers after meetings, syncs Slack status from event categories, and auto-locks Smart Meetings. Users can steer these through settings, priorities and hashtag directives (#reclaim_free, #reclaim_busy, #needs_travel). However, these are preset behaviors, not user-authored rules, so it only partly matches \"define rules that trigger actions\". Missing for 10: a general user-defined trigger\u2192action rule builder, custom actions or webhooks/API for event-driven automation, and independent hands-on corroboration of rule-style automation.",
     "evidenceIds": [
       "reclaim-docs-29",
       "reclaim-docs-34",
@@ -2539,7 +2561,7 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "Reclaim's 2.0 overview mentions previewing calendar changes before deploying them, which loosely covers the 'review' part of the story. Nothing in the pack shows versioning of automation configurations or a way to roll them back. Missing for 10: version history for automations/settings, rollback or restore of prior automation states, and documented review/approval workflows beyond a single preview mention.",
+    "rationale": "Reclaim 2.0 documents previewing calendar changes before deploying them, which loosely covers the 'review' part of the story. Nothing in the pack shows versioning or rollback of Habits, Tasks, Focus Time or other automation rules. Missing for 10: versioning or history of automation configurations, rollback or undo of automation changes, in-depth docs on the preview/review flow, independent or hands-on corroboration.",
     "evidenceIds": [
       "reclaim-docs-52"
     ]
@@ -2567,7 +2589,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Reclaim offers booking via Scheduling Links, so real-time booking webhooks are a fair question for this product. However, nothing in the evidence pack mentions webhooks or event notifications to external systems for bookings being created, rescheduled, or canceled. The OpenAPI probe found no published API spec.",
+    "rationale": "Webhooks for booking lifecycle events are a fair question for a scheduling product with booking links, so the axis applies. Nothing in the evidence pack mentions webhooks or event notifications for bookings that are created, rescheduled, or canceled. The probes found only an auth-gated MCP server and no OpenAPI spec, and neither shows outbound real-time event delivery.",
     "evidenceIds": []
   },
   {
@@ -2591,7 +2613,7 @@
     "verdict": "partial",
     "quality": 4,
     "confidence": "low",
-    "rationale": "Reclaim's Scheduling Links let others book time against \"you and your team's availability\" across \"one, or many, calendars\" (reclaim-docs-49), and Smart Meetings find times across all attendees' schedules (reclaim-docs-5). That suggests multi-host availability, but no doc states that a link shows only slots where every required host is free. missing for 10: explicit documentation of a collective/all-hosts-required link mode, required vs optional host settings, configuration details for sales-team use, and any independent or hands-on corroboration.",
+    "rationale": "Reclaim's Scheduling Links can share 'you and your team's availability' and let others book across one or many calendars, and Smart Meetings find times across all attendees' schedules. However, nothing in the evidence explicitly describes a collective mode that shows only slots where every required host is free, as opposed to round-robin or any-host pooling. missing for 10: explicit documentation of collective or all-hosts-required booking logic, configuration of required vs optional hosts, independent or hands-on corroboration.",
     "evidenceIds": [
       "reclaim-docs-49",
       "reclaim-docs-5",
@@ -2604,7 +2626,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Reclaim offers booking via Scheduling Links, so CRM and automation integration is a fair question for it. The evidence only shows Slack, Google/Outlook add-ons and task-tool sync (Todoist, Asana, Jira and others). Nothing shows bookings flowing into Salesforce, HubSpot or Zapier, and the probe found no public OpenAPI spec.",
+    "rationale": "Reclaim offers Scheduling Links for booking, so a CRM and automation integration axis applies. The evidence pack never mentions Salesforce, HubSpot, Zapier, webhooks, or any CRM sync for bookings. The documented integrations cover only calendars, Slack, Google/Outlook add-ons, and task tools like Todoist, Asana and Jira.",
     "evidenceIds": []
   },
   {
@@ -2613,14 +2635,14 @@
     "verdict": "full",
     "quality": 8,
     "confidence": "medium",
-    "rationale": "Reclaim's Calendar Sync makes 'smart copies' of events from a source calendar onto a destination calendar. Those copies stay up to date as the source events change, so availability stays accurate across multiple calendars, including external ones such as iCloud synced into Google. Missing for 10: independent or hands-on corroboration of Calendar Sync, and explicit evidence of bidirectional work-to-personal syncing and of copies showing only as busy blocks.",
+    "rationale": "Reclaim's first-party Calendar Sync docs say it creates smart copies of events from a source calendar on a destination calendar. They also say the copies stay up to date as source events change, so nothing needs manual updating, and that availability stays accurate across multiple calendars. External or personal calendars (e.g., iCloud) can be synced into a Google Calendar, which covers keeping work and personal schedules in step. Missing for 10: explicit documentation that copies can be shown as private 'busy' blocks without event details, confirmation of two-way (work\u2194personal) sync, and independent or hands-on corroboration of Calendar Sync.",
     "evidenceIds": [
       "reclaim-docs-8",
       "reclaim-docs-13",
       "reclaim-docs-18",
       "reclaim-docs-23",
-      "reclaim-docs-50",
-      "reclaim-docs-48"
+      "reclaim-docs-48",
+      "reclaim-docs-50"
     ]
   },
   {
@@ -2629,12 +2651,12 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "Reclaim documents Scheduling Links for sharing availability and letting others book time across one or many calendars. Each link can carry its own priority level and can overbook lower-priority events. However, the evidence never shows per-link configuration of the elements this story asks for. Missing for 10: evidence of multiple distinct event types, per-type durations, per-type locations, custom booking questions, confirmation/approval rules, and any independent or hands-on corroboration.",
+    "rationale": "Reclaim's docs confirm Scheduling Links that let others book time across one or many calendars, with \"smart meeting controls\" and per-link priority settings. That gives a booking-link foundation, but nothing documents distinct event types with their own settings. Missing for 10: evidence of multiple configurable event types, per-type durations, per-type locations, custom booking questions, confirmation/approval rules, and any independent or hands-on corroboration.",
     "evidenceIds": [
-      "reclaim-docs-2",
       "reclaim-docs-49",
-      "reclaim-docs-17",
-      "reclaim-docs-33"
+      "reclaim-docs-2",
+      "reclaim-docs-33",
+      "reclaim-docs-17"
     ]
   },
   {
@@ -2643,15 +2665,16 @@
     "verdict": "full",
     "quality": 9,
     "confidence": "high",
-    "rationale": "Reclaim's docs say Focus Time uses AI to flexibly defend a weekly focus goal and that Habits flex and adapt as things come up. They also say Reclaim automatically reschedules smart events to the next best time when conflicts or overbookings occur, guided by P1–P4 priorities. Community users report the bot adding routines and reserving time so meetings don't take over the day. Missing for 10: no documentation of what happens when no alternative slot exists (i.e. a guarantee habits are never dropped), and only anecdotal rather than detailed hands-on corroboration of conflict rescheduling.",
+    "rationale": "First-party docs say Focus Time uses AI to flexibly defend a weekly focus goal, and that Habits flex around your schedule and adapt as things come up. Reclaim automatically reschedules smart events to the next best time when a higher-priority meeting overbooks them, guided by P1\u2013P4 priorities. Community users corroborate that it reserves time for habits so meetings don't take over the day. Missing for 10: documented behavior when no alternative slot exists (the 'instead of dropping' guarantee), and clear independent hands-on confirmation of conflict-driven rescheduling (one early user reported the conflict test 'didn't work').",
     "evidenceIds": [
+      "reclaim-docs-1",
       "reclaim-docs-30",
+      "reclaim-docs-4",
       "reclaim-docs-31",
       "reclaim-docs-34",
       "reclaim-docs-29",
       "reclaim-docs-33",
-      "reclaim-docs-4",
-      "reclaim-docs-1",
+      "reclaim-docs-41",
       "reclaim-comm-3",
       "reclaim-comm-4",
       "reclaim-comm-10"
@@ -2663,9 +2686,10 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "Reclaim documents a free Lite plan for any single user with 'essential smart time blocking features' [reclaim-docs-16]. It also documents Scheduling Links as a booking feature [reclaim-docs-49], but nothing in the pack says those links are included in the free tier or how limited they are. missing for 10: explicit evidence that Scheduling Links are included in the free Lite plan, any limits on free-tier links (number, duration, branding), independent or hands-on confirmation of free-tier booking use.",
+    "rationale": "Reclaim offers a no-cost Lite plan for any single user, described as covering 'essential smart time blocking features' (reclaim-docs-16, reclaim-docs-28), and it separately documents Scheduling Links for sharing bookable availability (reclaim-docs-49, reclaim-docs-2). However, nothing in the pack confirms that Scheduling Links are included in Lite, and the Lite description stresses time blocking rather than booking. Missing for 10: explicit evidence that booking links are available on the free Lite plan, any free-tier limits on links or meeting types, and independent or hands-on confirmation that a free user can share a working booking link.",
     "evidenceIds": [
       "reclaim-docs-16",
+      "reclaim-docs-28",
       "reclaim-docs-49",
       "reclaim-docs-2"
     ]
@@ -2676,7 +2700,7 @@
     "verdict": "partial",
     "quality": 6,
     "confidence": "medium",
-    "rationale": "Reclaim's Calendar Sync copies events from source calendars onto a destination calendar so that bookings reflect 'true availability across multiple calendars' and time is defended 'across all of your schedules'. It works with Google and Outlook and auto-reschedules when conflicts arise. Apple/iCloud is only supported indirectly, by syncing an iCloud shared calendar into a Google Calendar, and conflict checking depends on sync copies rather than native checking of every connected calendar. Missing for 10: native Apple/iCloud calendar connection, explicit documentation that all connected calendars are checked for double-booking, independent hands-on corroboration of multi-calendar conflict prevention.",
+    "rationale": "Reclaim's Calendar Sync copies events from source calendars onto destination calendars and keeps them updated, so bookers see your \"true availability across multiple calendars\" (reclaim-docs-13, reclaim-docs-18, reclaim-docs-50, reclaim-docs-8), and it works with Google and Outlook calendars (reclaim-docs-47, reclaim-docs-33). Apple/iCloud calendars are only covered indirectly, by syncing a shared iCloud calendar into a Google Calendar (reclaim-docs-48), and conflict protection comes from mirrored busy copies rather than direct checking of every connected calendar. Missing for 10: native Apple/iCloud calendar connection, explicit documentation that every connected calendar is checked for conflicts at booking time, independent hands-on corroboration of multi-calendar double-booking prevention.",
     "evidenceIds": [
       "reclaim-docs-8",
       "reclaim-docs-13",
@@ -2684,19 +2708,23 @@
       "reclaim-docs-23",
       "reclaim-docs-50",
       "reclaim-docs-47",
-      "reclaim-docs-48",
       "reclaim-docs-33",
-      "reclaim-docs-34"
+      "reclaim-docs-48",
+      "reclaim-docs-49"
     ]
   },
   {
     "productId": "reclaim",
     "storyId": "openness-api-parity",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "API parity is a fair question for a SaaS scheduling product, but nothing in the evidence documents a public API that mirrors the UI. Every feature citation describes UI or calendar-hashtag workflows, and the OpenAPI/Swagger probes all returned 404. The llms.txt file covers only the help-center docs and is not evidence of a programmatic API.",
-    "evidenceIds": []
+    "verdict": "partial",
+    "quality": 2,
+    "confidence": "low",
+    "rationale": "The only programmatic surface in the evidence is an undocumented, auth-gated first-party remote MCP server at mcp.reclaim.ai, which advertises read/write scopes. Nothing shows what it covers or that it matches the UI, and no OpenAPI spec was found at any probed path. missing for 10: a documented public REST API, an OpenAPI or reference spec, evidence of coverage across Tasks/Habits/Focus Time/Scheduling Links/Calendar Sync/settings, any vendor docs for the MCP server, and independent confirmation of UI parity.",
+    "evidenceIds": [
+      "reclaim-probe-rt-1",
+      "reclaim-probe-rt-2",
+      "reclaim-probe-3"
+    ]
   },
   {
     "productId": "reclaim",
@@ -2704,7 +2732,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Data export and portability is a fair question for a SaaS calendar assistant, so the axis applies. The pack has no evidence of a data-export feature, open-format downloads (e.g. CSV/JSON/ICS) or an account-offboarding flow, and the OpenAPI probe returned 404. The docs only say Reclaim works on top of your existing Google/Outlook calendar rather than replacing it, which is not an export capability.",
+    "rationale": "Exporting data in open formats is a fair question for a SaaS calendar assistant, so the axis applies. The pack has no evidence of a data-export feature, export formats, or an account-exit or deletion process. Docs say Reclaim works alongside your Google or Outlook calendar rather than replacing it, but that does not show you can export Reclaim's own data (habits, tasks, priorities, settings).",
     "evidenceIds": []
   },
   {
@@ -2712,8 +2740,8 @@
     "storyId": "openness-open-license",
     "verdict": "none",
     "quality": 0,
-    "confidence": "medium",
-    "rationale": "Whether a SaaS scheduling product publishes its source under an open license is a fair question for this kind of product, so the axis applies. Nothing in the evidence pack mentions a public repository, source availability, or an open-source license. The pack covers only features, pricing, help docs and API/docs probes.",
+    "confidence": "high",
+    "rationale": "Open-source availability is a fair question for a SaaS scheduling product, since some scheduling tools ship open-source code, so the axis applies. Nothing in the evidence pack mentions a public repository, published source, or open license for Reclaim.ai. The docs cover features, pricing and an llms.txt help index, and the probes find only an auth-gated MCP endpoint, none of which concerns source availability.",
     "evidenceIds": []
   },
   {
@@ -2722,7 +2750,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Self-hosting is a fair question for a SaaS calendar-scheduling product, so the axis applies. Nothing in the evidence pack mentions a self-hosted, on-prem, or open-source deployment of Reclaim. The docs describe only the hosted service working with Google and Outlook calendars, so this is none rather than na.",
+    "rationale": "Self-hosting is a fair axis for a scheduling and calendar-assistant product, since some products in this category offer self-hostable deployments. Nothing in the evidence pack shows Reclaim offering a self-hosted or on-prem deployment of its core product. The evidence describes only a vendor-hosted service, including a remote MCP endpoint on the vendor's own domain.",
     "evidenceIds": []
   },
   {
@@ -2731,7 +2759,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Reclaim offers Scheduling Links for booking, so payment collection at booking is an applicable axis, but no evidence item mentions Stripe, payments, or paid sessions on booking links.",
+    "rationale": "Reclaim ships booking links (Scheduling Links), so collecting payment at booking is a fair question for this product. However, nothing in the evidence mentions payment collection, Stripe, or paid sessions. The scheduling-link docs cover only availability sharing, priority-based overbooking and auto-rescheduling.",
     "evidenceIds": []
   },
   {
@@ -2740,7 +2768,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Data residency is a fair question for a cloud SaaS calendar assistant like Reclaim.ai, so the axis applies. However, nothing in the evidence pack mentions choosing a storage region, data residency options, or where data is hosted. The cited items cover only scheduling features, sync, pricing and integrations, so the verdict is none.",
+    "rationale": "Choosing a data-storage region is a fair question for a SaaS calendar assistant like Reclaim.ai, so the axis applies. Nothing in the evidence pack mentions data residency, region selection, or where user data is hosted. The documentation covers scheduling features only, and the probes cover only the llms.txt, OpenAPI and MCP endpoints.",
     "evidenceIds": []
   },
   {
@@ -2749,7 +2777,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Reclaim.ai is an AI-powered scheduling SaaS with an AI Assistant, so asking whether user data can be excluded from AI model training is a fair question for this product. However, nothing in the evidence pack covers AI training data use, opt-out controls or data-use policies; the pack only describes scheduling, sync and buffer features.",
+    "rationale": "Reclaim.ai is an AI-powered SaaS that processes user calendar data, so an AI-training opt-out is a fair question for this kind of product. However, nothing in the evidence pack addresses AI training use, data-usage policies, or any opt-out control. The docs cover only scheduling features, and the probes cover only llms.txt and MCP endpoints.",
     "evidenceIds": []
   },
   {
@@ -2758,7 +2786,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Reclaim.ai is a SaaS calendar assistant that processes user calendar data, so data retention and deletion controls are a fair question to ask of it. However, nothing in the evidence pack documents retention settings, data deletion, account deletion, or data export controls. The docs cover only scheduling, sync, and buffer features.",
+    "rationale": "Data retention and deletion controls are a fair privacy question for a SaaS calendar assistant that processes users' schedules, so the axis applies. However, nothing in the evidence pack documents retention settings, data deletion, account deletion, or export controls. The docs cover scheduling features only, and the community and probe items do not address retention or deletion.",
     "evidenceIds": []
   },
   {
@@ -2767,7 +2795,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Opting out of telemetry and usage tracking is a fair privacy question for a SaaS calendar assistant, so the axis applies. Nothing in the evidence pack mentions telemetry, analytics opt-out, or usage-tracking controls. The docs cover only scheduling features, and the community comments do not address tracking controls.",
+    "rationale": "Opting out of telemetry and usage tracking is a fair privacy question for a SaaS calendar assistant like Reclaim, so the axis applies. The evidence pack covers scheduling, sync, buffers, priorities and an MCP endpoint, but contains no documentation of telemetry or analytics opt-out controls.",
     "evidenceIds": []
   },
   {
@@ -2776,7 +2804,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Reclaim ships Scheduling Links for booking time, so automated reminder and follow-up sequences around bookings are a fair axis for it. However, nothing in the evidence pack mentions email or SMS reminders, follow-up sequences, or no-show reduction features. The docs cover only availability sharing, auto-rescheduling, buffers, and calendar sync.",
+    "rationale": "Reclaim ships booking via Scheduling Links, so automated reminder and follow-up sequences around bookings are a fair question for this product. However, nothing in the evidence mentions email or SMS reminders, follow-up sequences, or no-show reduction. The docs cover only time blocking, buffers, calendar sync, priorities and rescheduling.",
     "evidenceIds": []
   },
   {
@@ -2785,7 +2813,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Reclaim ships Scheduling Links and Calendar Sync, so this axis applies to it. However, nothing in the pack shows invitees rescheduling or cancelling from a booking confirmation, or any enforced reschedule/cancel policies such as notice windows or limits. The auto-reschedule items (docs-12, docs-29) describe Reclaim moving lower-priority smart events around new bookings, not invitee self-service, and synced copies updating across calendars covers only the downstream piece.",
+    "rationale": "Reclaim ships Scheduling Links, so invitee self-service rescheduling is a fair axis for it. However, nothing in the pack shows invitees rescheduling or cancelling from a confirmation, or the host's policies (notice windows, cancellation rules) being enforced. The rescheduling the docs describe is Reclaim moving the host's own lower-priority smart events, and Calendar Sync only keeps the host's calendar copies updated; neither is invitee-initiated rescheduling or cancellation.",
     "evidenceIds": []
   },
   {
@@ -2794,7 +2822,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The only team-scheduling evidence is that Scheduling Links can share 'you and your team's availability' for booking across one or many calendars. Nothing shows round-robin distribution of inbound meetings among team members, or weighting or priority to balance load. The documented P1–P4 priorities rank events on an individual's own calendar, not how meetings are assigned across a team.",
+    "rationale": "The evidence shows Scheduling Links can expose 'you and your team's availability' across one or many calendars, but nothing documents round-robin distribution of inbound bookings, or weighting or fairness across hosts. Reclaim's P1\u2013P4 priorities rank events on a single user's calendar, not load across a team.",
     "evidenceIds": []
   },
   {
@@ -2803,7 +2831,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Routing forms are a fair question for a scheduling-link product like Reclaim, so the axis applies. The pack only shows Scheduling Links that can book across your own and your team's calendars, with nothing about intake forms, qualifying questions, or answer-based routing to a person or team. Lack of evidence for an applicable capability yields none.",
+    "rationale": "Routing forms are a fair question for a scheduling tool, so this axis applies. The evidence covers Scheduling Links that share your own or your team's availability, but nothing describes a form that qualifies invitees and routes them to a person or team based on their answers.",
     "evidenceIds": []
   },
   {
@@ -2812,7 +2840,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Reclaim is a scheduling SaaS, so a public REST API for event types, availability and bookings is a fair axis to ask about. However, the evidence pack documents only end-user features (scheduling links, calendar sync, buffers) and native integrations, with no mention of a developer API. The OpenAPI/Swagger path probes all returned 404.",
+    "rationale": "A documented public REST API is a fair axis for a scheduling SaaS like Reclaim. The pack contains no API reference covering event types, availability, or bookings, and the OpenAPI/Swagger probes all returned 404. The only programmatic surface found is an undocumented, OAuth-gated MCP endpoint, which is not a documented REST API and cannot be credited here.",
     "evidenceIds": []
   },
   {
@@ -2820,8 +2848,8 @@
     "storyId": "self-host-scheduling-engine",
     "verdict": "none",
     "quality": 0,
-    "confidence": "medium",
-    "rationale": "Self-hosting a scheduling engine under an open-source license is a fair axis for scheduling software, since open-source self-hostable scheduling tools exist. The evidence pack only describes Reclaim as a hosted calendar assistant working with Google or Outlook. It never mentions source code, container images, self-hosting or an open-source license.",
+    "confidence": "high",
+    "rationale": "Self-hosting under an open-source license is a fair question for scheduling tools, so the axis applies. Nothing in the evidence mentions source code, container images, an open-source license, or self-hosting. Reclaim is presented only as a hosted assistant that works with Google and Outlook calendars, with free and paid plans and a vendor-hosted MCP endpoint.",
     "evidenceIds": []
   },
   {
@@ -2830,7 +2858,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Reclaim ships Scheduling Links, so invitee time-zone handling is a fair question for this product. However, nothing in the pack covers detecting the invitee's time zone, showing slots in it, or handling DST. The only time-zone mention is about locking Smart Meetings at 4am in the user's own local time zone, which is unrelated to what invitees see.",
+    "rationale": "Reclaim offers Scheduling Links, so automatic invitee time-zone handling is a fair question for this product. However, nothing in the evidence covers detecting the invitee's time zone, showing slots in it, or handling DST. The only time-zone mention is Smart Meetings locking at 4am in the user's own local time zone, which is unrelated to what invitees see.",
     "evidenceIds": []
   },
   {
@@ -2839,7 +2867,7 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "Reclaim publishes a help article on how its pricing and plans work, and it states that the Lite tier is free for any single user with essential smart time-blocking features. That shows some tier information is public before talking to sales. However, the evidence gives no per-seat dollar amounts for paid tiers and no breakdown of what each tier includes. Missing for 10: published per-seat prices for paid tiers, per-tier feature inclusions and limits, evidence that pricing is self-serve without contacting sales, independent corroboration.",
+    "rationale": "Reclaim has a first-party help article on how its pricing and plans work, and it states that the Lite tier is free for any single user with essential smart time-blocking features. Nothing in the pack shows actual per-seat prices or what each paid tier includes. missing for 10: published per-seat dollar prices for paid tiers, tier-by-tier feature inclusions, evidence that pricing is visible without contacting sales, independent corroboration.",
     "evidenceIds": [
       "reclaim-docs-16",
       "reclaim-docs-28"
@@ -2851,7 +2879,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Reclaim offers Scheduling Links and Smart Meetings for booking time, so automatically attaching a conferencing link is a fair question for this product. However, nothing in the evidence pack mentions adding Zoom, Google Meet, Teams, or native video links to bookings. With no evidence for this capability, the verdict is none.",
+    "rationale": "Reclaim offers Scheduling Links for booking, so automatic conferencing links on bookings is a fair axis for this product. However, nothing in the evidence pack mentions adding Zoom, Google Meet, Teams, or native video links to booked meetings. The scheduling-link docs cover availability, priorities and rescheduling only.",
     "evidenceIds": []
   },
   {
@@ -2860,7 +2888,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Reclaim offers Scheduling Links that let others book time, so embedding the booking experience is a fair question for this product. However, nothing in the evidence pack mentions an embed snippet, inline or popup embed, or a floating widget for placing booking on a third-party site.",
+    "rationale": "Reclaim offers Scheduling Links, so embedding a booking page on your own site is a fair question for this product. However, the evidence only describes sharing booking links and never mentions an inline, popup, or floating-widget embed or any documented snippet. With no evidence of the capability, the verdict is none.",
     "evidenceIds": []
   },
   {
@@ -2869,14 +2897,14 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Reclaim documents out-of-office handling, including telling Reclaim you're on vacation while optionally still scheduling Tasks and Habits. It also supports ad-hoc availability overrides through hashtags (#reclaim_free for no-meeting days, #reclaim_busy to reserve time), and scheduling links share your availability. However, nothing in the pack shows defining working-hours schedules or a structured date-override feature, so the overrides depend on calendar-event hashtags. Missing for 10: documented working-hours or availability-schedule configuration, a dedicated date-override UI, and independent or hands-on corroboration of the OOO and override behavior.",
+    "rationale": "Out-of-office is documented: Reclaim can be told when you're on vacation or OOO, with options for continuing Tasks/Habits during that time, and makes OOO visibility automatic. Ad-hoc availability changes are possible through the #reclaim_free no-meeting-day and #reclaim_busy hashtags, and scheduling links share your availability. However, nothing in the pack documents defining working-hours schedules, and the date overrides are hashtag workarounds rather than a dedicated availability-schedule editor. Missing for 10: documented working-hours/availability schedule configuration, a first-class date-override mechanism, independent corroboration.",
     "evidenceIds": [
       "reclaim-docs-10",
       "reclaim-docs-38",
       "reclaim-docs-43",
       "reclaim-docs-44",
-      "reclaim-docs-2",
-      "reclaim-docs-49"
+      "reclaim-docs-49",
+      "reclaim-docs-2"
     ]
   },
   {

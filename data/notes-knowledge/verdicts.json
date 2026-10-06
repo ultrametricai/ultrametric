@@ -2908,37 +2908,34 @@
     "verdict": "full",
     "quality": 9,
     "confidence": "high",
-    "rationale": "Poly documents a hosted MCP server at mcp.poly.app (streamable HTTP, OAuth) exposing search, fetch, and a virtual `poly` CLI, and a runtime probe confirmed it is live and speaks the MCP OAuth flow. Its scriptable `poly` CLI comes with an agent skill that teaches agents to search, read, create, update, and organize files, and the Claude Code plugin grants full file access, so external agents can read and write notes without the GUI. Missing for 10: independent hands-on corroboration that agent writes work via MCP/CLI, and a fully headless auth path (first MCP connection requires a browser sign-in; no public REST/OpenAPI found).",
+    "rationale": "Poly documents a hosted MCP server at mcp.poly.app/mcp, confirmed live by a runtime probe. Its tools include search, fetch and a virtual `poly` CLI. Poly also ships a scriptable local `poly` CLI with an agent skill that can search, read, create, update and organize files, plus a Claude Code plugin granting full file access, so an agent can read and write notes such as Mind journal Markdown without the GUI. Missing for 10: hands-on or independent verification of write operations through MCP/CLI, and no public REST/OpenAPI vendor API (first MCP connection also needs a browser OAuth sign-in).",
     "evidenceIds": [
-      "poly-docs-7",
       "poly-docs-29",
       "poly-probe-rt-2",
-      "poly-probe-3",
-      "poly-docs-17",
       "poly-docs-20",
+      "poly-docs-17",
       "poly-docs-18",
       "poly-docs-19",
       "poly-docs-30",
-      "poly-docs-11",
       "poly-docs-12",
-      "poly-probe-rt-1",
+      "poly-probe-3",
+      "poly-probe-4",
       "poly-probe-2"
     ]
   },
   {
     "productId": "poly",
     "storyId": "agentic-agent-docs",
-    "verdict": "full",
-    "quality": 9,
-    "confidence": "high",
-    "rationale": "Probes confirm a live llms.txt at docs.poly.app with a companion llms-full.txt, and every docs page is mirrored as raw Markdown under /raw/*.md. That index covers the agent, CLI, and MCP integrations. An agent-skill doc also teaches agents how to use the CLI. Missing for 10: independent or community corroboration of agents actually consuming these docs successfully.",
+    "verdict": "partial",
+    "quality": 5,
+    "confidence": "medium",
+    "rationale": "A probe shows no llms.txt (HTTP 404 at docs.poly.app/llms.txt), but the docs are served as raw Markdown pages (docs.poly.app/raw/*.md) that an agent could be pointed at. Poly also ships agent-oriented guidance: a `poly-cli` agent skill that teaches an agent to compose `poly` commands, and a Claude Code plugin that \"teaches Claude how to use Poly.\" Missing for 10: an llms.txt or llms-full.txt index, explicit documentation that the raw Markdown docs are meant for agent consumption, and independent corroboration of agents successfully using the docs.",
     "evidenceIds": [
       "poly-probe-1",
-      "poly-probe-rt-1",
-      "poly-docs-1",
-      "poly-docs-25",
-      "poly-docs-5",
-      "poly-docs-20"
+      "poly-docs-20",
+      "poly-docs-19",
+      "poly-docs-17",
+      "poly-docs-18"
     ]
   },
   {
@@ -2947,14 +2944,13 @@
     "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Poly has a built-in agent that can summarize, explain, and act on your files inside the product. It handles multi-step reading, searching, and organizing tasks. It also automatically remembers key details from your files as a 'second brain' and supports natural-language search over them. missing for 10: evidence of proactive AI-generated suggestions or insights (beyond on-demand summarize/explain), detail on what kinds of insights are surfaced, independent or hands-on corroboration of output quality.",
+    "rationale": "Poly ships a built-in agent you can ask to summarize, explain, or edit your files (poly-docs-31), and it handles multi-step tasks across reading, searching, writing, and organizing (poly-docs-14). It also builds a 'second brain' of key details from your files (poly-docs-3) and offers natural-language search inside file content (poly-docs-2), so the core of getting AI-derived insight from your data inside the product is documented. Missing for 10: evidence of proactive AI suggestions or surfaced insights the user did not ask for, deeper documentation of insight-style outputs beyond summarize/explain, and independent or hands-on corroboration of the in-product agent's quality.",
     "evidenceIds": [
       "poly-docs-31",
-      "poly-docs-3",
       "poly-docs-14",
+      "poly-docs-3",
       "poly-docs-2",
-      "poly-docs-27",
-      "poly-probe-rt-1"
+      "poly-docs-28"
     ]
   },
   {
@@ -2978,14 +2974,13 @@
     "verdict": "full",
     "quality": 9,
     "confidence": "medium",
-    "rationale": "Poly's first-party docs describe a built-in Poly agent that accepts delegated work. It handles multi-step tasks spanning reading, searching, writing and organizing in one request, and it can create and edit files directly in storage. It can also summarize, explain and automate jobs like organizing a folder, and spawn and track subagents. A runtime probe confirms the docs index covers the built-in file agent. Missing for 10: independent or hands-on corroboration that the built-in agent completes delegated tasks reliably.",
+    "rationale": "Poly's docs describe a built-in Poly agent you can ask to summarize, explain, edit files, and automate tasks such as organizing a folder. The agent handles multi-step tasks (reading, searching, writing, organizing) in a single request, writes and edits files directly in your storage, and can spawn subagents to delegate and track work. missing for 10: independent or hands-on corroboration that the built-in agent performs delegated tasks as documented.",
     "evidenceIds": [
+      "poly-docs-31",
       "poly-docs-14",
       "poly-docs-27",
-      "poly-docs-31",
-      "poly-docs-21",
       "poly-docs-35",
-      "poly-probe-rt-1"
+      "poly-docs-21"
     ]
   },
   {
@@ -2994,12 +2989,12 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Poly ships an official `poly` CLI with 25+ commands, described as making files 'searchable and scriptable from the terminal', so terminal automation is plausible. Nothing documents running it non-interactively in CI, and the hosted MCP route needs an in-browser OAuth sign-in, which works against headless use. Missing for 10: documented headless or non-interactive authentication (API tokens or service accounts), CI/pipeline usage guidance or examples, and independent hands-on confirmation of unattended runs.",
+    "rationale": "Poly ships an official `poly` CLI described as making files \"searchable and scriptable from the terminal\" (e.g. `poly search ...`), which supports headless scripted automation. Nothing documents CI usage or non-interactive authentication, and the hosted MCP path requires in-browser OAuth on first connection, which works against unattended CI runs. missing for 10: documented CI/headless mode, non-interactive auth (API keys/service tokens), CI examples or integrations, independent hands-on corroboration of scripted runs.",
     "evidenceIds": [
       "poly-docs-17",
       "poly-docs-6",
       "poly-probe-4",
-      "poly-probe-rt-1",
+      "poly-docs-20",
       "poly-docs-29",
       "poly-probe-rt-2"
     ]
@@ -3010,7 +3005,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Poly ships its own built-in agent, so letting users plug in external MCP servers is a fair question for this product. However, every MCP item in the pack describes Poly acting as an MCP server that outside assistants connect to: the hosted endpoint at mcp.poly.app, the Claude Code plugin, and the IDE integrations. Nothing shows Poly's agent consuming third-party MCP servers or their tools, and that server-side evidence cannot be credited toward this client-side story.",
+    "rationale": "Poly ships its own agent, so letting users plug external MCP servers into it is a fair question for this product. However, all MCP evidence describes Poly acting as an MCP server that outside assistants connect to (hosted at mcp.poly.app, plus a Claude Code plugin). Nothing shows the Poly agent consuming third-party MCP servers or their tools, and server-side support does not count toward this client-side story.",
     "evidenceIds": []
   },
   {
@@ -3019,14 +3014,13 @@
     "verdict": "full",
     "quality": 9,
     "confidence": "high",
-    "rationale": "Poly documents an official hosted MCP server at https://mcp.poly.app/mcp, using streamable HTTP with in-browser OAuth. The official Claude Code plugin connects that server, and the docs index covers MCP setup for Claude Code, Codex, ChatGPT, Gemini and IDEs. A runtime probe confirmed the endpoint is live and returns the MCP OAuth challenge. Missing for 10: hands-on evidence of an authenticated session actually calling the exposed tools (search, fetch, virtual CLI), and independent community reports of using the MCP server.",
+    "rationale": "Poly documents an official hosted MCP server at https://mcp.poly.app/mcp, using streamable HTTP with in-browser OAuth, and an official Claude Code plugin that connects to it. A runtime probe confirmed the endpoint is live and returns the MCP OAuth challenge, with search, fetch and a virtual `poly` CLI exposed as tools. Missing for 10: hands-on evidence of an authenticated agent session completing tool calls, and detailed per-tool reference documentation.",
     "evidenceIds": [
       "poly-docs-7",
-      "poly-docs-18",
       "poly-docs-29",
+      "poly-docs-18",
       "poly-docs-19",
       "poly-probe-3",
-      "poly-probe-rt-1",
       "poly-probe-rt-2"
     ]
   },
@@ -3036,32 +3030,32 @@
     "verdict": "full",
     "quality": 9,
     "confidence": "medium",
-    "rationale": "Poly ships a built-in agent that takes natural-language requests to summarize, explain, edit and organize files, and handles multi-step read/search/write/organize tasks in a single request. It also offers natural-language search down to the timestamp or paragraph, and external assistants can drive it over a live hosted MCP server. Missing for 10: independent or hands-on corroboration that the built-in agent reliably carries out natural-language commands (evidence is first-party docs plus an MCP liveness probe).",
+    "rationale": "Poly ships a built-in agent that takes plain-language requests to summarize, explain, edit, and organize files, including multi-step read/search/write/organize tasks in a single request. It also supports natural-language search in the app and the CLI (e.g. `poly search \"the contract with the March deadline\"`), and can be driven from Claude, ChatGPT, and VS Code via its plugin and MCP server. Missing for 10: independent or hands-on corroboration that the natural-language agent works as documented (the evidence is vendor docs only, plus a probe confirming the MCP endpoint is live).",
     "evidenceIds": [
-      "poly-docs-14",
       "poly-docs-31",
+      "poly-docs-14",
       "poly-docs-27",
       "poly-docs-2",
+      "poly-docs-6",
+      "poly-docs-4",
       "poly-docs-11",
-      "poly-docs-29",
-      "poly-probe-rt-2",
-      "poly-probe-rt-1"
+      "poly-probe-rt-2"
     ]
   },
   {
     "productId": "poly",
     "storyId": "agentic-official-cli",
     "verdict": "full",
-    "quality": 8,
+    "quality": 9,
     "confidence": "high",
-    "rationale": "Poly documents an official `poly` command-line tool that makes files searchable and scriptable from the terminal, with examples like `poly search` and 25+ commands. It ships a first-party `poly-cli` agent skill that teaches agents to compose `poly` commands, and the integration docs position the local CLI as the first step for connecting AI assistants. Missing for 10: independent or hands-on corroboration that the CLI runs as documented, and evidence on installation/authentication details.",
+    "rationale": "Poly documents an official `poly` command-line tool that makes files \"searchable and scriptable from the terminal\", with concrete commands like `poly search`. It ships a first-party `poly-cli` agent skill that teaches agents to compose `poly` commands, and the integrations docs make the local CLI the first step for AI assistants. A probe also confirms the CLI docs page exists. Missing for 10: independent or hands-on corroboration that the local CLI works as documented; the only runtime probe covers the hosted MCP server's virtual CLI, not the local binary.",
     "evidenceIds": [
       "poly-docs-17",
       "poly-docs-6",
-      "poly-docs-20",
       "poly-docs-18",
+      "poly-docs-20",
       "poly-probe-4",
-      "poly-probe-rt-1"
+      "poly-probe-rt-2"
     ]
   },
   {
@@ -3070,7 +3064,7 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Poly can be driven programmatically through documented interfaces. It runs a live hosted MCP server at mcp.poly.app/mcp with OAuth, exposing search, fetch and a virtual `poly` CLI as tools. It also ships a scriptable `poly` CLI with 25+ commands and an agent skill for composing them. However, no conventional public API spec could be found: every OpenAPI/Swagger probe path returned 404, so the API surface is limited to MCP and CLI wrappers. Missing for 10: a documented general-purpose REST/HTTP API with an OpenAPI spec, API reference docs beyond MCP/CLI, independent hands-on corroboration of API-driven workflows.",
+    "rationale": "Poly can be driven programmatically through a documented, live hosted MCP server at https://mcp.poly.app/mcp, which uses OAuth and exposes search, fetch and a virtual `poly` CLI as tools. It also has a scriptable `poly` CLI with an agent skill for search, read, create, update and organize. However, no general-purpose public API is documented: all OpenAPI/Swagger probes returned 404 and the docs never describe a REST/HTTP API. Missing for 10: a documented general-purpose public REST/HTTP API with an OpenAPI spec, endpoint reference docs, and independent hands-on corroboration of API-driven use.",
     "evidenceIds": [
       "poly-docs-29",
       "poly-probe-rt-2",
@@ -3078,7 +3072,6 @@
       "poly-docs-17",
       "poly-docs-20",
       "poly-probe-4",
-      "poly-probe-rt-1",
       "poly-probe-2"
     ]
   },
@@ -3088,7 +3081,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Poly's hosted MCP server uses an OAuth browser sign-in, and the probe confirms the OAuth flow is live. However, nothing in the evidence describes issuing scoped, least-privilege, or per-agent credentials. The Claude Code integration is described as giving 'full access' to your Poly files, which points the other way.",
+    "rationale": "The evidence shows agents authenticate to Poly's hosted MCP server via in-browser OAuth with no pasted keys, and the probe confirms a live OAuth flow. Nothing documents scopes, read-only or folder-limited tokens, or any other least-privilege credential issuance. The Claude Code integration is described as giving 'full access to your Poly files', which points away from scoped credentials. File sharing permissions apply to people, not agent credentials, so they do not count here.",
     "evidenceIds": []
   },
   {
@@ -3097,7 +3090,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Poly is a SaaS file and agent platform, so shipping official SDKs is a fair question, but the evidence pack never mentions any client library or SDK. The documented developer surfaces are a CLI, a hosted MCP server, a Claude Code plugin and an agent skill, none of which is an SDK. Probes also found no OpenAPI spec (all candidate paths returned 404), so there is no evidence of an official SDK to build against.",
+    "rationale": "Poly is a SaaS file platform, so an official SDK is a fair question to ask, but the evidence shows no language SDK or client library. Its programmatic surfaces are a CLI, a hosted MCP server, a Claude Code plugin and an agent skill, and the OpenAPI probes all returned 404. Those surfaces belong to separate CLI and MCP stories and are not credited here.",
     "evidenceIds": []
   },
   {
@@ -3106,7 +3099,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Poly is a cloud file-storage and agent platform, so event webhooks are a fair capability to ask about. The evidence pack documents a CLI, a hosted MCP server, plugins and sharing, but nothing mentions webhooks or any event-subscription mechanism. The OpenAPI probe found no API spec.",
+    "rationale": "Poly is a cloud file-storage and AI platform, so webhook event subscriptions are a fair capability to ask about. The evidence documents a CLI, a hosted MCP server, a Claude Code plugin and agent features, but nothing on webhooks or event subscriptions. Probes also found no OpenAPI spec that might describe them.",
     "evidenceIds": []
   },
   {
@@ -3115,19 +3108,19 @@
     "verdict": "full",
     "quality": 9,
     "confidence": "high",
-    "rationale": "Poly documents first-party connectors that let external LLMs and AI tools reach its notes and files. It runs a hosted MCP server with OAuth (mcp.poly.app/mcp), and a runtime probe confirmed the server is live and speaks the MCP OAuth flow. It also ships an official Claude Code plugin, a poly-cli agent skill, and documented integrations for ChatGPT, Codex, Gemini and MCP-compatible IDEs. Missing for 10: independent or hands-on corroboration of the integrations working end-to-end beyond the 401 auth probe, and evidence of a broader third-party plugin ecosystem beyond the first-party connectors.",
+    "rationale": "Poly documents a first-party hosted MCP server at mcp.poly.app/mcp with in-browser OAuth, and a runtime probe confirmed it is live and speaks the MCP OAuth flow. It also ships an official Claude Code plugin that loads Poly memory and connects the MCP server, a poly-cli agent skill, and claims plugin support for Claude, ChatGPT and VS Code, so external LLMs can work directly with Poly files, including Mind notes. Missing for 10: dedicated docs or hands-on corroboration for the ChatGPT and VS Code connectors beyond a marketing line, and evidence of a broader third-party AI plugin ecosystem.",
     "evidenceIds": [
       "poly-docs-7",
       "poly-docs-18",
       "poly-docs-29",
+      "poly-probe-rt-2",
+      "poly-probe-3",
       "poly-docs-19",
       "poly-docs-11",
       "poly-docs-30",
-      "poly-docs-20",
       "poly-docs-4",
-      "poly-probe-3",
-      "poly-probe-rt-1",
-      "poly-probe-rt-2"
+      "poly-docs-20",
+      "poly-docs-12"
     ]
   },
   {
@@ -3136,7 +3129,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Poly is a SaaS file platform, so an interactive API reference is a fair thing to ask about. The evidence shows CLI docs, MCP integration docs and an llms.txt index, but nothing about an API reference you can explore or run examples in. Every probed OpenAPI/Swagger path returned 404.",
+    "rationale": "An interactive API reference is a fair ask for a cloud file platform that exposes a CLI and a hosted MCP server, so the axis applies. However, the pack contains no evidence of an API reference or runnable examples. Probes for an OpenAPI spec at every candidate path, and for llms.txt, all returned 404. The CLI and MCP docs show only static command examples, not an explorable, runnable API reference.",
     "evidenceIds": []
   },
   {
@@ -3145,10 +3138,8 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Poly is a SaaS file platform, so a published API spec is a fair thing to expect. However, every probed OpenAPI/Swagger path returned 404, and the docs describe only a CLI, an OAuth-gated hosted MCP server and an llms.txt docs index. None of these is a downloadable machine-readable API spec.",
-    "evidenceIds": [
-      "poly-probe-2"
-    ]
+    "rationale": "Poly is a SaaS file platform, so publishing a machine-readable API spec is a fair question, but the OpenAPI probe found every candidate path (openapi.json, swagger.json, api/openapi.json, .well-known/openapi.json) returning 404. No documentation mentions a downloadable OpenAPI or equivalent spec. The OAuth-gated MCP server and the CLI are separate integration surfaces, not a downloadable API specification.",
+    "evidenceIds": []
   },
   {
     "productId": "poly",
@@ -3156,7 +3147,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Poly is a cloud file-storage platform with an agent, a CLI and a hosted MCP server, so a separate sandbox or test environment is a fair thing to ask for. The evidence documents no sandbox, test workspace or non-production mode for agent or API work. Version recovery (flashback mode, recovering past file versions) undoes changes after the fact; it does not keep testing away from real data.",
+    "rationale": "Poly is a cloud file platform with an agent, CLI, and hosted MCP server, so a sandbox or test environment for agent workflows is a fair axis. The evidence documents no sandbox, test mode, or isolated non-production workspace. Version recovery and flashback mode let you undo agent changes after the fact, but they do not let you test without touching real data.",
     "evidenceIds": []
   },
   {
@@ -3165,7 +3156,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Poly is a SaaS platform that exposes a hosted MCP server and a CLI, so versioned APIs with a deprecation policy is a fair question to ask of it. The evidence pack documents no API versioning scheme and no deprecation policy, and every probed OpenAPI path returned 404. Beta release notes exist, but they are not a versioning or deprecation commitment.",
+    "rationale": "Poly exposes programmatic surfaces, including a hosted MCP server and a CLI, so API versioning and deprecation policy is a fair axis for this product. However, nothing in the pack documents API versions, version pinning, or a deprecation policy. The OpenAPI probes all returned 404, and the release notes cover features, not a deprecation schedule.",
     "evidenceIds": []
   },
   {
@@ -3174,13 +3165,13 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Bulk work is implied rather than documented. The Poly agent can handle multi-step reading, searching, writing and organizing in one request, and can automate tasks like organizing a folder. The CLI is scriptable, so it could loop over many files, and agents can spawn subagents to split up work. However, no evidence describes a dedicated bulk or batch operation (for example, multi-select move, retag or delete). missing for 10: explicit bulk/batch operation docs, documented batch CLI or MCP commands, limits or scale guidance, hands-on corroboration of bulk edits across many files.",
+    "rationale": "Poly offers several routes to multi-item work, but none is explicitly documented as bulk operations. The agent handles multi-step reading, searching, writing and organizing in one request and can 'automate tasks like organizing a folder'. The `poly` CLI is described as scriptable, and agents can spawn subagents to split up work. Missing for 10: explicit documentation of bulk actions (e.g., batch move/tag/rename/delete across many files), stated limits or scale for batch jobs, and hands-on or independent corroboration of bulk operations working.",
     "evidenceIds": [
       "poly-docs-14",
       "poly-docs-31",
       "poly-docs-17",
       "poly-docs-20",
-      "poly-docs-35"
+      "poly-docs-21"
     ]
   },
   {
@@ -3189,7 +3180,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Event-triggered automation rules are a fair axis for an AI file-storage product, but the evidence pack never documents rules or triggers that fire on file or other events. What it does show is on-demand automation: you ask the agent to do tasks such as organizing a folder, and the `poly` CLI is scriptable. Neither amounts to defining event-based rules.",
+    "rationale": "Event-triggered automation rules are a fair axis for an AI file-storage and agent product, but the evidence pack never documents user-defined rules, triggers, or event hooks. The only automation evidence is on-demand: asking the agent to automate tasks like organizing a folder, multi-step agent requests, and a scriptable CLI. Built-in auto-indexing and tag sync are fixed system behaviors, not user-defined rules.",
     "evidenceIds": []
   },
   {
@@ -3198,7 +3189,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Poly is an AI file-storage and agent product, so scheduling recurring jobs or workflows is a fair question to ask of it. The evidence covers on-demand agent tasks, multi-step requests, subagents, and a scriptable CLI, but nothing documents scheduled, recurring, or triggered execution. One-off automation such as organizing a folder on request is not scheduling.",
+    "rationale": "Poly is an AI file-storage product with a built-in agent, so scheduled or recurring automation is a fair axis to ask about. The evidence shows only on-demand agent tasks (multi-step requests, subagents, \"automate tasks like organizing a folder\") and a scriptable CLI. Nothing documents scheduling, triggers, or recurring jobs.",
     "evidenceIds": []
   },
   {
@@ -3222,7 +3213,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Poly stores Markdown journal notes in its Mind folder and can import notes from Obsidian and similar apps, so note linking is a fair axis for this product. However, the evidence never mentions [[wiki-style]] links, a backlinks panel, or unlinked-mention detection. Absence of evidence for an applicable capability yields none.",
+    "rationale": "Poly positions itself as a 'second brain' with Markdown journaling in a Mind folder and note imports from Obsidian, so wiki-style linking and backlinks are a fair question for it. However, nothing in the evidence documents [[wiki-link]] syntax, a backlinks panel, or unlinked-mention detection. Importing Obsidian notes does not show that links are resolved or that backlinks are surfaced.",
     "evidenceIds": []
   },
   {
@@ -3231,7 +3222,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Poly is a file-storage and second-brain product. It has Markdown notes in its Mind folder, journaling, and imports from Obsidian and Notion, so block-level linking is a fair question to ask of it. Nothing in the evidence pack mentions referencing or transcluding a block or section of one note inside another, or keeping such references in sync. The docs cover search, version history (flashback), sharing, the CLI and MCP, none of which address this story.",
+    "rationale": "Poly has a notes and second-brain layer (Mind folder, Markdown journal entries, imports from Notion and Obsidian), so block-level referencing is a fair question for this product. However, nothing in the evidence documents block references, section embeds or transclusion that stays in sync. Paragraph-level search results and file version history are different capabilities and do not count.",
     "evidenceIds": []
   },
   {
@@ -3240,16 +3231,15 @@
     "verdict": "partial",
     "quality": 6,
     "confidence": "medium",
-    "rationale": "Poly ships a built-in agent that can summarize, explain, and edit or write files directly in your storage. It handles multi-step reading, searching, and writing tasks, and builds a 'second brain' memory from your files and Mind notes, so grounded Q&A, summarization, and drafting are documented. However, nothing in the evidence describes controls over which files or notes the AI can see; the sharing controls cover people, not the agent. Missing for 10: documented controls scoping the AI's data access, independent hands-on corroboration of answer and summary quality, and explicit grounding or citation behavior for Q&A answers.",
+    "rationale": "Poly ships a built-in agent that can summarize, explain, and edit your files. It handles multi-step reading, searching, and writing tasks, and draws on an automatic 'second brain' plus Mind notes and journals, so the core of answering, summarizing, and drafting grounded in your own notes is documented. Nothing in the evidence shows controls for scoping what data the assistant sees, and community comments note the service by nature reads and analyzes all of a user's files. missing for 10: user-facing controls over which files or notes the AI can access, explicit documentation of grounded Q&A with citations, independent hands-on corroboration of the assistant's quality.",
     "evidenceIds": [
       "poly-docs-31",
       "poly-docs-27",
       "poly-docs-14",
       "poly-docs-3",
-      "poly-docs-2",
       "poly-docs-12",
       "poly-docs-22",
-      "poly-probe-rt-1"
+      "poly-comm-4"
     ]
   },
   {
@@ -3258,7 +3248,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Poly is a file-storage and AI-agent app, so a community plugin catalog is a fair thing to ask about, but the evidence shows no such catalog. The 'plugin' mentioned is Poly's own first-party plugin for external agents like Claude Code, ChatGPT, and VS Code, and the CLI, agent skill and MCP server are likewise outbound integrations. None of these is a browsable marketplace of community extensions that add features to Poly itself.",
+    "rationale": "A plugin or extension catalog is a fair axis for a file and knowledge-management app like Poly, but the evidence does not show one. The documented \"plugin\" is Poly's own official plugin that runs inside external agents such as Claude Code, ChatGPT and VS Code. Poly's MCP server, CLI and agent skill likewise expose Poly to other tools; none lets users browse or install community extensions into Poly.",
     "evidenceIds": []
   },
   {
@@ -3266,8 +3256,8 @@
     "storyId": "daily-notes-journal",
     "verdict": "partial",
     "quality": 3,
-    "confidence": "low",
-    "rationale": "Poly ships a Journaling feature in Poly Mind, described as a place to document day-to-day life, and new journal entries are saved as Markdown files in the Mind folder. That gives a basic journaling and capture surface. Nothing in the pack shows entries being created automatically per day, pre-filled from a template, or serving as the default landing page. Missing for 10: automatic per-day note creation, template pre-fill, daily note as default landing place, independent or hands-on corroboration.",
+    "confidence": "medium",
+    "rationale": "Poly documents a Journaling feature in Mind, described as \"a quiet place to document your day-to-day life\" where new entries are saved as Markdown files. That covers journaling as a capture spot, but nothing shows the entries are created automatically per day or pre-filled from a template. Missing for 10: automatic one-note-per-day creation, template pre-fill, daily note as the default landing/capture destination, independent or hands-on corroboration.",
     "evidenceIds": [
       "poly-docs-12",
       "poly-docs-26",
@@ -3294,12 +3284,12 @@
     "verdict": "partial",
     "quality": 4,
     "confidence": "low",
-    "rationale": "There is no dedicated export feature, but files can leave Poly in usable forms. The desktop app exposes your Poly files as a real folder in Finder or Explorer that downloads and syncs automatically, Finder tags sync both ways with Poly tags, and Mind journal entries are stored as Markdown files. These are open, portable formats reachable without lock-in, though only indirectly. Missing for 10: a documented full export or takeout of the whole knowledge base, export of Poly Mind memory and the auto-extracted 'second brain' data, bulk export of version history, and any independent confirmation that leaving is lossless.",
+    "rationale": "Poly has no documented export feature. Its files do appear as a real folder in Finder/Explorer that syncs automatically, and journal entries are stored as plain Markdown files, so users could copy their data out with ordinary tools. The CLI can also read files from the terminal. Leaving is therefore implied by the storage model rather than offered as a supported export path. Missing for 10: a documented one-click or bulk export of the full knowledge base, export of Poly-specific data (tags beyond Finder sync, Mind memory, version history, agent context) in open formats, and any hands-on confirmation that a complete exit is practical.",
     "evidenceIds": [
       "poly-docs-23",
       "poly-docs-12",
-      "poly-docs-8",
-      "poly-docs-17"
+      "poly-docs-17",
+      "poly-docs-20"
     ]
   },
   {
@@ -3308,14 +3298,14 @@
     "verdict": "partial",
     "quality": 4,
     "confidence": "medium",
-    "rationale": "Poly's docs describe natural-language search inside files with results down to the page, paragraph, timestamp, or frame. Search is also available from the `poly` CLI and through visual similarity, and Poly tags exist and sync with Finder. Nothing shows search filters on tags, properties, or paths, and nothing shows search working offline. missing for 10: tag/property/path search filters, offline search capability, explicit full-text (vs. semantic) search documentation, independent or hands-on corroboration of search speed.",
+    "rationale": "Poly documents search inside files, using natural-language queries that resolve down to the page, paragraph, timestamp or frame. That search is available from the CLI and also covers visual similarity. Poly also has tags that sync with Finder, but no evidence shows search filters on tags, properties or paths, or that search works offline (the desktop folder only downloads files on demand). Missing for 10: tag/property/path filters in search, offline search, evidence of instant full-text (keyword) search, independent corroboration.",
     "evidenceIds": [
       "poly-docs-2",
       "poly-docs-6",
-      "poly-docs-17",
       "poly-docs-13",
+      "poly-docs-17",
       "poly-docs-8",
-      "poly-docs-16"
+      "poly-docs-23"
     ]
   },
   {
@@ -3324,7 +3314,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Poly positions itself as a file-based \"second brain\" with Poly Mind and imports from Obsidian and Notion, so an interactive note graph is a fair axis for it. However, no evidence describes a graph view, note-to-note links or connection visualization, or filtering such a graph. The documented folder views (Icon, Grid, Feed, Detail, Tree, …) and tags are not a linking graph.",
+    "rationale": "Poly positions itself as a file-based \"second brain\" with a Mind notes area, so an interactive graph of notes and links is a fair question for it. The evidence pack never mentions a graph view, backlinks or connection filtering. The documented folder view modes (Icon, Grid, Feed, Detail, Tree, and others) do not include a graph.",
     "evidenceIds": []
   },
   {
@@ -3333,7 +3323,7 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Poly documents importing existing notes and memory archives into Poly Mind from Notion, Obsidian, Evernote, Bear and others. General file import from the local machine and cloud drives is also documented, so plain Markdown files can come in as files. The evidence does not say whether page hierarchy, internal links, or attachments survive the import, and Roam is not named. Missing for 10: Roam import, documented preservation of structure, links and attachments, details on how Markdown is handled, and any independent or hands-on corroboration of import fidelity.",
+    "rationale": "Poly documents a notes-import path into Poly Mind from Notion, Evernote, Obsidian, Bear \"and more\" (poly-docs-22), and general file import from cloud drives and local storage (poly-docs-1), so Markdown files could plausibly come in as files. Nothing in the evidence says whether hierarchy, internal links, or attachments survive the import, and Roam is not named. missing for 10: explicit Roam support, documentation that structure, links and attachments are preserved, a step-by-step import guide, independent or hands-on corroboration of import fidelity",
     "evidenceIds": [
       "poly-docs-22",
       "poly-docs-1"
@@ -3358,7 +3348,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Poly is a file storage and knowledge-base product, so asking about full-featured mobile apps is a fair question. The evidence covers a desktop Finder/Explorer integration, a CLI, MCP integrations and web docs, but never mentions an iOS or Android app, so mobile capture, search and linking are unevidenced.",
+    "rationale": "Poly is a cloud file and knowledge-base product, so full-featured mobile apps are a fair axis to judge it on. The pack documents a desktop Finder/Explorer integration, a CLI, an MCP server and agent plugins, but nothing mentions iOS or Android apps, mobile capture, or mobile search and linking. Lacking any evidence for an applicable capability, the verdict is none.",
     "evidenceIds": []
   },
   {
@@ -3367,7 +3357,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Poly is a file and notes product with journaling (Markdown entries in the Mind folder) and an agent that can create and edit files, so reusable note templates are a fair axis to judge. Nothing in the evidence pack mentions templates, template variables such as date or title, or applying a template when creating a note. The applicable capability is therefore unevidenced.",
+    "rationale": "Poly includes note-like features such as Markdown journal entries in its Mind folder and agent-driven file creation, so a template feature is a fair question for this product. However, nothing in the evidence mentions reusable templates, template variables like date or title, or applying templates when creating recurring notes.",
     "evidenceIds": []
   },
   {
@@ -3376,11 +3366,11 @@
     "verdict": "partial",
     "quality": 6,
     "confidence": "medium",
-    "rationale": "Poly documents that new journal entries are stored as Markdown files in the Mind folder, and that Poly files appear as a real folder in Finder or Explorer that syncs back automatically. That gives a plausible path to keeping notes in an open format outside the service. However, there is no documented export feature. Nothing says how Poly's auto-generated memory ('second brain'), tags, or version history can be exported. Importing from Notion or Obsidian covers bringing notes in, not taking them out. Missing for 10: a documented export or bulk-download feature, JSON or other structured export of memory and metadata, a format spec for non-journal note data, and independent confirmation that local copies are complete and usable without Poly.",
+    "rationale": "Poly documents that new journal entries are stored as Markdown files in the Mind folder (poly-docs-12), and that Poly files appear as a real folder in Finder/Explorer (poly-docs-23), so notes sit in an open format you can reach through the normal filesystem. Two things weaken the archive-outlives-vendor goal: files download on demand, so a full local copy is not guaranteed, and the docs never describe a bulk export or how imported notes and memory are stored. missing for 10: documented bulk export, JSON or other structured export of Mind memory and metadata, confirmation that imported notes stay in Markdown, an offline/local-first guarantee, independent hands-on corroboration.",
     "evidenceIds": [
       "poly-docs-12",
       "poly-docs-23",
-      "poly-docs-17"
+      "poly-docs-22"
     ]
   },
   {
@@ -3389,14 +3379,15 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Poly offers programmatic access through a scriptable `poly` CLI with 25+ commands that can search, read, create, update and organize files. It also runs a live hosted MCP server that exposes search, fetch and a virtual `poly` CLI as tools over OAuth. There is no evidence of a public REST/OpenAPI surface (all OpenAPI probes returned 404), and nothing shows that UI features like sharing, Shared Drives, flashback/version recovery, journaling or imports are reachable programmatically. missing for 10: documented public API or OpenAPI spec, explicit UI/API parity statement, programmatic coverage of sharing/Shared Drives/version recovery/imports/Mind journaling, independent hands-on corroboration.",
+    "rationale": "Poly offers programmatic surfaces beyond the UI: a scriptable `poly` CLI, an agent skill covering search, read, create, update and organize, and a live hosted MCP server at mcp.poly.app (OAuth, verified by runtime probe) exposing search, fetch and a virtual CLI. However, probes found no OpenAPI spec or public REST API, and nothing shows parity with UI features such as sharing, Shared Drives, flashback/version recovery, journaling or tag management. missing for 10: a documented public API with spec, evidence that sharing/Shared Drives/version recovery/Mind features are exposed via API/CLI/MCP, and an explicit API\u2013UI parity statement or independent corroboration.",
     "evidenceIds": [
       "poly-docs-17",
       "poly-docs-20",
+      "poly-docs-6",
       "poly-docs-29",
-      "poly-probe-rt-1",
       "poly-probe-rt-2",
       "poly-probe-2",
+      "poly-probe-3",
       "poly-probe-4"
     ]
   },
@@ -3421,10 +3412,8 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Whether a product's source is available under an open license is a fair question for a SaaS and desktop file product like Poly, so the axis applies. Nothing in the evidence pack mentions a public repository, an open-source license, or source availability. One community commenter calls it \"proprietary software\", which fits with the absence of any open-source evidence.",
-    "evidenceIds": [
-      "poly-comm-3"
-    ]
+    "rationale": "Whether a file-storage and agent product publishes its source under an open license is a fair openness question, so the axis applies. Nothing in the pack mentions a public repository, source availability, or an open-source license. The docs cover only the hosted service, the CLI, the MCP server and plugins, and one community comment calls it proprietary software.",
+    "evidenceIds": []
   },
   {
     "productId": "poly",
@@ -3432,7 +3421,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Self-hosting is a fair question for a cloud file-storage and AI product, so the axis applies. The evidence describes only Poly's hosted service: a hosted MCP endpoint at mcp.poly.app, cloud-synced storage, and a desktop client that syncs files. Nothing documents a self-hostable deployment, an open-source release, or an on-premises option.",
+    "rationale": "Self-hosting is a fair question for a cloud file-storage and AI product like Poly, so the axis applies. The evidence pack documents only Poly-hosted infrastructure (e.g. the hosted MCP endpoint at mcp.poly.app, plus desktop sync to Poly storage). Nothing shows a self-hostable server, deployment guide or open-source core.",
     "evidenceIds": []
   },
   {
@@ -3441,7 +3430,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence covers Poly's own first-party integrations: an official Claude Code plugin, a scriptable `poly` CLI with an agent skill, and a hosted MCP server. None of these is a documented extension API or SDK for third-party developers to build Poly plugins, and the pack shows no plugin samples or developer guides. The OpenAPI probe found nothing at any candidate path, so a public developer API is not evidenced either.",
+    "rationale": "The evidence shows first-party integration surfaces: an official Claude Code plugin, a hosted MCP server, a scriptable `poly` CLI, and a `poly-cli` agent skill. None of these is a documented extension API or SDK for building your own plugins, and no developer samples or plugin-authoring docs appear. Probes for an OpenAPI spec all returned 404, so there is no evidence of a documented plugin-building interface.",
     "evidenceIds": []
   },
   {
@@ -3450,7 +3439,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Poly is a cloud file-storage and agent service, so choosing a storage region or data residency is a fair question to ask of it. Nothing in the evidence pack mentions region selection, residency controls, or where data is hosted. Shared Drives being 'their own storage space' is about team ownership, not geographic location.",
+    "rationale": "Poly is a cloud file-storage and search service, so letting users choose a data region or residency is a fair question for this kind of product. Nothing in the evidence pack mentions storage regions, residency options, or data location controls. The sharing, Shared Drive, sync and MCP docs cover access and integration, not where data is stored.",
     "evidenceIds": []
   },
   {
@@ -3459,7 +3448,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Poly is an AI-powered file storage and agent product, so a training opt-out or no-training privacy guarantee is a fair question to ask of it. Nothing in the evidence pack mentions a training opt-out, a data-usage policy, or a no-training commitment. The community comments raise general security and trust worries but do not address model training, so they do not bear on this story.",
+    "rationale": "Poly is a cloud file-storage and AI-agent product that ingests and indexes user files, so a training opt-out is a fair question to ask. Nothing in the pack covers AI-training data use, an opt-out setting, or a no-training policy. The community comments voice general trust and security concerns but say nothing specific about model training.",
     "evidenceIds": []
   },
   {
@@ -3468,7 +3457,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence pack documents version history, which it frames as recovering 'any version of any file at any time', plus share revocation and a Shared Drive 'archive'. None of this shows user control over how long data is kept or how to delete it. There is no evidence of retention settings, permanent deletion, purging version history or indexed and transcribed data, or account and data deletion, so this applicable privacy axis is unevidenced.",
+    "rationale": "Retention and deletion control is a fair question for a cloud file-storage and AI-indexing product, so the axis applies. However, the evidence never documents retention settings, permanent deletion, purging of indexed or AI-remembered data, or account and data deletion. The version history and flashback features describe Poly keeping data indefinitely, not user control over deleting it, and revoking share links is access control rather than retention.",
     "evidenceIds": []
   },
   {
@@ -3477,7 +3466,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Telemetry opt-out is a fair question for a cloud file-storage and AI-agent product like Poly, so the axis applies. Nothing in the evidence pack mentions telemetry, analytics, usage tracking, or any setting to disable them. The docs cover sharing, sync, the CLI and MCP integrations, and the community comments raise general security worries, but none of these are about telemetry controls.",
+    "rationale": "Opting out of telemetry and usage tracking is a fair question for a cloud file-storage and AI-agent product like Poly. However, nothing in the evidence pack mentions telemetry, analytics, usage tracking, or any privacy setting that disables them. The community comments express general trust and security worries, which say nothing about whether a telemetry opt-out exists, so they are not relevant here.",
     "evidenceIds": []
   },
   {
@@ -3486,7 +3475,7 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "Poly documents sharing a file or folder in-app with \"anyone with a link\", which is a basic form of publishing selected notes from inside the app. Nothing shows that it renders notes as a browsable website or digital garden, or that links between notes work for viewers. Missing for 10: website/digital-garden rendering of published notes, working inter-note links on the published view, selective publish controls beyond link sharing, independent or hands-on corroboration.",
+    "rationale": "Poly documents in-app sharing of a file or folder with \"anyone with a link\", with revocable access. This is a minimal way to expose selected notes publicly without leaving the app, but nothing describes a published website or digital-garden experience. missing for 10: a publish-as-website or digital-garden feature, working inter-note links in the published output, site navigation or theming, and any hands-on or independent corroboration.",
     "evidenceIds": [
       "poly-docs-9",
       "poly-docs-33",
@@ -3499,11 +3488,12 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "Poly's docs show only fragments of this story: journal entries are Markdown files that can carry attached files, and the file editor offers Vim keybindings, which hints at a keyboard-driven Markdown editing surface. Nothing documents the formatting features the story names or the editor experience itself. Missing for 10: documented support for headings, callouts, tables, code blocks and inline embedded media; evidence of editor speed or keyboard shortcuts beyond Vim mode; hands-on or independent corroboration.",
+    "rationale": "Poly has an editing surface with optional Vim keybindings, which supports keyboard-driven editing. Journal entries are Markdown files, and journaling lets you attach files. That implies basic formatting and some media attachment, but none of the specific note-formatting features are documented. Missing for 10: explicit documentation of headings, callouts, tables, code blocks and inline embedded media in the editor; evidence of editor speed; independent or hands-on corroboration.",
     "evidenceIds": [
-      "poly-docs-12",
       "poly-docs-15",
-      "poly-docs-32"
+      "poly-docs-12",
+      "poly-docs-32",
+      "poly-docs-27"
     ]
   },
   {
@@ -3512,7 +3502,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Whether a file-storage and sync product can run without the vendor's cloud is a fair question, so the axis applies. Nothing in the pack documents a local-only mode or a self-hostable sync backend. Everything described runs on Poly's hosted service: storage with on-demand downloads, a hosted MCP endpoint behind OAuth, and server-side indexing.",
+    "rationale": "Self-hosting or a local-only mode is a fair question for a file storage and sync product, so the axis applies. Nothing in the evidence describes either one. The documented architecture depends on Poly's cloud: the desktop app downloads files on demand and syncs them back, and the MCP server is hosted at mcp.poly.app behind Poly OAuth.",
     "evidenceIds": []
   },
   {
@@ -3521,8 +3511,9 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Poly lets you share files or folders with specific people, and Shared Drives give a team its own storage space with members and roles. That covers the 'share a space with collaborators' half of the story. On simultaneous editing, the evidence only shows that conflicting edits are preserved and recoverable through version history and flashback mode, which is a safety net rather than true co-editing. Missing for 10: real-time co-editing or merge of concurrent edits, explicit edit permissions for collaborators (folder sharing is described as letting people 'see' content), and independent or hands-on corroboration of multi-user editing.",
+    "rationale": "Poly documents sharing files or folders with specific people (poly-docs-9, poly-docs-33) and Shared Drives with their own members and roles (poly-docs-34, poly-docs-24), so a researcher can share a space with collaborators. On conflicts, it only says that conflicting edits are preserved and recoverable (poly-docs-10, poly-docs-5), which is after-the-fact recovery rather than avoiding stepping on each other's changes. missing for 10: real-time or simultaneous co-editing of notes, conflict prevention or merging (versus recovery after the fact), clear editor permissions on shared content (the sharing doc only says collaborators can 'see' it), independent or hands-on corroboration.",
     "evidenceIds": [
+      "poly-docs-9",
       "poly-docs-33",
       "poly-docs-34",
       "poly-docs-24",
@@ -3536,7 +3527,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Querying notes by structured properties and rendering database-style views is a fair question for a notes and file 'second brain' product, so the axis applies. The evidence covers only natural-language and visual-similarity search, Finder tag sync, and fixed folder view modes (Icon, Grid, Feed, Detail, Tree). Nothing documents queries over structured properties or live table, board, or list views generated from those queries.",
+    "rationale": "Poly is a file storage and notes ('Mind') product, so structured property queries and database-style views are a fair axis for it. The evidence shows only natural-language and visual-similarity search, tags, and folder view modes (Icon, Grid, Feed, Detail, Tree). Nothing documents querying notes by structured properties or rendering live table, board, or list views from such queries.",
     "evidenceIds": []
   },
   {
@@ -3544,10 +3535,11 @@
     "storyId": "tags-properties-metadata",
     "verdict": "partial",
     "quality": 3,
-    "confidence": "low",
-    "rationale": "Poly has a native tag system: Poly tags, with colors, sync bidirectionally with macOS Finder tags. This gives some basic tag-based organization. There is no evidence of typed properties or metadata fields on notes, and none showing tags can filter or narrow search. Missing for 10: typed property/metadata fields on notes, tag-based search/filter/retrieval, schema consistency or enforcement across notes, tagging within Mind notes/journal entries, independent or hands-on corroboration.",
+    "confidence": "medium",
+    "rationale": "Poly has a native tag system: Finder tags sync bidirectionally with Poly tags, colors included. That shows tags can be attached to files, including Markdown notes in the Mind folder. Nothing in the pack documents typed properties or metadata fields, or using tags as search or filter criteria. Missing for 10: typed properties or metadata fields on notes, documented tag-based filtering and retrieval, consistent tag management across notes, independent or hands-on corroboration.",
     "evidenceIds": [
-      "poly-docs-8"
+      "poly-docs-8",
+      "poly-docs-12"
     ]
   },
   {
@@ -3556,13 +3548,12 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Poly can be driven from scripts through its `poly` CLI, documented as making files \"searchable and scriptable from the terminal\" with 25+ commands. The agent skill describes composing `poly` commands to create, update, and organize files, and a hosted MCP endpoint offers another programmatic path. However, none of the evidence shows a URI scheme, deep links, or a local HTTP endpoint for opening or creating notes in the app. Missing for 10: a documented URI scheme or deep links, a local endpoint for opening or creating notes inside the app, and independent hands-on confirmation of scripting note creation.",
+    "rationale": "Poly ships a `poly` command-line tool billed as making your files \"searchable and scriptable from the terminal\". Its agent skill describes creating, updating and organizing files by composing `poly` commands. A hosted MCP endpoint also offers programmatic access, though it is remote, OAuth-gated and aimed at AI assistants rather than a local script endpoint. missing for 10: a URI scheme or deep links for creating/opening notes, a local HTTP endpoint, evidence of opening a note in the app UI from outside, and independent hands-on corroboration of CLI-based note creation.",
     "evidenceIds": [
       "poly-docs-17",
-      "poly-docs-20",
       "poly-docs-6",
+      "poly-docs-20",
       "poly-probe-4",
-      "poly-probe-rt-1",
       "poly-docs-29",
       "poly-probe-rt-2"
     ]
@@ -3573,11 +3564,10 @@
     "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Poly documents a 'flashback mode' that shows exactly what files looked like at any past point, down to the millisecond. Its recovering-files docs say conflicting edits are preserved so you can 'recover any version of any file at any time'. Notes such as journal entries are stored as Markdown files, so this history applies to them. Missing for 10: an explicit deleted-file/trash recovery flow, detail on the restore UI or CLI workflow, and independent or hands-on corroboration.",
+    "rationale": "Poly documents a 'flashback mode' that shows exactly what files looked like at any point in the past, down to the millisecond (poly-docs-5). Its recovering-files page states that even conflicting edits are preserved, so any version of any file can be recovered at any time (poly-docs-10). Together these cover viewing history and restoring earlier versions. missing for 10: explicit documentation of recovering deleted notes (trash or undelete), detail on the restore workflow and UI, independent or hands-on corroboration.",
     "evidenceIds": [
       "poly-docs-5",
-      "poly-docs-10",
-      "poly-docs-12"
+      "poly-docs-10"
     ]
   },
   {
@@ -3586,7 +3576,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Poly is a file and notes workspace (Poly Mind, journaling), so a browser clipper is a fair question for it. The evidence covers only importing files from cloud drives or the local machine, migrating notes from Notion, Obsidian and similar apps, and attaching files to journal entries. Nothing in the pack shows an official web clipper, browser extension, or flow for capturing web pages and highlights.",
+    "rationale": "Poly is a file-storage and \"second brain\" product with Mind notes and journaling, so a web clipper is a fair question to ask of it. The evidence covers only file imports from cloud drives, note imports from apps like Notion and Obsidian, and journal entries. Nothing shows a browser extension, web clipper, or any flow for capturing pages, articles, or highlights.",
     "evidenceIds": []
   },
   {

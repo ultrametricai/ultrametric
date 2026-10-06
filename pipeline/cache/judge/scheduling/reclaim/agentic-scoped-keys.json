@@ -1,11 +1,14 @@
 {
-  "hash": "e4f2e5954dd3f23e7af4d048e7d06ca60d07b87b598248c1f6bf8f89fbce5a35",
+  "hash": "03e62b41ec669bc33193fb471dde528d4b4824e4c7f8fa4259ad4d6184c614a0",
   "verdict": {
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "partial",
+    "quality": 4,
     "confidence": "medium",
-    "rationale": "Reclaim.ai is a SaaS calendar assistant, so issuing scoped, least-privilege API credentials for agents is a fair question to ask of it. The evidence pack never mentions API keys, tokens, scopes or permissions, and the OpenAPI probe returned 404 at every candidate path. With no evidence for an applicable capability, the verdict is none.",
-    "evidenceIds": [],
+    "rationale": "Runtime probes show Reclaim's first-party MCP endpoint is auth-gated with MCP-spec OAuth. Its RFC 9728 discovery document advertises coarse 'read', 'write' and 'mcp' scopes, so an agent could plausibly be granted a read-only, scoped token. However, no vendor documentation describes this, and there is no evidence of user-facing controls for issuing, scoping or revoking agent credentials. Missing for 10: first-party docs on credential scoping, fine-grained per-resource scopes, a user-facing token/API-key management UI with revocation, and hands-on confirmation that the scopes are actually enforced.",
+    "evidenceIds": [
+      "reclaim-probe-rt-1",
+      "reclaim-probe-rt-2"
+    ],
     "productId": "reclaim",
     "storyId": "agentic-scoped-keys"
   }
