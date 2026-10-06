@@ -22,8 +22,8 @@ export function ProviderChoice({ choice }: { choice: ProviderGroup }) {
       <ul id={id}>{ordered.map((candidate) => {
         const coverage = choice.scores[candidate.id]
         return <ScoredProductRow scoreHref={coverage.evidenceHref} showScore={!foreign} scores={choice.candidates.map(item => choice.scores[item.id].score)} key={candidate.id} product={{ productId: candidate.logoId ?? candidate.id.split('/').at(-1)!, name: candidate.name, href: candidate.href!, hasLogo: !!candidate.logoId, score: coverage.score }} selected={candidate === selected} onSelect={selection ? () => selection.toggle(choice.scope, candidate.id) : undefined} selectionLabel={`Use ${candidate.name}`} evidenceLabel="process coverage" scoreTitle={`${coverage.score}/100 across ${choice.stepCount} rated default-scope ${choice.title} steps`}>
-          <p>Assessed on {coverage.assessedSteps} of {choice.stepCount} rated default-scope steps in {choice.title}. Score is the sum of assessed step scores divided by {choice.stepCount}; unassessed steps contribute nothing. Other categories and unrated steps are outside this score.</p>
-          <ul className="space-y-2">{coverage.steps.map(step => <li key={step.scope} className="flex items-start justify-between gap-4">
+          {foreign && <p>Default-scope evidence; the selected country is not assessed.</p>}
+          <ul aria-label={`${choice.title} default-scope step scores`} className="space-y-2">{coverage.steps.map(step => <li key={step.scope} className="flex items-start justify-between gap-4">
             {targetIsRendered(step.scope)
               ? <a href={`#${encodeURIComponent(step.scope)}`} onClick={() => openProcessTarget(step.scope)} className="min-w-0 break-words underline underline-offset-4 hover:text-emerald-300 focus-visible:outline-2 focus-visible:outline-emerald-300">{step.title}</a>
               : <span className="min-w-0 break-words">{step.title}</span>}

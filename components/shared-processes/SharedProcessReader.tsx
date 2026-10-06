@@ -190,7 +190,7 @@ export default function SharedProcessReader({ record, records, supplementary, ve
         </p>
         {icon && <Image src="/process-icons/incorporate-64.svg" alt="" width={64} height={64} className="mt-4 h-16 w-16 md:hidden" />}
         <h1 className="mt-4 break-words font-display text-3xl font-semibold leading-[1.1] tracking-tight sm:text-4xl">{record.title}</h1>
-        {record.summary && <p className="mt-5 max-w-2xl whitespace-pre-line text-lg leading-relaxed text-zinc-400">{record.summary}</p>}
+        {record.summary && <p className="mt-5 max-w-2xl whitespace-pre-line text-base leading-relaxed text-zinc-400">{record.summary}</p>}
         <ProcessSummary record={record} records={referencedCatalog(record, records)} />
         {record.kind === 'process' && <ProcessRunCTA target={processStartTarget(record)} />}
       </div>
