@@ -2,7 +2,6 @@ import type { Metadata } from 'next'
 import { notFound, permanentRedirect } from 'next/navigation'
 import SharedProcessPreview from '@/components/shared-processes/SharedProcessPreview'
 import { findSharedRecord, readSharedCatalog, sharedPreviewHref } from '@/lib/shared-processes/reader'
-import { withProcessSearchParams, type ProcessSearchParams } from '@/lib/shared-processes/redirect-query'
 
 export const dynamic = 'force-dynamic'
 
@@ -18,7 +17,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
 }
 
 export default async function SharedV2Page({ params, searchParams }: {
-  params: Promise<{ slug: string }>; searchParams: Promise<ProcessSearchParams>
+  params: Promise<{ slug: string }>; searchParams: Promise<Record<string, string | string[] | undefined>>
 }) {
   const { slug } = await params
   const records = readSharedCatalog()
@@ -26,7 +25,11 @@ export default async function SharedV2Page({ params, searchParams }: {
   if (!record) notFound()
   const href = sharedPreviewHref(record.id, records)
   if (href !== `/processes/${encodeURIComponent(slug)}/v2`) {
-    permanentRedirect(withProcessSearchParams(href, await searchParams))
+    const query = new URLSearchParams()
+    for (const [key, value] of Object.entries(await searchParams)) {
+      for (const entry of Array.isArray(value) ? value : value === undefined ? [] : [value]) query.append(key, entry)
+    }
+    permanentRedirect(query.size ? `${href}?${query}` : href)
   }
   return <SharedProcessPreview id={record.id} />
 }

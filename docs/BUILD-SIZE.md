@@ -204,13 +204,14 @@ stubs entirely would 404 every published /vs URL, so they stay.
 
 ## The include exceptions (preview routes)
 
-The shared-reader routes and compatibility redirects use `force-dynamic`; other pages are
+The shared-reader routes use `force-dynamic`; other pages are
 prerendered (`force-static`, or `generateStaticParams` + `dynamicParams = false`, and
 all route handlers are `force-static`):
 
 - `/processes/v2`: shared index
 - `/processes/[slug]/v2`: shared detail, including the original incorporation URL
-- `/processes/preview` and `/processes/preview/[id]`: compatibility redirects
+
+Old `/processes/preview` paths use native Next config redirects to these suffix URLs.
 
 At request time they read `processes/corpus.json` (+ `artifacts.json`,
 `vendor-registry.json`), `journeys/chains.json`, `content/processes/records/**` — and they

@@ -13,8 +13,9 @@ export const targets = [
 ]
 export const redirectTargets = [
   { route: '/processes/preview?geo=IN&via=legal-ops:clerky&via=payments:stripe&unknown=a&unknown=b', destination: '/processes/v2' },
-  { route: '/processes/preview/form_001?geo=IN&via=legal-ops:clerky&via=payments:stripe&unknown=a&unknown=b', destination: '/processes/incorporate-c-corp/v2' },
-  { route: '/processes/incorporate-a-company/v2?geo=GB', destination: '/processes/incorporate-c-corp/v2' },
+  { route: '/processes/preview/form_001?geo=IN&via=legal-ops:clerky&via=payments:stripe&unknown=a&unknown=b', destination: '/processes/form_001/v2' },
+  { route: '/processes/form_001/v2?geo=IN&via=legal-ops:clerky&via=payments:stripe&unknown=a&unknown=b', destination: '/processes/incorporate-c-corp/v2' },
+  { route: '/processes/preview/unknown-runtime-smoke-route', destination: '/processes/unknown-runtime-smoke-route/v2' },
 ]
 const requiredFiles = ['processes/corpus.json', 'journeys/chains.json', 'processes/business-logic-map.json']
 
@@ -123,7 +124,7 @@ export async function smokeRuntime(root, traces) {
       child.once('error', error => { clearTimeout(timer); reject(error) })
       child.once('exit', code => { clearTimeout(timer); reject(new Error(`Packaged runtime exited ${code}:\n${logs}`)) })
     })
-    for (const target of [...targets, { route: '/processes/incorporate-c-corp/v2', marker: 'data-shared-record="form_001"' }, { route: '/processes/preview/unknown-runtime-smoke-route', status: 404 }, { route: '/processes/unknown-runtime-smoke-route/v2', status: 404 }]) {
+    for (const target of [...targets, { route: '/processes/incorporate-c-corp/v2', marker: 'data-shared-record="form_001"' }, { route: '/processes/unknown-runtime-smoke-route/v2', status: 404 }]) {
       const response = await fetch(`http://127.0.0.1:${port}${target.route}`, { signal: AbortSignal.timeout(30_000), redirect: 'manual' })
       const body = await response.text()
       assert.equal(response.status, target.status ?? 200, `${target.route}: unexpected status\n${logs}`)

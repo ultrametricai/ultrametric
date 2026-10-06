@@ -1,9 +1,7 @@
 import type { NextConfig } from "next";
-import { loadSharedProcesses } from './lib/shared-processes/load';
-import { sharedPreviewRedirects } from './lib/shared-processes/routes';
 
 // Repo directories that pages read with fs ONLY while prerendering (every route except the
-// shared-reader and compatibility routes below is static: force-static or generateStaticParams with
+// shared-reader routes below is static: force-static or generateStaticParams with
 // dynamicParams=false, and every route handler is force-static). Without these excludes,
 // the tracer puts lib/data.ts & friends' fs reads into EVERY page trace: measured
 // 2026-10-02 at 10.17 GB of traced bytes across 94 .nft.json files (data/ 6.64 GB,
@@ -62,8 +60,6 @@ const nextConfig: NextConfig = {
   // node_modules/next/dist/build/collect-build-traces.js does; that file never runs under
   // Turbopack, which traces in Rust).
   outputFileTracingIncludes: {
-    '/processes/preview': PREVIEW_RUNTIME,
-    '/processes/preview/*': PREVIEW_RUNTIME,
     '/processes/v2': PREVIEW_RUNTIME,
     '/processes/*/v2': PREVIEW_RUNTIME,
   },
@@ -80,8 +76,16 @@ const nextConfig: NextConfig = {
   // permanent redirect, the same old-links-stay-alive posture as the proxy-layer
   // /productarena/* redirects (which remain at infra/cloudflare-proxy, not here).
   redirects: async () => [
-    // Exact destinations preserve query passthrough and browser fragment inheritance.
-    ...sharedPreviewRedirects(loadSharedProcesses()),
+    {
+      source: '/processes/preview',
+      destination: '/processes/v2',
+      permanent: true,
+    },
+    {
+      source: '/processes/preview/:key',
+      destination: '/processes/:key/v2',
+      permanent: true,
+    },
     {
       source: '/documents',
       destination: '/open-documents',
