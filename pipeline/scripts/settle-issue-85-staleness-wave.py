@@ -28,7 +28,12 @@
 # Usage: python3 pipeline/scripts/settle-issue-85-staleness-wave.py \
 #            <arena> <product> <baseline-verdicts.json> \
 #            [--added id,id] [--removed id,id] [--changed-material id,id] \
-#            [--remap old=new,old=new] [--write]
+#            [--remap old=new,old=new] [--revert-cells storyId,storyId] [--write]
+#
+# --revert-cells names cells reverted by ruling even though they cite an added id: under a
+# purely ADDITIVE pack change, a verdict/quality DOWNGRADE cannot be attributed to the new
+# evidence (coverage only grew), so a downgrade whose only link to the change is citing the
+# new item in passing is re-roll noise. Each use is listed in the commit message.
 import json
 import os
 import sys
@@ -38,7 +43,7 @@ ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..'))
 
 def parse_args(argv):
     arena, product, baseline = argv[1], argv[2], argv[3]
-    opts = {'added': set(), 'removed': set(), 'changed': set(), 'remap': {}, 'write': False}
+    opts = {'added': set(), 'removed': set(), 'changed': set(), 'remap': {}, 'revert_cells': set(), 'write': False}
     i = 4
     while i < len(argv):
         a = argv[i]
@@ -56,6 +61,9 @@ def parse_args(argv):
         elif a == '--remap':
             i += 1
             opts['remap'].update(dict(pair.split('=') for pair in argv[i].split(',')))
+        elif a == '--revert-cells':
+            i += 1
+            opts['revert_cells'] |= set(argv[i].split(','))
         else:
             raise SystemExit(f'unknown arg: {a}')
         i += 1
@@ -85,8 +93,9 @@ def main():
                     remapped.append(m)
             ov = dict(ov, evidenceIds=remapped)
             old_ids = set(remapped)
-        keep = bool(new_ids & opts['added']) or bool(old_ids & opts['removed']) \
-            or bool((old_ids | new_ids) & opts['changed'])
+        keep = (bool(new_ids & opts['added']) or bool(old_ids & opts['removed'])
+                or bool((old_ids | new_ids) & opts['changed'])) \
+            and k[1] not in opts['revert_cells']
         line = (f"{k[1]}: {ov['verdict']} q{ov['quality']} -> {nv['verdict']} q{nv['quality']}")
         if keep:
             keeps.append(line)
