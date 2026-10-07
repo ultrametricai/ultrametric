@@ -43,6 +43,11 @@ export interface ArtifactPageData {
   neededBy: ArtifactProcessLink[]
   // The display grouping axis: the canonical producer's area.
   producingArea: Area
+  // The /artifacts country-view filter flag (founder 2026-10-07, the /processes country rule's
+  // sibling): true when EVERY producing process (the canonical producer and the documented
+  // alsoProducedBy exceptions) is geoScope us/us-state. Mixed producers stay false — the
+  // artifact also comes into existence somewhere global, so a country view keeps it.
+  usOnlyProducers: boolean
   arenas: ArenaVendors[]
   // The registered templates this artifact is executed on (registry `documents` ids resolved
   // into open-documents records), in committed mapping order — empty for the honest absence.
@@ -108,16 +113,18 @@ export function loadArtifactPages(dir?: string): ArtifactPageData[] {
     if (!producerTask) throw new Error(`artifact ${artifact.id}: unknown producer ${artifact.producedBy}`)
     const producer = processLink(producerTask)
     const documents = (artifact.documents ?? []).map(openDocumentById)
+    const producerTasks = [producerTask, ...(artifact.alsoProducedBy ?? []).map((pid) => {
+      const t = byId.get(pid)
+      if (!t) throw new Error(`artifact ${artifact.id}: unknown exception producer ${pid}`)
+      return t
+    })]
     return {
       artifact,
       producer,
-      exceptionProducers: (artifact.alsoProducedBy ?? []).map((pid) => {
-        const t = byId.get(pid)
-        if (!t) throw new Error(`artifact ${artifact.id}: unknown exception producer ${pid}`)
-        return processLink(t)
-      }),
+      exceptionProducers: producerTasks.slice(1).map(processLink),
       neededBy: tasks.filter((t) => t.requires.includes(artifact.id)).map(processLink),
       producingArea: producer.area,
+      usOnlyProducers: producerTasks.every((t) => t.geoScope === 'us' || t.geoScope === 'us-state'),
       arenas: arenaVendorBlocks(producingStepArenaIds(artifact, byId), dir),
       documents,
       documentFamilies: documentFamilies(documents),

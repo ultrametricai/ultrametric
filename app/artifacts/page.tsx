@@ -1,6 +1,9 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
+import ArtifactGeoGate from '@/components/ArtifactGeoGate'
+import GeoDropdown from '@/components/GeoDropdown'
 import { artifactsByProducingArea } from '@/lib/artifactPages'
+import { PROCESSES_INDEX_DEFAULT_GEO } from '@/lib/geoPreference'
 import { REPO } from '@/lib/site'
 import { TABLE_HEADER_ROW, TABLE_SHELL } from '@/components/tableStyles'
 
@@ -32,9 +35,20 @@ export default function ArtifactsPage() {
           <code>requires</code> list. One canonical producer per artifact keeps the cross-process
           dependency graph a DAG. Grouped below by the producing process&rsquo;s area.
         </p>
+        {/* The geo driver (founder 2026-10-07): the same dropdown + store the process pages use.
+            Index framing like /processes (no selection shows the whole registry, so the trigger
+            reads 🌐 Global); align left — the trigger sits at the content's left here. Under an
+            explicit country selection the ArtifactGeoGate wrappers below hide the artifacts
+            whose EVERY producing process is US-scoped; mixed producers stay. */}
+        <div className="mt-4 flex flex-wrap items-center gap-2">
+          <GeoDropdown align="left" defaultChoice={PROCESSES_INDEX_DEFAULT_GEO} />
+        </div>
       </section>
       {groups.map((g) => (
-        <section key={g.area}>
+        // A section whose every artifact is US-produced hides whole in a country view — no
+        // heading over an empty table.
+        <ArtifactGeoGate key={g.area} usOnly={g.artifacts.every((a) => a.usOnlyProducers)}>
+        <section>
           <h2 className="font-display text-xl font-semibold tracking-tight">{g.area}</h2>
           <div className={`mt-3 ${TABLE_SHELL}`}>
             <table className="w-full border-collapse text-sm">
@@ -51,7 +65,8 @@ export default function ArtifactsPage() {
               </thead>
               <tbody className="divide-y divide-zinc-800/70">
                 {g.artifacts.map((a) => (
-                  <tr key={a.artifact.id} className="transition hover:bg-zinc-900/50">
+                  <ArtifactGeoGate key={a.artifact.id} usOnly={a.usOnlyProducers}>
+                  <tr className="transition hover:bg-zinc-900/50">
                     <td className="px-3 py-2.5 align-top">
                       <Link
                         href={`/artifacts/${a.artifact.id}`}
@@ -76,11 +91,13 @@ export default function ArtifactsPage() {
                           : '—'}
                     </td>
                   </tr>
+                  </ArtifactGeoGate>
                 ))}
               </tbody>
             </table>
           </div>
         </section>
+        </ArtifactGeoGate>
       ))}
       <p className="text-xs text-zinc-500">
         The registry lives in the open repo as <code>processes/artifacts.json</code>; the artifact
