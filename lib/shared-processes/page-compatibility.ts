@@ -1,3 +1,4 @@
+import { regionalDecision } from './regions'
 import { buildProcessCheckSteps } from '../processCheckData'
 import { loadProcesses } from '../processes'
 import type { ProcessCheckStep } from '../processCheck'
@@ -27,12 +28,19 @@ export function processSelectionContract(record: SharedRecord, records: SharedRe
     const task = tasks.find(task => task.id === taskId)
     if (task && !checks.has(taskId)) checks.set(taskId, buildProcessCheckSteps(task))
     return { scope, choiceScope: vendor?.choiceScope ?? choice?.stepScopes[scope],
-      // Candidates come from the step's FUNCTION comparison only. The cross-arena judged
-      // groups (additionalComparisons) live on the reader branch; when they land, their
-      // positive-score products join this same list — the eligibility rule is unchanged.
-      candidates: comparison.products.filter(product => product.score > 0 && product.stories.some(story => story.quality > 0)).map(product => product.id),
+      // Function and separately judged extra-arena candidates share the existing
+      // selection contract. Their scores remain in their own comparison groups.
+      candidates: [comparison, ...(comparison.additionalComparisons ?? [])].flatMap(group => group.products).filter(product => product.score > 0 && product.stories.some(story => story.quality > 0)).map(product => product.id),
+      rememberedCandidates: [comparison, ...(comparison.additionalComparisons ?? [])].flatMap(group => group.products.map(product => product.id)),
       legacyStep: checks.get(taskId)?.find(step => step.nodeId === nodeId),
+      // Extra-only steps have no function rank/aggregate. The existing vendor
+      // resolver needs only their separately ordered canonical arena rosters.
+      extraStep: { arenas: (comparison.additionalComparisons ?? []).map(group => ({
+        arenaId: group.arenaId, arenaName: group.arenaName, kind: 'extra' as const,
+        vendors: group.products.map(product => ({ productId: product.productId, name: product.name, score: product.score, hasLogo: product.hasLogo })),
+      })) },
     }
   })
-  return { groups, steps }
+  const region = regionalDecision(record)
+  return { groups, steps, ...(region ? { regions: { scope: region.scope, options: region.options.filter(option => option.id !== 'default').map(option => option.id) } } : {}) }
 }

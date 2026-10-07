@@ -5,6 +5,18 @@ import { useEffect, useId, useRef, useState } from 'react'
 import { START_METHODS, agentLaunch, startPrompt, type StartAgent, type StartTarget } from '@/lib/process-start'
 import { useRegionalVariant } from '@/components/shared-processes/RegionalVariant'
 
+function savedAgent(recordId: string): StartAgent {
+  const entry = window.history.state?.paProcessSelection
+  return entry?.recordId === recordId && START_METHODS.some(method => method.id === entry.startAgent) ? entry.startAgent : 'claude'
+}
+
+function rememberAgent(recordId: string, startAgent: StartAgent) {
+  const entry = window.history.state?.paProcessSelection
+  window.history.replaceState({ ...window.history.state, paProcessSelection: {
+    ...(entry?.recordId === recordId ? entry : {}), recordId, startAgent,
+  } }, '', window.location.href)
+}
+
 export default function ProcessRunCTA({ target }: { target: StartTarget }) {
   const region = useRegionalVariant()
   const dialog = useRef<HTMLDialogElement>(null)
@@ -12,6 +24,8 @@ export default function ProcessRunCTA({ target }: { target: StartTarget }) {
   const manualCopy = useRef<HTMLTextAreaElement>(null)
   const ownsHistory = useRef(false)
   const returningHistory = useRef(false)
+  const pickerOrigin = useRef<string | null>(null)
+  const selectedAgent = useRef<StartAgent>('claude')
   const copyAttempt = useRef(0)
   const heading = useId()
   const choices = useId()
@@ -23,16 +37,34 @@ export default function ProcessRunCTA({ target }: { target: StartTarget }) {
   const launch = agentLaunch(target, selected)
 
   useEffect(() => {
+    function restoreAgent() {
+      selectedAgent.current = savedAgent(target.id)
+      setSelected(selectedAgent.current)
+      copyAttempt.current++
+      setCopy(undefined)
+    }
     function onBack() {
+      // Closing the picker returns to its originating entry. Carry only the
+      // chosen agent back; country, provider and step state remain entry-owned.
+      const fromPicker = (ownsHistory.current || returningHistory.current) && window.location.href === pickerOrigin.current
+      if (fromPicker) rememberAgent(target.id, selectedAgent.current)
+      restoreAgent()
       returningHistory.current = false
+      pickerOrigin.current = null
       setReturning(false)
       ownsHistory.current = false
       copyAttempt.current++
       if (dialog.current?.open) dialog.current.close()
     }
+    function onPageShow(event: PageTransitionEvent) { if (event.persisted) restoreAgent() }
+    restoreAgent()
     window.addEventListener('popstate', onBack)
-    return () => window.removeEventListener('popstate', onBack)
-  }, [])
+    window.addEventListener('pageshow', onPageShow)
+    return () => {
+      window.removeEventListener('popstate', onBack)
+      window.removeEventListener('pageshow', onPageShow)
+    }
+  }, [target.id])
 
   useEffect(() => {
     if (currentCopy?.failed) {
@@ -70,7 +102,9 @@ export default function ProcessRunCTA({ target }: { target: StartTarget }) {
       if (dialog.current?.open || returningHistory.current) return
       copyAttempt.current++
       setCopy(undefined)
-      setSelected('claude')
+      selectedAgent.current = savedAgent(target.id)
+      setSelected(selectedAgent.current)
+      pickerOrigin.current = window.location.href
       window.history.pushState(window.history.state, '', '#run-process')
       ownsHistory.current = true
       dialog.current?.showModal()
@@ -96,7 +130,9 @@ export default function ProcessRunCTA({ target }: { target: StartTarget }) {
             <input type="radio" name={choices} value={method.id} checked={selected === method.id} onChange={() => {
               copyAttempt.current++
               setCopy(undefined)
+              selectedAgent.current = method.id
               setSelected(method.id)
+              rememberAgent(target.id, method.id)
             }} className="peer sr-only" />
             <span className="flex min-h-20 items-center gap-3 rounded-2xl border border-zinc-800 px-3 py-3 transition hover:border-emerald-400/60 hover:bg-emerald-400/5 peer-checked:border-emerald-300 peer-checked:bg-emerald-300/10 peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-emerald-300 sm:px-4">
               {method.logo ? <Image src={method.logo} width={32} height={32} alt="" className="h-8 w-8 shrink-0 rounded-lg object-contain" /> : <span aria-hidden="true" className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-zinc-800 font-mono text-lg">&gt;_</span>}

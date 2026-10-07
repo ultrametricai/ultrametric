@@ -160,7 +160,7 @@ describe('shared process presentation', () => {
       expect(badge.className).toContain('rounded-lg border')
     }
     expect(el.container.querySelector('[id="form_001:n3"] [title^="Legacy agent classification"]')?.getAttribute('title')).toBe('Legacy agent classification; no verified API or tool binding')
-    expect(el.container.querySelectorAll('[title="Existing source risk assessment"]')).toHaveLength(6)
+    expect([...el.container.querySelectorAll('[title="Existing source risk assessment"]')].filter(node => node.textContent === 'High risk')).toHaveLength(6)
   })
 
   it('uses the detailed row spacing for source-only candidates without fabricating scores or controls', () => {
@@ -171,7 +171,7 @@ describe('shared process presentation', () => {
     expect(rows).toHaveLength(5)
     for (const row of rows) {
       expect(row.querySelector(':scope > div')?.className).toContain('min-h-12')
-      expect(row.textContent).toContain('Not assessed')
+      expect(row.textContent).not.toContain('Not assessed')
       expect(row.textContent).not.toContain('/100')
       expect(row.querySelector('button')).toBeNull()
     }

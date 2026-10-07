@@ -18,7 +18,7 @@ describe('shared process service candidates', () => {
     expect(result.find(candidate => candidate.name === 'Northwest Registered Agent')?.href).toBeNull()
   })
 
-  it('renders accessible real links and the existing table logo fallback', () => {
+  it('renders unassessed options with the same rows and logo fallback, without unused comparison columns', () => {
     const el = document.createElement('div')
     el.innerHTML = renderToStaticMarkup(<ServiceCandidates references={refs} />)
     expect(el.querySelectorAll('li')).toHaveLength(6)
@@ -34,7 +34,12 @@ describe('shared process service candidates', () => {
     const fallback = [...el.querySelectorAll('li')].find(row => row.textContent?.includes('Northwest Registered Agent'))!
     expect(fallback).toBeDefined()
     expect(fallback.querySelector('img, a')).toBeNull()
-    expect(fallback.textContent).toContain('Not assessed')
+    expect(fallback.textContent).not.toContain('Not assessed')
+    expect(el.textContent?.match(/not been assessed/g)).toHaveLength(1)
+    const options = el.querySelector('[aria-label="Service options"]')!
+    expect(el.querySelector(`[id="${options.getAttribute('aria-describedby')}"]`)?.textContent).toBe('These options have not been assessed for this step.')
+    expect(el.querySelector('.w-8, .w-9, .w-7')).toBeNull()
+    expect(el.querySelector('button, [data-selected-provider]')).toBeNull()
     expect([...fallback.querySelectorAll('[aria-hidden]')].some(node => node.textContent === 'N')).toBe(true)
     expect(el.textContent).not.toMatch(/score|could attempt|prompt|37|32/)
   })

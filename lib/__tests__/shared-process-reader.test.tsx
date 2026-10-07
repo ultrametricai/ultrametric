@@ -5,7 +5,8 @@ import { tmpdir } from 'node:os'
 import path from 'node:path'
 import { renderToStaticMarkup } from 'react-dom/server'
 import { findSharedRecord, readSharedCatalog, sharedPreviewHref } from '../shared-processes/reader'
-import { validateCatalog } from '../shared-processes/schema'
+import { validateCatalog, type Part } from '../shared-processes/schema'
+import { formatMinutes } from '../processSim'
 import SharedProcessReader from '@/components/shared-processes/SharedProcessReader'
 import { modulesForProcess } from '../businessLogicMap'
 
@@ -16,6 +17,33 @@ function mount(markup: string) {
 }
 
 const examples = () => validateCatalog(JSON.parse(readFileSync('content/processes/examples/staging.json', 'utf8')))
+
+it('renders every authored default-option duration at its own method scope', () => {
+  const records = readSharedCatalog()
+  let checked = 0
+  for (const record of records) {
+    const expected: Array<{ scope: string; minutes: number }> = []
+    function visit(parts: Part[], parent: string) {
+      for (const part of parts) for (const option of part.options) {
+        const scope = `${parent}:${part.id}:${option.id}`
+        if (typeof option.metadata.estimatedMinutes === 'number') expected.push({ scope, minutes: option.metadata.estimatedMinutes })
+        visit(option.parts, scope)
+      }
+    }
+    visit(record.parts, record.id)
+    if (!expected.length) continue
+    const el = mount(renderToStaticMarkup(<SharedProcessReader record={record} records={records} />))
+    for (const { scope, minutes } of expected) {
+      const option = el.querySelector(`[id="${scope}"]`)
+      expect(option, scope).not.toBeNull()
+      const labels = [...option!.querySelectorAll(':scope > p, :scope > div > p')].filter(p => p.textContent?.startsWith('Estimated time:'))
+      expect(labels.map(p => p.textContent), scope).toEqual([`Estimated time: ${formatMinutes(minutes)}`])
+      expect(labels[0].className).toBe('text-zinc-400')
+      checked++
+    }
+  }
+  expect(checked).toBe(37)
+})
 
 describe('canonical shared process reader', () => {
   it('reads and renders edits exclusively from shared source without needing a legacy corpus', () => {
@@ -67,20 +95,22 @@ describe('canonical shared process reader', () => {
     expect(el.textContent).not.toContain('runs in parallel')
   })
 
-  it('shows only explicit high-risk annotations at their own part or option scope', () => {
+  it('shows explicit source risk annotations at their own part or option scope', () => {
     const records = readSharedCatalog()
     const record = findSharedRecord(records, 'form_001')!
     const el = mount(renderToStaticMarkup(<SharedProcessReader record={record} records={records} />))
     const risks = el.querySelectorAll('[title="Existing source risk assessment"]')
-    expect(risks).toHaveLength(6)
-    expect([...risks].every(risk => risk.textContent === 'High risk')).toBe(true)
+    expect([...risks].filter(risk => risk.textContent === 'High risk')).toHaveLength(6)
+    expect([...risks].some(risk => risk.textContent === 'Medium risk')).toBe(true)
     const filing = el.querySelector('[id="form_001:n4"]')!
     expect(filing.querySelector(':scope > div:first-child [title="Existing source risk assessment"]')).not.toBeNull()
     expect(filing.querySelector('[id="form_001:n4:default"] [title="Existing source risk assessment"]')).toBeNull()
     const synthetic = structuredClone(record)
     synthetic.parts = [{ ...synthetic.parts[0], metadata: { reversibility: 'irreversible', riskLevel: 'medium' } }]
     synthetic.links = []
-    expect(mount(renderToStaticMarkup(<SharedProcessReader record={synthetic} records={records} />)).textContent).not.toContain('High risk')
+    const rendered = mount(renderToStaticMarkup(<SharedProcessReader record={synthetic} records={records} />)).textContent
+    expect(rendered).not.toContain('High risk')
+    expect(rendered).toContain('Medium risk')
   })
 
   it('shows source route categories without inheriting defaults into alternatives', () => {

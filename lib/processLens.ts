@@ -212,7 +212,7 @@ export interface ResolvedStepVendor {
 // the header. Arenas are tried in serialized order (covering arena first, then extras), the
 // same convention as yoursForStep.
 export function resolveStepVendor(
-  step: ProcessCheckStep,
+  step: Pick<ProcessCheckStep, 'arenas'>,
   lens: LensMap,
   stack: StackMap,
 ): ResolvedStepVendor | null {

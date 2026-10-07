@@ -1,11 +1,5 @@
-// Legacy selection compatibility (docs/PR171-EXTRACTION.md, bucket c — rescoped from
-// PR #171's selection-cutover suite): every positive legacy vendor association in a
-// step's FUNCTION arena restores onto the shared selection contract through the existing
-// lens precedence (lib/processLens.ts resolveStepVendor), zero-score associations stay
-// ineligible, and the judged scores/citations the contract consumes are the original
-// pipeline numbers. The cross-arena judged groups (additionalComparisons) live on the
-// reader branch; their 93 extra-arena associations are pinned here as awaiting that port
-// rather than silently dropped.
+// Landed compatibility contract extended to the separately judged extra arenas.
+// Function scores, zero-score eligibility and canonical precedence stay unchanged.
 import { describe, expect, it } from 'vitest'
 import { loadProcesses } from '../processes'
 import { buildProcessCheckSteps } from '../processCheckData'
@@ -20,7 +14,7 @@ import { parseSavedSelection, restoreLegacySelection, type SelectionContract } f
 const records = readSharedCatalog()
 
 describe('existing judged selection compatibility', () => {
-  it('restores every positive function-arena candidate without promoting zero scores or changing judged numbers', () => {
+  it('restores every positive function and extra-arena candidate without promoting zero scores or changing judged numbers', () => {
     let extraArena = 0
     let zeroCount = 0
     let positiveCount = 0
@@ -49,16 +43,13 @@ describe('existing judged selection compatibility', () => {
             continue
           }
           if (arena.arenaId !== mapping?.arenaId) {
-            // Cross-arena judged associations restore once the reader branch's
-            // additionalComparisons land; until then they are not contract candidates.
-            expect(binding.candidates, `${task.id}/${step.nodeId}/${candidate} (extra arena)`).not.toContain(candidate)
+            expect(binding.candidates, `${task.id}/${step.nodeId}/${candidate} (extra arena)`).toContain(candidate)
             extraArena++
-            continue
           }
           const restored = restoreLegacySelection(contract, { [arena.arenaId]: vendor.productId }, {})
           const selected = restored.overrides[binding.scope] ?? (binding.choiceScope ? restored.picks[binding.choiceScope] : undefined)
           expect(selected, `${task.id}/${step.nodeId}/${candidate}`).toBe(candidate)
-          positiveCount++
+          if (arena.arenaId === mapping?.arenaId) positiveCount++
         }
       }
     }

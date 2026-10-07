@@ -184,3 +184,79 @@ describe('inline process picker', () => {
   })
 
 })
+
+describe('agent preference on the existing process history entry', () => {
+  it.each([
+    ['ChatGPT', 'chatgpt'], ['Codex', 'codex'], ['Claude Code', 'claude-code'], ['Cursor', 'cursor'], ['Ultrametric CLI', 'cli'],
+  ] as const)('restores %s after reload/reopen with the exact method/vendor and no automatic launch', async (name, agent) => {
+    const { view } = picker()
+    fireEvent.click(screen.getByRole('radio', { name }))
+    const url = location.href
+    const state = structuredClone(history.state)
+    view.unmount()
+    const open = vi.spyOn(window, 'open')
+    const reloaded = render(<ProcessRunCTA target={target} />)
+    expect(screen.queryByRole('dialog')).toBeNull()
+    expect(location.href).toBe(url)
+    expect(writeText).not.toHaveBeenCalled()
+    expect(open).not.toHaveBeenCalled()
+    fireEvent.click(screen.getByRole('button', { name: 'Run this process with Ultrametric' }))
+    expect((screen.getByRole('radio', { name }) as HTMLInputElement).checked).toBe(true)
+    expect(history.state.paProcessSelection.startAgent).toBe(agent)
+    expect(history.state.paProcessSelection.recordId).toBe(target.id)
+    expect(state.paProcessSelection.startAgent).toBe(agent)
+    const launch = screen.queryByRole('link')
+    if (launch) {
+      const params = new URL(launch.getAttribute('href')!).searchParams
+      expect(params.get(agent === 'cursor' ? 'text' : 'q')).toBe(startPrompt(target, undefined, agent))
+    }
+    fireEvent.click(screen.getByRole('button', { name: 'Copy prompt' }))
+    await waitFor(() => expect(writeText).toHaveBeenLastCalledWith(startPrompt(target, undefined, agent)))
+    expect(open).not.toHaveBeenCalled()
+    open.mockRestore()
+    reloaded.unmount()
+  })
+
+  it('carries the agent choice through close/Back to the originating entry without replacing other state', () => {
+    const initial = { nextState: 'keep', paProcessSelection: { recordId: target.id, geo: 'pt', picks: { 'form_001:n1': 'legal-ops/clerky' }, overrides: { 'form_001:n6': 'legal-ops/stripe-atlas' }, methods: { 'form_001:n6': true } } }
+    history.replaceState(initial, '', `${publicHref}?geo=pt&keep=one#steps`)
+    const origin = location.href
+    const back = vi.spyOn(history, 'back').mockImplementation(() => {})
+    const { trigger } = picker()
+    fireEvent.click(screen.getByRole('radio', { name: 'ChatGPT' }))
+    fireEvent.click(screen.getByRole('button', { name: 'Close agent picker' }))
+    history.replaceState(initial, '', origin)
+    fireEvent(window, new PopStateEvent('popstate'))
+    expect(history.state).toEqual({ ...initial, paProcessSelection: { ...initial.paProcessSelection, startAgent: 'chatgpt' } })
+    expect(location.href).toBe(origin)
+    fireEvent.click(trigger)
+    expect((screen.getByRole('radio', { name: 'ChatGPT' }) as HTMLInputElement).checked).toBe(true)
+    back.mockRestore()
+  })
+
+  it.each(['unknown', null, { id: 'chatgpt' }])('falls back from malformed saved agent %j', startAgent => {
+    history.replaceState({ paProcessSelection: { recordId: target.id, startAgent } }, '', publicHref)
+    picker()
+    expect((screen.getByRole('radio', { name: 'Claude' }) as HTMLInputElement).checked).toBe(true)
+    expect(writeText).not.toHaveBeenCalled()
+  })
+
+  it('ignores a different process and restores Back/Forward and cached page entries without opening the dialog', () => {
+    history.replaceState({ paProcessSelection: { recordId: 'other', startAgent: 'chatgpt' } }, '', publicHref)
+    const view = render(<ProcessRunCTA target={target} />)
+    const selected = () => view.container.querySelector<HTMLInputElement>('dialog input:checked')!.value
+    expect(selected()).toBe('claude')
+    const restore = (agent: string, event: Event) => {
+      history.replaceState({ paProcessSelection: { recordId: target.id, startAgent: agent } }, '', publicHref)
+      fireEvent(window, event)
+    }
+    restore('chatgpt', new PopStateEvent('popstate'))
+    expect(selected()).toBe('chatgpt')
+    restore('cursor', new PopStateEvent('popstate'))
+    expect(selected()).toBe('cursor')
+    restore('codex', new PageTransitionEvent('pageshow', { persisted: true }))
+    expect(selected()).toBe('codex')
+    expect(screen.queryByRole('dialog')).toBeNull()
+    expect(writeText).not.toHaveBeenCalled()
+  })
+})

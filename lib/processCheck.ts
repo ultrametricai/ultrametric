@@ -90,7 +90,7 @@ const round1 = (n: number) => Math.round(n * 10) / 10
 // order preserved: covering arena first), and within it the HIGHEST-SCORING covered pick is
 // "yours" — the best of the reader's real vendors for this context.
 export function yoursForStep(
-  step: ProcessCheckStep,
+  step: Pick<ProcessCheckStep, 'arenas'>,
   stack: StackMap,
 ): (CheckVendor & { arenaId: string; arenaName: string }) | null {
   for (const arena of step.arenas) {

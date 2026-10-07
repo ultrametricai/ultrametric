@@ -25,13 +25,13 @@ function ProductRow({ product, selected, inherited, onSelect, scores }: { produc
   </ScoredProductRow>
 }
 
-export default function StepComparisonTable({ comparison, choiceScope, parentChoiceScope, scope, bordered = true }: { comparison: StepComparison; choiceScope?: string; parentChoiceScope?: string; scope?: string; bordered?: boolean }) {
+export default function StepComparisonTable({ comparison, choiceScope, parentChoiceScope, scope, bordered = true, arenaName }: { comparison: StepComparison; choiceScope?: string; parentChoiceScope?: string; scope?: string; bordered?: boolean; arenaName?: string }) {
   const selection = useVendorSelection()
   const region = useRegionalVariant()
   const foreign = !!region?.decision && region.selected !== 'default'
   const overrideScope = scope && foreign ? `${scope}:regional:${region!.decision!.scope}:${region!.selected}` : scope
   const inheritedScope = foreign ? undefined : choiceScope
-  if (!comparison.products.length) return null
+  if (!comparison.products.length && !comparison.additionalComparisons?.length) return null
   const hasOverride = !!overrideScope && !!selection && Object.hasOwn(selection.overrides, overrideScope)
   const processPick = inheritedScope ? selectedVendor(selection, inheritedScope, parentChoiceScope) : undefined
   const inheritedPick = comparison.products.find(product => product.id === processPick && product.score > 0 && product.stories.some(story => story.quality > 0))?.id
@@ -39,12 +39,12 @@ export default function StepComparisonTable({ comparison, choiceScope, parentCho
   const inherited = !hasOverride && selectedId !== undefined
   const selected = comparison.products.find(product => product.id === selectedId && product.score > 0 && product.stories.some(story => story.quality > 0))
   const products = selected ? [selected, ...comparison.products.filter(product => product !== selected)] : comparison.products
-  return <section aria-label="Step product comparison" className="space-y-2 border-t border-zinc-800/50 pt-3">
-    <p className="text-sm text-zinc-400">Products · {comparison.storyCount} coverage stories</p>
+  return <>{comparison.products.length > 0 && <section aria-label="Step product comparison" className="space-y-2 border-t border-zinc-800/50 pt-3">
+    <p className="text-sm text-zinc-400">{arenaName ?? 'Products'} · {comparison.storyCount} coverage stories</p>
     <div className={bordered ? "overflow-hidden rounded-2xl border border-zinc-800" : "overflow-hidden"}>
       <ul>{products.map((product) => <ProductRow scores={comparison.products.map(item => item.score)} key={product.id} product={product} selected={product.id === selectedId} inherited={inherited} onSelect={overrideScope && selection ? () => selection.override(overrideScope, product.id === selectedId ? null : product.id) : undefined} />)}</ul>
     </div>
     {hasOverride && inheritedScope && <button type="button" onClick={() => selection?.override(overrideScope!, undefined)} className="text-sm text-zinc-400 underline underline-offset-4 hover:text-zinc-200">Use process choice</button>}
 
-  </section>
+  </section>}{comparison.additionalComparisons?.map(group => <StepComparisonTable key={group.arenaId} comparison={group} arenaName={group.arenaName} choiceScope={choiceScope} parentChoiceScope={parentChoiceScope} scope={scope} bordered={bordered} />)}</>
 }
