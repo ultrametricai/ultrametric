@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import ArenaVendorList from '@/components/ArenaVendorList'
+import { fieldsConsumedByModule } from '@/lib/companyFields'
 import { findOpenModulePage, loadOpenModulePages } from '@/lib/openModulePages'
 
 // One open module (founder 2026-10-05): the committed registry entry
@@ -13,6 +14,11 @@ import { findOpenModulePage, loadOpenModulePages } from '@/lib/openModulePages'
 // the covering arenas, each arena contributes its committed leaderboard leaders with their
 // Overall scores — the same rankings the arena pages publish, never a hand-picked list. Fully
 // static, params from the registry, unknown ids 404 (same contract as app/family/[id]).
+//
+// "Data fields" (founder 2026-10-07): the processes/company-fields.json fields THIS module's
+// exported functions consume — each row naming the function(s) and linking the establishing
+// artifact's page. Modules whose functions take no registered company-level field render no
+// section.
 
 export function generateStaticParams() {
   return loadOpenModulePages().map((m) => ({ id: m.id }))
@@ -39,6 +45,7 @@ export default async function OpenModulePage({ params }: { params: Promise<{ id:
   const { id } = await params
   const mod = findOpenModulePage(id)
   if (!mod) notFound()
+  const fieldRows = fieldsConsumedByModule(mod.id)
 
   return (
     <div className="space-y-8">
@@ -97,6 +104,53 @@ export default async function OpenModulePage({ params }: { params: Promise<{ id:
           ))}
         </ul>
       </section>
+
+      {fieldRows.length > 0 && (
+        <section>
+          <h2 className="font-display leading-[1.1] text-xl font-semibold tracking-tight">
+            Data fields it consumes
+          </h2>
+          <p className="mt-1 max-w-2xl text-sm text-zinc-500">
+            The typed company data this module&rsquo;s functions take
+            (<code>processes/company-fields.json</code>), each field linking the artifact that
+            establishes it.
+          </p>
+          <table className="mt-3 w-full max-w-2xl text-left text-sm">
+            <thead>
+              <tr className="border-b border-zinc-800 text-xs uppercase tracking-wide text-zinc-500">
+                <th className="py-1.5 pr-4 font-medium">Field</th>
+                <th className="py-1.5 pr-4 font-medium">Type</th>
+                <th className="py-1.5 pr-4 font-medium">Function</th>
+                <th className="py-1.5 font-medium">Established by</th>
+              </tr>
+            </thead>
+            <tbody>
+              {fieldRows.map((r) => (
+                <tr key={r.field.id} className="border-b border-zinc-900 align-top">
+                  <td className="py-2 pr-4 text-zinc-200" title={r.field.description}>
+                    {r.field.label}
+                  </td>
+                  <td className="py-2 pr-4 font-mono text-xs text-zinc-500">
+                    {r.field.type}
+                    {r.field.values ? ` (${r.field.values.join(' | ')})` : ''}
+                  </td>
+                  <td className="py-2 pr-4 font-mono text-xs text-zinc-400">
+                    {r.functions.join(', ')}
+                  </td>
+                  <td className="py-2 text-zinc-400">
+                    <Link
+                      href={r.artifactHref}
+                      className="text-zinc-300 underline decoration-zinc-800 underline-offset-2 transition hover:text-emerald-300"
+                    >
+                      {r.artifactLabel}
+                    </Link>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </section>
+      )}
 
       <section>
         <h2 className="font-display leading-[1.1] text-xl font-semibold tracking-tight">

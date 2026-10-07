@@ -1,10 +1,12 @@
 import fs from 'node:fs'
 import path from 'node:path'
 import { describe, expect, it } from 'vitest'
+import { CompanyFieldsRegistrySchema } from '@/lib/companyFields'
 import { shape } from '@/lib/founderOps'
 import { ArtifactRegistrySchema, VendorRegistrySchema } from '@/lib/processes'
 import {
   ARTIFACT_REGISTRY_SCHEMA_FILE, artifactRegistrySchemaJson,
+  COMPANY_FIELDS_SCHEMA_FILE, companyFieldsSchemaJson,
   OPERATIONAL_PROCESS_SCHEMA_FILE, operationalProcessSchemaJson,
   VENDOR_REGISTRY_SCHEMA_FILE, vendorRegistrySchemaJson,
 } from '../scripts/generate-corpus-schemas'
@@ -107,5 +109,29 @@ describe('process artifact-registry schema publication', () => {
     expect(errors).toEqual([])
     expect(() => ArtifactRegistrySchema.parse(registry)).not.toThrow()
     expect(registry.artifacts.length).toBeGreaterThanOrEqual(40)
+  })
+})
+
+// The company-fields schema (founder 2026-10-07: typed company data fields): same two
+// contracts — no drift, and the committed registry conforms. The registry's SEMANTIC
+// invariants (producedBy resolves, every consumer is a real exported function) are tested in
+// lib/__tests__/companyFields.test.ts; this file pins only the published contract.
+describe('company-fields schema publication', () => {
+  const committed = fs.readFileSync(COMPANY_FIELDS_SCHEMA_FILE, 'utf8')
+
+  it('regenerating produces byte-identical committed output (no drift)', () => {
+    expect(companyFieldsSchemaJson()).toBe(committed)
+  })
+
+  it('the committed registry conforms: shape() on the published schema + the zod source', () => {
+    const schema = JSON.parse(committed)
+    const registry = JSON.parse(
+      fs.readFileSync(path.join(ROOT, 'processes', 'company-fields.json'), 'utf8'),
+    )
+    const errors: string[] = []
+    shape(registry, schema, 'company fields', errors)
+    expect(errors).toEqual([])
+    expect(() => CompanyFieldsRegistrySchema.parse(registry)).not.toThrow()
+    expect(registry.fields.length).toBeGreaterThanOrEqual(10)
   })
 })

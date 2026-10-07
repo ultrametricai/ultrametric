@@ -179,3 +179,96 @@ describe('artifact documents — registered templates', () => {
     expect(byId.get('ein')!.documents).toEqual(['irs-form-ss4'])
   })
 })
+
+// The artifact GEO layer (founder geo-coverage ask 2026-10-07: "the registry is US-centric —
+// add per-country analogs for the six covered countries"). The honesty rules that keep the
+// `geo` field derived rather than invented:
+//   1. SOURCE OF TRUTH — entries live only on US-centric artifacts (us/us-state producing
+//      process), derived from the committed process geoNotes;
+//   2. NO INVENTED URLS — every artifact geo actionUrl is REUSED from a committed corpus
+//      geoNote actionUrl (the same verified-live set the geo waves curated);
+//   3. one entry per country per artifact, countries from the covered set (schema-enforced).
+describe('artifact geo — per-country analogs', () => {
+  const withGeo = artifacts.filter((a) => a.geo)
+  const tasksById = new Map(tasks.map((t) => [t.id, t]))
+  // Every committed process geoNote actionUrl — the only legal source of artifact geo URLs.
+  const committedUrls = new Set<string>()
+  for (const t of tasks) {
+    for (const note of t.geoNotes ?? []) committedUrls.add(note.actionUrl)
+  }
+
+  it('carries the US-centric coverage wave (bounds guard against decorating and silent loss)', () => {
+    expect(withGeo.length).toBeGreaterThanOrEqual(20)
+    expect(withGeo.length).toBeLessThanOrEqual(40)
+  })
+
+  it('geo entries live only on artifacts of US-centric producers — global-scope objects stay absent', () => {
+    for (const a of withGeo) {
+      const producer = tasksById.get(a.producedBy)!
+      expect(
+        producer.geoScope === 'us' || producer.geoScope === 'us-state',
+        `${a.id}: geo on a ${producer.geoScope}-scope producer`,
+      ).toBe(true)
+    }
+    for (const id of ['team-chat', 'crm', 'error-tracking', 'domain', 'website']) {
+      expect(byId.get(id)!.geo, `${id} is the same object everywhere — honest absence`).toBeUndefined()
+    }
+  })
+
+  it('at most one entry per country per artifact', () => {
+    for (const a of withGeo) {
+      const countries = a.geo!.map((g) => g.country)
+      expect(new Set(countries).size, `${a.id}: duplicate country entry`).toBe(countries.length)
+    }
+  })
+
+  it('every actionUrl is reused from a committed corpus geoNote — never fresh', () => {
+    expect(committedUrls.size).toBeGreaterThan(50)
+    for (const a of withGeo) {
+      for (const g of a.geo!) {
+        expect(
+          committedUrls.has(g.actionUrl),
+          `${a.id}/${g.country}: ${g.actionUrl} is not a committed corpus geoNote URL`,
+        ).toBe(true)
+      }
+    }
+  })
+
+  it('the founder-named anchors landed with their committed kinds', () => {
+    const geoOf = (id: string, country: string) => byId.get(id)!.geo!.find((g) => g.country === country)!
+    // EIN → UK UTR (analog object; the obtaining process stays absorbed) / IN absorbed into
+    // SPICe+ PAN-TAN.
+    expect(geoOf('ein', 'UK').kind).toBe('analog')
+    expect(geoOf('ein', 'UK').label).toContain('UTR')
+    expect(geoOf('ein', 'IN').kind).toBe('absorbed')
+    expect(geoOf('ein', 'IN').label).toContain('PAN')
+    // Certificate of incorporation → the Companies House certificate.
+    expect(geoOf('certificate-of-incorporation', 'UK').kind).toBe('analog')
+    expect(geoOf('certificate-of-incorporation', 'UK').label).toContain('Companies House')
+    // 83(b) → not-applicable in DE/FR per the § 19a / BOFiP precedent in the corpus geoNotes
+    // (fund_003); the UK's s.431 election is the one genuine analog.
+    expect(geoOf('83b-election', 'DE').kind).toBe('not-applicable')
+    expect(geoOf('83b-election', 'FR').kind).toBe('not-applicable')
+    expect(geoOf('83b-election', 'UK').kind).toBe('analog')
+    // The registered agent dissolves into the registered office everywhere — all absorbed,
+    // exactly as the qs_043 process notes say.
+    for (const g of byId.get('registered-agent')!.geo!) {
+      expect(g.kind, `registered-agent/${g.country}`).toBe('absorbed')
+    }
+  })
+
+  it('artifact geo never contradicts a canonical-producer note that says not-applicable', () => {
+    // An artifact-level kind may READ differently from the process note (the UK "Get EIN"
+    // process is absorbed while the UTR object is an analog), but a producer note saying the
+    // need does not exist can never coexist with an artifact entry claiming a real object.
+    for (const a of withGeo) {
+      for (const note of tasksById.get(a.producedBy)?.geoNotes ?? []) {
+        const g = a.geo!.find((x) => x.country === note.country)
+        if (!g) continue
+        if (note.kind === 'not-applicable') {
+          expect(g.kind, `${a.id}/${g.country}: process ${a.producedBy} says not-applicable`).toBe('not-applicable')
+        }
+      }
+    }
+  })
+})

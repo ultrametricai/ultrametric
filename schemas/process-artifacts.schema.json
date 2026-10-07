@@ -1,7 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "title": "Ultrametric process artifact registry",
-  "description": "The artifact vocabulary beside the operational-process corpus (processes/artifacts.json): the canonical business artifacts that flow between processes — per artifact its id, label, description, one canonical producer process, documented exception producers, and a terminal flag for artifacts nothing downstream consumes. Generated from ArtifactRegistrySchema in lib/processes.ts by scripts/generate-corpus-schemas.ts — edit the zod schema, never this file.",
+  "description": "The artifact vocabulary beside the operational-process corpus (processes/artifacts.json): the canonical business artifacts that flow between processes — per artifact its id, label, description, one canonical producer process, documented exception producers, a terminal flag for artifacts nothing downstream consumes, and optional per-country geo analogs derived from the committed process geoNotes. Generated from ArtifactRegistrySchema in lib/processes.ts by scripts/generate-corpus-schemas.ts — edit the zod schema, never this file.",
   "type": "object",
   "properties": {
     "$comment": {
@@ -47,6 +47,59 @@
             "items": {
               "type": "string",
               "minLength": 1
+            }
+          },
+          "geo": {
+            "minItems": 1,
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "country": {
+                  "type": "string",
+                  "enum": [
+                    "IN",
+                    "UK",
+                    "DE",
+                    "FR",
+                    "PT",
+                    "CA"
+                  ]
+                },
+                "kind": {
+                  "type": "string",
+                  "enum": [
+                    "analog",
+                    "absorbed",
+                    "not-applicable"
+                  ]
+                },
+                "label": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "summary": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "actionUrl": {
+                  "type": "string",
+                  "format": "uri"
+                },
+                "actionLabel": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              },
+              "required": [
+                "country",
+                "kind",
+                "label",
+                "summary",
+                "actionUrl",
+                "actionLabel"
+              ],
+              "additionalProperties": false
             }
           }
         },

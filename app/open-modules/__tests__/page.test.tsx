@@ -12,6 +12,7 @@ import OpenModulesPage from '@/app/open-modules/page'
 import sitemap from '@/app/sitemap'
 import { ARENA_LEADERS_CAP } from '@/lib/arenaLeaders'
 import { loadBusinessLogicMap } from '@/lib/businessLogicMap'
+import { fieldsConsumedByModule } from '@/lib/companyFields'
 import { loadCategory } from '@/lib/data'
 import { findOpenModulePage, loadOpenModulePages } from '@/lib/openModulePages'
 import { processSlug } from '@/lib/processes'
@@ -103,6 +104,36 @@ describe('/open-modules/[id] — computed vendor derivation', () => {
     const { container } = render(await OpenModuleDetailPage({ params: params('capTable') }))
     expect(container.textContent).not.toContain('No populated arena covers')
     expect(within(container).getByText('Vendors serving these processes today')).toBeDefined()
+  })
+})
+
+// The Data fields row (founder 2026-10-07: typed company data fields): the
+// processes/company-fields.json fields this module's functions consume, each linking the
+// establishing artifact. Registry totality lives in lib/__tests__/companyFields.test.ts.
+describe('/open-modules/[id] — data fields it consumes', () => {
+  it('runway lists its registered fields with function names and establishing-artifact links', async () => {
+    const rows = fieldsConsumedByModule('runway')
+    expect(rows.length).toBeGreaterThan(0)
+    const { container } = render(
+      await OpenModuleDetailPage({ params: Promise.resolve({ id: 'runway' }) }),
+    )
+    expect(container.textContent).toContain('Data fields it consumes')
+    for (const r of rows) {
+      expect(container.textContent).toContain(r.field.label)
+      expect(container.textContent).toContain(r.functions[0])
+      expect(
+        container.querySelector(`a[href="${r.artifactHref}"]`),
+        `${r.field.id} must link ${r.artifactHref}`,
+      ).not.toBeNull()
+    }
+  })
+
+  it('a module with no registered company-level field renders no section', async () => {
+    expect(fieldsConsumedByModule('unitEconomics')).toEqual([])
+    const { container } = render(
+      await OpenModuleDetailPage({ params: Promise.resolve({ id: 'unitEconomics' }) }),
+    )
+    expect(container.textContent).not.toContain('Data fields it consumes')
   })
 })
 

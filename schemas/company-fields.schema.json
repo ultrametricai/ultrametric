@@ -1,0 +1,94 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Ultrametric company data fields",
+  "description": "The typed company-level data fields beside the operational-process corpus (processes/company-fields.json): per field its id, label, type, the artifact that establishes it, and the open-module functions that consume it. Generated from CompanyFieldsRegistrySchema in lib/companyFields.ts by scripts/generate-corpus-schemas.ts — edit the zod schema, never this file.",
+  "type": "object",
+  "properties": {
+    "$comment": {
+      "type": "string"
+    },
+    "fields": {
+      "minItems": 1,
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$"
+          },
+          "label": {
+            "type": "string",
+            "minLength": 1
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "date",
+              "money",
+              "number",
+              "enum",
+              "string"
+            ]
+          },
+          "values": {
+            "minItems": 2,
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "description": {
+            "type": "string",
+            "minLength": 1
+          },
+          "producedBy": {
+            "type": "string",
+            "minLength": 1
+          },
+          "consumedBy": {
+            "minItems": 1,
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "module": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "function": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "input": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              },
+              "required": [
+                "module",
+                "function",
+                "input"
+              ],
+              "additionalProperties": false
+            }
+          }
+        },
+        "required": [
+          "id",
+          "label",
+          "type",
+          "description",
+          "producedBy",
+          "consumedBy"
+        ],
+        "additionalProperties": false
+      }
+    }
+  },
+  "required": [
+    "fields"
+  ],
+  "additionalProperties": false
+}

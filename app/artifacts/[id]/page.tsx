@@ -2,7 +2,9 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import ArenaVendorList from '@/components/ArenaVendorList'
+import ArtifactGeoNotes from '@/components/ArtifactGeoNotes'
 import { findArtifactPage, loadArtifactPages } from '@/lib/artifactPages'
+import { fieldsEstablishedBy } from '@/lib/companyFields'
 
 // One registry artifact (founder 2026-10-05): what it is (the committed description from
 // processes/artifacts.json), the canonical producer and documented exception producers, every
@@ -19,6 +21,14 @@ import { findArtifactPage, loadArtifactPages } from '@/lib/artifactPages'
 // Variants line renders them as one object — the labels are the registry's committed `variant`
 // fields, never invented prose. Artifacts with no registered template render no section: honest
 // absence, never an invented mapping. Fully static, params from the registry, unknown ids 404.
+//
+// Two sections joined 2026-10-07 (founder geo-coverage + data-fields asks):
+// - "Outside the US" renders the registry's committed per-country `geo` analogs through
+//   components/ArtifactGeoNotes.tsx — driven by the ONE shared geo store (the process pages'
+//   idiom), never a control of its own; artifacts with no committed entries render nothing.
+// - "Data fields" lists the processes/company-fields.json fields THIS artifact establishes
+//   (field exists only because a committed open-module function consumes it), each consumer
+//   linking its /open-modules page.
 
 export function generateStaticParams() {
   return loadArtifactPages().map((a) => ({ id: a.artifact.id }))
@@ -44,6 +54,7 @@ export default async function ArtifactPage({ params }: { params: Promise<{ id: s
   const page = findArtifactPage(id)
   if (!page) notFound()
   const { artifact, producer, exceptionProducers, neededBy, arenas, documents } = page
+  const fieldRows = fieldsEstablishedBy(artifact.id)
 
   return (
     <div className="space-y-8">
@@ -179,6 +190,60 @@ export default async function ArtifactPage({ params }: { params: Promise<{ id: s
           </p>
         )}
       </section>
+
+      {fieldRows.length > 0 && (
+        <section>
+          <h2 className="font-display leading-[1.1] text-xl font-semibold tracking-tight">
+            Data fields
+          </h2>
+          <p className="mt-1 max-w-2xl text-sm text-zinc-500">
+            The typed company data this artifact establishes (
+            <code>processes/company-fields.json</code>) — each field exists because a committed
+            open-module function consumes it.
+          </p>
+          <table className="mt-3 w-full max-w-2xl text-left text-sm">
+            <thead>
+              <tr className="border-b border-zinc-800 text-xs uppercase tracking-wide text-zinc-500">
+                <th className="py-1.5 pr-4 font-medium">Field</th>
+                <th className="py-1.5 pr-4 font-medium">Type</th>
+                <th className="py-1.5 font-medium">Consumed by</th>
+              </tr>
+            </thead>
+            <tbody>
+              {fieldRows.map(({ field, consumers }) => (
+                <tr key={field.id} className="border-b border-zinc-900 align-top">
+                  <td className="py-2 pr-4 text-zinc-200" title={field.description}>
+                    {field.label}
+                  </td>
+                  <td className="py-2 pr-4 font-mono text-xs text-zinc-500">
+                    {field.type}
+                    {field.values ? ` (${field.values.join(' | ')})` : ''}
+                  </td>
+                  <td className="py-2 text-zinc-400">
+                    {consumers.map((c, i) => (
+                      <span key={c.moduleId}>
+                        {i > 0 && ' · '}
+                        <Link
+                          href={c.href}
+                          className="text-zinc-300 underline decoration-zinc-800 underline-offset-2 transition hover:text-emerald-300"
+                          title={`${c.moduleLabel} — ${c.functions.join(', ')}`}
+                        >
+                          {c.moduleLabel}
+                        </Link>
+                        <span className="ml-1 font-mono text-xs text-zinc-600">
+                          {c.functions.join(', ')}
+                        </span>
+                      </span>
+                    ))}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </section>
+      )}
+
+      <ArtifactGeoNotes notes={artifact.geo ?? []} />
 
       <section>
         <h2 className="font-display leading-[1.1] text-xl font-semibold tracking-tight">

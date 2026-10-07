@@ -1,0 +1,174 @@
+{
+  "$comment": "Company data fields (founder 2026-10-07): the typed company-level data values the open business-logic modules genuinely consume. Honest derivation rule: a field exists here only because a committed lib/openstartup exported function takes it (signatures read from the module source) AND a committed processes/artifacts.json artifact establishes it - never speculative. producedBy resolves against the artifact registry (the charter sets the authorized shares and par value, the 409A report sets the common FMV and its as-of date, the bank account holds the cash). consumedBy entries name the real exported function and the parameter/input-object property the value enters as. Totality is tested in lib/__tests__/companyFields.test.ts; read back by lib/companyFields.ts; rendered on /artifacts/[id] (Data fields this artifact establishes) and /open-modules/[id] (fields the module consumes). Schema: schemas/company-fields.schema.json.",
+  "fields": [
+    {
+      "id": "incorporation-date",
+      "label": "Date of incorporation",
+      "type": "date",
+      "description": "The date the company legally comes into existence - the start of the recurring compliance clock (DE franchise tax, Form 1120, payroll quarters).",
+      "producedBy": "certificate-of-incorporation",
+      "consumedBy": [
+        { "module": "deadlines", "function": "complianceCalendar", "input": "fromIso" }
+      ]
+    },
+    {
+      "id": "fiscal-year-end",
+      "label": "Fiscal year end",
+      "type": "date",
+      "description": "The company's tax-year end - declared on the SS-4 when the EIN is obtained (calendar-year December 31 for most startups); it positions the federal return deadline.",
+      "producedBy": "ein",
+      "consumedBy": [
+        { "module": "deadlines", "function": "form1120Due", "input": "taxYearEnd" }
+      ]
+    },
+    {
+      "id": "stock-transfer-date",
+      "label": "Founder stock transfer date",
+      "type": "date",
+      "description": "The date the restricted founder stock is transferred - the event the 30-day 83(b) election window runs from.",
+      "producedBy": "founder-stock-issuance",
+      "consumedBy": [
+        { "module": "deadlines", "function": "election83bWindow", "input": "transferDate" }
+      ]
+    },
+    {
+      "id": "authorized-shares",
+      "label": "Authorized shares",
+      "type": "number",
+      "description": "Total shares the charter authorizes - the driver of Delaware's authorized-shares franchise-tax method and one side of the method comparison.",
+      "producedBy": "certificate-of-incorporation",
+      "consumedBy": [
+        { "module": "deFranchiseTax", "function": "authorizedSharesMethodTax", "input": "authorizedShares" },
+        { "module": "deFranchiseTax", "function": "compareFranchiseTaxMethods", "input": "authorizedClasses[].shares" }
+      ]
+    },
+    {
+      "id": "par-value",
+      "label": "Par value per share",
+      "type": "money",
+      "description": "The charter's par value per authorized share class - an input of the assumed-par-value-capital franchise-tax method.",
+      "producedBy": "certificate-of-incorporation",
+      "consumedBy": [
+        { "module": "deFranchiseTax", "function": "assumedParValueCapitalTax", "input": "authorizedClasses[].parValue" }
+      ]
+    },
+    {
+      "id": "issued-shares",
+      "label": "Issued shares",
+      "type": "number",
+      "description": "Total shares actually issued across all classes - the cap table's bottom line and the denominator of Delaware's assumed-par method.",
+      "producedBy": "cap-table",
+      "consumedBy": [
+        { "module": "deFranchiseTax", "function": "assumedParValueCapitalTax", "input": "totalIssuedShares" }
+      ]
+    },
+    {
+      "id": "gross-assets",
+      "label": "Total gross assets",
+      "type": "money",
+      "description": "The Form 1120 Schedule L total-asset figure - the assumed-par franchise-tax method's asset input and the QSBS $50M gross-asset condition's fact.",
+      "producedBy": "financial-statements",
+      "consumedBy": [
+        { "module": "deFranchiseTax", "function": "assumedParValueCapitalTax", "input": "totalGrossAssets" },
+        { "module": "qsbs", "function": "qsbsEligibilityChecklist", "input": "aggregateGrossAssetsAtIssuance" }
+      ]
+    },
+    {
+      "id": "fully-diluted-shares",
+      "label": "Fully diluted shares",
+      "type": "number",
+      "description": "Issued + options + pool + as-converted instruments - the denominator every ownership percentage and pool-sizing computation divides by.",
+      "producedBy": "cap-table",
+      "consumedBy": [
+        { "module": "equityComp", "function": "grantOwnershipPct", "input": "fullyDilutedShares" },
+        { "module": "capTable", "function": "poolIncreaseForTarget", "input": "fullyDiluted" }
+      ]
+    },
+    {
+      "id": "unissued-pool-shares",
+      "label": "Unissued option pool",
+      "type": "number",
+      "description": "Pool shares reserved but not yet granted - what the pool-increase computations top up to hit a target available percentage.",
+      "producedBy": "cap-table",
+      "consumedBy": [
+        { "module": "capTable", "function": "poolIncreaseForTarget", "input": "unissued" },
+        { "module": "capTable", "function": "poolIncreaseForRoundTarget", "input": "unissued" }
+      ]
+    },
+    {
+      "id": "cash-on-hand",
+      "label": "Cash on hand",
+      "type": "money",
+      "description": "Cash in the business bank account now - the numerator of every runway computation.",
+      "producedBy": "bank-account",
+      "consumedBy": [
+        { "module": "runway", "function": "simpleRunwayMonths", "input": "cash" },
+        { "module": "runway", "function": "defaultAliveReport", "input": "RunwayInputs.cash" }
+      ]
+    },
+    {
+      "id": "monthly-revenue",
+      "label": "Monthly revenue",
+      "type": "money",
+      "description": "Current monthly revenue run rate from the books - one side of net burn in the default-alive projection.",
+      "producedBy": "accounting-ledger",
+      "consumedBy": [
+        { "module": "runway", "function": "defaultAliveReport", "input": "RunwayInputs.monthlyRevenue" }
+      ]
+    },
+    {
+      "id": "monthly-expenses",
+      "label": "Monthly operating expenses",
+      "type": "money",
+      "description": "Gross burn - current monthly operating expenses from the books, the other side of net burn.",
+      "producedBy": "accounting-ledger",
+      "consumedBy": [
+        { "module": "runway", "function": "defaultAliveReport", "input": "RunwayInputs.monthlyExpenses" }
+      ]
+    },
+    {
+      "id": "revenue-growth-pct-mom",
+      "label": "Revenue growth (% MoM)",
+      "type": "number",
+      "description": "Month-over-month revenue growth in percent, measured from the books - what separates default-alive from default-dead.",
+      "producedBy": "accounting-ledger",
+      "consumedBy": [
+        { "module": "runway", "function": "defaultAliveReport", "input": "RunwayInputs.revenueGrowthPctMoM" },
+        { "module": "runway", "function": "growthAdjustedRunwayMonths", "input": "RunwayInputs.revenueGrowthPctMoM" }
+      ]
+    },
+    {
+      "id": "common-share-fmv",
+      "label": "Common share FMV (409A)",
+      "type": "money",
+      "description": "The 409A report's fair market value per common share - the strike-price floor every option grant is sanity-checked against.",
+      "producedBy": "409a-valuation",
+      "consumedBy": [
+        { "module": "grant409aSanity", "function": "strikeFloorCheck", "input": "fmvPerShare" },
+        { "module": "grant409aSanity", "function": "preferredCommonRatioIllustration", "input": "fmvPerShare" }
+      ]
+    },
+    {
+      "id": "409a-valuation-date",
+      "label": "409A valuation date",
+      "type": "date",
+      "description": "The as-of date of the current 409A valuation - what the 12-month staleness and refresh-trigger checks run from.",
+      "producedBy": "409a-valuation",
+      "consumedBy": [
+        { "module": "grant409aSanity", "function": "fmvAgeCheck", "input": "fmvAsOf" },
+        { "module": "grant409aSanity", "function": "refreshTriggerChecklist", "input": "fmvAsOf" }
+      ]
+    },
+    {
+      "id": "has-payroll",
+      "label": "Runs payroll",
+      "type": "enum",
+      "values": ["yes", "no"],
+      "description": "Whether the company runs payroll - established by the payroll account existing; it switches the Form 941 quarterlies into the compliance calendar.",
+      "producedBy": "payroll-account",
+      "consumedBy": [
+        { "module": "deadlines", "function": "complianceCalendar", "input": "options.hasPayroll" }
+      ]
+    }
+  ]
+}
