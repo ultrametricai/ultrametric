@@ -67,20 +67,22 @@ describe('canonical shared process reader', () => {
     expect(el.textContent).not.toContain('runs in parallel')
   })
 
-  it('shows only explicit high-risk annotations at their own part or option scope', () => {
+  it('shows explicit source risk annotations at their own part or option scope', () => {
     const records = readSharedCatalog()
     const record = findSharedRecord(records, 'form_001')!
     const el = mount(renderToStaticMarkup(<SharedProcessReader record={record} records={records} />))
     const risks = el.querySelectorAll('[title="Existing source risk assessment"]')
-    expect(risks).toHaveLength(6)
-    expect([...risks].every(risk => risk.textContent === 'High risk')).toBe(true)
+    expect([...risks].filter(risk => risk.textContent === 'High risk')).toHaveLength(6)
+    expect([...risks].some(risk => risk.textContent === 'Medium risk')).toBe(true)
     const filing = el.querySelector('[id="form_001:n4"]')!
     expect(filing.querySelector(':scope > div:first-child [title="Existing source risk assessment"]')).not.toBeNull()
     expect(filing.querySelector('[id="form_001:n4:default"] [title="Existing source risk assessment"]')).toBeNull()
     const synthetic = structuredClone(record)
     synthetic.parts = [{ ...synthetic.parts[0], metadata: { reversibility: 'irreversible', riskLevel: 'medium' } }]
     synthetic.links = []
-    expect(mount(renderToStaticMarkup(<SharedProcessReader record={synthetic} records={records} />)).textContent).not.toContain('High risk')
+    const rendered = mount(renderToStaticMarkup(<SharedProcessReader record={synthetic} records={records} />)).textContent
+    expect(rendered).not.toContain('High risk')
+    expect(rendered).toContain('Medium risk')
   })
 
   it('shows source route categories without inheriting defaults into alternatives', () => {

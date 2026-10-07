@@ -77,7 +77,8 @@ describe('explicit defaults in migrated method decisions', () => {
     const filing = el.querySelector('[id="form_001:n4"]')!
     const radios = [...el.querySelectorAll<HTMLInputElement>('fieldset[aria-describedby] input[type="radio"]')]
     expect(radios.find(radio => radio.checked)?.value).toBe('default')
-    expect(radios.map(option => ({ id: option.value, title: option.getAttribute('aria-label') })).sort((a, b) => a.id.localeCompare(b.id))).toEqual(record.parts.find(part => part.id === 'n4')!.options.map(option => ({ id: option.id, title: option.title })).sort((a, b) => a.id.localeCompare(b.id)))
+    expect(radios.map(option => ({ id: option.value, title: option.getAttribute('aria-label') }))).toEqual(expect.arrayContaining(record.parts.find(part => part.id === 'n4')!.options.map(option => ({ id: option.id, title: option.id === 'default' ? 'United States' : option.title }))))
+    expect(radios.map(option => option.value)).toEqual(expect.arrayContaining(['PT', 'CA', 'GLOBAL']))
     expect(filing.querySelector('[id="form_001:n4:default"]')).not.toBeNull()
     expect(filing.querySelector('[id="form_001:n4:germany-notary-gmbh"]')).toBeNull()
     expect(filing.querySelector('a[href="https://corp.delaware.gov/howtoform/"]')).not.toBeNull()

@@ -2,12 +2,14 @@
 import { afterEach, describe, expect, it } from 'vitest'
 import { cleanup, fireEvent, render, within } from '@testing-library/react'
 import { loadSharedProcesses } from '../shared-processes/load'
-import { buildStepComparisons } from '../shared-processes/step-comparisons'
+import { buildStepComparisons, comparisonCandidates } from '../shared-processes/step-comparisons'
 import { buildVendorPreview } from '../shared-processes/vendor-preview'
 import { buildProcessCheckSteps } from '../processCheckData'
 import { loadProcesses } from '../processes'
 import { loadCategory } from '../data'
 import { resolveServiceCandidates } from '../shared-processes/service-candidates'
+import { sourceStepScope } from '../shared-processes/source-step'
+import { processAnchorContract } from '../shared-processes/compatibility'
 import SharedProcessReader from '@/components/shared-processes/SharedProcessReader'
 
 const records = loadSharedProcesses()
@@ -107,7 +109,7 @@ describe('canonical step comparisons', () => {
       const el = render(<SharedProcessReader record={record} records={records} comparisons={comparisons} />)
       const section = el.container.querySelector(`[id="${scope}"]`) as HTMLElement
       for (const candidate of candidates) {
-        if (comparisons[scope].products.some(product => product.id === candidate.id)) continue
+        if (comparisonCandidates(comparisons[scope]).includes(candidate.id)) continue
         const list = section.querySelector('[aria-label="Service options"]') as HTMLElement
         expect(list).not.toBeNull()
         expect(list.textContent).toContain(candidate.name)
@@ -123,14 +125,14 @@ describe('canonical step comparisons', () => {
     let recordCount = 0
     for (const record of records) {
       const comparisons = buildStepComparisons(record)
-      if (Object.keys(comparisons).length) recordCount++
+      if (Object.values(comparisons).some(comparison => comparison.storyCount > 0)) recordCount++
       const task = loadProcesses().find(task => task.id === record.id)
       if (!task) { expect(comparisons).toEqual({}); continue }
       const expected = buildProcessCheckSteps(task).filter(step => record.parts.some(part => part.id === step.nodeId && part.kind !== 'reference'))
-      expect(Object.keys(comparisons)).toHaveLength(expected.length)
+      expect(Object.values(comparisons).filter(comparison => comparison.storyCount > 0)).toHaveLength(expected.length)
       for (const step of expected) {
         const node = task.dag.nodes.find(node => node.id === step.nodeId)!
-        const scope = `${record.id}:${step.nodeId}${node.methods?.length ? ':default' : ''}`
+        const scope = sourceStepScope(record, node, processAnchorContract(record, [], task))!
         const functionArena = step.arenas.find(arena => arena.kind === 'function')!
         expect(comparisons[scope].products.map(p => p.productId)).toEqual(functionArena.vendors.filter(v => !v.shutdown).map(v => v.productId))
         scopes++

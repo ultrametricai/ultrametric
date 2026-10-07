@@ -1,6 +1,6 @@
 'use client'
 
-import type { ReactNode } from 'react'
+import { useId, type ReactNode } from 'react'
 import type { ServiceCandidate } from '@/lib/shared-processes/service-candidates'
 import type { CapabilityEvidence, VendorCoverage } from '@/lib/shared-processes/vendor-preview'
 import ScoredProductRow from './ScoredProductRow'
@@ -11,6 +11,7 @@ import { selectedVendor, useVendorSelection } from './VendorSelection'
 export default function ServiceCandidateRows({ candidates, choiceScope, parentChoiceScope, coverage, evidence, details }: {
   candidates: ServiceCandidate[]; details?: Record<string, ReactNode>; choiceScope?: string; parentChoiceScope?: string; coverage?: Record<string, VendorCoverage>; evidence?: Record<string, CapabilityEvidence[]>
 }) {
+  const assessmentId = useId()
   const selection = useVendorSelection()
   const region = useRegionalVariant()
   const foreign = !!region?.decision && region.selected !== 'default'
@@ -23,9 +24,11 @@ export default function ServiceCandidateRows({ candidates, choiceScope, parentCh
     const value = coverage?.[id]
     return foreign && `${region?.decision?.scope}:default` === value?.scope ? undefined : value
   }
+  const informational = !choiceScope && candidates.every(candidate => !visibleCoverage(candidate.id) && (foreign || !details?.[candidate.id]))
   return <>
-    {!foreign && coverage && Object.keys(coverage).length > 0 && <p className="mb-2 text-sm text-zinc-400" title="Weighted coverage of the default filing step’s mapped stories, including manual workflows and APIs; not an automation probability or a whole-process score.">Filing coverage · /100</p>}
-    <ul aria-label="Service options" className="overflow-hidden rounded-2xl border border-zinc-800">
+    {informational && <p id={assessmentId} className="mb-3 text-base text-zinc-400">These options have not been assessed for this step.</p>}
+    {!informational && !foreign && coverage && Object.keys(coverage).length > 0 && <p className="mb-2 text-sm text-zinc-400" title="Weighted coverage of the default filing step’s mapped stories, including manual workflows and APIs; not an automation probability or a whole-process score.">Filing coverage · /100</p>}
+    <ul aria-label="Service options" aria-describedby={informational ? assessmentId : undefined} className="overflow-hidden rounded-2xl border border-zinc-800">
       {ordered.map(candidate => {
         const assessment = visibleCoverage(candidate.id)
         const providerDetail = foreign ? undefined : details?.[candidate.id]
@@ -34,7 +37,7 @@ export default function ServiceCandidateRows({ candidates, choiceScope, parentCh
           const value = visibleCoverage(item.id)
           return value && value.scope === assessment?.scope ? [value.score] : []
         })
-        return <ScoredProductRow key={candidate.id}
+        return <ScoredProductRow key={candidate.id} showScore={!informational} reserveControls={!informational}
           product={{ productId: candidate.logoId ?? candidate.id, name: candidate.name, href: candidate.href, hasLogo: candidate.logoId !== null, score: assessment?.score ?? null }}
           profileLabel={`${candidate.name} profile`} selected={candidate.id === selectedId} inherited={!!parentChoiceScope && !hasOverride && !foreign}
           onSelect={choiceScope && selection ? () => parentChoiceScope && overrideScope
