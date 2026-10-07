@@ -35,7 +35,7 @@ export default function ComputerUseChips({ taskId, nodeId }: { taskId: string; n
           routing is untouched. */}
       <span
         className="text-[10px] text-zinc-500"
-        title="Judged computer-use agents (browser agents + assistants with judged computer-use verdicts) ranked by their verdicts on this step's mapped stories. The step stays manual — this is who could attempt the mechanical part."
+        title="Judged computer-use agents ranked by their verdicts on this step's mapped stories — the step stays manual; this is who could attempt the mechanical part"
       >
         🖥
       </span>

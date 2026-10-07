@@ -17,7 +17,7 @@ export default function UsFlowLabel({ geoScope }: { geoScope: 'global' | 'us' | 
   return (
     <span
       className="mt-2 inline-flex items-center gap-1.5 rounded-full border border-zinc-700 px-2 py-0.5 text-[10px] uppercase tracking-widest text-zinc-400"
-      title={`This step-by-step is the US flow — written around US law and agencies, not the ${GEO_PREF_META[geo].label} path. The banner above carries the committed ${GEO_PREF_META[geo].label} note.`}
+      title={`This step-by-step is the US flow, not the ${GEO_PREF_META[geo].label} path — the ${GEO_PREF_META[geo].label} note is in the banner above`}
     >
       <span aria-hidden>🇺🇸</span>
       US flow

@@ -17,7 +17,7 @@ export default function CertificationChip({ cert }: { cert: Certification }) {
       className="inline-flex items-center gap-1.5 rounded-full border border-emerald-400/50 bg-emerald-400/5 px-2.5 py-0.5 text-xs text-emerald-300"
       title={`${CERT_LEVEL_LABELS[cert.level]} — conformance suite passed on ${cert.date} (${
         cert.initiatedBy === 'vendor' ? 'vendor-submitted, maintainer-verified' : 'maintainer-initiated'
-      }); expires ${certificationExpires(cert)}. The linked report carries every check, timestamp, and response digest.`}
+      }); expires ${certificationExpires(cert)} — every check is in the linked report`}
     >
       {/* The level's star-polygon seal (components/GeoMark.tsx), seeded by the level id so
           agent-ready and agent-native each wear one distinct mark site-wide. */}

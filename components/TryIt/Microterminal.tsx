@@ -335,7 +335,7 @@ export default function Microterminal({
             )}
             {authGated && liveResult.auth === 'keyless' && (
               <span
-                title="Our probe holds no vendor account, so keyless is where our proof stops: the server answered from its documented endpoint and demanded sign-in. That is verified-reachable — not absence of an MCP server."
+                title="Our probe holds no vendor account — the server answered from its documented endpoint and demanded sign-in; not absence of an MCP server"
                 className="rounded-full border border-amber-400/60 bg-amber-400/10 px-2 py-0.5 font-semibold text-amber-300"
               >
                 ⚿ verified reachable, auth-gated — untestable keylessly

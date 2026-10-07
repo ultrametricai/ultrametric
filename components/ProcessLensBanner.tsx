@@ -49,7 +49,7 @@ export default function ProcessLensBanner({
       <span className="text-zinc-100">
         Viewing via <span className="font-medium">{names.join(', ')}</span>:{' '}
         <span
-          title={`Steps a selected/stack vendor has judged evidence on, of the page's rankable steps. Process score = sum of the resolved vendors' step scores over ALL ${summary.rankable} rankable steps (unserved steps count 0), normalized 0–100 — the leaderboard's own formula.`}
+          title={`Steps a selected/stack vendor has judged evidence on, of the page's ${summary.rankable} rankable steps — process score sums step scores over all of them (unserved count 0), normalized 0–100`}
         >
           serves <span className="tabular-nums text-emerald-300">{summary.served}</span> of{' '}
           <span className="tabular-nums">{summary.rankable}</span> rankable steps · process score{' '}

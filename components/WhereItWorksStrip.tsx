@@ -39,7 +39,7 @@ export default function WhereItWorksStrip({
       <div className="flex items-center gap-2">
         <span
           className="text-[10px] uppercase tracking-widest text-zinc-500"
-          title="Region availability from the vendor's own pages (help center, docs, availability tables) — crawl-verified evidence, not a score. Each flag links to its source; a muted flag is partial availability."
+          title="Region availability from the vendor's own pages — crawl-verified evidence, not a score; a muted flag is partial availability"
         >
           Where it works
         </span>

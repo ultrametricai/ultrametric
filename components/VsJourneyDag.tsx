@@ -638,7 +638,7 @@ export default function VsJourneyDag({
                             <span
                               data-testid={`vs-dag-fork-${node.taskId}`}
                               className="shrink-0"
-                              title={`${node.title} — the corpus DAG forks at "${node.fork.at}": ${node.fork.branches.join(' ∥ ')} run as parallel branches that rejoin; the terminal prints the steps in corpus order`}
+                              title={`${node.title} — the corpus DAG forks at "${node.fork.at}": ${node.fork.branches.join(' ∥ ')} run in parallel and rejoin`}
                             >
                               <ForkGlyph lit={state !== 'pending'} />
                             </span>

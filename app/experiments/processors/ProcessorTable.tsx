@@ -175,7 +175,7 @@ export default function ProcessorTable() {
               <span title="Default / base TDP in watts, vendor-published. Hover a value for turbo/configurable ranges.">TDP</span>
             </Th>
             <Th col="memBwGBs" current={column} direction={direction} onSort={handleSort}>
-              <span title="Peak memory bandwidth (GB/s). Where the vendor only publishes the memory spec (e.g. DDR5-6400 dual-channel), the GB/s is derived — hover the value for the formula.">Mem BW</span>
+              <span title="Peak memory bandwidth (GB/s) — derived where the vendor only publishes the memory spec; hover the value for the formula">Mem BW</span>
             </Th>
             <Th col="topsPerW" current={column} direction={direction} onSort={handleSort} className="hidden md:table-cell">
               <span title="Derived: NPU TOPS ÷ default TDP. Only computed where the vendor publishes both — n/a is honest, not zero.">TOPS/W</span>
