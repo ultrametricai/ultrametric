@@ -93,6 +93,39 @@ describe('landing cutover routing', () => {
     }
   })
 
+  it('serves /productarena/data/* directly from the origin /data/* (no redirect)', async () => {
+    // The shipped ultrametric CLI (≤0.4.1) fetches these URLs with redirect:'error', so a 301
+    // fails every `arena` command with NETWORK_ERROR — the legacy data path must answer 200.
+    for (const [legacy, originPath] of [
+      ['/productarena/data/categories.json', '/data/categories.json'],
+      ['/productarena/data/domain-registrars/rankings.json', '/data/domain-registrars/rankings.json'],
+      ['/productarena/data/domain-registrars/stories.json?x=1', '/data/domain-registrars/stories.json?x=1'],
+    ]) {
+      const calls = stubOriginFetch('[]')
+      const resp = await get(legacy)
+      expect(resp.status).toBe(200)
+      expect(calls).toEqual([`${ORIGIN}${originPath}`])
+      vi.unstubAllGlobals()
+    }
+  })
+
+  it('still 301s non-data legacy /productarena/* paths without the prefix', async () => {
+    const resp = await get('/productarena/overall')
+    expect(resp.status).toBe(301)
+    expect(resp.headers.get('location')).toBe('https://ultrametric.ai/overall')
+    // /productarena/database (or any non-/data/ prefix sharing the first characters) still 301s.
+    const lookalike = await get('/productarena/database')
+    expect(lookalike.status).toBe(301)
+    expect(lookalike.headers.get('location')).toBe('https://ultrametric.ai/database')
+  })
+
+  it('302s the bare /productarena to /overall, uncacheable', async () => {
+    const resp = await get('/productarena')
+    expect(resp.status).toBe(302)
+    expect(resp.headers.get('location')).toBe('https://ultrametric.ai/overall')
+    expect(resp.headers.get('cache-control')).toBe('no-store')
+  })
+
   it('301s /v2 and /v2/ to /get-started (founder 2026-09-29 rename)', async () => {
     // A Cloudflare ZONE rule still intercepts /v2 ahead of the worker in production; this
     // redirect takes over the moment the founder removes it.

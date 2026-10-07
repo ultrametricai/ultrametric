@@ -1,6 +1,8 @@
 // Cloudflare Worker: serves Ultrametric (the product) at the ROOT of ultrametric.ai by
 // transparently proxying to the Vercel deployment (built with no basePath since the
-// 2026-09-28 rebrand). Route: ultrametric.ai/* — legacy /productarena/* URLs 301 here.
+// 2026-09-28 rebrand). Route: ultrametric.ai/* — legacy /productarena/* URLs 301 here, except
+// /productarena/data/* which serves the data files directly (the shipped ultrametric CLI
+// fetches that path with redirect:'error'; see block 1a in fetch()).
 //
 // Also hosts POST /productarena/api/scan — the "test my product" quick scan behind the /submit
 // page. It runs a fixed, keyless probe set (llms.txt, openapi.json, robots.txt, homepage hints)
@@ -2115,16 +2117,25 @@ export default {
     //    and indexed page keeps working; the bare product URL goes to /overall.
     if (url.pathname === '/productarena' || url.pathname.startsWith('/productarena/')) {
       const stripped = url.pathname.slice('/productarena'.length) || '/'
-      // Bare /productarena → /overall as an UNCACHEABLE 302: the target is "for now" (founder),
-      // and the earlier 301 to '/' got permanently cached by browsers — never again. Deep paths
-      // keep 301 (their root-path targets are stable; old links/badges/SEO keep working).
-      if (stripped === '/') {
+      // 1a. /productarena/data/* serves the data files DIRECTLY (same pathname-rewrite trick as
+      //     /overall below), not a 301: the shipped ultrametric CLI (≤0.4.1 ProductArenaClient)
+      //     fetches these exact URLs with redirect:'error', so a redirect fails every `arena`
+      //     command with NETWORK_ERROR (verified 2026-10-05, docs/cli-sandbox-spike/). Serving
+      //     200 here fixes every installed CLI without an npm release. Non-data legacy paths
+      //     keep the redirects below.
+      if (stripped === '/data' || stripped.startsWith('/data/')) {
+        url.pathname = stripped // fall through to the origin proxy below
+      } else if (stripped === '/') {
+        // Bare /productarena → /overall as an UNCACHEABLE 302: the target is "for now" (founder),
+        // and the earlier 301 to '/' got permanently cached by browsers — never again. Deep paths
+        // keep 301 (their root-path targets are stable; old links/badges/SEO keep working).
         return new Response(null, {
           status: 302,
           headers: { Location: `https://ultrametric.ai/overall${url.search}`, 'Cache-Control': 'no-store' },
         })
+      } else {
+        return Response.redirect(`https://ultrametric.ai${stripped}${url.search}`, 301)
       }
-      return Response.redirect(`https://ultrametric.ai${stripped}${url.search}`, 301)
     }
     // 1b. /v2 → /get-started (founder 2026-09-29 rename): the dedicated Ultrametric CLI/MCP
     //     product page lives at app/get-started; every /v2 link 301s there. NOTE: a Cloudflare
