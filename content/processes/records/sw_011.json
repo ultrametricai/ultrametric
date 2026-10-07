@@ -1,0 +1,209 @@
+{
+  "schemaVersion": 1,
+  "id": "sw_011",
+  "kind": "process",
+  "title": "Set up AI code review",
+  "summary": "Install an AI code reviewer on the code hosting org, scope its repository access, add its config to the repo, and confirm it reviews a test pull request. CodeRabbit is the canonical route; the ai-code-review arena ranks the alternatives.",
+  "outcomes": [],
+  "guidance": null,
+  "parts": [
+    {
+      "id": "n1",
+      "kind": "step",
+      "title": "Install the AI reviewer on the code hosting org",
+      "guidance": "Pick the reviewer from the ranked options and install it as an app on the code hosting organization. The install is an OAuth consent: an org admin grants the reviewer read access to the repositories it will review. Record which account performed the install and where the reviewer's dashboard lives so access can be revoked or rescoped later.",
+      "when": null,
+      "ref": null,
+      "options": [],
+      "notes": [],
+      "references": [
+        {
+          "kind": "vendor",
+          "id": "coderabbit",
+          "role": "stated-vendor"
+        },
+        {
+          "kind": "vendor",
+          "id": "coderabbit",
+          "role": "candidate"
+        },
+        {
+          "kind": "vendor",
+          "id": "greptile",
+          "role": "candidate"
+        },
+        {
+          "kind": "vendor",
+          "id": "cursor_bugbot",
+          "role": "candidate"
+        },
+        {
+          "kind": "category",
+          "id": "ai-code-review",
+          "role": "rankings"
+        }
+      ],
+      "metadata": {
+        "route": "form",
+        "reversibility": "reversible",
+        "producesArtifact": "ai-code-review",
+        "approvalRequired": true,
+        "estimatedMinutes": 10
+      }
+    },
+    {
+      "id": "n2",
+      "kind": "step",
+      "title": "Scope repository access",
+      "guidance": "Grant the reviewer access to the repositories that actually need review rather than the whole organization. Start with the main application repositories and leave experiments and forks out until the signal is proven. Note the scope in the engineering docs so new repositories get a deliberate include-or-exclude decision instead of inheriting a default.",
+      "when": null,
+      "ref": null,
+      "options": [],
+      "notes": [],
+      "references": [],
+      "metadata": {
+        "route": "agent",
+        "reversibility": "reversible",
+        "approvalRequired": true,
+        "riskLevel": "medium",
+        "estimatedMinutes": 5
+      }
+    },
+    {
+      "id": "n3",
+      "kind": "step",
+      "title": "Add the reviewer config to the repo",
+      "guidance": "Add the reviewer's configuration file to each covered repository: review rules, path filters for generated or vendored code, and any language-specific instructions. Keep the config in version control so review behavior changes go through pull requests themselves. A coding agent can draft the file; review it like any other code change.",
+      "when": null,
+      "ref": null,
+      "options": [],
+      "notes": [],
+      "references": [
+        {
+          "kind": "category",
+          "id": "ai-coding",
+          "role": "additional-rankings"
+        }
+      ],
+      "metadata": {
+        "route": "agent",
+        "reversibility": "reversible",
+        "approvalRequired": true,
+        "estimatedMinutes": 15
+      }
+    },
+    {
+      "id": "n4",
+      "kind": "step",
+      "title": "Open a test pull request and confirm a review lands",
+      "guidance": "Open a small, intentionally imperfect pull request and confirm the reviewer posts a review on it. Check latency, the quality of the findings, and whether path filters are respected. The review visible on the test pull request is the proof the installation works; fix scope or config before relying on it.",
+      "when": null,
+      "ref": null,
+      "options": [],
+      "notes": [],
+      "references": [],
+      "metadata": {
+        "route": "agent",
+        "reversibility": "reversible",
+        "approvalRequired": true,
+        "estimatedMinutes": 10,
+        "verify": {
+          "how": "The reviewer's review appears on the test pull request in the code host."
+        }
+      }
+    },
+    {
+      "id": "n5",
+      "kind": "step",
+      "title": "Decide the merge gate: blocking check or advisory comments",
+      "guidance": "Decide with the team whether the reviewer runs as a required check that blocks merging or as advisory comments. A blocking gate enforces attention but adds friction and false-positive risk while the config is young; advisory mode builds trust first. Revisit the choice once the team has seen a few weeks of findings.",
+      "when": null,
+      "ref": null,
+      "options": [],
+      "notes": [],
+      "references": [],
+      "metadata": {
+        "route": "person",
+        "reversibility": "reversible",
+        "estimatedMinutes": 5
+      }
+    }
+  ],
+  "links": [
+    {
+      "from": "n1",
+      "to": "n2",
+      "when": null
+    },
+    {
+      "from": "n2",
+      "to": "n3",
+      "when": null
+    },
+    {
+      "from": "n3",
+      "to": "n4",
+      "when": null
+    },
+    {
+      "from": "n4",
+      "to": "n5",
+      "when": null
+    }
+  ],
+  "references": [
+    {
+      "kind": "vendor",
+      "id": "coderabbit",
+      "role": "involves"
+    },
+    {
+      "kind": "vendor",
+      "id": "github",
+      "role": "involves"
+    }
+  ],
+  "notes": [],
+  "metadata": {
+    "phase": "software",
+    "cadence": "once",
+    "geoScope": "global",
+    "complexity": "simple",
+    "reversibility": "reversible",
+    "category": "dev_tooling",
+    "supportLevel": "partial",
+    "supportReason": "The reviewer installs as a code-host app behind an OAuth consent a human must grant. The config file and the test pull request are agent-runnable; the merge-gate policy call stays human.",
+    "contextNeeded": [
+      {
+        "tool": "company.get",
+        "query": "code hosting org",
+        "tier": "tools",
+        "required": true
+      }
+    ],
+    "produces": [
+      "ai-code-review"
+    ],
+    "requires": [
+      "code-hosting-org"
+    ],
+    "tags": [
+      "software",
+      "code-review",
+      "setup"
+    ],
+    "activeMinutes": 45,
+    "totalEstimatedMinutes": 45,
+    "hasAsyncSteps": false,
+    "timeOrder": 125,
+    "annoyance": 1,
+    "risk": 1,
+    "growthImpact": 3
+  },
+  "source": {
+    "path": "processes/corpus.json",
+    "id": "sw_011",
+    "revision": "cc8509f802175346b18a3d3bb4141527dfae84a6",
+    "sha256": "9bccb69ca0b62d3de644fcc7502bc7a9f887ac41900d401913da44201c1a0b59"
+  }
+}

@@ -26,9 +26,9 @@ const node = (over: Partial<DagNode>): DagNode => ({
 })
 
 describe('corpus', () => {
-  it('loads all 146 records (124 processes + 22 situations) with unique, non-empty slugs', () => {
+  it('loads all 147 records (125 processes + 22 situations) with unique, non-empty slugs', () => {
     const tasks = loadProcesses(DATA_DIR)
-    expect(tasks.length).toBe(146)
+    expect(tasks.length).toBe(147)
     const slugs = tasks.map((t) => processSlug(t.title))
     expect(new Set(slugs).size).toBe(tasks.length)
     for (const s of slugs) expect(s).toMatch(/^[a-z0-9]+(-[a-z0-9]+)*$/)

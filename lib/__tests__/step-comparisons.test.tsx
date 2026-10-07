@@ -143,8 +143,10 @@ describe('canonical step comparisons', () => {
     // Government-services wiring (2026-10-05): the irs/uspto vendor keys resolve to the new
     // arena, so the agency steps across those tasks gain function comparisons — +1 record (the
     // other covered tasks already carried function-mapped steps), +12 scopes.
-    expect(recordCount).toBe(131)
-    expect(scopes).toBe(400)
+    // Software-stack wave (2026-10-07): sw_011 (Set up AI code review) lands with one
+    // function-mapped step (n1, ai-code-review) — +1 record, +1 scope.
+    expect(recordCount).toBe(132)
+    expect(scopes).toBe(401)
   })
 
   it('works beyond the formation preview and never scores linked or unmapped parts by inheritance', () => {

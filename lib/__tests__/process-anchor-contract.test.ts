@@ -28,7 +28,7 @@ describe('legacy and native anchor contracts', () => {
         count++
       }
     }
-    expect(count).toBe(856)
+    expect(count).toBe(861)
   })
 
   it('preserves reviewed branding activities and records the pre-existing logo title drift', () => {

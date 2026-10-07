@@ -39,7 +39,7 @@ it('renders each registered header with its 64/512 pair and leaves all unregiste
   const registered = records.filter(record => processIllustration(record.id))
   const unregistered = records.filter(record => !processIllustration(record.id))
   expect(registered).toHaveLength(123)
-  expect(unregistered).toHaveLength(49)
+  expect(unregistered).toHaveLength(50)
   for (const record of records) {
     const root = document.createElement('div')
     root.innerHTML = renderToStaticMarkup(<SharedProcessReader record={record} records={records} />)

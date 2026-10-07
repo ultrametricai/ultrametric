@@ -87,8 +87,9 @@ export default async function ProcessPage({ params }: { params: Promise<{ slug: 
   // serialized for the client-side toggle; [] for the many processes that don't branch.
   const jurisSteps = jurisdictionStepViews(task.id)
   // Open modules serving this process (processes/business-logic-map.json) — the bottom table's
-  // rows; the header's inline control reads the same registry via modulesForProcess (repo
-  // README links, founder 2026-10-06).
+  // rows; the header's inline control reads the same registry via modulesForProcess
+  // (/open-modules page links since 2026-10-07; the per-step compute chips keep the README
+  // deep links).
   const openModuleRows = processOpenModuleRows(task)
   // Registry artifacts this process produces — the bottom 'Artifacts it produces' table.
   const producesRows = producedArtifactRows(task)
@@ -264,6 +265,21 @@ export default async function ProcessPage({ params }: { params: Promise<{ slug: 
           it once, not on all the pages") — /llms.txt is the once-place (it documents the
           manifest scheme), and the manifest stays machine-discoverable from this page via the
           <link rel="alternate"> in generateMetadata. */}
+
+      {/* View-in-repo (founder 2026-10-07): the one muted footer link — this record's per-id
+          file in the public shared catalog (content/processes/records/<id>.json; every corpus
+          task has one, mirror-tested in lib/__tests__/shared-canonical-identity.test.ts). */}
+      <p className="text-xs text-zinc-600">
+        <a
+          href={`https://github.com/ultrametricai/ultrametric/blob/main/content/processes/records/${task.id}.json`}
+          target="_blank"
+          rel="noopener noreferrer"
+          title={`This process's record in the public repo — content/processes/records/${task.id}.json`}
+          className="transition hover:text-emerald-300"
+        >
+          View this record in the repo ↗
+        </a>
+      </p>
     </div>
   )
 }

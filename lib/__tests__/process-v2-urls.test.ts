@@ -19,8 +19,8 @@ async function configRedirect(path: string) {
 
 describe('temporary shared-reader v2 URLs', () => {
   it('retains the existing record IDs and readable slugs without expanding legacy aliases', () => {
-    expect(records).toHaveLength(172)
-    expect(keys.size).toBe(320)
+    expect(records).toHaveLength(173)
+    expect(keys.size).toBe(322)
     expect(new Set(slugs.values()).size).toBe(records.length)
     for (const [key, id] of keys) expect(findSharedRecord(records, key)?.id).toBe(id)
     for (const record of records) expect(sharedPreviewHref(record.id, records)).toBe(`/processes/${slugs.get(record.id)}/v2`)

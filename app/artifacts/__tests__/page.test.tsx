@@ -141,8 +141,11 @@ describe('/artifacts/[id] — producers, consumers, computed vendors', () => {
   it('mapped documents sharing a registry family render as one object with variants — the SAFE note: cap · discount · MFN · international', async () => {
     const page = findArtifactPage('executed-safes')!
     expect(page.documentFamilies.map((g) => g.family)).toEqual(['yc-safe'])
-    // The variant labels are the registry's committed `variant` fields, in mapping order.
-    expect(page.documentFamilies[0].docs.map((d) => d.variant)).toEqual(['cap', 'discount', 'MFN', 'international'])
+    // The variant labels are the registry's committed `variant` fields, in mapping order
+    // (cross-link audit 2026-10-07: the pro rata side letter completes the executed yc-safe set).
+    expect(page.documentFamilies[0].docs.map((d) => d.variant)).toEqual([
+      'cap', 'discount', 'MFN', 'international', 'pro rata side letter',
+    ])
     const { container } = render(await ArtifactDetailPage({ params: params('executed-safes') }))
     expect(container.textContent).toContain('Variants:')
     for (const d of page.documentFamilies[0].docs) {
@@ -159,6 +162,32 @@ describe('/artifacts/[id] — producers, consumers, computed vendors', () => {
     expect(findArtifactPage('domain')!.documents).toEqual([])
     const { container } = render(await ArtifactDetailPage({ params: params('domain') }))
     expect([...container.querySelectorAll('h2')].map((h) => h.textContent)).not.toContain('Document')
+  })
+
+  it('links the birth step (the canonical producer page #step anchor) and the registry source file in the repo', async () => {
+    // Cross-link audit 2026-10-07: every artifact's bornAt resolves to the canonical producer's
+    // tagged node — the reverse of the process page's Born-at column.
+    const tasks = new Map(loadProcesses().map((t) => [t.id, t]))
+    for (const page of loadArtifactPages()) {
+      const producer = tasks.get(page.artifact.producedBy)!
+      const node = producer.dag.nodes.find((n) => n.producesArtifact === page.artifact.id)!
+      expect(page.bornAt.label).toBe(node.label)
+      expect(page.bornAt.href).toBe(
+        `/processes/${processSlug(producer.title)}#step-${producer.id}-${node.id}`,
+      )
+    }
+    const { container } = render(await ArtifactDetailPage({ params: params('83b-election') }))
+    const born = findArtifactPage('83b-election')!.bornAt
+    const bornLink = container.querySelector(`a[href="${born.href}"]`)
+    expect(bornLink, 'the Born at link must render').not.toBeNull()
+    expect(bornLink!.textContent).toContain(born.label)
+    // View-in-repo (founder 2026-10-07): the registry source file, honestly titled — JSON
+    // carries no per-entry anchor, so the link opens the whole file.
+    const repo = container.querySelector(
+      'a[href="https://github.com/ultrametricai/ultrametric/blob/main/processes/artifacts.json"]',
+    )
+    expect(repo, 'the registry source link must render').not.toBeNull()
+    expect(repo!.getAttribute('title')).toContain('processes/artifacts.json')
   })
 })
 

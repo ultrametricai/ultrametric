@@ -53,7 +53,7 @@ export default async function ArtifactPage({ params }: { params: Promise<{ id: s
   const { id } = await params
   const page = findArtifactPage(id)
   if (!page) notFound()
-  const { artifact, producer, exceptionProducers, neededBy, arenas, documents } = page
+  const { artifact, producer, bornAt, exceptionProducers, neededBy, arenas, documents } = page
   const fieldRows = fieldsEstablishedBy(artifact.id)
 
   return (
@@ -143,6 +143,18 @@ export default async function ArtifactPage({ params }: { params: Promise<{ id: s
           >
             canonical producer
           </span>
+        </p>
+        <p className="mt-1 text-xs text-zinc-500">
+          <span title="The corpus pins the exact step where this artifact comes into existence (node-level producesArtifact)">
+            Born at:
+          </span>{' '}
+          <Link
+            href={bornAt.href}
+            className="text-zinc-400 underline decoration-zinc-800 underline-offset-2 transition hover:text-emerald-300"
+            title={`Jump to the step that produces it: ${bornAt.label}`}
+          >
+            {bornAt.label}
+          </Link>
         </p>
         {exceptionProducers.length > 0 && (
           <p className="mt-2 text-sm text-zinc-500">
@@ -265,6 +277,18 @@ export default async function ArtifactPage({ params }: { params: Promise<{ id: s
           </p>
         )}
       </section>
+
+      <p className="text-xs text-zinc-600">
+        <a
+          href="https://github.com/ultrametricai/ultrametric/blob/main/processes/artifacts.json"
+          target="_blank"
+          rel="noopener noreferrer"
+          title="Registry source — processes/artifacts.json (one file holds the whole registry; JSON carries no per-entry anchor, so the link opens the file)"
+          className="transition hover:text-emerald-300"
+        >
+          View the registry source in the repo ↗
+        </a>
+      </p>
     </div>
   )
 }

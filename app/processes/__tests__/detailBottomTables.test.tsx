@@ -10,6 +10,8 @@
 //      registry artifact links its /artifacts page, carries the registry description, and names
 //      the step on this page where it is born (#step anchor); exception producers keep the
 //      honest canonical-producer pointer.
+import fs from 'node:fs'
+import path from 'node:path'
 import { fireEvent, render } from '@testing-library/react'
 import { describe, expect, it } from 'vitest'
 import ProcessPage from '@/app/processes/[slug]/page'
@@ -88,10 +90,10 @@ describe('the bottom Open modules table (founder 2026-10-05)', () => {
     // The geo dropdown left this row for the site header (founder 2026-10-07) — the control
     // still renders inside the header's inline controls row, with no geo trigger beside it.
     const row = trigger.closest('div.flex') as HTMLElement
-    expect(row).toBeTruthy()
+expect(row).toBeTruthy()
     expect(row.querySelector('button[title^="Where you operate"]')).toBeNull()
-    // Open it: one repo link per registry module — the module's open-modules/README.md section
-    // on GitHub (moduleReadmeHref), external-link hygiene intact.
+    // Open it: one on-site link per registry module — the module's /open-modules page
+    // (founder 2026-10-07: the module page is the hub; GitHub deep links live there).
     fireEvent.click(trigger)
     const menu = container.querySelector('[role="menu"][aria-label="Open modules"]') as HTMLElement
     expect(menu).toBeTruthy()
@@ -99,24 +101,24 @@ describe('the bottom Open modules table (founder 2026-10-05)', () => {
     expect(chips.length).toBeGreaterThan(1)
     for (const chip of chips) {
       const entry = menu.querySelector(`a[href="${chip.href}"]`) as HTMLElement
-      expect(entry, `${chip.id} must link its README section`).toBeTruthy()
-      expect(chip.href).toContain('/open-modules/README.md#')
+      expect(entry, `${chip.id} must link its module page`).toBeTruthy()
+      expect(chip.href).toBe(`/open-modules/${chip.id}`)
       expect(entry.textContent).toContain(chip.label)
-      expect(entry.getAttribute('target')).toBe('_blank')
-      expect(entry.getAttribute('rel')).toContain('noopener')
+      expect(entry.getAttribute('target')).toBeNull()
     }
   })
 
-  it("a single-module process (tax_002) renders plain inline text — 'Open module: Deadline calendar' linking the repo, no button, no menu", async () => {
+  it("a single-module process (tax_002) renders plain inline text — 'Open module: Deadline calendar' linking its module page, no button, no menu", async () => {
     const { task, container } = await renderPage('tax_002')
     const [chip, ...rest] = modulesForProcess(task.id)
     expect(rest).toEqual([])
     const link = container.querySelector(`a[href="${chip.href}"]`) as HTMLElement
     expect(link, 'the inline Open module link must render').toBeTruthy()
     expect(link.textContent).toContain(`Open module: ${chip.label}`)
-    expect(link.getAttribute('target')).toBe('_blank')
-    // In the header's inline controls row, not on its own line above (the geo dropdown left
-    // this row for the site header, founder 2026-10-07).
+expect(chip.href).toBe(`/open-modules/${chip.id}`)
+    expect(link.getAttribute('target')).toBeNull()
+    // In the inline controls row, not on its own line above (the geo dropdown left this row
+    // for the site header, founder 2026-10-07; the module link is on-site now).
     expect(link.closest('div.flex')).toBeTruthy()
     expect(link.closest('div.flex')?.querySelector('button[title^="Where you operate"]')).toBeNull()
     // No expanding behavior anywhere near the title: no menu trigger.
@@ -177,5 +179,22 @@ describe("the bottom 'Artifacts it produces' table (founder 2026-10-05)", () => 
     const { task, container } = await renderPage('tax_001')
     expect(task.produces).toEqual([])
     expect(container.textContent).not.toContain('Artifacts it produces')
+  })
+})
+
+describe("the view-in-repo footer link (founder 2026-10-07)", () => {
+  it('every corpus task has its per-id record file in the public shared catalog, and the page links it', async () => {
+    const recordsDir = path.resolve(__dirname, '../../../content/processes/records')
+    for (const task of loadProcesses()) {
+      expect(
+        fs.existsSync(path.join(recordsDir, `${task.id}.json`)),
+        `${task.id} must have a shared-catalog record file`,
+      ).toBe(true)
+    }
+    const { task, container } = await renderPage('form_002')
+    const href = `https://github.com/ultrametricai/ultrametric/blob/main/content/processes/records/${task.id}.json`
+    const link = container.querySelector(`a[href="${href}"]`)
+    expect(link, 'the view-in-repo footer link must render').toBeTruthy()
+    expect(link!.getAttribute('title')).toContain(`content/processes/records/${task.id}.json`)
   })
 })
