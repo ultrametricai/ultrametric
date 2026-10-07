@@ -89,6 +89,14 @@ export const ProductSchema = z.object({
   // lib/rollups.ts's loader contract); non-government arenas leave them absent.
   country: z.string().regex(/^[A-Z]{2}$/, 'country must be a 2-letter uppercase code').optional(),
   area: z.enum(['company-registry', 'tax', 'ip-office', 'immigration', 'procurement']).optional(),
+  // URLs from `urls` above that the crawl stage must NOT fetch (pipeline/stages/crawl.ts skips
+  // them): hosts that wall keyless agents at robots.txt itself or serve a bot-management
+  // interstitial (government-services Phase 2: mca.gov.in, aima.gov.pt, scc.virginia.gov,
+  // ohiosos.gov, the sos.state.mn.us Radware page). The URL stays in `urls` because it is the
+  // product's real front door (display/link identity); the wall itself is recorded as dated
+  // probe-tier evidence instead of being re-fetched on every crawl. Robots compliance stays
+  // mechanical: a category-wide crawl can never breach a recorded wall.
+  crawlExclude: z.array(z.string().url()).optional(),
 })
 
 // Provenance of a story in the taxonomy: 'canonical' for the 29 ids injected verbatim by
