@@ -1,39 +1,12 @@
 // @vitest-environment jsdom
 import { render } from '@testing-library/react'
 import { describe, expect, it } from 'vitest'
-import { costChipText, StepCostChip, StepVerifyLine } from '@/components/StepVerifyCost'
+import { costChipText, StepCostChip } from '@/components/StepVerifyCost'
 import type { StepCost } from '@/lib/processes'
 
-// Depth wave part 1 display: the '✓ verify:' line (plain text + primary-source link) and the
-// muted cost chip whose face carries the number and its as-of date — the honesty contract
-// rendered, not just stored.
-
-describe('StepVerifyLine', () => {
-  it('renders the check text with the ✓ verify: prefix and the primary-source link', () => {
-    const { container, getByRole } = render(
-      <StepVerifyLine
-        verify={{
-          how: 'The new entity appears in the Delaware entity search.',
-          url: 'https://icis.corp.delaware.gov/ecorp/entitysearch/namesearch.aspx',
-        }}
-      />,
-    )
-    expect(container.textContent).toContain('✓ verify:')
-    expect(container.textContent).toContain('Delaware entity search')
-    const link = getByRole('link')
-    expect(link.getAttribute('href')).toContain('icis.corp.delaware.gov')
-    expect(link.getAttribute('rel')).toContain('noopener')
-    expect(link.textContent).toContain('icis.corp.delaware.gov')
-  })
-
-  it('renders plain text with no link when the check has no canonical URL', () => {
-    const { container } = render(
-      <StepVerifyLine verify={{ how: 'Pay stubs generate and the tax deposits confirm.' }} />,
-    )
-    expect(container.textContent).toContain('✓ verify:')
-    expect(container.querySelector('a')).toBeNull()
-  })
-})
+// Depth wave part 1 display: the muted cost chip whose face carries the number and its as-of
+// date — the honesty contract rendered, not just stored. (The '✓ verify:' line left the step
+// blocks — founder 2026-10-07; verify stays corpus data.)
 
 const DE_FEE: StepCost = {
   usd: 109,

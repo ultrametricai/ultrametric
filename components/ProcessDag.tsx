@@ -12,7 +12,7 @@ import StepApiCalls from '@/components/StepApiCalls'
 import StepMethodDefault from '@/components/StepMethodDefault'
 import StepMethodGeo from '@/components/StepMethodGeo'
 import StepVendorRow, { type StepRowUntracked, type StepRowVendor } from '@/components/StepVendorRow'
-import { StepCostChip, StepVerifyLine } from '@/components/StepVerifyCost'
+import { StepCostChip } from '@/components/StepVerifyCost'
 import { computeChipsForStep } from '@/lib/businessLogicMap'
 import { layerNodes, type DagEdge } from '@/lib/dagLayers'
 import StepDocuments from '@/components/StepDocuments'
@@ -390,8 +390,9 @@ function NodeBlock({
   // lib/gapClosers.ts and its resolution stay data (the chain pages' ProcessVerdict/
   // ProcessSimulator and the gap analyses still consume resolveGapStep).
   // Evidence-grounded per-vendor calls for this step (data/step-vendor-calls.json) — when
-  // present they take over the API-calls block, with the node's own functionCalls kept as the
-  // canonical reference flow.
+  // present they take over the API-calls block, which renders ONLY the selected vendor's calls
+  // and nothing without a selection (founder 2026-10-07); the node's own functionCalls stay
+  // the fallback block for steps without grounded vendor calls.
   const vendorCalls = taskId ? stepVendorCallsFor(taskId, node.id) : []
   // The step's function-level open-module mappings (founder 2026-10-02: "go deeper on the
   // mapping of the logic") — processes/business-logic-map.json steps, rendered as tiny muted
@@ -594,12 +595,7 @@ function NodeBlock({
           physics/third-party blocker never shows a misleading "could attempt it today" row. */}
 
       {vendorCalls.length > 0 ? (
-        <StepApiCalls
-          canonical={calls}
-          canonicalVendor={node.vendor}
-          vendors={vendorCalls}
-          lensKey={lensKey}
-        />
+        <StepApiCalls vendors={vendorCalls} lensKey={lensKey} />
       ) : calls.length > 0 ? (
         <details className="group mt-2">
           <summary className="flex cursor-pointer list-none items-center gap-1.5 font-mono text-[11px] text-zinc-500 transition hover:text-zinc-300 [&::-webkit-details-marker]:hidden">
@@ -636,9 +632,9 @@ function NodeBlock({
         </div>
       )}
 
-      {/* "How do I know it worked?" (depth wave pt 1) — the step's concrete external check,
-          curated only where a real one exists; renders nothing for the many steps without. */}
-      {node.verify && <StepVerifyLine verify={node.verify} />}
+      {/* The '✓ verify:' line is gone from step blocks (founder 2026-10-07) — display only:
+          verify stays corpus truth (lib/processes.ts StepVerifySchema, the curation rules in
+          processes/README.md "Verification checks"), just no per-step rendering. */}
 
       {/* The '⚠ if it goes wrong' failure-modes line is gone (founder 2026-10-05) — display
           only: failureModes stays corpus data (lib/processes.ts StepFailureModeSchema, the
