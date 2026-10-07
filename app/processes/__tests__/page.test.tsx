@@ -107,16 +107,15 @@ describe('/processes — one combined table, one processes vocabulary', () => {
 })
 
 describe('/processes defaults onto the GLOBAL view (founder 2026-09-30: "default /processes onto a global view — you can include the US specific ones in the first view")', () => {
-  it('the SERVER render is the global view — geo dropdown reads 🌐 Global, every row present and glyph-marked with the sharp scope set — no client flash', () => {
+  it('the SERVER render is the global view — no page-level geo dropdown (the header control owns it since founder 2026-10-07), every row present and glyph-marked with the sharp scope set — no client flash', () => {
     const ssr = renderToString(<ProcessesPage />)
     const doc = document.createElement('div')
     doc.innerHTML = ssr
-    // The geo dropdown's default (no-param, no-stored-pref) framing is 🌐 Global, in the static
-    // HTML itself (SSG honesty: the prop, not a mount effect, carries the default).
+    // The country control moved to the site header (components/HeaderGeoControl.tsx — its 🌐
+    // Global no-selection framing is pinned in components/__tests__/HeaderGeoControl.test.tsx);
+    // the page itself mounts no geo trigger anymore.
     const geoTrigger = [...doc.querySelectorAll('button')].find((b) => b.title.includes('Where you operate'))
-    expect(geoTrigger?.textContent).toContain('Global')
-    expect(geoTrigger?.textContent).toContain('🌐')
-    expect(geoTrigger?.textContent).not.toContain('USA')
+    expect(geoTrigger).toBeUndefined()
     // "Include the US specific ones in the first view": the row set is the FULL corpus — the
     // geo dimension annotates, never filters. Scope glyphs since the founder batch 2026-10-02:
     // us AND us-state rows wear the 🇺🇸 flag (keyed strictly on geoScope — the label still
@@ -146,10 +145,10 @@ describe('/processes defaults onto the GLOBAL view (founder 2026-09-30: "default
     expect(bankCell!.textContent).not.toContain('🇺🇸')
   })
 
-  it('the client render matches (hydrated default = Global framing, all rows still present)', () => {
+  it('the client render matches (no page-level geo trigger, all rows still present)', () => {
     const { container } = render(<ProcessesPage />)
     const geoTrigger = [...container.querySelectorAll('button')].find((b) => b.title.includes('Where you operate'))
-    expect(geoTrigger?.textContent).toContain('Global')
+    expect(geoTrigger).toBeUndefined()
     const { rows } = buildProcessRows()
     expect((container.querySelector('table') as HTMLElement).querySelectorAll('tbody tr').length).toBe(rows.length + buildPlaybookRows().length)
   })

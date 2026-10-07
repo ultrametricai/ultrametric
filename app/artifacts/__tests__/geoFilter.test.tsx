@@ -1,14 +1,18 @@
 // @vitest-environment jsdom
 // The /artifacts country view (founder 2026-10-07 — the /processes country rule's sibling):
-// the index carries the same GeoDropdown + store the process pages use, and under an EXPLICIT
-// country selection it hides the artifacts whose EVERY producing process (canonical producer +
-// documented alsoProducedBy exceptions) is geoScope us/us-state. Mixed producers stay visible;
-// 🌐 Global and the no-selection default show the whole registry; the static HTML never learns
-// about the selection (byte-identical default). Display filter only — no judged number moves.
-import { act, cleanup, render } from '@testing-library/react'
+// the index adapts to the same shared store the process pages use — written by the site
+// header's country control since the top-bar move (founder 2026-10-07,
+// components/HeaderGeoControl.tsx; the page mounts no dropdown of its own) — and under an
+// EXPLICIT country selection it hides the artifacts whose EVERY producing process (canonical
+// producer + documented alsoProducedBy exceptions) is geoScope us/us-state. Mixed producers
+// stay visible; 🌐 Global and the no-selection default show the whole registry; the static
+// HTML never learns about the selection (byte-identical default). Display filter only — no
+// judged number moves.
+import { act, cleanup, fireEvent, render, within } from '@testing-library/react'
 import { renderToString } from 'react-dom/server'
 import { afterEach, beforeEach, describe, expect, it } from 'vitest'
 import ArtifactsPage from '@/app/artifacts/page'
+import HeaderGeoControl from '@/components/HeaderGeoControl'
 import { loadArtifactPages } from '@/lib/artifactPages'
 import { GEO_GLOBAL, setGeoChoice } from '@/lib/geoPreference'
 import { loadProcesses } from '@/lib/processes'
@@ -66,12 +70,12 @@ describe('usOnlyProducers (the filter flag, computed from the producers geoScope
 })
 
 describe('/artifacts under a country selection', () => {
-  it('mounts the geo dropdown and hides US-only artifacts under ?geo=in; mixed and global stay', () => {
+  it('mounts no dropdown of its own (the header control owns it) and hides US-only artifacts under a country selection; mixed and global stay', () => {
     const { container } = render(<ArtifactsPage />)
     expect(
       container.querySelector('button[aria-haspopup="listbox"][title^="Where you operate"]'),
-      'the GeoDropdown trigger must be mounted',
-    ).toBeTruthy()
+      'the page must not mount its own geo dropdown — the header control owns it (founder 2026-10-07)',
+    ).toBeNull()
 
     // Default: the whole registry.
     expect(link(container, 'ein')).toBeTruthy()
@@ -98,6 +102,24 @@ describe('/artifacts under a country selection', () => {
     expect(link(container, 'ein')).toBeTruthy()
     act(() => setGeoChoice(null))
     expect(link(container, 'ein')).toBeTruthy()
+  })
+
+  it('the header control drives the page (the 2026-10-07 seam): picking India in the header hides the EIN row; USA restores it', () => {
+    const r = render(
+      <div>
+        <HeaderGeoControl />
+        <ArtifactsPage />
+      </div>,
+    )
+    expect(link(r.container, 'ein')).toBeTruthy()
+    fireEvent.click(r.getByTitle(/Where you operate/))
+    fireEvent.click(within(r.getByRole('listbox', { name: 'Country' })).getByRole('option', { name: /India/ }))
+    expect(window.location.search).toBe('?geo=in')
+    expect(link(r.container, 'ein')).toBeNull()
+    expect(link(r.container, 'bank-account')).toBeTruthy()
+    fireEvent.click(r.getByTitle(/Where you operate/))
+    fireEvent.click(within(r.getByRole('listbox', { name: 'Country' })).getByRole('option', { name: /USA/ }))
+    expect(link(r.container, 'ein')).toBeTruthy()
   })
 
   it('static HTML never learns about the selection: SSR with ?geo=in equals the plain default', () => {

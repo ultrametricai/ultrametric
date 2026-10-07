@@ -206,7 +206,8 @@ function serializeRow(t: ProcessTask): ProcessRow {
       trigger: t.trigger ?? null,
       urgency: t.urgency ?? null,
       // Required on every corpus process (lib/processes.ts) — the index rows carry it for the
-      // client-side geo-scope glyph shown while a non-US country is selected (GeoSwitcher).
+      // client-side geo-scope glyph shown while a non-US country is selected (the header
+      // country control).
       geoScope: t.geoScope,
       // The country-view filter's slice of the committed geo notes (founder 2026-10-02:
       // "?geo=in should hide the processes that are not used in that country"): per country,

@@ -20,14 +20,14 @@ import { readParam, setParams } from '@/lib/urlState'
 // SimRolePicker.tsx, never a native <select>). Closed, the trigger shows the CURRENT country
 // (flag + name, default 🇺🇸 USA); open, the list is 🌐 Global · 🇺🇸 USA · 🇬🇧 UK · 🇮🇳 India ·
 // 🇩🇪 Germany · 🇫🇷 France · 🇵🇹 Portugal · 🇨🇦 Canada. The STATE CONTRACT is exactly the pill
-// row's (GeoSwitcher doctrine):
+// row's (the shared geo doctrine):
 // the ?geo= param + the pa-geo localStorage copy, read on MOUNT ONLY so the static HTML stays
 // byte-identical, plus the 'global' token (lib/geoPreference.ts GEO_GLOBAL, additive). Interop
 // is deliberate: a UK pick here is the same ?geo=uk / pa-geo=uk the process and product pages
 // read, and the control seeds the shared per-tab store (countries only — 'global' maps to the
 // null store state, which is exactly what geo-neutral means to every existing consumer).
 //
-// Honesty (the GeoSwitcher doctrine, verbatim): switching countries never re-ranks or recomputes
+// Honesty (the shared geo doctrine, verbatim): switching countries never re-ranks or recomputes
 // a judged number — every in-sim geo annotation is derived from committed evidence (process
 // geoNotes, jurisdictions/vendor-geo.json), and unsupported countries are said to be unmapped,
 // never guessed.
@@ -77,7 +77,7 @@ export default function VsGeoSelector({
   const listboxId = useId()
 
   // One-time post-hydration sync FROM the URL and the stored preference (external systems), the
-  // GeoSwitcher contract: the static HTML must render the US default, so this cannot be an
+  // shared geo-control contract: the static HTML must render the US default, so this cannot be an
   // initializer (hydration mismatch); it runs once. (The setter is the parent's state setter,
   // passed down as onChange — which is also why the lint rule doesn't need disabling here.)
   useEffect(() => {

@@ -2,7 +2,6 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import DoViaAfk from '@/components/DoViaAfk'
-import GeoDropdown from '@/components/GeoDropdown'
 import IconChip from '@/components/IconChip'
 import JurisdictionToggle from '@/components/JurisdictionToggle'
 import ProcessGeoBanner from '@/components/ProcessGeoBanner'
@@ -167,20 +166,15 @@ export default async function ProcessPage({ params }: { params: Promise<{ slug: 
             house menu. The bottom 'Open modules' receipts table stays as-is. */}
         {/* The per-page situation posture banner was removed (founder 2026-10-02) — the
             sitewide footer line and /terms carry the not-legal-advice posture. */}
-        {/* GEO as a top-level driver (founder 2026-09-28: "make GEO a top-level process driver
-            at the top of a particular process page … so we know how it works across the
-            globe"), as the house dropdown (founder 2026-10-02 — the /processes idiom replaces
-            the pill row; align="left" because the trigger sits at the content's LEFT here —
-            founder bug 2026-10-06, the right-aligned menu opened off the column's left edge).
-            NO defaultChoice on this surface (founder bug 2026-10-06, round 2: with the Global
-            framing a 🇺🇸 USA pick "stays showing Global" — the pick clears the choice to null
-            per the committed codec, and null IS this page's US-default view, so the trigger
-            reads USA; the /processes index keeps its Global framing). The selection is global
-            (?geo= + pa-geo, lib/geoPreference.ts); the banner below renders the selected
-            country's committed story — nothing without an explicit choice, so the flow shown
-            stays the one shared US-default view and no judged number moves. */}
+        {/* The page's own geo dropdown moved to the site header (founder 2026-10-07: "move
+            this into the top bar … then we don't need it per page" —
+            components/HeaderGeoControl.tsx). The selection stays global (?geo= + pa-geo,
+            lib/geoPreference.ts); the banner below renders the selected country's committed
+            story — nothing without an explicit choice, so the flow shown stays the one shared
+            US-default view and no judged number moves. The "Outside the US" rows
+            (ProcessGeoNotes, below) remain the page's internal country switches — they write
+            the same store the header control does. */}
         <div className="mt-4 flex flex-wrap items-center gap-2">
-          <GeoDropdown align="left" />
           <OpenModulesControl modules={modulesForProcess(task.id)} />
         </div>
         <ProcessGeoBanner geoScope={task.geoScope} notes={task.geoNotes ?? []} />

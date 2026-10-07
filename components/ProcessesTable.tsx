@@ -6,12 +6,11 @@ import { Fragment, useEffect, useMemo, useState } from 'react'
 import CeilingBar from '@/components/CeilingBar'
 import IconChip from '@/components/IconChip'
 import ProductLogoView from '@/components/ProductLogoView'
-import GeoDropdown from '@/components/GeoDropdown'
 import TableControls from '@/components/TableControls'
 import UrgencyChip from '@/components/UrgencyChip'
 import { useGeoSelection } from '@/components/useGeoSelection'
 import {
-  GEO_GLOBAL, hiddenInCountryView, usFlagGlyph, type GeoNotesByCountry,
+  hiddenInCountryView, usFlagGlyph, type GeoNotesByCountry,
 } from '@/lib/geoPreference'
 import { phaseEmoji, phaseIcon, phaseTooltip } from '@/lib/processIcons'
 import { URGENCY_TIERS, type ProcessKind, type Urgency } from '@/lib/processSim'
@@ -264,15 +263,10 @@ export default function ProcessesTable({
   rows,
   phases,
   playbooks = [],
-  // The surface's no-selection geo framing (founder 2026-09-30: the /processes index defaults
-  // onto the global view — lib/geoPreference.ts PROCESSES_INDEX_DEFAULT_GEO threads in from
-  // app/processes/page.tsx). null keeps the sitewide US default (the homepage's process mode).
-  defaultGeo = null,
 }: {
   rows: ProcessTableRow[]
   phases: string[]
   playbooks?: PlaybookRow[]
-  defaultGeo?: typeof GEO_GLOBAL | null
 }) {
   // The founder-timeline flat sort is the default view (founder 2026-09-30); the grouped-by-
   // area view is opt-in via the rank-by dropdown's top entry. Column/direction only apply while
@@ -286,8 +280,8 @@ export default function ProcessesTable({
   // table to that cadence; clicking the same value again clears it. Client state only — the
   // cadence cell is the control and the visible active state, no URL param.
   const [cadence, setCadence] = useState<string | null>(null)
-  // Non-null while the reader has a non-US country selected (GeoSwitcher seeds the shared
-  // store). The scope glyph is selection-independent since the founder batch 2026-10-02:
+  // Non-null while the reader has a non-US country selected (the header country control —
+  // components/HeaderGeoControl.tsx — seeds the shared store). The scope glyph is selection-independent since the founder batch 2026-10-02:
   // us/us-state rows always wear the 🇺🇸 flag (usFlagGlyph — strictly geoScope-keyed, the label
   // telling federal from state work) and global rows wear nothing, identically in the server
   // render and under any selection. Never re-sorts; since the country-view filter (founder
@@ -689,9 +683,12 @@ export default function ProcessesTable({
 
   return (
     <div className="space-y-3">
+      {/* The controls row's geo dropdown moved to the site header (founder 2026-10-07:
+          "move this into the top bar … then we don't need it per page" —
+          components/HeaderGeoControl.tsx). The table keeps every geo-adaptive behavior
+          (country-view filter, scope glyphs) through the same shared store. */}
       <TableControls
         presetsAsDropdown
-        after={<GeoDropdown defaultChoice={defaultGeo} />}
         presets={PRESETS}
         // The grouped view reads as its own dropdown entry; otherwise the sorted column shows
         // (visibly 'Founder timeline' in the no-param default — founder 2026-09-30).

@@ -5,7 +5,7 @@ import { GEO_GLOBAL, GEO_PREF_META, type GeoAnalogNote } from '@/lib/geoPreferen
 
 // The top-of-page geo banner (founder GEO ask 2026-09-28: "make GEO a top-level process driver
 // at the top of a particular process page"): under a non-US selection it says, from COMMITTED
-// data only, what this process means in that country. Renders right under the GeoSwitcher in
+// data only, what this process means in that country. Renders under the page header in
 // the process header; renders NOTHING in the static HTML and for the US default, so the
 // default page stays byte-identical (the client-personalization contract, lib/geoPreference.ts).
 //

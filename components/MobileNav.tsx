@@ -2,14 +2,17 @@
 
 import Link from 'next/link'
 import { useEffect, useRef, useState } from 'react'
+import HeaderGeoControl from '@/components/HeaderGeoControl'
 import { IconGlyph } from '@/components/IconChip'
 import { MOBILE_NAV_ICONS } from '@/lib/arenaIcons'
 
 // Mobile hamburger (founder 2026-09-24: "the mobile top bar goes off the page — we need a
 // hamburger menu"). Below sm the header shows only logo · ☰ · search · account; every other
-// destination lives here. Desktop never renders this (sm:hidden) — the full button row and the
-// Rankings/Explore dropdowns stay the desktop IA. Icons: house glyph tokens (lib/arenaIcons.ts,
-// founder 2026-10-01 — the custom set replaces the emoji in the top-bar menus).
+// destination lives here, and so does the sitewide country control (founder 2026-10-07 — the
+// desktop header mount is hidden below sm). Desktop never renders this (sm:hidden) — the full
+// button row and the Rankings/Explore dropdowns stay the desktop IA. Icons: house glyph tokens
+// (lib/arenaIcons.ts, founder 2026-10-01 — the custom set replaces the emoji in the top-bar
+// menus).
 const ITEMS: Array<{ href: string; label: string; icon: string }> = [
   // "Rankings" is the renamed Arenas label (founder 2026-10-07); the route stays /arenas.
   { href: '/arenas', label: 'Rankings', icon: MOBILE_NAV_ICONS['/arenas'] },
@@ -74,6 +77,13 @@ export default function MobileNav() {
               {item.label}
             </Link>
           ))}
+          {/* The sitewide country control (founder 2026-10-07) — below sm the desktop header
+              mount is hidden, so the ☰ panel carries it: same component, same ?geo=/pa-geo
+              preference, 🌐 Global default. */}
+          <div className="mt-1 flex items-center justify-between border-t border-zinc-800 px-3 pb-1 pt-2 text-sm text-zinc-500">
+            Country
+            <HeaderGeoControl />
+          </div>
         </div>
       )}
     </div>

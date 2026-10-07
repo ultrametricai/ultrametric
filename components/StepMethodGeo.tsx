@@ -139,7 +139,8 @@ export default function StepMethodGeo({
     () => DEFAULT_METHOD_ID,
   )
 
-  // The one selection writer left: follow the shared geo store. GeoDropdown/GeoSwitcher seed the
+  // The one selection writer left: follow the shared geo store. The header country control
+  // (components/HeaderGeoControl.tsx) seeds the
   // store from ?geo=/localStorage on THEIR mount; the subscription catches that seed regardless
   // of mount order. Global reads as geo-neutral (getGeoSelection maps it to null) — the default.
   useEffect(() => {

@@ -1,9 +1,7 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import ArtifactGeoGate from '@/components/ArtifactGeoGate'
-import GeoDropdown from '@/components/GeoDropdown'
 import { artifactsByProducingArea } from '@/lib/artifactPages'
-import { PROCESSES_INDEX_DEFAULT_GEO } from '@/lib/geoPreference'
 import { REPO } from '@/lib/site'
 import { TABLE_HEADER_ROW, TABLE_SHELL } from '@/components/tableStyles'
 
@@ -35,14 +33,11 @@ export default function ArtifactsPage() {
           <code>requires</code> list. One canonical producer per artifact keeps the cross-process
           dependency graph a DAG. Grouped below by the producing process&rsquo;s area.
         </p>
-        {/* The geo driver (founder 2026-10-07): the same dropdown + store the process pages use.
-            Index framing like /processes (no selection shows the whole registry, so the trigger
-            reads 🌐 Global); align left — the trigger sits at the content's left here. Under an
-            explicit country selection the ArtifactGeoGate wrappers below hide the artifacts
-            whose EVERY producing process is US-scoped; mixed producers stay. */}
-        <div className="mt-4 flex flex-wrap items-center gap-2">
-          <GeoDropdown align="left" defaultChoice={PROCESSES_INDEX_DEFAULT_GEO} />
-        </div>
+        {/* The geo driver is the site header's country control (founder 2026-10-07 — the
+            page's own dropdown moved there with the rest; components/HeaderGeoControl.tsx),
+            over the same store. No selection shows the whole registry; under an explicit
+            country selection the ArtifactGeoGate wrappers below hide the artifacts whose EVERY
+            producing process is US-scoped; mixed producers stay. */}
       </section>
       {groups.map((g) => (
         // A section whose every artifact is US-produced hides whole in a country view — no
