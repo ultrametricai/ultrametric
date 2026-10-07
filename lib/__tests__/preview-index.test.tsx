@@ -13,11 +13,11 @@ const records = readSharedCatalog()
 afterEach(() => { cleanup(); history.replaceState(null, '', '/') })
 
 describe('existing index presentation over shared records', () => {
-  it('keeps all 172 records, source metrics, exact authored icon bindings, and unique functional routes', () => {
+  it('keeps all 173 records, source metrics, exact authored icon bindings, and unique functional routes', () => {
     const index = buildPreviewIndex()
     const all = [...index.rows, ...index.playbooks]
-    expect(all).toHaveLength(172)
-    expect(new Set(all.map(row => row.href)).size).toBe(172)
+    expect(all).toHaveLength(173)
+    expect(new Set(all.map(row => row.href)).size).toBe(173)
     for (const record of records) {
       const href = sharedPreviewHref(record.id, records)
       expect(all.find(row => row.href === href)?.title).toBe(record.title)
@@ -42,8 +42,8 @@ describe('existing index presentation over shared records', () => {
   it('retains sorting, filtering, search, and canonical-only records without fabricated metrics', () => {
     const el = render(<PreviewIndex />)
     const table = el.getByRole('table')
-    expect(table.querySelectorAll('tbody tr')).toHaveLength(172)
-    expect(el.getByRole('searchbox', { name: 'Search processes' }).getAttribute('placeholder')).toContain('172')
+    expect(table.querySelectorAll('tbody tr')).toHaveLength(173)
+    expect(el.getByRole('searchbox', { name: 'Search processes' }).getAttribute('placeholder')).toContain('173')
     const contractor = table.querySelector('a[href="/processes/add-a-contractor-1099/v2"]')!
     expect(contractor.textContent).toBe('Add a contractor (1099)')
     for (const record of records) {

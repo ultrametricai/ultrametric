@@ -27,7 +27,7 @@ const tiers = new Set<string>(REVERSIBILITY_TIERS)
 
 describe('reversibility totality', () => {
   it('classifies every process explicitly with a valid tier', () => {
-    expect(RAW.length).toBe(146)
+    expect(RAW.length).toBe(147)
     for (const t of RAW) {
       expect(tiers.has(t.reversibility), `${t.id} task tier`).toBe(true)
     }
@@ -47,7 +47,7 @@ describe('reversibility totality', () => {
   it('parses through the schema (required field, no default)', () => {
     // loadProcesses throws on any unclassified record — this is the totality gate by
     // construction; the assertions above exist to name the offender precisely.
-    expect(loadProcesses(DATA_DIR).length).toBe(146)
+    expect(loadProcesses(DATA_DIR).length).toBe(147)
   })
 })
 
@@ -56,7 +56,7 @@ describe('reversibility distribution — irreversible is rare and means it', () 
   const nodeTier = (taskId: string, nodeId: string) =>
     RAW.find((t) => t.id === taskId)?.dag.nodes.find((n) => n.id === nodeId)?.reversibility
 
-  it('keeps irreversible processes rare (3–15 of 146) and reversible the majority', () => {
+  it('keeps irreversible processes rare (3–15 of 147) and reversible the majority', () => {
     const byTier = { reversible: 0, painful: 0, irreversible: 0 }
     for (const t of RAW) byTier[t.reversibility] += 1
     expect(byTier.irreversible).toBeGreaterThanOrEqual(3)

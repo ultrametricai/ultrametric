@@ -135,7 +135,7 @@ describe('canonical shared process reader', () => {
 
   it('renders the whole real catalog including the wave-3 situations (sit_013–sit_022)', () => {
     const records = readSharedCatalog()
-    expect(records).toHaveLength(172)
+    expect(records).toHaveLength(173)
     expect(findSharedRecord(records, 'sit_013')?.title).toBe('Recover from a payment-processor account termination')
     expect(findSharedRecord(records, 'fund_007')?.title).toBe('Apply to Y Combinator')
     for (const record of records) {

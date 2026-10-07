@@ -36,7 +36,7 @@ const taskIds = new Set(tasks.map((t) => t.id))
 
 describe('artifact registry totality', () => {
   it('is corpus-sized (the founder expectation: roughly 40–80 canonical artifacts), ids unique', () => {
-    expect(artifacts.length).toBe(81)
+    expect(artifacts.length).toBe(82)
     expect(new Set(artifacts.map((a) => a.id)).size).toBe(artifacts.length)
   })
 
@@ -130,7 +130,7 @@ describe('no invented artifacts — committed steps and real consumers', () => {
   it('the typed layer parses through the site loader (required fields, no defaults)', () => {
     // loadProcesses throws on any record missing produces/requires — totality by construction;
     // the assertions above exist to name offenders precisely.
-    expect(loadProcesses(DATA_DIR).length).toBe(146)
+    expect(loadProcesses(DATA_DIR).length).toBe(147)
   })
 })
 
