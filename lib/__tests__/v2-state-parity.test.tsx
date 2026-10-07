@@ -16,6 +16,9 @@ import { getGeoSelection } from '../geoPreference'
 import { STACK_KEY, writeStack } from '../myStack'
 import { act } from 'react'
 import { lensStorageKey } from '../processLens'
+import ProcessRunCTA from '@/components/process-start/ProcessRunCTA'
+import { processStartTarget } from '../shared-processes/start'
+import { startPrompt } from '../process-start'
 
 const records = readSharedCatalog()
 const record = records.find(record => record.id === 'form_001')!
@@ -48,10 +51,11 @@ function Probe() {
     </article>
   </>
 }
-function tree() {
+function tree(withCTA = false) {
   return <RegionalVariantProvider decision={decision}><VendorSelectionProvider>
     <ProcessCompatibilityBridge recordId={record.id} anchors={anchors} choices={choices} />
     <Probe />
+    {withCTA && <ProcessRunCTA target={processStartTarget(record)} />}
   </VendorSelectionProvider></RegionalVariantProvider>
 }
 beforeEach(() => {
@@ -240,4 +244,42 @@ it('remembers an explicit zero-score row without promoting it to assessed positi
   page.unmount(); page = render(tree())
   expect(JSON.parse(page.getByTestId('overrides').textContent!)).toMatchObject({ 'form_001:n7': 'legal-ops/firstbase' })
   expect(choices.steps.find(step => step.scope === 'form_001:n7')!.candidates).not.toContain('legal-ops/firstbase')
+})
+
+it('preserves the CTA agent with country, provider, step and method state through a full reader remount', async () => {
+  HTMLDialogElement.prototype.showModal = function () { this.open = true }
+  HTMLDialogElement.prototype.close = function () { this.open = false; this.dispatchEvent(new Event('close')) }
+  const writeText = vi.fn().mockResolvedValue(undefined)
+  Object.defineProperty(navigator, 'clipboard', { configurable: true, value: { writeText } })
+  let page = render(tree(true))
+  fireEvent.click(page.getByText('India', { selector: 'button' }))
+  fireEvent.click(page.getByText('Clerky', { selector: 'button' }))
+  fireEvent.click(page.getByText('Step override', { selector: 'button' }))
+  const method = document.getElementById('form_001:n6') as HTMLDetailsElement
+  method.open = true; fireEvent(method, new Event('toggle'))
+  fireEvent.click(page.getByRole('button', { name: 'Run this process with Ultrametric' }))
+  fireEvent.click(page.getByRole('radio', { name: 'ChatGPT' }))
+  const original = structuredClone(history.state.paProcessSelection)
+  page.unmount(); page = render(tree(true))
+  expect(page.queryByRole('dialog')).toBeNull()
+  expect(page.getByTestId('region').textContent).toBe('india-spice-plus')
+  expect(page.getByTestId('picks').textContent).toContain('legal-ops/clerky')
+  expect(page.getByTestId('overrides').textContent).toContain('legal-ops/stripe-atlas')
+  expect((document.getElementById('form_001:n6') as HTMLDetailsElement).open).toBe(true)
+  expect(history.state.paProcessSelection).toMatchObject(original)
+  expect(writeText).not.toHaveBeenCalled()
+  fireEvent.click(page.getByRole('button', { name: 'Run this process with Ultrametric' }))
+  expect((page.getByRole('radio', { name: 'ChatGPT' }) as HTMLInputElement).checked).toBe(true)
+  fireEvent.click(page.getByRole('button', { name: 'Copy prompt' }))
+  await waitFor(() => expect(writeText).toHaveBeenLastCalledWith(startPrompt(processStartTarget(record), 'india-spice-plus', 'chatgpt')))
+})
+
+it('does not relabel another process agent preference when the compatibility bridge initializes', () => {
+  history.replaceState({ paProcessSelection: { recordId: 'form_011', startAgent: 'chatgpt' } }, '', '/processes/incorporate-c-corp/v2')
+  HTMLDialogElement.prototype.showModal = function () { this.open = true }
+  const page = render(tree(true))
+  expect(history.state.paProcessSelection.recordId).toBe(record.id)
+  expect(history.state.paProcessSelection.startAgent).toBeUndefined()
+  fireEvent.click(page.getByRole('button', { name: 'Run this process with Ultrametric' }))
+  expect((page.getByRole('radio', { name: 'Claude' }) as HTMLInputElement).checked).toBe(true)
 })

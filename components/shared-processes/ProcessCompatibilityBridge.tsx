@@ -42,7 +42,7 @@ export default function ProcessCompatibilityBridge({ recordId, anchors, choices 
     const cancels: Array<() => void> = []
     function snapshot(selection: RestoredSelection, lens: LensState) {
       window.history.replaceState({ ...window.history.state, paProcessSelection: {
-        ...window.history.state?.paProcessSelection,
+        ...(window.history.state?.paProcessSelection?.recordId === recordId ? window.history.state.paProcessSelection : {}),
         recordId, via: encodeViaParam(parseViaParam(new URLSearchParams(window.location.search).getAll('via'))),
         lens, geo: serializeGeoChoice(currentGeo.current.country), geoExplicit: currentGeo.current.explicit,
         picks: selection.picks, overrides: selection.overrides,

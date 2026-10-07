@@ -167,6 +167,7 @@ function Parts({ parts, records, scope, vendorPreview, processChoice, comparison
           </details>}
           {visibleOptions.length > 0 && <RegionalOptions scope={anchor(scope, part.id)}>
             {visibleOptions.map(option => <RegionalOption key={option.id} scope={anchor(scope, part.id)} optionId={option.id} id={anchor(anchor(scope, part.id), option.id)} heading={<>{option.title}<StepAssessment metadata={option.metadata} spaced /></>}>
+                {typeof option.metadata.estimatedMinutes === 'number' && <p className="text-zinc-400">Estimated time: {formatMinutes(option.metadata.estimatedMinutes)}</p>}
                 <PreviewGuidance guidance={option.summary} scope={anchor(anchor(scope, part.id), option.id)} />
                 {isSourcePart && <ComputerUseLinks options={computerUseForPart(sourceId, part, option.id)} />}
                 <StepMetadata metadata={option.metadata} sourceId={sourceId} records={records} />
