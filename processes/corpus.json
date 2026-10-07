@@ -17503,7 +17503,8 @@
     "requires": [
       "code-hosting-org",
       "project-tracker",
-      "ci-pipeline"
+      "ci-pipeline",
+      "ai-code-review"
     ],
     "tags": [
       "software",
@@ -21052,6 +21053,125 @@
     "totalEstimatedMinutes": 175,
     "hasAsyncSteps": false,
     "timeOrder": 34
+  },
+  {
+    "id": "sw_011",
+    "title": "Set up AI code review",
+    "description": "Install an AI code reviewer on the code hosting org, scope its repository access, add its config to the repo, and confirm it reviews a test pull request. CodeRabbit is the canonical route; the ai-code-review arena ranks the alternatives.",
+    "phase": "software",
+    "cadence": "once",
+    "geoScope": "global",
+    "complexity": "simple",
+    "reversibility": "reversible",
+    "category": "dev_tooling",
+    "supportLevel": "partial",
+    "supportReason": "The reviewer installs as a code-host app behind an OAuth consent a human must grant. The config file and the test pull request are agent-runnable; the merge-gate policy call stays human.",
+    "vendors": [
+      "coderabbit",
+      "github"
+    ],
+    "dag": {
+      "nodes": [
+        {
+          "id": "n1",
+          "label": "Install the AI reviewer on the code hosting org",
+          "route": "form",
+          "reversibility": "reversible",
+          "producesArtifact": "ai-code-review",
+          "vendor": "coderabbit",
+          "optionsArenaId": "ai-code-review",
+          "vendorOptions": [
+            "coderabbit",
+            "greptile",
+            "cursor_bugbot"
+          ],
+          "approvalRequired": true,
+          "estimatedMinutes": 10
+        },
+        {
+          "id": "n2",
+          "label": "Scope repository access",
+          "route": "agent",
+          "reversibility": "reversible",
+          "approvalRequired": true,
+          "riskLevel": "medium",
+          "estimatedMinutes": 5
+        },
+        {
+          "id": "n3",
+          "label": "Add the reviewer config to the repo",
+          "route": "agent",
+          "reversibility": "reversible",
+          "approvalRequired": true,
+          "estimatedMinutes": 15,
+          "extraOptionArenas": [
+            "ai-coding"
+          ]
+        },
+        {
+          "id": "n4",
+          "label": "Open a test pull request and confirm a review lands",
+          "route": "agent",
+          "reversibility": "reversible",
+          "approvalRequired": true,
+          "estimatedMinutes": 10,
+          "verify": {
+            "how": "The reviewer's review appears on the test pull request in the code host."
+          }
+        },
+        {
+          "id": "n5",
+          "label": "Decide the merge gate: blocking check or advisory comments",
+          "route": "person",
+          "reversibility": "reversible",
+          "estimatedMinutes": 5
+        }
+      ],
+      "edges": [
+        {
+          "from": "n1",
+          "to": "n2"
+        },
+        {
+          "from": "n2",
+          "to": "n3"
+        },
+        {
+          "from": "n3",
+          "to": "n4"
+        },
+        {
+          "from": "n4",
+          "to": "n5"
+        }
+      ]
+    },
+    "contextNeeded": [
+      {
+        "tool": "company.get",
+        "query": "code hosting org",
+        "tier": "tools",
+        "required": true
+      }
+    ],
+    "produces": [
+      "ai-code-review"
+    ],
+    "requires": [
+      "code-hosting-org"
+    ],
+    "tags": [
+      "software",
+      "code-review",
+      "setup"
+    ],
+    "activeMinutes": 45,
+    "totalEstimatedMinutes": 45,
+    "hasAsyncSteps": false,
+    "timeOrder": 125,
+    "annoyance": 1,
+    "risk": 1,
+    "growthImpact": 3
   },
   {
     "id": "growth_015",

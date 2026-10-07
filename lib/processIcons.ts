@@ -211,6 +211,7 @@ export const PROCESS_ICONS: Record<string, string> = {
   sw_001: pi('ship', 'violet'), // 🚢 Ship a feature (ship it!)
   sw_002: pi('tag', 'violet'), // 🏷️ Cut a release (tag it)
   sw_010: pi('robot', 'violet'), // 🤖 Make the repo agent-ready
+  sw_011: pi('code-check', 'violet'), // 🕵 Set up AI code review (canonical: CodeRabbit)
   prod_002: pi('cycle', 'violet'), // 🔄 Set up CI/CD
   prod_004: pi('siren', 'violet'), // 🚨 Set up error tracking (canonical: Sentry)
   // Product (sky)
