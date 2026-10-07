@@ -6,7 +6,7 @@ import { resolveServiceCandidates, type ServiceCandidate } from './service-candi
 import { vendorEvidenceHref } from './coverage-links'
 
 export interface ProviderScore { score: number; assessedSteps: number; evidenceHref?: string; steps: Array<{ scope: string; title: string; score: number | null; evidenceHref?: string }> }
-export interface ProviderGroup { scope: string; arenaId: string; title: string; candidates: ServiceCandidate[]; scores: Record<string, ProviderScore>; stepCount: number; partScope?: string }
+export interface ProviderGroup { scope: string; arenaId: string; title: string; candidates: ServiceCandidate[]; scores: Record<string, ProviderScore>; stepCount: number; partScope?: string; partCandidates?: ServiceCandidate[] }
 export interface ProcessProviderChoice { groups: ProviderGroup[]; stepScopes: Record<string, string> }
 
 export function buildProcessProviderChoice(record: SharedRecord, comparisons: StepComparisons): ProcessProviderChoice | undefined {
@@ -28,7 +28,8 @@ export function buildProcessProviderChoice(record: SharedRecord, comparisons: St
     // its chooser at the top. Matching by resolved category IDs, never label guesses.
     const authoredChoices = record.parts.filter(part => {
       const candidates = resolveServiceCandidates(part.references)
-      return part.kind === 'step' && candidates.length > 0 && candidates.every(candidate => candidate.id.startsWith(`${arenaId}/`))
+      const products = candidates.filter(candidate => candidate.href !== null)
+      return part.kind === 'step' && products.length > 0 && products.every(candidate => candidate.id.startsWith(`${arenaId}/`))
     })
     const partScope = authoredChoices.length === 1 && !comparisons[`${record.id}:${authoredChoices[0].id}`] ? `${record.id}:${authoredChoices[0].id}` : undefined
     const steps = Object.entries(comparisons).filter(([scope]) => stepScopes[scope] === `${record.id}:provider:${arenaId}`)
@@ -41,8 +42,14 @@ export function buildProcessProviderChoice(record: SharedRecord, comparisons: St
       const stories = steps.flatMap(([, comparison]) => comparison.products.find(product => product.id === id)?.stories.map(story => story.id) ?? [])
       return [id, { score: aggregateStepCoverage(assessed, steps.length), assessedSteps: assessed.length, steps: breakdown, evidenceHref: vendorEvidenceHref(candidates.get(id)!.href, stories) }]
     }))
+    const ranked = [...candidates.values()].sort((a, b) => scores[b.id].score - scores[a.id].score || scores[b.id].assessedSteps - scores[a.id].assessedSteps || a.name.localeCompare(b.name))
+    const authored = partScope ? resolveServiceCandidates(authoredChoices[0].references) : undefined
+    // Newly bound mixed rosters retain their authored rows: unresolved references
+    // stay unscored and nonselectable. Existing fully resolved choosers keep their
+    // ranked comparison candidates.
+    const partCandidates = authored?.some(candidate => candidate.href === null) ? [...ranked.filter(candidate => authored.some(item => item.id === candidate.id)), ...authored.filter(candidate => !scores[candidate.id])] : undefined
     return { scores, stepCount: steps.length, scope: `${record.id}:provider:${arenaId}`, arenaId, title: categories.get(arenaId) ?? arenaId,
-      candidates: [...candidates.values()].sort((a, b) => scores[b.id].score - scores[a.id].score || scores[b.id].assessedSteps - scores[a.id].assessedSteps || a.name.localeCompare(b.name)), partScope }
+      candidates: ranked, partScope, partCandidates }
   }).sort((a, b) => a.title.localeCompare(b.title))
   return groups.length ? { groups, stepScopes } : undefined
 }

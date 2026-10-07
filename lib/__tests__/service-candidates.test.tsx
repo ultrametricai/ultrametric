@@ -31,10 +31,11 @@ describe('shared process service candidates', () => {
     }
     expect(el.querySelector('svg')).toBeNull()
     expect(el.textContent).not.toContain('opens in a new tab')
-    const fallback = [...el.querySelectorAll('li')].find(row => row.textContent?.endsWith('Northwest Registered Agent'))!
+    const fallback = [...el.querySelectorAll('li')].find(row => row.textContent?.includes('Northwest Registered Agent'))!
     expect(fallback).toBeDefined()
     expect(fallback.querySelector('img, a')).toBeNull()
-    expect(fallback.querySelector('[aria-hidden]')?.textContent).toBe('N')
+    expect(fallback.textContent).toContain('Not assessed')
+    expect([...fallback.querySelectorAll('[aria-hidden]')].some(node => node.textContent === 'N')).toBe(true)
     expect(el.textContent).not.toMatch(/score|could attempt|prompt|37|32/)
   })
 

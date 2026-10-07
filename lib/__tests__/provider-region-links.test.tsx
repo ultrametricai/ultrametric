@@ -42,7 +42,7 @@ it('restores invoice anchors across repeated region switches and keeps evidence 
     expect(title().tabIndex).toBe(-1)
     expect(title().closest('a')).toBeNull()
     expect(evidence().getAttribute('href')).toBe(href)
-    expect(panel().textContent).toContain('rated default-scope steps')
+    expect(panel().textContent).toContain('Default-scope evidence; the selected country is not assessed.')
     expect(within(panel()).getByRole('link', { name: 'Look up or create customer' }).getAttribute('href')).toBe('#sales_002%3An1')
     fireEvent.click(providers.getByRole('button', { name: 'Hide PayPal process coverage' }))
     expand()
