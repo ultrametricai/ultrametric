@@ -92,6 +92,34 @@ clock, and routes the response to counsel:
   "route": "person", "optionsArenaId": "startup-law-firms" }
 ```
 
+### Artifacts
+
+[`processes/artifacts.json`](processes/artifacts.json) is the object layer between the
+processes: it registers the business objects a committed step brings into existence (the EIN,
+the charter, the cap table, the 409A report). Each object names its one canonical producer
+process (documented exceptions in `alsoProducedBy`), its per-country analog objects, the
+open-document template it is drafted on, and, through
+[`processes/company-fields.json`](processes/company-fields.json), the company data values it
+establishes together with the open-module functions that consume them (the charter sets the
+authorized shares; the Delaware franchise-tax module reads them). `lib/processDeps.ts` builds
+the cross-process dependency DAG from the typed `produces`/`requires` edges, and every object
+renders at [/artifacts](https://ultrametric.ai/artifacts) with its producer, consumers,
+country variants, and data fields.
+
+One object end to end: the filed 83(b) election
+([/artifacts/83b-election](https://ultrametric.ai/artifacts/83b-election)) is produced on the
+"File 83(b) election with the IRS" step of
+[Incorporate C-Corp](https://ultrametric.ai/processes/incorporate-c-corp), is drafted on IRS
+Form 15620 from [`open-documents/`](open-documents/), and is terminal: nothing downstream
+consumes a filed election. Its UK analog is the section 431 election:
+
+```json
+{ "id": "83b-election", "label": "Filed 83(b) election",
+  "producedBy": "form_001", "terminal": true,
+  "documents": ["irs-form-15620"],
+  "geo": [{ "country": "UK", "kind": "analog", "label": "Section 431 election" }] }
+```
+
 The data lives in [`processes/`](processes/) (`corpus.json` + the jurisdiction-scoped legal
 workflows), [`journeys/`](journeys/) (`chains.json`), and
 [`processes/vendor-registry.json`](processes/) (every vendor fact the process pages render).
@@ -285,6 +313,7 @@ and markdown, schema-validated in CI, usable without running any code.
 | --- | --- | --- |
 | [`processes/`](processes/) | `corpus.json` (the operational processes and the reactive situations: DAGs, routing, geo scope, time estimates; situations doctrine in [`SITUATIONS.md`](processes/SITUATIONS.md)), the per-step vendor registry, and jurisdiction-scoped legal workflows (`equity/us-de/…`) | [`schemas/operational-process.schema.json`](schemas/) · [`schemas/process.schema.json`](schemas/) |
 | [`journeys/`](journeys/) | `chains.json` — multi-process founder paths | corpus schema + loader tests |
+| [`processes/artifacts.json`](processes/artifacts.json) | The artifact registry — the objects processes produce and consume: one canonical producer each, country analogs, open-document templates; [`company-fields.json`](processes/company-fields.json) adds the data values artifacts establish for the open modules | [`schemas/process-artifacts.schema.json`](schemas/) · [`schemas/company-fields.schema.json`](schemas/) + artifact/dependency tests |
 
 **Vendors**
 
