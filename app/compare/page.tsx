@@ -36,7 +36,7 @@ export default function ComparePage() {
       <section className="mx-auto max-w-3xl text-center">
         <h1 className="font-display leading-[1.1] mt-1 text-3xl font-bold tracking-tight">Compare</h1>
         <p className="mx-auto mt-3 max-w-2xl text-zinc-400">
-          Any products, side by side — every number is the same evidence-backed score the arenas
+          Any products, side by side — every number is the same evidence-backed score the rankings
           publish. Your selection is the URL, so a comparison is always a shareable link.
         </p>
         {starters.length > 0 && (

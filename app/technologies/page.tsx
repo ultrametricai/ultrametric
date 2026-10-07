@@ -16,7 +16,7 @@ export function generateMetadata(): Metadata {
   const { totalProducts, totalArenas, surfaces } = computeControlSurfaces(loadAll())
   return {
     title: `Control surfaces — ${surfaces.length} technologies ranked by adoption — Ultrametric`,
-    description: `API, MCP, CLI, webhooks and other agent control surfaces ranked by judged adoption across ${totalProducts} products in ${totalArenas} arenas — plus each surface's pros, cons and agent-readiness lift.`,
+    description: `API, MCP, CLI, webhooks and other agent control surfaces ranked by judged adoption across ${totalProducts} products in ${totalArenas} rankings — plus each surface's pros, cons and agent-readiness lift.`,
   }
 }
 
@@ -35,7 +35,7 @@ export default function TechnologiesPage() {
         <p className="mt-2 max-w-2xl text-zinc-400">
           Not vendors — the abstract ways software can be driven: public API, MCP, CLI, webhooks, built-in assistants and
           more. Each surface is scored from the judged verdicts on all {result.totalProducts} products across{' '}
-          {result.totalArenas} arenas: how many products ship it, how much more agent-ready the shippers are, and how far it
+          {result.totalArenas} rankings: how many products ship it, how much more agent-ready the shippers are, and how far it
           reaches across markets. Pros and cons are editorial; every number is recomputable from the committed evidence.
         </p>
       </div>
@@ -46,7 +46,7 @@ export default function TechnologiesPage() {
         Rankings the data cannot honestly support are deliberately absent: &ldquo;most mobile&rdquo; and &ldquo;most
         visual&rdquo; have no fleet-wide judged stories (mobile/desktop surfaces appear below the line instead), and
         &ldquo;fastest growing&rdquo; would need per-story verdict history this repo does not commit. Verdicts are judged
-        per arena against public evidence — see the{' '}
+        per ranking against public evidence — see the{' '}
         <Link href="/methodology" className="text-emerald-400 underline decoration-emerald-400/40 hover:text-emerald-300">
           methodology
         </Link>

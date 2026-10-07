@@ -198,8 +198,8 @@ export default function MegaTable({ rows, arenas }: { rows: MegaTableRow[]; aren
             setArenaId(value)
             setParams({ arena: value === 'all' ? null : value })
           },
-          ariaLabel: 'Filter by arena',
-          options: [{ value: 'all', label: 'All arenas' }, ...arenas.map((a) => ({ value: a.id, label: a.icon ? `${a.icon} ${a.name}` : a.name }))],
+          ariaLabel: 'Filter by ranking',
+          options: [{ value: 'all', label: 'All rankings' }, ...arenas.map((a) => ({ value: a.id, label: a.icon ? `${a.icon} ${a.name}` : a.name }))],
         }}
         query={query}
         onQuery={(value) => {
@@ -247,7 +247,7 @@ export default function MegaTable({ rows, arenas }: { rows: MegaTableRow[]; aren
                 # / Product
               </SortableTh>
               <SortableTh col="arena" current={column} direction={direction} onSort={handleSort} className="hidden lg:table-cell">
-                <span title="The product category (arena) it competes in — click through for that arena's full leaderboard">Arena</span>
+                <span title="The product category (ranking) it competes in — click through for that ranking's full leaderboard">Ranking</span>
               </SortableTh>
               <SortableTh col="oss" current={column} direction={direction} onSort={handleSort} className="hidden w-12 md:table-cell">
                 <span title="Open source — the code is publicly available. Click to sort open-source products first.">OSS</span>
@@ -337,7 +337,7 @@ export default function MegaTable({ rows, arenas }: { rows: MegaTableRow[]; aren
                   </td>
                   <td className="px-2 py-2 font-mono tabular-nums text-zinc-300">
                     {row.naDimensions?.includes('agentReady') ? (
-                      <span className="text-zinc-500" title="Not meaningful for this arena's product class — a physical part has no agent-drivable surface of its own. The Overall score still applies.">n/a</span>
+                      <span className="text-zinc-500" title="Not meaningful for this ranking's product class — a physical part has no agent-drivable surface of its own. The Overall score still applies.">n/a</span>
                     ) : row.agentReadyUntested ? (
                       <span className="font-sans text-xs italic text-zinc-500" title="No agent-access evidence found or probed either way — unscored, not zero.">
                         untested
@@ -353,7 +353,7 @@ export default function MegaTable({ rows, arenas }: { rows: MegaTableRow[]; aren
                   </td>
                   <td className="hidden px-2 py-2 font-mono tabular-nums text-zinc-300 sm:table-cell">
                     {row.naDimensions?.includes('agenticApp') ? (
-                      <span className="text-zinc-500" title="Not meaningful for this arena's product class. The Overall score still applies.">n/a</span>
+                      <span className="text-zinc-500" title="Not meaningful for this ranking's product class. The Overall score still applies.">n/a</span>
                     ) : row.agenticAppUntested ? (
                       <span className="font-sans text-xs italic text-zinc-500" title="No agentic-features evidence found or probed either way — unscored, not zero.">
                         untested
@@ -362,7 +362,7 @@ export default function MegaTable({ rows, arenas }: { rows: MegaTableRow[]; aren
                   </td>
                   <td className="hidden px-2 py-2 font-mono tabular-nums text-zinc-300 lg:table-cell">
                     {row.naDimensions?.includes('apiQuality') ? (
-                      <span className="text-zinc-500" title="Not meaningful for this arena's product class — a physical part has no API of its own. The Overall score still applies.">n/a</span>
+                      <span className="text-zinc-500" title="Not meaningful for this ranking's product class — a physical part has no API of its own. The Overall score still applies.">n/a</span>
                     ) : row.apiUntested ? (
                       <span className="font-sans text-xs italic text-zinc-500" title="No API-quality evidence found or probed either way — unscored, not zero.">
                         untested

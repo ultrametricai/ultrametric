@@ -36,7 +36,7 @@ describe('eventToItem', () => {
 
   it('maps arena-launched and product-added', () => {
     expect(eventToItem({ kind: 'arena-launched', ...base, productCount: 5 }).title)
-      .toBe('New arena: AI Coding (5 products)')
+      .toBe('New ranking: AI Coding (5 products)')
     expect(eventToItem({ kind: 'product-added', ...base, productId: 'x', productName: 'X' }).title)
       .toBe('X added to AI Coding')
   })

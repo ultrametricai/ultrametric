@@ -4,9 +4,9 @@ import { loadAll } from '@/lib/data'
 import { buildIcpRanking, icpTopThemes, loadIcpTypes } from '@/lib/icp'
 
 export const metadata: Metadata = {
-  title: 'ICP lenses — one cross-arena ranking per buyer type — Ultrametric',
+  title: 'ICP lenses — one cross-market ranking per buyer type — Ultrametric',
   description:
-    'Ten cross-arena buyer-type lenses — solo technical founder, Built-in AI startup, privacy-first org, open-source purist and more — each re-weighting the same evidence-judged verdicts into a ranking for that buyer.',
+    'Ten cross-market buyer-type lenses — solo technical founder, Built-in AI startup, privacy-first org, open-source purist and more — each re-weighting the same evidence-judged verdicts into a ranking for that buyer.',
 }
 
 // Static index of every ICP lens (see lib/icp.ts + data/icp-types.json). Each card links to the
@@ -30,7 +30,7 @@ export default function IcpIndexPage() {
           The Overall score is one deliberately-contestable blend — but an open-source purist and an
           Built-in AI startup don&rsquo;t weigh evidence the same way. Each lens below re-weights the
           same evidence-judged verdicts (never re-judging anything) by the personas and themes that
-          buyer type actually cares about, across every arena at once.
+          buyer type actually cares about, across every ranking at once.
         </p>
       </div>
 
@@ -68,7 +68,7 @@ export default function IcpIndexPage() {
       </div>
 
       <p className="text-xs text-zinc-500">
-        Lens scores reuse the canonical per-cell verdicts and the exact Arena normalization — a
+        Lens scores reuse the canonical per-cell verdicts and the exact ranking normalization — a
         lens multiplies story weights, it never invents or overrides a verdict. Products with no
         applicable emphasized evidence are excluded from a lens (out of scope), not scored 0.
       </p>

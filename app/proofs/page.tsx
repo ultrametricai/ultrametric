@@ -97,7 +97,7 @@ export default function ProofsPage() {
         <div className="rounded-xl border border-zinc-800 p-4">
           <p className="text-[10px] uppercase tracking-widest text-zinc-400">Products covered</p>
           <p className="mt-1 font-display text-2xl font-bold text-emerald-300">{allProducts.length}</p>
-          <p className="mt-1 text-xs text-zinc-500">across {arenas.length} arenas</p>
+          <p className="mt-1 text-xs text-zinc-500">across {arenas.length} rankings</p>
         </div>
         <div className="rounded-xl border border-zinc-800 p-4">
           <p className="text-[10px] uppercase tracking-widest text-zinc-400">Most proven</p>

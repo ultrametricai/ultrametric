@@ -43,11 +43,11 @@ const KIND_CHIP_CLASSES: Record<RecommendationKind, string> = {
 }
 
 const KIND_TOOLTIPS: Record<RecommendationKind, string> = {
-  upgrade: 'Upgrade — a same-arena product scores materially higher than your pick',
-  add: 'Add — an adjacent arena where your stack has nothing yet',
+  upgrade: 'Upgrade — a same-ranking product scores materially higher than your pick',
+  add: 'Add — an adjacent ranking where your stack has nothing yet',
   overlap: 'Overlap — picks of yours cover the same job; running several vendors here is often deliberate',
   group: 'Group — one vendor family could consolidate two of your slots',
-  breakout: 'Break out — your pick trails specialists by a wide margin in this arena',
+  breakout: 'Break out — your pick trails specialists by a wide margin in this ranking',
   migrate: 'Migrate — this pick’s vendor has announced it is shutting down',
 }
 
@@ -237,7 +237,7 @@ export default function MyStackBuilder({
           <h2 className="font-display leading-[1.1] text-xl font-semibold tracking-tight">Recommendations</h2>
           {recommendations.length === 0 ? (
             <p className="rounded-2xl border border-zinc-800 px-4 py-6 text-sm text-zinc-500">
-              Nothing to flag — no same-arena product beats a pick by Δ{UPGRADE_DELTA} or more on confident
+              Nothing to flag — no same-ranking product beats a pick by Δ{UPGRADE_DELTA} or more on confident
               evidence, no adjacent gap, no overlap, and no consolidation the data supports.
             </p>
           ) : (
@@ -271,12 +271,12 @@ export default function MyStackBuilder({
           {truncated > 0 && (
             <p className="text-xs text-zinc-500">
               {truncated} lower-impact recommendation{truncated === 1 ? '' : 's'} not shown —
-              adjacent-arena additions keep only their strongest {MAX_ADD_RECS}, and the list
+              adjacent-ranking additions keep only their strongest {MAX_ADD_RECS}, and the list
               caps at the {MAX_RECOMMENDATIONS} highest-impact overall.
             </p>
           )}
           <p className="text-xs text-zinc-500">
-            Every number is the arena leaderboard&rsquo;s published score; &ldquo;possible
+            Every number is the ranking&rsquo;s published score; &ldquo;possible
             overlap&rdquo; means exactly that, never &ldquo;remove it&rdquo;.
           </p>
         </section>

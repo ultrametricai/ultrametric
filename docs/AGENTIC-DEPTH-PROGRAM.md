@@ -13,7 +13,7 @@ expansion.
 ## Why a separate program
 
 Evidence-tier judging (vendor docs, GitHub, community, probe) is fast, keyless, and scales to
-every arena, but it has a ceiling: it can tell you a product *claims* an MCP server exists, and
+every ranking, but it has a ceiling: it can tell you a product *claims* an MCP server exists, and
 even confirm the endpoint resolves (`probe` tier), but it cannot tell you whether that MCP
 server returns well-formed tool schemas, degrades gracefully under a long context, or survives
 a malformed request. That requires actually running something against the product. The
@@ -137,7 +137,7 @@ whether a laggard is catching up or falling further behind.
   specifically hunt for judge leniency/harshness patterns, vendor gaming of sandboxed trials,
   and spec version changes that quietly favor one product's existing integration over another's.
 - **Annual State of Agentic Software report.** A yearly synthesis — aggregate rung
-  distributions across arenas, the biggest claims gaps closed and opened, and the year's
+  distributions across rankings, the biggest claims gaps closed and opened, and the year's
   agentic-velocity leaders — published as a standalone document, separate from the
   continuously-updated leaderboards, so there's a fixed point-in-time reference for citation.
 
@@ -147,18 +147,18 @@ whether a laggard is catching up or falling further behind.
   and wire suite runs to produce evidence-grade transcripts, gated behind the sandbox
   infrastructure needed to run them safely against real products without touching production
   data. No leaderboard changes yet — this phase is instrumentation only.
-  - **Exit criteria:** at least one full arena has ArenaBench transcripts for every product on
+  - **Exit criteria:** at least one full ranking has ArenaBench transcripts for every product on
     every implemented surface; transcripts are reproducible on a re-run with no product-side
     changes.
 - **Phase 2 — Ladder rungs on-site.** Surface L0–L3 rungs per surface on product pages
   alongside (not replacing) the existing agenticness cells; add the claims-gap flagging from
-  demand-side mining for the arenas with the richest community signal.
-  - **Exit criteria:** ladder rungs are live on-site for at least two arenas; a documented gap
+  demand-side mining for the rankings with the richest community signal.
+  - **Exit criteria:** ladder rungs are live on-site for at least two rankings; a documented gap
     analysis exists for every product flagged as overclaiming.
 - **Phase 3 — Task trials + L4/L5.** Stand up sandboxed task-trial infrastructure, run the
   five-axis trial scoring, and light up L4/L5 rungs. Introduce multi-judge uncertainty
   handling for close cells.
-  - **Exit criteria:** task trials running on the monthly cadence for at least one arena, with
+  - **Exit criteria:** task trials running on the monthly cadence for at least one ranking, with
     disagreement reporting live wherever judge passes split.
 - **Phase 4 — Velocity leaderboard + governance.** Ship the agentic-velocity leaderboard off
   the accumulated snapshot history, open the vendor evidence-submission channel, stand up the

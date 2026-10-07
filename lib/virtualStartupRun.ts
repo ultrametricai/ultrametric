@@ -538,9 +538,9 @@ export const VS_EVENTS: VsEventDef[] = [
           kind: 'switch-vendor',
           arenaId: 'payments',
           redoTaskId: 'qs_021',
-          blurb: 'the payments pick moves to the next vendor in the real arena ranking; the connect-a-payment-processor steps re-run (real corpus time)',
+          blurb: 'the payments pick moves to the next vendor in the real published ranking; the connect-a-payment-processor steps re-run (real corpus time)',
         },
-        outcome: 'the stack re-picks payments from the real arena ranking and redoes the setup steps',
+        outcome: 'the stack re-picks payments from the real published ranking and redoes the setup steps',
       },
       {
         id: 'wait',

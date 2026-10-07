@@ -157,7 +157,7 @@ const SITE_JSONLD = JSON.stringify({
   name: "Ultrametric",
   url: SITE_URL,
   description:
-    "The unbiased, evidence-based arena for software in the AI era. Products judged on real user stories with a citation behind every verdict.",
+    "The unbiased, evidence-based rankings for software in the AI era. Products judged on real user stories with a citation behind every verdict.",
   publisher: { "@type": "Organization", name: "Ultrametric", url: "https://ultrametric.ai" },
 });
 
@@ -171,7 +171,7 @@ export default async function RootLayout({ children }: LayoutProps<"/">) {
   // The Overall (all-products) rankings view leads the Rankings dropdown (founder 2026-09-29) —
   // it's the cross-arena leaderboard the per-arena entries below drill into.
   const arenaMenuSections = [
-    { name: "", items: [{ id: "overall", name: "Overall — every product ranked", label: "all arenas", icon: OVERALL_ICON, href: "/overall" }] },
+    { name: "", items: [{ id: "overall", name: "Overall — every product ranked", label: "all rankings", icon: OVERALL_ICON, href: "/overall" }] },
     ...loadArenaSections().map((section) => ({
     name: section.name,
     items: section.arenaIds.flatMap((id): ArenaMenuItem[] => {

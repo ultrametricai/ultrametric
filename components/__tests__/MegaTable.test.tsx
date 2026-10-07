@@ -59,7 +59,7 @@ describe('mount applies URL params (invalids fall back silently)', () => {
   it('pristine URL renders the default view: AGENT-READY desc, all arenas', () => {
     const { container } = mount()
     expect(thFor(container, 'Agent-ready')?.getAttribute('aria-sort')).toBe('descending')
-    expect((within(container).getByLabelText('Filter by arena') as HTMLSelectElement).value).toBe('all')
+    expect((within(container).getByLabelText('Filter by ranking') as HTMLSelectElement).value).toBe('all')
   })
 
   it('?rank=initScore&dir=asc sorts by Overall score ascending', () => {
@@ -74,7 +74,7 @@ describe('mount applies URL params (invalids fall back silently)', () => {
   it('?arena=<id> and ?q= apply the scope and text filter', () => {
     setUrl('?arena=payments&q=stripe')
     const { container } = mount()
-    expect((within(container).getByLabelText('Filter by arena') as HTMLSelectElement).value).toBe('payments')
+    expect((within(container).getByLabelText('Filter by ranking') as HTMLSelectElement).value).toBe('payments')
     expect((within(container).getByLabelText('Filter products by name or vendor') as HTMLInputElement).value).toBe('stripe')
     expect(within(container).queryByText('Notion')).toBeNull()
   })
@@ -94,7 +94,7 @@ describe('mount applies URL params (invalids fall back silently)', () => {
     setUrl('?rank=bogus&dir=sideways&arena=nope')
     const { container } = mount()
     expect(thFor(container, 'Agent-ready')?.getAttribute('aria-sort')).toBe('descending')
-    expect((within(container).getByLabelText('Filter by arena') as HTMLSelectElement).value).toBe('all')
+    expect((within(container).getByLabelText('Filter by ranking') as HTMLSelectElement).value).toBe('all')
   })
 })
 
@@ -121,7 +121,7 @@ describe('interactions write params; defaults remove them', () => {
 
   it('arena scope and text filter write and clear their params', () => {
     const { container } = mount()
-    const select = within(container).getByLabelText('Filter by arena')
+    const select = within(container).getByLabelText('Filter by ranking')
     fireEvent.change(select, { target: { value: 'docs' } })
     expect(params().get('arena')).toBe('docs')
     fireEvent.change(select, { target: { value: 'all' } })

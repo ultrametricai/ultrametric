@@ -77,7 +77,7 @@ export function renderArenaMarkdown(data: CategoryData, siteUrl: string): string
   // watermark, so a republished copy of this markdown still points back at verifiable data.
   lines.push(`<!-- ${provenanceLine(rankings._provenance?.fingerprint)} -->`)
   lines.push('')
-  lines.push(`# ${category.name} Arena`)
+  lines.push(`# ${category.name} Ranking`)
   lines.push('')
   lines.push(category.description)
   lines.push('')
@@ -161,10 +161,10 @@ export function renderProductMarkdown(
   const lines: string[] = []
   lines.push(`<!-- ${provenanceLine(data.rankings._provenance?.fingerprint)} -->`)
   lines.push('')
-  lines.push(`# ${product.name} — ${data.category.name} Arena`)
+  lines.push(`# ${product.name} — ${data.category.name} Ranking`)
   lines.push('')
   lines.push(
-    `${product.vendor} · ${product.type === 'oss' ? 'open source' : product.type === 'government' ? 'government service' : 'commercial'} · [site](${product.urls.site}) · [full arena](${siteUrl}/arena/${data.category.id}/llms.md)`,
+    `${product.vendor} · ${product.type === 'oss' ? 'open source' : product.type === 'government' ? 'government service' : 'commercial'} · [site](${product.urls.site}) · [full ranking](${siteUrl}/arena/${data.category.id}/llms.md)`,
   )
   lines.push('')
   lines.push(
@@ -312,7 +312,7 @@ export function renderProductMarkdown(
     if (unmapped.length > 0) {
       lines.push('')
       lines.push(`### Claims outside our story set (${unmapped.length})`)
-      lines.push('Real capability claims with no matching story in this arena\'s taxonomy yet — feedback on the taxonomy, not the product.')
+      lines.push('Real capability claims with no matching story in this ranking\'s taxonomy yet — feedback on the taxonomy, not the product.')
       for (const c of unmapped) {
         lines.push(`- "${c.text}" — [source](${c.url})`)
       }

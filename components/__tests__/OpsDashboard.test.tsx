@@ -95,7 +95,7 @@ describe('OpsDashboard admin gating', () => {
     render(<OpsDashboard data={DATA} />)
     expect(await screen.findByRole('heading', { name: /Coverage & engines/ })).toBeTruthy()
     expect(screen.getByRole('heading', { name: 'Depth coverage' })).toBeTruthy()
-    expect(screen.getByRole('heading', { name: 'Arena coverage' })).toBeTruthy()
+    expect(screen.getByRole('heading', { name: 'Ranking coverage' })).toBeTruthy()
     expect(screen.getByRole('heading', { name: 'Cron / engine health' })).toBeTruthy()
     expect(screen.getByRole('heading', { name: 'Vendor news monitor' })).toBeTruthy()
     // The re-spike cross-signal and the agentic highlight are the founder-actionable bits.

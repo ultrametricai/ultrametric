@@ -89,7 +89,7 @@ export function pickForRole(
   const { metric } = constraints
   const inArena = products.filter((p) => p.arenaId === role.arenaId)
   if (inArena.length === 0) {
-    return { role, pick: null, emptyReason: `The ${role.label} arena isn't live yet.` }
+    return { role, pick: null, emptyReason: `The ${role.label} ranking isn't live yet.` }
   }
   const arenaName = inArena[0].arenaName
   const metricLabel = STACK_METRIC_LABELS[metric]

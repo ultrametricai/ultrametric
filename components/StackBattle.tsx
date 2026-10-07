@@ -80,7 +80,7 @@ function AggregateRows({ agg }: { agg: StackAggregates }) {
         <dd>{mean(agg.meanAgentReady, agg.agentReadyCount, agg.productCount)}</dd>
       </div>
       <div className="flex items-baseline justify-between gap-2">
-        <dt className="text-xs text-zinc-500" title="How many distinct arenas the stack covers.">arena coverage</dt>
+        <dt className="text-xs text-zinc-500" title="How many distinct rankings the stack covers.">ranking coverage</dt>
         <dd className="font-mono tabular-nums text-zinc-200">
           {agg.arenaCount} arena{agg.arenaCount === 1 ? '' : 's'} / {agg.productCount} product{agg.productCount === 1 ? '' : 's'}
         </dd>
@@ -357,11 +357,11 @@ export default function StackBattle({
               <table className="w-full border-collapse text-sm">
                 <thead>
                   <tr className={TABLE_HEADER_ROW}>
-                    <th scope="col" className="px-3 py-2 font-normal"><span title="The product category (arena) this slot fills — each side's pick for it is compared on the same judged scores">Arena</span></th>
-                    <th scope="col" className="px-3 py-2 font-normal"><span title={`Stack A's pick for each arena slot`}>{aLabel}</span></th>
+                    <th scope="col" className="px-3 py-2 font-normal"><span title="The product category (ranking) this slot fills — each side's pick for it is compared on the same judged scores">Ranking</span></th>
+                    <th scope="col" className="px-3 py-2 font-normal"><span title={`Stack A's pick for each ranking slot`}>{aLabel}</span></th>
                     <th scope="col" className="px-3 py-2 font-normal">
                       <span className="inline-flex items-center gap-1.5">
-                        <span title={`Stack B's pick for each arena slot`}>{bLabel}</span>
+                        <span title={`Stack B's pick for each ranking slot`}>{bLabel}</span>
                         <ColumnsHelpLink />
                       </span>
                     </th>
@@ -383,7 +383,7 @@ export default function StackBattle({
                             <Link
                               href={slot.battleHref}
                               className="text-[10px] uppercase tracking-wide text-emerald-400/80 underline decoration-emerald-400/30 hover:text-emerald-300"
-                              title="These two share an arena — see their judged story-by-story battle"
+                              title="These two share a ranking — see their judged story-by-story battle"
                             >
                               judged battle →
                             </Link>

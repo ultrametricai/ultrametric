@@ -85,7 +85,7 @@ export default function MostTestedRankingPage() {
           Most tested — ranked by tested-evidence share
         </h1>
         <p className="mt-2 max-w-2xl text-zinc-400">
-          All {rows.length} products across every arena, ranked by tested share: the fraction of applicable verdict
+          All {rows.length} products from every ranking, ranked by tested share: the fraction of applicable verdict
           cells whose strongest cited evidence is tested — a{' '}
           <Link href="/proofs" className="text-zinc-300 underline decoration-zinc-700 hover:text-emerald-300">
             hands-on probe

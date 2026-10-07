@@ -10,7 +10,7 @@ import { loadCategories } from '@/lib/data'
 export const metadata: Metadata = {
   title: 'Rankings — Ultrametric',
   description:
-    'Every judged arena — grouped, visual, one card per market with its ranked leader. Pick an arena for the full evidence-backed leaderboard.',
+    'Every judged ranking — grouped, visual, one card per market with its ranked leader. Pick a ranking for the full evidence-backed leaderboard.',
 }
 
 export default function ArenasPage() {
@@ -21,7 +21,7 @@ export default function ArenasPage() {
       <section>
         <h1 className="font-display leading-[1.1] text-3xl font-bold tracking-tight">Rankings</h1>
         <p className="mt-2 max-w-2xl text-zinc-400">
-          {total} judged markets. Every arena card shows its current Overall score leader; every score
+          {total} judged markets. Every ranking card shows its current Overall score leader; every score
           traces back to cited evidence.
         </p>
         {/* Jump strip: one chip per section, anchors into the directory below. */}

@@ -75,7 +75,7 @@ function nodeTooltip(
     title,
     adoption
       ? `Adoption: ${adoption.adopters}/${adoption.total} tracked products (${adoption.pct}%) with a full or partial evidence-backed verdict`
-      : 'Adoption: no cross-arena data yet',
+      : 'Adoption: no cross-market data yet',
   ]
   if (requires.length > 0) lines.push(`Requires: ${requires.join(', ')}`)
   if (unlocks.length > 0) lines.push(`Unlocks: ${unlocks.join(', ')}`)

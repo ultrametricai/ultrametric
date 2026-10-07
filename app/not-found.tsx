@@ -31,7 +31,7 @@ export default function NotFound() {
           href="/"
           className="rounded-lg border border-emerald-400/60 px-4 py-2 font-medium text-emerald-300 transition hover:bg-emerald-400/10"
         >
-          Back to the arenas
+          Back to the rankings
         </Link>
         <Link
           href="/rankings/init"

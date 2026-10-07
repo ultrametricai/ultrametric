@@ -83,7 +83,7 @@ export default function PredictionsPage() {
         <p className="text-sm uppercase tracking-widest text-emerald-400">Predictions</p>
         <h1 className="font-display leading-[1.1] mt-1 text-3xl font-bold tracking-tight">Predictions — open and settled overtake questions</h1>
         <p className="mt-2 max-w-2xl text-zinc-400">
-          Whenever an arena&rsquo;s #1 and #2 are within {CLOSE_RACE_THRESHOLD.toFixed(1)} Overall score points — the same
+          Whenever a ranking&rsquo;s #1 and #2 are within {CLOSE_RACE_THRESHOLD.toFixed(1)} Overall score points — the same
           &ldquo;close race&rdquo; bar that triggers the multi-judge uncertainty pass — a yes/no question opens
           automatically: will the challenger overtake the leader within {PREDICTION_WINDOW_DAYS} days? Settlement is
           mechanical: <span className="text-zinc-300">yes</span> cites the exact rank-flip event on the{' '}
@@ -102,7 +102,7 @@ export default function PredictionsPage() {
           Open questions <span className="ml-1 text-xs font-normal text-zinc-500">{open.length}</span>
         </h2>
         {open.length === 0 ? (
-          <p className="mt-2 text-sm italic text-zinc-500">No open questions — no arena is a close race right now.</p>
+          <p className="mt-2 text-sm italic text-zinc-500">No open questions — no ranking is a close race right now.</p>
         ) : (
           <ul className="mt-3 space-y-3">
             {open.map((q) => (
@@ -198,11 +198,11 @@ export default function PredictionsPage() {
         <h2 className="font-display text-base font-semibold text-zinc-200">How this works</h2>
         <ul className="mt-2 list-disc space-y-1.5 pl-5">
           <li>
-            Questions are auto-generated from judges-split close races: when an arena&rsquo;s top two are within{' '}
+            Questions are auto-generated from judges-split close races: when a ranking&rsquo;s top two are within{' '}
             {CLOSE_RACE_THRESHOLD.toFixed(1)} Overall score points, the ranking is genuinely uncertain (it&rsquo;s the
             same threshold that triggers extra judge samples in the{' '}
             <Link href="/methodology" className={ARENA_LINK}>methodology</Link>&rsquo;s uncertainty pass), so the
-            question is worth asking. One open question per arena pair; a new one can open after the old one settles.
+            question is worth asking. One open question per ranking pair; a new one can open after the old one settles.
           </li>
           <li>
             Settlement is mechanical, from the public <Link href="/changelog" className={ARENA_LINK}>changelog</Link>:

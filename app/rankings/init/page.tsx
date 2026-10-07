@@ -9,7 +9,7 @@ export function generateMetadata(): Metadata {
   const totalProducts = categories.reduce((sum, data) => sum + data.products.length, 0)
   return {
     title: `Full Overall score ranking — all ${totalProducts} products — Ultrametric`,
-    description: `Every product across every arena ranked by the blended Overall score (agent-ready, API quality, openness, agentic app, automation). Evidence-graded, no opinion.`,
+    description: `Every product from every ranking, ranked by the blended Overall score (agent-ready, API quality, openness, agentic app, automation). Evidence-graded, no opinion.`,
   }
 }
 
@@ -30,7 +30,7 @@ export default function InitRankingPage() {
         <p className="text-sm uppercase tracking-widest text-emerald-400">Global ranking</p>
         <h1 className="font-display leading-[1.1] mt-1 text-3xl font-bold tracking-tight">Highest Overall score</h1>
         <p className="mt-2 max-w-2xl text-zinc-400">
-          All {totalProducts} products across every arena, ranked by the blended Overall score — agent-ready, API
+          All {totalProducts} products from every ranking, ranked by the blended Overall score — agent-ready, API
           quality, openness, agentic app, and automation, all agent tested. Ties break on the raw coverage score.
         </p>
         <p className="mt-2 text-xs text-zinc-500">

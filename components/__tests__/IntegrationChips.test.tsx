@@ -35,7 +35,7 @@ describe('Verified integrations table (founder 2026-10-05)', () => {
     expect(wrapper.className).toContain('rounded-2xl')
     expect(wrapper.className).toContain('border')
     const headers = [...container.querySelectorAll('th')]
-    expect(headers.map((h) => h.textContent)).toEqual(['Integration', 'Arena', 'Evidence'])
+    expect(headers.map((h) => h.textContent)).toEqual(['Integration', 'Ranking', 'Evidence'])
     expect(headers[0].closest('tr')!.className).toContain('text-xs')
     expect(container.querySelectorAll('tbody tr')).toHaveLength(2)
   })

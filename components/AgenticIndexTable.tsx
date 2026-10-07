@@ -74,7 +74,7 @@ export default function AgenticIndexTable({ categories, limit }: { categories: C
           <tr className={TABLE_HEADER_ROW}>
             <th className="sticky left-0 z-10 w-14 bg-zinc-950 px-3 py-2 font-normal">#</th>
             <th className="sticky left-14 z-10 w-[170px] bg-zinc-950 px-3 py-2 font-normal">Product</th>
-            <th className="px-3 py-2 font-normal"><span title="The product category (arena) it competes in — click through for that arena's full leaderboard">Arena</span></th>
+            <th className="px-3 py-2 font-normal"><span title="The product category (ranking) it competes in — click through for that ranking's full leaderboard">Ranking</span></th>
             <th className="px-3 py-2 font-normal"><span title="Agent-ready (0–100): how easily an outside AI agent or assistant can connect to and operate this product — APIs, command-line tools, MCP, docs">Agent-ready</span></th>
             <th className="hidden px-3 py-2 font-normal sm:table-cell"><span title="API quality (0–100): how good the product's programming interface is — machine-readable spec, interactive docs, sandbox, versioning discipline">API quality</span></th>
             <th className="px-3 py-2 font-normal"><span title="Which agent doorways exist: MCP server, official command-line tool (CLI), public API — from judged evidence">Access</span></th>

@@ -101,7 +101,7 @@ export default function CompareRivals({ data, productId }: { data: CategoryData;
       <h2 className="font-display leading-[1.1] mb-3 flex items-center gap-2 text-lg font-semibold">
         <GeoMark
           seed="compare-rivals"
-          title="Alternatives comparison — nearest arena rivals by leaderboard rank, same judged scores"
+          title="Alternatives comparison — the nearest rivals in this product's ranking, same judged scores"
           size={18}
           className="text-zinc-500"
         />
@@ -114,7 +114,7 @@ export default function CompareRivals({ data, productId }: { data: CategoryData;
           <thead>
             <tr className={TABLE_HEADER_ROW}>
               <th scope="col" className="px-2 py-1.5 font-normal">
-                <span title="This product (highlighted) plus its nearest rivals — # = rank in the full arena leaderboard">Product</span>
+                <span title="This product (highlighted) plus its nearest rivals — # = rank in the full ranking">Product</span>
               </th>
               <th scope="col" className="px-2 py-1.5 font-normal">
                 <span title="Overall score /100 — blended headline score; click a score for its full receipt">Overall score</span>
@@ -237,10 +237,10 @@ export default function CompareRivals({ data, productId }: { data: CategoryData;
       <div className="mt-2 text-xs">
         <Link
           href={`/arena/${data.category.id}`}
-          title={`The full ${data.category.name} arena — every ranked product, sortable`}
+          title={`The full ${data.category.name} ranking — every product, sortable`}
           className="text-zinc-400 hover:text-emerald-300"
         >
-          full arena →
+          full ranking →
         </Link>
       </div>
     </div>

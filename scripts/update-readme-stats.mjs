@@ -56,7 +56,7 @@ function renderArenasBlock() {
     const ids = readJson(productsPath).map((p) => p.id)
     rows.push(`| ${category.name} (\`${category.id}\`) | ${ids.join(', ')} |`)
   }
-  return [ARENAS_START_MARKER, '| Arena | Products |', '|---|---|', ...rows, ARENAS_END_MARKER].join('\n')
+  return [ARENAS_START_MARKER, '| Ranking | Products |', '|---|---|', ...rows, ARENAS_END_MARKER].join('\n')
 }
 
 // The count badges in the README's top badge row — static shields.io badges carrying the same
@@ -66,7 +66,7 @@ function renderStatBadgesBlock(stats) {
   const site = 'https://ultrametric.ai'
   return [
     BADGES_START_MARKER,
-    `[![arenas](https://img.shields.io/badge/arenas-${stats.arenas}-34d399)](${site})`,
+    `[![rankings](https://img.shields.io/badge/rankings-${stats.arenas}-34d399)](${site})`,
     `[![products](https://img.shields.io/badge/products-${stats.products}-34d399)](${site}/everything)`,
     `[![judged verdicts](https://img.shields.io/badge/judged_verdicts-${stats.verdicts}-34d399)](${site}/methodology)`,
     BADGES_END_MARKER,
@@ -76,7 +76,7 @@ function renderStatBadgesBlock(stats) {
 function renderBlock(stats) {
   return [
     START_MARKER,
-    `As of the last full pipeline run: **${stats.arenas} arenas, ${stats.products} products, ${stats.verdicts.toLocaleString('en-US')} judged verdicts.**`,
+    `As of the last full pipeline run: **${stats.arenas} rankings, ${stats.products} products, ${stats.verdicts.toLocaleString('en-US')} judged verdicts.**`,
     END_MARKER,
   ].join('\n')
 }

@@ -95,7 +95,7 @@ export default function VsScorecard({
       <p className="mt-0.5 text-[11px] text-zinc-400">
         agent-run = steps whose picked vendor has a judged MCP/CLI surface (canonical verdicts) or
         that no swappable vendor serves; the optimal stack is computed — the top MCP/CLI-bearing
-        vendor per role from the real arena ranking, before events.
+        vendor per role from the real published ranking, before events.
       </p>
 
       <ul className="mt-3 space-y-1.5">

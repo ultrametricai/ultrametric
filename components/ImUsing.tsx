@@ -43,7 +43,7 @@ export default function ImUsing({ arenaId, productId, productName }: { arenaId: 
               ? othersCount > 0
                 ? `${productName} is one of your ${othersCount + 1} ${arenaId} picks — click to remove it (your other picks stay). Manage your whole stack at /my-stack.`
                 : `${productName} is set as your ${arenaId} pick — click to unset. Manage your whole stack at /my-stack.`
-              : `Add ${productName} to YOUR picks for this arena — you can keep several vendors per function; powers your stack advice and personalized process runs`
+              : `Add ${productName} to YOUR picks for this ranking — you can keep several vendors per function; powers your stack advice and personalized process runs`
             : `Sign up or log in to record that you use ${productName} — your vendors power personalized process runs and stack advice (you'll come straight back here)`
         }
         className={`shrink-0 rounded-full border px-2.5 py-1 text-xs transition ${

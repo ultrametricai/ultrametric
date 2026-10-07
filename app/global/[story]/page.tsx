@@ -35,7 +35,7 @@ export async function generateMetadata({
   return {
     title: `${entry ? stripPersonaPrefix(entry.title) : story} — across all software — Ultrametric`,
     description: entry
-      ? `Every product's evidence-backed verdict on "${stripPersonaPrefix(entry.title)}" across ${entry.arenaCount} arenas.`
+      ? `Every product's evidence-backed verdict on "${stripPersonaPrefix(entry.title)}" across ${entry.arenaCount} rankings.`
       : undefined,
   }
 }
@@ -74,7 +74,7 @@ export default async function GlobalStoryPage({
           A global story is meaningful for any software product, so it can be compared across the
           whole site — every product&rsquo;s verdict on{' '}
           <span className="font-mono text-sm text-zinc-300">{entry.id}</span> across all{' '}
-          {entry.arenaCount} arenas that carry it, judged from public evidence.
+          {entry.arenaCount} rankings that carry it, judged from public evidence.
         </p>
         <p className="mt-1 text-xs text-zinc-500">
           {supported}/{entry.cells.length} products pass (full or partial) · click a verdict for
@@ -92,7 +92,7 @@ export default async function GlobalStoryPage({
         </p>
         <p className="text-xs text-zinc-500">
           {shortTitle}: {adoption.adopters} of {adoption.total} tracked products pass (full or
-          partial), across {entry.arenaCount} arenas.
+          partial), across {entry.arenaCount} rankings.
         </p>
         {curve.length >= 2 ? (
           <DiffusionCurve points={curve} label={`Adoption of ${shortTitle} among tracked products, by month`} />
@@ -126,7 +126,7 @@ export default async function GlobalStoryPage({
           <thead>
             <tr className={TABLE_HEADER_ROW}>
               <th scope="col" className="px-3 py-2 font-normal">Product</th>
-              <th scope="col" className="hidden px-3 py-2 font-normal sm:table-cell"><span title="The product category (arena) it competes in">Arena</span></th>
+              <th scope="col" className="hidden px-3 py-2 font-normal sm:table-cell"><span title="The product category (ranking) it competes in">Ranking</span></th>
               <th scope="col" className="px-3 py-2 font-normal"><span title="Does the product deliver this capability? full / partial / none — judged from cited evidence">Verdict</span></th>
               <th scope="col" className="px-3 py-2 font-normal"><span title="How well it delivers when it does (0–100)">Quality</span></th>
               <th scope="col" className="px-3 py-2 font-normal"><span title="How many cited sources back the verdict">Evidence</span></th>
@@ -179,8 +179,8 @@ export default async function GlobalStoryPage({
       </div>
 
       <p className="text-xs text-zinc-500">
-        Verdicts are judged per arena against that arena&rsquo;s evidence packs, so the same tier
-        can rest on different evidence depth across arenas — follow a row to the product page for
+        Verdicts are judged per ranking against that ranking&rsquo;s evidence packs, so the same tier
+        can rest on different evidence depth across rankings — follow a row to the product page for
         the full rationale.
       </p>
     </div>

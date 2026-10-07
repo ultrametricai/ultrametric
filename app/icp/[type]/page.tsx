@@ -33,7 +33,7 @@ export async function generateMetadata({
   return {
     title: `${icp ? icp.name : type} — best software for this buyer — Ultrametric`,
     description: icp
-      ? `Every arena's products re-ranked for a ${icp.name.toLowerCase()}: ${icp.tagline}`
+      ? `Every market's products re-ranked for a ${icp.name.toLowerCase()}: ${icp.tagline}`
       : undefined,
   }
 }
@@ -59,7 +59,7 @@ export default async function IcpPage({ params }: { params: Promise<{ type: stri
         <h1 className="font-display leading-[1.1] mt-1 text-3xl font-bold tracking-tight">{icp.name}</h1>
         <p className="mt-2 max-w-2xl text-zinc-400">{icp.tagline}</p>
         <p className="mt-1 text-xs text-zinc-500">
-          {rows.length} products across {arenaCount} arenas · same canonical verdicts, re-weighted
+          {rows.length} products across {arenaCount} rankings · same canonical verdicts, re-weighted
           for the personas ({icp.emphasis.personas.join(', ')}) and themes this buyer weighs most
           {icp.emphasis.requireOss ? ' · open-source products only' : ''}
         </p>
@@ -70,7 +70,7 @@ export default async function IcpPage({ params }: { params: Promise<{ type: stri
           <thead>
             <tr className={TABLE_HEADER_ROW}>
               <th scope="col" className="px-3 py-2 font-normal"># / Product</th>
-              <th scope="col" className="hidden px-3 py-2 font-normal sm:table-cell"><span title="The product category (arena) it competes in">Arena</span></th>
+              <th scope="col" className="hidden px-3 py-2 font-normal sm:table-cell"><span title="The product category (ranking) it competes in">Ranking</span></th>
               <th scope="col" className="px-3 py-2 font-normal"><span title="The product's theme scores re-weighted for this buyer type — same evidence, this lens's priorities">Lens score</span></th>
               {themes.map((theme) => (
                 <th key={theme} scope="col" className="hidden px-3 py-2 font-normal md:table-cell">

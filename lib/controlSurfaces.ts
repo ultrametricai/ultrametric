@@ -126,7 +126,7 @@ export const SURFACE_DEFS: SurfaceDef[] = [
     tier: 'canonical',
     pros: [
       'Lowest floor of any surface: no keys, no schema — a sentence is the integration.',
-      'Widely adopted across nearly every arena in the fleet.',
+      'Widely adopted across nearly every ranking in the fleet.',
     ],
     cons: [
       'Non-deterministic: the same sentence can do different things, which agents (and audits) hate.',
@@ -217,7 +217,7 @@ export const SURFACE_DEFS: SurfaceDef[] = [
       'Where agentic workflows meet humans: mobile approval of agent decisions is already a judged story in this fleet.',
     ],
     cons: [
-      'Judged in only a handful of arenas so far — too thin to rank against the canonical surfaces.',
+      'Judged in only a handful of rankings so far — too thin to rank against the canonical surfaces.',
       'Feature parity with desktop is the recurring caveat in the judged evidence.',
     ],
   },
@@ -232,7 +232,7 @@ export const SURFACE_DEFS: SurfaceDef[] = [
       'OS-level access (screen, shortcuts, local files) that no web surface can reach.',
     ],
     cons: [
-      'Judged in only two arenas so far — coverage is far too thin to rank.',
+      'Judged in only two rankings so far — coverage is far too thin to rank.',
       'Hardest surface for an agent to drive without accessibility APIs or computer use.',
     ],
   },
@@ -244,10 +244,10 @@ export const SURFACE_DEFS: SurfaceDef[] = [
     storyIds: ['voice-interaction', 'voice-conversation'],
     tier: 'emerging',
     pros: [
-      'The fastest human input channel — and adoption inside the arenas that judge it is high.',
+      'The fastest human input channel — and adoption inside the rankings that judge it is high.',
     ],
     cons: [
-      'Judged in only two arenas so far — too thin to rank.',
+      'Judged in only two rankings so far — too thin to rank.',
       'Transcription ambiguity makes voice the least auditable surface for consequential actions.',
     ],
   },
@@ -262,7 +262,7 @@ export const SURFACE_DEFS: SurfaceDef[] = [
       'Acts inside the authenticated session where pure APIs cannot reach.',
     ],
     cons: [
-      'Judged in a single arena so far — a data point, not a ranking.',
+      'Judged in a single ranking so far — a data point, too thin to rank.',
       'Bound to one browser profile; invisible to headless agents.',
     ],
   },
@@ -433,7 +433,7 @@ function computeSurface(def: SurfaceDef, categories: CategoryData[]): SurfaceRow
 export const SURFACE_RANKS = [
   { id: 'adoption', name: 'Most adopted', title: 'Share of all judged products shipping the surface (full or partial verdict)' },
   { id: 'lift', name: 'Highest agent-readiness lift', title: 'Mean AGENT-READY of shippers minus non-shippers — correlation, not causation' },
-  { id: 'breadth', name: 'Broadest arena coverage', title: 'Number of arenas where at least one product ships the surface' },
+  { id: 'breadth', name: 'Broadest ranking coverage', title: 'Number of rankings where at least one product ships the surface' },
   { id: 'strict', name: 'Strictest evidence', title: 'Share of judged products with a FULL verdict only — no partials' },
 ] as const
 

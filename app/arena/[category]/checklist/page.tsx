@@ -90,12 +90,12 @@ export default async function ChecklistPage({ params }: { params: Promise<{ cate
       <div>
         <p className="text-sm uppercase tracking-widest text-emerald-400">
           <Link href={`/arena/${category}`} className="hover:text-emerald-300">
-            {data.category.name} Arena
+            {data.category.name} Ranking
           </Link>
         </p>
         <h1 className="font-display leading-[1.1] mt-1 flex items-center gap-2.5 text-3xl font-bold tracking-tight">
           {/* Same house glyph this arena wears in the header's Rankings menu (lib/arenaIcons.ts). */}
-          <IconChip icon={arenaIcon(data.category.id)} title={`${data.category.name} arena`} />
+          <IconChip icon={arenaIcon(data.category.id)} title={`${data.category.name} ranking`} />
           Buyer checklist
         </h1>
         <p className="mt-2 max-w-2xl text-zinc-400">
@@ -211,7 +211,7 @@ export default async function ChecklistPage({ params }: { params: Promise<{ cate
       <p className="text-xs text-zinc-500">
         Full evidence behind every verdict lives on the{' '}
         <Link href={`/arena/${category}`} className="text-emerald-300 hover:underline">
-          arena page
+          ranking page
         </Link>{' '}
         and each product page — chips above deep-link straight to the judged story.
       </p>

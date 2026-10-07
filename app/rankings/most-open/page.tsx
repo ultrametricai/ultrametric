@@ -117,7 +117,7 @@ export default function MostOpenRankingPage() {
           Lowest lock-in — self-hosting, export, licenses, API parity
         </h1>
         <p className="mt-2 max-w-2xl text-zinc-400">
-          All {rows.length} products across every arena, ranked by the openness theme score — agent-tested
+          All {rows.length} products from every ranking, ranked by the openness theme score — agent-tested
           verdicts on self-hosting, full data export, open licensing, and API parity, the four questions that decide
           whether you own your setup or rent it. Ties break open-source first, then Overall score. Full definitions on{' '}
           <Link href="/methodology" className="text-zinc-300 underline decoration-zinc-700 hover:text-emerald-300">

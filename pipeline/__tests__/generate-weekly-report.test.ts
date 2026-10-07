@@ -89,7 +89,7 @@ describe('eventMarkdownLine', () => {
         { kind: 'arena-launched', date: '2026-09-05T00:00:00Z', categoryId: 'terminals', categoryName: 'Terminals', productCount: 5 },
         SITE,
       ),
-    ).toBe(`- [Terminals](${SITE}/arena/terminals) arena launched (5 products)`)
+    ).toBe(`- [Terminals](${SITE}/arena/terminals) ranking launched (5 products)`)
     expect(
       eventMarkdownLine(
         {
@@ -120,7 +120,7 @@ describe('eventMarkdownLine', () => {
         { kind: 'product-added', date: '2026-09-02T00:00:00Z', categoryId: 'terminals', categoryName: 'Terminals', productId: 'ghostty', productName: 'Ghostty' },
         SITE,
       ),
-    ).toBe(`- [Ghostty](${SITE}/arena/terminals/product/ghostty) entered the [Terminals](${SITE}/arena/terminals) arena`)
+    ).toBe(`- [Ghostty](${SITE}/arena/terminals/product/ghostty) entered the [Terminals](${SITE}/arena/terminals) ranking`)
   })
 })
 
@@ -152,7 +152,7 @@ describe('renderWeeklyReport', () => {
     expect(md).toContain('*Score history begins Aug 28, 2026')
     expect(md).toContain(`- [Warp](${SITE}/arena/terminals/product/warp) +5.4 → 45.4 in [Terminals](${SITE}/arena/terminals)`)
     expect(md).toContain(`- [kitty](${SITE}/arena/terminals/product/kitty) -2.1 → 27.9`)
-    expect(md).toContain(`- [Ghostty](${SITE}/arena/terminals/product/ghostty) entered the [Terminals](${SITE}/arena/terminals) arena`)
+    expect(md).toContain(`- [Ghostty](${SITE}/arena/terminals/product/ghostty) entered the [Terminals](${SITE}/arena/terminals) ranking`)
     expect(md).toContain('**Claude Code** 64.2 vs **OpenCode** 63.1 (gap 1.1) — 12 decisive cells triple-judged, 4 unstable')
     expect(md).toContain('### Sep 4')
     expect(md).toContain('### Sep 2')
@@ -169,7 +169,7 @@ describe('renderWeeklyReport', () => {
       siteUrl: SITE,
     })
     expect(md).toContain('_No movers among established products this week')
-    expect(md).toContain('_No new arenas or products this week._')
+    expect(md).toContain('_No new rankings or products this week._')
     expect(md).toContain('_A quiet week — nothing changed._')
   })
 })

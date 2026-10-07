@@ -97,7 +97,7 @@ export async function generateMetadata({
   const product = data.products.find((p) => p.id === id)
   // "— Ultrametric" suffix like every other page title on the site.
   return {
-    title: `${product ? product.name : id} — ${data.category.name} Arena — Ultrametric`,
+    title: `${product ? product.name : id} — ${data.category.name} Ranking — Ultrametric`,
     // Agent-discovery pointers (founder 2026-10-02): the bottom "For agents"/"Data" link cards
     // left the visible page, so the per-product markdown and the evidence/verdict JSON stay
     // discoverable FROM this page as <link rel="alternate"> tags — same URLs /llms.txt and

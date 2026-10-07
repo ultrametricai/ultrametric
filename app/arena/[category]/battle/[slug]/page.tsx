@@ -55,7 +55,7 @@ export async function generateMetadata({
   const { category, slug } = await params
   const data = loadCategory(category)
   const pair = parseBattleSlug(slug, data.products)
-  if (!pair) return { title: `Battle — ${data.category.name} Arena` }
+  if (!pair) return { title: `Battle — ${data.category.name} Ranking` }
   const a = data.products.find((p) => p.id === pair.a)!
   const b = data.products.find((p) => p.id === pair.b)!
   const year = new Date().getFullYear()

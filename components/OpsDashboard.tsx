@@ -112,7 +112,7 @@ export default function OpsDashboard({ data }: { data: OpsData }) {
         <p className="text-sm uppercase tracking-widest text-emerald-400">Founder ops — unlinked, admin-gated</p>
         <h1 className="font-display mt-1 text-3xl font-bold leading-[1.1] tracking-tight">Coverage &amp; engines</h1>
         <p className="mt-2 max-w-3xl text-zinc-400">
-          How deep every vendor is tested, which arenas are live vs planned, whether the engines are
+          How deep every vendor is tested, which rankings are live vs planned, whether the engines are
           actually running, and what the vendors themselves shipped lately. All numbers are aggregates
           of committed <span className="font-mono">data/</span> artifacts, as of last build
           ({shortDate(data.builtAt)}).
@@ -120,7 +120,7 @@ export default function OpsDashboard({ data }: { data: OpsData }) {
         <p className="mt-2 text-xs text-zinc-500">
           Sections:{' '}
           <a href="#depth" className="text-emerald-300 hover:text-emerald-200">depth</a> ·{' '}
-          <a href="#arenas" className="text-emerald-300 hover:text-emerald-200">arena coverage</a> ·{' '}
+          <a href="#arenas" className="text-emerald-300 hover:text-emerald-200">ranking coverage</a> ·{' '}
           <a href="#crons" className="text-emerald-300 hover:text-emerald-200">cron health</a> ·{' '}
           <a href="#news" className="text-emerald-300 hover:text-emerald-200">vendor news</a> ·{' '}
           <a href="#respike" className="text-emerald-300 hover:text-emerald-200">re-spike list</a>
@@ -132,10 +132,10 @@ export default function OpsDashboard({ data }: { data: OpsData }) {
         <SectionHead
           id="depth"
           title="Depth coverage"
-          blurb="Evidence depth per arena: median/min evidence per product, share of judged (non-na) verdicts citing probe- or github-tier evidence, and spike freshness from data/spike-queue.json. Arenas sorted thinnest-first."
+          blurb="Evidence depth per ranking: median/min evidence per product, share of judged (non-na) verdicts citing probe- or github-tier evidence, and spike freshness from data/spike-queue.json. Rankings sorted thinnest-first."
         />
         <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-6">
-          <Headline label="Arenas live" value={String(depth.fleet.arenas)} />
+          <Headline label="Rankings live" value={String(depth.fleet.arenas)} />
           <Headline label="Products" value={String(depth.fleet.products)} />
           <Headline label="Verdicts" value={depth.fleet.verdicts.toLocaleString('en-US')} />
           <Headline label="Evidence items" value={depth.fleet.evidenceItems.toLocaleString('en-US')} />
@@ -154,14 +154,14 @@ export default function OpsDashboard({ data }: { data: OpsData }) {
           <table className="w-full min-w-[860px] text-left text-sm">
             <thead>
               <tr className={TABLE_HEADER_ROW}>
-                <th className="px-3 py-2 font-normal">Arena</th>
+                <th className="px-3 py-2 font-normal">Ranking</th>
                 <th className="px-3 py-2 font-normal">Products</th>
                 <th className="px-3 py-2 font-normal" title="Median evidence items per product">Med. ev</th>
                 <th className="px-3 py-2 font-normal" title="Thinnest product's evidence count">Min ev</th>
                 <th className="px-3 py-2 font-normal" title="% of non-na verdicts citing probe/github-tier evidence">Probe-backed</th>
                 <th className="px-3 py-2 font-normal" title={`Products at/below the fleet bottom-decile evidence count (≤${depth.fleet.bottomDecileThreshold})`}>Thin tail</th>
                 <th className="px-3 py-2 font-normal" title="Queue products never deep-refreshed by the spike engine">Never spiked</th>
-                <th className="px-3 py-2 font-normal" title="Age of the arena's stalest lastSpiked product">Oldest spike</th>
+                <th className="px-3 py-2 font-normal" title="Age of the ranking's stalest lastSpiked product">Oldest spike</th>
               </tr>
             </thead>
             <tbody>
@@ -208,11 +208,11 @@ export default function OpsDashboard({ data }: { data: OpsData }) {
       <section className="space-y-4">
         <SectionHead
           id="arenas"
-          title="Arena coverage"
+          title="Ranking coverage"
           blurb="Live arenas vs data/arena-roadmap.json, plus the missing-vendor census: every process-corpus vendor chip with no VENDOR_ARENA mapping — the honest unlinked chips — with step counts and the arena the corpus implies."
         />
         <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
-          <Headline label="Arenas live" value={String(arenaCoverage.liveArenas)} />
+          <Headline label="Rankings live" value={String(arenaCoverage.liveArenas)} />
           <Headline label="Roadmap: planned" value={String(arenaCoverage.plannedArenas.length)} />
           <Headline
             label="Roadmap drift"
@@ -261,7 +261,7 @@ export default function OpsDashboard({ data }: { data: OpsData }) {
                         {v.impliedArena}
                       </Link>
                     ) : (
-                      <span className="text-zinc-500">no arena yet</span>
+                      <span className="text-zinc-500">no ranking yet</span>
                     )}
                   </td>
                 </tr>

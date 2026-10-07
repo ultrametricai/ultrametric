@@ -128,13 +128,13 @@ function productLink(e: { categoryId: string; productId: string; productName: st
 export function eventMarkdownLine(event: ChangeEvent, siteUrl: string): string {
   switch (event.kind) {
     case 'arena-launched':
-      return `- ${arenaLink(event, siteUrl)} arena launched (${event.productCount} ${event.productCount === 1 ? 'product' : 'products'})`
+      return `- ${arenaLink(event, siteUrl)} ranking launched (${event.productCount} ${event.productCount === 1 ? 'product' : 'products'})`
     case 'overtake':
       return `- ${productLink(event, siteUrl)} overtook [${event.overtookName}](${siteUrl}/arena/${event.categoryId}/product/${event.overtookId}) in ${arenaLink(event, siteUrl)} (${event.productAiEra.toFixed(1)} vs ${event.overtookAiEra.toFixed(1)})`
     case 'score-move':
       return `- ${productLink(event, siteUrl)} ${fmtDelta(event.delta)} Overall score in ${arenaLink(event, siteUrl)} (→ ${event.to.toFixed(1)})`
     case 'product-added':
-      return `- ${productLink(event, siteUrl)} entered the ${arenaLink(event, siteUrl)} arena`
+      return `- ${productLink(event, siteUrl)} entered the ${arenaLink(event, siteUrl)} ranking`
   }
 }
 
@@ -144,8 +144,8 @@ export function renderWeeklyReport(input: WeeklyReportInput): string {
   lines.push(`# Ultrametric Weekly — week ending ${dayLabel(weekEnding)}, ${weekEnding.slice(0, 4)}`)
   lines.push('')
   lines.push(
-    `The last ${REPORT_WINDOW_DAYS} days across every [Ultrametric](${siteUrl}) arena — rank flips, Overall score` +
-      ` moves, new arenas and products, derived from the committed score history` +
+    `The last ${REPORT_WINDOW_DAYS} days across every [Ultrametric](${siteUrl}) ranking — rank flips, Overall score` +
+      ` moves, new rankings and products, derived from the committed score history` +
       ` ([how scoring works](${siteUrl}/methodology)). Scores only move when evidence and verdicts are re-derived.`,
   )
   if (input.historyBegins) {
@@ -183,7 +183,7 @@ export function renderWeeklyReport(input: WeeklyReportInput): string {
   lines.push('## New this week')
   lines.push('')
   if (launches.length === 0 && additions.length === 0) {
-    lines.push('_No new arenas or products this week._')
+    lines.push('_No new rankings or products this week._')
   } else {
     for (const e of launches) lines.push(eventMarkdownLine(e, siteUrl))
     for (const e of additions) lines.push(eventMarkdownLine(e, siteUrl))
@@ -193,10 +193,10 @@ export function renderWeeklyReport(input: WeeklyReportInput): string {
   lines.push('## Close races')
   lines.push('')
   if (closeRaces.length === 0) {
-    lines.push('_No arena currently has its #1 and #2 within striking distance._')
+    lines.push('_No ranking currently has its #1 and #2 within striking distance._')
   } else {
     lines.push(
-      'Arenas where #1 and #2 are close enough that the ordering itself gets re-checked with extra' +
+      'Rankings where #1 and #2 are close enough that the ordering itself gets re-checked with extra' +
         ` judge samples ([uncertainty pass](${siteUrl}/methodology)):`,
     )
     lines.push('')

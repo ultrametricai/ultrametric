@@ -1,6 +1,6 @@
 # The Accuracy Engine
 
-How Ultrametric keeps 65 arenas / ~350 products from silently rotting: four scheduled loops,
+How Ultrametric keeps 65 rankings / ~350 products from silently rotting: four scheduled loops,
 each catching a different failure mode, feeding one work queue, with humans at exactly the
 points where a score could change. This doc is the map; the workflows and scripts it names are
 the source of truth.
@@ -9,7 +9,7 @@ the source of truth.
 
 | Loop | Schedule (UTC) | Keys | What it does | What it catches |
 |------|----------------|------|--------------|-----------------|
-| **story-runner** (`.github/workflows/story-runner.yml`) | every 6h at :17 | `ANTHROPIC_API_KEY` | Full pipeline (crawl → extract → collect-community → probe → judge → claims → popularity → derive) for ONE arena per run, plus score intervals, predictions, and the keyless SLO check. Arena pick: **worst-stale first** from `data/staleness-report.json` when one stands (one arena per 6h slot since the report's `generatedAt`), falling back to run-number rotation. | Stale evidence, changed vendor docs, verdicts due a re-judge — the only loop that can move a score. |
+| **story-runner** (`.github/workflows/story-runner.yml`) | every 6h at :17 | `ANTHROPIC_API_KEY` | Full pipeline (crawl → extract → collect-community → probe → judge → claims → popularity → derive) for ONE ranking per run, plus score intervals, predictions, and the keyless SLO check. Ranking pick: **worst-stale first** from `data/staleness-report.json` when one stands (one ranking per 6h slot since the report's `generatedAt`), falling back to run-number rotation. | Stale evidence, changed vendor docs, verdicts due a re-judge — the only loop that can move a score. |
 | **daily-snapshot** (`daily-snapshot.yml`) | daily 05:43 | none | Fleet-wide keyless SLO check + popularity refresh. | Agent-surface outages (llms.txt / remote MCP / openapi down), momentum drift. |
 | **cert-sweep** (`cert-sweep.yml`) | Mondays 07:29 | none | Re-verifies every standing certification (45-day renew window) + certifies the top 15 queued candidates (`cert-candidates.ts`). | Certified surfaces that regressed; products that newly qualify. |
 | **accuracy-engine** (`accuracy-engine.yml`) | Wednesdays 06:41 | none | Fleet staleness scan (`pipeline/scripts/staleness-scan.ts`), commits `data/staleness-report.json`, opens the ranked **work-queue issue** (label `story-runner`). | Everything below — the detector for what story-runner's keyed runs should chew through next. |
@@ -40,7 +40,7 @@ Keyless by design — it detects and ranks, it never re-judges. Per product it s
    answers 200 live right now; a documented remote MCP endpoint (`lib/mcpEndpoints.ts`
    allowlist) while `agentic-mcp-server` is still none.
 
-Output: `data/staleness-report.json` — products and arenas ranked worst-first, plus
+Output: `data/staleness-report.json` — products and rankings ranked worst-first, plus
 `arenasRanked` (what story-runner's pick step consumes) — and the work-queue issue body.
 Run it yourself: `pnpm tsx pipeline/scripts/staleness-scan.ts [--offline] [--category <id>]`.
 
@@ -74,7 +74,7 @@ score built entirely from zero-evidence none/na cells renders italic *untested*,
 **Known remaining gaps** (deliberate — report, don't boil the ocean):
 - `AiEraBadge`'s component-breakdown tooltip still shows raw numbers (a 0 there can be an
   untested 0) — the columns beside it are honest, the tooltip is next.
-- Per-theme scores on the arena page / `themeScores` in exports (`lib/markdown.ts` llms.md,
+- Per-theme scores on the ranking page / `themeScores` in exports (`lib/markdown.ts` llms.md,
   `/compare`, battle pages) render numeric values without the untested distinction.
 - `lib/scoreIntervals.ts`'s internal `isUntested` omits `na` (inconsistent with the canonical
   rule; affects only interval width, not display).
@@ -93,7 +93,7 @@ score built entirely from zero-evidence none/na cells renders italic *untested*,
    worst-stale ordering. Skim the flips section: anything shocking is worth a manual look
    before the keyed runs get there.
 3. **The work-queue issue** (label `story-runner`, Wednesdays) — the ranked to-do list. Close
-   it once the listed arenas have been through keyed runs; flips that survive a re-judge
+   it once the listed rankings have been through keyed runs; flips that survive a re-judge
    become verdict changes with new citations, which is the only way a flip may move a score.
 4. **Contest / vendor-response issues** — external correction channels; vendor responses enter
    the evidence pool but never change a verdict by themselves.

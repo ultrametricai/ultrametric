@@ -136,10 +136,10 @@ export default function EverythingCatalog({
           <select
             value={facets.arenaId}
             onChange={(e) => set({ arenaId: e.target.value })}
-            aria-label="Filter by arena"
+            aria-label="Filter by ranking"
             className="max-w-[10rem] appearance-none rounded border border-zinc-800 bg-zinc-900 py-1 pl-2 pr-6 text-[11px] text-zinc-100 focus:border-emerald-400/60 focus:outline-none"
           >
-            <option value="all">All arenas</option>
+            <option value="all">All rankings</option>
             {arenas.map((a) => (
               <option key={a.id} value={a.id}>
                 {a.name}
@@ -165,7 +165,7 @@ export default function EverythingCatalog({
         </button>
         <span className="inline-flex overflow-hidden rounded border border-zinc-800" role="group" aria-label="Group rows">
           <button type="button" onClick={() => setFlat(false)} aria-pressed={!flat} className={`px-2 py-1 text-[11px] leading-none transition ${!flat ? 'bg-emerald-400/10 text-emerald-300' : 'text-zinc-400 hover:text-emerald-300'}`}>
-            By arena
+            By ranking
           </button>
           <button type="button" onClick={() => setFlat(true)} aria-pressed={flat} className={`border-l border-zinc-800 px-2 py-1 text-[11px] leading-none transition ${flat ? 'bg-emerald-400/10 text-emerald-300' : 'text-zinc-400 hover:text-emerald-300'}`}>
             Flat
@@ -176,7 +176,7 @@ export default function EverythingCatalog({
           value={facets.query}
           onChange={(e) => set({ query: e.target.value })}
           placeholder="Filter…"
-          aria-label="Filter products by name, vendor, or arena"
+          aria-label="Filter products by name, vendor, or ranking"
           className="ml-auto min-w-0 flex-1 basis-20 rounded border border-zinc-800 bg-zinc-900 px-2 py-1 text-[11px] text-zinc-100 placeholder:text-zinc-500 focus:border-emerald-400/60 focus:outline-none sm:max-w-[11rem] sm:flex-none sm:basis-auto sm:w-40"
         />
       </div>

@@ -107,7 +107,7 @@ export default function BestApiRankingPage() {
           Best API — the strongest surfaces once an agent is in
         </h1>
         <p className="mt-2 max-w-2xl text-zinc-400">
-          All {rows.length} products across every arena, ranked by API QUALITY: machine-readable specs, sandbox
+          All {rows.length} products from every ranking, ranked by API QUALITY: machine-readable specs, sandbox
           environments, versioning policy, and interactive docs — how good the API surface is once an agent has
           reached it (reachability itself is the{' '}
           <Link href="/rankings/agentic" className="text-zinc-300 underline decoration-zinc-700 hover:text-emerald-300">

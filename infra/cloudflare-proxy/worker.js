@@ -351,7 +351,7 @@ const PROBE_PROTOCOL_VERSION = '2025-06-18'
 // hand-edit. Mirrored in lib/mcpDemoCalls.ts; a unit test asserts the two never drift.
 export const MCP_DEMO_CALLS = {
   'auth-platforms/better-auth': { tool: "search_docs", args: {"query":"sign in with google"}, label: "search the Better Auth docs for \"sign in with google\"" },
-  'self/productarena': { tool: "top_products", args: {"metric":"agentReady","limit":5}, label: "rank the top 5 agent-ready products across every arena" },
+  'self/productarena': { tool: "top_products", args: {"metric":"agentReady","limit":5}, label: "rank the top 5 agent-ready products across every ranking" },
   'voice-agents/retell': { tool: "list_api_endpoints", args: {}, label: "list every API endpoint the Retell server exposes" },
 }
 

@@ -200,7 +200,7 @@ export async function GET() {
       '/data/categories.json': {
         get: {
           operationId: 'listCategories',
-          summary: 'List every arena/category.',
+          summary: 'List every ranking/category.',
           responses: {
             '200': {
               description: 'Array of categories.',

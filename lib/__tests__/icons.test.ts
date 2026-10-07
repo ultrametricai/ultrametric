@@ -71,7 +71,7 @@ describe('themeExplanation', () => {
 
   it('falls back to an honest arena-scoped generic for niche themes', () => {
     expect(themeExplanation('zzz-not-a-real-theme-zzz')).toBe(
-      'Stories about zzz not a real theme zzz in this arena',
+      'Stories about zzz not a real theme zzz in this ranking',
     )
     expect(hasBespokeThemeExplanation('zzz-not-a-real-theme-zzz')).toBe(false)
   })

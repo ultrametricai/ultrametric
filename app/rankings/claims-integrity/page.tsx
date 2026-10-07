@@ -9,7 +9,7 @@ export function generateMetadata(): Metadata {
   const totalProducts = categories.reduce((sum, data) => sum + data.products.length, 0)
   return {
     title: `Claims vs reality ranking — all ${totalProducts} products — Ultrametric`,
-    description: `Every product across every arena ranked by claims integrity — how well the vendor's own website claims survive independent verification. Verified claims count fully, contradicted claims count doubly against. Evidence-graded, no opinion.`,
+    description: `Every product from every ranking, ranked by claims integrity — how well the vendor's own website claims survive independent verification. Verified claims count fully, contradicted claims count doubly against. Evidence-graded, no opinion.`,
   }
 }
 
@@ -27,7 +27,7 @@ export default function ClaimsIntegrityRankingPage() {
         <p className="text-sm uppercase tracking-widest text-emerald-400">Global ranking</p>
         <h1 className="font-display leading-[1.1] mt-1 text-3xl font-bold tracking-tight">Claims vs reality — who delivers what their website promises</h1>
         <p className="mt-2 max-w-2xl text-zinc-400">
-          All {totalProducts} products across every arena, ranked by claims integrity: each vendor&rsquo;s own
+          All {totalProducts} products from every ranking, ranked by claims integrity: each vendor&rsquo;s own
           capability claims, reconciled against our judge&rsquo;s independent verdicts. Verified claims count fully,
           unverified ones count for nothing, and each contradicted claim cancels two verified ones —{' '}
           <Link

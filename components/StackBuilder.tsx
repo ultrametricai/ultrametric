@@ -165,7 +165,7 @@ export default function StackBuilder({
       {roles.length === 0 ? (
         <p className="rounded-2xl border border-zinc-800 px-4 py-8 text-center text-sm text-zinc-500">
           Pick roles above (or start from a preset) — each role&rsquo;s winner is resolved live
-          from its arena&rsquo;s leaderboard under your constraints.
+          from its ranking&rsquo;s leaderboard under your constraints.
         </p>
       ) : (
         <section className="space-y-3">
@@ -196,7 +196,7 @@ export default function StackBuilder({
               <thead>
                 <tr className={TABLE_HEADER_ROW}>
                   <th scope="col" className="px-3 py-2 font-normal"><span title="The job this slot does in your stack">Role</span></th>
-                  <th scope="col" className="px-3 py-2 font-normal"><span title="The top product for this role under your constraints — resolved live from the arena leaderboard">Pick</span></th>
+                  <th scope="col" className="px-3 py-2 font-normal"><span title="The top product for this role under your constraints — resolved live from the ranking">Pick</span></th>
                   <th scope="col" className="px-3 py-2 font-normal"><span title="The judged score the pick rests on — click through for the evidence">Evidence</span></th>
                   <th scope="col" className="hidden px-3 py-2 font-normal sm:table-cell">
                     <span className="inline-flex items-center gap-1.5">
@@ -311,7 +311,7 @@ export default function StackBuilder({
           )}
 
           <p className="text-xs text-zinc-500">
-            Ranks are within each pick&rsquo;s full arena field on the chosen metric — a
+            Ranks are within each pick&rsquo;s full ranking field on the chosen metric — a
             constraint can pick a lower-ranked product, and the annotation says so honestly.
           </p>
         </section>

@@ -68,7 +68,7 @@ describe('/artifacts/[id] — producers, consumers, computed vendors', () => {
     const page = findArtifactPage('certificate-of-incorporation')!
     expect(page.arenas).toEqual([])
     const { container } = render(await ArtifactDetailPage({ params: params('certificate-of-incorporation') }))
-    expect(container.textContent).toContain('No populated arena covers the producing step')
+    expect(container.textContent).toContain('No populated ranking covers the producing step')
     expect(container.querySelectorAll('a[href^="/arena/"]')).toHaveLength(0)
   })
 

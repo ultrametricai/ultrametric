@@ -89,8 +89,8 @@ export default function YourStack({
       <section className="rounded-2xl border border-dashed border-zinc-800 p-5 text-sm text-zinc-400">
         <p>
           <span aria-hidden className="mr-2 text-zinc-500">▣</span>
-          Sign up to save your stack to your account: pick your product per arena, get upgraded
-          stack advice against every arena leaderboard, and run any process page with your own
+          Sign up to save your stack to your account: pick your product per ranking, get upgraded
+          stack advice against every ranking, and run any process page with your own
           vendors.
         </p>
         <div className="mt-3 flex flex-wrap gap-2">
@@ -145,17 +145,17 @@ export default function YourStack({
       <div>
         <h2 className="font-display leading-[1.1] text-xl font-semibold tracking-tight">Your stack</h2>
         <p className="mt-1 text-sm text-zinc-400">
-          Your vendors per arena — several allowed, the first is your primary — saved to your
+          Your vendors per ranking — several allowed, the first is your primary — saved to your
           account; process pages can then run with your own
-          vendors. {pickCount === 0 ? 'Nothing picked yet.' : `${pickCount} arena${pickCount === 1 ? '' : 's'} picked.`}
+          vendors. {pickCount === 0 ? 'Nothing picked yet.' : `${pickCount} ranking${pickCount === 1 ? '' : 's'} picked.`}
         </p>
       </div>
 
       <input
         value={query}
         onChange={(e) => setQuery(e.target.value)}
-        placeholder="Filter arenas or products…"
-        aria-label="Filter arenas or products"
+        placeholder="Filter rankings or products…"
+        aria-label="Filter rankings or products"
         className="w-full max-w-md rounded-lg border border-zinc-800 bg-zinc-900 px-3 py-2 text-sm text-zinc-100 placeholder:text-zinc-500 focus:border-emerald-400/60 focus:outline-none"
       />
 
@@ -259,7 +259,7 @@ export default function YourStack({
               <span className="tabular-nums text-emerald-400">{(advice.bestPossible ?? 0).toFixed(0)}</span>
               <span className="text-zinc-500">/100</span>
               <span className="ml-1 text-xs text-zinc-500">
-                — mean published Overall score of your scored picks vs those same arenas&rsquo; leaders.
+                — mean published Overall score of your scored picks vs those same rankings&rsquo; leaders.
               </span>
             </p>
           )}
@@ -278,7 +278,7 @@ export default function YourStack({
                   <span className="text-xs text-zinc-500">
                     #{p.pick.rank} of {p.pick.fieldSize}
                   </span>
-                  <span className="font-mono text-xs tabular-nums text-zinc-300" title="Overall score — the arena leaderboard's published headline score">
+                  <span className="font-mono text-xs tabular-nums text-zinc-300" title="Overall score — the ranking's published headline score">
                     Overall {scoreText(p.pick.aiEra)}
                   </span>
                   <Link href={receiptHref(p.pick)} className="text-[11px] text-zinc-500 underline decoration-zinc-700 hover:text-emerald-300">
@@ -323,7 +323,7 @@ export default function YourStack({
                   </p>
                 ))}
                 {p.pick.id === p.leader.id ? (
-                  <p className="mt-1.5 text-xs text-emerald-300/90">Leads its arena — nothing above it to upgrade to.</p>
+                  <p className="mt-1.5 text-xs text-emerald-300/90">Leads its ranking — nothing above it to upgrade to.</p>
                 ) : (
                   <p className="mt-1.5 text-xs text-zinc-400">
                     {p.overallDelta !== null && p.overallDelta > 0 ? (
@@ -338,7 +338,7 @@ export default function YourStack({
                         .
                       </>
                     ) : (
-                      <>Level with the arena leader on the published scores.</>
+                      <>Level with the ranking leader on the published scores.</>
                     )}
                   </p>
                 )}
@@ -366,7 +366,7 @@ export default function YourStack({
             ))}
           </ul>
           <p className="text-xs text-zinc-500">
-            Every number is the arena leaderboard&rsquo;s published score; each &ldquo;receipt&rdquo;
+            Every number is the ranking&rsquo;s published score; each &ldquo;receipt&rdquo;
             link opens the score page where the judged evidence behind it lives.
           </p>
         </div>

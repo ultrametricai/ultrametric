@@ -82,7 +82,7 @@ export default function EverythingPage() {
         ...(firstGlobalStory
           ? [{
               href: `/global/${firstGlobalStory.id}`,
-              label: `Global story pages — ${globalStories.length} cross-arena questions`,
+              label: `Global story pages — ${globalStories.length} cross-market questions`,
               note: `e.g. ${firstGlobalStory.title.toLowerCase()}`,
             }]
           : []),
@@ -166,7 +166,7 @@ export default function EverythingPage() {
           </h2>
           <span className="text-xs tabular-nums text-zinc-500">{stacks.length}</span>
         </div>
-        <p className="text-xs text-zinc-500">Curated cross-arena bundles — every scored slot resolved live from current leaderboards.</p>
+        <p className="text-xs text-zinc-500">Curated cross-market bundles — every scored slot resolved live from current leaderboards.</p>
         <ul className="rounded-lg border border-zinc-800">
           {stacks.map((s) => (
             <li key={s.id} className="flex items-center gap-2 px-2 py-[7px] text-[13px] leading-none odd:bg-zinc-900/40 sm:gap-3">

@@ -23,7 +23,7 @@ import { TABLE_HEADER_ROW, TABLE_SHELL } from '@/components/tableStyles'
 export const metadata: Metadata = {
   title: 'Testing pipeline — what we have NOT tested — Ultrametric',
   description:
-    'The transparency board: every arena’s untested product user stories, the share of verdicts backed by hands-on probes, the most-wanted untested product/story pairs, and which arenas are next.',
+    'The transparency board: every ranking’s untested product user stories, the share of verdicts backed by hands-on probes, the most-wanted untested product/story pairs, and which rankings are next.',
 }
 
 // The answer to "what have you NOT tested" — a static transparency board that leads with the
@@ -92,7 +92,7 @@ export default function PipelinePage() {
 
       <section className="grid gap-4 sm:grid-cols-3">
         {[
-          { id: 'cells-judged', label: 'product user stories judged', value: totals.totalCells.toLocaleString(), sub: `${totals.arenas} arenas` },
+          { id: 'cells-judged', label: 'product user stories judged', value: totals.totalCells.toLocaleString(), sub: `${totals.arenas} rankings` },
           { id: 'untested', label: 'still untested', value: `${totals.untestedPct}%`, sub: `${totals.untestedCells.toLocaleString()} zero-evidence product user stories` },
           { id: 'probed', label: 'probed hands-on', value: `${totals.probedPct}%`, sub: `${totals.probedCells.toLocaleString()} product user stories cite a probe` },
         ].map((stat) => (
@@ -111,7 +111,7 @@ export default function PipelinePage() {
         <p className="max-w-2xl text-sm text-zinc-400">
           <span className="font-medium text-zinc-200">Pricing coverage:</span>{' '}
           {pricing.extracted} of {pricing.coveredProducts} products in the {pricing.coveredArenas}{' '}
-          pricing-covered arenas have unit pricing extracted verbatim from the vendor&rsquo;s own
+          pricing-covered rankings have unit pricing extracted verbatim from the vendor&rsquo;s own
           pricing page ({pricing.unclear} record an honest &ldquo;pricing unclear&rdquo; — JS-shell
           or quote-only pages we refuse to guess at). Every figure carries its source URL, exact
           quote, and fetch date; we never compute a price we didn&rsquo;t extract.
@@ -134,8 +134,8 @@ export default function PipelinePage() {
               <tr className={TABLE_HEADER_ROW}>
                 <th scope="col" className="px-3 py-2 font-normal">Product</th>
                 <th scope="col" className="px-3 py-2 font-normal"><span title="A judged story whose verdict has no hands-on tested evidence yet — the next probe to run">Untested story</span></th>
-                <th scope="col" className="hidden px-3 py-2 font-normal sm:table-cell"><span title="The product category (arena) it competes in">Arena</span></th>
-                <th scope="col" className="px-3 py-2 font-normal"><span title="How much the story counts in the arena's scoring — heavier stories are probed first">Weight</span></th>
+                <th scope="col" className="hidden px-3 py-2 font-normal sm:table-cell"><span title="The product category (ranking) it competes in">Ranking</span></th>
+                <th scope="col" className="px-3 py-2 font-normal"><span title="How much the story counts in the ranking's scoring — heavier stories are probed first">Weight</span></th>
                 <th scope="col" className="hidden px-3 py-2 font-normal md:table-cell"><span title="GitHub stars — adoption context for prioritizing probes, never part of any score">GitHub ★</span></th>
               </tr>
             </thead>
@@ -172,20 +172,20 @@ export default function PipelinePage() {
 
       <section>
         <h2 className="font-display flex items-center gap-2 text-xl font-semibold tracking-tight">
-          <GeoMark seed="coverage" title="Coverage per arena — untested and probed shares" size={18} className="text-zinc-500" />
-          Coverage per arena
+          <GeoMark seed="coverage" title="Coverage per ranking — untested and probed shares" size={18} className="text-zinc-500" />
+          Coverage per ranking
         </h2>
         <p className="mt-1 max-w-2xl text-sm text-zinc-400">
-          Sorted worst-first: the arenas with the largest untested share are where the rankings
-          deserve the most skepticism — and the most contributed evidence.
+          Sorted worst-first: the rankings with the largest untested share are where the published
+          order deserves the most skepticism — and the most contributed evidence.
         </p>
         <div className={`mt-4 ${TABLE_SHELL}`}>
           <table className="w-full border-collapse text-sm">
             <thead>
               <tr className={TABLE_HEADER_ROW}>
-                <th scope="col" className="px-3 py-2 font-normal">Arena</th>
-                <th scope="col" className="hidden px-3 py-2 font-normal sm:table-cell"><span title="Judged products in this arena">Products</span></th>
-                <th scope="col" className="px-3 py-2 font-normal"><span title="Judged (product, story) verdict product user stories in this arena">Product user stories</span></th>
+                <th scope="col" className="px-3 py-2 font-normal">Ranking</th>
+                <th scope="col" className="hidden px-3 py-2 font-normal sm:table-cell"><span title="Judged products in this ranking">Products</span></th>
+                <th scope="col" className="px-3 py-2 font-normal"><span title="Judged (product, story) verdict product user stories in this ranking">Product user stories</span></th>
                 <th scope="col" className="px-3 py-2 font-normal"><span title="Product user stories with no hands-on tested evidence yet">Untested</span></th>
                 <th scope="col" className="px-3 py-2 font-normal"><span title="Share of product user stories backed by our own hands-on probes">Probed</span></th>
               </tr>
@@ -244,7 +244,7 @@ export default function PipelinePage() {
                 <thead>
                   <tr className={TABLE_HEADER_ROW}>
                     <th scope="col" className="px-3 py-2 font-normal">Product</th>
-                    <th scope="col" className="hidden px-3 py-2 font-normal sm:table-cell"><span title="The product category (arena) it competes in">Arena</span></th>
+                    <th scope="col" className="hidden px-3 py-2 font-normal sm:table-cell"><span title="The product category (ranking) it competes in">Ranking</span></th>
                     <th scope="col" className="px-3 py-2 font-normal"><span title="The monitored agent surface: llms.txt, MCP endpoint, or openapi.json">Surface</span></th>
                     <th scope="col" className="hidden px-3 py-2 font-normal md:table-cell">URL</th>
                     <th scope="col" className="px-3 py-2 font-normal"><span title="When our uptime monitor first saw this surface failing">Down since</span></th>
@@ -291,11 +291,11 @@ export default function PipelinePage() {
       {nextUp.length > 0 && (
         <section>
           <h2 className="font-display flex items-center gap-2 text-xl font-semibold tracking-tight">
-            <GeoMark seed="next-up" title="Next up — tier-1 arenas awaiting the pipeline" size={18} className="text-zinc-500" />
+            <GeoMark seed="next-up" title="Next up — tier-1 rankings awaiting the pipeline" size={18} className="text-zinc-500" />
             Next up
           </h2>
           <p className="mt-1 max-w-2xl text-sm text-zinc-400">
-            Tier-1 arenas on the roadmap that haven&rsquo;t been through the evidence pipeline
+            Tier-1 rankings on the roadmap that haven&rsquo;t been through the evidence pipeline
             yet — the categories we think matter most in an agent-first world, in no particular
             order.
           </p>

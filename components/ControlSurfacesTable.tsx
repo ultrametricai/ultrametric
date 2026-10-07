@@ -80,7 +80,7 @@ function SurfaceDetails({ row }: { row: SurfaceRow }) {
         <span className="tabular-nums text-zinc-200">
           {row.arenasWithShipper}/{row.arenasJudged}
         </span>{' '}
-        judged arenas.
+        judged rankings.
         {row.readinessLift !== null && row.avgReadyWith !== null && row.avgReadyWithout !== null && (
           <>
             {' '}
@@ -193,7 +193,7 @@ export default function ControlSurfacesTable({ surfaces, emerging }: { surfaces:
                 <span title="Mean AGENT-READY of products shipping the surface minus those without — correlation, not causation">Readiness lift</span>
               </th>
               <th scope="col" className="hidden px-3 py-2 font-normal md:table-cell">
-                <span title="Arenas with at least one shipper / arenas where the surface was judged">Arenas</span>
+                <span title="Rankings with at least one shipper / rankings where the surface was judged">Rankings</span>
               </th>
             </tr>
           </thead>
@@ -209,8 +209,8 @@ export default function ControlSurfacesTable({ surfaces, emerging }: { surfaces:
         <section aria-label="surfaces without fleet-wide judged coverage" className="space-y-2">
           <h2 className="font-display leading-[1.1] text-lg font-semibold">Below the line: thin judged coverage</h2>
           <p className="max-w-2xl text-xs text-zinc-500">
-            These surfaces are judged only through arena-authored stories in a handful of arenas, so ranking them against the
-            canonical surfaces would be dishonest. Counts below are real but cover only the arenas that judge them; the
+            These surfaces are judged only through stories authored inside a handful of individual rankings, so ranking them against the
+            canonical surfaces would be dishonest. Counts below are real but cover only the rankings that judge them; the
             readiness-lift stat is withheld on small samples.
           </p>
           <div className={TABLE_SHELL}>

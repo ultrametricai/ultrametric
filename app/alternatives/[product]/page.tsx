@@ -174,9 +174,9 @@ export default async function AlternativesPage({ params }: { params: Promise<{ p
 
       {adjacent.length > 0 && (
         <div>
-          <h2 className="font-display leading-[1.1] mb-1 text-lg font-semibold">Adjacent arenas</h2>
+          <h2 className="font-display leading-[1.1] mb-1 text-lg font-semibold">Adjacent rankings</h2>
           <p className="mb-3 text-xs text-zinc-400">
-            Top-ranked products from arenas whose story taxonomies overlap {data.category.name}&apos;s — worth a
+            Top-ranked products from rankings whose story taxonomies overlap {data.category.name}&apos;s — worth a
             look if your real problem sits next door.
           </p>
           <div className="grid gap-3 sm:grid-cols-3">
@@ -200,7 +200,7 @@ export default async function AlternativesPage({ params }: { params: Promise<{ p
       <p className="text-xs text-zinc-500">
         Full leaderboard:{' '}
         <Link href={`/arena/${data.category.id}`} className="text-emerald-300 hover:underline">
-          {data.category.name} arena →
+          {data.category.name} ranking →
         </Link>
       </p>
     </div>

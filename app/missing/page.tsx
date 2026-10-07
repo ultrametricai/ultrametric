@@ -21,7 +21,7 @@ export const dynamic = 'force-static'
 export const metadata: Metadata = {
   title: 'Missing startups — where the agent economy has gaps — Ultrametric',
   description:
-    'Arenas ranked by opportunity for new agent-native entrants: weak fleet agent-readiness, stories no product serves, and leaders with low Overall scores — all derived from evidence-backed verdicts.',
+    'Rankings ordered by opportunity for new agent-native entrants: weak fleet agent-readiness, stories no product serves, and leaders with low Overall scores — all derived from evidence-backed verdicts.',
 }
 
 // How many unserved stories a card lists before folding into "+N more".
@@ -47,10 +47,10 @@ export default function MissingStartupsPage() {
           Where the agent economy is missing startups
         </h1>
         <p className="mt-2 max-w-2xl text-zinc-400">
-          All {ranked.length} arenas ranked by opportunity for a new agent-native entrant: how far
+          All {ranked.length} rankings, ordered by opportunity for a new agent-native entrant: how far
           the incumbent fleet ({totalProducts} products) is from agent-ready, the stories nobody
           serves, and how weak the current leader is. Every input is a judged, evidence-backed
-          verdict — click through to any arena for the citations.
+          verdict — click through to any ranking for the citations.
         </p>
         {/* The full caveat matters (it's the page's honesty contract) but doesn't need to be
             read before the table — collapsed by default, one click away. */}
@@ -74,11 +74,11 @@ export default function MissingStartupsPage() {
       {globalGaps.length > 0 && (
         <section aria-label="nobody does this anywhere" className="rounded-xl border border-amber-400/30 bg-amber-400/5 p-4">
           <h2 className="font-display leading-[1.1] flex items-center gap-2 text-lg font-semibold">
-            <GeoMark seed="global-gaps" title="Global stories with no full or partial verdict in any arena that carries them" size={18} className="text-zinc-500" />
+            <GeoMark seed="global-gaps" title="Global stories with no full or partial verdict in any ranking that carries them" size={18} className="text-zinc-500" />
             Nobody does this anywhere
           </h2>
           <p className="mt-1 text-xs text-zinc-500">
-            Cross-arena capabilities where no tracked product — in any arena carrying the story —
+            Cross-market capabilities where no tracked product — in any ranking carrying the story —
             has a full or partial verdict.
           </p>
           <ul className="mt-2 space-y-1">
@@ -86,13 +86,13 @@ export default function MissingStartupsPage() {
               <li key={g.storyId} className="flex flex-wrap items-baseline gap-x-2 text-sm text-zinc-300">
                 <Link
                   href={`/global/${g.storyId}`}
-                  title="See every product's verdict on this capability across arenas"
+                  title="See every product's verdict on this capability across rankings"
                   className="underline decoration-zinc-700 underline-offset-2 hover:text-emerald-300"
                 >
                   {g.title}
                 </Link>
                 <span className="text-[10px] uppercase tracking-wide text-zinc-500">
-                  {g.arenaCount} {g.arenaCount === 1 ? 'arena' : 'arenas'}, zero coverage
+                  {g.arenaCount} {g.arenaCount === 1 ? 'ranking' : 'rankings'}, zero coverage
                 </span>
               </li>
             ))}
@@ -147,7 +147,7 @@ export default function MissingStartupsPage() {
                   Current leader:{' '}
                   <Link
                     href={`/arena/${arena.arenaId}/product/${arena.leader.productId}`}
-                    title="The arena's #1 by Overall score — the bar a new entrant has to clear"
+                    title="The ranking's #1 by Overall score — the bar a new entrant has to clear"
                     className="inline-flex items-center gap-1.5 align-middle text-zinc-300 underline decoration-zinc-700 underline-offset-2 hover:text-emerald-300"
                   >
                     <ProductLogoView
@@ -170,9 +170,9 @@ export default function MissingStartupsPage() {
               <div className="mt-3 border-t border-zinc-800/70 pt-2">
                 <p
                   className="text-[10px] uppercase tracking-widest text-zinc-500"
-                  title="Stories where no product in this arena has a full or partial verdict — the unserved demand our taxonomy already asks about"
+                  title="Stories where no product in this ranking has a full or partial verdict — the unserved demand our taxonomy already asks about"
                 >
-                  Nobody in this arena does
+                  Nobody in this ranking does
                 </p>
                 <ul className="mt-1 space-y-1">
                   {arena.unservedStories.slice(0, UNSERVED_DISPLAY_CAP).map((s) => (
@@ -188,7 +188,7 @@ export default function MissingStartupsPage() {
                   <p className="mt-1 text-[10px] text-zinc-500">
                     +{arena.unservedStories.length - UNSERVED_DISPLAY_CAP} more —{' '}
                     <Link href={`/arena/${arena.arenaId}`} className="underline decoration-zinc-800 underline-offset-2 hover:text-emerald-300">
-                      see the full list in the arena
+                      see the full list in the ranking
                     </Link>
                   </p>
                 )}

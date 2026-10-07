@@ -105,7 +105,7 @@ export default async function ArenaReportPage({ params }: { params: Promise<{ ca
       <section>
         <p className="text-sm uppercase tracking-widest text-emerald-400">
           <Link href={`/arena/${category}`} className="hover:text-emerald-300">
-            {data.category.name} Arena
+            {data.category.name} Ranking
           </Link>
         </p>
         <h1 className="font-display leading-[1.1] mt-1 text-3xl font-bold tracking-tight">
@@ -135,7 +135,7 @@ export default async function ArenaReportPage({ params }: { params: Promise<{ ca
                 <th className="px-3 py-2 font-normal">#</th>
                 <th className="px-3 py-2 font-normal">Product</th>
                 <th className="px-3 py-2 text-right font-normal"><span title="Overall score (0–100): the blended headline score — mostly agent-readiness and API quality, plus openness and built-in AI">Overall score</span></th>
-                <th className="px-3 py-2 text-right font-normal"><span title="Story coverage (0–100): how much of the arena's judged story set the product delivers, weighted by importance">Coverage score</span></th>
+                <th className="px-3 py-2 text-right font-normal"><span title="Story coverage (0–100): how much of the ranking's judged story set the product delivers, weighted by importance">Coverage score</span></th>
                 <th className="px-3 py-2 text-right font-normal"><span title="Judged (product, story) product user stories that apply to this product — n/a stories excluded">Applicable product user stories</span></th>
                 <th className="px-3 py-2 text-right font-normal"><span title="Mean judge confidence across this product's verdicts">Confidence</span></th>
               </tr>
@@ -176,7 +176,7 @@ export default async function ArenaReportPage({ params }: { params: Promise<{ ca
         <h2 className="font-display leading-[1.1] mb-2 text-lg font-semibold">Uncertainty note</h2>
         {closeRace ? (
           <p className="max-w-2xl text-sm text-zinc-400">
-            This arena is currently a <span className="font-semibold text-zinc-300">close race</span>:{' '}
+            This ranking is currently a <span className="font-semibold text-zinc-300">close race</span>:{' '}
             {closeRace.top1Name} ({closeRace.top1AiEra.toFixed(1)}) vs {closeRace.top2Name} (
             {closeRace.top2AiEra.toFixed(1)}), a gap of{' '}
             {Math.abs(closeRace.top1AiEra - closeRace.top2AiEra).toFixed(1)} Overall score. The ordering was
@@ -185,7 +185,7 @@ export default async function ArenaReportPage({ params }: { params: Promise<{ ca
           </p>
         ) : (
           <p className="max-w-2xl text-sm text-zinc-400">
-            The current #1/#2 gap in this arena is not close enough to qualify for the multi-judge
+            The current #1/#2 gap in this ranking is not close enough to qualify for the multi-judge
             uncertainty pass{data.uncertainty.length === 0 ? ' (or the pass has not covered it yet)' : ''} —
             no extra caveat applies beyond the per-product confidence grades above.
           </p>
@@ -196,7 +196,7 @@ export default async function ArenaReportPage({ params }: { params: Promise<{ ca
       <section className="print-break-before">
         <h2 className="font-display leading-[1.1] mb-1 text-lg font-semibold">Buyer checklist (RFP)</h2>
         <p className="mb-4 max-w-2xl text-xs text-zinc-500">
-          The arena&apos;s {data.stories.length} judged user stories as requirements, grouped by theme.
+          The ranking&apos;s {data.stories.length} judged user stories as requirements, grouped by theme.
           Priorities mirror the story weights our scoring uses (3 = must-have, 2 = should-have, 1 =
           nice-to-have). Interactive version with per-requirement verdicts for the top products:{' '}
           <Link href={`/arena/${category}/checklist`} className="text-emerald-300 hover:underline">
@@ -282,7 +282,7 @@ export default async function ArenaReportPage({ params }: { params: Promise<{ ca
         <h2 className="font-display leading-[1.1] mb-1 text-lg font-semibold">Appendix: recorded probes</h2>
         {proofs.length === 0 ? (
           <p className="max-w-2xl text-sm text-zinc-400">
-            No replayable probe recordings exist for this arena yet. Probe-tier evidence (hands-on checks)
+            No replayable probe recordings exist for this ranking yet. Probe-tier evidence (hands-on checks)
             still backs verdicts where cited — see each product page for the evidence trail.
           </p>
         ) : (
@@ -312,7 +312,7 @@ export default async function ArenaReportPage({ params }: { params: Promise<{ ca
       <section className="rounded-xl border border-zinc-800 p-4 text-xs text-zinc-500">
         <p>
           <span className="font-semibold text-zinc-400">Cite as:</span> Ultrametric by Ultrametric Inc,{' '}
-          {data.category.name} arena, rankings as of {reportDate} — {SITE_URL}/arena/{category}
+          {data.category.name} ranking, leaderboard as of {reportDate} — {SITE_URL}/arena/{category}
         </p>
         <p className="mt-2">
           <span className="font-semibold text-zinc-400">License:</span> © 2026 Ultrametric Inc. Brief

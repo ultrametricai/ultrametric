@@ -66,16 +66,16 @@ describe('storyPassStats', () => {
 
 describe('checklistWhy', () => {
   it('names the scoring weight for each priority tier', () => {
-    expect(checklistWhy(3, { full: 1, applicable: 2 })).toContain('weighs 3× in arena scoring')
-    expect(checklistWhy(2, { full: 1, applicable: 2 })).toContain('weighs 2× in arena scoring')
-    expect(checklistWhy(1, { full: 1, applicable: 2 })).toContain('weighs 1× in arena scoring')
+    expect(checklistWhy(3, { full: 1, applicable: 2 })).toContain('weighs 3× in ranking scoring')
+    expect(checklistWhy(2, { full: 1, applicable: 2 })).toContain('weighs 2× in ranking scoring')
+    expect(checklistWhy(1, { full: 1, applicable: 2 })).toContain('weighs 1× in ranking scoring')
   })
 
   it('reports the field honestly — none, some, all, or nothing applicable', () => {
     expect(checklistWhy(3, { full: 0, applicable: 4 })).toContain('no product fully delivers this yet')
     expect(checklistWhy(3, { full: 2, applicable: 4 })).toContain('2 of 4 products fully deliver this today')
     expect(checklistWhy(3, { full: 4, applicable: 4 })).toContain('all 4 products fully deliver this today')
-    expect(checklistWhy(3, { full: 0, applicable: 0 })).toBe('Core requirement — weighs 3× in arena scoring')
+    expect(checklistWhy(3, { full: 0, applicable: 0 })).toBe('Core requirement — weighs 3× in ranking scoring')
   })
 })
 

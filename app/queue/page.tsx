@@ -133,7 +133,7 @@ export default function QueuePage() {
               <tr className={TABLE_HEADER_ROW}>
                 <th className="px-3 py-2 font-normal" title="Queue position — priority desc, deterministic tiebreaks">#</th>
                 <th className="px-3 py-2 font-normal">Product</th>
-                <th className="px-3 py-2 font-normal">Arena</th>
+                <th className="px-3 py-2 font-normal">Ranking</th>
                 <th className="px-3 py-2 font-normal" title="staleness × popularityBoost × founderBoost — work prioritization only, never a Overall score input">
                   Priority
                 </th>

@@ -109,7 +109,7 @@ export default function YcIndexPage() {
 
       <p className="text-xs text-zinc-500">
         Batch codes are YC&rsquo;s own: W winter, X spring, S summer, F fall. A product tracked in more than one
-        arena counts once, in the arena where its Overall score is highest.
+        ranking counts once, in the ranking where its Overall score is highest.
       </p>
     </div>
   )

@@ -33,10 +33,10 @@ export function eventToItem(e: ChangeEvent): FeedItem {
   switch (e.kind) {
     case 'arena-launched':
       return {
-        title: `New arena: ${e.categoryName} (${e.productCount} products)`,
+        title: `New ranking: ${e.categoryName} (${e.productCount} products)`,
         link: arenaLink,
         date: e.date,
-        description: `${e.categoryName} joined the arenas with ${e.productCount} evidence-judged products.`,
+        description: `${e.categoryName} joined the rankings with ${e.productCount} evidence-judged products.`,
         guid: `arena-launched:${e.categoryId}:${e.date}`,
       }
     case 'product-added':
@@ -44,7 +44,7 @@ export function eventToItem(e: ChangeEvent): FeedItem {
         title: `${e.productName} added to ${e.categoryName}`,
         link: `${arenaLink}/product/${e.productId}`,
         date: e.date,
-        description: `${e.productName} entered the ${e.categoryName} arena and was judged against its user stories.`,
+        description: `${e.productName} entered the ${e.categoryName} ranking and was judged against its user stories.`,
         guid: `product-added:${e.categoryId}:${e.productId}:${e.date}`,
       }
     case 'overtake':
@@ -90,7 +90,7 @@ export function renderRss(items: FeedItem[]): string {
     '    <title>Ultrametric — evidence-based rankings changelog</title>',
     `    <link>${escapeXml(SITE_URL)}</link>`,
     `    <atom:link href="${escapeXml(`${SITE_URL}/feed.xml`)}" rel="self" type="application/rss+xml" />`,
-    '    <description>Rank overtakes, score moves, new arenas and products — every change re-derived from cited evidence. Scores only move when evidence moves.</description>',
+    '    <description>Rank overtakes, score moves, new rankings and products — every change re-derived from cited evidence. Scores only move when evidence moves.</description>',
     '    <language>en</language>',
     entries,
     '  </channel>',

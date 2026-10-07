@@ -1,8 +1,8 @@
 # Coverage Strategy: an AI-first taxonomy at G2 scale
 
-This document explains how Ultrametric grows from 11 live arenas to 180+ planned arenas
+This document explains how Ultrametric grows from 11 live rankings to 180+ planned rankings
 (`data/arena-roadmap.json`), how our taxonomy relates to G2's, why ours is organized differently,
-and the runner architecture that gets us to 100+ live arenas in roughly three months.
+and the runner architecture that gets us to 100+ live rankings in roughly three months.
 
 ## 1. The G2 tree, and how we obtained it
 
@@ -29,7 +29,7 @@ we use the tree only as a market map.
 | 8 | AR/VR Software | 2 | Thin; we skip for now (weak agent spine, hardware-tied). |
 | 9 | B2B Marketplaces | 4 | Ride sharing, on-demand delivery. **Excluded**. |
 | 10 | Business Services Providers | ~23 | HR services, legal services, ISPs. **Excluded** (services, not software). |
-| 11 | CAD & PLM Software | ~13 | We keep one arena (CAD) where API access is real (Onshape). |
+| 11 | CAD & PLM Software | ~13 | We keep one ranking (CAD) where API access is real (Onshape). |
 | 12 | Collaboration & Productivity | ~55 | Team chat, docs, email, meetings, notes. Heavily collapsed by us. |
 | 13 | Commerce Software | ~6 hubs | E-commerce, POS, payments. |
 | 14 | Content Management | ~37 | CMS, DAM, headless CMS, form builders, website builders. |
@@ -51,7 +51,7 @@ capturing every possible buyer search phrase for review SEO. That is not our goa
 
 ## 2. Our organizing principle: the AI-era scoring spine
 
-Every Ultrametric arena is judged on the same canon (see `lib/scoring.ts` — the Overall score
+Every Ultrametric ranking is judged on the same canon (see `lib/scoring.ts` — the Overall score
 blends five components with renormalized weights):
 
 | Component | Weight | Question it answers |
@@ -62,23 +62,23 @@ blends five components with renormalized weights):
 | **Agentic features** (`agenticApp`) | 0.15 | Does the product act agentically itself? |
 | **Automation depth** | 0.15 | How deep do the automation primitives go? |
 
-Plus the shared privacy/security themes carried by per-arena stories. **The taxonomy test is
-simple: an arena belongs in our tree if and only if this spine produces meaningful, falsifiable
+Plus the shared privacy/security themes carried by per-ranking stories. **The taxonomy test is
+simple: a ranking belongs in our tree if and only if this spine produces meaningful, falsifiable
 verdicts for its products.** A category where agent access, API quality, and openness are
-category-irrelevant cannot be an arena, no matter how big its G2 review count is.
+category-irrelevant cannot be a ranking, no matter how big its G2 review count is.
 
 ### How we diverge from G2
 
 **Collapse — categories AI agents make obsolete or that only exist for SEO.** G2 slices marketing
 into ~70 leaves (Email Signature Software, URL Shortener, Sweepstakes Software, Pop-Up Builders).
 Most of these are one-afternoon agent tasks now, not product categories. We collapse G2's dozens
-of email leaves into three arenas (transactional email APIs, email marketing, email clients), its
+of email leaves into three rankings (transactional email APIs, email marketing, email clients), its
 "AI Writing Assistants / Proofreading / Plagiarism Checker" cluster into nothing (a frontier-model
 capability, not a category), and its meeting/transcription sprawl into one AI-meeting-assistants
-arena.
+ranking.
 
 **Split — where agent access changes the buying decision.** We split G2's single "AI Code
-Generation" into three arenas: supervised coding agents (live `ai-coding`), autonomous
+Generation" into three rankings: supervised coding agents (live `ai-coding`), autonomous
 ticket-to-PR agents (`async-coding-agents`), and AI code review (`ai-code-review`) — because
 autonomy level is the axis buyers actually decide on. Likewise web data splits into extraction
 (live `web-scraping`) vs acting on the web (`browser-automation`), and databases split by
@@ -95,7 +95,7 @@ tree structurally cannot be.
 
 **Tier by AI-era salience, not review volume.** Tier 1 (30 planned) = highest AI-era salience plus
 classic battles with huge comparison-search demand (Slack vs Teams, Datadog vs Grafana). Tier 2
-(62) = strong spine, strong demand. Tier 3 (81) = valid arenas we'll reach opportunistically.
+(62) = strong spine, strong demand. Tier 3 (81) = valid rankings we'll reach opportunistically.
 
 ### Explicit exclusions (spine is meaningless)
 
@@ -106,7 +106,7 @@ classic battles with huge comparison-search demand (Slack vs Teams, Datadog vs G
 | MLM software, sweepstakes, promotional products | Category exists for SEO capture; no evidence-based verdicts worth publishing. |
 | Video surveillance, smart spaces, drone analytics, hardware-tied AR/VR | Verdicts hinge on hardware fleets we cannot probe; agent spine marginal. |
 | Regulated vertical suites (EHR, core banking, ERP mega-suites, legal practice mgmt) | Deferred, not rejected: sales-gated products where we cannot verify claims hands-on yet. Revisit when vendors expose public APIs/sandboxes. |
-| Data privacy paperwork tools (DSAR, privacy policy generators) | Privacy is a **shared axis on every arena**, not its own arena family; the paperwork-tool leaves are collapsing into compliance-automation (kept, tier 2). |
+| Data privacy paperwork tools (DSAR, privacy policy generators) | Privacy is a **shared axis on every ranking**, not its own ranking family; the paperwork-tool leaves are collapsing into compliance-automation (kept, tier 2). |
 
 ## 3. Roadmap file
 
@@ -121,15 +121,15 @@ served at `/data/arena-roadmap.json` for agents to consume.
 
 ### Existing: story-runner (refresh)
 
-`.github/workflows/story-runner.yml` runs every 6 hours, picks the next **live** arena by
+`.github/workflows/story-runner.yml` runs every 6 hours, picks the next **live** ranking by
 `run_number % categories.length`, re-runs the full pipeline (crawl → extract → normalize →
 collect-community → probe → judge → claims → popularity → derive), and opens a PR only if data
 changed. The judge's `cellHash` cache (story + evidence + prompt version) means unchanged
-evidence costs zero LLM calls — a quiet arena refresh is nearly free.
+evidence costs zero LLM calls — a quiet ranking refresh is nearly free.
 
 ### Proposed: arena-builder (growth)
 
-A second scheduled workflow, `arena-builder.yml`, that converts roadmap entries into live arenas:
+A second scheduled workflow, `arena-builder.yml`, that converts roadmap entries into live rankings:
 
 1. **Pick** — read `data/arena-roadmap.json`; select the first `status: "planned"` entry by tier
    (1 → 2 → 3) then array order, skipping any id with an open `arena-builder/<id>` PR (idempotent
@@ -141,48 +141,48 @@ A second scheduled workflow, `arena-builder.yml`, that converts roadmap entries 
    URLs don't resolve are dropped, and the run fails if fewer than 4 survive. A second pass
    drafts ~70-90 stories following the story shape and group conventions
    (`agent-access` / `agentic-features` / `api-quality` groups under `agenticness`) used by the
-   11 live arenas as few-shot examples.
+   11 live rankings as few-shot examples.
 3. **Run** — the same nine pipeline stages story-runner uses, via `pipeline/cli.ts`.
 4. **Gate** — `pnpm test` + `pipeline/scripts/recompute-check.ts` must pass; the PR body includes
    the leaderboard and flags low-evidence cells.
-5. **PR** — branch `arena-builder/<id>`; the PR adds the arena to `data/categories.json`, adds
+5. **PR** — branch `arena-builder/<id>`; the PR adds the ranking to `data/categories.json`, adds
    `data/<id>/`, and flips the roadmap entry to `status: "live"`. **Never a direct push** — a
    human reviews product roster sanity, story quality, and verdict plausibility (same bias-audit
-   discipline as the live arenas) before merge. Merging automatically enrolls the arena in
+   discipline as the live rankings) before merge. Merging automatically enrolls the ranking in
    story-runner's rotation.
 
 ### Cost model (judge tokens dominate)
 
 Assumptions: Sonnet-class judge (`pipeline/llm.ts` default `claude-sonnet-5`), ~$3/M input,
-~$15/M output; live arenas average ~5 products × ~80 stories = **~400 judge cells**; a cell sends
+~$15/M output; live rankings average ~5 products × ~80 stories = **~400 judge cells**; a cell sends
 story + rubric + evidence excerpts (~5-6k input) and returns a structured verdict (~0.4k output).
 
 | Item | Tokens | Cost |
 |---|---|---|
-| Judge, fresh arena (~400 cells) | ~2.3M in / ~0.16M out | **~$9-10** |
+| Judge, fresh ranking (~400 cells) | ~2.3M in / ~0.16M out | **~$9-10** |
 | Extract + claims + probe assists | ~0.5-1M in | ~$2-4 |
 | Seeding (category, products, stories) | ~0.2M in / ~0.1M out | ~$2 |
-| **Fresh arena, total** | | **~$13-16 (budget $20)** |
+| **Fresh ranking, total** | | **~$13-16 (budget $20)** |
 | Refresh run (cellHash: 5-15% cells moved) | ~0.1-0.35M in | **~$1-3** |
 
-### Cadence to 100+ arenas in ~3 months
+### Cadence to 100+ rankings in ~3 months
 
 - **arena-builder: 1/day** (`cron: '23 5 * * *'`), pausing itself when >3 arena-builder PRs are
-  open (human review is the real throttle, ~10-15 min/PR). 30 tier-1 arenas land in the first
-  month; ~90 days x ~1 merge/day → **~101 live arenas by early December 2026**, finishing tier 1
-  and most of tier 2. Build cost: ~90 arenas × ~$15 ≈ **$1,350**.
-- **story-runner: keep 6-hourly** (4 refreshes/day, ~$8-12/day). At 100 arenas a flat rotation
-  revisits each arena only every ~25 days, so add **tier-weighted rotation**: tier-1-live arenas
+  open (human review is the real throttle, ~10-15 min/PR). 30 tier-1 rankings land in the first
+  month; ~90 days x ~1 merge/day → **~101 live rankings by early December 2026**, finishing tier 1
+  and most of tier 2. Build cost: ~90 rankings × ~$15 ≈ **$1,350**.
+- **story-runner: keep 6-hourly** (4 refreshes/day, ~$8-12/day). At 100 rankings a flat rotation
+  revisits each ranking only every ~25 days, so add **tier-weighted rotation**: tier-1-live rankings
   enter the rotation array 3x, so they refresh roughly weekly while the tail refreshes monthly.
   When budget allows, move to hourly (`'17 * * * *'`) for ~4-day whole-catalog freshness at
-  ~$50-70/day worst case — cellHash keeps quiet arenas near-free, so realistic spend is lower.
+  ~$50-70/day worst case — cellHash keeps quiet rankings near-free, so realistic spend is lower.
 - **Total ~3-month spend: ~$2-2.5k** ($1.35k build + ~$0.7-1k refresh) — roughly the cost of one
-  G2 review-campaign gift-card batch, for 100 evidence-based arenas.
+  G2 review-campaign gift-card batch, for 100 evidence-based rankings.
 
 ### Failure and quality valves
 
 - arena-builder exits green when `ANTHROPIC_API_KEY` is absent (same gate as story-runner).
-- A planned arena that fails seeding twice gets `status` left as planned and an issue opened with
+- A planned ranking that fails seeding twice gets `status` left as planned and an issue opened with
   the failure log; the picker skips ids with open `arena-builder:<id>` issues.
 - Re-judge stability policy (README) applies to builder PRs exactly as to refresh PRs:
   no-new-citation verdict flips get reverted in review.

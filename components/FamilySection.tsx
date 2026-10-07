@@ -56,7 +56,7 @@ export default function FamilySection({ arenaId, productId }: { arenaId: string;
         </Link>
       </div>
       <p className="mt-1 text-sm text-zinc-500">
-        {family.name} ships more than one product — each judged line competes in its own arena
+        {family.name} ships more than one product — each judged line competes in its own ranking
         on the same stories as everyone else.
       </p>
       {judged.length > 0 && (
@@ -64,9 +64,9 @@ export default function FamilySection({ arenaId, productId }: { arenaId: string;
           <table className="w-full border-collapse text-sm">
             <thead>
               <tr className={TABLE_HEADER_ROW}>
-                <th scope="col" className="px-2 py-1.5 font-normal"><span title="One of the company's individual products — each is judged separately in its own arena">Line</span></th>
-                <th scope="col" className="px-2 py-1.5 font-normal"><span title="The product category (arena) this line competes in">Arena</span></th>
-                <th scope="col" className="px-2 py-1.5 font-normal"><span title="Rank in its own arena's leaderboard">Rank</span></th>
+                <th scope="col" className="px-2 py-1.5 font-normal"><span title="One of the company's individual products — each is judged separately in its own ranking">Line</span></th>
+                <th scope="col" className="px-2 py-1.5 font-normal"><span title="The product category (ranking) this line competes in">Ranking</span></th>
+                <th scope="col" className="px-2 py-1.5 font-normal"><span title="Rank in its own ranking">Rank</span></th>
                 <th scope="col" className="px-2 py-1.5 font-normal"><span title="Overall score /100 — the blended headline score">Overall score</span></th>
                 <th scope="col" className="hidden px-2 py-1.5 font-normal sm:table-cell"><span title="Agent-ready /100 — how easily an outside AI agent can access and operate it">Agent-ready</span></th>
               </tr>
@@ -123,7 +123,7 @@ export default function FamilySection({ arenaId, productId }: { arenaId: string;
       )}
       {pageOnly.length > 0 && (
         <p className="mt-2 text-xs text-zinc-500">
-          Not yet judged ({pageOnly.length} — no arena where they compete):{' '}
+          Not yet judged ({pageOnly.length} — no ranking where they compete):{' '}
           {pageOnly.map((s, i) => (
             <span key={s.id} title={s.note ?? s.blurb}>
               {i > 0 && ' · '}
