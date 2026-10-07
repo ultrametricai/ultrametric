@@ -337,7 +337,7 @@ few playbooks exist ([maturity ladder](governance/REVIEW_POLICY.md)).
 ## Rankings index — every market we rank
 
 <!-- arenas:start -->
-| Arena | Products |
+| Ranking | Products |
 |---|---|
 | Desktop OS (`desktop-os`) | macos, omarchy, ubuntu, fedora, windows |
 | Startup Banking (`startup-banking`) | mercury, brex, ramp, wise, relay, jeeves, airwallex |
@@ -444,13 +444,13 @@ See `data/categories.json` for each arena's full description, personas, and them
 ## Data releases & freshness
 
 <!-- stat-badges:start -->
-[![arenas](https://img.shields.io/badge/arenas-96-34d399)](https://ultrametric.ai)
+[![rankings](https://img.shields.io/badge/rankings-96-34d399)](https://ultrametric.ai)
 [![products](https://img.shields.io/badge/products-649-34d399)](https://ultrametric.ai/everything)
 [![judged verdicts](https://img.shields.io/badge/judged_verdicts-36683-34d399)](https://ultrametric.ai/methodology)
 <!-- stat-badges:end -->
 
 <!-- stats:start -->
-As of the last full pipeline run: **96 arenas, 649 products, 36,683 judged verdicts.**
+As of the last full pipeline run: **96 rankings, 649 products, 36,683 judged verdicts.**
 <!-- stats:end -->
 
 These counts (and the badges) are regenerated from `data/` by `pnpm stats`, not maintained
