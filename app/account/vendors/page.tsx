@@ -19,7 +19,7 @@ import { buildMyStackProducts, curatedStackArenaPatterns } from '@/lib/myStackDa
 // stack, so the prerendered HTML is identical for anonymous readers.
 export const metadata: Metadata = {
   title: 'My vendors — Ultrametric',
-  description: 'The vendors you run, per arena — recorded from “I’m using this” and synced to your account.',
+  description: 'The vendors you run, per ranking — recorded from “I’m using this” and synced to your account.',
   // Session-gated content: noindex, and deliberately absent from app/sitemap.ts (same posture
   // as /account and /watchlist).
   robots: { index: false, follow: false },
@@ -39,7 +39,7 @@ export default function AccountVendorsPage() {
           My vendors
         </h1>
         <p className="mt-2 max-w-2xl text-sm text-zinc-400">
-          The software you actually run — your picks per arena, several allowed (Mercury AND
+          The software you actually run — your picks per ranking, several allowed (Mercury AND
           Brex is a real stack). Every{' '}
           <span className="text-emerald-300">&ldquo;I&rsquo;m using this&rdquo;</span> click on a
           product page is recorded here, and everything here personalizes the{' '}

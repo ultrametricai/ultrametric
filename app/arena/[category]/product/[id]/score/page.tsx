@@ -35,7 +35,7 @@ export async function generateMetadata({
   const data = loadCategory(category)
   const product = data.products.find((p) => p.id === id)
   return {
-    title: `${product ? product.name : id} score calculation — ${data.category.name} Arena — Ultrametric`,
+    title: `${product ? product.name : id} score calculation — ${data.category.name} Ranking — Ultrametric`,
     description: `The transparent audit trail behind ${product ? product.name : id}'s Overall score: every judged story, verdict, cited evidence item, and the exact arithmetic from verdicts to the blended score.`,
     alternates: { canonical: `${SITE_URL}/arena/${category}/product/${id}/score` },
   }
@@ -128,7 +128,7 @@ function DimensionSection({ dim, productHref }: { dim: DimensionBreakdown; produ
       <p className="mt-1 max-w-2xl text-sm text-zinc-500">{DIMENSION_MEANINGS[dim.key]}</p>
       {dim.cells.length === 0 ? (
         <p className="mt-3 text-sm italic text-zinc-500">
-          This arena&rsquo;s story taxonomy has no stories on this axis — unscored, and the blend
+          This ranking&rsquo;s story taxonomy has no stories on this axis — unscored, and the blend
           renormalizes its weight away.
         </p>
       ) : (

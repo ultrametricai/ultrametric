@@ -143,7 +143,7 @@ function reviewFor(data: CategoryData, productId: string, geo: VendorGeoEntry[],
     jurisdictions: geo.map((row) => `${row.country}:${row.status}`),
     tested_use_case:
       `${data.category.name} — ${data.category.description} ` +
-      `Judged against the arena's evidence-graded story taxonomy: ` +
+      `Judged against the ranking's evidence-graded story taxonomy: ` +
       `${data.stories.length} user stories across ${themes.size} themes.`,
     tested_on: data.rankings.generatedAt.slice(0, 10),
     reviewer: REVIEWER,

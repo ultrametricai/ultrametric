@@ -49,11 +49,11 @@ structure and semantic invariants; it does not prove laws true or implement a ca
   templates, schemas); validator + planner ported from Python into `lib/founderOps.ts` so the
   corpus gates run inside vitest; governance merged with the repo's existing evidence doctrine;
   every directory README bridges to the live implementation. `data/processes.json`,
-  `data/process-chains.json`, and the arena data deliberately did not move (fingerprinted,
+  `data/process-chains.json`, and the ranking data deliberately did not move (fingerprinted,
   loader-bound, and under active lanes).
 - **Stage 2 — done 2026-09-28.** Consolidated, byte-identical moves behind the loaders:
   `data/processes.json` → `processes/corpus.json` and `data/process-chains.json` →
-  `journeys/chains.json` (`lib/processes.ts` resolves both as siblings of the arena-data dir;
+  `journeys/chains.json` (`lib/processes.ts` resolves both as siblings of the ranking-data dir;
   the founder-ops workflow walker skips `corpus.json`); `data/vendor-geo.json` →
   `jurisdictions/vendor-geo.json` (`lib/vendorGeo.ts`). Published the corpus contract as
   `schemas/operational-process.schema.json`, generated from the zod source of truth by

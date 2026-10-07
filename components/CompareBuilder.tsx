@@ -115,7 +115,7 @@ function StoryCellView({ cell, product, storyId }: { cell: StoryCellState; produ
         className="text-xs italic text-zinc-500"
         title={`This story belongs to a different arena — ${product.name} (${product.arenaName}) was never judged on it.`}
       >
-        n/a — different arena&rsquo;s story
+        n/a — different ranking&rsquo;s story
       </span>
     )
   }
@@ -475,7 +475,7 @@ export default function CompareBuilder({ products }: { products: CompareProduct[
                   scope="colgroup"
                   className="bg-zinc-900/40 px-3 py-2 text-left text-xs font-normal tracking-wide text-zinc-400"
                 >
-                  <span title="Judged scenarios every selected product's arena shares — the most important (weight-3) first">Key stories</span>
+                  <span title="Judged scenarios every selected product's ranking shares — the most important (weight-3) first">Key stories</span>
                 </th>
               </tr>
               {anyStoryLoading ? (
@@ -634,7 +634,7 @@ export default function CompareBuilder({ products }: { products: CompareProduct[
 
       {crossArena && (
         <p className="text-xs text-zinc-500">
-          Note: scores are computed within each product&rsquo;s own arena — cross-arena comparison
+          Note: scores are computed within each product&rsquo;s own ranking — cross-market comparison
           is directional, not exact.
         </p>
       )}

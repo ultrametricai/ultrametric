@@ -134,7 +134,7 @@ export default function SimRolePicker({
           />
           <span className="min-w-0 flex-1 truncate text-left">{current?.name ?? role.defaultProductName}</span>
           {current && rankOf(current.id) > 0 && (
-            <span className="shrink-0 text-[10px] text-zinc-500" title={`#${rankOf(current.id)} of ${role.alternatives.length} on this arena's agent-readiness ladder`}>
+            <span className="shrink-0 text-[10px] text-zinc-500" title={`#${rankOf(current.id)} of ${role.alternatives.length} on this ranking's agent-readiness ladder`}>
               #{rankOf(current.id)}
             </span>
           )}
@@ -181,7 +181,7 @@ export default function SimRolePicker({
                 >
                   <span
                     className="w-6 shrink-0 text-right text-[10px] text-zinc-500"
-                    title={`#${rankOf(o.id)} on this arena's agent-readiness ladder`}
+                    title={`#${rankOf(o.id)} on this ranking's agent-readiness ladder`}
                   >
                     #{rankOf(o.id)}
                   </span>

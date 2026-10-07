@@ -274,7 +274,7 @@ describe('outcome model surfaces — picks change the simulated clock, disclosed
     expect(runners.textContent).toContain('Square · 70')
     expect(runners.textContent).toContain('PayPal · 61')
     expect(within(runners).getByRole('link', { name: /Square · 70/ }).getAttribute('href')).toBe('/arena/payments/product/square')
-    expect(within(runners).getByRole('link', { name: 'arena →' }).getAttribute('href')).toBe('/arena/payments')
+    expect(within(runners).getByRole('link', { name: 'ranking →' }).getAttribute('href')).toBe('/arena/payments')
   })
 
   it("the Vendors tab offers the ordering toggle (Likely choice | Judged): likely leads with the committed signal order, judged restores the ladder, and the judged default wears '(recommended · judged)'", () => {

@@ -10,7 +10,7 @@ import { TABLE_HEADER_ROW, TABLE_SHELL } from '@/components/tableStyles'
 export const metadata: Metadata = {
   title: 'AI Stacks — Ultrametric',
   description:
-    'Best evidence-backed pairings for going agentic: OS, local model runtime, coding agent, and the founder ops layer — every scored pick resolved live from arena rankings.',
+    'Best evidence-backed pairings for going agentic: OS, local model runtime, coding agent, and the founder ops layer — every scored pick resolved live from the published rankings.',
 }
 
 // Cross-arena curated stacks: each scored slot is resolved at build time from the current arena
@@ -26,7 +26,7 @@ export default function StacksPage() {
         <h1 className="font-display leading-[1.1] mt-1 text-3xl font-bold tracking-tight">AI Stacks</h1>
         <p className="mx-auto mt-3 max-w-2xl text-zinc-400">
           The best pairings for going agentic — picked by evidence, not vibes. Every scored slot
-          below is the current #1 of its arena on the named metric, resolved live from the same
+          below is the current #1 of its ranking on the named metric, resolved live from the same
           rankings as the rest of the site; slots we can&rsquo;t score yet are labeled as
           AI judgement.
         </p>
@@ -83,11 +83,11 @@ export default function StacksPage() {
               <thead>
                 <tr className={TABLE_HEADER_ROW}>
                   <th scope="col" className="px-3 py-2 font-normal"><span title="The role this slot fills in the stack">Layer</span></th>
-                  <th scope="col" className="px-3 py-2 font-normal"><span title="The product filling this slot — scored picks resolve live from the arena leaderboard; unscored slots are labeled AI judgement">Pick</span></th>
+                  <th scope="col" className="px-3 py-2 font-normal"><span title="The product filling this slot — scored picks resolve live from the ranking; unscored slots are labeled AI judgement">Pick</span></th>
                   <th scope="col" className="hidden px-3 py-2 font-normal md:table-cell"><span title="The curators' one-line reason this slot exists">Why this pick</span></th>
                   <th scope="col" className="hidden px-3 py-2 font-normal sm:table-cell">
                     <span className="inline-flex items-center gap-1.5">
-                      <span title="The judged score behind the pick and its rank in the arena">Evidence</span>
+                      <span title="The judged score behind the pick and its position in the ranking">Evidence</span>
                       <ColumnsHelpLink />
                     </span>
                   </th>
@@ -102,7 +102,7 @@ export default function StacksPage() {
                       {slot.arenaId ? (
                         <Link
                           href={`/arena/${slot.arenaId}`}
-                          title={`See the full ${slot.role} arena leaderboard`}
+                          title={`See the full ${slot.role} ranking`}
                           className="font-medium underline decoration-zinc-800 underline-offset-2 transition hover:text-emerald-300"
                         >
                           {slot.role}
@@ -187,11 +187,11 @@ export default function StacksPage() {
                             <span className="text-zinc-500">#{slot.rank} of {slot.fieldSize} · </span>
                           )}
                           <Link href={`/arena/${slot.arenaId}`} className="text-zinc-400 underline decoration-zinc-700 hover:text-emerald-300">
-                            full arena
+                            full ranking
                           </Link>
                         </span>
                       ) : (
-                        <span className="rounded-full border border-amber-800/60 px-2 py-0.5 text-[10px] uppercase tracking-wide text-amber-400/90" title="No arena scores this slot yet — the pick is AI judgement over the market, not a judged ranking">
+                        <span className="rounded-full border border-amber-800/60 px-2 py-0.5 text-[10px] uppercase tracking-wide text-amber-400/90" title="No ranking scores this slot yet — the pick is AI judgement over the market, not a judged leaderboard position">
                           AI judgement
                         </span>
                       )}
@@ -206,7 +206,7 @@ export default function StacksPage() {
 
       <section className="mx-auto max-w-3xl text-center text-sm text-zinc-500">
         <p>
-          Disagree with a pick? Every scored slot traces to an arena leaderboard — contest the
+          Disagree with a pick? Every scored slot traces to a ranking — contest the
           underlying verdicts and the stack updates itself. Run a stack founders should see?{' '}
           <a
             href="https://github.com/ultrametricai/ultrametric/issues/new?template=submit-stack.yml"

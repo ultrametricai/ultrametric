@@ -57,7 +57,7 @@ export default function ClaimsIntegrityIndexTable({ categories, limit }: { categ
             <th className="sticky left-14 z-10 w-[170px] bg-zinc-950 px-3 py-2 font-normal">Product</th>
             {/* Arena yields below md so the integrity score — the ranking's whole point — is
                 visible without a sideways scroll on phones. */}
-            <th className="hidden px-3 py-2 font-normal md:table-cell"><span title="The product category (arena) it competes in — click through for that arena's full leaderboard">Arena</span></th>
+            <th className="hidden px-3 py-2 font-normal md:table-cell"><span title="The product category (ranking) it competes in — click through for that ranking's full leaderboard">Ranking</span></th>
             <th className="px-3 py-2 font-normal"><span title="Claims integrity (0–100): how much of what the vendor publicly claims held up when we tested it">Integrity</span></th>
             <th className="px-3 py-2 font-normal"><span title="Vendor claims our testing confirmed to be true">Verified</span></th>
             <th className="px-3 py-2 font-normal">

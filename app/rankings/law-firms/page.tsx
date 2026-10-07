@@ -162,7 +162,7 @@ export default function LawFirmsRankingPage() {
         {/* seed "law-firms": same concept mark as the Explore menu entry and RankingsNav. */}
         <p className="flex items-center gap-2 text-sm uppercase tracking-widest text-emerald-400">
           <GeoMark seed="law-firms" title="Startup law firms — ranked" size={16} className="text-zinc-500" />
-          Arena ranking
+          Ranking
         </p>
         <h1 className="font-display leading-[1.1] mt-1 text-3xl font-bold tracking-tight">
           Startup law firms — ranked
@@ -172,7 +172,7 @@ export default function LawFirmsRankingPage() {
           <Link href={`/arena/${ARENA_ID}`} className="text-zinc-300 underline decoration-zinc-700 hover:text-emerald-300">
             {data.category.name}
           </Link>{' '}
-          arena&apos;s judged leaderboard, in its committed order: Overall score first, coverage score as the
+          ranking&apos;s judged leaderboard, in its committed order: Overall score first, coverage score as the
           tiebreak. The practice dimensions carry the signal for firms — venture financing, formation, IP
           protection, startup programs. Agent-readiness is near-zero across the field; it stays on the table
           because that is what the evidence shows, not because it separates firms.

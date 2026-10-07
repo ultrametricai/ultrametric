@@ -263,15 +263,15 @@ export default async function ArtifactPage({ params }: { params: Promise<{ id: s
         </h2>
         <p className="mt-1 max-w-2xl text-sm text-zinc-500">
           Computed, never picked: the corpus pins the exact step where this artifact comes into
-          existence; that step&rsquo;s covering arenas (its function mapping and curated vendor
+          existence; that step&rsquo;s covering rankings (its function mapping and curated vendor
           options) each show their current leaderboard leaders with their Overall scores — the
-          same judged rankings the arena pages publish.
+          same judged order the ranking pages publish.
         </p>
         {arenas.length > 0 ? (
           <ArenaVendorList arenas={arenas} />
         ) : (
           <p className="mt-3 text-sm text-zinc-500">
-            No populated arena covers the producing step — this artifact is born in a government
+            No populated ranking covers the producing step — this artifact is born in a government
             portal, a signature act, or another step no judged market serves yet. There is no
             vendor list to derive.
           </p>

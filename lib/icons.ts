@@ -468,7 +468,7 @@ const THEME_DESCRIPTIONS: Record<string, string> = {
 
 // Honest fallback for an arena-specific niche theme no bespoke line covers.
 function genericThemeDetail(theme: string): string {
-  return `stories about ${humanizeTheme(theme).toLowerCase()} in this arena`
+  return `stories about ${humanizeTheme(theme).toLowerCase()} in this ranking`
 }
 
 // True when a theme has a bespoke hand-written explanation (vs the generic fallback) — the

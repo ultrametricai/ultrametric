@@ -51,7 +51,7 @@ function arenaFaqJsonLd(data: CategoryData) {
         name: `Which ${data.category.name} product is most agent-friendly?`,
         acceptedAnswer: {
           '@type': 'Answer',
-          text: `${product.name} ranks first in Ultrametric's ${data.category.name} arena, with ${scoreText(entry.aiEra)} — see the full agent-tested leaderboard at ${SITE_URL}/arena/${data.category.id}.`,
+          text: `${product.name} ranks first in Ultrametric's ${data.category.name} ranking, with ${scoreText(entry.aiEra)} — see the full agent-tested leaderboard at ${SITE_URL}/arena/${data.category.id}.`,
         },
       },
       {
@@ -179,7 +179,7 @@ export default async function ArenaPage({ params }: { params: Promise<{ category
               (lib/arenaIcons.ts) — IconChip renders the `pi:` token as the custom duotone SVG. */}
           <IconChip
             icon={arenaIcon(data.category.id)}
-            title={`${data.category.name} arena`}
+            title={`${data.category.name} ranking`}
           />
           {data.category.name}
         </h1>
@@ -195,7 +195,7 @@ export default async function ArenaPage({ params }: { params: Promise<{ category
             <Link
               href={SPEC_ANNEX[data.category.id]}
               className="text-zinc-400 underline decoration-zinc-800 hover:text-emerald-300"
-              title="The raw vendor-spec comparison table this arena graduated from"
+              title="The raw vendor-spec comparison table this ranking graduated from"
             >
               Raw spec table →
             </Link>
@@ -221,8 +221,8 @@ export default async function ArenaPage({ params }: { params: Promise<{ category
       {adjacent.length > 0 && (
         <div>
           <h2 className="font-display leading-[1.1] mb-1 flex items-center gap-2 text-lg font-semibold">
-            <GeoMark seed="arenas" title="Adjacent arenas — categories often shopped together" size={18} className="text-zinc-500" />
-            Adjacent arenas
+            <GeoMark seed="arenas" title="Adjacent rankings — categories often shopped together" size={18} className="text-zinc-500" />
+            Adjacent rankings
           </h2>
           <p className="mb-4 text-sm text-zinc-500">Shopping this category often means shopping these too.</p>
           <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
@@ -235,7 +235,7 @@ export default async function ArenaPage({ params }: { params: Promise<{ category
                 <p className="flex items-center gap-1.5 font-medium group-hover:text-emerald-300">
                   <IconChip
                     icon={arenaIcon(a.categoryId)}
-                    title={`${a.categoryName} arena`}
+                    title={`${a.categoryName} ranking`}
                   />
                   {a.categoryName}
                 </p>

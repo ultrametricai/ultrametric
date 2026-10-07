@@ -1,20 +1,20 @@
 # Vendors — evidence, not an endorsement list
 
 This repo's largest asset lives one directory over: `data/<arena>/` holds dated, reproducible,
-agent tested evaluations of 590+ products across 90+ arenas — judged verdicts over a shared
+agent tested evaluations of 590+ products across 90+ rankings — judged verdicts over a shared
 story taxonomy citing vendor docs, GitHub, community sources, and hands-on probes with recorded
 transcripts; rankings carry HMAC-fingerprinted `_provenance` and recompute deterministically
 (`pipeline/scripts/recompute-check.ts`). Owner-affiliated products (Foreloop, AFK, Ultrametric)
 are disclosed on every surface and get adversarial bias audits; favorable flips without new
 evidence are reverted (`governance/REVIEW_POLICY.md`).
 
-Live views: every arena renders at
+Live views: every ranking renders at
 [ultrametric.ai/arena/&lt;arena-id&gt;](https://ultrametric.ai/arenas) (index at `/arenas`), the
-cross-arena rankings at [ultrametric.ai/overall](https://ultrametric.ai/overall).
+cross-market rankings at [ultrametric.ai/overall](https://ultrametric.ai/overall).
 
 ## How the layer fits together
 
-Committed counts as of 2026-10-01: 94 arenas, 593 evidence packs (32,480 dated evidence
+Committed counts as of 2026-10-01: 94 rankings, 593 evidence packs (32,480 dated evidence
 items), 33,789 judged verdicts, 593 generated interchange records.
 
 ```mermaid
@@ -46,7 +46,7 @@ payments, equity, employment, and partnerships — payment can never change scor
 ## What an interchange record is
 
 `reviews/generated/` holds one record per judged product in this format, emitted
-deterministically from the committed arena data by
+deterministically from the committed ranking data by
 `pipeline/scripts/generate-vendor-reviews.ts` (stage 2 of the corpus lift): dated evidence URIs
 from the packs, region availability from `jurisdictions/vendor-geo.json` (honest negatives
 included), the committed pricing facts, the rankings dimensions, and the affiliation
@@ -61,7 +61,7 @@ the interchange shape without scraping the site. A trimmed real record
   "vendor": "Bench",
   "category": "accounting",
   "status": "tested",
-  "tested_use_case": "Accounting & Bookkeeping — … Judged against the arena's evidence-graded story taxonomy: 53 user stories across 12 themes.",
+  "tested_use_case": "Accounting & Bookkeeping — … Judged against the ranking's evidence-graded story taxonomy: 53 user stories across 12 themes.",
   "tested_on": "2026-09-24",
   "reviewer": "Ultrametric pipeline (automated, evidence-graded)",
   "affiliations": [],
@@ -88,6 +88,6 @@ the interchange shape without scraping the site. A trimmed real record
   in `data/<arena>/` via the pipeline (see the root README's Contributing section and
   CONTRIBUTING.md); the pipeline re-judges only the cells whose evidence changed.
 - **Never hand-edit `reviews/generated/`** — those records are emitted deterministically from
-  the committed arena data; fix the underlying data and re-run
+  the committed ranking data; fix the underlying data and re-run
   `pnpm tsx pipeline/scripts/generate-vendor-reviews.ts`. Gate:
   `npx vitest run pipeline/__tests__/vendorReviews.test.ts` (byte-identical regeneration).

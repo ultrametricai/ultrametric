@@ -38,22 +38,22 @@ export async function GET() {
 
 > Evidence-graded, head-to-head rankings of software products against a shared taxonomy of user stories. Every score traces back to cited evidence (vendor docs, GitHub, community sources, or a hands-on probe) — never opinion. See /methodology for the full scoring writeup.
 
-Ultrametric crawls vendor docs, GitHub, and community sources for ${categories.length} product categories ("arenas"), extracts per-product evidence, and has an LLM judge every product against a shared set of user stories (weight 1-3, tiered verdicts full/partial/none/disputed/na). The result is a coverage score, a Overall score, and a head-to-head battle log per arena — all reproducible from the cited evidence.
+Ultrametric crawls vendor docs, GitHub, and community sources for ${categories.length} product categories ("rankings"), extracts per-product evidence, and has an LLM judge every product against a shared set of user stories (weight 1-3, tiered verdicts full/partial/none/disputed/na). The result is a coverage score, a Overall score, and a head-to-head battle log per ranking — all reproducible from the cited evidence.
 
-## Arena rankings (markdown, one per category)
+## Rankings (markdown, one per category)
 
 ${arenaLinks}
 
 ## Head-to-head comparisons (battle pages)
 
-Every battle between two products in the same arena has its own page:
+Every battle between two products in the same ranking has its own page:
 \`${SITE}/arena/{category}/battle/{productA}-vs-{productB}\` — the verdict, the judged record,
 and every judged round with its cited evidence. (The old top-level \`${SITE}/vs/{productA}-vs-{productB}\`
-URLs permanently redirect here.) Full list in \`${SITE}/sitemap.xml\`; one example per arena below.
+URLs permanently redirect here.) Full list in \`${SITE}/sitemap.xml\`; one example per ranking below.
 
 ${leadingBattleLinks}
 
-## Global rankings (every product, every arena, one flat list)
+## Global rankings (every product, every ranking, one flat list)
 
 - [Most agentic](${SITE}/rankings/agentic): every product ranked by AGENT-READY (can an agent reach and operate it at all).
 - [Best built-in AI](${SITE}/rankings/ai-native): every product ranked by BUILT-IN AI (does the product act agentically on its own behalf).
@@ -85,7 +85,7 @@ linked from every process page. Example:
 - [Open modules](${SITE}/open-modules): the open business-logic modules (lib/openstartup/ — cap
 tables, vesting, 83(b) math, deadlines, franchise tax). One page per module at
 \`${SITE}/open-modules/{moduleId}\` naming the processes it serves and the judged vendor markets
-covering their steps (derived from the same arena leaderboards, never hand-picked).
+covering their steps (derived from the same published rankings, never hand-picked).
 - [Artifacts](${SITE}/artifacts): the canonical business artifacts flowing between processes
 (processes/artifacts.json — the EIN, the stamped certificate, the opened bank account). One page
 per artifact at \`${SITE}/artifacts/{artifactId}\` with its canonical producer, every consumer
@@ -93,7 +93,7 @@ process, and the judged vendor markets around the step that creates it.
 
 ## Data API (JSON, no auth)
 
-- [Categories](${SITE}/data/categories.json): every arena's id/name/description/personas/themes.
+- [Categories](${SITE}/data/categories.json): every ranking's id/name/description/personas/themes.
 - Per-category JSON (replace \`{category}\` with an id from categories.json above): \`/data/{category}/products.json\`, \`/data/{category}/stories.json\`, \`/data/{category}/verdicts.json\`, \`/data/{category}/rankings.json\`, \`/data/{category}/evidence/{product}.json\`.
 - [OpenAPI 3.1 spec](${SITE}/openapi.json): machine-readable schema for every endpoint above.
 

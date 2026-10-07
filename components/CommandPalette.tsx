@@ -173,7 +173,7 @@ export default function CommandPalette() {
           <div
             role="dialog"
             aria-modal="true"
-            aria-label="Search arenas, products, and stories"
+            aria-label="Search rankings, products, and stories"
             onClick={(e) => e.stopPropagation()}
             onKeyDown={onKeyDownInPalette}
             className="w-full max-w-lg overflow-hidden rounded-xl border border-zinc-800 bg-zinc-900 shadow-2xl"
@@ -182,7 +182,7 @@ export default function CommandPalette() {
               ref={inputRef}
               value={query}
               onChange={(e) => onInputChange(e.target.value)}
-              placeholder="Search arenas, products, stories…"
+              placeholder="Search rankings, products, stories…"
               className="w-full border-b border-zinc-800 bg-transparent px-4 py-3 text-sm text-zinc-100 placeholder:text-zinc-400 focus:outline-none"
             />
             <div className="max-h-96 overflow-y-auto py-2">

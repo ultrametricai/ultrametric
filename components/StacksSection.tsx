@@ -14,7 +14,7 @@ export default function StacksSection({ data }: { data: CategoryData }) {
     <div>
       {/* seed "stacks": same concept mark as the header's Stacks nav link. */}
       <h2 className="font-display leading-[1.1] mb-4 flex items-center gap-2 text-lg font-semibold">
-        <GeoMark seed="stacks" title="Stacks — proven product combinations in this arena" size={18} className="text-zinc-500" />
+        <GeoMark seed="stacks" title="Stacks — proven product combinations in this ranking" size={18} className="text-zinc-500" />
         Stacks
       </h2>
       <div className="grid gap-4 sm:grid-cols-2">
@@ -45,7 +45,7 @@ export default function StacksSection({ data }: { data: CategoryData }) {
                   </div>
                   <a
                     href="#story-matrix"
-                    title="Which stories apply — the arena's full What-we-tested table below"
+                    title="Which stories apply — the ranking's full What-we-tested table below"
                     className="text-xs text-zinc-400 underline decoration-zinc-800 underline-offset-2 transition hover:text-emerald-300"
                   >
                     {coverage.applicable}/{coverage.total} stories applicable

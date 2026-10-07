@@ -82,7 +82,7 @@ export default async function YcBatchPage({ params }: { params: Promise<{ batch:
         </p>
         <p className="mt-2 max-w-2xl text-xs text-zinc-500">
           The table lists the YC {code} companies <span className="text-zinc-300">we track</span>; coverage grows
-          batch by batch. Scores come from each product&rsquo;s arena verdicts —
+          batch by batch. Scores come from each product&rsquo;s ranking verdicts —
           see{' '}
           <Link href="/methodology" className="text-emerald-400 underline decoration-emerald-400/40 hover:text-emerald-300">
             methodology
@@ -161,7 +161,7 @@ export default async function YcBatchPage({ params }: { params: Promise<{ batch:
       </div>
 
       <p className="text-xs text-zinc-500">
-        A product tracked in more than one arena appears once, in the arena where its Overall score is highest. Unscored
+        A product tracked in more than one ranking appears once, in the ranking where its Overall score is highest. Unscored
         means no applicable product user stories — never zero. Batch stamps verified against YC&rsquo;s public directory by website
         domain, never by name.
       </p>

@@ -13,7 +13,7 @@ import { buildMyStackProducts, curatedStackArenaPatterns } from '@/lib/myStackDa
 export const metadata: Metadata = {
   title: 'My Stack — Ultrametric',
   description:
-    'Enter the stack you already run and get evidence-cited recommendations: upgrades where a rival scores materially higher, adjacent arenas you have nothing in, possible overlaps, vendor consolidations, and break-outs — every number from the live arena rankings, with a shareable URL.',
+    'Enter the stack you already run and get evidence-cited recommendations: upgrades where a rival scores materially higher, adjacent rankings you have nothing in, possible overlaps, vendor consolidations, and break-outs — every number from the live rankings, with a shareable URL.',
 }
 
 // Static shell, same contract as /compare and /stacks/builder: the page prerenders once; the
@@ -35,8 +35,8 @@ export default function MyStackPage() {
           My Stack
         </h1>
         <p className="mx-auto mt-3 max-w-2xl text-zinc-400">
-          Tell us what you already run and we&rsquo;ll hold it against the arena evidence:
-          upgrades where a rival scores materially higher, adjacent arenas you have nothing in,
+          Tell us what you already run and we&rsquo;ll hold it against the ranking evidence:
+          upgrades where a rival scores materially higher, adjacent rankings you have nothing in,
           possible overlaps, one-family consolidations, and jobs worth splitting out to a
           specialist. Every suggestion cites the published scores it rests on. Starting fresh
           instead? Try the{' '}

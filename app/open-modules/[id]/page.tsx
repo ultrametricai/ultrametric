@@ -158,14 +158,14 @@ export default async function OpenModulePage({ params }: { params: Promise<{ id:
         </h2>
         <p className="mt-1 max-w-2xl text-sm text-zinc-500">
           Computed, never picked: the steps of the processes above carry committed function
-          mappings onto covering arenas, and each arena shows its current leaderboard leaders
-          with their Overall scores — the same judged rankings the arena pages publish.
+          mappings onto covering rankings, and each ranking shows its current leaderboard leaders
+          with their Overall scores — the same judged order the ranking pages publish.
         </p>
         {mod.arenas.length > 0 ? (
           <ArenaVendorList arenas={mod.arenas} />
         ) : (
           <p className="mt-3 text-sm text-zinc-500">
-            No populated arena covers these processes&rsquo; steps yet — there is no judged
+            No populated ranking covers these processes&rsquo; steps yet — there is no judged
             vendor list to derive. The processes above still carry their step-by-step flows.
           </p>
         )}

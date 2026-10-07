@@ -1,12 +1,12 @@
 # Classic battles Ultrametric is missing
 
-A prioritized backlog of classic product rivalries that would make strong arenas. Priority
+A prioritized backlog of classic product rivalries that would make strong rankings. Priority
 weighs: (1) how iconic/searched the head-to-head is, (2) how well our evidence ladder
 (docs, GitHub, community, keyless probes) can judge it, (3) agent-era relevance — whether
 the products differ meaningfully on APIs, CLIs, and MCP surface, which is what the Arena
 Score actually measures.
 
-Format per battle: proposed arena id → products → the 3 stories that would decide it →
+Format per battle: proposed ranking id → products → the 3 stories that would decide it →
 expected agent-access differentiators.
 
 ---
@@ -22,7 +22,7 @@ expected agent-access differentiators.
 
 ## 2. `team-chat` — Slack vs Discord vs Microsoft Teams (vs Zulip) — ✅ SHIPPED
 
-Now a live arena (`data/team-chat/`): 22 manual stories + 29 canonical, hands-on probes
+Now a live ranking (`data/team-chat/`): 22 manual stories + 29 canonical, hands-on probes
 confirmed Slack's official MCP server docs AND a live auth-gated remote MCP endpoint at
 api.slack.com/mcp, Zulip's full OpenAPI spec + keyless API on chat.zulip.org, and Microsoft
 Graph's $metadata as Teams' machine-readable surface.
@@ -50,7 +50,7 @@ Graph's $metadata as Teams' machine-readable surface.
   1. As a data-engineer, I can run SQL programmatically via official drivers/REST with sandboxed roles.
   2. As an ai-native user, I can point an agent at the warehouse via MCP/semantic layer and get governed answers.
   3. As a platform-engineer, I can manage warehouses/pipelines as declarative config in CI.
-- **Agent-access differentiators:** Both giants now ship MCP servers and AI SQL assistants (Snowflake Cortex vs Databricks Assistant); ClickHouse is open-source with an official MCP server and local `clickhouse-local` CLI. Pricing-model evidence (credits vs DBUs) is famously contested — good community-evidence arena.
+- **Agent-access differentiators:** Both giants now ship MCP servers and AI SQL assistants (Snowflake Cortex vs Databricks Assistant); ClickHouse is open-source with an official MCP server and local `clickhouse-local` CLI. Pricing-model evidence (credits vs DBUs) is famously contested — good community-evidence ranking.
 
 ## 5. `design-tools` — Figma vs Penpot (vs Sketch)
 
@@ -77,11 +77,11 @@ Graph's $metadata as Teams' machine-readable surface.
   1. As a developer, I can integrate a full payment flow from docs alone in a sandbox account.
   2. As an ai-native user, I can drive payments/refunds/reporting through an agent with scoped, auditable keys.
   3. As a finance-lead, I can reconcile settlements automatically via reports API/webhooks.
-- **Agent-access differentiators:** Stripe's docs, OpenAPI spec, llms.txt, and agent toolkit are the industry benchmark; Adyen is powerful but enterprise-gated (no self-serve sandbox parity); PayPal ships an official MCP server but legacy API sprawl. Already on the roadmap queue ("payments w/ Stripe") — this is the highest-priority new arena.
+- **Agent-access differentiators:** Stripe's docs, OpenAPI spec, llms.txt, and agent toolkit are the industry benchmark; Adyen is powerful but enterprise-gated (no self-serve sandbox parity); PayPal ships an official MCP server but legacy API sprawl. Already on the roadmap queue ("payments w/ Stripe") — this is the highest-priority new ranking.
 
 ## 8. `backend-as-a-service` — Supabase vs Firebase (vs Appwrite, Convex) — ✅ SHIPPED
 
-Now a live arena (`data/backend-as-a-service/`) with Convex taking the fourth slot
+Now a live ranking (`data/backend-as-a-service/`) with Convex taking the fourth slot
 (reactive TypeScript backend with an FSL→Apache open-source core) over PocketBase: 22
 manual stories + 29 canonical. Hands-on probes: all four CLIs install from npm and
 version-print headlessly (supabase 2.116.0, firebase-tools 15.29.0, convex 1.45.0,
@@ -94,7 +94,7 @@ with no login.
   1. As a developer, I can stand up auth + database + storage from the CLI in minutes.
   2. As an ai-native user, I can have an agent create and migrate schemas via MCP/CLI safely (branching).
   3. As a platform-engineer, I can self-host the whole stack and export all data (openness).
-- **Agent-access differentiators:** Supabase has an official MCP server, database branching, and full OSS self-host; Firebase counters with Gemini-assisted tooling but is closed and export-hostile (Firestore lock-in); Appwrite/PocketBase are the pure-OSS spoilers. Likely the most vibe-coded-app-relevant arena in the list.
+- **Agent-access differentiators:** Supabase has an official MCP server, database branching, and full OSS self-host; Firebase counters with Gemini-assisted tooling but is closed and export-hostile (Firestore lock-in); Appwrite/PocketBase are the pure-OSS spoilers. Likely the most vibe-coded-app-relevant ranking in the list.
 
 ## 9. `auth-identity` — Auth0 vs Clerk (vs Keycloak, WorkOS)
 
@@ -148,7 +148,7 @@ with no login.
   1. As a developer, I can index documents and get typo-tolerant instant search with one CLI/SDK call.
   2. As a platform-engineer, I can self-host with predictable memory/cost at scale (openness/pricing).
   3. As an ai-native user, I can run hybrid semantic + keyword search and expose it to agents via API/MCP.
-- **Agent-access differentiators:** Meilisearch and Typesense are open-source, self-hostable, with clean REST APIs and official MCP servers; Algolia has the deepest relevance tooling but per-record pricing lock-in. Small product count, crisp axes — an easy high-quality arena.
+- **Agent-access differentiators:** Meilisearch and Typesense are open-source, self-hostable, with clean REST APIs and official MCP servers; Algolia has the deepest relevance tooling but per-record pricing lock-in. Small product count, crisp axes — an easy high-quality ranking.
 
 ## 15. `password-managers` — 1Password vs Bitwarden (vs KeePassXC)
 

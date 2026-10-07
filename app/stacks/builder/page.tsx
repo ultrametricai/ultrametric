@@ -9,7 +9,7 @@ import { loadIntegrationGraph, verifiedPairKeys } from '@/lib/integrations'
 export const metadata: Metadata = {
   title: 'Stack builder — Ultrametric',
   description:
-    'Build your own evidence-backed AI-era stack: pick roles and constraints, and every slot resolves live to the arena leaderboard winner — with its honest rank, runner-up, and a shareable URL.',
+    'Build your own evidence-backed AI-era stack: pick roles and constraints, and every slot resolves live to the ranking winner — with its honest rank, runner-up, and a shareable URL.',
 }
 
 // Static shell, same contract as /compare: the page prerenders once and the chosen
@@ -27,7 +27,7 @@ export default function StackBuilderPage() {
       <section className="mx-auto max-w-3xl text-center">
         <h1 className="font-display leading-[1.1] mt-1 text-3xl font-bold tracking-tight">Stack builder</h1>
         <p className="mx-auto mt-3 max-w-2xl text-zinc-400">
-          Compose your own stack from live arena rankings: pick the roles your team needs, set
+          Compose your own stack from the live rankings: pick the roles your team needs, set
           constraints, and every slot resolves to the current evidence-backed winner — no vibes,
           every pick annotated with its rank. Prefer a curated starting point? See{' '}
           <Link href="/stacks" className="text-emerald-400 underline decoration-emerald-400/40 hover:text-emerald-300">

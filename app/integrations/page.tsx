@@ -114,7 +114,7 @@ export default function IntegrationsPage() {
       )}
 
       <section className="space-y-6">
-        <h2 className="font-display leading-[1.1] text-lg font-semibold">By arena</h2>
+        <h2 className="font-display leading-[1.1] text-lg font-semibold">By ranking</h2>
         {arenaSections.map(({ category, rows }) => (
           <div key={category.id}>
             <h3 className="mb-2 text-sm font-semibold">

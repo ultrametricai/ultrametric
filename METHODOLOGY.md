@@ -5,7 +5,7 @@ the Agenticness Index, the Overall score, confidence grades, score intervals, st
 re-judge stability, and bias disclosure. The on-site
 [/methodology](https://ultrametric.ai/methodology) page is a tight one-screen summary of this
 document, and the [README](./README.md#methodology) carries a short summary; this file is the
-source of truth. See also [README.md](./README.md) for the arena list, data layout, and
+source of truth. See also [README.md](./README.md) for the ranking list, data layout, and
 pipeline workflow, and [CONTRIBUTING.md](./CONTRIBUTING.md) for how to contest a verdict.
 
 New to the site and just want plain-language answers ("what does `na` mean," "why does this
@@ -150,13 +150,13 @@ worse than staying silent — with the score clamped at 0.
 
 **Null, never zero:** a product with no claims data (or no testable claims) gets `null`,
 not a fabricated `0` — same rule as every other index here: "we don't know" is not "the
-worst", and nulls sort last. The full cross-arena ranking lives at
+worst", and nulls sort last. The full cross-market ranking lives at
 [/rankings/claims-integrity](https://ultrametric.ai/rankings/claims-integrity),
 and each product page's "Claims vs evidence" section opens with its integrity summary.
 
 ## The Agenticness Index
 
-Every arena includes the same 9 canonical "agenticness" stories, injected verbatim (never
+Every ranking includes the same 9 canonical "agenticness" stories, injected verbatim (never
 LLM-authored) so agent-readiness is comparable across categories. Defined in
 `pipeline/agentic-stories.ts`:
 
@@ -296,10 +296,10 @@ version will pass the prior verdict as an anchor to reduce this variance at the 
 
 **2026-09-30 judge-model migration.** The fleet was re-judged sonnet-5 → opus-5-5 on
 2026-09-30 after a full pilot (docs/OPUS-5-5-JUDGE-PILOT.md: 74% exact verdict agreement on
-the pilot arena; 7 of 10 manually adjudicated disagreements favored Opus 5.5's reading of the
+the pilot ranking; 7 of 10 manually adjudicated disagreements favored Opus 5.5's reading of the
 rubric). The prompt text did not change (v4 = v3 text). Every verdict flip and score move in
 that wave reflects the judge change, not product changes — the wave is labeled as such in
-each arena's `score-history.jsonl` (`note` field) and summarized with before/after
+each ranking's `score-history.jsonl` (`note` field) and summarized with before/after
 leaderboards in docs/JUDGE-MIGRATION-2026-09-30.md. The stability policy's
 no-new-evidence revert rule was deliberately NOT applied to the migration wave (under a judge
 change every flip cites no new evidence by construction — applying the rule would revert the
@@ -350,7 +350,7 @@ model and folding cross-model disagreement into the interval is listed as future
 
 ## Popularity — a signal, not a score
 
-Product pages, the arena table, and the global rankings pages show a **popularity/momentum
+Product pages, the ranking table, and the global rankings pages show a **popularity/momentum
 chip** — GitHub stars, stars/year, and npm/PyPI weekly downloads, sourced entirely from public
 registries (`api.github.com`, `api.npmjs.org`, `pypistats.org`), no API key required. It answers
 a different question than everything else on this site: not "is this AI-ready" but "will this
@@ -397,9 +397,9 @@ On the site it renders as an outline chip on classified story rows (product page
 
 ## Bias disclosure — the judge is an Anthropic model
 
-**Owner-product disclosure:** the Product Feedback & Intent arena includes Foreloop, built by
+**Owner-product disclosure:** the Product Feedback & Intent ranking includes Foreloop, built by
 Ultrametric Inc — the company that operates Ultrametric. Foreloop is judged by the identical evidence
-rules as every other product (it placed third of four in its own arena as of this writing), its
+rules as every other product (it placed third of four in its own ranking as of this writing), its
 product page carries an affiliation banner, and every one of its verdicts is contestable like
 any other. An adversarial bias audit of Foreloop's verdicts (2026-09-21) found and corrected 14
 overcalls in Foreloop's favor — four quality/tier downgrades on the `agentic-*` cells (including
@@ -410,10 +410,10 @@ relative to peers graded `none` on the same stories. Each corrected verdict carr
 audit note in its rationale, applied in the committed judge cache so re-judges preserve it; the
 corrections moved Foreloop from second to third of four.
 
-**Read this before trusting the `ai-coding` arena's numbers.** The judge model
+**Read this before trusting the `ai-coding` ranking's numbers.** The judge model
 (`claude-opus-5-5` since the 2026-09-30 migration; `claude-sonnet-5` before it) is made by
-Anthropic, and the `ai-coding` arena includes Anthropic's own
-product, Claude Code, which leads that arena's **Overall score** (29.5) as of v2.4 — though on
+Anthropic, and the `ai-coding` ranking includes Anthropic's own
+product, Claude Code, which leads that ranking's **Overall score** (29.5) as of v2.4 — though on
 raw coverage score it now sits second (34.6) behind GitHub Copilot (35.0), a lead that flipped
 when the v2.4 `api-quality` cells were added (Claude Code's own coverage score was 35.2 as of
 the last full audit below, before those cells existed). This is a real conflict of interest and
@@ -422,7 +422,7 @@ we want it visible, not buried.
 What we did about it:
 
 - **We ran an adversarial bias audit** of every `claude-code` verdict scored `full` in the
-  `ai-coding` arena (14 cells), checking each cited evidence excerpt against the claim it
+  `ai-coding` ranking (14 cells), checking each cited evidence excerpt against the claim it
   was used to support, and separately compared every `agentic-*` cell head-to-head against
   `codex`.
 - **One cell was downgraded** as a result: `live-app-debugging` went from `full` (quality 6)
@@ -467,7 +467,7 @@ What we did about it:
 
 **2026-09-30 judge-model migration and own-product audit.** On 2026-09-30 the judge migrated
 from `claude-sonnet-5` to `claude-opus-5-5` (same vendor — the conflict above is unchanged)
-and the whole fleet was re-judged; docs/JUDGE-MIGRATION-2026-09-30.md carries the per-arena
+and the whole fleet was re-judged; docs/JUDGE-MIGRATION-2026-09-30.md carries the per-ranking
 before/after leaderboards. In the pilot, an Anthropic judge model re-graded Anthropic's own
 product upward: claude-code had the second-fewest flips (13) but 10 were upgrades, including
 all three of its `disputed` cells going to `full`. Counter-signals, stated plainly: the
@@ -477,7 +477,7 @@ weight-3 MCP-server cell, matching this section's earlier human-adjudication pre
 Opus also downgraded claude-code (`vulnerability-autofix` full→partial, `agentic-scoped-keys`
 partial→none, plus 17 other unfavorable/lateral moves in the final wave). Because of the
 conflict, every favorable migration flip on an owner/affiliated product (claude-code,
-Foreloop, AFK, the Claude rows in other arenas) was adversarially re-read against its cited
+Foreloop, AFK, the Claude rows in other rankings) was adversarially re-read against its cited
 evidence: on claude-code, 10 of 16 favorable flips were kept and 6 were corrected with dated
 audit notes in their rationales (four reverted to the sonnet-5 baseline where a story
 qualifier or the evidence-relevance rule was not clearly satisfied, two quality-trimmed);

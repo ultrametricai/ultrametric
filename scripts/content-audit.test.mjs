@@ -39,7 +39,7 @@ test('separates declared situation markers, resolves cross-collection links, and
   assert.ok(situation.links.some(item => item.target === 'vendors:arena/tool' && item.state === 'resolved'))
   assert.ok(record(report, 'modules:module').links.some(item => item.target === 'situations:start' && item.state === 'resolved'))
   assert.equal(record(report, 'documents:form').inbound, 1)
-  assert.deepEqual(report.metrics[0], { label: 'Vendor story verdicts', covered: 1, total: 1, meaning: 'Unique product/story cells in the current arena taxonomies, including negative verdicts.' })
+  assert.deepEqual(report.metrics[0], { label: 'Vendor story verdicts', covered: 1, total: 1, meaning: 'Unique product/story cells in the current ranking taxonomies, including negative verdicts.' })
   assert.equal(record(report, 'documents:form').links[0].state, 'external')
   assert.equal(report.declaredCoverage.claim, 'One demonstration only.')
 })

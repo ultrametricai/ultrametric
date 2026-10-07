@@ -117,7 +117,7 @@ export default function ClaimsSection({
             Claims outside our story set ({unmapped.length})
           </summary>
           <p className="mt-1 text-xs text-zinc-500">
-            Real capability claims found in {product.name}&rsquo;s own materials, but no story in this arena&rsquo;s
+            Real capability claims found in {product.name}&rsquo;s own materials, but no story in this ranking&rsquo;s
             taxonomy covers them yet — that&rsquo;s feedback on the taxonomy, not a mark against the product.
           </p>
           <ul className="mt-2 space-y-2">

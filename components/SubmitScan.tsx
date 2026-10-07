@@ -68,7 +68,7 @@ export default function SubmitScan() {
   const c = result?.checks
   const issueUrl = result?.host
     ? `https://github.com/${REPO}/issues/new?title=${encodeURIComponent(`Submit a product: ${result.host}`)}&body=${encodeURIComponent(
-        `Product URL: https://${result.host}\n\nQuick scan (${result.scannedAt ?? ''}):\n- llms.txt: ${c?.llmsTxt.found ? `yes (${c.llmsTxt.bytes} bytes)` : 'no'}\n- openapi.json: ${c?.openapi.found ? 'yes' : 'no'}\n- homepage mentions: ${[c?.homepage.mentionsMcp && 'MCP', c?.homepage.mentionsApi && 'API', c?.homepage.mentionsCli && 'CLI', c?.homepage.mentionsDocs && 'docs'].filter(Boolean).join(', ') || 'none detected'}\n\nSuggested arena: <which arena should this compete in?>\nWhy it belongs: <one or two lines>`,
+        `Product URL: https://${result.host}\n\nQuick scan (${result.scannedAt ?? ''}):\n- llms.txt: ${c?.llmsTxt.found ? `yes (${c.llmsTxt.bytes} bytes)` : 'no'}\n- openapi.json: ${c?.openapi.found ? 'yes' : 'no'}\n- homepage mentions: ${[c?.homepage.mentionsMcp && 'MCP', c?.homepage.mentionsApi && 'API', c?.homepage.mentionsCli && 'CLI', c?.homepage.mentionsDocs && 'docs'].filter(Boolean).join(', ') || 'none detected'}\n\nSuggested ranking: <which ranking should this compete in?>\nWhy it belongs: <one or two lines>`,
       )}`
     : `https://github.com/${REPO}/issues/new?template=request-a-product.yml`
 
@@ -118,7 +118,7 @@ export default function SubmitScan() {
             <CheckRow label="Agents allowed" pass={c.robots.found && !c.robots.blocksAllAgents} detail={!c.robots.found ? 'no robots.txt found' : c.robots.blocksAllAgents ? 'robots.txt disallows everything — agents are locked out' : 'robots.txt does not block all agents'} />
           </ul>
           <p className="mt-4 text-xs text-zinc-500">
-            This is a surface scan of well-known paths only. The full arena evaluation crawls
+            This is a surface scan of well-known paths only. The full ranking evaluation crawls
             docs, collects community evidence, runs probes, and judges ~50 user stories.
           </p>
           <a
@@ -127,7 +127,7 @@ export default function SubmitScan() {
             rel="noopener noreferrer"
             className="mt-4 inline-block rounded-lg bg-emerald-400 px-4 py-2 text-sm font-semibold text-zinc-950 transition hover:bg-emerald-300"
           >
-            Submit for full arena evaluation →
+            Submit for full ranking evaluation →
           </a>
         </div>
       )}

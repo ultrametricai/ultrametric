@@ -11,7 +11,7 @@ import { buildMyStackProducts } from '@/lib/myStackData'
 export const metadata: Metadata = {
   title: 'Battle of the stacks — Ultrametric',
   description:
-    'Put two stacks side by side — curated AI stacks or your own product lists — and compare their evidence aggregates: mean Overall score, agent-readiness, arena coverage, verified interconnects, and the weakest link. Aggregates of published scores, not a judged head-to-head.',
+    'Put two stacks side by side — curated AI stacks or your own product lists — and compare their evidence aggregates: mean Overall score, agent-readiness, ranking coverage, verified interconnects, and the weakest link. Aggregates of published scores, not a judged head-to-head.',
 }
 
 // Static shell, same contract as /compare: the matchup lives in `?a=…&b=…` (a curated stack id
@@ -48,8 +48,8 @@ export default function StackBattlePage() {
             AI stacks
           </Link>{' '}
           or your own product lists. We compare the aggregates the evidence supports — mean Overall
-          score, agent-readiness, arena coverage, verified interconnects, weakest link — and
-          where both sides field one product in the same arena, we link the real judged battle.
+          score, agent-readiness, ranking coverage, verified interconnects, weakest link — and
+          where both sides field one product in the same ranking, we link the real judged battle.
           Have a stack already? Start from{' '}
           <Link href="/my-stack" className="text-emerald-400 underline decoration-emerald-400/40 hover:text-emerald-300">
             My Stack

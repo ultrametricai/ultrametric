@@ -20,7 +20,7 @@ export const dynamic = 'force-static'
 export const metadata: Metadata = {
   title: 'Capability adoption across the industry — Ultrametric',
   description:
-    'How widely each cross-arena capability — official MCP servers, llms.txt, webhooks, self-hosting, 2FA and more — is adopted among every product we track, with evidence-backed verdicts.',
+    'How widely each cross-market capability — official MCP servers, llms.txt, webhooks, self-hosting, 2FA and more — is adopted among every product we track, with evidence-backed verdicts.',
 }
 
 export default function GlobalIndexPage() {
@@ -40,7 +40,7 @@ export default function GlobalIndexPage() {
       <div>
         {/* seed "global": same concept mark as the Explore menu's Capability adoption entry. */}
         <p className="flex items-center gap-2 text-sm uppercase tracking-widest text-emerald-400">
-          <GeoMark seed="global" title="Capability adoption — cross-arena industry stats" size={16} className="text-zinc-500" />
+          <GeoMark seed="global" title="Capability adoption — industry stats across every ranking" size={16} className="text-zinc-500" />
           Global stories
         </p>
         <h1 className="font-display leading-[1.1] mt-1 text-3xl font-bold tracking-tight">
@@ -48,7 +48,7 @@ export default function GlobalIndexPage() {
         </h1>
         <p className="mt-2 max-w-2xl text-zinc-400">
           {stories.length} capabilities that are meaningful for any software product, compared
-          across all {categories.length} arenas and {totalProducts} tracked products. Adoption is
+          across all {categories.length} rankings and {totalProducts} tracked products. Adoption is
           the share of products whose evidence-backed verdict is full or partial — click through
           for every product&rsquo;s verdict and the month-by-month diffusion curve.
         </p>
@@ -86,8 +86,8 @@ export default function GlobalIndexPage() {
         <table className="w-full border-collapse text-sm">
           <thead>
             <tr className={TABLE_HEADER_ROW}>
-              <th scope="col" className="px-3 py-2 font-normal"><span title="An industry-wide capability judged in every arena (MCP server, llms.txt, agent docs…)">Capability</span></th>
-              <th scope="col" className="hidden px-3 py-2 font-normal sm:table-cell"><span title="How many product categories (arenas) this capability was judged across">Arenas</span></th>
+              <th scope="col" className="px-3 py-2 font-normal"><span title="An industry-wide capability judged in every ranking (MCP server, llms.txt, agent docs…)">Capability</span></th>
+              <th scope="col" className="hidden px-3 py-2 font-normal sm:table-cell"><span title="How many product categories (rankings) this capability was judged across">Rankings</span></th>
               <th scope="col" className="hidden px-3 py-2 font-normal sm:table-cell"><span title="Products with a full or partial verdict / all judged products">Products</span></th>
               <th scope="col" className="px-3 py-2 font-normal"><span title="Share of judged products that have this capability today (full or partial)">Adoption</span></th>
             </tr>
@@ -125,7 +125,7 @@ export default function GlobalIndexPage() {
       </div>
 
       <p className="text-xs text-zinc-500">
-        Verdicts are judged per arena against public evidence (see{' '}
+        Verdicts are judged per ranking against public evidence (see{' '}
         <Link href="/methodology" className="text-emerald-400 underline decoration-emerald-400/40 hover:text-emerald-300">
           methodology
         </Link>

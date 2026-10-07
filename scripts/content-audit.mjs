@@ -5,7 +5,7 @@ import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 
 export const collectionNames = {
-  processes: 'Processes', situations: 'Situations', vendors: 'Vendor entries', arenas: 'Arenas',
+  processes: 'Processes', situations: 'Situations', vendors: 'Vendor entries', arenas: 'Rankings',
   documents: 'Open documents', modules: 'Module source files', jurisdictions: 'Jurisdictions',
   rules: 'Rules', sources: 'Sources', resources: 'Resources', artifacts: 'Business artifacts',
 }
@@ -132,9 +132,9 @@ export function buildContentAudit(files, metadata) {
       } else check(vendor, 'Review record', 'unknown', 'No generated review record.')
     }
   }
-  metrics.push({ label: 'Vendor story verdicts', covered: presentCells, total: expectedCells, meaning: 'Unique product/story cells in the current arena taxonomies, including negative verdicts.' })
+  metrics.push({ label: 'Vendor story verdicts', covered: presentCells, total: expectedCells, meaning: 'Unique product/story cells in the current ranking taxonomies, including negative verdicts.' })
   const roadmap = array(json('data/arena-roadmap.json'), 'arena roadmap')
-  metrics.push({ label: 'Arenas in the declared roadmap', covered: roadmap.filter(item => categories.some(category => category.id === item.id)).length, total: roadmap.length, meaning: 'Presence in the category registry; does not establish complete vendor coverage.' })
+  metrics.push({ label: 'Rankings in the declared roadmap', covered: roadmap.filter(item => categories.some(category => category.id === item.id)).length, total: roadmap.length, meaning: 'Presence in the category registry; does not establish complete vendor coverage.' })
 
   const documents = json('open-documents/registry.json')
   if (!Number.isInteger(documents.review_window_days) || documents.review_window_days <= 0) throw new Error('Documents require a positive review_window_days.')

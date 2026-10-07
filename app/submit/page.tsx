@@ -4,7 +4,7 @@ import SubmitScan from '@/components/SubmitScan'
 export const metadata: Metadata = {
   title: 'Test my product — Ultrametric',
   description:
-    'Paste your product URL for an instant agent-readiness quick scan (llms.txt, OpenAPI, MCP signals), then submit it for a full evidence-based arena evaluation.',
+    'Paste your product URL for an instant agent-readiness quick scan (llms.txt, OpenAPI, MCP signals), then submit it for a full evidence-based ranking evaluation.',
 }
 
 export default function SubmitPage() {
@@ -14,8 +14,8 @@ export default function SubmitPage() {
         <h1 className="font-display leading-[1.1] text-3xl font-bold tracking-tight">Test my product</h1>
         <p className="mt-3 text-zinc-400">
           Paste a product URL and we&rsquo;ll run an instant agent-readiness quick scan — the
-          same well-known-path checks our pipeline probes first. Then submit it to compete in an
-          arena with a full evidence-based evaluation.
+          same well-known-path checks our pipeline probes first. Then submit it to compete in a
+          ranking with a full evidence-based evaluation.
         </p>
       </div>
       <SubmitScan />

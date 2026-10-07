@@ -1,6 +1,6 @@
 # The Founder-Ops Wave
 
-**Status: roadmap.** The `payroll` arena (Payroll & HR Ops) is the opener of a wave of arenas
+**Status: roadmap.** The `payroll` ranking (Payroll & HR Ops) is the opener of a wave of rankings
 covering the operational stack every startup runs on: money, people, customers, and paperwork.
 The thesis is the same one that drives the whole site — in the AI era the deciding question for
 ops software is no longer just "does it have the feature?" but *"can my agent drive it?"* —
@@ -8,18 +8,18 @@ and founder-ops tools vary wildly on that axis today. Some (Stripe, HubSpot, Pos
 publish MCP servers and OpenAPI specs; others (most PEOs, most insurance brokers) have no
 public API at all. That spread makes for decisive, non-degenerate rankings.
 
-Each proposed arena below lists: the arena id we'd register in `data/categories.json`, the
+Each proposed ranking below lists: the ranking id we'd register in `data/categories.json`, the
 product slate, three decisive stories (the cells most likely to split the field), and
 agent-access notes (who has real APIs/MCP/webhooks **today**, as of early September 2026 —
 re-verify with the probe stage before building; this table goes stale fast).
 
-Conventions carried over from existing arenas: every category gets the 29 canonical
+Conventions carried over from existing rankings: every category gets the 29 canonical
 agenticness/openness/automation/privacy stories injected by `pipeline/agentic-stories.ts`;
 personas should include `founder`, `ops`, and `ai-native`; weights 3 = core daily need.
 
 ## Priority order (proposed)
 
-1. **accounting** — highest demand-side overlap with payroll and banking arenas already live;
+1. **accounting** — highest demand-side overlap with payroll and banking rankings already live;
    QuickBooks/Xero API depth vs AI-native bookkeepers is the single most contested founder-ops
    question.
 2. **crm** — biggest product spread (Attio's modern API + MCP vs Salesforce's enterprise
@@ -65,7 +65,7 @@ both been piloting them.
 
 **Agent-access notes:** Carta has a partner/developer API (restricted access — good test of the
 "public vs partner-gated API" distinction our canon stories draw). Pulley and AngelList expose
-less; expect low agentReady scores across the board — that's the story of this arena, and worth
+less; expect low agentReady scores across the board — that's the story of this ranking, and worth
 publishing precisely because nobody has planted the agent-access flag yet.
 
 ## 3. Incorporation & legal — `incorporation`
@@ -89,9 +89,9 @@ it once, refresh rarely.
 
 **Products:** Ramp, Brex, Airbase, Expensify, Navan (optional).
 
-Note: Ramp and Brex already compete in `startup-banking`. This arena judges the *expense
+Note: Ramp and Brex already compete in `startup-banking`. This ranking judges the *expense
 workflow* axis (receipts, policies, reimbursements, travel) — same products, different story
-set; precedent for products appearing in two arenas.
+set; precedent for products appearing in two rankings.
 
 **Three decisive stories:**
 - As an ops user, I can enforce expense policy at swipe time with per-category limits rather
@@ -121,7 +121,7 @@ openness lens a real contender).
 **Agent-access notes:** HubSpot ships an official MCP server and deep API + webhooks. Attio is
 API-first with a modern REST API, webhooks, and MCP. Salesforce has the deepest enterprise API
 surface (REST/SOAP/Bulk/GraphQL, Agentforce) but the worst time-to-first-call. Twenty is
-open-source (self-host + full export = openness sweep). This arena has the richest evidence
+open-source (self-host + full export = openness sweep). This ranking has the richest evidence
 base of the whole wave.
 
 ## 6. Support — `support`
@@ -137,7 +137,7 @@ base of the whole wave.
   can triage before a human sees the ticket.
 
 **Agent-access notes:** Plain is API-first (GraphQL, built for programmatic support) — the
-Attio of this arena. Intercom has a strong REST API + webhooks + Fin AI agent (agenticApp
+Attio of this ranking. Intercom has a strong REST API + webhooks + Fin AI agent (agenticApp
 heavyweight). Zendesk has a mature API but legacy ergonomics. Chatwoot is open-source
 (self-host). Strong spread on both agentReady and agenticApp axes.
 
@@ -153,9 +153,9 @@ heavyweight). Zendesk has a mature API but legacy ergonomics. Chatwoot is open-s
 - As an ai-native user, I can self-host my scheduling stack and export every booking.
 
 **Agent-access notes:** Cal.com is the canonical AI-era scheduling product: open source, public
-API v2, official MCP server, llms.txt-friendly docs — likely arena winner and a great
+API v2, official MCP server, llms.txt-friendly docs — likely ranking winner and a great
 "openness sweeps" showcase. Calendly has a solid API + webhooks but closed source. Small,
-cheap arena to build (2-4 products); good fast-follow after payroll.
+cheap ranking to build (2-4 products); good fast-follow after payroll.
 
 ## 8. E-signature — `e-signature`
 
@@ -171,7 +171,7 @@ cheap arena to build (2-4 products); good fast-follow after payroll.
 
 **Agent-access notes:** Dropbox Sign's API is famously developer-friendly; DocuSign's is
 enterprise-deep with an official OpenAPI spec on GitHub; Documenso is open-source (openness
-lens contender). All three have real APIs — this arena differentiates on api-quality, not
+lens contender). All three have real APIs — this ranking differentiates on api-quality, not
 existence.
 
 ## 9. Product analytics — `product-analytics`
@@ -188,7 +188,7 @@ existence.
 
 **Agent-access notes:** PostHog is the AI-era benchmark: open source, llms.txt, official MCP
 server, full API, self-host. Amplitude and Mixpanel have strong APIs and shipping AI
-assistants but are closed. Probably the *easiest* arena in the wave to score well (dense docs,
+assistants but are closed. Probably the *easiest* ranking in the wave to score well (dense docs,
 heavy dev audience) — a strong candidate to build second.
 
 ## 10. Business insurance — `startup-insurance`
@@ -205,7 +205,7 @@ heavy dev audience) — a strong candidate to build second.
 
 **Agent-access notes:** Weakest agent-access category in the wave — Vouch and Embroker are
 digital-first brokers but publish no public APIs. Expect near-zero agentReady across the
-board; publish anyway as the baseline "pre-AI-era" contrast arena, and to pressure the
+board; publish anyway as the baseline "pre-AI-era" contrast ranking, and to pressure the
 category. Evidence will lean on marketing + community tiers; keep expectations (and refresh
 cadence) low.
 
@@ -224,7 +224,7 @@ cadence) low.
 
 **Agent-access notes:** Stripe has the strongest agent surface in all of software (API, MCP,
 llms.txt, agent toolkits); Adyen and Square both publish OpenAPI specs and webhooks; SumUp has
-a public API (thinner). This is also the beachhead for the broader `payments` arena already in
+a public API (thinner). This is also the beachhead for the broader `payments` ranking already in
 the queue — consider building `payments` first and splitting POS out later if the story sets
 diverge (precedent: the planned mobile-dev split).
 
@@ -233,16 +233,16 @@ diverge (precedent: the planned mobile-dev split).
 ## Cross-cutting notes
 
 - **Shared-product policy:** Ramp/Brex (banking + expense), Stripe (payments + POS +
-  incorporation) will appear in multiple arenas. Stories must be arena-scoped so verdicts
-  don't leak across arenas; ids stay globally unique per category directory, so no code
+  incorporation) will appear in multiple rankings. Stories must be ranking-scoped so verdicts
+  don't leak across rankings; ids stay globally unique per category directory, so no code
   changes needed.
-- **Probe-first triage:** before committing to any arena, run the keyless probes (llms.txt,
+- **Probe-first triage:** before committing to any ranking, run the keyless probes (llms.txt,
   OpenAPI conventions, MCP/CLI links) across the slate. If fewer than 2 products have any
-  positive probe, the arena will be degenerate on the agent axes — publish only with a strong
+  positive probe, the ranking will be degenerate on the agent axes — publish only with a strong
   editorial reason (see startup-insurance).
-- **Vertical AI-native stories:** every arena above needs ≥3 domain ai-native stories (the
-  payroll arena's pattern: agent previews the run / agent onboards the hire / agent reconciles
+- **Vertical AI-native stories:** every ranking above needs ≥3 domain ai-native stories (the
+  payroll ranking's pattern: agent previews the run / agent onboards the hire / agent reconciles
   the ledger). Write them at authoring time; they're the cells readers quote.
 - **Refresh cadence:** MCP server availability is changing monthly across these vendors.
   Agent-access notes in this doc are point-in-time (2026-09) — the probe + judge pipeline, not
-  this doc, is the source of truth once an arena ships.
+  this doc, is the source of truth once a ranking ships.

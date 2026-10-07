@@ -57,9 +57,9 @@ export function storyPassStats(
 // honest mechanical truth — weight is the multiplier lib/scoring.ts applies) plus how much of
 // the field fully delivers it today, so a buyer can tell table stakes from frontier asks.
 const PRIORITY_WHY: Record<Priority, string> = {
-  'must-have': 'Core requirement — weighs 3× in arena scoring',
-  'should-have': 'Important, not disqualifying — weighs 2× in arena scoring',
-  'nice-to-have': 'Differentiator, not a dealbreaker — weighs 1× in arena scoring',
+  'must-have': 'Core requirement — weighs 3× in ranking scoring',
+  'should-have': 'Important, not disqualifying — weighs 2× in ranking scoring',
+  'nice-to-have': 'Differentiator, not a dealbreaker — weighs 1× in ranking scoring',
 }
 
 export function checklistWhy(weight: number, stats: { full: number; applicable: number }): string {

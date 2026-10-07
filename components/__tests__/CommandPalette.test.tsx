@@ -49,7 +49,7 @@ async function openPalette() {
   fireEvent.click(screen.getByRole('button', { name: 'Open search' }))
   // The index is fetched on open — wait for the first entry to render before driving the keys.
   await screen.findByText('AI Coding Agents')
-  return screen.getByPlaceholderText('Search arenas, products, stories…')
+  return screen.getByPlaceholderText('Search rankings, products, stories…')
 }
 
 describe('CommandPalette keyboard navigation', () => {
@@ -79,7 +79,7 @@ describe('CommandPalette keyboard navigation', () => {
   it('Escape closes the palette without navigating', async () => {
     const input = await openPalette()
     fireEvent.keyDown(input, { key: 'Escape' })
-    expect(screen.queryByPlaceholderText('Search arenas, products, stories…')).toBeNull()
+    expect(screen.queryByPlaceholderText('Search rankings, products, stories…')).toBeNull()
     expect(push).not.toHaveBeenCalled()
   })
 })
@@ -138,7 +138,7 @@ describe('lazy index fetch (docs/BUILD-SIZE.md problem 2, 2026-10-02)', () => {
     expect(fetchMock).not.toHaveBeenCalled()
     const trigger = screen.getByRole('button', { name: 'Open search' })
     fireEvent.click(trigger)
-    const input = await screen.findByPlaceholderText('Search arenas, products, stories…')
+    const input = await screen.findByPlaceholderText('Search rankings, products, stories…')
     await screen.findByText('AI Coding Agents')
     expect(fetchMock).toHaveBeenCalledTimes(1)
     expect(fetchMock).toHaveBeenCalledWith('/search-index.json')
@@ -165,7 +165,7 @@ describe('lazy index fetch (docs/BUILD-SIZE.md problem 2, 2026-10-02)', () => {
     render(<CommandPalette />)
     const trigger = screen.getByRole('button', { name: 'Open search' })
     fireEvent.click(trigger)
-    const input = await screen.findByPlaceholderText('Search arenas, products, stories…')
+    const input = await screen.findByPlaceholderText('Search rankings, products, stories…')
     await screen.findByText(/Search is unavailable/)
     expect(fetchMock).toHaveBeenCalledTimes(1)
     // Reopen retries: the default mock (set in beforeEach) now resolves with the index.
@@ -187,7 +187,7 @@ describe('lazy index fetch (docs/BUILD-SIZE.md problem 2, 2026-10-02)', () => {
     fetchMock.mockReturnValue(new Promise<Response>((r) => { resolve = r }))
     render(<CommandPalette />)
     fireEvent.click(screen.getByRole('button', { name: 'Open search' }))
-    const input = screen.getByPlaceholderText('Search arenas, products, stories…')
+    const input = screen.getByPlaceholderText('Search rankings, products, stories…')
     fireEvent.change(input, { target: { value: 'jev' } })
     resolve(indexResponse(ENTRIES))
     await waitFor(() => expect(screen.queryByText('Loading search…')).toBeNull())

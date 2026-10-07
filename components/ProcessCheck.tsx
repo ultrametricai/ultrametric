@@ -75,7 +75,7 @@ export default function ProcessCheck({
       <div className="rounded-2xl border border-dashed border-zinc-800 p-6 text-sm text-zinc-400">
         <p>
           You haven&rsquo;t set up your stack yet — pick the vendors you actually use (several
-          per arena is fine) and this page will score them per step against the market&rsquo;s
+          per ranking is fine) and this page will score them per step against the market&rsquo;s
           best.
         </p>
         <Link

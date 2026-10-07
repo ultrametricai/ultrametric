@@ -70,7 +70,7 @@ export default function MethodologyPage() {
           <p className="font-semibold text-zinc-300">Bias disclosure</p>
           <p className="mt-1">
             The judge is <span className={CODE}>claude-opus-5-5</span>, made by Anthropic; the{' '}
-            <span className={CODE}>ai-coding</span> arena includes its own product (migrated from{' '}
+            <span className={CODE}>ai-coding</span> ranking includes its own product (migrated from{' '}
             <span className={CODE}>claude-sonnet-5</span> 2026-09-30 with every favorable own-product flip
             adversarially audited). Full audit writeups on GitHub.
           </p>
@@ -147,7 +147,7 @@ export default function MethodologyPage() {
         <p className="mt-3 max-w-2xl text-sm text-zinc-400">
           One number per product for &quot;does the vendor&apos;s website deliver what it
           promises?&quot;: we extract capability claims from the vendor&apos;s own docs/GitHub
-          materials, map each onto this arena&apos;s stories, and reconcile them against our
+          materials, map each onto this ranking&apos;s stories, and reconcile them against our
           judge&apos;s independent verdicts.
         </p>
         <p className="mt-3 max-w-2xl font-mono text-xs text-zinc-300">
@@ -160,7 +160,7 @@ export default function MethodologyPage() {
             <tr><td className="py-1.5 pr-3 text-emerald-400">verified</td><td className="py-1.5 text-zinc-300">claim maps to a story with a probed/community-backed full or partial verdict — counts fully</td></tr>
             <tr><td className="py-1.5 pr-3 text-zinc-400">unverified</td><td className="py-1.5 text-zinc-300">full/partial verdict, but only the vendor&apos;s own claim backs it — inflates the denominator only</td></tr>
             <tr><td className="py-1.5 pr-3 text-red-400">contradicted</td><td className="py-1.5 text-zinc-300">our judge found disputed/none/na — each one cancels two verified claims (overpromising is worse than staying silent); the score is clamped at 0</td></tr>
-            <tr><td className="py-1.5 pr-3 text-zinc-500">untestable</td><td className="py-1.5 text-zinc-300">outside this arena&apos;s story taxonomy — excluded from both numerator and denominator (a taxonomy gap is never a mark for or against the product)</td></tr>
+            <tr><td className="py-1.5 pr-3 text-zinc-500">untestable</td><td className="py-1.5 text-zinc-300">outside this ranking&apos;s story taxonomy — excluded from both numerator and denominator (a taxonomy gap is never a mark for or against the product)</td></tr>
           </tbody>
         </table>
         <p className="mt-3 text-xs text-zinc-400">

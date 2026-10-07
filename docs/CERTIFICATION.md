@@ -81,7 +81,7 @@ earned level means the same thing either way; who ran the suite is part of the p
 certification — the chip disappears, `/certified` moves it to "Lapsed", the committed report
 remains in history. Re-certifying is running the same command again.
 
-Only products already listed in an arena can hold a registry entry (the loader enforces it).
+Only products already listed in a ranking can hold a registry entry (the loader enforces it).
 Not listed yet? [Request the product](../.github/ISSUE_TEMPLATE/request-a-product.yml) first.
 
 ## 3. Badges + display
@@ -102,7 +102,7 @@ Not listed yet? [Request the product](../.github/ISSUE_TEMPLATE/request-a-produc
   certifies, Prove-It disputes), but a maintainer re-run that contradicts a submitted report
   is discussed in the open, on the submission issue.
 - **Our own products play by the same rules.** Anything Ultrametric ships that appears in an
-  arena (see `affiliation` in `products.json`) can only be certified through this exact
+  ranking (see `affiliation` in `products.json`) can only be certified through this exact
   protocol, marked `initiatedBy: 'maintainer'` with the report committed like anyone else's.
 - **A certification is not a ranking.** It never moves an Overall score, a verdict, or a
   leaderboard position — it is a conformance statement about agent-facing surfaces on a given

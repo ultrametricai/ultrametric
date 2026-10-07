@@ -16,7 +16,7 @@ import { loadChains, loadProcesses, phaseRank } from '@/lib/processes'
 // product page.
 export const metadata: Metadata = {
   title: 'House icon set — Ultrametric',
-  description: 'The house geometric icon set for founder processes and arenas: every glyph, its area hue, and the emoji pick that guided it.',
+  description: 'The house geometric icon set for founder processes and rankings: every glyph, its area hue, and the emoji pick that guided it.',
   robots: { index: false, follow: false },
 }
 
@@ -68,7 +68,7 @@ export default function ProcessIconGalleryPage() {
         <p className="text-sm uppercase tracking-widest text-emerald-400">experiments · unlisted</p>
         <h1 className="font-display mt-1 text-3xl font-bold leading-[1.1] tracking-tight">House icon set</h1>
         <p className="mt-2 max-w-2xl text-zinc-400">
-          The house geometric set replacing the curated emoji across the founder-process corpus and the arenas:{' '}
+          The house geometric set replacing the curated emoji across the founder-process corpus and the rankings:{' '}
           {glyphEntries.length} hand-authored duotone glyphs on a 24×24 grid, one accent hue per area so related concepts
           read as a family. Each tile shows the review size, the 16px table size, the glyph id, and the emoji pick it was
           drawn from. Source of truth: <span className="font-mono text-zinc-300">components/icons/ProcessIcon.tsx</span> +{' '}
@@ -114,9 +114,9 @@ export default function ProcessIconGalleryPage() {
       ))}
 
       <section>
-        <h2 className="font-display text-xl font-semibold">Arenas</h2>
+        <h2 className="font-display text-xl font-semibold">Rankings</h2>
         <p className="mt-1 text-sm text-zinc-500">
-          The arena set (founder ask 2026-10-01): one glyph per arena — reused from the process set where the concept
+          The ranking set (founder ask 2026-10-01): one glyph per ranking — reused from the process set where the concept
           matches, newly drawn in the same language where it doesn&apos;t — one hue per Rankings-menu section
           (lib/arenaIcons.ts). Plus the menu&apos;s leading Overall entry.
         </p>

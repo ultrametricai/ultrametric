@@ -275,8 +275,8 @@ export default function StepVendorRow({
     <div
       className="mt-1.5 flex flex-wrap items-center gap-1.5 text-[11px]"
       title={`Vendors ranked for THIS step, highest score first — scored from their judged verdicts on the ${storyCount} stories mapped to it${
-        hasExtras ? '; score tooltips name the arena whose evidence produced each number' : ''
-      } — not the arena's overall Overall score. Click a vendor chip to see the whole process via it.`}
+        hasExtras ? '; score tooltips name the ranking whose evidence produced each number' : ''
+      } — not the ranking's overall Overall score. Click a vendor chip to see the whole process via it.`}
     >
       {ordered.map((e) => (
         <VendorChipButton
@@ -310,7 +310,7 @@ export default function StepVendorRow({
           title="See the whole judged market for this step's function"
           className="whitespace-nowrap text-[10px] text-zinc-500 transition hover:text-emerald-300"
         >
-          full arena →
+          full ranking →
         </Link>
       )}
     </div>

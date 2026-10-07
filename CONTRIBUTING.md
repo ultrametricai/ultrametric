@@ -2,7 +2,7 @@
 
 Ultrametric's whole premise is that every score should trace back to cited evidence, and
 that anyone can contest a verdict. This document covers the contribution paths — contest
-a verdict, add evidence, [add your product](#add-your-vendor) to an arena,
+a verdict, add evidence, [add your product](#add-your-vendor) to a ranking,
 [submit a stack](#4-submit-a-stack), [add a process](#add-a-process),
 [add a jurisdiction](#add-a-jurisdiction), or [add an open module](#add-an-open-module) —
 plus local setup and style rules.
@@ -133,7 +133,7 @@ The judge cache (`pipeline/cache/judge/`) **is committed** to the repo, keyed by
 
 ## 3. Add your product
 
-Founders and vendors: this is how you get your product into an arena — and how you make sure
+Founders and vendors: this is how you get your product into a ranking — and how you make sure
 the pipeline *sees* what you've built. Scores only credit cited evidence, so the single
 biggest failure mode is not "the judge was harsh," it's "the crawl never saw your best pages."
 (Real precedent: both Asana and Linear sat at API-quality **0** — despite shipping OpenAPI specs
@@ -143,18 +143,18 @@ and full rate-limit docs — until their deep developer-docs URLs were added to 
 
 Go to [/submit](https://ultrametric.ai/submit), paste your product URL, and run the
 instant agent-readiness scan (llms.txt / OpenAPI / MCP / robots signals). The result page links
-to a **prefilled GitHub issue** with the scan attached — add which arena you belong in and why,
+to a **prefilled GitHub issue** with the scan attached — add which ranking you belong in and why,
 and you're done. A maintainer takes it from there.
 
 ### 3b. PR path: add yourself directly
 
-One file gets you in: append an entry to `data/<arena>/products.json` (arena ids live in
-`data/categories.json`; if no arena fits, open a [Submit a product](./.github/ISSUE_TEMPLATE/request-a-product.yml)
+One file gets you in: append an entry to `data/<arena>/products.json` (ranking ids live in
+`data/categories.json`; if no ranking fits, open a [Submit a product](./.github/ISSUE_TEMPLATE/request-a-product.yml)
 issue proposing a new one instead). A real, current entry for shape reference:
 
 ```jsonc
 {
-  "id": "linear",                      // lowercase, stable, unique within the arena
+  "id": "linear",                      // lowercase, stable, unique within the ranking
   "name": "Linear",
   "vendor": "Linear Orbit, Inc.",
   "type": "commercial",                // or "oss"
@@ -192,7 +192,7 @@ you didn't list scores `none`/0.
 `urls.extra` is where you point us at the deep pages a homepage crawl misses, in rough priority:
 
 1. **API reference** (and GraphQL/OpenAPI reference pages) — feeds the API-quality stories
-2. **Rate limits / quotas** — its own scored story in most arenas
+2. **Rate limits / quotas** — its own scored story in most rankings
 3. **Versioning + deprecation policy** — ditto
 4. **Webhooks, OAuth/auth, sandbox/test-mode docs**
 5. **Integrations/marketplace directory** — feeds the integration graph
@@ -245,18 +245,18 @@ certification).
 
 ## 4. Submit a stack
 
-[/stacks](https://ultrametric.ai/stacks) is proven toolchains to use and improve — cross-arena
-stacks whose scored slots resolve live from the arena rankings, composed from curated,
+[/stacks](https://ultrametric.ai/stacks) is proven toolchains to use and improve — cross-market
+stacks whose scored slots resolve live from the published rankings, composed from curated,
 committed data (`lib/aiStacks.ts`). If you run a toolchain founders should see, propose it via
 the [Submit a stack](https://github.com/ultrametricai/ultrametric/issues/new?template=submit-stack.yml)
 issue form (the "Submit your stack" link on /stacks opens the same form). It asks for:
 
 - the stack's name (and who it's for),
-- the picks per arena (arena id + product id, one line each; unjudged layers marked editorial),
+- the picks per ranking (ranking id + product id, one line each; unjudged layers marked editorial),
 - what you shipped with it — the proof it's proven, not a wishlist,
 - an affiliations disclosure (any relationship to any pick; "none" is an answer).
 
-Submissions feed curation review — a maintainer checks the picks against the arena
+Submissions feed curation review — a maintainer checks the picks against the ranking
 leaderboards and composes accepted stacks into the committed data by PR. The form never
 auto-publishes anything.
 

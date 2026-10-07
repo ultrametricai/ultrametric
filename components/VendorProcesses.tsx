@@ -32,7 +32,7 @@ const VISIBLE_ROWS = 8
 // own derivation — the actual best step and its real mapped-story count (founder 2026-10-05:
 // never a canned sentence where the concrete counts exist).
 const BEST_SCORE_TITLE =
-  'Highest judged step score /100 for this process — derived purely from the arena\'s judged verdicts'
+  'Highest judged step score /100 for this process — derived purely from the ranking\'s judged verdicts'
 
 function bestScoreTitle(a: VendorProcessAppearance): string {
   // servedSteps are best-first; computer-use-only appearances carry a score but no served
@@ -58,7 +58,7 @@ function roleText(a: VendorProcessAppearance): string {
   if (a.leaderboardRank !== null) {
     parts.push(`#${a.leaderboardRank} for this process · ${a.stepsServed}/${a.rankableSteps} steps`)
   } else if (a.kinds.includes('cross-arena')) {
-    parts.push('cross-arena option')
+    parts.push('cross-market option')
   }
   if (parts.length === 0 && a.kinds.includes('api-calls')) parts.push('grounded API calls')
   if (parts.length === 0 && a.kinds.includes('computer-use')) parts.push('🖥 computer-use attempt')
@@ -69,7 +69,7 @@ function roleText(a: VendorProcessAppearance): string {
 function roleTitle(a: VendorProcessAppearance): string {
   const why: Record<string, string> = {
     'step-ranked': 'it has a judged step score on the process\'s own step rankings',
-    'cross-arena': 'it surfaces on a step as an evidence-gated cross-arena option',
+    'cross-arena': 'it surfaces on a step as an evidence-gated cross-market option',
     'computer-use': 'it could attempt a manual step of this process today (judged computer-use evidence — not coverage)',
     canonical: 'a step names it as the canonical call target',
     'api-calls': 'it has grounded per-step API calls on this process',
@@ -169,7 +169,7 @@ function AppearanceTable({ rows }: { rows: VendorProcessAppearance[] }) {
           <tr className={TABLE_HEADER_ROW}>
             <th scope="col" className="px-2 py-1.5 font-normal"><span title="The founder process this product comes up in — links to its process page">Process</span></th>
             <th scope="col" className="px-2 py-1.5 font-normal"><span title="Company-lifecycle phase the process belongs to">Phase</span></th>
-            <th scope="col" className="px-2 py-1.5 font-normal"><span title="How this product comes up: its process-leaderboard rank and step coverage, or a cross-arena / computer-use / canonical role">Role</span></th>
+            <th scope="col" className="px-2 py-1.5 font-normal"><span title="How this product comes up: its process-leaderboard rank and step coverage, or a cross-market / computer-use / canonical role">Role</span></th>
             <th scope="col" className="px-2 py-1.5 font-normal"><span title={BEST_SCORE_TITLE}>Best step fit</span></th>
           </tr>
         </thead>

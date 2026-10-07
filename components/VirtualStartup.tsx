@@ -1582,7 +1582,7 @@ export default function VirtualStartup({
                 data-testid="vs-vendor-order-judged"
                 aria-pressed={vendorOrdering === 'judged'}
                 onClick={() => setVendorOrdering('judged')}
-                title="Judged — the arena's agent-readiness ladder, exactly as the rankings pages order it"
+                title="Judged — the ranking's agent-readiness ladder, exactly as the rankings pages order it"
                 className={`rounded-full border px-2 py-0.5 text-[11px] transition ${
                   vendorOrdering === 'judged'
                     ? 'border-emerald-400/60 bg-emerald-400/10 text-emerald-300'
@@ -2115,10 +2115,10 @@ export default function VirtualStartup({
                           )}
                           <Link
                             href={`/arena/${row.top.arenaId}`}
-                            title={`${row.top.arenaName} — the judged arena behind this pick`}
+                            title={`${row.top.arenaName} — the judged ranking behind this pick`}
                             className="hover:text-emerald-300"
                           >
-                            arena →
+                            ranking →
                           </Link>
                         </span>
                       </>

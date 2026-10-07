@@ -11,7 +11,7 @@ import raw from '@/data/experiments/processors.json'
 export const metadata: Metadata = {
   title: 'Processor spec table — Ultrametric',
   description:
-    'Raw vendor-spec annex of the Processors arena: current CPU/SoC specs side by side, curated from vendor spec sheets with per-cell sourcing.',
+    'Raw vendor-spec annex of the Processors ranking: current CPU/SoC specs side by side, curated from vendor spec sheets with per-cell sourcing.',
 }
 
 export default function ProcessorsSpecsPage() {
@@ -19,8 +19,8 @@ export default function ProcessorsSpecsPage() {
     <div className="space-y-8">
       <div>
         <p className="text-sm uppercase tracking-widest text-emerald-400">
-          <Link href="/arena/processors" title="Back to the evidence-judged Processors arena" className="transition hover:text-emerald-300">
-            Processors arena
+          <Link href="/arena/processors" title="Back to the evidence-judged Processors ranking" className="transition hover:text-emerald-300">
+            Processors ranking
           </Link>
           {' '}· specs annex
         </p>
@@ -30,7 +30,7 @@ export default function ProcessorsSpecsPage() {
           and Lunar Lake, and Qualcomm&rsquo;s Snapdragon X2 — on the raw numbers vendors actually publish. For the
           evidence-judged leaderboard over the same roster (user stories, citations, verdicts), see the{' '}
           <Link href="/arena/processors" className="text-emerald-300 underline decoration-zinc-700 underline-offset-2 hover:text-emerald-200">
-            Processors arena
+            Processors ranking
           </Link>
           .
         </p>

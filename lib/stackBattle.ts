@@ -143,7 +143,7 @@ export function battleVerdict(
     a.possiblePairs > 0 && b.possiblePairs > 0
       ? `; verified interconnects ${a.verifiedInterconnects}/${a.possiblePairs} vs ${b.verifiedInterconnects}/${b.possiblePairs}`
       : ''
-  return `${head}${interconnect} — an aggregate of per-arena evidence scores, not a judged head-to-head.`
+  return `${head}${interconnect} — an aggregate of per-ranking evidence scores, not a judged head-to-head.`
 }
 
 // ---- share-URL state (?a=…&b=…) ----

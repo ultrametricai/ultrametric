@@ -11,7 +11,7 @@ import raw from '@/data/experiments/gpus.json'
 export const metadata: Metadata = {
   title: 'GPU spec table — Ultrametric',
   description:
-    'Raw vendor-spec annex of the GPUs & AI Accelerators arena: current consumer and datacenter GPU specs side by side, curated from vendor spec sheets with per-cell sourcing.',
+    'Raw vendor-spec annex of the GPUs & AI Accelerators ranking: current consumer and datacenter GPU specs side by side, curated from vendor spec sheets with per-cell sourcing.',
 }
 
 export default function GpusSpecsPage() {
@@ -19,8 +19,8 @@ export default function GpusSpecsPage() {
     <div className="space-y-8">
       <div>
         <p className="text-sm uppercase tracking-widest text-emerald-400">
-          <Link href="/arena/gpus" title="Back to the evidence-judged GPUs & AI Accelerators arena" className="transition hover:text-emerald-300">
-            GPUs &amp; AI Accelerators arena
+          <Link href="/arena/gpus" title="Back to the evidence-judged GPUs & AI Accelerators ranking" className="transition hover:text-emerald-300">
+            GPUs &amp; AI Accelerators ranking
           </Link>
           {' '}· specs annex
         </p>
@@ -30,7 +30,7 @@ export default function GpusSpecsPage() {
           workstations, and H200 / B200 / Instinct MI355X in the datacenter — on the raw numbers vendors publish.
           For the evidence-judged leaderboard over the same roster (user stories, citations, verdicts), see the{' '}
           <Link href="/arena/gpus" className="text-emerald-300 underline decoration-zinc-700 underline-offset-2 hover:text-emerald-200">
-            GPUs &amp; AI Accelerators arena
+            GPUs &amp; AI Accelerators ranking
           </Link>
           .
         </p>

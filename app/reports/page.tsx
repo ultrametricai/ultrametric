@@ -16,7 +16,7 @@ export const dynamic = 'force-static'
 export const metadata: Metadata = {
   title: 'Weekly reports — Ultrametric',
   description:
-    'Weekly Arena Reports — the last 7 days of rank flips, Overall score movers, new arenas and close races, generated from the committed score history. Copy-paste ready for a newsletter.',
+    'Weekly Rankings Reports — the last 7 days of rank flips, Overall score movers, new rankings and close races, generated from the committed score history. Copy-paste ready for a newsletter.',
 }
 
 interface Report {
@@ -42,9 +42,9 @@ export default function ReportsPage() {
     <div className="mx-auto max-w-3xl space-y-8">
       <div>
         <p className="text-sm uppercase tracking-widest text-emerald-400">Weekly reports</p>
-        <h1 className="font-display leading-[1.1] mt-1 text-3xl font-bold tracking-tight">The Weekly Arena Report</h1>
+        <h1 className="font-display leading-[1.1] mt-1 text-3xl font-bold tracking-tight">The Weekly Rankings Report</h1>
         <p className="mt-2 max-w-2xl text-zinc-400">
-          One generated markdown report per week — the biggest Overall score movers, rank flips, new arenas and
+          One generated markdown report per week — the biggest Overall score movers, rank flips, new rankings and
           products, and the current close races, all derived from the committed score history. Each report lives{' '}
           <a
             href={`https://github.com/${REPO}/tree/main/reports`}

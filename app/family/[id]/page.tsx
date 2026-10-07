@@ -29,7 +29,7 @@ export async function generateMetadata({
   return {
     title: `${family ? family.name : id}, product by product — Ultrametric`,
     description: family
-      ? `${family.name}'s product lines broken out one by one: which are judged in an Ultrametric arena (with live rank and Overall score) and which have no arena yet.`
+      ? `${family.name}'s product lines broken out one by one: which are judged in an Ultrametric ranking (with live rank and Overall score) and which have no ranking yet.`
       : undefined,
   }
 }
@@ -97,7 +97,7 @@ export default async function FamilyPage({ params }: { params: Promise<{ id: str
         </h1>
         <p className="mt-2 max-w-2xl text-zinc-400">{family.tagline}</p>
         <p className="mt-3 text-sm text-zinc-500">
-          {judgedCount} of {family.subProducts.length} lines judged in an arena
+          {judgedCount} of {family.subProducts.length} lines judged in a ranking
           {parent && (
             <>
               {' · flagship: '}
@@ -195,7 +195,7 @@ export default async function FamilyPage({ params }: { params: Promise<{ id: str
                       all — never a placeholder number. `note` explains why (no fitting arena,
                       or already scored inside the parent's own entry). */}
                   <p className="text-sm italic text-zinc-500">
-                    {sub.note ?? 'Not yet judged — no arena where it competes.'}
+                    {sub.note ?? 'Not yet judged — no ranking where it competes.'}
                   </p>
                 </div>
               )}
@@ -205,8 +205,8 @@ export default async function FamilyPage({ params }: { params: Promise<{ id: str
       </div>
 
       <p className="text-xs text-zinc-500">
-        A judged line competes in its arena on the same stories as every rival — family
-        membership never affects scoring. Lines without a fitting arena stay unscored until one
+        A judged line competes in its ranking on the same stories as every rival — family
+        membership never affects scoring. Lines without a fitting ranking stay unscored until one
         exists. See the <Link href="/methodology" className="underline decoration-zinc-800 underline-offset-2 transition hover:text-emerald-300">methodology</Link>.
       </p>
     </div>

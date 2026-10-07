@@ -30,7 +30,7 @@ export default function HomeRankingsMini({ rows }: { rows: MegaTableRow[] }) {
             <thead>
               <tr className={TABLE_HEADER_ROW}>
                 <th scope="col" className="px-3 py-2 font-normal"># / Product</th>
-                <th scope="col" className="hidden px-3 py-2 font-normal md:table-cell">Arena</th>
+                <th scope="col" className="hidden px-3 py-2 font-normal md:table-cell">Ranking</th>
                 <th scope="col" className="px-3 py-2 font-normal">Overall score</th>
                 <th scope="col" className="px-3 py-2 font-normal">Agent-ready</th>
               </tr>

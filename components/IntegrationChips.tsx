@@ -77,7 +77,7 @@ export default function IntegrationChips({ chips }: { chips: IntegrationChipData
           <thead>
             <tr className="border-b border-zinc-800 text-left text-xs text-zinc-400">
               <th scope="col" className="px-3 py-2 font-normal">Integration</th>
-              <th scope="col" className="hidden px-3 py-2 font-normal sm:table-cell">Arena</th>
+              <th scope="col" className="hidden px-3 py-2 font-normal sm:table-cell">Ranking</th>
               <th scope="col" className="px-3 py-2 font-normal">
                 <span title="The verbatim evidence excerpt(s) this edge rests on, with which side's evidence said it — hover a row's excerpt for the full quote.">Evidence</span>
               </th>

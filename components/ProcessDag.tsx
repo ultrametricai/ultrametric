@@ -544,7 +544,7 @@ function NodeBlock({
         <div className="mt-1.5 flex flex-wrap items-center gap-1.5 text-[11px]">
           <span
             className="text-[10px] uppercase tracking-wide text-zinc-500"
-            title="Companies that can perform this step — judged ones link to their arena product page"
+            title="Companies that can perform this step — judged ones link to their ranking's product page"
           >
             via:
           </span>
@@ -554,10 +554,10 @@ function NodeBlock({
           {node.optionsArenaId && (
             <Link
               href={`/arena/${node.optionsArenaId}`}
-              title="This list is derived from the arena's live leaderboard (top products by Overall score) — see the whole judged market"
+              title="This list is derived live from the ranking (top products by Overall score) — see the whole judged market"
               className="whitespace-nowrap text-[10px] text-zinc-500 transition hover:text-emerald-300"
             >
-              full arena →
+              full ranking →
             </Link>
           )}
         </div>
