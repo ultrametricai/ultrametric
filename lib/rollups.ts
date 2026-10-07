@@ -128,7 +128,9 @@ export function buildRollups(products: Product[], rankings: Rankings): Rollups |
     areaBoards[area] = countries
       .flatMap((c) => {
         const cell = c.areas[area]
-        return cell ? [{ country: c.country, score: cell.score, productIds: cell.productIds }] : []
+        // Key order matches RollupsSchema's CellSchema.extend shape (score, productIds, country):
+        // derive writes the zod-parsed object, and recompute-check compares JSON.stringify output.
+        return cell ? [{ score: cell.score, productIds: cell.productIds, country: c.country }] : []
       })
       .sort((x, y) => {
         if (x.score === null && y.score === null) return x.country.localeCompare(y.country)

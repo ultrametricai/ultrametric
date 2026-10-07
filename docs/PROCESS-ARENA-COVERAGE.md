@@ -72,7 +72,7 @@ Registry entries without an `arenaId` — honest unlinked chips by design (gover
 | `producthunt` |  | `growth_010` |
 | `remote` |  | `hr_001`, `hr_013`, `qs_063` |
 | `sec` |  | `fund_001`, `fund_002` |
-| `state_sos` | Deliberately unlinked: the corpus key is generic across all states, while the government-services arena judges specific registries (delaware-doc, california-sos, new-york-dos, texas-sos) — no single judged product can stand for the key. | `form_005`, `qs_047`, `shutdown_001`, `tax_001` |
+| `state_sos` | Deliberately unlinked: the corpus key is generic across all states, while the government-services arena judges specific registries (delaware-doc, california-sos, new-york-dos, texas-sos, plus the Phase 2 state roster colorado-sos, florida-dos, washington-sos, new-jersey-dor, ohio-sos, minnesota-sos, virginia-scc) — no single judged product can stand for the key. | `form_005`, `qs_047`, `shutdown_001`, `tax_001` |
 | `statuspage` |  | `prod_011` |
 | `sydecar` |  | `vc_001`, `vc_002`, `vc_003` |
 
