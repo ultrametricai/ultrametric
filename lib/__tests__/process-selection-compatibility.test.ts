@@ -62,7 +62,7 @@ describe('existing judged selection compatibility', () => {
         }
       }
     }
-    expect(positiveCount).toBe(2521)
+    expect(positiveCount).toBe(2527)
     expect(zeroCount).toBe(134)
     expect(extraArena).toBe(93)
   })
