@@ -979,6 +979,30 @@ export function vendorLabel(vendor: string): string {
 // between processes (founder depth wave part 2, 2026-10-01)
 // ---------------------------------------------------------------------------
 
+// The artifact-level GEO entry (founder geo-coverage ask 2026-10-07: "the registry is
+// US-centric — add per-country analogs for the six covered countries"). Same vocabulary as the
+// process GeoNoteSchema (country set, kind, verified actionUrl), plus a `label` naming the
+// artifact-level analog OBJECT (the EIN's UK analog is the UTR; the certificate of
+// incorporation's is the Companies House certificate). Source of truth: the committed process
+// geoNotes — every entry is derived from (and stays consistent with) the producing process's
+// country note where one exists, and every actionUrl is REUSED from a committed corpus geoNote
+// (never fresh; corpus-tested in lib/__tests__/processArtifacts.test.ts). Kind reads at the
+// ARTIFACT level, which can differ from the process note's kind: the UK "Get EIN" process is
+// absorbed (the UTR arrives with no application), but the UTR itself exists as the analog
+// object, so the artifact entry says analog. US-centric artifacts carry entries; artifacts of
+// global-scope producers (team chat, CRM) carry none — the object is the same everywhere.
+export const ArtifactGeoNoteSchema = z.object({
+  country: z.enum(GEO_NOTE_COUNTRIES),
+  kind: z.enum(GEO_NOTE_KINDS),
+  // The analog object's name in that country — what the artifact IS there.
+  label: z.string().min(1),
+  summary: z.string().min(1),
+  // The canonical official page — always one of the committed corpus geoNote actionUrls.
+  actionUrl: z.string().url(),
+  actionLabel: z.string().min(1),
+})
+export type ArtifactGeoNote = z.infer<typeof ArtifactGeoNoteSchema>
+
 // One canonical business artifact: a thing a committed process step genuinely brings into
 // existence (the EIN, the signed bylaws, the opened bank account, the 409A report) that at
 // least one OTHER process consumes via `requires` — or, flagged `terminal`, that nothing
@@ -1013,6 +1037,10 @@ export const ArtifactSchema = z
     // is tested in lib/__tests__/processArtifacts.test.ts; the render path
     // (lib/artifactPages.ts → lib/documents.ts openDocumentById) throws on an unknown id.
     documents: z.string().min(1).array().min(1).optional(),
+    // Per-country analogs of a US-centric artifact (founder 2026-10-07) — at most one entry
+    // per covered country, derived from the producing process's committed geoNotes (see
+    // ArtifactGeoNoteSchema above). Absent on artifacts that are the same object everywhere.
+    geo: ArtifactGeoNoteSchema.array().min(1).optional(),
   })
   .strict()
 export type Artifact = z.infer<typeof ArtifactSchema>

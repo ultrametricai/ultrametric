@@ -1,5 +1,5 @@
 {
-  "$comment": "Artifact vocabulary for the operational-process corpus (founder depth wave part 2, 2026-10-01): the canonical business artifacts that flow between processes. Each artifact names its one canonical producer process (producedBy); documented exceptions (a second committed process that genuinely also brings the artifact into existence - the LLC route's EIN, the conversion's re-issued charter paper) live in alsoProducedBy. terminal=true marks artifacts no committed process consumes (filed 83(b)s, the dissolution certificate) - everything else is consumed by at least one other process's requires, and every artifact is produced by a committed step (the producer task carries it in produces, pinned to the node where it comes into existence via producesArtifact). No invented artifacts: the registry is sized from the corpus itself. Optional `documents` (founder 2026-10-06, classic document objects): the open-documents/registry.json ids whose registered template genuinely IS this artifact's form (the filed 83(b)'s IRS Form 15620, the executed SAFE's YC forms) - deliberately sparse, honest absence for everything with no registered template; referential integrity tested in lib/__tests__/processArtifacts.test.ts. Read back by lib/processes.ts loadArtifacts(); the cross-process dependency graph builds in lib/processDeps.ts; schema: schemas/process-artifacts.schema.json.",
+  "$comment": "Artifact vocabulary for the operational-process corpus (founder depth wave part 2, 2026-10-01): the canonical business artifacts that flow between processes. Each artifact names its one canonical producer process (producedBy); documented exceptions (a second committed process that genuinely also brings the artifact into existence - the LLC route's EIN, the conversion's re-issued charter paper) live in alsoProducedBy. terminal=true marks artifacts no committed process consumes (filed 83(b)s, the dissolution certificate) - everything else is consumed by at least one other process's requires, and every artifact is produced by a committed step (the producer task carries it in produces, pinned to the node where it comes into existence via producesArtifact). No invented artifacts: the registry is sized from the corpus itself. Optional `documents` (founder 2026-10-06, classic document objects): the open-documents/registry.json ids whose registered template genuinely IS this artifact's form (the filed 83(b)'s IRS Form 15620, the executed SAFE's YC forms) - deliberately sparse, honest absence for everything with no registered template; referential integrity tested in lib/__tests__/processArtifacts.test.ts. Optional `geo` (founder geo-coverage ask 2026-10-07): per-country analogs of a US-centric artifact for the six covered countries (UK/IN/DE/FR/PT/CA) - the corpus geoNotes vocabulary (kind analog/absorbed/not-applicable) plus a `label` naming the artifact-level analog object (the EIN's UK analog is the UTR). Derived from the producing process's committed geoNotes; every actionUrl is reused from a committed corpus geoNote (never fresh - tested in lib/__tests__/processArtifacts.test.ts). Kind reads at the artifact level, which can differ from the process note's kind (the UK 'Get EIN' process is absorbed, the UTR object is the analog). Artifacts of global-scope producers carry no geo - the object is the same everywhere. Read back by lib/processes.ts loadArtifacts(); the cross-process dependency graph builds in lib/processDeps.ts; schema: schemas/process-artifacts.schema.json.",
   "artifacts": [
     {
       "id": "company-name",
@@ -41,7 +41,57 @@
       "id": "registered-agent",
       "label": "Registered agent",
       "description": "A designated registered agent in the state of incorporation - the legal-documents recipient every state filing names, required before the incorporation filing itself.",
-      "producedBy": "qs_043"
+      "producedBy": "qs_043",
+      "geo": [
+        {
+          "country": "IN",
+          "kind": "absorbed",
+          "label": "Registered office (INC-22)",
+          "summary": "No agent industry: the analog is the registered office itself — declared at (or within 30 days of) incorporation via form INC-22 to the MCA, with the company name displayed at the premises.",
+          "actionUrl": "https://www.nsws.gov.in/",
+          "actionLabel": "NSWS (MCA registered office — INC-22)"
+        },
+        {
+          "country": "UK",
+          "kind": "absorbed",
+          "label": "Registered office (appropriate address)",
+          "summary": "The analog is the registered office: since the 2023 ECCT Act it must be an 'appropriate address' where documents reliably reach the company, plus a registered email — agent-provided addresses remain fine.",
+          "actionUrl": "https://www.gov.uk/limited-company-formation/company-address",
+          "actionLabel": "Companies House — registered office rules"
+        },
+        {
+          "country": "DE",
+          "kind": "absorbed",
+          "label": "Inländische Geschäftsanschrift",
+          "summary": "No registered-agent concept: the GmbH registers a domestic business address in the Handelsregister where service of process is valid — kept current via the notary.",
+          "actionUrl": "https://www.handelsregister.de/",
+          "actionLabel": "Handelsregister (business address)"
+        },
+        {
+          "country": "FR",
+          "kind": "absorbed",
+          "label": "Siège social",
+          "summary": "The analog is the siège social declared through the guichet unique — the founder's home or a domiciliation company (which must hold a prefectural agrément).",
+          "actionUrl": "https://procedures.inpi.fr/",
+          "actionLabel": "INPI guichet unique (siège social)"
+        },
+        {
+          "country": "PT",
+          "kind": "absorbed",
+          "label": "Sede",
+          "summary": "No registered-agent industry: the sede (registered office) is declared at formation in the commercial registry and service of process reaches the company there.",
+          "actionUrl": "https://www.gov.pt/guias/empresa-online-servicos-do-registo-comercial",
+          "actionLabel": "Empresa Online — registry filings"
+        },
+        {
+          "country": "CA",
+          "kind": "absorbed",
+          "label": "Registered office",
+          "summary": "No registered-agent industry: the registered office address is declared in the articles filed with Corporations Canada (or the provincial registry) and must stay current.",
+          "actionUrl": "https://ised-isde.canada.ca/site/corporations-canada/en",
+          "actionLabel": "Corporations Canada"
+        }
+      ]
     },
     {
       "id": "certificate-of-incorporation",
@@ -55,6 +105,56 @@
         "cooley-incorporation-package-de",
         "orrick-incorporation-toolkit",
         "de-formation-instructions"
+      ],
+      "geo": [
+        {
+          "country": "UK",
+          "kind": "analog",
+          "label": "Certificate of incorporation (Companies House)",
+          "summary": "Companies House issues the certificate of incorporation when the private limited company registers — online filings are usually approved within 24 hours.",
+          "actionUrl": "https://www.gov.uk/limited-company-formation",
+          "actionLabel": "Companies House — set up a limited company"
+        },
+        {
+          "country": "IN",
+          "kind": "analog",
+          "label": "SPICe+ certificate of incorporation",
+          "summary": "The Registrar of Companies issues the certificate of incorporation on the MCA's SPICe+ filing — PAN, TAN and the statutory registrations arrive with it.",
+          "actionUrl": "https://www.nsws.gov.in/",
+          "actionLabel": "India NSWS (MCA SPICe+ incorporation)"
+        },
+        {
+          "country": "DE",
+          "kind": "analog",
+          "label": "Handelsregister registration (HRB entry)",
+          "summary": "The GmbH or UG exists on registration in the Handelsregister after the notarized formation deed; the register excerpt is the company's proof-of-existence paper.",
+          "actionUrl": "https://www.handelsregister.de/",
+          "actionLabel": "Handelsregister (commercial register)"
+        },
+        {
+          "country": "FR",
+          "kind": "analog",
+          "label": "RCS registration (extrait Kbis)",
+          "summary": "Registration through the INPI guichet unique lands the SAS/SASU in the RCS; the Kbis extract is the company's proof of existence.",
+          "actionUrl": "https://procedures.inpi.fr/",
+          "actionLabel": "INPI guichet unique"
+        },
+        {
+          "country": "PT",
+          "kind": "analog",
+          "label": "Registo comercial (certidão permanente)",
+          "summary": "Empresa Online registration creates the Lda or SA in the commercial registry — the NIPC arrives with the registration, and the certidão permanente is the live registry certificate.",
+          "actionUrl": "https://www.gov.pt/guias/empresa-online-servicos-do-registo-comercial",
+          "actionLabel": "Empresa Online — registo comercial"
+        },
+        {
+          "country": "CA",
+          "kind": "analog",
+          "label": "CBCA certificate of incorporation",
+          "summary": "Corporations Canada issues the certificate of incorporation on the CBCA filing (often same-day); non-resident founders often incorporate provincially instead because of the federal director-residency rule.",
+          "actionUrl": "https://ised-isde.canada.ca/site/corporations-canada/en/federal-incorporation",
+          "actionLabel": "Corporations Canada — incorporate"
+        }
       ]
     },
     {
@@ -68,6 +168,56 @@
       "documents": [
         "cooley-incorporation-package-de",
         "orrick-incorporation-toolkit"
+      ],
+      "geo": [
+        {
+          "country": "UK",
+          "kind": "analog",
+          "label": "Articles of association",
+          "summary": "The internal constitution is the articles of association — the statutory model articles apply by default and bespoke articles replace them (there is no separate bylaws document).",
+          "actionUrl": "https://www.gov.uk/guidance/model-articles-of-association-for-limited-companies",
+          "actionLabel": "Model articles of association"
+        },
+        {
+          "country": "IN",
+          "kind": "analog",
+          "label": "Memorandum & articles of association (MoA/AoA)",
+          "summary": "The constitutional documents are the memorandum and articles of association, filed electronically as part of the SPICe+ incorporation.",
+          "actionUrl": "https://www.nsws.gov.in/",
+          "actionLabel": "India NSWS (MCA SPICe+ incorporation)"
+        },
+        {
+          "country": "DE",
+          "kind": "analog",
+          "label": "Gesellschaftsvertrag (Satzung)",
+          "summary": "The company constitution is the Gesellschaftsvertrag inside the notarized formation deed — amendments go back through the notary to the Handelsregister.",
+          "actionUrl": "https://www.handelsregister.de/",
+          "actionLabel": "Handelsregister (commercial register)"
+        },
+        {
+          "country": "FR",
+          "kind": "analog",
+          "label": "Statuts",
+          "summary": "The statuts adopted at formation are the constitutional document, filed through the INPI guichet unique — changing them is a formal amendment.",
+          "actionUrl": "https://procedures.inpi.fr/",
+          "actionLabel": "INPI guichet unique"
+        },
+        {
+          "country": "PT",
+          "kind": "analog",
+          "label": "Contrato de sociedade (estatutos)",
+          "summary": "The contrato de sociedade (the company's estatutos) adopted at formation and registered at the commercial registry is the constitutional document.",
+          "actionUrl": "https://www.gov.pt/guias/empresa-online-servicos-do-registo-comercial",
+          "actionLabel": "Empresa Online — registo comercial"
+        },
+        {
+          "country": "CA",
+          "kind": "analog",
+          "label": "By-laws & organizational resolutions",
+          "summary": "CBCA corporations genuinely have by-laws — made by the directors after incorporation and confirmed by shareholders, alongside the organizational resolutions.",
+          "actionUrl": "https://laws-lois.justice.gc.ca/eng/acts/C-44/",
+          "actionLabel": "CBCA — Canada Business Corporations Act"
+        }
       ]
     },
     {
@@ -81,6 +231,56 @@
       "documents": [
         "cooley-incorporation-package-de",
         "orrick-incorporation-toolkit"
+      ],
+      "geo": [
+        {
+          "country": "UK",
+          "kind": "analog",
+          "label": "Share allotment (SH01 return)",
+          "summary": "Founder shares are allotted by the company and every allotment is filed at Companies House on the SH01 return within a month.",
+          "actionUrl": "https://www.gov.uk/government/publications/return-of-allotment-of-shares-sh01",
+          "actionLabel": "Companies House — return of allotment (SH01)"
+        },
+        {
+          "country": "IN",
+          "kind": "absorbed",
+          "label": "Subscription shares in the MoA",
+          "summary": "Founders subscribe their initial shares in the memorandum of association as part of the SPICe+ incorporation — no separate issuance step at formation.",
+          "actionUrl": "https://www.nsws.gov.in/",
+          "actionLabel": "India NSWS (MCA SPICe+ incorporation)"
+        },
+        {
+          "country": "DE",
+          "kind": "absorbed",
+          "label": "Gesellschafterliste entry (§ 40 GmbHG)",
+          "summary": "Founder shares come into existence in the notarized formation deed; the authoritative record is the Gesellschafterliste the notary files in the Handelsregister.",
+          "actionUrl": "https://www.gesetze-im-internet.de/gmbhg/__40.html",
+          "actionLabel": "§ 40 GmbHG — Gesellschafterliste"
+        },
+        {
+          "country": "FR",
+          "kind": "absorbed",
+          "label": "Capital subscription in the statuts",
+          "summary": "Founders' shares are subscribed in the statuts at formation — the capital and holders are part of the registration through the guichet unique.",
+          "actionUrl": "https://procedures.inpi.fr/",
+          "actionLabel": "INPI guichet unique"
+        },
+        {
+          "country": "PT",
+          "kind": "absorbed",
+          "label": "Quota subscription at registration",
+          "summary": "The founders' quotas and their holders are set in the contrato de sociedade registered through Empresa Online — there is no separate stock-purchase step.",
+          "actionUrl": "https://www.gov.pt/guias/empresa-online-servicos-do-registo-comercial",
+          "actionLabel": "Empresa Online — registo comercial"
+        },
+        {
+          "country": "CA",
+          "kind": "analog",
+          "label": "Share issuance by directors' resolution",
+          "summary": "Founder shares are issued by directors' resolution after incorporation under the CBCA, typically at nominal value as part of the organizational resolutions.",
+          "actionUrl": "https://laws-lois.justice.gc.ca/eng/acts/C-44/",
+          "actionLabel": "CBCA — Canada Business Corporations Act"
+        }
       ]
     },
     {
@@ -95,25 +295,225 @@
       "terminal": true,
       "documents": [
         "irs-form-15620"
+      ],
+      "geo": [
+        {
+          "country": "UK",
+          "kind": "analog",
+          "label": "Section 431 election",
+          "summary": "The UK cousin is the joint section 431 ITEPA election to be taxed on the unrestricted value of restricted shares, made within 14 days of acquisition — HMRC's employment-related securities guidance covers it.",
+          "actionUrl": "https://www.gov.uk/government/collections/employment-related-securities",
+          "actionLabel": "HMRC — employment related securities"
+        },
+        {
+          "country": "IN",
+          "kind": "not-applicable",
+          "label": "No 83(b)-style election",
+          "summary": "Indian tax law has no 83(b)-style election: founder vesting is contractual (reverse vesting mirrored in the articles), and employee share awards are taxed as a perquisite under their own rules.",
+          "actionUrl": "https://www.incometax.gov.in/iec/foportal/",
+          "actionLabel": "Income Tax e-filing portal"
+        },
+        {
+          "country": "DE",
+          "kind": "not-applicable",
+          "label": "No 83(b) analog (§ 19a EStG instead)",
+          "summary": "No acceleration election exists; the statutory lever for startup employee equity is § 19a EStG's deferred ('dry income') taxation, not a filing-deadline race.",
+          "actionUrl": "https://www.gesetze-im-internet.de/estg/__19a.html",
+          "actionLabel": "EStG § 19a — startup equity taxation"
+        },
+        {
+          "country": "FR",
+          "kind": "not-applicable",
+          "label": "No 83(b) analog",
+          "summary": "No equivalent election: founder and employee equity are taxed under the regimes the BOFiP doctrine governs (BSPCE, free shares), with no filing deadline to race.",
+          "actionUrl": "https://bofip.impots.gouv.fr/",
+          "actionLabel": "BOFiP — official tax doctrine"
+        },
+        {
+          "country": "PT",
+          "kind": "not-applicable",
+          "label": "No 83(b) concept",
+          "summary": "There is no 83(b) concept to race: vesting is drafted as quota call-option/clawback clauses, and the 2023 startup law defers qualifying option taxation to liquidity instead.",
+          "actionUrl": "https://diariodarepublica.pt/dr/detalhe/lei/21-2023-213498830",
+          "actionLabel": "Lei 21/2023 (startup law) — DRE"
+        },
+        {
+          "country": "CA",
+          "kind": "not-applicable",
+          "label": "No election deadline to beat",
+          "summary": "Founder shares are issued at nominal value with CCPC tax deferral, so there is no 83(b)-style election deadline to beat.",
+          "actionUrl": "https://www.canada.ca/en/revenue-agency/services/tax/businesses/topics/payroll/benefits-allowances/security-options.html",
+          "actionLabel": "CRA — security options"
+        }
       ]
     },
     {
       "id": "llc-certificate-of-formation",
       "label": "LLC Certificate of Formation",
       "description": "The stamped Certificate of Formation (Articles of Organization accepted) - proof the LLC exists. Consumed when the LLC later converts to a C-Corp.",
-      "producedBy": "form_011"
+      "producedBy": "form_011",
+      "geo": [
+        {
+          "country": "IN",
+          "kind": "analog",
+          "label": "LLP incorporation certificate (FiLLiP)",
+          "summary": "The Indian analog is the LLP, incorporated with the MCA via the FiLLiP form, with a partner-drafted LLP agreement filed within 30 days.",
+          "actionUrl": "https://www.nsws.gov.in/",
+          "actionLabel": "NSWS (MCA LLP incorporation)"
+        },
+        {
+          "country": "UK",
+          "kind": "analog",
+          "label": "LLP registration",
+          "summary": "The pass-through analog is the LLP registered at Companies House — though most UK founders just form a private limited company, since there is no US-style LLC.",
+          "actionUrl": "https://www.gov.uk/guidance/set-up-and-run-a-limited-liability-partnership-llp",
+          "actionLabel": "Set up and run an LLP"
+        },
+        {
+          "country": "DE",
+          "kind": "analog",
+          "label": "UG (haftungsbeschränkt) formation",
+          "summary": "No LLC analog with pass-through: the low-capital route is the UG — a mini-GmbH formable from €1 with a notarized deed.",
+          "actionUrl": "https://www.existenzgruender.de/",
+          "actionLabel": "BMWK founders portal (UG/GmbH)"
+        },
+        {
+          "country": "FR",
+          "kind": "analog",
+          "label": "SARL/EURL registration",
+          "summary": "The closest analog is the SARL (or single-member EURL), formed like every French entity through the INPI guichet unique.",
+          "actionUrl": "https://procedures.inpi.fr/",
+          "actionLabel": "INPI guichet unique (SARL/EURL)"
+        },
+        {
+          "country": "PT",
+          "kind": "analog",
+          "label": "Lda formation",
+          "summary": "No LLC or check-the-box: the everyday small-company form is the Lda, formable online through Empresa Online with quota capital from €1 — corporate tax treatment, not pass-through.",
+          "actionUrl": "https://www.gov.pt/guias/empresa-online-servicos-do-registo-comercial",
+          "actionLabel": "Empresa Online — form an Lda"
+        },
+        {
+          "country": "CA",
+          "kind": "not-applicable",
+          "label": "No LLC form",
+          "summary": "Canada has no LLC: corporations are the only limited-liability company form and there is no check-the-box pass-through election.",
+          "actionUrl": "https://ised-isde.canada.ca/site/corporations-canada/en/federal-incorporation",
+          "actionLabel": "Corporations Canada — incorporation"
+        }
+      ]
     },
     {
       "id": "operating-agreement",
       "label": "LLC operating agreement",
       "description": "The signed LLC operating agreement governing the members. The members' consent to a later C-Corp conversion runs under it.",
-      "producedBy": "form_011"
+      "producedBy": "form_011",
+      "geo": [
+        {
+          "country": "IN",
+          "kind": "analog",
+          "label": "LLP agreement",
+          "summary": "The LLP agreement — drafted by the partners and filed with the MCA within 30 days of incorporation — is the operating agreement's direct analog.",
+          "actionUrl": "https://www.nsws.gov.in/",
+          "actionLabel": "NSWS (MCA LLP incorporation)"
+        },
+        {
+          "country": "UK",
+          "kind": "analog",
+          "label": "LLP members' agreement",
+          "summary": "An LLP's internal deal lives in a members' agreement; without one, the default statutory provisions apply.",
+          "actionUrl": "https://www.gov.uk/guidance/set-up-and-run-a-limited-liability-partnership-llp",
+          "actionLabel": "Set up and run an LLP"
+        },
+        {
+          "country": "DE",
+          "kind": "analog",
+          "label": "Gesellschaftsvertrag (UG/GmbH)",
+          "summary": "The governing document of the UG/GmbH route is the notarized Gesellschaftsvertrag — the formation deed carries the internal rules.",
+          "actionUrl": "https://www.existenzgruender.de/",
+          "actionLabel": "BMWK founders portal (UG/GmbH)"
+        },
+        {
+          "country": "FR",
+          "kind": "analog",
+          "label": "Statuts de SARL",
+          "summary": "The SARL's statuts are statute-driven and carry the internal rules — the SARL is a more codified vehicle than a US LLC's freely drafted operating agreement.",
+          "actionUrl": "https://procedures.inpi.fr/",
+          "actionLabel": "INPI guichet unique (SARL/EURL)"
+        },
+        {
+          "country": "PT",
+          "kind": "analog",
+          "label": "Contrato de sociedade (Lda)",
+          "summary": "The Lda's contrato de sociedade carries the internal rules, registered at formation through Empresa Online.",
+          "actionUrl": "https://www.gov.pt/guias/empresa-online-servicos-do-registo-comercial",
+          "actionLabel": "Empresa Online — form an Lda"
+        },
+        {
+          "country": "CA",
+          "kind": "not-applicable",
+          "label": "No LLC form",
+          "summary": "With no LLC form in Canada there is no operating agreement to draft — corporations use by-laws and shareholder agreements instead.",
+          "actionUrl": "https://ised-isde.canada.ca/site/corporations-canada/en/federal-incorporation",
+          "actionLabel": "Corporations Canada — incorporation"
+        }
+      ]
     },
     {
       "id": "founder-agreement",
       "label": "Founder agreement & IP assignment",
       "description": "The signed founder agreements with IP assignment - the equity split and vesting on paper. Consumed by the cap-table audit and by accelerator applications that ask who owns what.",
-      "producedBy": "startup_002"
+      "producedBy": "startup_002",
+      "geo": [
+        {
+          "country": "IN",
+          "kind": "analog",
+          "label": "Founders' agreement (stamped)",
+          "summary": "The founders' agreement is enforceable contract law — but it must be properly stamped to be usable in court, with transfer restrictions and reverse vesting mirrored in the articles.",
+          "actionUrl": "https://www.startupindia.gov.in/",
+          "actionLabel": "Startup India (founder agreement resources)"
+        },
+        {
+          "country": "UK",
+          "kind": "analog",
+          "label": "Shareholders' agreement + bespoke articles",
+          "summary": "Vesting is not a default: it lives in a shareholders' agreement plus bespoke articles, with compulsory-transfer 'leaver' clauses on founder shares.",
+          "actionUrl": "https://www.gov.uk/guidance/model-articles-of-association-for-limited-companies",
+          "actionLabel": "Model articles of association"
+        },
+        {
+          "country": "DE",
+          "kind": "analog",
+          "label": "Gesellschaftervereinbarung (notarized options)",
+          "summary": "GmbH shares only move by notarial deed, so founder vesting is drafted as notarized call-option/clawback clauses in the Gesellschaftervereinbarung.",
+          "actionUrl": "https://www.bnotk.de/",
+          "actionLabel": "Bundesnotarkammer (notaries)"
+        },
+        {
+          "country": "FR",
+          "kind": "analog",
+          "label": "Pacte d'associés",
+          "summary": "The founder agreement is the pacte d'associés — a private contract alongside the statuts, with vesting built from promesses de cession (share-transfer promises).",
+          "actionUrl": "https://bpifrance-creation.fr/encyclopedie/structures-juridiques/entreprendre-a-plusieurs/pacte-dassocies-organisation",
+          "actionLabel": "Pacte d'associés — Bpifrance Création guide"
+        },
+        {
+          "country": "PT",
+          "kind": "analog",
+          "label": "Acordo parassocial",
+          "summary": "The split lives in an acordo parassocial with vesting drafted as quota call-option/clawback clauses — quota transfers need written form and registry filing but no notary.",
+          "actionUrl": "https://diariodarepublica.pt/dr/legislacao-consolidada/decreto-lei/1986-34443975",
+          "actionLabel": "Código das Sociedades Comerciais (DRE)"
+        },
+        {
+          "country": "CA",
+          "kind": "analog",
+          "label": "Unanimous shareholder agreement",
+          "summary": "Founders sign a unanimous shareholder agreement (a CBCA creature) with reverse-vesting on founder shares.",
+          "actionUrl": "https://laws-lois.justice.gc.ca/eng/acts/C-44/",
+          "actionLabel": "CBCA — Canada Business Corporations Act"
+        }
+      ]
     },
     {
       "id": "ein",
@@ -125,13 +525,113 @@
       ],
       "documents": [
         "irs-form-ss4"
+      ],
+      "geo": [
+        {
+          "country": "UK",
+          "kind": "analog",
+          "label": "UTR (Unique Taxpayer Reference)",
+          "summary": "The analog identifier is the UTR: HMRC posts it automatically after incorporation (no application), and it anchors the company's Corporation Tax registration.",
+          "actionUrl": "https://www.gov.uk/corporation-tax",
+          "actionLabel": "HMRC Corporation Tax (UTR)"
+        },
+        {
+          "country": "IN",
+          "kind": "absorbed",
+          "label": "PAN & TAN (via SPICe+)",
+          "summary": "PAN and TAN — the company's tax identifiers — are allotted automatically as part of the SPICe+ incorporation filing; the Income Tax e-filing portal is where the company then uses them.",
+          "actionUrl": "https://www.incometax.gov.in/iec/foportal/",
+          "actionLabel": "Income Tax e-filing portal (PAN/TAN)"
+        },
+        {
+          "country": "DE",
+          "kind": "analog",
+          "label": "Steuernummer (ELSTER registration)",
+          "summary": "The tax office issues a Steuernummer after the Fragebogen zur steuerlichen Erfassung is filed on ELSTER — plus a separate VAT ID from the BZSt if needed.",
+          "actionUrl": "https://www.elster.de/eportal/start",
+          "actionLabel": "ELSTER — tax office registration"
+        },
+        {
+          "country": "FR",
+          "kind": "absorbed",
+          "label": "SIREN/SIRET (INSEE)",
+          "summary": "No application: INSEE allots the SIREN and per-establishment SIRET automatically when the guichet unique registration lands.",
+          "actionUrl": "https://entreprendre.service-public.fr/vosdroits/F32135",
+          "actionLabel": "Obtain a SIREN/SIRET number"
+        },
+        {
+          "country": "PT",
+          "kind": "absorbed",
+          "label": "NIPC (doubles as the tax number)",
+          "summary": "No separate tax-ID application: the NIPC issued at incorporation is the company's tax number, activated for corporate tax and VAT by the declaração de início de atividade.",
+          "actionUrl": "https://www.portaldasfinancas.gov.pt/",
+          "actionLabel": "Portal das Finanças (AT)"
+        },
+        {
+          "country": "CA",
+          "kind": "absorbed",
+          "label": "CRA business number",
+          "summary": "A CRA business number is issued automatically with federal (and most provincial) incorporation — program accounts (payroll, GST/HST, corporate tax) are added to it rather than applied for separately.",
+          "actionUrl": "https://www.canada.ca/en/revenue-agency/services/tax/businesses/topics/registering-your-business.html",
+          "actionLabel": "CRA — business number registration"
+        }
       ]
     },
     {
       "id": "business-address",
       "label": "Business mailing address",
       "description": "The company's business mailing address (virtual mailbox with the notarized USPS 1583 done). Insurance applications and other provider KYC ask for it.",
-      "producedBy": "qs_044"
+      "producedBy": "qs_044",
+      "geo": [
+        {
+          "country": "UK",
+          "kind": "analog",
+          "label": "Registered office address",
+          "summary": "Virtual-office addresses are a normal, legal registered-office choice — post-ECCT the address must be one where documents actually come to the company's attention, plus a registered email address.",
+          "actionUrl": "https://www.gov.uk/limited-company-formation/company-address",
+          "actionLabel": "Companies House — registered office rules"
+        },
+        {
+          "country": "IN",
+          "kind": "analog",
+          "label": "Registered office (INC-22 filings)",
+          "summary": "The registered office is declared to the MCA and every change files back to the RoC; virtual-office addresses are widely used, including per-state for GST registrations.",
+          "actionUrl": "https://www.nsws.gov.in/",
+          "actionLabel": "India NSWS (MCA filings)"
+        },
+        {
+          "country": "DE",
+          "kind": "analog",
+          "label": "Geschäftsanschrift (Handelsregister + Impressum)",
+          "summary": "The company's domestic business address lives in the Handelsregister and the website's Impressum needs a serviceable address — a business-center address is fine if post genuinely reaches you.",
+          "actionUrl": "https://www.handelsregister.de/",
+          "actionLabel": "Handelsregister (business address)"
+        },
+        {
+          "country": "FR",
+          "kind": "analog",
+          "label": "Domiciliation (siège social)",
+          "summary": "Domiciliation is its own regulated service: a prefecture-approved société de domiciliation hosts the siège social, and the address flows through the guichet unique onto the RCS.",
+          "actionUrl": "https://entreprendre.service-public.fr/vosdroits/F2160",
+          "actionLabel": "Domiciliation d'entreprise (service-public)"
+        },
+        {
+          "country": "PT",
+          "kind": "analog",
+          "label": "Sede (registered address)",
+          "summary": "The sede registered in the commercial registry is where official mail and service arrive — a business-center or virtual-office address is legitimate if post genuinely reaches the company.",
+          "actionUrl": "https://www.gov.pt/guias/empresa-online-servicos-do-registo-comercial",
+          "actionLabel": "Empresa Online — registry filings"
+        },
+        {
+          "country": "CA",
+          "kind": "analog",
+          "label": "Registered office street address",
+          "summary": "The registered office must be a street address in the incorporating jurisdiction where documents can be served — virtual-office providers are a normal choice, with changes filed online.",
+          "actionUrl": "https://ised-isde.canada.ca/site/corporations-canada/en",
+          "actionLabel": "Corporations Canada"
+        }
+      ]
     },
     {
       "id": "bank-account",
@@ -189,6 +689,56 @@
       "producedBy": "form_005",
       "alsoProducedBy": [
         "form_011"
+      ],
+      "geo": [
+        {
+          "country": "IN",
+          "kind": "analog",
+          "label": "Per-state GST & professional-tax registrations",
+          "summary": "The state layer is real here: GST registration is per state of operation, and professional tax plus shops-and-establishments registration are state acts.",
+          "actionUrl": "https://www.gst.gov.in/",
+          "actionLabel": "GST portal (per-state registration)"
+        },
+        {
+          "country": "UK",
+          "kind": "analog",
+          "label": "National HMRC registrations",
+          "summary": "No states: registering for taxes means one national HMRC registration each — Corporation Tax, PAYE when you employ, and VAT past the threshold.",
+          "actionUrl": "https://www.gov.uk/register-for-vat",
+          "actionLabel": "HMRC — register for VAT"
+        },
+        {
+          "country": "DE",
+          "kind": "analog",
+          "label": "Gewerbeanmeldung (municipal)",
+          "summary": "The sub-national layer is municipal: a Gewerbeanmeldung with each municipality you operate in, which drives Gewerbesteuer at that municipality's rate.",
+          "actionUrl": "https://www.existenzgruender.de/",
+          "actionLabel": "BMWK founders portal (Gewerbeanmeldung)"
+        },
+        {
+          "country": "FR",
+          "kind": "absorbed",
+          "label": "National registrations (CFE assessed automatically)",
+          "summary": "Registrations are national and flow from the guichet unique filing; local business taxes (the CFE) are then assessed per commune automatically.",
+          "actionUrl": "https://www.impots.gouv.fr/professionnel",
+          "actionLabel": "impots.gouv.fr — espace professionnel"
+        },
+        {
+          "country": "PT",
+          "kind": "analog",
+          "label": "Início de atividade + Segurança Social",
+          "summary": "One national layer instead of states: the início de atividade declaration covers corporate tax and VAT in one filing, with Segurança Social employer registration as the second rail.",
+          "actionUrl": "https://www.portaldasfinancas.gov.pt/",
+          "actionLabel": "Portal das Finanças — início de atividade"
+        },
+        {
+          "country": "CA",
+          "kind": "analog",
+          "label": "Provincial tax accounts",
+          "summary": "The provincial layer is real: GST/HST is federal via the business number, but several provinces run their own PST/QST registrations plus payroll levies and workers'-compensation accounts.",
+          "actionUrl": "https://www.canada.ca/en/revenue-agency/services/tax/businesses/topics/gst-hst-businesses.html",
+          "actionLabel": "CRA — GST/HST for businesses"
+        }
       ]
     },
     {
@@ -196,13 +746,113 @@
       "label": "Sales tax registrations",
       "description": "Registrations with each state's department of revenue where nexus thresholds are crossed, with collection and automated filings enabled. Terminal: the platform remits on schedule.",
       "producedBy": "tax_011",
-      "terminal": true
+      "terminal": true,
+      "geo": [
+        {
+          "country": "IN",
+          "kind": "analog",
+          "label": "GST registration",
+          "summary": "GST replaces the per-state sales-tax patchwork with one national regime — registration per state of operation on the GST portal; foreign SaaS falls under the OIDAR rules.",
+          "actionUrl": "https://www.gst.gov.in/",
+          "actionLabel": "GST portal registration"
+        },
+        {
+          "country": "UK",
+          "kind": "analog",
+          "label": "VAT registration",
+          "summary": "Instead of per-state sales tax there is one national VAT registration — mandatory past the turnover threshold — with returns filed digitally under Making Tax Digital.",
+          "actionUrl": "https://www.gov.uk/register-for-vat",
+          "actionLabel": "Register for VAT (Making Tax Digital)"
+        },
+        {
+          "country": "DE",
+          "kind": "analog",
+          "label": "VAT registration + BZSt VAT ID",
+          "summary": "One German VAT registration covers the whole country; for EU-wide B2C digital sales a single OSS (One-Stop-Shop) return replaces per-country registrations.",
+          "actionUrl": "https://www.bzst.de/",
+          "actionLabel": "BZSt — VAT identification number"
+        },
+        {
+          "country": "FR",
+          "kind": "analog",
+          "label": "TVA registration",
+          "summary": "One national TVA registration replaces the state-by-state patchwork — declared and paid through the espace professionnel, with OSS covering EU-wide B2C digital sales.",
+          "actionUrl": "https://www.impots.gouv.fr/professionnel",
+          "actionLabel": "impots.gouv.fr — espace professionnel (TVA)"
+        },
+        {
+          "country": "PT",
+          "kind": "analog",
+          "label": "IVA registration",
+          "summary": "One national VAT registration (activated by the início de atividade declaration) replaces per-state registrations, with OSS consolidating EU-wide B2C digital sales.",
+          "actionUrl": "https://www.portaldasfinancas.gov.pt/",
+          "actionLabel": "Portal das Finanças — IVA"
+        },
+        {
+          "country": "CA",
+          "kind": "analog",
+          "label": "GST/HST + provincial registrations",
+          "summary": "Genuinely nexus-like: register for GST/HST once worldwide taxable supplies pass the small-supplier threshold, then layer the separate provincial registrations where your customers are.",
+          "actionUrl": "https://www.canada.ca/en/revenue-agency/services/tax/businesses/topics/gst-hst-businesses.html",
+          "actionLabel": "CRA — GST/HST for businesses"
+        }
+      ]
     },
     {
       "id": "foreign-qualification",
       "label": "Foreign qualifications",
       "description": "Foreign-qualification filings in states with employees or offices. Withdrawn one by one when the company shuts down.",
-      "producedBy": "qs_045"
+      "producedBy": "qs_045",
+      "geo": [
+        {
+          "country": "IN",
+          "kind": "analog",
+          "label": "Per-state registrations (GST et al.)",
+          "summary": "Employees or premises in a new state typically mean a fresh GST registration for that state, plus state professional tax and a shops-and-establishments registration.",
+          "actionUrl": "https://www.gst.gov.in/",
+          "actionLabel": "GST portal (multi-state footprint)"
+        },
+        {
+          "country": "UK",
+          "kind": "not-applicable",
+          "label": "No intra-UK qualification",
+          "summary": "Inside the UK there is nothing to qualify for; the concept appears at the border — a foreign company opening a UK establishment registers it with form OS IN01.",
+          "actionUrl": "https://www.gov.uk/government/publications/register-a-uk-establishment-of-an-overseas-company-os-in01",
+          "actionLabel": "Register a UK establishment (OS IN01)"
+        },
+        {
+          "country": "DE",
+          "kind": "analog",
+          "label": "Per-municipality Gewerbeanmeldung",
+          "summary": "The analog is municipal: each additional Betriebsstätte needs its own Gewerbeanmeldung with that municipality, and Gewerbesteuer is apportioned across them.",
+          "actionUrl": "https://www.existenzgruender.de/",
+          "actionLabel": "BMWK founders portal (per-municipality registration)"
+        },
+        {
+          "country": "FR",
+          "kind": "analog",
+          "label": "Établissement secondaire (per-establishment SIRET)",
+          "summary": "A new office is an établissement secondaire declared through the guichet unique, which issues a per-establishment SIRET — a formality rather than a qualification battle.",
+          "actionUrl": "https://procedures.inpi.fr/",
+          "actionLabel": "INPI guichet unique (secondary establishment)"
+        },
+        {
+          "country": "PT",
+          "kind": "not-applicable",
+          "label": "No sub-national layer",
+          "summary": "No sub-national layer to qualify into: one commercial registry and one tax registration cover the whole country — the concept only appears at the border.",
+          "actionUrl": "https://www.gov.pt/guias/empresa-online-servicos-do-registo-comercial",
+          "actionLabel": "Empresa Online — registo comercial"
+        },
+        {
+          "country": "CA",
+          "kind": "analog",
+          "label": "Extra-provincial registration",
+          "summary": "The concept genuinely exists: carrying on business in a province means extra-provincial registration there — a federal corporation still registers in each province where it operates.",
+          "actionUrl": "https://ised-isde.canada.ca/site/corporations-canada/en/register-federal-corporation-province-or-territory",
+          "actionLabel": "Register in a province or territory"
+        }
+      ]
     },
     {
       "id": "insurance-policy",
@@ -214,14 +864,114 @@
       "id": "federal-tax-return",
       "label": "Federal tax return",
       "description": "The filed federal corporate return (Form 1120). The R&D credit's Form 6765 rides on it.",
-      "producedBy": "tax_002"
+      "producedBy": "tax_002",
+      "geo": [
+        {
+          "country": "IN",
+          "kind": "analog",
+          "label": "ITR-6 return",
+          "summary": "Companies file the ITR-6 return electronically on the Income Tax e-filing portal; the tax year runs April–March rather than the calendar year.",
+          "actionUrl": "https://www.incometax.gov.in/iec/foportal/",
+          "actionLabel": "Income Tax e-filing (ITR-6)"
+        },
+        {
+          "country": "UK",
+          "kind": "analog",
+          "label": "CT600 Company Tax Return",
+          "summary": "The company files a CT600 with HMRC within 12 months of its accounting period end — plus statutory accounts to Companies House.",
+          "actionUrl": "https://www.gov.uk/company-tax-returns",
+          "actionLabel": "HMRC Company Tax Return (CT600)"
+        },
+        {
+          "country": "DE",
+          "kind": "analog",
+          "label": "Körperschaftsteuer & Gewerbesteuer returns",
+          "summary": "Corporation tax plus trade tax returns are filed electronically through ELSTER, in practice via a Steuerberater.",
+          "actionUrl": "https://www.elster.de/eportal/start",
+          "actionLabel": "ELSTER — corporate tax returns"
+        },
+        {
+          "country": "FR",
+          "kind": "analog",
+          "label": "IS declaration",
+          "summary": "Corporate income tax (impôt sur les sociétés) is declared and paid through the company's espace professionnel on impots.gouv.fr.",
+          "actionUrl": "https://www.impots.gouv.fr/professionnel",
+          "actionLabel": "impots.gouv.fr — espace professionnel"
+        },
+        {
+          "country": "PT",
+          "kind": "analog",
+          "label": "Modelo 22 (IRC)",
+          "summary": "The company files the Modelo 22 (IRC) return electronically through the Portal das Finanças, plus the IES annual declaration — in practice via a certified accountant.",
+          "actionUrl": "https://www.portaldasfinancas.gov.pt/",
+          "actionLabel": "Portal das Finanças — Modelo 22"
+        },
+        {
+          "country": "CA",
+          "kind": "analog",
+          "label": "T2 corporation income tax return",
+          "summary": "The company files a T2 return with the CRA within six months of its fiscal year-end, plus any provincial corporate returns outside the CRA-administered provinces.",
+          "actionUrl": "https://www.canada.ca/en/revenue-agency/services/tax/businesses/topics/corporations.html",
+          "actionLabel": "CRA — corporation income tax (T2)"
+        }
+      ]
     },
     {
       "id": "certificate-of-dissolution",
       "label": "Certificate of dissolution",
       "description": "The accepted certificate of dissolution - the company's legal end. Terminal by definition.",
       "producedBy": "shutdown_001",
-      "terminal": true
+      "terminal": true,
+      "geo": [
+        {
+          "country": "IN",
+          "kind": "analog",
+          "label": "STK-2 strike-off / IBC voluntary liquidation",
+          "summary": "Two exits: MCA strike-off via form STK-2 for a company with no liabilities, or a formal voluntary liquidation under the IBC overseen by the IBBI.",
+          "actionUrl": "https://ibbi.gov.in/",
+          "actionLabel": "IBBI (voluntary liquidation) / MCA strike-off"
+        },
+        {
+          "country": "UK",
+          "kind": "analog",
+          "label": "DS01 voluntary strike-off",
+          "summary": "A solvent company applies for voluntary strike-off with a DS01 filing to Companies House (or a members' voluntary liquidation for larger balance sheets).",
+          "actionUrl": "https://www.gov.uk/strike-off-your-company-from-companies-register",
+          "actionLabel": "Strike off a company (DS01)"
+        },
+        {
+          "country": "DE",
+          "kind": "analog",
+          "label": "Liquidation & Löschung (Handelsregister)",
+          "summary": "Winding up a GmbH is slow by design: a notarized dissolution resolution, liquidators registered, creditors invited — then a mandatory one-year Sperrjahr before the company is deleted from the Handelsregister.",
+          "actionUrl": "https://www.handelsregister.de/",
+          "actionLabel": "Handelsregister (Liquidation & Sperrjahr)"
+        },
+        {
+          "country": "FR",
+          "kind": "analog",
+          "label": "Dissolution-liquidation, radiation du RCS",
+          "summary": "The sequence is dissolution, a liquidation phase closing the accounts, then radiation from the RCS — every step filed through the guichet unique.",
+          "actionUrl": "https://procedures.inpi.fr/",
+          "actionLabel": "INPI guichet unique (dissolution-liquidation)"
+        },
+        {
+          "country": "PT",
+          "kind": "analog",
+          "label": "Dissolução e encerramento (registry)",
+          "summary": "Wind-down runs through the registry's dissolution-and-liquidation channel, plus the final Modelo 22 and IES and the cessação de atividade declarations.",
+          "actionUrl": "https://www.gov.pt/guias/encerrar-o-negocio",
+          "actionLabel": "gov.pt — encerrar o negócio"
+        },
+        {
+          "country": "CA",
+          "kind": "analog",
+          "label": "Articles of dissolution",
+          "summary": "A solvent corporation dissolves by shareholder-authorized articles of dissolution filed with Corporations Canada — CRA program accounts close and the final T2 files before the certificate issues.",
+          "actionUrl": "https://ised-isde.canada.ca/site/corporations-canada/en/closing-corporation",
+          "actionLabel": "Corporations Canada — closing a corporation"
+        }
+      ]
     },
     {
       "id": "privacy-policy",
@@ -280,7 +1030,57 @@
       "label": "Trademark application",
       "description": "The USPTO trademark application and its serial number, as filed. Terminal: prosecution runs at the USPTO's pace.",
       "producedBy": "legal_002",
-      "terminal": true
+      "terminal": true,
+      "geo": [
+        {
+          "country": "IN",
+          "kind": "analog",
+          "label": "CGPDTM trade mark application",
+          "summary": "Trade marks are filed with the Controller General (CGPDTM) through the IP India e-filing portal.",
+          "actionUrl": "https://ipindiaonline.gov.in/",
+          "actionLabel": "Intellectual Property India e-filing"
+        },
+        {
+          "country": "UK",
+          "kind": "analog",
+          "label": "UK IPO trade mark application",
+          "summary": "UK marks are filed online with the UK IPO; since Brexit an EUIPO registration no longer covers the UK, so UK + EU protection means two filings.",
+          "actionUrl": "https://www.gov.uk/how-to-register-a-trade-mark",
+          "actionLabel": "UK IPO — register a trade mark"
+        },
+        {
+          "country": "DE",
+          "kind": "analog",
+          "label": "DPMA application (or EUIPO)",
+          "summary": "National marks are filed with the DPMA; the EU-wide alternative is a single EUIPO application covering all 27 member states.",
+          "actionUrl": "https://www.dpma.de/marken/index.html",
+          "actionLabel": "DPMA trade mark filing"
+        },
+        {
+          "country": "FR",
+          "kind": "analog",
+          "label": "INPI dépôt de marque (or EUIPO)",
+          "summary": "French marks are filed online with the INPI; an EUIPO application is the single-filing route to EU-wide protection.",
+          "actionUrl": "https://www.inpi.fr/comprendre-la-propriete-intellectuelle/la-marque",
+          "actionLabel": "INPI — dépôt de marque"
+        },
+        {
+          "country": "PT",
+          "kind": "analog",
+          "label": "INPI registo de marca (or EUIPO)",
+          "summary": "National marks are filed online with INPI; PT + EU protection is usually one EUIPO filing covering all member states.",
+          "actionUrl": "https://inpi.justica.gov.pt/",
+          "actionLabel": "INPI — registo de marca"
+        },
+        {
+          "country": "CA",
+          "kind": "analog",
+          "label": "CIPO trademark application",
+          "summary": "File with CIPO (online, Nice-classified, Madrid Protocol available) — and budget for the queue: CIPO examination waits run years, so file early.",
+          "actionUrl": "https://ised-isde.canada.ca/site/canadian-intellectual-property-office/en",
+          "actionLabel": "CIPO — trademarks"
+        }
+      ]
     },
     {
       "id": "board-minutes",
@@ -442,6 +1242,56 @@
         "yc-postmoney-safe-discount",
         "yc-postmoney-safe-mfn",
         "yc-safe-intl-variants"
+      ],
+      "geo": [
+        {
+          "country": "IN",
+          "kind": "analog",
+          "label": "iSAFE / CCPS / CCD instruments",
+          "summary": "Pre-seed runs on CCPS/CCD instruments or the iSAFE — a practitioner adaptation of the SAFE onto compulsorily convertible preference shares.",
+          "actionUrl": "https://www.startupindia.gov.in/",
+          "actionLabel": "Startup India (DPIIT recognition)"
+        },
+        {
+          "country": "UK",
+          "kind": "analog",
+          "label": "ASA (advanced subscription agreement)",
+          "summary": "The SAFE analog is the ASA or convertible loan note — with the round really driven by SEIS/EIS tax relief and its advance-assurance and longstop-date constraints.",
+          "actionUrl": "https://www.gov.uk/guidance/venture-capital-schemes-apply-to-use-the-seed-enterprise-investment-scheme",
+          "actionLabel": "HMRC — apply to use SEIS"
+        },
+        {
+          "country": "DE",
+          "kind": "analog",
+          "label": "Wandeldarlehen (convertible loan)",
+          "summary": "Pre-seed runs on the Wandeldarlehen, kept notarization-free in most setups; angels claim the federal INVEST grant on qualifying equity tickets.",
+          "actionUrl": "https://www.bafa.de/DE/Wirtschaft/Beratung_Finanzierung/Invest/invest_node.html",
+          "actionLabel": "BAFA — INVEST grant for angels"
+        },
+        {
+          "country": "FR",
+          "kind": "analog",
+          "label": "BSA-AIR",
+          "summary": "The SAFE analog is the BSA-AIR (bon de souscription d'actions — accord d'investissement rapide), a practitioner-standard warrant instrument.",
+          "actionUrl": "https://bpifrance-creation.fr/",
+          "actionLabel": "Bpifrance Création (state investment bank)"
+        },
+        {
+          "country": "PT",
+          "kind": "analog",
+          "label": "Convertible loan note",
+          "summary": "Pre-seed runs on convertible loan notes rather than SAFEs, with the Programa Semente deduction as the angel-side incentive.",
+          "actionUrl": "https://diariodarepublica.pt/dr/legislacao-consolidada/decreto-lei/1988-34570075",
+          "actionLabel": "CIRS (DRE) — Programa Semente"
+        },
+        {
+          "country": "CA",
+          "kind": "analog",
+          "label": "SAFE under NI 45-106 exemptions",
+          "summary": "SAFEs are used in Canadian pre-seeds, but securities law is provincial: issuances ride NI 45-106 prospectus exemptions with a report of exempt distribution after closing.",
+          "actionUrl": "https://www.osc.ca/en/securities-law/instruments-rules-policies/4/45-106",
+          "actionLabel": "NI 45-106 — prospectus exemptions (OSC)"
+        }
       ]
     },
     {
@@ -455,19 +1305,169 @@
         "nvca-investors-rights-agreement",
         "nvca-voting-agreement",
         "nvca-rofr-cosale-agreement"
+      ],
+      "geo": [
+        {
+          "country": "IN",
+          "kind": "analog",
+          "label": "Private placement (s.42, PAS-3)",
+          "summary": "A priced round is a private placement under Companies Act s.42: special resolution, registered-valuer report on price, PAS-3 return of allotment, and RBI reporting if the money is foreign.",
+          "actionUrl": "https://www.nsws.gov.in/",
+          "actionLabel": "NSWS (MCA private placement filings)"
+        },
+        {
+          "country": "UK",
+          "kind": "analog",
+          "label": "Share allotment + SH01",
+          "summary": "Closing means allotting new shares: board and shareholder authorities, a subscription and shareholders' agreement, new articles for the preferred class, then the SH01 filed within a month.",
+          "actionUrl": "https://www.gov.uk/government/publications/return-of-allotment-of-shares-sh01",
+          "actionLabel": "Companies House — return of allotment (SH01)"
+        },
+        {
+          "country": "DE",
+          "kind": "analog",
+          "label": "Notarized Kapitalerhöhung",
+          "summary": "A priced round is a notarized capital increase: the new shares only exist once the increase is registered in the Handelsregister — notary lead time is part of the closing plan.",
+          "actionUrl": "https://www.handelsregister.de/",
+          "actionLabel": "Handelsregister (capital increase)"
+        },
+        {
+          "country": "FR",
+          "kind": "analog",
+          "label": "Augmentation de capital",
+          "summary": "Closing is an augmentation de capital: an extraordinary general meeting, updated statuts, funds certified on a blocked account, then the capital change filed through the guichet unique.",
+          "actionUrl": "https://procedures.inpi.fr/",
+          "actionLabel": "INPI guichet unique (capital increase)"
+        },
+        {
+          "country": "PT",
+          "kind": "analog",
+          "label": "Aumento de capital",
+          "summary": "A priced round is a shareholder-resolved aumento de capital registered at the commercial registry — notarization is generally no longer required for standard increases.",
+          "actionUrl": "https://www.gov.pt/guias/empresa-online-servicos-do-registo-comercial",
+          "actionLabel": "Empresa Online — registry filings"
+        },
+        {
+          "country": "CA",
+          "kind": "analog",
+          "label": "Articles of amendment + NI 45-106 placement",
+          "summary": "Closing means articles of amendment creating the preferred class plus a private placement under NI 45-106 exemptions, with the exempt-distribution report due within 10 days.",
+          "actionUrl": "https://www.osc.ca/en/securities-law/instruments-rules-policies/4/45-106",
+          "actionLabel": "NI 45-106 — prospectus exemptions (OSC)"
+        }
       ]
     },
     {
       "id": "409a-valuation",
       "label": "409A valuation",
       "description": "The accepted 409A fair-market-value report. Every option grant - including the first hire's - requires a current one.",
-      "producedBy": "fund_003"
+      "producedBy": "fund_003",
+      "geo": [
+        {
+          "country": "IN",
+          "kind": "analog",
+          "label": "Registered-valuer report (Rule 11UA)",
+          "summary": "No 409A, but pricing is still regulated: share issues need a report from an IBBI-registered valuer or merchant banker, and ESOP perquisite tax runs off fair market value.",
+          "actionUrl": "https://ibbi.gov.in/",
+          "actionLabel": "IBBI — registered valuers"
+        },
+        {
+          "country": "UK",
+          "kind": "analog",
+          "label": "EMI valuation agreed with HMRC (VAL231)",
+          "summary": "The analog is agreeing an EMI valuation with HMRC's Shares and Assets Valuation team: it fixes market value for 90 days, so grants happen inside that window.",
+          "actionUrl": "https://www.gov.uk/government/collections/employment-related-securities",
+          "actionLabel": "HMRC — employment related securities"
+        },
+        {
+          "country": "DE",
+          "kind": "not-applicable",
+          "label": "No statutory appraisal",
+          "summary": "No 409A equivalent: there is no statutory safe-harbor appraisal for strike prices — pricing is a company-and-tax-advisor judgment, and the statutory lever that matters is § 19a EStG's deferred taxation.",
+          "actionUrl": "https://www.gesetze-im-internet.de/estg/__19a.html",
+          "actionLabel": "EStG § 19a — startup equity taxation"
+        },
+        {
+          "country": "FR",
+          "kind": "not-applicable",
+          "label": "No appraisal safe harbor",
+          "summary": "No 409A equivalent: BSPCE strike prices are set by the issuing company with no statutory appraisal — the BOFiP doctrine governs eligibility and taxation.",
+          "actionUrl": "https://bofip.impots.gouv.fr/",
+          "actionLabel": "BOFiP — official tax doctrine (BSPCE)"
+        },
+        {
+          "country": "PT",
+          "kind": "not-applicable",
+          "label": "No appraisal ritual",
+          "summary": "No 409A ritual: plans are priced by the company and its advisors, and the 2023 startup law defers qualifying option taxation to liquidity instead.",
+          "actionUrl": "https://diariodarepublica.pt/dr/detalhe/lei/21-2023-213498830",
+          "actionLabel": "Lei 21/2023 (startup law) — DRE"
+        },
+        {
+          "country": "CA",
+          "kind": "not-applicable",
+          "label": "No CRA appraisal safe harbor",
+          "summary": "No 409A equivalent: CRA publishes no appraisal safe harbor — CCPC option rules defer the employee's tax to sale regardless, so the annual-valuation ritual has no counterpart.",
+          "actionUrl": "https://www.canada.ca/en/revenue-agency/services/tax/businesses/topics/payroll/benefits-allowances/security-options.html",
+          "actionLabel": "CRA — security options"
+        }
+      ]
     },
     {
       "id": "option-grant",
       "label": "Option grants",
       "description": "Board-approved, signed, and recorded stock option grants. Offboarding's exercise-window notice runs against them.",
-      "producedBy": "fund_004"
+      "producedBy": "fund_004",
+      "geo": [
+        {
+          "country": "IN",
+          "kind": "analog",
+          "label": "ESOP grants (s.62(1)(b))",
+          "summary": "ESOPs need a shareholders' special resolution and are taxed as a perquisite at exercise on a registered valuation — DPIIT-recognised startups can defer that perquisite tax.",
+          "actionUrl": "https://www.startupindia.gov.in/",
+          "actionLabel": "Startup India (ESOP rules & deferral)"
+        },
+        {
+          "country": "UK",
+          "kind": "analog",
+          "label": "EMI options",
+          "summary": "UK startups grant EMI options — an HMRC-approved scheme with capital-gains treatment, valuations agreed with HMRC in advance, and grants notified to HMRC.",
+          "actionUrl": "https://www.gov.uk/tax-employee-share-schemes/enterprise-management-incentives-emis",
+          "actionLabel": "EMI share option scheme"
+        },
+        {
+          "country": "DE",
+          "kind": "analog",
+          "label": "VSOP / § 19a shares",
+          "summary": "Most startups grant VSOPs (virtual options, cash-settled); § 19a EStG now defers the dry-income tax on genuine employee shares for qualifying startups.",
+          "actionUrl": "https://www.gesetze-im-internet.de/estg/__19a.html",
+          "actionLabel": "§ 19a EStG (deferred taxation of employee equity)"
+        },
+        {
+          "country": "FR",
+          "kind": "analog",
+          "label": "BSPCE",
+          "summary": "French startups grant BSPCE — founder-company warrants reserved for young companies, with capital-gains-style taxation and no employer social charges.",
+          "actionUrl": "https://bpifrance-creation.fr/encyclopedie/financements/recours-a-investisseurs/bons-souscription-parts-createur-dentreprise",
+          "actionLabel": "BSPCE — Bpifrance Création guide"
+        },
+        {
+          "country": "PT",
+          "kind": "analog",
+          "label": "Startup-law option plan (Lei 21/2023)",
+          "summary": "Options are granted under a company plan with shareholder approval; for recognised startups the Lei 21/2023 regime defers taxation of qualifying plans to liquidity.",
+          "actionUrl": "https://diariodarepublica.pt/dr/detalhe/lei/21-2023-213498830",
+          "actionLabel": "Lei 21/2023 (startup law) — DRE"
+        },
+        {
+          "country": "CA",
+          "kind": "analog",
+          "label": "CCPC stock options",
+          "summary": "Grants are board-approved under the plan; for CCPCs the employee's taxable benefit is deferred until the shares are sold, with the 110(1)(d) deduction available.",
+          "actionUrl": "https://www.canada.ca/en/revenue-agency/services/tax/businesses/topics/payroll/benefits-allowances/security-options.html",
+          "actionLabel": "CRA — security options"
+        }
+      ]
     },
     {
       "id": "employment-agreement",
@@ -479,32 +1479,282 @@
       ],
       "documents": [
         "cooley-offer-letter"
+      ],
+      "geo": [
+        {
+          "country": "IN",
+          "kind": "analog",
+          "label": "Appointment letter (+ EPF/ESI setup)",
+          "summary": "First-hire paper is the appointment letter, alongside EPF/ESI applicability checks, a state shops-and-establishments registration, and monthly TDS on salary.",
+          "actionUrl": "https://unifiedportal-emp.epfindia.gov.in/epfo/",
+          "actionLabel": "EPFO employer portal"
+        },
+        {
+          "country": "UK",
+          "kind": "analog",
+          "label": "Written statement of particulars",
+          "summary": "A written statement of particulars is a day-one legal right; gov.uk's first-hire checklist adds right-to-work checks, employers' liability insurance, and PAYE before the first payday.",
+          "actionUrl": "https://www.gov.uk/employing-staff",
+          "actionLabel": "Employ someone: step by step"
+        },
+        {
+          "country": "DE",
+          "kind": "analog",
+          "label": "Arbeitsvertrag (NachwG written terms)",
+          "summary": "The Nachweisgesetz requires the essential terms of employment in writing (tightened in 2022, with fines) — the German employment contract carries them.",
+          "actionUrl": "https://www.gesetze-im-internet.de/nachwg/",
+          "actionLabel": "NachwG — written particulars law"
+        },
+        {
+          "country": "FR",
+          "kind": "analog",
+          "label": "Contrat de travail + DPAE",
+          "summary": "Every hire starts with the DPAE to URSSAF before the start date, plus a written contract in French and affiliation to the mandatory mutuelle and retirement schemes.",
+          "actionUrl": "https://entreprendre.service-public.fr/vosdroits/F23107",
+          "actionLabel": "DPAE — pre-hire declaration"
+        },
+        {
+          "country": "PT",
+          "kind": "analog",
+          "label": "Contrato de trabalho + admissao",
+          "summary": "The admission is reported to Segurança Social before the start date, mandatory work-accident insurance is taken out, and the written contract terms are put in place.",
+          "actionUrl": "https://www.gov.pt/guias/contratar-trabalhadores",
+          "actionLabel": "gov.pt — contratar trabalhadores"
+        },
+        {
+          "country": "CA",
+          "kind": "analog",
+          "label": "Employment agreement (provincial standards)",
+          "summary": "The agreement rides the employee's provincial employment-standards minimums, with a payroll (RP) account and workers'-compensation registration before the first payday.",
+          "actionUrl": "https://www.canada.ca/en/revenue-agency/services/tax/businesses/topics/payroll.html",
+          "actionLabel": "CRA — payroll"
+        }
       ]
     },
     {
       "id": "contractor-record",
       "label": "Contractor record (W-9 on file)",
       "description": "A payable 1099 contractor in payroll - W-9 and payment details on file. Year-end 1099 filings verify against it.",
-      "producedBy": "opp_002"
+      "producedBy": "opp_002",
+      "geo": [
+        {
+          "country": "IN",
+          "kind": "analog",
+          "label": "PAN + TDS record",
+          "summary": "Onboarding a contractor means collecting their PAN and deducting TDS from every payment, deposited monthly and reported quarterly.",
+          "actionUrl": "https://www.incometax.gov.in/iec/foportal/",
+          "actionLabel": "Income Tax e-filing (TDS on fees)"
+        },
+        {
+          "country": "UK",
+          "kind": "analog",
+          "label": "IR35 status determination (CEST)",
+          "summary": "Before the contract: an IR35/off-payroll status check — HMRC's CEST tool gives a rulable answer, and misclassification lands the tax bill on you.",
+          "actionUrl": "https://www.gov.uk/guidance/check-employment-status-for-tax",
+          "actionLabel": "HMRC — check employment status (CEST)"
+        },
+        {
+          "country": "DE",
+          "kind": "analog",
+          "label": "Status determination (DRV Clearingstelle)",
+          "summary": "The risk is Scheinselbständigkeit: a one-client contractor working like staff triggers retroactive social contributions — the DRV Clearingstelle runs an official status procedure.",
+          "actionUrl": "https://www.deutsche-rentenversicherung.de/",
+          "actionLabel": "Deutsche Rentenversicherung (status determination)"
+        },
+        {
+          "country": "FR",
+          "kind": "analog",
+          "label": "URSSAF attestation de vigilance",
+          "summary": "Contractors must be registered, and for contracts of €5,000+ you must collect and verify their URSSAF attestation de vigilance every six months.",
+          "actionUrl": "https://www.urssaf.fr/accueil/attestation-vigilance.html",
+          "actionLabel": "URSSAF — attestation de vigilance"
+        },
+        {
+          "country": "PT",
+          "kind": "analog",
+          "label": "Recibos verdes",
+          "summary": "Contractors invoice through recibos verdes on the tax authority's portal — with reclassification risk (falsos recibos verdes) when the work looks like staff work.",
+          "actionUrl": "https://www.portaldasfinancas.gov.pt/",
+          "actionLabel": "Portal das Finanças — recibos verdes"
+        },
+        {
+          "country": "CA",
+          "kind": "analog",
+          "label": "RC4110 status determination",
+          "summary": "Status is decided on CRA's employee-vs-self-employed factors (guide RC4110): misclassify and the employer owes retroactive CPP and EI with penalties.",
+          "actionUrl": "https://www.canada.ca/en/revenue-agency/services/forms-publications/publications/rc4110/employee-self-employed.html",
+          "actionLabel": "CRA RC4110 — employee or self-employed"
+        }
+      ]
     },
     {
       "id": "payroll-account",
       "label": "Payroll account",
       "description": "The configured payroll provider - the system of record for paying people and filing employment taxes. Hiring, payroll runs, contractors, the 401(k), visa updates, R&D payroll offset, and the final payroll all run on it.",
-      "producedBy": "qs_063"
+      "producedBy": "qs_063",
+      "geo": [
+        {
+          "country": "IN",
+          "kind": "analog",
+          "label": "EPF/ESI employer registration",
+          "summary": "Employer setup spans EPF and ESI registration plus state-level professional tax; salary TDS is deposited monthly against the company's TAN.",
+          "actionUrl": "https://unifiedportal-emp.epfindia.gov.in/epfo/",
+          "actionLabel": "EPFO employer portal"
+        },
+        {
+          "country": "UK",
+          "kind": "analog",
+          "label": "PAYE employer registration (RTI)",
+          "summary": "Register as an employer with HMRC for PAYE before the first payday, then report pay through Real Time Information on or before every payment.",
+          "actionUrl": "https://www.gov.uk/register-employer",
+          "actionLabel": "Register as an employer (PAYE)"
+        },
+        {
+          "country": "DE",
+          "kind": "analog",
+          "label": "Betriebsnummer",
+          "summary": "You need a Betriebsnummer from the Federal Employment Agency before running payroll, then monthly social-insurance reports to each employee's health insurer and wage tax via ELSTER.",
+          "actionUrl": "https://www.arbeitsagentur.de/unternehmen/betriebsnummern-service",
+          "actionLabel": "Betriebsnummern-Service (Bundesagentur für Arbeit)"
+        },
+        {
+          "country": "FR",
+          "kind": "analog",
+          "label": "DPAE + DSN",
+          "summary": "Every hire starts with a DPAE filed with URSSAF; monthly payroll then flows through the DSN, France's unified payroll report.",
+          "actionUrl": "https://entreprendre.service-public.fr/vosdroits/F23107",
+          "actionLabel": "Déclaration préalable à l'embauche (DPAE)"
+        },
+        {
+          "country": "PT",
+          "kind": "analog",
+          "label": "Segurança Social employer registration",
+          "summary": "Register as an employer with Segurança Social and report each hire before they start, then file the monthly remuneration declaration and withhold income tax.",
+          "actionUrl": "https://www.seg-social.pt/empregadores",
+          "actionLabel": "Segurança Social — empregadores"
+        },
+        {
+          "country": "CA",
+          "kind": "analog",
+          "label": "CRA payroll (RP) account",
+          "summary": "Open a payroll (RP) program account on the CRA business number before the first remittance, and register with the provincial workers'-compensation board.",
+          "actionUrl": "https://www.canada.ca/en/revenue-agency/services/tax/businesses/topics/payroll.html",
+          "actionLabel": "CRA — payroll"
+        }
+      ]
     },
     {
       "id": "benefits-plan",
       "label": "Benefits plan",
       "description": "The company's enrolled benefits (health, dental, vision) configured in payroll. New-hire enrollment and offboarding termination act on it.",
-      "producedBy": "scale_002"
+      "producedBy": "scale_002",
+      "geo": [
+        {
+          "country": "IN",
+          "kind": "analog",
+          "label": "Group mediclaim (+ statutory ESI/EPF floor)",
+          "summary": "The statutory floor is ESI health cover, EPF retirement, and gratuity; on top, a group mediclaim policy is the standard startup benefit.",
+          "actionUrl": "https://labour.gov.in/",
+          "actionLabel": "Ministry of Labour & Employment"
+        },
+        {
+          "country": "UK",
+          "kind": "analog",
+          "label": "Benefits-in-kind (P11D / payrolling)",
+          "summary": "The NHS makes health insurance a perk rather than table stakes; the mandatory piece is pension auto-enrolment, and private benefits are taxable benefits-in-kind reported to HMRC.",
+          "actionUrl": "https://www.gov.uk/employer-reporting-expenses-benefits",
+          "actionLabel": "Expenses and benefits for employers"
+        },
+        {
+          "country": "DE",
+          "kind": "absorbed",
+          "label": "Statutory insurances ride payroll",
+          "summary": "Health, pension, care and unemployment insurance are statutory and ride payroll — there is no benefits-enrollment project; the discretionary layer is a bAV pension offer and perks.",
+          "actionUrl": "https://www.deutsche-rentenversicherung.de/",
+          "actionLabel": "Deutsche Rentenversicherung"
+        },
+        {
+          "country": "FR",
+          "kind": "analog",
+          "label": "Mutuelle + prévoyance",
+          "summary": "Every employer must provide a mutuelle — complementary health insurance at least 50% employer-funded — plus prévoyance cover for cadres; both plug into payroll's DSN.",
+          "actionUrl": "https://entreprendre.service-public.fr/vosdroits/F33754",
+          "actionLabel": "Mandatory complementary health cover (mutuelle)"
+        },
+        {
+          "country": "PT",
+          "kind": "absorbed",
+          "label": "Statutory social security + SNS",
+          "summary": "Statutory social security rides payroll and the SNS provides universal healthcare — there is no benefits-enrollment project; the common extras are meal allowance and private health as perks.",
+          "actionUrl": "https://www.seg-social.pt/empregadores",
+          "actionLabel": "Segurança Social — empregadores"
+        },
+        {
+          "country": "CA",
+          "kind": "analog",
+          "label": "Group extended-health benefits",
+          "summary": "Provincial medicare covers care, so the real project is the extended-health layer: group benefits through an insurer, with CRA's taxable-benefit rules deciding what lands on the T4.",
+          "actionUrl": "https://www.canada.ca/en/revenue-agency/services/tax/businesses/topics/payroll/benefits-allowances.html",
+          "actionLabel": "CRA — benefits and allowances"
+        }
+      ]
     },
     {
       "id": "401k-plan",
       "label": "401(k) plan",
       "description": "The adopted retirement plan with the payroll integration connected. Terminal: contributions sync on every payroll run.",
       "producedBy": "hr_012",
-      "terminal": true
+      "terminal": true,
+      "geo": [
+        {
+          "country": "IN",
+          "kind": "analog",
+          "label": "EPF (Employees' Provident Fund)",
+          "summary": "The EPF is the mandatory retirement vehicle once headcount crosses 20 — 12% of basic pay from employer and employee each, administered through the EPFO portal.",
+          "actionUrl": "https://unifiedportal-emp.epfindia.gov.in/epfo/",
+          "actionLabel": "EPFO — Employees' Provident Fund"
+        },
+        {
+          "country": "UK",
+          "kind": "analog",
+          "label": "Workplace pension auto-enrolment",
+          "summary": "Not optional like a 401(k): every UK employer must auto-enrol eligible staff into a workplace pension and declare compliance to The Pensions Regulator.",
+          "actionUrl": "https://www.thepensionsregulator.gov.uk/en/employers",
+          "actionLabel": "Pension auto-enrolment (The Pensions Regulator)"
+        },
+        {
+          "country": "DE",
+          "kind": "analog",
+          "label": "bAV (Entgeltumwandlung)",
+          "summary": "State pension contributions ride payroll automatically; the 401(k) analog is betriebliche Altersvorsorge — every employer must offer salary conversion with an employer top-up.",
+          "actionUrl": "https://www.gesetze-im-internet.de/betravg/",
+          "actionLabel": "BetrAVG — occupational pensions law"
+        },
+        {
+          "country": "FR",
+          "kind": "absorbed",
+          "label": "AGIRC-ARRCO (auto via DSN)",
+          "summary": "Mandatory complementary pensions enroll automatically through payroll's DSN — nothing to set up; the optional analog is a PER d'entreprise as a perk.",
+          "actionUrl": "https://www.agirc-arrco.fr/",
+          "actionLabel": "AGIRC-ARRCO complementary pension"
+        },
+        {
+          "country": "PT",
+          "kind": "absorbed",
+          "label": "State pension via social security",
+          "summary": "State pension contributions ride the single social-security charge automatically and no occupational plan is mandated — a company PPR is a voluntary perk.",
+          "actionUrl": "https://www.seg-social.pt/empregadores",
+          "actionLabel": "Segurança Social — empregadores"
+        },
+        {
+          "country": "CA",
+          "kind": "analog",
+          "label": "Group RRSP / DPSP",
+          "summary": "CPP rides payroll automatically; the 401(k) analog is the voluntary group RRSP or DPSP most tech employers offer.",
+          "actionUrl": "https://www.canada.ca/en/services/taxes/savings-and-pension-plans/savings-and-pension-plan-administration.html",
+          "actionLabel": "Savings and pension plan administration"
+        }
+      ]
     },
     {
       "id": "ats",
