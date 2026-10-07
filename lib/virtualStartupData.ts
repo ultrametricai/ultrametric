@@ -11,7 +11,7 @@ import { hasLogo } from './logos'
 import { formatCompact } from './popularity'
 import { weeklyInstalls } from './popularRanking'
 import { ENTRY_PLAN_UNIT, isPricingUnavailable, loadPricing, PRICING_ARENAS, formatFactAmount, type PricingFact } from './pricing'
-import { loadProcesses } from './processes'
+import { loadArtifacts, loadProcesses, type ProcessTask } from './processes'
 import type { VendorRole } from './processSim'
 import {
   likelyChoiceOrder,
@@ -20,6 +20,7 @@ import {
   type VsAssistant,
   type VsPopularityMap,
   type VsPopularityProduct,
+  type VsProducedArtifact,
 } from './virtualStartup'
 import type { VsAccessMap, VsAccessSurface, VsPricingInfo, VsPricingMap, VsVerdictKind } from './virtualStartupRun'
 
@@ -116,6 +117,46 @@ export function buildVsAssistants(dir?: string): VsAssistant[] {
     if (!p) throw new Error(`virtual-startup: AI firm "${id}" missing from the judged ${VS_AI_FIRM_ARENA} roster`)
     return { id, name: p.name, hasLogo: hasLogo(id) }
   })
+}
+
+// Registry artifact labels keyed by artifact id (processes/artifacts.json) — the lookup
+// vsTaskLinkage resolves producesArtifact tags against.
+export function vsArtifactLabels(): Map<string, string> {
+  return new Map(loadArtifacts().map((a) => [a.id, a.label]))
+}
+
+// Corpus linkage for one sim task payload (founder round 2026-10-07, items 2–3 + diagram forks):
+//   nodeIds  — the DAG node ids, parallel to the flattened steps, behind the terminal's
+//              /processes/{slug}#step-{taskId}-{nodeId} deep links (the pinned anchor contract);
+//   produces — the registry artifact each step's producesArtifact tag names, with its committed
+//              label, or null (the document panel is computed from exactly these tags);
+//   fork     — the first step whose committed dag.edges diverge, with the parallel branches'
+//              first-step labels (the journey diagram's branch/join treatment; linear DAGs
+//              carry nothing).
+// Pure serialization of committed corpus/registry data; an unknown artifact id fails the build.
+export function vsTaskLinkage(
+  task: ProcessTask,
+  artifactLabels: Map<string, string>,
+): { nodeIds: string[]; produces: (VsProducedArtifact | null)[]; fork?: { at: string; branches: string[] } } {
+  const nodeIds = task.dag.nodes.map((n) => n.id)
+  const produces = task.dag.nodes.map((n) => {
+    if (!n.producesArtifact) return null
+    const label = artifactLabels.get(n.producesArtifact)
+    if (!label) {
+      throw new Error(`virtual-startup: step ${task.id}/${n.id} produces unknown artifact "${n.producesArtifact}"`)
+    }
+    return { id: n.producesArtifact, label }
+  })
+  const edges = task.dag.edges ?? []
+  const labelOf = new Map(task.dag.nodes.map((n) => [n.id, n.label]))
+  const forkNode = task.dag.nodes.find((n) => edges.filter((e) => e.from === n.id).length > 1)
+  const fork = forkNode
+    ? {
+        at: forkNode.label,
+        branches: edges.filter((e) => e.from === forkNode.id).map((e) => labelOf.get(e.to) ?? e.to),
+      }
+    : undefined
+  return { nodeIds, produces, ...(fork ? { fork } : {}) }
 }
 
 // The corpus risk axis (processes/corpus.json `risk`, 1–5) keyed by task id — the event engine's

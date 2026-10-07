@@ -54,6 +54,7 @@ import {
   type SynthIdentity,
   type SyntheticArtifact,
   type TopVendorPick,
+  type VsProducedArtifact,
   type VsAssistant,
   type VirtualTaskPayload,
   type VsChain,
@@ -124,7 +125,20 @@ type Row =
   | { kind: 'day'; key: string; day: number }
   // v3: outNote names the outcome-model rule applied to this step's sim minutes (null =
   // corpus estimate as-is); outMinutes is the effective clock advance the day markers use.
-  | { kind: 'step'; key: string; step: SimStep; top: TopVendorPick | null; outNote: string | null; outMinutes: number }
+  // anchor (2026-10-07, item 2) deep-links the process page's #step-{taskId}-{nodeId} block
+  // (null when the payload carries no node ids — old fixtures; honest degrade, no link).
+  // produces (item 3) is the registry artifact the corpus step's producesArtifact tag names —
+  // the document panel is computed from exactly these on the steps the run actually printed.
+  | {
+      kind: 'step'
+      key: string
+      step: SimStep
+      top: TopVendorPick | null
+      outNote: string | null
+      outMinutes: number
+      anchor: string | null
+      produces: VsProducedArtifact | null
+    }
   | { kind: 'artifact'; key: string; artifact: SyntheticArtifact }
   // v3: a seeded mid-run event, printed inside the terminal flow at its drawn day.
   | { kind: 'vsevent'; key: string; eventId: string; day: number }
@@ -212,7 +226,19 @@ function buildRunRows(args: RunArgs): RunBuild {
         // disclosed simulation assumptions) — falling back to the raw corpus estimate.
         const outStep = outcome.steps[steps.length]
         const outMinutes = outcome.minutesByKey[`${taskId}:${i}`] ?? step.estimatedMinutes
-        rows.push({ kind: 'step', key: `step-${taskId}-${i}`, step, top: task.tops[i] ?? null, outNote: outStep?.note ?? null, outMinutes })
+        // The step's canonical deep link: the process page's #step-{taskId}-{nodeId} anchor
+        // (the pinned anchor contract — every corpus node carries one). Null without node ids.
+        const nodeId = task.nodeIds?.[i]
+        rows.push({
+          kind: 'step',
+          key: `step-${taskId}-${i}`,
+          step,
+          top: task.tops[i] ?? null,
+          outNote: outStep?.note ?? null,
+          outMinutes,
+          anchor: nodeId ? `/processes/${task.slug}#step-${taskId}-${nodeId}` : null,
+          produces: task.produces?.[i] ?? null,
+        })
         steps.push(step)
         cum += outMinutes
       })
@@ -897,6 +923,12 @@ export default function VirtualStartup({
     const vendors: TopVendorPick[] = []
     const seenVendors = new Set<string>()
     const events: VsPanelEvent[] = []
+    // Company documents (founder 2026-10-07, item 3): the registry artifacts
+    // (processes/artifacts.json) of exactly the producesArtifact-tagged steps the run has
+    // printed — committed corpus tags only, deduped in first-production order (the registry's
+    // one-canonical-producer rule makes a duplicate an alsoProducedBy exception, printed once).
+    const documents: VsProducedArtifact[] = []
+    const seenDocuments = new Set<string>()
     // Ultrametric CLI/MCP lines (founder ask 2026-09-30): the revealed processes our own shipped
     // CLI can drive (curated lib/ultrametricCli.ts). Collected SEPARATELY from the judged
     // vendors list — first-party, disclosed, never mixed into or reordering the judged picks.
@@ -907,9 +939,15 @@ export default function VirtualStartup({
       } else if (row.kind === 'task') {
         const um = ultrametricCliFor(row.task.id)
         if (um) umCli.push({ taskId: row.task.id, title: row.task.title, command: um.command })
-      } else if (row.kind === 'step' && row.top && !seenVendors.has(row.top.productId)) {
-        seenVendors.add(row.top.productId)
-        vendors.push(row.top)
+      } else if (row.kind === 'step') {
+        if (row.top && !seenVendors.has(row.top.productId)) {
+          seenVendors.add(row.top.productId)
+          vendors.push(row.top)
+        }
+        if (row.produces && !seenDocuments.has(row.produces.id)) {
+          seenDocuments.add(row.produces.id)
+          documents.push(row.produces)
+        }
       } else if (row.kind === 'vsevent') {
         const resolved = resolvedEventById.get(row.eventId)
         if (resolved) {
@@ -923,7 +961,7 @@ export default function VirtualStartup({
         }
       }
     }
-    return { artifacts, vendors, events, umCli }
+    return { artifacts, vendors, events, umCli, documents }
   }, [rows, revealed, resolvedEventById])
   // The Decisions tab: BOTH founder axes first (item 5), then the nine decisions with their
   // pending-vs-asserted state (semi-auto shows what the run still owes you).
@@ -1751,6 +1789,7 @@ export default function VirtualStartup({
         decisions={panelDecisions}
         events={panel.events}
         umCli={panel.umCli}
+        documents={panel.documents}
       />
 
       {/* The terminal — the page's visual centerpiece (founder ask 2026-09-28: "have the
@@ -1959,7 +1998,21 @@ export default function VirtualStartup({
                 return (
                   <li key={row.key} className="flex flex-wrap items-center gap-x-2 gap-y-0.5 pl-4 text-sm text-zinc-400">
                     <span className={`rounded border px-1.5 py-px text-[10px] ${badge.cls}`}>{badge.text}</span>
-                    <span className="text-zinc-300">{row.step.label}</span>
+                    {/* The step label deep-links its canonical block on the process page —
+                        /processes/{slug}#step-{taskId}-{nodeId}, the pinned anchor contract
+                        (founder 2026-10-07, item 2). Honest degrade: no node id, no link. */}
+                    {row.anchor ? (
+                      <Link
+                        data-testid="vs-step-link"
+                        href={row.anchor}
+                        title={`${row.step.label} — open this step on the ${row.step.taskTitle} process page`}
+                        className="text-zinc-300 hover:text-emerald-300"
+                      >
+                        {row.step.label}
+                      </Link>
+                    ) : (
+                      <span className="text-zinc-300">{row.step.label}</span>
+                    )}
                     {stepUsScoped && geoCountry !== null && (
                       <span
                         aria-hidden

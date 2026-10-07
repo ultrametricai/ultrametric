@@ -5,7 +5,7 @@ import Link from 'next/link'
 import { IconGlyph } from '@/components/IconChip'
 import ProductLogoView from '@/components/ProductLogoView'
 import VsCopyCommand from '@/components/VsCopyCommand'
-import type { SyntheticArtifact, TopVendorPick } from '@/lib/virtualStartup'
+import type { SyntheticArtifact, TopVendorPick, VsProducedArtifact } from '@/lib/virtualStartup'
 
 // The state-graph viewer (founder batch 2026-09-29, item 3): a compact tabbed panel above (or
 // beside, on wide screens) the terminal that fills as the run progresses — the OBJECTS coming
@@ -61,6 +61,7 @@ export default function VsStateGraph({
   decisions,
   events,
   umCli = [],
+  documents,
 }: {
   // True once the run has revealed at least one row — pre-run the panel shows the placeholder.
   started: boolean
@@ -74,8 +75,16 @@ export default function VsStateGraph({
   events: VsPanelEvent[]
   // Revealed Ultrametric-driveable processes (ours, disclosed) — optional, additive (2026-09-30).
   umCli?: VsUmCliLine[]
+  // Company documents (founder 2026-10-07, item 3): the registry artifacts
+  // (processes/artifacts.json) of exactly the producesArtifact-tagged steps the run has printed,
+  // each linking its /artifacts/{id} page. The document TYPE is committed corpus vocabulary; the
+  // claim that THIS company holds one is a product of the synthetic run, so the line carries the
+  // same structural data-synthetic attribute as every generated object. Optional, additive:
+  // absent/[] = the section never renders.
+  documents?: VsProducedArtifact[]
 }) {
   const [tab, setTab] = useState<PanelTab>('status')
+  const docs = documents ?? []
 
   // No count badges (founder batch 2026-10-02, item 4) — the labels stand alone.
   const tabs: Array<{ id: PanelTab; label: string }> = [
@@ -117,23 +126,58 @@ export default function VsStateGraph({
             prints in the terminal.
           </p>
         ) : tab === 'status' ? (
-          artifacts.length === 0 ? (
-            <p className="py-2 text-[11px] text-zinc-400">nothing exists yet — the first artifacts are printing…</p>
-          ) : (
-            <ul className="space-y-1">
-              {artifacts.map((a, i) => (
-                <li
-                  key={`${a.taskId}-${i}`}
-                  data-testid="vs-sg-artifact"
-                  data-synthetic="true"
-                  className="flex flex-wrap items-center gap-x-2 gap-y-0.5 border-l-2 border-fuchsia-400/40 pl-2 text-[12px]"
+          <>
+            {artifacts.length === 0 ? (
+              <p className="py-2 text-[11px] text-zinc-400">nothing exists yet — the first artifacts are printing…</p>
+            ) : (
+              <ul className="space-y-1">
+                {artifacts.map((a, i) => (
+                  <li
+                    key={`${a.taskId}-${i}`}
+                    data-testid="vs-sg-artifact"
+                    data-synthetic="true"
+                    className="flex flex-wrap items-center gap-x-2 gap-y-0.5 border-l-2 border-fuchsia-400/40 pl-2 text-[12px]"
+                  >
+                    <span className="text-fuchsia-300/90">{a.label}:</span>
+                    <span className="min-w-0 truncate font-mono text-[11px] text-zinc-200" title={a.value}>{a.value}</span>
+                  </li>
+                ))}
+              </ul>
+            )}
+            {/* Company documents (founder 2026-10-07, item 3): one line per registry artifact
+                the run's executed steps produce (corpus producesArtifact tags — the sim never
+                invents a document), each linking its /artifacts page. The possession claim is
+                the synthetic run's, so the line keeps the structural data-synthetic attribute;
+                the document type and label are the committed registry's. */}
+            {docs.length > 0 && (
+              <div data-testid="vs-sg-documents" className="mt-2 border-t border-zinc-800 pt-1.5">
+                <p
+                  className="text-[9px] uppercase tracking-widest text-zinc-400"
+                  title="The registry artifacts (processes/artifacts.json) produced by the corpus steps this synthetic run executed — committed document types, synthetic possession"
                 >
-                  <span className="text-fuchsia-300/90">{a.label}:</span>
-                  <span className="min-w-0 truncate font-mono text-[11px] text-zinc-200" title={a.value}>{a.value}</span>
-                </li>
-              ))}
-            </ul>
-          )
+                  company documents · from the executed steps
+                </p>
+                <ul className="mt-1 space-y-1">
+                  {docs.map((d) => (
+                    <li
+                      key={d.id}
+                      data-testid="vs-sg-document"
+                      data-synthetic="true"
+                      className="flex min-w-0 items-center gap-2 border-l-2 border-fuchsia-400/40 pl-2 text-[12px]"
+                    >
+                      <Link
+                        href={`/artifacts/${d.id}`}
+                        title={`${d.label} — the registry artifact page: producer process, consumers, judged vendor markets`}
+                        className="min-w-0 truncate text-zinc-300 hover:text-emerald-300"
+                      >
+                        {d.label}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
+          </>
         ) : tab === 'vendors' ? (
           <>
             {vendors.length === 0 ? (

@@ -924,6 +924,13 @@ export interface TopVendorPick {
   runnersUp?: Array<{ productId: string; name: string; score: number }>
 }
 
+// A registry artifact (processes/artifacts.json) a corpus step brings into existence — id for
+// the /artifacts/{id} link, label for display. Committed registry data, serialized server-side.
+export interface VsProducedArtifact {
+  id: string
+  label: string
+}
+
 export interface VirtualTaskPayload {
   id: string
   title: string
@@ -933,6 +940,21 @@ export interface VirtualTaskPayload {
   steps: SimStep[]
   // Parallel to steps: the step's top judged vendor, or null.
   tops: (TopVendorPick | null)[]
+  // Corpus DAG node ids, parallel to steps (app/startup-sim/page.tsx serializes task.dag.nodes in
+  // the same order buildSimSteps flattens them), so each rendered step can deep-link the process
+  // page's #step-{taskId}-{nodeId} anchor (the pinned anchor contract,
+  // lib/__tests__/process-anchor-contract.test.ts). Optional additive field (2026-10-07): absent
+  // = the step renders unlinked, nothing else changes.
+  nodeIds?: string[]
+  // Parallel to steps: the registry artifact the corpus step's producesArtifact tag names, with
+  // its committed label (processes/artifacts.json), or null for the many steps without one.
+  // Optional additive field (2026-10-07): absent = no document line ever renders for the task.
+  produces?: (VsProducedArtifact | null)[]
+  // The task's internal corpus DAG fork, when its edges genuinely diverge: the forking step's
+  // label and the labels of the parallel branches' first steps (committed dag.edges only —
+  // app/startup-sim/page.tsx derives it; a linear DAG carries nothing). Optional additive field
+  // (2026-10-07): read by components/VsJourneyDag.tsx's branch/join treatment.
+  fork?: { at: string; branches: string[] }
   // The corpus GEO dimension (lib/processes.ts geoScope) + curated per-country analogs, passed
   // through for the in-sim geo annotations (founder batch 2026-09-29). Optional additive fields:
   // absent = no geo annotation ever renders for the task (honest degrade, never a guess).
