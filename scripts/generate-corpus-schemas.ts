@@ -9,12 +9,14 @@
 import fs from 'node:fs'
 import path from 'node:path'
 import { z } from 'zod'
+import { CompanyFieldsRegistrySchema } from '../lib/companyFields'
 import { ArtifactRegistrySchema, ProcessTaskSchema, VendorRegistrySchema } from '../lib/processes'
 
 const ROOT = path.resolve(__dirname, '..')
 export const OPERATIONAL_PROCESS_SCHEMA_FILE = path.join(ROOT, 'schemas', 'operational-process.schema.json')
 export const VENDOR_REGISTRY_SCHEMA_FILE = path.join(ROOT, 'schemas', 'process-vendor-registry.schema.json')
 export const ARTIFACT_REGISTRY_SCHEMA_FILE = path.join(ROOT, 'schemas', 'process-artifacts.schema.json')
+export const COMPANY_FIELDS_SCHEMA_FILE = path.join(ROOT, 'schemas', 'company-fields.schema.json')
 
 // The published schema text, byte-exact (2-space indent + trailing newline, the schemas/ house
 // format). Deterministic: z.toJSONSchema walks the zod shape in declaration order and
@@ -74,8 +76,29 @@ export function artifactRegistrySchemaJson(): string {
       'The artifact vocabulary beside the operational-process corpus ' +
       '(processes/artifacts.json): the canonical business artifacts that flow between ' +
       'processes — per artifact its id, label, description, one canonical producer process, ' +
-      'documented exception producers, and a terminal flag for artifacts nothing downstream ' +
-      'consumes. Generated from ArtifactRegistrySchema in lib/processes.ts by ' +
+      'documented exception producers, a terminal flag for artifacts nothing downstream ' +
+      'consumes, and optional per-country geo analogs derived from the committed process ' +
+      'geoNotes. Generated from ArtifactRegistrySchema in lib/processes.ts by ' +
+      'scripts/generate-corpus-schemas.ts — edit the zod schema, never this file.',
+    ...rest,
+  }
+  return `${JSON.stringify(doc, null, 2)}\n`
+}
+
+// The company-fields contract (founder 2026-10-07: typed company data fields): the typed
+// company-level values the open modules consume live in processes/company-fields.json; this
+// schema is generated from the same zod source of truth (CompanyFieldsRegistrySchema in
+// lib/companyFields.ts) and drift-tested the same way.
+export function companyFieldsSchemaJson(): string {
+  const { $schema, ...rest } = z.toJSONSchema(CompanyFieldsRegistrySchema)
+  const doc = {
+    $schema,
+    title: 'Ultrametric company data fields',
+    description:
+      'The typed company-level data fields beside the operational-process corpus ' +
+      '(processes/company-fields.json): per field its id, label, type, the artifact that ' +
+      'establishes it, and the open-module functions that consume it. Generated from ' +
+      'CompanyFieldsRegistrySchema in lib/companyFields.ts by ' +
       'scripts/generate-corpus-schemas.ts — edit the zod schema, never this file.',
     ...rest,
   }
@@ -89,6 +112,8 @@ function main(): void {
   console.log(`wrote ${path.relative(ROOT, VENDOR_REGISTRY_SCHEMA_FILE)}`)
   fs.writeFileSync(ARTIFACT_REGISTRY_SCHEMA_FILE, artifactRegistrySchemaJson())
   console.log(`wrote ${path.relative(ROOT, ARTIFACT_REGISTRY_SCHEMA_FILE)}`)
+  fs.writeFileSync(COMPANY_FIELDS_SCHEMA_FILE, companyFieldsSchemaJson())
+  console.log(`wrote ${path.relative(ROOT, COMPANY_FIELDS_SCHEMA_FILE)}`)
 }
 
 if (require.main === module) main()

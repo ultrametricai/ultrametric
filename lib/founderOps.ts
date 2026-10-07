@@ -34,6 +34,11 @@ const OPERATIONAL_ARTIFACTS = path.join('processes', 'artifacts.json')
 // lib/__tests__/businessLogicMap.test.ts, so the workflow walker skips it like the other
 // operational registries.
 const OPERATIONAL_BUSINESS_LOGIC_MAP = path.join('processes', 'business-logic-map.json')
+// The corpus's company-fields registry (founder 2026-10-07) is the operational layer too — its
+// own schema/loader/tests live in lib/companyFields.ts + schemas/company-fields.schema.json +
+// lib/__tests__/companyFields.test.ts, so the workflow walker skips it like the other
+// operational registries.
+const OPERATIONAL_COMPANY_FIELDS = path.join('processes', 'company-fields.json')
 
 function workflowJson(dir: string): string[] {
   return listJson(dir).filter(
@@ -41,7 +46,8 @@ function workflowJson(dir: string): string[] {
       !f.endsWith(OPERATIONAL_CORPUS) &&
       !f.endsWith(OPERATIONAL_VENDOR_REGISTRY) &&
       !f.endsWith(OPERATIONAL_ARTIFACTS) &&
-      !f.endsWith(OPERATIONAL_BUSINESS_LOGIC_MAP),
+      !f.endsWith(OPERATIONAL_BUSINESS_LOGIC_MAP) &&
+      !f.endsWith(OPERATIONAL_COMPANY_FIELDS),
   )
 }
 

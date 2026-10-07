@@ -12,6 +12,7 @@ import ArtifactsPage from '@/app/artifacts/page'
 import sitemap from '@/app/sitemap'
 import { ARENA_LEADERS_CAP } from '@/lib/arenaLeaders'
 import { artifactsByProducingArea, findArtifactPage, loadArtifactPages } from '@/lib/artifactPages'
+import { fieldsEstablishedBy } from '@/lib/companyFields'
 import { loadCategory } from '@/lib/data'
 import { processDepEdges } from '@/lib/processDeps'
 import { loadArtifacts, loadProcesses, processSlug } from '@/lib/processes'
@@ -106,7 +107,7 @@ describe('/artifacts/[id] — producers, consumers, computed vendors', () => {
     // lib/__tests__/processArtifacts.test.ts), and resolves to real registry records here.
     for (const a of loadArtifacts()) {
       expect(Object.keys(a).every((k) =>
-        ['id', 'label', 'description', 'producedBy', 'alsoProducedBy', 'terminal', 'documents'].includes(k),
+        ['id', 'label', 'description', 'producedBy', 'alsoProducedBy', 'terminal', 'documents', 'geo'].includes(k),
       ), a.id).toBe(true)
     }
     const page = findArtifactPage('83b-election')!
@@ -158,6 +159,66 @@ describe('/artifacts/[id] — producers, consumers, computed vendors', () => {
     expect(findArtifactPage('domain')!.documents).toEqual([])
     const { container } = render(await ArtifactDetailPage({ params: params('domain') }))
     expect([...container.querySelectorAll('h2')].map((h) => h.textContent)).not.toContain('Document')
+  })
+})
+
+// The artifact GEO section (founder geo-coverage ask 2026-10-07): committed per-country
+// analogs render as "Outside the US" through components/ArtifactGeoNotes.tsx — the process
+// pages' geo idiom, driven by the one shared geo store (no control of its own on this page;
+// the /artifacts dropdown lands from another lane). jsdom renders the US-default view: the
+// store is null until a switcher writes it, so the full per-country block is the static HTML.
+describe('/artifacts/[id] — per-country geo analogs', () => {
+  it('a US-centric artifact renders its committed entries: country, analog label, kind, committed URL', async () => {
+    const artifact = loadArtifacts().find((a) => a.id === 'ein')!
+    expect(artifact.geo!.length).toBeGreaterThanOrEqual(6)
+    const { container } = render(await ArtifactDetailPage({ params: params('ein') }))
+    expect(container.textContent).toContain('Outside the US')
+    const uk = artifact.geo!.find((g) => g.country === 'UK')!
+    expect(container.textContent).toContain(uk.label)
+    expect(container.textContent).toContain(uk.summary)
+    for (const g of artifact.geo!) {
+      expect(
+        container.querySelector(`a[href="${g.actionUrl}"]`),
+        `${g.country} must link its committed official page`,
+      ).not.toBeNull()
+    }
+  })
+
+  it('an artifact with no committed geo renders no section — honest absence', async () => {
+    expect(loadArtifacts().find((a) => a.id === 'team-chat')!.geo).toBeUndefined()
+    const { container } = render(await ArtifactDetailPage({ params: params('team-chat') }))
+    expect(container.textContent).not.toContain('Outside the US')
+  })
+})
+
+// The Data fields section (founder 2026-10-07: typed company data fields): the
+// processes/company-fields.json fields THIS artifact establishes, each consumer linking its
+// /open-modules page. Registry totality lives in lib/__tests__/companyFields.test.ts; this
+// pins the render.
+describe('/artifacts/[id] — data fields', () => {
+  it('the charter page lists the fields it establishes with their consuming modules linked', async () => {
+    const rows = fieldsEstablishedBy('certificate-of-incorporation')
+    expect(rows.map((r) => r.field.id)).toContain('incorporation-date')
+    const { container } = render(
+      await ArtifactDetailPage({ params: params('certificate-of-incorporation') }),
+    )
+    expect(container.textContent).toContain('Data fields')
+    for (const r of rows) {
+      expect(container.textContent).toContain(r.field.label)
+      expect(container.textContent).toContain(r.field.type)
+      for (const c of r.consumers) {
+        expect(
+          container.querySelector(`a[href="/open-modules/${c.moduleId}"]`),
+          `${r.field.id}: consumer ${c.moduleId} must link its module page`,
+        ).not.toBeNull()
+      }
+    }
+  })
+
+  it('an artifact that establishes no field renders no section', async () => {
+    expect(fieldsEstablishedBy('team-chat')).toEqual([])
+    const { container } = render(await ArtifactDetailPage({ params: params('team-chat') }))
+    expect([...container.querySelectorAll('h2')].map((h) => h.textContent)).not.toContain('Data fields')
   })
 })
 
