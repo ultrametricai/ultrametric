@@ -79,6 +79,24 @@ export const ProductSchema = z.object({
   // live, mark closed, keep the data.
   shutdown: z.string().min(1).max(240).optional(),
   shutdownSource: z.string().url().optional(),
+  // Jurisdiction tags for type:'government' products (government-services Phase 2, founder GO
+  // 2026-10-07 on docs/vendor-research/government-agenticness-world.md §5): `country` is the
+  // dossier's country code (US/UK/IN/DE/FR/PT/CA — UK kept as the dossier spells it), `area`
+  // the matched service area the agency is judged in. Rollup inputs only (lib/rollups.ts derives
+  // country and per-area rankings from these tags plus computed scores) — never hand-feeds a
+  // score, never part of the judge cellHash (judge.ts hashes story+evidence only), so tagging
+  // existing products never busts the judge cache. Both set together or not at all (refined in
+  // lib/rollups.ts's loader contract); non-government arenas leave them absent.
+  country: z.string().regex(/^[A-Z]{2}$/, 'country must be a 2-letter uppercase code').optional(),
+  area: z.enum(['company-registry', 'tax', 'ip-office', 'immigration', 'procurement']).optional(),
+  // URLs from `urls` above that the crawl stage must NOT fetch (pipeline/stages/crawl.ts skips
+  // them): hosts that wall keyless agents at robots.txt itself or serve a bot-management
+  // interstitial (government-services Phase 2: mca.gov.in, aima.gov.pt, scc.virginia.gov,
+  // ohiosos.gov, the sos.state.mn.us Radware page). The URL stays in `urls` because it is the
+  // product's real front door (display/link identity); the wall itself is recorded as dated
+  // probe-tier evidence instead of being re-fetched on every crawl. Robots compliance stays
+  // mechanical: a category-wide crawl can never breach a recorded wall.
+  crawlExclude: z.array(z.string().url()).optional(),
 })
 
 // Provenance of a story in the taxonomy: 'canonical' for the 29 ids injected verbatim by

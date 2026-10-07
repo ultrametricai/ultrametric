@@ -136,13 +136,21 @@ export function pickFaviconHost(urls: Product['urls']): string {
 
 async function saveLogo(categoryId: string, product: Product): Promise<void> {
   const dest = path.join(LOGOS_DIR, `${product.id}.png`)
-  try {
-    const buffer = await fetchSiteIcon(product)
-    writeLogo(dest, buffer)
-    console.log(`logos: ${categoryId}/${product.id} saved from site icon`)
-    return
-  } catch (err) {
-    console.warn(`logos: WARN ${categoryId}/${product.id} site icon failed (${(err as Error).message}), falling back to Google favicons`)
+  // crawlExclude (lib/schemas.ts): a robots-walled front door is never fetched, so the
+  // site-icon path is skipped and only the Google favicon service (a third-party cache,
+  // not the host) is queried.
+  const walled = (product.crawlExclude ?? []).includes(product.urls.site)
+  if (walled) {
+    console.log(`logos: ${categoryId}/${product.id} site is crawlExcluded — Google favicon service only`)
+  } else {
+    try {
+      const buffer = await fetchSiteIcon(product)
+      writeLogo(dest, buffer)
+      console.log(`logos: ${categoryId}/${product.id} saved from site icon`)
+      return
+    } catch (err) {
+      console.warn(`logos: WARN ${categoryId}/${product.id} site icon failed (${(err as Error).message}), falling back to Google favicons`)
+    }
   }
 
   try {

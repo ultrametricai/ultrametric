@@ -62,8 +62,10 @@ describe('existing judged selection compatibility', () => {
         }
       }
     }
-    expect(positiveCount).toBe(2527)
-    expect(zeroCount).toBe(134)
+    // Re-pinned at the government-services Phase 2 bring-up (2026-10-07, +31 judged agencies):
+    // the new positive gov verdicts add function-arena candidates on the registry/tax steps.
+    expect(positiveCount).toBe(2811)
+    expect(zeroCount).toBe(185)
     expect(extraArena).toBe(93)
   })
 

@@ -1,5 +1,6 @@
 import path from 'node:path'
 import { attachProvenance } from '../../lib/provenance'
+import { buildRollups, RollupsSchema } from '../../lib/rollups'
 import { ProductSchema, RankingsSchema, StorySchema, VerdictSchema } from '../../lib/schemas'
 import { appendScoreHistoryOnChange } from '../../lib/scoreHistory'
 import { buildRankings } from '../../lib/scoring'
@@ -17,6 +18,11 @@ export async function runDerive({ category }: { category?: string; product?: str
       attachProvenance(cat.id, buildRankings(products, stories, verdicts, new Date().toISOString())),
     )
     writeJson(path.join(dataDir, 'rankings.json'), rankings)
+    // Country/area rollups for arenas with jurisdiction-tagged products (government-services):
+    // a pure function of (products, rankings), stamped with rankings.generatedAt so
+    // recompute-check reproduces it byte-for-byte. Null for every untagged arena.
+    const rollups = buildRollups(products, rankings)
+    if (rollups) writeJson(path.join(dataDir, 'rollups.json'), RollupsSchema.parse(rollups))
     // Forward-fill the score time series (same pattern as popularity's popularity-history.jsonl
     // append, but change-only): one line per product whose rounded aiEra/agentReady moved since
     // the file's last entry for it. Idempotent — a re-derive with unchanged verdicts appends 0.

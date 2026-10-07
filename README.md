@@ -20,7 +20,7 @@
 | --- | --- |
 | Startup processes | [/processes](https://ultrametric.ai/processes): every founder process with its Agentic %, plus the chained playbooks |
 | A situation hits | [/situations](https://ultrametric.ai/situations): reactive, trigger-driven work (a breach, served papers, a tax notice), hottest clock first; doctrine in [`processes/SITUATIONS.md`](processes/SITUATIONS.md) |
-| Vendor rankings | [/overall](https://ultrametric.ai/overall) · [per-market leaderboards](https://ultrametric.ai/arenas) · [/compare](https://ultrametric.ai/compare) |
+| Vendor rankings | [/overall](https://ultrametric.ai/overall) · [per-arena leaderboards](https://ultrametric.ai/arenas) · [/compare](https://ultrametric.ai/compare) |
 | Stacks | [/stacks](https://ultrametric.ai/stacks): proven toolchains to use and improve |
 | Open modules | [`open-modules/README.md`](open-modules/README.md): the cap-table, runway, deadline, equity, and tax math as source-cited code in [`lib/openstartup/`](lib/openstartup/) |
 | The simulator | [/startup-sim](https://ultrametric.ai/startup-sim): a simulated company runs the corpus end to end |
@@ -32,9 +32,9 @@ This table is tasks only; the single structural overview of the repo is
 **You're an agent or developer consuming the data.** Nothing to install, no auth:
 
 ```bash
-curl https://ultrametric.ai/data/categories.json           # every ranking
-curl https://ultrametric.ai/data/ai-coding/rankings.json   # any ranking, machine-readable
-curl https://ultrametric.ai/arena/ai-coding/llms.md        # same ranking, markdown for agents
+curl https://ultrametric.ai/data/categories.json           # every arena
+curl https://ultrametric.ai/data/ai-coding/rankings.json   # any arena, machine-readable
+curl https://ultrametric.ai/arena/ai-coding/llms.md        # same arena, markdown for agents
 curl https://ultrametric.ai/llms.txt                       # the index for agents
 ```
 
@@ -92,34 +92,6 @@ clock, and routes the response to counsel:
   "route": "person", "optionsArenaId": "startup-law-firms" }
 ```
 
-### Artifacts
-
-[`processes/artifacts.json`](processes/artifacts.json) is the object layer between the
-processes: it registers the business objects a committed step brings into existence (the EIN,
-the charter, the cap table, the 409A report). Each object names its one canonical producer
-process (documented exceptions in `alsoProducedBy`), its per-country analog objects, the
-open-document template it is drafted on, and, through
-[`processes/company-fields.json`](processes/company-fields.json), the company data values it
-establishes together with the open-module functions that consume them (the charter sets the
-authorized shares; the Delaware franchise-tax module reads them). `lib/processDeps.ts` builds
-the cross-process dependency DAG from the typed `produces`/`requires` edges, and every object
-renders at [/artifacts](https://ultrametric.ai/artifacts) with its producer, consumers,
-country variants, and data fields.
-
-One object end to end: the filed 83(b) election
-([/artifacts/83b-election](https://ultrametric.ai/artifacts/83b-election)) is produced on the
-"File 83(b) election with the IRS" step of
-[Incorporate C-Corp](https://ultrametric.ai/processes/incorporate-c-corp), is drafted on IRS
-Form 15620 from [`open-documents/`](open-documents/), and is terminal: nothing downstream
-consumes a filed election. Its UK analog is the section 431 election:
-
-```json
-{ "id": "83b-election", "label": "Filed 83(b) election",
-  "producedBy": "form_001", "terminal": true,
-  "documents": ["irs-form-15620"],
-  "geo": [{ "country": "UK", "kind": "analog", "label": "Section 431 election" }] }
-```
-
 The data lives in [`processes/`](processes/) (`corpus.json` + the jurisdiction-scoped legal
 workflows), [`journeys/`](journeys/) (`chains.json`), and
 [`processes/vendor-registry.json`](processes/) (every vendor fact the process pages render).
@@ -136,7 +108,7 @@ To contribute: add a `geoNotes` country analog, a new process from
 ## Vendors
 
 The evidence layer: head-to-head, agent-tested rankings of the tools
-startups run on, ranking by ranking (current counts under
+startups run on, arena by arena (current counts under
 [Data releases & freshness](#data-releases--freshness)). Every verdict cites dated evidence (vendor docs, GitHub,
 community sources, hands-on probes), rankings recompute bit-identically and carry HMAC
 `_provenance`, honest negatives count as much as positives, and owner-affiliated products are
@@ -157,11 +129,11 @@ an hour" (evidence `stripe-comm-9` in
   "verdict": "full", "quality": 8, "confidence": "medium" }
 ```
 
-The data lives in [`data/`](data/) (per-ranking products, stories, evidence, verdicts,
+The data lives in [`data/`](data/) (per-arena products, stories, evidence, verdicts,
 rankings), [`vendors/`](vendors/) (the doctrine + `reviews/generated/`, one dated interchange
 record per judged product), and
 [`processes/vendor-registry.json`](processes/) (the bridge that links process steps to judged
-rankings). On the site: [/overall](https://ultrametric.ai/overall) and every ranking at
+arenas). On the site: [/overall](https://ultrametric.ai/overall) and every arena at
 `/arena/<id>` (index at [/arenas](https://ultrametric.ai/arenas)).
 
 To contribute: contest a verdict, add evidence, prove a story, or submit a product (see
@@ -287,7 +259,7 @@ The startup processes are the center of the repo; everything else feeds them:
   each (product, story) pair into a cited verdict (`verdicts.json`), and `derive` computes
   the rankings (`rankings.json`). Scores are computed, never hand-set, and `recompute-check`
   proves it bit-identically. `processes/vendor-registry.json` links each process step's
-  vendor options to the ranking that judges them, so every "use this tool for this step" is a
+  vendor options to the arena that judges them, so every "use this tool for this step" is a
   ranked, cited claim.
 - **Open modules compute what the steps need.** The `lib/openstartup/` modules (cap
   table, runway, deadlines, equity comp, notes, waterfalls, 409A sanity) are the calculations
@@ -299,7 +271,7 @@ The startup processes are the center of the repo; everything else feeds them:
 The processes themselves live in `processes/corpus.json` (playbooks in
 `journeys/chains.json`), render at [/processes](https://ultrametric.ai/processes), and replay
 end to end in [the simulator](https://ultrametric.ai/startup-sim). Everything is also served
-raw: the `/data` JSON API and the agent endpoints (`/llms.txt`, per-ranking `llms.md`).
+raw: the `/data` JSON API and the agent endpoints (`/llms.txt`, per-arena `llms.md`).
 
 ## Map of the repo
 
@@ -313,13 +285,12 @@ and markdown, schema-validated in CI, usable without running any code.
 | --- | --- | --- |
 | [`processes/`](processes/) | `corpus.json` (the operational processes and the reactive situations: DAGs, routing, geo scope, time estimates; situations doctrine in [`SITUATIONS.md`](processes/SITUATIONS.md)), the per-step vendor registry, and jurisdiction-scoped legal workflows (`equity/us-de/…`) | [`schemas/operational-process.schema.json`](schemas/) · [`schemas/process.schema.json`](schemas/) |
 | [`journeys/`](journeys/) | `chains.json` — multi-process founder paths | corpus schema + loader tests |
-| [`processes/artifacts.json`](processes/artifacts.json) | The artifact registry — the objects processes produce and consume: one canonical producer each, country analogs, open-document templates; [`company-fields.json`](processes/company-fields.json) adds the data values artifacts establish for the open modules | [`schemas/process-artifacts.schema.json`](schemas/) · [`schemas/company-fields.schema.json`](schemas/) + artifact/dependency tests |
 
 **Vendors**
 
 | Path | What lives there | Contract / gate |
 | --- | --- | --- |
-| `data/` | The ranking evidence layer: per-ranking products, stories, verdicts, evidence packs, fingerprinted rankings | `recompute-check` (bit-identical determinism) |
+| `data/` | The arena evidence layer: per-arena products, stories, verdicts, evidence packs, fingerprinted rankings | `recompute-check` (bit-identical determinism) |
 | [`vendors/`](vendors/) | The evidence doctrine + `reviews/generated/` — one interchange record per judged product | `schemas/vendor-review.schema.json`, deterministic regeneration |
 | `pipeline/` | crawl → extract → probe → judge → derive; all scores computed from verdicts | churn policy, judge caches, recompute gate |
 
@@ -351,7 +322,7 @@ belongs to [Open modules](#open-modules) above, listed there.
 | [`governance/`](governance/) | Review policy + maturity ladder, evidence doctrine, agent policy, security | — |
 | `infra/` | Cloudflare edge worker (routing, auth, live MCP probes) | 120 worker tests |
 | `docs/` | Architecture ([FOUNDER-OPS.md](docs/FOUNDER-OPS.md)), scoring companions, program docs | — |
-| `reports/` | Committed weekly rankings reports (markdown, rendered at `/reports`) | generated by the pipeline |
+| `reports/` | Committed weekly arena reports (markdown, rendered at `/reports`) | generated by the pipeline |
 | `scripts/` | Repo utilities: stats, badges, data mirroring, schema generation | — |
 | `app/`, `components/`, `lib/` | The Next.js site (~5,900 static pages) over the corpus | typecheck, lint, ~2,000 vitest tests |
 | `public/`, `__tests__/` | Static assets (committed badges, logos) and the repo-level test suites | — |
@@ -366,7 +337,7 @@ few playbooks exist ([maturity ladder](governance/REVIEW_POLICY.md)).
 ## Rankings index — every market we rank
 
 <!-- arenas:start -->
-| Ranking | Products |
+| Arena | Products |
 |---|---|
 | Desktop OS (`desktop-os`) | macos, omarchy, ubuntu, fedora, windows |
 | Startup Banking (`startup-banking`) | mercury, brex, ramp, wise, relay, jeeves, airwallex |
@@ -463,35 +434,35 @@ few playbooks exist ([maturity ladder](governance/REVIEW_POLICY.md)).
 | Virtual Mailboxes (`virtual-mailboxes`) | stable, virtualpostmail, earth-class-mail, anytime-mailbox |
 | Startup Law Firms (`startup-law-firms`) | cooley, gunderson-dettmer, fenwick, orrick, goodwin, latham-watkins, vlp-law-group, lowenstein-sandler, bird-bird, osborne-clarke, ypog, gide, cyril-amarchand, induslaw, trilegal |
 | Startup Immigration (`startup-immigration`) | alma, lighthouse, founder-law, deel-immigration, plymouth-street, casium, legalos, siskind-susser, ellis-porter, daryanani-law, green-and-spiegel |
-| Government Services (`government-services`) | irs, eftps, uscis, uspto, sam-gov, delaware-doc, california-sos, new-york-dos, texas-sos |
+| Government Services (`government-services`) | irs, eftps, uscis, uspto, sam-gov, delaware-doc, california-sos, new-york-dos, texas-sos, companies-house, hmrc, uk-ipo, uk-visas-immigration, mca-india, gst-india, ip-india, efrro-india, handelsregister, elster, dpma, bamf, inpi-guichet-unique, dgfip-impots, inpi-ip-operations, anef-france, irn-portugal, at-financas, inpi-portugal, aima-portugal, corporations-canada, cra, cipo, ircc, colorado-sos, florida-dos, washington-sos, new-jersey-dor, ohio-sos, minnesota-sos, virginia-scc |
 <!-- arenas:end -->
 
 Regenerated by `pnpm stats`; do not hand-edit. The live site has the current set as it grows.
 
-See `data/categories.json` for each ranking's full description, personas, and themes.
+See `data/categories.json` for each arena's full description, personas, and themes.
 
 ## Data releases & freshness
 
 <!-- stat-badges:start -->
-[![rankings](https://img.shields.io/badge/rankings-96-34d399)](https://ultrametric.ai)
-[![products](https://img.shields.io/badge/products-618-34d399)](https://ultrametric.ai/everything)
-[![judged verdicts](https://img.shields.io/badge/judged_verdicts-35084-34d399)](https://ultrametric.ai/methodology)
+[![arenas](https://img.shields.io/badge/arenas-96-34d399)](https://ultrametric.ai)
+[![products](https://img.shields.io/badge/products-649-34d399)](https://ultrametric.ai/everything)
+[![judged verdicts](https://img.shields.io/badge/judged_verdicts-36683-34d399)](https://ultrametric.ai/methodology)
 <!-- stat-badges:end -->
 
 <!-- stats:start -->
-As of the last full pipeline run: **96 rankings, 618 products, 35,084 judged verdicts.**
+As of the last full pipeline run: **96 arenas, 649 products, 36,683 judged verdicts.**
 <!-- stats:end -->
 
 These counts (and the badges) are regenerated from `data/` by `pnpm stats`, not maintained
 by hand. Everything on this page that changes is generated from the committed data, so the
 numbers stay current with the repo itself:
 
-- **[/reports](https://ultrametric.ai/reports)** — generated weekly rankings reports (biggest
-  movers, rank flips, new rankings, close races), committed as markdown in `reports/`.
+- **[/reports](https://ultrametric.ai/reports)** — generated weekly arena reports (biggest
+  movers, rank flips, new arenas, close races), committed as markdown in `reports/`.
 - **[GitHub releases](https://github.com/ultrametricai/ultrametric/releases)** — point-in-time
   dataset snapshots (e.g. `data-YYYY-MM-DD`) with the full `data/` tree attached, if you want
   a stable dataset to build against instead of tracking `main`.
-- **Score history** — every ranking's rank and score movements are committed alongside the data
+- **Score history** — every arena's rank and score movements are committed alongside the data
   (`data/<arena>/score-history.jsonl`), so any flip is reconstructible from the repo alone.
 
 ## Methodology
@@ -513,14 +484,14 @@ version. For plain-language answers ("what does `na` mean," "how do I disagree")
   evidenced story coverage, not absolute quality. `na` cells are excluded entirely.
 - **The Overall score** blends five agent-readiness components (agent access 0.30, API quality
   0.20, openness 0.20, agentic app 0.15, automation depth 0.15); 9 canonical agenticness
-  stories are injected verbatim into every ranking so the index is comparable across categories.
+  stories are injected verbatim into every arena so the index is comparable across categories.
 - **Honesty mechanics.** Unknown is `null`, never 0; every Overall score carries an A–D confidence
   grade (how much of it is probe-backed) and a measured ±band (68% interval from re-roll
   statistics; see [METHODOLOGY.md](./METHODOLOGY.md)); re-judge churn that cites no new
   evidence is reverted under audited rules; claims vendors make are reconciled against our
   verdicts in a claims-integrity index.
-- **Bias disclosure.** The judge is an Anthropic model and the `ai-coding` ranking includes
-  Anthropic's Claude Code; the Product Feedback ranking includes Foreloop, built by Ultrametric
+- **Bias disclosure.** The judge is an Anthropic model and the `ai-coding` arena includes
+  Anthropic's Claude Code; the Product Feedback arena includes Foreloop, built by Ultrametric
   Inc. Both conflicts are disclosed on-site, adversarially bias-audited with corrections
   applied in both directions, and documented cell-by-cell in
   [METHODOLOGY.md § Bias disclosure](./METHODOLOGY.md#bias-disclosure--the-judge-is-an-anthropic-model).
@@ -558,10 +529,10 @@ Requires `ANTHROPIC_API_KEY` in a local `.env` (see `.env.example`) for the LLM-
 on the Vercel project.** The deployed site only serves pre-computed static data from `data/`
 and does not call the Anthropic API at build or request time.
 
-### Ranking Notes (editorial drafts, not auto-published)
+### Arena Notes (editorial drafts, not auto-published)
 
 `pnpm tsx pipeline/scripts/generate-arena-notes.ts` drafts a short signed-POV essay (5
-paragraphs max: the week's rank flip that matters, an unfilled gap in the ranking, the vendor
+paragraphs max: the week's rank flip that matters, an unfilled gap in the arena, the vendor
 move to watch, one self-critique of our own data, a closing line) into
 `drafts/arena-notes/YYYY-MM-DD.md`. It is LLM-drafted but citation-gated in code: the model only
 sees a fact sheet derived from the committed changelog/report/uncertainty/gap-closers data, and
@@ -578,7 +549,7 @@ edit the frontmatter, commit. Unreviewed drafts do not render.
 
 ```
 data/
-  categories.json          # ranking metadata: id, name, description, personas, themes
+  categories.json          # arena metadata: id, name, description, personas, themes
   {category}/
     products.json           # product metadata (id, name, vendor, type, urls, logo)
     stories.json             # the category's story taxonomy (incl. the 29 canonical stories, each with an optional `origin`)
@@ -604,7 +575,7 @@ from an agent" below).
 **Dataset releases.** Point-in-time snapshots of `data/` are periodically tagged and published
 as [GitHub releases](https://github.com/ultrametricai/ultrametric/releases) (e.g.
 `data-YYYY-MM-DD`), each with a zip of the full `data/` tree attached and release notes listing
-ranking/product/verdict counts at that snapshot; useful if you want a stable dataset to build
+arena/product/verdict counts at that snapshot; useful if you want a stable dataset to build
 against instead of tracking `main`.
 
 <a id="for-ai-agents"></a>
@@ -616,8 +587,8 @@ today, no keys, no install:
 
 - **[/llms.txt](https://ultrametric.ai/llms.txt)**: the top-level index per the
   [llms.txt convention](https://llmstxt.org): site purpose, methodology one-liner, and links to
-  every ranking's markdown endpoint, the data API, and `/openapi.json`.
-- **Markdown endpoints**: every ranking has a full-content markdown rendering at
+  every arena's markdown endpoint, the data API, and `/openapi.json`.
+- **Markdown endpoints**: every arena has a full-content markdown rendering at
   `/arena/{category}/llms.md` (leaderboard, business models, grouped story matrix with proof
   URLs), and every product has a deep-dive at `/arena/{category}/product/{productId}/llms.md`
   (every verdict, rationale, and proof URL). These are the pages an agent should read first.
@@ -633,7 +604,7 @@ today, no keys, no install:
   `/data/{category}/evidence/{productId}.json`. `public/data/` is a build artifact
   (gitignored); it doesn't exist until `pnpm run build` or `pnpm run dev` regenerates it.
 - **Raw committed data**: the same records straight from the repo, no site in between:
-  [`data/`](data/) (rankings), [`processes/corpus.json`](processes/corpus.json) and
+  [`data/`](data/) (arenas), [`processes/corpus.json`](processes/corpus.json) and
   [`journeys/chains.json`](journeys/chains.json) (processes, situations, chains),
   [`rules/`](rules/) and [`sources/`](sources/) (cited law), each validating against
   [`schemas/`](schemas/).
@@ -641,7 +612,7 @@ today, no keys, no install:
   describing every data endpoint above, with hand-written JSON Schema summaries of each shape
   (mirrors `lib/schemas.ts`).
 - **[/search-index.json](https://ultrametric.ai/search-index.json)**: the site's complete
-  search index as one JSON fetch (every ranking, product, stack, process, chain, and tool page
+  search index as one JSON fetch (every arena, product, stack, process, chain, and tool page
   with its href), the same file the on-site palette loads.
 - **[/feed.xml](https://ultrametric.ai/feed.xml)**: RSS over the derived changelog
   (overtakes, score moves, launches), re-derived from committed history on each build.
@@ -653,7 +624,7 @@ today, no keys, no install:
   [/get-started](https://ultrametric.ai/get-started) is the install page, and
   [`lib/ultrametricCli.ts`](lib/ultrametricCli.ts) maps the corpus steps it can drive. The
   simulator's MCP calls remain labeled demos.
-- **schema.org**: ranking pages embed an `ItemList` of `SoftwareApplication` entries and product
+- **schema.org**: arena pages embed an `ItemList` of `SoftwareApplication` entries and product
   pages embed a `SoftwareApplication`, both with `additionalProperty` entries for our own
   metrics (`aiEra`, `score`, etc). No `aggregateRating`: we don't have star ratings and won't
   fabricate one.
@@ -665,10 +636,10 @@ today, no keys, no install:
 
 Ultrametric is live at **[ultrametric.ai](https://ultrametric.ai)** and under active expansion. In flight:
 
-- **Finer-grained rankings**: splitting broad categories (e.g. project management, edge
+- **Finer-grained arenas**: splitting broad categories (e.g. project management, edge
   platforms) into narrower slices as products diverge enough to need it.
-- **New rankings incoming**: the full build queue lives in
-  [`data/arena-roadmap.json`](./data/arena-roadmap.json) (170+ planned rankings in priority
+- **New arenas incoming**: the full build queue lives in
+  [`data/arena-roadmap.json`](./data/arena-roadmap.json) (170+ planned arenas in priority
   tiers; see [`docs/COVERAGE-STRATEGY.md`](./docs/COVERAGE-STRATEGY.md)); founder-ops
   next steps are specced in [`docs/FOUNDER-OPS-ROADMAP.md`](./docs/FOUNDER-OPS-ROADMAP.md)
   and classic head-to-heads in [`docs/CLASSIC-BATTLES.md`](./docs/CLASSIC-BATTLES.md).
@@ -684,13 +655,13 @@ Ultrametric is live at **[ultrametric.ai](https://ultrametric.ai)** and under ac
   [Contributing](#contributing--how-the-community-can-help) below);
   `.github/workflows/contest-check.yml` can automate the add-evidence → re-judge → PR loop
   once a maintainer wires up the `ANTHROPIC_API_KEY` secret.
-- **Continuous runners**: `.github/workflows/story-runner.yml` re-runs one ranking's full
+- **Continuous runners**: `.github/workflows/story-runner.yml` re-runs one arena's full
   pipeline every 6 hours on rotation and opens a reviewable PR (idle until the
-  `ANTHROPIC_API_KEY` secret is set); a ranking-builder runner that works through the
+  `ANTHROPIC_API_KEY` secret is set); an arena-builder runner that works through the
   roadmap automatically is designed in `docs/COVERAGE-STRATEGY.md`.
 
-Counts on this page (rankings/products/verdicts) are generated by `pnpm stats` (see
-`scripts/update-readme-stats.mjs`) and will keep moving as rankings and products are added.
+Counts on this page (arenas/products/verdicts) are generated by `pnpm stats` (see
+`scripts/update-readme-stats.mjs`) and will keep moving as arenas and products are added.
 They reflect the data at the last pipeline run.
 
 ## Contributing — how the community can help
@@ -705,7 +676,7 @@ The quick index:
 | --- | --- |
 | Contest a verdict | the "⚑ contest" link next to any verdict on the site → [prefilled issue](https://github.com/ultrametricai/ultrametric/issues/new?template=contest-verdict.yml); flow in [CONTRIBUTING.md](./CONTRIBUTING.md) |
 | Add evidence or prove a story hands-on | [CONTRIBUTING.md](./CONTRIBUTING.md) · [`docs/PROVE-IT.md`](./docs/PROVE-IT.md) |
-| Add your product to a ranking | [/submit](https://ultrametric.ai/submit) or [CONTRIBUTING.md § Add your product](./CONTRIBUTING.md#3-add-your-product) |
+| Add your product to an arena | [/submit](https://ultrametric.ai/submit) or [CONTRIBUTING.md § Add your product](./CONTRIBUTING.md#3-add-your-product) |
 | Add your country or state | [Add your country or state](#add-your-country-or-state) below; four PR shapes, smallest first |
 | Add an open module | [`open-modules/README.md`](open-modules/README.md): the bar is pure functions, a citation on every formula, tests that double as documentation |
 | Submit a stack | the [Submit a stack](https://github.com/ultrametricai/ultrametric/issues/new?template=submit-stack.yml) issue form (linked from [/stacks](https://ultrametric.ai/stacks)). Stacks stay curated committed data; submissions feed review and are not auto-published |
@@ -730,7 +701,7 @@ Ways to contribute:
   [`docs/VENDOR-RESPONSES.md`](./docs/VENDOR-RESPONSES.md).
 - **Add evidence by PR**: new doc pages, changelogs, or community sources for any
   product; the pipeline re-judges only the cells whose evidence changed.
-- **Submit a product or ranking**: the *Submit a product* issue form (prefilled from the
+- **Submit a product or arena**: the *Submit a product* issue form (prefilled from the
   [/submit](https://ultrametric.ai/submit) quick scan), or open a PR adding your
   `data/<arena>/products.json` entry. The exact entry shape, which URLs to include and why,
   and how to make your product probe well are all in
@@ -745,14 +716,14 @@ Ways to contribute:
   (`.github/ISSUE_TEMPLATE/prediction.yml`); v1 records predictions as submitted issues, and
   an accuracy leaderboard comes once enough questions have settled.
 - **Report an inaccuracy**: wrong metadata, broken link, stale evidence, missing logo.
-- **Adopt a ranking**: become the standing reviewer for one ranking's story taxonomy,
+- **Adopt an arena**: become the standing reviewer for one arena's story taxonomy,
   evidence freshness, and contest triage.
 - **Run probes locally**: `pnpm pipeline probe --category <id>` needs no API key;
   publishing discrepancies you find is exactly the point.
 - **Cite the data**: verdicts, scores, and evidence excerpts may be quoted with
   attribution (see DATA-LICENSE); bulk reuse needs written permission from Ultrametric.
-- **Spread the Weekly Rankings Report**: `pnpm tsx pipeline/scripts/generate-weekly-report.ts`
-  renders the last 7 days (biggest movers, rank flips, new rankings, close races) into
+- **Spread the Weekly Arena Report**: `pnpm tsx pipeline/scripts/generate-weekly-report.ts`
+  renders the last 7 days (biggest movers, rank flips, new arenas, close races) into
   committed markdown at `reports/YYYY-MM-DD.md`, listed on the site at `/reports`. The
   markdown is copy-paste ready for a newsletter or community digest, with links, attribution,
   and empty states handled.
