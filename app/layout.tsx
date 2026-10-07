@@ -15,6 +15,7 @@ import { GLOBAL_RANKINGS, PROCESS_RANKINGS } from "@/components/RankingsNav";
 import { loadArenaSections } from "@/lib/arenaSections";
 import CommandPalette from "@/components/CommandPalette";
 import GeoMark from "@/components/GeoMark";
+import HeaderGeoControl from "@/components/HeaderGeoControl";
 import { loadCategories } from "@/lib/data";
 import { arenaIcon, EXPLORE_SECTION_ICONS, OVERALL_ICON } from "@/lib/arenaIcons";
 import { loadIcpTypes } from "@/lib/icp";
@@ -345,6 +346,16 @@ export default async function RootLayout({ children }: LayoutProps<"/">) {
                   />
                 </svg>
               </a>
+              {/* THE sitewide country control (founder 2026-10-07: "move this into the top bar
+                  so the user can set their country or default to global, then we don't need it
+                  per page") — compact flag-or-globe trigger at nav weight, next to the ⌘K/
+                  account cluster. Desktop-only here; the MobileNav panel carries the same
+                  control below sm. Reads/writes the one ?geo=/pa-geo preference
+                  (lib/geoPreference.ts); 🌐 Global framing server-rendered, so the US-default
+                  static HTML stays byte-identical. */}
+              <span className="hidden sm:block">
+                <HeaderGeoControl />
+              </span>
               <CommandPalette />
               <MobileNav />
               {/* Account corner (components/AccountMenu.tsx): a quiet "Log in" link for

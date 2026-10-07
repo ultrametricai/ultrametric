@@ -73,23 +73,23 @@ describe('the bottom Open modules table (founder 2026-10-05)', () => {
     expect(section.textContent).toContain('this process as a whole')
   })
 
-  it('the header affordance sits INLINE with the geo control (founder 2026-10-06): several modules = a small house menu of repo links, no #open-modules anchor left', async () => {
+  it('the header affordance sits INLINE in the controls row (founder 2026-10-06): several modules = a small house menu of repo links, no #open-modules anchor left', async () => {
     const { task, container } = await renderPage('tax_001')
     // The 2026-10-05 '↓' anchor onto the bottom table is retired.
     expect(container.querySelector('a[href="#open-modules"]')).toBeNull()
-    // tax_001 maps two modules → the dropdown form: a menu-button trigger at the geo control's
-    // visual weight, in the SAME controls row as the geo dropdown.
+    // tax_001 maps two modules → the dropdown form: a menu-button trigger in the page header's
+    // inline controls row (which the geo dropdown left for the site header, founder 2026-10-07).
     const trigger = [...container.querySelectorAll('button')].find((b) =>
       b.textContent?.includes('Open modules'),
     ) as HTMLElement
     expect(trigger, 'the Open modules menu trigger must render').toBeTruthy()
     expect(trigger.getAttribute('aria-haspopup')).toBe('menu')
     expect(trigger.getAttribute('aria-expanded')).toBe('false')
+    // The geo dropdown left this row for the site header (founder 2026-10-07) — the control
+    // still renders inside the header's inline controls row, with no geo trigger beside it.
     const row = trigger.closest('div.flex') as HTMLElement
-    expect(
-      row?.querySelector('button[title^="Where you operate"]'),
-      'the control must share the geo dropdown’s controls row',
-    ).toBeTruthy()
+    expect(row).toBeTruthy()
+    expect(row.querySelector('button[title^="Where you operate"]')).toBeNull()
     // Open it: one repo link per registry module — the module's open-modules/README.md section
     // on GitHub (moduleReadmeHref), external-link hygiene intact.
     fireEvent.click(trigger)
@@ -115,8 +115,10 @@ describe('the bottom Open modules table (founder 2026-10-05)', () => {
     expect(link, 'the inline Open module link must render').toBeTruthy()
     expect(link.textContent).toContain(`Open module: ${chip.label}`)
     expect(link.getAttribute('target')).toBe('_blank')
-    // In the geo controls row, not on its own line above.
-    expect(link.closest('div.flex')?.querySelector('button[title^="Where you operate"]')).toBeTruthy()
+    // In the header's inline controls row, not on its own line above (the geo dropdown left
+    // this row for the site header, founder 2026-10-07).
+    expect(link.closest('div.flex')).toBeTruthy()
+    expect(link.closest('div.flex')?.querySelector('button[title^="Where you operate"]')).toBeNull()
     // No expanding behavior anywhere near the title: no menu trigger.
     expect(
       [...container.querySelectorAll('button')].find((b) => b.textContent?.includes('Open module')),

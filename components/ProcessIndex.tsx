@@ -1,6 +1,5 @@
 import FatProcessSearch from '@/components/FatProcessSearch'
 import ProcessesTable, { type ProcessTableRow, type PlaybookRow } from '@/components/ProcessesTable'
-import { PROCESSES_INDEX_DEFAULT_GEO } from '@/lib/geoPreference'
 
 export default function ProcessIndex({ tableRows, phases, playbooks, preview = false }: {
   tableRows: ProcessTableRow[]; phases: string[]; playbooks: PlaybookRow[]; preview?: boolean
@@ -24,8 +23,9 @@ export default function ProcessIndex({ tableRows, phases, playbooks, preview = f
           ]}
         />
         {/* The geo dimension (founder GEO ask 2026-09-28, lib/geoPreference.ts): every process
-            row below always wears its geoScope glyph; since 2026-09-30 the index opens on the
-            GLOBAL framing by default (see the ProcessesTable defaultGeo prop below). */}
+            row below always wears its geoScope glyph. The country control lives in the site
+            header since founder 2026-10-07 (components/HeaderGeoControl.tsx — 🌐 Global
+            framing by default), replacing this page's own dropdown. */}
       </section>
 
       {/* ONE view under the search (founder 2026-09-29: "combine playbooks and all processes
@@ -37,13 +37,12 @@ export default function ProcessIndex({ tableRows, phases, playbooks, preview = f
         {/* No 'All processes' heading (founder 2026-09-30) — the table stands alone under the
             search. The route-dot legend went earlier (founder 2026-09-29). */}
         {/* The index DEFAULTS onto the global view (founder 2026-09-30: "default /processes
-            onto a global view — you can include the US specific ones in the first view"): the
-            geo dropdown opens on 🌐 Global and the always-on scope glyphs run sharp (🌐/🇺🇸/🏛)
-            — server-rendered via this prop, not a mount flash, with every US-specific row still
-            in the first view (the geo dimension annotates, never filters). ?geo=/pa-geo win as
-            before; process DETAIL pages keep their US default (the seam is documented on
-            lib/geoPreference.ts PROCESSES_INDEX_DEFAULT_GEO). */}
-        <ProcessesTable rows={tableRows} phases={phases} playbooks={playbooks} defaultGeo={PROCESSES_INDEX_DEFAULT_GEO} />
+            onto a global view — you can include the US specific ones in the first view"): with
+            nothing chosen every US-specific row is still in the first view (the geo dimension
+            annotates, never filters) and the always-on scope glyphs run sharp (🌐/🇺🇸/🏛). The
+            🌐 Global no-selection framing is carried by the header control sitewide since
+            founder 2026-10-07; ?geo=/pa-geo win as before. */}
+        <ProcessesTable rows={tableRows} phases={phases} playbooks={playbooks} />
         {/* The 🐣 open-startup-simulator promo card and the 'Every mapped vendor traces…
             See all rankings →' footer were removed (founder 2026-10-02) — the nav carries the
             simulator; the table speaks for itself. */}

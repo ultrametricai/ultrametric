@@ -28,13 +28,13 @@ export function applyGeoChoice(next: GeoChoice | null): void {
 
 // The consumer half of the geo preference (lib/geoPreference.ts): every geo-aware component —
 // the process banner, step markers, vendor annotations, the product strip, the index glyphs —
-// calls this and re-renders when GeoSwitcher changes the selection.
+// calls this and re-renders when the header country control changes the selection.
 //
 // Static-HTML/hydration contract (the components/JurisdictionToggle.tsx precedent): the server
 // snapshot (and the first client render) is always the US default — `null` — so the static HTML
 // stays byte-identical and hydrates with zero mismatches; the store value only lands in the
-// mount effect. GeoSwitcher owns reading ?geo=/localStorage into the store; this hook only
-// mirrors the store.
+// mount effect. The header control (components/HeaderGeoControl.tsx) owns reading
+// ?geo=/localStorage into the store; this hook only mirrors the store.
 export function useGeoSelection(): GeoSelection | null {
   const [geo, setGeo] = useState<GeoSelection | null>(null)
   /* eslint-disable react-hooks/set-state-in-effect -- one-time post-hydration sync FROM the

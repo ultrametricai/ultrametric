@@ -467,32 +467,33 @@ describe('geoScope glyphs (founder batch 2026-10-02: the 🇺🇸 flag keys STRI
   })
 
   it('PIN: a geoScope-global record can NEVER render the flag (the qs_023 audit, founder 2026-10-02) — in any framing or selection', () => {
-    const { container } = render(<ProcessesTable rows={GEO_ROWS} phases={PHASES} defaultGeo={GEO_GLOBAL} />)
+    const { container } = render(<ProcessesTable rows={GEO_ROWS} phases={PHASES} />)
     expect(cellFor(container, 'Open a bank account')?.textContent).not.toContain('🇺🇸')
     act(() => setGeoSelection('UK'))
     expect(cellFor(container, 'Open a bank account')?.textContent).not.toContain('🇺🇸')
   })
 
-  describe('the GLOBAL surface default (founder 2026-09-30: /processes opens on the global view — defaultGeo threads in from app/processes/page.tsx)', () => {
-    it('no selection: every row still renders (annotates, never filters) — flags on US-scoped rows only — and the geo dropdown trigger reads Global', () => {
-      const { container, getByTitle } = render(<ProcessesTable rows={GEO_ROWS} phases={PHASES} defaultGeo={GEO_GLOBAL} />)
+  describe('the no-selection default view (founder 2026-09-30: the full corpus in the first view; the 🌐 Global framing lives on the HEADER control since founder 2026-10-07)', () => {
+    it('no selection: every row still renders (annotates, never filters) — flags on US-scoped rows only — and the table mounts NO geo dropdown of its own', () => {
+      const { container } = render(<ProcessesTable rows={GEO_ROWS} phases={PHASES} />)
       // Nothing filtered out: the US-specific rows are in the first view.
       expect(container.querySelectorAll('tbody tr').length).toBe(GEO_ROWS.length)
       expect(cellFor(container, 'Open a bank account')?.textContent).not.toContain('🌐')
       expect(cellFor(container, 'Get an EIN')?.textContent).toContain('🇺🇸')
       expect(cellFor(container, 'Incorporate the company')?.textContent).toContain('🇺🇸')
       expect(cellFor(container, 'Incorporate the company')?.textContent).not.toContain('🏛')
-      // The dropdown's no-selection framing is 🌐 Global on this surface.
-      expect(getByTitle(/Where you operate/).textContent).toContain('Global')
+      // The control moved to the site header (components/HeaderGeoControl.tsx, its own pin) —
+      // the controls row carries no geo trigger anymore.
+      expect(container.querySelector('button[title^="Where you operate"]')).toBeNull()
       // Annotation only — the timeOrder sort is untouched by the framing.
       expect([...container.querySelectorAll('tbody td:first-child')].map((c) =>
         c.textContent?.includes('Open a bank account') ? 'bank' : c.textContent?.includes('Incorporate') ? 'inc' : 'ein',
       )).toEqual(['bank', 'inc', 'ein'])
     })
 
-    it('SSR honesty: the server HTML already carries the Global trigger and the flags — and no title-trailing 🏛/🌐', () => {
-      const ssr = renderToString(<ProcessesTable rows={GEO_ROWS} phases={PHASES} defaultGeo={GEO_GLOBAL} />)
-      expect(ssr).toContain('Global')
+    it('SSR honesty: the server HTML carries the flags, no geo trigger, and no title-trailing 🏛/🌐', () => {
+      const ssr = renderToString(<ProcessesTable rows={GEO_ROWS} phases={PHASES} />)
+      expect(ssr).not.toContain('Where you operate')
       // The us-state LABEL still tells the state story; its glyph is the flag.
       expect(ssr).toContain('US state-level process — a US state is the counterparty')
       const doc = document.createElement('div')
@@ -505,18 +506,13 @@ describe('geoScope glyphs (founder batch 2026-10-02: the 🇺🇸 flag keys STRI
       expect(titleCells.some((c) => c.textContent?.includes('🌐'))).toBe(false)
     })
 
-    it('a country selection hides analog-noted rows too (founder override 2026-10-05; dropdown shows the country); without defaultGeo the homepage surface reads USA', () => {
-      const withGlobal = render(<ProcessesTable rows={GEO_ROWS} phases={PHASES} defaultGeo={GEO_GLOBAL} />)
+    it('a country selection hides analog-noted rows too (founder override 2026-10-05); clearing restores the glyph rule', () => {
+      const r = render(<ProcessesTable rows={GEO_ROWS} phases={PHASES} />)
       act(() => setGeoSelection('UK'))
-      expect(cellFor(withGlobal.container, 'Incorporate the company')).toBeUndefined()
-      expect(withGlobal.getByTitle(/Where you operate/).textContent).toContain('United Kingdom')
-      withGlobal.unmount()
+      expect(cellFor(r.container, 'Incorporate the company')).toBeUndefined()
       act(() => setGeoSelection(null))
-      // The homepage's process mode (no defaultGeo) renders the same glyph rule.
-      const plain = render(<ProcessesTable rows={GEO_ROWS} phases={PHASES} />)
-      expect(cellFor(plain.container, 'Incorporate the company')?.textContent).toContain('🇺🇸')
-      expect(cellFor(plain.container, 'Incorporate the company')?.textContent).not.toContain('🏛')
-      expect(plain.getByTitle(/Where you operate/).textContent).toContain('USA')
+      expect(cellFor(r.container, 'Incorporate the company')?.textContent).toContain('🇺🇸')
+      expect(cellFor(r.container, 'Incorporate the company')?.textContent).not.toContain('🏛')
     })
   })
 })
@@ -563,7 +559,7 @@ describe('the country-view filter (founder 2026-10-02, tightened 2026-10-05: an 
   const titles = (root: HTMLElement) =>
     [...root.querySelectorAll('tbody tr')].map((tr) =>
       ['Pick a company name', 'Incorporate C-Corp', 'Get EIN', 'Issue 1099s', 'Visa is held up'].find((t) => tr.textContent?.includes(t)) ?? '?')
-  const mountFilter = () => render(<ProcessesTable rows={FILTER_ROWS} phases={['formation', 'compliance', 'hr']} defaultGeo={GEO_GLOBAL} />)
+  const mountFilter = () => render(<ProcessesTable rows={FILTER_ROWS} phases={['formation', 'compliance', 'hr']} />)
 
   it('the no-selection default and the explicit 🌐 Global view keep the FULL corpus — nothing hidden, no disclosure line', () => {
     const { container } = mountFilter()

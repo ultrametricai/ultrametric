@@ -202,7 +202,7 @@ export function serializeGeo(selection: GeoSelection | null): string | null {
 
 // ---------------------------------------------------------------------------------------------
 // The per-tab store. Module-level state in the client bundle: every subscriber sees the same
-// selection, GeoSwitcher/GeoDropdown are the only writers, and the server render never touches
+// selection, the geo controls (GeoDropdown — header and sim forms) are the only writers, and the server render never touches
 // it (each consumer starts from the US default and syncs in its mount effect — the client-
 // personalization contract).
 //

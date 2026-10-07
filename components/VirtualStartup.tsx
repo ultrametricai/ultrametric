@@ -613,7 +613,8 @@ export default function VirtualStartup({
   // never in the URL), 'GLOBAL' = explicit geo-neutral (no marks), else a country. ANNOTATION
   // ONLY, derived from committed data — it never changes rows, scores, ranks, or the clock, so
   // switching mid-run simply annotates the already-revealed lines. VsGeoSelector owns the
-  // ?geo=/pa-geo sync (mount-read + writes), the same contract as components/GeoSwitcher.tsx.
+  // ?geo=/pa-geo sync (mount-read + writes), the same contract as the header country control
+  // (components/HeaderGeoControl.tsx).
   const [geo, setGeo] = useState<GeoChoice | null>(null)
   // The entity roster's country (founder round 5, item 1): the geo selection, with both the US
   // default (null) and the geo-neutral 🌐 Global resolving to the US roster (the corpus default).

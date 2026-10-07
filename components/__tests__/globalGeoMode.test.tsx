@@ -11,10 +11,10 @@
 //      annotations render nothing (Global reads as null to every country-consumer);
 //   3. a manual country still wins: picking a country after Global restores every country
 //      behavior unchanged, and the US default clears everything.
-import { render, fireEvent, act } from '@testing-library/react'
+import { render, fireEvent, act, within } from '@testing-library/react'
 import { renderToString } from 'react-dom/server'
 import { afterEach, beforeEach, describe, expect, it } from 'vitest'
-import GeoSwitcher from '@/components/GeoSwitcher'
+import HeaderGeoControl from '@/components/HeaderGeoControl'
 import JurisdictionToggle from '@/components/JurisdictionToggle'
 import ProcessGeoBanner from '@/components/ProcessGeoBanner'
 import ProcessGeoNotes from '@/components/ProcessGeoNotes'
@@ -23,6 +23,7 @@ import VendorGeoMark from '@/components/VendorGeoMark'
 import { useGeoSelection } from '@/components/useGeoSelection'
 import {
   GEO_GLOBAL,
+  getGeoChoice,
   getGeoSelection,
   setGeoChoice,
   type GeoAnalogNote,
@@ -211,7 +212,7 @@ describe('?geo=global hides the country specifics (the country-agnostic lens)', 
   })
 })
 
-describe('manual country still wins; the switcher writes the shareable token', () => {
+describe('manual country still wins; the header control writes the shareable token', () => {
   it('Global → UK → US default: every block restores its country behavior unchanged', () => {
     const { container } = render(geoAware)
     act(() => setGeoChoice(GEO_GLOBAL))
@@ -231,28 +232,36 @@ describe('manual country still wins; the switcher writes the shareable token', (
     expect(container.textContent).toContain('Delaware-only')
   })
 
-  it('the 🌐 Global pill writes ?geo=global + pa-geo, and country-consumers stay geo-neutral', () => {
-    const { getByRole, getByTestId } = render(
+  const pick = (r: { getByTitle: (t: RegExp) => HTMLElement; getByRole: (role: string, opts?: object) => HTMLElement }, name: RegExp) => {
+    fireEvent.click(r.getByTitle(/Where you operate/))
+    fireEvent.click(within(r.getByRole('listbox', { name: 'Country' })).getByRole('option', { name }))
+  }
+
+  it('the header control\'s 🌐 Global entry writes ?geo=global + pa-geo, and country-consumers stay geo-neutral', () => {
+    const r = render(
       <>
-        <GeoSwitcher />
+        <HeaderGeoControl />
         <Probe />
       </>,
     )
-    fireEvent.click(getByRole('button', { name: /Global$/ }))
+    pick(r, /Global/)
     expect(`${window.location.pathname}${window.location.search}`).toBe(`${PATH}?geo=global`)
     expect(window.localStorage.getItem('pa-geo')).toBe('global')
     // Country-consumers (useGeoSelection) see the geo-neutral null — never a sixth country.
-    expect(getByTestId('probe').textContent).toBe('US-default')
-    // And the US pill clears both again.
-    fireEvent.click(getByRole('button', { name: /US$/ }))
+    expect(r.getByTestId('probe').textContent).toBe('US-default')
+    // And the USA entry clears both again.
+    pick(r, /USA/)
     expect(`${window.location.pathname}${window.location.search}`).toBe(PATH)
     expect(window.localStorage.getItem('pa-geo')).toBeNull()
   })
 
-  it('GeoSwitcher restores the stored global choice on mount (pa-geo=global, no param)', () => {
+  it('the header control restores the stored global choice on mount (pa-geo=global, no param)', () => {
     window.localStorage.setItem('pa-geo', 'global')
-    const { getByRole } = render(<GeoSwitcher />)
-    expect(getByRole('button', { name: /Global$/ }).getAttribute('aria-pressed')).toBe('true')
-    expect(getByRole('button', { name: /US$/ }).getAttribute('aria-pressed')).toBe('false')
+    const r = render(<HeaderGeoControl />)
+    expect(getGeoChoice()).toBe(GEO_GLOBAL)
+    fireEvent.click(r.getByTitle(/Where you operate/))
+    const list = r.getByRole('listbox', { name: 'Country' })
+    expect(within(list).getByRole('option', { name: /Global/ }).getAttribute('aria-selected')).toBe('true')
+    expect(within(list).getByRole('option', { name: /USA/ }).getAttribute('aria-selected')).toBe('false')
   })
 })

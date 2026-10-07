@@ -19,36 +19,46 @@ import { applyGeoChoice } from '@/components/useGeoSelection'
 import { readParam } from '@/lib/urlState'
 
 // The geo switcher as ONE compact dropdown (founder 2026-09-29: "make the geo switcher on
-// /processes a single dropdown so the filter controls don't go to 2 lines") — the same shared
-// store, URL param, and honesty contract as components/GeoSwitcher.tsx (the pill form, now only
-// the WhereItWorks strip — process detail pages render THIS dropdown too, founder 2026-10-02).
-// House listbox pattern (SimRolePicker/VsGeoSelector family), never a native <select>.
+// /processes a single dropdown so the filter controls don't go to 2 lines") — house listbox
+// pattern (SimRolePicker/VsGeoSelector family), never a native <select>. Since the founder
+// top-bar move (2026-10-07: "move this into the top bar so the user can set their country or
+// default to global, then we don't need it per page") this renders ONCE, in the site header
+// (components/HeaderGeoControl.tsx) — the per-page mounts on /processes, the process detail
+// pages, and /artifacts are gone; the pages keep every adaptive behavior through the same
+// shared store, URL param, and honesty contract (lib/geoPreference.ts).
 //
-// `defaultChoice` is the SURFACE's no-selection framing (founder 2026-09-30: the /processes
-// index defaults onto the global view — lib/geoPreference.ts PROCESSES_INDEX_DEFAULT_GEO): with
-// nothing chosen the trigger reads 🌐 Global instead of 🇺🇸 USA, server-rendered (the prop, not a
-// mount effect, so the static HTML IS the default view). Display framing only — the store stays
-// null, no param/storage is written, and an explicit ?geo=/pa-geo/pick wins exactly as before.
-// On a global-default surface the 🇺🇸 USA entry keeps its sitewide meaning — clear the param and
-// the stored pref (the US default never appears in the URL) — so after picking it the trigger
-// settles back on the surface's default framing; the index rows are identical either way (USA,
-// Global and the pristine default all show the full corpus — only a COUNTRY view filters, per
-// the committed note kinds, founder 2026-10-02). Which is exactly why the Global framing fits
-// ONLY the index: on a process DETAIL page null IS the US-default view, so a USA pick framed as
-// Global read as "nothing happened" (founder bug 2026-10-06) — detail pages pass no
-// defaultChoice and their trigger reads 🇺🇸 USA whenever the choice is null/US.
+// `defaultChoice` is the SURFACE's no-selection framing (founder 2026-09-30, originally the
+// /processes index; sitewide via the header control since 2026-10-07 — lib/geoPreference.ts
+// PROCESSES_INDEX_DEFAULT_GEO documents the semantics): with nothing chosen the trigger reads
+// 🌐 Global instead of 🇺🇸 USA, server-rendered (the prop, not a mount effect, so the static
+// HTML IS the default view). Display framing only — the store stays null, no param/storage is
+// written, and an explicit ?geo=/pa-geo/pick wins exactly as before. On a global-default
+// surface the 🇺🇸 USA entry keeps its sitewide meaning — clear the param and the stored pref
+// (the US default never appears in the URL) — so after picking it the trigger settles back on
+// the surface's default framing; no selection and Global both mean the full corpus and the
+// US-baseline flows (only a COUNTRY view filters/adapts, founder 2026-10-02). The 2026-10-06
+// detail-page USA framing is superseded by the 2026-10-07 header default: one control, one
+// 🌐 Global no-selection framing sitewide.
+//
+// `variant='nav'` is the header form (founder 2026-10-07): a compact flag-or-globe trigger at
+// nav weight — no border chip, the country name in the tooltip/sr-only text only.
 
 export default function GeoDropdown({
   defaultChoice = null,
   align = 'right',
-}: { defaultChoice?: typeof GEO_GLOBAL | null; align?: 'left' | 'right' } = {}) {
+  variant = 'chip',
+}: {
+  defaultChoice?: typeof GEO_GLOBAL | null
+  align?: 'left' | 'right'
+  variant?: 'chip' | 'nav'
+} = {}) {
   const [geo, setGeo] = useState<GeoChoice | null>(null)
   const [open, setOpen] = useState(false)
   const rootRef = useRef<HTMLDivElement>(null)
 
   /* eslint-disable react-hooks/set-state-in-effect -- one-time post-hydration sync FROM the URL
-     and the stored preference, exactly the GeoSwitcher contract (static HTML renders the US
-     default; the mount effect seeds the shared store). */
+     and the stored preference (the client-personalization contract: static HTML renders the
+     surface default; the mount effect seeds the shared store). */
   useEffect(() => {
     const fromUrl = readParam(GEO_PARAM)
     const initial = fromUrl !== null ? parseGeoChoice(fromUrl) : parseGeoChoice(window.localStorage.getItem(GEO_STORAGE_KEY))
@@ -116,11 +126,19 @@ export default function GeoDropdown({
         aria-haspopup="listbox"
         aria-expanded={open}
         onClick={() => setOpen((v) => !v)}
-        title="Where you operate — a country view keeps the global processes and lists the US-specific ones it hides (with their committed local analogs) below the table; never re-ranks"
-        className="flex items-center gap-1.5 rounded-lg border border-zinc-800 px-2 py-1 text-xs text-zinc-300 transition hover:border-emerald-400/60 hover:text-emerald-300"
+        title="Where you operate — a country view adapts the processes, artifacts and availability marks to that country; no selection (or Global) keeps the full corpus and the US-baseline flows; never re-ranks"
+        className={
+          variant === 'nav'
+            ? 'flex items-center gap-1 text-sm text-zinc-300 transition hover:text-emerald-300'
+            : 'flex items-center gap-1.5 rounded-lg border border-zinc-800 px-2 py-1 text-xs text-zinc-300 transition hover:border-emerald-400/60 hover:text-emerald-300'
+        }
       >
         <span aria-hidden>{current ? current.flag : '🇺🇸'}</span>
-        <span className="hidden sm:inline">{current ? current.label : 'USA'}</span>
+        {/* Nav weight keeps the trigger a flag/globe only — the current choice's name stays
+            for screen readers (and in the tooltip above). */}
+        <span className={variant === 'nav' ? 'sr-only' : 'hidden sm:inline'}>
+          {current ? current.label : 'USA'}
+        </span>
         <span aria-hidden className="text-[10px] text-zinc-500">▾</span>
       </button>
       {open && (

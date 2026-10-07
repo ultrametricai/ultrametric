@@ -4,8 +4,9 @@
 // (ProcessDagVendorRows, StepVendorRow) assert over ProcessDag in isolation, so a route
 // cutover that swaps the page body for a different reader keeps the suite green while
 // unmounting every pinned component. This test renders the REAL canonical page and pins:
-//   1. ProcessDag, ProcessLeaderboard, and the geo layer (GeoDropdown, ProcessGeoBanner,
-//      ProcessGeoNotes) are mounted on the canonical route;
+//   1. ProcessDag, ProcessLeaderboard, and the geo layer (ProcessGeoBanner, ProcessGeoNotes —
+//      the control itself lives in the site header since founder 2026-10-07) are mounted on
+//      the canonical route;
 //   2. step blocks stay plain-text on receipts — inside the #steps region there are no
 //      per-step score links (a[href$="/score"]), no story-verdict receipt links
 //      (a[href*="#story-verdicts"]), and no interactive element nested inside another;
@@ -41,7 +42,7 @@ const stepsRegion = (container: HTMLElement) => {
 afterEach(() => setGeoChoice(null))
 
 describe('canonical /processes/[slug] page-level design pin', () => {
-  it('mounts ProcessDag, ProcessLeaderboard, and the geo controls on the canonical route (form_001)', async () => {
+  it('mounts ProcessDag, ProcessLeaderboard, and the geo layer on the canonical route (form_001)', async () => {
     const { task, container } = await renderPage('form_001')
 
     // The route itself serves the canonical slug and its alias slugs (static export).
@@ -66,11 +67,14 @@ describe('canonical /processes/[slug] page-level design pin', () => {
       expect(steps.contains(link), 'receipts links live at process level, not in step blocks').toBe(false)
     }
 
-    // GeoDropdown: the one geo control (the house dropdown, founder 2026-10-02).
+    // The geo control moved to the site header (founder 2026-10-07 —
+    // components/HeaderGeoControl.tsx, pinned in components/__tests__/HeaderGeoControl.test.tsx):
+    // the canonical page mounts NO dropdown of its own, and keeps every geo-adaptive block
+    // wired to the one shared store (asserted below).
     expect(
       container.querySelector('button[aria-haspopup="listbox"][title^="Where you operate"]'),
-      'the GeoDropdown trigger must be mounted',
-    ).toBeTruthy()
+      'the page must not mount its own geo dropdown — the header control owns it',
+    ).toBeNull()
 
     // ProcessGeoNotes: the curated per-country analogs section (form_001 carries notes).
     expect(task.geoNotes?.length ?? 0).toBeGreaterThan(0)
