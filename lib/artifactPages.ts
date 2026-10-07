@@ -36,6 +36,10 @@ export interface ArtifactProcessLink {
 export interface ArtifactPageData {
   artifact: Artifact
   producer: ArtifactProcessLink
+  // The birth step on the canonical producer's page: the node tagged producesArtifact, as an
+  // in-page #step anchor (the id ProcessDag renders) — the reverse direction of the process
+  // page's "Artifacts it produces" Born-at column (lib/processDeps.ts producedArtifactRows).
+  bornAt: { label: string; href: string }
   // Documented exception producers (registry alsoProducedBy), corpus-tested upstream.
   exceptionProducers: ArtifactProcessLink[]
   // Every process whose `requires` carries this artifact, in corpus order — exactly the
@@ -112,6 +116,8 @@ export function loadArtifactPages(dir?: string): ArtifactPageData[] {
     const producerTask = byId.get(artifact.producedBy)
     if (!producerTask) throw new Error(`artifact ${artifact.id}: unknown producer ${artifact.producedBy}`)
     const producer = processLink(producerTask)
+    const bornNode = producerTask.dag.nodes.find((n) => n.producesArtifact === artifact.id)
+    if (!bornNode) throw new Error(`artifact ${artifact.id}: producer ${producerTask.id} has no tagged birth step`)
     const documents = (artifact.documents ?? []).map(openDocumentById)
     const producerTasks = [producerTask, ...(artifact.alsoProducedBy ?? []).map((pid) => {
       const t = byId.get(pid)
@@ -121,6 +127,10 @@ export function loadArtifactPages(dir?: string): ArtifactPageData[] {
     return {
       artifact,
       producer,
+      bornAt: {
+        label: bornNode.label,
+        href: `${producer.href}#step-${producerTask.id}-${bornNode.id}`,
+      },
       exceptionProducers: producerTasks.slice(1).map(processLink),
       neededBy: tasks.filter((t) => t.requires.includes(artifact.id)).map(processLink),
       producingArea: producer.area,

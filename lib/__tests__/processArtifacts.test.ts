@@ -173,6 +173,9 @@ describe('artifact documents — registered templates', () => {
       'yc-postmoney-safe-discount',
       'yc-postmoney-safe-mfn',
       'yc-safe-intl-variants',
+      // Cross-link audit 2026-10-07: the pro rata side letter is the remaining executed
+      // instrument of the yc-safe family (the user guide stays unmapped — a guide, not a form).
+      'yc-pro-rata-side-letter',
     ])
     expect(byId.get('bylaws')!.documents).toEqual(['cooley-incorporation-package-de', 'orrick-incorporation-toolkit'])
     expect(byId.get('executed-nda')!.documents).toContain('onenda')

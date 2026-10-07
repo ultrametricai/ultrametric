@@ -1,18 +1,19 @@
 'use client'
 
+import Link from 'next/link'
 import { useEffect, useRef, useState } from 'react'
 import type { OpenModuleChip } from '@/lib/businessLogicMap'
 
 // The process header's open-modules affordance, inline with the geo control (founder
 // 2026-10-06: the 'Open modules ↓' link sat on its own line above the geo dropdown, and the
 // earlier disclosure "expanded in that lame way"). One module renders as plain inline text —
-// 'Open module: Cap table ↗' — linking straight to the module's section in
-// open-modules/README.md on GitHub (lib/businessLogicMap.ts moduleReadmeHref builds the hrefs
-// upstream). Several modules become a small dropdown at the geo control's visual weight, on the
-// house menu contract (DocsMenu/ArenaMenu: aria-haspopup/aria-expanded trigger,
-// outside-pointerdown and Escape close with focus restore, arrow-key movement). The bottom
-// 'Open modules' receipts table stays as-is — this control links the repo, the table carries
-// the per-step wiring.
+// 'Open module: Cap table' — linking the module's on-site /open-modules page (founder
+// 2026-10-07: the module page is the hub; it carries the GitHub deep link, and the per-step
+// compute chips keep their function-level README deep links). Several modules become a small
+// dropdown at the geo control's visual weight, on the house menu contract (DocsMenu/ArenaMenu:
+// aria-haspopup/aria-expanded trigger, outside-pointerdown and Escape close with focus restore,
+// arrow-key movement). The bottom 'Open modules' receipts table stays as-is — this control
+// links the module pages, the table carries the per-step wiring.
 
 export default function OpenModulesControl({ modules }: { modules: OpenModuleChip[] }) {
   const [open, setOpen] = useState(false)
@@ -42,21 +43,18 @@ export default function OpenModulesControl({ modules }: { modules: OpenModuleChi
   if (modules.length === 0) return null
 
   const title =
-    'Open-source lib/openstartup/ modules whose cited, tested math serves this process — opens the module’s section in open-modules/README.md on GitHub (the table at the bottom of this page shows how each links to the steps here)'
+    'Open-source lib/openstartup/ modules whose cited, tested math serves this process — opens the module’s page (what it computes, the processes it serves, the GitHub source; the table at the bottom of this page shows how each links to the steps here)'
 
   if (modules.length === 1) {
     const m = modules[0]
     return (
-      <a
+      <Link
         href={m.href}
-        target="_blank"
-        rel="noopener noreferrer"
         title={title}
         className="inline-flex items-center gap-1 text-xs text-zinc-400 transition hover:text-emerald-300"
       >
         Open module: {m.label}
-        <span aria-hidden className="text-[10px] text-zinc-500">↗</span>
-      </a>
+      </Link>
     )
   }
 
@@ -115,21 +113,18 @@ export default function OpenModulesControl({ modules }: { modules: OpenModuleChi
           className="absolute left-0 top-full z-40 mt-1 w-56 rounded-lg border border-zinc-800 bg-zinc-900 p-1 shadow-2xl"
         >
           {modules.map((m, i) => (
-            <a
+            <Link
               key={m.id}
               ref={(el) => {
                 itemRefs.current[i] = el
               }}
               role="menuitem"
               href={m.href}
-              target="_blank"
-              rel="noopener noreferrer"
               onClick={() => setOpen(false)}
               className="flex items-center justify-between gap-2 rounded-md px-2.5 py-1.5 text-xs text-zinc-300 transition hover:bg-zinc-800 hover:text-emerald-300"
             >
               {m.label}
-              <span aria-hidden className="text-zinc-500">↗</span>
-            </a>
+            </Link>
           ))}
         </div>
       )}

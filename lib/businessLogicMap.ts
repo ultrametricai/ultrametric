@@ -110,14 +110,17 @@ export function computeChipsForStep(taskId: string, nodeId: string): StepCompute
 
 // Restored 2026-10-06: the shared-process reader (codex) consumes these; the 2026-10-05
 // retirement only meant to remove the title-adjacent chip MENU, not the lib helpers.
+// Rerouted 2026-10-07 (founder): module-level affordances point at the on-site
+// /open-modules/<id> pages (they exist now, and each carries the GitHub deep links);
+// the per-step compute chips keep the README deep link — function-level source pointers.
 export function modulesForProcess(taskId: string): OpenModuleChip[] {
   return Object.entries(loadBusinessLogicMap())
     .filter(([, m]) => m.processes.includes(taskId))
-    .map(([id, m]) => ({ id, label: m.label, href: moduleReadmeHref(m.anchor) }))
+    .map(([id, m]) => ({ id, label: m.label, href: `/open-modules/${id}` }))
 }
 
-/** One process-level open-module entry: the module's label and its README deep link on
- * GitHub — the shared reader's chip row and the detail page's inline control consume these. */
+/** One process-level open-module entry: the module's label and its /open-modules page —
+ * the shared reader's chip row and the detail page's inline control consume these. */
 export interface OpenModuleChip {
   id: string
   label: string
