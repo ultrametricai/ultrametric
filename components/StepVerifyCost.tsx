@@ -1,35 +1,14 @@
 import ExternalLinkMark from './shared-processes/ExternalLinkMark'
-import type { StepCost, StepVerify } from '@/lib/processes'
+import type { StepCost } from '@/lib/processes'
 
-// Depth wave part 1 (founder 2026-10-01): the two per-step cited fields, rendered minimally in
+// Depth wave part 1 (founder 2026-10-01): the per-step cited cost field, rendered minimally in
 // the house zinc/emerald idiom — no layout rework. Server components, no state, render nothing
 // when the node doesn't carry the field (the common case), so most step blocks are
 // byte-identical to before.
 
-// "✓ verify:" — the step's concrete "how do I know it worked?" check, plain text plus the
-// primary-source link of the checking tool where one exists (every URL curl-verified live
-// before it shipped; the honesty rules live in processes/README.md "Verification checks").
-export function StepVerifyLine({ verify, squareExternalLinks = false }: { verify: StepVerify; squareExternalLinks?: boolean }) {
-  return (
-    <p className="mt-2 text-[11px] text-zinc-400">
-      <span className="text-emerald-300/90">✓ verify:</span> {verify.how}
-      {verify.url && (
-        <>
-          {' '}
-          <a
-            href={verify.url}
-            target="_blank"
-            rel="noopener noreferrer"
-            title={`Check it at ${new URL(verify.url).hostname.replace(/^www\./, '')} (external site)`}
-            className="whitespace-nowrap text-zinc-300 underline decoration-zinc-700 underline-offset-2 transition hover:text-emerald-300"
-          >
-            {new URL(verify.url).hostname.replace(/^www\./, '')}{squareExternalLinks ? <ExternalLinkMark href={verify.url} label="" /> : ' ↗'}
-          </a>
-        </>
-      )}
-    </p>
-  )
-}
+// The '✓ verify:' line (StepVerifyLine) lived here 2026-10-01 → 2026-10-07 (founder removal;
+// display only — verify stays corpus data under the processes/README.md "Verification checks"
+// rules; no judged number ever read it).
 
 // The '⚠ if it goes wrong' failure-modes block lived here 2026-10-02 → 2026-10-05 (founder
 // removal; display only — failureModes stays corpus data under the processes/README.md

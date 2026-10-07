@@ -10,13 +10,13 @@ import {
   GEO_STORAGE_KEY,
   getGeoChoice,
   parseGeoChoice,
-  serializeGeoChoice,
   setGeoChoice,
   subscribeGeoSelection,
   type GeoChoice,
   type GeoSelection,
 } from '@/lib/geoPreference'
-import { readParam, setParams } from '@/lib/urlState'
+import { applyGeoChoice } from '@/components/useGeoSelection'
+import { readParam } from '@/lib/urlState'
 
 // The geo switcher as ONE compact dropdown (founder 2026-09-29: "make the geo switcher on
 // /processes a single dropdown so the filter controls don't go to 2 lines") — the same shared
@@ -74,12 +74,10 @@ export default function GeoDropdown({
     }
   }, [open])
 
+  // The shared switcher write path (components/useGeoSelection.ts applyGeoChoice) — the
+  // "Outside the US" rows drive the same writes since founder 2026-10-07.
   const apply = (next: GeoChoice | null) => {
-    setGeoChoice(next)
-    const serialized = serializeGeoChoice(next)
-    setParams({ [GEO_PARAM]: serialized })
-    if (serialized === null) window.localStorage.removeItem(GEO_STORAGE_KEY)
-    else window.localStorage.setItem(GEO_STORAGE_KEY, serialized)
+    applyGeoChoice(next)
     setOpen(false)
   }
 

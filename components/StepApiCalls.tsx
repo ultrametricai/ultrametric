@@ -21,9 +21,6 @@ export interface VendorApiCalls {
   calls: ApiCall[]
 }
 
-// How many vendors' call rows are visible before the rest fold into a <details>.
-const VISIBLE_VENDORS = 4
-
 function CallLine({ call }: { call: ApiCall }) {
   return (
     <li className="truncate font-mono text-[11px] text-zinc-400" title={call.description}>
@@ -75,23 +72,19 @@ function VendorGroup({ vendor, yours }: { vendor: VendorApiCalls; yours: LensSou
   )
 }
 
-// Per-vendor API calls for one step, UPFRONT (founder 2026-09-21: "have the API calls for the
-// other vendors as well upfront (if they have not defined their vendors yet)"). The server
-// snapshot of the stack is '{}', so the static page shows every vendor's grounded calls — that
-// IS the no-stack view the founder asked for, and real SEO content. For readers with a pick,
-// hydration pins their vendor first and folds the rest away. Pick resolution is the process
-// lens's order (lib/processLens.ts): the vendor CLICKED on this page ("✓ via") beats the
-// "I'm using" stack pick ("your pick").
+// Per-step vendor API calls FOLLOW THE SELECTION (founder 2026-10-07: the calls neither
+// changed with the chip selection nor disappeared without one — the 2026-09-21 every-vendor-
+// upfront roster and its folded "other vendors" are retired). With a vendor selected — the
+// ?via=/pa-lens pick from the step chips, or an "I'm using" stack pick, the lens winning per
+// lib/processLens.ts — ONLY that vendor's grounded calls render; with no selection, nothing
+// renders. The server snapshot (empty lens + empty stack) therefore renders nothing, which is
+// exactly the no-selection view — no hydration mismatch. The canonical reference-flow fold
+// left with the roster; the node's own functionCalls stay data (and still render on steps
+// without grounded vendor calls via ProcessDag's fallback block).
 export default function StepApiCalls({
-  canonical,
-  canonicalVendor,
   vendors,
   lensKey,
 }: {
-  // The node's own functionCalls — the curated reference flow, shown when not already covered
-  // by a grounded vendor group.
-  canonical: ApiCall[]
-  canonicalVendor?: string
   vendors: VendorApiCalls[]
   lensKey?: string
 }) {
@@ -103,51 +96,15 @@ export default function StepApiCalls({
     vendors.find((v) => lens.picks[v.arenaId] === v.productId) ??
     vendors.find((v) => isPicked(stack, v.arenaId, v.productId)) ??
     null
-  const pickSource: LensSource | null =
-    pick === null ? null : lens.picks[pick.arenaId] === pick.productId ? 'lens' : 'stack'
-  const yoursOf = (v: VendorApiCalls): LensSource | null => (v === pick ? pickSource : null)
-  const ordered = pick ? [pick, ...vendors.filter((v) => v !== pick)] : vendors
-  const hasPick = pick !== null
-  // With a pick set, only the reader's vendor stays upfront; without one, the first few vendors
-  // all do (the "haven't defined their vendors yet" view).
-  const visible = ordered.slice(0, hasPick ? 1 : VISIBLE_VENDORS)
-  const folded = ordered.slice(hasPick ? 1 : VISIBLE_VENDORS)
-
-  if (vendors.length === 0 && canonical.length === 0) return null
+  if (pick === null) return null
+  const pickSource: LensSource =
+    lens.picks[pick.arenaId] === pick.productId ? 'lens' : 'stack'
   return (
     <div className="mt-2 space-y-1.5">
-      <p className="text-[10px] uppercase tracking-wide text-zinc-500" title="Concrete calls each vendor exposes for this step — every generated call links to the vendor docs evidence it was read from">
+      <p className="text-[10px] uppercase tracking-wide text-zinc-500" title="Concrete calls your selected vendor exposes for this step — every generated call links to the vendor docs evidence it was read from">
         API calls by vendor
       </p>
-      {visible.map((v) => (
-        <VendorGroup key={v.productId} vendor={v} yours={yoursOf(v)} />
-      ))}
-      {folded.length > 0 && (
-        <details className="group">
-          <summary className="flex cursor-pointer list-none items-center gap-1.5 text-[11px] text-zinc-500 transition hover:text-zinc-300 [&::-webkit-details-marker]:hidden">
-            <span aria-hidden className="inline-block text-[9px] transition-transform group-open:rotate-90">▶</span>
-            {hasPick ? `other vendors (${folded.length})` : `${folded.length} more vendor${folded.length === 1 ? '' : 's'}`}
-          </summary>
-          <div className="mt-1.5 space-y-1.5 border-l border-zinc-800 pl-3">
-            {folded.map((v) => (
-              <VendorGroup key={v.productId} vendor={v} yours={null} />
-            ))}
-          </div>
-        </details>
-      )}
-      {canonical.length > 0 && !vendors.some((v) => v.name === canonicalVendor) && (
-        <details className="group">
-          <summary className="flex cursor-pointer list-none items-center gap-1.5 text-[11px] text-zinc-500 transition hover:text-zinc-300 [&::-webkit-details-marker]:hidden">
-            <span aria-hidden className="inline-block text-[9px] transition-transform group-open:rotate-90">▶</span>
-            reference flow{canonicalVendor ? ` (${canonicalVendor})` : ''} · {canonical.length} call{canonical.length === 1 ? '' : 's'}
-          </summary>
-          <ul className="mt-1.5 space-y-0.5 border-l border-zinc-800 pl-3">
-            {canonical.map((c) => (
-              <CallLine key={c.method} call={c} />
-            ))}
-          </ul>
-        </details>
-      )}
+      <VendorGroup vendor={pick} yours={pickSource} />
     </div>
   )
 }

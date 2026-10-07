@@ -2,12 +2,29 @@
 
 import { useEffect, useState } from 'react'
 import {
+  GEO_PARAM,
+  GEO_STORAGE_KEY,
   getGeoChoice,
   getGeoSelection,
+  serializeGeoChoice,
+  setGeoChoice,
   subscribeGeoSelection,
   type GeoChoice,
   type GeoSelection,
 } from '@/lib/geoPreference'
+import { setParams } from '@/lib/urlState'
+
+// The ONE switcher write path (GeoDropdown's apply, shared since the "Outside the US" rows
+// became internal navigation — founder 2026-10-07): store fan-out, the ?geo= param, and the
+// stored preference move together, so every writer produces exactly the state the dropdown
+// would. lib/geoPreference.ts stays state fan-out only.
+export function applyGeoChoice(next: GeoChoice | null): void {
+  setGeoChoice(next)
+  const serialized = serializeGeoChoice(next)
+  setParams({ [GEO_PARAM]: serialized })
+  if (serialized === null) window.localStorage.removeItem(GEO_STORAGE_KEY)
+  else window.localStorage.setItem(GEO_STORAGE_KEY, serialized)
+}
 
 // The consumer half of the geo preference (lib/geoPreference.ts): every geo-aware component —
 // the process banner, step markers, vendor annotations, the product strip, the index glyphs —

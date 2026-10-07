@@ -7,6 +7,7 @@ import IconChip from '@/components/IconChip'
 import JurisdictionToggle from '@/components/JurisdictionToggle'
 import ProcessGeoBanner from '@/components/ProcessGeoBanner'
 import ProcessDag from '@/components/ProcessDag'
+import ProcessDagOverview from '@/components/ProcessDagOverview'
 import ProcessGeoNotes from '@/components/ProcessGeoNotes'
 import ProcessLeaderboard from '@/components/ProcessLeaderboard'
 import ProcessLensBanner from '@/components/ProcessLensBanner'
@@ -197,6 +198,12 @@ export default async function ProcessPage({ params }: { params: Promise<{ slug: 
           2026-10-05) — display only: the /mine route, MineLink, and the per-step "yours"
           affordances (StepYourPick, ProcessYourVendor, the leaderboard's mineHref) still carry
           readers into the personalized run. */}
+
+      {/* The flow overview (founder 2026-10-07): the v2 reader's top-of-page mini-map ported to
+          the canonical page — the whole DAG as one compact strip of route-marked step chips,
+          each jumping to its #step anchor in the diagram below. Server-rendered from the SAME
+          corpus DAG (lib/dagLayers.ts layering), outside the #steps region. */}
+      <ProcessDagOverview nodes={task.dag.nodes} edges={task.dag.edges} taskId={task.id} />
 
       <section>
         {/* 'Process breakdown' (founder 2026-10-05 functional-title rename of 'Step-by-step:

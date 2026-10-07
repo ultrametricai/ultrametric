@@ -12,7 +12,7 @@ import StepApiCalls from '@/components/StepApiCalls'
 import StepMethodDefault from '@/components/StepMethodDefault'
 import StepMethodGeo from '@/components/StepMethodGeo'
 import StepVendorRow, { type StepRowUntracked, type StepRowVendor } from '@/components/StepVendorRow'
-import { StepCostChip, StepVerifyLine } from '@/components/StepVerifyCost'
+import { StepCostChip } from '@/components/StepVerifyCost'
 import { computeChipsForStep } from '@/lib/businessLogicMap'
 import { layerNodes, type DagEdge } from '@/lib/dagLayers'
 import StepDocuments from '@/components/StepDocuments'
@@ -322,33 +322,21 @@ function StepRankingRow({
   )
 }
 
-// The committed step description under the label (founder 2026-10-05): short guidance is one
-// muted line; longer guidance collapses behind the page's details/summary idiom (the evidence
-// expandable's ▶ marker), the lead line truncated until opened. Server-rendered, committed
-// text only — guidanceParagraphs strips markdown markers, it never rewrites.
-const GUIDANCE_ONE_LINE_MAX = 220
-
+// The committed step description under the label (founder 2026-10-05; in full 2026-10-07: the
+// one-line/expander split is gone — every paragraph renders, nothing collapses or truncates —
+// and the size lifts from text-[11px] to text-sm at the secondary zinc-400 tier of the
+// contrast sweep, readable but still subordinate to the step label's zinc-100). Server-
+// rendered, committed text only — guidanceParagraphs strips markdown markers, it never
+// rewrites.
 export function StepGuidance({ text }: { text: string }) {
   const paragraphs = guidanceParagraphs(text)
   if (paragraphs.length === 0) return null
-  const lead = paragraphs[0]
-  if (paragraphs.length === 1 && lead.length <= GUIDANCE_ONE_LINE_MAX) {
-    return <p className="mt-1 text-[11px] leading-relaxed text-zinc-400">{lead}</p>
-  }
   return (
-    <details className="group mt-1">
-      <summary className="flex cursor-pointer list-none items-start gap-1.5 text-[11px] leading-relaxed text-zinc-400 transition hover:text-zinc-200 [&::-webkit-details-marker]:hidden">
-        <span aria-hidden className="mt-1 inline-block text-[9px] text-zinc-500 transition-transform group-open:rotate-90">▶</span>
-        <span className="min-w-0 truncate group-open:whitespace-normal">{lead}</span>
-      </summary>
-      {paragraphs.length > 1 && (
-        <div className="mt-1 space-y-1.5 border-l border-zinc-800 pl-3 text-[11px] leading-relaxed text-zinc-400">
-          {paragraphs.slice(1).map((p, i) => (
-            <p key={i}>{p}</p>
-          ))}
-        </div>
-      )}
-    </details>
+    <div className="mt-1.5 space-y-1.5 text-sm leading-relaxed text-zinc-400">
+      {paragraphs.map((p, i) => (
+        <p key={i}>{p}</p>
+      ))}
+    </div>
   )
 }
 
@@ -402,8 +390,9 @@ function NodeBlock({
   // lib/gapClosers.ts and its resolution stay data (the chain pages' ProcessVerdict/
   // ProcessSimulator and the gap analyses still consume resolveGapStep).
   // Evidence-grounded per-vendor calls for this step (data/step-vendor-calls.json) — when
-  // present they take over the API-calls block, with the node's own functionCalls kept as the
-  // canonical reference flow.
+  // present they take over the API-calls block, which renders ONLY the selected vendor's calls
+  // and nothing without a selection (founder 2026-10-07); the node's own functionCalls stay
+  // the fallback block for steps without grounded vendor calls.
   const vendorCalls = taskId ? stepVendorCallsFor(taskId, node.id) : []
   // The step's function-level open-module mappings (founder 2026-10-02: "go deeper on the
   // mapping of the logic") — processes/business-logic-map.json steps, rendered as tiny muted
@@ -606,12 +595,7 @@ function NodeBlock({
           physics/third-party blocker never shows a misleading "could attempt it today" row. */}
 
       {vendorCalls.length > 0 ? (
-        <StepApiCalls
-          canonical={calls}
-          canonicalVendor={node.vendor}
-          vendors={vendorCalls}
-          lensKey={lensKey}
-        />
+        <StepApiCalls vendors={vendorCalls} lensKey={lensKey} />
       ) : calls.length > 0 ? (
         <details className="group mt-2">
           <summary className="flex cursor-pointer list-none items-center gap-1.5 font-mono text-[11px] text-zinc-500 transition hover:text-zinc-300 [&::-webkit-details-marker]:hidden">
@@ -648,9 +632,9 @@ function NodeBlock({
         </div>
       )}
 
-      {/* "How do I know it worked?" (depth wave pt 1) — the step's concrete external check,
-          curated only where a real one exists; renders nothing for the many steps without. */}
-      {node.verify && <StepVerifyLine verify={node.verify} />}
+      {/* The '✓ verify:' line is gone from step blocks (founder 2026-10-07) — display only:
+          verify stays corpus truth (lib/processes.ts StepVerifySchema, the curation rules in
+          processes/README.md "Verification checks"), just no per-step rendering. */}
 
       {/* The '⚠ if it goes wrong' failure-modes line is gone (founder 2026-10-05) — display
           only: failureModes stays corpus data (lib/processes.ts StepFailureModeSchema, the
@@ -677,8 +661,8 @@ function NodeBlock({
       </div>
       {/* The step's committed description (founder 2026-10-05): the shared record part bound to
           this node id (content/processes/records — the same guidance the preview pages render),
-          muted under the label, one line expanding to the full committed paragraphs when long.
-          Steps without committed guidance render exactly as before — nothing is invented. */}
+          its paragraphs in full under the label (founder 2026-10-07 — no expander). Steps
+          without committed guidance render exactly as before — nothing is invented. */}
       {guidance && <StepGuidance text={guidance} />}
       {methodViews && (
         <StepMethodGeo

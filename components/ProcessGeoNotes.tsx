@@ -1,16 +1,21 @@
 'use client'
 
-import { useGeoChoice } from '@/components/useGeoSelection'
+import { applyGeoChoice, useGeoChoice } from '@/components/useGeoSelection'
 import { GEO_GLOBAL, GEO_PREF_META, type GeoAnalogNote } from '@/lib/geoPreference'
 
 // "Outside the US" (founder GEO ask 2026-09-28: "USA-centric processes vs global processes …
 // do spikes into India, UK, European countries"): the curated per-country analogs of a
-// US-scoped process — what a founder in India / the UK / Germany / France does instead, each
-// with its verified-live canonical portal (lib/processes.ts GeoNoteSchema). Since the mapping
-// expansion (founder ask 2026-09-29) flavored GLOBAL processes carry notes too, so the intro
-// stays honest per scope: US-scoped = "the real analogs", global = "the local flavor".
-// Documentation, not modeling: these notes never touch ceilings, rankings or the simulator,
-// and the block renders only for the processes that actually carry notes.
+// US-scoped process — what a founder in India / the UK / Germany / France does instead. Since
+// the mapping expansion (founder ask 2026-09-29) flavored GLOBAL processes carry notes too, so
+// the intro stays honest per scope: US-scoped = "the real analogs", global = "the local
+// flavor". Documentation, not modeling: these notes never touch ceilings, rankings or the
+// simulator, and the block renders only for the processes that actually carry notes.
+//
+// Pure internal navigation since founder 2026-10-07: each country row switches THIS page to
+// that country's view — the same store/?geo=/pa-geo writes the GeoDropdown makes
+// (applyGeoChoice) — instead of linking out to the country's government portal. The committed
+// actionUrl/actionLabel stay corpus data (lib/processes.ts GeoNoteSchema, verified live) and
+// stay reachable: the country view's top banner (components/ProcessGeoBanner.tsx) renders them.
 //
 // Client component since the 🌐 Global lens (founder 2026-09-30): under the explicit Global
 // choice the block renders NOTHING at all (founder 2026-10-02 — supersedes the earlier
@@ -54,15 +59,20 @@ export default function ProcessGeoNotes({
               </p>
               <p className="mt-1 text-sm text-zinc-400">{n.summary}</p>
               <p className="mt-1.5 text-xs">
-                <a
-                  href={n.actionUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-emerald-300 underline decoration-emerald-400/40 underline-offset-2 transition hover:text-emerald-200"
-                  title={`${meta.label} — the canonical portal for this work (verified live)`}
+                {/* Internal click-through (founder 2026-10-07): the same geo choice the dropdown
+                    writes, then back to the top where the country banner (with the committed
+                    portal link) renders. No external links from this section. */}
+                <button
+                  type="button"
+                  onClick={() => {
+                    applyGeoChoice(n.country)
+                    window.scrollTo({ top: 0, behavior: 'smooth' })
+                  }}
+                  className="cursor-pointer text-emerald-300 underline decoration-emerald-400/40 underline-offset-2 transition hover:text-emerald-200"
+                  title={`Switch this page to the ${meta.label} view — the same selection the country dropdown drives; the committed ${meta.label} story and its portal link render in the banner up top`}
                 >
-                  {n.actionLabel} ↗
-                </a>
+                  switch to the {meta.label} view →
+                </button>
               </p>
             </li>
           )
