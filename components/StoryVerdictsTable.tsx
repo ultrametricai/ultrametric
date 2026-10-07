@@ -44,7 +44,7 @@ import { TABLE_HEADER_ROW, TABLE_SHELL } from '@/components/tableStyles'
 // stories render no chip. See lib/schemas.ts's StorySchema.scope.
 const SCOPE_CHIP: Record<NonNullable<StoryVerdictRow['scope']>, { label: string; title: string }> = {
   global: { label: 'G', title: 'Global story — comparable across all software we rank' },
-  category: { label: 'C', title: 'Category story — meaningful within this arena’s domain' },
+  category: { label: 'C', title: 'Category story — meaningful within this ranking’s domain' },
   product: { label: 'P', title: 'Product story — probes one product’s specific claim' },
 }
 
@@ -358,8 +358,10 @@ export default function StoryVerdictsTable({
         <table className="w-full min-w-[760px] border-collapse text-sm">
           <thead>
             <tr className={TABLE_HEADER_ROW}>
+              {/* No visible header text (founder 2026-10-07): the stories themselves make the
+                  column self-evident. sr-only keeps the sort button and column named for AT. */}
               <SortableTh col="title" current={column} direction={direction} onSort={handleSort}>
-                <span title="The real buyer/user scenario the product was judged on — expand a row for the rationale and evidence">Story</span>
+                <span className="sr-only">Story</span>
               </SortableTh>
               <SortableTh col="persona" current={column} direction={direction} onSort={handleSort}>
                 <span title="Whose perspective the story is told from — the kind of user who needs it">User type</span>
@@ -368,7 +370,7 @@ export default function StoryVerdictsTable({
                 <span title="The capability grouping this story belongs to (agent access, openness, automation…)">Theme</span>
               </SortableTh>
               <SortableTh col="weight" current={column} direction={direction} onSort={handleSort}>
-                <span title="How much this story counts in the arena's scoring — higher weight = more important capability">Weight</span>
+                <span title="How much this story counts in the ranking's scoring — higher weight = more important capability">Weight</span>
               </SortableTh>
               <SortableTh col="verdict" current={column} direction={direction} onSort={handleSort}>
                 <span title="Does the product deliver this story? full / partial / none / disputed / n-a — judged from cited evidence">Verdict</span>
