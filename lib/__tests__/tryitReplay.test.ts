@@ -5,7 +5,7 @@ import { describe, expect, it } from 'vitest'
 import { mcpEndpointFor } from '../mcpEndpoints'
 import { buildRecordedStories, hasTryIt, mcpDocsUrlFor, processesFeaturing } from '../tryit'
 import { buildRunOptions, callResultLines, deriveRunLabel, mcpClientConfig, probeResultLines, replayCharCount, stripSgr, tryResultLines, type TryItStory } from '../tryitReplay'
-import { loadCategory } from '../data'
+import { loadAll, loadCategory } from '../data'
 import { loadProofIndex } from '../proofs'
 import fs from 'node:fs'
 import path from 'node:path'
@@ -269,6 +269,17 @@ describe('tryit assembly (committed corpus)', () => {
     expect(buildRecordedStories('startup-banking', 'mercury', [])).toEqual([])
     expect(hasTryIt('payroll', 'gusto')).toBe(true) // official MCP server evidence → live endpoint qualifies
     expect(hasTryIt('accounting', 'quickbooks')).toBe(false) // docs-only MCP link, no proofs → no fake try
+  })
+
+  it('hasTryIt equals the sandbox section\'s own render predicate for every committed product — the header CTA can never point at an empty section', () => {
+    for (const data of loadAll()) {
+      for (const p of data.products) {
+        const sectionRenders =
+          buildRecordedStories(data.category.id, p.id, data.stories).length > 0 ||
+          mcpEndpointFor(data.category.id, p.id) !== null
+        expect(hasTryIt(data.category.id, p.id), `${data.category.id}/${p.id}`).toBe(sectionRenders)
+      }
+    }
   })
 
   it('cross-links founder processes only for the arena the vendor is mapped to', () => {

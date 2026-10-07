@@ -124,6 +124,39 @@ describe('product page — founder 2026-10-02 batch', () => {
     expect(container.textContent).not.toContain('MCP docs ↗')
   })
 
+  it('header CTA (founder 2026-10-07): "Test in Ultrametric" is the primary action for a product with committed recorded proofs (payments/stripe)', async () => {
+    const { container } = render(
+      await ProductPage({ params: Promise.resolve({ category: 'payments', id: 'stripe' }) }),
+    )
+    const cta = screen.getByRole('link', { name: /Test in Ultrametric/ })
+    // Plain anchor into the sandbox section — SSR-static, no JS.
+    expect(cta.getAttribute('href')).toBe('#try-it')
+    // Primary emerald idiom: the one filled button in the header.
+    expect(cta.className).toContain('bg-emerald-400')
+    expect(cta.className).toContain('font-semibold')
+    // The anchor resolves: the "Test it in sandbox" section renders on this page with that id.
+    expect(container.querySelector('#try-it')).not.toBeNull()
+    // No nested interactives inside the CTA.
+    expect(cta.querySelectorAll('a, button, input, [role="button"]').length).toBe(0)
+  })
+
+  it('header CTA renders for a live-endpoint-only product too (startup-banking/mercury), anchor resolving', async () => {
+    const { container } = await renderPage()
+    expect(screen.getByRole('link', { name: /Test in Ultrametric/ }).getAttribute('href')).toBe('#try-it')
+    expect(container.querySelector('#try-it')).not.toBeNull()
+  })
+
+  it('HONESTY GATE: no "Test in Ultrametric" CTA when the sandbox section renders nothing (accounting/quickbooks — docs-only MCP link, no proofs)', async () => {
+    const { container } = render(
+      await ProductPage({ params: Promise.resolve({ category: 'accounting', id: 'quickbooks' }) }),
+    )
+    expect(screen.queryByRole('link', { name: /Test in Ultrametric/ })).toBeNull()
+    // The section itself is absent, so the CTA would have been dead — and the plain
+    // external site link holds the header slot instead.
+    expect(container.querySelector('#try-it')).toBeNull()
+    expect(container.textContent).not.toContain('Test it in sandbox')
+  })
+
   it('generateMetadata preserves the agent-discovery pointers as alternates (llms.md + data JSON)', async () => {
     const meta = await generateMetadata({ params })
     const types = meta.alternates?.types as Record<string, unknown>

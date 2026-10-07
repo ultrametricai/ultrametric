@@ -140,9 +140,11 @@ export default async function ProductPage({
   // header chip links down to the verdicts table, where each response renders inside its
   // story's expanded row.
   const vendorResponseCount = data.vendorResponses.filter((r) => r.productId === id).length
-  // "Try it" (components/TryIt/*) exists for products with ≥1 replayable recorded proof or an
-  // allowlisted live MCP endpoint. Only then does the header's primary CTA become hands-on —
-  // products with neither keep "Visit" as primary (no fake try).
+  // "Try it" (components/TryIt/*) exists for products whose sandbox section actually renders:
+  // ≥1 replayable recorded proof with a readable transcript, or an allowlisted live MCP
+  // endpoint — the exact predicate TryItSection renders on (lib/tryit.ts). Only then does the
+  // header's primary CTA become hands-on; products with neither keep the plain site link as
+  // primary (no fake try, never a dead CTA).
   const tryable = hasTryIt(category, id)
   // Momentum sparklines beside the chip — stars/downloads over time from
   // popularity-history.jsonl (tolerant-optional; series with <2 distinct snapshots render
@@ -247,12 +249,15 @@ export default async function ProductPage({
               <>
                 {/* Founder 2026-09-23: the right-side domain link is gone — the Access chips
                     below carry the site link, and the header stays focused on Try it. */}
-                {/* Founder 2026-10-02: renamed from "Try it agentically" (founder-decided). */}
+                {/* Founder 2026-10-07: the header's main CTA reads "Test in Ultrametric"
+                    (supersedes the 2026-10-02 "Test it in sandbox" label; the section heading
+                    below keeps that name). Plain anchor to the #try-it section — SSR-static,
+                    no JS. */}
                 <a
                   href="#try-it"
                   className="shrink-0 rounded-lg bg-emerald-400 px-4 py-2 text-sm font-semibold text-zinc-950 transition hover:bg-emerald-300"
                 >
-                  Test it in sandbox →
+                  Test in Ultrametric →
                 </a>
               </>
             ) : (

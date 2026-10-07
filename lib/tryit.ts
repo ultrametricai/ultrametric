@@ -12,12 +12,18 @@ import { stripSgr, type TryItStory } from './tryitReplay'
 // cross-links. Client-safe types/logic live in lib/tryitReplay.ts — this module owns the fs
 // reads and stays server-only.
 
-// A product is "tryable" when it has at least one REPLAYABLE recorded proof (kind 'terminal' —
-// video proofs play in ProofsSection, not the microterminal) or an allowlisted live MCP
-// endpoint. Products with neither keep their existing primary CTA: no fake try.
+// A product is "tryable" when its "Test it in sandbox" section will actually render something:
+// at least one REPLAYABLE recorded proof (kind 'terminal' WITH a readable transcript — video
+// proofs play in ProofsSection, not the microterminal, and a stale index entry whose transcript
+// file is missing renders nothing) or an allowlisted live MCP endpoint. This is exactly the
+// predicate TryItSection renders on (buildRecordedStories + mcpEndpointFor), so the header's
+// "Test in Ultrametric" CTA can never point at an empty section. Products with neither keep
+// their existing primary CTA: no fake try.
 export function hasTryIt(category: string, productId: string): boolean {
   return (
-    proofsForProduct(category, productId).some((p) => p.kind === 'terminal') ||
+    proofsForProduct(category, productId).some(
+      (p) => p.kind === 'terminal' && readProofTranscript(category, p) !== null,
+    ) ||
     mcpEndpointFor(category, productId) !== null
   )
 }
