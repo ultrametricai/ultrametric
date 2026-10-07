@@ -5,6 +5,7 @@
 import fs from 'node:fs'
 import path from 'node:path'
 import { attachProvenance } from '../../lib/provenance'
+import { buildRollups, RollupsSchema } from '../../lib/rollups'
 import { ProductSchema, RankingsSchema, StorySchema, VerdictSchema } from '../../lib/schemas'
 import { buildRankings } from '../../lib/scoring'
 
@@ -123,7 +124,15 @@ for (const cat of CATEGORIES) {
   // Same stamp the derive stage applies — the provenance watermark is a pure function of the
   // rankings content, so it must reproduce exactly too.
   const recomputed = attachProvenance(cat, buildRankings(products, stories, verdicts, persisted.generatedAt))
-  const match = JSON.stringify(recomputed) === JSON.stringify(persisted)
+  let match = JSON.stringify(recomputed) === JSON.stringify(persisted)
+  // Country/area rollups (lib/rollups.ts) are derived the same way: where a persisted
+  // rollups.json exists it must reproduce byte-for-byte from (products, persisted rankings).
+  const rollupsPath = path.join(dataDir, 'rollups.json')
+  if (fs.existsSync(rollupsPath)) {
+    const persistedRollups = readJson(RollupsSchema, rollupsPath)
+    const recomputedRollups = buildRollups(products, persisted)
+    if (JSON.stringify(recomputedRollups) !== JSON.stringify(persistedRollups)) match = false
+  }
   results.push(`${cat} ${match ? 'MATCH' : 'MISMATCH'}`)
   if (!match) allMatch = false
 }

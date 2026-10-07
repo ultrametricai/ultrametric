@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import ArenaTable from '@/components/ArenaTable'
+import CountryRankings from '@/components/CountryRankings'
 import GeoMark, { GeoBackdrop } from '@/components/GeoMark'
 import IconChip from '@/components/IconChip'
 import Legend from '@/components/Legend'
@@ -16,6 +17,7 @@ import { humanizeTheme } from '@/lib/icons'
 import { hotReasonsForCategory } from '@/lib/hotProducts'
 import { hasLogo } from '@/lib/logos'
 import { loadPricing, pricingCellFor, type PricingCell } from '@/lib/pricing'
+import { loadRollups } from '@/lib/rollups'
 import { SITE_URL } from '@/lib/site'
 
 // The two hardware arenas graduated from unlinked /experiments spec tables; those pages stay
@@ -144,6 +146,9 @@ export default async function ArenaPage({ params }: { params: Promise<{ category
   // 🔥 flags (lib/hotProducts.ts) need the whole fleet's popularity history (the hot threshold
   // is fleet-relative), so they're computed here server-side and passed down as plain strings.
   const hotReasons = hotReasonsForCategory(loadAll(), data)
+  // Country/area rollups (lib/rollups.ts): present only for jurisdiction-tagged arenas
+  // (government-services). Null everywhere else → no section renders.
+  const rollups = loadRollups(category)
   // What the client components below receive: CategoryData minus verdict rationale and battle
   // records, neither of which this page renders — see lib/arenaClientData.ts for the full
   // accounting. The server-side JSON-LD above keeps reading the untouched `data`.
@@ -205,6 +210,7 @@ export default async function ArenaPage({ params }: { params: Promise<{ category
       {/* No "Leaderboard" heading (founder 2026-09-30: self-evident — the ranked table opens
           the page); the table itself carries an aria-label so it keeps an accessible name. */}
       <ArenaTable data={clientData} logoMap={logoMap} pricing={pricing} hotReasons={Object.keys(hotReasons).length > 0 ? hotReasons : undefined} />
+      {rollups && <CountryRankings categoryId={category} rollups={rollups} products={data.products} />}
       <PersonaStacksSection data={clientData} />
       <StacksSection data={clientData} />
       <div id="story-matrix" className="scroll-mt-4">

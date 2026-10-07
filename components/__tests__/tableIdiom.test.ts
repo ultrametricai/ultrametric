@@ -23,6 +23,7 @@ const ADOPTERS = [
   'components/CompareBuilder.tsx',
   'components/CompareRivals.tsx',
   'components/ControlSurfacesTable.tsx',
+  'components/CountryRankings.tsx',
   'components/FamilySection.tsx',
   'components/HomeProcessesMini.tsx',
   'components/HomeRankingsMini.tsx',
