@@ -22,7 +22,7 @@ const SECTIONS: ArenaMenuSection[] = [
 
 function openMenu() {
   render(<ArenaMenu sections={SECTIONS} searchable />)
-  fireEvent.click(screen.getByRole('button', { name: /Arenas/ }))
+  fireEvent.click(screen.getByRole('button', { name: /Rankings/ }))
 }
 
 describe('ArenaMenu (grouped + searchable)', () => {
@@ -35,7 +35,7 @@ describe('ArenaMenu (grouped + searchable)', () => {
 
   it('filters live from the pinned search and hides empty sections', () => {
     openMenu()
-    fireEvent.change(screen.getByLabelText('Search arenas'), { target: { value: 'payro' } })
+    fireEvent.change(screen.getByLabelText('Search rankings'), { target: { value: 'payro' } })
     expect(screen.getAllByRole('menuitem')).toHaveLength(1)
     expect(screen.getByText('Payroll & HR Ops')).toBeTruthy()
     expect(screen.queryByText('AI & Agents')).toBeNull()
@@ -43,7 +43,7 @@ describe('ArenaMenu (grouped + searchable)', () => {
 
   it('shows an honest empty state for a no-match query', () => {
     openMenu()
-    fireEvent.change(screen.getByLabelText('Search arenas'), { target: { value: 'zzz' } })
+    fireEvent.change(screen.getByLabelText('Search rankings'), { target: { value: 'zzz' } })
     expect(screen.queryAllByRole('menuitem')).toHaveLength(0)
     expect(screen.getByText('No matches')).toBeTruthy()
   })
@@ -80,7 +80,7 @@ describe('ArenaMenu (grouped + searchable)', () => {
         ]}
       />,
     )
-    fireEvent.click(screen.getByRole('button', { name: /Arenas/ }))
+    fireEvent.click(screen.getByRole('button', { name: /Rankings/ }))
     const row = screen.getByRole('menuitem')
     expect(row.className).toContain('items-center')
     expect(row.className).not.toContain('items-baseline')
@@ -111,7 +111,7 @@ describe('ArenaMenu (grouped + searchable)', () => {
         ]}
       />,
     )
-    fireEvent.click(screen.getByRole('button', { name: /Arenas/ }))
+    fireEvent.click(screen.getByRole('button', { name: /Rankings/ }))
     expect(container.querySelectorAll('svg[data-glyph="bank"]').length).toBe(1) // the item glyph
     expect(container.querySelectorAll('svg[data-glyph="building"]').length).toBe(1) // the section glyph
     expect(container.querySelectorAll('svg[data-glyph="unknown"]').length).toBe(0) // never the placeholder

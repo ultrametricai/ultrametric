@@ -58,7 +58,7 @@ export default function ProcessIconGalleryPage() {
   const phases = [...new Set(tasks.map((t) => t.phase))]
   const glyphEntries = Object.entries(GLYPHS)
   // The arena set (founder ask 2026-10-01): every arena's house glyph, grouped by the same
-  // curated sections as the header's Arenas menu, hue per section (lib/arenaIcons.ts).
+  // curated sections as the header's Rankings menu, hue per section (lib/arenaIcons.ts).
   const categoryNameById = new Map(loadCategories().map((c) => [c.id, c.name]))
   const arenaSections = loadArenaSections()
 
@@ -117,11 +117,11 @@ export default function ProcessIconGalleryPage() {
         <h2 className="font-display text-xl font-semibold">Arenas</h2>
         <p className="mt-1 text-sm text-zinc-500">
           The arena set (founder ask 2026-10-01): one glyph per arena — reused from the process set where the concept
-          matches, newly drawn in the same language where it doesn&apos;t — one hue per Arenas-menu section
+          matches, newly drawn in the same language where it doesn&apos;t — one hue per Rankings-menu section
           (lib/arenaIcons.ts). Plus the menu&apos;s leading Overall entry.
         </p>
         <div className="mt-3 grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
-          <TokenTile token={OVERALL_ICON} label="Overall — every product ranked" sub="the Arenas-menu lead entry" />
+          <TokenTile token={OVERALL_ICON} label="Overall — every product ranked" sub="the Rankings-menu lead entry" />
         </div>
         {arenaSections.map((section) => (
           <div key={section.id} className="mt-5">

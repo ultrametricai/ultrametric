@@ -302,7 +302,7 @@ export default function MegaTable({ rows, arenas }: { rows: MegaTableRow[]; aren
                   <td className="hidden max-w-[180px] px-2 py-2 lg:table-cell">
                     <Link href={`/arena/${row.arenaId}`} className="block truncate whitespace-nowrap text-xs text-zinc-500 hover:text-emerald-300">
                       {/* The arena's house glyph (lib/arenaIcons.ts) — same icon it wears in
-                          the Arenas menu, not the legacy emoji from data/arena-icons.json. */}
+                          the Rankings menu, not the legacy emoji from data/arena-icons.json. */}
                       {arenaIcon(row.arenaId) && (
                         <span aria-hidden className="mr-1 inline-flex align-[-0.125em]">
                           <IconGlyph icon={arenaIcon(row.arenaId)} />

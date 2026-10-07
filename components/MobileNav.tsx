@@ -8,17 +8,20 @@ import { MOBILE_NAV_ICONS } from '@/lib/arenaIcons'
 // Mobile hamburger (founder 2026-09-24: "the mobile top bar goes off the page — we need a
 // hamburger menu"). Below sm the header shows only logo · ☰ · search · account; every other
 // destination lives here. Desktop never renders this (sm:hidden) — the full button row and the
-// Arenas/Explore dropdowns stay the desktop IA. Icons: house glyph tokens (lib/arenaIcons.ts,
+// Rankings/Explore dropdowns stay the desktop IA. Icons: house glyph tokens (lib/arenaIcons.ts,
 // founder 2026-10-01 — the custom set replaces the emoji in the top-bar menus).
 const ITEMS: Array<{ href: string; label: string; icon: string }> = [
-  { href: '/arenas', label: 'Arenas', icon: MOBILE_NAV_ICONS['/arenas'] },
+  // "Rankings" is the renamed Arenas label (founder 2026-10-07); the route stays /arenas.
+  { href: '/arenas', label: 'Rankings', icon: MOBILE_NAV_ICONS['/arenas'] },
   { href: '/processes', label: 'Processes', icon: MOBILE_NAV_ICONS['/processes'] },
   { href: '/situations', label: 'Situations', icon: MOBILE_NAV_ICONS['/situations'] },
   { href: '/technologies', label: 'Technologies', icon: MOBILE_NAV_ICONS['/technologies'] },
   { href: '/startup-sim', label: 'Open Startup Sim', icon: MOBILE_NAV_ICONS['/startup-sim'] },
   { href: '/stacks', label: 'Stacks', icon: MOBILE_NAV_ICONS['/stacks'] },
   { href: '/compare', label: 'Compare', icon: MOBILE_NAV_ICONS['/compare'] },
-  { href: '/global', label: 'Global rankings', icon: MOBILE_NAV_ICONS['/global'] },
+  // "Capability adoption" matches /global's Explore-menu entry and page title — a "Global
+  // rankings" label next to the renamed Rankings entry read as the same destination.
+  { href: '/global', label: 'Capability adoption', icon: MOBILE_NAV_ICONS['/global'] },
   { href: '/methodology', label: 'Methodology', icon: MOBILE_NAV_ICONS['/methodology'] },
 ]
 

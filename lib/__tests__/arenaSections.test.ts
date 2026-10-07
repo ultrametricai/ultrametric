@@ -1,6 +1,6 @@
 // Arena-section curation invariants against the REAL data files: every arena in
 // data/categories.json is assigned to exactly one section in data/arena-sections.json (an
-// unassigned arena would silently vanish from the header's Arenas dropdown; a duplicate would
+// unassigned arena would silently vanish from the header's Rankings dropdown; a duplicate would
 // render twice), no section references an unknown arena, and the section count stays in the
 // curated ~8–10 band the menu was designed for. Plus the pure menu filter the dropdown search
 // uses (components/ArenaMenu.tsx's filterMenuSections).

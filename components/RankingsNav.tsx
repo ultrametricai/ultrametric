@@ -39,19 +39,21 @@ export type ProcessRankingId = (typeof PROCESS_RANKINGS)[number]['id']
 export type RankingId = GlobalRankingId | ProcessRankingId
 
 // The two labeled groups every /rankings/* page cross-links — company pages show the process
-// group too (and vice versa): the clarity ask IS seeing both, clearly labeled.
+// group too (and vice versa): the clarity ask IS seeing both, clearly labeled. The groups say
+// "leaderboards", not "rankings", since the header's Arenas menu became Rankings (founder
+// 2026-10-07): a second "rankings" label in the same header read as the same thing.
 // Each group leads with its house glyph (lib/arenaIcons.ts) — the same icon the Explore menu's
 // section header wears, not the old 🏢/🔁 emoji (founder 2026-10-02 sweep).
 const GROUPS = [
-  { label: 'Company rankings', icon: EXPLORE_SECTION_ICONS.companyRankings, rankings: GLOBAL_RANKINGS },
-  { label: 'Process rankings', icon: EXPLORE_SECTION_ICONS.processRankings, rankings: PROCESS_RANKINGS },
+  { label: 'Company leaderboards', icon: EXPLORE_SECTION_ICONS.companyRankings, rankings: GLOBAL_RANKINGS },
+  { label: 'Process leaderboards', icon: EXPLORE_SECTION_ICONS.processRankings, rankings: PROCESS_RANKINGS },
 ] as const
 
 // Cross-link footer for the /rankings/* pages: every sibling ranking in both groups, with the
 // current one rendered as quiet text (never a self-link). Server-safe, no state.
 export default function RankingsNav({ current }: { current: RankingId }) {
   return (
-    <nav aria-label="all global rankings" className="space-y-3 rounded-xl border border-zinc-800 p-4">
+    <nav aria-label="all leaderboards" className="space-y-3 rounded-xl border border-zinc-800 p-4">
       {GROUPS.map((group) => (
         <div key={group.label}>
           <p className="flex items-center gap-1.5 text-xs uppercase tracking-widest text-zinc-500">

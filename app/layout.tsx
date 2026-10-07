@@ -20,7 +20,7 @@ import { arenaIcon, EXPLORE_SECTION_ICONS, OVERALL_ICON } from "@/lib/arenaIcons
 import { loadIcpTypes } from "@/lib/icp";
 import { REPO, SITE_URL } from "@/lib/site";
 
-// Short labels used inside the Arenas dropdown alongside full names.
+// Short labels used inside the Rankings dropdown (the arenas) alongside full names.
 const NAV_LABELS: Record<string, string> = {
   "desktop-os": "OS",
   "startup-banking": "Banking",
@@ -164,11 +164,11 @@ const SITE_JSONLD = JSON.stringify({
 export default async function RootLayout({ children }: LayoutProps<"/">) {
   const categories = loadCategories();
   const icpTypes = loadIcpTypes();
-  // The Arenas dropdown's curated sections (data/arena-sections.json): every arena appears in
+  // The Rankings dropdown's curated sections (data/arena-sections.json): every arena appears in
   // exactly one section (enforced by lib/__tests__/arenaSections.test.ts), so grouping is a pure
   // regrouping of `categories` — nothing is added or lost.
   const categoryById = new Map(categories.map((c) => [c.id, c]));
-  // The Overall (all-products) rankings view leads the Arenas dropdown (founder 2026-09-29) —
+  // The Overall (all-products) rankings view leads the Rankings dropdown (founder 2026-09-29) —
   // it's the cross-arena leaderboard the per-arena entries below drill into.
   const arenaMenuSections = [
     { name: "", items: [{ id: "overall", name: "Overall — every product ranked", label: "all arenas", icon: OVERALL_ICON, href: "/overall" }] },
@@ -221,13 +221,14 @@ export default async function RootLayout({ children }: LayoutProps<"/">) {
                   (components/fx/LogoWordmark.tsx), identical on every page. */}
               <LogoWordmark />
             </div>
-            {/* Primary IA: Arenas (the product), Explore (every secondary view: global rankings,
+            {/* Primary IA: Rankings (the arenas — the product; label renamed from Arenas,
+                founder 2026-10-07), Explore (every secondary view: global leaderboards,
                 buyer lenses, methodology/pipeline/proofs/MCP), then the three tools (Stacks,
                 Processes, Compare), GitHub, and search. One menu for all secondary destinations
                 instead of the old Rankings + Lenses dropdowns + a Methodology link. */}
             <nav className="flex flex-nowrap items-center gap-3 text-sm text-zinc-400 sm:flex-wrap sm:gap-6">
-              {/* Founder 2026-09-29: Virtual Startup leads the nav, LEFT of Arenas. Founder
-                  2026-09-23: Arenas sits LEFT of Processes. Founder 2026-09-24: the dropdowns
+              {/* Founder 2026-09-29: Virtual Startup leads the nav, LEFT of the Rankings menu.
+                  Founder 2026-09-23: it sits LEFT of Processes. Founder 2026-09-24: the dropdowns
                   and buttons are desktop-only — mobile gets the ☰ MobileNav. */}
               <Link
                 href="/startup-sim"
@@ -260,7 +261,9 @@ export default async function RootLayout({ children }: LayoutProps<"/">) {
                   never ambiguous what is a company ranking and what is a process ranking. Both
                   lists are the single sources of truth in components/RankingsNav.tsx — the
                   header menu, the /rankings/* cross-link footer, and each page's GeoMark all
-                  derive from them. */}
+                  derive from them. Groups say "leaderboards" since the Arenas menu became
+                  Rankings (founder 2026-10-07) — two "rankings" labels in one header were
+                  ambiguous; see components/RankingsNav.tsx GROUPS. */}
               <span className="hidden sm:block">
               <ArenaMenu
                 title="Explore"
@@ -269,12 +272,12 @@ export default async function RootLayout({ children }: LayoutProps<"/">) {
                   {
                     // House glyphs instead of the old 🏢/🔁 emoji (founder 2026-10-01: apply
                     // the custom icon set to the top-bar menus).
-                    name: "Company rankings",
+                    name: "Company leaderboards",
                     icon: EXPLORE_SECTION_ICONS.companyRankings,
                     items: GLOBAL_RANKINGS.map((r) => ({ id: r.id, name: r.name, label: "companies", href: r.href })),
                   },
                   {
-                    name: "Process rankings",
+                    name: "Process leaderboards",
                     icon: EXPLORE_SECTION_ICONS.processRankings,
                     items: PROCESS_RANKINGS.map((r) => ({ id: r.id, name: r.name, label: "processes", href: r.href })),
                   },

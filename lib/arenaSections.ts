@@ -1,4 +1,4 @@
-// Curated higher-level sections for the header's Arenas dropdown (data/arena-sections.json):
+// Curated higher-level sections for the header's Rankings dropdown (data/arena-sections.json):
 // 65+ arenas grouped into ~9 scannable buckets ("AI & Agents", "Dev Tools", "Fintech & Back
 // Office"…) with small uppercase headers, instead of one undifferentiated 65-row list. The
 // curation lives in data (not code) so adding an arena is a one-line JSON edit; the invariant

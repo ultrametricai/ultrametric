@@ -126,7 +126,7 @@ export default async function ArenaPage({ params }: { params: Promise<{ category
   // components, so they can't call lib/logos.ts's fs-based hasLogo() themselves (see
   // components/ProductLogoView.tsx for why).
   const adjacent = adjacentArenas(loadAll(), data)
-  // The breadcrumb's middle segment — the section this arena lives under in the Arenas index.
+  // The breadcrumb's middle segment — the section this arena lives under in the Rankings index (/arenas).
   const section = (arenaSections as { sections: { id: string; name: string; arenaIds: string[] }[] }).sections.find((x) => x.arenaIds.includes(data.category.id)) ?? null
   const logoMap = Object.fromEntries(data.products.map((p) => [p.id, hasLogo(p.id)]))
   // Pricing transparency index (lib/pricing.ts): serializable headline cells for the covered
@@ -164,9 +164,9 @@ export default async function ArenaPage({ params }: { params: Promise<{ category
         <GeoBackdrop seed={data.category.id} />
         {/* The eyebrow breadcrumb, matching the process pages' idiom exactly (founder
             2026-10-02: "the breadcrumb on the arena pages doesn't match the processes page"):
-            'Arenas / {section}' — same sizes, same slash, both halves linked. */}
+            'Rankings / {section}' — same sizes, same slash, both halves linked. */}
         <p className="text-[10px] uppercase tracking-widest text-zinc-400">
-          <Link href="/arenas" className="hover:text-emerald-300">Arenas</Link>
+          <Link href="/arenas" className="hover:text-emerald-300">Rankings</Link>
           {section && (
             <>
               <span className="mx-1 text-zinc-600">/</span>
@@ -175,7 +175,7 @@ export default async function ArenaPage({ params }: { params: Promise<{ category
           )}
         </p>
         <h1 className="font-display leading-[1.1] mt-1 flex items-center gap-2.5 text-3xl font-bold tracking-tight">
-          {/* The same house glyph this arena wears in the header's Arenas menu
+          {/* The same house glyph this arena wears in the header's Rankings menu
               (lib/arenaIcons.ts) — IconChip renders the `pi:` token as the custom duotone SVG. */}
           <IconChip
             icon={arenaIcon(data.category.id)}

@@ -141,7 +141,7 @@ describe('URL ⇄ mode', () => {
     const { getByRole } = render(
       <HomeModes companies={<div>COMPANIES-PANE</div>} processes={<div>PROCESSES-PANE</div>} arenas={<div>ARENAS-PANE</div>} />,
     )
-    for (const name of [/Companies/, /Products/, /Processes/, /Arenas/]) {
+    for (const name of [/Companies/, /Products/, /Processes/, /Rankings/]) {
       const btn = getByRole('button', { name })
       expect(btn.querySelector('svg'), String(name)).not.toBeNull()
       expect(btn.textContent).not.toMatch(/🏢|📦|🔁|🏟|pi:/)

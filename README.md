@@ -334,7 +334,7 @@ every externally-effectful workflow step requires a named, scoped human approval
 answers `unsupported` rather than guessing; and no jurisdiction is called covered because a
 few playbooks exist ([maturity ladder](governance/REVIEW_POLICY.md)).
 
-## Arena index — every market we rank
+## Rankings index — every market we rank
 
 <!-- arenas:start -->
 | Arena | Products |
@@ -618,7 +618,7 @@ today, no keys, no install:
 - **[/methodology](https://ultrametric.ai/methodology)**: a tight, on-site summary of
   [METHODOLOGY.md](./METHODOLOGY.md) (evidence tiers, judging, scoring, Overall score weights,
   story provenance, re-judge stability, bias disclosure), linked from the header next to
-  Arenas and from `/llms.txt`.
+  Rankings and from `/llms.txt`.
 - **MCP / CLI**: the `ultrametric` package on npm ships the CLI and MCP server —
   [/get-started](https://ultrametric.ai/get-started) is the install page, and
   [`lib/ultrametricCli.ts`](lib/ultrametricCli.ts) maps the corpus steps it can drive. The

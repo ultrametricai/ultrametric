@@ -18,7 +18,7 @@ export interface ArenaMenuItem {
   href?: string;
 }
 
-// One titled group of items — the Arenas dropdown passes ~9 curated sections
+// One titled group of items — the Rankings dropdown (the arenas) passes ~9 curated sections
 // (data/arena-sections.json via lib/arenaSections.ts); the Explore menu stays flat via `items`.
 export interface ArenaMenuSection {
   name: string;
@@ -42,7 +42,8 @@ export function filterMenuSections(sections: ArenaMenuSection[], query: string):
 export default function ArenaMenu({
   items,
   sections,
-  title = "Arenas",
+  // "Rankings" is the renamed Arenas nav label (founder 2026-10-07); routes stay /arenas, /arena/*.
+  title = "Rankings",
   // Trigger icon (founder 2026-09-23: every top button wears a unique icon).
   triggerIcon,
   hrefPrefix = "/arena",
@@ -51,7 +52,7 @@ export default function ArenaMenu({
 }: {
   /** Flat list (the Explore menu). Ignored when `sections` is provided. */
   items?: ArenaMenuItem[];
-  /** Grouped list with small uppercase section headers (the Arenas menu). */
+  /** Grouped list with small uppercase section headers (the Rankings menu). */
   sections?: ArenaMenuSection[];
   title?: string;
   triggerIcon?: React.ReactNode;

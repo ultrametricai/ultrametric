@@ -40,7 +40,7 @@ export async function GET() {
 
 Ultrametric crawls vendor docs, GitHub, and community sources for ${categories.length} product categories ("arenas"), extracts per-product evidence, and has an LLM judge every product against a shared set of user stories (weight 1-3, tiered verdicts full/partial/none/disputed/na). The result is a coverage score, a Overall score, and a head-to-head battle log per arena — all reproducible from the cited evidence.
 
-## Arenas (markdown, one per category)
+## Arena rankings (markdown, one per category)
 
 ${arenaLinks}
 
