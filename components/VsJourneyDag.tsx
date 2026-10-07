@@ -31,6 +31,27 @@ import type { SyntheticArtifact, TopVendorPick, VirtualTaskPayload } from '@/lib
 // hint was too subtle to read as "the previous row continues here"). Same lit/unlit scheme as
 // the in-row edge, and the EXACT same horizontal footprint (the invariant below).
 //
+// SERPENTINE (founder 2026-10-07, item 5): the measured wrap starts now CHUNK the flow into
+// explicit visual rows — even rows run left→right, odd rows right→left (flex-row-reverse), so
+// the connector snakes continuously: …→ end of row, elbow down at that same side, ← across, down,
+// →…. The reversal is VISUAL ONLY — DOM/reading order stays strictly sequential and every aria
+// label is unchanged — and every connector's arrowhead points along the actual flow direction
+// (the `flip` -scale-x-100 transform, layout-neutral so the footprint invariant holds). The
+// measurement loop is unchanged (flat offsetTops → wrapStarts → chunks reproduce the measured
+// lines exactly, since item widths are direction-independent); a window resize re-flattens to
+// one wrapping row and re-chunks against the new width. PINS kept from the earlier rounds:
+// overflow-x-hidden + the min(45vh,380px) cap on the strip, fixed node size, reveal-on-reach,
+// no own timers, the connector footprint invariant. DELIBERATELY REVISED pin: the <ol> is now a
+// flex-col of row <li>s (one per visual row) instead of one flex-wrap row of item <li>s — the
+// flex-wrap/w-full assertions moved from the ol to the row elements in VsJourneyDag.test.tsx.
+//
+// FORKS (founder 2026-10-07, item 6): a process whose committed corpus DAG genuinely forks
+// (dag.edges diverging into parallel branches — serialized as VirtualTaskPayload.fork) carries a
+// split/join glyph inside its node with the forking step and branch names in the tooltip. The
+// journey's process SEQUENCE is honestly linear (phases run in order), so the branch/join
+// treatment attaches where the fork actually lives — inside the process — and never redraws the
+// serpentine itself as diverging.
+//
 // PROGRESSIVE REVEAL (kept from round 4): upcoming nodes are NOT shown. Pre-run only the FIRST
 // node renders, dim; each node appears exactly when the reveal reaches its task row
 // (dagNodeReached — which also covers "its cluster started": the phase row prints one tick
@@ -76,6 +97,13 @@ export interface VsDagNode {
   taskId: string
   title: string
   slug: string
+  // The corpus task description (committed text) — the node tooltip carries it (founder
+  // 2026-10-07, item 4: descriptions instead of the step-count line).
+  description: string
+  // The task's internal corpus DAG fork (committed dag.edges diverging — serialized by
+  // app/startup-sim/page.tsx), or null for the many linear DAGs. Drives the branch/join glyph
+  // (founder 2026-10-07, item 6): only where the DAG forks, never invented.
+  fork: { at: string; branches: string[] } | null
   stepCount: number
   agentSteps: number
   // The row-index span this process occupies in the terminal: rowStart is its task row, rowEnd
@@ -129,6 +157,8 @@ export function deriveJourneyDag(
         taskId: row.task.id,
         title: row.task.title,
         slug: row.task.slug,
+        description: row.task.description,
+        fork: row.task.fork ?? null,
         stepCount: row.task.steps.length,
         agentSteps: row.task.steps.filter((s) => s.route === 'agent').length,
         rowStart: i,
@@ -264,6 +294,31 @@ function chainStyle(chainId: string): ChainStyle {
 // scroll doesn't silently unpin the follow.
 const FOLLOW_SLACK_PX = 24
 
+// The branch/join glyph (founder 2026-10-07, item 6): two strands splitting and rejoining —
+// rendered inside a node's box ONLY when its committed corpus DAG genuinely forks
+// (VsDagNode.fork, from dag.edges). The journey's process sequence stays the honest single
+// serpentine line (phases run in order); the fork lives INSIDE a process, so the treatment
+// attaches to the process node with the forking step and its parallel branches named in the
+// tooltip rather than implying the journey itself diverges.
+function ForkGlyph({ lit }: { lit: boolean }) {
+  return (
+    <svg
+      aria-hidden
+      width="14"
+      height="10"
+      viewBox="0 0 14 10"
+      className="shrink-0"
+    >
+      <path
+        d="M0 5 C3 5 3 1 6 1 C9 1 9 5 12 5 M0 5 C3 5 3 9 6 9 C9 9 9 5 12 5 M12 5 H14"
+        fill="none"
+        strokeWidth="1.2"
+        className={lit ? 'stroke-emerald-400/80' : 'stroke-zinc-500'}
+      />
+    </svg>
+  )
+}
+
 // A hand-rolled in-row edge: short line + arrowhead at one FIXED size (no tiers — nodes never
 // compress anymore), lit emerald once the reveal traversed it (its downstream node is active or
 // done).
@@ -279,15 +334,20 @@ const FOLLOW_SLACK_PX = 24
 // Both also carry the same mb-4 (= the under-node h-3.5 marker row + gap-0.5): self-center
 // centres the connector's MARGIN box on the whole li, so without it every arrow pointed at the
 // node's bottom border instead of the node box (founder 2026-10-02: the wrap read unclear).
-function Edge({ lit }: { lit: boolean }) {
+//
+// SERPENTINE (founder 2026-10-07, item 5): on a reversed (right-to-left) visual row the arrow
+// must point along the actual flow direction, so both connectors take `flip` — a pure
+// -scale-x-100 transform, layout-neutral by construction (the footprint invariant holds).
+function Edge({ lit, flip = false }: { lit: boolean; flip?: boolean }) {
   return (
     <svg
       aria-hidden
       data-testid="vs-dag-edge"
+      data-flipped={flip ? 'true' : undefined}
       width="16"
       height="8"
       viewBox="0 0 16 8"
-      className="mx-0.5 mb-4 w-4 shrink-0 self-center"
+      className={`mx-0.5 mb-4 w-4 shrink-0 self-center${flip ? ' -scale-x-100' : ''}`}
     >
       <line x1="0" y1="4" x2="10" y2="4" strokeWidth="1.5" className={lit ? 'stroke-emerald-400/70' : 'stroke-zinc-700'} />
       <path d="M10 1 L15.5 4 L10 7 Z" className={lit ? 'fill-emerald-400/70' : 'fill-zinc-700'} />
@@ -302,15 +362,18 @@ function Edge({ lit }: { lit: boolean }) {
 // node. Lit emerald once traversed, exactly like Edge. Same 16px + mx-0.5 HORIZONTAL footprint
 // as Edge — see the invariant above; a width change here reintroduces the flicker (extra height
 // is safe: wrap classification compares offsetTop ordering, which row height never flips).
-function WrapHint({ lit }: { lit: boolean }) {
+// Serpentine (2026-10-07): `flip` mirrors the elbow for a right-to-left row — the drop-in curve
+// turns LEFT at the row's right edge, joining the previous row's adjacent end.
+function WrapHint({ lit, flip = false }: { lit: boolean; flip?: boolean }) {
   return (
     <svg
       aria-hidden
       data-testid="vs-dag-wrap-hint"
+      data-flipped={flip ? 'true' : undefined}
       width="16"
       height="14"
       viewBox="0 0 16 14"
-      className="mx-0.5 mb-4 w-4 shrink-0 self-center"
+      className={`mx-0.5 mb-4 w-4 shrink-0 self-center${flip ? ' -scale-x-100' : ''}`}
     >
       {/* The elbow: down from the row above, then a quarter-curve into the arrowhead. */}
       <path d="M8 0.5 V5 Q8 9 11.5 9" fill="none" strokeWidth="1.5" className={lit ? 'stroke-emerald-400/70' : 'stroke-zinc-600'} />
@@ -318,6 +381,7 @@ function WrapHint({ lit }: { lit: boolean }) {
     </svg>
   )
 }
+
 
 export default function VsJourneyDag({
   rows,
@@ -404,9 +468,14 @@ export default function VsJourneyDag({
     measureWraps()
   })
   useEffect(() => {
-    window.addEventListener('resize', measureWraps)
-    return () => window.removeEventListener('resize', measureWraps)
-  }, [measureWraps])
+    // A resize re-flattens the serpentine to one wrapping row first (wrapStarts emptied), so the
+    // next layout-effect measurement re-chunks against the NEW width — without the reset, rows
+    // split at an old narrow width would never re-merge on widening (each chunked row measures
+    // as exactly one line, so offsetTops alone can't discover the extra room).
+    const onResize = () => setWrapStarts(new Set())
+    window.addEventListener('resize', onResize)
+    return () => window.removeEventListener('resize', onResize)
+  }, [])
 
   function markerChip(m: VsDagMarker) {
     const revealedMarker = revealed > m.at
@@ -446,6 +515,22 @@ export default function VsJourneyDag({
     visibleNodes.forEach((node, i) => flow.push({ cluster, node, leadsCluster: i === 0 }))
   }
 
+  // SERPENTINE chunking (founder 2026-10-07, item 5): the measured wrap starts split the flow
+  // into visual rows; even rows run left→right, odd rows RIGHT→LEFT (flex-row-reverse — a VISUAL
+  // reversal only: the DOM keeps strict sequence order, so reading order and aria stay honest),
+  // and each row-leading elbow drops in at the side where the previous row ended, so the
+  // connector line snakes continuously instead of jumping back to the line start. Pre-measure
+  // (and in jsdom, always) everything sits in one left→right row — the flat layout the wrap
+  // detector measures.
+  const flowRows: Array<typeof flow> = []
+  for (const item of flow) {
+    if (flowRows.length === 0 || (wrapStarts.has(item.node.taskId) && flowRows[flowRows.length - 1].length > 0)) {
+      flowRows.push([item])
+    } else {
+      flowRows[flowRows.length - 1].push(item)
+    }
+  }
+
   return (
     <section
       data-testid="vs-journeydag"
@@ -464,94 +549,137 @@ export default function VsJourneyDag({
         }}
         className="max-h-[min(45vh,380px)] overflow-x-hidden overflow-y-auto px-2 py-2 sm:px-3"
       >
-        <ol className="flex w-full flex-wrap items-start gap-x-1 gap-y-2" aria-label="Journey processes in run order">
-          {/* Run-press pauses (row 0, before any node) float at the flow's leading edge. */}
-          {(markersByTask.get(null) ?? []).length > 0 && (
-            <li className="mr-1 flex shrink-0 items-center gap-1 self-center">
-              {(markersByTask.get(null) ?? []).map((m) => markerChip(m))}
-            </li>
-          )}
-          {flow.map(({ cluster, node, leadsCluster }, fi) => {
-            const style = chainStyle(cluster.chainId)
-            const state = dagNodeState(node, revealed)
-            const isActive = state === 'active'
-            const pct = node.stepCount > 0 ? Math.round((node.agentSteps / node.stepCount) * 100) : 0
-            const nodeMarkers = markersByTask.get(node.taskId) ?? []
-            const vendorPrinted = node.vendor !== null && node.vendorRow !== -1 && revealed > node.vendorRow
+        {/* SERPENTINE rows (2026-10-07, item 5): one li per VISUAL row; odd rows render
+            flex-row-reverse so the flow runs …→ end of row, down, ←, down, →…. The DOM order
+            inside stays strictly sequential (reading order honest — reversal is layout only). */}
+        <ol className="flex w-full flex-col items-stretch gap-y-2" aria-label="Journey processes in run order">
+          {flowRows.map((rowItems, ri) => {
+            const reversed = ri % 2 === 1
             return (
-              // Each flow item wraps as one unit: [connector | ↵] [cluster chip?] [node column].
-              <li key={node.taskId} data-dag-flow={node.taskId} className="flex shrink-0 items-start">
-                {fi > 0 && (wrapStarts.has(node.taskId) ? <WrapHint lit={state !== 'pending'} /> : <Edge lit={state !== 'pending'} />)}
-                {/* The phase's chain-tinted label chip leads its first node (round 5 call:
-                    box-frames fight wrapping; the chip + the chain-hued done fill carry the
-                    cluster grouping instead). */}
-                {leadsCluster && (
-                  <span
-                    data-testid="vs-dag-cluster"
-                    data-chain={cluster.chainId}
-                    title={`${cluster.title} — from the ${cluster.chainName} playbook`}
-                    className={`mr-1 mt-1 inline-flex max-w-[140px] shrink-0 items-center gap-0.5 self-start rounded-full border px-1.5 py-0.5 text-[9px] uppercase leading-none tracking-wider ${style.chip}`}
-                  >
-                    <span aria-hidden><IconGlyph icon={chainIcon(cluster.chainId)} /></span>
-                    <span className="truncate">{cluster.title}</span>
+              <li
+                key={rowItems[0].node.taskId}
+                data-dag-row={ri}
+                data-dag-dir={reversed ? 'rtl' : 'ltr'}
+                className={`flex w-full flex-wrap items-start gap-x-1 gap-y-2${reversed ? ' flex-row-reverse' : ''}`}
+              >
+                {/* Run-press pauses (row 0, before any node) float at the flow's leading edge. */}
+                {ri === 0 && (markersByTask.get(null) ?? []).length > 0 && (
+                  <span className="mr-1 flex shrink-0 items-center gap-1 self-center">
+                    {(markersByTask.get(null) ?? []).map((m) => markerChip(m))}
                   </span>
                 )}
-                <div className="flex flex-col items-center gap-0.5">
-                  <button
-                    type="button"
-                    data-testid={`vs-dag-node-${node.taskId}`}
-                    data-dag-state={state}
-                    aria-label={node.title}
-                    title={`${node.title} — ${node.stepCount} step${node.stepCount === 1 ? '' : 's'}, ${node.agentSteps} agent-runnable (Agentic % ~${pct}). Click to jump to it in the terminal.`}
-                    onClick={() => onNodeClick?.(node.taskId)}
-                    className={`flex max-w-[180px] items-center gap-1 rounded-md border px-2 py-1.5 leading-none transition ${
-                      state === 'done'
-                        ? style.done
-                        : isActive
-                          ? 'animate-pulse border-emerald-400/70 text-zinc-100 ring-2 ring-emerald-400/50'
-                          : 'border-zinc-800 text-zinc-500'
-                    }`}
-                  >
-                    <span aria-hidden className={`text-base ${state === 'pending' ? 'opacity-50' : ''}`}>
-                      <IconGlyph icon={processIcon(node.taskId)} />
-                    </span>
-                    {/* FIXED node chrome (round 5): the title always renders — no tier ever
-                        hides it, no fisheye ever shrinks it. */}
-                    <span className="min-w-0 truncate text-[11px]">{node.title}</span>
-                    {/* The top judged pick's logo rides INSIDE the node box, trailing the title
-                        (founder 2026-10-02: floating outside, it didn't read as the node's
-                        vendor). It appears once its step printed — same reveal gate as before.
-                        The fixed-size contract holds: the box's max-w/padding are untouched and
-                        the min-w-0 truncating title absorbs the logo's width at the cap, so the
-                        icon + title stay legible always. */}
-                    {vendorPrinted && node.vendor && (
-                      <span
-                        data-testid={`vs-dag-vendor-${node.vendor.productId}`}
-                        className="shrink-0"
-                        title={`${node.vendor.name} — top judged pick for this process's step`}
-                      >
-                        <ProductLogoView
-                          product={{ id: node.vendor.productId, name: node.vendor.name }}
-                          size={12}
-                          hasLogo={node.vendor.hasLogo}
-                        />
-                      </span>
-                    )}
-                  </button>
-                  {/* Under-node row: the event/pause diamonds and the ↗ process-page link. */}
-                  <span className="flex h-3.5 min-w-0 items-center gap-1">
-                    {nodeMarkers.map((m) => markerChip(m))}
-                    <Link
-                      href={`/processes/${node.slug}`}
-                      data-testid={`vs-dag-open-${node.taskId}`}
-                      aria-label={`${node.title} — open the process page`}
-                      title={`${node.title} — open the process page`}
-                      className="text-[9px] leading-none text-zinc-700 transition hover:text-emerald-300"
+                {rowItems.map(({ cluster, node, leadsCluster }) => {
+                  const style = chainStyle(cluster.chainId)
+                  const state = dagNodeState(node, revealed)
+                  const isActive = state === 'active'
+                  const nodeMarkers = markersByTask.get(node.taskId) ?? []
+                  const vendorPrinted = node.vendor !== null && node.vendorRow !== -1 && revealed > node.vendorRow
+                  const firstOverall = flow[0]?.node.taskId === node.taskId
+                  const leadsRow = rowItems[0].node.taskId === node.taskId
+                  return (
+                    // Each flow item wraps as one unit: [connector | elbow] [cluster chip?]
+                    // [node column] — mirrored wholesale on reversed rows so the connector sits
+                    // on the upstream side and the chip still LEADS its node in flow direction.
+                    <div
+                      key={node.taskId}
+                      data-dag-flow={node.taskId}
+                      className={`flex shrink-0 items-start${reversed ? ' flex-row-reverse' : ''}`}
                     >
-                      ↗
-                    </Link>
-                  </span>
-                </div>
+                      {!firstOverall &&
+                        (leadsRow ? (
+                          <WrapHint lit={state !== 'pending'} flip={reversed} />
+                        ) : (
+                          <Edge lit={state !== 'pending'} flip={reversed} />
+                        ))}
+                      {/* The phase's chain-tinted label chip leads its first node (round 5 call:
+                          box-frames fight wrapping; the chip + the chain-hued done fill carry
+                          the cluster grouping instead). */}
+                      {leadsCluster && (
+                        <span
+                          data-testid="vs-dag-cluster"
+                          data-chain={cluster.chainId}
+                          title={`${cluster.title} — from the ${cluster.chainName} playbook`}
+                          className={`${reversed ? 'ml-1' : 'mr-1'} mt-1 inline-flex max-w-[140px] shrink-0 items-center gap-0.5 self-start rounded-full border px-1.5 py-0.5 text-[9px] uppercase leading-none tracking-wider ${style.chip}`}
+                        >
+                          <span aria-hidden><IconGlyph icon={chainIcon(cluster.chainId)} /></span>
+                          <span className="truncate">{cluster.title}</span>
+                        </span>
+                      )}
+                      <div className="flex flex-col items-center gap-0.5">
+                        <button
+                          type="button"
+                          data-testid={`vs-dag-node-${node.taskId}`}
+                          data-dag-state={state}
+                          aria-label={node.title}
+                          // The tooltip carries the COMMITTED corpus task description (founder
+                          // 2026-10-07, item 4), plus the click affordance.
+                          title={`${node.title} — ${node.description} Click to jump to it in the terminal.`}
+                          onClick={() => onNodeClick?.(node.taskId)}
+                          className={`flex max-w-[220px] items-center gap-1 rounded-md border px-2 py-1.5 leading-none transition ${
+                            state === 'done'
+                              ? style.done
+                              : isActive
+                                ? 'animate-pulse border-emerald-400/70 text-zinc-100 ring-2 ring-emerald-400/50'
+                                : 'border-zinc-800 text-zinc-500'
+                          }`}
+                        >
+                          <span aria-hidden className={`text-base ${state === 'pending' ? 'opacity-50' : ''}`}>
+                            <IconGlyph icon={processIcon(node.taskId)} />
+                          </span>
+                          {/* FIXED node chrome (round 5): the title always renders — no tier
+                              ever hides it, no fisheye ever shrinks it. text-[13px] since
+                              2026-10-07 (item 4: bigger node text). */}
+                          <span className="min-w-0 truncate text-[13px]">{node.title}</span>
+                          {/* Branch/join treatment (2026-10-07, item 6): the glyph renders ONLY
+                              when this process's committed corpus DAG forks (parallel branches),
+                              with the forking step and its branches named — the sequence of
+                              processes stays the honest single line; the fork is internal. */}
+                          {node.fork && (
+                            <span
+                              data-testid={`vs-dag-fork-${node.taskId}`}
+                              className="shrink-0"
+                              title={`${node.title} — the corpus DAG forks at "${node.fork.at}": ${node.fork.branches.join(' ∥ ')} run as parallel branches that rejoin; the terminal prints the steps in corpus order`}
+                            >
+                              <ForkGlyph lit={state !== 'pending'} />
+                            </span>
+                          )}
+                          {/* The top judged pick's logo rides INSIDE the node box, trailing the
+                              title (founder 2026-10-02: floating outside, it didn't read as the
+                              node's vendor). It appears once its step printed — same reveal gate
+                              as before. The fixed-size contract holds: the box's max-w/padding
+                              are untouched and the min-w-0 truncating title absorbs the logo's
+                              width at the cap, so the icon + title stay legible always. */}
+                          {vendorPrinted && node.vendor && (
+                            <span
+                              data-testid={`vs-dag-vendor-${node.vendor.productId}`}
+                              className="shrink-0"
+                              title={`${node.vendor.name} — top judged pick for this process's step`}
+                            >
+                              <ProductLogoView
+                                product={{ id: node.vendor.productId, name: node.vendor.name }}
+                                size={12}
+                                hasLogo={node.vendor.hasLogo}
+                              />
+                            </span>
+                          )}
+                        </button>
+                        {/* Under-node row: the event/pause diamonds and the ↗ process-page link. */}
+                        <span className="flex h-3.5 min-w-0 items-center gap-1">
+                          {nodeMarkers.map((m) => markerChip(m))}
+                          <Link
+                            href={`/processes/${node.slug}`}
+                            data-testid={`vs-dag-open-${node.taskId}`}
+                            aria-label={`${node.title} — open the process page`}
+                            title={`${node.title} — open the process page`}
+                            className="text-[9px] leading-none text-zinc-700 transition hover:text-emerald-300"
+                          >
+                            ↗
+                          </Link>
+                        </span>
+                      </div>
+                    </div>
+                  )
+                })}
               </li>
             )
           })}

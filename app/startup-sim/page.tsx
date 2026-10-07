@@ -15,7 +15,7 @@ import {
 // v3 run layer (vendor picks → outcomes, personas, seeded events, scorecard): serialized
 // canonical access verdicts, published-pricing headlines, and the corpus risk axis — see
 // lib/virtualStartupRun.ts for the client-side model and its honesty rules.
-import { buildVsAccess, buildVsAssistants, buildVsPopularity, buildVsPricing, buildVsTaskRisks } from '@/lib/virtualStartupData'
+import { buildVsAccess, buildVsAssistants, buildVsPopularity, buildVsPricing, buildVsTaskRisks, vsArtifactLabels, vsTaskLinkage } from '@/lib/virtualStartupData'
 
 // Virtual Startup (founder ask 2026-09-23): a synthetic company run through the REAL process
 // corpus. Route renamed /virtual-startup → /startup-sim (founder batch 2026-10-01, item 1) —
@@ -68,6 +68,9 @@ export default function VirtualStartupPage() {
   // popularity signal per role arena — the Vendors-tab picker ordering and the terminal
   // runners-up lead with it; judged scores and the judged top pick never move.
   const popularity = buildVsPopularity(roles)
+  // Registry artifact labels for the producesArtifact tags (processes/artifacts.json) — the
+  // document panel's committed vocabulary; vsTaskLinkage fails the build on an unknown id.
+  const artifactLabels = vsArtifactLabels()
   for (const task of unionTasks) {
     tasks[task.id] = {
       id: task.id,
@@ -76,6 +79,10 @@ export default function VirtualStartupPage() {
       phase: task.phase,
       description: task.description,
       steps: buildSimSteps([task]),
+      // Corpus linkage (founder round 2026-10-07): node ids for the step-anchor deep links,
+      // producesArtifact registry tags for the document panel, the internal DAG fork for the
+      // journey diagram — committed corpus/registry data, serialized in step order.
+      ...vsTaskLinkage(task, artifactLabels),
       // The step's top JUDGED vendor (story-derived ranking over real verdicts) — null where no
       // committed mapping/judged ranking exists, and the UI shows nothing rather than a guess.
       tops: task.dag.nodes.map((node) => {
