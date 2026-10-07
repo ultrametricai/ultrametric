@@ -4,9 +4,8 @@
 // by auth-gated evidence stays partial. Server- and client-safe (no hooks, no fs).
 
 export const AUTH_GATED_TITLE =
-  'auth-gated — our live probe reached this endpoint and hit a vendor sign-in wall (HTTP 401/403, OAuth challenge). ' +
-  'Verified reachable, auth-gated: untestable keylessly, which is NOT evidence of absence. ' +
-  'The verdict tier is unchanged by this marker.'
+  'auth-gated — our live probe hit a vendor sign-in wall (HTTP 401/403, OAuth): verified reachable, ' +
+  'untestable keylessly, not evidence of absence; never changes the verdict tier'
 
 export default function AuthGatedMarker({ compact = false }: { compact?: boolean }) {
   if (compact) {
@@ -38,8 +37,7 @@ export function AuthGatedChip({ count }: { count: number }) {
     <span
       title={
         `${count} runtime probe${count === 1 ? '' : 's'} reached this product's live endpoints and got an explicit ` +
-        'sign-in challenge (HTTP 401/403, OAuth). Verified reachable, auth-gated — untestable keylessly. ' +
-        'This usually means MORE agentic capability behind the wall than keyless probing can show, never less.'
+        'sign-in challenge (HTTP 401/403, OAuth) — verified reachable, auth-gated, untestable keylessly'
       }
       className="inline-flex items-center gap-1.5 rounded-full border border-amber-400/40 bg-amber-400/5 px-2.5 py-0.5 text-xs text-amber-300"
     >

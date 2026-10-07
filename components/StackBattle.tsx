@@ -88,7 +88,7 @@ function AggregateRows({ agg }: { agg: StackAggregates }) {
       <div className="flex items-baseline justify-between gap-2">
         <dt
           className="text-xs text-zinc-500"
-          title="Product pairs inside the stack with a verified integration edge (evidence-backed — see the integration graph). Absence of an edge means no evidence found, never 'doesn't integrate'."
+          title="Product pairs inside the stack with a verified integration edge — absence means no evidence found, never 'doesn't integrate'"
         >
           verified interconnects
         </dt>

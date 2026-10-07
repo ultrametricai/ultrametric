@@ -63,7 +63,7 @@ export default function GlobalIndexPage() {
             the tooltip so the honesty stays discoverable without a paragraph. */}
         <p
           className="mb-3 mt-1 max-w-2xl text-xs text-zinc-500"
-          title="Edges are hand-curated in data/story-edges.json, never inferred; each node's meter is the same evidence-backed adoption share as the table below. Hover an edge for its justification, a node for its adoption and what it requires/unlocks."
+          title="Curated in data/story-edges.json — hover an edge for its justification, a node for its adoption and what it requires/unlocks"
         >
           {(() => { const s = capabilityDagStats(); return `${s.nodes} canon capabilities, ${s.edges} curated dependency edges (${s.crossEdges} cross-cluster, dashed)` })()}
           {' '}— an arrow reads &ldquo;prerequisite of&rdquo;; edges are hand-curated, never inferred.

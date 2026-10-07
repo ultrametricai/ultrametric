@@ -192,7 +192,7 @@ export default function LawFirmsRankingPage() {
               <th className="px-3 py-2 font-normal">Firm</th>
               <th
                 className="px-3 py-2 font-normal"
-                title="Overall score (0–100): the committed blend of agent-readiness, API quality, openness, agentic behavior, and automation depth (lib/scoring.ts) — the axis the committed leaderboard is ordered by."
+                title="Overall score (0–100): the committed blend the leaderboard is ordered by — formula on /methodology"
               >
                 <span className="inline-flex items-center gap-1.5">Overall<ColumnsHelpLink /></span>
               </th>
@@ -203,7 +203,7 @@ export default function LawFirmsRankingPage() {
               ))}
               <th
                 className="hidden px-3 py-2 font-normal lg:table-cell"
-                title="AGENT-READY (0–100): can an agent reach the firm at all — API/CLI/MCP/webhooks/docs. Near-zero across law firms; shown honestly, not hidden."
+                title="AGENT-READY (0–100): can an agent reach the firm at all — API/CLI/MCP/webhooks/docs"
               >
                 Agent-ready
               </th>

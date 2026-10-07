@@ -34,7 +34,7 @@ export default function VendorGeoMark({ geo }: { geo?: VendorGeoByCountry }) {
   return (
     <span
       className={`shrink-0 font-mono text-[10px] ${s.className}`}
-      title={`${GEO_PREF_META[hit.selection].label} — ${s.label}: ${hit.cell.note} (from the vendor's own pages — see "Where it works" on the product page)`}
+      title={`${GEO_PREF_META[hit.selection].label} — ${s.label}: ${hit.cell.note} (vendor's own pages)`}
     >
       {s.glyph}
       {hit.cell.status === 'unavailable' && (

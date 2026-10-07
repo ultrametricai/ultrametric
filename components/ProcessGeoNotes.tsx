@@ -69,7 +69,7 @@ export default function ProcessGeoNotes({
                     window.scrollTo({ top: 0, behavior: 'smooth' })
                   }}
                   className="cursor-pointer text-emerald-300 underline decoration-emerald-400/40 underline-offset-2 transition hover:text-emerald-200"
-                  title={`Switch this page to the ${meta.label} view — the same selection the country dropdown drives; the committed ${meta.label} story and its portal link render in the banner up top`}
+                  title={`Switch this page to the ${meta.label} view — the same selection the country dropdown drives`}
                 >
                   switch to the {meta.label} view →
                 </button>

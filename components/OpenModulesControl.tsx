@@ -43,7 +43,7 @@ export default function OpenModulesControl({ modules }: { modules: OpenModuleChi
   if (modules.length === 0) return null
 
   const title =
-    'Open-source lib/openstartup/ modules whose cited, tested math serves this process — opens the module’s page (what it computes, the processes it serves, the GitHub source; the table at the bottom of this page shows how each links to the steps here)'
+    'Open-source lib/openstartup/ modules whose cited, tested math serves this process — opens the module’s page'
 
   if (modules.length === 1) {
     const m = modules[0]

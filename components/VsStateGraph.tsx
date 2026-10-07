@@ -153,7 +153,7 @@ export default function VsStateGraph({
               <div data-testid="vs-sg-documents" className="mt-2 border-t border-zinc-800 pt-1.5">
                 <p
                   className="text-[9px] uppercase tracking-widest text-zinc-400"
-                  title="The registry artifacts (processes/artifacts.json) produced by the corpus steps this synthetic run executed — committed document types, synthetic possession"
+                  title="The registry artifacts produced by the corpus steps this run executed — committed document types, synthetic possession"
                 >
                   company documents · from the executed steps
                 </p>
@@ -226,7 +226,7 @@ export default function VsStateGraph({
                 <Link
                   href="/get-started"
                   className="mt-1 inline-block text-[10px] text-emerald-400/80 hover:text-emerald-300"
-                  title="Built by Ultrametric Inc, which also operates this site. It serves the process guide and saves run records — your agent does the work. It never affects the judged vendor picks."
+                  title="Built by Ultrametric Inc, which also operates this site — it never affects the judged vendor picks"
                 >
                   our CLI/MCP serves the guide + saves records; your agent does the work →
                 </Link>

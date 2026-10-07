@@ -93,7 +93,7 @@ export default function DoViaAfk({ manifestUrl, className = '' }: {
     <button
       type="button"
       onClick={onClick}
-      title="Hands this process manifest to AFK — the executor consumes the manifest URL. Also copies the manifest URL to your clipboard. Admin preview: the AFK run endpoint may not be live yet."
+      title="Hands this process manifest URL to AFK and copies it to your clipboard — the run endpoint may not be live yet"
       className={`inline-flex items-center gap-1.5 rounded-full border border-emerald-400/50 px-3 py-1 text-xs font-medium text-emerald-300 transition hover:border-emerald-400 hover:bg-emerald-400/10 ${className}`}
     >
       <span aria-hidden>▶</span>

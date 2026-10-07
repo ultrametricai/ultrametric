@@ -134,7 +134,7 @@ export default function StackBuilder({
           </label>
           <label
             className="flex cursor-pointer items-center gap-2 text-xs text-zinc-300"
-            title="We don't score self-hostability directly — the openness theme score (leave/inspect/self-host stories) is the proxy; picks are re-ordered by a 70/30 blend of the metric and openness."
+            title="Self-hostability isn't scored directly — the openness theme score is the proxy; picks re-order on a 70/30 blend of the metric and openness"
           >
             <input
               type="checkbox"

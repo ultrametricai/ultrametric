@@ -86,7 +86,7 @@ export default async function ArtifactPage({ params }: { params: Promise<{ id: s
           </p>
           {page.documentFamilies.map((g) => (
             <p key={g.family} className="mt-2 text-sm text-zinc-400">
-              <span title={`One document object in ${g.docs.length} registered variants (open-documents family: ${g.family}) — the variant labels are the registry's committed \`variant\` fields`}>
+              <span title={`One document object in ${g.docs.length} registered variants (open-documents family: ${g.family})`}>
                 Variants:
               </span>{' '}
               {g.docs.map((d, i) => (
@@ -158,7 +158,7 @@ export default async function ArtifactPage({ params }: { params: Promise<{ id: s
         </p>
         {exceptionProducers.length > 0 && (
           <p className="mt-2 text-sm text-zinc-500">
-            <span title="Documented exception producers — other committed processes that genuinely also bring this artifact into existence (the LLC route's EIN, the conversion's re-issued charter paper)">
+            <span title="Documented exception producers — other committed processes that also bring this artifact into existence">
               Also produced by:
             </span>{' '}
             {exceptionProducers.map((p, i) => (

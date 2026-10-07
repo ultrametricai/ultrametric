@@ -126,8 +126,8 @@ export default async function ProcessPage({ params }: { params: Promise<{ slug: 
               // corpus-tested). geoScope also sharpens the flag's story: state-level work names
               // the state as the counterparty, federal work names the agencies.
               title={task.geoScope === 'us-state'
-                ? 'US state-level: the counterparty here is a US state (Delaware filings, state portals, state registrations)'
-                : 'US-specific: this flow is written around US federal law and agencies (IRS, USPTO, SEC, immigration)'}
+                ? 'US state-level: the counterparty here is a US state'
+                : 'US-specific: written around US federal law and agencies'}
               className="text-xl"
             >🇺🇸</span>
           )}

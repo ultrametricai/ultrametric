@@ -150,7 +150,7 @@ function ArenaVendorDropdown({
         title={
           current
             ? `${current.name} is driving this process's ${arena.arenaName} steps — open to change or clear it`
-            : `Pick the ${arena.arenaName} vendor to drive this process with — the steps below adjust to it`
+            : `Pick the ${arena.arenaName} vendor to drive this process with`
         }
         className={`flex w-full min-w-0 items-center gap-1.5 rounded-lg border py-1 pl-1 pr-2 text-xs transition ${
           open
@@ -213,8 +213,8 @@ function ArenaVendorDropdown({
                   onClick={() => pick(v.productId, v.name)}
                   title={
                     active
-                      ? `${v.name} is driving this process — pick 'No vendor' to go back to the generic view`
-                      : `Drive this process with ${v.name} — best judged step score ${v.best.toFixed(0)}/100 across this stream; the steps below adjust to it`
+                      ? `${v.name} is driving this process — pick 'No vendor' for the generic view`
+                      : `Drive this process with ${v.name} — best judged step score ${v.best.toFixed(0)}/100 across this stream`
                   }
                   className={`flex w-full items-center gap-2 border-l-2 px-2.5 py-1.5 text-left text-xs transition ${
                     active
@@ -250,7 +250,7 @@ export default function ProcessVendorPicker({ steps, lensKey }: { steps: Process
           the top of process pages — no vendor selected by default. */}
       <p
         className="text-[10px] uppercase tracking-widest text-zinc-500"
-        title="Pick the vendor you actually run for each market and the whole process below adjusts to it — step rankings pin your vendor, its real API calls and agent prompts lead, and steps it can't cover say so honestly. Starts generic with nothing selected; your picks persist on this device and travel in the URL (?via=) when you share it."
+        title="Pick the vendor you actually run for each market — the process below adjusts to it; picks persist on this device and travel in shared URLs (?via=)"
       >
         Select vendor for process test
       </p>

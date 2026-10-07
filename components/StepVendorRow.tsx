@@ -70,7 +70,7 @@ function SelectedTag({ source }: { source: LensSource }) {
       className="rounded bg-emerald-400/15 px-1 py-px text-[9px] font-semibold text-emerald-300"
       title={
         source === 'lens'
-          ? 'You selected this vendor — the process is shown as run via it (clear it from the banner above or the ✕)'
+          ? 'You selected this vendor — the process is shown as run via it'
           : 'From your "I\'m using" stack — the process is shown as run via your own pick'
       }
     >
@@ -209,7 +209,6 @@ export default function StepVendorRow({
   vendorGeo?: Record<string, VendorGeoByCountry>
 }) {
   const { lens, stack, setPick, resolveFor } = useProcessLens(lensKey)
-  const hasExtras = vendors.some((v) => v.cross)
 
   // Resolve who executes this step: lens > stack > null (lib/processLens.ts). Extras-only
   // steps have no checkStep — match against the displayed chips with the same precedence,
@@ -274,9 +273,7 @@ export default function StepVendorRow({
     // the line where the viewport forces it.
     <div
       className="mt-1.5 flex flex-wrap items-center gap-1.5 text-[11px]"
-      title={`Vendors ranked for THIS step, highest score first — scored from their judged verdicts on the ${storyCount} stories mapped to it${
-        hasExtras ? '; score tooltips name the ranking whose evidence produced each number' : ''
-      } — not the ranking's overall Overall score. Click a vendor chip to see the whole process via it.`}
+      title={`Vendors ranked for THIS step by judged verdicts on its ${storyCount} mapped stories — not the Overall score`}
     >
       {ordered.map((e) => (
         <VendorChipButton

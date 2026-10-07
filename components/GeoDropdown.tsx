@@ -126,7 +126,7 @@ export default function GeoDropdown({
         aria-haspopup="listbox"
         aria-expanded={open}
         onClick={() => setOpen((v) => !v)}
-        title="Where you operate — a country view adapts the processes, artifacts and availability marks to that country; no selection (or Global) keeps the full corpus and the US-baseline flows; never re-ranks"
+        title="Where you operate — a country view adapts the processes, artifacts and availability marks to that country; never re-ranks"
         className={
           variant === 'nav'
             ? 'flex items-center gap-1 text-sm text-zinc-300 transition hover:text-emerald-300'

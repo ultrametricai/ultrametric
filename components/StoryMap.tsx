@@ -116,10 +116,7 @@ function StoryBlock({ row, hints = NO_HINTS }: { row: StoryVerdictRow; hints?: H
         <p
           className="mt-1 truncate text-[10px] text-zinc-500"
           title={unlocks
-            .map(
-              (u) =>
-                `Passing this story but failing “${stripPersonaPrefix(u.title)}”, which this one enables (curated dependency — data/story-edges.json).`,
-            )
+            .map((u) => `Enables “${stripPersonaPrefix(u.title)}”, which currently fails (curated dependency)`)
             .join('\n')}
         >
           <span className="text-emerald-400/70">unlocks →</span>{' '}

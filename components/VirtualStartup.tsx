@@ -1398,7 +1398,7 @@ export default function VirtualStartup({
                 the appended 'q' token — legacy links replay without the phase. */}
             <label
               data-testid="vs-yc-apply"
-              title="Adds the real 'Apply to Y Combinator' corpus process (fund_007 — account, written application, one-minute founder video, submission; from YC's published application guidance) to the journey as its own phase. Synthetic run; not affiliated with or endorsed by Y Combinator."
+              title="Adds the real 'Apply to Y Combinator' corpus process (fund_007) to the journey as its own phase. Synthetic run; not affiliated with or endorsed by Y Combinator."
               className={`flex shrink-0 cursor-pointer items-center gap-1.5 whitespace-nowrap rounded-full border px-2.5 py-1 text-xs transition ${
                 ycApply
                   ? 'border-orange-400/60 bg-orange-400/10 text-orange-300'
@@ -1568,7 +1568,7 @@ export default function VirtualStartup({
                 data-testid="vs-vendor-order-likely"
                 aria-pressed={vendorOrdering === 'likely'}
                 onClick={() => setVendorOrdering('likely')}
-                title="Likely choice — the committed adoption/popularity signal (curated clearly-popular set, GitHub stars, weekly installs) orders each picker's list; judged scores never move"
+                title="Likely choice — the committed adoption/popularity signal orders each picker's list; judged scores never move"
                 className={`rounded-full border px-2 py-0.5 text-[11px] transition ${
                   vendorOrdering === 'likely'
                     ? 'border-emerald-400/60 bg-emerald-400/10 text-emerald-300'
@@ -1642,7 +1642,7 @@ export default function VirtualStartup({
               data-testid="vs-mode-semi"
               aria-pressed={mode === 'semi'}
               onClick={() => setDriveMode('semi')}
-              title="Semi-auto — you make each 'Not set' decision as the run reaches it: the run pauses and asks in the card above the terminal; decisions whose branch point already passed stay on their default"
+              title="Semi-auto — the run pauses to ask at each 'Not set' decision; decisions whose branch point already passed stay on their default"
               className={`whitespace-nowrap rounded-full border px-2 py-0.5 text-xs transition ${
                 mode === 'semi'
                   ? 'border-emerald-400/60 bg-emerald-400/10 text-emerald-300'
