@@ -94,7 +94,7 @@ export default async function ChecklistPage({ params }: { params: Promise<{ cate
           </Link>
         </p>
         <h1 className="font-display leading-[1.1] mt-1 flex items-center gap-2.5 text-3xl font-bold tracking-tight">
-          {/* Same house glyph this arena wears in the header's Arenas menu (lib/arenaIcons.ts). */}
+          {/* Same house glyph this arena wears in the header's Rankings menu (lib/arenaIcons.ts). */}
           <IconChip icon={arenaIcon(data.category.id)} title={`${data.category.name} arena`} />
           Buyer checklist
         </h1>

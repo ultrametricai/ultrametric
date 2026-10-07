@@ -53,7 +53,7 @@ export default function HomeRankingsMini({ rows }: { rows: MegaTableRow[] }) {
                   <td className="hidden max-w-[180px] px-2 py-2 md:table-cell">
                     <Link href={`/arena/${row.arenaId}`} className="block truncate whitespace-nowrap text-xs text-zinc-500 hover:text-emerald-300">
                       {/* The arena's house glyph (lib/arenaIcons.ts) — same icon it wears in
-                          the Arenas menu and on its page header. */}
+                          the Rankings menu and on its page header. */}
                       {arenaIcon(row.arenaId) && (
                         <span aria-hidden className="mr-1 inline-flex align-[-0.125em]">
                           <IconGlyph icon={arenaIcon(row.arenaId)} />

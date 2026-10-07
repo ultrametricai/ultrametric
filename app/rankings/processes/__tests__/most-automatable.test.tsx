@@ -34,7 +34,7 @@ describe('most-automatable process ranking page', () => {
 
     // The cross-link footer shows both labeled groups, each wearing its house glyph (the same
     // SVG the Explore menu's section header wears), not the old 🏢/🔁 emoji.
-    for (const label of ['Company rankings', 'Process rankings']) {
+    for (const label of ['Company leaderboards', 'Process leaderboards']) {
       const group = screen.getByText(label)
       expect(group.querySelector('svg')).not.toBeNull()
       expect(group.textContent).not.toMatch(/🏢|🔁|pi:/)

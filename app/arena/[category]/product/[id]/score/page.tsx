@@ -176,7 +176,7 @@ export default async function ScorePage({
     <div className="space-y-6">
       <div>
         <nav aria-label="Breadcrumb" className="flex flex-wrap items-center gap-x-1.5 text-xs text-zinc-500">
-          <Link href="/" className="transition hover:text-emerald-300">Arenas</Link>
+          <Link href="/" className="transition hover:text-emerald-300">Rankings</Link>
           <span aria-hidden className="text-zinc-700">→</span>
           <Link href={`/arena/${category}`} className="transition hover:text-emerald-300">
             {data.category.name}

@@ -19,7 +19,7 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { section } = await params
   const s = loadArenaSections().find((x) => x.id === section)
-  return { title: `${s ? s.name : section} arenas — Ultrametric` }
+  return { title: `${s ? s.name : section} rankings — Ultrametric` }
 }
 
 export default async function ArenaSectionPage({ params }: { params: Promise<{ section: string }> }) {
@@ -30,7 +30,7 @@ export default async function ArenaSectionPage({ params }: { params: Promise<{ s
     <div className="space-y-6">
       <nav className="text-xs text-zinc-500">
         <Link href="/arenas" className="transition hover:text-emerald-300">
-          Arenas
+          Rankings
         </Link>{' '}
         / {s.name}
       </nav>

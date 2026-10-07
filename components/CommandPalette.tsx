@@ -8,7 +8,8 @@ import { filterSearchEntries, prepareSearchEntries, type SearchEntry, type Searc
 
 const TYPE_ORDER: SearchEntryType[] = ['arena', 'stack', 'process', 'page', 'product', 'story']
 const TYPE_LABEL: Record<SearchEntryType, string> = {
-  arena: 'Arenas',
+  // The renamed Arenas nav label (founder 2026-10-07) — entry type ids stay 'arena'.
+  arena: 'Rankings',
   stack: 'Stacks',
   process: 'Processes',
   page: 'Pages',

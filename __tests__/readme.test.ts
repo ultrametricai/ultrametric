@@ -49,7 +49,7 @@ describe('README.md (founder batch 2026-10-02)', () => {
   })
 
   it('names the arena table for what it shows (renamed from "The arenas", no counts in the heading)', () => {
-    expect(readme).toContain('## Arena index — every market we rank')
+    expect(readme).toContain('## Rankings index — every market we rank')
     expect(readme).not.toContain('## The arenas')
   })
 

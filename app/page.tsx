@@ -138,7 +138,7 @@ export default function Home() {
             <ArenasDirectory headingLevel="h3" />
             <p className="text-sm">
               <Link href="/arenas" className="text-emerald-400 underline decoration-emerald-400/40 hover:text-emerald-300">
-                The full Arenas page →
+                The full Rankings page →
               </Link>{' '}
               <a
                 href="https://github.com/ultrametricai/ultrametric/issues/new?title=%5Barena%5D%20Suggest%20a%20new%20arena%3A%20%3Cname%3E&labels=arena-suggestion&body=%23%23%20Arena%20name%0A%0A%23%23%20Products%20that%20compete%20in%20it%20(4%2B)%0A%0A-%20%0A-%20%0A-%20%0A-%20%0A%0A%23%23%20Why%20it%20matters%20in%20the%20AI%20era%0A"

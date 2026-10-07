@@ -9,7 +9,7 @@
 // the same palette); concepts with no process twin got new glyphs drawn in the same design
 // language (gpus, frontier-models, vector-databases, browser-agents, …).
 //
-// Hues follow data/arena-sections.json — one accent hue per SECTION so the Arenas menu reads
+// Hues follow data/arena-sections.json — one accent hue per SECTION so the Rankings menu reads
 // in families, mirroring the per-AREA hues of the process set: money is emerald, security/legal
 // amber, infra/data sky, AI/software violet, comms/people orange, commerce/growth fuchsia,
 // hardware the neutral zinc.

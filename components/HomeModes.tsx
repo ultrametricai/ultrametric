@@ -75,7 +75,7 @@ export default function HomeModes({
           {tab('companies', HOME_MODE_ICONS.companies, 'Companies', 'One row per company — a multi-product family (Stripe, Adyen…) shows only its parent')}
           {tab('products', HOME_MODE_ICONS.products, 'Products', 'Every judged product line ranked separately, as it does inside its own arena')}
           {tab('processes', HOME_MODE_ICONS.processes, 'Processes', 'Startup processes, the software that runs them, and the best an agent can do today')}
-          {arenas !== undefined && tab('arenas', HOME_MODE_ICONS.arenas, 'Arenas', 'Every judged market — visual navigation, grouped by section')}
+          {arenas !== undefined && tab('arenas', HOME_MODE_ICONS.arenas, 'Rankings', 'Every judged market — visual navigation, grouped by section')}
         </div>
         <div className={mode === 'companies' || mode === 'products' ? '' : 'hidden'}>{companies}</div>
         <div className={mode === 'processes' ? '' : 'hidden'}>{processes}</div>

@@ -49,11 +49,11 @@ describe('ranking lists ↔ pages are 1:1', () => {
 })
 
 describe('RankingsNav', () => {
-  it('renders BOTH labeled groups — company and process rankings', () => {
+  it('renders BOTH labeled groups — company and process leaderboards', () => {
     render(<RankingsNav current="agentic" />)
     // Each group label wears its house glyph as SVG — never the old 🏢/🔁 emoji or a raw
     // `pi:` token (founder sweep 2026-10-02).
-    for (const label of ['Company rankings', 'Process rankings']) {
+    for (const label of ['Company leaderboards', 'Process leaderboards']) {
       const group = screen.getByText(label)
       expect(group.querySelector('svg')).not.toBeNull()
       expect(group.textContent).not.toMatch(/🏢|🔁|pi:/)
