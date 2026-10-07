@@ -8,6 +8,15 @@
 //   - WRAPPING FLOW: nodes render at one comfortable FIXED size (icon + title legible ALWAYS —
 //     no data-dag-size tiers, no title hiding) and wrap left→right, top→bottom in a flex-wrap
 //     row (no overflow-x, no w-max) — the container grows vertically with content;
+//   - SERPENTINE (founder 2026-10-07, item 5): the measured wrap starts chunk the flow into
+//     explicit visual rows — even rows left→right, odd rows right→left (flex-row-reverse, VISUAL
+//     only: DOM/reading order stays strictly sequential), connectors flipped to point along the
+//     actual flow direction, the row-leading elbow joining the previous row's adjacent end.
+//     DELIBERATELY REVISED pin: the <ol> is a flex-col of row <li>s now — the flex-wrap/w-full
+//     assertions moved from the ol to the [data-dag-row] elements;
+//   - FORKS (founder 2026-10-07, item 6): a split/join glyph renders inside a node EXACTLY when
+//     its committed corpus DAG forks (VirtualTaskPayload.fork), branches named in the tooltip;
+//   - node tooltips carry the COMMITTED corpus task description (founder 2026-10-07, item 4);
 //   - HEIGHT CAP + FOLLOW: past min(45vh, 380px) the strip scrolls VERTICALLY only, auto-pinned
 //     to the newest (active) node while following, with the terminal's follow-slack courtesy
 //     (scroll up unpins; back near the bottom re-pins) — smoke-tested via a scrollTop mock;
@@ -233,7 +242,7 @@ describe('VsJourneyDag — rendering', () => {
     expect(screen.getByTestId('vs-dag-node-site_001').getAttribute('data-dag-state')).toBe('active')
   })
 
-  it('wrap-flow invariants: fixed-size nodes (no size tiers) in a flex-wrap row, vertical-only scroll, visible == reached, one connector per non-first node', () => {
+  it('wrap-flow invariants: fixed-size nodes (no size tiers) in flex-wrap visual rows, vertical-only scroll, visible == reached, one connector per non-first node', () => {
     for (const revealed of [0, 2, 6, 8, UNIT_ROWS.length]) {
       const view = render(<VsJourneyDag rows={UNIT_ROWS} revealed={revealed} running={false} />)
       const strip = screen.getByTestId('vs-journeydag-strip')
@@ -244,10 +253,18 @@ describe('VsJourneyDag — rendering', () => {
       expect(strip.className).not.toContain('overflow-x-auto')
       expect(strip.className).toContain('overflow-y-auto')
       expect(strip.className).toContain('max-h-[min(45vh,380px)]')
-      const row = strip.querySelector('ol')!
-      expect(row.className).toContain('flex-wrap') // the flow wraps in reading order
-      expect(row.className).toContain('w-full')
-      expect(row.className).not.toContain('w-max')
+      // Serpentine (2026-10-07) — the DELIBERATE pin revision: the ol is a flex-col of visual
+      // rows; each row li carries the flex-wrap/w-full flow contract the ol used to.
+      const list = strip.querySelector('ol')!
+      expect(list.className).toContain('flex-col')
+      expect(list.className).toContain('w-full')
+      const flowRows = Array.from(strip.querySelectorAll<HTMLElement>('[data-dag-row]'))
+      expect(flowRows.length).toBeGreaterThan(0)
+      for (const row of flowRows) {
+        expect(row.className).toContain('flex-wrap') // the flow wraps in reading order
+        expect(row.className).toContain('w-full')
+        expect(row.className).not.toContain('w-max')
+      }
       const nodes = Array.from(strip.querySelectorAll<HTMLElement>('[data-testid^="vs-dag-node-"]'))
       // Visible node count == reached count (pre-run: the single dim first node).
       const { clusters } = deriveJourneyDag(UNIT_ROWS)
@@ -268,39 +285,138 @@ describe('VsJourneyDag — rendering', () => {
     }
   })
 
-  it('the wrap connector is a visible lit-aware ELBOW (founder 2026-10-02): a wrapped row leads with the drawn drop-in curve + arrowhead, emerald once traversed', () => {
-    // jsdom reports every offsetTop as 0, so the wrap classification is forced by mocking the
-    // flow items' offsetTops and re-rendering (the dependency-less measure effect re-runs on
-    // every commit and converges via its set-equality guard).
-    const mockFlowTops = (strip: HTMLElement, tops: Record<string, number>) => {
-      for (const el of Array.from(strip.querySelectorAll<HTMLElement>('[data-dag-flow]'))) {
-        const top = tops[el.getAttribute('data-dag-flow')!] ?? 0
-        Object.defineProperty(el, 'offsetTop', { configurable: true, get: () => top })
-      }
+  // jsdom reports every offsetTop as 0, so the wrap classification is forced via a PROTOTYPE
+  // getter keyed on data-dag-flow (serpentine chunking re-parents a newly wrapped item into its
+  // own row li, so a per-element mock would be lost with the old element — the prototype mock
+  // survives the re-parent, exactly like real layout does).
+  const mockFlowTops = (tops: Record<string, number>) => {
+    const original = Object.getOwnPropertyDescriptor(HTMLElement.prototype, 'offsetTop')
+    Object.defineProperty(HTMLElement.prototype, 'offsetTop', {
+      configurable: true,
+      get(this: HTMLElement) {
+        return tops[this.getAttribute?.('data-dag-flow') ?? ''] ?? 0
+      },
+    })
+    return () => {
+      if (original) Object.defineProperty(HTMLElement.prototype, 'offsetTop', original)
+      else delete (HTMLElement.prototype as { offsetTop?: unknown }).offsetTop
     }
+  }
+
+  it('the wrap connector is a visible lit-aware ELBOW (founder 2026-10-02): a wrapped row leads with the drawn drop-in curve + arrowhead, emerald once traversed — and the wrapped row runs RIGHT-TO-LEFT (serpentine, 2026-10-07)', () => {
     // Traversed wrap: both nodes done → the elbow lights emerald, exactly like an in-row edge.
     const done = render(<VsJourneyDag rows={UNIT_ROWS} revealed={UNIT_ROWS.length} running={false} />)
     const strip = screen.getByTestId('vs-journeydag-strip')
     expect(screen.queryByTestId('vs-dag-wrap-hint')).toBeNull() // all tops 0 — nothing wraps yet
-    mockFlowTops(strip, { site_001: 40 }) // site_001 measured below form_001 → starts a wrapped row
-    done.rerender(<VsJourneyDag rows={UNIT_ROWS} revealed={UNIT_ROWS.length} running={false} />)
-    const hint = screen.getByTestId('vs-dag-wrap-hint')
-    expect(hint.tagName.toLowerCase()).toBe('svg') // a DRAWN connector — not the old ↵ text hint
-    expect(hint.textContent).not.toContain('↵')
-    const [elbow, head] = Array.from(hint.querySelectorAll('path'))
-    expect(elbow.getAttribute('d')).toContain('Q') // the drop-in curve from the row above
-    expect(elbow.getAttribute('class')).toContain('stroke-emerald-400/70')
-    expect(head.getAttribute('class')).toContain('fill-emerald-400/70')
-    // The single connector slot swapped — no in-row edge remains beside it.
-    expect(strip.querySelectorAll('[data-testid="vs-dag-edge"]').length).toBe(0)
+    let restore = mockFlowTops({ site_001: 40 }) // site_001 measured below form_001 → starts a wrapped row
+    try {
+      done.rerender(<VsJourneyDag rows={UNIT_ROWS} revealed={UNIT_ROWS.length} running={false} />)
+      const hint = screen.getByTestId('vs-dag-wrap-hint')
+      expect(hint.tagName.toLowerCase()).toBe('svg') // a DRAWN connector — not the old ↵ text hint
+      expect(hint.textContent).not.toContain('↵')
+      const [elbow, head] = Array.from(hint.querySelectorAll('path'))
+      expect(elbow.getAttribute('d')).toContain('Q') // the drop-in curve from the row above
+      expect(elbow.getAttribute('class')).toContain('stroke-emerald-400/70')
+      expect(head.getAttribute('class')).toContain('fill-emerald-400/70')
+      // The single connector slot swapped — no in-row edge remains beside it.
+      expect(strip.querySelectorAll('[data-testid="vs-dag-edge"]').length).toBe(0)
+      // SERPENTINE (2026-10-07, item 5): the wrapped row is the second visual row — it runs
+      // right-to-left (flex-row-reverse, visual only) and its leading elbow is MIRRORED so the
+      // arrow points along the actual (leftward) flow direction. DOM order stays sequential:
+      // form_001's row precedes site_001's in the document.
+      const rows = Array.from(strip.querySelectorAll<HTMLElement>('[data-dag-row]'))
+      expect(rows.map((r) => r.getAttribute('data-dag-dir'))).toEqual(['ltr', 'rtl'])
+      expect(rows[1].className).toContain('flex-row-reverse')
+      expect(rows[0].className).not.toContain('flex-row-reverse')
+      expect(rows[1].contains(screen.getByTestId('vs-dag-node-site_001'))).toBe(true)
+      expect(hint.getAttribute('data-flipped')).toBe('true')
+      expect(hint.getAttribute('class')).toContain('-scale-x-100')
+      // The reversed item mirrors wholesale, so the connector sits on the upstream side.
+      expect(screen.getByTestId('vs-dag-node-site_001').closest('[data-dag-flow]')!.className).toContain('flex-row-reverse')
+    } finally {
+      restore()
+    }
     done.unmount()
     // Un-traversed wrap: the just-reached (still pending) node's elbow stays dim zinc.
     const reached = render(<VsJourneyDag rows={UNIT_ROWS} revealed={7} running />)
-    mockFlowTops(screen.getByTestId('vs-journeydag-strip'), { site_001: 40 })
-    reached.rerender(<VsJourneyDag rows={UNIT_ROWS} revealed={7} running />)
-    const dim = screen.getByTestId('vs-dag-wrap-hint')
-    expect(dim.querySelector('path')!.getAttribute('class')).toContain('stroke-zinc-600')
+    restore = mockFlowTops({ site_001: 40 })
+    try {
+      reached.rerender(<VsJourneyDag rows={UNIT_ROWS} revealed={7} running />)
+      const dim = screen.getByTestId('vs-dag-wrap-hint')
+      expect(dim.querySelector('path')!.getAttribute('class')).toContain('stroke-zinc-600')
+    } finally {
+      restore()
+    }
     reached.unmount()
+  })
+
+  it('serpentine alternation: three measured rows run ltr / rtl / ltr, in-row arrows flip only on the reversed row, and DOM order stays sequential (reading order honest)', () => {
+    // A 6-node journey chunked two per row via mocked offsetTops.
+    const many: VsDagSourceRow[] = []
+    for (let i = 0; i < 6; i++) {
+      const t = task(`task_${i}`, `Process ${i}`)
+      many.push({ kind: 'phase', key: `phase-${i}`, title: `Phase ${i}`, chainId: 'ship-v1', chainName: 'Ship v1', note: null })
+      many.push({ kind: 'task', key: `task-task_${i}`, task: t })
+      many.push({ kind: 'step', key: `step-task_${i}-0`, step: t.steps[0], top: null, outNote: null, outMinutes: 10 })
+    }
+    const view = render(<VsJourneyDag rows={many} revealed={many.length} running={false} />)
+    const restore = mockFlowTops({ task_2: 40, task_3: 40, task_4: 80, task_5: 80 })
+    try {
+      view.rerender(<VsJourneyDag rows={many} revealed={many.length} running={false} />)
+      const strip = screen.getByTestId('vs-journeydag-strip')
+      const rows = Array.from(strip.querySelectorAll<HTMLElement>('[data-dag-row]'))
+      expect(rows.map((r) => r.getAttribute('data-dag-dir'))).toEqual(['ltr', 'rtl', 'ltr'])
+      // DOM (reading) order is the run order regardless of visual direction.
+      const ids = Array.from(strip.querySelectorAll<HTMLElement>('[data-dag-flow]')).map((el) =>
+        el.getAttribute('data-dag-flow'),
+      )
+      expect(ids).toEqual(['task_0', 'task_1', 'task_2', 'task_3', 'task_4', 'task_5'])
+      // In-row arrows flip exactly on the reversed row; both wrapped rows lead with an elbow,
+      // mirrored only where the row runs leftward.
+      const edgeIn = (row: HTMLElement) => row.querySelector('[data-testid="vs-dag-edge"]')!
+      const hintIn = (row: HTMLElement) => row.querySelector('[data-testid="vs-dag-wrap-hint"]')!
+      expect(edgeIn(rows[0]).getAttribute('data-flipped')).toBeNull()
+      expect(hintIn(rows[1]).getAttribute('data-flipped')).toBe('true')
+      expect(edgeIn(rows[1]).getAttribute('data-flipped')).toBe('true')
+      expect(hintIn(rows[2]).getAttribute('data-flipped')).toBeNull()
+      expect(edgeIn(rows[2]).getAttribute('data-flipped')).toBeNull()
+      // The aria contract is unchanged.
+      expect(strip.querySelector('ol')!.getAttribute('aria-label')).toBe('Journey processes in run order')
+    } finally {
+      restore()
+    }
+  })
+
+  it('node tooltips carry the committed corpus description (founder 2026-10-07, item 4) at the bigger fixed text size', () => {
+    render(<VsJourneyDag rows={UNIT_ROWS} revealed={UNIT_ROWS.length} running={false} />)
+    const node = screen.getByTestId('vs-dag-node-form_001')
+    // The fixture's description is `${title} description` — the tooltip leads with it; the old
+    // step-count line is gone.
+    expect(node.getAttribute('title')).toContain('Incorporate C-Corp description')
+    expect(node.getAttribute('title')).not.toMatch(/\d+ steps?,/)
+    expect(node.querySelector('.text-\\[13px\\]')).toBeTruthy() // bigger node text (item 4)
+  })
+
+  it('the branch/join glyph renders EXACTLY where the committed DAG forks (founder 2026-10-07, item 6), branches named in the tooltip', () => {
+    const forky = task('fin_002', 'Close the books', {
+      fork: { at: 'Reconcile accounts', branches: ['Categorize transactions', 'Match payouts'] },
+    })
+    const rows: VsDagSourceRow[] = [
+      { kind: 'phase', key: 'phase-rev', title: 'Turn on revenue', chainId: 'get-paid', chainName: 'Get paid', note: null },
+      { kind: 'task', key: 'task-fin_002', task: forky },
+      { kind: 'step', key: 'step-fin_002-0', step: forky.steps[0], top: null, outNote: null, outMinutes: 10 },
+      { kind: 'phase', key: 'phase-website', title: 'Launch the website', chainId: 'launch-website', chainName: 'Launch website', note: null },
+      { kind: 'task', key: 'task-site_001', task: taskB },
+      { kind: 'step', key: 'step-site_001-0', step: taskB.steps[0], top: null, outNote: null, outMinutes: 10 },
+    ]
+    render(<VsJourneyDag rows={rows} revealed={rows.length} running={false} />)
+    const glyph = screen.getByTestId('vs-dag-fork-fin_002')
+    expect(screen.getByTestId('vs-dag-node-fin_002').contains(glyph)).toBe(true)
+    expect(glyph.getAttribute('title')).toContain('forks at "Reconcile accounts"')
+    expect(glyph.getAttribute('title')).toContain('Categorize transactions ∥ Match payouts')
+    expect(glyph.querySelector('svg')).toBeTruthy()
+    // A linear DAG renders no fork treatment — only where the corpus edges genuinely diverge.
+    expect(screen.queryByTestId('vs-dag-fork-site_001')).toBeNull()
   })
 
   it('nodes keep FULL fixed size at any count: icon + title legible always, no tier ever hides a title', () => {
@@ -467,7 +583,9 @@ describe('VsJourneyDag inside VirtualStartup — the live viewer above the termi
     expect(body.className).toContain('overflow-x-hidden') // explicit: overflow-y-auto alone computes overflow-x to auto
     expect(body.className).not.toContain('overflow-x-auto')
     expect(body.className).not.toContain('h-[140px]')
-    expect(body.querySelector('ol')!.className).toContain('flex-wrap')
+    // Serpentine (2026-10-07): the ol is a flex-col of visual rows; the row li wraps.
+    expect(body.querySelector('ol')!.className).toContain('flex-col')
+    expect(body.querySelector('[data-dag-row]')!.className).toContain('flex-wrap')
   })
 
   it('reveals + lights progressively with the terminal reveal (never its own timers): visible == traversed, at most one active, whole journey shown at completion', () => {
