@@ -1943,26 +1943,31 @@
     "verdict": "partial",
     "quality": 6,
     "confidence": "medium",
-    "rationale": "Missive documents an official MCP server (docs/ai/mcp/server) that lets external AI apps like Claude, ChatGPT, or Cursor act on conversations, contacts, calendar, and drafts with user-chosen permissions. The changelog cites inbox summarization, draft replies, and agent triage against a CRM, and notes that drafts created through the API and MCP server resolve user variables. However, nothing in the evidence shows an external agent can actually send email, so the end-to-end loop is not demonstrated. Missing for 10: explicit send capability via MCP/API, a published tool list or OpenAPI spec (probes 404), and independent hands-on corroboration.",
+    "rationale": "Missive documents an official MCP server that lets Claude, ChatGPT, or Cursor act on conversations, contacts, calendar, and drafts with user-chosen permissions. The changelog explicitly covers summarizing the inbox, triaging new conversations, and drafting replies, and a REST API with conversations and drafts endpoints offers a second documented route. However, the evidence only describes agents creating drafts, never sending, so the end-to-end flow stops short. Missing for 10: explicit evidence that an external agent can send email via MCP or the API, detailed MCP tool documentation, independent or hands-on corroboration.",
     "evidenceIds": [
-      "missive-probe-4",
       "missive-docs-20",
       "missive-docs-1",
       "missive-docs-21",
       "missive-docs-22",
       "missive-docs-50",
+      "missive-probe-4",
       "missive-docs-47",
-      "missive-docs-31"
+      "missive-supp-endpoints-reference"
     ]
   },
   {
     "productId": "missive",
     "storyId": "agentic-agent-docs",
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "full",
+    "quality": 8,
     "confidence": "medium",
-    "rationale": "Agent-readable docs are a fair axis for a SaaS product with a developer platform, but probes found no llms.txt, no markdown docs endpoint, and no OpenAPI spec (all 404). The in-app assistant answering from Missive's own documentation, and the documented MCP server, are separate capabilities and do not give an external agent a docs entry point.",
-    "evidenceIds": []
+    "rationale": "Missive's docs publish an llms.txt index at https://missiveapp.com/docs/llms.txt, and every docs page serves raw Markdown when .md is appended, which gives agents a documented, machine-readable entry point. The probes returning 404 at the root /llms.txt and /docs.md checked different paths, so they don't contradict this; they only show the index isn't at the conventional root location. Missing for 10: llms.txt at the site root for discoverability, independent or hands-on confirmation that /docs/llms.txt resolves, and an OpenAPI spec (all candidate paths 404) for agent-consumable API docs.",
+    "evidenceIds": [
+      "missive-supp-endpoints-reference",
+      "missive-probe-1",
+      "missive-probe-2",
+      "missive-probe-3"
+    ]
   },
   {
     "productId": "missive",
@@ -1970,18 +1975,17 @@
     "verdict": "partial",
     "quality": 6,
     "confidence": "medium",
-    "rationale": "Missive ships an in-product AI Assistant/Copilot. It runs long sessions with visible progress, creates drafts, composes, replies and translates messages, and can pull in internal data via MCP tools (docs-16/27/42, 34, 45, 49). However, it runs only on the user's own Anthropic/OpenAI/Gemini API key (intdir-2), and the inbox summarization and CRM triage examples (docs-21/22) describe external agents connecting via MCP, not in-app insights. missing for 10: explicit documentation of in-product AI insights or summaries over the user's conversation data, built-in AI without a BYO key, independent or hands-on corroboration.",
+    "rationale": "Missive has an in-product AI Assistant/Copilot. It can compose, reply to and translate messages, create drafts, and run visible long sessions. It can also be connected through custom MCP to internal systems and proprietary data. However, it runs on your own Anthropic, OpenAI or Gemini API key. The clearest data-insight examples (summarizing the inbox, CRM triage) are framed as external apps like Claude acting through MCP, not as built-in insights. Missing for 10: documented in-product insights such as summaries, trends or proactive suggestions drawn from the user's own data; AI that works without bringing your own key; independent or hands-on corroboration.",
     "evidenceIds": [
-      "missive-docs-16",
+      "missive-docs-49",
+      "missive-docs-2",
+      "missive-docs-34",
       "missive-docs-27",
       "missive-docs-42",
-      "missive-docs-52",
-      "missive-docs-34",
-      "missive-docs-2",
-      "missive-docs-45",
-      "missive-docs-49",
       "missive-intdir-2",
-      "missive-docs-3"
+      "missive-docs-45",
+      "missive-docs-3",
+      "missive-docs-52"
     ]
   },
   {
@@ -1990,15 +1994,14 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Missive ships rule-based workflow automation (\"Automate your workflows\", up to 1000 rules) that acts on its own, for example rules that create drafts and shared-account auto-archive, plus webhooks and an API. On the AI side, the changelog mentions letting an agent triage new conversations against your CRM and long assistant sessions that no longer need babysitting, but this agentic triage runs through external MCP-connected apps rather than a documented native background agent. missing for 10: documentation of rule triggers and actions, a native AI agent that runs autonomously on triggers or schedules, and independent or hands-on corroboration.",
+    "rationale": "Missive offers background rule-based automation: the pricing page lists 'Automate your workflows' with up to 1000 rules, and the changelog confirms rules can create drafts on their own; webhooks and the API support event-driven flows. On the AI side, long assistant sessions 'no longer need babysitting', and external agents connected over MCP can triage new conversations against a CRM before a human looks at them. However, the evidence never details rule triggers or actions, and autonomous AI work depends mostly on external agents or a supervised assistant rather than a native scheduled or background agent. Missing for 10: documented rule triggers/actions and scheduling, a native autonomous AI agent that runs unattended in the background, and independent or hands-on corroboration.",
     "evidenceIds": [
       "missive-docs-25",
       "missive-docs-11",
       "missive-docs-50",
-      "missive-docs-44",
       "missive-docs-31",
-      "missive-docs-22",
       "missive-docs-34",
+      "missive-docs-22",
       "missive-docs-20"
     ]
   },
@@ -2008,15 +2011,16 @@
     "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "First-party docs describe a built-in Missive AI Assistant/Copilot. It runs long sessions that you can monitor in a session tab, creates drafts, answers questions from the Missive docs, and can compose, reply and translate. It can also be extended with MCP tools to act on internal systems. It runs on the user's own Anthropic, OpenAI or Gemini API key. Missing for 10: a detailed documented list of the tasks the assistant can carry out on its own, clarity on whether it runs without a BYO API key, and any independent or hands-on corroboration.",
+    "rationale": "Missive ships a built-in AI Assistant/Copilot that runs long sessions with a session tab showing its progress (missive-docs-34, missive-docs-2). It creates drafts (missive-docs-50), composes, replies and translates (missive-docs-49), answers questions from the docs (missive-docs-3), and can be extended with MCP tools to act on internal systems (missive-docs-27, missive-docs-16). One caveat is that it requires your own Anthropic/OpenAI/Gemini API key (missive-intdir-2). Missing for 10: in-depth first-party docs on the range of delegable tasks and approval controls, independent or hands-on corroboration, and an included model rather than BYOK.",
     "evidenceIds": [
       "missive-docs-34",
       "missive-docs-2",
       "missive-docs-50",
-      "missive-docs-3",
       "missive-docs-49",
+      "missive-docs-3",
       "missive-docs-27",
       "missive-docs-16",
+      "missive-docs-52",
       "missive-intdir-2"
     ]
   },
@@ -2026,13 +2030,15 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Missive has no CLI or headless runtime, but it can be driven without the UI through its REST API, webhooks and an official MCP server, and the changelog says drafts can be created through the API and MCP server. That makes scripted or CI-driven automation possible against the hosted service, built from API calls. Missing for 10: a CLI or documented headless/CI usage, CI-specific guides or examples, a machine-readable OpenAPI spec (probes returned 404), and independent hands-on corroboration.",
+    "rationale": "Missive can be driven without its UI through a documented REST API and webhooks. The API has a per-endpoint reference against public.missiveapp.com/v1, documented rate limits with 429/Retry-After handling, drafts creatable via the API and an MCP server, and server-side rules. That supports scripted, headless automation, but nothing shows a CLI, CI integration, or a guide to running it in pipelines. Missing for 10: an official CLI or headless runner, CI/pipeline docs or examples, documented service-account/token setup for non-interactive use, an OpenAPI spec, and independent hands-on corroboration.",
     "evidenceIds": [
       "missive-docs-15",
       "missive-docs-31",
-      "missive-docs-47",
+      "missive-supp-endpoints-reference",
+      "missive-supp-rate-limits",
       "missive-docs-50",
-      "missive-probe-4",
+      "missive-docs-47",
+      "missive-docs-25",
       "missive-probe-3"
     ]
   },
@@ -2042,16 +2048,16 @@
     "verdict": "full",
     "quality": 8,
     "confidence": "medium",
-    "rationale": "Missive's MCP integration page says you can connect any MCP-compatible server to its AI Copilot. Setup is documented: add \"Custom MCP\", enter a name and server URL, and choose an authentication method. It also ships ready-made MCP integrations for Notion, Linear, Attio and Lindy.ai, and the assistant runs on your own Anthropic, OpenAI or Gemini key. Missing for 10: independent or hands-on corroboration that custom MCP connections work, and detail on supported transports (only remote server URLs are evidenced, not local stdio servers) and tool-permission controls.",
+    "rationale": "Missive's MCP integration page says users can 'connect any MCP-compatible server to Missive's AI Copilot' via 'Custom MCP', entering a name, server URL and authentication method, so the assistant can use internal tools and systems. It also ships ready-made MCP integrations for Notion, Linear, Attio and Lindy.ai, running on the user's own Anthropic/OpenAI/Gemini key. missing for 10: independent or hands-on corroboration of the custom MCP client working, and documentation of supported transports and per-tool permission/approval controls.",
     "evidenceIds": [
       "missive-docs-17",
       "missive-docs-27",
       "missive-docs-42",
       "missive-docs-16",
+      "missive-docs-52",
       "missive-docs-18",
-      "missive-intdir-2",
       "missive-intdir-1",
-      "missive-docs-52"
+      "missive-intdir-2"
     ]
   },
   {
@@ -2060,15 +2066,15 @@
     "verdict": "full",
     "quality": 8,
     "confidence": "high",
-    "rationale": "Missive documents a first-party MCP server. The changelog says external AI apps such as Claude, ChatGPT, and Cursor can connect via MCP and act on conversations, contacts, calendar, and drafts with user-chosen permissions, and a probe confirms server docs at /docs/ai/mcp/server. Later changelog items reference drafts created 'through the API and MCP server', and pricing lists 'API & MCP access'. Missing for 10: independent or hands-on corroboration that the server works, detailed evidence of the tool surface and authentication setup, and clarity on which plan tier includes MCP access.",
+    "rationale": "Missive ships an official MCP server. The changelog says external AI apps such as Claude, ChatGPT, or Cursor can connect via MCP and act on conversations, contacts, calendar, and drafts with user-chosen permissions. Later changelog entries reference drafts created \"through the API and MCP server\", the pricing page lists \"API & MCP access\", and a probe found dedicated server docs at /docs/ai/mcp/server. The Custom MCP client feature for Missive's own Copilot was not credited here. Missing for 10: independent or hands-on corroboration, and detailed evidence of the server's tool list, auth/setup flow, and plan limits.",
     "evidenceIds": [
       "missive-docs-20",
       "missive-docs-1",
-      "missive-probe-4",
+      "missive-docs-21",
+      "missive-docs-22",
       "missive-docs-50",
       "missive-docs-47",
-      "missive-docs-21",
-      "missive-docs-22"
+      "missive-probe-4"
     ]
   },
   {
@@ -2077,17 +2083,17 @@
     "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Missive has an in-app AI Assistant that runs long sessions, answers how-to questions from the docs, and creates drafts. Through its official MCP server, external AI apps like Claude, ChatGPT, or Cursor can act on conversations, contacts, calendar, and drafts via natural-language prompts such as \"summarize your inbox and draft replies.\" The built-in assistant requires the user's own Anthropic, OpenAI, or Gemini API key. Missing for 10: detailed documentation of the full range of in-app actions the assistant can perform (beyond drafting and doc answers), and independent or hands-on corroboration of natural-language operation.",
+    "rationale": "Missive has a built-in AI assistant that runs long sessions with visible activity, creates drafts, answers how-to questions from the docs, and can call MCP tools. Its first-party MCP server also lets Claude, ChatGPT or Cursor act on conversations, contacts, calendar and drafts from natural-language prompts like \"summarize your inbox and draft replies.\" missing for 10: detailed docs on which in-app actions (archive, assign, label, snooze) the assistant can perform by natural-language command, independent or hands-on corroboration, and in-app use without supplying your own Anthropic/OpenAI/Gemini API key.",
     "evidenceIds": [
-      "missive-docs-1",
+      "missive-docs-2",
+      "missive-docs-3",
+      "missive-docs-34",
+      "missive-docs-27",
+      "missive-docs-50",
       "missive-docs-20",
       "missive-docs-21",
       "missive-docs-22",
-      "missive-docs-34",
-      "missive-docs-3",
-      "missive-docs-45",
       "missive-docs-49",
-      "missive-docs-27",
       "missive-intdir-2",
       "missive-probe-4"
     ]
@@ -2098,23 +2104,24 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Missive is a SaaS collaborative inbox with a REST API, webhooks, and an MCP server, so an official CLI is a fair thing to ask about. Nothing in the evidence documents one. The in-app command bar (⌘/Ctrl+K) is a UI feature, not a command-line tool.",
+    "rationale": "Missive is a SaaS collaboration inbox, so an official CLI is a fair question, but the evidence pack never mentions one. It documents only a REST API, webhooks, UI integrations, an MCP server and MCP client integrations. The in-app command bar (⌘/Ctrl+K) is a GUI feature, not a command-line tool, so it does not count.",
     "evidenceIds": []
   },
   {
     "productId": "missive",
     "storyId": "agentic-public-api",
     "verdict": "full",
-    "quality": 7,
-    "confidence": "medium",
-    "rationale": "Missive documents a public REST API with webhooks, UI integrations and custom channels on its developer docs. The changelog confirms drafts can be created through the API and an official MCP server, and the pricing page lists \"API & MCP access\", so the product can be driven programmatically. However, the evidence gives little detail on API scope, and the OpenAPI probe found no machine-readable spec. Missing for 10: published OpenAPI/machine-readable spec, endpoint/auth/rate-limit detail in evidence, clarity on which plans include API access, independent or hands-on corroboration.",
+    "quality": 8,
+    "confidence": "high",
+    "rationale": "Missive documents a public REST API at public.missiveapp.com/v1 with an endpoint reference covering conversations, drafts, posts, contacts, labels and analytics, plus published rate limits with 429/Retry-After semantics, webhooks, and Markdown/llms.txt docs that agents can read. API and MCP server access are listed as a plan feature, and drafts can be created through the API and MCP server, so an AI-native user can drive the product programmatically. Missing for 10: no OpenAPI/Swagger spec (all probe paths returned 404), no try-it runner, no formal versioning/deprecation policy, and no independent or hands-on corroboration of API use.",
     "evidenceIds": [
-      "missive-docs-15",
+      "missive-supp-endpoints-reference",
+      "missive-supp-rate-limits",
+      "missive-supp-breaking-change-notes",
       "missive-docs-31",
-      "missive-docs-39",
+      "missive-docs-15",
       "missive-docs-47",
       "missive-docs-50",
-      "missive-docs-20",
       "missive-probe-4",
       "missive-probe-3"
     ]
@@ -2125,12 +2132,12 @@
     "verdict": "partial",
     "quality": 4,
     "confidence": "low",
-    "rationale": "The changelog says external AI apps like Claude, ChatGPT and Cursor connect to Missive's official MCP server and act 'with the permissions you choose', which implies per-agent permission scoping. This is a single thin claim. Nothing documents how scopes work for REST API tokens or what granularity exists. Missing for 10: documented per-token scope or permission model for API keys, granularity of MCP permissions (read vs. write, per resource), credential revocation or rotation, independent or hands-on corroboration.",
+    "rationale": "Missive documents an official MCP server (probe-4) that external agents such as Claude, ChatGPT, or Cursor connect to, and the changelog says they act on conversations, contacts, calendar, and drafts \"with the permissions you choose.\" That suggests agent access can be scoped, but the evidence never describes how REST API tokens or MCP credentials are issued, scoped, or revoked. Missing for 10: documented per-token scopes or permission model for API keys, least-privilege credential issuance and revocation details, independent or hands-on corroboration.",
     "evidenceIds": [
       "missive-docs-20",
-      "missive-docs-47",
+      "missive-docs-1",
       "missive-probe-4",
-      "missive-docs-1"
+      "missive-docs-47"
     ]
   },
   {
@@ -2139,7 +2146,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Official SDKs are a fair question for a SaaS platform like Missive. The evidence documents a REST API, webhooks, UI integrations, custom channels and an MCP server, but nothing mentions an official client SDK or library in any language. The OpenAPI probes all returned 404, so there is not even a published spec to generate one from. A raw REST API is not an official SDK.",
+    "rationale": "The axis applies, since a SaaS collaboration inbox could plausibly ship official client SDKs. However, the evidence shows only a raw REST API (endpoint reference, rate limits, webhooks), an MCP server, and UI integrations, with no official SDK or client library in any language, and no OpenAPI spec from which one could be generated. A REST API alone does not deliver the 'build against official SDKs' story.",
     "evidenceIds": []
   },
   {
@@ -2160,12 +2167,13 @@
     "verdict": "partial",
     "quality": 4,
     "confidence": "medium",
-    "rationale": "Missive documents AI-assisted reply composition in the app (missive-docs-49). Its assistant and MCP-connected apps like Claude can create draft replies for review (missive-docs-21, missive-docs-45, missive-docs-20). Nothing in the evidence shows the drafts adapt to the user's own voice or tone rather than generic output. missing for 10: learning or matching personal writing style/tone, controls for tone or voice customization, independent or hands-on corroboration of draft quality.",
+    "rationale": "Missive documents AI-generated drafts. Its AI integration can compose and reply to messages, its assistant (running on your own Anthropic, OpenAI or Gemini key) and rules can create drafts, and external agents like Claude can draft replies over MCP into the drafts folder for you to review and send. Nothing in the evidence shows the AI learning or matching the user's personal voice and tone, which is the core of the story. Missing for 10: drafts learned from or matched to the user's own writing style, tone/voice configuration, and independent or hands-on corroboration of draft quality.",
     "evidenceIds": [
       "missive-docs-49",
       "missive-docs-21",
-      "missive-docs-45",
-      "missive-docs-20"
+      "missive-docs-50",
+      "missive-docs-20",
+      "missive-intdir-2"
     ]
   },
   {
@@ -2174,15 +2182,14 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Missive's official MCP server lets external assistants like Claude or ChatGPT access and act on your conversations, contacts, calendar, and drafts, including 'summarize your inbox'. That covers cross-inbox and calendar Q&A, but only through a third-party AI app. The built-in assistant runs on your own API key, and its documented grounded answers come from Missive's help docs rather than your inbox. missing for 10: evidence of a native assistant answering questions across the whole inbox and calendar, explicit grounding or citations to source messages, documented 'who said what / what's outstanding' querying, and independent hands-on corroboration.",
+    "rationale": "Missive's official MCP server lets external assistants like Claude or ChatGPT read and act on your conversations, contacts, calendar and drafts, and the changelog cites asking Claude to summarize your inbox. The built-in assistant runs on a bring-your-own Anthropic/OpenAI/Gemini key, and its only documented Q&A use is answering from the Missive docs. So cross-inbox questioning depends on an external AI app or your own API key. Missing for 10: evidence that the native assistant answers questions across the whole inbox and calendar, grounding or citation of answers back to specific messages, examples of 'who said what / what's outstanding' queries, and independent hands-on corroboration.",
     "evidenceIds": [
       "missive-docs-20",
       "missive-docs-21",
       "missive-probe-4",
-      "missive-docs-47",
-      "missive-intdir-2",
+      "missive-docs-34",
       "missive-docs-3",
-      "missive-docs-34"
+      "missive-intdir-2"
     ]
   },
   {
@@ -2191,35 +2198,43 @@
     "verdict": "partial",
     "quality": 4,
     "confidence": "medium",
-    "rationale": "Missive's evidence supports AI triage mainly through agents: the changelog pitches letting an agent triage new conversations against your CRM and having Claude summarize your inbox via MCP, with permissions you choose. Auditability is supported by the session tab showing what the assistant is doing and by logging of every action. Labeling automation is shown only through classic rules, not AI-driven categorization. Missing for 10: native built-in AI auto-labeling/categorization, documented priority surfacing of what needs attention, documented ways to steer triage behavior (instructions/policies), and independent or hands-on corroboration.",
+    "rationale": "Missive's changelog shows AI triage only as something you build: an external agent connected over MCP can 'triage new conversations against your CRM' and 'summarize your inbox,' with permissions you choose. The built-in assistant runs on your own Anthropic, OpenAI or Gemini key, and auditability comes from the session tab showing what the assistant is doing plus Missive's action log. Missing for 10: native AI auto-labeling or categorization, AI-driven surfacing of what needs attention (the 1000 rules are not shown to be AI-driven), documented ways to steer triage behavior, and independent or hands-on corroboration.",
     "evidenceIds": [
       "missive-docs-22",
-      "missive-docs-21",
       "missive-docs-20",
+      "missive-docs-21",
       "missive-docs-34",
       "missive-docs-2",
       "missive-docs-9",
-      "missive-docs-25",
-      "missive-docs-45"
+      "missive-intdir-2"
     ]
   },
   {
     "productId": "missive",
     "storyId": "api-interactive-docs",
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "partial",
+    "quality": 4,
     "confidence": "medium",
-    "rationale": "Missive documents a REST API and developer tools, but nothing in the evidence shows an interactive API reference or runnable examples. Probes for an OpenAPI or Swagger spec at the standard paths all returned 404, so there is also no machine-readable spec to drive such a reference.",
-    "evidenceIds": []
+    "rationale": "Missive publishes a complete REST endpoint reference covering conversations, drafts, posts, contacts, labels and more. Each endpoint has an example request against public.missiveapp.com/v1, and the pages are AI-readable as raw Markdown with an llms.txt index. The docs explicitly state there is no live try-it runner and no OpenAPI spec, and probes found no openapi/swagger file, so the reference is static rather than interactive. Missing for 10: an interactive in-browser try-it console, an OpenAPI spec to drive interactive tooling, and hands-on corroboration that the examples run as documented.",
+    "evidenceIds": [
+      "missive-supp-endpoints-reference",
+      "missive-probe-3",
+      "missive-docs-31",
+      "missive-docs-15"
+    ]
   },
   {
     "productId": "missive",
     "storyId": "api-machine-spec",
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "partial",
+    "quality": 3,
     "confidence": "medium",
-    "rationale": "Missive documents a REST API, webhooks, and an MCP server, but nothing in the evidence mentions a downloadable OpenAPI or equivalent machine-readable spec. Probes of the common OpenAPI and Swagger paths all returned 404, so the axis applies but there is no evidence the capability exists.",
-    "evidenceIds": []
+    "rationale": "Missive publishes no OpenAPI or equivalent formal spec: every probed OpenAPI/Swagger path returns 404, and its docs state that no OpenAPI spec is documented. The closest substitute is the REST endpoint reference, which can be downloaded as raw Markdown (append .md to any docs page) and is indexed at /docs/llms.txt. That gives agents a text reference to the API, but not a structured, schema-level spec. Missing for 10: a downloadable OpenAPI/Swagger (or equivalent schema-based) spec file, machine-readable request/response schemas, and independent corroboration.",
+    "evidenceIds": [
+      "missive-probe-3",
+      "missive-supp-endpoints-reference",
+      "missive-docs-31"
+    ]
   },
   {
     "productId": "missive",
@@ -2227,17 +2242,20 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Missive is a SaaS inbox with a REST API and an official MCP server, so a sandbox or test environment is a fair question for it. The evidence never mentions a sandbox, test workspace, or non-production mode. Permission scoping for MCP clients limits what an agent can do, but it does not isolate testing from production data.",
+    "rationale": "Missive is a SaaS inbox platform with a REST API and an MCP server, so a sandbox or test environment is a fair question to ask of it. Nothing in the evidence describes a sandbox, test workspace, or non-production mode. The API docs reference only the production base URL and note no try-it runner, so the axis applies but is unevidenced.",
     "evidenceIds": []
   },
   {
     "productId": "missive",
     "storyId": "api-versioning-policy",
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "partial",
+    "quality": 4,
     "confidence": "medium",
-    "rationale": "Missive does offer a REST API, webhooks and API & MCP access, so this axis applies. However, nothing in the evidence pack mentions API versioning, version numbers in endpoints, or a documented deprecation or sunset policy. The OpenAPI probes also all returned 404, so there is no machine-readable spec showing versions.",
-    "evidenceIds": []
+    "rationale": "Missive's REST API is versioned under https://public.missiveapp.com/v1/. Compatibility changes are flagged inline in the endpoint reference, including a dated WhatsApp breaking-change warning and superseded fields kept as documented legacy aliases. However, the docs explicitly have no versioning or deprecation policy page, so half of the story (a documented deprecation policy) is not delivered. Missing for 10: a published deprecation/versioning policy with timelines and notice periods, evidence of multiple API versions or a migration path, a changelog dedicated to API changes, and independent corroboration.",
+    "evidenceIds": [
+      "missive-supp-endpoints-reference",
+      "missive-supp-breaking-change-notes"
+    ]
   },
   {
     "productId": "missive",
@@ -2245,32 +2263,33 @@
     "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Missive documents assigning conversations to a team or a specific person while keeping visibility (missive-docs-6), with shared and team inboxes (missive-docs-28, missive-docs-32) and an action log showing who did what (missive-docs-9). Its pricing page lists a rules engine of up to 1000 rules (missive-docs-25, missive-docs-36), and the changelog references rules creating drafts (missive-docs-45). Missing for 10: explicit documentation that rules can route or auto-assign incoming mail to owners, detail on rule conditions and actions, and independent hands-on corroboration of assignment and rules.",
+    "rationale": "Missive's features page says conversations can be assigned to a team or a specific person while keeping visibility. The pricing page lists workflow automation with up to 1000 rules, and the changelog references rules acting on conversations (e.g., creating drafts), with shared inboxes designed so multiple people don't step on each other's toes. Missing for 10: explicit documentation that rules can auto-assign or route incoming mail to specific owners, rule condition/action detail, and independent or hands-on corroboration of assignment and routing workflows.",
     "evidenceIds": [
       "missive-docs-6",
-      "missive-docs-28",
-      "missive-docs-32",
-      "missive-docs-9",
       "missive-docs-25",
       "missive-docs-36",
-      "missive-docs-45",
-      "missive-docs-3"
+      "missive-docs-11",
+      "missive-docs-3",
+      "missive-docs-50",
+      "missive-docs-28",
+      "missive-docs-9"
     ]
   },
   {
     "productId": "missive",
     "storyId": "automation-bulk-operations",
     "verdict": "partial",
-    "quality": 3,
+    "quality": 4,
     "confidence": "low",
-    "rationale": "Nothing documents explicit bulk selection or batch actions. The evidence only implies operating on many items: rules (up to 1000) automate workflows across conversations, the API and an official MCP server let external AI act on conversations, and agents can triage new conversations or summarize the inbox. Missing for 10: documented multi-select or batch actions in the UI, bulk or batch API/MCP endpoints, limits and examples for mass updates, and independent or hands-on corroboration.",
+    "rationale": "There is no explicit bulk-action feature in the evidence. Bulk-style work is only implied: rules (up to 1000) automate workflows across incoming conversations, and the REST API and MCP server act on conversations, labels and drafts. An AI agent can summarize the inbox or triage new conversations against a CRM. The API is also rate-limited to 5 concurrent requests and 300 per minute, which constrains large batch jobs. Missing for 10: documented multi-select bulk actions in the UI, batch or bulk API endpoints, any documentation of an AI agent applying one action across many items, and independent or hands-on corroboration.",
     "evidenceIds": [
       "missive-docs-25",
       "missive-docs-20",
-      "missive-docs-22",
       "missive-docs-21",
-      "missive-probe-4",
-      "missive-docs-31"
+      "missive-docs-22",
+      "missive-supp-endpoints-reference",
+      "missive-supp-rate-limits",
+      "missive-docs-44"
     ]
   },
   {
@@ -2295,7 +2314,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Scheduling recurring jobs is a fair question for an email and team-collaboration platform with automation rules, so the axis applies. The pack shows event-driven automation (up to 1000 rules, agents triaging new conversations) and one-off snoozing until a set time. Nothing documents recurring or cron-style scheduled jobs or workflows.",
+    "rationale": "Missive documents workflow automation through rules (up to 1000), AI agents that triage new conversations, and one-off time-based snoozing. None of the evidence describes time-based triggers, cron-style schedules, or recurring jobs. Rules and agent triage are event-driven, and snoozing is a one-time deferral of a single conversation, so scheduling recurring work is unevidenced.",
     "evidenceIds": []
   },
   {
@@ -2304,20 +2323,21 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Missive does ship automations: rules (up to 1000), plus AI and MCP-driven workflows. That makes this axis applicable. However, nothing in the evidence shows version history, review or diff of rule changes, or rollback of automation definitions. The general activity log (\"every action within Missive is logged\") tracks who did what. It does not show versioning or reverting automations, so it cannot be credited for this story.",
+    "rationale": "Missive clearly offers automations (rules, up to 1000 per plan), so this axis applies to the product. However, nothing in the evidence shows version history, review or diff workflows, or rollback for rules or other automations. The general activity log ('every action within Missive is logged') covers user actions, not versioning of automation definitions.",
     "evidenceIds": []
   },
   {
     "productId": "missive",
     "storyId": "beyond-email-channels",
-    "verdict": "partial",
-    "quality": 5,
+    "verdict": "full",
+    "quality": 7,
     "confidence": "medium",
-    "rationale": "Missive's pricing page lists \"Email, SMS, social accounts\" as supported channels, and its developer tools include \"custom channels\" for adding other sources. Aircall integration also brings calls into the app. Support for non-email channels is claimed, but only as a bare pricing bullet with no setup or behavior detail. missing for 10: documentation of how SMS/social conversations work in the shared inbox, any evidence of WhatsApp or live chat support, independent or hands-on corroboration.",
+    "rationale": "Missive's pricing page lists \"Email, SMS, social accounts\" as channels. The API reference documents WhatsApp messages flowing through conversations, and the developer tools offer custom channels, so non-email channels share the team inbox alongside email. Evidence is mostly short marketing bullets and API notes, not in-depth channel docs. missing for 10: dedicated docs on SMS/WhatsApp/social setup in the shared inbox, any evidence of live chat support, independent or hands-on corroboration.",
     "evidenceIds": [
       "missive-docs-56",
+      "missive-supp-breaking-change-notes",
       "missive-docs-31",
-      "missive-intdir-4"
+      "missive-docs-28"
     ]
   },
   {
@@ -2326,7 +2346,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Bulk triage is a fair question for a shared-inbox email client like Missive, so the axis applies. However, nothing in the pack documents selecting many conversations at once and archiving, labeling, or marking them done together. The closest items describe per-conversation actions (swipes and the command bar for snoozing) and a fix that stops the label list re-sorting while you tick labels, none of which shows multi-select.",
+    "rationale": "Bulk triage is a fair axis for a shared-inbox email client, but no evidence item describes multi-selecting conversations and applying archive, label, or done to them in one action. The closest items, swipe and command-bar snoozing on single conversations, rules automation, and a label-picker sorting fix, do not show bulk selection.",
     "evidenceIds": []
   },
   {
@@ -2335,10 +2355,10 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "The only calendar-related evidence is a changelog note that external AI apps can use Missive's MCP server to act on your calendar. That implies Missive has a calendar data model, but it describes agent access, not a power-user working in the email client UI. Missing for 10: documentation of an in-app calendar view, responding to invites (RSVP) from within emails, creating events in the client, details of calendar sync with Google/Office 365, and any independent or hands-on corroboration.",
+    "rationale": "The only calendar evidence is the changelog note that external AI apps can connect to Missive over MCP and act on your calendar. That implies Missive holds calendar data, but it says nothing about viewing, responding to invites, or creating events inside the client UI. missing for 10: documented in-client calendar view, invite RSVP from the inbox, event creation from the client, Google/Office 365 calendar sync details, independent or hands-on corroboration.",
     "evidenceIds": [
-      "missive-docs-20",
-      "missive-docs-1"
+      "missive-docs-1",
+      "missive-docs-20"
     ]
   },
   {
@@ -2347,10 +2367,11 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "The only relevant evidence is that Missive's shared or private address books sync with Office 365 and Google, which covers contacts from those providers. Nothing shows importing past mail history from an old provider or client, so this is minimal, contacts-only support. Missing for 10: documented import of complete mail history, contact import from other providers or clients (e.g. CSV/vCard), and independent or hands-on corroboration of migration.",
+    "rationale": "The only on-topic evidence is that contact address books sync with Office 365 and Google, which covers bringing contacts over from those providers. A community note implies that existing Gmail/Yahoo accounts are connected and their mail routes through Missive's servers, but nothing documents importing complete mail history. Missing for 10: documented full mail-history import from an old provider or client (e.g., IMAP/mbox/PST import), coverage of providers beyond Google/Office 365, and hands-on corroboration of a complete migration.",
     "evidenceIds": [
       "missive-docs-23",
-      "missive-docs-10"
+      "missive-docs-56",
+      "missive-comm-1"
     ]
   },
   {
@@ -2359,7 +2380,7 @@
     "verdict": "partial",
     "quality": 4,
     "confidence": "medium",
-    "rationale": "Missive documents search filters for Type (Internal/External) and Date range, which now work before a term is entered. The command bar can also search all messages, contacts, or messages within a specific label. That covers basic filtered search across mail, but nothing shows the precision or speed a power user would need. Missing for 10: documented search operators/syntax, ranked or relevance-ordered results, evidence of search speed, explicit coverage of full mail history, and independent or hands-on corroboration.",
+    "rationale": "Missive documents search filters for Type (Internal/External) and Date range, which now work without a search term. Its command bar can search across all messages, contacts, or messages inside a specific label. That covers basic filtered search across mail, but none of the power-user depth the story asks for is evidenced. Missing for 10: documented search operators/query syntax, ranked or relevance-ordered results, evidence of search speed, explicit coverage of full mail history, and independent or hands-on corroboration.",
     "evidenceIds": [
       "missive-docs-4",
       "missive-docs-38",
@@ -2371,14 +2392,13 @@
     "storyId": "internal-comments-mentions",
     "verdict": "partial",
     "quality": 5,
-    "confidence": "medium",
-    "rationale": "Missive markets behind-the-scenes collaboration on shared conversations: \"collaborate behind the scenes,\" team chat, real-time co-drafting and assignment with visibility. A community user also names it as a collaboration pick. However, no evidence explicitly describes internal comments attached beside an email or @mentions within a conversation. missing for 10: explicit documentation of internal comment threads on emails, @mention support, hands-on corroboration of side-thread discussion.",
+    "confidence": "low",
+    "rationale": "Missive's marketing says teams can 'collaborate behind the scenes' on shared conversations (missive-docs-30, missive-docs-48), offers team chat (missive-docs-8) and real-time collaborative drafting and review (missive-docs-7), and has an Internal/External search filter that implies internal messages sit alongside email (missive-docs-4); a community user also prefers Missive for collaboration (missive-comm-3). However, nothing explicitly documents comments attached to a specific email thread or @mentions, so the core mechanism is only implied. Missing for 10: explicit documentation of in-conversation internal comments beside the message, @mention notifications, and hands-on corroboration of the side-thread workflow.",
     "evidenceIds": [
       "missive-docs-30",
       "missive-docs-48",
       "missive-docs-8",
       "missive-docs-7",
-      "missive-docs-6",
       "missive-docs-4",
       "missive-comm-3"
     ]
@@ -2389,7 +2409,7 @@
     "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Missive documents a ⌘/Ctrl+K command bar that runs actions like snooze and supports typed search patterns, and its docs title it 'keyboard shortcuts and quick commands'. Canned responses can be inserted with a few keystrokes, and a community user calls it 'a proper snappy desktop app' compared with Front. missing for 10: a documented comprehensive shortcut list, evidence that every action is reachable from the keyboard, and independent hands-on performance corroboration beyond one anecdote.",
+    "rationale": "Missive documents a ⌘/Ctrl+K command bar that can run actions such as snooze and search across messages, contacts and labels, with a docs page on keyboard shortcuts and quick commands. Canned responses insert with a few keystrokes, and a hands-on user calls Missive a 'proper snappy desktop app', which supports the speed claim. missing for 10: an evidenced comprehensive shortcut reference, proof that every action is reachable from the keyboard, and independent performance measurements.",
     "evidenceIds": [
       "missive-docs-supp-2",
       "missive-docs-supp-3",
@@ -2403,7 +2423,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Missive is an email client, so aliases or masked addresses are a fair capability to ask about. The evidence pack never mentions alias creation, masked or forwarding addresses, or hiding the user's real address. The only nearby item covers distribution lists and shared team inboxes, which are collaboration features, not privacy masking.",
+    "rationale": "Missive is an email client and shared inbox, so offering aliases or masked addresses is a fair question for this product. Nothing in the pack shows Missive offering email aliases, hide-my-email, or masked forwarding addresses. The \"alias\" mention in the API docs refers to legacy API field names, and the team-inbox and distribution-list material is about collaboration, not hiding a user's real address.",
     "evidenceIds": []
   },
   {
@@ -2426,7 +2446,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Offline reading, searching, and composing with later sync is a fair question for an email client like Missive, so the axis applies. Nothing in the pack documents offline access, a local mail cache, offline search, or queued sends that sync on reconnect. Local attachment downloads and community remarks that it feels like a snappy desktop app say nothing about working offline.",
+    "rationale": "Offline reading, searching and composing is a fair axis for an email client like Missive, but nothing in the evidence pack covers offline access, local caching of mail, or queued changes that sync on reconnect. The closest items, local attachment downloads and a 'snappy desktop app' comment, do not establish offline capability.",
     "evidenceIds": []
   },
   {
@@ -2435,7 +2455,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence pack never mentions IMAP, JMAP, or SMTP access, nor any standards-based export format such as mbox or EML. What it does document is a proprietary REST API, webhooks, and an MCP server. These are vendor-specific integration surfaces, not open mail protocols or portable export formats. The axis applies to an email client, so the lack of evidence yields \"none\".",
+    "rationale": "Missive is an email client, so open-protocol access and standards-based export are a fair axis, but the evidence pack never mentions IMAP, JMAP or SMTP access to mail held in Missive. It also never mentions an mbox/EML-style export. The only programmatic access documented is a proprietary REST API and an MCP server, which do not satisfy the open-protocols-and-standard-formats requirement, so the verdict is none.",
     "evidenceIds": []
   },
   {
@@ -2444,14 +2464,16 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Missive documents a REST API, webhooks, custom channels and UI integrations, and an official MCP server that lets external AI apps act on conversations, contacts, calendar and drafts. Drafts can be created through the API and MCP server, and the pricing page lists API & MCP access. Nothing in the evidence claims UI-API parity, and many UI features (snoozing, canned responses, rules, team chat, assignment, analytics) have no documented API equivalent. MCP coverage appears limited to a subset of objects. Missing for 10: an explicit parity statement or endpoint coverage of UI features like rules, snoozing, canned responses, chat and assignment; a published OpenAPI spec (all probes returned 404); independent or hands-on corroboration of API breadth.",
+    "rationale": "Missive documents a REST API whose endpoints cover analytics, conversations, drafts, posts, contacts and labels. It also offers webhooks and custom channels, plus an official MCP server that lets agents act on conversations, contacts, calendar and drafts. Nothing in the evidence claims or shows that the API matches everything the UI can do, and rate limits are tight (5 concurrent requests, about 1 req/s sustained over 15 minutes). Missing for 10: an explicit API/UI parity claim or a coverage map for UI features like rules, snoozing, canned responses, team chat and settings, a machine-readable OpenAPI spec, and independent hands-on confirmation of parity.",
     "evidenceIds": [
+      "missive-supp-endpoints-reference",
       "missive-docs-31",
       "missive-docs-15",
       "missive-docs-20",
+      "missive-probe-4",
       "missive-docs-50",
       "missive-docs-47",
-      "missive-probe-4",
+      "missive-supp-rate-limits",
       "missive-probe-3"
     ]
   },
@@ -2461,14 +2483,13 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "No documented export feature or open export format appears in the evidence. The only possible exit paths are workarounds: programmatic access to conversations, contacts, calendar and drafts through the API and the official MCP server, contacts syncing with Office 365/Google, and attachments downloading locally. Missing for 10: a documented bulk or full-account export tool, named open export formats (e.g. mbox/EML/CSV/vCard), coverage of chats, comments and team data, offboarding or account-deletion guidance, and independent hands-on confirmation that data can be fully extracted.",
+    "rationale": "The evidence documents no first-party export or offboarding feature. The only route out is the REST API, which exposes conversations, drafts, posts, contacts, labels and analytics as JSON, plus the MCP server. That would make extraction a DIY job, throttled by documented rate limits (5 concurrent requests, 900 per 15 minutes). Missing for 10: documented bulk/self-serve export, standard archive formats (e.g. MBOX/EML/vCard/CSV), coverage guarantees for all data types (chats, tasks, audit logs, attachments), and any independent confirmation that a full exit is feasible.",
     "evidenceIds": [
-      "missive-docs-20",
-      "missive-docs-47",
-      "missive-probe-4",
+      "missive-supp-endpoints-reference",
+      "missive-supp-rate-limits",
       "missive-docs-31",
-      "missive-docs-23",
-      "missive-docs-5"
+      "missive-docs-47",
+      "missive-probe-4"
     ]
   },
   {
@@ -2477,7 +2498,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Source availability is a fair axis for any software product, but nothing in the evidence shows Missive publishing its source under an open license or offering a public repository. The REST API and MCP server are integration surfaces, not source access.",
+    "rationale": "Whether source code is published under an open license is a fair question for any software product, including a SaaS team inbox, so the axis applies. The evidence pack covers REST API docs, MCP integrations and features, but nothing indicates Missive's source is public or openly licensed.",
     "evidenceIds": []
   },
   {
@@ -2486,7 +2507,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Self-hosting is a fair question for a collaborative email and inbox product, so the axis applies. Nothing in the evidence pack documents a self-hosted or on-premises deployment option. One community report notes that user mail data routes through Missive's own servers, which points to a vendor-hosted SaaS model.",
+    "rationale": "Self-hosting is a fair question for a collaborative email/inbox SaaS like Missive, so the axis applies. Nothing in the pack documents a self-hosted or on-premises deployment option; the material covers only the hosted service, its REST API and its MCP integrations. A community thread notes that user mail routes through Missive's own servers, which is consistent with a hosted-only model.",
     "evidenceIds": []
   },
   {
@@ -2495,7 +2516,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Data residency and region selection are a fair question for a hosted SaaS email and collaboration product like Missive, so the axis applies. Nothing in the evidence pack documents choosing a storage region. The pricing page's 'IP restrictions / Secure access by location' controls who can log in by location, not where data is stored. The community note confirms only that mail data routes through Missive's servers, not any choice of where it lives.",
+    "rationale": "Choosing a data storage region is a fair question for a SaaS team-inbox product like Missive, but the evidence pack never mentions data residency, regional hosting, or region selection. The 'IP restrictions / Secure access by location' items concern restricting who can log in by IP, not where data is stored, so they do not count toward this story.",
     "evidenceIds": []
   },
   {
@@ -2504,7 +2525,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence pack has no statement about whether customer data is used for AI model training, and no opt-out or no-training commitment. The only related item says the assistant runs on the user's own Anthropic, OpenAI or Gemini API key. That does not establish any training-prevention control or policy from Missive itself.",
+    "rationale": "Training-data use is a fair privacy question for an email and collaboration SaaS with built-in AI features, so the axis applies. The pack contains no AI-training policy, opt-out control, or no-training commitment. The only nearby item says the assistant runs on the user's own Anthropic, OpenAI, or Gemini API key, which does not say how data is or isn't used for model training.",
     "evidenceIds": []
   },
   {
@@ -2513,7 +2534,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Data retention and deletion controls are a fair question for a collaborative email SaaS, but the evidence pack never documents retention policies, data deletion, purge controls, or retention settings for AI or MCP-accessed data. The closest items, auto-archive lists, activity logging and MCP permission scopes, concern workflow and access, not retention or deletion.",
+    "rationale": "Data retention and deletion controls are a fair axis for a collaborative email and inbox platform. However, the evidence pack contains no documentation of retention policies, data deletion, purge settings, or account or data erasure. The nearest items are auto-archive lists (missive-docs-44) and action logging (missive-docs-9), and neither is a retention or deletion control.",
     "evidenceIds": []
   },
   {
@@ -2522,7 +2543,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Opting out of telemetry is a fair question for a SaaS email and collaboration client like Missive, so the axis applies. However, nothing in the evidence pack mentions telemetry settings, usage-tracking controls, or an opt-out mechanism. The 'every action is logged' audit feature and the BYO API key for the assistant are not a user-facing telemetry opt-out.",
+    "rationale": "Telemetry and usage-tracking opt-out is a fair privacy question for a collaborative email client like Missive, so the axis applies. The evidence pack never mentions telemetry, usage analytics collection, or any opt-out control. Action logging and team analytics describe team-facing features, not user-controllable tracking.",
     "evidenceIds": []
   },
   {
@@ -2531,7 +2552,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Missive is an email client, so open and read tracking is a fair axis to judge it on. However, nothing in the evidence pack mentions read receipts, open tracking, or open timestamps. The activity-log claim covers internal team actions, not whether recipients opened a message.",
+    "rationale": "Open/read tracking is a fair question for an email client like Missive, so the axis applies. Nothing in the evidence pack mentions read receipts, open tracking, or recipient open notifications. The analytics, reporting, and activity-log items cover team performance and internal actions, not whether recipients opened a message.",
     "evidenceIds": []
   },
   {
@@ -2540,7 +2561,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Missive is an email client, so scheduled sending and undo-send apply. The evidence pack documents only snoozing, which defers incoming conversations rather than scheduling outgoing ones. Nothing in the pack shows a send-later or undo-send grace window.",
+    "rationale": "Scheduling a send and undoing a send are fair questions for an email client like Missive, so the axis applies. The evidence pack only documents snoozing incoming conversations, canned responses and collaborative composing. Nothing shows a send-later or undo-send grace window, and snoozing defers received mail rather than scheduling outgoing mail.",
     "evidenceIds": []
   },
   {
@@ -2549,7 +2570,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Self-hosting is a fair question for an email app, so the axis applies. The pack has no evidence of a self-hosted deployment option. A community report indicates the opposite: mail routes through Missive's own servers, so the pipeline is not under the user's control.",
+    "rationale": "Self-hosting is a fair question for an email client, but nothing in the pack shows a self-hosted or on-premises deployment of Missive. The available evidence points the other way: a community thread notes that mail routes through Missive's own servers, which suggests a hosted-only pipeline.",
     "evidenceIds": []
   },
   {
@@ -2558,7 +2579,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Sharing availability or inserting bookable meeting slots is a fair capability for an email client like Missive, so the axis applies. The pack never shows an availability-sharing or scheduling-link feature in the composer. The only calendar mentions are that external AI apps can act on your calendar via MCP and that contacts sync with Office 365/Google, and neither shows availability or bookable times being inserted into an email.",
+    "rationale": "Sharing availability or inserting bookable meeting times is a fair capability for an email client like Missive, so the axis applies. The evidence pack never documents an availability-sharing or booking-link feature in the composer. The only calendar-related item is that external AI apps can act on your calendar via MCP, which is not this capability.",
     "evidenceIds": []
   },
   {
@@ -2588,12 +2609,11 @@
     "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Missive documents canned responses (templates) that you write once, insert with a few keystrokes, and share with a team or the whole company (supp-4). A variables templating engine supports dynamic content such as the recipient's name (supp-5), and the changelog confirms {{ user.name }} and {{ user.email }} variables resolve in drafts (docs-50). Missing for 10: any evidence that templates can include attachments, and independent or hands-on corroboration of template insertion.",
+    "rationale": "Missive documents canned responses (templates) that are written once, inserted with a few keystrokes, and shareable with a team or the whole company. It also documents a variables templating engine for dynamic content such as the recipient's name, and the changelog confirms {{ user.name }}/{{ user.email }} variables resolve in the composer. missing for 10: evidence that templates can carry attachments, detail on the insertion workflow (e.g., shortcut or command bar), independent or hands-on corroboration.",
     "evidenceIds": [
       "missive-docs-supp-4",
       "missive-docs-supp-5",
-      "missive-docs-50",
-      "missive-docs-45"
+      "missive-docs-50"
     ]
   },
   {
@@ -2602,7 +2622,7 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Missive's docs show snoozing hides a conversation until a chosen time and then returns it to the Inbox, and it can be triggered by swipe or the ⌘/Ctrl+K command bar. That covers the snooze half of the story. Nothing in the pack shows a follow-up reminder that resurfaces a thread only if nobody replies; snooze is purely time-based. Missing for 10: reply-conditional follow-up reminders, any evidence of resurfacing on no-reply, and independent or hands-on corroboration.",
+    "rationale": "Missive's docs describe snoozing, which hides a conversation until a chosen time and then returns it to the Inbox. Snooze can be triggered by swipe or from the ⌘/Ctrl+K command bar, so the snooze half of the story is clearly delivered. Nothing shows a conditional follow-up reminder that brings a thread back only if nobody replies; snooze resurfaces on a timer whether or not anyone answered. Missing for 10: reply-conditional follow-up reminders, snooze options such as presets or custom times, independent or hands-on corroboration.",
     "evidenceIds": [
       "missive-docs-supp-1",
       "missive-docs-supp-2"
@@ -2614,14 +2634,14 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "Missive has building blocks that could approximate focused streams: team inboxes and dedicated team spaces give a team stream, up to 1000 automation rules and labels can sort mail, and an agent can triage new conversations before you look at them. None of the evidence shows a dedicated split-inbox or priority-stream view, so the power user would have to assemble this from rules and labels. Missing for 10: a documented split-inbox or stream feature, automatic categories for important, newsletters and calendar invites, priority-ordered triage views, and independent or hands-on corroboration.",
+    "rationale": "The evidence shows building blocks rather than a documented split-inbox feature. There are automation rules (up to 1000), labels you can search within, shared team inboxes and tailored team spaces, plus an optional agent that triages new conversations before you see them. Nothing shows the inbox being divided into priority streams such as important, newsletters or calendar invites, so the story is only implied through rule- and label-based workarounds. Missing for 10: a documented split-inbox or focused-streams view, built-in categories for newsletters, calendar invites or important mail, priority-ordered triage across streams, and independent or hands-on corroboration.",
     "evidenceIds": [
+      "missive-docs-25",
+      "missive-docs-36",
+      "missive-docs-supp-3",
+      "missive-docs-46",
       "missive-docs-32",
       "missive-docs-19",
-      "missive-docs-25",
-      "missive-docs-11",
-      "missive-docs-46",
-      "missive-docs-supp-3",
       "missive-docs-22"
     ]
   },
@@ -2631,7 +2651,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Tracking protection is a fair question for an email client, so the axis applies. Nothing in the pack shows Missive blocking read-receipt or tracking pixels, by default or otherwise. The only data-handling material is one community thread noting that mail routes through Missive's servers over TLS, which is not documented transparency about how mail data is used.",
+    "rationale": "Missive is an email client, so tracking protection and mail-data transparency are fair questions for it. The evidence pack has no documentation of blocking read-tracking pixels, remote-image proxying, or a privacy or data-handling policy. The only related item is a community thread noting that mail routes through Missive's servers over TLS, which falls well short of first-party transparency about data use.",
     "evidenceIds": []
   },
   {

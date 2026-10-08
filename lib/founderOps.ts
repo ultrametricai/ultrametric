@@ -296,7 +296,7 @@ export function validateFounderOps(asOf?: Date): string[] {
     }
   }
 
-  const coverageDoc = read(path.join(ROOT, 'catalog/coverage.json'))
+  const coverageDoc = read(path.join(ROOT, 'coverage/coverage.json'))
   const coverage = isObj(coverageDoc) && Array.isArray(coverageDoc.coverage) ? coverageDoc.coverage : []
   const covered = new Set<string>()
   for (const itemValue of coverage) {
