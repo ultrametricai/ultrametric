@@ -67,8 +67,8 @@ describe('existing judged selection compatibility', () => {
     // now only the agencies sharing its wired agency's committed country+area tags, so the
     // 2817 positive / 185 zero cells of the Phase 2 bring-up (2026-10-07, +31 judged agencies;
     // 2811 base + 6 sw_011 function cells) drop the foreign/wrong-area gov associations.
-    expect(positiveCount).toBe(2450)
-    expect(zeroCount).toBe(134)
+    expect(positiveCount).toBe(2491)
+    expect(zeroCount).toBe(137)
     expect(extraArena).toBe(93)
   })
 

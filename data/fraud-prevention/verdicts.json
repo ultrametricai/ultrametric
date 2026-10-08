@@ -1,5 +1,672 @@
 [
   {
+    "productId": "adyen-risk",
+    "storyId": "account-abuse-coverage",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Every documented scoring and decision flow evaluates payment transactions: block, allow or review the transaction, risk profiles applied to payments, ML that scores transactions, and 3DS routing. Nothing in the evidence shows account takeover, fake account creation, or promo/policy abuse being scored or managed. The optional data-collection SDK on other site pages and Shopper DNA network linking only feed transaction risk, so they do not show non-checkout event protection.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "adyen-risk",
+    "storyId": "agent-buyer-detection",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Telling malicious bots apart from legitimate AI buying agents is a fair question for a fraud and risk engine, so the axis applies. The evidence covers only general ML risk scoring, custom rules, block/allow lists and shopper DNA. Nothing addresses agent identification, verified-agent signals or agentic-commerce traffic handling, so agent-driven purchases could be blocked like any other bot.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "adyen-risk",
+    "storyId": "agent-drives-rules",
+    "verdict": "partial",
+    "quality": 4,
+    "confidence": "medium",
+    "rationale": "An agent could update block and trust lists programmatically through the Referrals API, and Adyen ships an official MCP server for LLM clients, though the evidence does not show that the MCP server exposes risk tools. Risk profiles and custom rules appear to be managed in the Customer Area, and risk posture is only visible per transaction via webhooks or payment responses. Missing for 10: an API or MCP tool to read risk profiles and rule configuration, programmatic creation or editing of rules (e.g. velocity rules), human approval gates for agent-proposed changes (case management covers transaction review, not rule changes), and evidence that the MCP server covers risk management.",
+    "evidenceIds": [
+      "adyen-risk-docs-13",
+      "adyen-risk-docs-17",
+      "adyen-risk-docs-16",
+      "adyen-risk-docs-4",
+      "adyen-risk-docs-6",
+      "adyen-risk-docs-9",
+      "adyen-risk-probe-4"
+    ]
+  },
+  {
+    "productId": "adyen-risk",
+    "storyId": "agent-triages-reviews",
+    "verdict": "partial",
+    "quality": 4,
+    "confidence": "low",
+    "rationale": "Adyen has a review outcome and case management, but the review step is documented only as a human working in the Customer Area UI (docs-9). An agent could see which payments were sent to case management, and which risk rules triggered, through webhooks and the payment response (docs-16). From that it could build its own flagged-case feed and context, then recommend a decision for a human to confirm in the Customer Area. An official MCP server exists (docs-17, probe-4), but nothing shows it exposes case-management or review-queue data. Missing for 10: an API or MCP tool to list and pull review-queue cases with full context, a programmatic way to record or propose an accept/reject recommendation, and evidence the MCP server covers risk cases.",
+    "evidenceIds": [
+      "adyen-risk-docs-1",
+      "adyen-risk-docs-9",
+      "adyen-risk-docs-16",
+      "adyen-risk-docs-17",
+      "adyen-risk-probe-4"
+    ]
+  },
+  {
+    "productId": "adyen-risk",
+    "storyId": "agentic-agent-docs",
+    "verdict": "full",
+    "quality": 9,
+    "confidence": "high",
+    "rationale": "Hands-on probes confirm a live llms.txt at docs.adyen.com that describes Adyen's developer and merchant documentation. Risk-management pages are also served as clean markdown (.md), including the risk overview, profiles, rules, lists and case management, so an agent can ingest them directly. Missing for 10: no evidence of a risk-specific section or llms-full.txt variant in the llms.txt contents, and no independent or community corroboration of agents using these docs in practice.",
+    "evidenceIds": [
+      "adyen-risk-probe-1",
+      "adyen-risk-probe-2",
+      "adyen-risk-docs-3",
+      "adyen-risk-docs-4",
+      "adyen-risk-docs-7"
+    ]
+  },
+  {
+    "productId": "adyen-risk",
+    "storyId": "agentic-ai-insights",
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "medium",
+    "rationale": "Inside the product, the AI's output is per-transaction fraud scoring: the machine-learning risk engine and Protect's AI score transactions and drive block/allow/review decisions. Shopper DNA surfaces networks linking shoppers, which is a data insight, but it is not described as AI-generated. The MCP server lets users query with natural language, but only through an external LLM client, not inside the product. Missing for 10: in-product AI-generated insights or summaries about the merchant's own data, AI suggestions such as recommended rule changes, and any hands-on or independent corroboration.",
+    "evidenceIds": [
+      "adyen-risk-docs-5",
+      "adyen-risk-docs-20",
+      "adyen-risk-docs-11",
+      "adyen-risk-docs-1"
+    ]
+  },
+  {
+    "productId": "adyen-risk",
+    "storyId": "agentic-autonomous-automation",
+    "verdict": "partial",
+    "quality": 6,
+    "confidence": "medium",
+    "rationale": "Users can configure risk profiles, custom rules, risk lists and dynamic 3DS rules that the Protect engine then applies autonomously to every transaction, deciding to block, allow or review without human involvement. It also pushes results via webhooks, and the Referrals API can automate list uploads. These automations are limited to fraud-rule decisioning, and the evidence shows no general-purpose automation builder, scheduled jobs or agentic background workflows; reviewed cases still require a human in the Customer Area. Missing for 10: general or custom background automation and workflow builder, scheduled or triggered jobs beyond transaction evaluation, autonomous agent-driven actions, independent hands-on corroboration.",
+    "evidenceIds": [
+      "adyen-risk-docs-1",
+      "adyen-risk-docs-4",
+      "adyen-risk-docs-6",
+      "adyen-risk-docs-10",
+      "adyen-risk-docs-13",
+      "adyen-risk-docs-16",
+      "adyen-risk-docs-21",
+      "adyen-risk-docs-9"
+    ]
+  },
+  {
+    "productId": "adyen-risk",
+    "storyId": "agentic-builtin-assistant",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "A built-in AI assistant is a fair question for a SaaS risk-management platform, so the axis applies. Nothing in the pack shows an in-product assistant you can delegate tasks to. The ML risk scoring (adyen-risk-docs-5, adyen-risk-docs-20) is automated fraud evaluation, not a task-delegation assistant. The MCP server (adyen-risk-docs-17) lets you use your own external LLM client, which is not a built-in assistant.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "adyen-risk",
+    "storyId": "agentic-headless",
+    "verdict": "partial",
+    "quality": 5,
+    "confidence": "medium",
+    "rationale": "Parts of risk management can be automated headlessly: the Referrals API automates uploading block and trust lists, the Disputes API handles retrieving and defending disputes, webhooks and payment responses carry risk outcomes, OpenAPI definitions are published, and there is an official MCP server. However, core configuration (risk settings overrides, case review) is documented through the Customer Area UI, and nothing shows CI-driven management of risk profiles or rules. missing for 10: API or infrastructure-as-code control of risk profiles, custom rules and settings; a CLI or documented CI workflow; headless case-management review; independent hands-on corroboration.",
+    "evidenceIds": [
+      "adyen-risk-docs-13",
+      "adyen-risk-docs-12",
+      "adyen-risk-docs-16",
+      "adyen-risk-docs-18",
+      "adyen-risk-docs-17",
+      "adyen-risk-gh-1",
+      "adyen-risk-docs-8",
+      "adyen-risk-docs-9"
+    ]
+  },
+  {
+    "productId": "adyen-risk",
+    "storyId": "agentic-mcp-client",
+    "verdict": "na",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Adyen Risk Management is a payments fraud and risk engine, not an AI agent or LLM host. Plugging external MCP servers into it as a client is outside this product type's role. The documented Adyen MCP server (adyen-risk-docs-17, adyen-risk-probe-4) is server-side, lets external LLM clients drive Adyen, and does not count toward this client-side story.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "adyen-risk",
+    "storyId": "agentic-mcp-server",
+    "verdict": "full",
+    "quality": 7,
+    "confidence": "medium",
+    "rationale": "Adyen documents an official MCP server that lets users connect their chosen LLM client and work in natural language, and a probe confirms the documentation page exists. However, it is a platform-wide Adyen MCP server, and the evidence does not show which tools it exposes or whether risk management operations are among them. Missing for 10: evidence of MCP tool coverage for risk management functions (risk profiles, rules, lists, case management), setup/authentication details, independent or hands-on corroboration.",
+    "evidenceIds": [
+      "adyen-risk-docs-17",
+      "adyen-risk-probe-4"
+    ]
+  },
+  {
+    "productId": "adyen-risk",
+    "storyId": "agentic-nl-commands",
+    "verdict": "partial",
+    "quality": 5,
+    "confidence": "medium",
+    "rationale": "Adyen documents an official MCP server that lets users work through natural language from their chosen LLM client, which gives an AI-native path to operating Adyen. Nothing in the evidence shows which risk-management operations that server exposes (risk profiles, custom rules, risk lists, case review), and there is no in-product natural-language interface. Missing for 10: evidence that the MCP tools cover risk-management actions, a native natural-language interface in Customer Area, and independent or hands-on corroboration.",
+    "evidenceIds": [
+      "adyen-risk-docs-17",
+      "adyen-risk-probe-4"
+    ]
+  },
+  {
+    "productId": "adyen-risk",
+    "storyId": "agentic-official-cli",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "An official CLI is a reasonable thing to ask of a SaaS payments and risk platform, so the axis applies. The evidence pack never mentions an Adyen CLI. The closest items are an MCP server, Postman collections for the OpenAPI definitions and REST APIs (Referrals, Disputes), but none of these is a command-line tool, so they cannot be credited here.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "adyen-risk",
+    "storyId": "agentic-public-api",
+    "verdict": "partial",
+    "quality": 6,
+    "confidence": "medium",
+    "rationale": "Adyen documents public APIs that touch risk management. The Referrals API automates block and trust list uploads, the Disputes API retrieves, defends or accepts disputes, risk-rule outcomes come back in payment responses and webhooks, and OpenAPI definitions are published on GitHub. However, the core workflows are documented as Customer Area UI actions: configuring risk profiles and settings, and reviewing cases (accept or reject). missing for 10: documented API for creating and managing risk profiles and custom rules, API-driven case management review, and any API for experiments or backtesting.",
+    "evidenceIds": [
+      "adyen-risk-docs-12",
+      "adyen-risk-docs-13",
+      "adyen-risk-docs-16",
+      "adyen-risk-docs-18",
+      "adyen-risk-gh-1",
+      "adyen-risk-docs-8",
+      "adyen-risk-docs-9"
+    ]
+  },
+  {
+    "productId": "adyen-risk",
+    "storyId": "agentic-scoped-keys",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Adyen Risk Management is an API-driven SaaS platform, so issuing scoped, least-privilege API credentials for an agent is a fair question to ask of it. However, nothing in the evidence pack covers API credential creation, roles, permission scoping, or restricting what an agent's key can do. The MCP server and API docs show agent access exists, but they say nothing about credential scoping.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "adyen-risk",
+    "storyId": "agentic-sdks",
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "medium",
+    "rationale": "The only official SDK in the evidence is a client-side fraud data collection SDK for website pages (adyen-risk-docs-15). Programmatic risk work instead goes through REST APIs (Referrals and Disputes APIs) and the OpenAPI definitions in the official adyen-openapi GitHub repo, which points developers to Postman rather than language SDKs. missing for 10: official server-side language SDKs/client libraries covering the risk APIs (Referrals, Disputes, risk settings), SDK documentation and code samples, independent or hands-on corroboration of SDK-based integration.",
+    "evidenceIds": [
+      "adyen-risk-docs-15",
+      "adyen-risk-gh-1",
+      "adyen-risk-docs-13",
+      "adyen-risk-docs-12"
+    ]
+  },
+  {
+    "productId": "adyen-risk",
+    "storyId": "agentic-webhooks",
+    "verdict": "full",
+    "quality": 7,
+    "confidence": "medium",
+    "rationale": "Adyen documents webhooks so integrators can avoid polling for asynchronous status changes, and the risk docs say risk information, such as case-management routing and triggered risk rules, can be included in those webhooks. That covers the core of subscribing to risk-related events. Missing for 10: documentation of how to subscribe or configure endpoints and select event types, webhook security/verification details, and independent or hands-on corroboration.",
+    "evidenceIds": [
+      "adyen-risk-docs-18",
+      "adyen-risk-docs-16"
+    ]
+  },
+  {
+    "productId": "adyen-risk",
+    "storyId": "ai-fraud-analyst",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Nothing in the evidence shows an AI assistant built into the Adyen Customer Area that answers natural-language questions over fraud data, drafts rules, or summarizes investigations. The MCP server lets you query in natural language through your own external LLM client, which is a different, bring-your-own story. The ML risk scoring is a decisioning engine, not an analyst assistant. A built-in assistant is a plausible capability for a fraud SaaS, so the axis applies and the verdict is none.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "adyen-risk",
+    "storyId": "api-interactive-docs",
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "medium",
+    "rationale": "The only relevant evidence is Adyen's official OpenAPI repository, which recommends importing the API definition into Postman to build runnable requests. That gives you runnable calls only through a third-party tool, not a first-party interactive reference. The probe also found no OpenAPI spec at the standard docs paths. Missing for 10: a documented interactive API explorer with in-browser runnable examples, risk-API-specific reference pages with try-it functionality, and hands-on or independent corroboration.",
+    "evidenceIds": [
+      "adyen-risk-gh-1",
+      "adyen-risk-probe-3"
+    ]
+  },
+  {
+    "productId": "adyen-risk",
+    "storyId": "api-machine-spec",
+    "verdict": "full",
+    "quality": 7,
+    "confidence": "medium",
+    "rationale": "Adyen publishes an official adyen-openapi GitHub repository and recommends importing the API definition into Postman, which gives developers a downloadable, machine-readable spec. The 404s at guessed docs.adyen.com OpenAPI paths only show the spec is not hosted at those URLs; they do not contradict the GitHub distribution. Missing for 10: explicit evidence that the repo covers the risk-specific APIs (Disputes API, Referrals API), in-depth first-party docs on spec versioning and download, and independent hands-on corroboration.",
+    "evidenceIds": [
+      "adyen-risk-gh-1",
+      "adyen-risk-docs-12",
+      "adyen-risk-docs-13",
+      "adyen-risk-probe-3"
+    ]
+  },
+  {
+    "productId": "adyen-risk",
+    "storyId": "api-sandbox",
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "The evidence never mentions a dedicated sandbox or test environment for Adyen Risk Management. The closest capability is Risk Rule Backtesting, which lets you test and optimize risk rules against historical data before going live. That avoids affecting live decisions, but it still runs on production transaction history rather than an isolated sandbox. Missing for 10: a documented sandbox/test environment, test credentials or endpoints for the risk APIs, isolation from production data, and any hands-on or independent corroboration.",
+    "evidenceIds": [
+      "adyen-risk-docs-19"
+    ]
+  },
+  {
+    "productId": "adyen-risk",
+    "storyId": "api-versioning-policy",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Versioning and deprecation are fair questions for an API-driven risk product. The evidence shows Adyen Risk Management exposes APIs (Disputes API, Referrals API) and publishes OpenAPI definitions on GitHub. However, no item mentions API version numbering, version lifecycle, or a documented deprecation policy, so the capability is unevidenced.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "adyen-risk",
+    "storyId": "automation-bulk-operations",
+    "verdict": "partial",
+    "quality": 5,
+    "confidence": "medium",
+    "rationale": "The Referrals API automates uploading whole lists of referrals and referral details to block and trust lists (adyen-risk-docs-13, adyen-risk-docs-7), which is bulk operation on one item type. The documented case-management flow has a reviewer accept or reject individual transactions, with no batch action shown (adyen-risk-docs-9). Missing for 10: bulk actions beyond risk-list uploads (e.g., batch case review or batch rule/profile edits), documented batch limits or semantics, and independent or hands-on corroboration.",
+    "evidenceIds": [
+      "adyen-risk-docs-13",
+      "adyen-risk-docs-7",
+      "adyen-risk-docs-9"
+    ]
+  },
+  {
+    "productId": "adyen-risk",
+    "storyId": "automation-rules-engine",
+    "verdict": "full",
+    "quality": 7,
+    "confidence": "medium",
+    "rationale": "You can build custom risk rules, grouped into risk profiles, that are evaluated on every transaction and automatically block, allow, or send it to review (adyen-risk-docs-6, -4, -1, -9). Dynamic 3D Secure rules decide routing and challenges, rule triggers are reported in webhooks and payment responses, and rules can be backtested before going live (adyen-risk-docs-10, -16, -19). Missing for 10: actions are limited to risk decisions on payment events rather than general event-to-action automation, there is no evidence of defining rules programmatically via API or MCP, and there is no independent or hands-on corroboration.",
+    "evidenceIds": [
+      "adyen-risk-docs-1",
+      "adyen-risk-docs-4",
+      "adyen-risk-docs-6",
+      "adyen-risk-docs-9",
+      "adyen-risk-docs-10",
+      "adyen-risk-docs-16",
+      "adyen-risk-docs-19"
+    ]
+  },
+  {
+    "productId": "adyen-risk",
+    "storyId": "automation-scheduled-jobs",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Scheduled or recurring workflows are a plausible capability for a risk-management SaaS platform, so the axis applies. However, nothing in the evidence describes scheduling recurring jobs. The Referrals API (adyen-risk-docs-13) and webhooks (adyen-risk-docs-18) support API-driven and event-driven automation, not time-based recurring schedules, so they do not count toward this story.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "adyen-risk",
+    "storyId": "automation-versioned-workflows",
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "Risk rules and profiles are the product's automations, so this axis applies. The evidence only shows adjacent pre-deployment review: you can backtest rules against historical data before going live, A/B test two risk profiles, and manage multiple risk profiles, which might let you switch back to an earlier configuration. Missing for 10: explicit versioning or change history of rules/profiles, a documented rollback mechanism, and a change review/approval workflow for automation edits.",
+    "evidenceIds": [
+      "adyen-risk-docs-19",
+      "adyen-risk-docs-14",
+      "adyen-risk-docs-4"
+    ]
+  },
+  {
+    "productId": "adyen-risk",
+    "storyId": "chargeback-guarantee",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "A chargeback guarantee is a fair question for a fraud and risk-management product, so the axis applies. The pack shows only risk scoring, rules, case review, dynamic 3D Secure routing, and a Disputes API for defending or accepting disputes. Nothing shows a vendor-backed guarantee that reimburses approved-then-disputed orders, or any coverage terms.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "adyen-risk",
+    "storyId": "custom-rules-authoring",
+    "verdict": "partial",
+    "quality": 5,
+    "confidence": "medium",
+    "rationale": "Adyen documents building custom risk rules around business-specific fraud risks. Risk evaluation ends in a block, allow, or review action, with review cases handled by reviewers in the Customer Area. ML scoring and block/allow risk lists exist as separate profile components, but no evidence shows a single custom rule combining model scores, velocity counters, list matches, and attributes. Missing for 10: velocity counters as rule inputs, evidence that model scores and list matches can be combined in custom rule logic, rule-authoring syntax or condition details, and independent hands-on corroboration.",
+    "evidenceIds": [
+      "adyen-risk-docs-6",
+      "adyen-risk-docs-1",
+      "adyen-risk-docs-5",
+      "adyen-risk-docs-7",
+      "adyen-risk-docs-4",
+      "adyen-risk-docs-9"
+    ]
+  },
+  {
+    "productId": "adyen-risk",
+    "storyId": "custom-signals-enrichment",
+    "verdict": "partial",
+    "quality": 5,
+    "confidence": "medium",
+    "rationale": "Merchants can shape risk decisions with their own data through custom risk rules built around their unique fraud risks (docs-6), risk lists based on 'your own data' (docs-7), and the Referrals API for uploading block/trust lists (docs-13). Device data is gathered through Adyen's own data collection SDK (docs-15). However, the ML scoring is described as running on Adyen's global transaction data (docs-5, docs-20), and nothing shows you can feed your own signals into the model itself. missing for 10: ability to submit custom metadata or behavioral signals as model features, ingestion of merchant-supplied device fingerprints, documentation on how merchant data affects the ML score, independent corroboration.",
+    "evidenceIds": [
+      "adyen-risk-docs-6",
+      "adyen-risk-docs-7",
+      "adyen-risk-docs-13",
+      "adyen-risk-docs-15",
+      "adyen-risk-docs-5",
+      "adyen-risk-docs-20"
+    ]
+  },
+  {
+    "productId": "adyen-risk",
+    "storyId": "data-residency-controls",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Data residency and retention controls are a fair question for a SaaS fraud and risk platform, so the axis applies. Nothing in the evidence pack covers regional data residency options, configurable retention periods, or privacy-review documentation for fraud data. The docs describe risk rules, lists, case management, ML scoring and webhooks, but never where data is stored or how long it is kept.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "adyen-risk",
+    "storyId": "dispute-evidence-automation",
+    "verdict": "partial",
+    "quality": 4,
+    "confidence": "medium",
+    "rationale": "Adyen's Disputes API lets you retrieve dispute information, defend or accept disputes, and upload defense documents. That makes programmatic submission to the issuer possible, and webhooks can trigger the workflow without polling. However, there is no evidence that Adyen compiles evidence from order, delivery, or session data itself, so the merchant must build that automation. Missing for 10: automatic evidence compilation from order/delivery/session data, a managed auto-representment workflow, and independent or hands-on corroboration.",
+    "evidenceIds": [
+      "adyen-risk-docs-12",
+      "adyen-risk-docs-18"
+    ]
+  },
+  {
+    "productId": "adyen-risk",
+    "storyId": "fraud-outcome-reporting",
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "The evidence only touches the story indirectly. Dispute information can be retrieved via the Disputes API, so a team could compute and export dispute data themselves. Risk experiments A/B test profiles to see which 'performs better', which hints at approval or fraud comparison metrics, and case management implies a review queue exists. None of this documents a finance-facing metrics view or export. Missing for 10: a documented dashboard or report showing dispute rate, false-positive rate, approval-rate lift and review-workload metrics; a board-ready export (CSV/PDF/scheduled reports); and independent or hands-on corroboration of reporting quality.",
+    "evidenceIds": [
+      "adyen-risk-docs-12",
+      "adyen-risk-docs-14",
+      "adyen-risk-docs-9"
+    ]
+  },
+  {
+    "productId": "adyen-risk",
+    "storyId": "lists-velocity-management",
+    "verdict": "partial",
+    "quality": 6,
+    "confidence": "medium",
+    "rationale": "Adyen documents risk lists (block and allow lists, or referrals) built from Adyen, merchant, or third-party data, plus custom lists and custom rules. A Referrals API automates uploading entries to block and trust lists, so list management is covered both in the risk profile configuration and programmatically. Velocity limits are never explicitly evidenced, and the specific list attributes (emails, cards, devices, IPs) are not enumerated. missing for 10: explicit velocity-limit rules, documented list types for email/card/device/IP, explicit dashboard list-management workflow, independent corroboration",
+    "evidenceIds": [
+      "adyen-risk-docs-7",
+      "adyen-risk-docs-3",
+      "adyen-risk-docs-13",
+      "adyen-risk-docs-6",
+      "adyen-risk-docs-4",
+      "adyen-risk-docs-8"
+    ]
+  },
+  {
+    "productId": "adyen-risk",
+    "storyId": "manual-review-queue",
+    "verdict": "partial",
+    "quality": 5,
+    "confidence": "medium",
+    "rationale": "Adyen documents a review outcome that routes transactions into case management, where a reviewer opens the case in the Customer Area and accepts or rejects it (docs-1, docs-9). That covers the review-queue core. Triggered risk rules are exposed in webhooks and payment responses (docs-16), and Shopper DNA links related shoppers (docs-11), but neither is shown to appear inside the review case view. Missing for 10: evidence that the case view shows customer history, triggered signals and similar or linked cases in one place, plus tools for consistent decisions (e.g. guidance or reason codes), and independent or hands-on corroboration of the reviewer experience.",
+    "evidenceIds": [
+      "adyen-risk-docs-1",
+      "adyen-risk-docs-9",
+      "adyen-risk-docs-16",
+      "adyen-risk-docs-11"
+    ]
+  },
+  {
+    "productId": "adyen-risk",
+    "storyId": "model-performance-visibility",
+    "verdict": "partial",
+    "quality": 5,
+    "confidence": "medium",
+    "rationale": "Adyen documents risk experiments that A/B test two risk profiles to see which performs better, and markets rule backtesting against historical data before go-live. Together these cover pre-deployment evaluation of rules, but not explicit model metrics or true shadow mode. missing for 10: explicit precision/recall (or equivalent model-performance) metrics on the merchant's own traffic, shadow-mode trials that score without affecting decisions, evaluation of new ML models (not just rules or profiles), in-depth docs on experiment metrics, independent corroboration.",
+    "evidenceIds": [
+      "adyen-risk-docs-14",
+      "adyen-risk-docs-19",
+      "adyen-risk-docs-5"
+    ]
+  },
+  {
+    "productId": "adyen-risk",
+    "storyId": "network-intelligence",
+    "verdict": "full",
+    "quality": 8,
+    "confidence": "medium",
+    "rationale": "Adyen's docs say its risk engine applies machine learning to 'Adyen's global transaction data' and scores every transaction against 'trillions of global data points' to spot trusted shoppers and fraudsters 'from their very first visit'. This is network-level intelligence beyond a single merchant. It is backed by Adyen-provided risk lists and Shopper DNA linking of shopper networks. Missing for 10: explicit documentation that a specific card or identity seen at other merchants feeds a given merchant's score, and any independent or hands-on corroboration of the network effect.",
+    "evidenceIds": [
+      "adyen-risk-docs-5",
+      "adyen-risk-docs-20",
+      "adyen-risk-docs-11",
+      "adyen-risk-docs-7",
+      "adyen-risk-docs-3"
+    ]
+  },
+  {
+    "productId": "adyen-risk",
+    "storyId": "openness-api-parity",
+    "verdict": "partial",
+    "quality": 4,
+    "confidence": "medium",
+    "rationale": "Several risk functions are exposed programmatically: a Disputes API to retrieve, defend, or accept disputes and upload documents, a Referrals API that automates block/trust list uploads, risk details in webhooks and payment responses, OpenAPI definitions on GitHub, and an official MCP server. However, the docs describe core workflows as UI-only, such as overriding risk settings by switching merchant accounts in the Customer Area and reviewers accepting or rejecting cases in the Customer Area, so API parity with the UI is not shown. Missing for 10: API for risk profile and custom/ML rule configuration, API for case-management review decisions, API for risk settings overrides, API for A/B experiments and backtesting, and any documented statement of full API/UI parity.",
+    "evidenceIds": [
+      "adyen-risk-docs-12",
+      "adyen-risk-docs-13",
+      "adyen-risk-docs-16",
+      "adyen-risk-docs-17",
+      "adyen-risk-gh-1",
+      "adyen-risk-docs-8",
+      "adyen-risk-docs-9",
+      "adyen-risk-docs-4"
+    ]
+  },
+  {
+    "productId": "adyen-risk",
+    "storyId": "openness-full-export",
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "Nothing in the evidence documents a bulk data export or account-exit path. The only signs of getting data out are piecemeal: the Disputes API lets you retrieve dispute information, and webhooks and payment responses can carry risk details such as triggered rules and case-management status. Missing for 10: a documented full-data export (risk profiles, custom rules, risk lists, case history), named open export formats (e.g. CSV/JSON dumps), data-portability or offboarding guidance, and independent corroboration.",
+    "evidenceIds": [
+      "adyen-risk-docs-12",
+      "adyen-risk-docs-16",
+      "adyen-risk-docs-18"
+    ]
+  },
+  {
+    "productId": "adyen-risk",
+    "storyId": "openness-open-license",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "high",
+    "rationale": "Open-source availability is a fair question for a SaaS risk platform, so the axis applies. Nothing in the evidence shows the risk engine's source is published under an open license. The only GitHub item (adyen-openapi) contains API definitions for building requests, not the product's source code, so the verdict is none.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "adyen-risk",
+    "storyId": "openness-self-host",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Self-hosting is a fair question for a fraud/risk engine, since some risk engines ship as deployable or open-source software, so the axis applies. Nothing in the evidence shows a self-hostable deployment. The docs describe a managed service configured through Adyen's Customer Area and driven by Adyen's global transaction data, and the GitHub item is only an OpenAPI definition repo, not deployable product code.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "adyen-risk",
+    "storyId": "platform-integrations",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Prebuilt commerce-platform integrations are a fair question for a fraud/risk product, so the axis applies. However, the evidence only covers the risk engine, APIs (Referrals, Disputes), webhooks, a data-collection SDK and an MCP server. Nothing in the pack mentions maintained plugins or connectors for Shopify, Salesforce Commerce, BigCommerce, or other PSPs.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "adyen-risk",
+    "storyId": "privacy-data-residency",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Data residency and region selection is a fair question for a SaaS payments risk service, so the axis applies. Nothing in the evidence pack covers choosing a storage region or residency. Item docs-5 mentions use of 'global transaction data', but that concerns model training, not customer-selectable residency.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "adyen-risk",
+    "storyId": "privacy-no-training",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "The axis applies: Adyen Risk Management is a SaaS fraud engine whose machine learning runs on Adyen's global transaction data, so an opt-out from AI training is a fair question. The evidence describes ML scoring on pooled global data but documents no setting, contract term, or policy that excludes a merchant's data from model training. Absence of evidence for an applicable capability is \"none\".",
+    "evidenceIds": []
+  },
+  {
+    "productId": "adyen-risk",
+    "storyId": "privacy-retention-controls",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Data retention and deletion controls are a fair privacy-posture question for a SaaS fraud and risk platform that processes shopper transaction data, so the axis applies. Nothing in the evidence pack covers retention periods, deletion requests, or data lifecycle controls. The items only describe risk rules, lists, case management, disputes, and the MCP server.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "adyen-risk",
+    "storyId": "privacy-telemetry-optout",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "A SaaS risk platform with SDKs and an MCP server could reasonably offer a telemetry or usage-tracking opt-out, so this story applies to it. The evidence pack never mentions telemetry, usage analytics, or any opt-out control. The optional fraud data-collection SDK (docs-15) collects shopper data for fraud scoring, not user telemetry, so it does not count here.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "adyen-risk",
+    "storyId": "psd2-sca-optimization",
+    "verdict": "partial",
+    "quality": 5,
+    "confidence": "medium",
+    "rationale": "Adyen's Dynamic 3D Secure lets merchants set rules for which card payments go through 3DS and whether they are challenged. That covers the risk-based 3DS-triggering half of the story. The pack does not show PSD2/SCA-specific handling such as automatic exemption requests (TRA, low-value, trusted beneficiary) or regulation-driven routing for European traffic. missing for 10: documented SCA exemption requesting, PSD2/European-specific compliance routing logic, evidence of conversion impact, independent or hands-on corroboration.",
+    "evidenceIds": [
+      "adyen-risk-docs-10",
+      "adyen-risk-probe-2"
+    ]
+  },
+  {
+    "productId": "adyen-risk",
+    "storyId": "psp-agnostic-coverage",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Processor-agnostic deployment is a fair question for a fraud product, so the axis applies. However, the evidence describes risk profiles applied to payments on an Adyen merchant account and reviews done in Adyen's Customer Area. Nothing shows it screening transactions processed through other PSPs, gateways, or platforms; third-party risk lists are a data input, not multi-processor support.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "adyen-risk",
+    "storyId": "realtime-scoring-api",
+    "verdict": "partial",
+    "quality": 5,
+    "confidence": "medium",
+    "rationale": "Adyen documents an ML-driven risk engine that evaluates and scores every transaction (adyen-risk-docs-5, adyen-risk-docs-20) and reaches a block/allow/review decision (adyen-risk-docs-1). Risk information, such as which rules triggered and whether the payment went to case management, can be included in the payment response (adyen-risk-docs-16), which implies in-flow synchronous results. However, the evidence shows no standalone scoring endpoint and does not show an explicit ML score being exposed to developers before authorization completes. missing for 10: a documented standalone or pre-authorization risk-scoring API, explicit return of the ML risk score value in the API response, latency or synchronous-flow documentation, and independent hands-on corroboration.",
+    "evidenceIds": [
+      "adyen-risk-docs-5",
+      "adyen-risk-docs-20",
+      "adyen-risk-docs-1",
+      "adyen-risk-docs-16"
+    ]
+  },
+  {
+    "productId": "adyen-risk",
+    "storyId": "review-outcomes-feedback",
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "Analysts can accept or reject transactions in case management (adyen-risk-docs-9). Confirmed fraud can be pushed into block and trust lists through risk lists and the Referrals API (adyen-risk-docs-7, adyen-risk-docs-13). That is a rules-level feedback path, but it is manual or integration-driven rather than automatic learning. The ML engine is described as learning from Adyen's global transaction data (adyen-risk-docs-5), with no statement that a merchant's own review decisions or fraud outcomes retrain it. Missing for 10: evidence that case review decisions automatically feed the ML model, evidence that confirmed fraud or chargeback outcomes are used as training labels, an automatic closed loop from review outcomes to rules, and independent corroboration.",
+    "evidenceIds": [
+      "adyen-risk-docs-9",
+      "adyen-risk-docs-7",
+      "adyen-risk-docs-13",
+      "adyen-risk-docs-5"
+    ]
+  },
+  {
+    "productId": "adyen-risk",
+    "storyId": "review-team-workflows",
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "medium",
+    "rationale": "Adyen's risk engine can route transactions to a 'review' outcome, where a reviewer accesses the case in the Customer Area and accepts or rejects it. Webhooks can also flag that a payment was sent to case management, so a basic manual review workflow exists. However, nothing in the evidence describes the team-workflow elements of the story. Missing for 10: case assignment to specific reviewers, escalation paths, SLAs/timers on review queues, a decision audit trail showing who approved what and why, and any independent corroboration.",
+    "evidenceIds": [
+      "adyen-risk-docs-1",
+      "adyen-risk-docs-9",
+      "adyen-risk-docs-16"
+    ]
+  },
+  {
+    "productId": "adyen-risk",
+    "storyId": "rules-backtesting",
+    "verdict": "partial",
+    "quality": 5,
+    "confidence": "medium",
+    "rationale": "Adyen's marketing page explicitly lists 'Risk Rule Backtesting' to test and optimize risk rules against historical data before going live, which covers the core of the story. The only support is that one-line marketing claim, with no documentation of what the backtest shows. Risk experiments (A/B testing two profiles) are related but run on live traffic, not historical replay. Missing for 10: documentation of backtest output (would-have-blocked, flagged/review counts, cost or chargeback impact), how-to docs for running a backtest on a custom rule, independent or hands-on corroboration.",
+    "evidenceIds": [
+      "adyen-risk-docs-19",
+      "adyen-risk-docs-14",
+      "adyen-risk-docs-6"
+    ]
+  },
+  {
+    "productId": "adyen-risk",
+    "storyId": "score-explainability",
+    "verdict": "partial",
+    "quality": 5,
+    "confidence": "medium",
+    "rationale": "Adyen can include which risk rules triggered, and whether a payment went to case management, in the payment response and webhooks. This gives analysts a rule-level explanation of why a transaction was flagged. The ML-driven scoring is described only as AI evaluating fraud risk against global data, with no evidence that each score comes with its top contributing factors. Missing for 10: per-score top-factor or feature-attribution explanations for the ML model, documentation of reason codes on every score, and independent or hands-on corroboration.",
+    "evidenceIds": [
+      "adyen-risk-docs-16",
+      "adyen-risk-docs-5",
+      "adyen-risk-docs-20"
+    ]
+  },
+  {
+    "productId": "adyen-risk",
+    "storyId": "score-thresholds-actions",
+    "verdict": "partial",
+    "quality": 6,
+    "confidence": "medium",
+    "rationale": "Adyen documents risk decisions that block, allow, or review transactions, with review handled through case management. It also offers rules that route payments through 3D Secure step-up, configurable risk profiles and custom rules, plus A/B experiments and backtesting to tune settings to the merchant's appetite. However, no evidence shows ops users mapping explicit risk-score ranges or thresholds to these actions, so the threshold-tuning core of the story is only implied by rule configurability. Missing for 10: explicit documentation of configurable score thresholds or score-range-to-action mapping, a link between the ML risk score and 3DS step-up decisions, and independent or hands-on corroboration.",
+    "evidenceIds": [
+      "adyen-risk-docs-1",
+      "adyen-risk-docs-4",
+      "adyen-risk-docs-5",
+      "adyen-risk-docs-6",
+      "adyen-risk-docs-9",
+      "adyen-risk-docs-10",
+      "adyen-risk-docs-14",
+      "adyen-risk-docs-19"
+    ]
+  },
+  {
+    "productId": "adyen-risk",
+    "storyId": "trusted-agent-signals",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Passing verified agent identity into a fraud decision is a fair question for a payments risk engine, so the axis applies. The evidence covers risk profiles, custom rules, risk lists, ML scoring, Shopper DNA and 3DS routing, but never mentions agentic-payment protocols, signed agent tokens, or delegated spending scopes as risk inputs. The MCP server is developer tooling for querying Adyen in natural language, not an agent-identity signal.",
+    "evidenceIds": []
+  },
+  {
     "productId": "forter",
     "storyId": "account-abuse-coverage",
     "verdict": "partial",
@@ -1710,7 +2377,7 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "The only hint of a cross-merchant network is a community comment describing Sift as an 'aggregator' of personal user data (sift-comm-3). The first-party docs describe a 0\u2013100 risk score (sift-docs-5) that gets smarter with more data about *your* business (sift-docs-4), not with signals pooled from other merchants. Missing for 10: first-party documentation of a global or consortium network, evidence that cards or identities seen at other businesses feed into the score, and independent corroboration of network-effect accuracy.",
+    "rationale": "The only hint of a cross-merchant network is a community comment describing Sift as an 'aggregator' of personal user data (sift-comm-3). The first-party docs describe a 0–100 risk score (sift-docs-5) that gets smarter with more data about *your* business (sift-docs-4), not with signals pooled from other merchants. Missing for 10: first-party documentation of a global or consortium network, evidence that cards or identities seen at other businesses feed into the score, and independent corroboration of network-effect accuracy.",
     "evidenceIds": [
       "sift-comm-3",
       "sift-docs-5",
@@ -1837,7 +2504,7 @@
     "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Sift documents a Score API that returns a 0\u2013100 risk score per event, and Workflows that make risk-based decisions in real time during key events. The documented API reference portal covers Score, Events and Workflows APIs, and the founder describes a data-driven ML approach rather than rules. However, none of the cited material explicitly states that the score comes back synchronously in the transaction request path before authorization. missing for 10: explicit documentation of synchronous score return (e.g. score in the event-call response) with latency guarantees, documented pre-authorization checkout flow, independent hands-on corroboration of real-time scoring.",
+    "rationale": "Sift documents a Score API that returns a 0–100 risk score per event, and Workflows that make risk-based decisions in real time during key events. The documented API reference portal covers Score, Events and Workflows APIs, and the founder describes a data-driven ML approach rather than rules. However, none of the cited material explicitly states that the score comes back synchronously in the transaction request path before authorization. missing for 10: explicit documentation of synchronous score return (e.g. score in the event-call response) with latency guarantees, documented pre-authorization checkout flow, independent hands-on corroboration of real-time scoring.",
     "evidenceIds": [
       "sift-docs-5",
       "sift-docs-16",
@@ -1893,7 +2560,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Sift's documentation in the pack only shows that it returns a 0\u2013100 risk score, plus abuse-specific scores. Nothing in the pack shows scores arriving with top risk factors, reason codes, or any explanation of why a transaction looks risky. Model explainability is a fair axis for a fraud-scoring product, so the lack of evidence makes this 'none' rather than 'na'.",
+    "rationale": "Sift's documentation in the pack only shows that it returns a 0–100 risk score, plus abuse-specific scores. Nothing in the pack shows scores arriving with top risk factors, reason codes, or any explanation of why a transaction looks risky. Model explainability is a fair axis for a fraud-scoring product, so the lack of evidence makes this 'none' rather than 'na'.",
     "evidenceIds": []
   },
   {
@@ -1902,7 +2569,7 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Sift produces a 0\u2013100 risk score and offers Workflows, a rules automation platform for real-time risk-based decisions. It also has Review Queues and custom Decisions (e.g., Ban Account, Cancel Order) tied to backend actions. Together these imply score-driven routing to allow, review, and block outcomes, but the evidence never explicitly shows configuring score-range thresholds or a step-up 3DS action. Missing for 10: explicit documentation of score-threshold configuration in Workflows, a step-up 3DS/authentication action, and hands-on corroboration of threshold tuning.",
+    "rationale": "Sift produces a 0–100 risk score and offers Workflows, a rules automation platform for real-time risk-based decisions. It also has Review Queues and custom Decisions (e.g., Ban Account, Cancel Order) tied to backend actions. Together these imply score-driven routing to allow, review, and block outcomes, but the evidence never explicitly shows configuring score-range thresholds or a step-up 3DS action. Missing for 10: explicit documentation of score-threshold configuration in Workflows, a step-up 3DS/authentication action, and hands-on corroboration of threshold tuning.",
     "evidenceIds": [
       "sift-docs-5",
       "sift-docs-6",
@@ -3008,7 +3675,7 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Stripe exposes core Radar objects through the API: review approval (POST /v1/reviews/:id/approve), early fraud warnings, and value lists usable in rules. The CLI and MCP server add further programmatic access. However, the docs describe custom rule creation, risk settings, fraud analytics, and the review queue as Dashboard features, and a community user cites a 'lack of easy programmatic control.' Missing for 10: API evidence for rule creation and editing, API access to risk settings and fraud-insights analytics, and documented UI\u2013API parity.",
+    "rationale": "Stripe exposes core Radar objects through the API: review approval (POST /v1/reviews/:id/approve), early fraud warnings, and value lists usable in rules. The CLI and MCP server add further programmatic access. However, the docs describe custom rule creation, risk settings, fraud analytics, and the review queue as Dashboard features, and a community user cites a 'lack of easy programmatic control.' Missing for 10: API evidence for rule creation and editing, API access to risk settings and fraud-insights analytics, and documented UI–API parity.",
     "evidenceIds": [
       "stripe-radar-docs-8",
       "stripe-radar-docs-9",

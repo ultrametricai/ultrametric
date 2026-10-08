@@ -347,18 +347,18 @@ few playbooks exist ([maturity ladder](governance/REVIEW_POLICY.md)).
 |---|---|
 | Desktop OS (`desktop-os`) | macos, omarchy, ubuntu, fedora, windows |
 | Startup Banking (`startup-banking`) | mercury, brex, ramp, wise, relay, jeeves, airwallex |
-| Project Management (`project-management`) | linear, asana, clickup, notion, monday, jira |
+| Project Management (`project-management`) | linear, asana, clickup, notion, monday, jira, trello |
 | Web Scraping APIs (`web-scraping`) | firecrawl, crawl4ai, jina-reader, apify, scrapingbee, browserbase, riveter, context-dev |
 | Mobile AI Dev Tools (`mobile-dev`) | termius, tailscale, blink-shell, a-shell, working-copy, github-mobile |
 | Code Hosting (`code-hosting`) | github, gitlab, bitbucket, gitea |
-| AI Coding Agents (`ai-coding`) | codex, claude-code, cursor, github-copilot, gemini-cli, opencode, devin, aider, cline, cubic, antigravity, random-labs, conductor, byteask |
+| AI Coding Agents (`ai-coding`) | codex, claude-code, cursor, github-copilot, gemini-cli, opencode, devin, aider, cline, cubic, antigravity, random-labs, conductor, byteask, grok-build |
 | Edge & App Platforms (`edge-platforms`) | cloudflare, vercel, netlify, fly-io, railway, render |
 | Frontend Frameworks (`frontend-frameworks`) | react, vue, svelte, angular, solid |
 | Local LLM Runtimes (`local-llm-runtimes`) | ollama, llama-cpp, vllm, lm-studio, jan, localai, llamafile, runanywhere |
 | Payroll & HR Ops (`payroll`) | gusto, rippling, deel, justworks |
 | Product Feedback & Intent (`product-feedback`) | canny, featurebase, productboard, foreloop |
 | Software Factory (`software-factory`) | foreloop, factory, devin, openhands, codegen, jules, omnara, yylo, humanlayer, superset |
-| Mobile & In-Person Payments (`mobile-payments`) | stripe-terminal, square, sumup, adyen-pos |
+| Mobile & In-Person Payments (`mobile-payments`) | stripe-terminal, square, sumup, adyen-pos, shopify-pos |
 | API platforms (`api-platforms`) | postman, kong, bruno, hoppscotch, insomnia |
 | Team Chat (`team-chat`) | slack, discord, ms-teams, zulip, buzz |
 | Backend as a Service (`backend-as-a-service`) | supabase, firebase, convex, appwrite |
@@ -394,7 +394,7 @@ few playbooks exist ([maturity ladder](governance/REVIEW_POLICY.md)).
 | GPU Clouds (`gpu-clouds`) | runpod, lambda-labs, coreweave, vast-ai, paperspace |
 | Feature Flags & Experimentation (`feature-flags`) | launchdarkly, statsig, growthbook, flagsmith, unleash |
 | Serverless & Developer Databases (`serverless-databases`) | neon, turso, planetscale, clickhouse, cockroachdb, supabase |
-| Agent Skills & Extensions (`agent-skills`) | superpowers, anthropic-skills, mattpocock-skills, skills-cli, codex-plugins, gstack, ultrametric |
+| Agent Skills & Extensions (`agent-skills`) | superpowers, anthropic-skills, mattpocock-skills, skills-cli, codex-plugins, gstack |
 | Data Warehouses & Lakehouses (`data-warehouses`) | snowflake, databricks, bigquery, motherduck |
 | Search Infrastructure (`search-infra`) | algolia, meilisearch, typesense, elastic, orama |
 | Scheduling & Calendar (`scheduling`) | cal-com, calendly, motion, reclaim, savvycal |
@@ -412,9 +412,9 @@ few playbooks exist ([maturity ladder](governance/REVIEW_POLICY.md)).
 | Cap Table & Equity (`equity-management`) | carta, pulley, cake-equity, fidelity-private-shares, ledgy, vestd |
 | Error Tracking (`error-tracking`) | sentry, bugsnag, rollbar, honeybadger, glitchtip, raygun |
 | Expense Management (`expense-management`) | ramp, brex, expensify, navan, bill-spend-expense |
-| Billing & Subscriptions (`billing-subscriptions`) | stripe-billing, chargebee, recurly, lago, orb, metronome, revenuecat |
-| Payment Fraud Prevention (`fraud-prevention`) | stripe-radar, sift, signifyd, forter, riskified |
-| Agentic Commerce (`agentic-commerce`) | stripe-agentic-commerce, shopify-ucp, paypal-agent-commerce, coinbase-x402, crossmint, visa-intelligent-commerce, skyfire |
+| Billing & Subscriptions (`billing-subscriptions`) | stripe-billing, chargebee, recurly, lago, orb, metronome, revenuecat, stripe-invoicing |
+| Payment Fraud Prevention (`fraud-prevention`) | stripe-radar, sift, signifyd, forter, riskified, adyen-risk |
+| Agentic Commerce (`agentic-commerce`) | stripe-agentic-commerce, shopify-ucp, paypal-agent-commerce, coinbase-x402, crossmint, visa-intelligent-commerce, skyfire, adyen-agentic |
 | Card Issuing Platforms (`card-issuing`) | stripe-issuing, lithic, marqeta, highnote, adyen-issuing |
 | Sales Tax Automation (`tax-automation`) | stripe-tax, avalara, anrok, taxjar, numeral, kintsugi |
 | Marketplace & Platform Payments (`marketplace-payments`) | stripe-connect, adyen-for-platforms, finix, mangopay, rainforest, tilled |
@@ -451,12 +451,12 @@ See `data/categories.json` for each arena's full description, personas, and them
 
 <!-- stat-badges:start -->
 [![rankings](https://img.shields.io/badge/rankings-96-34d399)](https://ultrametric.ai)
-[![products](https://img.shields.io/badge/products-650-34d399)](https://ultrametric.ai/everything)
-[![judged verdicts](https://img.shields.io/badge/judged_verdicts-36735-34d399)](https://ultrametric.ai/methodology)
+[![products](https://img.shields.io/badge/products-655-34d399)](https://ultrametric.ai/everything)
+[![judged verdicts](https://img.shields.io/badge/judged_verdicts-37055-34d399)](https://ultrametric.ai/methodology)
 <!-- stat-badges:end -->
 
 <!-- stats:start -->
-As of the last full pipeline run: **96 rankings, 650 products, 36,735 judged verdicts.**
+As of the last full pipeline run: **96 rankings, 655 products, 37,055 judged verdicts.**
 <!-- stats:end -->
 
 These counts (and the badges) are regenerated from `data/` by `pnpm stats`, not maintained
