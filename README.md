@@ -388,7 +388,7 @@ few playbooks exist ([maturity ladder](governance/REVIEW_POLICY.md)).
 | GPU Clouds (`gpu-clouds`) | runpod, lambda-labs, coreweave, vast-ai, paperspace |
 | Feature Flags & Experimentation (`feature-flags`) | launchdarkly, statsig, growthbook, flagsmith, unleash |
 | Serverless & Developer Databases (`serverless-databases`) | neon, turso, planetscale, clickhouse, cockroachdb, supabase |
-| Agent Skills & Extensions (`agent-skills`) | superpowers, anthropic-skills, mattpocock-skills, skills-cli, codex-plugins, gstack |
+| Agent Skills & Extensions (`agent-skills`) | superpowers, anthropic-skills, mattpocock-skills, skills-cli, codex-plugins, gstack, ultrametric |
 | Data Warehouses & Lakehouses (`data-warehouses`) | snowflake, databricks, bigquery, motherduck |
 | Search Infrastructure (`search-infra`) | algolia, meilisearch, typesense, elastic, orama |
 | Scheduling & Calendar (`scheduling`) | cal-com, calendly, motion, reclaim, savvycal |
@@ -445,12 +445,12 @@ See `data/categories.json` for each arena's full description, personas, and them
 
 <!-- stat-badges:start -->
 [![rankings](https://img.shields.io/badge/rankings-96-34d399)](https://ultrametric.ai)
-[![products](https://img.shields.io/badge/products-649-34d399)](https://ultrametric.ai/everything)
-[![judged verdicts](https://img.shields.io/badge/judged_verdicts-36683-34d399)](https://ultrametric.ai/methodology)
+[![products](https://img.shields.io/badge/products-650-34d399)](https://ultrametric.ai/everything)
+[![judged verdicts](https://img.shields.io/badge/judged_verdicts-36735-34d399)](https://ultrametric.ai/methodology)
 <!-- stat-badges:end -->
 
 <!-- stats:start -->
-As of the last full pipeline run: **96 rankings, 649 products, 36,683 judged verdicts.**
+As of the last full pipeline run: **96 rankings, 650 products, 36,735 judged verdicts.**
 <!-- stats:end -->
 
 These counts (and the badges) are regenerated from `data/` by `pnpm stats`, not maintained
