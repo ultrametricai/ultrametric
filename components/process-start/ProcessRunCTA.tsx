@@ -3,8 +3,9 @@
 import Image from 'next/image'
 import Link from 'next/link'
 import { useEffect, useId, useRef, useState } from 'react'
-import { START_METHODS, agentLaunch, startPrompt, type StartAgent, type StartTarget } from '@/lib/process-start'
+import { START_METHODS, agentLaunch, startPrompt, startRegionForCountry, type StartAgent, type StartTarget } from '@/lib/process-start'
 import { useRegionalVariant } from '@/components/shared-processes/RegionalVariant'
+import { useGeoSelection } from '@/components/useGeoSelection'
 
 // The run-with-Ultrametric affordance: an emerald trigger opening the agent-picker modal
 // (Claude / ChatGPT / Codex / Claude Code / Cursor / Ultrametric CLI), which hands off the
@@ -26,6 +27,8 @@ export default function ProcessRunCTA({
   triggerClassName?: string
 }) {
   const region = useRegionalVariant()
+  const country = useGeoSelection()
+  const selectedRegion = region?.selected ?? startRegionForCountry(target, country)?.id
   const dialog = useRef<HTMLDialogElement>(null)
   const trigger = useRef<HTMLButtonElement>(null)
   const manualCopy = useRef<HTMLTextAreaElement>(null)
@@ -36,10 +39,10 @@ export default function ProcessRunCTA({
   const choices = useId()
   const [selected, setSelected] = useState<StartAgent>('claude')
   const [returning, setReturning] = useState(false)
-  const prompt = startPrompt(target, region?.selected, selected)
+  const prompt = startPrompt(target, selectedRegion, selected)
   const [copy, setCopy] = useState<{ text: string; failed: boolean }>()
   const currentCopy = copy?.text === prompt ? copy : undefined
-  const launch = agentLaunch(target, selected)
+  const launch = agentLaunch(target, selected, selectedRegion)
 
   useEffect(() => {
     function onBack() {
@@ -118,7 +121,7 @@ export default function ProcessRunCTA({
               setSelected(method.id)
               // The CLI has no verified launch URL, so selecting it used to leave the modal
               // visibly inert. Copy the handoff prompt on selection instead (founder 2026-10-08).
-              if (method.id === 'cli') void copyPrompt(startPrompt(target, region?.selected, 'cli'))
+              if (method.id === 'cli') void copyPrompt(startPrompt(target, selectedRegion, 'cli'))
             }} className="peer sr-only" />
             <span className="flex min-h-20 items-center gap-3 rounded-2xl border border-zinc-800 px-3 py-3 transition hover:border-emerald-400/60 hover:bg-emerald-400/5 peer-checked:border-emerald-300 peer-checked:bg-emerald-300/10 peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-emerald-300 sm:px-4">
               {method.logo ? <Image src={method.logo} width={32} height={32} alt="" className="h-8 w-8 shrink-0 rounded-lg object-contain" /> : <span aria-hidden="true" className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-zinc-800 font-mono text-lg">&gt;_</span>}
