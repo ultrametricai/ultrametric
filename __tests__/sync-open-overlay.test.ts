@@ -126,6 +126,35 @@ describe('overlay collision gate on resolved paths', () => {
     expect(fs.readFileSync(path.join(root, 'catalog'), 'utf8')).toBe('tracked closed-repo file\n')
   })
 
+  it('fails when a FILE entry destination is currently a directory holding tracked files', () => {
+    // rmSync is recursive for every destination, so the tracked-children check must run
+    // for file entries too: `lib/data.ts` here is a tracked DIRECTORY in the consumer.
+    const root = initConsumerRepo({ 'lib/data.ts/kept.txt': 'tracked content\n' })
+    pinArtifact(root, SHA_A, {
+      'open-manifest.json': manifestWith([{ path: 'lib/data.ts', type: 'file', overlay: true }]),
+      'lib/data.ts': 'export {}\n',
+    })
+    const stderr = runScriptExpectingFailure(root)
+    expect(stderr).toContain('collision with tracked path: lib/data.ts/kept.txt')
+    expect(fs.readFileSync(path.join(root, 'lib', 'data.ts', 'kept.txt'), 'utf8')).toBe('tracked content\n')
+  })
+
+  it('refuses to copy or remove through a symlinked ancestor of the destination', () => {
+    // resolveInsideRoot is lexical; a symlinked `lib` would redirect rmSync/cpSync at
+    // `lib/data.ts` to a tree outside the repo root. The lstat ancestor walk must reject it.
+    const outside = makeTempDir('sync-open-victim-')
+    fs.writeFileSync(path.join(outside, 'data.ts'), 'victim outside the repo root\n')
+    const root = initConsumerRepo({})
+    fs.symlinkSync(outside, path.join(root, 'lib'))
+    pinArtifact(root, SHA_A, {
+      'open-manifest.json': manifestWith([{ path: 'lib/data.ts', type: 'file', overlay: true }]),
+      'lib/data.ts': 'export {}\n',
+    })
+    const stderr = runScriptExpectingFailure(root)
+    expect(stderr).toContain('symlink')
+    expect(fs.readFileSync(path.join(outside, 'data.ts'), 'utf8')).toBe('victim outside the repo root\n')
+  })
+
   it('fails when tracked files live under an overlay dir destination', () => {
     const root = initConsumerRepo({ 'data/site-owned.json': '{}\n' })
     pinArtifact(root, SHA_A, {
@@ -165,6 +194,35 @@ describe('overlay ledger', () => {
     expect(fs.existsSync(path.join(root, 'extra'))).toBe(false)
     const bumped = JSON.parse(fs.readFileSync(path.join(root, '.open-overlay-manifest.json'), 'utf8'))
     expect(bumped.paths).toEqual(['data'])
+  })
+
+  it('cleans up the partial output of a failed run after a pin change', () => {
+    // The ledger is written before the copy loop, so a run that dies mid-copy (here: the
+    // pinned tree is missing its second overlay path) still records what it materialized.
+    const root = initConsumerRepo({})
+    pinArtifact(root, SHA_A, {
+      'open-manifest.json': manifestWith([
+        { path: 'data', overlay: true },
+        { path: 'zz-missing', overlay: true },
+      ]),
+      'data/foo.json': '{"v":1}\n',
+    })
+    const stderr = runScriptExpectingFailure(root)
+    expect(stderr).toContain('pinned tree is missing overlay path: zz-missing')
+    expect(fs.readFileSync(path.join(root, 'data', 'foo.json'), 'utf8')).toBe('{"v":1}\n')
+    const partial = JSON.parse(fs.readFileSync(path.join(root, '.open-overlay-manifest.json'), 'utf8'))
+    expect(partial.paths).toEqual(['data', 'zz-missing'])
+
+    // A later run under a pin that drops both entries must remove the partial output.
+    pinArtifact(root, SHA_B, {
+      'open-manifest.json': manifestWith([{ path: 'other', overlay: true }]),
+      'other/x.txt': 'y\n',
+    })
+    runScript(root)
+    expect(fs.existsSync(path.join(root, 'data'))).toBe(false)
+    expect(fs.readFileSync(path.join(root, 'other', 'x.txt'), 'utf8')).toBe('y\n')
+    const ledger = JSON.parse(fs.readFileSync(path.join(root, '.open-overlay-manifest.json'), 'utf8'))
+    expect(ledger.paths).toEqual(['other'])
   })
 
   it('leaves a stale ledger path in place when it is git-tracked in the consuming repo', () => {

@@ -438,6 +438,11 @@ Phases 0 and 1 landed in place, all additive (2026-10-08). What exists now:
   the full tracked tree, not only the split directories; at adoption every tracked file
   was already covered, so no new classification calls were needed. `reports/` flipped
   to `overlay: true` because `app/reports/page.tsx` reads `reports/*.md` at build time.
+  Second review round: an lstat walk rejects symlinked ancestors of any destination
+  (lexical containment alone would follow a symlinked `lib` outside the root), the
+  tracked-children collision check runs for file entries too (rm is recursive for every
+  destination), and the ledger is written before the copy loop so a mid-run failure's
+  partial output is still cleaned up at the next pin.
 - `docs/repo-split-census.json` plus `__tests__/repo-split.test.ts`: the test-file census
   with its live-tree equality test (file exists if and only if listed; open + closed
   counts sum to the total; `scripts/content-audit.test.mjs` carried explicitly as the
