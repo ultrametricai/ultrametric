@@ -130,4 +130,79 @@ export const probes: LocalProbe[] = [
       expect: /"openai-curated"/,
       timeoutMs: 60_000,
     },
+    {
+      // Owner product (disclosed on the record): the ultrametric CLI runs keylessly from npm,
+      // pinned to the version its docs commit to (docs.ultrametric.ai/cli/install covers 0.4.1).
+      probeId: 'cli-version',
+      productId: 'ultrametric',
+      storyIds: ['agentic-official-cli'],
+      bin: 'npx',
+      argv: ['npx', '-y', 'ultrametric@0.4.1', '--version'],
+      displayCommand: 'npx -y ultrametric@0.4.1 --version',
+      expect: /0\.4\.1/,
+      timeoutMs: 120_000,
+    },
+    {
+      // Review-before-install: `init --dry-run` previews the two SKILL.md installs (Codex's
+      // .agents/skills and Claude Code's .claude/skills) without writing, keyless, in a scratch
+      // dir so no local login or settings leak in (the docs/SELF-EVAL.md method).
+      probeId: 'init-dry-run-preview',
+      productId: 'ultrametric',
+      storyIds: ['inspect-before-install', 'multi-harness-support'],
+      bin: 'npx',
+      argv: [
+        'sh', '-c',
+        'rm -rf /tmp/um-skill-um; mkdir -p /tmp/um-skill-um/project; cd /tmp/um-skill-um/project; npx -y ultrametric@0.4.1 --data-dir /tmp/um-skill-um/data init --dry-run; cd /; rm -rf /tmp/um-skill-um',
+      ],
+      displayCommand: 'npx -y ultrametric@0.4.1 init --dry-run  # in a scratch project dir',
+      expect: /\.claude\/skills\/ultrametric\/SKILL\.md/,
+      timeoutMs: 180_000,
+    },
+    {
+      // A REAL end-to-end install into a scratch project dir: `init` writes the skill for both
+      // harnesses, then the installed SKILL.md frontmatter is printed. Keyless, non-interactive.
+      probeId: 'scratch-install-roundtrip',
+      productId: 'ultrametric',
+      storyIds: ['one-command-install', 'agent-installs-skill', 'plain-files-portability'],
+      bin: 'npx',
+      argv: [
+        'sh', '-c',
+        'rm -rf /tmp/um-skill-rt; mkdir -p /tmp/um-skill-rt/project; cd /tmp/um-skill-rt/project; npx -y ultrametric@0.4.1 --data-dir /tmp/um-skill-rt/data init; echo "--- installed SKILL.md frontmatter ---"; sed -n 1,4p .claude/skills/ultrametric/SKILL.md; cd /; rm -rf /tmp/um-skill-rt',
+      ],
+      displayCommand: 'npx -y ultrametric@0.4.1 init  # in a scratch project dir, then print installed SKILL.md frontmatter',
+      expect: /name: ultrametric/,
+      timeoutMs: 180_000,
+    },
+    {
+      // The hosted MCP's keyless surface, recorded as the finding: initialize is refused with
+      // the documented AUTH_REQUIRED body (the RFC 9728 wall docs/SELF-EVAL.md recorded).
+      // `expect` matches the refusal — a PASS here records the wall, it does not credit a
+      // keyless handshake.
+      probeId: 'mcp-auth-wall',
+      productId: 'ultrametric',
+      storyIds: ['agentic-mcp-server'],
+      bin: 'curl',
+      argv: [
+        'sh', '-c',
+        'curl -sS -X POST https://api.ultrametric.ai/mcp -H "Content-Type: application/json" -H "Accept: application/json, text/event-stream" -d \'{"jsonrpc":"2.0","id":1,"method":"initialize","params":{"protocolVersion":"2025-06-18","capabilities":{},"clientInfo":{"name":"productarena-probe","version":"1.0"}}}\'',
+      ],
+      displayCommand: 'curl -sS -X POST https://api.ultrametric.ai/mcp -H "Content-Type: application/json" -H "Accept: application/json, text/event-stream" -d \'{"jsonrpc":"2.0","id":1,"method":"initialize","params":{"protocolVersion":"2025-06-18","capabilities":{},"clientInfo":{"name":"productarena-probe","version":"1.0"}}}\'',
+      expect: /AUTH_REQUIRED/,
+      timeoutMs: 60_000,
+    },
+    {
+      // The arena data surface keylessly from any shell — the defect row in docs/SELF-EVAL.md
+      // (NETWORK_ERROR on a redirecting data path), re-probed after the worker fix deployed.
+      probeId: 'arena-keyless-data',
+      productId: 'ultrametric',
+      storyIds: ['agentic-headless', 'agentic-public-api'],
+      bin: 'npx',
+      argv: [
+        'sh', '-c',
+        'rm -rf /tmp/um-arena-probe; mkdir -p /tmp/um-arena-probe; npx -y ultrametric@0.4.1 --data-dir /tmp/um-arena-probe arena categories --json | head -c 600; rm -rf /tmp/um-arena-probe',
+      ],
+      displayCommand: 'npx -y ultrametric@0.4.1 arena categories --json | head -c 600',
+      expect: /"id"/,
+      timeoutMs: 180_000,
+    },
 ]

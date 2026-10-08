@@ -65,7 +65,9 @@ describe('existing judged selection compatibility', () => {
     // Re-pinned at the government-services Phase 2 bring-up (2026-10-07, +31 judged agencies):
     // the new positive gov verdicts add function-arena candidates on the registry/tax steps.
     // Union after the sw_011 merge: 2811 (Phase 2 base) + 6 new sw_011 function cells.
-    expect(positiveCount).toBe(2817)
+    // Re-pinned at the ultrametric bring-up (2026-10-08, agent-skills +1 product): the new
+    // positive agent-skills verdicts add one function-arena candidate.
+    expect(positiveCount).toBe(2818)
     expect(zeroCount).toBe(185)
     expect(extraArena).toBe(93)
   })
