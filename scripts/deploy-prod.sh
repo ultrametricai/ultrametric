@@ -40,5 +40,8 @@ fi
 # machines is a team-dashboard action, and the project-level setting applies server-side
 # without any flag. Deploys FIT the Standard 32 GB machine since the /vs→battle dedup.
 # npx pins a current CLI (the global install once sent a malformed turbo override).
-npx -y vercel@latest deploy --prod --archive=tgz --yes
+# Pinned to the 62.x major: vercel@63.1.0 stopped honoring the stored CLI credentials
+# (two "Not authorized" deploy-creation failures on 2026-10-08 with an API-verified token;
+# 62.x deploys fine). Bump deliberately after verifying auth compat.
+npx -y vercel@62 deploy --prod --archive=tgz --yes
 echo "$NOW" > "$STAMP"
