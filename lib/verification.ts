@@ -63,13 +63,6 @@ export function cellAuthGated(verdict: Verdict, evidence: Map<string, Evidence>)
   })
 }
 
-// How many of a product's probe records hit an auth wall, cited or not — the product-page
-// chip. Uncited auth-wall probes matter most: they're exactly the case where a live, agentic
-// endpoint would otherwise read as nothing at all.
-export function authGatedProbeCount(data: CategoryData, productId: string): number {
-  return (data.evidence[productId] ?? []).filter(isAuthGatedEvidence).length
-}
-
 export type VerificationMix = Record<Exclude<VerificationLevel, 'unverified'>, number>
 
 // Counts, across every story in a category, how many of a product's verdicts land at each

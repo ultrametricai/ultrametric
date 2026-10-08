@@ -27,22 +27,3 @@ export default function AuthGatedMarker({ compact = false }: { compact?: boolean
     </span>
   )
 }
-
-// Product-page chip: "N probes hit live auth walls" — the aggregate view of the same signal
-// (lib/verification.ts authGatedProbeCount), counting uncited walls too, since those are
-// exactly where a live agentic endpoint would otherwise read as nothing at all.
-export function AuthGatedChip({ count }: { count: number }) {
-  if (count === 0) return null
-  return (
-    <span
-      title={
-        `${count} runtime probe${count === 1 ? '' : 's'} reached this product's live endpoints and got an explicit ` +
-        'sign-in challenge (HTTP 401/403, OAuth) — verified reachable, auth-gated, untestable keylessly'
-      }
-      className="inline-flex items-center gap-1.5 rounded-full border border-amber-400/40 bg-amber-400/5 px-2.5 py-0.5 text-xs text-amber-300"
-    >
-      <span className="rounded border border-amber-400/60 px-1 text-[9px] font-semibold uppercase tracking-wide">⚿ auth</span>
-      {count} auth-gated {count === 1 ? 'probe' : 'probes'}
-    </span>
-  )
-}

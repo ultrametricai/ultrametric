@@ -3,13 +3,11 @@ import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import arenaIcons from '@/data/arena-icons.json'
 import AgentAccessGlyphs from '@/components/AgentAccessGlyphs'
-import { AuthGatedChip } from '@/components/AuthGatedMarker'
 import AgenticBadge from '@/components/AgenticBadge'
 import AiEraBadge from '@/components/AiEraBadge'
 import { BusinessModelSection } from '@/components/BusinessModel'
 import ClaimsSection from '@/components/ClaimsSection'
 import CompareRivals from '@/components/CompareRivals'
-import CoverageMapSection from '@/components/CoverageMapSection'
 import FamilySection from '@/components/FamilySection'
 import { storyProcessesForArena } from '@/lib/storyProcessGraph'
 import GeoMark from '@/components/GeoMark'
@@ -17,7 +15,6 @@ import InstallCommands from '@/components/InstallCommands'
 import IntegrationChips, { chipTitle } from '@/components/IntegrationChips'
 import MomentumChip from '@/components/MomentumChip'
 import MomentumTrend from '@/components/MomentumTrend'
-import OpportunitiesSection from '@/components/OpportunitiesSection'
 import OssPill from '@/components/OssPill'
 import ProductLinkChips from '@/components/ProductLinkChips'
 import PricingSignals from '@/components/PricingSignals'
@@ -55,8 +52,7 @@ import { loadPricing } from '@/lib/pricing'
 import { loadScoreHistory } from '@/lib/scoreHistory'
 import { aiEraBandFor, loadScoreIntervals } from '@/lib/scoreIntervals'
 import type { Product, Story } from '@/lib/schemas'
-import { authGatedProbeCount } from '@/lib/verification'
-import { REPO, SITE_URL } from '@/lib/site'
+import { SITE_URL } from '@/lib/site'
 import { loadStoryTiers, storyTiersByCell, tierCountsFor } from '@/lib/storyTiers'
 import { buildStoryVerdictRows } from '@/lib/storyVerdictsSort'
 import { hasTryIt } from '@/lib/tryit'
@@ -520,15 +516,11 @@ export default async function ProductPage({
         <StoryThemeDag data={data} productId={id} productName={product.name} />
       )}
 
-      {/* The vendor's to-do list: every none/partial verdict above, ranked by score headroom
-          (lib/opportunities.ts) — collapsed by default, pure derivation from the verdicts. */}
-      <OpportunitiesSection data={data} productId={id} productName={product.name} />
-
-      {/* The inverse of the table's per-row "Covered by" chips: each evidence surface with the
-          stories it covers (lib/storyCoverage.ts) — collapsed by default, pure derivation from
-          the citations above. */}
-      <CoverageMapSection data={data} productId={id} />
-
+      {/* The Opportunities (score-headroom to-do list, lib/opportunities.ts) and Coverage map
+          (evidence surface → stories, lib/storyCoverage.ts) sections were removed from this
+          page (founder 2026-10-08). The derivations stay: the per-product llms.md
+          (lib/markdown.ts) still publishes both, and the table's per-row "Covered by" chips
+          still read lib/storyCoverage.ts. */}
       <ProofsSection category={category} productId={id} stories={data.stories} />
 
       <ClaimsSection data={data} category={category} productId={id} />
@@ -540,31 +532,17 @@ export default async function ProductPage({
       <BusinessModelSection product={product} />
 
 
-      {/* Founder 2026-09-15: score trend and the auth-gated probe chip live at the page end —
-          provenance and tooling for readers who scrolled the evidence, not prime space.
-          Founder 2026-10-02: the bottom utility card grid (Try/Flag/Badge/For agents/Data) is
-          collapsed to the one human action left — ⚑ Flag a verdict (the same prefilled-issue
-          link). The agent-discovery pointers it carried (per-product llms.md, evidence/verdicts
-          JSON) stay published via the documented contracts (/llms.txt and /openapi.json) and as
-          invisible <link rel="alternate"> tags in generateMetadata above; the /badges embed page
-          stays functional, just unlinked from here. */}
+      {/* Founder 2026-09-15: the score trend lives at the page end — provenance for readers
+          who scrolled the evidence, not prime space. Founder 2026-10-02 collapsed the bottom
+          utility card grid (Try/Flag/Badge/For agents/Data) to a ⚑ Flag a verdict button;
+          founder 2026-10-08 removed that footer affordance (and its ⚿ auth companion chip)
+          entirely — contestation routes through the repo (CONTRIBUTING.md's contest-a-verdict
+          guide and the .github issue templates). The agent-discovery pointers the old grid
+          carried (per-product llms.md, evidence/verdicts JSON) stay published via the
+          documented contracts (/llms.txt and /openapi.json) and as invisible
+          <link rel="alternate"> tags in generateMetadata above; the /badges embed page stays
+          functional, just unlinked from here. */}
       <ScoreTrend entries={loadScoreHistory(category).get(id) ?? []} />
-      <div className="flex flex-wrap items-center gap-4">
-        <a
-          href={`https://github.com/${REPO}/issues/new?${new URLSearchParams({
-            template: 'contest-verdict.md',
-            labels: 'contest',
-            title: `[contest] ${category}/${id}/<story-id>`,
-          }).toString()}`}
-          target="_blank"
-          rel="noopener noreferrer"
-          title="Opens a prefilled GitHub issue — or use the ⚑ next to any verdict above"
-          className="rounded-lg border border-zinc-800 px-3 py-1.5 text-xs text-zinc-400 transition hover:border-emerald-400/60 hover:text-emerald-300"
-        >
-          ⚑ Flag a verdict
-        </a>
-        <AuthGatedChip count={authGatedProbeCount(data, id)} />
-      </div>
 
       {/* Ops fine print, dead last (founder: educate first, ops last): 30-day agent-surface
           uptime (renders nothing until slo-check has history — lib/slo.ts). The "Evidence as

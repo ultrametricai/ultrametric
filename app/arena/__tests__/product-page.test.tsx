@@ -1,11 +1,12 @@
 // @vitest-environment jsdom
-// Product-page pins for the founder's 2026-10-02 batch, rendered against the real committed
-// corpus (startup-banking/mercury — a product with processes, integrations, and score history
-// coverage): the vendor line links OUT to the vendor's committed site (never a guessed domain),
-// the per-rect theme tooltips are gone, the bottom utility card grid collapsed to the one
-// ⚑ Flag a verdict button, and the agent-discovery pointers the grid carried moved into
-// generateMetadata alternates (<link rel="alternate">) — same URLs /llms.txt and /openapi.json
-// document.
+// Product-page pins for the founder's 2026-10-02 batch (amended 2026-10-08), rendered against
+// the real committed corpus (startup-banking/mercury — a product with processes, integrations,
+// and score history coverage): the vendor line links OUT to the vendor's committed site (never
+// a guessed domain), the per-rect theme tooltips are gone, the page-footer contest affordance
+// ("⚑ Flag a verdict" and its ⚿ auth companion chip) is removed — contestation routes through
+// the repo (CONTRIBUTING.md + issue templates) while the row-level ⚑ flag links stay — and the
+// agent-discovery pointers the old utility grid carried moved into generateMetadata alternates
+// (<link rel="alternate">) — same URLs /llms.txt and /openapi.json document.
 import { render, screen } from '@testing-library/react'
 import { describe, expect, it } from 'vitest'
 import ProductPage, { generateMetadata } from '@/app/arena/[category]/product/[id]/page'
@@ -67,18 +68,27 @@ describe('product page — founder 2026-10-02 batch', () => {
     for (const card of cards) expect(card.getAttribute('title')).toBeNull()
   })
 
-  it('the bottom utility grid is collapsed to the one ⚑ Flag a verdict button (prefilled issue link)', async () => {
+  it('the page-footer contest affordance is gone (founder 2026-10-08): no ⚑ Flag a verdict button, no ⚿ auth chip — row-level flag links stay', async () => {
     const { container } = await renderPage()
-    const flag = screen.getByRole('link', { name: /⚑ Flag a verdict/ })
-    const href = flag.getAttribute('href') ?? ''
-    expect(href).toContain('github.com/ultrametricai/ultrametric/issues/new')
-    expect(href).toContain('template=contest-verdict.md')
-    expect(href).toContain(encodeURIComponent(`[contest] ${ARENA}/${ID}/<story-id>`).replace(/%20/g, '+'))
-    // The rest of the card grid is gone — labels and links alike.
+    expect(container.textContent).not.toContain('⚑ Flag a verdict')
+    expect(container.textContent).not.toContain('auth-gated probe')
+    expect(container.querySelector('a[href*="template=contest-verdict.md"]')).toBeNull()
+    // The per-verdict row-level ⚑ flag affordances stay (ContestLink/RowMenu render inside
+    // the client-side story table on expansion, so they are not assertable in this static
+    // render; lib/__tests__/contestUrl.test.ts pins their URL builder) — only the footer
+    // affordance is removed.
+    // The old utility card grid stays gone — labels and links alike.
     for (const gone of ['For agents', 'This page as markdown', 'Evidence (JSON)', 'Verdicts (JSON)', 'Embed this product']) {
       expect(container.textContent).not.toContain(gone)
     }
     expect(container.querySelector(`a[href="/badges#${ID}"]`)).toBeNull()
+  })
+
+  it('the Opportunities and Coverage map sections are gone (founder 2026-10-08) — the derivations stay published in the per-product llms.md', async () => {
+    const { container } = await renderPage()
+    const headings = [...container.querySelectorAll('h2')].map((h) => h.textContent ?? '')
+    expect(headings.some((h) => h.includes('Opportunities'))).toBe(false)
+    expect(headings.some((h) => h.includes('Coverage map'))).toBe(false)
   })
 
   it('removed explainer sentences: integrations and score trend keep their content, lose the prose', async () => {

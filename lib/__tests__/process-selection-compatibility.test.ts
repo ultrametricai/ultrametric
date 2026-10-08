@@ -62,11 +62,13 @@ describe('existing judged selection compatibility', () => {
         }
       }
     }
-    // Re-pinned at the government-services Phase 2 bring-up (2026-10-07, +31 judged agencies):
-    // the new positive gov verdicts add function-arena candidates on the registry/tax steps.
-    // Union after the sw_011 merge: 2811 (Phase 2 base) + 6 new sw_011 function cells.
-    expect(positiveCount).toBe(2817)
-    expect(zeroCount).toBe(185)
+    // Re-pinned at the government-services applicability scoping (founder 2026-10-08,
+    // lib/processes.ts governmentStepEligibility): a government-covered step's candidates are
+    // now only the agencies sharing its wired agency's committed country+area tags, so the
+    // 2817 positive / 185 zero cells of the Phase 2 bring-up (2026-10-07, +31 judged agencies;
+    // 2811 base + 6 sw_011 function cells) drop the foreign/wrong-area gov associations.
+    expect(positiveCount).toBe(2449)
+    expect(zeroCount).toBe(134)
     expect(extraArena).toBe(93)
   })
 

@@ -954,6 +954,53 @@ export function vendorProductId(vendor: string): string {
   return VENDOR_PRODUCT_ID[vendor] ?? vendor.replace(/_/g, '-')
 }
 
+// ---------------------------------------------------------------------------
+// Government-services applicability (founder 2026-10-08)
+// ---------------------------------------------------------------------------
+
+export const GOVERNMENT_ARENA_ID = 'government-services'
+
+// The government-services arena rosters national monopolies, tagged by the Phase-2 rollup
+// work's committed `country`/`area` fields (data/government-services/products.json,
+// lib/rollups.ts). Unlike a competitive arena, those products are not substitutes for each
+// other across the tags: USPTO cannot take a federal tax return and Portugal's IRN cannot
+// incorporate a Delaware company, yet all of them score on the arena's generic stories, so an
+// unfiltered covering-arena → roster expansion listed them as candidates on every step the
+// arena covers (the Phase-2 substitutability flag).
+//
+// THE RULE (a filter over committed tags, never a hand-curated list): when a step's covering
+// arena is government-services, candidates are constrained to the products whose committed
+// `country` AND `area` tags both match the step's canonical agency — the product the corpus
+// wired the step to (node.vendor → vendorProductId → its product record in the arena). That
+// wiring is the committed statement of which country's which service area the step belongs
+// to: vendor 'irs' → US/tax, so tax steps admit US tax-area agencies (IRS, EFTPS);
+// 'uspto' → US/ip-office, so IP steps admit US IP offices. Geo variants are covered by
+// construction: a step wired to a foreign agency inherits that agency's own country. The
+// process-level jurisdiction context was checked and corroborates (every government-covered
+// step today sits on a geoScope-'us' process whose wired agency carries country 'US'; the
+// node-level `jurisdictions` field only marks CA/MULTI conditional steps), but the wired
+// agency is the finer committed signal — geoScope cannot tell a tax step from an IP step.
+//
+// Returns null — UNFILTERED — for every other arena, and for a government-covered step that
+// is not wired to a tagged product of the arena (no canonical vendor, or an untagged
+// product): there the area cannot be honestly derived from committed data, so the pull is
+// left alone rather than guessed. The arena page itself never passes through this path and
+// keeps its full roster.
+export function governmentStepEligibility(
+  node: Pick<DagNode, 'vendor'>,
+  arenaId: string,
+  dir?: string,
+): Set<string> | null {
+  if (arenaId !== GOVERNMENT_ARENA_ID) return null
+  if (!node.vendor || VENDOR_ARENA[node.vendor] !== GOVERNMENT_ARENA_ID) return null
+  const products = loadCategory(arenaId, dir).products
+  const anchor = products.find((p) => p.id === vendorProductId(node.vendor!))
+  if (!anchor?.country || !anchor.area) return null
+  return new Set(
+    products.filter((p) => p.country === anchor.country && p.area === anchor.area).map((p) => p.id),
+  )
+}
+
 // Pretty display names for corpus vendor keys (snake_case, lowercase). Fallback title-cases.
 const VENDOR_LABELS: Record<string, string> = registryField('label')
 
@@ -1104,8 +1151,12 @@ export function vendorAlternatives(vendor: string, limit = 2, dir?: string): Ven
   if (!arenaId || !isPopulated(arenaId, dir)) return []
   const productId = vendorProductId(vendor)
   const shutdown = shutdownIdsFor(arenaId, dir)
+  // A government agency's "or:" row obeys the same applicability rule as the step rankings
+  // (governmentStepEligibility): only agencies sharing the canonical agency's committed
+  // country+area tags are genuine alternatives — IRS never suggests "or: Companies House".
+  const eligible = governmentStepEligibility({ vendor }, arenaId, dir)
   return arenaSwapOptions(arenaId, dir)
-    .filter((o) => o.id !== productId && !shutdown.has(o.id))
+    .filter((o) => o.id !== productId && !shutdown.has(o.id) && (!eligible || eligible.has(o.id)))
     .slice(0, limit)
     .map((o) => ({ ...o, arenaId }))
 }
