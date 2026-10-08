@@ -21,8 +21,8 @@ const PALETTES = {
 
 export type AgenticBadgeKind = 'agent-ready' | 'agentic-app' | 'api-quality'
 
-// Exported for components/ScoreViewMenu.tsx (the product header's score dropdown) so the menu
-// entries and the big-number views reuse the exact labels/derivation tooltips these pills carry.
+// Exported for components/ScoreMiniTable.tsx (the product header's score mini table) so its
+// cells reuse the exact labels/derivation tooltips these pills carry.
 export const LABELS: Record<AgenticBadgeKind, string> = {
   'agent-ready': 'AGENT-READY',
   'agentic-app': 'BUILT-IN AI',

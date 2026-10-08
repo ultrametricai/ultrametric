@@ -46,9 +46,12 @@ export default function FamilySection({ arenaId, productId }: { arenaId: string;
   if (judged.length < 2) return null
 
   return (
-    <div className="rounded-xl border border-zinc-800 p-4">
+    // Plain section (founder 2026-10-08): the enclosing card chrome is gone — heading plus
+    // content, the Verified integrations idiom; the table below keeps its own TABLE_SHELL
+    // border like every house table.
+    <div>
       <div className="flex flex-wrap items-baseline justify-between gap-2">
-        <h2 className="font-display text-lg font-semibold leading-tight">Products</h2>
+        <h2 className="font-display leading-[1.1] text-lg font-semibold">Products</h2>
         <Link
           href={`/family/${family.id}`}
           className="text-sm text-emerald-300 underline decoration-emerald-400/40 underline-offset-2 transition hover:text-emerald-200"

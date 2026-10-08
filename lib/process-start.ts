@@ -34,6 +34,14 @@ export function startPrompt(target: StartTarget, region?: string, agent?: StartA
   return `Start “${target.title}” with Ultrametric. Install and use the supported connection if needed. Read and follow ${processHandoffUrl(target, region, agent)}`
 }
 
+// The product page's 'Install via Ultrametric' prompt (founder 2026-10-08): the startPrompt
+// idiom scoped to one product — the agent runs the committed setup process (the one mapping in
+// lib/installViaUm.ts) with this product as the vendor choice. The handoff URL is the same
+// committed process-scoped contract; the product name only steers the vendor choices inside it.
+export function installPrompt(productName: string, target: StartTarget) {
+  return `Set up ${productName} with Ultrametric. Start “${target.title}” and use ${productName} for the vendor choice. Install and use the supported connection if needed. Read and follow ${processHandoffUrl(target)}`
+}
+
 // Launch URLs omit the selected country and open only after the user's click.
 export function agentLaunch(target: StartTarget, method: StartAgent) {
   if (method === 'claude') return {
