@@ -4,8 +4,6 @@ import { notFound } from 'next/navigation'
 import arenaIcons from '@/data/arena-icons.json'
 import AgentAccessGlyphs from '@/components/AgentAccessGlyphs'
 import { AuthGatedChip } from '@/components/AuthGatedMarker'
-import AgenticBadge from '@/components/AgenticBadge'
-import AiEraBadge from '@/components/AiEraBadge'
 import { BusinessModelSection } from '@/components/BusinessModel'
 import ClaimsSection from '@/components/ClaimsSection'
 import CompareRivals from '@/components/CompareRivals'
@@ -26,6 +24,7 @@ import ProductShowcase from '@/components/ProductShowcase'
 import ProofsSection from '@/components/ProofsSection'
 import ScoreBar from '@/components/ScoreBar'
 import ScoreTrend from '@/components/ScoreTrend'
+import ScoreViewMenu from '@/components/ScoreViewMenu'
 import SloUptimeLine from '@/components/SloUptimeLine'
 import StoryMap from '@/components/StoryMap'
 import StoryThemeDag from '@/components/StoryThemeDag'
@@ -272,27 +271,33 @@ export default async function ProductPage({
             )}
           </div>
         </div>
-        {/* PRIMARY metrics row — the "should I care" read: Overall score (+68% band), the three
-            agenticness indexes, and the MCP/CLI/API access glyphs. Everything below this row
-            is deliberately quieter (secondary: momentum/vendor responses; then the arenas
-            strip). Every pill clicks through to THIS product's transparent calculation page
-            (/score, per-dimension anchors) — the exact stories, verdicts, evidence, and
-            arithmetic behind its number (founder 2026-09-15). */}
+        {/* PRIMARY metrics row — the "should I care" read: the score dropdown (founder
+            2026-10-08: the per-dimension pills fold into a menu anchored on the Overall score —
+            the reader switches which score the big number shows; the static HTML always shows
+            Overall) and the MCP/CLI/API access glyphs. Everything below this row is
+            deliberately quieter (secondary: momentum/vendor responses; then the arenas strip).
+            Every view clicks through to THIS product's transparent calculation page (/score,
+            per-dimension anchors) — the exact stories, verdicts, evidence, and arithmetic
+            behind its number (founder 2026-09-15), with each score's derivation tooltip riding
+            along. naDimensions (hardware arenas) keep the honest muted "n/a" view, and the
+            founder 2026-10-02 rule holds: an untested api-quality dimension gets NO entry at
+            all (untested stays data — the /score page and index tables still say it). */}
         <div className="mt-4 flex flex-wrap items-center gap-x-4 gap-y-2">
-          {/* Founder 2026-09-15: "Overall score" lives INSIDE the pill (label prop), consistent with
-              the self-labeled Agent-ready / Built-in AI pills beside it. */}
-          <AiEraBadge label="Overall score" value={entry.aiEra} href={`/arena/${category}/product/${id}/score`} interval={aiEraBandFor(loadScoreIntervals(category), id)} showBand components={{ agentReady: entry.agentReady, apiQuality: entry.apiQuality, openness: entry.themeScores['openness'] ?? null, agenticApp: entry.agenticApp, automation: entry.themeScores['automation-depth'] ?? null }} />
-          {/* naDimensions (hardware arenas): a suppressed dimension renders the muted "n/a"
-              pill (value=null path) — a chip has no agent-drivable surface or API of its own,
-              and a number would overstate; the Overall score above still applies. */}
-          <AgenticBadge kind="agent-ready" value={naDims.has('agentReady') ? null : entry.agentReady} untested={!naDims.has('agentReady') && isGroupUntested(data, id, 'agent-access')} href={naDims.has('agentReady') ? undefined : `/arena/${category}/product/${id}/score#agent-ready`} />
-          <AgenticBadge kind="agentic-app" value={naDims.has('agenticApp') ? null : entry.agenticApp} untested={!naDims.has('agenticApp') && isGroupUntested(data, id, 'agentic-features')} href={naDims.has('agenticApp') ? undefined : `/arena/${category}/product/${id}/score#built-in-ai`} />
-          {/* Founder 2026-10-02: no 'API untested' tag on this page — when the api-quality group
-              is untested the pill simply doesn't render (untested stays data: the /score page and
-              the index tables still say it; the API access glyph below keeps its slot). */}
-          {!(!naDims.has('apiQuality') && isGroupUntested(data, id, 'api-quality')) && (
-            <AgenticBadge kind="api-quality" value={naDims.has('apiQuality') ? null : entry.apiQuality} href={naDims.has('apiQuality') ? undefined : `/arena/${category}/product/${id}/score#api-quality`} />
-          )}
+          <ScoreViewMenu
+            overall={{
+              value: entry.aiEra,
+              href: `/arena/${category}/product/${id}/score`,
+              interval: aiEraBandFor(loadScoreIntervals(category), id),
+              components: { agentReady: entry.agentReady, apiQuality: entry.apiQuality, openness: entry.themeScores['openness'] ?? null, agenticApp: entry.agenticApp, automation: entry.themeScores['automation-depth'] ?? null },
+            }}
+            views={[
+              { kind: 'agent-ready', value: naDims.has('agentReady') ? null : entry.agentReady, untested: !naDims.has('agentReady') && isGroupUntested(data, id, 'agent-access'), href: naDims.has('agentReady') ? undefined : `/arena/${category}/product/${id}/score#agent-ready` },
+              { kind: 'agentic-app', value: naDims.has('agenticApp') ? null : entry.agenticApp, untested: !naDims.has('agenticApp') && isGroupUntested(data, id, 'agentic-features'), href: naDims.has('agenticApp') ? undefined : `/arena/${category}/product/${id}/score#built-in-ai` },
+              ...(!naDims.has('apiQuality') && isGroupUntested(data, id, 'api-quality')
+                ? []
+                : [{ kind: 'api-quality' as const, value: naDims.has('apiQuality') ? null : entry.apiQuality, href: naDims.has('apiQuality') ? undefined : `/arena/${category}/product/${id}/score#api-quality` }]),
+            ]}
+          />
           {/* Founder 2026-09-23: when the api-quality pill above shows an actual score, the API
               glyph is redundant — the score IS the tick. The glyph stays only when the pill has
               no number to show (n/a arena, untested, or no judged score). MCP/CLI always render. */}

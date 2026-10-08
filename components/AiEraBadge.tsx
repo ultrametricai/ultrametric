@@ -32,7 +32,9 @@ import Link from 'next/link'
 // Half-width shown as "±N" — the tooltip carries the exact (possibly asymmetric) low–high band.
 export const bandHalfWidth = (band: ScoreBand): number => Math.round((band.high - band.low) / 2)
 
-function tooltip(components?: AiEraComponents, band?: ScoreBand): string {
+// Exported for components/ScoreViewMenu.tsx (the product header's score dropdown): the menu's
+// 'Overall score' entry carries the same derivation tooltip this pill computes.
+export function aiEraTooltip(components?: AiEraComponents, band?: ScoreBand): string {
   const bandLine = band
     ? `\n±${bandHalfWidth(band)} (68% band: ${band.low.toFixed(0)}–${band.high.toFixed(0)}) — propagated from measured judge re-roll variance; untested cells widen it. See README "Score intervals".`
     : ''
@@ -87,7 +89,7 @@ export default function AiEraBadge({
   if (value === null) {
     return (
       <span
-        title={tooltip(components)}
+        title={aiEraTooltip(components)}
         className={`inline-flex w-fit items-center rounded-full bg-zinc-900 font-semibold italic text-zinc-500 ring-1 ring-zinc-800 ${sizeClass}`}
       >
         n/a
@@ -97,7 +99,7 @@ export default function AiEraBadge({
   const band = interval ?? undefined
   const badge = (
     <span
-      title={tooltip(components, band)}
+      title={aiEraTooltip(components, band)}
       className={`inline-flex w-fit cursor-help items-center gap-1.5 rounded-full bg-emerald-400 font-mono font-bold text-zinc-950 ring-1 ring-emerald-300 tabular-nums ${sizeClass}`}
     >
       {label && <span className="font-sans text-[0.72em] font-semibold uppercase tracking-wide opacity-80">{label}</span>}
