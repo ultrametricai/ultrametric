@@ -3,6 +3,7 @@ import { loadArenaSections } from '@/lib/arenaSections'
 import { battleSlug, loadAll } from '@/lib/data'
 import { collectGlobalStories } from '@/lib/globalStories'
 import { loadBusinessLogicMap } from '@/lib/businessLogicMap'
+import { loadCompanyFields } from '@/lib/companyFields'
 import { loadArtifacts, loadChains, loadProcesses, processSlug } from '@/lib/processes'
 import { loadFamilies } from '@/lib/families'
 import { loadIcpTypes } from '@/lib/icp'
@@ -136,6 +137,14 @@ export default function sitemap(): MetadataRoute.Sitemap {
   entries.push({ url: `${SITE_URL}/artifacts`, lastModified: now })
   for (const artifact of loadArtifacts()) {
     entries.push({ url: `${SITE_URL}/artifacts/${artifact.id}`, lastModified: now })
+  }
+
+  // Company data fields (founder 2026-10-08): the specification pages — the committed registry
+  // (processes/company-fields.json) is the param source, the same ids app/fields/[id]
+  // prerenders.
+  entries.push({ url: `${SITE_URL}/fields`, lastModified: now })
+  for (const field of loadCompanyFields()) {
+    entries.push({ url: `${SITE_URL}/fields/${field.id}`, lastModified: now })
   }
 
   // Product-family breakdown pages — one per multi-product vendor (see lib/families.ts and

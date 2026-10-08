@@ -42,6 +42,7 @@ const ADOPTERS = [
   'components/VendorProcesses.tsx',
   'components/VirtualStartup.tsx',
   'app/artifacts/page.tsx',
+  'app/fields/page.tsx',
   'app/experiments/gpus/GpuTable.tsx',
   'app/experiments/processors/ProcessorTable.tsx',
   'app/global/page.tsx',
