@@ -2,7 +2,7 @@
 
 import Link from 'next/link'
 import { useEffect, useRef, useState } from 'react'
-import { fetchLogoutUrl, loginUrl, useSession } from '@/lib/session'
+import { fetchLogoutUrl, loginUrl, registrationUrl, useSession } from '@/lib/session'
 import { SITE_URL } from '@/lib/site'
 
 // The header's account corner. Anonymous (and still-loading — same render, so the header never
@@ -43,22 +43,29 @@ export default function AccountMenu() {
 
   if (session.state !== 'authenticated') {
     // Founder 2026-09-18: the Sign up button ships visibly (supersedes the 09-14 hide-until-
-    // tested call) — AuthKit's hosted page handles both signup and login in one flow via the
-    // standard Ultrametric WorkOS environment. The pa-auth-test flag is retired.
-    // Signed-out: quiet "Log in" text link + the Sign up pill (founder 2026-09-18). Both land
-    // on the same AuthKit hosted page, which serves login and signup in one flow.
-    const go = (e: React.MouseEvent) => {
+    // tested call) — AuthKit's hosted page handles both signup and login via the standard
+    // Ultrametric WorkOS environment. The pa-auth-test flag is retired.
+    // Signed-out: quiet "Log in" text link + the Sign up pill (founder 2026-09-18). Same worker
+    // /auth/login route, DIFFERENT screens (founder bug 2026-10-08: Sign up landed on the login
+    // screen): the pill carries screen_hint=sign-up (lib/session.ts registrationUrl — the same
+    // mechanism ProcessCheck/YourStack already use), which the worker forwards to the AuthKit
+    // authorize URL so the hosted page opens on its sign-up screen.
+    const go = (build: (returnTo: string) => string) => (e: React.MouseEvent) => {
       e.preventDefault()
-      window.location.href = loginUrl(currentUrl())
+      window.location.href = build(currentUrl())
     }
     return (
       <span className="flex shrink-0 items-center gap-2.5">
-        <a href={loginUrl(SITE_URL)} onClick={go} className="text-xs text-zinc-400 transition hover:text-emerald-300">
+        <a
+          href={loginUrl(SITE_URL)}
+          onClick={go(loginUrl)}
+          className="text-xs text-zinc-400 transition hover:text-emerald-300"
+        >
           Log in
         </a>
         <a
-          href={loginUrl(SITE_URL)}
-          onClick={go}
+          href={registrationUrl(SITE_URL)}
+          onClick={go(registrationUrl)}
           className="rounded-full border border-emerald-400/60 bg-emerald-400/10 px-3 py-1 text-xs font-medium text-emerald-300 transition hover:bg-emerald-400/20"
         >
           Sign up

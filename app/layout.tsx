@@ -213,7 +213,12 @@ export default async function RootLayout({ children }: LayoutProps<"/">) {
           Skip to content
         </a>
         <header className="border-b border-zinc-800">
-          <div className="mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-x-3 gap-y-3 px-3 py-3 sm:flex-nowrap sm:gap-x-4 sm:px-5 sm:py-4">
+          {/* ONE line at every width (founder bug 2026-10-08: the mobile bar wrapped to double
+              height and the wrapped-left ☰ pushed its right-anchored panel off-screen). The row
+              carries NO wrapping classes: flex-nowrap at all widths, and below sm every member
+              is compact — the wordmark's first-glyph mark (LogoWordmark), icon-only search
+              (CommandPalette), the icon-only GitHub mark, ☰, and the account links. */}
+          <div className="mx-auto flex max-w-7xl flex-nowrap items-center justify-between gap-x-3 px-3 py-3 sm:gap-x-4 sm:px-5 sm:py-4">
             <div className="flex shrink-0 items-center gap-2">
               {/* One top-bar standard sitewide (founder 2026-09-29): the landing's wordmark SVG
                   leads the product bar too, so ultrametric.ai/ and the product pages share the
@@ -227,7 +232,7 @@ export default async function RootLayout({ children }: LayoutProps<"/">) {
                 buyer lenses, methodology/pipeline/proofs/MCP), then the three tools (Stacks,
                 Processes, Compare), GitHub, and search. One menu for all secondary destinations
                 instead of the old Rankings + Lenses dropdowns + a Methodology link. */}
-            <nav className="flex flex-nowrap items-center gap-3 text-sm text-zinc-400 sm:flex-wrap sm:gap-6">
+            <nav className="flex flex-nowrap items-center gap-2 text-sm text-zinc-400 sm:flex-wrap sm:gap-6">
               {/* Founder 2026-09-29: Virtual Startup leads the nav, LEFT of the Rankings menu.
                   Founder 2026-09-23: it sits LEFT of Processes. Founder 2026-09-24: the dropdowns
                   and buttons are desktop-only — mobile gets the ☰ MobileNav. */}

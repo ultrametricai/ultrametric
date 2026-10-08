@@ -63,7 +63,15 @@ export default function MobileNav() {
         <span aria-hidden className="text-base leading-none">☰</span>
       </button>
       {open && (
-        <div className="absolute right-0 top-10 z-50 w-56 rounded-xl border border-zinc-800 bg-zinc-900 p-1.5 shadow-2xl shadow-black/50">
+        /* Viewport-pinned panel (founder bug 2026-10-08: the panel rendered off-screen — while
+           the crowded header wrapped, the ☰ landed at the LEFT of the wrapped line, and this
+           panel was `absolute right-0`, anchored to the button, so its 224px width ran past the
+           viewport's left edge). `fixed` positions against the viewport, not the button: right-3
+           matches the header's px-3 gutter, top-14 clears the py-3 + h-8 header row, and the
+           max-h/overflow pair keeps every row reachable when the panel is taller than the
+           viewport (it gained a Country row 2026-10-07). Outside-tap close still works — the
+           panel stays inside rootRef in the DOM. */
+        <div className="fixed right-3 top-14 z-50 max-h-[calc(100dvh-4.5rem)] w-56 overflow-y-auto rounded-xl border border-zinc-800 bg-zinc-900 p-1.5 shadow-2xl shadow-black/50">
           {ITEMS.map((item) => (
             <Link
               key={item.href}

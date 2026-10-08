@@ -21,7 +21,7 @@ import { renderToString } from 'react-dom/server'
 import { hydrateRoot, type Root } from 'react-dom/client'
 import { afterEach, beforeEach, describe, expect, it } from 'vitest'
 import GeoDropdown from '@/components/GeoDropdown'
-import { GEO_GLOBAL, PROCESSES_INDEX_DEFAULT_GEO, getGeoChoice, setGeoChoice } from '@/lib/geoPreference'
+import { GEO_GLOBAL, PROCESSES_INDEX_DEFAULT_GEO, getGeoChoice, getGeoSelection, setGeoChoice, setUsPickDisplay } from '@/lib/geoPreference'
 
 // Same in-memory localStorage stand-in as components/__tests__/ProcessGeoSync.test.tsx.
 function stubLocalStorage() {
@@ -54,8 +54,10 @@ beforeEach(() => {
 })
 afterEach(() => {
   window.localStorage.clear()
-  // The module-level store outlives unmounts — reset so tests stay independent.
+  // The module-level store outlives unmounts — reset so tests stay independent (the explicit-
+  // USA display flag included, founder 2026-10-08).
   setGeoChoice(null)
+  setUsPickDisplay(false)
 })
 
 describe('static-HTML contract (SSR IS the surface default — no client flash)', () => {
@@ -156,13 +158,14 @@ describe('picks write the param/storage exactly as before (the codec is untouche
 
     list = openList(r)
     fireEvent.click([...list.querySelectorAll('[role="option"]')].find((o) => o.textContent?.includes('USA')) as Element)
-    // As today: the US default never appears in the URL and clears the stored copy. The
-    // pristine framing on the global-default surface is Global — honest, because no selection
-    // and Global mean the same thing everywhere (full corpus + US-baseline flows); only a
-    // country selection filters/adapts.
+    // As today: the US default never appears in the URL and clears the stored copy. The views
+    // stay the full-corpus US-baseline ones (store null — same as Global); only the TRIGGER
+    // reflects the pick (founder 2026-10-08: "clicking USA … stays 🌐" superseded the old
+    // settle-back-to-the-surface-framing display).
     expect(url()).toBe(PATH)
     expect(window.localStorage.getItem('pa-geo')).toBeNull()
-    expect(trigger(r).textContent).toContain('Global')
+    expect(trigger(r).textContent).toContain('🇺🇸')
+    expect(getGeoChoice()).toBeNull()
   })
 
   it('with no defaultChoice the pristine selected entry is 🇺🇸 USA (the no-framing default, unchanged)', () => {
@@ -252,5 +255,50 @@ describe('the nav variant (the header form, founder 2026-10-07)', () => {
     expect(url()).toBe(`${PATH}?geo=uk`)
     expect(window.localStorage.getItem('pa-geo')).toBe('uk')
     expect(trigger(r).textContent).toContain('🇬🇧')
+  })
+})
+
+describe('an explicit 🇺🇸 USA pick is REFLECTED on the trigger (founder 2026-10-08)', () => {
+  it('walks the founder sequence on the header form: 🌐 → USA 🇺🇸 → Global 🌐 → Germany 🇩🇪 → USA 🇺🇸 — with USA and Global both leaving the views geo-neutral', () => {
+    const r = render(<GeoDropdown variant="nav" defaultChoice={GEO_GLOBAL} />)
+    const pick = (name: string) => {
+      const list = openList(r)
+      fireEvent.click([...list.querySelectorAll('[role="option"]')].find((o) => o.textContent?.includes(name)) as Element)
+    }
+
+    // Pristine: the surface's Global framing (nothing chosen, nothing stored).
+    expect(trigger(r).textContent).toContain('🌐')
+
+    pick('USA')
+    expect(trigger(r).textContent).toContain('🇺🇸')
+    // Display only: the codec is untouched (USA never reaches URL/storage) and the store stays
+    // null — a USA view and a Global view render identically (the 2026-10-07 decision).
+    expect(url()).toBe(PATH)
+    expect(window.localStorage.getItem('pa-geo')).toBeNull()
+    expect(getGeoChoice()).toBeNull()
+    expect(getGeoSelection()).toBeNull()
+    // The pick also reads as the selected entry when the list reopens.
+    const list = openList(r)
+    expect([...list.querySelectorAll('[role="option"]')].find((o) => o.textContent?.includes('USA'))?.getAttribute('aria-selected')).toBe('true')
+    fireEvent.keyDown(document, { key: 'Escape' })
+
+    pick('Global')
+    expect(trigger(r).textContent).toContain('🌐')
+    expect(getGeoSelection()).toBeNull() // same geo-neutral views as the USA state above
+
+    pick('Germany')
+    expect(trigger(r).textContent).toContain('🇩🇪')
+    expect(url()).toBe(`${PATH}?geo=de`)
+
+    pick('USA')
+    expect(trigger(r).textContent).toContain('🇺🇸')
+    expect(url()).toBe(PATH)
+    expect(window.localStorage.getItem('pa-geo')).toBeNull()
+  })
+
+  it('the pristine default framing is untouched: no pick, no 🇺🇸 override — SSR and first client render still show the surface default', () => {
+    const ssr = renderToString(<GeoDropdown variant="nav" defaultChoice={GEO_GLOBAL} />)
+    expect(ssr).toContain('🌐')
+    expect(ssr).not.toContain('🇺🇸')
   })
 })

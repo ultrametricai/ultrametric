@@ -129,12 +129,23 @@ export default function LogoWordmark() {
 
   return (
     <Link ref={rootRef} href="/" className="logo-root relative block shrink-0" title="Ultrametric home">
+      {/* Compact mark below sm (founder 2026-10-08: the full wordmark is ~14× wider than tall,
+          so even at h-3 it took ~170px of a 375px bar and wrapped the header onto two lines).
+          The asset is the committed wordmark file with the viewBox cropped to its first glyph —
+          same letterform, no redrawn art. */}
+      {/* alt="" — decorative beside the wordmark's alt: one img names the link, and below sm
+          (wordmark display:none) the link's title attribute carries the accessible name. */}
+      {/* eslint-disable-next-line @next/next/no-img-element -- static svg mark */}
+      <img src="/ultrametric-mark.svg" alt="" className="h-4 w-auto sm:hidden" />
       {/* eslint-disable-next-line @next/next/no-img-element -- static svg wordmark */}
-      <img src="/ultrametric-wordmark.svg" alt="ultrametric" className="h-3 w-auto sm:h-3.5" />
-      <span className="logo-fx pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-300" aria-hidden>
+      <img src="/ultrametric-wordmark.svg" alt="ultrametric" className="hidden h-3.5 w-auto sm:block" />
+      {/* The hover fx overlays are masked to the FULL wordmark (app/globals.css .logo-fx), so
+          they only exist from sm up where that image renders — below sm the compact mark has no
+          hover fx (touch devices never armed the loop anyway, see the hover-capability gate). */}
+      <span className="logo-fx pointer-events-none absolute inset-0 hidden opacity-0 transition-opacity duration-300 sm:block" aria-hidden>
         <canvas ref={canvasRef} className="logo-fractal block h-full w-full" />
       </span>
-      <span className="logo-shine pointer-events-none absolute inset-0 opacity-0" aria-hidden />
+      <span className="logo-shine pointer-events-none absolute inset-0 hidden opacity-0 sm:block" aria-hidden />
     </Link>
   )
 }

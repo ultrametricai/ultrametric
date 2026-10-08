@@ -164,7 +164,19 @@ export default function CommandPalette() {
         className="flex shrink-0 items-center gap-2 rounded-lg border border-zinc-800 px-2.5 py-1 text-xs text-zinc-400 transition hover:border-emerald-400/60 hover:text-emerald-300"
         aria-label="Open search"
       >
-        <span>Search</span>
+        {/* Below sm the trigger is a magnifier icon (founder 2026-10-08: the word crowded the
+            single-line mobile bar); the accessible name stays "Open search" via the aria-label
+            above, and the ⌘K hint stays desktop-only. */}
+        <svg
+          aria-hidden
+          viewBox="0 0 16 16"
+          className="h-3.5 w-3.5 fill-none stroke-current sm:hidden"
+          strokeWidth="1.6"
+        >
+          <circle cx="7" cy="7" r="4.5" />
+          <path d="m10.5 10.5 3.5 3.5" strokeLinecap="round" />
+        </svg>
+        <span className="hidden sm:inline">Search</span>
         <kbd className="hidden rounded border border-zinc-700 bg-zinc-900 px-1 font-mono text-[10px] text-zinc-500 sm:inline">⌘K</kbd>
       </button>
 
