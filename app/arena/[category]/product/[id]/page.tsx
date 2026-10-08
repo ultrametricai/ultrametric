@@ -40,6 +40,7 @@ import WhereItWorks from '@/components/WhereItWorks'
 import EnterpriseBadge from '@/components/EnterpriseBadge'
 import ShutdownBadge from '@/components/ShutdownBadge'
 import YcBadge from '@/components/YcBadge'
+import { agentBanRecorded } from '@/lib/agentBans'
 import { arenaMembershipsOf } from '@/lib/alternatives'
 import {
   groupInOrder, loadAll, loadCategory, type CategoryData,
@@ -146,6 +147,11 @@ export default async function ProductPage({
   // header's primary CTA become hands-on; products with neither keep the plain site link as
   // primary (no fake try, never a dead CTA).
   const tryable = hasTryIt(category, id)
+  // Founder 2026-10-08: where the service has SAID agents may not come — committed evidence
+  // records a named AI-agent ban or a robots-walled front door (lib/agentBans.ts, derived from
+  // evidence/crawlExclude, never a hand list) — the primary slot renders NOTHING: no CTA, no
+  // external link. The vendor-name link above and the Access chips keep carrying the site.
+  const banRecorded = !tryable && agentBanRecorded(data, id)
   // Momentum sparklines beside the chip — stars/downloads over time from
   // popularity-history.jsonl (tolerant-optional; series with <2 distinct snapshots render
   // nothing — see components/MomentumTrend.tsx).
@@ -260,7 +266,7 @@ export default async function ProductPage({
                   Test in Ultrametric →
                 </a>
               </>
-            ) : (
+            ) : banRecorded ? null : (
               <a
                 href={product.urls.site}
                 target="_blank"
