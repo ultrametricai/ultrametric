@@ -83,6 +83,15 @@ describe('/open-documents', () => {
     expect(cells.some((c) => c?.includes('🇨🇦'))).toBe(false)
   })
 
+  it('spends no column on Checked — checked_on stays in the registry and the link titles', () => {
+    const { container } = render(<OpenDocumentsPage />)
+    const headers = [...container.querySelectorAll('thead th')].map((th) => th.textContent)
+    expect(headers).not.toContain('Checked')
+    // The verification date still rides every document link's title (registry data unchanged).
+    const d = registry.documents[0]
+    expect(container.querySelector(`a[href="${d.url}"]`)!.getAttribute('title')).toContain(d.checked_on)
+  })
+
   it('groups records under their use_case headings, registry order within each group', () => {
     const { container } = render(<OpenDocumentsPage />)
     const headings = [...container.querySelectorAll('h2')].map((h) => h.textContent)

@@ -123,11 +123,10 @@ export default function OpenDocumentsPage() {
                     <th scope="col" className="hidden px-3 py-2 font-normal sm:table-cell">
                       <span title="Descriptive, not a registry code — many standards are deliberately jurisdiction-neutral">Jurisdiction</span>
                     </th>
+                    {/* No Checked column (founder 2026-10-08): checked_on stays in the registry
+                        and in each document link's title; the table stops spending a column on it. */}
                     <th scope="col" className="hidden px-3 py-2 font-normal md:table-cell">
                       <span title="The published license or terms, and what still requires counsel">License / counsel note</span>
-                    </th>
-                    <th scope="col" className="px-3 py-2 font-normal">
-                      <span title="When the URL was last verified live">Checked</span>
                     </th>
                   </tr>
                 </thead>
@@ -159,7 +158,6 @@ export default function OpenDocumentsPage() {
                         <JurisdictionCell jurisdiction={d.jurisdiction} />
                       </td>
                       <td className="hidden px-3 py-2.5 align-top text-zinc-500 md:table-cell">{d.license_note}</td>
-                      <td className="px-3 py-2.5 align-top text-zinc-500">{d.checked_on}</td>
                     </tr>
                   ))}
                 </tbody>
