@@ -22,6 +22,15 @@ describe('FamilySection (committed corpus)', () => {
     expect(container.textContent).not.toContain('no ranking where they compete')
   })
 
+  it('is a plain section (founder 2026-10-08): no enclosing card chrome — the only border is the table\'s own shell', () => {
+    const { container } = render(<FamilySection arenaId="payments" productId="stripe" />)
+    // The section root is an unstyled div (the Verified integrations idiom: heading + content).
+    const root = container.firstElementChild!
+    expect(root.getAttribute('class')).toBeNull()
+    // The house table shell remains the one bordered element around the rows.
+    expect(root.querySelector('.rounded-2xl.border')).not.toBeNull()
+  })
+
   it('renders nothing when fewer than two judged lines exist, even with page-only lines committed', () => {
     // PayPal's committed family has one judged line plus page-only lines; with the footer gone
     // there is nothing left to show.
