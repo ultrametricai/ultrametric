@@ -5,7 +5,24 @@ import { useEffect, useId, useRef, useState } from 'react'
 import { START_METHODS, agentLaunch, startPrompt, type StartAgent, type StartTarget } from '@/lib/process-start'
 import { useRegionalVariant } from '@/components/shared-processes/RegionalVariant'
 
-export default function ProcessRunCTA({ target }: { target: StartTarget }) {
+// The run-with-Ultrametric affordance: an emerald trigger opening the agent-picker modal
+// (Claude / ChatGPT / Codex / Claude Code / Cursor / Ultrametric CLI), which hands off the
+// public start prompt — launch on web where a verified URL exists, copy otherwise. PUBLIC by
+// design (no admin gate): the handoff is a real prompt against api.ultrametric.ai/start, the
+// same contract the v2 reader publishes. The canonical process page mounts this same component
+// with the site's header-CTA trigger idiom (label/trigger overrides below); defaults are the
+// v2 reader's original pill.
+export default function ProcessRunCTA({
+  target,
+  label = 'Run this process with Ultrametric',
+  className = 'mt-6',
+  triggerClassName = 'inline-flex min-h-12 max-w-full items-center justify-center rounded-full bg-emerald-300 px-6 py-3 text-center font-medium leading-snug text-zinc-950 shadow-[0_0_30px_-15px_#6ee7b7] transition hover:bg-emerald-200 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-emerald-300',
+}: {
+  target: StartTarget
+  label?: string
+  className?: string
+  triggerClassName?: string
+}) {
   const region = useRegionalVariant()
   const dialog = useRef<HTMLDialogElement>(null)
   const trigger = useRef<HTMLButtonElement>(null)
@@ -65,7 +82,7 @@ export default function ProcessRunCTA({ target }: { target: StartTarget }) {
     }
   }
 
-  return <div className="mt-6">
+  return <div className={className}>
     <button ref={trigger} type="button" onClick={() => {
       if (dialog.current?.open || returningHistory.current) return
       copyAttempt.current++
@@ -74,8 +91,8 @@ export default function ProcessRunCTA({ target }: { target: StartTarget }) {
       window.history.pushState(window.history.state, '', '#run-process')
       ownsHistory.current = true
       dialog.current?.showModal()
-    }} aria-haspopup="dialog" aria-disabled={returning || undefined} className="inline-flex min-h-12 max-w-full items-center justify-center rounded-full bg-emerald-300 px-6 py-3 text-center font-medium leading-snug text-zinc-950 shadow-[0_0_30px_-15px_#6ee7b7] transition hover:bg-emerald-200 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-emerald-300">
-      Run this process with Ultrametric
+    }} aria-haspopup="dialog" aria-disabled={returning || undefined} className={triggerClassName}>
+      {label}
     </button>
     <dialog ref={dialog} aria-labelledby={heading} onKeyDown={event => {
       if (event.key !== 'Tab') return

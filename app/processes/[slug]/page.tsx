@@ -13,6 +13,7 @@ import ProcessLensBanner from '@/components/ProcessLensBanner'
 import OpenModulesControl from '@/components/OpenModulesControl'
 import ProcessOpenModulesTable from '@/components/ProcessOpenModulesTable'
 import ProcessProducesTable from '@/components/ProcessProducesTable'
+import ProcessRunCTA from '@/components/process-start/ProcessRunCTA'
 import UrgencyChip from '@/components/UrgencyChip'
 import UsFlowLabel from '@/components/UsFlowLabel'
 import { modulesForProcess } from '@/lib/businessLogicMap'
@@ -25,6 +26,8 @@ import {
   findProcessBySlug, jurisdictionStepViews, loadProcesses, processSlug,
   slugAliasFor, taskCeiling,
 } from '@/lib/processes'
+import { findSharedRecord, readSharedCatalog } from '@/lib/shared-processes/reader'
+import { processStartTarget } from '@/lib/shared-processes/start'
 import { SITE_URL } from '@/lib/site'
 
 // One founder process: the DAG as it really runs, with the market resolved live from arena
@@ -93,6 +96,15 @@ export default async function ProcessPage({ params }: { params: Promise<{ slug: 
   const openModuleRows = processOpenModuleRows(task)
   // Registry artifacts this process produces — the bottom 'Artifacts it produces' table.
   const producesRows = producedArtifactRows(task)
+  // 'Run this process in Ultrametric' (founder 2026-10-08): the v2 reader's PUBLIC run
+  // affordance (components/process-start/ProcessRunCTA.tsx — agent-picker modal over the
+  // api.ultrametric.ai/start prompt handoff; no admin gate on the v2 original, so none here),
+  // mounted on the canonical page with the product pages' header-CTA trigger idiom. The shared
+  // record is this task's own per-id file (shared-canonical-identity mirror); like the v2
+  // reader, only kind 'process' records carry the CTA (today that is every record — corpus
+  // situations mirror to kind 'process' records, so the v2 reader runs them too).
+  const sharedRecord = findSharedRecord(readSharedCatalog(), task.id)
+  const runTarget = sharedRecord?.kind === 'process' ? processStartTarget(sharedRecord) : null
 
   return (
     <div className="space-y-10">
@@ -115,7 +127,10 @@ export default async function ProcessPage({ params }: { params: Promise<{ slug: 
           <IconChip icon={phaseIcon(task.phase)} title={phaseTooltip(task.phase)} className="mr-1" />
           {task.phase}
         </p>
-        <h1 className="font-display leading-[1.1] mt-1 flex items-center gap-2.5 text-3xl font-bold tracking-tight">
+        {/* Header top row — title left, the run CTA on the RIGHT (founder 2026-10-08: the same
+            placement idiom as the product pages' 'Test in Ultrametric' primary CTA). */}
+        <div className="mt-1 flex flex-wrap items-start justify-between gap-x-4 gap-y-2">
+        <h1 className="font-display leading-[1.1] flex items-center gap-2.5 text-3xl font-bold tracking-tight">
           <IconChip icon={processIcon(task.id)} title={`${task.title} — ${task.phase} ${task.kind === 'situation' ? 'situation' : 'process'}`} />
           {task.title}
           {task.geoScope !== 'global' && (
@@ -132,6 +147,15 @@ export default async function ProcessPage({ params }: { params: Promise<{ slug: 
             >🇺🇸</span>
           )}
         </h1>
+        {runTarget && (
+          <ProcessRunCTA
+            target={runTarget}
+            label="Run this process in Ultrametric"
+            className="shrink-0"
+            triggerClassName="rounded-lg bg-emerald-400 px-4 py-2 text-sm font-semibold text-zinc-950 transition hover:bg-emerald-300"
+          />
+        )}
+        </div>
         <div className="mt-2 flex flex-wrap items-center gap-2 text-xs">
           {/* Situations (founder 2026-10-01) lead the chip row with their honest clock. */}
           {task.urgency && <UrgencyChip tier={task.urgency} />}
