@@ -15,7 +15,7 @@ import type { VendorGeoLookup } from './geoPreference'
 // the same host's public help-center JSON API).
 //
 // This is DOCUMENTATION, deliberately not a score: no judged number reads this file, and no
-// "geo score" is derived from it. Display-only — the compact "Where it works" line on product
+// "geo score" is derived from it. Display-only — the compact "Geos supported" line on product
 // pages (components/WhereItWorks.tsx), rendered only when rows exist. Missing file = no lines
 // anywhere (honest degrade, never an error).
 

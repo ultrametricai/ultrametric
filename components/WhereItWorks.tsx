@@ -1,7 +1,8 @@
 import WhereItWorksStrip from '@/components/WhereItWorksStrip'
 import { VENDOR_GEO_COUNTRIES, vendorGeoFor } from '@/lib/vendorGeo'
 
-// "Where it works" (founder GEO ask 2026-09-28; compacted to a flag row, founder 2026-10-07):
+// "Geos supported" (founder GEO ask 2026-09-28; compacted to a flag row, founder 2026-10-07;
+// renamed from "Where it works" 2026-10-08 — display strings only, file names stay):
 // the countries where the vendor-geo spike judged the product to WORK, as one small row of
 // flags — evidence, not a score, each flag linking to the vendor's OWN page the row rests on
 // (crawl-verified; lib/vendorGeo.ts) with the honest note in its tooltip. Committed negatives

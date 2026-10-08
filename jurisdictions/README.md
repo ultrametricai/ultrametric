@@ -26,7 +26,7 @@ Stage 2 of the corpus lift (2026-09-28) consolidated the vendor region-availabil
 here: `vendor-geo.json` (moved from `data/vendor-geo.json`, byte-identical) holds one dated,
 source-cited row per (product, country) for the top vendors of the geo-sensitive arenas —
 loader `lib/vendorGeo.ts`, crawl method in `pipeline/scripts/build-vendor-geo.py`, rendered as
-the "Where it works" line on product pages. Evidence only, deliberately not a score. A real
+the "Geos supported" line on product pages. Evidence only, deliberately not a score. A real
 row:
 
 ```json
@@ -60,7 +60,7 @@ which operational processes are US-centric vs global (`geoScope` in `processes/c
   `{productId, country, status: available|unavailable|partial, sourceUrl, note}`. The source
   must be the vendor's own page (or an official register) stating the fact; honest negatives
   ("US entities only") are as valuable as positives. These rows drive the geo switcher and
-  "Where it works" on product pages. Gate: `npx vitest run lib/__tests__/vendorGeo.test.ts`
+  "Geos supported" on product pages. Gate: `npx vitest run lib/__tests__/vendorGeo.test.ts`
   (or `pnpm test`).
 - **Register a new jurisdiction** — add it to `registry.json` with an explicit, narrow scope
   statement before contributing `rules/<CODE>/` cards or workflows for it. Unknown dimension

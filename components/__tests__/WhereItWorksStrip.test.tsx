@@ -1,5 +1,6 @@
 // @vitest-environment jsdom
-// WhereItWorksStrip — the "Where it works" section on product pages, compacted to a flag row
+// WhereItWorksStrip — the "Geos supported" section on product pages (renamed from "Where it
+// works", founder 2026-10-08 — display strings only), compacted to a flag row
 // (founder 2026-10-07): ONLY the countries where the product works render, as small adjacent
 // flags — no ticks, no pills, no per-country labels (the country name, status and committed
 // note live in each flag's tooltip/sr-only text, and each flag keeps its vendor-source link).
@@ -53,7 +54,8 @@ describe('the compact flag row (default view, and the static HTML)', () => {
     const tree = <WhereItWorksStrip rows={MERCURY} />
     expect(renderToString(tree)).toBe(renderToString(tree))
     const { container } = render(tree)
-    expect(container.textContent).toContain('Where it works')
+    expect(container.textContent).toContain('Geos supported')
+    expect(container.textContent).not.toContain('Where it works') // renamed, founder 2026-10-08
     const links = flags(container)
     // One flag: the US (available). The unavailable UK row renders no flag, no ✕, no pill.
     expect(links.map((l) => l.getAttribute('href'))).toEqual(['https://vendor.example/us'])
