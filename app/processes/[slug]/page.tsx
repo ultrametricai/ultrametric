@@ -218,17 +218,13 @@ export default async function ProcessPage({ params }: { params: Promise<{ slug: 
           affordances (StepYourPick, ProcessYourVendor, the leaderboard's mineHref) still carry
           readers into the personalized run. */}
 
-      {/* The flow overview (founder 2026-10-07; v2 diagram 2026-10-08): the ACTUAL v2 reader
-          diagram (node cards, SVG dependency edges with arrowheads, serpentine measured
-          layout — lib/shared-processes/overview-layout.ts) over the SAME corpus DAG, outside
-          the #steps region. Client-measured; the 10-07 chip strip is the SSR/no-JS fallback
-          it replaces on mount. The props stay slim on purpose — this is a client boundary,
-          so only id/label/route/legalSignature per node cross into the page payload. */}
-      <ProcessDagOverview
-        nodes={task.dag.nodes.map(({ id, label, route, legalSignature }) => ({ id, label, route, legalSignature }))}
-        edges={task.dag.edges}
-        taskId={task.id}
-      />
+      {/* The flow overview (founder 2026-10-07, reverted to the strip 2026-10-08): the compact
+          SSR strip of route-marked step chips, each jumping to its #step anchor in the diagram
+          below. Server-rendered from the SAME corpus DAG (lib/dagLayers.ts layering), outside
+          the #steps region. The same-day v2 diagram mount is retired from this page (the v2
+          reader keeps its diagram); the caption removal, bumped chip text, and unboxed chrome
+          stay. */}
+      <ProcessDagOverview nodes={task.dag.nodes} edges={task.dag.edges} taskId={task.id} />
 
       <section>
         {/* 'Process breakdown' (founder 2026-10-05 functional-title rename of 'Step-by-step:
@@ -248,7 +244,10 @@ export default async function ProcessPage({ params }: { params: Promise<{ slug: 
         <ProcessLensBanner steps={checkStepList} pageKey={task.id} />
         {/* The top-of-page vendor picker left process pages (founder 2026-10-05) — the per-step
             "use" affordances below are the lens writers here. */}
-        <div className="mt-4 rounded-2xl border border-zinc-800 p-4 sm:p-5">
+        {/* The enclosing box is gone (founder 2026-10-08): the breakdown region keeps its
+            layout but loses the rounded/border wrapper chrome. The div itself stays — it is
+            the #steps region the design pin measures (the anchor's parent). */}
+        <div className="mt-4">
           <div id="steps" className="scroll-mt-4" />
           <ProcessDag
             nodes={task.dag.nodes}
