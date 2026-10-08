@@ -4,6 +4,7 @@ import Link from 'next/link'
 import { useEffect, useRef, useState } from 'react'
 import HeaderGeoControl from '@/components/HeaderGeoControl'
 import { IconGlyph } from '@/components/IconChip'
+import { OBJECTS_ITEMS, OBJECTS_LABEL } from '@/components/ObjectsNav'
 import { MOBILE_NAV_ICONS } from '@/lib/arenaIcons'
 
 // Mobile hamburger (founder 2026-09-24: "the mobile top bar goes off the page — we need a
@@ -13,11 +14,16 @@ import { MOBILE_NAV_ICONS } from '@/lib/arenaIcons'
 // button row and the Rankings/Explore dropdowns stay the desktop IA. Icons: house glyph tokens
 // (lib/arenaIcons.ts, founder 2026-10-01 — the custom set replaces the emoji in the top-bar
 // menus).
-const ITEMS: Array<{ href: string; label: string; icon: string }> = [
+const PRIMARY_ITEMS: Array<{ href: string; label: string; icon: string }> = [
   // "Rankings" is the renamed Arenas label (founder 2026-10-07); the route stays /arenas.
   { href: '/arenas', label: 'Rankings', icon: MOBILE_NAV_ICONS['/arenas'] },
   { href: '/processes', label: 'Processes', icon: MOBILE_NAV_ICONS['/processes'] },
-  { href: '/situations', label: 'Situations', icon: MOBILE_NAV_ICONS['/situations'] },
+]
+
+// Between the two flat runs sits the Objects group (founder 2026-10-08) — the ☰ panel mirrors
+// the desktop header's Objects dropdown, same components/ObjectsNav.ts list and position
+// (right after Processes). Situations moved there from this flat list.
+const MORE_ITEMS: Array<{ href: string; label: string; icon: string }> = [
   { href: '/technologies', label: 'Technologies', icon: MOBILE_NAV_ICONS['/technologies'] },
   { href: '/startup-sim', label: 'Open Startup Sim', icon: MOBILE_NAV_ICONS['/startup-sim'] },
   { href: '/stacks', label: 'Stacks', icon: MOBILE_NAV_ICONS['/stacks'] },
@@ -72,7 +78,38 @@ export default function MobileNav() {
            viewport (it gained a Country row 2026-10-07). Outside-tap close still works — the
            panel stays inside rootRef in the DOM. */
         <div className="fixed right-3 top-14 z-50 max-h-[calc(100dvh-4.5rem)] w-56 overflow-y-auto rounded-xl border border-zinc-800 bg-zinc-900 p-1.5 shadow-2xl shadow-black/50">
-          {ITEMS.map((item) => (
+          {PRIMARY_ITEMS.map((item) => (
+            <Link
+              key={item.href}
+              href={item.href}
+              onClick={() => setOpen(false)}
+              className="flex items-center gap-2.5 rounded-lg px-3 py-2 text-sm text-zinc-300 transition hover:bg-zinc-800 hover:text-emerald-300"
+            >
+              <span aria-hidden className="inline-flex w-5 justify-center">
+                <IconGlyph icon={item.icon} />
+              </span>
+              {item.label}
+            </Link>
+          ))}
+          {/* The Objects group — same uppercase section-header idiom as the ArenaMenu panels,
+              same entries as the desktop Objects dropdown (components/ObjectsNav.ts). */}
+          <p className="px-3 pb-1 pt-2.5 text-[10px] font-semibold uppercase tracking-widest text-emerald-400/90">
+            {OBJECTS_LABEL}
+          </p>
+          {OBJECTS_ITEMS.map((item) => (
+            <Link
+              key={item.href}
+              href={item.href ?? `/${item.id}`}
+              onClick={() => setOpen(false)}
+              className="flex items-center gap-2.5 rounded-lg px-3 py-2 text-sm text-zinc-300 transition hover:bg-zinc-800 hover:text-emerald-300"
+            >
+              <span aria-hidden className="inline-flex w-5 justify-center">
+                <IconGlyph icon={item.icon ?? ''} />
+              </span>
+              {item.name}
+            </Link>
+          ))}
+          {MORE_ITEMS.map((item) => (
             <Link
               key={item.href}
               href={item.href}

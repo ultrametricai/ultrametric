@@ -10,6 +10,7 @@ import InstallNavAction from "@/components/InstallNavAction";
 import InstantTooltip from "@/components/InstantTooltip";
 import ArenaMenu, { type ArenaMenuItem } from "@/components/ArenaMenu";
 import MobileNav from "@/components/MobileNav";
+import { OBJECTS_ITEMS, OBJECTS_LABEL } from "@/components/ObjectsNav";
 import PostHogInit from "@/components/PostHogInit";
 import { GLOBAL_RANKINGS, PROCESS_RANKINGS } from "@/components/RankingsNav";
 import { loadArenaSections } from "@/lib/arenaSections";
@@ -228,10 +229,11 @@ export default async function RootLayout({ children }: LayoutProps<"/">) {
               <LogoWordmark />
             </div>
             {/* Primary IA: Rankings (the arenas — the product; label renamed from Arenas,
-                founder 2026-10-07), Explore (every secondary view: global leaderboards,
-                buyer lenses, methodology/pipeline/proofs/MCP), then the three tools (Stacks,
-                Processes, Compare), GitHub, and search. One menu for all secondary destinations
-                instead of the old Rankings + Lenses dropdowns + a Methodology link. */}
+                founder 2026-10-07), Objects (the object registries: Situations, Artifacts,
+                Open documents — founder 2026-10-08), Explore (every secondary view: global
+                leaderboards, buyer lenses, methodology/pipeline/proofs/MCP), then the tools,
+                GitHub, and search. One menu for all secondary destinations instead of the old
+                Rankings + Lenses dropdowns + a Methodology link. */}
             <nav className="flex flex-nowrap items-center gap-2 text-sm text-zinc-400 sm:flex-wrap sm:gap-6">
               {/* Founder 2026-09-29: Virtual Startup leads the nav, LEFT of the Rankings menu.
                   Founder 2026-09-23: it sits LEFT of Processes. Founder 2026-09-24: the dropdowns
@@ -251,14 +253,15 @@ export default async function RootLayout({ children }: LayoutProps<"/">) {
               >
                 Processes
               </Link>
-              {/* Situations (founder 2026-10-02): the reactive records' own index, a sibling of
-                  Processes — same house nav pattern as the link it sits beside. */}
-              <Link
-                href="/situations"
-                className="hidden shrink-0 items-center gap-1.5 text-sm text-zinc-300 transition hover:text-emerald-300 sm:flex"
-              >
-                Situations
-              </Link>
+              {/* Objects (founder 2026-10-08): one dropdown for the object registries —
+                  Situations (which gave up its 2026-10-02 top-level slot to this menu),
+                  Artifacts, and Open documents. Same ArenaMenu idiom as Rankings/Explore, so
+                  the trigger weight and the open/close behavior match; the item list and the
+                  label are the single source in components/ObjectsNav.ts, mirrored by the ☰
+                  panel's labeled group. */}
+              <span className="hidden sm:block">
+                <ArenaMenu title={OBJECTS_LABEL} items={OBJECTS_ITEMS} />
+              </span>
               {/* Technologies moved back under Explore → More views (founder 2026-09-29,
                   reversing the 2026-09-24 top-level entry). */}
               {/* geo: every Explore destination wears its deterministic concept mark

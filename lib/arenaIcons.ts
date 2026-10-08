@@ -162,10 +162,14 @@ export const EXPLORE_SECTION_ICONS = {
 
 // The mobile ☰ menu's destinations (components/MobileNav.tsx) — same vocabulary as the rest of
 // the site: the sim is the flask (🧪 was its emoji), compare the scales, stacks the bricks.
+// The header's Objects dropdown (components/ObjectsNav.ts) reads its item icons from here too,
+// so each destination wears one mark in both menus.
 export const MOBILE_NAV_ICONS: Record<string, string> = {
   '/arenas': pi('stadium', 'emerald'), // 🏟 the arenas themselves
   '/processes': pi('cycle', 'sky'), // 🔁
   '/situations': pi('siren', 'amber'), // 🚨 reactive, trigger-driven — amber: urgent, not an error
+  '/artifacts': pi('box', 'emerald'), // 📦 the nameable business thing — emerald (back-office objects), distinct from the sky products box
+  '/open-documents': pi('scroll', 'amber'), // 📜 the canonical legal documents — amber: the legal family
   '/technologies': pi('plug', 'sky'), // 🔌 same concept as vendor_010
   '/startup-sim': pi('flask', 'emerald'), // 🧪 same flask as startup_001
   '/stacks': pi('bricks', 'sky'), // 🧱
