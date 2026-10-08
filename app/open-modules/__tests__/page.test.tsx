@@ -125,6 +125,11 @@ describe('/open-modules/[id] — data fields it consumes', () => {
         container.querySelector(`a[href="${r.artifactHref}"]`),
         `${r.field.id} must link ${r.artifactHref}`,
       ).not.toBeNull()
+      // The field label links its /fields specification page (founder 2026-10-08).
+      expect(
+        container.querySelector(`a[href="/fields/${r.field.id}"]`),
+        `${r.field.id} must link its spec page`,
+      ).not.toBeNull()
     }
   })
 

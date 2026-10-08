@@ -16,9 +16,9 @@ import { findOpenModulePage, loadOpenModulePages } from '@/lib/openModulePages'
 // static, params from the registry, unknown ids 404 (same contract as app/family/[id]).
 //
 // "Data fields" (founder 2026-10-07): the processes/company-fields.json fields THIS module's
-// exported functions consume — each row naming the function(s) and linking the establishing
-// artifact's page. Modules whose functions take no registered company-level field render no
-// section.
+// exported functions consume — each row naming the function(s), linking the field's /fields
+// specification page (founder 2026-10-08) and the establishing artifact's page. Modules whose
+// functions take no registered company-level field render no section.
 
 export function generateStaticParams() {
   return loadOpenModulePages().map((m) => ({ id: m.id }))
@@ -112,8 +112,11 @@ export default async function OpenModulePage({ params }: { params: Promise<{ id:
           </h2>
           <p className="mt-1 max-w-2xl text-sm text-zinc-500">
             The typed company data this module&rsquo;s functions take
-            (<code>processes/company-fields.json</code>), each field linking the artifact that
-            establishes it.
+            (<code>processes/company-fields.json</code>), each field linking its{' '}
+            <Link href="/fields" className="underline decoration-zinc-800 underline-offset-2 transition hover:text-emerald-300">
+              specification page
+            </Link>{' '}
+            and the artifact that establishes it.
           </p>
           <table className="mt-3 w-full max-w-2xl text-left text-sm">
             <thead>
@@ -127,8 +130,13 @@ export default async function OpenModulePage({ params }: { params: Promise<{ id:
             <tbody>
               {fieldRows.map((r) => (
                 <tr key={r.field.id} className="border-b border-zinc-900 align-top">
-                  <td className="py-2 pr-4 text-zinc-200" title={r.field.description}>
-                    {r.field.label}
+                  <td className="py-2 pr-4" title={r.field.description}>
+                    <Link
+                      href={`/fields/${r.field.id}`}
+                      className="text-zinc-200 underline decoration-zinc-800 underline-offset-2 transition hover:text-emerald-300"
+                    >
+                      {r.field.label}
+                    </Link>
                   </td>
                   <td className="py-2 pr-4 font-mono text-xs text-zinc-500">
                     {r.field.type}

@@ -27,8 +27,9 @@ import { fieldsEstablishedBy } from '@/lib/companyFields'
 //   components/ArtifactGeoNotes.tsx — driven by the ONE shared geo store (the process pages'
 //   idiom), never a control of its own; artifacts with no committed entries render nothing.
 // - "Data fields" lists the processes/company-fields.json fields THIS artifact establishes
-//   (field exists only because a committed open-module function consumes it), each consumer
-//   linking its /open-modules page.
+//   (field exists only because a committed open-module function consumes it, or — the
+//   2026-10-08 identifier widening — committed processes require-and-carry the artifact), each
+//   field linking its /fields specification page and each consumer its /open-modules page.
 
 export function generateStaticParams() {
   return loadArtifactPages().map((a) => ({ id: a.artifact.id }))
@@ -211,7 +212,12 @@ export default async function ArtifactPage({ params }: { params: Promise<{ id: s
           <p className="mt-1 max-w-2xl text-sm text-zinc-500">
             The typed company data this artifact establishes (
             <code>processes/company-fields.json</code>) — each field exists because a committed
-            open-module function consumes it.
+            open-module function consumes it, or committed processes require-and-carry this
+            artifact. Each field links its{' '}
+            <Link href="/fields" className="underline decoration-zinc-800 underline-offset-2 transition hover:text-emerald-300">
+              specification page
+            </Link>
+            .
           </p>
           <table className="mt-3 w-full max-w-2xl text-left text-sm">
             <thead>
@@ -224,29 +230,43 @@ export default async function ArtifactPage({ params }: { params: Promise<{ id: s
             <tbody>
               {fieldRows.map(({ field, consumers }) => (
                 <tr key={field.id} className="border-b border-zinc-900 align-top">
-                  <td className="py-2 pr-4 text-zinc-200" title={field.description}>
-                    {field.label}
+                  <td className="py-2 pr-4" title={field.description}>
+                    <Link
+                      href={`/fields/${field.id}`}
+                      className="text-zinc-200 underline decoration-zinc-800 underline-offset-2 transition hover:text-emerald-300"
+                    >
+                      {field.label}
+                    </Link>
                   </td>
                   <td className="py-2 pr-4 font-mono text-xs text-zinc-500">
                     {field.type}
                     {field.values ? ` (${field.values.join(' | ')})` : ''}
                   </td>
                   <td className="py-2 text-zinc-400">
-                    {consumers.map((c, i) => (
-                      <span key={c.moduleId}>
-                        {i > 0 && ' · '}
-                        <Link
-                          href={c.href}
-                          className="text-zinc-300 underline decoration-zinc-800 underline-offset-2 transition hover:text-emerald-300"
-                          title={`${c.moduleLabel} — ${c.functions.join(', ')}`}
-                        >
-                          {c.moduleLabel}
-                        </Link>
-                        <span className="ml-1 font-mono text-xs text-zinc-600">
-                          {c.functions.join(', ')}
+                    {consumers.length > 0 ? (
+                      consumers.map((c, i) => (
+                        <span key={c.moduleId}>
+                          {i > 0 && ' · '}
+                          <Link
+                            href={c.href}
+                            className="text-zinc-300 underline decoration-zinc-800 underline-offset-2 transition hover:text-emerald-300"
+                            title={`${c.moduleLabel} — ${c.functions.join(', ')}`}
+                          >
+                            {c.moduleLabel}
+                          </Link>
+                          <span className="ml-1 font-mono text-xs text-zinc-600">
+                            {c.functions.join(', ')}
+                          </span>
                         </span>
+                      ))
+                    ) : (
+                      <span
+                        className="text-xs text-zinc-500"
+                        title="This identifier is consumed through the artifact: the processes under Needed by enter the value along the way — the field page lists them"
+                      >
+                        the processes that require this artifact (Needed by, above)
                       </span>
-                    ))}
+                    )}
                   </td>
                 </tr>
               ))}
