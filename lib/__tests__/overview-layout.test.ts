@@ -91,10 +91,22 @@ describe('responsive overview layout', () => {
           expect(positions.some(box => point.x > box.x && point.x < box.x + layout.nodeWidth && point.y > box.y && point.y < box.y + box.height), `${graph.id}: edge intersects card`).toBe(false)
         }
         const end = points.at(-1)!, previous = points.at(-2)!
-        // The arrowhead points into the destination, including right-to-left rows.
-        if (end.y < to.y) expect(end.y).toBeGreaterThan(previous.y)
-        else if (end.x < to.x) expect(end.x).toBeGreaterThan(previous.x)
+        // The arrowhead points into the destination, including right-to-left rows. A
+        // vertical edge now ends ON the top border (end.y === to.y), still pointing down.
+        if (end.y <= to.y) expect(end.y).toBeGreaterThan(previous.y)
+        else if (end.x <= to.x) expect(end.x).toBeGreaterThan(previous.x)
         else expect(end.x).toBeLessThan(previous.x)
+        // Arrows touch the boxes (founder 2026-10-08): both endpoints land exactly on a
+        // node border, so the marker tip (refX 10) leaves no floating gap.
+        const start = points[0]
+        expect(
+          start.x === from.x || start.x === from.x + layout.nodeWidth || start.y === from.y + from.height,
+          `${graph.id}: ${edge.from} → ${edge.to} must start on the source border`,
+        ).toBe(true)
+        expect(
+          end.x === to.x || end.x === to.x + layout.nodeWidth || end.y === to.y,
+          `${graph.id}: ${edge.from} → ${edge.to} must end on the destination border`,
+        ).toBe(true)
       })
       expect(JSON.stringify(graph)).toBe(before)
     }

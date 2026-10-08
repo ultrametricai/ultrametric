@@ -194,11 +194,17 @@ export default async function ProcessPage({ params }: { params: Promise<{ slug: 
           affordances (StepYourPick, ProcessYourVendor, the leaderboard's mineHref) still carry
           readers into the personalized run. */}
 
-      {/* The flow overview (founder 2026-10-07): the v2 reader's top-of-page mini-map ported to
-          the canonical page — the whole DAG as one compact strip of route-marked step chips,
-          each jumping to its #step anchor in the diagram below. Server-rendered from the SAME
-          corpus DAG (lib/dagLayers.ts layering), outside the #steps region. */}
-      <ProcessDagOverview nodes={task.dag.nodes} edges={task.dag.edges} taskId={task.id} />
+      {/* The flow overview (founder 2026-10-07; v2 diagram 2026-10-08): the ACTUAL v2 reader
+          diagram (node cards, SVG dependency edges with arrowheads, serpentine measured
+          layout — lib/shared-processes/overview-layout.ts) over the SAME corpus DAG, outside
+          the #steps region. Client-measured; the 10-07 chip strip is the SSR/no-JS fallback
+          it replaces on mount. The props stay slim on purpose — this is a client boundary,
+          so only id/label/route/legalSignature per node cross into the page payload. */}
+      <ProcessDagOverview
+        nodes={task.dag.nodes.map(({ id, label, route, legalSignature }) => ({ id, label, route, legalSignature }))}
+        edges={task.dag.edges}
+        taskId={task.id}
+      />
 
       <section>
         {/* 'Process breakdown' (founder 2026-10-05 functional-title rename of 'Step-by-step:

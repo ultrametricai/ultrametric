@@ -47,13 +47,15 @@ export function overviewLayout(graph: GraphScope, available: number, heights: Re
 
 export function overviewEdge(from: OverviewPosition, to: OverviewPosition, layout: { nodeWidth: number; width: number; columns: number }, index: number) {
   const { nodeWidth, width, columns } = layout
+  // Arrows touch the boxes (founder 2026-10-08): both endpoints land exactly on the node
+  // borders — the marker tip (refX 10) sits at the path end, so no floating gap remains.
   // On a single-column screen an ordinary sequential edge points straight down.
   if (columns === 1 && from.siblings === 1 && to.siblings === 1 && to.layer === from.layer + 1) {
     const x = from.x + nodeWidth / 2
-    return `M ${x} ${from.y + from.height + 2} V ${to.y - 4}`
+    return `M ${x} ${from.y + from.height} V ${to.y}`
   }
-  const x1 = from.x + (from.direction === 1 ? nodeWidth + 2 : -2), y1 = from.y + from.height / 2
-  const x2 = to.x + (to.direction === 1 ? -4 : nodeWidth + 4), y2 = to.y + to.height / 2
+  const x1 = from.x + (from.direction === 1 ? nodeWidth : 0), y1 = from.y + from.height / 2
+  const x2 = to.x + (to.direction === 1 ? 0 : nodeWidth), y2 = to.y + to.height / 2
   if (from.row === to.row && to.layer === from.layer + 1) {
     const mid = (x1 + x2) / 2
     return `M ${x1} ${y1} C ${mid} ${y1}, ${mid} ${y2}, ${x2} ${y2}`
