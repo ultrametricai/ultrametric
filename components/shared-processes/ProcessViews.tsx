@@ -1,5 +1,5 @@
 'use client'
-import { openProcessTarget } from '@/lib/shared-processes/open-target'
+import { openProcessTarget } from '@/components/shared-processes/open-target'
 
 import Link from 'next/link'
 import GraphTypeTooltip from './GraphTypeTooltip'

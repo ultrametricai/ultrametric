@@ -4,7 +4,7 @@ import Link from 'next/link'
 import type { ReactNode } from 'react'
 import { TABLE_HEADER_ROW, TABLE_SHELL } from '@/components/tableStyles'
 import type { BottomTables, BottomTableStep } from '@/lib/shared-processes/bottom-tables'
-import { openProcessTarget } from '@/lib/shared-processes/open-target'
+import { openProcessTarget } from '@/components/shared-processes/open-target'
 import { useRegionalVariant } from './RegionalVariant'
 import ExternalLinkMark from './ExternalLinkMark'
 
