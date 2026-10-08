@@ -3,8 +3,10 @@ import { describe, expect, it } from 'vitest'
 import { GLYPHS } from '@/components/icons/ProcessIcon'
 import { DECISION_ICONS, ROW_ICONS } from '@/components/VirtualStartup'
 import {
-  ARENA_ICONS, ARENA_SECTION_HUES, arenaIcon, EXPLORE_SECTION_ICONS, MOBILE_NAV_ICONS, OVERALL_ICON,
+  ARENA_ICONS, ARENA_SECTION_HUES, arenaIcon, CONTROL_SURFACE_ICONS, EXPLORE_SECTION_ICONS,
+  MOBILE_NAV_ICONS, OVERALL_ICON,
 } from '@/lib/arenaIcons'
+import { SURFACE_DEFS } from '@/lib/controlSurfaces'
 import { loadArenaSections } from '@/lib/arenaSections'
 import { loadCategories } from '@/lib/data'
 import { parseProcessIconToken } from '@/lib/processIcons'
@@ -55,6 +57,19 @@ describe('arena icon coverage (totality over the live arenas)', () => {
     }
     for (const [href, token] of Object.entries(MOBILE_NAV_ICONS)) {
       expect(resolvesToDesignedGlyph(token), `MOBILE_NAV_ICONS['${href}'] must name a designed glyph`).toBe(true)
+    }
+  })
+
+  it('every control surface (/technologies) has a designed glyph — and no stale key (founder 2026-10-08: the SURFACE_DEFS emoji joined the custom set)', () => {
+    const ids = new Set(SURFACE_DEFS.map((d) => d.id))
+    for (const def of SURFACE_DEFS) {
+      expect(
+        resolvesToDesignedGlyph(CONTROL_SURFACE_ICONS[def.id] ?? ''),
+        `control surface ${def.id} needs a curated icon naming a designed glyph`,
+      ).toBe(true)
+    }
+    for (const id of Object.keys(CONTROL_SURFACE_ICONS)) {
+      expect(ids.has(id), `CONTROL_SURFACE_ICONS has stale surface id ${id}`).toBe(true)
     }
   })
 

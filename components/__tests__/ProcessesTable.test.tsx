@@ -128,6 +128,12 @@ describe('mount applies URL params (invalids fall back silently)', () => {
     // overflow affordance is the accessible '→', never '+N'. No tooltip on vendor chips
     // (founder 2026-10-05) — the ?via= destination lives in the aria-label instead.
     expect(within(container).getAllByLabelText(/viewed via/).length).toBe(5)
+    // Chip text reads at text-xs (founder 2026-10-08: the 10px labels were too small beside
+    // the 18px logos) — same lift in HomeProcessesMini.
+    for (const chip of within(container).getAllByLabelText(/viewed via/)) {
+      expect(chip.className).toContain('text-xs')
+      expect(chip.className).not.toContain('text-[10px]')
+    }
     expect(container.querySelector('a[title*="viewed via"]')).toBeNull()
     expect(container.textContent).not.toMatch(/\+\d/)
     const arrow = within(container).getByLabelText('All vendors and steps — open Open a bank account')
@@ -622,6 +628,57 @@ describe('the country-view filter (founder 2026-10-02, tightened 2026-10-05: an 
     expect(formation.textContent).toContain('1 process')
     expect(within(container).queryByText('Get EIN')).toBeNull()
     expect(within(container).queryByText('Incorporate C-Corp')).toBeNull()
+  })
+})
+
+describe('the house icon sweep (founder 2026-10-08: the rank-by presets and the area dropdown render house `pi:` glyphs — SVG via IconGlyph — never raw emoji)', () => {
+  // The emoji planes the old icons lived in (🗂️🗓️⚡🔁😤⚠️📈 and the phase emoji) — NOT a global
+  // emoji ban: ✓/▾/→ and the 🇺🇸 scope flag are outside these ranges or outside the dropdowns.
+  const EMOJI = /[\u{1F300}-\u{1FAFF}\u{2600}-\u{26FF}\u{FE0F}]/u
+
+  it('every rank-by listbox option wears a designed SVG glyph and no emoji', () => {
+    const { getByRole } = mount()
+    fireEvent.click(getByRole('button', { name: /Founder timeline/ }))
+    const listbox = getByRole('listbox', { name: 'Rank by' })
+    const options = within(listbox).getAllByRole('option')
+    expect(options.length).toBe(7)
+    for (const option of options) {
+      expect(option.querySelector('svg[data-glyph]'), `option '${option.textContent}' needs a house glyph`).toBeTruthy()
+      expect(option.querySelector('svg[data-glyph="unknown"]')).toBeNull()
+      expect(option.textContent ?? '').not.toMatch(EMOJI)
+    }
+    // The closed trigger carries the active preset's glyph too.
+    fireEvent.click(within(listbox).getByRole('option', { name: /Riskiest/ }))
+    const trigger = getByRole('button', { name: /Riskiest/ })
+    expect(trigger.querySelector('svg[data-glyph]')).toBeTruthy()
+    expect(trigger.textContent ?? '').not.toMatch(EMOJI)
+  })
+
+  it("the desktop area dropdown is a house listbox (the founder's 2026-10-08 example): SVG phase glyphs, no emoji, and picking an area filters + writes ?phase=", () => {
+    const { container, getByRole } = mount()
+    // The select-look trigger shows the active scope ('All areas' on mount).
+    const trigger = getByRole('button', { name: /All areas/ })
+    fireEvent.click(trigger)
+    const listbox = getByRole('listbox', { name: 'Filter by phase' })
+    // 'All areas' + the two fixture phases; the PHASE options wear designed glyphs, none emoji.
+    const options = within(listbox).getAllByRole('option')
+    expect(options.length).toBe(3)
+    for (const option of options) expect(option.textContent ?? '').not.toMatch(EMOJI)
+    expect(within(listbox).getByRole('option', { name: /formation/ }).querySelector('svg[data-glyph]')).toBeTruthy()
+    expect(listbox.querySelector('svg[data-glyph="unknown"]')).toBeNull()
+    fireEvent.click(within(listbox).getByRole('option', { name: /growth/ }))
+    expect(params().get('phase')).toBe('growth')
+    expect(within(container).queryByText('Incorporate the company')).toBeNull()
+    expect(within(container).getByText('Run payroll')).toBeDefined()
+    // The native select (the below-sm + programmatic surface) mirrors the pick.
+    expect((within(container).getByLabelText('Filter by phase') as HTMLSelectElement).value).toBe('growth')
+  })
+
+  it('the mobile native selects keep the TEXT-ONLY emoji stand-ins and never leak a raw pi: token string', () => {
+    const { container } = mount()
+    for (const option of container.querySelectorAll('select option')) {
+      expect(option.textContent ?? '').not.toContain('pi:')
+    }
   })
 })
 

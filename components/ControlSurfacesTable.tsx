@@ -1,6 +1,7 @@
 'use client'
 
 import Link from 'next/link'
+import { IconGlyph } from '@/components/IconChip'
 import { useEffect, useMemo, useState } from 'react'
 import {
   isSurfaceRankId,
@@ -256,7 +257,11 @@ function SurfaceRows({
             <span aria-hidden className="mr-1.5 inline-block text-zinc-500">
               {expanded ? '▾' : '▸'}
             </span>
-            <span aria-hidden className="mr-1.5">{row.icon}</span>
+            {/* The surface's house glyph (CONTROL_SURFACE_ICONS `pi:` token — founder
+                2026-10-08 sweep); the visible name beside it carries the concept. */}
+            <span aria-hidden className="mr-1.5">
+              <IconGlyph icon={row.icon} />
+            </span>
             {row.name}
           </button>
           <p className="mt-0.5 text-xs text-zinc-500">{row.blurb}</p>

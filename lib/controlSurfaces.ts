@@ -19,6 +19,7 @@
 // Pure and `node:fs`-free (the lib/data-helpers.ts contract): callers pass CategoryData[]
 // (usually loadAll()), tests pass fixtures. Determinism: computeControlSurfaces on the same
 // input always yields byte-identical output (see lib/__tests__/controlSurfaces.test.ts).
+import { CONTROL_SURFACE_ICONS } from './arenaIcons'
 import type { CategoryData } from './data-helpers'
 import type { Verdict } from './schemas'
 
@@ -33,9 +34,6 @@ export const LIFT_MIN_ARENAS = 10
 export interface SurfaceDef {
   id: string
   name: string
-  /** Emoji concept mark, same convention as data/arena-icons.json (mcp/cli/voice reuse the
-      matching arena's icon so the same concept always wears the same mark). */
-  icon: string
   /** One-line editorial definition of the surface (what kind of control it is). */
   blurb: string
   /** Judged story ids that answer "does this product ship this surface" — best verdict wins
@@ -54,7 +52,6 @@ export interface SurfaceDef {
 export const SURFACE_DEFS: SurfaceDef[] = [
   {
     id: 'api',
-    icon: '🔌',
     name: 'Public API',
     blurb: 'A documented HTTP API an agent can drive programmatically — the base layer every other machine surface builds on.',
     storyIds: ['agentic-public-api'],
@@ -71,7 +68,6 @@ export const SURFACE_DEFS: SurfaceDef[] = [
   },
   {
     id: 'mcp',
-    icon: '🧩',
     name: 'MCP',
     blurb: 'A Model Context Protocol server (or client) — the surface purpose-built for agents to discover and call tools.',
     storyIds: ['agentic-mcp-server', 'agentic-mcp-client'],
@@ -87,7 +83,6 @@ export const SURFACE_DEFS: SurfaceDef[] = [
   },
   {
     id: 'agent-docs',
-    icon: '📖',
     name: 'Agent-readable docs',
     blurb: 'llms.txt or agent-oriented docs — the surface an agent reads before it can drive any other surface.',
     storyIds: ['agentic-agent-docs'],
@@ -103,7 +98,6 @@ export const SURFACE_DEFS: SurfaceDef[] = [
   },
   {
     id: 'headless',
-    icon: '⚙️',
     name: 'Headless / CI',
     blurb: 'Runs headlessly in scripts and CI — the terminal-automation surface, no window and no human required.',
     storyIds: ['agentic-headless'],
@@ -119,7 +113,6 @@ export const SURFACE_DEFS: SurfaceDef[] = [
   },
   {
     id: 'nl-commands',
-    icon: '💬',
     name: 'Natural-language commands',
     blurb: 'Operating the product through natural-language commands — the human-language control surface.',
     storyIds: ['agentic-nl-commands'],
@@ -135,7 +128,6 @@ export const SURFACE_DEFS: SurfaceDef[] = [
   },
   {
     id: 'sdk',
-    icon: '📦',
     name: 'Official SDKs',
     blurb: 'Typed first-party client libraries — the developer-ergonomics surface over the raw API.',
     storyIds: ['agentic-sdks'],
@@ -151,7 +143,6 @@ export const SURFACE_DEFS: SurfaceDef[] = [
   },
   {
     id: 'assistant',
-    icon: '💡',
     name: 'Built-in assistant',
     blurb: 'A chat assistant embedded in the product — delegation inside the vendor’s own walls.',
     storyIds: ['agentic-builtin-assistant'],
@@ -166,7 +157,6 @@ export const SURFACE_DEFS: SurfaceDef[] = [
   },
   {
     id: 'cli',
-    icon: '⌨️',
     name: 'CLI',
     blurb: 'An official command-line tool — the terminal surface humans and agents share.',
     storyIds: ['agentic-official-cli'],
@@ -182,7 +172,6 @@ export const SURFACE_DEFS: SurfaceDef[] = [
   },
   {
     id: 'webhooks',
-    icon: '🪝',
     name: 'Webhooks',
     blurb: 'Event push over HTTP — the only surface where the product calls the agent instead of being polled.',
     storyIds: ['agentic-webhooks'],
@@ -199,7 +188,6 @@ export const SURFACE_DEFS: SurfaceDef[] = [
   // ---- emerging: judged in only a few arenas; listed below the line, never ranked ----
   {
     id: 'mobile-app',
-    icon: '📱',
     name: 'Mobile app',
     blurb: 'A full-featured official iOS/Android app — the human-in-the-pocket surface (approvals, capture, on-call).',
     storyIds: [
@@ -223,7 +211,6 @@ export const SURFACE_DEFS: SurfaceDef[] = [
   },
   {
     id: 'desktop-app',
-    icon: '🖥️',
     name: 'Desktop app',
     blurb: 'An official desktop app with OS-level shortcuts and access to what is on screen.',
     storyIds: ['desktop-app'],
@@ -238,7 +225,6 @@ export const SURFACE_DEFS: SurfaceDef[] = [
   },
   {
     id: 'voice',
-    icon: '🎙️',
     name: 'Voice',
     blurb: 'Real-time voice conversation or voice-note interaction as a first-class control surface.',
     storyIds: ['voice-interaction', 'voice-conversation'],
@@ -253,7 +239,6 @@ export const SURFACE_DEFS: SurfaceDef[] = [
   },
   {
     id: 'browser-extension',
-    icon: '🌐',
     name: 'Browser extension',
     blurb: 'An official extension living inside the browser session — autofill-style, in-page control.',
     storyIds: ['browser-extension-autofill'],
@@ -282,6 +267,7 @@ export interface SurfaceExampleProduct {
 export interface SurfaceRow {
   id: string
   name: string
+  /** House icon token (`pi:` — rendered via IconGlyph), resolved from CONTROL_SURFACE_ICONS. */
   icon: string
   blurb: string
   tier: 'canonical' | 'emerging'
@@ -402,7 +388,10 @@ function computeSurface(def: SurfaceDef, categories: CategoryData[]): SurfaceRow
   return {
     id: def.id,
     name: def.name,
-    icon: def.icon,
+    // The house icon token (lib/arenaIcons.ts CONTROL_SURFACE_ICONS — founder 2026-10-08
+    // sweep: the per-surface emoji marks joined the custom set; mcp/cli/voice wear their arena
+    // twin's exact token, the same-concept rule the old emoji followed).
+    icon: CONTROL_SURFACE_ICONS[def.id] ?? '',
     blurb: def.blurb,
     tier: def.tier,
     pros: def.pros,

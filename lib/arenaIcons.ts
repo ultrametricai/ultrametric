@@ -189,6 +189,27 @@ export const HOME_MODE_ICONS: Record<string, string> = {
   arenas: pi('stadium', 'emerald'), // 🏟 same stadium as MOBILE_NAV_ICONS['/arenas']
 }
 
+// The /technologies control-surface categories (lib/controlSurfaces.ts SURFACE_DEFS — founder
+// 2026-10-08 house icon sweep: the per-surface emoji column markers join the custom set). All
+// violet: control surfaces ARE the machine-access/AI family, and most reuse their arena twin's
+// exact token (same concept = same mark, the SURFACE_DEFS comment's own rule). Totality over
+// SURFACE_DEFS is enforced by lib/__tests__/arenaIcons.test.ts.
+export const CONTROL_SURFACE_ICONS: Record<string, string> = {
+  api: pi('plug', 'violet'), // 🔌 same plug as the api-platforms arena
+  mcp: pi('puzzle', 'violet'), // 🧩 same piece as mcp-infrastructure
+  'agent-docs': pi('books', 'violet'), // 📖 same books as docs-platforms
+  headless: pi('gear', 'violet'), // ⚙️ the machine running without a UI
+  'nl-commands': pi('chat', 'violet'), // 💬 talking to the product
+  sdk: pi('box', 'violet'), // 📦 same package as package-managers
+  assistant: pi('bulb', 'violet'), // 💡 same bulb as ai-assistants
+  cli: pi('terminal', 'violet'), // ⌨️ same prompt as terminals
+  webhooks: pi('bolt', 'violet'), // 🪝 no hook glyph was ever drawn — the bolt: the event firing at your endpoint
+  'mobile-app': pi('phone', 'violet'), // 📱 same phone as mobile-dev
+  'desktop-app': pi('monitor', 'violet'), // 🖥️ same monitor as desktop-os
+  voice: pi('mic', 'violet'), // 🎙️ same microphone as voice-agents
+  'browser-extension': pi('browser', 'violet'), // 🌐 same browser as browser-agents
+}
+
 // Icon token for an arena id ('' for an unknown id — callers render nothing, never a wrong
 // concept; totality over the live categories is enforced by lib/__tests__/arenaIcons.test.ts).
 export function arenaIcon(arenaId: string): string {

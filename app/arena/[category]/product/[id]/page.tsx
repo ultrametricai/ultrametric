@@ -1,14 +1,15 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
-import arenaIcons from '@/data/arena-icons.json'
 import AgentAccessGlyphs from '@/components/AgentAccessGlyphs'
+import { IconGlyph } from '@/components/IconChip'
 import AgenticBadge from '@/components/AgenticBadge'
 import AiEraBadge from '@/components/AiEraBadge'
 import { BusinessModelSection } from '@/components/BusinessModel'
 import ClaimsSection from '@/components/ClaimsSection'
 import CompareRivals from '@/components/CompareRivals'
 import FamilySection from '@/components/FamilySection'
+import { arenaIcon } from '@/lib/arenaIcons'
 import { storyProcessesForArena } from '@/lib/storyProcessGraph'
 import GeoMark from '@/components/GeoMark'
 import InstallCommands from '@/components/InstallCommands'
@@ -52,7 +53,7 @@ import { loadPricing } from '@/lib/pricing'
 import { loadScoreHistory } from '@/lib/scoreHistory'
 import { aiEraBandFor, loadScoreIntervals } from '@/lib/scoreIntervals'
 import type { Product, Story } from '@/lib/schemas'
-import { SITE_URL } from '@/lib/site'
+import { REPO, SITE_URL } from '@/lib/site'
 import { loadStoryTiers, storyTiersByCell, tierCountsFor } from '@/lib/storyTiers'
 import { buildStoryVerdictRows } from '@/lib/storyVerdictsSort'
 import { hasTryIt } from '@/lib/tryit'
@@ -355,8 +356,12 @@ export default async function ProductPage({
                   : 'border-zinc-800 text-zinc-300 hover:border-emerald-400/60 hover:text-emerald-300'
               }`}
             >
-              {(arenaIcons as Record<string, string>)[m.arenaId] && (
-                <span aria-hidden>{(arenaIcons as Record<string, string>)[m.arenaId]}</span>
+              {/* The arena's house glyph (lib/arenaIcons.ts — founder 2026-10-08: the last
+                  raw data/arena-icons.json emoji render site joins the custom set). */}
+              {arenaIcon(m.arenaId) !== '' && (
+                <span aria-hidden>
+                  <IconGlyph icon={arenaIcon(m.arenaId)} />
+                </span>
               )}
               {m.arenaName}
               <span className="font-mono text-[10px] tabular-nums text-zinc-500">

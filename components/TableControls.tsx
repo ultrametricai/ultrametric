@@ -1,7 +1,8 @@
 'use client'
 
-import type { ReactNode } from 'react'
+import type { ReactNode, RefObject } from 'react'
 import { useEffect, useRef, useState } from 'react'
+import { IconGlyph } from '@/components/IconChip'
 
 // Shared control strip for the ranking tables (homepage MegaTable + per-arena ArenaTable) —
 // one component so "rank by" presets, the scope <select>, the text filter, and the live
@@ -9,9 +10,14 @@ import { useEffect, useRef, useState } from 'react'
 export interface TableControlsPreset<C extends string> {
   col: C
   label: string
-  // Optional icon, shown in the dropdown variant (founder 2026-09-30: /processes rank-by as a
-  // single dropdown with icons).
+  // Optional HOUSE icon token (`pi:<glyph>:<hue>`, lib/processIcons.ts), shown in the dropdown
+  // variant via IconGlyph (founder 2026-10-08: the house icon sweep — the rank-by dropdown wore
+  // raw emoji). Any non-token string still renders as text through IconGlyph's fallback.
   icon?: string
+  // Optional text-only stand-in for the mobile native <select> option label — native options
+  // can't render SVG, so the legacy emoji remains the only decoration there (the phaseEmoji
+  // precedent).
+  emoji?: string
 }
 
 function presetButtonClass(active: boolean): string {
@@ -39,12 +45,16 @@ export default function TableControls<C extends string>({
   // Whether the active column counts as "the preset is on" (e.g. only when direction is desc).
   presetActive: boolean
   onPreset: (col: C) => void
-  // Optional scope <select> (the mega-table's "All products / <arena>" control).
+  // Optional scope control (the mega-table's "All rankings / <arena>" filter, the processes
+  // table's area filter). Options may carry a house icon token (`icon`) — when any option does,
+  // desktop renders the house listbox with the custom SVG glyphs (founder 2026-10-08: the
+  // /processes area dropdown joins the custom set) and the native <select> survives below sm
+  // with the text-only `emoji` stand-ins; icon-less callers keep the plain native select.
   scope?: {
     value: string
     onChange: (value: string) => void
     ariaLabel: string
-    options: Array<{ value: string; label: string }>
+    options: Array<{ value: string; label: string; icon?: string; emoji?: string }>
   }
   query: string
   onQuery: (value: string) => void
@@ -72,7 +82,8 @@ export default function TableControls<C extends string>({
           {activePreset === undefined && <option value="">Rank by…</option>}
           {presets.map((p) => (
             <option key={p.col} value={p.col}>
-              {p.icon ? `${p.icon} ${p.label}` : p.label}
+              {/* Text-only surface: the emoji stand-in, never the house token string. */}
+              {p.emoji ? `${p.emoji} ${p.label}` : p.label}
             </option>
           ))}
         </select>
@@ -98,24 +109,38 @@ export default function TableControls<C extends string>({
           rank control keeps the width priority and the filter stays narrow, expanding on focus
           (a phone reader taps it before typing anyway). */}
       <div className="flex min-w-0 flex-1 flex-nowrap items-center gap-2 sm:ml-auto sm:flex-none">
-        {scope && (
-          <span className="relative inline-flex min-w-0 shrink">
-            <select
-              value={scope.value}
-              onChange={(e) => scope.onChange(e.target.value)}
-              aria-label={scope.ariaLabel}
-              className="w-full max-w-[11rem] appearance-none rounded-lg border border-zinc-800 bg-zinc-900 py-1.5 pl-2.5 pr-7 text-sm text-zinc-100 focus:border-emerald-400/60 focus:outline-none"
-            >
-              {scope.options.map((o) => (
-                <option key={o.value} value={o.value}>
-                  {o.label}
-                </option>
-              ))}
-            </select>
-            {/* native select arrows are near-invisible on dark backgrounds — draw our own */}
-            <span aria-hidden className="pointer-events-none absolute right-2 top-1/2 -translate-y-1/2 text-xs text-emerald-400">▾</span>
-          </span>
-        )}
+        {scope && (() => {
+          // House-listbox desktop variant whenever the options carry house icons (founder
+          // 2026-10-08) — the native select stays as the below-sm control AND as the stable
+          // programmatic/test surface (it keeps the aria-label either way).
+          const hasIcons = scope.options.some((o) => o.icon !== undefined && o.icon !== '')
+          return (
+            <>
+              <span className={`relative inline-flex min-w-0 shrink ${hasIcons ? 'sm:hidden' : ''}`}>
+                <select
+                  value={scope.value}
+                  onChange={(e) => scope.onChange(e.target.value)}
+                  aria-label={scope.ariaLabel}
+                  className="w-full max-w-[11rem] appearance-none rounded-lg border border-zinc-800 bg-zinc-900 py-1.5 pl-2.5 pr-7 text-sm text-zinc-100 focus:border-emerald-400/60 focus:outline-none"
+                >
+                  {scope.options.map((o) => (
+                    <option key={o.value} value={o.value}>
+                      {/* Text-only surface: the emoji stand-in, never the house token string. */}
+                      {o.emoji ? `${o.emoji} ${o.label}` : o.label}
+                    </option>
+                  ))}
+                </select>
+                {/* native select arrows are near-invisible on dark backgrounds — draw our own */}
+                <span aria-hidden className="pointer-events-none absolute right-2 top-1/2 -translate-y-1/2 text-xs text-emerald-400">▾</span>
+              </span>
+              {hasIcons && (
+                <span className="hidden sm:inline-flex">
+                  <ScopeDropdown scope={scope} />
+                </span>
+              )}
+            </>
+          )
+        })()}
         <input
           type="search"
           value={query}
@@ -133,8 +158,62 @@ export default function TableControls<C extends string>({
 }
 
 
+// Close-on-outside-pointer + Escape for the house listboxes below (one behavior, shared).
+function useDismiss(open: boolean, close: () => void, rootRef: RefObject<HTMLSpanElement | null>) {
+  useEffect(() => {
+    if (!open) return
+    const onPointerDown = (e: PointerEvent) => {
+      if (rootRef.current && !rootRef.current.contains(e.target as Node)) close()
+    }
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') close()
+    }
+    document.addEventListener('pointerdown', onPointerDown)
+    document.addEventListener('keydown', onKeyDown)
+    return () => {
+      document.removeEventListener('pointerdown', onPointerDown)
+      document.removeEventListener('keydown', onKeyDown)
+    }
+  }, [open, close, rootRef])
+}
+
+// One option row of a house listbox — the icon renders through IconGlyph, so a `pi:` token
+// shows the designed duotone SVG (founder 2026-10-08: the house icon sweep; emoji never
+// render in these listboxes anymore).
+function ListboxOption({
+  icon, label, isActive, onPick,
+}: {
+  icon?: string
+  label: string
+  isActive: boolean
+  onPick: () => void
+}) {
+  return (
+    <li role="presentation">
+      <button
+        type="button"
+        role="option"
+        aria-selected={isActive}
+        onClick={onPick}
+        className={`flex w-full items-center gap-2 px-2.5 py-1.5 text-left text-xs transition ${
+          isActive ? 'bg-emerald-400/10 text-emerald-300' : 'text-zinc-300 hover:bg-zinc-800 hover:text-emerald-300'
+        }`}
+      >
+        {icon !== undefined && icon !== '' && (
+          <span aria-hidden className="shrink-0 text-sm leading-none">
+            <IconGlyph icon={icon} />
+          </span>
+        )}
+        {label}
+        {isActive && <span aria-hidden className="ml-auto">✓</span>}
+      </button>
+    </li>
+  )
+}
+
 // The single rank-by dropdown (house listbox — GeoDropdown/SimRolePicker family, never a
-// native select on desktop). Closed button shows the active preset (icon + label) or 'Rank by'.
+// native select on desktop). Closed button shows the active preset (house glyph + label) or
+// 'Rank by'.
 function PresetDropdown<C extends string>({
   presets,
   active,
@@ -146,21 +225,7 @@ function PresetDropdown<C extends string>({
 }) {
   const [open, setOpen] = useState(false)
   const rootRef = useRef<HTMLSpanElement>(null)
-  useEffect(() => {
-    if (!open) return
-    const onPointerDown = (e: PointerEvent) => {
-      if (rootRef.current && !rootRef.current.contains(e.target as Node)) setOpen(false)
-    }
-    const onKeyDown = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') setOpen(false)
-    }
-    document.addEventListener('pointerdown', onPointerDown)
-    document.addEventListener('keydown', onKeyDown)
-    return () => {
-      document.removeEventListener('pointerdown', onPointerDown)
-      document.removeEventListener('keydown', onKeyDown)
-    }
-  }, [open])
+  useDismiss(open, () => setOpen(false), rootRef)
   const current = presets.find((p) => p.col === active) ?? null
   return (
     <span ref={rootRef} className="relative">
@@ -169,36 +234,85 @@ function PresetDropdown<C extends string>({
         aria-haspopup="listbox"
         aria-expanded={open}
         onClick={() => setOpen((v) => !v)}
-        className={presetButtonClass(current !== null)}
+        className={`inline-flex items-center gap-1.5 ${presetButtonClass(current !== null)}`}
       >
-        {current ? `${current.icon ? `${current.icon} ` : ''}${current.label}` : 'Rank by'}{' '}
+        {current?.icon !== undefined && current.icon !== '' && (
+          <span aria-hidden className="shrink-0 text-sm leading-none">
+            <IconGlyph icon={current.icon} />
+          </span>
+        )}
+        {current ? current.label : 'Rank by'}
         <span aria-hidden className="text-[10px] text-zinc-500">▾</span>
       </button>
       {open && (
         <ul role="listbox" aria-label="Rank by" className="absolute left-0 z-40 mt-1 w-52 overflow-hidden rounded-lg border border-zinc-800 bg-zinc-900 py-1 shadow-2xl">
-          {presets.map((p) => {
-            const isActive = p.col === active
-            return (
-              <li key={p.col} role="presentation">
-                <button
-                  type="button"
-                  role="option"
-                  aria-selected={isActive}
-                  onClick={() => {
-                    onPreset(p.col)
-                    setOpen(false)
-                  }}
-                  className={`flex w-full items-center gap-2 px-2.5 py-1.5 text-left text-xs transition ${
-                    isActive ? 'bg-emerald-400/10 text-emerald-300' : 'text-zinc-300 hover:bg-zinc-800 hover:text-emerald-300'
-                  }`}
-                >
-                  {p.icon && <span aria-hidden>{p.icon}</span>}
-                  {p.label}
-                  {isActive && <span aria-hidden className="ml-auto">✓</span>}
-                </button>
-              </li>
-            )
-          })}
+          {presets.map((p) => (
+            <ListboxOption
+              key={p.col}
+              icon={p.icon}
+              label={p.label}
+              isActive={p.col === active}
+              onPick={() => {
+                onPreset(p.col)
+                setOpen(false)
+              }}
+            />
+          ))}
+        </ul>
+      )}
+    </span>
+  )
+}
+
+// The scope filter as a house listbox (desktop, icon-carrying callers only — founder
+// 2026-10-08: the /processes area dropdown wore the native select's emoji; functional category
+// icons are house glyphs). Select-look trigger so the control reads exactly where the native
+// select stood; the list scrolls past ~10 entries (the mega-table's arena roster).
+function ScopeDropdown({
+  scope,
+}: {
+  scope: {
+    value: string
+    onChange: (value: string) => void
+    ariaLabel: string
+    options: Array<{ value: string; label: string; icon?: string; emoji?: string }>
+  }
+}) {
+  const [open, setOpen] = useState(false)
+  const rootRef = useRef<HTMLSpanElement>(null)
+  useDismiss(open, () => setOpen(false), rootRef)
+  const current = scope.options.find((o) => o.value === scope.value) ?? null
+  return (
+    <span ref={rootRef} className="relative">
+      <button
+        type="button"
+        aria-haspopup="listbox"
+        aria-expanded={open}
+        onClick={() => setOpen((v) => !v)}
+        className="inline-flex max-w-[13rem] items-center gap-1.5 rounded-lg border border-zinc-800 bg-zinc-900 py-1.5 pl-2.5 pr-2 text-sm text-zinc-100 transition focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400/60 hover:border-emerald-400/40"
+      >
+        {current?.icon !== undefined && current.icon !== '' && (
+          <span aria-hidden className="shrink-0 leading-none">
+            <IconGlyph icon={current.icon} />
+          </span>
+        )}
+        <span className="truncate">{current?.label ?? scope.value}</span>
+        <span aria-hidden className="text-xs text-emerald-400">▾</span>
+      </button>
+      {open && (
+        <ul role="listbox" aria-label={scope.ariaLabel} className="absolute right-0 z-40 mt-1 max-h-80 w-56 overflow-y-auto rounded-lg border border-zinc-800 bg-zinc-900 py-1 shadow-2xl">
+          {scope.options.map((o) => (
+            <ListboxOption
+              key={o.value}
+              icon={o.icon}
+              label={o.label}
+              isActive={o.value === scope.value}
+              onPick={() => {
+                scope.onChange(o.value)
+                setOpen(false)
+              }}
+            />
+          ))}
         </ul>
       )}
     </span>

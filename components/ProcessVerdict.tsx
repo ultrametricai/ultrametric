@@ -1,4 +1,5 @@
 import ComputerUseChips from '@/components/ComputerUseChips'
+import { IconGlyph } from '@/components/IconChip'
 import { verdictGaps, type HumanStepAudit, type VerdictGap } from '@/lib/humanSteps'
 import { FEASIBILITY_META, showComputerUseChips } from '@/lib/humanStepsUi'
 import type { ProcessCeiling, ProcessTask } from '@/lib/processes'
@@ -26,7 +27,9 @@ function AuditLine({ audit }: { audit: HumanStepAudit }) {
     <span className="text-zinc-500">
       {' '}— {audit.why}{' '}
       <span className="whitespace-nowrap" title={audit.computerUseWhy}>
-        · {meta.icon} {meta.label}
+        {/* The feasibility tier's house glyph (FEASIBILITY_ICONS — founder 2026-10-08 sweep);
+            the label beside it carries the concept, the title the audited why. */}
+        · <IconGlyph icon={meta.icon} /> {meta.label}
       </span>
     </span>
   )
