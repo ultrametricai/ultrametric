@@ -1,4 +1,4 @@
-import type { PlaybookRow, ProcessRow } from '@/components/ProcessesTable'
+import type { PlaybookRow, ProcessRow } from '@/lib/processRowTypes'
 import { loadCategory } from '@/lib/data'
 import type { GeoNotesByCountry } from '@/lib/geoPreference'
 import { hasLogo } from '@/lib/logos'
