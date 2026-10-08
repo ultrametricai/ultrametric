@@ -63,13 +63,16 @@ function VendorCell({ doc }: { doc: OpenDocument }) {
 // The Jurisdiction cell (founder 2026-10-08): the committed geo flag idiom (GEO_PREF_META via
 // lib/documents.ts documentJurisdictionFlag) — 🇺🇸 DE for the country-state combos, a country
 // flag beside the committed string for single countries. Unknown/multi jurisdictions render
-// exactly as before.
+// exactly as before. When the visible text drops the country (the US-DE state-code case, where
+// only the aria-hidden flag carries it), an sr-only country prefix restores the full
+// jurisdiction for screen readers (greptile #222).
 function JurisdictionCell({ jurisdiction }: { jurisdiction: string }) {
   const geo = documentJurisdictionFlag(jurisdiction)
   if (!geo) return <>{jurisdiction}</>
   return (
     <span title={geo.text === jurisdiction ? geo.countryLabel : `${geo.countryLabel} — ${jurisdiction}`}>
       <span aria-hidden className="mr-1">{geo.flag}</span>
+      {geo.text !== jurisdiction && <span className="sr-only">{geo.countryLabel} — </span>}
       {geo.text}
     </span>
   )
@@ -159,9 +162,15 @@ export default function OpenDocumentsPage() {
                       </td>
                       {/* The committed license class's short label, at readable contrast (founder
                           2026-10-08 contrast bar: content text ≥ zinc-400); the full license/counsel
-                          note stays on the title. */}
+                          note expands behind the site's details idiom so keyboard and screen-reader
+                          users reach it too (greptile #222), with the title kept for hover. */}
                       <td className="hidden px-3 py-2.5 align-top text-zinc-400 md:table-cell">
-                        <span title={d.license_note}>{DOCUMENT_LICENSES[d.license]}</span>
+                        <details title={d.license_note}>
+                          <summary className="cursor-pointer select-none transition hover:text-emerald-300">
+                            {DOCUMENT_LICENSES[d.license]}
+                          </summary>
+                          <p className="mt-1 max-w-xs text-xs text-zinc-500">{d.license_note}</p>
+                        </details>
                       </td>
                     </tr>
                   ))}

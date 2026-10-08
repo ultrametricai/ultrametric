@@ -123,6 +123,13 @@ describe('documents validators (failure modes)', () => {
     expect(
       validateDocumentRegistry(reg(record({ license: 'gpl' as unknown as 'free-download' })), AS_OF).join(';'),
     ).toContain('unknown license class')
+    // Inherited Object.prototype keys are not license classes (greptile #222: an `in` check
+    // accepted them; the validator uses Object.hasOwn).
+    for (const inherited of ['__proto__', 'constructor'] as const) {
+      expect(
+        validateDocumentRegistry(reg(record({ license: inherited as unknown as 'free-download' })), AS_OF).join(';'),
+      ).toContain('unknown license class')
+    }
     expect(validateDocumentRegistry(reg(record({ checked_on: '2027-01-01' })), AS_OF).join(';')).toContain('future')
   })
 
