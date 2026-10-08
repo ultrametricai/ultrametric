@@ -22,7 +22,8 @@ const CLASS_PINS: Array<[string, string]> = [
   // eighteen "/100" renders sitewide (e.g. app/yc/page.tsx, components/MegaTable.tsx).
   ['app/rankings/law-firms/page.tsx', '<>{score(value)}<span className="text-zinc-500">/100</span></>'],
   ['app/rankings/law-firms/page.tsx', '<>{score(row.entry.agentReady)}<span className="text-zinc-500">/100</span></>'],
-  ['components/VendorProcesses.tsx', '<span className="text-zinc-500">/100</span>'],
+  // (VendorProcesses' "/100" pin left with its scores — founder 2026-10-08: the section is a
+  // names-only inline list; the per-step scores live on the process pages.)
   // (The /processes hidden-rows disclosure pin left with the disclosure itself — founder
   // 2026-10-05: the country filter just filters; the note summaries render on the detail
   // pages, where ProcessGeoBanner carries the same field at zinc-300.)

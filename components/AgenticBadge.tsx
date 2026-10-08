@@ -21,7 +21,9 @@ const PALETTES = {
 
 export type AgenticBadgeKind = 'agent-ready' | 'agentic-app' | 'api-quality'
 
-const LABELS: Record<AgenticBadgeKind, string> = {
+// Exported for components/ScoreViewMenu.tsx (the product header's score dropdown) so the menu
+// entries and the big-number views reuse the exact labels/derivation tooltips these pills carry.
+export const LABELS: Record<AgenticBadgeKind, string> = {
   'agent-ready': 'AGENT-READY',
   'agentic-app': 'BUILT-IN AI',
   'api-quality': 'API',
@@ -32,7 +34,7 @@ const LABELS: Record<AgenticBadgeKind, string> = {
 // directions: can YOUR agent drive the product, vs does the product itself act agentically.
 // One clause each (founder tooltip sweep 2026-10-02) — the long contrast essays moved to
 // /methodology, which every click-through lands on.
-const TITLES: Record<AgenticBadgeKind, string> = {
+export const TITLES: Record<AgenticBadgeKind, string> = {
   'agent-ready': 'Outside-in: can YOUR agent drive this product — API, MCP, CLI, headless runs, agent docs',
   'agentic-app': 'Inside-out: how agentic the product itself is for its users — assistants, autonomous features',
   'api-quality': 'The programmable surface — machine-readable spec, docs, sandbox, versioning discipline',
