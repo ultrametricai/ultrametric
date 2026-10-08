@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { agentLaunch, processHandoffUrl, startPrompt } from '../process-start'
+import { agentLaunch, processHandoffUrl, startPrompt, startRegionForCountry } from '../process-start'
 import { findSharedRecord, readSharedCatalog } from '../shared-processes/reader'
 import { processStartTarget } from '../shared-processes/start'
 
@@ -26,7 +26,7 @@ describe('API-owned process handoff', () => {
     expect(startPrompt(target)).not.toMatch(/open_process|auth login|npm install|companyId/)
   })
 
-  it('encodes exact public identity for supported destinations, without country context', () => {
+  it('encodes exact public identity for supported destinations', () => {
     for (const item of records) {
       const target = processStartTarget(item)
       for (const [method, endpoint, key] of [
@@ -45,6 +45,30 @@ describe('API-owned process handoff', () => {
     const punctuation = { id: 'form_001', title: 'Quotes “&” / + ? # 日本語', regions: [] }
     expect(new URL(agentLaunch(punctuation, 'claude')!.href).searchParams.get('q')).toBe(startPrompt(punctuation, undefined, 'claude'))
     for (const method of ['codex', 'claude-code', 'cli'] as const) expect(agentLaunch(target, method)).toBeUndefined()
+  })
+
+  it('preserves a valid selected region in every launch destination', () => {
+    for (const [agent, key] of [['claude', 'q'], ['chatgpt', 'q'], ['cursor', 'text']] as const) {
+      for (const region of target.regions) {
+        const launch = new URL(agentLaunch(target, agent, region.id)!.href)
+        expect(launch.searchParams.get(key)).toBe(startPrompt(target, region.id, agent))
+        const handoff = new URL(launch.searchParams.get(key)!.split('Read and follow ')[1])
+        expect(Object.fromEntries(handoff.searchParams)).toEqual({
+          process: 'form_001', region: region.id,
+          method: agent === 'cursor' ? 'cli' : 'mcp', vendor: agent,
+        })
+      }
+      expect(new URL(agentLaunch(target, agent, 'unknown')!.href).searchParams.get(key)).not.toContain('region=')
+    }
+  })
+
+  it('maps a canonical country only to one explicitly supported process option', () => {
+    expect(startRegionForCountry(target, 'UK')?.id).toBe('uk-companies-house')
+    expect(startRegionForCountry(target, 'IN')?.id).toBe('india-spice-plus')
+    expect(startRegionForCountry(target, null)).toBeUndefined()
+    expect(startRegionForCountry(target, 'CA')).toBeUndefined()
+    const duplicate = { ...target.regions.find(region => region.id === 'uk-companies-house')!, id: 'other-uk-option' }
+    expect(startRegionForCountry({ ...target, regions: [...target.regions, duplicate] }, 'UK')).toBeUndefined()
   })
 
   it('maps method and vendor independently while retaining the exact process and country', () => {

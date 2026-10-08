@@ -12,11 +12,17 @@ export type StartAgent = typeof START_METHODS[number]['id']
 export type StartTarget = {
   id: string
   title: string
-  regions: Array<{ id: string; title: string }>
+  regions: Array<{ id: string; title: string; countries: string[] }>
 }
 
 export function startRegion(target: StartTarget, value?: string | null) {
   return target.regions.find(region => region.id === value)
+}
+
+export function startRegionForCountry(target: StartTarget, country: string | null) {
+  if (!country) return undefined
+  const matches = target.regions.filter(region => region.countries.includes(country))
+  return matches.length === 1 ? matches[0] : undefined
 }
 
 export function processHandoffUrl(target: StartTarget, region?: string, agent?: StartAgent) {
@@ -42,22 +48,21 @@ export function installPrompt(productName: string, target: StartTarget) {
   return `Set up ${productName} with Ultrametric. Start “${target.title}” and use ${productName} for the vendor choice. Install and use the supported connection if needed. Read and follow ${processHandoffUrl(target)}`
 }
 
-// Launch URLs omit the selected country and open only after the user's click.
-export function agentLaunch(target: StartTarget, method: StartAgent) {
+export function agentLaunch(target: StartTarget, method: StartAgent, region?: string) {
   if (method === 'claude') return {
     label: 'Run on web',
     description: 'Open a new Claude chat with a draft to review and send.',
-    href: `https://claude.ai/new?${new URLSearchParams({ q: startPrompt(target, undefined, method) })}`,
+    href: `https://claude.ai/new?${new URLSearchParams({ q: startPrompt(target, region, method) })}`,
   }
   if (method === 'chatgpt') return {
     label: 'Run on web',
     description: 'Start a new ChatGPT chat and send this process prompt.',
-    href: `https://chatgpt.com/?${new URLSearchParams({ q: startPrompt(target, undefined, method) })}`,
+    href: `https://chatgpt.com/?${new URLSearchParams({ q: startPrompt(target, region, method) })}`,
   }
   if (method === 'cursor') return {
     label: 'Open in Cursor',
     description: 'Open a Cursor prompt to review and send in the app.',
-    href: `https://cursor.com/link/prompt?${new URLSearchParams({ text: startPrompt(target, undefined, method) })}`,
+    href: `https://cursor.com/link/prompt?${new URLSearchParams({ text: startPrompt(target, region, method) })}`,
   }
   return undefined
 }
