@@ -1,13 +1,15 @@
 'use client'
 
 import Image from 'next/image'
+import Link from 'next/link'
 import { useEffect, useId, useRef, useState } from 'react'
 import { START_METHODS, agentLaunch, startPrompt, type StartAgent, type StartTarget } from '@/lib/process-start'
 import { useRegionalVariant } from '@/components/shared-processes/RegionalVariant'
 
 // The run-with-Ultrametric affordance: an emerald trigger opening the agent-picker modal
 // (Claude / ChatGPT / Codex / Claude Code / Cursor / Ultrametric CLI), which hands off the
-// public start prompt — launch on web where a verified URL exists, copy otherwise. PUBLIC by
+// public start prompt — launch on web where a verified URL exists, copy otherwise. The CLI
+// entry copies on selection and links the install path (/get-started). PUBLIC by
 // design (no admin gate): the handoff is a real prompt against api.ultrametric.ai/start, the
 // same contract the v2 reader publishes. The canonical process page mounts this same component
 // with the site's header-CTA trigger idiom (label/trigger overrides below); defaults are the
@@ -72,13 +74,13 @@ export default function ProcessRunCTA({
     ownsHistory.current = false
   }
 
-  async function copyPrompt() {
+  async function copyPrompt(text = prompt) {
     const attempt = ++copyAttempt.current
     try {
-      await navigator.clipboard.writeText(prompt)
-      if (attempt === copyAttempt.current) setCopy({ text: prompt, failed: false })
+      await navigator.clipboard.writeText(text)
+      if (attempt === copyAttempt.current) setCopy({ text, failed: false })
     } catch {
-      if (attempt === copyAttempt.current) setCopy({ text: prompt, failed: true })
+      if (attempt === copyAttempt.current) setCopy({ text, failed: true })
     }
   }
 
@@ -114,6 +116,9 @@ export default function ProcessRunCTA({
               copyAttempt.current++
               setCopy(undefined)
               setSelected(method.id)
+              // The CLI has no verified launch URL, so selecting it used to leave the modal
+              // visibly inert. Copy the handoff prompt on selection instead (founder 2026-10-08).
+              if (method.id === 'cli') void copyPrompt(startPrompt(target, region?.selected, 'cli'))
             }} className="peer sr-only" />
             <span className="flex min-h-20 items-center gap-3 rounded-2xl border border-zinc-800 px-3 py-3 transition hover:border-emerald-400/60 hover:bg-emerald-400/5 peer-checked:border-emerald-300 peer-checked:bg-emerald-300/10 peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-emerald-300 sm:px-4">
               {method.logo ? <Image src={method.logo} width={32} height={32} alt="" className="h-8 w-8 shrink-0 rounded-lg object-contain" /> : <span aria-hidden="true" className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-zinc-800 font-mono text-lg">&gt;_</span>}
@@ -123,7 +128,8 @@ export default function ProcessRunCTA({
         </fieldset>
         <div className="mt-6 flex flex-col items-center gap-2">
           {launch && <><a href={launch.href} title={launch.description} target="_blank" rel="noopener noreferrer" referrerPolicy="no-referrer" className="flex min-h-12 w-full items-center justify-center rounded-full bg-emerald-300 px-6 py-3 font-medium text-zinc-950 hover:bg-emerald-200 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-emerald-300">{launch.label}</a><span aria-hidden="true" className="text-sm text-zinc-500">or</span></>}
-          <button type="button" onClick={copyPrompt} className="min-h-11 rounded-lg px-5 font-medium text-zinc-300 hover:text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-300">Copy prompt</button>
+          <button type="button" onClick={() => copyPrompt()} className="min-h-11 rounded-lg px-5 font-medium text-zinc-300 hover:text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-300">Copy prompt</button>
+          {selected === 'cli' && <p className="text-center text-sm text-zinc-400">Runs in your terminal once the CLI is set up. <Link href="/get-started" title="Install Ultrametric — agent prompt, CLI, or MCP" className="font-medium text-emerald-300 underline-offset-4 hover:underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-300">Install the CLI →</Link></p>}
         </div>
         <p role="status" className="text-center text-sm text-zinc-400">{currentCopy && (currentCopy.failed ? 'Clipboard unavailable. The prompt is selected; copy it with your keyboard or touch menu.' : 'Copied.')}</p>
         {currentCopy?.failed && <textarea ref={manualCopy} readOnly value={prompt} rows={5} aria-label="Process prompt for manual copy" className="mt-3 block w-full resize-y rounded-xl border border-zinc-700 bg-zinc-950 p-4 text-sm leading-relaxed text-zinc-300 focus-visible:outline-2 focus-visible:outline-emerald-300" />}
