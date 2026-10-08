@@ -9,6 +9,7 @@ import {
   GEO_PREF_META,
   GEO_STORAGE_KEY,
   getGeoChoice,
+  getUsPickDisplay,
   parseGeoChoice,
   setGeoChoice,
   subscribeGeoSelection,
@@ -53,6 +54,10 @@ export default function GeoDropdown({
   variant?: 'chip' | 'nav'
 } = {}) {
   const [geo, setGeo] = useState<GeoChoice | null>(null)
+  // The explicit-USA display flag (founder 2026-10-08, lib/geoPreference.ts getUsPickDisplay):
+  // false on the server and at mount — the pick is per-tab presentation, never URL/storage —
+  // so the SSR default framing is untouched.
+  const [usPicked, setUsPicked] = useState(false)
   const [open, setOpen] = useState(false)
   const rootRef = useRef<HTMLDivElement>(null)
 
@@ -64,7 +69,11 @@ export default function GeoDropdown({
     const initial = fromUrl !== null ? parseGeoChoice(fromUrl) : parseGeoChoice(window.localStorage.getItem(GEO_STORAGE_KEY))
     setGeoChoice(initial)
     setGeo(getGeoChoice())
-    return subscribeGeoSelection(() => setGeo(getGeoChoice()))
+    setUsPicked(getUsPickDisplay())
+    return subscribeGeoSelection(() => {
+      setGeo(getGeoChoice())
+      setUsPicked(getUsPickDisplay())
+    })
   }, [])
   /* eslint-enable react-hooks/set-state-in-effect */
 
@@ -94,10 +103,18 @@ export default function GeoDropdown({
   // No explicit choice reads as the surface default (null = the sitewide 🇺🇸 US default;
   // GEO_GLOBAL on the /processes index) — so with defaultChoice=GEO_GLOBAL the 🌐 Global entry
   // is the one marked active in the pristine state, and the trigger says so from the server
-  // render on.
-  const effective = geo ?? defaultChoice
+  // render on. An explicit 🇺🇸 USA pick this tab (usPicked) overrides the default framing —
+  // the trigger reflects the pick (founder 2026-10-08) even though the store honestly stays
+  // null (USA and Global render the same views; the codec writes nothing for USA).
+  const effective = geo ?? (usPicked ? null : defaultChoice)
   const current =
-    effective === GEO_GLOBAL ? GEO_GLOBAL_META : effective ? GEO_PREF_META[effective] : null
+    effective === GEO_GLOBAL
+      ? GEO_GLOBAL_META
+      : effective
+        ? GEO_PREF_META[effective]
+        : usPicked
+          ? GEO_PREF_META.US
+          : null
   // 🌐 Global leads (the VsGeoSelector list order — the explicit geo-neutral choice, founder
   // 2026-09-30), then the canonical US-default → country set.
   const options: Array<{ value: GeoChoice | null; flag: string; name: string }> = [

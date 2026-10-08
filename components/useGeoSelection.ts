@@ -8,6 +8,7 @@ import {
   getGeoSelection,
   serializeGeoChoice,
   setGeoChoice,
+  setUsPickDisplay,
   subscribeGeoSelection,
   type GeoChoice,
   type GeoSelection,
@@ -20,6 +21,10 @@ import { setParams } from '@/lib/urlState'
 // would. lib/geoPreference.ts stays state fan-out only.
 export function applyGeoChoice(next: GeoChoice | null): void {
   setGeoChoice(next)
+  // null through THIS path is an explicit 🇺🇸 USA pick (the dropdown's USA entry is the only
+  // null writer) — record it as display state so the trigger reflects the pick (founder
+  // 2026-10-08) while the codec below stays exactly as committed: USA clears param + storage.
+  setUsPickDisplay(next === null)
   const serialized = serializeGeoChoice(next)
   setParams({ [GEO_PARAM]: serialized })
   if (serialized === null) window.localStorage.removeItem(GEO_STORAGE_KEY)

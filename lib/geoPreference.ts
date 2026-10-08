@@ -243,3 +243,26 @@ export function subscribeGeoSelection(listener: Listener): () => void {
   listeners.add(listener)
   return () => listeners.delete(listener)
 }
+
+// ---------------------------------------------------------------------------------------------
+// Display-only record of an explicit 🇺🇸 USA pick (founder 2026-10-08: "clicking USA in the
+// top-bar country control doesn't change the trigger icon — it stays 🌐"). The committed codec
+// is untouched: an explicit USA still clears ?geo= and pa-geo and leaves the store null, and
+// null and GLOBAL still render the same views (the 2026-10-07 decision). This flag is per-tab
+// PRESENTATION state beside the store: after the pick the trigger shows 🇺🇸 instead of falling
+// back to the surface's 🌐 default framing. It is never server-rendered and never stored, so
+// the pristine SSR default stays 🌐 byte-identically, and a fresh page load (no ?geo=, no
+// pa-geo — USA writes neither) opens on the default framing again. Writers: the shared write
+// path only (components/useGeoSelection.ts applyGeoChoice — null = an explicit USA pick, any
+// country/GLOBAL clears it); mount-effect URL/storage syncs never touch it.
+let usPickDisplay = false
+
+export function getUsPickDisplay(): boolean {
+  return usPickDisplay
+}
+
+export function setUsPickDisplay(next: boolean): void {
+  if (usPickDisplay === next) return
+  usPickDisplay = next
+  for (const l of listeners) l()
+}
