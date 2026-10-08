@@ -1,10 +1,16 @@
 import { ARENA_ICONS } from '@/lib/arenaIcons'
+import { loadBusinessLogicMap } from '@/lib/businessLogicMap'
 import { loadAll } from '@/lib/data'
+import { loadDocumentRegistry } from '@/lib/documents'
 import { hasLogo } from '@/lib/logos'
 import { loadAiStacks } from '@/lib/aiStacks'
-import { loadChains, loadProcesses, processSlug } from '@/lib/processes'
+import { readmeComputes } from '@/lib/openModulePages'
+import { loadArtifacts, loadChains, loadProcesses, processSlug } from '@/lib/processes'
 import {
+  buildArtifactEntries,
   buildChainEntries,
+  buildDocumentEntries,
+  buildModuleEntries,
   buildPageEntries,
   buildProcessEntries,
   buildSearchIndex,
@@ -47,6 +53,10 @@ export function buildAllSearchEntries(): SearchEntry[] {
     { type: 'arena', label: 'Most popular (stars, installs, 🔥 hot)', sublabel: 'Popularity measured fairly, by segment', href: '/rankings/popular', keywords: pageAliases['/rankings/popular'] },
     { type: 'arena', label: 'Lowest lock-in (full ranking)', sublabel: 'Self-hosting, data export, open licenses, API parity', href: '/rankings/most-open', keywords: pageAliases['/rankings/most-open'] },
     { type: 'arena', label: 'Best API (full ranking)', sublabel: 'All products, ranked by API quality', href: '/rankings/best-api', keywords: pageAliases['/rankings/best-api'] },
+    // The government country boards (founder 2026-10-08): the one jurisdiction-tagged arena's
+    // per-country rollup tables, reachable by the stable #country-rankings anchor
+    // (components/CountryRankings.tsx renders id="country-rankings" on /arena/government-services).
+    { type: 'arena', label: 'Government services by country', sublabel: 'Country boards: matched agencies, computed rollups', href: '/arena/government-services#country-rankings', keywords: pageAliases['/arena/government-services#country-rankings'] },
     ...buildStackEntries(loadAiStacks(), searchAliases.stacks as Record<string, string[]>),
     // The ⌘K 'Processes' group (founder 2026-10-02: defaults include processes): the
     // /processes index entry plus the high-traffic processes below. Ids come from
@@ -77,5 +87,35 @@ export function buildAllSearchEntries(): SearchEntry[] {
     // End-to-end playbooks (process chains) — searchable by name and by the journey phrases
     // people actually type ("raise a seed round", "launch on product hunt").
     ...buildChainEntries(loadChains(), pageAliases),
+    // The object-page families (founder 2026-10-08: "search can't find 83b"). Modules come
+    // BEFORE artifacts on purpose: both registries carry a "Cap table" label, exact-label ties
+    // break on index order, and 'cap table' should land on the open module (founder pin).
+    // Aliases are keyed by registry id (data/search-aliases.json `modules` / `artifacts`) —
+    // integrity-tested against the registries in lib/__tests__/search-matching.test.ts.
+    // The lore registry (lore/registry.json) stays out: it has no site surface to link.
+    ...buildModuleEntries(
+      Object.entries(loadBusinessLogicMap()).map(([id, m]) => {
+        const computes = readmeComputes().get(m.anchor)
+        // Same loud failure as lib/openModulePages.ts: a module missing its README index row
+        // must fail the build, not silently drop a palette row.
+        if (!computes) throw new Error(`⌘K open module ${id} missing from open-modules/README.md module index`)
+        return { id, label: m.label, computes }
+      }),
+      searchAliases.modules as Record<string, string[]>,
+    ),
+    ...buildArtifactEntries(
+      (() => {
+        const titleById = new Map(loadProcesses().map((t) => [t.id, t.title]))
+        return loadArtifacts().map((a) => {
+          const producerTitle = titleById.get(a.producedBy)
+          if (!producerTitle) throw new Error(`⌘K artifact ${a.id} names unknown producer ${a.producedBy}`)
+          return { id: a.id, label: a.label, producerTitle }
+        })
+      })(),
+      searchAliases.artifacts as Record<string, string[]>,
+    ),
+    ...buildDocumentEntries(
+      loadDocumentRegistry().documents.map((d) => ({ name: d.name, publisher: d.publisher })),
+    ),
   ]
 }

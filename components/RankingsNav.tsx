@@ -2,6 +2,7 @@ import Link from 'next/link'
 import GeoMark from '@/components/GeoMark'
 import { IconGlyph } from '@/components/IconChip'
 import { EXPLORE_SECTION_ICONS } from '@/lib/arenaIcons'
+import { REPO } from '@/lib/site'
 
 // The one list of global (cross-arena) COMPANY rankings, in the same order as the header's
 // Explore menu. `id` doubles as the GeoMark seed, so every ranking wears the same concept mark
@@ -49,9 +50,24 @@ const GROUPS = [
   { label: 'Process leaderboards', icon: EXPLORE_SECTION_ICONS.processRankings, rankings: PROCESS_RANKINGS },
 ] as const
 
+// The repo area each ranking is computed from (founder 2026-10-08 deep-link audit, the process
+// pages' view-in-repo idiom): process leaderboards derive from the corpus, the law-firms board
+// is arena-scoped (data/startup-law-firms/), every other company ranking spans the whole data
+// tree.
+function repoDataLink(current: RankingId): { href: string; path: string } {
+  if (PROCESS_RANKINGS.some((r) => r.id === current)) {
+    return { href: `https://github.com/${REPO}/blob/main/processes/corpus.json`, path: 'processes/corpus.json' }
+  }
+  if (current === 'law-firms') {
+    return { href: `https://github.com/${REPO}/tree/main/data/startup-law-firms`, path: 'data/startup-law-firms/' }
+  }
+  return { href: `https://github.com/${REPO}/tree/main/data`, path: 'data/' }
+}
+
 // Cross-link footer for the /rankings/* pages: every sibling ranking in both groups, with the
 // current one rendered as quiet text (never a self-link). Server-safe, no state.
 export default function RankingsNav({ current }: { current: RankingId }) {
+  const repo = repoDataLink(current)
   return (
     <nav aria-label="all leaderboards" className="space-y-3 rounded-xl border border-zinc-800 p-4">
       {GROUPS.map((group) => (
@@ -78,6 +94,17 @@ export default function RankingsNav({ current }: { current: RankingId }) {
           </ul>
         </div>
       ))}
+      <p className="text-xs text-zinc-600">
+        <a
+          href={repo.href}
+          target="_blank"
+          rel="noopener noreferrer"
+          title={`The data this leaderboard is computed from, in the public repo — ${repo.path}`}
+          className="transition hover:text-emerald-300"
+        >
+          View the evidence in the repo ↗
+        </a>
+      </p>
     </nav>
   )
 }

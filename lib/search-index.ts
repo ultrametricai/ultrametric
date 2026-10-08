@@ -1,6 +1,15 @@
 import type { Category, Product, Story } from './schemas'
 
-export type SearchEntryType = 'arena' | 'stack' | 'process' | 'page' | 'product' | 'story'
+export type SearchEntryType =
+  | 'arena'
+  | 'stack'
+  | 'process'
+  | 'module'
+  | 'artifact'
+  | 'document'
+  | 'page'
+  | 'product'
+  | 'story'
 
 export interface SearchEntry {
   type: SearchEntryType
@@ -154,6 +163,102 @@ export function buildProcessEntries(
       const href = `/processes/${p.slug}`
       return withAliases(href, { type: 'process' as const, label: p.title, sublabel: p.sublabel, href })
     }),
+  ]
+}
+
+// ---------------------------------------------------------------------------
+// The object-page families (founder 2026-10-08: "⌘K can't find 83b"): registry artifacts
+// (/artifacts/[id]), open modules (/open-modules/[id]), and open documents (/open-documents —
+// the registry has no per-document page, so every document row lands on the index). Each group
+// leads with its index page and keeps the grouping idiom: its own type key, its own header in
+// the palette. Alias phrases come from data/search-aliases.json (`artifacts` / `modules`
+// sections, keyed by registry id — the arenas convention; punctuated labels like "83(b)" need
+// them because the matcher is substring-based: '83b' never appears inside '83(b) election').
+// ---------------------------------------------------------------------------
+
+export interface ArtifactSearchSource {
+  id: string
+  label: string
+  /** The canonical producer's title — short, and says where the object comes from. */
+  producerTitle: string
+}
+
+export function buildArtifactEntries(
+  artifacts: ArtifactSearchSource[],
+  keywords?: Record<string, string[]>,
+): SearchEntry[] {
+  return [
+    {
+      type: 'artifact',
+      label: 'All artifacts',
+      sublabel: 'Every business artifact — who produces it, who needs it',
+      href: '/artifacts',
+    },
+    ...artifacts.map((a) => {
+      const aliases = keywords?.[a.id]
+      return {
+        type: 'artifact' as const,
+        label: a.label,
+        sublabel: `Artifact · produced by ${a.producerTitle}`,
+        href: `/artifacts/${a.id}`,
+        ...(aliases && aliases.length > 0 ? { keywords: aliases.map((k) => k.toLowerCase()) } : {}),
+      }
+    }),
+  ]
+}
+
+export interface ModuleSearchSource {
+  id: string
+  label: string
+  /** The README module-index "What it computes" cell (lib/openModulePages.ts readmeComputes). */
+  computes: string
+}
+
+export function buildModuleEntries(
+  modules: ModuleSearchSource[],
+  keywords?: Record<string, string[]>,
+): SearchEntry[] {
+  return [
+    {
+      type: 'module',
+      label: 'All open modules',
+      sublabel: 'The open startup library — cap tables, deadlines, dilution math',
+      href: '/open-modules',
+    },
+    ...modules.map((m) => {
+      const aliases = keywords?.[m.id]
+      return {
+        type: 'module' as const,
+        label: m.label,
+        sublabel: m.computes,
+        href: `/open-modules/${m.id}`,
+        ...(aliases && aliases.length > 0 ? { keywords: aliases.map((k) => k.toLowerCase()) } : {}),
+      }
+    }),
+  ]
+}
+
+export interface DocumentSearchSource {
+  name: string
+  publisher: string
+}
+
+export function buildDocumentEntries(documents: DocumentSearchSource[]): SearchEntry[] {
+  return [
+    {
+      type: 'document',
+      label: 'All open documents',
+      sublabel: 'Canonical startup legal documents — link-only, publisher-verified',
+      href: '/open-documents',
+    },
+    // Per-document rows all land on the index (no per-document page exists; the registry's
+    // publisher URLs stay external, linked from the index tables).
+    ...documents.map((d) => ({
+      type: 'document' as const,
+      label: d.name,
+      sublabel: d.publisher,
+      href: '/open-documents',
+    })),
   ]
 }
 

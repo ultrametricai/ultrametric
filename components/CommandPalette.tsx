@@ -6,12 +6,17 @@ import { useRouter } from 'next/navigation'
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { filterSearchEntries, prepareSearchEntries, type SearchEntry, type SearchEntryType } from '@/lib/search-index'
 
-const TYPE_ORDER: SearchEntryType[] = ['arena', 'stack', 'process', 'page', 'product', 'story']
+const TYPE_ORDER: SearchEntryType[] = ['arena', 'stack', 'process', 'module', 'artifact', 'document', 'page', 'product', 'story']
 const TYPE_LABEL: Record<SearchEntryType, string> = {
   // The renamed Arenas nav label (founder 2026-10-07) — entry type ids stay 'arena'.
   arena: 'Rankings',
   stack: 'Stacks',
   process: 'Processes',
+  // The object-page families (founder 2026-10-08): open modules, registry artifacts, and the
+  // open-documents registry each keep their own group header, same idiom as the rest.
+  module: 'Open modules',
+  artifact: 'Artifacts',
+  document: 'Open documents',
   page: 'Pages',
   product: 'Products',
   story: 'Stories',

@@ -2,6 +2,10 @@ import { describe, expect, it } from 'vitest'
 import searchAliases from '@/data/search-aliases.json'
 import categories from '@/data/categories.json'
 import aiStacks from '@/data/ai-stacks.json'
+import { loadBusinessLogicMap } from '@/lib/businessLogicMap'
+import { loadDocumentRegistry } from '@/lib/documents'
+import { loadArtifacts } from '@/lib/processes'
+import { buildAllSearchEntries } from '@/lib/search-entries'
 import {
   buildPageEntries,
   buildProcessEntries,
@@ -168,6 +172,80 @@ describe('filterSearchEntries — the classic queries', () => {
 
   it('still returns nothing for genuine misses', () => {
     expect(filterSearchEntries(prepared, 'zzzzz no such thing')).toEqual([])
+  })
+})
+
+describe('object-page families in the shipped index (founder 2026-10-08)', () => {
+  // The REAL index, exactly as /search-index.json serves it — these pins break if the wiring
+  // in lib/search-entries.ts drops a group or the alias data drifts.
+  const shipped = prepareSearchEntries(buildAllSearchEntries())
+  const first = (q: string) => filterSearchEntries(shipped, q)[0]?.href
+  const hrefs = (q: string) => filterSearchEntries(shipped, q).map((e) => e.href)
+
+  it("'83b' returns the artifact (the founder pin that started this)", () => {
+    expect(first('83b')).toBe('/artifacts/83b-election')
+  })
+
+  it("'83(b)', 'safe', and 'ein' all surface their artifact", () => {
+    expect(hrefs('83(b)')).toContain('/artifacts/83b-election')
+    expect(hrefs('safe')).toContain('/artifacts/executed-safes')
+    expect(first('ein')).toBe('/artifacts/ein')
+  })
+
+  it("'cap table' returns the open module (the second founder pin)", () => {
+    expect(first('cap table')).toBe('/open-modules/capTable')
+  })
+
+  it('every open module and every registry artifact has a palette row', () => {
+    const moduleHrefs = new Set(shipped.map((p) => p.entry).filter((e) => e.type === 'module').map((e) => e.href))
+    for (const id of Object.keys(loadBusinessLogicMap())) {
+      expect(moduleHrefs.has(`/open-modules/${id}`), `module ${id} missing from the index`).toBe(true)
+    }
+    const artifactHrefs = new Set(shipped.map((p) => p.entry).filter((e) => e.type === 'artifact').map((e) => e.href))
+    for (const a of loadArtifacts()) {
+      expect(artifactHrefs.has(`/artifacts/${a.id}`), `artifact ${a.id} missing from the index`).toBe(true)
+    }
+  })
+
+  it('open-documents rows all land on /open-documents (no per-document page exists) and cover the registry', () => {
+    const docs = shipped.map((p) => p.entry).filter((e) => e.type === 'document')
+    expect(docs.every((e) => e.href === '/open-documents')).toBe(true)
+    // Index lead + one row per registry document.
+    expect(docs).toHaveLength(loadDocumentRegistry().documents.length + 1)
+  })
+
+  it('the government country boards are reachable by their stable anchor', () => {
+    expect(first('country rankings')).toBe('/arena/government-services#country-rankings')
+  })
+})
+
+describe('modules/artifacts alias integrity (data/search-aliases.json)', () => {
+  const moduleAliases = searchAliases.modules as Record<string, string[]>
+  const artifactAliases = searchAliases.artifacts as Record<string, string[]>
+
+  it('covers EVERY open module with 3-8 alias phrases', () => {
+    for (const id of Object.keys(loadBusinessLogicMap())) {
+      const aliases = moduleAliases[id]
+      expect(aliases, `module ${id} has no aliases`).toBeDefined()
+      expect(aliases.length, `module ${id} has ${aliases?.length} aliases (want 3-8)`).toBeGreaterThanOrEqual(3)
+      expect(aliases.length, `module ${id} has ${aliases?.length} aliases (want 3-8)`).toBeLessThanOrEqual(8)
+    }
+  })
+
+  it('has no alias keys pointing at nonexistent modules or artifacts (artifact aliases stay sparse by design)', () => {
+    const moduleIds = new Set(Object.keys(loadBusinessLogicMap()))
+    for (const id of Object.keys(moduleAliases)) expect(moduleIds.has(id), `unknown module id ${id}`).toBe(true)
+    const artifactIds = new Set(loadArtifacts().map((a) => a.id))
+    for (const id of Object.keys(artifactAliases)) expect(artifactIds.has(id), `unknown artifact id ${id}`).toBe(true)
+  })
+
+  it('keeps alias phrases lowercase and free of matcher-stripped chrome', () => {
+    for (const [id, aliases] of [...Object.entries(moduleAliases), ...Object.entries(artifactAliases)]) {
+      for (const a of aliases) {
+        expect(a, `alias "${a}" (${id}) should not start with best/top/great`).not.toMatch(/^(?:best|top|great)\s/)
+        expect(a, `alias "${a}" (${id}) should be lowercase`).toBe(a.toLowerCase())
+      }
+    }
   })
 })
 
