@@ -48,19 +48,26 @@ describe('sitewide footer (app/layout.tsx)', () => {
 
 describe('header GitHub links (app/layout.tsx)', () => {
   const header = layoutSrc.slice(layoutSrc.indexOf('<header'), layoutSrc.indexOf('</header>'))
+  const chipStart = header.indexOf(`href={\`https://github.com/\${REPO}\`}`)
+  const chip = header.slice(chipStart, header.indexOf('</a>', chipStart))
 
-  it('keeps the desktop star chip desktop-only (hidden below sm)', () => {
-    const chipStart = header.indexOf(`href={\`https://github.com/\${REPO}\`}`)
+  it('the desktop chip is icon-only (founder 2026-10-08: drop the word "GitHub") and desktop-only', () => {
     expect(chipStart).toBeGreaterThan(-1)
-    const chip = header.slice(chipStart, header.indexOf('</a>', chipStart))
     expect(chip).toContain('hidden shrink-0 items-center')
     expect(chip).toContain('sm:flex')
+    // Icon only: the octocat mark with no visible label — the accessible name is the aria-label.
+    expect(chip).toContain('M8 0C3.58 0 0 3.58 0 8c0 3.54')
+    expect(chip).toContain('aria-label="Ultrametric on GitHub"')
+    expect(chip).not.toContain('>GitHub<')
+    expect(chip).not.toContain('font-mono')
   })
 
   it('renders a compact mobile-only GitHub mark top-right (founder 2026-10-01)', () => {
-    // The mobile mark: icon-only, visible below sm, hidden from sm up — the star chip's
-    // counterpart so the repo stays one tap away on phones.
-    const markIdx = header.indexOf('aria-label="Ultrametric on GitHub"')
+    // The mobile mark: icon-only, visible below sm, hidden from sm up — the desktop chip's
+    // counterpart so the repo stays one tap away on phones. It is the SECOND "Ultrametric on
+    // GitHub" anchor: the desktop chip carries the same accessible name since it went
+    // icon-only (founder 2026-10-08).
+    const markIdx = header.indexOf('aria-label="Ultrametric on GitHub"', chipStart + chip.length)
     expect(markIdx).toBeGreaterThan(-1)
     const anchorStart = header.lastIndexOf('<a', markIdx)
     const anchor = header.slice(anchorStart, header.indexOf('</a>', markIdx))
