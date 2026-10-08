@@ -170,7 +170,7 @@ export type VendorGeoByCountry = Partial<Record<GeoSelection, VendorGeoCell>>
 /** Keyed by productId; products the geo spike hasn't judged are simply absent (never guessed). */
 export type VendorGeoLookup = Record<string, VendorGeoByCountry>
 
-/** One full "Where it works" chip row (client-safe shape of lib/vendorGeo.ts entries). */
+/** One full "Geos supported" chip row (client-safe shape of lib/vendorGeo.ts entries). */
 export interface VendorGeoStripRow extends VendorGeoCell {
   country: GeoCountry
   checkedAt: string

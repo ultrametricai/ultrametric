@@ -36,9 +36,62 @@ describe('run-type selector options (founder 2026-10-05)', () => {
       story('c', 'install the CLI', 'npm install x-cli && x --version'),
     ])
     expect(options).toHaveLength(2)
-    expect(options[0].story.id).toBe('a') // representative = first story, selection unchanged
-    expect(options[0].titles).toEqual(['agent docs', 'machine index', 'docs an agent can read'])
-    expect(options.map((o) => o.label)).toEqual(['llms.txt discovery', 'Install locally'])
+    // Interest order (founder 2026-10-08): an install run outranks passive llms.txt discovery.
+    expect(options.map((o) => o.label)).toEqual(['Install locally', 'llms.txt discovery'])
+    const llms = options.find((o) => o.label === 'llms.txt discovery')!
+    expect(llms.story.id).toBe('a') // representative = first story of the command group, selection unchanged
+    expect(llms.titles).toEqual(['agent docs', 'machine index', 'docs an agent can read'])
+  })
+
+  it('orders options by user interest — live capability demos first, passive discovery last; the first option is the default (founder 2026-10-08)', () => {
+    const options = buildRunOptions([
+      story('md', 'markdown mirror', 'curl -sL https://x.dev/docs/quickstart.md | head -8'),
+      story('llms', 'agent docs', 'curl -s https://x.dev/llms.txt'),
+      story('install', 'install the CLI', 'npm install x-cli && x --version'),
+      story('skills', 'skills index', 'curl -s https://x.dev/.well-known/agent-skills/index.json'),
+      story('registry', 'registry listing', 'npm view x-cli version'),
+      story('cli', 'run the CLI', 'x --help'),
+      story('api', 'public API', 'curl -s https://api.x.dev/v1/ping'),
+      story('mcp-disc', 'MCP manifest', 'curl -s https://x.dev/.well-known/mcp.json'),
+      story('mcp-hs', 'MCP handshake', "curl -si -X POST https://mcp.x.dev -d '<jsonrpc initialize>'"),
+      story('mcp-call', 'a real tool call', "curl -s -X POST https://mcp.x.dev/mcp -d '<tools/call search>'"),
+    ])
+    expect(options.map((o) => o.label)).toEqual([
+      'MCP tool call',
+      'MCP handshake',
+      'MCP discovery',
+      'Public API',
+      'CLI',
+      'Skills registry',
+      'Package registry',
+      'Install locally',
+      'llms.txt discovery',
+      'Markdown docs',
+    ])
+    // The microterminal auto-plays options[0] — the MCP tool call leads, llms.txt never does.
+    expect(options[0].story.id).toBe('mcp-call')
+  })
+
+  it('CORPUS PIN: shopify-ucp (proofs spanning several run types) leads with its real MCP tool call, llms.txt last', () => {
+    const proofs = loadProofIndex('agentic-commerce').filter((p) => p.kind === 'terminal' && p.productId === 'shopify-ucp')
+    expect(proofs.length).toBeGreaterThanOrEqual(4)
+    const options = buildRunOptions(proofs.map((p) => story(p.probeId, p.storyIds.join(' · '), p.command)))
+    expect(options[0].label).toBe('MCP tool call')
+    expect(options[0].story.id).toBe('ucp-profile-gate')
+    expect(options.at(-1)!.label).toBe('llms.txt discovery')
+  })
+
+  it('CORPUS PIN: mintlify keeps every MCP handshake (host-qualified) ahead of CLI, llms.txt, and markdown — ties in committed proof order', () => {
+    const proofs = loadProofIndex('docs-platforms').filter((p) => p.kind === 'terminal' && p.productId === 'mintlify')
+    const options = buildRunOptions(proofs.map((p) => story(p.probeId, p.storyIds.join(' · '), p.command)))
+    expect(options.map((o) => o.label)).toEqual([
+      'MCP handshake · mcp.mintlify.com',
+      'MCP handshake · www.mintlify.com',
+      'MCP handshake · index.mintlify.com',
+      'CLI',
+      'llms.txt discovery',
+      'Markdown docs',
+    ])
   })
 
   it('same run type over different commands gets host-qualified labels — never two identical chips', () => {

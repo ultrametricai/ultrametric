@@ -203,7 +203,8 @@ describe('Microterminal live tiers', () => {
     // The two llms.txt variants run the same command path → one option; install keeps its own.
     expect(chips).toHaveLength(2)
     const labels = chips.map((c) => c.textContent?.replace('▶', '').trim())
-    expect(labels).toEqual(['llms.txt discovery', 'Install locally'])
+    // Interest order (founder 2026-10-08): the install run leads, passive llms.txt discovery trails.
+    expect(labels).toEqual(['Install locally', 'llms.txt discovery'])
     expect(new Set(labels).size).toBe(labels.length) // no duplicate labels
     // The merged chip's tooltip carries EVERY full story title it stands for.
     const merged = screen.getByRole('button', { name: /llms\.txt discovery/ })

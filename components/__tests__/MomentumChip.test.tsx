@@ -72,9 +72,11 @@ describe('MomentumChip', () => {
     expect(container.textContent).toBe('')
   })
 
-  it('renders a muted "no public signals" in the non-compact (default) variant', () => {
-    render(<MomentumChip popularity={undefined} />)
-    expect(screen.getByText('no public signals')).toBeDefined()
+  it('renders nothing in the non-compact (default) variant when there is no signal — silence, not "no public signals" text (founder 2026-10-08)', () => {
+    const { container } = render(<MomentumChip popularity={undefined} />)
+    expect(container.innerHTML).toBe('')
+    const { container: emptyRecord } = render(<MomentumChip popularity={{ fetchedAt: '2026-08-27T00:00:00.000Z' }} />)
+    expect(emptyRecord.innerHTML).toBe('')
   })
 
   it('surfaces fetchedAt in the title for freshness', () => {

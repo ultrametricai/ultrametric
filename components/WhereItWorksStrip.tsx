@@ -7,7 +7,9 @@ import {
   type VendorGeoStripRow,
 } from '@/lib/geoPreference'
 
-// The "Where it works" row on product pages, compacted to flags (founder 2026-10-07: "only the
+// The "Geos supported" row on product pages (renamed from "Where it works", founder 2026-10-08
+// — display strings only, the WhereItWorks* file names stay), compacted to flags (founder
+// 2026-10-07: "only the
 // countries where it works, flags adjacent, 🌐 Global first when the product is globally
 // available — no ticks, no pills, no per-country labels"). Only available/partial countries
 // render; a committed 'unavailable' row stays data (the honest negative) but draws nothing. A
@@ -41,7 +43,7 @@ export default function WhereItWorksStrip({
           className="text-[10px] uppercase tracking-widest text-zinc-500"
           title="Region availability from the vendor's own pages — crawl-verified evidence, not a score; a muted flag is partial availability"
         >
-          Where it works
+          Geos supported
         </span>
         <span className="flex items-center gap-1 text-sm leading-none">
           {global && (

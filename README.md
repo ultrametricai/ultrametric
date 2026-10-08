@@ -748,7 +748,7 @@ immediately whether your records hold up:
    [`jurisdictions/vendor-geo.json`](jurisdictions/): `{productId, country, status:
    available|unavailable|partial, sourceUrl, note}`. The source must be the vendor's own page
    (or an official register) stating the fact; honest negatives ("US entities only") are as
-   valuable as positives. These rows drive the geo switcher and "Where it works" on the site.
+   valuable as positives. These rows drive the geo switcher and "Geos supported" on the site.
 2. **A country analog for a process** — add a `geoNotes` entry to the process in
    [`processes/corpus.json`](processes/): `{country, summary, actionUrl, actionLabel}` with a
    live, official actionUrl (Companies House, MCA/NSWS, Handelsregister, INPI…). This is what

@@ -57,8 +57,31 @@ function commandHost(command: string): string | null {
   return m ? m[1] : null
 }
 
+// Run types by user interest (founder 2026-10-08): live capability demos first (a real MCP
+// tool call beats a handshake beats passive discovery), llms.txt/markdown mirrors last. The
+// microterminal auto-plays its FIRST option on mount, so this order decides what a visitor
+// sees run before touching anything.
+const RUN_TYPE_ORDER = [
+  'MCP tool call',
+  'MCP handshake',
+  'MCP discovery',
+  'Public API',
+  'CLI',
+  'Skills registry',
+  'Package registry',
+  'Install locally',
+  'llms.txt discovery',
+  'Markdown docs',
+]
+
+function runTypeRank(label: string): number {
+  const i = RUN_TYPE_ORDER.indexOf(label)
+  return i === -1 ? RUN_TYPE_ORDER.length : i
+}
+
 // The selector's options: one per distinct command path (combined-story variants that run the
-// same command merge into one option; all their titles ride the tooltip), labeled by run type.
+// same command merge into one option; all their titles ride the tooltip), labeled by run type
+// and ordered by RUN_TYPE_ORDER (ties keep the committed proof order — the sort is stable).
 // Labels are made unique deterministically — first by the command's host, then by the probe id —
 // so the menu never shows two identical chips. Selection semantics are unchanged: every option
 // plays exactly one real recorded story.
@@ -74,6 +97,8 @@ export function buildRunOptions(stories: TryItStory[]): RunOption[] {
     label: deriveRunLabel(group[0].command),
     titles: [...new Set(group.flatMap((s) => s.title.split(' · ')))],
   }))
+  // Interest order before disambiguation, while every label is still a bare run type.
+  options.sort((a, b) => runTypeRank(a.label) - runTypeRank(b.label))
   // Two disambiguation passes: host qualifier for same-run-type options, probe id if the hosts
   // collide too (probe ids are unique per product, so this terminates unique).
   for (const qualify of [
