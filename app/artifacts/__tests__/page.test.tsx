@@ -235,6 +235,11 @@ describe('/artifacts/[id] — data fields', () => {
     for (const r of rows) {
       expect(container.textContent).toContain(r.field.label)
       expect(container.textContent).toContain(r.field.type)
+      // The field label links its /fields specification page (founder 2026-10-08).
+      expect(
+        container.querySelector(`a[href="/fields/${r.field.id}"]`),
+        `${r.field.id} must link its spec page`,
+      ).not.toBeNull()
       for (const c of r.consumers) {
         expect(
           container.querySelector(`a[href="/open-modules/${c.moduleId}"]`),
@@ -242,6 +247,17 @@ describe('/artifacts/[id] — data fields', () => {
         ).not.toBeNull()
       }
     }
+  })
+
+  it('an identifier field consumed through the artifact renders the requires-path note, not an empty consumer cell', async () => {
+    // The ein artifact establishes EIN-the-number (the 2026-10-08 identifier widening): no
+    // module consumer, so the row points at the Needed-by processes and the field page.
+    const rows = fieldsEstablishedBy('ein')
+    const ein = rows.find((r) => r.field.id === 'ein')!
+    expect(ein.consumers).toEqual([])
+    const { container } = render(await ArtifactDetailPage({ params: params('ein') }))
+    expect(container.querySelector('a[href="/fields/ein"]')).not.toBeNull()
+    expect(container.textContent).toContain('the processes that require this artifact')
   })
 
   it('an artifact that establishes no field renders no section', async () => {
