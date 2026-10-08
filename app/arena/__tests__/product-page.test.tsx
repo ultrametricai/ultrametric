@@ -7,7 +7,7 @@
 // removed — contestation routes through the repo (CONTRIBUTING.md + issue templates) — and the
 // agent-discovery pointers the old utility grid carried moved into generateMetadata alternates
 // (<link rel="alternate">) — same URLs /llms.txt and /openapi.json document.
-import { render, screen } from '@testing-library/react'
+import { fireEvent, render, screen } from '@testing-library/react'
 import { describe, expect, it } from 'vitest'
 import ProductPage, { generateMetadata } from '@/app/arena/[category]/product/[id]/page'
 import { loadAll, loadCategory } from '@/lib/data'
@@ -82,6 +82,16 @@ describe('product page — founder 2026-10-02 batch', () => {
     // the story table, no prefilled flag-verdict issue link anywhere on the page.
     expect(screen.queryByRole('button', { name: 'Row actions' })).toBeNull()
     expect(container.querySelector('a[href*="flag-verdict.yml"]')).toBeNull()
+    // The removed per-row link lived in the EXPANDED details row, so expand every story row
+    // before sweeping again — a collapsed-only sweep would pass even if it came back.
+    const toggles = screen.getAllByRole('button', { name: /^Details for story / })
+    expect(toggles.length).toBeGreaterThan(0)
+    for (const toggle of toggles) fireEvent.click(toggle)
+    expect(toggles[0].getAttribute('aria-expanded')).toBe('true')
+    expect(container.querySelector('tr[id^="story-details-"]')).not.toBeNull()
+    expect(container.querySelector('a[href*="flag-verdict.yml"]')).toBeNull()
+    expect(container.textContent).not.toContain('⚑')
+    expect(screen.queryByRole('button', { name: 'Row actions' })).toBeNull()
     // The old utility card grid stays gone — labels and links alike.
     for (const gone of ['For agents', 'This page as markdown', 'Evidence (JSON)', 'Verdicts (JSON)', 'Embed this product']) {
       expect(container.textContent).not.toContain(gone)

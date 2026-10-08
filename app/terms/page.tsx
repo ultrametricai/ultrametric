@@ -139,8 +139,7 @@ export default function TermsPage() {
         <h2 className={H2}>Disputes: flag it</h2>
         <p className="mt-2 text-sm text-zinc-300">
           If you are a vendor (or anyone else) who believes a verdict, score, or evidence record is wrong, the
-          remedy is the public correction process: use the ⚑ flag link next to any verdict — it opens a
-          prefilled{' '}
+          remedy is the public correction process: open a prefilled{' '}
           <a
             href={`https://github.com/${REPO}/issues/new?template=flag-verdict.yml`}
             target="_blank"
@@ -149,7 +148,7 @@ export default function TermsPage() {
           >
             GitHub issue
           </a>{' '}
-          — and attach evidence URLs supporting the correction. Flags with evidence are re-judged against the
+          and attach evidence URLs supporting the correction. Flags with evidence are re-judged against the
           same methodology as everything else. For trademark or takedown concerns, email{' '}
           <a href="mailto:legal@ultrametric.ai" className={EXT_LINK}>
             legal@ultrametric.ai
