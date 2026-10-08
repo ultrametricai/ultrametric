@@ -11,7 +11,7 @@ const productId = data.products[0].id
 const rows = buildStoryVerdictRows(data, productId)
 
 function renderTable() {
-  return render(<StoryVerdictsTable category="desktop-os" productId={productId} rows={rows} />)
+  return render(<StoryVerdictsTable rows={rows} />)
 }
 
 afterEach(() => {
@@ -76,7 +76,7 @@ describe('StoryVerdictsTable', () => {
     const sfRows = buildStoryVerdictRows(sf, 'foreloop')
     const target = sfRows.find((r) => r.vendorResponse !== null)!
     expect(target.storyId).toBe('agentic-agent-docs')
-    render(<StoryVerdictsTable category="software-factory" productId="foreloop" rows={sfRows} />)
+    render(<StoryVerdictsTable rows={sfRows} />)
 
     // Collapsed: the block is not in the DOM yet.
     expect(screen.queryByText('Official vendor response')).toBeNull()
@@ -111,9 +111,7 @@ describe('StoryVerdictsTable', () => {
       if (r.storyId === covered[1].storyId) return { ...r, tier: 'unknown' as const }
       return { ...r, tier: undefined, tierNote: undefined }
     })
-    const { container } = render(
-      <StoryVerdictsTable category="desktop-os" productId={productId} rows={tieredRows} />,
-    )
+    const { container } = render(<StoryVerdictsTable rows={tieredRows} />)
     // Exactly one chip: the enterprise cell — unknown and unclassified rows render nothing.
     const chips = screen.getAllByText('enterprise')
     // (one chip + one <option> in the tier filter dropdown)
@@ -137,20 +135,20 @@ describe('StoryVerdictsTable', () => {
     expect(screen.queryByLabelText('Filter stories by pricing tier')).toBeNull()
   })
 
-  it('hides the Processes column entirely when the prop is absent (9 columns, colSpan 9)', () => {
+  it('hides the Processes column entirely when the prop is absent (8 columns, colSpan 8)', () => {
     const { container } = renderTable()
     expect(screen.queryByText('Processes')).toBeNull()
-    expect(container.querySelectorAll('thead th').length).toBe(9)
-    // Expanded details row spans the 9 base columns.
+    expect(container.querySelectorAll('thead th').length).toBe(8)
+    // Expanded details row spans the 8 base columns.
     fireEvent.click(screen.getByLabelText(`Details for story ${rows[0].storyId}`))
-    expect(container.querySelector(`#story-details-${rows[0].storyId} td`)?.getAttribute('colspan')).toBe('9')
+    expect(container.querySelector(`#story-details-${rows[0].storyId} td`)?.getAttribute('colspan')).toBe('8')
     // The no-match row does too.
     const input = screen.getByLabelText('Filter stories by title, persona, or theme')
     fireEvent.change(input, { target: { value: 'zzz-no-such-story' } })
-    expect(screen.getByText(/No stories match/).getAttribute('colspan')).toBe('9')
+    expect(screen.getByText(/No stories match/).getAttribute('colspan')).toBe('8')
   })
 
-  it('renders the Processes column when the prop is present: chips, +N overflow, em-dash, colSpan 10', () => {
+  it('renders the Processes column when the prop is present: chips, +N overflow, em-dash, colSpan 9', () => {
     const processes = {
       [rows[0].storyId]: [
         { slug: 'run-payroll', title: 'Run payroll', icon: '💸' },
@@ -158,12 +156,10 @@ describe('StoryVerdictsTable', () => {
         { slug: 'track-runway', title: 'Track runway', icon: '📉' },
       ],
     }
-    const { container } = render(
-      <StoryVerdictsTable category="desktop-os" productId={productId} rows={rows} processes={processes} />,
-    )
-    // Header present, 10 columns.
+    const { container } = render(<StoryVerdictsTable rows={rows} processes={processes} />)
+    // Header present, 9 columns.
     expect(screen.getByText('Processes')).toBeDefined()
-    expect(container.querySelectorAll('thead th').length).toBe(10)
+    expect(container.querySelectorAll('thead th').length).toBe(9)
 
     // The mapped row: 2 chips linking to /processes/<slug>#steps + a "+1" title-tooltip chip.
     const mappedRow = container.querySelector(`[id="story-${rows[0].storyId}"]`)!
@@ -180,14 +176,14 @@ describe('StoryVerdictsTable', () => {
     const dashes = container.querySelectorAll('td [title="No founder process maps onto this story"]')
     expect(dashes.length).toBe(rows.length - 1)
 
-    // Expanded details row spans all 10 columns.
+    // Expanded details row spans all 9 columns.
     fireEvent.click(screen.getByLabelText(`Details for story ${rows[0].storyId}`))
-    expect(container.querySelector(`#story-details-${rows[0].storyId} td`)?.getAttribute('colspan')).toBe('10')
+    expect(container.querySelector(`#story-details-${rows[0].storyId} td`)?.getAttribute('colspan')).toBe('9')
 
     // The no-match row too.
     const input = screen.getByLabelText('Filter stories by title, persona, or theme')
     fireEvent.change(input, { target: { value: 'zzz-no-such-story' } })
-    expect(screen.getByText(/No stories match/).getAttribute('colspan')).toBe('10')
+    expect(screen.getByText(/No stories match/).getAttribute('colspan')).toBe('9')
   })
 
   it('re-sorts when a column header is clicked, with aria-sort on the current column', () => {

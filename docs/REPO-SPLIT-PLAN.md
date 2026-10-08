@@ -144,7 +144,7 @@ imports 87, components import 108.
   `useMyStackMap`, `session.ts`, `urlState.ts`, `myStack.ts`, `watchlist.ts`,
   `shared-processes/open-target.ts`) and the site-presentation helpers (`icons.ts`,
   `arenaIcons.ts`, `processIcons.ts`, `accessGlyphs.ts`, `sparkline.ts`, `dates.ts`,
-  `ordinal.ts`, `rankingJsonLd.ts`, `notFoundSpotlight.ts`, `contestUrl.ts`,
+  `ordinal.ts`, `rankingJsonLd.ts`, `notFoundSpotlight.ts`,
   `stackBuilder.ts`, `humanStepsUi.ts`, `markdown.ts`, `search-index.ts`,
   `myStackData.ts`, `megaTable*.ts`, `search-entries.ts`).
 - **Named hard cases and their resolutions:**

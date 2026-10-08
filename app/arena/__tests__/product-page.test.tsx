@@ -2,9 +2,9 @@
 // Product-page pins for the founder's 2026-10-02 batch (amended 2026-10-08), rendered against
 // the real committed corpus (startup-banking/mercury — a product with processes, integrations,
 // and score history coverage): the vendor line links OUT to the vendor's committed site (never
-// a guessed domain), the per-rect theme tooltips are gone, the page-footer contest affordance
-// ("⚑ Flag a verdict" and its ⚿ auth companion chip) is removed — contestation routes through
-// the repo (CONTRIBUTING.md + issue templates) while the row-level ⚑ flag links stay — and the
+// a guessed domain), the per-rect theme tooltips are gone, the contest affordances
+// ("⚑ Flag a verdict" footer, its ⚿ auth companion chip, and the per-row ⚑ flag links) are
+// removed — contestation routes through the repo (CONTRIBUTING.md + issue templates) — and the
 // agent-discovery pointers the old utility grid carried moved into generateMetadata alternates
 // (<link rel="alternate">) — same URLs /llms.txt and /openapi.json document.
 import { render, screen } from '@testing-library/react'
@@ -73,15 +73,15 @@ describe('product page — founder 2026-10-02 batch', () => {
     for (const card of cards) expect(card.getAttribute('title')).toBeNull()
   })
 
-  it('the page-footer contest affordance is gone (founder 2026-10-08): no ⚑ Flag a verdict button, no ⚿ auth chip — row-level flag links stay', async () => {
+  it('the contest affordances are gone (founder 2026-10-08): no ⚑ Flag a verdict footer, no ⚿ auth chip, no row-level flag links', async () => {
     const { container } = await renderPage()
     expect(container.textContent).not.toContain('⚑ Flag a verdict')
     expect(container.textContent).not.toContain('auth-gated probe')
     expect(container.querySelector('a[href*="template=contest-verdict.md"]')).toBeNull()
-    // The per-verdict row-level ⚑ flag affordances stay (ContestLink/RowMenu render inside
-    // the client-side story table on expansion, so they are not assertable in this static
-    // render; lib/__tests__/contestUrl.test.ts pins their URL builder) — only the footer
-    // affordance is removed.
+    // The per-verdict row-level ⚑ flag affordances are gone too: no ⋯ "Row actions" menu in
+    // the story table, no prefilled flag-verdict issue link anywhere on the page.
+    expect(screen.queryByRole('button', { name: 'Row actions' })).toBeNull()
+    expect(container.querySelector('a[href*="flag-verdict.yml"]')).toBeNull()
     // The old utility card grid stays gone — labels and links alike.
     for (const gone of ['For agents', 'This page as markdown', 'Evidence (JSON)', 'Verdicts (JSON)', 'Embed this product']) {
       expect(container.textContent).not.toContain(gone)

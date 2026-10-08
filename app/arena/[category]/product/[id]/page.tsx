@@ -530,7 +530,7 @@ export default async function ProductPage({
             product's capability frontier greys out. */}
         <StoryViewToggle
           map={<StoryMap rows={verdictRows} productName={product.name} />}
-          table={<StoryVerdictsTable category={category} productId={id} rows={verdictRows} processes={storyProcessesForArena(category)} />}
+          table={<StoryVerdictsTable rows={verdictRows} processes={storyProcessesForArena(category)} />}
         />
       </div>
 

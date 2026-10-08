@@ -1,6 +1,5 @@
 import AgenticBadge from '@/components/AgenticBadge'
 import { BusinessModelLine } from '@/components/BusinessModel'
-import ContestLink from '@/components/ContestLink'
 import PersonaChip from '@/components/PersonaChip'
 import ShutdownBadge from '@/components/ShutdownBadge'
 import ThemeIcon from '@/components/ThemeIcon'
@@ -43,7 +42,7 @@ export default function BattleView({
   // COMPRESSED rounds (founder 2026-09-30: "/vs pages must read as a compact scorecard first,
   // not walls of text"): each round is a one-line verdict — action, per-product scores, who
   // took it — inside a native <details> disclosure. The full two-panel analysis (rationale,
-  // citations, proof links, contest affordance) renders unchanged INSIDE the expander: nothing
+  // citations, proof links) renders unchanged INSIDE the expander: nothing
   // is deleted or moved out of the page, it's folded. <details>/<summary> keeps this a server
   // component (no JS needed to expand) and keeps every word in the served HTML for search.
   const renderRound = (round: Round) => {
@@ -120,8 +119,8 @@ export default function BattleView({
                     )
                   })}
                 </ul>
-                <div className="mt-2 flex items-center justify-end gap-3">
-                  {proof && (
+                {proof && (
+                  <div className="mt-2 flex justify-end">
                     <a
                       href={proof.url}
                       target="_blank"
@@ -131,9 +130,8 @@ export default function BattleView({
                     >
                       proof ↗
                     </a>
-                  )}
-                  <ContestLink category={data.category.id} productId={p.id} storyId={round.storyId} verdict={v} />
-                </div>
+                  </div>
+                )}
               </div>
             )
           })}
