@@ -66,6 +66,23 @@ describe('/open-documents', () => {
     expect(ycInternalLinks).toEqual([])
   })
 
+  it('jurisdiction cells wear the committed geo flag; unknown/multi strings render as before', () => {
+    const { container } = render(<OpenDocumentsPage />)
+    const cells = [...container.querySelectorAll('tbody td:nth-child(3)')].map((td) => td.textContent?.trim())
+    // Country-state combo: US-DE renders flag + state code (founder's 🇺🇸 DE example; the
+    // visual gap is the flag span's margin, so textContent reads flag+code).
+    expect(registry.documents.some((d) => d.jurisdiction === 'US-DE')).toBe(true)
+    expect(cells).toContain('🇺🇸DE')
+    expect(cells).not.toContain('US-DE')
+    // Single committed country: the flag rides beside the committed string.
+    expect(registry.documents.some((d) => d.jurisdiction === 'India')).toBe(true)
+    expect(cells).toContain('🇮🇳India')
+    // Multi-jurisdiction and out-of-set strings render exactly as today — no flag invented.
+    expect(cells).toContain('Canada / Cayman Islands / Singapore')
+    expect(cells).toContain('Singapore')
+    expect(cells.some((c) => c?.includes('🇨🇦'))).toBe(false)
+  })
+
   it('groups records under their use_case headings, registry order within each group', () => {
     const { container } = render(<OpenDocumentsPage />)
     const headings = [...container.querySelectorAll('h2')].map((h) => h.textContent)

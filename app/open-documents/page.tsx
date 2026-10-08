@@ -1,7 +1,7 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import ProductLogoView from '@/components/ProductLogoView'
-import { DOCUMENT_USE_CASES, judgedProductRef, loadDocumentRegistry, type DocumentUseCase, type OpenDocument } from '@/lib/documents'
+import { DOCUMENT_USE_CASES, documentJurisdictionFlag, judgedProductRef, loadDocumentRegistry, type DocumentUseCase, type OpenDocument } from '@/lib/documents'
 import { hasLogo } from '@/lib/logos'
 import { REPO } from '@/lib/site'
 import { TABLE_HEADER_ROW, TABLE_SHELL } from '@/components/tableStyles'
@@ -57,6 +57,21 @@ function VendorCell({ doc }: { doc: OpenDocument }) {
       {logoExists && <ProductLogoView product={{ id: ref.productId, name: ref.name }} size={18} hasLogo={logoExists} />}
       <span>{doc.publisher}</span>
     </Link>
+  )
+}
+
+// The Jurisdiction cell (founder 2026-10-08): the committed geo flag idiom (GEO_PREF_META via
+// lib/documents.ts documentJurisdictionFlag) — 🇺🇸 DE for the country-state combos, a country
+// flag beside the committed string for single countries. Unknown/multi jurisdictions render
+// exactly as before.
+function JurisdictionCell({ jurisdiction }: { jurisdiction: string }) {
+  const geo = documentJurisdictionFlag(jurisdiction)
+  if (!geo) return <>{jurisdiction}</>
+  return (
+    <span title={geo.text === jurisdiction ? geo.countryLabel : `${geo.countryLabel} — ${jurisdiction}`}>
+      <span aria-hidden className="mr-1">{geo.flag}</span>
+      {geo.text}
+    </span>
   )
 }
 
@@ -140,7 +155,9 @@ export default function OpenDocumentsPage() {
                         )}
                       </td>
                       <td className="px-3 py-2.5 align-top text-zinc-400"><VendorCell doc={d} /></td>
-                      <td className="hidden px-3 py-2.5 align-top text-zinc-400 sm:table-cell">{d.jurisdiction}</td>
+                      <td className="hidden px-3 py-2.5 align-top text-zinc-400 sm:table-cell">
+                        <JurisdictionCell jurisdiction={d.jurisdiction} />
+                      </td>
                       <td className="hidden px-3 py-2.5 align-top text-zinc-500 md:table-cell">{d.license_note}</td>
                       <td className="px-3 py-2.5 align-top text-zinc-500">{d.checked_on}</td>
                     </tr>

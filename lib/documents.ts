@@ -1,5 +1,6 @@
 import fs from 'node:fs'
 import path from 'node:path'
+import { GEO_PREF_META, type GeoCountry } from './geoPreference'
 
 // Loader + validator for the open-documents map (open-documents/registry.json + open-documents/README.md).
 // Same doctrine as lib/resources.ts: structural/referential invariants as a flat error list for
@@ -189,6 +190,43 @@ export function openDocumentById(id: string): OpenDocument {
   const doc = byIdCache.get(id)
   if (!doc) throw new Error(`Unknown document id ${id} — not in open-documents/registry.json`)
   return doc
+}
+
+// The Jurisdiction column's flag idiom (founder 2026-10-08): the committed GEO_PREF_META flag
+// class, applied only where the committed jurisdiction string names ONE of its countries.
+// 'US-DE' renders 🇺🇸 DE (country flag + state code); a bare or qualified single country
+// ('US', 'India', 'US (state law varies)', 'US-FED') renders the flag beside the committed
+// string. Everything else — multi-jurisdiction strings ('EU/EEA', 'US/EU-aware', 'Canada /
+// Cayman Islands / Singapore'), countries outside the committed set (Singapore),
+// 'jurisdiction-neutral' — renders exactly as today, no flag invented.
+const JURISDICTION_COUNTRY_TOKENS: Record<string, GeoCountry> = {
+  US: 'US',
+  UK: 'UK',
+  India: 'IN',
+  Germany: 'DE',
+  France: 'FR',
+  Portugal: 'PT',
+  Canada: 'CA',
+}
+
+export interface JurisdictionFlag {
+  flag: string
+  /** The GEO_PREF_META country label, for the flag's tooltip. */
+  countryLabel: string
+  /** What the cell prints beside the flag: the state code for US-XX, else the committed string. */
+  text: string
+}
+
+export function documentJurisdictionFlag(jurisdiction: string): JurisdictionFlag | null {
+  if (jurisdiction.includes('/')) return null
+  const us = GEO_PREF_META.US
+  const state = /^US-([A-Z]{2})$/.exec(jurisdiction)
+  if (state) return { flag: us.flag, countryLabel: us.label, text: state[1] }
+  // US-FED (and its qualified forms) is federal, not a state — the flag rides the full string.
+  if (/^US-FED\b/.test(jurisdiction)) return { flag: us.flag, countryLabel: us.label, text: jurisdiction }
+  const country = JURISDICTION_COUNTRY_TOKENS[jurisdiction.split(' ')[0]]
+  if (!country) return null
+  return { flag: GEO_PREF_META[country].flag, countryLabel: GEO_PREF_META[country].label, text: jurisdiction }
 }
 
 /** A registry publisherProductId resolved against the judged data layer. */
