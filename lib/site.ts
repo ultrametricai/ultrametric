@@ -7,6 +7,7 @@
 // URL can override it. Since the 2026-09-28 rebrand the app is served at the domain root — no
 // path suffix, no basePath.
 export const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://ultrametric.ai'
+export const DOCS_URL = 'https://docs.ultrametric.ai'
 export const REPO = 'ultrametricai/ultrametric'
 
 // The app is served at the domain root since the 2026-09-28 rebrand, so there is no base path.

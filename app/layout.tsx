@@ -20,7 +20,7 @@ import HeaderGeoControl from "@/components/HeaderGeoControl";
 import { loadCategories } from "@/lib/data";
 import { arenaIcon, EXPLORE_SECTION_ICONS, OVERALL_ICON } from "@/lib/arenaIcons";
 import { loadIcpTypes } from "@/lib/icp";
-import { REPO, SITE_URL } from "@/lib/site";
+import { DOCS_URL, REPO, SITE_URL } from "@/lib/site";
 
 // Short labels used inside the Rankings dropdown (the arenas) alongside full names.
 const NAV_LABELS: Record<string, string> = {
@@ -320,6 +320,14 @@ export default async function RootLayout({ children }: LayoutProps<"/">) {
               {/* /everything is deliberately unlisted (founder call: "don't show the everything
                   page") — the route stays alive so old links don't 404, but nothing links to it. */}
               <InstallNavAction />
+              <a
+                href={DOCS_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hidden shrink-0 items-center text-sm text-zinc-300 transition hover:text-emerald-300 sm:flex"
+              >
+                Docs
+              </a>
               {/* Icon-only chip (founder 2026-10-08: drop the word "GitHub" — the mark alone;
                   supersedes the 2026-10-04 label-only form, which itself dropped the star
                   count). The accessible name survives as the aria-label, same destination. */}
@@ -471,6 +479,14 @@ export default async function RootLayout({ children }: LayoutProps<"/">) {
                 <Link href="/about" className="transition-colors hover:text-zinc-300">
                   About
                 </Link>
+                <a
+                  href={DOCS_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="transition-colors hover:text-zinc-300"
+                >
+                  Docs
+                </a>
                 <Link href="/privacy" className="transition-colors hover:text-zinc-300">
                   Privacy
                 </Link>

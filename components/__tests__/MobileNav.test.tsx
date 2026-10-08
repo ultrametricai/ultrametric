@@ -9,6 +9,7 @@
 import { fireEvent, render, screen } from '@testing-library/react'
 import { describe, expect, it } from 'vitest'
 import MobileNav from '@/components/MobileNav'
+import { DOCS_URL } from '@/lib/site'
 
 function openPanel() {
   const r = render(<MobileNav />)
@@ -43,5 +44,15 @@ describe('MobileNav open-state geometry', () => {
     expect(panel.textContent).toContain('Country') // the 2026-10-07 geo row stays
     fireEvent.click(screen.getByRole('link', { name: /Processes/ }))
     expect(r.container.querySelector('a[href="/arenas"]')).toBeNull() // panel closed
+  })
+
+  it('opens the docs site in a new tab and closes the menu', () => {
+    const { r } = openPanel()
+    const docs = screen.getByRole('link', { name: 'Docs' })
+    expect(docs.getAttribute('href')).toBe(DOCS_URL)
+    expect(docs.getAttribute('target')).toBe('_blank')
+    expect(docs.getAttribute('rel')).toBe('noopener noreferrer')
+    fireEvent.click(docs)
+    expect(r.container.querySelector('a[href="/arenas"]')).toBeNull()
   })
 })

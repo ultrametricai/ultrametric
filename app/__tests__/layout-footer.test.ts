@@ -1,13 +1,28 @@
 import { readFileSync } from 'node:fs'
 import path from 'node:path'
 import { describe, expect, it } from 'vitest'
-import { REPO } from '@/lib/site'
+import { DOCS_URL, REPO } from '@/lib/site'
 
 // The sitewide footer lives inline in RootLayout — an async server component that fetches the
 // GitHub star count and builds the full search index, and whose root element is <html> (invalid
 // to nest inside a jsdom render container) — so these pins read the source, the same pragmatic
 // pattern as the other source-asserting tests in this repo.
 const layoutSrc = readFileSync(path.join(__dirname, '..', 'layout.tsx'), 'utf8')
+
+describe('shared Docs links', () => {
+  it.each(['header', 'footer'])('links the live docs site from the %s', (element) => {
+    const section = layoutSrc.slice(layoutSrc.indexOf(`<${element}`), layoutSrc.indexOf(`</${element}>`))
+    const anchors = section.match(/<a\s[^>]*href=\{DOCS_URL\}[^>]*>\s*Docs\s*<\/a>/g)
+    expect(DOCS_URL).toBe('https://docs.ultrametric.ai')
+    expect(anchors).toHaveLength(1)
+    expect(anchors![0]).toContain('target="_blank"')
+    expect(anchors![0]).toContain('rel="noopener noreferrer"')
+    if (element === 'header') {
+      expect(anchors![0]).toContain('hidden shrink-0')
+      expect(anchors![0]).toContain('sm:flex')
+    }
+  })
+})
 
 describe('sitewide footer (app/layout.tsx)', () => {
   it('carries the GitHub repo link with the mark + "GitHub ↗" label (founder 2026-09-30)', () => {

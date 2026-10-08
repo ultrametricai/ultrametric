@@ -5,7 +5,8 @@ import { useEffect, useRef, useState } from 'react'
 import HeaderGeoControl from '@/components/HeaderGeoControl'
 import { IconGlyph } from '@/components/IconChip'
 import { OBJECTS_ITEMS, OBJECTS_LABEL } from '@/components/ObjectsNav'
-import { MOBILE_NAV_ICONS } from '@/lib/arenaIcons'
+import { arenaIcon, MOBILE_NAV_ICONS } from '@/lib/arenaIcons'
+import { DOCS_URL } from '@/lib/site'
 
 // Mobile hamburger (founder 2026-09-24: "the mobile top bar goes off the page — we need a
 // hamburger menu"). Below sm the header shows only logo · ☰ · search · account; every other
@@ -122,6 +123,18 @@ export default function MobileNav() {
               {item.label}
             </Link>
           ))}
+          <a
+            href={DOCS_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            onClick={() => setOpen(false)}
+            className="flex items-center gap-2.5 rounded-lg px-3 py-2 text-sm text-zinc-300 transition hover:bg-zinc-800 hover:text-emerald-300"
+          >
+            <span aria-hidden className="inline-flex w-5 justify-center">
+              <IconGlyph icon={arenaIcon('docs-platforms')} />
+            </span>
+            Docs
+          </a>
           {/* The sitewide country control (founder 2026-10-07) — below sm the desktop header
               mount is hidden, so the ☰ panel carries it: same component, same ?geo=/pa-geo
               preference, 🌐 Global default. */}
