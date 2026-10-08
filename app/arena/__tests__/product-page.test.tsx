@@ -84,6 +84,13 @@ describe('product page — founder 2026-10-02 batch', () => {
     expect(container.querySelector(`a[href="/badges#${ID}"]`)).toBeNull()
   })
 
+  it('the Opportunities and Coverage map sections are gone (founder 2026-10-08) — the derivations stay published in the per-product llms.md', async () => {
+    const { container } = await renderPage()
+    const headings = [...container.querySelectorAll('h2')].map((h) => h.textContent ?? '')
+    expect(headings.some((h) => h.includes('Opportunities'))).toBe(false)
+    expect(headings.some((h) => h.includes('Coverage map'))).toBe(false)
+  })
+
   it('removed explainer sentences: integrations and score trend keep their content, lose the prose', async () => {
     const { container } = await renderPage()
     expect(container.textContent).not.toContain('Connections to other tracked products')

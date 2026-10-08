@@ -8,7 +8,6 @@ import AiEraBadge from '@/components/AiEraBadge'
 import { BusinessModelSection } from '@/components/BusinessModel'
 import ClaimsSection from '@/components/ClaimsSection'
 import CompareRivals from '@/components/CompareRivals'
-import CoverageMapSection from '@/components/CoverageMapSection'
 import FamilySection from '@/components/FamilySection'
 import { storyProcessesForArena } from '@/lib/storyProcessGraph'
 import GeoMark from '@/components/GeoMark'
@@ -16,7 +15,6 @@ import InstallCommands from '@/components/InstallCommands'
 import IntegrationChips, { chipTitle } from '@/components/IntegrationChips'
 import MomentumChip from '@/components/MomentumChip'
 import MomentumTrend from '@/components/MomentumTrend'
-import OpportunitiesSection from '@/components/OpportunitiesSection'
 import OssPill from '@/components/OssPill'
 import ProductLinkChips from '@/components/ProductLinkChips'
 import PricingSignals from '@/components/PricingSignals'
@@ -512,15 +510,11 @@ export default async function ProductPage({
         <StoryThemeDag data={data} productId={id} productName={product.name} />
       )}
 
-      {/* The vendor's to-do list: every none/partial verdict above, ranked by score headroom
-          (lib/opportunities.ts) — collapsed by default, pure derivation from the verdicts. */}
-      <OpportunitiesSection data={data} productId={id} productName={product.name} />
-
-      {/* The inverse of the table's per-row "Covered by" chips: each evidence surface with the
-          stories it covers (lib/storyCoverage.ts) — collapsed by default, pure derivation from
-          the citations above. */}
-      <CoverageMapSection data={data} productId={id} />
-
+      {/* The Opportunities (score-headroom to-do list, lib/opportunities.ts) and Coverage map
+          (evidence surface → stories, lib/storyCoverage.ts) sections were removed from this
+          page (founder 2026-10-08). The derivations stay: the per-product llms.md
+          (lib/markdown.ts) still publishes both, and the table's per-row "Covered by" chips
+          still read lib/storyCoverage.ts. */}
       <ProofsSection category={category} productId={id} stories={data.stories} />
 
       <ClaimsSection data={data} category={category} productId={id} />

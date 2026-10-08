@@ -34,8 +34,6 @@ const SWEPT_CLEAN = [
   'components/ArenaMenu.tsx',
   // Stats lines / info rows
   'components/ClaimsSection.tsx',
-  'components/CoverageMapSection.tsx',
-  'components/OpportunitiesSection.tsx',
   'components/PersonaStacksSection.tsx',
   'components/ProcessLensBanner.tsx',
   'components/ProcessYourVendor.tsx',
