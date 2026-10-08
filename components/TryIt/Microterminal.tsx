@@ -60,12 +60,15 @@ export default function Microterminal({
   stories: TryItStory[]
   probe: LiveProbe | null
 }) {
-  // The first recorded story starts replaying on mount (its transcript is the initial target;
-  // the typing effect below stamps the start time lazily). The live probe NEVER auto-runs —
-  // one real request per explicit click, not per page view.
-  const firstId = stories[0]?.id ?? (probe ? LIVE_ID : null)
+  // The run options come interest-ordered (lib/tryitReplay.ts buildRunOptions, founder
+  // 2026-10-08: live capability demos first, passive discovery last); the FIRST option's story
+  // starts replaying on mount (its transcript is the initial target; the typing effect below
+  // stamps the start time lazily). The live probe NEVER auto-runs — one real request per
+  // explicit click, not per page view.
+  const options = buildRunOptions(stories)
+  const firstId = options[0]?.story.id ?? (probe ? LIVE_ID : null)
   const [activeId, setActiveId] = useState<string | null>(firstId)
-  const [target, setTarget] = useState(() => stories[0]?.transcript ?? '') // text being typed toward
+  const [target, setTarget] = useState(() => options[0]?.story.transcript ?? '') // text being typed toward
   const [shown, setShown] = useState(0) // how many chars are visible
   const [liveBusy, setLiveBusy] = useState(false)
   const [liveResult, setLiveResult] = useState<McpProbeResult | null>(null) // last completed probe
@@ -216,7 +219,7 @@ export default function Microterminal({
           and live-capable recordings wear a small 'live' badge instead of inline text. What
           runs is unchanged — every chip plays exactly one real recorded story. */}
       <div className="flex flex-wrap items-center gap-2">
-        {buildRunOptions(stories).map(({ story, label, titles }) => (
+        {options.map(({ story, label, titles }) => (
           <button
             key={story.id}
             type="button"
