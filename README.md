@@ -630,6 +630,11 @@ today, no keys, no install:
   [/get-started](https://ultrametric.ai/get-started) is the install page, and
   [`lib/ultrametricCli.ts`](lib/ultrametricCli.ts) maps the corpus steps it can drive. The
   simulator's MCP calls remain labeled demos.
+- **The docs site**: [docs.ultrametric.ai](https://docs.ultrametric.ai) documents the CLI,
+  MCP server, and HTTP API, and is itself agent-readable:
+  [docs.ultrametric.ai/llms.txt](https://docs.ultrametric.ai/llms.txt) indexes every page,
+  and each page is served as markdown at its own path with `.md` appended (e.g.
+  [quickstart.md](https://docs.ultrametric.ai/quickstart.md)).
 - **schema.org**: arena pages embed an `ItemList` of `SoftwareApplication` entries and product
   pages embed a `SoftwareApplication`, both with `additionalProperty` entries for our own
   metrics (`aiEra`, `score`, etc). No `aggregateRating`: we don't have star ratings and won't

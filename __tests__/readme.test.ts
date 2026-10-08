@@ -188,6 +188,29 @@ describe('README.md "Use it from an agent" (founder batch 2026-10-03)', () => {
   })
 })
 
+describe('README.md agent surfaces: the docs site (founder batch 2026-10-08)', () => {
+  const section = readme.slice(
+    readme.indexOf('## Use it from an agent'),
+    readme.indexOf('## Status & roadmap'),
+  )
+
+  it('cites the docs site, its llms.txt, and a per-page .md endpoint (external URLs: presence pins, each verified 200 by curl on 2026-10-08)', () => {
+    for (const url of [
+      'https://docs.ultrametric.ai',
+      'https://docs.ultrametric.ai/llms.txt',
+      'https://docs.ultrametric.ai/quickstart.md',
+    ]) {
+      expect(section, `section is missing docs surface ${url}`).toContain(url)
+    }
+  })
+
+  it('the self-eval dossier records the docs-site agent surface as a dated addendum', () => {
+    const selfEval = fs.readFileSync(path.join(ROOT, 'docs', 'SELF-EVAL.md'), 'utf8')
+    expect(selfEval).toContain('## Addendum (2026-10-08)')
+    expect(selfEval).toContain('https://docs.ultrametric.ai/llms.txt')
+  })
+})
+
 // Founder batch 2026-10-08: the Start-here founder table regrouped by the question being
 // asked (one row per repo layer, the founder's approved labels), three personas instead of
 // two, and the geo line updated to the shipped country set. Same source-pin pattern: repo

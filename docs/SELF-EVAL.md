@@ -171,3 +171,15 @@ npx -y ultrametric@0.4.1 arena categories --json                    # expect are
 
 Then re-run `docs/self-eval-probes/run-self-eval-keyless.sh` so the broken rows can move up on
 recorded evidence rather than by edit.
+
+## Addendum (2026-10-08) — the docs site's agent surface
+
+A positive found after the original sweep: the docs site at
+<https://docs.ultrametric.ai> is keyless and agent-readable. It publishes an llms.txt index
+(<https://docs.ultrametric.ai/llms.txt>) linking every page, and serves each page as markdown
+at its own path with `.md` appended (for example
+<https://docs.ultrametric.ai/quickstart.md>). Each cited URL answered HTTP 200 on the
+addendum date, checked with `curl -s -o /dev/null -w "%{http_code}"`. This is a documentation
+surface, not a data surface: the auth-gated classifications recorded above for the hosted
+process and context functions are unchanged. The README's "Use it from an agent" section now
+cites it alongside the other surfaces.
