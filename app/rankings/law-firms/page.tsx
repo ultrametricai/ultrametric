@@ -177,7 +177,7 @@ export default function LawFirmsRankingPage() {
           protection, startup programs. Agent-readiness is near-zero across the field; it stays on the table
           because that is what the evidence shows, not because it separates firms.
         </p>
-        <p className="mt-2 text-xs text-zinc-500">
+        <p className="mt-2 text-xs text-zinc-400">
           Where each firm works: per-country marks from the firm&apos;s own locations and practice pages
           (<span className="text-emerald-300">✓</span> available · <span className="text-amber-300">◐</span> partial ·{' '}
           <span className="text-zinc-400">✕</span> not available), honest negatives included — a US firm with no

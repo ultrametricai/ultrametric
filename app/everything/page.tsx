@@ -103,7 +103,7 @@ export default function EverythingPage() {
       {/* 1 · Products — the full catalog */}
       <section id="products" className="space-y-2">
         <h2 className="font-display leading-[1.1] text-lg font-semibold tracking-tight">Products</h2>
-        <p className="text-xs text-zinc-500">
+        <p className="text-xs text-zinc-400">
           Every ranked product. Triplet is Overall score · agent-ready · agentic (each /100); the letter is the
           score-confidence grade; M/C/A are MCP, CLI, and API access.
         </p>
@@ -118,7 +118,7 @@ export default function EverythingPage() {
           </h2>
           <span className="text-xs tabular-nums text-zinc-500">{processes.length}</span>
         </div>
-        <p className="text-xs text-zinc-500">
+        <p className="text-xs text-zinc-400">
           Founder operating processes with the % of steps an agent can run today (the Agentic %).
         </p>
         <ul className="rounded-lg border border-zinc-800">
@@ -166,7 +166,7 @@ export default function EverythingPage() {
           </h2>
           <span className="text-xs tabular-nums text-zinc-500">{stacks.length}</span>
         </div>
-        <p className="text-xs text-zinc-500">Curated cross-market bundles — every scored slot resolved live from current leaderboards.</p>
+        <p className="text-xs text-zinc-400">Curated cross-market bundles — every scored slot resolved live from current leaderboards.</p>
         <ul className="rounded-lg border border-zinc-800">
           {stacks.map((s) => (
             <li key={s.id} className="flex items-center gap-2 px-2 py-[7px] text-[13px] leading-none odd:bg-zinc-900/40 sm:gap-3">
@@ -190,7 +190,7 @@ export default function EverythingPage() {
           </h2>
           <span className="text-xs tabular-nums text-zinc-500">{lenses.length}</span>
         </div>
-        <p className="text-xs text-zinc-500">The same canonical verdicts re-weighted for ten different buyer types.</p>
+        <p className="text-xs text-zinc-400">The same canonical verdicts re-weighted for ten different buyer types.</p>
         <ul className="rounded-lg border border-zinc-800">
           {lenses.map((l) => (
             <li key={l.id} className="flex items-center gap-2 px-2 py-[7px] text-[13px] leading-none odd:bg-zinc-900/40 sm:gap-3">

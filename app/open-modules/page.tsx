@@ -53,7 +53,7 @@ export default function OpenModulesPage() {
               </Link>
             </h2>
             <p className="mt-1 text-sm text-zinc-400">{m.computes}</p>
-            <p className="mt-2 font-mono text-[11px] text-zinc-600">{m.sourceFile}</p>
+            <p className="mt-2 font-mono text-[11px] text-zinc-500">{m.sourceFile}</p>
           </div>
         ))}
       </div>

@@ -43,7 +43,7 @@ export default function YcIndexPage() {
           verified against YC&rsquo;s public directory by website domain, never by name, and ranked by the same
           agent-tested scores as everything else: agent readiness, built-in AI, Overall score.
         </p>
-        <p className="mt-2 max-w-2xl text-xs text-zinc-500">
+        <p className="mt-2 max-w-2xl text-xs text-zinc-400">
           The table lists the YC companies <span className="text-zinc-300">we track</span>; coverage grows batch by
           batch from a ranked queue of active YC companies whose products an agent could plausibly control. See{' '}
           <Link href="/methodology" className="text-emerald-400 underline decoration-emerald-400/40 hover:text-emerald-300">

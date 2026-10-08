@@ -97,7 +97,7 @@ export default function MostTestedRankingPage() {
           </Link>
           ).
         </p>
-        <p className="mt-2 text-xs text-zinc-500">
+        <p className="mt-2 text-xs text-zinc-400">
           A low tested share means we haven&rsquo;t probed much yet, not that the product fails — the{' '}
           <Link href="/pipeline" className="text-zinc-400 underline decoration-zinc-700 hover:text-emerald-300">
             testing pipeline

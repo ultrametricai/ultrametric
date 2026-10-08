@@ -197,11 +197,11 @@ export default function BattleView({
               </h2>
               {/* Visible one-liner explaining this grouping; lives OUTSIDE the sticky bar so the
                   pinned header stays one compact line while scrolling. */}
-              <p className="mt-2 truncate text-xs text-zinc-500">{themeExplanation(theme)}</p>
+              <p className="mt-2 truncate text-xs text-zinc-400">{themeExplanation(theme)}</p>
               <div className="mt-3 space-y-6">
                 {byGroup.map(([group, groupRounds]) => (
                   <div key={group}>
-                    {group !== theme && <p className="mb-2 text-xs text-zinc-500">{humanizeTheme(group)}</p>}
+                    {group !== theme && <p className="mb-2 text-xs text-zinc-400">{humanizeTheme(group)}</p>}
                     <ol className="space-y-3">{groupRounds.map(renderRound)}</ol>
                   </div>
                 ))}

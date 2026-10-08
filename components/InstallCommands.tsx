@@ -105,7 +105,7 @@ function InstallRow({ entry }: { entry: NonNullable<Product['install']>[number] 
         </button>
       </div>
       {isPipedShell && (
-        <p className="mt-1 text-[11px] text-zinc-500">
+        <p className="mt-1 text-[11px] text-zinc-400">
           Vendor-official, but review any script before piping it to a shell.
         </p>
       )}

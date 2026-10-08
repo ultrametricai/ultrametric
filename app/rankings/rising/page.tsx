@@ -170,7 +170,7 @@ export default function RisingRankingPage() {
           </Link>{' '}
           has the event-by-event view of the same history).
         </p>
-        <p className="mt-2 text-xs text-zinc-500">
+        <p className="mt-2 text-xs text-zinc-400">
           {flat} tracked products held perfectly flat over the window and aren&rsquo;t listed. {noTrend} have fewer
           than two recorded score points — no trend yet, which is not the same claim as &ldquo;flat&rdquo;, so they&rsquo;re
           excluded rather than shown as 0. Sparklines plot every recorded point, not just the window.

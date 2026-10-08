@@ -33,7 +33,7 @@ export default function InitRankingPage() {
           All {totalProducts} products from every ranking, ranked by the blended Overall score — agent-ready, API
           quality, openness, agentic app, and automation, all agent tested. Ties break on the raw coverage score.
         </p>
-        <p className="mt-2 text-xs text-zinc-500">
+        <p className="mt-2 text-xs text-zinc-400">
           This is the deep-linkable form of the homepage table&rsquo;s &ldquo;Highest Overall score&rdquo; preset —{' '}
           <Link href="/" className="text-zinc-400 underline decoration-zinc-700 hover:text-emerald-300">
             sort and filter it live there →

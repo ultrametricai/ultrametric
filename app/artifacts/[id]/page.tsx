@@ -76,7 +76,7 @@ export default async function ArtifactPage({ params }: { params: Promise<{ id: s
           <h2 className="font-display leading-[1.1] text-xl font-semibold tracking-tight">
             Document
           </h2>
-          <p className="mt-1 max-w-2xl text-sm text-zinc-500">
+          <p className="mt-1 max-w-2xl text-sm text-zinc-400">
             The registered open template{documents.length > 1 ? 's' : ''} this artifact is
             executed on — a committed mapping (processes/artifacts.json onto the{' '}
             <Link href="/open-documents" className="underline decoration-zinc-800 underline-offset-2 transition hover:text-emerald-300">
@@ -118,8 +118,8 @@ export default async function ArtifactPage({ params }: { params: Promise<{ id: s
                 >
                   {d.name} ↗
                 </a>
-                <span className="ml-2 text-xs text-zinc-600">{d.publisher}</span>
-                <p className="mt-1 max-w-2xl text-xs text-zinc-500">{d.license_note}</p>
+                <span className="ml-2 text-xs text-zinc-400">{d.publisher}</span>
+                <p className="mt-1 max-w-2xl text-xs text-zinc-400">{d.license_note}</p>
               </li>
             ))}
           </ul>
@@ -137,7 +137,7 @@ export default async function ArtifactPage({ params }: { params: Promise<{ id: s
           >
             {producer.title}
           </Link>
-          <span className="ml-2 text-xs text-zinc-600">{producer.area}</span>
+          <span className="ml-2 text-xs text-zinc-500">{producer.area}</span>
           <span
             className="ml-2 rounded-full border border-zinc-800 px-2 py-0.5 text-[10px] uppercase tracking-wide text-zinc-500"
             title="One canonical producer per artifact keeps the cross-process dependency graph a DAG — dependency edges always point here"
@@ -158,7 +158,7 @@ export default async function ArtifactPage({ params }: { params: Promise<{ id: s
           </Link>
         </p>
         {exceptionProducers.length > 0 && (
-          <p className="mt-2 text-sm text-zinc-500">
+          <p className="mt-2 text-sm text-zinc-400">
             <span title="Documented exception producers — other committed processes that also bring this artifact into existence">
               Also produced by:
             </span>{' '}
@@ -191,7 +191,7 @@ export default async function ArtifactPage({ params }: { params: Promise<{ id: s
                 >
                   {p.title}
                 </Link>
-                <span className="text-xs text-zinc-600">{p.area}</span>
+                <span className="text-xs text-zinc-500">{p.area}</span>
               </li>
             ))}
           </ul>
@@ -209,7 +209,7 @@ export default async function ArtifactPage({ params }: { params: Promise<{ id: s
           <h2 className="font-display leading-[1.1] text-xl font-semibold tracking-tight">
             Data fields
           </h2>
-          <p className="mt-1 max-w-2xl text-sm text-zinc-500">
+          <p className="mt-1 max-w-2xl text-sm text-zinc-400">
             The typed company data this artifact establishes (
             <code>processes/company-fields.json</code>) — each field exists because a committed
             open-module function consumes it, or committed processes require-and-carry this
@@ -254,7 +254,7 @@ export default async function ArtifactPage({ params }: { params: Promise<{ id: s
                           >
                             {c.moduleLabel}
                           </Link>
-                          <span className="ml-1 font-mono text-xs text-zinc-600">
+                          <span className="ml-1 font-mono text-xs text-zinc-500">
                             {c.functions.join(', ')}
                           </span>
                         </span>
@@ -281,7 +281,7 @@ export default async function ArtifactPage({ params }: { params: Promise<{ id: s
         <h2 className="font-display leading-[1.1] text-xl font-semibold tracking-tight">
           Vendors around the steps that create it
         </h2>
-        <p className="mt-1 max-w-2xl text-sm text-zinc-500">
+        <p className="mt-1 max-w-2xl text-sm text-zinc-400">
           Computed, never picked: the corpus pins the exact step where this artifact comes into
           existence; that step&rsquo;s covering rankings (its function mapping and curated vendor
           options) each show their current leaderboard leaders with their Overall scores — the
@@ -290,7 +290,7 @@ export default async function ArtifactPage({ params }: { params: Promise<{ id: s
         {arenas.length > 0 ? (
           <ArenaVendorList arenas={arenas} />
         ) : (
-          <p className="mt-3 text-sm text-zinc-500">
+          <p className="mt-3 text-sm text-zinc-400">
             No populated ranking covers the producing step — this artifact is born in a government
             portal, a signature act, or another step no judged market serves yet. There is no
             vendor list to derive.
@@ -298,7 +298,7 @@ export default async function ArtifactPage({ params }: { params: Promise<{ id: s
         )}
       </section>
 
-      <p className="text-xs text-zinc-600">
+      <p className="text-xs text-zinc-500">
         <a
           href="https://github.com/ultrametricai/ultrametric/blob/main/processes/artifacts.json"
           target="_blank"

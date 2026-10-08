@@ -18,7 +18,7 @@ export default function ProcessProducesTable({ rows }: { rows: ProducedArtifactR
       <h2 className="font-display leading-[1.1] text-xl font-semibold tracking-tight">
         Artifacts it produces
       </h2>
-      <p className="mt-1 max-w-2xl text-sm text-zinc-500">
+      <p className="mt-1 max-w-2xl text-sm text-zinc-400">
         Business artifacts this process brings into existence — the typed layer
         (<code>processes/artifacts.json</code>) the cross-process dependency graph is built from.
       </p>

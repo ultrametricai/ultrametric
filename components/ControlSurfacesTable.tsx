@@ -209,7 +209,7 @@ export default function ControlSurfacesTable({ surfaces, emerging }: { surfaces:
       {emerging.length > 0 && (
         <section aria-label="surfaces without fleet-wide judged coverage" className="space-y-2">
           <h2 className="font-display leading-[1.1] text-lg font-semibold">Below the line: thin judged coverage</h2>
-          <p className="max-w-2xl text-xs text-zinc-500">
+          <p className="max-w-2xl text-xs text-zinc-400">
             These surfaces are judged only through stories authored inside a handful of individual rankings, so ranking them against the
             canonical surfaces would be dishonest. Counts below are real but cover only the rankings that judge them; the
             readiness-lift stat is withheld on small samples.
@@ -264,7 +264,7 @@ function SurfaceRows({
             </span>
             {row.name}
           </button>
-          <p className="mt-0.5 text-xs text-zinc-500">{row.blurb}</p>
+          <p className="mt-0.5 text-xs text-zinc-400">{row.blurb}</p>
         </td>
         <td className="px-3 py-2">
           <AdoptionMeter pct={row.shipRate} />

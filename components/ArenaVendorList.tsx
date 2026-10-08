@@ -24,7 +24,7 @@ export default function ArenaVendorList({ arenas }: { arenas: ArenaVendors[] }) 
             {arena.leaders.map((leader) => (
               <li key={leader.productId} className="flex items-baseline justify-between gap-2">
                 <span>
-                  <span className="mr-1.5 font-mono text-[10px] text-zinc-600">#{leader.rank}</span>
+                  <span className="mr-1.5 font-mono text-[10px] text-zinc-500">#{leader.rank}</span>
                   <Link
                     href={leader.href}
                     className="text-zinc-300 underline decoration-zinc-800 underline-offset-2 transition hover:text-emerald-300"

@@ -180,7 +180,7 @@ export default function CertifiedPage() {
       {lapsed.length > 0 && (
         <div>
           <h2 className="font-display leading-[1.1] mb-2 text-lg font-semibold text-zinc-400">Lapsed</h2>
-          <p className="mb-3 max-w-2xl text-xs text-zinc-500">
+          <p className="mb-3 max-w-2xl text-xs text-zinc-400">
             Certifications expire 180 days after their run date — an expired certification is simply not a
             certification anymore until the suite is re-run. These stay listed as the public record.
           </p>

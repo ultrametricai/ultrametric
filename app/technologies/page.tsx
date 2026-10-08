@@ -42,7 +42,7 @@ export default function TechnologiesPage() {
 
       <ControlSurfacesTable surfaces={result.surfaces} emerging={result.emerging} />
 
-      <p className="text-xs text-zinc-500">
+      <p className="text-xs text-zinc-400">
         Rankings the data cannot honestly support are deliberately absent: &ldquo;most mobile&rdquo; and &ldquo;most
         visual&rdquo; have no fleet-wide judged stories (mobile/desktop surfaces appear below the line instead), and
         &ldquo;fastest growing&rdquo; would need per-story verdict history this repo does not commit. Verdicts are judged

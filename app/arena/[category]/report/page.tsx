@@ -165,7 +165,7 @@ export default async function ArenaReportPage({ params }: { params: Promise<{ ca
             </tbody>
           </table>
         </div>
-        <p className="mt-2 text-xs text-zinc-500">
+        <p className="mt-2 text-xs text-zinc-400">
           Overall score = agent-readiness blend (see methodology). Coverage score = weighted share of judged
           requirements met. Confidence = how much of the score rests on tested vs claimed evidence (A–D).
         </p>
@@ -195,7 +195,7 @@ export default async function ArenaReportPage({ params }: { params: Promise<{ ca
       {/* Buyer checklist */}
       <section className="print-break-before">
         <h2 className="font-display leading-[1.1] mb-1 text-lg font-semibold">Buyer checklist (RFP)</h2>
-        <p className="mb-4 max-w-2xl text-xs text-zinc-500">
+        <p className="mb-4 max-w-2xl text-xs text-zinc-400">
           The ranking&apos;s {data.stories.length} judged user stories as requirements, grouped by theme.
           Priorities mirror the story weights our scoring uses (3 = must-have, 2 = should-have, 1 =
           nice-to-have). Interactive version with per-requirement verdicts for the top products:{' '}
@@ -211,7 +211,7 @@ export default async function ArenaReportPage({ params }: { params: Promise<{ ca
                 {humanizeTheme(theme)}
               </h3>
               {/* Visible one-liner explaining this story grouping — not just the icon tooltip. */}
-              <p className="mb-1.5 mt-0.5 truncate text-xs text-zinc-500">{themeExplanation(theme)}</p>
+              <p className="mb-1.5 mt-0.5 truncate text-xs text-zinc-400">{themeExplanation(theme)}</p>
               <ul className="space-y-1">
                 {stories.map((s) => {
                   // Checklist lines lead with the action; the "As a {persona}," frame becomes
@@ -240,7 +240,7 @@ export default async function ArenaReportPage({ params }: { params: Promise<{ ca
       {pricingRows.length > 0 && (
         <section className="print-break-before">
           <h2 className="font-display leading-[1.1] mb-1 text-lg font-semibold">Pricing signals</h2>
-          <p className="mb-3 max-w-2xl text-xs text-zinc-500">
+          <p className="mb-3 max-w-2xl text-xs text-zinc-400">
             Extracted verbatim from each vendor&apos;s own pricing page — never converted, averaged, or
             derived. Products whose page prints no unit price are recorded as unclear.
           </p>
@@ -287,7 +287,7 @@ export default async function ArenaReportPage({ params }: { params: Promise<{ ca
           </p>
         ) : (
           <>
-            <p className="mb-3 max-w-2xl text-xs text-zinc-500">
+            <p className="mb-3 max-w-2xl text-xs text-zinc-400">
               Hands-on probe recordings — transcripts/videos a human can replay, the strongest evidence tier.
               Watch them at {SITE_URL}/proofs
             </p>

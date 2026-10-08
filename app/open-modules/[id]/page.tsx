@@ -85,7 +85,7 @@ export default async function OpenModulePage({ params }: { params: Promise<{ id:
         <h2 className="font-display leading-[1.1] text-xl font-semibold tracking-tight">
           Processes it serves
         </h2>
-        <p className="mt-1 max-w-2xl text-sm text-zinc-500">
+        <p className="mt-1 max-w-2xl text-sm text-zinc-400">
           The corpus processes wired to this module in{' '}
           <code>processes/business-logic-map.json</code> — the same committed registry that puts
           the module&rsquo;s chip on each process page.
@@ -99,7 +99,7 @@ export default async function OpenModulePage({ params }: { params: Promise<{ id:
               >
                 {p.title}
               </Link>
-              <span className="text-xs text-zinc-600">{p.area}</span>
+              <span className="text-xs text-zinc-500">{p.area}</span>
             </li>
           ))}
         </ul>
@@ -110,7 +110,7 @@ export default async function OpenModulePage({ params }: { params: Promise<{ id:
           <h2 className="font-display leading-[1.1] text-xl font-semibold tracking-tight">
             Data fields it consumes
           </h2>
-          <p className="mt-1 max-w-2xl text-sm text-zinc-500">
+          <p className="mt-1 max-w-2xl text-sm text-zinc-400">
             The typed company data this module&rsquo;s functions take
             (<code>processes/company-fields.json</code>), each field linking its{' '}
             <Link href="/fields" className="underline decoration-zinc-800 underline-offset-2 transition hover:text-emerald-300">
@@ -164,7 +164,7 @@ export default async function OpenModulePage({ params }: { params: Promise<{ id:
         <h2 className="font-display leading-[1.1] text-xl font-semibold tracking-tight">
           Vendors serving these processes today
         </h2>
-        <p className="mt-1 max-w-2xl text-sm text-zinc-500">
+        <p className="mt-1 max-w-2xl text-sm text-zinc-400">
           Computed, never picked: the steps of the processes above carry committed function
           mappings onto covering rankings, and each ranking shows its current leaderboard leaders
           with their Overall scores — the same judged order the ranking pages publish.
@@ -172,7 +172,7 @@ export default async function OpenModulePage({ params }: { params: Promise<{ id:
         {mod.arenas.length > 0 ? (
           <ArenaVendorList arenas={mod.arenas} />
         ) : (
-          <p className="mt-3 text-sm text-zinc-500">
+          <p className="mt-3 text-sm text-zinc-400">
             No populated ranking covers these processes&rsquo; steps yet — there is no judged
             vendor list to derive. The processes above still carry their step-by-step flows.
           </p>

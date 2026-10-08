@@ -68,7 +68,7 @@ export default function PricingSignals({ entry }: { entry?: ProductPricing }) {
               <span className="rounded-full bg-zinc-900 px-2 py-0.5 text-[10px] font-medium uppercase tracking-wide text-zinc-500 ring-1 ring-zinc-800">
                 {TIER_LABEL[fact.tier]}
               </span>
-              {fact.notes && <span className="text-xs text-zinc-500">{fact.notes}</span>}
+              {fact.notes && <span className="text-xs text-zinc-400">{fact.notes}</span>}
               <a
                 href={fact.sourceUrl}
                 target="_blank"

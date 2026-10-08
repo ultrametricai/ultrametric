@@ -230,7 +230,7 @@ export default async function ArenaPage({ params }: { params: Promise<{ category
             <GeoMark seed="arenas" title="Adjacent rankings — categories often shopped together" size={18} className="text-zinc-500" />
             Adjacent rankings
           </h2>
-          <p className="mb-4 text-sm text-zinc-500">Shopping this category often means shopping these too.</p>
+          <p className="mb-4 text-sm text-zinc-400">Shopping this category often means shopping these too.</p>
           <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
             {adjacent.map((a) => (
               <Link
@@ -258,7 +258,7 @@ export default async function ArenaPage({ params }: { params: Promise<{ category
       {/* View-in-repo (founder 2026-10-08, the process pages' footer idiom): this ranking's
           whole data area — products.json, evidence/, verdicts.json, and the derived
           rankings.json this page renders. */}
-      <p className="text-xs text-zinc-600">
+      <p className="text-xs text-zinc-500">
         <a
           href={`https://github.com/${REPO}/tree/main/data/${category}`}
           target="_blank"

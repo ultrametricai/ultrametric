@@ -125,7 +125,7 @@ export default function MostOpenRankingPage() {
           </Link>
           .
         </p>
-        <p className="mt-2 text-xs text-zinc-500">
+        <p className="mt-2 text-xs text-zinc-400">
           A &ldquo;none&rdquo; verdict means no evidence was found either way — click any chip for the rationale and
           citations. Products with no applicable openness product user stories are unscored (never zero) and sort last.
         </p>

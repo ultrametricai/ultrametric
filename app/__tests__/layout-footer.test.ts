@@ -35,11 +35,13 @@ describe('sitewide footer (app/layout.tsx)', () => {
 
   it('carries ONE muted disclaimer line near the © line, linking /terms (founder liability pass 2026-10-02)', () => {
     const footer = layoutSrc.slice(layoutSrc.indexOf('<footer'))
-    // The exact line — research content, not advice — and nothing louder than text-xs zinc-600.
+    // The exact line — research content, not advice — still the quietest readable line (contrast
+    // pass 3, founder 2026-10-08: zinc-600 is decorative-chrome-only, so the disclaimer sits at
+    // the zinc-500 fine-print tier, nothing louder than text-xs).
     const lineIdx = footer.indexOf('Research content — not legal, tax, or financial advice. See')
     expect(lineIdx).toBeGreaterThan(-1)
     const block = footer.slice(footer.lastIndexOf('<p', lineIdx), footer.indexOf('</p>', lineIdx))
-    expect(block).toContain('text-xs text-zinc-600')
+    expect(block).toContain('text-xs text-zinc-500')
     expect(block).toContain('href="/terms"')
     // It sits in the © column, next to the copyright line.
     expect(footer.indexOf('© 2026 Ultrametric.')).toBeLessThan(lineIdx)

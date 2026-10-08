@@ -299,7 +299,7 @@ export default async function ProcessPage({ params }: { params: Promise<{ slug: 
       {/* View-in-repo (founder 2026-10-07): the one muted footer link — this record's per-id
           file in the public shared catalog (content/processes/records/<id>.json; every corpus
           task has one, mirror-tested in lib/__tests__/shared-canonical-identity.test.ts). */}
-      <p className="text-xs text-zinc-600">
+      <p className="text-xs text-zinc-500">
         <a
           href={`https://github.com/ultrametricai/ultrametric/blob/main/content/processes/records/${task.id}.json`}
           target="_blank"

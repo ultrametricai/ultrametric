@@ -77,7 +77,7 @@ export default function StacksPage() {
             </Link>
           </div>
           <p className="mt-1 text-sm text-zinc-400">{stack.tagline}</p>
-          <p className="mt-0.5 text-xs text-zinc-500">For: {stack.audience}</p>
+          <p className="mt-0.5 text-xs text-zinc-400">For: {stack.audience}</p>
           <div className={`mt-4 ${TABLE_SHELL}`}>
             <table className="w-full border-collapse text-sm">
               <thead>
@@ -110,7 +110,7 @@ export default function StacksPage() {
                       ) : (
                         <span className="font-medium">{slot.role}</span>
                       )}
-                      <p className="mt-0.5 max-w-[220px] text-xs text-zinc-500">{slot.why}</p>
+                      <p className="mt-0.5 max-w-[220px] text-xs text-zinc-400">{slot.why}</p>
                     </td>
                     <td className="px-3 py-2.5 align-top">
                       {slot.kind !== 'editorial' && slot.productId && slot.arenaId ? (

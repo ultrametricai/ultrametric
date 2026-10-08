@@ -140,7 +140,7 @@ export default async function FieldPage({ params }: { params: Promise<{ id: stri
           >
             {artifact.label}
           </Link>
-          <span className="ml-2 text-xs text-zinc-600">
+          <span className="ml-2 text-xs text-zinc-400">
             the registry artifact whose creation sets this value
           </span>
         </p>
@@ -151,7 +151,7 @@ export default async function FieldPage({ params }: { params: Promise<{ id: stri
           <h2 className="font-display leading-[1.1] text-xl font-semibold tracking-tight">
             Consumed by open modules
           </h2>
-          <p className="mt-1 max-w-2xl text-sm text-zinc-500">
+          <p className="mt-1 max-w-2xl text-sm text-zinc-400">
             The committed <code>lib/openstartup</code> functions that take this value — the
             registry wiring this field&rsquo;s existence rests on.
           </p>
@@ -164,7 +164,7 @@ export default async function FieldPage({ params }: { params: Promise<{ id: stri
                 >
                   {c.moduleLabel}
                 </Link>
-                <span className="font-mono text-xs text-zinc-600">{c.functions.join(', ')}</span>
+                <span className="font-mono text-xs text-zinc-500">{c.functions.join(', ')}</span>
               </li>
             ))}
           </ul>
@@ -174,7 +174,7 @@ export default async function FieldPage({ params }: { params: Promise<{ id: stri
           <h2 className="font-display leading-[1.1] text-xl font-semibold tracking-tight">
             Processes that require it
           </h2>
-          <p className="mt-1 max-w-2xl text-sm text-zinc-500">
+          <p className="mt-1 max-w-2xl text-sm text-zinc-400">
             This identifier is consumed through its establishing artifact: every committed corpus
             process whose <code>requires</code> carries {artifact.label} enters the value along
             the way. Computed from <code>processes/corpus.json</code>, never hand-listed.
@@ -188,14 +188,14 @@ export default async function FieldPage({ params }: { params: Promise<{ id: stri
                 >
                   {p.title}
                 </Link>
-                <span className="text-xs text-zinc-600">{p.area}</span>
+                <span className="text-xs text-zinc-500">{p.area}</span>
               </li>
             ))}
           </ul>
         </section>
       )}
 
-      <p className="text-xs text-zinc-600">
+      <p className="text-xs text-zinc-500">
         <a
           href={`https://github.com/${REPO}/blob/main/processes/company-fields.json`}
           target="_blank"

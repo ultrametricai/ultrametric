@@ -80,7 +80,7 @@ export default async function YcBatchPage({ params }: { params: Promise<{ batch:
           The {rows.length} {batchLabel(code)} {rows.length === 1 ? 'company' : 'companies'} we track, ranked by
           agent-tested agent readiness — can an agent actually drive this product? — then built-in AI and Overall score.
         </p>
-        <p className="mt-2 max-w-2xl text-xs text-zinc-500">
+        <p className="mt-2 max-w-2xl text-xs text-zinc-400">
           The table lists the YC {code} companies <span className="text-zinc-300">we track</span>; coverage grows
           batch by batch. Scores come from each product&rsquo;s ranking verdicts —
           see{' '}

@@ -50,7 +50,7 @@ export default function CountryRankings({
           <GeoMark seed="country-rankings" title="Country rankings — matched agencies, computed rollups" size={18} className="text-zinc-500" />
           Country rankings
         </h2>
-        <p className="mb-4 text-sm text-zinc-500">
+        <p className="mb-4 text-sm text-zinc-400">
           Each country is represented by its judged agencies in the matched areas; every number is the
           mean of the linked agencies&apos; computed Overall scores.
         </p>
@@ -82,7 +82,7 @@ export default function CountryRankings({
                             <AgencyLinks categoryId={categoryId} productIds={cell.productIds} products={products} />
                           </>
                         ) : (
-                          <span className="text-zinc-600">not judged</span>
+                          <span className="text-zinc-500">not judged</span>
                         )}
                       </td>
                     )
