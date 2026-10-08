@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
+import { spotlightPick } from '@/lib/notFoundSpotlight'
 
 // Without this the 404 tab reads bare "Ultrametric" — every other page carries a descriptive
 // title. noindex keeps soft-404 URLs out of search results.
@@ -10,7 +11,11 @@ export const metadata: Metadata = {
 
 // 404: minimal, on-brand — no illustration. Same evidence-tier language the rest of the site
 // uses ("verdict: none q0") rendered as plain mono text instead of an illustrated scene.
+// Below the affordances, one process spotlight (founder 2026-10-08): a worked example from the
+// committed corpus, picked deterministically at build time (lib/notFoundSpotlight.ts), so every
+// 404 teaches something real.
 export default function NotFound() {
+  const spotlight = spotlightPick()
   return (
     <div className="flex flex-col items-center gap-8 py-24 text-center">
       <div aria-hidden className="flex items-baseline gap-3 font-mono">
@@ -40,6 +45,40 @@ export default function NotFound() {
           Highest Overall score ranking
         </Link>
       </div>
+
+      <section className="w-full max-w-md rounded-lg border border-zinc-800 p-5 text-left">
+        <p className="font-mono text-xs uppercase tracking-wide text-zinc-500">
+          Meanwhile, a process from the corpus
+        </p>
+        <h2 className="mt-2 text-base font-semibold">
+          <Link href={spotlight.href} className="text-zinc-100 transition hover:text-emerald-300">
+            {spotlight.title}
+          </Link>
+        </h2>
+        <p className="mt-2 text-sm text-zinc-400">{spotlight.description}</p>
+        <p className="mt-3 text-sm text-zinc-300">
+          {spotlight.fact.kind === 'artifact' ? (
+            <>
+              Produces the{' '}
+              <Link href={spotlight.fact.href} className="text-emerald-300 transition hover:text-emerald-200">
+                {spotlight.fact.artifactLabel}
+              </Link>{' '}
+              artifact.
+            </>
+          ) : (
+            <>
+              Agentic %: <span className="font-mono">{spotlight.fact.pct}%</span> (
+              {spotlight.fact.agentSteps} of {spotlight.fact.totalSteps} steps an agent can run
+              today).
+            </>
+          )}
+        </p>
+        <p className="mt-3 text-sm">
+          <Link href={spotlight.href} className="text-emerald-300 transition hover:text-emerald-200">
+            Read the process →
+          </Link>
+        </p>
+      </section>
     </div>
   )
 }
