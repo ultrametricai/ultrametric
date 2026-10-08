@@ -4,7 +4,7 @@ import { z } from 'zod'
 import { isPopulated, loadCategory } from './data'
 import { classifyGapStep } from './gapClosers'
 import type { DagNode, ProcessTask } from './processes'
-import { STEP_OPTIONS_CAP, VENDOR_ARENA } from './processes'
+import { governmentStepEligibility, STEP_OPTIONS_CAP, VENDOR_ARENA } from './processes'
 import type { Story, Verdict } from './schemas'
 import { weightedPercent } from './scoring'
 import { isShutdown } from './shutdown'
@@ -246,12 +246,21 @@ export function stepVendorScore(
 // All of one arena's products scored on a mapped story set, ranked. Uncapped — callers cap.
 // Shutdown products are excluded here, the shared eligibility layer, so every consumer's
 // vendor list (an offer) inherits the founder rule; their verdicts stay untouched and still
-// resolve through stepVendorScore directly.
-function rankVendors(arenaId: string, storyIds: string[], dir?: string): StepVendorScore[] {
+// resolve through stepVendorScore directly. `eligible` is the optional step-applicability
+// set (lib/processes.ts governmentStepEligibility — committed country+area tags constrain a
+// government-covered step's candidates); null means the whole roster, every other arena's
+// behavior, stays unchanged.
+function rankVendors(
+  arenaId: string,
+  storyIds: string[],
+  dir?: string,
+  eligible: Set<string> | null = null,
+): StepVendorScore[] {
   const lookup = arenaLookup(arenaId, dir)
   const scored: StepVendorScore[] = []
   for (const productId of lookup.productName.keys()) {
     if (lookup.shutdownIds.has(productId)) continue
+    if (eligible && !eligible.has(productId)) continue
     const s = stepVendorScore(arenaId, storyIds, productId, dir)
     if (s) scored.push(s)
   }
@@ -276,7 +285,10 @@ export function stepRanking(taskId: string, node: DagNode, dir?: string): StepRa
     .filter((s): s is Story => s !== undefined)
     .map((s) => ({ id: s.id, title: s.title, weight: s.weight }))
   if (stories.length === 0) return null
-  const vendors = rankVendors(entry.arenaId, stories.map((s) => s.id), dir).slice(0, STEP_OPTIONS_CAP)
+  // Government-covered steps constrain the roster to the step's own country+area agencies
+  // (committed tags — lib/processes.ts governmentStepEligibility); null for every other arena.
+  const eligible = governmentStepEligibility(node, entry.arenaId, dir)
+  const vendors = rankVendors(entry.arenaId, stories.map((s) => s.id), dir, eligible).slice(0, STEP_OPTIONS_CAP)
   if (vendors.length === 0) return null
   return { arenaId: entry.arenaId, arenaName: lookup.arenaName, kind: 'function', stories, vendors }
 }
@@ -290,6 +302,11 @@ export function stepRanking(taskId: string, node: DagNode, dir?: string): StepRa
 //     mapped stories — judged evidence, or nothing. Founder ask: "generate a website" should
 // list ChatGPT and Framer beside the vibe-coding roster, each traceable to its own arena's
 // verdicts (the UI shows an arena chip naming where the evidence lives).
+// Government applicability: no step declares government-services as an EXTRA arena today
+// (corpus-checked), and a step whose extra arena were government could not derive its
+// required area from committed data (the canonical vendor is wired to the primary arena), so
+// per the governmentStepEligibility contract such a pull would stay unfiltered — the
+// extraOptionRefs allowlist remains the only honest gate there.
 export function crossArenaStepRankings(taskId: string, node: DagNode, dir?: string): StepRanking[] {
   const refsByArena = new Map<string, Set<string>>()
   for (const r of node.extraOptionRefs ?? []) {
@@ -379,7 +396,9 @@ export function processLeaderboard(task: ProcessTask, dir?: string): ProcessLead
     const lookup = arenaLookup(entry.arenaId, dir)
     const storyIds = entry.storyIds.filter((id) => lookup.storyById.has(id))
     if (storyIds.length === 0) continue
-    const vendors = rankVendors(entry.arenaId, storyIds, dir)
+    // Same applicability constraint as stepRanking, so the leaderboard never credits an
+    // agency for a step outside its committed country+area (USPTO never serves a tax step).
+    const vendors = rankVendors(entry.arenaId, storyIds, dir, governmentStepEligibility(node, entry.arenaId, dir))
     if (vendors.length === 0) continue
     rankedSteps.push({ node, arenaId: entry.arenaId, arenaName: lookup.arenaName, storyIds, vendors })
   }

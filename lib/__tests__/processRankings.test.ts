@@ -2,13 +2,18 @@ import fs from 'node:fs'
 import path from 'node:path'
 import { describe, expect, it } from 'vitest'
 import { isPopulated, loadCategory } from '@/lib/data'
-import { chainTasks, loadChains, loadProcesses, STEP_OPTIONS_CAP } from '@/lib/processes'
+import {
+  chainTasks, GOVERNMENT_ARENA_ID, governmentStepEligibility, loadChains, loadProcesses,
+  STEP_OPTIONS_CAP, vendorAlternatives, vendorProductId,
+} from '@/lib/processes'
 import {
   COMPUTER_USE_SOURCES, computerUseEligibleProducts, computerUseMappingsFor, computerUseOptions,
   coveringArenaId, crossArenaStepRankings, extraArenasFor, extraMappingsFor, functionMappingFor,
-  isComputerUseCandidate, loadStepStoryMap, processLeaderboard, stepRanking, temporarilyHumanSteps,
+  isComputerUseCandidate, loadStepStoryMap, processLeaderboard, stepRanking, stepVendorScore,
+  temporarilyHumanSteps,
 } from '@/lib/processRankings'
 import { VERDICT_FACTORS } from '@/lib/scoring'
+import { isShutdown } from '@/lib/shutdown'
 
 const DATA_DIR = path.resolve(__dirname, '../../data')
 
@@ -501,5 +506,116 @@ describe('end-to-end: Incorporate C-Corp (company-launch playbook)', () => {
     }))
     expect(cu.some((s) => s.options.length > 0)).toBe(true)
     expect(cu).toMatchSnapshot()
+  })
+})
+
+describe('government-services step applicability (founder 2026-10-08: scope candidates by committed country+area tags)', () => {
+  const govProducts = () => loadCategory(GOVERNMENT_ARENA_ID, DATA_DIR).products
+
+  it('every government-covered step derives its required country+area from its wired agency, and every candidate shares both tags', () => {
+    const byId = new Map(govProducts().map((p) => [p.id, p]))
+    const unfiltered: string[] = []
+    let checkedSteps = 0
+    for (const task of tasks()) {
+      for (const node of task.dag.nodes) {
+        if (coveringArenaId(node) !== GOVERNMENT_ARENA_ID) continue
+        const eligible = governmentStepEligibility(node, GOVERNMENT_ARENA_ID, DATA_DIR)
+        if (!eligible) {
+          unfiltered.push(`${task.id}:${node.id}`)
+          continue
+        }
+        const anchor = byId.get(vendorProductId(node.vendor!))!
+        const r = stepRanking(task.id, node, DATA_DIR)
+        if (!r) continue
+        checkedSteps += 1
+        for (const v of r.vendors) {
+          const p = byId.get(v.productId)!
+          expect(p.country, `${task.id}:${node.id}: ${v.productId} is a foreign agency for this step`).toBe(anchor.country)
+          expect(p.area, `${task.id}:${node.id}: ${v.productId} serves the wrong area for this step`).toBe(anchor.area)
+        }
+      }
+    }
+    expect(checkedSteps).toBeGreaterThan(0)
+    // The derivation is total today: every government-covered step is wired to a tagged
+    // agency. A step landing here means its area could not be derived from committed data and
+    // its pull shipped UNFILTERED — report it to the founder rather than guessing a filter.
+    expect(unfiltered, `government-covered steps shipping unfiltered: ${unfiltered.join(', ')}`).toEqual([])
+  })
+
+  it('pin: the federal tax return (tax_002) admits US tax agencies — IRS and EFTPS present, USPTO absent', () => {
+    const task = tasks().find((t) => t.id === 'tax_002')!
+    const govStepVendors = task.dag.nodes
+      .map((n) => stepRanking(task.id, n, DATA_DIR))
+      .filter((r) => r?.arenaId === GOVERNMENT_ARENA_ID)
+      .flatMap((r) => r!.vendors.map((v) => v.productId))
+    expect(govStepVendors).toContain('irs')
+    expect(govStepVendors).toContain('eftps')
+    expect(govStepVendors).not.toContain('uspto')
+    const lbGov = processLeaderboard(task, DATA_DIR).entries
+      .filter((e) => e.arenaId === GOVERNMENT_ARENA_ID)
+      .map((e) => e.productId)
+    expect(lbGov).toContain('irs')
+    expect(lbGov).not.toContain('uspto')
+  })
+
+  it('pin: Portugal\'s IRN is absent from the US incorporation steps (form_001), and the trademark filing (legal_002) admits only US IP offices', () => {
+    const inc = tasks().find((t) => t.id === 'form_001')!
+    const incGov = [
+      ...inc.dag.nodes
+        .map((n) => stepRanking(inc.id, n, DATA_DIR))
+        .filter((r) => r?.arenaId === GOVERNMENT_ARENA_ID)
+        .flatMap((r) => r!.vendors.map((v) => v.productId)),
+      ...processLeaderboard(inc, DATA_DIR).entries
+        .filter((e) => e.arenaId === GOVERNMENT_ARENA_ID)
+        .map((e) => e.productId),
+    ]
+    expect(incGov.length).toBeGreaterThan(0)
+    expect(incGov).not.toContain('irn-portugal')
+    const tm = tasks().find((t) => t.id === 'legal_002')!
+    const node = tm.dag.nodes.find((n) => n.id === 'n5')!
+    const r = stepRanking(tm.id, node, DATA_DIR)!
+    expect(r.vendors.map((v) => v.productId)).toContain('uspto')
+    for (const v of r.vendors) {
+      const p = govProducts().find((x) => x.id === v.productId)!
+      expect(p.country).toBe('US')
+      expect(p.area).toBe('ip-office')
+    }
+  })
+
+  it('pin: the "or:" row for a government agency obeys the same rule — IRS never suggests a foreign or wrong-area agency', () => {
+    for (const alt of vendorAlternatives('irs', 99, DATA_DIR)) {
+      const p = govProducts().find((x) => x.id === alt.id)!
+      expect(p.country).toBe('US')
+      expect(p.area).toBe('tax')
+    }
+  })
+
+  it('pin: the government arena page keeps its FULL roster — the filter lives only on the step-candidate path', () => {
+    const { rankings, products } = loadCategory(GOVERNMENT_ARENA_ID, DATA_DIR)
+    const lb = rankings.leaderboard.map((e) => e.productId)
+    expect(lb).toContain('uspto')
+    expect(lb).toContain('irn-portugal')
+    expect(new Set(lb).size).toBe(products.length)
+  })
+
+  it('pin: a non-government arena is completely unaffected — eligibility is null and the ranking spans the full roster', () => {
+    const task = tasks().find((t) => t.id === 'startup_001')!
+    const node = task.dag.nodes.find((n) => n.id === 'n1')!
+    expect(coveringArenaId(node)).toBe('ai-assistants')
+    expect(governmentStepEligibility(node, 'ai-assistants', DATA_DIR)).toBeNull()
+    const r = stepRanking(task.id, node, DATA_DIR)!
+    // Recompute the unfiltered expectation straight from the full arena roster (shutdown
+    // exclusion is the only eligibility layer for a non-government arena).
+    const { products, rankings } = loadCategory('ai-assistants', DATA_DIR)
+    const rank = new Map(rankings.leaderboard.map((e, i) => [e.productId, i]))
+    const expected = products
+      .filter((p) => !isShutdown(p))
+      .map((p) => stepVendorScore('ai-assistants', r.stories.map((s) => s.id), p.id, DATA_DIR))
+      .filter((s): s is NonNullable<typeof s> => s !== null)
+      .sort((a, b) => b.score - a.score || (rank.get(a.productId) ?? 0) - (rank.get(b.productId) ?? 0))
+      .slice(0, STEP_OPTIONS_CAP)
+      .map((s) => s.productId)
+      .sort()
+    expect([...r.vendors.map((v) => v.productId)].sort()).toEqual(expected)
   })
 })

@@ -11,7 +11,7 @@
 import { isPopulated, loadCategory } from './data'
 import { hasLogo } from './logos'
 import type { ProcessCheckStep } from './processCheck'
-import type { ProcessTask } from './processes'
+import { governmentStepEligibility, type ProcessTask } from './processes'
 import { crossArenaStepRankings, functionMappingFor, stepVendorScore } from './processRankings'
 import { isShutdown } from './shutdown'
 
@@ -34,7 +34,13 @@ export function buildProcessCheckSteps(task: ProcessTask, dir?: string): Process
     // Shutdown vendors STAY in this serialized list, marked (unlike every offer surface, which
     // filters them via lib/processRankings.ts's rankVendors): the reader's own pick must remain
     // findable wherever it ranks so the check can tell them to migrate. They are never `best`.
+    // Government-covered steps keep only the step's applicable agencies (committed
+    // country+area tags — lib/processes.ts governmentStepEligibility, same rule as the step
+    // rankings): an agency outside the step's country or service area was never a candidate
+    // for it, so it has no place in the check either. `eligible` is null for every other arena.
+    const eligible = governmentStepEligibility(node, entry.arenaId, dir)
     const vendors = data.products
+      .filter((p) => !eligible || eligible.has(p.id))
       .flatMap((p) => {
         const s = stepVendorScore(entry.arenaId, storyIds, p.id, dir)
         return s
