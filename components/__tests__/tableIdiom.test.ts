@@ -39,7 +39,8 @@ const ADOPTERS = [
   'components/StackBuilder.tsx',
   'components/StoryMatrix.tsx',
   'components/StoryVerdictsTable.tsx',
-  'components/VendorProcesses.tsx',
+  // VendorProcesses left the list 2026-10-08 — the founder compaction made it an inline
+  // name list, no table.
   'components/VirtualStartup.tsx',
   'app/artifacts/page.tsx',
   'app/experiments/gpus/GpuTable.tsx',
