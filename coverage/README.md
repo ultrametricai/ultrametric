@@ -1,4 +1,4 @@
-# Catalog — domains, lifecycle, and coverage
+# Coverage — domains, lifecycle, and coverage map
 
 The coverage map of the founder-ops corpus: `domains.json` records what the corpus *intends*
 to cover, `coverage.json` records what it honestly covers *today*. `domains.json` is the full
@@ -30,7 +30,7 @@ corpus and the arenas publish their own coverage honestly on their own pages.
 ## What you can contribute here
 
 - **An honest coverage entry** — when you land a jurisdiction-scoped workflow, record it in
-  `catalog/coverage.json` at `draft` or `demonstration` maturity (`reviewed` requires a named
+  `coverage/coverage.json` at `draft` or `demonstration` maturity (`reviewed` requires a named
   domain expert; see `governance/REVIEW_POLICY.md`). Never mark a country covered because one
   workflow exists — the known-gaps field is part of the record.
 - **Taxonomy gaps** — a missing domain or lifecycle stage in `domains.json`, with the founder

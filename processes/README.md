@@ -335,7 +335,7 @@ flowchart TD
 - **A new jurisdiction-scoped workflow** — copy `templates/process.json` into
   `processes/<domain>/<jurisdiction>/`, narrow the applicability dimensions, reference rule
   cards in `rules/<CODE>/`, gate every external effect on a named human approval, add a
-  fictional fixture in `fixtures/`, and record honest maturity in `catalog/coverage.json`.
+  fictional fixture in `fixtures/`, and record honest maturity in `coverage/coverage.json`.
   Gate: `npx vitest run __tests__/founder-ops.test.ts`.
 - **Corrections to an operational process** — step routing (agent / manual form / human),
   Agentic % values, or time estimates in `corpus.json`, with a source or reproduction for the

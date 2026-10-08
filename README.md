@@ -314,7 +314,7 @@ and markdown, schema-validated in CI, usable without running any code.
 
 **Contracts & infrastructure** — the layer everything above validates against, plus the site
 that renders it. Three directories confuse newcomers, so to be explicit: **`schemas/`** holds the JSON
-contracts every record validates against; **`catalog/`** is the coverage map
+contracts every record validates against; **`coverage/`** is the coverage map
 (`domains.json` = what the corpus intends to cover, `coverage.json` = what it covers
 today, at what maturity); **`rules/`** is cited law the open-modules layer consumes; it
 belongs to [Open modules](#open-modules) above, listed there.
@@ -322,7 +322,7 @@ belongs to [Open modules](#open-modules) above, listed there.
 | Path | What lives there | Contract / gate |
 | --- | --- | --- |
 | [`schemas/`](schemas/) | JSON Schema contracts for processes, rules, sources, vendor reviews | drift-gated against the zod source |
-| [`catalog/`](catalog/) | Domain taxonomy, lifecycle map, machine-readable coverage with its maturity stated | `lib/founderOps.ts` coverage checks |
+| [`coverage/`](coverage/) | Domain taxonomy, lifecycle map, machine-readable coverage with its maturity stated | `lib/founderOps.ts` coverage checks |
 | [`templates/`](templates/) | Blank, schema-valid starting points for contributions | — |
 | [`fixtures/`](fixtures/) | Wholly fictional companies/events that exercise the planner | `synthetic: true` enforced |
 | [`governance/`](governance/) | Review policy + maturity ladder, evidence doctrine, agent policy, security | — |
@@ -772,7 +772,7 @@ immediately whether your records hold up:
 4. **A full jurisdiction-scoped workflow** — copy
    [`templates/process.json`](templates/process.json), narrow the applicability dimensions,
    reference your rule cards, gate every external effect on a human approval, add a fictional
-   fixture, and record the maturity level in [`catalog/coverage.json`](catalog/) (`draft` or
+   fixture, and record the maturity level in [`coverage/coverage.json`](coverage/) (`draft` or
    `demonstration` to start; `reviewed` requires a named domain expert, see the
    [review policy](governance/REVIEW_POLICY.md)).
 

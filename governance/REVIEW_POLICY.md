@@ -17,7 +17,7 @@ status is `example`, not production certified. A review expiry produces a stale 
 must block any automated external action. Disputed rules stay visible with an issue and are
 downgraded if material. No one may claim the repository is comprehensive for a country merely
 because it has several playbooks — coverage is tracked per scenario and locale in
-`catalog/coverage.json`, including known exclusions.
+`coverage/coverage.json`, including known exclusions.
 
 ## Evidence doctrine (vendor layer — already enforced in the pipeline)
 
@@ -46,7 +46,7 @@ because it has several playbooks — coverage is tracked per scenario and locale
 3. Copy `templates/process.json`. Narrow the applicability, separate legal requirements from
    operating advice, state the trigger and exceptions, and include a human decision at
    irreversible or regulated steps.
-4. Add at least one wholly fictional fixture. Update `catalog/coverage.json` with the real
+4. Add at least one wholly fictional fixture. Update `coverage/coverage.json` with the real
    maturity level.
 5. For vendors, use `templates/vendor-review.json` per `vendors/README.md`. Disclose
    affiliations and compensation; record the tested scenario, observed evidence, cost date, and

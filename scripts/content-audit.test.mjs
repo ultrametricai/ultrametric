@@ -21,7 +21,7 @@ function fixture() {
     'rules/US-DE/rule.json': { id: 'rule', statement: 'A rule', source_ids: ['statute'], jurisdiction: 'US-DE', status: 'demonstration', reviewed_on: '2026-10-01', review_due: '2027-01-01' },
     'processes/artifacts.json': { artifacts: [{ id: 'result', label: 'Result', description: 'Prepared result', producedBy: 'start' }] },
     'processes/business-logic-map.json': { modules: { module: { label: 'Module', file: 'lib/openstartup/module.ts', processes: ['start'] } } },
-    'catalog/coverage.json': { coverage_claim: 'One demonstration only.', uncovered: ['Other scenarios'], coverage: [] },
+    'coverage/coverage.json': { coverage_claim: 'One demonstration only.', uncovered: ['Other scenarios'], coverage: [] },
   }
   const files = new Map(Object.entries(data).map(([file, value]) => [file, JSON.stringify(value)]))
   files.set('lib/openstartup/module.ts', 'export const value = 1')
@@ -131,7 +131,7 @@ test('rejects missing or invalid document review windows', () => {
 
 test('preserves each narrow coverage claim and its limits', () => {
   const files = fixture()
-  change(files, 'catalog/coverage.json', value => value.coverage.push({
+  change(files, 'coverage/coverage.json', value => value.coverage.push({
     scenario: 'One event', process_id: 'start', entity_jurisdiction: 'US-DE', tax_jurisdiction: 'US-FED',
     status: 'example', reviewed_on: '2026-09-30', review_due: '2026-12-30', limits: ['One example only'],
   }))

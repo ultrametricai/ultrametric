@@ -10,7 +10,7 @@ export const collectionNames = {
   rules: 'Rules', sources: 'Sources', resources: 'Resources', artifacts: 'Business artifacts',
 }
 
-const roots = ['content/processes/records', 'data', 'open-documents', 'lib/openstartup', 'processes', 'jurisdictions', 'rules', 'sources', 'resources', 'vendors/reviews/generated', 'catalog']
+const roots = ['content/processes/records', 'data', 'open-documents', 'lib/openstartup', 'processes', 'jurisdictions', 'rules', 'sources', 'resources', 'vendors/reviews/generated', 'coverage']
 const recordKey = (collection, id) => `${collection}:${id}`
 const nonempty = value => typeof value === 'string' && value.trim().length > 0
 const isoDate = value => typeof value === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(value) && Number.isFinite(Date.parse(`${value}T00:00:00Z`)) && new Date(`${value}T00:00:00Z`).toISOString().slice(0, 10) === value
@@ -241,7 +241,7 @@ export function buildContentAudit(files, metadata) {
       linked: rows.filter(record => record.inbound > 0 || record.links.some(ref => ref.state === 'resolved')).length,
       unresolved: rows.reduce((total, record) => total + record.links.filter(ref => ref.state === 'unresolved').length, 0) }
   })
-  const coverage = json('catalog/coverage.json')
+  const coverage = json('coverage/coverage.json')
   const scopes = array(coverage.coverage, 'coverage scopes').map(value => ({
     scenario: value.scenario, processKey: processTarget(value.process_id), entityJurisdiction: value.entity_jurisdiction,
     taxJurisdiction: value.tax_jurisdiction, status: value.status, reviewedOn: value.reviewed_on,
