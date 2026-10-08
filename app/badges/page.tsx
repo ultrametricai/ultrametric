@@ -20,7 +20,7 @@ export const metadata: Metadata = {
 
 const BADGE_KINDS = [
   { suffix: 'agent-ready', alt: 'Ultrametric agent-ready score' },
-  { suffix: 'arena-score', alt: 'Ultrametric Overall score' },
+  { suffix: 'score', alt: 'Ultrametric Overall score' },
 ] as const
 
 function snippets(productId: string, categoryId: string, suffix: string, alt: string) {
