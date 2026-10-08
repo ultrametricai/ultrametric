@@ -12,27 +12,79 @@
 
 **Talk:** [Discord](https://discord.com/invite/3aHky836qP) — founders and contributors
 
-## Start here
+<!-- Legacy anchor: external links to #start-here predate the merge into this map. -->
+<a id="start-here"></a>
 
-**You're a founder starting or running a company.** One row per repo layer, grouped by the
-question you're asking:
+## Map of the repo
 
-| The question | Where |
-| --- | --- |
-| Do the work | [/processes](https://ultrametric.ai/processes): every founder process with its Agentic %, plus the chained playbooks · [/situations](https://ultrametric.ai/situations): reactive, trigger-driven work (a breach, served papers, a tax notice), hottest clock first; doctrine in [`processes/SITUATIONS.md`](processes/SITUATIONS.md) |
-| Know the rules | dated rule cards in [`rules/`](rules/), the jurisdiction registry and per-country vendor availability in [`jurisdictions/`](jurisdictions/) · the geo views on the site: the geo switcher on process/product pages and the per-country process views (US · UK · IN · DE · FR · PT · CA) |
-| Pick the tools | [/overall](https://ultrametric.ai/overall) · [per-arena leaderboards](https://ultrametric.ai/arenas) · [/compare](https://ultrametric.ai/compare) · [/stacks](https://ultrametric.ai/stacks): proven toolchains to use and improve · [government services](https://ultrametric.ai/arena/government-services), with per-country agency boards |
-| The objects you'll produce | [/artifacts](https://ultrametric.ai/artifacts): the documents and records the processes produce and consume · [/open-documents](https://ultrametric.ai/open-documents): the canonical startup legal documents as dated, link-only records |
-| The math underneath | [`open-modules/README.md`](open-modules/README.md): the cap-table, runway, deadline, equity, and tax math as source-cited code in [`lib/openstartup/`](lib/openstartup/) · the company data fields the modules consume, [`processes/company-fields.json`](processes/company-fields.json) |
-| Judgment, with sources | [`lore/registry.json`](lore/registry.json): schooled startup heuristics as sourced claims, the cross-school tensions mapped on both sides |
-| See it run | [/startup-sim](https://ultrametric.ai/startup-sim): a simulated company runs the corpus end to end |
+The single structural overview: each functional area, what it is, and where it lives, in the
+order a reader needs them. The **knowledge layer** is the product: plain JSON and markdown,
+schema-validated in CI, usable without running any code.
 
-This table is tasks only; the single structural overview of the repo is
-[Map of the repo](#map-of-the-repo) below.
+**Processes** — the founder work, step by step. On the site:
+[/processes](https://ultrametric.ai/processes) (every founder process with its Agentic %,
+plus the chained playbooks), [/situations](https://ultrametric.ai/situations) (reactive,
+trigger-driven work, hottest clock first), and
+[/artifacts](https://ultrametric.ai/artifacts) (the documents and records the processes
+produce and consume).
 
-**You're an agent (or building one).** Install the `ultrametric` npm package, the CLI and
-MCP server; [/get-started](https://ultrametric.ai/get-started) is the install page. The data
-itself needs no install and no auth:
+| Path | What lives there | Contract / gate |
+| --- | --- | --- |
+| [`processes/`](processes/) | `corpus.json` (the operational processes and the reactive situations: DAGs, routing, geo scope, time estimates; situations doctrine in [`SITUATIONS.md`](processes/SITUATIONS.md)), the per-step vendor registry, the artifact registry ([`artifacts.json`](processes/artifacts.json)), the company data fields the open modules consume ([`company-fields.json`](processes/company-fields.json)), and jurisdiction-scoped legal workflows (`equity/us-de/…`) | [`schemas/operational-process.schema.json`](schemas/) · [`schemas/process.schema.json`](schemas/) |
+| [`journeys/`](journeys/) | `chains.json` — multi-process founder paths | corpus schema + loader tests |
+
+**Vendors** — the judged tool rankings behind every process step. On the site:
+[/overall](https://ultrametric.ai/overall), the per-arena leaderboards at
+[/arenas](https://ultrametric.ai/arenas), head-to-heads at
+[/compare](https://ultrametric.ai/compare), proven toolchains at
+[/stacks](https://ultrametric.ai/stacks), and
+[government services](https://ultrametric.ai/arena/government-services) with per-country
+agency boards.
+
+| Path | What lives there | Contract / gate |
+| --- | --- | --- |
+| `data/` | The arena evidence layer: per-arena products, stories, verdicts, evidence packs, fingerprinted rankings | `recompute-check` (bit-identical determinism) |
+| [`vendors/`](vendors/) | The evidence doctrine + `reviews/generated/` — one interchange record per judged product | `schemas/vendor-review.schema.json`, deterministic regeneration |
+| `pipeline/` | crawl → extract → probe → judge → derive; all scores computed from verdicts | churn policy, judge caches, recompute gate |
+
+**Open modules** — the rules and calculations a startup runs on. On the site:
+[/open-documents](https://ultrametric.ai/open-documents), and the geo views: the geo switcher
+on process/product pages and the per-country process views (US · UK · IN · DE · FR · PT · CA).
+
+| Path | What lives there | Contract / gate |
+| --- | --- | --- |
+| [`rules/`](rules/) | Dated, source-locked legal rule cards with stable IDs, one dir per jurisdiction (`US-FED/`, `US-DE/`) | `schemas/rule.schema.json` + validator |
+| [`sources/`](sources/) | Primary authorities: publisher, exact provision locator, issued/checked dates | `schemas/source.schema.json` |
+| [`open-modules/`](open-modules/) | The open-modules index: the cap-table, runway, deadline, equity, and tax math as source-cited code in [`lib/openstartup/`](lib/openstartup/), the contribution bar, each module's Honesty boundaries | worked-example + property tests |
+| [`jurisdictions/`](jurisdictions/) | Jurisdiction registry + `vendor-geo.json` (dated per-country vendor availability, source-cited; feeds the geo views above) | exact-dimension matching; unknown maps to `unsupported` |
+| [`open-documents/`](open-documents/) | The canonical startup legal documents as dated, link-only records | `lib/documents.ts` + registry/README sync test |
+| [`resources/`](resources/) | The canonical startup resources + `LAWS.md` (cited distilled principles) + `LORE.md` (veracity-graded startup history) | `lib/resources.ts` / `lib/lore.ts` + invariant tests |
+| [`lore/`](lore/) | The startup-lore registry ([`registry.json`](lore/registry.json)): schooled heuristics as sourced claims, with the cross-school tensions mapped on both sides | `__tests__/lore-registry.test.ts` schema + referential invariants |
+
+**Contracts & infrastructure** — the layer everything above validates against, plus the site
+that renders it. Three directories confuse newcomers, so to be explicit: **`schemas/`** holds the JSON
+contracts every record validates against; **`coverage/`** is the coverage map
+(`domains.json` = what the corpus intends to cover, `coverage.json` = what it covers
+today, at what maturity); **`rules/`** is cited law the open-modules layer consumes; its
+rows are in the Open modules group above.
+
+| Path | What lives there | Contract / gate |
+| --- | --- | --- |
+| [`schemas/`](schemas/) | JSON Schema contracts for processes, rules, sources, vendor reviews | drift-gated against the zod source |
+| [`coverage/`](coverage/) | Domain taxonomy, lifecycle map, machine-readable coverage with its maturity stated | `lib/founderOps.ts` coverage checks |
+| [`templates/`](templates/) | Blank, schema-valid starting points for contributions | — |
+| [`fixtures/`](fixtures/) | Wholly fictional companies/events that exercise the planner | `synthetic: true` enforced |
+| [`governance/`](governance/) | Review policy + maturity ladder, evidence doctrine, agent policy, security | — |
+| `infra/` | Cloudflare edge worker (routing, auth, live MCP probes) | worker tests |
+| `docs/` | Architecture ([FOUNDER-OPS.md](docs/FOUNDER-OPS.md)), scoring companions, program docs | — |
+| `reports/` | Committed weekly arena reports (markdown, rendered at `/reports`) | generated by the pipeline |
+| `scripts/` | Repo utilities: stats, badges, data mirroring, schema generation | — |
+| `app/`, `components/`, `lib/` | The Next.js static site over the corpus, including the simulator at [/startup-sim](https://ultrametric.ai/startup-sim) | typecheck, lint, vitest |
+| `public/`, `__tests__/` | Static assets (committed badges, logos) and the repo-level test suites | — |
+
+**Agent access** — the `ultrametric` npm package ships the CLI and MCP server;
+[/get-started](https://ultrametric.ai/get-started) is the install page. The data itself
+needs no install and no auth:
 
 ```bash
 curl https://ultrametric.ai/data/categories.json           # every arena
@@ -46,8 +98,12 @@ described by [/openapi.json](https://ultrametric.ai/openapi.json), and the groun
 [governance/AGENT_POLICY.md](governance/AGENT_POLICY.md). More surfaces (the docs site, process
 manifests, the search index, the RSS feed) in [Use it from an agent](#use-it-from-an-agent) below.
 
-**You're a contributor.** Start from the contribution-guides row at the top of this page;
-the full flow is [CONTRIBUTING.md](./CONTRIBUTING.md).
+Record semantics that bind everything (from [docs/FOUNDER-OPS.md](docs/FOUNDER-OPS.md)):
+stable IDs with versioned edits; every legal statement resolves to a primary source with an
+exact locator; `reviewed_on`/`review_due` are editorial dates, not legal effective dates;
+every externally-effectful workflow step requires a named, scoped human approval; the planner
+answers `unsupported` rather than guessing; and no jurisdiction is called covered because a
+few playbooks exist ([maturity ladder](governance/REVIEW_POLICY.md)).
 
 ## Processes
 
@@ -278,67 +334,6 @@ The processes themselves live in `processes/corpus.json` (playbooks in
 `journeys/chains.json`), render at [/processes](https://ultrametric.ai/processes), and replay
 end to end in [the simulator](https://ultrametric.ai/startup-sim). Everything is also served
 raw: the `/data` JSON API and the agent endpoints (`/llms.txt`, per-arena `llms.md`).
-
-## Map of the repo
-
-The single structural overview: everything in the tree ([Start here](#start-here) stays
-task-oriented; this map owns structure). The **knowledge layer** is the product: plain JSON
-and markdown, schema-validated in CI, usable without running any code.
-
-**Processes**
-
-| Path | What lives there | Contract / gate |
-| --- | --- | --- |
-| [`processes/`](processes/) | `corpus.json` (the operational processes and the reactive situations: DAGs, routing, geo scope, time estimates; situations doctrine in [`SITUATIONS.md`](processes/SITUATIONS.md)), the per-step vendor registry, and jurisdiction-scoped legal workflows (`equity/us-de/…`) | [`schemas/operational-process.schema.json`](schemas/) · [`schemas/process.schema.json`](schemas/) |
-| [`journeys/`](journeys/) | `chains.json` — multi-process founder paths | corpus schema + loader tests |
-
-**Vendors**
-
-| Path | What lives there | Contract / gate |
-| --- | --- | --- |
-| `data/` | The arena evidence layer: per-arena products, stories, verdicts, evidence packs, fingerprinted rankings | `recompute-check` (bit-identical determinism) |
-| [`vendors/`](vendors/) | The evidence doctrine + `reviews/generated/` — one interchange record per judged product | `schemas/vendor-review.schema.json`, deterministic regeneration |
-| `pipeline/` | crawl → extract → probe → judge → derive; all scores computed from verdicts | churn policy, judge caches, recompute gate |
-
-**Open modules**
-
-| Path | What lives there | Contract / gate |
-| --- | --- | --- |
-| [`rules/`](rules/) | Dated, source-locked legal rule cards with stable IDs, one dir per jurisdiction (`US-FED/`, `US-DE/`) | `schemas/rule.schema.json` + validator |
-| [`sources/`](sources/) | Primary authorities: publisher, exact provision locator, issued/checked dates | `schemas/source.schema.json` |
-| [`open-modules/`](open-modules/) | The index of the open modules (code in `lib/openstartup/`), the contribution bar, the Honesty boundaries | worked-example + property tests |
-| [`jurisdictions/`](jurisdictions/) | Jurisdiction registry + `vendor-geo.json` (dated per-country vendor availability, source-cited; also feeds the site's geo switcher) | exact-dimension matching; unknown maps to `unsupported` |
-| [`open-documents/`](open-documents/) | Open documents — the canonical startup legal documents as dated, link-only records | `lib/documents.ts` + registry/README sync test |
-| [`resources/`](resources/) | The canonical startup resources + `LAWS.md` (cited distilled principles) + `LORE.md` (veracity-graded startup history) | `lib/resources.ts` / `lib/lore.ts` + invariant tests |
-| [`lore/`](lore/) | The startup-lore registry: schooled heuristics as sourced claims, with the cross-school tensions mapped on both sides | `__tests__/lore-registry.test.ts` schema + referential invariants |
-
-**Contracts & infrastructure** — the layer everything above validates against, plus the site
-that renders it. Three directories confuse newcomers, so to be explicit: **`schemas/`** holds the JSON
-contracts every record validates against; **`coverage/`** is the coverage map
-(`domains.json` = what the corpus intends to cover, `coverage.json` = what it covers
-today, at what maturity); **`rules/`** is cited law the open-modules layer consumes; it
-belongs to [Open modules](#open-modules) above, listed there.
-
-| Path | What lives there | Contract / gate |
-| --- | --- | --- |
-| [`schemas/`](schemas/) | JSON Schema contracts for processes, rules, sources, vendor reviews | drift-gated against the zod source |
-| [`coverage/`](coverage/) | Domain taxonomy, lifecycle map, machine-readable coverage with its maturity stated | `lib/founderOps.ts` coverage checks |
-| [`templates/`](templates/) | Blank, schema-valid starting points for contributions | — |
-| [`fixtures/`](fixtures/) | Wholly fictional companies/events that exercise the planner | `synthetic: true` enforced |
-| [`governance/`](governance/) | Review policy + maturity ladder, evidence doctrine, agent policy, security | — |
-| `infra/` | Cloudflare edge worker (routing, auth, live MCP probes) | 120 worker tests |
-| `docs/` | Architecture ([FOUNDER-OPS.md](docs/FOUNDER-OPS.md)), scoring companions, program docs | — |
-| `reports/` | Committed weekly arena reports (markdown, rendered at `/reports`) | generated by the pipeline |
-| `scripts/` | Repo utilities: stats, badges, data mirroring, schema generation | — |
-| `app/`, `components/`, `lib/` | The Next.js site (~5,900 static pages) over the corpus | typecheck, lint, ~2,000 vitest tests |
-| `public/`, `__tests__/` | Static assets (committed badges, logos) and the repo-level test suites | — |
-
-Record semantics that bind everything (from [docs/FOUNDER-OPS.md](docs/FOUNDER-OPS.md)):
-stable IDs with versioned edits; every legal statement resolves to a primary source with an
-exact locator; `reviewed_on`/`review_due` are editorial dates, not legal effective dates;
-every externally-effectful workflow step requires a named, scoped human approval; the planner
-answers `unsupported` rather than guessing; and no jurisdiction is called covered because a
-few playbooks exist ([maturity ladder](governance/REVIEW_POLICY.md)).
 
 ## Rankings index — every market we rank
 

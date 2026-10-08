@@ -336,8 +336,8 @@ the rollback target.
    repo is stripped, not rewritten; old SHAs keep resolving, which also keeps every
    pre-split `open.lock` pin fetchable forever.
 6. **The stripped README.** The layers reorg survives minus the site-internal rows: the
-   "Start here" table and "Map of the repo" keep the processes/vendors/open-modules/
-   lore/governance rows (these all point at OPEN paths already) and keep linking to the
+   merged "Map of the repo" keeps the processes/vendors/open-modules/
+   lore/governance rows (these all point at OPEN paths already) and keeps linking to the
    live site for rendered views; rows and sections that documented site internals
    (build size, preview runtime, Try-it plumbing) move to the closed repo's docs. The
    `pnpm stats` blocks and badge generation keep working (both scripts are OPEN).
