@@ -22,7 +22,7 @@ import ProductShowcase from '@/components/ProductShowcase'
 import ProofsSection from '@/components/ProofsSection'
 import ScoreBar from '@/components/ScoreBar'
 import ScoreTrend from '@/components/ScoreTrend'
-import ScoreViewMenu from '@/components/ScoreViewMenu'
+import ScoreMiniTable from '@/components/ScoreMiniTable'
 import SloUptimeLine from '@/components/SloUptimeLine'
 import StoryMap from '@/components/StoryMap'
 import StoryThemeDag from '@/components/StoryThemeDag'
@@ -274,31 +274,30 @@ export default async function ProductPage({
             )}
           </div>
         </div>
-        {/* PRIMARY metrics row — the "should I care" read: the score dropdown (founder
-            2026-10-08: the per-dimension pills fold into a menu anchored on the Overall score —
-            the reader switches which score the big number shows; the static HTML always shows
-            Overall) and the MCP/CLI/API access glyphs. Everything below this row is
-            deliberately quieter (secondary: momentum/vendor responses; then the arenas strip).
-            Every view clicks through to THIS product's transparent calculation page (/score,
-            per-dimension anchors) — the exact stories, verdicts, evidence, and arithmetic
-            behind its number (founder 2026-09-15), with each score's derivation tooltip riding
-            along. naDimensions (hardware arenas) keep the honest muted "n/a" view, and the
-            founder 2026-10-02 rule holds: an untested api-quality dimension gets NO entry at
-            all (untested stays data — the /score page and index tables still say it). */}
+        {/* PRIMARY metrics row — the "should I care" read: the score mini table (founder
+            2026-10-08 revision, retiring the same-day ScoreViewMenu dropdown — it hid too much:
+            Overall plus the three per-dimension indexes render TOGETHER, Overall visually
+            primary, one glance, no interaction) and the MCP/CLI/API access glyphs. Everything
+            below this row is deliberately quieter (secondary: momentum/vendor responses; then
+            the arenas strip). Every cell clicks through to THIS product's transparent
+            calculation page (/score, per-dimension anchors) — the exact stories, verdicts,
+            evidence, and arithmetic behind its number (founder 2026-09-15), with each score's
+            derivation tooltip riding along. naDimensions (hardware arenas) keep the honest
+            muted "n/a" cell, and an untested dimension now says "untested" VISIBLY in the grid
+            (the founder's point of the revision — this supersedes the 2026-10-02 "untested
+            api-quality renders nothing" rule on this surface; untested stays data). */}
         <div className="mt-4 flex flex-wrap items-center gap-x-4 gap-y-2">
-          <ScoreViewMenu
+          <ScoreMiniTable
             overall={{
               value: entry.aiEra,
               href: `/arena/${category}/product/${id}/score`,
               interval: aiEraBandFor(loadScoreIntervals(category), id),
               components: { agentReady: entry.agentReady, apiQuality: entry.apiQuality, openness: entry.themeScores['openness'] ?? null, agenticApp: entry.agenticApp, automation: entry.themeScores['automation-depth'] ?? null },
             }}
-            views={[
+            cells={[
               { kind: 'agent-ready', value: naDims.has('agentReady') ? null : entry.agentReady, untested: !naDims.has('agentReady') && isGroupUntested(data, id, 'agent-access'), href: naDims.has('agentReady') ? undefined : `/arena/${category}/product/${id}/score#agent-ready` },
               { kind: 'agentic-app', value: naDims.has('agenticApp') ? null : entry.agenticApp, untested: !naDims.has('agenticApp') && isGroupUntested(data, id, 'agentic-features'), href: naDims.has('agenticApp') ? undefined : `/arena/${category}/product/${id}/score#built-in-ai` },
-              ...(!naDims.has('apiQuality') && isGroupUntested(data, id, 'api-quality')
-                ? []
-                : [{ kind: 'api-quality' as const, value: naDims.has('apiQuality') ? null : entry.apiQuality, href: naDims.has('apiQuality') ? undefined : `/arena/${category}/product/${id}/score#api-quality` }]),
+              { kind: 'api-quality', value: naDims.has('apiQuality') ? null : entry.apiQuality, untested: !naDims.has('apiQuality') && isGroupUntested(data, id, 'api-quality'), href: naDims.has('apiQuality') ? undefined : `/arena/${category}/product/${id}/score#api-quality` },
             ]}
           />
           {/* Founder 2026-09-23: when the api-quality pill above shows an actual score, the API

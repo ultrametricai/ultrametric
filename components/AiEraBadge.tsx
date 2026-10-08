@@ -32,8 +32,8 @@ import Link from 'next/link'
 // Half-width shown as "±N" — the tooltip carries the exact (possibly asymmetric) low–high band.
 export const bandHalfWidth = (band: ScoreBand): number => Math.round((band.high - band.low) / 2)
 
-// Exported for components/ScoreViewMenu.tsx (the product header's score dropdown): the menu's
-// 'Overall score' entry carries the same derivation tooltip this pill computes.
+// Exported for components/ScoreMiniTable.tsx (the product header's score mini table): its
+// Overall cell carries the same derivation tooltip this pill computes.
 export function aiEraTooltip(components?: AiEraComponents, band?: ScoreBand): string {
   const bandLine = band
     ? `\n±${bandHalfWidth(band)} (68% band: ${band.low.toFixed(0)}–${band.high.toFixed(0)}) — propagated from measured judge re-roll variance; untested cells widen it. See README "Score intervals".`

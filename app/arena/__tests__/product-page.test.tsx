@@ -45,9 +45,9 @@ describe('product page — founder 2026-10-02 batch', () => {
     expect(screen.queryByText(/Open app/)).toBeNull()
   })
 
-  it('never shows an "API untested" tag (founder 2026-10-02) — the pill simply does not render when the group is untested', async () => {
+  it('an untested api-quality dimension shows a visible "untested" cell in the score mini table (founder 2026-10-08, superseding the 2026-10-02 suppressed-render rule)', async () => {
     // Find a real committed product whose api-quality group IS untested (and not an n/a arena),
-    // so this pin exercises the suppressed-render path rather than passing vacuously.
+    // so this pin exercises the untested-render path rather than passing vacuously.
     const hit = loadAll()
       .filter((d) => !(d.category.naDimensions ?? []).includes('apiQuality'))
       .flatMap((d) => d.products.map((p) => ({ d, p })))
@@ -56,7 +56,12 @@ describe('product page — founder 2026-10-02 batch', () => {
     const { container } = render(
       await ProductPage({ params: Promise.resolve({ category: hit!.d.category.id, id: hit!.p.id }) }),
     )
-    // Only the API tag is banned — agent-ready/built-in-AI keep their honest untested pills.
+    // The mini table's API cell says so out loud: the label with an italic 'untested' value
+    // (unscored, not zero) — visible rather than hidden. The old chip wording stays retired.
+    const apiCell = [...container.querySelectorAll('[title]')]
+      .find((el) => (el.getAttribute('title') ?? '').includes('unscored, not zero') && el.textContent?.includes('API'))
+    expect(apiCell, 'the untested API cell must render in the mini table').toBeDefined()
+    expect(apiCell!.textContent).toContain('untested')
     expect(container.textContent).not.toContain('API untested')
   })
 
