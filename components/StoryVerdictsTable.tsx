@@ -596,7 +596,7 @@ function StoryRowPair({
               <summary className="cursor-pointer select-none text-sm text-zinc-400 hover:text-emerald-300">
                 Why the judge ruled &ldquo;{row.verdict}&rdquo;{row.quality > 0 ? ` at ${row.quality}/10` : ''} — full reasoning
               </summary>
-              <p className="mt-1.5 text-sm text-zinc-500">{row.rationale}</p>
+              <p className="mt-1.5 text-sm text-zinc-400">{row.rationale}</p>
             </details>
             {surfaces.length > 0 && (
               <p className="mt-2 flex flex-wrap items-center gap-1.5 text-xs">
@@ -625,7 +625,7 @@ function StoryRowPair({
                       [{e.tier}]
                     </a>{' '}
                     <span className="break-all text-zinc-500">{e.url}</span>
-                    <span className="mt-0.5 block text-zinc-500">&ldquo;{e.excerpt}&rdquo;</span>
+                    <span className="mt-0.5 block text-zinc-400">&ldquo;{e.excerpt}&rdquo;</span>
                   </li>
                 ))}
               </ul>

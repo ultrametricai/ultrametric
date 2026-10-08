@@ -6,7 +6,7 @@
 import { render } from '@testing-library/react'
 import { describe, expect, it } from 'vitest'
 import OpenDocumentsPage from '@/app/open-documents/page'
-import { DOCUMENT_USE_CASES, loadDocumentRegistry } from '@/lib/documents'
+import { DOCUMENT_LICENSES, DOCUMENT_USE_CASES, loadDocumentRegistry } from '@/lib/documents'
 
 describe('/open-documents', () => {
   const registry = loadDocumentRegistry()
@@ -43,6 +43,72 @@ describe('/open-documents', () => {
     expect(chips.sort()).toEqual(
       registry.documents.filter((d) => d.variant).map((d) => d.variant!).sort(),
     )
+  })
+
+  it("heads the publisher column 'Vendor'; committed mappings link their judged product with its logo", () => {
+    const { container } = render(<OpenDocumentsPage />)
+    const headers = [...container.querySelectorAll('thead th')].map((th) => th.textContent)
+    expect(headers).toContain('Vendor')
+    expect(headers).not.toContain('Publisher')
+    // The mapping is COMMITTED (registry publisherProductId), never guessed: Cooley GO is the
+    // judged startup-law-firms product, so its rows link the product page and wear its logo.
+    expect(registry.documents.some((d) => d.publisherProductId === 'cooley')).toBe(true)
+    const cooleyLink = container.querySelector('a[href="/arena/startup-law-firms/product/cooley"]')
+    expect(cooleyLink).not.toBeNull()
+    expect(cooleyLink!.querySelector('img[alt="Cooley logo"]')).not.toBeNull()
+    // Honest fallback: Y Combinator is not a judged product — plain name, no internal link,
+    // no logo invented.
+    expect(registry.documents.find((d) => d.publisher === 'Y Combinator')!.publisherProductId).toBeUndefined()
+    expect(container.querySelector('img[alt="Y Combinator logo"]')).toBeNull()
+    const ycInternalLinks = [...container.querySelectorAll('tbody a')].filter(
+      (a) => a.textContent?.includes('Y Combinator') && a.getAttribute('href')?.startsWith('/'),
+    )
+    expect(ycInternalLinks).toEqual([])
+  })
+
+  it('jurisdiction cells wear the committed geo flag; unknown/multi strings render as before', () => {
+    const { container } = render(<OpenDocumentsPage />)
+    const cells = [...container.querySelectorAll('tbody td:nth-child(3)')].map((td) => td.textContent?.trim())
+    // Country-state combo: US-DE renders flag + state code (founder's 🇺🇸 DE example; the
+    // visual gap is the flag span's margin, so textContent reads flag+code).
+    expect(registry.documents.some((d) => d.jurisdiction === 'US-DE')).toBe(true)
+    expect(cells).toContain('🇺🇸DE')
+    expect(cells).not.toContain('US-DE')
+    // Single committed country: the flag rides beside the committed string.
+    expect(registry.documents.some((d) => d.jurisdiction === 'India')).toBe(true)
+    expect(cells).toContain('🇮🇳India')
+    // Multi-jurisdiction and out-of-set strings render exactly as today — no flag invented.
+    expect(cells).toContain('Canada / Cayman Islands / Singapore')
+    expect(cells).toContain('Singapore')
+    expect(cells.some((c) => c?.includes('🇨🇦'))).toBe(false)
+  })
+
+  it('spends no column on Checked — checked_on stays in the registry and the link titles', () => {
+    const { container } = render(<OpenDocumentsPage />)
+    const headers = [...container.querySelectorAll('thead th')].map((th) => th.textContent)
+    expect(headers).not.toContain('Checked')
+    // The verification date still rides every document link's title (registry data unchanged).
+    const d = registry.documents[0]
+    expect(container.querySelector(`a[href="${d.url}"]`)!.getAttribute('title')).toContain(d.checked_on)
+  })
+
+  it('license cells render the committed short label at readable contrast, full note on the title', () => {
+    const { container } = render(<OpenDocumentsPage />)
+    const headers = [...container.querySelectorAll('thead th')].map((th) => th.textContent)
+    expect(headers).toContain('License')
+    expect(headers).not.toContain('License / counsel note')
+    const cells = [...container.querySelectorAll('tbody td:nth-child(4)')]
+    expect(cells).toHaveLength(registry.documents.length)
+    const labels = new Set<string>(Object.values(DOCUMENT_LICENSES))
+    for (const cell of cells) {
+      expect(labels.has(cell.textContent!.trim()), `unknown license label ${cell.textContent}`).toBe(true)
+      // Readable contrast (founder 2026-10-08 bar: content text ≥ zinc-400, not grey-on-black).
+      expect(cell.className).toContain('text-zinc-400')
+      expect(cell.querySelector('span')!.getAttribute('title')!.length).toBeGreaterThan(0)
+    }
+    const texts = cells.map((c) => c.textContent!.trim())
+    expect(texts).toContain('CC BY 4.0')
+    expect(texts).toContain('Proprietary — link only')
   })
 
   it('groups records under their use_case headings, registry order within each group', () => {

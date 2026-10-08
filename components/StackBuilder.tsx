@@ -272,7 +272,7 @@ export default function StackBuilder({
               <h3 className="text-sm font-semibold">Interconnects</h3>
               {/* One line — the "no evidence ≠ doesn't integrate" caveat rides each unverified
                   pill's tooltip instead of a standing paragraph. */}
-              <p className="mt-1 text-xs text-zinc-500">
+              <p className="mt-1 text-xs text-zinc-400">
                 Verified integration edges between your picks — see the{' '}
                 <Link href="/integrations" className="underline decoration-zinc-700 hover:text-emerald-300">
                   integration graph

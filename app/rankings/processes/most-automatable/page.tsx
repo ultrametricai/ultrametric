@@ -71,7 +71,7 @@ export default function MostAutomatableProcessesPage() {
           today (steps routed &lsquo;agent&rsquo; in the corpus DAG, over total steps; lib/processes.ts taskCeiling). Ties break
           on step count, then title. The ✍ column counts legally-required human signature acts — the floor no agent removes.
         </p>
-        <p className="mt-2 text-xs text-zinc-500">
+        <p className="mt-2 text-xs text-zinc-400">
           This is the deep-linkable form of the{' '}
           <Link href="/processes" className="text-zinc-400 underline decoration-zinc-700 hover:text-emerald-300">
             /processes

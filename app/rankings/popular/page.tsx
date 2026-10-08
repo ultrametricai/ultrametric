@@ -189,7 +189,7 @@ export default function PopularRankingPage() {
           {byInstalls.length} ranked by weekly npm/PyPI installs, and {curated.length} clearly-popular products with no
           public counter at all — plus what&rsquo;s exploding in interest right now, each flag with its measured reason.
         </p>
-        <p className="mt-2 text-xs text-zinc-500">
+        <p className="mt-2 text-xs text-zinc-400">
           Popularity is never part of the Overall score (
           <Link href="/methodology" className="text-zinc-400 underline decoration-zinc-700 hover:text-emerald-300">
             methodology
@@ -203,7 +203,7 @@ export default function PopularRankingPage() {
         <h2 className="font-display leading-[1.1] text-lg font-semibold text-amber-300">
           🔥 Hot right now <span className="ml-1 text-xs font-normal text-zinc-500">{hot.length} products</span>
         </h2>
-        <p className="mt-1 text-xs text-zinc-500">
+        <p className="mt-1 text-xs text-zinc-400">
           Detected mechanically: top-decile star growth over the tracked window (with an absolute floor), or a very
           young repo whose star count alone is the explosion. A curated override exists for surges the data can&rsquo;t
           see yet (data/hot-products.json) — mechanical flags always win, and every flag carries its receipt.
@@ -231,7 +231,7 @@ export default function PopularRankingPage() {
         <h2 className="font-display leading-[1.1] mb-1 text-lg font-semibold text-emerald-300">
           ★ By GitHub stars <span className="ml-1 text-xs font-normal text-zinc-500">{byStars.length} products</span>
         </h2>
-        <p className="mb-2 text-xs text-zinc-500">
+        <p className="mb-2 text-xs text-zinc-400">
           Every product with a tracked public repo — open source and open-repo commercial products alike; the counter
           measures the repo. Velocity (stars/yr = stars ÷ repo age) shown alongside, never blended into the rank.
         </p>
@@ -279,7 +279,7 @@ export default function PopularRankingPage() {
         <h2 className="font-display leading-[1.1] mb-1 text-lg font-semibold text-emerald-300">
           ⇩ By weekly installs <span className="ml-1 text-xs font-normal text-zinc-500">{byInstalls.length} products</span>
         </h2>
-        <p className="mb-2 text-xs text-zinc-500">
+        <p className="mb-2 text-xs text-zinc-400">
           Products with a measured npm and/or PyPI package, ranked by combined weekly downloads — the two registries
           share a unit, so the sum is honest. A blank registry column means not published there, not zero.
         </p>
@@ -326,7 +326,7 @@ export default function PopularRankingPage() {
           Clearly popular — no public counter{' '}
           <span className="ml-1 text-xs font-normal text-zinc-500">{curated.length} products</span>
         </h2>
-        <p className="mb-2 text-xs text-zinc-500">
+        <p className="mb-2 text-xs text-zinc-400">
           Household names (Mercury, Linear, Notion&hellip;) publish no stars or download counts, so there is nothing
           fair to rank them by — pretending otherwise would be a fake number. Curated and deliberately UNRANKED
           (alphabetical): widely adopted, no public counter to show.

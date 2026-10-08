@@ -425,7 +425,7 @@ export default async function RootLayout({ children }: LayoutProps<"/">) {
                 </div>
                 {/* One muted disclaimer line sitewide, nothing louder (founder liability pass
                     2026-10-02); the full exclusions live at /terms, which this links. */}
-                <p className="text-xs text-zinc-600">
+                <p className="text-xs text-zinc-500">
                   Research content — not legal, tax, or financial advice. See{' '}
                   <Link href="/terms" className="underline decoration-zinc-800 transition-colors hover:text-zinc-400">
                     terms

@@ -99,7 +99,7 @@ export default function IntegrationChips({ chips }: { chips: IntegrationChipData
                   <span className="whitespace-nowrap text-[10px] uppercase tracking-wide text-zinc-500">{chip.arenaName}</span>
                 </td>
                 <td className="max-w-[260px] px-3 py-2 sm:max-w-[420px]">
-                  <span title={chip.title} className="block truncate text-xs text-zinc-500">
+                  <span title={chip.title} className="block truncate text-xs text-zinc-400">
                     {chip.title.split('\n')[0]}
                   </span>
                 </td>

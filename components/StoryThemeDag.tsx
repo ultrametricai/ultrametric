@@ -107,7 +107,7 @@ export default function StoryThemeDag({
           experiment
         </span>
       </h2>
-      <p className="mb-4 text-sm text-zinc-500">
+      <p className="mb-4 text-sm text-zinc-400">
         {productName}&rsquo;s judged stories as a theme → story DAG — the same verdicts as the
         table above, drawn as a map: <span className="text-emerald-300">✓ full</span> ·{' '}
         <span className="text-amber-300">~ partial</span> ·{' '}
@@ -135,7 +135,7 @@ export default function StoryThemeDag({
                     {delivered}/{judgeable} delivered
                   </span>
                 </div>
-                <p className="mt-0.5 text-xs text-zinc-500">{themeExplanation(theme)}</p>
+                <p className="mt-0.5 text-xs text-zinc-400">{themeExplanation(theme)}</p>
               </div>
               <Connector />
               {stories.length === 1 ? (

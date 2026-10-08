@@ -59,7 +59,7 @@ export default function FamilySection({ arenaId, productId }: { arenaId: string;
           {family.name}, product by product →
         </Link>
       </div>
-      <p className="mt-1 text-sm text-zinc-500">
+      <p className="mt-1 text-sm text-zinc-400">
         {family.name} ships more than one product — each judged line competes in its own ranking
         on the same stories as everyone else.
       </p>

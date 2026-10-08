@@ -546,7 +546,7 @@ export default function ProcessesTable({
           {/* Situations (founder 2026-10-01): the trigger — the event that puts a founder
               here — is the row's subtitle; process rows stay single-line. */}
           {r.kind === 'situation' && r.trigger !== null && (
-            <span className="mt-0.5 block pl-6 text-[11px] leading-snug text-zinc-500">{r.trigger}</span>
+            <span className="mt-0.5 block pl-6 text-[11px] leading-snug text-zinc-400">{r.trigger}</span>
           )}
         </td>
         {/* zinc-400, not 500 (founder 2026-10-05 contrast lift: the area cells read

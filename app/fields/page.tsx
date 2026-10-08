@@ -76,7 +76,7 @@ export default function FieldsPage() {
                           {f.label}
                         </Link>
                       </td>
-                      <td className="hidden px-3 py-2.5 align-top text-zinc-500 md:table-cell">
+                      <td className="hidden px-3 py-2.5 align-top text-zinc-400 md:table-cell">
                         {f.spec.format}
                       </td>
                       <td className="hidden px-3 py-2.5 align-top sm:table-cell">

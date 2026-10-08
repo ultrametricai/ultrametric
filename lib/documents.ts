@@ -1,5 +1,6 @@
 import fs from 'node:fs'
 import path from 'node:path'
+import { GEO_PREF_META, type GeoCountry } from './geoPreference'
 
 // Loader + validator for the open-documents map (open-documents/registry.json + open-documents/README.md).
 // Same doctrine as lib/resources.ts: structural/referential invariants as a flat error list for
@@ -21,11 +22,39 @@ export type DocumentUseCase = (typeof DOCUMENT_USE_CASES)[number]
 export const DOCUMENT_FORMATS = ['web-page', 'pdf', 'docx', 'xlsx', 'doc-generator', 'mixed'] as const
 export type DocumentFormat = (typeof DOCUMENT_FORMATS)[number]
 
+// The committed license classes (founder 2026-10-08): the License column renders the class's
+// short label; the full license_note stays the record's counsel note (and the cell tooltip).
+// Classes, not free text — a new publishing model means a deliberate new class here, the same
+// bar as DOCUMENT_FORMATS.
+export const DOCUMENT_LICENSES = {
+  'cc-by-4.0': 'CC BY 4.0',
+  cc0: 'CC0',
+  'creative-commons': 'Creative Commons',
+  'public-domain': 'Public domain',
+  ogl: 'Open Government Licence',
+  'open-form': 'Open form',
+  'free-generator': 'Free generator',
+  'free-download': 'Free download',
+  'free-reference': 'Free reference',
+  'official-publication': 'Official publication',
+  'proprietary-link-only': 'Proprietary — link only',
+} as const
+export type DocumentLicense = keyof typeof DOCUMENT_LICENSES
+
 export interface OpenDocument {
   id: string
   name: string
   publisher: string
+  /** The judged product this publisher maps to (founder 2026-10-08: vendor rows wear the
+   * vendor's logo where we have one). COMMITTED, never guessed: only publishers that ARE a
+   * judged product in data/ carry it (Cooley GO → cooley, Orrick → orrick, GitHub → github —
+   * all in their arenas). Rendering resolves it via judgedProductRef (throws on an unknown or
+   * ambiguous id, so a typo fails the build) and checks lib/logos hasLogo; unmapped publishers
+   * render as plain names — no logo invented. */
+  publisherProductId?: string
   url: string
+  /** The committed license class — the License column's short label key (DOCUMENT_LICENSES). */
+  license: DocumentLicense
   /** The published license/terms, honestly stated, including what still requires counsel. */
   license_note: string
   use_case: DocumentUseCase
@@ -81,12 +110,18 @@ export function validateDocumentRegistry(doc: DocumentRegistry, asOf: Date): str
     // /documents page because the per-file asset links are content-hashed and rotate.
     if (typeof d.url !== 'string' || !d.url.startsWith('https://')) errors.push(`${where}: require HTTPS URL`)
     if (!DOCUMENT_USE_CASES.includes(d.use_case)) errors.push(`${where}: unknown use_case ${JSON.stringify(d.use_case)}`)
+    if (typeof d.license !== 'string' || !(d.license in DOCUMENT_LICENSES)) {
+      errors.push(`${where}: unknown license class ${JSON.stringify(d.license)}`)
+    }
     if (!DOCUMENT_FORMATS.includes(d.format)) errors.push(`${where}: unknown format ${JSON.stringify(d.format)}`)
     // family ⇔ variant: a family member must carry its committed short label (pages render the
     // label, never invent one), and a variant label is meaningless outside a family.
     if (d.family !== undefined || d.variant !== undefined) {
       if (typeof d.family !== 'string' || !ID_RE.test(d.family)) errors.push(`${where}: family must be a registry-style slug`)
       if (typeof d.variant !== 'string' || d.variant.trim().length === 0) errors.push(`${where}: family member needs a committed variant label`)
+    }
+    if (d.publisherProductId !== undefined && (typeof d.publisherProductId !== 'string' || !ID_RE.test(d.publisherProductId))) {
+      errors.push(`${where}: publisherProductId must be a registry-style slug`)
     }
     if (typeof d.checked_on !== 'string' || !isIsoDate(d.checked_on)) errors.push(`${where}: invalid checked_on`)
     else {
@@ -113,6 +148,19 @@ export function validateDocumentRegistry(doc: DocumentRegistry, asOf: Date): str
     if (members.length < 2) errors.push(`family ${family}: needs at least two members, got ${members.length}`)
     const labels = members.map((m) => m.variant).filter((v): v is string => typeof v === 'string')
     if (new Set(labels).size !== labels.length) errors.push(`family ${family}: duplicate variant labels`)
+  }
+  // Publisher ↔ product consistency: one publisher string maps to one judged product, on every
+  // record or none — a partial or disagreeing mapping is a typo, not an editorial choice.
+  const byPublisher = new Map<string, OpenDocument[]>()
+  for (const d of doc.documents) {
+    if (typeof d.publisher === 'string') byPublisher.set(d.publisher, [...(byPublisher.get(d.publisher) ?? []), d])
+  }
+  for (const [publisher, records] of byPublisher) {
+    const mapped = new Set(records.map((r) => r.publisherProductId).filter((v): v is string => typeof v === 'string'))
+    if (mapped.size > 1) errors.push(`publisher ${publisher}: records disagree on publisherProductId`)
+    if (mapped.size === 1 && records.some((r) => r.publisherProductId === undefined)) {
+      errors.push(`publisher ${publisher}: publisherProductId must be on every record or none`)
+    }
   }
   return errors
 }
@@ -166,6 +214,77 @@ export function openDocumentById(id: string): OpenDocument {
   const doc = byIdCache.get(id)
   if (!doc) throw new Error(`Unknown document id ${id} — not in open-documents/registry.json`)
   return doc
+}
+
+// The Jurisdiction column's flag idiom (founder 2026-10-08): the committed GEO_PREF_META flag
+// class, applied only where the committed jurisdiction string names ONE of its countries.
+// 'US-DE' renders 🇺🇸 DE (country flag + state code); a bare or qualified single country
+// ('US', 'India', 'US (state law varies)', 'US-FED') renders the flag beside the committed
+// string. Everything else — multi-jurisdiction strings ('EU/EEA', 'US/EU-aware', 'Canada /
+// Cayman Islands / Singapore'), countries outside the committed set (Singapore),
+// 'jurisdiction-neutral' — renders exactly as today, no flag invented.
+const JURISDICTION_COUNTRY_TOKENS: Record<string, GeoCountry> = {
+  US: 'US',
+  UK: 'UK',
+  India: 'IN',
+  Germany: 'DE',
+  France: 'FR',
+  Portugal: 'PT',
+  Canada: 'CA',
+}
+
+export interface JurisdictionFlag {
+  flag: string
+  /** The GEO_PREF_META country label, for the flag's tooltip. */
+  countryLabel: string
+  /** What the cell prints beside the flag: the state code for US-XX, else the committed string. */
+  text: string
+}
+
+export function documentJurisdictionFlag(jurisdiction: string): JurisdictionFlag | null {
+  if (jurisdiction.includes('/')) return null
+  const us = GEO_PREF_META.US
+  const state = /^US-([A-Z]{2})$/.exec(jurisdiction)
+  if (state) return { flag: us.flag, countryLabel: us.label, text: state[1] }
+  // US-FED (and its qualified forms) is federal, not a state — the flag rides the full string.
+  if (/^US-FED\b/.test(jurisdiction)) return { flag: us.flag, countryLabel: us.label, text: jurisdiction }
+  const country = JURISDICTION_COUNTRY_TOKENS[jurisdiction.split(' ')[0]]
+  if (!country) return null
+  return { flag: GEO_PREF_META[country].flag, countryLabel: GEO_PREF_META[country].label, text: jurisdiction }
+}
+
+/** A registry publisherProductId resolved against the judged data layer. */
+export interface JudgedProductRef {
+  arenaId: string
+  productId: string
+  name: string
+}
+
+// productId → (arena, name) over every data/<arena>/products.json, built once per process (the
+// page resolves at most a handful of vendors per build). Ambiguity throws rather than picking
+// an arena: 14 product ids live in two arenas (brex, ramp, square, …) — a publisher mapping to
+// one of those needs a deliberate disambiguation, not a readdir-order coin flip.
+let judgedProductsCache: Map<string, JudgedProductRef | 'ambiguous'> | null = null
+
+/** Resolve a committed publisherProductId to its judged product — throws on unknown or
+ * ambiguous ids so a typo'd registry mapping fails the build loudly (the openDocumentById bar). */
+export function judgedProductRef(productId: string): JudgedProductRef {
+  if (judgedProductsCache === null) {
+    judgedProductsCache = new Map()
+    const categories = JSON.parse(fs.readFileSync(path.join(ROOT, 'data/categories.json'), 'utf8')) as Array<{ id: string }>
+    for (const c of categories) {
+      const productsPath = path.join(ROOT, 'data', c.id, 'products.json')
+      if (!fs.existsSync(productsPath)) continue
+      const products = JSON.parse(fs.readFileSync(productsPath, 'utf8')) as Array<{ id: string; name: string }>
+      for (const p of products) {
+        judgedProductsCache.set(p.id, judgedProductsCache.has(p.id) ? 'ambiguous' : { arenaId: c.id, productId: p.id, name: p.name })
+      }
+    }
+  }
+  const ref = judgedProductsCache.get(productId)
+  if (!ref) throw new Error(`Unknown publisherProductId ${productId} — not a judged product in data/`)
+  if (ref === 'ambiguous') throw new Error(`Ambiguous publisherProductId ${productId} — the id exists in more than one arena`)
+  return ref
 }
 
 /** The full gate: registry invariants + README/registry sync. Empty array = pass. */

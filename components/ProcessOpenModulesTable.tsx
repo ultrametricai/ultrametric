@@ -18,7 +18,7 @@ export default function ProcessOpenModulesTable({ rows }: { rows: ProcessOpenMod
       <h2 className="font-display leading-[1.1] text-xl font-semibold tracking-tight">
         Open modules serving this process
       </h2>
-      <p className="mt-1 max-w-2xl text-sm text-zinc-500">
+      <p className="mt-1 max-w-2xl text-sm text-zinc-400">
         Open-source <code>lib/openstartup/</code> modules wired to this process in{' '}
         <code>processes/business-logic-map.json</code> — cited, tested math, with the exact steps
         each one computes for.

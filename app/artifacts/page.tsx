@@ -78,7 +78,7 @@ export default function ArtifactsPage() {
                         {a.producer.title}
                       </Link>
                     </td>
-                    <td className="hidden px-3 py-2.5 align-top text-zinc-500 md:table-cell">
+                    <td className="hidden px-3 py-2.5 align-top text-zinc-400 md:table-cell">
                       {a.neededBy.length > 0
                         ? `${a.neededBy.length} process${a.neededBy.length === 1 ? '' : 'es'}`
                         : a.artifact.terminal

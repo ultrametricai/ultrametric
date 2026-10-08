@@ -129,7 +129,7 @@ export default async function ChecklistPage({ params }: { params: Promise<{ cate
 
       {/* Legend only — that a chip opens the judged evidence is already its tooltip. */}
       {topProducts.length > 0 && (
-        <p className="text-xs text-zinc-500">
+        <p className="text-xs text-zinc-400">
           Chips show the top {topProducts.length} ranked products&apos; current verdict on each requirement —{' '}
           <span className="text-emerald-300">✓ full</span> · ~ partial ·{' '}
           <span className="text-red-300">! disputed</span> · — none · n/a not applicable.
@@ -148,7 +148,7 @@ export default async function ChecklistPage({ params }: { params: Promise<{ cate
             </h2>
             {/* Visible one-liner explaining this story grouping — founder rule: never only a
                 hover tooltip. Truncates on narrow viewports rather than wrapping the header. */}
-            <p className="mt-0.5 truncate text-xs text-zinc-500">{themeExplanation(theme)}</p>
+            <p className="mt-0.5 truncate text-xs text-zinc-400">{themeExplanation(theme)}</p>
             <ul className="mt-3 divide-y divide-zinc-800/70 overflow-hidden rounded-xl border border-zinc-800">
               {stories.map((s) => {
                 const priority = priorityForWeight(s.weight)
@@ -169,7 +169,7 @@ export default async function ChecklistPage({ params }: { params: Promise<{ cate
                           <PersonaChip persona={parsed.persona ?? s.persona} className="mr-1.5" />
                           {parsed.action}
                         </p>
-                        <p className="mt-1 text-xs text-zinc-500">
+                        <p className="mt-1 text-xs text-zinc-400">
                           {checklistWhy(s.weight, storyPassStats(data, s.id))}
                         </p>
                         {topProducts.length > 0 && (

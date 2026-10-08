@@ -81,7 +81,7 @@ export default function PipelinePage() {
           page is the standing list of them. {totals.probedPct}% of all product user stories are backed by a
           hands-on probe.
         </p>
-        <p className="mt-2 text-xs text-zinc-500">
+        <p className="mt-2 text-xs text-zinc-400">
           The flip side of this page — which products&rsquo; verdicts rest on the MOST tested evidence — is its own
           global ranking:{' '}
           <Link href="/rankings/most-tested" className="text-zinc-400 underline decoration-zinc-700 hover:text-emerald-300">

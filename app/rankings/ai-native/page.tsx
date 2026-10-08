@@ -31,7 +31,7 @@ export default function AiNativeRankingPage() {
           its own behalf (built-in assistant, autonomous automation, natural-language commands)? Ties break on
           automation depth, then Overall score.
         </p>
-        <p className="mt-2 text-xs text-zinc-500">
+        <p className="mt-2 text-xs text-zinc-400">
           This is the deep-linkable form of the homepage table&rsquo;s &ldquo;Best built-in AI&rdquo; preset —{' '}
           <Link href="/" className="text-zinc-400 underline decoration-zinc-700 hover:text-emerald-300">
             sort and filter it live there →

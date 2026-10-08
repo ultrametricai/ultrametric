@@ -19,7 +19,7 @@ export default function SubmitPage() {
         </p>
       </div>
       <SubmitScan />
-      <p className="text-xs text-zinc-500">
+      <p className="text-xs text-zinc-400">
         The scanner only fetches a fixed set of public, well-known paths (llms.txt, openapi.json,
         robots.txt, homepage) with strict limits — it never executes anything from the target,
         rejects internal or non-public addresses, and is rate-limited.

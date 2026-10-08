@@ -120,7 +120,7 @@ export default function MostConnectedRankingPage() {
           </Link>
           .
         </p>
-        <p className="mt-2 text-xs text-zinc-500">
+        <p className="mt-2 text-xs text-zinc-400">
           A product missing from this list means no integration evidence was found in our corpus — never that it
           doesn&rsquo;t integrate. Connections count distinct products; mentions count the evidence quotes behind them.
         </p>

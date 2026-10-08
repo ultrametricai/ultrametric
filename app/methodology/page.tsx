@@ -101,18 +101,18 @@ export default function MethodologyPage() {
 
       <section id="ai-era" className="rounded-xl border border-zinc-800 p-5">
         <h2 id="arena-score" className="scroll-mt-16 font-display leading-[1.1] text-lg font-semibold">The Overall score</h2>
-        <p className="mt-1 text-sm text-zinc-500">Formerly displayed as the &quot;Arena Score&quot; (and before that the &quot;AI-Era Index&quot;) — same formula, new name.</p>
+        <p className="mt-1 text-sm text-zinc-400">Formerly displayed as the &quot;Arena Score&quot; (and before that the &quot;AI-Era Index&quot;) — same formula, new name.</p>
         <p className="mt-3 max-w-2xl text-sm text-zinc-400">
           Every leaderboard entry carries a Overall score (0–100, <span className={CODE}>aiEra</span> internally) — a
           weighted, renormalized blend of five components:
         </p>
         <table className="mt-3 w-full max-w-2xl border-collapse text-sm">
           <tbody className="divide-y divide-zinc-800/70">
-            <tr><td className="py-1.5 pr-3 text-zinc-500">agent-ready</td><td className="py-1.5 text-zinc-300">×0.30 — can an agent reach the product</td></tr>
-            <tr><td className="py-1.5 pr-3 text-zinc-500">API quality</td><td className="py-1.5 text-zinc-300">×0.20 — how good is that API surface</td></tr>
-            <tr><td className="py-1.5 pr-3 text-zinc-500">openness</td><td className="py-1.5 text-zinc-300">×0.20 — self-host, export, read the source</td></tr>
-            <tr><td className="py-1.5 pr-3 text-zinc-500">agentic app</td><td className="py-1.5 text-zinc-300">×0.15 — does the product act agentically itself</td></tr>
-            <tr><td className="py-1.5 pr-3 text-zinc-500">automation</td><td className="py-1.5 text-zinc-300">×0.15 — how deep rules, scheduling, and bulk automation go</td></tr>
+            <tr><td className="py-1.5 pr-3 text-zinc-400">agent-ready</td><td className="py-1.5 text-zinc-300">×0.30 — can an agent reach the product</td></tr>
+            <tr><td className="py-1.5 pr-3 text-zinc-400">API quality</td><td className="py-1.5 text-zinc-300">×0.20 — how good is that API surface</td></tr>
+            <tr><td className="py-1.5 pr-3 text-zinc-400">openness</td><td className="py-1.5 text-zinc-300">×0.20 — self-host, export, read the source</td></tr>
+            <tr><td className="py-1.5 pr-3 text-zinc-400">agentic app</td><td className="py-1.5 text-zinc-300">×0.15 — does the product act agentically itself</td></tr>
+            <tr><td className="py-1.5 pr-3 text-zinc-400">automation</td><td className="py-1.5 text-zinc-300">×0.15 — how deep rules, scheduling, and bulk automation go</td></tr>
           </tbody>
         </table>
         <p className="mt-3 text-xs text-zinc-400">
@@ -160,7 +160,7 @@ export default function MethodologyPage() {
             <tr><td className="py-1.5 pr-3 text-emerald-400">verified</td><td className="py-1.5 text-zinc-300">claim maps to a story with a probed/community-backed full or partial verdict — counts fully</td></tr>
             <tr><td className="py-1.5 pr-3 text-zinc-400">unverified</td><td className="py-1.5 text-zinc-300">full/partial verdict, but only the vendor&apos;s own claim backs it — inflates the denominator only</td></tr>
             <tr><td className="py-1.5 pr-3 text-red-400">contradicted</td><td className="py-1.5 text-zinc-300">our judge found disputed/none/na — each one cancels two verified claims (overpromising is worse than staying silent); the score is clamped at 0</td></tr>
-            <tr><td className="py-1.5 pr-3 text-zinc-500">untestable</td><td className="py-1.5 text-zinc-300">outside this ranking&apos;s story taxonomy — excluded from both numerator and denominator (a taxonomy gap is never a mark for or against the product)</td></tr>
+            <tr><td className="py-1.5 pr-3 text-zinc-400">untestable</td><td className="py-1.5 text-zinc-300">outside this ranking&apos;s story taxonomy — excluded from both numerator and denominator (a taxonomy gap is never a mark for or against the product)</td></tr>
           </tbody>
         </table>
         <p className="mt-3 text-xs text-zinc-400">

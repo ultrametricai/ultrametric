@@ -30,7 +30,7 @@ export default function AgenticRankingPage() {
           All {totalProducts} products from every ranking, ranked by AGENT-READY: can an agent reach the product
           at all (API/CLI/MCP/webhooks/SDKs/docs)? Ties break on API quality, then Overall score.
         </p>
-        <p className="mt-2 text-xs text-zinc-500">
+        <p className="mt-2 text-xs text-zinc-400">
           This is the deep-linkable form of the homepage table&rsquo;s &ldquo;Most agent-ready&rdquo; preset —{' '}
           <Link href="/" className="text-zinc-400 underline decoration-zinc-700 hover:text-emerald-300">
             sort and filter it live there →

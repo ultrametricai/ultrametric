@@ -90,7 +90,7 @@ export default function PredictionsPage() {
           <Link href="/changelog" className={ARENA_LINK}>changelog</Link>, <span className="text-zinc-300">no</span> is
           simply the deadline passing without one. No question is ever written or settled by hand.
         </p>
-        <p className="mt-2 text-xs text-zinc-500">
+        <p className="mt-2 text-xs text-zinc-400">
           Honest v1 scoping: predicting opens a prefilled GitHub issue, and your prediction is the submitted issue —
           recorded in public, timestamped by GitHub, before the outcome is known. There is no scoring or accuracy
           leaderboard yet; that comes once there&rsquo;s a real volume of settled predictions to score.

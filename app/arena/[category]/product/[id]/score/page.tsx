@@ -102,7 +102,7 @@ function CellLedger({ cell, productHref }: { cell: BreakdownCell; productHref: s
                 [{e.tier}]
               </a>{' '}
               <span className="break-all text-zinc-500">{e.url}</span>
-              <span className="mt-0.5 block text-zinc-500">&ldquo;{e.excerpt}&rdquo;</span>
+              <span className="mt-0.5 block text-zinc-400">&ldquo;{e.excerpt}&rdquo;</span>
             </li>
           ))}
         </ul>

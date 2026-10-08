@@ -156,7 +156,7 @@ export default function IntegrationsPage() {
           <GeoMark seed="classic-pairs" title="Classic pairings — the interconnects everyone expects, checked against our evidence" size={18} className="text-zinc-500" />
           Classic pairings
         </h2>
-        <p className="mb-1 mt-1 max-w-2xl text-xs text-zinc-500">
+        <p className="mb-1 mt-1 max-w-2xl text-xs text-zinc-400">
           {classic.statuses.length} pairings the industry simply expects, checked against the
           evidence graph: <span className="text-emerald-300">{classic.verified} verified</span> ·{' '}
           <span className="text-zinc-400">{classic.unverified} no evidence found yet</span>.

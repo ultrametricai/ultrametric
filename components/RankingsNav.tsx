@@ -94,7 +94,7 @@ export default function RankingsNav({ current }: { current: RankingId }) {
           </ul>
         </div>
       ))}
-      <p className="text-xs text-zinc-600">
+      <p className="text-xs text-zinc-500">
         <a
           href={repo.href}
           target="_blank"

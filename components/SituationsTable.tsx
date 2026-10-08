@@ -68,7 +68,7 @@ export default function SituationsTable({ rows }: { rows: ProcessRow[] }) {
                   {/* The trigger — the event that puts a founder here — is the row's subtitle,
                       the same presentation the situation rows had on /processes. */}
                   {r.trigger !== null && (
-                    <span className="mt-0.5 block pl-6 text-[11px] leading-snug text-zinc-500">{r.trigger}</span>
+                    <span className="mt-0.5 block pl-6 text-[11px] leading-snug text-zinc-400">{r.trigger}</span>
                   )}
                 </td>
                 <td className="whitespace-nowrap px-2 py-2">

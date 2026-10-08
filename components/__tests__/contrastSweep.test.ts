@@ -31,6 +31,34 @@ const CLASS_PINS: Array<[string, string]> = [
   ['components/StepVendorRow.tsx', 'text-[10px] text-zinc-500 transition hover:text-emerald-300'],
 ]
 
+// Contrast pass 3 (founder 2026-10-08, the bar TIGHTENS): CONTENT text — anything a reader is
+// meant to read: values, labels, license strings, summaries — renders ≥ zinc-400; zinc-500 only
+// for genuinely de-emphasized metadata; zinc-600+ is decorative chrome (separators, disabled
+// states) only. These pins fix representative lifted sites per surface; the deliberate-dark
+// notes above still stand where they named decorative chrome.
+const PASS3_PINS: Array<[string, string]> = [
+  // /open-documents: the committed license class label reads at the content tier.
+  ['app/open-documents/page.tsx', 'align-top text-zinc-400 md:table-cell'],
+  // Artifact pages: the license string and the publisher name are content, not chrome.
+  ['app/artifacts/[id]/page.tsx', 'text-zinc-400">{d.license_note}'],
+  ['app/artifacts/[id]/page.tsx', 'text-zinc-400">{d.publisher}'],
+  // Judged-verdict rationale and evidence excerpts are the reason the reader expanded the row.
+  ['components/StoryVerdictsTable.tsx', 'text-zinc-400">{row.rationale}'],
+  // Situation triggers are the row's one-line answer to "when does this fire".
+  ['components/SituationsTable.tsx', 'text-zinc-400">{r.trigger}'],
+  ['components/ProcessesTable.tsx', 'text-zinc-400">{r.trigger}'],
+  // Theme one-liners on the report and checklist surfaces (the StoryMap precedent above).
+  ['app/arena/[category]/report/page.tsx', 'text-zinc-400">{themeExplanation(theme)}'],
+  ['app/arena/[category]/checklist/page.tsx', 'text-zinc-400">{themeExplanation(theme)}'],
+  // Methodology: the score-dimension names are labels, read against their glosses.
+  ['app/methodology/page.tsx', 'text-zinc-400">agent-ready</td>'],
+  // Ranking-page intro explainers are summaries (law-firms as the per-surface representative).
+  ['app/rankings/law-firms/page.tsx', '<p className="mt-2 text-xs text-zinc-400">'],
+  // The sitewide footer disclaimer leaves the decorative tier: fine print, but readable
+  // (layout-footer.test.ts pins the full block).
+  ['app/layout.tsx', '<p className="text-xs text-zinc-500">\n                  Research content'],
+]
+
 describe('contrast sweep (founder 2026-09-30)', () => {
   it.each(CLASS_PINS)('%s keeps its label at the lifted tier: %s', (file, pin) => {
     const src = readFileSync(path.join(ROOT, file), 'utf8')
@@ -41,6 +69,13 @@ describe('contrast sweep (founder 2026-09-30)', () => {
     const src = readFileSync(path.join(ROOT, 'components/StoryMap.tsx'), 'utf8')
     const textDark = src.split('\n').filter((l) => /text-zinc-[67]00/.test(l) && !l.includes('svg'))
     expect(textDark).toEqual([])
+  })
+})
+
+describe('contrast pass 3 (founder 2026-10-08): content ≥ zinc-400, zinc-600 is chrome only', () => {
+  it.each(PASS3_PINS)('%s keeps its content at the lifted floor: %s', (file, pin) => {
+    const src = readFileSync(path.join(ROOT, file), 'utf8')
+    expect(src).toContain(pin)
   })
 })
 

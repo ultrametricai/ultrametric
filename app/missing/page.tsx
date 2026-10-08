@@ -77,7 +77,7 @@ export default function MissingStartupsPage() {
             <GeoMark seed="global-gaps" title="Global stories with no full or partial verdict in any ranking that carries them" size={18} className="text-zinc-500" />
             Nobody does this anywhere
           </h2>
-          <p className="mt-1 text-xs text-zinc-500">
+          <p className="mt-1 text-xs text-zinc-400">
             Cross-market capabilities where no tracked product — in any ranking carrying the story —
             has a full or partial verdict.
           </p>

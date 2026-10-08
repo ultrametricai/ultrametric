@@ -26,7 +26,7 @@ export default function TosPage() {
     >
 <h1 className="font-display text-3xl font-bold tracking-tight text-zinc-100">Ultrametric Terms of Service</h1> <p className="mt-2 text-sm text-zinc-500"><strong>Last Updated:</strong> May 14, 2026</p>{' '}
 {/* Site-local scope note — NOT part of the verbatim-ported landing text. */}
-<p className="text-sm text-zinc-500">
+<p className="text-sm text-zinc-400">
   These are the company terms for Ultrametric, Inc. and its Services. The Ultrametric site&apos;s own
   terms — rankings and guides as research not advice, dataset copyright and reuse, trademarks, the
   dispute path — layer on top of this document at{' '}
