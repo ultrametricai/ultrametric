@@ -4643,5 +4643,712 @@
     "confidence": "medium",
     "rationale": "Smithery manages OAuth flows for connections, so white-labeling that flow is a fair question for this product. However, the evidence only describes Smithery-managed OAuth: \"Zero OAuth configuration… Smithery maintains OAuth apps for popular integrations.\" Nothing documents bringing your own OAuth client credentials or custom branding on the authorization screens, so the applicable capability is unevidenced.",
     "evidenceIds": []
+  },
+  {
+    "productId": "treg",
+    "storyId": "agent-framework-integrations",
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "medium",
+    "rationale": "treg exposes its tools through generic integration surfaces: a hosted MCP endpoint, a documented Claude connector, a Claude Code plugin install, an OpenAPI spec, llms.txt and a CLI. MCP-capable frameworks could consume these, but the pack shows no documented adapters for any of the named agent frameworks or SDKs. missing for 10: documented adapters or packages for Vercel AI SDK, LangChain, CrewAI, OpenAI SDK and Anthropic SDK tool-calling, plus framework integration examples and independent corroboration of framework use.",
+    "evidenceIds": [
+      "treg-docs-7",
+      "treg-docs-32",
+      "treg-gh-1",
+      "treg-probe-3",
+      "treg-probe-4",
+      "treg-docs-5"
+    ]
+  },
+  {
+    "productId": "treg",
+    "storyId": "agentic-agent-docs",
+    "verdict": "full",
+    "quality": 9,
+    "confidence": "high",
+    "rationale": "The docs name /llms.txt as the file to point a coding agent at, saying it teaches the whole protocol in one fetch, and the homepage tells users to give the agent `set up treg - https://treg.to/llms.txt`. A probe confirms llms.txt returns HTTP 200 with substantive protocol content, and markdown docs (tutorial.md, feedback.md) plus openapi.json are also served for agents. missing for 10: independent/community reports of agents successfully onboarding via llms.txt, and a markdown version of the main docs page (docs.md returns 404).",
+    "evidenceIds": [
+      "treg-docs-5",
+      "treg-docs-35",
+      "treg-probe-1",
+      "treg-docs-10",
+      "treg-docs-12",
+      "treg-docs-27",
+      "treg-probe-3",
+      "treg-probe-2"
+    ]
+  },
+  {
+    "productId": "treg",
+    "storyId": "agentic-ai-insights",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "treg is a credential-injecting proxy and tool catalog. Analysis of returned data is done by the user's own external agent, not inside treg. The evidence shows no in-product feature that generates insights or suggestions from a user's data. Workflow outputs such as a lead list with a \"scored reason to write\" are framed as results the user's agent assembles by calling tools, not as native treg analytics.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "treg",
+    "storyId": "agentic-autonomous-automation",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "treg is a stateless tool-catalog and credential-proxy layer that agents call on demand. Nothing in the evidence shows it offers schedules, triggers, webhooks, or background jobs, and a community commenter explicitly notes it lacks the stateful half (webhooks, signals, schedules) where tools like Clay still have the edge. Use cases such as 'repeat next week' depend on the user's own agent to do the repeating.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "treg",
+    "storyId": "agentic-builtin-assistant",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "A built-in assistant is a fair question for a SaaS tool platform, so the axis applies. However, the evidence only shows treg serving the user's own external agents, through llms.txt, an MCP endpoint, a CLI and a Claude connector. The \"give your agent\" workflows refer to the customer's agent, and nothing documents an AI assistant built into treg that users can delegate tasks to.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "treg",
+    "storyId": "agentic-headless",
+    "verdict": "full",
+    "quality": 7,
+    "confidence": "medium",
+    "rationale": "treg is a token-authenticated HTTP API: one base URL and one token give access to 159 operations plus the `/call/` proxy. A live OpenAPI spec is published and the CLI installs with a one-line curl script, so non-interactive, scripted use is the product's core mode. The docs never address CI pipelines directly, and the documented sign-in paths (GitHub, emailed OTP, invite code) look interactive. missing for 10: explicit CI/headless documentation (e.g. CI examples, non-interactive CLI auth via env-var token or service accounts), independent hands-on corroboration of automated pipeline use.",
+    "evidenceIds": [
+      "treg-docs-1",
+      "treg-docs-6",
+      "treg-probe-3",
+      "treg-docs-10",
+      "treg-docs-29"
+    ]
+  },
+  {
+    "productId": "treg",
+    "storyId": "agentic-mcp-client",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Treg is a tool gateway and catalog. Aggregating third-party MCP servers is a plausible capability for this kind of product (a commenter names mcp-jungle as an alternative for the same purpose), so the axis applies. The evidence only shows Treg acting as an MCP server (`https://treg.to/mcp`, the Claude connector) and turning local CLIs or HTTP provider endpoints into team tools. Nothing shows users plugging their own MCP servers into Treg so it can use their tools.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "treg",
+    "storyId": "agentic-mcp-server",
+    "verdict": "full",
+    "quality": 9,
+    "confidence": "high",
+    "rationale": "treg documents a first-party hosted MCP endpoint at https://treg.to/mcp and a Claude connector page that uses OAuth with PKCE. Named MCP tools such as `review(call_id, ...)` and `balance` are documented, the Claude plugin installs with no token, and a probe confirms the official MCP server documentation. missing for 10: independent or hands-on corroboration of the MCP server in use.",
+    "evidenceIds": [
+      "treg-docs-7",
+      "treg-docs-32",
+      "treg-docs-33",
+      "treg-docs-12",
+      "treg-gh-1",
+      "treg-probe-4"
+    ]
+  },
+  {
+    "productId": "treg",
+    "storyId": "agentic-nl-commands",
+    "verdict": "full",
+    "quality": 7,
+    "confidence": "medium",
+    "rationale": "Treg is built to be driven by an AI agent in natural language. You can bootstrap it with a single prompt (\"set up treg - https://treg.to/llms.txt\"), and it ships an official MCP endpoint and Claude connector exposing operations like balance and review. Documented workflows return lead lists, creator lists or ad intel from \"one prompt\", and catalog search works by intent rather than vendor. Missing for 10: no native natural-language interface (it depends on an external agent such as Claude), no evidence that team or admin operations like member tool permissions can be done in natural language, and no hands-on or independent corroboration of natural-language operation.",
+    "evidenceIds": [
+      "treg-docs-35",
+      "treg-docs-5",
+      "treg-docs-7",
+      "treg-docs-32",
+      "treg-docs-33",
+      "treg-docs-12",
+      "treg-docs-21",
+      "treg-docs-3",
+      "treg-probe-4",
+      "treg-gh-1"
+    ]
+  },
+  {
+    "productId": "treg",
+    "storyId": "agentic-official-cli",
+    "verdict": "full",
+    "quality": 9,
+    "confidence": "medium",
+    "rationale": "treg ships an official CLI with a one-line installer (`curl -fsSL https://treg.to/install.sh | sh`). Documented, agent-oriented commands include `treg review`, `treg upload clis`, `treg shell`, `treg tool ls`, `treg health` and `treg feedback submit`, it is covered in the tutorial, and it sits alongside llms.txt so agents can be pointed at it. Missing for 10: independent or hands-on corroboration of the CLI working as described, beyond vendor docs and the repo README.",
+    "evidenceIds": [
+      "treg-docs-6",
+      "treg-docs-12",
+      "treg-docs-27",
+      "treg-docs-31",
+      "treg-gh-4",
+      "treg-probe-5",
+      "treg-docs-5"
+    ]
+  },
+  {
+    "productId": "treg",
+    "storyId": "agentic-public-api",
+    "verdict": "full",
+    "quality": 9,
+    "confidence": "high",
+    "rationale": "Treg is API-first: one base URL and token expose 159 documented operations plus a `/call/` proxy to 3,800+ provider endpoints. Documented endpoints include `/catalog/search` and `/catalog/platforms/{slug}`, and every catalogued endpoint lists its price, parameters and an example response. A probe confirmed a live OpenAPI spec at /openapi.json, and llms.txt teaches the protocol to agents. Missing for 10: independent hands-on reports of successfully driving the API end-to-end (the community only describes it as a set of stateless APIs).",
+    "evidenceIds": [
+      "treg-docs-1",
+      "treg-docs-3",
+      "treg-docs-4",
+      "treg-docs-5",
+      "treg-docs-10",
+      "treg-docs-30",
+      "treg-probe-1",
+      "treg-probe-3",
+      "treg-comm-4"
+    ]
+  },
+  {
+    "productId": "treg",
+    "storyId": "agentic-scoped-keys",
+    "verdict": "partial",
+    "quality": 5,
+    "confidence": "medium",
+    "rationale": "Treg keeps provider keys out of the agent's hands: it injects credentials server-side, and the Claude connector authenticates via OAuth with PKCE rather than pasted tokens. Admins can also restrict which tools each team member may use and whether they may run CLIs locally. However, these restrictions are scoped to team members, not to agent-specific credentials, and the agent otherwise holds a single treg token. missing for 10: per-agent or per-token scope definitions, token expiry/rotation/revocation controls, read-only or endpoint-level permission granularity, independent corroboration.",
+    "evidenceIds": [
+      "treg-docs-28",
+      "treg-docs-2",
+      "treg-docs-10",
+      "treg-docs-32",
+      "treg-docs-1",
+      "treg-docs-27"
+    ]
+  },
+  {
+    "productId": "treg",
+    "storyId": "agentic-sdks",
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "medium",
+    "rationale": "The evidence shows no language-specific SDK packages. Treg does expose official programmatic surfaces that partly substitute for them: a single-base-URL REST API with 159 documented operations, a published OpenAPI spec usable for client generation, an official CLI, an MCP endpoint, and an llms.txt written for coding agents. Missing for 10: any official SDK libraries (e.g., Python/TypeScript packages), SDK documentation or install instructions, and independent corroboration of building against an SDK.",
+    "evidenceIds": [
+      "treg-docs-1",
+      "treg-probe-3",
+      "treg-docs-5",
+      "treg-docs-6",
+      "treg-docs-7",
+      "treg-docs-30"
+    ]
+  },
+  {
+    "productId": "treg",
+    "storyId": "agentic-webhooks",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Treg's docs describe request/response operations (REST, the /call/ proxy, CLI and MCP) but never mention webhook subscriptions or event delivery. An independent commenter describes Treg as a set of stateless APIs and says webhooks and signals are exactly what it lacks compared with tools like Clay or pipe0. An API gateway could plausibly offer webhooks, so the axis applies, but there is no evidence Treg delivers them.",
+    "evidenceIds": [
+      "treg-comm-4"
+    ]
+  },
+  {
+    "productId": "treg",
+    "storyId": "api-interactive-docs",
+    "verdict": "partial",
+    "quality": 4,
+    "confidence": "medium",
+    "rationale": "treg documents 159 operations, publishes a live OpenAPI spec (probe confirms openapi.json), and says every catalogued endpoint carries its price, parameters and an example response, with curl-style request examples in the docs. None of this shows an interactive explorer or in-browser runnable examples; the reference appears to be static docs plus a machine-readable spec. Missing for 10: an interactive API explorer UI, runnable/try-it examples, and independent or hands-on corroboration of the reference experience.",
+    "evidenceIds": [
+      "treg-docs-1",
+      "treg-docs-3",
+      "treg-docs-30",
+      "treg-probe-3",
+      "treg-docs-5"
+    ]
+  },
+  {
+    "productId": "treg",
+    "storyId": "api-machine-spec",
+    "verdict": "full",
+    "quality": 8,
+    "confidence": "high",
+    "rationale": "A hands-on probe found a live, downloadable OpenAPI spec at https://treg.to/openapi.json (HTTP 200, contains the \"openapi\" key). The docs back this up with 159 documented operations, catalogued endpoints that carry parameters and example responses, and an agent-oriented llms.txt that also probes live. Missing for 10: the docs don't point users to the OpenAPI file, and nothing confirms the spec covers all 159 operations or the /call/ proxy surface.",
+    "evidenceIds": [
+      "treg-probe-3",
+      "treg-docs-1",
+      "treg-docs-30",
+      "treg-docs-5",
+      "treg-probe-1"
+    ]
+  },
+  {
+    "productId": "treg",
+    "storyId": "api-sandbox",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "A tool and API gateway could plausibly offer a sandbox or test mode, so this axis applies. However, the evidence only describes proxying real requests to live provider endpoints with injected credentials. The free first $1, the $0 settlement on per-success misses, and community self-hosting for development are not a sandbox that isolates calls from production data.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "treg",
+    "storyId": "api-versioning-policy",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "treg is an API gateway, so API versioning and a deprecation policy are a fair question to ask of it. The evidence shows a documented API surface (159 operations, a published OpenAPI spec, llms.txt), but nothing shows versioned endpoints, version pinning, changelogs or a stated deprecation policy. Lack of evidence for an applicable capability yields none.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "treg",
+    "storyId": "automation-bulk-operations",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Treg is an API and tool gateway for agents, so batch or bulk calls are a fair axis to ask about. The evidence documents only single-call proxying via `/call/`, per-call metering and per-call review. Workflows that return lists, such as lead lists or creator lists, produce many results from one query but are not bulk operations across many items, and no batch endpoint or bulk mode is documented.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "treg",
+    "storyId": "automation-rules-engine",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Treg is an agent tool gateway and API proxy, so event-driven rules and triggers are a fair axis for this kind of platform. The evidence pack documents no rules, triggers, webhooks or schedules. One community comment explicitly describes it as stateless APIs and says the stateful half of automation (webhooks, signals, schedules) is where tools like Clay or pipe0 have the edge.",
+    "evidenceIds": [
+      "treg-comm-4"
+    ]
+  },
+  {
+    "productId": "treg",
+    "storyId": "automation-scheduled-jobs",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Scheduling recurring jobs is a fair question for an agent-tooling and automation platform, but nothing in treg's docs describes a scheduler, cron, or recurring workflow feature. Its workflows are one-shot agent calls, and the 'repeat next week' use case implies manual re-running rather than built-in scheduling. A community reviewer independently describes treg as stateless APIs lacking 'webhooks, signals, schedules', which supports the absence.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "treg",
+    "storyId": "automation-versioned-workflows",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "treg is an agent tool gateway that is positioned against automation platforms like Clay, so versioning, reviewing and rolling back automations is a fair question to ask of it. The evidence shows no such capability. Its 'workflows' are one-shot agent prompts over stateless API calls, and the documented `treg review` command only rates a single call's usefulness. It is not a review or rollback of automations.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "treg",
+    "storyId": "browser-inspector-playground",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "treg is a tool catalog with an MCP endpoint, so a browser-based inspector or playground is a fair thing to ask of it. The evidence only shows the catalog listing each endpoint's price, parameters and an example response, plus HTTP, CLI and MCP access. Nothing documents an interactive browser UI for calling MCP tools before integrating them.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "treg",
+    "storyId": "call-logging-replay",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "The axis applies because treg is a proxy/gateway that every tool call passes through, but the evidence never documents a per-call log, audit trail, or replay capability. The closest items are a CALL_ID used for rating calls (treg-docs-12) and `balance` reporting aggregate daily usage (treg-docs-33). Neither amounts to a viewable log of calls with enough detail to audit or replay an agent's actions.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "treg",
+    "storyId": "downstream-event-triggers",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Event triggers and webhooks are a fair axis for a hosted tool and credential proxy, so the story applies. However, treg's docs describe only request/response calls through `/call/`, the CLI and the MCP endpoint, with no subscription, trigger or webhook mechanism. A community reviewer explicitly characterizes treg as a set of stateless APIs that lack the webhooks, signals and schedules other tools provide.",
+    "evidenceIds": [
+      "treg-comm-4",
+      "treg-docs-1",
+      "treg-docs-2"
+    ]
+  },
+  {
+    "productId": "treg",
+    "storyId": "free-tier-start",
+    "verdict": "full",
+    "quality": 7,
+    "confidence": "medium",
+    "rationale": "Pricing docs state the first $1.00 is free on a no-markup, per-call prepaid balance billed at fractions of a cent per call, and failed per-success calls settle at $0.00. Calls using your own provider keys are never metered, and the open-source project can be self-hosted, so a developer can prototype tool connections without paying. Missing for 10: the $1 credit is modest with no stated call volume it covers for typical endpoints, and no independent hands-on report of prototyping within the free credit.",
+    "evidenceIds": [
+      "treg-docs-14",
+      "treg-docs-9",
+      "treg-docs-16",
+      "treg-docs-8",
+      "treg-docs-15",
+      "treg-gh-3",
+      "treg-comm-6",
+      "treg-comm-5"
+    ]
+  },
+  {
+    "productId": "treg",
+    "storyId": "generate-server-from-openapi",
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "treg runs a single hosted MCP endpoint (https://treg.to/mcp) that exposes its catalog, so it is a hosted tool gateway, but adding your own APIs is only indirect. `treg upload clis` turns local CLIs into team tools, and vendors can get listed by submitting a pull request to the repo, which then routes calls through treg's MCP and proxy layer without custom protocol code. Missing for 10: any evidence of importing an OpenAPI definition to generate MCP tools, wrapping arbitrary custom code as a hosted MCP server, a dedicated per-API hosted server, and hands-on corroboration that uploaded tools appear over MCP.",
+    "evidenceIds": [
+      "treg-docs-7",
+      "treg-docs-27",
+      "treg-docs-34",
+      "treg-docs-1",
+      "treg-probe-4"
+    ]
+  },
+  {
+    "productId": "treg",
+    "storyId": "integration-breadth",
+    "verdict": "full",
+    "quality": 8,
+    "confidence": "medium",
+    "rationale": "The docs claim a proxy to 3,800+ catalogued provider endpoints through one base URL and token, plus 159 documented operations. Calls are routed by host with credentials injected server-side. The catalog is searchable by task and per platform, with price, parameters and example responses for each endpoint, and it spans SEO, enrichment, social, ads, media generation and voice providers. HN commenters loosely corroborate the breadth (\"supports many free tools\", data sources under one subscription), but the catalog size itself is only vendor-stated. Missing for 10: an explicit count of distinct third-party providers or apps rather than endpoints, and independent or hands-on verification of the catalog's size and coverage.",
+    "evidenceIds": [
+      "treg-docs-1",
+      "treg-docs-2",
+      "treg-docs-3",
+      "treg-docs-4",
+      "treg-docs-10",
+      "treg-docs-13",
+      "treg-docs-17",
+      "treg-docs-30",
+      "treg-comm-3",
+      "treg-comm-4"
+    ]
+  },
+  {
+    "productId": "treg",
+    "storyId": "local-server-uplink",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "treg is a tool gateway that serves its own MCP endpoint and proxies catalogued provider APIs, so bridging local MCP servers is a fair question for it. However, the evidence never shows it ingesting or tunneling a locally running MCP server as a managed remote connection. The closest feature, `treg upload clis` / `treg shell`, shares local CLIs with injected team keys, which is a different capability from bridging an MCP server.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "treg",
+    "storyId": "managed-oauth-vaulting",
+    "verdict": "partial",
+    "quality": 4,
+    "confidence": "medium",
+    "rationale": "The catalog says some downstream tools connect \"your own account via OAuth\" (treg-docs-25, treg-docs-26), and the Search Console use case implies account connection (treg-docs-18). treg stores credentials and injects them server-side (treg-docs-2, treg-docs-10), and offers a `treg health` credential check (treg-gh-4). However, the OAuth flow mechanics are mentioned only in passing, and nothing describes encryption at rest or automatic token refresh. Missing for 10: documented downstream OAuth flow mechanics, encrypted credential vaulting, automatic token refresh, independent corroboration.",
+    "evidenceIds": [
+      "treg-docs-25",
+      "treg-docs-26",
+      "treg-docs-18",
+      "treg-docs-2",
+      "treg-docs-10",
+      "treg-gh-4"
+    ]
+  },
+  {
+    "productId": "treg",
+    "storyId": "one-endpoint-hosted-connection",
+    "verdict": "full",
+    "quality": 9,
+    "confidence": "medium",
+    "rationale": "treg runs a hosted MCP endpoint at https://treg.to/mcp, and a documented Claude connector authenticates via OAuth with PKCE, so no token or provider key needs to be pasted in. Through that endpoint the client reaches thousands of catalogued downstream provider endpoints, with credentials injected server-side, so the user deploys no infrastructure; the GitHub plugin also installs with no token and no configuration. Missing for 10: hands-on or independent verification that the /mcp endpoint works from an MCP client (the probe only confirms the documentation exists), and setup docs for MCP clients other than Claude.",
+    "evidenceIds": [
+      "treg-docs-7",
+      "treg-docs-32",
+      "treg-probe-4",
+      "treg-docs-1",
+      "treg-docs-2",
+      "treg-docs-12",
+      "treg-gh-1",
+      "treg-docs-33"
+    ]
+  },
+  {
+    "productId": "treg",
+    "storyId": "openness-api-parity",
+    "verdict": "full",
+    "quality": 7,
+    "confidence": "medium",
+    "rationale": "treg is built API-first: one base URL and token expose 159 documented operations plus a proxy to 3,800+ provider endpoints, and a probe confirms a live OpenAPI spec. The same surface is reachable through a CLI (tool listing, credential health, reviews, feedback, CLI uploads) and an MCP endpoint (balance, review), and llms.txt teaches agents the whole protocol. Missing for 10: an explicit statement or audit that every UI action (e.g., team member permissions, invites, billing top-up) is available via API, and independent hands-on confirmation of parity.",
+    "evidenceIds": [
+      "treg-docs-1",
+      "treg-docs-5",
+      "treg-docs-7",
+      "treg-docs-12",
+      "treg-docs-27",
+      "treg-docs-28",
+      "treg-docs-33",
+      "treg-gh-4",
+      "treg-probe-3",
+      "treg-probe-4",
+      "treg-probe-5"
+    ]
+  },
+  {
+    "productId": "treg",
+    "storyId": "openness-full-export",
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "Treg is open source and self-hostable, and a community user reports running it with one click. That gives an exit path away from the hosted treg.to service and limits lock-in. However, nothing in the evidence shows a way to export your account data, such as team tool configurations, shared credentials, call history, reviews or billing usage, in any format. Missing for 10: a documented data-export feature, open or standard export formats, a path to migrate hosted data into a self-hosted instance, and independent confirmation of a clean exit.",
+    "evidenceIds": [
+      "treg-gh-3",
+      "treg-comm-6"
+    ]
+  },
+  {
+    "productId": "treg",
+    "storyId": "openness-open-license",
+    "verdict": "full",
+    "quality": 7,
+    "confidence": "medium",
+    "rationale": "The source is published in a public GitHub repo (superdesigndev/treg), and the README says 'anyone can self-host'. Community members call it open-source and report self-hosting it for development, and vendor listings are contributed by pull request to that repo. Missing for 10: the specific license is never named in the evidence, and there are no first-party docs confirming the open-license terms.",
+    "evidenceIds": [
+      "treg-gh-3",
+      "treg-gh-1",
+      "treg-docs-34",
+      "treg-comm-3",
+      "treg-comm-6"
+    ]
+  },
+  {
+    "productId": "treg",
+    "storyId": "openness-self-host",
+    "verdict": "full",
+    "quality": 7,
+    "confidence": "medium",
+    "rationale": "The official GitHub repo states the hosted service at treg.to is the team's instance and that 'anyone can self-host' (treg-gh-3). Community comments independently describe it as open-source and report self-hosting it for development via a one-click setup on tarvis.io (treg-comm-3, treg-comm-6). missing for 10: first-party self-hosting/deployment documentation (requirements, configuration, how credentials and provider keys work on a self-hosted instance), evidence of feature parity between self-hosted and hosted, production-grade self-hosting reports beyond a single dev setup.",
+    "evidenceIds": [
+      "treg-gh-3",
+      "treg-comm-3",
+      "treg-comm-6"
+    ]
+  },
+  {
+    "productId": "treg",
+    "storyId": "per-end-user-multi-tenant-auth",
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "The evidence shows only team-level analogs. Admins can choose which tools each team member may use (treg-docs-28), members sign in individually (treg-docs-29), and some catalog entries support connecting 'your own account' via OAuth (treg-docs-25, treg-docs-26). However, credentials are described as shared team keys injected server-side (treg-docs-8, treg-docs-27), and nothing shows per-end-user connected accounts or tokens for a platform's own customers. Missing for 10: per-end-user connected-account management, per-user scoped tokens bound to that user's credentials, multi-tenant credential isolation docs, independent corroboration.",
+    "evidenceIds": [
+      "treg-docs-28",
+      "treg-docs-29",
+      "treg-docs-25",
+      "treg-docs-26",
+      "treg-docs-8",
+      "treg-docs-27"
+    ]
+  },
+  {
+    "productId": "treg",
+    "storyId": "privacy-data-residency",
+    "verdict": "partial",
+    "quality": 4,
+    "confidence": "low",
+    "rationale": "The hosted treg.to service documents no region or data-residency selection. The only route to controlling where data lives is self-hosting: the repo states 'anyone can self-host' and a community user reports running a self-hosted instance. That is a workaround, not a residency feature. missing for 10: region/residency selection on the hosted service, documentation of where hosted data is stored, explicit guidance on residency controls for self-hosted deployments.",
+    "evidenceIds": [
+      "treg-gh-3",
+      "treg-comm-6"
+    ]
+  },
+  {
+    "productId": "treg",
+    "storyId": "privacy-no-training",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Treg is a hosted SaaS that relays user requests and data to upstream providers, so a data-training opt-out or no-training policy is a fair question to ask of it. The evidence pack contains no statement about AI training use, opt-outs, or data-retention policy. Self-hosting is mentioned, but nothing ties it to preventing training on user data.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "treg",
+    "storyId": "privacy-retention-controls",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Treg is a hosted API proxy and tool catalog that relays requests and handles credentials, so data retention and deletion controls are a fair question to ask of it. The evidence pack never mentions retention periods, logging policy, deletion of call data or accounts, or any related setting. Self-hosting is mentioned only as an option, not as a documented way to control retention or deletion.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "treg",
+    "storyId": "privacy-telemetry-optout",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Telemetry is a fair question for a CLI and hosted API gateway, but nothing in the evidence mentions telemetry, usage tracking, or a way to opt out of either. Self-hosting is documented, but no source presents it as a privacy or telemetry control. Per-call metering and usage reporting are billing features, not telemetry controls, so the evidence gives nothing to credit here.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "treg",
+    "storyId": "publish-server-distribution",
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "treg is a catalog of tools for agents, so publishing your own server for others to find and use is a fair question. The closest evidence is a vendor-listing process: you open a pull request to the treg GitHub repo to add a provider listing to the catalog. Separately, `treg upload clis` and `treg tool ls` let you share and discover tools, but only within your own team, and nothing shows a developer publishing an MCP server specifically. missing for 10: publishing and hosting your own MCP server, a self-serve submission flow beyond a GitHub PR, public discovery and one-click install of community-published servers, and any independent corroboration.",
+    "evidenceIds": [
+      "treg-docs-34",
+      "treg-docs-27",
+      "treg-gh-4"
+    ]
+  },
+  {
+    "productId": "treg",
+    "storyId": "publisher-cli-workflow",
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "medium",
+    "rationale": "treg ships an official CLI, installed via install.sh. It documents authentication through GitHub, an emailed OTP, or an invite code. `treg upload clis` publishes local CLIs as team tools, and agent install is shown via `/plugin install treg@treg`. That is only a loose analogue of publish-and-deploy: there is no evidence of staging or building a server and pushing it, and new listings are submitted as a GitHub pull request rather than through the CLI. Missing for 10: CLI build/stage of a server, a CLI push/deploy command for servers, CLI-driven install of published servers into agents, and independent corroboration.",
+    "evidenceIds": [
+      "treg-docs-6",
+      "treg-docs-29",
+      "treg-docs-27",
+      "treg-gh-1",
+      "treg-docs-34",
+      "treg-probe-5"
+    ]
+  },
+  {
+    "productId": "treg",
+    "storyId": "quality-scores-usage-signals",
+    "verdict": "full",
+    "quality": 7,
+    "confidence": "medium",
+    "rationale": "treg's catalog endpoint `/catalog/platforms/{slug}` lists providers side by side with measured success rate, speed and price, which is a direct comparison on published quality signals. Per-call usefulness reviews feed additional quality data, and every endpoint carries its price and an example response. missing for 10: no usage counts or verification badges evidenced, no detail on how success-rate/speed are measured or how often refreshed, no liveness/uptime checks for providers (`treg health` covers only team credentials), no independent or hands-on corroboration.",
+    "evidenceIds": [
+      "treg-docs-4",
+      "treg-docs-12",
+      "treg-docs-30",
+      "treg-docs-3"
+    ]
+  },
+  {
+    "productId": "treg",
+    "storyId": "registry-programmatic-api",
+    "verdict": "full",
+    "quality": 9,
+    "confidence": "high",
+    "rationale": "Treg documents a catalog API for programmatic discovery. Agents can search by intent via `GET /catalog/search?q=...` and compare providers via `/catalog/platforms/{slug}` with success rate, speed and price. Every catalogued endpoint carries its price, parameters and an example response, and probes confirm a live OpenAPI spec and an llms.txt protocol guide. Missing for 10: independent or hands-on confirmation that the catalog search endpoints return useful results, and explicit discovery of MCP servers as opposed to provider tools/endpoints.",
+    "evidenceIds": [
+      "treg-docs-3",
+      "treg-docs-4",
+      "treg-docs-1",
+      "treg-docs-30",
+      "treg-docs-5",
+      "treg-probe-1",
+      "treg-probe-3",
+      "treg-gh-4"
+    ]
+  },
+  {
+    "productId": "treg",
+    "storyId": "runtime-tool-search",
+    "verdict": "full",
+    "quality": 7,
+    "confidence": "medium",
+    "rationale": "Treg's design matches this story: agents use one base URL and token, search the catalog by intent (`GET /catalog/search`), compare platforms, read per-endpoint parameters, and proxy calls to any of 3,800+ endpoints through `/call/`. The agent learns this small protocol from a single llms.txt fetch instead of loading thousands of tool definitions, and an MCP endpoint exposes tool-style calls such as `review(...)` and `balance`. Missing for 10: explicit docs that the MCP server exposes search/describe/call meta-tools (only review and balance are named), and independent or hands-on confirmation that context stays small in practice.",
+    "evidenceIds": [
+      "treg-docs-1",
+      "treg-docs-3",
+      "treg-docs-4",
+      "treg-docs-5",
+      "treg-docs-7",
+      "treg-docs-10",
+      "treg-docs-12",
+      "treg-docs-30",
+      "treg-docs-33",
+      "treg-probe-1"
+    ]
+  },
+  {
+    "productId": "treg",
+    "storyId": "security-scanning-inspection",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "treg is a tool catalog and proxy, so pre-use security inspection of listed tools is a fair question for it. The evidence only shows measured success rate, speed and price, user usefulness reviews, credential health checks, and vendor listings submitted as GitHub pull requests. Nothing describes scanning or inspecting listed tools or servers for malicious or vulnerable behavior before agents use them.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "treg",
+    "storyId": "server-metadata-inspection",
+    "verdict": "partial",
+    "quality": 5,
+    "confidence": "medium",
+    "rationale": "Treg is a tool catalog where buyers can fairly ask about pre-use inspection. You can search it (`/catalog/search`), compare providers per platform on measured success rate, speed and price (`/catalog/platforms/{slug}`), and every catalogued endpoint lists its price, parameters and an example response. However, the entries are upstream provider endpoints proxied through treg, not independently hosted servers, so nothing documents per-listing transport or hosting attributes. Missing for 10: formal input-schema documentation per tool beyond 'parameters', transport details, hosting attributes, and independent or hands-on corroboration of the inspection flow.",
+    "evidenceIds": [
+      "treg-docs-3",
+      "treg-docs-4",
+      "treg-docs-30"
+    ]
+  },
+  {
+    "productId": "treg",
+    "storyId": "server-registry-search",
+    "verdict": "full",
+    "quality": 7,
+    "confidence": "medium",
+    "rationale": "treg is a tool catalog: you can search by capability rather than vendor (`GET /catalog/search?q=backlinks`) across 3,800+ catalogued provider endpoints. You can compare platforms side by side on measured success rate, speed and price, and every endpoint lists its price, parameters and an example response, so you can browse before wiring anything in. The probe confirms llms.txt bills it as \"the tool catalog for your agent\", but the catalog covers provider API endpoints rather than third-party MCP servers. Missing for 10: cataloguing of MCP servers specifically, and independent or hands-on corroboration of the search and browse experience.",
+    "evidenceIds": [
+      "treg-docs-1",
+      "treg-docs-3",
+      "treg-docs-4",
+      "treg-docs-30",
+      "treg-docs-25",
+      "treg-probe-1"
+    ]
+  },
+  {
+    "productId": "treg",
+    "storyId": "tool-allowlist-access-control",
+    "verdict": "partial",
+    "quality": 5,
+    "confidence": "medium",
+    "rationale": "The tutorial documents per-member tool access control: an admin can choose which tools each member may use and whether they may run CLIs locally, at invite time or later. This is a real allowlist-style restriction, but it is scoped to team members rather than explicitly to agents, rests on a single thin mention, and does not show finer control over individual operations or endpoints. missing for 10: explicit per-agent or per-token scoping, per-operation/endpoint-level allowlists, detailed configuration docs, independent or hands-on corroboration.",
+    "evidenceIds": [
+      "treg-docs-28",
+      "treg-docs-27",
+      "treg-gh-4"
+    ]
+  },
+  {
+    "productId": "treg",
+    "storyId": "transparent-pricing-limits",
+    "verdict": "partial",
+    "quality": 5,
+    "confidence": "medium",
+    "rationale": "Per-call pricing is transparent and well documented. Billing is a prepaid balance metered per call at the provider's rate with no markup and a free first $1.00, and per-success misses settle at $0.00. Every catalogued endpoint carries its price, and platform pages compare price side by side. However, the evidence contains no documented rate limits, and a community comment notes upstream rate limits can't be hidden behind the single endpoint. missing for 10: documented platform or per-endpoint rate limits, independent corroboration of pricing accuracy.",
+    "evidenceIds": [
+      "treg-docs-14",
+      "treg-docs-16",
+      "treg-docs-30",
+      "treg-docs-4",
+      "treg-docs-9",
+      "treg-docs-8",
+      "treg-docs-15",
+      "treg-comm-5"
+    ]
+  },
+  {
+    "productId": "treg",
+    "storyId": "usage-analytics-dashboard",
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "medium",
+    "rationale": "treg meters every call at the provider's rate (treg-docs-14), and its `balance` operation reports the team's prepaid balance and daily usage (treg-docs-33). That gives a platform engineer basic cost and usage visibility, while `treg health` adds credential health checks (treg-gh-4). The measured success rates in the catalog are platform-wide benchmarks, not org analytics, and nothing documents per-tool call-volume breakdowns, per-user attribution, error analytics, or usage of tools the org publishes. Missing for 10: per-server/per-tool call volume analytics, per-user usage breakdown, org error-rate reporting, analytics for published/shared tools, a dashboard or analytics docs, and independent corroboration.",
+    "evidenceIds": [
+      "treg-docs-33",
+      "treg-docs-14",
+      "treg-gh-4"
+    ]
+  },
+  {
+    "productId": "treg",
+    "storyId": "white-label-auth",
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "Treg brokers provider credentials, so this axis applies. Its docs say a team's own provider key is used when present (unmetered), and that it supports official OAuth for users' own accounts. The project is also open-source and self-hostable, which could in principle allow running under your own OAuth apps and domain. However, nothing documents a white-labeled authorization screen, custom branding, or configuring your own OAuth client ID/secret for the hosted OAuth flows. Missing for 10: documented white-label/branded consent flow, documented bring-your-own OAuth app client credentials, hands-on corroboration.",
+    "evidenceIds": [
+      "treg-docs-8",
+      "treg-docs-25",
+      "treg-docs-26",
+      "treg-gh-3",
+      "treg-comm-6"
+    ]
   }
 ]
