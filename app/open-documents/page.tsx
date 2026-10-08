@@ -1,7 +1,7 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import ProductLogoView from '@/components/ProductLogoView'
-import { DOCUMENT_USE_CASES, documentJurisdictionFlag, judgedProductRef, loadDocumentRegistry, type DocumentUseCase, type OpenDocument } from '@/lib/documents'
+import { DOCUMENT_LICENSES, DOCUMENT_USE_CASES, documentJurisdictionFlag, judgedProductRef, loadDocumentRegistry, type DocumentUseCase, type OpenDocument } from '@/lib/documents'
 import { hasLogo } from '@/lib/logos'
 import { REPO } from '@/lib/site'
 import { TABLE_HEADER_ROW, TABLE_SHELL } from '@/components/tableStyles'
@@ -126,7 +126,7 @@ export default function OpenDocumentsPage() {
                     {/* No Checked column (founder 2026-10-08): checked_on stays in the registry
                         and in each document link's title; the table stops spending a column on it. */}
                     <th scope="col" className="hidden px-3 py-2 font-normal md:table-cell">
-                      <span title="The published license or terms, and what still requires counsel">License / counsel note</span>
+                      <span title="The committed license class — hover a label for the published terms and what still requires counsel">License</span>
                     </th>
                   </tr>
                 </thead>
@@ -157,7 +157,12 @@ export default function OpenDocumentsPage() {
                       <td className="hidden px-3 py-2.5 align-top text-zinc-400 sm:table-cell">
                         <JurisdictionCell jurisdiction={d.jurisdiction} />
                       </td>
-                      <td className="hidden px-3 py-2.5 align-top text-zinc-500 md:table-cell">{d.license_note}</td>
+                      {/* The committed license class's short label, at readable contrast (founder
+                          2026-10-08 contrast bar: content text ≥ zinc-400); the full license/counsel
+                          note stays on the title. */}
+                      <td className="hidden px-3 py-2.5 align-top text-zinc-400 md:table-cell">
+                        <span title={d.license_note}>{DOCUMENT_LICENSES[d.license]}</span>
+                      </td>
                     </tr>
                   ))}
                 </tbody>

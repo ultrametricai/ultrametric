@@ -22,6 +22,25 @@ export type DocumentUseCase = (typeof DOCUMENT_USE_CASES)[number]
 export const DOCUMENT_FORMATS = ['web-page', 'pdf', 'docx', 'xlsx', 'doc-generator', 'mixed'] as const
 export type DocumentFormat = (typeof DOCUMENT_FORMATS)[number]
 
+// The committed license classes (founder 2026-10-08): the License column renders the class's
+// short label; the full license_note stays the record's counsel note (and the cell tooltip).
+// Classes, not free text — a new publishing model means a deliberate new class here, the same
+// bar as DOCUMENT_FORMATS.
+export const DOCUMENT_LICENSES = {
+  'cc-by-4.0': 'CC BY 4.0',
+  cc0: 'CC0',
+  'creative-commons': 'Creative Commons',
+  'public-domain': 'Public domain',
+  ogl: 'Open Government Licence',
+  'open-form': 'Open form',
+  'free-generator': 'Free generator',
+  'free-download': 'Free download',
+  'free-reference': 'Free reference',
+  'official-publication': 'Official publication',
+  'proprietary-link-only': 'Proprietary — link only',
+} as const
+export type DocumentLicense = keyof typeof DOCUMENT_LICENSES
+
 export interface OpenDocument {
   id: string
   name: string
@@ -34,6 +53,8 @@ export interface OpenDocument {
    * render as plain names — no logo invented. */
   publisherProductId?: string
   url: string
+  /** The committed license class — the License column's short label key (DOCUMENT_LICENSES). */
+  license: DocumentLicense
   /** The published license/terms, honestly stated, including what still requires counsel. */
   license_note: string
   use_case: DocumentUseCase
@@ -89,6 +110,9 @@ export function validateDocumentRegistry(doc: DocumentRegistry, asOf: Date): str
     // /documents page because the per-file asset links are content-hashed and rotate.
     if (typeof d.url !== 'string' || !d.url.startsWith('https://')) errors.push(`${where}: require HTTPS URL`)
     if (!DOCUMENT_USE_CASES.includes(d.use_case)) errors.push(`${where}: unknown use_case ${JSON.stringify(d.use_case)}`)
+    if (typeof d.license !== 'string' || !(d.license in DOCUMENT_LICENSES)) {
+      errors.push(`${where}: unknown license class ${JSON.stringify(d.license)}`)
+    }
     if (!DOCUMENT_FORMATS.includes(d.format)) errors.push(`${where}: unknown format ${JSON.stringify(d.format)}`)
     // family ⇔ variant: a family member must carry its committed short label (pages render the
     // label, never invent one), and a variant label is meaningless outside a family.

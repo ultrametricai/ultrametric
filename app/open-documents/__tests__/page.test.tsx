@@ -6,7 +6,7 @@
 import { render } from '@testing-library/react'
 import { describe, expect, it } from 'vitest'
 import OpenDocumentsPage from '@/app/open-documents/page'
-import { DOCUMENT_USE_CASES, loadDocumentRegistry } from '@/lib/documents'
+import { DOCUMENT_LICENSES, DOCUMENT_USE_CASES, loadDocumentRegistry } from '@/lib/documents'
 
 describe('/open-documents', () => {
   const registry = loadDocumentRegistry()
@@ -90,6 +90,25 @@ describe('/open-documents', () => {
     // The verification date still rides every document link's title (registry data unchanged).
     const d = registry.documents[0]
     expect(container.querySelector(`a[href="${d.url}"]`)!.getAttribute('title')).toContain(d.checked_on)
+  })
+
+  it('license cells render the committed short label at readable contrast, full note on the title', () => {
+    const { container } = render(<OpenDocumentsPage />)
+    const headers = [...container.querySelectorAll('thead th')].map((th) => th.textContent)
+    expect(headers).toContain('License')
+    expect(headers).not.toContain('License / counsel note')
+    const cells = [...container.querySelectorAll('tbody td:nth-child(4)')]
+    expect(cells).toHaveLength(registry.documents.length)
+    const labels = new Set<string>(Object.values(DOCUMENT_LICENSES))
+    for (const cell of cells) {
+      expect(labels.has(cell.textContent!.trim()), `unknown license label ${cell.textContent}`).toBe(true)
+      // Readable contrast (founder 2026-10-08 bar: content text ≥ zinc-400, not grey-on-black).
+      expect(cell.className).toContain('text-zinc-400')
+      expect(cell.querySelector('span')!.getAttribute('title')!.length).toBeGreaterThan(0)
+    }
+    const texts = cells.map((c) => c.textContent!.trim())
+    expect(texts).toContain('CC BY 4.0')
+    expect(texts).toContain('Proprietary — link only')
   })
 
   it('groups records under their use_case headings, registry order within each group', () => {

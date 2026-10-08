@@ -97,6 +97,7 @@ describe('documents validators (failure modes)', () => {
     name: 'A document',
     publisher: 'A publisher',
     url: 'https://example.com/doc',
+    license: 'free-download' as const,
     license_note: 'Freely published under the publisher’s terms; counsel still required.',
     use_case: 'formation' as const,
     jurisdiction: 'US',
@@ -119,6 +120,9 @@ describe('documents validators (failure modes)', () => {
     expect(
       validateDocumentRegistry(reg(record({ format: 'zip' as unknown as 'pdf' })), AS_OF).join(';'),
     ).toContain('unknown format')
+    expect(
+      validateDocumentRegistry(reg(record({ license: 'gpl' as unknown as 'free-download' })), AS_OF).join(';'),
+    ).toContain('unknown license class')
     expect(validateDocumentRegistry(reg(record({ checked_on: '2027-01-01' })), AS_OF).join(';')).toContain('future')
   })
 
