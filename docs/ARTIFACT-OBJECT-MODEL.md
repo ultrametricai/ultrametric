@@ -174,6 +174,59 @@ nothing.
 All of it stays propose/display-only under `governance/AGENT_POLICY.md`: the model orders
 and checks work; it authorizes nothing.
 
+## Per-artifact record files — split assessment (founder ask 2026-10-08)
+
+Assessment only; the founder decides. The question: should `processes/artifacts.json` (one
+file, 82 records) become per-id files, so each `/artifacts/[id]` page can deep-link its own
+repo object the way process pages link `content/processes/records/<id>.json`?
+
+**What a split buys.**
+
+- **Anchorable repo links.** Today the artifact page footer links the whole registry file
+  with an honest "JSON carries no per-entry anchor" title. Per-id files give every artifact
+  page the exact process-page idiom: one object, one URL.
+- **Per-object history.** `git log processes/artifacts/83b-election.json` reads as the
+  object's changelog; today one file's history interleaves all 82.
+- **Contributor ergonomics.** A geo-coverage or documents-mapping PR touches one small
+  file; parallel artifact PRs stop conflicting in a 1,800-line monolith.
+- **Growth room.** The lifecycle/clocks fields proposed above land per-file instead of
+  further growing the monolith.
+
+**What it costs — the consumers.**
+
+- One read point: `lib/processes.ts` `loadArtifacts()` (`artifactsFile`) is the only code
+  that opens the file. Everything downstream goes through it unchanged:
+  `lib/processDeps.ts`, `lib/artifactPages.ts`, `lib/companyFields.ts`, `lib/founderOps.ts`,
+  `lib/virtualStartup.ts`/`virtualStartupData.ts`, `lib/search-entries.ts`,
+  `lib/shared-processes/bottom-tables.ts`, `app/artifacts/*`, `app/sitemap.ts`,
+  `app/llms.txt/route.ts`, `app/startup-sim/page.tsx`,
+  `scripts/generate-timeline-inversions.ts`.
+- Two raw readers bypass the loader and would re-point:
+  `__tests__/corpus-schemas.test.ts` (validates the file against the published schema) and
+  `__tests__/readme.test.ts` (checks the README-quoted artifact id exists).
+- The published schema: `scripts/generate-corpus-schemas.ts` emits
+  `schemas/process-artifacts.schema.json` for the `{ artifacts: [...] }` wrapper; a split
+  re-shapes it to the single-record form (the corpus-record precedent).
+- **Registry order is committed meaning.** The array order is the display order the pages
+  and the dependency reports inherit; a directory listing is lexicographic. A split must
+  make order explicit — an `index.json` id list, or ordering derived from the producer's
+  corpus position — and test it.
+- The registry-wide `$comment` doctrine block needs a home (`processes/artifacts/README.md`).
+- Behavior tests keyed to the registry shape re-point but do not re-design:
+  `lib/__tests__/processArtifacts.test.ts`, `processDocuments.test.ts`,
+  `companyFields.test.ts`, `virtualStartupLinkage.test.ts`.
+
+**Two shapes, one recommendation seam.** (a) Per-id files become the source and the
+monolith goes; (b) the monolith stays the source and per-id files are generated mirrors —
+the exact `processes/corpus.json` → `content/processes/records/` relationship that already
+runs through an import manifest. Shape (b) ships without touching a single consumer (the
+mirror is additive and the page footer re-points to it) but adds a drift gate; shape (a) is
+the clean end state at the cost of the loader/order/schema work above.
+
+**company-fields.json.** Not the same case: 16 records, no per-field page exists, so there
+is no anchor demand — the fields render inside `/artifacts/[id]` and `/open-modules/[id]`.
+Splitting it buys nothing a reader can reach today. Revisit only if a fields surface lands.
+
 ## Adjacent seams from the cross-link audit (smaller, independently shippable)
 
 - Process pages render the Produces table but not a Needs surface;
