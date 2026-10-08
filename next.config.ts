@@ -106,6 +106,15 @@ const nextConfig: NextConfig = {
       destination: '/open-documents',
       permanent: true,
     },
+    // Badge rename (2026-10-08): the embeddable <id>-arena-score.svg became <id>-score.svg.
+    // No known external embeds, but a badge URL is pasted into third-party READMEs by design,
+    // so the old name stays alive as a permanent redirect (the /documents posture). The :id
+    // param backtracks across hyphens, so multi-word product ids resolve.
+    {
+      source: '/badges/:id-arena-score.svg',
+      destination: '/badges/:id-score.svg',
+      permanent: true,
+    },
   ],
 };
 
