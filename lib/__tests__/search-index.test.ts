@@ -1,5 +1,12 @@
 import { describe, expect, it } from 'vitest'
-import { buildSearchIndex, V2_PRODUCT_ENTRY, type SearchIndexSource } from '@/lib/search-index'
+import {
+  buildArtifactEntries,
+  buildDocumentEntries,
+  buildModuleEntries,
+  buildSearchIndex,
+  V2_PRODUCT_ENTRY,
+  type SearchIndexSource,
+} from '@/lib/search-index'
 
 const sources: SearchIndexSource[] = [
   {
@@ -55,6 +62,43 @@ describe('buildSearchIndex', () => {
       label: 'Ultrametric CLI/MCP',
       sublabel: 'Start and run your company from any agent',
       href: '/get-started',
+    })
+  })
+
+  it('builds artifact entries: index lead + one /artifacts/[id] row per registry artifact, aliases keyed by id', () => {
+    const entries = buildArtifactEntries(
+      [{ id: '83b-election', label: 'Filed 83(b) election', producerTitle: 'File the 83(b) election' }],
+      { '83b-election': ['83B', '83(b)'] },
+    )
+    expect(entries[0]).toEqual(expect.objectContaining({ type: 'artifact', href: '/artifacts' }))
+    expect(entries[1]).toEqual({
+      type: 'artifact',
+      label: 'Filed 83(b) election',
+      sublabel: 'Artifact · produced by File the 83(b) election',
+      href: '/artifacts/83b-election',
+      keywords: ['83b', '83(b)'],
+    })
+  })
+
+  it('builds module entries: index lead + one /open-modules/[id] row per module, sublabel = the README computes cell', () => {
+    const entries = buildModuleEntries([{ id: 'capTable', label: 'Cap table', computes: 'Ownership math' }])
+    expect(entries[0]).toEqual(expect.objectContaining({ type: 'module', href: '/open-modules' }))
+    expect(entries[1]).toEqual({
+      type: 'module',
+      label: 'Cap table',
+      sublabel: 'Ownership math',
+      href: '/open-modules/capTable',
+    })
+  })
+
+  it('builds document entries: index lead + per-document rows that all land on /open-documents (no per-document page exists)', () => {
+    const entries = buildDocumentEntries([{ name: 'Postmoney Safe', publisher: 'Y Combinator' }])
+    expect(entries[0]).toEqual(expect.objectContaining({ type: 'document', href: '/open-documents' }))
+    expect(entries[1]).toEqual({
+      type: 'document',
+      label: 'Postmoney Safe',
+      sublabel: 'Y Combinator',
+      href: '/open-documents',
     })
   })
 
