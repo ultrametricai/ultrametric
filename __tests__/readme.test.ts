@@ -173,6 +173,8 @@ describe('README.md "Use it from an agent" (founder batch 2026-10-03)', () => {
   })
 
   it('documents the real CLI/MCP (the shipped ultrametric npm package) and points at /get-started', () => {
+    // 2026-10-08: /get-started also appears in Start here (the agent persona installs first),
+    // so these pins scope to the section, not the whole README.
     // Correction 2026-10-05: an earlier pass wrongly claimed no CLI existed — the `ultrametric`
     // npm package (CLI + MCP server) shipped 2026-09-30 with /get-started as its install page
     // and lib/ultrametricCli.ts mapping the corpus steps it drives.
@@ -183,5 +185,86 @@ describe('README.md "Use it from an agent" (founder batch 2026-10-03)', () => {
     for (const inlined of ['npx ultrametric', 'claude mcp add', 'pnpm dlx', 'mcp.ultrametric']) {
       expect(section).not.toContain(inlined)
     }
+  })
+})
+
+// Founder batch 2026-10-08: the Start-here founder table regrouped by the question being
+// asked (one row per repo layer, the founder's approved labels), three personas instead of
+// two, and the geo line updated to the shipped country set. Same source-pin pattern: repo
+// paths must exist, external labels must appear.
+describe('README.md "Start here" regroup (founder batch 2026-10-08)', () => {
+  const startHere = readme.slice(readme.indexOf('## Start here'), readme.indexOf('## Processes'))
+
+  it('groups the founder table by the question being asked, the approved labels in order', () => {
+    const groups = [
+      'Do the work',
+      'Know the rules',
+      'Pick the tools',
+      "The objects you'll produce",
+      'The math underneath',
+      'Judgment, with sources',
+      'See it run',
+    ]
+    let last = -1
+    for (const g of groups) {
+      const at = startHere.indexOf(`| ${g} |`)
+      expect(at, `missing group row "${g}"`).toBeGreaterThan(-1)
+      expect(at, `group "${g}" out of order`).toBeGreaterThan(last)
+      last = at
+    }
+  })
+
+  it('every repo path and app route the grouped table points at resolves', () => {
+    for (const p of [
+      'rules',
+      'jurisdictions',
+      path.join('processes', 'company-fields.json'),
+      path.join('processes', 'SITUATIONS.md'),
+      path.join('lore', 'registry.json'),
+      path.join('open-modules', 'README.md'),
+    ]) {
+      expect(fs.existsSync(path.join(ROOT, p)), `missing repo path ${p}`).toBe(true)
+    }
+    for (const route of [
+      path.join('app', 'artifacts', 'page.tsx'),
+      path.join('app', 'open-documents', 'page.tsx'),
+      path.join('app', 'stacks'),
+      path.join('app', 'startup-sim'),
+      path.join('app', 'situations'),
+    ]) {
+      expect(fs.existsSync(path.join(ROOT, route)), `missing app route ${route}`).toBe(true)
+    }
+    for (const url of [
+      'https://ultrametric.ai/artifacts',
+      'https://ultrametric.ai/open-documents',
+      'https://ultrametric.ai/arena/government-services',
+    ]) {
+      expect(startHere, `table is missing ${url}`).toContain(url)
+    }
+  })
+
+  it('states the shipped geo country set (PT and CA included), not the stale five', () => {
+    expect(startHere).toContain('US · UK · IN · DE · FR · PT · CA')
+    expect(readme).not.toContain('(US · UK · IN · DE · FR)')
+  })
+
+  it('addresses three personas in order: founder (the table), agent (install first), contributor (one pointer)', () => {
+    const founder = startHere.indexOf("**You're a founder starting or running a company.**")
+    const agent = startHere.indexOf("**You're an agent")
+    const contributor = startHere.indexOf("**You're a contributor.**")
+    expect(founder).toBeGreaterThan(-1)
+    expect(agent).toBeGreaterThan(founder)
+    expect(contributor).toBeGreaterThan(agent)
+    // The agent persona leads with the CLI + MCP install (/get-started, the ultrametric npm
+    // package) and only then the curl surfaces.
+    const agentBlock = startHere.slice(agent, contributor)
+    const install = agentBlock.indexOf('https://ultrametric.ai/get-started')
+    expect(install).toBeGreaterThan(-1)
+    expect(agentBlock).toContain('`ultrametric` npm package')
+    expect(install).toBeLessThan(agentBlock.indexOf('curl https://'))
+    // The contributor line points back at the contribution-guides row and CONTRIBUTING.md.
+    expect(startHere.slice(contributor)).toContain('CONTRIBUTING.md')
+    // The tasks-only rule stands: the Map cross-link survives the regroup (also pinned above).
+    expect(startHere).toContain('[Map of the repo](#map-of-the-repo)')
   })
 })

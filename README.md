@@ -14,22 +14,25 @@
 
 ## Start here
 
-**You're a founder starting or running a company:**
+**You're a founder starting or running a company.** One row per repo layer, grouped by the
+question you're asking:
 
-| What you need | Where |
+| The question | Where |
 | --- | --- |
-| Startup processes | [/processes](https://ultrametric.ai/processes): every founder process with its Agentic %, plus the chained playbooks |
-| A situation hits | [/situations](https://ultrametric.ai/situations): reactive, trigger-driven work (a breach, served papers, a tax notice), hottest clock first; doctrine in [`processes/SITUATIONS.md`](processes/SITUATIONS.md) |
-| Vendor rankings | [/overall](https://ultrametric.ai/overall) · [per-arena leaderboards](https://ultrametric.ai/arenas) · [/compare](https://ultrametric.ai/compare) |
-| Stacks | [/stacks](https://ultrametric.ai/stacks): proven toolchains to use and improve |
-| Open modules | [`open-modules/README.md`](open-modules/README.md): the cap-table, runway, deadline, equity, and tax math as source-cited code in [`lib/openstartup/`](lib/openstartup/) |
-| The simulator | [/startup-sim](https://ultrametric.ai/startup-sim): a simulated company runs the corpus end to end |
-| Your context | the geo switcher on process/product pages (US · UK · IN · DE · FR) |
+| Do the work | [/processes](https://ultrametric.ai/processes): every founder process with its Agentic %, plus the chained playbooks · [/situations](https://ultrametric.ai/situations): reactive, trigger-driven work (a breach, served papers, a tax notice), hottest clock first; doctrine in [`processes/SITUATIONS.md`](processes/SITUATIONS.md) |
+| Know the rules | dated rule cards in [`rules/`](rules/), the jurisdiction registry and per-country vendor availability in [`jurisdictions/`](jurisdictions/) · the geo views on the site: the geo switcher on process/product pages and the per-country process views (US · UK · IN · DE · FR · PT · CA) |
+| Pick the tools | [/overall](https://ultrametric.ai/overall) · [per-arena leaderboards](https://ultrametric.ai/arenas) · [/compare](https://ultrametric.ai/compare) · [/stacks](https://ultrametric.ai/stacks): proven toolchains to use and improve · [government services](https://ultrametric.ai/arena/government-services), with per-country agency boards |
+| The objects you'll produce | [/artifacts](https://ultrametric.ai/artifacts): the documents and records the processes produce and consume · [/open-documents](https://ultrametric.ai/open-documents): the canonical startup legal documents as dated, link-only records |
+| The math underneath | [`open-modules/README.md`](open-modules/README.md): the cap-table, runway, deadline, equity, and tax math as source-cited code in [`lib/openstartup/`](lib/openstartup/) · the company data fields the modules consume, [`processes/company-fields.json`](processes/company-fields.json) |
+| Judgment, with sources | [`lore/registry.json`](lore/registry.json): schooled startup heuristics as sourced claims, the cross-school tensions mapped on both sides |
+| See it run | [/startup-sim](https://ultrametric.ai/startup-sim): a simulated company runs the corpus end to end |
 
 This table is tasks only; the single structural overview of the repo is
 [Map of the repo](#map-of-the-repo) below.
 
-**You're an agent or developer consuming the data.** Nothing to install, no auth:
+**You're an agent (or building one).** Install the `ultrametric` npm package, the CLI and
+MCP server; [/get-started](https://ultrametric.ai/get-started) is the install page. The data
+itself needs no install and no auth:
 
 ```bash
 curl https://ultrametric.ai/data/categories.json           # every arena
@@ -40,8 +43,11 @@ curl https://ultrametric.ai/llms.txt                       # the index for agent
 
 Every shape is published as a JSON Schema in [`schemas/`](schemas/), the endpoints are
 described by [/openapi.json](https://ultrametric.ai/openapi.json), and the ground rules are in
-[governance/AGENT_POLICY.md](governance/AGENT_POLICY.md). More surfaces (process manifests,
-the search index, the RSS feed) in [Use it from an agent](#use-it-from-an-agent) below.
+[governance/AGENT_POLICY.md](governance/AGENT_POLICY.md). More surfaces (the docs site, process
+manifests, the search index, the RSS feed) in [Use it from an agent](#use-it-from-an-agent) below.
+
+**You're a contributor.** Start from the contribution-guides row at the top of this page;
+the full flow is [CONTRIBUTING.md](./CONTRIBUTING.md).
 
 ## Processes
 
