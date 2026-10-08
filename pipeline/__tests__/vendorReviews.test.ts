@@ -64,8 +64,10 @@ describe('generated vendor-review interchange records', () => {
     expect(r.dimensions.agentReady).toBe(76.2)
     expect(r.dimensions.agentic).toBe(78)
     expect(r.dimensions.aiEra).toBe(59.8)
-    expect(r.tested_on).toBe('2026-09-30')
-    expect(r.recheck_due).toBe('2026-12-29') // tested_on + 90 days
+    // tested_on tracks the arena's rankings generatedAt — re-pinned 2026-10-08 when the
+    // family-judgement wave's grok-build bring-up re-derived ai-coding.
+    expect(r.tested_on).toBe('2026-10-08')
+    expect(r.recheck_due).toBe('2027-01-06') // tested_on + 90 days
     expect(r.evidence[0].kind).toBe('probe')
     expect(r.jurisdictions).toEqual([]) // no geo spike rows for ai-coding
   })

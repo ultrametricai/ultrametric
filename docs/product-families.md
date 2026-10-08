@@ -337,3 +337,40 @@ re-probe and supersede it.
   (notebooklm) — EXPECTED_TOTAL_PROBES 428 → 437; confidence intervals recomputed for all four
   arenas. Gotcha: antigravity.google serves compressed bytes even without Accept-Encoding — probe
   curls there need `--compressed`.
+
+## 2026-10-08 family-judgement wave (founder GO)
+
+Founder GO 2026-10-08: run the judgement on the registries' "not yet judged" members. Every
+page-only line was re-mapped against the arenas live TODAY (several notes predated arenas that
+now exist); six members judged in under the standard pipeline, incumbents byte-identical via the
+judge cellHash cache.
+
+| Member | Arena | Result | Why now |
+| --- | --- | --- | --- |
+| Grok Build (xAI) | ai-coding | #3/15, aiEra 47.9 | Its own note queued it first-priority; client open-sourced (xai-org/grok-build, Apache-2.0, 27.3k stars). Recorded keyless probe: docs-md mirror (EXPECTED_TOTAL_PROBES 1029 → 1030). |
+| Trello (Atlassian) | project-management | #7/7, aiEra 18.0 | Note already called it "a genuine project-management competitor", deferred only because the prior sweep was Stripe-scoped. Honest low: thin agent surface next to Linear/Asana. |
+| Shopify POS | mobile-payments | #5/5, aiEra 18.7 | Same deferral note. help.shopify.com HTML is bot-walled but serves full `.md` mirrors — corpus built from those plus shopify.dev. |
+| Adyen Risk Management | fraud-prevention | #2/6, aiEra 28.0 | Old note said "no fraud-prevention arena yet" — stale: the arena is live (stripe-radar, sift, signifyd, forter, riskified). |
+| Adyen Agentic | agentic-commerce | #8/8, aiEra 21.8 | Old note said "no separate agentic-commerce arena" — stale: the arena is live with the Stripe/Shopify/PayPal agentic lines. Honest low: ACP/UCP integration docs, no judged runtime surface of its own yet. |
+| Stripe Invoicing | billing-subscriptions | #4/8, aiEra 32.6 | Founder-directed mapping. Separately priced per paid invoice (0.4%/0.5%) and usable without subscriptions — the TaxJar/Stripe Tax same-vendor precedent, corpus scoped to invoicing docs only. |
+
+na-harmonization audit: zero flips applied. Every new-product `na` shares the na with incumbent
+peers (grok-build's `agentic-mcp-server` na sits beside 8 incumbent na's — the judge prompt's own
+agent-role boundary; trello's 6 na cells each have incumbent na peers on the same story), so the
+ByteAsk "left as judged" precedent governs. The product-scoped audit tool is
+`pipeline/scripts/na-harmonize-product.ts`; the arena-wide dry run also surfaced 21 pre-existing
+incumbent na/none splits in project-management, left for a dedicated harmonization lane.
+
+Still page-only after this wave, with the arena that WOULD fit (arena-roadmap candidates, not
+invented here): xAI API, OpenAI API Platform/Agents API, Claude Developer Platform/Managed
+Agents → frontier-model-apis (planned); Grok Imagine, OpenAI Images, Google Flow →
+image-generation / video-generation (planned); Claude in Chrome, Gemini in Chrome, Comet →
+browsers (planned); VS Code → code-editors (planned); Confluence → docs-workspaces (planned);
+Intercom Helpdesk → helpdesk (planned); Jira Service Management, Linear Asks → itsm (planned);
+Braintree → payments-infra (planned); Kong Mesh → service-mesh (no roadmap entry); Postman SDK
+Generator → sdk-generators (planned); Grokipedia, Cash App, Venmo, Shop, Afterpay, Stripe
+Capital/Climate, Mercury lending lines → no honest arena or roadmap slot today. Next-tranche
+judge candidates (existing arenas, gated on their own notes): Codex Security and Claude Security
+→ security-scanners (young record / enterprise beta), Volcano SDK → agent-frameworks, Google AI
+Studio → vibe-coding (login-walled Build mode), Postman Fabric Gateway → model-gateways (early
+access), Mercury Central → payroll (crawl-gap spike first).

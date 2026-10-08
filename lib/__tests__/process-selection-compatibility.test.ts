@@ -62,11 +62,12 @@ describe('existing judged selection compatibility', () => {
         }
       }
     }
-    // Re-pinned at the government-services Phase 2 bring-up (2026-10-07, +31 judged agencies):
-    // the new positive gov verdicts add function-arena candidates on the registry/tax steps.
-    // Union after the sw_011 merge: 2811 (Phase 2 base) + 6 new sw_011 function cells.
-    expect(positiveCount).toBe(2817)
-    expect(zeroCount).toBe(185)
+    // Re-pinned at the family-judgement bring-up wave (2026-10-08, founder GO: grok-build,
+    // trello, shopify-pos, adyen-risk, adyen-agentic, stripe-invoicing into their arenas):
+    // the new positive verdicts add function-arena candidates on steps mapped to those
+    // arenas. 2817 (sw_011 union) + 41 new function cells from the six judged entrants.
+    expect(positiveCount).toBe(2858)
+    expect(zeroCount).toBe(188) // +3 zero-score rows from the 2026-10-08 entrants (stay ineligible)
     expect(extraArena).toBe(93)
   })
 

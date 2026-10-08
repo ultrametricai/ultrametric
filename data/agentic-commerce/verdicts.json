@@ -1,5 +1,671 @@
 [
   {
+    "productId": "adyen-agentic",
+    "storyId": "agent-cart-create",
+    "verdict": "full",
+    "quality": 7,
+    "confidence": "medium",
+    "rationale": "Adyen documents managing the full ACP and UCP checkout flows for agent platforms, with session creation that returns the UCP envelope, totals and fulfillment options. Its Agentic Cart API adds cancel and commit session steps covering pricing, stock, tax and shipping orchestration. Missing for 10: no explicit evidence of an update-session or cart-modification call (only implied by 'full checkout flow'), and no independent or hands-on corroboration.",
+    "evidenceIds": [
+      "adyen-agentic-docs-4",
+      "adyen-agentic-docs-5",
+      "adyen-agentic-docs-8",
+      "adyen-agentic-docs-9",
+      "adyen-agentic-docs-11",
+      "adyen-agentic-docs-12",
+      "adyen-agentic-docs-20"
+    ]
+  },
+  {
+    "productId": "adyen-agentic",
+    "storyId": "agent-catalog-search",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Adyen Agentic covers the merchant side of product discovery: a feed API syncs catalogs to named AI platforms such as OpenAI and Meta, and agent platforms can run ACP/UCP checkout flows and tokenize credentials. The pack shows no API or endpoint that lets an arbitrary agent search products across merchants with keyless or self-service credentials. Discovery appears to flow through feeds pushed to specific large platforms rather than through an open search capability.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "adyen-agentic",
+    "storyId": "agent-checkout-complete",
+    "verdict": "full",
+    "quality": 8,
+    "confidence": "medium",
+    "rationale": "Adyen documents managing the full ACP and UCP checkout flows for agent platforms: creating checkout sessions with totals and fulfillment options, tokenizing shopper credentials into delegated ACP/UCP tokens tied to the session and merchant, and orchestrating stock, tax, shipping and payment authorization through to a completed transaction. missing for 10: explicit documentation of the order-confirmation step returned to the agent (only implied via payment authorization and the optional commit session), independent or hands-on corroboration of an end-to-end agent purchase.",
+    "evidenceIds": [
+      "adyen-agentic-docs-3",
+      "adyen-agentic-docs-4",
+      "adyen-agentic-docs-5",
+      "adyen-agentic-docs-6",
+      "adyen-agentic-docs-7",
+      "adyen-agentic-docs-8",
+      "adyen-agentic-docs-9",
+      "adyen-agentic-docs-12",
+      "adyen-agentic-docs-15",
+      "adyen-agentic-docs-23"
+    ]
+  },
+  {
+    "productId": "adyen-agentic",
+    "storyId": "agent-fraud-liability",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "The axis applies, since a payments provider for agent-initiated transactions could reasonably document liability and chargeback allocation. The evidence pack contains no documentation of liability shift, chargeback handling, or dispute responsibility for agentic transactions. The only related item is a marketing line that transactions are 'screened for fraud' (adyen-agentic-docs-23), which does not explain who bears the risk.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "adyen-agentic",
+    "storyId": "agent-identity-tiers",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Agent identity verification is a fair question for an agentic-commerce payments platform, so the axis applies. However, the evidence only covers credential tokenization, ACP/UCP checkout orchestration, catalog feeds and fraud screening. Nothing shows agents presenting registered profiles, cryptographic signatures or trust tiers that let merchants tell trusted agent traffic from anonymous bots. Agent platforms integrating with Adyen and tokens bound to sessions do not amount to merchant-visible agent identity.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "adyen-agentic",
+    "storyId": "agent-order-attribution",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "The axis applies, because Adyen Agentic is a merchant-facing agentic commerce product and attributing orders to agents is a plausible capability for it. However, the evidence never mentions recording which agent originated an order, or reporting and filtering transactions by agent. The closest items describe tokens tied to a checkout session and merchant identifier, and a Google-agent-specific integration, but neither shows agent-level attribution or reporting.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "adyen-agentic",
+    "storyId": "agent-order-tracking",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Adyen Agentic is an agentic commerce platform, so post-purchase order status queries are a fair axis to judge it on. The evidence covers catalog feeds, the checkout session lifecycle (create, commit, cancel), payment tokenization and authorization. Nothing shows an agent querying order status or shipment tracking after purchase. Webhooks and the integration with existing order management systems are merchant-side, and the MCP server is described only generically, so none of these show agent-facing order tracking.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "adyen-agentic",
+    "storyId": "agent-traffic-controls",
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "The Agentic Feed API lets a merchant choose which AI platforms (e.g. OpenAI, Meta) each catalog item is synchronized to. That works as an implicit platform-level allow-list for catalog exposure, and marketing claims merchants stay \"fully in control.\" There is no evidence of explicit allow/deny rules for specific agents, rate limiting, or access controls on checkout. missing for 10: per-agent allow/deny controls, rate-limiting configuration, checkout-level agent access policies, any documentation or hands-on corroboration of agent access management.",
+    "evidenceIds": [
+      "adyen-agentic-docs-13",
+      "adyen-agentic-docs-21"
+    ]
+  },
+  {
+    "productId": "adyen-agentic",
+    "storyId": "agent-wallet-provisioning",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Adyen Agentic serves merchants and agent platforms. Its documented credential model tokenizes a shopper's existing payment credential into checkout-scoped ACP/UCP tokens that the agent passes to merchants. Nothing in the evidence describes a user-funded wallet that an agent holds and spends from, user-set spending controls, or balance visibility. Payment credentials for agents are a fair axis for an agentic-payments product, so the absence of this capability is 'none' rather than 'na'.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "adyen-agentic",
+    "storyId": "agentic-agent-docs",
+    "verdict": "full",
+    "quality": 9,
+    "confidence": "high",
+    "rationale": "A live probe confirms an llms.txt at docs.adyen.com that returns HTTP 200 and describes Adyen's developer and merchant documentation. A second probe confirms the docs pages are served as agent-friendly Markdown (.md) with structured front-matter, including the Agentic Commerce pages themselves. Missing for 10: independent or community corroboration of agents successfully consuming these docs, and no evidence of an expanded llms-full.txt or how completely llms.txt indexes the agentic-commerce section.",
+    "evidenceIds": [
+      "adyen-agentic-probe-1",
+      "adyen-agentic-probe-2",
+      "adyen-agentic-docs-2"
+    ]
+  },
+  {
+    "productId": "adyen-agentic",
+    "storyId": "agentic-ai-insights",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "The axis applies, because a payments and commerce platform could plausibly offer AI-generated insights on merchant data. The evidence, however, only describes infrastructure that lets external AI agents discover products, check out and pay. The MCP server lets users query Adyen in natural language through their own external LLM client, which is not in-product insight or suggestion generation. Nothing in the pack shows AI-generated insights or recommendations drawn from the user's data inside the product.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "adyen-agentic",
+    "storyId": "agentic-autonomous-automation",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Adyen Agentic is payments and checkout infrastructure that lets third-party AI agents (ChatGPT, Gemini, Copilot) buy on behalf of shoppers, so a background-automation axis is a fair question for it. However, nothing in the evidence shows a user configuring automations that run autonomously in the background. Webhooks, automatic feed syncing and Adyen-handled checkout orchestration are platform-side integration mechanics, not user-defined autonomous workflows.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "adyen-agentic",
+    "storyId": "agentic-builtin-assistant",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "A built-in AI assistant is a fair axis for a payments SaaS platform, but the evidence shows no such assistant inside Adyen Agentic. The product is infrastructure that lets third-party agents (Gemini, ChatGPT, Copilot) transact, and its MCP server lets users drive Adyen from their own external LLM client. Neither is an in-product assistant that users can delegate tasks to.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "adyen-agentic",
+    "storyId": "agentic-headless",
+    "verdict": "partial",
+    "quality": 5,
+    "confidence": "medium",
+    "rationale": "Adyen Agentic is API-driven and server-to-server, so it can be automated without a UI. Evidence shows a batch Feed API (up to 200 items per request), Cart API session endpoints called from your server, webhooks that remove the need for polling, and published OpenAPI definitions on GitHub. Nothing addresses CI pipelines specifically, though, and there is no CLI or headless-runner tooling. missing for 10: CI/CD integration docs, an official CLI or headless automation tooling, test/sandbox automation guidance for pipelines, independent hands-on corroboration.",
+    "evidenceIds": [
+      "adyen-agentic-docs-10",
+      "adyen-agentic-docs-14",
+      "adyen-agentic-docs-18",
+      "adyen-agentic-gh-1",
+      "adyen-agentic-docs-13"
+    ]
+  },
+  {
+    "productId": "adyen-agentic",
+    "storyId": "agentic-mcp-client",
+    "verdict": "na",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Adyen Agentic is payments and commerce infrastructure that outside AI agents call into. It is not an agent or LLM host that would load MCP servers and use their tools, so the MCP-client story is a category error for this product. The documented Adyen MCP server is the server role, which is a different axis and does not make this client-side story applicable.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "adyen-agentic",
+    "storyId": "agentic-mcp-server",
+    "verdict": "full",
+    "quality": 7,
+    "confidence": "medium",
+    "rationale": "Adyen documents an official Model Context Protocol server that lets users drive Adyen through natural language from their chosen LLM client. A probe confirms the dedicated MCP server docs page exists, so an agent can connect via a first-party MCP server. Missing for 10: details of which tools/APIs the server exposes (e.g. whether it covers the Agentic Commerce APIs), setup/auth and transport documentation, and independent or hands-on corroboration.",
+    "evidenceIds": [
+      "adyen-agentic-docs-17",
+      "adyen-agentic-probe-4"
+    ]
+  },
+  {
+    "productId": "adyen-agentic",
+    "storyId": "agentic-nl-commands",
+    "verdict": "partial",
+    "quality": 5,
+    "confidence": "medium",
+    "rationale": "Adyen documents an official MCP server that lets users work with Adyen in natural language through their chosen LLM client (docs-17, probe-4). This requires bringing your own LLM client, and the evidence does not show which operations are exposed or whether the Agentic Commerce features can be driven this way. The other docs describe shopper-facing AI agents transacting with merchants, not users operating the product by natural language. Missing for 10: a native natural-language interface, documentation of which operations the MCP server exposes, coverage of Agentic Commerce flows via natural language, independent or hands-on corroboration.",
+    "evidenceIds": [
+      "adyen-agentic-docs-17",
+      "adyen-agentic-probe-4"
+    ]
+  },
+  {
+    "productId": "adyen-agentic",
+    "storyId": "agentic-official-cli",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "A payments platform like Adyen could plausibly ship an official CLI, so the axis applies. The evidence pack documents an MCP server, OpenAPI definitions on GitHub, llms.txt and markdown docs, but nothing describes an official command-line tool.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "adyen-agentic",
+    "storyId": "agentic-public-api",
+    "verdict": "full",
+    "quality": 8,
+    "confidence": "high",
+    "rationale": "Adyen documents public APIs for its agentic commerce product. These include the Agentic Cart API (create, commit and cancel session), the Agentic Feed API (batch product uploads of up to 200 items), and ACP/UCP agent-platform integrations that return tokens and sessions, plus webhooks. Machine-readable OpenAPI definitions are published in the official adyen-openapi GitHub repo, and the docs are available in LLM-friendly form (llms.txt and .md pages). Missing for 10: independent or hands-on corroboration of driving the agentic APIs, and no confirmation that the OpenAPI repo covers the Agentic Cart/Feed APIs specifically (the docs-domain OpenAPI paths returned 404).",
+    "evidenceIds": [
+      "adyen-agentic-docs-4",
+      "adyen-agentic-docs-5",
+      "adyen-agentic-docs-9",
+      "adyen-agentic-docs-10",
+      "adyen-agentic-docs-11",
+      "adyen-agentic-docs-12",
+      "adyen-agentic-docs-14",
+      "adyen-agentic-docs-18",
+      "adyen-agentic-gh-1",
+      "adyen-agentic-probe-1",
+      "adyen-agentic-probe-2",
+      "adyen-agentic-probe-3"
+    ]
+  },
+  {
+    "productId": "adyen-agentic",
+    "storyId": "agentic-scoped-keys",
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "The only scoped-credential evidence is Adyen's delegated payment tokens. Adyen tokenizes shopper credentials and returns ACP/UCP tokens for the agent to pass to merchants, and the UCP token is bound to a specific checkout session and merchant identifier. That is a narrowly scoped credential for agent purchases, but it is not a general API credential. Nothing shows issuing role-scoped or permission-limited API keys for an agent, including for the MCP server. Missing for 10: role- or permission-scoped API key issuance for agents, least-privilege configuration docs for MCP/API access, expiry or revocation controls, independent corroboration.",
+    "evidenceIds": [
+      "adyen-agentic-docs-3",
+      "adyen-agentic-docs-6",
+      "adyen-agentic-docs-7"
+    ]
+  },
+  {
+    "productId": "adyen-agentic",
+    "storyId": "agentic-sdks",
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "The only build-against artifact in evidence is Adyen's official OpenAPI definitions repo on GitHub, usable with Swagger tooling to generate clients. The pack never mentions official language SDKs or client libraries for the agentic APIs (ACP/UCP tokenization, Agentic Cart, Feed). Probes of OpenAPI paths on docs.adyen.com returned 404. Missing for 10: documented official language SDKs/client libraries, SDK coverage of the Agentic Commerce APIs (cart, feed, ACP/UCP), install/usage docs, and independent or hands-on corroboration.",
+    "evidenceIds": [
+      "adyen-agentic-gh-1"
+    ]
+  },
+  {
+    "productId": "adyen-agentic",
+    "storyId": "agentic-webhooks",
+    "verdict": "full",
+    "quality": 5,
+    "confidence": "medium",
+    "rationale": "Adyen's first-party developer docs describe webhooks as the way to get status changes for asynchronous processes without polling an API endpoint, which covers the core of subscribing to events. The evidence is a single platform-level mention, so its depth and its scope for agentic commerce are thin. Missing for 10: a list of event types (especially agentic checkout or session events), subscription and configuration details, signature verification and retry behavior, and independent or hands-on corroboration.",
+    "evidenceIds": [
+      "adyen-agentic-docs-18"
+    ]
+  },
+  {
+    "productId": "adyen-agentic",
+    "storyId": "api-interactive-docs",
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "The only relevant evidence is Adyen's official OpenAPI definitions on GitHub. Users can upload these to Swagger Editor or SwaggerHub to get an interactive, runnable reference, but that relies on third-party tooling rather than a first-party explorer. A probe of standard OpenAPI paths on docs.adyen.com returned 404, and nothing shows a hosted interactive reference or runnable examples for the Agentic Commerce APIs. Missing for 10: a first-party interactive API reference, runnable or try-it examples in the docs, coverage of the Agentic Cart/Feed/ACP/UCP endpoints, and independent or hands-on corroboration.",
+    "evidenceIds": [
+      "adyen-agentic-gh-1",
+      "adyen-agentic-probe-3"
+    ]
+  },
+  {
+    "productId": "adyen-agentic",
+    "storyId": "api-machine-spec",
+    "verdict": "partial",
+    "quality": 5,
+    "confidence": "medium",
+    "rationale": "Adyen publishes an official GitHub repo (Adyen/adyen-openapi) of OpenAPI definitions that can be downloaded and loaded into Swagger Editor or SwaggerHub, so a machine-readable spec exists for Adyen APIs. The evidence does not show that the agentic-specific APIs (Agentic Cart API, Feed API, ACP/UCP agent-platform flows) are in that repo. The probe found no spec at guessed docs-site paths, which only means there is no discoverable spec on the docs domain, not that the GitHub definitions don't work. Missing for 10: confirmation that the Agentic Commerce APIs are covered by the published OpenAPI definitions, a spec discoverable from the agentic docs, and independent or hands-on corroboration.",
+    "evidenceIds": [
+      "adyen-agentic-gh-1",
+      "adyen-agentic-probe-3"
+    ]
+  },
+  {
+    "productId": "adyen-agentic",
+    "storyId": "api-sandbox",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "A sandbox or test environment is a fair question for a payments and agentic-commerce platform, so the axis applies. However, no item in the evidence pack mentions a test or sandbox environment, test API keys, or isolation from live data. The MCP server, webhooks and OpenAPI citations describe other capabilities and say nothing about non-production testing.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "adyen-agentic",
+    "storyId": "api-versioning-policy",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "API versioning and deprecation policy are a fair question for a payments API platform, so the axis applies. The pack covers agentic commerce flows, an MCP server, webhooks and OpenAPI definitions on GitHub, but nothing mentions API version numbers, version lifecycles or a deprecation policy.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "adyen-agentic",
+    "storyId": "automation-bulk-operations",
+    "verdict": "partial",
+    "quality": 5,
+    "confidence": "medium",
+    "rationale": "The Agentic Feed API supports batch uploads of product data of up to 200 items per batch, and a single item can target multiple AI platforms in one request. That is real bulk capability, but the evidence shows it only for catalog-feed ingestion. Missing for 10: bulk operations beyond product feed uploads (e.g., bulk session cancels or commits, bulk payment or refund actions), bulk actions via the MCP server, and independent or hands-on corroboration of batch behavior and limits.",
+    "evidenceIds": [
+      "adyen-agentic-docs-14",
+      "adyen-agentic-docs-13",
+      "adyen-agentic-docs-19"
+    ]
+  },
+  {
+    "productId": "adyen-agentic",
+    "storyId": "automation-rules-engine",
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "The only event-driven capability in the evidence is Adyen's webhooks, which push notifications on asynchronous status changes so you don't have to poll. Acting on those events still requires your own server code. The Agentic Cart API's optional cancel/commit session callbacks (e.g., releasing inventory when a shopper abandons checkout) are integration hooks, not user-defined rules. missing for 10: a user-configurable rules engine (condition → action), automatic action execution on events without custom code, documentation of rule authoring/management, and independent corroboration.",
+    "evidenceIds": [
+      "adyen-agentic-docs-18",
+      "adyen-agentic-docs-11",
+      "adyen-agentic-docs-12"
+    ]
+  },
+  {
+    "productId": "adyen-agentic",
+    "storyId": "automation-scheduled-jobs",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Scheduling recurring jobs or workflows is a fair automation question for a commerce and payments platform, for example scheduled feed syncs or recurring payment runs. However, nothing in the evidence pack shows a scheduler, cron-style triggers, or recurring workflow capability. Webhooks, batch feed uploads and the MCP server are event-driven or on-demand features, not scheduling, so they do not count toward this story.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "adyen-agentic",
+    "storyId": "automation-versioned-workflows",
+    "verdict": "na",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Adyen Agentic is payment and commerce infrastructure: it tokenizes credentials, runs ACP/UCP checkout flows and syncs product feeds to AI platforms. It does not host user-authored automations, so versioning, reviewing and rolling them back is outside its product category. Nothing in the evidence shows an automation-authoring capability that would make this axis apply.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "adyen-agentic",
+    "storyId": "catalog-feed-publish",
+    "verdict": "full",
+    "quality": 8,
+    "confidence": "medium",
+    "rationale": "Adyen documents a dedicated Agentic Feed API that lets merchants upload product data in batches of up to 200 items. That data is mapped and synchronized to AI platforms like OpenAI and Meta, and one item can target several platforms in a single request. Marketing material adds that a single feed adapts to each platform and carries real-time catalog and inventory data. Missing for 10: independent or hands-on corroboration that the feed works in practice, and detail on the feed schema and data mapping.",
+    "evidenceIds": [
+      "adyen-agentic-docs-13",
+      "adyen-agentic-docs-14",
+      "adyen-agentic-docs-19",
+      "adyen-agentic-docs-2"
+    ]
+  },
+  {
+    "productId": "adyen-agentic",
+    "storyId": "chat-surface-checkout",
+    "verdict": "full",
+    "quality": 8,
+    "confidence": "medium",
+    "rationale": "Adyen documents merchant-side agentic checkout: AI agents such as Gemini, ChatGPT and Copilot can find products and make purchases. Merchants get ACP and UCP checkout flows plus a dedicated Google AI Mode/Gemini integration. They also get a Cart API with session commit/cancel, a product feed synced to OpenAI and Meta, and embedded commerce so shoppers complete transactions without leaving the agent. missing for 10: explicit evidence of Claude as a supported purchase surface, independent or hands-on corroboration of live in-chat purchases.",
+    "evidenceIds": [
+      "adyen-agentic-docs-1",
+      "adyen-agentic-docs-2",
+      "adyen-agentic-docs-4",
+      "adyen-agentic-docs-5",
+      "adyen-agentic-docs-8",
+      "adyen-agentic-docs-10",
+      "adyen-agentic-docs-12",
+      "adyen-agentic-docs-13",
+      "adyen-agentic-docs-15",
+      "adyen-agentic-docs-16",
+      "adyen-agentic-docs-20",
+      "adyen-agentic-docs-21"
+    ]
+  },
+  {
+    "productId": "adyen-agentic",
+    "storyId": "checkout-spec-versioned",
+    "verdict": "partial",
+    "quality": 4,
+    "confidence": "medium",
+    "rationale": "Adyen documents building against named commerce protocols, ACP and UCP. It covers full checkout flows, protocol tokens and UCP session envelopes, and publishes OpenAPI definitions on GitHub that can be loaded into Swagger tooling. However, nothing shows these schemas cover the agentic or protocol APIs specifically, and the docs-hosted OpenAPI probe paths returned 404. Missing for 10: explicit protocol/schema versioning, a published schema tied to the agentic ACP/UCP endpoints, conformance or validation tooling, and independent corroboration.",
+    "evidenceIds": [
+      "adyen-agentic-docs-4",
+      "adyen-agentic-docs-5",
+      "adyen-agentic-docs-6",
+      "adyen-agentic-docs-7",
+      "adyen-agentic-docs-9",
+      "adyen-agentic-gh-1",
+      "adyen-agentic-probe-3"
+    ]
+  },
+  {
+    "productId": "adyen-agentic",
+    "storyId": "dispute-handling-api",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Dispute and chargeback handling is a fair question for an agentic payments product, so the axis applies. However, nothing in the evidence pack mentions disputes, chargebacks, evidence submission, or dispute status and outcomes for agent transactions. The pack covers only checkout, tokenization, catalog feeds, session cancel/commit, generic webhooks, and an MCP server, so this is 'none' rather than 'na'.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "adyen-agentic",
+    "storyId": "fees-transparency-agent-payments",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Published pricing is a fair question for a payments product handling agentic transactions, so the axis applies. However, nothing in the evidence pack mentions fees, pricing schedules, or rates for agent-originated transactions. The docs cover only protocol integration (ACP/UCP tokens, cart and feed APIs, Google agentic payments), so there is no evidence a merchant can price agentic channels without contacting sales.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "adyen-agentic",
+    "storyId": "http-402-machine-payments",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Pay-per-call HTTP 402 machine payments are a fair question for an agentic payments platform, so the axis applies. However, the evidence only covers shopper-centric agentic checkout: ACP/UCP checkout sessions, credential tokenization, product feeds, and carts with tax and shipping. Nothing mentions HTTP 402, per-request API monetization, or agent-to-service micropayments.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "adyen-agentic",
+    "storyId": "human-approval-gate",
+    "verdict": "partial",
+    "quality": 4,
+    "confidence": "low",
+    "rationale": "Adyen's marketing page lists 'Customer approves payment' as a step in its agentic checkout flow. UCP tokens are tied to a specific checkout session and merchant identifier, which suggests per-purchase scoping of what an agent can spend. Beyond that one-line approval claim, the docs never describe how shopper consent is captured, enforced, or recorded before authorization, and the 'commit session' step is a merchant-side price and stock check, not user approval. Missing for 10: documented confirmation or consent mechanism in technical docs, signed mandate support, an auditable record of approval, and independent or hands-on corroboration.",
+    "evidenceIds": [
+      "adyen-agentic-docs-23",
+      "adyen-agentic-docs-7",
+      "adyen-agentic-docs-6"
+    ]
+  },
+  {
+    "productId": "adyen-agentic",
+    "storyId": "merchant-agent-onboarding",
+    "verdict": "partial",
+    "quality": 6,
+    "confidence": "medium",
+    "rationale": "Adyen documents merchant-side integration paths for agent traffic. These include the Agentic Cart API, where the merchant exposes a server that Adyen calls so it need not integrate with each agent platform, plus a Feed API for syncing catalogs to OpenAI/Meta and a Google agentic-commerce integration. Together they amount to a documented 'publish an endpoint' route. However, the evidence never shows that activation is self-serve: there is no setting to enable, agreement to sign, or onboarding step that avoids contacting Adyen. Missing for 10: evidence of a self-serve activation step (toggle, agreement, or Customer Area enablement), explicit onboarding/eligibility steps, independent or hands-on corroboration that a merchant can go live unaided.",
+    "evidenceIds": [
+      "adyen-agentic-docs-2",
+      "adyen-agentic-docs-10",
+      "adyen-agentic-docs-12",
+      "adyen-agentic-docs-13",
+      "adyen-agentic-docs-16",
+      "adyen-agentic-docs-22"
+    ]
+  },
+  {
+    "productId": "adyen-agentic",
+    "storyId": "multi-implementer-adoption",
+    "verdict": "full",
+    "quality": 7,
+    "confidence": "medium",
+    "rationale": "Adyen Agentic is built on multi-party protocols rather than a private integration. It implements both the Agentic Commerce Protocol (ACP) and the Universal Commerce Protocol (UCP) checkout flows. Its docs name several independent platforms it works with: AI agents such as Gemini, ChatGPT and Copilot, catalog sync to OpenAI and Meta, and a dedicated Google agentic commerce integration. Missing for 10: independent or third-party corroboration that these parties actually implement or interoperate in production (all evidence is vendor-claimed), and no evidence of other payment providers implementing the same protocols alongside Adyen.",
+    "evidenceIds": [
+      "adyen-agentic-docs-1",
+      "adyen-agentic-docs-4",
+      "adyen-agentic-docs-5",
+      "adyen-agentic-docs-13",
+      "adyen-agentic-docs-16",
+      "adyen-agentic-docs-21"
+    ]
+  },
+  {
+    "productId": "adyen-agentic",
+    "storyId": "open-spec-published",
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "Adyen Agentic speaks named commerce protocols, ACP and UCP (adyen-agentic-docs-4, -5, -6, -7). Adyen also publishes OpenAPI definitions publicly on GitHub (adyen-agentic-gh-1), which suggests some open, readable API specs. However, nothing in the pack shows that ACP or UCP themselves are openly published, versioned, or usable without an agreement, and the docs-site OpenAPI probe returned 404s (adyen-agentic-probe-3). Missing for 10: evidence that the ACP/UCP specifications are openly published, an explicit versioning scheme for the protocol spec, confirmation that no license or contract is needed to read or implement it, and confirmation that the GitHub OpenAPI definitions cover the agentic commerce endpoints.",
+    "evidenceIds": [
+      "adyen-agentic-docs-4",
+      "adyen-agentic-docs-5",
+      "adyen-agentic-docs-6",
+      "adyen-agentic-docs-7",
+      "adyen-agentic-gh-1",
+      "adyen-agentic-probe-3"
+    ]
+  },
+  {
+    "productId": "adyen-agentic",
+    "storyId": "openness-api-parity",
+    "verdict": "partial",
+    "quality": 5,
+    "confidence": "medium",
+    "rationale": "Adyen Agentic is clearly API-first. Its docs describe a Cart API, a Feed API, full ACP/UCP checkout flows, tokenization, and webhooks, and it publishes OpenAPI definitions on GitHub and an official MCP server. However, nothing in the evidence states or shows that every UI (dashboard/Customer Area) action is also exposed through the API. The OpenAPI probe at the docs domain returned 404, but the specs on GitHub mean this is not a contradiction. Missing for 10: an explicit API/UI parity statement or a feature-by-feature comparison, evidence that dashboard/configuration tasks are API-accessible, and independent corroboration.",
+    "evidenceIds": [
+      "adyen-agentic-docs-4",
+      "adyen-agentic-docs-5",
+      "adyen-agentic-docs-10",
+      "adyen-agentic-docs-11",
+      "adyen-agentic-docs-12",
+      "adyen-agentic-docs-13",
+      "adyen-agentic-docs-17",
+      "adyen-agentic-docs-18",
+      "adyen-agentic-gh-1",
+      "adyen-agentic-probe-4"
+    ]
+  },
+  {
+    "productId": "adyen-agentic",
+    "storyId": "openness-full-export",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Data portability is a fair axis for a merchant payments and commerce platform, but nothing in the evidence documents bulk export of transaction, catalog, or token data in open formats, or an offboarding path. The OpenAPI definitions, webhooks, and MCP server are integration interfaces, not data-export capabilities.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "adyen-agentic",
+    "storyId": "openness-open-license",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Adyen Agentic is a hosted payments and agentic-commerce service, so whether its source is published under an open license is a fair question to ask. The pack shows no such release. The only GitHub item (adyen-openapi) holds API definitions for Swagger tooling, not product source, and no license is stated. The rest of the pack covers proprietary hosted APIs, docs, and an MCP server, none of which is shown to be open-source.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "adyen-agentic",
+    "storyId": "openness-self-host",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Self-hosting is a fair openness question for a commerce and payments platform, so the axis applies. The evidence describes only an Adyen-operated service: Adyen stores credentials, returns tokens, and orchestrates checkout, tax, shipping and authorization on its side. Nothing shows a self-hostable or on-premises deployment of the core product.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "adyen-agentic",
+    "storyId": "order-event-webhooks",
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "Adyen documents general webhooks that push asynchronous status changes instead of polling. The Agentic Cart API has Adyen call the merchant server for session events such as cancel (release reserved inventory) and commit (final price or stock check). Nothing ties these pushes to a subscribable order lifecycle feed. Missing for 10: explicit order-lifecycle event types (created, updated, fulfilled, canceled), any documented subscription mechanism for agents or backends to receive order events, event payload/schema docs, and independent corroboration.",
+    "evidenceIds": [
+      "adyen-agentic-docs-18",
+      "adyen-agentic-docs-10",
+      "adyen-agentic-docs-11",
+      "adyen-agentic-docs-12"
+    ]
+  },
+  {
+    "productId": "adyen-agentic",
+    "storyId": "payable-service-directory",
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "Adyen's Agentic Feed API syncs merchant product catalogs to AI platforms such as OpenAI and Meta, so agents on those platforms can find products to buy (docs-13, docs-19, docs-20, docs-1). That makes catalog items discoverable, but Adyen publishes no directory or discovery index of payable services or APIs of its own. Discovery depends on third-party platforms, and the llms.txt probe is only a documentation index. Missing for 10: an Adyen-published directory or discovery index of payable services/APIs, a machine-readable discovery endpoint (e.g. a .well-known manifest; OpenAPI probe paths returned 404), and independent corroboration that agents can discover services this way.",
+    "evidenceIds": [
+      "adyen-agentic-docs-13",
+      "adyen-agentic-docs-19",
+      "adyen-agentic-docs-20",
+      "adyen-agentic-docs-1",
+      "adyen-agentic-probe-3"
+    ]
+  },
+  {
+    "productId": "adyen-agentic",
+    "storyId": "privacy-data-residency",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Data residency is a fair question for a payments and commerce SaaS platform like Adyen Agentic, so the axis applies. However, nothing in the evidence pack mentions choosing a storage region, data residency, or data-location controls. The docs only say that Adyen stores credentials and tokens, with no location options.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "adyen-agentic",
+    "storyId": "privacy-no-training",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Adyen Agentic is a SaaS commerce platform that syncs merchant product data to AI platforms like OpenAI and Meta, so a training-data opt-out is a fair question for buyers. However, nothing in the evidence pack mentions training-use policies, opt-out controls, or data-usage restrictions. Absence of evidence for an applicable capability yields none.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "adyen-agentic",
+    "storyId": "privacy-retention-controls",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Data retention and deletion is a fair question for a payments platform that stores shopper credentials and tokens, so the axis applies. However, the evidence pack documents nothing on retention periods, deletion APIs or token revocation. The 'cancel session' item only releases reserved inventory and is not data deletion.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "adyen-agentic",
+    "storyId": "privacy-telemetry-optout",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Telemetry opt-out is a fair privacy-posture question for a developer-facing payments platform that ships an MCP server and integrations, so the axis applies. Nothing in the evidence pack mentions telemetry, usage tracking, or any way to opt out of either.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "adyen-agentic",
+    "storyId": "refund-via-api",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Refunds apply to an agentic payments product, but nothing in the evidence pack covers initiating or tracking refunds on agent-placed orders. The closest items are generic webhooks for asynchronous status changes and a 'Cancel session' call that releases inventory when a shopper abandons checkout. Neither is a refund capability.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "adyen-agentic",
+    "storyId": "scoped-payment-tokens",
+    "verdict": "partial",
+    "quality": 5,
+    "confidence": "medium",
+    "rationale": "Adyen documents tokenizing shopper payment credentials so the agent passes a token rather than a raw card number (docs-3, docs-6). The UCP token is bound to a specific checkout session and merchant identifier (docs-7), which covers merchant and session scoping. There is no evidence of agent-configurable amount limits or expiry. Missing for 10: documented amount/spend limits on tokens, explicit expiry/limited-use controls, independent or hands-on corroboration.",
+    "evidenceIds": [
+      "adyen-agentic-docs-3",
+      "adyen-agentic-docs-6",
+      "adyen-agentic-docs-7"
+    ]
+  },
+  {
+    "productId": "adyen-agentic",
+    "storyId": "settlement-payout-clarity",
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "The docs show agent-originated payments run through Adyen's normal payment processing: the merchant uses the ACP token to process the payment with Adyen, and Adyen authorizes it after the commit step. The integration also works with existing order management, and generic webhooks exist for asynchronous status updates. Together this implies agentic transactions flow through the same rails as other channels, but nothing in the pack documents settlement, payouts, reports or reconciliation for this channel. missing for 10: documented settlement/payout flow for agentic transactions, reporting or reconciliation docs identifying agent-originated payments, channel tagging in settlement reports, independent corroboration.",
+    "evidenceIds": [
+      "adyen-agentic-docs-6",
+      "adyen-agentic-docs-12",
+      "adyen-agentic-docs-22",
+      "adyen-agentic-docs-18"
+    ]
+  },
+  {
+    "productId": "adyen-agentic",
+    "storyId": "spend-caps-revocation",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Adyen Agentic is a payments platform for agent-initiated commerce, so per-agent spend controls are a fair axis to judge it on. The evidence covers tokenization, UCP tokens bound to a specific checkout session and merchant, and shopper approval of each payment. Nothing documents configurable per-agent spend caps, usage limits, or instant revocation of an agent's payment authority; the 'cancel session' feature only releases reserved inventory.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "adyen-agentic",
+    "storyId": "stablecoin-settlement",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Stablecoin settlement is a fair question for an agentic payments platform, so the axis applies. However, nothing in the evidence mentions stablecoins, crypto rails, or on-chain settlement. The documented flows cover tokenized card credentials via ACP and UCP and Google Pay processing, all settled through Adyen's conventional payment authorization.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "adyen-agentic",
+    "storyId": "structured-offer-data",
+    "verdict": "partial",
+    "quality": 5,
+    "confidence": "medium",
+    "rationale": "Adyen's Agentic Feed API maps merchant product data, with real-time catalog, inventory and live pricing, and syncs it to AI platforms like OpenAI and Meta. Agent platforms can also run ACP/UCP checkout sessions through Adyen that return totals and fulfillment options. However, the evidence frames the feed as merchant-to-platform push rather than a developer-readable offer endpoint, and offer-level fields are only implied. Missing for 10: documented developer read access to offer data, explicit variant and checkout-link fields in the feed schema, independent or hands-on corroboration.",
+    "evidenceIds": [
+      "adyen-agentic-docs-2",
+      "adyen-agentic-docs-9",
+      "adyen-agentic-docs-13",
+      "adyen-agentic-docs-14",
+      "adyen-agentic-docs-19",
+      "adyen-agentic-docs-20"
+    ]
+  },
+  {
     "productId": "coinbase-x402",
     "storyId": "agent-cart-create",
     "verdict": "none",

@@ -12253,6 +12253,1067 @@
     ]
   },
   {
+    "productId": "grok-build",
+    "storyId": "agentic-agent-docs",
+    "verdict": "full",
+    "quality": 9,
+    "confidence": "high",
+    "rationale": "Probes show https://docs.x.ai/llms.txt returns HTTP 200 and indexes the full Grok Build docs section. It also documents a markdown convention: append .md or send Accept: text/markdown. A keyless runtime GET of build/overview.md returned the clean markdown mirror, and an OpenAPI spec is also served. The .md.md 404 only reflects a doubled extension and does not contradict this. missing for 10: independent community or hands-on reports of users actually pointing agents at these docs.",
+    "evidenceIds": [
+      "grok-build-probe-1",
+      "grok-build-probe-rt-1",
+      "grok-build-probe-3"
+    ]
+  },
+  {
+    "productId": "grok-build",
+    "storyId": "agentic-ai-insights",
+    "verdict": "full",
+    "quality": 7,
+    "confidence": "medium",
+    "rationale": "Grok Build is an AI coding agent whose core function is analyzing the user's own data, here the repo, files, logs and CI runs. Inside the TUI it returns insights and suggestions: it explains a repo or walks through a file on request, drafts plans after exploring the codebase, and runs background monitors and /loop prompts that report failures or errors. Missing for 10: insights over non-code data (databases, analytics) beyond the repo, logs and CI, proactive insight surfaces that do not require prompting, and independent hands-on corroboration of insight quality.",
+    "evidenceIds": [
+      "grok-build-docs-3",
+      "grok-build-docs-40",
+      "grok-build-docs-8",
+      "grok-build-docs-19",
+      "grok-build-docs-20",
+      "grok-build-docs-47",
+      "grok-build-docs-11",
+      "grok-build-docs-31"
+    ]
+  },
+  {
+    "productId": "grok-build",
+    "storyId": "agentic-autonomous-automation",
+    "verdict": "full",
+    "quality": 7,
+    "confidence": "medium",
+    "rationale": "Grok Build documents background tasks that run commands, subagents and monitors while the conversation continues, a `/loop` command that reruns a prompt on a recurring interval, and monitors that watch logs or CI runs and post notifications. Headless mode with JSON output and ACP over JSON-RPC supports scripted and bot-driven runs, and Auto mode and hooks reduce the need for manual approval; a community comment confirms headless mode is used for scripts and automations. However, these automations appear tied to a live session. missing for 10: native scheduled or cron-style triggers that persist outside an active session, cloud or remote background agents, event-driven triggers (e.g., on PR or issue), hands-on corroboration that /loop and monitors run reliably unattended.",
+    "evidenceIds": [
+      "grok-build-docs-18",
+      "grok-build-docs-19",
+      "grok-build-docs-46",
+      "grok-build-docs-47",
+      "grok-build-docs-20",
+      "grok-build-docs-6",
+      "grok-build-docs-7",
+      "grok-build-docs-41",
+      "grok-build-docs-43",
+      "grok-build-docs-30",
+      "grok-build-docs-31",
+      "grok-build-comm-19"
+    ]
+  },
+  {
+    "productId": "grok-build",
+    "storyId": "agentic-builtin-assistant",
+    "verdict": "full",
+    "quality": 9,
+    "confidence": "high",
+    "rationale": "Grok Build is itself a coding agent, and its docs extensively cover delegating work to it. Users can hand off tasks in the TUI, have it plan before editing, and let it track todos. It can spawn subagents with their own context, run background tasks and recurring /loop jobs, and report status for every session on a dashboard. Community users corroborate it in hands-on terms ('harness is butter smooth', 'impressive performance in a couple of my projects'). Missing for 10: independent hands-on reports specifically exercising the delegation features (subagents, background tasks, plan mode) rather than general praise.",
+    "evidenceIds": [
+      "grok-build-docs-2",
+      "grok-build-docs-8",
+      "grok-build-docs-17",
+      "grok-build-docs-18",
+      "grok-build-docs-19",
+      "grok-build-docs-21",
+      "grok-build-docs-31",
+      "grok-build-probe-rt-1",
+      "grok-build-comm-1",
+      "grok-build-comm-12"
+    ]
+  },
+  {
+    "productId": "grok-build",
+    "storyId": "agentic-headless",
+    "verdict": "full",
+    "quality": 7,
+    "confidence": "high",
+    "rationale": "Grok Build documents a headless mode for scripts and bots, with `--output-format` options of plain, json and streaming-json. It can also run as an ACP agent over JSON-RPC on stdin/stdout, and `--device-auth` covers headless or remote environments. An independent community comment confirms headless `-p` and ACP for automation and orchestration. Missing for 10: CI-specific integration guidance (e.g. a GitHub Actions or pipeline recipe), documented non-interactive API-key auth for CI runners, and a documented fully non-prompting approval mode (Auto mode notes dangerous tools may still prompt).",
+    "evidenceIds": [
+      "grok-build-docs-6",
+      "grok-build-docs-7",
+      "grok-build-docs-41",
+      "grok-build-docs-36",
+      "grok-build-docs-43",
+      "grok-build-comm-19",
+      "grok-build-probe-rt-1"
+    ]
+  },
+  {
+    "productId": "grok-build",
+    "storyId": "agentic-mcp-client",
+    "verdict": "full",
+    "quality": 9,
+    "confidence": "high",
+    "rationale": "First-party docs say configured MCP servers expose external tools that become available alongside Grok's built-in tools. They also document a `grok mcp add --transport http` command, import of MCP configs from Claude Code, Cursor and project `.mcp.json` files, and discovery of servers via `grok inspect`. Missing for 10: independent or hands-on corroboration of MCP tool use, and explicit coverage of other transports such as stdio or of MCP auth.",
+    "evidenceIds": [
+      "grok-build-docs-50",
+      "grok-build-docs-27",
+      "grok-build-docs-25",
+      "grok-build-docs-42"
+    ]
+  },
+  {
+    "productId": "grok-build",
+    "storyId": "agentic-mcp-server",
+    "verdict": "na",
+    "quality": 0,
+    "confidence": "high",
+    "rationale": "Grok Build is itself a coding agent, so it plays the MCP client role, and serving tools to other agents through an official MCP server is a different product role. The evidence shows only client-side MCP support (`grok mcp add`, loading `.mcp.json` and other MCP configs), which belongs to the separate MCP-client story and is not credited here. Its ACP JSON-RPC mode is a different protocol, not an MCP server mode, so nothing shows the agent runs as an MCP server.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "grok-build",
+    "storyId": "agentic-nl-commands",
+    "verdict": "full",
+    "quality": 9,
+    "confidence": "high",
+    "rationale": "Grok Build is a coding agent driven by natural-language prompts. The docs show plain-language requests such as \"Explain this repo\", \"@src/main.rs Walk me through this file\" and \"watch the deploy logs and tell me if anything errors\". Recurring prompts work via /loop, side questions via /btw, and plan mode drafts a plan from a request for approval before editing; headless -p runs the same prompts in scripts. Hands-on users praise the harness as smooth and effective in real projects. Missing for 10: verified evidence that product configuration and settings can be changed through natural language rather than config files and slash commands (the one community report of this is unverified).",
+    "evidenceIds": [
+      "grok-build-docs-3",
+      "grok-build-docs-40",
+      "grok-build-docs-8",
+      "grok-build-docs-11",
+      "grok-build-docs-19",
+      "grok-build-docs-20",
+      "grok-build-docs-46",
+      "grok-build-docs-6",
+      "grok-build-probe-rt-1",
+      "grok-build-comm-1",
+      "grok-build-comm-12",
+      "grok-build-comm-19"
+    ]
+  },
+  {
+    "productId": "grok-build",
+    "storyId": "agentic-official-cli",
+    "verdict": "full",
+    "quality": 10,
+    "confidence": "high",
+    "rationale": "Grok Build is xAI's official CLI coding agent. It installs via an official script also published in the xai-org GitHub repo, and has a documented CLI reference with subcommands (`grok mcp add`, `grok inspect`, `grok import`, `grok export`, `grok wrap`). It also offers headless scripting with plain/json/streaming-json output, ACP over JSON-RPC, and device-code auth for remote environments. Community users independently confirm running the binary, praise the TUI, and highlight headless `-p` mode and ACP for automation.",
+    "evidenceIds": [
+      "grok-build-docs-1",
+      "grok-build-gh-1",
+      "grok-build-probe-4",
+      "grok-build-docs-6",
+      "grok-build-docs-7",
+      "grok-build-docs-41",
+      "grok-build-docs-24",
+      "grok-build-docs-27",
+      "grok-build-docs-35",
+      "grok-build-docs-36",
+      "grok-build-docs-42",
+      "grok-build-probe-rt-1",
+      "grok-build-comm-13",
+      "grok-build-comm-18",
+      "grok-build-comm-19"
+    ]
+  },
+  {
+    "productId": "grok-build",
+    "storyId": "agentic-public-api",
+    "verdict": "full",
+    "quality": 7,
+    "confidence": "medium",
+    "rationale": "Grok Build documents programmatic control. Headless mode serves scripts and bots [docs-6], with `plain`, `json` or `streaming-json` output [docs-41]. It also runs as an ACP agent over JSON-RPC on stdin/stdout so other apps can drive it [docs-7, probe-rt-1], and a community user independently highlights headless mode plus full ACP support for custom bots and orchestration [comm-19]. Missing for 10: a network/REST API for Grok Build itself (the OpenAPI spec and xAI API cover the models, not the agent), in-depth ACP method/schema documentation in the evidence, and hands-on corroboration of driving it via ACP.",
+    "evidenceIds": [
+      "grok-build-docs-6",
+      "grok-build-docs-7",
+      "grok-build-docs-41",
+      "grok-build-probe-rt-1",
+      "grok-build-comm-19"
+    ]
+  },
+  {
+    "productId": "grok-build",
+    "storyId": "agentic-scoped-keys",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Scoped credentials for an agent is a fair question for a coding agent tied to the xAI API platform, so the axis applies. The evidence only shows device-code login, tool permission rules, and an OS-level sandbox. None of these is a way to issue scoped or least-privilege API keys or tokens for an agent.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "grok-build",
+    "storyId": "agentic-sdks",
+    "verdict": "partial",
+    "quality": 4,
+    "confidence": "medium",
+    "rationale": "No official Grok Build SDK package is evidenced. What the evidence does show are programmatic surfaces for building against it: headless mode with `json`/`streaming-json` output, an ACP agent over JSON-RPC on stdin/stdout (corroborated by a community comment about building custom bots and orchestration), and a published xAI API OpenAPI spec for dropping the model into your own agent loop. These are protocol- and spec-level integration points rather than official SDKs. missing for 10: named official SDK libraries (e.g. Python/TypeScript) for Grok Build or the xAI API, SDK documentation and examples, independent hands-on corroboration of SDK use.",
+    "evidenceIds": [
+      "grok-build-docs-5",
+      "grok-build-docs-6",
+      "grok-build-docs-7",
+      "grok-build-docs-41",
+      "grok-build-probe-3",
+      "grok-build-probe-rt-1",
+      "grok-build-comm-19"
+    ]
+  },
+  {
+    "productId": "grok-build",
+    "storyId": "agentic-webhooks",
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "Grok Build has no documented native webhook subscription. Its hooks system does let users attach commands to agent lifecycle events, for example to 'send a notification when a turn ends' or log tool use, and it reads Claude Code and Cursor hook event files. A hook script could therefore forward events to an HTTP endpoint, but only as a user-built workaround. Missing for 10: native outbound webhook delivery to URLs, a documented event catalog/payload schema for webhook consumers, retry/signing semantics, and independent corroboration.",
+    "evidenceIds": [
+      "grok-build-docs-30",
+      "grok-build-docs-49",
+      "grok-build-docs-26"
+    ]
+  },
+  {
+    "productId": "grok-build",
+    "storyId": "always-on-scheduled-agents",
+    "verdict": "partial",
+    "quality": 5,
+    "confidence": "medium",
+    "rationale": "Grok Build offers in-session scheduling: `/loop` reruns a prompt on a recurring interval (e.g. checking every 5m whether tests pass), and background monitors watch logs, CI runs or ports. Headless mode (`-p`, JSON output) and ACP let users wire it into their own scripts or bots, and Auto mode auto-approves safe tools. However, these features run inside a live session or rely on user-built automation, not a managed always-on agent service. Missing for 10: persistent/hosted always-on agents independent of an open session, native cron or event triggers (e.g. CI failure, new issue/PR), documented autonomous fix-and-PR workflows, and independent hands-on corroboration of unattended operation.",
+    "evidenceIds": [
+      "grok-build-docs-18",
+      "grok-build-docs-19",
+      "grok-build-docs-46",
+      "grok-build-docs-20",
+      "grok-build-docs-47",
+      "grok-build-docs-6",
+      "grok-build-docs-7",
+      "grok-build-docs-41",
+      "grok-build-docs-9",
+      "grok-build-comm-19"
+    ]
+  },
+  {
+    "productId": "grok-build",
+    "storyId": "api-interactive-docs",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "An interactive API reference is a fair question for a developer-facing agent product, since Grok Build exposes headless/JSON output and ACP JSON-RPC interfaces, so the axis applies. However, no evidence shows an interactive explorer or runnable examples. The only API-reference signal is a probe finding an openapi.json at docs.x.ai, which covers the general xAI REST API rather than Grok Build. A raw spec file is also not an interactive reference with runnable examples.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "grok-build",
+    "storyId": "api-key-auth",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Nothing in the evidence shows Grok Build accepting an API key (for example an env var or config key) in place of account login. The only documented auth path is account-based device-code login via `--device-auth`. Community reports describe access gated on SuperGrok subscription login, with one user stuck at the login prompt and another using xAI OAuth. The xAI API availability of grok-4.7 is presented for use in your own agent loop, not as a way to authenticate Grok Build.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "grok-build",
+    "storyId": "api-machine-spec",
+    "verdict": "partial",
+    "quality": 5,
+    "confidence": "medium",
+    "rationale": "A probe confirms a downloadable OpenAPI document at docs.x.ai/openapi.json, the same docs site that hosts Grok Build, and llms.txt indexes the docs in machine-readable form. However, that spec covers the underlying xAI REST/model API, not Grok Build's own programmatic surfaces (ACP over JSON-RPC, headless JSON output), which have no published schema in the evidence. Missing for 10: a machine-readable spec for Grok Build's own ACP/headless interface, first-party docs pointing to the spec, and independent corroboration of its contents.",
+    "evidenceIds": [
+      "grok-build-probe-3",
+      "grok-build-probe-1",
+      "grok-build-docs-5",
+      "grok-build-docs-7",
+      "grok-build-docs-41"
+    ]
+  },
+  {
+    "productId": "grok-build",
+    "storyId": "api-sandbox",
+    "verdict": "partial",
+    "quality": 6,
+    "confidence": "medium",
+    "rationale": "Grok Build documents an OS-level sandbox (Landlock on Linux, Seatbelt on macOS) that limits what the agent and its child processes can read, write and reach on the network. It also offers isolated worktree sessions, file-restoring checkpoints, and deny rules for dangerous commands. Together these let an agent run and test without reaching production resources. However, all of this is local process and workspace isolation; nothing describes a dedicated sandbox or test environment with non-production data to test against. missing for 10: a documented sandbox/test environment with mock or non-production data, guidance on configuring sandbox network rules to block production endpoints, independent hands-on corroboration of the sandbox.",
+    "evidenceIds": [
+      "grok-build-docs-32",
+      "grok-build-docs-33",
+      "grok-build-docs-14",
+      "grok-build-docs-10",
+      "grok-build-docs-8"
+    ]
+  },
+  {
+    "productId": "grok-build",
+    "storyId": "api-versioning-policy",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Versioning and deprecation guarantees are a fair question for a coding agent that exposes headless JSON output and an ACP JSON-RPC interface, so the axis applies. The pack has no evidence of API version numbering, stability guarantees, or a documented deprecation policy. The openapi.json probe shows a machine-readable spec exists, but it says nothing about versioning or deprecation.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "grok-build",
+    "storyId": "architecture-navigation",
+    "verdict": "full",
+    "quality": 7,
+    "confidence": "medium",
+    "rationale": "Grok Build's docs list \"Explain this repo.\" and \"@src/main.rs Walk me through this file.\" as recommended first prompts. Plan mode has the agent explore the codebase and draft a plan before editing, which maps directly to finding where to start making changes. Supporting features include subagents that return summaries and AGENTS.md architecture notes the agent follows. missing for 10: in-depth docs on how the agent maps or indexes repo structure (e.g., dependency/architecture views), hands-on or independent corroboration of codebase-explanation quality.",
+    "evidenceIds": [
+      "grok-build-docs-3",
+      "grok-build-docs-40",
+      "grok-build-docs-8",
+      "grok-build-docs-31",
+      "grok-build-docs-48"
+    ]
+  },
+  {
+    "productId": "grok-build",
+    "storyId": "automated-commit-and-pr-creation",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "The evidence pack has nothing on the agent staging changes, writing commit messages, creating branches, or opening pull requests. The closest items are a generic bash tool (named in permission rules) and worktree sessions that run in an isolated copy of the repo, but neither is documented as a git commit, branch, or PR workflow. Inferring git support from them would go beyond the evidence.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "grok-build",
+    "storyId": "automated-pr-review",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Automatic PR review is a fair axis for a coding agent, but the evidence pack documents no PR-review feature, GitHub or Git-host integration, or review bot. Headless mode for scripts and bots and ACP are generic automation building blocks with no documented code-review workflow. Absence of evidence for an applicable capability yields none.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "grok-build",
+    "storyId": "automated-test-and-lint-fixes",
+    "verdict": "partial",
+    "quality": 4,
+    "confidence": "low",
+    "rationale": "Grok Build is documented as a coding agent that edits files and runs bash commands. It follows build and test commands from AGENTS.md, can loop on checking whether the test suite passes, and can run a formatter via hooks after edits. That implies it can handle test and lint chores, but none of the four tasks in the story is explicitly documented. missing for 10: explicit docs or hands-on evidence of writing tests, fixing lint errors, resolving merge conflicts, and updating dependencies.",
+    "evidenceIds": [
+      "grok-build-probe-rt-1",
+      "grok-build-docs-48",
+      "grok-build-docs-19",
+      "grok-build-docs-30",
+      "grok-build-docs-10",
+      "grok-build-docs-8"
+    ]
+  },
+  {
+    "productId": "grok-build",
+    "storyId": "automatic-model-routing",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Automatic per-task model selection is a fair question for a coding agent, but nothing in the evidence shows Grok Build routing tasks to different models. The docs only cover adding custom models via config and the availability of grok-4.7. The \"Auto\" mode is a permission classifier for approving tools, not a model router.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "grok-build",
+    "storyId": "automation-bulk-operations",
+    "verdict": "partial",
+    "quality": 4,
+    "confidence": "low",
+    "rationale": "There is no dedicated bulk-operation feature, but the building blocks exist. Headless mode with JSON output supports scripting the agent across many items, and parallel subagents, worktree sessions and background tasks let work fan out concurrently. The multi-session dashboard tracks many sessions at once. Bulk processing is therefore achievable through scripting and orchestration rather than as a first-class capability. Missing for 10: a native batch/bulk operation command or workflow, documentation of multi-item or multi-file batch operations, and independent hands-on corroboration of bulk use.",
+    "evidenceIds": [
+      "grok-build-docs-6",
+      "grok-build-docs-41",
+      "grok-build-docs-31",
+      "grok-build-docs-33",
+      "grok-build-docs-18",
+      "grok-build-docs-21",
+      "grok-build-comm-19"
+    ]
+  },
+  {
+    "productId": "grok-build",
+    "storyId": "automation-rules-engine",
+    "verdict": "full",
+    "quality": 7,
+    "confidence": "medium",
+    "rationale": "Grok Build documents hooks that fire automatically on agent events: blocking a dangerous command before it runs, logging tool use, running a formatter after edits, and sending a notification when a turn ends. It also reads Claude Code and Cursor hook files, including their event names, and `grok inspect` lists the discovered hooks. Related automation comes from declarative permission rules, `/loop` recurring prompts, and background monitors that turn watched log, CI or port output into notifications. Missing for 10: a documented catalog of hook events and the hook config schema, any triggers from external events (e.g. webhooks or repo events) beyond the agent lifecycle, and independent or hands-on corroboration of hooks.",
+    "evidenceIds": [
+      "grok-build-docs-30",
+      "grok-build-docs-26",
+      "grok-build-docs-49",
+      "grok-build-docs-42",
+      "grok-build-docs-10",
+      "grok-build-docs-46",
+      "grok-build-docs-19",
+      "grok-build-docs-47"
+    ]
+  },
+  {
+    "productId": "grok-build",
+    "storyId": "automation-scheduled-jobs",
+    "verdict": "partial",
+    "quality": 5,
+    "confidence": "medium",
+    "rationale": "The docs describe `/loop`, which runs a prompt on a recurring interval (e.g. `/loop 5m Check if the test suite passes`) as a background task alongside the conversation. Headless mode with JSON output can also be driven by external schedulers. The evidence frames `/loop` as an in-session interval rather than a persistent scheduler, so true recurring jobs likely need external tooling such as cron plus headless mode. Missing for 10: a persistent or cron-style schedule that survives the session, workflow definitions for scheduled jobs, management and history of scheduled runs, and independent hands-on corroboration of `/loop`.",
+    "evidenceIds": [
+      "grok-build-docs-46",
+      "grok-build-docs-19",
+      "grok-build-docs-18",
+      "grok-build-docs-6",
+      "grok-build-docs-41",
+      "grok-build-comm-19"
+    ]
+  },
+  {
+    "productId": "grok-build",
+    "storyId": "automation-versioned-workflows",
+    "verdict": "partial",
+    "quality": 4,
+    "confidence": "medium",
+    "rationale": "Grok Build has automation primitives: recurring `/loop` prompts, background monitors, hooks, skills, and headless scripting. It also offers review and rollback for agent work. Sessions are saved to disk with tool calls and file snapshots, you can restore files to any earlier point, plan mode drafts a plan for approval before edits, and transcripts export as Markdown. However, nothing shows that the automation definitions themselves (loops, hooks, skills) are versioned, diffed, reviewed, or rolled back as first-class objects. Missing for 10: versioning of automation definitions, a review/approval workflow for automation changes, rollback of automation configs (as opposed to session file state), and independent corroboration.",
+    "evidenceIds": [
+      "grok-build-docs-13",
+      "grok-build-docs-14",
+      "grok-build-docs-8",
+      "grok-build-docs-35",
+      "grok-build-docs-46",
+      "grok-build-docs-30",
+      "grok-build-docs-51"
+    ]
+  },
+  {
+    "productId": "grok-build",
+    "storyId": "autonomous-end-to-end-feature-delivery",
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "medium",
+    "rationale": "Grok Build is documented as a local TUI/headless coding agent. It can plan, edit, run tests in the background (e.g. `/loop` checking the test suite), and share or export sessions for review. Headless mode with device-code auth could be self-run on a remote machine, but no first-party cloud agent is documented. missing for 10: a hosted cloud agent runtime, any demo artifacts (screenshots, video, preview deploys) of the built feature, a documented end-to-end build→test→demo review handoff, and independent hands-on corroboration.",
+    "evidenceIds": [
+      "grok-build-docs-8",
+      "grok-build-docs-17",
+      "grok-build-docs-18",
+      "grok-build-docs-19",
+      "grok-build-docs-6",
+      "grok-build-docs-36",
+      "grok-build-docs-12",
+      "grok-build-docs-35"
+    ]
+  },
+  {
+    "productId": "grok-build",
+    "storyId": "background-cloud-tasks",
+    "verdict": "partial",
+    "quality": 4,
+    "confidence": "medium",
+    "rationale": "Grok Build can run commands, subagents and monitors in the background while the conversation continues. Subagents run as independent child sessions, worktree sessions run in isolated repo copies, and a Landlock/Seatbelt sandbox restricts the agent. The dashboard tracks which agents are working or done. All of this runs locally, though, and nothing in the evidence shows delegating tasks to a hosted, isolated cloud environment. missing for 10: cloud-hosted execution environment, remote/asynchronous task delegation that survives closing the local session, hands-on corroboration of long-running background delegation.",
+    "evidenceIds": [
+      "grok-build-docs-18",
+      "grok-build-docs-31",
+      "grok-build-docs-33",
+      "grok-build-docs-32",
+      "grok-build-docs-21",
+      "grok-build-docs-46"
+    ]
+  },
+  {
+    "productId": "grok-build",
+    "storyId": "configurable-tool-permissions",
+    "verdict": "full",
+    "quality": 7,
+    "confidence": "medium",
+    "rationale": "Grok Build documents a permissions system with per-tool allow/deny rules and command patterns (e.g. denying `rm -rf *` on bash), approval modes, and hooks that can block dangerous commands. External integrations come only from explicitly configured MCP servers, which `grok inspect` lists, and an OS-level sandbox limits file and network reach. missing for 10: evidence that permission rules can target specific MCP servers or their individual tools, team- or admin-enforced managed policy for an engineering lead, a way to stop auto-loading of MCP configs from `.claude.json`/`.cursor`/`.mcp.json`, and independent hands-on corroboration.",
+    "evidenceIds": [
+      "grok-build-docs-10",
+      "grok-build-docs-43",
+      "grok-build-docs-30",
+      "grok-build-docs-27",
+      "grok-build-docs-50",
+      "grok-build-docs-25",
+      "grok-build-docs-42",
+      "grok-build-docs-32"
+    ]
+  },
+  {
+    "productId": "grok-build",
+    "storyId": "cross-device-task-continuity",
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "Grok Build saves sessions to local disk and `/resume` lists recent sessions for the current workspace. `/share` publishes a session via URL and `grok export` writes a Markdown transcript, so a session can be viewed or carried elsewhere by hand. Nothing shows actually continuing that session on another device or in a browser; local resume is single-machine. Missing for 10: cloud-synced sessions, resuming a session from a different device or browser, a web or remote client to continue tasks, and independent corroboration.",
+    "evidenceIds": [
+      "grok-build-docs-13",
+      "grok-build-docs-45",
+      "grok-build-docs-12",
+      "grok-build-docs-35"
+    ]
+  },
+  {
+    "productId": "grok-build",
+    "storyId": "cross-session-memory",
+    "verdict": "partial",
+    "quality": 4,
+    "confidence": "medium",
+    "rationale": "Grok Build automatically saves every conversation to disk and lets you reopen past sessions with /resume, and it follows a user-written AGENTS.md in every session without being told. That gives developers cross-session continuity, but nothing shows the agent itself building or recalling a persistent memory automatically. Missing for 10: agent-authored persistent memory, automatic recall of prior-session learnings into new sessions, documentation of a memory feature, independent corroboration.",
+    "evidenceIds": [
+      "grok-build-docs-13",
+      "grok-build-docs-45",
+      "grok-build-docs-48",
+      "grok-build-docs-22"
+    ]
+  },
+  {
+    "productId": "grok-build",
+    "storyId": "custom-agent-skills",
+    "verdict": "full",
+    "quality": 8,
+    "confidence": "medium",
+    "rationale": "First-party docs describe skills as reusable folders of markdown instructions, scripts and resources for the agent. User-invocable skills appear as `/<skill-name>` slash commands, a Marketplace tab installs plugins from configured sources, and `grok inspect` reports which skills were discovered. That covers equipping the agent with custom skills for specialized tasks. Missing for 10: authoring details (skill file location and format, how the agent selects skills automatically) and independent or hands-on corroboration that custom skills work.",
+    "evidenceIds": [
+      "grok-build-docs-51",
+      "grok-build-docs-28",
+      "grok-build-docs-29",
+      "grok-build-docs-42"
+    ]
+  },
+  {
+    "productId": "grok-build",
+    "storyId": "desktop-visual-diff-review",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Grok Build is documented only as a terminal TUI, headless CLI, and ACP agent. There is no first-party desktop app and no visual diff-review feature in the evidence. The TUI dashboard gives an overview of sessions, and worktrees isolate parallel agents, but neither is a desktop app with side-by-side sessions. The only desktop GUI mentioned is a community Tauri fork with unknown features, so it is not the product itself.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "grok-build",
+    "storyId": "enterprise-grade-auth",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "The evidence shows only consumer-style login options: device-code authentication via `--device-auth`, and xAI OAuth mentioned in a community workaround. It also shows custom model configuration in `~/.grok/config.toml`. Nothing documents enterprise SSO/SAML/OIDC identity providers or authentication through a cloud platform such as Bedrock, Vertex, or Azure. A community comment notes an enterprise plan offers ZDR (zero data retention), but it says nothing about identity or cloud-platform authentication.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "grok-build",
+    "storyId": "existing-subscription-auth",
+    "verdict": "partial",
+    "quality": 5,
+    "confidence": "medium",
+    "rationale": "Community reports confirm Grok Build signs in against an xAI/SuperGrok subscription. At launch it was limited to SuperGrok Heavy subscribers, and a user on a $40/month plan couldn't get past login because access is gated on a higher tier. The first-party docs only mention a `--device-auth` sign-in flag and do not explain subscription-based sign-in or which plans qualify. Missing for 10: first-party docs on subscription sign-in and eligible plans, access for lower-tier subscribers, and hands-on confirmation of a successful subscription login.",
+    "evidenceIds": [
+      "grok-build-docs-36",
+      "grok-build-comm-17",
+      "grok-build-comm-18",
+      "grok-build-comm-13",
+      "grok-build-comm-4"
+    ]
+  },
+  {
+    "productId": "grok-build",
+    "storyId": "external-workflow-tool-integration",
+    "verdict": "full",
+    "quality": 7,
+    "confidence": "medium",
+    "rationale": "Grok Build supports MCP servers that expose external tools to the agent alongside its built-in tools. The docs show adding a hosted workflow tool (`grok mcp add --transport http linear https://mcp.linear.app/mcp`), and Grok also reuses existing MCP configs from Claude Code and Cursor, so workflow tools can be connected to extend its context. A plugin Marketplace adds a further extension path. Missing for 10: any evidence of Jira, Slack or Google Drive connectors specifically (only Linear is shown), detail on auth/OAuth for those services, and independent hands-on confirmation of workflow-tool integrations.",
+    "evidenceIds": [
+      "grok-build-docs-50",
+      "grok-build-docs-27",
+      "grok-build-docs-25",
+      "grok-build-docs-42",
+      "grok-build-docs-29"
+    ]
+  },
+  {
+    "productId": "grok-build",
+    "storyId": "free-tier-account-access",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Account-based sign-in without API keys appears to exist: device-code auth is documented, and users run the Grok subscription via xAI OAuth. However, nothing shows a free tier. Community reports say Grok Build launched gated to SuperGrok Heavy ($300/month), and a $40/month subscriber could not get past login, so the free-tier core of the story is not delivered.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "grok-build",
+    "storyId": "full-codebase-mapping",
+    "verdict": "full",
+    "quality": 7,
+    "confidence": "medium",
+    "rationale": "The overview docs list \"Explain this repo.\" as a first prompt that needs no manually selected files, unlike the @file variant. Plan mode documents that the agent explores the codebase on its own, and subagents can investigate in separate contexts and return summaries, which together support autonomous whole-repo understanding. Missing for 10: dedicated documentation of how the agent maps or indexes large codebases (e.g. architecture overviews or dependency maps), and independent hands-on reports of its repo-explanation quality.",
+    "evidenceIds": [
+      "grok-build-docs-3",
+      "grok-build-docs-40",
+      "grok-build-docs-8",
+      "grok-build-docs-31"
+    ]
+  },
+  {
+    "productId": "grok-build",
+    "storyId": "inline-code-completion",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Grok Build is documented as a terminal, headless, and ACP coding agent built around prompt-driven sessions, plan mode, and tool calls. Nothing in the evidence shows inline as-you-type completions or next-edit suggestions. Inline completion is a fair axis for a coding tool, so missing evidence means none rather than na. The note that grok-4.7 can be dropped into an IDE integration refers to the xAI API model, not a Grok Build completion feature.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "grok-build",
+    "storyId": "issue-to-pr-automation",
+    "verdict": "partial",
+    "quality": 4,
+    "confidence": "medium",
+    "rationale": "Grok Build is a coding agent that can pull in a tracked issue through an MCP tracker integration (the docs show `grok mcp add` for Linear). It can then plan, edit and run work in an isolated worktree, monitor CI, and run headless for automation. However, nothing in the evidence shows it creating branches, commits or pull requests, so the issue-to-PR flow has to be assembled from separate pieces. Missing for 10: documented PR creation or GitHub/GitLab integration, an issue-to-PR workflow guide, commit/push handling, and hands-on corroboration of an end-to-end run.",
+    "evidenceIds": [
+      "grok-build-docs-27",
+      "grok-build-docs-50",
+      "grok-build-docs-8",
+      "grok-build-docs-17",
+      "grok-build-docs-33",
+      "grok-build-docs-20",
+      "grok-build-docs-6"
+    ]
+  },
+  {
+    "productId": "grok-build",
+    "storyId": "jetbrains-diff-integration",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "IDE integration is a fair axis for a coding agent, but the evidence pack never mentions a JetBrains plugin, interactive diff views in an IDE, or sharing selected editor code as context. The closest items are generic ACP support for use 'in other apps' and @-file mentions inside the terminal TUI. Neither shows JetBrains-specific diff or selection-sharing capability.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "grok-build",
+    "storyId": "license-provenance-check",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Code-referencing and license attribution for AI-generated code is a fair axis for a coding agent, so the story applies. Nothing in the evidence pack mentions public-code matching, license detection, or attribution references for Grok Build's suggestions. The permissions, sandbox, hooks and session features cover other review-safety concerns, not this one.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "grok-build",
+    "storyId": "live-app-debugging",
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "The only on-topic evidence is background monitors: you can ask Grok to watch a log or a port (e.g. \"watch the deploy logs and tell me if anything errors\"), and each line the script prints becomes a notification in the conversation. Generic MCP support lets external tools plug in, but no browser or debugger tool is documented. That gives log and port observation of a running app, not real live debugging. Missing for 10: attaching a debugger or browser devtools to a running web app, inspecting runtime state/DOM/network requests, breakpoints, and any hands-on or independent corroboration.",
+    "evidenceIds": [
+      "grok-build-docs-18",
+      "grok-build-docs-20",
+      "grok-build-docs-47",
+      "grok-build-docs-50"
+    ]
+  },
+  {
+    "productId": "grok-build",
+    "storyId": "local-terminal-agent",
+    "verdict": "full",
+    "quality": 9,
+    "confidence": "high",
+    "rationale": "Grok Build is a terminal coding agent. It installs with a one-line curl script and runs as a fullscreen interactive TUI, with a headless mode for scripts. Its own sandbox, sessions and worktrees operate on the local repo. Hands-on users praise the TUI as 'butter smooth' and 'great in the ways that matter', and one ran the binary on Windows. missing for 10: access is gated behind a higher-tier subscription (one user could not get past the interactive prompt on a $40/month plan), so not every developer can run it end to end.",
+    "evidenceIds": [
+      "grok-build-docs-1",
+      "grok-build-gh-1",
+      "grok-build-docs-2",
+      "grok-build-docs-6",
+      "grok-build-docs-32",
+      "grok-build-probe-rt-1",
+      "grok-build-comm-1",
+      "grok-build-comm-13",
+      "grok-build-comm-18",
+      "grok-build-comm-19"
+    ]
+  },
+  {
+    "productId": "grok-build",
+    "storyId": "multi-directory-context",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Including extra project directories in a session is a fair axis for a CLI coding agent, but no evidence item mentions it. There is no add-dir flag, multi-root workspace or cross-repo session option. The docs only describe single-workspace behavior: discovery in the current directory, AGENTS.md at the repo root, and per-repo worktrees.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "grok-build",
+    "storyId": "multi-ide-chat-assistant",
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "Grok Build is mainly a terminal TUI agent, but it can run as an ACP agent over JSON-RPC on stdin/stdout, and the overview says it can be used through ACP \"in other apps\". That gives an indirect route to embedding it in ACP-capable editors, though no IDE is ever named. The \"IDE integration\" line refers to using the grok-4.7 model via the API, not to Grok Build itself. Missing for 10: a first-party IDE extension or named editor integration, documentation of in-IDE chat with editor context (selection, open files), and hands-on corroboration of IDE use.",
+    "evidenceIds": [
+      "grok-build-docs-7",
+      "grok-build-probe-rt-1",
+      "grok-build-comm-19"
+    ]
+  },
+  {
+    "productId": "grok-build",
+    "storyId": "multi-model-selection",
+    "verdict": "partial",
+    "quality": 4,
+    "confidence": "low",
+    "rationale": "The docs say \"Grok supports any custom model\" added through `~/.grok/config.toml`, which suggests you can point a session at a non-xAI model. Beyond that one line, nothing shows how multi-provider selection actually works. Community forks advertising \"multi-provider CLIs\" hint that upstream support is limited, but that is not a concrete counter-example, so it lowers confidence rather than making this disputed. Missing for 10: a documented list of supported providers or API formats, an in-session model picker or `/model`-style switching, config examples for third-party providers, and independent hands-on confirmation that non-xAI models work.",
+    "evidenceIds": [
+      "grok-build-docs-4",
+      "grok-build-comm-5"
+    ]
+  },
+  {
+    "productId": "grok-build",
+    "storyId": "multi-platform-task-kickoff",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "The evidence shows no native way to start Grok Build tasks from GitHub, GitLab, Linear, or Slack, such as an @mention bot, issue or PR trigger, or Slack app. Headless mode (-p) and ACP are generic building blocks you could script your own bots with, which would require substantial custom glue. The Linear MCP example only lets the agent call Linear tools; it does not let Linear start the agent.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "grok-build",
+    "storyId": "multimodal-app-generation",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Grok Build is a terminal coding agent, so turning a design into an app is a fair axis for it. However, nothing in the evidence pack mentions accepting images, sketches, or PDFs as input, or generating an app from a visual design. The docs cover only text prompts, file references (@file), and repo exploration, so with no supporting evidence the verdict is none rather than na.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "grok-build",
+    "storyId": "natural-language-debugging",
+    "verdict": "full",
+    "quality": 7,
+    "confidence": "medium",
+    "rationale": "Grok Build is a coding agent driven entirely by natural-language prompts. Its docs show troubleshooting-style uses: explaining the repo and files, background monitors that watch logs and CI and flag errors (\"watch the deploy logs and tell me if anything errors\"), recurring /loop prompts that check the test suite and report failures, and /btw for side questions mid-task. A user also reports impressive performance in their projects. Missing for 10: a dedicated debugging or troubleshooting workflow in the docs (e.g., diagnosing stack traces or root-causing bugs), and independent hands-on reports specifically about debugging.",
+    "evidenceIds": [
+      "grok-build-docs-3",
+      "grok-build-docs-40",
+      "grok-build-docs-19",
+      "grok-build-docs-20",
+      "grok-build-docs-47",
+      "grok-build-docs-11",
+      "grok-build-docs-8",
+      "grok-build-comm-12"
+    ]
+  },
+  {
+    "productId": "grok-build",
+    "storyId": "natural-language-feature-implementation",
+    "verdict": "full",
+    "quality": 7,
+    "confidence": "medium",
+    "rationale": "Grok Build is documented as a coding agent with a TUI for coding with agents. Plan mode explores the codebase and drafts a plan before editing, sessions snapshot and restore all touched files, and a todo list tracks multi-step work. These together imply plain-language, multi-file implementation, and a hands-on user reports impressive, fast performance on real projects. Missing for 10: an explicit first-party description or example of implementing a feature or fixing a bug across multiple files (the sample prompts are only explanatory), and independent evidence of multi-file edit quality.",
+    "evidenceIds": [
+      "grok-build-docs-2",
+      "grok-build-docs-8",
+      "grok-build-docs-13",
+      "grok-build-docs-14",
+      "grok-build-docs-17",
+      "grok-build-probe-rt-1",
+      "grok-build-comm-12",
+      "grok-build-comm-1"
+    ]
+  },
+  {
+    "productId": "grok-build",
+    "storyId": "openness-api-parity",
+    "verdict": "partial",
+    "quality": 6,
+    "confidence": "medium",
+    "rationale": "Grok Build has a substantial programmatic surface alongside the TUI. It offers a headless mode for scripts and bots with plain, json and streaming-json output, and runs as an ACP agent over JSON-RPC on stdin/stdout for embedding in other apps (a community commenter calls this \"full ACP support\"). Scriptable subcommands such as `grok export`, `grok import`, `grok mcp add` and `grok inspect` add to this. However, nothing shows parity with the UI: many capabilities are documented only as TUI slash commands or views (/fork, /share, /btw, /loop, /resume picker, the dashboard, the Marketplace tab), and there is no evidence they are reachable through headless mode or ACP. missing for 10: explicit documentation of API/UI feature parity, evidence that session fork/share/rewind, dashboard and marketplace actions are available via ACP/headless, an independent hands-on confirmation of parity.",
+    "evidenceIds": [
+      "grok-build-docs-6",
+      "grok-build-docs-7",
+      "grok-build-docs-41",
+      "grok-build-comm-19",
+      "grok-build-probe-rt-1",
+      "grok-build-docs-35",
+      "grok-build-docs-24",
+      "grok-build-docs-27",
+      "grok-build-docs-34",
+      "grok-build-docs-15",
+      "grok-build-docs-12",
+      "grok-build-docs-21",
+      "grok-build-docs-29"
+    ]
+  },
+  {
+    "productId": "grok-build",
+    "storyId": "openness-full-export",
+    "verdict": "partial",
+    "quality": 6,
+    "confidence": "medium",
+    "rationale": "Grok Build saves every conversation to local disk (prompts, responses, tool calls, file snapshots). `grok export <session-id>` writes a session transcript as Markdown. Config lives in a plain `~/.grok/config.toml`, and project rules use the portable `AGENTS.md` convention, so leaving is low-friction. However, export is documented only per session, and nothing covers exporting or verifiably retrieving account or server-side data, such as uploaded repositories or shared session URLs. Missing for 10: a documented bulk/all-data export, export of server-side account data, structured (e.g. JSON) session export, and independent hands-on corroboration of the export flow.",
+    "evidenceIds": [
+      "grok-build-docs-13",
+      "grok-build-docs-35",
+      "grok-build-docs-4",
+      "grok-build-docs-22",
+      "grok-build-docs-12",
+      "grok-build-comm-16"
+    ]
+  },
+  {
+    "productId": "grok-build",
+    "storyId": "openness-open-license",
+    "verdict": "full",
+    "quality": 7,
+    "confidence": "medium",
+    "rationale": "A public GitHub repo exists (xai-org/grok-build), and several independent community reports describe the code as open-sourced. Users report reviewing about 1.3M lines of Rust, note the source release makes reverse engineering easier, and say forks such as a privacy fork and multi-provider CLIs appeared soon after. Issues and Discussions being disabled limits community engagement but not the ability to read the source. Missing for 10: the specific license is never named, and no first-party documentation states the licensing terms.",
+    "evidenceIds": [
+      "grok-build-gh-1",
+      "grok-build-comm-2",
+      "grok-build-comm-3",
+      "grok-build-comm-5",
+      "grok-build-comm-6",
+      "grok-build-comm-8"
+    ]
+  },
+  {
+    "productId": "grok-build",
+    "storyId": "openness-self-host",
+    "verdict": "partial",
+    "quality": 6,
+    "confidence": "medium",
+    "rationale": "Grok Build is a locally run CLI agent whose source has been released on GitHub; the community confirms the open-sourcing and has already produced forks, including a privacy fork that strips telemetry. Its config also supports any custom model, so the core harness can in principle run against your own model endpoint. Fully self-contained operation is undercut by documented default behavior that uploads the whole repository to xAI, which needs config workarounds or forks to stop, and by subscription gating at login on the official build. missing for 10: first-party self-hosting/offline-deployment docs, a documented fully local model setup without xAI auth, an upload-free default, and an open community (Issues/Discussions are disabled).",
+    "evidenceIds": [
+      "grok-build-gh-1",
+      "grok-build-docs-4",
+      "grok-build-comm-2",
+      "grok-build-comm-3",
+      "grok-build-comm-5",
+      "grok-build-comm-6",
+      "grok-build-comm-9",
+      "grok-build-comm-11",
+      "grok-build-comm-16",
+      "grok-build-comm-18"
+    ]
+  },
+  {
+    "productId": "grok-build",
+    "storyId": "parallel-agent-fleets",
+    "verdict": "partial",
+    "quality": 6,
+    "confidence": "medium",
+    "rationale": "The docs describe a dashboard of every session showing which agents are working, need input, or are done. Worktree sessions let parallel agents run in isolated repo copies, and subagents and monitors can run in the background as independent child sessions. Auto mode, `/loop`, and headless/ACP give partial unattended autonomy and orchestration hooks. However, nothing shows agents running autonomously for hours or days, and dangerous tools may still prompt for approval. missing for 10: evidence of multi-hour/day unattended runs, cloud or remote fleet execution independent of the local machine, explicit fleet-launch tooling for many tasks at once, hands-on corroboration of parallel agent fleets.",
+    "evidenceIds": [
+      "grok-build-docs-21",
+      "grok-build-docs-33",
+      "grok-build-docs-31",
+      "grok-build-docs-18",
+      "grok-build-docs-9",
+      "grok-build-docs-46",
+      "grok-build-docs-7",
+      "grok-build-comm-19"
+    ]
+  },
+  {
+    "productId": "grok-build",
+    "storyId": "parallel-task-attempt-comparison",
+    "verdict": "partial",
+    "quality": 6,
+    "confidence": "medium",
+    "rationale": "Grok Build supports running parallel attempts. `/fork` branches a session into a peer that starts from a copy of the conversation. Worktree sessions run in isolated repo copies so parallel agents don't overwrite each other. A dashboard shows every session's status. However, comparing results across attempts and picking a winner is only implied, not documented. Missing for 10: a documented side-by-side diff or comparison of attempt outputs, a select/merge-winner workflow (e.g. best-of-N), and independent or hands-on corroboration of the parallel-attempt workflow.",
+    "evidenceIds": [
+      "grok-build-docs-15",
+      "grok-build-docs-33",
+      "grok-build-docs-21",
+      "grok-build-docs-31"
+    ]
+  },
+  {
+    "productId": "grok-build",
+    "storyId": "partner-agent-app-integration",
+    "verdict": "partial",
+    "quality": 5,
+    "confidence": "medium",
+    "rationale": "Grok Build has a TUI Marketplace tab for browsing and installing plugins from configured sources, plus skills. Third-party MCP servers such as Linear's hosted endpoint can be added, and their tools sit alongside the built-in ones. It also reuses Claude Code and Cursor MCP and hook configs. However, nothing shows a curated catalog of partner-built agent apps; integration is through plugins and MCP tools rather than full partner agents. Missing for 10: a documented partner agent-app directory or program, evidence of partner-built agents (not just tools or plugins) running in workflows, and independent hands-on corroboration of the marketplace.",
+    "evidenceIds": [
+      "grok-build-docs-29",
+      "grok-build-docs-27",
+      "grok-build-docs-50",
+      "grok-build-docs-25",
+      "grok-build-docs-51",
+      "grok-build-docs-28"
+    ]
+  },
+  {
+    "productId": "grok-build",
+    "storyId": "persistent-project-instructions",
+    "verdict": "full",
+    "quality": 9,
+    "confidence": "high",
+    "rationale": "First-party docs describe the feature directly. You put coding conventions, build/test commands and architecture notes in an AGENTS.md at the repo root, and Grok follows them without being told each session. It also reads AGENTS.md variants, CLAUDE.md, and .claude/rules/ and .cursor/rules/ for compatibility, and `grok inspect` shows which instruction files it discovered. Missing for 10: independent or hands-on corroboration that the agent actually adheres to the instructions file.",
+    "evidenceIds": [
+      "grok-build-docs-22",
+      "grok-build-docs-48",
+      "grok-build-docs-23",
+      "grok-build-docs-42"
+    ]
+  },
+  {
+    "productId": "grok-build",
+    "storyId": "pre-merge-diff-inspection",
+    "verdict": "partial",
+    "quality": 4,
+    "confidence": "medium",
+    "rationale": "Running checks is documented: `/loop` can rerun the test suite and report failures, background monitors can watch a CI run, hooks can run a formatter after edits, and AGENTS.md supplies build and test commands. Plan mode adds an approval gate before any edit, and session snapshots let you roll files back. There is no evidence of reviewing diffs, so only the checks half of the story is delivered. Missing for 10: a documented diff view or review of agent changes, any pre-merge or PR review workflow, and independent or hands-on corroboration of the check features.",
+    "evidenceIds": [
+      "grok-build-docs-19",
+      "grok-build-docs-20",
+      "grok-build-docs-30",
+      "grok-build-docs-48",
+      "grok-build-docs-8",
+      "grok-build-docs-14"
+    ]
+  },
+  {
+    "productId": "grok-build",
+    "storyId": "privacy-data-residency",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Data region/residency is a fair question for a cloud-backed coding agent that sends data to its vendor, so the axis applies. The evidence pack contains no documentation of any region or residency selection. Local session saving and the community-reported upload to a cloud bucket do not amount to user-selectable storage location.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "grok-build",
+    "storyId": "privacy-no-training",
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "Community reports describe an 'Improve the model' toggle as a training opt-out, plus zero data retention on the enterprise plan only. An independent wire-level analysis, however, found the whole repo and unredacted .env files are uploaded whether the toggle is on or off. The stopgap is undocumented config flags (disable_codebase_upload, telemetry/trace_upload off) reported by users, one of them unverified. Because no first-party docs describe a training opt-out, there is no vendor-tier claim to dispute; the reports instead limit how far this partial capability can be trusted. Missing for 10: first-party documentation of a training opt-out, verified evidence that the toggle actually stops data from being used for training, a no-training guarantee outside the enterprise plan, and officially documented upload-disable settings.",
+    "evidenceIds": [
+      "grok-build-comm-10",
+      "grok-build-comm-11",
+      "grok-build-comm-12",
+      "grok-build-comm-9"
+    ]
+  },
+  {
+    "productId": "grok-build",
+    "storyId": "privacy-retention-controls",
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "First-party docs say only that Grok saves every conversation to disk automatically; they document no retention settings or deletion commands. Community reports describe config switches that limit what leaves the machine (disable_codebase_upload, telemetry/trace_upload off). They also say zero data retention is available only on the enterprise plan, and that the 'Improve the model' toggle reportedly has no effect on repo upload. missing for 10: documented retention/deletion controls for local sessions and server-side data, first-party docs for the upload-disable config, zero data retention outside enterprise, a verified working privacy toggle.",
+    "evidenceIds": [
+      "grok-build-docs-13",
+      "grok-build-comm-10",
+      "grok-build-comm-11",
+      "grok-build-comm-12"
+    ]
+  },
+  {
+    "productId": "grok-build",
+    "storyId": "privacy-telemetry-optout",
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "No first-party docs describe a telemetry opt-out. Community users report config switches in ~/.grok/config.toml ([harness] disable_codebase_upload=true; [telemetry] trace_upload=false and [features] telemetry=false, though the last two came from asking the CLI itself and are unverified). A wire-level analysis reports the built-in 'Improve the model' toggle has no effect on uploads, and users turned to third-party privacy forks and scripts to strip telemetry. Opt-out is therefore achievable only through undocumented, community-sourced workarounds. Missing for 10: official documentation of telemetry/usage-tracking controls, verified evidence that the config flags actually stop data collection, and a working first-party opt-out toggle.",
+    "evidenceIds": [
+      "grok-build-comm-11",
+      "grok-build-comm-10",
+      "grok-build-comm-5"
+    ]
+  },
+  {
+    "productId": "grok-build",
+    "storyId": "reproducible-cloud-environment-config",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Configurable cloud environments are a fair axis for a coding agent, but the evidence pack never documents one for Grok Build. The cited features are all local: AGENTS.md build and test instructions, local Landlock/Seatbelt sandboxing, and local worktree isolation. Nothing covers a cloud environment with declared dependencies or setup steps.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "grok-build",
+    "storyId": "root-cause-analysis",
+    "verdict": "partial",
+    "quality": 5,
+    "confidence": "medium",
+    "rationale": "Grok Build is a coding agent that can run commands, tests and log monitors in the background (e.g. `/loop 5m Check if the test suite passes and report any failures`, monitors that watch logs or CI runs). Plan mode explores the codebase before editing, and session snapshots let you restore files to an earlier state. Together these support reproducing an issue and verifying a fix, but no evidence describes a debugging or root-cause workflow; that part of the story is only implied by general agent capabilities. Missing for 10: documented debugging/root-cause analysis workflow, explicit issue-reproduction guidance, independent hands-on corroboration of debugging effectiveness.",
+    "evidenceIds": [
+      "grok-build-docs-8",
+      "grok-build-docs-14",
+      "grok-build-docs-18",
+      "grok-build-docs-19",
+      "grok-build-docs-20",
+      "grok-build-docs-22",
+      "grok-build-docs-3"
+    ]
+  },
+  {
+    "productId": "grok-build",
+    "storyId": "sandboxed-agent-execution",
+    "verdict": "full",
+    "quality": 7,
+    "confidence": "medium",
+    "rationale": "Grok Build documents a built-in sandbox that limits what the agent process and its children can read, write and reach on the network, using Landlock on Linux and Seatbelt on macOS (docs-32). That covers the code, tools and network elements of the story. Worktree sessions add filesystem isolation between parallel agents (docs-33), and permission deny rules give extra command-level control (docs-44). missing for 10: depth beyond a single doc snippet (configuration options, default policy, network allowlisting details), Windows sandbox coverage, and independent or hands-on corroboration that the sandbox works as claimed.",
+    "evidenceIds": [
+      "grok-build-docs-32",
+      "grok-build-docs-33",
+      "grok-build-docs-44"
+    ]
+  },
+  {
+    "productId": "grok-build",
+    "storyId": "shared-knowledge-workspace",
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "Grok Build has no dedicated shared workspace feature. The closest approximations are repo-level files: an `AGENTS.md` (plus compatible rule files) at the repo root holds conventions, build commands and architecture notes that Grok follows each session, and project `.mcp.json` files can live in the repo. `/share` can also share an individual session via URL. These are per-repo or per-session mechanisms, not a team workspace built from multiple docs and repos. Missing for 10: a team-level shared workspace or knowledge base that combines docs and multiple repos, team membership and access controls, and independent evidence of team use.",
+    "evidenceIds": [
+      "grok-build-docs-22",
+      "grok-build-docs-48",
+      "grok-build-docs-23",
+      "grok-build-docs-25",
+      "grok-build-docs-12"
+    ]
+  },
+  {
+    "productId": "grok-build",
+    "storyId": "terminal-scripting-automation",
+    "verdict": "full",
+    "quality": 8,
+    "confidence": "high",
+    "rationale": "First-party docs describe a headless mode for scripts and bots, with selectable output formats (plain, json, streaming-json). They also document ACP over JSON-RPC on stdin/stdout and device-code auth for headless environments, and a community comment independently confirms the `-p` headless mode for scripts and automations. missing for 10: documented non-interactive permission/approval handling (Auto mode notes dangerous tools may still prompt), exit-code and error-handling behavior for scripts, hands-on independent reports of scripted runs.",
+    "evidenceIds": [
+      "grok-build-docs-6",
+      "grok-build-docs-41",
+      "grok-build-docs-7",
+      "grok-build-docs-36",
+      "grok-build-probe-rt-1",
+      "grok-build-comm-19",
+      "grok-build-docs-9"
+    ]
+  },
+  {
+    "productId": "grok-build",
+    "storyId": "training-data-opt-out",
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "Community reports describe an 'Improve the model' toggle, which is the training opt-out. A wire-level analysis says the whole repo, including a .env file, is uploaded identically whether the toggle is on or off, so the opt-out does not keep data off xAI's servers [grok-build-comm-10, grok-build-comm-9]. Zero data retention is reportedly limited to the enterprise plan, and stopping the upload requires an undocumented config flag (`disable_codebase_upload=true`) [grok-build-comm-12, grok-build-comm-11]. This is not 'disputed' because no first-party doc in the pack claims the capability; the only evidence is community reports, so it stays partial at low confidence. missing for 10: first-party documentation of a training opt-out and its scope, a verified opt-out that actually prevents code and prompt collection outside the enterprise plan, independent reproduction of the toggle's behavior, a documented admin or team-level opt-out for an engineering lead",
+    "evidenceIds": [
+      "grok-build-comm-10",
+      "grok-build-comm-9",
+      "grok-build-comm-12",
+      "grok-build-comm-11"
+    ]
+  },
+  {
+    "productId": "grok-build",
+    "storyId": "unified-multi-session-workspace",
+    "verdict": "full",
+    "quality": 8,
+    "confidence": "medium",
+    "rationale": "Grok Build documents a fullscreen dashboard giving an overview of every session, showing which agents need input, which are working, and which are done. Worktree sessions isolate parallel agents so they cannot overwrite each other's files, and /resume, /fork, background subagents and child sessions support juggling multiple agent-driven workstreams from the TUI. Missing for 10: detail on interacting with or switching between sessions from the dashboard itself, and independent hands-on corroboration of multi-session management.",
+    "evidenceIds": [
+      "grok-build-docs-21",
+      "grok-build-docs-33",
+      "grok-build-docs-45",
+      "grok-build-docs-15",
+      "grok-build-docs-18",
+      "grok-build-docs-31"
+    ]
+  },
+  {
+    "productId": "grok-build",
+    "storyId": "vulnerability-autofix",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Grok Build is a coding agent, so explaining and fixing security vulnerabilities is a fair question for it. The pack only shows generic code-explanation prompts such as \"Explain this repo\" and \"Walk me through this file\". It has no evidence of vulnerability detection, security-focused explanations, or automatic security fixes. The sandbox, permission and hook features cover the agent's own execution safety, not vulnerability remediation in the user's code.",
+    "evidenceIds": []
+  },
+  {
     "productId": "opencode",
     "storyId": "agentic-agent-docs",
     "verdict": "partial",

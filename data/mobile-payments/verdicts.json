@@ -632,6 +632,583 @@
     ]
   },
   {
+    "productId": "shopify-pos",
+    "storyId": "accept-cards-and-wallets",
+    "verdict": "partial",
+    "quality": 6,
+    "confidence": "medium",
+    "rationale": "Shopify's Tap to Pay docs say it accepts contactless credit and debit cards, smartwatches, Apple Pay, Google Pay and other digital wallets on a smartphone, so the contactless and mobile-wallet parts of the story are covered. Nothing in the evidence documents chip (EMV) insertion, and an older community comment said the product still needed EMV support; that is an unaddressed gap rather than a dispute, because the vendor never claims chip support. Missing for 10: documented chip/EMV card acceptance (e.g., a card reader), in-depth first-party payment docs, independent hands-on corroboration.",
+    "evidenceIds": [
+      "shopify-pos-docs-25",
+      "shopify-pos-docs-27",
+      "shopify-pos-docs-28",
+      "shopify-pos-comm-4"
+    ]
+  },
+  {
+    "productId": "shopify-pos",
+    "storyId": "agent-monitors-disputes",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Dispute monitoring is a fair question for a POS that processes card payments, so the axis applies. However, the evidence pack never mentions chargebacks, dispute deadlines, dispute webhooks, or evidence submission. The general GraphQL Admin API access from POS UI extensions says nothing about disputes, and Sidekick is documented only for inventory tasks, not drafting dispute responses.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "shopify-pos",
+    "storyId": "agent-provisions-new-location",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "The evidence mentions a centralized back office for 1,000+ locations and says POS UI extensions can query the GraphQL Admin API. Nothing documents an API for creating locations or for programmatically registering card readers or hardware. With no evidence for either half of the end-to-end provisioning flow, this applicable axis is unsupported.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "shopify-pos",
+    "storyId": "agent-reconciles-daily-takings",
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "The evidence shows a GraphQL Admin API reachable from POS extensions (docs-36), integration with existing software (docs-6), and built-in reporting (docs-5). Programmatic data access is therefore plausible, but nothing in the pack documents transactions or payouts endpoints, or any reconciliation or ledger-sync workflow. Missing for 10: documented transaction and payout API endpoints, daily-takings or payout reconciliation features, accounting/ledger integration (the QuickBooks item covers POS migration, not ledger sync), agent-oriented API access, and independent corroboration.",
+    "evidenceIds": [
+      "shopify-pos-docs-36",
+      "shopify-pos-docs-6",
+      "shopify-pos-docs-5"
+    ]
+  },
+  {
+    "productId": "shopify-pos",
+    "storyId": "agentic-agent-docs",
+    "verdict": "full",
+    "quality": 8,
+    "confidence": "high",
+    "rationale": "A live probe found an llms.txt at help.shopify.com (HTTP 200) that describes itself as a \"guide for AI agents and crawlers.\" The help-center and shopify.dev POS pages are also served as .md markdown URLs (e.g., sell-in-person.md, apps/build/pos.md), so an agent can be pointed at agent-readable docs. The .md.md 404 probe used a malformed double extension and does not count against this. Missing for 10: a POS-specific llms.txt or agent guide (the file found covers the whole Shopify Help Center), visibility of the llms.txt content beyond its header, and independent or community confirmation that agents use these docs effectively.",
+    "evidenceIds": [
+      "shopify-pos-probe-1",
+      "shopify-pos-docs-1",
+      "shopify-pos-docs-34",
+      "shopify-pos-docs-38"
+    ]
+  },
+  {
+    "productId": "shopify-pos",
+    "storyId": "agentic-ai-insights",
+    "verdict": "full",
+    "quality": 7,
+    "confidence": "medium",
+    "rationale": "The POS features page says Sidekick, Shopify's AI assistant, gives reordering suggestions based on sales velocity and seasonality. It also recommends stock transfers between locations based on performance trends and can create them automatically. That is AI-generated, data-driven insight and action within the product. missing for 10: evidence of AI insights beyond inventory (e.g., sales or customer analytics), in-depth help-center documentation of Sidekick within the POS app itself, independent or hands-on corroboration.",
+    "evidenceIds": [
+      "shopify-pos-docs-18",
+      "shopify-pos-docs-19"
+    ]
+  },
+  {
+    "productId": "shopify-pos",
+    "storyId": "agentic-autonomous-automation",
+    "verdict": "partial",
+    "quality": 4,
+    "confidence": "medium",
+    "rationale": "The only background automation evidenced is one Shopify Flow-powered use case: notifications before stock runs out, based on sales-rate thresholds. Sidekick can create stock transfers automatically, but only when asked, so it is assistant-triggered rather than an autonomous background job. There is a general claim of low-code/no-code customization. Missing for 10: documentation of user-configurable automation workflows (triggers, conditions, actions) within POS, autonomous agent-run background tasks beyond notifications, scheduling/monitoring of automations, and any independent or hands-on corroboration.",
+    "evidenceIds": [
+      "shopify-pos-docs-20",
+      "shopify-pos-docs-19",
+      "shopify-pos-docs-6"
+    ]
+  },
+  {
+    "productId": "shopify-pos",
+    "storyId": "agentic-builtin-assistant",
+    "verdict": "full",
+    "quality": 7,
+    "confidence": "medium",
+    "rationale": "Shopify's POS features page documents Sidekick, Shopify's built-in AI assistant. Users can ask it for reordering suggestions based on sales velocity and seasonality. They can also have it recommend stock transfers between locations and create them automatically, which is real task delegation. missing for 10: evidence of delegation beyond inventory tasks (e.g., checkout, staff or customer workflows), clarity on whether Sidekick runs inside the POS app itself or only in the admin, in-depth docs on Sidekick capabilities, independent or hands-on corroboration.",
+    "evidenceIds": [
+      "shopify-pos-docs-18",
+      "shopify-pos-docs-19"
+    ]
+  },
+  {
+    "productId": "shopify-pos",
+    "storyId": "agentic-headless",
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "Shopify POS itself is documented as an iOS/Android-only app, so there is no evidence it can run headlessly. The surrounding developer tooling offers only adjacent automation: Shopify CLI scaffolds POS UI extensions, extensions can call the GraphQL Admin API via fetch(), and Shopify Flow powers threshold-based notifications. missing for 10: a documented headless or non-interactive mode for POS operations, CI pipeline usage (e.g. a CLI deploy or test flow in CI), API-driven automation of POS workflows outside the app UI, and independent or hands-on corroboration.",
+    "evidenceIds": [
+      "shopify-pos-docs-1",
+      "shopify-pos-docs-38",
+      "shopify-pos-docs-36",
+      "shopify-pos-docs-20"
+    ]
+  },
+  {
+    "productId": "shopify-pos",
+    "storyId": "agentic-mcp-client",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Shopify POS embeds an AI assistant, Sidekick, so asking whether it can consume external MCP servers is a fair question for this product. However, nothing in the evidence pack mentions MCP client support or any way to plug external tool servers into Sidekick or POS. The POS UI extensions and Admin API are developer extension points, not MCP integration.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "shopify-pos",
+    "storyId": "agentic-mcp-server",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Shopify POS is a retail/commerce SaaS platform, not an agent itself, so publishing an official MCP server is a fair axis. The evidence pack never mentions an MCP server or endpoint. The adjacent items do not count: Sidekick is a built-in assistant, the GraphQL Admin API and POS UI extensions are conventional developer surfaces, and llms.txt is crawler/agent documentation rather than an MCP server.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "shopify-pos",
+    "storyId": "agentic-nl-commands",
+    "verdict": "partial",
+    "quality": 4,
+    "confidence": "medium",
+    "rationale": "Shopify's AI assistant Sidekick can be asked in natural language to recommend stock transfers between locations and create them automatically, and it also offers reordering suggestions. This is real natural-language operation, but the evidence covers only inventory tasks and does not show it working inside the POS app itself. Missing for 10: natural-language control of core POS workflows (checkout, carts, discounts, fulfillment), evidence that Sidekick runs within the POS app rather than the admin, documentation of command scope and limits, and independent or hands-on corroboration.",
+    "evidenceIds": [
+      "shopify-pos-docs-18",
+      "shopify-pos-docs-19"
+    ]
+  },
+  {
+    "productId": "shopify-pos",
+    "storyId": "agentic-official-cli",
+    "verdict": "partial",
+    "quality": 4,
+    "confidence": "medium",
+    "rationale": "Shopify's developer docs say the official Shopify CLI is used to scaffold POS UI extensions, so an official CLI exists in the POS ecosystem. The evidence covers only extension scaffolding, not operating or managing POS itself from the command line, and it comes from a single brief mention. Missing for 10: CLI commands for POS operations (orders, inventory, staff, locations), documentation of agent or AI-driven CLI workflows, CLI reference depth beyond scaffolding, and independent or hands-on corroboration.",
+    "evidenceIds": [
+      "shopify-pos-docs-38",
+      "shopify-pos-docs-34"
+    ]
+  },
+  {
+    "productId": "shopify-pos",
+    "storyId": "agentic-public-api",
+    "verdict": "partial",
+    "quality": 5,
+    "confidence": "medium",
+    "rationale": "Shopify's developer docs cover POS UI extensions, scaffolded with Shopify CLI and offering a documented extension API (shopify.storage, shopify.toast, presentModal). Extensions can call the GraphQL Admin API via fetch(), and POS data syncs with the Shopify backend, so a documented public API path exists. However, the evidence shows these hooks embedding custom UI inside the POS app rather than an external API for an agent to drive POS operations (carts, checkout, in-store sales) programmatically. Missing for 10: a documented external API for driving POS actions directly, explicit Admin API coverage of POS-specific objects, and independent or hands-on corroboration of API-driven POS workflows.",
+    "evidenceIds": [
+      "shopify-pos-docs-34",
+      "shopify-pos-docs-35",
+      "shopify-pos-docs-36",
+      "shopify-pos-docs-38",
+      "shopify-pos-docs-39",
+      "shopify-pos-docs-2"
+    ]
+  },
+  {
+    "productId": "shopify-pos",
+    "storyId": "agentic-scoped-keys",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Shopify POS is a SaaS platform with developer APIs, so issuing scoped API credentials for an agent is a fair question. However, the evidence never describes API token issuance or access scopes. The custom staff roles and PINs control human staff permissions, not API credentials. The note that POS extensions can call the GraphQL Admin API says nothing about scoped or least-privilege credentials for an agent.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "shopify-pos",
+    "storyId": "agentic-sdks",
+    "verdict": "full",
+    "quality": 7,
+    "confidence": "medium",
+    "rationale": "Shopify documents an official POS UI extensions API on shopify.dev. It covers tiles, actions and blocks targets, a runtime surface (shopify.storage, shopify.toast, shopify.action.presentModal), Shopify CLI scaffolding, and direct GraphQL Admin API access via fetch(). Together these form an official SDK developers can build against for the POS. missing for 10: evidence of language-specific client SDKs or libraries beyond the extension runtime, AI-native workflow tooling tied to the SDK, and independent or hands-on corroboration of the developer experience.",
+    "evidenceIds": [
+      "shopify-pos-docs-34",
+      "shopify-pos-docs-35",
+      "shopify-pos-docs-36",
+      "shopify-pos-docs-38",
+      "shopify-pos-docs-39"
+    ]
+  },
+  {
+    "productId": "shopify-pos",
+    "storyId": "agentic-webhooks",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Event subscription via webhooks is a fair question for a commerce/POS platform, so the axis applies. The pack never mentions webhooks or event subscriptions: it covers only POS UI extensions querying the GraphQL Admin API, generic integration claims, and Flow-powered low-stock notifications, none of which show subscribing to events via webhooks.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "shopify-pos",
+    "storyId": "api-interactive-docs",
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "Shopify POS has a first-party API reference for POS UI extensions on shopify.dev. It documents APIs such as shopify.storage, shopify.toast and shopify.action.presentModal(), and notes that extensions can query the GraphQL Admin API via fetch(). Nothing in the evidence shows the reference is interactive or that its examples can be run in the browser, so only the API-reference half of the story is supported. Missing for 10: an interactive API explorer or playground, runnable in-docs examples, and independent or hands-on corroboration.",
+    "evidenceIds": [
+      "shopify-pos-docs-39",
+      "shopify-pos-docs-38",
+      "shopify-pos-docs-36",
+      "shopify-pos-docs-34"
+    ]
+  },
+  {
+    "productId": "shopify-pos",
+    "storyId": "api-machine-spec",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Shopify POS has developer APIs, including POS UI extensions and access to the GraphQL Admin API, so a downloadable machine-readable spec is a fair question. However, nothing in the evidence shows a downloadable OpenAPI document, GraphQL schema file, or equivalent. The llms.txt probe and markdown docs are documentation aids, not API specifications.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "shopify-pos",
+    "storyId": "api-sandbox",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Sandbox testing is a fair axis for a commerce platform with developer extensions and API access, so it applies. However, the evidence only covers scaffolding POS UI extensions with Shopify CLI and querying the Admin API. Nothing mentions a sandbox, development store, test mode, or any other way to test without touching production data.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "shopify-pos",
+    "storyId": "api-versioning-policy",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Shopify POS exposes developer surfaces, including POS UI extensions and GraphQL Admin API access from extensions, so API versioning and deprecation policy is a fair axis. However, nothing in the evidence mentions API version numbers, release cadence, or a documented deprecation policy. Absence of evidence for an applicable capability yields none.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "shopify-pos",
+    "storyId": "automation-bulk-operations",
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "The evidence only indirectly touches multi-item operations. Sidekick can recommend stock transfers between locations and create them automatically, and Quick counts and incoming-shipment receiving use a barcode scanner to update stock quantities. POS extensions can call the GraphQL Admin API, which suggests programmatic routes, but none of this is documented as bulk editing or bulk actions across many items. Missing for 10: explicit bulk edit/bulk action capability in POS, documented bulk updates of products, prices or inventory, AI-driven bulk operations beyond transfer creation, and independent or hands-on corroboration.",
+    "evidenceIds": [
+      "shopify-pos-docs-19",
+      "shopify-pos-docs-16",
+      "shopify-pos-docs-15",
+      "shopify-pos-docs-36"
+    ]
+  },
+  {
+    "productId": "shopify-pos",
+    "storyId": "automation-rules-engine",
+    "verdict": "partial",
+    "quality": 4,
+    "confidence": "medium",
+    "rationale": "Shopify Flow powers threshold-based low-stock notifications triggered by sales-rate events, and the pricing page mentions low-code/no-code customization, which points to an event-driven automation layer. Sidekick can also create stock transfers automatically. However, the evidence never shows a general user-authored rule builder covering arbitrary POS events and actions. Missing for 10: documentation of user-defined trigger/condition/action rules for POS events, breadth of supported triggers and actions, and independent or hands-on corroboration.",
+    "evidenceIds": [
+      "shopify-pos-docs-20",
+      "shopify-pos-docs-6",
+      "shopify-pos-docs-19"
+    ]
+  },
+  {
+    "productId": "shopify-pos",
+    "storyId": "automation-scheduled-jobs",
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "The only workflow-automation evidence is a Shopify Flow-powered low-stock notification that fires on sales-rate thresholds, plus a generic claim of low-code/no-code customization. That shows event-triggered automation tied to POS, but nothing documents scheduling recurring jobs or time-based workflows. Missing for 10: any documented scheduled or recurring trigger capability, details of Flow workflow configuration for POS, and independent or hands-on corroboration.",
+    "evidenceIds": [
+      "shopify-pos-docs-20",
+      "shopify-pos-docs-6"
+    ]
+  },
+  {
+    "productId": "shopify-pos",
+    "storyId": "automation-versioned-workflows",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Shopify POS does offer automation through Shopify Flow-powered low-stock alerts and Sidekick-created stock transfers, so this axis applies. However, nothing in the evidence shows versioning, review, or rollback of those automations. The Shopify CLI scaffolding for POS UI extensions covers extension development, not automation version history or rollback.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "shopify-pos",
+    "storyId": "catalog-inventory-sync",
+    "verdict": "full",
+    "quality": 8,
+    "confidence": "medium",
+    "rationale": "First-party docs state that POS inventory syncs in real time across POS, the online store and every sales channel, at every location. They also cover Quick counts with barcode scanners, receiving shipments, and exchanges that update inventory instantly, run from a centralized back office scaling to 1,000+ locations. One older community report of an integer-overflow bug breaking inventory counts, and an old complaint about missing custom product fields, are isolated rather than a concrete refutation of sync. Missing for 10: explicit documentation of catalog management itself (creating and editing products and variants), and independent hands-on corroboration that counts stay in sync across registers.",
+    "evidenceIds": [
+      "shopify-pos-docs-2",
+      "shopify-pos-docs-14",
+      "shopify-pos-docs-16",
+      "shopify-pos-docs-15",
+      "shopify-pos-docs-9",
+      "shopify-pos-docs-4",
+      "shopify-pos-comm-9",
+      "shopify-pos-comm-8"
+    ]
+  },
+  {
+    "productId": "shopify-pos",
+    "storyId": "digital-receipts",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Issuing receipts is a core, applicable capability for a point-of-sale system, but the evidence pack never mentions email, SMS, or printed receipts, nor card-network receipt requirements. The closest items are follow-up emails about unpurchased items and printing shipping labels, and neither is a transaction receipt.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "shopify-pos",
+    "storyId": "dispute-evidence-workflow",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Shopify POS processes card payments (e.g., Tap to Pay), so chargeback notification and dispute-evidence submission is a fair axis for this kind of product. However, nothing in the evidence pack mentions chargebacks, dispute alerts, evidence submission or response deadlines. The only notification feature documented is low-stock alerts via Shopify Flow.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "shopify-pos",
+    "storyId": "multi-location-operations",
+    "verdict": "partial",
+    "quality": 5,
+    "confidence": "medium",
+    "rationale": "Shopify documents multi-location operation: a centralized back office supporting 1,000+ locations, per-location inventory that syncs in real time, stock transfers between locations, and general reporting and analytics. However, nothing in the evidence explicitly shows per-location device assignment, per-location settings, or reporting broken down by location. Missing for 10: documented per-location device and fleet management, per-location settings configuration, location-level reporting breakdowns, independent or hands-on corroboration.",
+    "evidenceIds": [
+      "shopify-pos-docs-4",
+      "shopify-pos-docs-2",
+      "shopify-pos-docs-14",
+      "shopify-pos-docs-19",
+      "shopify-pos-docs-5",
+      "shopify-pos-docs-26"
+    ]
+  },
+  {
+    "productId": "shopify-pos",
+    "storyId": "native-mobile-sdks",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Embedding in-person payments via mobile SDKs is a fair question for an in-person payments/POS platform, so the axis applies. The evidence shows Tap to Pay only inside Shopify's own POS app, and POS UI extensions only add tiles, actions and blocks within Shopify's POS interface. Nothing documents an official iOS or Android SDK for taking in-person payments inside a third-party app.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "shopify-pos",
+    "storyId": "offline-payments",
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "The only on-topic evidence is a help-center heading, \"Using Shopify POS offline\", which shows some offline mode exists but says nothing about what it supports. The Tap to Pay page frames contactless payments as relying on WiFi or cellular connectivity, so offline card acceptance is not established. Missing for 10: evidence that card payments can be taken while offline, store-and-forward queuing and syncing of transactions on reconnect, any limits or risk terms on offline transactions, and independent or hands-on corroboration.",
+    "evidenceIds": [
+      "shopify-pos-docs-31",
+      "shopify-pos-docs-28"
+    ]
+  },
+  {
+    "productId": "shopify-pos",
+    "storyId": "openness-api-parity",
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "medium",
+    "rationale": "The evidence shows that Shopify POS data (orders, inventory) syncs with the Shopify back office and that POS UI extensions can call the GraphQL Admin API via fetch(), so some programmatic access exists. However, that access sits inside UI extensions embedded in the POS interface. Nothing documents a headless API that mirrors in-store UI actions such as building carts, taking payments, quick counts or receiving shipments. missing for 10: evidence of API coverage matching POS UI actions (cart/checkout, payments, staff/PIN management, stock counts), a documented parity claim, independent corroboration of API completeness.",
+    "evidenceIds": [
+      "shopify-pos-docs-36",
+      "shopify-pos-docs-34",
+      "shopify-pos-docs-2",
+      "shopify-pos-docs-6",
+      "shopify-pos-docs-38"
+    ]
+  },
+  {
+    "productId": "shopify-pos",
+    "storyId": "openness-full-export",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Data export is a fair axis for a commerce/POS product, but the evidence pack never mentions exporting data, CSV or other open-format downloads, or account portability. The only related items are a migration path *into* Shopify POS from QuickBooks (import, not export) and POS UI extensions that can query the GraphQL Admin API, which is extension functionality rather than a bulk export or exit path.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "shopify-pos",
+    "storyId": "openness-open-license",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Open-source licensing is a fair question for a point-of-sale product, since open-source POS systems exist, so the axis applies. Nothing in the evidence shows Shopify POS source code published under an open license. The docs cover proprietary iOS/Android apps and documented extension APIs (POS UI extensions, Shopify CLI), not readable product source.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "shopify-pos",
+    "storyId": "openness-self-host",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Self-hosting is a fair question for a point-of-sale system, since self-hostable POS products exist, so the axis applies. However, the evidence presents Shopify POS only as iOS/Android apps that sync with Shopify's hosted platform and back office, with customization limited to UI extensions and the Admin API. Nothing in the pack indicates the core product can be deployed on your own infrastructure.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "shopify-pos",
+    "storyId": "payment-event-webhooks",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Payment lifecycle webhooks are a fair question for a POS product that processes payments, so the axis applies. However, the evidence pack never mentions webhooks or subscriptions to authorized, captured, refunded, or disputed events. The closest items are POS UI extensions querying the GraphQL Admin API, Shopify Flow-powered inventory alerts, and generic integration claims, and none of these show event delivery for payment lifecycle changes.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "shopify-pos",
+    "storyId": "payout-timing-control",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Payout visibility and accelerated (next-day or instant) payouts are a fair question for a POS that processes card payments, so the axis applies. However, nothing in the evidence pack covers payout schedules, payout tracking, or instant/next-day payout options. The docs cover selling, inventory, staff, hardware and extensions only.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "shopify-pos",
+    "storyId": "privacy-data-residency",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Choosing a data storage region is a fair question for a cloud-synced SaaS POS, so the axis applies. However, nothing in the evidence pack mentions data residency, region selection, or where merchant data is hosted. The shopify.storage API only persists extension data between sessions and says nothing about residency.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "shopify-pos",
+    "storyId": "privacy-no-training",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Shopify POS is a SaaS commerce platform that processes merchant and customer data and ships AI features such as Sidekick, so an AI-training opt-out is a fair question to ask of it. Nothing in the evidence pack mentions any data-use policy, training opt-out, or privacy control over AI model training. The Sidekick references describe AI features only, not data-handling controls.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "shopify-pos",
+    "storyId": "privacy-retention-controls",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Data retention and deletion controls are a fair axis for a commerce SaaS like Shopify POS, which stores customer, order, and staff data. The evidence pack contains no material on retention policies, deletion tools, data export or erasure, or privacy controls. The shopify.storage mention covers extension session persistence, not user-controlled retention or deletion.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "shopify-pos",
+    "storyId": "privacy-telemetry-optout",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Opting out of telemetry and usage tracking is a fair question for a SaaS POS app, so the axis applies. Nothing in the evidence pack mentions telemetry settings, analytics opt-out, or usage-tracking controls. The pack's 'tracking' references concern order and inventory sync, which is a different subject.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "shopify-pos",
+    "storyId": "reader-pairing-setup",
+    "verdict": "partial",
+    "quality": 4,
+    "confidence": "medium",
+    "rationale": "The evidence shows Shopify POS can take payments on hardware: Tap to Pay turns an iOS/Android phone into a contactless checkout, and POS Hub connects peripherals to a tablet over USB. However, nothing documents pairing a dedicated card reader with the app or registering one to an account, and nothing describes a quick setup time. Missing for 10: documented card-reader pairing/registration flow, evidence of setup-to-first-payment within minutes, hands-on corroboration.",
+    "evidenceIds": [
+      "shopify-pos-docs-25",
+      "shopify-pos-docs-26",
+      "shopify-pos-docs-27",
+      "shopify-pos-docs-28",
+      "shopify-pos-docs-1"
+    ]
+  },
+  {
+    "productId": "shopify-pos",
+    "storyId": "reconcile-takings-reports",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "The pack mentions 'reporting and analytics' only generically on the pricing page (shopify-pos-docs-5). Nothing documents payout reports, itemized transaction or fee breakdowns, or reconciling daily takings against payouts. Without evidence for the core of this applicable axis, the verdict is none.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "shopify-pos",
+    "storyId": "reduced-pci-scope",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "PCI scope reduction is a fair axis for a POS product with first-party payment hardware, but the evidence never mentions PCI compliance, certified or encrypted card readers, or guidance on merchant or developer obligations. The Tap to Pay items only describe accepting contactless payments on a smartphone, without saying how card data is captured or isolated.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "shopify-pos",
+    "storyId": "refunds-from-pos",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Refunds are a core axis for a point-of-sale product, but the evidence pack never mentions issuing refunds, full or partial, to the original card from POS, the admin dashboard, or the API. The only related item covers exchanges for online or other-location purchases, which is not a refund to the original payment method. The generic note that extensions can query the GraphQL Admin API does not show any refund capability.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "shopify-pos",
+    "storyId": "server-driven-terminal-checkout",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "The evidence only documents POS UI extensions that run inside Shopify's own POS app as tiles, actions and blocks, and call the Admin API from the client. Nothing documents a server-driven API that lets a developer's backend drive a payment terminal or build a custom checkout outside the POS app. This client-side extension model does not deliver the story.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "shopify-pos",
+    "storyId": "simulated-reader-testing",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Shopify POS has a developer surface: POS UI extensions scaffolded with Shopify CLI, plus GraphQL Admin API access. That makes testing in-person payment integrations a fair question for this product. However, nothing in the pack mentions a simulated card reader, test card mode, sandbox payments, or end-to-end testing before going live.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "shopify-pos",
+    "storyId": "split-payments",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Splitting a sale across payment methods or payers is a fair axis for a point-of-sale product, but nothing in the evidence pack mentions split tender, partial payments, or multiple payers. The docs cover Tap to Pay, tips, gift cards and carts, but never combining payment methods on one sale.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "shopify-pos",
+    "storyId": "start-accepting-same-week",
+    "verdict": "partial",
+    "quality": 4,
+    "confidence": "low",
+    "rationale": "The evidence shows Shopify POS runs on iOS and Android, offers Tap to Pay for contactless payments on a smartphone with no extra hardware, and sells hardware such as POS Hub. That makes quick in-person selling plausible, but nothing documents the onboarding flow or how long it takes. Missing for 10: documented sign-up and merchant/payments approval process, evidence of ordering hardware directly from the admin dashboard, any time-to-first-payment or shipping timeline, and independent or hands-on corroboration of a same-week launch.",
+    "evidenceIds": [
+      "shopify-pos-docs-1",
+      "shopify-pos-docs-25",
+      "shopify-pos-docs-26",
+      "shopify-pos-docs-27",
+      "shopify-pos-docs-28"
+    ]
+  },
+  {
+    "productId": "shopify-pos",
+    "storyId": "tap-to-pay-on-own-phone",
+    "verdict": "full",
+    "quality": 8,
+    "confidence": "medium",
+    "rationale": "Shopify's first-party pages say Tap to Pay turns a smartphone into a checkout. It accepts contactless credit and debit cards, smartwatches, Apple Pay, Google Pay and other digital wallets over WiFi or cellular, and the POS app runs on iOS and Android, so the core of the story (contactless payments on a phone without a reader) is delivered. Missing for 10: supported device and region eligibility details, an explicit statement that no separate reader purchase is required, and independent or hands-on corroboration of Tap to Pay working.",
+    "evidenceIds": [
+      "shopify-pos-docs-25",
+      "shopify-pos-docs-27",
+      "shopify-pos-docs-28",
+      "shopify-pos-docs-1"
+    ]
+  },
+  {
+    "productId": "shopify-pos",
+    "storyId": "terminal-fleet-management-api",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Device-fleet management is a fair question for a POS product that sells card readers and hubs, so the axis applies. However, the evidence shows no API for registering readers or terminals, monitoring their status, or pushing configuration remotely. The only nearby items are POS Hub's 'built-in device monitoring', a hardware feature with no programmatic access described, and POS UI extensions, which customize the in-app interface and query the Admin API but do not manage devices.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "shopify-pos",
+    "storyId": "tipping-flows",
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "The only relevant evidence is a help-center article titled \"Collecting tips with the Shopify POS.\" It confirms that Shopify POS supports tip collection, but it gives no detail on how tipping prompts are configured or where they are shown. missing for 10: configurable tip percentages, smart tip amounts, custom tip entry, prompts on the card reader or terminal, in-depth docs, and independent or hands-on corroboration.",
+    "evidenceIds": [
+      "shopify-pos-docs-32"
+    ]
+  },
+  {
     "productId": "square",
     "storyId": "accept-cards-and-wallets",
     "verdict": "full",

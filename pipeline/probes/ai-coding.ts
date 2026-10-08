@@ -252,4 +252,19 @@ export const probes: LocalProbe[] = [
       expect: /# ByteAsk Docs[\s\S]*Documentation for ByteAsk/,
       timeoutMs: 30_000,
     },
+    {
+      // Grok Build's docs are agent-readable keylessly: every docs.x.ai page serves a markdown
+      // mirror at the same URL + `.md` (the site's llms.txt documents the convention and
+      // indexes the full Grok Build section). Recorded at the 2026-10-08 family-judgement
+      // bring-up (byteask/random-labs llms-index precedent, applied to the .md mirror that is
+      // the product's own overview page).
+      probeId: 'docs-md-mirror',
+      productId: 'grok-build',
+      storyIds: ['agentic-agent-docs'],
+      bin: 'curl',
+      argv: ['sh', '-c', 'curl -s --max-time 20 https://docs.x.ai/build/overview.md | head -8'],
+      displayCommand: 'curl -s https://docs.x.ai/build/overview.md | head -8',
+      expect: /# Grok Build[\s\S]*extensible coding agent/,
+      timeoutMs: 30_000,
+    },
 ]
