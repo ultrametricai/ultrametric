@@ -6,6 +6,6 @@ export function processStartTarget(record: SharedRecord): StartTarget {
   return {
     id: record.id,
     title: record.title,
-    regions: regionalDecision(record)?.options.map(({ id, title }) => ({ id, title })) ?? [],
+    regions: regionalDecision(record)?.options.map(({ id, title, countries }) => ({ id, title, countries })) ?? [],
   }
 }

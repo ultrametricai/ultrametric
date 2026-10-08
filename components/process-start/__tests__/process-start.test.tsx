@@ -7,6 +7,7 @@ import { regionalDecision } from '@/lib/shared-processes/regions'
 import { findSharedRecord, readSharedCatalog, sharedPreviewHref } from '@/lib/shared-processes/reader'
 import { processStartTarget } from '@/lib/shared-processes/start'
 import { startPrompt } from '@/lib/process-start'
+import { setGeoChoice } from '@/lib/geoPreference'
 
 const records = readSharedCatalog()
 const record = findSharedRecord(records, 'form_001')!
@@ -15,6 +16,7 @@ const publicHref = sharedPreviewHref(record.id, records)
 let writeText = vi.fn()
 
 beforeEach(() => {
+  setGeoChoice(null)
   window.history.replaceState({}, '', publicHref)
   HTMLDialogElement.prototype.showModal = function () { this.open = true }
   HTMLDialogElement.prototype.close = function () { this.open = false; this.dispatchEvent(new Event('close')) }
@@ -72,13 +74,13 @@ describe('inline process picker', () => {
     picker()
     fireEvent.click(screen.getByRole('radio', { name: 'India - MCA SPICe+ filing' }))
     const launch = screen.getByRole('link', { name: 'Run on web' })
-    expect(new URL(launch.getAttribute('href')!).searchParams.get('q')).toBe(startPrompt(target, undefined, 'claude'))
+    expect(new URL(launch.getAttribute('href')!).searchParams.get('q')).toBe(startPrompt(target, 'india-spice-plus', 'claude'))
     expect(launch.getAttribute('target')).toBe('_blank')
     expect(launch.getAttribute('rel')).toBe('noopener noreferrer')
     expect(launch.getAttribute('referrerpolicy')).toBe('no-referrer')
     fireEvent.click(screen.getByRole('radio', { name: 'ChatGPT' }))
     const chatgpt = screen.getByRole('link', { name: 'Run on web' })
-    expect(new URL(chatgpt.getAttribute('href')!).searchParams.get('q')).toBe(startPrompt(target, undefined, 'chatgpt'))
+    expect(new URL(chatgpt.getAttribute('href')!).searchParams.get('q')).toBe(startPrompt(target, 'india-spice-plus', 'chatgpt'))
     expect(chatgpt.getAttribute('title')).toContain('send this process prompt')
     for (const name of ['Codex', 'Claude Code']) {
       fireEvent.click(screen.getByRole('radio', { name }))
@@ -87,8 +89,17 @@ describe('inline process picker', () => {
     fireEvent.click(screen.getByRole('radio', { name: 'Cursor' }))
     const cursor = new URL(screen.getByRole('link', { name: 'Open in Cursor' }).getAttribute('href')!)
     expect(cursor.origin).toBe('https://cursor.com')
-    expect(cursor.searchParams.get('text')).toBe(startPrompt(target, undefined, 'cursor'))
+    expect(cursor.searchParams.get('text')).toBe(startPrompt(target, 'india-spice-plus', 'cursor'))
     expect(writeText).not.toHaveBeenCalled()
+  })
+
+  it('keeps the explicit regional selector ahead of the site-wide country preference', () => {
+    setGeoChoice('UK')
+    picker()
+    const launchPrompt = () => new URL(screen.getByRole('link', { name: 'Run on web' }).getAttribute('href')!).searchParams.get('q')
+    expect(launchPrompt()).toBe(startPrompt(target, 'default', 'claude'))
+    fireEvent.click(screen.getByRole('radio', { name: 'India - MCA SPICe+ filing' }))
+    expect(launchPrompt()).toBe(startPrompt(target, 'india-spice-plus', 'claude'))
   })
 
   // Founder sequence (2026-10-08): open modal → click Ultrametric CLI → prompt copied,
