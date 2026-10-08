@@ -2,11 +2,11 @@
 import { afterEach, expect, it, vi } from 'vitest'
 import { cleanup, fireEvent, render, within } from '@testing-library/react'
 import SharedProcessReader from '@/components/shared-processes/SharedProcessReader'
-import { loadSharedProcesses } from '../shared-processes/load'
-import { regionalDecision } from '../shared-processes/regions'
-import { buildComposedComparisons } from '../shared-processes/composed-preview'
-import { buildProcessProviderChoice } from '../shared-processes/provider-choice'
-import type { SharedRecord } from '../shared-processes/schema'
+import { loadSharedProcesses } from '@/lib/shared-processes/load'
+import { regionalDecision } from '@/lib/shared-processes/regions'
+import { buildComposedComparisons } from '@/lib/shared-processes/composed-preview'
+import { buildProcessProviderChoice } from '@/lib/shared-processes/provider-choice'
+import type { SharedRecord } from '@/lib/shared-processes/schema'
 
 const records = loadSharedProcesses()
 const originalScroll = HTMLElement.prototype.scrollIntoView

@@ -1,9 +1,9 @@
 // @vitest-environment jsdom
 import { afterEach, describe, expect, it } from 'vitest'
 import { cleanup, fireEvent, render, screen, within } from '@testing-library/react'
-import { readSharedCatalog, findSharedRecord } from '../shared-processes/reader'
-import { buildVendorPreview } from '../shared-processes/vendor-preview'
-import { resolveServiceCandidates } from '../shared-processes/service-candidates'
+import { readSharedCatalog, findSharedRecord } from '@/lib/shared-processes/reader'
+import { buildVendorPreview } from '@/lib/shared-processes/vendor-preview'
+import { resolveServiceCandidates } from '@/lib/shared-processes/service-candidates'
 import ServiceCandidateRows from '@/components/shared-processes/ServiceCandidateRows'
 import { SelectedCapability, VendorSelectionProvider } from '@/components/shared-processes/VendorSelection'
 import SharedProcessReader from '@/components/shared-processes/SharedProcessReader'

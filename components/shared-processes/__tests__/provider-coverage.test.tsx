@@ -1,11 +1,11 @@
 // @vitest-environment jsdom
 import { afterEach, expect, it, vi } from 'vitest'
 import { cleanup, fireEvent, render, within } from '@testing-library/react'
-import { buildProcessProviderChoice } from '../shared-processes/provider-choice'
-import { buildComposedComparisons } from '../shared-processes/composed-preview'
-import { loadSharedProcesses } from '../shared-processes/load'
-import { aggregateStepCoverage } from '../processRankings'
-import type { StepComparisonProduct } from '../shared-processes/step-comparisons'
+import { buildProcessProviderChoice } from '@/lib/shared-processes/provider-choice'
+import { buildComposedComparisons } from '@/lib/shared-processes/composed-preview'
+import { loadSharedProcesses } from '@/lib/shared-processes/load'
+import { aggregateStepCoverage } from '@/lib/processRankings'
+import type { StepComparisonProduct } from '@/lib/shared-processes/step-comparisons'
 import SharedProcessReader from '@/components/shared-processes/SharedProcessReader'
 const records = loadSharedProcesses()
 afterEach(cleanup)

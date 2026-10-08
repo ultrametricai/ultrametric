@@ -2,13 +2,13 @@
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import { cleanup, fireEvent, render, within } from '@testing-library/react'
 import SharedProcessReader from '@/components/shared-processes/SharedProcessReader'
-import { modulesForProcess, loadBusinessLogicMap, loadBusinessLogicSteps } from '../businessLogicMap'
-import { readmeComputes } from '../openModulePages'
-import { loadArtifacts } from '../processes'
-import { processBottomTables } from '../shared-processes/bottom-tables'
-import { loadSharedProcesses } from '../shared-processes/load'
-import { regionalDecision } from '../shared-processes/regions'
-import { sharedPreviewHref } from '../shared-processes/reader'
+import { modulesForProcess, loadBusinessLogicMap, loadBusinessLogicSteps } from '@/lib/businessLogicMap'
+import { readmeComputes } from '@/lib/openModulePages'
+import { loadArtifacts } from '@/lib/processes'
+import { processBottomTables } from '@/lib/shared-processes/bottom-tables'
+import { loadSharedProcesses } from '@/lib/shared-processes/load'
+import { regionalDecision } from '@/lib/shared-processes/regions'
+import { sharedPreviewHref } from '@/lib/shared-processes/reader'
 
 const records = loadSharedProcesses()
 const byId = (id: string) => records.find(record => record.id === id)!

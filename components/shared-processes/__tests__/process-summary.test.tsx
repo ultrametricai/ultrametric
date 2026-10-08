@@ -1,8 +1,8 @@
 // @vitest-environment jsdom
 import { describe, expect, it } from 'vitest'
 import { renderToStaticMarkup } from 'react-dom/server'
-import { loadSharedProcesses } from '../shared-processes/load'
-import { loadProcesses, taskCeiling } from '../processes'
+import { loadSharedProcesses } from '@/lib/shared-processes/load'
+import { loadProcesses, taskCeiling } from '@/lib/processes'
 import ProcessSummary, { processSummary } from '@/components/shared-processes/ProcessSummary'
 
 const records = loadSharedProcesses()

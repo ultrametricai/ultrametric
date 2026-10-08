@@ -2,12 +2,12 @@
 import { afterEach, expect, it } from 'vitest'
 import { cleanup, fireEvent, render, within } from '@testing-library/react'
 import SharedProcessReader from '@/components/shared-processes/SharedProcessReader'
-import { buildProcessProviderChoice } from '../shared-processes/provider-choice'
-import { buildComposedComparisons } from '../shared-processes/composed-preview'
-import { loadSharedProcesses } from '../shared-processes/load'
-import { resolveServiceCandidates } from '../shared-processes/service-candidates'
-import { buildVendorPreview } from '../shared-processes/vendor-preview'
-import type { SharedRecord } from '../shared-processes/schema'
+import { buildProcessProviderChoice } from '@/lib/shared-processes/provider-choice'
+import { buildComposedComparisons } from '@/lib/shared-processes/composed-preview'
+import { loadSharedProcesses } from '@/lib/shared-processes/load'
+import { resolveServiceCandidates } from '@/lib/shared-processes/service-candidates'
+import { buildVendorPreview } from '@/lib/shared-processes/vendor-preview'
+import type { SharedRecord } from '@/lib/shared-processes/schema'
 
 const records = loadSharedProcesses()
 const llc = records.find(record => record.id === 'form_011')!
