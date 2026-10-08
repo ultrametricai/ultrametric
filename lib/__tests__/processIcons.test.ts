@@ -3,8 +3,9 @@ import { describe, expect, it } from 'vitest'
 import { GLYPHS } from '@/components/icons/ProcessIcon'
 import { loadChains, loadProcesses } from '@/lib/processes'
 import {
-  CADENCE_ICON, CHAIN_ICONS, chainIcon, parseProcessIconToken, PHASE_ICONS, phaseEmoji,
-  phaseIcon, phaseTooltip, PROCESS_ICONS, processIcon, RANK_PRESET_ICONS, URGENCY_ICONS,
+  CADENCE_ICON, CHAIN_ICONS, chainIcon, COMPUTER_USE_ICON, FEASIBILITY_ICONS,
+  parseProcessIconToken, PHASE_ICONS, phaseEmoji, phaseIcon, phaseTooltip, PROCESS_ICONS,
+  processIcon, RANK_PRESET_ICONS, URGENCY_ICONS,
 } from '@/lib/processIcons'
 import { URGENCY_TIERS } from '@/lib/processSim'
 
@@ -87,6 +88,21 @@ describe('process icon coverage (totality over the live corpus)', () => {
     expect(RANK_PRESET_ICONS.cadence.icon).toBe(CADENCE_ICON)
     expect(parseProcessIconToken(RANK_PRESET_ICONS.growth.icon)?.glyph)
       .toBe(parseProcessIconToken(PHASE_ICONS.growth.icon)?.glyph)
+  })
+
+  it('the computer-use feasibility tiers and the fleet-row marker name designed glyphs in their semantic tones (founder 2026-10-08: the 🖥/⛔/🚫/⏳ emoji retired)', () => {
+    expect(resolvesToDesignedGlyph(COMPUTER_USE_ICON)).toBe(true)
+    for (const [tier, token] of Object.entries(FEASIBILITY_ICONS)) {
+      expect(resolvesToDesignedGlyph(token), `feasibility ${tier} needs a designed glyph`).toBe(true)
+    }
+    // Hue = the tier's FEASIBILITY_META tone (nothing red — human work is not an error state);
+    // drivable and assist share the screen glyph, told apart by tone.
+    expect(parseProcessIconToken(FEASIBILITY_ICONS.drivable)?.hue).toBe('emerald')
+    expect(parseProcessIconToken(FEASIBILITY_ICONS.assist)?.hue).toBe('amber')
+    expect(parseProcessIconToken(FEASIBILITY_ICONS.drivable)?.glyph).toBe(parseProcessIconToken(FEASIBILITY_ICONS.assist)?.glyph)
+    expect(parseProcessIconToken(FEASIBILITY_ICONS['policy-gate'])?.hue).toBe('violet')
+    expect(parseProcessIconToken(FEASIBILITY_ICONS['no-screen'])?.hue).toBe('zinc')
+    expect(parseProcessIconToken(FEASIBILITY_ICONS['third-party-wait'])?.hue).toBe('zinc')
   })
 
   it('unknown ids resolve to empty string (callers render nothing, never a wrong icon)', () => {

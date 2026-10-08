@@ -115,6 +115,21 @@ export const URGENCY_ICONS: Record<'hours' | 'days' | 'weeks', string> = {
   weeks: pi('calendar', 'sky'), // 🗓
 }
 
+// ---------- Computer-use feasibility (the human-step audit) ----------
+// House glyphs for the FEASIBILITY_META verdict tiers (lib/humanStepsUi.ts) and the standalone
+// 🖥 computer-use fleet-row marker (components/ComputerUseChips.tsx) — founder 2026-10-08 house
+// icon sweep, the URGENCY_ICONS precedent: glyph = the tier's old emoji concept, hue = the
+// tier's existing semantic tone (nothing red — human work is not an error state).
+export const COMPUTER_USE_ICON = pi('monitor', 'violet') // 🖥 the driven screen — agents are the violet family
+
+export const FEASIBILITY_ICONS: Record<'drivable' | 'assist' | 'policy-gate' | 'no-screen' | 'third-party-wait', string> = {
+  drivable: pi('monitor', 'emerald'), // 🖥 the screen, drivable today
+  assist: pi('monitor', 'amber'), // 🖥 same screen — agent preps, human decides
+  'policy-gate': pi('stop', 'violet'), // ⛔ the stop concept (sit_001's glyph), in the legally-human violet
+  'no-screen': pi('unplug', 'zinc'), // 🚫 had no glyph twin — the pulled plug: no machine rail to drive
+  'third-party-wait': pi('hourglass', 'zinc'), // ⏳ the wait is the problem (sit_002's concept)
+}
+
 // ---------- Individual processes (keyed by corpus task id) ----------
 // Glyph = the concept (was: the emoji), hue = the process's area. Comments carry the old emoji
 // pick as the semantic guide each glyph was drawn from.

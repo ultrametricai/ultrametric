@@ -1,7 +1,9 @@
 import Link from 'next/link'
+import IconChip from '@/components/IconChip'
 import ProductLogoView from '@/components/ProductLogoView'
 import { hasLogo } from '@/lib/logos'
 import { computerUseOptions, type ComputerUseOption } from '@/lib/processRankings'
+import { COMPUTER_USE_ICON } from '@/lib/processIcons'
 
 // The "🖥 could attempt it today" row for one MANUAL step (any non-agent route — founder
 // 2026-09-18: "any time 'manual' is seen, see if we can do a computer use process for it"):
@@ -30,15 +32,15 @@ export default function ComputerUseChips({ taskId, nodeId }: { taskId: string; n
   if (options.length === 0) return null
   return (
     <span className="mt-1 flex flex-wrap items-center gap-1.5">
-      {/* The 'could attempt it today:' label text is gone (founder 2026-10-05) — the 🖥 glyph
+      {/* The 'could attempt it today:' label text is gone (founder 2026-10-05) — the glyph
           keeps the row recognizable and its tooltip keeps the honest framing; the step's
-          routing is untouched. */}
-      <span
-        className="text-[10px] text-zinc-500"
+          routing is untouched. The 🖥 emoji became the house monitor glyph in the 2026-10-08
+          sweep (COMPUTER_USE_ICON); IconChip keeps the required concept-naming title. */}
+      <IconChip
+        icon={COMPUTER_USE_ICON}
         title="Judged computer-use agents ranked by their verdicts on this step's mapped stories — the step stays manual; this is who could attempt the mechanical part"
-      >
-        🖥
-      </span>
+        className="text-zinc-500"
+      />
       {options.map((o) => (
         // The score is plain text (founder 2026-10-05: no per-sub-step vendor score links) —
         // its tooltip keeps the concrete derivation; the chip body keeps opening the product
