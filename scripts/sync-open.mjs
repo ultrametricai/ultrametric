@@ -10,13 +10,20 @@
 //     the open repo's committed open-manifest.json from the tarball, and materializes every
 //     entry with overlay: true at its canonical path. Any overlay path that collides with a
 //     git-tracked path in the consuming repo fails the build: the open/closed boundary is
-//     machine-enforced.
+//     machine-enforced. Manifest paths are sanitized at load (no absolute paths, no `.` or
+//     `..` segments) and every destination is resolved and verified to stay strictly inside
+//     the consuming repo root before anything is removed or copied. A ledger
+//     (`.open-overlay-manifest.json`, gitignored in the consuming repo) records every
+//     materialized path; on the next run, ledger paths absent from the current pin's
+//     manifest are removed under the same guards, so a dropped or renamed entry leaves no
+//     stale files behind after a pin bump.
 //
 //   node scripts/sync-open.mjs --check
 //     Manifest-drift gate, for the OPEN repo's CI. Validates the committed open-manifest.json
-//     against the current git-tracked tree: every entry path exists; every tracked file under
-//     a split directory is covered by exactly one most-specific entry; overlay entries are
-//     open; the wholly-closed top-level dirs carry no open entries.
+//     against the current git-tracked tree: every entry path exists; every git-tracked file
+//     in the repo is covered by a most-specific entry (a new root file or top-level dir
+//     without a manifest entry fails); overlay entries are open; the wholly-closed
+//     top-level dirs carry no open entries.
 //
 // Exit code is the contract (house rules): 0 on success, 1 on any failure.
 
@@ -29,6 +36,7 @@ import process from 'node:process'
 
 const MANIFEST_NAME = 'open-manifest.json'
 const LOCK_NAME = 'open.lock'
+const LEDGER_NAME = '.open-overlay-manifest.json'
 
 function fail(message) {
   console.error(`sync-open: ${message}`)
@@ -38,6 +46,26 @@ function fail(message) {
 function gitTrackedFiles(cwd) {
   const out = execFileSync('git', ['ls-files', '-z'], { cwd, maxBuffer: 1024 * 1024 * 512 })
   return out.toString('utf8').split('\0').filter(Boolean)
+}
+
+// A manifest or ledger path must be a plain relative POSIX path: non-empty, not absolute,
+// no backslashes, and no empty, `.`, or `..` segments. Anything else is rejected before
+// any filesystem operation.
+function isSafeRelativePath(p) {
+  if (typeof p !== 'string' || p === '') return false
+  if (path.isAbsolute(p) || p.includes('\\')) return false
+  return p.split('/').every(segment => segment !== '' && segment !== '.' && segment !== '..')
+}
+
+// Resolve `relPath` against `root` and require the result to sit strictly inside `root`
+// (never the root itself, never outside it). Returns the resolved absolute path, or null.
+function resolveInsideRoot(root, relPath) {
+  const resolved = path.resolve(root, relPath)
+  const rel = path.relative(root, resolved)
+  if (rel === '' || rel === '..' || rel.startsWith(`..${path.sep}`) || path.isAbsolute(rel)) {
+    return null
+  }
+  return resolved
 }
 
 function loadManifest(filePath) {
@@ -51,9 +79,8 @@ function loadManifest(filePath) {
   if (!Array.isArray(manifest.entries) || manifest.entries.length === 0) fail('manifest has no entries')
   const seen = new Set()
   for (const entry of manifest.entries) {
-    if (typeof entry.path !== 'string' || entry.path === '' || entry.path.startsWith('/') ||
-        entry.path.endsWith('/') || entry.path.split('/').includes('..')) {
-      fail(`invalid entry path: ${JSON.stringify(entry.path)}`)
+    if (!isSafeRelativePath(entry.path)) {
+      fail(`invalid entry path (must be relative, no "." or ".." segments): ${JSON.stringify(entry.path)}`)
     }
     if (!['dir', 'file'].includes(entry.type)) fail(`${entry.path}: invalid type ${entry.type}`)
     if (!['open', 'closed', 'both-during-migration'].includes(entry.disposition)) {
@@ -99,13 +126,10 @@ function check() {
     }
   }
 
-  // 2. Split-dir completeness: every tracked file under a split dir has a covering entry.
-  for (const splitDir of manifest.splitDirs ?? []) {
-    const prefix = splitDir + '/'
-    for (const file of tracked) {
-      if (!file.startsWith(prefix)) continue
-      if (!coveringEntry(manifest, file)) errors.push(`uncovered file in split dir: ${file}`)
-    }
+  // 2. Full-tree classification: every git-tracked file has a covering entry, so a new
+  // root file or top-level directory cannot land unclassified.
+  for (const file of tracked) {
+    if (!coveringEntry(manifest, file)) errors.push(`unclassified tracked file: ${file}`)
   }
 
   // 3. Wholly-closed top-level dirs carry no open entries.
@@ -130,6 +154,101 @@ function check() {
 // ---------------------------------------------------------------------------
 function sha256(buffer) {
   return createHash('sha256').update(buffer).digest('hex')
+}
+
+function readLedger(ledgerPath) {
+  if (!fs.existsSync(ledgerPath)) return []
+  let ledger
+  try {
+    ledger = JSON.parse(fs.readFileSync(ledgerPath, 'utf8'))
+  } catch (error) {
+    fail(`cannot parse ${LEDGER_NAME} (delete it to reset the overlay state): ${error.message}`)
+  }
+  if (!Array.isArray(ledger.paths) || !ledger.paths.every(p => typeof p === 'string')) {
+    fail(`${LEDGER_NAME} is malformed (delete it to reset the overlay state)`)
+  }
+  return ledger.paths
+}
+
+// Apply the overlay entries from `manifest` (whose source tree sits at `sourceDir`) into
+// `root`. Ordering is the safety contract: validate every destination, run the collision
+// gate against resolved git-tracked paths, remove ledgered stale paths, copy, write the
+// new ledger. Nothing is removed or copied before the first two steps pass.
+function materializeOverlay(root, sourceDir, manifest) {
+  const overlayEntries = manifest.entries.filter(entry => entry.overlay)
+  if (overlayEntries.length === 0) fail('pinned manifest has no overlay entries')
+
+  // Every destination resolves strictly inside the consuming repo root. Manifest paths
+  // are already sanitized by loadManifest; this guards the resolved form too.
+  const targets = []
+  for (const entry of overlayEntries) {
+    const target = resolveInsideRoot(root, entry.path)
+    if (!target) fail(`overlay path escapes the repo root: ${entry.path}`)
+    targets.push({ entry, target })
+  }
+
+  // Collision gate on RESOLVED paths: an overlay destination that is (or contains, or is
+  // itself) a git-tracked path in the consuming repo means the boundary drifted. Fail
+  // loudly before any removal; fix the manifest or the consuming tree, never both copies.
+  const tracked = gitTrackedFiles(root)
+  const trackedResolved = tracked.map(f => path.resolve(root, f))
+  const trackedResolvedSet = new Set(trackedResolved)
+  const collisions = []
+  for (const { entry, target } of targets) {
+    if (trackedResolvedSet.has(target)) {
+      collisions.push(entry.path)
+      continue
+    }
+    if (entry.type === 'dir') {
+      const prefix = target + path.sep
+      collisions.push(...trackedResolved.filter(f => f.startsWith(prefix)).map(f => path.relative(root, f)))
+    }
+  }
+  if (collisions.length > 0) {
+    for (const hit of collisions.slice(0, 50)) console.error(`sync-open: collision with tracked path: ${hit}`)
+    fail(`${collisions.length} tracked path(s) collide with overlay entries`)
+  }
+
+  // Ledger reconciliation: remove paths a previous run materialized that the current
+  // pin's manifest no longer lists, so a dropped or renamed entry leaves no stale files.
+  const ledgerPath = path.join(root, LEDGER_NAME)
+  const previousPaths = readLedger(ledgerPath)
+  const currentPaths = new Set(overlayEntries.map(entry => entry.path))
+  let removed = 0
+  for (const stale of previousPaths) {
+    if (currentPaths.has(stale)) continue
+    if (!isSafeRelativePath(stale)) {
+      fail(`${LEDGER_NAME} contains an invalid path (delete it to reset the overlay state): ${JSON.stringify(stale)}`)
+    }
+    const resolved = resolveInsideRoot(root, stale)
+    if (!resolved) {
+      fail(`${LEDGER_NAME} contains a path outside the repo root (delete it to reset the overlay state): ${stale}`)
+    }
+    const prefix = resolved + path.sep
+    if (trackedResolvedSet.has(resolved) || trackedResolved.some(f => f.startsWith(prefix))) {
+      console.log(`sync-open: ledger path ${stale} is now git-tracked in the consuming repo; leaving it in place`)
+      continue
+    }
+    fs.rmSync(resolved, { recursive: true, force: true })
+    removed += 1
+  }
+
+  // Materialize at canonical paths, byte-for-byte.
+  let files = 0
+  for (const { entry, target } of targets) {
+    const source = path.join(sourceDir, entry.path)
+    if (!fs.existsSync(source)) fail(`pinned tree is missing overlay path: ${entry.path}`)
+    fs.rmSync(target, { recursive: true, force: true })
+    fs.mkdirSync(path.dirname(target), { recursive: true })
+    fs.cpSync(source, target, { recursive: true })
+    files += 1
+  }
+
+  fs.writeFileSync(
+    ledgerPath,
+    JSON.stringify({ version: 1, note: 'Generated by scripts/sync-open.mjs; lists overlay paths for stale cleanup.', paths: [...currentPaths].sort() }, null, 2) + '\n'
+  )
+  return { files, removed }
 }
 
 async function overlay() {
@@ -173,36 +292,9 @@ async function overlay() {
 
     // The OPEN repo owns the definition of what is open: read the manifest from the pin.
     const manifest = loadManifest(path.join(extractDir, MANIFEST_NAME))
-    const overlayEntries = manifest.entries.filter(entry => entry.overlay)
-    if (overlayEntries.length === 0) fail('pinned manifest has no overlay entries')
-
-    // Collision gate: an overlay path that is git-tracked in the consuming repo means the
-    // boundary drifted. Fail loudly; fix the manifest or the consuming tree, never both copies.
-    const tracked = gitTrackedFiles(root)
-    const collisions = []
-    for (const entry of overlayEntries) {
-      const hits = entry.type === 'file'
-        ? tracked.filter(f => f === entry.path)
-        : tracked.filter(f => f.startsWith(entry.path + '/'))
-      collisions.push(...hits)
-    }
-    if (collisions.length > 0) {
-      for (const hit of collisions.slice(0, 50)) console.error(`sync-open: collision with tracked path: ${hit}`)
-      fail(`${collisions.length} tracked path(s) collide with overlay entries`)
-    }
-
-    // Materialize at canonical paths, byte-for-byte.
-    let files = 0
-    for (const entry of overlayEntries) {
-      const source = path.join(extractDir, entry.path)
-      if (!fs.existsSync(source)) fail(`pinned tree is missing overlay path: ${entry.path}`)
-      const target = path.join(root, entry.path)
-      fs.rmSync(target, { recursive: true, force: true })
-      fs.mkdirSync(path.dirname(target), { recursive: true })
-      fs.cpSync(source, target, { recursive: true })
-      files += 1
-    }
-    console.log(`sync-open: materialized ${files} overlay entries from ${repo}@${sha.slice(0, 12)}`)
+    const { files, removed } = materializeOverlay(root, extractDir, manifest)
+    const staleNote = removed > 0 ? `, removed ${removed} stale ledger path(s)` : ''
+    console.log(`sync-open: materialized ${files} overlay entries from ${repo}@${sha.slice(0, 12)}${staleNote}`)
   } finally {
     fs.rmSync(extractDir, { recursive: true, force: true })
   }

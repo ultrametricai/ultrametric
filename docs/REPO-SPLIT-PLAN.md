@@ -428,8 +428,16 @@ Phases 0 and 1 landed in place, all additive (2026-10-08). What exists now:
 - `scripts/sync-open.mjs`: the section-2 overlay (lock-pinned codeload tarball, sha256
   verification, manifest-driven extraction, collision gate against the consuming repo's
   git-tracked paths) plus a `--check` mode validating the manifest against the current
-  tracked tree (entry paths exist, split directories fully partitioned, no open entries
+  tracked tree (entry paths exist, every tracked file classified, no open entries
   under `app/`, `components/`, `infra/`). `pnpm manifest:check` wraps it.
+  Hardened after PR #224 review: manifest paths are sanitized at load (relative only,
+  no `.`/`..` segments), overlay destinations and collisions compare resolved paths
+  verified to sit strictly inside the consuming repo root, and a gitignored ledger
+  (`.open-overlay-manifest.json`) records materialized paths so entries dropped or
+  renamed at a pin bump are cleaned up under the same guards. `--check` now classifies
+  the full tracked tree, not only the split directories; at adoption every tracked file
+  was already covered, so no new classification calls were needed. `reports/` flipped
+  to `overlay: true` because `app/reports/page.tsx` reads `reports/*.md` at build time.
 - `docs/repo-split-census.json` plus `__tests__/repo-split.test.ts`: the test-file census
   with its live-tree equality test (file exists if and only if listed; open + closed
   counts sum to the total; `scripts/content-audit.test.mjs` carried explicitly as the
