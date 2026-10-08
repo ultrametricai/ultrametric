@@ -88,6 +88,22 @@ export function phaseTooltip(phase: string): string {
 // the same recurring loop the Explore menu's Process-rankings group wears (lib/arenaIcons.ts).
 export const CADENCE_ICON = pi('cycle', 'sky')
 
+// ---------- Rank-by orderings (the /processes table's preset dropdown) ----------
+// House glyphs for the rank-by presets (founder 2026-10-08: the house icon sweep — the dropdown
+// wore raw emoji 🗂️🗓️⚡🔁😤⚠️📈). Each glyph is an EXISTING designed concept, matched to the
+// ordering (never new art); the old emoji survive as the text-only fallback for the mobile
+// native <select>, the same split as PHASE_ICONS icon/emoji. Keyed by the ProcessesTable
+// preset/column names. Judgment calls documented inline where the emoji had no glyph twin.
+export const RANK_PRESET_ICONS: Record<'grouped' | 'order' | 'pct' | 'cadence' | 'annoyance' | 'risk' | 'growth', { icon: string; emoji: string }> = {
+  grouped: { icon: pi('dividers', 'sky'), emoji: '🗂️' }, // 🗂️ the dividers — same glyph the emoji guides on qs_045
+  order: { icon: pi('calendar', 'sky'), emoji: '🗓️' }, // 🗓️ the founder's calendar
+  pct: { icon: pi('bolt', 'violet'), emoji: '⚡' }, // ⚡ the bolt, in the AI/agents violet — what an agent can run
+  cadence: { icon: CADENCE_ICON, emoji: '🔁' }, // 🔁 the recurring loop — literally CADENCE_ICON
+  annoyance: { icon: pi('hourglass', 'amber'), emoji: '😤' }, // 😤 has no glyph twin — the hourglass: the hours hand-toil drains
+  risk: { icon: pi('shield-crack', 'amber'), emoji: '⚠️' }, // ⚠️ has no glyph twin — the cracked shield: the cost of getting it wrong
+  growth: { icon: pi('chart-up', 'fuchsia'), emoji: '📈' }, // 📈 same chart the growth phase wears
+}
+
 // ---------- Urgency (situations) ----------
 // House glyphs for the UrgencyChip tiers (founder 2026-10-02: the 🚨/⏰/🗓 emoji join the custom
 // set). Glyph = the tier's old emoji concept, hue = the tier's existing semantic color: the

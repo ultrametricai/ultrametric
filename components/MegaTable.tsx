@@ -199,7 +199,11 @@ export default function MegaTable({ rows, arenas }: { rows: MegaTableRow[]; aren
             setParams({ arena: value === 'all' ? null : value })
           },
           ariaLabel: 'Filter by ranking',
-          options: [{ value: 'all', label: 'All rankings' }, ...arenas.map((a) => ({ value: a.id, label: a.icon ? `${a.icon} ${a.name}` : a.name }))],
+          // Each arena wears its house glyph in the desktop listbox (arenaIcon `pi:` token —
+          // founder 2026-10-08: the house icon sweep reaches the scope dropdown); the legacy
+          // emoji (a.icon, data/arena-icons.json) survives only as the below-sm native
+          // <option> decoration, where SVG can't render.
+          options: [{ value: 'all', label: 'All rankings' }, ...arenas.map((a) => ({ value: a.id, label: a.name, icon: arenaIcon(a.id), emoji: a.icon }))],
         }}
         query={query}
         onQuery={(value) => {

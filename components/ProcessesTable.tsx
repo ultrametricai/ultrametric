@@ -12,7 +12,7 @@ import { useGeoSelection } from '@/components/useGeoSelection'
 import {
   hiddenInCountryView, usFlagGlyph, type GeoNotesByCountry,
 } from '@/lib/geoPreference'
-import { phaseEmoji, phaseIcon, phaseTooltip } from '@/lib/processIcons'
+import { phaseEmoji, phaseIcon, phaseTooltip, RANK_PRESET_ICONS } from '@/lib/processIcons'
 import { URGENCY_TIERS, type ProcessKind, type Urgency } from '@/lib/processSim'
 import { readParams, setParams } from '@/lib/urlState'
 import { TABLE_HEADER_ROW, TABLE_SHELL } from '@/components/tableStyles'
@@ -168,14 +168,17 @@ function paramToColumn(value: string | null): Column | null {
 // 2026-09-30: grouping is a secondary option now, the TOP entry of the dropdown).
 type PresetCol = Column | 'grouped'
 
-const PRESETS: Array<{ col: PresetCol; label: string; icon: string }> = [
-  { col: 'grouped', label: 'Grouped by area', icon: '🗂️' },
-  { col: 'order', label: 'Founder timeline', icon: '🗓️' },
-  { col: 'pct', label: 'Most automatable', icon: '⚡' },
-  { col: 'cadence', label: 'Regularity', icon: '🔁' },
-  { col: 'annoyance', label: 'Most annoying', icon: '😤' },
-  { col: 'risk', label: 'Riskiest', icon: '⚠️' },
-  { col: 'growth', label: 'Growth-focused', icon: '📈' },
+// Icons are the house `pi:` tokens (lib/processIcons.ts RANK_PRESET_ICONS — founder 2026-10-08:
+// the dropdown's raw emoji join the custom set); the emoji survive only as the mobile native
+// <select>'s text-only option decoration (TableControls renders them, never the token string).
+const PRESETS: Array<{ col: PresetCol; label: string; icon: string; emoji: string }> = [
+  { col: 'grouped', label: 'Grouped by area', ...RANK_PRESET_ICONS.grouped },
+  { col: 'order', label: 'Founder timeline', ...RANK_PRESET_ICONS.order },
+  { col: 'pct', label: 'Most automatable', ...RANK_PRESET_ICONS.pct },
+  { col: 'cadence', label: 'Regularity', ...RANK_PRESET_ICONS.cadence },
+  { col: 'annoyance', label: 'Most annoying', ...RANK_PRESET_ICONS.annoyance },
+  { col: 'risk', label: 'Riskiest', ...RANK_PRESET_ICONS.risk },
+  { col: 'growth', label: 'Growth-focused', ...RANK_PRESET_ICONS.growth },
 ]
 
 // The adaptive metric column: which of the five orderings it currently shows. Defaults to the
@@ -572,7 +575,9 @@ export default function ProcessesTable({
               chip in one visual row — the flex-wrap + one-chip-row max-height + overflow-hidden
               trick hides whatever doesn't fit — and the '→' (replacing '+N') opens the process
               for the full roster. Chips keep their ?via= lens links; no tooltips on vendor
-              chips (founder 2026-10-05) — aria-labels carry the destination instead. */}
+              chips (founder 2026-10-05) — aria-labels carry the destination instead. Chip text
+              is text-xs (founder 2026-10-08: the 10px labels were too small beside the 18px
+              logos) — same lift in HomeProcessesMini, pinned in the styling test. */}
           {r.vendors.length > 0 && (
             <span className="flex items-center gap-1.5">
               <span className="flex min-w-0 flex-1 flex-wrap gap-1 overflow-hidden max-h-[28px]">
@@ -580,12 +585,12 @@ export default function ProcessesTable({
                   v.arena ? (
                     // Founder 2026-09-25: a vendor chip opens the PROCESS through that
                     // vendor (?via= lens, lib/processLens.ts) — not the vendor's own page.
-                    <Link key={v.label} href={r.href ? href : `${href}?via=${v.arena}:${v.id}`} aria-label={r.href ? `Open ${r.title} — view ${v.label} alongside the other options` : `Open ${r.title} viewed via ${v.label}`} className="inline-flex items-center gap-1 whitespace-nowrap rounded-full border border-zinc-700 py-px pl-0.5 pr-1.5 text-[10px] text-zinc-300 transition hover:border-emerald-400/60 hover:text-emerald-300">
+                    <Link key={v.label} href={r.href ? href : `${href}?via=${v.arena}:${v.id}`} aria-label={r.href ? `Open ${r.title} — view ${v.label} alongside the other options` : `Open ${r.title} viewed via ${v.label}`} className="inline-flex items-center gap-1 whitespace-nowrap rounded-full border border-zinc-700 py-px pl-0.5 pr-1.5 text-xs text-zinc-300 transition hover:border-emerald-400/60 hover:text-emerald-300">
                       <ProductLogoView product={{ id: v.id, name: v.label }} size={18} hasLogo={v.hasLogo} />
                       {v.label}
                     </Link>
                   ) : (
-                    <span key={v.label} className="inline-flex items-center gap-1 whitespace-nowrap rounded-full border border-zinc-800 py-px pl-0.5 pr-1.5 text-[10px] text-zinc-500">
+                    <span key={v.label} className="inline-flex items-center gap-1 whitespace-nowrap rounded-full border border-zinc-800 py-px pl-0.5 pr-1.5 text-xs text-zinc-500">
                       <ProductLogoView product={{ id: v.id, name: v.label }} size={18} hasLogo={v.hasLogo} />
                       {v.label}
                     </span>
@@ -655,12 +660,12 @@ export default function ProcessesTable({
               <span className="flex min-w-0 flex-1 flex-wrap gap-1 overflow-hidden max-h-[28px]">
                 {p.vendors.map((v) =>
                   v.arena ? (
-                    <Link key={v.label} href={`${p.href}?via=${v.arena}:${v.id}`} aria-label={`Open ${p.title} viewed via ${v.label}`} className="inline-flex items-center gap-1 whitespace-nowrap rounded-full border border-zinc-700 py-px pl-0.5 pr-1.5 text-[10px] text-zinc-300 transition hover:border-emerald-400/60 hover:text-emerald-300">
+                    <Link key={v.label} href={`${p.href}?via=${v.arena}:${v.id}`} aria-label={`Open ${p.title} viewed via ${v.label}`} className="inline-flex items-center gap-1 whitespace-nowrap rounded-full border border-zinc-700 py-px pl-0.5 pr-1.5 text-xs text-zinc-300 transition hover:border-emerald-400/60 hover:text-emerald-300">
                       <ProductLogoView product={{ id: v.id, name: v.label }} size={18} hasLogo={v.hasLogo} />
                       {v.label}
                     </Link>
                   ) : (
-                    <span key={v.label} className="inline-flex items-center gap-1 whitespace-nowrap rounded-full border border-zinc-800 py-px pl-0.5 pr-1.5 text-[10px] text-zinc-500">
+                    <span key={v.label} className="inline-flex items-center gap-1 whitespace-nowrap rounded-full border border-zinc-800 py-px pl-0.5 pr-1.5 text-xs text-zinc-500">
                       <ProductLogoView product={{ id: v.id, name: v.label }} size={18} hasLogo={v.hasLogo} />
                       {v.label}
                     </span>
@@ -702,9 +707,11 @@ export default function ProcessesTable({
           options: [
             // Founder 2026-09-23: reads "areas" to users, not the internal "phases" term.
             { value: 'all', label: 'All areas' },
-            // Native <option> labels are text-only — the legacy curated emoji stands in for
-            // the house SVG glyph here (lib/processIcons.ts phaseEmoji).
-            ...phases.map((p) => ({ value: p, label: `${phaseEmoji(p)} ${p}`.trim() })),
+            // Each area wears its house glyph (phaseIcon `pi:` token — founder 2026-10-08: the
+            // dropdown joins the custom set; TableControls renders it via IconGlyph). The
+            // legacy curated emoji survives ONLY as the below-sm native <option> decoration,
+            // where SVG can't render (phaseEmoji — the text-only precedent).
+            ...phases.map((p) => ({ value: p, label: p, icon: phaseIcon(p), emoji: phaseEmoji(p) })),
           ],
         }}
         query={query}

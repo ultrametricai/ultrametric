@@ -3,8 +3,8 @@ import { describe, expect, it } from 'vitest'
 import { GLYPHS } from '@/components/icons/ProcessIcon'
 import { loadChains, loadProcesses } from '@/lib/processes'
 import {
-  CHAIN_ICONS, chainIcon, parseProcessIconToken, PHASE_ICONS, phaseEmoji, phaseIcon,
-  phaseTooltip, PROCESS_ICONS, processIcon, URGENCY_ICONS,
+  CADENCE_ICON, CHAIN_ICONS, chainIcon, parseProcessIconToken, PHASE_ICONS, phaseEmoji,
+  phaseIcon, phaseTooltip, PROCESS_ICONS, processIcon, RANK_PRESET_ICONS, URGENCY_ICONS,
 } from '@/lib/processIcons'
 import { URGENCY_TIERS } from '@/lib/processSim'
 
@@ -71,6 +71,22 @@ describe('process icon coverage (totality over the live corpus)', () => {
     expect(parseProcessIconToken(URGENCY_ICONS.hours)?.hue).toBe('red')
     expect(parseProcessIconToken(URGENCY_ICONS.days)?.hue).toBe('amber')
     expect(parseProcessIconToken(URGENCY_ICONS.weeks)?.hue).toBe('sky')
+  })
+
+  it('every rank-by preset has a designed glyph AND a text-only emoji stand-in (founder 2026-10-08: the dropdown emoji join the custom set)', () => {
+    for (const [col, entry] of Object.entries(RANK_PRESET_ICONS)) {
+      expect(resolvesToDesignedGlyph(entry.icon), `rank-by preset ${col} needs a designed glyph (got '${entry.icon}')`).toBe(true)
+      // The emoji survives for the mobile native <select> only — same split as PHASE_ICONS.
+      expect(
+        entry.emoji.length > 0 && [...entry.emoji].some((ch) => (ch.codePointAt(0) ?? 0) > 0x7f),
+        `rank-by preset ${col} needs its text-only emoji stand-in`,
+      ).toBe(true)
+    }
+    // Same concept = same token: Regularity IS the cadence loop, Growth-focused the growth
+    // phase's rising chart.
+    expect(RANK_PRESET_ICONS.cadence.icon).toBe(CADENCE_ICON)
+    expect(parseProcessIconToken(RANK_PRESET_ICONS.growth.icon)?.glyph)
+      .toBe(parseProcessIconToken(PHASE_ICONS.growth.icon)?.glyph)
   })
 
   it('unknown ids resolve to empty string (callers render nothing, never a wrong icon)', () => {

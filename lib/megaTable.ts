@@ -124,8 +124,9 @@ export function buildMegaTableRows(categories: CategoryData[]): MegaTableRow[] {
 export interface MegaTableArenaOption {
   id: string
   name: string
-  // Emoji arena icon (data/arena-icons.json) — native <option> renders emoji text fine, so the
-  // homepage dropdown shows the same glyphs as the top-bar Arenas menu (founder 2026-09-18).
+  // Legacy emoji arena icon (data/arena-icons.json) — since the house icon sweep (founder
+  // 2026-10-08) it decorates ONLY the below-sm native <option> labels, where SVG can't render;
+  // the desktop scope listbox renders the house glyph via arenaIcon() instead.
   icon?: string
 }
 
