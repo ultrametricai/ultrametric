@@ -15,8 +15,8 @@ describe('README.md (founder batch 2026-10-02)', () => {
   it('carries the contribution-guide row near the top, each link resolving to a real CONTRIBUTING anchor', () => {
     const row = readme.indexOf('**Contribution guides:**')
     expect(row).toBeGreaterThan(-1)
-    // Near the top: before the Start here section.
-    expect(row).toBeLessThan(readme.indexOf('## Start here'))
+    // Near the top: before the Map of the repo section.
+    expect(row).toBeLessThan(readme.indexOf('## Map of the repo'))
     // The four guides, links only, each with a matching anchor in CONTRIBUTING.md.
     for (const anchor of ['add-your-vendor', 'add-a-process', 'add-a-jurisdiction', 'add-an-open-module']) {
       expect(readme).toContain(`(CONTRIBUTING.md#${anchor})`)
@@ -24,7 +24,7 @@ describe('README.md (founder batch 2026-10-02)', () => {
     }
   })
 
-  it('surfaces situations: a Start-here row and a Processes-pillar paragraph, no counts', () => {
+  it('surfaces situations: a Map lead and a Processes-pillar paragraph, no counts', () => {
     // The reactive layer links both its live index and its repo doctrine.
     expect(readme).toContain('https://ultrametric.ai/situations')
     expect(readme).toContain('processes/SITUATIONS.md')
@@ -40,12 +40,17 @@ describe('README.md (founder batch 2026-10-02)', () => {
     expect(paraText).not.toMatch(/\b12\b/)
   })
 
-  it('keeps ONE structural overview: the Map owns structure, Start here stays tasks', () => {
+  it('keeps ONE structural overview: the merged Map owns both tasks and structure', () => {
     expect(readme).toContain('## Map of the repo')
-    expect(readme).toContain('The single structural overview')
-    // Start here cross-links the Map instead of duplicating it.
-    const startHere = readme.slice(readme.indexOf('## Start here'), readme.indexOf('## Processes'))
-    expect(startHere).toContain('[Map of the repo](#map-of-the-repo)')
+    // Exactly one overview claim: the phrase appears once, and the old Start here
+    // section (merged into the Map, founder batch 2026-10-08) is gone.
+    expect(readme.indexOf('The single structural overview')).toBe(
+      readme.lastIndexOf('The single structural overview'),
+    )
+    expect(readme.indexOf('The single structural overview')).toBeGreaterThan(-1)
+    expect(readme).not.toContain('## Start here')
+    // Inbound #start-here deep links keep resolving (Writing style rule 8).
+    expect(readme).toContain('<a id="start-here"></a>')
   })
 
   it('names the arena table for what it shows (renamed from "The arenas", no counts in the heading)', () => {
@@ -173,7 +178,7 @@ describe('README.md "Use it from an agent" (founder batch 2026-10-03)', () => {
   })
 
   it('documents the real CLI/MCP (the shipped ultrametric npm package) and points at /get-started', () => {
-    // 2026-10-08: /get-started also appears in Start here (the agent persona installs first),
+    // 2026-10-08: /get-started also appears in the Map's Agent access block (install first),
     // so these pins scope to the section, not the whole README.
     // Correction 2026-10-05: an earlier pass wrongly claimed no CLI existed — the `ultrametric`
     // npm package (CLI + MCP server) shipped 2026-09-30 with /get-started as its install page
@@ -211,83 +216,110 @@ describe('README.md agent surfaces: the docs site (founder batch 2026-10-08)', (
   })
 })
 
-// Founder batch 2026-10-08: the Start-here founder table regrouped by the question being
-// asked (one row per repo layer, the founder's approved labels), three personas instead of
-// two, and the geo line updated to the shipped country set. Same source-pin pattern: repo
-// paths must exist, external labels must appear.
-describe('README.md "Start here" regroup (founder batch 2026-10-08)', () => {
-  const startHere = readme.slice(readme.indexOf('## Start here'), readme.indexOf('## Processes'))
+// Founder batch 2026-10-08 (second pass): Start here and Map of the repo merged into one
+// functional map, no question framing, grouped by functional area with path links and the
+// site views folded in. Same source-pin pattern: repo paths must exist, folded destinations
+// must survive the merge.
+describe('README.md merged map (founder batch 2026-10-08)', () => {
+  const map = readme.slice(readme.indexOf('## Map of the repo'), readme.indexOf('\n## Processes'))
 
-  it('groups the founder table by the question being asked, the approved labels in order', () => {
+  it('sits at the top and carries the functional groups in reading order, no question framing', () => {
+    // The map is the first H2 after the intro block.
+    expect(readme.indexOf('## Map of the repo')).toBeLessThan(readme.indexOf('\n## Processes'))
     const groups = [
-      'Do the work',
-      'Know the rules',
-      'Pick the tools',
-      "The objects you'll produce",
-      'The math underneath',
-      'Judgment, with sources',
-      'See it run',
+      '**Processes** —',
+      '**Vendors** —',
+      '**Open modules** —',
+      '**Contracts & infrastructure** —',
+      '**Agent access** —',
     ]
     let last = -1
     for (const g of groups) {
-      const at = startHere.indexOf(`| ${g} |`)
-      expect(at, `missing group row "${g}"`).toBeGreaterThan(-1)
+      const at = map.indexOf(g)
+      expect(at, `missing group lead "${g}"`).toBeGreaterThan(-1)
       expect(at, `group "${g}" out of order`).toBeGreaterThan(last)
       last = at
     }
+    // No question-styled rows or persona leads survive the merge.
+    expect(readme).not.toContain('| The question |')
+    expect(readme).not.toContain("**You're a founder")
+    expect(readme).not.toContain("**You're an agent")
+    expect(readme).not.toContain("**You're a contributor")
+    // No hand-maintained counts inside the map (evidence doctrine).
+    expect(map).not.toMatch(/~\d/)
   })
 
-  it('every repo path and app route the grouped table points at resolves', () => {
+  it('every repo path the map links resolves, at post-rename locations (coverage/, not catalog/)', () => {
     for (const p of [
-      'rules',
-      'jurisdictions',
-      path.join('processes', 'company-fields.json'),
+      'processes',
       path.join('processes', 'SITUATIONS.md'),
-      path.join('lore', 'registry.json'),
+      path.join('processes', 'artifacts.json'),
+      path.join('processes', 'company-fields.json'),
+      'journeys',
+      'data',
+      'vendors',
+      'pipeline',
+      'rules',
+      'sources',
       path.join('open-modules', 'README.md'),
+      path.join('lib', 'openstartup'),
+      'jurisdictions',
+      'open-documents',
+      'resources',
+      path.join('lore', 'registry.json'),
+      'schemas',
+      'coverage',
+      'templates',
+      'fixtures',
+      path.join('governance', 'AGENT_POLICY.md'),
+      path.join('docs', 'FOUNDER-OPS.md'),
     ]) {
       expect(fs.existsSync(path.join(ROOT, p)), `missing repo path ${p}`).toBe(true)
+    }
+    expect(map).toContain('(coverage/)')
+    expect(readme).not.toContain('(catalog/)')
+  })
+
+  it('keeps every site destination folded in from the old Start here table', () => {
+    for (const url of [
+      'https://ultrametric.ai/processes',
+      'https://ultrametric.ai/situations',
+      'https://ultrametric.ai/artifacts',
+      'https://ultrametric.ai/overall',
+      'https://ultrametric.ai/arenas',
+      'https://ultrametric.ai/compare',
+      'https://ultrametric.ai/stacks',
+      'https://ultrametric.ai/arena/government-services',
+      'https://ultrametric.ai/open-documents',
+      'https://ultrametric.ai/startup-sim',
+    ]) {
+      expect(map, `map is missing ${url}`).toContain(url)
     }
     for (const route of [
       path.join('app', 'artifacts', 'page.tsx'),
       path.join('app', 'open-documents', 'page.tsx'),
+      path.join('app', 'compare'),
+      path.join('app', 'arenas'),
       path.join('app', 'stacks'),
       path.join('app', 'startup-sim'),
       path.join('app', 'situations'),
+      path.join('app', 'get-started'),
     ]) {
       expect(fs.existsSync(path.join(ROOT, route)), `missing app route ${route}`).toBe(true)
-    }
-    for (const url of [
-      'https://ultrametric.ai/artifacts',
-      'https://ultrametric.ai/open-documents',
-      'https://ultrametric.ai/arena/government-services',
-    ]) {
-      expect(startHere, `table is missing ${url}`).toContain(url)
     }
   })
 
   it('states the shipped geo country set (PT and CA included), not the stale five', () => {
-    expect(startHere).toContain('US · UK · IN · DE · FR · PT · CA')
+    expect(map).toContain('US · UK · IN · DE · FR · PT · CA')
     expect(readme).not.toContain('(US · UK · IN · DE · FR)')
   })
 
-  it('addresses three personas in order: founder (the table), agent (install first), contributor (one pointer)', () => {
-    const founder = startHere.indexOf("**You're a founder starting or running a company.**")
-    const agent = startHere.indexOf("**You're an agent")
-    const contributor = startHere.indexOf("**You're a contributor.**")
-    expect(founder).toBeGreaterThan(-1)
-    expect(agent).toBeGreaterThan(founder)
-    expect(contributor).toBeGreaterThan(agent)
-    // The agent persona leads with the CLI + MCP install (/get-started, the ultrametric npm
-    // package) and only then the curl surfaces.
-    const agentBlock = startHere.slice(agent, contributor)
+  it('Agent access leads with the CLI + MCP install, then the keyless curl surfaces', () => {
+    const agentBlock = map.slice(map.indexOf('**Agent access** —'))
     const install = agentBlock.indexOf('https://ultrametric.ai/get-started')
     expect(install).toBeGreaterThan(-1)
     expect(agentBlock).toContain('`ultrametric` npm package')
     expect(install).toBeLessThan(agentBlock.indexOf('curl https://'))
-    // The contributor line points back at the contribution-guides row and CONTRIBUTING.md.
-    expect(startHere.slice(contributor)).toContain('CONTRIBUTING.md')
-    // The tasks-only rule stands: the Map cross-link survives the regroup (also pinned above).
-    expect(startHere).toContain('[Map of the repo](#map-of-the-repo)')
+    expect(agentBlock).toContain('governance/AGENT_POLICY.md')
   })
 })
