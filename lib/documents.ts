@@ -110,7 +110,9 @@ export function validateDocumentRegistry(doc: DocumentRegistry, asOf: Date): str
     // /documents page because the per-file asset links are content-hashed and rotate.
     if (typeof d.url !== 'string' || !d.url.startsWith('https://')) errors.push(`${where}: require HTTPS URL`)
     if (!DOCUMENT_USE_CASES.includes(d.use_case)) errors.push(`${where}: unknown use_case ${JSON.stringify(d.use_case)}`)
-    if (typeof d.license !== 'string' || !(d.license in DOCUMENT_LICENSES)) {
+    // Object.hasOwn, not `in`: inherited Object.prototype keys ('__proto__', 'constructor')
+    // are not license classes and must fail validation.
+    if (typeof d.license !== 'string' || !Object.hasOwn(DOCUMENT_LICENSES, d.license)) {
       errors.push(`${where}: unknown license class ${JSON.stringify(d.license)}`)
     }
     if (!DOCUMENT_FORMATS.includes(d.format)) errors.push(`${where}: unknown format ${JSON.stringify(d.format)}`)

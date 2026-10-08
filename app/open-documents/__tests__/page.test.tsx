@@ -70,10 +70,17 @@ describe('/open-documents', () => {
     const { container } = render(<OpenDocumentsPage />)
     const cells = [...container.querySelectorAll('tbody td:nth-child(3)')].map((td) => td.textContent?.trim())
     // Country-state combo: US-DE renders flag + state code (founder's 🇺🇸 DE example; the
-    // visual gap is the flag span's margin, so textContent reads flag+code).
+    // visual gap is the flag span's margin). The flag is aria-hidden, so an sr-only country
+    // prefix carries the full jurisdiction to screen readers (greptile #222) — textContent
+    // reads flag + sr-only prefix + code.
     expect(registry.documents.some((d) => d.jurisdiction === 'US-DE')).toBe(true)
-    expect(cells).toContain('🇺🇸DE')
+    expect(cells).toContain('🇺🇸United States — DE')
     expect(cells).not.toContain('US-DE')
+    expect(cells).not.toContain('🇺🇸DE')
+    // Single-country rows already print the country — no sr-only prefix duplicates it.
+    const srTexts = [...container.querySelectorAll('tbody td:nth-child(3) .sr-only')].map((s) => s.textContent)
+    expect(srTexts.length).toBeGreaterThan(0)
+    for (const t of srTexts) expect(t).toBe('United States — ')
     // Single committed country: the flag rides beside the committed string.
     expect(registry.documents.some((d) => d.jurisdiction === 'India')).toBe(true)
     expect(cells).toContain('🇮🇳India')
@@ -92,7 +99,7 @@ describe('/open-documents', () => {
     expect(container.querySelector(`a[href="${d.url}"]`)!.getAttribute('title')).toContain(d.checked_on)
   })
 
-  it('license cells render the committed short label at readable contrast, full note on the title', () => {
+  it('license cells render the committed short label at readable contrast, full note behind a keyboard-reachable disclosure', () => {
     const { container } = render(<OpenDocumentsPage />)
     const headers = [...container.querySelectorAll('thead th')].map((th) => th.textContent)
     expect(headers).toContain('License')
@@ -101,14 +108,23 @@ describe('/open-documents', () => {
     expect(cells).toHaveLength(registry.documents.length)
     const labels = new Set<string>(Object.values(DOCUMENT_LICENSES))
     for (const cell of cells) {
-      expect(labels.has(cell.textContent!.trim()), `unknown license label ${cell.textContent}`).toBe(true)
+      // The visible label is the committed short class label, as the summary of the site's
+      // details idiom — focusable, so the full license/counsel note is keyboard-reachable
+      // (greptile #222: a title on a non-focusable span reached pointer users only).
+      const summary = cell.querySelector('details > summary')
+      expect(summary, 'license label must be a disclosure summary').not.toBeNull()
+      const label = summary!.textContent!.trim()
+      expect(labels.has(label), `unknown license label ${label}`).toBe(true)
+      // The expanded note is the record's full license_note, verbatim.
+      const note = cell.querySelector('details > p')!.textContent
+      expect(note!.length).toBeGreaterThan(0)
       // Readable contrast (founder 2026-10-08 bar: content text ≥ zinc-400, not grey-on-black).
       expect(cell.className).toContain('text-zinc-400')
-      expect(cell.querySelector('span')!.getAttribute('title')!.length).toBeGreaterThan(0)
+      expect(cell.querySelector('details')!.getAttribute('title')!.length).toBeGreaterThan(0)
     }
-    const texts = cells.map((c) => c.textContent!.trim())
-    expect(texts).toContain('CC BY 4.0')
-    expect(texts).toContain('Proprietary — link only')
+    const summaries = cells.map((c) => c.querySelector('details > summary')!.textContent!.trim())
+    expect(summaries).toContain('CC BY 4.0')
+    expect(summaries).toContain('Proprietary — link only')
   })
 
   it('groups records under their use_case headings, registry order within each group', () => {
