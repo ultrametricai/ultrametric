@@ -9,11 +9,10 @@ import ProductLogoView from '@/components/ProductLogoView'
 import TableControls from '@/components/TableControls'
 import UrgencyChip from '@/components/UrgencyChip'
 import { useGeoSelection } from '@/components/useGeoSelection'
-import {
-  hiddenInCountryView, usFlagGlyph, type GeoNotesByCountry,
-} from '@/lib/geoPreference'
+import { hiddenInCountryView, usFlagGlyph } from '@/lib/geoPreference'
 import { phaseEmoji, phaseIcon, phaseTooltip, RANK_PRESET_ICONS } from '@/lib/processIcons'
-import { URGENCY_TIERS, type ProcessKind, type Urgency } from '@/lib/processSim'
+import { URGENCY_TIERS } from '@/lib/processSim'
+import type { PlaybookRow, ProcessRow, ProcessTableRow } from '@/lib/processRowTypes'
 import { readParams, setParams } from '@/lib/urlState'
 import { TABLE_HEADER_ROW, TABLE_SHELL } from '@/components/tableStyles'
 
@@ -52,85 +51,11 @@ import { TABLE_HEADER_ROW, TABLE_SHELL } from '@/components/tableStyles'
 //   Growth-focused   — growthImpact 1–5, how directly it drives revenue/user growth.
 // The metric column adapts to the active preset so the number being ranked on is always visible.
 
-export interface ProcessRow {
-  slug: string
-  title: string
-  // Curated emoji for this process (lib/processIcons.ts), resolved server-side by task id.
-  icon: string
-  phase: string
-  // Friendly display area over the internal phase (lib/processRows.ts PHASE_AREA — curated and
-  // totality-tested) plus its founder-lifecycle rank (AREA_ORDER index), both resolved
-  // server-side so this client component never imports the node-only builder.
-  area: string
-  areaRank: number
-  // The GEO dimension (founder 2026-09-28) — required on every corpus process. us/us-state
-  // rows wear the 🇺🇸 flag after the title (usFlagGlyph — keyed strictly on geoScope, founder
-  // 2026-10-02); global rows wear no scope glyph. Never re-sorts — and since the country-view
-  // filter (founder 2026-10-02) the scope also feeds hiddenInCountryView.
-  geoScope: 'global' | 'us' | 'us-state'
-  // The country-view filter data (founder 2026-10-02: "?geo=in should hide the processes that
-  // are not used in that country"): per country, the committed note's curated kind + its own
-  // summary (rendered on the detail pages — ProcessGeoNotes; the table's hidden-rows
-  // disclosure is gone, founder 2026-10-05). {} on global rows — they never filter.
-  geoNotesByCountry: GeoNotesByCountry
-  pct: number
-  agentSteps: number
-  totalSteps: number
-  complexity: string
-  // Record kind (founder 2026-10-01): 'situation' rows are reactive — they render `trigger`
-  // as their subtitle, wear the `urgency` chip, and carry timeOrder null (no founder-timeline
-  // slot; they sort after the timeline — see timelineRank below).
-  kind: ProcessKind
-  trigger: string | null
-  urgency: Urgency | null
-  // The five-orderings fields (curated in processes/corpus.json; cadence label/rank resolved
-  // server-side so this component stays free of the node-only cadence helpers). timeOrder is
-  // null on kind 'situation'.
-  timeOrder: number | null
-  cadenceLabel: string
-  cadenceRank: number
-  annoyance: number
-  risk: number
-  growthImpact: number
-  vendors: Array<{ id: string; label: string; arena: string | null; hasLogo: boolean }>
-}
-
-// A curated end-to-end chain (journeys/chains.json) as a row in the SAME table (founder
-// 2026-09-29: one view for the processes under the process search — the separate playbooks
-// section is gone). Serialized server-side by lib/processRows.ts buildPlaybookRows.
-export interface PlaybookRow {
-  id: string
-  title: string
-  tagline: string
-  icon: string
-  href: string
-  // The dominant area — the area of the chain's FIRST constituent process (founder 2026-09-29:
-  // playbooks are still processes, so a chain row folds into an area group, not its own group)
-  // — with its lifecycle rank and that first constituent's timeOrder, all resolved server-side,
-  // so the grouped view slots the row into the area at its journey position.
-  dominantArea: string
-  areaRank: number
-  timeOrder: number
-  // The constituent processes (icon chips in the Phase column) and their distinct phases —
-  // the phase filter scopes playbooks by membership, not by a single phase they don't have.
-  processes: Array<{ id: string; icon: string; title: string; phase: string }>
-  phases: string[]
-  // Aggregate agent ceiling across every step of every process in the chain.
-  pct: number
-  agentSteps: number
-  totalSteps: number
-  steps: Array<{ label: string; route: 'agent' | 'form' | 'person'; legalSignature: boolean }>
-  // The combined vendor cell (founder 2026-10-02: show the vendors, not a 'Go to process' link)
-  // — the constituent processes' vendor chips, deduped in journey order, same shape and cap as
-  // a process row's.
-  vendors: Array<{ id: string; label: string; arena: string | null; hasLogo: boolean }>
-}
-
-// Shared records can lack legacy index metrics. Missing values stay blank and sort last.
-type OptionalIndexField = 'geoScope' | 'pct' | 'agentSteps' | 'timeOrder' | 'cadenceLabel' | 'cadenceRank' | 'annoyance' | 'risk' | 'growthImpact'
-export type ProcessTableRow = Omit<ProcessRow, OptionalIndexField> & {
-  [K in OptionalIndexField]: ProcessRow[K] | null
-} & { href?: string }
+// Row types (ProcessRow, PlaybookRow, ProcessTableRow) are defined in lib/processRowTypes.ts
+// (repo-split boundary, docs/REPO-SPLIT-PLAN.md lib hard case: the server-side row builders in
+// lib and this client table share them, and lib never imports from components). Re-exported
+// here so existing importers keep working.
+export type { PlaybookRow, ProcessRow, ProcessTableRow }
 
 function compareValues(a: number | string | null, b: number | string | null, direction: Direction = 'asc') {
   if (a === null) return b === null ? 0 : 1

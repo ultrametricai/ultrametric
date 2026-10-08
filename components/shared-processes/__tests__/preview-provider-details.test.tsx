@@ -1,9 +1,9 @@
 // @vitest-environment jsdom
 import { afterEach, expect, it } from 'vitest'
 import { cleanup, fireEvent, render, within } from '@testing-library/react'
-import { loadSharedProcesses } from '../shared-processes/load'
-import { buildVendorPreview } from '../shared-processes/vendor-preview'
-import { buildStepComparisons } from '../shared-processes/step-comparisons'
+import { loadSharedProcesses } from '@/lib/shared-processes/load'
+import { buildVendorPreview } from '@/lib/shared-processes/vendor-preview'
+import { buildStepComparisons } from '@/lib/shared-processes/step-comparisons'
 import SharedProcessReader from '@/components/shared-processes/SharedProcessReader'
 const records = loadSharedProcesses()
 const record = records.find(record => record.id === 'form_001')!

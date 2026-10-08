@@ -2,8 +2,8 @@
 import { afterEach, expect, it } from 'vitest'
 import { cleanup, render } from '@testing-library/react'
 import SharedProcessReader from '@/components/shared-processes/SharedProcessReader'
-import { loadSharedProcesses } from '../shared-processes/load'
-import type { SharedRecord } from '../shared-processes/schema'
+import { loadSharedProcesses } from '@/lib/shared-processes/load'
+import type { SharedRecord } from '@/lib/shared-processes/schema'
 
 const records = loadSharedProcesses()
 afterEach(cleanup)

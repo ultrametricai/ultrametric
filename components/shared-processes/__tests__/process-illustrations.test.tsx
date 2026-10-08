@@ -3,9 +3,9 @@ import { expect, it } from 'vitest'
 import { readFileSync } from 'node:fs'
 import { renderToStaticMarkup } from 'react-dom/server'
 import SharedProcessReader from '@/components/shared-processes/SharedProcessReader'
-import { processIllustration } from '../shared-processes/process-illustrations'
-import { loadSharedProcesses } from '../shared-processes/load'
-import bindings from '../shared-processes/index-icons.json'
+import { processIllustration } from '@/lib/shared-processes/process-illustrations'
+import { loadSharedProcesses } from '@/lib/shared-processes/load'
+import bindings from '@/lib/shared-processes/index-icons.json'
 
 const records = loadSharedProcesses()
 

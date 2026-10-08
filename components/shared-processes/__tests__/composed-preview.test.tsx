@@ -1,12 +1,12 @@
 // @vitest-environment jsdom
 import { afterEach, describe, expect, it } from 'vitest'
 import { cleanup, fireEvent, render, within } from '@testing-library/react'
-import { loadSharedProcesses } from '../shared-processes/load'
-import { buildComposedComparisons, referencedCatalog } from '../shared-processes/composed-preview'
-import { buildStepComparisons } from '../shared-processes/step-comparisons'
-import { buildProcessProviderChoice } from '../shared-processes/provider-choice'
-import { processGraphs, graphExecutionType } from '../shared-processes/graph'
-import { processSummary } from '../shared-processes/summary'
+import { loadSharedProcesses } from '@/lib/shared-processes/load'
+import { buildComposedComparisons, referencedCatalog } from '@/lib/shared-processes/composed-preview'
+import { buildStepComparisons } from '@/lib/shared-processes/step-comparisons'
+import { buildProcessProviderChoice } from '@/lib/shared-processes/provider-choice'
+import { processGraphs, graphExecutionType } from '@/lib/shared-processes/graph'
+import { processSummary } from '@/lib/shared-processes/summary'
 import SharedProcessReader from '@/components/shared-processes/SharedProcessReader'
 const records = loadSharedProcesses()
 const record = records.find(record => record.id === 'get-paid')!

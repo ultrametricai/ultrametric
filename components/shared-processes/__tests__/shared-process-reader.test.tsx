@@ -4,10 +4,10 @@ import { mkdtempSync, mkdirSync, readFileSync, rmSync, writeFileSync } from 'nod
 import { tmpdir } from 'node:os'
 import path from 'node:path'
 import { renderToStaticMarkup } from 'react-dom/server'
-import { findSharedRecord, readSharedCatalog, sharedPreviewHref } from '../shared-processes/reader'
-import { validateCatalog } from '../shared-processes/schema'
+import { findSharedRecord, readSharedCatalog, sharedPreviewHref } from '@/lib/shared-processes/reader'
+import { validateCatalog } from '@/lib/shared-processes/schema'
 import SharedProcessReader from '@/components/shared-processes/SharedProcessReader'
-import { modulesForProcess } from '../businessLogicMap'
+import { modulesForProcess } from '@/lib/businessLogicMap'
 
 function mount(markup: string) {
   const el = document.createElement('div')

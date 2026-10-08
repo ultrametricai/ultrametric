@@ -3,11 +3,11 @@ import { afterEach, describe, expect, it } from 'vitest'
 import { cleanup, fireEvent, render, within } from '@testing-library/react'
 import { existsSync, readFileSync } from 'node:fs'
 import path from 'node:path'
-import { buildPreviewIndex } from '../shared-processes/index-rows'
-import { buildPreviewRoutes, findSharedRecord, readSharedCatalog, sharedPreviewHref } from '../shared-processes/reader'
+import { buildPreviewIndex } from '@/lib/shared-processes/index-rows'
+import { buildPreviewRoutes, findSharedRecord, readSharedCatalog, sharedPreviewHref } from '@/lib/shared-processes/reader'
 import PreviewIndex from '@/app/processes/v2/page'
-import { buildProcessRows } from '../processRows'
-import bindings from '../shared-processes/index-icons.json'
+import { buildProcessRows } from '@/lib/processRows'
+import bindings from '@/lib/shared-processes/index-icons.json'
 
 const records = readSharedCatalog()
 afterEach(() => { cleanup(); history.replaceState(null, '', '/') })

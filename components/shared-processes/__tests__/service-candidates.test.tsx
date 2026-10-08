@@ -1,10 +1,10 @@
 // @vitest-environment jsdom
 import { describe, expect, it } from 'vitest'
 import { renderToStaticMarkup } from 'react-dom/server'
-import { readSharedCatalog, findSharedRecord } from '../shared-processes/reader'
-import { resolveServiceCandidates } from '../shared-processes/service-candidates'
+import { readSharedCatalog, findSharedRecord } from '@/lib/shared-processes/reader'
+import { resolveServiceCandidates } from '@/lib/shared-processes/service-candidates'
 import ServiceCandidates from '@/components/shared-processes/ServiceCandidates'
-import type { Reference } from '../shared-processes/schema'
+import type { Reference } from '@/lib/shared-processes/schema'
 
 const refs = findSharedRecord(readSharedCatalog(), 'form_001')!.parts[0].references
 

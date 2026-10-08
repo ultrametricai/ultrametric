@@ -1,10 +1,10 @@
 // @vitest-environment jsdom
 import { afterEach, expect, it } from 'vitest'
 import { cleanup, fireEvent, render, within } from '@testing-library/react'
-import { loadSharedProcesses } from '../shared-processes/load'
-import { buildVendorPreview } from '../shared-processes/vendor-preview'
-import { buildStepComparisons } from '../shared-processes/step-comparisons'
-import { processGraphs } from '../shared-processes/graph'
+import { loadSharedProcesses } from '@/lib/shared-processes/load'
+import { buildVendorPreview } from '@/lib/shared-processes/vendor-preview'
+import { buildStepComparisons } from '@/lib/shared-processes/step-comparisons'
+import { processGraphs } from '@/lib/shared-processes/graph'
 import SharedProcessReader from '@/components/shared-processes/SharedProcessReader'
 const records = loadSharedProcesses()
 afterEach(cleanup)

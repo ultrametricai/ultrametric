@@ -5,7 +5,7 @@ import { mkdtempSync, readFileSync, rmSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import path from 'node:path'
 import { renderToStaticMarkup } from 'react-dom/server'
-import { loadSharedProcesses } from '../shared-processes/load'
+import { loadSharedProcesses } from '@/lib/shared-processes/load'
 import SharedProcessReader from '@/components/shared-processes/SharedProcessReader'
 
 type SourceMethod = { id: string; label: string; summary: string; context: { when: string; kind: string } }

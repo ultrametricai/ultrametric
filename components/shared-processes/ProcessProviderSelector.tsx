@@ -2,7 +2,7 @@
 
 import { useId } from 'react'
 import type { ProcessProviderChoice, ProviderGroup } from '@/lib/shared-processes/provider-choice'
-import { openProcessTarget } from '@/lib/shared-processes/open-target'
+import { openProcessTarget } from '@/components/shared-processes/open-target'
 import { useRegionalVariant } from './RegionalVariant'
 import ScoredProductRow from './ScoredProductRow'
 import { useVendorSelection } from './VendorSelection'

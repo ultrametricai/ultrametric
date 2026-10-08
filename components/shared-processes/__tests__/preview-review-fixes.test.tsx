@@ -1,9 +1,9 @@
 // @vitest-environment jsdom
 import { afterEach, expect, it } from 'vitest'
 import { cleanup, fireEvent, render } from '@testing-library/react'
-import { loadSharedProcesses } from '../shared-processes/load'
-import { loadProcesses } from '../processes'
-import { buildStepComparisons } from '../shared-processes/step-comparisons'
+import { loadSharedProcesses } from '@/lib/shared-processes/load'
+import { loadProcesses } from '@/lib/processes'
+import { buildStepComparisons } from '@/lib/shared-processes/step-comparisons'
 import SharedProcessReader from '@/components/shared-processes/SharedProcessReader'
 import { RegionalCoverageNote } from '@/components/shared-processes/RegionalVariant'
 import ProcessLeaderboard from '@/components/ProcessLeaderboard'

@@ -1,13 +1,13 @@
 // @vitest-environment jsdom
 import { afterEach, describe, expect, it } from 'vitest'
 import { cleanup, fireEvent, render, within } from '@testing-library/react'
-import { loadSharedProcesses } from '../shared-processes/load'
-import { buildStepComparisons } from '../shared-processes/step-comparisons'
-import { buildVendorPreview } from '../shared-processes/vendor-preview'
-import { buildProcessCheckSteps } from '../processCheckData'
-import { loadProcesses } from '../processes'
-import { loadCategory } from '../data'
-import { resolveServiceCandidates } from '../shared-processes/service-candidates'
+import { loadSharedProcesses } from '@/lib/shared-processes/load'
+import { buildStepComparisons } from '@/lib/shared-processes/step-comparisons'
+import { buildVendorPreview } from '@/lib/shared-processes/vendor-preview'
+import { buildProcessCheckSteps } from '@/lib/processCheckData'
+import { loadProcesses } from '@/lib/processes'
+import { loadCategory } from '@/lib/data'
+import { resolveServiceCandidates } from '@/lib/shared-processes/service-candidates'
 import SharedProcessReader from '@/components/shared-processes/SharedProcessReader'
 
 const records = loadSharedProcesses()

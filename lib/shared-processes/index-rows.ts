@@ -1,6 +1,6 @@
 import { buildPlaybookRows, buildProcessRows, buildSituationRows, AREA_ORDER } from '../processRows'
 import { loadProcesses, processSlug } from '../processes'
-import type { ProcessTableRow } from '@/components/ProcessesTable'
+import type { ProcessTableRow } from '@/lib/processRowTypes'
 import { buildPreviewRoutes, readSharedCatalog } from './reader'
 import iconBindings from './index-icons.json'
 
