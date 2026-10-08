@@ -1,6 +1,6 @@
 // Embeddable score badges: renders two static shield-style SVGs per ranked product into
 // public/badges/ — `<id>-agent-ready.svg` (the leaderboard's agentReady component) and
-// `<id>-arena-score.svg` (the blended Arena Score, internally `aiEra`) — plus one
+// `<id>-score.svg` (the blended Overall score, internally `aiEra`) — plus one
 // `<id>-certified.svg` per Agent-Ready certification (data/<arena>/certifications.json,
 // docs/CERTIFICATION.md). Plain node, no deps.
 //
@@ -131,7 +131,7 @@ export function certBadgeSvg({ level, date }) {
 export function badgeFiles(productId, entry) {
   return [
     [`${productId}-agent-ready.svg`, badgeSvg({ label: 'agent-ready', score: entry?.agentReady ?? null })],
-    [`${productId}-arena-score.svg`, badgeSvg({ label: 'arena score', score: entry?.aiEra ?? null })],
+    [`${productId}-score.svg`, badgeSvg({ label: 'overall score', score: entry?.aiEra ?? null })],
   ]
 }
 

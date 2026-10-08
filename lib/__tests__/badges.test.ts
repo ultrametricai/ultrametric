@@ -28,7 +28,7 @@ describe('badgeSvg', () => {
   })
 
   it('rounds instead of truncating', () => {
-    expect(badgeSvg({ label: 'arena score', score: 68.5 })).toContain('arena score 69/100')
+    expect(badgeSvg({ label: 'overall score', score: 68.5 })).toContain('overall score 69/100')
   })
 
   it('renders null scores as an untested zinc badge, never a fake 0', () => {
@@ -40,7 +40,7 @@ describe('badgeSvg', () => {
   })
 
   it('is a standalone well-formed SVG document with consistent panel widths', () => {
-    const svg = badgeSvg({ label: 'arena score', score: 100 })
+    const svg = badgeSvg({ label: 'overall score', score: 100 })
     expect(svg.startsWith('<svg xmlns="http://www.w3.org/2000/svg"')).toBe(true)
     const total = Number(svg.match(/<svg [^>]*width="(\d+)"/)![1])
     const left = Number(svg.match(/<rect width="(\d+)" height="20" fill=/)![1])
@@ -71,14 +71,14 @@ describe('certBadgeSvg', () => {
 describe('badgeFiles', () => {
   it('emits both files for a leaderboard entry', () => {
     const files = badgeFiles('stripe', { agentReady: 77, aiEra: 81.2 })
-    expect(files.map(([name]) => name)).toEqual(['stripe-agent-ready.svg', 'stripe-arena-score.svg'])
+    expect(files.map(([name]) => name)).toEqual(['stripe-agent-ready.svg', 'stripe-score.svg'])
     expect(files[0][1]).toContain('agent-ready 77/100')
-    expect(files[1][1]).toContain('arena score 81/100')
+    expect(files[1][1]).toContain('overall score 81/100')
   })
 
   it('treats a missing leaderboard entry as untested on both axes', () => {
     const files = badgeFiles('ghost', undefined)
     expect(files[0][1]).toContain('agent-ready untested')
-    expect(files[1][1]).toContain('arena score untested')
+    expect(files[1][1]).toContain('overall score untested')
   })
 })

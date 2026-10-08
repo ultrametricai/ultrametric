@@ -5,9 +5,7 @@ import type { ReactNode } from 'react'
 import { useEffect, useMemo, useState } from 'react'
 import AuthGatedMarker from '@/components/AuthGatedMarker'
 import ColumnsHelpLink from '@/components/ColumnsHelpLink'
-import ContestLink from '@/components/ContestLink'
 import { IconGlyph } from '@/components/IconChip'
-import RowMenu from '@/components/RowMenu'
 import PersonaChip from '@/components/PersonaChip'
 import SurfaceChip from '@/components/SurfaceChip'
 import ThemeIcon from '@/components/ThemeIcon'
@@ -16,7 +14,7 @@ import UncertaintyMarker from '@/components/UncertaintyMarker'
 import VerdictBadge from '@/components/VerdictBadge'
 import VerificationBadge from '@/components/VerificationBadge'
 import { humanizeTheme } from '@/lib/icons'
-import type { VendorResponse, Verdict } from '@/lib/schemas'
+import type { VendorResponse } from '@/lib/schemas'
 import { isCoveredVerdict, surfacesForEvidence } from '@/lib/storyCoverage'
 import {
   type SortDirection,
@@ -158,28 +156,10 @@ function VendorResponseBlock({ response }: { response: VendorResponse }) {
   )
 }
 
-// Reconstructs the minimal Verdict shape ContestLink's prefilled-issue body reads from a
-// serialized row — same values the server judged, never invented.
-function verdictForContest(productId: string, row: StoryVerdictRow): Verdict {
-  return {
-    productId,
-    storyId: row.storyId,
-    verdict: row.verdict,
-    quality: row.quality,
-    confidence: row.confidence,
-    rationale: row.rationale,
-    evidenceIds: row.evidence.map((e) => e.id),
-  }
-}
-
 export default function StoryVerdictsTable({
-  category,
-  productId,
   rows,
   processes,
 }: {
-  category: string
-  productId: string
   rows: StoryVerdictRow[]
   // storyId → related founder processes (lib/storyGraph.ts's storyProcessesForArena) — the
   // story↔process connection layer (founder ask 2026-09-22). OPTIONAL: undefined hides the
@@ -231,10 +211,10 @@ export default function StoryVerdictsTable({
   const filtered = useMemo(() => filterStoryVerdictRows(rows, query, theme, scope, tier, persona), [rows, query, theme, scope, tier, persona])
   const sorted = useMemo(() => sortStoryVerdictRows(filtered, column, direction), [filtered, column, direction])
 
-  // 9 base columns; the optional "Processes" column (present only when the page passed the
-  // story→process map) makes it 10 — every full-width cell (no-match row, expanded details)
+  // 8 base columns; the optional "Processes" column (present only when the page passed the
+  // story→process map) makes it 9 — every full-width cell (no-match row, expanded details)
   // spans whichever count is live.
-  const colSpan = processes ? 10 : 9
+  const colSpan = processes ? 9 : 8
 
   // Auto-expand the row a #story-<id> deep link targets — on mount for cross-page links
   // (StoryMatrix, mega table, glyph tables) and on hashchange for same-page ones (ClaimsSection,
@@ -394,7 +374,6 @@ export default function StoryVerdictsTable({
                   </span>
                 </th>
               )}
-              <th scope="col" aria-label="Row actions" className="w-8 px-1 py-2" />
             </tr>
           </thead>
           <tbody className="divide-y divide-zinc-800/70">
@@ -409,8 +388,6 @@ export default function StoryVerdictsTable({
                   row={row}
                   isOpen={isOpen}
                   untested={untested}
-                  category={category}
-                  productId={productId}
                   processLinks={processes ? processes[row.storyId] ?? [] : undefined}
                   colSpan={colSpan}
                   onToggle={() => toggle(row.storyId)}
@@ -435,8 +412,6 @@ function StoryRowPair({
   row,
   isOpen,
   untested,
-  category,
-  productId,
   processLinks,
   colSpan,
   onToggle,
@@ -444,8 +419,6 @@ function StoryRowPair({
   row: StoryVerdictRow
   isOpen: boolean
   untested: boolean
-  category: string
-  productId: string
   // undefined = the table has no "Processes" column at all; [] = column present, none related.
   processLinks?: StoryProcessLink[]
   colSpan: number
@@ -485,7 +458,7 @@ function StoryRowPair({
             </button>
             <div className="min-w-0">
               {/* Persona moved to its own "User type" column (founder request) — the full
-                  authored title stays in row.title for filtering/flag links. */}
+                  authored title stays in row.title for filtering. */}
               <p className="font-medium">
                 <span title={row.origin}>{row.action}</span>{' '}
                 <ScopeChip scope={row.scope} globalHref={row.globalHref} />
@@ -583,9 +556,6 @@ function StoryRowPair({
             )}
           </td>
         )}
-        <td className="px-1 py-2 text-right">
-          <RowMenu category={category} productId={productId} storyId={row.storyId} verdict={row.verdict} quality={row.quality} />
-        </td>
       </tr>
       {isOpen && (
         <tr id={detailsId} className="bg-zinc-900/30">
@@ -631,8 +601,8 @@ function StoryRowPair({
               </ul>
             )}
             {row.vendorResponse && <VendorResponseBlock response={row.vendorResponse} />}
-            <div className="mt-2 flex items-center justify-end gap-3">
-              {row.proofUrl && (
+            {row.proofUrl && (
+              <div className="mt-2 flex justify-end">
                 <a
                   href={row.proofUrl}
                   target="_blank"
@@ -642,14 +612,8 @@ function StoryRowPair({
                 >
                   proof ↗
                 </a>
-              )}
-              <ContestLink
-                category={category}
-                productId={productId}
-                storyId={row.storyId}
-                verdict={verdictForContest(productId, row)}
-              />
-            </div>
+              </div>
+            )}
           </td>
         </tr>
       )}

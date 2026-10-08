@@ -20,9 +20,9 @@ export function verificationLevel(verdict: Verdict, evidence: Map<string, Eviden
 
 // Evidence-strength ladder, strongest first: a direct hands-on probe outranks a github
 // README, which outranks independent community commentary, which outranks the vendor's own
-// claimed docs. Used to pick the single best "proof ↗" link for a verdict (see ContestLink's
-// neighbors on the product page, StoryMatrix cells, and BattleView cards) — distinct from
-// verificationLevel's coarser tiering (which lumps github in with claimed-docs).
+// claimed docs. Used to pick the single best "proof ↗" link for a verdict (product-page
+// story rows, StoryMatrix cells, and BattleView cards) — distinct from verificationLevel's
+// coarser tiering (which lumps github in with claimed-docs).
 const EVIDENCE_LADDER: Array<Evidence['tier']> = ['probe', 'github', 'community', 'claimed-docs']
 
 // Highest-tier cited evidence for a verdict, or null if the verdict cites nothing resolvable.
