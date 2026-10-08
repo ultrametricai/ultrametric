@@ -11,6 +11,7 @@ import { arenaIcon } from '@/lib/arenaIcons'
 import { storyProcessesForArena } from '@/lib/storyProcessGraph'
 import GeoMark from '@/components/GeoMark'
 import InstallCommands from '@/components/InstallCommands'
+import InstallViaUltrametric from '@/components/InstallViaUltrametric'
 import IntegrationChips, { chipTitle } from '@/components/IntegrationChips'
 import MomentumChip from '@/components/MomentumChip'
 import MomentumTrend from '@/components/MomentumTrend'
@@ -55,6 +56,7 @@ import type { Product, Story } from '@/lib/schemas'
 import { REPO, SITE_URL } from '@/lib/site'
 import { loadStoryTiers, storyTiersByCell, tierCountsFor } from '@/lib/storyTiers'
 import { buildStoryVerdictRows } from '@/lib/storyVerdictsSort'
+import { installProcessForVendor } from '@/lib/installViaUm'
 import { hasTryIt } from '@/lib/tryit'
 import { processesForVendor } from '@/lib/vendorProcesses'
 
@@ -187,6 +189,9 @@ export default async function ProductPage({
   // computer-use-only "could attempt it" appearances stay out of the chip (and out of
   // stepsServed) so a browser agent's ~100 attempt candidacies never read as coverage.
   const processAppearances = processesForVendor(category, id)
+  // The committed setup process behind the 'Install via Ultrametric' prompt — null for the
+  // many products no setup-flavored process serves (the block then renders nothing).
+  const installProcess = installProcessForVendor(category, id)
   const processesServed = processAppearances.filter((a) => a.stepsServed > 0).length
 
   return (
@@ -387,6 +392,29 @@ export default async function ProductPage({
           was one near-empty box holding only the Access chips) — those chips now sit inline in
           the header's secondary row above. Try/Flag/Badge/For agents/Data keep the bottom rail. */}
 
+      {/* Install moved back UP (founder 2026-10-08: right after the header/score area, before
+          the story content — supersedes the 2026-09-23 under-the-sandbox slot). */}
+      {(product.install?.length ?? 0) > 0 && (
+        <div className="min-w-0">
+          <p className="text-[10px] uppercase tracking-widest text-zinc-500">Install</p>
+          <div className="mt-1.5">
+            <InstallCommands product={product} />
+          </div>
+        </div>
+      )}
+      {/* 'Install via Ultrametric' directly under the install commands (founder 2026-10-08): a
+          copyable prompt handing an agent the committed setup process for this product
+          (lib/installViaUm.ts mapping over the same vendorProcesses reverse index the Processes
+          section renders). Renders ONLY when a mapped setup process exists — the committed
+          start contract is process-scoped, so there is no prompt to offer without one. */}
+      {installProcess && (
+        <InstallViaUltrametric
+          productName={product.name}
+          target={installProcess.target}
+          processTitle={installProcess.title}
+        />
+      )}
+
       {/* Showcase (screenshots) above the microterminal — founder rule: show what the product
           looks like before the hands-on replay. */}
       <ProductShowcase product={product} />
@@ -406,17 +434,6 @@ export default async function ProductPage({
       <FamilySection arenaId={category} productId={id} />
 
       <TryItSection category={category} productId={id} productName={product.name} stories={data.stories} />
-
-      {/* Founder 2026-09-23: the install commands live right under "Test it in sandbox" — try
-          it in the microterminal, then install it for real in one scroll. */}
-      {(product.install?.length ?? 0) > 0 && (
-        <div className="min-w-0">
-          <p className="text-[10px] uppercase tracking-widest text-zinc-500">Install</p>
-          <div className="mt-1.5">
-            <InstallCommands product={product} />
-          </div>
-        </div>
-      )}
 
       {/* Verified integrations, right after the family/trend block (founder: more useful than
           its old bottom-of-page slot) — each chip's tooltip quotes the evidence excerpt(s) the
