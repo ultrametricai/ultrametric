@@ -72,6 +72,7 @@ import { probes as securityKeys } from './security-keys'
 import { probes as selfHostedAssistants } from './self-hosted-assistants'
 import { probes as authenticatorApps } from './authenticator-apps'
 import { probes as gameEngines } from './game-engines'
+import { probes as governmentServices } from './government-services'
 import { probes as identityVerification } from './identity-verification'
 import { probes as bankingDataApis } from './banking-data-apis'
 import { probes as stablecoinPayments } from './stablecoin-payments'
@@ -155,6 +156,7 @@ export const LOCAL_PROBES: Record<string, LocalProbe[]> = {
   'self-hosted-assistants': selfHostedAssistants,
   'authenticator-apps': authenticatorApps,
   'game-engines': gameEngines,
+  'government-services': governmentServices,
   'identity-verification': identityVerification,
   'banking-data-apis': bankingDataApis,
   'stablecoin-payments': stablecoinPayments,
