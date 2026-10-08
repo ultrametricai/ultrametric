@@ -39,6 +39,16 @@ import { LIVE_PROBES } from './live-probes.generated.js'
 const ORIGIN = 'https://ultrametric.vercel.app'
 const ALLOWED_CORS = new Set(['https://ultrametric.ai', 'https://ultrametric.vercel.app'])
 
+// The landing pages retained by zone overrides share root asset URLs. Their CSS
+// also requests these public files outside /_astro. Keep ownership independent of
+// Referer; /fonts, /images, /logos and /faces are not assigned wholesale to landing.
+const LANDING_ASSET_FILES = new Set([
+  '/fonts/Satoshi-Variable.woff2',
+  '/fonts/Satoshi-VariableItalic.woff2',
+  '/images/foreloop/og-review.png',
+  '/og-sitegen.svg',
+])
+
 const MAX_BODY_BYTES = 128 * 1024
 const FETCH_TIMEOUT_MS = 6000
 const MAX_REDIRECTS = 3
@@ -2108,6 +2118,20 @@ export default {
   async fetch(request, env, ctx) {
     const url = new URL(request.url)
 
+    if ((request.method === 'GET' || request.method === 'HEAD') &&
+        (url.pathname.startsWith('/_astro/') || LANDING_ASSET_FILES.has(url.pathname))) {
+      if (!env?.LANDING_ASSETS) {
+        return new Response('Landing asset service unavailable', {
+          status: 503,
+          headers: { 'Cache-Control': 'no-store' },
+        })
+      }
+      // Preserve the request and response, including CORS, MIME, HEAD, ranges and
+      // conditional 304s. The explicit service avoids same-host fetch fallthrough
+      // and never retries a missing asset against the unrelated Vercel app.
+      return env.LANDING_ASSETS.fetch(request)
+    }
+
     // ── Ultrametric rebrand cutover (founder 2026-09-28) ─────────────────────────────────
     // The product moved from ultrametric.ai/productarena/* to the root of ultrametric.ai.
     // '/' serves the company landing homepage — since 2026-09-29 ported into the product app
@@ -2159,10 +2183,10 @@ export default {
         headers: { Location: `https://ultrametric.ai/startup-sim${tail}${url.search}`, 'Cache-Control': 'no-store' },
       })
     }
-    // 2. The landing pages are ported INTO the product app (founder 2026-09-29: "the top bar
-    //    we use should be constant through the site") — the separate Astro landing origin, its
-    //    HTMLRewriter header-injection shims, and its asset passthroughs (/_astro, /faces) are
-    //    all retired. '/' serves the ported landing homepage (app/home) via the same
+    // 2. The main landing pages are ported INTO the product app (founder 2026-09-29:
+    //    "the top bar we use should be constant through the site"). Page overrides remain
+    //    outside this Worker; their shared assets are dispatched above. '/' serves the
+    //    ported landing homepage (app/home) via the same
     //    pathname-rewrite trick as /overall below; /company and /tos are ordinary product
     //    routes now and just fall through to the proxy. Old Astro-only paths 301:
     if (url.pathname === '/') {
