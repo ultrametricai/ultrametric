@@ -28,3 +28,13 @@ describe('arena page header (founder 2026-09-30 removals)', () => {
     expect(tableSrc).toContain('aria-label={`${data.category.name} rankings`}')
   })
 })
+
+// View-in-repo footer (founder 2026-10-08 deep-link audit): the arena page links its whole
+// data area — the per-arena dir holding products.json, evidence/, verdicts.json, rankings.json.
+// Source-read pin, same pattern as above (async server component over fs-loaded params).
+describe('arena page view-in-repo footer (founder 2026-10-08)', () => {
+  it('links data/<category>/ on GitHub with the muted process-page idiom', () => {
+    expect(pageSrc).toContain('https://github.com/${REPO}/tree/main/data/${category}')
+    expect(pageSrc).toContain('View the evidence in the repo')
+  })
+})

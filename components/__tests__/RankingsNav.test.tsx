@@ -82,4 +82,19 @@ describe('RankingsNav', () => {
     // Company rankings stay linked from a process page.
     expect(screen.getByRole('link', { name: /Highest Overall score/ }).getAttribute('href')).toBe('/rankings/init')
   })
+
+  // View-in-repo line (founder 2026-10-08 deep-link audit): each leaderboard links the repo
+  // area it is computed from — the whole data tree for cross-arena company rankings, the one
+  // arena dir for the arena-scoped law-firms board, the corpus for process leaderboards.
+  it('links the repo data area the current leaderboard is computed from', () => {
+    const repoHref = () => screen.getByRole('link', { name: /View the evidence in the repo/ }).getAttribute('href')
+    const { unmount: u1 } = render(<RankingsNav current="agentic" />)
+    expect(repoHref()).toBe('https://github.com/ultrametricai/ultrametric/tree/main/data')
+    u1()
+    const { unmount: u2 } = render(<RankingsNav current="law-firms" />)
+    expect(repoHref()).toBe('https://github.com/ultrametricai/ultrametric/tree/main/data/startup-law-firms')
+    u2()
+    render(<RankingsNav current="most-automatable" />)
+    expect(repoHref()).toBe('https://github.com/ultrametricai/ultrametric/blob/main/processes/corpus.json')
+  })
 })

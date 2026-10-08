@@ -81,6 +81,14 @@ describe('product page — founder 2026-10-02 batch', () => {
     expect(container.querySelector(`a[href="/badges#${ID}"]`)).toBeNull()
   })
 
+  it('view-in-repo footer (founder 2026-10-08): the muted link opens this product\'s evidence file in the public data tree', async () => {
+    await renderPage()
+    const repo = screen.getByRole('link', { name: /View the evidence in the repo/ })
+    expect(repo.getAttribute('href')).toBe(
+      `https://github.com/ultrametricai/ultrametric/blob/main/data/${ARENA}/evidence/${ID}.json`,
+    )
+  })
+
   it('removed explainer sentences: integrations and score trend keep their content, lose the prose', async () => {
     const { container } = await renderPage()
     expect(container.textContent).not.toContain('Connections to other tracked products')

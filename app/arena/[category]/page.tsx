@@ -18,7 +18,7 @@ import { hotReasonsForCategory } from '@/lib/hotProducts'
 import { hasLogo } from '@/lib/logos'
 import { loadPricing, pricingCellFor, type PricingCell } from '@/lib/pricing'
 import { loadRollups } from '@/lib/rollups'
-import { SITE_URL } from '@/lib/site'
+import { REPO, SITE_URL } from '@/lib/site'
 
 // The two hardware arenas graduated from unlinked /experiments spec tables; those pages stay
 // live as each arena's raw vendor-spec annex (app/experiments/*), linked from the header row.
@@ -254,6 +254,21 @@ export default async function ArenaPage({ params }: { params: Promise<{ category
           </div>
         </div>
       )}
+
+      {/* View-in-repo (founder 2026-10-08, the process pages' footer idiom): this ranking's
+          whole data area — products.json, evidence/, verdicts.json, and the derived
+          rankings.json this page renders. */}
+      <p className="text-xs text-zinc-600">
+        <a
+          href={`https://github.com/${REPO}/tree/main/data/${category}`}
+          target="_blank"
+          rel="noopener noreferrer"
+          title={`This ranking's data in the public repo — data/${category}/ (products, evidence, verdicts, derived rankings)`}
+          className="transition hover:text-emerald-300"
+        >
+          View the evidence in the repo ↗
+        </a>
+      </p>
     </div>
   )
 }

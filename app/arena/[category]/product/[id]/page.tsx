@@ -560,6 +560,21 @@ export default async function ProductPage({
         <AuthGatedChip count={authGatedProbeCount(data, id)} />
       </div>
 
+      {/* View-in-repo (founder 2026-10-08, the process pages' footer idiom): this product's
+          judged evidence file in the public data tree — every product has one
+          (data/<arena>/evidence/<id>.json; products.json sits beside it). */}
+      <p className="text-xs text-zinc-600">
+        <a
+          href={`https://github.com/${REPO}/blob/main/data/${category}/evidence/${id}.json`}
+          target="_blank"
+          rel="noopener noreferrer"
+          title={`This product's judged evidence in the public repo — data/${category}/evidence/${id}.json`}
+          className="transition hover:text-emerald-300"
+        >
+          View the evidence in the repo ↗
+        </a>
+      </p>
+
       {/* Ops fine print, dead last (founder: educate first, ops last): 30-day agent-surface
           uptime (renders nothing until slo-check has history — lib/slo.ts). The "Evidence as
           of · story coverage" provenance line stays removed entirely (founder 2026-09-15 —
