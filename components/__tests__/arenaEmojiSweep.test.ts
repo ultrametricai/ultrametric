@@ -13,12 +13,13 @@ const ROOT = path.join(__dirname, '..', '..')
 
 // Files that may STILL read the raw emoji map, each for a text-only reason:
 const ALLOWED = new Set([
-  // Native <select><option> labels (the mega-table's arena scope filter) — options can't
-  // render SVG, so the emoji remain the only decoration a select can carry (same precedent
-  // as phaseEmoji() in the processes table's phase filter).
+  // Native <select><option> labels (the mega-table's BELOW-SM arena scope filter — the desktop
+  // control is the house listbox since the 2026-10-08 sweep) — options can't render SVG, so
+  // the emoji remain the only decoration a select can carry (same precedent as phaseEmoji()
+  // in the processes table's phase filter).
   'lib/megaTable.ts',
-  // The product page header (vendor-lane surface) — pending its own conversion pass.
-  'app/arena/[category]/product/[id]/page.tsx',
+  // The product page header converted in the 2026-10-08 house icon sweep — arenaIcon() +
+  // IconGlyph, no raw import left.
   // The arena-icon source of truth documents itself.
   'lib/arenaIcons.ts',
 ])
