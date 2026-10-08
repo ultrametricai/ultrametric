@@ -1,0 +1,50 @@
+{
+  "_comment": "Probe-tier evidence for the ultrametric bring-up (agent-skills, 2026-10-08), quoted verbatim from the committed keyless self-eval sweep: docs/self-eval-probes/transcript-self-eval-keyless.txt (recorded 2026-10-07, method in docs/SELF-EVAL.md — scratch --data-dir, no credentials anywhere in the session, refusals recorded verbatim). Each item's url is the documented surface the recorded probe exercised; the transcript is the authority. Appended by pipeline/scripts/append-ultrametric-selfeval-evidence.py with tier 'probe' and fetchedAt = the recording timestamp. The negatives (the process auth wall, the MCP initialize refusal) are kept on purpose.",
+  "ultrametric": [
+    {
+      "id": "ultrametric-selfeval-1",
+      "url": "https://registry.npmjs.org/ultrametric/latest",
+      "excerpt": "Recorded keyless CLI sweep (2026-10-07, docs/self-eval-probes/transcript-self-eval-keyless.txt): `$ npx -y ultrametric@0.4.1 --version` → `0.4.1` (exit 0). Every command `ultrametric --help` enumerates was run keylessly in a scratch --data-dir; `doctor` printed version, Node, storage/auth/settings/log paths, and API endpoints, and `logs show` printed per-command diagnostics (name, exit code, duration)."
+    },
+    {
+      "id": "ultrametric-selfeval-2",
+      "url": "https://docs.ultrametric.ai/plugins/overview.md",
+      "excerpt": "Recorded keyless probe (2026-10-07): `$ ultrametric init --path <scratch> --dry-run` → 'Initialization preview: … create: …/project/.agents/skills/ultrametric/SKILL.md / create: …/project/.claude/skills/ultrametric/SKILL.md' (exit 0) — the dry run previews both harness targets (Codex .agents/skills and Claude Code .claude/skills) without writing anything."
+    },
+    {
+      "id": "ultrametric-selfeval-3",
+      "url": "https://docs.ultrametric.ai/cli/install.md",
+      "excerpt": "Recorded keyless probe (2026-10-07): `$ ultrametric auth login --json` → {\"status\": \"pending\", \"loginId\": \"9bccf821-…\", \"userCode\": \"KHFW-RQVS\", \"verificationUri\": \"https://api.ultrametric.ai/auth/login\", \"verificationUriComplete\": \"…?user_code=KHFW-RQVS\", \"expiresAt\": …, \"retryAfter\": 5} (exit 0); `auth complete <login-id>` printed the verification URI, code, expiry, and retry guidance (exit 0). A device-code login an agent can drive end to end up to the human approval step; the recorded code expired minutes later, unapproved."
+    },
+    {
+      "id": "ultrametric-selfeval-4",
+      "url": "https://docs.ultrametric.ai/guides/retrieve-a-process.md",
+      "excerpt": "Recorded keyless refusals (2026-10-07): `$ ultrametric process list` → 'Error [AUTH_REQUIRED]: API login is required.' (exit 1); `process get` and `process open` refuse identically; `$ context get --json` → {\"schemaVersion\":1,\"error\":{\"code\":\"AUTH_REQUIRED\",\"message\":\"API login is required.\",\"hint\":\"Run ultrametric auth login.\"}} (exit 1). Every process-shaped function requires login: a keyless visitor cannot retrieve or run a single hosted guide."
+    },
+    {
+      "id": "ultrametric-selfeval-5",
+      "url": "https://docs.ultrametric.ai/mcp/connect.md",
+      "excerpt": "Recorded keyless MCP probe (2026-10-07): POST https://api.ultrametric.ai/mcp `initialize` → HTTP/2 401, body {\"schemaVersion\":1,\"error\":{\"code\":\"AUTH_REQUIRED\",\"message\":\"Sign in to continue.\"}}; `tools/list` → the same AUTH_REQUIRED body. Headers carry `www-authenticate: Bearer resource_metadata=\"https://api.ultrametric.ai/.well-known/oauth-protected-resource\"` and that well-known document answers 200 with {\"resource\":\"https://api.ultrametric.ai/mcp\",\"authorization_servers\":[\"https://auth.ultrametric.ai\"],…}. The hosted MCP refuses even the keyless initialize handshake; the wall carries the full RFC 9728 pattern (401 + resource metadata + live well-known document)."
+    },
+    {
+      "id": "ultrametric-selfeval-6",
+      "url": "https://docs.ultrametric.ai/cli/commands.md",
+      "excerpt": "Recorded keyless probe (2026-10-07): `$ ultrametric understand --json` → a complete company-profile guide (kind \"company_profile_guide\": instructions, template, result schema, agent-trial spec), offline, exit 0; `$ assess --json` → a complete four-dimension AI-readiness assessment (rubric, readiness levels, steps, template, result schema), offline, exit 0. The largest keyless payloads the CLI ships: real, usable guide content with no account."
+    },
+    {
+      "id": "ultrametric-selfeval-7",
+      "url": "https://docs.ultrametric.ai/cli/commands.md",
+      "excerpt": "Recorded keyless probe (2026-10-07): `$ ultrametric companies validate --file empty-profile.json` → 'Error [VALIDATION]: Input does not match the required schema.' with per-field errors naming each violation (schemaVersion, operation, companyId, asOf, facts, review, nextSteps), offline, exit 3; `companies schema` / `assessments schema` print the full JSON Schemas with worked examples, and `actions set` rejects a bad --status by enumerating the allowed states (proposed, planned, in_progress, done, dismissed). Local, revisioned, schema-enforced record stores working without any hosted dependency."
+    },
+    {
+      "id": "ultrametric-selfeval-8",
+      "url": "https://docs.ultrametric.ai/api-reference/operations.md",
+      "excerpt": "Recorded keyless probe (2026-10-07): `$ ultrametric context schema open` / `save` / `get` → the hosted API's full input schemas (JSON Schema 2020-12) printed with no login (exit 0). The hosted API's input contracts are readable before sign-in; the hosted `context get`/`save` operations behind them require login."
+    },
+    {
+      "id": "ultrametric-selfeval-9",
+      "url": "https://ultrametric.ai/productarena/data/categories.json",
+      "excerpt": "At the 2026-10-07 recording all four `arena` commands failed keylessly: `$ ultrametric arena categories --json` → {\"schemaVersion\":1,\"error\":{\"code\":\"NETWORK_ERROR\",\"message\":\"Could not reach ProductArena.\",\"hint\":\"Check your connection and retry.\"}} (exit 1) — the shipped CLI fetched a redirecting data path (docs/SELF-EVAL.md, Broken). Re-verified 2026-10-08 after the worker fix deployed: https://ultrametric.ai/productarena/data/categories.json answers HTTP/2 200 (application/json) and `npx -y ultrametric@0.4.1 arena categories --json` prints the arena catalog (exit 0)."
+    }
+  ]
+}

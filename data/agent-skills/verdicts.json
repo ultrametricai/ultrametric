@@ -4285,5 +4285,700 @@
       "superpowers-docs-48",
       "superpowers-gh-5"
     ]
+  },
+  {
+    "productId": "ultrametric",
+    "storyId": "active-maintenance",
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "The only maintenance signals are a published npm release (ultrametric@0.4.1) and a recorded fix: the `arena` commands failed on 2026-10-07 and worked again on 2026-10-08 after a worker fix was deployed. That shows some active upkeep, but it is a server-side data-path fix rather than a new release, and nothing shows a public issue tracker or community involvement. Missing for 10: release history or changelog with dates, evidence of public issue triage, evidence of accepted community contributions, independent corroboration of maintenance cadence.",
+    "evidenceIds": [
+      "ultrametric-selfeval-9",
+      "ultrametric-docs-6",
+      "ultrametric-selfeval-1"
+    ]
+  },
+  {
+    "productId": "ultrametric",
+    "storyId": "agent-authors-skill",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Ultrametric ships agent skill files, so a skill-authoring spec, template, or meta-skill would be a fair thing to expect, and the axis applies. The evidence only shows `ultrametric init` installing Ultrametric's own prebuilt SKILL.md into the .agents/.claude skill directories, plus templates for business-process guides. Nothing documents a spec, template, or meta-skill that lets an agent author and package a new skill.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "ultrametric",
+    "storyId": "agent-installs-skill",
+    "verdict": "full",
+    "quality": 8,
+    "confidence": "high",
+    "rationale": "The docs describe a two-step, agent-oriented skill install: `ultrametric init --dry-run --json` previews the changes, and the second command writes the selected skill files. A keyless hands-on probe confirmed that `npx -y ultrametric@0.4.1` runs without prompts and that `init --dry-run` exits 0 with a preview of both the Codex (.agents/skills) and Claude Code (.claude/skills) SKILL.md targets, with no login required. The CLI also documents `--json` mode for agent use. Missing for 10: a recorded hands-on run of the actual write step (non-dry-run) completing headlessly, and full documentation of the non-interactive target-selection flags (the docs snippet is truncated).",
+    "evidenceIds": [
+      "ultrametric-docs-6",
+      "ultrametric-docs-8",
+      "ultrametric-docs-9",
+      "ultrametric-docs-22",
+      "ultrametric-selfeval-1",
+      "ultrametric-selfeval-2"
+    ]
+  },
+  {
+    "productId": "ultrametric",
+    "storyId": "agentic-agent-docs",
+    "verdict": "full",
+    "quality": 9,
+    "confidence": "high",
+    "rationale": "A probe confirms a live llms.txt at docs.ultrametric.ai/llms.txt (HTTP 200) that indexes the docs with descriptive links. The docs themselves are served as agent-readable .md pages, and `ultrametric init` writes SKILL.md files for Codex and Claude Code, verified hands-on, so agents get dedicated agent-oriented instructions. Missing for 10: no evidence of an llms-full.txt or full-content bundle, and no independent corroboration of an agent actually consuming the llms.txt end to end.",
+    "evidenceIds": [
+      "ultrametric-probe-1",
+      "ultrametric-docs-5",
+      "ultrametric-docs-8",
+      "ultrametric-selfeval-2",
+      "ultrametric-docs-10"
+    ]
+  },
+  {
+    "productId": "ultrametric",
+    "storyId": "agentic-ai-insights",
+    "verdict": "partial",
+    "quality": 4,
+    "confidence": "low",
+    "rationale": "Ultrametric explicitly runs no model of its own; insights are produced by the user's own agent. It supplies the structure for that work: guides like `understand` (company profile) and `assess` (a four-dimension AI-readiness assessment with rubric and result schema), plus stored records where actions can be marked 'proposed'. So AI-generated assessments and suggestions about your company are possible, but only through your external agent host, not inside the product itself. missing for 10: native in-product AI insight generation, evidence of insights computed from user data rather than templates, hands-on corroboration of an insight or suggestion workflow with real data.",
+    "evidenceIds": [
+      "ultrametric-docs-4",
+      "ultrametric-docs-1",
+      "ultrametric-selfeval-6",
+      "ultrametric-selfeval-7",
+      "ultrametric-docs-13"
+    ]
+  },
+  {
+    "productId": "ultrametric",
+    "storyId": "agentic-autonomous-automation",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Ultrametric is a hosted process-guidance and context service for agents, so background automation is a fair axis for it. However, the evidence shows it runs no model itself and only supplies guides and saved state to an agent the user drives in a session. The `--period` option tracks separate runs of a recurring process but is not a scheduler, and nothing documents triggers, schedules, or unattended background execution.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "ultrametric",
+    "storyId": "agentic-builtin-assistant",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "high",
+    "rationale": "A business-process SaaS could plausibly ship an in-product assistant, so this axis applies. The evidence shows Ultrametric deliberately does not: it 'runs no model' and uses the AI plan you already pay for. Delegation happens through your own external agent via its MCP server or CLI, not through a built-in assistant.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "ultrametric",
+    "storyId": "agentic-headless",
+    "verdict": "partial",
+    "quality": 6,
+    "confidence": "medium",
+    "rationale": "The CLI is built for non-interactive agent use. `--json` returns structured stdout with a schemaVersion and data object, and completion needs no interactive prompt. Hands-on probes show machine-readable errors with distinct exit codes (1 for AUTH_REQUIRED, 3 for VALIDATION), plus `--dry-run`, `doctor`, an `--environment` flag and an HTTP API with an OpenAPI contract. However, every hosted process and context command requires login, and the only evidenced login is a device-code flow that stops at a human approval step, which is a real obstacle for unattended CI. Missing for 10: a documented non-interactive CI credential (API key, service account or token env var), any CI/pipeline documentation or example, and independent corroboration of authenticated headless runs.",
+    "evidenceIds": [
+      "ultrametric-docs-7",
+      "ultrametric-docs-22",
+      "ultrametric-docs-8",
+      "ultrametric-docs-23",
+      "ultrametric-docs-24",
+      "ultrametric-docs-20",
+      "ultrametric-docs-21",
+      "ultrametric-selfeval-1",
+      "ultrametric-selfeval-3",
+      "ultrametric-selfeval-4",
+      "ultrametric-selfeval-6",
+      "ultrametric-selfeval-7"
+    ]
+  },
+  {
+    "productId": "ultrametric",
+    "storyId": "agentic-mcp-client",
+    "verdict": "na",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Ultrametric is a process-guidance service that runs no model and acts as a tool provider: it exposes its own hosted MCP server and CLI for external agents to call. Consuming third-party MCP servers is an agent-host or client role, which falls outside this product's category, and nothing in the evidence shows it ships MCP-client capability.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "ultrametric",
+    "storyId": "agentic-mcp-server",
+    "verdict": "full",
+    "quality": 7,
+    "confidence": "medium",
+    "rationale": "Ultrametric is a process service that runs no model, so publishing an official MCP server applies. It documents a hosted remote MCP server at https://api.ultrametric.ai/mcp with connection steps, auth scopes (e.g. `context:protected:read`), and a `status` tool. A hands-on probe confirms the endpoint is live and returns a standards-compliant 401 with RFC 9728 OAuth protected-resource metadata, which is an expected sign-in wall rather than a failure. Missing for 10: no observed authenticated session (successful `initialize`/`tools/list`) or full documented MCP tool catalog. [2026-10-08 adversarial bias audit (owner-product bring-up lane): quality capped 9 -> 7 and confidence high -> medium — MCP cells are the most bias-sensitive class (fleet precedent: probe-grade evidence); the recorded probe shows only the documented AUTH_REQUIRED wall, and the rationale concedes no observed initialize/tools/list session. full stands on the documented hosted server, documented tools, and the live RFC 9728 wall; a never-observed handshake cannot carry q9 high. Ultrametric-affiliation governance, README §9.]",
+    "evidenceIds": [
+      "ultrametric-docs-5",
+      "ultrametric-probe-3",
+      "ultrametric-docs-25",
+      "ultrametric-docs-26",
+      "ultrametric-docs-19",
+      "ultrametric-selfeval-5",
+      "ultrametric-docs-4"
+    ]
+  },
+  {
+    "productId": "ultrametric",
+    "storyId": "agentic-nl-commands",
+    "verdict": "full",
+    "quality": 7,
+    "confidence": "medium",
+    "rationale": "Ultrametric is built to be driven through the user's own AI agent in natural language. It provides a hosted MCP server to add in an agent host, installs skill files for Claude Code and Codex, and its docs describe simply asking the agent to call MCP tools like `status` and letting the agent handle processes such as incorporating, hiring and payroll. Ultrametric runs no model itself, so natural-language interpretation depends entirely on the user's agent plan, and recorded probes only show the `init` dry run and auth walls rather than an actual conversational session. Missing for 10: hands-on corroboration of an end-to-end natural-language-driven process run, and first-party documentation of example natural-language prompts or workflows.",
+    "evidenceIds": [
+      "ultrametric-docs-1",
+      "ultrametric-docs-2",
+      "ultrametric-docs-4",
+      "ultrametric-docs-5",
+      "ultrametric-docs-8",
+      "ultrametric-docs-26",
+      "ultrametric-selfeval-2"
+    ]
+  },
+  {
+    "productId": "ultrametric",
+    "storyId": "agentic-official-cli",
+    "verdict": "full",
+    "quality": 9,
+    "confidence": "high",
+    "rationale": "Ultrametric ships an official npm CLI (`npm install -g ultrametric`) built for agents. It offers a `--json` mode with a stable `schemaVersion`/`data` envelope, `init --dry-run` skill setup, `doctor` diagnostics, and an agent-drivable device-code login. Recorded hands-on sweeps confirm the commands run, return structured errors, and serve real offline guides. missing for 10: independent third-party corroboration (all hands-on runs are the vendor's own self-eval recordings), and evidence of authenticated hosted process commands working end to end (keyless runs only reached the AUTH_REQUIRED wall).",
+    "evidenceIds": [
+      "ultrametric-docs-6",
+      "ultrametric-docs-7",
+      "ultrametric-docs-8",
+      "ultrametric-docs-22",
+      "ultrametric-docs-24",
+      "ultrametric-docs-16",
+      "ultrametric-probe-4",
+      "ultrametric-selfeval-1",
+      "ultrametric-selfeval-2",
+      "ultrametric-selfeval-3",
+      "ultrametric-selfeval-4",
+      "ultrametric-selfeval-6",
+      "ultrametric-selfeval-7"
+    ]
+  },
+  {
+    "productId": "ultrametric",
+    "storyId": "agentic-public-api",
+    "verdict": "full",
+    "quality": 6,
+    "confidence": "medium",
+    "rationale": "Ultrametric documents an HTTP API for reading process guides and working with company context. It publishes a downloadable OpenAPI contract with request and response schemas, has an operations reference, and the CLI prints the hosted API's JSON Schema 2020-12 input contracts without login. Agent-friendly surfaces (JSON CLI output, a hosted MCP endpoint with a standard OAuth resource-metadata flow) reinforce the programmatic path. Hosted operations sit behind login, which is normal API auth. The probe-2 404s checked other paths, not the documented /contracts/openapi.json location, so they do not contradict the docs. Missing for 10: a hands-on authenticated call against the HTTP API, and independent retrieval of the documented OpenAPI contract file. [2026-10-08 adversarial bias audit (owner-product bring-up lane): quality 8 -> 6 — the judged rationale leaned on the 404s not covering the documented /contracts/openapi.json location; the audit fetched that documented location and it answers 404 {\"code\":\"NOT_FOUND\"} (2026-10-08), so the OpenAPI sub-claim is affirmatively contradicted. full stands on the documented operations reference plus keyless schema output (the anthropic-skills full-8 bar), minus the contradicted contract claim and no authenticated call. Ultrametric-affiliation governance, README §9.]",
+    "evidenceIds": [
+      "ultrametric-docs-20",
+      "ultrametric-docs-21",
+      "ultrametric-selfeval-8",
+      "ultrametric-docs-22",
+      "ultrametric-docs-5",
+      "ultrametric-selfeval-5",
+      "ultrametric-selfeval-3"
+    ]
+  },
+  {
+    "productId": "ultrametric",
+    "storyId": "agentic-scoped-keys",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "low",
+    "rationale": "The MCP authentication docs name at least one OAuth-style scope (`context:protected:read`) gating protected context, so access is scope-partitioned to some degree. The hosted MCP uses a standard OAuth protected-resource pattern with a separate authorization server, and the CLI uses a device-code login an agent can drive up to human approval. However, nothing shows a user deliberately issuing a dedicated, narrowly scoped credential (API key or token) for an agent; agents appear to act under the signed-in user's account and organization. missing for 10: documented way to mint agent-specific API keys/tokens, user-selectable scope or permission sets, a full scope catalog, credential revocation/rotation and expiry controls, independent or hands-on corroboration of scoped issuance. [2026-10-08 adversarial bias audit (owner-product bring-up lane): reverted partial 3 -> none 0 — the story is issuing scoped/least-privilege credentials for an agent; the rationale concedes nothing shows a user issuing a dedicated scoped credential, and one scope name in the MCP auth docs is not an issuance capability. Every peer with no issuance surface sits at none/na. Ultrametric-affiliation governance, README §9.]",
+    "evidenceIds": [
+      "ultrametric-docs-25",
+      "ultrametric-selfeval-5",
+      "ultrametric-selfeval-3",
+      "ultrametric-docs-19"
+    ]
+  },
+  {
+    "productId": "ultrametric",
+    "storyId": "agentic-sdks",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "No language SDK or client library is documented. The closest official programmatic surfaces are an HTTP API with a downloadable OpenAPI contract for request/response schemas, which enables client generation, and an npm-installed CLI with a versioned `--json` output envelope (`schemaVersion` + `data`) whose input schemas can be printed. Hands-on probes confirmed the CLI runs and the schemas print, so you can build against Ultrametric only through generated clients or by shelling out to the CLI. missing for 10: an official SDK/client library in any language, SDK documentation and examples, independent corroboration of SDK use. [2026-10-08 adversarial bias audit (owner-product bring-up lane): reverted partial 3 -> none 0 — the rationale opens by conceding no SDK or client library is documented; the partial rode on a downloadable OpenAPI contract enabling client generation, and the documented contract path answers 404 (2026-10-08 audit fetch). A conceded absence plus a contradicted enabler is none — the bar at which five of six peers sit (none/na). Ultrametric-affiliation governance, README §9.]",
+    "evidenceIds": [
+      "ultrametric-docs-20",
+      "ultrametric-docs-21",
+      "ultrametric-docs-6",
+      "ultrametric-docs-22",
+      "ultrametric-selfeval-1",
+      "ultrametric-selfeval-8"
+    ]
+  },
+  {
+    "productId": "ultrametric",
+    "storyId": "agentic-webhooks",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Ultrametric is a hosted service with an HTTP API, MCP server, and CLI, so event subscriptions via webhooks are a fair axis to ask about. Nothing in the docs or probes mentions webhooks, event subscriptions, or push notifications. Its documented interfaces are pull-based: API reads, CLI commands, and MCP `status` calls.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "ultrametric",
+    "storyId": "api-interactive-docs",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Ultrametric documents an HTTP API reference (overview plus an operations page) and offers a downloadable OpenAPI contract for request and response schemas. A keyless probe also showed the CLI prints the hosted API's full input schemas without login. Nothing shows an interactive explorer or runnable 'try it' examples, and the hosted operations behind those schemas require sign-in. missing for 10: an interactive API explorer, runnable in-browser examples, keyless or sandbox execution of reference calls, and independent corroboration of the reference experience. [2026-10-08 adversarial bias audit (owner-product bring-up lane): reverted partial 3 -> none 0 — the rationale concedes nothing shows an interactive explorer or runnable examples (the story object), and the cited downloadable OpenAPI contract 404s at its documented path (2026-10-08 audit fetch). Ultrametric-affiliation governance, README §9.]",
+    "evidenceIds": [
+      "ultrametric-docs-20",
+      "ultrametric-docs-21",
+      "ultrametric-selfeval-8"
+    ]
+  },
+  {
+    "productId": "ultrametric",
+    "storyId": "api-machine-spec",
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "medium",
+    "rationale": "The API reference explicitly offers a downloadable OpenAPI contract at /contracts/openapi.json with request and response schemas. Hands-on probes confirm the CLI prints the hosted API's full input JSON Schemas (2020-12) with no login. The probe's 404s were on conventional paths (/openapi.json, /swagger.json, etc.), not the documented /contracts path, so they do not contradict the claim, though they do lower discoverability. Missing for 10: a hands-on fetch confirming /contracts/openapi.json resolves and is complete, the spec being served at conventional or well-known discovery paths, and independent corroboration. [2026-10-08 adversarial bias audit (owner-product bring-up lane): reverted full 7 -> partial 3 — the story object is a retrievable machine-readable spec; the documented download path https://api.ultrametric.ai/contracts/openapi.json answers 404 on the 2026-10-08 audit fetch, and every conventional path 404d in the recorded probe. What survives hands-on is `context schema open|save|get` printing JSON Schema 2020-12 input contracts keylessly — machine-readable contracts, not a retrievable OpenAPI document. Ultrametric-affiliation governance, README §9.]",
+    "evidenceIds": [
+      "ultrametric-docs-21",
+      "ultrametric-docs-20",
+      "ultrametric-selfeval-8",
+      "ultrametric-probe-2"
+    ]
+  },
+  {
+    "productId": "ultrametric",
+    "storyId": "api-sandbox",
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "medium",
+    "rationale": "The CLI documents an `--environment` option that accepts `production` or `staging`. It also offers a `--dry-run` that previews `init` changes without writing anything, and a recorded probe confirms this. Local scratch `--data-dir` use and offline schema validation let an agent exercise commands without hosted data. However, the staging option is a single thin mention with no detail on whether it is a user-facing sandbox with isolated data, and dry-run only covers skill-file setup. Missing for 10: documented sandbox/test-mode semantics for hosted company records and processes, evidence that staging is accessible and isolated from production data, and dry-run or test modes for process and context writes. [2026-10-08 adversarial bias audit (owner-product bring-up lane): quality 5 -> 3 — peers with the same thin-mention evidence (anthropic-skills, skills-cli, superpowers) sit at partial 3, and the rationale itself calls `--environment staging` a single thin mention with no documented isolation semantics. Ultrametric-affiliation governance, README §9.]",
+    "evidenceIds": [
+      "ultrametric-docs-23",
+      "ultrametric-docs-8",
+      "ultrametric-selfeval-2",
+      "ultrametric-selfeval-1",
+      "ultrametric-selfeval-7"
+    ]
+  },
+  {
+    "productId": "ultrametric",
+    "storyId": "api-versioning-policy",
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "medium",
+    "rationale": "There are some signs of versioning. CLI and API responses carry a `schemaVersion` envelope (seen in docs and in keyless API/MCP error bodies), and process guides can be pinned to a positive-integer version. There is also a downloadable OpenAPI contract and a pinnable CLI version, though the probed OpenAPI paths returned 404. Nothing in the pack documents a deprecation policy or explicit API version paths. Missing for 10: a documented deprecation/sunset policy, explicit API versioning scheme (e.g., versioned endpoints or headers), a changelog or compatibility guarantees, and independent corroboration.",
+    "evidenceIds": [
+      "ultrametric-docs-22",
+      "ultrametric-docs-11",
+      "ultrametric-docs-21",
+      "ultrametric-docs-6",
+      "ultrametric-selfeval-5",
+      "ultrametric-selfeval-4",
+      "ultrametric-probe-2"
+    ]
+  },
+  {
+    "productId": "ultrametric",
+    "storyId": "author-from-template",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Ultrametric ships its own skill files: `ultrametric init` writes a generated SKILL.md into the .agents/skills and .claude/skills directories. That makes skill authoring a fair question for this product. However, the evidence only shows installing Ultrametric's prebuilt skill. Nothing documents a template or SKILL.md name/description frontmatter that developers can use to write their own new skills.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "ultrametric",
+    "storyId": "authoring-meta-skill",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Ultrametric ships its own SKILL.md files: `init` previews and writes them for Codex and Claude Code, and teams can commit them to share. Because it distributes agent skills, a skill-authoring meta-skill is a fair question for this product. However, nothing in the pack shows a skill or tool that guides an agent through writing, improving, or packaging new skills; its guides cover business processes such as incorporating, payroll and company profiles.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "ultrametric",
+    "storyId": "automation-bulk-operations",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Bulk operations are a fair question for a CLI, MCP, and HTTP service that manages company records, runs, and actions, so the axis applies. The evidence only shows single-item operations: paging through the catalog, fetching one record or run's history, and revision-checked updates to individual records. Nothing documents batch or multi-item operations.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "ultrametric",
+    "storyId": "automation-rules-engine",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Event-triggered rules are a fair question for an agent-facing process and company-records platform like Ultrametric, so the axis applies. The evidence shows only agent-driven retrieval of process guides, saved progress, recurring runs selected manually with `--period`, and manually set action statuses. Nothing in the pack documents rules, triggers, webhooks, or automatic actions fired on events.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "ultrametric",
+    "storyId": "automation-scheduled-jobs",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "The pack shows no scheduler, cron, or trigger that runs jobs or workflows on a recurring basis. Ultrametric runs no model itself, and agents drive its processes on demand. The `--period` option only records a separate run per period for a recurring process; it tracks progress and does not schedule or automatically execute anything.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "ultrametric",
+    "storyId": "automation-versioned-workflows",
+    "verdict": "partial",
+    "quality": 5,
+    "confidence": "medium",
+    "rationale": "Ultrametric covers some versioning and review. Hosted process guides can be pinned to a specific integer version. Records carry revisions with conflict protection, and history can be read with `context get --history`. `init --dry-run` previews skill-file changes before writing (confirmed hands-on), and skill files can be committed to a team's repo. Rollback is not a documented feature: reverting would rely on git for skill files or on manually re-selecting an older process version, so the story is only met with extra tools and workarounds. Missing for 10: native rollback/restore of a prior run or record revision, a review/approval workflow for automation changes, versioning of user-authored automations (versions apply to vendor-managed guides), and hands-on corroboration of history and version pinning (the hosted operations require login and were not exercised).",
+    "evidenceIds": [
+      "ultrametric-docs-11",
+      "ultrametric-docs-16",
+      "ultrametric-docs-17",
+      "ultrametric-docs-8",
+      "ultrametric-docs-9",
+      "ultrametric-selfeval-2",
+      "ultrametric-selfeval-7"
+    ]
+  },
+  {
+    "productId": "ultrametric",
+    "storyId": "browse-searchable-catalog",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "The docs describe a catalog of process guides you can page through and retrieve by version, and `init --dry-run` previews the selected skill files before writing them. However, the keyless probe shows `process list`, `get` and `open` all refuse with AUTH_REQUIRED, so browsing requires installing the CLI and signing in first. The only skill-like target `init` previews is the single Ultrametric SKILL.md, not a browsable set of skills. Missing for 10: a public, login-free registry or marketplace page of skills, search or filter capability, a catalog of distinct installable skills rather than one bundled skill, and independent corroboration of catalog browsing. [2026-10-08 adversarial bias audit (owner-product bring-up lane): reverted partial 4 -> none 0 — the judged partial rests on the hosted process catalog (a different object than a skills catalog, and AUTH_REQUIRED-walled in the recorded probe) plus a preview of the single bundled skill; the rationale concedes there is no browsable set of skills. Partial credit on a conceded absence is the class the Foreloop audits reverted. Ultrametric-affiliation governance, README §9.]",
+    "evidenceIds": [
+      "ultrametric-docs-10",
+      "ultrametric-docs-11",
+      "ultrametric-docs-8",
+      "ultrametric-selfeval-2",
+      "ultrametric-selfeval-4"
+    ]
+  },
+  {
+    "productId": "ultrametric",
+    "storyId": "clean-uninstall",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Ultrametric installs skill files with `ultrametric init` into .agents/skills and .claude/skills, so this axis applies. The evidence shows only a dry-run preview of what init would create and a `doctor` command that reports local file locations. Nothing documents listing installed skills, or an uninstall/remove command that cleans up skill files and instructions without leaving orphans.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "ultrametric",
+    "storyId": "documented-update-path",
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "The evidence documents no explicit update command or auto-update mechanism. The CLI install is pinned (`npm install -g ultrametric@0.4.1`), and `doctor` only reports the current CLI version. The one implied path is the hosted remote MCP server and shared hosted process service: fixes there would arrive server-side without reinstalling, but the docs never describe this as an update path. Missing for 10: a documented CLI update/upgrade command or procedure, guidance on refreshing generated skill files after upgrades, a changelog or release notes, and explicit documentation that hosted MCP users get fixes automatically.",
+    "evidenceIds": [
+      "ultrametric-docs-6",
+      "ultrametric-docs-24",
+      "ultrametric-docs-5",
+      "ultrametric-docs-19"
+    ]
+  },
+  {
+    "productId": "ultrametric",
+    "storyId": "five-minute-quickstart",
+    "verdict": "full",
+    "quality": 7,
+    "confidence": "medium",
+    "rationale": "The docs give a short install-then-init path: `npm install -g ultrametric@0.4.1`, then `ultrametric init`, which previews changes and then writes the skill files. Hands-on probes confirm the CLI installs and runs keylessly via npx, and that `init --dry-run` previews SKILL.md for both Codex and Claude Code targets with exit 0 and no login, so a fast path to an installed skill is credible. Missing for 10: a dedicated quickstart page or any timing evidence for the under-five-minutes claim, a hands-on record of the actual (non-dry-run) skill write, and proof the skill is 'working' without the login and human device-code approval that hosted process retrieval requires.",
+    "evidenceIds": [
+      "ultrametric-docs-6",
+      "ultrametric-docs-8",
+      "ultrametric-docs-9",
+      "ultrametric-selfeval-1",
+      "ultrametric-selfeval-2",
+      "ultrametric-selfeval-3",
+      "ultrametric-selfeval-4",
+      "ultrametric-selfeval-6"
+    ]
+  },
+  {
+    "productId": "ultrametric",
+    "storyId": "inspect-before-install",
+    "verdict": "partial",
+    "quality": 5,
+    "confidence": "medium",
+    "rationale": "`ultrametric init --dry-run` previews the skill changes before anything is written. A hands-on probe confirmed it lists each file it would create (SKILL.md under both .agents/skills and .claude/skills) without writing anything. The real run writes those skill files into the project, where they can be read and committed for team review. Missing for 10: the dry run shows file paths only, not the instruction text itself; there is no explicit documentation of the skill file contents or confirmation that no scripts are added; reading files after install is implied by the local, committable files rather than shown directly. [2026-10-08 adversarial bias audit (owner-product bring-up lane): reverted full 7 -> partial 5 — all six competitors sit at partial 4-6 on this story, including gstack's public-SKILL.md inspection probe at partial 5; the recorded dry run lists target file paths, not the instruction contents the story asks to review before install. The owner product being the arena's only full on a path-listing preview fails the parity check. Ultrametric-affiliation governance, README §9.]",
+    "evidenceIds": [
+      "ultrametric-docs-8",
+      "ultrametric-docs-9",
+      "ultrametric-selfeval-2"
+    ]
+  },
+  {
+    "productId": "ultrametric",
+    "storyId": "multi-harness-support",
+    "verdict": "partial",
+    "quality": 5,
+    "confidence": "medium",
+    "rationale": "A hands-on `ultrametric init --dry-run` shows the same skill being written to both Codex (.agents/skills) and Claude Code (.claude/skills) targets. The hosted MCP server can be added in any agent host's remote MCP settings, and both connections share the same process service and records, so work carries across agents. However, Cursor and other named harnesses are never mentioned, and the docs give only one generic MCP instruction rather than per-harness setup steps. Missing for 10: evidenced Cursor and other-harness install targets, documented per-harness installation instructions, and independent corroboration beyond the vendor's own probes.",
+    "evidenceIds": [
+      "ultrametric-selfeval-2",
+      "ultrametric-docs-8",
+      "ultrametric-docs-5",
+      "ultrametric-docs-19",
+      "ultrametric-docs-2"
+    ]
+  },
+  {
+    "productId": "ultrametric",
+    "storyId": "one-command-install",
+    "verdict": "full",
+    "quality": 7,
+    "confidence": "medium",
+    "rationale": "Ultrametric documents a CLI path for installing its skill: `npm install -g ultrametric@0.4.1`, then `ultrametric init`, which writes the selected skill files (docs-6, docs-8). A hands-on dry run confirmed `init` would create SKILL.md under both `.agents/skills` (Codex) and `.claude/skills` (Claude Code), the locations those harnesses load from (selfeval-1, selfeval-2). The files can also be committed to share the setup with a team (docs-9). Missing for 10: a true single-command install (it takes an npm install followed by `init`), a hands-on run of the actual write rather than only the dry-run preview, an explicit documented statement that the skill is active in the next session, and an in-agent marketplace or plugin install option.",
+    "evidenceIds": [
+      "ultrametric-docs-6",
+      "ultrametric-docs-8",
+      "ultrametric-docs-9",
+      "ultrametric-selfeval-1",
+      "ultrametric-selfeval-2"
+    ]
+  },
+  {
+    "productId": "ultrametric",
+    "storyId": "open-spec-compliance",
+    "verdict": "partial",
+    "quality": 5,
+    "confidence": "medium",
+    "rationale": "A recorded dry run of `ultrametric init` shows it writing SKILL.md files into both Codex's `.agents/skills/` and Claude Code's `.claude/skills/` directories. The docs say these skill files can be committed and shared, so the skill format works with more than one vendor's harness. No evidence explicitly states conformance to the open Agent Skills specification, or shows that the same folder is valid as-is beyond those two targets. Missing for 10: explicit documented Agent Skills spec conformance, evidence of SKILL.md frontmatter/structure matching the spec, independent validation that one skill folder works across arbitrary spec-compliant tools.",
+    "evidenceIds": [
+      "ultrametric-selfeval-2",
+      "ultrametric-docs-8",
+      "ultrametric-docs-9"
+    ]
+  },
+  {
+    "productId": "ultrametric",
+    "storyId": "openness-api-parity",
+    "verdict": "partial",
+    "quality": 6,
+    "confidence": "medium",
+    "rationale": "Ultrametric is built to be operated by agents. It ships three programmatic surfaces, all backed by the same process service and hosted company records: an HTTP API with a downloadable OpenAPI contract, a remote MCP server, and a CLI with `--json` mode. Keyless probes confirm the CLI works end to end, including device-code login, schemas and local record stores, while hosted operations correctly require auth. However, nothing documents a UI or states that the API matches it feature for feature, and the HTTP API overview describes only reading guides and working with company context. Missing for 10: an explicit API/UI parity statement or a feature inventory, evidence that the HTTP API covers every process operation (run, save, resume) and not just guide and context reads, and an authenticated hands-on check of hosted API coverage.",
+    "evidenceIds": [
+      "ultrametric-docs-5",
+      "ultrametric-docs-7",
+      "ultrametric-docs-19",
+      "ultrametric-docs-20",
+      "ultrametric-docs-21",
+      "ultrametric-docs-22",
+      "ultrametric-selfeval-3",
+      "ultrametric-selfeval-4",
+      "ultrametric-selfeval-8"
+    ]
+  },
+  {
+    "productId": "ultrametric",
+    "storyId": "openness-full-export",
+    "verdict": "partial",
+    "quality": 4,
+    "confidence": "low",
+    "rationale": "There is no documented 'export all data' feature. The pieces that exist are retrieving saved records and run history as JSON (`context get --record … --history --json`), an HTTP API with a downloadable OpenAPI contract, and JSON Schemas for company and assessment records that print without login. Some records are also stored locally and schema-enforced. Together these make record-by-record extraction in an open format (JSON) plausible, but the 'your company comes with you' claim is about switching AI models, not leaving Ultrametric's hosted records. Missing for 10: a documented bulk or full-account export, an explicit account-deletion or offboarding path, a statement that all hosted data (documents, decisions, progress) is exportable, and independent or hands-on confirmation of a complete export.",
+    "evidenceIds": [
+      "ultrametric-docs-16",
+      "ultrametric-docs-20",
+      "ultrametric-docs-21",
+      "ultrametric-docs-22",
+      "ultrametric-docs-3",
+      "ultrametric-docs-19",
+      "ultrametric-selfeval-7",
+      "ultrametric-selfeval-8"
+    ]
+  },
+  {
+    "productId": "ultrametric",
+    "storyId": "openness-open-license",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Source availability under an open license is a fair question for any software product, including a CLI and hosted service like this one, so the axis applies. The evidence shows a CLI published on npm and documented schemas, but never mentions a source repository or an open-source license. Absence of evidence for an applicable capability yields none.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "ultrametric",
+    "storyId": "openness-self-host",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Self-hosting is a fair question for a SaaS process service, but the evidence shows no way to run the core product yourself. Process guides and company context live on the hosted service ('same process service and hosted company records'). The CLI's `--environment` accepts only production or staging, and every process or context operation fails with AUTH_REQUIRED against api.ultrametric.ai. A few offline CLI commands and local schema-checked record stores exist, but they are not a self-hostable deployment of the core service.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "ultrametric",
+    "storyId": "per-skill-documentation",
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "Ultrametric installs a single SKILL.md into Codex and Claude Code skill directories. `init --dry-run` previews exactly which skill files will be created before anything is written, and the files can be committed for team review, which gives some advance visibility into the agent's new behavior. However, nothing in the evidence shows what the SKILL.md contains, whether it describes what the skill does, or when it activates. Missing for 10: documented skill contents describing purpose, documented activation triggers or conditions, per-skill reference docs, independent corroboration of skill documentation quality.",
+    "evidenceIds": [
+      "ultrametric-docs-8",
+      "ultrametric-docs-9",
+      "ultrametric-selfeval-2"
+    ]
+  },
+  {
+    "productId": "ultrametric",
+    "storyId": "plain-files-portability",
+    "verdict": "full",
+    "quality": 7,
+    "confidence": "medium",
+    "rationale": "`ultrametric init` writes plain `SKILL.md` files into both the Codex (`.agents/skills/ultrametric/`) and Claude Code (`.claude/skills/ultrametric/`) folder layouts, as a hands-on dry run confirmed, and the docs say these skill files can be committed and shared. That is portable, readable markdown rather than a proprietary format. However, the substantive process guides are retrieved from a hosted service that requires login, so copying the skill files does not carry the process content with them. Missing for 10: evidence of what the SKILL.md files contain and whether they are self-contained; process guides shipped as local markdown rather than hosted behind auth; independent corroboration of carrying skills to other harnesses.",
+    "evidenceIds": [
+      "ultrametric-selfeval-2",
+      "ultrametric-docs-8",
+      "ultrametric-docs-9",
+      "ultrametric-selfeval-4"
+    ]
+  },
+  {
+    "productId": "ultrametric",
+    "storyId": "privacy-data-residency",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "low",
+    "rationale": "The evidence offers no region or residency selection for hosted company records; the only `--environment` choice is production versus staging. Users can, however, keep some data on their own machine: local project context passed via `--path` stays local during retrieval, the CLI runs local, schema-enforced record stores in a chosen `--data-dir` with no hosted dependency, and `doctor` reports local storage paths. That is a local-versus-hosted choice, not true residency control. Missing for 10: selectable hosting region for hosted records, documented data-residency guarantees, independent corroboration. [2026-10-08 adversarial bias audit (owner-product bring-up lane): reverted partial 3 -> none 0 — the rationale's first sentence concedes no region or residency selection exists; keeping some data local via --data-dir is not choosing where hosted records are stored. Every peer sits at none/na. Ultrametric-affiliation governance, README §9.]",
+    "evidenceIds": [
+      "ultrametric-docs-12",
+      "ultrametric-docs-19",
+      "ultrametric-docs-23",
+      "ultrametric-docs-24",
+      "ultrametric-selfeval-1",
+      "ultrametric-selfeval-7"
+    ]
+  },
+  {
+    "productId": "ultrametric",
+    "storyId": "privacy-no-training",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "low",
+    "rationale": "The evidence only indirectly addresses training. Ultrametric says it \"runs no model\" and that work uses the user's own AI plan. The `--path` local project context \"stays local during retrieval,\" and local record stores work without the hosted service, which limits what reaches Ultrametric. However, company records, runs and progress are hosted, and nothing states how that hosted data may or may not be used for AI training. Missing for 10: an explicit no-training data-use policy, an opt-out control or setting, and coverage of whether the hosted company records are excluded from training (including by any third parties), plus independent corroboration. [2026-10-08 adversarial bias audit (owner-product bring-up lane): reverted partial 3 -> none 0 — the rationale concedes the evidence only indirectly addresses training and that nothing states how hosted records may be used; \"runs no model\" is an architecture statement, not a no-training commitment. Every peer sits at none/na on the same class of silence. Ultrametric-affiliation governance, README §9.]",
+    "evidenceIds": [
+      "ultrametric-docs-4",
+      "ultrametric-docs-12",
+      "ultrametric-selfeval-7",
+      "ultrametric-docs-19"
+    ]
+  },
+  {
+    "productId": "ultrametric",
+    "storyId": "privacy-retention-controls",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Ultrametric stores hosted company records, runs, and history, so data retention and deletion is a fair question for this product. The evidence covers saving, resuming, revisioning, and keeping some context local during retrieval, but nothing documents deletion commands, retention periods or policies, or user-controlled purging of hosted or local records.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "ultrametric",
+    "storyId": "privacy-telemetry-optout",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Ultrametric ships a CLI and hosted MCP service, so a telemetry opt-out is a fair question to ask. Nothing in the evidence documents telemetry collection, usage tracking, or any opt-out setting, flag, or environment variable. The local `logs show` diagnostics and `doctor` settings paths do not address telemetry opt-out.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "ultrametric",
+    "storyId": "project-vs-global-install",
+    "verdict": "partial",
+    "quality": 5,
+    "confidence": "medium",
+    "rationale": "The project-local half is well evidenced. `ultrametric init` writes skill files into the project's `.agents/skills` and `.claude/skills` (confirmed by a hands-on `--path` dry run), and the docs say to commit them to share the setup with the team. The only global evidence is `npm install -g` for the CLI binary itself. Nothing shows a choice to install the skills or plugin user-globally across all projects. Missing for 10: a documented user-global scope option for skill/plugin install (e.g., a home-directory target or a scope flag), and docs explaining how to choose between project and global scope.",
+    "evidenceIds": [
+      "ultrametric-docs-8",
+      "ultrametric-docs-9",
+      "ultrametric-selfeval-2",
+      "ultrametric-docs-6"
+    ]
+  },
+  {
+    "productId": "ultrametric",
+    "storyId": "release-notes",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Ultrametric ships versioned artifacts: a pinned npm CLI (ultrametric@0.4.1), generated skill files, and process guides selectable by integer version. That makes release notes a fair question to ask, but nothing in the evidence mentions a changelog, release notes, or any description of what changed between skill or process versions.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "ultrametric",
+    "storyId": "reliable-auto-triggering",
+    "verdict": "partial",
+    "quality": 5,
+    "confidence": "medium",
+    "rationale": "Ultrametric does install skills. `ultrametric init` writes SKILL.md files into both Codex (.agents/skills) and Claude Code (.claude/skills) harness locations, a keyless dry-run probe confirmed this, and the files can be committed to share the setup with a team. Placing skills in the harness's native skills directories lets the agent discover them. However, no evidence shows how the skill descriptions are written, what triggers activation, or that the right skill fires at the right moment. missing for 10: skill description/frontmatter content engineered for activation, evidence of automatic triggering from task context, hands-on corroboration of correct activation.",
+    "evidenceIds": [
+      "ultrametric-docs-8",
+      "ultrametric-docs-9",
+      "ultrametric-selfeval-2"
+    ]
+  },
+  {
+    "productId": "ultrametric",
+    "storyId": "security-posture-docs",
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "medium",
+    "rationale": "Only fragments of a security posture appear. One doc states that `--path` local project context stays local during retrieval. MCP auth uses scoped permissions such as `context:protected:read` behind an RFC 9728 OAuth wall. `init --dry-run` previews exactly which SKILL.md files will be written before anything changes. There is no consolidated security or trust document. missing for 10: a documented statement of what installed skills can execute, a trust model for third-party skills, a telemetry/data-collection disclosure, and independent corroboration.",
+    "evidenceIds": [
+      "ultrametric-docs-12",
+      "ultrametric-docs-25",
+      "ultrametric-selfeval-5",
+      "ultrametric-docs-8",
+      "ultrametric-selfeval-2"
+    ]
+  },
+  {
+    "productId": "ultrametric",
+    "storyId": "selective-install",
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "The plugin docs say `ultrametric init --dry-run --json` previews changes and a second command 'writes the selected skill files', which hints at selective installation. However, the hands-on dry run shows only a single `ultrametric/SKILL.md` written to two harness targets (Codex and Claude Code), so the selection appears to be by harness, not by picking skills from a multi-skill collection. missing for 10: evidence of a multi-skill collection, a documented way to choose individual skills, and hands-on confirmation of a per-skill install.",
+    "evidenceIds": [
+      "ultrametric-docs-8",
+      "ultrametric-selfeval-2",
+      "ultrametric-docs-9"
+    ]
+  },
+  {
+    "productId": "ultrametric",
+    "storyId": "skill-testing-harness",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Ultrametric ships skill files and versioned process guides, so a test or eval suite guarding those skills against regressions is a fair question. Nothing in the pack shows the vendor maintains or publishes such tests or evals. The closest items are schema validation of user records, guide versioning, and an 'agent-trial spec' inside one guide, and none of these is regression testing of the skills themselves.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "ultrametric",
+    "storyId": "team-distribution",
+    "verdict": "partial",
+    "quality": 5,
+    "confidence": "medium",
+    "rationale": "`ultrametric init` writes skill files into the project, and the docs state you can commit those files to share the setup with your team. A hands-on dry run confirmed it targets both `.agents/skills/ultrametric/SKILL.md` and `.claude/skills/ultrametric/SKILL.md`, so committing them distributes the skill to Codex and Claude Code users. Missing for 10: no marketplace or plugin-registry distribution path, no evidence of bundling a custom or multi-skill team set beyond the single Ultrametric skill, no hands-on confirmation of the non-dry-run write or of a teammate picking up committed files. [2026-10-08 adversarial bias audit (owner-product bring-up lane): reverted full 7 -> partial 5 — parity: gstack's dedicated team tooling (./setup --team + gstack-team-init) and superpowers' shared marketplace repo both sit at partial 5; the owner product's only path is committing two generated SKILL.md files for a single skill, with no team tooling and no hands-on teammate pickup. The owner product does not get the higher reading of an ambiguous bar. Ultrametric-affiliation governance, README §9.]",
+    "evidenceIds": [
+      "ultrametric-docs-8",
+      "ultrametric-docs-9",
+      "ultrametric-selfeval-2"
+    ]
+  },
+  {
+    "productId": "ultrametric",
+    "storyId": "version-control-pinning",
+    "verdict": "partial",
+    "quality": 6,
+    "confidence": "medium",
+    "rationale": "There are several pinning mechanisms. The CLI installs at an exact version (ultrametric@0.4.1, confirmed by the hands-on version check). `init --dry-run` previews skill-file changes before writing them, and the resulting skill files can be committed so the team shares a fixed setup. Hosted process guides can be retrieved at a specific integer version. However, there is no lockfile or documented update policy, and nothing states that unpinned guide retrieval won't silently pick up the latest content. Missing for 10: a lockfile or manifest pinning guide versions team-wide, documented update and changelog notifications, explicit assurance against silent upstream changes to hosted guides, and independent corroboration.",
+    "evidenceIds": [
+      "ultrametric-docs-6",
+      "ultrametric-docs-8",
+      "ultrametric-docs-9",
+      "ultrametric-docs-11",
+      "ultrametric-selfeval-1",
+      "ultrametric-selfeval-2"
+    ]
   }
 ]
