@@ -45,6 +45,27 @@ describe('/open-documents', () => {
     )
   })
 
+  it("heads the publisher column 'Vendor'; committed mappings link their judged product with its logo", () => {
+    const { container } = render(<OpenDocumentsPage />)
+    const headers = [...container.querySelectorAll('thead th')].map((th) => th.textContent)
+    expect(headers).toContain('Vendor')
+    expect(headers).not.toContain('Publisher')
+    // The mapping is COMMITTED (registry publisherProductId), never guessed: Cooley GO is the
+    // judged startup-law-firms product, so its rows link the product page and wear its logo.
+    expect(registry.documents.some((d) => d.publisherProductId === 'cooley')).toBe(true)
+    const cooleyLink = container.querySelector('a[href="/arena/startup-law-firms/product/cooley"]')
+    expect(cooleyLink).not.toBeNull()
+    expect(cooleyLink!.querySelector('img[alt="Cooley logo"]')).not.toBeNull()
+    // Honest fallback: Y Combinator is not a judged product — plain name, no internal link,
+    // no logo invented.
+    expect(registry.documents.find((d) => d.publisher === 'Y Combinator')!.publisherProductId).toBeUndefined()
+    expect(container.querySelector('img[alt="Y Combinator logo"]')).toBeNull()
+    const ycInternalLinks = [...container.querySelectorAll('tbody a')].filter(
+      (a) => a.textContent?.includes('Y Combinator') && a.getAttribute('href')?.startsWith('/'),
+    )
+    expect(ycInternalLinks).toEqual([])
+  })
+
   it('groups records under their use_case headings, registry order within each group', () => {
     const { container } = render(<OpenDocumentsPage />)
     const headings = [...container.querySelectorAll('h2')].map((h) => h.textContent)

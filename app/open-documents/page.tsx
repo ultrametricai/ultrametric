@@ -1,5 +1,8 @@
 import type { Metadata } from 'next'
-import { DOCUMENT_USE_CASES, loadDocumentRegistry, type DocumentUseCase, type OpenDocument } from '@/lib/documents'
+import Link from 'next/link'
+import ProductLogoView from '@/components/ProductLogoView'
+import { DOCUMENT_USE_CASES, judgedProductRef, loadDocumentRegistry, type DocumentUseCase, type OpenDocument } from '@/lib/documents'
+import { hasLogo } from '@/lib/logos'
 import { REPO } from '@/lib/site'
 import { TABLE_HEADER_ROW, TABLE_SHELL } from '@/components/tableStyles'
 
@@ -34,6 +37,27 @@ function groupFamilies(docs: OpenDocument[]): OpenDocument[] {
     }
   }
   return out
+}
+
+// The Vendor cell (founder 2026-10-08: 'Publisher' renames to 'Vendor', rows gain the vendor's
+// logo where we have one). Only a COMMITTED registry mapping (publisherProductId — the
+// publisher IS a judged product in data/) earns a product-page link, and the logo itself still
+// gates on the committed asset (lib/logos hasLogo). Every other publisher renders as a plain
+// name — no logo invented.
+function VendorCell({ doc }: { doc: OpenDocument }) {
+  if (!doc.publisherProductId) return <>{doc.publisher}</>
+  const ref = judgedProductRef(doc.publisherProductId)
+  const logoExists = hasLogo(ref.productId)
+  return (
+    <Link
+      href={`/arena/${ref.arenaId}/product/${ref.productId}`}
+      className="inline-flex items-center gap-1.5 text-zinc-300 transition hover:text-emerald-300"
+      title={`${doc.publisher} — judged as ${ref.name} in its arena`}
+    >
+      {logoExists && <ProductLogoView product={{ id: ref.productId, name: ref.name }} size={18} hasLogo={logoExists} />}
+      <span>{doc.publisher}</span>
+    </Link>
+  )
 }
 
 const USE_CASE_LABELS: Record<DocumentUseCase, string> = {
@@ -78,7 +102,9 @@ export default function OpenDocumentsPage() {
                     <th scope="col" className="px-3 py-2 font-normal">
                       <span title="Opens the publisher's live page — the document itself stays on the publisher's site">Document</span>
                     </th>
-                    <th scope="col" className="px-3 py-2 font-normal">Publisher</th>
+                    <th scope="col" className="px-3 py-2 font-normal">
+                      <span title="The organization that publishes the document — logo'd names are judged products and link their arena pages">Vendor</span>
+                    </th>
                     <th scope="col" className="hidden px-3 py-2 font-normal sm:table-cell">
                       <span title="Descriptive, not a registry code — many standards are deliberately jurisdiction-neutral">Jurisdiction</span>
                     </th>
@@ -113,7 +139,7 @@ export default function OpenDocumentsPage() {
                           </span>
                         )}
                       </td>
-                      <td className="px-3 py-2.5 align-top text-zinc-400">{d.publisher}</td>
+                      <td className="px-3 py-2.5 align-top text-zinc-400"><VendorCell doc={d} /></td>
                       <td className="hidden px-3 py-2.5 align-top text-zinc-400 sm:table-cell">{d.jurisdiction}</td>
                       <td className="hidden px-3 py-2.5 align-top text-zinc-500 md:table-cell">{d.license_note}</td>
                       <td className="px-3 py-2.5 align-top text-zinc-500">{d.checked_on}</td>

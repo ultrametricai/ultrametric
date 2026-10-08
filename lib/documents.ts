@@ -25,6 +25,13 @@ export interface OpenDocument {
   id: string
   name: string
   publisher: string
+  /** The judged product this publisher maps to (founder 2026-10-08: vendor rows wear the
+   * vendor's logo where we have one). COMMITTED, never guessed: only publishers that ARE a
+   * judged product in data/ carry it (Cooley GO → cooley, Orrick → orrick, GitHub → github —
+   * all in their arenas). Rendering resolves it via judgedProductRef (throws on an unknown or
+   * ambiguous id, so a typo fails the build) and checks lib/logos hasLogo; unmapped publishers
+   * render as plain names — no logo invented. */
+  publisherProductId?: string
   url: string
   /** The published license/terms, honestly stated, including what still requires counsel. */
   license_note: string
@@ -88,6 +95,9 @@ export function validateDocumentRegistry(doc: DocumentRegistry, asOf: Date): str
       if (typeof d.family !== 'string' || !ID_RE.test(d.family)) errors.push(`${where}: family must be a registry-style slug`)
       if (typeof d.variant !== 'string' || d.variant.trim().length === 0) errors.push(`${where}: family member needs a committed variant label`)
     }
+    if (d.publisherProductId !== undefined && (typeof d.publisherProductId !== 'string' || !ID_RE.test(d.publisherProductId))) {
+      errors.push(`${where}: publisherProductId must be a registry-style slug`)
+    }
     if (typeof d.checked_on !== 'string' || !isIsoDate(d.checked_on)) errors.push(`${where}: invalid checked_on`)
     else {
       if (new Date(`${d.checked_on}T00:00:00Z`) > asOf) errors.push(`${where}: checked_on is in the future`)
@@ -113,6 +123,19 @@ export function validateDocumentRegistry(doc: DocumentRegistry, asOf: Date): str
     if (members.length < 2) errors.push(`family ${family}: needs at least two members, got ${members.length}`)
     const labels = members.map((m) => m.variant).filter((v): v is string => typeof v === 'string')
     if (new Set(labels).size !== labels.length) errors.push(`family ${family}: duplicate variant labels`)
+  }
+  // Publisher ↔ product consistency: one publisher string maps to one judged product, on every
+  // record or none — a partial or disagreeing mapping is a typo, not an editorial choice.
+  const byPublisher = new Map<string, OpenDocument[]>()
+  for (const d of doc.documents) {
+    if (typeof d.publisher === 'string') byPublisher.set(d.publisher, [...(byPublisher.get(d.publisher) ?? []), d])
+  }
+  for (const [publisher, records] of byPublisher) {
+    const mapped = new Set(records.map((r) => r.publisherProductId).filter((v): v is string => typeof v === 'string'))
+    if (mapped.size > 1) errors.push(`publisher ${publisher}: records disagree on publisherProductId`)
+    if (mapped.size === 1 && records.some((r) => r.publisherProductId === undefined)) {
+      errors.push(`publisher ${publisher}: publisherProductId must be on every record or none`)
+    }
   }
   return errors
 }
@@ -166,6 +189,40 @@ export function openDocumentById(id: string): OpenDocument {
   const doc = byIdCache.get(id)
   if (!doc) throw new Error(`Unknown document id ${id} — not in open-documents/registry.json`)
   return doc
+}
+
+/** A registry publisherProductId resolved against the judged data layer. */
+export interface JudgedProductRef {
+  arenaId: string
+  productId: string
+  name: string
+}
+
+// productId → (arena, name) over every data/<arena>/products.json, built once per process (the
+// page resolves at most a handful of vendors per build). Ambiguity throws rather than picking
+// an arena: 14 product ids live in two arenas (brex, ramp, square, …) — a publisher mapping to
+// one of those needs a deliberate disambiguation, not a readdir-order coin flip.
+let judgedProductsCache: Map<string, JudgedProductRef | 'ambiguous'> | null = null
+
+/** Resolve a committed publisherProductId to its judged product — throws on unknown or
+ * ambiguous ids so a typo'd registry mapping fails the build loudly (the openDocumentById bar). */
+export function judgedProductRef(productId: string): JudgedProductRef {
+  if (judgedProductsCache === null) {
+    judgedProductsCache = new Map()
+    const categories = JSON.parse(fs.readFileSync(path.join(ROOT, 'data/categories.json'), 'utf8')) as Array<{ id: string }>
+    for (const c of categories) {
+      const productsPath = path.join(ROOT, 'data', c.id, 'products.json')
+      if (!fs.existsSync(productsPath)) continue
+      const products = JSON.parse(fs.readFileSync(productsPath, 'utf8')) as Array<{ id: string; name: string }>
+      for (const p of products) {
+        judgedProductsCache.set(p.id, judgedProductsCache.has(p.id) ? 'ambiguous' : { arenaId: c.id, productId: p.id, name: p.name })
+      }
+    }
+  }
+  const ref = judgedProductsCache.get(productId)
+  if (!ref) throw new Error(`Unknown publisherProductId ${productId} — not a judged product in data/`)
+  if (ref === 'ambiguous') throw new Error(`Ambiguous publisherProductId ${productId} — the id exists in more than one arena`)
+  return ref
 }
 
 /** The full gate: registry invariants + README/registry sync. Empty array = pass. */
