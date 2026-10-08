@@ -22,6 +22,9 @@ export default defineConfig({
     // Same headroom rationale as vitest.config.ts: heavy integration tests (full data/
     // copies + spawned pipeline CLIs) outlive the 5s default under per-file worker isolation.
     testTimeout: 30_000,
+    // Same collision guard as vitest.config.ts: coverage/ is corpus data, reports go to
+    // .coverage/ (gitignored).
+    coverage: { reportsDirectory: './.coverage' },
   },
   resolve: { alias: { '@': path.resolve(__dirname) } },
 })

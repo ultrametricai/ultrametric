@@ -13,6 +13,9 @@ export default defineConfig({
     // handful of heavy integration tests (full data/ copies + spawned pipeline CLIs) past the 5s
     // default. Headroom, not semantics: genuinely-hung tests still fail.
     testTimeout: 30_000,
+    // coverage/ is the committed corpus coverage map; test-coverage reports write to
+    // .coverage/ (gitignored) so the two never collide.
+    coverage: { reportsDirectory: './.coverage' },
   },
   resolve: { alias: { '@': path.resolve(__dirname) } },
 })
