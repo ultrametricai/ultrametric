@@ -52,7 +52,7 @@ describe('inline process picker', () => {
   it('selects agents without copying, then copies the exact process and country in one click', async () => {
     picker()
     fireEvent.click(screen.getByRole('radio', { name: 'India - MCA SPICe+ filing' }))
-    for (const [name, agent] of [['Claude', 'claude'], ['ChatGPT', 'chatgpt'], ['Codex', 'codex'], ['Claude Code', 'claude-code'], ['Cursor', 'cursor'], ['Ultrametric CLI', 'cli']] as const) {
+    for (const [name, agent] of [['Claude', 'claude'], ['ChatGPT', 'chatgpt'], ['Codex', 'codex'], ['Claude Code', 'claude-code'], ['Cursor', 'cursor']] as const) {
       writeText.mockClear()
       fireEvent.click(screen.getByRole('radio', { name }))
       expect(writeText).not.toHaveBeenCalled()
@@ -60,6 +60,12 @@ describe('inline process picker', () => {
       await waitFor(() => expect(writeText).toHaveBeenLastCalledWith(startPrompt(target, 'india-spice-plus', agent)))
       expect(window.location.pathname).toBe(publicHref)
     }
+    // Ultrametric CLI is the exception (founder 2026-10-08): it has no launch URL, so
+    // selecting it IS the one click — the prompt copies on selection, with the country kept.
+    writeText.mockClear()
+    fireEvent.click(screen.getByRole('radio', { name: 'Ultrametric CLI' }))
+    expect(writeText).toHaveBeenCalledExactlyOnceWith(startPrompt(target, 'india-spice-plus', 'cli'))
+    expect(window.location.pathname).toBe(publicHref)
   })
 
   it('launches only verified destinations with public identity in a new tab', () => {
@@ -85,17 +91,43 @@ describe('inline process picker', () => {
     expect(writeText).not.toHaveBeenCalled()
   })
 
-  it('offers only one-click agent-prompt copy for CLI, with no terminal-command panel', async () => {
+  // Founder sequence (2026-10-08): open modal → click Ultrametric CLI → prompt copied,
+  // feedback shown, /get-started install path linked. No terminal-command panel.
+  it('copies the agent prompt on CLI selection, confirms, and links the CLI install path', async () => {
     picker()
     fireEvent.click(screen.getByRole('radio', { name: 'Ultrametric CLI' }))
-    expect(screen.queryByRole('textbox')).toBeNull()
-    expect(screen.queryByRole('link')).toBeNull()
-    expect(screen.queryByText(/curl|terminal commands/)).toBeNull()
-    fireEvent.click(screen.getByRole('button', { name: 'Copy prompt' }))
     expect(writeText).toHaveBeenCalledExactlyOnceWith(startPrompt(target, 'default', 'cli'))
     expect(writeText.mock.calls[0][0]).toContain('method=cli')
     expect(writeText.mock.calls[0][0]).not.toContain('vendor=')
     await waitFor(() => expect(screen.getByRole('status').textContent).toBe('Copied.'))
+    // A user without the CLI is not stranded: the only link is the install path.
+    const links = screen.getAllByRole('link')
+    expect(links).toHaveLength(1)
+    expect(links[0].getAttribute('href')).toBe('/get-started')
+    expect(links[0].textContent).toContain('Install the CLI')
+    expect(screen.queryByRole('textbox')).toBeNull()
+    expect(screen.queryByText(/curl|terminal commands/)).toBeNull()
+  })
+
+  it('shows the manual-copy textarea and keeps the install link when the CLI copy fails', async () => {
+    writeText.mockRejectedValue(new Error('Denied'))
+    picker()
+    fireEvent.click(screen.getByRole('radio', { name: 'Ultrametric CLI' }))
+    await waitFor(() => expect(screen.getByRole('status').textContent).toContain('Clipboard unavailable'))
+    const field = screen.getByRole('textbox', { name: 'Process prompt for manual copy' }) as HTMLTextAreaElement
+    expect(field.value).toBe(startPrompt(target, 'default', 'cli'))
+    expect(document.activeElement).toBe(field)
+    expect(screen.getByRole('status').textContent).not.toContain('Copied.')
+    expect(screen.getByRole('link', { name: /Install the CLI/ }).getAttribute('href')).toBe('/get-started')
+  })
+
+  it('leaves non-CLI agents launch-or-copy only, with no install link', () => {
+    picker()
+    for (const name of ['Claude', 'ChatGPT', 'Codex', 'Claude Code', 'Cursor']) {
+      fireEvent.click(screen.getByRole('radio', { name }))
+      expect(screen.queryByRole('link', { name: /Install the CLI/ })).toBeNull()
+    }
+    expect(writeText).not.toHaveBeenCalled()
   })
 
   it('only exposes manual copy after failure and never reports copied on failure', async () => {
