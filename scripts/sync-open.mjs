@@ -45,6 +45,13 @@ function fail(message) {
 }
 
 function gitTrackedFiles(cwd) {
+  // Vercel archive deploys extract the upload into a gitless directory, so the collision
+  // gate has no tracked set to defend there. That is acceptable only on Vercel: the gate
+  // still runs with the real tracked set everywhere a .git exists (local runs and CI).
+  if (process.env.VERCEL === '1' && !fs.existsSync(path.join(cwd, '.git'))) {
+    console.log('sync-open: gitless Vercel build detected; collision gate has no tracked set')
+    return []
+  }
   const out = execFileSync('git', ['ls-files', '-z'], { cwd, maxBuffer: 1024 * 1024 * 512 })
   return out.toString('utf8').split('\0').filter(Boolean)
 }
