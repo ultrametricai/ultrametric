@@ -11,7 +11,7 @@ import { buildSituationRows } from '@/lib/processRows'
 export const metadata: Metadata = {
   title: 'Situations — when something hits the company — Ultrametric',
   description:
-    'The reactive founder situations, mapped step by step: a lawsuit lands, a breach is live, a tax notice arrives. Trigger, urgency, and the honest Agentic % for each — judgment, counsel, and signatures stay human.',
+    'The reactive founder situations, mapped step by step: a lawsuit lands, a breach is live, a tax notice arrives. Trigger, urgency, and the Agentic % for each; judgment, counsel, and signatures stay human.',
 }
 
 export default function SituationsPage() {
