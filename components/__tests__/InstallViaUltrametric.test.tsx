@@ -84,7 +84,9 @@ describe('InstallViaUltrametric copy idiom (ProcessRunCTA mechanics)', () => {
     fireEvent.click(screen.getByRole('button', { name: 'Copy prompt' }))
     await waitFor(() => expect(screen.getByRole('status').textContent).toContain('Clipboard unavailable'))
     const field = screen.getByRole('textbox', { name: 'Install prompt for manual copy' }) as HTMLTextAreaElement
-    expect(document.activeElement).toBe(field)
+    // Focus and selection land in an effect after the fallback renders — assert them
+    // under waitFor or the check races the effect on loaded workers.
+    await waitFor(() => expect(document.activeElement).toBe(field))
     expect(field.selectionEnd).toBe(field.value.length)
     expect(screen.getByRole('status').textContent).not.toContain('Copied.')
   })
