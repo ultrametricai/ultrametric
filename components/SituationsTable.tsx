@@ -33,12 +33,12 @@ export default function SituationsTable({ rows }: { rows: ProcessRow[] }) {
               <span title="A reactive, trigger-driven situation — the event that puts a founder here is the subtitle">Situation</span>
             </th>
             <th scope="col" className="px-2 py-2 font-normal">
-              <span title="How fast the clock really runs once the trigger lands — hours, days, or weeks">Urgency</span>
+              <span title="How fast the clock runs once the trigger lands — hours, days, or weeks">Urgency</span>
             </th>
             {/* 'Area', not 'Phase' (founder 2026-10-02): the cell renders the situation's
                 domain tag (legal, compliance, finance…), not a lifecycle phase. */}
             <th scope="col" className="hidden px-2 py-2 font-normal md:table-cell">
-              <span title="The honest domain of the situation (legal, compliance, finance…)">Area</span>
+              <span title="Which part of the company the situation hits (legal, compliance, finance…)">Area</span>
             </th>
             <th scope="col" className="px-2 py-2 font-normal">
               <span title="Agentic %: the share of this situation's steps an AI agent can run today — judgment, counsel, and signatures stay human">Agentic %</span>
