@@ -380,7 +380,7 @@ raw: the `/data` JSON API and the agent endpoints (`/llms.txt`, per-arena `llms.
 | AI Inference Providers (`inference-providers`) | groq, together-ai, fireworks-ai, cerebras, deepinfra, baseten, morph |
 | Workflow Automation (`workflow-automation`) | n8n, zapier, make, temporal, pipedream, windmill, afk, gumloop, lindy, activepieces, trigger-dev |
 | Observability & Monitoring (`observability`) | datadog, grafana, sentry, new-relic, honeycomb, signoz |
-| MCP Infrastructure & Registries (`mcp-infrastructure`) | composio, smithery, glama, pipedream-mcp, gram, manufact, metorial |
+| MCP Infrastructure & Registries (`mcp-infrastructure`) | composio, smithery, glama, pipedream-mcp, gram, manufact, metorial, treg |
 | Browser Automation for Agents (`browser-agents`) | browser-use, stagehand, skyvern, hyperbrowser, steel, notte, smooth |
 | AI Memory Layers (`ai-memory`) | mem0, zep, letta, supermemory, cognee, airweave |
 | Voice Agent Platforms (`voice-agents`) | vapi, retell, elevenlabs-agents, bland, livekit-agents, pipecat, bolna, telli, deepgram |
@@ -446,12 +446,12 @@ See `data/categories.json` for each arena's full description, personas, and them
 
 <!-- stat-badges:start -->
 [![rankings](https://img.shields.io/badge/rankings-96-34d399)](https://ultrametric.ai)
-[![products](https://img.shields.io/badge/products-656-34d399)](https://ultrametric.ai/everything)
-[![judged verdicts](https://img.shields.io/badge/judged_verdicts-37107-34d399)](https://ultrametric.ai/methodology)
+[![products](https://img.shields.io/badge/products-657-34d399)](https://ultrametric.ai/everything)
+[![judged verdicts](https://img.shields.io/badge/judged_verdicts-37159-34d399)](https://ultrametric.ai/methodology)
 <!-- stat-badges:end -->
 
 <!-- stats:start -->
-As of the last full pipeline run: **96 rankings, 656 products, 37,107 judged verdicts.**
+As of the last full pipeline run: **96 rankings, 657 products, 37,159 judged verdicts.**
 <!-- stats:end -->
 
 These counts (and the badges) are regenerated from `data/` by `pnpm stats`, not maintained
