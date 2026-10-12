@@ -124,6 +124,14 @@ jobs:
           pnpm tsx pipeline/scripts/generate-predictions.ts
           pnpm tsx pipeline/scripts/settle-predictions.ts
 
+      # vendors/reviews/generated/ is a pure projection of data/ (rankings generatedAt,
+      # evidence packs, pricing, geo). Derive restamps generatedAt on every run, so the
+      # records must be regenerated here or the drift test inside `pnpm test` below fails
+      # against the refreshed data (3 consecutive red runs through 2026-10-12).
+      - name: Regenerate vendor-review interchange records
+        if: steps.gate.outputs.enabled == 'true'
+        run: pnpm tsx pipeline/scripts/generate-vendor-reviews.ts
+
       - name: Tests + recompute check
         if: steps.gate.outputs.enabled == 'true'
         run: |
@@ -146,7 +154,7 @@ jobs:
           # When the API-key gate skipped the pipeline, only the SLO check ran and CATEGORY is
           # empty — branch/PR naming falls back accordingly.
           CATEGORY="${CATEGORY:-slo-only}"
-          if git diff --quiet -- data pipeline/cache; then
+          if git diff --quiet -- data pipeline/cache vendors/reviews/generated; then
             echo "No changes for $CATEGORY — done."
             exit 0
           fi
@@ -155,7 +163,7 @@ jobs:
           git config user.name "ultrametric-story-runner"
           git config user.email "noreply@ultrametric.ai"
           git checkout -b "$BRANCH"
-          git add data pipeline/cache README.md
+          git add data pipeline/cache vendors/reviews/generated README.md
           git commit -m "chore(story-runner): refresh $CATEGORY evidence + verdicts"
           git push -u origin "$BRANCH"
           # Org policy currently forbids Actions from creating PRs ("Write permissions for

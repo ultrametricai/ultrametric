@@ -4,6 +4,7 @@ import path from 'node:path'
 import { type Evidence, EvidenceSchema, ProductSchema, StorySchema } from '../lib/schemas'
 import { fetchWithRetry, htmlToMarkdown } from './fetch-page'
 import { categoryDir, readJson, resolveCategories, ROOT, writeJson } from './paths'
+import { writeVendorReviews } from './scripts/generate-vendor-reviews'
 import { runDerive } from './stages/derive'
 import { runJudge } from './stages/judge'
 import { REPO as DEFAULT_REPO } from '../lib/site'
@@ -174,6 +175,10 @@ async function main(): Promise<void> {
 
   await runJudge({ category, product: productId })
   await runDerive({ category })
+  // Derive restamped rankings.generatedAt, which feeds every review's tested_on/recheck_due —
+  // regenerate the interchange records so the PR passes the drift test
+  // (pipeline/__tests__/vendorReviews.test.ts).
+  writeVendorReviews()
 
   const branch = `contest-${issueNumber}`
   git(['checkout', '-b', branch])
@@ -182,6 +187,7 @@ async function main(): Promise<void> {
     path.relative(ROOT, evidenceFile),
     path.relative(ROOT, path.join(dataDir, 'verdicts.json')),
     path.relative(ROOT, path.join(dataDir, 'rankings.json')),
+    'vendors/reviews/generated',
   ])
   git([
     '-c',
