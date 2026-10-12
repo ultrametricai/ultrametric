@@ -1,0 +1,74 @@
+{
+  "readyForPublicPackage": true,
+  "scope": "Frozen artifact inspection and copy-only deterministic replay. No model, browser/native runtime or external service calls; original output bytes untouched.",
+  "frozenSnapshots": {
+    "without-um": {
+      "frozenFilesMatched": 8,
+      "status": "completed",
+      "createdArtifacts": 4
+    },
+    "with-um": {
+      "frozenFilesMatched": 12,
+      "status": "completed",
+      "createdArtifacts": 8
+    }
+  },
+  "completedMatchedPair": true,
+  "copyReplay": {
+    "exitCode": 0,
+    "stdout": "PASS: 25 checks; 22 simulated event rows; zero real sends, bookings, or qualified opportunities.",
+    "regeneratedFiles": {
+      "sales/first-conversations/validation.md": {
+        "sha256": "8cc71f3b8ae8e559540e44151cf1d03f84fac97564492b7f416fd5454b875959",
+        "byteIdentical": true
+      },
+      "sales/first-conversations/simulated-events.csv": {
+        "sha256": "e729ad2d47befffda7828fd684378249fd8cb8a47f95165c39753e7b6eead20d",
+        "byteIdentical": true
+      }
+    },
+    "mutatedCopyChecks": [
+      {
+        "case": "accidentally_eligible",
+        "rejected": true,
+        "message": "AssertionError: Every actual row is ineligible and unapproved"
+      },
+      {
+        "case": "lost_optout_history",
+        "rejected": true,
+        "message": "AssertionError: All four original addresses and historical statuses preserved"
+      },
+      {
+        "case": "duplicate_normalized_research_address",
+        "rejected": true,
+        "message": "AssertionError: One candidate per account; no duplicate nonempty normalized email"
+      }
+    ]
+  },
+  "semanticInspection": {
+    "originalContacts": 4,
+    "researchedControlAccounts": 3,
+    "researchedUMAccounts": 4,
+    "UMActualLedgerRows": 8,
+    "UMEligible": 0,
+    "UMSuppressed": 1,
+    "UMExistingConversation": 1,
+    "UMHeld": 6,
+    "observedSends": 0,
+    "observedMeetings": 0,
+    "observedCustomers": 0,
+    "sourceHistoryPreserved": true,
+    "missingPersonalizationFlagHaltsSyntheticPreview": true,
+    "realDraftTemplateParserTested": false,
+    "providerStateReconciliationTested": false,
+    "liveSenderOrCalendarTested": false,
+    "publicOrganizationClaimsIndependentlyRefetched": false,
+    "contextSaveSucceeded": false
+  },
+  "limits": [
+    "The UM script validates this fixed eight-row snapshot and simulates state; it is not a deployed CRM or sender.",
+    "Missing personalization is modeled as a Boolean flag, not detected by parsing the real drafts. Cadence and timezones are proposals without a scheduler.",
+    "Research facts and legal summaries are performer claims backed by their cited sources, not independently refreshed in this review.",
+    "Contact names/addresses and unnecessary local run ID are redacted only in public derivatives; original and stored hashes are recorded."
+  ]
+}
