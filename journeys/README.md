@@ -21,7 +21,7 @@ How the site consumes this directory: `lib/processes.ts` `loadChains()` cross-ch
 `taskId`; chain pages render at `/processes/chains/<id>` with the member step graphs
 stitched in order; the startup simulator (`/startup-sim`) drives a simulated company
 through these chains; and the ⌘K palette surfaces each chain by the phrases people type
-("raise a seed round") via `data/search-aliases.json`.
+("raise a seed round") via `rankings/search-aliases.json`.
 
 Contribute here:
 

@@ -7,7 +7,7 @@
 // precomputed with lib/processes.ts computeCeiling arithmetic.
 //
 // DERIVED-ARTIFACT DECISION (this phase): the generated per-step artifacts —
-// data/step-prompts.json and data/step-vendor-calls.json — key on (taskId, nodeId) and describe
+// rankings/step-prompts.json and rankings/step-vendor-calls.json — key on (taskId, nodeId) and describe
 // the node's DEFAULT method; method variants are deliberately EXCLUDED from them. A variant
 // panel therefore shows only corpus-committed functionCalls (never a regenerated prompt or
 // per-vendor call table), and the default panel's prompt/vendor-call blocks hide while a

@@ -3,7 +3,7 @@
 The review layer over the judged rankings, one dated, machine-readable review
 record per judged product, plus the place hands-on human reviews land.
 
-The evidence itself lives one directory over in `data/<arena>/`: each product is examined
+The evidence itself lives one directory over in `rankings/<arena>/`: each product is examined
 through an agentic lens (can an agent drive it, is it testable, do its claims match what
 hands-on checks found) and ranked by how automatable it is, with dated evidence packs,
 judged verdicts citing evidence ids, and rankings that recompute deterministically with a
@@ -34,5 +34,5 @@ Contribute here:
   fill the rubric, disclose every affiliation. Gate:
   `npx vitest run __tests__/founder-ops.test.ts`.
 - **Evidence for a judged product** — new doc pages, changelogs, or community sources
-  belong in `data/<arena>/` via the pipeline (see CONTRIBUTING.md); only the cells whose
+  belong in `rankings/<arena>/` via the pipeline (see CONTRIBUTING.md); only the cells whose
   evidence changed are re-judged.

@@ -10,7 +10,7 @@ export const collectionNames = {
   rules: 'Rules', sources: 'Sources', resources: 'Resources', artifacts: 'Business artifacts',
 }
 
-const roots = ['content/processes/records', 'data', 'open-documents', 'lib/openstartup', 'processes', 'jurisdictions', 'rules', 'sources', 'resources', 'vendors/reviews/generated', 'coverage']
+const roots = ['content/processes/records', 'rankings', 'open-documents', 'lib/openstartup', 'processes', 'jurisdictions', 'rules', 'sources', 'resources', 'vendors/reviews/generated', 'coverage']
 const recordKey = (collection, id) => `${collection}:${id}`
 const nonempty = value => typeof value === 'string' && value.trim().length > 0
 const isoDate = value => typeof value === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(value) && Number.isFinite(Date.parse(`${value}T00:00:00Z`)) && new Date(`${value}T00:00:00Z`).toISOString().slice(0, 10) === value
@@ -88,17 +88,17 @@ export function buildContentAudit(files, metadata) {
     if (!entry.arenaId) return { target: `vendor-registry:${id}`, state: 'unmapped' }
     return { target: recordKey('vendors', `${entry.arenaId}/${entry.productId ?? id.replaceAll('_', '-')}`), state: 'pending' }
   }
-  const categories = array(json('data/categories.json'), 'categories')
+  const categories = array(json('rankings/categories.json'), 'categories')
   const metrics = []
   let expectedCells = 0
   let presentCells = 0
   for (const category of categories) {
     if (!nonempty(category.id)) throw new Error('A category ID is missing.')
-    const base = `data/${category.id}`
+    const base = `rankings/${category.id}`
     const products = array(json(`${base}/products.json`), `${base}/products`)
     const stories = array(json(`${base}/stories.json`), `${base}/stories`)
     const verdicts = array(json(`${base}/verdicts.json`), `${base}/verdicts`)
-    const arena = add('arenas', category.id, category.name, 'data/categories.json')
+    const arena = add('arenas', category.id, category.name, 'rankings/categories.json')
     if (stories.some(story => !nonempty(story.id)) || products.some(product => !nonempty(product.id))) throw new Error(`Missing product or story identity: ${base}`)
     const storyIds = new Set(stories.map(story => story.id))
     const productIds = new Set(products.map(product => product.id))
@@ -133,7 +133,7 @@ export function buildContentAudit(files, metadata) {
     }
   }
   metrics.push({ label: 'Vendor story verdicts', covered: presentCells, total: expectedCells, meaning: 'Unique product/story cells in the current ranking taxonomies, including negative verdicts.' })
-  const roadmap = array(json('data/arena-roadmap.json'), 'arena roadmap')
+  const roadmap = array(json('rankings/arena-roadmap.json'), 'arena roadmap')
   metrics.push({ label: 'Rankings in the declared roadmap', covered: roadmap.filter(item => categories.some(category => category.id === item.id)).length, total: roadmap.length, meaning: 'Presence in the category registry; does not establish complete vendor coverage.' })
 
   const documents = json('open-documents/registry.json')

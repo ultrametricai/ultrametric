@@ -67,7 +67,7 @@ need it.
 ## What this repo is
 
 Ultrametric is the open startup repo: step-by-step founder processes (`processes/`),
-agent-tested vendor rankings (`data/`, `vendors/`, `pipeline/`), and open, source-cited
+agent-tested vendor rankings (`rankings/`, `vendors/`, `pipeline/`), and open, source-cited
 business logic (`lib/openstartup/`, `rules/`, `sources/`). The knowledge layer (plain JSON
 and markdown, schema-validated in CI) is the product. The site that renders it at
 ultrametric.ai is maintained in a private repo, which materializes this repo's open
@@ -88,7 +88,7 @@ Every data file (`categories.json`, `products.json`, `stories.json`, `evidence/*
 `verdicts.json`, `rankings.json`, rule cards, process records) validates against a
 schema (`lib/schemas.ts`, `schemas/*.schema.json`). If a fact does not fit the schema,
 change the schema deliberately in its own commit; do not stuff it into a free-text
-field. Run `pnpm test` before opening any PR that touches `data/`, `processes/`,
+field. Run `pnpm test` before opening any PR that touches `rankings/`, `processes/`,
 `rules/`, `sources/`, or `jurisdictions/`.
 
 ## Generated files: do not hand-edit
@@ -96,12 +96,12 @@ field. Run `pnpm test` before opening any PR that touches `data/`, `processes/`,
 The evidence doctrine in the house rules is the principle; these are the mechanical
 traps:
 
-- `data/<arena>/rankings.json` is derived. Change verdicts or evidence, then run
+- `rankings/<arena>/rankings.json` is derived. Change verdicts or evidence, then run
   `pnpm pipeline derive --category <id>`.
 - The README blocks between `<!-- stats:start -->` / `<!-- arenas:start -->` style
   markers, and the badge SVGs in `public/badges/`, come from `pnpm stats` and
   `node scripts/generate-badges.mjs`. Edit around the markers, never inside them.
-- `vendors/reviews/generated/` regenerates deterministically from `data/`.
+- `vendors/reviews/generated/` regenerates deterministically from `rankings/`.
 
 ## The pipeline
 

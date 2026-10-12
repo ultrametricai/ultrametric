@@ -4,7 +4,7 @@ import { z } from 'zod'
 import { loadProcesses } from './processes'
 import { stepRanking } from './processRankings'
 
-// The committed per-(step, vendor) API-call mapping — data/step-vendor-calls.json, generated
+// The committed per-(step, vendor) API-call mapping — rankings/step-vendor-calls.json, generated
 // once by pipeline/scripts/map-step-calls.ts (an LLM pass GROUNDED in each vendor's collected
 // evidence: every call's sourceUrl is one of the vendor's evidence URLs or its documented MCP
 // endpoint — never invented). This module is the read side: process pages ask "which actual API
@@ -51,7 +51,7 @@ export interface StepVendorCalls {
   calls: VendorCall[]
 }
 
-const DEFAULT_DIR = () => path.join(process.cwd(), 'data')
+const DEFAULT_DIR = () => path.join(process.cwd(), 'rankings')
 
 // Same tolerant-optional contract as loadStepStoryMap: a missing committed file is an empty
 // list (no call panels anywhere), never an error. Cached module-level per data dir.

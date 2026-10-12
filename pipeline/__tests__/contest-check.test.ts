@@ -3,8 +3,8 @@ import { contestEvidenceIds, parseIssueBody } from '@/pipeline/contest-check'
 
 const TEMPLATE_BODY = `<!--
 Before filing: find the exact category, product, and story ids in
-data/categories.json, data/{category}/products.json, and data/{category}/stories.json.
-Find the current verdict in data/{category}/verdicts.json.
+rankings/categories.json, rankings/{category}/products.json, and rankings/{category}/stories.json.
+Find the current verdict in rankings/{category}/verdicts.json.
 -->
 
 **Category**

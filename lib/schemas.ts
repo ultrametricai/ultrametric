@@ -56,11 +56,11 @@ export const ProductSchema = z.object({
   // YC batch code (e.g. "S22", "W23", and since YC's 2024 move to four batches a year the
   // Spring/Fall codes "X25"/"F25") for products verified — by website domain, never by name
   // alone — to be alumni of a Y Combinator batch (see pipeline/scripts/yc-cross-reference.ts and
-  // data/yc-batches.json, the source of truth this field is stamped from). Display-only, like
+  // rankings/yc-batches.json, the source of truth this field is stamped from). Display-only, like
   // PopularitySchema: never fed into scoring (lib/scoring.ts never imports it).
   ycBatch: z.string().regex(/^[WXSF]\d{2}$/, 'ycBatch must look like "S22", "W23", "X25", or "F25"').optional(),
   // Product-family membership (e.g. "stripe" for Stripe, Stripe Terminal, Stripe Atlas): the id
-  // of an entry in data/product-families.json (see lib/families.ts, the source of truth for
+  // of an entry in rankings/product-families.json (see lib/families.ts, the source of truth for
   // family structure — this field is a denormalized back-reference kept in sync by the families
   // test). Display-only, like ycBatch/PopularitySchema: never fed into scoring, and never part
   // of the judge's cellHash (pipeline/stages/judge.ts hashes story+evidence only), so stamping
@@ -181,7 +181,7 @@ export const ClaimSchema = z.object({
   extractedAt: z.string().datetime(),
 })
 
-// data/{cat}/claims/{productId}.json shape: at most 60 distinct capability claims per product
+// rankings/{cat}/claims/{productId}.json shape: at most 60 distinct capability claims per product
 // (see pipeline/stages/claims.ts's SYSTEM prompt — the LLM consolidates near-duplicate evidence
 // into one claim per distinct capability, so this cap is a content limit, not a truncation).
 export const ClaimsArraySchema = ClaimSchema.array().min(0).max(60)
@@ -243,7 +243,7 @@ export const RankingsSchema = z.object({
     .optional(),
 })
 
-// One line of data/{cat}/score-history.jsonl — the append-only per-product time series of the
+// One line of rankings/{cat}/score-history.jsonl — the append-only per-product time series of the
 // two headline scores (Overall score / aiEra + agent-readiness), one line per product per CHANGE
 // (not per run — consecutive identical values are deduped, unlike popularity-history.jsonl's
 // one-line-per-run cadence). Values are stored rounded to 1 decimal so "changed" is a stable,
@@ -280,7 +280,7 @@ export const PopularitySchema = z.object({
   fetchedAt: z.string().datetime(),
 })
 
-// data/{cat}/popularity.json shape: productId -> Popularity. A product absent from the map has
+// rankings/{cat}/popularity.json shape: productId -> Popularity. A product absent from the map has
 // no public signals at all (not "zero" — genuinely unknown), which display code must render as
 // muted/absent rather than as a zero value.
 export const PopularityMapSchema = z.record(z.string(), PopularitySchema)
@@ -300,16 +300,16 @@ export const UncertaintyEntrySchema = z.object({
   agreement: z.enum(['1/3', '2/3', '3/3']),
 })
 
-// data/{cat}/uncertainty.json shape: an array of UncertaintyEntry, one per decisive cell that
+// rankings/{cat}/uncertainty.json shape: an array of UncertaintyEntry, one per decisive cell that
 // was re-judged. Entirely optional/additive — see lib/data.ts's tolerant-optional load — most
 // categories (not a "close race") will have no uncertainty.json at all, and even a qualifying
 // category only covers its decisive cells, not the full matrix.
 export const UncertaintyArraySchema = UncertaintyEntrySchema.array()
 
 // Analytic 68% confidence band on one product's Overall score (aiEra) and agent-readiness — see
-// pipeline/scripts/compute-confidence-intervals.ts (which writes data/{cat}/score-intervals.json)
+// pipeline/scripts/compute-confidence-intervals.ts (which writes rankings/{cat}/score-intervals.json)
 // and lib/scoreIntervals.ts (the simulation math + tolerant-optional loader). Derived at pipeline
-// time by propagating the MEASURED judge re-roll variance (data/*/uncertainty.json) through the
+// time by propagating the MEASURED judge re-roll variance (rankings/*/uncertainty.json) through the
 // exact scoring formula via a seeded Monte Carlo — no new judging, display-only, never feeds
 // lib/scoring.ts. Low/high are the 16th/84th percentiles of the simulated score distribution; a
 // null pair means the corresponding published score is itself null (nothing to band).
@@ -322,7 +322,7 @@ export const ScoreIntervalEntrySchema = z.object({
 })
 export type ScoreIntervalEntry = z.infer<typeof ScoreIntervalEntrySchema>
 
-// data/{cat}/score-intervals.json shape: one entry per product in the arena. Optional/additive —
+// rankings/{cat}/score-intervals.json shape: one entry per product in the arena. Optional/additive —
 // same tolerant contract as uncertainty.json above: an arena that hasn't been through the
 // intervals pass has no file, and display code must render no band at all (never a fabricated
 // one) when the entry or file is absent.
@@ -354,14 +354,14 @@ export const VendorResponseSchema = z.object({
   status: z.enum(['standing', 'superseded']),
 })
 
-// data/{cat}/vendor-responses.json shape: an array of VendorResponse. Entirely optional/
+// rankings/{cat}/vendor-responses.json shape: an array of VendorResponse. Entirely optional/
 // additive — see lib/data.ts's tolerant-optional load, same "absence is not an error" contract
 // as popularity/claims/uncertainty — most categories have no vendor responses at all. At most
 // one 'standing' response per (productId, storyId) cell (enforced in lib/data.ts); superseded
 // responses stay in the file as the public record.
 export const VendorResponsesArraySchema = VendorResponseSchema.array()
 
-// data/yc-map.json shape: one entry per modern-batch (W23–S26) YC company, distilled from the
+// rankings/yc-map.json shape: one entry per modern-batch (W23–S26) YC company, distilled from the
 // yc-oss/api mirror of YC's public directory (see pipeline/scripts/yc-fetch.ts) plus an
 // LLM-assigned arena mapping (see pipeline/scripts/yc-classify.ts). `mappedArena` is an existing
 // categories.json id the company genuinely competes in; `proposedArena` is a kebab-case name for

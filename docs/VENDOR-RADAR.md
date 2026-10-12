@@ -11,7 +11,7 @@ already is — a deliberate, reviewed run of the standard pipeline on a human-ap
 ## The no-auto-judge rule
 
 **The radar never auto-adds products and never auto-judges.** It is detection only: nothing under
-`data/` changes from a radar run. Rankings on this site are evidence-graded verdicts; a product
+`rankings/` changes from a radar run. Rankings on this site are evidence-graded verdicts; a product
 enters them only through the full bring-up (research → roster PR → keyed
 crawl → extract → probe → judge → claims → derive), each step reviewable. The radar's output is a
 report and an issue — paper, not verdicts. This rule is stated in the issue template text, the
@@ -39,12 +39,12 @@ report `_comment`, and the workflow header, on purpose, three times.
      crosses `GITHUB_MIN_STARS_PER_DAY`.
 2. **Match** each hot item's text (title / tagline / description / topics) against the arena
    taxonomy: `DOMAIN_VOCAB` (`pipeline/scripts/tag-story-scopes.ts` — the same per-arena nouns
-   `yc-coverage-queue.ts` matches with), extended per arena with its `data/categories.json`
-   name tokens and its `data/arena-sections.json` section-name tokens. `MIN_ARENA_HITS`
+   `yc-coverage-queue.ts` matches with), extended per arena with its `rankings/categories.json`
+   name tokens and its `rankings/arena-sections.json` section-name tokens. `MIN_ARENA_HITS`
    distinct keyword hits are required — a hot launch that speaks no arena's language is not our
    vendor. Lexical matching is a NOMINATION signal, never a verdict input.
 3. **Dedupe**, so each candidate surfaces exactly once, ever:
-   - every tracked product (`data/<arena>/products.json`) by normalized site domain
+   - every tracked product (`rankings/<arena>/products.json`) by normalized site domain
      (`pipeline/yc-shared.ts` `normalizeDomain`) and by normalized name/id,
    - the vendor registry (`vendors/reviews/generated/`) by product id,
    - the committed seen-ledger **`pipeline/radar-seen.json`**: every candidate ever reported,
@@ -83,7 +83,7 @@ bring-ups used (`docs/vendor-research/instinct.md`, `docs/vendor-research/ai-ass
 1. **Research doc** — `docs/vendor-research/<vendor>.md`: what it is, which arena, capability map
    with per-claim source URLs, fetch dates, and evidence tiers (`claimed-docs` / `press` /
    `probe`). No judging, no rankings edits — raw material for the evidence pack.
-2. **Roster PR** — add the product to `data/<arena>/products.json` (reviewed like any roster
+2. **Roster PR** — add the product to `rankings/<arena>/products.json` (reviewed like any roster
    change; disclosure rules apply if owner-affiliated).
 3. **The deep spike** — a keyed standard-pipeline run on that product/arena:
    `crawl → extract → collect-community → probe → judge → claims → derive` (via

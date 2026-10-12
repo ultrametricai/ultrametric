@@ -3,8 +3,8 @@
 // in exactly what this site knows about the step: the task title/description, the node's
 // label/route/async/approvalRequired/actionUrl/functionCalls, the step's mapped stories
 // (lib/processRankings.ts functionMappingFor + story titles), the step's GROUNDED vendor API
-// calls (data/step-vendor-calls.json via lib/stepVendorCalls.ts), and the human-step audit
-// entry (lib/humanSteps.ts) for non-agent routes. Writes the committed data/step-prompts.json
+// calls (rankings/step-vendor-calls.json via lib/stepVendorCalls.ts), and the human-step audit
+// entry (lib/humanSteps.ts) for non-agent routes. Writes the committed rankings/step-prompts.json
 // that lib/stepPrompts.ts loads.
 //
 // Same honesty + cost architecture as map-step-stories.ts (the model for this script):
@@ -103,7 +103,7 @@ export interface PromptTarget {
   vendor: string | null // canonical vendor key, e.g. 'sendgrid'
   arenaId: string | null // covering arena — non-null means "has a vendor market"
   storyTitles: string[] // titles of the step's mapped 'function' stories
-  groundedCalls: GroundedCall[] // from data/step-vendor-calls.json, all vendors
+  groundedCalls: GroundedCall[] // from rankings/step-vendor-calls.json, all vendors
   audit: HumanStepAudit | null // only for non-agent routes
 }
 
@@ -326,7 +326,7 @@ function readTaskCache(file: string): TaskCache {
   return JSON.parse(fs.readFileSync(file, 'utf8')) as TaskCache
 }
 
-// The committed-file schema (data/step-prompts.json) — lib/stepPrompts.ts reads this shape.
+// The committed-file schema (rankings/step-prompts.json) — lib/stepPrompts.ts reads this shape.
 export const StepPromptEntrySchema = z.object({
   taskId: z.string().min(1),
   nodeId: z.string().min(1),
@@ -401,14 +401,14 @@ export async function runGenerator({ task }: { task?: string } = {}): Promise<vo
     const fresh = targets.every((t) => cache[t.stepKey]?.hash === promptTargetHash(t, STEP_PROMPT_VERSION))
     if (!fresh) {
       if (task && taskId !== task) continue // out-of-scope task not yet generated — fine, skip it
-      console.warn(`prompts: ${taskId} incomplete after run — not writing data/step-prompts.json`)
+      console.warn(`prompts: ${taskId} incomplete after run — not writing rankings/step-prompts.json`)
       return
     }
     for (const t of targets) entries.push({ taskId: t.taskId, nodeId: t.nodeId, prompt: cache[t.stepKey].prompt })
   }
   entries.sort((a, b) => a.taskId.localeCompare(b.taskId) || a.nodeId.localeCompare(b.nodeId))
   writeJson(path.join(DATA_DIR, 'step-prompts.json'), StepPromptsFileSchema.parse(entries))
-  console.log(`prompts: wrote ${entries.length} step prompts to data/step-prompts.json`)
+  console.log(`prompts: wrote ${entries.length} step prompts to rankings/step-prompts.json`)
 }
 
 function printReport(): void {

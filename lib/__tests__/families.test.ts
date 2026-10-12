@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest'
 import { loadAll } from '@/lib/data'
 import { familyForProduct, loadFamilies } from '@/lib/families'
 
-// data/product-families.json integrity: every judged ref resolves to a real product in a
+// rankings/product-families.json integrity: every judged ref resolves to a real product in a
 // populated arena, and the denormalized Product.familyId back-references (lib/schemas.ts) stay
 // in sync with the family structure in BOTH directions — see lib/families.ts's module doc.
 

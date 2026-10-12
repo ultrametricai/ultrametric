@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # One-shot helper for the authenticator-apps arena bring-up (2026-09-15): appends probe-tier
-# evidence items distilled from the recorded runtime probes in data/authenticator-apps/proofs/
+# evidence items distilled from the recorded runtime probes in rankings/authenticator-apps/proofs/
 # (see pipeline/probes/authenticator-apps.ts — all 14 recorded probes passed). Run AFTER
 # `pnpm pipeline probe --category authenticator-apps` — that stage wholesale-replaces
 # probe-tier evidence and would wipe these items (re-run this script after any probe refresh).
@@ -102,7 +102,7 @@ ITEMS = {
 
 def main() -> None:
     for pid, items in ITEMS.items():
-        path = f'data/authenticator-apps/evidence/{pid}.json'
+        path = f'rankings/authenticator-apps/evidence/{pid}.json'
         with open(path) as f:
             evidence = json.load(f)
         have = {e['id'] for e in evidence}

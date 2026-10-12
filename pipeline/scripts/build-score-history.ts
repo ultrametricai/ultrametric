@@ -1,4 +1,4 @@
-// One-shot backfill of data/{cat}/score-history.jsonl from git history: walks every commit on
+// One-shot backfill of rankings/{cat}/score-history.jsonl from git history: walks every commit on
 // this repo's main branch that touched a category's rankings.json, extracts each product's
 // headline scores (aiEra + agentReady) from that commit's snapshot, dedupes consecutive
 // identical values, and (re)writes the whole file — one line per product per CHANGE, in commit
@@ -99,7 +99,7 @@ function main(): void {
 
   let totalLines = 0
   for (const cat of resolveCategories(category)) {
-    const gitPath = `data/${cat.id}/rankings.json`
+    const gitPath = `rankings/${cat.id}/rankings.json`
     const snapshots: Snapshot[] = []
     for (const { sha, date } of commitsFor(ref, gitPath)) {
       let raw: unknown

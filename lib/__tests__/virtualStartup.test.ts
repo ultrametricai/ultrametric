@@ -59,7 +59,7 @@ import {
   type YearTaskSource,
 } from '@/lib/virtualStartup'
 
-const DATA_DIR = path.resolve(__dirname, '../../data')
+const DATA_DIR = path.resolve(__dirname, '../../rankings')
 
 const chains: VsChain[] = loadChains(DATA_DIR).map(({ id, name, taskIds }) => ({ id, name, taskIds }))
 const corpusById = new Map(loadProcesses(DATA_DIR).map((t) => [t.id, t]))

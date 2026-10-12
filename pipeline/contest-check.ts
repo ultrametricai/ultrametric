@@ -180,7 +180,7 @@ async function main(): Promise<void> {
   // regenerate the interchange records so the PR passes the drift test
   // (pipeline/__tests__/vendorReviews.test.ts).
   writeVendorReviews()
-  // The judge pass can flip story→product verdicts, an input of data/graph.json — regenerate
+  // The judge pass can flip story→product verdicts, an input of rankings/graph.json — regenerate
   // the graph so the PR passes the byte-identity tests (lib/__tests__/storyProcessGraph.test.ts
   // and shared-canonical-identity.test.ts).
   writeStoryGraph()
@@ -192,7 +192,7 @@ async function main(): Promise<void> {
     path.relative(ROOT, evidenceFile),
     path.relative(ROOT, path.join(dataDir, 'verdicts.json')),
     path.relative(ROOT, path.join(dataDir, 'rankings.json')),
-    'data/graph.json',
+    'rankings/graph.json',
     'vendors/reviews/generated',
   ])
   git([
@@ -209,7 +209,7 @@ async function main(): Promise<void> {
   const prBody = [
     `Automated contest resolution for #${issueNumber}.`,
     '',
-    `Added ${newEvidence.length} evidence item(s) to \`data/${category}/evidence/${productId}.json\` from the issue's ` +
+    `Added ${newEvidence.length} evidence item(s) to \`rankings/${category}/evidence/${productId}.json\` from the issue's ` +
       `Evidence URLs, then re-ran \`judge --category ${category} --product ${productId}\` and ` +
       `\`derive --category ${category}\`.`,
     '',

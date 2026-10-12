@@ -14,7 +14,7 @@ import { verdictGaps } from '@/lib/humanSteps'
 import { showComputerUseChips } from '@/lib/humanSteps'
 import { buildSimRun, LEGAL_SIGNATURE_WHY } from '@/lib/processSim'
 
-const DATA_DIR = path.resolve(__dirname, '../../data')
+const DATA_DIR = path.resolve(__dirname, '../../rankings')
 
 const node = (over: Partial<DagNode>): DagNode => ({
   id: 'n1',

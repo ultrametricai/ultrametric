@@ -45,7 +45,7 @@ End to end (all paths verified in code this spike):
    inside BSD `script(1)` (a real pty capture) with a minimal env (PATH/HOME/TERM only, so no
    local keys can reach the child). Transcripts pass `sanitizeForPublication` (`lib/proofs.ts`:
    control-char cleanup, secret redaction, a hard fail on any residual `sk-|key|token` match)
-   and land at `data/<arena>/proofs/<productId>/<probeId>.txt` with a JSON sidecar
+   and land at `rankings/<arena>/proofs/<productId>/<probeId>.txt` with a JSON sidecar
    (`command`, `storyIds`, `recordedAt`, `exitCode`, `kind`) plus `proofs/index.json`.
 2. **Replay.** `lib/tryit.ts` (server, build time) turns each terminal proof into a
    `TryItStory` titled by the stories it substantiates; `components/TryIt/TryItSection.tsx`
@@ -56,7 +56,7 @@ End to end (all paths verified in code this spike):
    redacted before publication").
 3. **Live re-runs.** "Live-capable" is mechanical: a recorded probe whose exact command is pure
    HTTP gets compiled by `pipeline/scripts/generate-live-probe-manifest.ts` into a fixed
-   (method, url, headers, body) entry in `data/live-probes.json`, mirrored into the worker as
+   (method, url, headers, body) entry in `rankings/live-probes.json`, mirrored into the worker as
    `infra/cloudflare-proxy/live-probes.generated.js`. The "run live" button POSTs
    `/api/try/:arena/:product/:probeId`; the worker (`handleTryProbe` in
    `infra/cloudflare-proxy/worker.js`) looks the key up in that committed manifest and executes
@@ -66,7 +66,7 @@ End to end (all paths verified in code this spike):
 4. **Live MCP.** Products with a documented remote MCP endpoint (`lib/mcpEndpoints.ts`,
    generated allowlist, mirrored into the worker) get the keyless handshake tier
    (`/api/mcp-probe`: initialize + tools/list, plus one curated read-only demo call from
-   `data/mcp-demo-calls.json`), a BYO-key tier, and a provisionable sandbox-account tier
+   `rankings/mcp-demo-calls.json`), a BYO-key tier, and a provisionable sandbox-account tier
    (`DEMO_CRED_*` secrets). `'self/productarena'` is the existing first-party demo key: the
    worker calls its own MCP endpoint in-process.
 
@@ -158,7 +158,7 @@ keyless and read-only):
 - `porkbun.com/llms.txt` documents the agent surface, the OpenAPI spec, and an official hosted
   MCP at `https://mcp.porkbun.com/mcp`; the MCP server is also on npm
   (`@porkbunllc/mcp-server` 0.43.5).
-- Porkbun already has four recorded proofs (`data/domain-registrars/proofs/porkbun/`) and four
+- Porkbun already has four recorded proofs (`rankings/domain-registrars/proofs/porkbun/`) and four
   live-capable manifest entries, so the test page composes existing verified pieces.
 - `domain_001` lists `porkbun` among its vendors, so the process cross-link
   (`lib/tryit.ts processesFeaturing`) already resolves.
@@ -170,7 +170,7 @@ record); (2) the agent-side work as Porkbun's keyless calls — mock `checkDomai
 copyable `npx -y ultrametric@0.4.1 process open check-domain-availability` command. Segment 2
 is a Porkbun run, shown as a Porkbun run; the CLI frame applies only to segment 1.
 
-Follow-up found during the spike: `data/domain-registrars/products.json` pins Porkbun's
+Follow-up found during the spike: `rankings/domain-registrars/products.json` pins Porkbun's
 `links.mcp` to the docs page `https://porkbun.com/mcp`, while the vendor now documents the
 hosted endpoint `https://mcp.porkbun.com/mcp` in its llms.txt. Re-verifying and updating that
 link (then regenerating the MCP allowlist) would give the Porkbun page the live keyless MCP
@@ -227,9 +227,9 @@ handshake tier.
 | Sidecar `auth` provenance field | `lib/proofs.ts` (schema, own commit), `pipeline/stages/probe-record.ts`, `pipeline/proof-io.ts`, Microterminal footer |
 | Copyable `cli` command | `lib/tryitReplay.ts` (type), `lib/tryit.ts` (populate), `components/TryIt/Microterminal.tsx` (render — UI-lane-owned, wait for it to land) |
 | Test page | `app/experiments/cli-sandbox/page.tsx` + test |
-| `'self/ultrametric'` MCP demo key | `lib/mcpDemoCalls.ts` source data (`data/mcp-demo-calls.json`), `infra/cloudflare-proxy/worker.js` mirror |
-| Porkbun MCP endpoint refresh | `data/domain-registrars/products.json`, `scripts/generate-mcp-allowlist.mjs` rerun |
+| `'self/ultrametric'` MCP demo key | `lib/mcpDemoCalls.ts` source data (`rankings/mcp-demo-calls.json`), `infra/cloudflare-proxy/worker.js` mirror |
+| Porkbun MCP endpoint refresh | `rankings/domain-registrars/products.json`, `scripts/generate-mcp-allowlist.mjs` rerun |
 | CLI `arena` defect | ultrametric-cli repo (base URL) or worker/site 200 at `/productarena/data/*` |
 
 Gates: the standard four, plus the proof-schema tests when the sidecar field lands; disclosure
-strings register in `data/copy-audit.json` per the SIM-UM-CLI rules.
+strings register in `rankings/copy-audit.json` per the SIM-UM-CLI rules.

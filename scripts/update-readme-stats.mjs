@@ -1,4 +1,4 @@
-// `pnpm stats`: recomputes the top-line arena/product/verdict counts from data/ and rewrites
+// `pnpm stats`: recomputes the top-line arena/product/verdict counts from rankings/ and rewrites
 // the marked block in README.md (<!-- stats:start -->...<!-- stats:end -->). Keeps the README
 // from going stale as arenas/products/verdicts are added — never hand-edit the numbers inside
 // the marked block, run this script instead. Idempotent: running it twice with no data changes
@@ -8,7 +8,7 @@ import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..')
-const DATA_DIR = path.join(ROOT, 'data')
+const DATA_DIR = path.join(ROOT, 'rankings')
 const README_PATH = path.join(ROOT, 'README.md')
 
 const START_MARKER = '<!-- stats:start -->'
@@ -52,13 +52,13 @@ function computeStats() {
 function renderArenasBlock(stats) {
   return [
     ARENAS_START_MARKER,
-    `**${stats.arenas} rankings** today, ${stats.products} products judged head to head — the full index is [ultrametric.ai/arenas](https://ultrametric.ai/arenas), and each ranking's records live under [\`data/\`](data/).`,
+    `**${stats.arenas} rankings** today, ${stats.products} products judged head to head — the full index is [ultrametric.ai/arenas](https://ultrametric.ai/arenas), and each ranking's records live under [\`rankings/\`](rankings/).`,
     ARENAS_END_MARKER,
   ].join('\n')
 }
 
 // The count badges in the README's top badge row — static shields.io badges carrying the same
-// generated numbers as the stats line, so the row can never drift from data/ (the repo has no
+// generated numbers as the stats line, so the row can never drift from rankings/ (the repo has no
 // public dynamic-badge source to hotlink while it's private).
 function renderStatBadgesBlock(stats) {
   const site = 'https://ultrametric.ai'

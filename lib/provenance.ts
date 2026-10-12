@@ -1,7 +1,7 @@
 import { createHash, createHmac } from 'node:crypto'
 import type { Rankings } from './schemas'
 
-// Provenance watermark for the published dataset files (data/{category}/rankings.json, which
+// Provenance watermark for the published dataset files (rankings/{category}/rankings.json, which
 // is also what the /data API and the MCP servers serve verbatim). The HMAC key below is a
 // committed constant, NOT a secret: the point isn't to hide anything, it's that a republished
 // copy of our data carries a fingerprint only our exact bytes produce. Anyone (including us,

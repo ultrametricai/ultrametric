@@ -12,7 +12,7 @@ import {
 } from '@/lib/stepMethods'
 import { loadVendorGeo } from '@/lib/vendorGeo'
 
-const DATA_DIR = path.resolve(__dirname, '../../data')
+const DATA_DIR = path.resolve(__dirname, '../../rankings')
 
 // Method variants (founder 2026-09-30: "certain processes have steps that are just ONE way to
 // do it when there are multiple methods depending on context — get multiple options selectable

@@ -96,7 +96,7 @@ describe('trackedHot', () => {
 
 describe('youngRocket', () => {
   it('flags a very young repo with a big star count (buzz: 32.5k stars, ~6-month-old repo)', () => {
-    // Real committed numbers from data/team-chat/popularity.json — the founder's canonical case,
+    // Real committed numbers from rankings/team-chat/popularity.json — the founder's canonical case,
     // and it must trigger MECHANICALLY (stars ÷ starsPerYear = repo age, no history needed).
     const flag = youngRocket({ stars: 32_528, starsPerYear: 63_222.567678913474 })
     expect(flag).toEqual({ reason: '★ 32.5k in ~6 months (repo age)', source: 'young' })

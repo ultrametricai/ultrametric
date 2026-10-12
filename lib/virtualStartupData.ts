@@ -4,7 +4,7 @@
 // judged/committed data — canonical agent-access verdicts (lib/accessGlyphs.ts), verbatim
 // published-pricing facts (lib/pricing.ts), and the corpus risk axis (processes/corpus.json) —
 // never a new judgment.
-import popularIds from '../data/popular-products.json'
+import popularIds from '../rankings/popular-products.json'
 import { ACCESS_COLUMNS, bestAccessVerdict } from './accessGlyphs'
 import { loadCategory } from './data'
 import { hasLogo } from './logos'
@@ -168,7 +168,7 @@ export function buildVsTaskRisks(dir?: string): Record<string, number> {
 // 'Likely choice' ordering payload (founder round 5, item 7): per role arena, every swap
 // option's committed adoption/popularity signal resolved into a best-first PRESENTATION order
 // (lib/virtualStartup.ts likelyChoiceOrder) plus per-product signal labels — the receipts.
-// Committed data only: data/popular-products.json curated membership, data/{arena}/
+// Committed data only: rankings/popular-products.json curated membership, rankings/{arena}/
 // popularity.json stars and npm+PyPI weekly installs. Products with no signal carry no label
 // and keep the judged order at the tail — absence is absence, never a fake rank.
 export function buildVsPopularity(roles: VendorRole[], dir?: string): VsPopularityMap {

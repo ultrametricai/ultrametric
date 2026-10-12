@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # Helper for the game-engines arena (bring-up 2026-09-15, accuracy wave 2026-09-23): upserts
 # probe-tier evidence items distilled from the recorded runtime probes in
-# data/game-engines/proofs/ (see pipeline/probes/game-engines.ts) plus MCP/CLI-landscape facts
+# rankings/game-engines/proofs/ (see pipeline/probes/game-engines.ts) plus MCP/CLI-landscape facts
 # verified live via keyless GitHub/npm/UPM API calls (official vs community attribution
 # matters — the founder asked for agenticness measured honestly). The 2026-09-23 wave added
 # Unity's first-party CLI (`unity mcp` / `unity eval`, the announced replacement for the
@@ -179,7 +179,7 @@ ITEMS = {
 
 def main() -> None:
     for pid, items in ITEMS.items():
-        path = f'data/game-engines/evidence/{pid}.json'
+        path = f'rankings/game-engines/evidence/{pid}.json'
         with open(path) as f:
             evidence = json.load(f)
         # Upsert by id (2026-09-23): re-appending is not enough once a recorded fact needs a

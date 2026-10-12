@@ -1,10 +1,10 @@
-// Analytic score-intervals pass (v1, no new judging) — writes data/{cat}/score-intervals.json,
+// Analytic score-intervals pass (v1, no new judging) — writes rankings/{cat}/score-intervals.json,
 // the 68% confidence band on every product's Overall score and agent-readiness. All the modeling
 // and math live in lib/scoreIntervals.ts (buildMeasuredNoiseModel + simulateScoreInterval — see
 // that module's doc for the precise method); this script only:
 //
 //   1. Aggregates the MEASURED judge re-roll statistics fleet-wide from every
-//      data/*/uncertainty.json (plus the fleet-median partial quality for reviveQuality) into
+//      rankings/*/uncertainty.json (plus the fleet-median partial quality for reviveQuality) into
 //      the noise model — measured rates, never invented ones.
 //   2. Runs the seeded Monte Carlo (500 draws/product, deterministic mulberry32 stream keyed per
 //      product — reproducible builds, no Math.random) for each populated arena and writes the

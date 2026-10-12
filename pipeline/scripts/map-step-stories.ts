@@ -7,7 +7,7 @@
 // covering arenas (extraOptionArenas /
 // extraOptionRefs), which of THAT arena's stories describe performing the step (kind 'extra':
 // "generate a website" onto ai-assistants / design-tools). Writes the committed
-// data/process-step-stories.json that lib/processRankings.ts derives every step/process
+// rankings/process-step-stories.json that lib/processRankings.ts derives every step/process
 // ranking from.
 //
 // Same honesty + cost architecture as classify-story-tiers.ts (the model for this script):
@@ -305,7 +305,7 @@ export async function runMapper({ task }: { task?: string } = {}): Promise<void>
   )
   writeJson(path.join(DATA_DIR, 'process-step-stories.json'), StepStoryMapSchema.parse(entries))
   const withStories = entries.filter((e) => e.storyIds.length > 0).length
-  console.log(`map: wrote ${entries.length} mappings (${withStories} with stories) to data/process-step-stories.json`)
+  console.log(`map: wrote ${entries.length} mappings (${withStories} with stories) to rankings/process-step-stories.json`)
 }
 
 function printReport(): void {

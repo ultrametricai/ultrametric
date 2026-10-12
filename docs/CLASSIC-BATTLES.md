@@ -22,7 +22,7 @@ expected agent-access differentiators.
 
 ## 2. `team-chat` — Slack vs Discord vs Microsoft Teams (vs Zulip) — ✅ SHIPPED
 
-Now a live ranking (`data/team-chat/`): 22 manual stories + 29 canonical, hands-on probes
+Now a live ranking (`rankings/team-chat/`): 22 manual stories + 29 canonical, hands-on probes
 confirmed Slack's official MCP server docs AND a live auth-gated remote MCP endpoint at
 api.slack.com/mcp, Zulip's full OpenAPI spec + keyless API on chat.zulip.org, and Microsoft
 Graph's $metadata as Teams' machine-readable surface.
@@ -81,7 +81,7 @@ Graph's $metadata as Teams' machine-readable surface.
 
 ## 8. `backend-as-a-service` — Supabase vs Firebase (vs Appwrite, Convex) — ✅ SHIPPED
 
-Now a live ranking (`data/backend-as-a-service/`) with Convex taking the fourth slot
+Now a live ranking (`rankings/backend-as-a-service/`) with Convex taking the fourth slot
 (reactive TypeScript backend with an FSL→Apache open-source core) over PocketBase: 22
 manual stories + 29 canonical. Hands-on probes: all four CLIs install from npm and
 version-print headlessly (supabase 2.116.0, firebase-tools 15.29.0, convex 1.45.0,

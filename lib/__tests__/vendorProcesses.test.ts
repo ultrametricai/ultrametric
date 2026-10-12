@@ -6,7 +6,7 @@ import { processLeaderboard } from '@/lib/processRankings'
 import { loadStepVendorCalls } from '@/lib/stepVendorCalls'
 import { processesForVendor, VENDOR_PROCESS_KINDS } from '@/lib/vendorProcesses'
 
-const DATA_DIR = path.resolve(__dirname, '../../data')
+const DATA_DIR = path.resolve(__dirname, '../../rankings')
 
 describe('processesForVendor — the reverse index over the process pages\' own rankings', () => {
   it('mercury (startup-banking) serves the finance processes it comes up in, with leaderboard ranks — track runway and open bank account included', () => {
@@ -25,7 +25,7 @@ describe('processesForVendor — the reverse index over the process pages\' own 
     }
     // The bank the DAG names: mercury is a canonical vendor somewhere in the corpus.
     expect(rows.some((a) => a.kinds.includes('canonical'))).toBe(true)
-    // Grounded API-call cells (data/step-vendor-calls.json) surface as the api-calls kind.
+    // Grounded API-call cells (rankings/step-vendor-calls.json) surface as the api-calls kind.
     const callTaskIds = new Set(
       loadStepVendorCalls(DATA_DIR)
         .filter((e) => e.arenaId === 'startup-banking' && e.productId === 'mercury')

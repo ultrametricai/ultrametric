@@ -168,7 +168,7 @@ function reviewFor(data: CategoryData, productId: string, geo: VendorGeoEntry[],
 // filename -> file content for EVERY judged product (every leaderboard entry of every populated
 // arena), in categories.json × leaderboard order. Pure projection of the committed data under
 // `dir` — see the header.
-export function buildVendorReviews(dir: string = path.join(ROOT, 'data')): Map<string, string> {
+export function buildVendorReviews(dir: string = path.join(ROOT, 'rankings')): Map<string, string> {
   const out = new Map<string, string>()
   for (const data of loadAll(dir)) {
     for (const entry of data.rankings.leaderboard) {

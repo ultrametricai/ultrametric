@@ -8,7 +8,7 @@ and founder-ops tools vary wildly on that axis today. Some (Stripe, HubSpot, Pos
 publish MCP servers and OpenAPI specs; others (most PEOs, most insurance brokers) have no
 public API at all. That spread makes for decisive, non-degenerate rankings.
 
-Each proposed ranking below lists: the ranking id we'd register in `data/categories.json`, the
+Each proposed ranking below lists: the ranking id we'd register in `rankings/categories.json`, the
 product slate, three decisive stories (the cells most likely to split the field), and
 agent-access notes (who has real APIs/MCP/webhooks **today**, as of early September 2026 —
 re-verify with the probe stage before building; this table goes stale fast).

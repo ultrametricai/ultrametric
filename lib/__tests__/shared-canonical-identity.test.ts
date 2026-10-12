@@ -15,7 +15,7 @@ const tasks = loadProcesses()
 
 describe('corpus and shared-record identity', () => {
   it('keeps the committed process/story graph and simulator/chain identities unchanged', () => {
-    expect(buildStoryGraph()).toEqual(JSON.parse(readFileSync('data/graph.json', 'utf8')))
+    expect(buildStoryGraph()).toEqual(JSON.parse(readFileSync('rankings/graph.json', 'utf8')))
     for (const event of VS_EVENTS) expect(findSharedRecord(records, event.groundedIn)?.id).toBe(event.groundedIn)
     for (const chain of loadChains()) expect(findSharedRecord(records, chain.id)?.id).toBe(chain.id)
   })
