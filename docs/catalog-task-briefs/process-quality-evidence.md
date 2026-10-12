@@ -88,6 +88,8 @@ The subsequent [realistic incident review](evaluations/incident-2026-10-12/READM
 
 **Readiness and changes:** [`growth_002/n1–n7,links`](../../content/processes/records/growth_002.json) gives firm cancellation a direct route, makes calls optional and requires billing readback. The [support repeat](https://api.ultrametric.ai/internal/trials?trialId=1a9b36e0-7600-455c-9876-36bf1e4fd2a5) promised daily updates until resolution without verified coverage; the candidate requires an owner/cadence the team can sustain. This was a support draft, not a failed retention execution; the control also proposed daily follow-up internally. Retest a firm cancellation and a separate customer seeking help; check that neither unsupported promises nor a required retention meeting appear.
 
+The subsequent [realistic cancellation pair](evaluations/cancellation-2026-10-12/README.md) completed supported handling packages in both arms. UM adds uncertain-result retry checks, invoice readback and export coverage/mapping checks, with a longer document and runtime. Both preserve the firm cancellation decision, paid access and unknown owner/procedure facts. No further guide fix is supported; actual cancellation, export and customer communication remain unperformed.
+
 ### 9. Run outbound sales sequences (`growth_012`; API `outbound-sales-sequences`)
 
 **Run outcome:** “Prepare a targeted sequence with verified recipients and working stop rules.” For a founder testing an offer with an appropriate audience. Deliver eligibility/suppression ledger, exact copy, sender/cadence, no-send test evidence and a campaign handoff. Delivery, responses, accepted meetings and customers require their own observations.
