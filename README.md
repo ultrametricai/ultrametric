@@ -12,22 +12,23 @@ jurisdictions, the [lore](#open-lore) and its library recorded with sources, the
 company agentic, automated, and standardized across geographies.
 
 ```
-processes/       every founder process, step by step
-journeys/        processes chained into playbooks
-rankings/        evidence, verdicts, computed scores
-vendors/         per-product review records
-pipeline/        crawl, probe, judge, derive
-open-modules/    the startup calculations, indexed
-lib/             the code behind modules and loaders
-rules/           startup law, one rule per record
-sources/         the primary legal authorities
-jurisdictions/   countries, states, vendor geography
-open-documents/  the open legal documents catalog
-lore/            heuristics and the reading library
-resources/       canonical reading, laws, episodes
-coverage/        what is covered, at what maturity
-schemas/         the JSON contracts for every record
-governance/      review, evidence, and agent policy
+ultrametric/
+├── processes/       every founder process, step by step
+├── journeys/        processes chained into playbooks
+├── rankings/        evidence, verdicts, computed scores
+├── vendors/         per-product review records
+├── pipeline/        crawl, probe, judge, derive
+├── open-modules/    the startup calculations, indexed
+├── lib/             the code behind modules and loaders
+├── rules/           startup law, one rule per record
+├── sources/         the primary legal authorities
+├── jurisdictions/   countries, states, vendor geography
+├── open-documents/  the open legal documents catalog
+├── lore/            heuristics and the reading library
+├── resources/       canonical reading, laws, episodes
+├── coverage/        what is covered, at what maturity
+├── schemas/         the JSON contracts for every record
+└── governance/      review, evidence, and agent policy
 ```
 
 **Community:** [Discord](https://discord.com/invite/3aHky836qP) — founders and contributors

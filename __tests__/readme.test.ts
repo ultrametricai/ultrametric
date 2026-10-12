@@ -36,22 +36,23 @@ const INTRO = [
   // here by the repo layout tree; "Talk" renamed "Community"; the demo gif is a clickable
   // link to the live site.
   '```',
-  'processes/       every founder process, step by step',
-  'journeys/        processes chained into playbooks',
-  'rankings/        evidence, verdicts, computed scores',
-  'vendors/         per-product review records',
-  'pipeline/        crawl, probe, judge, derive',
-  'open-modules/    the startup calculations, indexed',
-  'lib/             the code behind modules and loaders',
-  'rules/           startup law, one rule per record',
-  'sources/         the primary legal authorities',
-  'jurisdictions/   countries, states, vendor geography',
-  'open-documents/  the open legal documents catalog',
-  'lore/            heuristics and the reading library',
-  'resources/       canonical reading, laws, episodes',
-  'coverage/        what is covered, at what maturity',
-  'schemas/         the JSON contracts for every record',
-  'governance/      review, evidence, and agent policy',
+  'ultrametric/',
+  '├── processes/       every founder process, step by step',
+  '├── journeys/        processes chained into playbooks',
+  '├── rankings/        evidence, verdicts, computed scores',
+  '├── vendors/         per-product review records',
+  '├── pipeline/        crawl, probe, judge, derive',
+  '├── open-modules/    the startup calculations, indexed',
+  '├── lib/             the code behind modules and loaders',
+  '├── rules/           startup law, one rule per record',
+  '├── sources/         the primary legal authorities',
+  '├── jurisdictions/   countries, states, vendor geography',
+  '├── open-documents/  the open legal documents catalog',
+  '├── lore/            heuristics and the reading library',
+  '├── resources/       canonical reading, laws, episodes',
+  '├── coverage/        what is covered, at what maturity',
+  '├── schemas/         the JSON contracts for every record',
+  '└── governance/      review, evidence, and agent policy',
   '```',
   '',
   '**Community:** [Discord](https://discord.com/invite/3aHky836qP) — founders and contributors',
@@ -157,7 +158,10 @@ describe('README.md structure (founder round 2, 2026-10-12)', () => {
   it('the intro layout tree lists real top-level folders', () => {
     const intro = readme.slice(0, readme.indexOf('\n## '))
     const tree = intro.slice(intro.indexOf('```'), intro.indexOf('```', intro.indexOf('```') + 3))
-    const dirs = [...tree.matchAll(/^([a-z][a-z-]*)\/ /gm)].map((m) => m[1])
+    // Classic waterfall form: a root line, ├── branch connectors, └── on the last entry.
+    expect(tree).toContain('\nultrametric/\n')
+    expect(tree).toMatch(/\n└── [a-z][a-z-]*\/ /)
+    const dirs = [...tree.matchAll(/^[├└]── ([a-z][a-z-]*)\/ /gm)].map((m) => m[1])
     expect(dirs.length).toBeGreaterThanOrEqual(10)
     for (const dir of dirs) {
       expect(
