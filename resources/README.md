@@ -1,6 +1,6 @@
 # Resources
 
-Resources: the canonical, openly readable startup reading, as dated records, with the
+The canonical, openly readable startup reading, as dated records, with the
 recurring principles distilled in `LAWS.md` and the famous episodes recorded in `LORE.md`.
 
 Every entry in `registry.json` is a dated record: `id`, `title`/`author` (as published),

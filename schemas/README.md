@@ -1,6 +1,6 @@
 # Schemas
 
-Schemas: the published JSON Schema contracts every record in this repo validates against
+The published JSON Schema contracts every record in this repo validates against
 in CI.
 
 `process.schema.json` (jurisdiction-scoped workflows), `operational-process.schema.json`

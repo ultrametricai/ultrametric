@@ -1,6 +1,6 @@
 # Templates
 
-Templates: blank, schema-valid starting points to copy when contributing a new workflow or
+Blank, schema-valid starting points to copy when contributing a new workflow or
 vendor review, so nobody reverse-engineers an existing record.
 
 `process.json` starts a jurisdiction-scoped workflow; `vendor-review.json` starts a

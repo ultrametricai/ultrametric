@@ -1,6 +1,6 @@
 # Vendors
 
-Vendors: the review layer over the judged rankings, one dated, machine-readable review
+The review layer over the judged rankings, one dated, machine-readable review
 record per judged product, plus the place hands-on human reviews land.
 
 The evidence itself lives one directory over in `data/<arena>/`: dated evidence packs,

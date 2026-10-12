@@ -37,8 +37,9 @@ process, and the startup simulator.
 
 ## Open vendor rankings
 
-Head-to-head rankings of the tools startups run on, judged story by story against hands-on
-probes, code, docs, and community reports, with every verdict contestable.
+Head-to-head rankings of the tools startups run on, scored on the specific things a
+founder needs each tool to do, checked against hands-on tests, code, docs, and user
+reports, with every verdict contestable.
 
 <!-- arenas:start -->
 **96 rankings** today, 657 products judged head to head — the full index is [ultrametric.ai/arenas](https://ultrametric.ai/arenas), and each ranking's records live under [`data/`](data/).
@@ -53,7 +54,7 @@ probes, code, docs, and community reports, with every verdict contestable.
 ## Open processes
 
 Every founder process as a step-by-step graph: each step routed agent, form, or human,
-timed, graded for reversibility, and wired to the ranked vendors that can run it.
+timed, marked by how hard it is to undo, and wired to the ranked vendors that can run it.
 
 The processes and the rankings cross-reference: each step lists its vendor options with
 their judged scores, and [`processes/vendor-registry.json`](processes/vendor-registry.json)
@@ -134,13 +135,13 @@ by what they are for; known gaps are recorded in the catalog.
 
 | Category | Example documents | Gaps |
 | --- | --- | --- |
-| Formation | Cooley GO Delaware incorporation package, IRS Form SS-4 | — |
-| Fundraising | YC post-money SAFEs, SAFE User Guide, pro rata side letter | — |
-| Governance | Delaware incorporation toolkit (charter, bylaws, consents), cap table template | — |
-| Hiring | Offer letters, CIIAA/PIIA, Balanced Employee IP Agreement | No openly published option plan or grant template exists |
-| Commercial | Common Paper cloud service agreement, terms of service, SLA | — |
-| Privacy | DPA, BAA, AI addendum (Common Paper and Bonterms) | — |
-| Open-source | Apache ICLA/CCLA, Developer Certificate of Origin | — |
+| Formation | [Cooley GO Delaware incorporation package](https://www.cooleygo.com/documents/incorporation-package-delaware/), [IRS Form SS-4](https://www.irs.gov/pub/irs-pdf/fss4.pdf) | — |
+| Fundraising | [YC post-money SAFEs, User Guide, and pro rata side letter](https://www.ycombinator.com/documents) | — |
+| Governance | [Orrick Delaware incorporation toolkit](https://www.orrick.com/en/tech-studio/forms/Incorporation-Toolkit), [cap table template](https://www.orrick.com/en/tech-studio/forms/Capitalization-Table) | — |
+| Hiring | [Offer letter](https://www.cooleygo.com/documents/form-employee-offer-letter/), [CIIAA/PIIA](https://www.cooleygo.com/documents/form-employee-confidential-information-inventions-assignment-agreement/), [Balanced Employee IP Agreement](https://github.com/github/balanced-employee-ip-agreement) | No openly published option plan or grant template exists |
+| Commercial | [Cloud service agreement](https://commonpaper.com/standards/cloud-service-agreement/), [terms of service](https://commonpaper.com/standards/terms-of-service/), [SLA](https://commonpaper.com/standards/service-level-agreement/) | — |
+| Privacy | [DPA](https://commonpaper.com/standards/data-processing-agreement/), [BAA](https://commonpaper.com/standards/business-associate-agreement/), [AI addendum](https://commonpaper.com/standards/ai-addendum/) | — |
+| Open-source | [Apache ICLA](https://www.apache.org/licenses/icla.pdf), [Developer Certificate of Origin](https://developercertificate.org/) | — |
 
 [`open-documents/`](open-documents/) · [ultrametric.ai/open-documents](https://ultrametric.ai/open-documents)
 
@@ -159,15 +160,16 @@ arrives), each with a named trigger and an urgency clock of hours, days, or week
 
 Processes and vendor availability adapt to where you operate: the US is the baseline, with
 country analogs and official filing links for the UK, India, Germany, France, Portugal,
-and Canada, and adding your country is a schema-gated pull request.
+and Canada; adding your country is a pull request that the data checks validate
+automatically.
 
 [`jurisdictions/`](jurisdictions/) · [Add a jurisdiction](CONTRIBUTING.md#add-a-jurisdiction)
 
 ## Open lore
 
 The heuristics founders trade and the episodes behind them, as sourced records: every rule
-of thumb names its school and author, every episode carries a veracity grade, and
-conflicts between schools are recorded on both entries. The library
+of thumb names its school and author, every episode carries a grade for how well it is
+documented, and conflicts between schools are recorded on both entries. The library
 ([`lore/library.json`](lore/library.json)) collects the essays, guides, books, and talks
 behind them, in sections from starting up through getting acquired.
 
@@ -176,7 +178,7 @@ behind them, in sections from starting up through getting acquired.
 ### Example: Getting acquired
 
 The acquisition episodes are recorded lore (WhatsApp, Twitch, MySpace in
-`resources/LORE.md`, each with its lesson and veracity grade), the sale math is live (the
+`resources/LORE.md`, each with its lesson and sources), the sale math is live (the
 waterfall module computes who gets what at any price), and the acquisition playbook itself
 is a mapped, open gap in `coverage/`.
 
@@ -184,8 +186,10 @@ is a mapped, open gap in `coverage/`.
 
 ## Open law
 
-Dated legal rule cards, one proposition each, every card citing a primary authority with
-an exact locator; a provider blog cannot establish law.
+Map the law that applies to startups, across jurisdictions, and connect it to the
+calculations and the vendors that act on it. Each legal statement is one dated record
+citing a primary authority (a statute, regulation, or agency page) with the exact section;
+a blog post cannot establish law.
 
 [`rules/`](rules/) · [`sources/`](sources/)
 
@@ -241,9 +245,9 @@ curl https://ultrametric.ai/llms.txt                # the index for agents
 
 ## Methodology
 
-Every score is computed from dated, cited evidence: unknown stays null, negative results
-stay published, re-scores without new evidence are reverted, and the founders' own
-products are disclosed and bias-audited.
+Every score is computed from dated, cited evidence: an unknown is shown as unknown rather
+than zero, negative results stay published, a score cannot move without new evidence, and
+the founders' own products are disclosed and checked for bias.
 
 [METHODOLOGY.md](./METHODOLOGY.md) · [ultrametric.ai/methodology](https://ultrametric.ai/methodology)
 

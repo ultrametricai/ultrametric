@@ -1,6 +1,6 @@
 # Fixtures
 
-Fixtures: wholly fictional companies and events that exercise the workflow planner, so the
+Wholly fictional companies and events that exercise the workflow planner, so the
 gates run on realistic inputs without ever touching real company data.
 
 Every fixture asserts `synthetic: true` and carries full scenario dimensions; the planner

@@ -1,6 +1,6 @@
 # Coverage
 
-Coverage: the map of what the founder-ops layer intends to cover and what it covers today,
+The map of what the founder-ops layer intends to cover and what it covers today,
 at what maturity, with the gaps stated.
 
 `domains.json` is the full founder-journey map (formation through exit), including domains

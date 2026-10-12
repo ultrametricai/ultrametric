@@ -1,9 +1,9 @@
 # Sources
 
-Sources: the primary authorities every legal rule card cites, each with a publisher, an
-exact provision locator, and the date a human last verified it.
+The primary authorities every legal rule cites, each with a publisher, the exact
+section, and the date a human last verified it.
 
-`registry.json` holds the records: publisher, locator, `issued_on` where known,
+`registry.json` holds the records: publisher, exact section, `issued_on` where known,
 `checked_on`, and an HTTPS link. A legal rule card may only cite `primary-*` sources;
 provider blogs can explain practice but cannot establish law (`kind:
 secondary-practice`).
@@ -16,4 +16,4 @@ Contribute here:
   what the card claims, and bump `checked_on` (note it if the provision moved).
 
 Gate: `npx vitest run __tests__/founder-ops.test.ts` (every card must resolve to a
-registered source with an exact locator).
+registered source with an exact section).
