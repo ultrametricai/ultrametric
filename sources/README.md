@@ -1,24 +1,20 @@
-# Sources — primary authorities
+# Sources
 
-`registry.json` holds every primary source the rule cards cite: publisher, exact provision
-locator, `issued_on` where known, `checked_on` (the date a human last verified it), and an
-HTTPS link. A legal rule card may only cite `primary-*` sources; provider blogs can explain
-practice but cannot establish law (`kind: secondary-practice`).
+Sources: the primary authorities every legal rule card cites, each with a publisher, an
+exact provision locator, and the date a human last verified it.
 
-This is the legal-layer sibling of the evidence provenance the vendor layer already runs on:
-every judged verdict in `data/<arena>/` cites evidence IDs, recorded probes and proofs carry
-transcripts, and `_provenance` blocks in the committed rankings are HMAC-fingerprinted and
-recomputable (`pipeline/scripts/recompute-check.ts`). Same doctrine, two record shapes: nothing
+`registry.json` holds the records: publisher, locator, `issued_on` where known,
+`checked_on`, and an HTTPS link. A legal rule card may only cite `primary-*` sources;
+provider blogs can explain practice but cannot establish law (`kind:
+secondary-practice`). The same doctrine runs the vendor layer one directory over: nothing
 is asserted without a dated, checkable source.
 
-## What you can contribute here
+Contribute here:
 
-- **Primary sources for new rule cards** — add entries to `sources/registry.json` (publisher,
-  exact provision locator, `issued_on` where known, `checked_on`, HTTPS link) alongside the
-  `rules/<CODE>/*.json` cards that cite them. Legal cards may only cite `primary-*` kinds;
-  practical guides go in as `kind: secondary-practice`.
-- **Re-verification passes** — follow an existing source's link, confirm the provision still
-  says what the card claims, and bump `checked_on` (with a note if the provision moved).
+- **Primary sources for new rule cards** — add entries alongside the `rules/<CODE>/*.json`
+  cards that cite them.
+- **Re-verification passes** — follow an existing link, confirm the provision still says
+  what the card claims, and bump `checked_on` (note it if the provision moved).
 
-Gate for both: `npx vitest run __tests__/founder-ops.test.ts` (every rule card must resolve to
-a registered source with an exact locator).
+Gate: `npx vitest run __tests__/founder-ops.test.ts` (every card must resolve to a
+registered source with an exact locator).
