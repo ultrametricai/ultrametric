@@ -5,7 +5,8 @@ of thought, with the disagreements between schools kept explicit.
 
 Every entry in `registry.json` is one school's belief about how to build a company, with a
 named author and a citable work behind it. The registry takes no position on which school
-is right; the tension map is the content. The episode layer lives separately in
+is right; it records the conflicts between entries explicitly, on both sides. The episode
+layer lives separately in
 [`resources/LORE.md`](../resources/LORE.md) (veracity-graded startup history); this
 registry records the rules of thumb the schools draw from it.
 

@@ -17,44 +17,18 @@
 
 ## The open startup repo
 
-The knowledge is the product: the processes, rankings, rules, and calculations a startup
-runs on, committed here as plain JSON and markdown that any founder or agent can read,
-verify, and correct by pull request.
+This repo holds the processes, rankings, rules, and calculations a startup runs on, as
+plain JSON and markdown that any founder or agent can read, verify, and correct by pull
+request; the site at [ultrametric.ai](https://ultrametric.ai) renders it unchanged.
 
 [CONTRIBUTING.md](./CONTRIBUTING.md) · [DATA-LICENSE](./DATA-LICENSE)
 
 ## Video demo
 
-A quick pass through the live site: home, the overall rankings, one market's leaderboard,
-one process, and the startup simulator.
+A pass through the live site: home, the overall rankings, one market's leaderboard, one
+process, and the startup simulator.
 
 ![A pass through ultrametric.ai: home, the overall rankings, the AI Coding Agents leaderboard, the Incorporate C-Corp process, and the startup simulator](docs/assets/readme/demo.gif)
-
-*The animated preview above is the quick pass; the full recording is committed at
-[`docs/assets/readme/demo.mp4`](docs/assets/readme/demo.mp4).*
-
-<a id="methodology"></a>
-
-## Trust
-
-Every score is computed from dated, cited evidence by a published method: unknowns stay
-null, negative results stay published, and the founders' own products are disclosed and
-adversarially bias-audited instead of favored.
-
-[METHODOLOGY.md](./METHODOLOGY.md) · [ultrametric.ai/methodology](https://ultrametric.ai/methodology)
-
-[![CI](https://github.com/ultrametricai/ultrametric/actions/workflows/ci.yml/badge.svg)](https://github.com/ultrametricai/ultrametric/actions/workflows/ci.yml)
-<!-- stat-badges:start -->
-[![rankings](https://img.shields.io/badge/rankings-96-34d399)](https://ultrametric.ai)
-[![products](https://img.shields.io/badge/products-657-34d399)](https://ultrametric.ai/everything)
-[![judged verdicts](https://img.shields.io/badge/judged_verdicts-37159-34d399)](https://ultrametric.ai/methodology)
-<!-- stat-badges:end -->
-
-<!-- stats:start -->
-As of the last full pipeline run: **96 rankings, 657 products, 37,159 judged verdicts.**
-<!-- stats:end -->
-
-![Backed by builders: Y Combinator, Pioneer, Garry Tan, Charlie Songhurst, Drew Houston, Immad Akhund, Tomer London, Darby Wong, Jude Gomila](docs/assets/readme/trust.png)
 
 <a id="vendors"></a>
 
@@ -84,7 +58,7 @@ timed, graded for reversibility, and wired to the ranked vendors that can run it
 
 ## Examples
 
-Three processes end to end, exactly as they render from the committed records:
+Three processes end to end:
 
 - [Validate the idea](https://ultrametric.ai/processes/validate-the-idea) — picking the startup to work on
 - [Generate a company name](https://ultrametric.ai/processes/generate-a-company-name) — picking a brand name
@@ -97,16 +71,46 @@ Three processes end to end, exactly as they render from the committed records:
 
 ## Open modules
 
-The startup math as source-cited code: cap tables, SAFE conversion, sale waterfalls,
-runway, vesting, option tax, and filing deadlines, with every formula citing its source
-and replaying the published worked examples in tests.
+The startup calculations as code in [`lib/openstartup/`](lib/openstartup/): every formula
+cites its source and replays the published worked examples in tests.
 
-[`open-modules/README.md`](open-modules/README.md) · [`lib/openstartup/`](lib/openstartup/)
+| Module | What it computes | Source it cites |
+| --- | --- | --- |
+| [Cap table](open-modules/README.md#cap-table) | Issuance, option pools, SAFE conversion, priced-round price per share, dilution | YC Post-Money Safe User Guide |
+| [Vesting](open-modules/README.md#vesting-mechanics) | Cliff and periodic schedules, back-loaded tranches, acceleration, departures | Cooley GO; Amazon's published schedule; FAST grid |
+| [83(b) election](open-modules/README.md#83b-election-math) | Tax at grant vs tax at vesting, forfeiture cost | Rev. Proc. 2012-29 |
+| [QSBS (§ 1202)](open-modules/README.md#qsbs--1202) | Eligibility conditions, holding clock, exclusion percentages, per-issuer cap | IRC § 1202 |
+| [Deadlines](open-modules/README.md#deadline-calendar) | The founder compliance calendar, each date citing a rule card | Dated rule cards in `rules/` |
+| [Convertible notes](open-modules/README.md#convertible-notes) | Interest accrual, cap/discount conversion, maturity paths | Cooley GO convertible-debt primers |
+| [Sale waterfall](open-modules/README.md#liquidity-event-waterfall) | Per-holder proceeds at a sale price | YC User Guide; Cooley GO |
+| [Anti-dilution](open-modules/README.md#anti-dilution) | Weighted-average and full-ratchet adjustments | NVCA model documents |
+| [Priced round](open-modules/README.md#priced-round-mechanics) | Pro rata, pool sizing from a hiring plan, down rounds, secondaries | YC User Guide; Index Rewarding Talent |
+| [Round composer](open-modules/README.md#priced-round-composer) | A priced round end to end, term sheet to post-close table | YC User Guide, replayed end to end |
+| [409A sanity](open-modules/README.md#409a-grant-sanity) | Strike floor, valuation staleness, presumption timing | Treas. Reg. § 1.409A rule cards |
+| [Equity comp](open-modules/README.md#offer--equity-comp-scenarios) | Offer grant percentage, option spread, exit scenarios | Holloway Guide; Index Rewarding Talent |
+| [Option tax](open-modules/README.md#iso--nso-exercise-tax) | NSO income at exercise, ISO/AMT outcomes, the $100,000 limit, sale outcomes | IRS Pub 525; Treas. Reg. § 1.422 |
+| [Payroll tax](open-modules/README.md#employer-payroll-tax) | Employer FICA/FUTA load, per-employee annual cost | IRS Pub 15 |
+| [Delaware franchise tax](open-modules/README.md#delaware-franchise-tax) | Both published methods, the cheaper-method comparison | 8 Del. C. § 503; Division worked examples |
+| [R&D tax](open-modules/README.md#rd-tax-mechanics) | § 174 amortization, § 41(h) payroll-offset mechanics | IRC §§ 174, 41; Form 8974 instructions |
+| [Runway](open-modules/README.md#runway--burn) | Default-alive trajectories, hiring impact | Paul Graham, "Default Alive or Default Dead?" |
+| [Unit economics](open-modules/README.md#unit-economics) | LTV/CAC, burn multiple, Rule of 40, magic number | Skok; Sacks; Feld |
+| [Deferred revenue](open-modules/README.md#deferred-revenue-subscriptions) | Subscription revenue recognition, plan-change proration | Stripe revenue-recognition examples |
 
-## Open situations
+[`open-modules/README.md`](open-modules/README.md) has each module's contract, worked
+examples, and boundaries.
 
-Trigger-driven guides for the work nobody schedules (a breach is live, a summons lands, a
-tax notice arrives), sorted by how fast the clock runs.
+### Shared data fields
+
+The modules and processes read one typed set of company fields (incorporation date,
+authorized shares, par value, cash on hand, common-share FMV), registered in
+[`processes/company-fields.json`](processes/company-fields.json) so the same value feeds
+every module and vendor integration that needs it; every record shape is published as a
+JSON Schema in [`schemas/`](schemas/).
+
+## Situations
+
+Trigger-driven guides for reactive work (a breach is live, a summons lands, a tax notice
+arrives), each with a named trigger and an urgency clock of hours, days, or weeks.
 
 [ultrametric.ai/situations](https://ultrametric.ai/situations) · [`processes/SITUATIONS.md`](processes/SITUATIONS.md)
 
@@ -114,7 +118,7 @@ tax notice arrives), sorted by how fast the clock runs.
 
 <a id="add-your-country-or-state"></a>
 
-## Founder country switch
+### Founder country switch
 
 Processes and vendor availability adapt to where you operate: the US is the baseline, with
 country analogs and official filing links for the UK, India, Germany, France, Portugal,
@@ -124,29 +128,28 @@ and Canada, and adding your country is a schema-gated pull request.
 
 ## Open docs
 
-The canonical startup legal documents (SAFEs, board consents, offer letters) as dated,
-verified links to their publishers, with the missing ones recorded as plainly as the
-links.
+The openly published startup legal documents, as dated links to their publishers, grouped
+by what they are for; known gaps are recorded in the catalog.
+
+| Category | Example documents | Gaps |
+| --- | --- | --- |
+| Formation | Cooley GO Delaware incorporation package, IRS Form SS-4 | — |
+| Fundraising | YC post-money SAFEs, SAFE User Guide, pro rata side letter | — |
+| Governance | Delaware incorporation toolkit (charter, bylaws, consents), cap table template | — |
+| Hiring | Offer letters, CIIAA/PIIA, Balanced Employee IP Agreement | No openly published option plan or grant template exists |
+| Commercial | Common Paper cloud service agreement, terms of service, SLA | — |
+| Privacy | DPA, BAA, AI addendum (Common Paper and Bonterms) | — |
+| Open-source | Apache ICLA/CCLA, Developer Certificate of Origin | — |
 
 [`open-documents/`](open-documents/) · [ultrametric.ai/open-documents](https://ultrametric.ai/open-documents)
 
-![The open documents catalog on ultrametric.ai: formation, fundraising, hiring, and privacy documents with their publishers](docs/assets/readme/open-documents.png)
-
 ## Open lore
 
-The heuristics founders trade and the episodes that taught them, as sourced records: every
-rule of thumb names its school and author, every episode carries a veracity grade, and the
-disagreements between schools stay mapped on both sides.
+The heuristics founders trade and the episodes behind them, as sourced records: every rule
+of thumb names its school and author, every episode carries a veracity grade, and
+conflicts between schools are recorded on both entries.
 
 [`lore/`](lore/) · [`resources/`](resources/)
-
-## Getting acquired
-
-The sale-of-the-company math is live (the waterfall module computes who gets what at any
-price); the acquisition playbook itself is a mapped, open gap in `coverage/`, waiting for
-its first records.
-
-[Liquidity-event waterfall](open-modules/README.md#liquidity-event-waterfall) · [`coverage/`](coverage/)
 
 ## Open law
 
@@ -154,6 +157,13 @@ Dated legal rule cards, one proposition each, every card citing a primary author
 an exact locator; a provider blog cannot establish law.
 
 [`rules/`](rules/) · [`sources/`](sources/)
+
+### Getting acquired
+
+The sale-of-the-company math is live (the waterfall module computes who gets what at any
+price); the acquisition playbook itself is a mapped, open gap in `coverage/`.
+
+[Sale waterfall](open-modules/README.md#liquidity-event-waterfall) · [`coverage/`](coverage/)
 
 ## Open artifacts
 
@@ -164,24 +174,6 @@ and what it needs.
 [ultrametric.ai/artifacts](https://ultrametric.ai/artifacts) · [`processes/artifacts.json`](processes/artifacts.json)
 
 ![The artifacts view on ultrametric.ai: the documents and records founder processes produce and consume](docs/assets/readme/artifacts.png)
-
-## Open data structure
-
-Every record validates against a published JSON Schema, and the company fields the
-processes and modules read are themselves a typed, registered list.
-
-[`schemas/`](schemas/) · [`processes/company-fields.json`](processes/company-fields.json)
-
-```
-data/
-  categories.json            # every ranking: id, name, description
-  {ranking}/
-    products.json            # the products and their URLs
-    stories.json             # what each product is judged on
-    evidence/{product}.json  # dated evidence items, tiered by strength
-    verdicts.json            # one judged cell per (product, story)
-    rankings.json            # derived scores: computed, never hand-set
-```
 
 ## Open startup simulator
 
@@ -216,6 +208,25 @@ curl https://ultrametric.ai/llms.txt                # the index for agents
 ```
 
 [ultrametric.ai/get-started](https://ultrametric.ai/get-started) · [docs.ultrametric.ai](https://docs.ultrametric.ai)
+
+## Methodology
+
+Every score is computed from dated, cited evidence: unknown stays null, negative results
+stay published, re-scores without new evidence are reverted, and the founders' own
+products are disclosed and bias-audited.
+
+[METHODOLOGY.md](./METHODOLOGY.md) · [ultrametric.ai/methodology](https://ultrametric.ai/methodology)
+
+[![CI](https://github.com/ultrametricai/ultrametric/actions/workflows/ci.yml/badge.svg)](https://github.com/ultrametricai/ultrametric/actions/workflows/ci.yml)
+<!-- stat-badges:start -->
+[![rankings](https://img.shields.io/badge/rankings-96-34d399)](https://ultrametric.ai)
+[![products](https://img.shields.io/badge/products-657-34d399)](https://ultrametric.ai/everything)
+[![judged verdicts](https://img.shields.io/badge/judged_verdicts-37159-34d399)](https://ultrametric.ai/methodology)
+<!-- stat-badges:end -->
+
+<!-- stats:start -->
+As of the last full pipeline run: **96 rankings, 657 products, 37,159 judged verdicts.**
+<!-- stats:end -->
 
 ## Upcoming
 

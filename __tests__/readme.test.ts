@@ -2,10 +2,11 @@ import fs from 'node:fs'
 import path from 'node:path'
 import { describe, expect, it } from 'vitest'
 
-// README structure pins (founder batch 2026-10-12, the elite-README rewrite): the preserved
-// intro block, the fixed section order, the one-liner-per-section format, the plain-language
-// vocabulary bar, the compact generated blocks, and the committed media. The README is data;
-// these are source pins, the same pattern as the loader golden tests.
+// README structure pins (founder round 2, 2026-10-12): the preserved intro block, the
+// compressed section order (no Trust section up top; country switch, getting-acquired, and
+// the shared-field layer demoted to subsections), the one-liner-per-section format, the
+// section-guide tables, the plain-language vocabulary bar, the compact generated blocks, and
+// the committed media. The README is data; these are source pins.
 
 const ROOT = path.join(__dirname, '..')
 const readme = fs.readFileSync(path.join(ROOT, 'README.md'), 'utf8')
@@ -32,48 +33,66 @@ const INTRO = [
   '<a id="start-here"></a>',
 ].join('\n')
 
-// The founder-specified section order, verbatim.
+// The founder-specified section order (round 2): Trust removed, Methodology near the bottom.
 const SECTIONS = [
   '## The open startup repo',
   '## Video demo',
-  '## Trust',
   '## Open vendor rankings',
   '## Open processes',
   '## Examples',
   '## Open modules',
-  '## Open situations',
-  '## Founder country switch',
+  '## Situations',
   '## Open docs',
   '## Open lore',
-  '## Getting acquired',
   '## Open law',
   '## Open artifacts',
-  '## Open data structure',
   '## Open startup simulator',
   '## Open skills for startups',
   '## Install Ultrametric',
+  '## Methodology',
   '## Upcoming',
   '## License',
 ]
 
-describe('README.md structure (founder batch 2026-10-12)', () => {
+// Demoted to subsections inside their parent sections (founder round 2, items 4/6/7).
+const SUBSECTIONS: Array<[string, string]> = [
+  ['## Open modules', '### Shared data fields'],
+  ['## Situations', '### Founder country switch'],
+  ['## Open law', '### Getting acquired'],
+]
+
+const sectionBody = (heading: string) => {
+  const start = readme.indexOf(heading) + heading.length
+  const idx = SECTIONS.indexOf(heading)
+  const end = idx === SECTIONS.length - 1 ? readme.length : readme.indexOf(SECTIONS[idx + 1])
+  return readme.slice(start, end)
+}
+
+describe('README.md structure (founder round 2, 2026-10-12)', () => {
   it('opens with the preserved intro block, byte-for-byte', () => {
     expect(readme.startsWith(INTRO)).toBe(true)
   })
 
-  it('carries exactly the specified sections, in order, and no others', () => {
+  it('carries exactly the specified sections, in order, and no Trust section', () => {
     const headings = readme.split('\n').filter((l) => l.startsWith('## '))
     expect(headings).toEqual(SECTIONS)
+    expect(readme).not.toContain('\n## Trust')
+  })
+
+  it('each demoted area lives as a subsection inside its parent section', () => {
+    for (const [parent, sub] of SUBSECTIONS) {
+      const body = sectionBody(parent)
+      expect(body, `${sub} missing from ${parent}`).toContain(sub)
+    }
+    // Demoted areas are gone from the top level.
+    for (const gone of ['## Founder country switch', '## Getting acquired', '## Open data structure', '## Open situations']) {
+      expect(readme).not.toContain(`\n${gone}`)
+    }
   })
 
   it('every section leads with a prose one-liner paragraph, not a table or list', () => {
     for (const heading of SECTIONS) {
-      const start = readme.indexOf(heading) + heading.length
-      const end = SECTIONS.indexOf(heading) === SECTIONS.length - 1
-        ? readme.length
-        : readme.indexOf(SECTIONS[SECTIONS.indexOf(heading) + 1])
-      const body = readme.slice(start, end)
-      const firstLine = body
+      const firstLine = sectionBody(heading)
         .split('\n')
         .map((l) => l.trim())
         .find((l) => l.length > 0 && !l.startsWith('<a id=') && !l.startsWith('<!--'))
@@ -82,6 +101,14 @@ describe('README.md structure (founder batch 2026-10-12)', () => {
       expect(firstLine!.startsWith('- '), `${heading} opens with a list`).toBe(false)
       expect(firstLine!.startsWith('!['), `${heading} opens with an image before its one-liner`).toBe(false)
     }
+  })
+
+  it('the Video demo section plays the gif without narrating the committed mp4', () => {
+    const section = sectionBody('## Video demo')
+    expect(section).toContain('docs/assets/readme/demo.gif')
+    expect(section).not.toContain('demo.mp4')
+    // The full recording stays committed for native upload later.
+    expect(fs.existsSync(path.join(ROOT, 'docs', 'assets', 'readme', 'demo.mp4'))).toBe(true)
   })
 
   it('uses plain language: no insider vocabulary anywhere on the page', () => {
@@ -104,6 +131,38 @@ describe('README.md structure (founder batch 2026-10-12)', () => {
   })
 })
 
+describe('README.md section-guide tables (founder round 2)', () => {
+  it('Open modules carries the module guide table with a row per mapped module', () => {
+    const section = sectionBody('## Open modules')
+    expect(section).toContain('| Module | What it computes | Source it cites |')
+    const map = JSON.parse(
+      fs.readFileSync(path.join(ROOT, 'processes', 'business-logic-map.json'), 'utf8'),
+    ) as { modules: Record<string, { anchor: string }> }
+    const anchors = Object.values(map.modules).map((m) => m.anchor)
+    expect(anchors.length).toBeGreaterThan(0)
+    for (const anchor of anchors) {
+      expect(section, `module table is missing a link to #${anchor}`).toContain(
+        `](open-modules/README.md#${anchor})`,
+      )
+    }
+  })
+
+  it('Open docs carries the category table covering every registry use_case, with a gaps column', () => {
+    const section = sectionBody('## Open docs')
+    expect(section).toContain('| Category | Example documents | Gaps |')
+    const registry = JSON.parse(
+      fs.readFileSync(path.join(ROOT, 'open-documents', 'registry.json'), 'utf8'),
+    ) as { documents: Array<{ use_case: string }> }
+    const useCases = [...new Set(registry.documents.map((d) => d.use_case))]
+    expect(useCases.length).toBeGreaterThan(0)
+    for (const useCase of useCases) {
+      expect(section.toLowerCase(), `docs table is missing category ${useCase}`).toContain(
+        `| ${useCase.replace(/-/g, '-')} `.toLowerCase(),
+      )
+    }
+  })
+})
+
 describe('README.md generated blocks', () => {
   it('keeps the three generated marker pairs pnpm stats rewrites', () => {
     for (const marker of [
@@ -123,7 +182,6 @@ describe('README.md generated blocks', () => {
     expect(block).not.toContain('| Ranking | Products |')
     expect(block).not.toContain('|---|')
     expect(block).toContain('https://ultrametric.ai/arenas')
-    // One content line between the markers.
     expect(block.trim().split('\n').length).toBe(2)
   })
 })
@@ -131,15 +189,13 @@ describe('README.md generated blocks', () => {
 describe('README.md anchors and links', () => {
   it('keeps every legacy inbound anchor resolving (Writing style rule 8)', () => {
     for (const id of [
-      'start-here', 'processes', 'vendors', 'business-logic', 'methodology',
+      'start-here', 'processes', 'vendors', 'business-logic',
       'add-your-country-or-state', 'for-ai-agents', 'use-it-from-an-agent',
     ]) {
-      const present =
-        readme.includes(`<a id="${id}"></a>`) ||
-        readme.toLowerCase().includes(`\n## ${id.replace(/-/g, ' ')}`)
-      expect(present, `missing anchor #${id}`).toBe(true)
+      expect(readme, `missing anchor #${id}`).toContain(`<a id="${id}"></a>`)
     }
-    // The intro's own section links resolve: #open-modules via its heading.
+    // #methodology and #open-modules resolve through their headings.
+    expect(readme).toContain('\n## Methodology')
     expect(readme).toContain('\n## Open modules')
   })
 
@@ -185,12 +241,6 @@ describe('README.md media', () => {
     for (const p of media) {
       expect(fs.existsSync(path.join(ROOT, p)), `missing media file ${p}`).toBe(true)
     }
-  })
-
-  it('the Video demo section embeds the gif inline and references the committed mp4', () => {
-    const section = readme.slice(readme.indexOf('## Video demo'), readme.indexOf('## Trust'))
-    expect(section).toContain('docs/assets/readme/demo.gif')
-    expect(section).toContain('docs/assets/readme/demo.mp4')
   })
 
   it('each screenshot stays under the 300KB budget and the gif under 5MB', () => {
