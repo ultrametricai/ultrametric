@@ -107,26 +107,20 @@ authorized shares, par value, cash on hand, common-share FMV), registered in
 every module and vendor integration that needs it; every record shape is published as a
 JSON Schema in [`schemas/`](schemas/).
 
-## Situations
+## Open artifacts
 
-Trigger-driven guides for reactive work (a breach is live, a summons lands, a tax notice
-arrives), each with a named trigger and an urgency clock of hours, days, or weeks.
+The documents and records that processes produce and consume (certificate of
+incorporation, EIN letter, cap table), registered so every process declares what it makes
+and what it needs.
 
-[ultrametric.ai/situations](https://ultrametric.ai/situations) · [`processes/SITUATIONS.md`](processes/SITUATIONS.md)
+[ultrametric.ai/artifacts](https://ultrametric.ai/artifacts) · [`processes/artifacts.json`](processes/artifacts.json)
 
-![The situations index on ultrametric.ai, reactive work sorted hottest clock first](docs/assets/readme/situations.png)
+![The artifacts view on ultrametric.ai: the documents and records founder processes produce and consume](docs/assets/readme/artifacts.png)
 
-<a id="add-your-country-or-state"></a>
+<!-- Legacy anchor: inbound links to #open-docs predate the fold under Open artifacts. -->
+<a id="open-docs"></a>
 
-### Founder country switch
-
-Processes and vendor availability adapt to where you operate: the US is the baseline, with
-country analogs and official filing links for the UK, India, Germany, France, Portugal,
-and Canada, and adding your country is a schema-gated pull request.
-
-[`jurisdictions/`](jurisdictions/) · [Add a jurisdiction](CONTRIBUTING.md#add-a-jurisdiction)
-
-## Open docs
+### Open docs
 
 The openly published startup legal documents, as dated links to their publishers, grouped
 by what they are for; known gaps are recorded in the catalog.
@@ -143,6 +137,25 @@ by what they are for; known gaps are recorded in the catalog.
 
 [`open-documents/`](open-documents/) · [ultrametric.ai/open-documents](https://ultrametric.ai/open-documents)
 
+## Situations
+
+Trigger-driven guides for reactive work (a breach is live, a summons lands, a tax notice
+arrives), each with a named trigger and an urgency clock of hours, days, or weeks.
+
+[ultrametric.ai/situations](https://ultrametric.ai/situations) · [`processes/SITUATIONS.md`](processes/SITUATIONS.md)
+
+![The situations index on ultrametric.ai, reactive work sorted hottest clock first](docs/assets/readme/situations.png)
+
+<a id="add-your-country-or-state"></a>
+
+### Example: Founder country switch
+
+Processes and vendor availability adapt to where you operate: the US is the baseline, with
+country analogs and official filing links for the UK, India, Germany, France, Portugal,
+and Canada, and adding your country is a schema-gated pull request.
+
+[`jurisdictions/`](jurisdictions/) · [Add a jurisdiction](CONTRIBUTING.md#add-a-jurisdiction)
+
 ## Open lore
 
 The heuristics founders trade and the episodes behind them, as sourced records: every rule
@@ -151,29 +164,21 @@ conflicts between schools are recorded on both entries.
 
 [`lore/`](lore/) · [`resources/`](resources/)
 
+### Example: Getting acquired
+
+The acquisition episodes are recorded lore (WhatsApp, Twitch, MySpace in
+`resources/LORE.md`, each with its lesson and veracity grade), the sale math is live (the
+waterfall module computes who gets what at any price), and the acquisition playbook itself
+is a mapped, open gap in `coverage/`.
+
+[Sale waterfall](open-modules/README.md#liquidity-event-waterfall) · [`coverage/`](coverage/)
+
 ## Open law
 
 Dated legal rule cards, one proposition each, every card citing a primary authority with
 an exact locator; a provider blog cannot establish law.
 
 [`rules/`](rules/) · [`sources/`](sources/)
-
-### Getting acquired
-
-The sale-of-the-company math is live (the waterfall module computes who gets what at any
-price); the acquisition playbook itself is a mapped, open gap in `coverage/`.
-
-[Sale waterfall](open-modules/README.md#liquidity-event-waterfall) · [`coverage/`](coverage/)
-
-## Open artifacts
-
-The documents and records that processes produce and consume (certificate of
-incorporation, EIN letter, cap table), registered so every process declares what it makes
-and what it needs.
-
-[ultrametric.ai/artifacts](https://ultrametric.ai/artifacts) · [`processes/artifacts.json`](processes/artifacts.json)
-
-![The artifacts view on ultrametric.ai: the documents and records founder processes produce and consume](docs/assets/readme/artifacts.png)
 
 ## Open startup simulator
 

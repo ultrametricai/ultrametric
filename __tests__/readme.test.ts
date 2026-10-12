@@ -2,11 +2,12 @@ import fs from 'node:fs'
 import path from 'node:path'
 import { describe, expect, it } from 'vitest'
 
-// README structure pins (founder round 2, 2026-10-12): the preserved intro block, the
-// compressed section order (no Trust section up top; country switch, getting-acquired, and
-// the shared-field layer demoted to subsections), the one-liner-per-section format, the
-// section-guide tables, the plain-language vocabulary bar, the compact generated blocks, and
-// the committed media. The README is data; these are source pins.
+// README structure pins (founder rounds 2-3, 2026-10-12): the preserved intro block, the
+// compressed section order (no Trust section; artifacts directly after modules with the docs
+// catalog folded inside; country switch and getting-acquired as Example subsections), the
+// one-liner-per-section format, the section-guide tables, the plain-language vocabulary bar,
+// the compact generated blocks, and the committed media. The README is data; these are
+// source pins.
 
 const ROOT = path.join(__dirname, '..')
 const readme = fs.readFileSync(path.join(ROOT, 'README.md'), 'utf8')
@@ -34,7 +35,8 @@ const INTRO = [
   '<a id="start-here"></a>',
 ].join('\n')
 
-// The founder-specified section order (round 2): Trust removed, Methodology near the bottom.
+// The founder-specified section order (round 3): artifacts directly after modules with the
+// docs catalog folded inside, country-switch and getting-acquired framed as examples.
 const SECTIONS = [
   '## The open startup repo',
   '## Video demo',
@@ -42,11 +44,10 @@ const SECTIONS = [
   '## Open processes',
   '## Examples',
   '## Open modules',
+  '## Open artifacts',
   '## Situations',
-  '## Open docs',
   '## Open lore',
   '## Open law',
-  '## Open artifacts',
   '## Open startup simulator',
   '## Open skills for startups',
   '## Install Ultrametric',
@@ -55,11 +56,12 @@ const SECTIONS = [
   '## License',
 ]
 
-// Demoted to subsections inside their parent sections (founder round 2, items 4/6/7).
+// Demoted to subsections inside their parent sections (founder rounds 2 and 3).
 const SUBSECTIONS: Array<[string, string]> = [
   ['## Open modules', '### Shared data fields'],
-  ['## Situations', '### Founder country switch'],
-  ['## Open law', '### Getting acquired'],
+  ['## Open artifacts', '### Open docs'],
+  ['## Situations', '### Example: Founder country switch'],
+  ['## Open lore', '### Example: Getting acquired'],
 ]
 
 const sectionBody = (heading: string) => {
@@ -86,8 +88,9 @@ describe('README.md structure (founder round 2, 2026-10-12)', () => {
       expect(body, `${sub} missing from ${parent}`).toContain(sub)
     }
     // Demoted areas are gone from the top level.
-    for (const gone of ['## Founder country switch', '## Getting acquired', '## Open data structure', '## Open situations']) {
-      expect(readme).not.toContain(`\n${gone}`)
+    for (const gone of ['## Founder country switch', '## Getting acquired', '## Open data structure', '## Open situations', '## Open docs']) {
+      expect(readme).not.toContain(`\n${gone} `)
+      expect(readme).not.toContain(`\n${gone}\n`)
     }
   })
 
@@ -148,8 +151,8 @@ describe('README.md section-guide tables (founder round 2)', () => {
     }
   })
 
-  it('Open docs carries the category table covering every registry use_case, with a gaps column', () => {
-    const section = sectionBody('## Open docs')
+  it('the Open docs subsection carries the category table covering every registry use_case, with a gaps column', () => {
+    const section = sectionBody('## Open artifacts')
     expect(section).toContain('| Category | Example documents | Gaps |')
     const registry = JSON.parse(
       fs.readFileSync(path.join(ROOT, 'open-documents', 'registry.json'), 'utf8'),
@@ -191,7 +194,7 @@ describe('README.md anchors and links', () => {
   it('keeps every legacy inbound anchor resolving (Writing style rule 8)', () => {
     for (const id of [
       'start-here', 'processes', 'vendors', 'business-logic',
-      'add-your-country-or-state', 'for-ai-agents', 'use-it-from-an-agent',
+      'add-your-country-or-state', 'open-docs', 'for-ai-agents', 'use-it-from-an-agent',
     ]) {
       expect(readme, `missing anchor #${id}`).toContain(`<a id="${id}"></a>`)
     }
