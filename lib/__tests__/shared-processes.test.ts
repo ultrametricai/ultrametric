@@ -87,6 +87,10 @@ describe('shared process definitions', () => {
     expect(churn.links.find(link => link.from === 'n1' && link.to === 'n6')?.when).toContain('cancellation')
     expect(churn.links.find(link => link.from === 'n4' && link.to === 'n6')?.when).toContain('does not need a call')
     const outbound = processGraphs(records.find(record => record.id === 'growth_012')!, records)[0]
+    // Existing replies can reach response handling without a new campaign.
+    const intakePaths = outbound.edges.filter(edge => edge.from === 'n1')
+    expect(intakePaths.map(edge => edge.to).sort()).toEqual(['n2', 'n4'])
+    expect(intakePaths.every(edge => edge.conditional)).toBe(true)
     for (const target of ['n5', 'n6']) {
       const incoming = outbound.edges.filter(edge => edge.to === target)
       expect(incoming).toHaveLength(1)

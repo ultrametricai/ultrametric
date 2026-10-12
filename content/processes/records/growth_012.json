@@ -15,7 +15,7 @@
       "id": "n1",
       "kind": "step",
       "title": "Build the target list",
-      "guidance": "Define target companies and contacts by the offer's relevant problem, role, location and exclusions. Build the list from authorized sources, keeping the source of each contact and removing duplicates, customers or suppressions as appropriate. Resolve outreach eligibility for the intended markets before transfer to a sending tool. Hold uncertain contact details or eligibility for review.\n\nKeep stable recipient/account identifiers, evidence dates and an inclusion or exclusion reason for every input row. Reconcile eligible, duplicate, suppressed and held records to the source list. A contact with unresolved identity or eligibility must not enter an activation batch.",
+      "guidance": "Define target companies and contacts by the offer's relevant problem, role, location and exclusions. Build the list from authorized sources, keeping the source of each contact and removing duplicates, customers or suppressions as appropriate. Resolve outreach eligibility for the intended markets before transfer to a sending tool. Hold uncertain contact details or eligibility for review.\n\nKeep stable recipient/account identifiers, evidence dates and an inclusion or exclusion reason for every input row. Reconcile eligible, duplicate, suppressed and held records to the source list. A contact with unresolved identity or eligibility must not enter an activation batch.\n\nReconcile prior conversations and delivery attempts before enrollment. Route an existing reply to its appropriate response or next step instead of restarting a cold sequence. Preserve opt-outs and declines, and hold uncertain prior sends until delivery state is resolved. Reusing the same contact in a new campaign must not erase those states.",
       "when": null,
       "ref": null,
       "options": [],
@@ -65,7 +65,7 @@
       "kind": "step",
       "title": "Draft the sequence copy",
       "guidance": "Ground the sequence in a verified reason the offer may help its target group. Make the sender and next step clear, and have each follow-up add useful information. Include the audience's reviewed preference or opt-out handling. Hand exact messages, intended recipients and proposed cadence to launch setup, flagging unresolved claims or contact assumptions.\n\nInclude the verified sender name/company and reply route, plus a proposed interval and timezone for each touch. Use a simple progression: relevant observed problem and offer, a new useful detail, then a concrete next step or close. Reuse approved positioning and proof; flag missing evidence instead of inventing revenue loss, testimonials or customer results. If identity or cadence is unknown, deliver labeled drafts and list the exact decisions needed for activation.",
-      "when": null,
+      "when": "New eligible contacts need an outreach sequence.",
       "ref": null,
       "options": [],
       "notes": [],
@@ -108,7 +108,7 @@
       "id": "n3",
       "kind": "step",
       "title": "Set up and launch the sequence",
-      "guidance": "Load the messages and eligible audience into a draft sequence. Check the authorized sender, personalization, sending window, stop conditions and handling of replies, bounces and opt-outs. Run an internal test through the messages and CRM updates. Activate only the sales owner's agreed recipient set and cadence, with a named person able to pause unexpected sends.\n\nSave a draft identifier or export, the exact approved audience/copy/cadence and the test results. Before any activation, replay synthetic success and failure events through a no-send route, including personalization failure and a last-minute suppression. Draft creation, activation and each send are distinct effects; pausing cannot undo delivered messages.",
+      "guidance": "Load the messages and eligible audience into a draft sequence. Check the authorized sender, personalization, sending window, stop conditions and handling of replies, bounces and opt-outs. Run an internal test through the messages and CRM updates. Activate only the sales owner's agreed recipient set and cadence, with a named person able to pause unexpected sends.\n\nSave a draft identifier or export, the exact approved audience/copy/cadence and the test results. Before any activation, replay synthetic success and failure events through a no-send route, including personalization failure and a last-minute suppression. Draft creation, activation and each send are distinct effects; pausing cannot undo delivered messages.\n\nSize the initial batch and cadence to the team’s actual response and meeting capacity. Record who handles replies; avoid assuming a conversion rate to turn available meeting slots into a promised acquisition result.",
       "when": null,
       "ref": null,
       "options": [],
@@ -180,9 +180,9 @@
     {
       "id": "n4",
       "kind": "step",
-      "title": "Send and monitor replies",
-      "guidance": "Monitor delivery, replies, bounces and preference changes as the authorized sequence runs. Enforce its stop rules, record automated replies separately and route substantive responses to the account owner. Investigate sender or template failures before continuing affected sends. Update CRM dispositions and resolve any proposed audience or copy change outside the agreed campaign scope.\n\nMaintain an event/disposition ledger keyed to recipient and provider event identifiers. Check duplicate and out-of-order events, and re-check suppressions and substantive replies before queued follow-ups. After an uncertain send result, inspect the provider state before retrying so a contact does not receive duplicates. Keep simulated events and actual deliveries distinguishable.",
-      "when": null,
+      "title": "Monitor delivery and handle conversations",
+      "guidance": "Handle existing conversations in context within the account team’s agreed authority. For authorized sequences, monitor delivery, replies, bounces and preference changes. Enforce its stop rules, record automated replies separately and route substantive responses to the account owner. Investigate sender or template failures before continuing affected sends. Update CRM dispositions and resolve any proposed audience or copy change outside the agreed campaign scope.\n\nMaintain an event/disposition ledger keyed to recipient and provider event identifiers. Check duplicate and out-of-order events, and re-check suppressions and substantive replies before queued follow-ups. After an uncertain send result, inspect the provider state before retrying so a contact does not receive duplicates. Keep simulated events and actual deliveries distinguishable.",
+      "when": "An authorized sequence is running or an existing conversation needs a response.",
       "ref": null,
       "options": [],
       "notes": [],
@@ -250,7 +250,12 @@
     {
       "from": "n1",
       "to": "n2",
-      "when": null
+      "when": "New eligible contacts need an outreach sequence."
+    },
+    {
+      "from": "n1",
+      "to": "n4",
+      "when": "An existing conversation needs a response without enrollment in a new sequence."
     },
     {
       "from": "n2",
