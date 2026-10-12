@@ -180,12 +180,21 @@ export function buildVendorReviews(dir: string = path.join(ROOT, 'data')): Map<s
   return out
 }
 
-function main(): void {
+// Rebuild REVIEWS_DIR from the committed data. Called by the CLI below and by every
+// automated flow that mutates the reviews' inputs (the scheduled runner workflows and
+// pipeline/contest-check.ts) — derive restamps rankings.generatedAt on each run, so any
+// run that reaches derive must regenerate the records before the drift test compares them.
+export function writeVendorReviews(): number {
   const reviews = buildVendorReviews()
   fs.rmSync(REVIEWS_DIR, { recursive: true, force: true })
   fs.mkdirSync(REVIEWS_DIR, { recursive: true })
   for (const [file, content] of reviews) fs.writeFileSync(path.join(REVIEWS_DIR, file), content)
-  console.log(`wrote ${reviews.size} vendor reviews to ${path.relative(ROOT, REVIEWS_DIR)}`)
+  return reviews.size
+}
+
+function main(): void {
+  const count = writeVendorReviews()
+  console.log(`wrote ${count} vendor reviews to ${path.relative(ROOT, REVIEWS_DIR)}`)
 }
 
 if (require.main === module) main()
