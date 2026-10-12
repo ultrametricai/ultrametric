@@ -132,6 +132,17 @@ jobs:
         if: steps.gate.outputs.enabled == 'true'
         run: pnpm tsx pipeline/scripts/generate-vendor-reviews.ts
 
+      # data/graph.json is the same kind of pure projection (corpus + step-story mapping +
+      # judged story→product verdicts). The judge stage above can flip verdicts, which adds,
+      # drops, or relabels story-product edges, so the graph must be regenerated here or the
+      # byte-identity tests (lib/__tests__/storyProcessGraph.test.ts and
+      # shared-canonical-identity.test.ts) fail against the refreshed data (run 38288658736,
+      # email-apis, 2026-10-12). It lives in data/, so the change check and commit below
+      # already carry it.
+      - name: Regenerate the story graph artifact
+        if: steps.gate.outputs.enabled == 'true'
+        run: pnpm tsx pipeline/scripts/generate-story-graph.ts
+
       - name: Tests + recompute check
         if: steps.gate.outputs.enabled == 'true'
         run: |

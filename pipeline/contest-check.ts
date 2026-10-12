@@ -4,6 +4,7 @@ import path from 'node:path'
 import { type Evidence, EvidenceSchema, ProductSchema, StorySchema } from '../lib/schemas'
 import { fetchWithRetry, htmlToMarkdown } from './fetch-page'
 import { categoryDir, readJson, resolveCategories, ROOT, writeJson } from './paths'
+import { writeStoryGraph } from './scripts/generate-story-graph'
 import { writeVendorReviews } from './scripts/generate-vendor-reviews'
 import { runDerive } from './stages/derive'
 import { runJudge } from './stages/judge'
@@ -179,6 +180,10 @@ async function main(): Promise<void> {
   // regenerate the interchange records so the PR passes the drift test
   // (pipeline/__tests__/vendorReviews.test.ts).
   writeVendorReviews()
+  // The judge pass can flip story→product verdicts, an input of data/graph.json — regenerate
+  // the graph so the PR passes the byte-identity tests (lib/__tests__/storyProcessGraph.test.ts
+  // and shared-canonical-identity.test.ts).
+  writeStoryGraph()
 
   const branch = `contest-${issueNumber}`
   git(['checkout', '-b', branch])
@@ -187,6 +192,7 @@ async function main(): Promise<void> {
     path.relative(ROOT, evidenceFile),
     path.relative(ROOT, path.join(dataDir, 'verdicts.json')),
     path.relative(ROOT, path.join(dataDir, 'rankings.json')),
+    'data/graph.json',
     'vendors/reviews/generated',
   ])
   git([

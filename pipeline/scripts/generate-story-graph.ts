@@ -23,26 +23,34 @@ const ROOT = path.resolve(__dirname, '..', '..')
 const OUT = path.join(ROOT, 'data', 'graph.json')
 const MAX_BYTES = 5 * 1024 * 1024
 
-const graph = buildStoryGraph(path.join(ROOT, 'data'))
-const json = `${JSON.stringify(graph, null, 2)}\n`
-const bytes = Buffer.byteLength(json, 'utf8')
+// Rebuild data/graph.json from the committed corpus + mapping + verdicts. Called by the CLI
+// below and by every automated flow whose judge/derive pass can move story→product verdicts
+// (the scheduled runner workflows and pipeline/contest-check.ts) — same contract as
+// generate-vendor-reviews.ts's writeVendorReviews(): any run that re-judges must regenerate
+// the artifact before the byte-identity tests compare it.
+export function writeStoryGraph(): void {
+  const graph = buildStoryGraph(path.join(ROOT, 'data'))
+  const json = `${JSON.stringify(graph, null, 2)}\n`
+  const bytes = Buffer.byteLength(json, 'utf8')
 
-if (bytes > MAX_BYTES) {
-  console.error(
-    `graph.json would be ${(bytes / 1024 / 1024).toFixed(1)}MB (> ${MAX_BYTES / 1024 / 1024}MB cap) — `
-    + 'split story→product edges into per-arena data/graph-products/<arenaId>.json files and keep '
-    + 'the core DAG in graph.json (see the header comment).',
+  if (bytes > MAX_BYTES) {
+    throw new Error(
+      `graph.json would be ${(bytes / 1024 / 1024).toFixed(1)}MB (> ${MAX_BYTES / 1024 / 1024}MB cap) — `
+      + 'split story→product edges into per-arena data/graph-products/<arenaId>.json files and keep '
+      + 'the core DAG in graph.json (see the header comment).',
+    )
+  }
+
+  fs.writeFileSync(OUT, json)
+
+  const { nodes, edges } = graph.counts
+  console.log(
+    `wrote ${path.relative(ROOT, OUT)} (${(bytes / 1024).toFixed(0)}KB) — `
+    + `${graph.nodes.length} nodes (${nodes.process} processes, ${nodes.step} steps, `
+    + `${nodes.story} stories, ${nodes.product} products), `
+    + `${graph.edges.length} edges (${edges['has-step']} has-step, ${edges['step-story']} step-story, `
+    + `${edges['story-product']} story-product)`,
   )
-  process.exit(1)
 }
 
-fs.writeFileSync(OUT, json)
-
-const { nodes, edges } = graph.counts
-console.log(
-  `wrote ${path.relative(ROOT, OUT)} (${(bytes / 1024).toFixed(0)}KB) — `
-  + `${graph.nodes.length} nodes (${nodes.process} processes, ${nodes.step} steps, `
-  + `${nodes.story} stories, ${nodes.product} products), `
-  + `${graph.edges.length} edges (${edges['has-step']} has-step, ${edges['step-story']} step-story, `
-  + `${edges['story-product']} story-product)`,
-)
+if (require.main === module) writeStoryGraph()
