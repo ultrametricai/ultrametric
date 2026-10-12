@@ -39,7 +39,7 @@ const HEIGHT = 20
  * @returns {number} integer px
  */
 export function textWidth(text, { bold = false } = {}) {
-  const narrow = /[iljtfrI1.,:;'"()[\]\/ -]/
+  const narrow = /[iljtfrI1.,:;'"()[\]/ -]/
   let w = 0
   for (const ch of text) w += narrow.test(ch) ? 4.3 : 7.0
   if (bold) w *= 1.08

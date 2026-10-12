@@ -1,9 +1,9 @@
 name: CI
 
-# Runs lint, the test suite, static build, and rankings-determinism check on every PR and every
-# push to main. No secrets required: the LLM-driven pipeline stages are never invoked here, only
-# `pnpm lint`, `pnpm test`, `pnpm build`, and a read-only recompute-and-compare check against the
-# data already committed under data/.
+# Runs the open gates on every PR and every push to main: lint, typecheck, the test suite,
+# the shared-process checks, the manifest check, and the rankings-determinism check against
+# the data already committed under data/. No secrets required: the LLM-driven pipeline stages
+# are never invoked here. The site build runs in the private repo's CI.
 
 on:
   pull_request:
@@ -48,6 +48,12 @@ jobs:
       - name: Lint
         run: pnpm lint
 
+      - name: Typecheck
+        run: pnpm typecheck
+
+      - name: Open-manifest check
+        run: pnpm manifest:check
+
       - name: Shared process schema and source drift
         run: |
           pnpm shared:check
@@ -63,48 +69,19 @@ jobs:
       - name: Rankings determinism check
         run: pnpm tsx pipeline/scripts/recompute-check.ts
 
-  build:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v7
-
-      - name: Setup pnpm
-        uses: pnpm/action-setup@v6
-
-      - name: Read Node version from package.json
-        id: node-version
-        run: |
-          # pnpm 11 (see packageManager in package.json) requires Node >= 22.13.
-          NODE_VERSION=22
-          echo "version=$NODE_VERSION" >> "$GITHUB_OUTPUT"
-
-      - name: Setup Node
-        uses: actions/setup-node@v7
-        with:
-          node-version: ${{ steps.node-version.outputs.version }}
-          cache: pnpm
-
-      - name: Install dependencies
-        run: pnpm install --frozen-lockfile
-
-      - name: Build
-        run: pnpm build
-
   # Keep the existing check name as the aggregate gate. always() prevents a failed,
   # cancelled, or skipped dependency from silently skipping this check.
   ci:
     if: ${{ always() }}
-    needs: [validation, build]
+    needs: [validation]
     runs-on: ubuntu-latest
     steps:
       - name: Require all CI jobs to succeed
         env:
           VALIDATION_RESULT: ${{ needs.validation.result }}
-          BUILD_RESULT: ${{ needs.build.result }}
         run: |
-          echo "validation=$VALIDATION_RESULT build=$BUILD_RESULT"
-          if [[ "$VALIDATION_RESULT" != "success" || "$BUILD_RESULT" != "success" ]]; then
+          echo "validation=$VALIDATION_RESULT"
+          if [[ "$VALIDATION_RESULT" != "success" ]]; then
             echo "::error::All CI jobs must succeed; failure, cancellation, or skipped checks block CI."
             exit 1
           fi

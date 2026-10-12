@@ -35,20 +35,7 @@ describe('arenaClientData', () => {
     expect(JSON.stringify(slim).length).toBeLessThan(JSON.stringify(data).length / 2)
   })
 
-  it('is actually what the arena page hands its client components', () => {
-    const pageSrc = readFileSync(path.join(__dirname, '..', '..', 'app', 'arena', '[category]', 'page.tsx'), 'utf8')
-    for (const component of ['ArenaTable', 'StoryMatrix', 'PersonaStacksSection', 'StacksSection']) {
-      expect(pageSrc).toMatch(new RegExp(`<${component}[^>]*data=\\{clientData\\}`))
-    }
-    // And none of those components (or what they render) reads the stripped fields — the
-    // claim lib/arenaClientData.ts makes. AiModeBadge and BattleView DO read rationale; they
-    // must not appear in these components.
-    for (const component of ['ArenaTable', 'StoryMatrix', 'PersonaStacksSection', 'StacksSection']) {
-      const src = readFileSync(path.join(__dirname, '..', '..', 'components', `${component}.tsx`), 'utf8')
-      expect(src).not.toContain('.rationale')
-      expect(src).not.toContain('rankings.battles')
-      expect(src).not.toContain('AiModeBadge')
-      expect(src).not.toContain('BattleView')
-    }
-  })
+  // The source pin that the arena page really hands this projection to its client components
+  // (and that those components never read the stripped fields) moved to the private site repo
+  // with app/arena and components/ (repo split).
 })
