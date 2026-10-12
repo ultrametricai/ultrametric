@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # One-shot helper for the document-extraction arena bring-up (2026-09-10): appends probe-tier
-# evidence items distilled from the recorded runtime probes in data/document-extraction/proofs/
+# evidence items distilled from the recorded runtime probes in rankings/document-extraction/proofs/
 # (see pipeline/probes/document-extraction.ts — all 24 recorded probes passed). Run AFTER
 # `pnpm pipeline probe --category document-extraction` — that stage wholesale-replaces
 # probe-tier evidence and would wipe these items (re-run this script after any probe refresh).
@@ -109,7 +109,7 @@ ITEMS = {
 }
 
 for product, items in ITEMS.items():
-    path = f'data/document-extraction/evidence/{product}.json'
+    path = f'rankings/document-extraction/evidence/{product}.json'
     with open(path) as f:
         evidence = json.load(f)
     existing = {e['id'] for e in evidence}

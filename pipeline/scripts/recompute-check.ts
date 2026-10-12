@@ -116,7 +116,7 @@ function readJson<T>(schema: { parse: (v: unknown) => T }, file: string): T {
 let allMatch = true
 const results: string[] = []
 for (const cat of CATEGORIES) {
-  const dataDir = path.join(ROOT, 'data', cat)
+  const dataDir = path.join(ROOT, 'rankings', cat)
   const products = readJson(ProductSchema.array(), path.join(dataDir, 'products.json'))
   const stories = readJson(StorySchema.array(), path.join(dataDir, 'stories.json'))
   const verdicts = readJson(VerdictSchema.array(), path.join(dataDir, 'verdicts.json'))

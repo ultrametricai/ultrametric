@@ -27,7 +27,7 @@ import { categoryDir, readJson } from '../paths'
 import { judgePrompt, RawVerdictSchema, SYSTEM } from '../stages/judge'
 
 // Structural schema for pipeline/golden/golden-cells.json — a pipeline-internal test fixture,
-// not a data/ file consumed by the app, so it doesn't warrant a lib/schemas.ts entry. Reuses
+// not a rankings/ file consumed by the app, so it doesn't warrant a lib/schemas.ts entry. Reuses
 // VerdictBaseSchema's verdict enum so a golden cell can never target a verdict tier the real
 // judge couldn't itself produce.
 const GoldenCellSchema = z.object({

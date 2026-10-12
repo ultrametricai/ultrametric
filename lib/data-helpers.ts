@@ -26,33 +26,33 @@ export interface CategoryData {
   rankings: Rankings
   stacks: Stack[]
   // Keyless popularity/momentum signal, keyed by productId — see lib/schemas.ts's
-  // PopularityMapSchema and pipeline/stages/popularity.ts. `data/{cat}/popularity.json` is
+  // PopularityMapSchema and pipeline/stages/popularity.ts. `rankings/{cat}/popularity.json` is
   // optional (not every category has been through the popularity stage yet, and even when it
   // has, most products have no discoverable GitHub/npm/pypi signal), so this is `{}` rather
   // than undefined when absent — display code should look up by productId and treat a miss as
   // "no public signals", not as an error.
   popularity: Record<string, Popularity>
   // Keyed by productId — see lib/schemas.ts's ClaimSchema and pipeline/stages/claims.ts.
-  // `data/{cat}/claims/` is optional (not every category has been through the claims stage yet)
+  // `rankings/{cat}/claims/` is optional (not every category has been through the claims stage yet)
   // and, even when present, an individual product's file may be missing — both cases resolve to
   // `[]` for that productId rather than an error, same "absence is not an error" contract as
   // popularity above.
   claims: Record<string, Claim[]>
   // Multi-judge uncertainty results — see lib/schemas.ts's UncertaintyEntrySchema and
-  // pipeline/scripts/uncertainty-pass.ts. `data/{cat}/uncertainty.json` is optional (most
+  // pipeline/scripts/uncertainty-pass.ts. `rankings/{cat}/uncertainty.json` is optional (most
   // categories are never a "close race", and even a qualifying one only covers its decisive
   // cells) — absence resolves to `[]`, same "absence is not an error" contract as popularity and
   // claims above. Use uncertaintyFor(data, productId, storyId) rather than scanning this array
   // directly.
   uncertainty: UncertaintyEntry[]
   // Verified official vendor responses to specific verdicts — see lib/schemas.ts's
-  // VendorResponseSchema and docs/VENDOR-RESPONSES.md. `data/{cat}/vendor-responses.json` is
+  // VendorResponseSchema and docs/VENDOR-RESPONSES.md. `rankings/{cat}/vendor-responses.json` is
   // optional (most categories have none) — absence resolves to `[]`, same "absence is not an
   // error" contract as popularity/claims/uncertainty above. Use vendorResponseFor(data,
   // productId, storyId) rather than scanning this array directly.
   vendorResponses: VendorResponse[]
   // Agent-Ready certifications earned through the self-serve conformance suite — see
-  // lib/certifications.ts and docs/CERTIFICATION.md. `data/{cat}/certifications.json` is
+  // lib/certifications.ts and docs/CERTIFICATION.md. `rankings/{cat}/certifications.json` is
   // optional (most arenas have none) — absence resolves to `[]`, same "absence is not an
   // error" contract as everything above. Use activeCertificationFor(data.certifications,
   // productId) rather than scanning this array directly: entries past their 180-day expiry

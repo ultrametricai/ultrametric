@@ -82,7 +82,7 @@ export function diffusionCurve(cells: GlobalStoryCell[], firstTracked: FirstTrac
 // fs-backed FirstTracked: a cell's entry into tracking is its product's first line in that
 // arena's score-history.jsonl (seeded from git history, grown by derive — lib/scoreHistory.ts).
 // Null when the arena has no history file or the product no entries yet.
-export function firstTrackedLookup(dir: string = path.join(process.cwd(), 'data')): FirstTracked {
+export function firstTrackedLookup(dir: string = path.join(process.cwd(), 'rankings')): FirstTracked {
   return (cell) => {
     const entries = loadScoreHistory(cell.categoryId, dir).get(cell.productId)
     if (!entries || entries.length === 0) return null

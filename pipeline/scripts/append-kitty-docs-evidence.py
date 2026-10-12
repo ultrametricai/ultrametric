@@ -48,7 +48,7 @@ ITEMS = [
     },
 ]
 
-path = 'data/terminals/evidence/kitty.json'
+path = 'rankings/terminals/evidence/kitty.json'
 ev = json.load(open(path))
 existing = {e['id'] for e in ev}
 docs_gh = [e for e in ev if e['tier'] in ('claimed-docs', 'github')]

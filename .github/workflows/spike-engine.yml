@@ -1,5 +1,5 @@
 # Spike engine (docs/FOUNDER-ASKS.md: "deep running engine that is always probing and spiking
-# through the top companies"): daily, re-rank data/spike-queue.json (keyless — staleness ×
+# through the top companies"): daily, re-rank rankings/spike-queue.json (keyless — staleness ×
 # popularity × founder priority over every judged product), then, when the ANTHROPIC_API_KEY
 # secret exists, spike the top due product: one budget-capped exhaustive pass through the
 # normal pipeline stages (crawl → extract → probe → judge), the churn policy (keep only flips
@@ -67,7 +67,7 @@ jobs:
         run: pnpm install --frozen-lockfile
 
       # Keyless: recompute the queue ranking + the work-queue issue body. Never mutates any
-      # data/<arena>/ files — rank mode only rewrites data/spike-queue.json.
+      # rankings/<arena>/ files — rank mode only rewrites rankings/spike-queue.json.
       - name: Rank spike queue
         if: steps.gate.outputs.enabled != 'true'
         run: pnpm tsx pipeline/scripts/spike-engine.ts --issue-body /tmp/spike-issue.md
@@ -93,7 +93,7 @@ jobs:
         run: pnpm tsx pipeline/scripts/generate-vendor-reviews.ts
 
       # Same contract as story-runner: a keyed spike pass re-judges, which can flip
-      # story→product verdicts, an input of data/graph.json. Regenerate before the
+      # story→product verdicts, an input of rankings/graph.json. Regenerate before the
       # byte-identity tests; a rank-only run regenerates byte-identically (no diff).
       - name: Regenerate the story graph artifact
         run: pnpm tsx pipeline/scripts/generate-story-graph.ts
@@ -106,7 +106,7 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           RUN_ID: ${{ github.run_id }}
         run: |
-          if git diff --quiet -- data pipeline/cache vendors/reviews/generated; then
+          if git diff --quiet -- rankings pipeline/cache vendors/reviews/generated; then
             echo "No changes — done."
             exit 0
           fi
@@ -115,7 +115,7 @@ jobs:
           git config user.name "ultrametric-spike-engine"
           git config user.email "noreply@ultrametric.ai"
           git checkout -b "$BRANCH"
-          git add data pipeline/cache vendors/reviews/generated README.md
+          git add rankings pipeline/cache vendors/reviews/generated README.md
           git commit -m "chore(spike-engine): queue re-rank + top-of-queue spike pass"
           git push -u origin "$BRANCH"
           # Same org-policy fallback as story-runner: if Actions may not open PRs, leave an
@@ -139,4 +139,4 @@ jobs:
           gh issue create \
             --title "spike-engine: queue $(date -u +%F)" \
             --body-file /tmp/spike-issue.md \
-            --label "story-runner" || echo "work-queue issue creation failed — the same ranking is committed in data/spike-queue.json"
+            --label "story-runner" || echo "work-queue issue creation failed — the same ranking is committed in rankings/spike-queue.json"

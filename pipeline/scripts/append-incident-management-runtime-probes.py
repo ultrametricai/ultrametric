@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # One-shot helper for the incident-management arena bring-up (2026-09-06): appends probe-tier
-# evidence items distilled from the recorded runtime probes in data/incident-management/proofs/
+# evidence items distilled from the recorded runtime probes in rankings/incident-management/proofs/
 # (see pipeline/probes/incident-management.ts — all 8 recorded
 # probes passed). Run AFTER `pnpm pipeline probe --category incident-management` — that stage
 # wholesale-replaces probe-tier evidence and would wipe these items (re-run this script after
@@ -80,7 +80,7 @@ ITEMS = {
 }
 
 for pid, items in ITEMS.items():
-    path = f'data/incident-management/evidence/{pid}.json'
+    path = f'rankings/incident-management/evidence/{pid}.json'
     ev = json.load(open(path))
     existing = {e['id'] for e in ev}
     for item in items:

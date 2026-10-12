@@ -8,7 +8,7 @@ import {
 } from '@/lib/processIcons'
 import { URGENCY_TIERS } from '@/lib/processSim'
 
-const DATA_DIR = path.resolve(__dirname, '../../data')
+const DATA_DIR = path.resolve(__dirname, '../../rankings')
 
 // A curated icon must be a well-formed house token (`pi:<glyph>:<hue>`). The stronger
 // cross-check that each token names a DESIGNED glyph lives with the glyph registry

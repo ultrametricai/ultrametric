@@ -134,8 +134,8 @@ describe('mostWantedUntested', () => {
   })
 })
 
-describe('nextUpArenas (committed data/arena-roadmap.json)', () => {
-  const REAL = path.resolve(__dirname, '../../data')
+describe('nextUpArenas (committed rankings/arena-roadmap.json)', () => {
+  const REAL = path.resolve(__dirname, '../../rankings')
 
   it('returns only tier-1 planned entries that are not already live', () => {
     const live = new Set(['agent-frameworks', 'agent-sandboxes', 'team-chat'])

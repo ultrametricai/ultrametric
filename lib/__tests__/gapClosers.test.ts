@@ -6,7 +6,7 @@ import {
 } from '@/lib/gapClosers'
 import { buildSimSteps, loadProcesses } from '@/lib/processes'
 
-const DATA_DIR = path.resolve(__dirname, '../../data')
+const DATA_DIR = path.resolve(__dirname, '../../rankings')
 
 const step = (label: string, route: GapStep['route'] = 'form', async?: boolean): GapStep =>
   ({ label, route, async })

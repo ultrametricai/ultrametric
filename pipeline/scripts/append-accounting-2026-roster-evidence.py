@@ -303,7 +303,7 @@ PROBES = {
 
 def main():
     for product in ('freshbooks', 'zoho-books', 'wave', 'digits', 'kick', 'mercury-books', 'bench', 'quickbooks'):
-        path = f'data/accounting/evidence/{product}.json'
+        path = f'rankings/accounting/evidence/{product}.json'
         ev = json.load(open(path))
         existing = {e['id'] for e in ev}
 

@@ -37,7 +37,7 @@ ITEMS = {
 }
 
 for (category, pid), items in ITEMS.items():
-    path = f'data/{category}/evidence/{pid}.json'
+    path = f'rankings/{category}/evidence/{pid}.json'
     ev = json.load(open(path))
     existing = {e['id'] for e in ev}
     appended = 0

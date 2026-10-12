@@ -1,5 +1,5 @@
 // Arena-section curation invariants against the REAL data files: every arena in
-// data/categories.json is assigned to exactly one section in data/arena-sections.json (an
+// rankings/categories.json is assigned to exactly one section in rankings/arena-sections.json (an
 // unassigned arena would silently vanish from the header's Rankings dropdown; a duplicate would
 // render twice), no section references an unknown arena, and the section count stays in the
 // curated ~8–10 band the menu was designed for. The dropdown-search filter cases moved to the
@@ -11,8 +11,8 @@ import { loadCategories } from '../data'
 const SECTIONS = loadArenaSections() // the real curated file
 const CATEGORY_IDS = loadCategories().map((c) => c.id)
 
-describe('data/arena-sections.json', () => {
-  it('assigns every arena in data/categories.json exactly once (total coverage, no dupes)', () => {
+describe('rankings/arena-sections.json', () => {
+  it('assigns every arena in rankings/categories.json exactly once (total coverage, no dupes)', () => {
     const assigned = SECTIONS.flatMap((s) => s.arenaIds)
     expect(new Set(assigned).size, 'no arena appears in two sections').toBe(assigned.length)
     expect([...assigned].sort()).toEqual([...CATEGORY_IDS].sort())

@@ -13,9 +13,9 @@
  *    enumeration only. No fill, no clicks, no submits of any kind.
  *
  * Outputs:
- *  - data/experiments/computer-use/<step-id>.json   per-step result
- *  - data/experiments/computer-use/<step-id>.png    viewport screenshot (evidence)
- *  - data/experiments/computer-use/feasibility-report.json  aggregate
+ *  - rankings/experiments/computer-use/<step-id>.json   per-step result
+ *  - rankings/experiments/computer-use/<step-id>.png    viewport screenshot (evidence)
+ *  - rankings/experiments/computer-use/feasibility-report.json  aggregate
  *
  * Run: pnpm tsx pipeline/scripts/computer-use-feasibility.ts
  * (playwright resolved from .proof-scratch/node_modules in the main checkout)
@@ -428,7 +428,7 @@ const DETECT_BLOCKERS_JS = `
 // Runner
 // ---------------------------------------------------------------------------
 
-const OUT_DIR = join(REPO_ROOT, 'data', 'experiments', 'computer-use')
+const OUT_DIR = join(REPO_ROOT, 'rankings', 'experiments', 'computer-use')
 
 function classify(t: StepTest, r: Omit<StepResult, 'outcome' | 'blockedAt' | 'automationCeiling'>): {
   outcome: Outcome

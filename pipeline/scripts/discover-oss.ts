@@ -2,14 +2,14 @@
 // Sweeps GitHub's most-starred repos (a global stars:>15000 pass plus per-topic passes) via
 // `gh api search/repositories` (authenticated CLI, same pattern as pipeline/stages/
 // popularity.ts), filters out non-products (awesome lists, books, tutorials, interview prep),
-// classifies each survivor into an EXISTING arena (data/categories.json) or a PROPOSED new
+// classifies each survivor into an EXISTING arena (rankings/categories.json) or a PROPOSED new
 // arena using pure string heuristics — NO LLM calls — and captures cheap signals (llms.txt
 // served by homepage or repo root, MCP/CLI mentions). Output:
-//   - data/oss-candidates.json  (all candidates, sorted by stars desc)
+//   - rankings/oss-candidates.json  (all candidates, sorted by stars desc)
 //   - docs/OSS-COVERAGE.md      (top-50 uncovered table + ranked new-arena suggestions)
 // Re-runnable and rate-limit-aware: total `gh api` requests are hard-capped (MAX_GH_REQUESTS)
 // and search calls are paced under GitHub's 30-req/min search limit. Discovery only — this
-// script never edits any data/<category>/products.json.
+// script never edits any rankings/<category>/products.json.
 //
 // Run: pnpm exec tsx pipeline/scripts/discover-oss.ts
 import { execFileSync } from 'node:child_process'
@@ -690,7 +690,7 @@ function buildMarkdown(
   lines.push(`- GitHub search results swept: ${stats.rawResults} (${stats.unique} unique repos)`)
   lines.push(`- Usable software products after filtering: ${stats.filtered}`)
   lines.push(`- Already covered by an existing arena: ${stats.covered}`)
-  lines.push(`- Full candidate list: \`data/oss-candidates.json\``)
+  lines.push(`- Full candidate list: \`rankings/oss-candidates.json\``)
   lines.push('')
   lines.push('## Top 50 not-yet-covered candidates by target arena')
   lines.push('')

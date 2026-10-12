@@ -6,7 +6,7 @@ import {
   battleSlug, findBattleBySlug, isPopulated, leadingBattle, loadAll, loadCategories, loadCategory, parseBattleSlug,
 } from '@/lib/data'
 
-const REAL = path.resolve(__dirname, '../../data')
+const REAL = path.resolve(__dirname, '../../rankings')
 let tmp: string | undefined
 afterEach(() => { if (tmp) fs.rmSync(tmp, { recursive: true, force: true }); tmp = undefined })
 

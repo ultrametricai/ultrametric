@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # One-shot helper for the agentic-commerce arena bring-up (2026-09-14): appends probe-tier
-# evidence items distilled from the recorded runtime probes in data/agentic-commerce/proofs/
+# evidence items distilled from the recorded runtime probes in rankings/agentic-commerce/proofs/
 # (see pipeline/probes/agentic-commerce.ts — all 23 recorded probes passed). Run AFTER
 # `pnpm pipeline probe --category agentic-commerce` — that stage wholesale-replaces probe-tier
 # evidence and would wipe these items (re-run this script after any probe refresh).
@@ -155,7 +155,7 @@ ITEMS = {
 
 def main():
     for product, items in ITEMS.items():
-        path = f'data/agentic-commerce/evidence/{product}.json'
+        path = f'rankings/agentic-commerce/evidence/{product}.json'
         ev = json.load(open(path))
         have = {e['id'] for e in ev}
         added = 0

@@ -35,16 +35,16 @@ a GitHub Action) still has to do the deeper check described below: add the evide
 If you'd rather skip the prefilled link, you can also open an issue manually using the
 [Contest a Verdict](./.github/ISSUE_TEMPLATE/contest-verdict.md) template. Fill in:
 
-- `category` and `product` (must match the ids in `data/categories.json` / `data/{category}/products.json`)
-- `story id` (from `data/{category}/stories.json`)
-- the current verdict (tier + quality, from `data/{category}/verdicts.json`)
+- `category` and `product` (must match the ids in `rankings/categories.json` / `rankings/{category}/products.json`)
+- `story id` (from `rankings/{category}/stories.json`)
+- the current verdict (tier + quality, from `rankings/{category}/verdicts.json`)
 - your proposed verdict
 - evidence URLs and quotes supporting your proposal
 
 **Flow:**
 
 1. You open the issue with the fields above.
-2. A maintainer reviews it against the cited evidence in `data/{category}/evidence/{product}.json`.
+2. A maintainer reviews it against the cited evidence in `rankings/{category}/evidence/{product}.json`.
 3. If your evidence is new or better, the maintainer (or you, via a PR — see below) adds it
    to the product's evidence file and re-judges:
    ```bash
@@ -95,7 +95,7 @@ statements. Full governance: [`docs/VENDOR-RESPONSES.md`](./docs/VENDOR-RESPONSE
 If you have a source (docs, changelog, GitHub, a hands-on write-up) that should change a
 verdict, you can propose it directly as a PR:
 
-1. Fork/branch, then edit `data/{category}/evidence/{product}.json` to add your evidence
+1. Fork/branch, then edit `rankings/{category}/evidence/{product}.json` to add your evidence
    item. Each item needs:
    - `id` — a unique, stable id (convention: `{product}-{tier-prefix}-{n}`, e.g. `claude-code-docs-20`)
    - `tier` — one of `claimed-docs`, `github`, `community`, `probe`
@@ -128,7 +128,7 @@ The judge cache (`pipeline/cache/judge/`) **is committed** to the repo, keyed by
   `judge --product <product>` run will therefore re-send **all** of that product's stories to
   the LLM, not only the one your new evidence supports. Approximate cost: one LLM call per
   story in the category (currently ~42–57 depending on category — see
-  `data/{category}/stories.json` length), each a small JSON-mode call. This is expected
+  `rankings/{category}/stories.json` length), each a small JSON-mode call. This is expected
   and intentional (it keeps the judge honest about re-evaluating the whole pack); budget
   for it — a single-evidence-item PR is not a single-LLM-call PR.
 
@@ -151,8 +151,8 @@ and you're done. A maintainer takes it from there.
 
 ### 3b. PR path: add yourself directly
 
-One file gets you in: append an entry to `data/<arena>/products.json` (ranking ids live in
-`data/categories.json`; if no ranking fits, open a [Submit a product](./.github/ISSUE_TEMPLATE/request-a-product.yml)
+One file gets you in: append an entry to `rankings/<arena>/products.json` (ranking ids live in
+`rankings/categories.json`; if no ranking fits, open a [Submit a product](./.github/ISSUE_TEMPLATE/request-a-product.yml)
 issue proposing a new one instead). A real, current entry for shape reference:
 
 ```jsonc
@@ -334,13 +334,13 @@ pnpm test
 `ANTHROPIC_API_KEY` is only needed for the LLM-driven pipeline stages (`extract`,
 `normalize`, `collect-community`, `judge`) run locally. It is **never** required to work on
 the data, and it must **never** be set on the site's Vercel project — the deployed site
-serves pre-computed static `data/` and makes no LLM calls at build or request time.
+serves pre-computed static `rankings/` and makes no LLM calls at build or request time.
 
 ## Style: schemas are law
 
 Every data file (`categories.json`, `products.json`, `stories.json`, `evidence/*.json`,
 `verdicts.json`, `rankings.json`) is validated against a Zod schema in `lib/schemas.ts`.
-Before opening a PR that touches any `data/` file, run:
+Before opening a PR that touches any `rankings/` file, run:
 
 ```bash
 pnpm test

@@ -1,6 +1,6 @@
 // Stage 1 of the YC ingestion lane: pull the full YC public company directory from the keyless
 // yc-oss/api mirror, cache the raw feed (pipeline/cache/yc/, gitignored), and distill the modern
-// batches (W23–S26) into data/yc-map.json with mappedArena/proposedArena left null — that's
+// batches (W23–S26) into rankings/yc-map.json with mappedArena/proposedArena left null — that's
 // pipeline/scripts/yc-classify.ts's job. Run with: tsx pipeline/scripts/yc-fetch.ts
 import fs from 'node:fs'
 import path from 'node:path'
@@ -9,7 +9,7 @@ import { ROOT, writeJson } from '../paths'
 import { batchCode, MODERN_BATCHES, YC_ALL_COMPANIES_URL, type YcRawCompany } from '../yc-shared'
 
 const CACHE_DIR = path.join(ROOT, 'pipeline', 'cache', 'yc')
-const YC_MAP_PATH = path.join(ROOT, 'data', 'yc-map.json')
+const YC_MAP_PATH = path.join(ROOT, 'rankings', 'yc-map.json')
 
 async function fetchAllCompanies(): Promise<YcRawCompany[]> {
   const res = await fetch(YC_ALL_COMPANIES_URL)

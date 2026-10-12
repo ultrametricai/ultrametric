@@ -13,11 +13,11 @@ import type { LocalProbe } from '../probes/types'
 // it runs the product's own CLI on this machine — version prints, headless-mode help, real MCP
 // stdio initialize handshakes — and, when UM_RECORD=1, captures the session through the BSD
 // `script` pty recorder so the resulting transcript is a faithful terminal capture, published
-// at data/<category>/proofs/ (layout + sanitization contract: lib/proofs.ts).
+// at rankings/<category>/proofs/ (layout + sanitization contract: lib/proofs.ts).
 //
 // Deliberately opt-in and side-effect-light:
 //   - without UM_RECORD=1 it only runs the probes and prints pass/fail (a dry run);
-//   - it never touches data/<category>/evidence/*.json — proof metadata lives in sidecar JSON
+//   - it never touches rankings/<category>/evidence/*.json — proof metadata lives in sidecar JSON
 //     until the schema integration phase (docs/PROVE-IT.md, phase 2), because lib/schemas.ts
 //     is owned by another lane;
 //   - probes only run for binaries already installed on PATH, and every child process gets a

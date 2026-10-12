@@ -9,7 +9,7 @@ anyone, and expiring after 180 days.
 The current implementation: the suite is `ultrametric-cli certify` (the CLI lives in its own
 repo; the maintainer-side implementation the weekly sweep runs is
 `pipeline/scripts/certify.ts`), the
-registry is `data/<arena>/certifications.json` (`CertificationSchema` in
+registry is `rankings/<arena>/certifications.json` (`CertificationSchema` in
 `lib/certifications.ts`, loaded tolerant-optionally by `lib/data.ts`), the public listing is
 [/certified](https://ultrametric.ai/certified), intake is the
 [Certification](../.github/ISSUE_TEMPLATE/certification.yml) issue form, and badges come from
@@ -56,8 +56,8 @@ Certification is claims-with-receipts, so the protocol is deliberately symmetric
    command — and diffs the per-check statuses against the submitted report. Content digests
    will legitimately differ for dynamic bodies; the check statuses and level must match. A
    mismatch is discussed on the issue (transient flakes get one re-run), not papered over.
-4. **On a match**, one PR commits: the registry entry in `data/<arena>/certifications.json`,
-   the maintainer's re-run report at `data/<arena>/cert-reports/<productId>.json` (served at
+4. **On a match**, one PR commits: the registry entry in `rankings/<arena>/certifications.json`,
+   the maintainer's re-run report at `rankings/<arena>/cert-reports/<productId>.json` (served at
    `/data/<arena>/cert-reports/<productId>.json` like every dataset file — that's the
    `reportUrl`), and the regenerated badge.
 

@@ -6,7 +6,7 @@ import {
   vendorGeoFor, vendorGeoLookup,
 } from '@/lib/vendorGeo'
 
-const DATA_DIR = path.resolve(__dirname, '../../data')
+const DATA_DIR = path.resolve(__dirname, '../../rankings')
 
 // The vendor-geo spike (founder 2026-09-28): region-availability EVIDENCE for the top vendors
 // of the geo-sensitive arenas, committed at jurisdictions/vendor-geo.json since stage 2 of the

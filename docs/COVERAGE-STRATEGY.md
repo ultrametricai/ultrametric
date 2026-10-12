@@ -1,7 +1,7 @@
 # Coverage Strategy: an AI-first taxonomy at G2 scale
 
 This document explains how Ultrametric grows from 11 live rankings to 180+ planned rankings
-(`data/arena-roadmap.json`), how our taxonomy relates to G2's, why ours is organized differently,
+(`rankings/arena-roadmap.json`), how our taxonomy relates to G2's, why ours is organized differently,
 and the runner architecture that gets us to 100+ live rankings in roughly three months.
 
 ## 1. The G2 tree, and how we obtained it
@@ -110,11 +110,11 @@ classic battles with huge comparison-search demand (Slack vs Teams, Datadog vs G
 
 ## 3. Roadmap file
 
-`data/arena-roadmap.json` — 184 entries: 11 live (mirroring `data/categories.json`) + 173 planned
+`rankings/arena-roadmap.json` — 184 entries: 11 live (mirroring `rankings/categories.json`) + 173 planned
 (tier 1: 30, tier 2: 62, tier 3: 81). Each entry: `{id, name, tier, status, g2Equivalent,
 candidateProducts, rationale, aiEraAngle}`. Candidate products are seeds for the arena-builder,
 not final rosters — the seeding stage verifies each product's URLs before it enters the pipeline.
-Because `scripts/copy-data.mjs` mirrors `data/` into `public/data/`, the roadmap is automatically
+Because `scripts/copy-data.mjs` mirrors `rankings/` into `public/data/`, the roadmap is automatically
 served at `/data/arena-roadmap.json` for agents to consume.
 
 ## 4. Runner architecture for scaling
@@ -131,7 +131,7 @@ evidence costs zero LLM calls — a quiet ranking refresh is nearly free.
 
 A second scheduled workflow, `arena-builder.yml`, that converts roadmap entries into live rankings:
 
-1. **Pick** — read `data/arena-roadmap.json`; select the first `status: "planned"` entry by tier
+1. **Pick** — read `rankings/arena-roadmap.json`; select the first `status: "planned"` entry by tier
    (1 → 2 → 3) then array order, skipping any id with an open `arena-builder/<id>` PR (idempotent
    under failures; `workflow_dispatch` input can override the pick).
 2. **Seed** — one LLM pass drafts the `categories.json` entry (description, personas, themes —
@@ -145,8 +145,8 @@ A second scheduled workflow, `arena-builder.yml`, that converts roadmap entries 
 3. **Run** — the same nine pipeline stages story-runner uses, via `pipeline/cli.ts`.
 4. **Gate** — `pnpm test` + `pipeline/scripts/recompute-check.ts` must pass; the PR body includes
    the leaderboard and flags low-evidence cells.
-5. **PR** — branch `arena-builder/<id>`; the PR adds the ranking to `data/categories.json`, adds
-   `data/<id>/`, and flips the roadmap entry to `status: "live"`. **Never a direct push** — a
+5. **PR** — branch `arena-builder/<id>`; the PR adds the ranking to `rankings/categories.json`, adds
+   `rankings/<id>/`, and flips the roadmap entry to `status: "live"`. **Never a direct push** — a
    human reviews product roster sanity, story quality, and verdict plausibility (same bias-audit
    discipline as the live rankings) before merge. Merging automatically enrolls the ranking in
    story-runner's rotation.

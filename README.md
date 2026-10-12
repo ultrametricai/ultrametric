@@ -37,7 +37,7 @@ each one, is it testable, and do the vendor's claims match what we found hands-o
 rankings order products by how automatable they are, and every verdict can be contested.
 
 <!-- arenas:start -->
-**96 rankings** today, 657 products judged head to head — the full index is [ultrametric.ai/arenas](https://ultrametric.ai/arenas), and each ranking's records live under [`data/`](data/).
+**96 rankings** today, 657 products judged head to head — the full index is [ultrametric.ai/arenas](https://ultrametric.ai/arenas), and each ranking's records live under [`rankings/`](rankings/).
 <!-- arenas:end -->
 
 [ultrametric.ai/overall](https://ultrametric.ai/overall)
@@ -204,7 +204,7 @@ Government agencies are judged like vendors (the IRS, Companies House, HMRC, the
 Handelsregister), with per-country boards comparing how well each agency works for a
 founder or an agent.
 
-[ultrametric.ai/arena/government-services](https://ultrametric.ai/arena/government-services) · [`data/government-services/`](data/government-services/)
+[ultrametric.ai/arena/government-services](https://ultrametric.ai/arena/government-services) · [`rankings/government-services/`](rankings/government-services/)
 
 ## Startup ecosystem
 
@@ -273,7 +273,7 @@ Finer-grained rankings, recorded probe sessions published on product pages, runt
 conformance testing behind the agent-readiness scores, and continuous re-judging as
 evidence lands.
 
-[`data/arena-roadmap.json`](data/arena-roadmap.json) · [`docs/COVERAGE-STRATEGY.md`](docs/COVERAGE-STRATEGY.md)
+[`rankings/arena-roadmap.json`](rankings/arena-roadmap.json) · [`docs/COVERAGE-STRATEGY.md`](docs/COVERAGE-STRATEGY.md)
 
 ## License
 

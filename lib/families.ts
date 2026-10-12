@@ -2,7 +2,7 @@ import fs from 'node:fs'
 import path from 'node:path'
 import { z } from 'zod'
 
-// Product families (data/product-families.json): one entry per multi-product vendor whose
+// Product families (rankings/product-families.json): one entry per multi-product vendor whose
 // lines are genuinely separate experiences (Stripe → Payments/Terminal/Billing/Atlas…,
 // Mercury → banking/cards/invoicing, Block → Square/Cash App). A family is a DISPLAY-ONLY
 // breakdown rendered at /family/[id]: it never feeds lib/scoring.ts, and a sub-product judged
@@ -72,7 +72,7 @@ export type Family = z.infer<typeof FamilySchema>
 export type FamilySubProduct = z.infer<typeof FamilySubProductSchema>
 export type FamilyProductRef = z.infer<typeof FamilyProductRefSchema>
 
-export function loadFamilies(dataDir = path.join(process.cwd(), 'data')): Family[] {
+export function loadFamilies(dataDir = path.join(process.cwd(), 'rankings')): Family[] {
   const raw = JSON.parse(fs.readFileSync(path.join(dataDir, 'product-families.json'), 'utf8'))
   return FamiliesSchema.parse(raw)
 }

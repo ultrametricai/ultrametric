@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # Processors + GPUs arena bring-up (2026-09): appends probe-tier evidence items distilled from
-# the recorded keyless probes in data/{processors,gpus}/proofs/ (see pipeline/probes/
+# the recorded keyless probes in rankings/{processors,gpus}/proofs/ (see pipeline/probes/
 # {processors,gpus}.ts — hardware has no API/CLI/MCP surface, so the honest probes are
 # spec-page liveness with an expected model string, two toolchain-docs liveness checks, and one
 # recorded FINDING: Qualcomm's spec page serves a JS shell to any non-browser fetcher).
@@ -54,7 +54,7 @@ ITEMS = {
 
 for cat, products in ITEMS.items():
     for pid, items in products.items():
-        path = f'data/{cat}/evidence/{pid}.json'
+        path = f'rankings/{cat}/evidence/{pid}.json'
         existing = json.load(open(path)) if os.path.exists(path) else []
         have = {e['id'] for e in existing}
         added = 0

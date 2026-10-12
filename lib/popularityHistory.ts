@@ -1,4 +1,4 @@
-// Loader + pure series helpers for data/{cat}/popularity-history.jsonl — the one-line-per-
+// Loader + pure series helpers for rankings/{cat}/popularity-history.jsonl — the one-line-per-
 // product-per-run star/download snapshots appended by pipeline/stages/popularity.ts (see its
 // PopularityHistoryLine). Same tolerant-optional contract as lib/scoreHistory.ts: a category
 // without the file resolves to an empty map, a product with no lines to undefined — display
@@ -22,7 +22,7 @@ export type PopularityHistoryLine = z.infer<typeof PopularityHistoryLineSchema>
 
 export const POPULARITY_HISTORY_FILE = 'popularity-history.jsonl'
 
-const DEFAULT_DIR = () => path.join(process.cwd(), 'data')
+const DEFAULT_DIR = () => path.join(process.cwd(), 'rankings')
 
 // Blank lines tolerated (trailing-newline append convention); a malformed line is a real error —
 // the file is machine-written only, same stance as lib/scoreTrend.ts's parseScoreHistoryJsonl.
