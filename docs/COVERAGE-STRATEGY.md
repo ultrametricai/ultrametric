@@ -125,7 +125,7 @@ served at `/data/arena-roadmap.json` for agents to consume.
 `run_number % categories.length`, re-runs the full pipeline (crawl → extract → normalize →
 collect-community → probe → judge → claims → popularity → derive), and opens a PR only if data
 changed. The judge's `cellHash` cache (story + evidence + prompt version) means unchanged
-evidence costs zero LLM calls — a quiet ranking refresh is nearly free.
+evidence triggers zero LLM calls: a quiet ranking refresh re-judges nothing.
 
 ### Proposed: arena-builder (growth)
 
@@ -151,33 +151,25 @@ A second scheduled workflow, `arena-builder.yml`, that converts roadmap entries 
    discipline as the live rankings) before merge. Merging automatically enrolls the ranking in
    story-runner's rotation.
 
-### Cost model (judge tokens dominate)
+### Run scope (judge tokens dominate)
 
-Assumptions: Sonnet-class judge (`pipeline/llm.ts` default `claude-sonnet-5`), ~$3/M input,
-~$15/M output; live rankings average ~5 products × ~80 stories = **~400 judge cells**; a cell sends
+Live rankings average ~5 products × ~80 stories = **~400 judge cells**; a cell sends
 story + rubric + evidence excerpts (~5-6k input) and returns a structured verdict (~0.4k output).
-
-| Item | Tokens | Cost |
-|---|---|---|
-| Judge, fresh ranking (~400 cells) | ~2.3M in / ~0.16M out | **~$9-10** |
-| Extract + claims + probe assists | ~0.5-1M in | ~$2-4 |
-| Seeding (category, products, stories) | ~0.2M in / ~0.1M out | ~$2 |
-| **Fresh ranking, total** | | **~$13-16 (budget $20)** |
-| Refresh run (cellHash: 5-15% cells moved) | ~0.1-0.35M in | **~$1-3** |
+The judge stage dominates a fresh ranking's LLM traffic; extract, claims, probe assists, and
+seeding together add well under half as much again. A refresh run moves only 5-15% of cells
+(cellHash), so its traffic is a small fraction of a fresh build.
 
 ### Cadence to 100+ rankings in ~3 months
 
 - **arena-builder: 1/day** (`cron: '23 5 * * *'`), pausing itself when >3 arena-builder PRs are
   open (human review is the real throttle, ~10-15 min/PR). 30 tier-1 rankings land in the first
   month; ~90 days x ~1 merge/day → **~101 live rankings by early December 2026**, finishing tier 1
-  and most of tier 2. Build cost: ~90 rankings × ~$15 ≈ **$1,350**.
-- **story-runner: keep 6-hourly** (4 refreshes/day, ~$8-12/day). At 100 rankings a flat rotation
+  and most of tier 2.
+- **story-runner: keep 6-hourly** (4 refreshes/day). At 100 rankings a flat rotation
   revisits each ranking only every ~25 days, so add **tier-weighted rotation**: tier-1-live rankings
   enter the rotation array 3x, so they refresh roughly weekly while the tail refreshes monthly.
-  When budget allows, move to hourly (`'17 * * * *'`) for ~4-day whole-catalog freshness at
-  ~$50-70/day worst case — cellHash keeps quiet rankings near-free, so realistic spend is lower.
-- **Total ~3-month spend: ~$2-2.5k** ($1.35k build + ~$0.7-1k refresh) — roughly the cost of one
-  G2 review-campaign gift-card batch, for 100 evidence-based rankings.
+  Moving to hourly (`'17 * * * *'`) gives ~4-day whole-catalog freshness; cellHash keeps quiet
+  rankings from re-judging.
 
 ### Failure and quality valves
 

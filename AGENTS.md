@@ -111,7 +111,7 @@ popularity). The LLM stages (`extract`, `normalize`, `collect-community`, `judge
 need `ANTHROPIC_API_KEY` in a local `.env`. That key is local-pipeline-only: it must
 never be set on the Vercel project, and the deployed site never calls the Anthropic
 API. Verdicts are cache-keyed on their evidence, so re-judging without new evidence
-is wasted spend; scope runs with `--product` where possible. After a contributed
+reproduces the same verdicts; scope runs with `--product` where possible. After a contributed
 correction, the minimal flow is `judge --product` then `derive`, not a full
 category re-run (see CONTRIBUTING.md).
 
