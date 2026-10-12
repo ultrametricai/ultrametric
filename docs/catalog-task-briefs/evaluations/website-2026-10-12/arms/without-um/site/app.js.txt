@@ -1,0 +1,107 @@
+import { buildDraft, samples, conversationStarter, contactDestination } from "./workorder.mjs";
+import { siteConfig } from "./config.mjs";
+
+const form = document.querySelector("#request-form");
+const workspace = document.querySelector("#example-workspace");
+const status = document.querySelector("#draft-status");
+const createButton = document.querySelector("#create-draft");
+const reviewChecks = [...document.querySelectorAll('input[name="review"]')];
+let draftIsCurrent = true;
+
+function showDraft(input, announcement) {
+  const draft = buildDraft(input);
+  for (const field of ["title", "property", "location", "description"]) {
+    document.querySelector(`#draft-${field}`).textContent = draft[field];
+  }
+  draftIsCurrent = true;
+  reviewChecks.forEach((checkbox) => { checkbox.checked = false; checkbox.disabled = false; });
+  document.querySelector(".result-card").classList.remove("is-stale");
+  createButton.firstChild.textContent = "Update example draft ";
+  status.textContent = announcement;
+}
+
+function markChanged() {
+  draftIsCurrent = false;
+  reviewChecks.forEach((checkbox) => { checkbox.checked = false; checkbox.disabled = true; });
+  document.querySelector(".result-card").classList.add("is-stale");
+  status.textContent = "Request changed. Update the example draft to review the new details.";
+  document.querySelectorAll("[data-sample]").forEach((button) => {
+    button.classList.remove("is-active");
+    button.setAttribute("aria-pressed", "false");
+  });
+}
+
+form.addEventListener("input", markChanged);
+form.addEventListener("change", () => {
+  // Some browsers emit only a change event for select controls.
+  if (draftIsCurrent) markChanged();
+});
+form.addEventListener("submit", (event) => {
+  event.preventDefault();
+  if (!form.reportValidity()) return;
+  try {
+    showDraft(Object.fromEntries(new FormData(form)), "Example draft updated. Review the details below; nothing has been sent or saved.");
+  } catch (error) {
+    status.textContent = error.message;
+  }
+});
+
+document.querySelectorAll("[data-sample]").forEach((button) => {
+  button.addEventListener("click", () => {
+    const sample = samples[button.dataset.sample];
+    for (const [key, value] of Object.entries(sample)) form.elements.namedItem(key).value = value;
+    showDraft(sample, `${button.textContent} example loaded. Review the details and try changing the request.`);
+    document.querySelectorAll("[data-sample]").forEach((other) => {
+      const isActive = other === button;
+      other.classList.toggle("is-active", isActive);
+      other.setAttribute("aria-pressed", String(isActive));
+    });
+  });
+});
+
+reviewChecks.forEach((checkbox) => {
+  checkbox.addEventListener("change", () => {
+    if (!draftIsCurrent) return;
+    const checked = reviewChecks.filter((item) => item.checked).length;
+    status.textContent = checked === reviewChecks.length
+      ? "Example review complete. Nothing has been sent or saved. You decide what happens next."
+      : `${checked} of ${reviewChecks.length} review notes checked. Nothing has been sent or saved.`;
+  });
+});
+
+const destination = contactDestination(siteConfig);
+if (destination) {
+  const action = document.querySelector("#contact-action");
+  action.replaceChildren();
+  const link = document.createElement("a");
+  link.className = "button button-light";
+  link.href = destination.href;
+  link.textContent = `${destination.label} ↗`;
+  action.append(link);
+  const hint = document.createElement("p");
+  hint.className = "contact-note";
+  hint.textContent = destination.kind === "email" ? "Opens an email draft for you to review and send." : "Opens our discovery booking page.";
+  action.append(hint);
+} else {
+  const copyButton = document.querySelector("#copy-conversation");
+  copyButton.hidden = false;
+  copyButton.addEventListener("click", async () => {
+    const contactStatus = document.querySelector("#contact-status");
+    try {
+      if (!navigator.clipboard?.writeText) throw new Error("Clipboard unavailable");
+      await navigator.clipboard.writeText(conversationStarter);
+      contactStatus.textContent = "Conversation starter copied. No message has been sent.";
+      document.querySelector("#copy-fallback").hidden = true;
+    } catch {
+      const text = document.querySelector("#conversation-text");
+      document.querySelector("#copy-fallback").hidden = false;
+      text.value = conversationStarter;
+      text.focus();
+      text.select();
+      contactStatus.textContent = "Automatic copying is unavailable. Copy the selected text below. No message has been sent.";
+    }
+  });
+}
+
+document.querySelector("#year").textContent = new Date().getFullYear();
+workspace.hidden = false;

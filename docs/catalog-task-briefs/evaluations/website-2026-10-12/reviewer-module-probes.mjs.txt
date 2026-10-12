@@ -1,0 +1,28 @@
+import assert from 'node:assert/strict';
+import {pathToFileURL} from 'node:url';
+const site = process.argv[2];
+const {buildDraft,samples,contactDestination} = await import(pathToFileURL(site+'/workorder.mjs').href);
+const {siteConfig} = await import(pathToFileURL(site+'/config.mjs').href);
+const passed=[];
+for (const [category,sample] of Object.entries(samples)) {
+  const draft=buildDraft(sample);
+  assert.equal(draft.description,sample.description); assert.equal(draft.property,sample.property);
+  assert.equal(draft.location,sample.location);assert.equal(draft.status,'Needs your review');
+  assert.deepEqual(Object.keys(draft).sort(),['description','location','property','status','title']);
+}
+passed.push('All authored samples retain input facts, require review and infer no priority or assignment');
+const input={property:'  Test building ',location:' Unit A ',description:'<img src=x onerror=alert(1)>',category:'general'};
+const draft=buildDraft(input);assert.equal(draft.property,'Test building');assert.equal(draft.description,input.description);assert(Object.isFrozen(draft));
+passed.push('Trimmed text preserves arbitrary description as a string; frozen return object');
+for (const patch of [{property:' '},{location:''},{description:'short'},{description:'x'.repeat(801)},{property:'x'.repeat(81)},{category:'toString'}]) assert.throws(()=>buildDraft({...input,...patch}));
+assert.throws(()=>buildDraft(null));
+passed.push('Blank, short, long, unsupported category and absent inputs rejected');
+assert.equal(contactDestination(siteConfig),null);
+passed.push('Frozen empty contact configuration offers no destination');
+for (const bookingUrl of ['https://example.com/a','https://fieldnote-work.example/a','http://booking.fieldnote-work.com/a','javascript:alert(1)','https://user:pass@booking.fieldnote-work.com/a','https://localhost/a']) assert.equal(contactDestination({bookingUrl,contactEmail:''}),null);
+for (const contactEmail of ['hello@fieldnote-work.example','hello@example.com','not-an-email']) assert.equal(contactDestination({contactEmail,bookingUrl:''}),null);
+passed.push('Reserved, non-HTTPS, embedded-credential and malformed destination examples rejected');
+const route=contactDestination({bookingUrl:'https://booking.fieldnote-work.com/synthetic-check',contactEmail:''});assert.equal(route.kind,'booking');
+const mail=contactDestination({contactEmail:'review@fieldnote-work.com',bookingUrl:''});assert.equal(mail.kind,'email');assert(mail.href.startsWith('mailto:'));
+passed.push('Syntactically accepted synthetic config constructs booking or mail draft URL without opening it; destination ownership and delivery unverified');
+console.log(JSON.stringify({passed,networkCalls:0,browserUsed:false},null,2));
