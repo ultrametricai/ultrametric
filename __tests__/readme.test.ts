@@ -23,6 +23,10 @@ const INTRO = [
   '[process](#processes) step by step, the [vendors](#vendors) ranked, and the',
   '[open modules](#open-modules) underneath.**',
   '',
+  // The mission line joined the intro in founder round 4 (explicitly authorized intro edit).
+  'The aim: make starting and running a company agentic, automated, and standardized across',
+  'geographies.',
+  '',
   '- **Use it:** [ultrametric.ai](https://ultrametric.ai) has [the processes](https://ultrametric.ai/processes) · [the rankings](https://ultrametric.ai/overall) · [the simulator](https://ultrametric.ai/startup-sim)',
   '- **Improve it:** the open startup repo, [CONTRIBUTING.md](./CONTRIBUTING.md). Contest a verdict, add your country, add a module.',
   '- **For agents:** open data, no keys. `curl https://ultrametric.ai/data/categories.json` ([use it from an agent](#use-it-from-an-agent))',
@@ -42,12 +46,13 @@ const SECTIONS = [
   '## Video demo',
   '## Open vendor rankings',
   '## Open processes',
-  '## Examples',
   '## Open modules',
   '## Open artifacts',
   '## Situations',
   '## Open lore',
   '## Open law',
+  '## Government services and startups',
+  '## Startup ecosystem',
   '## Open startup simulator',
   '## Open skills for startups',
   '## Install Ultrametric',
@@ -58,6 +63,7 @@ const SECTIONS = [
 
 // Demoted to subsections inside their parent sections (founder rounds 2 and 3).
 const SUBSECTIONS: Array<[string, string]> = [
+  ['## Open processes', '### Examples'],
   ['## Open modules', '### Shared data fields'],
   ['## Open artifacts', '### Open docs'],
   ['## Situations', '### Example: Founder country switch'],
@@ -230,7 +236,9 @@ describe('README.md examples pin to the committed records', () => {
   const slug = (title: string) => title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '')
 
   it('the three example links resolve to real processes via their derived slugs', () => {
-    for (const id of ['startup_001', 'brand_001', 'fund_007']) {
+    // Founder round 4: the formal picks — Incorporate C-Corp, Get a 409A valuation,
+    // Set up mailing address (all three verified 200 on the live site, 2026-10-12).
+    for (const id of ['form_001', 'fund_003', 'qs_044']) {
       const rec = corpus.find((t) => t.id === id)
       expect(rec, `corpus record ${id} missing`).toBeDefined()
       expect(readme).toContain(`https://ultrametric.ai/processes/${slug(rec!.title)}`)

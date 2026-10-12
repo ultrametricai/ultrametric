@@ -4,6 +4,9 @@
 [process](#processes) step by step, the [vendors](#vendors) ranked, and the
 [open modules](#open-modules) underneath.**
 
+The aim: make starting and running a company agentic, automated, and standardized across
+geographies.
+
 - **Use it:** [ultrametric.ai](https://ultrametric.ai) has [the processes](https://ultrametric.ai/processes) · [the rankings](https://ultrametric.ai/overall) · [the simulator](https://ultrametric.ai/startup-sim)
 - **Improve it:** the open startup repo, [CONTRIBUTING.md](./CONTRIBUTING.md). Contest a verdict, add your country, add a module.
 - **For agents:** open data, no keys. `curl https://ultrametric.ai/data/categories.json` ([use it from an agent](#use-it-from-an-agent))
@@ -52,19 +55,23 @@ probes, code, docs, and community reports, with every verdict contestable.
 Every founder process as a step-by-step graph: each step routed agent, form, or human,
 timed, graded for reversibility, and wired to the ranked vendors that can run it.
 
+The processes and the rankings cross-reference: each step lists its vendor options with
+their judged scores, and [`processes/vendor-registry.json`](processes/vendor-registry.json)
+maps every step's vendors to the market that ranks them.
+
 [ultrametric.ai/processes](https://ultrametric.ai/processes) · [`processes/`](processes/)
 
 ![The founder processes on ultrametric.ai, each with its phase, agentic share, step count, and vendors](docs/assets/readme/processes-index.png)
 
-## Examples
+### Examples
 
 Three processes end to end:
 
-- [Validate the idea](https://ultrametric.ai/processes/validate-the-idea) — picking the startup to work on
-- [Generate a company name](https://ultrametric.ai/processes/generate-a-company-name) — picking a brand name
-- [Apply to Y Combinator](https://ultrametric.ai/processes/apply-to-y-combinator) — the YC application, step by step
+- [Incorporate C-Corp](https://ultrametric.ai/processes/incorporate-c-corp) — set up a Delaware C-corp, filing to signed 83(b)
+- [Get a 409A valuation](https://ultrametric.ai/processes/get-a-409a-valuation) — establish the fair market value for stock options
+- [Set up mailing address](https://ultrametric.ai/processes/set-up-mailing-address) — a business mailing address for legal and banking purposes
 
-![The Validate the idea process: the step diagram, each step routed agent or human, with ranked vendor options per step](docs/assets/readme/process-page.png)
+![The Incorporate C-Corp process: the step diagram, each step routed agent, form, or human, with ranked vendor options per step](docs/assets/readme/process-page.png)
 
 <!-- Legacy anchor: external links to #business-logic predate the open-modules/ rename. -->
 <a id="business-logic"></a>
@@ -179,6 +186,22 @@ Dated legal rule cards, one proposition each, every card citing a primary author
 an exact locator; a provider blog cannot establish law.
 
 [`rules/`](rules/) · [`sources/`](sources/)
+
+## Government services and startups
+
+Government agencies are judged like vendors (the IRS, Companies House, HMRC, the
+Handelsregister), with per-country boards comparing how well each agency works for a
+founder or an agent.
+
+[ultrametric.ai/arena/government-services](https://ultrametric.ai/arena/government-services) · [`data/government-services/`](data/government-services/)
+
+## Startup ecosystem
+
+The service providers around a startup (law firms, immigration counsel, accountants,
+banks) are ranked in their own markets and wired to the process steps they serve through
+the vendor registry.
+
+[ultrametric.ai/arena/startup-law-firms](https://ultrametric.ai/arena/startup-law-firms) · [`processes/vendor-registry.json`](processes/vendor-registry.json)
 
 ## Open startup simulator
 
