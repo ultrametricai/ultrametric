@@ -1,0 +1,179 @@
+#!/usr/bin/env python3
+"""Rebuild a local, synthetic pricing preview. Does not access billing systems."""
+
+import argparse
+import calendar
+import csv
+import json
+from datetime import date, timedelta
+from decimal import Decimal, ROUND_HALF_UP
+from pathlib import Path
+
+
+ROOT = Path(__file__).resolve().parents[1]
+NEW_MONTHLY = {"Team": Decimal("129"), "Business": Decimal("299")}
+RATE_LOCK_END = {"C-006": date(2027, 2, 1)}
+
+
+def money(value):
+    return str(value.quantize(Decimal("0.01"), rounding=ROUND_HALF_UP))
+
+
+def advance(anchor, count, period):
+    months = count if period == "month" else count * 12
+    index = anchor.year * 12 + anchor.month - 1 + months
+    year, month0 = divmod(index, 12)
+    month = month0 + 1
+    return date(year, month, min(anchor.day, calendar.monthrange(year, month)[1]))
+
+
+def eligible_renewal(row, notice_date):
+    # Calendar-date assumption only; delivery timestamps/provider behavior unverified.
+    earliest = max(notice_date + timedelta(days=30), date(2026, 11, 1),
+                   RATE_LOCK_END.get(row["commitment_ref"], date.min))
+    anchor = date.fromisoformat(row["renewal"])
+    count = 0
+    while advance(anchor, count, row["period"]) < earliest:
+        count += 1
+    return advance(anchor, count, row["period"])
+
+
+def write_csv(path, rows):
+    with path.open("w", newline="", encoding="utf-8") as handle:
+        writer = csv.DictWriter(handle, fieldnames=list(rows[0]))
+        writer.writeheader()
+        writer.writerows(rows)
+
+
+def build(notice_date, output_dir):
+    with (ROOT / "billing/subscriptions.csv").open(newline="", encoding="utf-8") as handle:
+        subscriptions = list(csv.DictReader(handle))
+    assert len({r["subscription_id"] for r in subscriptions}) == len(subscriptions)
+    for row in subscriptions:
+        if row["period"] not in ("month", "year"):
+            raise ValueError("Unknown billing period")
+        if row["status"] not in ("active", "past_due", "cancel_at_period_end"):
+            raise ValueError("Unknown subscription status; review required")
+        if row["commitment_ref"] not in ("standard", "annual", "C-003", "C-006"):
+            raise ValueError("Unknown commitment; review required")
+
+    impact, forecast, summaries = [], [], {}
+    for basis in ("pre_discount", "post_discount"):
+        modeled = []
+        for row in subscriptions:
+            factor = Decimal("1") - Decimal(row["discount_percent"]) / Decimal("100")
+            listed = Decimal(row["amount_usd"])
+            current = listed * factor if basis == "pre_discount" else listed
+            multiplier = Decimal("12") if row["period"] == "year" else Decimal("1")
+            new_list = NEW_MONTHLY[row["plan"]] * (10 if row["period"] == "year" else 1)
+            new_net = new_list * factor
+            candidate = eligible_renewal(row, notice_date)
+            if row["status"] == "active":
+                disposition = "preview_candidate_pending_decision_and_notice"
+                target = candidate
+            elif row["status"] == "past_due":
+                disposition = "hold_past_due_reconcile_and_recalculate_before_change"
+                target = None
+            else:
+                disposition = "exclude_cancels_at_period_end"
+                target = None
+            blockers = ["Synthetic data", "Founder decision pending", "Notice not sent", "Provider trial pending"]
+            if row["commitment_ref"] == "C-003":
+                blockers.append("Confirm whether CSV amount is before or after discount; preserve 20% indefinitely")
+            if row["commitment_ref"] == "C-006":
+                blockers.append("Preserve fixed USD 99 through commitment ending 2027-02-01")
+            if row["period"] == "year":
+                blockers.append("Preserve current annual term; no midterm repricing")
+            if row["status"] == "past_due":
+                blockers.append("Reconcile arrears; preserve existing invoice amounts; refresh renewal and notice eligibility")
+            if row["status"] == "cancel_at_period_end":
+                blockers.append("Honor cancellation; no migration or reactivation")
+
+            impact.append({
+                "scenario_amount_basis": basis,
+                "subscription_id": row["subscription_id"], "customer": row["customer"],
+                "plan": row["plan"], "period": row["period"], "status": row["status"],
+                "commitment_ref": row["commitment_ref"],
+                "source_amount_usd": money(listed), "discount_percent_retained": row["discount_percent"],
+                "current_net_per_period_usd": money(current),
+                "proposed_list_per_period_usd": money(new_list),
+                "proposed_net_per_period_usd": money(new_net),
+                "potential_delta_per_period_usd": money(new_net-current),
+                "current_normalized_mrr_usd": money(current/multiplier),
+                "potential_delta_normalized_mrr_usd": money((new_net-current)/multiplier),
+                "source_renewal": row["renewal"], "assumed_notice_sent_date": notice_date.isoformat(),
+                "notice_plus_30_calendar_days": (notice_date+timedelta(days=30)).isoformat(),
+                "first_date_eligible_renewal_if_retained": candidate.isoformat(),
+                "preview_change_date": target.isoformat() if target else "",
+                "latest_calendar_notice_date_for_candidate": (candidate-timedelta(days=30)).isoformat(),
+                "disposition": disposition, "checks_before_change": "; ".join(blockers),
+            })
+            modeled.append({"row": row, "current": current/multiplier,
+                            "new": new_net/multiplier, "target": target})
+
+        active = [m for m in modeled if m["row"]["status"] == "active"]
+        baseline = sum((m["current"] for m in active), Decimal("0"))
+        eventual = sum((m["new"] for m in active), Decimal("0"))
+        summaries[basis] = {
+            "active_retained_count": len(active),
+            "active_retained_baseline_mrr_usd": money(baseline),
+            "active_retained_eventual_mrr_usd": money(eventual),
+            "active_retained_eventual_mrr_increase_usd": money(eventual-baseline),
+            "active_retained_eventual_mrr_increase_percent": money((eventual/baseline-1)*100),
+            "active_retained_annualized_run_rate_increase_usd": money((eventual-baseline)*12),
+            "all_rows_current_normalized_run_rate_usd": money(sum((m["current"] for m in modeled), Decimal("0"))),
+            "past_due_current_run_rate_held_usd": money(sum((m["current"] for m in modeled if m["row"]["status"] == "past_due"), Decimal("0"))),
+            "cancelling_current_run_rate_excluded_usd": money(sum((m["current"] for m in modeled if m["row"]["status"] == "cancel_at_period_end"), Decimal("0"))),
+        }
+        for month_index in range(7):
+            month_start = advance(date(2026, 10, 1), month_index, "month")
+            month_end = date(month_start.year, month_start.month, calendar.monthrange(month_start.year, month_start.month)[1])
+            total = sum((m["new"] if m["target"] <= month_end else m["current"] for m in active), Decimal("0"))
+            held_past_due = sum((m["current"] for m in modeled if m["row"]["status"] == "past_due"), Decimal("0"))
+            remaining_cancelling = sum((m["current"] for m in modeled if m["row"]["status"] == "cancel_at_period_end" and month_end < date.fromisoformat(m["row"]["renewal"])), Decimal("0"))
+            changes = [m["row"]["subscription_id"] for m in active if month_start <= m["target"] <= month_end]
+            forecast.append({
+                "scenario_amount_basis": basis, "month_end": month_end.isoformat(),
+                "active_retained_baseline_mrr_usd": money(baseline),
+                "active_retained_month_end_mrr_usd": money(total),
+                "increase_vs_same_cohort_baseline_usd": money(total-baseline),
+                "subscriptions_changing_this_month": ";".join(changes),
+                "past_due_and_cancelling_excluded": "S-004;S-005",
+                "held_past_due_nominal_run_rate_usd": money(held_past_due),
+                "remaining_cancelling_nominal_run_rate_usd": money(remaining_cancelling),
+                "all_rows_nominal_run_rate_including_held_past_due_usd": money(total+held_past_due+remaining_cancelling),
+                "measure": "Month-end normalized subscription run rate; not cash, collections, or recognized revenue",
+            })
+
+    summary = {
+        "synthetic": True, "snapshot_date": "2026-10-10", "currency": "USD",
+        "assumed_notice_date": notice_date.isoformat(), "notice_sent": False,
+        "new_buyer_target_date": "2026-11-01", "billing_provider_confirmed": False,
+        "scenarios": summaries,
+        "assumptions": [
+            "These outputs are illustrative and do not authorize or execute billing changes.",
+            "30 full calendar days modeled from notice date; exact delivery time/timezone and notice receipt requirements require verification.",
+            "Renewal anchors repeat as supplied; refresh source dates/statuses before execution.",
+            "Annual prices are ten times monthly list prices; annual run rate divides net annual amount by twelve.",
+            "C-003 retains its recurring 20% discount on the new list price without an end date.",
+            "C-006 is not repriced before the first eligible renewal after its fixed-rate commitment.",
+            "Active retained cohort excludes past_due S-004 and cancelling S-005 at both baseline and forecast.",
+            "All-row nominal bridge holds S-004 at USD 249 despite unknown collectibility and treats S-005's listed renewal as its cancellation date.",
+            "No new customers, further churn, upgrades/downgrades, taxes, fees, refunds, usage, proration, or collections modeled.",
+            "Each scenario is an alternative interpretation; do not sum scenarios.",
+        ],
+    }
+    output_dir.mkdir(parents=True, exist_ok=True)
+    write_csv(output_dir / "subscription-impact.csv", impact)
+    write_csv(output_dir / "monthly-run-rate.csv", forecast)
+    (output_dir / "impact-summary.json").write_text(json.dumps(summary, indent=2)+"\n", encoding="utf-8")
+    return summary
+
+
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--notice-date", required=True, type=date.fromisoformat,
+                        help="Hypothetical actual send date (YYYY-MM-DD); no notices are sent")
+    parser.add_argument("--output-dir", type=Path, default=Path(__file__).resolve().parent)
+    args = parser.parse_args()
+    print(json.dumps(build(args.notice_date, args.output_dir), indent=2))
