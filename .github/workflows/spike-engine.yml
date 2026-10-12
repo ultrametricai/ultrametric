@@ -92,6 +92,12 @@ jobs:
       - name: Regenerate vendor-review interchange records
         run: pnpm tsx pipeline/scripts/generate-vendor-reviews.ts
 
+      # Same contract as story-runner: a keyed spike pass re-judges, which can flip
+      # story→product verdicts, an input of data/graph.json. Regenerate before the
+      # byte-identity tests; a rank-only run regenerates byte-identically (no diff).
+      - name: Regenerate the story graph artifact
+        run: pnpm tsx pipeline/scripts/generate-story-graph.ts
+
       - name: Tests
         run: pnpm test
 
