@@ -23,7 +23,7 @@ workspace, never here.
 | `vendors/` | The evidence layer + the scenario-scoped review interchange format |
 | `templates/` | Contribution starting points |
 | `schemas/` | JSON Schema contracts for processes, rules, sources, vendor reviews |
-| `fixtures/` | Fictional companies and events only |
+| `processes/fixtures/` | Fictional companies and events only |
 | `governance/` | Review policy, evidence doctrine, agent policy, security |
 
 The surfaces over the corpus live beside it: the Next.js site at `app/` (+ `components/`,
