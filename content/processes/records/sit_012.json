@@ -4,14 +4,18 @@
   "kind": "process",
   "title": "Migrate off a shutting-down vendor",
   "summary": "A vendor sunset is a deadline you didn't choose: the end-of-service date and the (usually shorter) data-export window are in the notice, and the export is the step that cannot wait — do it before the deadline crunch, whatever else slips. Then it's a normal migration run under pressure: choose the replacement from the live market, stand it up, run old and new in parallel through one business cycle, cut over, and only then cancel — getting the data deletion confirmed in writing (that confirmation is the irreversible step, deliberately last).",
-  "outcomes": [],
-  "guidance": null,
+  "outcomes": [
+    "A recoverable export with a dated manifest of records, relationships, attachments and completeness checks.",
+    "A replacement mapping and import reconciliation, with representative workflow and recovery evidence.",
+    "A cutover decision after the agreed parallel-run checks, with cancellation and retention/deletion evidence only when actually authorized and completed."
+  ],
+  "guidance": "Record the shutdown date, the separate export deadline, the systems that depend on the vendor and the permitted destination for its data. Preserve a usable export before spending the remaining window on replacement selection. Verify import integrity and business behavior, then observe the agreed parallel-run window before authorizing cutover or cancellation. A local migration rehearsal is useful evidence but does not establish a completed business cycle, real cutover or provider deletion. Preserve record identifiers and keep an owner, evidence and unresolved decision with each stage.",
   "parts": [
     {
       "id": "n1",
       "kind": "step",
       "title": "Read the shutdown notice: the end-of-service date, the data-export window, and what your contract promises",
-      "guidance": null,
+      "guidance": "Read the actual notice and contract for shutdown, export, support and retention dates, including timezone. Identify the earlier deadline that could make recovery impossible and the services, integrations, owners and data affected. Confirm existing account/export permissions and the authorized data destination. Resolve ambiguous dates with the owner while preparing a safe export; do not infer an extension or new service commitment.",
       "when": null,
       "ref": null,
       "options": [],
@@ -27,11 +31,31 @@
       "id": "n2",
       "kind": "step",
       "title": "Export your data now — not in the deadline crunch",
-      "guidance": null,
+      "guidance": "Export through a supported API or authorized account interface while access remains available. Preserve the raw export and capture its source account, time, scope, pagination/completion state, record counts and attachment hashes. Include relationships, configuration and identifiers needed to restore the business workflow. Check for missing pages, corrupt files and inaccessible records; counts alone cannot prove completeness. Mark gaps explicitly and keep a usable copy in the authorized destination before proceeding.",
       "when": null,
       "ref": null,
       "options": [],
-      "notes": [],
+      "notes": [
+        {
+          "text": "Use the shutdown situation to prioritize recoverability, then select the arena evidence for the actual vendor. UM's CRM full-export verdict illustrates a consequential gap: readable contacts and import documentation do not establish export of attachments, relationships and all other objects. Build the source inventory from this company's usage and compare it with the documented export coverage. Preserve uncovered objects as explicit migration blockers, and carry that coverage check through restore, parallel operation and cutover. A successful export request alone does not establish recoverability.",
+          "references": [
+            {
+              "kind": "url",
+              "url": "https://github.com/ultrametricai/ultrametric/blob/6b8b3d854f555e743bfd1c589f1ae1b57a0e1c61/data/crm/verdicts.json",
+              "title": "UM CRM full-export coverage gaps",
+              "description": "Pinned UM source; retain evidence tier and observation date, and refresh consequential facts.",
+              "role": "source"
+            },
+            {
+              "kind": "url",
+              "url": "https://github.com/ultrametricai/ultrametric/blob/6b8b3d854f555e743bfd1c589f1ae1b57a0e1c61/data/crm/evidence/hubspot.json",
+              "title": "Evidence to scope a CRM export",
+              "description": "Pinned UM source; retain evidence tier and observation date, and refresh consequential facts.",
+              "role": "source"
+            }
+          ]
+        }
+      ],
       "references": [],
       "metadata": {
         "route": "agent",
@@ -43,7 +67,7 @@
       "id": "n3",
       "kind": "step",
       "title": "Choose the replacement from the live market",
-      "guidance": null,
+      "guidance": "Choose a replacement against the workflows, data model, integrations, budget and deadline already recorded. Reuse the vendor-selection process for consequential unknowns. Verify import/export support and the specific plan or access needed, with a small synthetic or cleared sample where possible. A shortlist or successful sign-in is not a working replacement; record any unsupported requirement before committing to a route.",
       "when": null,
       "ref": null,
       "options": [],
@@ -59,7 +83,7 @@
       "id": "n4",
       "kind": "step",
       "title": "Migrate: stand up the replacement, import the data, re-point the integrations",
-      "guidance": null,
+      "guidance": "Map stable source identifiers, fields, relationships, attachment references, permissions and timezones to the replacement. Start in a permitted test destination and import a representative sample, then reconcile the full permitted import against the export manifest. Check content hashes and relationship integrity as well as counts. Retain a per-item result ledger and inspect destination state after uncertain responses before retrying. Re-point test integrations and prove a restore path; leave production endpoints and the old source intact until cutover is authorized.\n\nChoose the authoritative system for writes during migration. Capture a baseline watermark and a repeatable delta export or a planned write freeze; include creations, edits, deletions, attachments and permission changes. Keep shadow tests from sending duplicate notifications or triggering live downstream actions. Reconcile changed records by stable identifier, not only total counts.",
       "when": null,
       "ref": null,
       "options": [],
@@ -73,10 +97,27 @@
       }
     },
     {
+      "id": "n7",
+      "kind": "step",
+      "title": "Run and verify the parallel-run window",
+      "guidance": "Agree the business cycle, minimum observation period and acceptance checks with the operational owner before running old and new in parallel. Compare the required reads, updates, permissions and downstream results, and record discrepancies and their resolution. Complete the actual observation window before presenting the cutover decision. A simulated clock or replay is a rehearsal only. If time remaining cannot support the agreed window, escalate that constraint rather than silently skipping the check.\n\nKeep normal business writes in the designated source unless an explicitly approved synchronization scheme covers both systems. Track any test or destination-only writes so they can be discarded or reconciled deliberately. Verify that updates after the first export reach the replacement and that the recovery plan preserves work created after switching.",
+      "when": null,
+      "ref": null,
+      "options": [],
+      "notes": [],
+      "references": [],
+      "metadata": {
+        "route": "person",
+        "reversibility": "reversible",
+        "async": true,
+        "estimatedMinutes": 10080
+      }
+    },
+    {
       "id": "n5",
       "kind": "step",
-      "title": "Run old and new in parallel through one business cycle, then cut over",
-      "guidance": null,
+      "title": "Review the parallel-run results and cut over",
+      "guidance": "Review the completed parallel-run evidence, reconciled data, integration checks, unresolved exceptions and tested recovery path with the cutover owner. Obtain authority for the exact production changes and timing, then switch only that scope. Verify the primary business workflow and destination state after the change. Stop or recover on failed checks; retain the old service and export until the owner accepts the result and retention requirements are resolved.\n\nAt the approved cutover window, freeze source writes or establish the agreed final watermark, transfer and reconcile the final delta, and rerun permission and business-task checks before switching traffic. If recovery is needed, pause destination writes and preserve/reconcile post-switch changes before reopening the old source. If the shutdown deadline makes a safe parallel run impossible, deliver the verified archive and a continuity decision to the owner; record the reduced assurance and obtain an explicit revised cutover decision.",
       "when": null,
       "ref": null,
       "options": [],
@@ -92,7 +133,7 @@
       "id": "n6",
       "kind": "step",
       "title": "Cancel the old contract and get the data deletion confirmed in writing",
-      "guidance": null,
+      "guidance": "After accepted cutover and the agreed observation checks, have the owner confirm cancellation scope, contract obligations, export retention and any deletion request. Preserve the recovery data the company is required and authorized to keep. Cancel or request deletion only through the approved account process, then retain the provider’s actual confirmation and effective date. A submitted request is not proof of cancellation or deletion. Keep unconfirmed items with an owner and follow-up; never delete the only recoverable copy.",
       "when": null,
       "ref": null,
       "options": [],
@@ -103,23 +144,6 @@
         "reversibility": "irreversible",
         "riskLevel": "medium",
         "estimatedMinutes": 30
-      }
-    },
-    {
-      "id": "n7",
-      "kind": "step",
-      "title": "Wait out the parallel-run window",
-      "guidance": null,
-      "when": null,
-      "ref": null,
-      "options": [],
-      "notes": [],
-      "references": [],
-      "metadata": {
-        "route": "person",
-        "reversibility": "reversible",
-        "async": true,
-        "estimatedMinutes": 10080
       }
     }
   ],
@@ -141,17 +165,17 @@
     },
     {
       "from": "n4",
+      "to": "n7",
+      "when": null
+    },
+    {
+      "from": "n7",
       "to": "n5",
       "when": null
     },
     {
       "from": "n5",
       "to": "n6",
-      "when": null
-    },
-    {
-      "from": "n6",
-      "to": "n7",
       "when": null
     }
   ],
