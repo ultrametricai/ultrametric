@@ -1,13 +1,3 @@
-<!-- BEGIN:nextjs-agent-rules -->
-
-# This is NOT the Next.js you know
-
-This version has breaking changes — APIs, conventions, and file structure may all differ from your training data. Read the relevant guide in `node_modules/next/dist/docs/` (resolved from this file's directory; in monorepos the `next` package may not be visible from the repo root) before writing any code. Heed deprecation notices.
-
-This block is written and re-added by `next dev` — verify at `node_modules/next/dist/server/lib/generate-agent-files.js`. Removing it from a diff only re-creates the uncommitted change; committing it with your work keeps the tree clean.
-
-<!-- END:nextjs-agent-rules -->
-
 # House rules
 
 These bind every agent and contributor working in this repo.
@@ -35,17 +25,17 @@ These bind every agent and contributor working in this repo.
 All of these must exit 0 before any merge to main:
 
 1. `pnpm recompute-check` (derived data deterministic)
-2. `pnpm tsc --noEmit`
+2. `pnpm typecheck`
 3. `pnpm lint` (0 errors)
-4. `pnpm vitest run --maxWorkers=2`
-5. `pnpm shared:check` when `content/processes/` or the shared corpus is touched
+4. `pnpm test --maxWorkers=2`
+5. `pnpm manifest:check` (every tracked path classified in `open-manifest.json`)
+6. `pnpm shared:check` when `content/processes/` or the shared corpus is touched
 
 Never gate an `&&` chain on echoed text — test the tool's exit code.
 
 ## Workflow
 
 - Every change lands as a branch + pull request. No direct commits to main.
-- One `next build` at a time machine-wide; worktree lanes never build.
 - Authored records in `content/processes/` are never overwritten by catalog regeneration:
   refresh only source-mirrored metadata and re-bless the manifest
   (see `scripts/shared-processes/import.py`, authored-record conflict rule).
@@ -78,22 +68,19 @@ need it.
 
 Ultrametric is the open startup repo: step-by-step founder processes (`processes/`),
 agent-tested vendor rankings (`data/`, `vendors/`, `pipeline/`), and open, source-cited
-business logic (`lib/openstartup/`, `rules/`, `sources/`), rendered by a Next.js static
-site. The knowledge layer (plain JSON and markdown, schema-validated in CI) is the
-product; the site only renders it. The README has the full map.
+business logic (`lib/openstartup/`, `rules/`, `sources/`). The knowledge layer (plain JSON
+and markdown, schema-validated in CI) is the product. The site that renders it at
+ultrametric.ai is maintained in a private repo, which materializes this repo's open
+surface at a pinned commit via `scripts/sync-open.mjs` and `open-manifest.json`; UI and
+page changes happen there. The README has the full map.
 
 ## Setup and everyday commands
 
 ```bash
 pnpm install
-pnpm dev        # http://localhost:3000 (predev mirrors data/ into public/data/)
 pnpm test       # vitest run: schema, scoring, and founder-ops gates
 pnpm stats      # regenerates the README stats/arenas blocks and badges
 ```
-
-`public/data/` is a gitignored build artifact produced by `scripts/copy-data.mjs`;
-do not commit it and do not expect it to exist before a dev or build run. Per the
-house rules, worktree lanes do not run `pnpm build`.
 
 ## Schemas are law
 
