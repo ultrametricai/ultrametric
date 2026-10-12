@@ -118,7 +118,7 @@ popularity, plus `pipeline/scripts/` and `pipeline/cache/`) stays OPEN.
 - Keys: `ANTHROPIC_API_KEY` is local/Actions-secret only, never committed and never set
   on Vercel (existing rule, unchanged). The keyless loops stay keyless. `pipeline/cache/`
   (judge caches keyed on evidence) stays OPEN: it is how a third party replays a verdict
-  without spend, and it is already published.
+  without an API key, and it is already published.
 
 ### Hard case: the lib split
 

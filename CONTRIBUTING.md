@@ -113,23 +113,23 @@ verdict, you can propose it directly as a PR:
    A maintainer will sanity-check the diff (does the new verdict follow from the
    cited excerpt?) before merging.
 
-### About the judge cache and re-judge cost
+### About the judge cache and re-judge scope
 
 The judge cache (`pipeline/cache/judge/`) **is committed** to the repo, keyed by a hash of
 `(storyId, story title, the product's full evidence array, prompt version)` — the
 *whole* evidence pack, not only the item(s) you cite. This has two consequences:
 
-- **If you haven't touched a product's evidence, re-running `judge` for it is free** (all
-  cells are cache hits — no LLM calls, no `ANTHROPIC_API_KEY` even needed to hit the fast
+- **If you haven't touched a product's evidence, re-running `judge` for it makes no LLM
+  calls** (all cells are cache hits — no `ANTHROPIC_API_KEY` even needed to hit the fast
   path). This is why the judge cache is tracked in git: everyone shares the same cache and
-  doesn't re-pay for verdicts nobody changed.
+  doesn't re-run verdicts nobody changed.
 - **If you add/edit/remove even one evidence item for a product, every cell hash for that
   product changes** — because the hash covers the full pack, not only the changed item. A
   `judge --product <product>` run will therefore re-send **all** of that product's stories to
-  the LLM, not only the one your new evidence supports. Approximate cost: one LLM call per
+  the LLM, not only the one your new evidence supports. Approximate scope: one LLM call per
   story in the category (currently ~42–57 depending on category — see
   `rankings/{category}/stories.json` length), each a small JSON-mode call. This is expected
-  and intentional (it keeps the judge honest about re-evaluating the whole pack); budget
+  and intentional (it keeps the judge honest about re-evaluating the whole pack); plan
   for it — a single-evidence-item PR is not a single-LLM-call PR.
 
 <a id="add-your-vendor"></a>
