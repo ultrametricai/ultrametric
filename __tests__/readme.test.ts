@@ -174,6 +174,29 @@ describe('README.md section-guide tables (founder round 2)', () => {
       expect(row, `docs row ${useCase} has no publisher link`).toMatch(/\]\(https:\/\//)
     }
   })
+
+  it('the Open lore table rows match lore/library.json sections, each example URL a committed entry', () => {
+    const section = sectionBody('## Open lore')
+    expect(section).toContain('| Section | What it teaches | Example entry |')
+    const library = JSON.parse(
+      fs.readFileSync(path.join(ROOT, 'lore', 'library.json'), 'utf8'),
+    ) as { sections: Array<{ title: string; covers: string }>; entries: Array<{ url: string }> }
+    expect(library.sections.length).toBeGreaterThan(0)
+    for (const s of library.sections) {
+      expect(section, `lore table is missing section ${s.title}`).toContain(`| ${s.title} | ${s.covers} |`)
+    }
+    // One row per library section, and every example link is a committed library entry.
+    const rows = section
+      .split('\n')
+      .filter((l) => l.startsWith('| ') && !l.startsWith('| Section') && !l.startsWith('| ---'))
+    expect(rows.length).toBe(library.sections.length)
+    const urls = new Set(library.entries.map((e) => e.url))
+    for (const row of rows) {
+      const link = row.match(/\]\((https:\/\/[^)]+)\)/)
+      expect(link, `lore row carries no example link: ${row.slice(0, 50)}`).toBeTruthy()
+      expect(urls.has(link![1]), `example URL is not a library entry: ${link![1]}`).toBe(true)
+    }
+  })
 })
 
 describe('README.md generated blocks', () => {
