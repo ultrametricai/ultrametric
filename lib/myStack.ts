@@ -17,33 +17,13 @@
 //     share of the score rests on no evidence) is NOT actionable — upgrade/break-out recs are
 //     suppressed rather than recommending on footing we've said is thin.
 import { isShutdown } from './shutdown'
-import { stackPairKey } from './stackBuilder'
+// The catalog-row shape, stack-map shape, pick accessor, and pair-key format live in
+// lib/stackShared.ts (open — the process/battle derivations read them too); re-exported here
+// so this module stays the one entry point for the My Stack API.
+import { stackPairKey, stackPicks, type MyStackProduct, type StackMap } from './stackShared'
 
-// One catalog row — the lean serialized shape both /my-stack and /stacks/battle receive as a
-// prop (built server-side by lib/myStackData.ts). A product ranked in two arenas (e.g. square
-// in payments AND mobile-payments) has one row per arena; pick resolution takes the first row
-// (categories order), the same canonical-arena convention as lib/alternatives.ts.
-export interface MyStackProduct {
-  id: string
-  name: string
-  vendor: string
-  arenaId: string
-  arenaName: string
-  type: 'oss' | 'commercial' | 'government'
-  /** Overall score from the arena leaderboard (null = not scored yet). */
-  aiEra: number | null
-  agentReady: number | null
-  /** Evidence-confidence grade for the score's footing — see lib/confidence.ts. */
-  confidence: 'A' | 'B' | 'C' | 'D'
-  /** 1-based position in the arena leaderboard (its canonical order) and the field size. */
-  rank: number
-  fieldSize: number
-  hasLogo: boolean
-  /** The verified shutdown note (lib/schemas.ts ProductSchema) when the vendor announced it is
-   *  closing — never offered as an upgrade/leader/add (lib/shutdown.ts founder rule); a reader
-   *  who RUNS one gets MIGRATE advice on top. */
-  shutdown?: string
-}
+export { stackPairKey, stackPicks }
+export type { MyStackProduct, StackMap }
 
 // Everything the engine needs besides the reader's picks. adjacency/curatedStackArenas carry
 // the arena-id vocabulary of data/adjacent-arenas.json clusters and data/ai-stacks.json slot
@@ -469,8 +449,6 @@ export function parseStoredStack(raw: string | null): string[] {
 // parseStackMap accepts BOTH shapes — from localStorage AND from the KV payload — migrating a
 // bare string to a one-element array losslessly; serialization always writes v2 arrays.
 
-export type StackMap = Record<string, string[]>
-
 export const STACK_KEY = 'pa-account-stack'
 export const STACK_API = '/api/my-stack'
 // Same-tab change event — localStorage's 'storage' event only fires in OTHER tabs.
@@ -517,12 +495,7 @@ export function serializeStackMap(stack: StackMap): string {
   return JSON.stringify(Object.fromEntries(Object.entries(stack).sort(([a], [b]) => a.localeCompare(b))))
 }
 
-// ---- pick helpers (client-safe, pure) ----
-
-/** The ordered picks for one arena — [] when the arena has none. */
-export function stackPicks(stack: StackMap, arenaId: string): string[] {
-  return stack[arenaId] ?? []
-}
+// ---- pick helpers (client-safe, pure; stackPicks itself lives in lib/stackShared.ts) ----
 
 /** "Is this A pick" — the v2 replacement for every stack[arenaId] === productId equality. */
 export function isPicked(stack: StackMap, arenaId: string, productId: string): boolean {

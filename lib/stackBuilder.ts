@@ -3,6 +3,7 @@
 // CategoryData): this composes a stack interactively in the browser from the same lean
 // CompareProduct list /compare uses (lib/compareData.ts), so it must stay free of node builtins.
 import type { CompareProduct } from './compare'
+import { stackPairKey } from './stackShared'
 
 export type StackMetric = 'agentReady' | 'aiEra'
 
@@ -152,12 +153,10 @@ export function stackAgentReadiness(results: RoleResult[]): number | null {
 
 // ---- interconnect check (verified integration edges between the stack's picks) ----
 
-// Same 'a|b' sorted-pair format as lib/integrations.ts's pairKey/verifiedPairKeys (that module
-// is server-only — it reads data/ with fs — so the one-liner is mirrored here for the client;
-// lib/__tests__/stackBuilder.test.ts cross-checks the two formats against each other).
-export function stackPairKey(a: string, b: string): string {
-  return [a, b].sort().join('|')
-}
+// Same 'a|b' sorted-pair format as lib/integrations.ts's pairKey/verifiedPairKeys — the
+// one-liner lives in lib/stackShared.ts (open) and is re-exported here for existing callers;
+// lib/__tests__/integrations.test.ts cross-checks the two formats against each other.
+export { stackPairKey }
 
 export interface InterconnectPair {
   aId: string

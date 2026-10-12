@@ -11,7 +11,7 @@ import {
 } from '@/lib/processes'
 import { stepRanking } from '@/lib/processRankings'
 import { verdictGaps } from '@/lib/humanSteps'
-import { showComputerUseChips } from '@/lib/humanStepsUi'
+import { showComputerUseChips } from '@/lib/humanSteps'
 import { buildSimRun, LEGAL_SIGNATURE_WHY } from '@/lib/processSim'
 
 const DATA_DIR = path.resolve(__dirname, '../../data')

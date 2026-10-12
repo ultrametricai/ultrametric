@@ -10,23 +10,11 @@
 
 // ---------- Theme names ----------
 
-// Plain-language display overrides for theme/group ids whose literal humanization is jargon
-// (founder 2026-09-30: "'action primitives' means nothing to people"). The machine id stays
-// everywhere — URLs, schema fields, data files — only the display text changes, and it changes
-// in ONE place so every render site (matrix headers, product-page cards, checklists, battles,
-// markdown) stays consistent.
-const THEME_LABEL_OVERRIDES: Record<string, string> = {
-  'action-primitives': 'Agent actions',
-}
-
-// 'privacy-posture' → 'Privacy posture' — the ONLY user-facing spelling of a kebab-case
-// theme/group id (dashes never reach the UI). First word capitalized, the rest left as-is.
-export function humanizeTheme(theme: string): string {
-  const override = THEME_LABEL_OVERRIDES[theme]
-  if (override !== undefined) return override
-  const words = theme.replace(/-/g, ' ')
-  return words.charAt(0).toUpperCase() + words.slice(1)
-}
+// The display-name logic (overrides + humanization) lives in lib/themeLabels.ts (open — the
+// corpus derivations label theme groups too); re-exported here so the icon system keeps one
+// entry point for theme naming.
+import { humanizeTheme } from './themeLabels'
+export { humanizeTheme }
 
 // ---------- Theme icons ----------
 

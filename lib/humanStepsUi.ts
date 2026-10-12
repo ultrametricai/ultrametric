@@ -16,15 +16,7 @@ export const FEASIBILITY_META: Record<ComputerUseFeasibility, { icon: string; la
   'third-party-wait': { icon: FEASIBILITY_ICONS['third-party-wait'], label: 'third party’s clock', tone: 'zinc' },
 }
 
-// Whether the judged computer-use fleet chips are honest capability evidence for this node:
-// only where the blocker is mechanical (an agent could drive or prep it). Where the blocker is
-// authority, physics, or someone else's clock, showing "could attempt it today" misleads —
-// and a legally-required signature act (DagNode.legalSignature, the founder's true human
-// floor) NEVER shows chips, whatever its audited feasibility says about the mechanical part.
-export function showComputerUseChips(
-  feasibility: ComputerUseFeasibility | undefined,
-  legalSignature?: boolean,
-): boolean {
-  if (legalSignature) return false
-  return feasibility === undefined || feasibility === 'drivable' || feasibility === 'assist'
-}
+// showComputerUseChips — the honesty rule for the fleet chips — moved to lib/humanSteps.ts
+// (it is an evidence rule over the audit, not display metadata); re-exported for existing
+// component imports.
+export { showComputerUseChips } from './humanSteps'

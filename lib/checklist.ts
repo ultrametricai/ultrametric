@@ -3,7 +3,7 @@
 // surfaced as a buyer priority (3 = must-have, 2 = should-have, 1 = nice-to-have — the same
 // weights lib/scoring.ts multiplies by). Pure and `node:fs`-free, same contract as
 // lib/data-helpers.ts: callers pass CategoryData, tests pass fixtures.
-import { humanizeTheme } from './icons'
+import { humanizeTheme } from './themeLabels'
 import { groupInOrder, stripPersonaPrefix, verdictFor, type CategoryData } from './data-helpers'
 import type { Story, Verdict } from './schemas'
 import { SITE_URL } from './site'
