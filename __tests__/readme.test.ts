@@ -15,21 +15,22 @@ const contributing = fs.readFileSync(path.join(ROOT, 'CONTRIBUTING.md'), 'utf8')
 
 // The intro ("what we are making here and motivations") is preserved byte-for-byte from the
 // pre-rewrite README; edits to it are a founder decision, not a lane decision.
+// Rewritten in founder round 7 (authorized intro edit): one paragraph, each capability
+// named once with one link, no duplicate destinations, the mission line closing it, and
+// the demo gif sitting directly under the intro with no heading or caption.
 const INTRO = [
-  // Banner alt text carries no tagline (founder 2026-10-12: the graphic is the logo alone).
   '![Ultrametric](docs/assets/banner.svg)',
   '',
-  '**Everything a founder (or their agent) needs to start and run a company: every',
-  '[process](#processes) step by step, the [vendors](#vendors) ranked, and the',
-  '[open modules](#open-modules) underneath.**',
-  '',
-  // The mission line joined the intro in founder round 4 (explicitly authorized intro edit).
-  'The aim: make starting and running a company agentic, automated, and standardized across',
-  'geographies.',
-  '',
-  '- **Use it:** [ultrametric.ai](https://ultrametric.ai) has [the processes](https://ultrametric.ai/processes) · [the rankings](https://ultrametric.ai/overall) · [the simulator](https://ultrametric.ai/startup-sim)',
-  '- **Improve it:** the open startup repo, [CONTRIBUTING.md](./CONTRIBUTING.md). Contest a verdict, add your country, add a module.',
-  '- **For agents:** open data, no keys. `curl https://ultrametric.ai/data/categories.json` ([use it from an agent](#use-it-from-an-agent))',
+  'Ultrametric ([ultrametric.ai](https://ultrametric.ai)) is the open startup repo: every',
+  'founder [process](#open-processes) step by step, the [tools](#open-vendor-rankings) and',
+  'the [service providers](#startup-ecosystem) around a company (law firms included) ranked',
+  'by how well an agent can drive them, [company law](#open-law) mapped across',
+  'jurisdictions, the [lore](#open-lore) and its library recorded with sources, the open',
+  '[documents and artifacts](#open-artifacts) collected, the startup',
+  '[calculations](#open-modules) as tested code, all of it replayable in the',
+  '[simulator](https://ultrametric.ai/startup-sim) and readable by',
+  '[agents](#install-ultrametric) without keys. The aim: make starting and running a',
+  'company agentic, automated, and standardized across geographies.',
   '',
   '**Contribution guides:** [Add your vendor](CONTRIBUTING.md#add-your-vendor) · [Add a process](CONTRIBUTING.md#add-a-process) · [Add a jurisdiction](CONTRIBUTING.md#add-a-jurisdiction) · [Add an open module](CONTRIBUTING.md#add-an-open-module)',
   '',
@@ -37,13 +38,14 @@ const INTRO = [
   '',
   '<!-- Legacy anchor: external links to #start-here predate the merge into this map. -->',
   '<a id="start-here"></a>',
+  '',
+  '![A tour of ultrametric.ai at 4x: the simulator founding a company, a process page, a vendor page, a situation, the overall rankings, government services, and open documents](docs/assets/readme/demo.gif)',
 ].join('\n')
 
 // The founder-specified section order (round 3): artifacts directly after modules with the
 // docs catalog folded inside, country-switch and getting-acquired framed as examples.
 const SECTIONS = [
   '## The open startup repo',
-  '## Video demo',
   '## Open vendor rankings',
   '## Open processes',
   '## Open modules',
@@ -113,12 +115,20 @@ describe('README.md structure (founder round 2, 2026-10-12)', () => {
     }
   })
 
-  it('the Video demo section plays the gif without narrating the committed mp4', () => {
-    const section = sectionBody('## Video demo')
-    expect(section).toContain('docs/assets/readme/demo.gif')
-    expect(section).not.toContain('demo.mp4')
+  it('the demo gif sits under the intro with no heading or caption, mp4 committed unnarrated', () => {
+    const beforeFirstSection = readme.slice(0, readme.indexOf('\n## '))
+    expect(beforeFirstSection).toContain('docs/assets/readme/demo.gif')
+    expect(readme).not.toContain('## Video demo')
+    expect(readme).not.toContain('demo.mp4')
     // The full recording stays committed for native upload later.
     expect(fs.existsSync(path.join(ROOT, 'docs', 'assets', 'readme', 'demo.mp4'))).toBe(true)
+  })
+
+  it('the intro links each destination exactly once', () => {
+    const intro = readme.slice(0, readme.indexOf('\n## '))
+    const dests = [...intro.matchAll(/\]\(([^)]+)\)/g)].map((m) => m[1])
+    expect(dests.length).toBeGreaterThan(0)
+    expect(new Set(dests).size, `duplicate intro links: ${dests.join(', ')}`).toBe(dests.length)
   })
 
   it('uses plain language: no insider vocabulary anywhere on the page', () => {
