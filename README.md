@@ -1,4 +1,4 @@
-![Ultrametric — the open startup repo](docs/assets/banner.svg)
+![Ultrametric](docs/assets/banner.svg)
 
 **Everything a founder (or their agent) needs to start and run a company: every
 [process](#processes) step by step, the [vendors](#vendors) ranked, and the
