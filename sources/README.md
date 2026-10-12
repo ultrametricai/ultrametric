@@ -6,8 +6,7 @@ exact provision locator, and the date a human last verified it.
 `registry.json` holds the records: publisher, locator, `issued_on` where known,
 `checked_on`, and an HTTPS link. A legal rule card may only cite `primary-*` sources;
 provider blogs can explain practice but cannot establish law (`kind:
-secondary-practice`). The same doctrine runs the vendor layer one directory over: nothing
-is asserted without a dated, checkable source.
+secondary-practice`).
 
 Contribute here:
 
