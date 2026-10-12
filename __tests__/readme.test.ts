@@ -15,7 +15,8 @@ const contributing = fs.readFileSync(path.join(ROOT, 'CONTRIBUTING.md'), 'utf8')
 // The intro ("what we are making here and motivations") is preserved byte-for-byte from the
 // pre-rewrite README; edits to it are a founder decision, not a lane decision.
 const INTRO = [
-  '![Ultrametric — the open startup repo](docs/assets/banner.svg)',
+  // Banner alt text carries no tagline (founder 2026-10-12: the graphic is the logo alone).
+  '![Ultrametric](docs/assets/banner.svg)',
   '',
   '**Everything a founder (or their agent) needs to start and run a company: every',
   '[process](#processes) step by step, the [vendors](#vendors) ranked, and the',
