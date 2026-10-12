@@ -1,7 +1,10 @@
 # Startup lore
 
 Lore: the heuristics founders actually trade, recorded as sourced claims from named schools
-of thought, with the disagreements between schools kept explicit.
+of thought, with the disagreements between schools kept explicit, and the library of
+essays, guides, books, and talks those claims come from.
+
+## Registry
 
 Every entry in `registry.json` is one school's belief about how to build a company, with a
 named author and a citable work behind it. The registry takes no position on which school
@@ -28,3 +31,37 @@ Contribute here:
 4. Every `processIds` entry must resolve.
 
 Gate: `pnpm vitest run __tests__/lore-registry.test.ts --maxWorkers=2`.
+
+## Library
+
+`library.json` is the curated reading list: the canonical essays, guides, books, and talks
+on building a company, organized into sections. Where the definitive version of a lesson
+is a recorded talk, the entry is the video. Each entry carries `id`, `section`, `title`,
+`author`, `year` (when the work itself or its publisher states one), `format` (`essay`,
+`guide`, `book`, `video`), `url`, `teaches` (one functional sentence on what the work
+argues or shows), `loreIds` (registry heuristics the work grounds), and `processIds`
+(processes it bears on). Cross-links are recorded only where the connection is real; most
+entries carry none.
+
+| Section | Covers |
+| --- | --- |
+| Starting up and ideas | Deciding to start, finding an idea worth working on, and the first weeks of a company |
+| Finding product-market fit | Talking to users, shipping a minimum product, and measuring whether the market pulls |
+| Fundraising | Raising seed and priced rounds: instruments, term sheets, pitching, and runway math |
+| Hiring and culture | Recruiting, interviewing, compensation, and the management systems that scale a team |
+| Growth and distribution | First users, growth loops, channel decay, and when to scale spend and headcount |
+| Pricing and sales | Setting and raising prices, founder-led selling, and building the first sales team |
+| Exits and acquisitions | Deciding whether to sell, running an acquisition process, and life after the deal |
+
+Contribute here:
+
+1. Every URL is fetched and confirmed to resolve to the claimed work before it lands; a
+   dead host or a page that no longer carries the work disqualifies the link (find the
+   current home or leave the entry out). `note` documents host-level caveats.
+2. `teaches` is one sentence on what the work actually argues or shows; titles stay as
+   published.
+3. Sections hold 8-15 entries; the bar is the best entries, not the most.
+4. `loreIds` and `processIds` must resolve, and only record real connections.
+
+Gate: `pnpm vitest run __tests__/lore-library.test.ts --maxWorkers=2` (shape and
+references; URL liveness is checked at authoring time, the test performs no network I/O).

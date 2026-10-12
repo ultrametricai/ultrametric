@@ -167,7 +167,9 @@ and Canada, and adding your country is a schema-gated pull request.
 
 The heuristics founders trade and the episodes behind them, as sourced records: every rule
 of thumb names its school and author, every episode carries a veracity grade, and
-conflicts between schools are recorded on both entries.
+conflicts between schools are recorded on both entries. The library
+([`lore/library.json`](lore/library.json)) collects the essays, guides, books, and talks
+behind them, in sections from starting up through getting acquired.
 
 [`lore/`](lore/) · [`resources/`](resources/)
 
