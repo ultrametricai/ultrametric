@@ -102,3 +102,18 @@ export function verdictGaps(tasks: ProcessTask[], dir?: string): VerdictGaps {
   }
   return out
 }
+
+// Whether the judged computer-use fleet chips are honest capability evidence for a node:
+// only where the blocker is mechanical (an agent could drive or prep it). Where the blocker is
+// authority, physics, or someone else's clock, showing "could attempt it today" misleads —
+// and a legally-required signature act (DagNode.legalSignature, the founder's true human
+// floor) NEVER shows chips, whatever its audited feasibility says about the mechanical part.
+// Lives here (not with the display metadata in lib/humanStepsUi.ts) because it is an evidence
+// rule over the audit, shared with the open shared-processes layer.
+export function showComputerUseChips(
+  feasibility: ComputerUseFeasibility | undefined,
+  legalSignature?: boolean,
+): boolean {
+  if (legalSignature) return false
+  return feasibility === undefined || feasibility === 'drivable' || feasibility === 'assist'
+}

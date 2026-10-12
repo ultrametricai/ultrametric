@@ -1,6 +1,5 @@
 import path from 'node:path'
 import { describe, expect, it } from 'vitest'
-import { GLYPHS } from '@/components/icons/ProcessIcon'
 import { loadChains, loadProcesses } from '@/lib/processes'
 import {
   CADENCE_ICON, CHAIN_ICONS, chainIcon, COMPUTER_USE_ICON, FEASIBILITY_ICONS,
@@ -11,13 +10,10 @@ import { URGENCY_TIERS } from '@/lib/processSim'
 
 const DATA_DIR = path.resolve(__dirname, '../../data')
 
-// A curated icon must be a house token (`pi:<glyph>:<hue>`) naming a DESIGNED glyph — a token
-// pointing at a glyph nobody drew would render the honest-fallback placeholder, which is a
-// design failure, not a rendering choice. parseProcessIconToken also guarantees the hue.
-const resolvesToDesignedGlyph = (s: string) => {
-  const parsed = parseProcessIconToken(s)
-  return parsed !== null && parsed.glyph in GLYPHS
-}
+// A curated icon must be a well-formed house token (`pi:<glyph>:<hue>`). The stronger
+// cross-check that each token names a DESIGNED glyph lives with the glyph registry
+// (components/icons/ProcessIcon.tsx) in the private site repo since the split.
+const resolvesToDesignedGlyph = (s: string) => parseProcessIconToken(s) !== null
 
 describe('process icon coverage (totality over the live corpus)', () => {
   it('every live process has a curated icon resolving to a designed glyph', () => {
@@ -136,15 +132,5 @@ describe('the icon token scheme', () => {
       .toBe(parseProcessIconToken(processIcon('fund_001'))?.glyph)
     expect(parseProcessIconToken(chainIcon('set-up-compliance'))?.glyph)
       .toBe(parseProcessIconToken(processIcon('comp_001'))?.glyph)
-  })
-
-  it('every designed glyph keeps its guiding emoji as fallback/alias data', () => {
-    for (const [id, glyph] of Object.entries(GLYPHS)) {
-      expect(glyph.name.length, `glyph ${id} needs a human name`).toBeGreaterThan(0)
-      expect(
-        glyph.emoji.length > 0 && [...glyph.emoji].some((ch) => (ch.codePointAt(0) ?? 0) > 0x7f),
-        `glyph ${id} needs its guiding emoji`,
-      ).toBe(true)
-    }
   })
 })

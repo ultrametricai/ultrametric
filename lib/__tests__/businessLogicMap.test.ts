@@ -148,23 +148,5 @@ describe('processes/business-logic-map.json step-level totality', () => {
   })
 })
 
-describe("the step chips' rendered label (founder 2026-10-06: 'compute:' read as jargon from nowhere)", () => {
-  const dagSrc = fs.readFileSync(path.join(ROOT, 'components', 'ProcessDag.tsx'), 'utf8')
-
-  it("the row label is 'Open module:' — the chip itself shows the object/function name", () => {
-    expect(dagSrc).toContain('Open module:')
-    // The old label is gone from the render (comments may still tell its history).
-    expect(dagSrc).not.toMatch(/>\s*compute:\s*</)
-  })
-
-  it('the chip tooltip/aria says what it is in one clause and keeps the GitHub deep link + ↗', () => {
-    expect(dagSrc).toContain(
-      'title={`${c.module}.${c.fn} — the open-source module function serving this step`}',
-    )
-    expect(dagSrc).toContain(
-      'aria-label={`${c.module}.${c.fn} — the open-source module function serving this step`}',
-    )
-    expect(dagSrc).toContain('{c.module}.{c.fn} ↗')
-    expect(dagSrc).toContain('href={c.href}')
-  })
-})
+// The step-chip render pins ("Open module:" label, tooltip/aria wording, GitHub deep link)
+// moved to the private site repo with components/ProcessDag.tsx (repo split).

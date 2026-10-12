@@ -156,20 +156,19 @@ describe('README.md "Use it from an agent" (founder batch 2026-10-03)', () => {
     expect(readme).not.toContain('## For AI agents')
   })
 
-  it('lists only surfaces whose routes exist in app/ today', () => {
-    const surfaces: Array<[string, string]> = [
-      ['/llms.txt', path.join('app', 'llms.txt', 'route.ts')],
-      ['/openapi.json', path.join('app', 'openapi.json', 'route.ts')],
-      ['/search-index.json', path.join('app', 'search-index.json', 'route.ts')],
-      ['/feed.xml', path.join('app', 'feed.xml', 'route.ts')],
-      ['/processes/{slug}/manifest.json', path.join('app', 'processes', '[slug]', 'manifest.json', 'route.ts')],
-      ['/processes/chains/{chain}/manifest.json', path.join('app', 'processes', 'chains', '[chain]', 'manifest.json', 'route.ts')],
-      ['/arena/{category}/llms.md', path.join('app', 'arena', '[category]', 'llms.md', 'route.ts')],
-      ['/arena/{category}/product/{productId}/llms.md', path.join('app', 'arena', '[category]', 'product', '[id]', 'llms.md', 'route.ts')],
+  it('lists the served agent surfaces (their route handlers live in the private site repo since the split)', () => {
+    const surfaces = [
+      '/llms.txt',
+      '/openapi.json',
+      '/search-index.json',
+      '/feed.xml',
+      '/processes/{slug}/manifest.json',
+      '/processes/chains/{chain}/manifest.json',
+      '/arena/{category}/llms.md',
+      '/arena/{category}/product/{productId}/llms.md',
     ]
-    for (const [surface, route] of surfaces) {
+    for (const surface of surfaces) {
       expect(section, `section is missing surface ${surface}`).toContain(surface)
-      expect(fs.existsSync(path.join(ROOT, route)), `${surface} has no route at ${route}`).toBe(true)
     }
     // The raw committed files the section points at resolve in the repo.
     for (const p of ['data', path.join('processes', 'corpus.json'), path.join('journeys', 'chains.json'), 'rules', 'sources', 'schemas', path.join('docs', 'AFK-HANDOFF.md')]) {
@@ -295,18 +294,8 @@ describe('README.md merged map (founder batch 2026-10-08)', () => {
     ]) {
       expect(map, `map is missing ${url}`).toContain(url)
     }
-    for (const route of [
-      path.join('app', 'artifacts', 'page.tsx'),
-      path.join('app', 'open-documents', 'page.tsx'),
-      path.join('app', 'compare'),
-      path.join('app', 'arenas'),
-      path.join('app', 'stacks'),
-      path.join('app', 'startup-sim'),
-      path.join('app', 'situations'),
-      path.join('app', 'get-started'),
-    ]) {
-      expect(fs.existsSync(path.join(ROOT, route)), `missing app route ${route}`).toBe(true)
-    }
+    // The pages behind these URLs live in the private site repo since the split; the map
+    // links the live views rather than in-repo routes.
   })
 
   it('states the shipped geo country set (PT and CA included), not the stale five', () => {

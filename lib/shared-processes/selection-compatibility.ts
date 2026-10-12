@@ -3,8 +3,8 @@
 // through the SAME precedence and shutdown rules the canonical page uses
 // (lib/processLens.ts resolveStepVendor) — no second URL encoding, no new store.
 import type { ProcessCheckStep } from '../processCheck'
-import { resolveStepVendor, type LensMap } from '../processLens'
-import type { StackMap } from '../myStack'
+import { resolveStepVendor, type LensMap } from '../processLensCore'
+import type { StackMap } from '../stackShared'
 
 export interface SelectionContract {
   groups: Array<{ scope: string; arenaId: string; candidates: string[] }>

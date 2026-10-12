@@ -2,8 +2,6 @@ import fs from 'node:fs'
 import os from 'node:os'
 import path from 'node:path'
 import { afterAll, describe, expect, it } from 'vitest'
-import { loadCategory } from '@/lib/data'
-import { renderProductMarkdown } from '@/lib/markdown'
 import {
   loadStoryTiers, StoryTierSchema, storyTierKey, storyTiersByCell, tierCountsFor, type StoryTier,
 } from '@/lib/storyTiers'
@@ -79,20 +77,5 @@ describe('storyTiersByCell / tierCountsFor', () => {
   })
 })
 
-describe('renderProductMarkdown pricing-tier field', () => {
-  const data = loadCategory('desktop-os', path.resolve(__dirname, '../../data'))
-  const productId = data.products[0].id
-  const covered = data.verdicts.find((v) => v.productId === productId && (v.verdict === 'full' || v.verdict === 'partial'))!
-
-  it('adds "Pricing tier" on classified story lines only — unknown and unclassified emit nothing', () => {
-    const tiersMap = storyTiersByCell([
-      tier({ productId, storyId: covered.storyId, tier: 'enterprise', tierNote: 'SSO on Enterprise plan only', tierEvidenceId: 'e1' }),
-    ])
-    const md = renderProductMarkdown(data, productId, 'https://example.com', tiersMap)
-    expect(md).toContain('- Pricing tier: enterprise — SSO on Enterprise plan only')
-
-    const unknownMap = storyTiersByCell([tier({ productId, storyId: covered.storyId })])
-    expect(renderProductMarkdown(data, productId, 'https://example.com', unknownMap)).not.toContain('Pricing tier:')
-    expect(renderProductMarkdown(data, productId, 'https://example.com')).not.toContain('Pricing tier:')
-  })
-})
+// The renderProductMarkdown pricing-tier cases moved to the private site repo with
+// lib/markdown.ts (repo split).

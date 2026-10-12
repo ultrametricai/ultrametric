@@ -7,6 +7,9 @@ a verdict, add evidence, [add your product](#add-your-vendor) to a ranking,
 [add a jurisdiction](#add-a-jurisdiction), or [add an open module](#add-an-open-module) —
 plus local setup and style rules.
 
+UI and page changes are maintained in the private site repo; report rendering bugs on this
+repo with the [site rendering issue form](https://github.com/ultrametricai/ultrametric/issues/new?template=site-rendering.yml).
+
 Contributing to the **founder-ops corpus** (jurisdiction-scoped workflows, rule cards, sources,
 vendor reviews, open modules) has its own workflow and review bar — see
 [governance/REVIEW_POLICY.md](governance/REVIEW_POLICY.md) and the templates in
@@ -301,15 +304,13 @@ The bar — pure functions, a citation on every formula, tests that double as do
 git clone https://github.com/ultrametricai/ultrametric.git && cd ultrametric
 pnpm install
 cp .env.example .env    # fill in ANTHROPIC_API_KEY if you need to run extract/normalize/collect-community/judge
-pnpm dev                # http://localhost:3000
 pnpm test
-pnpm build
 ```
 
 `ANTHROPIC_API_KEY` is only needed for the LLM-driven pipeline stages (`extract`,
-`normalize`, `collect-community`, `judge`) run locally. It is **never** required to run the site itself, and it
-must **never** be set on the Vercel project — the deployed site serves pre-computed static
-`data/` and makes no LLM calls at build or request time.
+`normalize`, `collect-community`, `judge`) run locally. It is **never** required to work on
+the data, and it must **never** be set on the site's Vercel project — the deployed site
+serves pre-computed static `data/` and makes no LLM calls at build or request time.
 
 ## Style: schemas are law
 
