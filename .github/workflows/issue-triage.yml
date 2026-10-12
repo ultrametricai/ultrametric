@@ -1,0 +1,133 @@
+# Scheduled issue triage: keeps the issue list matching reality without a manual sweep.
+#
+# Three passes, keyless (secrets.GITHUB_TOKEN only):
+#
+#   1. Label — an open issue with no labels gets the labels its issue-form title prefix maps
+#      to (.github/ISSUE_TEMPLATE/*.yml), covering issues filed while a form's label was
+#      missing from the repo.
+#   2. Run-notification lifecycle — the engine workflows fall back to a
+#      "<engine>: ... ready on <branch>" issue when org policy blocks `gh pr create`
+#      (see daily-snapshot.yml). This pass closes a notification once its branch is on main
+#      (merged PR, or compare ahead-by 0), and closes older notifications in a series when a
+#      newer one is open: notifications are informational once read, and the run's branch
+#      stays reachable from the compare link.
+#   3. Stale — a contributor issue quiet for 30 days gets a stale-candidate label and a
+#      comment; 14 more quiet days close it. Any activity restarts the 14-day window, and
+#      removing the label restores the 30-day one.
+#
+# Issues labeled needs-founder are exempt from every pass. Approval checklists (vendor-radar
+# candidates, YC bring-up queues, re-judge flip reviews, the Renovate dashboard) are decided
+# by a human; this workflow reads them and moves on.
+name: issue-triage
+
+on:
+  schedule:
+    - cron: '23 11 * * *' # daily 11:23 UTC — after the morning engine runs have filed their issues
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
+  pull-requests: read # merged-PR lookup in the run-notification pass
+
+concurrency:
+  group: issue-triage
+  cancel-in-progress: false
+
+jobs:
+  triage:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      GH_REPO: ${{ github.repository }}
+    steps:
+      - name: Label form-filed issues missing their form label
+        run: |
+          gh issue list --state open --limit 200 --json number,title,labels \
+            --jq '.[] | select(.labels | length == 0) | [.number, .title] | @tsv' \
+            > /tmp/unlabeled.tsv
+          while IFS=$'\t' read -r NUM TITLE; do
+            LABELS=""
+            case "$TITLE" in
+              "[verdict]"*)         LABELS="verdict-contest,contest" ;;
+              "[proof]"*)           LABELS="proof-spec,prove-it" ;;
+              "[inaccuracy]"*)      LABELS="accuracy" ;;
+              "[site]"*)            LABELS="site-rendering" ;;
+              "[stack]"*)           LABELS="stack-submission" ;;
+              "[prediction]"*)      LABELS="prediction" ;;
+              "Certification:"*)    LABELS="certification" ;;
+              "Submit a product:"*) LABELS="product-request" ;;
+              "Vendor response:"*)  LABELS="vendor-response" ;;
+            esac
+            if [ -n "$LABELS" ]; then
+              gh issue edit "$NUM" --add-label "$LABELS" </dev/null
+            fi
+          done < /tmp/unlabeled.tsv
+
+      - name: Close landed and superseded run notifications
+        run: |
+          # "ready on <branch>" issues the engines filed as their PR fallback, oldest first.
+          # needs-founder exempts an issue from both sub-passes.
+          gh issue list --state open --limit 200 --label story-runner --json number,title,labels \
+            --jq '[.[]
+                   | select((.labels | map(.name) | index("needs-founder")) | not)
+                   | select(.title | test(" ready on "))]
+                  | sort_by(.number) | .[] | [.number, .title] | @tsv' \
+            > /tmp/ready.tsv
+          : > /tmp/pending.tsv
+          while IFS=$'\t' read -r NUM TITLE; do
+            BRANCH="${TITLE##* ready on }"
+            # Series key = branch path with the trailing Actions run id stripped,
+            # e.g. daily-snapshot/38210082289 -> daily-snapshot,
+            #      story-runner/email-marketing-38294523048 -> story-runner/email-marketing.
+            SERIES="$(printf '%s' "$BRANCH" | sed -E 's#[-/][0-9]{6,}$##')"
+            MERGED_PR="$(gh pr list --state merged --head "$BRANCH" --json number --jq '.[0].number // empty')"
+            AHEAD="$(gh api "repos/$GH_REPO/compare/main...$BRANCH" --jq .ahead_by 2>/dev/null)" || AHEAD=""
+            if [ -n "$MERGED_PR" ]; then
+              gh issue close "$NUM" --comment "Landed: \`$BRANCH\` merged via PR #$MERGED_PR. Closing the run notification." </dev/null
+            elif [ "$AHEAD" = "0" ]; then
+              gh issue close "$NUM" --comment "Landed: every commit on \`$BRANCH\` is on main. Closing the run notification." </dev/null
+            else
+              printf '%s\t%s\t%s\n' "$SERIES" "$NUM" "$BRANCH" >> /tmp/pending.tsv
+            fi
+          done < /tmp/ready.tsv
+          # Within a series, keep the newest open notification; close the rest as superseded.
+          awk -F'\t' '{ latest[$1] = $2 } END { for (s in latest) print s "\t" latest[s] }' \
+            /tmp/pending.tsv > /tmp/latest.tsv
+          while IFS=$'\t' read -r SERIES NUM BRANCH; do
+            LATEST="$(awk -F'\t' -v s="$SERIES" '$1 == s { print $2 }' /tmp/latest.tsv)"
+            if [ "$NUM" != "$LATEST" ]; then
+              gh issue close "$NUM" --comment "Superseded by the newer run notification #$LATEST in the \`$SERIES\` series. This run's branch \`$BRANCH\` remains reachable from the compare link above." </dev/null
+            fi
+          done < /tmp/pending.tsv
+
+      - name: Mark and close stale contributor issues
+        run: |
+          NOW="$(date -u +%s)"
+          WARN_S=$((30 * 24 * 3600))
+          CLOSE_S=$((14 * 24 * 3600))
+          gh issue list --state open --limit 200 --json number,updatedAt,labels \
+            --jq '.[] | [.number, .updatedAt, (.labels | map(.name) | join(","))] | @tsv' \
+            > /tmp/open.tsv
+          while IFS=$'\t' read -r NUM UPDATED LABELS; do
+            case ",$LABELS," in
+              *,needs-founder,*|*,story-runner,*) continue ;;
+            esac
+            AGE=$(( NOW - $(date -u -d "$UPDATED" +%s) ))
+            case ",$LABELS," in
+              *,stale-candidate,*)
+                if [ "$AGE" -ge "$CLOSE_S" ]; then
+                  gh issue close "$NUM" --reason "not planned" \
+                    --comment "Closed after the stale window (30 quiet days, then 14 more after the stale-candidate label). Reopen or refile if this is still current." </dev/null
+                fi
+                ;;
+              *)
+                if [ "$AGE" -ge "$WARN_S" ]; then
+                  gh issue comment "$NUM" \
+                    --body "No activity for 30 days. Adding the stale-candidate label; this issue closes automatically after 14 more quiet days. Any comment restarts the 14-day window, and removing the label restores the 30-day one." </dev/null
+                  gh issue edit "$NUM" --add-label "stale-candidate" </dev/null
+                fi
+                ;;
+            esac
+          done < /tmp/open.tsv
