@@ -1,11 +1,14 @@
-# Open modules — decision support, calculations, calendars, comparisons
+# Open modules
 
-Part of [the open startup repo](../README.md#open-modules): the open modules — reusable
-decision support, calculations, calendars, and comparisons — separate from law (`rules/`)
-and the vendor evidence layer (`vendors/`, `data/`). The modules live in `lib/openstartup/`
-and are indexed in the table below; every one is pure, client-safe, deterministic, and
-validated by worked-example and property tests (`npx vitest run lib/openstartup/__tests__/`).
-Repo-first by design: use the modules from tests, scripts, or your own agent.
+Open modules: the startup math as source-cited code (cap tables, rounds, waterfalls,
+runway, tax mechanics), every module pure, deterministic, and validated against published
+worked examples.
+
+Part of [the open startup repo](../README.md#open-modules), separate from law (`rules/`)
+and the vendor evidence layer (`vendors/`, `data/`). The modules live in
+`lib/openstartup/` and are indexed in the table below
+(`npx vitest run lib/openstartup/__tests__/` runs their gates). Repo-first by design: use
+them from tests, scripts, or your own agent.
 
 The bar, fixed for every module: a contract, explicit assumptions, a citation on every
 formula's doc comment (a published guide, form, or primary source — never "everyone

@@ -1,13 +1,13 @@
-# Open documents — the canonical startup documents, mapped
+# Open documents
 
-A catalog of every openly licensed or freely published legal document a founder can actually
-use, as dated records in `registry.json` (100 records across formation, fundraising,
-governance, hiring, commercial, privacy, and open-source). Policy: **link, never
-redistribute** — the documents themselves are never copied into this repo; each record points
-at the publisher's live page, curl-verified (browser UA) on its `checked_on` date. Publishers
-change asset URLs (YC's SAFE downloads are content-hashed and rotate; NVCA's model docs live at
-dated wp-content paths that change with each update; Bonterms' per-form pages 404 — all three
-re-verified 2026-10-02), so records link the stable page, and the note says so.
+Open documents: every openly licensed or freely published legal document a founder can
+actually use, as dated records that link to the publisher's live page rather than copying
+anything here.
+
+The records live in `registry.json`, spanning formation, fundraising, governance, hiring,
+commercial, privacy, and open-source. Policy: **link, never redistribute**; each record
+points at the publisher's stable page, verified live on its `checked_on` date (publishers
+rotate asset URLs, so records link the stable page and the note says so).
 
 Honesty notes are part of the record: `license_note` states the actual terms as published and
 what still requires counsel. A free form is a starting point — none of these substitute for a

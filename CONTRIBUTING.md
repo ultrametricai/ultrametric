@@ -18,8 +18,8 @@ vendor reviews, open modules) has its own workflow and review bar — see
 **Founders outside the US (or outside Delaware):** the highest-leverage contribution is local
 knowledge — vendor availability rows for your country, verified country analogs for the
 processes, rule cards for your jurisdiction, full workflows. The four PR shapes, with exact
-file paths and the gates that validate them, are in the README's
-["Add your country or state"](README.md#add-your-country-or-state).
+file paths and the gates that validate them, are in
+[Add a jurisdiction](#add-a-jurisdiction) below.
 
 ## 1. Contest a verdict
 
@@ -282,12 +282,36 @@ tells you immediately whether the record holds up. Chained founder paths go in
 ## 6. Add a jurisdiction
 
 The highest-leverage contribution for founders outside the US. Four PR shapes, smallest
-first — vendor availability rows for your country, a country analog for a process, rule cards
-citing primary sources, a full jurisdiction-scoped workflow — with exact file paths and the
-gates that validate them in the README's
-["Add your country or state"](README.md#add-your-country-or-state). Register the jurisdiction
-in [`jurisdictions/registry.json`](jurisdictions/) with a deliberately narrow scope; `pnpm
-test` validates every record.
+first; each is schema-validated, so `pnpm test` tells you immediately whether your records
+hold up:
+
+1. **Vendor availability in your country** — add rows to
+   [`jurisdictions/vendor-geo.json`](jurisdictions/): `{productId, country, status:
+   available|unavailable|partial, sourceUrl, note}`. The source must be the vendor's own
+   page (or an official register) stating the fact; negatives ("US entities only") are as
+   valuable as positives. These rows drive the geo switcher and "Geos supported" on the
+   site.
+2. **A country analog for a process** — add a `geoNotes` entry to the process in
+   [`processes/corpus.json`](processes/): `{country, summary, actionUrl, actionLabel}` with
+   a live, official actionUrl (Companies House, MCA/NSWS, Handelsregister, INPI…). This
+   renders in the top-of-page geo banner and the "Outside the US" block.
+3. **Rule cards for your jurisdiction** — register the jurisdiction in
+   [`jurisdictions/registry.json`](jurisdictions/) with a deliberately narrow scope, then
+   add `rules/<CODE>/*.json` cards citing primary sources in
+   [`sources/registry.json`](sources/) (statute, regulation, agency guidance; a provider
+   blog cannot establish law). One proposition per stable ID.
+4. **A full jurisdiction-scoped workflow** — copy
+   [`templates/process.json`](templates/process.json), narrow the applicability dimensions,
+   reference your rule cards, gate every external effect on a human approval, add a
+   fictional fixture in [`processes/fixtures/`](processes/fixtures/), and record the
+   maturity level in [`coverage/coverage.json`](coverage/) (`draft` or `demonstration` to
+   start; `reviewed` requires a named domain expert, see the
+   [review policy](governance/REVIEW_POLICY.md)).
+
+US rules are never copied into another jurisdiction, no country is marked covered because
+one workflow exists, and fixtures are fictional by gate. The validator
+(`lib/founderOps.ts`, run by `npx vitest run __tests__/founder-ops.test.ts`) enforces
+source resolution, jurisdiction matching, approval gates, and accurate coverage reporting.
 
 <a id="add-an-open-module"></a>
 
