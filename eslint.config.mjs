@@ -12,6 +12,9 @@ const eslintConfig = defineConfig([
     '.claude/**',
     // Vitest coverage reports (coverage/ itself is committed corpus data).
     '.coverage/**',
+    // Stale Next build output in pre-strip checkouts: next is no longer a dependency,
+    // but a leftover .next/ from before the strip must not redden the lint gate.
+    '.next/**',
   ]),
   {
     files: ['**/*.{js,mjs,cjs}'],
