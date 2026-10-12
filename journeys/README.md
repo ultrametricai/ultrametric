@@ -1,6 +1,6 @@
 # Journeys
 
-Journeys: multi-process founder paths, each chaining existing processes into a
+Multi-process founder paths, each chaining existing processes into a
 founder-visible playbook (incorporate and launch, the VC raise, month-end close, the
 agent-run back office).
 

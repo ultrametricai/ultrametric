@@ -1,6 +1,6 @@
 # Open documents
 
-Open documents: every openly licensed or freely published legal document a founder can
+Every openly licensed or freely published legal document a founder can
 actually use, as dated records that link to the publisher's live page rather than copying
 anything here.
 

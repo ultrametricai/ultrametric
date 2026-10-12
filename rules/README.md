@@ -1,12 +1,12 @@
 # Rule cards
 
-Rule cards: dated legal propositions, one per stable ID, each scoped to a jurisdiction and
-citing a primary source with an exact locator.
+Map the law that applies to startups: each file states one legal rule under a stable ID,
+scoped to a jurisdiction and citing a primary source with the exact section.
 
 Workflows reference cards by ID, so a statute or agency change traces to every affected
 workflow. `reviewed_on` / `review_due` are editorial check dates, not legal effective
 dates; unknown `valid_from` / `valid_until` stay null until verified. An ID is never
-reused to change a proposition's meaning: version it and note the affected workflows.
+reused to change a rule's meaning: version it and note the affected workflows.
 
 How a card is consumed: `lib/founderOps.ts` validates every card against
 `schemas/rule.schema.json`, requires its `jurisdiction` to exist in
@@ -31,7 +31,7 @@ A trimmed real card (`rules/US-FED/us-fed-1120-filing-deadline.json`):
 Contribute here:
 
 - **Cards for a new jurisdiction** — register the jurisdiction first
-  (`jurisdictions/registry.json`) with a narrow scope, then add one proposition per stable
+  (`jurisdictions/registry.json`) with a narrow scope, then add one rule per stable
   ID, citing primary sources. US rules are never copied into another jurisdiction.
 - **Refresh an existing card** — re-verify against the primary source and bump
   `reviewed_on` / `review_due`; if the meaning changed, version the ID instead of editing

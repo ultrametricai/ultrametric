@@ -1,6 +1,6 @@
 # Governance
 
-Governance: the policies that bind every record here, and the one place where a maintainer
+The policies that bind every record here, and the one place where a maintainer
 must agree before merge.
 
 - `REVIEW_POLICY.md` — the review bar, the coverage maturity ladder (draft → demonstration

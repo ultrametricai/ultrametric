@@ -1,8 +1,8 @@
 # Open modules
 
-Open modules: the startup math as source-cited code (cap tables, rounds, waterfalls,
-runway, tax mechanics), every module pure, deterministic, and validated against published
-worked examples.
+The startup calculations as code (cap tables, rounds, waterfalls, runway, tax
+mechanics): every module is pure, deterministic, and validated against published worked
+examples.
 
 Part of [the open startup repo](../README.md#open-modules), separate from law (`rules/`)
 and the vendor evidence layer (`vendors/`, `data/`). The modules live in
@@ -632,8 +632,8 @@ published convention cited.
 ## How the modules connect to the processes
 
 `processes/business-logic-map.json` is the wiring: task-level (which modules honestly
-serve which corpus processes — the "Open modules" line on live process pages) and
-step-level (which exported FUNCTION computes which DAG step's math — the per-step
+serve which processes — the "Open modules" line on live process pages) and
+step-level (which exported FUNCTION computes which step's math — the per-step
 `compute:` chips). The map is curated from both sides and totality-tested both ways in
 `lib/__tests__/businessLogicMap.test.ts` + `businessLogicServes.test.ts`: files, process
 ids, node ids, exported functions, anchors, and the Serves lines can never point at

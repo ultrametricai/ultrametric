@@ -166,9 +166,12 @@ describe('README.md section-guide tables (founder round 2)', () => {
     const useCases = [...new Set(registry.documents.map((d) => d.use_case))]
     expect(useCases.length).toBeGreaterThan(0)
     for (const useCase of useCases) {
-      expect(section.toLowerCase(), `docs table is missing category ${useCase}`).toContain(
-        `| ${useCase.replace(/-/g, '-')} `.toLowerCase(),
-      )
+      const row = section
+        .split('\n')
+        .find((l) => l.toLowerCase().startsWith(`| ${useCase} `.toLowerCase()))
+      expect(row, `docs table is missing category ${useCase}`).toBeDefined()
+      // Founder round 5: every example-document cell links its real publisher destination.
+      expect(row, `docs row ${useCase} has no publisher link`).toMatch(/\]\(https:\/\//)
     }
   })
 })

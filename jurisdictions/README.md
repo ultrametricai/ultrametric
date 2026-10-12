@@ -1,6 +1,6 @@
 # Jurisdictions
 
-Jurisdictions: the registry of countries and states the workflow layer knows about, plus
+The registry of countries and states the workflow layer knows about, plus
 the dated, source-cited record of which vendors work where.
 
 `registry.json` lists each jurisdiction with an explicit, narrow scope statement.

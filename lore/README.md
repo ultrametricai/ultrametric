@@ -1,6 +1,6 @@
 # Startup lore
 
-Lore: the heuristics founders actually trade, recorded as sourced claims from named schools
+The heuristics founders actually trade, recorded as sourced claims from named schools
 of thought, with the disagreements between schools kept explicit.
 
 Every entry in `registry.json` is one school's belief about how to build a company, with a
