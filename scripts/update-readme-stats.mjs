@@ -47,16 +47,14 @@ function computeStats() {
   }
 }
 
-function renderArenasBlock() {
-  const categories = readJson(path.join(DATA_DIR, 'categories.json'))
-  const rows = []
-  for (const category of categories) {
-    const productsPath = path.join(DATA_DIR, category.id, 'products.json')
-    if (!fs.existsSync(productsPath)) continue
-    const ids = readJson(productsPath).map((p) => p.id)
-    rows.push(`| ${category.name} (\`${category.id}\`) | ${ids.join(', ')} |`)
-  }
-  return [ARENAS_START_MARKER, '| Ranking | Products |', '|---|---|', ...rows, ARENAS_END_MARKER].join('\n')
+// One computed line, not a table: the full per-market listing lives on the live index, and
+// README prose never hand-writes a count (evidence doctrine).
+function renderArenasBlock(stats) {
+  return [
+    ARENAS_START_MARKER,
+    `**${stats.arenas} rankings** today, ${stats.products} products judged head to head — the full index is [ultrametric.ai/arenas](https://ultrametric.ai/arenas), and each ranking's records live under [\`data/\`](data/).`,
+    ARENAS_END_MARKER,
+  ].join('\n')
 }
 
 // The count badges in the README's top badge row — static shields.io badges carrying the same
@@ -98,7 +96,7 @@ function updateReadme(stats) {
   const readme = fs.readFileSync(README_PATH, 'utf8')
 
   let next = replaceBetween(readme, START_MARKER, END_MARKER, renderBlock(stats))
-  next = replaceBetween(next, ARENAS_START_MARKER, ARENAS_END_MARKER, renderArenasBlock())
+  next = replaceBetween(next, ARENAS_START_MARKER, ARENAS_END_MARKER, renderArenasBlock(stats))
   next = replaceBetween(next, BADGES_START_MARKER, BADGES_END_MARKER, renderStatBadgesBlock(stats))
 
   if (next === readme) {
