@@ -32,14 +32,34 @@ const INTRO = [
   '[agents](#install-ultrametric) without keys. The aim: make starting and running a',
   'company agentic, automated, and standardized across geographies.',
   '',
-  '**Contribution guides:** [Add your vendor](CONTRIBUTING.md#add-your-vendor) · [Add a process](CONTRIBUTING.md#add-a-process) · [Add a jurisdiction](CONTRIBUTING.md#add-a-jurisdiction) · [Add an open module](CONTRIBUTING.md#add-an-open-module)',
+  // Founder round 8: the contribution-guides line distributed into the sections, replaced
+  // here by the repo layout tree; "Talk" renamed "Community"; the demo gif is a clickable
+  // link to the live site.
+  '```',
+  'processes/       every founder process, step by step',
+  'journeys/        processes chained into playbooks',
+  'rankings/        evidence, verdicts, computed scores',
+  'vendors/         per-product review records',
+  'pipeline/        crawl, probe, judge, derive',
+  'open-modules/    the startup calculations, indexed',
+  'lib/             the code behind modules and loaders',
+  'rules/           startup law, one rule per record',
+  'sources/         the primary legal authorities',
+  'jurisdictions/   countries, states, vendor geography',
+  'open-documents/  the open legal documents catalog',
+  'lore/            heuristics and the reading library',
+  'resources/       canonical reading, laws, episodes',
+  'coverage/        what is covered, at what maturity',
+  'schemas/         the JSON contracts for every record',
+  'governance/      review, evidence, and agent policy',
+  '```',
   '',
-  '**Talk:** [Discord](https://discord.com/invite/3aHky836qP) — founders and contributors',
+  '**Community:** [Discord](https://discord.com/invite/3aHky836qP) — founders and contributors',
   '',
   '<!-- Legacy anchor: external links to #start-here predate the merge into this map. -->',
   '<a id="start-here"></a>',
   '',
-  '![A tour of ultrametric.ai at 4x: the simulator founding a company, a process page, a vendor page, a situation, the overall rankings, government services, and open documents](docs/assets/readme/demo.gif)',
+  '[![A tour of ultrametric.ai at 4x: the simulator founding a company, a process page, a vendor page, a situation, the overall rankings, government services, and open documents](docs/assets/readme/demo.gif)](https://ultrametric.ai)',
 ].join('\n')
 
 // The founder-specified section order (round 3): artifacts directly after modules with the
@@ -59,7 +79,6 @@ const SECTIONS = [
   '## Open skills for startups',
   '## Install Ultrametric',
   '## Methodology',
-  '## Upcoming',
   '## License',
 ]
 
@@ -124,11 +143,44 @@ describe('README.md structure (founder round 2, 2026-10-12)', () => {
     expect(fs.existsSync(path.join(ROOT, 'docs', 'assets', 'readme', 'demo.mp4'))).toBe(true)
   })
 
-  it('the intro links each destination exactly once', () => {
-    const intro = readme.slice(0, readme.indexOf('\n## '))
+  it('the intro links each destination exactly once (image wraps excluded)', () => {
+    // Clickable images are the display layer; the dedup rule governs prose links.
+    const intro = readme
+      .slice(0, readme.indexOf('\n## '))
+      .replace(/\[!\[[^\]]*\]\([^)]+\)\]\([^)]+\)/g, '')
+      .replace(/!\[[^\]]*\]\([^)]+\)/g, '')
     const dests = [...intro.matchAll(/\]\(([^)]+)\)/g)].map((m) => m[1])
     expect(dests.length).toBeGreaterThan(0)
     expect(new Set(dests).size, `duplicate intro links: ${dests.join(', ')}`).toBe(dests.length)
+  })
+
+  it('the intro layout tree lists real top-level folders', () => {
+    const intro = readme.slice(0, readme.indexOf('\n## '))
+    const tree = intro.slice(intro.indexOf('```'), intro.indexOf('```', intro.indexOf('```') + 3))
+    const dirs = [...tree.matchAll(/^([a-z][a-z-]*)\/ /gm)].map((m) => m[1])
+    expect(dirs.length).toBeGreaterThanOrEqual(10)
+    for (const dir of dirs) {
+      expect(
+        fs.existsSync(path.join(ROOT, dir)) && fs.statSync(path.join(ROOT, dir)).isDirectory(),
+        `layout tree lists ${dir}/ but no such top-level folder exists`,
+      ).toBe(true)
+    }
+  })
+
+  it('every screenshot is a clickable link to the live page it shows', () => {
+    const embeds = [...readme.matchAll(/!\[[^\]]*\]\(docs\/assets\/readme\/[^)]+\)/g)]
+    const wrapped = [...readme.matchAll(/\[!\[[^\]]*\]\(docs\/assets\/readme\/[^)]+\)\]\((https:\/\/ultrametric\.ai[^)]*)\)/g)]
+    expect(embeds.length).toBeGreaterThan(0)
+    expect(wrapped.length, 'an image under docs/assets/readme/ is not wrapped in a live-site link').toBe(embeds.length)
+  })
+
+  it('both Example subsections use the bulleted link format', () => {
+    for (const sub of ['### Examples', '### Example: Founder country switch']) {
+      const at = readme.indexOf(sub)
+      expect(at).toBeGreaterThan(-1)
+      const body = readme.slice(at, readme.indexOf('\n#', at + sub.length))
+      expect(body, `${sub} carries no bulleted example links`).toMatch(/\n- \[[^\]]+\]\(https:\/\/ultrametric\.ai\/processes\//)
+    }
   })
 
   it('uses plain language: no insider vocabulary anywhere on the page', () => {
@@ -138,14 +190,10 @@ describe('README.md structure (founder round 2, 2026-10-12)', () => {
   })
 
   it('hand-written prose carries no counts and no dates; numbers live in generated blocks only', () => {
-    let stripped = readme
-    for (const [s, e] of [
-      ['<!-- stats:start -->', '<!-- stats:end -->'],
-      ['<!-- stat-badges:start -->', '<!-- stat-badges:end -->'],
-      ['<!-- arenas:start -->', '<!-- arenas:end -->'],
-    ]) {
-      stripped = stripped.slice(0, stripped.indexOf(s)) + stripped.slice(stripped.indexOf(e) + e.length)
-    }
+    // Only the arenas block is generated now (founder round 8); strip it, then scan.
+    const s = '<!-- arenas:start -->'
+    const e = '<!-- arenas:end -->'
+    const stripped = readme.slice(0, readme.indexOf(s)) + readme.slice(readme.indexOf(e) + e.length)
     expect(stripped).not.toMatch(/\b\d[\d,]* (rankings|products|verdicts|arenas|processes|markets)\b/)
     expect(stripped).not.toMatch(/\b\d{4}-\d{2}-\d{2}\b/)
   })
@@ -154,7 +202,11 @@ describe('README.md structure (founder round 2, 2026-10-12)', () => {
 describe('README.md section-guide tables (founder round 2)', () => {
   it('Open modules carries the module guide table with a row per mapped module', () => {
     const section = sectionBody('## Open modules')
-    expect(section).toContain('| Module | What it computes | Source it cites |')
+    // Founder round 8: two columns (sources moved to prose), and "409A sanity" reads "409A".
+    expect(section).toContain('| Module | What it computes |')
+    expect(section).not.toContain('Source it cites')
+    expect(section).not.toContain('409A sanity')
+    expect(section).toContain('| [409A](open-modules/README.md#409a-grant-sanity)')
     const map = JSON.parse(
       fs.readFileSync(path.join(ROOT, 'processes', 'business-logic-map.json'), 'utf8'),
     ) as { modules: Record<string, { anchor: string }> }
@@ -169,7 +221,9 @@ describe('README.md section-guide tables (founder round 2)', () => {
 
   it('the Open docs subsection carries the category table covering every registry use_case, with a gaps column', () => {
     const section = sectionBody('## Open artifacts')
-    expect(section).toContain('| Category | Example documents | Gaps |')
+    // Founder round 8: the Gaps column is gone; gaps live in the catalog prose.
+    expect(section).toContain('| Category | Example documents |')
+    expect(section).not.toContain('| Gaps |')
     const registry = JSON.parse(
       fs.readFileSync(path.join(ROOT, 'open-documents', 'registry.json'), 'utf8'),
     ) as { documents: Array<{ use_case: string }> }
@@ -210,13 +264,13 @@ describe('README.md section-guide tables (founder round 2)', () => {
 })
 
 describe('README.md generated blocks', () => {
-  it('keeps the three generated marker pairs pnpm stats rewrites', () => {
-    for (const marker of [
-      '<!-- stats:start -->', '<!-- stats:end -->',
-      '<!-- stat-badges:start -->', '<!-- stat-badges:end -->',
-      '<!-- arenas:start -->', '<!-- arenas:end -->',
-    ]) {
+  it('keeps only the arenas marker pair; the stats line, badge row, and CI badge are gone', () => {
+    for (const marker of ['<!-- arenas:start -->', '<!-- arenas:end -->']) {
       expect(readme).toContain(marker)
+    }
+    // Founder round 8: the generated-stats presence at the Methodology spot was removed.
+    for (const gone of ['<!-- stats:start -->', '<!-- stat-badges:start -->', 'img.shields.io', 'badge.svg']) {
+      expect(readme).not.toContain(gone)
     }
   })
 
