@@ -3,7 +3,9 @@
 The review layer over the judged rankings, one dated, machine-readable review
 record per judged product, plus the place hands-on human reviews land.
 
-The evidence itself lives one directory over in `data/<arena>/`: dated evidence packs,
+The evidence itself lives one directory over in `data/<arena>/`: each product is examined
+through an agentic lens (can an agent drive it, is it testable, do its claims match what
+hands-on checks found) and ranked by how automatable it is, with dated evidence packs,
 judged verdicts citing evidence ids, and rankings that recompute deterministically with a
 tamper-evident fingerprint (`pipeline/scripts/recompute-check.ts`). Owner-affiliated
 products (Foreloop, AFK, Ultrametric) are disclosed on every surface and bias-audited;

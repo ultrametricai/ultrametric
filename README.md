@@ -1,15 +1,15 @@
 ![Ultrametric](docs/assets/banner.svg)
 
-**Everything a founder (or their agent) needs to start and run a company: every
-[process](#processes) step by step, the [vendors](#vendors) ranked, and the
-[open modules](#open-modules) underneath.**
-
-The aim: make starting and running a company agentic, automated, and standardized across
-geographies.
-
-- **Use it:** [ultrametric.ai](https://ultrametric.ai) has [the processes](https://ultrametric.ai/processes) · [the rankings](https://ultrametric.ai/overall) · [the simulator](https://ultrametric.ai/startup-sim)
-- **Improve it:** the open startup repo, [CONTRIBUTING.md](./CONTRIBUTING.md). Contest a verdict, add your country, add a module.
-- **For agents:** open data, no keys. `curl https://ultrametric.ai/data/categories.json` ([use it from an agent](#use-it-from-an-agent))
+Ultrametric ([ultrametric.ai](https://ultrametric.ai)) is the open startup repo: every
+founder [process](#open-processes) step by step, the [tools](#open-vendor-rankings) and
+the [service providers](#startup-ecosystem) around a company (law firms included) ranked
+by how well an agent can drive them, [company law](#open-law) mapped across
+jurisdictions, the [lore](#open-lore) and its library recorded with sources, the open
+[documents and artifacts](#open-artifacts) collected, the startup
+[calculations](#open-modules) as tested code, all of it replayable in the
+[simulator](https://ultrametric.ai/startup-sim) and readable by
+[agents](#install-ultrametric) without keys. The aim: make starting and running a
+company agentic, automated, and standardized across geographies.
 
 **Contribution guides:** [Add your vendor](CONTRIBUTING.md#add-your-vendor) · [Add a process](CONTRIBUTING.md#add-a-process) · [Add a jurisdiction](CONTRIBUTING.md#add-a-jurisdiction) · [Add an open module](CONTRIBUTING.md#add-an-open-module)
 
@@ -17,6 +17,8 @@ geographies.
 
 <!-- Legacy anchor: external links to #start-here predate the merge into this map. -->
 <a id="start-here"></a>
+
+![A tour of ultrametric.ai at 4x: the simulator founding a company, a process page, a vendor page, a situation, the overall rankings, government services, and open documents](docs/assets/readme/demo.gif)
 
 ## The open startup repo
 
@@ -26,20 +28,13 @@ request; the site at [ultrametric.ai](https://ultrametric.ai) renders it unchang
 
 [CONTRIBUTING.md](./CONTRIBUTING.md) · [DATA-LICENSE](./DATA-LICENSE)
 
-## Video demo
-
-A pass through the live site: home, the overall rankings, one market's leaderboard, one
-process, and the startup simulator.
-
-![A pass through ultrametric.ai: home, the overall rankings, the AI Coding Agents leaderboard, the Incorporate C-Corp process, and the startup simulator](docs/assets/readme/demo.gif)
-
 <a id="vendors"></a>
 
 ## Open vendor rankings
 
-Head-to-head rankings of the tools startups run on, scored on the specific things a
-founder needs each tool to do, checked against hands-on tests, code, docs, and user
-reports, with every verdict contestable.
+The tools startups run on, examined through an agentic lens: can an agent actually drive
+each one, is it testable, and do the vendor's claims match what we found hands-on; the
+rankings order products by how automatable they are, and every verdict can be contested.
 
 <!-- arenas:start -->
 **96 rankings** today, 657 products judged head to head — the full index is [ultrametric.ai/arenas](https://ultrametric.ai/arenas), and each ranking's records live under [`data/`](data/).
