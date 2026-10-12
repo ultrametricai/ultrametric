@@ -1,0 +1,199 @@
+#!/usr/bin/env python3
+"""Audit a DeskNest-format local export and create an internal, offline archive.
+
+No network calls, imports, account changes, or invented customer metadata.
+Use a new output directory for each export; existing output is never overwritten.
+"""
+import argparse
+import csv
+import hashlib
+import html
+import json
+import shutil
+from collections import Counter
+from pathlib import Path
+from urllib.parse import quote
+
+
+def digest(path):
+    sha = hashlib.sha256()
+    with path.open("rb") as handle:
+        for chunk in iter(lambda: handle.read(1024 * 1024), b""):
+            sha.update(chunk)
+    return sha.hexdigest()
+
+
+def read_csv(path, required):
+    with path.open(encoding="utf-8-sig", newline="") as handle:
+        reader = csv.DictReader(handle)
+        missing = set(required) - set(reader.fieldnames or [])
+        if missing:
+            raise ValueError(f"{path.name}: missing columns {sorted(missing)}")
+        rows = list(reader)
+        if any(None in row or any(v is None for v in row.values()) for row in rows):
+            raise ValueError(f"{path.name}: malformed CSV row")
+        return rows
+
+
+def prepare(source, output):
+    source, output = source.resolve(), output.resolve()
+    if output == source or source in output.parents:
+        raise ValueError("Output must be outside the source export")
+    if output.exists():
+        raise ValueError("Output already exists; choose a new snapshot directory")
+    if not source.is_dir():
+        raise ValueError("Source export directory does not exist")
+    if any(p.is_symlink() for p in source.rglob("*")):
+        raise ValueError("Symlinks in export require manual review")
+
+    tickets = read_csv(source / "tickets.csv", ["id", "organization", "subject", "status", "updated_at"])
+    comments = read_csv(source / "comments.csv", ["id", "ticket_id", "visibility", "body", "attachment"])
+    issues, attachment_refs = [], []
+
+    def issue(severity, scope, code, action):
+        issues.append(dict(severity=severity, scope=scope, code=code, action=action))
+
+    for name, rows in [("tickets", tickets), ("comments", comments)]:
+        for record_id, count in Counter(row["id"] for row in rows).items():
+            if not record_id or count > 1:
+                issue("BLOCK", name + ":" + record_id, "invalid_id", "Recover unique, nonempty source IDs before importing.")
+
+    ticket_ids = {row["id"] for row in tickets}
+    for comment in comments:
+        if comment["ticket_id"] not in ticket_ids:
+            issue("BLOCK", comment["id"], "orphan_comment", "Recover the parent ticket; retain this comment in the archive.")
+        if comment["visibility"] not in {"public", "private"}:
+            issue("BLOCK", comment["id"], "unknown_visibility", "Keep restricted until visibility is established.")
+        name = comment["attachment"]
+        if name:
+            path = (source / "attachments" / name).resolve()
+            safe = source / "attachments" in path.parents
+            exists = safe and path.is_file()
+            attachment_refs.append(dict(ticket_id=comment["ticket_id"], comment_id=comment["id"],
+                                        filename=name, present=exists,
+                                        sha256=digest(path) if exists else None))
+            if not safe:
+                issue("BLOCK", comment["id"], "unsafe_attachment_path", "Resolve the attachment path inside the export attachments folder.")
+            elif not exists:
+                issue("BLOCK", comment["id"], "missing_attachment", f"Recover {name} for {comment['ticket_id']}; do not substitute an empty file.")
+
+    for ticket in tickets:
+        if ticket["status"] not in {"open", "pending", "closed"}:
+            issue("BLOCK", ticket["id"], "unknown_status", "Define an explicit destination status mapping.")
+        if not any(c["ticket_id"] == ticket["id"] for c in comments):
+            issue("REVIEW", ticket["id"], "no_exported_comments", "Recover the original ticket body or confirm that the source record was empty.")
+    # These checks intentionally use the requested normalized field names.
+    # Richer vendor exports need an explicit schema review, not guessed mappings.
+    requirements = [
+        (tickets, ["requester_email"], "missing_requester", "Recover a verified requester email or destination customer ID for each live ticket."),
+        (tickets, ["created_at", "body"], "missing_ticket_history", "Recover ticket creation time and original description; updated_at is not created_at."),
+        (comments, ["author_id", "author_type", "created_at"], "missing_comment_metadata", "Recover comment author, customer/agent direction, and original timestamp."),
+        (comments, ["message_id", "in_reply_to", "references"], "missing_thread_headers", "Recover original email headers or validate and document handling of replies to legacy emails."),
+    ]
+    for rows, fields, code, action in requirements:
+        affected = [r["id"] for r in rows if any(not r.get(f) for f in fields)]
+        if affected:
+            issue("BLOCK", ",".join(affected), code, action)
+    issue("BLOCK", "snapshot", "live_delta_required", "The supplied operations note says the source is live. Obtain a fresh full export and final changes at cutover.")
+    issue("REVIEW", "snapshot", "source_totals_unverified", "Reconcile against provider totals; local counts alone do not prove a complete export.")
+
+    staged = []
+    for ticket in tickets:
+        staged.append(dict(source_ticket=ticket,
+                           comments=[dict(source_comment=c, export_row=i + 2)
+                                     for i, c in enumerate(comments) if c["ticket_id"] == ticket["id"]],
+                           proposed_disposition="internal_archive" if ticket["status"] == "closed" else "new_tool_after_validation",
+                           import_status="not_imported"))
+    orphan_comments = [c for c in comments if c["ticket_id"] not in ticket_ids]
+    audit = dict(
+        scope="Supplied synthetic DeskNest export; counts are local only, not provider totals.",
+        live_migration_ready=False,
+        counts=dict(tickets=len(tickets), comments=len(comments),
+                    statuses=dict(Counter(t["status"] for t in tickets)),
+                    visibility=dict(Counter(c["visibility"] for c in comments)),
+                    attachment_references=len(attachment_refs),
+                    attachment_references_present=sum(a["present"] for a in attachment_refs),
+                    attachment_references_missing=sum(not a["present"] for a in attachment_refs)),
+        attachment_references=attachment_refs, issues=issues,
+        limitations=["Original authors, timestamps, and email threading cannot be reconstructed from these CSVs.",
+                     "Archive includes private content and has no user authentication.",
+                     "No destination records have been created; no live email tests have run."])
+
+    output.mkdir(parents=True)
+    shutil.copytree(source, output / "source-export")
+    manifest = []
+    for path in sorted(source.rglob("*")):
+        if path.is_file():
+            relative = path.relative_to(source)
+            expected = digest(path)
+            if digest(output / "source-export" / relative) != expected:
+                raise ValueError(f"Copy verification failed: {relative}")
+            manifest.append(dict(path="source-export/" + relative.as_posix(), bytes=path.stat().st_size, sha256=expected))
+    for name, data in [("audit.json", audit), ("manifest.json", manifest),
+                       ("staging.json", dict(importable=False, tickets=staged, orphan_comments=orphan_comments))]:
+        (output / name).write_text(json.dumps(data, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
+    with (output / "exceptions.csv").open("w", encoding="utf-8", newline="") as handle:
+        writer = csv.DictWriter(handle, fieldnames=["severity", "scope", "code", "action"])
+        writer.writeheader()
+        writer.writerows(issues)
+
+    esc = lambda value: html.escape(str(value), quote=True)
+    cards = []
+    for record in staged:
+        ticket = record["source_ticket"]
+        parts = [f'<article><h2>{esc(ticket["id"])} · {esc(ticket["subject"])}</h2>',
+                 f'<p>{esc(ticket["organization"])} · {esc(ticket["status"])} · Updated {esc(ticket["updated_at"])}</p>']
+        if ticket.get("body"):
+            parts.append('<p>Original description</p><pre>' + esc(ticket["body"]) + '</pre>')
+        if not record["comments"]:
+            parts.append('<p class="missing">No comments or original description in this export.</p>')
+        for item in record["comments"]:
+            c = item["source_comment"]
+            label = f'{esc(c["id"])} · {esc(c["visibility"].upper())}'
+            restricted = c["visibility"] != "public"
+            parts.append(f'<details class="private"><summary>{label} — internal content</summary>' if restricted else f'<section><strong>{label}</strong>')
+            parts.append(f'<p class="meta">Author: {esc(c.get("author_id") or "not exported")}; time: {esc(c.get("created_at") or "not exported")}. CSV row {item["export_row"]}; chronology requires source verification.</p><pre>{esc(c["body"])}</pre>')
+            if c["attachment"]:
+                match = next(a for a in attachment_refs if a["comment_id"] == c["id"] and a["ticket_id"] == c["ticket_id"] and a["filename"] == c["attachment"])
+                if match["present"]:
+                    url = quote("source-export/attachments/" + c["attachment"], safe="/")
+                    parts.append(f'<p>Attachment: <a href="{esc(url)}" download>{esc(c["attachment"])}</a></p>')
+                else:
+                    parts.append(f'<p class="missing">Missing attachment: {esc(c["attachment"])}</p>')
+            parts.append('</details>' if restricted else '</section>')
+        parts.append('</article>')
+        cards.append("\n".join(parts))
+    page = '''<!doctype html>
+<html lang="en"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'unsafe-inline'; script-src 'unsafe-inline'; base-uri 'none'; form-action 'none'">
+<title>Rivet Desk — internal support archive</title>
+<style>body{font:16px system-ui;max-width:900px;margin:40px auto;padding:0 20px;color:#172d3b;background:#f4f7f8}h1{font-size:28px}h2{font-size:20px}article{background:white;border:1px solid #cbd5da;border-radius:8px;padding:20px;margin:18px 0}section,details{border-top:1px solid #ddd;padding:14px 0}.private{background:#fff6db;padding:14px}pre{white-space:pre-wrap;overflow-wrap:anywhere;font:inherit}.meta{font-size:13px;color:#52636c}.missing{color:#92271d;font-weight:600}input{width:100%;box-sizing:border-box;padding:12px;font:inherit}summary{cursor:pointer}a{color:#075b86}</style>
+<h1>Rivet Desk support archive</h1>
+<p><strong>Internal only — contains private notes.</strong> Collapsing a note does not restrict access. Keep this entire folder within authorized company storage.</p>
+<p>Archive of the supplied DeskNest scenario export. See <a href="source-export/download-log.txt">the source download log</a> for snapshot timing. Incomplete snapshot; nothing has been imported into a live support tool. Missing metadata and files are listed in <a href="audit.json">the audit</a>.</p>
+<label for="search">Search ticket IDs, organizations, subjects, or comment text (including private notes)</label>
+<input id="search" type="search" placeholder="e.g. T-102 or Example Elm">
+<p id="count" aria-live="polite"></p>
+'''
+    page += "\n".join(cards)
+    if orphan_comments:
+        page += '<article><h2>Orphan comments — restricted pending review</h2><pre>' + esc(json.dumps(orphan_comments, indent=2)) + '</pre></article>'
+    page += '''<script>
+const field = document.getElementById('search');
+const cards = Array.from(document.querySelectorAll('article'));
+function filter() { const q = field.value.toLowerCase(); let shown = 0;
+  for (const card of cards) { card.hidden = !card.textContent.toLowerCase().includes(q); if (!card.hidden) shown++; }
+  document.getElementById('count').textContent = shown + ' of ' + cards.length + ' records shown';
+}
+field.addEventListener('input', filter); filter();
+</script></html>'''
+    (output / "archive.html").write_text(page, encoding="utf-8")
+    print(json.dumps(dict(output=str(output), counts=audit["counts"], issues=len(issues), live_migration_ready=False), indent=2))
+
+
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--source", type=Path, required=True)
+    parser.add_argument("--output", type=Path, required=True)
+    args = parser.parse_args()
+    prepare(args.source, args.output)

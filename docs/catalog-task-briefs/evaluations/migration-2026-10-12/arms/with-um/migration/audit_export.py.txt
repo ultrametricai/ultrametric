@@ -1,0 +1,228 @@
+#!/usr/bin/env python3
+"""Preserve and rehearse recovery of the supplied DeskNest CSV subset, offline.
+
+No network access, provider import, email sending, or production changes.
+Each run requires a new output directory; existing evidence is never overwritten.
+"""
+import argparse
+import csv
+import hashlib
+import json
+import os
+from pathlib import Path
+import shutil
+import sqlite3
+from datetime import datetime, timezone
+
+
+def sha(data):
+    return hashlib.sha256(data).hexdigest()
+
+
+def canonical(row):
+    return json.dumps(row, sort_keys=True, ensure_ascii=False, separators=(",", ":"))
+
+
+def read_csv(path):
+    with path.open(newline="", encoding="utf-8") as stream:
+        reader = csv.DictReader(stream)
+        return reader.fieldnames, list(reader)
+
+
+def write_json(path, value):
+    path.write_text(json.dumps(value, indent=2, ensure_ascii=False) + "\n")
+
+
+def main():
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--workspace", type=Path, default=Path(__file__).resolve().parents[1])
+    parser.add_argument("--output", type=Path, required=True)
+    args = parser.parse_args()
+    workspace, output = args.workspace.resolve(), args.output.resolve()
+    if workspace not in output.parents:
+        parser.error("Output must be a new directory inside the workspace.")
+    if any(output == workspace / name or workspace / name in output.parents
+           for name in ("export", "support", "company")):
+        parser.error("Output must not be inside the source directories.")
+    if output.exists():
+        parser.error("Output already exists; choose a new directory to preserve prior evidence.")
+    os.umask(0o077)
+    output.mkdir(parents=True, mode=0o700)
+    raw = output / "raw"
+    raw.mkdir()
+    inventory = []
+    for name in ("company", "support", "export"):
+        for source in sorted((workspace / name).rglob("*")):
+            if source.is_symlink():
+                raise ValueError(f"Symlink in source; review before copying: {source}")
+            if not source.is_file():
+                continue
+            relative = source.relative_to(workspace)
+            data = source.read_bytes()
+            target = raw / relative
+            target.parent.mkdir(parents=True, exist_ok=True)
+            target.write_bytes(data)
+            assert sha(target.read_bytes()) == sha(data)
+            inventory.append({"path": str(relative), "bytes": len(data), "sha256": sha(data)})
+
+    ticket_fields, tickets = read_csv(raw / "export/tickets.csv")
+    comment_fields, comments = read_csv(raw / "export/comments.csv")
+    assert ticket_fields == ["id", "organization", "subject", "status", "updated_at"]
+    assert comment_fields == ["id", "ticket_id", "visibility", "body", "attachment"]
+    for rows in (tickets, comments):
+        assert len({row["id"] for row in rows}) == len(rows), "Duplicate source IDs"
+        assert all(row["id"] and None not in row and None not in row.values() for row in rows)
+    ticket_ids = {row["id"] for row in tickets}
+    assert all(row["ticket_id"] in ticket_ids for row in comments), "Orphan comment"
+    assert all(row["visibility"] in ("public", "private") for row in comments), "Unknown privacy"
+    for row in tickets:
+        datetime.fromisoformat(row["updated_at"].replace("Z", "+00:00"))
+
+    attachment_names = sorted({row["attachment"] for row in comments if row["attachment"]})
+    attachments, attachment_bytes = [], {}
+    attachment_root = (raw / "export/attachments").resolve()
+    for name in attachment_names:
+        path = (attachment_root / name).resolve()
+        assert attachment_root in path.parents, "Attachment path escapes archive"
+        data = path.read_bytes() if path.is_file() else None
+        attachment_bytes[name] = data
+        attachments.append({
+            "filename": name, "state": "present" if data is not None else "missing",
+            "bytes": len(data) if data is not None else None,
+            "sha256": sha(data) if data is not None else None,
+            "comment_ids": [row["id"] for row in comments if row["attachment"] == name],
+            "ticket_ids": sorted({row["ticket_id"] for row in comments if row["attachment"] == name}),
+        })
+
+    archive = output / "archive.sqlite3"
+    db = sqlite3.connect(archive)
+    db.execute("PRAGMA foreign_keys=ON")
+    db.executescript("""
+        CREATE TABLE tickets (
+            id TEXT PRIMARY KEY, organization TEXT, subject TEXT, status TEXT, updated_at TEXT);
+        CREATE TABLE attachments (
+            filename TEXT PRIMARY KEY, state TEXT CHECK(state IN ('present','missing')),
+            sha256 TEXT, content BLOB);
+        CREATE TABLE comments (
+            id TEXT PRIMARY KEY, ticket_id TEXT REFERENCES tickets(id),
+            visibility TEXT CHECK(visibility IN ('public','private')), body TEXT,
+            attachment TEXT REFERENCES attachments(filename));
+        CREATE VIEW public_comments AS SELECT * FROM comments WHERE visibility='public';
+    """)
+    db.executemany("INSERT INTO tickets VALUES (?,?,?,?,?)",
+                   [[row[field] for field in ticket_fields] for row in tickets])
+    db.executemany("INSERT INTO attachments VALUES (?,?,?,?)",
+                   [(a["filename"], a["state"], a["sha256"], attachment_bytes[a["filename"]])
+                    for a in attachments])
+    db.executemany("INSERT INTO comments VALUES (?,?,?,?,?)",
+                   [(row["id"], row["ticket_id"], row["visibility"], row["body"], row["attachment"] or None)
+                    for row in comments])
+    db.commit()
+    assert db.execute("PRAGMA integrity_check").fetchone()[0] == "ok"
+    assert db.execute("PRAGMA foreign_key_check").fetchall() == []
+    restored_dir = output / "restore-rehearsal"
+    restored_dir.mkdir()
+    restored = sqlite3.connect(restored_dir / "archive.sqlite3")
+    db.backup(restored)
+    db.close()
+    restored.row_factory = sqlite3.Row
+    assert restored.execute("PRAGMA integrity_check").fetchone()[0] == "ok"
+    assert restored.execute("PRAGMA foreign_key_check").fetchall() == []
+    ledger = []
+    for table, fields, originals in (("tickets", ticket_fields, tickets),
+                                       ("comments", comment_fields, comments)):
+        recovered = [dict(row) for row in restored.execute(f"SELECT * FROM {table} ORDER BY id")]
+        if table == "comments":
+            for row in recovered:
+                row["attachment"] = row["attachment"] or ""
+        assert sorted(originals, key=lambda x: x["id"]) == recovered
+        with (restored_dir / f"{table}.csv").open("w", newline="", encoding="utf-8") as stream:
+            writer = csv.DictWriter(stream, fieldnames=fields)
+            writer.writeheader()
+            writer.writerows(recovered)
+        assert read_csv(restored_dir / f"{table}.csv")[1] == recovered
+        recovered_by_id = {row["id"]: row for row in recovered}
+        for row in originals:
+            digest = sha(canonical(row).encode())
+            recovered_digest = sha(canonical(recovered_by_id[row["id"]]).encode())
+            assert digest == recovered_digest
+            ledger.append({"kind": table, "source_id": row["id"],
+                           "parent_id": row.get("ticket_id", ""),
+                           "visibility": row.get("visibility", ""),
+                           "source_sha256": digest, "restored_sha256": recovered_digest,
+                           "result": "local_restore_match", "provider_destination_id": ""})
+    for attachment in attachments:
+        name = attachment["filename"]
+        row = restored.execute("SELECT * FROM attachments WHERE filename=?", (name,)).fetchone()
+        assert row["state"] == attachment["state"]
+        if row["content"] is not None:
+            path = restored_dir / "attachments" / name
+            path.parent.mkdir(parents=True, exist_ok=True)
+            path.write_bytes(row["content"])
+            assert sha(path.read_bytes()) == attachment["sha256"]
+        ledger.append({"kind": "attachment", "source_id": name,
+                       "parent_id": ";".join(attachment["comment_ids"]), "visibility": "inherits_comment",
+                       "source_sha256": attachment["sha256"] or "",
+                       "restored_sha256": row["sha256"] or "",
+                       "result": "local_restore_match" if row["content"] is not None else "BLOCKED_missing_source_file",
+                       "provider_destination_id": ""})
+    private_ids = {row["id"] for row in comments if row["visibility"] == "private"}
+    visible_ids = {row["id"] for row in restored.execute("SELECT id FROM public_comments")}
+    assert private_ids.isdisjoint(visible_ids)
+    restored.close()
+    with (output / "reconciliation.csv").open("w", newline="", encoding="utf-8") as stream:
+        writer = csv.DictWriter(stream, fieldnames=list(ledger[0]))
+        writer.writeheader()
+        writer.writerows(ledger)
+
+    generated = datetime.now(timezone.utc).isoformat()
+    manifest = {
+        "generated_at_utc": generated,
+        "source_type": "synthetic scenario fixtures; no live provider evidence",
+        "source_download_log_time": "2026-10-09T10:30Z",
+        "source_account_id": None, "source_export_job_id": None,
+        "source_pagination_complete": None, "provider_record_counts": None,
+        "scope": "Supplied local files only; source-wide completeness unknown",
+        "raw_files": inventory,
+        "counts": {"tickets": len(tickets), "comments": len(comments),
+                   "private_comments": len(private_ids), "attachment_references": len(attachment_names),
+                   "attachments_present": sum(a["state"] == "present" for a in attachments),
+                   "attachments_missing": sum(a["state"] == "missing" for a in attachments)},
+        "tickets_without_comments": sorted(ticket_ids - {row["ticket_id"] for row in comments}),
+        "attachments": attachments,
+        "maximum_observed_ticket_updated_at": max(row["updated_at"] for row in tickets),
+        "delta_watermark_validated": False,
+        "archive_sha256": sha(archive.read_bytes()),
+        "checks": {"raw_copy_hashes": "pass", "unique_source_ids": "pass",
+                   "comment_ticket_relationships": "pass", "local_sqlite_integrity": "pass",
+                   "local_restore_ticket_and_comment_content": "pass",
+                   "available_attachment_restoration": "pass",
+                   "private_comment_excluded_from_public_view": "pass",
+                   "destination_role_permissions": "NOT_TESTED",
+                   "email_threading": "NOT_TESTED", "complete_business_cycle": "NOT_RUN",
+                   "provider_import": "NOT_RUN", "full_source_recoverability": "NOT_ESTABLISHED"},
+        "limitations": ["missing-screen.png is absent, not repaired or replaced",
+                        "Source lacks requesters, authors, comment times and email headers",
+                        "Source is still active; this subset is not a current export",
+                        "A SQL view is not an authorization boundary; entire archive is internal-only",
+                        "Local same-disk copies are not an independent disaster-recovery backup"],
+    }
+    write_json(output / "manifest.json", manifest)
+    write_json(output / "rehearsal-result.json", {
+        "generated_at_utc": generated, "status": "available_subset_restored_locally",
+        "provider_import_ready": False, "cutover_ready": False,
+        "ticket_rows_verified": len(tickets), "comment_rows_verified": len(comments),
+        "attachment_files_verified": manifest["counts"]["attachments_present"],
+        "missing_files": [a["filename"] for a in attachments if a["state"] == "missing"],
+        "checks": manifest["checks"],
+    })
+    (output / "INTERNAL_ONLY.txt").write_text(
+        "Contains private support notes. Restrict the whole directory to authorized staff.\n"
+        "The public_comments view filters rows but does not provide role-based access control.\n"
+        "This is a local rehearsal of an incomplete synthetic export, not a provider migration.\n")
+    print(json.dumps({"output": str(output), "counts": manifest["counts"],
+                      "status": "available subset restored locally; migration blocked by source gaps"}, indent=2))
+
+
+if __name__ == "__main__":
+    main()
