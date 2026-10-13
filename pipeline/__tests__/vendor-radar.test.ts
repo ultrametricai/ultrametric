@@ -274,13 +274,13 @@ describe('report + issue markdown', () => {
     expect(report.candidates[0].key).toBe('domain:driftbase.dev')
   })
 
-  it('markdown carries the checkbox approval line, evidence links, and the no-auto-judge statement', () => {
+  it('markdown carries the criteria-triage line, evidence links, and the no-new-rankings statement', () => {
     const { candidates } = assembleCandidates([raw({})], VOCAB, EMPTY_CTX(), '2026-10-02')
     const md = buildMarkdown(reportOf(candidates))
     expect(md).toContain('- [ ] **Driftbase** — https://driftbase.dev')
-    expect(md).toContain('NEVER auto-adds products and NEVER auto-judges')
-    expect(md).toContain('deep spike on approved candidates runs via the standard pipeline')
-    expect(md).toContain('approve by checking the box / commenting')
+    expect(md).toContain('NEVER creates a new ranking and NEVER touches a founder-affiliated product')
+    expect(md).toContain('auto-approval criteria in `governance/AGENT_POLICY.md`')
+    expect(md).toContain('runs via the standard pipeline')
     expect(md).toContain('[Show HN: Driftbase](https://news.ycombinator.com/item?id=1)')
     expect(md).toContain('github: ERROR (HTTP 403)') // degraded sources stay visible, never hidden
   })

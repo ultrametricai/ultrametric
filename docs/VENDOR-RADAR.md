@@ -8,14 +8,29 @@ The radar is the LISTENING half of that ask: a keyless daily scan of public laun
 reports new, hot, arena-relevant vendors as candidates. The SPIKE half stays exactly what it
 already is — a deliberate, reviewed run of the standard pipeline on a human-approved candidate.
 
-## The no-auto-judge rule
+## Approval and the hard limits
 
-**The radar never auto-adds products and never auto-judges.** It is detection only: nothing under
-`rankings/` changes from a radar run. Rankings on this site are evidence-graded verdicts; a product
-enters them only through the full bring-up (research → roster PR → keyed
-crawl → extract → probe → judge → claims → derive), each step reviewable. The radar's output is a
-report and an issue — paper, not verdicts. This rule is stated in the issue template text, the
-report `_comment`, and the workflow header, on purpose, three times.
+Founder authorization (2026-10-13) replaced per-candidate checkbox approval with the criteria in
+`governance/AGENT_POLICY.md` ("Vendor-radar candidate approval"): existing-ranking fit, public
+docs surface, shipped product, no founder affiliation. `pipeline/scripts/radar-triage.ts` applies
+them mechanically — the lexical arena classifier for ranking fit, a docs-surface fetch, the
+waitlist/link-list/placeholder guards plus a star-velocity anomaly floor for shipped-product,
+and the affiliation guard — and records
+every candidate's disposition (auto-approved, skipped with the failing criterion and its evidence,
+or needs-human) on the day's candidates issue and in
+`reports/vendor-radar/<date>-triage.json`.
+
+Two limits hold in every case:
+
+- **The radar never creates a new ranking.** A candidate whose only fit would be a new arena is
+  skipped; new-ranking creation is a human decision.
+- **The radar never touches a founder-affiliated product autonomously.** Affiliated candidates
+  route to needs-human for disclosure and a bias audit.
+
+Scores stay pipeline-computed: the bring-up on an auto-approved candidate is a scoped standard
+pipeline run (`crawl → extract → collect-community → probe → judge --product → derive → logos`)
+landing as a reviewed PR, with the skipped list in the PR body. Nothing merges to `main` without
+that review.
 
 ## How it works
 
@@ -53,9 +68,14 @@ report `_comment`, and the workflow header, on purpose, three times.
 4. **Report**: `reports/vendor-radar/<date>.json` (schema-validated) + `<date>.md`, committed via
    the usual PR-or-issue flow. When there are NEW candidates the workflow also files (or, on a
    same-day re-run, comments on) a **`vendor-radar: candidates YYYY-MM-DD`** issue
-   (label `story-runner`) listing each candidate with its evidence links, matched arenas, and the
-   action line: *a deep spike on approved candidates runs via the standard pipeline — approve by
-   checking the box / commenting.*
+   (label `story-runner`) listing each candidate with its evidence links and matched arenas.
+5. **Triage + bring-up**: `radar-triage.ts` applies the auto-approval criteria to the day's new
+   candidates, writes `reports/vendor-radar/<date>-triage.json`, and appends the disposition
+   table to the issue. When the `ANTHROPIC_API_KEY` repo secret is present, `radar-bringup.ts`
+   adds up to 3 auto-approved passers per run to their existing arenas and the workflow runs the
+   scoped pipeline on each, opening a **bring-up PR** with the full disposition table (including
+   the skipped list) in the body. Without the key, passers stay approved-pending in the triage
+   report.
 
 ## Tuning keywords and thresholds
 
@@ -77,8 +97,9 @@ report `_comment`, and the workflow header, on purpose, three times.
 
 ## From candidate to judged product (the Instinct/dots precedent)
 
-Approving a radar candidate starts the same deliberate flow the Instinct and OpenAI-dots
-bring-ups used (`docs/vendor-research/instinct.md`, `docs/vendor-research/ai-assistants-candidates.md`):
+An auto-approved (or human-approved) radar candidate goes through the same deliberate flow the
+Instinct and OpenAI-dots bring-ups used (`docs/vendor-research/instinct.md`,
+`docs/vendor-research/ai-assistants-candidates.md`):
 
 1. **Research doc** — `docs/vendor-research/<vendor>.md`: what it is, which arena, capability map
    with per-claim source URLs, fetch dates, and evidence tiers (`claimed-docs` / `press` /
@@ -98,5 +119,6 @@ The radar only ever shortens the time between "it launched" and step 1.
 `pipeline/__tests__/vendor-radar.test.ts` — pure units only, no network: fake HN/PH/GitHub
 fixtures → arena matches, hotness thresholds, dedupe against tracked products and the
 seen-ledger, same-key cross-source merging, and the report/issue shape (schema round-trip, the
-checkbox action line, the no-auto-judge statement). The committed inaugural run under
-`reports/vendor-radar/` is the end-to-end integration evidence.
+criteria-triage line, the no-new-rankings statement). `pipeline/__tests__/radar-triage.test.ts`
+covers the criteria checks the same way: injected fetch results, no network. The committed
+inaugural run under `reports/vendor-radar/` is the end-to-end integration evidence.
