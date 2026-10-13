@@ -55,6 +55,9 @@ function workflowJson(dir: string): string[] {
   return listJson(dir).filter(
     (f) =>
       !f.includes(FIXTURES_SUBTREE) &&
+      !f.includes(path.join('processes', 'records') + path.sep) &&
+      !f.includes(path.join('processes', 'examples') + path.sep) &&
+      !['import-manifest.json', 'legacy-audit.json', 'default-options-audit.json'].some(name => f.endsWith(path.join('processes', name))) &&
       !f.endsWith(OPERATIONAL_CORPUS) &&
       !f.endsWith(OPERATIONAL_VENDOR_REGISTRY) &&
       !f.endsWith(OPERATIONAL_ARTIFACTS) &&

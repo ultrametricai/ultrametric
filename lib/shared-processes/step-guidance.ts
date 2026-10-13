@@ -3,7 +3,7 @@ import type { Part, SharedRecord } from './schema'
 
 // Committed per-step descriptions for the CORPUS process pages (founder 2026-10-05: steps like
 // 'Set primary logo' rendered with no description while the shared-reader pages carry
-// per-part guidance). The source is the shared catalog (content/processes/records/*.json):
+// per-part guidance). The source is the shared catalog (processes/records/*.json):
 // every corpus task has a shared record, and the record parts whose id matches a corpus DAG
 // node id (n1, n2, …) carry that step's authored guidance — their metadata mirrors the node's
 // own fields, which is the binding. NOTHING is invented here: a node whose record part has no
@@ -11,7 +11,7 @@ import type { Part, SharedRecord } from './schema'
 // the committed guidance verbatim minus markdown markers (display cleaning only).
 //
 // Read-only over the catalog — the site keeps its corpus loaders; this is the additive reader
-// the content/processes README describes (lib/shared-processes/load.ts, opt-in).
+// the processes README describes (lib/shared-processes/load.ts, opt-in).
 
 let catalogCache: SharedRecord[] | null = null
 function catalog(): SharedRecord[] {

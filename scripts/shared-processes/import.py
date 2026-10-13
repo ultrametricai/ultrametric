@@ -9,10 +9,10 @@ from source_snapshot import read_snapshot
 
 parser = argparse.ArgumentParser()
 parser.add_argument("--write", action="store_true")
-parser.add_argument("--output", type=Path, help="Destination catalog directory; defaults to content/processes.")
+parser.add_argument("--output", type=Path, help="Destination catalog directory; defaults to processes.")
 args = parser.parse_args()
 SOURCE = Path(__file__).resolve().parents[2]
-ROOT = args.output.resolve() if args.output else SOURCE / "content/processes"
+ROOT = args.output.resolve() if args.output else SOURCE / "processes"
 REVISION, SOURCE_FILES = read_snapshot(SOURCE)
 TRACE = []
 ISSUES = []

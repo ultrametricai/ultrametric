@@ -275,7 +275,7 @@ a situation additionally carries a `trigger` and an `urgency` tier (see
 [`processes/SITUATIONS.md`](processes/SITUATIONS.md)) — and validate with `pnpm test`, which
 tells you immediately whether the record holds up. Chained founder paths go in
 [`processes/chains.json`](processes/). Changes to the shared process schema or catalog
-(`content/processes/`) also run `pnpm shared:check`.
+(`processes/records/`) also run `pnpm shared:check`.
 
 <a id="add-a-jurisdiction"></a>
 

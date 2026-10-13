@@ -4,7 +4,13 @@ Every founder process as a step-by-step record, each step routed agent, form, or
 human, timed, and wired to the judged vendor rankings; the fixtures and curation doctrine
 beneath them live here too.
 
-Two layers, deliberately separate:
+Shared process definitions and authored guidance live in [`records/`](records/README.md).
+The operational corpus, chains, jurisdiction workflows, import receipts and shared
+records share this directory. Existing site readers continue to use the operational
+files; the API export reads the shared records. Import conflict checks protect
+authored records when the operational source changes.
+
+The operational files contain two layers:
 
 1. **Jurisdiction-scoped workflows** (`processes/<domain>/<jurisdiction>/*.json`, contract
    in `schemas/process.schema.json`): source-cited legal/tax workflows with explicit

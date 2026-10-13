@@ -2,7 +2,7 @@
 
 These records are the additive successor to the operational corpus, chains, and jurisdiction workflows. Existing pages and manifests keep their current loaders. `lib/shared-processes/load.ts` is the opt-in reader.
 
-Edit one JSON file per record under `records/`. Guidance and notes support Markdown. A record can be a situation or a process; the importer does not infer that a legacy chain is a situation. Outcomes describe useful results. `when` is optional prose applicability, interpreted by the agent. User selections and company context stay in API memory.
+Edit one JSON file per record under `processes/records/`. Guidance and notes support Markdown. A record can be a situation or a process; the importer does not infer that a legacy chain is a situation. Outcomes describe useful results. `when` is optional prose applicability, interpreted by the agent. User selections and company context stay in API memory.
 
 Parts have stable IDs and contain a step, a reference to another record, or a decision with options. A connection uses `from`, `to`, and optionally `option` and `when`. `option` must belong to its source decision. Later branch connections can rejoin ordinary parts. A referenced process supplies its own graph. Options can also contain local parts and connections. The validator rejects unresolved process references, duplicate identities, invalid option connections, and graph/nesting cycles. It does not evaluate conditions or execute work.
 
@@ -19,7 +19,7 @@ The manifest’s `generatedHash` records generated output. Authored records reta
 - `python3 scripts/shared-processes/check-import.py` checks full value preservation against a fresh migration in a temporary directory. CI runs this check without modifying or comparing authored catalog records to the legacy baseline. Authored guidance, outcomes, notes, and graph changes remain allowed. The catalog validator separately rejects legacy `toolCall` and `functionCalls` fields, including inside metadata.
 - `pnpm exec tsx scripts/shared-processes/check.ts --write-schema` updates the JSON Schema generated from the TypeScript source.
 - `pnpm shared:export --output /path/to/catalog.json` exports a committed, validated catalog with its Git revision, JSON Schema, and content hash. It also rejects a committed JSON Schema that differs from the TypeScript definition, using the same consistency check as `shared:check`.
-- Add `--example` to export only the two synthetic staging records in `content/processes/examples/staging.json`. They demonstrate option branches, a nested process, and a shared downstream step. They are excluded from the real catalog and current site.
+- Add `--example` to export only the two synthetic staging records in `processes/examples/staging.json`. They demonstrate option branches, a nested process, and a shared downstream step. They are excluded from the real catalog and current site.
 
 The initial mapping contained 149 records, 694 operational nodes and 522 original connections;
 the catalog holds 162 records as of 2026-10-01 (the 12 reactive situations included). The audit lists missing outcomes, guidance, vendor keys, and placement questions. A valid mapped record is not automatically a useful published guide.

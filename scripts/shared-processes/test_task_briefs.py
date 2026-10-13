@@ -11,7 +11,7 @@ import unittest
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
-RECORDS = ROOT / "content/processes/records"
+RECORDS = ROOT / "processes/records"
 
 
 def digest(value):
@@ -28,7 +28,7 @@ def has_authored_guidance(record):
 
 
 def authored_records():
-    manifest = json.loads((ROOT / "content/processes/import-manifest.json").read_text())
+    manifest = json.loads((ROOT / "processes/import-manifest.json").read_text())
     records = {record_id: json.loads((RECORDS / f"{record_id}.json").read_text())
                for record_id in manifest["records"]}
     # Guidance also identifies authored records if a receipt is accidentally re-blessed.
@@ -108,7 +108,7 @@ class TaskBriefContentTests(unittest.TestCase):
 class TaskBriefImportTests(unittest.TestCase):
     def test_formation_receipt_describes_generated_baseline(self):
         authored = json.loads((RECORDS / "form_001.json").read_text())
-        manifest = json.loads((ROOT / "content/processes/import-manifest.json").read_text())
+        manifest = json.loads((ROOT / "processes/import-manifest.json").read_text())
         with tempfile.TemporaryDirectory() as directory:
             subprocess.run([sys.executable, str(ROOT / "scripts/shared-processes/import.py"),
                             "--write", "--output", directory], check=True, capture_output=True)
@@ -125,13 +125,7 @@ class TaskBriefImportTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as directory:
             work = Path(directory)
             shutil.copytree(ROOT / "scripts/shared-processes", work / "scripts/shared-processes")
-            shutil.copytree(ROOT / "content/processes", work / "content/processes")
-            for name in ("processes/corpus.json", "processes/vendor-registry.json", "processes/chains.json"):
-                dest = work / name
-                dest.parent.mkdir(parents=True, exist_ok=True)
-                shutil.copyfile(ROOT / name, dest)
-            shutil.copytree(ROOT / "processes/equity", work / "processes/equity")
-
+            shutil.copytree(ROOT / "processes", work / "processes")
             def git(*args):
                 subprocess.run(["git", *args], cwd=work, check=True, capture_output=True)
 
@@ -142,7 +136,9 @@ class TaskBriefImportTests(unittest.TestCase):
 
             def snapshot():
                 return {str(p.relative_to(work)): hashlib.sha256(p.read_bytes()).hexdigest()
-                        for p in (work / "content/processes").rglob("*.json")}
+                        for p in (work / "processes").rglob("*.json")
+                        if any(part in ("records", "examples") for part in p.relative_to(work / "processes").parts)
+                        or p.name in ("import-manifest.json", "legacy-audit.json", "default-options-audit.json")}
 
             def run_import():
                 return subprocess.run([sys.executable, str(work / "scripts/shared-processes/import.py"),

@@ -24,6 +24,13 @@ class ImportTests(unittest.TestCase):
         self.commit_sources()
         self.run_import('--write', expected=0)
 
+    def catalog_snapshot(self):
+        root = self.root / 'processes'
+        files = list((root / 'records').rglob('*.json')) + list((root / 'examples').rglob('*.json'))
+        files += [root / name for name in ('import-manifest.json', 'legacy-audit.json', 'default-options-audit.json')
+                  if (root / name).exists()]
+        return {str(path): path.read_bytes() for path in files}
+
     def commit_sources(self):
         subprocess.run(['git', 'add', 'processes'], cwd=self.root, check=True)
         subprocess.run(['git', '-c', 'user.name=Test', '-c', 'user.email=test@example.invalid', '-c', 'commit.gpgsign=false', 'commit', '-qm', 'Synthetic source'], cwd=self.root, check=True)
@@ -42,19 +49,19 @@ class ImportTests(unittest.TestCase):
         return result
 
     def test_preserves_authored_edits_and_stops_before_any_conflicting_write(self):
-        target = self.root / 'content/processes/records/alpha.json'
+        target = self.root / 'processes/records/alpha.json'
         value = json.loads(target.read_text())
         value['notes'] = [{'text': 'Authored note'}]
         target.write_text(json.dumps(value))
         self.run_import('--write', expected=0)
         self.assertEqual(json.loads(target.read_text())['notes'], value['notes'])
-        before = {str(p): p.read_bytes() for p in (self.root / 'content/processes').rglob('*.json')}
+        before = self.catalog_snapshot()
         self.records[0]['description'] = 'Changed source'
         self.records[1]['description'] = 'Another changed source'
         self.source.write_text(json.dumps(self.records))
         self.commit_sources()
         self.run_import('--write', expected=1)
-        self.assertEqual({str(p): p.read_bytes() for p in (self.root / 'content/processes').rglob('*.json')}, before)
+        self.assertEqual(self.catalog_snapshot(), before)
 
     def test_reports_drift_then_updates_an_unedited_generated_record(self):
         self.records[0]['description'] = 'Changed source'
@@ -62,13 +69,13 @@ class ImportTests(unittest.TestCase):
         self.commit_sources()
         self.run_import(expected=1)
         self.run_import('--write', expected=0)
-        target = self.root / 'content/processes/records/alpha.json'
+        target = self.root / 'processes/records/alpha.json'
         self.assertEqual(json.loads(target.read_text())['summary'], 'Changed source')
         self.run_import(expected=0)
 
 
     def test_rejects_unstaged_and_staged_source_changes_without_writes(self):
-        before = {str(p): p.read_bytes() for p in (self.root / 'content/processes').rglob('*.json')}
+        before = self.catalog_snapshot()
         self.records[0]['description'] = 'Uncommitted change'
         self.source.write_text(json.dumps(self.records))
         for staged in (False, True):
@@ -76,7 +83,7 @@ class ImportTests(unittest.TestCase):
                 subprocess.run(['git', 'add', 'processes/corpus.json'], cwd=self.root, check=True)
             result = self.run_import('--write', expected=1)
             self.assertIn('Commit legacy source changes', result.stderr)
-            self.assertEqual({str(p): p.read_bytes() for p in (self.root / 'content/processes').rglob('*.json')}, before)
+            self.assertEqual(self.catalog_snapshot(), before)
 
     def test_rejects_an_untracked_workflow(self):
         directory = self.root / 'processes/equity'
@@ -90,7 +97,7 @@ class ImportTests(unittest.TestCase):
         self.source.write_text(json.dumps(self.records))
         self.commit_sources()
         self.run_import('--write', expected=0)
-        target = json.loads((self.root / 'content/processes/records/alpha.json').read_text())
+        target = json.loads((self.root / 'processes/records/alpha.json').read_text())
         original = json.loads(subprocess.check_output(['git', 'show', target['source']['revision'] + ':' + target['source']['path']], cwd=self.root, text=True))
         self.assertEqual(target['summary'], original[0]['description'])
         self.assertEqual(target['summary'], 'Committed change')
@@ -103,7 +110,7 @@ class ImportTests(unittest.TestCase):
             (root / 'processes/corpus.json').write_text(json.dumps(self.records))
             result = subprocess.run(['python3', str(root / 'scripts/shared-processes/import.py'), '--write'], capture_output=True, text=True)
             self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
-            target = json.loads((root / 'content/processes/records/alpha.json').read_text())
+            target = json.loads((root / 'processes/records/alpha.json').read_text())
             self.assertEqual(target['summary'], 'Changed in the plain tree')
             self.assertEqual(target['source']['revision'], '0' * 40)
 
@@ -127,17 +134,17 @@ class ImportTests(unittest.TestCase):
             result = subprocess.run(['python3', str(root / 'scripts/shared-processes/import.py'), '--write'], capture_output=True, text=True)
             self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
             head = subprocess.check_output(['git', 'rev-parse', 'HEAD'], cwd=root, text=True).strip()
-            target = json.loads((root / 'content/processes/records/alpha.json').read_text())
+            target = json.loads((root / 'processes/records/alpha.json').read_text())
             self.assertEqual(target['source']['revision'], head)
 
     def test_fresh_preservation_allows_authored_catalog_changes(self):
-        target = self.root / 'content/processes/records/alpha.json'
+        target = self.root / 'processes/records/alpha.json'
         value = json.loads(target.read_text())
         value.update(notes=[{'text': 'Authored note'}], guidance='Authored guidance', outcomes=['Authored outcome'], summary='Authored summary')
         target.write_text(json.dumps(value))
-        before = {str(p): p.read_bytes() for p in (self.root / 'content/processes').rglob('*.json')}
+        before = self.catalog_snapshot()
         self.check_preservation(expected=0)
-        self.assertEqual({str(p): p.read_bytes() for p in (self.root / 'content/processes').rglob('*.json')}, before)
+        self.assertEqual(self.catalog_snapshot(), before)
 
     def test_fresh_preservation_detects_a_dropped_source_value(self):
         importer = self.root / 'scripts/shared-processes/import.py'
@@ -161,21 +168,21 @@ class ImportTests(unittest.TestCase):
         self.records.append(source)
         self.source.write_text(json.dumps(self.records))
         self.commit_sources()
-        target = self.root / 'content/processes/records/form_001.json'
-        shutil.copy(repository / 'content/processes/records/form_001.json', target)
-        manifest_path = self.root / 'content/processes/import-manifest.json'
+        target = self.root / 'processes/records/form_001.json'
+        shutil.copy(repository / 'processes/records/form_001.json', target)
+        manifest_path = self.root / 'processes/import-manifest.json'
         manifest = json.loads(manifest_path.read_text())
-        receipt = json.loads((repository / 'content/processes/import-manifest.json').read_text())
+        receipt = json.loads((repository / 'processes/import-manifest.json').read_text())
         manifest['records']['form_001'] = receipt['records']['form_001']
         manifest_path.write_text(json.dumps(manifest))
         self.run_import(expected=0)
         source['description'] += ' Synthetic later source change.'
         self.source.write_text(json.dumps(self.records))
         self.commit_sources()
-        before = {str(p): p.read_bytes() for p in (self.root / 'content/processes').rglob('*.json')}
+        before = self.catalog_snapshot()
         result = self.run_import('--write', expected=1)
         self.assertIn('form_001', result.stderr)
-        self.assertEqual({str(p): p.read_bytes() for p in (self.root / 'content/processes').rglob('*.json')}, before)
+        self.assertEqual(self.catalog_snapshot(), before)
 
 if __name__ == '__main__':
     unittest.main()

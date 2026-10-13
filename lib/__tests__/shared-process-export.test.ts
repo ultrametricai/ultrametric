@@ -22,11 +22,11 @@ function runExport(example: boolean) {
 
 beforeEach(() => {
   root = mkdtempSync(path.join(tmpdir(), 'um-shared-export-'))
-  for (const directory of ['schemas', 'content/processes/records', 'content/processes/examples']) mkdirSync(path.join(root, directory), { recursive: true })
+  for (const directory of ['schemas', 'processes/records', 'processes/examples']) mkdirSync(path.join(root, directory), { recursive: true })
   writeFileSync(path.join(root, 'schemas/shared-process.schema.json'), sharedSchemaJson())
-  const example = readFileSync(path.join(repo, 'content/processes/examples/staging.json'), 'utf8')
-  writeFileSync(path.join(root, 'content/processes/examples/staging.json'), example)
-  for (const record of JSON.parse(example)) writeFileSync(path.join(root, 'content/processes/records', `${record.id}.json`), JSON.stringify(record))
+  const example = readFileSync(path.join(repo, 'processes/examples/staging.json'), 'utf8')
+  writeFileSync(path.join(root, 'processes/examples/staging.json'), example)
+  for (const record of JSON.parse(example)) writeFileSync(path.join(root, 'processes/records', `${record.id}.json`), JSON.stringify(record))
   execFileSync('git', ['init', '-q'], { cwd: root })
   commit()
 })

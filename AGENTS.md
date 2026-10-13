@@ -29,14 +29,14 @@ All of these must exit 0 before any merge to main:
 3. `pnpm lint` (0 errors)
 4. `pnpm test --maxWorkers=2`
 5. `pnpm manifest:check` (every tracked path classified in `open-manifest.json`)
-6. `pnpm shared:check` when `content/processes/` or the shared corpus is touched
+6. `pnpm shared:check` when `processes/` or the shared corpus is touched
 
 Never gate an `&&` chain on echoed text — test the tool's exit code.
 
 ## Workflow
 
 - Every change lands as a branch + pull request. No direct commits to main.
-- Authored records in `content/processes/` are never overwritten by catalog regeneration:
+- Authored records in `processes/records/` are never overwritten by catalog regeneration:
   refresh only source-mirrored metadata and re-bless the manifest
   (see `scripts/shared-processes/import.py`, authored-record conflict rule).
 
@@ -52,7 +52,7 @@ deprecated fallback; user-facing copy never says "productarena" or "PA".
 
 # Shared process content
 
-The shared situations/process schema and records live in `content/processes/`.
+The shared situations/process schema and records live in `processes/records/`.
 Keep the old corpus, chains, jurisdiction files, and site loaders working during
 the additive transition. Public Git owns shared process meaning. Private UM
 instructions live as versioned additions in the API database. Do not use the

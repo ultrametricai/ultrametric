@@ -12,7 +12,7 @@ import re
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
-RECORDS = ROOT / "content/processes/records"
+RECORDS = ROOT / "processes/records"
 AUDIT_DIR = ROOT / "docs/catalog-task-briefs"
 
 
@@ -128,7 +128,7 @@ def main():
         assert invariant_hash(current[rid]) == baseline["recordInvariantHashes"][rid], (
             f"Change outside authored fields: {rid}")
 
-    manifest = json.loads((ROOT / "content/processes/import-manifest.json").read_text())
+    manifest = json.loads((ROOT / "processes/import-manifest.json").read_text())
     assert digest(manifest) == baseline["importManifestHash"], "Importer manifest changed"
     for rid in target_ids:
         assert digest(current[rid]) != manifest["records"][rid]["generatedHash"], (
