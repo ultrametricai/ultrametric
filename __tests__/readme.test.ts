@@ -19,7 +19,7 @@ const contributing = fs.readFileSync(path.join(ROOT, 'CONTRIBUTING.md'), 'utf8')
 // named once with one link, no duplicate destinations, the mission line closing it, and
 // the demo gif sitting directly under the intro with no heading or caption.
 const INTRO = [
-  '![Ultrametric](docs/assets/banner.svg)',
+  '![Ultrametric](assets/banner.svg)',
   '',
   'Ultrametric ([ultrametric.ai](https://ultrametric.ai)) is the open startup repo: every',
   'founder [process](#open-processes) step by step, the [tools](#open-vendor-rankings) and',
@@ -57,7 +57,7 @@ const INTRO = [
   '<!-- Legacy anchor: external links to #start-here predate the merge into this map. -->',
   '<a id="start-here"></a>',
   '',
-  '[![A tour of ultrametric.ai at 4x: the simulator founding a company, a process page, a vendor page, a situation, the overall rankings, government services, and open documents](docs/assets/readme/demo.gif)](https://ultrametric.ai)',
+  '[![A tour of ultrametric.ai at 4x: the simulator founding a company, a process page, a vendor page, a situation, the overall rankings, government services, and open documents](assets/readme/demo.gif)](https://ultrametric.ai)',
 ].join('\n')
 
 // The founder-specified section order (round 3): artifacts directly after modules with the
@@ -134,11 +134,11 @@ describe('README.md structure (founder round 2, 2026-10-12)', () => {
 
   it('the demo gif sits under the intro with no heading or caption, mp4 committed unnarrated', () => {
     const beforeFirstSection = readme.slice(0, readme.indexOf('\n## '))
-    expect(beforeFirstSection).toContain('docs/assets/readme/demo.gif')
+    expect(beforeFirstSection).toContain('assets/readme/demo.gif')
     expect(readme).not.toContain('## Video demo')
     expect(readme).not.toContain('demo.mp4')
     // The full recording stays committed for native upload later.
-    expect(fs.existsSync(path.join(ROOT, 'docs', 'assets', 'readme', 'demo.mp4'))).toBe(true)
+    expect(fs.existsSync(path.join(ROOT, 'assets', 'readme', 'demo.mp4'))).toBe(true)
   })
 
   it('the intro links each destination exactly once (image wraps excluded)', () => {
@@ -169,10 +169,10 @@ describe('README.md structure (founder round 2, 2026-10-12)', () => {
   })
 
   it('every screenshot is a clickable link to the live page it shows', () => {
-    const embeds = [...readme.matchAll(/!\[[^\]]*\]\(docs\/assets\/readme\/[^)]+\)/g)]
-    const wrapped = [...readme.matchAll(/\[!\[[^\]]*\]\(docs\/assets\/readme\/[^)]+\)\]\((https:\/\/ultrametric\.ai[^)]*)\)/g)]
+    const embeds = [...readme.matchAll(/!\[[^\]]*\]\(assets\/readme\/[^)]+\)/g)]
+    const wrapped = [...readme.matchAll(/\[!\[[^\]]*\]\(assets\/readme\/[^)]+\)\]\((https:\/\/ultrametric\.ai[^)]*)\)/g)]
     expect(embeds.length).toBeGreaterThan(0)
-    expect(wrapped.length, 'an image under docs/assets/readme/ is not wrapped in a live-site link').toBe(embeds.length)
+    expect(wrapped.length, 'an image under assets/readme/ is not wrapped in a live-site link').toBe(embeds.length)
   })
 
   it('both Example subsections use the bulleted link format', () => {
@@ -339,7 +339,7 @@ describe('README.md examples pin to the committed records', () => {
 
 describe('README.md media', () => {
   it('every committed image and recording the README embeds exists on disk', () => {
-    const media = [...readme.matchAll(/\]\((docs\/assets\/[^)]+)\)/g)].map((m) => m[1])
+    const media = [...readme.matchAll(/\]\((assets\/[^)]+)\)/g)].map((m) => m[1])
     expect(media.length).toBeGreaterThan(0)
     for (const p of media) {
       expect(fs.existsSync(path.join(ROOT, p)), `missing media file ${p}`).toBe(true)
@@ -347,7 +347,7 @@ describe('README.md media', () => {
   })
 
   it('each screenshot stays under the 300KB budget and the gif under 5MB', () => {
-    const dir = path.join(ROOT, 'docs', 'assets', 'readme')
+    const dir = path.join(ROOT, 'assets', 'readme')
     for (const file of fs.readdirSync(dir)) {
       const size = fs.statSync(path.join(dir, file)).size
       if (file.endsWith('.png')) expect(size, `${file} over 300KB`).toBeLessThan(300 * 1024)

@@ -1125,6 +1125,1054 @@
     "evidenceIds": []
   },
   {
+    "productId": "edge0",
+    "storyId": "accelerator-plugin-support",
+    "verdict": "partial",
+    "quality": 2,
+    "confidence": "medium",
+    "rationale": "Edge0 has a pluggable backend facade: a new backend can implement the same interface with zero core changes, and `backends/cuda/` is a reserved slot. But the only documented backends target consumer devices (MLX on iOS, Vulkan on Windows, native Android and macOS engines), and even CUDA is only reserved, not implemented. Using TPUs or Gaudi would mean writing a backend yourself. Missing for 10: any shipped TPU, Gaudi or other datacenter-accelerator backend or plugin, documentation of the plugin/backend API, and hands-on evidence of running on specialized accelerators.",
+    "evidenceIds": [
+      "edge0-gh-20",
+      "edge0-gh-16",
+      "edge0-gh-18"
+    ]
+  },
+  {
+    "productId": "edge0",
+    "storyId": "agentic-agent-docs",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Edge0 is a local inference engine with developer docs, so agent-oriented documentation such as llms.txt is a fair question to ask of it. However, nothing in the pack shows an llms.txt, AGENTS.md, or other agent-oriented docs. The only probe for a machine-readable markdown docs endpoint returned HTTP 404.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "edge0",
+    "storyId": "agentic-ai-insights",
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "Edge0 is a local LLM inference engine. It offers one-shot chat, an OpenAI-compatible serve endpoint, and on-device desktop and mobile apps, so users can get AI-generated responses inside the product. Nothing in the evidence shows features for ingesting the user's own data or producing insights and suggestions from it; that would only work by pasting data into a generic chat. Missing for 10: ingesting or connecting to user data (files, documents, RAG), proactive insight or suggestion features, and any documentation or hands-on evidence of data-analysis workflows.",
+    "evidenceIds": [
+      "edge0-gh-6",
+      "edge0-gh-8",
+      "edge0-gh-16",
+      "edge0-gh-19"
+    ]
+  },
+  {
+    "productId": "edge0",
+    "storyId": "agentic-autonomous-automation",
+    "verdict": "na",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Edge0 is a local LLM inference engine and model distribution: SSD expert offload, prerouter, LoRA adapters, an OpenAI-compatible serve endpoint, and on-device apps. User-configured autonomous background automations belong to agent or workflow platforms, not inference runtimes. The macOS 'daemon' mention refers to a background serving process, not user-defined automations, so it does not make this axis applicable.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "edge0",
+    "storyId": "agentic-builtin-assistant",
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "Edge0 is a local inference engine, and its own surfaces let users interact with a built-in model: a one-shot chat CLI with optional reasoning output, on-device iOS, Android, Windows and macOS apps, and an OpenAI-compatible serve endpoint. That gives a chat assistant inside the product, but nothing shows the assistant taking delegated tasks: no agent mode, tool use or multi-step execution. Missing for 10: evidence of agentic task delegation (tool calling, actions on the user's behalf), documentation of assistant features in the desktop and mobile apps, and independent hands-on corroboration.",
+    "evidenceIds": [
+      "edge0-gh-8",
+      "edge0-gh-16",
+      "edge0-gh-17",
+      "edge0-gh-18",
+      "edge0-gh-19",
+      "edge0-gh-6"
+    ]
+  },
+  {
+    "productId": "edge0",
+    "storyId": "agentic-headless",
+    "verdict": "full",
+    "quality": 7,
+    "confidence": "medium",
+    "rationale": "Edge0 can run without a UI: a CLI `edge0 serve` command exposes an OpenAI-compatible /v1/chat/completions endpoint that can be scripted with curl. It also offers a one-shot chat CLI with flags like --max-new, a Python AutoEngine API, scripted model fetching, a benchmark script driven by an env var, a macOS daemon mode, and a pytest suite that needs no real weights. Missing for 10: explicit CI/automation documentation or examples (e.g. pipeline configs, exit-code/non-interactive behavior), clarity on headless support for typical Linux/CUDA CI runners (CUDA is only a reserved slot), and independent hands-on corroboration.",
+    "evidenceIds": [
+      "edge0-gh-6",
+      "edge0-gh-7",
+      "edge0-gh-8",
+      "edge0-gh-11",
+      "edge0-gh-5",
+      "edge0-gh-15",
+      "edge0-gh-19",
+      "edge0-gh-21",
+      "edge0-gh-20"
+    ]
+  },
+  {
+    "productId": "edge0",
+    "storyId": "agentic-mcp-client",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Edge0 is a local LLM inference engine with an OpenAI-compatible server and desktop/mobile apps. Such products can plausibly act as MCP clients, so the axis applies. The evidence covers only SSD expert offload, LoRA adapters, and serving, and never mentions connecting MCP servers or tool use.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "edge0",
+    "storyId": "agentic-mcp-server",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Edge0 is a local LLM inference engine, not an agent, so an official MCP server is a fair question for it. The evidence documents only an OpenAI-compatible /v1/chat/completions server (`edge0 serve`), a CLI and a Python API. Nothing mentions an MCP server, MCP endpoint or MCP tool interface for connecting agents.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "edge0",
+    "storyId": "agentic-nl-commands",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Edge0 is a local LLM inference engine. Its docs show you can send natural-language prompts to the hosted model (one-shot chat, an OpenAI-compatible /v1/chat/completions server). However, the product itself is operated through CLI flags, scripts and Python APIs such as fetch_models.py, --no-lora and AutoEngine. Nothing in the pack shows natural-language control of the product's own operations, such as fetching models, swapping adapters or configuring serving.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "edge0",
+    "storyId": "agentic-official-cli",
+    "verdict": "full",
+    "quality": 7,
+    "confidence": "medium",
+    "rationale": "Edge0's first-party GitHub docs show an official `edge0` CLI. It serves an OpenAI-compatible endpoint with `edge0 serve edge0-35b`, runs one-shot chat with flags like --max-new and --show-thinking, and accepts --no-prerouter / --no-lora toggles, with a macOS local CLI/daemon listed alongside. Missing for 10: a complete CLI command reference, CLI coverage of model download (fetching still uses a Python script), clear CLI availability on platforms beyond the shown commands and macOS, and independent or hands-on corroboration.",
+    "evidenceIds": [
+      "edge0-gh-6",
+      "edge0-gh-7",
+      "edge0-gh-8",
+      "edge0-gh-14",
+      "edge0-gh-19",
+      "edge0-gh-5"
+    ]
+  },
+  {
+    "productId": "edge0",
+    "storyId": "agentic-public-api",
+    "verdict": "full",
+    "quality": 7,
+    "confidence": "medium",
+    "rationale": "Edge0 documents a public, OpenAI-compatible HTTP API: `edge0 serve` exposes `/v1/chat/completions`, with a curl example. It also offers a transformers-style Python API (`AutoEngine.from_pretrained`, `AutoModel`/`AutoConfig`), so agents and scripts can drive it programmatically. The evidence is only README-level snippets, not a dedicated API reference. Missing for 10: a full API reference (parameters, other endpoints such as models/embeddings, auth and error behavior), and independent or hands-on corroboration that the endpoint works as documented.",
+    "evidenceIds": [
+      "edge0-gh-6",
+      "edge0-gh-7",
+      "edge0-gh-10",
+      "edge0-gh-11"
+    ]
+  },
+  {
+    "productId": "edge0",
+    "storyId": "agentic-scoped-keys",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Edge0 is a local inference engine that serves an OpenAI-compatible /v1/chat/completions endpoint, so API authentication and scoped credentials are a fair axis for it. Nothing in the evidence mentions API keys, authentication, or least-privilege credential issuance for agents.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "edge0",
+    "storyId": "agentic-sdks",
+    "verdict": "partial",
+    "quality": 5,
+    "confidence": "medium",
+    "rationale": "Edge0 ships a first-party Python API with transformers-style `AutoModel` / `AutoConfig` / `AutoEngine` and `AutoEngine.from_pretrained(...)`, so developers can build against it in Python. Its OpenAI-compatible `/v1/chat/completions` server also lets existing OpenAI client libraries work, though those are not Edge0's own SDKs. The iOS, Android, Windows and macOS components are described as apps and native engines, not as client SDKs. Missing for 10: official SDKs beyond Python (e.g. JS/TS, Swift, Kotlin client libraries), SDK reference documentation, versioned and published packages, and independent or hands-on corroboration of SDK usage.",
+    "evidenceIds": [
+      "edge0-gh-10",
+      "edge0-gh-11",
+      "edge0-gh-6",
+      "edge0-gh-7",
+      "edge0-gh-16",
+      "edge0-gh-17"
+    ]
+  },
+  {
+    "productId": "edge0",
+    "storyId": "agentic-webhooks",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Edge0 is a local LLM inference engine with an OpenAI-compatible serve endpoint and a daemon, so event subscription via webhooks is a plausible feature for this kind of product and the axis applies. The evidence only shows request/response chat completions, CLI usage and a Python engine API. Nothing mentions webhooks, callbacks or any event-subscription mechanism.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "edge0",
+    "storyId": "anthropic-compatible-endpoint",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Edge0 ships an HTTP server (`edge0 serve`), so an Anthropic-compatible messages endpoint is a fair question for it. The evidence documents only an OpenAI-compatible /v1/chat/completions endpoint, and nothing shows an Anthropic-style /v1/messages route.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "edge0",
+    "storyId": "api-interactive-docs",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Edge0 exposes an OpenAI-compatible HTTP server and a Python API, so an interactive API reference is a fair question for it. The evidence only shows static README snippets, such as a curl command and AutoEngine usage. Nothing shows an explorable, interactive API reference with runnable in-page examples, and the docs-md probe returned a 404.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "edge0",
+    "storyId": "api-machine-spec",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Edge0 exposes an HTTP API through `edge0 serve` with an OpenAI-compatible /v1/chat/completions endpoint, so a published API spec is a fair thing to ask for. However, the evidence never mentions a downloadable OpenAPI or equivalent spec for Edge0. Being OpenAI-compatible only implies that third-party specs might apply; that is not a first-party spec the user can download.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "edge0",
+    "storyId": "api-sandbox",
+    "verdict": "na",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Edge0 is a local, on-device LLM inference engine that streams weights from SSD and serves an OpenAI-compatible endpoint on localhost. It has no hosted service or production dataset that would call for a separate sandbox or test environment, so this story's axis is a category error for this kind of product. The unit tests that run without real weights are developer testing, not a user-facing sandbox.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "edge0",
+    "storyId": "api-versioning-policy",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Edge0 is a local inference engine exposing an OpenAI-compatible server and a Python API, so API versioning and deprecation policy is a fair axis for it. The pack documents no versioning scheme, compatibility guarantees, changelog or deprecation policy. The '/v1/chat/completions' path only mirrors OpenAI's endpoint convention and is not evidence of a versioned API with a stated policy.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "edge0",
+    "storyId": "apple-silicon-acceleration",
+    "verdict": "partial",
+    "quality": 4,
+    "confidence": "low",
+    "rationale": "The evidence shows Apple-platform targets: an on-device iPhone app built on MLX Swift (Apple's framework for Apple Silicon) and a native Rust macOS CLI, daemon and desktop app. That implies some Apple Silicon-native execution, but nothing explicitly documents Metal kernels, ARM-specific optimizations or measured speedups on Macs. The SSD-offload and prerouter throughput gains are backend-agnostic, so they are not evidence for this story. Missing for 10: explicit Metal/MLX backend documentation for macOS, ARM/NEON optimization details, Apple Silicon benchmarks, independent corroboration.",
+    "evidenceIds": [
+      "edge0-gh-16",
+      "edge0-gh-19"
+    ]
+  },
+  {
+    "productId": "edge0",
+    "storyId": "automation-bulk-operations",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Edge0 is a local LLM inference engine, and batch or bulk processing of many prompts is a fair capability for this kind of product. The evidence shows only single-request paths: one-shot chat, an OpenAI-compatible /v1/chat/completions server, and a benchmark script. Nothing documents batch inference, a bulk job API, or multi-item operations.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "edge0",
+    "storyId": "automation-rules-engine",
+    "verdict": "na",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Edge0 is a local LLM inference engine: it streams MoE expert weights from SSD, ships LoRA/prerouter adapters, serves an OpenAI-compatible endpoint, and runs as on-device apps. Event-driven automation rules that trigger actions are a workflow-automation capability, not something buyers compare inference runtimes on. Nothing in the evidence shows Edge0 ships any trigger or rules feature that would make this axis applicable.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "edge0",
+    "storyId": "automation-scheduled-jobs",
+    "verdict": "na",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Edge0 is a local LLM inference engine: it streams SSD expert weights, ships LoRA/prerouter adapters, and offers an OpenAI-compatible serve endpoint plus on-device apps. Scheduling recurring jobs or workflows is an orchestration capability outside the category of a model runtime. Nothing in the evidence shows it ships any scheduling feature, so the axis does not apply.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "edge0",
+    "storyId": "automation-versioned-workflows",
+    "verdict": "na",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Edge0 is a local MoE inference engine and model runtime (SSD expert offload, LoRA/prerouter adapters, OpenAI-compatible serve). It has no automation or workflow layer, so versioning, reviewing, and rolling back automations is outside its product category. Adapter file swapping is model-artifact management, not automation versioning, and does not make this axis apply.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "edge0",
+    "storyId": "broad-model-architecture-support",
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "medium",
+    "rationale": "Edge0 runs MoE LLMs: a 35B MoE tier with SSD expert offload, served via an OpenAI-compatible chat endpoint. It also auto-detects model tiers from config.json. However, the evidence points to a small set of curated 'tiers' with bundled adapters, not broad architecture coverage. Missing for 10: support for hundreds of architectures, multi-modal models, embedding models, and any list of supported model families.",
+    "evidenceIds": [
+      "edge0-docs-1",
+      "edge0-gh-1",
+      "edge0-gh-6",
+      "edge0-gh-9",
+      "edge0-gh-10",
+      "edge0-gh-4"
+    ]
+  },
+  {
+    "productId": "edge0",
+    "storyId": "build-from-source",
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "The README implies a from-source workflow: a local .venv, repo scripts such as scripts/fetch_models.py and examples/bench.py, and a pytest suite that runs without real weights. Native engines exist per platform (C++ + Vulkan, Rust, Kotlin, Swift + MLX). However, there are no build instructions, and the dependency footprint is never described as minimal; Vulkan and MLX Swift are themselves external dependencies. Missing for 10: documented build-from-source steps, a stated or minimal dependency list, native-engine build instructions, and independent corroboration that a source build works.",
+    "evidenceIds": [
+      "edge0-gh-5",
+      "edge0-gh-21",
+      "edge0-gh-15",
+      "edge0-gh-18",
+      "edge0-gh-19",
+      "edge0-gh-16"
+    ]
+  },
+  {
+    "productId": "edge0",
+    "storyId": "built-in-chat-ui",
+    "verdict": "partial",
+    "quality": 5,
+    "confidence": "low",
+    "rationale": "Edge0 lists on-device iOS and Android apps, a Windows desktop app, and a macOS desktop app, which suggests a graphical front end for local models. However, none of these is explicitly described as a chat interface. The clearly documented chat paths are a CLI one-shot chat and an OpenAI-compatible /v1/chat/completions server, which would need an external client for a GUI. Missing for 10: explicit documentation that the desktop/mobile apps provide a chat UI, any description of GUI chat features (multi-turn history, model selection), screenshots or hands-on corroboration.",
+    "evidenceIds": [
+      "edge0-gh-16",
+      "edge0-gh-17",
+      "edge0-gh-18",
+      "edge0-gh-19",
+      "edge0-gh-8",
+      "edge0-gh-6"
+    ]
+  },
+  {
+    "productId": "edge0",
+    "storyId": "cli-interactive-chat",
+    "verdict": "partial",
+    "quality": 4,
+    "confidence": "medium",
+    "rationale": "The README documents terminal chat, but only as one-shot prompts (gh-8, with --max-new and --show-thinking), plus an OpenAI-compatible `edge0 serve` endpoint queried via curl and a macOS local CLI. None of this shows a persistent multi-turn interactive session. Missing for 10: an interactive REPL/chat mode with conversation history, documented chat command syntax, independent or hands-on corroboration.",
+    "evidenceIds": [
+      "edge0-gh-8",
+      "edge0-gh-6",
+      "edge0-gh-7",
+      "edge0-gh-19"
+    ]
+  },
+  {
+    "productId": "edge0",
+    "storyId": "cli-model-management",
+    "verdict": "partial",
+    "quality": 4,
+    "confidence": "medium",
+    "rationale": "Downloading is done from the command line, but through a Python helper script (`scripts/fetch_models.py --tier edge0-35b --target-dir models`) rather than a first-class `edge0` subcommand. Each download bundles the base checkpoint and adapters into a ready-to-run directory, and the `edge0` CLI can serve and run models by tier or path. There is no evidence of model search or of list/remove/update management commands; adapter upgrades are described only as file swaps. missing for 10: CLI model search, a native `edge0` download/pull subcommand, CLI commands to list/delete/update installed models, independent hands-on corroboration.",
+    "evidenceIds": [
+      "edge0-gh-5",
+      "edge0-gh-4",
+      "edge0-gh-6",
+      "edge0-gh-9",
+      "edge0-gh-12",
+      "edge0-gh-19"
+    ]
+  },
+  {
+    "productId": "edge0",
+    "storyId": "cli-runtime-config",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Edge0 has a CLI that loads models (`edge0 serve edge0-35b`) and exposes flags like `--max-new`, `--no-prerouter` and `--no-lora`. None of these set GPU offload or context length: `--max-new` only caps generation length, and SSD expert offload is automatic rather than user-tunable. CUDA is listed only as a reserved backend slot, so the story's specific settings are unevidenced.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "edge0",
+    "storyId": "cli-server-control",
+    "verdict": "full",
+    "quality": 7,
+    "confidence": "medium",
+    "rationale": "The README documents starting the local OpenAI-compatible server from the command line with `edge0 serve edge0-35b`, which then accepts requests at 127.0.0.1:8000. The macOS build is described as a local CLI/daemon. Stopping is only implied by running the server as a foreground process, not documented. Missing for 10: explicit stop/daemon-management commands (stop/status/restart), configuration of host/port, and independent hands-on corroboration.",
+    "evidenceIds": [
+      "edge0-gh-6",
+      "edge0-gh-7",
+      "edge0-gh-19"
+    ]
+  },
+  {
+    "productId": "edge0",
+    "storyId": "client-library-bindings",
+    "verdict": "partial",
+    "quality": 5,
+    "confidence": "medium",
+    "rationale": "Edge0 ships an official in-process Python API with transformers-style `AutoModel`/`AutoConfig`/`AutoEngine` and `AutoEngine.from_pretrained(...)`. It also offers an OpenAI-compatible `/v1/chat/completions` server, so generic OpenAI or HTTP clients in any language can call it. There is no evidence of an official JavaScript client or a dedicated Edge0 HTTP client SDK, and the Python API is documented only by short snippets. Missing for 10: an official JavaScript/TypeScript client library, an official client SDK for the serve endpoint, and in-depth API reference docs or independent corroboration of the Python library.",
+    "evidenceIds": [
+      "edge0-gh-10",
+      "edge0-gh-11",
+      "edge0-gh-6",
+      "edge0-gh-7"
+    ]
+  },
+  {
+    "productId": "edge0",
+    "storyId": "cloud-model-passthrough",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Edge0 is an on-device inference engine with desktop and mobile apps, so connecting cloud providers alongside local models is a fair question for this kind of product. The evidence only shows local model serving: SSD expert offload, an OpenAI-compatible local server it exposes, and hardware backend slots such as CUDA. Nothing shows the app connecting to cloud AI providers.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "edge0",
+    "storyId": "cloud-offload-large-models",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "A hosted cloud tier is a plausible offering for a local inference engine, so the axis applies. However, every piece of evidence describes on-device execution that requires downloading weights first (fetch_models.py, a local serve endpoint, on-device apps). The 'offload' is local SSD expert streaming, and 'tier' refers to model size tiers, not a cloud service. There is no evidence of hosted or cloud inference.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "edge0",
+    "storyId": "cloud-offload-pricing-caps",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Edge0 is a local, on-device inference engine, and a product of this kind could plausibly offer a hosted cloud offload tier, so the axis applies. The evidence only describes local SSD-streamed inference, a local OpenAI-compatible server and on-device apps. Its 'tier' references are model tiers (e.g. edge0-35b), not pricing tiers, and nothing covers a hosted cloud tier, its pricing, rate limits or usage caps.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "edge0",
+    "storyId": "coding-agent-backend-integration",
+    "verdict": "partial",
+    "quality": 5,
+    "confidence": "medium",
+    "rationale": "Edge0 ships `edge0 serve`, which exposes an OpenAI-compatible /v1/chat/completions endpoint on localhost (shown with a curl example), so a coding agent that accepts an OpenAI-style base URL could plausibly use it as its model backend. Nothing shows this actually works for agentic coding, since tool/function calling, streaming and agent setup are not documented. Missing for 10: evidence of tool/function-calling support in the server, documented setup with specific coding agents, streaming/endpoint compatibility details, and independent or hands-on reports of an agent running against it.",
+    "evidenceIds": [
+      "edge0-gh-6",
+      "edge0-gh-7"
+    ]
+  },
+  {
+    "productId": "edge0",
+    "storyId": "cold-start-latency",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Nothing in the evidence addresses cold-start or time-to-first-token latency. The primary documented path runs through a Python venv, and while native per-platform engines exist (e.g. a Rust CLI/daemon on macOS), no claim says they start quickly. SSD weight streaming and the prerouter are presented only as memory-bounding and decode-throughput features, not startup-time improvements.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "edge0",
+    "storyId": "concurrent-request-limits",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Edge0 ships a local OpenAI-compatible server (`edge0 serve`) and a bench script, so this axis applies. The evidence only covers single-stream decode throughput and memory bounds. Nothing documents maximum concurrent requests or connections, or when throughput degrades under load.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "edge0",
+    "storyId": "container-deployment",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Edge0 is a local LLM inference runtime with an OpenAI-compatible `edge0 serve` mode, so running it in a container for reproducible deployment is a fair question. The evidence shows only venv-based Python setup, model fetch scripts and native per-platform apps. Nothing mentions a Dockerfile, a container image or any containerized deployment path.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "edge0",
+    "storyId": "continuous-batching-throughput",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Edge0 is an LLM inference engine with an OpenAI-compatible `edge0 serve` endpoint, so serving-throughput techniques are a fair axis. However, the evidence never mentions continuous batching, chunked prefill, or multi-request scheduling. The only throughput claim is a +59% single-stream decode gain from overlapping expert loads via the prerouter, which is a different mechanism from what the story asks for.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "edge0",
+    "storyId": "cpu-gpu-hybrid-offload",
+    "verdict": "partial",
+    "quality": 5,
+    "confidence": "medium",
+    "rationale": "Edge0 lets you run models much larger than available memory, such as 35B MoE models in about 2.5 GB, by streaming expert weights from SSD on demand. Peak memory is bounded by the active expert set, and a trained prerouter overlaps those loads with the forward pass. However, the mechanism is SSD-to-memory expert streaming, not the combined CPU+GPU layer offload the story describes, and the CUDA backend is only a reserved slot. Missing for 10: explicit CPU+GPU split/offload controls (e.g., layers on GPU vs. CPU), a discrete-GPU VRAM-specific path such as an implemented CUDA backend, and independent hands-on corroboration of larger-than-VRAM performance.",
+    "evidenceIds": [
+      "edge0-docs-1",
+      "edge0-gh-1",
+      "edge0-gh-2",
+      "edge0-gh-18",
+      "edge0-gh-20"
+    ]
+  },
+  {
+    "productId": "edge0",
+    "storyId": "cross-architecture-cpu-support",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "CPU-architecture portability is a fair question for a local inference engine, so the axis applies. However, the evidence only lists iOS, Android, Windows (C++/Vulkan) and macOS targets, plus a pluggable backend facade with a reserved CUDA slot. Nothing mentions PowerPC or any other CPU architecture beyond mainstream mobile and desktop platforms.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "edge0",
+    "storyId": "custom-assistant-creation",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Edge0 is a local LLM inference engine with chat apps, so configurable task-specific assistants are a fair question for it. The evidence never mentions assistant creation, personas, saved system prompts, or task configuration. The LoRA adapters and the support for multiple adapter sets on one base are described only as recovering quantization loss, not as task specialization, and the OpenAI-compatible serve endpoint does not by itself evidence custom assistants.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "edge0",
+    "storyId": "custom-model-identifier",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Edge0 has an OpenAI-compatible `edge0 serve` endpoint, so a model-alias capability is a fair question. However, the evidence only shows models referenced by fixed tier names (e.g. edge0-35b) or auto-detected from config.json. Nothing documents a flag or setting to assign a custom identifier to a loaded model for use in API calls.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "edge0",
+    "storyId": "disaggregated-serving",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Edge0 is an LLM inference engine with a serve mode (an OpenAI-compatible `edge0 serve` endpoint), so prefill/decode disaggregation is a fair axis to judge it on. The evidence pack never mentions separating prefill and decode phases across workers or nodes. Its performance features are SSD expert offload and a prerouter that predicts expert loads to improve single-node decode throughput, and it targets on-device platforms (iOS, Android, Windows, macOS) rather than large-scale distributed serving.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "edge0",
+    "storyId": "distributed-parallelism",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Edge0 is an LLM inference engine, so multi-GPU distribution is a fair axis to ask about. The evidence describes single-device, on-device inference that streams MoE expert weights from SSD, and says the CUDA backend is only a reserved slot. Nothing in the pack shows tensor, pipeline, or data parallelism across multiple GPUs.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "edge0",
+    "storyId": "document-chat-rag",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Edge0 is an on-device LLM inference engine with desktop and mobile apps, so built-in document chat via RAG is a fair question for this kind of product. The evidence shows only offline chat and an OpenAI-compatible local server. Nothing in the pack mentions document ingestion, embeddings, indexing, or retrieval-augmented generation.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "edge0",
+    "storyId": "document-editing-assistant",
+    "verdict": "na",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Edge0 is a local LLM inference engine. Its evidence covers SSD expert offload, routing prediction, LoRA adapters, an OpenAI-compatible server, and on-device apps. An integrated document-drafting workspace with autosave belongs to a different product category (productivity editor), so this axis does not apply, and nothing in the pack shows Edge0 ships such a capability.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "edge0",
+    "storyId": "download-models-from-huggingface",
+    "verdict": "partial",
+    "quality": 4,
+    "confidence": "low",
+    "rationale": "Edge0 has a model download script (`fetch_models.py --tier edge0-35b`) and per-model 'repos' that bundle the base checkpoint with LoRA and prerouter adapters as one ready-to-run download. Models load transformers-style via `AutoEngine.from_pretrained` from a local path, with the tier auto-detected from `config.json`, and `--no-lora`/`--no-prerouter` run the plain base. However, the evidence never names Hugging Face as the source, and support appears limited to Edge0's own tiered checkpoints rather than arbitrary open models. Missing for 10: explicit Hugging Face Hub integration (pulling by repo ID), evidence of support for arbitrary or third-party open models beyond Edge0 tiers, and independent or hands-on corroboration.",
+    "evidenceIds": [
+      "edge0-gh-4",
+      "edge0-gh-5",
+      "edge0-gh-9",
+      "edge0-gh-10",
+      "edge0-gh-11",
+      "edge0-gh-14"
+    ]
+  },
+  {
+    "productId": "edge0",
+    "storyId": "embedding-model-support",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Edge0 is a local LLM inference and serving engine, so serving embedding models is a fair question for it. However, the evidence only documents MoE chat models served over an OpenAI-compatible /v1/chat/completions endpoint, with no mention of embedding models or an /v1/embeddings endpoint.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "edge0",
+    "storyId": "enterprise-license-cost",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Licensing terms for commercial or enterprise use are a fair question for an open-source local inference engine like Edge0. However, nothing in the evidence pack mentions a license, a community vs. paid edition, or commercial-use terms. The pack covers only technical features such as SSD offload, LoRA adapters, serving and platform apps.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "edge0",
+    "storyId": "flexible-integer-quantization",
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "medium",
+    "rationale": "Edge0 uses 4-bit quantized weights, with LoRA adapters distilled from the FP teacher to recover quantization loss (edge0-gh-3), which reduces memory footprint. The documented memory savings come mainly from SSD expert offload rather than a selectable range of integer bit-widths. missing for 10: very low-bit (2–3-bit) formats, 8-bit format, user-selectable precision options, quantization documentation and memory benchmarks per bit-width, independent corroboration.",
+    "evidenceIds": [
+      "edge0-gh-3"
+    ]
+  },
+  {
+    "productId": "edge0",
+    "storyId": "format-backward-compat",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Edge0 is a local inference runtime that downloads quantized checkpoints, so runtime-to-model-file compatibility is a fair question. The evidence never documents a format versioning scheme, a compatibility policy, or upgrade notes about breaking previously downloaded weights. The closest item, that upgrading adapters swaps only adapter files and leaves the base read-only, concerns adapter updates, not runtime upgrades.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "edge0",
+    "storyId": "gguf-format-support",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Edge0 is a local model inference engine, so GGUF loading is a fair question for it. The evidence only shows its own bundled checkpoints with LoRA and prerouter adapters, auto-detected from a transformers-style `config.json` directory (plus MLX Swift on iOS). Nothing mentions loading or running GGUF-packaged models.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "edge0",
+    "storyId": "gpu-fallback-diagnostics",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Edge0 is a local LLM inference engine with hardware backends (Vulkan on Windows, MLX on iOS, a reserved CUDA backend slot), so diagnostics for GPU-to-CPU fallback are a fair question for it. The evidence never mentions GPU detection, fallback behavior, logging, or diagnostic output explaining why acceleration failed.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "edge0",
+    "storyId": "headless-server-mode",
+    "verdict": "full",
+    "quality": 7,
+    "confidence": "medium",
+    "rationale": "Edge0 can run with no GUI. It ships an `edge0 serve` command exposing an OpenAI-compatible `/v1/chat/completions` endpoint reachable via curl, a one-shot chat CLI, a programmatic Python `AutoEngine` API, and an explicit macOS CLI/daemon mode. Unit tests run under pytest without real weights, which suits CI. missing for 10: explicit Linux/server-GPU deployment support (the CUDA backend is only a reserved slot), documented CI pipeline or container guidance, and independent hands-on corroboration of headless server use.",
+    "evidenceIds": [
+      "edge0-gh-6",
+      "edge0-gh-7",
+      "edge0-gh-8",
+      "edge0-gh-11",
+      "edge0-gh-19",
+      "edge0-gh-21",
+      "edge0-gh-20"
+    ]
+  },
+  {
+    "productId": "edge0",
+    "storyId": "kv-cache-paged-memory-management",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Edge0 is an LLM inference engine with an OpenAI-compatible serve mode, so paged KV-cache management is a fair axis for it. The evidence only describes SSD streaming of MoE expert weights and bounding peak memory by the active expert set. Nothing covers paged attention, KV-cache block allocation, fragmentation avoidance, or concurrent-request capacity.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "edge0",
+    "storyId": "local-voice-transcription",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Edge0 is an on-device model inference engine with native mobile and desktop apps, so on-device speech transcription is a plausible capability for this kind of product and the axis applies. The evidence covers only text LLM inference (35B MoE expert streaming, LoRA adapters, chat completions). Nothing mentions speech input, dictation, ASR models, or real-time transcription.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "edge0",
+    "storyId": "lora-adapter-serving",
+    "verdict": "partial",
+    "quality": 5,
+    "confidence": "medium",
+    "rationale": "The repo states that adapters stay unmerged and that one read-only base serves multiple adapter sets. Upgrading adapters swaps only the adapter files, and an OpenAI-compatible `edge0 serve` endpoint exists. However, the shipped LoRAs are distillation adapters for recovering quantization loss, not general user adapters. There is no documentation on how several adapters are selected or served together. missing for 10: per-request adapter selection or routing in the serve API, concurrent multi-adapter serving or hot-swap at runtime, loading custom third-party LoRAs, efficiency or throughput evidence for multi-adapter serving, independent or hands-on corroboration.",
+    "evidenceIds": [
+      "edge0-gh-13",
+      "edge0-gh-12",
+      "edge0-gh-3",
+      "edge0-gh-4",
+      "edge0-gh-6",
+      "edge0-gh-14"
+    ]
+  },
+  {
+    "productId": "edge0",
+    "storyId": "low-level-server-tuning-flags",
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "The only engine-level override documented is `--no-prerouter` / `--no-lora`, which turns off the predictive expert router and the adapters to run the plain base model. Everything else, including SSD expert streaming and tier selection, is presented as automatic defaults. missing for 10: any documented memory-locking (mlock) control, mmap toggles, tunables for expert-offload or cache size, or a general engine configuration reference.",
+    "evidenceIds": [
+      "edge0-gh-14",
+      "edge0-gh-1",
+      "edge0-gh-9"
+    ]
+  },
+  {
+    "productId": "edge0",
+    "storyId": "maintainer-release-cadence",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Release cadence and security-patch history are fair questions for any open-source inference engine, so this axis applies. The evidence pack covers model offload, adapters, serving and platform apps, but contains nothing on releases, changelogs, security advisories or patch turnaround times.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "edge0",
+    "storyId": "model-cache-portability",
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "The evidence shows Edge0 models come as a single directory: a base checkpoint with a `config.json`, plus unmerged LoRA and prerouter adapters. The base stays read-only and is never merged, and it can run as a plain model via `--no-lora`/`--no-prerouter`. Loading uses transformers-style `AutoModel`/`AutoEngine` from a path, which hints at a standard layout that other tools could reuse. Nothing states that these files or caches work in other runtimes without re-downloading or converting, so the developer cannot actually know this from the docs. Missing for 10: explicit documentation of on-disk weight format and quantization compatibility with other runtimes (e.g. Hugging Face transformers, llama.cpp, MLX), guidance on sharing caches with or importing from existing model stores, and any hands-on confirmation of cross-runtime reuse.",
+    "evidenceIds": [
+      "edge0-gh-4",
+      "edge0-gh-9",
+      "edge0-gh-10",
+      "edge0-gh-11",
+      "edge0-gh-12",
+      "edge0-gh-13",
+      "edge0-gh-14"
+    ]
+  },
+  {
+    "productId": "edge0",
+    "storyId": "model-config-management",
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "The evidence shows only CLI-level handling of model assets: a fetch script downloads models into a target directory, each model is a self-contained directory, and adapters can be swapped or disabled via flags. Per-model tier settings are auto-detected from config.json. Nothing shows a unified place to manage models, prompts and configurations, though desktop apps are listed. Missing for 10: a central model-library/management UI, saved-prompt storage or management, user-editable per-model configuration profiles, and any hands-on corroboration.",
+    "evidenceIds": [
+      "edge0-gh-5",
+      "edge0-gh-4",
+      "edge0-gh-9",
+      "edge0-gh-12",
+      "edge0-gh-14",
+      "edge0-gh-19"
+    ]
+  },
+  {
+    "productId": "edge0",
+    "storyId": "model-hot-swapping",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "The evidence shows `edge0 serve` launched with a single model tier, and nothing documents loading extra models or switching them while the server keeps running. The note that one read-only base serves multiple adapter sets concerns LoRA adapters on a single base model. It does not show runtime switching between distinct models without a restart.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "edge0",
+    "storyId": "model-recommendation-assistant",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Edge0 is a local model inference engine, so pre-download model recommendation is a fair axis for it. The evidence only shows manual tier selection via fetch_models.py and tier auto-detection from an already-downloaded checkpoint's config.json. Nothing shows an AI assistant or advisor that matches models to the user's hardware or task before download.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "edge0",
+    "storyId": "modern-quant-format-support",
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "Edge0 runs 4-bit quantized base models, using distilled LoRA adapters to recover quantization loss (edge0-gh-3). However, loading appears limited to its own bundled tier checkpoints, which are auto-detected from config.json (edge0-gh-4, edge0-gh-9), with no evidence of loading arbitrary third-party quantized formats. Missing for 10: documented support for FP8, INT4 checkpoint formats, GPTQ and AWQ; loading of non-Edge0 quantized checkpoints; a list of supported formats; independent corroboration.",
+    "evidenceIds": [
+      "edge0-gh-3",
+      "edge0-gh-4",
+      "edge0-gh-9"
+    ]
+  },
+  {
+    "productId": "edge0",
+    "storyId": "multi-agent-concurrent-throughput",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Edge0 is a local inference runtime with an OpenAI-compatible serve endpoint, so concurrent-request capacity is a fair axis. The evidence only covers bounded memory via SSD expert streaming, prefetch-driven decode speedups, and one base model serving multiple adapter sets. Nothing documents reserved capacity, request batching, or steady throughput under concurrent agents or sessions.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "edge0",
+    "storyId": "multi-instance-memory-budgeting",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Edge0 is a local LLM inference engine, so controlling context memory across concurrent model instances is a fair question for it. The evidence covers SSD expert offload, which bounds weight memory, and one read-only base serving multiple adapter sets. Nothing documents KV-cache or context-memory allocation controls, or settings for running multiple instances concurrently.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "edge0",
+    "storyId": "multi-vendor-gpu-support",
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "medium",
+    "rationale": "Edge0 ships a Windows native engine on Vulkan, a cross-vendor GPU API that can reach NVIDIA and AMD hardware, and an iOS app on Apple's MLX. However, the CUDA backend is explicitly only a \"reserved slot\", and there is no evidence of ROCm or other vendor-tuned kernels. Missing for 10: an implemented CUDA backend, AMD ROCm/HIP kernels, vendor-specific kernel docs or benchmarks, and independent corroboration of GPU acceleration on NVIDIA/AMD.",
+    "evidenceIds": [
+      "edge0-gh-18",
+      "edge0-gh-16",
+      "edge0-gh-20"
+    ]
+  },
+  {
+    "productId": "edge0",
+    "storyId": "network-accessible-serving",
+    "verdict": "partial",
+    "quality": 5,
+    "confidence": "medium",
+    "rationale": "Edge0 ships an `edge0 serve` command exposing an OpenAI-compatible /v1/chat/completions endpoint, and macOS has a local daemon. However, the only documented example targets 127.0.0.1:8000, which is loopback only, so access from other devices on the network is not shown. Missing for 10: documented host/bind option (e.g. 0.0.0.0) for LAN exposure, network auth/access-control guidance, independent or hands-on confirmation of serving to other devices.",
+    "evidenceIds": [
+      "edge0-gh-6",
+      "edge0-gh-7",
+      "edge0-gh-19"
+    ]
+  },
+  {
+    "productId": "edge0",
+    "storyId": "one-command-agent-launch",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Launching third-party coding-agent CLIs pre-wired to local models is a fair ask for a local inference runtime, so the axis applies. The evidence shows only an OpenAI-compatible `edge0 serve` endpoint and a one-shot chat CLI. Nothing shows a single command that launches or auto-configures external coding agents; pointing them at the endpoint would be a manual setup step.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "edge0",
+    "storyId": "open-source-contribution",
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "Edge0 is developed in a public GitHub repo with a local unit-test suite that runs without real weights (edge0-gh-21) and a documented backend extension point, a reserved `backends/cuda/` slot needing no core changes (edge0-gh-20). That suggests outside code contributions are technically feasible, but nothing documents a contribution process or how contributors are recognized. Missing for 10: CONTRIBUTING guide, open-source license, PR/review process, contributor or maintainer recognition path, and evidence of external contributors.",
+    "evidenceIds": [
+      "edge0-gh-20",
+      "edge0-gh-21",
+      "edge0-gh-1"
+    ]
+  },
+  {
+    "productId": "edge0",
+    "storyId": "openai-compatible-server",
+    "verdict": "full",
+    "quality": 7,
+    "confidence": "medium",
+    "rationale": "The README documents a first-party `edge0 serve edge0-35b` command that exposes an OpenAI-compatible `/v1/chat/completions` endpoint on localhost:8000, with a curl example. Edge0 models load from directories with tier auto-detection, so the core story is delivered from GitHub docs alone. Missing for 10: evidence that serve accepts arbitrary model directories beyond named Edge0 tiers, documentation of other OpenAI endpoints (completions, models, embeddings) and server options, and independent or hands-on corroboration.",
+    "evidenceIds": [
+      "edge0-gh-6",
+      "edge0-gh-7",
+      "edge0-gh-9"
+    ]
+  },
+  {
+    "productId": "edge0",
+    "storyId": "openness-api-parity",
+    "verdict": "partial",
+    "quality": 5,
+    "confidence": "low",
+    "rationale": "Edge0 has several programmatic surfaces: an OpenAI-compatible /v1/chat/completions server, a Python AutoEngine/AutoModel API, and a CLI with flags for model selection, adapters, prerouter and output length. It also ships desktop and mobile apps, but nothing in the evidence says those apps' features are all reachable through the API, so UI parity is unproven. Missing for 10: an explicit API/UI parity statement, API coverage of app features (e.g., model download and management or adapter switching over HTTP), and API reference docs or independent corroboration.",
+    "evidenceIds": [
+      "edge0-gh-6",
+      "edge0-gh-7",
+      "edge0-gh-8",
+      "edge0-gh-10",
+      "edge0-gh-11",
+      "edge0-gh-14",
+      "edge0-gh-18",
+      "edge0-gh-19"
+    ]
+  },
+  {
+    "productId": "edge0",
+    "storyId": "openness-full-export",
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "Edge0 is a local inference engine. Its models ship as plain on-disk checkpoint directories with a standard `config.json` and transformers-style loading, adapters stay as separate unmerged files over a read-only base, and serving uses an OpenAI-compatible API. That limits lock-in and makes switching tools plausible, but nothing documents exporting user data (e.g., chat history or app data from the desktop/mobile apps) or names the open file formats used. Missing for 10: an explicit data-export feature, a documented open format for user data and conversations, confirmation of open weight formats, and independent corroboration.",
+    "evidenceIds": [
+      "edge0-gh-4",
+      "edge0-gh-9",
+      "edge0-gh-10",
+      "edge0-gh-12",
+      "edge0-gh-13",
+      "edge0-gh-6"
+    ]
+  },
+  {
+    "productId": "edge0",
+    "storyId": "openness-open-license",
+    "verdict": "partial",
+    "quality": 5,
+    "confidence": "medium",
+    "rationale": "The public GitHub repo exposes readable source: runnable scripts, an engine facade with a `backends/` directory, and a pytest unit-test suite. That covers the 'read the source' half of the story. Nothing in the pack names a license, so the 'open license' half is unverified. missing for 10: any evidence of the license type (e.g. an OSI-approved license file or README badge), confirmation that all components (mobile/desktop apps, native engines) are covered by it, independent corroboration.",
+    "evidenceIds": [
+      "edge0-gh-5",
+      "edge0-gh-20",
+      "edge0-gh-21",
+      "edge0-gh-16",
+      "edge0-gh-19"
+    ]
+  },
+  {
+    "productId": "edge0",
+    "storyId": "openness-self-host",
+    "verdict": "full",
+    "quality": 8,
+    "confidence": "high",
+    "rationale": "Edge0 is a local inference engine on GitHub. The repo documents downloading model weights with `fetch_models.py`, running `edge0 serve` to expose an OpenAI-compatible endpoint on 127.0.0.1:8000, and using local CLI, daemon and desktop builds across macOS, Windows, Android and iOS, so the core product runs entirely on the user's own hardware. Missing for 10: independent or hands-on corroboration of a self-hosted deployment, and explicit evidence of the license terms governing self-hosting.",
+    "evidenceIds": [
+      "edge0-gh-5",
+      "edge0-gh-6",
+      "edge0-gh-7",
+      "edge0-gh-4",
+      "edge0-gh-11",
+      "edge0-gh-19",
+      "edge0-gh-18",
+      "edge0-gh-1"
+    ]
+  },
+  {
+    "productId": "edge0",
+    "storyId": "package-manager-install",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Nothing in the evidence shows Edge0 being installed through a standard package manager such as pip, Homebrew, npm or apt. The only setup hints are a local `.venv/bin/python scripts/fetch_models.py` invocation and an `edge0` CLI, which point to a repo-checkout workflow, so a published package for quick install is not evidenced.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "edge0",
+    "storyId": "prebuilt-binaries",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "The evidence never describes a prebuilt binary, release download, pip/brew package, or other packaged install. The only setup hint is running scripts from a local `.venv` in a repo checkout, which points to a source install. The listed platform apps (iOS, Android, Windows, macOS) are not shown as downloadable prebuilt artifacts, and the single-download bundles cover model weights, not the software.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "edge0",
+    "storyId": "prefix-caching",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Edge0 is a local LLM inference engine with an OpenAI-compatible server, so prefix/KV caching for repeated prompts is a fair axis. The evidence covers only SSD expert offload, routing prediction, LoRA adapters and platform apps, and never mentions prefix caching or KV-cache reuse across requests.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "edge0",
+    "storyId": "privacy-data-residency",
+    "verdict": "partial",
+    "quality": 5,
+    "confidence": "medium",
+    "rationale": "Edge0 is a local inference engine. It serves on 127.0.0.1, ships on-device iOS, Android, Windows and macOS apps, and downloads models to a user-chosen --target-dir, so data location is implicitly whatever machine the user runs it on. However, the evidence never makes an explicit data-residency or no-telemetry statement, and there is no region selection as such. Missing for 10: an explicit statement that prompts and data never leave the device, documented data-handling or telemetry policy, and independent corroboration of local-only operation.",
+    "evidenceIds": [
+      "edge0-gh-6",
+      "edge0-gh-7",
+      "edge0-gh-5",
+      "edge0-gh-16",
+      "edge0-gh-17",
+      "edge0-gh-18",
+      "edge0-gh-19"
+    ]
+  },
+  {
+    "productId": "edge0",
+    "storyId": "privacy-no-training",
+    "verdict": "partial",
+    "quality": 5,
+    "confidence": "low",
+    "rationale": "Edge0 is a local inference engine. It runs models on-device (iOS, Android, Windows and macOS apps) and serves them on localhost (127.0.0.1). That architecture implies user prompts never reach a vendor that could train on them, but the evidence never states this explicitly. missing for 10: an explicit no-training or data-use policy, a no-telemetry statement, and independent verification that no data leaves the device.",
+    "evidenceIds": [
+      "edge0-gh-16",
+      "edge0-gh-17",
+      "edge0-gh-18",
+      "edge0-gh-19",
+      "edge0-gh-7",
+      "edge0-gh-5"
+    ]
+  },
+  {
+    "productId": "edge0",
+    "storyId": "privacy-retention-controls",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Edge0 is a local inference engine with on-device apps and a localhost OpenAI-compatible server, so a data-retention question is fair to ask of it. However, the evidence never mentions conversation logs, history storage, retention settings, or deletion controls. Local execution alone does not show that users can control retention or deletion.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "edge0",
+    "storyId": "privacy-telemetry-optout",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Edge0 is a local, on-device inference engine and app suite, so telemetry opt-out is a fair question for this kind of product. The evidence covers SSD expert offload, local serving on 127.0.0.1 and on-device apps, but never mentions telemetry, usage tracking, or any opt-out control. Running locally does not by itself establish an opt-out mechanism.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "edge0",
+    "storyId": "private-local-inference-guarantee",
+    "verdict": "full",
+    "quality": 8,
+    "confidence": "high",
+    "rationale": "Edge0 is built as a local inference engine. Weights are streamed from local SSD, the server binds to 127.0.0.1 with an OpenAI-compatible API, and there are dedicated on-device apps and engines for iOS, Android, Windows and macOS, so prompts are processed on the user's own hardware. The core of the story is clearly delivered, but the evidence never explicitly confirms that no data leaves the device. Missing for 10: an explicit no-telemetry/offline-operation guarantee, independent or hands-on corroboration that no data leaves the device.",
+    "evidenceIds": [
+      "edge0-docs-1",
+      "edge0-gh-1",
+      "edge0-gh-6",
+      "edge0-gh-7",
+      "edge0-gh-16",
+      "edge0-gh-17",
+      "edge0-gh-18",
+      "edge0-gh-19",
+      "edge0-gh-11"
+    ]
+  },
+  {
+    "productId": "edge0",
+    "storyId": "speculative-decoding",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Speculative decoding is a fair axis for a local LLM inference engine, but the evidence never mentions draft models, token speculation or verification. The documented speedup (up to +59% decode throughput) comes from a trained prerouter that prefetches MoE expert weights one step ahead to overlap SSD loads with the forward pass. That is speculative I/O prefetching, not speculative decoding.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "edge0",
+    "storyId": "streaming-token-output",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Edge0 is a local inference engine that exposes an OpenAI-compatible /v1/chat/completions server, so token streaming is a fair question for it. However, nothing in the evidence mentions streaming responses (e.g., `stream: true`, SSE, or incremental token callbacks). The documented interfaces are a one-shot chat CLI and a plain curl request, and OpenAI compatibility alone does not show that streaming is supported.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "edge0",
+    "storyId": "structured-output-generation",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Edge0 is a local inference engine with an OpenAI-compatible /v1/chat/completions server, so grammar-constrained structured output is a fair axis for it. Nothing in the evidence mentions JSON mode, grammars, schemas, or constrained decoding; the server and CLI items describe only basic serving and length caps.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "edge0",
+    "storyId": "tool-calling-support",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Edge0 ships an OpenAI-compatible /v1/chat/completions server, so tool-calling and reasoning parsing are fair axes for it. However, the evidence never mentions tools/function-calling or a reasoning parser in API requests. The only reasoning-related item is a --show-thinking flag for one-shot CLI chat, which is not request-level reasoning-parser support.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "edge0",
+    "storyId": "vision-language-model-support",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Edge0 is a local LLM inference engine, so running vision-language models is a fair question for it. However, the evidence covers only text-oriented capabilities: MoE expert streaming from SSD, LoRA adapters, an OpenAI-compatible chat endpoint and one-shot chat. Nothing mentions image inputs, multimodal checkpoints or vision encoders.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "edge0",
+    "storyId": "vulkan-fallback-acceleration",
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "The only relevant evidence is a single line saying the Windows build ships a native C++ + Vulkan engine. That implies a vendor-neutral GPU path that would not need ROCm, but nothing confirms AMD GPUs are supported or tested. missing for 10: explicit AMD GPU support statement, documentation that no ROCm install is required, Vulkan backend setup/usage docs, Vulkan on non-Windows platforms, performance benchmarks on AMD hardware, independent or hands-on corroboration.",
+    "evidenceIds": [
+      "edge0-gh-18"
+    ]
+  },
+  {
+    "productId": "edge0",
+    "storyId": "x86-simd-acceleration",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Edge0 is a local LLM inference engine, so x86 SIMD/matrix acceleration (AVX, AVX2, AVX512, AMX) is a fair question for it. The evidence never mentions any of these instruction sets. The documented backends are MLX on iOS, a native Kotlin engine on Android, C++ + Vulkan on Windows, Rust on macOS, and a reserved CUDA slot, with no x86 CPU-specific optimization path.",
+    "evidenceIds": []
+  },
+  {
     "productId": "jan",
     "storyId": "accelerator-plugin-support",
     "verdict": "none",

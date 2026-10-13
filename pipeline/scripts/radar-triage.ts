@@ -5,6 +5,13 @@
 //   1. existing-ranking fit    — the candidate's strongest lexical arena match (the same
 //                                matchArenas classifier the radar nominates with) must reach
 //                                MIN_FIT_HITS distinct keyword hits on an existing arena.
+//                                Keyword hits place a product; they do not confirm it belongs
+//                                (the 2026-10-13 bring-up filed ZCode, a coding agent, under
+//                                agent-skills on the word "skill"). Until a better classifier
+//                                exists, every auto-approved disposition carries the matched
+//                                arena's rankings/categories.json definition in its evidence
+//                                and the PLACEMENT_CAVEAT in its reason, so the bring-up PR
+//                                asks the reviewer to confirm placement against the definition.
 //   2. public docs surface     — a reachable docs site / API reference on the product's own
 //                                domain, or a substantive README for an open-source product.
 //   3. shipped product         — not a waitlist/coming-soon page; for OSS, not an archived
@@ -49,6 +56,11 @@ export const AFFILIATED_PATTERNS = ['ultrametric', 'productarena']
 // Launch-post hosts: a page about the launch, not the product. A candidate whose only URL is
 // one of these has no product docs surface we can verify keylessly.
 export const LAUNCH_POST_HOSTS = new Set(['producthunt.com', 'www.producthunt.com', 'news.ycombinator.com'])
+
+// Lexical placement is a nomination signal, not a classification. The caveat rides on every
+// auto-approved disposition (and through it, the bring-up PR body) until a definition-aware
+// classifier replaces keyword hits.
+export const PLACEMENT_CAVEAT = 'placement: keyword-matched, confirm against arena definition at review'
 
 export const DispositionSchema = z.object({
   key: z.string(),
@@ -221,7 +233,7 @@ export function realTriageIo(): TriageIo {
 
 // --- the triage itself --------------------------------------------------------------------------
 
-export async function triageCandidate(candidate: RadarCandidate, existingArenas: Set<string>, io: TriageIo): Promise<Disposition> {
+export async function triageCandidate(candidate: RadarCandidate, existingArenas: Set<string>, io: TriageIo, arenaDefinitions?: Map<string, string>): Promise<Disposition> {
   const base = { key: candidate.key, name: candidate.name, url: candidate.url }
   const evidence: string[] = []
 
@@ -230,10 +242,16 @@ export async function triageCandidate(candidate: RadarCandidate, existingArenas:
     return { ...base, arena: null, status: 'needs-human', criterion: 'founder-affiliation', reason: 'founder-affiliated products require human review, disclosure, and a bias audit', evidence, bringup: null }
   }
 
-  // 1. existing-ranking fit.
+  // 1. existing-ranking fit. The match is lexical; record the matched arena's definition next
+  // to the keyword hits so the reviewer can check placement against what the arena actually is.
   const fit = checkRankingFit(candidate, existingArenas)
   if ('fail' in fit) {
     return { ...base, arena: null, status: 'skipped', criterion: 'ranking-fit', reason: fit.fail, evidence, bringup: null }
+  }
+  const hits = candidate.matchedArenas.find((m) => m.arena === fit.arena)
+  const definition = arenaDefinitions?.get(fit.arena)
+  if (definition) {
+    evidence.push(`arena-definition ${fit.arena}: "${definition}" (lexical match: ${hits ? hits.keywords.join(', ') : 'n/a'})`)
   }
 
   // 2 + 3 for OSS: the repo is the product surface.
@@ -266,7 +284,7 @@ export async function triageCandidate(candidate: RadarCandidate, existingArenas:
       arena: fit.arena,
       status: 'auto-approved',
       criterion: null,
-      reason: `existing-arena fit (${fit.arena}), substantive README (${repo.readmeBytes}B), active repo`,
+      reason: `existing-arena fit (${fit.arena}), substantive README (${repo.readmeBytes}B), active repo; ${PLACEMENT_CAVEAT}`,
       evidence,
       bringup: { site: candidate.url, docs: githubUrl, github: githubUrl, type: 'oss' },
     }
@@ -299,15 +317,15 @@ export async function triageCandidate(candidate: RadarCandidate, existingArenas:
     arena: fit.arena,
     status: 'auto-approved',
     criterion: null,
-    reason: `existing-arena fit (${fit.arena}), reachable docs surface, shipped product page`,
+    reason: `existing-arena fit (${fit.arena}), reachable docs surface, shipped product page; ${PLACEMENT_CAVEAT}`,
     evidence,
     bringup: { site: candidate.url, docs: docsLink, type: 'commercial' },
   }
 }
 
-export async function triageReport(report: { candidates: RadarCandidate[] }, existingArenas: Set<string>, io: TriageIo): Promise<TriageReport> {
+export async function triageReport(report: { candidates: RadarCandidate[] }, existingArenas: Set<string>, io: TriageIo, arenaDefinitions?: Map<string, string>): Promise<TriageReport> {
   const dispositions: Disposition[] = []
-  for (const c of report.candidates) dispositions.push(await triageCandidate(c, existingArenas, io))
+  for (const c of report.candidates) dispositions.push(await triageCandidate(c, existingArenas, io, arenaDefinitions))
   return {
     _comment:
       'Generated by pipeline/scripts/radar-triage.ts — mechanical application of the auto-approval criteria in governance/AGENT_POLICY.md (founder authorization 2026-10-13). auto-approved: eligible for a scoped standard-pipeline bring-up PR. skipped: failed a criterion, with the evidence. needs-human: founder-affiliated or otherwise reserved for human review. The triage creates no rankings and changes nothing under rankings/.',
@@ -346,8 +364,10 @@ async function main(argv: string[]): Promise<void> {
     process.exit(1)
   }
   const radar = RadarReportSchema.parse(JSON.parse(fs.readFileSync(reportPath, 'utf8')))
-  const existingArenas = new Set(readCategories().map((c) => c.id))
-  const triage = await triageReport(radar, existingArenas, realTriageIo())
+  const categories = readCategories()
+  const existingArenas = new Set(categories.map((c) => c.id))
+  const arenaDefinitions = new Map<string, string>(categories.map((c) => [c.id, c.description]))
+  const triage = await triageReport(radar, existingArenas, realTriageIo(), arenaDefinitions)
   const out = arg('--out')
   const md = arg('--md')
   if (out) {

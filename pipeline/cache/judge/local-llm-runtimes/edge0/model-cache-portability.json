@@ -1,0 +1,20 @@
+{
+  "hash": "c5d4eeeed30aad0b16fdb8c8da8d90c2026bff59a4017c6c3a4ab529b1fc8a07",
+  "verdict": {
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "The evidence shows Edge0 models come as a single directory: a base checkpoint with a `config.json`, plus unmerged LoRA and prerouter adapters. The base stays read-only and is never merged, and it can run as a plain model via `--no-lora`/`--no-prerouter`. Loading uses transformers-style `AutoModel`/`AutoEngine` from a path, which hints at a standard layout that other tools could reuse. Nothing states that these files or caches work in other runtimes without re-downloading or converting, so the developer cannot actually know this from the docs. Missing for 10: explicit documentation of on-disk weight format and quantization compatibility with other runtimes (e.g. Hugging Face transformers, llama.cpp, MLX), guidance on sharing caches with or importing from existing model stores, and any hands-on confirmation of cross-runtime reuse.",
+    "evidenceIds": [
+      "edge0-gh-4",
+      "edge0-gh-9",
+      "edge0-gh-10",
+      "edge0-gh-11",
+      "edge0-gh-12",
+      "edge0-gh-13",
+      "edge0-gh-14"
+    ],
+    "productId": "edge0",
+    "storyId": "model-cache-portability"
+  }
+}
