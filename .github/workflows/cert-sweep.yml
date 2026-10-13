@@ -48,7 +48,7 @@ jobs:
 
       # Keyless and bounded: ~1 suite (≤ a dozen public HTTP requests, 20s timeout each) per
       # certified product for re-verification, plus at most 15 candidate suites. Updates
-      # data/*/certifications.json + data/*/cert-reports/*.json; never touches verdicts/rankings.
+      # rankings/*/certifications.json + rankings/*/cert-reports/*.json; never touches verdicts/rankings.
       - name: Certification sweep (re-verify + candidates)
         run: pnpm tsx pipeline/scripts/cert-sweep.ts
 
@@ -65,7 +65,7 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           RUN_ID: ${{ github.run_id }}
         run: |
-          if git diff --quiet -- data public/badges; then
+          if git diff --quiet -- rankings public/badges; then
             echo "No certification changes — done."
             exit 0
           fi
@@ -74,7 +74,7 @@ jobs:
           git config user.name "ultrametric-cert-sweep"
           git config user.email "noreply@ultrametric.ai"
           git checkout -b "$BRANCH"
-          git add data public/badges README.md
+          git add rankings public/badges README.md
           git commit -m "chore(cert-sweep): weekly certification re-verify + new passers"
           git push -u origin "$BRANCH"
           # Org policy currently forbids Actions from creating PRs ("Write permissions for
@@ -84,7 +84,7 @@ jobs:
           # fails on a missing label).
           if ! gh pr create \
             --title "cert-sweep: weekly certification re-verify + new passers" \
-            --body "Automated weekly keyless certification sweep: re-ran the Agent-Ready conformance suite (\`pipeline/scripts/certify.ts\`) against every certified product and the top of the probe-evidence candidate queue (\`pipeline/scripts/cert-candidates.ts\`). Updates \`data/*/certifications.json\`, \`data/*/cert-reports/*.json\` and \`public/badges/*-certified.svg\` only — no verdicts or rankings touched. Removals mean a former passer failed the live suite today (failing report committed as evidence); see the run log for the per-product breakdown." \
+            --body "Automated weekly keyless certification sweep: re-ran the Agent-Ready conformance suite (\`pipeline/scripts/certify.ts\`) against every certified product and the top of the probe-evidence candidate queue (\`pipeline/scripts/cert-candidates.ts\`). Updates \`rankings/*/certifications.json\`, \`rankings/*/cert-reports/*.json\` and \`public/badges/*-certified.svg\` only — no verdicts or rankings touched. Removals mean a former passer failed the live suite today (failing report committed as evidence); see the run log for the per-product breakdown." \
             --base main --head "$BRANCH"; then
             gh issue create \
               --title "cert-sweep: ready on $BRANCH" \

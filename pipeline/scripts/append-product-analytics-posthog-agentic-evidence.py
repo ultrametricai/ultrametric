@@ -163,7 +163,7 @@ PROBES = [
 
 
 def main():
-    path = 'data/product-analytics/evidence/posthog.json'
+    path = 'rankings/product-analytics/evidence/posthog.json'
     ev = json.load(open(path))
     existing = {e['id'] for e in ev}
 

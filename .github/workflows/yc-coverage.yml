@@ -2,7 +2,7 @@
 # Runs pipeline/scripts/yc-coverage-queue.ts — re-crawls YC's public directory (yc-oss/api
 # mirror), filters to ACTIVE companies that fit an EXISTING arena (yc-classify verdicts where
 # available, DOMAIN_VOCAB keyword match otherwise) and show a real docs/API surface (bounded
-# keyless HTTP checks), and re-ranks data/yc-queue.json (batch recency x arena fit x docs
+# keyless HTTP checks), and re-ranks rankings/yc-queue.json (batch recency x arena fit x docs
 # surface) — then:
 #
 #   1. commits the refreshed queue via the usual PR-or-issue flow (merging it is the human
@@ -62,7 +62,7 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           RUN_ID: ${{ github.run_id }}
         run: |
-          if git diff --quiet -- data; then
+          if git diff --quiet -- rankings; then
             echo "No queue change — done."
             exit 0
           fi
@@ -70,7 +70,7 @@ jobs:
           git config user.name "ultrametric-yc-coverage"
           git config user.email "noreply@ultrametric.ai"
           git checkout -b "$BRANCH"
-          git add data
+          git add rankings
           git commit -m "chore(yc-coverage): weekly YC coverage-queue refresh"
           git push -u origin "$BRANCH"
           # Same org-policy fallback as story-runner/accuracy-engine: if Actions may not open
@@ -94,4 +94,4 @@ jobs:
           gh issue create \
             --title "yc-coverage: next bring-up candidates $(date -u +%F)" \
             --body-file /tmp/yc-queue-issue.md \
-            --label "story-runner" || echo "work-queue issue creation failed — the same ranking is committed in data/yc-queue.json"
+            --label "story-runner" || echo "work-queue issue creation failed — the same ranking is committed in rankings/yc-queue.json"

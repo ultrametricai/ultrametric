@@ -96,6 +96,42 @@ class ImportTests(unittest.TestCase):
         self.assertEqual(target['summary'], original[0]['description'])
         self.assertEqual(target['summary'], 'Committed change')
 
+    def test_imports_from_a_plain_tree_without_git(self):
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp) / 'tree'
+            shutil.copytree(self.root, root, ignore=shutil.ignore_patterns('.git'))
+            self.records[0]['description'] = 'Changed in the plain tree'
+            (root / 'processes/corpus.json').write_text(json.dumps(self.records))
+            result = subprocess.run(['python3', str(root / 'scripts/shared-processes/import.py'), '--write'], capture_output=True, text=True)
+            self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+            target = json.loads((root / 'content/processes/records/alpha.json').read_text())
+            self.assertEqual(target['summary'], 'Changed in the plain tree')
+            self.assertEqual(target['source']['revision'], '0' * 40)
+
+    def test_imports_ignored_untracked_sources_from_the_working_tree(self):
+        # The consuming-repo shape: a git repo whose corpus is materialized at build time,
+        # untracked and gitignored. Non-ignored untracked sources still fail (the
+        # test_rejects_an_untracked_workflow contract).
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            (root / 'scripts/shared-processes').mkdir(parents=True)
+            for name in ('import.py', 'claim_audit.py', 'source_snapshot.py'):
+                shutil.copy(SCRIPT / name, root / 'scripts/shared-processes' / name)
+            (root / 'processes').mkdir()
+            (root / 'journeys').mkdir()
+            (root / 'processes/corpus.json').write_text(json.dumps(self.records))
+            (root / 'journeys/chains.json').write_text('[]')
+            (root / 'processes/vendor-registry.json').write_text('{"vendors":{}}')
+            subprocess.run(['git', 'init', '-q'], cwd=root, check=True)
+            (root / '.gitignore').write_text('processes/\njourneys/\ncontent/\n')
+            subprocess.run(['git', 'add', '.gitignore'], cwd=root, check=True)
+            subprocess.run(['git', '-c', 'user.name=Test', '-c', 'user.email=test@example.invalid', '-c', 'commit.gpgsign=false', 'commit', '-qm', 'Ignore materialized sources'], cwd=root, check=True)
+            result = subprocess.run(['python3', str(root / 'scripts/shared-processes/import.py'), '--write'], capture_output=True, text=True)
+            self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+            head = subprocess.check_output(['git', 'rev-parse', 'HEAD'], cwd=root, text=True).strip()
+            target = json.loads((root / 'content/processes/records/alpha.json').read_text())
+            self.assertEqual(target['source']['revision'], head)
+
     def test_fresh_preservation_allows_authored_catalog_changes(self):
         target = self.root / 'content/processes/records/alpha.json'
         value = json.loads(target.read_text())

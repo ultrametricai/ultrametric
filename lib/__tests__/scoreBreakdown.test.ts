@@ -10,7 +10,7 @@ import type { LeaderboardEntry } from '@/lib/schemas'
 // so any drift between lib/scoreBreakdown.ts's story selectors and lib/scoring.ts's
 // buildRankings (or any silent rankings.json regeneration change) fails the suite.
 
-const REAL = path.resolve(__dirname, '../../data')
+const REAL = path.resolve(__dirname, '../../rankings')
 
 const round1 = (n: number) => Math.round(n * 10) / 10
 

@@ -54,13 +54,13 @@ type Story = { id: string; title: string }
 
 let restamped = 0
 for (const [cat, pids] of Object.entries(WAVE)) {
-  const stories: Story[] = JSON.parse(fs.readFileSync(path.join(ROOT, 'data', cat, 'stories.json'), 'utf8'))
+  const stories: Story[] = JSON.parse(fs.readFileSync(path.join(ROOT, 'rankings', cat, 'stories.json'), 'utf8'))
   const verdicts: Record<string, unknown>[] = JSON.parse(
-    fs.readFileSync(path.join(ROOT, 'data', cat, 'verdicts.json'), 'utf8'),
+    fs.readFileSync(path.join(ROOT, 'rankings', cat, 'verdicts.json'), 'utf8'),
   )
   const byKey = new Map(verdicts.map((v) => [`${v.productId}:${v.storyId}`, v]))
   for (const pid of pids) {
-    const evidence = JSON.parse(fs.readFileSync(path.join(ROOT, 'data', cat, 'evidence', `${pid}.json`), 'utf8'))
+    const evidence = JSON.parse(fs.readFileSync(path.join(ROOT, 'rankings', cat, 'evidence', `${pid}.json`), 'utf8'))
     for (const story of stories) {
       const cacheFile = path.join(ROOT, 'pipeline', 'cache', 'judge', cat, pid, `${story.id}.json`)
       const cached = JSON.parse(fs.readFileSync(cacheFile, 'utf8')) as { hash: string; verdict: unknown }

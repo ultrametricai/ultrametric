@@ -49,7 +49,7 @@ const CATEGORIES = [
 ]
 
 function readCurrentVerdicts(cat: string): VerdictRow[] {
-  return JSON.parse(fs.readFileSync(path.join(ROOT, 'data', cat, 'verdicts.json'), 'utf8'))
+  return JSON.parse(fs.readFileSync(path.join(ROOT, 'rankings', cat, 'verdicts.json'), 'utf8'))
 }
 
 function readOldVerdicts(cat: string): VerdictRow[] {
@@ -58,7 +58,7 @@ function readOldVerdicts(cat: string): VerdictRow[] {
 }
 
 function evidenceTierMap(cat: string, product: string): Map<string, string> {
-  const file = path.join(ROOT, 'data', cat, 'evidence', `${product}.json`)
+  const file = path.join(ROOT, 'rankings', cat, 'evidence', `${product}.json`)
   if (!fs.existsSync(file)) return new Map()
   const items: EvidenceItem[] = JSON.parse(fs.readFileSync(file, 'utf8'))
   return new Map(items.map((i) => [i.id, i.tier]))
@@ -200,7 +200,7 @@ async function main() {
   // --- Write verdicts.json per category ---
   for (const cat of CATEGORIES) {
     const rows = finalByCat.get(cat)!
-    fs.writeFileSync(path.join(ROOT, 'data', cat, 'verdicts.json'), JSON.stringify(rows, null, 2) + '\n')
+    fs.writeFileSync(path.join(ROOT, 'rankings', cat, 'verdicts.json'), JSON.stringify(rows, null, 2) + '\n')
   }
 
   // --- Patch judge cache files: keep hash, replace verdict object ---

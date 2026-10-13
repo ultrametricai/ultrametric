@@ -365,7 +365,7 @@ Measured at the front door, the US is behind on machine rails and ahead on nothi
 - Sweep artifacts (bodies, headers, parsed robots) live outside the repo; every claim
   above carries its observable (URL + date + response) inline.
 
-## 5. Phase 2 proposal: roster, leaderboards, stories, spend
+## 5. Phase 2 proposal: roster, leaderboards, stories, judge run
 
 ### 5.1 Roster (31 new products; 40 total in the arena)
 
@@ -429,26 +429,25 @@ judgeable from published docs:
 
 Existing cached verdicts stay valid; the two new stories add cells for all 40 products.
 
-### 5.4 Spend at the adopted judge model
+### 5.4 Judge-run scope at the adopted judge model
 
 Basis: `docs/OPUS-5-5-JUDGE-PILOT.md` (adopted 2026-09-30; `pipeline/llm.ts` default
-`claude-opus-5-5`): measured ~7,600 input + ~460 output tokens per cell, ≈ $0.040/cell
-interactive ($4/$20 per MTok), ≈ $0.020/cell on the Batch API.
+`claude-opus-5-5`): measured ~7,600 input + ~460 output tokens per cell. The run can go
+interactive or through the Batch API.
 
-- 31 new products × 51 stories ≈ 1,581 cells → ≈ $63 interactive, ≈ $32 batch.
-- 2 new stories × 9 existing products = 18 cells → ≈ $0.72 (cache keys keep the other
+- 31 new products × 51 stories ≈ 1,581 cells.
+- 2 new stories × 9 existing products = 18 cells (cache keys keep the other
   existing cells un-rejudged).
 - Pre-judge LLM stages (extract, normalize, collect-community) for 31 products are not
-  priced in the pilot doc; budgeting them at up to 1x the judge stage gives a ceiling.
+  measured in the pilot doc; sizing them at up to 1x the judge stage gives a ceiling.
 
-Proposal: approve a $150 interactive ceiling (expected ~$65–130), or ~$75 if the fleet
-batch path from the pilot doc is used. Crawl evidence for the walled hosts is already
-bounded by this dossier, so judge inputs for those products are small.
+Crawl evidence for the walled hosts is already bounded by this dossier, so judge inputs
+for those products are small.
 
 ### 5.5 Founder decision points
 
 1. Roster: 24 country agencies + 7 states as proposed, or trim/extend.
 2. Schema: approve `country`/`area` product fields and the derived `rollups.json`.
 3. Stories: approve the two additions (or judge with the existing 49 unchanged).
-4. Spend: approve the Phase 2 ceiling and interactive-vs-batch choice.
+4. Judge run: approve the Phase 2 re-judge and the interactive-vs-batch choice.
 5. Geo layer: add PT and CA (Canada) codes to `jurisdictions/` alongside the judged set.

@@ -4,7 +4,7 @@ import { z } from 'zod'
 import type { CategoryData } from './data-helpers'
 import { isShutdown } from './shutdown'
 
-// Cross-arena curated stacks (data/ai-stacks.json): named bundles of one pick per role. Picks:
+// Cross-arena curated stacks (rankings/ai-stacks.json): named bundles of one pick per role. Picks:
 // - "arena-top": resolved LIVE from an arena's leaderboard (the pick moves when the evidence
 //   moves, so the page can never go stale). `ossOnly` restricts the field to open-source
 //   products. When the runner-up is within CLOSE_CALL_DELTA of the leader, both are surfaced
@@ -62,7 +62,7 @@ export const AiStackSchema = z.object({
 export type AiStack = z.infer<typeof AiStackSchema>
 export type AiStackSlot = z.infer<typeof AiStackSlotSchema>
 
-export function loadAiStacks(dataDir = path.join(process.cwd(), 'data')): AiStack[] {
+export function loadAiStacks(dataDir = path.join(process.cwd(), 'rankings')): AiStack[] {
   const raw = JSON.parse(fs.readFileSync(path.join(dataDir, 'ai-stacks.json'), 'utf8'))
   return z.array(AiStackSchema).parse(raw)
 }

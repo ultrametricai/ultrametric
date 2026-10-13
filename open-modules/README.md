@@ -1,11 +1,14 @@
-# Open modules — decision support, calculations, calendars, comparisons
+# Open modules
 
-Part of [the open startup repo](../README.md#open-modules): the open modules — reusable
-decision support, calculations, calendars, and comparisons — separate from law (`rules/`)
-and the vendor evidence layer (`vendors/`, `data/`). The modules live in `lib/openstartup/`
-and are indexed in the table below; every one is pure, client-safe, deterministic, and
-validated by worked-example and property tests (`npx vitest run lib/openstartup/__tests__/`).
-Repo-first by design: use the modules from tests, scripts, or your own agent.
+The startup calculations as code (cap tables, rounds, waterfalls, runway, tax
+mechanics): every module is pure, deterministic, and validated against published worked
+examples.
+
+Part of [the open startup repo](../README.md#open-modules), separate from law (`rules/`)
+and the vendor evidence layer (`vendors/`, `rankings/`). The modules live in
+`lib/openstartup/` and are indexed in the table below
+(`npx vitest run lib/openstartup/__tests__/` runs their gates). Repo-first by design: use
+them from tests, scripts, or your own agent.
 
 The bar, fixed for every module: a contract, explicit assumptions, a citation on every
 formula's doc comment (a published guide, form, or primary source — never "everyone
@@ -629,8 +632,8 @@ published convention cited.
 ## How the modules connect to the processes
 
 `processes/business-logic-map.json` is the wiring: task-level (which modules honestly
-serve which corpus processes — the "Open modules" line on live process pages) and
-step-level (which exported FUNCTION computes which DAG step's math — the per-step
+serve which processes — the "Open modules" line on live process pages) and
+step-level (which exported FUNCTION computes which step's math — the per-step
 `compute:` chips). The map is curated from both sides and totality-tested both ways in
 `lib/__tests__/businessLogicMap.test.ts` + `businessLogicServes.test.ts`: files, process
 ids, node ids, exported functions, anchors, and the Serves lines can never point at

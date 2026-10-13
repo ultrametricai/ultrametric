@@ -16,7 +16,7 @@
 # URL-refresh-only edits (same claim text relocated) are NOT material; flips that only
 # touch them revert.
 #
-# Reverting patches BOTH data/<arena>/verdicts.json and the judge cache entry
+# Reverting patches BOTH rankings/<arena>/verdicts.json and the judge cache entry
 # (pipeline/cache/judge/<arena>/<product>/<story>.json — hash kept, verdict object
 # replaced) so a future judge run does not resurrect the churn.
 #
@@ -72,7 +72,7 @@ def parse_args(argv):
 
 def main():
     arena, product, baseline_file, opts = parse_args(sys.argv)
-    cur_file = os.path.join(ROOT, 'data', arena, 'verdicts.json')
+    cur_file = os.path.join(ROOT, 'rankings', arena, 'verdicts.json')
     cur = json.load(open(cur_file))
     old = json.load(open(baseline_file))
     o = {(v['productId'], v['storyId']): v for v in old}

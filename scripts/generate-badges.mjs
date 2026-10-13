@@ -1,7 +1,7 @@
 // Embeddable score badges: renders two static shield-style SVGs per ranked product into
 // public/badges/ — `<id>-agent-ready.svg` (the leaderboard's agentReady component) and
 // `<id>-score.svg` (the blended Overall score, internally `aiEra`) — plus one
-// `<id>-certified.svg` per Agent-Ready certification (data/<arena>/certifications.json,
+// `<id>-certified.svg` per Agent-Ready certification (rankings/<arena>/certifications.json,
 // docs/CERTIFICATION.md). Plain node, no deps.
 //
 // The SVGs are COMMITTED build inputs, not build artifacts (unlike public/data/): they only
@@ -39,7 +39,7 @@ const HEIGHT = 20
  * @returns {number} integer px
  */
 export function textWidth(text, { bold = false } = {}) {
-  const narrow = /[iljtfrI1.,:;'"()[\]\/ -]/
+  const narrow = /[iljtfrI1.,:;'"()[\]/ -]/
   let w = 0
   for (const ch of text) w += narrow.test(ch) ? 4.3 : 7.0
   if (bold) w *= 1.08
@@ -88,7 +88,7 @@ export function badgeSvg({ label, score }) {
  * The certification badge: same shield layout, right panel always emerald (a certification is
  * only ever rendered for an earned, unexpired level — there is no "untested" variant), text
  * "CERTIFIED AGENT-READY · 2026" (or AGENT-NATIVE), year taken from the certification date.
- * See docs/CERTIFICATION.md; the registry entries live in data/<arena>/certifications.json.
+ * See docs/CERTIFICATION.md; the registry entries live in rankings/<arena>/certifications.json.
  *
  * @param {{ level: 'agent-ready' | 'agent-native', date: string }} cert
  * @returns {string} a complete standalone SVG document
@@ -136,7 +136,7 @@ export function badgeFiles(productId, entry) {
 }
 
 function main() {
-  const dataDir = path.join(ROOT, 'data')
+  const dataDir = path.join(ROOT, 'rankings')
   const outDir = path.join(ROOT, 'public', 'badges')
   fs.mkdirSync(outDir, { recursive: true })
 

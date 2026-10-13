@@ -48,7 +48,7 @@ function arena(
 // relay; battle mercury-vs-ramp stored as a=mercury, b=ramp, record 16–28, 28 drawn —
 // re-pinned 2026-10-01 after the opus-5-5 judge migration) ------------
 
-const banking = loadCategory('startup-banking', path.resolve(__dirname, '../../data'))
+const banking = loadCategory('startup-banking', path.resolve(__dirname, '../../rankings'))
 
 describe('compareRivalsFor', () => {
   it('returns self + 4 leaderboard-adjacent rivals, self flagged and first, rivals in rank order', () => {
@@ -76,7 +76,7 @@ describe('compareRivalsFor', () => {
   })
 
   it('links each rival to the stored battle slug with the record oriented self-first', () => {
-    // data/startup-banking/rankings.json stores the pair as a=mercury, b=ramp with
+    // rankings/startup-banking/rankings.json stores the pair as a=mercury, b=ramp with
     // record { aWins: 16, bWins: 28, draws: 28 } — assert both orientations read from it.
     const fromMercury = compareRivalsFor(banking, 'mercury').find((r) => r.productId === 'ramp')!
     expect(fromMercury.battleSlug).toBe('mercury-vs-ramp')

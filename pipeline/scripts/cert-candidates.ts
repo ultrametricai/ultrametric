@@ -1,5 +1,5 @@
 // Certification candidate queue: every product whose committed probe evidence
-// (pipeline/stages/probe.ts, data/<arena>/evidence/<id>.json) shows a verified agent surface —
+// (pipeline/stages/probe.ts, rankings/<arena>/evidence/<id>.json) shows a verified agent surface —
 // a live llms.txt ("PROBE llms.txt: HTTP 200 …") or an officially documented MCP server
 // ("official MCP server documented at …") — and which does not already hold an ACTIVE
 // (unexpired, lib/certifications.ts) Agent-Ready certification anywhere in the registry.

@@ -1,5 +1,5 @@
 import { humanStepAudit } from '../humanSteps'
-import { showComputerUseChips } from '../humanStepsUi'
+import { showComputerUseChips } from '../humanSteps'
 import { computerUseOptions, isComputerUseCandidate } from '../processRankings'
 import { loadProcesses } from '../processes'
 import type { Part } from './schema'

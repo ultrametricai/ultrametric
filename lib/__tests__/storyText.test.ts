@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest'
 import { parseStoryPersona } from '@/lib/storyText'
 
-// Fixtures below marked "live" are copied VERBATIM from data/*/stories.json — the parser must
+// Fixtures below marked "live" are copied VERBATIM from rankings/*/stories.json — the parser must
 // hold against the real corpus (3,724 titles at time of writing, 100% in the comma form), not
 // just textbook Connextra examples. The data files themselves are never touched: judge caching
 // keys on the exact title (pipeline/stages/judge.ts's cellHash), so this is display-only.

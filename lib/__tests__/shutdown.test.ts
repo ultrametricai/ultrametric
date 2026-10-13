@@ -1,7 +1,7 @@
 // The shutdown founder rule (lib/shutdown.ts; 2026-09-21: "if pulley doesnt exist anymore and
 // shutting down, have a tag for 'shutdown' and dont offer it"): a marked product keeps its
 // rows, verdicts and history (list/rank surfaces tag it) but is never OFFERED — stack picks,
-// step vendor rosters, upgrade advice, gap closers. Pulley (data/equity-management, marked
+// step vendor rosters, upgrade advice, gap closers. Pulley (rankings/equity-management, marked
 // 2026-09-15) is the real-data probe: it must vanish from every equity-management step vendor
 // list while its arena leaderboard row and step scores stay fully intact.
 import path from 'node:path'
@@ -10,7 +10,6 @@ import { resolveStack, type AiStack } from '@/lib/aiStacks'
 import { loadCategory } from '@/lib/data'
 import type { CategoryData } from '@/lib/data-helpers'
 import { resolveGapStep } from '@/lib/gapClosers'
-import { MIGRATE_IMPACT, recommend, stackAdvice, type MyStackProduct } from '@/lib/myStack'
 import { runProcessCheck } from '@/lib/processCheck'
 import { buildProcessCheckSteps } from '@/lib/processCheckData'
 import { loadProcesses, stepVendorOptions, vendorAlternatives, type DagNode, type ProcessTask } from '@/lib/processes'
@@ -20,7 +19,7 @@ import {
 } from '@/lib/processRankings'
 import { isShutdown, SHUTDOWN_TAG_TITLE } from '@/lib/shutdown'
 
-const DATA_DIR = path.resolve(__dirname, '../../data')
+const DATA_DIR = path.resolve(__dirname, '../../rankings')
 
 describe('isShutdown', () => {
   it('is true exactly when the verified note is set', () => {
@@ -103,70 +102,9 @@ describe('aiStacks shutdown exclusion', () => {
   })
 })
 
-// ---------------------------------------------------------------------------
-// myStack: never an upgrade/leader/add; a shutdown PICK gets top MIGRATE advice
-// ---------------------------------------------------------------------------
-
-function catalogRow(overrides: Partial<MyStackProduct>): MyStackProduct {
-  return {
-    id: 'p',
-    name: 'P',
-    vendor: 'V',
-    arenaId: 'arena',
-    arenaName: 'Arena',
-    type: 'commercial',
-    aiEra: 50,
-    agentReady: 50,
-    confidence: 'A',
-    rank: 1,
-    fieldSize: 3,
-    hasLogo: false,
-    ...overrides,
-  }
-}
-
-describe('myStack shutdown handling', () => {
-  const dying = catalogRow({ id: 'dying', name: 'Dying', aiEra: 40, rank: 3, shutdown: 'Shutting down 2026-12-08.' })
-  const leader = catalogRow({ id: 'leader', name: 'Leader', aiEra: 70, rank: 1 })
-  const mid = catalogRow({ id: 'mid', name: 'Mid', aiEra: 55, rank: 2 })
-  const inputs = { products: [leader, mid, dying], adjacency: [], curatedStackArenas: [], verifiedPairs: [] as string[] }
-
-  it('a shutdown pick surfaces MIGRATE as the top advice line, naming the remaining leader', () => {
-    const { recommendations } = recommend(['dying'], inputs)
-    expect(recommendations.length).toBeGreaterThan(0)
-    expect(recommendations[0].kind).toBe('migrate')
-    expect(recommendations[0].impact).toBe(MIGRATE_IMPACT)
-    expect(recommendations[0].reason).toMatch(/shutting down — migrate/)
-    expect(recommendations[0].reason).toContain('Leader')
-    // The migrate rec replaces (not merely outranks) the score-gap upgrade for that pick.
-    expect(recommendations.some((r) => r.kind === 'upgrade')).toBe(false)
-  })
-
-  it('never recommends a shutdown product as an upgrade', () => {
-    const deadChallenger = catalogRow({ id: 'dead-top', name: 'Dead Top', aiEra: 90, rank: 1, shutdown: 'Closing.' })
-    const pick = catalogRow({ id: 'mine', name: 'Mine', aiEra: 50, rank: 2 })
-    const { recommendations } = recommend(['mine'], {
-      products: [deadChallenger, pick],
-      adjacency: [],
-      curatedStackArenas: [],
-      verifiedPairs: [],
-    })
-    expect(recommendations.filter((r) => r.kind === 'upgrade' || r.kind === 'breakout')).toEqual([])
-  })
-
-  it('stackAdvice: shutdown products are excluded from leader/upgrade offers; a shutdown pick still resolves', () => {
-    const advice = stackAdvice({ arena: ['dying'] }, [leader, mid, dying])
-    expect(advice.picks).toHaveLength(1)
-    expect(advice.picks[0].pick.id).toBe('dying')
-    expect(advice.picks[0].leader.id).toBe('leader')
-    expect(advice.picks[0].upgrades.map((u) => u.product.id)).not.toContain('dying')
-
-    const deadLeader = catalogRow({ id: 'dead-lead', name: 'Dead Lead', aiEra: 95, rank: 1, shutdown: 'Closing.' })
-    const advice2 = stackAdvice({ arena: ['mid'] }, [deadLeader, mid, leader])
-    expect(advice2.picks[0].leader.id).toBe('leader')
-    expect(advice2.picks[0].upgrades.map((u) => u.product.id)).not.toContain('dead-lead')
-  })
-})
+// The My Stack recommendation-engine cases (shutdown pick gets MIGRATE advice, shutdown
+// products never offered as upgrades/leaders) moved to the private site repo with
+// lib/myStack.ts (repo split).
 
 // ---------------------------------------------------------------------------
 // Real-data probe: Pulley (equity-management, marked shutdown 2026-09-15)

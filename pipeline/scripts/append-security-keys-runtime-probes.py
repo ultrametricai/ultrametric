@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # One-shot helper for the security-keys arena bring-up (2026-09-15): appends probe-tier
-# evidence items distilled from the recorded runtime probes in data/security-keys/proofs/
+# evidence items distilled from the recorded runtime probes in rankings/security-keys/proofs/
 # (see pipeline/probes/security-keys.ts — all 11 recorded probes passed, two of them
 # deliberate negatives). Run AFTER `pnpm pipeline probe --category security-keys` — that
 # stage wholesale-replaces probe-tier evidence and would wipe these items (re-run this
@@ -87,7 +87,7 @@ ITEMS = {
 
 def main() -> None:
     for pid, items in ITEMS.items():
-        path = f'data/security-keys/evidence/{pid}.json'
+        path = f'rankings/security-keys/evidence/{pid}.json'
         with open(path) as f:
             evidence = json.load(f)
         have = {e['id'] for e in evidence}

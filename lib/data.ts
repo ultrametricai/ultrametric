@@ -14,7 +14,7 @@ export {
 } from './data-helpers'
 import type { CategoryData } from './data-helpers'
 
-const DEFAULT_DIR = () => path.join(process.cwd(), 'data')
+const DEFAULT_DIR = () => path.join(process.cwd(), 'rankings')
 
 const categoriesCache = new Map<string, Category[]>()
 const categoryCache = new Map<string, CategoryData>()

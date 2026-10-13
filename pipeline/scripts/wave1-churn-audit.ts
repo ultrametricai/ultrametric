@@ -43,7 +43,7 @@ function readOldVerdicts(): VerdictRow[] {
 }
 
 function readNewVerdicts(): VerdictRow[] {
-  return JSON.parse(fs.readFileSync(path.join(ROOT, 'data', CATEGORY, 'verdicts.json'), 'utf8'))
+  return JSON.parse(fs.readFileSync(path.join(ROOT, 'rankings', CATEGORY, 'verdicts.json'), 'utf8'))
 }
 
 function readOldEvidenceIds(productId: string): Set<string> {
@@ -113,7 +113,7 @@ function main(): void {
     return
   }
 
-  fs.writeFileSync(path.join(ROOT, 'data', CATEGORY, 'verdicts.json'), JSON.stringify(final, null, 2) + '\n')
+  fs.writeFileSync(path.join(ROOT, 'rankings', CATEGORY, 'verdicts.json'), JSON.stringify(final, null, 2) + '\n')
 
   let patched = 0
   let missing = 0

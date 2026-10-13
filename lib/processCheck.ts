@@ -4,7 +4,7 @@
 // builder that reads the committed step→story mapping and judged verdicts lives in
 // lib/processCheckData.ts; this file must stay free of node builtins.
 //
-import { stackPicks, type StackMap } from './myStack'
+import { stackPicks, type StackMap } from './stackShared'
 
 // Honesty contract (inherited from lib/processRankings.ts): every step score here is the
 // story-derived weightedPercent the process page already publishes — never recomputed, never

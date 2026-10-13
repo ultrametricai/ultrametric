@@ -11,7 +11,7 @@ import { loadProcesses, REVERSIBILITY_TIERS, type Reversibility } from '@/lib/pr
 // and means real doors closing (filed dissolutions, filed 83(b)s, equity accepted, wires sent,
 // terminations), not drudgery.
 
-const DATA_DIR = path.resolve(__dirname, '../../data')
+const DATA_DIR = path.resolve(__dirname, '../../rankings')
 // The RAW corpus — includes the jurisdiction-conditional nodes loadProcesses strips from the
 // default view; the classification must be total over those too.
 const RAW = JSON.parse(

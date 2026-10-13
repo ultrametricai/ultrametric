@@ -1,5 +1,5 @@
 // The copy audit behind /admin (founder ask 2026-09-29: "give me a /admin where I can see all
-// the examples of stuff that is superfluous"). data/copy-audit.json is a CURATED, hand-ranked
+// the examples of stuff that is superfluous"). rankings/copy-audit.json is a CURATED, hand-ranked
 // sweep of user-visible prose — intros, explainers, tooltips, eyebrows, legends, empty states,
 // stat clutter — each with a cut/tighten/keep suggestion and a one-line why. 'keep' entries are
 // the honesty/legal floor (affiliation disclosures, absence-of-evidence framing, licensing,
@@ -53,7 +53,7 @@ export type CopyAudit = z.infer<typeof CopyAuditFileSchema>
 export type CopyAuditKind = (typeof COPY_AUDIT_KINDS)[number]
 export type CopyAuditSuggestion = (typeof COPY_AUDIT_SUGGESTIONS)[number]
 
-const DEFAULT_FILE = () => path.join(process.cwd(), 'data', 'copy-audit.json')
+const DEFAULT_FILE = () => path.join(process.cwd(), 'rankings', 'copy-audit.json')
 let cache: { file: string; audit: CopyAudit } | null = null
 
 export function loadCopyAudit(file: string = DEFAULT_FILE()): CopyAudit {

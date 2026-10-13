@@ -1,47 +1,58 @@
-# Processes — human guides and machine-readable workflows
+# Processes
+
+Every founder process as a step-by-step record, each step routed agent, form, or
+human, timed, and wired to the judged vendor rankings; the fixtures and curation doctrine
+beneath them live here too.
 
 Two layers, deliberately separate:
 
-1. **Jurisdiction-scoped workflows** (this tree, `processes/<domain>/<jurisdiction>/*.json`,
-   contract in `schemas/process.schema.json`): source-cited legal/tax workflows with explicit
-   applicability dimensions, dated editorial review, rule-card references, stop conditions, and
-   a scoped human approval on every externally-effectful step. Validated by
-   `lib/founderOps.ts` inside the normal test gates. The starter set is two demonstration US
-   Delaware equity workflows (409A valuation review, 83(b) election) — status `demonstration`,
-   not production-certified; see `governance/REVIEW_POLICY.md` for the maturity ladder.
+1. **Jurisdiction-scoped workflows** (`processes/<domain>/<jurisdiction>/*.json`, contract
+   in `schemas/process.schema.json`): source-cited legal/tax workflows with explicit
+   applicability dimensions, dated editorial review, rule-card references, stop conditions,
+   and a scoped human approval on every externally-effectful step. Validated by
+   `lib/founderOps.ts` inside the normal test gates; status `demonstration`, not
+   production-certified (`governance/REVIEW_POLICY.md` has the maturity ladder).
 
-2. **The operational corpus** (`corpus.json` in this directory, 146 records rendered live at
-   [ultrametric.ai/processes](https://ultrametric.ai/processes) — each process at
-   `/processes/<id>` — contract in `schemas/operational-process.schema.json`):
-   step-by-step operating DAGs with agent/manual/human routing, judged vendor rankings per
-   step, the Agentic % of each process, and time estimates. These are operating guides, not legal advice, and
-   they carry no jurisdiction warranty — the site's jurisdiction toggle (`lib/jurisdictions.ts`)
-   and geo scoping annotate where steps are US- or state-specific.
+2. **The process library** (`corpus.json`, rendered live at
+   [ultrametric.ai/processes](https://ultrametric.ai/processes), contract in
+   `schemas/operational-process.schema.json`): step-by-step operating graphs with
+   agent/form/human routing, judged vendor rankings per step, each process's agentic
+   share, and time estimates. Operating guides, not legal advice; the site's jurisdiction
+   toggle (`lib/jurisdictions.ts`) and geo scoping annotate where steps are US- or
+   state-specific.
 
-   Since 2026-10-01 the corpus carries two kinds of record: 124 **processes** (the proactive
-   founder timeline) and 12 **situations** (`kind: "situation"` — reactive, trigger-driven:
-   a cease-and-desist arrives, a visa is stuck, a breach is live). A situation is the same
-   machinery — DAG, routing, ceilings, vendors, reversibility, geo — plus a one-sentence
-   `trigger` and an honest `urgency` clock (`hours`/`days`/`weeks`), and deliberately NO
-   `timeOrder` slot: reactive work is not a stop on the founder timeline, so /processes groups
-   situations under their own area and sorts them after the timeline. Where a situation leans
-   on a legal deadline, its description cites a dated rule card in `rules/` (the
-   `lib/openstartup/deadlines.ts` needs-review doctrine) and its steps link the primary source.
+   The library carries two kinds of record: **processes** (the proactive founder timeline)
+   and **situations** (`kind: "situation"`, reactive and trigger-driven: a cease-and-desist
+   arrives, a visa is stuck, a breach is live). A situation is the same machinery plus a
+   one-sentence `trigger` and an `urgency` clock (`hours`/`days`/`weeks`), and deliberately
+   no `timeOrder` slot: reactive work is not a stop on the founder timeline. Where a
+   situation leans on a legal deadline, its description cites a dated rule card in `rules/`
+   and its steps link the primary source. Doctrine: `SITUATIONS.md`.
 
-A process here may cite operational corpus pages for the how-to mechanics; the operational
-corpus links back when a step crosses into fact-specific legal territory. The two layers keep
-separate IDs and never silently substitute for each other. Stage 2 of the corpus lift
-(2026-09-28) moved the operational corpus here from `data/processes.json`, byte-identical —
-paths only: `lib/processes.ts` `loadProcesses()` reads `processes/corpus.json`, and the
-founder-ops workflow validator (`lib/founderOps.ts`) deliberately skips `corpus.json` when it
-walks this tree (the corpus has its own schema and gates). The two layers now live side by
-side under this directory as promised.
+The two layers keep separate IDs and never silently substitute for each other:
+`lib/processes.ts` `loadProcesses()` reads `corpus.json`, and the workflow validator
+(`lib/founderOps.ts`) deliberately skips it when walking this tree.
 
-## What a corpus record is
+| Section | What it covers |
+| --- | --- |
+| [What a library record is](#what-a-library-record-is) | The shape of one process record |
+| [Reversibility](#reversibility) | Classifying how hard each step is to undo |
+| [Verification checks](#verification-checks-verify) | The "how do I know it worked" check on a step |
+| [Cost honesty](#cost-honesty-cost) | Sourced, dated fees; nothing estimated |
+| [Failure modes](#failure-modes-failuremodes--spike-introduced) | What concretely goes wrong, and the recovery |
+| [Step documents](#step-documents-documents) | Steps linked to the open documents they are done on |
+| [Proven runs](#proven-runs-provenruns--the-executed-proof-slot-design-only) | Evidence that a named operator ran a process |
+| [The artifact layer](#the-artifact-layer-typed-inputsoutputs) | Typed inputs and outputs between processes |
+| [The Open-modules map](#the-open-modules-map) | Wiring steps to the calculation modules |
+| [A real process, drawn](#a-real-process-drawn) | One committed record as a diagram |
+| [How the site consumes this directory](#how-the-site-consumes-this-directory) | Loaders and the pages they power |
+| [What you can contribute here](#what-you-can-contribute-here) | The PR shapes and their gates |
+
+## What a library record is
 
 One record per founder process: identity and classification (`phase`, `cadence`,
 `complexity`), an honest Agentic % (`supportLevel` + `supportReason`), the vendors that can
-run it, the step DAG, and geo scoping. A trimmed real record (`form_002`, Get EIN):
+run it, the step graph, and geo scoping. A trimmed real record (`form_002`, Get EIN):
 
 ```jsonc
 {
@@ -97,7 +108,7 @@ contain one truly *irreversible* filing step (Incorporate C-Corp — the entity 
 dissolved, the filed 83(b) cannot be unfiled), and an *irreversible* process is mostly
 reversible steps until the wire goes out. Irreversible is deliberately rare at both levels —
 totality and distribution are pinned by `lib/__tests__/reversibility.test.ts`. No zod default
-exists: an unclassified process or step fails the corpus parse.
+exists: an unclassified process or step fails the schema parse.
 
 ## Verification checks (`verify`)
 
@@ -156,7 +167,7 @@ is. Curation rules, stricter than coverage:
   needs-review posture). Legal claims cite a dated rule card in `rules/` by id inside the
   prose, the same convention situation descriptions use.
 - **`source`** is the primary page/statute/fee schedule backing the entry, curl-verified live
-  like every corpus URL.
+  like every committed URL.
 - **3–6 quality entries per deep process**, not totality — absence means nothing is curated
   yet, never that the step can't fail. Display: one collapsed "⚠ if it goes wrong" line per
   affected step (`components/ProcessDag.tsx`); no judged number reads the field.
@@ -166,27 +177,27 @@ is. Curation rules, stricter than coverage:
 Steps that are genuinely done ON a canonical open document may carry `documents: string[]` —
 ids into `open-documents/registry.json` (the Cooley GO Delaware incorporation package for the
 bylaws/stock-paperwork drafting steps, IRS Form 15620 for the 83(b) election). Added by the
-form_001 spike after confirming no prior mechanism linked corpus steps to the documents
-registry; extended across the corpus the same day (founder 2026-10-02: SAFEs on the SAFE-prep
+form_001 spike after confirming no prior mechanism linked process steps to the documents
+registry; extended across the library the same day (founder 2026-10-02: SAFEs on the SAFE-prep
 step, the NVCA suite on the definitive-docs step, offer letters, SS-4, the open NDAs/DPAs/
 cloud terms — `scripts/tmp-wire-step-documents.py`) — only where the document is plainly the
 step's instrument, never forced totality. Rendered on the process pages as small external-link
 chips (`components/ProcessDag.tsx`, registry title as label, canonical URL as target).
-Referential integrity is corpus-tested both ways (`lib/__tests__/processDocuments.test.ts`) —
+Referential integrity is gated both ways (`lib/__tests__/processDocuments.test.ts`) —
 every id must resolve in the registry, and the render lookup throws on an unknown id.
 
 ## Proven runs (`provenRuns`) — the executed-proof slot (design only)
 
-A corpus record can carry `provenRuns`: dated evidence that a named operator actually ran the
+A process record can carry `provenRuns`: dated evidence that a named operator actually ran the
 process end to end. The shape (`ProvenRunSchema` in `lib/processes.ts`):
 
 - `ranOn` (ISO date), `operator` (a named person/company, never "a user"), `ownerRun`
   (boolean), `disclosure` (one honest sentence — **required whenever `ownerRun` is true**,
   load-enforced: reader trust comes from the disclosure, not from pretending independence);
 - `steps: [{ nodeId, wallClockMinutes?, feesPaidUsd?, note? }]` — the REAL elapsed wall clock
-  and the REAL fees paid per step, as run, never the corpus estimates re-stated.
+  and the REAL fees paid per step, as run, never the committed estimates re-stated.
 
-The field ships **empty and schema-ready**: no run is fabricated, and the corpus estimates
+The field ships **empty and schema-ready**: no run is fabricated, and the committed estimates
 stay estimates until a real record lands (the first will be Ultrametric Inc.'s own receipts,
 supplied by the founder). When records exist they are display-only; no judged number reads
 them.
@@ -197,23 +208,23 @@ them.
 business artifacts that flow BETWEEN processes — the EIN, the Certificate of Incorporation,
 the bank account, the cap table, the 409A report, the payroll account. Each registry entry:
 `id` (kebab-case), `label`, `description`, `producedBy` (the ONE canonical producer process),
-optional `alsoProducedBy` (documented exceptions), optional `terminal: true`. On the corpus
+optional `alsoProducedBy` (documented exceptions), optional `terminal: true`. On the library
 side every process carries two required typed fields — `produces: string[]` and
 `requires: string[]` (artifact ids) — and the specific step where an artifact comes into
 existence is pinned with node-level `producesArtifact`. The `contextNeeded` prose stays the
 human context; the typed layer is the machine truth, and `lib/processDeps.ts` builds the
-company-level dependency DAG from it (process page "Needs / Produces" chips, the derived
+company-level dependency graph from it (process page "Needs / Produces" chips, the derived
 topological ordering, and the committed `docs/TIMELINE-INVERSIONS.md` renumbering worklist).
 
-**What qualifies as an artifact.** A nameable business thing a committed corpus step genuinely
+**What qualifies as an artifact.** A nameable business thing a committed process step genuinely
 brings into existence AND that at least one other process genuinely consumes — or, rarely, a
 real terminal output nothing downstream reads (the filed 83(b), the dissolution certificate),
 flagged `terminal`. Not artifacts: judgments, meetings, recurring acts ("payroll was run"),
-or anything no committed step produces. The registry is sized from the corpus itself — no
+or anything no committed step produces. The registry is sized from the committed records — no
 invented artifacts, no aspirational vocabulary.
 
 **The one-producer rule.** Every artifact names exactly one canonical producer (`producedBy`)
-so the dependency graph stays a DAG with unambiguous edges. Where a second committed process
+so the dependency graph stays acyclic with unambiguous edges. Where a second committed process
 genuinely also births the artifact — the LLC route applies for its own EIN, the LLC→C-Corp
 conversion re-issues the charter paper, the exec hire signs an offer — that process is listed
 in `alsoProducedBy` and may carry the artifact in its `produces`; graph edges still point at
@@ -223,7 +234,7 @@ process.
 **How to add one.** Add the registry entry; add the artifact to the producer's `produces` and
 tag the birth step with `producesArtifact` (never on a jurisdiction-conditional node — those
 are stripped from the default view); add it to at least one other process's `requires` (or
-flag it `terminal` with the reason in the description). Gates: the corpus tests
+flag it `terminal` with the reason in the description). Gates: the library tests
 (`lib/__tests__/processArtifacts.test.ts` — totality, one-producer, consumed-or-terminal;
 `lib/__tests__/processDeps.test.ts` — acyclicity, resolvable edges, no self-requires), and
 regenerate the derived report: `npx tsx scripts/generate-timeline-inversions.ts` (drift-tested
@@ -245,7 +256,7 @@ Delaware franchise-tax math to `tax_001` and the `sit_010` delinquency cure, the
 modules to the 83(b)-carrying processes, the cap-table/vesting/round/anti-dilution/waterfall
 family to the founder agreement, option grants, and SAFE/priced rounds. Keyed by module id
 (the `lib/openstartup/` file basename); each entry carries the README heading `label`, its
-GitHub `anchor`, and the corpus `processes` it honestly serves — modules with no honest target
+GitHub `anchor`, and the `processes` it honestly serves — modules with no honest target
 are simply absent, nothing is forced.
 
 **The step layer** (founder depth ask, same day): `steps` entries —
@@ -253,7 +264,7 @@ are simply absent, nothing is forced.
 genuinely computes a specific step's math (the 83(b) sign steps →
 `election83b.compare83bScenario`, the filing steps → `deadlines.election83bWindow`, the
 franchise-tax calculation → `deFranchiseTax.compareFranchiseTaxMethods`, …), curated from both
-sides: the module's real exports and the corpus step text. A step a module merely informs
+sides: the module's real exports and the step text. A step a module merely informs
 stays task-level — no decorating. Every step entry's `(module, processId)` pair must also
 appear in that module's `processes` list.
 
@@ -264,17 +275,17 @@ into `open-modules/README.md` (repo-first — the modules are a library by desig
 pages). That README's per-module **Serves** lines are generated from this file
 (`scripts/generate-business-logic-serves.ts`) and drift-gated. Totality gates, both ways:
 `lib/__tests__/businessLogicMap.test.ts` (every module file exists, every process id exists,
-every step's node id exists in its process DAG, every named function is a real exported
+every step's node id exists in its process graph, every named function is a real exported
 function — a misspelled name fails the suite — and every anchor matches its README heading)
 and `lib/__tests__/businessLogicServes.test.ts` (every mapped module's Serves line in sync,
 no strays).
 
 Coverage companion: `docs/PROCESS-ARENA-COVERAGE.md` (generated by
 `scripts/generate-process-arena-coverage.ts`, drift-tested) audits the other wiring direction —
-every corpus vendor resolving through `vendor-registry.json` to an arena or being deliberately
+every vendor in the library resolving through `vendor-registry.json` to an arena or being deliberately
 untracked, plus the processes whose vendor set resolves to zero arenas.
 
-## A real process DAG
+## A real process, drawn
 
 This is `form_001` (Incorporate C-Corp) exactly as committed in `corpus.json` at
 `a4b656235` (2026-09-30) — the mermaid below is generated from that record's `dag.nodes` and
@@ -313,9 +324,9 @@ flowchart TD
 - `lib/processes.ts` `loadProcesses()` reads `corpus.json` at build time — it strips the
   jurisdiction-conditional nodes (they only ever render client-side via the `?juris=` toggle,
   so no judged number moves) and powers `/processes`, every `/processes/<slug>` page
-  (`components/ProcessDag.tsx` renders the DAG above with the same route colors), the process
+  (`components/ProcessDag.tsx` renders the step graph above with the same route colors), the process
   rankings (`/rankings/processes/*`), and the open startup simulator at `/startup-sim`.
-- `journeys/chains.json` links corpus process IDs into playbooks (see `journeys/README.md`).
+- `journeys/chains.json` links process IDs into playbooks (see `journeys/README.md`).
 - `lib/founderOps.ts` validates the jurisdiction-scoped workflow layer (`equity/us-de/*`)
   against `schemas/process.schema.json`, resolves its rule-card references into `rules/` and
   `sources/`, and exposes the exact-dimension planner (`planFounderOps`).
@@ -330,12 +341,12 @@ flowchart TD
   SPICe+ incorporation), or `not-applicable` (the need genuinely doesn't exist there — the UK
   has no 1099 regime). This renders in the top-of-page geo banner and the "Outside the US"
   block, and `kind` drives which US-scoped rows the /processes table shows inside a country
-  view (only `analog` rows stay; the default and Global views keep the full corpus). Gate:
-  `pnpm test` (corpus loader + schema tests).
+  view (only `analog` rows stay; the default and Global views keep the full library). Gate:
+  `pnpm test` (library loader + schema tests).
 - **A new jurisdiction-scoped workflow** — copy `templates/process.json` into
   `processes/<domain>/<jurisdiction>/`, narrow the applicability dimensions, reference rule
   cards in `rules/<CODE>/`, gate every external effect on a named human approval, add a
-  fictional fixture in `fixtures/`, and record honest maturity in `coverage/coverage.json`.
+  fictional fixture in `processes/fixtures/`, and record honest maturity in `coverage/coverage.json`.
   Gate: `npx vitest run __tests__/founder-ops.test.ts`.
 - **Corrections to an operational process** — step routing (agent / manual form / human),
   Agentic % values, or time estimates in `corpus.json`, with a source or reproduction for the

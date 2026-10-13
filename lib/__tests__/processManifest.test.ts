@@ -9,7 +9,7 @@ import {
 import { DagNodeSchema, loadChains, loadProcesses, processSlug, type DagNode } from '@/lib/processes'
 import { SITE_URL } from '@/lib/site'
 
-const DATA_DIR = path.resolve(__dirname, '../../data')
+const DATA_DIR = path.resolve(__dirname, '../../rankings')
 
 const node = (over: Partial<DagNode>): DagNode => ({
   id: 'n1',

@@ -7,6 +7,9 @@ a verdict, add evidence, [add your product](#add-your-vendor) to a ranking,
 [add a jurisdiction](#add-a-jurisdiction), or [add an open module](#add-an-open-module) —
 plus local setup and style rules.
 
+UI and page changes are maintained in the private site repo; report rendering bugs on this
+repo with the [site rendering issue form](https://github.com/ultrametricai/ultrametric/issues/new?template=site-rendering.yml).
+
 Contributing to the **founder-ops corpus** (jurisdiction-scoped workflows, rule cards, sources,
 vendor reviews, open modules) has its own workflow and review bar — see
 [governance/REVIEW_POLICY.md](governance/REVIEW_POLICY.md) and the templates in
@@ -15,8 +18,8 @@ vendor reviews, open modules) has its own workflow and review bar — see
 **Founders outside the US (or outside Delaware):** the highest-leverage contribution is local
 knowledge — vendor availability rows for your country, verified country analogs for the
 processes, rule cards for your jurisdiction, full workflows. The four PR shapes, with exact
-file paths and the gates that validate them, are in the README's
-["Add your country or state"](README.md#add-your-country-or-state).
+file paths and the gates that validate them, are in
+[Add a jurisdiction](#add-a-jurisdiction) below.
 
 ## 1. Contest a verdict
 
@@ -32,16 +35,16 @@ a GitHub Action) still has to do the deeper check described below: add the evide
 If you'd rather skip the prefilled link, you can also open an issue manually using the
 [Contest a Verdict](./.github/ISSUE_TEMPLATE/contest-verdict.md) template. Fill in:
 
-- `category` and `product` (must match the ids in `data/categories.json` / `data/{category}/products.json`)
-- `story id` (from `data/{category}/stories.json`)
-- the current verdict (tier + quality, from `data/{category}/verdicts.json`)
+- `category` and `product` (must match the ids in `rankings/categories.json` / `rankings/{category}/products.json`)
+- `story id` (from `rankings/{category}/stories.json`)
+- the current verdict (tier + quality, from `rankings/{category}/verdicts.json`)
 - your proposed verdict
 - evidence URLs and quotes supporting your proposal
 
 **Flow:**
 
 1. You open the issue with the fields above.
-2. A maintainer reviews it against the cited evidence in `data/{category}/evidence/{product}.json`.
+2. A maintainer reviews it against the cited evidence in `rankings/{category}/evidence/{product}.json`.
 3. If your evidence is new or better, the maintainer (or you, via a PR — see below) adds it
    to the product's evidence file and re-judges:
    ```bash
@@ -92,7 +95,7 @@ statements. Full governance: [`docs/VENDOR-RESPONSES.md`](./docs/VENDOR-RESPONSE
 If you have a source (docs, changelog, GitHub, a hands-on write-up) that should change a
 verdict, you can propose it directly as a PR:
 
-1. Fork/branch, then edit `data/{category}/evidence/{product}.json` to add your evidence
+1. Fork/branch, then edit `rankings/{category}/evidence/{product}.json` to add your evidence
    item. Each item needs:
    - `id` — a unique, stable id (convention: `{product}-{tier-prefix}-{n}`, e.g. `claude-code-docs-20`)
    - `tier` — one of `claimed-docs`, `github`, `community`, `probe`
@@ -110,23 +113,23 @@ verdict, you can propose it directly as a PR:
    A maintainer will sanity-check the diff (does the new verdict follow from the
    cited excerpt?) before merging.
 
-### About the judge cache and re-judge cost
+### About the judge cache and re-judge scope
 
 The judge cache (`pipeline/cache/judge/`) **is committed** to the repo, keyed by a hash of
 `(storyId, story title, the product's full evidence array, prompt version)` — the
 *whole* evidence pack, not only the item(s) you cite. This has two consequences:
 
-- **If you haven't touched a product's evidence, re-running `judge` for it is free** (all
-  cells are cache hits — no LLM calls, no `ANTHROPIC_API_KEY` even needed to hit the fast
+- **If you haven't touched a product's evidence, re-running `judge` for it makes no LLM
+  calls** (all cells are cache hits — no `ANTHROPIC_API_KEY` even needed to hit the fast
   path). This is why the judge cache is tracked in git: everyone shares the same cache and
-  doesn't re-pay for verdicts nobody changed.
+  doesn't re-run verdicts nobody changed.
 - **If you add/edit/remove even one evidence item for a product, every cell hash for that
   product changes** — because the hash covers the full pack, not only the changed item. A
   `judge --product <product>` run will therefore re-send **all** of that product's stories to
-  the LLM, not only the one your new evidence supports. Approximate cost: one LLM call per
+  the LLM, not only the one your new evidence supports. Approximate scope: one LLM call per
   story in the category (currently ~42–57 depending on category — see
-  `data/{category}/stories.json` length), each a small JSON-mode call. This is expected
-  and intentional (it keeps the judge honest about re-evaluating the whole pack); budget
+  `rankings/{category}/stories.json` length), each a small JSON-mode call. This is expected
+  and intentional (it keeps the judge honest about re-evaluating the whole pack); plan
   for it — a single-evidence-item PR is not a single-LLM-call PR.
 
 <a id="add-your-vendor"></a>
@@ -148,8 +151,8 @@ and you're done. A maintainer takes it from there.
 
 ### 3b. PR path: add yourself directly
 
-One file gets you in: append an entry to `data/<arena>/products.json` (ranking ids live in
-`data/categories.json`; if no ranking fits, open a [Submit a product](./.github/ISSUE_TEMPLATE/request-a-product.yml)
+One file gets you in: append an entry to `rankings/<arena>/products.json` (ranking ids live in
+`rankings/categories.json`; if no ranking fits, open a [Submit a product](./.github/ISSUE_TEMPLATE/request-a-product.yml)
 issue proposing a new one instead). A real, current entry for shape reference:
 
 ```jsonc
@@ -279,12 +282,36 @@ tells you immediately whether the record holds up. Chained founder paths go in
 ## 6. Add a jurisdiction
 
 The highest-leverage contribution for founders outside the US. Four PR shapes, smallest
-first — vendor availability rows for your country, a country analog for a process, rule cards
-citing primary sources, a full jurisdiction-scoped workflow — with exact file paths and the
-gates that validate them in the README's
-["Add your country or state"](README.md#add-your-country-or-state). Register the jurisdiction
-in [`jurisdictions/registry.json`](jurisdictions/) with a deliberately narrow scope; `pnpm
-test` validates every record.
+first; each is schema-validated, so `pnpm test` tells you immediately whether your records
+hold up:
+
+1. **Vendor availability in your country** — add rows to
+   [`jurisdictions/vendor-geo.json`](jurisdictions/): `{productId, country, status:
+   available|unavailable|partial, sourceUrl, note}`. The source must be the vendor's own
+   page (or an official register) stating the fact; negatives ("US entities only") are as
+   valuable as positives. These rows drive the geo switcher and "Geos supported" on the
+   site.
+2. **A country analog for a process** — add a `geoNotes` entry to the process in
+   [`processes/corpus.json`](processes/): `{country, summary, actionUrl, actionLabel}` with
+   a live, official actionUrl (Companies House, MCA/NSWS, Handelsregister, INPI…). This
+   renders in the top-of-page geo banner and the "Outside the US" block.
+3. **Rule cards for your jurisdiction** — register the jurisdiction in
+   [`jurisdictions/registry.json`](jurisdictions/) with a deliberately narrow scope, then
+   add `rules/<CODE>/*.json` cards citing primary sources in
+   [`sources/registry.json`](sources/) (statute, regulation, agency guidance; a provider
+   blog cannot establish law). One proposition per stable ID.
+4. **A full jurisdiction-scoped workflow** — copy
+   [`templates/process.json`](templates/process.json), narrow the applicability dimensions,
+   reference your rule cards, gate every external effect on a human approval, add a
+   fictional fixture in [`processes/fixtures/`](processes/fixtures/), and record the
+   maturity level in [`coverage/coverage.json`](coverage/) (`draft` or `demonstration` to
+   start; `reviewed` requires a named domain expert, see the
+   [review policy](governance/REVIEW_POLICY.md)).
+
+US rules are never copied into another jurisdiction, no country is marked covered because
+one workflow exists, and fixtures are fictional by gate. The validator
+(`lib/founderOps.ts`, run by `npx vitest run __tests__/founder-ops.test.ts`) enforces
+source resolution, jurisdiction matching, approval gates, and accurate coverage reporting.
 
 <a id="add-an-open-module"></a>
 
@@ -301,21 +328,19 @@ The bar — pure functions, a citation on every formula, tests that double as do
 git clone https://github.com/ultrametricai/ultrametric.git && cd ultrametric
 pnpm install
 cp .env.example .env    # fill in ANTHROPIC_API_KEY if you need to run extract/normalize/collect-community/judge
-pnpm dev                # http://localhost:3000
 pnpm test
-pnpm build
 ```
 
 `ANTHROPIC_API_KEY` is only needed for the LLM-driven pipeline stages (`extract`,
-`normalize`, `collect-community`, `judge`) run locally. It is **never** required to run the site itself, and it
-must **never** be set on the Vercel project — the deployed site serves pre-computed static
-`data/` and makes no LLM calls at build or request time.
+`normalize`, `collect-community`, `judge`) run locally. It is **never** required to work on
+the data, and it must **never** be set on the site's Vercel project — the deployed site
+serves pre-computed static `rankings/` and makes no LLM calls at build or request time.
 
 ## Style: schemas are law
 
 Every data file (`categories.json`, `products.json`, `stories.json`, `evidence/*.json`,
 `verdicts.json`, `rankings.json`) is validated against a Zod schema in `lib/schemas.ts`.
-Before opening a PR that touches any `data/` file, run:
+Before opening a PR that touches any `rankings/` file, run:
 
 ```bash
 pnpm test

@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # One-shot helper for the 2026-10-01 ai-assistants roster expansion (dots, grok-bot, kimi,
 # perplexity-computer). Appends probe-tier evidence items distilled from the recorded runtime
-# probes in data/ai-assistants/proofs/{dots,grok-bot,kimi,perplexity-computer}/ (see
+# probes in rankings/ai-assistants/proofs/{dots,grok-bot,kimi,perplexity-computer}/ (see
 # pipeline/probes/ai-assistants.ts — all eight recorded probes passed). Run AFTER
 # `pnpm pipeline probe --category ai-assistants --product <id>` (or a spike pass, whose probe
 # stage wholesale-replaces probe-tier evidence and would wipe these items) — re-run this script
@@ -79,7 +79,7 @@ ITEMS = {
 }
 
 for pid, items in ITEMS.items():
-    path = f'data/ai-assistants/evidence/{pid}.json'
+    path = f'rankings/ai-assistants/evidence/{pid}.json'
     ev = json.load(open(path))
     existing = {e['id'] for e in ev}
     for item in items:

@@ -24,7 +24,7 @@
 // speak any arena's language is not our vendor, however hot.
 //
 // Dedupe, so each candidate surfaces ONCE and already-tracked vendors never do:
-//   · every data/<arena>/products.json product, by normalized site domain (pipeline/yc-shared.ts
+//   · every rankings/<arena>/products.json product, by normalized site domain (pipeline/yc-shared.ts
 //     normalizeDomain — never by name alone) AND by normalized name/id,
 //   · the vendor registry (vendors/reviews/generated/<arena>--<product>.json), by product id,
 //   · the committed seen-ledger pipeline/radar-seen.json: every candidate ever reported, keyed by
@@ -35,7 +35,7 @@
 // candidates — .github/workflows/vendor-radar.yml files the day's issue from it.
 //
 // HONESTY: the radar NEVER auto-adds products and NEVER auto-judges. It detects and reports —
-// nothing under data/ changes from this scan. The deep spike on an approved candidate remains a
+// nothing under rankings/ changes from this scan. The deep spike on an approved candidate remains a
 // deliberate, reviewed run of the standard pipeline (docs/VENDOR-RADAR.md, the Instinct/dots
 // precedent). Every evidence string in the report is verbatim-derived from the source's own
 // response (points, dates, star counts); nothing is invented, and a source that fails to answer
@@ -449,7 +449,7 @@ export function assembleCandidates(raw: RawCandidate[], vocab: Map<string, Vocab
 // Report + issue markdown
 
 const HONESTY_LINES = [
-  'Detection only — the radar NEVER auto-adds products and NEVER auto-judges: nothing under `data/` changed from this scan.',
+  'Detection only — the radar NEVER auto-adds products and NEVER auto-judges: nothing under `rankings/` changed from this scan.',
   'A deep spike on approved candidates runs via the standard pipeline — approve by checking the box / commenting, then bring the vendor up per `docs/VENDOR-RADAR.md` (research doc → roster PR → keyed crawl→extract→probe→judge run, the Instinct/dots precedent).',
 ]
 

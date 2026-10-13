@@ -86,7 +86,7 @@ export function rowWinners(values: Array<number | null>): number[] {
 
 // 'automation-depth' → 'Automation depth' — display label for a theme id. Re-exported from
 // lib/icons.ts (the site's one kebab-id humanizer) under this module's historical name.
-export { humanizeTheme as themeLabel } from './icons'
+export { humanizeTheme as themeLabel } from './themeLabels'
 
 // Client-side styling for the serialized access glyph chars (mirrors lib/accessGlyphs.ts's
 // accessGlyphFor, which isn't imported here to keep verdict types out of the client bundle).

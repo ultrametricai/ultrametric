@@ -6,7 +6,7 @@
 # re-judge stability policy (see README) can be applied before merge.
 #
 # Also runs the keyless agent-surface SLO check (pipeline/scripts/slo-check.ts) on every
-# 6-hourly run — that step needs no secrets, so it runs (and its data/slo-history.jsonl
+# 6-hourly run — that step needs no secrets, so it runs (and its rankings/slo-history.jsonl
 # appends get committed) even while the LLM pipeline below is gated.
 #
 # The LLM pipeline requires the ANTHROPIC_API_KEY repo secret; until it exists those steps are
@@ -69,17 +69,17 @@ jobs:
           if [ -n "$INPUT_CATEGORY" ]; then
             CAT="$INPUT_CATEGORY"
           else
-            # Accuracy engine (docs/ACCURACY.md): while a data/staleness-report.json stands
+            # Accuracy engine (docs/ACCURACY.md): while a rankings/staleness-report.json stands
             # (written weekly by accuracy-engine.yml), walk its arenasRanked worst-stale-first —
             # one arena per 6-hour slot since the report's generatedAt, so every weekly report
             # gets its worst arenas re-run before the next report supersedes it. Falls back to
             # the original run-number rotation when the report is missing or malformed.
             CAT=$(node -e '
               const fs = require("fs");
-              const cats = require("./data/categories.json").map((c) => c.id);
+              const cats = require("./rankings/categories.json").map((c) => c.id);
               let pick = null;
               try {
-                const rep = JSON.parse(fs.readFileSync("./data/staleness-report.json", "utf8"));
+                const rep = JSON.parse(fs.readFileSync("./rankings/staleness-report.json", "utf8"));
                 const ranked = (rep.arenasRanked ?? []).filter((a) => cats.includes(a));
                 const slot = Math.floor((Date.now() - Date.parse(rep.generatedAt)) / (6 * 60 * 60 * 1000));
                 if (ranked.length > 0 && Number.isFinite(slot) && slot >= 0) pick = ranked[slot % ranked.length];
@@ -116,13 +116,32 @@ jobs:
       # created, then settle open ones against the re-derived changelog — generation before
       # settlement so a question can never settle in the same instant it opens for the wrong
       # reason (its window starts at the rankings snapshot it derives from). Both scripts are
-      # idempotent, so quiet runs write nothing; changes land in data/predictions.json and
+      # idempotent, so quiet runs write nothing; changes land in rankings/predictions.json and
       # ride the same PR as the refresh below.
       - name: Generate + settle predictions
         if: steps.gate.outputs.enabled == 'true'
         run: |
           pnpm tsx pipeline/scripts/generate-predictions.ts
           pnpm tsx pipeline/scripts/settle-predictions.ts
+
+      # vendors/reviews/generated/ is a pure projection of rankings/ (rankings generatedAt,
+      # evidence packs, pricing, geo). Derive restamps generatedAt on every run, so the
+      # records must be regenerated here or the drift test inside `pnpm test` below fails
+      # against the refreshed data (3 consecutive red runs through 2026-10-12).
+      - name: Regenerate vendor-review interchange records
+        if: steps.gate.outputs.enabled == 'true'
+        run: pnpm tsx pipeline/scripts/generate-vendor-reviews.ts
+
+      # rankings/graph.json is the same kind of pure projection (corpus + step-story mapping +
+      # judged story→product verdicts). The judge stage above can flip verdicts, which adds,
+      # drops, or relabels story-product edges, so the graph must be regenerated here or the
+      # byte-identity tests (lib/__tests__/storyProcessGraph.test.ts and
+      # shared-canonical-identity.test.ts) fail against the refreshed data (run 38288658736,
+      # email-apis, 2026-10-12). It lives in rankings/, so the change check and commit below
+      # already carry it.
+      - name: Regenerate the story graph artifact
+        if: steps.gate.outputs.enabled == 'true'
+        run: pnpm tsx pipeline/scripts/generate-story-graph.ts
 
       - name: Tests + recompute check
         if: steps.gate.outputs.enabled == 'true'
@@ -132,7 +151,7 @@ jobs:
 
       # Keyless and cheap (~300 HTTP checks, ≤3 concurrent): appends one uptime line per
       # documented agent surface (llms.txt / remote MCP / openapi.json) to
-      # data/slo-history.jsonl — see pipeline/scripts/slo-check.ts and lib/slo.ts. Deliberately
+      # rankings/slo-history.jsonl — see pipeline/scripts/slo-check.ts and lib/slo.ts. Deliberately
       # ungated so the 6-hourly cadence builds a real uptime series even without the API key.
       - name: Agent-surface SLO check
         run: pnpm tsx pipeline/scripts/slo-check.ts
@@ -146,7 +165,7 @@ jobs:
           # When the API-key gate skipped the pipeline, only the SLO check ran and CATEGORY is
           # empty — branch/PR naming falls back accordingly.
           CATEGORY="${CATEGORY:-slo-only}"
-          if git diff --quiet -- data pipeline/cache; then
+          if git diff --quiet -- rankings pipeline/cache vendors/reviews/generated; then
             echo "No changes for $CATEGORY — done."
             exit 0
           fi
@@ -155,7 +174,7 @@ jobs:
           git config user.name "ultrametric-story-runner"
           git config user.email "noreply@ultrametric.ai"
           git checkout -b "$BRANCH"
-          git add data pipeline/cache README.md
+          git add rankings pipeline/cache vendors/reviews/generated README.md
           git commit -m "chore(story-runner): refresh $CATEGORY evidence + verdicts"
           git push -u origin "$BRANCH"
           # Org policy currently forbids Actions from creating PRs ("Write permissions for

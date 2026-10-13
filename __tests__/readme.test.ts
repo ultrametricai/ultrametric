@@ -2,324 +2,359 @@ import fs from 'node:fs'
 import path from 'node:path'
 import { describe, expect, it } from 'vitest'
 
-// README surface pins (founder batch 2026-10-02): the contribution-guide row, the situations
-// surface, the single structural overview, the arena-index rename, and the not-yet-live
-// Discord slot. These are source pins (the README is data here), the same pragmatic pattern
-// as app/__tests__/layout-footer.test.ts.
+// README structure pins (founder rounds 2-3, 2026-10-12): the preserved intro block, the
+// compressed section order (no Trust section; artifacts directly after modules with the docs
+// catalog folded inside; country switch and getting-acquired as Example subsections), the
+// one-liner-per-section format, the section-guide tables, the plain-language vocabulary bar,
+// the compact generated blocks, and the committed media. The README is data; these are
+// source pins.
 
 const ROOT = path.join(__dirname, '..')
 const readme = fs.readFileSync(path.join(ROOT, 'README.md'), 'utf8')
 const contributing = fs.readFileSync(path.join(ROOT, 'CONTRIBUTING.md'), 'utf8')
 
-describe('README.md (founder batch 2026-10-02)', () => {
-  it('carries the contribution-guide row near the top, each link resolving to a real CONTRIBUTING anchor', () => {
-    const row = readme.indexOf('**Contribution guides:**')
-    expect(row).toBeGreaterThan(-1)
-    // Near the top: before the Map of the repo section.
-    expect(row).toBeLessThan(readme.indexOf('## Map of the repo'))
-    // The four guides, links only, each with a matching anchor in CONTRIBUTING.md.
+// The intro ("what we are making here and motivations") is preserved byte-for-byte from the
+// pre-rewrite README; edits to it are a founder decision, not a lane decision.
+// Rewritten in founder round 7 (authorized intro edit): one paragraph, each capability
+// named once with one link, no duplicate destinations, the mission line closing it, and
+// the demo gif sitting directly under the intro with no heading or caption.
+const INTRO = [
+  '![Ultrametric](docs/assets/banner.svg)',
+  '',
+  'Ultrametric ([ultrametric.ai](https://ultrametric.ai)) is the open startup repo: every',
+  'founder [process](#open-processes) step by step, the [tools](#open-vendor-rankings) and',
+  'the [service providers](#startup-ecosystem) around a company (law firms included) ranked',
+  'by how well an agent can drive them, [company law](#open-law) mapped across',
+  'jurisdictions, the [lore](#open-lore) and its library recorded with sources, the open',
+  '[documents and artifacts](#open-artifacts) collected, the startup',
+  '[calculations](#open-modules) as tested code, all of it replayable in the',
+  '[simulator](https://ultrametric.ai/startup-sim) and readable by',
+  '[agents](#install-ultrametric) without keys. The aim: make starting and running a',
+  'company agentic, automated, and standardized across geographies.',
+  '',
+  // Founder round 8: the contribution-guides line distributed into the sections, replaced
+  // here by the repo layout tree; "Talk" renamed "Community"; the demo gif is a clickable
+  // link to the live site.
+  '```',
+  'ultrametric/',
+  '├── processes/       every founder process, step by step',
+  '├── journeys/        processes chained into playbooks',
+  '├── rankings/        evidence, verdicts, computed scores',
+  '├── vendors/         per-product review records',
+  '├── pipeline/        crawl, probe, judge, derive',
+  '├── open-modules/    the startup calculations, indexed',
+  '├── lib/             the code behind modules and loaders',
+  '├── rules/           startup law, one rule per record',
+  '├── sources/         the primary legal authorities',
+  '├── jurisdictions/   countries, states, vendor geography',
+  '├── open-documents/  the open legal documents catalog',
+  '├── lore/            heuristics and the reading library',
+  '├── resources/       canonical reading, laws, episodes',
+  '├── coverage/        what is covered, at what maturity',
+  '├── schemas/         the JSON contracts for every record',
+  '└── governance/      review, evidence, and agent policy',
+  '```',
+  '',
+  '**Community:** [Discord](https://discord.com/invite/3aHky836qP) — founders and contributors',
+  '',
+  '<!-- Legacy anchor: external links to #start-here predate the merge into this map. -->',
+  '<a id="start-here"></a>',
+  '',
+  '[![A tour of ultrametric.ai at 4x: the simulator founding a company, a process page, a vendor page, a situation, the overall rankings, government services, and open documents](docs/assets/readme/demo.gif)](https://ultrametric.ai)',
+].join('\n')
+
+// The founder-specified section order (round 3): artifacts directly after modules with the
+// docs catalog folded inside, country-switch and getting-acquired framed as examples.
+const SECTIONS = [
+  '## The open startup repo',
+  '## Open vendor rankings',
+  '## Open processes',
+  '## Open modules',
+  '## Open artifacts',
+  '## Situations',
+  '## Open lore',
+  '## Open law',
+  '## Government services and startups',
+  '## Startup ecosystem',
+  '## Open startup simulator',
+  '## Open skills for startups',
+  '## Install Ultrametric',
+  '## Methodology',
+  '## License',
+]
+
+// Demoted to subsections inside their parent sections (founder rounds 2 and 3).
+const SUBSECTIONS: Array<[string, string]> = [
+  ['## Open processes', '### Examples'],
+  ['## Open modules', '### Shared data fields'],
+  ['## Open artifacts', '### Open docs'],
+  ['## Situations', '### Example: Founder country switch'],
+  ['## Open lore', '### Example: Getting acquired'],
+]
+
+const sectionBody = (heading: string) => {
+  const start = readme.indexOf(heading) + heading.length
+  const idx = SECTIONS.indexOf(heading)
+  const end = idx === SECTIONS.length - 1 ? readme.length : readme.indexOf(SECTIONS[idx + 1])
+  return readme.slice(start, end)
+}
+
+describe('README.md structure (founder round 2, 2026-10-12)', () => {
+  it('opens with the preserved intro block, byte-for-byte', () => {
+    expect(readme.startsWith(INTRO)).toBe(true)
+  })
+
+  it('carries exactly the specified sections, in order, and no Trust section', () => {
+    const headings = readme.split('\n').filter((l) => l.startsWith('## '))
+    expect(headings).toEqual(SECTIONS)
+    expect(readme).not.toContain('\n## Trust')
+  })
+
+  it('each demoted area lives as a subsection inside its parent section', () => {
+    for (const [parent, sub] of SUBSECTIONS) {
+      const body = sectionBody(parent)
+      expect(body, `${sub} missing from ${parent}`).toContain(sub)
+    }
+    // Demoted areas are gone from the top level.
+    for (const gone of ['## Founder country switch', '## Getting acquired', '## Open data structure', '## Open situations', '## Open docs']) {
+      expect(readme).not.toContain(`\n${gone} `)
+      expect(readme).not.toContain(`\n${gone}\n`)
+    }
+  })
+
+  it('every section leads with a prose one-liner paragraph, not a table or list', () => {
+    for (const heading of SECTIONS) {
+      const firstLine = sectionBody(heading)
+        .split('\n')
+        .map((l) => l.trim())
+        .find((l) => l.length > 0 && !l.startsWith('<a id=') && !l.startsWith('<!--'))
+      expect(firstLine, `${heading} must open with prose`).toBeDefined()
+      expect(firstLine!.startsWith('|'), `${heading} opens with a table`).toBe(false)
+      expect(firstLine!.startsWith('- '), `${heading} opens with a list`).toBe(false)
+      expect(firstLine!.startsWith('!['), `${heading} opens with an image before its one-liner`).toBe(false)
+    }
+  })
+
+  it('the demo gif sits under the intro with no heading or caption, mp4 committed unnarrated', () => {
+    const beforeFirstSection = readme.slice(0, readme.indexOf('\n## '))
+    expect(beforeFirstSection).toContain('docs/assets/readme/demo.gif')
+    expect(readme).not.toContain('## Video demo')
+    expect(readme).not.toContain('demo.mp4')
+    // The full recording stays committed for native upload later.
+    expect(fs.existsSync(path.join(ROOT, 'docs', 'assets', 'readme', 'demo.mp4'))).toBe(true)
+  })
+
+  it('the intro links each destination exactly once (image wraps excluded)', () => {
+    // Clickable images are the display layer; the dedup rule governs prose links.
+    const intro = readme
+      .slice(0, readme.indexOf('\n## '))
+      .replace(/\[!\[[^\]]*\]\([^)]+\)\]\([^)]+\)/g, '')
+      .replace(/!\[[^\]]*\]\([^)]+\)/g, '')
+    const dests = [...intro.matchAll(/\]\(([^)]+)\)/g)].map((m) => m[1])
+    expect(dests.length).toBeGreaterThan(0)
+    expect(new Set(dests).size, `duplicate intro links: ${dests.join(', ')}`).toBe(dests.length)
+  })
+
+  it('the intro layout tree lists real top-level folders', () => {
+    const intro = readme.slice(0, readme.indexOf('\n## '))
+    const tree = intro.slice(intro.indexOf('```'), intro.indexOf('```', intro.indexOf('```') + 3))
+    // Classic waterfall form: a root line, ├── branch connectors, └── on the last entry.
+    expect(tree).toContain('\nultrametric/\n')
+    expect(tree).toMatch(/\n└── [a-z][a-z-]*\/ /)
+    const dirs = [...tree.matchAll(/^[├└]── ([a-z][a-z-]*)\/ /gm)].map((m) => m[1])
+    expect(dirs.length).toBeGreaterThanOrEqual(10)
+    for (const dir of dirs) {
+      expect(
+        fs.existsSync(path.join(ROOT, dir)) && fs.statSync(path.join(ROOT, dir)).isDirectory(),
+        `layout tree lists ${dir}/ but no such top-level folder exists`,
+      ).toBe(true)
+    }
+  })
+
+  it('every screenshot is a clickable link to the live page it shows', () => {
+    const embeds = [...readme.matchAll(/!\[[^\]]*\]\(docs\/assets\/readme\/[^)]+\)/g)]
+    const wrapped = [...readme.matchAll(/\[!\[[^\]]*\]\(docs\/assets\/readme\/[^)]+\)\]\((https:\/\/ultrametric\.ai[^)]*)\)/g)]
+    expect(embeds.length).toBeGreaterThan(0)
+    expect(wrapped.length, 'an image under docs/assets/readme/ is not wrapped in a live-site link').toBe(embeds.length)
+  })
+
+  it('both Example subsections use the bulleted link format', () => {
+    for (const sub of ['### Examples', '### Example: Founder country switch']) {
+      const at = readme.indexOf(sub)
+      expect(at).toBeGreaterThan(-1)
+      const body = readme.slice(at, readme.indexOf('\n#', at + sub.length))
+      expect(body, `${sub} carries no bulleted example links`).toMatch(/\n- \[[^\]]+\]\(https:\/\/ultrametric\.ai\/processes\//)
+    }
+  })
+
+  it('uses plain language: no insider vocabulary anywhere on the page', () => {
+    for (const banned of ['corpus', 'interchange', 'disposition', 'manifest', 'taxonomy', 'HMAC', 'DAG', 'provenance']) {
+      expect(readme.toLowerCase(), `README contains banned word "${banned}"`).not.toContain(banned.toLowerCase())
+    }
+  })
+
+  it('hand-written prose carries no counts and no dates; numbers live in generated blocks only', () => {
+    // Only the arenas block is generated now (founder round 8); strip it, then scan.
+    const s = '<!-- arenas:start -->'
+    const e = '<!-- arenas:end -->'
+    const stripped = readme.slice(0, readme.indexOf(s)) + readme.slice(readme.indexOf(e) + e.length)
+    expect(stripped).not.toMatch(/\b\d[\d,]* (rankings|products|verdicts|arenas|processes|markets)\b/)
+    expect(stripped).not.toMatch(/\b\d{4}-\d{2}-\d{2}\b/)
+  })
+})
+
+describe('README.md section-guide tables (founder round 2)', () => {
+  it('Open modules carries the module guide table with a row per mapped module', () => {
+    const section = sectionBody('## Open modules')
+    // Founder round 8: two columns (sources moved to prose), and "409A sanity" reads "409A".
+    expect(section).toContain('| Module | What it computes |')
+    expect(section).not.toContain('Source it cites')
+    expect(section).not.toContain('409A sanity')
+    expect(section).toContain('| [409A](open-modules/README.md#409a-grant-sanity)')
+    const map = JSON.parse(
+      fs.readFileSync(path.join(ROOT, 'processes', 'business-logic-map.json'), 'utf8'),
+    ) as { modules: Record<string, { anchor: string }> }
+    const anchors = Object.values(map.modules).map((m) => m.anchor)
+    expect(anchors.length).toBeGreaterThan(0)
+    for (const anchor of anchors) {
+      expect(section, `module table is missing a link to #${anchor}`).toContain(
+        `](open-modules/README.md#${anchor})`,
+      )
+    }
+  })
+
+  it('the Open docs subsection carries the category table covering every registry use_case, with a gaps column', () => {
+    const section = sectionBody('## Open artifacts')
+    // Founder round 8: the Gaps column is gone; gaps live in the catalog prose.
+    expect(section).toContain('| Category | Example documents |')
+    expect(section).not.toContain('| Gaps |')
+    const registry = JSON.parse(
+      fs.readFileSync(path.join(ROOT, 'open-documents', 'registry.json'), 'utf8'),
+    ) as { documents: Array<{ use_case: string }> }
+    const useCases = [...new Set(registry.documents.map((d) => d.use_case))]
+    expect(useCases.length).toBeGreaterThan(0)
+    for (const useCase of useCases) {
+      const row = section
+        .split('\n')
+        .find((l) => l.toLowerCase().startsWith(`| ${useCase} `.toLowerCase()))
+      expect(row, `docs table is missing category ${useCase}`).toBeDefined()
+      // Founder round 5: every example-document cell links its real publisher destination.
+      expect(row, `docs row ${useCase} has no publisher link`).toMatch(/\]\(https:\/\//)
+    }
+  })
+
+  it('the Open lore table rows match lore/library.json sections, each example URL a committed entry', () => {
+    const section = sectionBody('## Open lore')
+    expect(section).toContain('| Section | What it teaches | Example entry |')
+    const library = JSON.parse(
+      fs.readFileSync(path.join(ROOT, 'lore', 'library.json'), 'utf8'),
+    ) as { sections: Array<{ title: string; covers: string }>; entries: Array<{ url: string }> }
+    expect(library.sections.length).toBeGreaterThan(0)
+    for (const s of library.sections) {
+      expect(section, `lore table is missing section ${s.title}`).toContain(`| ${s.title} | ${s.covers} |`)
+    }
+    // One row per library section, and every example link is a committed library entry.
+    const rows = section
+      .split('\n')
+      .filter((l) => l.startsWith('| ') && !l.startsWith('| Section') && !l.startsWith('| ---'))
+    expect(rows.length).toBe(library.sections.length)
+    const urls = new Set(library.entries.map((e) => e.url))
+    for (const row of rows) {
+      const link = row.match(/\]\((https:\/\/[^)]+)\)/)
+      expect(link, `lore row carries no example link: ${row.slice(0, 50)}`).toBeTruthy()
+      expect(urls.has(link![1]), `example URL is not a library entry: ${link![1]}`).toBe(true)
+    }
+  })
+})
+
+describe('README.md generated blocks', () => {
+  it('keeps only the arenas marker pair; the stats line, badge row, and CI badge are gone', () => {
+    for (const marker of ['<!-- arenas:start -->', '<!-- arenas:end -->']) {
+      expect(readme).toContain(marker)
+    }
+    // Founder round 8: the generated-stats presence at the Methodology spot was removed.
+    for (const gone of ['<!-- stats:start -->', '<!-- stat-badges:start -->', 'img.shields.io', 'badge.svg']) {
+      expect(readme).not.toContain(gone)
+    }
+  })
+
+  it('the arenas block is the compact one-line form, not the old per-market table', () => {
+    const block = readme.slice(
+      readme.indexOf('<!-- arenas:start -->'),
+      readme.indexOf('<!-- arenas:end -->'),
+    )
+    expect(block).not.toContain('| Ranking | Products |')
+    expect(block).not.toContain('|---|')
+    expect(block).toContain('https://ultrametric.ai/arenas')
+    expect(block.trim().split('\n').length).toBe(2)
+  })
+})
+
+describe('README.md anchors and links', () => {
+  it('keeps every legacy inbound anchor resolving (Writing style rule 8)', () => {
+    for (const id of [
+      'start-here', 'processes', 'vendors', 'business-logic',
+      'add-your-country-or-state', 'open-docs', 'for-ai-agents', 'use-it-from-an-agent',
+    ]) {
+      expect(readme, `missing anchor #${id}`).toContain(`<a id="${id}"></a>`)
+    }
+    // #methodology and #open-modules resolve through their headings.
+    expect(readme).toContain('\n## Methodology')
+    expect(readme).toContain('\n## Open modules')
+  })
+
+  it('every CONTRIBUTING.md anchor the README links exists', () => {
     for (const anchor of ['add-your-vendor', 'add-a-process', 'add-a-jurisdiction', 'add-an-open-module']) {
       expect(readme).toContain(`(CONTRIBUTING.md#${anchor})`)
       expect(contributing, `CONTRIBUTING.md is missing <a id="${anchor}">`).toContain(`<a id="${anchor}"></a>`)
     }
   })
 
-  it('surfaces situations: a Map lead and a Processes-pillar paragraph, no counts', () => {
-    // The reactive layer links both its live index and its repo doctrine.
-    expect(readme).toContain('https://ultrametric.ai/situations')
-    expect(readme).toContain('processes/SITUATIONS.md')
-    // The pillar paragraph names the trigger + urgency model (plain prose, no bold-label
-    // scaffolding — AGENTS.md Writing style rule 5).
-    const para = readme.indexOf('**situations**, the reactive layer')
-    expect(para).toBeGreaterThan(-1)
-    const paraText = readme.slice(para, readme.indexOf('\n\n', para))
-    expect(paraText).toContain('trigger')
-    expect(paraText).toContain('`hours` / `days` / `weeks`')
-    // No counts: the number of situations is corpus-owned (processes/SITUATIONS.md), never a
-    // hand-maintained README claim.
-    expect(paraText).not.toMatch(/\b12\b/)
-  })
-
-  it('keeps ONE structural overview: the merged Map owns both tasks and structure', () => {
-    expect(readme).toContain('## Map of the repo')
-    // Exactly one overview claim: the phrase appears once, and the old Start here
-    // section (merged into the Map, founder batch 2026-10-08) is gone.
-    expect(readme.indexOf('The single structural overview')).toBe(
-      readme.lastIndexOf('The single structural overview'),
-    )
-    expect(readme.indexOf('The single structural overview')).toBeGreaterThan(-1)
-    expect(readme).not.toContain('## Start here')
-    // Inbound #start-here deep links keep resolving (Writing style rule 8).
-    expect(readme).toContain('<a id="start-here"></a>')
-  })
-
-  it('names the arena table for what it shows (renamed from "The arenas", no counts in the heading)', () => {
-    expect(readme).toContain('## Rankings index — every market we rank')
-    expect(readme).not.toContain('## The arenas')
-  })
-
-  it('routes developer setup to CONTRIBUTING instead of carrying its own quickstart block', () => {
-    // The README is for people consuming the open repo; the dev commands live in one place.
-    expect(readme).not.toContain('## Local development')
-    expect(readme).toContain('(./CONTRIBUTING.md#local-setup)')
-    expect(contributing).toContain('## Local setup')
-    expect(contributing).toContain('pnpm test')
-  })
-
-  it('carries the live Discord invite the founder supplied (2026-10-02)', () => {
-    expect(readme).toContain('[Discord](https://discord.com/invite/3aHky836qP)')
-    expect(readme).not.toContain('TODO(founder): drop the Discord invite URL here')
+  it('every repo path the README links resolves', () => {
+    const repoLinks = [...readme.matchAll(/\]\((?!https?:)(?!#)(?:\.\/)?([^)]+?)(?:#[^)]*)?\)/g)]
+      .map((m) => m[1])
+      .filter((p) => !p.startsWith('mailto:'))
+    expect(repoLinks.length).toBeGreaterThan(0)
+    for (const p of repoLinks) {
+      expect(fs.existsSync(path.join(ROOT, p)), `missing repo path ${p}`).toBe(true)
+    }
   })
 })
 
-// Founder batch 2026-10-03: worked examples copied from committed data (never invented), and
-// the agent-surfaces section pointing only at routes that exist in app/. Same source-pin
-// pattern as above: the README is data, the committed corpus is the authority.
-type DagNodeRec = { id: string; label: string; route: string; vendorOptions?: string[]; producesArtifact?: string }
-type CorpusRec = { id: string; trigger?: string; urgency?: string; dag: { nodes: DagNodeRec[] } }
-
-describe('README.md worked examples (founder batch 2026-10-03)', () => {
+describe('README.md examples pin to the committed records', () => {
+  type CorpusRec = { id: string; title: string }
   const corpus: CorpusRec[] = JSON.parse(
     fs.readFileSync(path.join(ROOT, 'processes', 'corpus.json'), 'utf8'),
   )
-  const byId = (id: string) => corpus.find((t) => t.id === id)!
+  // Mirrors lib/processes.ts processSlug.
+  const slug = (title: string) => title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '')
 
-  it('Processes example: the Incorporate C-Corp step/artifact/vendor-options facts match corpus record form_001', () => {
-    const proc = byId('form_001')
-    expect(proc).toBeDefined()
-    expect(readme).toContain('https://ultrametric.ai/processes/incorporate-c-corp')
-    const nodes = proc.dag.nodes
-    // The quoted opening step and its vendor options, verbatim from the corpus.
-    const n1 = nodes.find((n) => n.id === 'n1')!
-    expect(readme).toContain(`"label": "${n1.label}"`)
-    expect(readme).toContain(JSON.stringify(n1.vendorOptions).replace(/,/g, ', '))
-    // The quoted artifact-producing step.
-    const n5 = nodes.find((n) => n.id === 'n5')!
-    expect(n5.producesArtifact).toBe('certificate-of-incorporation')
-    expect(readme).toContain(`"label": "${n5.label}"`)
-    expect(readme).toContain('"producesArtifact": "certificate-of-incorporation"')
-    // The artifact exists in the registry the README links.
-    const artifacts = JSON.parse(fs.readFileSync(path.join(ROOT, 'processes', 'artifacts.json'), 'utf8'))
-    expect(artifacts.artifacts.some((a: { id: string }) => a.id === 'certificate-of-incorporation')).toBe(true)
-  })
-
-  it('Situations example: the cease-and-desist trigger, clock, and counsel step match corpus record sit_001', () => {
-    const sit = byId('sit_001')
-    expect(sit).toBeDefined()
-    expect(readme).toContain('https://ultrametric.ai/processes/respond-to-a-cease-and-desist')
-    // The trigger and urgency are quoted verbatim, never paraphrased.
-    expect(readme).toContain(`"trigger": "${sit.trigger}"`)
-    expect(readme).toContain(`"urgency": "${sit.urgency}"`)
-    // The counsel step quoted in the snippet exists and stays human-routed.
-    const n4 = sit.dag.nodes.find((n) => n.id === 'n4')!
-    expect(n4.route).toBe('person')
-    expect(readme).toContain(`"label": "${n4.label}"`)
-  })
-
-  it('Vendors example: the Stripe payments verdict, story title, and evidence excerpt match the committed data', () => {
-    const verdicts: Array<{ productId: string; storyId: string; verdict: string; quality: number; evidenceIds: string[] }> = JSON.parse(
-      fs.readFileSync(path.join(ROOT, 'data', 'payments', 'verdicts.json'), 'utf8'),
-    )
-    const cell = verdicts.find((v) => v.productId === 'stripe' && v.storyId === 'accept-card-payment-online')!
-    expect(cell).toBeDefined()
-    // The verdict facts the README states, pinned to the derived-from-evidence record.
-    expect(readme).toContain(`"verdict": "${cell.verdict}"`)
-    expect(readme).toContain(`"quality": ${cell.quality}`)
-    // The story title is quoted verbatim from the taxonomy.
-    const stories: Array<{ id: string; title: string }> = JSON.parse(
-      fs.readFileSync(path.join(ROOT, 'data', 'payments', 'stories.json'), 'utf8'),
-    )
-    const story = stories.find((s) => s.id === 'accept-card-payment-online')!
-    expect(readme).toContain(story.title)
-    // The quoted community excerpt exists in the cited evidence item, and the verdict cites it.
-    const evidence: Array<{ id: string; excerpt: string }> = JSON.parse(
-      fs.readFileSync(path.join(ROOT, 'data', 'payments', 'evidence', 'stripe.json'), 'utf8'),
-    )
-    const item = evidence.find((e) => e.id === 'stripe-comm-9')!
-    expect(item.excerpt).toContain('up and running and accepting recurring payments in less than an hour')
-    expect(readme).toContain('up and running and accepting recurring payments in less than\nan hour')
-    expect(cell.evidenceIds).toContain('stripe-comm-9')
-  })
-})
-
-describe('README.md "Use it from an agent" (founder batch 2026-10-03)', () => {
-  const section = readme.slice(
-    readme.indexOf('## Use it from an agent'),
-    readme.indexOf('## Status & roadmap'),
-  )
-
-  it('exists, keeps the old anchor, and the top-of-README links point at it', () => {
-    expect(section.length).toBeGreaterThan(0)
-    // Inbound #for-ai-agents deep links keep resolving (Writing style rule 8).
-    expect(readme).toContain('<a id="for-ai-agents"></a>')
-    expect(readme).toContain('(#use-it-from-an-agent)')
-    expect(readme).not.toContain('## For AI agents')
-  })
-
-  it('lists only surfaces whose routes exist in app/ today', () => {
-    const surfaces: Array<[string, string]> = [
-      ['/llms.txt', path.join('app', 'llms.txt', 'route.ts')],
-      ['/openapi.json', path.join('app', 'openapi.json', 'route.ts')],
-      ['/search-index.json', path.join('app', 'search-index.json', 'route.ts')],
-      ['/feed.xml', path.join('app', 'feed.xml', 'route.ts')],
-      ['/processes/{slug}/manifest.json', path.join('app', 'processes', '[slug]', 'manifest.json', 'route.ts')],
-      ['/processes/chains/{chain}/manifest.json', path.join('app', 'processes', 'chains', '[chain]', 'manifest.json', 'route.ts')],
-      ['/arena/{category}/llms.md', path.join('app', 'arena', '[category]', 'llms.md', 'route.ts')],
-      ['/arena/{category}/product/{productId}/llms.md', path.join('app', 'arena', '[category]', 'product', '[id]', 'llms.md', 'route.ts')],
-    ]
-    for (const [surface, route] of surfaces) {
-      expect(section, `section is missing surface ${surface}`).toContain(surface)
-      expect(fs.existsSync(path.join(ROOT, route)), `${surface} has no route at ${route}`).toBe(true)
-    }
-    // The raw committed files the section points at resolve in the repo.
-    for (const p of ['data', path.join('processes', 'corpus.json'), path.join('journeys', 'chains.json'), 'rules', 'sources', 'schemas', path.join('docs', 'AFK-HANDOFF.md')]) {
-      expect(fs.existsSync(path.join(ROOT, p)), `missing repo path ${p}`).toBe(true)
-    }
-  })
-
-  it('documents the real CLI/MCP (the shipped ultrametric npm package) and points at /get-started', () => {
-    // 2026-10-08: /get-started also appears in the Map's Agent access block (install first),
-    // so these pins scope to the section, not the whole README.
-    // Correction 2026-10-05: an earlier pass wrongly claimed no CLI existed — the `ultrametric`
-    // npm package (CLI + MCP server) shipped 2026-09-30 with /get-started as its install page
-    // and lib/ultrametricCli.ts mapping the corpus steps it drives.
-    expect(section).toContain('https://ultrametric.ai/get-started')
-    expect(section).toContain('lib/ultrametricCli.ts')
-    expect(section).not.toContain('no Ultrametric MCP server or CLI today')
-    // Install mechanics live on /get-started, not inlined here.
-    for (const inlined of ['npx ultrametric', 'claude mcp add', 'pnpm dlx', 'mcp.ultrametric']) {
-      expect(section).not.toContain(inlined)
+  it('the three example links resolve to real processes via their derived slugs', () => {
+    // Founder round 4: the formal picks — Incorporate C-Corp, Get a 409A valuation,
+    // Set up mailing address (all three verified 200 on the live site, 2026-10-12).
+    for (const id of ['form_001', 'fund_003', 'qs_044']) {
+      const rec = corpus.find((t) => t.id === id)
+      expect(rec, `corpus record ${id} missing`).toBeDefined()
+      expect(readme).toContain(`https://ultrametric.ai/processes/${slug(rec!.title)}`)
     }
   })
 })
 
-describe('README.md agent surfaces: the docs site (founder batch 2026-10-08)', () => {
-  const section = readme.slice(
-    readme.indexOf('## Use it from an agent'),
-    readme.indexOf('## Status & roadmap'),
-  )
-
-  it('cites the docs site, its llms.txt, and a per-page .md endpoint (external URLs: presence pins, each verified 200 by curl on 2026-10-08)', () => {
-    for (const url of [
-      'https://docs.ultrametric.ai',
-      'https://docs.ultrametric.ai/llms.txt',
-      'https://docs.ultrametric.ai/quickstart.md',
-    ]) {
-      expect(section, `section is missing docs surface ${url}`).toContain(url)
+describe('README.md media', () => {
+  it('every committed image and recording the README embeds exists on disk', () => {
+    const media = [...readme.matchAll(/\]\((docs\/assets\/[^)]+)\)/g)].map((m) => m[1])
+    expect(media.length).toBeGreaterThan(0)
+    for (const p of media) {
+      expect(fs.existsSync(path.join(ROOT, p)), `missing media file ${p}`).toBe(true)
     }
   })
 
-  it('the self-eval dossier records the docs-site agent surface as a dated addendum', () => {
-    const selfEval = fs.readFileSync(path.join(ROOT, 'docs', 'SELF-EVAL.md'), 'utf8')
-    expect(selfEval).toContain('## Addendum (2026-10-08)')
-    expect(selfEval).toContain('https://docs.ultrametric.ai/llms.txt')
-  })
-})
-
-// Founder batch 2026-10-08 (second pass): Start here and Map of the repo merged into one
-// functional map, no question framing, grouped by functional area with path links and the
-// site views folded in. Same source-pin pattern: repo paths must exist, folded destinations
-// must survive the merge.
-describe('README.md merged map (founder batch 2026-10-08)', () => {
-  const map = readme.slice(readme.indexOf('## Map of the repo'), readme.indexOf('\n## Processes'))
-
-  it('sits at the top and carries the functional groups in reading order, no question framing', () => {
-    // The map is the first H2 after the intro block.
-    expect(readme.indexOf('## Map of the repo')).toBeLessThan(readme.indexOf('\n## Processes'))
-    const groups = [
-      '**Processes** —',
-      '**Vendors** —',
-      '**Open modules** —',
-      '**Contracts & infrastructure** —',
-      '**Agent access** —',
-    ]
-    let last = -1
-    for (const g of groups) {
-      const at = map.indexOf(g)
-      expect(at, `missing group lead "${g}"`).toBeGreaterThan(-1)
-      expect(at, `group "${g}" out of order`).toBeGreaterThan(last)
-      last = at
+  it('each screenshot stays under the 300KB budget and the gif under 5MB', () => {
+    const dir = path.join(ROOT, 'docs', 'assets', 'readme')
+    for (const file of fs.readdirSync(dir)) {
+      const size = fs.statSync(path.join(dir, file)).size
+      if (file.endsWith('.png')) expect(size, `${file} over 300KB`).toBeLessThan(300 * 1024)
+      if (file.endsWith('.gif')) expect(size, `${file} over 5MB`).toBeLessThan(5 * 1024 * 1024)
     }
-    // No question-styled rows or persona leads survive the merge.
-    expect(readme).not.toContain('| The question |')
-    expect(readme).not.toContain("**You're a founder")
-    expect(readme).not.toContain("**You're an agent")
-    expect(readme).not.toContain("**You're a contributor")
-    // No hand-maintained counts inside the map (evidence doctrine).
-    expect(map).not.toMatch(/~\d/)
-  })
-
-  it('every repo path the map links resolves, at post-rename locations (coverage/, not catalog/)', () => {
-    for (const p of [
-      'processes',
-      path.join('processes', 'SITUATIONS.md'),
-      path.join('processes', 'artifacts.json'),
-      path.join('processes', 'company-fields.json'),
-      'journeys',
-      'data',
-      'vendors',
-      'pipeline',
-      'rules',
-      'sources',
-      path.join('open-modules', 'README.md'),
-      path.join('lib', 'openstartup'),
-      'jurisdictions',
-      'open-documents',
-      'resources',
-      path.join('lore', 'registry.json'),
-      'schemas',
-      'coverage',
-      'templates',
-      'fixtures',
-      path.join('governance', 'AGENT_POLICY.md'),
-      path.join('docs', 'FOUNDER-OPS.md'),
-    ]) {
-      expect(fs.existsSync(path.join(ROOT, p)), `missing repo path ${p}`).toBe(true)
-    }
-    expect(map).toContain('(coverage/)')
-    expect(readme).not.toContain('(catalog/)')
-  })
-
-  it('keeps every site destination folded in from the old Start here table', () => {
-    for (const url of [
-      'https://ultrametric.ai/processes',
-      'https://ultrametric.ai/situations',
-      'https://ultrametric.ai/artifacts',
-      'https://ultrametric.ai/overall',
-      'https://ultrametric.ai/arenas',
-      'https://ultrametric.ai/compare',
-      'https://ultrametric.ai/stacks',
-      'https://ultrametric.ai/arena/government-services',
-      'https://ultrametric.ai/open-documents',
-      'https://ultrametric.ai/startup-sim',
-    ]) {
-      expect(map, `map is missing ${url}`).toContain(url)
-    }
-    for (const route of [
-      path.join('app', 'artifacts', 'page.tsx'),
-      path.join('app', 'open-documents', 'page.tsx'),
-      path.join('app', 'compare'),
-      path.join('app', 'arenas'),
-      path.join('app', 'stacks'),
-      path.join('app', 'startup-sim'),
-      path.join('app', 'situations'),
-      path.join('app', 'get-started'),
-    ]) {
-      expect(fs.existsSync(path.join(ROOT, route)), `missing app route ${route}`).toBe(true)
-    }
-  })
-
-  it('states the shipped geo country set (PT and CA included), not the stale five', () => {
-    expect(map).toContain('US · UK · IN · DE · FR · PT · CA')
-    expect(readme).not.toContain('(US · UK · IN · DE · FR)')
-  })
-
-  it('Agent access leads with the CLI + MCP install, then the keyless curl surfaces', () => {
-    const agentBlock = map.slice(map.indexOf('**Agent access** —'))
-    const install = agentBlock.indexOf('https://ultrametric.ai/get-started')
-    expect(install).toBeGreaterThan(-1)
-    expect(agentBlock).toContain('`ultrametric` npm package')
-    expect(install).toBeLessThan(agentBlock.indexOf('curl https://'))
-    expect(agentBlock).toContain('governance/AGENT_POLICY.md')
   })
 })

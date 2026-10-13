@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # One-shot helper for the jo ai-assistants bring-up (YC X26 coverage-queue wave 2026-09-25).
 # Appends probe-tier evidence items distilled from the recorded runtime probes in
-# data/ai-assistants/proofs/jo/ (see pipeline/probes/ai-assistants.ts — both recorded probes
+# rankings/ai-assistants/proofs/jo/ (see pipeline/probes/ai-assistants.ts — both recorded probes
 # passed). Run AFTER `pnpm pipeline probe --category ai-assistants --product jo` (or a spike
 # pass, whose probe stage wholesale-replaces probe-tier evidence and would wipe these items) —
 # re-run this script after any probe refresh.
@@ -30,7 +30,7 @@ ITEMS = {
 }
 
 for pid, items in ITEMS.items():
-    path = f'data/ai-assistants/evidence/{pid}.json'
+    path = f'rankings/ai-assistants/evidence/{pid}.json'
     ev = json.load(open(path))
     existing = {e['id'] for e in ev}
     for item in items:

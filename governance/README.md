@@ -1,19 +1,19 @@
-# Governance — the policies that bind the records
+# Governance
 
-- `REVIEW_POLICY.md` — the review policy, coverage maturity ladder (draft → demonstration →
-  reviewed), and the evidence doctrine: what counts as evidence, churn policy, owner-affiliation
-  disclosure and adversarial bias audits.
-- `AGENT_POLICY.md` — ground rules for agents consuming or contributing to the corpus.
-- `SECURITY.md` — the data-hygiene doctrine (no real company data, no PII, fictional fixtures
-  only) complementing the repo-root SECURITY.md vulnerability policy.
+The policies that bind every record here, and the one place where a maintainer
+must agree before merge.
 
-## What you can contribute here
+- `REVIEW_POLICY.md` — the review bar, the coverage maturity ladder (draft → demonstration
+  → reviewed), and the evidence doctrine: what counts as evidence, churn rules,
+  owner-affiliation disclosure and adversarial bias audits.
+- `AGENT_POLICY.md` — ground rules for agents consuming or contributing to the data.
+- `SECURITY.md` — the data-hygiene doctrine: no real company data, no PII, fictional
+  fixtures only (complements the repo-root SECURITY.md vulnerability policy).
 
-- **Clarifications with a failure case** — if a policy was ambiguous enough that a real PR or
-  contest went sideways, a PR tightening the wording (with the case linked) is welcome.
-- **Maturity-ladder and doctrine proposals** — changes to what `reviewed` requires, what
-  evidence tiers admit, or how contests settle. These change how every record is judged, so
-  they need explicit maintainer sign-off and land separately from data PRs.
+Contribute here:
 
-No mechanical gate validates prose here beyond `pnpm test` staying green — the gate is review:
-policy changes are the one place a maintainer must agree before merge.
+- **Clarifications with a failure case** — if a policy was ambiguous enough that a real PR
+  or contest went sideways, tighten the wording and link the case.
+- **Doctrine proposals** — changes to what `reviewed` requires or how contests settle
+  change how every record is judged, so they land separately with explicit maintainer
+  sign-off.

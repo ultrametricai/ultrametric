@@ -8,7 +8,7 @@
 // tests (lib/__tests__/storyDag.test.ts) pin the behavior on two real arenas' fixtures.
 
 import { stripPersonaPrefix } from './data-helpers'
-import { humanizeTheme } from './icons'
+import { humanizeTheme } from './themeLabels'
 
 // Tokens that never carry the capability: articles/pronouns/prepositions plus the generic lead
 // verbs mined titles open with ("have the agent…", "get automatic…", "see license…"). Dropping

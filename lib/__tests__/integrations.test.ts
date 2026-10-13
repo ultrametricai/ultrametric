@@ -12,6 +12,7 @@ import {
   verifiedPairKeys,
   type ProductIntegrations,
 } from '../integrations'
+import { stackPairKey } from '../stackShared'
 
 const edge = (productId: string, arena: string, sourceEvidenceId: string, excerpt: string) => ({
   productId,
@@ -94,6 +95,12 @@ describe('verifiedPairKeys / pairKey', () => {
   it('emits each unordered pair once, sorted', () => {
     expect(pairKey('xero', 'mercury')).toBe('mercury|xero')
     expect(verifiedPairKeys(graph())).toEqual(['mercury|stripe', 'mercury|xero', 'stripe|xero'])
+  })
+
+  it('lib/stackShared.ts stackPairKey mirrors the format exactly (drift guard)', () => {
+    expect(stackPairKey('b', 'a')).toBe(pairKey('b', 'a'))
+    expect(stackPairKey('a', 'b')).toBe(pairKey('a', 'b'))
+    expect(stackPairKey('stripe', 'mercury')).toBe('mercury|stripe')
   })
 })
 

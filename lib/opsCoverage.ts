@@ -6,15 +6,15 @@ import { loadProcesses, vendorLabel, VENDOR_ARENA, type DagNode } from './proces
 // dashboard for coverage: how deep we have tested all the vendors, arena coverage, missing
 // vendors, cron job frequency, and monitoring product launches from these vendors").
 //
-// Everything here reads committed repo state at BUILD time — data/*/ evidence + verdicts,
-// data/spike-queue.json, data/arena-roadmap.json, data/vendor-news.json, .github/workflows —
+// Everything here reads committed repo state at BUILD time — rankings/*/ evidence + verdicts,
+// rankings/spike-queue.json, rankings/arena-roadmap.json, rankings/vendor-news.json, .github/workflows —
 // and returns plain serializable rows for components/OpsDashboard.tsx. None of it is secret
-// (copy-data.mjs already mirrors all of data/ world-readable); the /ops admin gate is about
+// (copy-data.mjs already mirrors all of rankings/ world-readable); the /ops admin gate is about
 // FOCUS, not secrecy. Reads are deliberately TOLERANT (the /queue page's
 // convention): a missing optional file degrades to an honest empty section, never a build
 // failure. All functions take a data-dir override so tests run on small fixture dirs.
 
-const DEFAULT_DIR = () => path.join(process.cwd(), 'data')
+const DEFAULT_DIR = () => path.join(process.cwd(), 'rankings')
 
 function readJsonTolerant<T>(file: string): T | null {
   try {
@@ -378,12 +378,12 @@ export function buildCronHealth(repoRoot: string = process.cwd(), dir: string = 
       'watcher (pipeline/scripts/watch-vendor-news.ts) follows the same convention: session-run, ' +
       'budgeted, resumable.',
     lastRuns: [
-      { label: 'Score history (story-runner / engines)', date: newestScore, source: 'data/*/score-history.jsonl' },
-      { label: 'Popularity history (daily-snapshot)', date: newestPopularity, source: 'data/*/popularity-history.jsonl' },
-      { label: 'Agent-surface SLO check (daily-snapshot / story-runner)', date: slo, source: 'data/slo-history.jsonl' },
-      { label: 'Spike queue re-rank (session cron)', date: spike?.generatedAt ?? null, source: 'data/spike-queue.json' },
-      { label: 'Staleness scan (accuracy-engine, Wednesdays)', date: staleness?.generatedAt ?? null, source: 'data/staleness-report.json' },
-      { label: 'Vendor news watcher (session cron)', date: news?.generatedAt ?? null, source: 'data/vendor-news.json' },
+      { label: 'Score history (story-runner / engines)', date: newestScore, source: 'rankings/*/score-history.jsonl' },
+      { label: 'Popularity history (daily-snapshot)', date: newestPopularity, source: 'rankings/*/popularity-history.jsonl' },
+      { label: 'Agent-surface SLO check (daily-snapshot / story-runner)', date: slo, source: 'rankings/slo-history.jsonl' },
+      { label: 'Spike queue re-rank (session cron)', date: spike?.generatedAt ?? null, source: 'rankings/spike-queue.json' },
+      { label: 'Staleness scan (accuracy-engine, Wednesdays)', date: staleness?.generatedAt ?? null, source: 'rankings/staleness-report.json' },
+      { label: 'Vendor news watcher (session cron)', date: news?.generatedAt ?? null, source: 'rankings/vendor-news.json' },
     ],
   }
 }

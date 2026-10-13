@@ -39,7 +39,7 @@ ITEMS = {
 }
 
 for pid, items in ITEMS.items():
-    path = f'data/ai-assistants/evidence/{pid}.json'
+    path = f'rankings/ai-assistants/evidence/{pid}.json'
     ev = json.load(open(path))
     existing = {e['id'] for e in ev}
     for item in items:

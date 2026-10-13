@@ -150,7 +150,7 @@ PROBES = [
 
 
 def main():
-    path = 'data/backend-as-a-service/evidence/supabase.json'
+    path = 'rankings/backend-as-a-service/evidence/supabase.json'
     ev = json.load(open(path))
     existing = {e['id'] for e in ev}
 

@@ -7,17 +7,17 @@
 // under the re-judge stability policy (keep verdict flips that cite newly-added evidence ids,
 // revert the rest — the same rule revert-churn-api-quality-wave.ts applies).
 //
-// The engine maintains data/spike-queue.json: every judged product in the fleet, ranked by
+// The engine maintains rankings/spike-queue.json: every judged product in the fleet, ranked by
 //   priority = staleness × popularityBoost × founderBoost
-// where staleness comes from data/staleness-report.json when one stands (accuracy-engine's
+// where staleness comes from rankings/staleness-report.json when one stands (accuracy-engine's
 // weekly keyless scan) with a local median-evidence-age fallback, popularityBoost marks the
-// curated data/popular-products.json set (display-only popularity is never blended into any
+// curated rankings/popular-products.json set (display-only popularity is never blended into any
 // Overall score — this is a WORK-PRIORITIZATION signal only, the same editorial-but-deliberate
 // carve-out staleness-scan.ts documents for its weights), and founderBoost comes from
-// data/spike-priorities.json (founder-curated multipliers per arena or per product).
+// rankings/spike-priorities.json (founder-curated multipliers per arena or per product).
 //
 // Two modes:
-//   rank     (default; keyless, never mutates data/<arena>/) — recompute the queue ranking,
+//   rank     (default; keyless, never mutates rankings/<arena>/) — recompute the queue ranking,
 //            preserving each product's lastSpiked/lastRun history.
 //   process  (requires ANTHROPIC_API_KEY) — take the top due product (or an explicit
 //            --category/--product target), run one budget-capped exhaustive pass through the
@@ -41,7 +41,7 @@
 // Flags: --budget-urls N (default 12 new URLs per pass) · --dry-run (no writes) ·
 //        --offline (rank without network; skips nothing else)
 //
-// Founder-visible state: the UNLINKED /queue page renders data/spike-queue.json verbatim.
+// Founder-visible state: the UNLINKED /queue page renders rankings/spike-queue.json verbatim.
 import fs from 'node:fs'
 import path from 'node:path'
 import { spawnSync } from 'node:child_process'
@@ -240,7 +240,7 @@ const StalenessReportSchema = z.object({
 function loadPriorities(): SpikePriorities {
   return (
     readJsonIf(SpikePrioritiesSchema, PRIORITIES_FILE) ?? {
-      _comment: 'missing data/spike-priorities.json — all boosts default to 1',
+      _comment: 'missing rankings/spike-priorities.json — all boosts default to 1',
       arenas: {},
       products: {},
     }

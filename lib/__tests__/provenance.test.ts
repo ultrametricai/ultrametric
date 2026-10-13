@@ -10,7 +10,7 @@ import {
 } from '@/lib/provenance'
 import { RankingsSchema, type Rankings } from '@/lib/schemas'
 
-const DATA_DIR = path.resolve(__dirname, '../../data')
+const DATA_DIR = path.resolve(__dirname, '../../rankings')
 
 const sample: Rankings = {
   generatedAt: '2026-09-01T00:00:00.000Z',
