@@ -124,7 +124,7 @@ grid. Tests: `lib/openstartup/__tests__/vesting.test.ts`.
 counts only — the election window belongs to the deadlines module (rule
 `us-fed.83b-filing-period`), and all ISO/NSO/AMT/83(b) tax math belongs to the tax
 modules. Milestone/performance vesting is deliberately out: the computable part is a
-board-certified boolean the plan documents own.
+board-certified boolean the plan documents own (see `docs/OPEN-MODULES-GAPS.md`).
 
 **Extend it.** A published schedule shape with a citable worked example (and only then).
 
@@ -234,7 +234,8 @@ methods). Tests: `lib/openstartup/__tests__/convertibleNote.test.ts`.
 
 **Honesty boundaries.** The capitalization definition is contract-specific and always
 supplied, never assumed; maturity is surfaced as the three published paths, never chosen.
-Note MFN clauses are bespoke contract text and remain outside this module.
+Note MFN clauses are bespoke contract text — assessed and skipped in
+`docs/OPEN-MODULES-GAPS.md`.
 
 **Extend it.** A fourth published pricing method with a worked example would slot into
 `seriesPricingWithNotes`.
@@ -454,7 +455,7 @@ Rev. Proc. 2024-40's complete-phaseout amounts, every published figure. Tests:
 
 **Honesty boundaries.** Vesting-year attribution and FMVs are inputs — never derived; the
 AMT illustration is labeled and never a filing computation; state withholding needs dated
-state rule cards before it ships.
+state rule cards before it ships (assessed in `docs/OPEN-MODULES-GAPS.md`).
 
 **Extend it.** FICA-on-NSO-spread completeness is the next honest slice, cited to Pub 15.
 
@@ -675,7 +676,9 @@ books.
   and a templated section in this README (What it computes / Contract / Worked examples
   replayed / Serves / Honesty boundaries / Extend it). The bar is fixed: pure functions, a
   citation on every formula's doc comment, explicit rounding, worked examples reproduced
-  number-for-number from the cited source, and property tests. Gate:
+  number-for-number from the cited source, and property tests. The assessed candidate
+  backlog — with build/skip/defer verdicts and the citable sources that exist (or honestly
+  don't) — lives in [`docs/OPEN-MODULES-GAPS.md`](../docs/OPEN-MODULES-GAPS.md). Gate:
   `npx vitest run lib/openstartup/__tests__/` (and `pnpm test`).
 - **Harden an existing module** — a missed edge case from a cited worked example, a new
   property test, or a correction with the source that proves it (e.g. the YC Post-Money

@@ -6,7 +6,7 @@ import { describe, expect, it } from 'vitest'
 // compressed section order (no Trust section; artifacts directly after modules with the docs
 // catalog folded inside; country switch and getting-acquired as Example subsections), the
 // one-liner-per-section format, the section-guide tables, the plain-language vocabulary bar,
-// and the compact generated blocks. The README is data; these are
+// the compact generated blocks, and the committed media. The README is data; these are
 // source pins.
 
 const ROOT = path.join(__dirname, '..')
@@ -17,8 +17,10 @@ const contributing = fs.readFileSync(path.join(ROOT, 'CONTRIBUTING.md'), 'utf8')
 // pre-rewrite README; edits to it are a founder decision, not a lane decision.
 // Rewritten in founder round 7 (authorized intro edit): one paragraph, each capability
 // named once with one link, no duplicate destinations, the mission line closing it, and
-// the prose retained when the internal docs and media directory was removed.
+// the demo gif sitting directly under the intro with no heading or caption.
 const INTRO = [
+  '![Ultrametric](assets/banner.svg)',
+  '',
   'Ultrametric ([ultrametric.ai](https://ultrametric.ai)) is the open startup repo: every',
   'founder [process](#open-processes) step by step, the [tools](#open-vendor-rankings) and',
   'the [service providers](#startup-ecosystem) around a company (law firms included) ranked',
@@ -31,7 +33,8 @@ const INTRO = [
   'company agentic, automated, and standardized across geographies.',
   '',
   // Founder round 8: the contribution-guides line distributed into the sections, replaced
-  // here by the repo layout tree; "Talk" renamed "Community".
+  // here by the repo layout tree; "Talk" renamed "Community"; the demo gif is a clickable
+  // link to the live site.
   '```',
   'ultrametric/',
   '├── processes/       every founder process, step by step',
@@ -57,6 +60,7 @@ const INTRO = [
   '<!-- Legacy anchor: external links to #start-here predate the merge into this map. -->',
   '<a id="start-here"></a>',
   '',
+  '[![A tour of ultrametric.ai at 4x: the simulator founding a company, a process page, a vendor page, a situation, the overall rankings, government services, and open documents](assets/readme/demo.gif)](https://ultrametric.ai)',
 ].join('\n')
 
 // The founder-specified section order (round 3): artifacts directly after modules with the
@@ -131,8 +135,13 @@ describe('README.md structure (founder round 2, 2026-10-12)', () => {
     }
   })
 
-  it('has no links or embeds in the removed docs directory', () => {
-    expect(readme).not.toMatch(/\]\((?:\.\/)?docs\//)
+  it('the demo gif sits under the intro with no heading or caption, mp4 committed unnarrated', () => {
+    const beforeFirstSection = readme.slice(0, readme.indexOf('\n## '))
+    expect(beforeFirstSection).toContain('assets/readme/demo.gif')
+    expect(readme).not.toContain('## Video demo')
+    expect(readme).not.toContain('demo.mp4')
+    // The full recording stays committed for native upload later.
+    expect(fs.existsSync(path.join(ROOT, 'assets', 'readme', 'demo.mp4'))).toBe(true)
   })
 
   it('the intro links each destination exactly once (image wraps excluded)', () => {
@@ -160,6 +169,13 @@ describe('README.md structure (founder round 2, 2026-10-12)', () => {
         `layout tree lists ${dir}/ but no such top-level folder exists`,
       ).toBe(true)
     }
+  })
+
+  it('every screenshot is a clickable link to the live page it shows', () => {
+    const embeds = [...readme.matchAll(/!\[[^\]]*\]\(assets\/readme\/[^)]+\)/g)]
+    const wrapped = [...readme.matchAll(/\[!\[[^\]]*\]\(assets\/readme\/[^)]+\)\]\((https:\/\/ultrametric\.ai[^)]*)\)/g)]
+    expect(embeds.length).toBeGreaterThan(0)
+    expect(wrapped.length, 'an image under assets/readme/ is not wrapped in a live-site link').toBe(embeds.length)
   })
 
   it('both Example subsections use the bulleted link format', () => {
@@ -320,6 +336,25 @@ describe('README.md examples pin to the committed records', () => {
       const rec = corpus.find((t) => t.id === id)
       expect(rec, `corpus record ${id} missing`).toBeDefined()
       expect(readme).toContain(`https://ultrametric.ai/processes/${slug(rec!.title)}`)
+    }
+  })
+})
+
+describe('README.md media', () => {
+  it('every committed image and recording the README embeds exists on disk', () => {
+    const media = [...readme.matchAll(/\]\((assets\/[^)]+)\)/g)].map((m) => m[1])
+    expect(media.length).toBeGreaterThan(0)
+    for (const p of media) {
+      expect(fs.existsSync(path.join(ROOT, p)), `missing media file ${p}`).toBe(true)
+    }
+  })
+
+  it('each screenshot stays under the 300KB budget and the gif under 5MB', () => {
+    const dir = path.join(ROOT, 'assets', 'readme')
+    for (const file of fs.readdirSync(dir)) {
+      const size = fs.statSync(path.join(dir, file)).size
+      if (file.endsWith('.png')) expect(size, `${file} over 300KB`).toBeLessThan(300 * 1024)
+      if (file.endsWith('.gif')) expect(size, `${file} over 5MB`).toBeLessThan(5 * 1024 * 1024)
     }
   })
 })

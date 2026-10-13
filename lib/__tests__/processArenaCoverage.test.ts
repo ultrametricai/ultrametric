@@ -1,14 +1,18 @@
+import fs from 'node:fs'
 import { describe, expect, it } from 'vitest'
 import {
   auditProcessArenaCoverage,
+  PROCESS_ARENA_COVERAGE_FILE,
   processArenaCoverageMarkdown,
 } from '../../scripts/generate-process-arena-coverage'
 
+// The TIMELINE-INVERSIONS pattern: the committed coverage report is pinned to the live corpus +
+// registry — any corpus/registry change that moves the audit fails here until the report is
+// regenerated (npx tsx scripts/generate-process-arena-coverage.ts).
+
 describe('process → arena coverage audit', () => {
-  it('reports every unresolved vendor from the current corpus', () => {
-    const audit = auditProcessArenaCoverage()
-    const report = processArenaCoverageMarkdown()
-    for (const vendor of audit.unregistered) expect(report).toContain(`\`${vendor}\``)
+  it('docs/PROCESS-ARENA-COVERAGE.md matches what the live corpus generates', () => {
+    expect(fs.readFileSync(PROCESS_ARENA_COVERAGE_FILE, 'utf8')).toBe(processArenaCoverageMarkdown())
   })
 
   it('has ZERO mechanical gaps: every registry arenaId names a real arena', () => {

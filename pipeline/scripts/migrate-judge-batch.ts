@@ -1,5 +1,6 @@
 // Judge-model migration driver (sonnet-5 → claude-opus-5-5, prompt v3 → v4) — the generalized
-// successor to pipeline/scripts/rejudge-pilot.ts, for the historical migration: re-judge the fleet arena-by-arena through the Message Batches API (half
+// successor to pipeline/scripts/rejudge-pilot.ts, per the adopted docs/OPUS-5-5-JUDGE-PILOT.md
+// recommendation: re-judge the fleet arena-by-arena through the Message Batches API (half
 // price, no rate-limit contention with story-runner), land each arena atomically (judge cache +
 // verdicts.json + rankings.json + labeled score-history in one commit), and never apply the
 // churn policy's no-new-evidence revert rule to this wave — every flip is the judge change and
@@ -22,11 +23,11 @@
 //                                       {productId, storyId, verdict}) to cache + verdicts.json
 //                                       and re-finalize — used by the owner-product bias audit
 //
-// Finalize = re-apply protected human adjudications from the private state worklist (they outrank
-// any model; JUDGE-MIGRATION-2026-09-30-worklist.json records what the fresh judge said),
+// Finalize = re-apply protected human adjudications from the committed worklist (they outrank
+// any model — docs/JUDGE-MIGRATION-2026-09-30-worklist.json records what the fresh judge said),
 // assemble verdicts.json from the full cache matrix (staleness-checked like the judge stage),
 // derive rankings + labeled score-history, and write a per-arena flip/rank report to the state
-// directory. Restore the preserved worklist into --state before continuing a migration.
+// dir for docs/JUDGE-MIGRATION-2026-09-30.md.
 //
 // Spend guard: every batch/interactive token is metered into <state>/<cat>/usage.json and
 // summed by `status`; the migration stops if projected fleet spend exceeds the $800 cap
@@ -49,6 +50,7 @@ import {
 import { CACHE_DIR, categoryDir, readJson, ROOT, writeJson } from '../paths'
 
 export const MIGRATION_NOTE = 'judge-migration-2026-09-30: sonnet-5 → opus-5-5 (prompt v4)'
+const WORKLIST_FILE = path.join(ROOT, 'docs', 'JUDGE-MIGRATION-2026-09-30-worklist.json')
 const BATCH_MAX_TOKENS = 8192
 // Batch API pricing for claude-opus-5-5 ($/MTok); interactive is 2x.
 const BATCH_IN = 2, BATCH_OUT = 10, LIVE_IN = 4, LIVE_OUT = 20
@@ -59,13 +61,11 @@ function arg(name: string): string | undefined {
 }
 
 const stateDir = path.resolve(arg('state') ?? '/tmp/judge-migration-2026-09-30')
-for (const forbidden of [ROOT]) {
+for (const forbidden of [path.join(ROOT, 'rankings'), path.join(ROOT, 'pipeline', 'cache')]) {
   if (stateDir === forbidden || stateDir.startsWith(forbidden + path.sep)) {
     throw new Error(`migrate-judge-batch: --state ${stateDir} is inside ${forbidden}`)
   }
 }
-
-const WORKLIST_FILE = path.join(stateDir, 'JUDGE-MIGRATION-2026-09-30-worklist.json')
 
 type WorklistEntry = {
   category: string
@@ -340,8 +340,10 @@ function finalizeArena(cat: string): void {
   const { dataDir, products, stories, evidenceOf } = loadArena(cat)
 
   // 1. Protected human adjudications outrank any model: re-apply them to the cache verbatim
-  //    (current-scheme hash) and record what the fresh judge said in the private state worklist.
-  const worklist = JSON.parse(fs.readFileSync(WORKLIST_FILE, 'utf8')) as { entries: WorklistEntry[]; notes?: unknown }
+  //    (current-scheme hash) and record what the fresh judge said in the committed worklist.
+  const worklist = fs.existsSync(WORKLIST_FILE)
+    ? (JSON.parse(fs.readFileSync(WORKLIST_FILE, 'utf8')) as { entries: WorklistEntry[]; notes?: unknown })
+    : { entries: [] as WorklistEntry[] }
   let worklistTouched = false
   for (const entry of worklist.entries) {
     if (entry.category !== cat) continue
@@ -441,9 +443,6 @@ function finalizeArena(cat: string): void {
 async function main(): Promise<void> {
   const cmd = process.argv[2]
   const cat = arg('category')
-  if (['submit', 'submit-all', 'ingest', 'restamp-pilot', 'adjust'].includes(cmd) && !fs.existsSync(WORKLIST_FILE)) {
-    throw new Error('Restore the preserved JUDGE-MIGRATION-2026-09-30-worklist.json into --state before running a migration; protected human adjudications are required.')
-  }
   if (cmd === 'submit') { if (!cat) throw new Error('--category required'); await submit(cat); return }
   if (cmd === 'submit-all') {
     // Arena ids from a whitespace-separated file — submits every arena that has no batch.json

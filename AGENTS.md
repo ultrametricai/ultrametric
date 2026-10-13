@@ -35,9 +35,6 @@ Never gate an `&&` chain on echoed text — test the tool's exit code.
 
 ## Workflow
 
-- Keep internal plans, evaluation reports, transcripts, and media in a private workspace.
-  The public repository does not host a `docs/` directory; do not recreate it.
-
 - Every change lands as a branch + pull request. No direct commits to main.
 - Authored records in `content/processes/` are never overwritten by catalog regeneration:
   refresh only source-mirrored metadata and re-bless the manifest

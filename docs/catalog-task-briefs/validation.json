@@ -1,0 +1,101 @@
+{
+  "scope": "Checks for the reconciled canonical descriptions and explicit metadata corrections on main 41726f6b35b2d3cd125d3cc46d516d5def4d7ff9.",
+  "baseCommit": "41726f6b35b2d3cd125d3cc46d516d5def4d7ff9",
+  "checks": [
+    {
+      "name": "preservation",
+      "command": "python3 scripts/shared-processes/check-task-briefs.py",
+      "exitCode": 0,
+      "result": "985 descriptions, 150 authored process records, 22 unchanged situations, 33 retained descriptions, exact source-link matching and all invariant fields validated."
+    },
+    {
+      "name": "portable-ci-tests",
+      "command": "node node_modules/vitest/vitest.mjs run lib/__tests__/catalog-task-briefs.test.ts --maxWorkers=1",
+      "exitCode": 0,
+      "result": "2 tests passed; normal Vitest discovery invokes the checker and 3 portable Python tests without Git history or legacy inputs."
+    },
+    {
+      "name": "task-brief-tests",
+      "command": "python3 scripts/shared-processes/test_task_briefs.py",
+      "exitCode": 0,
+      "result": "5 tests passed: portable positive/negative checks, exact formation generated-baseline receipt, two unchanged-source imports, and changed-source conflicts for all 150 authored records with zero writes."
+    },
+    {
+      "name": "import-tests",
+      "command": "python3 -m unittest discover -s scripts/shared-processes -p test_import.py",
+      "exitCode": 0,
+      "result": "8 tests passed."
+    },
+    {
+      "name": "fresh-import",
+      "command": "python3 scripts/shared-processes/check-import.py",
+      "exitCode": 0,
+      "result": "172 records; 17,709 source value checks; changed-source negative check passed."
+    },
+    {
+      "name": "import-check",
+      "command": "python3 scripts/shared-processes/import.py",
+      "exitCode": 0,
+      "result": "172 records, 865 source nodes, 670 source edges; no changed records or vendor registry change."
+    },
+    {
+      "name": "schema-graph",
+      "command": "node --import tsx scripts/shared-processes/check.ts",
+      "exitCode": 0,
+      "result": "172 records and graph references validated."
+    },
+    {
+      "name": "determinism",
+      "command": "node --import tsx pipeline/scripts/recompute-check.ts",
+      "exitCode": 0,
+      "result": "All deterministic."
+    },
+    {
+      "name": "lint",
+      "command": "node node_modules/eslint/bin/eslint.js . --quiet",
+      "exitCode": 0,
+      "result": "Full lint passed with zero errors."
+    },
+    {
+      "name": "vitest",
+      "command": "pnpm_config_pm_on_fail=ignore pnpm_config_verify_deps_before_run=false node node_modules/vitest/vitest.mjs run --maxWorkers=2",
+      "exitCode": 1,
+      "result": "285 files passed, 1 file failed; 3,101 tests passed and 1 failed. The existing shared-process-reader.test.tsx:111 assertion expects n6 to have no related links despite the newly reviewed citations. Reader test changes remain with the reader integration."
+    },
+    {
+      "name": "tsc",
+      "command": "node node_modules/typescript/lib/tsc.js --noEmit",
+      "exitCode": 0,
+      "result": "Passed after next typegen supplied generated route types."
+    }
+  ],
+  "environment": {
+    "node": "v26.5.0",
+    "pnpm": "11.1.3",
+    "tsx": "4.23.15",
+    "notes": [
+      "Installed dependencies used; invocation-only settings prevent package-manager download or dependency auto-install.",
+      "Next route type generation supplies LayoutProps in this new worktree. No production build ran."
+    ]
+  },
+  "notRun": [
+    {
+      "command": "next build",
+      "reason": "AGENTS.md prohibits production builds in worktree lanes."
+    }
+  ],
+  "excludedSituationsByteIdentical": 22,
+  "diffCheck": "passed",
+  "integrationBlockers": [
+    "Reader test must accept the reviewed source links and keep a separate vendor-only fixture for the no-source-links case.",
+    "Selected-region/provider rendering remains a separate prerequisite; downstream geographic findings remain open."
+  ],
+  "publication": "Local-only reconciliation; no push, PR update, merge or deployment.",
+  "postManifestRepairChecks": {
+    "taskBriefTests": 5,
+    "portableVitestTests": 2,
+    "importDrift": "none",
+    "diffCheck": "passed",
+    "fullSuite": "The earlier full-suite result applies to the same canonical records. Focused preservation and importer checks were repeated after the receipt repair."
+  }
+}
