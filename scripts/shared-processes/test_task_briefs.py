@@ -1,110 +1,71 @@
-"""Portable catalog preservation checks and isolated historical importer tests."""
-import contextlib
+"""Isolated importer checks for authored catalog records and their generated receipts."""
 import hashlib
-import importlib.util
-import io
 import json
-import os
+import re
 import shutil
 import subprocess
 import sys
 import tempfile
 import unittest
 from pathlib import Path
-from unittest.mock import patch
 
 ROOT = Path(__file__).resolve().parents[2]
+RECORDS = ROOT / "content/processes/records"
 
 
-def load_checker(root=ROOT):
-    spec = importlib.util.spec_from_file_location(
-        "task_brief_check", ROOT / "scripts/shared-processes/check-task-briefs.py")
-    checker = importlib.util.module_from_spec(spec)
-    spec.loader.exec_module(checker)
-    checker.ROOT = root
-    checker.RECORDS = root / "content/processes/records"
-    checker.AUDIT_DIR = root / "docs/catalog-task-briefs"
-    return checker
+def digest(value):
+    return hashlib.sha256(json.dumps(value, ensure_ascii=False, sort_keys=True,
+                                     separators=(",", ":")).encode()).hexdigest()
 
 
-def copy_canonical_fixture(root):
-    shutil.copytree(ROOT / "content/processes", root / "content/processes")
-    shutil.copytree(ROOT / "docs/catalog-task-briefs", root / "docs/catalog-task-briefs")
+def authored_records():
+    manifest = json.loads((ROOT / "content/processes/import-manifest.json").read_text())
+    records = {record_id: json.loads((RECORDS / f"{record_id}.json").read_text())
+               for record_id in manifest["records"]}
+    return {record_id: record for record_id, record in records.items()
+            if digest(record) != manifest["records"][record_id]["generatedHash"]}
 
 
-class TaskBriefPreservationTests(unittest.TestCase):
-    def test_checker_needs_no_git_history_or_legacy_files(self):
-        with tempfile.TemporaryDirectory() as directory:
-            root = Path(directory)
-            copy_canonical_fixture(root)
-            self.assertFalse((root / ".git").exists())
-            self.assertFalse((root / "processes").exists())
-            self.assertFalse((root / "journeys").exists())
-            checker = load_checker(root)
-            with patch.dict(os.environ, {"PATH": ""}), contextlib.redirect_stdout(io.StringIO()):
-                checker.main()
+class TaskBriefContentTests(unittest.TestCase):
+    def test_authored_briefs_are_complete_distinct_and_have_valid_source_links(self):
+        # Keep the live editorial checks; only historical byte/hash snapshots moved private.
+        texts = {}
 
-    def test_audited_sources_match_added_links(self):
-        checker = load_checker()
-        source = {"url": "https://example.invalid/audited-source"}
-        link = {"kind": "url", "url": source["url"], "title": "Audited source",
-                "role": "authored-guidance-source", "description": None}
-        legacy = {"kind": "url", "url": "https://example.invalid/legacy-source"}
-        baseline = checker.reference_snapshot([legacy])
-        checker.check_references(baseline, [legacy, link], "fixture", [source, legacy])
-        for links in ([], [dict(link, url="https://example.invalid/unrelated-source")]):
-            with self.subTest(links=links), self.assertRaisesRegex(AssertionError, "Source link mismatch"):
-                checker.check_references(baseline, [legacy] + links, "fixture", [source])
-        with self.assertRaisesRegex(AssertionError, "Duplicate source link"):
-            checker.check_references(baseline, [legacy, link, link], "fixture", [source])
-        with self.assertRaisesRegex(AssertionError, "Altered existing reference"):
-            checker.check_references(baseline, [dict(legacy, title="Changed"), link], "fixture", [source])
+        def check(target, field, location):
+            text = target[field]
+            self.assertIsInstance(text, str, location)
+            self.assertTrue(text.strip(), location)
+            self.assertIsNone(re.search(r"\b(?:TODO|TBD|lorem ipsum)\b", text), location)
+            normalized = re.sub(r"\s+", " ", text).strip()
+            self.assertNotIn(normalized, texts, f"Duplicate brief: {location}, {texts.get(normalized)}")
+            texts[normalized] = location
+            links = [ref for ref in target["references"] if ref.get("role") == "authored-guidance-source"]
+            urls = [ref["url"] for ref in links]
+            self.assertEqual(len(urls), len(set(urls)), f"Duplicate source link: {location}")
+            for ref in links:
+                self.assertEqual(ref["kind"], "url", location)
+                self.assertTrue(ref["url"].startswith("https://"), location)
+                self.assertIsNone(ref.get("description"), location)
 
-    def test_rejects_changed_retained_copy_bindings_and_main_fields(self):
-        for target in ("description", "provider", "government_metadata", "provenance", "graph", "situation"):
-            with self.subTest(target=target), tempfile.TemporaryDirectory() as directory:
-                root = Path(directory)
-                copy_canonical_fixture(root)
-                checker = load_checker(root)
-                path = checker.RECORDS / ("sit_001.json" if target == "situation" else "form_001.json")
-                record = json.loads(path.read_text())
-                if target == "description":
-                    part = next(p for p in record["parts"] if p["id"] == "n3")
-                    part["guidance"] += " Unreviewed change."
-                    audit_path = checker.AUDIT_DIR / "audit.json"
-                    audit = json.loads(audit_path.read_text())
-                    item = next(i for i in audit["items"] if i["recordId"] == "form_001"
-                                and i["partId"] == "n3" and i["field"] == "guidance")
-                    item["contentHash"] = checker.digest(part["guidance"])
-                    item["wordCount"] = len(part["guidance"].split())
-                    audit_path.write_text(json.dumps(audit))
-                    error = "Preserved brief changed"
-                elif target == "provider":
-                    part = next(p for p in record["parts"] if p["id"] == "n8")
-                    part["metadata"]["previewBriefs"][0]["guidance"] += " Unreviewed change."
-                    error = "previewBriefs"
-                elif target == "government_metadata":
-                    part = next(p for p in record["parts"] if p["id"] == "n8")
-                    part["metadata"]["verify"]["how"] = "Reverted government-source correction."
-                    error = "Change outside authored fields"
-                elif target == "provenance":
-                    record["source"]["revision"] = "changed"
-                    error = "Change outside authored fields"
-                elif target == "graph":
-                    record["links"] = []
-                    error = "Change outside authored fields"
-                else:
-                    record["summary"] += " Changed situation."
-                    error = "Excluded situation changed"
-                path.write_text(json.dumps(record))
-                with self.assertRaisesRegex(AssertionError, error):
-                    checker.main()
+        def walk(parts, location):
+            for part in parts:
+                part_location = f"{location}/{part['id']}"
+                check(part, "guidance", part_location)
+                for option in part["options"]:
+                    option_location = f"{part_location}/{option['id']}"
+                    check(option, "summary", option_location)
+                    walk(option["parts"], option_location)
+
+        records = authored_records()
+        self.assertIn("form_001", records)
+        for record_id, record in records.items():
+            walk(record["parts"], record_id)
+        self.assertTrue(texts)
 
 
 class TaskBriefImportTests(unittest.TestCase):
     def test_formation_receipt_describes_generated_baseline(self):
-        checker = load_checker()
-        authored = json.loads((checker.RECORDS / "form_001.json").read_text())
+        authored = json.loads((RECORDS / "form_001.json").read_text())
         manifest = json.loads((ROOT / "content/processes/import-manifest.json").read_text())
         with tempfile.TemporaryDirectory() as directory:
             subprocess.run([sys.executable, str(ROOT / "scripts/shared-processes/import.py"),
@@ -113,12 +74,12 @@ class TaskBriefImportTests(unittest.TestCase):
         generated["source"]["revision"] = authored["source"]["revision"]
         receipt = manifest["records"]["form_001"]
         self.assertEqual(receipt["sourceHash"], generated["source"]["sha256"])
-        self.assertEqual(receipt["generatedHash"], checker.digest(generated))
-        self.assertNotEqual(receipt["generatedHash"], checker.digest(authored))
+        self.assertEqual(receipt["generatedHash"], digest(generated))
+        self.assertNotEqual(receipt["generatedHash"], digest(authored))
 
     def test_full_catalog_is_idempotent_and_all_authored_source_changes_conflict(self):
-        audit = json.loads((ROOT / "docs/catalog-task-briefs/audit.json").read_text())
-        authored_ids = {i["recordId"] for i in audit["items"]}
+        authored_ids = set(authored_records())
+        self.assertIn("form_001", authored_ids, "Authored-record conflict coverage must be nonempty")
         with tempfile.TemporaryDirectory() as directory:
             work = Path(directory)
             shutil.copytree(ROOT / "scripts/shared-processes", work / "scripts/shared-processes")

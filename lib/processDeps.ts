@@ -13,8 +13,7 @@ import { loadArtifacts, loadProcesses, processSlug, type Artifact, type ProcessT
 // The derived topological ordering is compared against the curated `timeOrder` founder
 // timeline: timelineInversions() reports (never auto-fixes) every place the curated timeline
 // orders a consumer before its producer — that list IS the founder's renumbering worklist,
-// committed as docs/TIMELINE-INVERSIONS.md (scripts/generate-timeline-inversions.ts,
-// drift-tested so it can't go stale silently).
+// printed from the current data by scripts/generate-timeline-inversions.ts.
 //
 // SIMULATOR SEAM (design note only — lib/virtualStartup composition is deliberately untouched
 // this round): the open startup simulator currently composes its run from the curated phase

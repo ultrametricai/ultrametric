@@ -2,10 +2,8 @@ import { describe, expect, it } from 'vitest'
 import { execFileSync } from 'node:child_process'
 import { readFileSync } from 'node:fs'
 
-// Post-split gates (docs/REPO-SPLIT-PLAN.md; stripped per
-// docs/REPO-SPLIT-STRIP-VERIFICATION.md): the committed open-manifest.json and
-// docs/repo-split-census.json must match the live git-tracked tree, so a file added, moved,
-// or deleted without a manifest/census update fails CI instead of drifting silently.
+// The open manifest classifies the live tracked tree; suite boundaries are checked
+// directly so they do not depend on a historical census report.
 
 const tracked = execFileSync('git', ['ls-files', '-z'], { maxBuffer: 1024 * 1024 * 512 })
   .toString('utf8').split('\0').filter(Boolean)
@@ -25,23 +23,19 @@ describe('open-manifest.json', () => {
       expect(['dir', 'file']).toContain(entry.type)
     }
   })
+
+  it('keeps the internal docs directory out of the public tree and overlay', () => {
+    expect(tracked.filter(file => file.startsWith('docs/'))).toEqual([])
+    const manifest = JSON.parse(readFileSync('open-manifest.json', 'utf8'))
+    expect(manifest.entries.filter((entry: { path: string }) => entry.path === 'docs' || entry.path.startsWith('docs/'))).toEqual([])
+  })
 })
 
-describe('docs/repo-split-census.json', () => {
-  const census = JSON.parse(readFileSync('docs/repo-split-census.json', 'utf8'))
+describe('open test suites', () => {
   const liveTestFiles = tracked.filter(f => /\.test\.(ts|tsx|mjs)$/.test(f)).sort()
 
-  it('lists exactly the live test files (file exists if and only if listed)', () => {
-    expect([...census.open.files].sort()).toEqual(liveTestFiles)
-  })
-
-  it('count and total match the file list', () => {
-    expect(census.open.count).toBe(census.open.files.length)
-    expect(census.total).toBe(census.open.count)
-    expect(census.total).toBe(liveTestFiles.length)
-  })
-
-  it('every test file sits in an open suite (plan section 1 tests table)', () => {
+  it('every tracked test file sits in an open suite', () => {
+    expect(liveTestFiles.length).toBeGreaterThan(0)
     for (const file of liveTestFiles) {
       const open = file.startsWith('__tests__/') || file.startsWith('lib/') ||
         file.startsWith('pipeline/') || file === 'scripts/content-audit.test.mjs'
@@ -49,8 +43,8 @@ describe('docs/repo-split-census.json', () => {
     }
   })
 
-  it('carries the node --test file explicitly (vitest glob blind spot)', () => {
-    expect(census.nodeTestRunner.files).toContain('scripts/content-audit.test.mjs')
-    expect(census.open.files).toContain('scripts/content-audit.test.mjs')
+  it('runs the tracked node --test suite in CI (vitest glob blind spot)', () => {
+    expect(liveTestFiles).toContain('scripts/content-audit.test.mjs')
+    expect(readFileSync('.github/workflows/ci.yml', 'utf8')).toContain('node --test scripts/content-audit.test.mjs')
   })
 })
