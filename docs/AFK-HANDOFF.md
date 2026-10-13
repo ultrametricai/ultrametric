@@ -18,7 +18,7 @@ served by `app/processes/[slug]/manifest.json/route.ts` and
   (e.g. `.../processes/chains/company-launch/manifest.json`)
 
 Manifests are **public data** — the published corpus (`processes/corpus.json`,
-`journeys/chains.json`) reshaped and resolved against the live arena leaderboards at build
+`processes/chains.json`) reshaped and resolved against the live arena leaderboards at build
 time. There is no gating on the JSON; only the "Do via AFK" button is admin-gated. Every process
 and chain page links its manifest in the public "For agents" footer.
 
@@ -68,7 +68,7 @@ Process manifest:
   "provenance": {
     "source": "productarena",
     "url": "https://ultrametric.ai",
-    "generatedFrom": "processes/corpus.json + journeys/chains.json …", // commit-agnostic: refetch, don't pin
+    "generatedFrom": "processes/corpus.json + processes/chains.json …", // commit-agnostic: refetch, don't pin
     "license": "Ultrametric Data License (DATA-LICENSE) …"
   }
 }

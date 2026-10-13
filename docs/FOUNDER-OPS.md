@@ -12,7 +12,7 @@ workspace, never here.
 | Path | Purpose |
 | --- | --- |
 | `coverage/` | Domain taxonomy, lifecycle navigation, machine-readable coverage and gaps |
-| `journeys/` | Multi-process founder paths (chains; The Open Startup is the live surface) |
+| `processes/chains.json` | Multi-process founder paths (chains; The Open Startup is the live surface) |
 | `processes/` | Jurisdiction-scoped legal workflows + the operational corpus (two layers) |
 | `law/<jurisdiction>/` | Canonical, dated legal rule cards with stable IDs |
 | `citations/` | The citation registry: rule-card authorities and the canonical startup reading |
@@ -52,7 +52,7 @@ structure and semantic invariants; it does not prove laws true or implement a ca
   loader-bound, and under active lanes).
 - **Stage 2 — done 2026-09-28.** Consolidated, byte-identical moves behind the loaders:
   `rankings/processes.json` → `processes/corpus.json` and `rankings/process-chains.json` →
-  `journeys/chains.json` (`lib/processes.ts` resolves both as siblings of the ranking-data dir;
+  `processes/chains.json` (`lib/processes.ts` resolves both as siblings of the ranking-data dir;
   the founder-ops workflow walker skips `corpus.json`); `rankings/vendor-geo.json` →
   `jurisdictions/vendor-geo.json` (`lib/vendorGeo.ts`). Published the corpus contract as
   `schemas/operational-process.schema.json`, generated from the zod source of truth by

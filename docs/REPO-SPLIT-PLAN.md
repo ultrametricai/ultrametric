@@ -47,7 +47,6 @@ private site repo), **SPLIT** (file-level partition inside the directory),
 | `data/` | OPEN | The arena evidence layer that forms the rankings; the core checkable artifact (includes the `.png`/`.webm` probe evidence inside arena dirs). |
 | `processes/` | OPEN | The operational corpus, situations, artifacts, company fields, vendor registry; founder intent names it directly. |
 | `content/processes/` | OPEN | The shared-process records; public Git owns shared process meaning (AGENTS.md). |
-| `journeys/` | OPEN | `chains.json`, the multi-process founder paths; corpus-schema-gated content. |
 | `jurisdictions/` | OPEN | Registry and per-country vendor availability; checkable legal scope. |
 | `law/` | OPEN | Dated, source-locked rule cards; the "know the rules" layer. |
 | `citations/` | OPEN | Citation registry: the authorities the rule cards cite and the reading the laws and lore cite. |
@@ -196,7 +195,7 @@ cannot drift from the artifact silently.
 ## 2. Consumption mechanism: how the closed site reads the open artifact
 
 The closed repo needs, at build time: the content dirs (`data/`, `processes/`,
-`content/processes/`, `journeys/`, `law/`, `jurisdictions/`, `lore/`,
+`content/processes/`, `law/`, `jurisdictions/`, `lore/`,
 `open-documents/`, `open-modules/`, `citations/`, `coverage/`, `fixtures/`,
 `templates/`, `vendors/`, `schemas/`, `governance/`, the OPEN half of `docs/` that pages
 read, e.g. `docs/assets/`), the OPEN `public/` assets (badges, logos, screenshots), and

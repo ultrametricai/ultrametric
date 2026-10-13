@@ -50,7 +50,7 @@ export interface ProcessRow {
   vendors: Array<{ id: string; label: string; arena: string | null; hasLogo: boolean }>
 }
 
-// A curated end-to-end chain (journeys/chains.json) as a row in the SAME table (founder
+// A curated end-to-end chain (processes/chains.json) as a row in the SAME table (founder
 // 2026-09-29: one view for the processes under the process search — the separate playbooks
 // section is gone). Serialized server-side by lib/processRows.ts buildPlaybookRows.
 export interface PlaybookRow {

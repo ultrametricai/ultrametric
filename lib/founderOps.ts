@@ -39,6 +39,11 @@ const OPERATIONAL_BUSINESS_LOGIC_MAP = path.join('processes', 'business-logic-ma
 // lib/__tests__/companyFields.test.ts, so the workflow walker skips it like the other
 // operational registries.
 const OPERATIONAL_COMPANY_FIELDS = path.join('processes', 'company-fields.json')
+// The corpus's chain list (folded in from the old top-level journeys/) is the operational
+// layer too — its own loader/tests live in lib/processes.ts (loadChains) +
+// lib/__tests__/processes.test.ts, so the workflow walker skips it like the other
+// operational registries.
+const OPERATIONAL_CHAINS = path.join('processes', 'chains.json')
 
 // Fictional scenario fixtures live under processes/fixtures/ (folded in from the old
 // top-level fixtures/). They validate separately below, so the workflow walker skips the
@@ -54,7 +59,8 @@ function workflowJson(dir: string): string[] {
       !f.endsWith(OPERATIONAL_VENDOR_REGISTRY) &&
       !f.endsWith(OPERATIONAL_ARTIFACTS) &&
       !f.endsWith(OPERATIONAL_BUSINESS_LOGIC_MAP) &&
-      !f.endsWith(OPERATIONAL_COMPANY_FIELDS),
+      !f.endsWith(OPERATIONAL_COMPANY_FIELDS) &&
+      !f.endsWith(OPERATIONAL_CHAINS),
   )
 }
 

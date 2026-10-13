@@ -14,7 +14,6 @@ company agentic, automated, and standardized across geographies.
 ```
 ultrametric/
 ├── processes/       every founder process, step by step
-├── journeys/        processes chained into playbooks
 ├── rankings/        evidence, verdicts, computed scores
 ├── vendors/         per-product review records
 ├── pipeline/        crawl, probe, judge, derive

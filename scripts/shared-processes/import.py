@@ -205,7 +205,7 @@ def operational(value):
 
 def chain(value):
     key = value["id"]
-    r = record_base(value, "journeys/chains.json", key, value["tagline"])
+    r = record_base(value, "processes/chains.json", key, value["tagline"])
     m = Move(value, f"chain[{key}]", f"records[{key}]")
     for field, target in [("id", "id"), ("name", "title"), ("tagline", "summary")]:
         m.take(field, target)
@@ -236,7 +236,7 @@ def workflow(value, path):
 
 
 corpus = SOURCE_FILES["processes/corpus.json"]
-chains = SOURCE_FILES["journeys/chains.json"]
+chains = SOURCE_FILES["processes/chains.json"]
 registry = SOURCE_FILES["processes/vendor-registry.json"]
 def slug(value):
     return re.sub(r"[^a-z0-9]+", "-", value.lower()).strip("-")
