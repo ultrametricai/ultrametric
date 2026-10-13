@@ -1,19 +1,19 @@
 {
-  "hash": "5785215da57468b4cb9f4d0240d450845d48a264900c3ae8f162dd453f3fbdeb",
+  "hash": "91daab99ee11a263402e4566cc09ae8cc26a9206c82c5d616d01b0de05e20b03",
   "verdict": {
     "verdict": "partial",
-    "quality": 4,
-    "confidence": "low",
-    "rationale": "The docs show documents can be added to an existing index (meilisearch-docs-2, docs-13), and Meilisync offers automatic database sync (docs-71), which implies incremental indexing rather than full rebuilds. Community reports conflict on freshness: some praise fast indexing (comm-10, comm-6), while others say indexing fell hours behind for constantly changing records (comm-4) and writes were hard to scale (comm-13). There is no vendor claim of near-real-time searchability for these reports to contradict, so this stays partial rather than disputed. Missing for 10: documented support for updates and deletes, any stated indexing latency or near-real-time guarantee, and evidence that incremental changes avoid reindexing under heavy write load.",
+    "quality": 5,
+    "confidence": "medium",
+    "rationale": "Incremental ingestion without a full reindex is evidenced: documents are added to an existing index (meilisearch-docs-74), and official integrations auto-sync database rows, ActiveRecord models and Firebase collections (meilisearch-docs-88, meilisearch-docs-85, meilisearch-docs-87). A long-running production user confirms continuous Postgres syncing works (meilisearch-comm-19). However, the docs never claim near-real-time visibility. Hands-on reports show indexing of frequently changing records falling hours behind (meilisearch-comm-9) and an early CPU-bound backlog that only batch indexing fixed (meilisearch-comm-15), though indexing speed has since improved (meilisearch-comm-7). Missing for 10: documented near-real-time latency for updates, explicit evidence that updates and deletes are applied incrementally, and independent corroboration that high-churn workloads stay current.",
     "evidenceIds": [
-      "meilisearch-docs-2",
-      "meilisearch-docs-13",
-      "meilisearch-docs-71",
-      "meilisearch-comm-4",
-      "meilisearch-comm-6",
-      "meilisearch-comm-10",
-      "meilisearch-comm-13",
-      "meilisearch-comm-15"
+      "meilisearch-docs-74",
+      "meilisearch-docs-88",
+      "meilisearch-docs-85",
+      "meilisearch-docs-87",
+      "meilisearch-comm-19",
+      "meilisearch-comm-9",
+      "meilisearch-comm-15",
+      "meilisearch-comm-7"
     ],
     "productId": "meilisearch",
     "storyId": "realtime-index-updates"
