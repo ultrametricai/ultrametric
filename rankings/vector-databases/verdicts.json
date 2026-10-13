@@ -2739,6 +2739,675 @@
     ]
   },
   {
+    "productId": "moss",
+    "storyId": "access-control-rbac",
+    "verdict": "partial",
+    "quality": 4,
+    "confidence": "medium",
+    "rationale": "Moss documents project-level API keys that can be created, listed, deleted and rotated via the CLI, plus a pattern for keeping the projectKey out of browser or untrusted clients. Nothing in the pack shows role-based access or per-index/per-collection permission scoping, so only the API-key part of the story is covered. Missing for 10: roles/RBAC, per-index (collection) permissions, scoped or read-only keys, independent corroboration.",
+    "evidenceIds": [
+      "moss-docs-20",
+      "moss-docs-21",
+      "moss-docs-15"
+    ]
+  },
+  {
+    "productId": "moss",
+    "storyId": "agentic-agent-docs",
+    "verdict": "full",
+    "quality": 8,
+    "confidence": "high",
+    "rationale": "A probe confirmed a live llms.txt at docs.moss.dev/llms.txt (HTTP 200, with structured Moss Docs content). A second llms.txt at moss.dev/llms.txt indexes pages such as the CLI docs, and pages are also published as markdown (e.g. pricing.md), so an agent can be pointed straight at agent-friendly docs. Missing for 10: evidence of an llms-full.txt or full-content dump, and independent or hands-on corroboration of agents actually consuming these docs.",
+    "evidenceIds": [
+      "moss-probe-1",
+      "moss-docs-3",
+      "moss-docs-16"
+    ]
+  },
+  {
+    "productId": "moss",
+    "storyId": "agentic-ai-insights",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Moss is a semantic-search runtime and retrieval layer. Its evidence covers indexing, hybrid search and agent integrations (MCP, LangChain, Vercel AI SDK), where external models consume retrieval results. Nothing shows the product itself generating AI insights or suggestions from a user's data. A platform like this could plausibly offer such a feature (for example in a console), so the axis applies, but the pack has no evidence of it.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "moss",
+    "storyId": "agentic-autonomous-automation",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Moss is a semantic-search runtime, and such a product could plausibly offer user-configurable background jobs such as scheduled re-crawls or syncs, so the axis applies. The evidence shows only on-demand SDK, CLI and API operations (web-source crawling, upserts, cloud hot-swaps) and tools that other agents can call. Nothing shows users setting up automations that run on their own in the background.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "moss",
+    "storyId": "agentic-builtin-assistant",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Moss is a semantic-search runtime and SDK with a cloud console. A platform of this kind could plausibly ship a built-in assistant, so the axis applies. The evidence only shows Moss being used by external assistants via its MCP server, LangChain and Vercel AI SDK integrations. Nothing documents an AI assistant built into the product itself that users can delegate tasks to.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "moss",
+    "storyId": "agentic-headless",
+    "verdict": "full",
+    "quality": 7,
+    "confidence": "medium",
+    "rationale": "Moss is mainly a programmatic product, which makes headless automation natural. It ships Python and TypeScript SDKs (moss-docs-1, moss-docs-8), an HTTP API multiplexed through `/v1/manage` (moss-docs-10), and an official CLI for terminal use and key management (moss-docs-3, moss-docs-21, moss-probe-4). Disk caching and snapshot fallback on 429/503 errors also suit unattended runs (moss-docs-24, moss-docs-25). Missing for 10: explicit CI/pipeline documentation (e.g. GitHub Actions examples), documented non-interactive CLI auth (the docs show an interactive-style `moss login`), a published OpenAPI spec (moss-probe-2), and independent hands-on corroboration of CI use.",
+    "evidenceIds": [
+      "moss-docs-1",
+      "moss-docs-3",
+      "moss-docs-8",
+      "moss-docs-10",
+      "moss-docs-21",
+      "moss-docs-24",
+      "moss-docs-25",
+      "moss-probe-4"
+    ]
+  },
+  {
+    "productId": "moss",
+    "storyId": "agentic-mcp-client",
+    "verdict": "na",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Moss is a semantic-search runtime and SDK that agents call, not an agent or LLM host that calls tools. Plugging MCP servers into it as a client is therefore outside its product role. Its documented MCP server, which exposes Moss tools to AI assistants, is the opposite (server) role and does not count toward this client-side story.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "moss",
+    "storyId": "agentic-mcp-server",
+    "verdict": "full",
+    "quality": 7,
+    "confidence": "medium",
+    "rationale": "Moss, a semantic-search runtime rather than an agent, has a first-party MCP server integration page. It says AI assistants can create indexes, add documents and run sub-10ms semantic queries from within the conversation, and a probe confirmed the official MCP server documentation exists. Missing for 10: setup and configuration details (transport, client config, auth), a full tool list, and independent or hands-on corroboration that the server works as described.",
+    "evidenceIds": [
+      "moss-docs-11",
+      "moss-probe-3"
+    ]
+  },
+  {
+    "productId": "moss",
+    "storyId": "agentic-nl-commands",
+    "verdict": "partial",
+    "quality": 6,
+    "confidence": "medium",
+    "rationale": "Moss has no built-in natural-language interface. Its official MCP server lets a user's AI assistant create indexes, add documents and run semantic queries through conversation. The Vercel AI SDK integration also exposes Moss operations as tools that language models can call. So natural-language operation is possible, but only through a third-party assistant or agent framework. missing for 10: a native natural-language command interface, evidence that management operations such as keys and web sources can be driven conversationally, detailed MCP tool documentation, and independent or hands-on corroboration.",
+    "evidenceIds": [
+      "moss-docs-11",
+      "moss-probe-3",
+      "moss-docs-14"
+    ]
+  },
+  {
+    "productId": "moss",
+    "storyId": "agentic-official-cli",
+    "verdict": "full",
+    "quality": 7,
+    "confidence": "medium",
+    "rationale": "Moss ships an official CLI: llms.txt points to installing and using it from the terminal, the auth docs show concrete commands (`moss login`, `moss keys create/list/delete`), and the probe confirms a first-party `packages/moss-cli` in the official GitHub repo. The documented command surface covers only key management, so the CLI's broader workflow coverage is thin. missing for 10: evidence of CLI commands for indexing/querying or agent-oriented workflows, a dedicated CLI reference, independent or hands-on corroboration",
+    "evidenceIds": [
+      "moss-docs-3",
+      "moss-docs-21",
+      "moss-probe-4"
+    ]
+  },
+  {
+    "productId": "moss",
+    "storyId": "agentic-public-api",
+    "verdict": "full",
+    "quality": 8,
+    "confidence": "high",
+    "rationale": "Moss documents a public v1 REST API reference in which all actions go through the `/v1/manage` endpoint using an action string (e.g. `createWebSource`). Official SDKs cover Python, JavaScript, Swift, Elixir, C and WASM, with documented index and document CRUD and key management, so agents can drive the product programmatically. The same operations are also exposed through an MCP server, AI SDK tools and a CLI. Missing for 10: a machine-readable OpenAPI/Swagger spec (all probed paths returned 404) and independent hands-on corroboration of the REST API.",
+    "evidenceIds": [
+      "moss-docs-10",
+      "moss-docs-9",
+      "moss-docs-1",
+      "moss-docs-8",
+      "moss-docs-22",
+      "moss-docs-21",
+      "moss-docs-14",
+      "moss-docs-11",
+      "moss-probe-2"
+    ]
+  },
+  {
+    "productId": "moss",
+    "storyId": "agentic-scoped-keys",
+    "verdict": "partial",
+    "quality": 4,
+    "confidence": "medium",
+    "rationale": "Moss documents API key lifecycle management: creating, listing and deleting keys via the CLI, plus rotation with overlap. It also describes a separate pattern for browser and untrusted clients so the projectKey is never embedded, which hints at a narrower credential path. However, no evidence shows keys can be scoped to specific indexes, actions or read-only access. Missing for 10: explicit per-key scopes/permissions (e.g., read-only or per-index), documented short-lived agent tokens, independent corroboration.",
+    "evidenceIds": [
+      "moss-docs-20",
+      "moss-docs-21",
+      "moss-docs-15"
+    ]
+  },
+  {
+    "productId": "moss",
+    "storyId": "agentic-sdks",
+    "verdict": "full",
+    "quality": 9,
+    "confidence": "high",
+    "rationale": "Moss documents official SDKs across many languages: Python, TypeScript/JavaScript (Node `@moss-js/moss`), Swift, Elixir, C, and a WASM browser build. The docs include a per-class JS API reference (MossClient) and SDK-specific features such as disk caching and `minScore` filtering, and the first-party GitHub repo backs this up. Missing for 10: independent or hands-on corroboration that the SDKs work as documented, since all evidence is vendor-authored.",
+    "evidenceIds": [
+      "moss-docs-1",
+      "moss-docs-5",
+      "moss-docs-8",
+      "moss-docs-15",
+      "moss-docs-23",
+      "moss-docs-24",
+      "moss-gh-1"
+    ]
+  },
+  {
+    "productId": "moss",
+    "storyId": "agentic-webhooks",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Moss is a cloud-backed semantic search runtime with a management API. Event subscription via webhooks is therefore a fair axis to ask about, for example notifications when an index sync or web crawl completes. Nothing in the pack mentions webhooks or any event-subscription mechanism: the API is a request/response `/v1/manage` endpoint, and the closest features are SDK sessions and hot-swaps.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "moss",
+    "storyId": "api-interactive-docs",
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "medium",
+    "rationale": "Moss publishes a structured API reference: a v1 overview that documents the `/v1/manage` action-multiplexed endpoint and operations like `createWebSource`, plus per-class SDK reference pages such as MossClient. There is no evidence that this reference is interactive or has in-page runnable examples, and the OpenAPI/Swagger probes all returned 404, so there is no spec to drive a try-it console. Missing for 10: an interactive try-it/playground in the API reference, runnable in-browser examples, a published OpenAPI spec, and independent corroboration.",
+    "evidenceIds": [
+      "moss-docs-9",
+      "moss-docs-10",
+      "moss-docs-15",
+      "moss-probe-2"
+    ]
+  },
+  {
+    "productId": "moss",
+    "storyId": "api-machine-spec",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Moss exposes an HTTP API (all actions go through /v1/manage) and publishes an API reference, so a downloadable machine-readable spec is a fair ask. However, the probe found every common OpenAPI/Swagger path returning 404. The llms.txt file and human-readable API reference are not an OpenAPI-equivalent spec, and no other evidence shows one exists. Confidence is medium because the probe only checked a handful of candidate paths.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "moss",
+    "storyId": "api-sandbox",
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "The evidence never names a sandbox or test environment. Moss can index and query locally on-device or in the browser, with unlimited local queries, and indexes can be created and deleted at will. That gives an implied workaround for experimenting without touching cloud production indexes, but no documented isolation guarantee. Missing for 10: an explicit sandbox/test mode or separate dev/prod project environments, test keys distinct from production keys, documentation of data isolation between environments, and independent or hands-on corroboration.",
+    "evidenceIds": [
+      "moss-docs-4",
+      "moss-docs-5",
+      "moss-docs-16",
+      "moss-docs-22",
+      "moss-docs-21"
+    ]
+  },
+  {
+    "productId": "moss",
+    "storyId": "api-versioning-policy",
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "medium",
+    "rationale": "Moss exposes a versioned API: the API reference lives under a /v1/ path and all actions route through the `/v1/manage` endpoint. Nothing in the pack documents a deprecation policy, sunset timelines, or version-migration guidance, and no OpenAPI spec was found by the probe. Missing for 10: documented deprecation policy, version lifecycle/sunset guarantees, changelog or migration docs, machine-readable versioned API spec.",
+    "evidenceIds": [
+      "moss-docs-10",
+      "moss-docs-9",
+      "moss-probe-2"
+    ]
+  },
+  {
+    "productId": "moss",
+    "storyId": "automation-bulk-operations",
+    "verdict": "partial",
+    "quality": 5,
+    "confidence": "low",
+    "rationale": "The docs describe plural-document operations: upserting, fetching, and deleting docs (moss-docs-22), crawling a whole website into an index (moss-docs-9), and loading several indexes at once for a single query (moss-docs-18). This suggests batch-style handling of many items, and agents can add and manage documents via the MCP server and AI SDK tools (moss-docs-11, moss-docs-14). However, nothing explicitly documents a bulk or batch API, its limits, or cross-index bulk management. Missing for 10: an explicitly documented batch/bulk endpoint with size limits, bulk operations across indexes (not just documents), and independent or hands-on corroboration.",
+    "evidenceIds": [
+      "moss-docs-22",
+      "moss-docs-9",
+      "moss-docs-18",
+      "moss-docs-11",
+      "moss-docs-14"
+    ]
+  },
+  {
+    "productId": "moss",
+    "storyId": "automation-rules-engine",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Moss is a semantic search runtime and cloud platform, so event-driven automation such as webhooks or triggers on index changes is a fair capability to ask about. The evidence pack documents no user-defined rules, triggers, or webhooks. Cloud sync, hot-swaps, and agent tool integrations are infrastructure behaviors or client-invoked operations, not rule-based automation.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "moss",
+    "storyId": "automation-scheduled-jobs",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Moss is a cloud and on-device semantic search platform. Such a platform could plausibly offer scheduled jobs, such as periodic web-source re-crawls or index syncs, so the axis applies. The evidence covers web crawling into indexes, upserts, and zero-downtime hot-swaps, but nothing documents scheduling, cron, or recurring job or workflow capabilities.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "moss",
+    "storyId": "automation-versioned-workflows",
+    "verdict": "na",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Moss is a semantic-search runtime and SDK for agents, not an automation or workflow platform, so it has no automations of its own to version, review, or roll back. Index hot-swaps and cached snapshots concern search data, not automation definitions, so the axis does not apply.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "moss",
+    "storyId": "backup-restore-snapshots",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Moss is a semantic-search index runtime, so backing up and restoring collections is a fair axis. The only 'snapshot' evidence is a local disk cache of a downloaded index that is served when the cloud is unreachable. That is a resilience fallback, not a user-initiated backup or restore feature, and nothing documents creating, exporting or restoring index snapshots.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "moss",
+    "storyId": "builtin-full-text-search",
+    "verdict": "full",
+    "quality": 7,
+    "confidence": "medium",
+    "rationale": "Moss has built-in keyword retrieval in the same index as semantic search. The core-concepts docs describe a hybrid mode tuned with `alpha`, where 0.0 means pure keyword. The GitHub README separately lists hybrid retrieval (semantic + keyword search), so no separate search engine is needed. Missing for 10: details on the keyword engine (e.g. BM25 scoring, tokenization, phrase or boolean query support), full-text feature docs beyond the alpha parameter, and independent or hands-on corroboration of keyword search quality.",
+    "evidenceIds": [
+      "moss-docs-19",
+      "moss-gh-1"
+    ]
+  },
+  {
+    "productId": "moss",
+    "storyId": "bulk-import-export",
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "Moss documents adding and upserting documents, bringing your own vectors via a `custom` model, attaching metadata (used for filtering), and fetching specific docs. Together these give a programmatic way to load vectors plus metadata, but nothing in the evidence describes a bulk import/export feature or a documented file format. Fetching specific docs is not a bulk export path. Missing for 10: a documented bulk-import file format (e.g. JSONL/Parquet), any bulk-export or dump capability for vectors and metadata, and hands-on corroboration.",
+    "evidenceIds": [
+      "moss-docs-17",
+      "moss-docs-22",
+      "moss-gh-1"
+    ]
+  },
+  {
+    "productId": "moss",
+    "storyId": "embedded-local-mode",
+    "verdict": "full",
+    "quality": 7,
+    "confidence": "medium",
+    "rationale": "Moss is built to run in-process. It ships SDKs for Node, Python, Swift, Elixir and C plus a browser WASM build, and it indexes and queries locally with on-device embeddings and unlimited local queries. The docs, however, describe a cloud-hydrated model: indexes load and sync from the cloud and are cached to disk. A fully standalone local or offline setup is not clearly documented. missing for 10: a documented standalone local mode with no cloud dependency, a lightweight local server-instance option, and independent hands-on corroboration of embedded use.",
+    "evidenceIds": [
+      "moss-docs-4",
+      "moss-docs-5",
+      "moss-docs-8",
+      "moss-docs-16",
+      "moss-docs-17",
+      "moss-docs-24",
+      "moss-docs-25",
+      "moss-gh-1",
+      "moss-docs-26",
+      "moss-docs-6"
+    ]
+  },
+  {
+    "productId": "moss",
+    "storyId": "free-tier-prototyping",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "low",
+    "rationale": "The only pricing evidence says that all plans include unlimited local queries. It never states that a free plan, trial, or no-cost tier exists, so the pack does not show that a developer can prototype before paying. The SDK quick-start docs show that onboarding is easy, but they say nothing about cost.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "moss",
+    "storyId": "horizontal-scaling-sharding",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Moss is a semantic search runtime, so horizontal scaling is a fair question to ask of it. The evidence covers running indexes locally in the browser, on devices, or in the cloud, hydrating from and syncing to the cloud, and loading several indexes for one query. None of it describes sharding a single index, multi-node clustering, or distributed deployment for scale-out.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "moss",
+    "storyId": "hybrid-dense-sparse-search",
+    "verdict": "full",
+    "quality": 7,
+    "confidence": "medium",
+    "rationale": "Moss's core-concepts docs describe a hybrid search mode that blends semantic and keyword retrieval in one query, weighted by an `alpha` parameter (1.0 semantic, 0.0 keyword, default 0.8). The GitHub README separately lists hybrid retrieval (semantic + keyword search) as a feature. missing for 10: documentation of the keyword scoring algorithm (BM25 or otherwise), support for sparse vectors, detail on the fusion method beyond alpha weighting (e.g. RRF), and independent or hands-on corroboration of ranking quality.",
+    "evidenceIds": [
+      "moss-docs-19",
+      "moss-gh-1"
+    ]
+  },
+  {
+    "productId": "moss",
+    "storyId": "index-tuning-controls",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Moss is a semantic search runtime, so tuning index parameters is a fair question for it. The evidence shows only retrieval-time knobs: the hybrid `alpha` weighting, `min_score` filtering, and a choice between the built-in embedding model and custom vectors. Nothing in the pack documents HNSW graph settings, selectable index types, or any parameter for trading recall against latency or memory.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "moss",
+    "storyId": "integrated-embedding-generation",
+    "verdict": "full",
+    "quality": 7,
+    "confidence": "medium",
+    "rationale": "Moss documents that it embeds on-device with a built-in model, so no separate embedding pipeline is needed (moss-docs-17). The GitHub repo also lists built-in embeddings as a core feature (moss-gh-1). The only alternative documented is a `custom` model, which means bringing your own precomputed vectors rather than configuring a hosted provider. Missing for 10: configurable third-party model providers (e.g., hosted embedding APIs), explicit documentation that query text is embedded automatically at query time, details on built-in model choice and quality, independent or hands-on corroboration.",
+    "evidenceIds": [
+      "moss-docs-17",
+      "moss-gh-1",
+      "moss-docs-1"
+    ]
+  },
+  {
+    "productId": "moss",
+    "storyId": "kubernetes-production-deploy",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Moss is a semantic search runtime and managed service, so asking for self-hosted Kubernetes deployment through a Helm chart or operator is a fair question. The evidence covers only SDKs, a CLI, an MCP server, and claims of running in the browser, on-device, edge, or cloud. Nothing mentions Kubernetes, Helm, an operator, or self-hosted cluster deployment.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "moss",
+    "storyId": "live-upserts-freshness",
+    "verdict": "partial",
+    "quality": 5,
+    "confidence": "medium",
+    "rationale": "Moss documents upserting additional documents and deleting documents or indexes later (moss-docs-22). It also describes freshness mechanisms: local indexing during real-time sessions that later syncs to the cloud (moss-docs-5), staying fresh via zero-downtime hot-swaps (moss-docs-6), disk caches that reload when cloud data changes (moss-docs-24), and serving a stale snapshot when the cloud is unreachable (moss-docs-25). However, the evidence never states how quickly upserts and deletes become visible in search, nor what consistency model applies between local and cloud copies. Missing for 10: documented update-to-search visibility latency, an explicit consistency model for continuous upserts and deletes, and independent or hands-on corroboration of freshness under continuous writes.",
+    "evidenceIds": [
+      "moss-docs-22",
+      "moss-docs-5",
+      "moss-docs-6",
+      "moss-docs-24",
+      "moss-docs-25"
+    ]
+  },
+  {
+    "productId": "moss",
+    "storyId": "managed-cloud-offering",
+    "verdict": "partial",
+    "quality": 5,
+    "confidence": "medium",
+    "rationale": "Moss has a managed cloud side. Docs say it runs 'in the cloud', indexes sync to and hydrate from the cloud with cached fallback, and pricing plans exist. Programmatic control is offered through the `/v1/manage` API and SDKs (create, upsert, delete indexes), plus CLI key management. However, the cloud mainly acts as a storage and sync backend for a local or embedded runtime, not a clearly fully managed hosted database, and provisioning is shown only at the index and key level. Missing for 10: explicit fully managed hosted query service, programmatic project/account provisioning, a published OpenAPI spec (probe found 404s), independent or hands-on corroboration.",
+    "evidenceIds": [
+      "moss-docs-4",
+      "moss-docs-5",
+      "moss-docs-6",
+      "moss-docs-10",
+      "moss-docs-22",
+      "moss-docs-21",
+      "moss-docs-24",
+      "moss-docs-25",
+      "moss-docs-26",
+      "moss-docs-16",
+      "moss-probe-2"
+    ]
+  },
+  {
+    "productId": "moss",
+    "storyId": "metadata-filtered-search",
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "The GitHub README lists 'metadata filtering' as a feature (moss-gh-1), and the docs make general sub-10ms search latency claims (moss-docs-26). Nothing documents structured filter conditions or shows that filtered queries keep recall and latency intact. missing for 10: documented filter syntax/operators (equality, range, boolean conditions), evidence of how filtering interacts with ANN recall (pre- vs post-filtering), latency figures for filtered queries, independent or hands-on corroboration.",
+    "evidenceIds": [
+      "moss-gh-1",
+      "moss-docs-26"
+    ]
+  },
+  {
+    "productId": "moss",
+    "storyId": "multi-tenant-isolation",
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "Moss exposes indexes as discrete units that can be created, upserted into, and deleted. Several indexes can be loaded for a query and unloaded afterward, and metadata filtering exists, so per-tenant indexes or filter-based partitioning are plausible. However, nothing in the evidence frames these as a tenant-isolation mechanism. The only documented limit is 20 web sources per index, which is not a tenancy limit. Missing for 10: explicit multi-tenancy or namespace documentation, documented limits on index or tenant counts, cost guidance for many tenants, isolation guarantees, and independent corroboration.",
+    "evidenceIds": [
+      "moss-docs-18",
+      "moss-docs-22",
+      "moss-docs-9",
+      "moss-gh-1",
+      "moss-docs-11"
+    ]
+  },
+  {
+    "productId": "moss",
+    "storyId": "openness-api-parity",
+    "verdict": "partial",
+    "quality": 6,
+    "confidence": "medium",
+    "rationale": "Moss exposes a broad programmatic surface: a multiplexed `/v1/manage` API with action strings, including `createWebSource`, plus SDKs for creating, upserting, fetching and deleting indexes and documents. Key create/list/delete runs from the CLI, and an MCP server and AI SDK tools let agents create indexes and manage documents. That suggests most core dashboard operations are reachable without the UI, but nothing explicitly documents UI/API parity, and the probe found no published OpenAPI spec. Missing for 10: explicit documentation of UI/API parity, a machine-readable OpenAPI spec, evidence that project/account/billing/team management is available via API, and independent hands-on corroboration.",
+    "evidenceIds": [
+      "moss-docs-10",
+      "moss-docs-9",
+      "moss-docs-22",
+      "moss-docs-21",
+      "moss-docs-11",
+      "moss-docs-14",
+      "moss-probe-2",
+      "moss-probe-3",
+      "moss-probe-4"
+    ]
+  },
+  {
+    "productId": "moss",
+    "storyId": "openness-full-export",
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "There is no documented export feature. The only way out is indirect: the SDK can fetch specific docs back from an index (moss-docs-22), and the Node/Python SDKs can cache downloaded indexes to local disk (moss-docs-24), so a user could script retrieval of their data. Self-supplied vectors via the custom model option (moss-docs-17) also mean embeddings need not be locked to Moss. Missing for 10: a documented bulk or full-account export, a stated open export format (JSON/Parquet/etc.) for documents, embeddings and metadata, guidance on migrating off or deleting your account, and any independent corroboration.",
+    "evidenceIds": [
+      "moss-docs-22",
+      "moss-docs-24",
+      "moss-docs-17"
+    ]
+  },
+  {
+    "productId": "moss",
+    "storyId": "openness-open-license",
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "Moss has a public GitHub repository (usemoss/moss) that describes its retrieval features and WASM build, and it hosts the official CLI package source under packages/moss-cli, so some product source is readable. Nothing in the evidence names an open-source license, and it is unclear whether the core runtime, rather than just SDKs and CLI, is published. missing for 10: evidence of an explicit OSI/open license, confirmation that the core search runtime source is public, independent corroboration.",
+    "evidenceIds": [
+      "moss-gh-1",
+      "moss-probe-4"
+    ]
+  },
+  {
+    "productId": "moss",
+    "storyId": "openness-self-host",
+    "verdict": "partial",
+    "quality": 4,
+    "confidence": "medium",
+    "rationale": "Moss's query runtime can run on-device, in the browser via WASM, or at the edge, with unlimited local queries and local indexing during sessions (moss-docs-4, moss-docs-5, moss-docs-8, moss-docs-16, moss-gh-1). However, the evidence shows the product is still tied to Moss's cloud: indexes are hydrated from and synced to the cloud, management goes through a hosted `/v1/manage` API with project keys, and disk caching only serves a snapshot of cloud data (moss-docs-6, moss-docs-10, moss-docs-24, moss-docs-25). So this is local execution, not true self-hosting. Missing for 10: a documented self-hosted server or control-plane deployment, the ability to operate fully without the Moss cloud, an explicit open-source license or self-hosting guide, and independent confirmation of self-hosted use.",
+    "evidenceIds": [
+      "moss-docs-4",
+      "moss-docs-5",
+      "moss-docs-6",
+      "moss-docs-8",
+      "moss-docs-10",
+      "moss-docs-16",
+      "moss-docs-24",
+      "moss-docs-25",
+      "moss-gh-1"
+    ]
+  },
+  {
+    "productId": "moss",
+    "storyId": "polyglot-sdk-breadth",
+    "verdict": "partial",
+    "quality": 5,
+    "confidence": "high",
+    "rationale": "Moss documents official Python and TypeScript/JavaScript (Node, `@moss-js/moss`) SDKs, with per-SDK details such as `min_score`/`minScore`, disk caching, and a MossClient reference. It also lists Swift, Elixir, C, and a WASM build, but the evidence never mentions Go or Java SDKs, so only half of the named major languages are covered. missing for 10: official Go SDK, official Java SDK, independent corroboration of SDK quality.",
+    "evidenceIds": [
+      "moss-docs-1",
+      "moss-docs-8",
+      "moss-docs-5",
+      "moss-docs-24",
+      "moss-docs-23",
+      "moss-docs-15"
+    ]
+  },
+  {
+    "productId": "moss",
+    "storyId": "privacy-data-residency",
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "Moss can index and query on-device, in the browser, or in the cloud, and can cache indexes to local disk. That gives some control over where data physically lives at runtime. However, the documented workflow hydrates from and syncs to the Moss cloud, and nothing describes choosing a cloud region or a residency guarantee. missing for 10: selectable cloud storage region, data-residency or compliance commitments, a documented fully local-only mode with no cloud sync, independent corroboration.",
+    "evidenceIds": [
+      "moss-docs-4",
+      "moss-docs-5",
+      "moss-docs-6",
+      "moss-docs-24"
+    ]
+  },
+  {
+    "productId": "moss",
+    "storyId": "privacy-no-training",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Moss is a cloud-backed semantic search service that stores customer data, so whether that data is used for AI training is a fair question. The evidence pack has no training-use policy, opt-out control, or data-usage commitment. On-device embedding and local querying are documented, but data still syncs to the cloud, and none of these items address model-training use.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "moss",
+    "storyId": "privacy-retention-controls",
+    "verdict": "partial",
+    "quality": 5,
+    "confidence": "medium",
+    "rationale": "Users can explicitly delete documents or entire indexes through the indexing API (moss-docs-22) and unload indexes from memory (moss-docs-18). Running and embedding on-device (moss-docs-4, moss-docs-17) gives some control over where data lives, while the optional disk cache (moss-docs-24) adds data the user must manage. Missing for 10: documented retention policies or configurable retention windows, guarantees about cloud-side deletion and backup purging, account or project-level data deletion, cache-clearing controls, and independent corroboration.",
+    "evidenceIds": [
+      "moss-docs-22",
+      "moss-docs-18",
+      "moss-docs-4",
+      "moss-docs-17",
+      "moss-docs-24"
+    ]
+  },
+  {
+    "productId": "moss",
+    "storyId": "privacy-telemetry-optout",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Moss is an SDK, CLI and cloud search runtime, so a telemetry or usage-tracking opt-out is a fair question for it. However, nothing in the evidence pack mentions telemetry, analytics collection, or any opt-out setting. On-device execution and unlimited local queries describe where search runs, not whether usage data is collected or can be disabled.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "moss",
+    "storyId": "published-latency-benchmarks",
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "medium",
+    "rationale": "Moss repeatedly states a concrete latency figure (sub-10 ms search) across its homepage, llms.txt, and integration docs, and the homepage offers a 'Run a Latency Test' feature that lets users measure latency themselves. However, the pack has no published benchmark report, methodology, dataset or hardware details, percentile breakdowns, or independent measurements, and no recall numbers at all. missing for 10: published benchmark methodology and results, recall/accuracy metrics, independent or third-party latency corroboration, documented test conditions (dataset size, hardware, p50/p99).",
+    "evidenceIds": [
+      "moss-docs-26",
+      "moss-docs-27",
+      "moss-probe-1",
+      "moss-docs-11",
+      "moss-docs-12"
+    ]
+  },
+  {
+    "productId": "moss",
+    "storyId": "quantization-compression",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Moss is a semantic/vector search runtime, so vector quantization or compression is a fair axis. Nothing in the evidence pack mentions quantization, compression, or a documented accuracy trade-off. The disk caching in moss-docs-24 is persistence, not compression, so it does not count.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "moss",
+    "storyId": "rag-framework-integrations",
+    "verdict": "full",
+    "quality": 7,
+    "confidence": "medium",
+    "rationale": "Moss has dedicated first-party integration pages for LangChain, covering RAG pipelines and agentic workflows, and for the Vercel AI SDK, which exposes Moss operations as agent tools. Its docs also list LiveKit and Pipecat connectors, so the core of plugging Moss into agent frameworks is clearly documented. Missing for 10: any evidence of a LlamaIndex integration, evidence that the integrations are actively maintained (versioned packages or release history), and independent or hands-on corroboration beyond vendor docs.",
+    "evidenceIds": [
+      "moss-docs-2",
+      "moss-docs-12",
+      "moss-docs-13",
+      "moss-docs-14"
+    ]
+  },
+  {
+    "productId": "moss",
+    "storyId": "replication-high-availability",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Moss is a search runtime, so data replication for high availability is an applicable axis. The evidence never documents replication across nodes or zones, nor any consistency model. What it does show is a client-side cloud-to-device pattern: local indexes sync to the cloud, devices hydrate from the cloud with hot-swaps, and a cached snapshot is served if the cloud is unreachable. That is offline resilience and caching, not server-side HA replication with stated consistency guarantees.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "moss",
+    "storyId": "reranking-integration",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Moss is a semantic search runtime, so reranking is a fair axis to ask about. The evidence shows hybrid alpha blending and a min_score relevance cutoff, but no built-in or first-party-integrated reranking model.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "moss",
+    "storyId": "rich-filter-expressions",
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "The GitHub README states that Moss supports \"metadata filtering\" alongside hybrid retrieval, so some filter capability exists. The evidence never describes what filter expressions are supported. min_score is a relevance cutoff, not a metadata filter. Missing for 10: documented range filters, geo filters, nested boolean (AND/OR/NOT) logic, array-membership operators, filter syntax/API reference, independent or hands-on corroboration.",
+    "evidenceIds": [
+      "moss-gh-1"
+    ]
+  },
+  {
+    "productId": "moss",
+    "storyId": "serverless-usage-pricing",
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "Moss has a pricing page that mentions plans, and it states that all plans include unlimited local queries. Its runtime model (embedded SDK running in-browser, on-device or in the cloud, with no vector database to stand up) suggests developers do not provision fixed clusters. However, nothing shows usage-based billing or published per-unit rates. missing for 10: documented usage-based or serverless billing model, transparent per-unit prices (e.g., per query, per document, per GB), details of cloud-side metering, independent corroboration of pricing.",
+    "evidenceIds": [
+      "moss-docs-16",
+      "moss-docs-26",
+      "moss-docs-4"
+    ]
+  },
+  {
+    "productId": "moss",
+    "storyId": "vector-similarity-search",
+    "verdict": "partial",
+    "quality": 5,
+    "confidence": "medium",
+    "rationale": "Moss clearly provides semantic similarity search over embeddings. It supports a built-in embedding model or bring-your-own vectors via a `custom` model, with sub-10ms queries, a `minScore` threshold and a hybrid `alpha` blend. The evidence never mentions an approximate nearest-neighbor index or any option to choose a distance metric such as cosine, dot product or L2. Missing for 10: configurable distance metrics, explicit documentation of the ANN index type and its tuning, independent or hands-on corroboration of search quality.",
+    "evidenceIds": [
+      "moss-docs-1",
+      "moss-docs-17",
+      "moss-docs-19",
+      "moss-docs-23",
+      "moss-docs-26",
+      "moss-gh-1"
+    ]
+  },
+  {
     "productId": "pinecone",
     "storyId": "access-control-rbac",
     "verdict": "partial",

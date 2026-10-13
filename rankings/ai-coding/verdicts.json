@@ -15278,5 +15278,938 @@
     "confidence": "medium",
     "rationale": "Slate is a coding agent, so explaining and auto-fixing security vulnerabilities is a fair question to ask of it. The evidence pack never mentions vulnerability detection, security explanations, or automatic security fixes. The documented permission controls govern the agent's own actions, and the architecture-review prompt is general, so neither counts as security-vulnerability remediation.",
     "evidenceIds": []
+  },
+  {
+    "productId": "stagewise",
+    "storyId": "agentic-agent-docs",
+    "verdict": "full",
+    "quality": 8,
+    "confidence": "high",
+    "rationale": "A live probe confirms that https://docs.stagewise.io/llms.txt returns HTTP 200 with a structured index of the docs. Content is also served from stagewise.io/llms.txt, which covers agent capabilities and settings, so an agent can be pointed at machine-readable docs directly. Missing for 10: any evidence of an llms-full.txt or per-page markdown docs, and any hands-on or independent report of an agent actually consuming these files.",
+    "evidenceIds": [
+      "stagewise-probe-1",
+      "stagewise-docs-25",
+      "stagewise-docs-26"
+    ]
+  },
+  {
+    "productId": "stagewise",
+    "storyId": "agentic-ai-insights",
+    "verdict": "partial",
+    "quality": 5,
+    "confidence": "medium",
+    "rationale": "stagewise is an agentic IDE, and its AI works on the user's own data, mainly code and project context. On connecting a workspace it generates a WORKSPACE.md project summary (stagewise-docs-20), and the agent reads files and inspects screenshots and the browser console to debug (stagewise-docs-12, stagewise-docs-25, stagewise-gh-3). Its edits are proposed as reviewable diffs (stagewise-docs-6), and a Supabase plugin enables database queries (stagewise-docs-16). These are coding suggestions rather than a dedicated insights or analytics feature. missing for 10: explicit insight or analytics surfacing over user data, proactive suggestion features beyond code edits, independent hands-on corroboration of insight quality.",
+    "evidenceIds": [
+      "stagewise-docs-20",
+      "stagewise-docs-12",
+      "stagewise-docs-25",
+      "stagewise-docs-16",
+      "stagewise-docs-6",
+      "stagewise-gh-3"
+    ]
+  },
+  {
+    "productId": "stagewise",
+    "storyId": "agentic-autonomous-automation",
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "stagewise lets several agent instances run in parallel, each in its own session, and handle multi-step workflows with shell access. A setting keeps the app awake while agents work, which implies agents can run unattended. The evidence shows no way to set up automations, such as scheduled, triggered, or headless background jobs; it only shows interactive chat-driven agent sessions inside the desktop IDE. Missing for 10: scheduled or event-triggered automations, headless or background execution independent of the IDE session, docs for defining and managing automations, and independent corroboration.",
+    "evidenceIds": [
+      "stagewise-docs-19",
+      "stagewise-docs-26",
+      "stagewise-docs-25",
+      "stagewise-docs-18"
+    ]
+  },
+  {
+    "productId": "stagewise",
+    "storyId": "agentic-builtin-assistant",
+    "verdict": "full",
+    "quality": 9,
+    "confidence": "high",
+    "rationale": "stagewise is a desktop agentic IDE with a built-in coding agent. Docs say it can read and edit files, run shell commands, drive browser tabs via CDP, and orchestrate multi-step workflows, with parallel agent instances, slash-command skills, and diff review of each agent edit. Hands-on users report weeks of productive use, though the demo shows the agent choosing a hardcoded 298px height rather than idiomatic CSS. Missing for 10: independent hands-on corroboration of complex multi-step task delegation, since community evidence mainly covers UI tweaks and shows output-quality caveats.",
+    "evidenceIds": [
+      "stagewise-docs-1",
+      "stagewise-docs-25",
+      "stagewise-docs-18",
+      "stagewise-docs-19",
+      "stagewise-docs-6",
+      "stagewise-docs-15",
+      "stagewise-gh-3",
+      "stagewise-comm-5",
+      "stagewise-comm-6",
+      "stagewise-comm-7"
+    ]
+  },
+  {
+    "productId": "stagewise",
+    "storyId": "agentic-headless",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Headless or CI operation is a fair axis for an agentic coding IDE, but the evidence only describes a GUI desktop app (installable IDE, visual diff review, browser preview). One community mention of signing up via a CLI does not show headless agent runs or CI automation.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "stagewise",
+    "storyId": "agentic-mcp-client",
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "stagewise is an agentic IDE, so the MCP-client axis applies. Its docs describe a plugin system that gives the agent tools such as GitHub (repos, issues, PRs, actions), Supabase (queries, edge functions, migrations) and Figma (designs, selection monitoring), with plugin commands exposed via slash commands. That shows external tool integration, but none of the evidence names MCP or says users can add arbitrary servers. Missing for 10: explicit MCP client support, documentation for configuring custom or third-party MCP servers, transport/config details, independent or hands-on corroboration.",
+    "evidenceIds": [
+      "stagewise-docs-15",
+      "stagewise-docs-16",
+      "stagewise-docs-17"
+    ]
+  },
+  {
+    "productId": "stagewise",
+    "storyId": "agentic-mcp-server",
+    "verdict": "na",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "stagewise is itself an agentic IDE with built-in coding agents, so it fills the MCP-client role; serving tools to other agents through an official MCP server is a different product role. Its GitHub, Supabase and Figma plugins are client-side integrations and do not count here. Nothing in the evidence shows stagewise running as an MCP server, such as an 'mcp serve' mode or a hosted MCP endpoint.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "stagewise",
+    "storyId": "agentic-nl-commands",
+    "verdict": "full",
+    "quality": 8,
+    "confidence": "high",
+    "rationale": "stagewise is built around a chat-driven agent. Users type natural-language requests, @mention files and tabs, or invoke skills with / slash commands, and the agent edits files, runs shell commands, drives browser tabs and orchestrates multi-step workflows. Community hands-on use confirms natural-language requests like \"same height\" are executed, though one produced a hardcoded 298px value rather than a solid CSS approach. Missing for 10: evidence that app-level settings and configuration can be operated via natural language (beyond coding/browser tasks), and stronger independent corroboration that commands produce reliable, high-quality results.",
+    "evidenceIds": [
+      "stagewise-docs-1",
+      "stagewise-docs-13",
+      "stagewise-docs-15",
+      "stagewise-docs-18",
+      "stagewise-docs-25",
+      "stagewise-comm-7",
+      "stagewise-comm-5",
+      "stagewise-comm-6"
+    ]
+  },
+  {
+    "productId": "stagewise",
+    "storyId": "agentic-official-cli",
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "The only evidence of a CLI is a community comment saying sign-up was possible only via the CLI (stagewise-comm-11), which implies an official CLI existed at some point. Current first-party docs describe a downloadable desktop IDE (stagewise-docs-24) with in-app agent shell access, and never document a stagewise CLI. Missing for 10: first-party CLI documentation, install/usage instructions, evidence of agent or workflow commands via the CLI, and confirmation that the CLI is current rather than legacy.",
+    "evidenceIds": [
+      "stagewise-comm-11",
+      "stagewise-docs-24"
+    ]
+  },
+  {
+    "productId": "stagewise",
+    "storyId": "agentic-public-api",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "A desktop agentic IDE could plausibly expose a public API for programmatic control, so this axis applies. The evidence shows none. The API references describe BYOK keys and custom endpoints for calling model providers, not an API for driving stagewise itself, and the OpenAPI/Swagger probes all returned 404. The llms.txt docs index is documentation for agents to read, not a control API.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "stagewise",
+    "storyId": "agentic-scoped-keys",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "The axis applies because stagewise runs a cloud account and enterprise service (SSO/SCIM, optional self-hosted cloud), so it could plausibly issue scoped agent credentials. The evidence only shows BYOK, where users supply their own provider API keys for the agents to consume. There is no evidence of stagewise issuing scoped or least-privilege credentials for agents, and the OpenAPI probe found no public API at any checked path.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "stagewise",
+    "storyId": "agentic-sdks",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "An agentic desktop IDE could plausibly ship an official SDK for extending or embedding it, so this axis applies. The evidence covers BYOK provider configuration, SKILL.md skills, and first-party plugins (GitHub, Supabase, Figma), but never mentions an official SDK developers can build against. The OpenAPI probe also returned 404 on every candidate path.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "stagewise",
+    "storyId": "agentic-webhooks",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Webhook event subscriptions are a plausible capability for an agentic IDE, for example notifying external systems when an agent run completes, so the axis applies. Nothing in the evidence shows stagewise offers webhooks: the only notification feature is customizable local notification sounds, the GitHub plugin gives the agent repository access rather than event subscriptions, and no OpenAPI spec was found.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "stagewise",
+    "storyId": "always-on-scheduled-agents",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "stagewise is a desktop agentic IDE whose documented agents run interactively in chat sessions, including in parallel and while the app is kept awake. The evidence shows no scheduled, triggered or always-on background agents that maintain or fix code autonomously. Background autonomous agents are a fair axis for a coding-agent product, so absence of evidence is \"none\", not \"na\".",
+    "evidenceIds": []
+  },
+  {
+    "productId": "stagewise",
+    "storyId": "api-interactive-docs",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Stagewise is a desktop agentic IDE, and a developer tool like this could plausibly publish an interactive API or extension reference, so the axis applies. The evidence shows no API reference with runnable examples. Its docs \"reference\" section covers only BYOK and custom-provider setup, and the OpenAPI probe returned 404 on every candidate path.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "stagewise",
+    "storyId": "api-key-auth",
+    "verdict": "full",
+    "quality": 9,
+    "confidence": "medium",
+    "rationale": "The BYOK docs explicitly say you can \"skip authentication entirely by configuring BYOK for every provider you use,\" so no requests go through the stagewise managed service. Provider API keys (Anthropic, OpenAI, Google, custom or self-hosted endpoints) can be configured per provider in place of a stagewise Account. Community complaints about account sign-up friction concern the account flow itself and do not contradict the BYOK path. missing for 10: independent or hands-on corroboration that a fully BYOK setup works with no account login.",
+    "evidenceIds": [
+      "stagewise-docs-22",
+      "stagewise-docs-21",
+      "stagewise-docs-2",
+      "stagewise-docs-3",
+      "stagewise-docs-23",
+      "stagewise-gh-4",
+      "stagewise-docs-4"
+    ]
+  },
+  {
+    "productId": "stagewise",
+    "storyId": "api-machine-spec",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "An agentic IDE with a managed cloud service could plausibly publish a programmatic API with a machine-readable spec, so the axis applies. The evidence shows no such spec: all probed OpenAPI/Swagger paths returned 404, and the docs only describe consuming third-party model APIs, not exposing a stagewise API.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "stagewise",
+    "storyId": "api-sandbox",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "The evidence shows no sandbox or isolated test environment that keeps agent work away from production data. Diff review and undo let you roll back edits, and design previews and local dev-server previews let you check changes, but none of these isolate data or execution. A community user notes the agents run directly on the host rather than sandboxed by default, and the Supabase plugin can run database queries and migrations with no documented environment separation.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "stagewise",
+    "storyId": "api-versioning-policy",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "stagewise is an agentic desktop IDE with plugins, a managed inference service and an optional self-hosted cloud, so versioned APIs and a deprecation policy are a fair question for a product of this kind. The evidence pack contains no mention of API versioning or a deprecation policy, and the OpenAPI probe returned 404 on every candidate path. With no evidence of an applicable capability, the verdict is none.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "stagewise",
+    "storyId": "architecture-navigation",
+    "verdict": "partial",
+    "quality": 5,
+    "confidence": "medium",
+    "rationale": "stagewise auto-generates a WORKSPACE.md high-level project summary when a workspace is connected (stagewise-docs-20). Its agent can read files across multiple workspaces (stagewise-docs-1, stagewise-docs-5, stagewise-docs-25), and clicking a UI element attaches it as agent context, which helps locate the code behind a feature (stagewise-docs-10, stagewise-docs-13). However, these features are framed as giving the agent context, not as tooling that explains architecture to the developer. missing for 10: a documented developer-facing codebase explanation or Q&A workflow, architecture or dependency mapping, guidance on finding entry points for changes, and independent or hands-on corroboration of codebase-understanding quality.",
+    "evidenceIds": [
+      "stagewise-docs-20",
+      "stagewise-docs-1",
+      "stagewise-docs-5",
+      "stagewise-docs-25",
+      "stagewise-docs-10",
+      "stagewise-docs-13"
+    ]
+  },
+  {
+    "productId": "stagewise",
+    "storyId": "automated-commit-and-pr-creation",
+    "verdict": "partial",
+    "quality": 4,
+    "confidence": "medium",
+    "rationale": "stagewise's agent has shell access to run commands, which implies it could run git. Its GitHub plugin lists repository access and pull requests, so opening PRs is plausible. No first-party docs describe a git workflow covering staging, commit message generation, or branch creation, so the story is only implied through generic shell access plus a plugin. Missing for 10: documented git staging and commit-message generation, explicit branch creation support, a documented PR-opening workflow, and hands-on or independent corroboration.",
+    "evidenceIds": [
+      "stagewise-docs-18",
+      "stagewise-docs-16",
+      "stagewise-docs-25"
+    ]
+  },
+  {
+    "productId": "stagewise",
+    "storyId": "automated-pr-review",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "The evidence shows no automatic, per-pull-request code review with contextual feedback, so the verdict is none. The Diff Review feature lets you accept or reject the agent's own local edits, which is not PR review. The GitHub plugin gives the agent access to repositories and pull requests, but nothing shows reviews triggered automatically on every PR or feedback posted back to it. Automated review is a fair axis for an agentic IDE, so this is none rather than na.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "stagewise",
+    "storyId": "automated-test-and-lint-fixes",
+    "verdict": "partial",
+    "quality": 4,
+    "confidence": "medium",
+    "rationale": "stagewise's agent can read, write, and modify workspace files, run shell commands, scripts, and package managers, and orchestrate multi-step workflows. That generic toolset plausibly covers test writing, lint fixing, and dependency updates via package managers, and edits can be reviewed through inline diffs. None of the four tasks is explicitly documented, though, and the product's positioning is centered on visual/UI front-end work. missing for 10: explicit test-generation support, lint-error fixing workflows, merge-conflict resolution, dependency-update features, and any hands-on or independent corroboration of these tasks.",
+    "evidenceIds": [
+      "stagewise-docs-1",
+      "stagewise-docs-18",
+      "stagewise-docs-25",
+      "stagewise-docs-6"
+    ]
+  },
+  {
+    "productId": "stagewise",
+    "storyId": "automatic-model-routing",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "The evidence shows only manual model selection: each parallel agent can use a different model, providers are configured per BYOK setup, and the free plan offers named tiers (Default, Quick, Smart). Nothing describes the tool automatically routing or choosing the best model for each task.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "stagewise",
+    "storyId": "automation-bulk-operations",
+    "verdict": "partial",
+    "quality": 5,
+    "confidence": "medium",
+    "rationale": "stagewise lets its agent change many items in one pass: it edits files across several connected workspaces, runs shell scripts, and runs multiple agents in parallel. A dedicated Diff Review page lists every modified file, and a single undo rolls back all changes from one agent action. However, bulk work happens through agent-driven multi-file edits and scripts rather than a documented bulk-operations feature, and the docs show no accept-all/reject-all batch controls. Missing for 10: an explicit bulk or batch operation capability, documented batch accept/reject across items, and independent or hands-on corroboration of large-scale multi-item changes.",
+    "evidenceIds": [
+      "stagewise-docs-1",
+      "stagewise-docs-5",
+      "stagewise-docs-8",
+      "stagewise-docs-9",
+      "stagewise-docs-18",
+      "stagewise-docs-19",
+      "stagewise-docs-25"
+    ]
+  },
+  {
+    "productId": "stagewise",
+    "storyId": "automation-rules-engine",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Event-triggered automation rules, such as hooks, are a fair capability for an agentic IDE, so this axis applies. The evidence pack shows no way to define them. Skills are invoked explicitly via slash commands, and WORKSPACE.md and SKILL.md only supply agent context, not event-driven triggers.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "stagewise",
+    "storyId": "automation-scheduled-jobs",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Scheduling recurring jobs is a fair question for an agentic IDE, so the axis applies. Nothing in the evidence shows stagewise offers scheduled, recurring, or cron-like triggering of agent jobs or workflows. The documented features are interactive: chat-driven agents, parallel agent sessions, multi-step workflow orchestration within a session, and shell access.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "stagewise",
+    "storyId": "automation-versioned-workflows",
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "stagewise lets users review and roll back what agents do: inline and side-by-side diff review, accept/reject, and per-action undo/redo of agent edits. Its reusable workflows exist as SKILL.md files and slash commands. However, nothing shows versioning, review, or rollback of the automations themselves; the controls apply to agent output, not to automation definitions. missing for 10: versioning/history of skills or automations, review workflow for automation changes, rollback of automation definitions, independent corroboration.",
+    "evidenceIds": [
+      "stagewise-docs-6",
+      "stagewise-docs-8",
+      "stagewise-docs-9",
+      "stagewise-docs-14",
+      "stagewise-docs-15"
+    ]
+  },
+  {
+    "productId": "stagewise",
+    "storyId": "autonomous-end-to-end-feature-delivery",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "stagewise is a standalone desktop IDE whose agents run locally on the host machine. They can edit files, run shell commands, preview the dev server and take screenshots, but nothing shows a cloud-hosted agent that builds, tests and demos a feature for later review. The enterprise 'stagewise Cloud' mention refers to the managed service, not remote agent execution, so the story's cloud-agent axis is unevidenced.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "stagewise",
+    "storyId": "background-cloud-tasks",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "stagewise is a desktop IDE whose agents run locally on the host against connected workspace folders, so delegating background work to an isolated cloud environment is a fair question for it. The evidence does not show that capability. Parallel agent instances and a setting to keep the app awake while agents work both point to local execution. The 'stagewise Cloud' self-hosting option is not described as an isolated execution environment.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "stagewise",
+    "storyId": "configurable-tool-permissions",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "The evidence shows that stagewise's agent can use integrations such as GitHub, Supabase and Figma, plus shell access and browser CDP. Nothing documents a way for a lead to allowlist, deny, or set permissions on which tools and integrations the agent may access. BYOK provider settings govern model endpoints, not agent tool access. Enterprise SSO/SCIM covers identity, not tool policy.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "stagewise",
+    "storyId": "cross-device-task-continuity",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Cross-device session continuity is a fair question for an agentic desktop IDE, so the axis applies. The evidence describes a locally installed desktop app with per-instance chat sessions and a stagewise Account for managed inference, but nothing shows syncing or resuming agent tasks across devices or browsers. A mention of a 'stagewise Cloud' is not evidence of session handoff.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "stagewise",
+    "storyId": "cross-session-memory",
+    "verdict": "partial",
+    "quality": 4,
+    "confidence": "medium",
+    "rationale": "stagewise automatically generates a WORKSPACE.md file in .stagewise/ when a workspace is connected. That file is the agent's primary high-level understanding of the project and persists on disk, giving it a form of auto-built, reusable project context. SKILL.md files add persistent project-specific instructions, but users write those themselves rather than the agent building them. missing for 10: evidence that the agent automatically records and recalls learnings or facts from past sessions, documentation of whether WORKSPACE.md updates as work progresses, and independent or hands-on corroboration of cross-session recall.",
+    "evidenceIds": [
+      "stagewise-docs-20",
+      "stagewise-docs-14"
+    ]
+  },
+  {
+    "productId": "stagewise",
+    "storyId": "custom-agent-skills",
+    "verdict": "full",
+    "quality": 8,
+    "confidence": "medium",
+    "rationale": "The docs say skills are SKILL.md files that give the agent structured instructions for specific tasks, teaching it project-specific patterns, workflows, and constraints. Skills can be invoked explicitly via slash commands, and plugins (GitHub, Supabase, Figma) extend the agent further, so the core of the story is directly delivered. Missing for 10: detailed authoring docs (file location, format/schema, how custom skills are discovered), and independent or hands-on corroboration of custom skills working.",
+    "evidenceIds": [
+      "stagewise-docs-14",
+      "stagewise-docs-15",
+      "stagewise-docs-16",
+      "stagewise-docs-17"
+    ]
+  },
+  {
+    "productId": "stagewise",
+    "storyId": "desktop-visual-diff-review",
+    "verdict": "full",
+    "quality": 8,
+    "confidence": "medium",
+    "rationale": "stagewise is a standalone desktop IDE for macOS, Windows and Linux. Its docs describe visual diff review: inline diffs with accept, reject and undo, plus a dedicated Diff Review page with a side-by-side view across modified files. The docs also say multiple agent instances can run in parallel, each with its own chat session and model. missing for 10: explicit evidence that parallel sessions can be laid out side by side in the UI, independent or hands-on corroboration of diff review and parallel sessions.",
+    "evidenceIds": [
+      "stagewise-docs-1",
+      "stagewise-docs-24",
+      "stagewise-docs-6",
+      "stagewise-docs-8",
+      "stagewise-docs-9",
+      "stagewise-docs-19"
+    ]
+  },
+  {
+    "productId": "stagewise",
+    "storyId": "enterprise-grade-auth",
+    "verdict": "full",
+    "quality": 7,
+    "confidence": "medium",
+    "rationale": "The enterprise page lists SSO via OIDC and SAML, SCIM provisioning, and optional self-hosting of the stagewise Cloud, which covers enterprise identity. The custom-providers docs add support for Azure OpenAI, Amazon Bedrock, and Google Vertex AI API styles, so model access can run through cloud platforms. Missing for 10: in-depth setup documentation for SSO/SAML/SCIM beyond a marketing bullet list, details on how cloud-platform credentials (e.g., IAM roles for Bedrock/Vertex) are handled, and independent or hands-on corroboration of the enterprise identity features.",
+    "evidenceIds": [
+      "stagewise-docs-28",
+      "stagewise-docs-23",
+      "stagewise-docs-22"
+    ]
+  },
+  {
+    "productId": "stagewise",
+    "storyId": "existing-subscription-auth",
+    "verdict": "partial",
+    "quality": 5,
+    "confidence": "medium",
+    "rationale": "stagewise lets developers use what they already pay for by bringing existing provider API keys per provider, and the README says subscriptions can be connected with a single API key to unlock all of that provider's models. A stagewise Account sign-in also provides managed inference on the free Hobby and paid plans. However, nothing shows signing in with a consumer subscription plan (e.g. a Claude or ChatGPT plan) instead of an API key, and community reports describe a broken sign-in and sign-up flow. Missing for 10: documented sign-in/OAuth with an existing provider subscription plan, plan-limit/usage documentation, and independent confirmation that subscription-based access works.",
+    "evidenceIds": [
+      "stagewise-docs-2",
+      "stagewise-gh-4",
+      "stagewise-docs-4",
+      "stagewise-docs-21",
+      "stagewise-docs-22",
+      "stagewise-docs-27",
+      "stagewise-comm-1",
+      "stagewise-comm-11"
+    ]
+  },
+  {
+    "productId": "stagewise",
+    "storyId": "external-workflow-tool-integration",
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "medium",
+    "rationale": "stagewise ships a plugin system that connects the agent to external tools. Documented plugins include GitHub (issues, PRs, actions), Supabase and Figma, and these can extend agent context and be invoked via slash commands. However, none of the story's named workflow tools (Jira, Slack, Google Drive) appear, and there is no evidence of a generic connector mechanism for adding arbitrary services. Missing for 10: Jira integration, Slack integration, Google Drive integration, a documented generic or custom connector path for arbitrary workflow tools, and independent corroboration that the plugins work.",
+    "evidenceIds": [
+      "stagewise-docs-15",
+      "stagewise-docs-16",
+      "stagewise-docs-17"
+    ]
+  },
+  {
+    "productId": "stagewise",
+    "storyId": "free-tier-account-access",
+    "verdict": "full",
+    "quality": 7,
+    "confidence": "medium",
+    "rationale": "The docs describe a stagewise Account as 'the fastest way to start', giving access to pre-configured models through a managed inference service with 'No API keys needed'. The pricing page lists a free Hobby tier with limited access to 3 standard models (Default, Quick, Smart), and providers can be routed through the account rather than BYOK. Community reports describe onboarding friction: a sign-in email that never arrived, no visible account-creation path, and sign-up only via CLI. These are hands-on failures but point to a rough flow rather than an absent capability, so they lower confidence instead of creating a dispute. Missing for 10: free tier is limited to only 3 models, independent confirmation that sign-in and free-tier access work smoothly, documented free-tier usage limits.",
+    "evidenceIds": [
+      "stagewise-docs-4",
+      "stagewise-docs-27",
+      "stagewise-docs-21",
+      "stagewise-comm-1",
+      "stagewise-comm-11"
+    ]
+  },
+  {
+    "productId": "stagewise",
+    "storyId": "full-codebase-mapping",
+    "verdict": "full",
+    "quality": 7,
+    "confidence": "medium",
+    "rationale": "stagewise automatically generates a WORKSPACE.md in .stagewise/ when a workspace is connected, and the docs call this the primary way the agent understands the project at a high level. The agent can also read files across workspaces and run shell commands on its own, so it can explore a codebase without the developer hand-picking context files. missing for 10: explicit documentation of on-demand codebase mapping or explanation (e.g., architecture summaries), detail on how WORKSPACE.md is built and how deep it goes, and any independent or hands-on corroboration of codebase-understanding quality.",
+    "evidenceIds": [
+      "stagewise-docs-20",
+      "stagewise-docs-1",
+      "stagewise-docs-25",
+      "stagewise-docs-18",
+      "stagewise-docs-5"
+    ]
+  },
+  {
+    "productId": "stagewise",
+    "storyId": "inline-code-completion",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "stagewise is a desktop agentic IDE, so inline completions and next-edit suggestions are a fair question for it. However, the evidence only describes chat-driven agents, diff review, and opening files in an external editor. Nothing in the pack mentions as-you-type completions, tab suggestions, or next-edit prediction.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "stagewise",
+    "storyId": "issue-to-pr-automation",
+    "verdict": "partial",
+    "quality": 5,
+    "confidence": "medium",
+    "rationale": "stagewise's agent can edit files across workspaces, run shell commands, and orchestrate multi-step workflows. A GitHub plugin gives it access to issues and pull requests, and diff review lets the developer vet the changes. Together these supply the building blocks for an issue-to-PR flow, but no documented end-to-end workflow ties them together. Missing for 10: a documented issue-to-PR workflow (picking up an issue, branching, committing, and opening the PR automatically), detail on what the GitHub plugin can actually do with issues and PRs, and hands-on or independent corroboration of the flow working.",
+    "evidenceIds": [
+      "stagewise-docs-16",
+      "stagewise-docs-25",
+      "stagewise-docs-18",
+      "stagewise-docs-1",
+      "stagewise-docs-6",
+      "stagewise-docs-15"
+    ]
+  },
+  {
+    "productId": "stagewise",
+    "storyId": "jetbrains-diff-integration",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "stagewise is a standalone agentic IDE with its own inline and side-by-side diff review, and it attaches context via @mentions inside that app. The GitHub README mentions generic \"IDE integration to view and apply code changes in your favorite editor,\" and settings let you choose an external editor for opening files. But nothing in the evidence names JetBrains, shows interactive diffs rendered inside a JetBrains IDE, or shows sending a selected code range from JetBrains as agent context.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "stagewise",
+    "storyId": "license-provenance-check",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "stagewise is an agentic IDE that generates AI-suggested code, so license and public-code matching references are a fair capability to ask about. The evidence pack documents diff review (accept, reject, undo) but never mentions license detection, code-referencing, or matching against public code.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "stagewise",
+    "storyId": "live-app-debugging",
+    "verdict": "full",
+    "quality": 8,
+    "confidence": "medium",
+    "rationale": "stagewise runs your dev server inside its IDE, and its agent can interact with live browser tabs via CDP. The GitHub README says the agent has full access to the tab's console and debugger, and the docs say it takes screenshots to debug visually, so the agent debugs the running app directly. A community user confirms the prefabbed ability to have the agent look at the live UI. Missing for 10: in-depth docs on the debugger capabilities (breakpoints, network and state inspection), independent hands-on corroboration of console/debugger-driven bug fixing, and documented support for debugging backend processes alongside the frontend.",
+    "evidenceIds": [
+      "stagewise-gh-3",
+      "stagewise-docs-25",
+      "stagewise-docs-12",
+      "stagewise-docs-11",
+      "stagewise-docs-13",
+      "stagewise-comm-6"
+    ]
+  },
+  {
+    "productId": "stagewise",
+    "storyId": "local-terminal-agent",
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "stagewise does run coding agents locally on the developer's machine: it is a standalone desktop IDE (docs-1, docs-24), agents can run shell commands (docs-18, docs-25), self-hosted models are supported (docs-3), and a community member notes agents run directly on the host (comm-8). The terminal side is barely evidenced: a single community comment says sign-up is only possible via a CLI (comm-11), which implies a CLI exists but not that it launches or drives the agent. The primary documented interface is a GUI desktop app. Missing for 10: documented CLI or terminal command to launch and interact with the agent, terminal-based agent workflow docs, hands-on corroboration of terminal usage.",
+    "evidenceIds": [
+      "stagewise-docs-1",
+      "stagewise-docs-24",
+      "stagewise-docs-18",
+      "stagewise-docs-25",
+      "stagewise-docs-3",
+      "stagewise-comm-8",
+      "stagewise-comm-11"
+    ]
+  },
+  {
+    "productId": "stagewise",
+    "storyId": "multi-directory-context",
+    "verdict": "full",
+    "quality": 7,
+    "confidence": "medium",
+    "rationale": "The docs state you can connect several project folders at once so agents can work across your full stack, and that agents can read, write, and modify files across your workspaces. Each connected workspace also gets a generated WORKSPACE.md that gives the agent high-level project context. missing for 10: in-depth docs on how multiple workspaces are scoped to a single chat session, any limits on how many folders can be connected, and independent or hands-on corroboration of multi-workspace use.",
+    "evidenceIds": [
+      "stagewise-docs-5",
+      "stagewise-docs-1",
+      "stagewise-docs-20"
+    ]
+  },
+  {
+    "productId": "stagewise",
+    "storyId": "multi-ide-chat-assistant",
+    "verdict": "full",
+    "quality": 7,
+    "confidence": "medium",
+    "rationale": "stagewise is itself a standalone desktop agentic IDE with built-in agent chat sessions (docs-1, docs-19). Its context features include @mentioning files and browser tabs, slash commands typed in the chat, an auto-generated WORKSPACE.md, and clicking UI elements to attach them as context (docs-13, docs-15, docs-20, docs-10). Integration with other editors (gh-2, docs-26) covers only opening files and applying changes there, not chatting inside them. missing for 10: chat embedded in third-party IDEs like VS Code, independent hands-on corroboration of the in-IDE chat experience.",
+    "evidenceIds": [
+      "stagewise-docs-1",
+      "stagewise-docs-19",
+      "stagewise-docs-13",
+      "stagewise-docs-15",
+      "stagewise-docs-20",
+      "stagewise-docs-10",
+      "stagewise-gh-2",
+      "stagewise-docs-26"
+    ]
+  },
+  {
+    "productId": "stagewise",
+    "storyId": "multi-model-selection",
+    "verdict": "full",
+    "quality": 9,
+    "confidence": "high",
+    "rationale": "First-party docs show model choice across many providers: BYOK keys for Claude, GPT, Gemini, Kimi, Qwen, DeepSeek, GLM and MiniMax; self-hosted models via Ollama, LM Studio and OpenAI-compatible endpoints; and a managed library of pre-configured models. Providers are configured independently, many API styles are supported (Anthropic, Google, Azure, Bedrock, Vertex), and each parallel agent session can use a different model. The free Hobby tier is limited to 3 standard models, but BYOK sidesteps this. Missing for 10: independent or hands-on corroboration of the model-selection workflow.",
+    "evidenceIds": [
+      "stagewise-docs-2",
+      "stagewise-docs-3",
+      "stagewise-docs-4",
+      "stagewise-docs-19",
+      "stagewise-docs-21",
+      "stagewise-docs-23",
+      "stagewise-gh-4",
+      "stagewise-docs-27"
+    ]
+  },
+  {
+    "productId": "stagewise",
+    "storyId": "multi-platform-task-kickoff",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "stagewise is a desktop agentic IDE, so launching agent tasks from external tools is a fair axis for it. However, the evidence only shows a GitHub plugin that lets the in-IDE agent access repos, issues, PRs and actions. That is the agent reaching out to GitHub, not GitHub, GitLab, Linear or Slack triggering agent tasks, so there is no evidence the story is delivered.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "stagewise",
+    "storyId": "multimodal-app-generation",
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "stagewise is an agentic IDE whose agent can write code across workspaces, and a Figma plugin gives it access to Figma designs. That makes design-to-code plausible, but only via Figma. Nothing shows it turning a sketch, image, or PDF into a working app. missing for 10: explicit image/sketch upload-to-code workflow, PDF design ingestion, documented end-to-end generation of a working app from a design, hands-on corroboration.",
+    "evidenceIds": [
+      "stagewise-docs-17",
+      "stagewise-docs-1",
+      "stagewise-docs-13",
+      "stagewise-gh-1"
+    ]
+  },
+  {
+    "productId": "stagewise",
+    "storyId": "natural-language-debugging",
+    "verdict": "full",
+    "quality": 7,
+    "confidence": "medium",
+    "rationale": "stagewise is a chat-driven agentic IDE. Its docs describe visual debugging in which the agent takes screenshots and inspects what users see. The GitHub README says the agent has full access to the browser tab's console and debugger, and it can also run shell commands and interact with tabs via CDP, so developers can troubleshoot by asking the agent in natural language. Missing for 10: no in-depth documentation of a natural-language debugging workflow (e.g. stack-trace or log analysis, root-cause explanation), no hands-on or independent corroboration of debugging quality, and debugging evidence is mostly limited to the browser/frontend.",
+    "evidenceIds": [
+      "stagewise-docs-12",
+      "stagewise-gh-3",
+      "stagewise-docs-25",
+      "stagewise-docs-18",
+      "stagewise-docs-13",
+      "stagewise-docs-1"
+    ]
+  },
+  {
+    "productId": "stagewise",
+    "storyId": "natural-language-feature-implementation",
+    "verdict": "full",
+    "quality": 8,
+    "confidence": "medium",
+    "rationale": "stagewise is an agentic IDE whose agents take chat instructions and read, write, and modify files across one or more workspaces, orchestrating multi-step workflows. Its dedicated multi-file Diff Review page, with accept, reject, and undo controls, confirms edits spanning several files. Community users report using it happily, though a demo showed the agent choosing a hardcoded 298px value over a proper CSS approach. missing for 10: independent hands-on evidence of plain-language feature/bug fixes spanning multiple files, evidence of implementation quality on complex changes.",
+    "evidenceIds": [
+      "stagewise-docs-1",
+      "stagewise-docs-5",
+      "stagewise-docs-8",
+      "stagewise-docs-9",
+      "stagewise-docs-25",
+      "stagewise-docs-18",
+      "stagewise-comm-5",
+      "stagewise-comm-7"
+    ]
+  },
+  {
+    "productId": "stagewise",
+    "storyId": "openness-api-parity",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "stagewise is a desktop agentic IDE, and exposing a programmatic API with UI parity is a fair question for that kind of product, so the axis applies. The evidence only covers UI-driven features such as diff review, visual element selection and chat slash commands. The 'API keys' it mentions are for bringing your own model providers, not for a stagewise control API, and the OpenAPI probe returned 404 on every candidate path. With no evidence of a public API at all, let alone one matching the UI, the verdict is none.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "stagewise",
+    "storyId": "openness-full-export",
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "There is no documented export feature. Leaving looks low-friction only by implication: stagewise works directly on local project folders, and its agent artifacts are plain Markdown files (WORKSPACE.md in .stagewise/, SKILL.md skills). The docs also describe it as open-source, and BYOK lets you skip the managed service entirely. missing for 10: an explicit data-export capability, export of chat/agent session history and settings in open formats, account-data export or deletion docs for the stagewise Account/Cloud, and any independent or hands-on confirmation of portability.",
+    "evidenceIds": [
+      "stagewise-docs-1",
+      "stagewise-docs-5",
+      "stagewise-docs-20",
+      "stagewise-docs-14",
+      "stagewise-docs-22",
+      "stagewise-probe-1"
+    ]
+  },
+  {
+    "productId": "stagewise",
+    "storyId": "openness-open-license",
+    "verdict": "full",
+    "quality": 7,
+    "confidence": "medium",
+    "rationale": "stagewise's own docs index describes it as \"the open-source agentic IDE\" (stagewise-probe-1). The README content is published in a public GitHub repo, stagewise-io/stagewise (stagewise-gh-1, stagewise-gh-2), so the source is readable and positioned as open. Missing for 10: the specific license is never named (e.g. MIT/Apache/AGPL), there is no evidence about whether the desktop IDE's full source (vs. parts) is in the repo, and there is no independent corroboration of the license terms.",
+    "evidenceIds": [
+      "stagewise-probe-1",
+      "stagewise-gh-1",
+      "stagewise-gh-2"
+    ]
+  },
+  {
+    "productId": "stagewise",
+    "storyId": "openness-self-host",
+    "verdict": "full",
+    "quality": 7,
+    "confidence": "medium",
+    "rationale": "stagewise is described as an open-source agentic IDE distributed as a downloadable desktop app for macOS, Windows and Linux. It can run fully on your own infrastructure: local models via Ollama, LM Studio or OpenAI-compatible endpoints with \"zero external API calls,\" and BYOK for every provider so that no requests go through the managed service. The enterprise tier also offers optional self-hosting of the stagewise Cloud. Missing for 10: self-hosting of the cloud/backend appears limited to the Enterprise tier with no deployment documentation, there is no self-hosting setup guide, and there is no independent or hands-on corroboration of a fully self-hosted deployment.",
+    "evidenceIds": [
+      "stagewise-probe-1",
+      "stagewise-docs-24",
+      "stagewise-docs-3",
+      "stagewise-docs-22",
+      "stagewise-docs-28"
+    ]
+  },
+  {
+    "productId": "stagewise",
+    "storyId": "parallel-agent-fleets",
+    "verdict": "partial",
+    "quality": 5,
+    "confidence": "medium",
+    "rationale": "The docs state that stagewise runs multiple agent instances in parallel, each with its own chat session and model (stagewise-docs-19). A 'keep the app awake while agents work' setting suggests some support for longer unattended runs (stagewise-docs-26), and agents can orchestrate multi-step workflows (stagewise-docs-25). However, this is a local desktop IDE with per-chat agents, and nothing shows fleet-scale autonomous execution lasting hours or days. Missing for 10: fleet-level launch and management of many agents, evidence of autonomous runs lasting hours or days, background or cloud execution independent of the desktop app, per-task isolation such as separate branches or worktrees, and independent hands-on corroboration of parallel agent use.",
+    "evidenceIds": [
+      "stagewise-docs-19",
+      "stagewise-docs-26",
+      "stagewise-docs-25"
+    ]
+  },
+  {
+    "productId": "stagewise",
+    "storyId": "parallel-task-attempt-comparison",
+    "verdict": "partial",
+    "quality": 5,
+    "confidence": "medium",
+    "rationale": "stagewise documents multiple agent instances running in parallel, each with its own chat session and optionally a different model, so the same task could be tried with different agents. Per-edit diff review, accept/reject and undo provide a way to inspect and discard changes. However, nothing shows these parallel runs are isolated attempts at the same task, or that they can be compared side by side with one picked as the winner. Missing for 10: isolated per-attempt workspaces (e.g., worktrees/branches), side-by-side comparison of competing attempts, a select-one-and-discard-others workflow, independent corroboration.",
+    "evidenceIds": [
+      "stagewise-docs-19",
+      "stagewise-docs-6",
+      "stagewise-docs-8",
+      "stagewise-docs-9"
+    ]
+  },
+  {
+    "productId": "stagewise",
+    "storyId": "partner-agent-app-integration",
+    "verdict": "partial",
+    "quality": 4,
+    "confidence": "medium",
+    "rationale": "stagewise offers a skills-and-plugins system: plugins expose slash commands in chat and include integrations for third-party services such as GitHub, Supabase, and Figma. These are integrations of partner services into the stagewise agent, not evidence that partner-built agent apps can be installed or run in stagewise workflows. Missing for 10: evidence that plugins are partner-built or that a third-party developer/partner program exists, a marketplace or distribution mechanism for external agent apps, a way to run third-party agents (rather than tools for stagewise's own agent), and independent corroboration.",
+    "evidenceIds": [
+      "stagewise-docs-15",
+      "stagewise-docs-16",
+      "stagewise-docs-17",
+      "stagewise-docs-14"
+    ]
+  },
+  {
+    "productId": "stagewise",
+    "storyId": "persistent-project-instructions",
+    "verdict": "partial",
+    "quality": 5,
+    "confidence": "medium",
+    "rationale": "stagewise auto-generates a WORKSPACE.md in .stagewise/ as the agent's primary high-level project context, and supports SKILL.md files that teach project-specific patterns, workflows, and constraints. However, the docs don't say that WORKSPACE.md is user-editable for coding standards, and skills are task-scoped, invoked via slash commands, rather than an always-applied rules file. Missing for 10: an explicit user-authored, always-applied project instructions/rules file (e.g. AGENTS.md-style) for conventions, documentation of editing WORKSPACE.md to enforce standards, and independent corroboration that the agent follows such instructions.",
+    "evidenceIds": [
+      "stagewise-docs-20",
+      "stagewise-docs-14",
+      "stagewise-docs-15"
+    ]
+  },
+  {
+    "productId": "stagewise",
+    "storyId": "pre-merge-diff-inspection",
+    "verdict": "partial",
+    "quality": 6,
+    "confidence": "medium",
+    "rationale": "Diff inspection is well documented. Agent edits get full inline diffs with accept/reject/undo, and a dedicated Diff Review page offers a per-file list and side-by-side view. Running checks is only implied: the agent has shell access to run scripts and package managers, and the GitHub plugin mentions pull requests and actions, but no dedicated test, lint, or CI check workflow before merging is documented. Missing for 10: an explicit pre-merge check/test runner integrated with diff review, a documented merge-gating workflow, and independent or hands-on corroboration of the diff review.",
+    "evidenceIds": [
+      "stagewise-docs-6",
+      "stagewise-docs-8",
+      "stagewise-docs-9",
+      "stagewise-docs-18",
+      "stagewise-docs-25",
+      "stagewise-docs-16"
+    ]
+  },
+  {
+    "productId": "stagewise",
+    "storyId": "privacy-data-residency",
+    "verdict": "partial",
+    "quality": 4,
+    "confidence": "low",
+    "rationale": "stagewise has no documented region or residency selector. It offers indirect ways to control where data goes: local models via Ollama or LM Studio with \"zero external API calls\", full BYOK so \"no requests go through the stagewise managed service\", custom endpoints such as Azure OpenAI, Bedrock and Vertex AI, and optional enterprise self-hosting of the stagewise Cloud. A community user also noted that the dataflow (what is sent to the LLM) is not documented. Missing for 10: an explicit region or residency choice for the managed stagewise Account/Cloud, documentation of where stagewise stores user data, a dataflow and residency explanation, and independent corroboration.",
+    "evidenceIds": [
+      "stagewise-docs-3",
+      "stagewise-docs-22",
+      "stagewise-docs-23",
+      "stagewise-docs-28",
+      "stagewise-comm-9"
+    ]
+  },
+  {
+    "productId": "stagewise",
+    "storyId": "privacy-no-training",
+    "verdict": "partial",
+    "quality": 4,
+    "confidence": "low",
+    "rationale": "stagewise has no documented no-training policy or training opt-out. Users can still keep data away from stagewise and third-party model vendors by running self-hosted models via Ollama/LM Studio ('zero external API calls'), by configuring BYOK for every provider so no requests touch the stagewise managed service, or by self-hosting the stagewise Cloud on the enterprise plan. A community user also reported that the dataflow (what gets sent to the LLM) is undocumented, so this protection comes from routing workarounds rather than an explicit guarantee. Missing for 10: an explicit statement that user data or code is not used for training, a training opt-out control for the managed stagewise Account inference, documented data-handling and retention terms, and independent corroboration.",
+    "evidenceIds": [
+      "stagewise-docs-3",
+      "stagewise-docs-22",
+      "stagewise-docs-4",
+      "stagewise-docs-28",
+      "stagewise-comm-9"
+    ]
+  },
+  {
+    "productId": "stagewise",
+    "storyId": "privacy-retention-controls",
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "The pack documents no explicit retention or deletion controls. The only indirect lever is avoiding stagewise's servers: BYOK for every provider means no requests go through the managed service, local models run with zero external API calls, and enterprise customers can self-host the stagewise Cloud. A community user also reports that the dataflow, meaning what is actually sent to the LLM, is undocumented. missing for 10: documented retention policy, user-facing deletion of chats/account data, retention period settings, data export/erasure controls, independent verification.",
+    "evidenceIds": [
+      "stagewise-docs-22",
+      "stagewise-docs-3",
+      "stagewise-docs-28",
+      "stagewise-comm-9"
+    ]
+  },
+  {
+    "productId": "stagewise",
+    "storyId": "privacy-telemetry-optout",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "The evidence pack never mentions a telemetry, analytics, or usage-tracking opt-out. BYOK and self-hosted model docs say requests can bypass the managed inference service, but that concerns where model calls go, not product usage tracking. The documented settings (editor choice, keep-awake, notification sounds) include no privacy or telemetry toggle.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "stagewise",
+    "storyId": "reproducible-cloud-environment-config",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Configurable cloud environments are a fair axis for an agentic coding IDE, but the evidence describes stagewise only as a locally installed desktop app whose agents run shell commands and package managers on the user's own machine. Nothing in the pack shows a way to define a reproducible cloud environment with repository dependencies or setup steps. The 'stagewise Cloud' self-hosting mention refers to the managed service, not agent execution environments.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "stagewise",
+    "storyId": "root-cause-analysis",
+    "verdict": "full",
+    "quality": 7,
+    "confidence": "medium",
+    "rationale": "stagewise's agent can run your dev server and preview the app (docs-11), drive browser tabs via CDP (docs-25), and take screenshots to debug visually (docs-12). It also has access to the tab's console and debugger (gh-3) and can run shell commands and scripts such as tests (docs-18), which together cover reproducing and verifying fixes, with diff review and undo for iterating on candidate fixes (docs-6, docs-9). Missing for 10: a documented end-to-end debugging or root-cause workflow (narrowing down causes is only implied by debugger access), explicit test-based fix verification guidance, coverage beyond web front-ends, and independent hands-on corroboration of debugging use.",
+    "evidenceIds": [
+      "stagewise-docs-11",
+      "stagewise-docs-12",
+      "stagewise-docs-25",
+      "stagewise-gh-3",
+      "stagewise-docs-18",
+      "stagewise-docs-6",
+      "stagewise-docs-9"
+    ]
+  },
+  {
+    "productId": "stagewise",
+    "storyId": "sandboxed-agent-execution",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Sandboxing is a fair question for an agentic desktop IDE, but nothing in the evidence documents a sandbox or isolated environment for the agent's file, shell, or network activity. The docs describe direct file editing across workspaces and shell command execution, and a community commenter states agents should be sandboxed by default rather than run directly on the host, which suggests no sandbox exists. Diff review and undo are post-hoc review controls, not execution isolation.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "stagewise",
+    "storyId": "shared-knowledge-workspace",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "stagewise lets a user connect several local project folders as workspaces and auto-generates a WORKSPACE.md for agent context. Enterprise SSO/SCIM is listed, but nothing in the evidence shows creating a team-shared workspace from docs and repos that acts as a common source of truth. Workspaces appear to be local agent context for an individual's IDE, not a collaborative team artifact.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "stagewise",
+    "storyId": "terminal-scripting-automation",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "stagewise is documented as an interactive desktop agentic IDE driven by chat, slash commands, and visual diff review, so a headless or scripted agent mode is a fair question for it. Nothing in the evidence shows a headless mode, a non-interactive CLI invocation, or a scripting API. The agent's own shell access is the reverse direction: it lets the agent run commands, not scripts run the agent. A community remark that signup happens via a CLI says nothing about running the agent non-interactively.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "stagewise",
+    "storyId": "training-data-opt-out",
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "No documented training opt-out setting or data-use policy appears in the evidence. A lead can only route around the question: configuring BYOK for every provider means no requests go through the stagewise managed service, and self-hosted models via Ollama or LM Studio mean zero external API calls. Enterprise also offers optional self-hosting of the stagewise Cloud, and a community user reported being unable to find documentation of what data is sent to the LLM. Missing for 10: an explicit no-training policy or opt-out control for the managed stagewise Account service, documented data-retention terms, and independent confirmation of data handling.",
+    "evidenceIds": [
+      "stagewise-docs-22",
+      "stagewise-docs-3",
+      "stagewise-docs-28",
+      "stagewise-comm-9"
+    ]
+  },
+  {
+    "productId": "stagewise",
+    "storyId": "unified-multi-session-workspace",
+    "verdict": "full",
+    "quality": 7,
+    "confidence": "medium",
+    "rationale": "stagewise is a standalone desktop IDE that documents parallel agent instances, each with its own chat session and selectable model. It also lets you connect several project folders at once, and it notifies you while agents work, so multiple sessions run from one workspace. Missing for 10: documented session-management UI (switching between, monitoring, or overviewing parallel agents), and independent or hands-on corroboration of multi-session use.",
+    "evidenceIds": [
+      "stagewise-docs-19",
+      "stagewise-docs-5",
+      "stagewise-docs-1",
+      "stagewise-docs-26"
+    ]
+  },
+  {
+    "productId": "stagewise",
+    "storyId": "vulnerability-autofix",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "stagewise is an agentic IDE, so security-vulnerability explanation and auto-fix is a fair axis for this kind of product. However, the evidence documents only general agent file editing, diff review, skills, and plugins. Nothing describes vulnerability detection, contextual security explanations, or automated security fixes.",
+    "evidenceIds": []
   }
 ]
