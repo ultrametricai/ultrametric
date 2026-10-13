@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import { pairKey } from '../integrations'
-import type { MyStackProduct } from '../myStack'
+import type { MyStackProduct } from '../stackShared'
 import {
   aggregateStack,
   battleVerdict,

@@ -541,10 +541,10 @@ export function processesByCadence(tasks: ProcessTask[]): Array<{ cadence: Caden
   })).filter((g) => g.tasks.length > 0)
 }
 
-const DEFAULT_DIR = () => path.join(process.cwd(), 'data')
+const DEFAULT_DIR = () => path.join(process.cwd(), 'rankings')
 
 // Stage 2 of the corpus lift (docs/FOUNDER-OPS.md): the operational corpus and the chains moved
-// out of data/ into the founder-ops tree — processes/corpus.json and journeys/chains.json.
+// out of rankings/ into the founder-ops tree — processes/corpus.json and journeys/chains.json.
 // `dir` stays the ARENA-DATA dir (it keys the caches and resolves the live markets via
 // loadCategory); the corpus files resolve as siblings of it, so every existing call site
 // (DEFAULT_DIR, tests' DATA_DIR, pipeline/paths.ts DATA_DIR — all `<root>/data`) keeps working
@@ -961,7 +961,7 @@ export function vendorProductId(vendor: string): string {
 export const GOVERNMENT_ARENA_ID = 'government-services'
 
 // The government-services arena rosters national monopolies, tagged by the Phase-2 rollup
-// work's committed `country`/`area` fields (data/government-services/products.json,
+// work's committed `country`/`area` fields (rankings/government-services/products.json,
 // lib/rollups.ts). Unlike a competitive arena, those products are not substitutes for each
 // other across the tags: USPTO cannot take a federal tax return and Portugal's IRN cannot
 // incorporate a Delaware company, yet all of them score on the arena's generic stories, so an

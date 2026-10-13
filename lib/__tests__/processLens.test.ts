@@ -1,4 +1,4 @@
-// The process lens (lib/processLens.ts): pure resolution semantics over the pre-serialized
+// The process lens (lib/processLensCore.ts): pure resolution semantics over the pre-serialized
 // ProcessCheckStep rows — lens > stack > null, a lens pick without judged step evidence falls
 // through, a shutdown vendor is never resolvable FROM the lens (offer surface) while a stack
 // shutdown pick still resolves (the reader really runs it) — plus the banner's process-score
@@ -13,7 +13,7 @@ import {
   parseViaParam,
   resolveStepVendor,
   serializeLensState,
-} from '@/lib/processLens'
+} from '@/lib/processLensCore'
 
 function step(overrides: Partial<ProcessCheckStep>): ProcessCheckStep {
   return {

@@ -6,8 +6,7 @@
 // judged head-to-head. Scores are computed within each product's own arena, so cross-arena
 // aggregates are directional; the one place a real judged battle exists — two products in the
 // SAME arena — the slot row links to its arena battle page instead of pretending this page judged it.
-import type { MyStackProduct } from './myStack'
-import { stackPairKey } from './stackBuilder'
+import { stackPairKey, type MyStackProduct } from './stackShared'
 
 const round1 = (n: number) => Math.round(n * 10) / 10
 
@@ -148,7 +147,7 @@ export function battleVerdict(
 
 // ---- share-URL state (?a=…&b=…) ----
 
-// Each side is either a curated preset id (data/ai-stacks.json) or a comma-separated custom
+// Each side is either a curated preset id (rankings/ai-stacks.json) or a comma-separated custom
 // product list. Preset ids are matched first — they're kebab-case slugs from a reviewed file,
 // so a collision with a product id would be a data bug, not a runtime ambiguity.
 export type BattleSideState =

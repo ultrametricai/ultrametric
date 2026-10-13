@@ -3,14 +3,11 @@
 // real processes/corpus.json tasks selected via real journeys/chains.json chains, and every
 // synthetic artifact must be born labeled simulated and replay deterministically from the
 // decision combo.
-import { readFileSync } from 'node:fs'
 import path from 'node:path'
 import { describe, expect, it } from 'vitest'
-import searchAliases from '@/data/search-aliases.json'
 import { GEO_PREF_META } from '@/lib/geoPreference'
 import { CADENCE_META, loadChains, loadProcesses, processSlug, taskCeiling } from '@/lib/processes'
 import type { SimStep } from '@/lib/processSim'
-import { buildPageEntries } from '@/lib/search-index'
 import {
   allChoiceCombos,
   applyYcCalibration,
@@ -62,7 +59,7 @@ import {
   type YearTaskSource,
 } from '@/lib/virtualStartup'
 
-const DATA_DIR = path.resolve(__dirname, '../../data')
+const DATA_DIR = path.resolve(__dirname, '../../rankings')
 
 const chains: VsChain[] = loadChains(DATA_DIR).map(({ id, name, taskIds }) => ({ id, name, taskIds }))
 const corpusById = new Map(loadProcesses(DATA_DIR).map((t) => [t.id, t]))
@@ -1046,24 +1043,8 @@ describe("'Likely choice' ordering (round 5, item 7) — committed signals, pres
   })
 })
 
-describe('repo CTA removed from the simulator page (founder 2026-10-01)', () => {
-  it('the page carries no repo CTA — the header nav repo link covers it', () => {
-    const src = readFileSync(path.resolve(__dirname, '../../app/startup-sim/page.tsx'), 'utf8')
-    expect(src).not.toContain('vs-repo-cta')
-    expect(src).not.toContain('Take part in the open startup repo')
-    expect(src.indexOf('The open startup simulator</h1>')).toBeGreaterThan(-1)
-  })
-})
-
-describe('discoverability wiring', () => {
-  it('/startup-sim is a ⌘K page entry with committed aliases', () => {
-    const entry = buildPageEntries(searchAliases.pages as Record<string, string[]>).find(
-      (e) => e.href === '/startup-sim',
-    )
-    expect(entry?.label).toBe('Open Startup Sim') // renamed from 'The Open Startup' (founder 2026-10-02)
-    expect(entry?.keywords).toContain('virtual startup')
-  })
-})
+// The simulator-page source pin (repo CTA removal) and the ⌘K search-entry wiring case moved
+// to the private site repo with app/startup-sim and lib/search-index.ts (repo split).
 
 describe("the 'Apply to YC' composition (founder 2026-10-01, item 6) — against the live corpus", () => {
   it('fund_007 is a real, committed corpus process with https-cited YC sources and honest routes', () => {

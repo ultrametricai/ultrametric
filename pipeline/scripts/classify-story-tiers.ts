@@ -1,6 +1,6 @@
 // Pricing-tier classifier: annotates every (product, story) cell the judge ruled full/partial
 // with the plan tier the cited evidence says a buyer needs — free / paid / enterprise — or
-// 'unknown' when the evidence never states gating. Writes data/{cat}/story-tiers.json (see
+// 'unknown' when the evidence never states gating. Writes rankings/{cat}/story-tiers.json (see
 // lib/storyTiers.ts for the schema and the display-only contract: this NEVER feeds scoring,
 // verdicts.json is never touched).
 //

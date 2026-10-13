@@ -1,4 +1,4 @@
-// Aggregates data/yc-map.json into the lane's required report: top proposed new arenas by
+// Aggregates rankings/yc-map.json into the lane's required report: top proposed new arenas by
 // company density (>=3 candidates), and the full list of YC companies mapped to an EXISTING
 // arena (direct add-candidates for that arena's products.json). Read-only — writes
 // .superpowers/yc-lane-report.md (not tracked as a "gate" artifact, just the requested report
@@ -8,8 +8,8 @@ import path from 'node:path'
 import { YcMapSchema } from '../../lib/schemas'
 import { ROOT } from '../paths'
 
-const YC_MAP_PATH = path.join(ROOT, 'data', 'yc-map.json')
-const YC_BATCHES_PATH = path.join(ROOT, 'data', 'yc-batches.json')
+const YC_MAP_PATH = path.join(ROOT, 'rankings', 'yc-map.json')
+const YC_BATCHES_PATH = path.join(ROOT, 'rankings', 'yc-batches.json')
 const REPORT_PATH = path.join(ROOT, '.superpowers', 'yc-lane-report.md')
 
 function main() {
@@ -40,7 +40,7 @@ function main() {
   const lines: string[] = []
   lines.push('# YC ingestion + category-mapping lane report')
   lines.push('')
-  lines.push(`Generated from data/yc-map.json (${map.length} companies, batches W23-S26) and data/yc-batches.json (${Object.keys(ycBatches).length} existing products verified as YC alumni).`)
+  lines.push(`Generated from rankings/yc-map.json (${map.length} companies, batches W23-S26) and rankings/yc-batches.json (${Object.keys(ycBatches).length} existing products verified as YC alumni).`)
   lines.push('')
   lines.push('## Top proposed new arenas by density (>=3 candidates)')
   lines.push('')
@@ -60,7 +60,7 @@ function main() {
     for (const m of members) lines.push(`- ${m.name} (${m.slug}, ${m.batch}) — ${m.oneLiner}`)
     lines.push('')
   }
-  lines.push('## Existing products verified as YC alumni (data/yc-batches.json)')
+  lines.push('## Existing products verified as YC alumni (rankings/yc-batches.json)')
   lines.push('')
   for (const [productId, code] of Object.entries(ycBatches)) lines.push(`- ${productId}: ${code}`)
   lines.push('')

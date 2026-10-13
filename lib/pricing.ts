@@ -1,4 +1,4 @@
-// Pricing transparency index: schema + loader + display helpers for data/{cat}/pricing.json —
+// Pricing transparency index: schema + loader + display helpers for rankings/{cat}/pricing.json —
 // what agent-driven usage of a product actually costs, normalized into the arena's canonical
 // per-action unit (see PRICING_ARENAS below). Produced by pipeline/stages/pricing.ts, which
 // LLM-extracts pricing facts from the vendor's own pricing page under hard honesty rules:
@@ -63,7 +63,7 @@ export const PricingFactSchema = z.object({
   message: 'a non-free fact must carry a price (amountUsd > 0 or percent)',
 })
 
-// data/{cat}/pricing.json value per product: either ≥1 verified facts, or an honest
+// rankings/{cat}/pricing.json value per product: either ≥1 verified facts, or an honest
 // "pricing unclear" record with the reason (JS-shell page, bot wall, no printed unit prices).
 export const ProductPricingSchema = z.union([
   z.object({
@@ -77,7 +77,7 @@ export const ProductPricingSchema = z.union([
   }),
 ])
 
-// data/{cat}/pricing.json shape: productId -> ProductPricing. A product absent from the map has
+// rankings/{cat}/pricing.json shape: productId -> ProductPricing. A product absent from the map has
 // simply not been through the pricing stage yet — display code renders nothing, not "unclear".
 export const PricingMapSchema = z.record(z.string(), ProductPricingSchema)
 
@@ -91,7 +91,7 @@ export function isPricingUnavailable(entry: ProductPricing): entry is PricingUna
   return 'unavailable' in entry && entry.unavailable === true
 }
 
-const DEFAULT_DIR = () => path.join(process.cwd(), 'data')
+const DEFAULT_DIR = () => path.join(process.cwd(), 'rankings')
 const pricingCache = new Map<string, PricingMap>()
 
 // Same tolerant-optional contract as lib/data.ts's popularity load: no pricing.json (arena not

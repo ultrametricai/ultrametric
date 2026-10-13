@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # One-shot helper for the agent-skills arena bring-up (2026-09-06): appends probe-tier evidence
-# items distilled from the recorded runtime probes in data/agent-skills/proofs/ (see
+# items distilled from the recorded runtime probes in rankings/agent-skills/proofs/ (see
 # pipeline/probes/agent-skills.ts — all 7 recorded probes passed).
 # Run AFTER `pnpm pipeline probe --category agent-skills` — that stage wholesale-replaces
 # probe-tier evidence and would wipe these items (re-run this script after any probe refresh).
@@ -72,7 +72,7 @@ ITEMS = {
 }
 
 for pid, items in ITEMS.items():
-    path = f'data/agent-skills/evidence/{pid}.json'
+    path = f'rankings/agent-skills/evidence/{pid}.json'
     ev = json.load(open(path))
     existing = {e['id'] for e in ev}
     for item in items:

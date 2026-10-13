@@ -3,7 +3,7 @@ import { describe, expect, it } from 'vitest'
 import { loadAiStacks, resolveStack } from '@/lib/aiStacks'
 import { loadAll } from '@/lib/data'
 
-const DATA_DIR = path.resolve(__dirname, '../../data')
+const DATA_DIR = path.resolve(__dirname, '../../rankings')
 
 describe('ai-stacks data', () => {
   it('parses and every arena-top slot references a real arena id', () => {

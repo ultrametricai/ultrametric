@@ -41,7 +41,7 @@ ITEMS = {
 }
 
 for pid, items in ITEMS.items():
-    path = f'data/frontier-models/evidence/{pid}.json'
+    path = f'rankings/frontier-models/evidence/{pid}.json'
     ev = json.load(open(path))
     existing = {e['id'] for e in ev}
     for iid, url, excerpt in items:

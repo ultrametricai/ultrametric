@@ -5,7 +5,7 @@ import { verdictFor, type CategoryData } from './data-helpers'
 import { weightedPercent } from './scoring'
 import type { Story } from './schemas'
 
-// ICP lenses (data/icp-types.json): ~10 cross-arena buyer types — not company-size tiers but
+// ICP lenses (rankings/icp-types.json): ~10 cross-arena buyer types — not company-size tiers but
 // genuinely different ways of weighing the same evidence (an open-source purist and an
 // Built-in AI startup read the same verdict matrix and reach different shortlists). Each lens
 // declares an *emphasis*: the story personas that matter to that buyer plus per-theme/per-group
@@ -51,7 +51,7 @@ export const IcpTypesSchema = z.array(IcpTypeSchema).min(1).superRefine((icps, c
 export type IcpType = z.infer<typeof IcpTypeSchema>
 export type IcpEmphasis = z.infer<typeof IcpEmphasisSchema>
 
-export function loadIcpTypes(dataDir = path.join(process.cwd(), 'data')): IcpType[] {
+export function loadIcpTypes(dataDir = path.join(process.cwd(), 'rankings')): IcpType[] {
   const raw = JSON.parse(fs.readFileSync(path.join(dataDir, 'icp-types.json'), 'utf8'))
   return IcpTypesSchema.parse(raw)
 }

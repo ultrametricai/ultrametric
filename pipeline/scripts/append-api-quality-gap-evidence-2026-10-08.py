@@ -65,7 +65,7 @@ EXTRA_URLS = {
 
 def main():
     for (arena, pid), items in ITEMS.items():
-        ef = os.path.join(ROOT, 'data', arena, 'evidence', f'{pid}.json')
+        ef = os.path.join(ROOT, 'rankings', arena, 'evidence', f'{pid}.json')
         ev = json.load(open(ef))
         have = {e['id'] for e in ev}
         added = 0
@@ -79,7 +79,7 @@ def main():
                 f.write(json.dumps(ev, indent=2, ensure_ascii=False) + '\n')
         print(f'{arena}/{pid}: +{added} evidence items ({len(ev)} total)')
 
-        pf = os.path.join(ROOT, 'data', arena, 'products.json')
+        pf = os.path.join(ROOT, 'rankings', arena, 'products.json')
         ps = json.load(open(pf))
         changed = False
         for p in ps:

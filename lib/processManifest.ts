@@ -16,7 +16,7 @@ import { SITE_URL } from './site'
 //
 // Everything here is a pure function of the corpus (read through lib/processes.ts only) plus
 // the committed arena data — no request-time inputs — so the routes prerender under the static
-// export and the whole module is unit-testable against data/.
+// export and the whole module is unit-testable against rankings/.
 
 export const MANIFEST_VERSION = 1 as const
 

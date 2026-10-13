@@ -2,7 +2,7 @@
 // (components/TryIt/Microterminal.tsx) and the worker's /api/try/:arena/:product/:probeId
 // route (infra/cloudflare-proxy/worker.js).
 //
-// The idea: many recorded keyless probes (data/<arena>/proofs/) are pure HTTP — a curl GET/POST
+// The idea: many recorded keyless probes (rankings/<arena>/proofs/) are pure HTTP — a curl GET/POST
 // of a fixed public URL with static args, or an npm/pip registry lookup. Those exact requests
 // can be re-run live from the Cloudflare Worker as worker-native fetch calls (never a shell,
 // never user input). This script scans every committed proof index, parses each recorded
@@ -18,7 +18,7 @@
 //              every non-HTTP binary (npx, uvx, docker, stripe, …) — those keep the replay.
 //
 // Outputs (both committed, both generated — do not hand-edit):
-//   data/live-probes.json                          read by lib/liveProbes.ts (site, build time)
+//   rankings/live-probes.json                          read by lib/liveProbes.ts (site, build time)
 //                                                  and mirrored to public/data/ by copy-data.mjs
 //   infra/cloudflare-proxy/live-probes.generated.js  imported by worker.js — `wrangler deploy`
 //                                                  bundles it into the worker (same "committed
@@ -398,10 +398,10 @@ export function workerModuleSource(entries: LiveProbeEntry[]): string {
     '//   pnpm tsx pipeline/scripts/generate-live-probe-manifest.ts',
     '//',
     '// The static allowlist behind the worker\'s /api/try/:arena/:product/:probeId route: every',
-    '// entry is a recorded keyless proof command (data/*/proofs/) that is provably reproducible',
+    '// entry is a recorded keyless proof command (rankings/*/proofs/) that is provably reproducible',
     '// as one worker-native fetch of a fixed public https URL — no shell, no user input, ever.',
     '// `wrangler deploy` bundles this module into worker.js (same committed-allowlist pattern as',
-    '// MCP_ENDPOINTS there). Kept byte-identical to data/live-probes.json by',
+    '// MCP_ENDPOINTS there). Kept byte-identical to rankings/live-probes.json by',
     '// __tests__/try.test.ts.',
     'export const LIVE_PROBES = {',
     ...lines,

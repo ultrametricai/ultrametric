@@ -2,7 +2,7 @@
 // as abstract technologies in their pros and cons"): the /technologies page ranks ABSTRACT ways
 // of driving software — API, MCP, CLI, webhooks, built-in assistant… — not vendors. The site's
 // doctrine is evidence-first, so every number here is AGGREGATED from committed judged data
-// (data/*/verdicts.json + rankings.json via loadAll()); nothing is hand-scored. Only the
+// (rankings/*/verdicts.json + rankings.json via loadAll()); nothing is hand-scored. Only the
 // pros/cons prose and the story-id curation per surface are editorial, the same contract as
 // arena descriptions.
 //
@@ -19,9 +19,32 @@
 // Pure and `node:fs`-free (the lib/data-helpers.ts contract): callers pass CategoryData[]
 // (usually loadAll()), tests pass fixtures. Determinism: computeControlSurfaces on the same
 // input always yields byte-identical output (see lib/__tests__/controlSurfaces.test.ts).
-import { CONTROL_SURFACE_ICONS } from './arenaIcons'
 import type { CategoryData } from './data-helpers'
+import { PROCESS_ICON_PREFIX, type IconHue } from './processIcons'
 import type { Verdict } from './schemas'
+
+const pi = (glyph: string, hue: IconHue): string => `${PROCESS_ICON_PREFIX}${glyph}:${hue}`
+
+// The per-surface house icon tokens (founder 2026-10-08 house icon sweep: the per-surface
+// emoji column markers join the custom set). All violet: control surfaces ARE the
+// machine-access/AI family, and most reuse their arena twin's exact token (same concept =
+// same mark). Lives here with SURFACE_DEFS (lib/arenaIcons.ts re-exports it for the icon
+// gallery); totality over SURFACE_DEFS is enforced by lib/__tests__/controlSurfaces.test.ts.
+export const CONTROL_SURFACE_ICONS: Record<string, string> = {
+  api: pi('plug', 'violet'), // 🔌 same plug as the api-platforms arena
+  mcp: pi('puzzle', 'violet'), // 🧩 same piece as mcp-infrastructure
+  'agent-docs': pi('books', 'violet'), // 📖 same books as docs-platforms
+  headless: pi('gear', 'violet'), // ⚙️ the machine running without a UI
+  'nl-commands': pi('chat', 'violet'), // 💬 talking to the product
+  sdk: pi('box', 'violet'), // 📦 same package as package-managers
+  assistant: pi('bulb', 'violet'), // 💡 same bulb as ai-assistants
+  cli: pi('terminal', 'violet'), // ⌨️ same prompt as terminals
+  webhooks: pi('bolt', 'violet'), // 🪝 no hook glyph was ever drawn — the bolt: the event firing at your endpoint
+  'mobile-app': pi('phone', 'violet'), // 📱 same phone as mobile-dev
+  'desktop-app': pi('monitor', 'violet'), // 🖥️ same monitor as desktop-os
+  voice: pi('mic', 'violet'), // 🎙️ same microphone as voice-agents
+  'browser-extension': pi('browser', 'violet'), // 🌐 same browser as browser-agents
+}
 
 // Same ladder as lib/accessGlyphs.ts's VERDICT_RANK — "ships" means full or partial, mirroring
 // /global's adoption semantics (lib/diffusion.ts): we found evidence it works, maybe with caveats.
@@ -417,7 +440,7 @@ function computeSurface(def: SurfaceDef, categories: CategoryData[]): SurfaceRow
 //   - "Most mobile" / "Most visual": mobile/desktop/voice surfaces are judged in ≤7 arenas via
 //     arena-authored stories, and no judged story measures "visual" at all — a fleet ranking on
 //     either would be invented, not derived.
-//   - "Fastest growing": data/*/score-history.jsonl tracks scores over time but per-story
+//   - "Fastest growing": rankings/*/score-history.jsonl tracks scores over time but per-story
 //     verdict history is not committed, so surface growth is not recomputable from this repo.
 export const SURFACE_RANKS = [
   { id: 'adoption', name: 'Most adopted', title: 'Share of all judged products shipping the surface (full or partial verdict)' },

@@ -3,9 +3,9 @@
 # X2 Elite Extreme. qualcomm.com is a client-rendered React app — every fetcher in the pipeline
 # (crawl UA, plain curl, WebFetch) receives a 6.9KB JS shell that literally says "You need to
 # enable JavaScript to run this app", so the standard crawl→extract path has no corpus to work
-# with (the same bot-wall class the Intel ARK note in data/experiments/processors.json records).
+# with (the same bot-wall class the Intel ARK note in rankings/experiments/processors.json records).
 # Spec values below are the vendor's own published figures, verified via rendered browser fetch
-# at the 2026-09-14 experiments curation (data/experiments/processors.json, same sourceUrl) and
+# at the 2026-09-14 experiments curation (rankings/experiments/processors.json, same sourceUrl) and
 # re-checked at bring-up. The JS-shell fact itself is recorded in the pack — recorded reality
 # wins, and spec-transparency is a judged axis in this arena.
 import datetime
@@ -32,7 +32,7 @@ ITEMS = [
      "Qualcomm's developer portal covers Windows on Snapdragon development: Arm-native Windows toolchains, the Qualcomm AI Engine Direct SDK, and Qualcomm AI Hub for optimizing and deploying models to the Hexagon NPU on Snapdragon X-series PCs."),
 ]
 
-path = 'data/processors/evidence/qualcomm-snapdragon-x2-elite-extreme.json'
+path = 'rankings/processors/evidence/qualcomm-snapdragon-x2-elite-extreme.json'
 existing = []
 if os.path.exists(path):
     existing = json.load(open(path))

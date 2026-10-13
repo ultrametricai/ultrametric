@@ -4,6 +4,8 @@ import path from 'node:path'
 import { type Evidence, EvidenceSchema, ProductSchema, StorySchema } from '../lib/schemas'
 import { fetchWithRetry, htmlToMarkdown } from './fetch-page'
 import { categoryDir, readJson, resolveCategories, ROOT, writeJson } from './paths'
+import { writeStoryGraph } from './scripts/generate-story-graph'
+import { writeVendorReviews } from './scripts/generate-vendor-reviews'
 import { runDerive } from './stages/derive'
 import { runJudge } from './stages/judge'
 import { REPO as DEFAULT_REPO } from '../lib/site'
@@ -174,6 +176,14 @@ async function main(): Promise<void> {
 
   await runJudge({ category, product: productId })
   await runDerive({ category })
+  // Derive restamped rankings.generatedAt, which feeds every review's tested_on/recheck_due —
+  // regenerate the interchange records so the PR passes the drift test
+  // (pipeline/__tests__/vendorReviews.test.ts).
+  writeVendorReviews()
+  // The judge pass can flip story→product verdicts, an input of rankings/graph.json — regenerate
+  // the graph so the PR passes the byte-identity tests (lib/__tests__/storyProcessGraph.test.ts
+  // and shared-canonical-identity.test.ts).
+  writeStoryGraph()
 
   const branch = `contest-${issueNumber}`
   git(['checkout', '-b', branch])
@@ -182,6 +192,8 @@ async function main(): Promise<void> {
     path.relative(ROOT, evidenceFile),
     path.relative(ROOT, path.join(dataDir, 'verdicts.json')),
     path.relative(ROOT, path.join(dataDir, 'rankings.json')),
+    'rankings/graph.json',
+    'vendors/reviews/generated',
   ])
   git([
     '-c',
@@ -197,7 +209,7 @@ async function main(): Promise<void> {
   const prBody = [
     `Automated contest resolution for #${issueNumber}.`,
     '',
-    `Added ${newEvidence.length} evidence item(s) to \`data/${category}/evidence/${productId}.json\` from the issue's ` +
+    `Added ${newEvidence.length} evidence item(s) to \`rankings/${category}/evidence/${productId}.json\` from the issue's ` +
       `Evidence URLs, then re-ran \`judge --category ${category} --product ${productId}\` and ` +
       `\`derive --category ${category}\`.`,
     '',

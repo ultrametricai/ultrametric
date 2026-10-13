@@ -1,17 +1,22 @@
 import { configDefaults, defineConfig } from 'vitest/config'
-import react from '@vitejs/plugin-react'
 import path from 'node:path'
 
+// The open artifact test surface (docs/REPO-SPLIT-PLAN.md, section 3): the root
+// data-integrity suite, the lib loader/determinism/golden suites, and pipeline correctness.
+// The UI suites run in the private site repo. scripts/content-audit.test.mjs runs under
+// node --test, outside this glob (see docs/repo-split-census.json).
 export default defineConfig({
-  plugins: [react()],
   test: {
-    include: ['**/__tests__/**/*.test.{ts,tsx}'],
-    exclude: [...configDefaults.exclude, '**/.claude/**', '**/.next/**'],
-    passWithNoTests: true,
-    setupFiles: ['./vitest.setup.ts'],
-    // vitest 5 spawns a fresh isolated worker per test file (v4 reused workers), which slows the
-    // handful of heavy integration tests (full data/ copies + spawned pipeline CLIs) past the 5s
-    // default. Headroom, not semantics: genuinely-hung tests still fail.
+    include: [
+      '__tests__/**/*.test.ts',
+      'lib/**/__tests__/**/*.test.ts',
+      'pipeline/**/__tests__/**/*.test.ts',
+    ],
+    exclude: [...configDefaults.exclude, '**/.claude/**'],
+    // An include-pattern typo must fail, not silently pass with no tests.
+    passWithNoTests: false,
+    // Heavy integration tests (full rankings/ copies + spawned pipeline CLIs) outlive the 5s
+    // default under per-file worker isolation. Headroom, not semantics.
     testTimeout: 30_000,
     // coverage/ is the committed corpus coverage map; test-coverage reports write to
     // .coverage/ (gitignored) so the two never collide.

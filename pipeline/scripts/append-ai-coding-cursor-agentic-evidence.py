@@ -169,7 +169,7 @@ PROBES = [
 
 
 def main():
-    path = f'{ROOT}/data/ai-coding/evidence/cursor.json'
+    path = f'{ROOT}/rankings/ai-coding/evidence/cursor.json'
     ev = json.load(open(path))
     existing = {e['id'] for e in ev}
 

@@ -1,6 +1,6 @@
 // Scratch re-judge pilot: runs the EXACT judge stage (same SYSTEM prompt, same correction
 // loop, same cellHash) for one category, but writes every artifact to a caller-supplied
-// scratch directory OUTSIDE the repo — committed data/, the judge cache under pipeline/cache/,
+// scratch directory OUTSIDE the repo — committed rankings/, the judge cache under pipeline/cache/,
 // and rankings.json are never touched. Built for model-migration pilots (e.g. sonnet-5 →
 // opus-5-5): run with UM_JUDGE_MODEL=<candidate> and diff the scratch verdicts against the committed
 // baseline with pipeline/scripts/rejudge-pilot-diff.ts.
@@ -40,9 +40,9 @@ if (!category || !out) {
 }
 
 // Hard isolation guard: the scratch dir must not live anywhere a committed artifact could be
-// clobbered. Refuse data/ and pipeline/cache/ (and anything inside them) outright.
+// clobbered. Refuse rankings/ and pipeline/cache/ (and anything inside them) outright.
 const outAbs = path.resolve(out)
-for (const forbidden of [path.join(ROOT, 'data'), path.join(ROOT, 'pipeline', 'cache')]) {
+for (const forbidden of [path.join(ROOT, 'rankings'), path.join(ROOT, 'pipeline', 'cache')]) {
   if (outAbs === forbidden || outAbs.startsWith(forbidden + path.sep)) {
     throw new Error(`rejudge-pilot: --out ${outAbs} is inside ${forbidden} — pick a scratch location outside the repo's committed trees`)
   }

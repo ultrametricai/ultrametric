@@ -111,7 +111,7 @@ export interface VsAxisOption<V extends string = string> {
   // Compact picker text (the canonical `label` stays the accessible name).
   short: string
   blurb: string
-  // The matching data/icp-types.json lens where one exists — a cross-reference, not a data
+  // The matching rankings/icp-types.json lens where one exists — a cross-reference, not a data
   // dependency; null where the corpus has no such lens and the option is defined editorially.
   icpId: string | null
   // The option's named modifier, phrased as a visible simulation assumption; null = baseline.

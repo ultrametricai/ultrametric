@@ -1,58 +1,67 @@
 # Startup lore
 
-Startup law distills principles the sources agree on. Lore is the other half: the
-heuristics founders actually trade, held by schools that genuinely disagree with each
-other. `registry.json` records those heuristics with provenance and keeps the
-disagreements explicit.
+The heuristics founders actually trade, recorded as sourced claims from named schools
+of thought, with the disagreements between schools kept explicit, and the library of
+essays, guides, books, and talks those claims come from.
 
-Every entry carries the stance `claim`. A heuristic in this registry is one school's
-belief about how to build a company, with a named author and a citable work behind it.
-The registry takes no position on which school is right; the tension map is the content.
+## Registry
 
-The episode layer lives separately: [`resources/LORE.md`](../resources/LORE.md) records
-veracity-graded startup history, while this registry records the rules of thumb the
-schools draw from it.
+Every entry in `registry.json` is one school's belief about how to build a company, with a
+named author and a citable work behind it. The registry takes no position on which school
+is right; it records the conflicts between entries explicitly, on both sides. The episode
+layer lives separately in
+[`resources/LORE.md`](../resources/LORE.md) (veracity-graded startup history); this
+registry records the rules of thumb the schools draw from it.
 
-## Entry shape
+Each record carries: `id` (stable), `heuristic` (one actionable sentence, a faithful
+paraphrase), `school` (`YC`, `lean`, `blitzscaling`, `bootstrapper`, `effectual`,
+`contrarian`, `classical`, `craft`), `source` (author, work, URL), `stance` (always
+`claim`), `tensions` (conflicting entry ids, symmetric and always across schools), and
+`processIds` (the processes in [`processes/corpus.json`](../processes/corpus.json) it
+bears on).
 
-Each record in `registry.json`:
+Contribute here:
 
-| Field | Meaning |
-| --- | --- |
-| `id` | Stable kebab-case identifier |
-| `heuristic` | The actionable rule, one sentence, a faithful paraphrase of the source |
-| `school` | The tradition it comes from (`YC`, `lean`, `blitzscaling`, `bootstrapper`, `effectual`, `contrarian`, `classical`, `craft`) |
-| `source` | `author`, `work`, `url`: the essay, book, or talk by the person who said it |
-| `stance` | Always `claim`; a belief with provenance |
-| `tensions` | Ids of heuristics it conflicts with; symmetric, and always across schools |
-| `processIds` | Processes in [`processes/corpus.json`](../processes/corpus.json) the heuristic bears on |
+1. A real, verifiable source is required: essay, book, or talk by the person the heuristic
+   is attributed to, with a resolving URL (`source.note` documents hosts that refuse
+   automated fetches, with a reachable alternative). A fabricated URL or invented quote is
+   disqualifying.
+2. Map the tensions: add the id on both sides, across schools.
+3. One actionable sentence per heuristic; `stance` stays `claim`.
+4. Every `processIds` entry must resolve.
 
-`source.note` is optional and documents hosts that refuse automated fetches, together
-with a reachable alternative where one exists.
+Gate: `pnpm vitest run __tests__/lore-registry.test.ts --maxWorkers=2`.
 
-## Tensions
+## Library
 
-The registry disagrees with itself on purpose. Launch-early claims sit against
-polish-first claims, fundraise-and-blitzscale against bootstrap-and-stay-calm, focus
-against many small bets, definite plans against hypothesis loops. Every tension is
-recorded on both entries, and the gate fails if a tension is one-sided, dangling, or
-drawn inside a single school.
+`library.json` is the curated reading list: the canonical essays, guides, books, and talks
+on building a company, organized into sections. Where the definitive version of a lesson
+is a recorded talk, the entry is the video. Each entry carries `id`, `section`, `title`,
+`author`, `year` (when the work itself or its publisher states one), `format` (`essay`,
+`guide`, `book`, `video`), `url`, `teaches` (one functional sentence on what the work
+argues or shows), `loreIds` (registry heuristics the work grounds), and `processIds`
+(processes it bears on). Cross-links are recorded only where the connection is real; most
+entries carry none.
 
-## Contributing an entry
+| Section | What it teaches | Example entry |
+| --- | --- | --- |
+| Starting up and ideas | Deciding to start, finding an idea worth working on, and the first weeks of a company. | [How to Start a Startup](https://paulgraham.com/start.html) — Paul Graham |
+| Finding product-market fit | Talking to users, shipping a minimum product, and measuring whether the market pulls. | [The Only Thing That Matters](https://pmarchive.com/guide_to_startups_part4.html) — Marc Andreessen |
+| Fundraising | Raising seed and priced rounds: instruments, term sheets, pitching, and runway math. | [How to Raise Money](https://paulgraham.com/fr.html) — Paul Graham |
+| Hiring and culture | Recruiting, interviewing, compensation, and the management systems that scale a team. | [How to Hire](https://blog.samaltman.com/how-to-hire) — Sam Altman |
+| Growth and distribution | First users, growth loops, channel decay, and when to scale spend and headcount. | [Startup = Growth](https://paulgraham.com/growth.html) — Paul Graham |
+| Pricing and sales | Setting and raising prices, founder-led selling, and building the first sales team. | [Why Your Customers Would Be Happier If You Charged More](https://www.kalzumeus.com/2012/09/21/ramit-sethi-and-patrick-mckenzie-on-why-your-customers-would-be-happier-if-you-charged-more/) — Patrick McKenzie with Ramit Sethi |
+| Exits and acquisitions | Deciding whether to sell, running an acquisition process, and life after the deal. | [Notes on the Acquisition Process](https://cdixon.org/2012/09/10/notes-on-the-acquisition-process/) — Chris Dixon |
 
-1. A source is required: a real, verifiable essay, book, or talk by the person the
-   heuristic is attributed to. Check the URL resolves. If the host refuses automated
-   fetches, keep the canonical URL and add a `source.note` with a reachable alternative.
-   A fabricated URL or an invented quote is disqualifying; paraphrase faithfully, and if
-   you quote, quote exactly.
-2. Tension mapping is encouraged: find the entries your heuristic conflicts with and add
-   the id on both sides. Tensions must cross schools.
-3. Keep `stance` as `claim`, and keep the heuristic to one actionable sentence.
-4. Point `processIds` at the corpus processes the heuristic bears on; every id must
-   resolve.
+Contribute here:
 
-Gate:
+1. Every URL is fetched and confirmed to resolve to the claimed work before it lands; a
+   dead host or a page that no longer carries the work disqualifies the link (find the
+   current home or leave the entry out). `note` documents host-level caveats.
+2. `teaches` is one sentence on what the work actually argues or shows; titles stay as
+   published.
+3. Sections hold 8-15 entries; the bar is the best entries, not the most.
+4. `loreIds` and `processIds` must resolve, and only record real connections.
 
-```bash
-pnpm vitest run __tests__/lore-registry.test.ts --maxWorkers=2
-```
+Gate: `pnpm vitest run __tests__/lore-library.test.ts --maxWorkers=2` (shape and
+references; URL liveness is checked at authoring time, the test performs no network I/O).

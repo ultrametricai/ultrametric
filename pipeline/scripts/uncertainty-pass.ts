@@ -7,7 +7,7 @@
 // on-disk evidence pack, and records agreement across those 2 fresh samples plus the tier already
 // cached in verdicts.json.
 //
-// Writes data/{cat}/uncertainty.json (array of UncertaintyEntry — see lib/schemas.ts). Entirely
+// Writes rankings/{cat}/uncertainty.json (array of UncertaintyEntry — see lib/schemas.ts). Entirely
 // additive/display-only: never touches verdicts.json, never feeds lib/scoring.ts, and a category
 // that isn't a close race gets no file at all (see lib/data.ts's tolerant-optional load).
 //

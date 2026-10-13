@@ -7,8 +7,9 @@ import { planFounderOps, validateFounderOps } from '@/lib/founderOps'
 // committed rules/processes/sources/coverage records must satisfy every structural and semantic
 // invariant, and the conservative planner must refuse everything it cannot exactly match.
 
+const FIXTURES_DIR = path.join(process.cwd(), 'processes', 'fixtures')
 const readFixture = (name: string) =>
-  JSON.parse(fs.readFileSync(path.join(process.cwd(), 'fixtures', name), 'utf8'))
+  JSON.parse(fs.readFileSync(path.join(FIXTURES_DIR, name), 'utf8'))
 
 describe('founder-ops corpus validation', () => {
   it('the committed corpus passes every invariant', () => {
@@ -19,7 +20,7 @@ describe('founder-ops corpus validation', () => {
   })
 
   it('all fixtures are synthetic with full scenario dimensions', () => {
-    for (const file of fs.readdirSync(path.join(process.cwd(), 'fixtures')).filter((f) => f.endsWith('.json'))) {
+    for (const file of fs.readdirSync(FIXTURES_DIR).filter((f) => f.endsWith('.json'))) {
       const event = readFixture(file)
       expect(event.synthetic, `${file} must assert synthetic=true`).toBe(true)
       for (const key of ['entity_jurisdiction', 'tax_jurisdiction', 'entity_type', 'event_type']) {

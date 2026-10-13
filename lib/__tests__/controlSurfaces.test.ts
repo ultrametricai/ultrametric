@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest'
 import {
   bestSurfaceVerdict,
   computeControlSurfaces,
+  CONTROL_SURFACE_ICONS,
   isSurfaceRankId,
   LIFT_MIN_ARENAS,
   sortSurfaces,
@@ -9,6 +10,7 @@ import {
   SURFACE_RANKS,
   type SurfaceRow,
 } from '@/lib/controlSurfaces'
+import { parseProcessIconToken } from '@/lib/processIcons'
 import { loadAll } from '@/lib/data'
 import type { CategoryData } from '@/lib/data-helpers'
 import type { Story, Verdict } from '@/lib/schemas'
@@ -282,6 +284,19 @@ describe('live corpus', () => {
         expect(byArena.get(p.categoryId)?.has(p.productId), `${s.id}: ${p.categoryId}/${p.productId}`).toBe(true)
         expect(['full', 'partial']).toContain(p.verdict)
       }
+    }
+  })
+})
+
+describe('CONTROL_SURFACE_ICONS (totality over SURFACE_DEFS)', () => {
+  it('every surface has a parseable house token, and no key is stale', () => {
+    const ids = new Set(SURFACE_DEFS.map((d) => d.id))
+    for (const def of SURFACE_DEFS) {
+      const token = CONTROL_SURFACE_ICONS[def.id] ?? ''
+      expect(parseProcessIconToken(token), `control surface ${def.id} needs a curated house icon token (got '${token}')`).not.toBeNull()
+    }
+    for (const id of Object.keys(CONTROL_SURFACE_ICONS)) {
+      expect(ids.has(id), `CONTROL_SURFACE_ICONS has stale surface id ${id}`).toBe(true)
     }
   })
 })

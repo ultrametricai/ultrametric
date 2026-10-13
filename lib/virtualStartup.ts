@@ -869,7 +869,7 @@ export function unionTaskIds(chains: VsChain[]): string[] {
 // 'Which AI firm are you using' (founder batch 2026-09-30, item 7)
 // ---------------------------------------------------------------------------
 // The setup band's "I'm using" selector: REAL judged ai-assistants products only (the roster is
-// pinned against data/ai-assistants/products.json by tests). The selection is a DISPLAY PIN on the
+// pinned against rankings/ai-assistants/products.json by tests). The selection is a DISPLAY PIN on the
 // ai-assistants-mapped steps (the LLM-venue curation: steps whose judged step ranking lives in
 // the ai-assistants arena): the chosen assistant renders as 'your assistant' while the judged
 // top keeps its '(recommended · judged)' chip and score — no judged number ever moves, and the
@@ -1541,10 +1541,10 @@ export interface WindowRow extends YearRow {
 // ---------------------------------------------------------------------------
 // 'Likely choice' vendor ordering (founder round 5, item 7) — the committed adoption/popularity
 // signal as an ORDERING, never a new number. NO rank fabrication: every input is committed data —
-//   curated  — data/popular-products.json membership ("clearly popular", an UNRANKED editorial
+//   curated  — rankings/popular-products.json membership ("clearly popular", an UNRANKED editorial
 //              set; within it, measured counters then name order — presentation of an unranked
 //              set, labeled as such, never a popularity rank claim);
-//   stars    — data/{arena}/popularity.json GitHub stars (open-source products only);
+//   stars    — rankings/{arena}/popularity.json GitHub stars (open-source products only);
 //   installs — npm+PyPI weekly installs from the same popularity stage;
 //   rest     — no committed signal: the judged input order is kept.
 // The judged rankings stay untouched — this reorders PRESENTATION (Vendors-tab pickers, terminal

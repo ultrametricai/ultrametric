@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # One-shot helper for the gpu-clouds arena bring-up (2026-09-05): appends probe-tier evidence
-# items distilled from the recorded runtime probes in data/gpu-clouds/proofs/ (see
+# items distilled from the recorded runtime probes in rankings/gpu-clouds/proofs/ (see
 # pipeline/probes/gpu-clouds.ts — all 12 recorded probes passed).
 # Run AFTER `pnpm pipeline probe --category gpu-clouds` — that stage wholesale-replaces
 # probe-tier evidence and would wipe these items (re-run this script after any probe refresh).
@@ -100,7 +100,7 @@ ITEMS = {
 }
 
 for pid, items in ITEMS.items():
-    path = f'data/gpu-clouds/evidence/{pid}.json'
+    path = f'rankings/gpu-clouds/evidence/{pid}.json'
     ev = json.load(open(path))
     existing = {e['id'] for e in ev}
     for item in items:

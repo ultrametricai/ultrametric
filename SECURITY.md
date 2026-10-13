@@ -1,7 +1,7 @@
 # Security Policy
 
 Ultrametric (ultrametric.ai) is a static, evidence-based comparison site. The deployed site serves
-pre-computed data from `data/` — it does not accept user input that is executed, does not run
+pre-computed data from `rankings/` — it does not accept user input that is executed, does not run
 a database, and does not call any LLM API at build or request time (see README, "Pipeline
 refresh workflow"). The pipeline that *produces* the data runs locally, out of band, and is
 the more security-sensitive surface (it holds an `ANTHROPIC_API_KEY` and fetches third-party

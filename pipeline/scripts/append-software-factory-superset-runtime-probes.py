@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # One-shot helper for the superset software-factory bring-up (YC X26 coverage-queue wave
 # 2026-09-25). Appends probe-tier evidence items distilled from the recorded runtime probes in
-# data/software-factory/proofs/superset/ (see pipeline/probes/software-factory.ts — all 3
+# rankings/software-factory/proofs/superset/ (see pipeline/probes/software-factory.ts — all 3
 # recorded probes passed). Run AFTER `pnpm pipeline probe --category software-factory --product
 # superset` (or a spike pass, whose probe stage wholesale-replaces probe-tier evidence and would
 # wipe these items) — re-run this script after any probe refresh.
@@ -37,7 +37,7 @@ ITEMS = {
 }
 
 for pid, items in ITEMS.items():
-    path = f'data/software-factory/evidence/{pid}.json'
+    path = f'rankings/software-factory/evidence/{pid}.json'
     ev = json.load(open(path))
     existing = {e['id'] for e in ev}
     for item in items:

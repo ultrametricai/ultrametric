@@ -40,9 +40,16 @@ const OPERATIONAL_BUSINESS_LOGIC_MAP = path.join('processes', 'business-logic-ma
 // operational registries.
 const OPERATIONAL_COMPANY_FIELDS = path.join('processes', 'company-fields.json')
 
+// Fictional scenario fixtures live under processes/fixtures/ (folded in from the old
+// top-level fixtures/). They validate separately below, so the workflow walker skips the
+// whole subtree like it skips the operational registries.
+const FIXTURES_DIR = path.join('processes', 'fixtures')
+const FIXTURES_SUBTREE = FIXTURES_DIR + path.sep
+
 function workflowJson(dir: string): string[] {
   return listJson(dir).filter(
     (f) =>
+      !f.includes(FIXTURES_SUBTREE) &&
       !f.endsWith(OPERATIONAL_CORPUS) &&
       !f.endsWith(OPERATIONAL_VENDOR_REGISTRY) &&
       !f.endsWith(OPERATIONAL_ARTIFACTS) &&
@@ -317,7 +324,7 @@ export function validateFounderOps(asOf?: Date): string[] {
     shape(read(file), need('vendor-review.schema'), `vendor ${path.basename(file)}`, errors)
   }
 
-  for (const file of listJson(path.join(ROOT, 'fixtures'))) {
+  for (const file of listJson(path.join(ROOT, FIXTURES_DIR))) {
     const event = read(file)
     const obj = isObj(event) ? event : {}
     if (obj.synthetic !== true) errors.push(`fixture ${path.basename(file)}: must assert synthetic=true`)

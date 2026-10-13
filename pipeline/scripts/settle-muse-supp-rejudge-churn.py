@@ -21,13 +21,13 @@ args = ap.parse_args()
 
 ARENA = 'ai-assistants'
 PRODUCT = 'muse'
-VERDICTS = f'data/{ARENA}/verdicts.json'
+VERDICTS = f'rankings/{ARENA}/verdicts.json'
 CACHE_DIR = f'pipeline/cache/judge/{ARENA}/{PRODUCT}'
 
 old_ids = set(json.load(open(args.old_ids)))
 before = {v['storyId']: v for v in json.load(open(args.before)) if v['productId'] == PRODUCT}
 current = json.load(open(VERDICTS))
-cur_evidence_ids = {e['id'] for e in json.load(open(f'data/{ARENA}/evidence/{PRODUCT}.json'))}
+cur_evidence_ids = {e['id'] for e in json.load(open(f'rankings/{ARENA}/evidence/{PRODUCT}.json'))}
 
 kept, reverted, unchanged = 0, 0, 0
 settled = []

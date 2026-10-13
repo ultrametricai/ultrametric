@@ -12,7 +12,7 @@ import { REPO } from './site'
 // (which modules serve which corpus processes), the open-modules/README.md module index (the
 // one committed functional description per module, parsed from its "What it computes" column —
 // never paraphrased here), and the corpus itself. The vendor section is DERIVED, never curated:
-// the module's processes' steps' function mappings (data/process-step-stories.json) name the
+// the module's processes' steps' function mappings (rankings/process-step-stories.json) name the
 // covering arenas, and each arena contributes its committed leaderboard leaders
 // (lib/arenaLeaders.ts). A module whose processes' steps have no populated covering arena keeps
 // an honest empty state.
@@ -60,7 +60,7 @@ export function readmeComputes(): Map<string, string> {
 
 // The step-level covering arenas of one module, in first-seen corpus order: for each process
 // the registry maps to the module, each step's committed function mapping
-// (data/process-step-stories.json kind 'function') names the arena covering that step's
+// (rankings/process-step-stories.json kind 'function') names the arena covering that step's
 // general function. Pure collection — population and leaderboard resolution happen in
 // lib/arenaLeaders.ts.
 function moduleArenaIds(processIds: string[], byId: Map<string, ProcessTask>, dir?: string): string[] {

@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest'
 import { buildHistoryLines, snapshotEntries } from '../scripts/build-score-history'
 
 // Real shape of a pre-Arena-Score-era rankings.json (see e.g. commit 98854cd's
-// data/desktop-os/rankings.json): leaderboard entries have score/agenticness but no
+// rankings/desktop-os/rankings.json): leaderboard entries have score/agenticness but no
 // aiEra/agentReady fields at all.
 const OLD_ERA_SNAPSHOT = {
   generatedAt: '2026-08-27T23:12:56.681Z',
