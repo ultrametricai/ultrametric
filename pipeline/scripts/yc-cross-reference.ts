@@ -67,7 +67,10 @@ function main() {
     }
   }
 
-  writeJson(YC_BATCHES_PATH, ycBatches)
+  // Sorted keys: the mapping's on-disk order is independent of category iteration order, so a
+  // re-run after an arena add or rename diffs only the entries that actually changed.
+  const sorted = Object.fromEntries(Object.entries(ycBatches).sort(([a], [b]) => a.localeCompare(b)))
+  writeJson(YC_BATCHES_PATH, sorted)
 
   console.log(`Checked ${totalProducts} existing products against ${all.length} YC companies (all batches).`)
   console.log(`\nMatches (${matches.length}):`)

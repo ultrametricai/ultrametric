@@ -69,7 +69,10 @@ describe('existing judged selection compatibility', () => {
     // 2811 base + 6 sw_011 function cells) drop the foreign/wrong-area gov associations.
     // Re-pinned at the treg addition (mcp-infrastructure, 2026-10-08): the new judged product
     // joins the mcp-infrastructure candidate lists of the steps mapped to that arena.
-    expect(positiveCount).toBe(2494)
+    // Re-pinned at the yc-coverage bring-up (issue #239, 2026-10-13): ten newly judged products
+    // (moss, cactus-compute, channel3, stagewise, mirrors, bentolabs, chronicle-labs, gitcafe,
+    // ardent, lightsprint) join the candidate lists of the steps mapped to their arenas.
+    expect(positiveCount).toBe(2512)
     expect(zeroCount).toBe(137)
     expect(extraArena).toBe(93)
   })

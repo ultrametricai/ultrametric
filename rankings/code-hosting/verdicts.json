@@ -860,6 +860,873 @@
     ]
   },
   {
+    "productId": "gitcafe",
+    "storyId": "agentic-agent-docs",
+    "verdict": "full",
+    "quality": 9,
+    "confidence": "high",
+    "rationale": "A live probe confirms an llms.txt at git.cafe returns HTTP 200 with a structured overview. The docs add per-repository `/<owner>/<repo>/llms.txt` files, Markdown versions of every guide and most repository pages for coding agents, and a dedicated agent-workflows guide with agent skills. Missing for 10: independent or community corroboration of agents consuming these docs in practice, and a working top-level docs.md index (probed 404).",
+    "evidenceIds": [
+      "gitcafe-probe-1",
+      "gitcafe-docs-26",
+      "gitcafe-docs-25",
+      "gitcafe-docs-27",
+      "gitcafe-docs-11",
+      "gitcafe-probe-2"
+    ]
+  },
+  {
+    "productId": "gitcafe",
+    "storyId": "agentic-ai-insights",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "GitCafe is a Git forge, so built-in AI insights (for example, PR summaries or review suggestions) are a fair axis. However, the evidence only shows ways for external AI tools to reach GitCafe data: an MCP server, WebMCP tools offered to the browser's own agent, agent skills for coding assistants, and Markdown/llms.txt views. Nothing documents AI-generated insights or suggestions produced inside the product itself.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "gitcafe",
+    "storyId": "agentic-autonomous-automation",
+    "verdict": "partial",
+    "quality": 4,
+    "confidence": "medium",
+    "rationale": "GitCafe has no native automation or agent runner. Users can still build background automation from its parts: signed webhooks fire on pushes, issues and merged PRs; Buildkite CI results show up as checks; GitHub sync and branch mirroring keep repositories in sync without manual steps; and personal access tokens plus a non-interactive CLI/API (`--json`, `--no-input`, idempotent `requestId`) support scripts and CI jobs. Missing for 10: a built-in workflow/actions runner or scheduled jobs, autonomous background agents hosted by GitCafe, and any hands-on corroboration that automations run end-to-end without external infrastructure.",
+    "evidenceIds": [
+      "gitcafe-docs-16",
+      "gitcafe-docs-17",
+      "gitcafe-docs-6",
+      "gitcafe-docs-28",
+      "gitcafe-docs-22",
+      "gitcafe-docs-12",
+      "gitcafe-docs-15"
+    ]
+  },
+  {
+    "productId": "gitcafe",
+    "storyId": "agentic-builtin-assistant",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "A built-in AI assistant is a fair capability for a Git forge to ship, so the axis applies. The evidence shows only ways for external agents to work with GitCafe: an MCP server for Claude and ChatGPT, agent skills for your own coding assistant, and WebMCP tools exposed to the browser's agent. Nothing shows a native assistant inside the product that users can delegate tasks to.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "gitcafe",
+    "storyId": "agentic-headless",
+    "verdict": "full",
+    "quality": 8,
+    "confidence": "medium",
+    "rationale": "GitCafe's CLI is documented for unattended use: `--json` gives structured output with errors on stderr, `--no-input` fails instead of prompting, and `--yes` confirms destructive actions. `cafe api` reaches any REST endpoint, and personal access tokens are explicitly meant for scripts and CI jobs over the REST API or Git HTTPS. Idempotent `requestId` retries and signed webhooks round out headless automation. Missing for 10: explicit docs on authenticating the `cafe` CLI itself non-interactively in CI (token env var or login flow), and independent or hands-on corroboration beyond vendor docs.",
+    "evidenceIds": [
+      "gitcafe-docs-12",
+      "gitcafe-docs-13",
+      "gitcafe-docs-22",
+      "gitcafe-docs-15",
+      "gitcafe-docs-16",
+      "gitcafe-docs-10",
+      "gitcafe-probe-5"
+    ]
+  },
+  {
+    "productId": "gitcafe",
+    "storyId": "agentic-mcp-client",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "GitCafe is a Git forge. It documents only the server side of MCP: its own server at git.cafe/mcp, and WebMCP pages that offer GitCafe's tools to a browser agent. Neither shows GitCafe connecting to external MCP servers to use their tools. Forges can plausibly host agents that consume MCP servers, so the axis applies, but there is no evidence GitCafe does.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "gitcafe",
+    "storyId": "agentic-mcp-server",
+    "verdict": "full",
+    "quality": 9,
+    "confidence": "high",
+    "rationale": "GitCafe documents an official hosted MCP server at https://git.cafe/mcp that AI tools such as Claude and ChatGPT can connect to. Its read tools work on public repositories without an account, and with approval it can work on issues and pull requests. WebMCP exposes the same tools to in-browser agents, and a probe confirms the MCP docs page exists. Missing for 10: independent or hands-on corroboration of agents actually connecting and using the server, and detailed documentation of the account-connection and approval flow.",
+    "evidenceIds": [
+      "gitcafe-docs-23",
+      "gitcafe-docs-24",
+      "gitcafe-docs-27",
+      "gitcafe-probe-4"
+    ]
+  },
+  {
+    "productId": "gitcafe",
+    "storyId": "agentic-nl-commands",
+    "verdict": "partial",
+    "quality": 6,
+    "confidence": "medium",
+    "rationale": "GitCafe has no built-in natural-language interface, but it runs an official MCP server that lets AI tools such as Claude and ChatGPT read repositories and, with approval, work on issues and pull requests. It also offers WebMCP tools to in-browser agents and agent skills for coding assistants, so natural-language operation works only through an external AI client. Missing for 10: a first-party natural-language command interface, documentation of which write operations the MCP tools cover beyond issues/PRs, and independent or hands-on corroboration that natural-language operation works end to end.",
+    "evidenceIds": [
+      "gitcafe-docs-23",
+      "gitcafe-docs-24",
+      "gitcafe-docs-27",
+      "gitcafe-docs-11",
+      "gitcafe-probe-4"
+    ]
+  },
+  {
+    "productId": "gitcafe",
+    "storyId": "agentic-official-cli",
+    "verdict": "full",
+    "quality": 9,
+    "confidence": "high",
+    "rationale": "GitCafe documents an official `cafe` CLI that signs you in, sets up Git credentials, and manages repositories, pull requests, stacks and issues from the terminal. It is built for agent use: `--json` gives structured output, `--no-input` fails instead of prompting, `--yes` confirms destructive actions, and `cafe api` gives authenticated access to any REST endpoint. It also offers stack submission across Git, jj and Sapling, agent skills extend the same workflow to coding assistants, and a probe confirms the CLI docs page exists. Missing for 10: independent or hands-on corroboration of the CLI in use.",
+    "evidenceIds": [
+      "gitcafe-docs-10",
+      "gitcafe-docs-12",
+      "gitcafe-docs-13",
+      "gitcafe-docs-4",
+      "gitcafe-docs-11",
+      "gitcafe-probe-5"
+    ]
+  },
+  {
+    "productId": "gitcafe",
+    "storyId": "agentic-public-api",
+    "verdict": "full",
+    "quality": 8,
+    "confidence": "medium",
+    "rationale": "GitCafe documents a public REST API with a reference page that is also published as OpenAPI 3.1 JSON for code generators. It supports idempotent retries via `requestId` and personal access tokens for scripted use, and the CLI's `cafe api <path>` sends authenticated calls to any endpoint, so the API is clearly usable for programmatic and agent-driven control. The probe found no OpenAPI spec at standard well-known paths, but it only tried guessed URLs, so this does not contradict the docs. Missing for 10: independent or hands-on corroboration that the API works as documented, and a verified, discoverable location for the OpenAPI spec.",
+    "evidenceIds": [
+      "gitcafe-docs-13",
+      "gitcafe-docs-14",
+      "gitcafe-docs-15",
+      "gitcafe-docs-22",
+      "gitcafe-docs-16",
+      "gitcafe-probe-3"
+    ]
+  },
+  {
+    "productId": "gitcafe",
+    "storyId": "agentic-scoped-keys",
+    "verdict": "full",
+    "quality": 7,
+    "confidence": "medium",
+    "rationale": "GitCafe documents personal access tokens that let scripts, CI jobs and tools use the REST API or Git over HTTPS \"with only the permissions you grant\" [gitcafe-docs-22], which covers least-privilege credentials for an agent. Its MCP server also gates write actions on issues and pull requests behind user approval [gitcafe-docs-23]. missing for 10: details of scope granularity (per-repo or per-org limits, read vs write), token expiry and revocation controls, agent-specific or non-human identities distinct from acting \"as you\", and independent or hands-on corroboration.",
+    "evidenceIds": [
+      "gitcafe-docs-22",
+      "gitcafe-docs-23"
+    ]
+  },
+  {
+    "productId": "gitcafe",
+    "storyId": "agentic-sdks",
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "The evidence shows no official SDK packages, only a documented REST API with an OpenAPI 3.1 description offered 'for code generators', plus the `cafe api` CLI passthrough. Users would have to generate their own client rather than use a vendor-maintained SDK. Probes of common OpenAPI paths all returned 404, but the docs may host the spec elsewhere, so this lowers confidence rather than contradicting the claim. Missing for 10: official vendor-maintained SDK libraries in any language, SDK documentation and examples, a verified reachable OpenAPI spec location, independent corroboration.",
+    "evidenceIds": [
+      "gitcafe-docs-14",
+      "gitcafe-docs-13",
+      "gitcafe-docs-22",
+      "gitcafe-probe-3"
+    ]
+  },
+  {
+    "productId": "gitcafe",
+    "storyId": "agentic-webhooks",
+    "verdict": "full",
+    "quality": 7,
+    "confidence": "medium",
+    "rationale": "GitCafe has a dedicated webhooks docs page. It describes signed HTTPS requests sent to your server for repository or organization events such as pushes, new issues and merged pull requests, which covers the core of subscribing to events. Missing for 10: a full event catalog, details on subscription setup, delivery retries and signature verification, and independent or hands-on corroboration.",
+    "evidenceIds": [
+      "gitcafe-docs-16"
+    ]
+  },
+  {
+    "productId": "gitcafe",
+    "storyId": "ai-autofix-vulnerabilities",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "GitCafe is a Git forge, and AI-generated fixes for detected vulnerabilities (Copilot Autofix-style) is a fair question for that kind of product, so the axis applies. The evidence pack shows no security scanning, no vulnerability detection, and no automated remediation. The MCP server and agent skills let external AI tools work on issues and pull requests, but nothing ties them to detecting or fixing vulnerabilities.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "gitcafe",
+    "storyId": "ai-code-review-suggestions",
+    "verdict": "partial",
+    "quality": 4,
+    "confidence": "medium",
+    "rationale": "GitCafe has no built-in AI reviewer. It does run an official MCP server that lets external AI tools such as Claude and ChatGPT read pull requests, reviews and CI results and, with approval, work on pull requests. WebMCP and agent skills extend this to browser agents and coding assistants, so AI-assisted review is possible only by bringing your own AI tool. Missing for 10: a native AI reviewer that analyzes diffs automatically, inline AI-suggested fixes in the review UI, documentation of an AI review workflow, and independent or hands-on corroboration.",
+    "evidenceIds": [
+      "gitcafe-docs-23",
+      "gitcafe-docs-24",
+      "gitcafe-docs-27",
+      "gitcafe-docs-11",
+      "gitcafe-docs-2"
+    ]
+  },
+  {
+    "productId": "gitcafe",
+    "storyId": "ai-first-pass-review-assignment",
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "GitCafe has no native AI reviewer that can be assigned to a pull request. The closest path is its official MCP server, which lets external AI tools such as Claude or ChatGPT read pull requests and reviews and, with approval, \"work on\" pull requests; agent skills and webhooks could also wire up an external reviewer. That makes AI-assisted review possible only by bringing your own agent and integration, and the docs never explicitly say an agent can post review feedback. missing for 10: a built-in or assignable AI reviewer, documentation that an agent can leave PR review comments or approvals, automatic AI first-pass review on PR open, and hands-on or independent corroboration.",
+    "evidenceIds": [
+      "gitcafe-docs-23",
+      "gitcafe-docs-24",
+      "gitcafe-docs-11",
+      "gitcafe-docs-16",
+      "gitcafe-docs-2"
+    ]
+  },
+  {
+    "productId": "gitcafe",
+    "storyId": "api-interactive-docs",
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "medium",
+    "rationale": "GitCafe has an API reference page whose description is also offered as OpenAPI 3.1 JSON [gitcafe-docs-14]. The `cafe api <path>` command can send authenticated requests to any REST endpoint [gitcafe-docs-13], which lets users run calls from the terminal but is not an in-docs interactive explorer. Probes found no OpenAPI spec at the standard paths [gitcafe-probe-3], so the spec's location is unverified, though the docs never name a path, so this is not a contradiction. Missing for 10: an interactive browser-based API explorer or try-it console, runnable examples embedded in the reference, a verified public OpenAPI spec URL, and independent corroboration.",
+    "evidenceIds": [
+      "gitcafe-docs-14",
+      "gitcafe-docs-13",
+      "gitcafe-docs-15",
+      "gitcafe-probe-3"
+    ]
+  },
+  {
+    "productId": "gitcafe",
+    "storyId": "api-machine-spec",
+    "verdict": "full",
+    "quality": 7,
+    "confidence": "medium",
+    "rationale": "GitCafe's API reference says the REST API description is available as OpenAPI 3.1 JSON for code generators, which directly addresses the story. An automated probe got 404s at four guessed paths (openapi.json, swagger.json, etc.), but the docs never name those paths, so this lowers confidence rather than contradicting the claim. Missing for 10: the documented download URL for the spec, hands-on confirmation that the spec can be fetched, and independent corroboration.",
+    "evidenceIds": [
+      "gitcafe-docs-14",
+      "gitcafe-probe-3"
+    ]
+  },
+  {
+    "productId": "gitcafe",
+    "storyId": "api-sandbox",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "A sandbox or test environment is a fair question for a SaaS Git forge with a REST API and MCP server, so the axis applies. Nothing in the evidence describes a sandbox, test mode or isolated staging instance. The ruleset 'Evaluate' warning-only mode, idempotent requestIds and read-only public MCP access are different capabilities and do not amount to a sandbox environment.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "gitcafe",
+    "storyId": "api-versioning-policy",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "GitCafe documents a REST API, an OpenAPI 3.1 description, and idempotent retries via requestId, so the versioning axis clearly applies to it. However, nothing in the evidence mentions API versioning or a deprecation policy, so this story is unevidenced.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "gitcafe",
+    "storyId": "automated-deployments",
+    "verdict": "partial",
+    "quality": 4,
+    "confidence": "medium",
+    "rationale": "GitCafe is a Git forge, so CI/CD is a fair question for it. It has no native CI runner and no deployment feature. It does plug into external pipelines: Buildkite builds appear on a CI tab and as PR checks, signed webhooks fire on pushes and merged PRs to trigger an external server, and personal access tokens let CI jobs authenticate. Any actual deployment automation has to live in third-party tooling. Missing for 10: native CI/CD pipeline execution, deployment/environment features (deploy jobs, environments, approvals, secrets), documentation of a deployment workflow, independent or hands-on corroboration.",
+    "evidenceIds": [
+      "gitcafe-docs-17",
+      "gitcafe-docs-18",
+      "gitcafe-docs-16",
+      "gitcafe-docs-22",
+      "gitcafe-docs-19"
+    ]
+  },
+  {
+    "productId": "gitcafe",
+    "storyId": "automation-bulk-operations",
+    "verdict": "partial",
+    "quality": 4,
+    "confidence": "medium",
+    "rationale": "Some multi-item operations are documented. `cafe stack submit` opens or reuses one PR per commit, landing merges a whole stack bottom-up, and GitHub import brings in repositories with their issues, PRs, reviews and comments. The CLI is also scriptable (`--json`, `--no-input`, `--yes`, `cafe api`, idempotent `requestId`), so users can build their own loops over items. However, there is no evidence of general-purpose bulk actions such as batch-editing, labeling, closing or deleting many issues, PRs or repositories at once, so broader bulk work depends on user scripting. Missing for 10: native bulk-edit/batch actions for issues, PRs and repos; a batch API endpoint; independent or hands-on corroboration.",
+    "evidenceIds": [
+      "gitcafe-docs-4",
+      "gitcafe-docs-5",
+      "gitcafe-docs-6",
+      "gitcafe-docs-10",
+      "gitcafe-docs-12",
+      "gitcafe-docs-13",
+      "gitcafe-docs-15"
+    ]
+  },
+  {
+    "productId": "gitcafe",
+    "storyId": "automation-rules-engine",
+    "verdict": "partial",
+    "quality": 4,
+    "confidence": "medium",
+    "rationale": "GitCafe documents webhooks that send signed HTTPS requests on repository or organization events such as pushes, new issues and merged pull requests. That lets users trigger actions on events, but only by hosting their own receiving server. Rulesets enforce branch and tag protections, and Buildkite builds appear as checks, but neither is a native rule engine that runs actions when events occur. Missing for 10: native event→action rule or workflow automation, built-in CI/actions runner, configurable automation conditions beyond webhooks, independent corroboration.",
+    "evidenceIds": [
+      "gitcafe-docs-16",
+      "gitcafe-docs-19",
+      "gitcafe-docs-17"
+    ]
+  },
+  {
+    "productId": "gitcafe",
+    "storyId": "automation-scheduled-jobs",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Scheduling recurring jobs is a fair axis for a Git forge, but the evidence shows no native scheduling or cron-style workflow capability. The pack covers only event-driven webhooks (push, issue, merged PR) and display of external Buildkite builds as CI checks. None of the cited items mention time-based or recurring triggers.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "gitcafe",
+    "storyId": "automation-versioned-workflows",
+    "verdict": "partial",
+    "quality": 4,
+    "confidence": "low",
+    "rationale": "GitCafe is a Git forge without a native automation engine. Automations count only if they are stored as code in a repository, where they get Git versioning and commit history [30, 1], pull-request review with diffs and stacks [2, 3], and rulesets that require reviews, CODEOWNERS approval and passing checks [19, 21]. Its only automation-like hooks, webhooks and Buildkite checks [16, 17], are not shown to be versioned or reversible themselves. missing for 10: a first-party automation/workflow feature, documented versioning of webhook or CI configuration, an explicit rollback or revert capability beyond plain Git history, and independent corroboration.",
+    "evidenceIds": [
+      "gitcafe-docs-30",
+      "gitcafe-docs-1",
+      "gitcafe-docs-2",
+      "gitcafe-docs-3",
+      "gitcafe-docs-19",
+      "gitcafe-docs-21",
+      "gitcafe-docs-16",
+      "gitcafe-docs-17"
+    ]
+  },
+  {
+    "productId": "gitcafe",
+    "storyId": "branch-level-permissions",
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "medium",
+    "rationale": "The evidence covers only the branch layer of this story. Repository rulesets protect matching branches or tags by requiring pull requests, reviews and passing checks, or by blocking deletion and force pushes. CODEOWNERS approval enforces path-level review, and personal access tokens can be limited to granted permissions. Nothing documents role-based access control at the workspace/organization, project or repository level, so the multi-level granular model is mostly unevidenced. Missing for 10: workspace/organization-level roles and permissions, project-level access control, repository-level collaborator/team permission settings, independent or hands-on corroboration.",
+    "evidenceIds": [
+      "gitcafe-docs-19",
+      "gitcafe-docs-20",
+      "gitcafe-docs-21",
+      "gitcafe-docs-22"
+    ]
+  },
+  {
+    "productId": "gitcafe",
+    "storyId": "change-approval-workflow",
+    "verdict": "full",
+    "quality": 7,
+    "confidence": "medium",
+    "rationale": "GitCafe's repository rulesets can protect matching branches by requiring pull requests, reviews and passing checks. They can also enforce CODEOWNERS approval for each changed path, and an Evaluate mode lets you trial the rules as warnings first. Buildkite results show up as checks on pull requests, so automated CI can gate merges into protected branches. Missing for 10: deployment- or environment-level approval gates beyond branch merge protection, detail on how required checks are configured and enforced, and independent or hands-on corroboration of rulesets.",
+    "evidenceIds": [
+      "gitcafe-docs-19",
+      "gitcafe-docs-20",
+      "gitcafe-docs-21",
+      "gitcafe-docs-17"
+    ]
+  },
+  {
+    "productId": "gitcafe",
+    "storyId": "chat-tool-notifications",
+    "verdict": "partial",
+    "quality": 4,
+    "confidence": "medium",
+    "rationale": "GitCafe documents webhooks that send signed HTTPS requests on repository or organization events such as pushes, new issues and merged pull requests. These could be routed to a chat tool, but only through a custom relay or receiver. The evidence shows no native chat-tool integration. Missing for 10: first-party Slack/Discord/Teams integrations, chat-formatted notification delivery, configurable notification subscriptions to channels, and independent or hands-on corroboration.",
+    "evidenceIds": [
+      "gitcafe-docs-16"
+    ]
+  },
+  {
+    "productId": "gitcafe",
+    "storyId": "cloud-dev-environments",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "GitCafe is a Git forge, and forges can plausibly offer cloud development environments (Codespaces-style), so this axis applies. Nothing in the evidence pack describes launching a hosted, ready-to-code environment. The docs cover Git hosting, stacked pull requests, a CLI, the API, MCP and Buildkite CI integration, but no cloud workspaces.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "gitcafe",
+    "storyId": "code-search",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "GitCafe is a Git forge, so cross-repository code, file, and commit search is a fair axis. The evidence only documents browsing files, diffs, and per-repository commit history and blame, plus MCP read tools over repositories. Nothing describes a search capability across repositories.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "gitcafe",
+    "storyId": "create-manage-repositories",
+    "verdict": "full",
+    "quality": 8,
+    "confidence": "medium",
+    "rationale": "GitCafe is a Git forge, and its first-party docs cover the whole story. Repositories are created in GitCafe (docs-9), managed from the CLI (docs-10), used with any Git client over HTTPS or SSH (docs-1), and browsed in the web UI (docs-2). The docs also state you can read commit history, inspect single commits and see who last changed each line (docs-30). Missing for 10: independent or hands-on corroboration of repo creation and history browsing, and detailed docs on repo management operations such as settings and deletion.",
+    "evidenceIds": [
+      "gitcafe-docs-1",
+      "gitcafe-docs-2",
+      "gitcafe-docs-9",
+      "gitcafe-docs-10",
+      "gitcafe-docs-30",
+      "gitcafe-probe-1"
+    ]
+  },
+  {
+    "productId": "gitcafe",
+    "storyId": "cross-platform-self-hosting",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Self-hosting is a fair question for a Git forge, so this axis applies. However, the evidence describes only the hosted service at git.cafe (beta pricing, a hosted MCP endpoint, a CLI that targets the service). Nothing documents a self-hosted install, supported operating systems or architectures, or container images.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "gitcafe",
+    "storyId": "dependency-update-automation",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Automated dependency-update pull requests are a fair capability to expect from a Git forge, so the axis applies. The evidence pack never mentions dependency scanning, vulnerability alerts, or automatically opened update PRs. It covers only manual and stacked pull requests, GitHub sync, webhooks, CI checks and rulesets.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "gitcafe",
+    "storyId": "deployment-incident-mapping",
+    "verdict": "partial",
+    "quality": 4,
+    "confidence": "medium",
+    "rationale": "GitCafe rulesets can protect branches or tags by requiring pull requests, reviews, passing checks and CODEOWNERS approval, with an evaluate-only mode. That gives a form of change approval before code lands, but it is merge gating rather than release or deployment approval. Nothing in the evidence covers deployment tracking or linking incidents to deployments. Missing for 10: deployment records or environments, incident-to-deployment mapping, release- or deployment-level approval gates, independent corroboration.",
+    "evidenceIds": [
+      "gitcafe-docs-19",
+      "gitcafe-docs-20",
+      "gitcafe-docs-21",
+      "gitcafe-docs-17"
+    ]
+  },
+  {
+    "productId": "gitcafe",
+    "storyId": "external-ci-cd-integration",
+    "verdict": "full",
+    "quality": 7,
+    "confidence": "medium",
+    "rationale": "GitCafe documents a first-class Buildkite integration: builds appear on a CI tab and as pull-request checks, and results can be published to GitHub for synced repos. Signed webhooks fire on pushes and merges, personal access tokens are explicitly meant for CI jobs, and rulesets can require passing checks, which together let external CI drive the workflow. Missing for 10: documented integrations for CI tools beyond Buildkite (e.g. Jenkins, CircleCI), an explicitly documented generic commit-status/checks API for arbitrary CI systems, and independent or hands-on corroboration.",
+    "evidenceIds": [
+      "gitcafe-docs-17",
+      "gitcafe-docs-18",
+      "gitcafe-docs-16",
+      "gitcafe-docs-22",
+      "gitcafe-docs-19",
+      "gitcafe-docs-13"
+    ]
+  },
+  {
+    "productId": "gitcafe",
+    "storyId": "flexible-licensing-commitment",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "GitCafe is a hosted Git forge with paid plans, so a commercial licensing and commitment model is a fair question to ask of it. The only pricing evidence says private repositories are free during the public beta and paid plans add higher limits. Nothing describes annual commitments, seat-based versus usage-based licensing, or flexibly allocating spend between them.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "gitcafe",
+    "storyId": "git-learning-resources",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Built-in learning resources for Git are a fair question for a Git hosting forge, so the axis applies. However, the evidence only documents GitCafe's own features: CLI, stacks, GitHub sync, rulesets, API and MCP. None of it mentions tutorials, guides or other built-in material for learning Git itself.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "gitcafe",
+    "storyId": "hosted-ci-runners",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Hosted CI runners are a fair question for a Git forge, so the axis applies. The only CI evidence is a Buildkite integration that displays external builds on a CI tab and as PR checks. Nothing shows GitCafe providing its own platform-hosted runners that spare the user from managing infrastructure.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "gitcafe",
+    "storyId": "inline-code-review",
+    "verdict": "full",
+    "quality": 7,
+    "confidence": "medium",
+    "rationale": "GitCafe documents online diff comparison with feedback left alongside the code, per-change review of stacked pull requests, and rulesets that can require reviews, so the core of online code review is covered. Reviews also exist as first-class data, appearing in GitHub import and MCP read tools. missing for 10: explicit documentation of replying to or resolving inline review comment threads, a dedicated pull-request review guide, independent or hands-on corroboration.",
+    "evidenceIds": [
+      "gitcafe-docs-2",
+      "gitcafe-docs-3",
+      "gitcafe-docs-19",
+      "gitcafe-docs-6",
+      "gitcafe-docs-24"
+    ]
+  },
+  {
+    "productId": "gitcafe",
+    "storyId": "integrated-security-scanning",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "GitCafe is a Git forge, and built-in security scanning is a fair axis for that kind of product. The evidence pack documents no static analysis, dependency, secret or dynamic scanning. The only related capabilities are showing external Buildkite CI results as pull-request checks and rulesets that require passing checks, which surface third-party results rather than consolidating scanning into GitCafe.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "gitcafe",
+    "storyId": "ip-allowlisting",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "IP-range access restriction is a reasonable security capability for a Git forge, but GitCafe's evidence shows no IP allowlisting: rulesets protect branches and tags, and tokens scope permissions, but nothing restricts access by network origin.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "gitcafe",
+    "storyId": "issue-tracking-with-dependencies",
+    "verdict": "partial",
+    "quality": 4,
+    "confidence": "medium",
+    "rationale": "GitCafe's docs say you can track work with issues, labels and milestones, and the CLI manages issues from the terminal. That covers the issue-tracking and milestone parts of the story, but only through brief index-level mentions. Missing for 10: time tracking on issues, issue dependencies/blocking relationships, in-depth issue/milestone documentation, independent or hands-on corroboration.",
+    "evidenceIds": [
+      "gitcafe-docs-29",
+      "gitcafe-docs-10",
+      "gitcafe-docs-16"
+    ]
+  },
+  {
+    "productId": "gitcafe",
+    "storyId": "jira-in-app-management",
+    "verdict": "partial",
+    "quality": 5,
+    "confidence": "medium",
+    "rationale": "GitCafe can import GitHub issues and keep them in sync one way or both ways (gitcafe-docs-6, gitcafe-docs-7). That means issues from an external GitHub tracker can be worked on inside GitCafe's own issue tooling, with labels and milestones (gitcafe-docs-29). However, GitHub is the only external source evidenced, and it is a full-repo sync rather than a dedicated issue-tracker integration. Missing for 10: integrations with dedicated external trackers (e.g. Jira, Linear), documentation of in-UI linking or management of external tracker items, and hands-on or independent corroboration of bidirectional issue sync.",
+    "evidenceIds": [
+      "gitcafe-docs-6",
+      "gitcafe-docs-7",
+      "gitcafe-docs-29"
+    ]
+  },
+  {
+    "productId": "gitcafe",
+    "storyId": "jira-issue-status-sync",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "GitCafe is a Git forge with built-in issue tracking, so automatically updating issue status from commit references is a fair question for this product. The evidence covers issues, labels, milestones, webhooks and the REST API, but nothing documents closing or transitioning issues from issue keys in commit messages. Webhooks would only let you build this yourself, which does not count as delivering it.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "gitcafe",
+    "storyId": "large-diff-review",
+    "verdict": "partial",
+    "quality": 4,
+    "confidence": "medium",
+    "rationale": "GitCafe documents diff comparison with feedback left alongside the code, and stacked pull requests that let reviewers break large changes into separately reviewed commits. Third-party integration in the review screen is limited to Buildkite builds appearing as checks on pull requests, which is CI status rather than code quality reports. Missing for 10: explicit large-diff handling (collapsing, lazy loading, file filtering), display of third-party code quality reports or annotations in the review screen, and independent or hands-on corroboration.",
+    "evidenceIds": [
+      "gitcafe-docs-2",
+      "gitcafe-docs-3",
+      "gitcafe-docs-4",
+      "gitcafe-docs-17"
+    ]
+  },
+  {
+    "productId": "gitcafe",
+    "storyId": "large-scale-reference-architecture",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Self-hosting with scalable reference architectures is a fair question for a Git forge, so the axis applies. The evidence pack describes only the hosted git.cafe service: CLI, API, MCP, GitHub sync and beta pricing. Nothing shows a self-hosted edition or reference architectures for large user counts.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "gitcafe",
+    "storyId": "marketplace-apps-actions",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "A Git forge could plausibly offer a marketplace of third-party apps, actions or AI models, so the axis applies. The evidence shows only first-party extension points: webhooks, a REST API, a Buildkite CI integration, GitHub sync and an MCP server. Nothing describes a marketplace or catalog for discovering and installing third-party apps, actions or AI models.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "gitcafe",
+    "storyId": "merge-checks-enforcement",
+    "verdict": "full",
+    "quality": 8,
+    "confidence": "medium",
+    "rationale": "GitCafe rulesets protect matching branches or tags and can require pull requests, reviews, passing checks and code-owner approval, or block deletion and force pushes. An Evaluate mode lets teams trial rules as warnings before enforcing them, and Buildkite builds show up as PR checks, so merge gating is configurable. Missing for 10: evidence of organization-wide rulesets for standardizing checks across many repos, and independent or hands-on corroboration that enforcement works.",
+    "evidenceIds": [
+      "gitcafe-docs-19",
+      "gitcafe-docs-20",
+      "gitcafe-docs-21",
+      "gitcafe-docs-17"
+    ]
+  },
+  {
+    "productId": "gitcafe",
+    "storyId": "migration-tooling",
+    "verdict": "partial",
+    "quality": 5,
+    "confidence": "medium",
+    "rationale": "GitCafe documents a GitHub importer that brings over repositories with their issues, pull requests, reviews and comments, with optional one-way or two-way sync. It also offers branch mirroring with another Git server. However, migration tooling appears limited to GitHub, and branch-level mirroring is not a full migration path. Missing for 10: importers for other platforms (e.g. GitLab, Bitbucket) or self-hosted instances, explicit migration of users or organizations and their permissions, and independent or hands-on corroboration.",
+    "evidenceIds": [
+      "gitcafe-docs-6",
+      "gitcafe-docs-7",
+      "gitcafe-docs-8",
+      "gitcafe-docs-28"
+    ]
+  },
+  {
+    "productId": "gitcafe",
+    "storyId": "mobile-task-management",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Mobile project management is a fair axis for a Git forge, so the story applies. The evidence shows issue tracking with labels and milestones, a CLI, an API and an MCP server, but nothing about a mobile app, a mobile-optimized web interface, or assigning tasks to people. With no mobile capability in the evidence, the verdict is none.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "gitcafe",
+    "storyId": "openness-api-parity",
+    "verdict": "full",
+    "quality": 7,
+    "confidence": "medium",
+    "rationale": "GitCafe documents a REST API described in OpenAPI 3.1, with idempotent `requestId` retries. Personal access tokens grant scripts the same permissions as the user. The `cafe` CLI manages repositories, pull requests, stacks, issues and more, offers `--json` output, and can send authenticated calls to any REST endpoint; an MCP server also exposes issue and PR work to agents. The core of programmatic access is clearly there, but no source explicitly claims full UI/API parity. The probe found none of the standard OpenAPI paths, which suggests the spec is hosted elsewhere rather than contradicting the docs. Missing for 10: an explicit statement or coverage map showing every UI action (e.g. rulesets, CI tab, sync settings) has an API equivalent, a publicly reachable OpenAPI spec, and independent hands-on corroboration.",
+    "evidenceIds": [
+      "gitcafe-docs-10",
+      "gitcafe-docs-12",
+      "gitcafe-docs-13",
+      "gitcafe-docs-14",
+      "gitcafe-docs-15",
+      "gitcafe-docs-22",
+      "gitcafe-docs-23",
+      "gitcafe-probe-3",
+      "gitcafe-probe-5"
+    ]
+  },
+  {
+    "productId": "gitcafe",
+    "storyId": "openness-full-export",
+    "verdict": "partial",
+    "quality": 5,
+    "confidence": "medium",
+    "rationale": "Code is portable: repositories work with any Git client over HTTPS/SSH, and branches can be mirrored to another Git server. Issues, pull requests and comments can be kept in two-way sync with GitHub, or pulled out through the REST API and the CLI's `--json` output. Pages are also readable as Markdown. However, there is no documented one-step account or organization export of all data (issues, reviews, comments, settings) in an open archive format, so leaving with non-code data takes scripting or depends on GitHub sync. Missing for 10: a documented full-account/org data export feature, an open archive format for issues/PRs/reviews, and hands-on corroboration of a complete exit.",
+    "evidenceIds": [
+      "gitcafe-docs-1",
+      "gitcafe-docs-28",
+      "gitcafe-docs-6",
+      "gitcafe-docs-7",
+      "gitcafe-docs-12",
+      "gitcafe-docs-13",
+      "gitcafe-docs-25"
+    ]
+  },
+  {
+    "productId": "gitcafe",
+    "storyId": "openness-open-license",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Whether a Git forge's own source is published under an open license is a fair question, so the axis applies. Nothing in the evidence pack says GitCafe's own source code is public or names a license. The cited features (Git access, browsing files, Markdown and llms.txt views, MCP read tools) cover users' hosted repositories, not the product's own codebase.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "gitcafe",
+    "storyId": "openness-self-host",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Self-hosting is a fair question for a Git forge, so the axis applies. Every item in the pack describes the hosted service at git.cafe (hosted MCP endpoint, beta pricing plans, mirroring to another Git server), and none documents a self-hosted, on-prem, or downloadable deployment of the core product.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "gitcafe",
+    "storyId": "org-wide-ci-visibility",
+    "verdict": "partial",
+    "quality": 4,
+    "confidence": "medium",
+    "rationale": "GitCafe shows Buildkite builds on each repository's CI tab and as pull-request checks, and its MCP read tools expose CI results. That gives per-repository CI visibility, but only through an external CI provider, and nothing evidences an organization-wide view. Missing for 10: an org-level aggregated dashboard of workflow runs across repositories, native or broader CI provider support beyond Buildkite, cross-repo filtering or reporting of runs, and independent or hands-on corroboration.",
+    "evidenceIds": [
+      "gitcafe-docs-17",
+      "gitcafe-docs-18",
+      "gitcafe-docs-24"
+    ]
+  },
+  {
+    "productId": "gitcafe",
+    "storyId": "org-wide-policy-enforcement",
+    "verdict": "partial",
+    "quality": 5,
+    "confidence": "medium",
+    "rationale": "Repository rulesets can require pull requests, reviews and passing checks, and can block deletion and force pushes. They also offer an evaluate (warn-only) mode and CODEOWNERS approval, and Buildkite results appear as PR checks. That enforces policy per repository. The docs only describe rulesets at repository level, so centrally enforcing standards across all teams and repositories is unevidenced. Missing for 10: organization-wide or cross-repository rulesets, team-scoped policy management, a built-in linting or coding-standards enforcement mechanism, and independent corroboration.",
+    "evidenceIds": [
+      "gitcafe-docs-19",
+      "gitcafe-docs-20",
+      "gitcafe-docs-21",
+      "gitcafe-docs-17"
+    ]
+  },
+  {
+    "productId": "gitcafe",
+    "storyId": "package-registry-hosting",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "GitCafe is a Git forge, and package hosting is a fair question for a code-hosting platform. However, the evidence covers only Git hosting, PRs and stacks, GitHub sync, CI checks, rulesets, the CLI, the API and the MCP server. Nothing mentions a package registry or publishing and consuming packages in any format.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "gitcafe",
+    "storyId": "personal-access-tokens",
+    "verdict": "full",
+    "quality": 7,
+    "confidence": "medium",
+    "rationale": "GitCafe has a dedicated personal access token doc page. It says tokens let scripts, CI jobs and tools use the REST API or Git over HTTPS as the user, limited to the permissions granted. That covers the core of generating scoped tokens for platform authentication. Missing for 10: explicit documentation of management actions (listing, expiry, revocation, rotation) and independent or hands-on corroboration.",
+    "evidenceIds": [
+      "gitcafe-docs-22",
+      "gitcafe-docs-1"
+    ]
+  },
+  {
+    "productId": "gitcafe",
+    "storyId": "privacy-data-residency",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "GitCafe is a hosted Git forge, so choosing a storage region or data residency is a fair question for it. Nothing in the evidence pack mentions regions, residency options or data location controls. Branch mirroring to another Git server is not a residency choice and does not count.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "gitcafe",
+    "storyId": "privacy-no-training",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "A code-hosting forge could reasonably offer an AI-training opt-out or a no-training data policy, so this axis applies. Nothing in the evidence pack mentions training-data use, opt-out controls, or a privacy commitment about AI training. The MCP and agent docs cover AI tools reading repositories, not whether hosted data is used to train models.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "gitcafe",
+    "storyId": "privacy-retention-controls",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Data retention and deletion controls are a fair privacy axis for a hosted Git forge, but the evidence pack never documents retention policies, account or repository data deletion, or data export and purge. The ruleset item about blocking branch deletion and the CLI's '--yes' flag for destructive actions are not data-retention controls.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "gitcafe",
+    "storyId": "privacy-telemetry-optout",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "GitCafe is a hosted Git forge with a CLI, web app, and MCP server, so opting out of telemetry and usage tracking is a fair question for this kind of product. Nothing in the evidence pack mentions telemetry, analytics, usage tracking, or any opt-out setting for the CLI, web app, or MCP server.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "gitcafe",
+    "storyId": "project-boards-roadmaps",
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "medium",
+    "rationale": "GitCafe documents issue tracking with labels and milestones, which gives basic task organization and some milestone-level grouping. Nothing in the evidence mentions project boards, kanban views or roadmap planning, so the story as written is only glancingly supported. Missing for 10: project boards (kanban/table views), roadmap or timeline views, linking high-level initiatives to everyday tasks on a board, and independent or hands-on corroboration.",
+    "evidenceIds": [
+      "gitcafe-docs-29",
+      "gitcafe-docs-10"
+    ]
+  },
+  {
+    "productId": "gitcafe",
+    "storyId": "pull-request-workflow",
+    "verdict": "full",
+    "quality": 8,
+    "confidence": "medium",
+    "rationale": "GitCafe is a Git forge with a documented pull request workflow. Developers can open pull requests (including one per commit via `cafe stack submit`), compare diffs, leave feedback and reviews alongside the code, and land or merge PRs. Rulesets can require reviews, code-owner approval and passing CI checks before merge. Missing for 10: independent or hands-on corroboration (all evidence is vendor docs), and detailed docs on the basic single-PR create, comment-thread and merge flow outside of stacks.",
+    "evidenceIds": [
+      "gitcafe-docs-2",
+      "gitcafe-docs-3",
+      "gitcafe-docs-4",
+      "gitcafe-docs-5",
+      "gitcafe-docs-10",
+      "gitcafe-docs-16",
+      "gitcafe-docs-17",
+      "gitcafe-docs-19",
+      "gitcafe-docs-21"
+    ]
+  },
+  {
+    "productId": "gitcafe",
+    "storyId": "reusable-pipeline-actions",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Reusable community CI/CD actions or plugins are a fair axis for a Git forge. GitCafe's evidence only shows it displaying external Buildkite builds as checks and publishing them to GitHub. Nothing describes a marketplace, shared actions, or a plugin mechanism for pipelines.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "gitcafe",
+    "storyId": "secret-leak-detection",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Secret scanning is a fair axis for a Git forge. The evidence pack covers rulesets, CI checks, webhooks, tokens and an MCP server, but nothing on detecting leaked secrets, push protection, or remediation workflows across repositories.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "gitcafe",
+    "storyId": "self-hosted-ci-runners",
+    "verdict": "partial",
+    "quality": 4,
+    "confidence": "low",
+    "rationale": "GitCafe has no native CI runner in the evidence. CI is handled by integrating an external Buildkite service, whose builds appear on the repository's CI tab and as pull request checks. Signed webhooks and personal access tokens let your own infrastructure react to pushes and talk to the API. Self-hosted execution is therefore only achievable through an external CI tool, and the docs never explicitly describe running jobs on your own or private runners. Missing for 10: native or first-party runner support, explicit documentation of self-hosted/private runner registration and management, hands-on corroboration.",
+    "evidenceIds": [
+      "gitcafe-docs-17",
+      "gitcafe-docs-18",
+      "gitcafe-docs-16",
+      "gitcafe-docs-22"
+    ]
+  },
+  {
+    "productId": "gitcafe",
+    "storyId": "self-hosted-easy-install",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Self-hosting is a fair question for a Git forge, since products of this type often ship self-managed editions, so the axis applies. The evidence pack only describes the hosted service at git.cafe (sign-up, cloud MCP endpoint, beta pricing) and never mentions a self-managed install, deployment artifacts or setup docs. Mirroring a branch with another Git server is not self-hosting the platform.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "gitcafe",
+    "storyId": "ssh-key-management",
+    "verdict": "partial",
+    "quality": 4,
+    "confidence": "low",
+    "rationale": "GitCafe states that repositories work with any Git client over SSH, which implies SSH-based authentication. Its CLI also 'sets up Git credentials', though the evidence never says that means SSH keys. No evidence shows how a developer adds, manages or revokes SSH keys. Missing for 10: documented SSH key upload/management flow (account settings or CLI), key types/fingerprints guidance, deploy keys, and independent or hands-on confirmation that SSH key auth works.",
+    "evidenceIds": [
+      "gitcafe-docs-1",
+      "gitcafe-docs-10"
+    ]
+  },
+  {
+    "productId": "gitcafe",
+    "storyId": "third-party-security-tool-integration",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "GitCafe is a Git forge, so installing third-party security scanning integrations from a security tab is a fair question for it. The evidence covers a Buildkite CI tab, webhooks, rulesets with required checks, and GitHub sync, but never mentions a security tab, security scanning, or an integration marketplace. Generic webhooks or required CI checks could be wired to an external scanner, but that is not installing integrations from a security tab.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "gitcafe",
+    "storyId": "two-factor-authentication",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Account security via two-factor authentication is a fair axis for a Git forge, but nothing in the evidence pack mentions 2FA, TOTP, security keys or passkeys. The account docs cover only personal access tokens and CLI sign-in, which are not second factors.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "gitcafe",
+    "storyId": "yaml-pipeline-authoring",
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "GitCafe shows no native pipeline-as-code feature. Its only CI evidence is a Buildkite integration: builds appear on the repository's CI tab and as pull-request checks, and per-pipeline results can be published to GitHub. Pipelines are therefore defined in an external tool, and nothing in the evidence describes a YAML syntax or in-repo pipeline file. Missing for 10: native CI/CD runner, documented YAML pipeline syntax stored in the repository, pipeline configuration docs, independent corroboration.",
+    "evidenceIds": [
+      "gitcafe-docs-17",
+      "gitcafe-docs-18"
+    ]
+  },
+  {
     "productId": "gitea",
     "storyId": "agentic-agent-docs",
     "verdict": "none",

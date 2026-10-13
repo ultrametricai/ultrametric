@@ -1,5 +1,1130 @@
 [
   {
+    "productId": "cactus-compute",
+    "storyId": "accelerator-plugin-support",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Cactus is an on-device inference engine, so accelerator support is a fair axis. Nothing in the evidence describes a plugin mechanism or support for TPUs, Gaudi or other specialized accelerators. The docs emphasize CPU-only, no-GPU operation on phones, wearables and Raspberry Pis, and community reports say GPUs aren't used for inference.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "cactus-compute",
+    "storyId": "agentic-agent-docs",
+    "verdict": "full",
+    "quality": 9,
+    "confidence": "high",
+    "rationale": "A probe confirms a live llms.txt (HTTP 200) at cactuscompute.com. The vendor also publishes agent-oriented markdown subpages (/llms/api, /llms/pricing, /llms/run-locally) and a machine-readable OpenAPI spec at /v1/openapi.json, and its docs explicitly name running the platform from 'a coding agent with your API key'. The probe's 404s are only for root-level OpenAPI paths and do not contradict the /v1 spec. Missing for 10: independent or hands-on corroboration of an agent actually consuming these docs successfully.",
+    "evidenceIds": [
+      "cactus-compute-probe-1",
+      "cactus-compute-docs-1",
+      "cactus-compute-docs-9",
+      "cactus-compute-docs-4",
+      "cactus-compute-docs-10",
+      "cactus-compute-docs-11"
+    ]
+  },
+  {
+    "productId": "cactus-compute",
+    "storyId": "agentic-ai-insights",
+    "verdict": "partial",
+    "quality": 4,
+    "confidence": "low",
+    "rationale": "Cactus is an on-device model platform, not an analytics product, so there is no evidence of a built-in insights or suggestions feature over a user's own data. Its platform API does produce AI-generated suggestions: POST /tool_schemas returns suggested tool definitions from a product description, and POST /generations synthesizes training data. Its models can also extract typed fields from messy text and embed sentences for search and matching, but that is a developer building block rather than an in-product insight experience. Missing for 10: an in-product insights/suggestions surface over user data (e.g. in the dashboard), docs describing such a workflow, and independent corroboration of suggestion quality.",
+    "evidenceIds": [
+      "cactus-compute-docs-5",
+      "cactus-compute-docs-4",
+      "cactus-compute-docs-15",
+      "cactus-compute-docs-16",
+      "cactus-compute-docs-9"
+    ]
+  },
+  {
+    "productId": "cactus-compute",
+    "storyId": "agentic-autonomous-automation",
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "Cactus markets an 'Automation Foundation Model' (Needle) that completes tool-calling loops via run() and can stream live audio into tool calls in one engine call. That makes it a building block a developer could use to construct on-device automations. There is no evidence of a user-facing way to set up automations that run autonomously in the background. Community testing also shows frequent misfired tool calls and unreliable confidence scores, which limits safe unattended use. Missing for 10: user-configurable automation setup, scheduling/triggers or background execution, persistent autonomous runs, and evidence of reliable unattended operation.",
+    "evidenceIds": [
+      "cactus-compute-docs-23",
+      "cactus-compute-docs-13",
+      "cactus-compute-docs-19",
+      "cactus-compute-docs-20",
+      "cactus-compute-comm-2",
+      "cactus-compute-comm-3",
+      "cactus-compute-comm-5"
+    ]
+  },
+  {
+    "productId": "cactus-compute",
+    "storyId": "agentic-builtin-assistant",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Cactus is an on-device model, inference and fine-tuning platform, so an in-product assistant is a fair question, but no evidence shows a built-in assistant in its dashboard, CLI or platform that users can hand tasks to. The pack shows model demos (a browser demo of the Automation Foundation Model, an Android chat app showcasing the offline LLM) and support for driving the platform from an external coding agent with an API key. Neither is a built-in assistant for delegating work within the product.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "cactus-compute",
+    "storyId": "agentic-headless",
+    "verdict": "full",
+    "quality": 7,
+    "confidence": "medium",
+    "rationale": "Cactus is scriptable without a UI. The docs say the platform can be run from the CLI, Python or a coding agent with an API key, and the REST API covers generations, tool schemas, uploads and billing checks. The GitHub repo also documents non-interactive CLI commands: `cactus run`, `cactus convert` and `cactus benchmark`. Missing for 10: explicit CI documentation (e.g. GitHub Actions or pipeline examples), guidance on non-interactive auth or secrets handling, and independent hands-on reports of headless or CI use.",
+    "evidenceIds": [
+      "cactus-compute-docs-9",
+      "cactus-compute-docs-4",
+      "cactus-compute-docs-5",
+      "cactus-compute-docs-6",
+      "cactus-compute-docs-8",
+      "cactus-compute-docs-10",
+      "cactus-compute-gh-1",
+      "cactus-compute-gh-5",
+      "cactus-compute-gh-6"
+    ]
+  },
+  {
+    "productId": "cactus-compute",
+    "storyId": "agentic-mcp-client",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Cactus is a runtime and model platform built around tool calling, so plugging in MCP servers as a tool source is a fair question for it. The evidence only shows tools defined as decorated Python functions or OpenAI-form tool schemas passed to Needle. Nothing in the pack mentions connecting to or consuming MCP servers.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "cactus-compute",
+    "storyId": "agentic-mcp-server",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Cactus is an on-device model, inference and fine-tuning platform, not an agent, so an official MCP server is a fair question. The evidence shows a REST API, CLI, llms.txt and a note that a coding agent can use your API key, but nothing mentions an MCP server.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "cactus-compute",
+    "storyId": "agentic-nl-commands",
+    "verdict": "partial",
+    "quality": 5,
+    "confidence": "medium",
+    "rationale": "The docs say the hosted platform can be run from 'a coding agent with your API key', and they publish an agent-readable llms.txt (confirmed live by probe) with agent-directed guidance such as checking billing before spending allowance. That lets a user drive Cactus through natural language via an external agent, but the product has no first-party natural-language command interface of its own. Community reports of Needle demos misfiring on indirect phrasing concern the model's tool-calling accuracy inside demo apps, not operating Cactus itself, so they do not create a dispute here. missing for 10: native natural-language control of the platform or CLI, documented agent workflows beyond a one-line mention, and hands-on corroboration of agent-driven operation.",
+    "evidenceIds": [
+      "cactus-compute-docs-9",
+      "cactus-compute-docs-1",
+      "cactus-compute-docs-8",
+      "cactus-compute-probe-1",
+      "cactus-compute-docs-5"
+    ]
+  },
+  {
+    "productId": "cactus-compute",
+    "storyId": "agentic-official-cli",
+    "verdict": "full",
+    "quality": 7,
+    "confidence": "medium",
+    "rationale": "Cactus ships an official CLI, installable via Homebrew (`brew install cactus-compute/cactus/cactus`). It has documented subcommands: `cactus run`, `cactus convert`, `cactus benchmark` and `needle whistle compare`. The platform docs list the CLI alongside the dashboard, Python and coding agents as a supported way to run hosted jobs. Missing for 10: a full command reference for the platform CLI, evidence of agent-oriented features such as machine-readable output or non-interactive auth, and any independent hands-on corroboration of the CLI.",
+    "evidenceIds": [
+      "cactus-compute-gh-6",
+      "cactus-compute-gh-1",
+      "cactus-compute-gh-5",
+      "cactus-compute-docs-9",
+      "cactus-compute-docs-21"
+    ]
+  },
+  {
+    "productId": "cactus-compute",
+    "storyId": "agentic-public-api",
+    "verdict": "full",
+    "quality": 8,
+    "confidence": "medium",
+    "rationale": "Cactus documents a public REST API for its platform: POST /generations, POST /tool_schemas, a reserve/PUT/complete upload flow, GET /billing and GET /v1/plans. The docs point to an OpenAPI spec at /v1/openapi.json and an llms.txt (confirmed live by probe) that names coding agents with an API key as a supported way to run it. Separately, the open-source engine exposes OpenAI-compatible APIs with multi-language bindings, and a community user calls the API very simple. The probe's 404s were only at root-level OpenAPI paths, not the documented /v1 path, so they do not contradict the docs. Missing for 10: independent hands-on verification of the hosted REST API and its OpenAPI spec, clear documentation of authentication and key handling; community also flags the SDK's inline model download as awkward.",
+    "evidenceIds": [
+      "cactus-compute-docs-1",
+      "cactus-compute-docs-4",
+      "cactus-compute-docs-5",
+      "cactus-compute-docs-6",
+      "cactus-compute-docs-8",
+      "cactus-compute-docs-9",
+      "cactus-compute-docs-10",
+      "cactus-compute-probe-1",
+      "cactus-compute-gh-2",
+      "cactus-compute-gh-4",
+      "cactus-compute-comm-16",
+      "cactus-compute-comm-18"
+    ]
+  },
+  {
+    "productId": "cactus-compute",
+    "storyId": "agentic-scoped-keys",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Cactus's hosted platform uses API keys, and the docs say a coding agent can run with your API key. The axis therefore applies. However, no evidence describes scoped, restricted or least-privilege keys, per-agent credentials, or permission controls. A single account API key does not deliver the story.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "cactus-compute",
+    "storyId": "agentic-sdks",
+    "verdict": "full",
+    "quality": 8,
+    "confidence": "medium",
+    "rationale": "Cactus ships official bindings for Swift, Kotlin, Flutter, React Native, Python and Rust, plus an OpenAI-compatible engine API. A Python package (needle) offers a decorator-based tool API, and the hosted platform can be driven from the CLI, Python or a coding agent. A community user called the React Native API very simple, though another flagged that models download inline at runtime with no separate download/cache API. Missing for 10: in-depth per-language SDK documentation (bindings appear only as a one-line list), an evidenced SDK for the hosted platform API beyond Python, and a separate model download/cache API.",
+    "evidenceIds": [
+      "cactus-compute-gh-4",
+      "cactus-compute-gh-2",
+      "cactus-compute-docs-9",
+      "cactus-compute-docs-13",
+      "cactus-compute-docs-22",
+      "cactus-compute-docs-10",
+      "cactus-compute-comm-16",
+      "cactus-compute-comm-18"
+    ]
+  },
+  {
+    "productId": "cactus-compute",
+    "storyId": "agentic-webhooks",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Cactus runs a hosted platform API for data generation, fine-tuning jobs and uploads, so webhook event subscriptions (for example, job-completion callbacks) are a fair ask for this kind of product. Nothing in the evidence pack mentions webhooks, callbacks or event subscriptions. The documented API covers only request-style endpoints such as POST /generations, POST /tool_schemas, GET /billing and the reserve/PUT/complete upload flow.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "cactus-compute",
+    "storyId": "anthropic-compatible-endpoint",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Cactus is an inference engine, so an Anthropic-compatible messages endpoint is a fair question to ask of it. The evidence only documents OpenAI-compatible APIs for text, speech and vision, plus platform endpoints for generations, tool schemas and billing. Nothing mentions an Anthropic-style /v1/messages endpoint or compatibility.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "cactus-compute",
+    "storyId": "api-interactive-docs",
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "medium",
+    "rationale": "Cactus publishes a machine-readable OpenAPI spec at /v1/openapi.json and a text API reference at /llms/api covering /generations, /tool_schemas, upload and /billing, and one endpoint (GET /v1/plans) can be called with no key. Nothing in the evidence shows an interactive explorer or runnable examples, and the probe found the standard OpenAPI/Swagger paths returning 404. The in-browser model demo is a product trial, not an API reference. missing for 10: an interactive API explorer (try-it/Swagger-style UI), runnable code examples per endpoint, any hands-on or independent corroboration of the reference experience.",
+    "evidenceIds": [
+      "cactus-compute-docs-10",
+      "cactus-compute-docs-4",
+      "cactus-compute-docs-5",
+      "cactus-compute-docs-8",
+      "cactus-compute-docs-1",
+      "cactus-compute-probe-2"
+    ]
+  },
+  {
+    "productId": "cactus-compute",
+    "storyId": "api-machine-spec",
+    "verdict": "full",
+    "quality": 8,
+    "confidence": "medium",
+    "rationale": "An OpenAPI spec is published at https://cactuscompute.com/v1/openapi.json; the cited description ('Generate tool-calling training data, fine-tune Needle 3, and download the resulting models') comes from that file. It sits alongside agent-oriented llms.txt and llms/api docs that describe the REST endpoints. The probe's 404s only covered unversioned or well-known paths, not the /v1/ path, so they do not contradict the spec's existence. Missing for 10: the spec is not discoverable at standard or well-known locations, and there is no hands-on or independent confirmation of its completeness or validity.",
+    "evidenceIds": [
+      "cactus-compute-docs-10",
+      "cactus-compute-probe-2",
+      "cactus-compute-probe-1",
+      "cactus-compute-docs-1"
+    ]
+  },
+  {
+    "productId": "cactus-compute",
+    "storyId": "api-sandbox",
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "There is no documented sandbox or test mode for the hosted API. The closest thing is local mirroring: the open-source package runs LoRA fine-tuning free on your own hardware and data, and needle_eval.py \"scores exactly the way the platform does,\" so you can trial workflows locally before using hosted resources. Separately, GET /billing lets you check limits before spending allowance. missing for 10: a dedicated sandbox/test environment or test API keys for the hosted platform, a non-billable dry-run mode for /generations and training jobs, isolation guarantees separating test from production data, and independent or hands-on corroboration.",
+    "evidenceIds": [
+      "cactus-compute-docs-2",
+      "cactus-compute-docs-12",
+      "cactus-compute-docs-8",
+      "cactus-compute-docs-1"
+    ]
+  },
+  {
+    "productId": "cactus-compute",
+    "storyId": "api-versioning-policy",
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "The hosted API is path-versioned (/v1/plans, /v1/openapi.json), and the Needle SDK lets existing deployments pin an older model generation (generation=2), which shows some backward-compatibility intent. Nothing in the evidence documents a deprecation policy, sunset timelines, or a changelog. Missing for 10: a documented API deprecation and sunset policy, a versioning or changelog policy for the /v1 API, and independent corroboration of version stability.",
+    "evidenceIds": [
+      "cactus-compute-docs-1",
+      "cactus-compute-docs-10",
+      "cactus-compute-docs-22"
+    ]
+  },
+  {
+    "productId": "cactus-compute",
+    "storyId": "apple-silicon-acceleration",
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "medium",
+    "rationale": "Cactus officially runs natively on macOS on Arm and installs via Homebrew, so Apple Silicon is supported on the CPU path. The docs say it needs no GPU, and a community tester reports Needle 3 does not run inference on the Apple GPU at all, using the GPU only for training. The Metal half of the story is therefore unmet. Missing for 10: Metal/GPU-accelerated inference, documented ARM-specific optimizations (e.g., NEON kernels), and Apple Silicon performance benchmarks.",
+    "evidenceIds": [
+      "cactus-compute-docs-11",
+      "cactus-compute-gh-6",
+      "cactus-compute-comm-7"
+    ]
+  },
+  {
+    "productId": "cactus-compute",
+    "storyId": "automation-bulk-operations",
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "The evidence shows only batch-style generation, not general bulk operations. One POST /generations call produces 100 to 10,000 training examples, and setting max_depth trains and scores every smaller model size in one job. A community test also showed one natural-language request yielding several tool calls at once. Missing for 10: bulk actions over existing items (e.g., batch delete/update/download of models or datasets), a documented batch inference API, CLI bulk commands, and independent corroboration of bulk workflows.",
+    "evidenceIds": [
+      "cactus-compute-docs-4",
+      "cactus-compute-docs-7",
+      "cactus-compute-comm-11"
+    ]
+  },
+  {
+    "productId": "cactus-compute",
+    "storyId": "automation-rules-engine",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Cactus is branded as an 'Automation Foundation Model', so automation is a fair axis for it. However, the evidence only shows model-inferred tool calling: decorated functions become tools, and streamed audio or text produces tool calls. Nothing documents user-defined rules or event-based triggers that fire actions automatically, and one community user explicitly wished for exact phrase-to-control mappings instead of the heuristic model.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "cactus-compute",
+    "storyId": "automation-scheduled-jobs",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Cactus is an on-device inference and fine-tuning platform with an API, CLI and hosted jobs, so a scheduling feature for recurring jobs or workflows is a fair question to ask. The evidence covers one-off API calls (generations, fine-tuning, uploads, billing) and tool-calling models branded as 'automation'. Nothing in the pack shows cron-style scheduling, recurring jobs, or workflow orchestration.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "cactus-compute",
+    "storyId": "automation-versioned-workflows",
+    "verdict": "na",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Cactus is an on-device inference engine and model fine-tuning platform. Its 'automation' is tool-calling done by a model inside the developer's own app, not a workflow product where users author automations, so versioning, reviewing and rolling back automations is outside its category. The only versioning evidence is pinning an older model generation (Needle 2). That is model-version selection, not automation versioning, so it does not make this axis apply.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "cactus-compute",
+    "storyId": "broad-model-architecture-support",
+    "verdict": "partial",
+    "quality": 4,
+    "confidence": "medium",
+    "rationale": "Cactus claims any HuggingFace model can be converted with `cactus convert`, but labels this experimental. The engine exposes OpenAI-compatible APIs for text, speech and vision, Needle can return embeddings, and users report running Gemma 4 and loading GGUF models. Hands-on evidence is weaker: Jan Nano and SmolLM3 downloaded fine but crashed the demo app as soon as they were selected. Missing for 10: any documented list or count of supported architectures backing 'hundreds', any explicit evidence of MoE support, non-experimental broad conversion, and independent confirmation that varied architectures run reliably.",
+    "evidenceIds": [
+      "cactus-compute-gh-1",
+      "cactus-compute-gh-2",
+      "cactus-compute-docs-16",
+      "cactus-compute-comm-19",
+      "cactus-compute-comm-17"
+    ]
+  },
+  {
+    "productId": "cactus-compute",
+    "storyId": "build-from-source",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Cactus is an on-device inference engine, so building its runtime from source with few dependencies is a fair question to ask. The pack shows only a Homebrew binary install (brew install, cactus run) and platform/Python requirements for running locally. Nothing documents a source build, its toolchain, or a minimal dependency footprint. The one community note about vendoring llama.cpp is a branding critique, not evidence of a lean source build.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "cactus-compute",
+    "storyId": "built-in-chat-ui",
+    "verdict": "partial",
+    "quality": 4,
+    "confidence": "medium",
+    "rationale": "Community hands-on reports describe a Cactus Android chat/demo app for chatting with offline LLMs. Users called it fast and accurate, but reported endless phrase repetition and no auto-scroll. The app also crashed when selecting downloaded GGUF models, and it lacks dark mode and has low-contrast text. The first-party evidence shows only a CLI (`cactus run`), a browser demo of an automation model, and SDK bindings, with no documented built-in GUI chat interface. Missing for 10: first-party documentation of a graphical chat app, desktop GUI support, stable support for custom local models without crashes, polished UX (auto-scroll, dark mode, accessibility).",
+    "evidenceIds": [
+      "cactus-compute-comm-13",
+      "cactus-compute-comm-17",
+      "cactus-compute-gh-6"
+    ]
+  },
+  {
+    "productId": "cactus-compute",
+    "storyId": "cli-interactive-chat",
+    "verdict": "partial",
+    "quality": 5,
+    "confidence": "medium",
+    "rationale": "The GitHub README shows a terminal quickstart: `brew install cactus-compute/cactus/cactus` followed by `cactus run`. Together with other CLI subcommands (`cactus convert`, `cactus benchmark`), this indicates the CLI can run a model locally. However, the evidence never says `cactus run` opens an interactive, multi-turn chat. Missing for 10: explicit documentation that `cactus run` provides an interactive chat REPL, details on model selection and session behavior, and independent hands-on corroboration of terminal chat use.",
+    "evidenceIds": [
+      "cactus-compute-gh-6",
+      "cactus-compute-gh-1",
+      "cactus-compute-gh-5"
+    ]
+  },
+  {
+    "productId": "cactus-compute",
+    "storyId": "cli-model-management",
+    "verdict": "partial",
+    "quality": 4,
+    "confidence": "medium",
+    "rationale": "Cactus ships a CLI installed via Homebrew with `cactus run`, `cactus convert [HF-Name]` (experimental conversion of any HuggingFace model, which implies fetching it), and `cactus benchmark`, and the platform tier can also be driven from a CLI. There is no documented command for searching a model catalog or for listing, updating, or removing local models. Missing for 10: model search/discovery command, explicit download/pull command, local model management (list/delete/cache), in-depth CLI reference docs, independent hands-on corroboration of CLI model handling.",
+    "evidenceIds": [
+      "cactus-compute-gh-6",
+      "cactus-compute-gh-1",
+      "cactus-compute-gh-5",
+      "cactus-compute-docs-9"
+    ]
+  },
+  {
+    "productId": "cactus-compute",
+    "storyId": "cli-runtime-config",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Cactus is an on-device inference engine with a CLI (`cactus run`, `cactus convert`, `cactus benchmark`), so this axis applies. However, no evidence shows CLI flags for GPU offload or context length. Community reports say the GPU isn't used for inference on a Pixel or on Apple GPU (Needle 3), and the vendor stresses 'no GPU' operation, so custom GPU offload settings are not evidenced.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "cactus-compute",
+    "storyId": "cli-server-control",
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "Cactus ships a CLI: `brew install` followed by `cactus run`, plus `cactus convert` and `cactus benchmark`. The engine also exposes OpenAI-compatible APIs, so starting a local model from the command line is evidenced. Nothing shows that `cactus run` launches a persistent server or that the CLI can stop one, and the site describes the product as \"no server\". missing for 10: an explicit server/serve mode, a documented stop/shutdown command, server lifecycle documentation, hands-on corroboration.",
+    "evidenceIds": [
+      "cactus-compute-gh-6",
+      "cactus-compute-gh-2",
+      "cactus-compute-gh-5",
+      "cactus-compute-gh-1"
+    ]
+  },
+  {
+    "productId": "cactus-compute",
+    "storyId": "client-library-bindings",
+    "verdict": "full",
+    "quality": 8,
+    "confidence": "medium",
+    "rationale": "The Cactus repo lists official bindings for Python and React Native, plus Swift, Kotlin, Flutter and Rust. The Needle README shows a Python API (decorated functions, run(), stream()). A community user (comm-16) independently describes the React Native API as very simple. Missing for 10: an evidenced plain JavaScript/Node or browser SDK, and in-depth per-binding reference docs beyond a list entry.",
+    "evidenceIds": [
+      "cactus-compute-gh-4",
+      "cactus-compute-docs-9",
+      "cactus-compute-docs-13",
+      "cactus-compute-docs-22",
+      "cactus-compute-comm-16"
+    ]
+  },
+  {
+    "productId": "cactus-compute",
+    "storyId": "cloud-model-passthrough",
+    "verdict": "partial",
+    "quality": 4,
+    "confidence": "low",
+    "rationale": "The Cactus engine says it can route hard queries to the cloud automatically based on local model confidence, and a user mentions running 'Cactus Hybrid', so local and cloud inference coexist in one engine. The evidence is a single README line, though, and says nothing about choosing or configuring cloud AI providers yourself. Missing for 10: documentation of which cloud providers are supported, user-configurable provider/API-key setup, manual (not only automatic) switching between cloud and local models in the same interface, independent hands-on confirmation of the cloud handoff.",
+    "evidenceIds": [
+      "cactus-compute-gh-3",
+      "cactus-compute-comm-19"
+    ]
+  },
+  {
+    "productId": "cactus-compute",
+    "storyId": "cloud-offload-large-models",
+    "verdict": "partial",
+    "quality": 4,
+    "confidence": "low",
+    "rationale": "The Cactus README says it can route hard queries to the cloud automatically based on local model confidence, and a community user mentions running 'Cactus Hybrid', so some cloud fallback for inference exists. However, the hosted platform evidence covers GPUs for fine-tuning and training, not a hosted inference tier for running very large models. missing for 10: an explicit hosted inference tier for large models, a way to pick a cloud model without downloading it, documentation of which cloud models are served and how hybrid routing is configured or priced, and independent hands-on corroboration of cloud offload.",
+    "evidenceIds": [
+      "cactus-compute-gh-3",
+      "cactus-compute-comm-19"
+    ]
+  },
+  {
+    "productId": "cactus-compute",
+    "storyId": "cloud-offload-pricing-caps",
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "Cactus does route hard queries to the cloud based on local confidence (gh-3), and it documents named platform tiers (Starter, Pro, Custom), a /v1/plans price endpoint and a GET /billing endpoint returning plan limits and period usage. However, the documented pricing and limits concern hosted fine-tuning and data generation, not cloud inference offload. Missing for 10: published prices for cloud inference offload, documented rate limits, explicit usage caps for routed inference, and any independent confirmation of how hybrid-cloud inference is billed.",
+    "evidenceIds": [
+      "cactus-compute-gh-3",
+      "cactus-compute-docs-1",
+      "cactus-compute-docs-8",
+      "cactus-compute-docs-9",
+      "cactus-compute-docs-3"
+    ]
+  },
+  {
+    "productId": "cactus-compute",
+    "storyId": "coding-agent-backend-integration",
+    "verdict": "full",
+    "quality": 7,
+    "confidence": "medium",
+    "rationale": "Cactus's docs say the paid platform can be run from 'a coding agent with your API key'. Agent-readable surfaces back this up: a live llms.txt, a documented REST API (generations, tool_schemas, uploads, billing checks), and an OpenAI-style spec at /v1/openapi.json. The root-level OpenAPI probe 404s, but that does not contradict the documented /v1 path. missing for 10: an official MCP server or agent-specific integration guide, and independent or hands-on corroboration of a coding agent actually driving the platform end-to-end.",
+    "evidenceIds": [
+      "cactus-compute-docs-9",
+      "cactus-compute-docs-1",
+      "cactus-compute-probe-1",
+      "cactus-compute-docs-10",
+      "cactus-compute-docs-4",
+      "cactus-compute-docs-5",
+      "cactus-compute-docs-6",
+      "cactus-compute-docs-8"
+    ]
+  },
+  {
+    "productId": "cactus-compute",
+    "storyId": "cold-start-latency",
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "Cactus is a lightweight on-device engine: it installs via brew and runs with `cactus run`, its models are small (Whistle is a single 16.9 MB CPU file, and the smallest models run on budget phones and Raspberry Pis), and a user called it the fastest offline LLM they had seen on their phone. None of this measures cold-start or model-load time, and a community critique notes that models download inline at runtime, which forces apps to block on a first-run progress bar. Missing for 10: documented or benchmarked cold-start/load latency, evidence about runtime binary size, and a pre-download/cache API to avoid first-run delays.",
+    "evidenceIds": [
+      "cactus-compute-gh-6",
+      "cactus-compute-docs-17",
+      "cactus-compute-docs-24",
+      "cactus-compute-comm-13",
+      "cactus-compute-comm-18"
+    ]
+  },
+  {
+    "productId": "cactus-compute",
+    "storyId": "concurrent-request-limits",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Cactus is a local inference engine exposing OpenAI-compatible APIs, so documented concurrency limits are a fair question to ask of it. The evidence pack never states a maximum number of concurrent requests or connections, nor where throughput degrades. A `cactus benchmark` command exists, but nothing shows it reports concurrency limits.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "cactus-compute",
+    "storyId": "container-deployment",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Cactus is an inference runtime, so containerized deployment is a fair axis to judge it on. The evidence pack never mentions Docker, container images or any container deployment guidance. It shows only Linux/macOS/Windows host support, a Homebrew install and Python/mobile bindings, none of which demonstrate a containerized, reproducible deployment path.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "cactus-compute",
+    "storyId": "continuous-batching-throughput",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Cactus is an LLM inference engine with OpenAI-compatible APIs, so serving throughput is a fair axis to judge it on. However, nothing in the evidence mentions continuous batching, chunked prefill, or multi-request serving throughput. The materials focus on single-device, on-device CPU inference and fine-tuning.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "cactus-compute",
+    "storyId": "cpu-gpu-hybrid-offload",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Cactus is an on-device inference engine, so CPU+GPU offload for models larger than VRAM is a fair axis to ask about. Nothing in the evidence pack documents layer splitting or offloading across CPU and GPU. Its docs stress CPU-only, no-GPU operation, and community reports say the GPU goes unused for inference on Pixel and Apple hardware, so there is nothing to credit.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "cactus-compute",
+    "storyId": "cross-architecture-cpu-support",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Supported CPU architectures are a fair question for an on-device inference engine like Cactus, so the axis applies. However, the documented platforms are limited to Arm and x86 on macOS/Linux and x64/Arm64 on Windows. Nothing in the pack mentions PowerPC, RISC-V or any other architecture beyond x86 and ARM, and the general 'any hardware' marketing line does not establish such support.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "cactus-compute",
+    "storyId": "custom-assistant-creation",
+    "verdict": "partial",
+    "quality": 5,
+    "confidence": "medium",
+    "rationale": "Cactus lets you build task-specialized tool-calling models rather than configurable assistant personas. You submit your tools, a product description and example messages to generate training data (POST /generations, /tool_schemas), fine-tune Needle 3 on the platform or with local LoRA, then download the model. You can also declare custom tools by decorating functions. This delivers specialization through a developer fine-tuning workflow, not a simple assistant-configuration feature. Hands-on reports suggest results are weak unless the use case is matched exactly, and that the model struggles beyond about 10 tools. missing for 10: a first-class assistant or persona configuration feature (system prompts, saved task profiles), documentation framing this as building assistants, and independent evidence that fine-tuned specialized models perform reliably.",
+    "evidenceIds": [
+      "cactus-compute-docs-4",
+      "cactus-compute-docs-5",
+      "cactus-compute-docs-10",
+      "cactus-compute-docs-2",
+      "cactus-compute-docs-3",
+      "cactus-compute-docs-13",
+      "cactus-compute-comm-10",
+      "cactus-compute-comm-6",
+      "cactus-compute-comm-4"
+    ]
+  },
+  {
+    "productId": "cactus-compute",
+    "storyId": "custom-model-identifier",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Cactus is an on-device inference engine with OpenAI-compatible APIs, so model aliasing is a fair serving-API question. Nothing in the evidence shows a way to assign a custom identifier to a loaded model. One community API critique says models download inline at runtime and asks for a separate API that returns an identifier to pass into inference, which suggests no such mechanism exists.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "cactus-compute",
+    "storyId": "disaggregated-serving",
+    "verdict": "na",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Cactus is an on-device inference engine and model maker for phones, wearables and Raspberry Pis, positioned as needing no GPU and no server. Disaggregating prefill and decode across hardware for large-scale datacenter serving is outside this product category, so the story's axis does not apply.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "cactus-compute",
+    "storyId": "distributed-parallelism",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Cactus is an inference engine, so multi-GPU parallelism is a fair axis to ask about. The evidence pack never mentions tensor, pipeline, or data parallelism. The docs stress CPU-only, no-GPU on-device execution, and community reports say the GPU isn't used for inference.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "cactus-compute",
+    "storyId": "document-chat-rag",
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "Cactus provides the building blocks for offline document chat but no evidence of an automatic RAG feature. It runs models fully on-device with no data leaving the device, exposes OpenAI-compatible text APIs, and returns sentence vectors so an app can 'search, match and route locally'. A hands-on user also ran its offline chat app. Missing for 10: automatic retrieval-augmented generation, document ingestion/indexing, a ready-made chat-with-your-documents workflow, and hands-on corroboration of document Q&A offline.",
+    "evidenceIds": [
+      "cactus-compute-docs-16",
+      "cactus-compute-docs-24",
+      "cactus-compute-gh-2",
+      "cactus-compute-comm-13"
+    ]
+  },
+  {
+    "productId": "cactus-compute",
+    "storyId": "document-editing-assistant",
+    "verdict": "na",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Cactus is an on-device inference engine and model fine-tuning platform with SDKs, a CLI and an API. An integrated document-drafting workspace with autosave falls outside that product category, and nothing in the evidence shows Cactus ships a document editor or workspace (its demo chat app is not one).",
+    "evidenceIds": []
+  },
+  {
+    "productId": "cactus-compute",
+    "storyId": "download-models-from-huggingface",
+    "verdict": "partial",
+    "quality": 5,
+    "confidence": "medium",
+    "rationale": "Cactus's GitHub README says any Hugging Face model can be converted with `cactus convert [HF-Name]` and then run locally via `cactus run`, but it labels the conversion path experimental and requires a conversion step rather than direct running. Community reports show models do download and run on-device, though one user's Jan Nano/SmolLM3 GGUF downloads in the demo app crashed on selection. Missing for 10: direct no-conversion HF model loading, stable (non-experimental) conversion support, detailed docs on supported HF architectures, reliable hands-on corroboration of arbitrary HF models running.",
+    "evidenceIds": [
+      "cactus-compute-gh-1",
+      "cactus-compute-gh-6",
+      "cactus-compute-comm-17",
+      "cactus-compute-comm-18",
+      "cactus-compute-comm-13"
+    ]
+  },
+  {
+    "productId": "cactus-compute",
+    "storyId": "embedding-model-support",
+    "verdict": "partial",
+    "quality": 4,
+    "confidence": "low",
+    "rationale": "The Needle README says the same model 'returns a vector for a sentence, so an app can search, match and route locally,' which gives on-device embeddings for search. The engine also exposes OpenAI-compatible APIs for text, and arbitrary HuggingFace models can be converted, though that path is labelled experimental. Embedding support is a single thin mention tied to the tool-calling model, so this is only partial delivery. Missing for 10: dedicated embedding model support or catalog, a documented embeddings endpoint or API, retrieval/indexing guidance, quality benchmarks, and independent or hands-on corroboration.",
+    "evidenceIds": [
+      "cactus-compute-docs-16",
+      "cactus-compute-gh-2",
+      "cactus-compute-gh-1"
+    ]
+  },
+  {
+    "productId": "cactus-compute",
+    "storyId": "enterprise-license-cost",
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "medium",
+    "rationale": "The pricing docs separate a free tier ($0 for local LoRA fine-tuning with the open-source package) from paid Platform tiers (Starter, Pro, Custom) that add hosted GPUs, full-model training, a confidence head and 2-bit exports. This shows which features cost money, but nothing addresses whether commercial or enterprise use of the free open-source package needs a paid license. missing for 10: the open-source license terms, an explicit statement on commercial/enterprise use rights, details of what the Custom/enterprise tier covers, and independent confirmation.",
+    "evidenceIds": [
+      "cactus-compute-docs-2",
+      "cactus-compute-docs-3",
+      "cactus-compute-docs-9",
+      "cactus-compute-docs-1"
+    ]
+  },
+  {
+    "productId": "cactus-compute",
+    "storyId": "flexible-integer-quantization",
+    "verdict": "partial",
+    "quality": 4,
+    "confidence": "low",
+    "rationale": "Cactus is an on-device inference engine, so quantization is a fair axis. The docs mention 2-bit exports, but only on the paid hosted platform (cactus-compute-docs-3). A community benchmark ran a fine-tuned Needle 3 model in W4A8 form, i.e. 4-bit weights with 8-bit activations (cactus-compute-comm-10). That shows some low-bit integer quantization exists, but the evidence never documents a selectable range of bit-widths up to 8-bit or any memory-footprint figures. Missing for 10: documented quantization options covering low-bit through INT8, first-party docs on choosing a precision in the open-source engine or convert tool, memory-reduction figures, independent corroboration of 2-bit exports.",
+    "evidenceIds": [
+      "cactus-compute-docs-3",
+      "cactus-compute-comm-10"
+    ]
+  },
+  {
+    "productId": "cactus-compute",
+    "storyId": "format-backward-compat",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Nothing in the evidence documents a compatibility policy, format versioning, or upgrade notes on whether a new Cactus runtime can still load previously downloaded quantized model files. The `generation=2` option for keeping Needle 2 running concerns choosing a model generation, not file-format compatibility across runtime upgrades. The GGUF crash report is not tied to an upgrade either.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "cactus-compute",
+    "storyId": "gguf-format-support",
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "Community evidence suggests an earlier Cactus build vendored llama.cpp, which implies a GGUF-based runtime. Its demo app offered GGUF model links for Jan Nano and SmolLM3, and those downloads worked, but the app crashed as soon as the models were selected. Current first-party material only describes an experimental `cactus convert` path from HuggingFace and never mentions GGUF. Missing for 10: first-party documentation of GGUF loading, evidence that GGUF models actually run without crashing, and clarity on whether the current engine still supports GGUF.",
+    "evidenceIds": [
+      "cactus-compute-comm-14",
+      "cactus-compute-comm-17",
+      "cactus-compute-gh-1"
+    ]
+  },
+  {
+    "productId": "cactus-compute",
+    "storyId": "gpu-fallback-diagnostics",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "GPU acceleration is a fair axis for an on-device inference engine like Cactus, but nothing in the pack documents diagnostic output explaining why GPU use failed or why it fell back to CPU. Community reports point the other way: one user saw the GPU go unused on a Pixel even when enabled, with no explanation, and another noted Needle 3 does not run inference on Apple GPU at all.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "cactus-compute",
+    "storyId": "headless-server-mode",
+    "verdict": "partial",
+    "quality": 6,
+    "confidence": "medium",
+    "rationale": "Cactus ships a CLI (`cactus run`, `cactus benchmark`, `cactus convert`) and Python and Rust bindings that run on Linux and Windows across Arm and x86 without a GPU. These are inherently GUI-free and could be scripted in servers or CI, and the engine advertises OpenAI-compatible APIs. Nothing explicitly documents headless, server or CI deployment, and the product is pitched mainly at on-device use. Missing for 10: explicit headless/server-mode documentation, a documented HTTP serving mode for the OpenAI-compatible API, CI pipeline guidance or examples, independent hands-on reports of server/CI use.",
+    "evidenceIds": [
+      "cactus-compute-gh-6",
+      "cactus-compute-gh-5",
+      "cactus-compute-gh-1",
+      "cactus-compute-gh-4",
+      "cactus-compute-gh-2",
+      "cactus-compute-docs-11",
+      "cactus-compute-docs-9"
+    ]
+  },
+  {
+    "productId": "cactus-compute",
+    "storyId": "kv-cache-paged-memory-management",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Cactus ships an on-device inference engine, so KV-cache memory management is a fair performance question for this kind of product. Nothing in the evidence mentions paged attention, KV-cache paging, fragmentation handling, or concurrent-request capacity. The engine, benchmark and binding citations are silent on this, so the axis applies but is unevidenced.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "cactus-compute",
+    "storyId": "local-voice-transcription",
+    "verdict": "full",
+    "quality": 8,
+    "confidence": "medium",
+    "rationale": "First-party docs describe Whistle, a 16.9 MB on-CPU speech-to-text model covering seven languages, and `needle.stream(chunks)`, which transcribes live from the microphone and commits words once two passes agree. Word timestamps and keyword biasing are also documented, and the site states no data leaves the device. The engine additionally exposes speech APIs. Missing for 10: independent hands-on corroboration of Whistle's real-time streaming (the one community mic-transcription mention concerns Cactus Hybrid/Gemma, not Whistle), and any documented latency or accuracy figures for live dictation.",
+    "evidenceIds": [
+      "cactus-compute-docs-17",
+      "cactus-compute-docs-19",
+      "cactus-compute-docs-18",
+      "cactus-compute-docs-24",
+      "cactus-compute-gh-2",
+      "cactus-compute-docs-21"
+    ]
+  },
+  {
+    "productId": "cactus-compute",
+    "storyId": "lora-adapter-serving",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Cactus is an on-device inference engine, so serving LoRA adapters on a base model is a fair question for it. The evidence only covers local LoRA fine-tuning and downloading the resulting models. Nothing describes loading, hot-swapping or concurrently serving multiple LoRA adapters on a shared base model in the engine.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "cactus-compute",
+    "storyId": "low-level-server-tuning-flags",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Cactus is an on-device inference engine, so exposing low-level runtime knobs is a fair question for this kind of product. The pack has no evidence of user-overridable memory locking, mmap, or similar engine settings. The vendored llama.cpp remark and a GPU-enable mention say nothing about exposed memory or loading controls.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "cactus-compute",
+    "storyId": "maintainer-release-cadence",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Cactus is an open-source project with GitHub repos, so patch cadence and release history are a fair axis. However, the evidence pack contains no release notes, changelog, security advisories, or data on how quickly critical bugs or vulnerabilities are fixed. Community reports describe bugs such as crashes and repeated output, but none say whether or how fast those bugs were patched.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "cactus-compute",
+    "storyId": "model-cache-portability",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Nothing in the evidence says whether Cactus's downloaded model files or caches can be reused by other runtimes. The only related item is that Hugging Face models must go through an experimental `cactus convert` step. That points to a Cactus-specific format rather than a documented, interoperable cache, and there is no statement on cache location, format compatibility, or sharing with other runtimes.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "cactus-compute",
+    "storyId": "model-config-management",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "There is no evidence of a unified place to manage downloaded models, saved prompts and per-model configurations. The demo app can download and select GGUF models, but nothing shows those models being organized or managed. A community critique says models download inline at runtime, with no separate download-or-cache API. The platform dashboard is only described in the context of fine-tuning, not local model, prompt or config management.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "cactus-compute",
+    "storyId": "model-hot-swapping",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Cactus exposes an engine with OpenAI-compatible APIs, but the evidence never documents loading several models at once or hot-swapping them in a running server. The nearest items, selecting a model generation at construction time and choosing downloaded GGUF models in a demo app (which crashed on selection), do not show switching without a restart.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "cactus-compute",
+    "storyId": "model-recommendation-assistant",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Cactus is an on-device model runtime and model provider, so a hardware- and task-aware model recommendation assistant is a fair question for it. The evidence shows only adjacent tooling: a `cactus benchmark` command, `needle whistle compare` for side-by-side speech models, and an llms.txt for coding agents. Nothing shows an AI assistant that recommends which local model to download for a given device and task.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "cactus-compute",
+    "storyId": "modern-quant-format-support",
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "Cactus does run quantized models: community users ran a fine-tuned Needle 3 at W4A8, the platform offers 2-bit exports, the demo app downloads GGUF models, and HuggingFace models can be converted with the experimental `cactus convert`. Nothing shows it loading the named formats (FP8, INT4, GPTQ, AWQ) directly, and the GGUF models crashed the demo app on selection. Missing for 10: documented support for loading FP8/GPTQ/AWQ/INT4 checkpoints, a list of supported quantization formats, non-experimental conversion of third-party quantized models.",
+    "evidenceIds": [
+      "cactus-compute-gh-1",
+      "cactus-compute-docs-3",
+      "cactus-compute-comm-10",
+      "cactus-compute-comm-17"
+    ]
+  },
+  {
+    "productId": "cactus-compute",
+    "storyId": "multi-agent-concurrent-throughput",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Cactus is an on-device inference runtime, so concurrent throughput and capacity reservation are fair questions for it. Nothing in the pack covers concurrency, multi-session scheduling, or reserved compute capacity. The 'reserve' call in the API docs is about reserving an upload slot, not runtime capacity, and the performance comments are about single-session speed on CPU or GPU.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "cactus-compute",
+    "storyId": "multi-instance-memory-budgeting",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Cactus is an on-device inference engine with an OpenAI-compatible API, CLI and bindings, so controlling context memory across concurrent model instances is a fair question for it. However, nothing in the evidence covers context or KV-cache memory allocation, per-instance memory limits, or running multiple model instances at once. The axis applies but is unevidenced.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "cactus-compute",
+    "storyId": "multi-vendor-gpu-support",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Cactus is an on-device inference engine, so vendor-specific GPU acceleration is a fair axis to judge it on. The evidence points the other way: the docs describe local running with \"no GPU\" and pitch \"No GPU, no server.\" Community reports say Needle 3 does not use the Apple GPU for inference and the GPU went unused on a Pixel even when enabled. Nothing in the pack mentions NVIDIA, AMD or other vendor-specific kernels.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "cactus-compute",
+    "storyId": "network-accessible-serving",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Cactus is a local inference engine, so serving models to other devices on a LAN is a fair question for it. The evidence only shows \"OpenAI-compatible APIs\" inside the Cactus Engine and a `cactus run` CLI. Nothing shows a network server mode, host or port binding, or access from other devices, and the vendor frames the product as fully on-device with \"no server\".",
+    "evidenceIds": []
+  },
+  {
+    "productId": "cactus-compute",
+    "storyId": "one-command-agent-launch",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Cactus is a local inference engine with a CLI (`cactus run`) and OpenAI-compatible APIs, so launching coding agents against local models is a fair question for it. The evidence shows no command that launches third-party coding agent CLIs pre-configured for local models. The only coding-agent mention is about driving the hosted platform with an API key, which is a different capability.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "cactus-compute",
+    "storyId": "open-source-contribution",
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "Cactus has public GitHub repositories (cactus-compute/cactus, cactus-compute/needle) and describes its local fine-tuning package as open source, so outside contribution is plausible. However, nothing in the evidence describes how contributions are accepted or how contributors are recognized. Missing for 10: contribution guidelines (CONTRIBUTING file), a PR/review process, a license statement, a collaborator or maintainer recognition path, and community or hands-on evidence of external contributors being accepted.",
+    "evidenceIds": [
+      "cactus-compute-gh-1",
+      "cactus-compute-gh-6",
+      "cactus-compute-docs-2",
+      "cactus-compute-docs-13"
+    ]
+  },
+  {
+    "productId": "cactus-compute",
+    "storyId": "openai-compatible-server",
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "The Cactus repo says the engine exposes \"OpenAI-compatible APIs for text, speech, and vision\" (gh-2), offers a `cactus run` CLI command (gh-6), and can convert any HuggingFace model, though experimentally (gh-1). Nothing shows these APIs are served over a local HTTP endpoint rather than as in-process SDK bindings. missing for 10: a documented local server/serve command, an HTTP endpoint and port configuration, confirmation that it works for any loaded model (conversion is labeled experimental), and independent hands-on corroboration.",
+    "evidenceIds": [
+      "cactus-compute-gh-2",
+      "cactus-compute-gh-6",
+      "cactus-compute-gh-1"
+    ]
+  },
+  {
+    "productId": "cactus-compute",
+    "storyId": "openness-api-parity",
+    "verdict": "full",
+    "quality": 7,
+    "confidence": "medium",
+    "rationale": "The docs say the platform can be driven equally from the dashboard, CLI, Python, or a coding agent with an API key. The API covers the platform's main workflows: tool-schema and training-data generation, three-step data upload, training with max_depth, model download, plan pricing, and billing usage, all described in a /v1/openapi.json spec. The probe's 404s were on root-level OpenAPI paths, not /v1/openapi.json, so they do not contradict this. Missing for 10: an explicit statement that the API matches the UI feature-for-feature, API coverage of account/key/team management, and independent hands-on confirmation of that parity.",
+    "evidenceIds": [
+      "cactus-compute-docs-9",
+      "cactus-compute-docs-10",
+      "cactus-compute-docs-4",
+      "cactus-compute-docs-5",
+      "cactus-compute-docs-6",
+      "cactus-compute-docs-7",
+      "cactus-compute-docs-8",
+      "cactus-compute-docs-1"
+    ]
+  },
+  {
+    "productId": "cactus-compute",
+    "storyId": "openness-full-export",
+    "verdict": "partial",
+    "quality": 4,
+    "confidence": "medium",
+    "rationale": "The hosted platform lets users download the models they train (docs-10) and offers 2-bit exports (docs-3). An open-source package also supports local fine-tuning on your own hardware and data, which reduces lock-in (docs-2, docs-1). There is no evidence of a full account-data export, and the export formats are not stated as open. missing for 10: documented bulk export of all user data (uploaded datasets, generated training data, job history), explicit open-format guarantees for exported models and data, account deletion/offboarding docs, independent confirmation of export working.",
+    "evidenceIds": [
+      "cactus-compute-docs-10",
+      "cactus-compute-docs-3",
+      "cactus-compute-docs-2",
+      "cactus-compute-docs-1"
+    ]
+  },
+  {
+    "productId": "cactus-compute",
+    "storyId": "openness-open-license",
+    "verdict": "full",
+    "quality": 7,
+    "confidence": "medium",
+    "rationale": "Cactus publishes public GitHub repositories (cactus-compute/cactus, plus the needle README served from raw.githubusercontent.com), and the pricing docs describe local fine-tuning with 'the open-source package', so the core of reading the source openly is delivered. missing for 10: the specific license (e.g. MIT/Apache) is never named in the evidence, and it is unclear whether the hosted platform features are also open.",
+    "evidenceIds": [
+      "cactus-compute-docs-2",
+      "cactus-compute-gh-1",
+      "cactus-compute-gh-6",
+      "cactus-compute-docs-13"
+    ]
+  },
+  {
+    "productId": "cactus-compute",
+    "storyId": "openness-self-host",
+    "verdict": "full",
+    "quality": 8,
+    "confidence": "high",
+    "rationale": "The core Cactus engine and Needle models run entirely locally: install via brew and `cactus run`, with no GPU, no server and no data leaving the device. The base model is downloadable without a key, and local LoRA fine-tuning is free with the open-source package. Hands-on users confirm running it on their own phones and desktops. missing for 10: full-model training, the trained confidence head and 2-bit exports remain hosted-platform-only, and the evidence does not state an explicit open-source license or self-hosting guide for the platform/API layer.",
+    "evidenceIds": [
+      "cactus-compute-gh-6",
+      "cactus-compute-gh-2",
+      "cactus-compute-docs-1",
+      "cactus-compute-docs-2",
+      "cactus-compute-docs-3",
+      "cactus-compute-docs-11",
+      "cactus-compute-docs-24",
+      "cactus-compute-comm-12",
+      "cactus-compute-comm-19"
+    ]
+  },
+  {
+    "productId": "cactus-compute",
+    "storyId": "package-manager-install",
+    "verdict": "full",
+    "quality": 7,
+    "confidence": "medium",
+    "rationale": "The GitHub README documents a two-step install: `brew install cactus-compute/cactus/cactus` followed by `cactus run`. That is a quick install through a standard package manager, though it uses a vendor tap rather than core Homebrew. Language bindings exist for Swift, Kotlin, Flutter, React Native, Python and Rust, and the docs list supported platforms, but no explicit pip/npm/cargo/pub install commands are shown. Missing for 10: documented install commands for the other ecosystems (pip, npm, cargo, Gradle/SPM, pub), a Windows install path despite Windows being listed as supported, and independent hands-on corroboration of how quick the install is.",
+    "evidenceIds": [
+      "cactus-compute-gh-6",
+      "cactus-compute-gh-4",
+      "cactus-compute-docs-11"
+    ]
+  },
+  {
+    "productId": "cactus-compute",
+    "storyId": "prebuilt-binaries",
+    "verdict": "full",
+    "quality": 7,
+    "confidence": "medium",
+    "rationale": "The GitHub README documents a package-manager install, `brew install cactus-compute/cactus/cactus` followed by `cactus run`, which is a packaged install rather than a manual source build. The run-locally docs list support for macOS, Linux and Windows with Python 3.9+, but they never name an explicit pip or binary download. Missing for 10: packages for the Swift, Kotlin, Flutter, React Native, Python and Rust bindings; a Windows or Linux install path beyond Homebrew; confirmation that the Homebrew tap ships prebuilt bottles rather than compiling; independent hands-on corroboration of the install.",
+    "evidenceIds": [
+      "cactus-compute-gh-6",
+      "cactus-compute-docs-11",
+      "cactus-compute-gh-4"
+    ]
+  },
+  {
+    "productId": "cactus-compute",
+    "storyId": "prefix-caching",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Cactus is an on-device inference engine with OpenAI-compatible APIs, so prefix caching is a fair axis to ask about. Nothing in the evidence pack mentions prefix caching, KV-cache reuse, or prompt caching for repeated-prompt workloads, so the capability is unevidenced.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "cactus-compute",
+    "storyId": "privacy-data-residency",
+    "verdict": "partial",
+    "quality": 4,
+    "confidence": "medium",
+    "rationale": "Cactus lets users keep data on their own hardware: models run on-device with \"no data leaving the device,\" and LoRA fine-tuning can run locally with your own hardware and data. That is a de facto local-vs-hosted residency choice. However, nothing documents region or residency selection for the hosted platform (uploads, generations, hosted GPU training), and the cloud-routing feature has no stated location controls. Missing for 10: region selection for hosted storage and training, documented data-residency guarantees for uploaded data, residency controls on cloud routing, independent corroboration.",
+    "evidenceIds": [
+      "cactus-compute-docs-24",
+      "cactus-compute-docs-2",
+      "cactus-compute-docs-3",
+      "cactus-compute-docs-6",
+      "cactus-compute-gh-3"
+    ]
+  },
+  {
+    "productId": "cactus-compute",
+    "storyId": "privacy-no-training",
+    "verdict": "partial",
+    "quality": 4,
+    "confidence": "low",
+    "rationale": "Cactus's on-device models run with 'no data leaving the device', and LoRA fine-tuning can be done locally with your own data and hardware. Both indirectly keep user data out of anyone else's training, but there is no explicit no-training policy or opt-out control. The hosted platform takes uploaded data and cloud routing sends hard queries off-device, and neither has a stated data-use policy. Missing for 10: an explicit policy that customer data is not used for model training, an opt-out control for hosted fine-tuning and cloud routing, documented data-retention terms, and independent corroboration.",
+    "evidenceIds": [
+      "cactus-compute-docs-24",
+      "cactus-compute-docs-2",
+      "cactus-compute-gh-3",
+      "cactus-compute-docs-6"
+    ]
+  },
+  {
+    "productId": "cactus-compute",
+    "storyId": "privacy-retention-controls",
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "Cactus lets users keep data entirely under their own control by running locally: the smallest models have 'no data leaving the device', and local LoRA fine-tuning uses your own hardware and data. That implicitly gives full control over retention. However, the hosted platform accepts uploaded bytes, and the evidence documents no retention policy, deletion endpoint or data-lifecycle controls for that hosted data. Missing for 10: documented retention policy for uploaded training data and generations, a delete API or dashboard control for hosted datasets and models, and any independent corroboration.",
+    "evidenceIds": [
+      "cactus-compute-docs-24",
+      "cactus-compute-docs-2",
+      "cactus-compute-docs-6"
+    ]
+  },
+  {
+    "productId": "cactus-compute",
+    "storyId": "privacy-telemetry-optout",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Telemetry and usage-tracking controls are a fair question for an on-device inference SDK and platform, but the evidence pack never mentions telemetry, analytics, or an opt-out mechanism. The homepage line \"no data leaving the device\" is a marketing claim about where inference runs. It does not document tracking behavior or a user-controllable opt-out, so it is not credited here.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "cactus-compute",
+    "storyId": "private-local-inference-guarantee",
+    "verdict": "full",
+    "quality": 8,
+    "confidence": "high",
+    "rationale": "Cactus is built for on-device inference: the vendor states \"no GPU, no server, and no data leaving the device\" (docs-24), documents local runs on macOS, Linux and Windows without a GPU (docs-11), and ships a local CLI via brew install and cactus run (gh-6). Community users report fast offline inference on phones and desktops (comm-13, comm-12, comm-19). The product also offers automatic cloud routing of hard queries based on local confidence (gh-3), so fully local operation depends on how it is configured. missing for 10: clear documentation of whether cloud routing is opt-in or how to disable it, and independent verification of no telemetry or network egress during local inference.",
+    "evidenceIds": [
+      "cactus-compute-docs-24",
+      "cactus-compute-docs-11",
+      "cactus-compute-gh-6",
+      "cactus-compute-gh-2",
+      "cactus-compute-docs-16",
+      "cactus-compute-docs-20",
+      "cactus-compute-gh-3",
+      "cactus-compute-comm-13",
+      "cactus-compute-comm-12",
+      "cactus-compute-comm-19"
+    ]
+  },
+  {
+    "productId": "cactus-compute",
+    "storyId": "speculative-decoding",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Cactus is an on-device LLM inference engine, so speculative decoding is a fair performance axis for it. However, nothing in the evidence pack mentions speculative decoding, draft models, or any similar generation-acceleration technique. The pack covers only benchmarking, CPU performance, confidence-based cloud routing and quantized exports, none of which constitutes speculative decoding.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "cactus-compute",
+    "storyId": "streaming-token-output",
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "The only explicit streaming evidence is needle.stream(chunks), which streams live speech-transcription words back to the app as two passes agree, plus a general claim of 'OpenAI-compatible APIs for text' that hints at, but does not document, token streaming. Neither shows incremental token-by-token delivery for LLM text generation. Missing for 10: documented token-streaming API or callback for text generation, streaming examples across the bindings, and hands-on corroboration of streamed generation.",
+    "evidenceIds": [
+      "cactus-compute-docs-19",
+      "cactus-compute-gh-2"
+    ]
+  },
+  {
+    "productId": "cactus-compute",
+    "storyId": "structured-output-generation",
+    "verdict": "full",
+    "quality": 6,
+    "confidence": "medium",
+    "rationale": "The Needle README says you can declare a shape, pass in messy text, and get typed fields back, and that \"the decode grammar guarantees the output parses\". That is grammar-constrained structured output. A community tester also reports getting a clean JSON doc from a multi-intent request. The support rests on a single brief README line, with no detail on schema format, custom grammar authoring, or how it is exposed through the serving API. missing for 10: documentation of JSON Schema or custom grammar (e.g. GBNF) support, grammar or response_format options in the OpenAI-compatible serving API, enum/value-constraint enforcement details, independent hands-on corroboration of the parse guarantee.",
+    "evidenceIds": [
+      "cactus-compute-docs-15",
+      "cactus-compute-comm-11",
+      "cactus-compute-docs-13"
+    ]
+  },
+  {
+    "productId": "cactus-compute",
+    "storyId": "tool-calling-support",
+    "verdict": "partial",
+    "quality": 5,
+    "confidence": "medium",
+    "rationale": "Native tool calling is documented. The Cactus Engine exposes OpenAI-compatible APIs, and the Needle SDK accepts tools=[...] via decorated functions with run() completing the loop. It returns an empty list when no tool fits, and the decode grammar guarantees parseable output. Nothing shows a reasoning parser in requests. Community tests show the model often picks wrong tool calls, but that concerns accuracy, not whether the tool-calling interface exists. Missing for 10: any evidence of reasoning-parser support, documentation of tool calling in the OpenAI-compatible serving endpoint's request format, and independent corroboration that the request interface works reliably.",
+    "evidenceIds": [
+      "cactus-compute-gh-2",
+      "cactus-compute-docs-13",
+      "cactus-compute-docs-14",
+      "cactus-compute-docs-15",
+      "cactus-compute-docs-22",
+      "cactus-compute-comm-11"
+    ]
+  },
+  {
+    "productId": "cactus-compute",
+    "storyId": "vision-language-model-support",
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "The Cactus engine README lists 'OpenAI-compatible APIs for text, speech, and vision,' which signals some image-plus-text model support. That is the only mention, though: no supported VLM is named, and image input is not documented. Converting arbitrary HuggingFace models, which might cover VLMs, is explicitly labelled experimental. Missing for 10: named supported vision-language models, documentation of image input usage and API, hands-on or independent corroboration of image understanding, and evidence of mobile/on-device VLM performance.",
+    "evidenceIds": [
+      "cactus-compute-gh-2",
+      "cactus-compute-gh-1"
+    ]
+  },
+  {
+    "productId": "cactus-compute",
+    "storyId": "vulkan-fallback-acceleration",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Vulkan GPU acceleration is a fair question for an on-device inference engine like Cactus, so the axis applies. The pack never mentions Vulkan, AMD GPUs, or ROCm. Docs stress CPU-only, no-GPU operation, and community reports say the GPU goes unused for inference on a Pixel and on Apple hardware, so there is no evidence the capability exists.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "cactus-compute",
+    "storyId": "x86-simd-acceleration",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "CPU instruction-set acceleration is a fair axis for an on-device inference engine like Cactus, so this story applies. However, the evidence never mentions AVX, AVX2, AVX512, AMX or any x86 SIMD optimization. It only says the local package runs on Linux, macOS and Windows on x86/x64 without a GPU, which shows the platform is supported but not that these instruction sets are used.",
+    "evidenceIds": []
+  },
+  {
     "productId": "jan",
     "storyId": "accelerator-plugin-support",
     "verdict": "none",

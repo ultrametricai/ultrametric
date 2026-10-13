@@ -1,5 +1,740 @@
 [
   {
+    "productId": "ardent",
+    "storyId": "agent-provisions-database",
+    "verdict": "partial",
+    "quality": 6,
+    "confidence": "medium",
+    "rationale": "Ardent's CLI lets an agent work headlessly. It creates branches and prints only the connection URL (`--print-url`, `--url-type`), returns JSON output and errors, authenticates non-interactively via ARDENT_TOKEN, and is documented for agents that create, use and delete their own branches; an API is also offered for agent workflows. However, provisioning means branching an existing connected Postgres rather than creating a fresh database, and schema changes and queries run through the returned Postgres URL rather than through Ardent itself. Missing for 10: standalone creation of a new database (not a clone of an existing source), an MCP server, a published OpenAPI spec (probes 404), first-class schema-apply/query commands in the CLI or API, and independent hands-on corroboration.",
+    "evidenceIds": [
+      "ardent-docs-1",
+      "ardent-docs-2",
+      "ardent-docs-7",
+      "ardent-docs-8",
+      "ardent-docs-10",
+      "ardent-docs-11",
+      "ardent-docs-12",
+      "ardent-docs-14",
+      "ardent-docs-19",
+      "ardent-docs-25",
+      "ardent-probe-2",
+      "ardent-probe-3"
+    ]
+  },
+  {
+    "productId": "ardent",
+    "storyId": "agent-safe-sql-operations",
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "medium",
+    "rationale": "Ardent makes database delegation safe through isolation rather than through scoped SQL tools. The agent receives only a branch URL, needs no Ardent token, and \"can't touch anything but its branch\" (ardent-docs-18, ardent-docs-24), which lets destructive operations run against a production copy (ardent-docs-21, ardent-docs-2). The only read-only versus destructive distinctions are on the control plane: a read-only `role_org_viewer` API role (ardent-docs-15) and a connector deletion lock (ardent-docs-16). Missing for 10: agent-facing SQL and schema tools (e.g., an MCP server), tool-level scoping that separates read-only from destructive SQL, per-operation permission or approval gates, and independent corroboration.",
+    "evidenceIds": [
+      "ardent-docs-18",
+      "ardent-docs-24",
+      "ardent-docs-21",
+      "ardent-docs-2",
+      "ardent-docs-15",
+      "ardent-docs-16",
+      "ardent-docs-19"
+    ]
+  },
+  {
+    "productId": "ardent",
+    "storyId": "agentic-agent-docs",
+    "verdict": "full",
+    "quality": 9,
+    "confidence": "high",
+    "rationale": "A probe confirms a live llms.txt at docs.tryardent.com that indexes the docs as markdown files (index.md, quickstart.md, cli/*.md), and a second llms.txt exists at tryardent.com. The docs are also agent-oriented: the ardent-cli skill fetches the current docs to drive setup, and a dedicated AI-agents workflow page explains how an agent should use the product. Missing for 10: no evidence of an llms-full.txt or full-content bundle, and no independent or hands-on report of an agent consuming the docs successfully.",
+    "evidenceIds": [
+      "ardent-probe-1",
+      "ardent-docs-28",
+      "ardent-docs-5",
+      "ardent-docs-18",
+      "ardent-docs-19",
+      "ardent-docs-3"
+    ]
+  },
+  {
+    "productId": "ardent",
+    "storyId": "agentic-ai-insights",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Built-in AI insights or suggestions are a plausible feature for a database platform, so the axis applies. However, Ardent's docs describe only instant, isolated Postgres branches that external coding agents such as Claude Code or Cursor use; nothing shows Ardent itself generating insights or suggestions from the data. Index validation is something users run themselves, and the docs say only metadata reaches the control plane.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "ardent",
+    "storyId": "agentic-autonomous-automation",
+    "verdict": "partial",
+    "quality": 4,
+    "confidence": "medium",
+    "rationale": "Ardent has no native background-automation or scheduling feature. It does support automation-style workflows: every PR gets its own database branch in CI, connectors can run SQL automatically on every new branch, and the API, ARDENT_TOKEN and JSON outputs suit unattended CI harnesses and agents that create and delete their own branches. These automations are driven by external CI or agent tooling rather than set up and run by Ardent itself. Missing for 10: a first-party scheduler or trigger system for autonomous background jobs, documentation of automations running independently of external CI, and independent hands-on corroboration.",
+    "evidenceIds": [
+      "ardent-docs-20",
+      "ardent-docs-25",
+      "ardent-docs-14",
+      "ardent-docs-10",
+      "ardent-docs-18",
+      "ardent-docs-19",
+      "ardent-docs-13"
+    ]
+  },
+  {
+    "productId": "ardent",
+    "storyId": "agentic-builtin-assistant",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "A built-in AI assistant is a plausible feature for a database-branching SaaS, so the axis applies. However, the evidence only shows Ardent serving external coding agents (Claude Code, Cursor, an installable ardent-cli skill, CLI/API workflows); nothing documents an AI assistant built into the product itself.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "ardent",
+    "storyId": "agentic-headless",
+    "verdict": "full",
+    "quality": 9,
+    "confidence": "medium",
+    "rationale": "Ardent's docs describe a headless-friendly CLI and API. ARDENT_TOKEN auth needs no login step, `--print-url` and `--format json` give machine-readable output, errors are JSON with stable codes, and re-runs are idempotent. There is also a dedicated CI/CD workflow in which every PR gets its own branch, driven by a script or CI harness. Missing for 10: independent or hands-on corroboration of CI usage (all evidence is vendor docs), and no published OpenAPI spec for the automation API.",
+    "evidenceIds": [
+      "ardent-docs-8",
+      "ardent-docs-10",
+      "ardent-docs-11",
+      "ardent-docs-13",
+      "ardent-docs-14",
+      "ardent-docs-18",
+      "ardent-docs-20",
+      "ardent-probe-3",
+      "ardent-probe-2"
+    ]
+  },
+  {
+    "productId": "ardent",
+    "storyId": "agentic-mcp-client",
+    "verdict": "na",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Ardent is a Postgres database-branching service with a CLI and API that coding agents use. It is not itself an agent or LLM host that consumes tools, so acting as an MCP client is outside its product category. Nothing in the evidence shows it runs an agent that could load MCP servers.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "ardent",
+    "storyId": "agentic-mcp-server",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Ardent is a SaaS database-branching service, not an agent, so publishing an official MCP server is a fair axis. The evidence documents only an agent-friendly CLI, an ardent-cli skill, and a REST API for agent workflows. No official MCP server or MCP endpoint is mentioned anywhere in the pack.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "ardent",
+    "storyId": "agentic-nl-commands",
+    "verdict": "partial",
+    "quality": 5,
+    "confidence": "medium",
+    "rationale": "Ardent has no built-in natural-language interface. It supports NL operation indirectly: with the ardent-cli skill installed in a coding agent, 'a short ask is enough' and the skill works through setup. Agents like Claude Code and Cursor can also run the CLI themselves to create, use and delete branches. The CLI's JSON output, JSON errors and an llms.txt help agents drive it. This depends on an external agent plus the skill, and only setup is explicitly described as NL-driven. Missing for 10: a native first-party NL command interface, documentation of NL control beyond setup (e.g., branch management via plain-language asks), and independent or hands-on corroboration that NL operation works.",
+    "evidenceIds": [
+      "ardent-docs-5",
+      "ardent-docs-19",
+      "ardent-docs-2",
+      "ardent-docs-8",
+      "ardent-docs-11",
+      "ardent-probe-1"
+    ]
+  },
+  {
+    "productId": "ardent",
+    "storyId": "agentic-official-cli",
+    "verdict": "full",
+    "quality": 9,
+    "confidence": "high",
+    "rationale": "Ardent ships an official, documented CLI with agent-friendly features. It supports machine-readable output (--print-url, --format json) and JSON errors with stable codes. It also offers token-based non-interactive auth via ARDENT_TOKEN, idempotent re-runs, documented workflows where coding agents run the CLI themselves, and an ardent-cli agent skill. Missing for 10: independent or hands-on corroboration of the CLI working as documented; all evidence is first-party docs.",
+    "evidenceIds": [
+      "ardent-probe-3",
+      "ardent-docs-8",
+      "ardent-docs-9",
+      "ardent-docs-10",
+      "ardent-docs-11",
+      "ardent-docs-13",
+      "ardent-docs-19",
+      "ardent-docs-5",
+      "ardent-docs-7"
+    ]
+  },
+  {
+    "productId": "ardent",
+    "storyId": "agentic-public-api",
+    "verdict": "full",
+    "quality": 7,
+    "confidence": "medium",
+    "rationale": "Ardent documents a public REST API for CI systems, internal platforms and agent workflows. The docs cover authentication with scoped roles such as role_org_viewer and concrete versioned endpoints like POST /v1/connectors/{id}/deletion-lock and quarantine release. A scriptable CLI with stable JSON output, JSON errors and token-based non-interactive auth adds to this. Missing for 10: no machine-readable OpenAPI/Swagger spec (all probed paths 404), branch-lifecycle API endpoints not directly evidenced in the pack, and no independent or hands-on corroboration of API use.",
+    "evidenceIds": [
+      "ardent-docs-14",
+      "ardent-docs-15",
+      "ardent-docs-16",
+      "ardent-docs-17",
+      "ardent-docs-8",
+      "ardent-docs-10",
+      "ardent-docs-11",
+      "ardent-probe-2"
+    ]
+  },
+  {
+    "productId": "ardent",
+    "storyId": "agentic-scoped-keys",
+    "verdict": "partial",
+    "quality": 6,
+    "confidence": "medium",
+    "rationale": "Ardent's API authentication documents role-based credentials, including a role_org_viewer role for read-only automation, and token-based CLI auth via ARDENT_TOKEN. Its agent workflow is explicitly least-privilege: the agent receives only a branch URL, needs no Ardent token, and can't touch anything but its branch. However, only one API role is evidenced, and the steps for issuing a scoped API token for an agent are not shown. missing for 10: a documented flow for issuing and revoking agent-specific API tokens, resource- or project-level token scoping beyond org roles, token expiry/rotation controls, independent corroboration.",
+    "evidenceIds": [
+      "ardent-docs-15",
+      "ardent-docs-10",
+      "ardent-docs-18",
+      "ardent-docs-24",
+      "ardent-docs-14"
+    ]
+  },
+  {
+    "productId": "ardent",
+    "storyId": "agentic-sdks",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "The SDK axis applies to a SaaS database-branching platform. The evidence documents only an official CLI with JSON output and a REST API under /v1; it never mentions an official SDK in any language. The OpenAPI probe found no published spec from which clients could be generated, and a raw REST API is not an official SDK.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "ardent",
+    "storyId": "agentic-webhooks",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Webhook event subscriptions are a fair question for a SaaS database-branching platform with an API, but no evidence in the pack mentions webhooks, event subscriptions, or push notifications. The documented API and CLI cover branch and connector management only.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "ardent",
+    "storyId": "analytical-queries",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Ardent is a Postgres branching and cloning product, so asking whether its branches can serve analytical workloads is a fair question. The evidence only covers instant isolated clones, autoscaling compute, and index validation for testing. Nothing shows analytical acceleration, columnar or OLAP execution, or dashboard-grade aggregation performance over large tables. The 'custom dashboards' in the API docs refers to building internal tooling around Ardent itself, not analytics queries.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "ardent",
+    "storyId": "api-interactive-docs",
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "medium",
+    "rationale": "Ardent documents a REST API with endpoint reference tables (e.g., connector deletion-lock and quarantine-release endpoints) and role-based auth, so an API reference exists. However, nothing shows it is interactive or offers runnable examples, and the OpenAPI/Swagger probes all returned 404, which argues against a generated try-it console. missing for 10: interactive try-it/playground console, runnable request examples, published OpenAPI spec, independent corroboration.",
+    "evidenceIds": [
+      "ardent-docs-14",
+      "ardent-docs-15",
+      "ardent-docs-16",
+      "ardent-docs-17",
+      "ardent-probe-2"
+    ]
+  },
+  {
+    "productId": "ardent",
+    "storyId": "api-machine-spec",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Ardent documents a REST API with endpoint tables in its markdown docs, so a downloadable spec is a fair question here. However, a probe found all common OpenAPI/Swagger paths returning 404, and no doc mentions an OpenAPI or equivalent spec. The llms.txt index and markdown endpoint tables are documentation, not a machine-readable API specification.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "ardent",
+    "storyId": "api-sandbox",
+    "verdict": "full",
+    "quality": 9,
+    "confidence": "high",
+    "rationale": "Ardent's core product is isolated, instant copies of production Postgres that coding agents can test against, including destructive operations, \"without touching production.\" Branch URLs have zero access to the original database, and agents can be scoped to only their own branch, with per-PR fresh branches in CI. Community comments raise a caveat about side effects outside the DB (e.g., external API calls) but do not contradict the DB isolation itself. Missing for 10: independent hands-on corroboration of Ardent's isolation in practice, and no evidenced synthetic/masked-data option for agents that shouldn't see real data.",
+    "evidenceIds": [
+      "ardent-docs-1",
+      "ardent-docs-2",
+      "ardent-docs-18",
+      "ardent-docs-19",
+      "ardent-docs-20",
+      "ardent-docs-21",
+      "ardent-docs-24",
+      "ardent-docs-4",
+      "ardent-comm-1"
+    ]
+  },
+  {
+    "productId": "ardent",
+    "storyId": "api-versioning-policy",
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "medium",
+    "rationale": "The REST API uses a /v1/ path prefix (e.g. POST /v1/connectors/{connector_id}/deletion-lock), and the CLI promises a 'stable JSON object' and errors with a 'stable code', which implies some versioning and output-stability intent. However, nothing in the pack documents a versioning policy or any deprecation policy, timeline, or changelog. missing for 10: documented API versioning policy, documented deprecation policy/timelines, changelog or migration guidance, independent corroboration of stability guarantees",
+    "evidenceIds": [
+      "ardent-docs-16",
+      "ardent-docs-17",
+      "ardent-docs-8",
+      "ardent-docs-11"
+    ]
+  },
+  {
+    "productId": "ardent",
+    "storyId": "automated-backups",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Ardent is a Postgres branching and cloning tool, so asking about scheduled backups and self-serve restores is fair for this kind of product. However, the evidence only describes on-demand isolated branches for testing and agents. Nothing in the pack documents automatic backups, a visible or configurable backup schedule, or a restore workflow back to the source database.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "ardent",
+    "storyId": "automation-bulk-operations",
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "Ardent has no documented bulk command for acting on many branches or connectors at once. The closest support is a per-connector post-create SQL hook that runs on every new branch, plus scriptable CLI/API building blocks (JSON output, token auth, idempotent re-runs) that let users loop over items themselves. The marketing line about agents cleaning and deduplicating data refers to SQL the agent runs on a branch, not a product bulk feature. Missing for 10: native bulk or batch operations across branches or connectors (e.g., multi-select delete or apply), documented batch API endpoints, and hands-on evidence of bulk workflows.",
+    "evidenceIds": [
+      "ardent-docs-25",
+      "ardent-docs-8",
+      "ardent-docs-11",
+      "ardent-docs-13",
+      "ardent-docs-14",
+      "ardent-docs-26"
+    ]
+  },
+  {
+    "productId": "ardent",
+    "storyId": "automation-rules-engine",
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "The only Ardent-native event-triggered automation is a per-connector option to run SQL on every new branch after it is created, which works as a post-creation hook. Per-PR branch creation is described, but it is driven by the user's CI harness rather than by rules defined in Ardent. missing for 10: a general rules/trigger engine, multiple event types (e.g., branch delete, schema change, replication status), webhooks or event notifications, configurable action types beyond SQL, and detailed docs or hands-on corroboration of the hook.",
+    "evidenceIds": [
+      "ardent-docs-25",
+      "ardent-docs-20"
+    ]
+  },
+  {
+    "productId": "ardent",
+    "storyId": "automation-scheduled-jobs",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "A database-branching platform could plausibly offer scheduled jobs, such as recurring branch refreshes, resets or cleanups, so the axis applies. The evidence shows no scheduling or recurring-job capability. Branch creation is driven by the CLI, the API or CI events like per-PR runs, and the post-creation SQL hook fires on each new branch rather than on a schedule.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "ardent",
+    "storyId": "automation-versioned-workflows",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Ardent is a Postgres branching tool that users drive from their own scripts, CI and agents. It does expose automation-like configuration, such as per-connector SQL that runs on every new branch, so the axis plausibly applies. However, nothing in the evidence shows versioning, review or rollback of those automations. Its \"Git for your data\" positioning covers database branches, not the user's automations.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "ardent",
+    "storyId": "autoscaling-under-load",
+    "verdict": "partial",
+    "quality": 5,
+    "confidence": "low",
+    "rationale": "Ardent's marketing site says clones 'scale to 0, autoscale compute' with 'zero management needed', and its pricing says 'never pay for idle resources'. That covers automatic scaling up and down, but only for branch/clone compute, and it rests on one marketing line with no technical documentation. Missing for 10: in-depth docs on autoscaling behavior and limits, evidence of no-downtime scaling, autoscaling beyond ephemeral clones, and independent or hands-on corroboration.",
+    "evidenceIds": [
+      "ardent-docs-27",
+      "ardent-docs-29"
+    ]
+  },
+  {
+    "productId": "ardent",
+    "storyId": "branch-reset-restore",
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "There is no documented reset-from-parent or point-in-time restore command. The docs do show that branches can be created and deleted quickly (6s clones, no storage duplication, agents create and delete their own branches), so throwing a branch away and recloning from the source works as a fresh-state workaround without a dump. Missing for 10: a native branch reset-to-parent operation, restore or rollback of a branch to an earlier point in time or snapshot, preservation of branch identity/URL across a reset, and any hands-on corroboration.",
+    "evidenceIds": [
+      "ardent-docs-8",
+      "ardent-docs-19",
+      "ardent-docs-20",
+      "ardent-docs-27"
+    ]
+  },
+  {
+    "productId": "ardent",
+    "storyId": "builtin-connection-pooling",
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "The branches CLI can print a 'pooled' connection URL alongside direct and prisma URLs. That implies a built-in pooled endpoint, so branch users don't run their own pgbouncer, but this single flag mention is the only evidence. Missing for 10: documentation of the pooler itself (mode, limits, configuration), any evidence it handles thousands of concurrent connections, and independent or hands-on corroboration.",
+    "evidenceIds": [
+      "ardent-docs-12"
+    ]
+  },
+  {
+    "productId": "ardent",
+    "storyId": "ci-preview-branches",
+    "verdict": "full",
+    "quality": 7,
+    "confidence": "medium",
+    "rationale": "Ardent documents a CI/CD workflow where every PR gets its own fresh database branch (ardent-docs-20). The pieces for CI automation are documented: `ardent branch create pr-123 --print-url`, JSON output and errors, token auth via ARDENT_TOKEN with no login step, idempotent re-runs, and an API aimed at CI systems and internal developer platforms. Teardown is only implied, through mentions of scripts and agents deleting their own branches. missing for 10: explicit documented branch-delete or automatic cleanup on PR close, native deploy-platform integrations (e.g. a Vercel or GitHub Actions integration), independent hands-on corroboration of the per-PR CI flow.",
+    "evidenceIds": [
+      "ardent-docs-20",
+      "ardent-docs-8",
+      "ardent-docs-10",
+      "ardent-docs-11",
+      "ardent-docs-13",
+      "ardent-docs-14",
+      "ardent-docs-18",
+      "ardent-docs-19"
+    ]
+  },
+  {
+    "productId": "ardent",
+    "storyId": "cli-daily-workflow",
+    "verdict": "full",
+    "quality": 7,
+    "confidence": "medium",
+    "rationale": "The official CLI documents the core terminal loop. `ardent branch create` makes databases. `--print-url` and `--url-type` (direct, pooled or prisma) give you connection URLs. `ardent branch info --format json` lets you inspect them. Token auth needs no login step, and the CLI remembers your project, connector and branch context, so the dashboard isn't required. However, no dedicated shell or psql subcommand is evidenced: shelling in is only implied by feeding the printed URL to an external client. missing for 10: a documented interactive shell/SQL-console command, a full CLI command reference covering list/delete/connect in depth, independent hands-on corroboration of the CLI workflow.",
+    "evidenceIds": [
+      "ardent-docs-1",
+      "ardent-docs-8",
+      "ardent-docs-9",
+      "ardent-docs-10",
+      "ardent-docs-12",
+      "ardent-docs-7",
+      "ardent-docs-19",
+      "ardent-probe-3"
+    ]
+  },
+  {
+    "productId": "ardent",
+    "storyId": "database-branching",
+    "verdict": "full",
+    "quality": 8,
+    "confidence": "medium",
+    "rationale": "Ardent's docs describe instant, isolated copies of a production Postgres database (schema and data) created from the terminal with `ardent branch create`. Clones load in about 6s and do not duplicate storage, which implies copy-on-write, and the docs position them for testing migrations and destructive operations against an exact copy of production. A community note that it is built on Neon Twin infrastructure loosely corroborates the branching mechanism. Missing for 10: explicit documentation of the copy-on-write mechanism, independent hands-on confirmation of instant branching, and evidence of behavior on large databases (a community question about a 35GB table went unanswered).",
+    "evidenceIds": [
+      "ardent-docs-1",
+      "ardent-docs-2",
+      "ardent-docs-8",
+      "ardent-docs-21",
+      "ardent-docs-27",
+      "ardent-docs-20",
+      "ardent-comm-7"
+    ]
+  },
+  {
+    "productId": "ardent",
+    "storyId": "engine-compatibility",
+    "verdict": "full",
+    "quality": 7,
+    "confidence": "medium",
+    "rationale": "Ardent branches are isolated copies of your actual production Postgres, from any source (Supabase, RDS, PlanetScale, self-hosted), described as an \"exact copy of production\" for running full test suites and real query and index validation. A community note says it runs on Neon infrastructure, which is consistent with real Postgres rather than a lookalike. Missing for 10: explicit documentation of extension support and Postgres version parity between source and branch, MySQL/SQLite support, and independent hands-on confirmation of dialect fidelity.",
+    "evidenceIds": [
+      "ardent-docs-1",
+      "ardent-docs-3",
+      "ardent-docs-21",
+      "ardent-docs-22",
+      "ardent-docs-26",
+      "ardent-comm-7"
+    ]
+  },
+  {
+    "productId": "ardent",
+    "storyId": "fleet-per-agent-databases",
+    "verdict": "full",
+    "quality": 7,
+    "confidence": "medium",
+    "rationale": "Ardent documents unlimited branches per database that scale to zero, don't duplicate storage, and bill only for active compute, which supports cheap per-agent and per-PR/preview isolated Postgres databases. Fleet management is programmatic through a CLI with JSON output, token auth, stable error codes and idempotent creates, plus a REST API aimed at agent workflows. missing for 10: evidence of operating at thousands-of-branches scale, a per-tenant production database model (branches are copies of a source database, not fresh tenant DBs), a published OpenAPI spec (probe 404), and independent hands-on corroboration of cost and scale.",
+    "evidenceIds": [
+      "ardent-docs-4",
+      "ardent-docs-8",
+      "ardent-docs-10",
+      "ardent-docs-11",
+      "ardent-docs-13",
+      "ardent-docs-14",
+      "ardent-docs-18",
+      "ardent-docs-19",
+      "ardent-docs-20",
+      "ardent-docs-27",
+      "ardent-docs-28",
+      "ardent-docs-29",
+      "ardent-probe-2"
+    ]
+  },
+  {
+    "productId": "ardent",
+    "storyId": "free-tier-depth",
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "medium",
+    "rationale": "Ardent has no documented ongoing free tier. The pricing page offers only a $30 one-time credit on top of a paid base plan plus compute and storage. Scale-to-zero and 'never pay for idle' could stretch that credit for prototyping. A community pricing comment describes a $250/month plan that includes $100 of credit, which reinforces that sustained use requires paying. Missing for 10: a persistent free plan, documented free-tier limits (branches/compute/storage), and evidence the credit covers real prototype workloads.",
+    "evidenceIds": [
+      "ardent-docs-29",
+      "ardent-docs-27",
+      "ardent-comm-9"
+    ]
+  },
+  {
+    "productId": "ardent",
+    "storyId": "global-low-latency",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Ardent hosts Postgres branch copies with direct and pooled connection URLs and autoscaling compute, so region placement is a fair question for it. However, nothing in the evidence mentions choosing regions, multi-region replicas, or geo-distributed reads. Its documented purpose is isolated dev, test, CI and agent branches rather than serving end users worldwide.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "ardent",
+    "storyId": "import-existing-database",
+    "verdict": "partial",
+    "quality": 5,
+    "confidence": "medium",
+    "rationale": "Ardent documents connecting an existing production Postgres (Supabase, RDS, PlanetScale, or self-hosted) through a connector flow. That flow includes a non-invasive preflight check, resumable setup via `ardent connector retry-setup`, and replication status flowing to the control plane, and the docs stress it works 'without touching production.' However, this is a replication/branching onboarding rather than a migration that moves the production database onto Ardent, and the evidence never addresses downtime explicitly. Missing for 10: an explicit migration/import guide for moving a production DB, documented downtime or cutover behavior, handling guidance for large databases, and independent hands-on corroboration of the onboarding path.",
+    "evidenceIds": [
+      "ardent-docs-1",
+      "ardent-docs-3",
+      "ardent-docs-6",
+      "ardent-docs-7",
+      "ardent-docs-23",
+      "ardent-docs-2"
+    ]
+  },
+  {
+    "productId": "ardent",
+    "storyId": "instant-provisioning",
+    "verdict": "partial",
+    "quality": 6,
+    "confidence": "medium",
+    "rationale": "Ardent's CLI creates a branch database and prints a ready-to-use connection URL (`ardent branch create pr-123 --print-url`, with direct, pooled or prisma URL types). The docs claim clones load in about 6s, scale to zero, autoscale compute and need 'zero management', and an API exists for CI and agent workflows. The main caveat is that each database is a copy of an existing Postgres source reached through a connector that must be set up first (preflight, retry-setup), not a fresh standalone database. Missing for 10: creating a blank database without a source, documented API endpoints for branch creation (the OpenAPI probe returned 404), and independent hands-on corroboration of the seconds-level provisioning and autoscaling claims.",
+    "evidenceIds": [
+      "ardent-docs-1",
+      "ardent-docs-3",
+      "ardent-docs-6",
+      "ardent-docs-7",
+      "ardent-docs-8",
+      "ardent-docs-12",
+      "ardent-docs-14",
+      "ardent-docs-27",
+      "ardent-docs-28",
+      "ardent-probe-2",
+      "ardent-probe-3"
+    ]
+  },
+  {
+    "productId": "ardent",
+    "storyId": "local-keyless-engine",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Ardent is documented only as a hosted, account-based branching service: CLI and API use rely on an ARDENT_TOKEN, and branches are created from a connected source database. Nothing in the evidence describes a local, keyless or offline mode of the engine for development or CI. A local mode is a fair question for a database-branching tool, so the absence of any evidence means \"none\" rather than \"na\".",
+    "evidenceIds": []
+  },
+  {
+    "productId": "ardent",
+    "storyId": "openness-api-parity",
+    "verdict": "partial",
+    "quality": 6,
+    "confidence": "medium",
+    "rationale": "Ardent documents a REST API aimed at CI systems, internal platforms, custom dashboards and agent workflows. It reaches fine-grained operations such as connector deletion locks and quarantine release, and has role-scoped tokens for automation. The CLI adds JSON output, stable error codes and token-only auth. Nothing in the pack explicitly claims the API matches the UI feature-for-feature, and no OpenAPI spec could be found at any probed path. Missing for 10: an explicit API/UI parity statement, a published machine-readable OpenAPI spec, and evidence of API coverage across branches, projects, settings and billing, plus independent hands-on corroboration.",
+    "evidenceIds": [
+      "ardent-docs-14",
+      "ardent-docs-15",
+      "ardent-docs-16",
+      "ardent-docs-17",
+      "ardent-docs-8",
+      "ardent-docs-10",
+      "ardent-docs-11",
+      "ardent-probe-2",
+      "ardent-probe-3"
+    ]
+  },
+  {
+    "productId": "ardent",
+    "storyId": "openness-full-export",
+    "verdict": "partial",
+    "quality": 4,
+    "confidence": "low",
+    "rationale": "Ardent has no documented export or offboarding feature. However, its source of truth is your own Postgres (Supabase, RDS, self-hosted), and every branch is exposed as a standard Postgres connection URL. Your data therefore stays in an open, portable format you can reach with standard Postgres tooling, and leaving mostly means disconnecting. The CLI also emits stable JSON for branch metadata. Missing for 10: an explicit documented data/metadata export feature, an account-deletion and offboarding path, and independent confirmation of data portability.",
+    "evidenceIds": [
+      "ardent-docs-3",
+      "ardent-docs-1",
+      "ardent-docs-8",
+      "ardent-docs-12",
+      "ardent-docs-23"
+    ]
+  },
+  {
+    "productId": "ardent",
+    "storyId": "openness-open-license",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Open-source availability is a fair question for a SaaS database-branching tool with a CLI, so the axis applies. Nothing in the first-party docs mentions a public repository or an open license. A community commenter explicitly noted that Ardent does not look open-source and pointed to Xata as an open-source alternative.",
+    "evidenceIds": [
+      "ardent-comm-4"
+    ]
+  },
+  {
+    "productId": "ardent",
+    "storyId": "openness-self-host",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Self-hosting is a fair question for a database-branching service, but the pack shows no way to self-host Ardent itself. 'Self-hosted' in the docs refers only to the source Postgres Ardent connects to, and the control-plane/data-plane split never says customers can run the product. The evidence instead describes a managed, metered SaaS, and a community commenter notes it doesn't appear to be open source.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "ardent",
+    "storyId": "orm-framework-compat",
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "medium",
+    "rationale": "Ardent branches are standard Postgres connection URLs ([ardent-docs-3], [ardent-docs-8]), and the CLI ships a Prisma-specific URL type (`--url-type prisma`, [ardent-docs-12]), so Prisma compatibility is explicitly considered and other Postgres ORMs plausibly connect. There are no documented integration guides for any ORM or framework. Missing for 10: documented setup guides for Prisma, Drizzle, Django and Rails; explicit evidence that Drizzle/Django/Rails work out of the box; hands-on or independent corroboration of ORM compatibility.",
+    "evidenceIds": [
+      "ardent-docs-12",
+      "ardent-docs-3",
+      "ardent-docs-8"
+    ]
+  },
+  {
+    "productId": "ardent",
+    "storyId": "point-in-time-recovery",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Ardent's docs describe instant, isolated branches cloned from the current state of a connected production Postgres database for testing, CI and agent work. Nothing in the evidence mentions point-in-time restore, a retention window, choosing a past timestamp for a branch, or restoring production after bad writes. Branching from the current state alone does not deliver recovery to an earlier point in time.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "ardent",
+    "storyId": "privacy-data-residency",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Ardent is a hosted database-branching service, so letting users choose where branch data is stored is a fair question for this kind of product. The evidence pack never mentions region selection or residency controls. The architecture doc says data stays in the data plane and only metadata reaches the control plane, but it does not say users can choose where that data plane runs.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "ardent",
+    "storyId": "privacy-no-training",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "The axis applies, because Ardent is a SaaS that holds copies of customer production data and could publish a no-training commitment or opt-out. However, nothing in the evidence pack mentions AI model training, a training opt-out, or a data-usage policy. The architecture note that actual data stays in the data plane concerns data flow between Ardent's components, not a commitment against using data for training, so it is not credited here.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "ardent",
+    "storyId": "privacy-retention-controls",
+    "verdict": "partial",
+    "quality": 4,
+    "confidence": "medium",
+    "rationale": "Ardent documents some deletion controls: agents can create and delete their own branches via the CLI, and the API offers a deletion-lock endpoint that blocks connector deletes until unlocked. It also states that actual data never leaves the data plane and that preflight stores no credentials. There is no evidence of configurable retention policies or of controlling how long Ardent keeps data. Missing for 10: retention policies/TTL or auto-expiry for branches, documented account/org-level data deletion and purge guarantees, control over retention of control-plane metadata, independent corroboration.",
+    "evidenceIds": [
+      "ardent-docs-19",
+      "ardent-docs-16",
+      "ardent-docs-23",
+      "ardent-docs-6"
+    ]
+  },
+  {
+    "productId": "ardent",
+    "storyId": "privacy-telemetry-optout",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Telemetry opt-out is a fair question for a SaaS product with an official CLI, so the axis applies. Nothing in the evidence pack mentions telemetry, usage tracking, analytics collection, or any opt-out flag or environment variable. The architecture note that only metadata reaches the control plane covers the data-plane split, not user telemetry controls.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "ardent",
+    "storyId": "query-insights",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Ardent is a Postgres branching platform, so a built-in performance insights view is a fair question for it. However, the evidence shows no slow-query view, no index recommendations, and no performance metrics dashboard. The closest item is a regression-testing workflow where users manually try a new index on a branch to see whether it speeds up real queries (ardent-docs-22). That is self-run validation, not a built-in insights view with recommendations, so it is not credited.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "ardent",
+    "storyId": "replicas-failover",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Ardent is a hosted Postgres branching and cloning service, so asking about read replicas and HA/failover is a fair question for this kind of database platform. Nothing in the evidence documents adding read replicas or any high-availability or failover behavior. The 'replication status' metadata and the autoscaling and scale-to-zero claims describe source sync and compute elasticity, not replicas or failover. The community comment about read replicas offers them as an alternative to Ardent, not as an Ardent feature.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "ardent",
+    "storyId": "safe-schema-changes",
+    "verdict": "partial",
+    "quality": 4,
+    "confidence": "medium",
+    "rationale": "Ardent gives developers instant isolated Postgres branches cloned from production, so they can test migrations and schema changes against real data without touching prod (CLI, per-PR branches in CI). Nothing in the evidence shows it applying those changes back to production: there is no merge-to-prod, deploy-request, or online/non-locking DDL mechanism. A community comment notes that migrations validated this way can still lock tables or break live services. missing for 10: online/non-blocking DDL execution against production, deploy requests or merge-back of branch schema changes, lock-safety guarantees during rollout, independent hands-on corroboration.",
+    "evidenceIds": [
+      "ardent-docs-1",
+      "ardent-docs-2",
+      "ardent-docs-20",
+      "ardent-docs-21",
+      "ardent-docs-8",
+      "ardent-comm-11"
+    ]
+  },
+  {
+    "productId": "ardent",
+    "storyId": "scale-to-zero-idle",
+    "verdict": "partial",
+    "quality": 4,
+    "confidence": "medium",
+    "rationale": "Ardent's marketing says its clones \"scale to 0\" and autoscale compute without duplicating storage, and its pricing says you \"never pay for idle resources\". But this applies to branch copies of an existing Postgres database hosted elsewhere, not to a founder's primary prototype database. Pricing also includes a base plan, so idle projects do not cost nothing. Missing for 10: scale-to-zero for a primary or standalone database, a free or zero-cost idle tier (a base plan fee applies), documented durability guarantees for idle data, scale-to-zero behavior details such as cold-start or wake semantics, and independent or hands-on corroboration.",
+    "evidenceIds": [
+      "ardent-docs-27",
+      "ardent-docs-29",
+      "ardent-docs-1",
+      "ardent-docs-3"
+    ]
+  },
+  {
+    "productId": "ardent",
+    "storyId": "serverless-edge-driver",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Ardent serves Postgres branches with connection URLs, so a serverless driver is a fair question for this product. The docs show only standard connection strings, including a 'pooled' URL type for branches, and no official driver for querying over HTTP or WebSockets. A pooled Postgres URL alone does not deliver a serverless or edge driver built for short-lived connections.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "ardent",
+    "storyId": "spend-caps-alerts",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Ardent is a usage-billed SaaS (base plan plus compute and storage), so spend caps and usage alerts are a fair axis. The evidence only shows clones that scale to zero and 'never pay for idle resources', which reduces idle cost but is not a cap or an alert. Nothing documents budget limits, spend alerts, or usage notifications that would stop a runaway query or traffic spike from producing a surprise bill.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "ardent",
+    "storyId": "transparent-usage-pricing",
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "Ardent's pricing page describes a usage-based model ('Base plan + compute and storage', no charge for idle resources, $30 one-time credit), and a community comment mentions a $250/month plan that includes $100/month of credit. That is enough to show the billing structure, but the evidence does not show actual per-unit rates, so a founder could not predict a bill from it. missing for 10: published per-unit compute rates, published per-unit storage rates, any traffic/egress pricing, a cost calculator or worked example, independent confirmation that rates are public.",
+    "evidenceIds": [
+      "ardent-docs-29",
+      "ardent-comm-9"
+    ]
+  },
+  {
+    "productId": "ardent",
+    "storyId": "vector-embeddings",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Ardent is Postgres database-branching infrastructure that hands out real Postgres connection URLs, so vector storage and search on branches is a fair axis for this kind of product. However, nothing in the evidence mentions embeddings, pgvector, or vector similarity search. The docs cover only branching, cloning, CLI/API workflows and agent isolation, so there is no evidence of native vector capability.",
+    "evidenceIds": []
+  },
+  {
     "productId": "clickhouse",
     "storyId": "agent-provisions-database",
     "verdict": "full",

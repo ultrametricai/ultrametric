@@ -737,6 +737,690 @@
     ]
   },
   {
+    "productId": "bentolabs",
+    "storyId": "agent-queries-own-traces",
+    "verdict": "partial",
+    "quality": 6,
+    "confidence": "medium",
+    "rationale": "Bento's official CLI claims dashboard parity from the terminal or scripts, including reading runs, triaging issues, inspecting signals and their firings, and pulling analytics. Its raw JSON output lets an agent pipe and parse the data, so an agent can query traces and metrics through it. However, the documented MCP usage only loads docs into the agent, not trace data, and no OpenAPI spec was found, so access goes through the CLI rather than a documented API or MCP server. Missing for 10: a documented data-querying MCP server or public REST API, explicit agent access to eval and regression results, and independent hands-on corroboration.",
+    "evidenceIds": [
+      "bentolabs-docs-30",
+      "bentolabs-docs-32",
+      "bentolabs-docs-35",
+      "bentolabs-docs-34",
+      "bentolabs-docs-2",
+      "bentolabs-docs-1",
+      "bentolabs-probe-2",
+      "bentolabs-probe-3"
+    ]
+  },
+  {
+    "productId": "bentolabs",
+    "storyId": "agent-session-traces",
+    "verdict": "full",
+    "quality": 8,
+    "confidence": "medium",
+    "rationale": "Bento captures every span over OpenTelemetry and shows them as a span tree (bentolabs-docs-3), with manual `bento.track_ai` wrapping for uninstrumented calls (bentolabs-docs-18). Runs are grouped through `session_id` set on every span (bentolabs-docs-23) and a shared `convo_id` that ties runs into conversations (bentolabs-docs-24). Missing for 10: detailed docs on parent/child span nesting for multi-step agent runs beyond a 'span tree' mention, documentation of a session/thread view in the UI, and independent or hands-on corroboration.",
+    "evidenceIds": [
+      "bentolabs-docs-3",
+      "bentolabs-docs-18",
+      "bentolabs-docs-23",
+      "bentolabs-docs-24",
+      "bentolabs-docs-21"
+    ]
+  },
+  {
+    "productId": "bentolabs",
+    "storyId": "agent-triggers-eval-run",
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "Bento claims releases are scored against production history offline and in CI (bentolabs-docs-14), which implies some programmatic eval capability. Its CLI claims dashboard parity for scripts and CI, with JSON output an agent can read (bentolabs-docs-30, bentolabs-docs-32), and agent skills give coding agents an integration playbook (bentolabs-docs-1). However, no evidence documents creating datasets or a specific command or API for triggering an eval run and reading back its results, and no OpenAPI spec was found (bentolabs-probe-2). Missing for 10: dataset creation API/CLI, documented eval-run trigger command, eval-results retrieval endpoint, hands-on corroboration.",
+    "evidenceIds": [
+      "bentolabs-docs-14",
+      "bentolabs-docs-30",
+      "bentolabs-docs-32",
+      "bentolabs-docs-1",
+      "bentolabs-probe-2"
+    ]
+  },
+  {
+    "productId": "bentolabs",
+    "storyId": "agentic-agent-docs",
+    "verdict": "full",
+    "quality": 9,
+    "confidence": "high",
+    "rationale": "A live probe confirms https://docs.bentolabs.ai/llms.txt returns HTTP 200 with structured content, and docs pages are served as agent-readable .md files. Bento also ships an agent-oriented path: a paste-in prompt for Claude Code, Cursor, Codex, OpenCode, or Windsurf installs Agent Skills with the full integration playbook and loads the docs over MCP. Missing for 10: independent or community corroboration that agents actually work well with these docs (e.g., an llms-full.txt or real-world agent usage reports).",
+    "evidenceIds": [
+      "bentolabs-probe-1",
+      "bentolabs-docs-1",
+      "bentolabs-docs-2",
+      "bentolabs-docs-18",
+      "bentolabs-docs-28"
+    ]
+  },
+  {
+    "productId": "bentolabs",
+    "storyId": "agentic-ai-insights",
+    "verdict": "full",
+    "quality": 8,
+    "confidence": "medium",
+    "rationale": "Bento's own docs describe AI-driven insights from your trace data inside the product. It trains signals from plain-English failure descriptions and backfills history, clusters similar findings so patterns surface on their own, judges alert incidents as real or benign, and pinpoints what shifted when agent behavior drifts. For suggestions, it proposes reusable fixes (skills, subagents, nudges) that are shadow-tested and promoted, plus a plain-language memory of learned failure patterns and fixes. Missing for 10: no independent or hands-on corroboration, and only marketing-level detail on how suggestions are generated and shown to users in the dashboard.",
+    "evidenceIds": [
+      "bentolabs-docs-4",
+      "bentolabs-docs-6",
+      "bentolabs-docs-7",
+      "bentolabs-docs-9",
+      "bentolabs-docs-11",
+      "bentolabs-docs-12",
+      "bentolabs-docs-13",
+      "bentolabs-docs-5"
+    ]
+  },
+  {
+    "productId": "bentolabs",
+    "storyId": "agentic-autonomous-automation",
+    "verdict": "partial",
+    "quality": 5,
+    "confidence": "medium",
+    "rationale": "Bento runs several user-configured processes autonomously in the background. Plain-English signals fire in real time and backfill history (bentolabs-docs-4). English-written alert rules route to Slack, PagerDuty, email or webhook, and incidents are auto-judged real or benign (bentolabs-docs-7, bentolabs-docs-8). Trigger-based fixes run in shadow mode and graduate to full traffic on their own (bentolabs-docs-11, bentolabs-docs-12). These automations are confined to monitoring and remediation of agent traces rather than general-purpose user automations, and all evidence is vendor-claimed. missing for 10: general-purpose automation/workflow builder beyond monitoring, scheduling/trigger configuration docs, independent or hands-on corroboration.",
+    "evidenceIds": [
+      "bentolabs-docs-4",
+      "bentolabs-docs-7",
+      "bentolabs-docs-8",
+      "bentolabs-docs-11",
+      "bentolabs-docs-12"
+    ]
+  },
+  {
+    "productId": "bentolabs",
+    "storyId": "agentic-builtin-assistant",
+    "verdict": "partial",
+    "quality": 4,
+    "confidence": "medium",
+    "rationale": "Bento has built-in AI behavior you can hand work to in plain English. You describe a failure mode and it trains, fires and backfills a signal [docs-4]. Alerts written in English are grouped into incidents and judged real or benign automatically [docs-7]. It also proposes and shadow-tests fixes that graduate to full traffic only if they help [docs-11, docs-12]. However, there is no evidence of a general-purpose in-product assistant you can delegate arbitrary tasks to. Its agent-facing tooling (Agent Skills, MCP docs) targets external agents like Claude Code rather than a built-in assistant [docs-1, docs-2]. Missing for 10: a documented general in-product assistant or chat interface, open-ended task delegation beyond signal/alert/fix workflows, and independent corroboration.",
+    "evidenceIds": [
+      "bentolabs-docs-4",
+      "bentolabs-docs-7",
+      "bentolabs-docs-11",
+      "bentolabs-docs-12"
+    ]
+  },
+  {
+    "productId": "bentolabs",
+    "storyId": "agentic-headless",
+    "verdict": "full",
+    "quality": 7,
+    "confidence": "medium",
+    "rationale": "Bento's docs say anything doable in the dashboard can also be done from the terminal, a script, or CI. The official CLI emits raw JSON for piping into jq or files, and release scoring is explicitly claimed to run in CI. The only documented CLI auth flow opens a browser and saves tokens to the keychain, so non-interactive CI authentication is not shown. Missing for 10: documented headless/CI auth (API key or env-var token), a concrete CI pipeline example (e.g. GitHub Actions) for the in-CI regression scoring, and independent or hands-on corroboration.",
+    "evidenceIds": [
+      "bentolabs-docs-30",
+      "bentolabs-docs-32",
+      "bentolabs-docs-14",
+      "bentolabs-docs-31",
+      "bentolabs-probe-3",
+      "bentolabs-docs-25"
+    ]
+  },
+  {
+    "productId": "bentolabs",
+    "storyId": "agentic-mcp-client",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Bento is an AI-agent observability and improvement platform with its own agentic features, such as signals trained from plain English and auto-generated fixes. A buyer could reasonably ask whether it accepts external MCP servers as tools, so the axis applies. The only MCP mention is coding agents loading Bento's docs over MCP, which is Bento serving content, not consuming tools. Nothing shows users can plug MCP servers into Bento for it to use.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "bentolabs",
+    "storyId": "agentic-mcp-server",
+    "verdict": "partial",
+    "quality": 4,
+    "confidence": "medium",
+    "rationale": "Bento is an observability platform rather than an agent, so the MCP-server axis applies. The quickstart says coding agents (Claude Code, Cursor, Codex, etc.) install Bento's skill and then \"load the docs over MCP,\" which points to an official docs-serving MCP endpoint. Nothing shows an MCP server that exposes Bento's product data or actions such as issues, runs, signals, or alerts; those are only documented through the CLI. Missing for 10: an MCP server exposing product data and actions (triage, runs, signals), a documented MCP endpoint or tool list with setup instructions, and independent or hands-on corroboration.",
+    "evidenceIds": [
+      "bentolabs-docs-2",
+      "bentolabs-docs-1"
+    ]
+  },
+  {
+    "productId": "bentolabs",
+    "storyId": "agentic-nl-commands",
+    "verdict": "partial",
+    "quality": 6,
+    "confidence": "medium",
+    "rationale": "Bento lets users define failure-mode signals and alert rules in plain English, which compile to trace queries. Its Agent Skills plug into Claude Code, Cursor, and similar agents to drive integration and migrations from natural-language prompts. Beyond signal and alert authoring and agent-led setup, though, there is no evidence of a general natural-language interface for operating the product, such as triaging issues or querying runs conversationally. Missing for 10: a documented natural-language interface for day-to-day operation (querying runs and analytics, triage), evidence that agents can drive the CLI or dashboard actions from natural language, and independent hands-on corroboration.",
+    "evidenceIds": [
+      "bentolabs-docs-4",
+      "bentolabs-docs-7",
+      "bentolabs-docs-8",
+      "bentolabs-docs-1",
+      "bentolabs-docs-2",
+      "bentolabs-docs-26"
+    ]
+  },
+  {
+    "productId": "bentolabs",
+    "storyId": "agentic-official-cli",
+    "verdict": "full",
+    "quality": 9,
+    "confidence": "high",
+    "rationale": "Bento documents an official `bentolabs` CLI. It has dedicated installation, overview, commands and resource docs, and claims dashboard parity from the terminal, scripts or CI. Supporting details include browser-based auth that stores tokens in the keychain, raw JSON output to stdout for piping into tools like jq, and signal list/read/update commands. Missing for 10: independent or hands-on corroboration of the CLI working as documented.",
+    "evidenceIds": [
+      "bentolabs-docs-30",
+      "bentolabs-docs-31",
+      "bentolabs-docs-32",
+      "bentolabs-docs-33",
+      "bentolabs-docs-34",
+      "bentolabs-docs-35",
+      "bentolabs-docs-36",
+      "bentolabs-probe-3"
+    ]
+  },
+  {
+    "productId": "bentolabs",
+    "storyId": "agentic-public-api",
+    "verdict": "partial",
+    "quality": 5,
+    "confidence": "medium",
+    "rationale": "Bento documents programmatic control through an official CLI that claims full dashboard parity: triage issues, read runs, inspect and update signals, and pull analytics, with raw JSON output for scripts and CI. It also documents an OpenTelemetry ingest endpoint with one auth header and SDK calls. However, no documented public management REST API surfaced, and every OpenAPI/Swagger probe path returned 404, so control runs through the CLI and ingest SDK rather than a published API. missing for 10: documented public REST/management API reference, OpenAPI spec, independent corroboration.",
+    "evidenceIds": [
+      "bentolabs-docs-30",
+      "bentolabs-docs-31",
+      "bentolabs-docs-32",
+      "bentolabs-docs-33",
+      "bentolabs-docs-36",
+      "bentolabs-docs-21",
+      "bentolabs-docs-18",
+      "bentolabs-probe-2",
+      "bentolabs-probe-3"
+    ]
+  },
+  {
+    "productId": "bentolabs",
+    "storyId": "agentic-scoped-keys",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Bento is a SaaS observability platform, so issuing scoped API credentials for agents is a fair axis. The evidence only shows a single auth header for OTel export and a browser-based CLI login that saves tokens to the keychain. Nothing documents scoped, least-privilege, or per-agent API keys.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "bentolabs",
+    "storyId": "agentic-sdks",
+    "verdict": "full",
+    "quality": 7,
+    "confidence": "medium",
+    "rationale": "Bento documents an official Python SDK with installation docs, a Google ADK extra, `init()` configuration (user_id, session_id, tags), `bento.track_ai` manual wrapping, and `bento.flush()` for short-lived processes, plus an OTel transport. It also supports SDK-level capture of LLM calls, so developers can build against it directly. missing for 10: explicit documentation of a first-party TypeScript/other-language SDK (TS is only implied via 'no Bento package at all'), a published API spec (OpenAPI probes 404), independent or hands-on corroboration.",
+    "evidenceIds": [
+      "bentolabs-docs-17",
+      "bentolabs-docs-18",
+      "bentolabs-docs-20",
+      "bentolabs-docs-21",
+      "bentolabs-docs-23",
+      "bentolabs-docs-25",
+      "bentolabs-docs-27",
+      "bentolabs-probe-2"
+    ]
+  },
+  {
+    "productId": "bentolabs",
+    "storyId": "agentic-webhooks",
+    "verdict": "partial",
+    "quality": 4,
+    "confidence": "medium",
+    "rationale": "Bento's FAQ says alert rules compile to trace queries and can route to a webhook alongside Slack, PagerDuty and email, so webhook delivery exists for alert and incident events. That is a single FAQ line, and it covers only alert routing, not general event subscription. missing for 10: general-purpose webhook subscriptions for other event types (issues, signal firings, runs), documented payload schemas, delivery guarantees such as retries and signing, setup docs or an API for managing webhooks, and independent or hands-on corroboration.",
+    "evidenceIds": [
+      "bentolabs-docs-8",
+      "bentolabs-docs-7"
+    ]
+  },
+  {
+    "productId": "bentolabs",
+    "storyId": "api-interactive-docs",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "An interactive API reference is a fair question for an observability SaaS like Bento, so the axis applies. The evidence shows CLI reference docs, an llms.txt file and docs served over MCP, but nothing about an interactive API explorer or runnable examples. The probe also found no OpenAPI or Swagger spec at any of the candidate paths.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "bentolabs",
+    "storyId": "api-machine-spec",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Bento is an observability SaaS with a CLI, so a downloadable API spec is a fair question, but the probe found no OpenAPI or Swagger spec at any candidate path (all 404). The llms.txt file, the MCP-served docs and the CLI's raw JSON output are documentation and agent tooling, not a machine-readable API specification.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "bentolabs",
+    "storyId": "api-sandbox",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Bento is an agent observability and improvement platform, so a separate sandbox or test environment is a fair thing to ask for. The evidence never documents one: no test projects, sandbox API keys or environment isolation. The closest items are shadow-mode rollout of fixes and offline/CI release scoring, but both run against live traffic or production history rather than an isolated environment.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "bentolabs",
+    "storyId": "api-versioning-policy",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Bento is an observability SaaS with a CLI and SDKs, so versioned APIs and a deprecation policy are a fair question. The pack never mentions API version identifiers, version pinning, or any deprecation or sunset policy. The versioning it does describe covers customer prompts, skills, and model changes, not Bento's own APIs, and no OpenAPI spec was found at any probed path.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "bentolabs",
+    "storyId": "automation-bulk-operations",
+    "verdict": "partial",
+    "quality": 4,
+    "confidence": "low",
+    "rationale": "Bento has no documented bulk-action feature such as multi-select triage or batch updates, but its CLI lets you do everything the dashboard does from a script or CI, with raw JSON output you can pipe into jq. So bulk operations can be built by looping over list commands. Signals also backfill across your entire trace history, and recurring failures are auto-grouped into issues and clusters, which are aggregate operations of a kind. Missing for 10: a native bulk update or triage command for many issues or signals at once, a documented batch API (no OpenAPI spec was found), and hands-on corroboration.",
+    "evidenceIds": [
+      "bentolabs-docs-30",
+      "bentolabs-docs-32",
+      "bentolabs-docs-34",
+      "bentolabs-docs-36",
+      "bentolabs-docs-4",
+      "bentolabs-docs-5",
+      "bentolabs-docs-6",
+      "bentolabs-probe-2"
+    ]
+  },
+  {
+    "productId": "bentolabs",
+    "storyId": "automation-rules-engine",
+    "verdict": "full",
+    "quality": 7,
+    "confidence": "medium",
+    "rationale": "Bento lets users write alert rules and signals in plain English. These compile to trace queries, fire in real time on matching events, and route to Slack, PagerDuty, email, or webhook. Trigger-based fixes (skills/subagents) are also promoted automatically, and signals can be edited from the CLI. missing for 10: detailed docs on rule syntax and configuration, actions beyond notification/webhook routing (e.g., remediation steps per rule), independent or hands-on corroboration.",
+    "evidenceIds": [
+      "bentolabs-docs-8",
+      "bentolabs-docs-7",
+      "bentolabs-docs-4",
+      "bentolabs-docs-11",
+      "bentolabs-docs-36",
+      "bentolabs-docs-16"
+    ]
+  },
+  {
+    "productId": "bentolabs",
+    "storyId": "automation-scheduled-jobs",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Bento is an agent observability and improvement platform, so scheduled jobs such as recurring evals or reports are a plausible capability and the axis applies. The evidence shows only real-time signal firing, backfills, CI scoring, and a scriptable CLI. Nothing documents a built-in way to schedule recurring jobs or workflows; an external scheduler driving the CLI would be a separate tool, not a Bento capability.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "bentolabs",
+    "storyId": "automation-versioned-workflows",
+    "verdict": "full",
+    "quality": 7,
+    "confidence": "medium",
+    "rationale": "Bento states that every prompt, skill, and model change is versioned, diffable, and reversible, with regressions traceable to the change that caused them [15]. Skills and rules live in the user's repo as Markdown/YAML, so they can be reviewed and rolled back through normal source control [16]. Fixes ship in shadow mode and promote from candidate only after proving themselves, with releases scored before rollout [11][12][14], which adds a review gate. Missing for 10: detailed docs on the rollback mechanism and review workflow (UI/CLI commands), any version history for signals and alert rules (only an in-place `signals update` is documented), and independent or hands-on corroboration.",
+    "evidenceIds": [
+      "bentolabs-docs-15",
+      "bentolabs-docs-16",
+      "bentolabs-docs-11",
+      "bentolabs-docs-12",
+      "bentolabs-docs-14"
+    ]
+  },
+  {
+    "productId": "bentolabs",
+    "storyId": "bulk-trace-export",
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "The official CLI can read runs and pull analytics from a script or CI, and its `raw` mode emits plain JSON that can be piped to a file. That makes a scripted export of trace data possible as a workaround, but nothing documents a native bulk-export capability. missing for 10: native bulk export of traces, any dataset export, blob-storage (S3/GCS) destinations, data-warehouse connectors (e.g. Snowflake/BigQuery), scheduled/streaming export, independent corroboration.",
+    "evidenceIds": [
+      "bentolabs-docs-30",
+      "bentolabs-docs-32",
+      "bentolabs-probe-3"
+    ]
+  },
+  {
+    "productId": "bentolabs",
+    "storyId": "ci-eval-gating",
+    "verdict": "partial",
+    "quality": 5,
+    "confidence": "medium",
+    "rationale": "Bento's marketing says every release is scored against production history \"offline, in CI, and on live traffic\" to catch regressions. Its CLI is documented as usable from CI scripts with JSON output, and nudges only graduate to full traffic if they provably help. However, the evidence never documents how to run an eval suite in CI or how to fail or block a deploy on results. missing for 10: documented CI eval command or workflow, pass/fail thresholds or exit codes for deployment gating, dataset/eval configuration docs, independent or hands-on corroboration.",
+    "evidenceIds": [
+      "bentolabs-docs-14",
+      "bentolabs-docs-30",
+      "bentolabs-docs-32",
+      "bentolabs-docs-12",
+      "bentolabs-docs-10"
+    ]
+  },
+  {
+    "productId": "bentolabs",
+    "storyId": "cost-attribution-metadata",
+    "verdict": "partial",
+    "quality": 6,
+    "confidence": "medium",
+    "rationale": "Bento documents the attribution metadata: `init()` accepts `user_id`, `session_id` and `tags` that apply to every span, spans can be tagged with feature flags and experiment IDs, and `convo_id` ties runs together. Separately, it reports cost per run out of the box. But no evidence shows cost or usage actually aggregated or broken down by those user, session or feature dimensions, so the linkage is only implied. Missing for 10: documented cost/usage breakdowns grouped by user, session or feature metadata; token/usage attribution reporting; independent or hands-on corroboration.",
+    "evidenceIds": [
+      "bentolabs-docs-23",
+      "bentolabs-docs-22",
+      "bentolabs-docs-24",
+      "bentolabs-docs-10",
+      "bentolabs-docs-30"
+    ]
+  },
+  {
+    "productId": "bentolabs",
+    "storyId": "custom-code-scorers",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Bento documents release scoring against production history and lets users define signals in plain English, which it then trains on traces. Nothing in the pack shows users writing their own code-based scorers or metric functions for evaluations. Signals are edited via name, prompt, or config, not custom code, so this applicable capability is unevidenced.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "bentolabs",
+    "storyId": "custom-dashboards",
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "Bento has a dashboard with out-of-the-box views of cost per run, tool failure rates, drift, and regressions across deploys. Releases are scored against production history, and the CLI can pull analytics as raw JSON, so you could build dashboards externally as a workaround. Nothing shows user-defined custom dashboards, and latency is never mentioned. Missing for 10: custom dashboard builder or widget configuration, explicit latency metrics, eval-score charting, independent or hands-on corroboration.",
+    "evidenceIds": [
+      "bentolabs-docs-10",
+      "bentolabs-docs-30",
+      "bentolabs-docs-32",
+      "bentolabs-docs-14"
+    ]
+  },
+  {
+    "productId": "bentolabs",
+    "storyId": "experiment-comparison",
+    "verdict": "partial",
+    "quality": 5,
+    "confidence": "medium",
+    "rationale": "Bento claims that every release is scored against production history offline, in CI, and on live traffic to catch regressions. It also says prompt and model changes are versioned and diffable, shows drift over prompt versions and regressions across deploys, and lets spans be tagged with experiment IDs. These cover the regression-detection goal, but nothing describes an explicit side-by-side comparison of eval runs, and all evidence is vendor marketing or docs. Missing for 10: an explicit side-by-side eval-run comparison view, documented eval-run and dataset workflow detail, independent or hands-on corroboration.",
+    "evidenceIds": [
+      "bentolabs-docs-14",
+      "bentolabs-docs-15",
+      "bentolabs-docs-10",
+      "bentolabs-docs-22"
+    ]
+  },
+  {
+    "productId": "bentolabs",
+    "storyId": "framework-auto-instrumentation",
+    "verdict": "partial",
+    "quality": 5,
+    "confidence": "medium",
+    "rationale": "Bento documents at least one named framework integration: the Google ADK extra captures every call automatically. It also says it captures LLM calls at the SDK level, ingests spans from any framework over OpenTelemetry (in TypeScript with no Bento package), and offers bento.track_ai as a manual fallback for SDKs without an integration. However, none of the specific integrations named in the story are evidenced, so this is broad OTel-based support rather than a documented integration catalog. missing for 10: explicit LangChain, OpenAI SDK, and Vercel AI SDK integrations, a documented list of supported frameworks, independent or hands-on corroboration.",
+    "evidenceIds": [
+      "bentolabs-docs-17",
+      "bentolabs-docs-18",
+      "bentolabs-docs-3",
+      "bentolabs-docs-27",
+      "bentolabs-docs-21",
+      "bentolabs-docs-19",
+      "bentolabs-docs-29"
+    ]
+  },
+  {
+    "productId": "bentolabs",
+    "storyId": "human-annotation-queues",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Bento is an LLM/agent observability platform, so human annotation queues are a fair axis for this kind of product. The evidence shows automated signals, issue triage, clustering, and alert routing to Slack, PagerDuty, email, or webhook. None of it documents queues where humans review or label outputs.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "bentolabs",
+    "storyId": "llm-as-judge-scoring",
+    "verdict": "partial",
+    "quality": 5,
+    "confidence": "low",
+    "rationale": "Bento's closest feature is the signal: you describe a failure mode in plain English, and Bento trains a signal on your traces, fires it in real time and backfills history (bentolabs-docs-4). Each signal has an editable prompt and config (bentolabs-docs-36), and releases are scored against production history offline, in CI and on live traffic (bentolabs-docs-14). However, nothing explicitly says these are LLM-as-a-judge evaluators producing scores on outputs; signals are described as trained detectors that fire, not graded scorers. Missing for 10: explicit LLM-as-a-judge evaluator docs, configurable judge model/rubric/score scales, documented per-output scoring, and independent or hands-on corroboration.",
+    "evidenceIds": [
+      "bentolabs-docs-4",
+      "bentolabs-docs-36",
+      "bentolabs-docs-14",
+      "bentolabs-docs-34"
+    ]
+  },
+  {
+    "productId": "bentolabs",
+    "storyId": "multimodal-trace-payloads",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Bento is an agent tracing and observability platform, so capturing multimodal payloads in traces is a fair question to ask of it. The evidence covers OpenTelemetry span capture, manual track_ai events and tagging, but none of it mentions images, audio, file attachments or any other multimodal payload handling.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "bentolabs",
+    "storyId": "offline-eval-datasets",
+    "verdict": "partial",
+    "quality": 5,
+    "confidence": "medium",
+    "rationale": "Bento claims every release is scored against production history offline, in CI, and on live traffic, and it captures full production traces with tagging, signals, and issue grouping. That covers the offline-eval-against-production half of the story. However, no evidence shows an explicit dataset curation workflow, such as selecting, labeling, or versioning trace subsets into named datasets. Missing for 10: documented dataset creation and curation from traces, details on how offline eval runs are configured and scored, and independent or hands-on corroboration.",
+    "evidenceIds": [
+      "bentolabs-docs-14",
+      "bentolabs-docs-3",
+      "bentolabs-docs-5",
+      "bentolabs-docs-22",
+      "bentolabs-docs-4"
+    ]
+  },
+  {
+    "productId": "bentolabs",
+    "storyId": "online-evals-guardrails",
+    "verdict": "full",
+    "quality": 7,
+    "confidence": "medium",
+    "rationale": "Bento's signals are plain-English failure-mode detectors trained on your traces. They fire in real time on live traffic and also backfill history (bentolabs-docs-4). Releases are scored \"offline, in CI, and on live traffic\" (bentolabs-docs-14), and shadow-mode changes are scored against production outcomes (bentolabs-docs-12), so continuous evaluation on production traffic is clearly the core design. missing for 10: detailed docs on configuring online evaluators (sampling, custom scorer code, LLM-as-judge setup), and independent or hands-on corroboration beyond marketing and FAQ claims.",
+    "evidenceIds": [
+      "bentolabs-docs-4",
+      "bentolabs-docs-14",
+      "bentolabs-docs-12",
+      "bentolabs-docs-7",
+      "bentolabs-docs-35"
+    ]
+  },
+  {
+    "productId": "bentolabs",
+    "storyId": "openness-api-parity",
+    "verdict": "partial",
+    "quality": 6,
+    "confidence": "medium",
+    "rationale": "Bento's docs explicitly claim dashboard parity for programmatic use: anything you can do in the dashboard can be done from the terminal, a script, or CI, including triaging issues, reading runs, inspecting signals, and pulling analytics. The CLI backs this with JSON output and editable resources such as `signals update`. However, that parity is delivered through an official CLI rather than a documented public API, and probes found no OpenAPI or Swagger spec at any candidate path. Missing for 10: a documented public REST/HTTP API or OpenAPI spec, evidence that write operations beyond signals (e.g. alerts, nudges, skills, issue status changes) are covered, and independent hands-on corroboration of the parity claim.",
+    "evidenceIds": [
+      "bentolabs-docs-30",
+      "bentolabs-docs-32",
+      "bentolabs-docs-34",
+      "bentolabs-docs-36",
+      "bentolabs-probe-3",
+      "bentolabs-probe-2"
+    ]
+  },
+  {
+    "productId": "bentolabs",
+    "storyId": "openness-full-export",
+    "verdict": "partial",
+    "quality": 5,
+    "confidence": "medium",
+    "rationale": "Bento keeps skills and rules in your own repo as model-agnostic Markdown and YAML. Instrumentation is standard OpenTelemetry, so traces can also be sent to other backends alongside Bento. Its CLI covers dashboard actions (reading runs, signals and analytics) and can emit plain JSON to stdout for piping into files, which is a workable but piecemeal export path. missing for 10: a documented bulk export of all stored traces/runs/issues, explicit data-portability or account-exit docs, an export-format specification, independent corroboration that full history can be extracted.",
+    "evidenceIds": [
+      "bentolabs-docs-16",
+      "bentolabs-docs-29",
+      "bentolabs-docs-20",
+      "bentolabs-docs-30",
+      "bentolabs-docs-32",
+      "bentolabs-docs-35"
+    ]
+  },
+  {
+    "productId": "bentolabs",
+    "storyId": "openness-open-license",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Open-sourcing is a fair question for an agent observability platform like Bento, but the evidence pack never mentions a public source repository or an open license. The repo-resident Markdown/YAML skills and rules are the user's own content, not the product's source.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "bentolabs",
+    "storyId": "openness-self-host",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Self-hosting is a fair question for an agent observability platform, so the axis applies. Nothing in the pack describes deploying Bento's core product on your own infrastructure. The OTel export and CLI items all point at Bento's hosted endpoint and auth, and the Markdown/YAML skills living in your repo are configuration, not a self-hosted product.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "bentolabs",
+    "storyId": "otel-native-tracing",
+    "verdict": "full",
+    "quality": 8,
+    "confidence": "medium",
+    "rationale": "Bento's docs say spans are captured over OpenTelemetry (bentolabs-docs-3, bentolabs-docs-29). You can point any OTel exporter at a single Bento endpoint with one auth header, and in TypeScript this needs no Bento package at all (bentolabs-docs-21). Bento can also wire directly into an existing OTel pipeline (bentolabs-docs-20), so ingestion is clearly standards-based rather than proprietary. Missing for 10: evidence of exporting or forwarding traces out of Bento over OTLP, explicit OTLP protocol/transport details (gRPC vs HTTP), and independent or hands-on corroboration.",
+    "evidenceIds": [
+      "bentolabs-docs-3",
+      "bentolabs-docs-20",
+      "bentolabs-docs-21",
+      "bentolabs-docs-29"
+    ]
+  },
+  {
+    "productId": "bentolabs",
+    "storyId": "pii-masking-controls",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Bento is an OpenTelemetry-based tracing and observability product for AI agents, so masking sensitive data before it is stored in traces is an applicable axis. Nothing in the evidence pack mentions redaction, masking, PII scrubbing, or span-processing hooks. The configuration docs cover only user_id, session_id, and tags kwargs, not filtering of trace payloads.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "bentolabs",
+    "storyId": "privacy-data-residency",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Data residency or region selection is a fair question for a SaaS observability platform that ingests agent traces. However, nothing in the evidence pack mentions choosing a storage region, residency controls, or self-hosting. The OTel export docs only describe sending traces to a single endpoint, with no regional options.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "bentolabs",
+    "storyId": "privacy-no-training",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Bento is a SaaS observability platform that ingests customer traces, so a training opt-out is a fair question. The evidence pack has no opt-out control, data-usage policy, or no-training commitment. The only related item says Bento trains signals on your own traces, which describes using customer data rather than preventing its use.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "bentolabs",
+    "storyId": "privacy-retention-controls",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Bento is a trace-observability platform that stores production agent data, so retention and deletion controls are a fair question to ask. The evidence pack never documents retention settings, data deletion, or purge capabilities. The 30-day default in the signals CLI is a query time window, not a retention control.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "bentolabs",
+    "storyId": "privacy-telemetry-optout",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Bento is an agent-observability SaaS with an SDK and CLI, so opting out of the vendor's own telemetry is a fair question. The evidence only covers capturing the customer's own agent traces. It never documents a telemetry or usage-tracking opt-out for the SDK, CLI or dashboard. The 'skip the analytics layer' note concerns routing traces over OpenTelemetry, not disabling vendor usage tracking.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "bentolabs",
+    "storyId": "prompt-playground",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Bento is an LLM/agent observability and improvement platform, so a prompt playground is a fair axis to ask about. The evidence covers prompt versioning, diffs, and drift tracking (docs-15, docs-10), but nothing shows an interactive playground for running prompts against real models with variables.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "bentolabs",
+    "storyId": "prompt-versioning-deploy",
+    "verdict": "partial",
+    "quality": 4,
+    "confidence": "medium",
+    "rationale": "Bento says every prompt, skill, and model change is versioned, diffable, and reversible, and it tracks drift across prompt versions [15][10]. Fixes and nudges roll out from shadow mode to 100% traffic based on production results [11][12], which hints at runtime rollout. However, skills and rules live in your repo as Markdown/YAML [16], which suggests changes go through the codebase rather than a no-code deploy path. missing for 10: an explicit prompt registry or runtime prompt fetching that decouples prompt deploys from code releases, documented steps for promoting a prompt version to production, and independent or hands-on corroboration.",
+    "evidenceIds": [
+      "bentolabs-docs-15",
+      "bentolabs-docs-10",
+      "bentolabs-docs-11",
+      "bentolabs-docs-12",
+      "bentolabs-docs-16"
+    ]
+  },
+  {
+    "productId": "bentolabs",
+    "storyId": "python-js-sdk-parity",
+    "verdict": "partial",
+    "quality": 5,
+    "confidence": "medium",
+    "rationale": "An official Python SDK is well documented, with installation, a Google ADK extra, `init()` configuration, `bento.track_ai` manual events, and `flush()`. For TypeScript, the only evidence is the OTel export docs, which say you can send traces 'with no Bento package at all' by pointing an OpenTelemetry exporter at Bento's endpoint. So JS/TS support goes through generic OTel rather than a documented first-party SDK. Missing for 10: evidence of an officially supported JS/TS SDK package and its docs, plus independent or hands-on corroboration of either SDK.",
+    "evidenceIds": [
+      "bentolabs-docs-17",
+      "bentolabs-docs-18",
+      "bentolabs-docs-23",
+      "bentolabs-docs-25",
+      "bentolabs-docs-20",
+      "bentolabs-docs-21"
+    ]
+  },
+  {
+    "productId": "bentolabs",
+    "storyId": "threshold-alerting",
+    "verdict": "full",
+    "quality": 7,
+    "confidence": "medium",
+    "rationale": "Bento lets you write alerts in plain English. Rules compile to trace queries and route to Slack, PagerDuty, email, or webhook, and fires are grouped into incidents and triaged as real or benign. It also tracks cost per run, tool failure rates, and release scoring, which these alerts could plausibly target. Missing for 10: explicit documentation of alerts on cost spikes and eval-score drops, in-depth alert-configuration docs beyond marketing/FAQ pages, and independent or hands-on corroboration.",
+    "evidenceIds": [
+      "bentolabs-docs-7",
+      "bentolabs-docs-8",
+      "bentolabs-docs-10",
+      "bentolabs-docs-4",
+      "bentolabs-docs-14"
+    ]
+  },
+  {
+    "productId": "bentolabs",
+    "storyId": "token-cost-dashboards",
+    "verdict": "partial",
+    "quality": 4,
+    "confidence": "medium",
+    "rationale": "Bento's FAQ claims developers see cost per run out of the box. The CLI docs mention a dashboard with analytics you can pull, so per-request cost visibility in a dashboard is supported only by a single thin vendor statement. missing for 10: token usage metrics, cost/token breakdown by model, time-period aggregation or filtering of cost in dashboards, detailed first-party docs on cost dashboards, independent or hands-on corroboration.",
+    "evidenceIds": [
+      "bentolabs-docs-10",
+      "bentolabs-docs-30"
+    ]
+  },
+  {
+    "productId": "bentolabs",
+    "storyId": "trace-llm-calls",
+    "verdict": "full",
+    "quality": 7,
+    "confidence": "medium",
+    "rationale": "Bento captures every span over OpenTelemetry with a span-tree view, auto-captures LLM calls at the SDK level (including a Google ADK integration), and offers `bento.track_ai` to wrap any LLM or tool call manually. It also reports cost per run out of the box, which implies token accounting. Missing for 10: explicit documentation that captured spans record inputs, outputs, latency, and token counts as fields; independent or hands-on corroboration beyond vendor docs.",
+    "evidenceIds": [
+      "bentolabs-docs-3",
+      "bentolabs-docs-17",
+      "bentolabs-docs-18",
+      "bentolabs-docs-27",
+      "bentolabs-docs-10",
+      "bentolabs-docs-21"
+    ]
+  },
+  {
     "productId": "braintrust",
     "storyId": "agent-queries-own-traces",
     "verdict": "full",
@@ -2168,6 +2852,651 @@
       "cekura-docs-25",
       "cekura-docs-15",
       "cekura-docs-1"
+    ]
+  },
+  {
+    "productId": "chronicle-labs",
+    "storyId": "agent-queries-own-traces",
+    "verdict": "partial",
+    "quality": 5,
+    "confidence": "medium",
+    "rationale": "Chronicle documents querying telemetry events through its SDK and a REST endpoint (events.search / POST /v1/search for semantic search over event content), so an agent could programmatically pull trace data to debug. There is no evidence of programmatic access to metrics or eval results, and no first-party MCP server; the MCP mention refers only to MCP servers inside simulated environments. Missing for 10: documented API access to eval results/scores and metrics, an official MCP server for querying observability data, a published OpenAPI spec (probe returned 404), and independent or hands-on corroboration of agent-driven debugging.",
+    "evidenceIds": [
+      "chronicle-labs-docs-19",
+      "chronicle-labs-docs-20",
+      "chronicle-labs-docs-14",
+      "chronicle-labs-docs-17",
+      "chronicle-labs-probe-2"
+    ]
+  },
+  {
+    "productId": "chronicle-labs",
+    "storyId": "agent-session-traces",
+    "verdict": "partial",
+    "quality": 4,
+    "confidence": "medium",
+    "rationale": "Chronicle accepts trace telemetry from your own code, from agent tool calls, or from an OpenTelemetry exporter, which can be queried in Timeline or via the SDK. Agent keys carry a traces:write scope, and observability shows every request, change, and score. However, nothing in the evidence explicitly documents nested span hierarchies or grouping runs into sessions or threads. Missing for 10: documented nested/parent-child span model, session or thread grouping of multi-step runs, trace data model/API reference, hands-on or independent corroboration.",
+    "evidenceIds": [
+      "chronicle-labs-docs-19",
+      "chronicle-labs-docs-17",
+      "chronicle-labs-docs-14",
+      "chronicle-labs-docs-23"
+    ]
+  },
+  {
+    "productId": "chronicle-labs",
+    "storyId": "agent-triggers-eval-run",
+    "verdict": "partial",
+    "quality": 5,
+    "confidence": "medium",
+    "rationale": "Chronicle has the building blocks for programmatic evals. It ships SDKs in five languages, offers CI-scoped API keys, and supports idempotent retries that return 'the original world or run', which implies runs can be created over the API. Task suites act as the dataset analog, eval runs pin frozen suite versions, and telemetry and events can be queried through the SDK. However, nothing explicitly documents an agent creating a task suite or dataset via API, or fetching eval scores and results by API, and no OpenAPI spec is published. missing for 10: documented API/SDK endpoint for creating task suites or datasets, explicit API to trigger an evaluation run, explicit API to read back eval scores and results, a published OpenAPI spec, and independent or hands-on corroboration.",
+    "evidenceIds": [
+      "chronicle-labs-docs-5",
+      "chronicle-labs-docs-11",
+      "chronicle-labs-docs-13",
+      "chronicle-labs-docs-17",
+      "chronicle-labs-docs-18",
+      "chronicle-labs-docs-19",
+      "chronicle-labs-docs-20",
+      "chronicle-labs-probe-2"
+    ]
+  },
+  {
+    "productId": "chronicle-labs",
+    "storyId": "agentic-agent-docs",
+    "verdict": "full",
+    "quality": 8,
+    "confidence": "high",
+    "rationale": "A live probe returned HTTP 200 for a structured llms.txt at docs.chronicle-labs.com, and the marketing site also serves /llms.txt. Docs pages are published as raw .md URLs (introduction.md, platform/*.md, api-reference/*.md), which an agent can ingest directly. Missing for 10: no evidence of an llms-full.txt or documented guidance for agent consumption, and no machine-readable OpenAPI spec (all candidate paths returned 404).",
+    "evidenceIds": [
+      "chronicle-labs-probe-1",
+      "chronicle-labs-docs-24",
+      "chronicle-labs-docs-25",
+      "chronicle-labs-docs-4",
+      "chronicle-labs-docs-7",
+      "chronicle-labs-probe-2"
+    ]
+  },
+  {
+    "productId": "chronicle-labs",
+    "storyId": "agentic-ai-insights",
+    "verdict": "partial",
+    "quality": 4,
+    "confidence": "low",
+    "rationale": "Chronicle offers some AI-driven analysis of user data: an LLM judge scores qualities like clarity or completeness, Workflow Discovery reconstructs workflows from production data streams and turns those patterns into tests, and semantic search runs over event content. None of this is documented as a general in-product insights or suggestions feature; failure analysis is described as the user inspecting recorded actions. Missing for 10: an explicit in-product AI insights/suggestions surface (e.g., auto-generated failure explanations or recommended fixes from data), detailed docs for Workflow Discovery and autonomous fix, and independent or hands-on corroboration.",
+    "evidenceIds": [
+      "chronicle-labs-docs-1",
+      "chronicle-labs-docs-25",
+      "chronicle-labs-docs-22",
+      "chronicle-labs-docs-20",
+      "chronicle-labs-docs-24",
+      "chronicle-labs-docs-2"
+    ]
+  },
+  {
+    "productId": "chronicle-labs",
+    "storyId": "agentic-autonomous-automation",
+    "verdict": "partial",
+    "quality": 4,
+    "confidence": "low",
+    "rationale": "Chronicle is an agent simulation and evaluation platform, so background automation applies mainly to evaluation runs and agent monitoring. Its marketing llms.txt claims \"real-time monitoring of production agents with autonomous fix and rollback\". The docs mention automating workflows via SDKs in several languages, CI-scoped API keys for unattended runs, and retry-safe idempotent calls. Missing for 10: documented scheduling or trigger configuration for background automations, in-depth docs for the autonomous monitoring/fix/rollback feature beyond a one-line marketing claim, and independent or hands-on corroboration.",
+    "evidenceIds": [
+      "chronicle-labs-docs-24",
+      "chronicle-labs-docs-5",
+      "chronicle-labs-docs-17",
+      "chronicle-labs-docs-18",
+      "chronicle-labs-docs-25"
+    ]
+  },
+  {
+    "productId": "chronicle-labs",
+    "storyId": "agentic-builtin-assistant",
+    "verdict": "partial",
+    "quality": 4,
+    "confidence": "low",
+    "rationale": "The axis applies, because an evaluation SaaS platform could ship a built-in assistant. The closest evidence is Worldsmith, which builds simulated worlds from a natural-language description, delegating one specific task to built-in AI. Marketing also claims autonomous fix and rollback for monitored production agents. Neither is documented as a general in-product assistant you can hand arbitrary tasks to. Missing for 10: a general-purpose built-in assistant for delegating tasks across the product, documentation of how Worldsmith is invoked and what it can do, and hands-on or independent corroboration.",
+    "evidenceIds": [
+      "chronicle-labs-docs-3",
+      "chronicle-labs-docs-24"
+    ]
+  },
+  {
+    "productId": "chronicle-labs",
+    "storyId": "agentic-headless",
+    "verdict": "partial",
+    "quality": 6,
+    "confidence": "medium",
+    "rationale": "The docs point to headless, programmatic use. There are SDKs for Python, TypeScript, JavaScript, Go and Rust to automate workflows, and authentication docs describe a dedicated CI key with platform scope. Idempotent, retry-safe API calls and SDK/REST telemetry querying further support unattended runs. However, the evidence never explicitly shows triggering evaluation suites or compare runs from CI, and the main workflow is described as browser-based. missing for 10: an explicit CI integration guide or example (e.g. GitHub Actions), a CLI, documentation that evaluation runs can be started and gated via API/SDK, a published OpenAPI spec (probe returned 404), and independent hands-on corroboration.",
+    "evidenceIds": [
+      "chronicle-labs-docs-5",
+      "chronicle-labs-docs-17",
+      "chronicle-labs-docs-18",
+      "chronicle-labs-docs-19",
+      "chronicle-labs-docs-20",
+      "chronicle-labs-docs-6",
+      "chronicle-labs-probe-2"
+    ]
+  },
+  {
+    "productId": "chronicle-labs",
+    "storyId": "agentic-mcp-client",
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "The only MCP mention is that a custom environment version can describe MCP servers (docs-16). That suggests MCP servers can be plugged into simulated worlds for the agent under test, not that Chronicle itself consumes MCP tools. There is no documented setup, configuration, or tool-invocation flow. Missing for 10: evidence that Chronicle's own features (e.g., Worldsmith or monitoring) act as an MCP client, documentation on connecting and configuring MCP servers, details of how their tools are exposed or invoked, and independent or hands-on corroboration.",
+    "evidenceIds": [
+      "chronicle-labs-docs-16"
+    ]
+  },
+  {
+    "productId": "chronicle-labs",
+    "storyId": "agentic-mcp-server",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Chronicle Labs is an agent-testing and simulation platform rather than an agent, so publishing an official MCP server is a fair question. The evidence shows no first-party MCP server or endpoint that lets an agent operate Chronicle. The only MCP mention (docs-16) says a custom environment version can describe MCP servers inside a simulated world. That is user-supplied test-environment content, not an official Chronicle MCP server, so it is not credited.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "chronicle-labs",
+    "storyId": "agentic-nl-commands",
+    "verdict": "partial",
+    "quality": 4,
+    "confidence": "medium",
+    "rationale": "Worldsmith builds simulated worlds from a natural-language description, and telemetry offers semantic search over event content. Natural language therefore drives some specific features, but general operation of the product is done through the browser UI and SDKs, not natural-language commands. Missing for 10: a general natural-language command interface or assistant for running evaluations, managing tasks and comparing agents; detailed docs on how Worldsmith interprets descriptions; independent or hands-on corroboration.",
+    "evidenceIds": [
+      "chronicle-labs-docs-3",
+      "chronicle-labs-docs-20"
+    ]
+  },
+  {
+    "productId": "chronicle-labs",
+    "storyId": "agentic-official-cli",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "An official CLI is a fair question for an agent-evaluation platform like Chronicle Labs, so the axis applies. The evidence only documents browser workflows, multi-language SDKs/API, and CI keys, with no mention of an official command-line tool.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "chronicle-labs",
+    "storyId": "agentic-public-api",
+    "verdict": "full",
+    "quality": 7,
+    "confidence": "medium",
+    "rationale": "Chronicle documents a public API reference: scoped API keys for CI and agent processes, idempotent retry semantics, and REST endpoints such as POST /v1/search, with SDKs in Python, TypeScript, JavaScript, Go, and Rust for automating workflows. The OpenAPI probe returning 404 does not contradict the API's existence, but it does leave no machine-readable spec. Missing for 10: a published OpenAPI/machine-readable spec, evidence that endpoints cover creating worlds, tasks, and evaluations (not just telemetry), and independent or hands-on corroboration.",
+    "evidenceIds": [
+      "chronicle-labs-docs-17",
+      "chronicle-labs-docs-18",
+      "chronicle-labs-docs-19",
+      "chronicle-labs-docs-20",
+      "chronicle-labs-docs-5",
+      "chronicle-labs-probe-2"
+    ]
+  },
+  {
+    "productId": "chronicle-labs",
+    "storyId": "agentic-scoped-keys",
+    "verdict": "full",
+    "quality": 7,
+    "confidence": "medium",
+    "rationale": "The authentication docs describe API keys carrying distinct scopes. A CI key typically gets `platform`, while a key supplied to the agent process typically gets only `agents:write` and `traces:write`, which is least-privilege credentialing for an agent. Missing for 10: documentation of how keys are issued and revoked, expiry/rotation controls, a full scope catalog, and independent or hands-on corroboration.",
+    "evidenceIds": [
+      "chronicle-labs-docs-17"
+    ]
+  },
+  {
+    "productId": "chronicle-labs",
+    "storyId": "agentic-sdks",
+    "verdict": "full",
+    "quality": 7,
+    "confidence": "medium",
+    "rationale": "Chronicle's docs say workflows can be automated in Python, TypeScript, JavaScript, Go, or Rust. They also reference querying telemetry \"through the SDK\" and document SDK methods mapped to REST endpoints (e.g., events.search(query) → POST /v1/search), with API keys scoped for CI and agent processes. That covers the core of building against official SDKs, but the evidence is thin on detail. Missing for 10: package names and install/quickstart docs per language, a fuller SDK method reference beyond telemetry, and independent or hands-on corroboration that the SDKs work as described.",
+    "evidenceIds": [
+      "chronicle-labs-docs-5",
+      "chronicle-labs-docs-19",
+      "chronicle-labs-docs-20",
+      "chronicle-labs-docs-17"
+    ]
+  },
+  {
+    "productId": "chronicle-labs",
+    "storyId": "agentic-webhooks",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Chronicle Labs is an API-driven agent evaluation and simulation platform, so outbound webhook subscriptions are a fair axis to ask about. The evidence pack shows no webhooks: its event features cover ingesting telemetry from your code or OpenTelemetry and querying or searching it via the SDK or Timeline. Nothing shows the platform pushing event notifications to subscriber endpoints.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "chronicle-labs",
+    "storyId": "api-interactive-docs",
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "medium",
+    "rationale": "Chronicle publishes an API reference section covering authentication, reliability, and telemetry, with method-to-endpoint mappings such as events.search → POST /v1/search. Nothing in the evidence shows it is interactive or has runnable examples, and probes for an OpenAPI/Swagger spec, which typically powers try-it consoles, all returned 404. Missing for 10: an interactive try-it/playground console, runnable code examples within the reference, a published OpenAPI spec, and independent corroboration.",
+    "evidenceIds": [
+      "chronicle-labs-docs-17",
+      "chronicle-labs-docs-18",
+      "chronicle-labs-docs-19",
+      "chronicle-labs-docs-20",
+      "chronicle-labs-probe-2"
+    ]
+  },
+  {
+    "productId": "chronicle-labs",
+    "storyId": "api-machine-spec",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Chronicle Labs has a documented REST API, including authentication, reliability, and telemetry reference pages and endpoints like POST /v1/search, so a downloadable machine-readable spec is a fair ask. However, the probe found every standard OpenAPI/Swagger path returns 404. The evidence shows only markdown API reference pages and an llms.txt, neither of which is an OpenAPI-equivalent spec.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "chronicle-labs",
+    "storyId": "api-sandbox",
+    "verdict": "full",
+    "quality": 9,
+    "confidence": "medium",
+    "rationale": "Chronicle's core product is a sandbox for agents. Agents read and write \"simulated services\" (twins) through vendor APIs. Production data is turned into staging environments, and custom environments can use recorded HTTP replays, seeded datastores, or standalone twins. Published environment versions are frozen, so every trial starts from the same state. Missing for 10: independent or hands-on corroboration, and explicit documentation guaranteeing isolation from live production systems (e.g., no write-back, data masking).",
+    "evidenceIds": [
+      "chronicle-labs-docs-7",
+      "chronicle-labs-docs-9",
+      "chronicle-labs-docs-16",
+      "chronicle-labs-docs-15",
+      "chronicle-labs-docs-21",
+      "chronicle-labs-docs-3",
+      "chronicle-labs-probe-1"
+    ]
+  },
+  {
+    "productId": "chronicle-labs",
+    "storyId": "api-versioning-policy",
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "The only API-versioning signal is a /v1-prefixed endpoint (POST /v1/search), which implies a versioned REST surface. No deprecation policy, changelog, or version-lifecycle documentation appears in the evidence. The frozen suite and environment versions are about evaluation content, not API versions, so they don't count here. Missing for 10: a documented deprecation/sunset policy, explicit API versioning documentation (version lifecycle, compatibility guarantees), and a changelog or migration guides.",
+    "evidenceIds": [
+      "chronicle-labs-docs-20"
+    ]
+  },
+  {
+    "productId": "chronicle-labs",
+    "storyId": "automation-bulk-operations",
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "The closest evidence is task suites, which group many tasks so one evaluation run executes them all against an agent version or a baseline-vs-candidate comparison. SDKs in several languages let users script repeated operations themselves. Neither is a documented general bulk-operation capability (e.g., bulk edit, delete or update across selected items). Missing for 10: explicit bulk/batch endpoints or UI multi-select actions, batch APIs for tasks, worlds or records, and any hands-on or independent corroboration.",
+    "evidenceIds": [
+      "chronicle-labs-docs-11",
+      "chronicle-labs-docs-12",
+      "chronicle-labs-docs-5"
+    ]
+  },
+  {
+    "productId": "chronicle-labs",
+    "storyId": "automation-rules-engine",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Chronicle Labs is an agent simulation, evaluation and observability platform, so event-driven automation rules are a fair axis for it. However, the evidence never shows users defining rules or triggers that fire actions on events. The closest items are SDK scripting ('Automate workflows with Python, TypeScript…') and a single llms.txt line about vendor-driven 'autonomous fix and rollback' in production monitoring, and neither is a user-configurable event-to-action rule.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "chronicle-labs",
+    "storyId": "automation-scheduled-jobs",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Chronicle Labs is an agent evaluation and simulation platform, so scheduling recurring evaluation runs or workflows is a fair axis. The evidence shows SDK-driven automation in several languages and CI keys, but nothing documents a built-in scheduler, cron triggers, or recurring runs. Any recurrence would rely on external CI tooling.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "chronicle-labs",
+    "storyId": "automation-versioned-workflows",
+    "verdict": "partial",
+    "quality": 5,
+    "confidence": "medium",
+    "rationale": "Chronicle documents versioning and review for agents: you register a new agent version and compare it against the previous one on the same tasks [10][2][12]. Task suites [13] and environments [15] are frozen into pinned versions, and the recorded actions behind each score can be inspected [2][14]. Rollback rests on a single marketing line about 'autonomous fix and rollback' of production agents [24], and the versioning serves evaluation rather than managing the automations themselves. Missing for 10: documented rollback mechanics or workflow, versioning of workflow automations as such (not just agents under test), and independent or hands-on corroboration.",
+    "evidenceIds": [
+      "chronicle-labs-docs-10",
+      "chronicle-labs-docs-2",
+      "chronicle-labs-docs-12",
+      "chronicle-labs-docs-13",
+      "chronicle-labs-docs-15",
+      "chronicle-labs-docs-14",
+      "chronicle-labs-docs-24"
+    ]
+  },
+  {
+    "productId": "chronicle-labs",
+    "storyId": "bulk-trace-export",
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "The only data-access path in the evidence is reading traces back: events can be queried in Timeline or through the SDK, and there is a semantic-search endpoint (POST /v1/search). A developer could script their own export from that, but the docs show no native bulk export and no blob-storage or warehouse destinations. The OpenTelemetry exporter mentioned only covers sending data into Chronicle, not out. Missing for 10: native bulk export of traces, dataset/task export, blob storage (S3/GCS/Azure) or data warehouse connectors, scheduled or streaming export, and any independent corroboration.",
+    "evidenceIds": [
+      "chronicle-labs-docs-19",
+      "chronicle-labs-docs-20"
+    ]
+  },
+  {
+    "productId": "chronicle-labs",
+    "storyId": "ci-eval-gating",
+    "verdict": "partial",
+    "quality": 5,
+    "confidence": "medium",
+    "rationale": "The docs mention a CI-scoped API key and SDKs in several languages, which implies evals can be triggered from CI. Scorers return 0–1 values with configurable pass thresholds, and Compare mode plus pinned suite and environment versions give reproducible baseline-vs-candidate results, so the building blocks for gating exist. Missing for 10: a documented CI integration (e.g. a GitHub Action or CLI), an explicit deployment-gating mechanism such as failing a build on threshold misses, an end-to-end CI workflow guide, and independent or hands-on corroboration.",
+    "evidenceIds": [
+      "chronicle-labs-docs-17",
+      "chronicle-labs-docs-4",
+      "chronicle-labs-docs-12",
+      "chronicle-labs-docs-13",
+      "chronicle-labs-docs-5",
+      "chronicle-labs-docs-18",
+      "chronicle-labs-docs-11"
+    ]
+  },
+  {
+    "productId": "chronicle-labs",
+    "storyId": "cost-attribution-metadata",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Chronicle Labs offers observability and telemetry: it ingests events via SDK or an OpenTelemetry exporter and lets you query them in Timeline. That makes cost attribution a fair axis for this product. However, the evidence never mentions cost tracking, token or usage accounting, or tagging events with user, session, or feature metadata for attribution.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "chronicle-labs",
+    "storyId": "custom-code-scorers",
+    "verdict": "full",
+    "quality": 7,
+    "confidence": "medium",
+    "rationale": "Chronicle's docs say you attach scorers to tasks, and code-based checks verify concrete outputs or recorded changes alongside LLM-judge scorers (docs-1). Scorers return a 0–1 value with configurable pass thresholds (docs-4), and they are versioned and pinned to runs within task suites (docs-11, docs-13). missing for 10: detailed docs on the scorer-authoring API, which languages scorers can be written in, examples of custom aggregate metrics beyond per-check scores, and independent or hands-on corroboration.",
+    "evidenceIds": [
+      "chronicle-labs-docs-1",
+      "chronicle-labs-docs-4",
+      "chronicle-labs-docs-11",
+      "chronicle-labs-docs-13"
+    ]
+  },
+  {
+    "productId": "chronicle-labs",
+    "storyId": "custom-dashboards",
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "The evidence shows observability and telemetry: every request, change, and score can be viewed, and events from code or OpenTelemetry can be queried in Timeline or through the SDK. There are also generic mentions of a dashboard and real-time production monitoring. Nothing documents a configurable dashboard builder, and latency, error, and cost metrics are never named; only eval scores (0–1 scorer values) are explicit. Missing for 10: custom dashboard/widget creation, explicit latency/error/cost metric charts, aggregation over eval scores across runs, independent corroboration.",
+    "evidenceIds": [
+      "chronicle-labs-docs-14",
+      "chronicle-labs-docs-19",
+      "chronicle-labs-docs-23",
+      "chronicle-labs-docs-24",
+      "chronicle-labs-docs-4"
+    ]
+  },
+  {
+    "productId": "chronicle-labs",
+    "storyId": "experiment-comparison",
+    "verdict": "full",
+    "quality": 8,
+    "confidence": "medium",
+    "rationale": "Docs describe a dedicated Compare mode for baseline vs. candidate (docs-12). You register a new agent version and compare it against the previous one on the same tasks and starting state (docs-10, docs-2), using task suites (docs-11). Runs pin frozen task/scorer versions so results stay comparable (docs-13), and you can inspect the recorded actions behind each score to diagnose failures. Missing for 10: specifics of the side-by-side view or automatic regression flagging/score diffs, explicit framing for prompt vs. model changes rather than generic agent versions, and independent or hands-on corroboration.",
+    "evidenceIds": [
+      "chronicle-labs-docs-12",
+      "chronicle-labs-docs-2",
+      "chronicle-labs-docs-10",
+      "chronicle-labs-docs-11",
+      "chronicle-labs-docs-13",
+      "chronicle-labs-docs-4"
+    ]
+  },
+  {
+    "productId": "chronicle-labs",
+    "storyId": "framework-auto-instrumentation",
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "medium",
+    "rationale": "Chronicle accepts telemetry from your own code, from agent tool calls, or from a generic OpenTelemetry exporter, and agent processes get a traces:write key, so instrumentation is possible. No first-party integrations for LangChain, the OpenAI SDK, or the Vercel AI SDK are documented, so connecting those frameworks would mean building your own OpenTelemetry instrumentation. Missing for 10: named framework integrations for LangChain, OpenAI SDK, and Vercel AI SDK; setup docs for auto-instrumentation; independent or hands-on corroboration.",
+    "evidenceIds": [
+      "chronicle-labs-docs-19",
+      "chronicle-labs-docs-17"
+    ]
+  },
+  {
+    "productId": "chronicle-labs",
+    "storyId": "human-annotation-queues",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Human annotation queues are a fair question for an agent evaluation platform like Chronicle Labs, so the axis applies. However, the evidence describes only automated scoring (code checks and LLM judges with 0–1 scores and pass thresholds) plus trace inspection. Nothing shows outputs being routed to human reviewers or labeling queues.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "chronicle-labs",
+    "storyId": "llm-as-judge-scoring",
+    "verdict": "full",
+    "quality": 7,
+    "confidence": "medium",
+    "rationale": "The docs say an LLM judge can be attached as a scorer on tasks to assess qualities such as clarity or completeness. Scorers return a 0–1 value with configurable pass thresholds, and the scorer set is versioned and pinned to each evaluation run. That covers the core of the story, but the depth of configuration is thin. missing for 10: documentation of judge configuration (custom rubrics/prompts, judge model selection), worked examples of LLM-judge scorers, independent or hands-on corroboration.",
+    "evidenceIds": [
+      "chronicle-labs-docs-1",
+      "chronicle-labs-docs-4",
+      "chronicle-labs-docs-13",
+      "chronicle-labs-docs-11"
+    ]
+  },
+  {
+    "productId": "chronicle-labs",
+    "storyId": "multimodal-trace-payloads",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Chronicle accepts traces and telemetry events from SDK code, agent tool calls, or an OpenTelemetry exporter, so capturing multimodal payloads is a fair question for it. However, no evidence shows that images, audio, or file attachments can be captured in those traces. The telemetry docs mention only event content and semantic search over it.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "chronicle-labs",
+    "storyId": "offline-eval-datasets",
+    "verdict": "full",
+    "quality": 7,
+    "confidence": "medium",
+    "rationale": "Offline evaluation is well documented. Task suites with code and LLM-judge scorers can be run against agent versions in Suite or Compare mode, and frozen suite and environment versions make runs reproducible. The production-to-test path is also claimed: production data becomes staging environments, real conversations are captured and replayed for evaluation, environments support recorded HTTP replays, and Timeline findings can be turned into the next test. missing for 10: detailed docs on converting a specific production trace into a curated task or dataset entry, an explicit dataset-management concept beyond task suites, and independent or hands-on corroboration.",
+    "evidenceIds": [
+      "chronicle-labs-docs-1",
+      "chronicle-labs-docs-4",
+      "chronicle-labs-docs-11",
+      "chronicle-labs-docs-12",
+      "chronicle-labs-docs-13",
+      "chronicle-labs-docs-14",
+      "chronicle-labs-docs-15",
+      "chronicle-labs-docs-16",
+      "chronicle-labs-docs-19",
+      "chronicle-labs-docs-21",
+      "chronicle-labs-docs-22",
+      "chronicle-labs-docs-23"
+    ]
+  },
+  {
+    "productId": "chronicle-labs",
+    "storyId": "online-evals-guardrails",
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "Chronicle's documented evaluation model runs scorers against frozen task suites in simulated environments. Production data is mainly turned into replayed tests, which is offline evaluation. The only production-facing pieces are telemetry ingestion from the agent process via SDK or OpenTelemetry, and a marketing claim of real-time monitoring of production agents; neither shows scorers running continuously on live traffic. Missing for 10: documented online/continuous scorer execution on live production traces, sampling or scheduling controls for production evals, hands-on or independent corroboration.",
+    "evidenceIds": [
+      "chronicle-labs-docs-24",
+      "chronicle-labs-docs-19",
+      "chronicle-labs-docs-14",
+      "chronicle-labs-docs-17",
+      "chronicle-labs-docs-22",
+      "chronicle-labs-docs-13"
+    ]
+  },
+  {
+    "productId": "chronicle-labs",
+    "storyId": "openness-api-parity",
+    "verdict": "partial",
+    "quality": 5,
+    "confidence": "medium",
+    "rationale": "Chronicle documents a real API and SDK surface. It has scoped API keys, including a CI `platform` scope and agents/traces write scopes. It supports idempotent creation of worlds and runs, multi-language SDKs for automating workflows, and telemetry querying through the SDK and `POST /v1/search`. However, the browser is presented as the place to build worlds, write tasks and run evaluations, and nothing confirms that every UI action has an API equivalent. Probes also found no public OpenAPI spec. Missing for 10: an explicit UI/API parity statement, documented API coverage for authoring tasks/scorers and comparing evaluations, a published OpenAPI spec, and independent corroboration.",
+    "evidenceIds": [
+      "chronicle-labs-docs-5",
+      "chronicle-labs-docs-6",
+      "chronicle-labs-docs-17",
+      "chronicle-labs-docs-18",
+      "chronicle-labs-docs-19",
+      "chronicle-labs-docs-20",
+      "chronicle-labs-probe-2"
+    ]
+  },
+  {
+    "productId": "chronicle-labs",
+    "storyId": "openness-full-export",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Data export applies to a SaaS agent-evaluation platform like Chronicle, but the pack documents no bulk export, open-format download, or account-exit path. The only related items are ingesting telemetry via an OpenTelemetry exporter and querying events through the SDK or search API. Neither shows that all worlds, tasks, scorers, runs, and traces can be exported in open formats, and the OpenAPI spec probe returned 404.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "chronicle-labs",
+    "storyId": "openness-open-license",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Whether a product's source is available under an open license is a fair question for a SaaS agent-evaluation platform like Chronicle Labs, so the axis applies. Nothing in the evidence pack mentions a public repository, an open-source license, or source availability. The docs describe only a hosted browser platform, an SDK and APIs.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "chronicle-labs",
+    "storyId": "openness-self-host",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Chronicle Labs is a platform for agent simulation and evaluation, so asking whether it can be self-hosted is a fair question. The evidence describes only hosted usage: building worlds and running evaluations in the browser, a dashboard, and API keys. No document mentions a self-hosted, on-prem, or open-source deployment option.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "chronicle-labs",
+    "storyId": "otel-native-tracing",
+    "verdict": "partial",
+    "quality": 4,
+    "confidence": "medium",
+    "rationale": "Chronicle's telemetry docs say traces can be sent 'from an OpenTelemetry exporter' and then queried in Timeline or through the SDK, and API keys carry a traces:write scope. That covers OTel-based ingestion, but only as a single brief mention. Getting traces back out appears to go through Chronicle's own SDK/search API, not OTLP. Missing for 10: documented OTLP endpoint details (gRPC/HTTP, URL, auth headers), evidence of exporting or receiving traces in OTLP format, semantic-convention mapping docs, and independent or hands-on corroboration.",
+    "evidenceIds": [
+      "chronicle-labs-docs-19",
+      "chronicle-labs-docs-17",
+      "chronicle-labs-docs-20"
+    ]
+  },
+  {
+    "productId": "chronicle-labs",
+    "storyId": "pii-masking-controls",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Chronicle Labs ingests traces and telemetry: agent keys carry traces:write, events can be sent from code or an OpenTelemetry exporter, and production data is captured and replayed. That makes trace-data redaction an applicable axis. However, nothing in the evidence describes masking, redaction, PII scrubbing, or any filtering of sensitive data before it is stored in traces.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "chronicle-labs",
+    "storyId": "privacy-data-residency",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Chronicle Labs is a SaaS platform for agent simulation and evaluation that ingests production data, so letting users choose a data residency region is a fair question to ask of it. Nothing in the evidence pack mentions region selection, data residency, or storage location. The docs cover only worlds, tasks, scorers, evaluations, telemetry and authentication scopes.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "chronicle-labs",
+    "storyId": "privacy-no-training",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Chronicle Labs is a SaaS platform that ingests customer production data, so a training opt-out is a fair question for it. However, nothing in the evidence pack mentions a training opt-out, a data-usage policy, or any control that keeps customer data out of AI model training. The only training reference describes replaying captured events \"for training and evaluation\", which is a product feature, not a privacy control.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "chronicle-labs",
+    "storyId": "privacy-retention-controls",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Chronicle Labs ingests production data, conversations, and telemetry events, so user control over data retention and deletion is a fair question for it. However, nothing in the evidence pack covers retention periods, deletion APIs, or data-lifecycle settings. The docs describe only capturing, freezing, replaying, and searching data.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "chronicle-labs",
+    "storyId": "privacy-telemetry-optout",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Opting out of vendor telemetry and usage tracking is a fair question for any SaaS platform, including an agent-simulation and evaluation tool like Chronicle Labs. The pack has no evidence of such a control. Its 'telemetry' material describes customers sending their own agent events and traces into Chronicle as a product feature, not opting out of the vendor's tracking of the user.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "chronicle-labs",
+    "storyId": "prompt-playground",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Chronicle Labs is an agent evaluation and simulation platform, so a prompt playground is a fair question for this kind of product. The evidence only covers building simulated worlds, tasks, scorers, version comparison and telemetry. Nothing shows an interactive playground for iterating on prompts against real models with variables.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "chronicle-labs",
+    "storyId": "prompt-versioning-deploy",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Prompt management is a fair question for an agent evaluation and observability platform. However, the evidence only shows registering and comparing agent versions against task suites, plus monitoring with rollback. Nothing shows a prompt registry, prompt versioning, or deploying prompt changes to production without a code release.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "chronicle-labs",
+    "storyId": "python-js-sdk-parity",
+    "verdict": "partial",
+    "quality": 5,
+    "confidence": "low",
+    "rationale": "The docs say workflows can be automated with Python, TypeScript, JavaScript, Go, or Rust. Telemetry can be sent from your own code or an OpenTelemetry exporter and queried through \"the SDK\", and agent-process keys get traces:write scope, which implies instrumentation via SDKs. However, no evidence explicitly names official Python and JS/TS tracing SDKs or shows how to instrument with them. Missing for 10: explicit documentation of official Python and JS/TS instrumentation SDKs (packages, install, tracing API), code examples, independent or hands-on corroboration.",
+    "evidenceIds": [
+      "chronicle-labs-docs-5",
+      "chronicle-labs-docs-19",
+      "chronicle-labs-docs-17",
+      "chronicle-labs-docs-20"
+    ]
+  },
+  {
+    "productId": "chronicle-labs",
+    "storyId": "threshold-alerting",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Chronicle is an agent evaluation and observability platform, so alerting is a fair axis to ask about. The evidence shows observability and a claim of 'real-time monitoring of production agents with autonomous fix and rollback.' Nothing documents configurable alert rules on error rates, cost spikes or eval-score drops, or notification delivery to Slack, PagerDuty or email. The Slack mention refers to simulated records loaded into test worlds, not alert delivery.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "chronicle-labs",
+    "storyId": "token-cost-dashboards",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Chronicle Labs is an agent simulation, evaluation, and observability platform, so cost and token dashboards are a fair axis to ask about. The evidence covers per-request event visibility, a telemetry Timeline, and production agent monitoring. Nothing in the pack mentions tracking cost or token usage, or breaking it down by request, model, or time period in dashboards.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "chronicle-labs",
+    "storyId": "trace-llm-calls",
+    "verdict": "partial",
+    "quality": 4,
+    "confidence": "medium",
+    "rationale": "Chronicle has a telemetry/trace ingestion path. Agent keys carry a traces:write scope, and events can be sent from your own code, your agent's tool calls, or an OpenTelemetry exporter, then queried in Timeline or through the SDK. The observability page promises you can \"see every request, change, and score.\" However, the evidence never says LLM calls specifically are captured, nor that inputs/outputs, latency, or token usage are recorded fields; the platform's focus is evaluating agents in simulated environments. Missing for 10: explicit LLM-call span capture, documented input/output, latency, and token-usage fields, SDK auto-instrumentation details, and independent or hands-on corroboration.",
+    "evidenceIds": [
+      "chronicle-labs-docs-19",
+      "chronicle-labs-docs-17",
+      "chronicle-labs-docs-14",
+      "chronicle-labs-docs-20"
     ]
   },
   {
@@ -4999,6 +6328,551 @@
       "langsmith-docs-12",
       "langsmith-docs-34",
       "langsmith-comm-2"
+    ]
+  },
+  {
+    "productId": "mirrors",
+    "storyId": "agent-queries-own-traces",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Mirrors works with agent traces, sessions, and outcome labels, so letting an agent query that data through an API or MCP server is a fair question for this product. The evidence never mentions a query API or MCP server for traces, metrics, or eval results. The OpenAPI probes all returned 404, and the llms.txt file only describes the product; it does not provide data access.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "mirrors",
+    "storyId": "agent-session-traces",
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "Mirrors references reviewing agent sessions, previewing routing conditions against stored traces, and recorded sessions. It also says it works with the traces a team already has and lists agent frameworks such as LangChain and LangGraph. However, the evidence suggests Mirrors consumes existing traces rather than instrumenting runs itself, and nothing describes nested span hierarchies or thread grouping. Missing for 10: first-party instrumentation/SDK for capturing multi-step runs, nested parent/child span model, explicit session/thread grouping docs, independent or hands-on corroboration.",
+    "evidenceIds": [
+      "mirrors-docs-1",
+      "mirrors-docs-3",
+      "mirrors-docs-11",
+      "mirrors-docs-12",
+      "mirrors-docs-13"
+    ]
+  },
+  {
+    "productId": "mirrors",
+    "storyId": "agent-triggers-eval-run",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Mirrors is a developer tool for AI agents that compares sessions against holdout groups and previews routing against stored traces, so an evals/datasets axis applies. However, nothing in the evidence shows a programmatic or agent-drivable way to create datasets, trigger eval runs, or read results back. Probes found no OpenAPI spec and no docs.md, and the docs describe only team-driven review workflows.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "mirrors",
+    "storyId": "agentic-agent-docs",
+    "verdict": "full",
+    "quality": 7,
+    "confidence": "high",
+    "rationale": "A live probe confirms https://mirrors.dev/llms.txt returns HTTP 200 with a product overview written for agents, and content is quoted from that file, so a user can point an agent at it. Other agent-oriented surfaces are missing: /docs.md returns 404 and no OpenAPI spec was found at any candidate path. missing for 10: markdown or agent-oriented docs beyond the llms.txt summary (docs.md 404), a machine-readable API spec (OpenAPI 404), evidence of llms.txt depth or coverage (e.g. llms-full.txt), independent corroboration of agent usage.",
+    "evidenceIds": [
+      "mirrors-probe-1",
+      "mirrors-docs-5",
+      "mirrors-probe-2",
+      "mirrors-probe-3"
+    ]
+  },
+  {
+    "productId": "mirrors",
+    "storyId": "agentic-ai-insights",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Mirrors analyzes agent traces and outcomes, so AI-generated suggestions are a fair question for this kind of tool. The evidence, however, describes a human-driven workflow: teams review sessions and decide where a change could help, write the context and routing conditions themselves, and routing runs without model inference. Nothing shows the product generating insights or suggestions with AI.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "mirrors",
+    "storyId": "agentic-autonomous-automation",
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "Mirrors lets teams define routing conditions that, once activated, automatically inject context edits into live agent conversations with no redeploy or code change. Routing runs locally and unattended, which is a narrow form of rule-triggered background automation (docs-2, docs-6, docs-7, docs-3). It is not a general automation feature: humans still write the context, review traces, and decide keep/revise/rollback (docs-1, docs-4, docs-9). Missing for 10: general-purpose user-defined automations or workflows, scheduled or background jobs, autonomous action beyond context injection, and independent or hands-on corroboration.",
+    "evidenceIds": [
+      "mirrors-docs-2",
+      "mirrors-docs-3",
+      "mirrors-docs-6",
+      "mirrors-docs-7",
+      "mirrors-docs-9"
+    ]
+  },
+  {
+    "productId": "mirrors",
+    "storyId": "agentic-builtin-assistant",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Mirrors is a developer tool that manages context for a team's own agents, and a SaaS tool of this kind could plausibly ship a built-in assistant, so the axis applies. The evidence shows no in-product AI assistant to delegate tasks to: teams write the context and choose routing conditions themselves, and routing runs without model inference.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "mirrors",
+    "storyId": "agentic-headless",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Mirrors is a developer tool for AI agents, so headless or CI-driven automation is a fair question to ask of it. The evidence describes a review, preview and rollback workflow and says routing runs locally inside the agent, but it never mentions a CLI, an API, CI pipeline integration or any scriptable headless mode. Probes for an OpenAPI spec and a docs.md page both returned 404.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "mirrors",
+    "storyId": "agentic-mcp-client",
+    "verdict": "na",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Mirrors is a context-routing and evaluation layer for teams' existing AI agents. Per its docs, it delivers context edits mid-conversation and rewrites tool descriptions, schemas and tool results, but it is not itself an agent that calls tools. Plugging in MCP servers so the product can use their tools is an agent-client capability, so this axis does not fit the product's type. Nothing in the evidence shows it acting as an MCP client.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "mirrors",
+    "storyId": "agentic-mcp-server",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Mirrors is a developer platform for managing AI agents' context, not an agent itself, so an official MCP server is a fair axis. Nothing in the evidence pack mentions an MCP server or endpoint. The docs describe framework integrations and editing tool descriptions and schemas, and probes found only llms.txt with no API spec. Absence of evidence for an applicable capability yields none.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "mirrors",
+    "storyId": "agentic-nl-commands",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "A natural-language command interface is a fair axis for a developer SaaS tool like Mirrors, so the story applies. The evidence only shows users writing natural-language guidance that gets injected into their own agents' context, and defining routing conditions and outcome labels. Nothing shows the Mirrors product itself being operated through natural-language commands or a conversational or agent interface.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "mirrors",
+    "storyId": "agentic-official-cli",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Mirrors is a developer tool for AI agents, so an official CLI is a fair question for this kind of product. Nothing in the evidence mentions a CLI: the docs describe reviewing traces, routing conditions and holdout comparisons without naming a command-line interface, and the probes found no docs.md or OpenAPI spec. Absence of evidence for an applicable capability yields none.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "mirrors",
+    "storyId": "agentic-public-api",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "A documented public API is a fair question for a developer tool for AI agents, so the axis applies. The evidence shows no API reference: every OpenAPI/Swagger path returned 404, as did docs.md. The only machine-readable artifact is an llms.txt product summary, and the marketing pages describe dashboard-style workflows and framework compatibility, not programmatic endpoints.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "mirrors",
+    "storyId": "agentic-scoped-keys",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Mirrors is a developer tool for AI agents. A SaaS platform like this could plausibly offer scoped or least-privilege API keys, so the axis applies. The evidence pack never mentions API keys, credential scoping, permissions, or token issuance, and probes found no OpenAPI spec or docs describing an auth model.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "mirrors",
+    "storyId": "agentic-sdks",
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "Mirrors lists integrations with agent frameworks (LangChain, LangGraph, LlamaIndex, CrewAI, AutoGen, Pydantic AI, smolagents, Google ADK). It also says routing decisions run locally without a network request, which implies an in-process client library. However, no official SDK is named or documented, and probes found no OpenAPI spec or docs.md. Missing for 10: an explicitly named official SDK with packages or languages, SDK reference documentation, an API spec, and independent or hands-on corroboration of building against it.",
+    "evidenceIds": [
+      "mirrors-docs-12",
+      "mirrors-docs-7",
+      "mirrors-probe-1",
+      "mirrors-probe-2",
+      "mirrors-probe-3"
+    ]
+  },
+  {
+    "productId": "mirrors",
+    "storyId": "agentic-webhooks",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Mirrors is a SaaS developer tool for routing context into AI agents, so offering webhook event subscriptions is a fair question for this kind of product. Nothing in the evidence pack mentions webhooks or event subscriptions. The docs cover trace review, routing previews, holdout comparisons and local routing decisions, and probes found no OpenAPI spec that might document webhook endpoints.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "mirrors",
+    "storyId": "api-interactive-docs",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Mirrors is a developer tool for AI agents, so an interactive API reference with runnable examples is a fair thing to ask of it. The evidence pack shows no API reference, playground, or runnable examples. Probes for an OpenAPI/Swagger spec and docs.md all returned 404; only a marketing-level llms.txt exists.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "mirrors",
+    "storyId": "api-machine-spec",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Mirrors is a developer platform for AI agents, so publishing a machine-readable API spec is a fair axis. However, every probed OpenAPI/Swagger path returned 404. The llms.txt file that does exist is a product description, not an API specification. No docs mention a downloadable spec.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "mirrors",
+    "storyId": "api-sandbox",
+    "verdict": "partial",
+    "quality": 4,
+    "confidence": "medium",
+    "rationale": "Mirrors lets users preview routing conditions against stored traces before activation, reviewing matches, misses, and unexpected matches without changing live agent behavior. It also supports holdout comparisons and rollback, which give a safety net. This is pre-activation dry-run testing on recorded data, not a dedicated sandbox or staging environment isolated from production. Missing for 10: an explicit sandbox/staging environment or test mode, isolation from production data (previews use real stored traces), documentation of test credentials or environments, and hands-on corroboration.",
+    "evidenceIds": [
+      "mirrors-docs-3",
+      "mirrors-docs-4",
+      "mirrors-docs-5",
+      "mirrors-docs-11"
+    ]
+  },
+  {
+    "productId": "mirrors",
+    "storyId": "api-versioning-policy",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Mirrors is a developer tool for AI agents, so versioned APIs with a deprecation policy is a fair axis. The evidence never mentions API versioning or a deprecation policy, and the OpenAPI probes all returned 404. The ability to roll back context changes is about agent configuration, not API version stability.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "mirrors",
+    "storyId": "automation-bulk-operations",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Mirrors is a developer tool for managing agent context and routing, so bulk actions on sessions, traces or context changes are a fair question. The evidence only shows single-change workflows: writing a context change, previewing routing conditions against stored traces, and keeping, revising or rolling back a change. Nothing documents selecting many items and acting on them at once, and no API is available to script it (OpenAPI probes returned 404).",
+    "evidenceIds": []
+  },
+  {
+    "productId": "mirrors",
+    "storyId": "automation-rules-engine",
+    "verdict": "partial",
+    "quality": 5,
+    "confidence": "medium",
+    "rationale": "Mirrors lets teams write routing conditions that fire automatically when a matching situation comes up mid-conversation. Activation needs no redeploy, routing runs locally, and conditions can be previewed against stored traces before going live. The actions are limited to context edits: appending guidance, editing tool descriptions, tightening schemas, or rewriting tool results. It is not a general event-to-action automation engine. Missing for 10: arbitrary or external actions (e.g. webhooks or integrations), documentation of the rule syntax and event types, a programmatic rules API, and independent or hands-on corroboration.",
+    "evidenceIds": [
+      "mirrors-docs-2",
+      "mirrors-docs-3",
+      "mirrors-docs-6",
+      "mirrors-docs-7",
+      "mirrors-docs-9",
+      "mirrors-docs-10"
+    ]
+  },
+  {
+    "productId": "mirrors",
+    "storyId": "automation-scheduled-jobs",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Mirrors is a developer platform for routing context edits to AI agents, and such a SaaS platform could plausibly offer scheduled or recurring jobs (for example, periodic evaluations), so the axis applies. Nothing in the evidence pack mentions scheduling, cron, or recurring execution. The \"one workflow\" in docs-14 refers to a pricing and use-case scope, not to automated workflows.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "mirrors",
+    "storyId": "automation-versioned-workflows",
+    "verdict": "partial",
+    "quality": 5,
+    "confidence": "medium",
+    "rationale": "Mirrors' context changes act as its automations. The vendor says you can preview routing conditions against stored traces to review matches and misses before activation, and then keep, revise, or roll back a change based on holdout comparisons. Explicit versioning (change history or diffs) is not documented, apart from a UI snippet showing \"5 changes.\" missing for 10: explicit version history/diffing of changes, detailed docs on how rollback works, independent or hands-on corroboration.",
+    "evidenceIds": [
+      "mirrors-docs-3",
+      "mirrors-docs-4",
+      "mirrors-docs-5",
+      "mirrors-docs-1",
+      "mirrors-docs-13"
+    ]
+  },
+  {
+    "productId": "mirrors",
+    "storyId": "bulk-trace-export",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Mirrors stores and works with agent traces, so bulk export of traces and datasets is a fair question for this kind of product. The evidence only covers ingesting existing traces and previewing routing against stored traces. Nothing mentions exporting traces or datasets to blob storage or a data warehouse, and no public API spec was found.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "mirrors",
+    "storyId": "ci-eval-gating",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "The evidence describes previewing routing conditions against stored traces before activation and comparing sessions against holdout groups after rollout. These are runtime and manual review workflows, and Mirrors explicitly delivers context with \"no redeploy.\" Nothing shows evals running in a CI pipeline or results gating a deployment, and the stray \"3 of 4 checks passed\" UI label does not establish CI gating.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "mirrors",
+    "storyId": "cost-attribution-metadata",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Mirrors is a trace-driven developer tool for AI agents, so cost and usage attribution is a fair question to ask of it. The evidence covers routing context edits, previewing conditions against stored traces, and comparing outcomes against holdout groups. Nothing in the pack mentions tracking cost or token usage, or attributing usage to users, sessions, or features via custom metadata.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "mirrors",
+    "storyId": "custom-code-scorers",
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "Mirrors lets teams define success with their own outcome labels, checks, and customer feedback, and compares sessions against holdout groups on those outcomes. A UI fragment also shows sessions scored by checks (\"3 of 4 checks passed\"). Nothing shows these checks can be written as custom code, so support for code-based scorers is only implied. Missing for 10: documented way to author scorers or metrics in code, SDK or API for custom metrics, examples or reference docs, independent or hands-on corroboration.",
+    "evidenceIds": [
+      "mirrors-docs-9",
+      "mirrors-docs-13",
+      "mirrors-docs-4"
+    ]
+  },
+  {
+    "productId": "mirrors",
+    "storyId": "custom-dashboards",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Mirrors is a trace-driven context-routing tool for AI agents, so dashboards over agent metrics are a fair question for it. The evidence only shows holdout comparisons of sessions against team-defined outcome labels and per-session check results. Nothing shows custom dashboards, or tracking of latency, error, or cost metrics.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "mirrors",
+    "storyId": "experiment-comparison",
+    "verdict": "partial",
+    "quality": 4,
+    "confidence": "low",
+    "rationale": "Mirrors lets teams compare sessions that received a context change against holdout groups using their own outcome labels, then keep, revise, or roll back the change (mirrors-docs-4, mirrors-docs-5, mirrors-docs-9). It also previews routing conditions against stored traces and shows per-session check pass counts (mirrors-docs-3, mirrors-docs-13). This is online A/B comparison of context edits rather than side-by-side eval-run comparison, and all evidence is vendor marketing copy. Missing for 10: side-by-side comparison of offline eval runs, comparison across model versions, explicit regression detection or diffing views, and in-depth docs or independent corroboration.",
+    "evidenceIds": [
+      "mirrors-docs-4",
+      "mirrors-docs-5",
+      "mirrors-docs-9",
+      "mirrors-docs-3",
+      "mirrors-docs-13"
+    ]
+  },
+  {
+    "productId": "mirrors",
+    "storyId": "framework-auto-instrumentation",
+    "verdict": "partial",
+    "quality": 4,
+    "confidence": "low",
+    "rationale": "The marketing site lists framework logos under \"built for your agent's context\": LangChain, LangGraph, LlamaIndex, CrewAI, AutoGen, Pydantic AI, smolagents and Google ADK. It also claims Mirrors works with traces teams already have, which suggests some integration path. But this is only a logo strip with no documentation of how instrumentation works, and the OpenAI SDK and Vercel AI SDK named in the story are absent. missing for 10: documented integration/setup guides, OpenAI SDK support, Vercel AI SDK support, details of how traces are ingested, independent or hands-on corroboration.",
+    "evidenceIds": [
+      "mirrors-docs-12",
+      "mirrors-docs-11"
+    ]
+  },
+  {
+    "productId": "mirrors",
+    "storyId": "human-annotation-queues",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Mirrors lets teams review agent sessions alongside outcome labels and feedback their team already tracks. Its 'routing' refers to delivering context edits to matching situations, not to sending outputs into human annotation queues. Nothing in the evidence describes queuing outputs for human reviewers or a labeling workflow.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "mirrors",
+    "storyId": "llm-as-judge-scoring",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Mirrors is an agent-trace and context tool that measures outcomes, so an LLM-as-a-judge evaluation axis applies. The evidence only mentions team-defined outcome labels, checks, customer feedback and holdout comparisons. Nothing shows configurable LLM-judge evaluators that score outputs.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "mirrors",
+    "storyId": "multimodal-trace-payloads",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Mirrors is an agent developer tool that ingests and stores traces, so capturing payloads inside traces is a fair question for it. However, the evidence only covers reusing existing traces, previewing routing conditions against stored traces, and delivering context. Nothing mentions capturing images, audio, or files within traces.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "mirrors",
+    "storyId": "offline-eval-datasets",
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "Mirrors works with existing traces and lets teams review sessions against outcome labels. It can preview routing conditions against stored traces (matches, misses, unexpected matches), which is a limited offline check. Its main evaluation is an online holdout comparison of live sessions, not offline evals run over curated datasets. Missing for 10: explicit dataset curation or export from production traces, offline evaluation runs scoring agent outputs against a dataset, eval docs or API, and independent corroboration.",
+    "evidenceIds": [
+      "mirrors-docs-1",
+      "mirrors-docs-3",
+      "mirrors-docs-4",
+      "mirrors-docs-9",
+      "mirrors-docs-11"
+    ]
+  },
+  {
+    "productId": "mirrors",
+    "storyId": "online-evals-guardrails",
+    "verdict": "partial",
+    "quality": 4,
+    "confidence": "low",
+    "rationale": "Mirrors compares live sessions that received a context change against holdout groups, using outcomes your team tracks (labels, checks, customer feedback). A recorded session shows \"3 of 4 checks passed\", which implies checks run on real sessions. However, the success signals are team-supplied, and nothing describes Mirrors running evaluators continuously on production traffic as a general capability. Missing for 10: documented continuous or online evaluator execution on live traffic, evaluator configuration and scoring docs, sampling and alerting on production evals, and independent or hands-on corroboration.",
+    "evidenceIds": [
+      "mirrors-docs-4",
+      "mirrors-docs-9",
+      "mirrors-docs-13"
+    ]
+  },
+  {
+    "productId": "mirrors",
+    "storyId": "openness-api-parity",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "API parity is a fair question for a developer tool like Mirrors, but the evidence never documents a public API. The docs describe UI-style workflows (reviewing sessions, previewing routing conditions, comparing holdouts, rolling back) without saying any of them can be done programmatically. Probes found no OpenAPI or Swagger spec at any candidate path and no docs.md; only an llms.txt overview exists.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "mirrors",
+    "storyId": "openness-full-export",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Data export applies to a hosted developer tool that stores traces, context edits, and outcome data. However, the evidence pack never mentions exporting data, open export formats, or offboarding. The only related evidence covers bringing existing traces in (import), not getting data out, and the OpenAPI probes returned 404, so no documented programmatic export path was found.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "mirrors",
+    "storyId": "openness-open-license",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Whether a developer tool for AI agents publishes its source under an open license is a fair question, so the axis applies. Nothing in the evidence pack mentions a public repository, published source code, or an open license. The docs describe a hosted, sales-scoped product, and the probes show only llms.txt and no openly published artifacts.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "mirrors",
+    "storyId": "openness-self-host",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Self-hosting is a fair question for a developer tool like Mirrors, so the axis applies. The evidence only shows that routing decisions run locally in the agent, with no network request. It never documents deploying the core platform (trace review, holdouts, configuration) on your own infrastructure. Sales-scoped pricing also points to a vendor-hosted service.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "mirrors",
+    "storyId": "otel-native-tracing",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Mirrors works on agent traces, so trace ingestion is a fair axis for it. However, nothing in the pack mentions OpenTelemetry, OTLP, or any trace format or export path. The FAQ answer that it works 'with the traces I already have' is too vague to establish OTLP send/receive support versus a proprietary or framework-specific ingestion path.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "mirrors",
+    "storyId": "pii-masking-controls",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Mirrors ingests and stores agent traces (it previews routing conditions against stored traces and works with existing traces), so masking sensitive data before storage is a fair question for it. However, nothing in the evidence mentions masking, redaction, or PII scrubbing. Its ability to rewrite tool-result content shown to the model concerns context editing, not redacting trace data before it is stored.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "mirrors",
+    "storyId": "privacy-data-residency",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Mirrors is a SaaS developer tool that ingests and stores agent traces, so data-residency choice is a fair axis. However, the evidence pack never mentions storage regions, residency options, or self-hosting. The note that routing decisions run locally concerns where routing is evaluated, not where data is stored.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "mirrors",
+    "storyId": "privacy-no-training",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Mirrors is a developer tool that ingests customers' agent traces and sessions, so whether it uses that data for model training is a fair privacy-posture question. Nothing in the evidence pack addresses training-data use, opt-out controls, or a no-training commitment. Local routing (docs-7) concerns runtime decisions, not training-data policy.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "mirrors",
+    "storyId": "privacy-retention-controls",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Mirrors works with stored agent traces and session data, so data retention and deletion controls are a fair question for this product. The evidence pack never mentions retention periods, deletion, or data-lifecycle controls. Local routing decisions and rolling back context changes are about configuration, not about retaining or deleting user data.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "mirrors",
+    "storyId": "privacy-telemetry-optout",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Mirrors is a developer tool that ingests agent traces, so a telemetry or usage-tracking opt-out is a fair question for it. However, the evidence pack never mentions telemetry controls or opt-out settings. The note that routing decisions run locally without a network request concerns where routing executes, not whether usage tracking can be disabled.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "mirrors",
+    "storyId": "prompt-playground",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Prompt iteration is a fair axis for a context and prompt-management tool, but the evidence shows no interactive playground for running prompts against live models with variables. The closest features are previewing routing conditions against stored traces, which involves no model inference, and comparing context changes against holdout groups in production sessions; neither is a playground workflow.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "mirrors",
+    "storyId": "prompt-versioning-deploy",
+    "verdict": "full",
+    "quality": 7,
+    "confidence": "medium",
+    "rationale": "Mirrors says context changes reach the agent mid-conversation with \"no redeploy, no code change.\" Those changes can append guidance, edit tool descriptions, tighten tool schemas, or rewrite tool-result content. Teams can preview routing against stored traces before activation and keep, revise, or roll back a change, which implies change management. Missing for 10: explicit versioning features (version history, diffs, labeled releases), in-depth docs beyond the marketing site, and independent or hands-on corroboration.",
+    "evidenceIds": [
+      "mirrors-docs-2",
+      "mirrors-docs-3",
+      "mirrors-docs-4",
+      "mirrors-docs-5",
+      "mirrors-docs-6"
+    ]
+  },
+  {
+    "productId": "mirrors",
+    "storyId": "python-js-sdk-parity",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Mirrors is an agent-tracing and context tool, so official instrumentation SDKs are a fair axis. The evidence never mentions an official SDK in any language. It only lists agent frameworks it is 'built for' (LangChain, LangGraph, LlamaIndex, CrewAI, etc.) and says it works with existing traces, which does not establish officially supported Python and JS/TS SDKs.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "mirrors",
+    "storyId": "threshold-alerting",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Mirrors is a developer tool built around agent traces, outcome labels and holdout comparisons, so alerting on error rates, cost spikes or eval-score drops is a fair question for it. However, the evidence never mentions alerts, thresholds, or notifications to Slack, PagerDuty or email. The outcome comparisons and check results it describes are review features, not alerting.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "mirrors",
+    "storyId": "token-cost-dashboards",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Mirrors is a trace-driven developer tool for AI agents, so cost and token dashboards are a fair question for this kind of product. However, the evidence covers only session review, context routing, and outcome comparison against holdout groups. Nothing mentions cost, token usage, or per-request, per-model, or per-period dashboards.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "mirrors",
+    "storyId": "trace-llm-calls",
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "Mirrors works with stored traces and recorded agent sessions, and integrates with agent frameworks such as LangChain and LlamaIndex. However, its docs frame traces as something teams already have and bring in, used to route context changes, rather than as a tracing capture product. missing for 10: evidence that Mirrors itself instruments and captures LLM calls, explicit capture of inputs/outputs, latency metrics, token usage tracking, SDK/instrumentation docs, independent corroboration.",
+    "evidenceIds": [
+      "mirrors-docs-3",
+      "mirrors-docs-11",
+      "mirrors-docs-13",
+      "mirrors-docs-14",
+      "mirrors-docs-12",
+      "mirrors-docs-1"
     ]
   },
   {
