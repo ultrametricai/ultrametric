@@ -7,7 +7,7 @@ from pathlib import Path
 # records written from such a tree still satisfy the source.revision schema.
 NULL_REVISION = '0' * 40
 
-FIXED_PATHS = ['processes/corpus.json', 'journeys/chains.json', 'processes/vendor-registry.json']
+FIXED_PATHS = ['processes/corpus.json', 'processes/chains.json', 'processes/vendor-registry.json']
 
 
 def _working_workflows(root):

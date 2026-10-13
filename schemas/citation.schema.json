@@ -1,0 +1,35 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Citation record",
+  "oneOf": [
+    {
+      "title": "Authority citation: a legal authority or dated practice source that rule cards cite",
+      "type": "object",
+      "required": ["id", "role", "publisher", "title", "kind", "url", "locator", "issued_on", "checked_on", "jurisdiction", "note"],
+      "properties": {
+        "id": {"type": "string"}, "role": {"enum": ["authority"]},
+        "publisher": {"type": "string"}, "title": {"type": "string"},
+        "kind": {"enum": ["primary-statute", "primary-regulation", "primary-agency-form", "primary-agency-guidance", "secondary-practice"]},
+        "url": {"type": "string", "format": "uri"}, "locator": {"type": "string"},
+        "issued_on": {"type": ["string", "null"], "format": "date"}, "checked_on": {"type": "string", "format": "date"},
+        "jurisdiction": {"type": "string"}, "note": {"type": "string"}
+      },
+      "additionalProperties": false
+    },
+    {
+      "title": "Reading citation: canonical startup reading that the laws and lore cite",
+      "type": "object",
+      "required": ["id", "role", "title", "author", "url", "kind", "topics", "note", "published_on", "checked_on"],
+      "properties": {
+        "id": {"type": "string"}, "role": {"enum": ["reading"]},
+        "title": {"type": "string"}, "author": {"type": "string"},
+        "url": {"type": "string", "format": "uri"},
+        "kind": {"enum": ["essay", "guide", "handbook", "library", "primary-source", "document-repository"]},
+        "topics": {"type": "array", "items": {"type": "string"}, "minItems": 1},
+        "note": {"type": "string"},
+        "published_on": {"type": ["string", "null"], "format": "date"}, "checked_on": {"type": "string", "format": "date"}
+      },
+      "additionalProperties": false
+    }
+  ]
+}

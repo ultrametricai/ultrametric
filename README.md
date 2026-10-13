@@ -14,18 +14,15 @@ company agentic, automated, and standardized across geographies.
 ```
 ultrametric/
 ├── processes/       every founder process, step by step
-├── journeys/        processes chained into playbooks
 ├── rankings/        evidence, verdicts, computed scores
-├── vendors/         per-product review records
 ├── pipeline/        crawl, probe, judge, derive
 ├── open-modules/    the startup calculations, indexed
 ├── lib/             the code behind modules and loaders
-├── rules/           startup law, one rule per record
-├── sources/         the primary legal authorities
+├── law/             startup law, one rule per record
+├── citations/       the sources every record cites
 ├── jurisdictions/   countries, states, vendor geography
 ├── open-documents/  the open legal documents catalog
-├── lore/            heuristics and the reading library
-├── resources/       canonical reading, laws, episodes
+├── lore/            heuristics, episodes, the library
 ├── coverage/        what is covered, at what maturity
 ├── schemas/         the JSON contracts for every record
 └── governance/      review, evidence, and agent policy
@@ -40,7 +37,7 @@ ultrametric/
 
 ## The open startup repo
 
-This repo holds the processes, rankings, rules, and calculations a startup runs on, as
+This repo holds the processes, rankings, law, and calculations a startup runs on, as
 plain JSON and markdown that any founder or agent can read, verify, and correct by pull
 request. The site at ultrametric.ai renders it unchanged.
 
@@ -180,7 +177,7 @@ automatically.
 
 ## Open lore
 
-The [advice](lore/) founders actually pass around, and the [episodes](resources/) behind
+The [advice](lore/) founders actually pass around, and the [episodes](lore/LORE.md) behind
 it: who said it, where it is written down, and how well documented it is. When the
 schools disagree, both sides are recorded. The [library](lore/library.json) collects the
 best essays, guides, books, and talks, organized from starting up through getting
@@ -199,15 +196,15 @@ acquired.
 ### Example: Getting acquired
 
 The acquisition episodes are recorded lore: WhatsApp, Twitch, and MySpace are in
-`resources/LORE.md`, each with its lesson and sources. The sale math is live; the
+`lore/LORE.md`, each with its lesson and sources. The sale math is live; the
 waterfall module computes who gets what at any price. The acquisition playbook itself is
 a mapped, open gap in [`coverage/`](coverage/).
 
 ## Open law
 
-Map the [law](rules/) that applies to startups, across jurisdictions, and connect it to
+Map the [law](law/) that applies to startups, across jurisdictions, and connect it to
 the calculations and the vendors that act on it. Each legal statement is one dated record
-citing a primary [authority](sources/) (a statute, regulation, or agency page) with the
+citing a primary [authority](citations/) (a statute, regulation, or agency page) with the
 exact section. A blog post cannot establish law.
 
 ## Government services and startups

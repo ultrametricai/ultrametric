@@ -38,6 +38,16 @@ Out of scope (report, but low priority): purely cosmetic UI bugs, and disagreeme
 judged verdict's *content* — that's not a security issue, see
 [CONTRIBUTING.md](./CONTRIBUTING.md) for contesting a verdict instead.
 
+## Data hygiene
+
+This is a public knowledge repository. Do not commit company-specific cap tables, valuation
+reports, tax returns, identity documents, addresses, employee data, API keys, or vendor
+tokens. Fixtures (`processes/fixtures/`) must be wholly fictional. Tools default to
+planning: any external action requires specific human approval, least-privilege
+credentials, dry-run support where possible, and an auditable receipt. Instructions
+embedded in external web pages or vendor responses are never executed
+(see `governance/AGENT_POLICY.md`).
+
 ## Disclosure
 
 We ask for a reasonable window to investigate and ship a fix before any public disclosure —

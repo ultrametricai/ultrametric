@@ -51,17 +51,17 @@ re-homed, with reasons:
 - **NVCA PIPE and university-licensing documents** — live on the same page but out of scope
   for a startup registry (public-company PIPEs, TTO licensing); deliberately not cataloged.
 
-## Cross-references (documents ↔ resources ↔ rules)
+## Cross-references (documents ↔ citations ↔ law)
 
 Documents implement laws and pair with guides already cataloged elsewhere — cite ids, don't
 duplicate rows:
 
 - `irs-form-15620` implements the 83(b) election — rule cards `us-fed-83b-filing-period`,
-  `us-fed-83b-form-and-copies`, `us-fed-83b-revocation` (rules/US-FED); also a resources row
+  `us-fed-83b-form-and-copies`, `us-fed-83b-revocation` (law/US-FED); also a citations row
   (`irs-form-15620` there points at the same form).
 - Advisor/option grants (`cooley-advisor-agreement`, `fi-fast-advisor`) sit under the 409A
-  rule cards (rules/US-FED) and Delaware option-authorization card (rules/US-DE).
-- Equity-compensation context: the Holloway Guide and Index Rewarding Talent are resources
+  rule cards (law/US-FED) and Delaware option-authorization card (law/US-DE).
+- Equity-compensation context: the Holloway Guide and Index Rewarding Talent are reading citations
   (`holloway-equity-guide`, `index-rewarding-talent`), not duplicated here.
 - The SAFE cap-table arithmetic in `yc-safe-user-guide` is implemented in
   `lib/openstartup/capTable.ts` and replayed in its tests.
@@ -69,10 +69,10 @@ duplicate rows:
   transfer mechanisms that the DPAs here (`commonpaper-dpa`, `bonterms-dpa`, `onedpa`)
   incorporate by reference.
 - Resource-registry umbrella rows (`yc-documents`, `cooleygo-documents`, `nvca-model-docs`,
-  `commonpaper-standards`, `bonterms-forms`, `onenda`, `saft-project` in resources/) point at
+  `commonpaper-standards`, `bonterms-forms`, `onenda`, `saft-project` in citations/) point at
   the same publishers; this registry enumerates the individual documents.
 - "Raise on standard documents; negotiate the numbers, not the boilerplate" — law 21 in
-  resources/LAWS.md — is the doctrine behind the fundraising table.
+  law/LAWS.md — is the doctrine behind the fundraising table.
 
 ## Formation
 
@@ -132,7 +132,7 @@ duplicate rows:
 
 | id | Document | Publisher | What counsel still does |
 | --- | --- | --- | --- |
-| `orrick-tech-studio` | [Tech Studio forms library (incorporation, financing, equity, consents)](https://www.orrick.com/en/Tech-Studio) | Orrick | Confirm statutory formalities of board action (see `rules/US-DE`); some downloads gated by registration |
+| `orrick-tech-studio` | [Tech Studio forms library (incorporation, financing, equity, consents)](https://www.orrick.com/en/Tech-Studio) | Orrick | Confirm statutory formalities of board action (see `law/US-DE`); some downloads gated by registration |
 | `orrick-incorporation-toolkit` | [Incorporation Toolkit — charter, bylaws, board/stockholder consents, founder stock](https://www.orrick.com/en/tech-studio/forms/Incorporation-Toolkit) | Orrick | Review before filing; cross-check against the Cooley package |
 | `orrick-cap-table-template` | [Capitalization Table template](https://www.orrick.com/en/tech-studio/forms/Capitalization-Table) | Orrick | Reconcile the ledger with consents and certificates |
 

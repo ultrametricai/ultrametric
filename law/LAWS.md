@@ -1,16 +1,16 @@
 # Startup laws
 
-The recurring, near-universal principles distilled from the resource registry — the things
+The recurring, near-universal principles distilled from the citation registry — the things
 the canon keeps re-teaching every generation of founders. Every law cites the registry
-records (`resources/registry.json`) it is distilled from; no law is uncited, and aphorisms
+records (`citations/registry.json`) it is distilled from; no law is uncited, and aphorisms
 are attributed to their actual origin, not to folklore. The citation lines are machine-checked:
-`__tests__/resources.test.ts` fails if a cited id does not resolve, if a law has no citation,
+`__tests__/citations.test.ts` fails if a cited id does not resolve, if a law has no citation,
 or if the list drifts outside 25–40 laws.
 
 These are compressions of other people's published work, dated by the registry's
 `checked_on` fields. They are heuristics with strong priors, not statutes — the only entries
 here that are literally laws (the 83(b) window, the Delaware franchise tax date) cite primary
-sources and carry rule cards in `rules/`.
+sources and carry rule cards in `law/`.
 
 ## Idea and validation
 

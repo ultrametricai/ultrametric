@@ -39,6 +39,11 @@ const OPERATIONAL_BUSINESS_LOGIC_MAP = path.join('processes', 'business-logic-ma
 // lib/__tests__/companyFields.test.ts, so the workflow walker skips it like the other
 // operational registries.
 const OPERATIONAL_COMPANY_FIELDS = path.join('processes', 'company-fields.json')
+// The corpus's chain list (folded in from the old top-level journeys/) is the operational
+// layer too — its own loader/tests live in lib/processes.ts (loadChains) +
+// lib/__tests__/processes.test.ts, so the workflow walker skips it like the other
+// operational registries.
+const OPERATIONAL_CHAINS = path.join('processes', 'chains.json')
 
 // Fictional scenario fixtures live under processes/fixtures/ (folded in from the old
 // top-level fixtures/). They validate separately below, so the workflow walker skips the
@@ -54,7 +59,8 @@ function workflowJson(dir: string): string[] {
       !f.endsWith(OPERATIONAL_VENDOR_REGISTRY) &&
       !f.endsWith(OPERATIONAL_ARTIFACTS) &&
       !f.endsWith(OPERATIONAL_BUSINESS_LOGIC_MAP) &&
-      !f.endsWith(OPERATIONAL_COMPANY_FIELDS),
+      !f.endsWith(OPERATIONAL_COMPANY_FIELDS) &&
+      !f.endsWith(OPERATIONAL_CHAINS),
   )
 }
 
@@ -224,16 +230,19 @@ export function validateFounderOps(asOf?: Date): string[] {
     }
   }
 
-  const sourcesDoc = read(path.join(ROOT, 'sources/registry.json'))
+  const citationsDoc = read(path.join(ROOT, 'citations/registry.json'))
   const sourceMap = new Map<string, JsonObject>()
-  const sourceList = isObj(sourcesDoc) && Array.isArray(sourcesDoc.sources) ? sourcesDoc.sources : []
-  for (const source of sourceList) {
+  const citationList = isObj(citationsDoc) && Array.isArray(citationsDoc.citations) ? citationsDoc.citations : []
+  for (const source of citationList) {
     if (!isObj(source) || typeof source.id !== 'string') {
-      errors.push('sources/registry.json: source without id')
+      errors.push('citations/registry.json: citation without id')
       continue
     }
     const sid = source.id
-    shape(source, need('source.schema'), `source ${sid}`, errors)
+    shape(source, need('citation.schema'), `citation ${sid}`, errors)
+    // Reading-role citations are validated in lib/citations.ts; the rule cards cite the
+    // authority role, so only those enter the source map and the authority checks below.
+    if (source.role !== 'authority') continue
     if (sourceMap.has(sid)) errors.push(`duplicate source id ${sid}`)
     sourceMap.set(sid, source)
     const url = str(source.url) ?? ''
@@ -245,7 +254,7 @@ export function validateFounderOps(asOf?: Date): string[] {
     if (checked && checked > today) errors.push(`source ${sid}: checked date is in the future`)
   }
 
-  const rules = indexed(listJson(path.join(ROOT, 'rules')).filter((f) => !f.endsWith('README.md')), errors, 'rule')
+  const rules = indexed(listJson(path.join(ROOT, 'law')).filter((f) => !f.endsWith('README.md')), errors, 'rule')
   for (const [rid, rule] of rules) {
     shape(rule, need('rule.schema'), `rule ${rid}`, errors)
     if (!jurisdictions.has(str(rule.jurisdiction) ?? '')) errors.push(`rule ${rid}: unknown jurisdiction`)
@@ -320,7 +329,7 @@ export function validateFounderOps(asOf?: Date): string[] {
     if (!covered.has(pid)) errors.push(`process ${pid}: absent from coverage registry`)
   }
 
-  for (const file of listJson(path.join(ROOT, 'vendors/reviews'))) {
+  for (const file of listJson(path.join(ROOT, 'rankings/reviews'))) {
     shape(read(file), need('vendor-review.schema'), `vendor ${path.basename(file)}`, errors)
   }
 
@@ -363,11 +372,11 @@ export function planFounderOps(event: JsonObject, asOf?: Date): FounderOpsPlan {
   if (matches.length === 0) {
     return { status: 'unsupported', reason: 'no exact covered scenario', may_execute: false }
   }
-  const ruleMap = indexed(listJson(path.join(ROOT, 'rules')), [], 'rule')
-  const sourcesDoc = read(path.join(ROOT, 'sources/registry.json'))
+  const ruleMap = indexed(listJson(path.join(ROOT, 'law')), [], 'rule')
+  const citationsDoc = read(path.join(ROOT, 'citations/registry.json'))
   const sources = new Map<string, JsonObject>()
-  for (const s of isObj(sourcesDoc) && Array.isArray(sourcesDoc.sources) ? sourcesDoc.sources : []) {
-    if (isObj(s) && typeof s.id === 'string') sources.set(s.id, s)
+  for (const s of isObj(citationsDoc) && Array.isArray(citationsDoc.citations) ? citationsDoc.citations : []) {
+    if (isObj(s) && typeof s.id === 'string' && s.role === 'authority') sources.set(s.id, s)
   }
   const output: JsonObject[] = matches.map((process) => {
     const due = new Date(`${str(process.review_due)}T00:00:00Z`)

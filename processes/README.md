@@ -26,7 +26,7 @@ Two layers, deliberately separate:
    arrives, a visa is stuck, a breach is live). A situation is the same machinery plus a
    one-sentence `trigger` and an `urgency` clock (`hours`/`days`/`weeks`), and deliberately
    no `timeOrder` slot: reactive work is not a stop on the founder timeline. Where a
-   situation leans on a legal deadline, its description cites a dated rule card in `rules/`
+   situation leans on a legal deadline, its description cites a dated rule card in `law/`
    and its steps link the primary source. Doctrine: `SITUATIONS.md`.
 
 The two layers keep separate IDs and never silently substitute for each other:
@@ -164,7 +164,7 @@ is. Curation rules, stricter than coverage:
   careful".
 - **`then` is the honest recovery** — including the honest *absence* of one: the missed 83(b)
   window entry says there is no self-help fix, only a tax-counsel conversation (the
-  needs-review posture). Legal claims cite a dated rule card in `rules/` by id inside the
+  needs-review posture). Legal claims cite a dated rule card in `law/` by id inside the
   prose, the same convention situation descriptions use.
 - **`source`** is the primary page/statute/fee schedule backing the entry, curl-verified live
   like every committed URL.
@@ -326,10 +326,40 @@ flowchart TD
   so no judged number moves) and powers `/processes`, every `/processes/<slug>` page
   (`components/ProcessDag.tsx` renders the step graph above with the same route colors), the process
   rankings (`/rankings/processes/*`), and the open startup simulator at `/startup-sim`.
-- `journeys/chains.json` links process IDs into playbooks (see `journeys/README.md`).
+- `chains.json` links process IDs into playbooks (see the Chains section below).
 - `lib/founderOps.ts` validates the jurisdiction-scoped workflow layer (`equity/us-de/*`)
-  against `schemas/process.schema.json`, resolves its rule-card references into `rules/` and
-  `sources/`, and exposes the exact-dimension planner (`planFounderOps`).
+  against `schemas/process.schema.json`, resolves its rule-card references into `law/` and
+  `citations/`, and exposes the exact-dimension planner (`planFounderOps`).
+
+## Chains
+
+Multi-process founder paths, each chaining existing processes into a founder-visible
+playbook (incorporate and launch, the VC raise, month-end close, the agent-run back
+office).
+
+A chain in `chains.json` is deliberately thin: an id, a name, a one-line tagline, and an
+ordered list of process IDs that must already exist in `corpus.json`; chains never invent
+steps. The real `company-launch` record:
+
+```json
+{
+  "id": "company-launch",
+  "name": "Company launch",
+  "tagline": "Incorporate, get the EIN, put the founders and cap table on paper, open the bank account, turn on payroll and the books.",
+  "taskIds": ["form_001", "form_002", "qs_051", "startup_002", "qs_023", "qs_063", "qs_073"]
+}
+```
+
+How the site consumes chains: `lib/processes.ts` `loadChains()` cross-checks every
+`taskId`; chain pages render at `/processes/chains/<id>` with the member step graphs
+stitched in order; the startup simulator (`/startup-sim`) drives a simulated company
+through these chains; and the ⌘K palette surfaces each chain by the phrases people type
+("raise a seed round") via `rankings/search-aliases.json`.
+
+Contribute a new chain by linking existing process IDs into a founder-visible path (a
+country-specific incorporation sequence, a wind-down, a first-enterprise-deal path), or
+fix an existing one (reordering, a missing leg, a better description) with the reasoning
+in the PR. Gate: `pnpm test` (`lib/__tests__/processes.test.ts` cross-checks every chain).
 
 ## What you can contribute here
 
@@ -345,7 +375,7 @@ flowchart TD
   `pnpm test` (library loader + schema tests).
 - **A new jurisdiction-scoped workflow** — copy `templates/process.json` into
   `processes/<domain>/<jurisdiction>/`, narrow the applicability dimensions, reference rule
-  cards in `rules/<CODE>/`, gate every external effect on a named human approval, add a
+  cards in `law/<CODE>/`, gate every external effect on a named human approval, add a
   fictional fixture in `processes/fixtures/`, and record honest maturity in `coverage/coverage.json`.
   Gate: `npx vitest run __tests__/founder-ops.test.ts`.
 - **Corrections to an operational process** — step routing (agent / manual form / human),

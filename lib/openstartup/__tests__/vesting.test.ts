@@ -27,7 +27,7 @@ import {
 } from '../vesting'
 
 function loadRuleCard(jurisdiction: string, ruleId: string) {
-  const dir = path.join(process.cwd(), 'rules', jurisdiction)
+  const dir = path.join(process.cwd(), 'law', jurisdiction)
   for (const file of fs.readdirSync(dir).filter((f) => f.endsWith('.json'))) {
     const card = JSON.parse(fs.readFileSync(path.join(dir, file), 'utf8')) as {
       id: string
@@ -44,7 +44,7 @@ describe('every referenced rule resolves to a committed, jurisdiction-matched ca
   for (const [name, ref] of Object.entries(RULE_IDS_VESTING)) {
     it(`${name} → ${ref.ruleId}`, () => {
       const card = loadRuleCard(ref.jurisdiction, ref.ruleId)
-      expect(card, `rules/${ref.jurisdiction} must contain a card with id ${ref.ruleId}`).not.toBeNull()
+      expect(card, `law/${ref.jurisdiction} must contain a card with id ${ref.ruleId}`).not.toBeNull()
       expect(card?.jurisdiction).toBe(ref.jurisdiction)
       expect(card?.source_ids.length).toBeGreaterThan(0)
     })

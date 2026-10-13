@@ -5,7 +5,7 @@ gates run on realistic inputs without ever touching real company data.
 
 Every fixture asserts `synthetic: true` and carries full scenario dimensions; the planner
 tests read this directory (`lib/founderOps.ts`). Invented names only, no real people, no
-PII (`governance/SECURITY.md`).
+PII (`SECURITY.md`, "Data hygiene").
 
 Contribute here:
 

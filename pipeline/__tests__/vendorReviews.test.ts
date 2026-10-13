@@ -4,13 +4,13 @@ import { describe, expect, it } from 'vitest'
 import { shape } from '@/lib/founderOps'
 import { buildVendorReviews, REVIEWER, REVIEWS_DIR } from '../scripts/generate-vendor-reviews'
 
-// Corpus lift stage 2: vendors/reviews/generated/ holds one founder-ops interchange record
+// Corpus lift stage 2: rankings/reviews/generated/ holds one founder-ops interchange record
 // (schemas/vendor-review.schema.json) per judged product, emitted deterministically from the
 // committed arena data by pipeline/scripts/generate-vendor-reviews.ts. These tests pin the
 // contracts that make the committed records trustworthy: schema conformance for every file,
 // byte-identical regeneration (no clock reads, no drift), the owner-disclosure rule, and three
 // spot-pinned records so a silent projection change fails loudly. (The founder-ops validator in
-// lib/founderOps.ts additionally shape-checks everything under vendors/reviews/ on every run.)
+// lib/founderOps.ts additionally shape-checks everything under rankings/reviews/ on every run.)
 
 const ROOT = path.resolve(__dirname, '..', '..')
 const SCHEMA = JSON.parse(

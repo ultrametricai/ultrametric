@@ -4,8 +4,8 @@ The published JSON Schema contracts every record in this repo validates against
 in CI.
 
 `process.schema.json` (jurisdiction-scoped workflows), `operational-process.schema.json`
-(the process library), `rule.schema.json`, `source.schema.json`, and
-`vendor-review.schema.json`. `operational-process.schema.json` is generated from the zod
+(the process library), `rule.schema.json`, `citation.schema.json` (the citation
+registry's two record roles, authority and reading), and `vendor-review.schema.json`. `operational-process.schema.json` is generated from the zod
 source by `scripts/generate-corpus-schemas.ts` and drift-gated byte-identical; change the
 zod schema and regenerate, never the file.
 

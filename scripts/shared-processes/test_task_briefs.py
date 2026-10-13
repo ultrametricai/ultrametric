@@ -126,7 +126,7 @@ class TaskBriefImportTests(unittest.TestCase):
             work = Path(directory)
             shutil.copytree(ROOT / "scripts/shared-processes", work / "scripts/shared-processes")
             shutil.copytree(ROOT / "content/processes", work / "content/processes")
-            for name in ("processes/corpus.json", "processes/vendor-registry.json", "journeys/chains.json"):
+            for name in ("processes/corpus.json", "processes/vendor-registry.json", "processes/chains.json"):
                 dest = work / name
                 dest.parent.mkdir(parents=True, exist_ok=True)
                 shutil.copyfile(ROOT / name, dest)
@@ -136,7 +136,7 @@ class TaskBriefImportTests(unittest.TestCase):
                 subprocess.run(["git", *args], cwd=work, check=True, capture_output=True)
 
             def commit():
-                git("add", "processes", "journeys")
+                git("add", "processes")
                 git("-c", "user.name=Test", "-c", "user.email=test@example.invalid",
                     "-c", "commit.gpgsign=false", "commit", "-qm", "Isolated importer fixture")
 
@@ -160,7 +160,7 @@ class TaskBriefImportTests(unittest.TestCase):
             # Commit independent source edits for every authored record, including
             # chain references and equity workflows, without editing the catalog.
             for name, field in (("processes/corpus.json", "description"),
-                                ("journeys/chains.json", "tagline")):
+                                ("processes/chains.json", "tagline")):
                 path = work / name
                 records = json.loads(path.read_text())
                 for record in records:

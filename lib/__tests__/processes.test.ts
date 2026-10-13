@@ -380,7 +380,7 @@ describe('corpus', () => {
       ['qs_047', 'US-TX', 'us-tx.franchise-tax-report'],
     ] as const) {
       expect(byId(pid).description, `${pid} cites ${ruleId}`).toContain(ruleId)
-      const file = path.join(__dirname, '..', '..', 'rules', dir, `${ruleId.replace(/\./g, '-')}.json`)
+      const file = path.join(__dirname, '..', '..', 'law', dir, `${ruleId.replace(/\./g, '-')}.json`)
       expect(fs.existsSync(file), `${ruleId} card committed at ${file}`).toBe(true)
       expect(JSON.parse(fs.readFileSync(file, 'utf8')).id).toBe(ruleId)
     }
@@ -443,7 +443,7 @@ describe('corpus', () => {
       ['sit_021', 'US-FED', 'us-fed.osha-severe-injury-reporting'],
     ] as const) {
       expect(byId(sid).description, `${sid} cites its rule card`).toContain(ruleId)
-      const file = path.join(__dirname, '..', '..', 'rules', dir, `${ruleId.replace(/\./g, '-')}.json`)
+      const file = path.join(__dirname, '..', '..', 'law', dir, `${ruleId.replace(/\./g, '-')}.json`)
       expect(fs.existsSync(file), `${ruleId} card committed at ${file}`).toBe(true)
       expect(JSON.parse(fs.readFileSync(file, 'utf8')).id).toBe(ruleId)
     }

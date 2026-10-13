@@ -274,7 +274,7 @@ blank, schema-valid record in [`templates/`](templates/), follow the curation ru
 a situation additionally carries a `trigger` and an `urgency` tier (see
 [`processes/SITUATIONS.md`](processes/SITUATIONS.md)) — and validate with `pnpm test`, which
 tells you immediately whether the record holds up. Chained founder paths go in
-[`journeys/chains.json`](journeys/). Changes to the shared process schema or catalog
+[`processes/chains.json`](processes/). Changes to the shared process schema or catalog
 (`content/processes/`) also run `pnpm shared:check`.
 
 <a id="add-a-jurisdiction"></a>
@@ -297,8 +297,8 @@ hold up:
    renders in the top-of-page geo banner and the "Outside the US" block.
 3. **Rule cards for your jurisdiction** — register the jurisdiction in
    [`jurisdictions/registry.json`](jurisdictions/) with a deliberately narrow scope, then
-   add `rules/<CODE>/*.json` cards citing primary sources in
-   [`sources/registry.json`](sources/) (statute, regulation, agency guidance; a provider
+   add `law/<CODE>/*.json` cards citing primary sources in
+   [`citations/registry.json`](citations/) (statute, regulation, agency guidance; a provider
    blog cannot establish law). One proposition per stable ID.
 4. **A full jurisdiction-scoped workflow** — copy
    [`templates/process.json`](templates/process.json), narrow the applicability dimensions,

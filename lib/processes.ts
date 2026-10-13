@@ -227,7 +227,7 @@ export type StepMethod = z.infer<typeof StepMethodSchema>
 // `what` names the failure, `then` the recovery — or the honest "no recovery; this is a
 // conversation with counsel" where that is the truth (needs_review posture). `source` is the
 // primary page/statute/fee schedule backing the entry (curl-verified live, like every corpus
-// URL); legal claims additionally cite a dated rule card in rules/ by id inside the prose, the
+// URL); legal claims additionally cite a dated rule card in law/ by id inside the prose, the
 // situations-house precedent. 3–6 QUALITY entries per deep process, not coverage — see
 // processes/README.md "Failure modes". Display: none since founder 2026-10-05 (the collapsed
 // '⚠ if it goes wrong' step line was removed) — the field stays corpus data, carried by the
@@ -544,13 +544,13 @@ export function processesByCadence(tasks: ProcessTask[]): Array<{ cadence: Caden
 const DEFAULT_DIR = () => path.join(process.cwd(), 'rankings')
 
 // Stage 2 of the corpus lift (docs/FOUNDER-OPS.md): the operational corpus and the chains moved
-// out of rankings/ into the founder-ops tree — processes/corpus.json and journeys/chains.json.
+// out of rankings/ into the founder-ops tree — processes/corpus.json and processes/chains.json.
 // `dir` stays the ARENA-DATA dir (it keys the caches and resolves the live markets via
 // loadCategory); the corpus files resolve as siblings of it, so every existing call site
 // (DEFAULT_DIR, tests' DATA_DIR, pipeline/paths.ts DATA_DIR — all `<root>/data`) keeps working
 // unchanged. Content is byte-identical to the pre-move files; paths only.
 const corpusFile = (dir: string) => path.join(dir, '..', 'processes', 'corpus.json')
-const chainsFile = (dir: string) => path.join(dir, '..', 'journeys', 'chains.json')
+const chainsFile = (dir: string) => path.join(dir, '..', 'processes', 'chains.json')
 
 // URL slug for a process — kebab-case of the title, same convention as arena/product ids
 // elsewhere on the site (lowercase, hyphen-separated). Uniqueness across the corpus is enforced
@@ -706,7 +706,7 @@ export function slugAliasFor(task: ProcessTask, slug: string): SlugAlias | null 
 
 const chainsCache = new Map<string, ProcessChain[]>()
 
-// Curated chained stories (journeys/chains.json): ordered runs of real corpus task ids.
+// Curated chained stories (processes/chains.json): ordered runs of real corpus task ids.
 // Integrity-checked at load: every taskId must exist in the corpus, chain ids must be unique.
 export function loadChains(dir: string = DEFAULT_DIR()): ProcessChain[] {
   const hit = chainsCache.get(dir)

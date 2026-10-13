@@ -18,7 +18,7 @@ protection, the codex access decision in open question 2).
 Ground truth this plan is built on (all measured 2026-10-08 in this tree):
 
 - The artifact is pure content. `data/` (4,327 files, 91 MB), `processes/`, `content/`,
-  `rules/`, `schemas/`, and the other content dirs contain zero `.ts`/`.js`; the
+  `law/`, `schemas/`, and the other content dirs contain zero `.ts`/`.js`; the
   dependency arrow is strictly one-way, `lib/` reads the artifact.
 - `lib/` is almost entirely framework-free: of 179 non-test modules, 2 import React,
   0 import `next/*`, 3 reference `@/components` (two of those type-only).
@@ -47,18 +47,16 @@ private site repo), **SPLIT** (file-level partition inside the directory),
 | `data/` | OPEN | The arena evidence layer that forms the rankings; the core checkable artifact (includes the `.png`/`.webm` probe evidence inside arena dirs). |
 | `processes/` | OPEN | The operational corpus, situations, artifacts, company fields, vendor registry; founder intent names it directly. |
 | `content/processes/` | OPEN | The shared-process records; public Git owns shared process meaning (AGENTS.md). |
-| `journeys/` | OPEN | `chains.json`, the multi-process founder paths; corpus-schema-gated content. |
 | `jurisdictions/` | OPEN | Registry and per-country vendor availability; checkable legal scope. |
-| `rules/` | OPEN | Dated, source-locked rule cards; the "know the rules" layer. |
-| `sources/` | OPEN | Primary-authority registry the rule cards cite. |
+| `law/` | OPEN | Dated, source-locked rule cards; the "know the rules" layer. |
+| `citations/` | OPEN | Citation registry: the authorities the rule cards cite and the reading the laws and lore cite. |
 | `lore/` | OPEN | Sourced heuristics registry. |
 | `open-documents/` | OPEN | The canonical startup legal documents as dated link-only records. |
 | `open-modules/` | OPEN | Index of the open founder-math modules (code in `lib/openstartup/`). |
-| `resources/` | OPEN | Source registry for lore and laws. |
 | `coverage/` | OPEN | Coverage and domain vocabulary for the corpus. |
 | `fixtures/` | OPEN | Fictional worked-example inputs for the open modules. |
 | `templates/` | OPEN | Contribution templates for processes and vendor reviews. |
-| `vendors/` | OPEN | Evidence doctrine plus `reviews/generated/` (651 interchange records, deterministic regeneration from `data/`). |
+| `rankings/reviews/` | OPEN | Evidence doctrine plus `generated/` interchange records, deterministic regeneration from the arena data. |
 | `schemas/` | OPEN | Every published shape; "schemas are law" is the public contract. |
 | `governance/` | OPEN | AGENT_POLICY, REVIEW_POLICY, SECURITY; the methodology/governance layer. |
 | `pipeline/` | OPEN | Resolved below ("Hard case: the pipeline"). |
@@ -70,7 +68,7 @@ private site repo), **SPLIT** (file-level partition inside the directory),
 | `public/` | SPLIT | Pipeline-produced, evidence-bearing assets OPEN (`badges/` are regenerated from the cert registry and hot-linked by vendors, `logos/` and `screenshots/` are pipeline stages' output); site chrome CLOSED (og images, marks, `faces/`, `people/`, `process-icons/`, `step-icons/`, `robots.txt`, stock svgs). |
 | `lib/` | SPLIT | Resolved below ("Hard case: the lib split"). |
 | `scripts/` | SPLIT | OPEN: `update-readme-stats.mjs`, `generate-badges.mjs`, `generate-corpus-schemas.ts`, `generate-situations-md.ts`, `generate-business-logic-serves.ts`, `generate-timeline-inversions.ts`, `generate-process-arena-coverage.ts`, `shared-processes/` (Python importer + checks), `content-audit.mjs` + its test, `pnpmfile.cjs`. CLOSED: `copy-data.mjs`, `dedupe-segments.mjs`, `generate-og.mjs`, `audit-site-urls.mjs`, `check-preview-runtime.mjs`, `deploy-prod.sh`, `workos-go-live.sh`, `generate-mcp-allowlist.mjs`, `generate-mcp-demo-calls.mjs` (worker build inputs). |
-| `docs/` | SPLIT | OPEN: methodology and artifact docs (SCORING, SCORING-REVIEW, ACCURACY, CERTIFICATION, SELF-EVAL, PROVE-IT, COVERAGE-STRATEGY, OSS-COVERAGE, VENDOR-RADAR, product-families, judge-migration records, ARTIFACT-OBJECT-MODEL, OPEN-MODULES-GAPS, TIMELINE-INVERSIONS, `assets/`). CLOSED: site-internal docs (BUILD-SIZE, SITE-QA, AUTH, TRY-IT, TRY-IT-DEMO-ACCOUNTS, PROCESS-UI-RELEASE, search-gaps, INCORPORATION-SHOWCASE-*, FOUNDER-ASKS where site-operational). Judgment calls at file level during Phase 0 inventory. |
+| `docs/` | SPLIT | OPEN: methodology and artifact docs (SCORING, SCORING-REVIEW, ACCURACY, CERTIFICATION, SELF-EVAL, PROVE-IT, COVERAGE-STRATEGY, VENDOR-RADAR, product-families, judge-migration records, ARTIFACT-OBJECT-MODEL, OPEN-MODULES-GAPS, TIMELINE-INVERSIONS, `assets/`). CLOSED: site-internal docs (BUILD-SIZE, SITE-QA, AUTH, TRY-IT, TRY-IT-DEMO-ACCOUNTS, PROCESS-UI-RELEASE, search-gaps, INCORPORATION-SHOWCASE-*, FOUNDER-ASKS where site-operational). Judgment calls at file level during Phase 0 inventory. |
 | `.github/workflows/` | SPLIT | OPEN: the artifact loops (story-runner, daily-snapshot, cert-sweep, accuracy-engine, vendor-radar, yc-coverage, contest-check, spike-engine) and the validation half of `ci.yml`. CLOSED: the `next build` job of `ci.yml` plus a new UI-suite workflow. |
 
 ### Significant root files
@@ -197,9 +195,9 @@ cannot drift from the artifact silently.
 ## 2. Consumption mechanism: how the closed site reads the open artifact
 
 The closed repo needs, at build time: the content dirs (`data/`, `processes/`,
-`content/processes/`, `journeys/`, `rules/`, `jurisdictions/`, `lore/`,
-`open-documents/`, `open-modules/`, `sources/`, `resources/`, `coverage/`, `fixtures/`,
-`templates/`, `vendors/`, `schemas/`, `governance/`, the OPEN half of `docs/` that pages
+`content/processes/`, `law/`, `jurisdictions/`, `lore/`,
+`open-documents/`, `open-modules/`, `citations/`, `coverage/`, `fixtures/`,
+`templates/`, `schemas/`, `governance/`, the OPEN half of `docs/` that pages
 read, e.g. `docs/assets/`), the OPEN `public/` assets (badges, logos, screenshots), and
 the OPEN lib modules the app imports (87-module surface, ~160 OPEN files).
 
@@ -336,7 +334,7 @@ the rollback target.
    repo is stripped, not rewritten; old SHAs keep resolving, which also keeps every
    pre-split `open.lock` pin fetchable forever.
 6. **The stripped README.** The layers reorg survives minus the site-internal rows: the
-   merged "Map of the repo" keeps the processes/vendors/open-modules/
+   merged "Map of the repo" keeps the processes/rankings/open-modules/
    lore/governance rows (these all point at OPEN paths already) and keeps linking to the
    live site for rendered views; rows and sections that documented site internals
    (build size, preview runtime, Try-it plumbing) move to the closed repo's docs. The
@@ -461,14 +459,13 @@ Phases 0 and 1 landed in place, all additive (2026-10-08). What exists now:
 
 Files the section-1 lists do not name. OPEN: `AFK-HANDOFF.md` (the corpus manifest
 contract), `AGENTIC-DEPTH-PROGRAM.md` (measurement methodology design),
-`CLASSIC-BATTLES.md` (rankings coverage backlog), `CLI-SANDBOX-DESIGN.md` and
+`CLI-SANDBOX-DESIGN.md` and
 `cli-sandbox-spike/` (probe design with its recorded keyless transcripts),
 `COMPUTER-USE-FEASIBILITY.md` (recorded dry-run evidence), `FOUNDER-OPS.md` and
 `FOUNDER-OPS-ROADMAP.md` (corpus architecture and arena roadmap),
-`OPUS-5-5-JUDGE-PILOT.md` and `OPUS-5-5-MIGRATION-STATUS.md` (judge-migration records),
+`OPUS-5-5-JUDGE-PILOT.md` (judge-migration record),
 `PROCESS-ARENA-COVERAGE.md` (generated by an OPEN script, pinned by an OPEN test),
-`PROCESS-COVERAGE-FOLLOW-UP.md` and `PROCESS-MIGRATION-2026-10-02.{md,json}` (corpus
-migration records), `REPO-SPLIT-PLAN.md` (this document), `SIM-UM-CLI.md` (simulator
+`PROCESS-MIGRATION-2026-10-02.{md,json}` (corpus migration records), `REPO-SPLIT-PLAN.md` (this document), `SIM-UM-CLI.md` (simulator
 design; the sim logic is OPEN), `ULTRAMETRIC-CLI-CAPABILITIES.md` (audit of the published
 CLI artifact), `VENDOR-RESPONSES.md` (verdict-response doctrine), `catalog-task-briefs/`
 (read by `scripts/shared-processes/check-task-briefs.py`), `self-eval-probes/` (recorded

@@ -1,6 +1,6 @@
 // Virtual Startup (founder ask 2026-09-23): a synthetic company run through the REAL process
 // corpus. The reader picks a handful of starting decisions; each decision selects which real
-// processes/chains (processes/corpus.json + journeys/chains.json) make up the journey, and the
+// processes/chains (processes/corpus.json + processes/chains.json) make up the journey, and the
 // timeline replays them with clearly-labeled synthetic artifacts ("what each step produces").
 //
 // Client-safe and pure (no node builtins) — same split convention as lib/processSim.ts: the
@@ -610,10 +610,10 @@ export function gateActive(gate: VsGate, choices: Choices): boolean {
 }
 
 // ---------------------------------------------------------------------------
-// Decision → journey mapping (real chains from journeys/chains.json only)
+// Decision → journey mapping (real chains from processes/chains.json only)
 // ---------------------------------------------------------------------------
 
-// The chains the journey is composed from — each id must exist in journeys/chains.json
+// The chains the journey is composed from — each id must exist in processes/chains.json
 // (journeyPhases throws otherwise; the test suite checks against the committed file).
 export const VS_CHAIN_IDS = [
   'name-the-company',

@@ -12,15 +12,14 @@ workspace, never here.
 | Path | Purpose |
 | --- | --- |
 | `coverage/` | Domain taxonomy, lifecycle navigation, machine-readable coverage and gaps |
-| `journeys/` | Multi-process founder paths (chains; The Open Startup is the live surface) |
+| `processes/chains.json` | Multi-process founder paths (chains; The Open Startup is the live surface) |
 | `processes/` | Jurisdiction-scoped legal workflows + the operational corpus (two layers) |
-| `rules/<jurisdiction>/` | Canonical, dated legal rule cards with stable IDs |
-| `sources/` | Primary authorities: provision locators, issue dates, checked dates |
+| `law/<jurisdiction>/` | Canonical, dated legal rule cards with stable IDs |
+| `citations/` | The citation registry: rule-card authorities and the canonical startup reading |
 | `jurisdictions/` | Registry + overlays; exact-dimension matching, unknown = unsupported |
 | `open-modules/` | The open modules — cited, deterministic calculations (cap table first) |
-| `resources/` | Curated canonical startup resources + the distilled startup laws (cited) |
 | `open-documents/` | The open-documents map: openly licensed legal forms, linked never redistributed |
-| `vendors/` | The evidence layer + the scenario-scoped review interchange format |
+| `rankings/reviews/` | The scenario-scoped review interchange format over the evidence layer |
 | `templates/` | Contribution starting points |
 | `schemas/` | JSON Schema contracts for processes, rules, sources, vendor reviews |
 | `processes/fixtures/` | Fictional companies and events only |
@@ -53,17 +52,17 @@ structure and semantic invariants; it does not prove laws true or implement a ca
   loader-bound, and under active lanes).
 - **Stage 2 — done 2026-09-28.** Consolidated, byte-identical moves behind the loaders:
   `rankings/processes.json` → `processes/corpus.json` and `rankings/process-chains.json` →
-  `journeys/chains.json` (`lib/processes.ts` resolves both as siblings of the ranking-data dir;
+  `processes/chains.json` (`lib/processes.ts` resolves both as siblings of the ranking-data dir;
   the founder-ops workflow walker skips `corpus.json`); `rankings/vendor-geo.json` →
   `jurisdictions/vendor-geo.json` (`lib/vendorGeo.ts`). Published the corpus contract as
   `schemas/operational-process.schema.json`, generated from the zod source of truth by
   `scripts/generate-corpus-schemas.ts` with a byte-identical drift gate
   (`__tests__/corpus-schemas.test.ts`). Generated the vendor-review interchange layer:
-  `vendors/reviews/generated/<arena>--<productId>.json` for every judged product (578 records)
+  `rankings/reviews/generated/<arena>--<productId>.json` for every judged product (578 records)
   via `pipeline/scripts/generate-vendor-reviews.ts` — deterministic projection of the committed
   rankings/evidence/pricing/geo data, owner disclosures always carried
   (`pipeline/__tests__/vendorReviews.test.ts`). Still open from the original stage-2 sketch:
-  folding process geo-scope into `rules/`, and the on-site workflow-layer surface (a
+  folding process geo-scope into `law/`, and the on-site workflow-layer surface (a
   `/founder-ops` or per-process "legal layer" view).
 - **Stage 3 — retired 2026-09-29.** The original plan (physically move the site/CLI/MCP/worker
   under `apps/` as workspace packages) is moot: the MCP/CLI packages moved to their own

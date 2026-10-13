@@ -1,5 +1,5 @@
 // Textbook tests for the § 1202 QSBS module. Duties: (1) every ruleId in QSBS_RULE_IDS
-// resolves to a committed, jurisdiction-matched card in rules/US-FED/ with primary
+// resolves to a committed, jurisdiction-matched card in law/US-FED/ with primary
 // sources; (2) the cap arithmetic replays the standard published worked example (greater
 // of $10M or 10x basis — the example every reputable QSBS explainer uses), re-derived in
 // comments directly from § 1202(b)(1); (3) the regime routing (the July 4, 2025
@@ -21,7 +21,7 @@ import {
 } from '../qsbs'
 
 function loadRuleCard(jurisdiction: string, ruleId: string) {
-  const dir = path.join(process.cwd(), 'rules', jurisdiction)
+  const dir = path.join(process.cwd(), 'law', jurisdiction)
   for (const file of fs.readdirSync(dir).filter((f) => f.endsWith('.json'))) {
     const card = JSON.parse(fs.readFileSync(path.join(dir, file), 'utf8')) as {
       id: string
@@ -38,7 +38,7 @@ describe('every condition resolves to a committed, jurisdiction-matched rule car
   for (const [name, ref] of Object.entries(QSBS_RULE_IDS)) {
     it(`${name} → ${ref.ruleId}`, () => {
       const card = loadRuleCard(ref.jurisdiction, ref.ruleId)
-      expect(card, `rules/${ref.jurisdiction} must contain a card with id ${ref.ruleId}`).not.toBeNull()
+      expect(card, `law/${ref.jurisdiction} must contain a card with id ${ref.ruleId}`).not.toBeNull()
       expect(card?.jurisdiction).toBe(ref.jurisdiction)
       expect(card?.kind).toBe('legal')
       expect(card?.source_ids.length).toBeGreaterThan(0)

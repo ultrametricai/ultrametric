@@ -46,7 +46,7 @@ report `_comment`, and the workflow header, on purpose, three times.
 3. **Dedupe**, so each candidate surfaces exactly once, ever:
    - every tracked product (`rankings/<arena>/products.json`) by normalized site domain
      (`pipeline/yc-shared.ts` `normalizeDomain`) and by normalized name/id,
-   - the vendor registry (`vendors/reviews/generated/`) by product id,
+   - the vendor registry (`rankings/reviews/generated/`) by product id,
    - the committed seen-ledger **`pipeline/radar-seen.json`**: every candidate ever reported,
      keyed by product domain (or `github:owner/repo` / normalized name when no product domain is
      public). `firstSeen` is the honest date of the run that first reported it — never backdated.

@@ -7,8 +7,9 @@ must agree before merge.
   → reviewed), and the evidence doctrine: what counts as evidence, churn rules,
   owner-affiliation disclosure and adversarial bias audits.
 - `AGENT_POLICY.md` — ground rules for agents consuming or contributing to the data.
-- `SECURITY.md` — the data-hygiene doctrine: no real company data, no PII, fictional
-  fixtures only (complements the repo-root SECURITY.md vulnerability policy).
+
+The data-hygiene doctrine (no real company data, no PII, fictional fixtures only) lives
+in the repo-root `SECURITY.md` alongside the vulnerability policy.
 
 Contribute here:
 

@@ -1,16 +1,22 @@
 import fs from 'node:fs'
 import path from 'node:path'
 
-// Loader + validator for the startup-resources corpus (resources/registry.json and the
-// distilled resources/LAWS.md). Follows the lib/founderOps.ts pattern: structural and
-// referential invariants only, returned as a flat error list so the vitest gate
-// (__tests__/resources.test.ts) can assert an empty array. The pure validators take data,
-// not paths, so tests can exercise failure modes without touching the committed corpus.
+// Loader + validator for the citation registry (citations/registry.json, one registry of
+// every cited source in two roles) and the distilled law/LAWS.md. Follows the
+// lib/founderOps.ts pattern: structural and referential invariants only, returned as a
+// flat error list so the vitest gate (__tests__/citations.test.ts) can assert an empty
+// array. The pure validators take data, not paths, so tests can exercise failure modes
+// without touching the committed corpus.
+//
+// Role split: 'authority' entries (legal authorities and dated practice sources) are
+// validated by lib/founderOps.ts against schemas/citation.schema.json alongside the rule
+// cards that cite them; this module validates the 'reading' entries (the canonical
+// startup reading) and the LAWS.md citation resolution, which may cite either role.
 //
 // Deliberately deterministic: URL liveness is an editorial duty recorded via checked_on
-// (see resources/README.md); nothing here performs network I/O.
+// (see citations/README.md); nothing here performs network I/O.
 
-export const RESOURCE_KINDS = [
+export const READING_KINDS = [
   'essay',
   'guide',
   'handbook',
@@ -19,23 +25,40 @@ export const RESOURCE_KINDS = [
   'document-repository',
 ] as const
 
-export type ResourceKind = (typeof RESOURCE_KINDS)[number]
+export type ReadingKind = (typeof READING_KINDS)[number]
 
-export interface StartupResource {
+export interface ReadingCitation {
   id: string
+  role: 'reading'
   title: string
   author: string
   url: string
-  kind: ResourceKind
+  kind: ReadingKind
   topics: string[]
   note: string
   published_on: string | null
   checked_on: string
 }
 
-export interface ResourceRegistry {
+export interface AuthorityCitation {
+  id: string
+  role: 'authority'
+  publisher: string
+  title: string
+  kind: string
+  url: string
+  locator: string
+  issued_on: string | null
+  checked_on: string
+  jurisdiction: string
+  note: string
+}
+
+export type Citation = ReadingCitation | AuthorityCitation
+
+export interface CitationRegistry {
   updated_on: string
-  resources: StartupResource[]
+  citations: Citation[]
 }
 
 export interface StartupLaw {
@@ -62,27 +85,35 @@ function isIsoDate(value: string): boolean {
 // Registry
 // ---------------------------------------------------------------------------
 
-export function validateResourceRegistry(doc: ResourceRegistry, asOf: Date): string[] {
+export function validateCitationRegistry(doc: CitationRegistry, asOf: Date): string[] {
   const errors: string[] = []
   if (!isIsoDate(doc.updated_on)) errors.push(`registry.updated_on: invalid ISO date ${JSON.stringify(doc.updated_on)}`)
-  if (!Array.isArray(doc.resources) || doc.resources.length === 0) {
-    errors.push('registry: no resources')
+  if (!Array.isArray(doc.citations) || doc.citations.length === 0) {
+    errors.push('registry: no citations')
     return errors
   }
   const ids = new Set<string>()
-  const urls = new Set<string>()
-  for (const r of doc.resources) {
-    const where = `resource ${r.id ?? '<missing id>'}`
-    if (typeof r.id !== 'string' || !ID_RE.test(r.id)) errors.push(`${where}: invalid id`)
-    else if (ids.has(r.id)) errors.push(`duplicate resource id ${r.id}`)
-    else ids.add(r.id)
+  const readingUrls = new Set<string>()
+  for (const c of doc.citations) {
+    const where = `citation ${c.id ?? '<missing id>'}`
+    if (typeof c.id !== 'string' || !ID_RE.test(c.id)) errors.push(`${where}: invalid id`)
+    else if (ids.has(c.id)) errors.push(`duplicate citation id ${c.id}`)
+    else ids.add(c.id)
+    if (c.role !== 'reading' && c.role !== 'authority') {
+      errors.push(`${where}: unknown role ${JSON.stringify((c as { role?: unknown }).role)}`)
+      continue
+    }
+    // Authority entries are schema- and doctrine-checked by lib/founderOps.ts; only the
+    // registry-wide id invariants apply here.
+    if (c.role !== 'reading') continue
+    const r = c
     for (const key of ['title', 'author', 'note'] as const) {
       if (typeof r[key] !== 'string' || r[key].trim().length === 0) errors.push(`${where}: missing ${key}`)
     }
     if (typeof r.url !== 'string' || !r.url.startsWith('https://')) errors.push(`${where}: require HTTPS URL`)
-    else if (urls.has(r.url)) errors.push(`${where}: duplicate URL ${r.url}`)
-    else urls.add(r.url)
-    if (!RESOURCE_KINDS.includes(r.kind)) errors.push(`${where}: unknown kind ${JSON.stringify(r.kind)}`)
+    else if (readingUrls.has(r.url)) errors.push(`${where}: duplicate URL ${r.url}`)
+    else readingUrls.add(r.url)
+    if (!READING_KINDS.includes(r.kind)) errors.push(`${where}: unknown kind ${JSON.stringify(r.kind)}`)
     if (!Array.isArray(r.topics) || r.topics.length === 0) errors.push(`${where}: topics must be non-empty`)
     else if (r.topics.some((t) => typeof t !== 'string' || !/^[a-z0-9][a-z0-9-]*$/.test(t))) {
       errors.push(`${where}: topics must be lowercase slugs`)
@@ -96,12 +127,17 @@ export function validateResourceRegistry(doc: ResourceRegistry, asOf: Date): str
   return errors
 }
 
+/** The reading-role entries (the canonical startup reading list). */
+export function readingCitations(doc: CitationRegistry): ReadingCitation[] {
+  return doc.citations.filter((c): c is ReadingCitation => c.role === 'reading')
+}
+
 // ---------------------------------------------------------------------------
 // LAWS.md
 // ---------------------------------------------------------------------------
 
 /**
- * Parse resources/LAWS.md. Grammar (kept deliberately rigid so drift is caught):
+ * Parse law/LAWS.md. Grammar (kept deliberately rigid so drift is caught):
  *   `## <stage>` opens a lifecycle stage;
  *   `### <n>. <title>` opens law n (global, continuous numbering);
  *   a law body must contain exactly one `Sources:` line citing backticked registry ids.
@@ -151,9 +187,9 @@ export function parseStartupLaws(markdown: string): { laws: StartupLaw[]; errors
   return { laws, errors }
 }
 
-export function validateStartupLaws(markdown: string, registry: ResourceRegistry): string[] {
+export function validateStartupLaws(markdown: string, registry: CitationRegistry): string[] {
   const { laws, errors } = parseStartupLaws(markdown)
-  const known = new Set(registry.resources.map((r) => r.id))
+  const known = new Set(registry.citations.map((c) => c.id))
   if (laws.length < LAWS_MIN || laws.length > LAWS_MAX) {
     errors.push(`laws: expected ${LAWS_MIN}-${LAWS_MAX}, found ${laws.length}`)
   }
@@ -179,17 +215,17 @@ export function validateStartupLaws(markdown: string, registry: ResourceRegistry
 
 const ROOT = process.cwd()
 
-export function loadResourceRegistry(): ResourceRegistry {
-  return JSON.parse(fs.readFileSync(path.join(ROOT, 'resources/registry.json'), 'utf8')) as ResourceRegistry
+export function loadCitationRegistry(): CitationRegistry {
+  return JSON.parse(fs.readFileSync(path.join(ROOT, 'citations/registry.json'), 'utf8')) as CitationRegistry
 }
 
 export function loadStartupLawsMarkdown(): string {
-  return fs.readFileSync(path.join(ROOT, 'resources/LAWS.md'), 'utf8')
+  return fs.readFileSync(path.join(ROOT, 'law/LAWS.md'), 'utf8')
 }
 
 /** The full gate: registry invariants + LAWS.md citation resolution. Empty array = pass. */
-export function validateResources(asOf?: Date): string[] {
-  const registry = loadResourceRegistry()
+export function validateCitations(asOf?: Date): string[] {
+  const registry = loadCitationRegistry()
   const markdown = loadStartupLawsMarkdown()
-  return [...validateResourceRegistry(registry, asOf ?? new Date()), ...validateStartupLaws(markdown, registry)]
+  return [...validateCitationRegistry(registry, asOf ?? new Date()), ...validateStartupLaws(markdown, registry)]
 }

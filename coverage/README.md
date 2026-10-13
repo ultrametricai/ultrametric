@@ -28,7 +28,7 @@ Gate: `npx vitest run __tests__/founder-ops.test.ts`.
 
 `node scripts/content-audit.mjs /path/to/content-audit.json` exports a source-library
 audit of the committed records (processes, vendor stories and verdicts, documents,
-modules, jurisdictions, rules, sources, resources, artifacts), resolving declared
+modules, jurisdictions, law, sources, resources, artifacts), resolving declared
 references and reporting missing outcomes, incomplete verdict evidence, and unresolved
 links without changing records. Keep exports outside the public data tree; the private
 [ultrametric-api repository](https://github.com/ultrametricai/ultrametric-api) stores

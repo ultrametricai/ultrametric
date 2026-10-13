@@ -1,6 +1,7 @@
-# Spike engine (docs/FOUNDER-ASKS.md: "deep running engine that is always probing and spiking
-# through the top companies"): daily, re-rank rankings/spike-queue.json (keyless — staleness ×
-# popularity × founder priority over every judged product), then, when the ANTHROPIC_API_KEY
+# Spike engine (founder ask, recorded in the private repo: "deep running engine that is always
+# probing and spiking through the top companies"): daily, re-rank rankings/spike-queue.json
+# (keyless — staleness × popularity × founder priority over every judged product), then,
+# when the ANTHROPIC_API_KEY
 # secret exists, spike the top due product: one budget-capped exhaustive pass through the
 # normal pipeline stages (crawl → extract → probe → judge), the churn policy (keep only flips
 # citing newly-added evidence ids), derive, and intervals. See pipeline/scripts/spike-engine.ts
@@ -106,7 +107,7 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           RUN_ID: ${{ github.run_id }}
         run: |
-          if git diff --quiet -- rankings pipeline/cache vendors/reviews/generated; then
+          if git diff --quiet -- rankings pipeline/cache; then
             echo "No changes — done."
             exit 0
           fi
@@ -115,7 +116,7 @@ jobs:
           git config user.name "ultrametric-spike-engine"
           git config user.email "noreply@ultrametric.ai"
           git checkout -b "$BRANCH"
-          git add rankings pipeline/cache vendors/reviews/generated README.md
+          git add rankings pipeline/cache README.md
           git commit -m "chore(spike-engine): queue re-rank + top-of-queue spike pass"
           git push -u origin "$BRANCH"
           # Same org-policy fallback as story-runner: if Actions may not open PRs, leave an

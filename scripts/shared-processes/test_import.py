@@ -13,20 +13,19 @@ class ImportTests(unittest.TestCase):
         self.root = Path(self.temp.name)
         (self.root / 'scripts/shared-processes').mkdir(parents=True)
         (self.root / 'processes').mkdir()
-        (self.root / 'journeys').mkdir()
         for name in ('import.py', 'claim_audit.py', 'source_snapshot.py', 'check-import.py'):
             shutil.copy(SCRIPT / name, self.root / 'scripts/shared-processes' / name)
         self.source = self.root / 'processes/corpus.json'
         self.records = [{'id': key, 'title': key, 'description': 'Synthetic source', 'dag': {'nodes': [{'id': 'step', 'label': 'Synthetic step', 'estimatedMinutes': 5, 'toolCall': 'unverified-test-operation'}], 'edges': []}} for key in ('alpha', 'beta')]
         self.source.write_text(json.dumps(self.records))
-        (self.root / 'journeys/chains.json').write_text('[]')
+        (self.root / 'processes/chains.json').write_text('[]')
         (self.root / 'processes/vendor-registry.json').write_text('{"vendors":{}}')
         subprocess.run(['git', 'init', '-q'], cwd=self.root, check=True)
         self.commit_sources()
         self.run_import('--write', expected=0)
 
     def commit_sources(self):
-        subprocess.run(['git', 'add', 'processes', 'journeys'], cwd=self.root, check=True)
+        subprocess.run(['git', 'add', 'processes'], cwd=self.root, check=True)
         subprocess.run(['git', '-c', 'user.name=Test', '-c', 'user.email=test@example.invalid', '-c', 'commit.gpgsign=false', 'commit', '-qm', 'Synthetic source'], cwd=self.root, check=True)
 
     def check_preservation(self, expected):
@@ -118,12 +117,11 @@ class ImportTests(unittest.TestCase):
             for name in ('import.py', 'claim_audit.py', 'source_snapshot.py'):
                 shutil.copy(SCRIPT / name, root / 'scripts/shared-processes' / name)
             (root / 'processes').mkdir()
-            (root / 'journeys').mkdir()
             (root / 'processes/corpus.json').write_text(json.dumps(self.records))
-            (root / 'journeys/chains.json').write_text('[]')
+            (root / 'processes/chains.json').write_text('[]')
             (root / 'processes/vendor-registry.json').write_text('{"vendors":{}}')
             subprocess.run(['git', 'init', '-q'], cwd=root, check=True)
-            (root / '.gitignore').write_text('processes/\njourneys/\ncontent/\n')
+            (root / '.gitignore').write_text('processes/\ncontent/\n')
             subprocess.run(['git', 'add', '.gitignore'], cwd=root, check=True)
             subprocess.run(['git', '-c', 'user.name=Test', '-c', 'user.email=test@example.invalid', '-c', 'commit.gpgsign=false', 'commit', '-qm', 'Ignore materialized sources'], cwd=root, check=True)
             result = subprocess.run(['python3', str(root / 'scripts/shared-processes/import.py'), '--write'], capture_output=True, text=True)

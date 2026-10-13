@@ -26,7 +26,7 @@
 // Dedupe, so each candidate surfaces ONCE and already-tracked vendors never do:
 //   · every rankings/<arena>/products.json product, by normalized site domain (pipeline/yc-shared.ts
 //     normalizeDomain — never by name alone) AND by normalized name/id,
-//   · the vendor registry (vendors/reviews/generated/<arena>--<product>.json), by product id,
+//   · the vendor registry (rankings/reviews/generated/<arena>--<product>.json), by product id,
 //   · the committed seen-ledger pipeline/radar-seen.json: every candidate ever reported, keyed by
 //     product domain (or github:owner/repo / normalized name when no product domain is public).
 //
@@ -590,7 +590,7 @@ function loadDedupeContext(): DedupeContext {
       trackedNames.add(normalizeName(p.id))
     }
   }
-  // The vendor registry: vendors/reviews/generated/<arena>--<product>.json — product ids again,
+  // The vendor registry: rankings/reviews/generated/<arena>--<product>.json — product ids again,
   // belt-and-braces in case a registry record outlives a roster edit.
   if (fs.existsSync(REVIEWS_DIR)) {
     for (const f of fs.readdirSync(REVIEWS_DIR)) {
