@@ -1,9 +1,0 @@
-import test from 'node:test';
-import assert from 'node:assert/strict';
-import { reorderRows, toCsv } from '../lib/reorder.mjs';
-const item = { sku: 'brake-pad', onHand: 9, reserved: 3, minimum: 10, packSize: 3 };
-test('rounds shortage to supplier packs', () => assert.deepEqual(reorderRows([item]), [{ sku: 'brake-pad', available: 6, order: 6 }]));
-test('omits sufficient inventory', () => assert.deepEqual(reorderRows([{ ...item, onHand: 20 }]), []));
-test('rejects duplicate SKU', () => assert.throws(() => reorderRows([item, item]), /unique/));
-test('rejects bad quantities', () => assert.throws(() => reorderRows([{ ...item, reserved: 12 }])));
-test('escapes CSV quotes', () => assert.equal(toCsv([{ sku: 'pad, "soft"', available: 0, order: 2 }]), 'sku,available,order\n"pad, ""soft""",0,2\n'));

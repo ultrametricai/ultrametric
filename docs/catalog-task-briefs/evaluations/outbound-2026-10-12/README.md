@@ -1,9 +1,0 @@
-# Outbound trial evidence
-
-The natural prompt was “help me get our first sales conversations.” Both arms completed local preparation using the same fictional company and contact-history inputs. The UM arm additionally produced a replayable event model for the proposed no-send workflow. No real outreach, booking or acquired-customer outcome is established.
-
-Read the [independent comparison](independent-outcome-review.md), [replay checks](independent-checks.json), [actual guide coverage](guide-coverage.json), [metadata](metadata.json) and [curated conversation](transcript.json). The metadata preserves resource observations, public candidate provenance and harness limits without private account telemetry. [Source checks](independent-source-checks.json) describe the frozen inputs.
-
-The performer naturally selected the `get-first-10-customers` parent guide. That assembly contains the revised outbound record; the standalone outbound mapping was not selected. Company-context persistence was denied by the unchanged native approval boundary.
-
-Public contact details are redacted derivatives of preserved private originals. [Redactions](publication-redactions.json) and the [artifact manifest](artifact-manifest.json) record both hashes and exact reconstruction paths. Source inputs are fictional, and research companies are unqualified prospects rather than customers. Code is stored with an inert `.txt` suffix. To replay, inspect the archived script, reconstruct a disposable `with-um` tree using manifest `reconstructionPath` values, then run `python3 sales/first-conversations/checks/dry_run.py`. The script reads local CSVs and regenerates the two validation artifacts; it has no sending or network function. [Public reconstruction checks](public-reconstruction-checks.json) record that replay after redaction.

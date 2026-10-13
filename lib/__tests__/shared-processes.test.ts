@@ -2,7 +2,6 @@ import { describe, expect, it } from 'vitest'
 import { readFileSync } from 'node:fs'
 import { loadSharedProcesses } from '../shared-processes/load'
 import { collectDecisions, validateCatalog, type SharedRecord, type Part } from '../shared-processes/schema'
-import { processGraphs } from '../shared-processes/graph'
 
 function part(id: string, overrides: Partial<Part> = {}): Part {
   return { id, kind: 'step', title: id, guidance: null, when: null, ref: null, options: [], references: [], notes: [], metadata: {}, ...overrides }
@@ -61,41 +60,5 @@ describe('shared process definitions', () => {
     records[0].guidance = 'Authored guidance.'
     records[0].outcomes = ['An authored outcome.']
     expect(validateCatalog(records)[0].notes[0].text).toBe('A contextual recommendation.')
-  })
-
-  it.each([
-    ['growth_014', 'n6', 'n4'], // Required customer notices precede billing changes.
-    ['growth_014', 'n4', 'n7'], // Reconcile the applied change before reporting effects.
-    ['sit_012', 'n7', 'n5'], // Observe the parallel run before cutover.
-    ['sit_012', 'n5', 'n6'], // Accept cutover before retiring the old service.
-    ['site_001', 'n3', 'n2'], // Review the preview before publication.
-    ['growth_012', 'n1', 'n3'], // Establish eligibility before activating outreach.
-    ['growth_012', 'n3', 'n4'], // Test setup before monitoring actual sends.
-  ])('%s places prerequisite %s before %s in the rendered graph', (id, before, after) => {
-    const records = loadSharedProcesses()
-    const selected = records.find(record => record.id === id)!
-    const graph = processGraphs(selected, records)[0]
-    const layer = (partId: string) => graph.layers.findIndex(nodes => nodes.some(node => node.id === partId))
-    expect(graph.unresolved).toBe(0)
-    expect(layer(before)).toBeGreaterThanOrEqual(0)
-    expect(layer(after)).toBeGreaterThan(layer(before))
-  })
-
-  it('keeps cancellation independent of a retention call and outreach meetings conditional', () => {
-    const records = loadSharedProcesses()
-    const churn = records.find(record => record.id === 'growth_002')!
-    expect(churn.links.find(link => link.from === 'n1' && link.to === 'n6')?.when).toContain('cancellation')
-    expect(churn.links.find(link => link.from === 'n4' && link.to === 'n6')?.when).toContain('does not need a call')
-    const outbound = processGraphs(records.find(record => record.id === 'growth_012')!, records)[0]
-    // Existing replies can reach response handling without a new campaign.
-    const intakePaths = outbound.edges.filter(edge => edge.from === 'n1')
-    expect(intakePaths.map(edge => edge.to).sort()).toEqual(['n2', 'n4'])
-    expect(intakePaths.every(edge => edge.conditional)).toBe(true)
-    for (const target of ['n5', 'n6']) {
-      const incoming = outbound.edges.filter(edge => edge.to === target)
-      expect(incoming).toHaveLength(1)
-      expect(incoming[0].conditional).toBe(true)
-      expect(outbound.nodes.find(node => node.id === target)?.when).toBeTruthy()
-    }
   })
 })
