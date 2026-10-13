@@ -1,4 +1,4 @@
-![Ultrametric](docs/assets/banner.svg)
+![Ultrametric](assets/banner.svg)
 
 Ultrametric ([ultrametric.ai](https://ultrametric.ai)) is the open startup repo: every
 founder [process](#open-processes) step by step, the [tools](#open-vendor-rankings) and
@@ -33,7 +33,7 @@ ultrametric/
 <!-- Legacy anchor: external links to #start-here predate the merge into this map. -->
 <a id="start-here"></a>
 
-[![A tour of ultrametric.ai at 4x: the simulator founding a company, a process page, a vendor page, a situation, the overall rankings, government services, and open documents](docs/assets/readme/demo.gif)](https://ultrametric.ai)
+[![A tour of ultrametric.ai at 4x: the simulator founding a company, a process page, a vendor page, a situation, the overall rankings, government services, and open documents](assets/readme/demo.gif)](https://ultrametric.ai)
 
 ## The open startup repo
 
@@ -53,7 +53,7 @@ rankings order products by how automatable they are, and every verdict can be co
 **96 rankings** today, 667 products judged head to head — the full index is [ultrametric.ai/arenas](https://ultrametric.ai/arenas), and each ranking's records live under [`rankings/`](rankings/).
 <!-- arenas:end -->
 
-[![The overall rankings on ultrametric.ai: companies ranked by agent readiness, with per-market leaderboards behind each row](docs/assets/readme/rankings-overall.png)](https://ultrametric.ai/overall)
+[![The overall rankings on ultrametric.ai: companies ranked by agent readiness, with per-market leaderboards behind each row](assets/readme/rankings-overall.png)](https://ultrametric.ai/overall)
 
 [Add your vendor](CONTRIBUTING.md#add-your-vendor)
 
@@ -66,7 +66,7 @@ human, timed, and marked by how hard it is to undo. The vendors that can run a s
 listed on it, with their judged scores. See it live at
 [ultrametric.ai/processes](https://ultrametric.ai/processes).
 
-[![The founder processes on ultrametric.ai, each with its phase, agentic share, step count, and vendors](docs/assets/readme/processes-index.png)](https://ultrametric.ai/processes)
+[![The founder processes on ultrametric.ai, each with its phase, agentic share, step count, and vendors](assets/readme/processes-index.png)](https://ultrametric.ai/processes)
 
 ### Examples
 
@@ -74,7 +74,7 @@ listed on it, with their judged scores. See it live at
 - [Get a 409A valuation](https://ultrametric.ai/processes/get-a-409a-valuation) — establish the fair market value for stock options
 - [Set up mailing address](https://ultrametric.ai/processes/set-up-mailing-address) — a business mailing address for legal and banking purposes
 
-[![The Incorporate C-Corp process: the step diagram, each step routed agent, form, or human, with ranked vendor options per step](docs/assets/readme/process-page.png)](https://ultrametric.ai/processes/incorporate-c-corp)
+[![The Incorporate C-Corp process: the step diagram, each step routed agent, form, or human, with ranked vendor options per step](assets/readme/process-page.png)](https://ultrametric.ai/processes/incorporate-c-corp)
 
 [Add a process](CONTRIBUTING.md#add-a-process)
 
@@ -131,7 +131,7 @@ incorporation, the EIN letter, the cap table. Each is registered in
 it makes and what it needs. See it live at
 [ultrametric.ai/artifacts](https://ultrametric.ai/artifacts).
 
-[![The artifacts view on ultrametric.ai: the documents and records founder processes produce and consume](docs/assets/readme/artifacts.png)](https://ultrametric.ai/artifacts)
+[![The artifacts view on ultrametric.ai: the documents and records founder processes produce and consume](assets/readme/artifacts.png)](https://ultrametric.ai/artifacts)
 
 <!-- Legacy anchor: inbound links to #open-docs predate the fold under Open artifacts. -->
 <a id="open-docs"></a>
@@ -159,7 +159,7 @@ checked. Known gaps are recorded too. See it live at
 a tax notice arrives. Each names its trigger and an urgency clock of hours, days, or
 weeks. See it live at [ultrametric.ai/situations](https://ultrametric.ai/situations).
 
-[![The situations index on ultrametric.ai, reactive work sorted hottest clock first](docs/assets/readme/situations.png)](https://ultrametric.ai/situations)
+[![The situations index on ultrametric.ai, reactive work sorted hottest clock first](assets/readme/situations.png)](https://ultrametric.ai/situations)
 
 <a id="add-your-country-or-state"></a>
 
@@ -226,7 +226,7 @@ law firms live at
 A simulated company runs the whole process library end to end. Every step is routed
 agent, form, or human, and everything it generates is visibly marked simulated.
 
-[![The Open Startup simulator mid-run: a simulated company executing the founder processes](docs/assets/readme/startup-sim.png)](https://ultrametric.ai/startup-sim)
+[![The Open Startup simulator mid-run: a simulated company executing the founder processes](assets/readme/startup-sim.png)](https://ultrametric.ai/startup-sim)
 
 ## Open skills for startups
 
@@ -236,7 +236,7 @@ retrieve a process, run the agent-routed steps, and save progress from inside yo
 Skill collections themselves are a judged market: see it live at
 [ultrametric.ai/arena/agent-skills](https://ultrametric.ai/arena/agent-skills).
 
-[![The Agent Skills ranking on ultrametric.ai, skill collections and plugin catalogs judged head to head](docs/assets/readme/agent-skills.png)](https://ultrametric.ai/arena/agent-skills)
+[![The Agent Skills ranking on ultrametric.ai, skill collections and plugin catalogs judged head to head](assets/readme/agent-skills.png)](https://ultrametric.ai/arena/agent-skills)
 
 <a id="for-ai-agents"></a>
 <a id="use-it-from-an-agent"></a>
