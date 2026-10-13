@@ -329,7 +329,7 @@ flowchart TD
 - `journeys/chains.json` links process IDs into playbooks (see `journeys/README.md`).
 - `lib/founderOps.ts` validates the jurisdiction-scoped workflow layer (`equity/us-de/*`)
   against `schemas/process.schema.json`, resolves its rule-card references into `law/` and
-  `sources/`, and exposes the exact-dimension planner (`planFounderOps`).
+  `citations/`, and exposes the exact-dimension planner (`planFounderOps`).
 
 ## What you can contribute here
 

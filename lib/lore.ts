@@ -2,9 +2,9 @@ import fs from 'node:fs'
 import path from 'node:path'
 
 import { loadProcesses } from '@/lib/processes'
-import { loadStartupLawsMarkdown, parseStartupLaws, type StartupLaw } from '@/lib/resources'
+import { loadStartupLawsMarkdown, parseStartupLaws, type StartupLaw } from '@/lib/citations'
 
-// Loader + validator for startup lore (resources/LORE.md) — the famous episodes and war
+// Loader + validator for startup lore (lore/LORE.md) — the famous episodes and war
 // stories of startup history, curated as sourced records. Follows the LAWS.md precedent
 // exactly: a deliberately rigid markdown grammar parsed here, structural and referential
 // invariants returned as a flat error list, and a vitest gate (__tests__/lore.test.ts)
@@ -13,7 +13,7 @@ import { loadStartupLawsMarkdown, parseStartupLaws, type StartupLaw } from '@/li
 //
 // The honesty field that distinguishes this corpus is `veracity`: every episode is graded
 // by how well it is evidenced, and famous-but-unverifiable stories are recorded AS legend,
-// never asserted as fact. Deterministic — URL liveness is editorial (see resources/README.md);
+// never asserted as fact. Deterministic — URL liveness is editorial (see citations/README.md);
 // nothing here performs network I/O.
 
 export const VERACITY_GRADES = [
@@ -54,7 +54,7 @@ export interface LoreEntry {
   lesson: string
   veracity: VeracityGrade
   sources: LoreSource[]
-  /** Law numbers from resources/LAWS.md this episode illustrates. */
+  /** Law numbers from law/LAWS.md this episode illustrates. */
   relatedLaws: number[]
   /** Process ids from processes/corpus.json this episode illustrates (verified on main). */
   relatedProcesses: string[]
@@ -94,7 +94,7 @@ const commaList = (text: string): string[] =>
     .filter((s) => s.length > 0)
 
 /**
- * Parse resources/LORE.md. Grammar (kept deliberately rigid so drift is caught):
+ * Parse lore/LORE.md. Grammar (kept deliberately rigid so drift is caught):
  *   `## <theme>` opens a theme;
  *   `### <n>. <title>` opens entry n (global, continuous numbering);
  *   labeled lines (`Id:` backticked slug, `Era:`, `Companies:`/`People:` comma lists,
@@ -302,7 +302,7 @@ export function validateStartupLore(
 const ROOT = process.cwd()
 
 export function loadStartupLoreMarkdown(): string {
-  return fs.readFileSync(path.join(ROOT, 'resources/LORE.md'), 'utf8')
+  return fs.readFileSync(path.join(ROOT, 'lore/LORE.md'), 'utf8')
 }
 
 export function loadStartupLore(): LoreEntry[] {
@@ -310,7 +310,7 @@ export function loadStartupLore(): LoreEntry[] {
 }
 
 /**
- * The full gate: LORE.md grammar + invariants, law numbers resolved against resources/LAWS.md,
+ * The full gate: LORE.md grammar + invariants, law numbers resolved against law/LAWS.md,
  * process ids resolved (read-only) against the corpus loader. Empty array = pass.
  */
 export function validateLore(): string[] {

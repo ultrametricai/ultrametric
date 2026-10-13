@@ -15,10 +15,9 @@ workspace, never here.
 | `journeys/` | Multi-process founder paths (chains; The Open Startup is the live surface) |
 | `processes/` | Jurisdiction-scoped legal workflows + the operational corpus (two layers) |
 | `law/<jurisdiction>/` | Canonical, dated legal rule cards with stable IDs |
-| `sources/` | Primary authorities: provision locators, issue dates, checked dates |
+| `citations/` | The citation registry: rule-card authorities and the canonical startup reading |
 | `jurisdictions/` | Registry + overlays; exact-dimension matching, unknown = unsupported |
 | `open-modules/` | The open modules — cited, deterministic calculations (cap table first) |
-| `resources/` | Curated canonical startup resources + the distilled startup laws (cited) |
 | `open-documents/` | The open-documents map: openly licensed legal forms, linked never redistributed |
 | `vendors/` | The evidence layer + the scenario-scoped review interchange format |
 | `templates/` | Contribution starting points |

@@ -50,11 +50,10 @@ private site repo), **SPLIT** (file-level partition inside the directory),
 | `journeys/` | OPEN | `chains.json`, the multi-process founder paths; corpus-schema-gated content. |
 | `jurisdictions/` | OPEN | Registry and per-country vendor availability; checkable legal scope. |
 | `law/` | OPEN | Dated, source-locked rule cards; the "know the rules" layer. |
-| `sources/` | OPEN | Primary-authority registry the rule cards cite. |
+| `citations/` | OPEN | Citation registry: the authorities the rule cards cite and the reading the laws and lore cite. |
 | `lore/` | OPEN | Sourced heuristics registry. |
 | `open-documents/` | OPEN | The canonical startup legal documents as dated link-only records. |
 | `open-modules/` | OPEN | Index of the open founder-math modules (code in `lib/openstartup/`). |
-| `resources/` | OPEN | Source registry for lore and laws. |
 | `coverage/` | OPEN | Coverage and domain vocabulary for the corpus. |
 | `fixtures/` | OPEN | Fictional worked-example inputs for the open modules. |
 | `templates/` | OPEN | Contribution templates for processes and vendor reviews. |
@@ -198,7 +197,7 @@ cannot drift from the artifact silently.
 
 The closed repo needs, at build time: the content dirs (`data/`, `processes/`,
 `content/processes/`, `journeys/`, `law/`, `jurisdictions/`, `lore/`,
-`open-documents/`, `open-modules/`, `sources/`, `resources/`, `coverage/`, `fixtures/`,
+`open-documents/`, `open-modules/`, `citations/`, `coverage/`, `fixtures/`,
 `templates/`, `vendors/`, `schemas/`, `governance/`, the OPEN half of `docs/` that pages
 read, e.g. `docs/assets/`), the OPEN `public/` assets (badges, logos, screenshots), and
 the OPEN lib modules the app imports (87-module surface, ~160 OPEN files).

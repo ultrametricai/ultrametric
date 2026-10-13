@@ -21,11 +21,10 @@ ultrametric/
 ├── open-modules/    the startup calculations, indexed
 ├── lib/             the code behind modules and loaders
 ├── law/             startup law, one rule per record
-├── sources/         the primary legal authorities
+├── citations/       the sources every record cites
 ├── jurisdictions/   countries, states, vendor geography
 ├── open-documents/  the open legal documents catalog
-├── lore/            heuristics and the reading library
-├── resources/       canonical reading, laws, episodes
+├── lore/            heuristics, episodes, the library
 ├── coverage/        what is covered, at what maturity
 ├── schemas/         the JSON contracts for every record
 └── governance/      review, evidence, and agent policy
@@ -180,7 +179,7 @@ automatically.
 
 ## Open lore
 
-The [advice](lore/) founders actually pass around, and the [episodes](resources/) behind
+The [advice](lore/) founders actually pass around, and the [episodes](lore/LORE.md) behind
 it: who said it, where it is written down, and how well documented it is. When the
 schools disagree, both sides are recorded. The [library](lore/library.json) collects the
 best essays, guides, books, and talks, organized from starting up through getting
@@ -199,7 +198,7 @@ acquired.
 ### Example: Getting acquired
 
 The acquisition episodes are recorded lore: WhatsApp, Twitch, and MySpace are in
-`resources/LORE.md`, each with its lesson and sources. The sale math is live; the
+`lore/LORE.md`, each with its lesson and sources. The sale math is live; the
 waterfall module computes who gets what at any price. The acquisition playbook itself is
 a mapped, open gap in [`coverage/`](coverage/).
 
@@ -207,7 +206,7 @@ a mapped, open gap in [`coverage/`](coverage/).
 
 Map the [law](law/) that applies to startups, across jurisdictions, and connect it to
 the calculations and the vendors that act on it. Each legal statement is one dated record
-citing a primary [authority](sources/) (a statute, regulation, or agency page) with the
+citing a primary [authority](citations/) (a statute, regulation, or agency page) with the
 exact section. A blog post cannot establish law.
 
 ## Government services and startups

@@ -10,8 +10,9 @@ reused to change a rule's meaning: version it and note the affected workflows.
 
 How a card is consumed: `lib/founderOps.ts` validates every card against
 `schemas/rule.schema.json`, requires its `jurisdiction` to exist in
-`jurisdictions/registry.json`, and requires every `source_ids` entry to resolve in
-`sources/registry.json` (for `kind: legal`, to a `primary-*` authority). Workflows in
+`jurisdictions/registry.json`, and requires every `source_ids` entry to resolve to an
+`authority` citation in `citations/registry.json` (for `kind: legal`, to a `primary-*`
+authority). Workflows in
 `processes/<domain>/<jurisdiction>/` cite cards in `rule_ids`, e.g.
 `equity.us-de.83b-election` cites `us-fed.83b-filing-period`.
 
@@ -39,3 +40,12 @@ Contribute here:
 
 Gate: `npx vitest run __tests__/founder-ops.test.ts` (source resolution, jurisdiction
 matching, ID stability).
+
+## LAWS.md
+
+`LAWS.md` distills the citation registry's reading canon into recurring, near-universal
+startup principles grouped by lifecycle stage; every law cites its
+`citations/registry.json` records by id, aphorisms are attributed to their actual origin,
+and the only literal laws (filing deadlines) also carry rule cards here. Gate:
+`npx vitest run __tests__/citations.test.ts` (grammar, numbering, and citation
+resolution via `lib/citations.ts`).

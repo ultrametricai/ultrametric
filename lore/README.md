@@ -9,8 +9,7 @@ essays, guides, books, and talks those claims come from.
 Every entry in `registry.json` is one school's belief about how to build a company, with a
 named author and a citable work behind it. The registry takes no position on which school
 is right; it records the conflicts between entries explicitly, on both sides. The episode
-layer lives separately in
-[`resources/LORE.md`](../resources/LORE.md) (veracity-graded startup history); this
+layer lives alongside it in [`LORE.md`](./LORE.md) (see below); this
 registry records the rules of thumb the schools draw from it.
 
 Each record carries: `id` (stable), `heuristic` (one actionable sentence, a faithful
@@ -31,6 +30,16 @@ Contribute here:
 4. Every `processIds` entry must resolve.
 
 Gate: `pnpm vitest run __tests__/lore-registry.test.ts --maxWorkers=2`.
+
+## Episodes
+
+`LORE.md` records the episodes of startup history as sourced entries: a tight factual
+retelling, era, companies and people, a one-sentence lesson, at least one source with a
+what-it-supports note, and a veracity grade on every entry (`first-person` / `documented`
+/ `reported` / `legend`). Disputed tellings keep the dispute in the text; cross-links to
+the laws (`law/LAWS.md`) and processes must resolve.
+
+Gate: `pnpm vitest run __tests__/lore.test.ts --maxWorkers=2` (via `lib/lore.ts`).
 
 ## Library
 

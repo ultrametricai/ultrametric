@@ -7,10 +7,10 @@ import { fileURLToPath } from 'node:url'
 export const collectionNames = {
   processes: 'Processes', situations: 'Situations', vendors: 'Vendor entries', arenas: 'Rankings',
   documents: 'Open documents', modules: 'Module source files', jurisdictions: 'Jurisdictions',
-  law: 'Rule cards', sources: 'Sources', resources: 'Resources', artifacts: 'Business artifacts',
+  law: 'Rule cards', citations: 'Citations', artifacts: 'Business artifacts',
 }
 
-const roots = ['content/processes/records', 'rankings', 'open-documents', 'lib/openstartup', 'processes', 'jurisdictions', 'law', 'sources', 'resources', 'vendors/reviews/generated', 'coverage']
+const roots = ['content/processes/records', 'rankings', 'open-documents', 'lib/openstartup', 'processes', 'jurisdictions', 'law', 'citations', 'vendors/reviews/generated', 'coverage']
 const recordKey = (collection, id) => `${collection}:${id}`
 const nonempty = value => typeof value === 'string' && value.trim().length > 0
 const isoDate = value => typeof value === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(value) && Number.isFinite(Date.parse(`${value}T00:00:00Z`)) && new Date(`${value}T00:00:00Z`).toISOString().slice(0, 10) === value
@@ -148,17 +148,17 @@ export function buildContentAudit(files, metadata) {
     date(record, value.checked_on, due)
   }
   for (const [collection, file, field] of [
-    ['jurisdictions', 'jurisdictions/registry.json', 'jurisdictions'], ['sources', 'sources/registry.json', 'sources'], ['resources', 'resources/registry.json', 'resources'],
+    ['jurisdictions', 'jurisdictions/registry.json', 'jurisdictions'], ['citations', 'citations/registry.json', 'citations'],
   ]) {
     for (const value of array(json(file)[field], file)) {
-      const record = add(collection, value.id ?? value.code, value.name ?? value.title, file, [value.jurisdiction, value.kind])
+      const record = add(collection, value.id ?? value.code, value.name ?? value.title, file, [value.role, value.jurisdiction, value.kind])
       if (value.url) link(record, value.url, 'source URL', 'external')
       if (collection === 'jurisdictions') {
         check(record, 'Declared coverage', 'unknown', `${value.coverage ?? 'Not recorded'}: ${value.scope ?? 'scope not recorded'}`)
         if (value.parent) link(record, recordKey('jurisdictions', value.parent), 'parent jurisdiction')
       } else {
         date(record, value.checked_on)
-        if (collection === 'sources') {
+        if (value.role === 'authority') {
           presence(record, 'Exact provision locator', nonempty(value.locator))
           if (value.jurisdiction) link(record, recordKey('jurisdictions', value.jurisdiction), 'jurisdiction')
         }
@@ -172,7 +172,7 @@ export function buildContentAudit(files, metadata) {
     presence(record, 'Source citations', Array.isArray(value.source_ids) && value.source_ids.length > 0)
     date(record, value.reviewed_on, value.review_due)
     check(record, 'Recorded maturity', value.status === 'reviewed' ? 'present' : 'unknown', `${value.status ?? 'Unknown'}; ${value.reviewer ?? 'reviewer not recorded'}.`)
-    for (const id of value.source_ids ?? []) link(record, recordKey('sources', id), 'cites')
+    for (const id of value.source_ids ?? []) link(record, recordKey('citations', id), 'cites')
     link(record, recordKey('jurisdictions', value.jurisdiction), 'jurisdiction')
   }
   for (const value of array(json('processes/artifacts.json').artifacts, 'artifacts')) {
@@ -213,7 +213,7 @@ export function buildContentAudit(files, metadata) {
         if (ref.kind === 'url') link(record, ref.url, ref.role, 'external')
         else if (ref.kind === 'vendor') { const target = vendorTarget(ref.id); link(record, target.target, ref.role, target.state) }
         else {
-          const collection = { category: 'arenas', product: 'vendors', rule: 'law', source: 'sources', guidance: 'resources' }[ref.kind]
+          const collection = { category: 'arenas', product: 'vendors', rule: 'law', source: 'citations', guidance: 'citations' }[ref.kind]
           if (collection) link(record, recordKey(collection, ref.id), ref.role)
         }
       }

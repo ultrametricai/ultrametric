@@ -224,16 +224,19 @@ export function validateFounderOps(asOf?: Date): string[] {
     }
   }
 
-  const sourcesDoc = read(path.join(ROOT, 'sources/registry.json'))
+  const citationsDoc = read(path.join(ROOT, 'citations/registry.json'))
   const sourceMap = new Map<string, JsonObject>()
-  const sourceList = isObj(sourcesDoc) && Array.isArray(sourcesDoc.sources) ? sourcesDoc.sources : []
-  for (const source of sourceList) {
+  const citationList = isObj(citationsDoc) && Array.isArray(citationsDoc.citations) ? citationsDoc.citations : []
+  for (const source of citationList) {
     if (!isObj(source) || typeof source.id !== 'string') {
-      errors.push('sources/registry.json: source without id')
+      errors.push('citations/registry.json: citation without id')
       continue
     }
     const sid = source.id
-    shape(source, need('source.schema'), `source ${sid}`, errors)
+    shape(source, need('citation.schema'), `citation ${sid}`, errors)
+    // Reading-role citations are validated in lib/citations.ts; the rule cards cite the
+    // authority role, so only those enter the source map and the authority checks below.
+    if (source.role !== 'authority') continue
     if (sourceMap.has(sid)) errors.push(`duplicate source id ${sid}`)
     sourceMap.set(sid, source)
     const url = str(source.url) ?? ''
@@ -364,10 +367,10 @@ export function planFounderOps(event: JsonObject, asOf?: Date): FounderOpsPlan {
     return { status: 'unsupported', reason: 'no exact covered scenario', may_execute: false }
   }
   const ruleMap = indexed(listJson(path.join(ROOT, 'law')), [], 'rule')
-  const sourcesDoc = read(path.join(ROOT, 'sources/registry.json'))
+  const citationsDoc = read(path.join(ROOT, 'citations/registry.json'))
   const sources = new Map<string, JsonObject>()
-  for (const s of isObj(sourcesDoc) && Array.isArray(sourcesDoc.sources) ? sourcesDoc.sources : []) {
-    if (isObj(s) && typeof s.id === 'string') sources.set(s.id, s)
+  for (const s of isObj(citationsDoc) && Array.isArray(citationsDoc.citations) ? citationsDoc.citations : []) {
+    if (isObj(s) && typeof s.id === 'string' && s.role === 'authority') sources.set(s.id, s)
   }
   const output: JsonObject[] = matches.map((process) => {
     const due = new Date(`${str(process.review_due)}T00:00:00Z`)
