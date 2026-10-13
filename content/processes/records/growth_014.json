@@ -3,19 +3,50 @@
   "id": "growth_014",
   "kind": "process",
   "title": "Roll out a pricing change",
-  "summary": "Change prices without burning the base: model the revenue impact, decide who gets grandfathered, create the new plans, migrate subscriptions, announce it honestly, and watch churn and MRR through the transition.",
-  "outcomes": [],
-  "guidance": null,
+  "summary": "Model the pricing change, decide customer-level treatment, prepare plans and required notices, then apply authorized billing changes and reconcile the transition.",
+  "outcomes": [
+    "A complete customer transition ledger with old/new terms, effective dates, exceptions and held accounts.",
+    "Reproducible revenue scenarios and account-level billing previews, with provider assumptions identified.",
+    "A reconciled execution ledger and customer notices for actions actually performed, or an explicit prepared-only handoff."
+  ],
+  "guidance": "Use a dated subscription snapshot and the approved customer-level transition policy. Prepare a ledger covering every subscription exactly once, including accounts held for review. Start with supported previews or a clearly labeled simulation; neither changes live billing. Release only the exact authorized batch and reconcile its observed results. Keep modeled recurring revenue, invoice amounts and cash collection separate. A tested migration package is a prepared outcome; a rollout is complete only after the authorized changes, required notices and actual billing reconciliation are evidenced.",
   "parts": [
     {
       "id": "n1",
       "kind": "step",
       "title": "Model the revenue impact of the new pricing",
-      "guidance": "Compare current and proposed pricing against actual customer quantities, discounts, usage and renewal patterns. Show representative invoices and scenarios for customer responses, keeping recurring revenue definitions and currencies consistent. Separate modeled revenue uplift from cash collection. Give the pricing decision-maker the assumptions and sensitivities that materially change the result, especially for customers facing the largest increases.",
+      "guidance": "Compare current and proposed pricing against actual customer quantities, discounts, usage and renewal patterns. Show representative invoices and scenarios for customer responses, keeping recurring revenue definitions and currencies consistent. Separate modeled revenue uplift from cash collection. Give the pricing decision-maker the assumptions and sensitivities that materially change the result, especially for customers facing the largest increases.\n\nRetain input subscription IDs and the snapshot date. Reconcile starting and proposed recurring revenue to the customer ledger, using consistent billing intervals and separate currencies unless an explicit conversion is supplied. Show totals for unchanged, migrated and unresolved cohorts; a projected uplift is not collected cash.\n\nShow the approved baseline and a downside scenario separately. Preserve contractual annual terms until the relevant renewal, and represent delayed cohorts in their actual periods. If customer counts, fees or timing are corrected, recompute the model and update the customer ledger, notices and handoff from that same revision.\n\nRegenerate related outputs together in a staging location and validate the complete set before replacing the last verified revision; a failed run must leave that revision intact and identify the revised attempt as incomplete. After changing an input, rerun verification and reconcile period-specific cohort totals, schedules and summaries, including renewals that move beyond the forecast horizon. Keep fixed baseline test expectations separate from checks valid for changed inputs, and update narrative dates and amounts from the verified revision.",
       "when": null,
       "ref": null,
       "options": [],
-      "notes": [],
+      "notes": [
+        {
+          "text": "UM's Stripe Billing evidence includes a proration-preview source (stripe-billing-docs-4), while its proration-correctness and agent-manages-subscriptions verdicts record gaps in calculation details, credits, permissions and hands-on execution. Use those gaps to define the customer's preview and invoice reconciliation checks before rollout. The patio11-charge-more lore entry is a hypothesis about pricing, with an explicit tension against growth-at-speed thinking; test it against this company's value evidence and cohort economics. It does not establish that a price increase is appropriate or authorized.",
+          "references": [
+            {
+              "kind": "url",
+              "url": "https://github.com/ultrametricai/ultrametric/blob/6b8b3d854f555e743bfd1c589f1ae1b57a0e1c61/data/billing-subscriptions/evidence/stripe-billing.json",
+              "title": "UM Stripe Billing proration evidence",
+              "description": "stripe-billing-docs-4 documents proration previews, a starting point for checking the customer’s actual invoice treatment.",
+              "role": "source"
+            },
+            {
+              "kind": "url",
+              "url": "https://github.com/ultrametricai/ultrametric/blob/6b8b3d854f555e743bfd1c589f1ae1b57a0e1c61/data/billing-subscriptions/verdicts.json",
+              "title": "UM billing operation and proration gaps",
+              "description": "Proration and subscription-management verdicts record calculation, credit, permission and execution gaps for rollout checks.",
+              "role": "source"
+            },
+            {
+              "kind": "url",
+              "url": "https://github.com/ultrametricai/ultrametric/blob/6b8b3d854f555e743bfd1c589f1ae1b57a0e1c61/lore/registry.json",
+              "title": "UM pricing heuristic and competing assumptions",
+              "description": "The patio11-charge-more entry presents a pricing hypothesis and its tension with growth-at-speed assumptions, not a customer-specific recommendation.",
+              "role": "source"
+            }
+          ]
+        }
+      ],
       "references": [
         {
           "kind": "vendor",
@@ -33,7 +64,7 @@
       "id": "n2",
       "kind": "step",
       "title": "Decide grandfathering and migration policy",
-      "guidance": "Group customers into retained terms, new pricing and cases needing individual review. Check contracts and commitments with the commercial and legal reviewers for relevant notice, acceptance and renewal conditions. Define effective dates, discount treatment and exception authority. Produce a customer-level migration policy, keeping unresolved accounts out of the change batch until their obligations and treatment are established.",
+      "guidance": "Group customers into retained terms, new pricing and cases needing individual review. Check contracts and commitments with the commercial and legal reviewers for relevant notice, acceptance and renewal conditions. Define effective dates, discount treatment and exception authority. Produce a customer-level migration policy, keeping unresolved accounts out of the change batch until their obligations and treatment are established.\n\nAssign every subscription to exactly one transition group, with the decision source and owner. Store old/new price identifiers, quantity, discount, currency, interval, effective date and required notice or acceptance status. A missing policy decision excludes that account from execution.\n\nCapture subscription lifecycle status and scheduled changes, including pending cancellation, pause, trial or delinquency. Resolve how each affects eligibility with the billing owner; keep unknown treatment held. Preserve existing cancellation and scheduled-change intent. Count recurring revenue under the stated policy rather than treating every listed amount as an eligible renewal or uplift.",
       "when": null,
       "ref": null,
       "options": [],
@@ -50,7 +81,7 @@
       "id": "n3",
       "kind": "step",
       "title": "Create the new plans in billing",
-      "guidance": "Create the new plans from the pricing matrix in a draft or test catalog, preserving identifiers still used by current subscriptions. Check currency, interval, unit, usage limits and customer wording through checkout and invoice previews. Map each old plan to its intended successor and specify which remain available. Release the new catalog within billing authority; moving subscriptions requires the separate migration policy.",
+      "guidance": "Create the new plans from the pricing matrix in a draft or test catalog, preserving identifiers still used by current subscriptions. Check currency, interval, unit, usage limits and customer wording through checkout and invoice previews. Map each old plan to its intended successor and specify which remain available. Release the new catalog within billing authority; moving subscriptions requires the separate migration policy.\n\nIdentify the provider account and test/live mode before any catalog change. Keep test identifiers separate from live identifiers, and preserve a preview artifact showing the intended amount and interval. A local simulator checks the proposed policy only; it does not verify provider-specific proration or tax behavior.",
       "when": null,
       "ref": null,
       "options": [],
@@ -96,41 +127,10 @@
       }
     },
     {
-      "id": "n4",
-      "kind": "step",
-      "title": "Migrate or grandfather existing subscriptions",
-      "guidance": "Build the exact subscription batch from the migration policy, excluding grandfathered and unresolved accounts. Preview effective dates, billing periods, discounts, credits and immediate charges with the provider's supported tools. Confirm required notices or acceptance and billing authority for that batch. Apply and reconcile each account; inspect partial failures before retrying so a customer is not charged twice or moved outside the policy.",
-      "when": null,
-      "ref": null,
-      "options": [],
-      "notes": [],
-      "references": [
-        {
-          "kind": "vendor",
-          "id": "stripe_billing",
-          "role": "stated-vendor"
-        },
-        {
-          "kind": "url",
-          "url": "https://docs.stripe.com/billing/subscriptions/change-price",
-          "title": "Change the price of existing subscriptions",
-          "description": null,
-          "role": "authored-guidance-source"
-        }
-      ],
-      "metadata": {
-        "route": "agent",
-        "reversibility": "painful",
-        "approvalRequired": true,
-        "riskLevel": "high",
-        "estimatedMinutes": 30
-      }
-    },
-    {
       "id": "n5",
       "kind": "step",
       "title": "Update the site pricing page and docs",
-      "guidance": "Use the billing pricing matrix to update the public pricing page, plan comparisons and help material. Explain units, intervals, limits and treatment of existing customers consistently. In preview, follow each purchase link to the intended plan and price. Publish the pricing owner's agreed version, then compare live amounts, destinations and support guidance with the released catalog.",
+      "guidance": "Use the billing pricing matrix to update the public pricing page, plan comparisons and help material. Explain units, intervals, limits and treatment of existing customers consistently. In preview, follow each purchase link to the intended plan and price. Publish the pricing owner's agreed version, then compare live amounts, destinations and support guidance with the released catalog.\n\nCoordinate the public release date with the approved new-customer and existing-customer policies. A preview can be prepared while required notices are pending; publish only on the agreed schedule and avoid implying that protected existing customers have already changed terms.",
       "when": null,
       "ref": null,
       "options": [],
@@ -152,7 +152,7 @@
       "id": "n6",
       "kind": "step",
       "title": "Announce the change to customers",
-      "guidance": "Write each customer notice for that recipient's actual transition group: old and new terms, effective date, required action and support contact. Follow the contract and jurisdiction review for notice or acceptance requirements. Send the commercial owner's agreed messages to the mapped recipients on the required schedule. Track responses and return disputed or unresolved accounts to the migration owner before their billing change.",
+      "guidance": "Write each customer notice for that recipient's actual transition group: old and new terms, effective date, required action and support contact. Follow the contract and jurisdiction review for notice or acceptance requirements. Send the commercial owner's agreed messages to the mapped recipients on the required schedule. Track responses and return disputed or unresolved accounts to the migration owner before their billing change.\n\nCheck the actual recipient-to-subscription mapping and fill in the sender, exact effective date, required action and monitored support route. Keep missing dates or contacts as explicit draft gaps. A cohort summary is useful internally but is not a recipient-ready notice. Record delivery/notice evidence and any required acceptance before releasing that recipient’s billing change; failed, late or disputed notices hold the affected account.",
       "when": null,
       "ref": null,
       "options": [],
@@ -186,10 +186,41 @@
       }
     },
     {
+      "id": "n4",
+      "kind": "step",
+      "title": "Migrate or grandfather existing subscriptions",
+      "guidance": "Build the exact subscription batch from the migration policy, excluding grandfathered and unresolved accounts. Preview effective dates, billing periods, discounts, credits and immediate charges with the provider's supported tools. Confirm required notices or acceptance and billing authority for that batch. Apply and reconcile each account; inspect partial failures before retrying so a customer is not charged twice or moved outside the policy.\n\nRetain a per-subscription record of the requested change, preview, approval scope, provider request/receipt identifiers and authoritative readback. After a timeout or partial response, reconcile current state before retrying; use the provider’s supported retry controls. Report changed, unchanged, held, failed and unconfirmed accounts separately, and reconcile their counts to the exact batch before declaring completion.\n\nVerify lifecycle status and scheduled changes in both the preview and readback. A price update must preserve cancellation, pause and other scheduled intent unless the exact change is separately authorized. Reconcile these states as well as amounts and dates.",
+      "when": null,
+      "ref": null,
+      "options": [],
+      "notes": [],
+      "references": [
+        {
+          "kind": "vendor",
+          "id": "stripe_billing",
+          "role": "stated-vendor"
+        },
+        {
+          "kind": "url",
+          "url": "https://docs.stripe.com/billing/subscriptions/change-price",
+          "title": "Change the price of existing subscriptions",
+          "description": null,
+          "role": "authored-guidance-source"
+        }
+      ],
+      "metadata": {
+        "route": "agent",
+        "reversibility": "painful",
+        "approvalRequired": true,
+        "riskLevel": "high",
+        "estimatedMinutes": 30
+      }
+    },
+    {
       "id": "n7",
       "kind": "step",
       "title": "Monitor churn and MRR through the transition",
-      "guidance": "Compare affected cohorts with the pre-change baseline for recurring revenue, cancellations, downgrades and expansion. Reconcile planned transitions with actual invoices and charges to distinguish implementation errors from customer decisions. Read support complaints alongside the numbers. Report the window, cohort sizes and data gaps, and identify concrete corrections where billing behavior or customer understanding differs from the policy.",
+      "guidance": "Compare affected cohorts with the pre-change baseline for recurring revenue, cancellations, downgrades and expansion. Reconcile planned transitions with actual invoices and charges to distinguish implementation errors from customer decisions. Read support complaints alongside the numbers. Report the window, cohort sizes and data gaps, and identify concrete corrections where billing behavior or customer understanding differs from the policy.\n\nCompare the execution ledger with actual invoices over the stated observation window. Do not claim churn or revenue effects before sufficient observations exist. Hand over remaining monitoring with its owner and schedule only when that follow-up is actually established.",
       "when": null,
       "ref": null,
       "options": [],
@@ -221,26 +252,26 @@
     },
     {
       "from": "n3",
-      "to": "n4",
-      "when": null
-    },
-    {
-      "from": "n3",
       "to": "n5",
       "when": null
     },
     {
-      "from": "n4",
-      "to": "n6",
-      "when": null
-    },
-    {
-      "from": "n5",
+      "from": "n3",
       "to": "n6",
       "when": null
     },
     {
       "from": "n6",
+      "to": "n4",
+      "when": null
+    },
+    {
+      "from": "n4",
+      "to": "n7",
+      "when": null
+    },
+    {
+      "from": "n5",
       "to": "n7",
       "when": null
     }
