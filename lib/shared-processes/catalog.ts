@@ -8,14 +8,7 @@ const identifier = sharedRecordSchema.shape.id
 export const processDefinitionSchema = sharedRecordSchema.extend({
   entrySteps: z.array(identifier).min(1),
 })
-const journeySchema = z.strictObject({
-  schemaVersion: z.literal(1), id: identifier, title: z.string().min(1), summary: z.string(),
-  parts: z.array(z.strictObject({ id: identifier, process: identifier, when: z.string().min(1).nullable() })).min(1),
-  links: z.array(z.strictObject({ from: identifier, to: identifier, when: z.string().min(1).nullable().optional() })),
-  entrySteps: z.array(identifier).min(1),
-})
 export type CatalogProcess = { slug: string; entrySteps: string[]; record: SharedRecord }
-export type Journey = z.infer<typeof journeySchema>
 
 function json(file: string) {
   if (!lstatSync(file).isFile()) throw new Error(`Expected a regular file: ${file}`)
@@ -43,20 +36,7 @@ export function validateFlow(ids: string[], links: { from: string; to: string }[
   if (visited.size !== known.size) throw new Error('Every step must be reachable from an explicit entry')
 }
 
-export function validateJourneys(input: unknown[], records: SharedRecord[]) {
-  const journeys = input.map(value => journeySchema.parse(value))
-  const ids = new Set(records.map(record => record.id))
-  const names = new Set<string>()
-  for (const journey of journeys) {
-    if (names.has(journey.id) || ids.has(journey.id)) throw new Error('Duplicate journey ID')
-    names.add(journey.id)
-    if (journey.parts.some(part => !ids.has(part.process))) throw new Error('Unknown journey process')
-    validateFlow(journey.parts.map(part => part.id), journey.links, journey.entrySteps)
-  }
-  return journeys
-}
-
-export function loadProcessCatalog(selection: { processes: string[]; journeys?: string[] }, root = process.cwd()) {
+export function loadProcessCatalog(selection: { processes: string[] }, root = process.cwd()) {
   const names = z.array(slug).min(1).parse(selection.processes)
   if (new Set(names).size !== names.length) throw new Error('Duplicate process selection')
   const processes: CatalogProcess[] = names.sort().map(name => {
@@ -65,7 +45,5 @@ export function loadProcessCatalog(selection: { processes: string[]; journeys?: 
     return { slug: name, entrySteps, record }
   })
   validateCatalog(processes.map(process => process.record))
-  const journeyNames = z.array(slug).parse(selection.journeys ?? [])
-  const journeys = validateJourneys(journeyNames.map(name => json(path.join(root, 'journeys', `${name}.json`))), processes.map(process => process.record))
-  return { processes, journeys }
+  return { processes }
 }
