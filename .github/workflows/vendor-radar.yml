@@ -12,11 +12,19 @@
 #      'vendor-radar: candidates YYYY-MM-DD' issue listing them with their evidence links
 #      (label: story-runner, the same label every automation reuses).
 #
-# HONESTY: the radar NEVER auto-adds products and NEVER auto-judges — detection only; nothing
-# under rankings/ changes from this scan. The deep spike on an approved candidate remains a
-# deliberate, reviewed run of the standard pipeline (docs/VENDOR-RADAR.md, the Instinct/dots
-# precedent). Keyless by design: no LLM key needed; secrets.GITHUB_TOKEN is auto-provided and
-# only used for git push / gh issue|pr create / the higher authenticated GitHub search limit.
+# HONESTY: the scan itself changes nothing under rankings/, the radar NEVER creates a new
+# ranking, and it NEVER touches a founder-affiliated product autonomously. Approval is
+# criteria-based (governance/AGENT_POLICY.md "Vendor-radar candidate approval", founder
+# authorization 2026-10-13, replacing checkbox approval): radar-triage.ts applies the criteria
+# mechanically (existing-ranking fit via the lexical classifier, docs-surface fetch, shipped-
+# product checks, founder-affiliation guard), records every failing candidate as skipped with
+# its reason, and radar-bringup.ts adds capped auto-approved passers to their existing arena's
+# roster. The bring-up then runs the scoped standard pipeline (crawl → extract →
+# collect-community → probe → judge --product → derive → logos; LLM stages only when the
+# ANTHROPIC_API_KEY repo secret exists — without it, passers stay approved-pending in the triage
+# report) and lands as a PR, never a direct push to main. The scan is keyless;
+# secrets.GITHUB_TOKEN is auto-provided and only used for git push / gh issue|pr create / the
+# higher authenticated GitHub search limit.
 #
 # Cron offset from the other loops: story-runner '17 */6 * * *', daily-snapshot '43 5 * * *',
 # cert-sweep '29 7 * * 1' (Mondays), accuracy-engine '41 6 * * 3' (Wednesdays), yc-coverage
@@ -60,6 +68,26 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: pnpm tsx pipeline/scripts/vendor-radar.ts --issue-body /tmp/vendor-radar-issue.md
+
+      # Criteria triage (governance/AGENT_POLICY.md): mechanical checks per candidate — fetches
+      # the docs surface, applies the shipped-product and affiliation guards — and appends the
+      # disposition table (auto-approved / skipped-with-reason / needs-human) to the issue body
+      # so every candidate's outcome is recorded where it surfaced.
+      - name: Criteria triage
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          if [ ! -f /tmp/vendor-radar-issue.md ]; then
+            echo "No new candidates — nothing to triage."
+            exit 0
+          fi
+          DATE=$(date -u +%F)
+          pnpm tsx pipeline/scripts/radar-triage.ts \
+            --report "reports/vendor-radar/$DATE.json" \
+            --out "reports/vendor-radar/$DATE-triage.json" \
+            --md /tmp/vendor-radar-triage.md
+          printf '\n' >> /tmp/vendor-radar-issue.md
+          cat /tmp/vendor-radar-triage.md >> /tmp/vendor-radar-issue.md
 
       - name: Tests
         run: pnpm test
@@ -120,4 +148,71 @@ jobs:
               --title "$TITLE" \
               --body-file /tmp/vendor-radar-issue.md \
               --label "story-runner" || echo "issue creation failed — the same report is committed in reports/vendor-radar/"
+          fi
+
+      # Bring-up PR for auto-approved passers: roster append (radar-bringup.ts, capped at 3 per
+      # run to bound judge spend) + the scoped standard pipeline per added product, landing as
+      # its own PR with the full disposition table (including the skipped list) in the body.
+      # Gated on the ANTHROPIC_API_KEY repo secret because extract/collect-community/judge are
+      # LLM stages — without the key nothing is added and passers stay approved-pending in the
+      # committed triage report. Branches from the scanned commit, not the report branch, so the
+      # bring-up PR carries only roster + pipeline output.
+      - name: Bring-up PR for auto-approved passers
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          RUN_ID: ${{ github.run_id }}
+        run: |
+          DATE=$(date -u +%F)
+          TRIAGE="reports/vendor-radar/$DATE-triage.json"
+          if [ ! -f "$TRIAGE" ]; then
+            echo "No triage output — no bring-up."
+            exit 0
+          fi
+          if [ -z "$ANTHROPIC_API_KEY" ]; then
+            echo "ANTHROPIC_API_KEY secret not set — auto-approved passers stay approved-pending in $TRIAGE."
+            exit 0
+          fi
+          cp "$TRIAGE" /tmp/triage.json
+          BRANCH="vendor-radar-bringup/$RUN_ID"
+          git config user.name "ultrametric-vendor-radar"
+          git config user.email "noreply@ultrametric.ai"
+          git checkout -f -B "$BRANCH" "$GITHUB_SHA"
+          pnpm tsx pipeline/scripts/radar-bringup.ts --triage /tmp/triage.json --cap 3 > /tmp/bringups.txt
+          if [ ! -s /tmp/bringups.txt ]; then
+            echo "No products added — no bring-up PR."
+            exit 0
+          fi
+          while read -r ARENA PRODUCT; do
+            for STAGE in crawl extract collect-community probe judge; do
+              pnpm pipeline "$STAGE" --category "$ARENA" --product "$PRODUCT"
+            done
+            pnpm pipeline derive --category "$ARENA"
+            pnpm pipeline logos --category "$ARENA" --product "$PRODUCT"
+          done < /tmp/bringups.txt
+          # Same contract as spike-engine: derive restamps rankings.generatedAt and judge adds
+          # verdicts, inputs of the vendor-review interchange records and the story graph.
+          pnpm tsx pipeline/scripts/generate-vendor-reviews.ts
+          pnpm tsx pipeline/scripts/generate-story-graph.ts
+          pnpm stats
+          pnpm test
+          git add rankings pipeline/cache vendors/reviews/generated public/badges README.md
+          git commit -m "feat(vendor-radar): scoped bring-up of auto-approved candidates ($DATE)"
+          git push -u origin "$BRANCH"
+          {
+            echo "Automated bring-up of auto-approved radar candidates (criteria: \`governance/AGENT_POLICY.md\` \"Vendor-radar candidate approval\", founder authorization 2026-10-13). Products added:"
+            sed 's/^/- /' /tmp/bringups.txt
+            echo
+            echo "Debut scores come from the scoped standard pipeline (crawl → extract → collect-community → probe → judge --product → derive → logos); no rank was hand-set. The radar created no new ranking and touched no founder-affiliated product."
+            echo
+            cat /tmp/vendor-radar-triage.md
+          } > /tmp/bringup-pr-body.md
+          if ! gh pr create \
+            --title "vendor-radar: bring-up $DATE" \
+            --body-file /tmp/bringup-pr-body.md \
+            --base main --head "$BRANCH"; then
+            gh issue create \
+              --title "vendor-radar: bring-up ready on $BRANCH" \
+              --body "The bring-up is committed on [\`$BRANCH\`](https://github.com/${GITHUB_REPOSITORY}/compare/main...$BRANCH) but PR creation failed — open the PR from the compare link." \
+              --label "story-runner" || echo "issue creation also failed — branch $BRANCH is pushed; see run logs"
           fi
