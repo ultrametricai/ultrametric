@@ -1,4 +1,4 @@
-import { describe, expect, it } from 'vitest'
+import { describe, expect, it, vi } from 'vitest'
 import fs from 'node:fs'
 import path from 'node:path'
 import { planFounderOps, validateFounderOps } from '@/lib/founderOps'
@@ -17,6 +17,24 @@ describe('founder-ops corpus validation', () => {
     // state-coverage wave's CA/NV/TX sources) so the "checked date is in the future"
     // invariant stays meaningful.
     expect(validateFounderOps(new Date('2026-10-03T00:00:00Z'))).toEqual([])
+  })
+
+  it('collects malformed workflow JSON and invalid process definitions together', () => {
+    const readFile = fs.readFileSync.bind(fs)
+    const unreadable = path.join(process.cwd(), 'processes/equity/us-de/409a-valuation.json')
+    const invalid = path.join(process.cwd(), 'processes/generate-a-brand-logo.json')
+    const spy = vi.spyOn(fs, 'readFileSync').mockImplementation((...args: Parameters<typeof fs.readFileSync>) => {
+      if (String(args[0]) === unreadable) return '{'
+      if (String(args[0]) === invalid) return JSON.stringify({ schemaVersion: 1, kind: 'process', id: 'invalid' })
+      return readFile(...args)
+    })
+    try {
+      const errors = validateFounderOps(new Date('2026-10-03T00:00:00Z'))
+      expect(errors).toContain('processes/equity/us-de/409a-valuation.json: unreadable JSON')
+      expect(errors).toContain('processes/generate-a-brand-logo.json: invalid process definition')
+    } finally {
+      spy.mockRestore()
+    }
   })
 
   it('all fixtures are synthetic with full scenario dimensions', () => {

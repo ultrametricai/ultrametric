@@ -1,5 +1,6 @@
+import { execFileSync, spawnSync } from 'node:child_process'
 import { afterEach, describe, expect, it } from 'vitest'
-import { mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs'
+import { cpSync, existsSync, mkdirSync, mkdtempSync, readFileSync, rmSync, symlinkSync, writeFileSync } from 'node:fs'
 import os from 'node:os'
 import path from 'node:path'
 import { loadProcessCatalog, validateFlow } from '../shared-processes/catalog'
@@ -30,5 +31,43 @@ describe('process authoring catalog', () => {
     const definition = JSON.parse(readFileSync('processes/generate-a-brand-logo.json', 'utf8'))
     writeFileSync(path.join(root, 'processes/example.json'), JSON.stringify({ ...definition, links: [] }))
     expect(() => loadProcessCatalog({ processes: ['example'] }, root)).toThrow('reachable')
+  })
+})
+
+function exportFixture() {
+  const root = mkdtempSync(path.join(os.tmpdir(), 'candidate-export-'))
+  temporary.push(root)
+  const files = ['lib/shared-processes/catalog.ts', 'lib/shared-processes/schema.ts', 'lib/shared-processes/json-schema.ts', 'scripts/shared-processes/export-candidate.ts', 'schemas/shared-process.schema.json', 'processes/generate-a-brand-logo.json']
+  for (const file of files) {
+    mkdirSync(path.dirname(path.join(root, file)), { recursive: true })
+    cpSync(file, path.join(root, file))
+  }
+  symlinkSync(path.join(process.cwd(), 'node_modules'), path.join(root, 'node_modules'))
+  writeFileSync(path.join(root, '.gitignore'), 'node_modules\n')
+  execFileSync('git', ['init', '-q'], { cwd: root })
+  execFileSync('git', ['add', '.'], { cwd: root })
+  execFileSync('git', ['-c', 'user.name=Test', '-c', 'user.email=test@example.invalid', '-c', 'commit.gpgsign=false', 'commit', '-qm', 'Synthetic candidate'], { cwd: root })
+  return root
+}
+function exportCandidate(root: string) {
+  return spawnSync(process.execPath, ['--import', 'tsx', 'scripts/shared-processes/export-candidate.ts', '--process', 'generate-a-brand-logo', '--output', 'catalog.json', '--lock', 'candidate.lock'], { cwd: root, encoding: 'utf8' })
+}
+describe('candidate source pin', () => {
+  it.each(['lib/shared-processes/json-schema.ts', 'scripts/shared-processes/export-candidate.ts'])('rejects uncommitted exporter code in %s', file => {
+    const root = exportFixture()
+    const source = path.join(root, file)
+    writeFileSync(source, readFileSync(source, 'utf8') + '\n')
+    const result = exportCandidate(root)
+    expect(result.status).not.toBe(0)
+    expect(result.stderr).toContain('Commit candidate source before exporting')
+    expect(existsSync(path.join(root, 'catalog.json'))).toBe(false)
+  })
+  it('exports reproducible JSON files without executable helper files in the lock', () => {
+    const root = exportFixture()
+    const result = exportCandidate(root)
+    expect(result.status, result.stderr).toBe(0)
+    const lock = JSON.parse(readFileSync(path.join(root, 'candidate.lock'), 'utf8'))
+    expect(lock.sourceRevision).toBe(execFileSync('git', ['rev-parse', 'HEAD'], { cwd: root, encoding: 'utf8' }).trim())
+    expect(lock.files.map((file: { path: string }) => file.path)).toEqual(['processes/generate-a-brand-logo.json', 'schemas/shared-process.schema.json'])
   })
 })

@@ -62,14 +62,7 @@ function workflowJson(dir: string): string[] {
       !f.endsWith(OPERATIONAL_BUSINESS_LOGIC_MAP) &&
       !f.endsWith(OPERATIONAL_COMPANY_FIELDS) &&
       !f.endsWith(OPERATIONAL_CHAINS),
-  ).filter(file => {
-    const value = read(file)
-    if (isObj(value) && value.schemaVersion === 1 && (value.kind === 'process' || value.kind === 'situation')) {
-      processDefinitionSchema.parse(value)
-      return false
-    }
-    return true
-  })
+  )
 }
 
 type Json = string | number | boolean | null | Json[] | { [key: string]: Json }
@@ -77,6 +70,10 @@ type JsonObject = { [key: string]: Json }
 
 function isObj(v: Json | undefined): v is JsonObject {
   return typeof v === 'object' && v !== null && !Array.isArray(v)
+}
+
+function isProcessDefinition(value: Json): boolean {
+  return isObj(value) && value.schemaVersion === 1 && (value.kind === 'process' || value.kind === 'situation')
 }
 
 function read(file: string): Json {
@@ -115,6 +112,10 @@ function indexed(files: string[], errors: string[], name: string): Map<string, J
       record = read(file)
     } catch {
       errors.push(`${path.relative(ROOT, file)}: unreadable JSON`)
+      continue
+    }
+    if (name === 'process' && isProcessDefinition(record)) {
+      if (!processDefinitionSchema.safeParse(record).success) errors.push(`${path.relative(ROOT, file)}: invalid process definition`)
       continue
     }
     if (!isObj(record) || typeof record.id !== 'string') {
@@ -373,6 +374,7 @@ export function planFounderOps(event: JsonObject, asOf?: Date): FounderOpsPlan {
   const processes = workflowJson(path.join(ROOT, 'processes'))
     .map(read)
     .filter(isObj)
+    .filter(record => !isProcessDefinition(record))
   const matches = processes.filter((p) => {
     const scope = isObj(p.applicability) ? p.applicability : {}
     return MATCH_KEYS.every((key) => scope[key] === event[key])
