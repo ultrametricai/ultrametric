@@ -4,18 +4,35 @@
   "kind": "process",
   "title": "Run an incident postmortem",
   "summary": "After the incident is resolved: assemble the timeline from the incident tooling, draft the blameless write-up, hold the review, file the follow-up actions, and post the public status-page account. Setting up on-call itself lives in On-call & incidents.",
-  "outcomes": [],
-  "guidance": null,
+  "outcomes": [
+    "A source-linked incident timeline and impact calculation with disputed or missing observations identified.",
+    "A causal analysis separating demonstrated causes from hypotheses and a testable corrective-action backlog.",
+    "Recorded review decisions and authorized communications when performed, with proposed work and pending approvals kept distinct."
+  ],
+  "guidance": "Start after containment with a defined incident, service and evidence window. Build a source-linked account of impact, detection, response and recovery, preserving uncertainty and sensitive-data boundaries. A review-ready package contains a checked timeline, causal hypotheses and corrective actions with observable acceptance checks. A completed review, accepted owner/date, tracker ticket or public communication requires its own evidence; drafting those items does not complete them.",
   "parts": [
     {
       "id": "n1",
       "kind": "step",
       "title": "Assemble the incident timeline",
-      "guidance": "Build the incident timeline from alerts, deployments, logs, responder notes and support reports using one timezone. Include when users were affected, when the team noticed, what changed during mitigation and how recovery was established. Link disputed timestamps to their evidence and keep estimates visibly uncertain. Ask participants to correct gaps before analysis; keep customer identifiers and credentials out of the shared timeline.",
+      "guidance": "Build the incident timeline from alerts, deployments, logs, responder notes and support reports using one timezone. Include when users were affected, when the team noticed, what changed during mitigation and how recovery was established. Link disputed timestamps to their evidence and keep estimates visibly uncertain. Ask participants to correct gaps before analysis; keep customer identifiers and credentials out of the shared timeline.\n\nRetain event identifiers, original timestamps/timezones and any demonstrated clock correction. Reconcile the impact start and recovery with user-facing evidence rather than a single green infrastructure metric. Show the covered population and missing observations; do not manufacture a precise affected-user count.\n\nIdentify evidence that may expire before review. Preserve the necessary logs, metrics and configuration through authorized access with their query/window and source dates, applying the sharing and redaction rules. Record unavailable evidence and retention limits; an expiring dashboard link alone may not support later review.",
       "when": null,
       "ref": null,
       "options": [],
-      "notes": [],
+      "notes": [
+        {
+          "text": "UM's incident.io evidence documents an editable timeline, postmortem tracking and follow-ups (incident-io-docs-4, incident-io-docs-5 and incident-io-docs-7). Use these as retrieval and handoff leads when the company uses that tool. An editable timeline may include manual narrative; retain original observations and reconcile clock offsets before calculating duration or asserting cause. Vendor postmortem features do not establish this incident's impact, root cause, accepted owner or completed follow-up.",
+          "references": [
+            {
+              "kind": "url",
+              "url": "https://github.com/ultrametricai/ultrametric/blob/6b8b3d854f555e743bfd1c589f1ae1b57a0e1c61/data/incident-management/evidence/incident-io.json",
+              "title": "UM incident timeline and follow-up evidence",
+              "description": "incident-io-docs-4, -5 and -7 describe editable timelines, postmortems and follow-ups, without establishing this incident’s causal evidence.",
+              "role": "source"
+            }
+          ]
+        }
+      ],
       "references": [
         {
           "kind": "vendor",
@@ -55,7 +72,7 @@
       "id": "n2",
       "kind": "step",
       "title": "Draft the blameless postmortem doc",
-      "guidance": "Explain the incident using the timeline: user impact, detection, decisions, contributing conditions and recovery. Describe each decision in the context of the information responders had at the time. Separate a reproduced cause from a plausible hypothesis. For each proposed improvement, explain which observed failure it addresses, such as late detection or a recovery command that failed. List unresolved causal questions for the review.",
+      "guidance": "Explain the incident using the timeline: user impact, detection, decisions, contributing conditions and recovery. Describe each decision in the context of the information responders had at the time. Separate a reproduced cause from a plausible hypothesis. For each proposed improvement, explain which observed failure it addresses, such as late detection or a recovery command that failed. List unresolved causal questions for the review.\n\nFor each causal statement, identify the supporting observation or reproduction and the competing explanations still open. A nearby deployment is correlation until the evidence supports a causal link. Check duration and detection-delay calculations against the normalized timeline.\n\nTie every impact calculation to its denominator, time window and source. Distinguish failed attempts, distinct users, eventual success and revenue loss; one does not establish the others. Prioritize the few corrective actions that address evidenced failures and include what new observation would confirm or reject an unresolved hypothesis.\n\nEstablish whether metric rows are interval counts, cumulative counters or samples, and whether their windows overlap, before aggregating them. Keep calculations limited to the observed coverage; sparse samples alone cannot establish a continuous alert condition or exact impact interval.\n\nEstablish each measured interval’s boundaries before inferring an intervention’s immediate effect. A later row timestamp can include observations from before the change; preserve this uncertainty in both the detailed analysis and summaries.",
       "when": null,
       "ref": null,
       "options": [],
@@ -94,7 +111,7 @@
       "id": "n3",
       "kind": "step",
       "title": "Hold the postmortem review meeting",
-      "guidance": "Use the review to resolve disputed timeline entries, test causal explanations and decide which improvements merit work. Bring the responders and owners needed for those questions, with the draft available beforehand. Record disagreements that remain and the actions people actually accept. Review sensitive passages before wider circulation, then update the incident account and its prioritized follow-ups.",
+      "guidance": "Use the review to resolve disputed timeline entries, test causal explanations and decide which improvements merit work. Bring the responders and owners needed for those questions, with the draft available beforehand. Record disagreements that remain and the actions people actually accept. Review sensitive passages before wider circulation, then update the incident account and its prioritized follow-ups.\n\nAn asynchronous review is sufficient when the necessary participants can resolve the questions and accept follow-ups in the record. Reuse the company’s incident severity, communication policy and service ownership; ask for a meeting when unresolved disagreement or impact warrants it. Keep the review-ready draft usable even when participants are unavailable.",
       "when": null,
       "ref": null,
       "options": [],
@@ -118,7 +135,7 @@
       "id": "n4",
       "kind": "step",
       "title": "File follow-up actions in the tracker",
-      "guidance": "Turn each accepted improvement into a ticket tied to the failure it addresses. Replace vague work such as “improve alerts” with an observable result, such as a controlled failure reaching the on-call responder with the relevant diagnostic link. Use the agreed owner and priority, distinguishing proposed dates from commitments. Link tickets to the incident and keep deferred actions visible with their reason.",
+      "guidance": "Turn each accepted improvement into a ticket tied to the failure it addresses. Replace vague work such as “improve alerts” with an observable result, such as a controlled failure reaching the on-call responder with the relevant diagnostic link. Use the agreed owner and priority, distinguishing proposed dates from commitments. Link tickets to the incident and keep deferred actions visible with their reason.\n\nKeep proposed and accepted owners/dates separate, along with the evidence of acceptance. Attach an acceptance test that would detect or prevent the observed failure; use a controlled synthetic replay where feasible. Retain results for tests actually executed; otherwise keep the acceptance test proposed with its owner and unresolved prerequisites. Filing the follow-up backlog does not require implementing every corrective action. A local ticket draft is not a created tracker issue or an implemented fix.",
       "when": null,
       "ref": null,
       "options": [],
