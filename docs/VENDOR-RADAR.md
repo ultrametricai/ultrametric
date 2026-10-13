@@ -18,7 +18,11 @@ waitlist/link-list/placeholder guards plus a star-velocity anomaly floor for shi
 and the affiliation guard — and records
 every candidate's disposition (auto-approved, skipped with the failing criterion and its evidence,
 or needs-human) on the day's candidates issue and in
-`reports/vendor-radar/<date>-triage.json`.
+`reports/vendor-radar/<date>-triage.json`. Ranking-fit placement is lexical, so every
+auto-approved disposition records the matched arena's `rankings/categories.json` definition in
+its evidence and carries "placement: keyword-matched, confirm against arena definition at
+review" in its reason; the bring-up PR body inherits both, and the reviewer confirms the arena
+against its definition before merge.
 
 Two limits hold in every case:
 

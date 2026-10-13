@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest'
 import {
   MIN_FIT_HITS,
   OSS_README_MIN_BYTES,
+  PLACEMENT_CAVEAT,
   TriageReportSchema,
   buildTriageMarkdown,
   checkOssSubstance,
@@ -95,12 +96,21 @@ describe('triageCandidate', () => {
     expect(d.arena).toBe('browser-agents')
     expect(d.bringup).toEqual({ site: 'https://driftbase.dev', docs: 'https://driftbase.dev/docs', type: 'commercial' })
     expect(d.evidence.some((e) => e.includes('HTTP 200'))).toBe(true)
+    expect(d.reason).toContain(PLACEMENT_CAVEAT)
   })
 
   it('auto-approves a substantive OSS repo through the GitHub API facts', async () => {
     const d = await triageCandidate(candidate({ url: 'https://github.com/acme/driftbase', key: 'github:acme/driftbase' }), ARENAS, io())
     expect(d.status).toBe('auto-approved')
     expect(d.bringup).toMatchObject({ github: 'https://github.com/acme/driftbase', type: 'oss' })
+    expect(d.reason).toContain(PLACEMENT_CAVEAT)
+  })
+
+  it('records the matched arena definition and keywords in evidence when definitions are supplied', async () => {
+    const defs = new Map([['browser-agents', 'Agents that drive a real browser to complete web tasks.']])
+    const d = await triageCandidate(candidate(), ARENAS, io(), defs)
+    expect(d.status).toBe('auto-approved')
+    expect(d.evidence.some((e) => e.startsWith('arena-definition browser-agents:') && e.includes('drive a real browser') && e.includes('playwright'))).toBe(true)
   })
 
   it('skips launch-post-only candidates on the docs-surface criterion with the stated reason', async () => {
