@@ -193,7 +193,7 @@ async function main(): Promise<void> {
     path.relative(ROOT, path.join(dataDir, 'verdicts.json')),
     path.relative(ROOT, path.join(dataDir, 'rankings.json')),
     'rankings/graph.json',
-    'vendors/reviews/generated',
+    'rankings/reviews/generated',
   ])
   git([
     '-c',

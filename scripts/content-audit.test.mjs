@@ -13,7 +13,7 @@ function fixture() {
     'rankings/arena/stories.json': [{ id: 'story' }],
     'rankings/arena/verdicts.json': [{ productId: 'tool', storyId: 'story', verdict: 'none', evidenceIds: ['proof'] }],
     'rankings/arena/evidence/tool.json': [{ id: 'proof', tier: 'probe' }],
-    'vendors/reviews/generated/arena--tool.json': { tested_on: '2026-10-01', recheck_due: '2027-01-01', status: 'tested', reviewer: 'Automated pipeline' },
+    'rankings/reviews/generated/arena--tool.json': { tested_on: '2026-10-01', recheck_due: '2027-01-01', status: 'tested', reviewer: 'Automated pipeline' },
     'open-documents/registry.json': { review_window_days: 120, documents: [{ id: 'form', name: 'Form', license_note: 'Review terms', publisher: 'Example', url: 'https://example.test/form', checked_on: '2026-10-01', jurisdiction: 'Worldwide', use_case: 'formation' }] },
     'citations/registry.json': { citations: [{ id: 'statute', role: 'authority', title: 'Statute', url: 'https://example.test/law', locator: '§ 1', checked_on: '2026-10-01', jurisdiction: 'US-DE' }] },
     'jurisdictions/registry.json': { jurisdictions: [{ code: 'US-DE', name: 'Delaware', coverage: 'partial-example', scope: 'One example' }] },

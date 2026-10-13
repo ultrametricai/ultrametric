@@ -5,7 +5,7 @@ mechanics): every module is pure, deterministic, and validated against published
 examples.
 
 Part of [the open startup repo](../README.md#open-modules), separate from law (`law/`)
-and the vendor evidence layer (`vendors/`, `rankings/`). The modules live in
+and the vendor evidence layer (`rankings/`). The modules live in
 `lib/openstartup/` and are indexed in the table below
 (`npx vitest run lib/openstartup/__tests__/` runs their gates). Repo-first by design: use
 them from tests, scripts, or your own agent.

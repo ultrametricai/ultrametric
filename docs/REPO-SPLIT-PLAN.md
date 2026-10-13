@@ -56,7 +56,7 @@ private site repo), **SPLIT** (file-level partition inside the directory),
 | `coverage/` | OPEN | Coverage and domain vocabulary for the corpus. |
 | `fixtures/` | OPEN | Fictional worked-example inputs for the open modules. |
 | `templates/` | OPEN | Contribution templates for processes and vendor reviews. |
-| `vendors/` | OPEN | Evidence doctrine plus `reviews/generated/` (651 interchange records, deterministic regeneration from `data/`). |
+| `rankings/reviews/` | OPEN | Evidence doctrine plus `generated/` interchange records, deterministic regeneration from the arena data. |
 | `schemas/` | OPEN | Every published shape; "schemas are law" is the public contract. |
 | `governance/` | OPEN | AGENT_POLICY, REVIEW_POLICY, SECURITY; the methodology/governance layer. |
 | `pipeline/` | OPEN | Resolved below ("Hard case: the pipeline"). |
@@ -197,7 +197,7 @@ cannot drift from the artifact silently.
 The closed repo needs, at build time: the content dirs (`data/`, `processes/`,
 `content/processes/`, `law/`, `jurisdictions/`, `lore/`,
 `open-documents/`, `open-modules/`, `citations/`, `coverage/`, `fixtures/`,
-`templates/`, `vendors/`, `schemas/`, `governance/`, the OPEN half of `docs/` that pages
+`templates/`, `schemas/`, `governance/`, the OPEN half of `docs/` that pages
 read, e.g. `docs/assets/`), the OPEN `public/` assets (badges, logos, screenshots), and
 the OPEN lib modules the app imports (87-module surface, ~160 OPEN files).
 
@@ -334,7 +334,7 @@ the rollback target.
    repo is stripped, not rewritten; old SHAs keep resolving, which also keeps every
    pre-split `open.lock` pin fetchable forever.
 6. **The stripped README.** The layers reorg survives minus the site-internal rows: the
-   merged "Map of the repo" keeps the processes/vendors/open-modules/
+   merged "Map of the repo" keeps the processes/rankings/open-modules/
    lore/governance rows (these all point at OPEN paths already) and keeps linking to the
    live site for rendered views; rows and sections that documented site internals
    (build size, preview runtime, Try-it plumbing) move to the closed repo's docs. The

@@ -10,7 +10,7 @@ export const collectionNames = {
   law: 'Rule cards', citations: 'Citations', artifacts: 'Business artifacts',
 }
 
-const roots = ['content/processes/records', 'rankings', 'open-documents', 'lib/openstartup', 'processes', 'jurisdictions', 'law', 'citations', 'vendors/reviews/generated', 'coverage']
+const roots = ['content/processes/records', 'rankings', 'open-documents', 'lib/openstartup', 'processes', 'jurisdictions', 'law', 'citations', 'coverage']
 const recordKey = (collection, id) => `${collection}:${id}`
 const nonempty = value => typeof value === 'string' && value.trim().length > 0
 const isoDate = value => typeof value === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(value) && Number.isFinite(Date.parse(`${value}T00:00:00Z`)) && new Date(`${value}T00:00:00Z`).toISOString().slice(0, 10) === value
@@ -124,7 +124,7 @@ export function buildContentAudit(files, metadata) {
       const uncited = cells.filter(item => !['none', 'na'].includes(item.verdict) && (!Array.isArray(item.evidenceIds) || !item.evidenceIds.length)).length
       check(vendor, 'Verdict evidence', cells.length && !dangling && !uncited ? 'present' : 'missing', `${dangling} unresolved evidence references; ${uncited} positive or disputed verdicts without required citations.`)
       presence(vendor, 'Evidence records', evidence.length > 0, `${evidence.length} evidence items; ${evidence.filter(item => item.tier === 'probe').length} recorded as probe tier.`)
-      const reviewFile = `vendors/reviews/generated/${category.id}--${product.id}.json`
+      const reviewFile = `rankings/reviews/generated/${category.id}--${product.id}.json`
       if (files.has(reviewFile)) {
         const review = json(reviewFile)
         date(vendor, review.tested_on, review.recheck_due)

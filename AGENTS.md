@@ -67,7 +67,7 @@ need it.
 ## What this repo is
 
 Ultrametric is the open startup repo: step-by-step founder processes (`processes/`),
-agent-tested vendor rankings (`rankings/`, `vendors/`, `pipeline/`), and open, source-cited
+agent-tested vendor rankings (`rankings/`, `pipeline/`), and open, source-cited
 business logic (`lib/openstartup/`, `law/`, `citations/`). The knowledge layer (plain JSON
 and markdown, schema-validated in CI) is the product. The site that renders it at
 ultrametric.ai is maintained in a private repo, which materializes this repo's open
@@ -101,7 +101,7 @@ traps:
 - The README blocks between `<!-- stats:start -->` / `<!-- arenas:start -->` style
   markers, and the badge SVGs in `public/badges/`, come from `pnpm stats` and
   `node scripts/generate-badges.mjs`. Edit around the markers, never inside them.
-- `vendors/reviews/generated/` regenerates deterministically from `rankings/`.
+- `rankings/reviews/generated/` regenerates deterministically from the arena data.
 
 ## The pipeline
 

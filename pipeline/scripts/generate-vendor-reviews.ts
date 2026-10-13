@@ -1,6 +1,6 @@
 // Corpus lift stage 2 (docs/FOUNDER-OPS.md): emit the evidence layer in the founder-ops
 // vendor-review interchange shape (schemas/vendor-review.schema.json) — one
-// vendors/reviews/generated/<arena>--<productId>.json per judged product, so external consumers
+// rankings/reviews/generated/<arena>--<productId>.json per judged product, so external consumers
 // get the same dated, evidence-graded record the site renders without scraping it.
 //
 // DERIVED, NEVER JUDGED HERE: every field is a deterministic projection of committed data —
@@ -26,7 +26,7 @@ import type { Evidence } from '../../lib/schemas'
 import { VENDOR_GEO_COUNTRY_META, vendorGeoFor, type VendorGeoEntry } from '../../lib/vendorGeo'
 
 const ROOT = path.resolve(__dirname, '..', '..')
-export const REVIEWS_DIR = path.join(ROOT, 'vendors', 'reviews', 'generated')
+export const REVIEWS_DIR = path.join(ROOT, 'rankings', 'reviews', 'generated')
 
 export const REVIEWER = 'Ultrametric pipeline (automated, evidence-graded)'
 

@@ -19,7 +19,7 @@ workspace, never here.
 | `jurisdictions/` | Registry + overlays; exact-dimension matching, unknown = unsupported |
 | `open-modules/` | The open modules — cited, deterministic calculations (cap table first) |
 | `open-documents/` | The open-documents map: openly licensed legal forms, linked never redistributed |
-| `vendors/` | The evidence layer + the scenario-scoped review interchange format |
+| `rankings/reviews/` | The scenario-scoped review interchange format over the evidence layer |
 | `templates/` | Contribution starting points |
 | `schemas/` | JSON Schema contracts for processes, rules, sources, vendor reviews |
 | `processes/fixtures/` | Fictional companies and events only |
@@ -58,7 +58,7 @@ structure and semantic invariants; it does not prove laws true or implement a ca
   `schemas/operational-process.schema.json`, generated from the zod source of truth by
   `scripts/generate-corpus-schemas.ts` with a byte-identical drift gate
   (`__tests__/corpus-schemas.test.ts`). Generated the vendor-review interchange layer:
-  `vendors/reviews/generated/<arena>--<productId>.json` for every judged product (578 records)
+  `rankings/reviews/generated/<arena>--<productId>.json` for every judged product (578 records)
   via `pipeline/scripts/generate-vendor-reviews.ts` — deterministic projection of the committed
   rankings/evidence/pricing/geo data, owner disclosures always carried
   (`pipeline/__tests__/vendorReviews.test.ts`). Still open from the original stage-2 sketch:

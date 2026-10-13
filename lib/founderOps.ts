@@ -329,7 +329,7 @@ export function validateFounderOps(asOf?: Date): string[] {
     if (!covered.has(pid)) errors.push(`process ${pid}: absent from coverage registry`)
   }
 
-  for (const file of listJson(path.join(ROOT, 'vendors/reviews'))) {
+  for (const file of listJson(path.join(ROOT, 'rankings/reviews'))) {
     shape(read(file), need('vendor-review.schema'), `vendor ${path.basename(file)}`, errors)
   }
 

@@ -48,7 +48,7 @@ because it has several playbooks — coverage is tracked per scenario and locale
    irreversible or regulated steps.
 4. Add at least one wholly fictional fixture. Update `coverage/coverage.json` with the real
    maturity level.
-5. For vendors, use `templates/vendor-review.json` per `vendors/README.md`. Disclose
+5. For vendors, use `templates/vendor-review.json` per `rankings/reviews/README.md`. Disclose
    affiliations and compensation; record the tested scenario, observed evidence, cost date, and
    negatives. Marketing copy alone is `unverified`.
 6. Run the gates: `npx vitest run __tests__/founder-ops.test.ts` (structure + invariants) and
