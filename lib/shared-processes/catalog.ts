@@ -1,12 +1,11 @@
-import { lstatSync, readFileSync, readdirSync } from 'node:fs'
+import { lstatSync, readFileSync } from 'node:fs'
 import path from 'node:path'
 import { z } from 'zod'
 import { sharedRecordSchema, validateCatalog, type SharedRecord } from './schema'
 
 const slug = z.string().regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/).refine(value => value !== 'v1')
 const identifier = sharedRecordSchema.shape.id
-const definition = sharedRecordSchema.omit({ parts: true }).extend({
-  steps: z.array(z.string().regex(/^steps\/[a-z0-9]+(?:-[a-z0-9]+)*\.json$/)).min(1),
+export const processDefinitionSchema = sharedRecordSchema.extend({
   entrySteps: z.array(identifier).min(1),
 })
 const journeySchema = z.strictObject({
@@ -57,28 +56,16 @@ export function validateJourneys(input: unknown[], records: SharedRecord[]) {
   return journeys
 }
 
-export function loadProcessCatalog(root = process.cwd()) {
-  const processes: CatalogProcess[] = []
-  const directory = path.join(root, 'processes')
-  for (const entry of readdirSync(directory, { withFileTypes: true }).sort((a, b) => a.name.localeCompare(b.name))) {
-    if (!entry.isDirectory()) continue
-    const files = readdirSync(path.join(directory, entry.name))
-    if (!files.includes('process.json')) continue
-    slug.parse(entry.name)
-    const folder = path.join(directory, entry.name)
-    const { steps, entrySteps, ...record } = definition.parse(json(path.join(folder, 'process.json')))
-    if (new Set(steps).size !== steps.length) throw new Error('Duplicate step file')
-    if (!lstatSync(path.join(folder, 'steps')).isDirectory()) throw new Error('Expected a steps directory')
-    const actual = readdirSync(path.join(folder, 'steps')).map(file => `steps/${file}`).sort()
-    if (JSON.stringify(actual) !== JSON.stringify([...steps].sort())) throw new Error('Unlisted or missing step file')
-    const assembled = sharedRecordSchema.parse({ ...record, parts: steps.map(file => json(path.join(folder, file))) })
-    validateFlow(assembled.parts.map(part => part.id), assembled.links, entrySteps)
-    processes.push({ slug: entry.name, entrySteps, record: assembled })
-  }
+export function loadProcessCatalog(selection: { processes: string[]; journeys?: string[] }, root = process.cwd()) {
+  const names = z.array(slug).min(1).parse(selection.processes)
+  if (new Set(names).size !== names.length) throw new Error('Duplicate process selection')
+  const processes: CatalogProcess[] = names.sort().map(name => {
+    const { entrySteps, ...record } = processDefinitionSchema.parse(json(path.join(root, 'processes', `${name}.json`)))
+    validateFlow(record.parts.map(part => part.id), record.links, entrySteps)
+    return { slug: name, entrySteps, record }
+  })
   validateCatalog(processes.map(process => process.record))
-  const journeyDirectory = path.join(root, 'journeys')
-  const journeyFiles = readdirSync(root).includes('journeys')
-    ? readdirSync(journeyDirectory).filter(file => file.endsWith('.json')).sort() : []
-  const journeys = validateJourneys(journeyFiles.map(file => json(path.join(journeyDirectory, file))), processes.map(process => process.record))
+  const journeyNames = z.array(slug).parse(selection.journeys ?? [])
+  const journeys = validateJourneys(journeyNames.map(name => json(path.join(root, 'journeys', `${name}.json`))), processes.map(process => process.record))
   return { processes, journeys }
 }

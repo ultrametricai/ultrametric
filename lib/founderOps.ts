@@ -1,5 +1,6 @@
 import fs from 'node:fs'
 import path from 'node:path'
+import { processDefinitionSchema } from './shared-processes/catalog'
 
 // The founder-ops corpus validator + conservative planner — a faithful TypeScript port of the
 // founder-ops-open starter's tools/validate.py (ingested 2026-09-28), rehomed into the repo's
@@ -61,7 +62,14 @@ function workflowJson(dir: string): string[] {
       !f.endsWith(OPERATIONAL_BUSINESS_LOGIC_MAP) &&
       !f.endsWith(OPERATIONAL_COMPANY_FIELDS) &&
       !f.endsWith(OPERATIONAL_CHAINS),
-  )
+  ).filter(file => {
+    const value = read(file)
+    if (isObj(value) && value.schemaVersion === 1 && (value.kind === 'process' || value.kind === 'situation')) {
+      processDefinitionSchema.parse(value)
+      return false
+    }
+    return true
+  })
 }
 
 type Json = string | number | boolean | null | Json[] | { [key: string]: Json }
