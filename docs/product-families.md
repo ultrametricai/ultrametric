@@ -286,7 +286,8 @@ What exists publicly today (every URL fetched, statuses recorded):
 
 - npm `ultrametric-cli` and `ultrametric-mcp`: **registry 404 — unpublished.** The packages moved
   to a dedicated private repo (github.com/ultrametricai/ultrametric-cli and …/ultrametric-mcp both
-  404 keyless); FOUNDER-ASKS already records the move as "publishes happen from there".
+  404 keyless); the founder-asks record in the private repo already notes the move as
+  "publishes happen from there".
 - The retired first-party MCP: `POST https://ultrametric.ai/mcp` → **410**
   `{"error":"gone","message":"The ProductArena MCP server is retired… A first-party Ultrametric
   MCP is coming."}` (worker handler from the 2026-09-23 retirement); GET /mcp 307s home. A

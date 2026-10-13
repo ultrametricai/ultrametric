@@ -240,3 +240,8 @@ per-arena flip stats in the table.
 | **Web Scraping APIs** (`web-scraping`) | 768 | 144 | 81.3% | firecrawl (+1 · 42.3→43.9)<br>crawl4ai (+3 · 34.1→40.5)<br>context-dev (= · 39.6→39.7)<br>apify (-3 · 44.1→37.6)<br>riveter (+1 · 32.7→36.8) |
 | **Workflow Automation** (`workflow-automation`) | 616 | 117 | 81% | windmill (+1 · 41.7→47.3)<br>activepieces (-1 · 43.9→44.2)<br>trigger-dev (= · 39.5→42.3)<br>gumloop (+2 · 34.4→39.7)<br>pipedream (= · 38.1→36) |
 
+## Completion
+
+All 94 arenas were ingested and committed by 2026-10-01 with no batches left in flight.
+The interim live status tracker was retired into this record.
+
