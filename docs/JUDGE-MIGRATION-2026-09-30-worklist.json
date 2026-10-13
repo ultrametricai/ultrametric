@@ -1,0 +1,396 @@
+{
+  "wave": "judge-migration-2026-09-30: sonnet-5 -> opus-5-5 (prompt v4)",
+  "purpose": "Protected-cell worklist per docs/OPUS-5-5-JUDGE-PILOT.md §5.2: every committed verdict carrying a dated human-adjudication/bias-audit marker in its rationale, extracted BEFORE the migration re-judge. These human adjudications outrank any model: after each arena ingest, pipeline/scripts/migrate-judge-batch.ts finalizeArena() re-applies preservedVerdict to the judge cache and verdicts.json verbatim and records what the fresh opus-5-5 judge said (freshJudgeSaid/action below).",
+  "extractionNotes": [
+    "Marker = a bracketed dated annotation in the rationale, e.g. \"[2026-09-24 adversarial bias audit ...]\" — the committed-audit-note convention established by the Foreloop bias audit (README §9) and the AFK governance notes.",
+    "The memo names four arenas as carrying audit-annotated verdicts (ai-coding: 23; product-feedback; ai-code-review; workflow-automation). Verified 2026-09-30 before extraction: the ai-coding \"23\" and ai-code-review \"11\" are /audit/i keyword matches on ordinary product-capability language (\"audit logs\", \"automation versioning/audit history UI\") — NOT human adjudication markers. The README §9 ai-coding adjudications (live-app-debugging full->partial; agentic-public-api full->partial; copilot agentic-mcp-server partial->none) were superseded by later evidence-driven re-judges under new evidence packs and no longer carry rationale suffixes in the committed verdicts; they are therefore NOT blind-re-applied here. Their subject cells fall under the owner-product bias audit of this migration instead (see docs/JUDGE-MIGRATION-2026-09-30.md).",
+    "Extraction found 18 marked cells: 16 product-feedback Foreloop cells (11 from the 2026-09-21 adversarial bias audit, 5 from the 2026-09-24 depth-spike-lane follow-up audit — together the committed record of the README §9 Foreloop corrections) and 2 workflow-automation AFK cells (2026-09-24 adversarial bias audit, owner-product governance). software-factory foreloop/yylo rows carry no dated markers (judged after the audit conventions were already applied at judge time)."
+  ],
+  "entries": [
+    {
+      "category": "product-feedback",
+      "productId": "foreloop",
+      "storyId": "agentic-ai-insights",
+      "markerExcerpt": "[2026-09-21 adversarial bias audit: downgraded full 7 → partial 6 — marketing-claims-only posture; productboard's identical posture on this story was graded partial 6. Ultrametric-affiliation governance, README §9.]",
+      "preservedVerdict": {
+        "productId": "foreloop",
+        "storyId": "agentic-ai-insights",
+        "verdict": "partial",
+        "quality": 6,
+        "confidence": "medium",
+        "rationale": "Foreloop's docs describe AI-generated review findings on PRs (scored P0-P2, with explanations of expected vs actual behavior) and an agent that reads feedback submissions to auto-fill intentions and propose tasks — both clear cases of AI-generated insights/suggestions surfaced inside the product. Missing for 10: independent/hands-on corroboration of insight quality, and concrete examples of generated suggestions beyond docs claims. [2026-09-21 adversarial bias audit: downgraded full 7 → partial 6 — marketing-claims-only posture; productboard's identical posture on this story was graded partial 6. Ultrametric-affiliation governance, README §9.] [2026-09-24 adversarial bias audit (depth-spike lane): reverted full 7 -> partial 6 — re-upgrade on another claimed-docs item would reverse the standing 2026-09-21 audit ruling on this story (marketing-claims-only posture; productboard graded partial 6 for the identical posture). Ultrametric-affiliation governance, README §9.]",
+        "evidenceIds": [
+          "foreloop-docs-1",
+          "foreloop-docs-2",
+          "foreloop-docs-23",
+          "foreloop-docs-10",
+          "foreloop-docs-21"
+        ]
+      },
+      "status": "preserved",
+      "freshJudgeSaid": "partial q6 (conf medium)",
+      "action": "preserved human adjudication (opus-5-5 independently reached the same verdict/quality; annotated rationale kept as the record of the human call)"
+    },
+    {
+      "category": "product-feedback",
+      "productId": "foreloop",
+      "storyId": "agentic-builtin-assistant",
+      "markerExcerpt": "[2026-09-24 adversarial bias audit (depth-spike lane): reverted partial 5 -> partial 4 — quality bump rested on the same one-sentence claim; posture unchanged. Ultrametric-affiliation governance, README §9.]",
+      "preservedVerdict": {
+        "productId": "foreloop",
+        "storyId": "agentic-builtin-assistant",
+        "verdict": "partial",
+        "quality": 4,
+        "confidence": "low",
+        "rationale": "Foreloop's docs mention an internal 'agent' that reads user feedback submissions and automatically fills in intentions and proposes tasks (foreloop-docs-10, foreloop-docs-21), which is a limited form of AI delegation. However, this is a narrow, single-purpose automation tied to the feedback-collection pipeline, not a general-purpose built-in assistant that users can converse with or delegate arbitrary tasks to. Missing for 10: evidence of a conversational/general AI assistant, ability to delegate arbitrary tasks beyond feedback-to-task conversion, and any interface for direct task delegation by the user. [2026-09-24 adversarial bias audit (depth-spike lane): reverted partial 5 -> partial 4 — quality bump rested on the same one-sentence claim; posture unchanged. Ultrametric-affiliation governance, README §9.]",
+        "evidenceIds": [
+          "foreloop-docs-10",
+          "foreloop-docs-21",
+          "foreloop-docs-9"
+        ]
+      },
+      "status": "preserved",
+      "freshJudgeSaid": "partial q4 (conf low)",
+      "action": "preserved human adjudication (opus-5-5 independently reached the same verdict/quality; annotated rationale kept as the record of the human call)"
+    },
+    {
+      "category": "product-feedback",
+      "productId": "foreloop",
+      "storyId": "agentic-headless",
+      "markerExcerpt": "[2026-09-21 adversarial bias audit: downgraded full 8 → full 7 — claimed-docs-only quality ceiling (no hands-on validation). Ultrametric-affiliation governance, README §9.]",
+      "preservedVerdict": {
+        "productId": "foreloop",
+        "storyId": "agentic-headless",
+        "verdict": "full",
+        "quality": 7,
+        "confidence": "medium",
+        "rationale": "Docs show a first-party CLI runnable from any environment including CI/cron/coding agents, with stable --json output, meaningful exit codes, and a FORELOOP_TOKEN env var that bypasses interactive login specifically for CI use — all core requirements for headless automation. Missing for 10: independent/hands-on confirmation of CI usage and no explicit example CI pipeline config shown. [2026-09-21 adversarial bias audit: downgraded full 8 → full 7 — claimed-docs-only quality ceiling (no hands-on validation). Ultrametric-affiliation governance, README §9.]",
+        "evidenceIds": [
+          "foreloop-docs-6",
+          "foreloop-docs-7",
+          "foreloop-docs-8",
+          "foreloop-docs-17",
+          "foreloop-probe-1"
+        ]
+      },
+      "status": "preserved",
+      "freshJudgeSaid": "full q7 (conf medium)",
+      "action": "preserved human adjudication (opus-5-5 independently reached the same verdict/quality; annotated rationale kept as the record of the human call)"
+    },
+    {
+      "category": "product-feedback",
+      "productId": "foreloop",
+      "storyId": "agentic-mcp-server",
+      "markerExcerpt": "[2026-09-24 adversarial bias audit (depth-spike lane): reverted partial 4 -> none 0 — the sole new citation is one first-party sentence (\"The CLI and MCP let agents read and update Foreloop\"); fleet precedent requires pr",
+      "preservedVerdict": {
+        "productId": "foreloop",
+        "storyId": "agentic-mcp-server",
+        "verdict": "none",
+        "quality": 0,
+        "confidence": "medium",
+        "rationale": "Foreloop offers a CLI usable by coding agents via terminal commands (foreloop-docs-6, foreloop-docs-15) with stable JSON output, but there is no mention anywhere in the evidence of an official MCP server or MCP protocol support — connecting via CLI subprocess calls is not the same as an MCP server integration. [2026-09-24 adversarial bias audit (depth-spike lane): reverted partial 4 -> none 0 — the sole new citation is one first-party sentence (\"The CLI and MCP let agents read and update Foreloop\"); fleet precedent requires probe-grade evidence for MCP cells (the most bias-sensitive class) and this arena has no probe module. Ultrametric-affiliation governance, README §9.]",
+        "evidenceIds": [
+          "foreloop-docs-6",
+          "foreloop-docs-15",
+          "foreloop-docs-7",
+          "foreloop-docs-16"
+        ]
+      },
+      "status": "preserved",
+      "freshJudgeSaid": "none q0 (conf medium)",
+      "action": "preserved human adjudication (opus-5-5 independently reached the same verdict/quality; annotated rationale kept as the record of the human call)"
+    },
+    {
+      "category": "product-feedback",
+      "productId": "foreloop",
+      "storyId": "agentic-nl-commands",
+      "markerExcerpt": "[2026-09-24 adversarial bias audit (depth-spike lane): flip none -> partial KEPT (concrete documented command syntax: \"@foreloop retest\", \"@foreloop link REF\") but quality capped 5 -> 4 under the claimed-docs-only ceilin",
+      "preservedVerdict": {
+        "productId": "foreloop",
+        "storyId": "agentic-nl-commands",
+        "verdict": "partial",
+        "quality": 4,
+        "confidence": "low",
+        "rationale": "Foreloop exposes structured CLI commands, GitHub comment triggers like '@foreloop retest' and '@foreloop link YOUR-REF', and an MCP interface letting agents 'read and update Foreloop' — these support agentic/automated operation but are not natural-language command parsing per se. Missing for 10: explicit documentation of free-form natural-language command input/parsing, examples of conversational commands being interpreted, and independent evidence of NL command usage in practice. [2026-09-24 adversarial bias audit (depth-spike lane): flip none -> partial KEPT (concrete documented command syntax: \"@foreloop retest\", \"@foreloop link REF\") but quality capped 5 -> 4 under the claimed-docs-only ceiling. Ultrametric-affiliation governance, README §9.]",
+        "evidenceIds": [
+          "foreloop-docs-3",
+          "foreloop-docs-25",
+          "foreloop-docs-28",
+          "foreloop-docs-6"
+        ]
+      },
+      "status": "preserved",
+      "freshJudgeSaid": "partial q4 (conf low)",
+      "action": "preserved human adjudication (opus-5-5 independently reached the same verdict/quality; annotated rationale kept as the record of the human call)"
+    },
+    {
+      "category": "product-feedback",
+      "productId": "foreloop",
+      "storyId": "agentic-official-cli",
+      "markerExcerpt": "[2026-09-21 adversarial bias audit: downgraded full 8 → full 7 — claimed-docs-only quality ceiling; the \"documented at\" probe is a page-exists check, not a run. Ultrametric-affiliation governance, README §9.]",
+      "preservedVerdict": {
+        "productId": "foreloop",
+        "storyId": "agentic-official-cli",
+        "verdict": "full",
+        "quality": 7,
+        "confidence": "medium",
+        "rationale": "Foreloop documents an official CLI usable from terminals, coding agents, and cron, with stable --json output for scripting, meaningful exit codes for automation, and CI-friendly token auth via FORELOOP_TOKEN — all hallmarks of an agentic/AI-native CLI design. missing for 10: independent/hands-on verification of the CLI beyond first-party docs, and no mention of a package registry install method for the CLI itself. [2026-09-21 adversarial bias audit: downgraded full 8 → full 7 — claimed-docs-only quality ceiling; the \"documented at\" probe is a page-exists check, not a run. Ultrametric-affiliation governance, README §9.] [2026-09-24 adversarial bias audit (depth-spike lane): reverted full 8 -> full 7 — the 2026-09-21 audit set an explicit claimed-docs-only quality ceiling of 7 here; the new CLI snippet is still first-party docs, not a hands-on run. Ultrametric-affiliation governance, README §9.]",
+        "evidenceIds": [
+          "foreloop-docs-6",
+          "foreloop-docs-7",
+          "foreloop-docs-8",
+          "foreloop-docs-15",
+          "foreloop-docs-16",
+          "foreloop-docs-17",
+          "foreloop-probe-1"
+        ]
+      },
+      "status": "preserved",
+      "freshJudgeSaid": "full q7 (conf medium)",
+      "action": "preserved human adjudication (opus-5-5 independently reached the same verdict/quality; annotated rationale kept as the record of the human call)"
+    },
+    {
+      "category": "product-feedback",
+      "productId": "foreloop",
+      "storyId": "agentic-public-api",
+      "markerExcerpt": "[2026-09-21 adversarial bias audit: downgraded full 8 → partial 5 — CLI-only evidence does not clear the \"documented public REST/HTTP API\" bar applied to canny/featurebase/productboard (matches the claude-code agentic-pu",
+      "preservedVerdict": {
+        "productId": "foreloop",
+        "storyId": "agentic-public-api",
+        "verdict": "partial",
+        "quality": 5,
+        "confidence": "medium",
+        "rationale": "Foreloop documents a CLI usable by coding agents and cron, with a stable `--json` output shape, meaningful exit codes, and token-based auth for CI—effectively a documented, machine-drivable interface for projects, loops, intentions, stories and tasks. Missing for 10: no explicit REST/GraphQL API or SDK documentation beyond the CLI, and no independent corroboration of the API's stability claims. [2026-09-21 adversarial bias audit: downgraded full 8 → partial 5 — CLI-only evidence does not clear the \"documented public REST/HTTP API\" bar applied to canny/featurebase/productboard (matches the claude-code agentic-public-api 8→5 precedent). Ultrametric-affiliation governance, README §9.] [2026-09-24 adversarial bias audit (depth-spike lane): reverted full 8 -> partial 5 — same single-sentence citation as the MCP cell; no endpoint reference, auth docs, or spec. partial -> full on the owner product from one claim line fails the audit. Ultrametric-affiliation governance, README §9.]",
+        "evidenceIds": [
+          "foreloop-docs-6",
+          "foreloop-docs-7",
+          "foreloop-docs-8",
+          "foreloop-docs-16",
+          "foreloop-docs-17",
+          "foreloop-probe-1"
+        ]
+      },
+      "status": "preserved",
+      "freshJudgeSaid": "partial q5 (conf medium)",
+      "action": "preserved human adjudication (opus-5-5 independently reached the same verdict/quality; annotated rationale kept as the record of the human call)"
+    },
+    {
+      "category": "product-feedback",
+      "productId": "foreloop",
+      "storyId": "api-sandbox",
+      "markerExcerpt": "[2026-09-21 adversarial bias audit: reclassified na → none 0 — peers lacking the same capability were graded none on this story; na improperly shrank the score denominator. Ultrametric-affiliation governance, README §9.]",
+      "preservedVerdict": {
+        "productId": "foreloop",
+        "storyId": "api-sandbox",
+        "verdict": "none",
+        "quality": 0,
+        "confidence": "high",
+        "rationale": "Foreloop is a PR/product-review and feedback-collection tool for coding workflows, not a data platform or API product with production data access that would require a sandbox test environment; the story is a category mismatch for this product type. [2026-09-21 adversarial bias audit: reclassified na → none 0 — peers lacking the same capability were graded none on this story; na improperly shrank the score denominator. Ultrametric-affiliation governance, README §9.]",
+        "evidenceIds": []
+      },
+      "status": "preserved",
+      "freshJudgeSaid": "none q0 (conf high)",
+      "action": "preserved human adjudication (opus-5-5 independently reached the same verdict/quality; annotated rationale kept as the record of the human call)"
+    },
+    {
+      "category": "product-feedback",
+      "productId": "foreloop",
+      "storyId": "automated-sla-workflows",
+      "markerExcerpt": "[2026-09-21 adversarial bias audit: reclassified na → none 0 — peers lacking the same capability were graded none on this story; na improperly shrank the score denominator. Ultrametric-affiliation governance, README §9.]",
+      "preservedVerdict": {
+        "productId": "foreloop",
+        "storyId": "automated-sla-workflows",
+        "verdict": "none",
+        "quality": 0,
+        "confidence": "high",
+        "rationale": "Foreloop is a code-review/feedback-to-PR tool centered on turning user feedback into engineering intentions/tasks and PR reviews, not a business-process automation platform for SLA tracking, trial extensions, or discount offers. This story concerns customer-success/commercial workflow automation, which is outside Foreloop's product category entirely. [2026-09-21 adversarial bias audit: reclassified na → none 0 — peers lacking the same capability were graded none on this story; na improperly shrank the score denominator. Ultrametric-affiliation governance, README §9.]",
+        "evidenceIds": []
+      },
+      "status": "preserved",
+      "freshJudgeSaid": "none q0 (conf high)",
+      "action": "preserved human adjudication (opus-5-5 independently reached the same verdict/quality; annotated rationale kept as the record of the human call)"
+    },
+    {
+      "category": "product-feedback",
+      "productId": "foreloop",
+      "storyId": "branded-changelog-page",
+      "markerExcerpt": "[2026-09-21 adversarial bias audit: reclassified na → none 0 — peers lacking the same capability were graded none on this story; na improperly shrank the score denominator. Ultrametric-affiliation governance, README §9.]",
+      "preservedVerdict": {
+        "productId": "foreloop",
+        "storyId": "branded-changelog-page",
+        "verdict": "none",
+        "quality": 0,
+        "confidence": "high",
+        "rationale": "Foreloop is a code-review/feedback-to-task automation tool for engineering workflows; there is no evidence it offers a customer-facing changelog product feature at all, and this capability is outside its category (PR review, CLI, feedback widget) rather than a documented gap in an applicable axis. [2026-09-21 adversarial bias audit: reclassified na → none 0 — peers lacking the same capability were graded none on this story; na improperly shrank the score denominator. Ultrametric-affiliation governance, README §9.]",
+        "evidenceIds": []
+      },
+      "status": "preserved",
+      "freshJudgeSaid": "none q0 (conf high)",
+      "action": "preserved human adjudication (opus-5-5 independently reached the same verdict/quality; annotated rationale kept as the record of the human call)"
+    },
+    {
+      "category": "product-feedback",
+      "productId": "foreloop",
+      "storyId": "changelog-email-subscriptions",
+      "markerExcerpt": "[2026-09-21 adversarial bias audit: reclassified na → none 0 — peers lacking the same capability were graded none on this story; na improperly shrank the score denominator. Ultrametric-affiliation governance, README §9.]",
+      "preservedVerdict": {
+        "productId": "foreloop",
+        "storyId": "changelog-email-subscriptions",
+        "verdict": "none",
+        "quality": 0,
+        "confidence": "high",
+        "rationale": "Foreloop is a PR-review/product-context tool for GitHub workflows and CLI-driven intentions/tasks; there is no changelog feature or customer-facing subscription mechanism in its product category, so this story is a category mismatch rather than a missing feature. [2026-09-21 adversarial bias audit: reclassified na → none 0 — peers lacking the same capability were graded none on this story; na improperly shrank the score denominator. Ultrametric-affiliation governance, README §9.]",
+        "evidenceIds": []
+      },
+      "status": "preserved",
+      "freshJudgeSaid": "none q0 (conf high)",
+      "action": "preserved human adjudication (opus-5-5 independently reached the same verdict/quality; annotated rationale kept as the record of the human call)"
+    },
+    {
+      "category": "product-feedback",
+      "productId": "foreloop",
+      "storyId": "docs-editor-for-announcements",
+      "markerExcerpt": "[2026-09-21 adversarial bias audit: reclassified na → none 0 — peers lacking the same capability were graded none on this story; na improperly shrank the score denominator. Ultrametric-affiliation governance, README §9.]",
+      "preservedVerdict": {
+        "productId": "foreloop",
+        "storyId": "docs-editor-for-announcements",
+        "verdict": "none",
+        "quality": 0,
+        "confidence": "high",
+        "rationale": "Foreloop is a PR-review/feedback/intention-tracking tool for developers, not a content/documentation platform; there is no mention of a rich text editor, changelog authoring, or help-content components anywhere in the evidence, and this capability is outside its product category. [2026-09-21 adversarial bias audit: reclassified na → none 0 — peers lacking the same capability were graded none on this story; na improperly shrank the score denominator. Ultrametric-affiliation governance, README §9.]",
+        "evidenceIds": []
+      },
+      "status": "preserved",
+      "freshJudgeSaid": "none q0 (conf high)",
+      "action": "preserved human adjudication (opus-5-5 independently reached the same verdict/quality; annotated rationale kept as the record of the human call)"
+    },
+    {
+      "category": "product-feedback",
+      "productId": "foreloop",
+      "storyId": "embed-feedback-widget",
+      "markerExcerpt": "[2026-09-24 adversarial bias audit (depth-spike lane): reverted full 8 -> full 7 — claims-only quality ceiling (script-tag claim, no hands-on embed validation). Ultrametric-affiliation governance, README §9.]",
+      "preservedVerdict": {
+        "productId": "foreloop",
+        "storyId": "embed-feedback-widget",
+        "verdict": "full",
+        "quality": 7,
+        "confidence": "medium",
+        "rationale": "Docs state a single script tag serves the widget with no build step and fixes propagate without redeploy, directly matching the story; an npm package is also offered as an alternative install path. Missing for 10: independent/hands-on confirmation of the script-tag embed working, and concrete code sample showing the exact tag syntax. [2026-09-24 adversarial bias audit (depth-spike lane): reverted full 8 -> full 7 — claims-only quality ceiling (script-tag claim, no hands-on embed validation). Ultrametric-affiliation governance, README §9.]",
+        "evidenceIds": [
+          "foreloop-docs-18",
+          "foreloop-docs-9",
+          "foreloop-docs-19"
+        ]
+      },
+      "status": "preserved",
+      "freshJudgeSaid": "full q7 (conf medium)",
+      "action": "preserved human adjudication (opus-5-5 independently reached the same verdict/quality; annotated rationale kept as the record of the human call)"
+    },
+    {
+      "category": "product-feedback",
+      "productId": "foreloop",
+      "storyId": "link-spec-to-delivery",
+      "markerExcerpt": "[2026-09-24 adversarial bias audit (depth-spike lane): flip partial -> full KEPT (three concretely documented PR<->intention linking mechanisms — the core product workflow) but quality capped 8 -> 7 under the claimed-doc",
+      "preservedVerdict": {
+        "productId": "foreloop",
+        "storyId": "link-spec-to-delivery",
+        "verdict": "full",
+        "quality": 7,
+        "confidence": "medium",
+        "rationale": "Foreloop explicitly supports pulling approved specs into delivery: `foreloop tasks ready` lists open tasks whose contract is approved, intentions/stories/tasks are CLI-accessible from terminals or coding agents, and PRs can be linked to an intention via Foreloop-Intention refs or @foreloop link to start implementation work tied to the approved spec. missing for 10: no independent/hands-on corroboration of the 'ready' filter behavior in practice, and no end-to-end walkthrough showing a developer explicitly pulling a spec and beginning implementation from it. [2026-09-24 adversarial bias audit (depth-spike lane): flip partial -> full KEPT (three concretely documented PR<->intention linking mechanisms — the core product workflow) but quality capped 8 -> 7 under the claimed-docs-only ceiling. Ultrametric-affiliation governance, README §9.]",
+        "evidenceIds": [
+          "foreloop-docs-27",
+          "foreloop-docs-6",
+          "foreloop-docs-26",
+          "foreloop-docs-14",
+          "foreloop-docs-28"
+        ]
+      },
+      "status": "preserved",
+      "freshJudgeSaid": "full q7 (conf medium)",
+      "action": "preserved human adjudication (opus-5-5 independently reached the same verdict/quality; annotated rationale kept as the record of the human call)"
+    },
+    {
+      "category": "product-feedback",
+      "productId": "foreloop",
+      "storyId": "publish-changelog",
+      "markerExcerpt": "[2026-09-21 adversarial bias audit: reclassified na → none 0 — peers lacking the same capability were graded none on this story; na improperly shrank the score denominator. Ultrametric-affiliation governance, README §9.]",
+      "preservedVerdict": {
+        "productId": "foreloop",
+        "storyId": "publish-changelog",
+        "verdict": "none",
+        "quality": 0,
+        "confidence": "high",
+        "rationale": "Foreloop is a PR-review/feedback-loop and intention-tracking tool for engineering workflows; nothing in the evidence pack relates to authoring or publishing customer-facing changelogs. This is a category mismatch, not a missing feature. [2026-09-21 adversarial bias audit: reclassified na → none 0 — peers lacking the same capability were graded none on this story; na improperly shrank the score denominator. Ultrametric-affiliation governance, README §9.]",
+        "evidenceIds": []
+      },
+      "status": "preserved",
+      "freshJudgeSaid": "none q0 (conf high)",
+      "action": "preserved human adjudication (opus-5-5 independently reached the same verdict/quality; annotated rationale kept as the record of the human call)"
+    },
+    {
+      "category": "product-feedback",
+      "productId": "foreloop",
+      "storyId": "targeted-release-notes",
+      "markerExcerpt": "[2026-09-21 adversarial bias audit: reclassified na → none 0 — peers lacking the same capability were graded none on this story; na improperly shrank the score denominator. Ultrametric-affiliation governance, README §9.]",
+      "preservedVerdict": {
+        "productId": "foreloop",
+        "storyId": "targeted-release-notes",
+        "verdict": "none",
+        "quality": 0,
+        "confidence": "high",
+        "rationale": "Foreloop is a code-review/product-intention tool integrated with GitHub PRs and feedback collection, not a release-notes or customer-communication/marketing product; segmenting release announcements by user attributes is outside its category. [2026-09-21 adversarial bias audit: reclassified na → none 0 — peers lacking the same capability were graded none on this story; na improperly shrank the score denominator. Ultrametric-affiliation governance, README §9.]",
+        "evidenceIds": []
+      },
+      "status": "preserved",
+      "freshJudgeSaid": "none q0 (conf high)",
+      "action": "preserved human adjudication (opus-5-5 independently reached the same verdict/quality; annotated rationale kept as the record of the human call)"
+    },
+    {
+      "category": "workflow-automation",
+      "productId": "afk",
+      "storyId": "agentic-mcp-client",
+      "markerExcerpt": "[2026-09-24 adversarial bias audit: reverted na q0 -> none q0. Six competitors in this arena without MCP client support (zapier, make, pipedream, temporal, trigger-dev, windmill) are graded none, so the axis is applicabl",
+      "preservedVerdict": {
+        "productId": "afk",
+        "storyId": "agentic-mcp-client",
+        "verdict": "none",
+        "quality": 0,
+        "confidence": "low",
+        "rationale": "AFK integrates with specific business tools (Mercury, Gusto, Carta, Stripe) but there is no evidence of MCP server support or a plugin mechanism for arbitrary MCP tools; probes for llms.txt and OpenAPI specs both 404. [2026-09-24 adversarial bias audit: reverted na q0 -> none q0. Six competitors in this arena without MCP client support (zapier, make, pipedream, temporal, trigger-dev, windmill) are graded none, so the axis is applicable to workflow platforms; na would remove it from AFK's score denominator and favor the owner product. The newly cited afk-docs-16 is generic marketing copy and says nothing about MCP. Ultrametric-affiliation governance, README §9.]",
+        "evidenceIds": [
+          "afk-docs-3",
+          "afk-probe-1",
+          "afk-probe-2"
+        ]
+      },
+      "status": "preserved",
+      "freshJudgeSaid": "none q0 (conf low)",
+      "action": "preserved human adjudication (opus-5-5 independently reached the same verdict/quality; annotated rationale kept as the record of the human call)"
+    },
+    {
+      "category": "workflow-automation",
+      "productId": "afk",
+      "storyId": "agentic-nl-commands",
+      "markerExcerpt": "[2026-09-24 adversarial bias audit: reverted full q6 -> partial q5. The upgrade cited only afk-docs-16, first-party marketing copy on a waitlist-gated pre-launch product; gumloop, make and windmill hold partial q6 on thi",
+      "preservedVerdict": {
+        "productId": "afk",
+        "storyId": "agentic-nl-commands",
+        "verdict": "partial",
+        "quality": 5,
+        "confidence": "low",
+        "rationale": "AFK's docs describe goal-based natural-language commands like \"Get to $1m ARR\" that get decomposed into tasks, and querying/acting across integrated tools \"from a single surface,\" implying natural-language interaction. However, there's no explicit chat/command interface documentation, no examples of actual NL syntax or command patterns, and no independent or hands-on evidence confirming this works as described. Missing for 10: explicit NL command interface documentation, example command transcripts, independent/hands-on verification, API/spec access (openapi and llms.txt probes both 404). [2026-09-24 adversarial bias audit: reverted full q6 -> partial q5. The upgrade cited only afk-docs-16, first-party marketing copy on a waitlist-gated pre-launch product; gumloop, make and windmill hold partial q6 on this story with shipped products and real docs. Claims-only posture stays partial per the foreloop precedent. Ultrametric-affiliation governance, README §9.]",
+        "evidenceIds": [
+          "afk-docs-6",
+          "afk-docs-13",
+          "afk-docs-3",
+          "afk-probe-1",
+          "afk-probe-2"
+        ]
+      },
+      "status": "preserved",
+      "freshJudgeSaid": "partial q5 (conf low)",
+      "action": "preserved human adjudication (opus-5-5 independently reached the same verdict/quality; annotated rationale kept as the record of the human call)"
+    }
+  ]
+}
