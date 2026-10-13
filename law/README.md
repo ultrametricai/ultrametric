@@ -15,7 +15,7 @@ How a card is consumed: `lib/founderOps.ts` validates every card against
 `processes/<domain>/<jurisdiction>/` cite cards in `rule_ids`, e.g.
 `equity.us-de.83b-election` cites `us-fed.83b-filing-period`.
 
-A trimmed real card (`rules/US-FED/us-fed-1120-filing-deadline.json`):
+A trimmed real card (`law/US-FED/us-fed-1120-filing-deadline.json`):
 
 ```jsonc
 {

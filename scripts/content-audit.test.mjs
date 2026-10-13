@@ -18,7 +18,7 @@ function fixture() {
     'sources/registry.json': { sources: [{ id: 'statute', title: 'Statute', url: 'https://example.test/law', locator: '§ 1', checked_on: '2026-10-01', jurisdiction: 'US-DE' }] },
     'resources/registry.json': { resources: [] },
     'jurisdictions/registry.json': { jurisdictions: [{ code: 'US-DE', name: 'Delaware', coverage: 'partial-example', scope: 'One example' }] },
-    'rules/US-DE/rule.json': { id: 'rule', statement: 'A rule', source_ids: ['statute'], jurisdiction: 'US-DE', status: 'demonstration', reviewed_on: '2026-10-01', review_due: '2027-01-01' },
+    'law/US-DE/rule.json': { id: 'rule', statement: 'A rule', source_ids: ['statute'], jurisdiction: 'US-DE', status: 'demonstration', reviewed_on: '2026-10-01', review_due: '2027-01-01' },
     'processes/artifacts.json': { artifacts: [{ id: 'result', label: 'Result', description: 'Prepared result', producedBy: 'start' }] },
     'processes/business-logic-map.json': { modules: { module: { label: 'Module', file: 'lib/openstartup/module.ts', processes: ['start'] } } },
     'coverage/coverage.json': { coverage_claim: 'One demonstration only.', uncovered: ['Other scenarios'], coverage: [] },

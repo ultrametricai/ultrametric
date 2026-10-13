@@ -1,6 +1,6 @@
 // Textbook tests for the compliance deadline calendar. Two duties: (1) every deadline's
 // day-count arithmetic matches the cited rule card's statement, re-derived in comments;
-// (2) every ruleId in DEADLINE_RULE_IDS resolves to a committed card in rules/<jurisdiction>/
+// (2) every ruleId in DEADLINE_RULE_IDS resolves to a committed card in law/<jurisdiction>/
 // whose id and jurisdiction match — the module never hardcodes a day count without a dated,
 // primary-sourced card behind it (open-modules/README.md contract).
 
@@ -17,7 +17,7 @@ import {
 } from '../deadlines'
 
 function loadRuleCard(jurisdiction: string, ruleId: string) {
-  const dir = path.join(process.cwd(), 'rules', jurisdiction)
+  const dir = path.join(process.cwd(), 'law', jurisdiction)
   for (const file of fs.readdirSync(dir).filter((f) => f.endsWith('.json'))) {
     const card = JSON.parse(fs.readFileSync(path.join(dir, file), 'utf8')) as { id: string; jurisdiction: string }
     if (card.id === ruleId) return card
@@ -29,7 +29,7 @@ describe('every deadline resolves to a committed, jurisdiction-matched rule card
   for (const [name, ref] of Object.entries(DEADLINE_RULE_IDS)) {
     it(`${name} → ${ref.ruleId}`, () => {
       const card = loadRuleCard(ref.jurisdiction, ref.ruleId)
-      expect(card, `rules/${ref.jurisdiction} must contain a card with id ${ref.ruleId}`).not.toBeNull()
+      expect(card, `law/${ref.jurisdiction} must contain a card with id ${ref.ruleId}`).not.toBeNull()
       expect(card?.jurisdiction).toBe(ref.jurisdiction)
     })
   }

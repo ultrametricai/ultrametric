@@ -1,6 +1,6 @@
 // Textbook tests for the ISO/NSO exercise tax-mechanics module. Duties (the
 // deadlines-module pattern): (1) every ruleId in OPTION_TAX_RULE_IDS resolves to a
-// committed, jurisdiction-matched card in rules/US-FED/ with primary sources; (2) the
+// committed, jurisdiction-matched card in law/US-FED/ with primary sources; (2) the
 // published worked examples are replayed number-for-number — Treas. Reg. § 1.422-4(d)
 // Examples 1-3 for the $100,000 limit, and Rev. Proc. 2024-40 § 2.11's complete-phaseout
 // amounts as the arithmetic check on the AMT exemption phaseout; (3) the remaining
@@ -23,7 +23,7 @@ import {
 } from '../optionTax'
 
 function loadRuleCard(jurisdiction: string, ruleId: string) {
-  const dir = path.join(process.cwd(), 'rules', jurisdiction)
+  const dir = path.join(process.cwd(), 'law', jurisdiction)
   for (const file of fs.readdirSync(dir).filter((f) => f.endsWith('.json'))) {
     const card = JSON.parse(fs.readFileSync(path.join(dir, file), 'utf8')) as {
       id: string
@@ -40,7 +40,7 @@ describe('every computation resolves to a committed, jurisdiction-matched rule c
   for (const [name, ref] of Object.entries(OPTION_TAX_RULE_IDS)) {
     it(`${name} → ${ref.ruleId}`, () => {
       const card = loadRuleCard(ref.jurisdiction, ref.ruleId)
-      expect(card, `rules/${ref.jurisdiction} must contain a card with id ${ref.ruleId}`).not.toBeNull()
+      expect(card, `law/${ref.jurisdiction} must contain a card with id ${ref.ruleId}`).not.toBeNull()
       expect(card?.jurisdiction).toBe(ref.jurisdiction)
       expect(card?.kind).toBe('legal')
       expect(card?.source_ids.length).toBeGreaterThan(0)

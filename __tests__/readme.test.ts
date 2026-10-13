@@ -44,7 +44,7 @@ const INTRO = [
   '├── pipeline/        crawl, probe, judge, derive',
   '├── open-modules/    the startup calculations, indexed',
   '├── lib/             the code behind modules and loaders',
-  '├── rules/           startup law, one rule per record',
+  '├── law/             startup law, one rule per record',
   '├── sources/         the primary legal authorities',
   '├── jurisdictions/   countries, states, vendor geography',
   '├── open-documents/  the open legal documents catalog',

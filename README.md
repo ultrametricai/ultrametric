@@ -20,7 +20,7 @@ ultrametric/
 ├── pipeline/        crawl, probe, judge, derive
 ├── open-modules/    the startup calculations, indexed
 ├── lib/             the code behind modules and loaders
-├── rules/           startup law, one rule per record
+├── law/             startup law, one rule per record
 ├── sources/         the primary legal authorities
 ├── jurisdictions/   countries, states, vendor geography
 ├── open-documents/  the open legal documents catalog
@@ -40,7 +40,7 @@ ultrametric/
 
 ## The open startup repo
 
-This repo holds the processes, rankings, rules, and calculations a startup runs on, as
+This repo holds the processes, rankings, law, and calculations a startup runs on, as
 plain JSON and markdown that any founder or agent can read, verify, and correct by pull
 request. The site at ultrametric.ai renders it unchanged.
 
@@ -205,7 +205,7 @@ a mapped, open gap in [`coverage/`](coverage/).
 
 ## Open law
 
-Map the [law](rules/) that applies to startups, across jurisdictions, and connect it to
+Map the [law](law/) that applies to startups, across jurisdictions, and connect it to
 the calculations and the vendors that act on it. Each legal statement is one dated record
 citing a primary [authority](sources/) (a statute, regulation, or agency page) with the
 exact section. A blog post cannot establish law.

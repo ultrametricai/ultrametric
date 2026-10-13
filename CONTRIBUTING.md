@@ -297,7 +297,7 @@ hold up:
    renders in the top-of-page geo banner and the "Outside the US" block.
 3. **Rule cards for your jurisdiction** — register the jurisdiction in
    [`jurisdictions/registry.json`](jurisdictions/) with a deliberately narrow scope, then
-   add `rules/<CODE>/*.json` cards citing primary sources in
+   add `law/<CODE>/*.json` cards citing primary sources in
    [`sources/registry.json`](sources/) (statute, regulation, agency guidance; a provider
    blog cannot establish law). One proposition per stable ID.
 4. **A full jurisdiction-scoped workflow** — copy

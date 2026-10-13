@@ -13,7 +13,7 @@
 //   discounting for expected future-round dilution when quoting exit outcomes.
 // - Strike-price floor: options must be granted with an exercise price at or above the
 //   grant-date fair market value of the underlying stock to stay outside deferred-comp
-//   treatment — rule card rules/US-FED/us-fed-409a-stock-right-exception.json (Treas. Reg.
+//   treatment — rule card law/US-FED/us-fed-409a-stock-right-exception.json (Treas. Reg.
 //   § 1.409A-1(b)(5)); the module takes the 409A FMV/strike as INPUT and never invents one.
 //
 // Honest-scope notes (also in the README contract):

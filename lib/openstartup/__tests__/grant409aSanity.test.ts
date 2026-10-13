@@ -1,6 +1,6 @@
 // Textbook tests for the 409A grant sanity module. Two duties (the deadlines-module
 // pattern): (1) every ruleId in RULE_IDS_409A resolves to a committed, jurisdiction-matched
-// card in rules/US-FED/ with primary sources — the module never asserts a legal condition
+// card in law/US-FED/ with primary sources — the module never asserts a legal condition
 // without a dated card behind it; (2) the date and price arithmetic is re-derived by hand
 // in comments. There is deliberately NO published valuation example to replay here: the
 // module refuses to value companies (it takes the 409A FMV as input, equityComp's posture),
@@ -25,7 +25,7 @@ import {
 } from '../grant409aSanity'
 
 function loadRuleCard(jurisdiction: string, ruleId: string) {
-  const dir = path.join(process.cwd(), 'rules', jurisdiction)
+  const dir = path.join(process.cwd(), 'law', jurisdiction)
   for (const file of fs.readdirSync(dir).filter((f) => f.endsWith('.json'))) {
     const card = JSON.parse(fs.readFileSync(path.join(dir, file), 'utf8')) as {
       id: string
@@ -42,7 +42,7 @@ describe('every check resolves to a committed, jurisdiction-matched rule card', 
   for (const [name, ref] of Object.entries(RULE_IDS_409A)) {
     it(`${name} → ${ref.ruleId}`, () => {
       const card = loadRuleCard(ref.jurisdiction, ref.ruleId)
-      expect(card, `rules/${ref.jurisdiction} must contain a card with id ${ref.ruleId}`).not.toBeNull()
+      expect(card, `law/${ref.jurisdiction} must contain a card with id ${ref.ruleId}`).not.toBeNull()
       expect(card?.jurisdiction).toBe(ref.jurisdiction)
       expect(card?.kind).toBe('legal')
       expect(card?.source_ids.length).toBeGreaterThan(0)

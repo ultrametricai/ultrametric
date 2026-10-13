@@ -10,7 +10,7 @@ secondary-practice`).
 
 Contribute here:
 
-- **Primary sources for new rule cards** — add entries alongside the `rules/<CODE>/*.json`
+- **Primary sources for new rule cards** — add entries alongside the `law/<CODE>/*.json`
   cards that cite them.
 - **Re-verification passes** — follow an existing link, confirm the provision still says
   what the card claims, and bump `checked_on` (note it if the provision moved).

@@ -18,7 +18,7 @@ protection, the codex access decision in open question 2).
 Ground truth this plan is built on (all measured 2026-10-08 in this tree):
 
 - The artifact is pure content. `data/` (4,327 files, 91 MB), `processes/`, `content/`,
-  `rules/`, `schemas/`, and the other content dirs contain zero `.ts`/`.js`; the
+  `law/`, `schemas/`, and the other content dirs contain zero `.ts`/`.js`; the
   dependency arrow is strictly one-way, `lib/` reads the artifact.
 - `lib/` is almost entirely framework-free: of 179 non-test modules, 2 import React,
   0 import `next/*`, 3 reference `@/components` (two of those type-only).
@@ -49,7 +49,7 @@ private site repo), **SPLIT** (file-level partition inside the directory),
 | `content/processes/` | OPEN | The shared-process records; public Git owns shared process meaning (AGENTS.md). |
 | `journeys/` | OPEN | `chains.json`, the multi-process founder paths; corpus-schema-gated content. |
 | `jurisdictions/` | OPEN | Registry and per-country vendor availability; checkable legal scope. |
-| `rules/` | OPEN | Dated, source-locked rule cards; the "know the rules" layer. |
+| `law/` | OPEN | Dated, source-locked rule cards; the "know the rules" layer. |
 | `sources/` | OPEN | Primary-authority registry the rule cards cite. |
 | `lore/` | OPEN | Sourced heuristics registry. |
 | `open-documents/` | OPEN | The canonical startup legal documents as dated link-only records. |
@@ -197,7 +197,7 @@ cannot drift from the artifact silently.
 ## 2. Consumption mechanism: how the closed site reads the open artifact
 
 The closed repo needs, at build time: the content dirs (`data/`, `processes/`,
-`content/processes/`, `journeys/`, `rules/`, `jurisdictions/`, `lore/`,
+`content/processes/`, `journeys/`, `law/`, `jurisdictions/`, `lore/`,
 `open-documents/`, `open-modules/`, `sources/`, `resources/`, `coverage/`, `fixtures/`,
 `templates/`, `vendors/`, `schemas/`, `governance/`, the OPEN half of `docs/` that pages
 read, e.g. `docs/assets/`), the OPEN `public/` assets (badges, logos, screenshots), and

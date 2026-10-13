@@ -1,7 +1,7 @@
 // ISO vs NSO exercise tax mechanics (founder directive 2026-10-01: "go super deep on
 // business logic — tax mechanics, everything").
 //
-// Pure, client-safe, deterministic. Every formula cites a dated rule card in rules/US-FED/
+// Pure, client-safe, deterministic. Every formula cites a dated rule card in law/US-FED/
 // backed by primary sources (IRC via verified statutory text, Treasury regulations, IRS
 // publications — see the cards' source_ids); the vitest gate
 // (lib/openstartup/__tests__/optionTax.test.ts) asserts every ruleId resolves to a

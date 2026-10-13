@@ -10,7 +10,7 @@ or if the list drifts outside 25–40 laws.
 These are compressions of other people's published work, dated by the registry's
 `checked_on` fields. They are heuristics with strong priors, not statutes — the only entries
 here that are literally laws (the 83(b) window, the Delaware franchise tax date) cite primary
-sources and carry rule cards in `rules/`.
+sources and carry rule cards in `law/`.
 
 ## Idea and validation
 

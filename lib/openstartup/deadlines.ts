@@ -1,10 +1,10 @@
 // Deadline calendar — the recurring founder compliance clock (founder direction 2026-09-29).
 //
 // Pure, client-safe, deterministic: all date math is UTC on ISO `YYYY-MM-DD` strings.
-// EVERY deadline here references a dated rule card in rules/ by id — no hardcoded day count
+// EVERY deadline here references a dated rule card in law/ by id — no hardcoded day count
 // is asserted without a card whose sources were verified against the live primary source
 // (see open-modules/README.md; the cross-check that each ruleId resolves to a committed
-// card lives in lib/openstartup/__tests__/deadlines.test.ts, which reads rules/ from disk).
+// card lives in lib/openstartup/__tests__/deadlines.test.ts, which reads law/ from disk).
 //
 // Honest-maturity contract (matches the rule cards' own caveats): this module computes the
 // nominal calendar date stated by the rule and flags `needsReview: true` whenever the true
@@ -25,7 +25,7 @@ export const DEADLINE_RULE_IDS = {
 export interface DeadlineComputation {
   /** Nominal due date, ISO YYYY-MM-DD, straight from the cited rule's day count. */
   due: string
-  /** The rules/ card asserting the legal proposition behind `due`. */
+  /** The law/ card asserting the legal proposition behind `due`. */
   ruleId: string
   jurisdiction: 'US-FED' | 'US-DE'
   /** True when the real date may differ from `due` (weekend landing, statutory exception,

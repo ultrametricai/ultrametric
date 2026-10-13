@@ -14,7 +14,7 @@ workspace, never here.
 | `coverage/` | Domain taxonomy, lifecycle navigation, machine-readable coverage and gaps |
 | `journeys/` | Multi-process founder paths (chains; The Open Startup is the live surface) |
 | `processes/` | Jurisdiction-scoped legal workflows + the operational corpus (two layers) |
-| `rules/<jurisdiction>/` | Canonical, dated legal rule cards with stable IDs |
+| `law/<jurisdiction>/` | Canonical, dated legal rule cards with stable IDs |
 | `sources/` | Primary authorities: provision locators, issue dates, checked dates |
 | `jurisdictions/` | Registry + overlays; exact-dimension matching, unknown = unsupported |
 | `open-modules/` | The open modules — cited, deterministic calculations (cap table first) |
@@ -63,7 +63,7 @@ structure and semantic invariants; it does not prove laws true or implement a ca
   via `pipeline/scripts/generate-vendor-reviews.ts` — deterministic projection of the committed
   rankings/evidence/pricing/geo data, owner disclosures always carried
   (`pipeline/__tests__/vendorReviews.test.ts`). Still open from the original stage-2 sketch:
-  folding process geo-scope into `rules/`, and the on-site workflow-layer surface (a
+  folding process geo-scope into `law/`, and the on-site workflow-layer surface (a
   `/founder-ops` or per-process "legal layer" view).
 - **Stage 3 — retired 2026-09-29.** The original plan (physically move the site/CLI/MCP/worker
   under `apps/` as workspace packages) is moot: the MCP/CLI packages moved to their own

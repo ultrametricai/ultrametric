@@ -57,10 +57,10 @@ Documents implement laws and pair with guides already cataloged elsewhere — ci
 duplicate rows:
 
 - `irs-form-15620` implements the 83(b) election — rule cards `us-fed-83b-filing-period`,
-  `us-fed-83b-form-and-copies`, `us-fed-83b-revocation` (rules/US-FED); also a resources row
+  `us-fed-83b-form-and-copies`, `us-fed-83b-revocation` (law/US-FED); also a resources row
   (`irs-form-15620` there points at the same form).
 - Advisor/option grants (`cooley-advisor-agreement`, `fi-fast-advisor`) sit under the 409A
-  rule cards (rules/US-FED) and Delaware option-authorization card (rules/US-DE).
+  rule cards (law/US-FED) and Delaware option-authorization card (law/US-DE).
 - Equity-compensation context: the Holloway Guide and Index Rewarding Talent are resources
   (`holloway-equity-guide`, `index-rewarding-talent`), not duplicated here.
 - The SAFE cap-table arithmetic in `yc-safe-user-guide` is implemented in
@@ -132,7 +132,7 @@ duplicate rows:
 
 | id | Document | Publisher | What counsel still does |
 | --- | --- | --- | --- |
-| `orrick-tech-studio` | [Tech Studio forms library (incorporation, financing, equity, consents)](https://www.orrick.com/en/Tech-Studio) | Orrick | Confirm statutory formalities of board action (see `rules/US-DE`); some downloads gated by registration |
+| `orrick-tech-studio` | [Tech Studio forms library (incorporation, financing, equity, consents)](https://www.orrick.com/en/Tech-Studio) | Orrick | Confirm statutory formalities of board action (see `law/US-DE`); some downloads gated by registration |
 | `orrick-incorporation-toolkit` | [Incorporation Toolkit — charter, bylaws, board/stockholder consents, founder stock](https://www.orrick.com/en/tech-studio/forms/Incorporation-Toolkit) | Orrick | Review before filing; cross-check against the Cooley package |
 | `orrick-cap-table-template` | [Capitalization Table template](https://www.orrick.com/en/tech-studio/forms/Capitalization-Table) | Orrick | Reconcile the ledger with consents and certificates |
 

@@ -12,7 +12,7 @@ cites. Candidates that fail live verification are left out rather than linked ho
 - **`LAWS.md`** distills the registry into recurring, near-universal principles grouped by
   lifecycle stage; every law cites its source records by id, aphorisms are attributed to
   their actual origin, and the only literal laws (filing deadlines) also carry rule cards
-  in `rules/`.
+  in `law/`.
 - **`LORE.md`** records the episodes of startup history as sourced entries: a tight
   factual retelling, era, companies and people, a one-sentence lesson, at least one source
   with a what-it-supports note, and a veracity grade on every entry (`first-person` /

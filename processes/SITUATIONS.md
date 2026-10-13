@@ -77,7 +77,7 @@ The 22 situations, hottest clock first (urgency, then title — the /situations 
 
 1. Add the record to `processes/corpus.json` with `kind: 'situation'`, a `trigger` written as
    the event, an honest `urgency` tier, **no `timeOrder`**, and the usual DAG/scores/geoScope.
-   Legal claims in descriptions cite dated rule cards in `rules/` by id; deadlines cite the
+   Legal claims in descriptions cite dated rule cards in `law/` by id; deadlines cite the
    notice or statute, curl-verified like every corpus URL.
 2. Route steps honestly: `agent` only for the mechanical core; signatures under penalty of
    perjury get `legalSignature`; third-party clocks are `person` waits.

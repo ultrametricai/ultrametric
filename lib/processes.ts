@@ -227,7 +227,7 @@ export type StepMethod = z.infer<typeof StepMethodSchema>
 // `what` names the failure, `then` the recovery — or the honest "no recovery; this is a
 // conversation with counsel" where that is the truth (needs_review posture). `source` is the
 // primary page/statute/fee schedule backing the entry (curl-verified live, like every corpus
-// URL); legal claims additionally cite a dated rule card in rules/ by id inside the prose, the
+// URL); legal claims additionally cite a dated rule card in law/ by id inside the prose, the
 // situations-house precedent. 3–6 QUALITY entries per deep process, not coverage — see
 // processes/README.md "Failure modes". Display: none since founder 2026-10-05 (the collapsed
 // '⚠ if it goes wrong' step line was removed) — the field stays corpus data, carried by the

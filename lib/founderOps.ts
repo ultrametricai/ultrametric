@@ -245,7 +245,7 @@ export function validateFounderOps(asOf?: Date): string[] {
     if (checked && checked > today) errors.push(`source ${sid}: checked date is in the future`)
   }
 
-  const rules = indexed(listJson(path.join(ROOT, 'rules')).filter((f) => !f.endsWith('README.md')), errors, 'rule')
+  const rules = indexed(listJson(path.join(ROOT, 'law')).filter((f) => !f.endsWith('README.md')), errors, 'rule')
   for (const [rid, rule] of rules) {
     shape(rule, need('rule.schema'), `rule ${rid}`, errors)
     if (!jurisdictions.has(str(rule.jurisdiction) ?? '')) errors.push(`rule ${rid}: unknown jurisdiction`)
@@ -363,7 +363,7 @@ export function planFounderOps(event: JsonObject, asOf?: Date): FounderOpsPlan {
   if (matches.length === 0) {
     return { status: 'unsupported', reason: 'no exact covered scenario', may_execute: false }
   }
-  const ruleMap = indexed(listJson(path.join(ROOT, 'rules')), [], 'rule')
+  const ruleMap = indexed(listJson(path.join(ROOT, 'law')), [], 'rule')
   const sourcesDoc = read(path.join(ROOT, 'sources/registry.json'))
   const sources = new Map<string, JsonObject>()
   for (const s of isObj(sourcesDoc) && Array.isArray(sourcesDoc.sources) ? sourcesDoc.sources : []) {

@@ -4,7 +4,7 @@
 // this module says so rather than pretending a federal number is the loaded cost.
 //
 // Pure, client-safe, deterministic. Every rate and threshold is an asOf-dated parameter
-// object backed by a rule card in rules/US-FED/ citing the live-verified IRS guidance:
+// object backed by a rule card in law/US-FED/ citing the live-verified IRS guidance:
 // - us-fed.fica-rates-2026 — Pub 15 (2026): social security 6.2% each on the $184,500
 //   wage base; Medicare 1.45% each, no limit; Additional Medicare 0.9% withheld from
 //   employees only over $200,000 (NO employer share).
