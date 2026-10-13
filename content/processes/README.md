@@ -10,7 +10,7 @@ Notes use `{ "text": "...", "references": [] }`; references are optional. They c
 
 `metadata` preserves temporary legacy annotations. It is not included in API instructions. Unverified operation strings are retained only in `legacy-audit.json`. Six standalone legal decisions remain in metadata because the source does not specify their graph position. No decisions, outcomes, vendor claims, or instructions are invented during import. Source provenance is optional for new records. It identifies copied content, not factual support.
 
-The manifest’s `generatedHash` records generated output. Authored records retain that baseline so the importer can detect conflicting source changes. The reconciliation audit is retained in [the migration report](../../docs/PROCESS-MIGRATION-2026-10-02.md).
+The manifest’s `generatedHash` records generated output. Authored records retain that baseline so the importer can detect conflicting source changes. The [import manifest](./import-manifest.json) records the source and generated hashes; `check-import.py` verifies the fresh migration against legacy inputs.
 
 ## Commands
 
@@ -32,4 +32,4 @@ The additive process preview makes 38 legacy base methods explicit default optio
 36 records, preserving their 97 alternatives, links and all incoming metadata. Integration
 uses stable record/part IDs; it retains all 162 records including reactive situations.
 The approved formation chooser guidance is an authored amendment. See
-`default-options-audit.json` and `../../docs/PROCESS-UI-RELEASE.md`.
+`default-options-audit.json`.

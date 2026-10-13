@@ -6,7 +6,7 @@
 // arena using pure string heuristics — NO LLM calls — and captures cheap signals (llms.txt
 // served by homepage or repo root, MCP/CLI mentions). Output:
 //   - rankings/oss-candidates.json  (all candidates, sorted by stars desc)
-//   - docs/OSS-COVERAGE.md      (top-50 uncovered table + ranked new-arena suggestions)
+//   - stdout: Markdown coverage report (redirect outside this repository to retain it)
 // Re-runnable and rate-limit-aware: total `gh api` requests are hard-capped (MAX_GH_REQUESTS)
 // and search calls are paced under GitHub's 30-req/min search limit. Discovery only — this
 // script never edits any rankings/<category>/products.json.
@@ -16,7 +16,7 @@ import { execFileSync } from 'node:child_process'
 import fs from 'node:fs'
 import path from 'node:path'
 import { ProductSchema } from '../../lib/schemas'
-import { DATA_DIR, ROOT, readCategories, readJson } from '../paths'
+import { DATA_DIR, readCategories, readJson } from '../paths'
 
 // ---------------------------------------------------------------------------
 // Budgets (keep the script polite and re-runnable)
@@ -790,13 +790,8 @@ async function main(): Promise<void> {
   const outJson = path.join(DATA_DIR, 'oss-candidates.json')
   fs.writeFileSync(outJson, JSON.stringify(candidates, null, 2) + '\n')
   const coveredCount = candidates.filter((c) => c.alreadyCovered).length
-  const outMd = path.join(ROOT, 'docs', 'OSS-COVERAGE.md')
-  fs.mkdirSync(path.dirname(outMd), { recursive: true })
-  fs.writeFileSync(
-    outMd,
-    buildMarkdown(candidates, { rawResults, unique: repos.length, filtered: candidates.length, covered: coveredCount }, categoriesById),
-  )
-  console.log(`wrote ${outJson} (${candidates.length} candidates, ${coveredCount} already covered) and ${outMd}`)
+  process.stdout.write(buildMarkdown(candidates, { rawResults, unique: repos.length, filtered: candidates.length, covered: coveredCount }, categoriesById))
+  console.log(`wrote ${outJson} (${candidates.length} candidates, ${coveredCount} already covered)`)
 
   const uncovered = candidates.filter((c) => !c.alreadyCovered)
   console.log('\nTop 15 uncovered candidates:')
