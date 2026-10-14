@@ -8,7 +8,7 @@ import { battleSlug, stripPersonaPrefix, type CategoryData } from './data-helper
 import type { LeaderboardEntry, Product } from './schemas'
 import { isShutdown } from './shutdown'
 
-// The canonical lens themes injected into EVERY arena (see pipeline/agentic-stories.ts):
+// The canonical lens themes injected into EVERY arena (see rankings-engine/agentic-stories.ts):
 // shared by construction, so they carry zero adjacency signal and are excluded from the
 // shared-theme count below. Domain themes (pricing-limits, dev-experience, onboarding, …)
 // are what make two arenas genuinely adjacent.

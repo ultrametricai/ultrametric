@@ -1,5 +1,5 @@
 // Pure helpers reconciling a product's vendor CLAIMS (lib/schemas.ts's ClaimSchema, extracted by
-// pipeline/stages/claims.ts from claimed-docs/github evidence) against our judge's own VERDICTS
+// rankings-engine/stages/claims.ts from claimed-docs/github evidence) against our judge's own VERDICTS
 // for the same story. A claim is what the vendor says; a verdict is what we independently found —
 // this module is the diff between the two.
 import { evidenceById, verdictFor, type CategoryData } from './data-helpers'

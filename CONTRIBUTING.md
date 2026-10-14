@@ -29,8 +29,8 @@ product, story id, and the current verdict/quality are filled in for you, with e
 for your proposed verdict, evidence URLs, and quotes. It's the fast path for flagging
 something that looks wrong; it does not itself change any data. A maintainer (or, eventually,
 a GitHub Action) still has to do the deeper check described below: add the evidence, run
-`pnpm run pipeline judge --category <category> --product <product>`, then
-`pnpm run pipeline derive --category <category>` to update the verdict.
+`pnpm engine judge --category <category> --product <product>`, then
+`pnpm engine derive --category <category>` to update the verdict.
 
 If you'd rather skip the prefilled link, you can also open an issue manually using the
 [Contest a Verdict](./.github/ISSUE_TEMPLATE/contest-verdict.md) template. Fill in:
@@ -48,8 +48,8 @@ If you'd rather skip the prefilled link, you can also open an issue manually usi
 3. If your evidence is new or better, the maintainer (or you, via a PR — see below) adds it
    to the product's evidence file and re-judges:
    ```bash
-   pnpm run pipeline judge --category <category> --product <product>
-   pnpm run pipeline derive --category <category>
+   pnpm engine judge --category <category> --product <product>
+   pnpm engine derive --category <category>
    ```
    This re-judges **every** cell for that product, not only the one you're contesting —
    see the cache note below.
@@ -60,14 +60,14 @@ If you'd rather skip the prefilled link, you can also open an issue manually usi
 
 `.github/workflows/contest-check.yml` can do steps 2–4 above automatically: when an issue is
 labeled `contest` (or a maintainer runs the workflow manually via `workflow_dispatch` with an
-`issue_number`), it runs `pnpm tsx pipeline/contest-check.ts --issue <n>`, which:
+`issue_number`), it runs `pnpm tsx rankings-engine/contest-check.ts --issue <n>`, which:
 
 1. Fetches the issue and parses the category/product/story id and the "Evidence URLs" section
-   from its body (tolerant of the exact template — see `pipeline/__tests__/contest-check.test.ts`
+   from its body (tolerant of the exact template — see `rankings-engine/__tests__/contest-check.test.ts`
    for the cases it handles).
 2. Fetches each evidence URL and appends it as a `claimed-docs`-tier evidence item, ided
    `{product}-contest-{issueNumber}-{n}` (namespaced by issue so it can never collide with ids
-   the pipeline itself mints, or with another contest issue's items).
+   the engine itself mints, or with another contest issue's items).
 3. Re-runs `judge --category <category> --product <product>` and `derive --category <category>`.
 4. Opens a PR on a `contest-{issueNumber}` branch referencing the issue, and comments the
    outcome (PR link, or a failure reason) back on the issue.
@@ -104,8 +104,8 @@ verdict, you can propose it directly as a PR:
    - `fetchedAt` — an ISO 8601 datetime
 2. Re-judge that product:
    ```bash
-   pnpm run pipeline judge --category <category> --product <product>
-   pnpm run pipeline derive --category <category>
+   pnpm engine judge --category <category> --product <product>
+   pnpm engine derive --category <category>
    ```
 3. Commit **both** the evidence file and the resulting `verdicts.json` / `rankings.json`
    changes in the same PR — never hand-edit `verdicts.json` or `rankings.json` directly.
@@ -115,7 +115,7 @@ verdict, you can propose it directly as a PR:
 
 ### About the judge cache and re-judge scope
 
-The judge cache (`pipeline/cache/judge/`) **is committed** to the repo, keyed by a hash of
+The judge cache (`rankings-engine/cache/judge/`) **is committed** to the repo, keyed by a hash of
 `(storyId, story title, the product's full evidence array, prompt version)` — the
 *whole* evidence pack, not only the item(s) you cite. This has two consequences:
 
@@ -137,7 +137,7 @@ The judge cache (`pipeline/cache/judge/`) **is committed** to the repo, keyed by
 ## 3. Add your product
 
 Founders and vendors: this is how you get your product into a ranking — and how you make sure
-the pipeline *sees* what you've built. Scores only credit cited evidence, so the single
+the rankings engine *sees* what you've built. Scores only credit cited evidence, so the single
 biggest failure mode is not "the judge was harsh," it's "the crawl never saw your best pages."
 (Real precedent: both Asana and Linear sat at API-quality **0** — despite shipping OpenAPI specs
 and full rate-limit docs — until their deep developer-docs URLs were added to `urls.extra`.)
@@ -187,7 +187,7 @@ issue proposing a new one instead). A real, current entry for shape reference:
 }
 ```
 
-Why the URLs matter so much: the pipeline crawls **exactly** `urls.site`, `urls.docs`,
+Why the URLs matter so much: the rankings engine crawls **exactly** `urls.site`, `urls.docs`,
 `urls.changelog`, `urls.github` (README) and every `urls.extra` entry — nothing else. That crawl
 is the entire corpus your docs-tier evidence is extracted from (community and probe evidence are
 collected separately). Judging is evidence-or-nothing, so a capability documented only on a page
@@ -202,15 +202,15 @@ you didn't list scores `none`/0.
 6. **A raw GitHub README** (`raw.githubusercontent.com/...`) for your SDK/spec repo
 
 Validate before opening the PR: `pnpm test` (schema checks). You do **not** need to run the
-LLM pipeline or touch `stories.json`/`verdicts.json`/`rankings.json` — those are
-pipeline-owned; maintainers run the stages on your entry. If you *do* have an
+LLM engine stages or touch `stories.json`/`verdicts.json`/`rankings.json` — those are
+engine-owned; maintainers run the stages on your entry. If you *do* have an
 `ANTHROPIC_API_KEY` and want to include results, the sequence is
-`crawl → extract → probe → judge → derive` (all `pnpm run pipeline <stage> --category <arena>
+`crawl → extract → probe → judge → derive` (all `pnpm engine <stage> --category <arena>
 --product <id>`), committing evidence + verdicts + rankings together.
 
 ### 3c. Make your product probe well (this is the score-moving part)
 
-The pipeline runs keyless, reproducible probes against public conventions, and the
+The rankings engine runs keyless, reproducible probes against public conventions, and the
 [certification suite](./docs/CERTIFICATION.md) checks the same surfaces. Each artifact below
 maps directly to scored stories:
 
@@ -331,7 +331,7 @@ cp .env.example .env    # fill in ANTHROPIC_API_KEY if you need to run extract/n
 pnpm test
 ```
 
-`ANTHROPIC_API_KEY` is only needed for the LLM-driven pipeline stages (`extract`,
+`ANTHROPIC_API_KEY` is only needed for the LLM-driven engine stages (`extract`,
 `normalize`, `collect-community`, `judge`) run locally. It is **never** required to work on
 the data, and it must **never** be set on the site's Vercel project — the deployed site
 serves pre-computed static `open-rankings/` and makes no LLM calls at build or request time.

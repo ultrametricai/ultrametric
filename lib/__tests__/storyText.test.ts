@@ -4,7 +4,7 @@ import { parseStoryPersona } from '@/lib/storyText'
 // Fixtures below marked "live" are copied VERBATIM from open-rankings/*/stories.json — the parser must
 // hold against the real corpus (3,724 titles at time of writing, 100% in the comma form), not
 // just textbook Connextra examples. The data files themselves are never touched: judge caching
-// keys on the exact title (pipeline/stages/judge.ts's cellHash), so this is display-only.
+// keys on the exact title (rankings-engine/stages/judge.ts's cellHash), so this is display-only.
 
 describe('parseStoryPersona — live "I can" titles', () => {
   const cases: Array<[string, string, string]> = [

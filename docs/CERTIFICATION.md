@@ -8,7 +8,7 @@ anyone, and expiring after 180 days.
 
 The current implementation: the suite is `ultrametric-cli certify` (the CLI lives in its own
 repo; the maintainer-side implementation the weekly sweep runs is
-`pipeline/scripts/certify.ts`), the
+`rankings-engine/scripts/certify.ts`), the
 registry is `open-rankings/<arena>/certifications.json` (`CertificationSchema` in
 `lib/certifications.ts`, loaded tolerant-optionally by `lib/data.ts`), the public listing is
 [/certified](https://ultrametric.ai/certified), intake is the
@@ -22,7 +22,7 @@ npx ultrametric-cli certify https://docs.your-product.com --report cert-report.j
 ```
 
 Six checks, all keyless, read-only, and run from the operator's machine against public
-surfaces (the same conventions as the pipeline's probe stage, `pipeline/stages/probe.ts`):
+surfaces (the same conventions as the engine's probe stage, `rankings-engine/stages/probe.ts`):
 
 | check | passes when |
 | --- | --- |
@@ -97,7 +97,7 @@ Not listed yet? [Request the product](../.github/ISSUE_TEMPLATE/request-a-produc
 
 - **The suite is the certification.** No judgment calls, no partial credit, no negotiated
   exceptions: the levels are pure functions of check statuses (`certificationLevel` in
-  `pipeline/scripts/certify.ts`), and the code is public.
+  `rankings-engine/scripts/certify.ts`), and the code is public.
 - **Failing runs are not secrets.** We don't publish a registry of failures (this program
   certifies, Prove-It disputes), but a maintainer re-run that contradicts a submitted report
   is discussed in the open, on the submission issue.

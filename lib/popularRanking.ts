@@ -1,6 +1,6 @@
 // Pure segmentation + hot-detection logic for the /rankings/popular page and the 🔥 chip.
 // Split from lib/hotProducts.ts (the fs composer) the same way lib/popularity.ts is split from
-// pipeline/stages/popularity.ts: no node builtins, so client components and tests import it
+// rankings-engine/stages/popularity.ts: no node builtins, so client components and tests import it
 // without dragging fs into the bundle.
 //
 // FAIRNESS is the design constraint. You cannot rank GitHub stars against a closed SaaS

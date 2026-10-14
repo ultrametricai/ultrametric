@@ -88,7 +88,7 @@ Honestly, in descending order of how much each one distorts outcomes today:
    in any touched arena would have failed its staleness gate. Scores didn't move, but the
    invariant "published verdicts correspond to the current evidence pack hash" was broken for
    three days with no alarm. (Reconciled for project-management by
-   `pipeline/scripts/restamp-judge-cache-intdir.ts`, which encodes why restamping equals the
+   `rankings-engine/scripts/restamp-judge-cache-intdir.ts`, which encodes why restamping equals the
    churn-policy fixed point; other enriched arenas still carry the stale hashes.)
 
 ## 3. Improvement proposals (with tradeoffs)

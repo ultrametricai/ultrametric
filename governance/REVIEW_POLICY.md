@@ -19,7 +19,7 @@ downgraded if material. No one may claim the repository is comprehensive for a c
 because it has several playbooks — coverage is tracked per scenario and locale in
 `coverage/coverage.json`, including known exclusions.
 
-## Evidence doctrine (vendor layer — already enforced in the pipeline)
+## Evidence doctrine (vendor layer — already enforced in the engine)
 
 - **Everything evidence-driven.** Verdicts, scores, and ranks are computed from cited evidence;
   they are never hand-tuned. Honest negatives are recorded as probes.
@@ -29,7 +29,7 @@ because it has several playbooks — coverage is tracked per scenario and locale
   Ultrametric) carry affiliation disclosure on every surface and receive adversarial bias
   audits; favorable flips get extra scrutiny and have been reverted under this policy.
 - **Determinism.** Committed rankings recompute bit-identically
-  (`pipeline/scripts/recompute-check.ts` must report ALL DETERMINISTIC); provenance is
+  (`rankings-engine/scripts/recompute-check.ts` must report ALL DETERMINISTIC); provenance is
   HMAC-fingerprinted.
 - **No paid placement.** Payment cannot change scores, rankings, routing, or inclusion — in
   arenas, in workflows, or in vendor reviews. Maintainers with a vendor relationship disclose

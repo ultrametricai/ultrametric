@@ -375,7 +375,7 @@ export function buildCronHealth(repoRoot: string = process.cwd(), dir: string = 
       'spike-engine.yml keeps no schedule by design: since 2026-09-21 the daily 04:23 UTC spike ' +
       'runs as a session cron — in the founder’s Claude session, gates + commit + deploy in one ' +
       'pass — and the workflow stays dispatch-only as the manual/backup path. The vendor-news ' +
-      'watcher (pipeline/scripts/watch-vendor-news.ts) follows the same convention: session-run, ' +
+      'watcher (rankings-engine/scripts/watch-vendor-news.ts) follows the same convention: session-run, ' +
       'budgeted, resumable.',
     lastRuns: [
       { label: 'Score history (story-runner / engines)', date: newestScore, source: 'open-rankings/*/score-history.jsonl' },

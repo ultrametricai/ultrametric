@@ -44,7 +44,7 @@ describe('docs/repo-split-census.json', () => {
   it('every test file sits in an open suite (plan section 1 tests table)', () => {
     for (const file of liveTestFiles) {
       const open = file.startsWith('__tests__/') || file.startsWith('lib/') ||
-        file.startsWith('pipeline/') || file === 'scripts/content-audit.test.mjs'
+        file.startsWith('rankings-engine/') || file === 'scripts/content-audit.test.mjs'
       expect(open, `${file} is outside the open suites`).toBe(true)
     }
   })

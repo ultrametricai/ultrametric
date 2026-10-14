@@ -26,20 +26,20 @@ export interface CategoryData {
   rankings: Rankings
   stacks: Stack[]
   // Keyless popularity/momentum signal, keyed by productId — see lib/schemas.ts's
-  // PopularityMapSchema and pipeline/stages/popularity.ts. `open-rankings/{cat}/popularity.json` is
+  // PopularityMapSchema and rankings-engine/stages/popularity.ts. `open-rankings/{cat}/popularity.json` is
   // optional (not every category has been through the popularity stage yet, and even when it
   // has, most products have no discoverable GitHub/npm/pypi signal), so this is `{}` rather
   // than undefined when absent — display code should look up by productId and treat a miss as
   // "no public signals", not as an error.
   popularity: Record<string, Popularity>
-  // Keyed by productId — see lib/schemas.ts's ClaimSchema and pipeline/stages/claims.ts.
+  // Keyed by productId — see lib/schemas.ts's ClaimSchema and rankings-engine/stages/claims.ts.
   // `open-rankings/{cat}/claims/` is optional (not every category has been through the claims stage yet)
   // and, even when present, an individual product's file may be missing — both cases resolve to
   // `[]` for that productId rather than an error, same "absence is not an error" contract as
   // popularity above.
   claims: Record<string, Claim[]>
   // Multi-judge uncertainty results — see lib/schemas.ts's UncertaintyEntrySchema and
-  // pipeline/scripts/uncertainty-pass.ts. `open-rankings/{cat}/uncertainty.json` is optional (most
+  // rankings-engine/scripts/uncertainty-pass.ts. `open-rankings/{cat}/uncertainty.json` is optional (most
   // categories are never a "close race", and even a qualifying one only covers its decisive
   // cells) — absence resolves to `[]`, same "absence is not an error" contract as popularity and
   // claims above. Use uncertaintyFor(data, productId, storyId) rather than scanning this array
@@ -138,7 +138,7 @@ export function vendorResponseFor(data: CategoryData, productId: string, storyId
 }
 
 // Every story title is authored as "As a(n) {persona description}, {clause}" (see
-// pipeline/agentic-stories.ts + normalize.ts + depth-mine.ts's commonRules). The persona clause
+// rankings-engine/agentic-stories.ts + normalize.ts + depth-mine.ts's commonRules). The persona clause
 // is redundant once a story has its own persona tag/column/chip, so this strips it for
 // *display only* — the underlying Story.title is never mutated, and if a title doesn't match
 // the expected shape (defensive: hand-edited/legacy titles), it's returned unchanged rather

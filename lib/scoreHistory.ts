@@ -1,7 +1,7 @@
 // Loader + forward-fill appender for open-rankings/{cat}/score-history.jsonl — the append-only,
 // change-only time series of each product's Overall score (aiEra) and agent-readiness (see
 // lib/schemas.ts's ScoreHistoryEntrySchema doc). Seeded from git history by
-// pipeline/scripts/build-score-history.ts; grown by pipeline/stages/derive.ts via
+// rankings-engine/scripts/build-score-history.ts; grown by rankings-engine/stages/derive.ts via
 // appendScoreHistoryOnChange below. The pure helpers (parsing, series, 30d trend delta) live in
 // lib/scoreTrend.ts so client components can use them without this module's fs dependency.
 import fs from 'node:fs'
@@ -69,7 +69,7 @@ export function overallScoreTrendDelta(
 // product's last line in the file (or that has no line yet). Append-only and idempotent per
 // run — re-running derive on unchanged verdicts appends nothing, because the rounded values
 // still match the file's tail. Returns the number of lines appended. Mirrors
-// pipeline/stages/popularity.ts's popularity-history.jsonl append, minus the per-run cadence.
+// rankings-engine/stages/popularity.ts's popularity-history.jsonl append, minus the per-run cadence.
 // `note` (optional) labels every appended line with a provenance marker — used by judge-model
 // migration waves so score discontinuities that reflect a judge change, not an evidence change,
 // are stamped as such in the series (ScoreHistoryEntrySchema.note).

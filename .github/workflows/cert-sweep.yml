@@ -1,14 +1,14 @@
 # Weekly Agent-Ready certification sweep — keeps /certified self-sustaining without keys:
 #
 #   1. Re-verifies every currently certified product by re-running the same keyless conformance
-#      suite vendors run themselves (pipeline/scripts/certify.ts): passes inside the renewal window get a
+#      suite vendors run themselves (rankings-engine/scripts/certify.ts): passes inside the renewal window get a
 #      fresh date + report, level changes are recorded, and former passers that fail TODAY are
 #      removed with the failing report committed as evidence (expiry semantics in
 #      lib/certifications.ts — absence is how a lapsed certification is expressed).
 #   2. Certifies new passers from the probe-evidence candidate queue
-#      (pipeline/scripts/cert-candidates.ts): uncertified products whose committed probe
+#      (rankings-engine/scripts/cert-candidates.ts): uncertified products whose committed probe
 #      evidence shows a live llms.txt or documented MCP server. Capped at 15 per run
-#      (pipeline/scripts/cert-sweep.ts CANDIDATE_CAP) so runs stay bounded; the deterministic
+#      (rankings-engine/scripts/cert-sweep.ts CANDIDATE_CAP) so runs stay bounded; the deterministic
 #      queue ordering pages through the backlog week by week and the skip list is logged.
 #
 # Requires ZERO repo secrets — the certify suite only GETs/POSTs public vendor surfaces
@@ -50,7 +50,7 @@ jobs:
       # certified product for re-verification, plus at most 15 candidate suites. Updates
       # open-rankings/*/certifications.json + open-rankings/*/cert-reports/*.json; never touches verdicts/rankings.
       - name: Certification sweep (re-verify + candidates)
-        run: pnpm tsx pipeline/scripts/cert-sweep.ts
+        run: pnpm tsx rankings-engine/scripts/cert-sweep.ts
 
       # Re-render the /badges SVGs from the updated registry — same "re-run after data changes,
       # commit the diff" cadence the script documents.
@@ -84,7 +84,7 @@ jobs:
           # fails on a missing label).
           if ! gh pr create \
             --title "cert-sweep: weekly certification re-verify + new passers" \
-            --body "Automated weekly keyless certification sweep: re-ran the Agent-Ready conformance suite (\`pipeline/scripts/certify.ts\`) against every certified product and the top of the probe-evidence candidate queue (\`pipeline/scripts/cert-candidates.ts\`). Updates \`open-rankings/*/certifications.json\`, \`open-rankings/*/cert-reports/*.json\` and \`public/badges/*-certified.svg\` only — no verdicts or rankings touched. Removals mean a former passer failed the live suite today (failing report committed as evidence); see the run log for the per-product breakdown." \
+            --body "Automated weekly keyless certification sweep: re-ran the Agent-Ready conformance suite (\`rankings-engine/scripts/certify.ts\`) against every certified product and the top of the probe-evidence candidate queue (\`rankings-engine/scripts/cert-candidates.ts\`). Updates \`open-rankings/*/certifications.json\`, \`open-rankings/*/cert-reports/*.json\` and \`public/badges/*-certified.svg\` only — no verdicts or rankings touched. Removals mean a former passer failed the live suite today (failing report committed as evidence); see the run log for the per-product breakdown." \
             --base main --head "$BRANCH"; then
             gh issue create \
               --title "cert-sweep: ready on $BRANCH" \

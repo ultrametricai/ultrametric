@@ -12,7 +12,7 @@
 // panel therefore shows only corpus-committed functionCalls (never a regenerated prompt or
 // per-vendor call table), and the default panel's prompt/vendor-call blocks hide while a
 // variant is selected. Regeneration for variants is a later, unscoped pass per the lane-merge
-// playbook; pipeline/scripts/recompute-check.ts is untouched either way (it covers arena
+// playbook; rankings-engine/scripts/recompute-check.ts is untouched either way (it covers arena
 // rankings only).
 
 import { hasLogo } from './logos'

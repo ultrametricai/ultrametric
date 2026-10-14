@@ -1,5 +1,5 @@
 // Structural validation of the curated canon story DAG (open-rankings/story-graph.json via
-// lib/storyGraph.ts). The canon ids come straight from pipeline/agentic-stories.ts — the single
+// lib/storyGraph.ts). The canon ids come straight from rankings-engine/agentic-stories.ts — the single
 // source of truth normalize.ts injects into every arena — so a canon rename or addition that
 // isn't mirrored in the graph fails here, not silently in the map render.
 
@@ -7,7 +7,7 @@ import { describe, expect, it } from 'vitest'
 import {
   AGENTIC_FEATURE_STORIES, AGENTIC_STORIES, API_QUALITY_STORIES, AUTOMATION_STORIES,
   OPENNESS_STORIES, PRIVACY_STORIES,
-} from '@/pipeline/agentic-stories'
+} from '@/rankings-engine/agentic-stories'
 import { canonGraphStoryIds, clusterEdges, storyGraph } from '@/lib/storyGraph'
 
 const CANON = [

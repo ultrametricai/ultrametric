@@ -14,7 +14,7 @@ import { isShutdown } from './shutdown'
 // vendors actually support". Everything here is DERIVATION over already-judged data:
 //
 //   open-rankings/process-step-stories.json  (committed, generated once by
-//   pipeline/scripts/map-step-stories.ts — an LLM pass that maps each covered step onto the
+//   rankings-engine/scripts/map-step-stories.ts — an LLM pass that maps each covered step onto the
 //   RELEVANT stories of its covering arena, cached/corrected like classify-story-tiers)
 //     ×
 //   open-rankings/{arena}/verdicts.json      (the judged verdicts — never touched here)
@@ -111,7 +111,7 @@ export function computerUseMappingsFor(taskId: string, nodeId: string, dir?: str
 
 // The step's ADDITIONAL covering arenas, in declaration order: extraOptionArenas first, then
 // the arenas of explicit extraOptionRefs — deduped, never repeating the primary covering arena.
-// The single source of truth the mapping generator (pipeline/scripts/map-step-stories.ts) and
+// The single source of truth the mapping generator (rankings-engine/scripts/map-step-stories.ts) and
 // every 'extra'-kind consumer share, mirroring coveringArenaId for the 'function' kind.
 export function extraArenasFor(
   node: Pick<DagNode, 'optionsArenaId' | 'vendor' | 'extraOptionArenas' | 'extraOptionRefs'>,
@@ -501,7 +501,7 @@ export function computerUseEligibleProducts(source: ComputerUseSource, dir?: str
 }
 
 // Which steps get computer-use mappings — the single source of truth shared by the mapping
-// generator (pipeline/scripts/map-step-stories.ts) and every consumer, mirroring
+// generator (rankings-engine/scripts/map-step-stories.ts) and every consumer, mirroring
 // coveringArenaId/extraArenasFor for the other kinds. Founder 2026-09-18: "any time 'manual'
 // is seen, see if we can do a computer use process for it" — EVERY non-agent step qualifies
 // (manual form/portal work and human steps alike), not just the irreducible-judgment subset.

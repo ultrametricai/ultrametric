@@ -1,4 +1,4 @@
-// Pure math/formatting for the popularity/momentum signal (see pipeline/stages/popularity.ts,
+// Pure math/formatting for the popularity/momentum signal (see rankings-engine/stages/popularity.ts,
 // which collects the raw numbers, and components/MomentumChip.tsx, which renders them). Kept
 // free of node:fs/network so it's usable from both the pipeline (Node) and the app (client
 // component) and is trivially unit-testable.

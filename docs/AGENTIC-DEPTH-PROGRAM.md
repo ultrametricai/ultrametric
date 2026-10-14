@@ -72,7 +72,7 @@ Every suite run produces a **transcript** — the literal requests/responses or 
 invocations and their outputs — stored as evidence, the same way probe-tier evidence works
 today. The transcript, not just a pass/fail bit, is the artifact anyone can audit. The spec
 itself is versioned (`ARENABENCH_VERSION`, mirroring the existing `PROMPT_VERSION` pattern in
-`pipeline/stages/judge.ts`) so suite changes don't silently reshuffle historical scores —
+`rankings-engine/stages/judge.ts`) so suite changes don't silently reshuffle historical scores —
 a version bump is a visible, changelogged event, and old transcripts stay attributed to the
 spec version that produced them.
 
@@ -175,7 +175,7 @@ result is itself subject to the same contest mechanism as any other verdict on U
 
 ### 2026-10-14 — Stripe (payments), ArenaBench 0.1.0
 
-First Phase-1 run. The runner lives at `pipeline/depth/` (check plans, pure graders, a
+First Phase-1 run. The runner lives at `rankings-engine/depth/` (check plans, pure graders, a
 robots-gated recorder, and a `--replay` mode); the snapshot lives at
 `open-rankings/experiments/depth/2026-10-14-stripe/` with one transcript per check plus the
 consulted robots.txt recordings, and `report.json` regrades byte-identically from those

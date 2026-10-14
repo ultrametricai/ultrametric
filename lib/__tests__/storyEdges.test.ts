@@ -1,13 +1,13 @@
 // Structural validation of the curated cross-story dependency edges (open-rankings/story-edges.json via
 // lib/storyEdges.ts) plus the pure theme-rule/hint machinery. Canon ids come straight from
-// pipeline/agentic-stories.ts — same source-of-truth arrangement as lib/__tests__/storyGraph.test.ts —
+// rankings-engine/agentic-stories.ts — same source-of-truth arrangement as lib/__tests__/storyGraph.test.ts —
 // so a canon rename that isn't mirrored here fails loudly, not as a silently dangling edge.
 
 import { describe, expect, it } from 'vitest'
 import {
   AGENTIC_FEATURE_STORIES, AGENTIC_STORIES, API_QUALITY_STORIES, AUTOMATION_STORIES,
   OPENNESS_STORIES, PRIVACY_STORIES,
-} from '@/pipeline/agentic-stories'
+} from '@/rankings-engine/agentic-stories'
 import {
   CANON_SHORT_LABELS, combinedCanonEdges, domainPrereqEdges, domainPrereqIds, storyEdges,
   unlockHints,

@@ -2,7 +2,7 @@
 // which tracked products verifiably connect to which others, extracted from each product's
 // COLLECTED EVIDENCE CORPUS (docs/GitHub/community evidence; for the most-connected products the
 // corpus deliberately includes their official integrations-directory page via urls.extra) by
-// pipeline/stages/integrations.ts — the stage itself never crawls. Honesty contract
+// rankings-engine/stages/integrations.ts — the stage itself never crawls. Honesty contract
 // (mirrors lib/pricing.ts): every edge carries the id of the evidence item it came from plus a
 // verbatim excerpt verified (in code, not by prompt) to appear inside that evidence item's own
 // excerpt — an edge that can't be traced byte-for-byte back to collected evidence is dropped at
