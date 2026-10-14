@@ -11,9 +11,9 @@ classifications (`route`, `reversibility`) retain their existing locations withi
 open-ended `metadata`. Graph identity, reachability and cycle checks also run in
 the catalog validators; JSON Schema describes the record structure.
 
-The same URL continues accepting jurisdiction-scoped workflows through its
-`#/$defs/jurisdiction` alternative. Their original contract is preserved in
-[`jurisdiction-process.schema.json`](jurisdiction-process.schema.json).
+The same URL continues accepting legacy process records through its
+`#/$defs/legacy` alternative. Their original contract is preserved in
+[`legacy-process.schema.json`](legacy-process.schema.json).
 `operational-process.schema.json` describes the existing process corpus;
 `shared-process.schema.json` describes the compatibility export.
 
@@ -24,7 +24,7 @@ zod schema and regenerate, never the file.
 
 Regenerate the process and corpus schemas with
 `pnpm exec tsx scripts/generate-corpus-schemas.ts`. CI checks byte-identical output
-and validates the canonical logo and existing jurisdiction workflows.
+and validates the canonical logo and existing legacy records.
 
 Contribute here:
 

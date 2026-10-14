@@ -10,7 +10,7 @@ import {
   ARTIFACT_REGISTRY_SCHEMA_FILE, artifactRegistrySchemaJson,
   COMPANY_FIELDS_SCHEMA_FILE, companyFieldsSchemaJson,
   OPERATIONAL_PROCESS_SCHEMA_FILE, operationalProcessSchemaJson,
-  PROCESS_SCHEMA_FILE, processSchemaJson, JURISDICTION_PROCESS_SCHEMA_FILE,
+  PROCESS_SCHEMA_FILE, processSchemaJson, LEGACY_PROCESS_SCHEMA_FILE,
   VENDOR_REGISTRY_SCHEMA_FILE, vendorRegistrySchemaJson,
 } from '../scripts/generate-corpus-schemas'
 
@@ -37,6 +37,7 @@ describe('canonical process schema publication', () => {
     const { $schema, $defs, ...canonical } = z.toJSONSchema(processDefinitionSchema)
     expect(schema.$schema).toBe($schema)
     expect(schema.$id).toBe('https://raw.githubusercontent.com/ultrametricai/ultrametric/main/schemas/process.schema.json')
+    expect(schema.oneOf).toEqual([{ $ref: '#/$defs/canonical' }, { $ref: '#/$defs/legacy' }])
     expect(schema.$defs.canonical).toEqual(canonical)
     for (const [name, definition] of Object.entries($defs ?? {})) expect(schema.$defs[name]).toEqual(definition)
     expect(schema.$defs.canonical.required).toContain('entrySteps')
@@ -75,11 +76,11 @@ describe('canonical process schema publication', () => {
     expect(published.safeParse(record).success).toBe(false)
   })
 
-  it('keeps the legacy contract and its existing URL valid for jurisdiction workflows', () => {
-    const legacy = JSON.parse(fs.readFileSync(JURISDICTION_PROCESS_SCHEMA_FILE, 'utf8'))
-    const { $schema, $defs, ...jurisdiction } = legacy
+  it('keeps legacy records valid through the preserved contract and existing URL', () => {
+    const legacy = JSON.parse(fs.readFileSync(LEGACY_PROCESS_SCHEMA_FILE, 'utf8'))
+    const { $schema, $defs, ...legacyDefinition } = legacy
     expect(schema.$schema).toBe($schema)
-    expect(schema.$defs.jurisdiction).toEqual(jurisdiction)
+    expect(schema.$defs.legacy).toEqual(legacyDefinition)
     for (const [name, definition] of Object.entries($defs)) expect(schema.$defs[name]).toEqual(definition)
     const directory = path.join(ROOT, 'open-processes/equity/us-de')
     for (const file of fs.readdirSync(directory).filter(file => file.endsWith('.json'))) {

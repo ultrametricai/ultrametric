@@ -292,7 +292,7 @@ export function validateFounderOps(asOf?: Date): string[] {
 
   const processes = indexed(workflowJson(path.join(ROOT, 'open-processes')), errors, 'process')
   for (const [pid, process] of processes) {
-    shape(process, need('jurisdiction-process.schema'), `process ${pid}`, errors)
+    shape(process, need('process.schema'), `process ${pid}`, errors)
     const scope = isObj(process.applicability) ? process.applicability : {}
     for (const key of MATCH_KEYS) {
       if (!str(scope[key])) errors.push(`process ${pid}: missing applicability.${key}`)
