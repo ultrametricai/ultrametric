@@ -44,7 +44,7 @@ badge tier.
 
 ### Probe harness
 
-`pnpm pipeline probe` runs a small set of keyless, hands-on checks per product and turns each
+`pnpm run pipeline probe` runs a small set of keyless, hands-on checks per product and turns each
 *definitive* result — positive or negative — into a `probe`-tier evidence item (ambiguous
 results, e.g. a 403 from a WAF, produce no item rather than a guess): whether `/llms.txt`
 resolves, whether the docs URL serves a `.md` variant, whether a conventional OpenAPI spec
@@ -357,7 +357,7 @@ a different question than everything else on this site: not "is this AI-ready" b
 project still be alive tomorrow" — a reader-requested survival/support signal.
 
 It is **deliberately not part of the Overall score** and never affects rankings, leaderboard
-position, or any battle outcome (`pnpm pipeline popularity` makes no LLM calls and its output,
+position, or any battle outcome (`pnpm run pipeline popularity` makes no LLM calls and its output,
 `rankings/{category}/popularity.json`, isn't read by `lib/scoring.ts`). Popularity measures
 *adoption* — how many people already use something — which is a lagging, momentum-driven
 signal unrelated to whether a product is well-built for AI agents today. A ten-year-old

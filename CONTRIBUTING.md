@@ -29,8 +29,8 @@ product, story id, and the current verdict/quality are filled in for you, with e
 for your proposed verdict, evidence URLs, and quotes. It's the fast path for flagging
 something that looks wrong; it does not itself change any data. A maintainer (or, eventually,
 a GitHub Action) still has to do the deeper check described below: add the evidence, run
-`pnpm pipeline judge --category <category> --product <product>`, then
-`pnpm pipeline derive --category <category>` to update the verdict.
+`pnpm run pipeline judge --category <category> --product <product>`, then
+`pnpm run pipeline derive --category <category>` to update the verdict.
 
 If you'd rather skip the prefilled link, you can also open an issue manually using the
 [Contest a Verdict](./.github/ISSUE_TEMPLATE/contest-verdict.md) template. Fill in:
@@ -48,8 +48,8 @@ If you'd rather skip the prefilled link, you can also open an issue manually usi
 3. If your evidence is new or better, the maintainer (or you, via a PR — see below) adds it
    to the product's evidence file and re-judges:
    ```bash
-   pnpm pipeline judge --category <category> --product <product>
-   pnpm pipeline derive --category <category>
+   pnpm run pipeline judge --category <category> --product <product>
+   pnpm run pipeline derive --category <category>
    ```
    This re-judges **every** cell for that product, not only the one you're contesting —
    see the cache note below.
@@ -104,8 +104,8 @@ verdict, you can propose it directly as a PR:
    - `fetchedAt` — an ISO 8601 datetime
 2. Re-judge that product:
    ```bash
-   pnpm pipeline judge --category <category> --product <product>
-   pnpm pipeline derive --category <category>
+   pnpm run pipeline judge --category <category> --product <product>
+   pnpm run pipeline derive --category <category>
    ```
 3. Commit **both** the evidence file and the resulting `verdicts.json` / `rankings.json`
    changes in the same PR — never hand-edit `verdicts.json` or `rankings.json` directly.
@@ -205,7 +205,7 @@ Validate before opening the PR: `pnpm test` (schema checks). You do **not** need
 LLM pipeline or touch `stories.json`/`verdicts.json`/`rankings.json` — those are
 pipeline-owned; maintainers run the stages on your entry. If you *do* have an
 `ANTHROPIC_API_KEY` and want to include results, the sequence is
-`crawl → extract → probe → judge → derive` (all `pnpm pipeline <stage> --category <arena>
+`crawl → extract → probe → judge → derive` (all `pnpm run pipeline <stage> --category <arena>
 --product <id>`), committing evidence + verdicts + rankings together.
 
 ### 3c. Make your product probe well (this is the score-moving part)
