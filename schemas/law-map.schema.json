@@ -1,0 +1,54 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Startup-law domain map",
+  "description": "open-law/map.json: the domain taxonomy over the rule cards. Each domain lists its sub-areas, the cards that cover each sub-area, the workflow or corpus processes the sub-area governs, and an editorial maturity grade. lib/founderOps.ts enforces the referential invariants: every rule_ids entry resolves to a committed card, every committed card appears in at least one sub-area, and maturity grades are consistent with the cards actually present.",
+  "type": "object",
+  "required": ["updated_on", "scope", "maturity_grades", "domains"],
+  "properties": {
+    "updated_on": {"type": "string", "format": "date"},
+    "scope": {"type": "string", "minLength": 1},
+    "maturity_grades": {
+      "type": "object",
+      "required": ["mapped", "partial", "unmapped"],
+      "properties": {
+        "mapped": {"type": "string", "minLength": 1},
+        "partial": {"type": "string", "minLength": 1},
+        "unmapped": {"type": "string", "minLength": 1}
+      },
+      "additionalProperties": false
+    },
+    "domains": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["id", "name", "covers", "maturity", "subareas"],
+        "properties": {
+          "id": {"type": "string", "pattern": "^[a-z0-9][a-z0-9-]*$"},
+          "name": {"type": "string", "minLength": 1},
+          "covers": {"type": "string", "minLength": 1},
+          "maturity": {"enum": ["mapped", "partial", "unmapped"]},
+          "subareas": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "object",
+              "required": ["id", "name", "maturity", "rule_ids", "gaps"],
+              "properties": {
+                "id": {"type": "string", "pattern": "^[a-z0-9][a-z0-9-]*$"},
+                "name": {"type": "string", "minLength": 1},
+                "maturity": {"enum": ["mapped", "partial", "unmapped"]},
+                "rule_ids": {"type": "array", "items": {"type": "string", "minLength": 1}},
+                "process_ids": {"type": "array", "items": {"type": "string", "minLength": 1}},
+                "gaps": {"type": "array", "items": {"type": "string", "minLength": 1}}
+              },
+              "additionalProperties": false
+            }
+          }
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "additionalProperties": false
+}
