@@ -112,6 +112,16 @@ describe('no adjustment on an at-or-above-price issuance', () => {
     const at: DilutiveIssuance = { newShares: 1_000_000, considerationDollars: 2_000_000 }
     expect(weightedAverageConversionPrice(2, BROAD_BASE, at)).toBe(2)
   })
+
+  it('a barely-dilutive issuance can round back to CP1 at 4 decimals (adjusted stays false)', () => {
+    // CP2 = $2.00 × (12,000,000 + 50)/(12,000,100) = $1.99999… → roundPrice → $2.0000.
+    const tiny: DilutiveIssuance = { newShares: 100, considerationDollars: 100 } // $1.00/share, below CP1
+    expect(weightedAverageConversionPrice(2, BROAD_BASE, tiny)).toBe(2)
+    const r = applyAntiDilution(SERIES_A, tiny, 'broad-based', BROAD_BASE)
+    expect(r.adjusted).toBe(false)
+    expect(r.additionalCommonShares).toBe(0)
+    expect(r.note).toContain('rounds away')
+  })
 })
 
 describe('ordering invariants (property tests)', () => {
