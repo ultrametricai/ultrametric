@@ -70,16 +70,15 @@
     "productId": "anthropic-skills",
     "storyId": "agentic-ai-insights",
     "verdict": "partial",
-    "quality": 4,
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Skills package workflows that Claude runs over user data. The repo explicitly cites 'analyzing data using your organization's specific workflows' (gh-9), and a pre-built xlsx skill runs in the code execution environment (docs-10, docs-11). A hands-on report says the xlsx skill handles many Excel edge cases well (comm-8). However, any insights come from Claude using a skill the user authors or installs, not from a built-in data-insights feature. Community reports also say skills often fail to auto-trigger without explicit invocation (comm-12, comm-14). Missing for 10: a documented first-party data-analysis or insight-generation skill, examples of proactive suggestions drawn from user data, and independent corroboration that insights are actually produced.",
+    "rationale": "Skills can package data-analysis workflows that Claude runs in a code execution environment. Anthropic says skills support \"analyzing data using your organization's specific workflows\", and ships pre-built skills such as xlsx and pdf, which a community user praised for handling Excel edge cases. However, the evidence never describes a built-in feature that surfaces AI-generated insights or suggestions from a user's data; that output depends on the user or Claude invoking a suitable skill. missing for 10: an explicit insight/suggestion capability over user data, documented examples of analysis outputs, independent hands-on corroboration of data-insight quality.",
     "evidenceIds": [
       "anthropic-skills-gh-9",
+      "anthropic-skills-gh-7",
       "anthropic-skills-docs-10",
       "anthropic-skills-docs-11",
-      "anthropic-skills-comm-8",
-      "anthropic-skills-comm-12",
-      "anthropic-skills-comm-14"
+      "anthropic-skills-comm-4"
     ]
   },
   {
@@ -1394,11 +1393,18 @@
   {
     "productId": "codex-plugins",
     "storyId": "openness-self-host",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "Self-hosting is a fair question for a plugin platform, but nothing in the evidence shows the core Codex Plugins runtime or directory can be run on your own infrastructure. Plugins install into OpenAI-operated ChatGPT/Codex surfaces through one universal plugin directory and an OpenAI submission and review process. Local or repo marketplaces and developer-run MCP servers are authoring and distribution features, not self-hosting of the core product.",
-    "evidenceIds": []
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "Plugins and skills can be run from your own infrastructure: you can generate a local marketplace entry, add your own marketplace source via `codex plugin marketplace add`, and keep skills in local `.agents/skills` directories. The plugin source is also published on GitHub. However, plugins still run inside OpenAI's Codex/ChatGPT clients, and nothing in the evidence shows the core plugin platform or runtime can be self-hosted. Missing for 10: self-hostable plugin runtime/platform, documented self-hosting deployment guide, independent corroboration of fully self-hosted operation.",
+    "evidenceIds": [
+      "codex-plugins-docs-10",
+      "codex-plugins-docs-11",
+      "codex-plugins-docs-17",
+      "codex-plugins-docs-8",
+      "codex-plugins-gh-1",
+      "codex-plugins-docs-26"
+    ]
   },
   {
     "productId": "codex-plugins",
@@ -1806,10 +1812,10 @@
   {
     "productId": "gstack",
     "storyId": "agentic-webhooks",
-    "verdict": "na",
+    "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "gstack is a local skill and methodology pack that runs inside host coding agents such as Claude Code, Codex and Cursor. It has no hosted service or event platform that could deliver outbound events, so webhook subscription is a category error for this kind of product. Nothing in the evidence shows it shipping any webhook or event-subscription capability that would make the axis apply.",
+    "rationale": "gstack is a workflow and skills toolkit for AI coding agents, and such a toolkit could plausibly emit events, for example when a ship or QA run completes, so the webhook axis applies. Nothing in the evidence shows a webhook or event-subscription mechanism. The closest item, terminal-driven checks reacting to new output, is internal polling behavior rather than subscribable webhooks.",
     "evidenceIds": []
   },
   {
@@ -1842,11 +1848,14 @@
   {
     "productId": "gstack",
     "storyId": "api-versioning-policy",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "gstack is a skills/tooling pack with a CLI and typed host configs, so asking whether its interfaces are versioned with a documented deprecation policy is a fair question. The pack shows only a CHANGELOG and an upgrade skill that \"shows what's new,\" which suggests release versioning. It has no evidence of versioned APIs or any documented deprecation policy. The ship workflow's VERSION bump applies to the user's project, not gstack's own interfaces.",
-    "evidenceIds": []
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "gstack shows only basic release versioning: it maintains a CHANGELOG, and its upgrade skill installs new releases and shows what's new. Nothing in the evidence describes versioned API or skill interfaces, or any documented deprecation policy. The ship skill's VERSION bump applies to the user's own project, not to gstack's interfaces. Missing for 10: explicitly versioned API/CLI/skill interfaces, a documented deprecation policy with timelines, compatibility guarantees, and independent corroboration.",
+    "evidenceIds": [
+      "gstack-docs-7",
+      "gstack-docs-33"
+    ]
   },
   {
     "productId": "gstack",
@@ -2053,13 +2062,12 @@
     "productId": "gstack",
     "storyId": "openness-full-export",
     "verdict": "partial",
-    "quality": 6,
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "gstack keeps its accumulated learnings locally as JSONL under ~/.gstack/projects/{slug}/learnings.jsonl, an open and portable format, and the /learn skill explicitly supports exporting what it has learned. Per-site domain skills are also saved as notes the agent writes for itself. However, the evidence covers only learnings and skills, not a documented 'export everything and leave' path. missing for 10: a documented comprehensive export covering all gstack data (including any telemetry-collected usage data), specification of the export format, and independent or hands-on confirmation that leaving loses nothing.",
+    "rationale": "gstack documents a /learn skill that can export what it has learned across sessions, and its learnings are stored locally as JSONL under ~/.gstack/projects/{slug}/learnings.jsonl, which is an open, portable format. Nothing shows that all user data (such as per-site domain skills or other session state) can be exported comprehensively, and no leave or migration path is documented. Missing for 10: evidence of complete export covering all data types, documented export formats beyond learnings, an explicit offboarding or migration story, and independent or hands-on corroboration.",
     "evidenceIds": [
       "gstack-docs-8",
-      "gstack-docs-17",
-      "gstack-docs-10"
+      "gstack-docs-17"
     ]
   },
   {
@@ -2152,13 +2160,11 @@
   {
     "productId": "gstack",
     "storyId": "privacy-no-training",
-    "verdict": "partial",
-    "quality": 3,
-    "confidence": "low",
-    "rationale": "gstack is a skill/tool pack layered on host coding agents, so data-use controls are a fair axis, but there is no documentation about model training. The only related evidence is a community report that gstack collects usage telemetry and that a user can opt out of it, which would keep usage data from leaving the machine. Missing for 10: any first-party statement on whether collected data is used for AI training, a documented training opt-out or policy, first-party docs on the telemetry opt-out mechanism, and clarity on how host-agent providers handle data.",
-    "evidenceIds": [
-      "gstack-comm-3"
-    ]
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "gstack is a local skill and workflow layer for AI coding agents, and it reportedly collects usage telemetry. A data-use and training-control question is therefore a fair privacy-posture axis for it. The evidence pack has no documented training opt-out, no data-use policy, and no control to stop user data being used for model training.",
+    "evidenceIds": []
   },
   {
     "productId": "gstack",
@@ -2176,13 +2182,11 @@
   {
     "productId": "gstack",
     "storyId": "privacy-telemetry-optout",
-    "verdict": "partial",
-    "quality": 3,
-    "confidence": "low",
-    "rationale": "The only relevant evidence is a community thread confirming gstack collects usage telemetry, with a reply saying users can opt out. This suggests an opt-out exists, but nothing in the docs confirms it or explains how it works. Missing for 10: first-party documentation of the opt-out mechanism (config flag, env var or prompt), clarity on whether telemetry is opt-in or opt-out by default, what data is collected, and independent hands-on confirmation that opting out stops data collection.",
-    "evidenceIds": [
-      "gstack-comm-3"
-    ]
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Telemetry opt-out is a fair question for a developer tool like gstack, so the axis applies. The pack only has a community remark that gstack collects telemetry on usage data, and no documentation shows any way to disable or opt out of it.",
+    "evidenceIds": []
   },
   {
     "productId": "gstack",
@@ -3072,10 +3076,10 @@
   {
     "productId": "skills-cli",
     "storyId": "agentic-autonomous-automation",
-    "verdict": "na",
+    "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "skills.sh is a registry and CLI package manager that installs, updates, and removes SKILL.md files for other coding agents. Running autonomous background automations belongs to an agent runtime or scheduler, which is a different product role. Its non-interactive (CI/CD-friendly) install flag and `skills use --agent`, which launches an agent interactively, are not background automation, so the axis does not apply.",
+    "rationale": "skills.sh is a CLI and registry for installing, updating and listing agent skill files. The evidence shows no feature for scheduling or running automations autonomously in the background. Non-interactive CI/CD-friendly installation is about installing skills, not running autonomous automations, so the axis applies but has no supporting evidence.",
     "evidenceIds": []
   },
   {
@@ -3223,11 +3227,16 @@
   {
     "productId": "skills-cli",
     "storyId": "api-sandbox",
-    "verdict": "na",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "skills.sh is a skills registry and CLI package manager. It installs SKILL.md files into agent directories and has no production data or service environments of its own, so a sandbox-vs-production testing environment is a category error for this product type. The closest feature, `skills use` writing skill files to a temporary directory, lets you try a skill without installing it; it is not an isolated environment that keeps you away from production data, so it does not make this axis apply.",
-    "evidenceIds": []
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "skills.sh has no sandbox or test environment as such. The closest evidence is `skills use`, which writes the selected skill files to a temporary directory and prints the generated prompt instead of installing into the project. `--list` also lets you inspect a repository's skills without installing them. Together these give a glancing way to trial skills without altering a real project setup. Missing for 10: a dedicated sandbox or test environment, isolation from production data or credentials, sandboxed execution of bundled skill scripts, and independent or hands-on corroboration.",
+    "evidenceIds": [
+      "skills-cli-gh-3",
+      "skills-cli-gh-39",
+      "skills-cli-gh-6",
+      "skills-cli-gh-19"
+    ]
   },
   {
     "productId": "skills-cli",
@@ -3262,16 +3271,17 @@
     "productId": "skills-cli",
     "storyId": "authoring-meta-skill",
     "verdict": "partial",
-    "quality": 4,
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "The CLI ships `skills init [name]`, which creates a new SKILL.md template, so authoring has a scaffolding tool. An install example names a `skill-creator` skill in vercel-labs/agent-skills, which hints at a meta-skill, but nothing describes what it does. The spec also references `skills-ref validate` for checking a skill. Missing for 10: evidence that skill-creator actually guides an agent through writing and improving skills, an agent-guided iteration or improvement workflow, packaging/publishing guidance, and independent or hands-on corroboration.",
+    "rationale": "The CLI ships `skills init [name]`, which scaffolds a new SKILL.md template, and the README's install example names a `skill-creator` skill in vercel-labs/agent-skills, which points to a meta-skill. The agentskills.io spec separately documents the SKILL.md format and a `skills-ref validate` command. However, nothing describes what skill-creator actually does, and the scaffolding is a static template, not agent guidance. Missing for 10: documented behavior of the skill-creator meta-skill, guidance for improving or iterating on skills, a packaging/publishing workflow, and independent or hands-on corroboration.",
     "evidenceIds": [
       "skills-cli-gh-15",
       "skills-cli-gh-28",
       "skills-cli-gh-43",
       "skills-cli-docs-10",
       "skills-cli-gh-20",
-      "skills-cli-docs-4"
+      "skills-cli-docs-4",
+      "skills-cli-docs-16"
     ]
   },
   {
@@ -3589,10 +3599,10 @@
   {
     "productId": "skills-cli",
     "storyId": "privacy-data-residency",
-    "verdict": "none",
+    "verdict": "na",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "skills.sh is a skills registry and leaderboard with a CLI, and the leaderboard ranks skills by install counts collected through the CLI. A product of this kind could plausibly offer data-region choices, so the axis applies. The evidence only shows local install-location options (project `./<agent>/skills/` vs global `~/<agent>/skills/`), which are directory choices on the user's disk, not data region or residency controls. Nothing in the pack documents hosted data regions or residency settings.",
+    "rationale": "skills.sh is a local CLI package installer plus a public leaderboard. It copies skill files into project or user directories and does not host user data, so regional data residency is not a meaningful axis for this kind of product. The local install-scope options (project vs. global) choose file paths, not hosting regions, and are not credited here.",
     "evidenceIds": []
   },
   {
@@ -3669,16 +3679,13 @@
     "productId": "skills-cli",
     "storyId": "security-posture-docs",
     "verdict": "partial",
-    "quality": 2,
+    "quality": 3,
     "confidence": "low",
-    "rationale": "The only security-relevant documentation is in the Agent Skills spec. It says skills can bundle scripts and other resources, and it defines an experimental `allowed-tools` frontmatter field listing pre-approved tools a skill may use. That glancingly addresses what skills can execute. Nothing describes a trust model for third-party skills: installs pull directly from arbitrary git repos and URLs using existing auth, with no documented review, signing or vetting. Nothing discloses telemetry either; the leaderboard is ranked by install counts collected through `npx skills`, and a community member noted the site does not explain this. Missing for 10: a documented trust/vetting model for third-party skills, telemetry and data-collection disclosure, a non-experimental execution-permission model, and a security/sandboxing doc for bundled scripts.",
+    "rationale": "The only first-party material on this topic comes from the spec. It notes that skills can bundle scripts and defines an experimental `allowed-tools` frontmatter field for pre-approved tools, which loosely addresses what skills can execute. Telemetry is described only by community commenters, who say leaderboard ranking comes from anonymous telemetry on `npx skills add`; the project's own docs in this pack do not disclose it. Missing for 10: a documented trust or verification model for third-party skills, first-party telemetry and data-collection disclosure with opt-out, a non-experimental execution or sandboxing policy, and any dedicated security documentation.",
     "evidenceIds": [
       "skills-cli-docs-13",
       "skills-cli-docs-14",
-      "skills-cli-gh-35",
-      "skills-cli-gh-9",
-      "skills-cli-comm-3",
-      "skills-cli-comm-4"
+      "skills-cli-comm-1"
     ]
   },
   {
@@ -3950,10 +3957,10 @@
   {
     "productId": "superpowers",
     "storyId": "agentic-webhooks",
-    "verdict": "na",
+    "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Superpowers is a library of markdown skills and bootstrap hooks that runs inside local coding-agent harnesses such as Claude Code, Codex and Cursor. It has no hosted service or event platform that could publish webhook subscriptions, so this story's axis is a category mismatch. Nothing in the evidence shows it ships webhook or event-subscription functionality; its session-start hooks inject context into the harness and are not webhooks.",
+    "rationale": "Superpowers is a skills framework and plugin for coding agents. An agent-workflow framework could plausibly emit events such as task completion or review results, so the webhook axis applies. The evidence only covers local skills, slash commands, a session-start hook and subagent workflows; nothing shows webhook endpoints or any way to subscribe to events.",
     "evidenceIds": []
   },
   {
@@ -4111,17 +4118,11 @@
   {
     "productId": "superpowers",
     "storyId": "clean-uninstall",
-    "verdict": "partial",
-    "quality": 3,
+    "verdict": "none",
+    "quality": 0,
     "confidence": "low",
-    "rationale": "Superpowers ships only through each harness's own plugin install mechanism and its porting guide says it never edits the user's files, which implies removal through the harness would not leave instructions behind in user files. It also offers a skills-search tool for discovering available skills. However, no evidence documents a list-installed command or an uninstall/removal flow, and on some harnesses (Codex, OpenCode) install works by having the agent follow a fetched INSTALL.md, so clean removal there is unclear. Missing for 10: documented way to list installed skills, documented uninstall/remove command, evidence that removal leaves no orphaned files or bootstrap/session-start instructions, hands-on confirmation of clean removal across harnesses.",
-    "evidenceIds": [
-      "superpowers-docs-48",
-      "superpowers-docs-20",
-      "superpowers-gh-8",
-      "superpowers-gh-5",
-      "superpowers-comm-5"
-    ]
+    "rationale": "The evidence covers installing Superpowers through each harness's own mechanism (marketplace add/install, `devin plugins install`, git clone for Hermes) and updating by reinstalling. Nothing documents listing installed skills or uninstalling or removing them. The porting guide's 'never edit the user's files' principle hints at a small footprint, but it does not show a clean removal path. The Skills-search tool is for discovering skills, not for inventorying installed ones.",
+    "evidenceIds": []
   },
   {
     "productId": "superpowers",
@@ -4160,19 +4161,16 @@
     "productId": "superpowers",
     "storyId": "inspect-before-install",
     "verdict": "partial",
-    "quality": 5,
+    "quality": 4,
     "confidence": "medium",
-    "rationale": "Superpowers is an open-source skills plugin. Its skills live as plain SKILL.md files in the public repo's `skills/` directory, which is \"the source of truth, shared verbatim by every harness\" (docs-13, docs-37). That lets a lead read the instructions on GitHub or in a git-clone install before and after adopting them (docs-15, docs-16, docs-17, docs-53). The evidence shows no dedicated pre-install manifest or inspection workflow. The session-start hook that injects context (docs-28, gh-8) is not enumerated, and the Codex/OpenCode install has the agent fetch and follow a remote INSTALL.md, which is harder to review (comm-5). Missing for 10: a documented pre-install content listing, a documented install location or audit path for every installed file, an enumeration of the hooks and scripts added alongside the skill text, and independent corroboration of a review workflow.",
+    "rationale": "Skills are plain files in a public `skills/` directory that every harness shares verbatim, with individual SKILL.md files readable at raw GitHub URLs. Install can also be done from a git clone, so a lead can inspect the instructions and scripts by reading the repo before and after installing. However, there is no documented install-preview or file-listing feature, and a community report describes the Codex/OpenCode install path as 'like curl|bash but with added LLM agents', which makes exact review of what gets added harder. Missing for 10: a first-party pre-install manifest or listing of a skill's files, documented post-install locations for inspection across harnesses, a transparent non-agent install path for every harness, and independent hands-on confirmation of the review workflow.",
     "evidenceIds": [
       "superpowers-docs-13",
       "superpowers-docs-37",
-      "superpowers-docs-15",
-      "superpowers-docs-16",
-      "superpowers-docs-17",
       "superpowers-docs-53",
-      "superpowers-docs-28",
-      "superpowers-gh-8",
-      "superpowers-comm-5"
+      "superpowers-docs-48",
+      "superpowers-docs-31",
+      "superpowers-comm-4"
     ]
   },
   {
@@ -4380,17 +4378,11 @@
   {
     "productId": "superpowers",
     "storyId": "project-vs-global-install",
-    "verdict": "partial",
-    "quality": 3,
-    "confidence": "low",
-    "rationale": "Superpowers installs through each harness's own plugin mechanism, such as `/plugin install` or `devin plugins install` (docs-48, docs-36, docs-7). Its docs reference a user-level `~/.agents/skills/` path recognized across runtimes (docs-31), which implies user-global placement. Nothing shows a documented choice between a repo-committed, project-local install and a user-global one; scope appears to be whatever each harness's installer does. Missing for 10: explicit project-local install option committed with the repo, documented scope selection, per-harness scope guidance, hands-on corroboration.",
-    "evidenceIds": [
-      "superpowers-docs-48",
-      "superpowers-docs-31",
-      "superpowers-docs-36",
-      "superpowers-docs-7",
-      "superpowers-gh-5"
-    ]
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Superpowers installs through each harness's own mechanism (Claude Code marketplace `/plugin install`, `devin plugins install`, git clone for Hermes), with separate installs per harness. Nothing in the evidence documents choosing between project-local files committed with a repo and a user-global install. The `~/.agents/skills/` mention describes where runtimes look for skills, not a user-selectable install scope.",
+    "evidenceIds": []
   },
   {
     "productId": "superpowers",
@@ -4433,11 +4425,17 @@
   {
     "productId": "superpowers",
     "storyId": "security-posture-docs",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "The evidence pack contains no security or trust documentation: nothing on what skills are permitted to execute, no trust model for third-party skills, and no telemetry or data-collection statement. Nearby items, such as human stops for destructive actions, user instructions taking precedence over skills, and safe worktree removal, describe workflow behavior. They are not a documented security posture.",
-    "evidenceIds": []
+    "verdict": "partial",
+    "quality": 2,
+    "confidence": "low",
+    "rationale": "The evidence contains only scattered behavioral guardrails, not a documented security posture. Release notes say destructive or irreversible actions stop for a human, worktree removal won't reach for `--force`, and implementers and reviewers may not spawn subagents. The porting guide says ports should never edit the user's files, and user instructions take precedence over skills. missing for 10: a security or trust-model document, an explicit statement of what skills can execute or access, a trust model for third-party skills or marketplace content, a statement on telemetry and data collection, and independent corroboration.",
+    "evidenceIds": [
+      "superpowers-docs-2",
+      "superpowers-docs-41",
+      "superpowers-docs-65",
+      "superpowers-docs-48",
+      "superpowers-docs-32"
+    ]
   },
   {
     "productId": "superpowers",
@@ -4489,11 +4487,16 @@
   {
     "productId": "superpowers",
     "storyId": "version-control-pinning",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "The evidence pack documents no pinned plugin versions, version selection, or lockfile for Superpowers skills. The closest hint is that Antigravity updates happen by reinstalling with the same command, but that pulls the latest release and offers no pinning. Installs that fetch from HEAD or a git clone are also floating, not locked to a version.",
-    "evidenceIds": []
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "The evidence only glancingly touches update control. On Antigravity, updates happen when you re-run the install command, not silently (gh-8). The Hermes install works from a git clone, which implies a checkout could be pinned (docs-53). Everything else ships through each harness's own install mechanism (docs-48), and dated release notes exist, but nothing documents version pinning, a lockfile, or team-wide update control. Missing for 10: documented version pinning, a lockfile or manifest for skills, team-level update gating, and evidence about auto-update behavior on Claude Code and other harnesses.",
+    "evidenceIds": [
+      "superpowers-gh-8",
+      "superpowers-docs-53",
+      "superpowers-docs-48",
+      "superpowers-gh-5"
+    ]
   },
   {
     "productId": "ultrametric",
@@ -4824,14 +4827,11 @@
   {
     "productId": "ultrametric",
     "storyId": "automation-scheduled-jobs",
-    "verdict": "partial",
-    "quality": 2,
+    "verdict": "none",
+    "quality": 0,
     "confidence": "medium",
-    "rationale": "The only relevant evidence is a `--period` flag that creates a separate saved run for each period of a recurring process (e.g., payroll). That is record-keeping for recurring work, not a scheduler, and Ultrametric runs no model itself, so the user's agent must start each run. missing for 10: any scheduling/cron/trigger mechanism, automatic execution of recurring workflows, schedule management docs, independent corroboration.",
-    "evidenceIds": [
-      "ultrametric-docs-14",
-      "ultrametric-docs-4"
-    ]
+    "rationale": "The pack shows no scheduler, cron, or trigger that runs jobs or workflows on a recurring basis. Ultrametric runs no model itself, and agents drive its processes on demand. The `--period` option only records a separate run per period for a recurring process; it tracks progress and does not schedule or automatically execute anything.",
+    "evidenceIds": []
   },
   {
     "productId": "ultrametric",
@@ -4874,11 +4874,16 @@
   {
     "productId": "ultrametric",
     "storyId": "documented-update-path",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "The evidence pack documents no update path. There is no explicit update command, no auto-update mechanism, and no guidance on refreshing skill files written by `ultrametric init`. The CLI install doc only shows a version-pinned `npm install -g ultrametric@0.4.1`, and `doctor` reports the CLI version without describing how to upgrade. The hosted remote MCP endpoint may stay current server-side, but nothing in the evidence documents that as an update mechanism.",
-    "evidenceIds": []
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "The evidence documents no explicit update command or auto-update mechanism. The CLI install is pinned (`npm install -g ultrametric@0.4.1`), and `doctor` only reports the current CLI version. The one implied path is the hosted remote MCP server and shared hosted process service: fixes there would arrive server-side without reinstalling, but the docs never describe this as an update path. Missing for 10: a documented CLI update/upgrade command or procedure, guidance on refreshing generated skill files after upgrades, a changelog or release notes, and explicit documentation that hosted MCP users get fixes automatically.",
+    "evidenceIds": [
+      "ultrametric-docs-6",
+      "ultrametric-docs-24",
+      "ultrametric-docs-5",
+      "ultrametric-docs-19"
+    ]
   },
   {
     "productId": "ultrametric",
