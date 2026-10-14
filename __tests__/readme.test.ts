@@ -67,7 +67,9 @@ const SECTIONS = [
   '## Open processes',
   '## Open modules',
   '## Open artifacts',
-  '## Situations',
+  // Round 10: "Situations" joins the open- family as "Open situations"; the legacy
+  // #situations anchor keeps resolving.
+  '## Open situations',
   '## Open lore',
   '## Open law',
   '## Government services and startups',
@@ -83,7 +85,7 @@ const SUBSECTIONS: Array<[string, string]> = [
   ['## Open processes', '### Examples'],
   ['## Open modules', '### Shared data fields'],
   ['## Open artifacts', '### Open docs'],
-  ['## Situations', '### Example: Founder country switch'],
+  ['## Open situations', '### Example: Founder country switch'],
   ['## Open lore', '### Example: Getting acquired'],
 ]
 
@@ -111,7 +113,8 @@ describe('README.md structure (founder round 2, 2026-10-12)', () => {
       expect(body, `${sub} missing from ${parent}`).toContain(sub)
     }
     // Demoted areas are gone from the top level.
-    for (const gone of ['## Founder country switch', '## Getting acquired', '## Open data structure', '## Open situations', '## Open docs']) {
+    // Round 10: '## Situations' joined the gone list when the section took its open- name.
+    for (const gone of ['## Founder country switch', '## Getting acquired', '## Open data structure', '## Situations', '## Open docs']) {
       expect(readme).not.toContain(`\n${gone} `)
       expect(readme).not.toContain(`\n${gone}\n`)
     }
@@ -315,7 +318,7 @@ describe('README.md generated blocks', () => {
 describe('README.md anchors and links', () => {
   it('keeps every legacy inbound anchor resolving (Writing style rule 8)', () => {
     for (const id of [
-      'start-here', 'processes', 'vendors', 'business-logic',
+      'start-here', 'processes', 'vendors', 'business-logic', 'situations',
       'add-your-country-or-state', 'open-docs', 'for-ai-agents', 'use-it-from-an-agent',
     ]) {
       expect(readme, `missing anchor #${id}`).toContain(`<a id="${id}"></a>`)
@@ -326,10 +329,14 @@ describe('README.md anchors and links', () => {
   })
 
   it('every CONTRIBUTING.md anchor the README links exists', () => {
-    for (const anchor of ['add-your-vendor', 'add-a-process', 'add-a-jurisdiction', 'add-an-open-module']) {
+    for (const anchor of ['add-your-vendor', 'add-a-process', 'add-an-open-module']) {
       expect(readme).toContain(`(CONTRIBUTING.md#${anchor})`)
       expect(contributing, `CONTRIBUTING.md is missing <a id="${anchor}">`).toContain(`<a id="${anchor}"></a>`)
     }
+    // Round 10: the Add a jurisdiction link left the country-switch example (founder call);
+    // CONTRIBUTING.md keeps the guide and its anchor for direct links.
+    expect(readme).not.toContain('(CONTRIBUTING.md#add-a-jurisdiction)')
+    expect(contributing).toContain('<a id="add-a-jurisdiction"></a>')
   })
 
   it('every repo path the README links resolves', () => {

@@ -141,7 +141,10 @@ checked. Known gaps are recorded too. See it live at
 | Privacy | [DPA](https://commonpaper.com/standards/data-processing-agreement/), [BAA](https://commonpaper.com/standards/business-associate-agreement/), [AI addendum](https://commonpaper.com/standards/ai-addendum/) |
 | Open-source | [Apache ICLA](https://www.apache.org/licenses/icla.pdf), [Developer Certificate of Origin](https://developercertificate.org/) |
 
-## Situations
+<!-- Legacy anchor: inbound links to #situations predate the open- family rename. -->
+<a id="situations"></a>
+
+## Open situations
 
 [Guides](open-processes/SITUATIONS.md) for reactive work: a breach is live, a summons lands,
 a tax notice arrives. Each names its trigger and an urgency clock of hours, days, or
@@ -160,8 +163,6 @@ automatically.
 
 - [Get EIN](https://ultrametric.ai/processes/get-ein) — in the UK, France, Portugal, and Canada the tax ID arrives automatically with incorporation; in Germany it is its own filing with the tax office
 - [Set up an LLC](https://ultrametric.ai/processes/set-up-an-llc) — the analog shifts by country (LLP in the UK and India, UG in Germany, SARL in France) and Canada has no LLC at all
-
-[Add a jurisdiction](CONTRIBUTING.md#add-a-jurisdiction)
 
 ## Open lore
 
