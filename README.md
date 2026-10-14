@@ -33,9 +33,7 @@ ultrametric/
 
 ## Open vendor rankings
 
-The tools startups run on, examined through an agentic lens: can an agent actually drive
-each one, is it testable, and do the vendor's claims match what we found hands-on. The
-rankings order products by how automatable they are, and every verdict can be contested.
+We've looked at all the tools and vendors needed for founders to start and operate their company. Vendors are then ranked in terms of how easy it is for your AI to access and control them. From business banking, to payroll, to gov services for filing tax or your trademark. We want to know what claims match reality and who is the most AI native when it comes to their APIs, CLIs, MCPs and computer use surface area. 
 
 <!-- arenas:start -->
 **96 rankings** today, 670 products judged head to head — the full index is [ultrametric.ai/arenas](https://ultrametric.ai/arenas), and each ranking's records live under [`open-rankings/`](open-rankings/).
