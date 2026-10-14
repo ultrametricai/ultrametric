@@ -194,7 +194,8 @@ a mapped, open gap in [`coverage/`](coverage/).
 Map the [law](open-law/) that applies to startups, across jurisdictions, and connect it to
 the calculations and the vendors that act on it. Each legal statement is one dated record
 citing a primary [authority](citations/) (a statute, regulation, or agency page) with the
-exact section. A blog post cannot establish law.
+exact section. A blog post cannot establish law. The [domain map](open-law/README.md#the-map)
+grades each area of US startup law as mapped, partial, or unmapped.
 
 ## Government services and startups
 

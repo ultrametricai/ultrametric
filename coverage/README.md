@@ -12,7 +12,9 @@ How it maps onto the rest of the repo: the rankings (`open-rankings/`, live at `
 vendor-evaluation cut of the same territory; the process library
 (`open-processes/corpus.json`, live at `/processes`) covers the operating work; the
 jurisdiction-scoped workflows (`open-processes/<domain>/<jurisdiction>/`) are the source-cited
-legal layer, and `coverage.json` tracks only that layer.
+legal layer, and `coverage.json` tracks only that layer. The rule cards themselves are
+mapped by domain in `open-law/map.json`, which grades each legal domain mapped, partial,
+or unmapped and lists the gaps.
 
 Contribute here:
 

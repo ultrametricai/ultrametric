@@ -64,6 +64,15 @@ describe('founder-ops corpus validation', () => {
     }
   })
 
+  it('the open-law README domain table mirrors map.json (names and maturity grades)', () => {
+    const map = JSON.parse(fs.readFileSync(path.join(process.cwd(), 'open-law/map.json'), 'utf8'))
+    const lawReadme = fs.readFileSync(path.join(process.cwd(), 'open-law/README.md'), 'utf8')
+    const rows = [...lawReadme.matchAll(/^\| ([^|]+) \| [^|]+ \| (mapped|partial|unmapped) \|$/gm)]
+    expect(rows.map((r) => [r[1].trim(), r[2]])).toEqual(
+      (map.domains as Array<{ name: string; maturity: string }>).map((d) => [d.name, d.maturity]),
+    )
+  })
+
   it('all fixtures are synthetic with full scenario dimensions', () => {
     for (const file of fs.readdirSync(FIXTURES_DIR).filter((f) => f.endsWith('.json'))) {
       const event = readFixture(file)
