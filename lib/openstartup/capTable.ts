@@ -351,6 +351,24 @@ function runPricedRound(
   const cappedPct = safes.reduce((s, x) => s + (x.cap ? x.amount / x.cap : 0), 0)
   if (cappedPct >= 1) throw new RangeError('SAFEs sold ≥ 100% ownership — raise less or lift the caps')
 
+  // Guard: a SAFE with no cap on any of its candidate term sets converts at the (possibly
+  // discounted) round price, and those shares live inside the pre-money fully diluted —
+  // PPS = pre-money / (post-conversion FD + pool increase), so price-route claims can
+  // never reach the pre-money. When their gross-up Σ amount / (1 − discount) does, no
+  // conversion price exists and the fixed-point sweep would settle on a 4-decimal rounding
+  // artifact; refuse instead (the price-route mirror of the §D.2 capped guard above).
+  const priceRouteClaim = safes.reduce((s, safe) => {
+    const candidates = mfnCandidates(safe, safes)
+    if (candidates.some((c) => c.cap !== undefined && c.cap > 0)) return s
+    const maxDiscount = Math.max(0, ...candidates.map((c) => c.discountPct ?? 0))
+    return s + safe.amount / (1 - maxDiscount / 100)
+  }, 0)
+  if (priceRouteClaim >= ev.preMoney) {
+    throw new RangeError(
+      'uncapped/discount SAFE purchase amounts (grossed up for discounts) reach the pre-money — no conversion price exists; raise the pre-money or cap the SAFEs',
+    )
+  }
+
   let shares = safes.map(() => 0)
   let poolInc = ev.poolShares ?? 0
   let pps = 0

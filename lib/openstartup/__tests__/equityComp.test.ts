@@ -72,6 +72,16 @@ describe('grantExitOutcome (worked example)', () => {
     expect(o.needsReview).toBe(true)
   })
 
+  it('rejects a negative extraDilutionPct', () => {
+    expect(() => grantExitOutcome(GRANT, { label: 'x', exitValuation: 1, extraDilutionPct: -5 })).toThrow(RangeError)
+  })
+
+  it('a zero-strike grant is never under water: net equals gross', () => {
+    const o = grantExitOutcome({ ...GRANT, strikePerShare: 0 }, { label: 'z', exitValuation: 100_000_000 })
+    expect(o.exerciseCost).toBe(0)
+    expect(o.netBeforeTax).toBe(o.grossValue)
+  })
+
   it('Exit B: $100M with no further dilution → net $480,000', () => {
     const o = grantExitOutcome(GRANT, { label: 'B', exitValuation: 100_000_000 })
     expect(o.sharePriceAtExit).toBe(10)

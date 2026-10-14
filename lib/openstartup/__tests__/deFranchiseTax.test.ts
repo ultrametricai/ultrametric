@@ -2,8 +2,8 @@
 // pattern): (1) every ruleId in DE_FRANCHISE_RULE_IDS resolves to a committed,
 // jurisdiction-matched card in open-law/US-DE/ with primary sources; (2) the Division of
 // Corporations' OWN published worked examples (corp.delaware.gov/frtaxcalc, verified live
-// 2026-10-01) are replayed number-for-number — this is the module whose March
-// panic-then-recalculate moment the comparator exists for.
+// 2026-10-01) are replayed number-for-number — the default authorized-shares bill vs the
+// recomputed assumed-par bill is the comparison the comparator exists for.
 
 import { describe, expect, it } from 'vitest'
 import fs from 'node:fs'
@@ -168,6 +168,28 @@ describe('Assumed Par Value Capital Method (rule us-de.franchise-tax-assumed-par
     ).toThrow(/no-par/)
   })
 
+  it('a class whose par equals the assumed par counts identically under either step', () => {
+    // assumed par = 2,000,000 / 1,000,000 = 2.000000; 500,000 × $2.00 = $1,000,000 either way.
+    const r = assumedParValueCapitalTax({
+      totalGrossAssets: 2_000_000,
+      totalIssuedShares: 1_000_000,
+      authorizedClasses: [{ shares: 500_000, parValue: 2 }],
+    })
+    expect(r.assumedPar).toBe(2)
+    expect(r.assumedParValueCapital).toBe(1_000_000)
+    expect(r.tax).toBe(400) // exactly $1,000,000 → 1 million → the $400 minimum
+  })
+
+  it('rejects a negative par value the same way as a zero one', () => {
+    expect(() =>
+      assumedParValueCapitalTax({
+        totalGrossAssets: 1_000_000,
+        totalIssuedShares: 1000,
+        authorizedClasses: [{ shares: 1000, parValue: -0.01 }],
+      }),
+    ).toThrow(/no-par/)
+  })
+
   it('rejects non-positive assets, shares, and empty class lists', () => {
     expect(() =>
       assumedParValueCapitalTax({ totalGrossAssets: 0, totalIssuedShares: 1, authorizedClasses: [{ shares: 1, parValue: 1 }] }),
@@ -190,7 +212,7 @@ describe('largeCorporateFilerTax (8 Del. C. § 503(c), existence surfaced only)'
   })
 })
 
-describe('compareFranchiseTaxMethods — the March recalculation', () => {
+describe('compareFranchiseTaxMethods — both published methods on the Division’s example', () => {
   it("the Division's example company: default bill $10,790, recomputed $1,600, saving $9,190", () => {
     const cmp = compareFranchiseTaxMethods({
       totalGrossAssets: 1_000_000,

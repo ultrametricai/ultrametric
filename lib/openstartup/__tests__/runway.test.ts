@@ -88,6 +88,16 @@ describe('defaultAliveReport (the essay’s question, answered)', () => {
     expect(r.monthsToZeroCash).toBeNull()
   })
 
+  it('handles declining revenue (negative growth above the −100 floor)', () => {
+    // $10k revenue shrinking 10%/month against $20k flat expenses: revenue m1..m4 =
+    // 9,000 + 8,100 + 7,290 + 6,561 = 30,951, so cumulative burn at m4 = 80,000 − 30,951
+    // = 49,049 (< 50,000); m5 adds 20,000 − 5,904.90 = 14,095.10 → 63,144.10 > 50,000.
+    const r = defaultAliveReport({ cash: 50_000, monthlyRevenue: 10_000, monthlyExpenses: 20_000, revenueGrowthPctMoM: -10 })
+    expect(r.status).toBe('default-dead')
+    expect(r.monthsToZeroCash).toBe(5)
+    expect(r.monthsToProfitability).toBeNull()
+  })
+
   it('rejects invalid inputs and horizons', () => {
     expect(() => defaultAliveReport({ ...BASE, cash: -1 })).toThrow(RangeError)
     expect(() => defaultAliveReport({ ...BASE, revenueGrowthPctMoM: -100 })).toThrow(RangeError)
@@ -160,6 +170,17 @@ describe('hiringImpact (the essay’s overhiring warning, made concrete)', () =>
     const two = hiringImpact(BASE, [{ monthlyCost: 7_500, startMonth: 1, count: 2 }])
     const one = hiringImpact(BASE, [{ monthlyCost: 15_000, startMonth: 1 }])
     expect(two.withHires).toEqual(one.withHires)
+  })
+
+  it('reports a numeric runway delta when both plans run out of cash', () => {
+    // Base on $100k dies at month 7 (cumulative burn 105,641.12). A $10k/month hire from
+    // month 1 makes expenses 40,000 flat: cumulative burn m3 = 120,000 − 36,410 = 83,590,
+    // m4 = 160,000 − 51,051 = 108,949 → zero cash at month 4. Delta = 4 − 7 = −3.
+    const impact = hiringImpact({ ...BASE, cash: 100_000 }, [{ monthlyCost: 10_000, startMonth: 1 }])
+    expect(impact.base.monthsToZeroCash).toBe(7)
+    expect(impact.withHires.monthsToZeroCash).toBe(4)
+    expect(impact.runwayDeltaMonths).toBe(-3)
+    expect(impact.becomesDefaultDead).toBe(false) // the base plan was already default dead
   })
 
   it('rejects malformed plans', () => {

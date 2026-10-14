@@ -118,6 +118,34 @@ describe('the standard 4-year / 1-year-cliff monthly schedule (Cooley GO convent
   })
 })
 
+describe('schedule-shape edges', () => {
+  it('a cliff equal to the total schedule vests everything in one event', () => {
+    const g: VestingGrant = {
+      shares: 1_000,
+      commencement: '2026-01-15',
+      schedule: { kind: 'periodic', totalMonths: 24, cliffMonths: 24, periodMonths: 1 },
+    }
+    const events = vestingEvents(g)
+    expect(events).toHaveLength(1)
+    expect(events[0]).toMatchObject({ date: '2028-01-15', cumulativeVested: 1_000 })
+  })
+
+  it('a period that does not divide totalMonths still ends exactly at totalMonths', () => {
+    const g: VestingGrant = {
+      shares: 1_000,
+      commencement: '2026-01-15',
+      schedule: { kind: 'periodic', totalMonths: 10, cliffMonths: 0, periodMonths: 4 },
+    }
+    const events = vestingEvents(g)
+    expect(events.map((e) => e.monthsFromStart)).toEqual([4, 8, 10])
+    expect(events[events.length - 1].cumulativeVested).toBe(1_000)
+  })
+
+  it('addMonthsClamped with 0 months returns the same date', () => {
+    expect(addMonthsClamped('2026-01-31', 0)).toBe('2026-01-31')
+  })
+})
+
 describe('quarterly and annual variants (Cooley GO: "monthly or quarterly increments")', () => {
   it('quarterly 48/12: 25% at the cliff, then 15/48 at month 15', () => {
     const g: VestingGrant = {

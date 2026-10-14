@@ -89,6 +89,13 @@ describe('compare83bScenario replays Rev. Proc. 2012-29 Examples 1, 2, 4, 5', ()
     expect(cmp.ruleIds).toContain('us-fed.restricted-property-holding-period')
   })
 
+  it('an empty vesting scenario: without-election income and basis stay 0 until something vests', () => {
+    const cmp = compare83bScenario(PAID_FACTS, [])
+    expect(cmp.withoutElection.incomeAtVesting).toBe(0)
+    expect(cmp.withoutElection.basis).toBe(0)
+    expect(cmp.withElection.basis).toBe(25_000)
+  })
+
   it('rejects a vesting scenario larger than the transfer', () => {
     expect(() => compare83bScenario(PAID_FACTS, [{ label: 'x', shares: 25_001, fmvPerShare: 1 }])).toThrow(RangeError)
   })
@@ -167,6 +174,14 @@ describe('forfeitureAfterElection replays Examples 3 and 6', () => {
     const f = forfeitureAfterElection({ shares: 25_000, pricePaidPerShare: 0, fmvAtTransferPerShare: 1, repurchasePricePerShare: 0 })
     expect(f.amountRealized).toBe(0)
     expect(f.gainOrLoss).toBe(0) // loss limited to amount paid (0) over amount realized (0)
+    expect(f.unrecoveredInclusion).toBe(25_000)
+  })
+
+  it('a repurchase above the elected basis is a gain measured against basis, with the inclusion still unrecovered', () => {
+    // Paid $1/share, FMV $2 at transfer (inclusion $25,000), repurchased at $3/share:
+    // basis $50,000, realized $75,000 → gain $25,000; the $25,000 inclusion is separate.
+    const f = forfeitureAfterElection({ shares: 25_000, pricePaidPerShare: 1, fmvAtTransferPerShare: 2, repurchasePricePerShare: 3 })
+    expect(f.gainOrLoss).toBe(25_000)
     expect(f.unrecoveredInclusion).toBe(25_000)
   })
 

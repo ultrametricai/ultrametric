@@ -96,6 +96,17 @@ describe('fmvAgeCheck (rule us-fed.staleness: more than 12 months before the use
     expect(f.note).toContain('stale after 2026-09-15')
   })
 
+  it('a Feb 29 FMV date goes stale after Mar 1 (the documented month-addition convention)', () => {
+    const f = fmvAgeCheck('2024-02-29', '2025-03-01', { materialChangeSinceFmv: false })
+    expect(f.staleAfter).toBe('2025-03-01')
+    expect(f.level).toBe('pass') // the boundary day is not "more than 12 months"
+    expect(fmvAgeCheck('2024-02-29', '2025-03-02', { materialChangeSinceFmv: false }).level).toBe('fail')
+  })
+
+  it('staleness outranks the term-sheet flag: a stale FMV fails even with a term sheet', () => {
+    expect(fmvAgeCheck('2025-08-01', '2026-10-05', { termSheetSignedSinceFmv: true }).level).toBe('fail')
+  })
+
   it('a signed priced-round term sheet flags even a fresh FMV (User Guide §B.6 convention)', () => {
     const f = fmvAgeCheck('2026-08-01', '2026-09-15', { termSheetSignedSinceFmv: true, materialChangeSinceFmv: false })
     expect(f.level).toBe('flag')
@@ -355,6 +366,18 @@ describe('penaltyIllustration409a (rule us-fed.409a-penalty-additions, IRC § 40
     expect(p.producesValuation).toBe(false)
     expect(p.ruleId).toBe('us-fed.409a-penalty-additions')
     expect(p.note).toContain('Not a tax computation')
+  })
+
+  it('sums multiple hypothetical underpayment rows', () => {
+    // 50,000 × (7+1)% × 2 + 10,000 × (4+1)% × 1 = 8,000 + 500 = 8,500.
+    const p = penaltyIllustration409a({
+      includibleCompensation: 100_000,
+      hypotheticalUnderpayments: [
+        { underpayment: 50_000, underpaymentRatePct: 7, yearsOutstanding: 2 },
+        { underpayment: 10_000, underpaymentRatePct: 4, yearsOutstanding: 1 },
+      ],
+    })
+    expect(p.premiumInterestIllustration).toBe(8_500)
   })
 
   it('premium interest at (stated rate + 1 point), simple: $50,000 at 7% for 2 years → $8,000', () => {

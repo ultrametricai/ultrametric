@@ -19,6 +19,11 @@
 //   CAC ÷ (ARPA × Gross Margin %), Net MRR churn = (churned MRR − expansion MRR) ÷
 //   beginning MRR, Net New MRR = new + expansion − churned. The LTV:CAC > 3 and
 //   CAC-payback guidelines are the source's published bands — inputs here, never encoded.
+// - David Skok, "SaaS Metrics 2.0 – A Guide to Measuring and Improving what Matters"
+//   (https://www.forentrepreneurs.com/saas-metrics-2/), "Guidelines for Churn": "At 2%
+//   monthly churn, you are losing about 22% of your revenue every year" — the published
+//   claim behind annualizedNetChurnPct (verified 2026-10-14; the sentence is on the main
+//   article, not the Detailed Definitions page).
 // - David Sacks, "The Burn Multiple" (Craft Ventures, April 23, 2020,
 //   https://sacks.substack.com/p/the-burn-multiple-51a7e43cb200): Burn Multiple =
 //   Net Burn ÷ Net New ARR, with the post's own worked examples ($2M burned for $1M net
@@ -124,9 +129,10 @@ export function netMrrChurnRatePct(input: { churnedMrr: number; expansionMrr: nu
 
 /**
  * Annualized compounding of a monthly net churn rate: (1 − (1 − m)¹²) × 100 — the
- * arithmetic behind Skok's "above 2% per month … you are losing about 22% of your revenue
- * every year" (exactly 21.53% — the source says "about"). Works for negative (expansion)
- * rates too.
+ * arithmetic behind Skok's "At 2% monthly churn, you are losing about 22% of your revenue
+ * every year" (SaaS Metrics 2.0 main article, "Guidelines for Churn",
+ * https://www.forentrepreneurs.com/saas-metrics-2/ — exactly 21.53%; the source says
+ * "about"). Works for negative (expansion) rates too.
  */
 export function annualizedNetChurnPct(monthlyNetChurnPct: number): number {
   if (!(monthlyNetChurnPct <= 100)) throw new RangeError('monthlyNetChurnPct must be <= 100')

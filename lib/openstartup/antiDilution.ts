@@ -9,7 +9,9 @@
 //
 // Sources (each formula's doc comment cites the specific one):
 // - NVCA Model Certificate of Incorporation (https://nvca.org/model-legal-documents/,
-//   verified 2026-10-01): the weighted-average adjustment in the model COD's anti-dilution
+//   page re-checked 2026-10-14; the COD itself is a document download, revised October
+//   2025 and June 2026 — the same formula is printed by the reachable Cooley GO page
+//   below): the weighted-average adjustment in the model COD's anti-dilution
 //   section — CP2 = CP1 × (A + B) ÷ (A + C), where A is the Common Stock Deemed
 //   Outstanding immediately prior to the issue (broad-based option: all outstanding common
 //   PLUS all common issuable on conversion of outstanding preferred and exercise of
@@ -249,8 +251,9 @@ export function applyAntiDilution(
       ? `${series.name}: ${basis} adjustment lowers the conversion price $${series.conversionPriceBefore} → $${cp2}; ` +
         `as-converted ${before.toLocaleString('en-US')} → ${after.toLocaleString('en-US')} shares. Exempt-issuance ` +
         `carve-outs and the charter's own price precision control — needs review.`
-      : `${series.name}: issuance at or above the $${series.conversionPriceBefore} conversion price — no adjustment ` +
-        `(anti-dilution protects against issuances below the conversion price).`,
+      : `${series.name}: no adjustment — the issuance is at or above the $${series.conversionPriceBefore} conversion ` +
+        `price, or the adjustment rounds away at 4 decimals (anti-dilution protects against issuances below the ` +
+        `conversion price).`,
   }
 }
 

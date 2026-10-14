@@ -67,6 +67,14 @@ describe('form1120Due (i1120 When To File: 15th day of the 4th month)', () => {
     expect(d.ruleId).toBe('us-fed.1120-filing-deadline')
   })
 
+  it('the June 30 exception sunsets: taxable years beginning after 2025-12-31 use the 4th month (Pub. L. 114-41 § 2006(a)(3))', () => {
+    // FY 2026-07-01 → 2027-06-30 began after the cutoff: the general 4th-month rule, 2027-10-15.
+    const d = form1120Due('2027-06-30')
+    expect(d.due).toBe('2027-10-15')
+    expect(d.needsReview).toBe(true)
+    expect(d.note).toContain('sunset')
+  })
+
   it('June 30 fiscal year uses the 3rd month and always needs review (statutory exception)', () => {
     // Months after 2026-06-30: Jul, Aug, Sep → September 15, 2026.
     const d = form1120Due('2026-06-30')
@@ -119,6 +127,13 @@ describe('election83bWindow (Form 15620: no later than 30 days after the transfe
     expect(election83bWindow('2028-01-31').due).toBe('2028-03-01')
   })
 
+  it('counts from a leap-day transfer and across a year end', () => {
+    // 2028-02-29 + 30 days: all of March 1-30 → 2028-03-30.
+    expect(election83bWindow('2028-02-29').due).toBe('2028-03-30')
+    // Dec 15 + 30 days: 16 remaining December days + 14 January days = Jan 14.
+    expect(election83bWindow('2026-12-15').due).toBe('2027-01-14')
+  })
+
   it('is ALWAYS needsReview — the transfer date is a legal determination', () => {
     const d = election83bWindow('2026-03-02')
     expect(d.due).toBe('2026-04-01')
@@ -151,6 +166,11 @@ describe('complianceCalendar', () => {
 
   it('omits payroll deadlines for companies without payroll', () => {
     const entries = complianceCalendar('2026-01-01', '2026-12-31')
+    expect(entries.map((e) => e.id)).toEqual(['de-franchise-tax-2025', 'form-1120-2025'])
+  })
+
+  it('includes entries due exactly on the range boundaries', () => {
+    const entries = complianceCalendar('2026-03-01', '2026-04-15')
     expect(entries.map((e) => e.id)).toEqual(['de-franchise-tax-2025', 'form-1120-2025'])
   })
 

@@ -76,6 +76,14 @@ describe('midpoint amortization (rule us-fed.research-expenditure-amortization)'
     }
   })
 
+  it('a 1-year period is two half-years (the smallest midpoint schedule)', () => {
+    const s = midpointAmortizationSchedule(10_000, 1)
+    expect(s.schedule).toEqual([
+      { year: 1, deduction: 5000 },
+      { year: 2, deduction: 5000 },
+    ])
+  })
+
   it('rejects non-positive amounts and periods', () => {
     expect(() => midpointAmortizationSchedule(0, 5)).toThrow(RangeError)
     expect(() => midpointAmortizationSchedule(100, 0)).toThrow(RangeError)
@@ -103,6 +111,11 @@ describe('qsbPayrollOffsetEligibility (rule us-fed.rd-payroll-offset)', () => {
     const r = qsbPayrollOffsetEligibility({ grossReceiptsCurrentYear: 1_000_000 })
     expect(r.overall).toBe('needs_review')
     expect(r.note).toContain('§ 41(d)')
+  })
+
+  it('rejects negative gross receipts and fractional prior election years', () => {
+    expect(() => qsbPayrollOffsetEligibility({ grossReceiptsCurrentYear: -1 })).toThrow(RangeError)
+    expect(() => qsbPayrollOffsetEligibility({ grossReceiptsCurrentYear: 0, priorElectionYears: 1.5 })).toThrow(RangeError)
   })
 
   it('computable failures flip to not-met: receipts at the ceiling, early receipts, 5 prior elections', () => {
@@ -167,6 +180,16 @@ describe('quarterlyOffsetApplication (Form 8974 mechanics)', () => {
       quarters: [{ label: 'q', employerSocialSecurityTax: 400_000, employerMedicareTax: 0 }],
     })
     expect(r.quarters[0].appliedToSocialSecurity).toBe(250_000) // SS pool exhausted, not liability
+  })
+
+  it('rejects negative quarterly liabilities', () => {
+    expect(() =>
+      quarterlyOffsetApplication({
+        electedAmount: 100_000,
+        taxYearBeginsAfter2022: true,
+        quarters: [{ label: 'q1', employerSocialSecurityTax: -1, employerMedicareTax: 0 }],
+      }),
+    ).toThrow(RangeError)
   })
 
   it('refuses an election above the statutory cap', () => {

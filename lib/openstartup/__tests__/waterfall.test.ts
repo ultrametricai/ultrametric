@@ -148,6 +148,31 @@ const SIMPLE: WaterfallInputs = {
   preferred: SERIES_A,
 }
 
+describe('mixed SAFE decisions and the exact-preference price', () => {
+  it('a mixed decision: the low-cap safe converts while the high-cap safe cashes out', () => {
+    const r = liquidityWaterfall(
+      {
+        holders: [{ name: 'Common', shares: 9_000_000 }],
+        safes: [
+          { name: 'Low cap', amount: 500_000, postMoneyCap: 2_000_000 },
+          { name: 'High cap', amount: 500_000, postMoneyCap: 50_000_000 },
+        ],
+      },
+      5_000_000,
+    )
+    const byName = Object.fromEntries(r.safeConversions.map((c) => [c.name, c]))
+    expect(byName['Low cap'].decision).toBe('convert')
+    expect(byName['High cap'].decision).toBe('cash-out')
+    expect(r.rows.reduce((s, x) => s + x.total, 0)).toBeCloseTo(5_000_000, 8)
+  })
+
+  it('a price exactly equal to the preference pays the claim in full and leaves common zero', () => {
+    const r = liquidityWaterfall(SIMPLE, 5_000_000)
+    expect(r.rows.find((x) => x.kind === 'preferred')!.total).toBe(5_000_000)
+    expect(r.rows.find((x) => x.name === 'Common')!.total).toBe(0)
+  })
+})
+
 describe('non-participating preferred: the greater of preference and as-converted (Cooley GO glossary)', () => {
   it('$30m exit: 25% as-converted ($7.5m) beats the $5m preference → converts', () => {
     const r = liquidityWaterfall(SIMPLE, 30_000_000)
