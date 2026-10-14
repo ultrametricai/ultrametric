@@ -1,6 +1,6 @@
 ![Ultrametric](assets/banner.svg)
 
-Ultrametric ([ultrametric.ai](https://ultrametric.ai)) is the open startup repo: every
+Ultrametric is the open startup repo: every
 founder [process](#open-processes) step by step, the [tools](#open-vendor-rankings) and
 the [service providers](#startup-ecosystem) around a company (law firms included) ranked
 by how well an agent can drive them, [company law](#open-law) mapped across
