@@ -2,7 +2,7 @@
 
 [![Discord](https://img.shields.io/badge/Discord-Join_the_community-5865F2?style=for-the-badge&logo=discord&logoColor=white)](https://discord.gg/3aHky836qP)
 
-**The open repo for every part of the startup journey in the agentic era.**
+**The open repo for the whole startup journey in the agentic era.**
 
 Navigate all business processes, compare and select AI native vendors, inform yourself on startup lore, run open modules to become vendor free, save money using open documentation. Help future founders by making PRs to the open artifacts, gaps in open documents or improve the open module logic. Let's make it easy to start and run a startup around the world.
 
@@ -17,15 +17,17 @@ ultrametric/
 ├── <a href="#open-docs">open-documents</a>/     openly published legal documents, by use case
 ├── pipeline/           the code that crawls, probes, judges, scores
 ├── lib/                loaders, scoring, and the calculation code
-├── jurisdictions/      country and state records, vendor availability
-├── citations/          the primary sources the legal records cite
+├── jurisdictions/      country and state data, vendor availability
+├── citations/          the primary sources the legal rules cite
 ├── coverage/           what is mapped and what is a known gap
-├── schemas/            the JSON shape every record validates against
+├── schemas/            the JSON shape each data file validates against
 └── governance/         review rules and what agents may do here
 </pre>
 
 <!-- Legacy anchor: external links to #start-here predate the merge into this map. -->
 <a id="start-here"></a>
+
+Supported founders globally: 🌐 🇺🇸 🇬🇧 🇮🇳 🇩🇪 🇫🇷 🇵🇹 🇨🇦
 
 [![A tour of ultrametric.ai at 4x: the simulator founding a company, a process page, a vendor page, a situation, the overall rankings, government services, and open documents](assets/readme/demo.gif)](https://ultrametric.ai)
 
@@ -35,13 +37,13 @@ ultrametric/
 
 The tools startups run on, examined through an agentic lens: can an agent actually drive
 each one, is it testable, and do the vendor's claims match what we found hands-on. The
-rankings order products by how automatable they are, and every verdict can be contested.
+rankings order products by how automatable they are, and any verdict can be contested.
 
 <!-- arenas:start -->
-**96 rankings** today, 670 products judged head to head — the full index is [ultrametric.ai/arenas](https://ultrametric.ai/arenas), and each ranking's records live under [`open-rankings/`](open-rankings/).
+**96 rankings** today, 670 products judged head to head — the full index is [ultrametric.ai/arenas](https://ultrametric.ai/arenas), and each ranking's data lives under [`open-rankings/`](open-rankings/).
 <!-- arenas:end -->
 
-[![The overall rankings on ultrametric.ai: companies ranked by agent readiness, with per-market leaderboards behind each row](assets/readme/rankings-overall.png)](https://ultrametric.ai/overall)
+[![The overall rankings on ultrametric.ai: companies ranked by agent readiness, scored on agent access and built-in AI](assets/readme/rankings-overall.png)](https://ultrametric.ai/overall)
 
 [Add your vendor](CONTRIBUTING.md#add-your-vendor)
 
@@ -49,12 +51,12 @@ rankings order products by how automatable they are, and every verdict can be co
 
 ## Open processes
 
-Every founder [process](open-processes/), step by step. Each step is routed agent, form, or
+The founder [processes](open-processes/), step by step. Each step is routed agent, form, or
 human, timed, and marked by how hard it is to undo. The vendors that can run a step are
 listed on it, with their judged scores. See it live at
 [ultrametric.ai/processes](https://ultrametric.ai/processes).
 
-[![The founder processes on ultrametric.ai, each with its phase, agentic share, step count, and vendors](assets/readme/processes-index.png)](https://ultrametric.ai/processes)
+[![The founder processes on ultrametric.ai, ranked on the founder timeline, with area and agentic share](assets/readme/processes-index.png)](https://ultrametric.ai/processes)
 
 ### Examples
 
@@ -73,8 +75,8 @@ listed on it, with their judged scores. See it live at
 
 The standard startup calculations, ready to run: cap table math, SAFE conversion,
 dilution, sale waterfalls, runway, vesting, option tax, and filing deadlines. The code
-lives in [`lib/openstartup/`](lib/openstartup/), and you can run and check it. Every
-formula cites its source and replays the published worked examples in tests.
+lives in [`lib/openstartup/`](lib/openstartup/), and you can run and check it. Formulas
+cite their sources and replay the published worked examples in tests.
 
 | Module | What it computes |
 | --- | --- |
@@ -106,20 +108,20 @@ examples, and boundaries.
 The modules and processes read one shared set of company fields: incorporation date,
 authorized shares, par value, cash on hand, the common-share FMV. Each field is
 registered in [`open-processes/company-fields.json`](open-processes/company-fields.json), so the
-same value feeds every module that needs it. Every record shape is published as a JSON
-Schema in [`schemas/`](schemas/).
+same value feeds the modules that need it. The data shapes are published as JSON
+Schemas in [`schemas/`](schemas/).
 
 [Add an open module](CONTRIBUTING.md#add-an-open-module)
 
 ## Open artifacts
 
-The documents and records that processes produce and consume: the certificate of
+The documents and files that processes produce and consume: the certificate of
 incorporation, the EIN letter, the cap table. Each is registered in
-[`open-processes/artifacts.json`](open-processes/artifacts.json), so every process declares what
-it makes and what it needs. See it live at
+[`open-processes/artifacts.json`](open-processes/artifacts.json), so the processes declare what
+they make and what they need. See it live at
 [ultrametric.ai/artifacts](https://ultrametric.ai/artifacts).
 
-[![The artifacts view on ultrametric.ai: the documents and records founder processes produce and consume](assets/readme/artifacts.png)](https://ultrametric.ai/artifacts)
+[![The artifacts view on ultrametric.ai: the documents and files founder processes produce and consume](assets/readme/artifacts.png)](https://ultrametric.ai/artifacts)
 
 <!-- Legacy anchor: inbound links to #open-docs predate the fold under Open artifacts. -->
 <a id="open-docs"></a>
@@ -166,7 +168,7 @@ automatically.
 
 ## Open lore
 
-The [advice](open-lore/) founders actually pass around, and the [episodes](open-lore/LORE.md) behind
+The [advice](open-lore/) founders actually pass around, and the [stories](open-lore/LORE.md) behind
 it: who said it, where it is written down, and how well documented it is. When the
 schools disagree, both sides are recorded. The [library](open-lore/library.json) collects the
 best essays, guides, books, and talks, organized from deciding to start through getting
@@ -189,15 +191,15 @@ acquired.
 
 ### Example: Getting acquired
 
-The acquisition episodes are recorded lore: WhatsApp, Twitch, and MySpace are in
+The acquisition stories are written down: WhatsApp, Twitch, and MySpace are in
 `open-lore/LORE.md`, each with its lesson and sources. The sale math is live; the
 waterfall module computes who gets what at any price. The acquisition playbook itself is
-a mapped, open gap in [`coverage/`](coverage/).
+a known, open gap.
 
 ## Open law
 
 Map the [law](open-law/) that applies to startups, across jurisdictions, and connect it to
-the calculations and the vendors that act on it. Each legal statement is one dated record
+the calculations and the vendors that act on it. Each legal statement is one dated rule card
 citing a primary [authority](citations/) (a statute, regulation, or agency page) with the
 exact section. A blog post cannot establish law.
 
@@ -208,17 +210,21 @@ Companies House, HMRC, the Handelsregister. Per-country boards compare how well 
 agency works for a founder or an agent. See it live at
 [ultrametric.ai/arena/government-services](https://ultrametric.ai/arena/government-services).
 
+[![The government services country board on ultrametric.ai: countries compared through their judged agencies, company registry to immigration](assets/readme/government-services.png)](https://ultrametric.ai/arena/government-services)
+
 ## Startup ecosystem
 
 The service providers around a startup (law firms, immigration counsel, accountants,
 banks) are ranked in their own markets and wired to the process steps they serve. See the
 law firms live at
-[ultrametric.ai/arena/startup-law-firms](https://ultrametric.ai/arena/startup-law-firms).
+[ultrametric.ai/rankings/law-firms](https://ultrametric.ai/rankings/law-firms).
+
+[![The startup law firms ranking on ultrametric.ai: firms scored on venture financing, formation, IP protection, and startup programs, with country availability](assets/readme/law-firms.png)](https://ultrametric.ai/rankings/law-firms)
 
 ## Open startup simulator
 
-A simulated company runs the whole process library end to end. Every step is routed
-agent, form, or human, and everything it generates is visibly marked simulated.
+A simulated company runs the whole process library end to end, and everything it
+generates is visibly marked simulated.
 
 [![The Open Startup simulator mid-run: a simulated company executing the founder processes](assets/readme/startup-sim.png)](https://ultrametric.ai/startup-sim)
 
@@ -232,7 +238,7 @@ keys.
 
 ```bash
 npm install -g ultrametric@latest                   # CLI + MCP server + agent skill
-curl https://ultrametric.ai/data/categories.json    # every ranking, raw JSON
+curl https://ultrametric.ai/data/categories.json    # all rankings, raw JSON
 curl https://ultrametric.ai/llms.txt                # the index for agents
 ```
 
@@ -240,7 +246,7 @@ curl https://ultrametric.ai/llms.txt                # the index for agents
 
 ## Methodology
 
-Every score is computed from dated, cited evidence. An unknown is shown as unknown, not
+Scores are computed from dated, cited evidence. An unknown is shown as unknown, not
 zero. Negative results stay published, a score cannot move without new evidence, and the
 founders' own products are disclosed and checked for bias. The full method is in
 [METHODOLOGY.md](./METHODOLOGY.md); see it live at
