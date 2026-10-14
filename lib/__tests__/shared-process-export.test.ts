@@ -1,5 +1,5 @@
 import { execFileSync, spawnSync } from 'node:child_process'
-import { existsSync, mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs'
+import { cpSync, existsSync, mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import path from 'node:path'
 import { afterEach, beforeEach, describe, expect, it } from 'vitest'
@@ -52,5 +52,19 @@ describe('pinned catalog export', () => {
     expect(artifact.schema).toEqual(JSON.parse(sharedSchemaJson()))
     expect(artifact.records).toHaveLength(2)
     expect(artifact.sourceRevision).toBe(execFileSync('git', ['rev-parse', 'HEAD'], { cwd: root, encoding: 'utf8' }).trim())
+  })
+
+  it('preserves the canonical logo entry, graph, guidance and metadata in the normal export', () => {
+    const directory = path.join(root, 'content/processes/records')
+    rmSync(directory, { recursive: true })
+    cpSync(path.join(repo, 'content/processes/records'), directory, { recursive: true })
+    commit()
+    const result = runExport(false)
+    expect(result.status, result.stderr).toBe(0)
+    const artifact = JSON.parse(readFileSync(path.join(root, 'catalog.json'), 'utf8'))
+    const canonical = JSON.parse(readFileSync(path.join(repo, 'open-processes/generate-a-brand-logo.json'), 'utf8'))
+    const projected = artifact.records.find((record: { id: string }) => record.id === canonical.id)
+    const authored = JSON.parse(readFileSync(path.join(directory, `${canonical.id}.json`), 'utf8'))
+    expect(projected).toEqual({ ...canonical, source: authored.source })
   })
 })
