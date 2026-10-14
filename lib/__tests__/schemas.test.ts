@@ -45,6 +45,15 @@ describe('schemas', () => {
     }).success).toBe(false)
   })
 
+  it('evidence preserve marker: accepts true, keeps it through parse, rejects false', () => {
+    const row = {
+      id: 'e', tier: 'probe', url: 'https://x.com', excerpt: 'recorded counter-check',
+      fetchedAt: '2026-10-14T00:00:00Z', preserve: true,
+    }
+    expect(EvidenceSchema.parse(row)).toEqual(row)
+    expect(EvidenceSchema.safeParse({ ...row, preserve: false }).success).toBe(false)
+  })
+
   it('requires a valid site url on products', () => {
     expect(ProductSchema.safeParse({
       id: 'p', name: 'P', vendor: 'V', type: 'oss', urls: { site: 'not-a-url' },
