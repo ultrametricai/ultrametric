@@ -220,6 +220,12 @@ export interface DownRoundReport {
  * Who absorbs the dilution: everyone whose conversion price did NOT adjust — founders,
  * options, and any unprotected series — their pctAfter falls by both the new money AND the
  * protected series' additional as-converted shares.
+ *
+ * Base convention: the broad base counts each row at its ROW share count, which equals
+ * as-converted only while every protected series still converts 1:1 (the engine's issued
+ * rows — the documented case). A series already adjusted below its original issue price
+ * enters the base undercounted; callers with pre-adjusted series should pass as-converted
+ * rows (pinned in the tests).
  */
 export function downRoundModel(
   rows: readonly CapTableRow[],
