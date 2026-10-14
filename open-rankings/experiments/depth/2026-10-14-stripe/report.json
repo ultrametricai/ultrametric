@@ -1,0 +1,234 @@
+{
+  "version": 1,
+  "tool": "arenabench-depth",
+  "arenabenchVersion": "0.1.0",
+  "program": "docs/AGENTIC-DEPTH-PROGRAM.md",
+  "phase": "phase-1-pilot",
+  "target": {
+    "productId": "stripe",
+    "categoryId": "payments",
+    "vendor": "Stripe"
+  },
+  "scope": "credential-free public surfaces only: no account creation, no credentials, no payments; robots.txt absolute; auth walls recorded, never bypassed",
+  "runAt": "2026-10-14T22:37:46.104Z",
+  "surfaces": [
+    {
+      "surface": "mcp",
+      "rung": 2,
+      "checks": [
+        {
+          "checkId": "mcp-documented",
+          "surface": "mcp",
+          "level": 1,
+          "title": "MCP server documented at a public docs page",
+          "outcome": "pass",
+          "detail": "https://docs.stripe.com/mcp.md -> HTTP 200 markdown naming the hosted endpoint mcp.stripe.com",
+          "evidence": "transcripts/mcp-documented.json",
+          "docUrl": "https://docs.stripe.com/mcp"
+        },
+        {
+          "checkId": "mcp-initialize-handshake",
+          "surface": "mcp",
+          "level": 2,
+          "title": "Hosted MCP endpoint answers a JSON-RPC initialize",
+          "outcome": "pass",
+          "detail": "initialize answered with the MCP authorization challenge (HTTP 401 + WWW-Authenticate resource_metadata) — a live server speaking the protocol auth spec",
+          "evidence": "transcripts/mcp-initialize-handshake.json",
+          "docUrl": "https://docs.stripe.com/mcp"
+        },
+        {
+          "checkId": "mcp-protected-resource-metadata",
+          "surface": "mcp",
+          "level": 3,
+          "title": "RFC 9728 protected-resource metadata is served and well-formed",
+          "outcome": "pass",
+          "detail": "oauth-protected-resource metadata is valid JSON with 1 authorization server(s)",
+          "evidence": "transcripts/mcp-protected-resource-metadata.json",
+          "docUrl": "https://docs.stripe.com/mcp"
+        },
+        {
+          "checkId": "mcp-malformed-request-shape",
+          "surface": "mcp",
+          "level": 3,
+          "title": "Malformed request answered with a structured error, not HTML",
+          "outcome": "pass",
+          "detail": "malformed JSON rejected with HTTP 401 and a JSON error body",
+          "evidence": "transcripts/mcp-malformed-request-shape.json",
+          "docUrl": "https://docs.stripe.com/mcp"
+        },
+        {
+          "checkId": "mcp-tool-schema-lint",
+          "surface": "mcp",
+          "level": 3,
+          "title": "tools/list returns schema-valid tool definitions",
+          "outcome": "auth-gated",
+          "detail": "tools/list sits behind the OAuth wall (HTTP 401): the tool-schema lint needs an authorized session, so it is not reachable credential-free — recorded, not bypassed",
+          "evidence": "transcripts/mcp-tool-schema-lint.json",
+          "docUrl": "https://docs.stripe.com/mcp"
+        },
+        {
+          "checkId": "mcp-agent-trial",
+          "surface": "mcp",
+          "level": 4,
+          "title": "Agent task trial through the MCP server",
+          "outcome": "auth-gated",
+          "detail": "L4 requires an OAuth-scoped sandbox workspace for an agent to do real work through the server (program §3, Phase 3 infrastructure); not reachable credential-free",
+          "evidence": "transcripts/mcp-agent-trial.json",
+          "docUrl": "https://docs.stripe.com/mcp"
+        },
+        {
+          "checkId": "mcp-sustained-use",
+          "surface": "mcp",
+          "level": 5,
+          "title": "Sustained, adversarial, long-horizon use",
+          "outcome": "auth-gated",
+          "detail": "L5 requires repeated authenticated trials over time (program §1); not reachable credential-free",
+          "evidence": "transcripts/mcp-sustained-use.json",
+          "docUrl": "https://docs.stripe.com/mcp"
+        }
+      ],
+      "partial": {
+        "level": 3,
+        "verified": [
+          "mcp-protected-resource-metadata",
+          "mcp-malformed-request-shape"
+        ],
+        "unverified": [
+          {
+            "checkId": "mcp-tool-schema-lint",
+            "outcome": "auth-gated",
+            "detail": "tools/list sits behind the OAuth wall (HTTP 401): the tool-schema lint needs an authorized session, so it is not reachable credential-free — recorded, not bypassed"
+          }
+        ]
+      }
+    },
+    {
+      "surface": "api",
+      "rung": 1,
+      "checks": [
+        {
+          "checkId": "api-reference-documented",
+          "surface": "api",
+          "level": 1,
+          "title": "API reference served as agent-readable markdown",
+          "outcome": "pass",
+          "detail": "https://docs.stripe.com/api.md -> HTTP 200 markdown (1932 bytes)",
+          "evidence": "transcripts/api-reference-documented.json",
+          "docUrl": "https://docs.stripe.com/api"
+        },
+        {
+          "checkId": "api-endpoint-responds",
+          "surface": "api",
+          "level": 2,
+          "title": "API origin resolves and answers an unauthenticated request",
+          "outcome": "robots-disallowed",
+          "detail": "robots.txt disallows every candidate URL for our user agent (https://api.stripe.com/)",
+          "evidence": "transcripts/api-endpoint-responds.json",
+          "docUrl": "https://docs.stripe.com/api"
+        },
+        {
+          "checkId": "api-error-shape-auth",
+          "surface": "api",
+          "level": 3,
+          "title": "Unauthenticated resource request returns the documented error envelope",
+          "outcome": "robots-disallowed",
+          "detail": "robots.txt disallows every candidate URL for our user agent (https://api.stripe.com/v1/charges)",
+          "evidence": "transcripts/api-error-shape-auth.json",
+          "docUrl": "https://docs.stripe.com/api/errors"
+        },
+        {
+          "checkId": "api-error-shape-consistency",
+          "surface": "api",
+          "level": 3,
+          "title": "Error envelope is consistent across endpoints, including unknown paths",
+          "outcome": "robots-disallowed",
+          "detail": "robots.txt disallows every candidate URL for our user agent (https://api.stripe.com/v1/customers, https://api.stripe.com/v1/ultrametric-depth-nonexistent)",
+          "evidence": "transcripts/api-error-shape-consistency.json",
+          "docUrl": "https://docs.stripe.com/api/errors"
+        },
+        {
+          "checkId": "api-openapi-published",
+          "surface": "api",
+          "level": 3,
+          "title": "Published OpenAPI spec retrieves and is structurally valid",
+          "outcome": "pass",
+          "detail": "OpenAPI 3.0.0 from https://raw.githubusercontent.com/stripe/openapi/master/openapi/spec3.json: 431 paths, 612 operations (all with responses), 1538 component schemas, error envelope declared",
+          "evidence": "transcripts/api-openapi-published.json",
+          "docUrl": "https://github.com/stripe/openapi"
+        },
+        {
+          "checkId": "api-llms-txt",
+          "surface": "api",
+          "level": 3,
+          "title": "llms.txt conforms: plain text indexing markdown doc mirrors",
+          "outcome": "pass",
+          "detail": "llms.txt -> HTTP 200, 92764 bytes indexing 471 .md doc mirrors",
+          "evidence": "transcripts/api-llms-txt.json",
+          "docUrl": "https://docs.stripe.com/building-with-llms"
+        },
+        {
+          "checkId": "api-rate-limit-probe",
+          "surface": "api",
+          "level": 3,
+          "title": "Documented rate limits enforced and reported via headers",
+          "outcome": "auth-gated",
+          "detail": "rate limits are enforced per authenticated credential; observing enforcement would mean hammering the unauthenticated endpoint, which only ever answers 401 — not reachable credential-free",
+          "evidence": "transcripts/api-rate-limit-probe.json",
+          "docUrl": "https://docs.stripe.com/rate-limits"
+        },
+        {
+          "checkId": "api-idempotency-probe",
+          "surface": "api",
+          "level": 3,
+          "title": "Repeated writes with the idempotency header dedupe",
+          "outcome": "auth-gated",
+          "detail": "idempotent writes require an authenticated sandbox credential; not reachable credential-free",
+          "evidence": "transcripts/api-idempotency-probe.json",
+          "docUrl": "https://docs.stripe.com/api/idempotent_requests"
+        },
+        {
+          "checkId": "api-agent-trial",
+          "surface": "api",
+          "level": 4,
+          "title": "Agent task trial against a sandbox account",
+          "outcome": "auth-gated",
+          "detail": "L4 requires a disposable sandbox account and scoped test credentials (program §3, Phase 3 infrastructure); not reachable credential-free",
+          "evidence": "transcripts/api-agent-trial.json",
+          "docUrl": "https://docs.stripe.com/testing"
+        },
+        {
+          "checkId": "api-sustained-use",
+          "surface": "api",
+          "level": 5,
+          "title": "Sustained, adversarial, long-horizon use",
+          "outcome": "auth-gated",
+          "detail": "L5 requires repeated authenticated trials over time (program §1); not reachable credential-free",
+          "evidence": "transcripts/api-sustained-use.json",
+          "docUrl": "https://docs.stripe.com/testing"
+        }
+      ],
+      "partial": {
+        "level": 2,
+        "verified": [],
+        "unverified": [
+          {
+            "checkId": "api-endpoint-responds",
+            "outcome": "robots-disallowed",
+            "detail": "robots.txt disallows every candidate URL for our user agent (https://api.stripe.com/)"
+          }
+        ]
+      }
+    }
+  ],
+  "notPiloted": {
+    "cli": "CLI ladder not graded in this pilot; recorded credential-free CLI proofs exist at open-rankings/payments/proofs/stripe/ (cli-version, cli-resources-discovery, cli-webhook-listen-help)",
+    "automation": "webhooks/bulk/workflow checks need an account to register endpoints against; deferred to the sandboxed trial phase",
+    "human-ai-ux": "agent-operated web UI trials are Phase 3 scope (program §3)"
+  },
+  "robotsTranscripts": [
+    "transcripts/robots-api-stripe-com.json",
+    "transcripts/robots-docs-stripe-com.json",
+    "transcripts/robots-mcp-stripe-com.json",
+    "transcripts/robots-raw-githubusercontent-com.json"
+  ]
+}
