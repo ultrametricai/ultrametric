@@ -37,6 +37,33 @@ describe('founder-ops corpus validation', () => {
     }
   })
 
+  it('rejects a law map with unknown references, inconsistent maturity, or an unplaced card', () => {
+    const mapPath = path.join(process.cwd(), 'open-law/map.json')
+    const map = JSON.parse(fs.readFileSync(mapPath, 'utf8'))
+    // Tamper three ways at once: point a sub-area at a ghost rule and a ghost process,
+    // downgrade a card-carrying sub-area to unmapped, and evict a card from the taxonomy.
+    const subarea = map.domains[0].subareas[0]
+    subarea.rule_ids = ['us-fed.ghost-rule']
+    subarea.process_ids = ['ghost_process']
+    subarea.maturity = 'unmapped'
+    const readFile = fs.readFileSync.bind(fs)
+    const spy = vi.spyOn(fs, 'readFileSync').mockImplementation((...args: Parameters<typeof fs.readFileSync>) => {
+      if (String(args[0]) === mapPath) return JSON.stringify(map)
+      return readFile(...args)
+    })
+    try {
+      const errors = validateFounderOps(new Date('2026-10-14T00:00:00Z'))
+      const sid = `${map.domains[0].id}/${subarea.id}`
+      expect(errors).toContain(`law map ${sid}: unknown rule us-fed.ghost-rule`)
+      expect(errors).toContain(`law map ${sid}: unknown process ghost_process`)
+      expect(errors).toContain(`law map ${sid}: carries cards, so maturity cannot be unmapped`)
+      // The evicted cards surface as unplaced rather than vanishing silently.
+      expect(errors.some((e) => /absent from the law map/.test(e))).toBe(true)
+    } finally {
+      spy.mockRestore()
+    }
+  })
+
   it('all fixtures are synthetic with full scenario dimensions', () => {
     for (const file of fs.readdirSync(FIXTURES_DIR).filter((f) => f.endsWith('.json'))) {
       const event = readFixture(file)
