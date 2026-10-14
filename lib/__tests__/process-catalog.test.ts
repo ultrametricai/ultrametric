@@ -10,9 +10,14 @@ afterEach(() => temporary.splice(0).forEach(folder => rmSync(folder, { recursive
 describe('process authoring catalog', () => {
   it('preserves every authored logo value through catalog loading', () => {
     const { processes } = loadProcessCatalog({ processes: ['generate-a-brand-logo'] })
+    const { entrySteps, ...record } = JSON.parse(readFileSync('processes/generate-a-brand-logo.json', 'utf8'))
     expect(processes).toHaveLength(1)
     expect(processes[0].slug).toBe('generate-a-brand-logo')
-    expect(processes[0].record).toEqual(JSON.parse(readFileSync('content/processes/records/brand_002.json', 'utf8')))
+    expect(processes[0].record).toEqual(record)
+    expect(processes[0].entrySteps).toEqual(entrySteps)
+    for (const id of ['design-brief', 'inspect-logo']) {
+      expect(processes[0].record.parts.find(part => part.id === id)?.metadata).toEqual({ route: 'agent', reversibility: 'reversible' })
+    }
   })
   it('requires explicit entries and connections without inferred order', () => {
     expect(() => validateFlow(['a', 'b'], [], ['a'])).toThrow('reachable')
