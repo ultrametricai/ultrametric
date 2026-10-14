@@ -12,6 +12,11 @@
 #
 # The curated items live in pipeline/seeds/agent-skills-ultrametric-selfeval-evidence.json so
 # the excerpts are reviewable data, not code. Idempotent: existing ids are skipped.
+#
+# 2026-10-14: the items now carry preserve: true (the seed is the source), so once appended
+# they survive probe-stage refreshes (pipeline/stages/probe.ts mergeProbeEvidence) — the
+# 2026-10-14 refresh had clobbered them, which let the judge re-grade the owner product on a
+# docs-only pack (see pipeline/scripts/bias-audit-ultrametric-refresh-2026-10-14.py).
 import json
 import os
 
@@ -32,7 +37,11 @@ for pid, items in seed.items():
         if item['id'] in existing:
             print(f"{pid}: {item['id']} already present, skipping")
             continue
-        ev.append({'id': item['id'], 'tier': 'probe', 'url': item['url'], 'excerpt': item['excerpt'], 'fetchedAt': RECORDED_AT})
+        row = {'id': item['id'], 'tier': 'probe', 'url': item['url'], 'excerpt': item['excerpt'], 'fetchedAt': RECORDED_AT}
+        if item.get('preserve') is True:
+            row['preserve'] = True
+        ev.append(row)
         print(f"{pid}: appended {item['id']}")
     with open(path, 'w') as f:
-        f.write(json.dumps(ev, indent=2) + '\n')
+        # ensure_ascii=False matches pipeline writeJson (JSON.stringify keeps unicode literal).
+        f.write(json.dumps(ev, indent=2, ensure_ascii=False) + '\n')
