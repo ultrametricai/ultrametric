@@ -41,7 +41,7 @@ function computeStats() {
 function renderArenasBlock(stats) {
   return [
     ARENAS_START_MARKER,
-    `**${stats.arenas} rankings** today, ${stats.products} products judged head to head — the full index is [ultrametric.ai/arenas](https://ultrametric.ai/arenas), and each ranking's records live under [\`open-rankings/\`](open-rankings/).`,
+    `**${stats.arenas} rankings** today, ${stats.products} products judged head to head — the full index is [ultrametric.ai/arenas](https://ultrametric.ai/arenas), and each ranking's data lives under [\`open-rankings/\`](open-rankings/).`,
     ARENAS_END_MARKER,
   ].join('\n')
 }
