@@ -4,10 +4,14 @@ Every founder process as a step-by-step record, each step routed agent, form, or
 human, timed, and wired to the judged vendor rankings; the fixtures and curation doctrine
 beneath them live here too.
 
-Two layers, deliberately separate:
+Canonical DAG definitions such as `generate-a-brand-logo.json` use
+[`schemas/process.schema.json#/$defs/canonical`](../schemas/process.schema.json#/$defs/canonical),
+generated from `lib/shared-processes/catalog.ts`.
+
+The existing workflow and corpus layers retain their own contracts:
 
 1. **Jurisdiction-scoped workflows** (`open-processes/<domain>/<jurisdiction>/*.json`, contract
-   in `schemas/process.schema.json`): source-cited legal/tax workflows with explicit
+   in `schemas/jurisdiction-process.schema.json`, also accepted by `schemas/process.schema.json`): source-cited legal/tax workflows with explicit
    applicability dimensions, dated editorial review, rule-card references, stop conditions,
    and a scoped human approval on every externally-effectful step. Validated by
    `lib/founderOps.ts` inside the normal test gates; status `demonstration`, not
@@ -328,7 +332,7 @@ flowchart TD
   rankings (`/rankings/processes/*`), and the open startup simulator at `/startup-sim`.
 - `chains.json` links process IDs into playbooks (see the Chains section below).
 - `lib/founderOps.ts` validates the jurisdiction-scoped workflow layer (`equity/us-de/*`)
-  against `schemas/process.schema.json`, resolves its rule-card references into `open-law/` and
+  against `schemas/jurisdiction-process.schema.json`, resolves its rule-card references into `open-law/` and
   `citations/`, and exposes the exact-dimension planner (`planFounderOps`).
 
 ## Chains
