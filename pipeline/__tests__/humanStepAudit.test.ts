@@ -9,8 +9,8 @@ import { humanStepAudit, loadHumanStepAudit } from '../../lib/humanSteps'
 import { loadProcesses } from '../../lib/processes'
 import { DATA_DIR } from '../paths'
 import {
-  ComputerUseFeasibilitySchema, HAND_VERIFIED_NOT_DRIVABLE, HumanStepAuditFileSchema,
-  LEGACY_GENERIC_REASONS,
+  ComputerUseFeasibilitySchema, HAND_VERIFIED_NOT_DRIVABLE, type HumanStepAuditEntry,
+  HumanStepAuditFileSchema, LEGACY_GENERIC_REASONS, mergeAuditEntries,
 } from '../scripts/audit-human-steps'
 
 const file = path.join(DATA_DIR, 'human-step-audit.json')
@@ -64,6 +64,26 @@ describe('authored reasons', () => {
       expect(e, `validation-set node ${key} missing from audit`).toBeDefined()
       expect(['drivable', 'assist']).not.toContain(e!.computerUse)
     }
+  })
+})
+
+describe('mergeAuditEntries', () => {
+  const entry = (nodeId: string, why: string, extra: Partial<HumanStepAuditEntry> = {}): HumanStepAuditEntry => ({
+    taskId: 'fund_001', nodeId, route: 'person', why,
+    computerUse: 'no-screen', computerUseWhy: `cu-why for ${nodeId}`, ...extra,
+  })
+
+  it('a committed entry marked preserve wins over the cache-derived entry for the same node', () => {
+    const curated = entry('n1', 'hand-curated root cause', { preserve: true })
+    const assembled = [entry('n1', 'freshly generated reason'), entry('n2', 'other reason')]
+    const merged = mergeAuditEntries(assembled, [curated, entry('n2', 'stale committed reason')])
+    expect(merged).toEqual([curated, entry('n2', 'other reason')])
+  })
+
+  it('unmarked committed entries are refreshed normally, and preserved entries for nodes gone from the corpus drop out', () => {
+    const assembled = [entry('n1', 'regenerated')]
+    const committed = [entry('n1', 'old'), entry('n9', 'node no longer in corpus', { preserve: true })]
+    expect(mergeAuditEntries(assembled, committed)).toEqual([entry('n1', 'regenerated')])
   })
 })
 

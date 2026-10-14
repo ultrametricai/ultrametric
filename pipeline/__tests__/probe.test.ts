@@ -1,6 +1,9 @@
 import { describe, expect, it } from 'vitest'
-import type { Product } from '@/lib/schemas'
-import { runProbeChecks, type ProbeFetchResult, type ProbeFetcher } from '@/pipeline/stages/probe'
+import type { Evidence, Product } from '@/lib/schemas'
+import {
+  buildProbeEvidenceRows, mergeProbeEvidence, runProbeChecks,
+  type ProbeFetchResult, type ProbeFetcher, type ProbeResult,
+} from '@/pipeline/stages/probe'
 
 const baseProduct: Product = {
   id: 'acme',
@@ -143,5 +146,65 @@ describe('runProbeChecks', () => {
     const cli = results.find((r) => r.key === 'cli-link')
     expect(cli?.positive).toBe(false)
     expect(cli?.excerpt).toContain('HTTP 404')
+  })
+})
+
+const row = (id: string, tier: Evidence['tier'], extra: Partial<Evidence> = {}): Evidence => ({
+  id, tier, url: 'https://acme.example/x', excerpt: `excerpt for ${id}`,
+  fetchedAt: '2026-10-01T00:00:00.000Z', ...extra,
+})
+
+describe('mergeProbeEvidence', () => {
+  const docs = row('acme-docs-1', 'claimed-docs')
+  const counterCheck = row('acme-audit-20261014-1', 'probe', {
+    excerpt: 'PROBE audit counter-check: documented endpoint 404s', preserve: true,
+  })
+  const staleProbe = row('acme-probe-1', 'probe')
+  const freshProbes = [
+    row('acme-probe-1', 'probe', { fetchedAt: '2026-10-14T00:00:00.000Z' }),
+    row('acme-probe-2', 'probe', { fetchedAt: '2026-10-14T00:00:00.000Z' }),
+  ]
+
+  it('a preserved row survives a rerun that replaces everything else probe-tier', () => {
+    const merged = mergeProbeEvidence([docs, staleProbe, counterCheck], freshProbes)
+    expect(merged).toContainEqual(counterCheck) // recorded counter-evidence intact, byte for byte
+    expect(merged).toContainEqual(docs) // non-probe tiers untouched
+    expect(merged.filter((e) => e.tier === 'probe')).toHaveLength(3) // 2 fresh + 1 preserved
+    expect(merged.find((e) => e.id === 'acme-probe-1')?.fetchedAt).toBe('2026-10-14T00:00:00.000Z')
+  })
+
+  it('unmarked probe rows still refresh normally (wholesale replacement)', () => {
+    const merged = mergeProbeEvidence([docs, staleProbe], freshProbes)
+    expect(merged).toEqual([docs, ...freshProbes])
+  })
+
+  it('a rerun with zero fresh rows still keeps the preserved row', () => {
+    const merged = mergeProbeEvidence([counterCheck, staleProbe], [])
+    expect(merged).toEqual([counterCheck])
+  })
+
+  it('a fresh row whose id collides with a preserved row is dropped, not duplicated', () => {
+    const preservedWithProbeId = row('acme-probe-1', 'probe', { preserve: true })
+    const merged = mergeProbeEvidence([preservedWithProbeId], freshProbes)
+    expect(merged.filter((e) => e.id === 'acme-probe-1')).toEqual([preservedWithProbeId])
+    expect(merged.map((e) => e.id).sort()).toEqual(['acme-probe-1', 'acme-probe-2'])
+  })
+})
+
+describe('buildProbeEvidenceRows', () => {
+  const results: ProbeResult[] = [
+    { key: 'llms-txt', url: 'https://acme.example/llms.txt', positive: true, excerpt: 'PROBE llms.txt: HTTP 200' },
+    { key: 'openapi', url: 'https://acme.example/openapi.json', positive: false, excerpt: 'PROBE openapi: all candidate paths 404' },
+  ]
+
+  it('numbers fresh ids sequentially when nothing is preserved', () => {
+    const rows = buildProbeEvidenceRows('acme', results, new Set(), '2026-10-14T00:00:00.000Z')
+    expect(rows.map((r) => r.id)).toEqual(['acme-probe-1', 'acme-probe-2'])
+    expect(rows.every((r) => r.tier === 'probe')).toBe(true)
+  })
+
+  it('skips numbers held by preserved rows so a refresh cannot mint a colliding id', () => {
+    const rows = buildProbeEvidenceRows('acme', results, new Set(['acme-probe-1', 'acme-probe-3']), '2026-10-14T00:00:00.000Z')
+    expect(rows.map((r) => r.id)).toEqual(['acme-probe-2', 'acme-probe-4'])
   })
 })

@@ -204,9 +204,30 @@ export const HumanStepAuditEntrySchema = z.object({
   why: z.string().min(1),
   computerUse: ComputerUseFeasibilitySchema,
   computerUseWhy: z.string().min(1),
+  // Marks a hand-curated entry a rerun must not clobber: assembly keeps the committed entry
+  // for this node instead of the cache-derived one (mergeAuditEntries below) — the same
+  // preserve idiom as probe-tier evidence (lib/schemas.ts EvidenceSchema). Removal happens by
+  // editing the committed file in an explicit dated change. `true` or absent — never `false`.
+  preserve: z.literal(true).optional(),
 })
 
 export const HumanStepAuditFileSchema = HumanStepAuditEntrySchema.array()
+
+export type HumanStepAuditEntry = z.infer<typeof HumanStepAuditEntrySchema>
+
+// A rerun assembles the whole committed file from the LLM cache — which would clobber any
+// hand-curated entry (the same wholesale-replace class as the probe-stage refresh). Entries
+// marked preserve: true in the committed file win over the cache-derived entry for the same
+// node. Preserved entries for nodes no longer in the corpus drop out (coverage stays exact).
+export function mergeAuditEntries(
+  assembled: HumanStepAuditEntry[],
+  committed: HumanStepAuditEntry[],
+): HumanStepAuditEntry[] {
+  const preserved = new Map(
+    committed.filter((e) => e.preserve === true).map((e) => [`${e.taskId}:${e.nodeId}`, e]),
+  )
+  return assembled.map((e) => preserved.get(`${e.taskId}:${e.nodeId}`) ?? e)
+}
 
 // ---------------------------------------------------------------------------
 // Cache + run
@@ -298,8 +319,14 @@ export async function runAudit({ task }: { task?: string } = {}): Promise<void> 
     })
   }
   entries.sort((a, b) => a.taskId.localeCompare(b.taskId) || a.nodeId.localeCompare(b.nodeId))
-  writeJson(path.join(DATA_DIR, 'human-step-audit.json'), HumanStepAuditFileSchema.parse(entries))
-  console.log(`audit: wrote ${entries.length} audited steps to rankings/human-step-audit.json`)
+  const auditFile = path.join(DATA_DIR, 'human-step-audit.json')
+  const committed = fs.existsSync(auditFile)
+    ? HumanStepAuditFileSchema.parse(JSON.parse(fs.readFileSync(auditFile, 'utf8')))
+    : []
+  const merged = mergeAuditEntries(entries, committed)
+  writeJson(auditFile, HumanStepAuditFileSchema.parse(merged))
+  const kept = merged.filter((e) => e.preserve === true).length
+  console.log(`audit: wrote ${merged.length} audited steps to rankings/human-step-audit.json (${kept} preserved)`)
 }
 
 function printReport(): void {
