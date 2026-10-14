@@ -116,7 +116,7 @@ new fail) cited side by side.
 ## 5. Phasing
 
 - **v1 (this repo, now).** Maintainer-authored probes with recordings: local CLI checks and
-  real MCP stdio handshakes for `ai-coding` (`pnpm pipeline probe-record --category
+  real MCP stdio handshakes for `ai-coding` (`pnpm run pipeline probe-record --category
   ai-coding` with `UM_RECORD=1`), one browser-video pilot for `web-scraping`. Proof metadata
   lives **only** in sidecar JSON + `proofs/index.json` — deliberately outside
   `lib/schemas.ts`, which is owned by another lane.

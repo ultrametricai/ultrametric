@@ -19,7 +19,9 @@ describe('derive stage', () => {
     tmpDir = fs.mkdtempSync(path.join(os.tmpdir(), 'pa-derive-'))
     fs.cpSync(path.join(repoRoot, 'rankings'), tmpDir, { recursive: true })
 
-    execFileSync('pnpm', ['pipeline', 'derive', '--category', 'desktop-os'], {
+    // `run` is required: pnpm 12 ships a built-in `pipeline` command that shadows the
+    // script in shorthand form.
+    execFileSync('pnpm', ['run', 'pipeline', 'derive', '--category', 'desktop-os'], {
       cwd: repoRoot,
       env: { ...process.env, UM_DATA_DIR: tmpDir },
     })

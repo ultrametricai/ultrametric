@@ -97,7 +97,7 @@ The evidence doctrine in the house rules is the principle; these are the mechani
 traps:
 
 - `rankings/<arena>/rankings.json` is derived. Change verdicts or evidence, then run
-  `pnpm pipeline derive --category <id>`.
+  `pnpm run pipeline derive --category <id>`.
 - The README blocks between `<!-- stats:start -->` / `<!-- arenas:start -->` style
   markers, and the badge SVGs in `public/badges/`, come from `pnpm stats` and
   `node scripts/generate-badges.mjs`. Edit around the markers, never inside them.
@@ -105,9 +105,10 @@ traps:
 
 ## The pipeline
 
-`pnpm pipeline <stage> --category <id> [--product <id>]` runs the stages
+`pnpm run pipeline <stage> --category <id> [--product <id>]` runs the stages
 (crawl, extract, normalize, collect-community, probe, judge, derive, logos,
-popularity). The LLM stages (`extract`, `normalize`, `collect-community`, `judge`)
+popularity). The `run` is required: pnpm 12 ships a built-in `pipeline` command
+that shadows the script in shorthand form. The LLM stages (`extract`, `normalize`, `collect-community`, `judge`)
 need `ANTHROPIC_API_KEY` in a local `.env`. That key is local-pipeline-only: it must
 never be set on the Vercel project, and the deployed site never calls the Anthropic
 API. Verdicts are cache-keyed on their evidence, so re-judging without new evidence
