@@ -5,7 +5,7 @@
 // the product's pack is re-roll noise, not an evidence-driven change, and is reverted to its
 // prior state. This subsumes the na<->none rule. Patches both verdicts.json and the matching
 // judge cache files in place (same hash, reverted verdict object) so a future
-// `pnpm pipeline judge` run doesn't resurrect the churn.
+// `pnpm engine judge` run doesn't resurrect the churn.
 //
 // Wave specifics:
 //  - adyen/paypal/square were re-judged because this wave expanded their evidence packs
@@ -17,7 +17,7 @@
 //    commit this wave's worktree branched from).
 //  - No payments golden cells exist at authoring time; the golden guard still runs (no-op).
 //
-// Usage: pnpm exec tsx pipeline/scripts/revert-churn-payments-fairness-wave.ts [--write]
+// Usage: pnpm exec tsx rankings-engine/scripts/revert-churn-payments-fairness-wave.ts [--write]
 //   (no --write: dry run, prints the plan only; --write: applies changes to disk)
 //   OLD_REF: the pre-wave commit to diff verdicts against (default HEAD).
 

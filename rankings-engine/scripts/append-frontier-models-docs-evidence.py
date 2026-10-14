@@ -4,7 +4,7 @@
 # data-warehouses/auth-platforms precedent (append-data-warehouses-docs-evidence.py): per-source
 # extraction caps starve specific capabilities out of the prompt even though the corpus contains
 # them verbatim (this arena's jev corpus alone is 116 crawled sources, ~500 chars each in the
-# extraction prompt). Every excerpt below quotes a page in pipeline/cache/crawl/frontier-models/
+# extraction prompt). Every excerpt below quotes a page in rankings-engine/cache/crawl/frontier-models/
 # fetched 2026-09-22 (grep-verified at authoring time via .pa-tmp/find-passages.py). Honest
 # negatives are included where the crawl PROVED an absence (llama's SSO-gated docs; jev's
 # no-fine-tuning statement). Community-replica items attribute third-party status explicitly —

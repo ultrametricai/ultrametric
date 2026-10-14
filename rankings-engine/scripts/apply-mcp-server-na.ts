@@ -4,7 +4,7 @@
 // servers (see the new `agentic-mcp-client` canonical story), not whether they ship one for
 // something else to connect to. This is a documented cache-edit: we hand-write the verdict
 // (na, quality 0) and stamp the cache file with the CURRENT cellHash (post evidence-pack
-// deepening) so `pnpm pipeline judge` treats it as already judged and doesn't overwrite it
+// deepening) so `pnpm engine judge` treats it as already judged and doesn't overwrite it
 // with an LLM call that has no way to know about this applicability ruling.
 //
 // EXCLUDES codex (review verdict, reopened): codex ships a real (if experimental, and now
@@ -22,7 +22,7 @@
 // see open-rankings/ai-coding/verdicts.json), not forced to na. cursor/gemini-cli/github-copilot remain
 // forced na — doc search found no equivalent first-party server mode for any of them.
 //
-// Usage: pnpm exec tsx pipeline/scripts/apply-mcp-server-na.ts [--write]
+// Usage: pnpm exec tsx rankings-engine/scripts/apply-mcp-server-na.ts [--write]
 import fs from 'node:fs'
 import path from 'node:path'
 import { EvidenceSchema, StorySchema } from '../../lib/schemas'

@@ -15,7 +15,7 @@ ultrametric/
 ├── <a href="#open-law">open-law</a>/           startup legal rules by jurisdiction, each cited
 ├── <a href="#open-lore">open-lore</a>/          founder advice, who said it, the reading library
 ├── <a href="#open-docs">open-documents</a>/     openly published legal documents, by use case
-├── pipeline/           the code that crawls, probes, judges, scores
+├── rankings-engine/    the code that crawls, probes, judges, scores
 ├── lib/                loaders, scoring, and the calculation code
 ├── jurisdictions/      country and state data, vendor availability
 ├── citations/          the primary sources the legal rules cite

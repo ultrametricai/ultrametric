@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # Adversarial bias audit for the agent-skills scheduled refresh (2026-10-14) — the owner-product
-# governance pass (README §9), following pipeline/scripts/bias-audit-ultrametric-bringup-2026-10-08.py.
+# governance pass (README §9), following rankings-engine/scripts/bias-audit-ultrametric-bringup-2026-10-08.py.
 # The refresh re-judged every ultrametric cell against a pack that gained 9 new claimed-docs items
 # (ultrametric-docs-27..35, all first-party pages) and a REPLACED probe set: the recorded 2026-10-08
 # counter-checks (the 404 at the documented /contracts/openapi.json, the observed AUTH_REQUIRED MCP

@@ -8,7 +8,7 @@ import {
   isGhAvailable,
   parseGithubUrl,
   type GithubRepoInfo,
-} from '@/pipeline/stages/popularity'
+} from '@/rankings-engine/stages/popularity'
 
 describe('parseGithubUrl', () => {
   it('extracts owner/repo from a plain repo URL', () => {
@@ -91,7 +91,7 @@ describe('runPopularity (integration, fake fetchers, isolated data dir)', () => 
     const repoRoot = path.resolve(__dirname, '../..')
     fs.cpSync(path.join(repoRoot, 'open-rankings'), tmpDir, { recursive: true })
     // Strip any already-committed popularity.json/-history.jsonl from the fixture copy — the
-    // real open-rankings/ has these once `pnpm pipeline popularity` has been run for real, and a
+    // real open-rankings/ has these once `pnpm engine popularity` has been run for real, and a
     // same-day fetchedAt would trip the 7-day cache-skip logic these tests are trying to
     // exercise from a clean slate.
     for (const catDir of fs.readdirSync(tmpDir, { withFileTypes: true })) {
@@ -110,7 +110,7 @@ describe('runPopularity (integration, fake fetchers, isolated data dir)', () => 
   })
 
   it('writes popularity.json only for react (github url) in frontend-frameworks, appends history', async () => {
-    const { runPopularity } = await import('@/pipeline/stages/popularity')
+    const { runPopularity } = await import('@/rankings-engine/stages/popularity')
     const fakeNow = new Date('2026-08-27T00:00:00Z')
     let githubCalls = 0
     await runPopularity(
@@ -148,7 +148,7 @@ describe('runPopularity (integration, fake fetchers, isolated data dir)', () => 
   })
 
   it('skips a product with no github url and no curated npm/pypi package (macos)', async () => {
-    const { runPopularity } = await import('@/pipeline/stages/popularity')
+    const { runPopularity } = await import('@/rankings-engine/stages/popularity')
     await runPopularity(
       { category: 'desktop-os', product: 'macos' },
       {
@@ -170,7 +170,7 @@ describe('runPopularity (integration, fake fetchers, isolated data dir)', () => 
       path.join(dataDir, 'popularity.json'),
       JSON.stringify({ react: { stars: 111, fetchedAt: '2026-08-25T00:00:00.000Z' } }),
     )
-    const { runPopularity } = await import('@/pipeline/stages/popularity')
+    const { runPopularity } = await import('@/rankings-engine/stages/popularity')
     let githubCalls = 0
     await runPopularity(
       { category: 'frontend-frameworks', product: 'react' },
@@ -195,7 +195,7 @@ describe('runPopularity (integration, fake fetchers, isolated data dir)', () => 
       path.join(dataDir, 'popularity.json'),
       JSON.stringify({ react: { stars: 111, fetchedAt: '2026-08-01T00:00:00.000Z' } }),
     )
-    const { runPopularity } = await import('@/pipeline/stages/popularity')
+    const { runPopularity } = await import('@/rankings-engine/stages/popularity')
     let githubCalls = 0
     await runPopularity(
       { category: 'frontend-frameworks', product: 'react' },
@@ -215,7 +215,7 @@ describe('runPopularity (integration, fake fetchers, isolated data dir)', () => 
   })
 
   it('throws for an unknown --product filter', async () => {
-    const { runPopularity } = await import('@/pipeline/stages/popularity')
+    const { runPopularity } = await import('@/rankings-engine/stages/popularity')
     await expect(
       runPopularity(
         { category: 'frontend-frameworks', product: 'nonexistent' },

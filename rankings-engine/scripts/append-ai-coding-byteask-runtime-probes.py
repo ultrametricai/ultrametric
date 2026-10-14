@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 # One-shot helper for the byteask ai-coding bring-up (YC F26 coverage-queue wave 2026-09-25).
 # Appends probe-tier evidence items distilled from the recorded runtime probes in
-# open-rankings/ai-coding/proofs/byteask/ (see pipeline/probes/ai-coding.ts — both recorded probes
-# passed). Run AFTER `pnpm pipeline probe --category ai-coding --product byteask` (or a spike
+# open-rankings/ai-coding/proofs/byteask/ (see rankings-engine/probes/ai-coding.ts — both recorded probes
+# passed). Run AFTER `pnpm engine probe --category ai-coding --product byteask` (or a spike
 # pass, whose probe stage wholesale-replaces probe-tier evidence and would wipe these items) —
 # re-run this script after any probe refresh.
 import datetime

@@ -1,5 +1,5 @@
 // Loader + pure series helpers for open-rankings/{cat}/popularity-history.jsonl — the one-line-per-
-// product-per-run star/download snapshots appended by pipeline/stages/popularity.ts (see its
+// product-per-run star/download snapshots appended by rankings-engine/stages/popularity.ts (see its
 // PopularityHistoryLine). Same tolerant-optional contract as lib/scoreHistory.ts: a category
 // without the file resolves to an empty map, a product with no lines to undefined — display
 // code renders nothing, never an error. Display-only, like popularity itself: never fed into

@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # Owner-product parity pass over the 2026-10-14 agent-skills re-judge (README §9), following
-# pipeline/scripts/bias-audit-ultrametric-refresh-2026-10-14.py. That audit set explicit
+# rankings-engine/scripts/bias-audit-ultrametric-refresh-2026-10-14.py. That audit set explicit
 # strictest-comparable standards on 15 ultrametric cells. This re-judge ran against the pack
 # with the counter-evidence restored (PR #305: the nine 2026-10-07 self-eval rows and the two
 # 2026-10-14 audit counter-checks, all preserve: true) plus the five peers' restored runtime

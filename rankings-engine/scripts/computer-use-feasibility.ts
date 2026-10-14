@@ -17,7 +17,7 @@
  *  - open-rankings/experiments/computer-use/<step-id>.png    viewport screenshot (evidence)
  *  - open-rankings/experiments/computer-use/feasibility-report.json  aggregate
  *
- * Run: pnpm tsx pipeline/scripts/computer-use-feasibility.ts
+ * Run: pnpm tsx rankings-engine/scripts/computer-use-feasibility.ts
  * (playwright resolved from .proof-scratch/node_modules in the main checkout)
  */
 

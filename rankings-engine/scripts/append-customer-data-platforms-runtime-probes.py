@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 # One-shot helper for the customer-data-platforms arena bring-up (2026-09-08): appends
 # probe-tier evidence items distilled from the recorded runtime probes in
-# open-rankings/customer-data-platforms/proofs/ (see pipeline/probes/customer-data-platforms.ts —
+# open-rankings/customer-data-platforms/proofs/ (see rankings-engine/probes/customer-data-platforms.ts —
 # all 12 recorded probes passed). Run AFTER
-# `pnpm pipeline probe --category customer-data-platforms` — that stage wholesale-replaces
+# `pnpm engine probe --category customer-data-platforms` — that stage wholesale-replaces
 # probe-tier evidence and would wipe these items (re-run this script after any probe refresh).
 import datetime
 import json

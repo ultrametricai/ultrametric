@@ -11,7 +11,7 @@
 //   3. crawl-gap signatures — pure-data contradictions the fleet audits keep finding:
 //                            · api-quality gap: `agentic-public-api` full/partial while ALL four
 //                              api-quality stories are zero-evidence none (the 54-product audit
-//                              signature, see pipeline/scripts/append-api-quality-docs-evidence.py)
+//                              signature, see rankings-engine/scripts/append-api-quality-docs-evidence.py)
 //                            · agent-docs contradiction (the cline case, commit 14e665a0): the
 //                              evidence pack holds a positive "PROBE llms.txt: HTTP 200" item but
 //                              the `agentic-agent-docs` verdict is still a zero-evidence none.
@@ -24,9 +24,9 @@
 // KEYLESS by design: no LLM ever runs here. The scan only DETECTS and RANKS; re-crawling and
 // re-judging stay in story-runner's keyed runs, which read this report to pick the worst-stale
 // arena first (see story-runner.yml's "Pick arena" step). Scoring weights live in
-// stalenessScore() below; everything pure is exported for pipeline/__tests__/staleness-scan.test.ts.
+// stalenessScore() below; everything pure is exported for rankings-engine/__tests__/staleness-scan.test.ts.
 //
-//   pnpm tsx pipeline/scripts/staleness-scan.ts [--category <id>] [--offline]
+//   pnpm tsx rankings-engine/scripts/staleness-scan.ts [--category <id>] [--offline]
 //     [--issue-body <path>] [--out <path>]
 //
 // --offline skips every network check (age + pure-data signatures only); --issue-body writes the
@@ -49,8 +49,8 @@ const USER_AGENT = 'Mozilla/5.0 (compatible; Ultrametric-staleness/1.0; +https:/
 // How many top-cited URLs get live-checked per product — bounded so a fleet run stays polite.
 const CITED_URL_SAMPLE = 2
 
-// Same positive-probe prefixes as pipeline/scripts/cert-candidates.ts / slo-check.ts — the
-// canonical wording pipeline/stages/probe.ts stamps into probe evidence.
+// Same positive-probe prefixes as rankings-engine/scripts/cert-candidates.ts / slo-check.ts — the
+// canonical wording rankings-engine/stages/probe.ts stamps into probe evidence.
 const LLMS_POSITIVE_PREFIX = 'PROBE llms.txt: HTTP 200'
 
 export interface LiveFlip {
@@ -297,7 +297,7 @@ export function buildIssueBody(report: StalenessReport, top: number = 20): strin
   lines.push(`## Accuracy-engine work queue — ${date}`)
   lines.push('')
   lines.push(
-    `Fleet scan (keyless, \`pipeline/scripts/staleness-scan.ts\`): ` +
+    `Fleet scan (keyless, \`rankings-engine/scripts/staleness-scan.ts\`): ` +
     `${report.fleet.products} products across ${report.fleet.arenas} arenas · ` +
     `${report.fleet.urlsChecked} top-cited URLs live-checked, ${report.fleet.deadUrls} dead · ` +
     `${report.fleet.llmsTxtFlips} llms.txt flips · ${report.fleet.mcpFlips} MCP flips · ` +
@@ -413,7 +413,7 @@ async function run(): Promise<void> {
       try {
         const origin = new URL(item.product.urls.docs ?? item.product.urls.site).origin
         // A shared code-host origin serves the HOST's llms.txt, not the product's — probing it
-        // would flag a false flip for every repo-hosted product (see pipeline/stages/probe.ts).
+        // would flag a false flip for every repo-hosted product (see rankings-engine/stages/probe.ts).
         if (isSharedCodeHostOrigin(origin)) continue
         llmsUrls.add(`${origin}/llms.txt`)
       } catch { /* malformed product URL — skip */ }

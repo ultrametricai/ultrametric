@@ -6,7 +6,7 @@
 # check at run time — the script FAILS (exit 1) if an observation no longer matches the expected
 # shape, so stale claims can't be silently re-appended.
 #
-# Run AFTER `pnpm pipeline probe --category mcp-infrastructure` — that stage wholesale-replaces
+# Run AFTER `pnpm engine probe --category mcp-infrastructure` — that stage wholesale-replaces
 # probe-tier evidence and would wipe these items (re-run this script after any probe refresh).
 import datetime
 import json

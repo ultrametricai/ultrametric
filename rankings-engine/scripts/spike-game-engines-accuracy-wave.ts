@@ -1,8 +1,8 @@
 // Game-engines accuracy wave (2026-09-23, founder ask: "make the game-engine arena accurate").
 // One budget-capped exhaustive pass over ONE game engine — the same crawl → extract → probe →
-// judge → churn-settle loop as pipeline/scripts/spike-engine.ts's spikeProduct (whose exported
+// judge → churn-settle loop as rankings-engine/scripts/spike-engine.ts's spikeProduct (whose exported
 // churnDecision/discoverUrlsFromLlmsTxt this reuses verbatim), with the one extra step the
-// stock pass lacks and this arena requires: `pnpm pipeline probe` wholesale-replaces probe-tier
+// stock pass lacks and this arena requires: `pnpm engine probe` wholesale-replaces probe-tier
 // evidence, which would silently wipe the hand-recorded `*-probe-rt-*` runtime items
 // (append-game-engines-runtime-probes.py documents "Run AFTER probe" for exactly this reason).
 // Running the stock spikeProduct would therefore judge against an evidence pack missing its
@@ -24,7 +24,7 @@
 // settle-game-engines-accuracy-wave.ts, which applies spike-engine's churnDecision for every
 // product against the pre-wave baseline (git HEAD).
 //
-// Usage: pnpm exec tsx pipeline/scripts/spike-game-engines-accuracy-wave.ts --product <id> --budget-urls <n> [--mid-wave]
+// Usage: pnpm exec tsx rankings-engine/scripts/spike-game-engines-accuracy-wave.ts --product <id> --budget-urls <n> [--mid-wave]
 // Requires ANTHROPIC_API_KEY (appending evidence without a same-run re-judge strands caches).
 import fs from 'node:fs'
 import path from 'node:path'
@@ -114,12 +114,12 @@ async function main(): Promise<void> {
   }
 
   // 2. Pipeline stages — with the rt-item re-append between probe and judge (see header).
-  runStage('pnpm', ['exec', 'tsx', 'pipeline/cli.ts', 'crawl', '--category', ARENA, '--product', productId])
-  runStage('pnpm', ['exec', 'tsx', 'pipeline/cli.ts', 'extract', '--category', ARENA, '--product', productId])
-  runStage('pnpm', ['exec', 'tsx', 'pipeline/cli.ts', 'probe', '--category', ARENA, '--product', productId])
-  runStage('python3', ['pipeline/scripts/append-game-engines-runtime-probes.py'])
+  runStage('pnpm', ['exec', 'tsx', 'rankings-engine/cli.ts', 'crawl', '--category', ARENA, '--product', productId])
+  runStage('pnpm', ['exec', 'tsx', 'rankings-engine/cli.ts', 'extract', '--category', ARENA, '--product', productId])
+  runStage('pnpm', ['exec', 'tsx', 'rankings-engine/cli.ts', 'probe', '--category', ARENA, '--product', productId])
+  runStage('python3', ['rankings-engine/scripts/append-game-engines-runtime-probes.py'])
   const midWave = process.argv.includes('--mid-wave')
-  const judge = spawnSync('pnpm', ['exec', 'tsx', 'pipeline/cli.ts', 'judge', '--category', ARENA, '--product', productId], {
+  const judge = spawnSync('pnpm', ['exec', 'tsx', 'rankings-engine/cli.ts', 'judge', '--category', ARENA, '--product', productId], {
     cwd: ROOT,
     encoding: 'utf8',
   })
@@ -145,7 +145,7 @@ async function main(): Promise<void> {
 }
 
 main()
-  .then(() => setImmediate(() => process.exit(0))) // same kept-alive-session force-exit as pipeline/cli.ts
+  .then(() => setImmediate(() => process.exit(0))) // same kept-alive-session force-exit as rankings-engine/cli.ts
   .catch((err) => {
     console.error(err)
     process.exit(1)

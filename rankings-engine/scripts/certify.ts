@@ -2,11 +2,11 @@
 // `ultrametric-cli certify <url>` (the CLI lives in its own repo; this is the maintainer-side
 // implementation the weekly cert-sweep runs, protocol in docs/CERTIFICATION.md). Every check is
 // keyless, read-only, and runs against the vendor's own public surfaces, mirroring the
-// pipeline's probe conventions (pipeline/stages/probe.ts): llms.txt, docs .md mirrors, OpenAPI,
+// pipeline's probe conventions (rankings-engine/stages/probe.ts): llms.txt, docs .md mirrors, OpenAPI,
 // an MCP initialize handshake, robots.txt, and a structured-errors spot check.
 //
 // Pure by construction: all network access goes through an injectable CertifyFetcher so the
-// whole suite is unit-testable without touching the network (pipeline/__tests__/certify.test.ts).
+// whole suite is unit-testable without touching the network (rankings-engine/__tests__/certify.test.ts).
 // Every response is digested (sha256) into the report so a maintainer re-run can be compared
 // check-by-check against a vendor-submitted cert-report.json.
 import { createHash } from 'node:crypto'
@@ -199,7 +199,7 @@ export function mcpCandidates(target: string, explicit?: string): string[] {
   return [...new Set(out)]
 }
 
-// Same conventional spec paths the pipeline probes (pipeline/stages/probe.ts).
+// Same conventional spec paths the pipeline probes (rankings-engine/stages/probe.ts).
 export const OPENAPI_PATHS = ['/openapi.json', '/swagger.json', '/api/openapi.json', '/.well-known/openapi.json']
 
 const MCP_INITIALIZE = JSON.stringify({

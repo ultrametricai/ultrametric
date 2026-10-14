@@ -1,5 +1,5 @@
 // Shared shape and JSON-RPC payloads for the per-arena probe modules in this directory
-// (assembled by ./index.ts, executed by pipeline/stages/probe-record.ts).
+// (assembled by ./index.ts, executed by rankings-engine/stages/probe-record.ts).
 
 export interface LocalProbe {
   probeId: string

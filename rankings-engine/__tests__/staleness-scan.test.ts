@@ -1,5 +1,5 @@
 // Pure-function tests for the accuracy engine's staleness scanner
-// (pipeline/scripts/staleness-scan.ts): age math, the audit signatures (api-quality gap, the
+// (rankings-engine/scripts/staleness-scan.ts): age math, the audit signatures (api-quality gap, the
 // cline agent-docs contradiction), flip candidacy, citation sampling, and the ranking score —
 // no network, no fs.
 import { describe, expect, it } from 'vitest'
@@ -16,7 +16,7 @@ import {
   stalenessScore,
   topCitedUrls,
   type StalenessReport,
-} from '@/pipeline/scripts/staleness-scan'
+} from '@/rankings-engine/scripts/staleness-scan'
 
 const ev = (id: string, overrides: Partial<Evidence> = {}): Evidence => ({
   id,

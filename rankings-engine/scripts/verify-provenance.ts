@@ -5,7 +5,7 @@
 // data Ultrametric published for that arena; any edit to a score/verdict breaks it.
 //
 // Usage:
-//   pnpm tsx pipeline/scripts/verify-provenance.ts <file.json> [arenaId]
+//   pnpm tsx rankings-engine/scripts/verify-provenance.ts <file.json> [arenaId]
 //
 // [arenaId] is only needed when the copy stripped or altered `_provenance.arena`.
 // Exit 0 = VALID, exit 1 = INVALID or unverifiable.
@@ -14,7 +14,7 @@ import { verifyProvenance } from '../../lib/provenance'
 
 const [file, arenaId] = process.argv.slice(2)
 if (!file) {
-  console.error('usage: pnpm tsx pipeline/scripts/verify-provenance.ts <file.json> [arenaId]')
+  console.error('usage: pnpm tsx rankings-engine/scripts/verify-provenance.ts <file.json> [arenaId]')
   process.exit(1)
 }
 

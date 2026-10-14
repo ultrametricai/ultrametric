@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 # One-shot helper for the ai-memory arena bring-up (2026-09-05): appends probe-tier evidence
 # items distilled from the recorded runtime probes in open-rankings/ai-memory/proofs/ (see
-# pipeline/probes/ai-memory.ts — all 12 recorded probes passed).
-# Run AFTER `pnpm pipeline probe --category ai-memory` — that stage wholesale-replaces
+# rankings-engine/probes/ai-memory.ts — all 12 recorded probes passed).
+# Run AFTER `pnpm engine probe --category ai-memory` — that stage wholesale-replaces
 # probe-tier evidence and would wipe these items (re-run this script after any probe refresh).
 import json
 import datetime

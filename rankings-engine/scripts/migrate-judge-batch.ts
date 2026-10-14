@@ -1,5 +1,5 @@
 // Judge-model migration driver (sonnet-5 → claude-opus-5-5, prompt v3 → v4) — the generalized
-// successor to pipeline/scripts/rejudge-pilot.ts, per the adopted docs/OPUS-5-5-JUDGE-PILOT.md
+// successor to rankings-engine/scripts/rejudge-pilot.ts, per the adopted docs/OPUS-5-5-JUDGE-PILOT.md
 // recommendation: re-judge the fleet arena-by-arena through the Message Batches API (half
 // price, no rate-limit contention with story-runner), land each arena atomically (judge cache +
 // verdicts.json + rankings.json + labeled score-history in one commit), and never apply the
@@ -475,7 +475,7 @@ async function main(): Promise<void> {
     applyAdjustments(cat, path.resolve(file))
     return
   }
-  console.error('usage: tsx pipeline/scripts/migrate-judge-batch.ts <submit|status|ingest|restamp-pilot|adjust> --category <id> [--pilot <dir>] [--file <json>] [--state <dir>]')
+  console.error('usage: tsx rankings-engine/scripts/migrate-judge-batch.ts <submit|status|ingest|restamp-pilot|adjust> --category <id> [--pilot <dir>] [--file <json>] [--state <dir>]')
   process.exit(1)
 }
 

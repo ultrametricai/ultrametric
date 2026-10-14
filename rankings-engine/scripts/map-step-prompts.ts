@@ -23,12 +23,12 @@
 //       · no secrets handling beyond "use your configured credentials";
 //       · 120–350 words;
 //   - cached per node by a hash over the node fields + task title + grounded-calls digest +
-//     audit digest + prompt version (pipeline/cache/step-prompts/<taskId>.json), so re-runs
+//     audit digest + prompt version (rankings-engine/cache/step-prompts/<taskId>.json), so re-runs
 //     are incremental; the committed JSON is written all-or-nothing per task: only tasks whose
 //     every node is fresh in cache are included, and nothing is written unless every task in
 //     the run scope is complete.
 //
-// Usage: tsx pipeline/scripts/map-step-prompts.ts [--task <id>] [--report]
+// Usage: tsx rankings-engine/scripts/map-step-prompts.ts [--task <id>] [--report]
 import crypto from 'node:crypto'
 import fs from 'node:fs'
 import path from 'node:path'
@@ -50,7 +50,7 @@ export const MAX_PROMPT_WORDS = 350
 // vendor. Required in the prompt iff the step has a vendor market (a covering arena).
 export const VENDOR_PLACEHOLDER = '{{vendor}}'
 
-// Validator regexes — exported so pipeline/__tests__/stepPrompts.test.ts re-checks the
+// Validator regexes — exported so rankings-engine/__tests__/stepPrompts.test.ts re-checks the
 // committed file against EXACTLY the rules the generator enforced.
 // Any HTTP method + path token in the prompt must be a substring of a grounded call.
 export const ENDPOINT_RE = /\b(?:GET|POST|PUT|PATCH|DELETE)\s+\/\S*/g

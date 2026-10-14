@@ -4,7 +4,7 @@
 # Stripe spike, commit 771a7510, and the fairness wave, commit 277a7797). This script applies
 # the SAME supplement recipe to the newcomers from day one: verbatim passages from
 # CRAWLED/VERIFIED vendor pages that the per-source extraction caps plus the story quota
-# starved out of the packs even though the crawled corpus (pipeline/cache/crawl/payments/<id>/)
+# starved out of the packs even though the crawled corpus (rankings-engine/cache/crawl/payments/<id>/)
 # contains them verbatim, plus live keyless probes that fail loudly if reality changes.
 #
 # Every URL below is in that product's products.json urls; every excerpt quotes the crawled
@@ -24,7 +24,7 @@
 #     via Stripe Connect — nothing quoted beyond what the docs say.
 #   - openness-*/privacy-*: only what the crawled pages state; no agent-washing of other axes.
 #
-# Run AFTER `pnpm pipeline probe --category payments --product <id>` (that stage wholesale-
+# Run AFTER `pnpm engine probe --category payments --product <id>` (that stage wholesale-
 # replaces probe-tier items; this script's probe items must be re-appended if it re-runs) and
 # AFTER extract (extraction is monotonic and dedups by normalized excerpt).
 import datetime

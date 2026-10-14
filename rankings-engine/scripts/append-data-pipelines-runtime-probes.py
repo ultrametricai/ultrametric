@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 # One-shot helper for the data-pipelines arena bring-up (2026-09-08): appends probe-tier
 # evidence items distilled from the recorded runtime probes in open-rankings/data-pipelines/proofs/
-# (see pipeline/probes/data-pipelines.ts — all 11 recorded probes
-# passed). Run AFTER `pnpm pipeline probe --category data-pipelines` — that stage wholesale-
+# (see rankings-engine/probes/data-pipelines.ts — all 11 recorded probes
+# passed). Run AFTER `pnpm engine probe --category data-pipelines` — that stage wholesale-
 # replaces probe-tier evidence and would wipe these items (re-run this script after any probe
 # refresh). Signature probes here are REAL scaffolds and boots: dlt init wrote a working
 # pipeline, create-dagster + dagster dev booted a live webserver, meltano init laid out a

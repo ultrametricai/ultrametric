@@ -1,12 +1,12 @@
 // Assembles a category's stories.json from a hand-curated manual taxonomy plus the canonical
 // lens stories — the manual-authoring counterpart of normalize.ts's LLM path (payroll was built
-// the same way). The manual stories live in pipeline/seeds/manual-stories/<category>.json and
-// carry origin {kind:'manual'}; the 29 canonical lens stories (pipeline/agentic-stories.ts) are
+// the same way). The manual stories live in rankings-engine/seeds/manual-stories/<category>.json and
+// carry origin {kind:'manual'}; the 29 canonical lens stories (rankings-engine/agentic-stories.ts) are
 // injected verbatim with origin {kind:'canonical'}, exactly as assembleTaxonomy does. The same
 // guards apply: manual stories must not use canon themes or id prefixes, ids must be unique,
 // and output is sorted theme → group → id for stable diffs.
 //
-// Usage: pnpm tsx pipeline/scripts/assemble-manual-stories.ts --category <id>
+// Usage: pnpm tsx rankings-engine/scripts/assemble-manual-stories.ts --category <id>
 //
 // Refuses to clobber a taxonomy that already has real verdicts (same guard as normalize.ts)
 // unless UM_FORCE_NORMALIZE=1 — rewriting stories.json under committed verdicts silently
@@ -60,7 +60,7 @@ function main(): void {
   const categoryFlag = process.argv.indexOf('--category')
   const categoryId = categoryFlag >= 0 ? process.argv[categoryFlag + 1] : undefined
   if (!categoryId) {
-    console.error('usage: pnpm tsx pipeline/scripts/assemble-manual-stories.ts --category <id>')
+    console.error('usage: pnpm tsx rankings-engine/scripts/assemble-manual-stories.ts --category <id>')
     process.exit(1)
   }
   const [cat] = resolveCategories(categoryId)

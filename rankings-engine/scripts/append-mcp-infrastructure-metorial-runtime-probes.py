@@ -4,8 +4,8 @@
 # precedent — because Metorial's surface IS this arena's axis: hosted MCP servers, provider
 # registry, OAuth handling, session logs). Appends probe-tier evidence items distilled from the
 # recorded runtime probes in open-rankings/mcp-infrastructure/proofs/metorial/ (see
-# pipeline/probes/mcp-infrastructure.ts — all 3 recorded probes passed). Run AFTER
-# `pnpm pipeline probe --category mcp-infrastructure --product metorial` (or a spike pass, whose
+# rankings-engine/probes/mcp-infrastructure.ts — all 3 recorded probes passed). Run AFTER
+# `pnpm engine probe --category mcp-infrastructure --product metorial` (or a spike pass, whose
 # probe stage wholesale-replaces probe-tier evidence and would wipe these items) — re-run this
 # script after any probe refresh.
 import datetime

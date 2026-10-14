@@ -4,7 +4,7 @@ Empirical browser-automation dry-runs (2026-09-14) against the live public sites
 human-marked steps of `/processes/chains/company-launch`. Question under test: **where the chain
 says "human", could a computer-use agent do it?**
 
-- Harness: `pipeline/scripts/computer-use-feasibility.ts` (playwright, headless chromium)
+- Harness: `rankings-engine/scripts/computer-use-feasibility.ts` (playwright, headless chromium)
 - Evidence: `open-rankings/experiments/computer-use/` — one JSON + one PNG screenshot per step, plus
   `feasibility-report.json` (aggregate)
 - Safety envelope actually enforced: **zero submissions, zero accounts created, zero payments,
@@ -88,6 +88,6 @@ attestation** (Delaware, IRS). Computer use reliably removes the *data-entry* mi
 This matches gapClosers' existing caution ("assisted, not autonomous — a human supervises") and
 the evidence now grounds it per-step.
 
-Reproduce: `pnpm tsx pipeline/scripts/computer-use-feasibility.ts` (playwright resolved from
+Reproduce: `pnpm tsx rankings-engine/scripts/computer-use-feasibility.ts` (playwright resolved from
 `.proof-scratch/node_modules`; expects chromium in the playwright browser cache). Results vary
 with vendors' bot-defense posture — these are point-in-time observations, not permanent facts.

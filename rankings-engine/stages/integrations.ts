@@ -2,7 +2,7 @@
 // facts FROM THE EXISTING EVIDENCE CORPUS ONLY (no new crawling) and write
 // open-rankings/{cat}/integrations.json (see lib/integrations.ts for the schema and graph helpers).
 //
-// Two-step honesty design, mirroring pipeline/stages/pricing.ts's mechanics:
+// Two-step honesty design, mirroring rankings-engine/stages/pricing.ts's mechanics:
 // 1. Exact-name prefilter (code, no LLM): scan every evidence excerpt for word-boundary,
 //    case-sensitive mentions of other tracked products' names (all ~289 fleet-wide, plus a small
 //    curated alias list). Only evidence items that literally contain another product's name ever
@@ -183,7 +183,7 @@ export function integrationsPrompt(product: Product, arenaName: string, candidat
 }
 
 // First rule violation for one returned integration, or null when clean. Mirrors
-// pipeline/stages/pricing.ts's factViolation → corrective-re-prompt → per-item drop pattern.
+// rankings-engine/stages/pricing.ts's factViolation → corrective-re-prompt → per-item drop pattern.
 export function integrationViolation(raw: RawIntegration, candidates: CandidateMention[]): string | null {
   const candidate = candidates.find(
     (c) => c.evidenceId === raw.evidenceId && c.targetProductId === raw.targetProductId,
@@ -241,7 +241,7 @@ export interface ExtractionResult {
 
 // One product's classification: LLM → validate → one corrective re-prompt on violation → drop
 // any still-unverifiable items individually → assemble edges. Pure over its inputs, so tests
-// can drive it with a mocked LLM client (pipeline/llm.ts's setClientForTests).
+// can drive it with a mocked LLM client (rankings-engine/llm.ts's setClientForTests).
 export async function extractIntegrations(opts: {
   product: Product
   arenaName: string

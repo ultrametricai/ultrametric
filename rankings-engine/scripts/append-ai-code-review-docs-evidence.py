@@ -6,7 +6,7 @@
 # and merge-gating pages) out of the prompt even though the crawled corpus contains them
 # verbatim. Applied evenly across all six products so the fairness pass favors no one — the
 # Greptile item deliberately includes the vendor's de-identified-data training carve-out.
-# Every excerpt below quotes pipeline/cache/crawl/ai-code-review/<product>/*.md content
+# Every excerpt below quotes rankings-engine/cache/crawl/ai-code-review/<product>/*.md content
 # (checked at authoring time); URLs are the crawled sources.
 import datetime
 import json

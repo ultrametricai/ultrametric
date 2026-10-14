@@ -2,7 +2,7 @@
 // enrichment (commit 54b6a895): that wave appended {product}-intdir-N claimed-docs evidence
 // to 35 products as integration-graph fuel, deliberately leaving verdicts untouched — but the
 // judge cache key hashes the FULL evidence pack, so every touched product's cells went stale
-// and any later `pnpm pipeline judge --category <cat>` run fails at the assembly staleness
+// and any later `pnpm engine judge --category <cat>` run fails at the assembly staleness
 // check (first hit: the 2026-09-14 linear api-quality fix, blocked on asana's stale cells).
 //
 // Why restamp instead of re-judge: the established churn policy (revert-churn.ts /
@@ -17,7 +17,7 @@
 // the committed verdicts.json row — any mismatch aborts, because then the cache and verdicts
 // have diverged for a reason this script must not paper over.
 //
-// Usage: pnpm exec tsx pipeline/scripts/restamp-judge-cache-intdir.ts [--write]
+// Usage: pnpm exec tsx rankings-engine/scripts/restamp-judge-cache-intdir.ts [--write]
 //   (no --write: dry run, prints the plan only; --write: applies changes to disk)
 
 import fs from 'node:fs'
@@ -26,7 +26,7 @@ import { cellHash } from '../stages/judge'
 
 const ROOT = path.resolve(__dirname, '..', '..')
 const WRITE = process.argv.includes('--write')
-// Keep in sync with pipeline/stages/judge.ts. NOTE: this script's wave predates the v4
+// Keep in sync with rankings-engine/stages/judge.ts. NOTE: this script's wave predates the v4
 // judge-model migration (2026-09-30, sonnet-5 → opus-5-5); v4 hashes also fold in the judge
 // model id (cellHash's default 4th arg), so a fresh run of this script against post-migration
 // caches restamps to v4-scheme hashes. The historical v3 restamps it performed are committed.

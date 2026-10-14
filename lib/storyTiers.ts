@@ -1,7 +1,7 @@
 // Pricing-tier annotation layer: schema + loader + display helpers for
 // open-rankings/{cat}/story-tiers.json — for each (product, story) cell the judge ruled full/partial,
 // which plan tier the cited evidence says a buyer needs ("what can be done for free, paid,
-// enterprise"). Produced by pipeline/scripts/classify-story-tiers.ts, an LLM classifier that
+// enterprise"). Produced by rankings-engine/scripts/classify-story-tiers.ts, an LLM classifier that
 // reads ONLY the verdict's cited evidence excerpts plus the product's pricing evidence
 // (open-rankings/{cat}/pricing.json facts + pricing-page evidence items) under strict honesty rules:
 // 'unknown' whenever the evidence never states gating — never guessed from reputation — and

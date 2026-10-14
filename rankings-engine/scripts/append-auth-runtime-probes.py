@@ -5,7 +5,7 @@
 # discipline as append-inference-runtime-probes.py: every excerpt is generated from an HTTP
 # check at run time and the script FAILS if an observation no longer matches the expected shape.
 #
-# Run AFTER `pnpm pipeline probe --category auth-platforms` — that stage wholesale-replaces
+# Run AFTER `pnpm engine probe --category auth-platforms` — that stage wholesale-replaces
 # probe-tier evidence and would wipe these items (re-run this script after any probe refresh).
 import datetime
 import json

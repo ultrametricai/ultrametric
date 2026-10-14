@@ -280,7 +280,7 @@ describe('report + issue markdown', () => {
     expect(md).toContain('- [ ] **Driftbase** — https://driftbase.dev')
     expect(md).toContain('NEVER creates a new ranking and NEVER touches a founder-affiliated product')
     expect(md).toContain('auto-approval criteria in `governance/AGENT_POLICY.md`')
-    expect(md).toContain('runs via the standard pipeline')
+    expect(md).toContain('runs via the standard engine stages')
     expect(md).toContain('[Show HN: Driftbase](https://news.ycombinator.com/item?id=1)')
     expect(md).toContain('github: ERROR (HTTP 403)') // degraded sources stay visible, never hidden
   })

@@ -1,7 +1,7 @@
 // Stage 1 of the YC ingestion lane: pull the full YC public company directory from the keyless
-// yc-oss/api mirror, cache the raw feed (pipeline/cache/yc/, gitignored), and distill the modern
+// yc-oss/api mirror, cache the raw feed (rankings-engine/cache/yc/, gitignored), and distill the modern
 // batches (W23–S26) into open-rankings/yc-map.json with mappedArena/proposedArena left null — that's
-// pipeline/scripts/yc-classify.ts's job. Run with: tsx pipeline/scripts/yc-fetch.ts
+// rankings-engine/scripts/yc-classify.ts's job. Run with: tsx rankings-engine/scripts/yc-fetch.ts
 import fs from 'node:fs'
 import path from 'node:path'
 import { YcMapSchema } from '../../lib/schemas'

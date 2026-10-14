@@ -7,7 +7,7 @@
 // duplicates) and instructed to keep only concrete, judgeable, product-neutral stories.
 // Candidates are deduped against existing stories (id + a cheap token-overlap semantic check)
 // and against each other, given `origin`, appended to stories.json (sorted, canon untouched),
-// and a summary is written to pipeline/cache/depth/<category>.json for review.
+// and a summary is written to rankings-engine/cache/depth/<category>.json for review.
 import fs from 'node:fs'
 import path from 'node:path'
 import { z } from 'zod'
@@ -24,7 +24,7 @@ const CandidateStorySchema = StorySchema.omit({ origin: true })
 const CandidatesSchema = z.object({ stories: z.array(CandidateStorySchema).min(0).max(8) })
 
 // Kebab-case prefixes reserved for the 29 canonical (never-LLM-authored) stories injected by
-// pipeline/agentic-stories.ts (see normalize.ts's CANON_ID_PREFIXES). A depth-mined story that
+// rankings-engine/agentic-stories.ts (see normalize.ts's CANON_ID_PREFIXES). A depth-mined story that
 // happened to land on one of these would look like a canonical lens story and would get
 // silently dropped if normalize.ts ever re-ran for this category — so we nudge any collision
 // to a lookalike-but-distinct prefix instead of failing.
@@ -163,7 +163,7 @@ async function main(): Promise<void> {
   const args = process.argv.slice(2)
   const categoryFlag = args.indexOf('--category')
   const category = categoryFlag >= 0 ? args[categoryFlag + 1] : undefined
-  if (!category) throw new Error('usage: tsx pipeline/scripts/depth-mine.ts --category <id>')
+  if (!category) throw new Error('usage: tsx rankings-engine/scripts/depth-mine.ts --category <id>')
 
   const [cat] = resolveCategories(category)
   const dataDir = categoryDir(cat.id)

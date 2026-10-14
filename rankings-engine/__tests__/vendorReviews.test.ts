@@ -6,7 +6,7 @@ import { buildVendorReviews, REVIEWER, REVIEWS_DIR } from '../scripts/generate-v
 
 // Corpus lift stage 2: open-rankings/reviews/generated/ holds one founder-ops interchange record
 // (schemas/vendor-review.schema.json) per judged product, emitted deterministically from the
-// committed arena data by pipeline/scripts/generate-vendor-reviews.ts. These tests pin the
+// committed arena data by rankings-engine/scripts/generate-vendor-reviews.ts. These tests pin the
 // contracts that make the committed records trustworthy: schema conformance for every file,
 // byte-identical regeneration (no clock reads, no drift), the owner-disclosure rule, and three
 // spot-pinned records so a silent projection change fails loudly. (The founder-ops validator in

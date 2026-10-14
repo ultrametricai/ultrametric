@@ -2,10 +2,10 @@
 # Accounting 2026-roster bring-up (2026-09-16): freshbooks, zoho-books, wave, digits, kick,
 # mercury-books, bench debut against incumbents (quickbooks, xero, puzzle, pilot) that already
 # carry exhaustive evidence packs. Same supplement recipe as the payments roster expansion
-# (pipeline/scripts/append-payments-2026-roster-evidence.py, commit 8ca5dc78b): verbatim
+# (rankings-engine/scripts/append-payments-2026-roster-evidence.py, commit 8ca5dc78b): verbatim
 # passages from CRAWLED/VERIFIED vendor pages that the per-source extraction caps plus the
 # story quota starved out of the packs even though the crawled corpus
-# (pipeline/cache/crawl/accounting/<id>/) contains them verbatim, plus live keyless probes
+# (rankings-engine/cache/crawl/accounting/<id>/) contains them verbatim, plus live keyless probes
 # that fail loudly if reality changes.
 #
 # Every URL below is in that product's products.json urls (or is quoted from a page that is);
@@ -35,7 +35,7 @@
 #   - bench: a human-plus-software bookkeeping service; no developer surface of any kind
 #     (generic probe negatives recorded).
 #
-# Run AFTER `pnpm pipeline probe --category accounting --product <id>` (that stage wholesale-
+# Run AFTER `pnpm engine probe --category accounting --product <id>` (that stage wholesale-
 # replaces probe-tier items; this script's probe items must be re-appended if it re-runs) and
 # AFTER extract (extraction is monotonic and dedups by normalized excerpt).
 import datetime

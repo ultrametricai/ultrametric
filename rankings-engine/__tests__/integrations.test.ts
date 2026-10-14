@@ -1,7 +1,7 @@
 import { describe, expect, it, vi } from 'vitest'
 import { IntegrationsFileSchema } from '@/lib/integrations'
 import type { Evidence, Product } from '@/lib/schemas'
-import { setClientForTests } from '@/pipeline/llm'
+import { setClientForTests } from '@/rankings-engine/llm'
 import {
   aliasPattern,
   buildIntegrationEdges,
@@ -11,7 +11,7 @@ import {
   integrationViolation,
   type CandidateMention,
   type RawIntegration,
-} from '@/pipeline/stages/integrations'
+} from '@/rankings-engine/stages/integrations'
 
 const FLEET = [
   { id: 'stripe', name: 'Stripe', arena: 'payments' },

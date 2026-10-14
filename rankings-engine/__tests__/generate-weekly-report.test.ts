@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest'
 import type { ArenaHistoryInput, ChangeEvent } from '@/lib/changelog'
 import {
   eventMarkdownLine, eventsInWindow, renderWeeklyReport, weeklyMovers,
-} from '@/pipeline/scripts/generate-weekly-report'
+} from '@/rankings-engine/scripts/generate-weekly-report'
 
 const NOW = new Date('2026-09-06T12:00:00Z')
 const SITE = 'https://example.test/site'

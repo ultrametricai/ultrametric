@@ -9,7 +9,7 @@
 //
 // Ranking = batch recency x arena fit x docs surface:
 //   - recency: newest batch in the window = 1.0, decaying linearly to the oldest batch,
-//   - fit: 1.0 when pipeline/scripts/yc-classify.ts already mapped the company to an existing
+//   - fit: 1.0 when rankings-engine/scripts/yc-classify.ts already mapped the company to an existing
 //     arena (open-rankings/yc-map.json), else a DOMAIN_VOCAB keyword match against the one-liner + tags
 //     (>= MIN_VOCAB_HITS distinct arena keywords required; scaled by hit count),
 //   - docs surface: fraction of DOCS_PROBE_PATHS that answer < 400 (0 hits still keeps a small
@@ -21,9 +21,9 @@
 // counted in the per-batch stats instead — honest exclusions, not silent drops.
 //
 // Run with:
-//   tsx pipeline/scripts/yc-coverage-queue.ts --years 2024-2026            # first wave
-//   tsx pipeline/scripts/yc-coverage-queue.ts --years 2016-2026 --no-http  # full sweep, fit only
-//   tsx pipeline/scripts/yc-coverage-queue.ts --issue-body /tmp/yc-queue-issue.md
+//   tsx rankings-engine/scripts/yc-coverage-queue.ts --years 2024-2026            # first wave
+//   tsx rankings-engine/scripts/yc-coverage-queue.ts --years 2016-2026 --no-http  # full sweep, fit only
+//   tsx rankings-engine/scripts/yc-coverage-queue.ts --issue-body /tmp/yc-queue-issue.md
 import fs from 'node:fs'
 import path from 'node:path'
 import { z } from 'zod'

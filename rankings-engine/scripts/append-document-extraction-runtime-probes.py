@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 # One-shot helper for the document-extraction arena bring-up (2026-09-10): appends probe-tier
 # evidence items distilled from the recorded runtime probes in open-rankings/document-extraction/proofs/
-# (see pipeline/probes/document-extraction.ts — all 24 recorded probes passed). Run AFTER
-# `pnpm pipeline probe --category document-extraction` — that stage wholesale-replaces
+# (see rankings-engine/probes/document-extraction.ts — all 24 recorded probes passed). Run AFTER
+# `pnpm engine probe --category document-extraction` — that stage wholesale-replaces
 # probe-tier evidence and would wipe these items (re-run this script after any probe refresh).
 import datetime
 import json

@@ -1,4 +1,4 @@
-// Pure-part tests for the pricing-tier classifier (pipeline/scripts/classify-story-tiers.ts):
+// Pure-part tests for the pricing-tier classifier (rankings-engine/scripts/classify-story-tiers.ts):
 // hashing, pricing-context assembly, prompt shape, rule validation, and unknown normalization.
 // No LLM/network — same posture as judge.test.ts's validateVerdictRules coverage.
 import { describe, expect, it } from 'vitest'

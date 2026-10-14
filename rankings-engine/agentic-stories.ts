@@ -4,7 +4,7 @@ import type { Story } from '../lib/schemas'
 // exactly what makes it canon — so scope: 'global' is stamped here at the source rather than in
 // each data file. normalize.ts's assembleTaxonomy spreads these objects verbatim, so any newly
 // assembled taxonomy inherits the tag; already-committed stories.json files are backfilled by
-// pipeline/scripts/tag-story-scopes.ts (whose first rule is canonical → global, so both paths
+// rankings-engine/scripts/tag-story-scopes.ts (whose first rule is canonical → global, so both paths
 // agree). Cache-safe: judge.ts's cellHash never reads `scope` (only storyId + title + evidence
 // + promptVersion), so stamping this can never trigger a re-judge.
 function withGlobalScope(stories: Story[]): Story[] {

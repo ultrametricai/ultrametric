@@ -21,7 +21,7 @@
 #     scopes are required"); the 13 granular OAuth scopes shown by probe-10 apply to the OAuth
 #     login flow, not PATs.
 #
-# Run AFTER `pnpm pipeline extract --category backend-as-a-service --product supabase` (extract
+# Run AFTER `pnpm engine extract --category backend-as-a-service --product supabase` (extract
 # is monotonic and dedups by normalized excerpt, so re-running extract keeps these items stable).
 import datetime
 import json

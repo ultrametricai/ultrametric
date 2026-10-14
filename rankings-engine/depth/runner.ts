@@ -2,7 +2,7 @@
 // every exchange as a sanitized transcript, then grades purely from those transcripts. The
 // grade step is shared with `--replay` and the unit tests, so a committed pilot regrades to
 // the identical report with no network. Network access goes through the same injectable
-// fetcher shape as pipeline/scripts/certify.ts.
+// fetcher shape as rankings-engine/scripts/certify.ts.
 //
 // Evidence doctrine mechanics:
 //   - robots.txt is absolute: each origin's robots.txt is fetched once, recorded as its own

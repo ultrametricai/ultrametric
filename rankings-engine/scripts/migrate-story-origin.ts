@@ -1,14 +1,14 @@
 // One-time migration: stamps `origin` provenance onto every story in every category's
-// stories.json. The 29 canonical ids (pipeline/agentic-stories.ts exports, injected verbatim
+// stories.json. The 29 canonical ids (rankings-engine/agentic-stories.ts exports, injected verbatim
 // by normalize.ts's assembleTaxonomy) get {kind:'canonical'}; every other (LLM-normalized)
 // story gets {kind:'normalized', promptVersion:'v2'}. Both get the same `recordedAt`: the
 // category's stories.json first-add commit date (`git log --diff-filter=A --format=%cI`),
 // i.e. when that taxonomy was actually generated — not "now."
 //
-// Cache safety: pipeline/stages/judge.ts's cellHash() hashes only storyId + title + evidence
+// Cache safety: rankings-engine/stages/judge.ts's cellHash() hashes only storyId + title + evidence
 // + promptVersion — never the story object as a whole — so adding `origin` here must not
 // change any hash and must not trigger a re-judge. Verified by running
-// `pnpm pipeline judge --category desktop-os` after this migration and confirming zero
+// `pnpm engine judge --category desktop-os` after this migration and confirming zero
 // "judge: ... →" re-judge lines and an unchanged verdicts.json (see repo report for the run).
 import { execFileSync } from 'node:child_process'
 import fs from 'node:fs'

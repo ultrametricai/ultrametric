@@ -3,7 +3,7 @@ import path from 'node:path'
 import { z } from 'zod'
 
 // Agent-surface SLO history — loader + uptime math over open-rankings/slo-history.jsonl, the
-// append-only log written by pipeline/scripts/slo-check.ts (one line per keyless check of a
+// append-only log written by rankings-engine/scripts/slo-check.ts (one line per keyless check of a
 // product's documented agent surface: its llms.txt, remote MCP endpoint, or openapi.json).
 // Split the usual way (lib/scoreHistory.ts / lib/scoreTrend.ts): the parse + summary math is
 // pure and unit-tested (lib/__tests__/slo.test.ts); only the loaders at the bottom touch fs.

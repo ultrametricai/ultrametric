@@ -26,9 +26,9 @@
 #     only the Developer MCP (docs) server is fully unauthenticated.
 #   - openness-*/privacy-*: out of this wave's scope; no agent-washing of unrelated axes.
 #
-# Run AFTER `pnpm pipeline extract --product ramp` in both arenas (extraction is monotonic and
+# Run AFTER `pnpm engine extract --product ramp` in both arenas (extraction is monotonic and
 # dedups by normalized excerpt, so re-running extract after this keeps these items stable). If
-# `pnpm pipeline probe` ever wholesale-replaces probe-tier items, re-run this script to restore
+# `pnpm engine probe` ever wholesale-replaces probe-tier items, re-run this script to restore
 # ramp-probe-4/5/6 (expense-management) and ramp-probe-4/5 (startup-banking).
 import datetime
 import json

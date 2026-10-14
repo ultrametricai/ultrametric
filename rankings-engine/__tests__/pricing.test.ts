@@ -4,7 +4,7 @@ import {
   ProductPricingSchema,
 } from '@/lib/pricing'
 import type { Product } from '@/lib/schemas'
-import { setClientForTests } from '@/pipeline/llm'
+import { setClientForTests } from '@/rankings-engine/llm'
 import {
   amountAppearsInExcerpt,
   buildPricingEntry,
@@ -14,7 +14,7 @@ import {
   factViolation,
   normalizeForMatch,
   type RawFact,
-} from '@/pipeline/stages/pricing'
+} from '@/rankings-engine/stages/pricing'
 
 const PAGE = [
   '# Pricing',

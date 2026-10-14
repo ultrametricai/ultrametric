@@ -5,7 +5,7 @@
 // order. Safe to re-run (it regenerates from history, then the derive stage's
 // appendScoreHistoryOnChange grows the file forward — see lib/scoreHistory.ts).
 //
-//   pnpm tsx pipeline/scripts/build-score-history.ts [--category <id>] [--ref <git-ref>]
+//   pnpm tsx rankings-engine/scripts/build-score-history.ts [--category <id>] [--ref <git-ref>]
 //
 // Snapshots that predate the Overall score era (no aiEra/agentReady fields on leaderboard
 // entries at all — e.g. the old `agenticness`-only shape) are skipped entirely: a missing field

@@ -13,21 +13,21 @@
 //      hotness evidence — the feed does not expose vote counts keylessly and we never invent them.
 //   3. GitHub repo search (api.github.com/search/repositories — keyless within 10 req/min; we make
 //      ONE request, with GH_TOKEN used for the higher authenticated limit when present, same
-//      preference as pipeline/stages/popularity.ts): repos created in the last
+//      preference as rankings-engine/stages/popularity.ts): repos created in the last
 //      GITHUB_LOOKBACK_DAYS crossing a star-velocity threshold (isHotRepo).
 //
 // Matching: candidate text (title/tagline/description/topics) is scored lexically against the
-// arena taxonomy — DOMAIN_VOCAB (pipeline/scripts/tag-story-scopes.ts, the same per-arena nouns
+// arena taxonomy — DOMAIN_VOCAB (rankings-engine/scripts/tag-story-scopes.ts, the same per-arena nouns
 // yc-coverage-queue.ts matches with) extended with each arena's categories.json name tokens and
 // its arena-sections.json section-name tokens (buildArenaVocab). MIN_ARENA_HITS distinct keyword
 // hits are required, exactly like yc-coverage-queue's MIN_VOCAB_HITS: a candidate that doesn't
 // speak any arena's language is not our vendor, however hot.
 //
 // Dedupe, so each candidate surfaces ONCE and already-tracked vendors never do:
-//   · every open-rankings/<arena>/products.json product, by normalized site domain (pipeline/yc-shared.ts
+//   · every open-rankings/<arena>/products.json product, by normalized site domain (rankings-engine/yc-shared.ts
 //     normalizeDomain — never by name alone) AND by normalized name/id,
 //   · the vendor registry (open-rankings/reviews/generated/<arena>--<product>.json), by product id,
-//   · the committed seen-ledger pipeline/radar-seen.json: every candidate ever reported, keyed by
+//   · the committed seen-ledger rankings-engine/radar-seen.json: every candidate ever reported, keyed by
 //     product domain (or github:owner/repo / normalized name when no product domain is public).
 //
 // Output: reports/vendor-radar/<date>.json + .md (the dated candidates report) and the updated
@@ -39,15 +39,15 @@
 // autonomously. Approval is criteria-based (governance/AGENT_POLICY.md "Vendor-radar candidate
 // approval", founder authorization 2026-10-13, replacing checkbox approval): the companion
 // radar-triage.ts applies the criteria mechanically and the bring-up on auto-approved candidates
-// is a scoped standard-pipeline run landing as a reviewed PR (docs/VENDOR-RADAR.md). Every
+// is a scoped standard engine run landing as a reviewed PR (docs/VENDOR-RADAR.md). Every
 // evidence string in the report is verbatim-derived from the source's own response (points,
 // dates, star counts); nothing is invented, and a source that fails to answer degrades to zero
 // items with an honest note in the report, never a fabricated one.
 //
 // Invocation:
-//   pnpm tsx pipeline/scripts/vendor-radar.ts                      # scan, write report + ledger
-//   pnpm tsx pipeline/scripts/vendor-radar.ts --dry-run            # scan, print, write nothing
-//   pnpm tsx pipeline/scripts/vendor-radar.ts --issue-body /tmp/vendor-radar-issue.md
+//   pnpm tsx rankings-engine/scripts/vendor-radar.ts                      # scan, write report + ledger
+//   pnpm tsx rankings-engine/scripts/vendor-radar.ts --dry-run            # scan, print, write nothing
+//   pnpm tsx rankings-engine/scripts/vendor-radar.ts --issue-body /tmp/vendor-radar-issue.md
 import fs from 'node:fs'
 import path from 'node:path'
 import { z } from 'zod'
@@ -401,7 +401,7 @@ export function candidateKey(c: Pick<RawCandidate, 'kind' | 'name' | 'url' | 'ti
 export interface DedupeContext {
   trackedDomains: Set<string> // normalized product site domains across every arena
   trackedNames: Set<string> // normalized product names + ids + registry ids
-  seenKeys: Set<string> // pipeline/radar-seen.json — everything ever reported
+  seenKeys: Set<string> // rankings-engine/radar-seen.json — everything ever reported
 }
 
 export interface AssembleResult {
@@ -453,7 +453,7 @@ export function assembleCandidates(raw: RawCandidate[], vocab: Map<string, Vocab
 
 const HONESTY_LINES = [
   'The radar NEVER creates a new ranking and NEVER touches a founder-affiliated product autonomously — nothing under `open-rankings/` changes from the scan itself.',
-  'Candidates are triaged against the auto-approval criteria in `governance/AGENT_POLICY.md` ("Vendor-radar candidate approval", founder authorization 2026-10-13, replacing checkbox approval): existing-ranking fit, public docs surface, shipped product, no founder affiliation. The bring-up on auto-approved candidates runs via the standard pipeline as a reviewed PR (`docs/VENDOR-RADAR.md`); candidates failing a criterion are recorded as skipped with the reason and its evidence.',
+  'Candidates are triaged against the auto-approval criteria in `governance/AGENT_POLICY.md` ("Vendor-radar candidate approval", founder authorization 2026-10-13, replacing checkbox approval): existing-ranking fit, public docs surface, shipped product, no founder affiliation. The bring-up on auto-approved candidates runs via the standard engine stages as a reviewed PR (`docs/VENDOR-RADAR.md`); candidates failing a criterion are recorded as skipped with the reason and its evidence.',
 ]
 
 export function buildMarkdown(report: RadarReport): string {
@@ -464,7 +464,7 @@ export function buildMarkdown(report: RadarReport): string {
     .map((s) => `${s.kind}: ${s.error ? `ERROR (${s.error})` : `${s.items} items`}`)
     .join(' · ')
   lines.push(
-    `Keyless scan (\`pipeline/scripts/vendor-radar.ts\`): ${srcLine} · ` +
+    `Keyless scan (\`rankings-engine/scripts/vendor-radar.ts\`): ${srcLine} · ` +
       `${report.candidates.length} new candidate${report.candidates.length === 1 ? '' : 's'} ` +
       `(${report.skipped.tracked} already tracked, ${report.skipped.alreadySeen} previously surfaced` +
       `${report.skipped.overflow > 0 ? `, ${report.skipped.overflow} over the per-report cap` : ''}).`,
@@ -634,7 +634,7 @@ export async function run(argv: string[]): Promise<RadarReport> {
 
   const report: RadarReport = {
     _comment:
-      'Generated by pipeline/scripts/vendor-radar.ts — new-vendor candidates from public launch surfaces (HN Algolia, Product Hunt frontpage feed, GitHub repo search), lexically matched to the arena taxonomy. The radar never creates a new ranking and never touches a founder-affiliated product autonomously. Candidates are triaged against the auto-approval criteria in governance/AGENT_POLICY.md (founder authorization 2026-10-13); the bring-up on auto-approved candidates is a scoped standard-pipeline run landing as a reviewed PR (docs/VENDOR-RADAR.md). Evidence strings are verbatim-derived from each source’s own response.',
+      'Generated by rankings-engine/scripts/vendor-radar.ts — new-vendor candidates from public launch surfaces (HN Algolia, Product Hunt frontpage feed, GitHub repo search), lexically matched to the arena taxonomy. The radar never creates a new ranking and never touches a founder-affiliated product autonomously. Candidates are triaged against the auto-approval criteria in governance/AGENT_POLICY.md (founder authorization 2026-10-13); the bring-up on auto-approved candidates is a scoped standard engine run landing as a reviewed PR (docs/VENDOR-RADAR.md). Evidence strings are verbatim-derived from each source’s own response.',
     generatedAt: now.toISOString(),
     date,
     thresholds: {
@@ -666,7 +666,7 @@ export async function run(argv: string[]): Promise<RadarReport> {
   const prior = loadSeenLedger()
   const ledger: SeenLedger = {
     _comment:
-      'Seen-ledger for pipeline/scripts/vendor-radar.ts: every candidate the radar has ever reported, keyed by product domain (or github:owner/repo / normalized name). A key listed here never surfaces again — firstSeen is the honest date of the run that first reported it.',
+      'Seen-ledger for rankings-engine/scripts/vendor-radar.ts: every candidate the radar has ever reported, keyed by product domain (or github:owner/repo / normalized name). A key listed here never surfaces again — firstSeen is the honest date of the run that first reported it.',
     updatedAt: now.toISOString(),
     seen: [
       ...(prior?.seen ?? []),

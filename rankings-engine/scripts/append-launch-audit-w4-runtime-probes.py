@@ -4,9 +4,9 @@
 # probe/github-tier evidence) — muse, gemini (ai-assistants), motion (scheduling), tilled
 # (marketplace-payments), notebooklm (ai-research-agents), sift (fraud-prevention),
 # google-titan (security-keys), intel-core-ultra-7-258v + amd-ryzen-9-9950x3d (processors).
-# Every item cites a PA_RECORD proof in open-rankings/<arena>/proofs/ (pipeline/probes/<arena>.ts);
+# Every item cites a PA_RECORD proof in open-rankings/<arena>/proofs/ (rankings-engine/probes/<arena>.ts);
 # negatives are recorded honestly — an absence proof is still probe-tier.
-# Run AFTER `pnpm pipeline probe --category <arena>` (and after any spike pass) — that stage
+# Run AFTER `pnpm engine probe --category <arena>` (and after any spike pass) — that stage
 # wholesale-replaces probe-tier evidence and would wipe these items (re-run after refreshes).
 import datetime
 import json

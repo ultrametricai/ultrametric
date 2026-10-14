@@ -18,7 +18,7 @@ const oldEv = EvidenceSchema.array().parse(JSON.parse(
 let stale = 0
 for (const story of stories) {
   const cached = JSON.parse(
-    execSync(`git show HEAD:pipeline/cache/judge/payments/stripe/${story.id}.json`, { cwd: ROOT, maxBuffer: 1 << 28 }).toString('utf8'),
+    execSync(`git show HEAD:rankings-engine/cache/judge/payments/stripe/${story.id}.json`, { cwd: ROOT, maxBuffer: 1 << 28 }).toString('utf8'),
   ) as { hash: string }
   if (cached.hash !== cellHash(story, oldEv, PROMPT_VERSION)) stale++
 }

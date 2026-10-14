@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import type { Story } from '@/lib/schemas'
-import { domainPattern, scopeForStory, type ScopeContext } from '@/pipeline/scripts/tag-story-scopes'
+import { domainPattern, scopeForStory, type ScopeContext } from '@/rankings-engine/scripts/tag-story-scopes'
 
 function story(overrides: Partial<Story> & { id: string; title: string }): Story {
   return { persona: 'a developer', theme: 'core', group: 'core', weight: 2, ...overrides }

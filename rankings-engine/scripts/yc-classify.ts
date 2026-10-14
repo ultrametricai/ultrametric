@@ -6,8 +6,8 @@
 // names and reuse one instead of coining a near-duplicate — the #1 risk with LLM-clustered
 // category names is fragmentation ("ai-legal" vs "legal-ai" vs "legaltech-ai" for the same
 // cluster). Checkpoints after every batch (both open-rankings/yc-map.json and a progress marker in
-// pipeline/cache/yc/, gitignored) so a killed/resumed run picks up where it left off instead of
-// re-spending LLM calls. Run with: tsx pipeline/scripts/yc-classify.ts
+// rankings-engine/cache/yc/, gitignored) so a killed/resumed run picks up where it left off instead of
+// re-spending LLM calls. Run with: tsx rankings-engine/scripts/yc-classify.ts
 import fs from 'node:fs'
 import path from 'node:path'
 import { z } from 'zod'

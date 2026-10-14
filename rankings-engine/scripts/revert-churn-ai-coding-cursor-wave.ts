@@ -4,7 +4,7 @@
 // verdict or quality changed while citing NO evidence id that is new to the product's pack is
 // re-roll noise, not an evidence-driven change, and is reverted to its prior state. Patches
 // both verdicts.json and the matching judge cache files in place (same hash, reverted verdict
-// object) so a future `pnpm pipeline judge` run doesn't resurrect the churn.
+// object) so a future `pnpm engine judge` run doesn't resurrect the churn.
 //
 // Wave specifics:
 //  - cursor was re-judged because this wave expanded its pack 33 → 94 (30 new agent-surface
@@ -13,7 +13,7 @@
 //    caches verified 0-stale at the wave's branch point, so the "new evidence" baseline is
 //    plain HEAD.
 //
-// Usage: pnpm exec tsx pipeline/scripts/revert-churn-ai-coding-cursor-wave.ts [--write]
+// Usage: pnpm exec tsx rankings-engine/scripts/revert-churn-ai-coding-cursor-wave.ts [--write]
 //   (no --write: dry run, prints the plan only; --write: applies changes to disk)
 //   OLD_REF: the pre-wave commit to diff verdicts against (default HEAD).
 

@@ -16,7 +16,7 @@ import { upsertProofIndex, writeProofArtifact } from '../proof-io'
 // a script that runs rarely). Run it with a scratch install, e.g.:
 //
 //   npm install --prefix .proof-scratch playwright   # browsers come from ~/Library/Caches/ms-playwright
-//   pnpm exec tsx pipeline/scripts/record-browser-proof.ts
+//   pnpm exec tsx rankings-engine/scripts/record-browser-proof.ts
 //
 // UM_PLAYWRIGHT_DIR overrides the scratch location.
 

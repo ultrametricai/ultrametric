@@ -9,9 +9,9 @@
 // id that did not exist in the pre-enrichment pack (54b6a895b^ — the state the prior verdicts
 // were judged against); every other flip is re-roll noise and reverts to the prior verdict.
 // Patches both verdicts.json and the matching judge cache files in place (fresh hash kept,
-// reverted verdict object) so a future `pnpm pipeline judge` run doesn't resurrect the churn.
+// reverted verdict object) so a future `pnpm engine judge` run doesn't resurrect the churn.
 //
-// Usage: pnpm exec tsx pipeline/scripts/revert-churn-edge-integrations-wave.ts [--write]
+// Usage: pnpm exec tsx rankings-engine/scripts/revert-churn-edge-integrations-wave.ts [--write]
 //   (no --write: dry run, prints the plan only; --write: applies changes to disk)
 // Env: OLD_VERDICTS_REF (default HEAD) — ref holding the settled pre-re-judge verdicts.json;
 //      OLD_EVIDENCE_REF (default 54b6a895b^) — pre-enrichment evidence state.

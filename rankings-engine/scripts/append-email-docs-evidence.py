@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # One-shot gap-closing supplement for the email arena bring-up (2026-09-06) — the kitty/
 # auth-platforms/data-warehouses precedent: verbatim quotes lifted from ALREADY-CRAWLED vendor
-# doc pages (pipeline/cache/crawl/email/...) that multiple extract passes did not surface,
+# doc pages (rankings-engine/cache/crawl/email/...) that multiple extract passes did not surface,
 # covering capabilities the taxonomy asks about directly (Missive snooze / command bar, Fastmail
 # snooze). Quotes are byte-for-byte from the cited pages; re-run is idempotent by evidence id.
 import datetime

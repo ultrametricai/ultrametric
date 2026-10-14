@@ -28,7 +28,7 @@
 // drift. NEVER accept request-time URLs anywhere downstream: this build-time scan of committed
 // data is the only door in.
 //
-// Run: pnpm tsx pipeline/scripts/generate-live-probe-manifest.ts
+// Run: pnpm tsx rankings-engine/scripts/generate-live-probe-manifest.ts
 import fs from 'node:fs'
 import path from 'node:path'
 import { loadProofIndex, readProofTranscript, type ProofIndexEntry } from '../../lib/proofs'
@@ -395,7 +395,7 @@ export function workerModuleSource(entries: LiveProbeEntry[]): string {
   })
   return [
     '// GENERATED — do not hand-edit. Regenerate with:',
-    '//   pnpm tsx pipeline/scripts/generate-live-probe-manifest.ts',
+    '//   pnpm tsx rankings-engine/scripts/generate-live-probe-manifest.ts',
     '//',
     '// The static allowlist behind the worker\'s /api/try/:arena/:product/:probeId route: every',
     '// entry is a recorded keyless proof command (open-rankings/*/proofs/) that is provably reproducible',

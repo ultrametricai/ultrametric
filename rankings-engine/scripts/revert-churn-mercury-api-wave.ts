@@ -1,11 +1,11 @@
 // Surgical, auditable revert of judge re-roll churn introduced by the Mercury API-accuracy
 // spike re-judge wave (2026-09-14: startup-banking mercury + brex + ramp). Same mechanics and
-// ruling as pipeline/scripts/revert-churn-api-quality-wave.ts (which follows revert-churn.ts,
+// ruling as rankings-engine/scripts/revert-churn-api-quality-wave.ts (which follows revert-churn.ts,
 // the probe-wave precedent): a re-judged cell whose verdict or quality changed while citing NO
 // evidence id that is new to the product's pack is re-roll noise, not an evidence-driven
 // change, and is reverted to its prior state. This subsumes the na<->none rule (those flips
 // never cite new evidence). Patches both verdicts.json and the matching judge cache files in
-// place (same hash, reverted verdict object) so a future `pnpm pipeline judge` run doesn't
+// place (same hash, reverted verdict object) so a future `pnpm engine judge` run doesn't
 // resurrect the churn.
 //
 // Wave specifics:
@@ -14,12 +14,12 @@
 //    Its "new evidence" baseline is the pack at OLD_REF (pre-spike HEAD).
 //  - brex and ramp were re-judged only to clear a PRE-EXISTING hash-stale condition: the
 //    integrations-enrichment commit 54b6a895 expanded their packs (brex/ramp-docs-1x,
-//    *-intdir-1) without re-judging, which blocked `pnpm pipeline judge` from assembling
+//    *-intdir-1) without re-judging, which blocked `pnpm engine judge` from assembling
 //    startup-banking/verdicts.json at all. Their caches at pre-spike HEAD verify 0-stale
 //    against the 54b6a895^ packs (see spike-check-baseline.ts), so their "new evidence"
 //    baseline is 54b6a895^ — changes citing the enrichment items ARE evidence-driven and kept.
 //  - GOLDEN GUARD: a changed cell whose OLD tier matches its golden-cell expectation
-//    (pipeline/golden/golden-cells.json) and whose NEW tier contradicts it is reverted even if
+//    (rankings-engine/golden/golden-cells.json) and whose NEW tier contradicts it is reverted even if
 //    it cites new evidence, unless a human re-adjudicates the golden first. Concrete case this
 //    wave: mercury:agentic-mcp-server full->partial — the flip's only new citation
 //    (mercury-docs-32, an NL-prompt marketing line) carries no capability information; the
@@ -28,7 +28,7 @@
 //    "runtime-verified, unambiguous full". A single reroll reproduced partial, i.e. this is
 //    current-judge tier-drift on unchanged facts — exactly what goldens exist to pin.
 //
-// Usage: pnpm exec tsx pipeline/scripts/revert-churn-mercury-api-wave.ts [--write]
+// Usage: pnpm exec tsx rankings-engine/scripts/revert-churn-mercury-api-wave.ts [--write]
 //   (no --write: dry run, prints the plan only; --write: applies changes to disk)
 //   OLD_REF: the pre-wave commit to diff verdicts against (default HEAD).
 

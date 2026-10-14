@@ -1,5 +1,5 @@
 // Integrity tests for the committed human-step audit (open-rankings/human-step-audit.json, generated
-// by pipeline/scripts/audit-human-steps.ts): exact coverage of the corpus's non-agent nodes,
+// by rankings-engine/scripts/audit-human-steps.ts): exact coverage of the corpus's non-agent nodes,
 // enum-valid feasibility, authored (non-generic) reasons, the hand-verified not-drivable set,
 // and a loader smoke test. No LLM/network — same posture as map-step-stories.test.ts.
 import fs from 'node:fs'

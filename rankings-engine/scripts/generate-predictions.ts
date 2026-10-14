@@ -7,7 +7,7 @@
 // purely mechanical step — see settle-predictions.ts.
 //
 // LLM-free and cheap; wired into .github/workflows/story-runner.yml after derive.
-//   pnpm tsx pipeline/scripts/generate-predictions.ts
+//   pnpm tsx rankings-engine/scripts/generate-predictions.ts
 import fs from 'node:fs'
 import path from 'node:path'
 import {

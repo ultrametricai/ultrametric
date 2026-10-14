@@ -17,10 +17,10 @@
 //   - judge-style correction rounds: every returned storyId must exist in the offered
 //     candidate list, every step must be answered exactly once, or the batch is re-asked;
 //   - cached per (step, arena, kind) by a hash over the step text + candidate stories +
-//     prompt version (pipeline/cache/step-stories/), so re-runs are incremental and a mid-run
+//     prompt version (rankings-engine/cache/step-stories/), so re-runs are incremental and a mid-run
 //     crash resumes for free; the committed JSON is assembled only when every cell is fresh.
 //
-// Usage: tsx pipeline/scripts/map-step-stories.ts [--task <id>] [--report]
+// Usage: tsx rankings-engine/scripts/map-step-stories.ts [--task <id>] [--report]
 import crypto from 'node:crypto'
 import fs from 'node:fs'
 import path from 'node:path'

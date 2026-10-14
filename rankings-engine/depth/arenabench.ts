@@ -1,14 +1,14 @@
 // ArenaBench depth types + ladder math — Agentic Depth Program phase 1
 // (docs/AGENTIC-DEPTH-PROGRAM.md §1–§2). The capability ladder is graded per surface from
 // recorded transcripts; grading is pure over those transcripts so a replay from disk
-// reproduces the report byte-for-byte (pipeline/depth/__tests__/depth.test.ts). This module
+// reproduces the report byte-for-byte (rankings-engine/depth/__tests__/depth.test.ts). This module
 // is types + arithmetic only: no network, no filesystem.
 //
 // Structurally separate from the evidence pipeline on purpose: depth results land as dated
 // snapshots under open-rankings/experiments/depth/ and touch no evidence/*.json, verdicts, or
 // rankings (the program's "never blocks the fast loop" boundary).
 
-// Versioned like PROMPT_VERSION in pipeline/stages/judge.ts: a spec change is a visible
+// Versioned like PROMPT_VERSION in rankings-engine/stages/judge.ts: a spec change is a visible
 // version bump, and old transcripts stay attributed to the version that produced them.
 export const ARENABENCH_VERSION = '0.1.0'
 

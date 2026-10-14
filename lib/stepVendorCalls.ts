@@ -5,7 +5,7 @@ import { loadProcesses } from './processes'
 import { stepRanking } from './processRankings'
 
 // The committed per-(step, vendor) API-call mapping — open-rankings/step-vendor-calls.json, generated
-// once by pipeline/scripts/map-step-calls.ts (an LLM pass GROUNDED in each vendor's collected
+// once by rankings-engine/scripts/map-step-calls.ts (an LLM pass GROUNDED in each vendor's collected
 // evidence: every call's sourceUrl is one of the vendor's evidence URLs or its documented MCP
 // endpoint — never invented). This module is the read side: process pages ask "which actual API
 // calls would each vendor option use for this step?" and get back only what the evidence

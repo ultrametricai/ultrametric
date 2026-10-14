@@ -2,7 +2,7 @@
 // OpenAPI spec is several MB). Computed at record time from the raw body, stored in the
 // transcript, and the ONLY thing grading reads for those checks — so a replay from disk is
 // exact without the repo carrying megabyte bodies. The raw body's sha256/byte length are
-// recorded alongside (pipeline/depth/arenabench.ts, DepthRequestRecord).
+// recorded alongside (rankings-engine/depth/arenabench.ts, DepthRequestRecord).
 
 import { extractMdLinks } from '../scripts/certify'
 

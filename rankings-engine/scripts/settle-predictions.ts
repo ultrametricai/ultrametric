@@ -8,7 +8,7 @@
 // writes nothing. See lib/predictions.ts's settleQuestions for the pure logic + tests.
 //
 // LLM-free; wired into .github/workflows/story-runner.yml after generate-predictions.ts.
-//   pnpm tsx pipeline/scripts/settle-predictions.ts
+//   pnpm tsx rankings-engine/scripts/settle-predictions.ts
 import fs from 'node:fs'
 import path from 'node:path'
 import { buildChangelog } from '../../lib/changelog'

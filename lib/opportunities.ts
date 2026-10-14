@@ -46,7 +46,7 @@ export interface Opportunity {
   // weight × (10 − quality) × boost, rounded to 1 decimal — the ranking key.
   impact: number
   // One honest sentence on what's missing, per the judge's own rationale: the rationale's
-  // "missing for 10: …" clause when present (pipeline/stages/judge.ts requires it whenever
+  // "missing for 10: …" clause when present (rankings-engine/stages/judge.ts requires it whenever
   // quality < 10), else the rationale's first sentence.
   why: string
   scoreLever: ScoreLever
@@ -83,7 +83,7 @@ export function scoreLeverFor(story: Pick<Story, 'theme' | 'group'>): ScoreLever
   return 'Overall score'
 }
 
-// The judge's required gap-naming clause (pipeline/stages/judge.ts: quality < 10 must include
+// The judge's required gap-naming clause (rankings-engine/stages/judge.ts: quality < 10 must include
 // "missing for 10: …"; a few older cached verdicts phrase it "missing for a 10"). Everything
 // after the phrase IS the gap list by construction — it's authored as the rationale's closer.
 const MISSING_CLAUSE = /missing for (?:a )?10:\s*([\s\S]+)/i

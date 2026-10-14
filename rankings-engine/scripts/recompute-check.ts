@@ -1,6 +1,6 @@
 // Standalone determinism check: calls buildRankings() directly against on-disk data for every
 // category and deep-compares against the persisted rankings.json. Used as a sanity gate after
-// any manual verdicts.json edit (e.g. pipeline/scripts/revert-churn.ts) to confirm the derive
+// any manual verdicts.json edit (e.g. rankings-engine/scripts/revert-churn.ts) to confirm the derive
 // step was applied cleanly and rankings.json isn't stale/drifted.
 import fs from 'node:fs'
 import path from 'node:path'

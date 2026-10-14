@@ -2,7 +2,7 @@
 // candidate approval", founder authorization 2026-10-13): reads a radar-triage dispositions
 // file and adds each auto-approved candidate to its existing arena's products.json, up to
 // --cap. The append writes roster INPUT only; scores and ranks still come exclusively from the
-// scoped standard pipeline (crawl → extract → collect-community → probe → judge --product →
+// scoped standard engine run (crawl → extract → collect-community → probe → judge --product →
 // derive → logos) that the caller runs next. The script never creates an arena, never touches
 // a founder-affiliated candidate (triage routes those to needs-human), and skips any product
 // already tracked by id or site domain.
@@ -11,7 +11,7 @@
 // run the scoped pipeline stages).
 //
 // Invocation:
-//   pnpm tsx pipeline/scripts/radar-bringup.ts --triage reports/vendor-radar/<date>-triage.json [--cap 3]
+//   pnpm tsx rankings-engine/scripts/radar-bringup.ts --triage reports/vendor-radar/<date>-triage.json [--cap 3]
 import fs from 'node:fs'
 import path from 'node:path'
 import { DATA_DIR, readCategories } from '../paths'
@@ -115,7 +115,7 @@ async function main(argv: string[]): Promise<void> {
   }
   const triagePath = arg('--triage')
   if (!triagePath) {
-    console.error('usage: pnpm tsx pipeline/scripts/radar-bringup.ts --triage <triage.json> [--cap N]')
+    console.error('usage: pnpm tsx rankings-engine/scripts/radar-bringup.ts --triage <triage.json> [--cap N]')
     process.exit(1)
   }
   const cap = Number(arg('--cap') ?? DEFAULT_BRINGUP_CAP)

@@ -6,7 +6,7 @@
 //
 // The SVGs are COMMITTED build inputs, not build artifacts (unlike public/data/): they only
 // change when rankings change, so the workflow is "re-run after a re-judge, commit the diff"
-// (see README's pipeline section), keeping `pnpm build` badge-free. Badge consumers hotlink
+// (see README's refresh workflow), keeping `pnpm build` badge-free. Badge consumers hotlink
 // the deployed URL (see app/badges/page.tsx), so a redeploy is what updates everyone's badge.
 //
 // The pure string helpers (textWidth, badgeSvg) are exported for unit tests

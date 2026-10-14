@@ -17,7 +17,7 @@
 # touch them revert.
 #
 # Reverting patches BOTH open-rankings/<arena>/verdicts.json and the judge cache entry
-# (pipeline/cache/judge/<arena>/<product>/<story>.json — hash kept, verdict object
+# (rankings-engine/cache/judge/<arena>/<product>/<story>.json — hash kept, verdict object
 # replaced) so a future judge run does not resurrect the churn.
 #
 # When a REMOVED id was a pure duplicate of a surviving item (same claim, same page —
@@ -25,7 +25,7 @@
 # row can be restored with its citation pointed at the surviving id instead of keeping
 # a re-roll flip alive solely because the old row cites a retired id.
 #
-# Usage: python3 pipeline/scripts/settle-issue-85-staleness-wave.py \
+# Usage: python3 rankings-engine/scripts/settle-issue-85-staleness-wave.py \
 #            <arena> <product> <baseline-verdicts.json> \
 #            [--added id,id] [--removed id,id] [--changed-material id,id] \
 #            [--remap old=new,old=new] [--revert-cells storyId,storyId] [--write]

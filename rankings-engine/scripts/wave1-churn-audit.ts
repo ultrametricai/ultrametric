@@ -1,6 +1,6 @@
 // Accuracy Program wave 1 churn audit: after deepening evidence packs for codex, claude-code,
 // cursor, and github-copilot (new urls.extra pointing at MCP-client docs) and re-running
-// `pnpm pipeline judge --category ai-coding`, every cell for a product whose evidence array
+// `pnpm engine judge --category ai-coding`, every cell for a product whose evidence array
 // changed gets re-judged by the LLM — not just the cells that plausibly needed it. This script
 // diffs every (product, story) cell old (git HEAD, pre-wave) vs new (current disk) and reverts
 // any verdict/quality change that cites no newly-added evidence id, per the published
@@ -11,7 +11,7 @@
 //     correction (na), not an LLM re-judge.
 //   - `agentic-mcp-client` — a brand-new canonical story with no "old" cell to diff against.
 //
-// Usage: pnpm exec tsx pipeline/scripts/wave1-churn-audit.ts [--write]
+// Usage: pnpm exec tsx rankings-engine/scripts/wave1-churn-audit.ts [--write]
 import { execSync } from 'node:child_process'
 import fs from 'node:fs'
 import path from 'node:path'

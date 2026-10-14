@@ -10,12 +10,12 @@
 //   - judge-style correction rounds: every step answered exactly once, feasibility from the
 //     closed enum, no generic-bucket reasons, and a hand-verified validation set that must
 //     never come back 'drivable'/'assist' — or the batch is re-asked (up to 3 rounds);
-//   - cached per node (pipeline/cache/human-steps/audit.json) by a hash over the node fields +
+//   - cached per node (rankings-engine/cache/human-steps/audit.json) by a hash over the node fields +
 //     task title + prompt version, so re-runs are incremental and a mid-run crash resumes for
 //     free; the committed open-rankings/human-step-audit.json is assembled only when every node is
 //     fresh — all 147 or nothing.
 //
-// Usage: tsx pipeline/scripts/audit-human-steps.ts [--task <id>] [--report]
+// Usage: tsx rankings-engine/scripts/audit-human-steps.ts [--task <id>] [--report]
 import crypto from 'node:crypto'
 import fs from 'node:fs'
 import path from 'node:path'

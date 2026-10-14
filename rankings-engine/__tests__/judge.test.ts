@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import type { Evidence, Story, Verdict } from '@/lib/schemas'
-import { cellHash, validateVerdictRules } from '@/pipeline/stages/judge'
+import { cellHash, validateVerdictRules } from '@/rankings-engine/stages/judge'
 
 const story: Story = { id: 's1', persona: 'developer', title: 't', theme: 'core', group: 'core', weight: 2 }
 const ev = (id: string, tier: Evidence['tier']): Evidence => ({

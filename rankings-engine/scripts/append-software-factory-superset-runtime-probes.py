@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 # One-shot helper for the superset software-factory bring-up (YC X26 coverage-queue wave
 # 2026-09-25). Appends probe-tier evidence items distilled from the recorded runtime probes in
-# open-rankings/software-factory/proofs/superset/ (see pipeline/probes/software-factory.ts — all 3
-# recorded probes passed). Run AFTER `pnpm pipeline probe --category software-factory --product
+# open-rankings/software-factory/proofs/superset/ (see rankings-engine/probes/software-factory.ts — all 3
+# recorded probes passed). Run AFTER `pnpm engine probe --category software-factory --product
 # superset` (or a spike pass, whose probe stage wholesale-replaces probe-tier evidence and would
 # wipe these items) — re-run this script after any probe refresh.
 import datetime

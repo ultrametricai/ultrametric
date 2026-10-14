@@ -1,9 +1,9 @@
 // One-shot bring-up helper (browser-agents, 2026-09): collect-community for steel using ONLY the
-// curated seeds from pipeline/seeds/community.json. The generic HN name-search corpus for
+// curated seeds from rankings-engine/seeds/community.json. The generic HN name-search corpus for
 // "Steel" pulls unrelated steel-industry threads whose content trips the LLM's refusal path
 // (stop_reason: "refusal" — reproduced 3x), so the stage's combined corpus can never parse.
 // Same system prompt, same distillation contract, same replace-community-tier write as
-// pipeline/stages/collect-community.ts — just without the name-search corpus.
+// rankings-engine/stages/collect-community.ts — just without the name-search corpus.
 import fs from 'node:fs'
 import path from 'node:path'
 import { z } from 'zod'

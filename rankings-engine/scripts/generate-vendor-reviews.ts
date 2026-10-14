@@ -11,9 +11,9 @@
 // included), and products.json (affiliation disclosures — owner products ALWAYS carry theirs;
 // shutdown notices become limitations). No Date.now in content, no LLM, no network: recompute
 // is byte-identical until the inputs change, and the drift test
-// (pipeline/__tests__/vendorReviews.test.ts) enforces exactly that.
+// (rankings-engine/__tests__/vendorReviews.test.ts) enforces exactly that.
 //
-// Usage: tsx pipeline/scripts/generate-vendor-reviews.ts
+// Usage: tsx rankings-engine/scripts/generate-vendor-reviews.ts
 import fs from 'node:fs'
 import path from 'node:path'
 import { confidenceFor } from '../../lib/confidence'
@@ -182,7 +182,7 @@ export function buildVendorReviews(dir: string = path.join(ROOT, 'open-rankings'
 
 // Rebuild REVIEWS_DIR from the committed data. Called by the CLI below and by every
 // automated flow that mutates the reviews' inputs (the scheduled runner workflows and
-// pipeline/contest-check.ts) — derive restamps rankings.generatedAt on each run, so any
+// rankings-engine/contest-check.ts) — derive restamps rankings.generatedAt on each run, so any
 // run that reaches derive must regenerate the records before the drift test compares them.
 export function writeVendorReviews(): number {
   const reviews = buildVendorReviews()

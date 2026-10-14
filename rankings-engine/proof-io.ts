@@ -8,7 +8,7 @@ import {
 import { categoryDir } from './paths'
 
 // Shared disk layer for proof recordings (see lib/proofs.ts for the on-disk layout). Used by
-// the probe-record stage (terminal transcripts) and pipeline/scripts/record-browser-proof.ts
+// the probe-record stage (terminal transcripts) and rankings-engine/scripts/record-browser-proof.ts
 // (video sidecars) so both write the same sidecar + index shape.
 
 export function proofsDirFor(categoryId: string): string {

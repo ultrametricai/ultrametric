@@ -22,7 +22,7 @@ args = ap.parse_args()
 ARENA = 'ai-assistants'
 PRODUCT = 'muse'
 VERDICTS = f'open-rankings/{ARENA}/verdicts.json'
-CACHE_DIR = f'pipeline/cache/judge/{ARENA}/{PRODUCT}'
+CACHE_DIR = f'rankings-engine/cache/judge/{ARENA}/{PRODUCT}'
 
 old_ids = set(json.load(open(args.old_ids)))
 before = {v['storyId']: v for v in json.load(open(args.before)) if v['productId'] == PRODUCT}

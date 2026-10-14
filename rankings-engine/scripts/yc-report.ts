@@ -2,7 +2,7 @@
 // company density (>=3 candidates), and the full list of YC companies mapped to an EXISTING
 // arena (direct add-candidates for that arena's products.json). Read-only — writes
 // .superpowers/yc-lane-report.md (not tracked as a "gate" artifact, just the requested report
-// path). Run with: tsx pipeline/scripts/yc-report.ts
+// path). Run with: tsx rankings-engine/scripts/yc-report.ts
 import fs from 'node:fs'
 import path from 'node:path'
 import { YcMapSchema } from '../../lib/schemas'

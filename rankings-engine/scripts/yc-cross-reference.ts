@@ -2,12 +2,12 @@
 // YC-classified modern batches) against the FULL YC public directory (all batches, 2006–present)
 // to find which current products are themselves YC alumni. Matches are verified by normalized
 // website domain — never by name — to avoid false positives from unrelated companies that share a
-// product name (see pipeline/yc-shared.ts's normalizeDomain doc). Writes open-rankings/yc-batches.json
+// product name (see rankings-engine/yc-shared.ts's normalizeDomain doc). Writes open-rankings/yc-batches.json
 // ({ productId: "S22" }) and stamps the verified ycBatch onto each matched product's
 // open-rankings/{category}/products.json entry.
 //
-// Depends on pipeline/scripts/yc-fetch.ts having already populated
-// pipeline/cache/yc/companies-all.json. Run with: tsx pipeline/scripts/yc-cross-reference.ts
+// Depends on rankings-engine/scripts/yc-fetch.ts having already populated
+// rankings-engine/cache/yc/companies-all.json. Run with: tsx rankings-engine/scripts/yc-cross-reference.ts
 import fs from 'node:fs'
 import path from 'node:path'
 import { ProductSchema } from '../../lib/schemas'

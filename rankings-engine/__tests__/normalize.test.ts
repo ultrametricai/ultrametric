@@ -7,9 +7,9 @@ import {
   AUTOMATION_STORIES,
   OPENNESS_STORIES,
   PRIVACY_STORIES,
-} from '@/pipeline/agentic-stories'
-import { PROMPT_VERSION } from '@/pipeline/stages/judge'
-import { assembleTaxonomy } from '@/pipeline/stages/normalize'
+} from '@/rankings-engine/agentic-stories'
+import { PROMPT_VERSION } from '@/rankings-engine/stages/judge'
+import { assembleTaxonomy } from '@/rankings-engine/stages/normalize'
 
 const s = (over: Partial<Story>): Story => ({
   id: 'story-a',

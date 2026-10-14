@@ -2,11 +2,11 @@
 // crawl-gap re-judge (2026-09-15: the pack gained developers.clerky.com Partner API docs,
 // llms.txt, and the mcp.clerky.com/mcp OAuth-challenge probe — the founder flagged the 0/100
 // AI-era score; it was a coverage gap, not reality). Same mechanics and ruling as
-// pipeline/scripts/revert-churn-api-quality-wave.ts: a re-judged cell whose verdict or quality
+// rankings-engine/scripts/revert-churn-api-quality-wave.ts: a re-judged cell whose verdict or quality
 // changed while citing NO evidence id that is new to the pack is re-roll noise and reverts to
 // its prior state, patching both verdicts.json and the judge cache in place.
 //
-// Usage: pnpm exec tsx pipeline/scripts/revert-churn-clerky-wave.ts [--write]
+// Usage: pnpm exec tsx rankings-engine/scripts/revert-churn-clerky-wave.ts [--write]
 //   OLD_REF: the pre-wave commit (defaults to HEAD — this wave runs uncommitted on top of it).
 
 import { execSync } from 'node:child_process'

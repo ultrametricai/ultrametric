@@ -4,7 +4,7 @@
 // so the down-list is a real outage list, never "product X never had an llms.txt":
 //
 //   llms-txt  — the URL from a positive probe-tier evidence item ("PROBE llms.txt: HTTP 200
-//               at …", pipeline/stages/probe.ts) on the product's docs/site origin.
+//               at …", rankings-engine/stages/probe.ts) on the product's docs/site origin.
 //   openapi   — likewise, the URL from a positive "PROBE openapi: HTTP 200" evidence item.
 //   mcp       — the product's own remote MCP endpoint from the lib/mcpEndpoints.ts allowlist,
 //               plus any endpoint a recorded handshake proof (open-rankings/*/proofs, lib/proofs.ts)
@@ -17,7 +17,7 @@
 //
 // Keyless and cheap by construction: wired into .github/workflows/story-runner.yml before the
 // PR step, so every 6-hour run grows a real uptime series. Run manually with
-//   pnpm tsx pipeline/scripts/slo-check.ts
+//   pnpm tsx rankings-engine/scripts/slo-check.ts
 import fs from 'node:fs'
 import path from 'node:path'
 import { MCP_ENDPOINTS } from '../../lib/mcpEndpoints'

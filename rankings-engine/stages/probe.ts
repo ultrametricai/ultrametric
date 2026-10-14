@@ -9,7 +9,7 @@ export interface ProbeFetchResult {
   text: string
 }
 
-// Injectable so tests never touch the network (see pipeline/__tests__/probe.test.ts) while
+// Injectable so tests never touch the network (see rankings-engine/__tests__/probe.test.ts) while
 // runProbe's real usage hits the network via fetch.
 export type ProbeFetcher = (url: string) => Promise<ProbeFetchResult>
 
@@ -165,7 +165,7 @@ async function probeLinkedTool(
 }
 
 // Pure(ish) — all network access goes through the injected fetcher, so this is fully
-// unit-testable without touching the network (see pipeline/__tests__/probe.test.ts).
+// unit-testable without touching the network (see rankings-engine/__tests__/probe.test.ts).
 export async function runProbeChecks(product: Product, fetcher: ProbeFetcher = defaultFetcher): Promise<ProbeResult[]> {
   const results: ProbeResult[] = []
   const base = product.urls.docs ?? product.urls.site

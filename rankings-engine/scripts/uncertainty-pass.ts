@@ -12,7 +12,7 @@
 // that isn't a close race gets no file at all (see lib/data.ts's tolerant-optional load).
 //
 // Costs ~2 live LLM calls per decisive cell per qualifying product — deliberately NOT part of
-// `pnpm test`. Usage: pnpm exec tsx pipeline/scripts/uncertainty-pass.ts [--category a,b,c]
+// `pnpm test`. Usage: pnpm exec tsx rankings-engine/scripts/uncertainty-pass.ts [--category a,b,c]
 //   --category (comma-separated allowlist) limits the pass to specific arenas — added for the
 //   2026-09-30 opus-5-5 judge migration, whose memo prescribes re-measuring the noise model on
 //   a ~100-cell SAMPLE under the new judge (~$8) rather than every qualifying arena (35 arenas

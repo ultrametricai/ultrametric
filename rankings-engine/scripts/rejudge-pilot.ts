@@ -1,12 +1,12 @@
 // Scratch re-judge pilot: runs the EXACT judge stage (same SYSTEM prompt, same correction
 // loop, same cellHash) for one category, but writes every artifact to a caller-supplied
-// scratch directory OUTSIDE the repo — committed open-rankings/, the judge cache under pipeline/cache/,
+// scratch directory OUTSIDE the repo — committed open-rankings/, the judge cache under rankings-engine/cache/,
 // and rankings.json are never touched. Built for model-migration pilots (e.g. sonnet-5 →
 // opus-5-5): run with UM_JUDGE_MODEL=<candidate> and diff the scratch verdicts against the committed
-// baseline with pipeline/scripts/rejudge-pilot-diff.ts.
+// baseline with rankings-engine/scripts/rejudge-pilot-diff.ts.
 //
 // Usage:
-//   UM_JUDGE_MODEL=claude-opus-5-5 pnpm tsx pipeline/scripts/rejudge-pilot.ts \
+//   UM_JUDGE_MODEL=claude-opus-5-5 pnpm tsx rankings-engine/scripts/rejudge-pilot.ts \
 //     --category ai-coding --out /tmp/opus55-pilot [--concurrency 6]
 //
 // Resumable: a cell whose scratch file already exists with the current cellHash is skipped,
@@ -35,12 +35,12 @@ const out = arg('out')
 const onlyProduct = arg('product') // optional: smoke-test a single product before a full run
 const concurrency = Number(arg('concurrency') ?? 6)
 if (!category || !out) {
-  console.error('usage: UM_JUDGE_MODEL=<model> pnpm tsx pipeline/scripts/rejudge-pilot.ts --category <id> --out <scratch-dir> [--product <id>] [--concurrency N]')
+  console.error('usage: UM_JUDGE_MODEL=<model> pnpm tsx rankings-engine/scripts/rejudge-pilot.ts --category <id> --out <scratch-dir> [--product <id>] [--concurrency N]')
   process.exit(1)
 }
 
 // Hard isolation guard: the scratch dir must not live anywhere a committed artifact could be
-// clobbered. Refuse open-rankings/ and pipeline/cache/ (and anything inside them) outright.
+// clobbered. Refuse open-rankings/ and rankings-engine/cache/ (and anything inside them) outright.
 const outAbs = path.resolve(out)
 for (const forbidden of [path.join(ROOT, 'open-rankings'), path.join(ROOT, 'pipeline', 'cache')]) {
   if (outAbs === forbidden || outAbs.startsWith(forbidden + path.sep)) {

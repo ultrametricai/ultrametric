@@ -9,12 +9,12 @@ async function main() {
   const category = categoryFlag >= 0 ? rest[categoryFlag + 1] : undefined
 
   if (!STAGES.includes(stage as Stage)) {
-    console.error(`usage: pnpm pipeline <${STAGES.join('|')}> [--category <id>] [--product <id>]`)
+    console.error(`usage: pnpm engine <${STAGES.join('|')}> [--category <id>] [--product <id>]`)
     process.exit(1)
   }
 
   if (stage === 'normalize' && !category) {
-    console.error('usage: pnpm pipeline normalize --category <id>')
+    console.error('usage: pnpm engine normalize --category <id>')
     process.exit(1)
   }
 

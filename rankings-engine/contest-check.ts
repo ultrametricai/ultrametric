@@ -137,7 +137,7 @@ async function main(): Promise<void> {
   const issueFlag = args.indexOf('--issue')
   const issueNumber = issueFlag >= 0 ? args[issueFlag + 1] : undefined
   if (!issueNumber) {
-    console.error('usage: pnpm tsx pipeline/contest-check.ts --issue <number>')
+    console.error('usage: pnpm tsx rankings-engine/contest-check.ts --issue <number>')
     process.exit(1)
   }
 
@@ -178,7 +178,7 @@ async function main(): Promise<void> {
   await runDerive({ category })
   // Derive restamped rankings.generatedAt, which feeds every review's tested_on/recheck_due —
   // regenerate the interchange records so the PR passes the drift test
-  // (pipeline/__tests__/vendorReviews.test.ts).
+  // (rankings-engine/__tests__/vendorReviews.test.ts).
   writeVendorReviews()
   // The judge pass can flip story→product verdicts, an input of open-rankings/graph.json — regenerate
   // the graph so the PR passes the byte-identity tests (lib/__tests__/storyProcessGraph.test.ts

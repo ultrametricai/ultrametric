@@ -59,9 +59,9 @@ structure and semantic invariants; it does not prove laws true or implement a ca
   `scripts/generate-corpus-schemas.ts` with a byte-identical drift gate
   (`__tests__/corpus-schemas.test.ts`). Generated the vendor-review interchange layer:
   `open-rankings/reviews/generated/<arena>--<productId>.json` for every judged product (578 records)
-  via `pipeline/scripts/generate-vendor-reviews.ts` — deterministic projection of the committed
+  via `rankings-engine/scripts/generate-vendor-reviews.ts` — deterministic projection of the committed
   open-rankings/evidence/pricing/geo data, owner disclosures always carried
-  (`pipeline/__tests__/vendorReviews.test.ts`). Still open from the original stage-2 sketch:
+  (`rankings-engine/__tests__/vendorReviews.test.ts`). Still open from the original stage-2 sketch:
   folding process geo-scope into `open-law/`, and the on-site workflow-layer surface (a
   `/founder-ops` or per-process "legal layer" view).
 - **Stage 3 — retired 2026-09-29.** The original plan (physically move the site/CLI/MCP/worker

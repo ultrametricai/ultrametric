@@ -3,7 +3,7 @@
 # from the CRAWLED vendor docs that the LLM extraction pass missed — the kitty precedent
 # (append-kitty-docs-evidence.py): giant single-page docs (Keycloak's 1.1MB server-admin guide)
 # and per-source extraction caps starve specific capabilities out of the prompt even though the
-# crawled corpus contains them verbatim. Every excerpt below quotes pipeline/cache/crawl/
+# crawled corpus contains them verbatim. Every excerpt below quotes rankings-engine/cache/crawl/
 # auth-platforms/<product>/*.md content (checked at authoring time); URLs are the crawled
 # sources. Extraction is monotonic and dedups by normalized excerpt, so re-running extract
 # after this keeps these items stable.

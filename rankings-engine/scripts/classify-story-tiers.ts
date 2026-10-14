@@ -16,7 +16,7 @@
 // incremental and a mid-run crash resumes for free. UM_TIER_CONCURRENCY products run in
 // parallel (default 4).
 //
-// Usage: tsx pipeline/scripts/classify-story-tiers.ts [--category <id>] [--product <id>] [--report]
+// Usage: tsx rankings-engine/scripts/classify-story-tiers.ts [--category <id>] [--product <id>] [--report]
 import crypto from 'node:crypto'
 import fs from 'node:fs'
 import path from 'node:path'

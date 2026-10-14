@@ -21,9 +21,9 @@
 #   - MCP Analytics and the Slack app carry Beta labels — quoted with labels intact;
 #   - openness-*/privacy-* axes are out of this wave's scope; no agent-washing of unrelated axes.
 #
-# Run AFTER `pnpm pipeline extract --product posthog` (extract is monotonic and dedups by
+# Run AFTER `pnpm engine extract --product posthog` (extract is monotonic and dedups by
 # normalized excerpt, so re-running extract after this keeps these items stable). If
-# `pnpm pipeline probe --category product-analytics` ever wholesale-replaces probe-tier items,
+# `pnpm engine probe --category product-analytics` ever wholesale-replaces probe-tier items,
 # re-run this script to restore posthog-probe-6/7.
 import datetime
 import json

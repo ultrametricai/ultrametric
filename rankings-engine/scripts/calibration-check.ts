@@ -1,7 +1,7 @@
 // Golden-cell calibration harness (Lane A, judge calibration + uncertainty). Re-runs the ACTUAL
-// judge prompt (imported verbatim from pipeline/stages/judge.ts — never a hand-copied
+// judge prompt (imported verbatim from rankings-engine/stages/judge.ts — never a hand-copied
 // duplicate that could drift) against the CURRENT on-disk evidence pack for a small, hand-picked
-// set of cells whose correct verdict is already known (see pipeline/golden/golden-cells.json —
+// set of cells whose correct verdict is already known (see rankings-engine/golden/golden-cells.json —
 // runtime-verified probes, applicability corrections, wrong-axis na's, and a few unambiguous
 // full/none cells). This is a REGRESSION gate on the judge's calibration, not a test of the data:
 // if the current judge disagrees with a golden verdict tier, either the judge (prompt/model) has
@@ -26,7 +26,7 @@ import { llmJson } from '../llm'
 import { categoryDir, readJson } from '../paths'
 import { judgePrompt, RawVerdictSchema, SYSTEM } from '../stages/judge'
 
-// Structural schema for pipeline/golden/golden-cells.json — a pipeline-internal test fixture,
+// Structural schema for rankings-engine/golden/golden-cells.json — a pipeline-internal test fixture,
 // not a open-rankings/ file consumed by the app, so it doesn't warrant a lib/schemas.ts entry. Reuses
 // VerdictBaseSchema's verdict enum so a golden cell can never target a verdict tier the real
 // judge couldn't itself produce.

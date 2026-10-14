@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { contestEvidenceIds, parseIssueBody } from '@/pipeline/contest-check'
+import { contestEvidenceIds, parseIssueBody } from '@/rankings-engine/contest-check'
 
 const TEMPLATE_BODY = `<!--
 Before filing: find the exact category, product, and story ids in

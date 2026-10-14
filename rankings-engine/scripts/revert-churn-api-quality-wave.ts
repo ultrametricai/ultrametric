@@ -1,13 +1,13 @@
 // Surgical, auditable revert of judge re-roll churn introduced by the api-quality crawl-gap
 // re-judge wave (2026-09-10: databricks/snowflake/gitlab/hubspot/slack/figma/asana). Same
-// mechanics and ruling as pipeline/scripts/revert-churn.ts (probe-wave precedent): a re-judged
+// mechanics and ruling as rankings-engine/scripts/revert-churn.ts (probe-wave precedent): a re-judged
 // cell whose verdict or quality changed while citing NO evidence id that is new to the
 // product's pack is re-roll noise, not an evidence-driven change, and is reverted to its prior
 // state. This subsumes the na<->none rule (those flips never cite new evidence). Patches both
 // verdicts.json and the matching judge cache files in place (same hash, reverted verdict
-// object) so a future `pnpm pipeline judge` run doesn't resurrect the churn.
+// object) so a future `pnpm engine judge` run doesn't resurrect the churn.
 //
-// Usage: pnpm exec tsx pipeline/scripts/revert-churn-api-quality-wave.ts [--write]
+// Usage: pnpm exec tsx rankings-engine/scripts/revert-churn-api-quality-wave.ts [--write]
 //   (no --write: dry run, prints the plan only; --write: applies changes to disk)
 
 import { execSync } from 'node:child_process'

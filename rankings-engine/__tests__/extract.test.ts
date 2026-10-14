@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import type { Evidence } from '@/lib/schemas'
-import { buildEvidence } from '@/pipeline/stages/extract'
+import { buildEvidence } from '@/rankings-engine/stages/extract'
 
 describe('buildEvidence', () => {
   const urls = { site: 'https://omarchy.org/', github: 'https://github.com/basecamp/omarchy' }

@@ -16,13 +16,13 @@
 //   - the mapping is an ANNOTATION: verdicts, scoring, judge caches are never touched;
 //   - judge-style correction rounds (up to 3) on rule violations;
 //   - cached per (step, vendor) by a hash over the step text + vendor + evidence ids/urls used
-//     + canonical calls + prompt version (pipeline/cache/step-calls/<arenaId>.json), so re-runs
+//     + canonical calls + prompt version (rankings-engine/cache/step-calls/<arenaId>.json), so re-runs
 //     are incremental and a mid-run crash resumes for free;
 //   - the committed open-rankings/step-vendor-calls.json is assembled all-or-nothing: unscoped runs
 //     require EVERY enumerated target fresh; scoped runs (--task / --tasks) apply the same rule
 //     per task, committing every task whose full target set is fresh in cache.
 //
-// Usage: tsx pipeline/scripts/map-step-calls.ts [--task <id>] [--tasks <id,id,...>] [--report]
+// Usage: tsx rankings-engine/scripts/map-step-calls.ts [--task <id>] [--tasks <id,id,...>] [--report]
 import crypto from 'node:crypto'
 import fs from 'node:fs'
 import path from 'node:path'

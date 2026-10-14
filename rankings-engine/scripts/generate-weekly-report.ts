@@ -5,9 +5,9 @@
 // them). Deterministic given the data files and the clock; safe to re-run (same-day re-runs
 // overwrite the same file).
 //
-//   pnpm tsx pipeline/scripts/generate-weekly-report.ts
+//   pnpm tsx rankings-engine/scripts/generate-weekly-report.ts
 //
-// The render/compute helpers are pure (exported for pipeline/__tests__/generate-weekly-report
+// The render/compute helpers are pure (exported for rankings-engine/__tests__/generate-weekly-report
 // .test.ts); only main() at the bottom touches fs/loadAll.
 import fs from 'node:fs'
 import path from 'node:path'

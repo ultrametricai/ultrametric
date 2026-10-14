@@ -3,7 +3,7 @@ import type { Evidence, Product } from '@/lib/schemas'
 import {
   buildProbeEvidenceRows, mergeProbeEvidence, runProbeChecks,
   type ProbeFetchResult, type ProbeFetcher, type ProbeResult,
-} from '@/pipeline/stages/probe'
+} from '@/rankings-engine/stages/probe'
 
 const baseProduct: Product = {
   id: 'acme',

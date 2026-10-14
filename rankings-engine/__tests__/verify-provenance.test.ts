@@ -5,7 +5,7 @@ import path from 'node:path'
 import { afterEach, describe, expect, it } from 'vitest'
 
 const repoRoot = path.resolve(__dirname, '../..')
-const SCRIPT = path.join('pipeline', 'scripts', 'verify-provenance.ts')
+const SCRIPT = path.join('rankings-engine', 'scripts', 'verify-provenance.ts')
 
 function run(args: string[]): { status: number; stdout: string } {
   try {

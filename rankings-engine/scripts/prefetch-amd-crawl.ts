@@ -3,11 +3,11 @@
 // bring-up: HTTP/2 stream reset with the probe UA, HTTP 200 with a browser UA) — the same
 // bot-wall class as Intel ARK at the experiments curation (see open-rankings/experiments/*.json notes).
 // This writes the exact crawl-cache layout crawl.ts produces (<!-- source: url --> header +
-// turndown markdown) so `pnpm pipeline extract` runs the standard path over real page content.
-// Run BEFORE `pnpm pipeline extract` whenever the processors/gpus crawl cache is rebuilt
-// (pipeline/cache/crawl/ is gitignored); `pnpm pipeline crawl` warns-and-skips these URLs.
+// turndown markdown) so `pnpm engine extract` runs the standard path over real page content.
+// Run BEFORE `pnpm engine extract` whenever the processors/gpus crawl cache is rebuilt
+// (rankings-engine/cache/crawl/ is gitignored); `pnpm engine crawl` warns-and-skips these URLs.
 //
-// Usage: pnpm exec tsx pipeline/scripts/prefetch-amd-crawl.ts
+// Usage: pnpm exec tsx rankings-engine/scripts/prefetch-amd-crawl.ts
 import fs from 'node:fs'
 import path from 'node:path'
 import { htmlToMarkdown } from '../fetch-page'

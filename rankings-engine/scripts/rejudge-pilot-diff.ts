@@ -1,4 +1,4 @@
-// Diffs a scratch re-judge (produced by pipeline/scripts/rejudge-pilot.ts) against the
+// Diffs a scratch re-judge (produced by rankings-engine/scripts/rejudge-pilot.ts) against the
 // committed baseline verdicts for one category. Read-only on the repo: everything it writes
 // goes into the pilot's scratch dir. Reports:
 //   - per-cell verdict agreement (exact, and credit-direction: both credit-bearing vs both zero)
@@ -8,7 +8,7 @@
 //     next to the committed baseline leaderboard
 //
 // Usage:
-//   pnpm tsx pipeline/scripts/rejudge-pilot-diff.ts --category ai-coding --pilot /tmp/opus55-pilot
+//   pnpm tsx rankings-engine/scripts/rejudge-pilot-diff.ts --category ai-coding --pilot /tmp/opus55-pilot
 import fs from 'node:fs'
 import path from 'node:path'
 import { ProductSchema, StorySchema, VerdictSchema, type Verdict } from '../../lib/schemas'
@@ -23,7 +23,7 @@ function arg(name: string): string | undefined {
 const category = arg('category')
 const pilot = arg('pilot')
 if (!category || !pilot) {
-  console.error('usage: pnpm tsx pipeline/scripts/rejudge-pilot-diff.ts --category <id> --pilot <scratch-dir>')
+  console.error('usage: pnpm tsx rankings-engine/scripts/rejudge-pilot-diff.ts --category <id> --pilot <scratch-dir>')
   process.exit(1)
 }
 

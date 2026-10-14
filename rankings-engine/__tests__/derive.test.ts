@@ -21,7 +21,7 @@ describe('derive stage', () => {
 
     // `run` is required: pnpm 12 ships a built-in `pipeline` command that shadows the
     // script in shorthand form.
-    execFileSync('pnpm', ['run', 'pipeline', 'derive', '--category', 'desktop-os'], {
+    execFileSync('pnpm', ['run', 'engine', 'derive', '--category', 'desktop-os'], {
       cwd: repoRoot,
       env: { ...process.env, UM_DATA_DIR: tmpDir },
     })

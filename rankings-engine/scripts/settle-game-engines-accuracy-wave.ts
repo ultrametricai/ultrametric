@@ -8,7 +8,7 @@
 // stands). Reverted cells get the standard cache patch (current hash, old verdict) so the next
 // judge run doesn't resurrect the churn.
 //
-// Usage: pnpm exec tsx pipeline/scripts/settle-game-engines-accuracy-wave.ts [--write]
+// Usage: pnpm exec tsx rankings-engine/scripts/settle-game-engines-accuracy-wave.ts [--write]
 // Without --write it reports what it WOULD do.
 import { execFileSync } from 'node:child_process'
 import fs from 'node:fs'

@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { isPngBytes, pickFaviconHost, pickIconHref } from '@/pipeline/stages/logos'
+import { isPngBytes, pickFaviconHost, pickIconHref } from '@/rankings-engine/stages/logos'
 
 describe('pickIconHref', () => {
   it('prefers apple-touch-icon over a larger plain icon', () => {

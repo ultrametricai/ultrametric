@@ -1,7 +1,7 @@
 // Stripe agentic-capability spike helper (2026-09-14): confirm every payments product's judge
 // cache is hash-fresh against its CURRENT evidence pack before the spike touches stripe's pack
 // — same role as spike-check-baseline.ts in the Mercury API-accuracy spike (a pre-existing
-// stale cache elsewhere would block `pnpm pipeline judge` from assembling verdicts.json).
+// stale cache elsewhere would block `pnpm engine judge` from assembling verdicts.json).
 import fs from 'node:fs'
 import path from 'node:path'
 import { EvidenceSchema, ProductSchema, StorySchema } from '../../lib/schemas'

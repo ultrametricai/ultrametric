@@ -1,16 +1,16 @@
 import fs from 'node:fs'
 import path from 'node:path'
 import { describe, expect, it } from 'vitest'
-import { LOCAL_PROBES } from '@/pipeline/probes'
+import { LOCAL_PROBES } from '@/rankings-engine/probes'
 
 // Total probes across all arena modules. Bump this when adding or removing probes in
-// pipeline/probes/<arena-id>.ts — it exists to catch accidental drops during merges.
+// rankings-engine/probes/<arena-id>.ts — it exists to catch accidental drops during merges.
 const EXPECTED_TOTAL_PROBES = 1043
 
 const probesDir = path.resolve(__dirname, '../probes')
 const NON_ARENA_MODULES = new Set(['index.ts', 'types.ts'])
 
-describe('pipeline/probes registry', () => {
+describe('rankings-engine/probes registry', () => {
   it('registers every arena module in the index (and nothing else)', () => {
     const moduleIds = fs
       .readdirSync(probesDir)

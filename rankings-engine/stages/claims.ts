@@ -68,7 +68,7 @@ export function buildClaims(
 }
 
 // Claims are derived purely from a product's own claimed-docs/github evidence (monotonic —
-// extract only ever adds to that pack, see pipeline/stages/extract.ts), so unlike judge's
+// extract only ever adds to that pack, see rankings-engine/stages/extract.ts), so unlike judge's
 // per-cell cache this stage is a plain idempotent full-replace: every run recomputes the whole
 // claims file for a product from its current evidence pack, no staleness bookkeeping needed.
 export async function runClaims({ category, product }: { category?: string; product?: string }): Promise<void> {

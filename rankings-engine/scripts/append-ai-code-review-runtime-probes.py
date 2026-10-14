@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 # One-shot helper for the ai-code-review arena bring-up (2026-09-10): appends probe-tier
 # evidence items distilled from the recorded runtime probes in open-rankings/ai-code-review/proofs/
-# (see pipeline/probes/ai-code-review.ts — all 19 recorded probes passed). Run AFTER
-# `pnpm pipeline probe --category ai-code-review` — that stage wholesale-replaces probe-tier
+# (see rankings-engine/probes/ai-code-review.ts — all 19 recorded probes passed). Run AFTER
+# `pnpm engine probe --category ai-code-review` — that stage wholesale-replaces probe-tier
 # evidence and would wipe these items (re-run this script after any probe refresh).
 import datetime
 import json

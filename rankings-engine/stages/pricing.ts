@@ -103,7 +103,7 @@ export function amountAppearsInExcerpt(fact: Pick<RawFact, 'amountUsd' | 'percen
 }
 
 // First rule violation across the raw facts, or null when clean. Mirrors
-// pipeline/stages/claims.ts's validateClaimRules → corrective-re-prompt pattern.
+// rankings-engine/stages/claims.ts's validateClaimRules → corrective-re-prompt pattern.
 export function factViolation(fact: RawFact, allowedUnits: string[], pageText: string): string | null {
   if (!allowedUnits.includes(fact.unit)) return `unit "${fact.unit}" is not in the allowed list`
   if (fact.unit === ENTRY_PLAN_UNIT && fact.tier !== 'entry-paid') return `unit "${ENTRY_PLAN_UNIT}" requires tier "entry-paid"`
@@ -147,7 +147,7 @@ export function buildPricingEntry(
 // One product's extraction against one fetched page: LLM → validate → one corrective re-prompt
 // on violation → drop any still-unverifiable facts individually (an invented excerpt must never
 // sink the verified ones) → assemble. Pure over its inputs, so tests can drive it with a mocked
-// LLM client (pipeline/llm.ts's setClientForTests).
+// LLM client (rankings-engine/llm.ts's setClientForTests).
 export async function extractPricing(opts: {
   product: Product
   arenaId: string

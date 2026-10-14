@@ -5,7 +5,7 @@
 # 40-story extraction cap over a 64-source corpus starves specific capabilities (pricing,
 # rate limits, model lifecycle, retention controls) out of the prompt even though the corpus
 # contains them verbatim. Every excerpt below quotes a page in
-# pipeline/cache/crawl/frontier-models/grok/ fetched 2026-09-23 (grep-verified at authoring
+# rankings-engine/cache/crawl/frontier-models/grok/ fetched 2026-09-23 (grep-verified at authoring
 # time). Churn from the follow-up re-judge is settled by
 # revert-churn-frontier-models-supp-wave.ts (flips kept only when citing a -supp- id).
 import datetime

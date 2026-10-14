@@ -12,7 +12,7 @@ import { categoryDir, readJson, resolveCategories, ROOT } from '../paths'
 // gitignored scratch install (browsers come from ~/Library/Caches/ms-playwright):
 //
 //   npm install --prefix .proof-scratch playwright sharp
-//   pnpm pipeline screenshots [--category <id>] [--product <id>] [--force]
+//   pnpm engine screenshots [--category <id>] [--product <id>] [--force]
 //
 // UM_PLAYWRIGHT_DIR overrides the scratch location.
 

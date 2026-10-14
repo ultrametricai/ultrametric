@@ -1,4 +1,4 @@
-// Pure-part tests for the step→story mapper (pipeline/scripts/map-step-stories.ts): target
+// Pure-part tests for the step→story mapper (rankings-engine/scripts/map-step-stories.ts): target
 // enumeration mirrors lib/processRankings.ts's consumption, hashing, prompt shape, and rule
 // validation. No LLM/network — same posture as classify-story-tiers.test.ts.
 import { describe, expect, it } from 'vitest'

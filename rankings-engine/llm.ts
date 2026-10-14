@@ -5,7 +5,7 @@ import type { z } from 'zod'
 // adopted docs/OPUS-5-5-JUDGE-PILOT.md recommendation (founder-ordered re-judge): Opus 5.5
 // follows the v3 rubric's decision procedures more faithfully (7/10 adjudicated flips), at 2.0x
 // Sonnet interactive pricing ($4/$20 per MTok; $2/$10 via the Batch API the migration ran on).
-// The model id is part of the judge cellHash (pipeline/stages/judge.ts) — changing UM_JUDGE_MODEL
+// The model id is part of the judge cellHash (rankings-engine/stages/judge.ts) — changing UM_JUDGE_MODEL
 // or this default invalidates every cached verdict rather than silently mixing judge models.
 // PA_MODEL is the deprecated pre-rename spelling, honored as a fallback.
 export const JUDGE_MODEL = process.env.UM_JUDGE_MODEL ?? process.env.PA_MODEL ?? 'claude-opus-5-5'

@@ -7,14 +7,14 @@
 //
 // Pure derivation — re-run after any corpus / mapping / verdict change; determinism against the
 // committed file is enforced by lib/__tests__/storyProcessGraph.test.ts (same recompute posture as
-// rankings.json vs pipeline/scripts/recompute-check.ts). No LLM, no network, no cache.
+// rankings.json vs rankings-engine/scripts/recompute-check.ts). No LLM, no network, no cache.
 //
 // Size sanity cap: the whole graph must stay under MAX_BYTES (5MB). If a future corpus pushes it
 // over, this script fails loudly — the agreed split is then to keep the core DAG (process/step/
 // story nodes + has-step/step-story edges) in graph.json and move story→product edges into
 // per-arena files (open-rankings/graph-products/<arenaId>.json); don't raise the cap silently.
 //
-// Usage: tsx pipeline/scripts/generate-story-graph.ts
+// Usage: tsx rankings-engine/scripts/generate-story-graph.ts
 import fs from 'node:fs'
 import path from 'node:path'
 import { buildStoryGraph } from '../../lib/storyProcessGraph'
@@ -25,7 +25,7 @@ const MAX_BYTES = 5 * 1024 * 1024
 
 // Rebuild open-rankings/graph.json from the committed corpus + mapping + verdicts. Called by the CLI
 // below and by every automated flow whose judge/derive pass can move story→product verdicts
-// (the scheduled runner workflows and pipeline/contest-check.ts) — same contract as
+// (the scheduled runner workflows and rankings-engine/contest-check.ts) — same contract as
 // generate-vendor-reviews.ts's writeVendorReviews(): any run that re-judges must regenerate
 // the artifact before the byte-identity tests compare it.
 export function writeStoryGraph(): void {

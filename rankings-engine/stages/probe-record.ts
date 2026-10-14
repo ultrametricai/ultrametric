@@ -23,8 +23,8 @@ import type { LocalProbe } from '../probes/types'
 //   - probes only run for binaries already installed on PATH, and every child process gets a
 //     minimal env (PATH/HOME/TERM only) so no local API keys can even reach the pty.
 //
-// Probe definitions live in pipeline/probes/<arena-id>.ts — one module per arena, assembled
-// into LOCAL_PROBES by pipeline/probes/index.ts. Add or edit probes there, not here.
+// Probe definitions live in rankings-engine/probes/<arena-id>.ts — one module per arena, assembled
+// into LOCAL_PROBES by rankings-engine/probes/index.ts. Add or edit probes there, not here.
 
 export type { LocalProbe } from '../probes/types'
 

@@ -52,7 +52,7 @@ export function validateVerdictRules(verdict: Verdict, evidence: Evidence[]): st
 }
 
 // Exported so other consumers that need to re-run the EXACT judge prompt against current
-// evidence (pipeline/scripts/calibration-check.ts, pipeline/scripts/uncertainty-pass.ts) do so
+// evidence (rankings-engine/scripts/calibration-check.ts, rankings-engine/scripts/uncertainty-pass.ts) do so
 // verbatim rather than risking prompt drift from a hand-copied duplicate.
 export const RawVerdictSchema = VerdictBaseSchema.omit({ productId: true, storyId: true })
 

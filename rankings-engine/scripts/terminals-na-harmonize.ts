@@ -18,15 +18,15 @@
 // the axis APPLIES and absence of one in evidence is 'none'") — alacritty/wezterm/kitty na →
 // none, joining ghostty/iterm2 which were already judged none. Warp KEEPS its na: Warp is
 // itself an agent product (Agent Mode / Warp Agent CLI), the same role ruling as cursor/
-// gemini-cli/github-copilot in pipeline/scripts/apply-mcp-server-na.ts.
+// gemini-cli/github-copilot in rankings-engine/scripts/apply-mcp-server-na.ts.
 //
 // Same documented cache-edit mechanism as apply-mcp-server-na.ts: hand-write the verdict and
-// stamp the cache file with the CURRENT cellHash so `pnpm pipeline judge` treats it as already
+// stamp the cache file with the CURRENT cellHash so `pnpm engine judge` treats it as already
 // judged. Score impact is strictly conservative: every flip turns a denominator-excluded na
 // into a scoring none (quality 0), removing the null-renormalization windfall for products
 // with no evidence on applicable axes.
 //
-// Usage: pnpm exec tsx pipeline/scripts/terminals-na-harmonize.ts [--write]
+// Usage: pnpm exec tsx rankings-engine/scripts/terminals-na-harmonize.ts [--write]
 import fs from 'node:fs'
 import path from 'node:path'
 import { EvidenceSchema, StorySchema, VerdictBaseSchema, type Verdict } from '../../lib/schemas'
@@ -37,10 +37,10 @@ const WRITE = process.argv.includes('--write')
 const CATEGORY = 'terminals'
 
 const RATIONALE =
-  'The axis applies to terminal emulators as a kind (peer products hold positive or none verdicts on this story), so lack of evidence for an applicable capability is "none", never "na". (na/none harmonized at arena bring-up — see pipeline/scripts/terminals-na-harmonize.ts.)'
+  'The axis applies to terminal emulators as a kind (peer products hold positive or none verdicts on this story), so lack of evidence for an applicable capability is "none", never "na". (na/none harmonized at arena bring-up — see rankings-engine/scripts/terminals-na-harmonize.ts.)'
 
 const MCP_SERVER_RATIONALE =
-  'This product is not itself an agent, so publishing an official MCP server is plausible and the axis applies; no first-party MCP server appears in the evidence. (na/none harmonized at arena bring-up — see pipeline/scripts/terminals-na-harmonize.ts.)'
+  'This product is not itself an agent, so publishing an official MCP server is plausible and the axis applies; no first-party MCP server appears in the evidence. (na/none harmonized at arena bring-up — see rankings-engine/scripts/terminals-na-harmonize.ts.)'
 
 function main(): void {
   const dataDir = categoryDir(CATEGORY)
@@ -92,7 +92,7 @@ function main(): void {
       fs.writeFileSync(cacheFile, JSON.stringify({ hash, verdict }, null, 2) + '\n')
     }
   }
-  console.log(`${flips.length} cells ${WRITE ? 'written' : 'planned'}; re-run \`pnpm pipeline judge --category terminals\` to reassemble verdicts.json`)
+  console.log(`${flips.length} cells ${WRITE ? 'written' : 'planned'}; re-run \`pnpm engine judge --category terminals\` to reassemble verdicts.json`)
   if (!WRITE) console.log('Dry run only — pass --write to apply.')
 }
 

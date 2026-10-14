@@ -18,7 +18,7 @@
 #     (or the Desktop-bundled managed-agent copy); no brew/npm distribution either.
 #   - openness-*/privacy-* axes untouched except where a crawled page speaks directly.
 #
-# Run AFTER `pnpm pipeline extract --category team-chat --product buzz` (extract is monotonic and
+# Run AFTER `pnpm engine extract --category team-chat --product buzz` (extract is monotonic and
 # dedups by normalized excerpt, so re-running extract after this keeps these items stable).
 import datetime
 import json

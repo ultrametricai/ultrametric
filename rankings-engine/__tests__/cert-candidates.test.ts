@@ -6,8 +6,8 @@ import {
   collectCertCandidates,
   compareCandidates,
   type CertCandidate,
-} from '@/pipeline/scripts/cert-candidates'
-import { needsRenewal, CANDIDATE_CAP, RENEW_WINDOW_DAYS } from '@/pipeline/scripts/cert-sweep'
+} from '@/rankings-engine/scripts/cert-candidates'
+import { needsRenewal, CANDIDATE_CAP, RENEW_WINDOW_DAYS } from '@/rankings-engine/scripts/cert-sweep'
 
 const ev = (tier: Evidence['tier'], excerpt: string): Evidence => ({
   id: 'acme-x',

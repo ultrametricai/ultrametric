@@ -5,7 +5,7 @@
 // while citing NO evidence id that is new to the product's pack is re-roll noise, not an
 // evidence-driven change, and is reverted to its prior state. This subsumes the na<->none rule.
 // Patches both verdicts.json and the matching judge cache files in place (same hash, reverted
-// verdict object) so a future `pnpm pipeline judge` run doesn't resurrect the churn.
+// verdict object) so a future `pnpm engine judge` run doesn't resurrect the churn.
 //
 // Wave specifics:
 //  - ramp was re-judged in both arenas because this wave expanded its packs (12/18 new
@@ -16,7 +16,7 @@
 //    worktree branched from).
 //  - No golden cells exist for these arenas at authoring time; the golden guard still runs.
 //
-// Usage: pnpm exec tsx pipeline/scripts/revert-churn-ramp-wave.ts [--write]
+// Usage: pnpm exec tsx rankings-engine/scripts/revert-churn-ramp-wave.ts [--write]
 //   (no --write: dry run, prints the plan only; --write: applies changes to disk)
 //   OLD_REF: the pre-wave commit to diff verdicts against (default HEAD).
 

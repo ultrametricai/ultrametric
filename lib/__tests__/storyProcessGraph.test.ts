@@ -3,7 +3,7 @@
 // exactly for sampled arenas, (2) the full DAG is well-formed (every edge endpoint exists, no
 // dangling task/story refs, tags only where they belong), (3) the committed public artifact
 // open-rankings/graph.json deep-equals a fresh in-process build (determinism across builds — the same
-// recompute contract rankings.json has with pipeline/scripts/recompute-check.ts).
+// recompute contract rankings.json has with rankings-engine/scripts/recompute-check.ts).
 import fs from 'node:fs'
 import path from 'node:path'
 import { describe, expect, it } from 'vitest'
@@ -172,10 +172,10 @@ describe('buildStoryGraph (the backend DAG)', () => {
   })
 
   it('matches the committed open-rankings/graph.json byte-for-byte (deterministic across builds)', () => {
-    // The committed artifact was produced by a separate process (pipeline/scripts/
+    // The committed artifact was produced by a separate process (rankings-engine/scripts/
     // generate-story-graph.ts) — deep-equality with this fresh build IS the double-build
     // determinism check, and the drift gate after any corpus/mapping/verdict change.
-    expect(fs.existsSync(GRAPH_FILE), 'run: tsx pipeline/scripts/generate-story-graph.ts').toBe(true)
+    expect(fs.existsSync(GRAPH_FILE), 'run: tsx rankings-engine/scripts/generate-story-graph.ts').toBe(true)
     const committed = fs.readFileSync(GRAPH_FILE, 'utf8')
     expect(committed).toBe(`${JSON.stringify(graph, null, 2)}\n`)
     // Size sanity cap — the generator enforces it too; if this trips, split story→product

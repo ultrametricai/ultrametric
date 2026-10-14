@@ -1,15 +1,15 @@
 // Certification candidate queue: every product whose committed probe evidence
-// (pipeline/stages/probe.ts, open-rankings/<arena>/evidence/<id>.json) shows a verified agent surface —
+// (rankings-engine/stages/probe.ts, open-rankings/<arena>/evidence/<id>.json) shows a verified agent surface —
 // a live llms.txt ("PROBE llms.txt: HTTP 200 …") or an officially documented MCP server
 // ("official MCP server documented at …") — and which does not already hold an ACTIVE
 // (unexpired, lib/certifications.ts) Agent-Ready certification anywhere in the registry.
 //
 // Pure data → data: no network, no LLM, no keys. The weekly cert-sweep
-// (pipeline/scripts/cert-sweep.ts, .github/workflows/cert-sweep.yml) consumes this queue and
-// re-runs the live conformance suite (pipeline/scripts/certify.ts) against each candidate; run it
+// (rankings-engine/scripts/cert-sweep.ts, .github/workflows/cert-sweep.yml) consumes this queue and
+// re-runs the live conformance suite (rankings-engine/scripts/certify.ts) against each candidate; run it
 // standalone to inspect the queue:
 //
-//   pnpm tsx pipeline/scripts/cert-candidates.ts
+//   pnpm tsx rankings-engine/scripts/cert-candidates.ts
 import fs from 'node:fs'
 import path from 'node:path'
 import { CertificationsArraySchema, isCertificationExpired } from '../../lib/certifications'

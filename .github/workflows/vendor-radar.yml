@@ -1,10 +1,10 @@
 # Daily vendor radar (founder ask 2026-10-02: "listen for new vendor launches and do a deep
 # spike on them when they come out, so this data set is alive"): runs the KEYLESS scan in
-# pipeline/scripts/vendor-radar.ts over public launch surfaces — Hacker News (Algolia API:
+# rankings-engine/scripts/vendor-radar.ts over public launch surfaces — Hacker News (Algolia API:
 # Show HN / Launch HN / launch-shaped front-page stories), Product Hunt's public frontpage feed,
 # and GitHub repo search (new repos crossing the star-velocity threshold) — matches candidates
 # lexically against the arena taxonomy, dedupes against every tracked product, the vendor
-# registry, and the committed seen-ledger (pipeline/radar-seen.json), then:
+# registry, and the committed seen-ledger (rankings-engine/radar-seen.json), then:
 #
 #   1. commits the dated candidates report (reports/vendor-radar/<date>.{json,md}) + the updated
 #      seen-ledger via the usual PR-or-issue flow,
@@ -19,7 +19,7 @@
 # mechanically (existing-ranking fit via the lexical classifier, docs-surface fetch, shipped-
 # product checks, founder-affiliation guard), records every failing candidate as skipped with
 # its reason, and radar-bringup.ts adds capped auto-approved passers to their existing arena's
-# roster. The bring-up then runs the scoped standard pipeline (crawl → extract →
+# roster. The bring-up then runs the scoped standard engine run (crawl → extract →
 # collect-community → probe → judge --product → derive → logos; LLM stages only when the
 # ANTHROPIC_API_KEY repo secret exists — without it, passers stay approved-pending in the triage
 # report) and lands as a PR, never a direct push to main. The scan is keyless;
@@ -62,12 +62,12 @@ jobs:
 
       # The scan itself: keyless, bounded (a handful of HTTP requests, 10s timeouts; GH_TOKEN
       # only raises the GitHub search rate limit). Writes reports/vendor-radar/<date>.{json,md},
-      # updates pipeline/radar-seen.json, and writes the issue body ONLY when there are new
+      # updates rankings-engine/radar-seen.json, and writes the issue body ONLY when there are new
       # candidates — a quiet day files no issue.
       - name: Vendor radar scan
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: pnpm tsx pipeline/scripts/vendor-radar.ts --issue-body /tmp/vendor-radar-issue.md
+        run: pnpm tsx rankings-engine/scripts/vendor-radar.ts --issue-body /tmp/vendor-radar-issue.md
 
       # Criteria triage (governance/AGENT_POLICY.md): mechanical checks per candidate — fetches
       # the docs surface, applies the shipped-product and affiliation guards — and appends the
@@ -82,7 +82,7 @@ jobs:
             exit 0
           fi
           DATE=$(date -u +%F)
-          pnpm tsx pipeline/scripts/radar-triage.ts \
+          pnpm tsx rankings-engine/scripts/radar-triage.ts \
             --report "reports/vendor-radar/$DATE.json" \
             --out "reports/vendor-radar/$DATE-triage.json" \
             --md /tmp/vendor-radar-triage.md
@@ -99,7 +99,7 @@ jobs:
         run: |
           # porcelain, not `git diff --quiet`: a brand-new dated report file is UNTRACKED and
           # invisible to diff.
-          if [ -z "$(git status --porcelain -- reports pipeline/radar-seen.json)" ]; then
+          if [ -z "$(git status --porcelain -- reports rankings-engine/radar-seen.json)" ]; then
             echo "No report/ledger change — done."
             exit 0
           fi
@@ -107,7 +107,7 @@ jobs:
           git config user.name "ultrametric-vendor-radar"
           git config user.email "noreply@ultrametric.ai"
           git checkout -b "$BRANCH"
-          git add reports pipeline/radar-seen.json
+          git add reports rankings-engine/radar-seen.json
           git commit -m "chore(vendor-radar): daily launch-surface scan"
           git push -u origin "$BRANCH"
           # Org policy currently forbids Actions from creating PRs ("Write permissions for
@@ -117,7 +117,7 @@ jobs:
           # fails on a missing label).
           if ! gh pr create \
             --title "vendor-radar: daily scan $(date -u +%F)" \
-            --body "Automated keyless launch-surface scan (\`pipeline/scripts/vendor-radar.ts\`): dated candidates report + seen-ledger update. DETECTION ONLY — no products added, no verdicts touched; candidates are listed in the companion 'vendor-radar: candidates' issue and a deep spike on approved ones runs via the standard pipeline (docs/VENDOR-RADAR.md)." \
+            --body "Automated keyless launch-surface scan (\`rankings-engine/scripts/vendor-radar.ts\`): dated candidates report + seen-ledger update. DETECTION ONLY — no products added, no verdicts touched; candidates are listed in the companion 'vendor-radar: candidates' issue and a deep spike on approved ones runs via the standard engine stages (docs/VENDOR-RADAR.md)." \
             --base main --head "$BRANCH"; then
             gh issue create \
               --title "vendor-radar: report ready on $BRANCH" \
@@ -151,12 +151,12 @@ jobs:
           fi
 
       # Bring-up PR for auto-approved passers: roster append (radar-bringup.ts, capped at 3 per
-      # run to bound judge spend) + the scoped standard pipeline per added product, landing as
+      # run to bound judge spend) + the scoped standard engine run per added product, landing as
       # its own PR with the full disposition table (including the skipped list) in the body.
       # Gated on the ANTHROPIC_API_KEY repo secret because extract/collect-community/judge are
       # LLM stages — without the key nothing is added and passers stay approved-pending in the
       # committed triage report. Branches from the scanned commit, not the report branch, so the
-      # bring-up PR carries only roster + pipeline output.
+      # bring-up PR carries only roster + engine output.
       - name: Bring-up PR for auto-approved passers
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -178,32 +178,32 @@ jobs:
           git config user.name "ultrametric-vendor-radar"
           git config user.email "noreply@ultrametric.ai"
           git checkout -f -B "$BRANCH" "$GITHUB_SHA"
-          pnpm tsx pipeline/scripts/radar-bringup.ts --triage /tmp/triage.json --cap 3 > /tmp/bringups.txt
+          pnpm tsx rankings-engine/scripts/radar-bringup.ts --triage /tmp/triage.json --cap 3 > /tmp/bringups.txt
           if [ ! -s /tmp/bringups.txt ]; then
             echo "No products added — no bring-up PR."
             exit 0
           fi
           while read -r ARENA PRODUCT; do
             for STAGE in crawl extract collect-community probe judge; do
-              pnpm run pipeline "$STAGE" --category "$ARENA" --product "$PRODUCT"
+              pnpm engine "$STAGE" --category "$ARENA" --product "$PRODUCT"
             done
-            pnpm run pipeline derive --category "$ARENA"
-            pnpm run pipeline logos --category "$ARENA" --product "$PRODUCT"
+            pnpm engine derive --category "$ARENA"
+            pnpm engine logos --category "$ARENA" --product "$PRODUCT"
           done < /tmp/bringups.txt
           # Same contract as spike-engine: derive restamps rankings.generatedAt and judge adds
           # verdicts, inputs of the vendor-review interchange records and the story graph.
-          pnpm tsx pipeline/scripts/generate-vendor-reviews.ts
-          pnpm tsx pipeline/scripts/generate-story-graph.ts
+          pnpm tsx rankings-engine/scripts/generate-vendor-reviews.ts
+          pnpm tsx rankings-engine/scripts/generate-story-graph.ts
           pnpm stats
           pnpm test
-          git add rankings pipeline/cache vendors/reviews/generated public/badges README.md
+          git add rankings rankings-engine/cache vendors/reviews/generated public/badges README.md
           git commit -m "feat(vendor-radar): scoped bring-up of auto-approved candidates ($DATE)"
           git push -u origin "$BRANCH"
           {
             echo "Automated bring-up of auto-approved radar candidates (criteria: \`governance/AGENT_POLICY.md\` \"Vendor-radar candidate approval\", founder authorization 2026-10-13). Products added:"
             sed 's/^/- /' /tmp/bringups.txt
             echo
-            echo "Debut scores come from the scoped standard pipeline (crawl → extract → collect-community → probe → judge --product → derive → logos); no rank was hand-set. The radar created no new ranking and touched no founder-affiliated product."
+            echo "Debut scores come from the scoped standard engine run (crawl → extract → collect-community → probe → judge --product → derive → logos); no rank was hand-set. The radar created no new ranking and touched no founder-affiliated product."
             echo
             cat /tmp/vendor-radar-triage.md
           } > /tmp/bringup-pr-body.md

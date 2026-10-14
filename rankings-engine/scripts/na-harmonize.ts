@@ -17,12 +17,12 @@
 //   applies to the kind).
 //
 // Cache-edit mechanism (same as apply-mcp-server-na.ts / terminals-na-harmonize.ts): hand-write
-// the verdict and stamp the cache file with the CURRENT cellHash so `pnpm pipeline judge`
+// the verdict and stamp the cache file with the CURRENT cellHash so `pnpm engine judge`
 // treats it as already judged. Score impact is strictly conservative: every flip turns a
 // denominator-excluded na into a scoring none (quality 0), removing the null-renormalization
 // windfall for products with no evidence on applicable axes.
 //
-// Usage: pnpm exec tsx pipeline/scripts/na-harmonize.ts --category <id> [--write]
+// Usage: pnpm exec tsx rankings-engine/scripts/na-harmonize.ts --category <id> [--write]
 import fs from 'node:fs'
 import path from 'node:path'
 import { EvidenceSchema, StorySchema, VerdictBaseSchema, type Verdict } from '../../lib/schemas'
@@ -33,12 +33,12 @@ const WRITE = process.argv.includes('--write')
 const categoryFlag = process.argv.indexOf('--category')
 const CATEGORY = categoryFlag >= 0 ? process.argv[categoryFlag + 1] : undefined
 if (!CATEGORY) {
-  console.error('usage: pnpm exec tsx pipeline/scripts/na-harmonize.ts --category <id> [--write]')
+  console.error('usage: pnpm exec tsx rankings-engine/scripts/na-harmonize.ts --category <id> [--write]')
   process.exit(1)
 }
 
 const RATIONALE =
-  'The axis applies to this product kind (peer products hold positive or none verdicts on this story), so lack of evidence for an applicable capability is "none", never "na". (na/none harmonized at arena bring-up — see pipeline/scripts/na-harmonize.ts.)'
+  'The axis applies to this product kind (peer products hold positive or none verdicts on this story), so lack of evidence for an applicable capability is "none", never "na". (na/none harmonized at arena bring-up — see rankings-engine/scripts/na-harmonize.ts.)'
 
 function main(): void {
   const dataDir = categoryDir(CATEGORY!)
@@ -85,7 +85,7 @@ function main(): void {
       fs.writeFileSync(cacheFile, JSON.stringify({ hash, verdict }, null, 2) + '\n')
     }
   }
-  console.log(`${flips.length} cells ${WRITE ? 'written' : 'planned'}; re-run \`pnpm pipeline judge --category ${CATEGORY}\` to reassemble verdicts.json`)
+  console.log(`${flips.length} cells ${WRITE ? 'written' : 'planned'}; re-run \`pnpm engine judge --category ${CATEGORY}\` to reassemble verdicts.json`)
   if (!WRITE) console.log('Dry run only — pass --write to apply.')
 }
 

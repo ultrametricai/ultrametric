@@ -1,5 +1,5 @@
 // One-time migration for Ultrametric's Accuracy Program wave 1: appends the new canonical
-// `agentic-mcp-client` story (pipeline/agentic-stories.ts) to every category's stories.json.
+// `agentic-mcp-client` story (rankings-engine/agentic-stories.ts) to every category's stories.json.
 //
 // Why a separate migration instead of just re-running normalize: normalize.ts refuses to
 // touch a category with real (non-SAMPLE) verdicts, and re-normalizing would also churn every
@@ -10,7 +10,7 @@
 //
 // Cache safety: judge.ts's cellHash() only hashes storyId + title + evidence + promptVersion,
 // so adding a brand-new story id never collides with an existing cache entry — the new cells
-// simply have no cache file yet and `pnpm pipeline judge` will judge them fresh (expected: 53
+// simply have no cache file yet and `pnpm engine judge` will judge them fresh (expected: 53
 // new cells across the 10 categories, one per product).
 import fs from 'node:fs'
 import path from 'node:path'

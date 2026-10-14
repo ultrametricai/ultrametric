@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 # One-shot helper for the serverless-databases arena bring-up (2026-09-06): appends probe-tier
 # evidence items distilled from the recorded runtime probes in open-rankings/serverless-databases/proofs/
-# (see pipeline/probes/serverless-databases.ts — all 14 recorded
-# probes passed). Run AFTER `pnpm pipeline probe --category serverless-databases` — that stage
+# (see rankings-engine/probes/serverless-databases.ts — all 14 recorded
+# probes passed). Run AFTER `pnpm engine probe --category serverless-databases` — that stage
 # wholesale-replaces probe-tier evidence and would wipe these items (re-run this script after
 # any probe refresh).
 import datetime

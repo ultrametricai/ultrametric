@@ -5,7 +5,7 @@
 // the product's pack is re-roll noise, not an evidence-driven change, and is reverted to its
 // prior state. This subsumes the na<->none rule. Patches both verdicts.json and the matching
 // judge cache files in place (same hash, reverted verdict object) so a future
-// `pnpm pipeline judge` run doesn't resurrect the churn.
+// `pnpm engine judge` run doesn't resurrect the churn.
 //
 // Wave specifics:
 //  - vercel and cloudflare were re-judged because this wave expanded their evidence packs
@@ -21,7 +21,7 @@
 //    restamp-judge-cache-intdir.ts before this wave; it is NOT re-judged here.
 //  - No edge-platforms golden cells exist at authoring time; the golden guard still runs.
 //
-// Usage: pnpm exec tsx pipeline/scripts/revert-churn-edge-platforms-wave.ts [--write]
+// Usage: pnpm exec tsx rankings-engine/scripts/revert-churn-edge-platforms-wave.ts [--write]
 //   (no --write: dry run, prints the plan only; --write: applies changes to disk)
 //   OLD_REF: the pre-wave commit to diff verdicts against (default HEAD).
 

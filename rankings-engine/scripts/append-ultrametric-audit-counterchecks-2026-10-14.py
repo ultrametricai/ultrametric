@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
 # Records the 2026-10-14 adversarial bias audit's two hands-on counter-checks (header of
-# pipeline/scripts/bias-audit-ultrametric-refresh-2026-10-14.py, committed f670b9b3e) as
+# rankings-engine/scripts/bias-audit-ultrametric-refresh-2026-10-14.py, committed f670b9b3e) as
 # preserved probe-tier evidence rows in the ultrametric agent-skills pack. The audit applied
 # its corrections to verdicts + judge cache; this puts the counter-evidence itself in the
 # pack so the next re-judge sees it directly, and preserve: true keeps it through probe-stage
-# refreshes (pipeline/stages/probe.ts mergeProbeEvidence) — the replacement clobber is what
+# refreshes (rankings-engine/stages/probe.ts mergeProbeEvidence) — the replacement clobber is what
 # erased the 2026-10-08 counter-checks and triggered the #4 -> #2 regression the audit
 # corrected. Removal of these rows is itself an audit-correction act: another explicit dated
 # script, never a refresh.

@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
 # One-shot helper for the yylo bring-up (issue #19, 2026-09-14): appends probe-tier evidence
 # items distilled from the recorded keyless probes in open-rankings/software-factory/proofs/yylo/ (see
-# pipeline/probes/software-factory.ts — both recorded probes passed). Both probes are
+# rankings-engine/probes/software-factory.ts — both recorded probes passed). Both probes are
 # metadata-only (npm registry view + raw LICENSE fetch): no vendor-submitted code is executed,
 # per the vendor-submission security policy applied to this first community submission.
-# Run AFTER `pnpm pipeline probe --category software-factory --product yylo` — that stage
+# Run AFTER `pnpm engine probe --category software-factory --product yylo` — that stage
 # wholesale-replaces probe-tier evidence and would wipe these items (re-run this script after
 # any probe refresh).
 import datetime

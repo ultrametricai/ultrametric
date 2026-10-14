@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 # One-shot helper for the docs-platforms arena bring-up (2026-09-08): appends probe-tier
 # evidence items distilled from the recorded runtime probes in open-rankings/docs-platforms/proofs/
-# (see pipeline/probes/docs-platforms.ts — all 20 recorded probes
-# passed). Run AFTER `pnpm pipeline probe --category docs-platforms` — that stage wholesale-
+# (see rankings-engine/probes/docs-platforms.ts — all 20 recorded probes
+# passed). Run AFTER `pnpm engine probe --category docs-platforms` — that stage wholesale-
 # replaces probe-tier evidence and would wipe these items (re-run this script after any probe
 # refresh). The arena's signature: every excerpt below is a vendor demonstrating ON ITS OWN
 # DOCS the agent-docs feature it sells to customers.

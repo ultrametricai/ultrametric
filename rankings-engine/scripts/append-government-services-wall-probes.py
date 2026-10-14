@@ -13,7 +13,7 @@
 #   - www.uscis.gov requests honor its published Crawl-delay: 10;
 #   - a connection error IS the observation (filings.dos.ny.gov resets TLS to this UA).
 #
-# Run AFTER `pnpm pipeline probe` — the probe stage replaces probe-tier evidence wholesale on
+# Run AFTER `pnpm engine probe` — the probe stage replaces probe-tier evidence wholesale on
 # each run and would clobber these items (the documented probe-stage replacement gotcha). Ids
 # continue each product's existing `<pid>-probe-N` numbering. Idempotent by id.
 import datetime

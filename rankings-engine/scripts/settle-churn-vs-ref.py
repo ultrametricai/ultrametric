@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# Churn settle vs a git ref — the spike-engine churn rule (pipeline/scripts/spike-engine.ts
+# Churn settle vs a git ref — the spike-engine churn rule (rankings-engine/scripts/spike-engine.ts
 # churnDecision, itself the revert-churn-*-wave.ts rule) applied end-to-end over a whole
 # evidence wave for one product: a verdict flip survives only when it cites at least one
 # evidence id that did not exist at the baseline ref; every other flip is reverted to the
@@ -9,7 +9,7 @@
 # Reverts patch the judge cache too (keep the current hash, restore the old verdict) so the
 # next judge run doesn't resurrect the churn.
 #
-# Usage: python3 pipeline/scripts/settle-churn-vs-ref.py <ref> <arena> <productId>
+# Usage: python3 rankings-engine/scripts/settle-churn-vs-ref.py <ref> <arena> <productId>
 import json
 import subprocess
 import sys
@@ -59,7 +59,7 @@ for v in verdicts:
         continue
     reverted += 1
     print(f"REVERT {arena}/{pid}:{v['storyId']} {v['verdict']}/q{v['quality']} -> {old['verdict']}/q{old['quality']} (no new citation vs {ref})")
-    cache_file = f'pipeline/cache/judge/{arena}/{pid}/{v["storyId"]}.json'
+    cache_file = f'rankings-engine/cache/judge/{arena}/{pid}/{v["storyId"]}.json'
     try:
         cached = json.load(open(cache_file))
         cached_out = {'hash': cached['hash'], 'verdict': old}

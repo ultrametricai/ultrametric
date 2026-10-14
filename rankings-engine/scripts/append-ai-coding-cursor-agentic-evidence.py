@@ -22,7 +22,7 @@
 #   - Enterprise gates kept: Admin/Analytics/AI-Code-Tracking/Bugbot APIs and service accounts
 #     and OpenTelemetry Export are Enterprise-plan features (quoted with the gate).
 #
-# Run AFTER `pnpm pipeline extract --category ai-coding --product cursor` (extract is monotonic
+# Run AFTER `pnpm engine extract --category ai-coding --product cursor` (extract is monotonic
 # and dedups by normalized excerpt). If a probe stage ever wholesale-replaces probe-tier items,
 # re-run this script to restore cursor-probe-2..5.
 import datetime

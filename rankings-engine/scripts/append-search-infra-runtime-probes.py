@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 # One-shot helper for the search-infra arena bring-up (2026-09-06): appends probe-tier evidence
 # items distilled from the recorded runtime probes in open-rankings/search-infra/proofs/ (see
-# pipeline/probes/search-infra.ts — all 10 recorded probes passed).
-# Run AFTER `pnpm pipeline probe --category search-infra` — that stage wholesale-replaces
+# rankings-engine/probes/search-infra.ts — all 10 recorded probes passed).
+# Run AFTER `pnpm engine probe --category search-infra` — that stage wholesale-replaces
 # probe-tier evidence and would wipe these items (re-run this script after any probe refresh).
 import datetime
 import json

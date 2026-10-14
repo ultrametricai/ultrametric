@@ -10,8 +10,9 @@ import type { Verdict } from './schemas'
 // here lead with the gaps: untested cells, the share of cells backed by hands-on probes, the
 // most-wanted untested (product, story) pairs, and which arenas are next.
 //
-// Named testingPipeline (not pipeline) to avoid colliding with the top-level pipeline/ build
-// tooling — this module is about *publishing* the pipeline's coverage, not running it.
+// Named testingPipeline for the testing-coverage pipeline it publishes, distinct from the
+// top-level rankings-engine/ build tooling — this module is about *publishing* the engine's
+// coverage, not running it.
 
 // "Untested" for a single cell — the per-cell generalization of data-helpers'
 // isGroupUntested: a zero-evidence none/na means we found nothing pro or con and never probed

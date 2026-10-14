@@ -15,7 +15,7 @@
 // stats do, so they're computed once, committed, and re-run after re-judges (story-runner.yml
 // runs this post-derive for the refreshed arena).
 //
-// Usage: pnpm exec tsx pipeline/scripts/compute-confidence-intervals.ts [--category <id>]
+// Usage: pnpm exec tsx rankings-engine/scripts/compute-confidence-intervals.ts [--category <id>]
 //   --category limits which arenas get REwritten; the measured noise model is always built from
 //   the whole fleet's uncertainty files regardless.
 import fs from 'node:fs'

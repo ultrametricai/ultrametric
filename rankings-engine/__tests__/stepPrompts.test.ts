@@ -1,4 +1,4 @@
-// Committed-file + loader tests for the step→prompt generator (pipeline/scripts/
+// Committed-file + loader tests for the step→prompt generator (rankings-engine/scripts/
 // map-step-prompts.ts). Two layers, same posture as stepVendorCalls.test.ts: pure-part tests
 // of the generator's validator (no LLM, no network), then re-validation of the committed
 // open-rankings/step-prompts.json against EXACTLY the rules the generator enforced — referential

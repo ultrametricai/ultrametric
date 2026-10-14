@@ -1,12 +1,12 @@
 #!/usr/bin/env python3
 # One-shot helper for the agent-skills arena bring-up (2026-09-06): appends probe-tier evidence
 # items distilled from the recorded runtime probes in open-rankings/agent-skills/proofs/ (see
-# pipeline/probes/agent-skills.ts — all 7 recorded probes passed).
+# rankings-engine/probes/agent-skills.ts — all 7 recorded probes passed).
 # 2026-10-14: items now carry preserve: true, so once appended they survive probe-stage
-# refreshes (pipeline/stages/probe.ts mergeProbeEvidence keeps preserved probe-tier rows;
+# refreshes (rankings-engine/stages/probe.ts mergeProbeEvidence keeps preserved probe-tier rows;
 # before that fix the stage wholesale-replaced the tier and wiped these items — the clobber
 # that also dropped the ultrametric audit counter-checks, see
-# pipeline/scripts/bias-audit-ultrametric-refresh-2026-10-14.py). The 2026-10-14 refresh ran
+# rankings-engine/scripts/bias-audit-ultrametric-refresh-2026-10-14.py). The 2026-10-14 refresh ran
 # before the fix, so a re-run of this script (then judge + derive) is needed to restore them.
 import datetime
 import json

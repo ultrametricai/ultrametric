@@ -1,7 +1,7 @@
 // Keyless popularity/momentum signal ("will this project be alive tomorrow?" — a
 // reader-requested addition). Gathers GitHub stars/forks/issues/dates for products with a
 // urls.github, and npm/pypi weekly downloads for products curated in
-// pipeline/popularity-packages.json, verified against the public registry (no API key
+// rankings-engine/popularity-packages.json, verified against the public registry (no API key
 // *required* for either source — see the `gh` CLI note below). NO LLM CALLS — this is a pure
 // display signal, never fed into scoring (see lib/scoring.ts, which never imports
 // lib/schemas.ts's PopularitySchema).
@@ -26,8 +26,8 @@ export interface GithubRepoInfo {
   pushedAt: string
 }
 
-// Injectable so tests never touch the network (see pipeline/__tests__/popularity.test.ts) —
-// same shape as pipeline/stages/probe.ts's ProbeFetcher.
+// Injectable so tests never touch the network (see rankings-engine/__tests__/popularity.test.ts) —
+// same shape as rankings-engine/stages/probe.ts's ProbeFetcher.
 export type GithubFetcher = (owner: string, repo: string) => Promise<GithubRepoInfo | null>
 export type DownloadsFetcher = (pkg: string) => Promise<number | null>
 

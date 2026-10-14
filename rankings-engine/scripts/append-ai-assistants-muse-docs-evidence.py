@@ -10,7 +10,7 @@
 # and (3) the Mac client + WhatsApp channel — but the judged cells privacy-no-training,
 # training-opt-out, export-my-data, openness-full-export, and desktop-app were decided on a
 # pack that lacked those lines. Every excerpt below is verbatim from the crawled page in
-# pipeline/cache/crawl/ai-assistants/muse/ (checked at authoring time, 2026-09-21).
+# rankings-engine/cache/crawl/ai-assistants/muse/ (checked at authoring time, 2026-09-21).
 #
 # Verified-honest counterparts (NO items added, on purpose):
 #   - voice-conversation / image-understanding: the privacy policy lists "text, voice, photos"

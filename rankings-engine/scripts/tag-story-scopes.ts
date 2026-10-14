@@ -4,12 +4,12 @@
 // prints one line per story: `<arena> <scope> [<rule>] <id>`). Re-runnable and idempotent.
 //
 // Rule ladder, first match wins (anything ambiguous falls through to 'category'):
-//   1. canonical        → global   the 29 canonical lens ids (pipeline/agentic-stories.ts) are
+//   1. canonical        → global   the 29 canonical lens ids (rankings-engine/agentic-stories.ts) are
 //                                  cross-arena by definition; they also carry scope at the
 //                                  source, this just backfills committed data files.
 //   2. claims-probe     → product  claims-derived depth-mine stories (origin kind 'normalized',
 //                                  promptVersion 'v2-depth' — distilled from ONE vendor's
-//                                  unmapped claims, see pipeline/scripts/depth-mine.ts) where
+//                                  unmapped claims, see rankings-engine/scripts/depth-mine.ts) where
 //                                  exactly one product in the arena holds a positive (full/
 //                                  partial) verdict: effectively a probe of that product's
 //                                  specific claim, however neutrally the title is phrased.
@@ -189,7 +189,7 @@ export interface ScopeContext {
 }
 
 export function scopeForStory(story: Story, ctx: ScopeContext): { scope: StoryScope; rule: string } {
-  // 1. Canon is global by definition (also tagged at the source in pipeline/agentic-stories.ts).
+  // 1. Canon is global by definition (also tagged at the source in rankings-engine/agentic-stories.ts).
   if (CANONICAL_IDS.has(story.id) || story.origin?.kind === 'canonical') {
     return { scope: 'global', rule: 'canonical' }
   }

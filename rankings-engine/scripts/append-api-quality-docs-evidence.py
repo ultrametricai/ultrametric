@@ -7,7 +7,7 @@
 # 54 products with agentic-public-api full/partial but ALL four api-quality stories none/q0;
 # live checks confirmed several vendors DO publish machine-readable specs, interactive docs,
 # sandboxes, and deprecation policies. Every URL below was added to that product's
-# products.json urls.extra, crawled into pipeline/cache/crawl/, and every excerpt quotes the
+# products.json urls.extra, crawled into rankings-engine/cache/crawl/, and every excerpt quotes the
 # crawled page (checked at authoring time, 2026-09-10). Extraction is monotonic and dedups by
 # normalized excerpt, so re-running extract after this keeps these items stable.
 #

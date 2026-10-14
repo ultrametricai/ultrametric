@@ -6,9 +6,9 @@
 // state is the .pa-tmp/verdicts-pre-supp-wave.json snapshot (this lane's worktree has no
 // pre-wave commit to diff against — the whole arena is new on this branch). Patches both
 // verdicts.json and the matching judge cache files in place (same hash, reverted verdict
-// object) so a future `pnpm pipeline judge` run doesn't resurrect the churn.
+// object) so a future `pnpm engine judge` run doesn't resurrect the churn.
 //
-// Usage: pnpm exec tsx pipeline/scripts/revert-churn-frontier-models-supp-wave.ts [--write]
+// Usage: pnpm exec tsx rankings-engine/scripts/revert-churn-frontier-models-supp-wave.ts [--write]
 import fs from 'node:fs'
 import path from 'node:path'
 import { EvidenceSchema, StorySchema, type Verdict } from '../../lib/schemas'

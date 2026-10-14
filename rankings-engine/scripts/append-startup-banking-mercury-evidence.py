@@ -7,11 +7,11 @@
 # contains them verbatim). Two transform losses fixed here in particular:
 #   - turndown strips `<https://...>` autolinks, so the crawled sandbox page LOST both sandbox
 #     base URLs (api-sandbox.mercury.com / oauth2-sandbox.mercury.com) that the live page
-#     publishes (pipeline/cache/crawl/startup-banking/mercury/extra-5.md shows the empty gaps);
+#     publishes (rankings-engine/cache/crawl/startup-banking/mercury/extra-5.md shows the empty gaps);
 #   - the ReadMe reference hub's interactive "Try It!" runner + Shell/Node/Ruby/PHP/Python
 #     code-sample picker IS in the crawled docs.md but never survived extraction's 40-story cap.
 # Every URL below is in mercury's products.json urls.extra and crawled into
-# pipeline/cache/crawl/startup-banking/mercury/; every excerpt quotes the crawled/live page
+# rankings-engine/cache/crawl/startup-banking/mercury/; every excerpt quotes the crawled/live page
 # (live-checked at authoring time, 2026-09-14).
 #
 # Verified-honest counterparts (NO doc items added, on purpose):
@@ -25,9 +25,9 @@
 #     exist — /api/v1 versioned paths, a v1-pre/v1/v2 docs version picker, and a dated public
 #     changelog with migration guides — is quoted below; the missing policy stays missing.
 #
-# Run AFTER `pnpm pipeline extract --product mercury` (extraction is monotonic and dedups by
+# Run AFTER `pnpm engine extract --product mercury` (extraction is monotonic and dedups by
 # normalized excerpt, so re-running extract after this keeps these items stable). If
-# `pnpm pipeline probe --category startup-banking` ever wholesale-replaces probe-tier items,
+# `pnpm engine probe --category startup-banking` ever wholesale-replaces probe-tier items,
 # re-run this script to restore mercury-probe-6.
 import datetime
 import json

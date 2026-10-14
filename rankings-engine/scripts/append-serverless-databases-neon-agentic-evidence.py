@@ -7,7 +7,7 @@
 # hosted MCP server's tool/scoping docs, AI Gateway, Functions-for-agents, neon.ts,
 # branching-for-agents, API-key scoping, the Management API llms.txt endpoint index); the
 # monotonic re-extract surfaced 18 mostly one-line items. These verbatim passages quote the
-# CRAWLED pages (pipeline/cache/crawl/serverless-databases/neon/*, fetched 2026-09-15) for
+# CRAWLED pages (rankings-engine/cache/crawl/serverless-databases/neon/*, fetched 2026-09-15) for
 # content the per-source extraction caps starved out.
 #
 # Verified-honest counterparts (NO doc items added, on purpose):
@@ -24,7 +24,7 @@
 #     documented endpoint; /api/list-tools is documented on the MCP overview page).
 #   - openness-*/privacy-* axes: out of this wave's scope; no supplements added there.
 #
-# Run AFTER `pnpm pipeline extract --product neon` (extract is monotonic and dedups by
+# Run AFTER `pnpm engine extract --product neon` (extract is monotonic and dedups by
 # normalized excerpt). If a probe stage ever wholesale-replaces probe-tier items, re-run this
 # script to restore neon-probe-6/7/8.
 import datetime

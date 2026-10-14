@@ -2,8 +2,8 @@
 # One-shot helper for the 2026-10-01 ai-assistants roster expansion (dots, grok-bot, kimi,
 # perplexity-computer). Appends probe-tier evidence items distilled from the recorded runtime
 # probes in open-rankings/ai-assistants/proofs/{dots,grok-bot,kimi,perplexity-computer}/ (see
-# pipeline/probes/ai-assistants.ts — all eight recorded probes passed). Run AFTER
-# `pnpm pipeline probe --category ai-assistants --product <id>` (or a spike pass, whose probe
+# rankings-engine/probes/ai-assistants.ts — all eight recorded probes passed). Run AFTER
+# `pnpm engine probe --category ai-assistants --product <id>` (or a spike pass, whose probe
 # stage wholesale-replaces probe-tier evidence and would wipe these items) — re-run this script
 # after any probe refresh.
 import datetime

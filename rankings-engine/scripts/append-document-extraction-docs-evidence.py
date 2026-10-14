@@ -4,7 +4,7 @@
 # precedent (append-kitty-docs-evidence.py): per-source extraction caps starved the entire
 # compliance/retention/deployment posture (SOC 2, HIPAA, ZDR, on-prem) out of every product's
 # pack even though the crawled corpus contains it verbatim. Applied evenly across all six
-# products. Every excerpt quotes pipeline/cache/crawl/document-extraction/<product>/*.md
+# products. Every excerpt quotes rankings-engine/cache/crawl/document-extraction/<product>/*.md
 # content (checked at authoring time); URLs are the crawled sources.
 import datetime
 import json

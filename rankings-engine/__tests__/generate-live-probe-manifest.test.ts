@@ -1,4 +1,4 @@
-// The live-probe manifest generator (pipeline/scripts/generate-live-probe-manifest.ts) is the
+// The live-probe manifest generator (rankings-engine/scripts/generate-live-probe-manifest.ts) is the
 // ONLY door into the worker's /api/try allowlist, so its exclusion rules are the security
 // boundary: everything here asserts that only static, keyless, pure-HTTP commands survive and
 // that every shell-shaped, credentialed, or non-HTTP probe is rejected (fail closed).

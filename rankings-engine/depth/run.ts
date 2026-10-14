@@ -1,4 +1,4 @@
-// Depth runner CLI — deliberately outside pipeline/cli.ts so the depth suite can never block
+// Depth runner CLI — deliberately outside rankings-engine/cli.ts so the depth suite can never block
 // or destabilize the fast evidence-in/rankings-out loop (docs/AGENTIC-DEPTH-PROGRAM.md, "Why a
 // separate program"). It writes only dated snapshot directories under
 // open-rankings/experiments/depth/ and touches no evidence, verdicts, or rankings.

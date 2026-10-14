@@ -1,8 +1,8 @@
 import { describe, expect, it } from 'vitest'
 import type { Story } from '@/lib/schemas'
-import { AGENTIC_STORIES } from '@/pipeline/agentic-stories'
-import { CANONICAL_IDS, stampOrigin } from '@/pipeline/scripts/migrate-story-origin'
-import { PROMPT_VERSION } from '@/pipeline/stages/judge'
+import { AGENTIC_STORIES } from '@/rankings-engine/agentic-stories'
+import { CANONICAL_IDS, stampOrigin } from '@/rankings-engine/scripts/migrate-story-origin'
+import { PROMPT_VERSION } from '@/rankings-engine/stages/judge'
 
 const RECORDED_AT = '2026-08-27T22:35:38-07:00'
 

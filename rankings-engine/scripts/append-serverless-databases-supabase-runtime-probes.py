@@ -2,8 +2,8 @@
 # One-shot helper for the supabase serverless-databases second-arena membership (founder ask
 # 2026-09-23: "supabase should show up in developer databases and be compared against neon").
 # Appends probe-tier evidence items distilled from the recorded runtime probes in
-# open-rankings/serverless-databases/proofs/supabase/ (see pipeline/probes/serverless-databases.ts —
-# all 3 recorded probes passed). Run AFTER `pnpm pipeline probe --category serverless-databases`
+# open-rankings/serverless-databases/proofs/supabase/ (see rankings-engine/probes/serverless-databases.ts —
+# all 3 recorded probes passed). Run AFTER `pnpm engine probe --category serverless-databases`
 # — that stage wholesale-replaces probe-tier evidence and would wipe these items (re-run this
 # script after any probe refresh).
 import datetime

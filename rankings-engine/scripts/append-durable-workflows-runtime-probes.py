@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 # One-shot helper for the durable-workflows arena bring-up (2026-09-10): appends probe-tier
 # evidence items distilled from the recorded runtime probes in open-rankings/durable-workflows/proofs/
-# (see pipeline/probes/durable-workflows.ts — all 28 recorded probes passed). Run AFTER
-# `pnpm pipeline probe --category durable-workflows` — that stage wholesale-replaces probe-tier
+# (see rankings-engine/probes/durable-workflows.ts — all 28 recorded probes passed). Run AFTER
+# `pnpm engine probe --category durable-workflows` — that stage wholesale-replaces probe-tier
 # evidence and would wipe these items (re-run this script after any probe refresh). The arena's
 # signature: every vendor ships a real CLI installable keylessly from a public registry, and
 # every vendor serves llms.txt — the densest agent-legible arena probed so far.

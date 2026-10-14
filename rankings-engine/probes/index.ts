@@ -1,7 +1,7 @@
-// Local probe registry: one module per arena (pipeline/probes/<arena-id>.ts) so parallel
+// Local probe registry: one module per arena (rankings-engine/probes/<arena-id>.ts) so parallel
 // arena waves never collide in a single literal. To add probes for an arena, edit (or
 // create) its module, register it here, and bump EXPECTED counts in
-// pipeline/__tests__/probes.test.ts.
+// rankings-engine/__tests__/probes.test.ts.
 //
 // Every command here is cheap, keyless, and read-only: --version/--help prints and stdio MCP
 // initialize handshakes. Nothing installs, mutates state, or needs credentials.

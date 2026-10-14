@@ -2,7 +2,7 @@ import type { LocalProbe } from './types'
 
 // Government services: the agencies whose committed evidence shows a genuinely probeable
 // public machine surface get recorded runs; everything else in this arena stays replay-free.
-// Standing rules (same contract as the wall-probe scripts in pipeline/scripts/
+// Standing rules (same contract as the wall-probe scripts in rankings-engine/scripts/
 // append-government-services-*-wall-probes.py): every command is a single keyless read-only
 // GET with the standard pipeline UA, no logins, no CAPTCHAs, and robots.txt is re-checked per
 // host before any recording run. Runtime robots results (2026-10-08, pipeline UA):

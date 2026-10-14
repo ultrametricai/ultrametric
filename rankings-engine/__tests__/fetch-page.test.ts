@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { htmlToMarkdown } from '@/pipeline/fetch-page'
+import { htmlToMarkdown } from '@/rankings-engine/fetch-page'
 
 describe('htmlToMarkdown', () => {
   it('converts headings and paragraphs, strips scripts and nav', () => {

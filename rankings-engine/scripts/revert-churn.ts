@@ -3,10 +3,10 @@
 //
 // Applies four revert rules (R1-R4) documented below, writes the resulting verdicts.json
 // per category, patches the matching judge cache files in place (same hash, reverted verdict
-// object) so a future `pnpm pipeline judge` run doesn't resurrect the churn, and prints a full
+// object) so a future `pnpm engine judge` run doesn't resurrect the churn, and prints a full
 // audit trail of every reverted cell.
 //
-// Usage: pnpm exec tsx pipeline/scripts/revert-churn.ts [--write]
+// Usage: pnpm exec tsx rankings-engine/scripts/revert-churn.ts [--write]
 //   (no --write: dry run, prints the plan only; --write: applies changes to disk)
 
 import { execSync } from 'node:child_process'

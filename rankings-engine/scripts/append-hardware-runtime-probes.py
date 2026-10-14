@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
 # Processors + GPUs arena bring-up (2026-09): appends probe-tier evidence items distilled from
-# the recorded keyless probes in open-rankings/{processors,gpus}/proofs/ (see pipeline/probes/
+# the recorded keyless probes in open-rankings/{processors,gpus}/proofs/ (see rankings-engine/probes/
 # {processors,gpus}.ts — hardware has no API/CLI/MCP surface, so the honest probes are
 # spec-page liveness with an expected model string, two toolchain-docs liveness checks, and one
 # recorded FINDING: Qualcomm's spec page serves a JS shell to any non-browser fetcher).
-# Run AFTER `pnpm pipeline probe --category processors|gpus` — that stage wholesale-replaces
+# Run AFTER `pnpm engine probe --category processors|gpus` — that stage wholesale-replaces
 # probe-tier evidence and would wipe these items (re-run this script after any probe refresh).
 import datetime
 import json

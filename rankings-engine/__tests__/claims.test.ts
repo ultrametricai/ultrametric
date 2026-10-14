@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import type { Evidence } from '@/lib/schemas'
-import { buildClaims, validateClaimRules } from '@/pipeline/stages/claims'
+import { buildClaims, validateClaimRules } from '@/rankings-engine/stages/claims'
 
 const ev = (id: string, tier: Evidence['tier'], excerpt: string): Evidence => ({
   id, tier, url: `https://x.example/${id}`, excerpt, fetchedAt: '2026-08-26T00:00:00Z',

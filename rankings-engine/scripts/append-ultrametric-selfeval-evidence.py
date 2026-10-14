@@ -10,13 +10,13 @@
 # The negatives are the point: the process auth wall (selfeval-4) and the MCP initialize
 # refusal (selfeval-5) are the owner product's recorded walls, kept per the house rules.
 #
-# The curated items live in pipeline/seeds/agent-skills-ultrametric-selfeval-evidence.json so
+# The curated items live in rankings-engine/seeds/agent-skills-ultrametric-selfeval-evidence.json so
 # the excerpts are reviewable data, not code. Idempotent: existing ids are skipped.
 #
 # 2026-10-14: the items now carry preserve: true (the seed is the source), so once appended
-# they survive probe-stage refreshes (pipeline/stages/probe.ts mergeProbeEvidence) — the
+# they survive probe-stage refreshes (rankings-engine/stages/probe.ts mergeProbeEvidence) — the
 # 2026-10-14 refresh had clobbered them, which let the judge re-grade the owner product on a
-# docs-only pack (see pipeline/scripts/bias-audit-ultrametric-refresh-2026-10-14.py).
+# docs-only pack (see rankings-engine/scripts/bias-audit-ultrametric-refresh-2026-10-14.py).
 import json
 import os
 

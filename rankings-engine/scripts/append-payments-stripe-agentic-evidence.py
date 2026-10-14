@@ -20,9 +20,9 @@
 #   - openness-full-export / privacy-*: out of this wave's scope; no agent-washing of unrelated
 #     axes.
 #
-# Run AFTER `pnpm pipeline extract --product stripe` (extraction is monotonic and dedups by
+# Run AFTER `pnpm engine extract --product stripe` (extraction is monotonic and dedups by
 # normalized excerpt, so re-running extract after this keeps these items stable). If
-# `pnpm pipeline probe --category payments` ever wholesale-replaces probe-tier items, re-run
+# `pnpm engine probe --category payments` ever wholesale-replaces probe-tier items, re-run
 # this script to restore stripe-probe-6/7.
 import datetime
 import json

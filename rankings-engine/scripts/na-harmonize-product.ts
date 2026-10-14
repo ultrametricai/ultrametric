@@ -7,7 +7,7 @@
 // flip turns a denominator-excluded na into a scoring none (RunAnywhere precedent, 2026-09-25:
 // "na-harmonize (against the new product)").
 //
-// Usage: pnpm exec tsx pipeline/scripts/na-harmonize-product.ts --category <id> --product <id> [--write]
+// Usage: pnpm exec tsx rankings-engine/scripts/na-harmonize-product.ts --category <id> --product <id> [--write]
 import fs from 'node:fs'
 import path from 'node:path'
 import { EvidenceSchema, StorySchema, VerdictBaseSchema, type Verdict } from '../../lib/schemas'
@@ -20,12 +20,12 @@ const CATEGORY = categoryFlag >= 0 ? process.argv[categoryFlag + 1] : undefined
 const productFlag = process.argv.indexOf('--product')
 const PRODUCT = productFlag >= 0 ? process.argv[productFlag + 1] : undefined
 if (!CATEGORY || !PRODUCT) {
-  console.error('usage: pnpm exec tsx pipeline/scripts/na-harmonize-product.ts --category <id> --product <id> [--write]')
+  console.error('usage: pnpm exec tsx rankings-engine/scripts/na-harmonize-product.ts --category <id> --product <id> [--write]')
   process.exit(1)
 }
 
 const RATIONALE =
-  'The axis applies to this product kind (peer products hold positive or none verdicts on this story), so lack of evidence for an applicable capability is "none", never "na". (na/none harmonized at arena bring-up — see pipeline/scripts/na-harmonize.ts.)'
+  'The axis applies to this product kind (peer products hold positive or none verdicts on this story), so lack of evidence for an applicable capability is "none", never "na". (na/none harmonized at arena bring-up — see rankings-engine/scripts/na-harmonize.ts.)'
 
 function main(): void {
   const dataDir = categoryDir(CATEGORY!)
@@ -78,7 +78,7 @@ function main(): void {
   }
   console.log(
     `${flips.length} ${PRODUCT} cells ${WRITE ? 'written' : 'planned'} (${incumbentNasSkipped} incumbent na cells left as judged); `
-    + `re-run \`pnpm pipeline judge --category ${CATEGORY}\` to reassemble verdicts.json`,
+    + `re-run \`pnpm engine judge --category ${CATEGORY}\` to reassemble verdicts.json`,
   )
   if (!WRITE) console.log('Dry run only — pass --write to apply.')
 }

@@ -1,13 +1,13 @@
 #!/usr/bin/env python3
 # Helper for the game-engines arena (bring-up 2026-09-15, accuracy wave 2026-09-23): upserts
 # probe-tier evidence items distilled from the recorded runtime probes in
-# open-rankings/game-engines/proofs/ (see pipeline/probes/game-engines.ts) plus MCP/CLI-landscape facts
+# open-rankings/game-engines/proofs/ (see rankings-engine/probes/game-engines.ts) plus MCP/CLI-landscape facts
 # verified live via keyless GitHub/npm/UPM API calls (official vs community attribution
 # matters — the founder asked for agenticness measured honestly). The 2026-09-23 wave added
 # Unity's first-party CLI (`unity mcp` / `unity eval`, the announced replacement for the
 # deprecated in-editor MCP server), Unity's keyless UPM registry, Epic's new-but-flaky
 # llms.txt files, and Godot's built-in LSP counterweight. Run AFTER
-# `pnpm pipeline probe --category game-engines` — that stage wholesale-replaces probe-tier
+# `pnpm engine probe --category game-engines` — that stage wholesale-replaces probe-tier
 # evidence and would wipe these items.
 import datetime
 import json

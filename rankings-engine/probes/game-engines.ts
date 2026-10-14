@@ -278,7 +278,7 @@ export const probes: LocalProbe[] = [
   // back-to-back runs, whatever the client — curl, node fetch, python urllib). Too flaky
   // for a standing recorded probe (the api.github.com rationale below), so the fact is
   // recorded as a dated probe-tier evidence item in
-  // pipeline/scripts/append-game-engines-runtime-probes.py instead.
+  // rankings-engine/scripts/append-game-engines-runtime-probes.py instead.
   {
     // Honest negative: Unreal's source repo is EULA/auth-gated (raw README 404s keylessly)
     // and unrealengine.com 403s every non-browser client, its license page included.

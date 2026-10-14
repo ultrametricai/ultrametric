@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # One-shot helper for the terminals arena bring-up (2026-09-04): appends probe-tier evidence
 # items distilled from the recorded runtime probes in open-rankings/terminals/proofs/ (see
-# pipeline/probes/terminals.ts). Run AFTER `pnpm pipeline probe
+# rankings-engine/probes/terminals.ts). Run AFTER `pnpm engine probe
 # --category terminals` — that stage wholesale-replaces probe-tier evidence and would wipe
 # these items (re-run this script after any probe refresh).
 import json

@@ -1,6 +1,6 @@
 import { describe, expect, it, vi } from 'vitest'
 import { z } from 'zod'
-import { extractJson, llmJson, retryBackoffMs, setClientForTests, setSleepForTests } from '@/pipeline/llm'
+import { extractJson, llmJson, retryBackoffMs, setClientForTests, setSleepForTests } from '@/rankings-engine/llm'
 
 // Retries back off with real sleeps in production; tests record them instead of waiting.
 const sleeps: number[] = []

@@ -21,7 +21,7 @@
 #     quoted as such. Alpha/Beta labels are kept where the pages carry them.
 #   - openness-*/privacy-*: out of this wave's scope; no agent-washing of unrelated axes.
 #
-# Run AFTER `pnpm pipeline extract --product <id>` (extraction is monotonic and dedups by
+# Run AFTER `pnpm engine extract --product <id>` (extraction is monotonic and dedups by
 # normalized excerpt, so re-running extract after this keeps these items stable).
 import datetime
 import json

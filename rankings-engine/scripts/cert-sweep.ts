@@ -1,6 +1,6 @@
 // Weekly certification sweep (.github/workflows/cert-sweep.yml) — keeps /certified
 // self-sustaining with the same keyless conformance suite vendors run themselves
-// (pipeline/scripts/certify.ts, protocol in docs/CERTIFICATION.md). Two passes:
+// (rankings-engine/scripts/certify.ts, protocol in docs/CERTIFICATION.md). Two passes:
 //
 //   1. Re-verify every currently certified product against its committed report's target.
 //      Pass at the same level        → refresh (new date + report) only when the certification
@@ -14,7 +14,7 @@
 //                                      auditable in the PR diff.
 //
 //   2. Certify new passers from the probe-evidence candidate queue
-//      (pipeline/scripts/cert-candidates.ts), capped at CANDIDATE_CAP per run so the weekly
+//      (rankings-engine/scripts/cert-candidates.ts), capped at CANDIDATE_CAP per run so the weekly
 //      job stays bounded; everything past the cap is logged and, because certified products
 //      leave the queue, the deterministic ordering pages through the backlog week by week.
 //
@@ -22,7 +22,7 @@
 // submitted by the vendor (see lib/certifications.ts). Keyless by construction: runCertify
 // only GETs/POSTs public vendor surfaces. Run manually with
 //
-//   pnpm tsx pipeline/scripts/cert-sweep.ts
+//   pnpm tsx rankings-engine/scripts/cert-sweep.ts
 //
 // then `node scripts/generate-badges.mjs` to re-render the /badges SVGs from the updated
 // registry (the workflow does both).

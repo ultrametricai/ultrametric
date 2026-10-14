@@ -4,7 +4,7 @@ import globals from 'globals'
 import tseslint from 'typescript-eslint'
 
 // The open-surface lint config: eslint recommended for the plain-JS scripts, typescript-eslint
-// recommended for lib/pipeline/tests. (The pre-split config came from eslint-config-next; the
+// recommended for the lib, rankings-engine, and test suites. (The pre-split config came from eslint-config-next; the
 // severity downgrades below match what it applied, so the gate is unchanged.)
 const eslintConfig = defineConfig([
   globalIgnores([

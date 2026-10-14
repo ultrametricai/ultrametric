@@ -6,7 +6,7 @@
 # only 5-10 items per firm (mostly the interactive tools) and starved the practice-page claims
 # (patent prosecution, venture deal volume, offices, published startup programs) out of the
 # packs even though the crawl cache contains them verbatim. Every excerpt below was curated
-# FROM the pipeline crawl cache (pipeline/cache/crawl/startup-law-firms/<firm>/) and quotes the
+# FROM the pipeline crawl cache (rankings-engine/cache/crawl/startup-law-firms/<firm>/) and quotes the
 # cited firm page (checked at authoring time, 2026-09-30). Extraction is monotonic and dedups
 # by normalized excerpt, so re-running extract after this keeps these items stable.
 #
@@ -15,7 +15,7 @@
 # none), no IP-prosecution items for Gunderson Dettmer (it has no IP prosecution/litigation
 # practice), no open-resource items for VLP.
 #
-# The curated items live in pipeline/seeds/startup-law-firms-supp-evidence.json (one list per
+# The curated items live in rankings-engine/seeds/startup-law-firms-supp-evidence.json (one list per
 # productId) so the excerpts are reviewable data, not code.
 import datetime
 import json

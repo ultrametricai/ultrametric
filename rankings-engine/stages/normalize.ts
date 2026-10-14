@@ -64,7 +64,7 @@ Return JSON: array of story objects.`
 
 export async function runNormalize({ category }: { category?: string; product?: string }): Promise<void> {
   if (!category) {
-    throw new Error('usage: pnpm pipeline normalize --category <id>')
+    throw new Error('usage: pnpm engine normalize --category <id>')
   }
   const [cat] = resolveCategories(category)
   const dataDir = categoryDir(cat.id)
