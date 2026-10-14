@@ -11,17 +11,22 @@ identical `SYSTEM` prompt, `judgePrompt`, validation rules, and correction loop 
 `pipeline/stages/judge.ts` (prompt `v3`), so every difference below is the model, not the
 prompt.
 
+**Redaction note:** this memo was trimmed of pricing (dollar figures and the price-per-token
+tables) on 2026-10-14 by founder order; token counts, cache behavior, and the relative cost
+ratios are unchanged.
+
 ## Recommendation: ADOPT — staged per-arena via the Batch API, with the mechanics below
 
 Short version: Opus 5.5 reads the v3 rubric more faithfully than Sonnet 5 (7 of 10 manually
 adjudicated flips favored its reading, including one weight-3 cell where the Sonnet verdict
 plainly violates the prompt's own MCP boundary example), it cites slightly more evidence per
-verdict, and at $4/$20 per MTok it costs exactly 2.0x Sonnet 5 interactive — and **the same as
-today's Sonnet interactive spend if the migration re-judge runs through the Batch API**
-($2/$10). The full-fleet migration is a ~$570–1,300 one-time cost. "Adopt for new arenas only"
+verdict, and per token it costs exactly 2.0x Sonnet 5 interactive — and **the same as today's
+Sonnet interactive spend if the migration re-judge runs through the Batch API** (batch is half
+the interactive rate for both models). The full-fleet migration is a bounded one-time cost
+(§4, sized in tokens). "Adopt for new arenas only"
 is the worst of the three options: it leaves documented Sonnet misjudgments published in the
 oldest arenas and makes the cross-arena `/global/[story]` comparisons judge-inconsistent
-indefinitely. The real cost of adoption is not dollars — it is the migration mechanics
+indefinitely. The real cost of adoption is not the token bill — it is the migration mechanics
 (§ Migration mechanics), which are tractable but must be done deliberately.
 
 ---
@@ -148,31 +153,30 @@ non-Anthropic product on a *correct* rule application, and Opus also downgraded 
 Actual token spend, summed from API response `usage` metadata across every call (including
 retries and correction rounds; zero cache usage — the judge makes independent one-shot calls):
 
-| | Calls | Input tokens | Output tokens | Cost @ Opus 5.5 $4/$20 per MTok |
-|---|---|---|---|---|
-| Smoke run (aider, 74 cells) | 74 | 534,260 | 32,407 | $2.79 |
-| Full run (remaining 962 cells) | 965 | 7,344,471 | 447,177 | $38.32 |
-| **Pilot total (1,036 cells)** | **1,039** | **7,878,731** | **479,584** | **$41.11** |
+| | Calls | Input tokens | Output tokens |
+|---|---|---|---|
+| Smoke run (aider, 74 cells) | 74 | 534,260 | 32,407 |
+| Full run (remaining 962 cells) | 965 | 7,344,471 | 447,177 |
+| **Pilot total (1,036 cells)** | **1,039** | **7,878,731** | **479,584** |
 
-Per cell: ~7,600 input + ~460 output tokens ≈ **$0.040/cell** (Opus 5.5 interactive).
-The same tokens on Sonnet 5 ($2/$10) would cost $20.55 — the multiplier is exactly **2.0x**.
-Run at concurrency 8; zero failed cells, zero validation failures.
+Per cell: ~7,600 input + ~460 output tokens. On Opus 5.5 interactive the same tokens cost
+exactly **2.0x** what they cost on Sonnet 5 interactive (the input and output price ratios are
+both 2.0x). Run at concurrency 8; zero failed cells, zero validation failures.
 
 **Full fleet** (93 arenas, 32,949 cells; fleet evidence packs average ~17.7 KB/cell vs
-ai-coding's 21.4 KB, so scale the input term by ~0.83):
+ai-coding's 21.4 KB, so scale the input term by ~0.83): roughly 32x the pilot's token volume.
 
-| Scenario | Estimated cost |
+| Scenario | Relative cost |
 |---|---|
-| Full-fleet re-judge, Opus 5.5 interactive | **~$1,130** (upper bound $1,310 if every arena were ai-coding-sized) |
-| Full-fleet re-judge, Opus 5.5 **Batch API** ($2/$10) | **~$570** — identical to what the same re-judge costs on Sonnet 5 interactive today |
-| Reference: full fleet on Sonnet 5 interactive | ~$570 |
+| Full-fleet re-judge, Opus 5.5 interactive | 2.0x the same re-judge on Sonnet 5 interactive |
+| Full-fleet re-judge, Opus 5.5 **Batch API** | identical to what the same re-judge costs on Sonnet 5 interactive today (batch halves the interactive rate) |
 
 **Ongoing cadence:** story-runner refreshes one arena per 6 h (≈28 arena-runs/week) and the
-cellHash cache means only evidence-changed cells re-judge. Marginal pricing is **$40 per 1,000
-cells interactive / $20 per 1,000 via batch** — i.e. steady-state judge spend doubles versus
-today, from a base that is already small (a *worst-case* week that fully re-judged every
-refreshed arena ≈ 9,900 cells ≈ $395 interactive; realistic evidence-driven weeks re-judge a
-small fraction of that). Calibration/uncertainty passes (which share `PA_MODEL` via
+cellHash cache means only evidence-changed cells re-judge. Marginal judge spend per re-judged
+cell doubles versus today (half of that doubling is recovered via batch), from a base that is
+already small (a *worst-case* week that fully re-judged every refreshed arena ≈ 9,900 cells
+≈ 75M input tokens; realistic evidence-driven weeks re-judge a small fraction of that).
+Calibration/uncertainty passes (which share `PA_MODEL` via
 `pipeline/llm.ts`) double in cost on the same basis.
 
 ## 5. Migration mechanics (if adopted)
@@ -210,7 +214,8 @@ small fraction of that). Calibration/uncertainty passes (which share `PA_MODEL` 
    score-interval bands (README §8) were measured from *Sonnet* re-rolls; Opus has a different
    (likely narrower — conf distribution is tighter, medium-heavy) noise profile. Re-run the
    uncertainty pass on a sample under Opus before republishing bands; a 100-cell double
-   re-roll costs ~$8 and should happen *before* fleet cutover as the go/no-go stability check.
+   re-roll (≈200 judge calls, ~1.6M tokens) should happen *before* fleet cutover as the
+   go/no-go stability check.
 6. **Docs to update in the same release:** README §7 (judge model name + new prompt version),
    README §9 and `app/methodology/page.tsx` (bias disclosure: judge is still an Anthropic
    model, Anthropic's products in ai-coding/frontier-models re-graded by it — include this
@@ -236,8 +241,8 @@ small fraction of that). Calibration/uncertainty passes (which share `PA_MODEL` 
 - Single arena, single Opus pass: Opus's own re-roll variance is unmeasured (mechanics §5
   covers this before cutover). n=10 adjudicated flips is a directional signal, not a proof.
 - ai-coding is evidence-deep and includes Anthropic's own product; a second pilot on one
-  thin-evidence, no-conflict arena (~$5–15) would confirm the generosity shift generalizes
-  before the fleet run — cheap insurance, not a blocker.
+  thin-evidence, no-conflict arena (a few hundred judge cells) would confirm the generosity
+  shift generalizes before the fleet run — cheap insurance, not a blocker.
 - The score-scale inflation (+2–8 aiEra) means published historical comparisons break at the
   migration boundary; the labeled-discontinuity mechanics in §5.4 are the mitigation, not a
   reason to stay.
@@ -253,6 +258,8 @@ pnpm exec tsx pipeline/scripts/rejudge-pilot-diff.ts --category ai-coding --pilo
 ```
 
 Pilot artifacts (scratch, uncommitted by design): `/tmp/opus55-pilot/ai-coding/{verdicts.json,usage.json,diff-report.json,cells/}`.
-Model ids verified against the live models API on 2026-09-30; prices from
-platform.claude.com/docs/en/about-claude/pricing (Opus 5.5 $4/$20, batch $2/$10, cache-hit
-$0.20; Sonnet 5 $2/$10, batch $1/$5).
+Model ids verified against the live models API on 2026-09-30. The price ratios used above
+(Opus 5.5 interactive = 2.0x Sonnet 5 interactive on both input and output tokens; Batch API
+= half the interactive rate for both models) are from
+platform.claude.com/docs/en/about-claude/pricing, retrieved 2026-09-30; the dollar figures
+are redacted per the note at the top.
