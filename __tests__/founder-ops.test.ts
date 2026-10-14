@@ -13,10 +13,10 @@ const readFixture = (name: string) =>
 
 describe('founder-ops corpus validation', () => {
   it('the committed corpus passes every invariant', () => {
-    // Pinned to the newest checked_on in citations/registry.json (2026-10-03 — the
-    // state-coverage wave's CA/NV/TX sources) so the "checked date is in the future"
-    // invariant stays meaningful.
-    expect(validateFounderOps(new Date('2026-10-03T00:00:00Z'))).toEqual([])
+    // Pinned to the newest checked_on in citations/registry.json (2026-10-14 — the
+    // open-modules quality audit's Rev. Proc. 2025-32 / Pub. L. 114-41 sources) so the
+    // "checked date is in the future" invariant stays meaningful.
+    expect(validateFounderOps(new Date('2026-10-14T00:00:00Z'))).toEqual([])
   })
 
   it('collects malformed workflow JSON and invalid process definitions together', () => {
