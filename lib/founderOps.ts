@@ -46,6 +46,12 @@ const OPERATIONAL_COMPANY_FIELDS = path.join('open-processes', 'company-fields.j
 // operational registries.
 const OPERATIONAL_CHAINS = path.join('open-processes', 'chains.json')
 
+// The startup-law map (open-law/map.json, schemas/law-map.schema.json) is the domain taxonomy
+// OVER the rule cards, not a card itself, so the rule walkers skip it; its own invariants
+// (every card placed, every reference resolving, maturity grades consistent with the cards
+// present) run inside validateFounderOps below.
+const LAW_MAP = path.join('open-law', 'map.json')
+
 // Fictional scenario fixtures live under open-processes/fixtures/ (folded in from the old
 // top-level fixtures/). They validate separately below, so the workflow walker skips the
 // whole subtree like it skips the operational registries.
@@ -263,7 +269,7 @@ export function validateFounderOps(asOf?: Date): string[] {
     if (checked && checked > today) errors.push(`source ${sid}: checked date is in the future`)
   }
 
-  const rules = indexed(listJson(path.join(ROOT, 'open-law')).filter((f) => !f.endsWith('README.md')), errors, 'rule')
+  const rules = indexed(listJson(path.join(ROOT, 'open-law')).filter((f) => !f.endsWith(LAW_MAP)), errors, 'rule')
   for (const [rid, rule] of rules) {
     shape(rule, need('rule.schema'), `rule ${rid}`, errors)
     if (!jurisdictions.has(str(rule.jurisdiction) ?? '')) errors.push(`rule ${rid}: unknown jurisdiction`)
@@ -319,6 +325,70 @@ export function validateFounderOps(asOf?: Date): string[] {
         }
       }
     }
+  }
+
+  // The startup-law map: every committed card appears in the taxonomy, every rule and
+  // process reference resolves, and the editorial maturity grades stay consistent with the
+  // cards actually present (no cards cannot grade better than unmapped; cards cannot grade
+  // unmapped; partial and unmapped sub-areas state their gaps).
+  const mapDoc = read(path.join(ROOT, LAW_MAP))
+  shape(mapDoc, need('law-map.schema'), 'law map', errors)
+  const linkableProcessIds = new Set<string>(processes.keys())
+  const corpusDoc = read(path.join(ROOT, OPERATIONAL_CORPUS))
+  if (Array.isArray(corpusDoc)) {
+    for (const p of corpusDoc) if (isObj(p) && typeof p.id === 'string') linkableProcessIds.add(p.id)
+  }
+  const mappedRules = new Set<string>()
+  if (isObj(mapDoc)) {
+    const updated = isoDate(mapDoc.updated_on, 'law map.updated_on', errors)
+    if (updated && updated > today) errors.push('law map: updated_on is in the future')
+    const domainIds = new Set<string>()
+    for (const domainValue of Array.isArray(mapDoc.domains) ? mapDoc.domains : []) {
+      const domain = isObj(domainValue) ? domainValue : {}
+      const did = str(domain.id) ?? ''
+      if (domainIds.has(did)) errors.push(`law map: duplicate domain ${did}`)
+      domainIds.add(did)
+      const subMaturities: string[] = []
+      const subIds = new Set<string>()
+      for (const subValue of Array.isArray(domain.subareas) ? domain.subareas : []) {
+        const sub = isObj(subValue) ? subValue : {}
+        const sid = `${did}/${str(sub.id) ?? ''}`
+        if (subIds.has(sid)) errors.push(`law map: duplicate sub-area ${sid}`)
+        subIds.add(sid)
+        const maturity = str(sub.maturity) ?? ''
+        subMaturities.push(maturity)
+        const ruleIds = Array.isArray(sub.rule_ids) ? sub.rule_ids : []
+        const seen = new Set<string>()
+        for (const ridValue of ruleIds) {
+          const rid = typeof ridValue === 'string' ? ridValue : ''
+          if (seen.has(rid)) errors.push(`law map ${sid}: duplicate rule ${rid}`)
+          seen.add(rid)
+          if (!rules.has(rid)) errors.push(`law map ${sid}: unknown rule ${rid}`)
+          mappedRules.add(rid)
+        }
+        if (ruleIds.length === 0 && maturity !== 'unmapped') errors.push(`law map ${sid}: no cards, so maturity must be unmapped`)
+        if (ruleIds.length > 0 && maturity === 'unmapped') errors.push(`law map ${sid}: carries cards, so maturity cannot be unmapped`)
+        const gaps = Array.isArray(sub.gaps) ? sub.gaps : []
+        if (maturity !== 'mapped' && gaps.length === 0) errors.push(`law map ${sid}: ${maturity} maturity requires stated gaps`)
+        for (const pidValue of Array.isArray(sub.process_ids) ? sub.process_ids : []) {
+          const pid = typeof pidValue === 'string' ? pidValue : ''
+          if (!linkableProcessIds.has(pid)) errors.push(`law map ${sid}: unknown process ${pid}`)
+        }
+      }
+      const maturity = str(domain.maturity) ?? ''
+      if (maturity === 'mapped' && subMaturities.some((m) => m !== 'mapped')) {
+        errors.push(`law map ${did}: mapped requires every sub-area mapped`)
+      }
+      if (maturity === 'unmapped' && subMaturities.some((m) => m !== 'unmapped')) {
+        errors.push(`law map ${did}: unmapped requires every sub-area unmapped`)
+      }
+      if (maturity === 'partial' && (subMaturities.every((m) => m === 'mapped') || subMaturities.every((m) => m === 'unmapped'))) {
+        errors.push(`law map ${did}: partial misstates uniformly ${subMaturities[0] ?? 'absent'} sub-areas`)
+      }
+    }
+  }
+  for (const rid of rules.keys()) {
+    if (!mappedRules.has(rid)) errors.push(`rule ${rid}: absent from the law map (open-law/map.json)`)
   }
 
   const coverageDoc = read(path.join(ROOT, 'coverage/coverage.json'))
@@ -382,7 +452,7 @@ export function planFounderOps(event: JsonObject, asOf?: Date): FounderOpsPlan {
   if (matches.length === 0) {
     return { status: 'unsupported', reason: 'no exact covered scenario', may_execute: false }
   }
-  const ruleMap = indexed(listJson(path.join(ROOT, 'open-law')), [], 'rule')
+  const ruleMap = indexed(listJson(path.join(ROOT, 'open-law')).filter((f) => !f.endsWith(LAW_MAP)), [], 'rule')
   const citationsDoc = read(path.join(ROOT, 'citations/registry.json'))
   const sources = new Map<string, JsonObject>()
   for (const s of isObj(citationsDoc) && Array.isArray(citationsDoc.citations) ? citationsDoc.citations : []) {
