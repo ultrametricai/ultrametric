@@ -61,4 +61,38 @@ describe('shared process definitions', () => {
     records[0].outcomes = ['An authored outcome.']
     expect(validateCatalog(records)[0].notes[0].text).toBe('A contextual recommendation.')
   })
+  it.each([
+    ['empty', []],
+    ['duplicate', ['method', 'method']],
+    ['unknown', ['missing']],
+    ['incoming connection', ['self']],
+  ])('rejects %s explicit entries', (_, entrySteps) => {
+    const records = fixture()
+    records[0].entrySteps = entrySteps
+    expect(() => validateCatalog(records)).toThrow()
+  })
+  it('rejects steps unreachable from explicit entries', () => {
+    const records = fixture()
+    records[0].entrySteps = ['method']
+    records[0].parts.push(part('unreachable'))
+    expect(() => validateCatalog(records)).toThrow('unreachable')
+  })
+  it('accepts valid explicit entries and keeps unpinned legacy records valid', () => {
+    const records = fixture()
+    expect(validateCatalog(records)[0].entrySteps).toBeUndefined()
+    records[0].entrySteps = ['method']
+    expect(validateCatalog(records)[0].entrySteps).toEqual(['method'])
+  })
+  it('accepts multiple entries that cover disconnected top-level branches', () => {
+    const records = fixture()
+    records[0].parts.push(part('other-root'))
+    records[0].entrySteps = ['method', 'other-root']
+    expect(validateCatalog(records)[0].entrySteps).toEqual(['method', 'other-root'])
+  })
+  it('rejects nested option parts as top-level entries', () => {
+    const records = fixture()
+    records[0].parts[0].options[0].parts = [part('nested')]
+    records[0].entrySteps = ['method', 'nested']
+    expect(() => validateCatalog(records)).toThrow('invalid entry step')
+  })
 })
