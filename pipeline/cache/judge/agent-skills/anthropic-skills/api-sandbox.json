@@ -1,14 +1,16 @@
 {
-  "hash": "a976c11128ebe9f2e5842e0aee9fecf9f1f4cd9b28503e39031ff8698d5118cd",
+  "hash": "59aafe76816ec2034e4a23246a966eb3c8ff9a824bc3f04eabb1980dc1c5d575",
   "verdict": {
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "On the API, Skills run inside the code execution environment, specified through the `container` parameter. Claude Code plugins with skills can be tested locally via the `--plugin-dir` flag, and skill-creator can benchmark skills. Together these suggest an isolated place to try skills, but nothing explicitly describes a sandbox that keeps tests away from production data. Missing for 10: explicit documentation that the execution container is isolated from production systems and data, a dedicated test or staging mode for skills, and independent or hands-on corroboration of safe sandboxed testing.",
+    "rationale": "API Skills run inside Anthropic's code execution environment, a container specified via the `container` parameter (docs-10, docs-23), which implies isolated execution. Plugins and skills can also be tested locally with `--plugin-dir` before distribution (docs-41). Adjacent safeguards exist: hooks can block destructive commands (docs-91) and file checkpointing can restore files (docs-92). However, none of the evidence describes a sandbox environment explicitly separated from production data. missing for 10: explicit documentation of a sandbox/staging mode isolated from production data, documented data-isolation guarantees for the code execution container, hands-on or independent corroboration.",
     "evidenceIds": [
       "anthropic-skills-docs-10",
+      "anthropic-skills-docs-23",
       "anthropic-skills-docs-41",
-      "anthropic-skills-docs-14"
+      "anthropic-skills-docs-91",
+      "anthropic-skills-docs-92"
     ],
     "productId": "anthropic-skills",
     "storyId": "api-sandbox"
