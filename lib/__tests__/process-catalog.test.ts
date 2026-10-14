@@ -10,7 +10,7 @@ afterEach(() => temporary.splice(0).forEach(folder => rmSync(folder, { recursive
 describe('process authoring catalog', () => {
   it('preserves every authored logo value through catalog loading', () => {
     const { processes } = loadProcessCatalog({ processes: ['generate-a-brand-logo'] })
-    const { entrySteps, ...record } = JSON.parse(readFileSync('processes/generate-a-brand-logo.json', 'utf8'))
+    const { entrySteps, ...record } = JSON.parse(readFileSync('open-processes/generate-a-brand-logo.json', 'utf8'))
     expect(processes).toHaveLength(1)
     expect(processes[0].slug).toBe('generate-a-brand-logo')
     expect(processes[0].record).toEqual(record)
@@ -32,9 +32,9 @@ describe('process authoring catalog', () => {
     expect(() => loadProcessCatalog({ processes: ['v1'] })).toThrow()
     const root = mkdtempSync(path.join(os.tmpdir(), 'process-catalog-'))
     temporary.push(root)
-    mkdirSync(path.join(root, 'processes'))
-    const definition = JSON.parse(readFileSync('processes/generate-a-brand-logo.json', 'utf8'))
-    writeFileSync(path.join(root, 'processes/example.json'), JSON.stringify({ ...definition, links: [] }))
+    mkdirSync(path.join(root, 'open-processes'))
+    const definition = JSON.parse(readFileSync('open-processes/generate-a-brand-logo.json', 'utf8'))
+    writeFileSync(path.join(root, 'open-processes/example.json'), JSON.stringify({ ...definition, links: [] }))
     expect(() => loadProcessCatalog({ processes: ['example'] }, root)).toThrow('reachable')
   })
 })
@@ -42,7 +42,7 @@ describe('process authoring catalog', () => {
 function exportFixture() {
   const root = mkdtempSync(path.join(os.tmpdir(), 'candidate-export-'))
   temporary.push(root)
-  const files = ['lib/shared-processes/catalog.ts', 'lib/shared-processes/schema.ts', 'lib/shared-processes/json-schema.ts', 'scripts/shared-processes/export-candidate.ts', 'schemas/shared-process.schema.json', 'processes/generate-a-brand-logo.json']
+  const files = ['lib/shared-processes/catalog.ts', 'lib/shared-processes/schema.ts', 'lib/shared-processes/json-schema.ts', 'scripts/shared-processes/export-candidate.ts', 'schemas/shared-process.schema.json', 'open-processes/generate-a-brand-logo.json']
   for (const file of files) {
     mkdirSync(path.dirname(path.join(root, file)), { recursive: true })
     cpSync(file, path.join(root, file))
@@ -73,6 +73,6 @@ describe('candidate source pin', () => {
     expect(result.status, result.stderr).toBe(0)
     const lock = JSON.parse(readFileSync(path.join(root, 'candidate.lock'), 'utf8'))
     expect(lock.sourceRevision).toBe(execFileSync('git', ['rev-parse', 'HEAD'], { cwd: root, encoding: 'utf8' }).trim())
-    expect(lock.files.map((file: { path: string }) => file.path)).toEqual(['processes/generate-a-brand-logo.json', 'schemas/shared-process.schema.json'])
+    expect(lock.files.map((file: { path: string }) => file.path)).toEqual(['open-processes/generate-a-brand-logo.json', 'schemas/shared-process.schema.json'])
   })
 })

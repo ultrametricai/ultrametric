@@ -10,7 +10,7 @@ if (!values.output || !values.lock) throw new Error('Use --output <catalog.json>
 const { processes } = loadProcessCatalog({ processes: values.process ?? [] })
 if (!processes.length) throw new Error('The candidate catalog is empty')
 const paths = ['lib/shared-processes/catalog.ts', 'lib/shared-processes/schema.ts', 'lib/shared-processes/json-schema.ts', 'scripts/shared-processes/export-candidate.ts', 'schemas/shared-process.schema.json',
-  ...processes.map(process => `processes/${process.slug}.json`)]
+  ...processes.map(process => `open-processes/${process.slug}.json`)]
 if (execFileSync('git', ['status', '--porcelain', '--', ...paths], { encoding: 'utf8' }).trim()) {
   throw new Error('Commit candidate source before exporting')
 }

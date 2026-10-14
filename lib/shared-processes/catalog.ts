@@ -40,7 +40,7 @@ export function loadProcessCatalog(selection: { processes: string[] }, root = pr
   const names = z.array(slug).min(1).parse(selection.processes)
   if (new Set(names).size !== names.length) throw new Error('Duplicate process selection')
   const processes: CatalogProcess[] = names.sort().map(name => {
-    const { entrySteps, ...record } = processDefinitionSchema.parse(json(path.join(root, 'processes', `${name}.json`)))
+    const { entrySteps, ...record } = processDefinitionSchema.parse(json(path.join(root, 'open-processes', `${name}.json`)))
     validateFlow(record.parts.map(part => part.id), record.links, entrySteps)
     return { slug: name, entrySteps, record }
   })
