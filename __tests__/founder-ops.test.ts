@@ -13,10 +13,10 @@ const readFixture = (name: string) =>
 
 describe('founder-ops corpus validation', () => {
   it('the committed corpus passes every invariant', () => {
-    // Pinned to the newest checked_on in citations/registry.json (2026-10-03 — the
-    // state-coverage wave's CA/NV/TX sources) so the "checked date is in the future"
-    // invariant stays meaningful.
-    expect(validateFounderOps(new Date('2026-10-03T00:00:00Z'))).toEqual([])
+    // Pinned to the newest checked_on in citations/registry.json (2026-10-14 — the
+    // law-map wave's securities/employment/IP sources) so the "checked date is in the
+    // future" invariant stays meaningful.
+    expect(validateFounderOps(new Date('2026-10-14T00:00:00Z'))).toEqual([])
   })
 
   it('collects malformed workflow JSON and invalid process definitions together', () => {
@@ -29,7 +29,7 @@ describe('founder-ops corpus validation', () => {
       return readFile(...args)
     })
     try {
-      const errors = validateFounderOps(new Date('2026-10-03T00:00:00Z'))
+      const errors = validateFounderOps(new Date('2026-10-14T00:00:00Z'))
       expect(errors).toContain('open-processes/equity/us-de/409a-valuation.json: unreadable JSON')
       expect(errors).toContain('open-processes/generate-a-brand-logo.json: invalid process definition')
     } finally {
