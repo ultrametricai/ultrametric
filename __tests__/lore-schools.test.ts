@@ -23,7 +23,7 @@ const registry = JSON.parse(
 const schoolIds = new Set(schools.map((s) => s.id))
 const registrySchools = new Set(registry.map((e) => e.school))
 
-describe('lore schools (lore/schools.json)', () => {
+describe('lore schools (open-lore/schools.json)', () => {
   it('is an array of at least five schools, so the registry can disagree with itself', () => {
     expect(Array.isArray(schools)).toBe(true)
     expect(schools.length).toBeGreaterThanOrEqual(5)
@@ -63,7 +63,7 @@ describe('lore schools (lore/schools.json)', () => {
   })
 
   it('the lore README schools table matches schools.json', () => {
-    const readme = fs.readFileSync(path.join(ROOT, 'lore', 'README.md'), 'utf8')
+    const readme = fs.readFileSync(path.join(ROOT, 'open-lore', 'README.md'), 'utf8')
     for (const s of schools) {
       expect(readme, `lore README missing school row for ${s.id}`).toContain(
         `| ${s.name} | ${s.position} |`,

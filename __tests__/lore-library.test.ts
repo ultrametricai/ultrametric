@@ -183,7 +183,7 @@ describe('lore library (open-lore/library.json)', () => {
   })
 
   it('the lore README topics table carries a row for every section', () => {
-    const readme = fs.readFileSync(path.join(ROOT, 'lore', 'README.md'), 'utf8')
+    const readme = fs.readFileSync(path.join(ROOT, 'open-lore', 'README.md'), 'utf8')
     for (const s of library.sections) {
       expect(readme, `lore README missing topic row for ${s.id}`).toContain(`| ${s.title} | ${s.covers}`)
     }
