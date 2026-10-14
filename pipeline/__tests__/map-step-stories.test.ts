@@ -4,7 +4,7 @@
 import { describe, expect, it } from 'vitest'
 import { loadProcesses, type DagNode } from '../../lib/processes'
 import {
-  COMPUTER_USE_SOURCES, coveringArenaId, extraArenasFor, isComputerUseCandidate,
+  COMPUTER_USE_SOURCES, coveringArenaId, extraArenasFor, isComputerUseCandidate, loadStepStoryMap,
 } from '../../lib/processRankings'
 import type { Story } from '../../lib/schemas'
 import {
@@ -116,7 +116,9 @@ describe('enumerateTargets mirrors lib/processRankings consumption', () => {
       } else if (t.kind === 'extra') {
         // Extras mirror the 'function' posture: the arena's FULL story list is offered — the
         // ref allowlist and full/partial gate live in the consumer, not the mapper.
-        expect(extraArenasFor(node)).toContain(t.arenaId)
+        const external = loadStepStoryMap(DATA_DIR).find(entry => entry.taskId === t.taskId && entry.nodeId === t.nodeId && entry.arenaId === t.arenaId && entry.kind === 'extra')
+        expect([...extraArenasFor(node), ...(external?.productIds?.length ? [external.arenaId] : [])]).toContain(t.arenaId)
+        expect(t.productIds).toEqual(external?.productIds)
         expect(t.arenaId).not.toBe(coveringArenaId(node))
       } else {
         // Founder 2026-09-18: every manual step (any non-agent route) is a computer-use cell.
@@ -143,7 +145,9 @@ describe('enumerateTargets mirrors lib/processRankings consumption', () => {
     expect(cu.length).toBe(manualSteps * COMPUTER_USE_SOURCES.length)
     // One cell per declared (step, extra arena) pair across the whole corpus.
     const declared = loadProcesses(DATA_DIR)
-      .flatMap((t) => t.dag.nodes.map((n) => extraArenasFor(n).length))
+      .flatMap((t) => t.dag.nodes.map((n) => new Set([...extraArenasFor(n), ...loadStepStoryMap(DATA_DIR)
+        .filter(entry => entry.taskId === t.id && entry.nodeId === n.id && entry.kind === 'extra' && entry.productIds?.length)
+        .map(entry => entry.arenaId)]).size))
       .reduce((a, b) => a + b, 0)
     expect(extra.length).toBe(declared)
     expect(extra.length).toBeGreaterThanOrEqual(50)

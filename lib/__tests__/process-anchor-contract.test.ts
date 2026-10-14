@@ -28,10 +28,10 @@ describe('legacy and native anchor contracts', () => {
         count++
       }
     }
-    expect(count).toBe(861)
+    expect(count).toBe(tasks.reduce((sum, task) => sum + task.dag.nodes.length, 0))
   })
 
-  it('preserves reviewed branding activities and records the pre-existing logo title drift', () => {
+  it('preserves reviewed branding anchors and uses canonical titles in the projection', () => {
     const logo = findSharedRecord(records, 'brand_002')!
     const task = tasks.find(task => task.id === logo.id)!
     const contract = processAnchorContract(logo, records, task)
@@ -41,7 +41,7 @@ describe('legacy and native anchor contracts', () => {
     expect(returned.metadata.producesArtifact).toBe('brand-logo')
     expect(returned.guidance?.trim()).toBe(stepGuidanceFor('brand_002', 'n2'))
     // Existing stable-ID mapping predates any cutover; this does not claim selection equals handoff.
-    expect(task.dag.nodes.find(node => node.id === 'n2')?.label).toBe('Set primary logo')
+    expect(task.dag.nodes.find(node => node.id === 'n2')?.label).toBe(returned.title)
     expect(returned.title).toBe('Return the useful logo set and design choices')
   })
 

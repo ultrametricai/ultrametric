@@ -1,3 +1,38 @@
+# Canonical process definitions
+
+Author one `<slug>.json` definition in this directory. `lib/shared-processes/catalog.ts`
+loads the complete catalog or a selected process with its reference closure. Each ordinary
+record declares `entrySteps` and explicit `links`; absent links never imply a sequence.
+`catalog.json` lists every definition in compatibility order; unlisted definitions fail validation.
+Options retain their own nested parts and local links. Stable record, part and option IDs
+bind external rankings, private additions and execution evidence.
+
+Chains use the same record fields plus ordered `taskIds`. Their reference parts must match
+that list exactly. Chains have empty `entrySteps` and `links`: the task list defines composition
+order, while each referenced process supplies its own dependency graph.
+
+`corpus.json`, `chains.json` and the equity workflow files are generated compatibility
+projections. Run `pnpm shared:project` after editing definitions, then `pnpm shared:check`.
+These projections are not authoring inputs. Historical source receipts remain unchanged;
+the export revision and catalog hash identify the current authored content.
+
+Canonical records contain agent-agnostic process meaning. Private consumers preserve and
+pin operational bindings separately; `toolCall` and `functionCalls` are rejected at every
+canonical scope. Missing classifications and durations stay unknown. A complete duration
+aggregate exists only when every contributing estimate is known. Manifest version 2 allows
+missing estimates and unclassified steps, and keeps unbound machine steps approval-gated.
+
+The normal `pnpm shared:export --output <catalog.json>` format-1 bundle includes ordinary
+records' `entrySteps` and chains' ordered `taskIds`. It promotes selected authored verification,
+recovery, context, geography and approval fields into notes for instruction assemblers.
+Situations retain `kind: "situation"`; consumers must preserve their invocation policy.
+
+Export the format-2 candidate bundle with `pnpm exec tsx scripts/shared-processes/export-candidate.ts
+--output <catalog.json> --lock <catalog.lock>`. Repeat `--process <slug>` to export a selection
+and its referenced records. Commit source changes before exporting a pin.
+
+The sections below document the legacy compatibility fields and external registries.
+
 # Processes
 
 Every founder process as a step-by-step record, each step routed agent, form, or

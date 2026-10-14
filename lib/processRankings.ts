@@ -53,6 +53,7 @@ export const StepStoryEntrySchema = z.object({
   kind: z.enum(STEP_STORY_KINDS),
   arenaId: z.string().min(1),
   storyIds: z.string().min(1).array(),
+  productIds: z.string().min(1).array().min(1).optional(),
 })
 
 export const StepStoryMapSchema = StepStoryEntrySchema.array()
@@ -127,10 +128,19 @@ export function extraArenasFor(
   return out
 }
 
-export function extraMappingsFor(taskId: string, node: DagNode, dir?: string): StepStoryEntry[] {
-  return extraArenasFor(node)
-    .map((arenaId) => mapIndex(dir).get(stepStoryKey(taskId, node.id, 'extra', arenaId)))
-    .filter((e): e is StepStoryEntry => e !== undefined)
+const extraIndexCache = new Map<string, Map<string, StepStoryEntry[]>>()
+export function extraMappingsFor(taskId: string, node: DagNode, dir: string = DEFAULT_DIR()): StepStoryEntry[] {
+  let index = extraIndexCache.get(dir)
+  if (!index) {
+    index = new Map()
+    for (const entry of loadStepStoryMap(dir)) if (entry.kind === 'extra') {
+      const key = `${entry.taskId}:${entry.nodeId}`
+      index.set(key, [...(index.get(key) ?? []), entry])
+    }
+    extraIndexCache.set(dir, index)
+  }
+  const declared = new Set(extraArenasFor(node))
+  return (index.get(`${taskId}:${node.id}`) ?? []).filter(entry => declared.has(entry.arenaId) || entry.productIds?.length)
 }
 
 // ---------------------------------------------------------------------------
@@ -325,7 +335,7 @@ export function crossArenaStepRankings(taskId: string, node: DagNode, dir?: stri
       .filter((s): s is Story => s !== undefined)
       .map((s) => ({ id: s.id, title: s.title, weight: s.weight }))
     if (stories.length === 0) continue
-    const allowed = wholeArena.has(entry.arenaId) ? null : refsByArena.get(entry.arenaId) ?? new Set<string>()
+    const allowed = wholeArena.has(entry.arenaId) ? null : refsByArena.get(entry.arenaId) ?? new Set(entry.productIds ?? [])
     const vendors = rankVendors(entry.arenaId, stories.map((s) => s.id), dir)
       .filter((v) => allowed === null || allowed.has(v.productId))
       .filter((v) => v.score > 0 && v.cites.some((c) => c.verdict === 'full' || c.verdict === 'partial'))
@@ -512,7 +522,7 @@ export function computerUseEligibleProducts(source: ComputerUseSource, dir?: str
 // mechanical click may exist, but "could attempt it today" is not an honest frame for a
 // signature only a human may make, so no mapping is generated or consumed for them.
 export function isComputerUseCandidate(node: Pick<DagNode, 'route' | 'legalSignature'>): boolean {
-  return node.route !== 'agent' && !node.legalSignature
+  return (node.route === 'form' || node.route === 'person') && !node.legalSignature
 }
 
 // A temporarily-human step of one task, with node identity (splitGaps only carries labels).

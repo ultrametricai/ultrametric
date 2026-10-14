@@ -99,18 +99,18 @@ export function buildStepMethodViews(
   }
   const variants = methods.map((m): StepMethodView => {
     const subSteps = (m.subSteps ?? []).map((s) => subStepView(s, dir))
-    const derivedMinutes = subSteps.length > 0
-      ? subSteps.reduce((acc, s) => acc + s.estimatedMinutes, 0)
+    const derivedMinutes = subSteps.length > 0 && subSteps.every(s => s.estimatedMinutes !== undefined)
+      ? subSteps.reduce((acc, s) => acc + s.estimatedMinutes!, 0)
       : null
     return {
       id: m.id,
       label: m.label,
       summary: m.summary,
-      context: {
+      context: m.context ? {
         kind: m.context.kind,
         when: m.context.when,
         countries: [...(m.context.countries ?? [])],
-      },
+      } : null,
       route: m.route ?? node.route,
       // Honest time only: the corpus value (load-validated to equal the sub-step sum when both
       // exist), else the sum derived from sub-steps, else nothing.

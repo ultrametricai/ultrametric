@@ -1,0 +1,323 @@
+{
+  "schemaVersion": 1,
+  "id": "growth_002",
+  "kind": "process",
+  "title": "Save a churning customer",
+  "summary": "Handle a cancellation or retention case using the customer’s stated choice, supported remedies and verified subscription state.",
+  "outcomes": [
+    "A case record distinguishing the customer’s stated intent, observed account facts and unresolved questions.",
+    "A supported remedy or cancellation package with exact terms, authority and effective date.",
+    "Verified billing/support results for actions performed, with promises and remaining follow-up identified separately."
+  ],
+  "guidance": "Start with the customer’s stated intent and the correct account/subscription. A firm cancellation request goes directly to the authorized cancellation checks; usage analysis, a save offer or a call must not become an obstacle. When the customer wants help, investigate and offer only a supported remedy within authority. Retain the chosen outcome, exact terms, owner and observed billing/support state. A draft, accepted offer or simulated billing result is not evidence that a customer was retained or that a live cancellation completed.",
+  "parts": [
+    {
+      "id": "n1",
+      "kind": "step",
+      "title": "Pull customer usage data",
+      "guidance": "Confirm the customer’s stated intent and the correct account/subscription first. If they have made a firm cancellation choice, proceed to the cancellation checks without waiting for usage analysis, a health score or a call. When the customer wants help, compare recent and earlier activity over a defined period, focusing on their intended outcome, active users and unresolved support issues. Build a short account timeline with links to observations and questions about their reason for leaving. Missing telemetry is unknown activity, not proof they stopped using the product.",
+      "when": null,
+      "ref": null,
+      "options": [],
+      "notes": [],
+      "references": [
+        {
+          "kind": "vendor",
+          "id": "stripe",
+          "role": "stated-vendor"
+        }
+      ],
+      "metadata": {
+        "route": "agent",
+        "reversibility": "reversible",
+        "estimatedMinutes": 2
+      }
+    },
+    {
+      "id": "n2",
+      "kind": "step",
+      "title": "Check CRM health score",
+      "guidance": "Inspect the CRM health score's components, update time and owner. Compare it with recent conversations, renewal context, support history and usage. Correct factual errors and flag unexplained scoring results, separating evidenced risks and customer statements from the account team's interpretation.",
+      "when": "The customer wants help evaluating a remedy; skip this step for a firm cancellation request.",
+      "ref": null,
+      "options": [],
+      "notes": [],
+      "references": [
+        {
+          "kind": "vendor",
+          "id": "hubspot",
+          "role": "stated-vendor"
+        }
+      ],
+      "metadata": {
+        "route": "agent",
+        "reversibility": "reversible",
+        "estimatedMinutes": 2
+      }
+    },
+    {
+      "id": "n3",
+      "kind": "step",
+      "title": "Prepare save offer",
+      "guidance": "Match the customer's stated problem to a specific remedy, such as onboarding help, a fix or a plan change. Specify its delivery owner, limits, cost and contract effect. Resolve any feature commitment or discount outside the account team's authority before presenting the offer.\n\nRecord the approved amount/duration, delivery owner, staffing or product evidence, and the limit of the account team’s authority. Do not add an SLA, feature delivery date, refund or discount merely to make the offer more persuasive. An unsupported remedy stays in the review queue.\n\nVerify support capacity before proposing an update cadence or delivery date: name the available owner, coverage and next update they can actually meet. Keep proposed follow-ups separate from accepted commitments. A report of an unresolved problem or an approaching renewal is not itself cancellation intent.",
+      "when": null,
+      "ref": null,
+      "options": [],
+      "notes": [],
+      "references": [],
+      "metadata": {
+        "route": "agent",
+        "reversibility": "reversible",
+        "approvalRequired": true,
+        "riskLevel": "medium",
+        "estimatedMinutes": 5
+      }
+    },
+    {
+      "id": "n4",
+      "kind": "step",
+      "title": "Send retention email",
+      "guidance": "Send the retention message to the confirmed customer contact within the account team's communication authority. Acknowledge their specific concern, describe the agreed remedy and its limits, and give them a clear way to respond. Use verified account facts and commercial terms. Add the sent message and next follow-up to the CRM so another teammate can continue the conversation accurately.\n\nOffer a safe continuity step only when it is appropriate for the reported problem, and label an unverified workaround accordingly. Confirm the next update with its responsible owner before promising it; do not default to daily updates until resolution. Preserve the customer’s choice to cancel without another sales step.",
+      "when": null,
+      "ref": null,
+      "options": [],
+      "notes": [],
+      "references": [
+        {
+          "kind": "vendor",
+          "id": "gmail",
+          "role": "stated-vendor"
+        },
+        {
+          "kind": "category",
+          "id": "email-marketing",
+          "role": "additional-rankings"
+        }
+      ],
+      "metadata": {
+        "route": "agent",
+        "reversibility": "reversible",
+        "approvalRequired": true,
+        "riskLevel": "medium",
+        "estimatedMinutes": 2
+      }
+    },
+    {
+      "id": "n5",
+      "kind": "step",
+      "title": "Schedule call",
+      "guidance": "Offer call times with a timezone and an agenda based on the customer's concern. Include the people who can resolve it and send the invitation through the account team's agreed process. Record the accepted slot and preparation notes; an offered time remains tentative until the customer agrees.\n\nMake a call conditional on the customer wanting one. Do not require a meeting to carry out an otherwise authorized cancellation, and do not record an offered slot as accepted.",
+      "when": null,
+      "ref": null,
+      "options": [],
+      "notes": [],
+      "references": [
+        {
+          "kind": "category",
+          "id": "scheduling",
+          "role": "additional-rankings"
+        }
+      ],
+      "metadata": {
+        "route": "person",
+        "reversibility": "reversible",
+        "estimatedMinutes": 30,
+        "async": true
+      }
+    },
+    {
+      "id": "n6",
+      "kind": "step",
+      "title": "Apply discount or cancel",
+      "guidance": "Apply the customer's chosen outcome to the correct subscription and effective date. Check a concession's amount, duration and renewal effect, or a cancellation's access consequences and outstanding charges; treat any refund as a separate decision. Preview the exact change where supported and resolve anything outside billing authority. Apply it once, then read back the subscription and invoice state before confirming completion to the customer.\n\nKeep the account/subscription identifiers, customer decision, authorized operation, preview, request identifier and readback together. After an uncertain result, inspect current subscription state before retrying. Check renewal amount after a temporary concession ends and distinguish a cancellation request from its effective state. Rehearsals must use synthetic subscriptions and remain labeled simulated.\n\nWhen the customer requests their data, verify supported export formats and scope, including separate attachments, and the access/export deadline. Provide usable instructions or prepare the export within existing authority, identifying incomplete items. Distinguish retention or deletion timing from continued download access. Handle the authorized cancellation without making the export task or a retention conversation a new prerequisite; any requested timing adjustment must fit the customer’s instructions and terms.",
+      "when": null,
+      "ref": null,
+      "options": [],
+      "notes": [
+        {
+          "text": "UM's Stripe Billing subscription-crud-api verdict records incomplete evidence for update, pause and cancellation operations in the research pack. Treat that as a prompt to verify the exact current operation and available permission, not as evidence that cancellation is impossible. Join the observed subscription state to this customer's terms and decision before acting. CRM access can help find account history, but vendor research cannot establish a refund entitlement, future feature delivery or support commitment for this customer.",
+          "references": [
+            {
+              "kind": "url",
+              "url": "https://github.com/ultrametricai/ultrametric/blob/6b8b3d854f555e743bfd1c589f1ae1b57a0e1c61/data/billing-subscriptions/verdicts.json",
+              "title": "UM subscription lifecycle coverage gaps",
+              "description": "The subscription-crud-api verdict flags incomplete update, pause and cancellation evidence for operation-specific verification.",
+              "role": "source"
+            },
+            {
+              "kind": "url",
+              "url": "https://github.com/ultrametricai/ultrametric/blob/6b8b3d854f555e743bfd1c589f1ae1b57a0e1c61/data/billing-subscriptions/evidence/stripe-billing.json",
+              "title": "Evidence underlying the lifecycle verdict",
+              "description": "Stripe Billing source entries support tracing the lifecycle verdict; the customer’s terms and observed subscription state determine the next action.",
+              "role": "source"
+            }
+          ]
+        }
+      ],
+      "references": [
+        {
+          "kind": "vendor",
+          "id": "stripe",
+          "role": "stated-vendor"
+        },
+        {
+          "kind": "url",
+          "url": "https://docs.stripe.com/billing/subscriptions/change",
+          "title": "Modify subscriptions",
+          "description": null,
+          "role": "authored-guidance-source"
+        }
+      ],
+      "metadata": {
+        "route": "agent",
+        "reversibility": "reversible",
+        "approvalRequired": true,
+        "riskLevel": "high",
+        "estimatedMinutes": 2
+      }
+    },
+    {
+      "id": "n7",
+      "kind": "step",
+      "title": "Log outcome in CRM",
+      "guidance": "Update the CRM with the customer's stated reason, decision, agreed remedy and verified billing or support result. Link the relevant conversation. Distinguish promised work from delivered work and an accepted offer from resumed use, then assign any remaining follow-up. Record the data handoff status, access deadline and any unfinished export separately from the cancellation result.",
+      "when": null,
+      "ref": null,
+      "options": [],
+      "notes": [],
+      "references": [
+        {
+          "kind": "vendor",
+          "id": "hubspot",
+          "role": "stated-vendor"
+        }
+      ],
+      "metadata": {
+        "route": "agent",
+        "reversibility": "reversible",
+        "estimatedMinutes": 2
+      }
+    }
+  ],
+  "links": [
+    {
+      "from": "n1",
+      "to": "n3",
+      "when": "The customer wants help evaluating a remedy rather than a direct cancellation."
+    },
+    {
+      "from": "n2",
+      "to": "n3",
+      "when": "The customer wants help evaluating a remedy rather than a direct cancellation."
+    },
+    {
+      "from": "n3",
+      "to": "n4",
+      "when": null
+    },
+    {
+      "from": "n4",
+      "to": "n5",
+      "when": "The customer wants a call before deciding."
+    },
+    {
+      "from": "n5",
+      "to": "n6",
+      "when": null
+    },
+    {
+      "from": "n6",
+      "to": "n7",
+      "when": null
+    },
+    {
+      "from": "n1",
+      "to": "n6",
+      "when": "The customer has made a firm cancellation choice; confirm identity, terms and authority before applying it."
+    },
+    {
+      "from": "n4",
+      "to": "n6",
+      "when": "The customer has chosen the outcome and does not need a call."
+    }
+  ],
+  "references": [
+    {
+      "kind": "vendor",
+      "id": "stripe",
+      "role": "involves"
+    },
+    {
+      "kind": "vendor",
+      "id": "hubspot",
+      "role": "involves"
+    },
+    {
+      "kind": "vendor",
+      "id": "gmail",
+      "role": "involves"
+    }
+  ],
+  "notes": [],
+  "metadata": {
+    "phase": "growth",
+    "cadence": "event-driven",
+    "geoScope": "global",
+    "complexity": "moderate",
+    "reversibility": "reversible",
+    "category": "customer_ops",
+    "supportLevel": "partial",
+    "supportReason": "Stripe/HubSpot APIs provide data. Email automatable. Actual save conversation is person-routed.",
+    "contextNeeded": [
+      {
+        "tool": "user_input",
+        "query": "customer id",
+        "tier": "user_input",
+        "required": true
+      },
+      {
+        "tool": "stripe.customers",
+        "query": "subscription",
+        "tier": "connected",
+        "required": true
+      }
+    ],
+    "produces": [],
+    "requires": [
+      "product-analytics",
+      "crm",
+      "subscription-billing"
+    ],
+    "tags": [
+      "growth",
+      "churn",
+      "retention"
+    ],
+    "activeMinutes": 15,
+    "totalEstimatedMinutes": 45,
+    "hasAsyncSteps": true,
+    "timeOrder": 70,
+    "annoyance": 2,
+    "risk": 1,
+    "growthImpact": 3,
+    "slugAliases": [
+      {
+        "slug": "churn-save-attempt",
+        "label": "Churn save attempt"
+      }
+    ]
+  },
+  "source": {
+    "path": "open-processes/corpus.json",
+    "id": "growth_002",
+    "revision": "4a1ac9b2eea2d4e1ac8cc5a0dfdc7cc5dc6080a1",
+    "sha256": "296680d2962fcbb4702a16edd873303e8fd61df067435826a4b4eed62441d90f"
+  },
+  "entrySteps": [
+    "n1",
+    "n2"
+  ],
+  "aliases": [
+    "churn-save-attempt"
+  ]
+}

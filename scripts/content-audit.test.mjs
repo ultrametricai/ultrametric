@@ -5,7 +5,7 @@ import { buildContentAudit } from './content-audit.mjs'
 const metadata = { sourceRevision: 'a'.repeat(40), sourceDirty: false, generatedAt: '2026-10-02T12:00:00Z' }
 function fixture() {
   const data = {
-    'content/processes/records/start.json': { schemaVersion: 1, id: 'start', kind: 'process', title: 'Start', summary: 'Prepare a result', outcomes: ['A result'], parts: [{ kind: 'step', guidance: 'Prepare it', metadata: { documents: ['form'], produces: ['result'] }, references: [{ kind: 'vendor', id: 'tool', role: 'uses' }] }], metadata: { kind: 'situation' } },
+    'open-processes/start.json': { schemaVersion: 1, id: 'start', kind: 'process', title: 'Start', summary: 'Prepare a result', outcomes: ['A result'], parts: [{ kind: 'step', guidance: 'Prepare it', metadata: { documents: ['form'], produces: ['result'] }, references: [{ kind: 'vendor', id: 'tool', role: 'uses' }] }], metadata: { kind: 'situation' } },
     'open-processes/vendor-registry.json': { vendors: { tool: { arenaId: 'arena' } } },
     'open-rankings/categories.json': [{ id: 'arena', name: 'An arena' }],
     'open-rankings/arena-roadmap.json': [{ id: 'arena' }, { id: 'planned' }],
@@ -45,7 +45,7 @@ test('separates declared situation markers, resolves cross-collection links, and
 
 test('reports unresolved links and unavailable evidence without deleting records', () => {
   const files = fixture()
-  change(files, 'content/processes/records/start.json', value => value.parts[0].metadata.documents = ['missing-form'])
+  change(files, 'open-processes/start.json', value => value.parts[0].metadata.documents = ['missing-form'])
   change(files, 'open-rankings/arena/verdicts.json', value => value[0].evidenceIds = ['missing-proof'])
   const report = buildContentAudit(files, metadata)
   assert.equal(record(report, 'situations:start').links.find(item => item.target === 'documents:missing-form').state, 'unresolved')
@@ -74,7 +74,7 @@ test('fails on missing required inputs and duplicate identities', () => {
   files.delete('open-rankings/arena/verdicts.json')
   assert.throws(() => buildContentAudit(files, metadata), /Missing required/)
   const duplicate = fixture()
-  duplicate.set('content/processes/records/duplicate.json', duplicate.get('content/processes/records/start.json'))
+  duplicate.set('open-processes/duplicate.json', duplicate.get('open-processes/start.json'))
   assert.throws(() => buildContentAudit(duplicate, metadata), /Duplicate shared/)
 })
 
@@ -102,14 +102,14 @@ test('does not treat uncited negative or inapplicable verdicts as invalid eviden
 
 test('rejects a changed shared schema rather than misreading it as the old format', () => {
   const files = fixture()
-  change(files, 'content/processes/records/start.json', value => value.schemaVersion = 2)
+  change(files, 'open-processes/start.json', value => value.schemaVersion = 2)
   assert.throws(() => buildContentAudit(files, metadata), /Unsupported shared schema/)
 })
 
 
 test('preserves process review dates and flags overdue or reversed schedules', () => {
   const files = fixture()
-  change(files, 'content/processes/records/start.json', value => {
+  change(files, 'open-processes/start.json', value => {
     value.metadata.reviewed_on = '2026-09-30'
     value.metadata.review_due = '2026-09-29'
   })

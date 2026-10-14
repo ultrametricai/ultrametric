@@ -36,9 +36,8 @@ Never gate an `&&` chain on echoed text — test the tool's exit code.
 ## Workflow
 
 - Every change lands as a branch + pull request. No direct commits to main.
-- Authored records in `content/processes/` are never overwritten by catalog regeneration:
-  refresh only source-mirrored metadata and re-bless the manifest
-  (see `scripts/shared-processes/import.py`, authored-record conflict rule).
+- Author process meaning in `open-processes/<slug>.json`. Regenerate compatibility files
+  with `pnpm shared:project`; never edit generated corpus, chains or equity projections.
 
 ## Immutable identifiers — legacy on purpose, never rename
 
@@ -52,9 +51,8 @@ deprecated fallback; user-facing copy never says "productarena" or "PA".
 
 # Shared process content
 
-The shared situations/process schema and records live in `content/processes/`.
-Keep the old corpus, chains, jurisdiction files, and site loaders working during
-the additive transition. Public Git owns shared process meaning. Private UM
+The canonical situations/process records live in `open-processes/`.
+Corpus, chains and jurisdiction files are checked compatibility projections. Public Git owns shared process meaning. Private UM
 instructions live as versioned additions in the API database. Do not use the
 retired private process repo as a source of authority or copy private guides here.
 Run `pnpm shared:check` and the shared-process tests for schema or catalog changes.

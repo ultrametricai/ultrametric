@@ -1,0 +1,278 @@
+{
+  "schemaVersion": 1,
+  "id": "sit_018",
+  "kind": "situation",
+  "title": "Recover a hijacked domain or social account",
+  "summary": "The first hour decides how far this spreads. Work out what was taken: the registrar account, DNS, email, or the social handle. Changed MX and DNS records are how one stolen login becomes all of them. Lock what you still hold: passwords, hardware-key 2FA, the registrar transfer lock. Then use the owners' own processes: the registrar's compromise case (if the domain was transferred away, ICANN's transfer-dispute path, where the 60-day rules matter) and the platforms' recovery flows (Google's hacked-account flow; Instagram's /hacked; X's sits behind its help center). Check registration state on RDAP instead of guessing. If posts went out or mail was read, tell the people affected before the screenshots do. A domain transferred to another registrar comes back only with pain.",
+  "outcomes": [],
+  "guidance": null,
+  "parts": [
+    {
+      "id": "n1",
+      "kind": "step",
+      "title": "Scope the compromise: registrar account, DNS, email, or the social handle — and whether MX/DNS were changed (that's how everything else falls)",
+      "guidance": null,
+      "when": null,
+      "ref": null,
+      "options": [],
+      "notes": [],
+      "references": [],
+      "metadata": {
+        "route": "person",
+        "reversibility": "reversible",
+        "riskLevel": "high",
+        "estimatedMinutes": 30
+      }
+    },
+    {
+      "id": "n2",
+      "kind": "step",
+      "title": "Lock what you still hold: rotate passwords, enforce hardware-key 2FA, check DNS and MX against known-good, enable the registrar/transfer lock",
+      "guidance": null,
+      "when": null,
+      "ref": null,
+      "options": [],
+      "notes": [],
+      "references": [
+        {
+          "kind": "vendor",
+          "id": "cloudflare_registrar",
+          "role": "candidate"
+        },
+        {
+          "kind": "vendor",
+          "id": "namecheap",
+          "role": "candidate"
+        },
+        {
+          "kind": "vendor",
+          "id": "porkbun",
+          "role": "candidate"
+        },
+        {
+          "kind": "category",
+          "id": "domain-registrars",
+          "role": "rankings"
+        }
+      ],
+      "metadata": {
+        "route": "agent",
+        "reversibility": "reversible",
+        "estimatedMinutes": 45
+      }
+    },
+    {
+      "id": "n3",
+      "kind": "step",
+      "title": "Open the registrar's compromise case — and if the domain was transferred away, invoke ICANN's transfer-dispute path (the 60-day rules matter)",
+      "guidance": null,
+      "when": null,
+      "ref": null,
+      "options": [],
+      "notes": [],
+      "references": [
+        {
+          "kind": "url",
+          "url": "https://www.icann.org/compliance/complaint",
+          "role": "legacy-action-link",
+          "title": "ICANN: registrar complaints",
+          "description": null
+        }
+      ],
+      "metadata": {
+        "route": "person",
+        "reversibility": "reversible",
+        "riskLevel": "high",
+        "estimatedMinutes": 45
+      }
+    },
+    {
+      "id": "n4",
+      "kind": "step",
+      "title": "Verify the live registration state and transfer timeline on RDAP — facts, not guesses",
+      "guidance": null,
+      "when": null,
+      "ref": null,
+      "options": [],
+      "notes": [],
+      "references": [
+        {
+          "kind": "url",
+          "url": "https://lookup.icann.org/",
+          "role": "legacy-action-link",
+          "title": "ICANN RDAP lookup",
+          "description": null
+        }
+      ],
+      "metadata": {
+        "route": "agent",
+        "reversibility": "reversible",
+        "estimatedMinutes": 20
+      }
+    },
+    {
+      "id": "n5",
+      "kind": "step",
+      "title": "Run the platform's own recovery flow for hijacked accounts (Google's hacked-account flow; Instagram's /hacked; X's via its help center)",
+      "guidance": null,
+      "when": null,
+      "ref": null,
+      "options": [],
+      "notes": [],
+      "references": [
+        {
+          "kind": "url",
+          "url": "https://support.google.com/accounts/answer/6294825",
+          "role": "legacy-action-link",
+          "title": "Google: secure a hacked account",
+          "description": null
+        }
+      ],
+      "metadata": {
+        "route": "form",
+        "reversibility": "reversible",
+        "riskLevel": "medium",
+        "estimatedMinutes": 45
+      }
+    },
+    {
+      "id": "n6",
+      "kind": "step",
+      "title": "If posts went out from your handle or mail was read, tell the people affected before the screenshots do",
+      "guidance": null,
+      "when": null,
+      "ref": null,
+      "options": [],
+      "notes": [],
+      "references": [],
+      "metadata": {
+        "route": "person",
+        "reversibility": "painful",
+        "estimatedMinutes": 30
+      }
+    },
+    {
+      "id": "n7",
+      "kind": "step",
+      "title": "Harden after recovery: registrar lock + hardware keys everywhere + DNS monitoring, documented",
+      "guidance": null,
+      "when": null,
+      "ref": null,
+      "options": [],
+      "notes": [],
+      "references": [],
+      "metadata": {
+        "route": "agent",
+        "reversibility": "reversible",
+        "estimatedMinutes": 45
+      }
+    },
+    {
+      "id": "n8",
+      "kind": "step",
+      "title": "Wait out the registrar/platform case queues and re-verify on RDAP when they close",
+      "guidance": null,
+      "when": null,
+      "ref": null,
+      "options": [],
+      "notes": [],
+      "references": [],
+      "metadata": {
+        "route": "person",
+        "reversibility": "reversible",
+        "async": true,
+        "estimatedMinutes": 10080
+      }
+    }
+  ],
+  "links": [
+    {
+      "from": "n1",
+      "to": "n2",
+      "when": null
+    },
+    {
+      "from": "n2",
+      "to": "n3",
+      "when": null
+    },
+    {
+      "from": "n3",
+      "to": "n4",
+      "when": null
+    },
+    {
+      "from": "n4",
+      "to": "n5",
+      "when": null
+    },
+    {
+      "from": "n5",
+      "to": "n6",
+      "when": null
+    },
+    {
+      "from": "n6",
+      "to": "n7",
+      "when": null
+    },
+    {
+      "from": "n7",
+      "to": "n8",
+      "when": null
+    }
+  ],
+  "references": [],
+  "notes": [],
+  "metadata": {
+    "phase": "operations",
+    "kind": "situation",
+    "trigger": "Your domain, DNS, or a company social/email account is taken over: logins fail, records change, or posts you didn't write appear.",
+    "urgency": "hours",
+    "cadence": "event-driven",
+    "geoScope": "global",
+    "complexity": "complex",
+    "reversibility": "painful",
+    "category": "security",
+    "supportLevel": "manual_guide",
+    "supportReason": "Recovery runs through registrar cases, ICANN processes, and platform flows that verify the human owner; an agent can run the lock-down, the RDAP checks, and the hardening, but the ownership proofs are yours.",
+    "contextNeeded": [
+      {
+        "tool": "user_input",
+        "query": "which accounts/domains are affected and what still logs in",
+        "tier": "user_input",
+        "required": true
+      },
+      {
+        "tool": "user_input",
+        "query": "registrar, DNS host, and the ownership proofs you hold",
+        "tier": "user_input",
+        "required": true
+      }
+    ],
+    "tags": [
+      "situation",
+      "security",
+      "domain",
+      "account-takeover",
+      "recovery"
+    ],
+    "activeMinutes": 260,
+    "totalEstimatedMinutes": 10340,
+    "hasAsyncSteps": true,
+    "annoyance": 4,
+    "risk": 5,
+    "growthImpact": 1,
+    "produces": [],
+    "requires": []
+  },
+  "source": {
+    "path": "open-processes/corpus.json",
+    "id": "sit_018",
+    "revision": "4a1ac9b2eea2d4e1ac8cc5a0dfdc7cc5dc6080a1",
+    "sha256": "651aeb5ef3dd34a00ba3ce0d1c6e17f86d78cac3dc16c1bde6f6cbd9d045a9c3"
+  },
+  "entrySteps": [
+    "n1"
+  ]
+}

@@ -1,9 +1,6 @@
 {
-  "id": "equity.us-de.409a-valuation",
   "version": "0.1.0",
   "status": "demonstration",
-  "title": "Review common-stock fair market value before a stock option grant",
-  "summary": "A planning workflow for a private Delaware corporation considering a US service-provider option grant. It does not itself value stock or approve grants.",
   "reviewed_on": "2026-09-28",
   "review_due": "2026-12-28",
   "reviewer": "Starter editorial review; independent US tax counsel review pending",
@@ -38,10 +35,31 @@
       "owner": "finance-and-board"
     }
   ],
+  "stop_conditions": [
+    "A material change is unresolved",
+    "The valuation is older than 12 months at proposed grant date",
+    "No confirmed corporate authority or equity-plan share capacity",
+    "The instrument, service provider, or jurisdiction falls outside applicability",
+    "An anticipated transaction may invalidate a claimed illiquid-startup presumption"
+  ],
+  "automation_boundary": "Public tooling may only prepare and check a draft plan. Valuation, corporate authorization, and grant are external actions requiring case-specific human approval.",
+  "rule_ids": [
+    "us-fed.409a-stock-right-exception",
+    "us-fed.reasonable-method",
+    "us-fed.staleness",
+    "us-fed.independent-appraisal-presumption",
+    "us-de.delaware-option-authorization"
+  ],
+  "id": "equity.us-de.409a-valuation",
+  "title": "Review common-stock fair market value before a stock option grant",
+  "summary": "A planning workflow for a private Delaware corporation considering a US service-provider option grant. It does not itself value stock or approve grants.",
+  "outputs": [
+    "Private valuation rationale or report",
+    "Specific corporate authorization",
+    "Executed option records if approved"
+  ],
   "steps": [
     {
-      "id": "scope",
-      "action": "Record entity, security class, recipient, proposed grant date, option terms, and governing plan.",
       "mode": "read_only",
       "owner": "founder-or-equity-admin",
       "inputs": [
@@ -51,11 +69,11 @@
       "evidence": [
         "private-scope-checklist"
       ],
-      "approval": null
+      "approval": null,
+      "id": "scope",
+      "action": "Record entity, security class, recipient, proposed grant date, option terms, and governing plan."
     },
     {
-      "id": "collect",
-      "action": "Assemble current cap table, prior valuation date/report, financials, forecasts, financing terms, and material events since that date.",
       "mode": "prepare_draft",
       "owner": "finance",
       "inputs": [
@@ -64,11 +82,11 @@
       "evidence": [
         "private-document-index"
       ],
-      "approval": null
+      "approval": null,
+      "id": "collect",
+      "action": "Assemble current cap table, prior valuation date/report, financials, forecasts, financing terms, and material events since that date."
     },
     {
-      "id": "review-route",
-      "action": "Ask qualified valuation and tax advisers to evaluate current fair market value, available methods, material changes, and the option exception.",
       "mode": "prepare_draft",
       "owner": "finance-and-counsel",
       "inputs": [
@@ -78,11 +96,11 @@
         "dated-adviser-conclusion",
         "valuation-report-or-memo"
       ],
-      "approval": null
+      "approval": null,
+      "id": "review-route",
+      "action": "Ask qualified valuation and tax advisers to evaluate current fair market value, available methods, material changes, and the option exception."
     },
     {
-      "id": "authorize",
-      "action": "Approve valuation use and proposed option terms through the corporate decision path that counsel confirms is authorized.",
       "mode": "external_effect",
       "owner": "board-or-authorized-delegate",
       "inputs": [
@@ -95,11 +113,11 @@
       "approval": {
         "role": "authorized-corporate-decision-maker",
         "scope": "specific valuation use and option terms"
-      }
+      },
+      "id": "authorize",
+      "action": "Approve valuation use and proposed option terms through the corporate decision path that counsel confirms is authorized."
     },
     {
-      "id": "grant",
-      "action": "Only after counsel and authorized decision-maker approval, issue the specific option and record grant date, exercise price, recipient acceptance, and source report version.",
       "mode": "external_effect",
       "owner": "equity-admin",
       "inputs": [
@@ -112,11 +130,11 @@
       "approval": {
         "role": "authorized-corporate-decision-maker",
         "scope": "specific recipient, shares, exercise price and grant date"
-      }
+      },
+      "id": "grant",
+      "action": "Only after counsel and authorized decision-maker approval, issue the specific option and record grant date, exercise price, recipient acceptance, and source report version."
     },
     {
-      "id": "monitor",
-      "action": "Before subsequent grants, recheck material developments and the valuation date; schedule a case-specific refresh review.",
       "mode": "read_only",
       "owner": "finance",
       "inputs": [
@@ -126,27 +144,9 @@
       "evidence": [
         "dated-refresh-decision"
       ],
-      "approval": null
+      "approval": null,
+      "id": "monitor",
+      "action": "Before subsequent grants, recheck material developments and the valuation date; schedule a case-specific refresh review."
     }
-  ],
-  "stop_conditions": [
-    "A material change is unresolved",
-    "The valuation is older than 12 months at proposed grant date",
-    "No confirmed corporate authority or equity-plan share capacity",
-    "The instrument, service provider, or jurisdiction falls outside applicability",
-    "An anticipated transaction may invalidate a claimed illiquid-startup presumption"
-  ],
-  "outputs": [
-    "Private valuation rationale or report",
-    "Specific corporate authorization",
-    "Executed option records if approved"
-  ],
-  "automation_boundary": "Public tooling may only prepare and check a draft plan. Valuation, corporate authorization, and grant are external actions requiring case-specific human approval.",
-  "rule_ids": [
-    "us-fed.409a-stock-right-exception",
-    "us-fed.reasonable-method",
-    "us-fed.staleness",
-    "us-fed.independent-appraisal-presumption",
-    "us-de.delaware-option-authorization"
   ]
 }

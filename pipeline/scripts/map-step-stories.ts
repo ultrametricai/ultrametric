@@ -27,7 +27,7 @@ import path from 'node:path'
 import { z } from 'zod'
 import { loadProcesses, type ProcessTask } from '../../lib/processes'
 import {
-  COMPUTER_USE_SOURCES, coveringArenaId, extraArenasFor, isComputerUseCandidate,
+  COMPUTER_USE_SOURCES, coveringArenaId, extraArenasFor, extraMappingsFor, isComputerUseCandidate,
   StepStoryMapSchema, type StepStoryEntry,
 } from '../../lib/processRankings'
 import { StorySchema, type Story } from '../../lib/schemas'
@@ -53,10 +53,11 @@ export interface MapTarget {
   arenaId: string
   stepKey: string // `${taskId}:${nodeId}` — the id the LLM answers with
   label: string
-  route: string
+  route: string | undefined
   taskTitle: string
   taskDescription: string
   candidates: Story[]
+  productIds?: string[]
 }
 
 export function targetHash(t: MapTarget, promptVersion: string): string {
@@ -170,10 +171,12 @@ export function enumerateTargets(tasks: ProcessTask[]): MapTarget[] {
       // Additional covering arenas (extraOptionArenas / extraOptionRefs) → 'extra' mappings,
       // one per arena, offered the arena's FULL story list (same posture as 'function' — the
       // ref/arena allowlist and full/partial gate are applied by the consumer, not here).
-      for (const extraArena of extraArenasFor(node)) {
+      const external = extraMappingsFor(task.id, node, DATA_DIR).filter(entry => entry.productIds?.length)
+      for (const extraArena of new Set([...extraArenasFor(node), ...external.map(entry => entry.arenaId)])) {
         const extraStories = storiesFor(extraArena)
         if (!extraStories) continue
-        targets.push({ ...base, kind: 'extra', arenaId: extraArena, candidates: extraStories })
+        const productIds = external.find(entry => entry.arenaId === extraArena)?.productIds
+        targets.push({ ...base, kind: 'extra', arenaId: extraArena, candidates: extraStories, ...(productIds ? { productIds } : {}) })
       }
       // Every MANUAL step (any non-agent route — founder 2026-09-18: "any time 'manual' is
       // seen, see if we can do a computer use process for it") → 'computer-use' mapping per
@@ -294,7 +297,7 @@ export async function runMapper({ task }: { task?: string } = {}): Promise<void>
       console.warn(`map: mapping incomplete — missing/stale ${t.stepKey} (${t.arenaId}/${t.kind}); not writing process-step-stories.json`)
       return
     }
-    entries.push({ taskId: t.taskId, nodeId: t.nodeId, kind: t.kind, arenaId: t.arenaId, storyIds: cached.storyIds })
+    entries.push({ taskId: t.taskId, nodeId: t.nodeId, kind: t.kind, arenaId: t.arenaId, storyIds: cached.storyIds, ...(t.productIds ? { productIds: t.productIds } : {}) })
   }
   entries.sort(
     (a, b) =>

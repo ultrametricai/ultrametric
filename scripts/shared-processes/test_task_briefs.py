@@ -1,4 +1,4 @@
-"""Isolated importer checks for authored catalog records and their generated receipts."""
+"""Content checks for the canonical catalog and recursively authored briefs."""
 import copy
 import hashlib
 import json
@@ -11,7 +11,7 @@ import unittest
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
-RECORDS = ROOT / "content/processes/records"
+RECORDS = ROOT / "open-processes"
 
 
 def digest(value):
@@ -28,13 +28,9 @@ def has_authored_guidance(record):
 
 
 def authored_records():
-    manifest = json.loads((ROOT / "content/processes/import-manifest.json").read_text())
-    records = {record_id: json.loads((RECORDS / f"{record_id}.json").read_text())
-               for record_id in manifest["records"]}
-    # Guidance also identifies authored records if a receipt is accidentally re-blessed.
-    return {record_id: record for record_id, record in records.items()
-            if has_authored_guidance(record)
-            or digest(record) != manifest["records"][record_id]["generatedHash"]}
+    records = [json.loads(p.read_text()) for p in RECORDS.glob("*.json")]
+    return {r["id"]: r for r in records if isinstance(r, dict)
+            and r.get("schemaVersion") == 1 and "parts" in r and has_authored_guidance(r)}
 
 
 class TaskBriefContentTests(unittest.TestCase):
@@ -77,7 +73,7 @@ class TaskBriefContentTests(unittest.TestCase):
         self.check_briefs(records)
 
     def test_rejects_incomplete_duplicate_briefs_and_invalid_source_links(self):
-        formation = json.loads((RECORDS / "form_001.json").read_text())
+        formation = authored_records()["form_001"]
         for mutation in ("blank", "placeholder", "duplicate", "option_summary",
                          "duplicate_link", "source_kind", "source_url", "source_description"):
             with self.subTest(mutation=mutation):
@@ -105,80 +101,5 @@ class TaskBriefContentTests(unittest.TestCase):
                     self.check_briefs({record["id"]: record})
 
 
-class TaskBriefImportTests(unittest.TestCase):
-    def test_formation_receipt_describes_generated_baseline(self):
-        authored = json.loads((RECORDS / "form_001.json").read_text())
-        manifest = json.loads((ROOT / "content/processes/import-manifest.json").read_text())
-        with tempfile.TemporaryDirectory() as directory:
-            subprocess.run([sys.executable, str(ROOT / "scripts/shared-processes/import.py"),
-                            "--write", "--output", directory], check=True, capture_output=True)
-            generated = json.loads((Path(directory) / "records/form_001.json").read_text())
-        generated["source"]["revision"] = authored["source"]["revision"]
-        receipt = manifest["records"]["form_001"]
-        self.assertEqual(receipt["sourceHash"], generated["source"]["sha256"])
-        self.assertEqual(receipt["generatedHash"], digest(generated))
-        self.assertNotEqual(receipt["generatedHash"], digest(authored))
-
-    def test_full_catalog_is_idempotent_and_all_authored_source_changes_conflict(self):
-        authored_ids = set(authored_records())
-        self.assertIn("form_001", authored_ids, "Authored-record conflict coverage must be nonempty")
-        with tempfile.TemporaryDirectory() as directory:
-            work = Path(directory)
-            shutil.copytree(ROOT / "scripts/shared-processes", work / "scripts/shared-processes")
-            shutil.copytree(ROOT / "content/processes", work / "content/processes")
-            for name in ("open-processes/corpus.json", "open-processes/vendor-registry.json", "open-processes/chains.json"):
-                dest = work / name
-                dest.parent.mkdir(parents=True, exist_ok=True)
-                shutil.copyfile(ROOT / name, dest)
-            shutil.copytree(ROOT / "open-processes/equity", work / "open-processes/equity")
-
-            def git(*args):
-                subprocess.run(["git", *args], cwd=work, check=True, capture_output=True)
-
-            def commit():
-                git("add", "open-processes")
-                git("-c", "user.name=Test", "-c", "user.email=test@example.invalid",
-                    "-c", "commit.gpgsign=false", "commit", "-qm", "Isolated importer fixture")
-
-            def snapshot():
-                return {str(p.relative_to(work)): hashlib.sha256(p.read_bytes()).hexdigest()
-                        for p in (work / "content/processes").rglob("*.json")}
-
-            def run_import():
-                return subprocess.run([sys.executable, str(work / "scripts/shared-processes/import.py"),
-                                       "--write"], cwd=work, capture_output=True, text=True)
-
-            git("init", "-q")
-            commit()
-            before = snapshot()
-            for _ in range(2):
-                result = run_import()
-                self.assertEqual(result.returncode, 0, result.stderr)
-                self.assertEqual(json.loads(result.stdout)["changedRecords"], [])
-                self.assertEqual(snapshot(), before, "Unchanged-source import changed catalog bytes")
-
-            # Commit independent source edits for every authored record, including
-            # chain references and equity workflows, without editing the catalog.
-            for name, field in (("open-processes/corpus.json", "description"),
-                                ("open-processes/chains.json", "tagline")):
-                path = work / name
-                records = json.loads(path.read_text())
-                for record in records:
-                    if record["id"] in authored_ids:
-                        record[field] += " Synthetic source change for conflict protection."
-                path.write_text(json.dumps(records))
-            for path in (work / "open-processes/equity").rglob("*.json"):
-                record = json.loads(path.read_text())
-                if record["id"] in authored_ids:
-                    record["summary"] += " Synthetic source change for conflict protection."
-                    path.write_text(json.dumps(record))
-            commit()
-            result = run_import()
-            self.assertNotEqual(result.returncode, 0, "Source changes silently replaced authored content")
-            report = json.loads(result.stderr)
-            self.assertEqual(set(report["editedRecordsWithSourceChanges"]), authored_ids)
-            self.assertEqual(snapshot(), before, "Conflict wrote part of the catalog")
-
-
-if __name__ == "__main__":
+if __name__ == '__main__':
     unittest.main()

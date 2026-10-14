@@ -74,7 +74,7 @@ export interface PlaybookRow {
   pct: number
   agentSteps: number
   totalSteps: number
-  steps: Array<{ label: string; route: 'agent' | 'form' | 'person'; legalSignature: boolean }>
+  steps: Array<{ label: string; route?: 'agent' | 'form' | 'person'; legalSignature: boolean }>
   // The combined vendor cell (founder 2026-10-02: show the vendors, not a 'Go to process' link)
   // — the constituent processes' vendor chips, deduped in journey order, same shape and cap as
   // a process row's.

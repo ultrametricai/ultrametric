@@ -153,7 +153,7 @@ describe('outcome math — vendor picks change outcomes', () => {
     const o = computeStackOutcome(inputs, {}, ROLES, ACCESS, TECH_FIRST)
     expect(o.totalMinutes).toBe(30)
     expect(o.allManualMinutes).toBe(10 * FOUNDER_HOURS_MULTIPLIER + 20)
-    expect(o.founderHoursSavedMinutes).toBe(o.allManualMinutes - o.totalMinutes)
+    expect(o.founderHoursSavedMinutes).toBe(o.allManualMinutes! - o.totalMinutes!)
   })
 
   it('the launch milestone excludes post-launch phases from the launch clock', () => {
@@ -279,7 +279,8 @@ describe('optimal stack — computed, judged-surface-bearing', () => {
     const inputs = journeyOutcomeInputs(journeyPhases(DEFAULT_CHOICES, vsChains), tasks)
     const yours = computeStackOutcome(inputs, {}, liveRoles, liveAccess, TECH_FIRST)
     const optimal = computeStackOutcome(inputs, optimalSelections(liveRoles, liveAccess), liveRoles, liveAccess, TECH_FIRST)
-    expect(optimal.launchMinutes).toBeLessThanOrEqual(yours.launchMinutes)
+    if (yours.launchMinutes === undefined) expect(optimal.launchMinutes).toBeUndefined()
+    else expect(optimal.launchMinutes).toBeLessThanOrEqual(yours.launchMinutes)
     expect(optimal.agentRunSteps).toBeGreaterThanOrEqual(yours.agentRunSteps)
   })
 })
@@ -465,7 +466,8 @@ describe('event engine — grounded, gated, seeded, deterministic', () => {
     const tasks = Object.fromEntries(union.map((id) => [id, payloadFor(id)]))
     const inputs = journeyOutcomeInputs(journeyPhases(DEFAULT_CHOICES, vsChains), tasks)
     const d = corpusLaunchDay(inputs)
-    expect(d).toBeGreaterThanOrEqual(1)
+    if (inputs.some(input => input.estimatedMinutes === undefined)) expect(d).toBeUndefined()
+    else expect(d).toBeGreaterThanOrEqual(1)
     expect(d).toBe(corpusLaunchDay(inputs))
   })
 })

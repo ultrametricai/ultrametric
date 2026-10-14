@@ -33,10 +33,10 @@ export interface StepMethodChipView {
 export interface StepMethodSubStepView {
   id: string
   label: string
-  route: StepRoute
+  route?: StepRoute
   legalSignature: boolean
   async: boolean
-  estimatedMinutes: number
+  estimatedMinutes?: number
   calls: string[]
   actionUrl: string | null
   actionLabel: string | null
@@ -52,8 +52,8 @@ export interface StepMethodView {
   label: string
   summary: string | null
   context: { kind: StepMethodContextKind; when: string; countries: GeoSelection[] } | null
-  route: StepRoute
-  estimatedMinutes: number | null
+  route?: StepRoute
+  estimatedMinutes: number | null | undefined
   calls: string[]
   chips: StepMethodChipView[]
   subSteps: StepMethodSubStepView[]

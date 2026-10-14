@@ -22,11 +22,16 @@ function runExport(example: boolean) {
 
 beforeEach(() => {
   root = mkdtempSync(path.join(tmpdir(), 'um-shared-export-'))
-  for (const directory of ['schemas', 'content/processes/records', 'content/processes/examples']) mkdirSync(path.join(root, directory), { recursive: true })
+  for (const directory of ['schemas', 'open-processes', 'content/processes/examples']) mkdirSync(path.join(root, directory), { recursive: true })
   writeFileSync(path.join(root, 'schemas/shared-process.schema.json'), sharedSchemaJson())
   const example = readFileSync(path.join(repo, 'content/processes/examples/staging.json'), 'utf8')
   writeFileSync(path.join(root, 'content/processes/examples/staging.json'), example)
-  for (const record of JSON.parse(example)) writeFileSync(path.join(root, 'content/processes/records', `${record.id}.json`), JSON.stringify(record))
+  const definitions = JSON.parse(example).map((record: { id: string; parts: Array<{ id: string }>; links: Array<{ to: string }> }) => {
+    if (!record.parts.length) record.parts.push({ id: 'synthetic-step', kind: 'step', title: 'Synthetic step', guidance: 'Perform the synthetic check.', when: null, ref: null, options: [], references: [], notes: [], metadata: {} } as typeof record.parts[number])
+    return { ...record, entrySteps: record.parts.filter(part => !record.links.some(link => link.to === part.id)).map(part => part.id) }
+  })
+  for (const record of definitions) writeFileSync(path.join(root, 'open-processes', `${record.id}.json`), JSON.stringify(record))
+  writeFileSync(path.join(root, 'open-processes/catalog.json'), JSON.stringify({ processes: definitions.map((record: { id: string }) => record.id) }))
   execFileSync('git', ['init', '-q'], { cwd: root })
   commit()
 })

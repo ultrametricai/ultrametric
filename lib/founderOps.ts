@@ -61,7 +61,8 @@ function workflowJson(dir: string): string[] {
       !f.endsWith(OPERATIONAL_ARTIFACTS) &&
       !f.endsWith(OPERATIONAL_BUSINESS_LOGIC_MAP) &&
       !f.endsWith(OPERATIONAL_COMPANY_FIELDS) &&
-      !f.endsWith(OPERATIONAL_CHAINS),
+      !f.endsWith(OPERATIONAL_CHAINS) &&
+      !f.endsWith(path.join('open-processes', 'catalog.json')),
   )
 }
 

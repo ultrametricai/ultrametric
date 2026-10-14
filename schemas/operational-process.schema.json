@@ -351,8 +351,7 @@
                       "minLength": 1
                     },
                     "summary": {
-                      "type": "string",
-                      "minLength": 1
+                      "type": "string"
                     },
                     "context": {
                       "type": "object",
@@ -599,9 +598,7 @@
                         },
                         "required": [
                           "id",
-                          "label",
-                          "route",
-                          "estimatedMinutes"
+                          "label"
                         ]
                       }
                     },
@@ -651,8 +648,7 @@
                   "required": [
                     "id",
                     "label",
-                    "summary",
-                    "context"
+                    "summary"
                   ]
                 }
               },
@@ -762,10 +758,7 @@
             },
             "required": [
               "id",
-              "label",
-              "route",
-              "estimatedMinutes",
-              "reversibility"
+              "label"
             ]
           }
         },
@@ -775,16 +768,41 @@
             "type": "object",
             "properties": {
               "from": {
-                "type": "string"
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 160,
+                "pattern": "^[a-zA-Z0-9][a-zA-Z0-9._-]*$"
               },
               "to": {
-                "type": "string"
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 160,
+                "pattern": "^[a-zA-Z0-9][a-zA-Z0-9._-]*$"
+              },
+              "option": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 160,
+                "pattern": "^[a-zA-Z0-9][a-zA-Z0-9._-]*$"
+              },
+              "when": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "minLength": 1,
+                    "pattern": "\\S"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
               }
             },
             "required": [
               "from",
               "to"
-            ]
+            ],
+            "additionalProperties": false
           }
         }
       },
@@ -930,8 +948,6 @@
     "produces",
     "requires",
     "tags",
-    "activeMinutes",
-    "totalEstimatedMinutes",
     "hasAsyncSteps"
   ]
 }

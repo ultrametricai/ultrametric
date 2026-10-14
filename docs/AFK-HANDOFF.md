@@ -128,6 +128,13 @@ human approval before running it:
 
 ## Versioning rules
 
+Version 2 permits an absent `estimatedMinutes` when no estimate is authored and adds
+`kind: "unclassified"` when execution mode is unknown. Executors must preserve those unknowns
+and require a classification before execution. Unclassified steps and API steps without
+recorded calls require approval. Private consumers join their version-pinned execution
+bindings before deriving call-based approval behavior; public canonical records contain no
+Ultrametric operation bindings. Version 1 consumers must update before accepting version 2.
+
 - `manifestVersion` is a single integer, bumped **only on breaking changes**: removing or
   renaming a field, changing a field's type or meaning, changing the kind/approval semantics.
 - **Additive changes do not bump the version** (new optional fields — `actionUrl` and

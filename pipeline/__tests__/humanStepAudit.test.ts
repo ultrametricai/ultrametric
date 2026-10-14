@@ -20,7 +20,7 @@ const byKey = new Map(entries.map((e) => [`${e.taskId}:${e.nodeId}`, e]))
 // Every non-agent node in the corpus, from the same loader the generator enumerates with.
 const nonAgentNodes = loadProcesses(DATA_DIR).flatMap((t) =>
   t.dag.nodes
-    .filter((n) => n.route !== 'agent')
+    .filter((n) => n.route === 'form' || n.route === 'person')
     .map((n) => ({ key: `${t.id}:${n.id}`, route: n.route as 'form' | 'person' })),
 )
 

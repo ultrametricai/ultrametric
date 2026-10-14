@@ -1222,7 +1222,7 @@ export interface JourneyStats {
   legalSignatures: number
   approvals: number
   asyncSteps: number
-  totalMinutes: number
+  totalMinutes: number | undefined
 }
 
 export function journeyStats(steps: SimStep[]): JourneyStats {
@@ -1239,11 +1239,11 @@ export function journeyStats(steps: SimStep[]): JourneyStats {
   for (const step of steps) {
     if (step.route === 'agent') s.agentSteps += 1
     else if (step.route === 'form') s.formSteps += 1
-    else s.personSteps += 1
+    else if (step.route === 'person') s.personSteps += 1
     if (step.legalSignature) s.legalSignatures += 1
     if (step.approvalRequired) s.approvals += 1
     if (step.async) s.asyncSteps += 1
-    s.totalMinutes += step.estimatedMinutes
+    s.totalMinutes = s.totalMinutes !== undefined && step.estimatedMinutes !== undefined ? s.totalMinutes + step.estimatedMinutes : undefined
   }
   return s
 }
