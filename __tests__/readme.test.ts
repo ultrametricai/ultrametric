@@ -19,6 +19,10 @@ const contributing = fs.readFileSync(path.join(ROOT, 'CONTRIBUTING.md'), 'utf8')
 // intro with no prose links, a Discord button directly under the banner, and the separate
 // "Community:" line removed (the button supersedes it). The layout tree, legacy anchor,
 // and demo gif placement are unchanged.
+// Round 10 (founder-ordered folder renames): the tree reads the open- folder names,
+// leads with open-processes / open-rankings / open-modules, adds open-startup-sim/, and
+// is an HTML <pre> block so each folder with a matching README section links its anchor
+// (a fenced code block cannot carry links).
 const INTRO = [
   '![Ultrametric](assets/banner.svg)',
   '',
@@ -28,22 +32,23 @@ const INTRO = [
   '',
   "This repo is home to all the processes you need to run, vendors and tools you need to compare, advice you need to hear, and helpful modules to reduce lock-in. Let's make it easy to start and run a professional startup in the US and other geographies.",
   '',
-  '```',
+  '<pre>',
   'ultrametric/',
-  '├── open-processes/       every founder process, step by step',
-  '├── open-rankings/        evidence, verdicts, computed scores',
-  '├── pipeline/        crawl, probe, judge, derive',
-  '├── open-modules/    the startup calculations, indexed',
-  '├── lib/             the code behind modules and loaders',
-  '├── open-law/             startup law, one rule per record',
-  '├── citations/       the sources every record cites',
-  '├── jurisdictions/   countries, states, vendor geography',
-  '├── open-documents/  the open legal documents catalog',
-  '├── open-lore/            heuristics, episodes, the library',
-  '├── coverage/        what is covered, at what maturity',
-  '├── schemas/         the JSON contracts for every record',
-  '└── governance/      review, evidence, and agent policy',
-  '```',
+  '├── <a href="#open-processes">open-processes</a>/     each founder process as routed, timed steps',
+  '├── <a href="#open-vendor-rankings">open-rankings</a>/      per-market products, stories, evidence, verdicts',
+  '├── <a href="#open-modules">open-modules</a>/       worked guides to each startup calculation',
+  '├── <a href="#open-startup-simulator">open-startup-sim</a>/   what the simulator runs and assumes',
+  '├── <a href="#open-law">open-law</a>/           startup legal rules by jurisdiction, each cited',
+  '├── <a href="#open-lore">open-lore</a>/          founder advice, who said it, the reading library',
+  '├── <a href="#open-docs">open-documents</a>/     openly published legal documents, by use case',
+  '├── pipeline/           the code that crawls, probes, judges, scores',
+  '├── lib/                loaders, scoring, and the calculation code',
+  '├── jurisdictions/      country and state records, vendor availability',
+  '├── citations/          the primary sources the legal records cite',
+  '├── coverage/           what is mapped and what is a known gap',
+  '├── schemas/            the JSON shape every record validates against',
+  '└── governance/         review rules and what agents may do here',
+  '</pre>',
   '',
   '<!-- Legacy anchor: external links to #start-here predate the merge into this map. -->',
   '<a id="start-here"></a>',
@@ -55,6 +60,8 @@ const INTRO = [
 // docs catalog folded inside, country-switch and getting-acquired framed as examples.
 // Round 9: the "The open startup repo" preamble section was removed; the intro now leads
 // straight into Open vendor rankings.
+// Round 10: the "Open skills for startups" section was removed (founder call); the
+// agent-skills market stays reachable through the rankings index.
 const SECTIONS = [
   '## Open vendor rankings',
   '## Open processes',
@@ -66,7 +73,6 @@ const SECTIONS = [
   '## Government services and startups',
   '## Startup ecosystem',
   '## Open startup simulator',
-  '## Open skills for startups',
   '## Install Ultrametric',
   '## Methodology',
   '## License',
@@ -145,19 +151,40 @@ describe('README.md structure (founder round 2, 2026-10-12)', () => {
     expect(new Set(dests).size, `duplicate intro links: ${dests.join(', ')}`).toBe(dests.length)
   })
 
-  it('the intro layout tree lists real top-level folders', () => {
+  it('the intro layout tree lists real top-level folders, open catalogs first, linked to their sections', () => {
+    // Round 10: the tree is an HTML <pre> block (a fenced code block cannot carry links);
+    // each folder with a matching README section links its anchor, the rest stay plain.
     const intro = readme.slice(0, readme.indexOf('\n## '))
-    const tree = intro.slice(intro.indexOf('```'), intro.indexOf('```', intro.indexOf('```') + 3))
+    const tree = intro.slice(intro.indexOf('<pre>'), intro.indexOf('</pre>'))
     // Classic waterfall form: a root line, ├── branch connectors, └── on the last entry.
     expect(tree).toContain('\nultrametric/\n')
-    expect(tree).toMatch(/\n└── [a-z][a-z-]*\/ /)
-    const dirs = [...tree.matchAll(/^[├└]── ([a-z][a-z-]*)\/ /gm)].map((m) => m[1])
-    expect(dirs.length).toBeGreaterThanOrEqual(10)
-    for (const dir of dirs) {
+    expect(tree).toMatch(/\n└── /)
+    const rows = [...tree.matchAll(/^[├└]── (?:<a href="#([a-z-]+)">)?([a-z][a-z-]*)(?:<\/a>)?\/ +\S/gm)].map(
+      (m) => ({ anchor: m[1] ?? null, dir: m[2] }),
+    )
+    // The founder-specified order: the open catalogs people come for first, governance last.
+    expect(rows.map((r) => r.dir)).toEqual([
+      'open-processes', 'open-rankings', 'open-modules', 'open-startup-sim',
+      'open-law', 'open-lore', 'open-documents',
+      'pipeline', 'lib', 'jurisdictions', 'citations', 'coverage', 'schemas', 'governance',
+    ])
+    // Every README anchor a heading or explicit <a id> establishes (GitHub slug form).
+    const slug = (h: string) => h.toLowerCase().replace(/[^a-z0-9 -]/g, '').trim().replace(/ /g, '-')
+    const anchors = new Set([
+      ...[...readme.matchAll(/^#{2,3} (.+)$/gm)].map((m) => slug(m[1])),
+      ...[...readme.matchAll(/<a id="([a-z-]+)"><\/a>/g)].map((m) => m[1]),
+    ])
+    for (const { anchor, dir } of rows) {
       expect(
         fs.existsSync(path.join(ROOT, dir)) && fs.statSync(path.join(ROOT, dir)).isDirectory(),
         `layout tree lists ${dir}/ but no such top-level folder exists`,
       ).toBe(true)
+      if (anchor) {
+        expect(anchors.has(anchor), `tree links ${dir}/ to #${anchor} but no such anchor resolves`).toBe(true)
+      } else {
+        // Plain-text folders stay unlinked because no section covers them.
+        expect(anchors.has(dir), `tree leaves ${dir}/ unlinked but #${dir} resolves to a section`).toBe(false)
+      }
     }
   })
 

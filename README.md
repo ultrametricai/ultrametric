@@ -6,22 +6,23 @@
 
 This repo is home to all the processes you need to run, vendors and tools you need to compare, advice you need to hear, and helpful modules to reduce lock-in. Let's make it easy to start and run a professional startup in the US and other geographies.
 
-```
+<pre>
 ultrametric/
-├── open-processes/       every founder process, step by step
-├── open-rankings/        evidence, verdicts, computed scores
-├── pipeline/        crawl, probe, judge, derive
-├── open-modules/    the startup calculations, indexed
-├── lib/             the code behind modules and loaders
-├── open-law/             startup law, one rule per record
-├── citations/       the sources every record cites
-├── jurisdictions/   countries, states, vendor geography
-├── open-documents/  the open legal documents catalog
-├── open-lore/            heuristics, episodes, the library
-├── coverage/        what is covered, at what maturity
-├── schemas/         the JSON contracts for every record
-└── governance/      review, evidence, and agent policy
-```
+├── <a href="#open-processes">open-processes</a>/     each founder process as routed, timed steps
+├── <a href="#open-vendor-rankings">open-rankings</a>/      per-market products, stories, evidence, verdicts
+├── <a href="#open-modules">open-modules</a>/       worked guides to each startup calculation
+├── <a href="#open-startup-simulator">open-startup-sim</a>/   what the simulator runs and assumes
+├── <a href="#open-law">open-law</a>/           startup legal rules by jurisdiction, each cited
+├── <a href="#open-lore">open-lore</a>/          founder advice, who said it, the reading library
+├── <a href="#open-docs">open-documents</a>/     openly published legal documents, by use case
+├── pipeline/           the code that crawls, probes, judges, scores
+├── lib/                loaders, scoring, and the calculation code
+├── jurisdictions/      country and state records, vendor availability
+├── citations/          the primary sources the legal records cite
+├── coverage/           what is mapped and what is a known gap
+├── schemas/            the JSON shape every record validates against
+└── governance/         review rules and what agents may do here
+</pre>
 
 <!-- Legacy anchor: external links to #start-here predate the merge into this map. -->
 <a id="start-here"></a>
@@ -214,16 +215,6 @@ A simulated company runs the whole process library end to end. Every step is rou
 agent, form, or human, and everything it generates is visibly marked simulated.
 
 [![The Open Startup simulator mid-run: a simulated company executing the founder processes](assets/readme/startup-sim.png)](https://ultrametric.ai/startup-sim)
-
-## Open skills for startups
-
-`ultrametric init` installs the bundled agent skill
-([install guide](https://docs.ultrametric.ai/cli/install)), so a coding agent can
-retrieve a process, run the agent-routed steps, and save progress from inside your repo.
-Skill collections themselves are a judged market: see it live at
-[ultrametric.ai/arena/agent-skills](https://ultrametric.ai/arena/agent-skills).
-
-[![The Agent Skills ranking on ultrametric.ai, skill collections and plugin catalogs judged head to head](assets/readme/agent-skills.png)](https://ultrametric.ai/arena/agent-skills)
 
 <a id="for-ai-agents"></a>
 <a id="use-it-from-an-agent"></a>
