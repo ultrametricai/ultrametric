@@ -237,11 +237,11 @@ export interface MethodComparison {
 }
 
 /**
- * The famous March recalculation: the Division bills the Authorized Shares Method by
- * default, and a startup with a large authorized pool but small assets usually owes far
- * less under the Assumed Par Value Capital Method (both rule cards' caveats say exactly
- * this). Computes both published methods and reports which is cheaper. Proposes only —
- * the corporation elects the method on its own annual report filing.
+ * The Division bills the Authorized Shares Method by default, and a startup with a large
+ * authorized pool but small assets usually owes far less under the Assumed Par Value
+ * Capital Method (both rule cards' caveats say exactly this). Computes both published
+ * methods and reports which is cheaper. Proposes only — the corporation elects the method
+ * on its own annual report filing.
  */
 export function compareFranchiseTaxMethods(inputs: AssumedParInputs): MethodComparison {
   const totalAuthorized = inputs.authorizedClasses.reduce((sum, c) => sum + c.shares, 0)
