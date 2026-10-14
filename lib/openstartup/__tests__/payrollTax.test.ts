@@ -71,6 +71,15 @@ describe('employerFicaAnnual (rule us-fed.fica-rates-2026)', () => {
     expect(r.employerFicaTotal).toBe(18_689)
   })
 
+  it('one dollar over the social security wage base still pays the $11,439 maximum', () => {
+    expect(employerFicaAnnual(184_501).employerSocialSecurity).toBe(11_439)
+  })
+
+  it('rejects negative wages', () => {
+    expect(() => employerFicaAnnual(-1)).toThrow(RangeError)
+    expect(() => futaAnnual(-1)).toThrow(RangeError)
+  })
+
   it('the $200,000 withholding threshold is exact', () => {
     expect(employerFicaAnnual(200_000).employeeAdditionalMedicareWithholding).toBe(0)
     expect(employerFicaAnnual(200_001).employeeAdditionalMedicareWithholding).toBe(0.01)
@@ -98,6 +107,12 @@ describe('futaAnnual (rule us-fed.futa-2025)', () => {
     expect(futaAnnual(50_000, { stateCreditRate: 0.051 }).netFuta).toBe(63)
     expect(() => futaAnnual(50_000, { stateCreditRate: 0.055 })).toThrow(RangeError)
     expect(() => futaAnnual(50_000, { stateCreditRate: -0.01 })).toThrow(RangeError)
+  })
+
+  it('the $7,000 wage base boundary is exact: $6,999 proportional, $7,000 and above capped', () => {
+    expect(futaAnnual(6_999).futaWages).toBe(6_999)
+    expect(futaAnnual(7_000).netFuta).toBe(42)
+    expect(futaAnnual(7_001).futaWages).toBe(7_000)
   })
 
   it('zero credit: the full 6.0% ($420 at the base)', () => {
