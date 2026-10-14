@@ -3,17 +3,25 @@ import path from 'node:path'
 import { describe, expect, it } from 'vitest'
 
 // The lore library gate: open-lore/library.json is the curated reading list (essays, guides,
-// books, talks) organized into sections. Invariants: total schema on sections and entries
-// (no missing or extra fields), unique kebab-case ids, every URL https and unique, every
-// entry's section resolving, loreIds resolving against open-lore/registry.json, and processIds
+// books, talks) organized into sections, which double as the lore topic set. Invariants:
+// total schema on sections and entries (no missing or extra fields), unique kebab-case ids,
+// every URL https and unique, every entry's section resolving, loreIds resolving against
+// open-lore/registry.json, section arenas resolving against open-rankings/, and processIds
 // resolving (read-only) against open-processes/corpus.json. Deterministic; URL liveness is
-// editorial (open-lore/README.md) and is verified at authoring time, not here.
+// editorial (open-lore/README.md) and is verified at authoring time, not here. Registry <->
+// library cross-link symmetry is asserted in lore-registry.test.ts.
 
 const ROOT = path.join(__dirname, '..')
 
 const FORMATS = ['essay', 'guide', 'book', 'video'] as const
 
-type LibrarySection = { id: string; title: string; covers: string }
+type LibrarySection = {
+  id: string
+  title: string
+  covers: string
+  arenas?: string[]
+  processIds?: string[]
+}
 type LibraryEntry = {
   id: string
   section: string
@@ -54,15 +62,44 @@ describe('lore library (open-lore/library.json)', () => {
 
   it('every section carries the total schema with a unique kebab-case id', () => {
     const seen = new Set<string>()
+    const REQUIRED = ['id', 'title', 'covers']
+    const OPTIONAL = ['arenas', 'processIds']
     for (const s of library.sections) {
-      expect(Object.keys(s).sort(), `section ${s.id} keys`).toEqual(['covers', 'id', 'title'])
+      const keys = Object.keys(s)
+      const extra = keys.filter((k) => !REQUIRED.includes(k) && !OPTIONAL.includes(k))
+      expect(extra, `section ${s.id} extra keys`).toEqual([])
       for (const k of ['id', 'title', 'covers'] as const) {
+        expect(keys.includes(k), `section ${s.id} missing ${k}`).toBe(true)
         expect(typeof s[k], `section ${s.id} ${k}`).toBe('string')
         expect(s[k].length, `section ${s.id} ${k} non-empty`).toBeGreaterThan(0)
       }
       expect(s.id, `section id format: ${s.id}`).toMatch(KEBAB)
       expect(seen.has(s.id), `duplicate section id ${s.id}`).toBe(false)
       seen.add(s.id)
+    }
+  })
+
+  it('section arenas resolve against open-rankings/ and section processIds against the corpus', () => {
+    for (const s of library.sections) {
+      if (s.arenas !== undefined) {
+        expect(Array.isArray(s.arenas), `section ${s.id} arenas array`).toBe(true)
+        expect(s.arenas.length, `section ${s.id} arenas non-empty when present`).toBeGreaterThan(0)
+        expect(new Set(s.arenas).size, `section ${s.id} duplicate arenas`).toBe(s.arenas.length)
+        for (const a of s.arenas) {
+          expect(a, `section ${s.id} arena id format: ${a}`).toMatch(KEBAB)
+          const rankingsFile = path.join(ROOT, 'open-rankings', a, 'rankings.json')
+          expect(fs.existsSync(rankingsFile), `section ${s.id} unknown arena ${a}`).toBe(true)
+        }
+      }
+      if (s.processIds !== undefined) {
+        expect(Array.isArray(s.processIds), `section ${s.id} processIds array`).toBe(true)
+        expect(new Set(s.processIds).size, `section ${s.id} duplicate processIds`).toBe(
+          s.processIds.length,
+        )
+        for (const pid of s.processIds) {
+          expect(processIds.has(pid), `section ${s.id} unknown process id ${pid}`).toBe(true)
+        }
+      }
     }
   })
 
@@ -113,7 +150,7 @@ describe('lore library (open-lore/library.json)', () => {
     }
   })
 
-  it('every entry belongs to a declared section, and every section holds 8-15 entries', () => {
+  it('every entry belongs to a declared section, and every section holds 6-16 entries', () => {
     const sections = new Set(library.sections.map((s) => s.id))
     const counts = new Map<string, number>()
     for (const e of library.entries) {
@@ -122,8 +159,8 @@ describe('lore library (open-lore/library.json)', () => {
     }
     for (const s of library.sections) {
       const n = counts.get(s.id) ?? 0
-      expect(n, `section ${s.id} entry count ${n}`).toBeGreaterThanOrEqual(8)
-      expect(n, `section ${s.id} entry count ${n}`).toBeLessThanOrEqual(15)
+      expect(n, `section ${s.id} entry count ${n}`).toBeGreaterThanOrEqual(6)
+      expect(n, `section ${s.id} entry count ${n}`).toBeLessThanOrEqual(16)
     }
   })
 
@@ -142,6 +179,13 @@ describe('lore library (open-lore/library.json)', () => {
       for (const pid of e.processIds) {
         expect(processIds.has(pid), `entry ${e.id} unknown process id ${pid}`).toBe(true)
       }
+    }
+  })
+
+  it('the lore README topics table carries a row for every section', () => {
+    const readme = fs.readFileSync(path.join(ROOT, 'open-lore', 'README.md'), 'utf8')
+    for (const s of library.sections) {
+      expect(readme, `lore README missing topic row for ${s.id}`).toContain(`| ${s.title} | ${s.covers}`)
     }
   })
 

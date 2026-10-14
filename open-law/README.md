@@ -16,6 +16,30 @@ authority). Workflows in
 `open-processes/<domain>/<jurisdiction>/` cite cards in `rule_ids`, e.g.
 `equity.us-de.83b-election` cites `us-fed.83b-filing-period`.
 
+## The map
+
+`map.json` is the domain map over the cards: each domain's sub-areas, the cards covering
+each sub-area, the workflow and corpus processes the sub-area governs, an editorial
+maturity grade, and the stated gaps. Grades mean: `mapped` (the recurring rules a startup
+hits carry cards), `partial` (some do; the gaps field lists what is missing), `unmapped`
+(no cards yet; the gaps field lists the rules a startup hits first). `lib/founderOps.ts`
+enforces that every card appears in the map, every reference resolves, and the grades
+agree with the cards present; the table below mirrors `map.json` and a test holds the two
+together.
+
+| Domain | Covers | Maturity |
+| --- | --- | --- |
+| Formation and corporate governance | Incorporation mechanics and charter contents (Delaware focus), board and stockholder action, stock issuance authority, ongoing state registrations, and beneficial-ownership reporting. | partial |
+| Securities and fundraising | The Securities Act registration requirement and private-offering exemptions, Regulation D conditions, offering notices (Form D and blue sky), and compensatory-issuance exemptions. | partial |
+| Equity and compensation | 409A valuation presumptions and penalties, 83(b) elections and restricted stock, ISO and NSO tax treatment, and QSBS. | mapped |
+| Employment | Hiring and onboarding duties, federal wage and hour baselines, worker classification, restrictive covenants, terminations and layoffs, workplace safety, and benefits. | partial |
+| Tax | Federal corporate income tax and R&D rules, payroll taxes, state entity-level taxes, and sales tax. | partial |
+| Intellectual property | Ownership and assignment of founder, employee, and contractor work product; patents; trademarks; trade secrets; and open source. | partial |
+| Contracts and commercial | Electronic contracting, marketing communications, customer contracts, and dispute deadlines. | partial |
+| Privacy and data protection | US state privacy statutes, federal sectoral privacy law, and EU data protection. | partial |
+| Immigration | Founder immigration paths and employment-based work visas. | partial |
+| Dissolution and distress | Voluntary dissolution and wind-down, and insolvency paths. | partial |
+
 A trimmed real card (`open-law/US-FED/us-fed-1120-filing-deadline.json`):
 
 ```jsonc
@@ -34,6 +58,8 @@ Contribute here:
 - **Cards for a new jurisdiction** — register the jurisdiction first
   (`jurisdictions/registry.json`) with a narrow scope, then add one rule per stable
   ID, citing primary sources. US rules are never copied into another jurisdiction.
+- **Place every new card in `map.json`** — add its ID to the covering sub-area (the
+  validator fails an unplaced card) and restate that sub-area's grade and gaps.
 - **Refresh an existing card** — re-verify against the primary source and bump
   `reviewed_on` / `review_due`; if the meaning changed, version the ID instead of editing
   it in place.

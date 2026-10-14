@@ -2,6 +2,8 @@ import fs from 'node:fs'
 import path from 'node:path'
 import { describe, expect, it } from 'vitest'
 
+import { GEO_COUNTRIES, GEO_PREF_META } from '../lib/geoPreference'
+
 // README structure pins (founder rounds 2-3, 2026-10-12): the preserved intro block, the
 // compressed section order (no Trust section; artifacts directly after modules with the docs
 // catalog folded inside; country switch and getting-acquired as Example subsections), the
@@ -23,12 +25,16 @@ const contributing = fs.readFileSync(path.join(ROOT, 'CONTRIBUTING.md'), 'utf8')
 // leads with open-processes / open-rankings / open-modules, adds open-startup-sim/, and
 // is an HTML <pre> block so each folder with a matching README section links its anchor
 // (a fenced code block cannot carry links).
+// Founder visual+language batch (2026-10-14): the founder-authorized vocabulary sweep
+// ("episodes" banned; "records" and "every X" rewritten in plain alternatives) reaches
+// into the motto and the layout tree, and the supported-countries line sits directly
+// above the demo gif (globe first, then the geo switcher's country set, US first).
 const INTRO = [
   '![Ultrametric](assets/banner.svg)',
   '',
   '[![Discord](https://img.shields.io/badge/Discord-Join_the_community-5865F2?style=for-the-badge&logo=discord&logoColor=white)](https://discord.gg/3aHky836qP)',
   '',
-  '**The open repo for every part of the startup journey in the agentic era.**',
+  '**The open repo for the whole startup journey in the agentic era.**',
   '',
   "Navigate all business processes, compare and select AI native vendors, inform yourself on startup lore, run open modules to become vendor free, save money using open documentation. Help future founders by making PRs to the open artifacts, gaps in open documents or improve the open module logic. Let's make it easy to start and run a startup around the world.",
   '',
@@ -43,15 +49,17 @@ const INTRO = [
   '├── <a href="#open-docs">open-documents</a>/     openly published legal documents, by use case',
   '├── pipeline/           the code that crawls, probes, judges, scores',
   '├── lib/                loaders, scoring, and the calculation code',
-  '├── jurisdictions/      country and state records, vendor availability',
-  '├── citations/          the primary sources the legal records cite',
+  '├── jurisdictions/      country and state data, vendor availability',
+  '├── citations/          the primary sources the legal rules cite',
   '├── coverage/           what is mapped and what is a known gap',
-  '├── schemas/            the JSON shape every record validates against',
+  '├── schemas/            the JSON shape each data file validates against',
   '└── governance/         review rules and what agents may do here',
   '</pre>',
   '',
   '<!-- Legacy anchor: external links to #start-here predate the merge into this map. -->',
   '<a id="start-here"></a>',
+  '',
+  'Supported founders globally: 🌐 🇺🇸 🇬🇧 🇮🇳 🇩🇪 🇫🇷 🇵🇹 🇨🇦',
   '',
   '[![A tour of ultrametric.ai at 4x: the simulator founding a company, a process page, a vendor page, a situation, the overall rankings, government services, and open documents](assets/readme/demo.gif)](https://ultrametric.ai)',
 ].join('\n')
@@ -191,6 +199,30 @@ describe('README.md structure (founder round 2, 2026-10-12)', () => {
     }
   })
 
+  it('the supported-countries line sits directly above the demo gif and matches the geo switcher', () => {
+    // Founder visual+language batch (2026-10-14): globe first, then the full GEO_COUNTRIES
+    // set in switcher order (US first). The line is plain prose, no heading.
+    const line = `Supported founders globally: 🌐 ${GEO_COUNTRIES.map((c) => GEO_PREF_META[c].flag).join(' ')}`
+    expect(readme).toContain(`\n${line}\n\n[![A tour of ultrametric.ai`)
+  })
+
+  it('the Government services and Startup ecosystem sections carry their live-board screenshots', () => {
+    expect(sectionBody('## Government services and startups')).toContain(
+      '](assets/readme/government-services.png)](https://ultrametric.ai/arena/government-services)',
+    )
+    expect(sectionBody('## Startup ecosystem')).toContain(
+      '](assets/readme/law-firms.png)](https://ultrametric.ai/rankings/law-firms)',
+    )
+  })
+
+  it('the Getting acquired example names the playbook gap without linking coverage/', () => {
+    const at = readme.indexOf('### Example: Getting acquired')
+    expect(at).toBeGreaterThan(-1)
+    const body = readme.slice(at, readme.indexOf('\n## ', at))
+    expect(body).toContain('open gap')
+    expect(body).not.toContain('](coverage/')
+  })
+
   it('every screenshot is a clickable link to the live page it shows', () => {
     const embeds = [...readme.matchAll(/!\[[^\]]*\]\(assets\/readme\/[^)]+\)/g)]
     const wrapped = [...readme.matchAll(/\[!\[[^\]]*\]\(assets\/readme\/[^)]+\)\]\((https:\/\/ultrametric\.ai[^)]*)\)/g)]
@@ -208,9 +240,20 @@ describe('README.md structure (founder round 2, 2026-10-12)', () => {
   })
 
   it('uses plain language: no insider vocabulary anywhere on the page', () => {
-    for (const banned of ['corpus', 'interchange', 'disposition', 'manifest', 'taxonomy', 'HMAC', 'DAG', 'provenance']) {
+    // 'episodes' joined the list in the founder visual+language batch (2026-10-14).
+    for (const banned of ['corpus', 'interchange', 'disposition', 'manifest', 'taxonomy', 'HMAC', 'DAG', 'provenance', 'episodes']) {
       expect(readme.toLowerCase(), `README contains banned word "${banned}"`).not.toContain(banned.toLowerCase())
     }
+  })
+
+  it('avoids "record(s)" and "every X" constructions (founder sweep, 2026-10-14)', () => {
+    // Soft sweep: plain alternatives ("the processes", "any verdict", "each data file")
+    // replaced them throughout; no exception survived, so the allowed list is empty.
+    const allowed: string[] = []
+    const hits = [...readme.matchAll(/\b(records?|every)\b/gi)]
+      .map((m) => m[0])
+      .filter((w) => !allowed.includes(w))
+    expect(hits, `README uses swept vocabulary: ${hits.join(', ')}`).toEqual([])
   })
 
   it('hand-written prose carries no counts and no dates; numbers live in generated blocks only', () => {
@@ -384,6 +427,20 @@ describe('README.md media', () => {
       const size = fs.statSync(path.join(dir, file)).size
       if (file.endsWith('.png')) expect(size, `${file} over 300KB`).toBeLessThan(300 * 1024)
       if (file.endsWith('.gif')) expect(size, `${file} over 5MB`).toBeLessThan(5 * 1024 * 1024)
+    }
+  })
+
+  it('every embedded image is wide enough that GitHub renders them all at equal full width', () => {
+    // GitHub caps rendered images at the markdown container (~1012px); anything at or over
+    // that renders edge to edge, so the gif and the screenshots display at the same width
+    // (founder visual batch, 2026-10-14: screenshots 1260px, gif re-rendered at 1260px).
+    const dir = path.join(ROOT, 'assets', 'readme')
+    for (const file of fs.readdirSync(dir)) {
+      const buf = fs.readFileSync(path.join(dir, file))
+      let width: number | null = null
+      if (file.endsWith('.png')) width = buf.readUInt32BE(16)
+      if (file.endsWith('.gif')) width = buf.readUInt16LE(6)
+      if (width !== null) expect(width, `${file} narrower than the render cap`).toBeGreaterThanOrEqual(1012)
     }
   })
 })
