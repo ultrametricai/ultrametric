@@ -4626,9 +4626,12 @@
     "storyId": "agentic-agent-docs",
     "verdict": "none",
     "quality": 0,
-    "confidence": "medium",
-    "rationale": "Pointing an agent at llms.txt or agent-oriented docs is a fair question for a government agency with a large public documentation site, so the axis applies. The only relevant evidence is the probe: canada.ca/llms.txt returned HTTP 200, but the probe found no agent-oriented docs index, which suggests a generic page rather than a real llms.txt. None of the other documentation describes agent-oriented docs. Confidence is medium because the HTTP 200 result is ambiguous.",
-    "evidenceIds": []
+    "confidence": "high",
+    "rationale": "A government agency's web platform could publish an llms.txt or agent-oriented docs index, so this axis applies. The later probe shows https://www.canada.ca/llms.txt redirects (302) to the canada.ca 404 error page. That resolves the earlier HTTP 200 reading as a soft 404, so no llms.txt or agent-oriented docs exist. Nothing else in the pack describes agent-facing documentation.",
+    "evidenceIds": [
+      "cra-probe-2",
+      "cra-probe-1"
+    ]
   },
   {
     "productId": "cra",
@@ -4636,7 +4639,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "A tax agency's online portal, which holds account, return and payment data, could plausibly offer AI-generated insights or suggestions, so the axis applies. The evidence covers business registration, e-services (filing, payments, notices, calculators) and EFILE transmission, but none of it mentions AI-generated insights, recommendations or assistant features drawn from user data.",
+    "rationale": "The CRA runs online account portals that hold user tax and benefit data, so AI-generated insights or suggestions inside those services are a fair question to ask. The evidence describes only transactional e-services: registration, filing, payments, calculators, document submission and transmission history. Nothing shows AI-generated insights, recommendations or assistant features, and the probes confirm no agent-oriented documentation exists.",
     "evidenceIds": []
   },
   {
@@ -4645,7 +4648,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The axis applies, since a government e-service could plausibly offer scheduled, recurring, or programmatic background actions, but the evidence shows none. The listed e-services (filing, payments, document submission, email notifications) and EFILE system-to-system transmission through certified software are all filer-initiated, with nothing on user-configured automations, scheduling, or autonomous background execution. The llms.txt probe likewise found no agent-oriented docs index.",
+    "rationale": "The axis applies, since a tax agency's online services could offer user-configured background automation such as scheduled or recurring actions or an API for agents. The evidence shows only interactive e-services (filing, payments, registration, email notifications) and the EFILE channel, where certified software transmits returns that a filer submits. Nothing shows users can set up autonomous automations that run in the background.",
     "evidenceIds": []
   },
   {
@@ -4654,7 +4657,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "A government tax agency's online services could plausibly offer a built-in AI assistant or chatbot, so this axis applies. The evidence describes only conventional e-services: online registration, filing, payments, document submission, and EFILE transmission through certified third-party software. Nothing in the pack shows a built-in AI assistant that users can delegate tasks to.",
+    "rationale": "A government online-services portal like CRA's could plausibly ship a built-in AI assistant, so the axis applies. The evidence only covers online registration, e-services, and EFILE through third-party certified software. Nothing shows an in-product AI assistant that can take delegated tasks, and the llms.txt probes find no agent-oriented resources either.",
     "evidenceIds": []
   },
   {
@@ -4662,13 +4665,13 @@
     "storyId": "agentic-headless",
     "verdict": "partial",
     "quality": 3,
-    "confidence": "medium",
-    "rationale": "The only non-interactive channel in evidence is EFILE: enrolled electronic filers use CRA-certified tax software to transmit returns system-to-system, including amended returns via ReFILE (cra-supp-3, cra-docs-14, cra-docs-15, cra-docs-19). It is gated behind certification and enrollment with an EFILE number and password, and covers only return filing. Everything else, including business registration, payments and document submission, is described as interactive online portal use. Missing for 10: a public API or CLI usable by ordinary users, CI/headless documentation, automation coverage beyond certified-software return transmission, and independent or hands-on corroboration.",
+    "confidence": "low",
+    "rationale": "The only non-interactive channel in evidence is EFILE: certified tax-preparation software run by an enrolled electronic filer can transmit returns system-to-system to the CRA, which allows some programmatic filing. That channel requires third-party certified software and filer enrollment. Account management and transmission history still need an interactive sign-in with EFILE number and password, and the rest of the services (business registration, payments, document submission) are web-portal flows. Missing for 10: a publicly documented API or CLI for headless use, CI-friendly authentication (tokens or service accounts), automation beyond certified-software return transmission, and independent hands-on corroboration.",
     "evidenceIds": [
-      "cra-supp-3",
       "cra-docs-14",
-      "cra-docs-15",
       "cra-docs-19",
+      "cra-supp-3",
+      "cra-docs-16",
       "cra-docs-17"
     ]
   },
@@ -4678,7 +4681,7 @@
     "verdict": "na",
     "quality": 0,
     "confidence": "high",
-    "rationale": "Plugging in MCP servers is an MCP-client capability, which belongs to AI agents or AI host applications. The Canada Revenue Agency is a government tax-administration service (business registration, EFILE, e-services), not an agent that consumes tools, so this axis is a category error. Nothing in the evidence shows it ships any client-side AI tool integration that would make the axis apply.",
+    "rationale": "The CRA is a government tax agency offering online registration, filing and EFILE transmission services, not an AI agent or assistant that could act as an MCP client. Plugging MCP servers into it so it can use their tools is therefore a category error for this kind of product. Nothing in the evidence shows any AI or agent capability that would make the axis apply.",
     "evidenceIds": []
   },
   {
@@ -4687,7 +4690,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "high",
-    "rationale": "The CRA is a government digital-services provider, not an agent, so an official MCP server is a fair question. The evidence shows only web e-services and the EFILE certified-software transmission channel. Nothing in the pack mentions an MCP server or any agent-connection endpoint, and the llms.txt probe found no agent-oriented docs index.",
+    "rationale": "The CRA is a government service platform, not an agent, so publishing an official MCP server is a fair question and the axis applies. Nothing in the evidence pack mentions an MCP server or any agent-facing integration. The only programmatic channel documented is EFILE, which works through certified tax software and is not an MCP server. Probes also confirm canada.ca publishes no llms.txt or other agent-oriented docs index.",
     "evidenceIds": []
   },
   {
@@ -4696,7 +4699,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "A government e-services platform could plausibly offer a natural-language assistant or chatbot, so this axis applies. However, the evidence only describes form-based online portals (BRO, My Account, Represent a Client) and certified-software EFILE transmission. Nothing shows users can issue natural-language commands, and the llms.txt probe found no agent-oriented docs index.",
+    "rationale": "A government tax-services portal could plausibly offer a conversational or natural-language interface, so this axis applies. The evidence only describes form-based online services (BRO registration, My Account e-services) and certified-software EFILE transmission. Nothing shows natural-language operation, and the llms.txt probe resolves to a soft 404 with no agent-oriented interface.",
     "evidenceIds": []
   },
   {
@@ -4705,7 +4708,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "A government digital-services provider could plausibly ship an official command-line tool, so this axis applies. The evidence shows only web portals and online forms (BRO, My Business Account, Represent a Client) plus the EFILE system-to-system channel. EFILE runs through third-party certified tax software, not a first-party CLI. Nothing in the pack documents an official CRA command-line tool.",
+    "rationale": "A revenue agency could plausibly publish an official CLI for its digital services, so the axis applies. The evidence shows no such tool. The only machine channel is EFILE, which runs through third-party certified tax software rather than an agency-published CLI, and the agency's other services are web portals and online forms.",
     "evidenceIds": []
   },
   {
@@ -4714,14 +4717,13 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "medium",
-    "rationale": "The only machine-to-machine channel in evidence is EFILE/ReFILE: CRA-certified tax software and enrolled electronic filers transmit returns system-to-system. That path is gated behind software certification and filer enrollment, and covers only return filing, not a general public API. Everything else (business registration, payments, documents, enquiries) is offered as web portal e-services, and the llms.txt probe found no agent-oriented docs index. Missing for 10: a publicly documented open API spec, self-serve developer access without certification, API coverage beyond return transmission (registration, payments, account management), and agent-oriented docs.",
+    "rationale": "The only machine-to-machine channel in evidence is EFILE/ReFILE, which lets certified tax software and enrolled electronic filers transmit returns system-to-system. It is gated behind a CRA certification process and filer enrollment, and no public API specification is shown. Everything else is web portals and forms, and canada.ca publishes no llms.txt or agent-oriented docs index. Missing for 10: an openly documented public API (spec/reference) usable by an ordinary or AI-native user, coverage beyond return filing (registration, payments, account management), and an agent-oriented docs index.",
     "evidenceIds": [
       "cra-docs-14",
       "cra-docs-15",
       "cra-docs-19",
       "cra-supp-3",
-      "cra-docs-9",
-      "cra-probe-1"
+      "cra-probe-2"
     ]
   },
   {
@@ -4730,7 +4732,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "A government tax agency's digital services could plausibly offer scoped API credentials for third-party software, so this axis applies. The evidence shows no way to issue scoped or least-privilege API credentials for an agent. The closest items are a single EFILE number and password for certified tax software transmitters and portal-based access requests for human representatives, neither of which is an agent API credential with scopes.",
+    "rationale": "The axis applies because CRA runs digital services, including EFILE system-to-system transmission, so issuing scoped credentials to software is a fair question. The evidence shows no way to issue them. EFILE uses a single EFILE number and password per filer (cra-docs-17). 'Authorize access to online information' and the Represent a Client portal (cra-docs-10, cra-docs-18) delegate account access to human representatives, not scoped API credentials for an AI agent. The probe also finds no agent-oriented docs index on canada.ca (cra-probe-2).",
     "evidenceIds": []
   },
   {
@@ -4739,7 +4741,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "A tax agency with digital services could plausibly publish developer SDKs, so this axis applies. However, the evidence only shows web e-services and the EFILE channel, where third-party tax software is certified for system-to-system transmission. Nothing in the pack shows an official SDK, client library, or developer API that a user could build against.",
+    "rationale": "A tax agency could plausibly publish official SDKs or client libraries for its programmatic filing channels, so this axis applies. The evidence shows only a certified-software EFILE transmission channel and online portals; no official SDK or client library is documented. The probes also confirm there is no agent-oriented docs index.",
     "evidenceIds": []
   },
   {
@@ -4748,7 +4750,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Event notifications are a fair question for a government agency that runs e-services and a system-to-system EFILE channel, so this axis applies. The evidence only shows email notifications, electronic mailing-list subscriptions, and viewing transmission history in a portal. Nothing documents webhooks or any programmatic event-subscription mechanism.",
+    "rationale": "Programmatic event notification is a fair axis for a government agency that runs digital services, but the evidence shows only email notifications and electronic mailing lists for humans. EFILE is outbound system-to-system return transmission, not an event subscription mechanism. Nothing documents webhooks or any machine-consumable event subscription.",
     "evidenceIds": []
   },
   {
@@ -4757,7 +4759,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "A tax agency could publish a developer API reference with runnable examples, as some revenue agencies run developer hubs, so this axis applies. The evidence shows only consumer and business e-services portals and the certified-software EFILE transmission channel. Nothing documents a public API reference, interactive explorer, or runnable examples.",
+    "rationale": "A revenue agency with system-to-system channels could plausibly publish a developer API reference, so this axis applies. The evidence shows only consumer e-services, online business registration, and an EFILE channel limited to certified software. Nothing documents a public API reference, interactive explorer, or runnable examples, and probes confirm no llms.txt or agent-oriented docs index exists.",
     "evidenceIds": []
   },
   {
@@ -4766,7 +4768,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "A tax agency could plausibly publish machine-readable API specs, so the axis applies. The evidence shows only web e-services and the EFILE channel, which works through CRA-certified tax software and enrolled filers. Nothing in the pack shows a downloadable OpenAPI or equivalent spec.",
+    "rationale": "A tax agency could plausibly publish developer APIs with machine-readable specs, so this axis applies. The evidence shows only web e-services and the EFILE certified-software transmission channel. No item mentions a downloadable OpenAPI or equivalent spec, and the probes found no llms.txt or other agent-oriented docs index.",
     "evidenceIds": []
   },
   {
@@ -4775,7 +4777,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "A sandbox or test environment is a fair question for a tax agency that exposes system-to-system channels like EFILE, so the axis applies. The evidence mentions only that software developers go through a compatibility-verification process with the CRA. It never describes a sandbox or test environment that users or agents can reach without touching production data.",
+    "rationale": "CRA runs a system-to-system EFILE channel for certified tax software, so a test or sandbox environment is a fair question for this agency. However, the evidence never mentions a sandbox, test endpoint, or synthetic test data. The software certification process is described only as verifying compatibility, with no stated way to test without touching production data.",
     "evidenceIds": []
   },
   {
@@ -4784,7 +4786,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "A tax agency with system-to-system channels such as EFILE could plausibly publish versioned APIs, so the axis applies. However, the evidence only describes certified-software transmission and year-scoped ReFILE support. Nothing documents API versioning, version identifiers, or a deprecation or sunset policy that an AI-native integrator could rely on.",
+    "rationale": "A tax agency with a system-to-system filing channel could reasonably publish versioned APIs and a deprecation policy, so this axis applies. The evidence describes EFILE as a certified-software transmission channel and lists various web e-services, but nothing mentions API versioning, version lifecycles, or a documented deprecation policy. The probes also show no agent-oriented docs index on canada.ca.",
     "evidenceIds": []
   },
   {
@@ -4825,8 +4827,8 @@
     "storyId": "automation-rules-engine",
     "verdict": "none",
     "quality": 0,
-    "confidence": "high",
-    "rationale": "The axis applies to this product kind (peer products hold positive or none verdicts on this story), so lack of evidence for an applicable capability is \"none\", never \"na\". (na/none harmonized at arena bring-up — see pipeline/scripts/na-harmonize.ts.)",
+    "confidence": "medium",
+    "rationale": "A government tax e-services portal could plausibly offer event-driven automation, such as notice webhooks or rule-based actions, so the axis applies. The evidence shows only fixed CRA email notifications, manual e-services and the EFILE transmission channel. Nothing shows user-defined rules that trigger actions automatically on events.",
     "evidenceIds": []
   },
   {
@@ -4835,7 +4837,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "A tax agency's e-services could plausibly offer scheduled or recurring actions, such as pre-authorized recurring payments or scheduled filings, so this axis applies. The evidence only shows one-off actions: making a payment, filing returns, submitting documents, getting email notifications, and EFILE transmission through certified software. Nothing shows any way to schedule recurring jobs or workflows.",
+    "rationale": "A government tax-services platform could plausibly offer scheduling, such as recurring pre-authorized payments or scheduled filings, so the axis applies. The evidence only covers one-off online actions: registration, filing, payments, document submission, EFILE transmission and email notifications. Nothing documents scheduling recurring jobs, payments or workflows, and the probes show no agent-oriented docs.",
     "evidenceIds": []
   },
   {
@@ -4844,7 +4846,7 @@
     "verdict": "na",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The CRA is a government tax and business-registration agency, not a platform that hosts user-built automations, so versioning, reviewing and rolling back automations is a category error for this kind of product. The evidence does show EFILE transmission history and ReFILE amendments, but those concern tax returns, not user automations, so they do not make the axis applicable.",
+    "rationale": "The CRA is a government tax agency whose e-services cover registration, filing, payments and document submission; it does not host user-defined automations. Versioning, reviewing and rolling back automations is therefore a category error for this kind of product. EFILE transmission history and ReFILE amended returns concern tax filings, not automation versioning, so they do not make the axis applicable.",
     "evidenceIds": []
   },
   {
@@ -4853,7 +4855,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Publishing bulk public datasets or registry extracts is a fair question for a tax agency, so the axis applies. The evidence only shows interactive lookups, such as searching the GST/HST registry or searching for a registered charity, which are per-record web searches rather than downloadable bulk extracts. Nothing in the pack documents a dataset download, open-data extract or statistics file.",
+    "rationale": "Publishing bulk public datasets or registry extracts is a fair question for a tax agency, so the axis applies. However, the evidence only shows interactive lookups (search for a registered charity, search the GST/HST registry, find an existing business number). It shows no downloadable datasets, registry extracts or statistical files. Interactive search tools would still require scraping for bulk use, so they do not satisfy this story.",
     "evidenceIds": []
   },
   {
@@ -4862,7 +4864,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Publishing a robots.txt is a fair question for any public web service like the CRA's canada.ca pages, so the axis applies. The pack has no probe or document about robots.txt. The only crawl-related probe concerns llms.txt, a different file, and says no agent-oriented index exists, so it cannot count as robots.txt evidence.",
+    "rationale": "Publishing a robots.txt is a fair question for any public web service, including a government agency's site, so the axis applies. The pack has no probe or document about robots.txt on canada.ca. The only probes concern llms.txt, a different file, so they cannot show whether a real robots.txt exists or what it permits.",
     "evidenceIds": []
   },
   {
@@ -4871,12 +4873,11 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "The only published sign-in path in the evidence is the EFILE channel, where a filer signs in remotely with an EFILE number and password (cra-docs-16, cra-docs-17). This is a credential-based remote path, but nothing shows it uses MFA, and nothing describes how the main CRA business account sign-in or the Represent a Client access works. missing for 10: evidence of MFA on any sign-in, the sign-in and identity-verification method for My Business Account or Represent a Client, confirmation that no mailed PIN, in-person visit or biometric step is required, and independent or hands-on corroboration.",
+    "rationale": "The only published sign-in detail is for the EFILE channel, which uses an EFILE number and password (cra-docs-16, cra-docs-17). That is a remote credential path with no biometric or in-person step mentioned, and CRA says registration happens online (cra-supp-2). However, the evidence never mentions MFA. It also never describes how a founder signs in to the CRA account for business or how identity is first verified, so a mailed PIN or in-person step cannot be ruled out. Missing for 10: documented MFA on the sign-in path, a description of sign-in and identity verification for the CRA business account, explicit confirmation that no mailed PIN, biometric or in-person step is required, and independent or hands-on corroboration.",
     "evidenceIds": [
       "cra-docs-16",
       "cra-docs-17",
-      "cra-docs-18",
-      "cra-docs-7"
+      "cra-supp-2"
     ]
   },
   {
@@ -4885,7 +4886,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Publishing filing deadlines and late-filing penalty and interest schedules is a fair question for a tax authority, so the axis applies. However, the evidence pack covers only business registration, e-services and EFILE transmission. It contains no deadline dates, penalty percentages or prescribed interest rates.",
+    "rationale": "Publishing filing deadlines and penalty and interest schedules is a core, applicable question for a tax authority. The evidence pack covers only business registration, e-services, and EFILE. No cited item gives filing deadlines, late-filing penalty rates, or interest figures.",
     "evidenceIds": []
   },
   {
@@ -4894,11 +4895,12 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "medium",
-    "rationale": "The evidence shows CRA publishes a delegated-access channel. Business accounts can \"authorize access to online information,\" representatives must use the Represent a Client portal to request online access, and representatives can file returns or make payments for clients. Nothing in the pack spells out what a representative may or may not do. Missing for 10: the specific authorization forms, the defined representative roles or access levels, which signatures or declarations stay personal to the taxpayer, and any independent corroboration.",
+    "rationale": "The evidence shows that CRA has a delegated-access model. Representatives must request online access through the Represent a Client portal, account holders can 'authorize access to online information', and EFILE transmitters can file clients' returns. None of it publishes the actual scope of what a third party may or may not do. Missing for 10: named authorization forms, defined representative roles or authorization levels, a statement of which signatures or declarations must remain personal to the taxpayer, and any detailed first-party documentation of delegation limits.",
     "evidenceIds": [
-      "cra-docs-10",
       "cra-docs-18",
-      "cra-docs-11"
+      "cra-docs-10",
+      "cra-docs-11",
+      "cra-docs-14"
     ]
   },
   {
@@ -4907,9 +4909,10 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "The registration overview says founders can register for a BN and program accounts \"on one form\" [cra-docs-6], which hints at a non-online alternative to Business Registration Online. However, the pack never names the form, never gives a mailing address or fax number, and never says that route can be used when the online flow is down. The nearby submission option is itself electronic, via \"Submit documents\" in the online CRA business account [cra-docs-7]. Missing for 10: the specific paper form identifier, exact mailing addresses, fax numbers, explicit positioning as a fallback when online services are unavailable, and independent corroboration.",
+    "rationale": "The registration overview mentions registering for a BN and program accounts \"on one form\" (cra-docs-6). It also lists electronic \"Submit documents\" as one of several submission routes (cra-docs-7), which implies a non-online form path exists. However, the evidence never names the form, the mailing address, or a fax number. missing for 10: named paper form (e.g. form number), exact mailing addresses, fax numbers, explicit documentation of the offline fallback procedure, independent corroboration.",
     "evidenceIds": [
-      "cra-docs-6"
+      "cra-docs-6",
+      "cra-docs-7"
     ]
   },
   {
@@ -4918,7 +4921,7 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "CRA's business-registration page publishes a distinct non-resident route, including registering a Canadian business with only non-resident owners. It also states that holders of a temporary SIN starting with 9 must register through BRO. The pack does not show what that non-resident route requires. Missing for 10: eligibility criteria for non-residents, a list of acceptable foreign identifiers or credentials (e.g., foreign ID or a non-SIN path), the explicit extra steps on the non-resident route, and independent corroboration.",
+    "rationale": "CRA's business-registration page publishes a dedicated \"Register as a non-resident\" route, including for a Canadian business with only non-resident owners. Its pages also address one identifier case: individuals with a temporary SIN starting with 9 must use BRO. The pack does not detail eligibility criteria, which foreign credentials or identifiers are accepted, or the extra steps non-residents must take. missing for 10: explicit non-resident eligibility rules, list of acceptable foreign identifiers/credentials, documented extra steps for non-residents, independent or hands-on corroboration.",
     "evidenceIds": [
       "cra-supp-1",
       "cra-docs-5"
@@ -4930,7 +4933,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Publishing downloadable forms and instructions is a fair expectation for a tax agency, so the axis applies. However, the evidence pack covers online registration (BRO), account-based e-services and EFILE, and never states that forms or guides can be downloaded without signing in. The single mention of registering 'on one form' does not establish account-free download.",
+    "rationale": "A tax agency's site could plausibly publish downloadable forms and guides without sign-in, so this axis applies. However, the evidence pack only describes online registration flows (BRO), account-based e-services and EFILE. Nothing shows that forms or their instructions can be downloaded without an account, and the 'one form' reference is to the online BRO registration, not a downloadable form.",
     "evidenceIds": []
   },
   {
@@ -4939,7 +4942,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The pack documents Business Registration Online as the core online flow, but no cited page says it can be started without first creating or signing in to an account, or by entering only a file number. The nearby entry points all point the other way: document submission runs through a 'CRA account for business', and EFILE requires an EFILE number and password, which is an enrolled credential rather than a keyless path. The 'Find an existing business number' link is a lookup aid, not a documented account-free way into the registration flow.",
+    "rationale": "The evidence shows an online core flow, Business Registration Online for a BN and program accounts, but no cited page says it can be started without first creating a CRA account or with only a file number. The access paths that are documented are credentialed: the CRA account for business for submitting documents, and the EFILE number and password for transmitters. Nothing published describes a keyless or file-number entry route for founders.",
     "evidenceIds": []
   },
   {
@@ -4948,13 +4951,13 @@
     "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Text was extracted verbatim from several public canada.ca guidance pages (business registration overview, e-services, EFILE, the CRA landing page), and a direct probe of canada.ca returned HTTP 200. Together these suggest the public reading surface serves readable content to an automated fetcher without a wall in front. The evidence is indirect: no probe explicitly records the user agent used or confirms the absence of a bot wall, CAPTCHA, or JS-only rendering. missing for 10: explicit probe confirming access with an identified agent user agent, explicit confirmation of server-rendered HTML (no JS-only shell), and independent corroboration that no bot or CAPTCHA challenge is applied.",
+    "rationale": "Verbatim guidance text was extracted from several canada.ca CRA pages (registration overview, e-services, EFILE, agency home). That indicates the public reading surface serves readable, server-rendered content to an automated fetcher. The canada.ca probe also got a plain HTTP 302 response rather than a challenge page, so no bot wall or CAPTCHA appears in front of the platform. Missing for 10: an explicit probe recording HTTP 200 on a guidance page under a declared agent user agent, direct confirmation that no CAPTCHA or JS-only shell sits in front of the pages, and independent corroboration.",
     "evidenceIds": [
-      "cra-probe-1",
       "cra-docs-1",
       "cra-docs-8",
       "cra-docs-14",
-      "cra-docs-20"
+      "cra-docs-21",
+      "cra-probe-2"
     ]
   },
   {
@@ -4963,7 +4966,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "CRA does have a machine channel: EFILE lets certified software transmit returns system-to-system. However, the evidence only describes enrollment and a software-certification process with the CRA. Nothing in the pack shows a published OpenAPI spec, XML schema set, or data dictionary for EFILE or any other channel, so this applicable axis gets none.",
+    "rationale": "The CRA has a sanctioned system-to-system machine channel: EFILE, with certified software transmitting returns. A published specification for that channel is therefore a fair question. However, nothing in the pack shows an OpenAPI spec, XML schemas, or a data dictionary being published; the evidence only covers software certification and enrollment. The llms.txt probe concerns an agent docs index, not a channel specification, and it resolves to a soft 404 anyway.",
     "evidenceIds": []
   },
   {
@@ -4972,14 +4975,14 @@
     "verdict": "full",
     "quality": 9,
     "confidence": "high",
-    "rationale": "The CRA's own pages say online registration (Business Registration Online, BRO) is the fastest way to get a business number. In one form, founders can also open GST/HST, payroll and corporation income tax accounts, and the e-services pages cover filing returns and making payments online. Minor caveats are that GST/HST registration via BRO excludes Quebec, and some filing runs through certified EFILE software. missing for 10: independent or hands-on corroboration that the online registration, filing and payment flows complete end-to-end.",
+    "rationale": "The CRA's own pages say business registration is done online through Business Registration Online, which issues a BN plus GST/HST, payroll and corporation income tax accounts in one form, and call it \"the fastest and easiest way\". Its e-services pages also list filing a return, making a payment and registering a business online, with EFILE as the sanctioned software filing channel. Missing for 10: no independent or hands-on confirmation that the online flow completes end to end.",
     "evidenceIds": [
       "cra-docs-1",
       "cra-docs-2",
       "cra-docs-6",
+      "cra-supp-2",
       "cra-docs-9",
       "cra-docs-21",
-      "cra-supp-2",
       "cra-docs-14",
       "cra-supp-3"
     ]
@@ -4990,7 +4993,7 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "medium",
-    "rationale": "The only programmatic channel in evidence is EFILE/ReFILE. It is restricted to certified tax software and enrolled electronic filers, who transmit returns and amended T1s system-to-system. The rest of the online services are documented only as portal/UI flows: BN registration in BRO, submitting documents, payments, direct deposit, enquiries, responding to notices and authorizing representatives. So there is a narrow filing API, nowhere near UI parity. Missing for 10: any general-purpose public API, API coverage of registration, payments, documents, notices and account management, open developer access without certification, and independent confirmation of API scope.",
+    "rationale": "The only documented programmatic channel is EFILE/ReFILE. Through it, certified tax software and enrolled electronic filers can transmit current and prior-year T1 returns and amendments system-to-system. The much broader online-portal feature set has no evidence of any API equivalent: business registration, submitting documents, enquiries, payments, direct deposit, notices and authorizations. EFILE is also gated behind software certification and filer enrollment, and the probe found no llms.txt or agent-oriented docs index. Missing for 10: a public API covering business registration, payments, document submission, enquiries and account management; open developer docs; agent-oriented docs; parity beyond T1 return filing.",
     "evidenceIds": [
       "cra-docs-14",
       "cra-docs-15",
@@ -4998,8 +5001,7 @@
       "cra-supp-3",
       "cra-docs-8",
       "cra-docs-10",
-      "cra-docs-18",
-      "cra-docs-1"
+      "cra-probe-2"
     ]
   },
   {
@@ -5007,8 +5009,8 @@
     "storyId": "openness-full-export",
     "verdict": "none",
     "quality": 0,
-    "confidence": "high",
-    "rationale": "The axis applies to this product kind (peer products hold positive or none verdicts on this story), so lack of evidence for an applicable capability is \"none\", never \"na\". (na/none harmonized at arena bring-up — see pipeline/scripts/na-harmonize.ts.)",
+    "confidence": "medium",
+    "rationale": "Data portability is a fair question for a government agency that holds taxpayer records, even though 'leaving' the CRA isn't realistic. The evidence covers registration, filing, payments, and viewing EFILE transmission history, but never shows a way to export a user's data in open formats. Absence of evidence for this applicable capability yields none.",
     "evidenceIds": []
   },
   {
@@ -5017,7 +5019,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The CRA delivers its services through software (Business Registration Online, the e-services portals, EFILE), and government digital services can plausibly publish their code under an open license, so this axis applies. Nothing in the evidence pack mentions published source code, a public repository, or an open license for any CRA system. The pack covers only registration, e-services, EFILE functionality and an llms.txt probe, so absence of evidence for an applicable capability yields none.",
+    "rationale": "Government digital services can plausibly publish their source code under an open license, so this axis applies to the CRA's online services. Nothing in the evidence pack shows any CRA service code being published or openly licensed. The pack covers only the online registration flows, e-services and the EFILE channel, and the llms.txt probe found nothing relevant.",
     "evidenceIds": []
   },
   {
@@ -5026,7 +5028,7 @@
     "verdict": "na",
     "quality": 0,
     "confidence": "high",
-    "rationale": "The CRA is a sovereign government tax authority whose core product is official registration, filing and assessment. Its authority cannot be replicated by running software on your own infrastructure, so self-hosting is a category error for this kind of product. The evidence describes only agency-run online services (BRO, EFILE, CRA accounts), and nothing suggests a self-hostable distribution that would make the axis applicable.",
+    "rationale": "The CRA is a sovereign government tax authority whose core product (BN registration, filing, program accounts) is inherently state-operated, so self-hosting is a category error for this kind of product. EFILE-certified tax software runs on third-party systems, but it only transmits returns to the CRA. That does not let anyone host the agency's service.",
     "evidenceIds": []
   },
   {
@@ -5035,7 +5037,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The question fairly applies to CRA's online registration and filing flows, but nothing in the evidence pack publishes operating hours, per-day limits, or session timeouts. The cited pages cover only what can be registered or filed online (BRO, EFILE, ReFILE, e-services), not availability windows or session constraints, so the capability is unevidenced.",
+    "rationale": "The axis applies because CRA runs online registration (BRO), My Business Account, and EFILE flows that could publish service hours, daily limits, or session timeouts. However, nothing in the evidence pack mentions an operating-hours window, a per-day limit, or a session timeout disclosed before starting.",
     "evidenceIds": []
   },
   {
@@ -5044,13 +5046,13 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "The CRA's business-registration overview is written in plain language rather than statute text. It says registering online is \"the fastest and easiest way\" to get a BN, explains which program accounts can be registered together, routes founders who do not know their BN or are non-resident to the right path, and describes the next step of linking to provincial registration. However, the evidence shows only overview-level signposting, not a full step-by-step walkthrough of a founder task. Missing for 10: explicit numbered step-by-step instructions, plain-language explainers for tasks beyond registration (e.g. collecting and remitting GST/HST, payroll obligations), and independent or hands-on confirmation that non-lawyers find the guidance followable.",
+    "rationale": "The CRA business-registration overview is written as plain-language, task-oriented guidance rather than statute text. It explains that registering online is the 'fastest and easiest way' to get a BN, lists which program accounts can be registered together, routes founders who don't know their BN, points to provincial registration afterward, and publishes a separate path for non-resident founders. The evidence shows these routing explainers but not an actual numbered step-by-step walkthrough a non-lawyer can follow end to end. Missing for 10: explicit step-by-step how-to sequences for founder tasks (e.g., registration walkthrough, GST/HST filing steps), evidence of plain-language guides beyond registration, and independent or hands-on corroboration that founders find the guidance followable.",
     "evidenceIds": [
       "cra-docs-1",
       "cra-docs-2",
       "cra-docs-3",
       "cra-docs-4",
-      "cra-docs-6",
+      "cra-docs-5",
       "cra-supp-1",
       "cra-supp-2"
     ]
@@ -5061,7 +5063,7 @@
     "verdict": "na",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The CRA is a national tax authority, and taxpayer records are held by the agency within its own jurisdiction, so letting a user pick a storage region or residency is not a capability this kind of product could plausibly offer. The evidence covers online registration, EFILE and e-services, and the non-resident registration path concerns the filer's tax status, not where data is stored. Nothing shows a selectable data-residency feature that would make the axis apply.",
+    "rationale": "The CRA is a national tax authority, and taxpayer records are held by the agency under its own jurisdiction. A user-selectable storage region is a SaaS or cloud-provider feature, not something a sovereign tax agency could plausibly offer. The axis is a category error for this kind of product, and nothing in the evidence suggests otherwise.",
     "evidenceIds": []
   },
   {
@@ -5070,7 +5072,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The CRA holds user tax and business data, so whether that data can be excluded from AI model training is a fair privacy question for this kind of service. The evidence pack covers only business registration, e-services, and EFILE channels, and says nothing about AI training policy, data-use restrictions, or any opt-out. With no evidence for an applicable capability, the verdict is none.",
+    "rationale": "Any service that holds personal data could publish a policy or opt-out on using that data for AI training, so this privacy-posture axis applies to a tax agency's online services. Nothing in the evidence pack addresses AI training, data-use opt-outs, or privacy controls; the citations cover only business registration, e-services, and EFILE, and the llms.txt probes concern agent docs, not training consent.",
     "evidenceIds": []
   },
   {
@@ -5079,7 +5081,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Data retention and deletion controls are a fair privacy question for a government online service that holds taxpayer data, so the axis applies. However, nothing in the evidence pack covers user-controlled retention periods, data deletion, or account data erasure. The only related wording, about inactivating or terminating a specimen, concerns program filings rather than personal data retention.",
+    "rationale": "Privacy posture, including user control over how long data is kept and whether it can be deleted, is a fair question for any service that holds personal and business data, including a government tax agency. The evidence covers registration, EFILE, transmission history and e-services. None of it mentions user-controlled data retention settings, deletion requests or retention policies, so the axis applies but nothing shows it is delivered.",
     "evidenceIds": []
   },
   {
@@ -5088,7 +5090,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "A government online-services portal could plausibly offer analytics or cookie opt-outs, so this axis applies. However, the evidence pack covers only business registration, e-services, and EFILE, and never mentions telemetry, analytics, cookies, or usage-tracking controls. With no evidence of an opt-out, the verdict is none.",
+    "rationale": "CRA runs online e-services (CRA account, BRO registration, EFILE), so whether users can opt out of usage tracking or analytics is a fair privacy question. However, nothing in the evidence pack covers telemetry, analytics, cookies or any opt-out control. The llms.txt probes concern agent docs, not tracking, so they are not relevant here.",
     "evidenceIds": []
   },
   {
@@ -5097,7 +5099,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Publishing processing times is a fair question for a government tax-registration service, so the axis applies. Nothing in the pack shows CRA publishing current processing times for any transaction type. The nearest items are the claim that online registration is 'fastest and easiest' and a feature to 'track the progress of files submitted', which is per-file status tracking rather than published service-level timing.",
+    "rationale": "Publishing service standards or processing times is a fair question for a government tax agency, so the axis applies. The pack only shows that users can track the progress of files they submitted and view transmission history (cra-docs-8, cra-docs-16), which is per-file status, not published current processing times for a transaction type. No evidence shows the CRA publishes processing times for business registration or other founder transactions.",
     "evidenceIds": []
   },
   {
@@ -5120,13 +5122,11 @@
     "verdict": "partial",
     "quality": 4,
     "confidence": "medium",
-    "rationale": "CRA's e-services page lists the ability to \"track the progress of files submitted to the CRA\", and EFILE filers can view their transmission history, but both require signing in. Neither is a lookup on public pages. The only truly public lookups are adjacent: finding an existing BN and searching the GST/HST registry. missing for 10: a documented status lookup for filings, applications or cases on public (unauthenticated) pages, detail on what tracking covers (BN registration, program accounts, cases) and how it works, and independent or hands-on corroboration.",
+    "rationale": "CRA's e-services page lists \"track the progress of files submitted to the CRA\" as an online capability, and EFILE filers can view their transmission history. Both features sit behind sign-in, in a CRA account or with an EFILE number and password, rather than on openly accessible public pages, and each is backed by only a single brief mention. Missing for 10: a public (unauthenticated) status lookup for filings, applications, or cases; detailed documentation of what statuses are shown and for which file types; independent or hands-on corroboration.",
     "evidenceIds": [
       "cra-docs-8",
       "cra-docs-16",
-      "cra-docs-17",
-      "cra-docs-3",
-      "cra-docs-21"
+      "cra-docs-17"
     ]
   },
   {
@@ -5135,7 +5135,7 @@
     "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "The CRA documents sanctioned third-party channels for acting on a business's behalf. Representatives use the Represent a Client portal to request online access to an account, and businesses can authorize access to their online information. Separately, enrolled EFILE electronic filers using CRA-certified software can file for clients, and filers can file returns or make payments for business clients. missing for 10: detail on how a company grants, scopes, or revokes a representative's authorization; business-specific (not T1-focused) EFILE coverage; independent or hands-on corroboration.",
+    "rationale": "CRA documents a sanctioned third-party rail. Representatives use the Represent a Client portal to request online access to an account, and businesses can authorize access to their online information. Representatives can also file returns and make payments for business clients, and EFILE provides an enrolled-filer channel using CRA-certified software. Missing for 10: detailed documentation of how a business authorizes a representative (authorization levels, scope, revocation), business-specific (non-T1) coverage of the EFILE channel, and independent or hands-on corroboration.",
     "evidenceIds": [
       "cra-docs-18",
       "cra-docs-10",
@@ -5151,7 +5151,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "CRA does have a machine channel: EFILE system-to-system transmission by certified software. So asking whether it has a test environment is a fair question. The evidence only says software developers go through a compatibility verification process with the CRA. Nothing documents a public sandbox or test environment where a developer can run the rail end to end before production.",
+    "rationale": "CRA does have a machine channel: EFILE lets certified software transmit returns system-to-system. Nothing in the pack documents a public sandbox or test environment for exercising that channel end to end. The only related item says software developers go through a CRA compatibility-verification process, which is a vendor certification gate, not a publicly documented test environment.",
     "evidenceIds": []
   },
   {
@@ -5160,14 +5160,14 @@
     "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "CRA documents EFILE as a sanctioned system-to-system transmitter channel. Certified tax software goes through a CRA compatibility process, and enrolled electronic filers use an EFILE number and password to transmit returns, view transmission history, and maintain or renew their accounts; ReFILE covers amended T1 returns. The agency's own pages are said to publish the enrollment path. Missing for 10: quoted step-by-step enrollment and software-certification requirements; evidence of machine channels beyond T1 return filing (e.g., payroll/GST batch transmitters or API system accounts); independent or hands-on corroboration.",
+    "rationale": "CRA documents EFILE as a sanctioned software-transmitter channel. Developers certify their tax software with the CRA, and enrolled electronic filers transmit client returns from that certified software. Filers use an EFILE number and password to maintain and renew their account and view transmission history, and ReFILE handles amended returns. The agency's own page is said to publish the enrollment path. Missing for 10: verbatim enrollment and application steps (only maintain/renew is quoted), evidence of system accounts or batch/bulk channels beyond T1 EFILE (e.g., payroll or information-return transmitters), and independent or hands-on corroboration.",
     "evidenceIds": [
+      "cra-supp-3",
       "cra-docs-14",
       "cra-docs-15",
       "cra-docs-16",
       "cra-docs-17",
-      "cra-docs-19",
-      "cra-supp-3"
+      "cra-docs-19"
     ]
   },
   {
@@ -5176,7 +5176,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Publishing statutory fee amounts for a transaction is a fair question for a government registration and tax agency, so the axis applies. However, nothing in the evidence pack states any fee amount, or that registration is fee-free, for business number or program-account registration. The pages cited describe only registration channels, e-services and EFILE enrollment.",
+    "rationale": "Published statutory fees are a fair question for a government registration and filing service, so the axis applies. However, none of the evidence states any fee amounts for business number or program-account registration, or confirms the transaction is free. Pages describe online registration, e-services and EFILE but never what a founder pays.",
     "evidenceIds": []
   },
   {

@@ -226,10 +226,17 @@ export function stalenessScore(s: StalenessSignals): number {
 // ---------------------------------------------------------------------------------------------
 // Live checks (skipped under --offline)
 
-async function fetchStatus(url: string): Promise<number> {
+// Some hosts (amd.com, aima.gov.pt — verified live 2026-10-14) drop the polite scanner UA at
+// the connection level, which status alone cannot tell apart from DNS-gone. A no-response URL
+// gets one retry with a browser UA: any HTTP answer on the retry means the resource exists
+// (bot-walled, not dead), and the retried status is what the report records.
+const BROWSER_USER_AGENT =
+  'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36'
+
+async function fetchStatusAs(url: string, userAgent: string): Promise<number> {
   try {
     const res = await fetch(url, {
-      headers: { 'User-Agent': USER_AGENT },
+      headers: { 'User-Agent': userAgent },
       redirect: 'follow',
       signal: AbortSignal.timeout(TIMEOUT_MS),
     })
@@ -238,6 +245,12 @@ async function fetchStatus(url: string): Promise<number> {
   } catch {
     return 0
   }
+}
+
+async function fetchStatus(url: string): Promise<number> {
+  const status = await fetchStatusAs(url, USER_AGENT)
+  if (status !== 0) return status
+  return fetchStatusAs(url, BROWSER_USER_AGENT)
 }
 
 // GET /llms.txt and confirm it's a real text document (same tells as worker.js's handleScan):

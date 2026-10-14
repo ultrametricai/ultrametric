@@ -40,7 +40,7 @@ each one, is it testable, and do the vendor's claims match what we found hands-o
 rankings order products by how automatable they are, and any verdict can be contested.
 
 <!-- arenas:start -->
-**96 rankings** today, 670 products judged head to head — the full index is [ultrametric.ai/arenas](https://ultrametric.ai/arenas), and each ranking's data lives under [`open-rankings/`](open-rankings/).
+**96 rankings** today, 671 products judged head to head — the full index is [ultrametric.ai/arenas](https://ultrametric.ai/arenas), and each ranking's data lives under [`open-rankings/`](open-rankings/).
 <!-- arenas:end -->
 
 [![The overall rankings on ultrametric.ai: companies ranked by agent readiness, scored on agent access and built-in AI](assets/readme/rankings-overall.png)](https://ultrametric.ai/overall)
