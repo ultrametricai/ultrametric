@@ -879,7 +879,7 @@ export function unionTaskIds(chains: VsChain[]): string[] {
 // APPEND-ONLY (the 'a' codec token stores the id string and validates membership — appending
 // keeps every legacy link decoding; removals would reject shared links). dots, grok-bot, kimi,
 // and perplexity-computer joined with the 2026-10-01 roster expansion, judged first.
-export const VS_AI_FIRM_IDS = ['chatgpt', 'claude', 'gemini', 'grok', 'muse', 'dots', 'grok-bot', 'kimi', 'perplexity-computer'] as const
+export const VS_AI_FIRM_IDS = ['chatgpt', 'claude', 'gemini', 'grok', 'muse', 'dots', 'grok-bot', 'kimi', 'perplexity-computer', 'instinct', 'perplexity', 'copilot', 'poke', 'martin', 'jo'] as const
 export type VsAiFirmId = (typeof VS_AI_FIRM_IDS)[number]
 
 // The assistant a FRESH visit starts pinned to (founder batch 2026-10-01, item 5: ChatGPT is
