@@ -12,7 +12,7 @@ ultrametric/
 ├── <a href="#open-vendor-rankings">open-rankings</a>/      per-market products, stories, evidence, verdicts
 ├── <a href="#open-modules">open-modules</a>/       worked guides to each startup calculation
 ├── <a href="#open-startup-simulator">open-startup-sim</a>/   what the simulator runs and assumes
-├── <a href="#open-law">open-law</a>/           startup legal rules by jurisdiction, each cited
+├── <a href="#open-law">open-law</a>/           startup legal rules by jurisdiction
 ├── <a href="#open-lore">open-lore</a>/          founder advice, who said it, the reading library
 ├── <a href="#open-docs">open-documents</a>/     openly published legal documents, by use case
 ├── rankings-engine/    the code that crawls, probes, judges, scores
