@@ -16,6 +16,7 @@ import fs from 'node:fs'
 import path from 'node:path'
 import { DATA_DIR, readCategories } from '../paths'
 import { ProductSchema } from '../../lib/schemas'
+import { isSharedCodeHostOrigin } from '../stages/probe'
 import { normalizeDomain } from '../yc-shared'
 import { TriageReportSchema, type Disposition } from './radar-triage'
 
@@ -42,6 +43,25 @@ export function vendorOf(d: Disposition): string {
   return host ?? d.name
 }
 
+// Roster-dedupe key: a shared code host (github.com, gitlab.com, …) hosts many distinct
+// products, so the key keeps the owner/repo path there; everywhere else the site domain is
+// the product's identity (the same split vendor-radar.ts uses for its seen-ledger keys).
+// Matching on the bare domain skipped every GitHub-hosted candidate as "already tracked"
+// whenever the arena already rostered any GitHub-hosted product (found 2026-10-14,
+// logo-design-skill vs agent-skills).
+export function rosterDedupeKey(url: string | undefined | null): string | null {
+  const domain = normalizeDomain(url)
+  if (!domain || !url) return domain
+  const withScheme = url.includes('://') ? url : `https://${url}`
+  if (!isSharedCodeHostOrigin(withScheme)) return domain
+  try {
+    const segments = new URL(withScheme).pathname.split('/').filter(Boolean).slice(0, 2)
+    return segments.length === 2 ? `${domain}/${segments.join('/').toLowerCase()}` : domain
+  } catch {
+    return domain
+  }
+}
+
 export interface BringupResult {
   added: { arena: string; id: string }[]
   skipped: { name: string; reason: string }[]
@@ -65,8 +85,8 @@ export function applyBringups(triagePath: string, cap: number): BringupResult {
     const rosterPath = path.join(DATA_DIR, d.arena, 'products.json')
     const roster = ProductSchema.array().parse(JSON.parse(fs.readFileSync(rosterPath, 'utf8')))
     const id = slugify(d.name)
-    const domain = normalizeDomain(d.bringup.site)
-    if (roster.some((p) => p.id === id || (domain && normalizeDomain(p.urls.site) === domain))) {
+    const key = rosterDedupeKey(d.bringup.site)
+    if (roster.some((p) => p.id === id || (key !== null && rosterDedupeKey(p.urls.site) === key))) {
       result.skipped.push({ name: d.name, reason: `already tracked in ${d.arena}` })
       continue
     }
