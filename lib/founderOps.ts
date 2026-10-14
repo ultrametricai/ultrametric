@@ -13,42 +13,42 @@ import path from 'node:path'
 const ROOT = process.cwd()
 const MATCH_KEYS = ['entity_jurisdiction', 'tax_jurisdiction', 'entity_type', 'event_type'] as const
 
-// processes/ holds TWO layers (see processes/README.md): the jurisdiction-scoped legal
+// open-processes/ holds TWO layers (see open-processes/README.md): the jurisdiction-scoped legal
 // workflows this validator owns, and — since stage 2 of the corpus lift — the operational
-// corpus (processes/corpus.json, the 123-process array behind /processes). The corpus has its
+// corpus (open-processes/corpus.json, the 123-process array behind /processes). The corpus has its
 // own schema, loader and gates (lib/processes.ts, schemas/operational-process.schema.json,
 // lib/__tests__/processes.test.ts), so the workflow walker skips it rather than misreading a
 // task array as a workflow record.
-const OPERATIONAL_CORPUS = path.join('processes', 'corpus.json')
+const OPERATIONAL_CORPUS = path.join('open-processes', 'corpus.json')
 // The corpus's vendor registry (SSOT migration 2026-09-30) is the operational layer too — its
 // own schema/loader/tests live in lib/processes.ts + schemas/process-vendor-registry.schema.json
 // + lib/__tests__/vendorRegistry.test.ts, so the workflow walker skips it like corpus.json.
-const OPERATIONAL_VENDOR_REGISTRY = path.join('processes', 'vendor-registry.json')
+const OPERATIONAL_VENDOR_REGISTRY = path.join('open-processes', 'vendor-registry.json')
 // The corpus's artifact registry (founder depth wave part 2, 2026-10-01) is the operational
 // layer too — its own schema/loader/tests live in lib/processes.ts +
 // schemas/process-artifacts.schema.json + lib/__tests__/processArtifacts.test.ts, so the
 // workflow walker skips it like corpus.json and vendor-registry.json.
-const OPERATIONAL_ARTIFACTS = path.join('processes', 'artifacts.json')
+const OPERATIONAL_ARTIFACTS = path.join('open-processes', 'artifacts.json')
 // The corpus's business-logic ↔ process map (founder 2026-10-02) is the operational layer too —
 // its own schema/loader/tests live in lib/businessLogicMap.ts +
 // lib/__tests__/businessLogicMap.test.ts, so the workflow walker skips it like the other
 // operational registries.
-const OPERATIONAL_BUSINESS_LOGIC_MAP = path.join('processes', 'business-logic-map.json')
+const OPERATIONAL_BUSINESS_LOGIC_MAP = path.join('open-processes', 'business-logic-map.json')
 // The corpus's company-fields registry (founder 2026-10-07) is the operational layer too — its
 // own schema/loader/tests live in lib/companyFields.ts + schemas/company-fields.schema.json +
 // lib/__tests__/companyFields.test.ts, so the workflow walker skips it like the other
 // operational registries.
-const OPERATIONAL_COMPANY_FIELDS = path.join('processes', 'company-fields.json')
+const OPERATIONAL_COMPANY_FIELDS = path.join('open-processes', 'company-fields.json')
 // The corpus's chain list (folded in from the old top-level journeys/) is the operational
 // layer too — its own loader/tests live in lib/processes.ts (loadChains) +
 // lib/__tests__/processes.test.ts, so the workflow walker skips it like the other
 // operational registries.
-const OPERATIONAL_CHAINS = path.join('processes', 'chains.json')
+const OPERATIONAL_CHAINS = path.join('open-processes', 'chains.json')
 
-// Fictional scenario fixtures live under processes/fixtures/ (folded in from the old
+// Fictional scenario fixtures live under open-processes/fixtures/ (folded in from the old
 // top-level fixtures/). They validate separately below, so the workflow walker skips the
 // whole subtree like it skips the operational registries.
-const FIXTURES_DIR = path.join('processes', 'fixtures')
+const FIXTURES_DIR = path.join('open-processes', 'fixtures')
 const FIXTURES_SUBTREE = FIXTURES_DIR + path.sep
 
 function workflowJson(dir: string): string[] {
@@ -254,7 +254,7 @@ export function validateFounderOps(asOf?: Date): string[] {
     if (checked && checked > today) errors.push(`source ${sid}: checked date is in the future`)
   }
 
-  const rules = indexed(listJson(path.join(ROOT, 'law')).filter((f) => !f.endsWith('README.md')), errors, 'rule')
+  const rules = indexed(listJson(path.join(ROOT, 'open-law')).filter((f) => !f.endsWith('README.md')), errors, 'rule')
   for (const [rid, rule] of rules) {
     shape(rule, need('rule.schema'), `rule ${rid}`, errors)
     if (!jurisdictions.has(str(rule.jurisdiction) ?? '')) errors.push(`rule ${rid}: unknown jurisdiction`)
@@ -275,7 +275,7 @@ export function validateFounderOps(asOf?: Date): string[] {
     }
   }
 
-  const processes = indexed(workflowJson(path.join(ROOT, 'processes')), errors, 'process')
+  const processes = indexed(workflowJson(path.join(ROOT, 'open-processes')), errors, 'process')
   for (const [pid, process] of processes) {
     shape(process, need('process.schema'), `process ${pid}`, errors)
     const scope = isObj(process.applicability) ? process.applicability : {}
@@ -329,7 +329,7 @@ export function validateFounderOps(asOf?: Date): string[] {
     if (!covered.has(pid)) errors.push(`process ${pid}: absent from coverage registry`)
   }
 
-  for (const file of listJson(path.join(ROOT, 'rankings/reviews'))) {
+  for (const file of listJson(path.join(ROOT, 'open-rankings/reviews'))) {
     shape(read(file), need('vendor-review.schema'), `vendor ${path.basename(file)}`, errors)
   }
 
@@ -362,7 +362,7 @@ export function planFounderOps(event: JsonObject, asOf?: Date): FounderOpsPlan {
   if (missing.length > 0) {
     return { status: 'needs_review', reason: 'missing dimensions', missing: [...missing], may_execute: false }
   }
-  const processes = workflowJson(path.join(ROOT, 'processes'))
+  const processes = workflowJson(path.join(ROOT, 'open-processes'))
     .map(read)
     .filter(isObj)
   const matches = processes.filter((p) => {
@@ -372,7 +372,7 @@ export function planFounderOps(event: JsonObject, asOf?: Date): FounderOpsPlan {
   if (matches.length === 0) {
     return { status: 'unsupported', reason: 'no exact covered scenario', may_execute: false }
   }
-  const ruleMap = indexed(listJson(path.join(ROOT, 'law')), [], 'rule')
+  const ruleMap = indexed(listJson(path.join(ROOT, 'open-law')), [], 'rule')
   const citationsDoc = read(path.join(ROOT, 'citations/registry.json'))
   const sources = new Map<string, JsonObject>()
   for (const s of isObj(citationsDoc) && Array.isArray(citationsDoc.citations) ? citationsDoc.citations : []) {

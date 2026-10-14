@@ -17,7 +17,7 @@ describe('derive stage', () => {
   it('writes a valid rankings.json with one battle per product pair from the CLI', () => {
     const repoRoot = path.resolve(__dirname, '../..')
     tmpDir = fs.mkdtempSync(path.join(os.tmpdir(), 'pa-derive-'))
-    fs.cpSync(path.join(repoRoot, 'rankings'), tmpDir, { recursive: true })
+    fs.cpSync(path.join(repoRoot, 'open-rankings'), tmpDir, { recursive: true })
 
     // `run` is required: pnpm 12 ships a built-in `pipeline` command that shadows the
     // script in shorthand form.

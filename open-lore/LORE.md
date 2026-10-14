@@ -1,7 +1,7 @@
 # Startup lore
 
 The famous episodes and war stories of startup history, curated as sourced records — the
-complement to `law/LAWS.md`: where a law is a recurring principle, a lore entry is the episode
+complement to `open-law/LAWS.md`: where a law is a recurring principle, a lore entry is the episode
 that taught it. Every retelling is tight and factual; every entry carries at least one source
 with a note saying exactly what it supports; and every entry is graded for **veracity** —
 `first-person` (a participant told it on the record), `documented` (contemporaneous records),
@@ -12,7 +12,7 @@ Blockbuster near-laughter is attributed to the one participant who tells it that
 
 The grammar is machine-checked by `lib/lore.ts` and `__tests__/lore.test.ts`: unique ids,
 valid veracity grades, non-empty lessons, HTTPS sources, law numbers resolving against
-`law/LAWS.md`, and process ids resolving against `processes/corpus.json`.
+`open-law/LAWS.md`, and process ids resolving against `open-processes/corpus.json`.
 
 ## Founding and origin stories
 

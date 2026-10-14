@@ -3,7 +3,7 @@
 # 2026-09-25; queue classified agent-frameworks, re-based to mcp-infrastructure — morph
 # precedent — because Metorial's surface IS this arena's axis: hosted MCP servers, provider
 # registry, OAuth handling, session logs). Appends probe-tier evidence items distilled from the
-# recorded runtime probes in rankings/mcp-infrastructure/proofs/metorial/ (see
+# recorded runtime probes in open-rankings/mcp-infrastructure/proofs/metorial/ (see
 # pipeline/probes/mcp-infrastructure.ts — all 3 recorded probes passed). Run AFTER
 # `pnpm pipeline probe --category mcp-infrastructure --product metorial` (or a spike pass, whose
 # probe stage wholesale-replaces probe-tier evidence and would wipe these items) — re-run this
@@ -40,7 +40,7 @@ ITEMS = {
 }
 
 for pid, items in ITEMS.items():
-    path = f'rankings/mcp-infrastructure/evidence/{pid}.json'
+    path = f'open-rankings/mcp-infrastructure/evidence/{pid}.json'
     ev = json.load(open(path))
     existing = {e['id'] for e in ev}
     for item in items:

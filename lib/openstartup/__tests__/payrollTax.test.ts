@@ -1,6 +1,6 @@
 // Textbook tests for the employer-side federal payroll tax module. Duties: (1) every
 // ruleId in PAYROLL_RULE_IDS resolves to a committed, jurisdiction-matched card in
-// law/US-FED/ with primary sources; (2) the maxima implied by the cited published
+// open-law/US-FED/ with primary sources; (2) the maxima implied by the cited published
 // figures are hand-derived and pinned (6.2% x $184,500 = $11,439 employer social security
 // maximum for 2026; 0.6% x $7,000 = $42 full-credit FUTA maximum); (3) the piecewise
 // arithmetic (wage base cap, $200,000 Additional Medicare threshold, credit bounds) is
@@ -20,7 +20,7 @@ import {
 } from '../payrollTax'
 
 function loadRuleCard(jurisdiction: string, ruleId: string) {
-  const dir = path.join(process.cwd(), 'law', jurisdiction)
+  const dir = path.join(process.cwd(), 'open-law', jurisdiction)
   for (const file of fs.readdirSync(dir).filter((f) => f.endsWith('.json'))) {
     const card = JSON.parse(fs.readFileSync(path.join(dir, file), 'utf8')) as {
       id: string
@@ -37,7 +37,7 @@ describe('every computation resolves to a committed, jurisdiction-matched rule c
   for (const [name, ref] of Object.entries(PAYROLL_RULE_IDS)) {
     it(`${name} → ${ref.ruleId}`, () => {
       const card = loadRuleCard(ref.jurisdiction, ref.ruleId)
-      expect(card, `law/${ref.jurisdiction} must contain a card with id ${ref.ruleId}`).not.toBeNull()
+      expect(card, `open-law/${ref.jurisdiction} must contain a card with id ${ref.ruleId}`).not.toBeNull()
       expect(card?.jurisdiction).toBe(ref.jurisdiction)
       expect(card?.kind).toBe('legal')
       expect(card?.source_ids.length).toBeGreaterThan(0)

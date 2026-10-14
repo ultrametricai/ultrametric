@@ -1,6 +1,6 @@
 // Integration-graph stage: for each product, extract "integrates with <other tracked product>"
 // facts FROM THE EXISTING EVIDENCE CORPUS ONLY (no new crawling) and write
-// rankings/{cat}/integrations.json (see lib/integrations.ts for the schema and graph helpers).
+// open-rankings/{cat}/integrations.json (see lib/integrations.ts for the schema and graph helpers).
 //
 // Two-step honesty design, mirroring pipeline/stages/pricing.ts's mechanics:
 // 1. Exact-name prefilter (code, no LLM): scan every evidence excerpt for word-boundary,

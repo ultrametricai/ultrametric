@@ -8,7 +8,7 @@
 //     top decile (with an absolute floor) — see popularRanking.trackedHot; or
 //   - young rocket: its popularity.json snapshot alone proves a very young repo with a big
 //     star count — see popularRanking.youngRocket; or
-//   - curated: rankings/hot-products.json names it with a reason (only for what the data can't see
+//   - curated: open-rankings/hot-products.json names it with a reason (only for what the data can't see
 //     yet — mechanical flags always win).
 // Every flag carries a concrete reason string. Display-only, like popularity itself: never fed
 // into scoring.
@@ -29,7 +29,7 @@ import {
 
 export const HOT_PRODUCTS_FILE = 'hot-products.json'
 
-const DEFAULT_DIR = () => path.join(process.cwd(), 'rankings')
+const DEFAULT_DIR = () => path.join(process.cwd(), 'open-rankings')
 
 export function loadCuratedHot(dir: string = DEFAULT_DIR()): ReturnType<typeof CuratedHotSchema.parse>['hot'] {
   const file = path.join(dir, HOT_PRODUCTS_FILE)

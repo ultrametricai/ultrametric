@@ -1,6 +1,6 @@
 // Textbook tests for the Delaware franchise tax module. Two duties (the deadlines-module
 // pattern): (1) every ruleId in DE_FRANCHISE_RULE_IDS resolves to a committed,
-// jurisdiction-matched card in law/US-DE/ with primary sources; (2) the Division of
+// jurisdiction-matched card in open-law/US-DE/ with primary sources; (2) the Division of
 // Corporations' OWN published worked examples (corp.delaware.gov/frtaxcalc, verified live
 // 2026-10-01) are replayed number-for-number — this is the module whose March
 // panic-then-recalculate moment the comparator exists for.
@@ -18,7 +18,7 @@ import {
 } from '../deFranchiseTax'
 
 function loadRuleCard(jurisdiction: string, ruleId: string) {
-  const dir = path.join(process.cwd(), 'law', jurisdiction)
+  const dir = path.join(process.cwd(), 'open-law', jurisdiction)
   for (const file of fs.readdirSync(dir).filter((f) => f.endsWith('.json'))) {
     const card = JSON.parse(fs.readFileSync(path.join(dir, file), 'utf8')) as {
       id: string
@@ -35,7 +35,7 @@ describe('every computation resolves to a committed, jurisdiction-matched rule c
   for (const [name, ref] of Object.entries(DE_FRANCHISE_RULE_IDS)) {
     it(`${name} → ${ref.ruleId}`, () => {
       const card = loadRuleCard(ref.jurisdiction, ref.ruleId)
-      expect(card, `law/${ref.jurisdiction} must contain a card with id ${ref.ruleId}`).not.toBeNull()
+      expect(card, `open-law/${ref.jurisdiction} must contain a card with id ${ref.ruleId}`).not.toBeNull()
       expect(card?.jurisdiction).toBe(ref.jurisdiction)
       expect(card?.kind).toBe('legal')
       expect(card?.source_ids.length).toBeGreaterThan(0)

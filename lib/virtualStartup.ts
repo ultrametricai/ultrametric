@@ -1,6 +1,6 @@
 // Virtual Startup (founder ask 2026-09-23): a synthetic company run through the REAL process
 // corpus. The reader picks a handful of starting decisions; each decision selects which real
-// processes/chains (processes/corpus.json + processes/chains.json) make up the journey, and the
+// open-processes/chains (open-processes/corpus.json + open-processes/chains.json) make up the journey, and the
 // timeline replays them with clearly-labeled synthetic artifacts ("what each step produces").
 //
 // Client-safe and pure (no node builtins) — same split convention as lib/processSim.ts: the
@@ -9,7 +9,7 @@
 //
 // Honesty rules (the site's whole brand):
 //   - the journey is COMPOSED of real corpus processes — every task id here must exist in
-//     processes/corpus.json (lib/__tests__/virtualStartup.test.ts enforces it against the live
+//     open-processes/corpus.json (lib/__tests__/virtualStartup.test.ts enforces it against the live
 //     corpus; journeyPhases throws on an unknown chain rather than inventing one);
 //   - vendor picks are the judged rankings (lib/processRankings.ts stepRanking), resolved
 //     server-side — nothing here fabricates a score;
@@ -171,7 +171,7 @@ export const HIDDEN_OPTION_VALUES: Partial<Record<keyof Choices, readonly string
 // Each entity value names its country, display suffix, and the impossible-real formation filing
 // its artifact prints (all-zero identifiers — the module-header convention). The corpus
 // COMPOSITION never varies by country: only 'llc' swaps form_001 → form_011; every other value
-// runs the C-Corp path framed with the committed country analog (processes/corpus.json geoNotes).
+// runs the C-Corp path framed with the committed country analog (open-processes/corpus.json geoNotes).
 
 export interface EntityMeta {
   label: string
@@ -610,10 +610,10 @@ export function gateActive(gate: VsGate, choices: Choices): boolean {
 }
 
 // ---------------------------------------------------------------------------
-// Decision → journey mapping (real chains from processes/chains.json only)
+// Decision → journey mapping (real chains from open-processes/chains.json only)
 // ---------------------------------------------------------------------------
 
-// The chains the journey is composed from — each id must exist in processes/chains.json
+// The chains the journey is composed from — each id must exist in open-processes/chains.json
 // (journeyPhases throws otherwise; the test suite checks against the committed file).
 export const VS_CHAIN_IDS = [
   'name-the-company',
@@ -869,7 +869,7 @@ export function unionTaskIds(chains: VsChain[]): string[] {
 // 'Which AI firm are you using' (founder batch 2026-09-30, item 7)
 // ---------------------------------------------------------------------------
 // The setup band's "I'm using" selector: REAL judged ai-assistants products only (the roster is
-// pinned against rankings/ai-assistants/products.json by tests). The selection is a DISPLAY PIN on the
+// pinned against open-rankings/ai-assistants/products.json by tests). The selection is a DISPLAY PIN on the
 // ai-assistants-mapped steps (the LLM-venue curation: steps whose judged step ranking lives in
 // the ai-assistants arena): the chosen assistant renders as 'your assistant' while the judged
 // top keeps its '(recommended · judged)' chip and score — no judged number ever moves, and the
@@ -924,7 +924,7 @@ export interface TopVendorPick {
   runnersUp?: Array<{ productId: string; name: string; score: number }>
 }
 
-// A registry artifact (processes/artifacts.json) a corpus step brings into existence — id for
+// A registry artifact (open-processes/artifacts.json) a corpus step brings into existence — id for
 // the /artifacts/{id} link, label for display. Committed registry data, serialized server-side.
 export interface VsProducedArtifact {
   id: string
@@ -947,7 +947,7 @@ export interface VirtualTaskPayload {
   // = the step renders unlinked, nothing else changes.
   nodeIds?: string[]
   // Parallel to steps: the registry artifact the corpus step's producesArtifact tag names, with
-  // its committed label (processes/artifacts.json), or null for the many steps without one.
+  // its committed label (open-processes/artifacts.json), or null for the many steps without one.
   // Optional additive field (2026-10-07): absent = no document line ever renders for the task.
   produces?: (VsProducedArtifact | null)[]
   // The task's internal corpus DAG fork, when its edges genuinely diverge: the forking step's
@@ -1257,7 +1257,7 @@ export function dayOf(cumulativeMinutes: number): number {
 // Year one — the operating rhythm ("cron jobs") the virtual company now runs
 // ---------------------------------------------------------------------------
 // Founder iteration 2026-09-25: after the launch journey, show the RECURRING processes the
-// company owns for the year, derived from the corpus cadence axis (processes/corpus.json
+// company owns for the year, derived from the corpus cadence axis (open-processes/corpus.json
 // `cadence`, the same field /processes/operating-rhythm slices by). The row set is mechanical:
 //   - the month-end-close and tax-season chains (committed corpus playbooks any operating
 //     company runs) are ALWAYS in;
@@ -1314,7 +1314,7 @@ export interface YearTaskSource {
   ceilingPct: number
 }
 
-// Founder iteration 2026-09-25 (richer year view): sweep processes/corpus.json for EVERY
+// Founder iteration 2026-09-25 (richer year view): sweep open-processes/corpus.json for EVERY
 // calendar-recurring process the journey plausibly activates — not just the tasks the journey
 // chains happen to carry. Each swept task names its gate: null = every operating company runs
 // it; a choice gate turns it on only when the decision that plausibly activates it is set.
@@ -1541,10 +1541,10 @@ export interface WindowRow extends YearRow {
 // ---------------------------------------------------------------------------
 // 'Likely choice' vendor ordering (founder round 5, item 7) — the committed adoption/popularity
 // signal as an ORDERING, never a new number. NO rank fabrication: every input is committed data —
-//   curated  — rankings/popular-products.json membership ("clearly popular", an UNRANKED editorial
+//   curated  — open-rankings/popular-products.json membership ("clearly popular", an UNRANKED editorial
 //              set; within it, measured counters then name order — presentation of an unranked
 //              set, labeled as such, never a popularity rank claim);
-//   stars    — rankings/{arena}/popularity.json GitHub stars (open-source products only);
+//   stars    — open-rankings/{arena}/popularity.json GitHub stars (open-source products only);
 //   installs — npm+PyPI weekly installs from the same popularity stage;
 //   rest     — no committed signal: the judged input order is kept.
 // The judged rankings stay untouched — this reorders PRESENTATION (Vendors-tab pickers, terminal

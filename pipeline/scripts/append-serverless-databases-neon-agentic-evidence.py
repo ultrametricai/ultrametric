@@ -161,7 +161,7 @@ PROBES = [
 
 
 def main():
-    path = 'rankings/serverless-databases/evidence/neon.json'
+    path = 'open-rankings/serverless-databases/evidence/neon.json'
     ev = json.load(open(path))
     existing = {e['id'] for e in ev}
 

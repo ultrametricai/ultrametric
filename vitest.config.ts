@@ -15,7 +15,7 @@ export default defineConfig({
     exclude: [...configDefaults.exclude, '**/.claude/**'],
     // An include-pattern typo must fail, not silently pass with no tests.
     passWithNoTests: false,
-    // Heavy integration tests (full rankings/ copies + spawned pipeline CLIs) outlive the 5s
+    // Heavy integration tests (full open-rankings/ copies + spawned pipeline CLIs) outlive the 5s
     // default under per-file worker isolation. Headroom, not semantics.
     testTimeout: 30_000,
     // coverage/ is the committed corpus coverage map; test-coverage reports write to

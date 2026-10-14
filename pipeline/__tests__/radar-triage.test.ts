@@ -51,7 +51,7 @@ describe('criterion checks', () => {
     const weak = checkRankingFit(candidate({ matchedArenas: [{ arena: 'browser-agents', hits: MIN_FIT_HITS - 1, keywords: ['browser', 'agent'] }] }), ARENAS)
     expect(weak).toHaveProperty('fail')
     const missing = checkRankingFit(candidate({ matchedArenas: [{ arena: 'not-an-arena', hits: 9, keywords: ['x'] }] }), ARENAS)
-    expect(missing).toEqual({ fail: 'no matched arena exists in rankings/' })
+    expect(missing).toEqual({ fail: 'no matched arena exists in open-rankings/' })
   })
 
   it('OSS substance: archived repos, forks, link lists, and thin READMEs fail with the right criterion', () => {

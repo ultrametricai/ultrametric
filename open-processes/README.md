@@ -6,7 +6,7 @@ beneath them live here too.
 
 Two layers, deliberately separate:
 
-1. **Jurisdiction-scoped workflows** (`processes/<domain>/<jurisdiction>/*.json`, contract
+1. **Jurisdiction-scoped workflows** (`open-processes/<domain>/<jurisdiction>/*.json`, contract
    in `schemas/process.schema.json`): source-cited legal/tax workflows with explicit
    applicability dimensions, dated editorial review, rule-card references, stop conditions,
    and a scoped human approval on every externally-effectful step. Validated by
@@ -26,7 +26,7 @@ Two layers, deliberately separate:
    arrives, a visa is stuck, a breach is live). A situation is the same machinery plus a
    one-sentence `trigger` and an `urgency` clock (`hours`/`days`/`weeks`), and deliberately
    no `timeOrder` slot: reactive work is not a stop on the founder timeline. Where a
-   situation leans on a legal deadline, its description cites a dated rule card in `law/`
+   situation leans on a legal deadline, its description cites a dated rule card in `open-law/`
    and its steps link the primary source. Doctrine: `SITUATIONS.md`.
 
 The two layers keep separate IDs and never silently substitute for each other:
@@ -164,7 +164,7 @@ is. Curation rules, stricter than coverage:
   careful".
 - **`then` is the honest recovery** — including the honest *absence* of one: the missed 83(b)
   window entry says there is no self-help fix, only a tax-counsel conversation (the
-  needs-review posture). Legal claims cite a dated rule card in `law/` by id inside the
+  needs-review posture). Legal claims cite a dated rule card in `open-law/` by id inside the
   prose, the same convention situation descriptions use.
 - **`source`** is the primary page/statute/fee schedule backing the entry, curl-verified live
   like every committed URL.
@@ -328,7 +328,7 @@ flowchart TD
   rankings (`/rankings/processes/*`), and the open startup simulator at `/startup-sim`.
 - `chains.json` links process IDs into playbooks (see the Chains section below).
 - `lib/founderOps.ts` validates the jurisdiction-scoped workflow layer (`equity/us-de/*`)
-  against `schemas/process.schema.json`, resolves its rule-card references into `law/` and
+  against `schemas/process.schema.json`, resolves its rule-card references into `open-law/` and
   `citations/`, and exposes the exact-dimension planner (`planFounderOps`).
 
 ## Chains
@@ -354,7 +354,7 @@ How the site consumes chains: `lib/processes.ts` `loadChains()` cross-checks eve
 `taskId`; chain pages render at `/processes/chains/<id>` with the member step graphs
 stitched in order; the startup simulator (`/startup-sim`) drives a simulated company
 through these chains; and the ⌘K palette surfaces each chain by the phrases people type
-("raise a seed round") via `rankings/search-aliases.json`.
+("raise a seed round") via `open-rankings/search-aliases.json`.
 
 Contribute a new chain by linking existing process IDs into a founder-visible path (a
 country-specific incorporation sequence, a wind-down, a first-enterprise-deal path), or
@@ -364,7 +364,7 @@ in the PR. Gate: `pnpm test` (`lib/__tests__/processes.test.ts` cross-checks eve
 ## What you can contribute here
 
 - **A country analog for a process** — add a `geoNotes` entry to the process in
-  `processes/corpus.json`: `{country, kind, summary, actionUrl, actionLabel}` with a live,
+  `open-processes/corpus.json`: `{country, kind, summary, actionUrl, actionLabel}` with a live,
   official actionUrl (Companies House, MCA/NSWS, Handelsregister, INPI…). `kind` is curated
   from the summary's own truth: `analog` (the need exists there as its own doable process),
   `absorbed` (handled automatically inside another process there — PAN/TAN arrive with the
@@ -374,9 +374,9 @@ in the PR. Gate: `pnpm test` (`lib/__tests__/processes.test.ts` cross-checks eve
   view (only `analog` rows stay; the default and Global views keep the full library). Gate:
   `pnpm test` (library loader + schema tests).
 - **A new jurisdiction-scoped workflow** — copy `templates/process.json` into
-  `processes/<domain>/<jurisdiction>/`, narrow the applicability dimensions, reference rule
-  cards in `law/<CODE>/`, gate every external effect on a named human approval, add a
-  fictional fixture in `processes/fixtures/`, and record honest maturity in `coverage/coverage.json`.
+  `open-processes/<domain>/<jurisdiction>/`, narrow the applicability dimensions, reference rule
+  cards in `open-law/<CODE>/`, gate every external effect on a named human approval, add a
+  fictional fixture in `open-processes/fixtures/`, and record honest maturity in `coverage/coverage.json`.
   Gate: `npx vitest run __tests__/founder-ops.test.ts`.
 - **Corrections to an operational process** — step routing (agent / manual form / human),
   Agentic % values, or time estimates in `corpus.json`, with a source or reproduction for the

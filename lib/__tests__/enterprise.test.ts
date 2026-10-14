@@ -6,10 +6,10 @@ import { ProductSchema } from '@/lib/schemas'
 // Curation integrity for the display-only enterprise-motion flag (lib/schemas.ts): a product
 // may only carry `enterprise: true` together with an `enterpriseSource` URL citing the vendor
 // page that shows the sales-led motion (no self-serve signup, pricing by sales contact — see
-// components/EnterpriseBadge.tsx). Reads the raw rankings/*/products.json files so the assertion
+// components/EnterpriseBadge.tsx). Reads the raw open-rankings/*/products.json files so the assertion
 // covers exactly what is committed, not what a loader may have normalized.
 
-const dataDir = path.join(process.cwd(), 'rankings')
+const dataDir = path.join(process.cwd(), 'open-rankings')
 const arenas = fs
   .readdirSync(dataDir, { withFileTypes: true })
   .filter((d) => d.isDirectory() && fs.existsSync(path.join(dataDir, d.name, 'products.json')))

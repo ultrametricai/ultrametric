@@ -28,7 +28,7 @@ UA = 'Mozilla/5.0 (compatible; Ultrametric/1.0; +https://ultrametric.ai)'
 NOW = datetime.datetime.now(datetime.timezone.utc).strftime('%Y-%m-%dT%H:%M:%S.000Z')
 TODAY = NOW[:10]
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-DATA = os.path.join(os.path.dirname(ROOT), 'rankings', 'government-services', 'evidence')
+DATA = os.path.join(os.path.dirname(ROOT), 'open-rankings', 'government-services', 'evidence')
 
 
 def get(url: str, timeout: int = 25):

@@ -6,7 +6,7 @@
 # chars per page) plus the 40-story quota starve specific capabilities out of the pack even
 # though the crawled corpus contains them verbatim. This wave's crawl added 16 agent-surface
 # pages (agents/plugin, skills, agentic-commerce/*, payments/machine + mpp, link-cli, directory,
-# projects, rankings/analyze-with-ai, billing/token-billing, workbench + shell, event-destinations,
+# projects, open-rankings/analyze-with-ai, billing/token-billing, workbench + shell, event-destinations,
 # keys/restricted-api-keys); a single extract run surfaced only ~10 one-line items from them.
 # Every URL below is in stripe's products.json urls (or is the live endpoint a probe verifies);
 # every excerpt quotes the crawled/live page (live-checked at authoring time, 2026-09-14 — the
@@ -29,7 +29,7 @@ import json
 import subprocess
 
 NOW = datetime.datetime.now(datetime.timezone.utc).strftime('%Y-%m-%dT%H:%M:%S.000Z')
-EVIDENCE = 'rankings/payments/evidence/stripe.json'
+EVIDENCE = 'open-rankings/payments/evidence/stripe.json'
 
 DOC_ITEMS = [
     # --- MCP server depth (docs.stripe.com/mcp.md, crawled extra-14) ---

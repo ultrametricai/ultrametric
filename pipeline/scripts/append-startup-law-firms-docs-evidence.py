@@ -24,7 +24,7 @@ import os
 NOW = datetime.datetime.now(datetime.timezone.utc).strftime('%Y-%m-%dT%H:%M:%S.000Z')
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SEED = os.path.join(ROOT, 'seeds', 'startup-law-firms-supp-evidence.json')
-DATA = os.path.join(os.path.dirname(ROOT), 'rankings', 'startup-law-firms', 'evidence')
+DATA = os.path.join(os.path.dirname(ROOT), 'open-rankings', 'startup-law-firms', 'evidence')
 
 ITEMS = json.load(open(SEED))
 

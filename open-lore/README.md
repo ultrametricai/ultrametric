@@ -16,7 +16,7 @@ Each record carries: `id` (stable), `heuristic` (one actionable sentence, a fait
 paraphrase), `school` (`YC`, `lean`, `blitzscaling`, `bootstrapper`, `effectual`,
 `contrarian`, `classical`, `craft`), `source` (author, work, URL), `stance` (always
 `claim`), `tensions` (conflicting entry ids, symmetric and always across schools), and
-`processIds` (the processes in [`processes/corpus.json`](../processes/corpus.json) it
+`processIds` (the processes in [`open-processes/corpus.json`](../processes/corpus.json) it
 bears on).
 
 Contribute here:
@@ -37,7 +37,7 @@ Gate: `pnpm vitest run __tests__/lore-registry.test.ts --maxWorkers=2`.
 retelling, era, companies and people, a one-sentence lesson, at least one source with a
 what-it-supports note, and a veracity grade on every entry (`first-person` / `documented`
 / `reported` / `legend`). Disputed tellings keep the dispute in the text; cross-links to
-the laws (`law/LAWS.md`) and processes must resolve.
+the laws (`open-law/LAWS.md`) and processes must resolve.
 
 Gate: `pnpm vitest run __tests__/lore.test.ts --maxWorkers=2` (via `lib/lore.ts`).
 

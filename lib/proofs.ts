@@ -10,10 +10,10 @@ import { z } from 'zod'
 // NOT in lib/schemas.ts — the evidence schema is owned by another lane; folding proofs into
 // Evidence is phase 2 of docs/PROVE-IT.md. Layout on disk:
 //
-//   rankings/<category>/proofs/<productId>/<probeId>.txt    plain sanitized transcript
-//   rankings/<category>/proofs/<productId>/<probeId>.webm   browser recording (kind: 'video')
-//   rankings/<category>/proofs/<productId>/<probeId>.json   sidecar (ProofSidecarSchema)
-//   rankings/<category>/proofs/index.json                   ProofIndexSchema (adds productId/file)
+//   open-rankings/<category>/proofs/<productId>/<probeId>.txt    plain sanitized transcript
+//   open-rankings/<category>/proofs/<productId>/<probeId>.webm   browser recording (kind: 'video')
+//   open-rankings/<category>/proofs/<productId>/<probeId>.json   sidecar (ProofSidecarSchema)
+//   open-rankings/<category>/proofs/index.json                   ProofIndexSchema (adds productId/file)
 
 export const ProofSidecarSchema = z.object({
   probeId: z.string(),
@@ -40,7 +40,7 @@ export const ProofIndexSchema = z.object({
 })
 export type ProofIndex = z.infer<typeof ProofIndexSchema>
 
-const DEFAULT_DIR = () => path.join(process.cwd(), 'rankings')
+const DEFAULT_DIR = () => path.join(process.cwd(), 'open-rankings')
 
 export function proofsDir(categoryId: string, dir: string = DEFAULT_DIR()): string {
   return path.join(dir, categoryId, 'proofs')
@@ -59,9 +59,9 @@ export function proofsForProduct(categoryId: string, productId: string, dir: str
 }
 
 // Every recorded proof site-wide, grouped by category — the /proofs theater's data source
-// (app/proofs/page.tsx). Walks rankings/*/proofs/index.json directly off the filesystem rather
+// (app/proofs/page.tsx). Walks open-rankings/*/proofs/index.json directly off the filesystem rather
 // than going through loadAll(): proofs are sidecar files with their own optional-file
-// contract, so a category needs no rankings/verdicts to have its recordings listed. Sorted
+// contract, so a category needs no open-rankings/verdicts to have its recordings listed. Sorted
 // by categoryId for a stable build output; categories without a single proof are omitted.
 export interface CategoryProofs {
   categoryId: string

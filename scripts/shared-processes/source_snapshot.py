@@ -7,11 +7,11 @@ from pathlib import Path
 # records written from such a tree still satisfy the source.revision schema.
 NULL_REVISION = '0' * 40
 
-FIXED_PATHS = ['processes/corpus.json', 'processes/chains.json', 'processes/vendor-registry.json']
+FIXED_PATHS = ['open-processes/corpus.json', 'open-processes/chains.json', 'open-processes/vendor-registry.json']
 
 
 def _working_workflows(root):
-    return sorted(path.relative_to(root).as_posix() for path in (Path(root) / 'processes/equity').rglob('*.json'))
+    return sorted(path.relative_to(root).as_posix() for path in (Path(root) / 'open-processes/equity').rglob('*.json'))
 
 
 def read_snapshot(root):
@@ -36,10 +36,10 @@ def read_snapshot(root):
         return NULL_REVISION, {path: read_working(path) for path in paths}
 
     tracked = set(
-        git('ls-tree', '-rz', '--name-only', revision, '--', *FIXED_PATHS, 'processes/equity').split('\0')
+        git('ls-tree', '-rz', '--name-only', revision, '--', *FIXED_PATHS, 'open-processes/equity').split('\0')
     )
     tracked.discard('')
-    workflows = sorted({p for p in tracked if p.startswith('processes/equity/')} | set(working_workflows))
+    workflows = sorted({p for p in tracked if p.startswith('open-processes/equity/')} | set(working_workflows))
     paths = FIXED_PATHS + workflows
     # Tracked sources must be committed before an import is trusted; untracked paths that the
     # repo deliberately ignores (the materialized open artifact in a consuming repo) are read

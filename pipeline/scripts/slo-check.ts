@@ -1,5 +1,5 @@
 // Agent-surface SLO check: keylessly pings every product's DOCUMENTED agent surfaces and
-// appends one line per check to rankings/slo-history.jsonl (schema + uptime math in lib/slo.ts).
+// appends one line per check to open-rankings/slo-history.jsonl (schema + uptime math in lib/slo.ts).
 // "Documented" is deliberate — we only monitor surfaces we have previously observed to exist,
 // so the down-list is a real outage list, never "product X never had an llms.txt":
 //
@@ -7,7 +7,7 @@
 //               at …", pipeline/stages/probe.ts) on the product's docs/site origin.
 //   openapi   — likewise, the URL from a positive "PROBE openapi: HTTP 200" evidence item.
 //   mcp       — the product's own remote MCP endpoint from the lib/mcpEndpoints.ts allowlist,
-//               plus any endpoint a recorded handshake proof (rankings/*/proofs, lib/proofs.ts)
+//               plus any endpoint a recorded handshake proof (open-rankings/*/proofs, lib/proofs.ts)
 //               POSTed a `<jsonrpc initialize>` to (every recorded handshake answered 2xx/400/
 //               401 — all alive — so proofs never seed the monitor with a never-existed URL).
 //

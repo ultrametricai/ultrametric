@@ -1,6 +1,6 @@
 // Pricing transparency stage: for each product in a covered arena (lib/pricing.ts's
 // PRICING_ARENAS), fetch its pricing page, LLM-extract structured pricing facts in the arena's
-// canonical agent-action units, and write rankings/{cat}/pricing.json.
+// canonical agent-action units, and write open-rankings/{cat}/pricing.json.
 //
 // Honesty rules (enforced in code, not just prompted):
 // - The LLM only ever reads the fetched page text we hand it; sourceUrl/fetchedAt are stamped

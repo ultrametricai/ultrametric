@@ -6,7 +6,7 @@ import { loadArtifacts, loadProcesses } from '@/lib/processes'
 
 // The artifact layer (founder depth wave part 2, 2026-10-01: typed inputs/outputs between
 // processes). These tests pin the registry's honesty contract — the rules that make
-// processes/artifacts.json a corpus-grounded vocabulary instead of a wishlist:
+// open-processes/artifacts.json a corpus-grounded vocabulary instead of a wishlist:
 //   1. TOTALITY — every process carries explicit produces/requires (no zod default hides a
 //      gap), and every artifact id used anywhere resolves in the registry.
 //   2. ONE CANONICAL PRODUCER — each artifact names one producedBy; any other process claiming
@@ -21,7 +21,7 @@ const DATA_DIR = path.resolve(__dirname, '../../rankings')
 // The RAW corpus — includes the jurisdiction-conditional nodes loadProcesses strips from the
 // default view, so we can assert no producesArtifact ever hides on a conditional node.
 const RAW = JSON.parse(
-  fs.readFileSync(path.join(DATA_DIR, '..', 'processes', 'corpus.json'), 'utf8'),
+  fs.readFileSync(path.join(DATA_DIR, '..', 'open-processes', 'corpus.json'), 'utf8'),
 ) as Array<{
   id: string
   produces: string[]

@@ -4,10 +4,10 @@ import path from 'node:path'
 import { planFounderOps, validateFounderOps } from '@/lib/founderOps'
 
 // The founder-ops corpus gates (ingested from the founder-ops-open starter, 2026-09-28): the
-// committed law/processes/citations/coverage records must satisfy every structural and semantic
+// committed open-law / open-processes / citations / coverage records must satisfy every structural and semantic
 // invariant, and the conservative planner must refuse everything it cannot exactly match.
 
-const FIXTURES_DIR = path.join(process.cwd(), 'processes', 'fixtures')
+const FIXTURES_DIR = path.join(process.cwd(), 'open-processes', 'fixtures')
 const readFixture = (name: string) =>
   JSON.parse(fs.readFileSync(path.join(FIXTURES_DIR, name), 'utf8'))
 

@@ -6,7 +6,7 @@ import {
 // SSOT pins for the vendor-fact migration (founder audit 2026-09-30: "verify everything rendered
 // on /processes is driven from the open repo corpus"): the four in-code vendor tables
 // (VENDOR_ARENA, VENDOR_LABELS, VENDOR_PRODUCT_ID, VENDOR_SIGNUP_URL) moved verbatim into
-// processes/vendor-registry.json, and lib/processes.ts now READS THEM BACK. These tests pin
+// open-processes/vendor-registry.json, and lib/processes.ts now READS THEM BACK. These tests pin
 // that the exports are pure projections of the registry (no residual in-code vendor facts), the
 // spot values the migration moved, and the honesty contract for deliberately-unlinked vendors.
 

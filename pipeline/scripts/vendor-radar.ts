@@ -24,9 +24,9 @@
 // speak any arena's language is not our vendor, however hot.
 //
 // Dedupe, so each candidate surfaces ONCE and already-tracked vendors never do:
-//   · every rankings/<arena>/products.json product, by normalized site domain (pipeline/yc-shared.ts
+//   · every open-rankings/<arena>/products.json product, by normalized site domain (pipeline/yc-shared.ts
 //     normalizeDomain — never by name alone) AND by normalized name/id,
-//   · the vendor registry (rankings/reviews/generated/<arena>--<product>.json), by product id,
+//   · the vendor registry (open-rankings/reviews/generated/<arena>--<product>.json), by product id,
 //   · the committed seen-ledger pipeline/radar-seen.json: every candidate ever reported, keyed by
 //     product domain (or github:owner/repo / normalized name when no product domain is public).
 //
@@ -34,7 +34,7 @@
 // seen-ledger. --issue-body <path> additionally writes the markdown ONLY when there are new
 // candidates — .github/workflows/vendor-radar.yml files the day's issue from it.
 //
-// HONESTY: the scan itself detects and reports — nothing under rankings/ changes from a scan, the
+// HONESTY: the scan itself detects and reports — nothing under open-rankings/ changes from a scan, the
 // radar NEVER creates a new ranking, and it NEVER touches a founder-affiliated product
 // autonomously. Approval is criteria-based (governance/AGENT_POLICY.md "Vendor-radar candidate
 // approval", founder authorization 2026-10-13, replacing checkbox approval): the companion
@@ -452,7 +452,7 @@ export function assembleCandidates(raw: RawCandidate[], vocab: Map<string, Vocab
 // Report + issue markdown
 
 const HONESTY_LINES = [
-  'The radar NEVER creates a new ranking and NEVER touches a founder-affiliated product autonomously — nothing under `rankings/` changes from the scan itself.',
+  'The radar NEVER creates a new ranking and NEVER touches a founder-affiliated product autonomously — nothing under `open-rankings/` changes from the scan itself.',
   'Candidates are triaged against the auto-approval criteria in `governance/AGENT_POLICY.md` ("Vendor-radar candidate approval", founder authorization 2026-10-13, replacing checkbox approval): existing-ranking fit, public docs surface, shipped product, no founder affiliation. The bring-up on auto-approved candidates runs via the standard pipeline as a reviewed PR (`docs/VENDOR-RADAR.md`); candidates failing a criterion are recorded as skipped with the reason and its evidence.',
 ]
 
@@ -593,7 +593,7 @@ function loadDedupeContext(): DedupeContext {
       trackedNames.add(normalizeName(p.id))
     }
   }
-  // The vendor registry: rankings/reviews/generated/<arena>--<product>.json — product ids again,
+  // The vendor registry: open-rankings/reviews/generated/<arena>--<product>.json — product ids again,
   // belt-and-braces in case a registry record outlives a roster edit.
   if (fs.existsSync(REVIEWS_DIR)) {
     for (const f of fs.readdirSync(REVIEWS_DIR)) {

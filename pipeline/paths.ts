@@ -5,7 +5,7 @@ import { CategorySchema, type Category } from '../lib/schemas'
 
 export const ROOT = path.resolve(__dirname, '..')
 // PA_DATA_DIR is the deprecated pre-rename spelling, honored as a fallback.
-export const DATA_DIR = process.env.UM_DATA_DIR ?? process.env.PA_DATA_DIR ?? path.join(ROOT, 'rankings')
+export const DATA_DIR = process.env.UM_DATA_DIR ?? process.env.PA_DATA_DIR ?? path.join(ROOT, 'open-rankings')
 export const CACHE_DIR = path.join(ROOT, 'pipeline', 'cache')
 
 export function categoryDir(categoryId: string): string {

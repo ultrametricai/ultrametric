@@ -46,7 +46,7 @@ interface RawTask {
 }
 
 const rawTasks = JSON.parse(
-  fs.readFileSync(path.join(DATA_DIR, '..', 'processes', 'corpus.json'), 'utf8'),
+  fs.readFileSync(path.join(DATA_DIR, '..', 'open-processes', 'corpus.json'), 'utf8'),
 ) as RawTask[]
 const rawConditional = rawTasks.flatMap((t) =>
   t.dag.nodes.filter((n) => n.jurisdictions !== undefined).map((n) => ({ task: t, node: n })),

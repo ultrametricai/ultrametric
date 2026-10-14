@@ -1,5 +1,5 @@
 // "Classic interconnects": curated product pairings the industry expects to work together
-// (rankings/classic-pairs.json) — Stripe↔QuickBooks, Slack↔Linear, GitHub↔Vercel… The curation
+// (open-rankings/classic-pairs.json) — Stripe↔QuickBooks, Slack↔Linear, GitHub↔Vercel… The curation
 // asserts only the EXPECTATION; whether the pairing is real is computed here against the
 // verified integration graph (lib/integrations.ts) and rendered on /integrations as either
 // "verified" (an evidence-backed edge exists, with its verbatim quotes) or the honest
@@ -24,7 +24,7 @@ export const ClassicPairsFileSchema = z.object({
 
 export type ClassicPair = z.infer<typeof ClassicPairSchema>
 
-const DEFAULT_FILE = () => path.join(process.cwd(), 'rankings', 'classic-pairs.json')
+const DEFAULT_FILE = () => path.join(process.cwd(), 'open-rankings', 'classic-pairs.json')
 let cache: { file: string; pairs: ClassicPair[] } | null = null
 
 export function loadClassicPairs(file: string = DEFAULT_FILE()): ClassicPair[] {

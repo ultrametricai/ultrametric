@@ -1,9 +1,9 @@
 // Pricing-tier annotation layer: schema + loader + display helpers for
-// rankings/{cat}/story-tiers.json — for each (product, story) cell the judge ruled full/partial,
+// open-rankings/{cat}/story-tiers.json — for each (product, story) cell the judge ruled full/partial,
 // which plan tier the cited evidence says a buyer needs ("what can be done for free, paid,
 // enterprise"). Produced by pipeline/scripts/classify-story-tiers.ts, an LLM classifier that
 // reads ONLY the verdict's cited evidence excerpts plus the product's pricing evidence
-// (rankings/{cat}/pricing.json facts + pricing-page evidence items) under strict honesty rules:
+// (open-rankings/{cat}/pricing.json facts + pricing-page evidence items) under strict honesty rules:
 // 'unknown' whenever the evidence never states gating — never guessed from reputation — and
 // every non-unknown tier must cite the evidence item that implies it (tierEvidenceId) plus a
 // one-liner quoting the gating evidence (tierNote, e.g. "SSO on Enterprise plan only").
@@ -39,7 +39,7 @@ export const StoryTierSchema = z.object({
   message: 'non-unknown tiers must cite their gating evidence (tierNote + tierEvidenceId)',
 })
 
-// rankings/{cat}/story-tiers.json shape: one entry per (product, story) cell with a full/partial
+// open-rankings/{cat}/story-tiers.json shape: one entry per (product, story) cell with a full/partial
 // verdict — 'unknown' entries are kept in the file (honest "evidence doesn't state gating"),
 // cells with none/disputed/na verdicts are simply absent (nothing delivered to gate).
 export const StoryTiersArraySchema = StoryTierSchema.array()
@@ -50,7 +50,7 @@ export function storyTierKey(productId: string, storyId: string): string {
   return `${productId}:${storyId}`
 }
 
-const DEFAULT_DIR = () => path.join(process.cwd(), 'rankings')
+const DEFAULT_DIR = () => path.join(process.cwd(), 'open-rankings')
 const tiersCache = new Map<string, StoryTier[]>()
 
 // Same tolerant-optional contract as lib/pricing.ts's loadPricing: no story-tiers.json (arena

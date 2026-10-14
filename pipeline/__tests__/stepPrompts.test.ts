@@ -1,9 +1,9 @@
 // Committed-file + loader tests for the step→prompt generator (pipeline/scripts/
 // map-step-prompts.ts). Two layers, same posture as stepVendorCalls.test.ts: pure-part tests
 // of the generator's validator (no LLM, no network), then re-validation of the committed
-// rankings/step-prompts.json against EXACTLY the rules the generator enforced — referential
-// integrity against processes/corpus.json, the {{vendor}} placeholder rule, endpoint grounding
-// against rankings/step-vendor-calls.json, the human-step audit posture — and a loader smoke test.
+// open-rankings/step-prompts.json against EXACTLY the rules the generator enforced — referential
+// integrity against open-processes/corpus.json, the {{vendor}} placeholder rule, endpoint grounding
+// against open-rankings/step-vendor-calls.json, the human-step audit posture — and a loader smoke test.
 import { describe, expect, it } from 'vitest'
 import { humanStepAudit } from '../../lib/humanSteps'
 import { loadProcesses, type DagNode } from '../../lib/processes'
@@ -174,7 +174,7 @@ describe('promptTargetHash / generationPrompt / enumeration', () => {
 // The committed file, re-checked against exactly the generator's rules
 // ---------------------------------------------------------------------------
 
-describe('rankings/step-prompts.json', () => {
+describe('open-rankings/step-prompts.json', () => {
   const entries = StepPromptsFileSchema.parse(loadStepPrompts())
   const tasks = loadProcesses(DATA_DIR)
   const nodeByKey = new Map<string, DagNode>(
@@ -206,7 +206,7 @@ describe('rankings/step-prompts.json', () => {
     }
   })
 
-  it('quotes endpoints only from the step\'s grounded vendor calls (rankings/step-vendor-calls.json)', () => {
+  it('quotes endpoints only from the step\'s grounded vendor calls (open-rankings/step-vendor-calls.json)', () => {
     for (const e of entries) {
       const grounded = stepVendorCallsFor(e.taskId, e.nodeId, DATA_DIR).flatMap((v) => v.calls.map((c) => c.method))
       for (const raw of e.prompt.match(ENDPOINT_RE) ?? []) {

@@ -15,7 +15,7 @@ import { DECISION_STEP_RE, formatMinutes, gapWhy, PROCESS_KINDS, REVERSIBILITY_T
 export { formatMinutes, gapWhy, PROCESS_KINDS, REVERSIBILITY_TIERS, URGENCY_TIERS }
 export type { Cadence, GapResolution, ProcessKind, Reversibility, SimStep, StepRoute, SwapOption, Urgency, VendorRole }
 
-// The founder-process corpus (processes/corpus.json): 146 real startup operating records — 124
+// The founder-process corpus (open-processes/corpus.json): 146 real startup operating records — 124
 // timeline processes plus 22 reactive SITUATIONS (kind 'situation', founder ask 2026-10-01;
 // wave 3 boost 2026-10-02) —
 // each mapped as a DAG whose nodes are routed 'agent' (an agent can drive the step via a
@@ -134,7 +134,7 @@ export const DagNodeBaseSchema = z.object({
 
 // "How do I know it worked?" — a concrete, externally checkable test for the step, with the
 // primary-source URL of the checking tool where one exists (the DE entity search, TSDR, EDGAR
-// full-text search, RDAP lookup…). Curation honesty (processes/README.md "Verification
+// full-text search, RDAP lookup…). Curation honesty (open-processes/README.md "Verification
 // checks"): a verify that merely restates the step is worse than absence — drafting steps and
 // internal decisions carry none; URLs are https, primary sources (government portals, registrar
 // tools) preferred, and every one is curl-verified live before it ships.
@@ -148,7 +148,7 @@ export type StepVerify = z.infer<typeof StepVerifySchema>
 export const COST_KINDS = ['government-fee', 'typical-vendor-price', 'free'] as const
 export type CostKind = (typeof COST_KINDS)[number]
 
-// The real, KNOWABLE cost of a step. Honesty contract (processes/README.md "Cost honesty"):
+// The real, KNOWABLE cost of a step. Honesty contract (open-processes/README.md "Cost honesty"):
 // every number carries the source URL of a published fee schedule or sticker-price page plus
 // the asOf date it was read — fees change, the asOf date is the contract, currentness is never
 // claimed. `usd: null` is the honest spelling of "a real cost exists but no published number
@@ -227,9 +227,9 @@ export type StepMethod = z.infer<typeof StepMethodSchema>
 // `what` names the failure, `then` the recovery — or the honest "no recovery; this is a
 // conversation with counsel" where that is the truth (needs_review posture). `source` is the
 // primary page/statute/fee schedule backing the entry (curl-verified live, like every corpus
-// URL); legal claims additionally cite a dated rule card in law/ by id inside the prose, the
+// URL); legal claims additionally cite a dated rule card in open-law/ by id inside the prose, the
 // situations-house precedent. 3–6 QUALITY entries per deep process, not coverage — see
-// processes/README.md "Failure modes". Display: none since founder 2026-10-05 (the collapsed
+// open-processes/README.md "Failure modes". Display: none since founder 2026-10-05 (the collapsed
 // '⚠ if it goes wrong' step line was removed) — the field stays corpus data, carried by the
 // manifests; no judged number reads it.
 export const StepFailureModeSchema = z.object({
@@ -247,7 +247,7 @@ export type StepFailureMode = z.infer<typeof StepFailureModeSchema>
 export const DagNodeSchema = DagNodeBaseSchema.extend({
   methods: StepMethodSchema.array().min(1).optional(),
   // The artifact layer, node half (founder depth wave part 2, 2026-10-01: typed inputs/outputs
-  // between steps): the registry artifact (processes/artifacts.json) that comes into existence
+  // between steps): the registry artifact (open-processes/artifacts.json) that comes into existence
   // at THIS step — the certificate received, the account opened, the paper signed. OPTIONAL per
   // node, but corpus-tested as the exact node-level image of the task's `produces` list (set
   // equality per task, lib/__tests__/processArtifacts.test.ts), and never on a
@@ -258,7 +258,7 @@ export const DagNodeSchema = DagNodeBaseSchema.extend({
   // what is reversible — for ALL processes and process steps"). REQUIRED with no zod default —
   // every node is explicitly curated (an unclassified node fails the corpus parse; totality and
   // distribution are corpus-tested). Tier definitions + curation rules live on
-  // REVERSIBILITY_TIERS in lib/processSim.ts and in processes/README.md. The tier attaches to
+  // REVERSIBILITY_TIERS in lib/processSim.ts and in open-processes/README.md. The tier attaches to
   // the step's own act (a "wait/receive" step commits nothing → reversible; the filing before
   // it carried the commitment). Method-variant subSteps (DagNodeBaseSchema) deliberately do NOT
   // carry the field this phase — variants are display-level; the default flow is the judged
@@ -448,7 +448,7 @@ export const ProcessTaskSchema = z.object({
   // default (totality is corpus-tested; irreversible is deliberately rare). Independent of the
   // per-step tiers: a painful process can contain one truly irreversible filing step, and an
   // irreversible process is mostly reversible steps until the wire goes out. Definitions:
-  // REVERSIBILITY_TIERS in lib/processSim.ts and processes/README.md.
+  // REVERSIBILITY_TIERS in lib/processSim.ts and open-processes/README.md.
   reversibility: z.enum(REVERSIBILITY_TIERS),
   category: z.string().min(1),
   supportLevel: z.enum(['full', 'partial', 'manual_guide']),
@@ -465,7 +465,7 @@ export const ProcessTaskSchema = z.object({
     required: z.boolean(),
   }).array(),
   // The artifact layer, task half (founder depth wave part 2, 2026-10-01): typed inputs/outputs
-  // between processes, as registry artifact ids (processes/artifacts.json — loadArtifacts below).
+  // between processes, as registry artifact ids (open-processes/artifacts.json — loadArtifacts below).
   // `contextNeeded` prose stays the human context; this is the machine truth the cross-process
   // dependency graph (lib/processDeps.ts) builds from. Both REQUIRED with no zod default — the
   // whole corpus is explicitly curated (an empty array is an honest "this process produces/needs
@@ -541,16 +541,16 @@ export function processesByCadence(tasks: ProcessTask[]): Array<{ cadence: Caden
   })).filter((g) => g.tasks.length > 0)
 }
 
-const DEFAULT_DIR = () => path.join(process.cwd(), 'rankings')
+const DEFAULT_DIR = () => path.join(process.cwd(), 'open-rankings')
 
 // Stage 2 of the corpus lift (docs/FOUNDER-OPS.md): the operational corpus and the chains moved
-// out of rankings/ into the founder-ops tree — processes/corpus.json and processes/chains.json.
+// out of open-rankings/ into the founder-ops tree — open-processes/corpus.json and open-processes/chains.json.
 // `dir` stays the ARENA-DATA dir (it keys the caches and resolves the live markets via
 // loadCategory); the corpus files resolve as siblings of it, so every existing call site
 // (DEFAULT_DIR, tests' DATA_DIR, pipeline/paths.ts DATA_DIR — all `<root>/data`) keeps working
 // unchanged. Content is byte-identical to the pre-move files; paths only.
-const corpusFile = (dir: string) => path.join(dir, '..', 'processes', 'corpus.json')
-const chainsFile = (dir: string) => path.join(dir, '..', 'processes', 'chains.json')
+const corpusFile = (dir: string) => path.join(dir, '..', 'open-processes', 'corpus.json')
+const chainsFile = (dir: string) => path.join(dir, '..', 'open-processes', 'chains.json')
 
 // URL slug for a process — kebab-case of the title, same convention as arena/product ids
 // elsewhere on the site (lowercase, hyphen-separated). Uniqueness across the corpus is enforced
@@ -706,7 +706,7 @@ export function slugAliasFor(task: ProcessTask, slug: string): SlugAlias | null 
 
 const chainsCache = new Map<string, ProcessChain[]>()
 
-// Curated chained stories (processes/chains.json): ordered runs of real corpus task ids.
+// Curated chained stories (open-processes/chains.json): ordered runs of real corpus task ids.
 // Integrity-checked at load: every taskId must exist in the corpus, chain ids must be unique.
 export function loadChains(dir: string = DEFAULT_DIR()): ProcessChain[] {
   const hit = chainsCache.get(dir)
@@ -880,14 +880,14 @@ export function gapThemes(tasks: ProcessTask[]): GapTheme[] {
 }
 
 // ---------------------------------------------------------------------------
-// Vendor registry (processes/vendor-registry.json) — arena links, labels, product ids, signup URLs
+// Vendor registry (open-processes/vendor-registry.json) — arena links, labels, product ids, signup URLs
 // ---------------------------------------------------------------------------
 
 // Single source of truth for vendor FACTS (SSOT migration, founder audit 2026-09-30: "verify
 // everything rendered on /processes is driven from the open repo corpus"): which arena judges a
 // corpus vendor, its display label where title-casing the key misfires, its judged product id
 // where it differs from the key, and its verified-live start-here page all live in the open
-// corpus file processes/vendor-registry.json — keyed by corpus vendor key (snake_case, the same
+// corpus file open-processes/vendor-registry.json — keyed by corpus vendor key (snake_case, the same
 // keys corpus.json uses in vendor/vendorOptions) — not in TypeScript. The exports below are
 // READ BACK from that file with their historic shapes, so every consumer (processRows,
 // vendorProcesses, tryit, everything, opsCoverage, operating-rhythm, pipeline scripts) is
@@ -919,7 +919,7 @@ export const VendorRegistrySchema = z
   })
   .strict()
 
-const vendorRegistryFile = () => path.join(process.cwd(), 'processes', 'vendor-registry.json')
+const vendorRegistryFile = () => path.join(process.cwd(), 'open-processes', 'vendor-registry.json')
 let vendorRegistryCache: Record<string, VendorRegistryEntry> | null = null
 export function loadVendorRegistry(): Record<string, VendorRegistryEntry> {
   if (!vendorRegistryCache) {
@@ -961,7 +961,7 @@ export function vendorProductId(vendor: string): string {
 export const GOVERNMENT_ARENA_ID = 'government-services'
 
 // The government-services arena rosters national monopolies, tagged by the Phase-2 rollup
-// work's committed `country`/`area` fields (rankings/government-services/products.json,
+// work's committed `country`/`area` fields (open-rankings/government-services/products.json,
 // lib/rollups.ts). Unlike a competitive arena, those products are not substitutes for each
 // other across the tags: USPTO cannot take a federal tax return and Portugal's IRN cannot
 // incorporate a Delaware company, yet all of them score on the arena's generic stories, so an
@@ -1022,7 +1022,7 @@ export function vendorLabel(vendor: string): string {
 }
 
 // ---------------------------------------------------------------------------
-// Artifact registry (processes/artifacts.json) — the canonical business artifacts that flow
+// Artifact registry (open-processes/artifacts.json) — the canonical business artifacts that flow
 // between processes (founder depth wave part 2, 2026-10-01)
 // ---------------------------------------------------------------------------
 
@@ -1099,7 +1099,7 @@ export const ArtifactRegistrySchema = z
   })
   .strict()
 
-const artifactsFile = () => path.join(process.cwd(), 'processes', 'artifacts.json')
+const artifactsFile = () => path.join(process.cwd(), 'open-processes', 'artifacts.json')
 let artifactsCache: Artifact[] | null = null
 export function loadArtifacts(): Artifact[] {
   if (!artifactsCache) {

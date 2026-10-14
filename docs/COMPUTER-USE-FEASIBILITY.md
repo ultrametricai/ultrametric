@@ -5,7 +5,7 @@ human-marked steps of `/processes/chains/company-launch`. Question under test: *
 says "human", could a computer-use agent do it?**
 
 - Harness: `pipeline/scripts/computer-use-feasibility.ts` (playwright, headless chromium)
-- Evidence: `rankings/experiments/computer-use/` — one JSON + one PNG screenshot per step, plus
+- Evidence: `open-rankings/experiments/computer-use/` — one JSON + one PNG screenshot per step, plus
   `feasibility-report.json` (aggregate)
 - Safety envelope actually enforced: **zero submissions, zero accounts created, zero payments,
   zero CAPTCHA bypasses, zero government forms filled**. Fake data only (`Test Example Co`,

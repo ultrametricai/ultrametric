@@ -4,7 +4,7 @@
 # probe/github-tier evidence) — muse, gemini (ai-assistants), motion (scheduling), tilled
 # (marketplace-payments), notebooklm (ai-research-agents), sift (fraud-prevention),
 # google-titan (security-keys), intel-core-ultra-7-258v + amd-ryzen-9-9950x3d (processors).
-# Every item cites a PA_RECORD proof in rankings/<arena>/proofs/ (pipeline/probes/<arena>.ts);
+# Every item cites a PA_RECORD proof in open-rankings/<arena>/proofs/ (pipeline/probes/<arena>.ts);
 # negatives are recorded honestly — an absence proof is still probe-tier.
 # Run AFTER `pnpm pipeline probe --category <arena>` (and after any spike pass) — that stage
 # wholesale-replaces probe-tier evidence and would wipe these items (re-run after refreshes).
@@ -89,7 +89,7 @@ for cat, products in ITEMS.items():
     if ONLY and cat not in ONLY:
         continue
     for pid, items in products.items():
-        path = f'rankings/{cat}/evidence/{pid}.json'
+        path = f'open-rankings/{cat}/evidence/{pid}.json'
         existing = json.load(open(path)) if os.path.exists(path) else []
         have = {e['id'] for e in existing}
         added = 0

@@ -30,16 +30,16 @@ const INTRO = [
   '',
   '```',
   'ultrametric/',
-  '├── processes/       every founder process, step by step',
-  '├── rankings/        evidence, verdicts, computed scores',
+  '├── open-processes/       every founder process, step by step',
+  '├── open-rankings/        evidence, verdicts, computed scores',
   '├── pipeline/        crawl, probe, judge, derive',
   '├── open-modules/    the startup calculations, indexed',
   '├── lib/             the code behind modules and loaders',
-  '├── law/             startup law, one rule per record',
+  '├── open-law/             startup law, one rule per record',
   '├── citations/       the sources every record cites',
   '├── jurisdictions/   countries, states, vendor geography',
   '├── open-documents/  the open legal documents catalog',
-  '├── lore/            heuristics, episodes, the library',
+  '├── open-lore/            heuristics, episodes, the library',
   '├── coverage/        what is covered, at what maturity',
   '├── schemas/         the JSON contracts for every record',
   '└── governance/      review, evidence, and agent policy',
@@ -202,7 +202,7 @@ describe('README.md section-guide tables (founder round 2)', () => {
     expect(section).not.toContain('409A sanity')
     expect(section).toContain('| [409A](open-modules/README.md#409a-grant-sanity)')
     const map = JSON.parse(
-      fs.readFileSync(path.join(ROOT, 'processes', 'business-logic-map.json'), 'utf8'),
+      fs.readFileSync(path.join(ROOT, 'open-processes', 'business-logic-map.json'), 'utf8'),
     ) as { modules: Record<string, { anchor: string }> }
     const anchors = Object.values(map.modules).map((m) => m.anchor)
     expect(anchors.length).toBeGreaterThan(0)
@@ -233,11 +233,11 @@ describe('README.md section-guide tables (founder round 2)', () => {
     }
   })
 
-  it('the Open lore table rows match lore/library.json sections, each example URL a committed entry', () => {
+  it('the Open lore table rows match open-lore/library.json sections, each example URL a committed entry', () => {
     const section = sectionBody('## Open lore')
     expect(section).toContain('| Section | What it teaches | Example entry |')
     const library = JSON.parse(
-      fs.readFileSync(path.join(ROOT, 'lore', 'library.json'), 'utf8'),
+      fs.readFileSync(path.join(ROOT, 'open-lore', 'library.json'), 'utf8'),
     ) as { sections: Array<{ title: string; covers: string }>; entries: Array<{ url: string }> }
     expect(library.sections.length).toBeGreaterThan(0)
     for (const s of library.sections) {
@@ -319,7 +319,7 @@ describe('README.md anchors and links', () => {
 describe('README.md examples pin to the committed records', () => {
   type CorpusRec = { id: string; title: string }
   const corpus: CorpusRec[] = JSON.parse(
-    fs.readFileSync(path.join(ROOT, 'processes', 'corpus.json'), 'utf8'),
+    fs.readFileSync(path.join(ROOT, 'open-processes', 'corpus.json'), 'utf8'),
   )
   // Mirrors lib/processes.ts processSlug.
   const slug = (title: string) => title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '')

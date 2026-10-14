@@ -19,7 +19,7 @@ const DATA_DIR = path.resolve(__dirname, '../../rankings')
 
 const tasks = () => loadProcesses(DATA_DIR)
 
-describe('committed step→story mapping (rankings/process-step-stories.json)', () => {
+describe('committed step→story mapping (open-rankings/process-step-stories.json)', () => {
   it('exists — the rankings feature ships with its mapping', () => {
     expect(fs.existsSync(path.join(DATA_DIR, 'process-step-stories.json'))).toBe(true)
     expect(loadStepStoryMap(DATA_DIR).length).toBeGreaterThan(0)

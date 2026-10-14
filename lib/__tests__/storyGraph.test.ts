@@ -1,4 +1,4 @@
-// Structural validation of the curated canon story DAG (rankings/story-graph.json via
+// Structural validation of the curated canon story DAG (open-rankings/story-graph.json via
 // lib/storyGraph.ts). The canon ids come straight from pipeline/agentic-stories.ts — the single
 // source of truth normalize.ts injects into every arena — so a canon rename or addition that
 // isn't mirrored in the graph fails here, not silently in the map render.

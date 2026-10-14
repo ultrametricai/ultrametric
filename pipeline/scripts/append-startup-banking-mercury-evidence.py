@@ -34,7 +34,7 @@ import json
 import subprocess
 
 NOW = datetime.datetime.now(datetime.timezone.utc).strftime('%Y-%m-%dT%H:%M:%S.000Z')
-EVIDENCE = 'rankings/startup-banking/evidence/mercury.json'
+EVIDENCE = 'open-rankings/startup-banking/evidence/mercury.json'
 
 DOC_ITEMS = [
     ('mercury-supp-sandbox-base-urls', 'https://docs.mercury.com/docs/using-mercury-sandbox.md',

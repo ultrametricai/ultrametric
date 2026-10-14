@@ -16,7 +16,7 @@ import { SITE_URL } from './site'
 //
 // Everything here is a pure function of the corpus (read through lib/processes.ts only) plus
 // the committed arena data — no request-time inputs — so the routes prerender under the static
-// export and the whole module is unit-testable against rankings/.
+// export and the whole module is unit-testable against open-rankings/.
 
 export const MANIFEST_VERSION = 1 as const
 
@@ -230,7 +230,7 @@ export function manifestProvenance(): ManifestProvenance {
     source: 'productarena',
     url: SITE_URL,
     generatedFrom:
-      'processes/corpus.json + processes/chains.json (the Ultrametric founder-process corpus), '
+      'open-processes/corpus.json + open-processes/chains.json (the Ultrametric founder-process corpus), '
       + 'resolved against live ranking leaderboards at build time. Regenerate by refetching this '
       + 'manifest URL — it always reflects the currently deployed data, not a pinned data commit.',
     license:

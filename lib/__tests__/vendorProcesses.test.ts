@@ -25,7 +25,7 @@ describe('processesForVendor — the reverse index over the process pages\' own 
     }
     // The bank the DAG names: mercury is a canonical vendor somewhere in the corpus.
     expect(rows.some((a) => a.kinds.includes('canonical'))).toBe(true)
-    // Grounded API-call cells (rankings/step-vendor-calls.json) surface as the api-calls kind.
+    // Grounded API-call cells (open-rankings/step-vendor-calls.json) surface as the api-calls kind.
     const callTaskIds = new Set(
       loadStepVendorCalls(DATA_DIR)
         .filter((e) => e.arenaId === 'startup-banking' && e.productId === 'mercury')

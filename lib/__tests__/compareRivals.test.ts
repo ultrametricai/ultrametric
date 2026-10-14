@@ -76,7 +76,7 @@ describe('compareRivalsFor', () => {
   })
 
   it('links each rival to the stored battle slug with the record oriented self-first', () => {
-    // rankings/startup-banking/rankings.json stores the pair as a=mercury, b=ramp with
+    // open-rankings/startup-banking/rankings.json stores the pair as a=mercury, b=ramp with
     // record { aWins: 16, bWins: 28, draws: 28 } — assert both orientations read from it.
     const fromMercury = compareRivalsFor(banking, 'mercury').find((r) => r.productId === 'ramp')!
     expect(fromMercury.battleSlug).toBe('mercury-vs-ramp')

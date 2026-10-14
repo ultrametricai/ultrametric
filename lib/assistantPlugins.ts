@@ -1,4 +1,4 @@
-// Assistant-plugin coverage map (rankings/assistant-plugins.json): RECORDED EVIDENCE of which of our
+// Assistant-plugin coverage map (open-rankings/assistant-plugins.json): RECORDED EVIDENCE of which of our
 // vendors have an integration listed on each of the four assistant platforms — ChatGPT (Plugin
 // Directory / Apps SDK), Claude (Connectors directory, remote MCP), Grok (Connectors catalog +
 // BYO MCP), and Muse (Meta's fixed, Meta-reviewed connector directory). Probe-tier facts only:
@@ -58,7 +58,7 @@ export type AssistantPlatform = z.infer<typeof AssistantPlatformSchema>
 export type AssistantPluginEntry = z.infer<typeof AssistantPluginEntrySchema>
 export type AssistantPluginsFile = z.infer<typeof AssistantPluginsFileSchema>
 
-const DEFAULT_FILE = () => path.join(process.cwd(), 'rankings', 'assistant-plugins.json')
+const DEFAULT_FILE = () => path.join(process.cwd(), 'open-rankings', 'assistant-plugins.json')
 let cache: { file: string; data: AssistantPluginsFile } | null = null
 
 export function loadAssistantPlugins(file: string = DEFAULT_FILE()): AssistantPluginsFile {

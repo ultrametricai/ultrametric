@@ -16,7 +16,7 @@ import {
 // tests pin the two contracts that make the published schema trustworthy:
 //   1. NO DRIFT — regenerating produces byte-identical committed output, so a zod-schema edit
 //      that forgets to regenerate (or a hand-edit of the generated file) fails loudly.
-//   2. THE CORPUS CONFORMS — every committed processes/corpus.json record validates against the
+//   2. THE CORPUS CONFORMS — every committed open-processes/corpus.json record validates against the
 //      published schema with lib/founderOps.ts's shape() checker (the same structural validator
 //      that gates the jurisdiction-scoped workflow layer), so the schema we publish is true of
 //      the data we ship, not just of the code.
@@ -52,7 +52,7 @@ describe('operational-process schema publication', () => {
 
   it('every committed corpus record validates against the published schema via shape()', () => {
     const schema = JSON.parse(committed)
-    const corpus = JSON.parse(fs.readFileSync(path.join(ROOT, 'processes', 'corpus.json'), 'utf8'))
+    const corpus = JSON.parse(fs.readFileSync(path.join(ROOT, 'open-processes', 'corpus.json'), 'utf8'))
     expect(Array.isArray(corpus)).toBe(true)
     expect(corpus.length).toBeGreaterThanOrEqual(100)
     const errors: string[] = []
@@ -75,7 +75,7 @@ describe('process vendor-registry schema publication', () => {
   it('the committed registry conforms: shape() on the published schema + the zod source', () => {
     const schema = JSON.parse(committed)
     const registry = JSON.parse(
-      fs.readFileSync(path.join(ROOT, 'processes', 'vendor-registry.json'), 'utf8'),
+      fs.readFileSync(path.join(ROOT, 'open-processes', 'vendor-registry.json'), 'utf8'),
     )
     const errors: string[] = []
     shape(registry, schema, 'vendor registry', errors)
@@ -102,7 +102,7 @@ describe('process artifact-registry schema publication', () => {
   it('the committed registry conforms: shape() on the published schema + the zod source', () => {
     const schema = JSON.parse(committed)
     const registry = JSON.parse(
-      fs.readFileSync(path.join(ROOT, 'processes', 'artifacts.json'), 'utf8'),
+      fs.readFileSync(path.join(ROOT, 'open-processes', 'artifacts.json'), 'utf8'),
     )
     const errors: string[] = []
     shape(registry, schema, 'artifact registry', errors)
@@ -126,7 +126,7 @@ describe('company-fields schema publication', () => {
   it('the committed registry conforms: shape() on the published schema + the zod source', () => {
     const schema = JSON.parse(committed)
     const registry = JSON.parse(
-      fs.readFileSync(path.join(ROOT, 'processes', 'company-fields.json'), 'utf8'),
+      fs.readFileSync(path.join(ROOT, 'open-processes', 'company-fields.json'), 'utf8'),
     )
     const errors: string[] = []
     shape(registry, schema, 'company fields', errors)

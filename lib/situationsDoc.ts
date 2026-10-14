@@ -2,14 +2,14 @@ import fs from 'node:fs'
 import path from 'node:path'
 import { loadProcesses } from '@/lib/processes'
 
-// processes/SITUATIONS.md ↔ corpus sync (founder 2026-10-02: situations get their own repo
+// open-processes/SITUATIONS.md ↔ corpus sync (founder 2026-10-02: situations get their own repo
 // surface). Same doctrine as the open-documents/README.md gate (lib/documents.ts): the listing
-// lives in markdown for humans, the truth lives in processes/corpus.json (kind: 'situation'),
+// lives in markdown for humans, the truth lives in open-processes/corpus.json (kind: 'situation'),
 // and a drift test (__tests__/situations.test.ts) keeps the two byte-identical — the table
 // block between the markers is GENERATED (scripts/generate-situations-md.ts), so the list can
 // never go stale. Pure validators take data so failure modes are testable; no network I/O.
 
-export const SITUATIONS_DOC = 'processes/SITUATIONS.md'
+export const SITUATIONS_DOC = 'open-processes/SITUATIONS.md'
 export const TABLE_START = '<!-- situations:table:start (generated — scripts/generate-situations-md.ts) -->'
 export const TABLE_END = '<!-- situations:table:end -->'
 
@@ -74,7 +74,7 @@ export function validateSituationsDoc(markdown: string, records: SituationDocRec
   const committed = markdown.slice(start, end + TABLE_END.length)
   if (committed !== renderSituationsTable(records)) {
     errors.push(
-      'SITUATIONS.md: the generated table block has drifted from processes/corpus.json — rerun scripts/generate-situations-md.ts',
+      'SITUATIONS.md: the generated table block has drifted from open-processes/corpus.json — rerun scripts/generate-situations-md.ts',
     )
   }
   const known = new Set(records.map((r) => r.id))

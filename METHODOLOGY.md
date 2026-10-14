@@ -28,7 +28,7 @@ strongest first:
 | `community` | independent forums/reviews/social posts (independent) |
 | `claimed-docs` | vendor site/docs/changelog copy (vendor claim) |
 
-Evidence is stored per product at `rankings/{category}/evidence/{product}.json`, each item with a
+Evidence is stored per product at `open-rankings/{category}/evidence/{product}.json`, each item with a
 stable id, tier, source URL, verbatim excerpt, and fetch timestamp (`fetchedAt`).
 
 A direct, hands-on probe of the product (see "Probe harness" below) outranks a GitHub README,
@@ -266,7 +266,7 @@ probes land, so the fastest way to raise one is to submit reproducible evidence.
 
 ## Story provenance
 
-Every story in `rankings/{category}/stories.json` optionally carries an `origin` field
+Every story in `open-rankings/{category}/stories.json` optionally carries an `origin` field
 (`lib/schemas.ts`'s `StoryOriginSchema`) recording where it came from and when:
 
 | `origin.kind` | Meaning |
@@ -319,7 +319,7 @@ How it's built (`pipeline/scripts/compute-confidence-intervals.ts`, math in
 `lib/scoreIntervals.ts`):
 
 - **Per-cell noise comes from measured re-roll statistics, never invented rates.** The
-  multi-judge uncertainty pass (`rankings/*/uncertainty.json`, see the re-judge stability policy
+  multi-judge uncertainty pass (`open-rankings/*/uncertainty.json`, see the re-judge stability policy
   above) re-judged 650+ decisive cells twice more against unchanged evidence; ~20% showed some
   disagreement. From those samples we build a cached-tier → re-rolled-tier transition matrix
   (e.g. a `full` cell re-rolls to `partial` ~7% of the time), and every evidenced
@@ -338,7 +338,7 @@ How it's built (`pipeline/scripts/compute-confidence-intervals.ts`, math in
   the resulting distribution; agent-readiness gets its own band the same way. The PRNG is
   seeded (mulberry32, keyed per product) — builds are byte-reproducible, no `Math.random`.
 
-Results land in `rankings/{category}/score-intervals.json` (committed, re-run post-derive by the
+Results land in `open-rankings/{category}/score-intervals.json` (committed, re-run post-derive by the
 story-runner). Display is tolerant-optional (`lib/scoreIntervals.ts`): no interval data ⇒ no
 band is ever rendered — never a fabricated one. Fleet-wide as of the first pass the median band
 width is ~4.5 Overall score points.
@@ -358,7 +358,7 @@ project still be alive tomorrow" — a reader-requested survival/support signal.
 
 It is **deliberately not part of the Overall score** and never affects rankings, leaderboard
 position, or any battle outcome (`pnpm run pipeline popularity` makes no LLM calls and its output,
-`rankings/{category}/popularity.json`, isn't read by `lib/scoring.ts`). Popularity measures
+`open-rankings/{category}/popularity.json`, isn't read by `lib/scoring.ts`). Popularity measures
 *adoption* — how many people already use something — which is a lagging, momentum-driven
 signal unrelated to whether a product is well-built for AI agents today. A ten-year-old
 framework with a huge install base and a brand-new, better-designed API for agents should not
@@ -370,7 +370,7 @@ missing chip means "no public signal available," not "unpopular."
 ## Pricing tiers — an annotation, not a score
 
 Every (product, story) cell the judge ruled **full/partial** carries a pricing-tier annotation
-(`rankings/{category}/story-tiers.json`, produced by `pipeline/scripts/classify-story-tiers.ts`):
+(`open-rankings/{category}/story-tiers.json`, produced by `pipeline/scripts/classify-story-tiers.ts`):
 **free**, **paid**, **enterprise**, or **unknown** — which plan a buyer needs for that delivered
 capability. It answers the "what can I actually do without paying?" question the verdicts alone
 don't.
@@ -429,7 +429,7 @@ What we did about it:
   to `partial` (quality 5) after adjudication. The sole citation was a bare, title-only doc
   fragment ("Debug live web applications | Chrome") with no scope or mechanism detail, while
   every competing product's comparable-or-better evidence for the same story capped at
-  `partial`/`none`. The verdict's rationale in `rankings/ai-coding/verdicts.json` documents the
+  `partial`/`none`. The verdict's rationale in `open-rankings/ai-coding/verdicts.json` documents the
   downgrade and the shared-vendor conflict explicitly. This changed Claude Code's overall
   score from 35.5 to 35.2 (it remained the category leader).
 - **A second adversarial review pass, run for v2.4, audited the new api-quality/agent-access
@@ -439,7 +439,7 @@ What we did about it:
   applied to competitors), and one **in** Claude Code's favor, applied to a competitor
   (GitHub Copilot's `agentic-mcp-server` downgraded `partial`→`none`, quality 5→0 — its cited
   evidence showed MCP *client* administration, not an official MCP server offered by the
-  product). Both corrections are recorded in `rankings/ai-coding/verdicts.json` with rationale
+  product). Both corrections are recorded in `open-rankings/ai-coding/verdicts.json` with rationale
   suffixes citing the review.
 - **The audit's calibration samples also found the judge was *harsher* on claude-code in
   several cells**, not just lenient. The clearest example: on
@@ -460,7 +460,7 @@ What we did about it:
     "isolated cloud environments," while Claude Code's cited evidence confirms background/
     cloud execution but never uses the word "isolated." Both were scored `full`, but only one
     product's evidence actually supports that specific qualifier.
-- **Every verdict cites evidence ids** resolvable in `rankings/{category}/evidence/`, so anyone
+- **Every verdict cites evidence ids** resolvable in `open-rankings/{category}/evidence/`, so anyone
   can independently check any verdict against its source. If you disagree with a call, see
   [CONTRIBUTING.md](./CONTRIBUTING.md) — contesting a verdict is a first-class, expected
   workflow, not a one-off.

@@ -15,11 +15,11 @@ class ImportTests(unittest.TestCase):
         (self.root / 'processes').mkdir()
         for name in ('import.py', 'claim_audit.py', 'source_snapshot.py', 'check-import.py'):
             shutil.copy(SCRIPT / name, self.root / 'scripts/shared-processes' / name)
-        self.source = self.root / 'processes/corpus.json'
+        self.source = self.root / 'open-processes/corpus.json'
         self.records = [{'id': key, 'title': key, 'description': 'Synthetic source', 'dag': {'nodes': [{'id': 'step', 'label': 'Synthetic step', 'estimatedMinutes': 5, 'toolCall': 'unverified-test-operation'}], 'edges': []}} for key in ('alpha', 'beta')]
         self.source.write_text(json.dumps(self.records))
-        (self.root / 'processes/chains.json').write_text('[]')
-        (self.root / 'processes/vendor-registry.json').write_text('{"vendors":{}}')
+        (self.root / 'open-processes/chains.json').write_text('[]')
+        (self.root / 'open-processes/vendor-registry.json').write_text('{"vendors":{}}')
         subprocess.run(['git', 'init', '-q'], cwd=self.root, check=True)
         self.commit_sources()
         self.run_import('--write', expected=0)
@@ -73,17 +73,17 @@ class ImportTests(unittest.TestCase):
         self.source.write_text(json.dumps(self.records))
         for staged in (False, True):
             if staged:
-                subprocess.run(['git', 'add', 'processes/corpus.json'], cwd=self.root, check=True)
+                subprocess.run(['git', 'add', 'open-processes/corpus.json'], cwd=self.root, check=True)
             result = self.run_import('--write', expected=1)
             self.assertIn('Commit legacy source changes', result.stderr)
             self.assertEqual({str(p): p.read_bytes() for p in (self.root / 'content/processes').rglob('*.json')}, before)
 
     def test_rejects_an_untracked_workflow(self):
-        directory = self.root / 'processes/equity'
+        directory = self.root / 'open-processes/equity'
         directory.mkdir()
         (directory / 'new.json').write_text('{}')
         result = self.run_import('--write', expected=1)
-        self.assertIn('processes/equity/new.json', result.stderr)
+        self.assertIn('open-processes/equity/new.json', result.stderr)
 
     def test_records_the_commit_containing_the_imported_values(self):
         self.records[0]['description'] = 'Committed change'
@@ -100,7 +100,7 @@ class ImportTests(unittest.TestCase):
             root = Path(temp) / 'tree'
             shutil.copytree(self.root, root, ignore=shutil.ignore_patterns('.git'))
             self.records[0]['description'] = 'Changed in the plain tree'
-            (root / 'processes/corpus.json').write_text(json.dumps(self.records))
+            (root / 'open-processes/corpus.json').write_text(json.dumps(self.records))
             result = subprocess.run(['python3', str(root / 'scripts/shared-processes/import.py'), '--write'], capture_output=True, text=True)
             self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
             target = json.loads((root / 'content/processes/records/alpha.json').read_text())
@@ -117,11 +117,11 @@ class ImportTests(unittest.TestCase):
             for name in ('import.py', 'claim_audit.py', 'source_snapshot.py'):
                 shutil.copy(SCRIPT / name, root / 'scripts/shared-processes' / name)
             (root / 'processes').mkdir()
-            (root / 'processes/corpus.json').write_text(json.dumps(self.records))
-            (root / 'processes/chains.json').write_text('[]')
-            (root / 'processes/vendor-registry.json').write_text('{"vendors":{}}')
+            (root / 'open-processes/corpus.json').write_text(json.dumps(self.records))
+            (root / 'open-processes/chains.json').write_text('[]')
+            (root / 'open-processes/vendor-registry.json').write_text('{"vendors":{}}')
             subprocess.run(['git', 'init', '-q'], cwd=root, check=True)
-            (root / '.gitignore').write_text('processes/\ncontent/\n')
+            (root / '.gitignore').write_text('open-processes/\ncontent/\n')
             subprocess.run(['git', 'add', '.gitignore'], cwd=root, check=True)
             subprocess.run(['git', '-c', 'user.name=Test', '-c', 'user.email=test@example.invalid', '-c', 'commit.gpgsign=false', 'commit', '-qm', 'Ignore materialized sources'], cwd=root, check=True)
             result = subprocess.run(['python3', str(root / 'scripts/shared-processes/import.py'), '--write'], capture_output=True, text=True)
@@ -156,7 +156,7 @@ class ImportTests(unittest.TestCase):
         # Re-blessing the authored chooser as generated makes this regression fail:
         # a later corpus edit would silently replace its guidance and option scope.
         repository = SCRIPT.parents[1]
-        corpus = json.loads((repository / 'processes/corpus.json').read_text())
+        corpus = json.loads((repository / 'open-processes/corpus.json').read_text())
         source = next(record for record in corpus if record['id'] == 'form_001')
         self.records.append(source)
         self.source.write_text(json.dumps(self.records))

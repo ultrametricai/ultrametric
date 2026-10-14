@@ -1,7 +1,7 @@
 // Hardware arena bring-up (2026-09): pre-populates the crawl cache for www.amd.com pages.
 // www.amd.com resets connections for the pipeline's Ultrametric crawler UA (verified live at
 // bring-up: HTTP/2 stream reset with the probe UA, HTTP 200 with a browser UA) — the same
-// bot-wall class as Intel ARK at the experiments curation (see rankings/experiments/*.json notes).
+// bot-wall class as Intel ARK at the experiments curation (see open-rankings/experiments/*.json notes).
 // This writes the exact crawl-cache layout crawl.ts produces (<!-- source: url --> header +
 // turndown markdown) so `pnpm pipeline extract` runs the standard path over real page content.
 // Run BEFORE `pnpm pipeline extract` whenever the processors/gpus crawl cache is rebuilt

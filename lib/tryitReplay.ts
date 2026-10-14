@@ -156,7 +156,7 @@ export interface McpProbeResult {
   resourceName?: string
   scopes?: string[]
   authServers?: string[]
-  // Set when this endpoint has a curated read-only demo call (rankings/mcp-demo-calls.json) — the
+  // Set when this endpoint has a curated read-only demo call (open-rankings/mcp-demo-calls.json) — the
   // "▶ run a real call" affordance. Tool + label only; the args ship server-side.
   demoCall?: { tool: string; label: string }
   // Set when the operator has provisioned a DEMO_CRED_<PRODUCTID> wrangler secret — the

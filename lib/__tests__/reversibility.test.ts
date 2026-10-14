@@ -5,7 +5,7 @@ import { loadProcesses, REVERSIBILITY_TIERS, type Reversibility } from '@/lib/pr
 
 // Reversibility curation (founder 2026-09-30: "map what is irreversible and what is reversible
 // — consider 'irreversible with pain' as a 3rd option — for ALL processes and process steps").
-// Definitions + curation rules: processes/README.md "Reversibility" and REVERSIBILITY_TIERS in
+// Definitions + curation rules: open-processes/README.md "Reversibility" and REVERSIBILITY_TIERS in
 // lib/processSim.ts. These tests pin totality (every process and every step classified — no zod
 // default exists to hide a gap) and the honest shape of the distribution: irreversible is rare
 // and means real doors closing (filed dissolutions, filed 83(b)s, equity accepted, wires sent,
@@ -15,7 +15,7 @@ const DATA_DIR = path.resolve(__dirname, '../../rankings')
 // The RAW corpus — includes the jurisdiction-conditional nodes loadProcesses strips from the
 // default view; the classification must be total over those too.
 const RAW = JSON.parse(
-  fs.readFileSync(path.join(DATA_DIR, '..', 'processes', 'corpus.json'), 'utf8'),
+  fs.readFileSync(path.join(DATA_DIR, '..', 'open-processes', 'corpus.json'), 'utf8'),
 ) as Array<{
   id: string
   title: string

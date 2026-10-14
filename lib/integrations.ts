@@ -1,4 +1,4 @@
-// The integration graph: schema + loader + graph helpers for rankings/{cat}/integrations.json —
+// The integration graph: schema + loader + graph helpers for open-rankings/{cat}/integrations.json —
 // which tracked products verifiably connect to which others, extracted from each product's
 // COLLECTED EVIDENCE CORPUS (docs/GitHub/community evidence; for the most-connected products the
 // corpus deliberately includes their official integrations-directory page via urls.extra) by
@@ -18,7 +18,7 @@ import type { CategoryData } from './data-helpers'
 
 // One directed claim: "the owning product's evidence says it integrates with `productId`".
 // `arena` is the target's home arena (its canonical /arena/... link); `sourceEvidenceId` points
-// into the OWNING product's rankings/{cat}/evidence/{id}.json; `excerpt` is the verbatim quote from
+// into the OWNING product's open-rankings/{cat}/evidence/{id}.json; `excerpt` is the verbatim quote from
 // that evidence item containing the target's name.
 export const IntegrationEdgeSchema = z.object({
   productId: z.string().min(1),
@@ -32,7 +32,7 @@ export const ProductIntegrationsSchema = z.object({
   integratesWith: IntegrationEdgeSchema.array().min(1),
 })
 
-// rankings/{cat}/integrations.json shape: one entry per product with ≥1 verified edge, in
+// open-rankings/{cat}/integrations.json shape: one entry per product with ≥1 verified edge, in
 // products.json order. A product absent from the file has no verified edges (either the stage
 // hasn't run or nothing survived verification) — display code renders absence as absence.
 export const IntegrationsFileSchema = ProductIntegrationsSchema.array()
@@ -40,7 +40,7 @@ export const IntegrationsFileSchema = ProductIntegrationsSchema.array()
 export type IntegrationEdge = z.infer<typeof IntegrationEdgeSchema>
 export type ProductIntegrations = z.infer<typeof ProductIntegrationsSchema>
 
-const DEFAULT_DIR = () => path.join(process.cwd(), 'rankings')
+const DEFAULT_DIR = () => path.join(process.cwd(), 'open-rankings')
 const integrationsCache = new Map<string, ProductIntegrations[]>()
 
 export function loadIntegrations(categoryId: string, dir: string = DEFAULT_DIR()): ProductIntegrations[] {

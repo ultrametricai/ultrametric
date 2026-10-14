@@ -10,7 +10,7 @@
 //                             the cap-table update must match (n9)
 //   postCloseLiquidityCheck → the sanity read on what the table just signed pays at a sale
 //   downRoundPreview        → the anti-dilution clause quantified on the post-close table
-// The process wiring itself lives in processes/business-logic-map.json (this module carries
+// The process wiring itself lives in open-processes/business-logic-map.json (this module carries
 // no process ids); the "Convert SAFEs at the priced round" process (fund_006) reviews the
 // same pro-forma through replayPricedRound.
 //

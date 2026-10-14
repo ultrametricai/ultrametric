@@ -4,7 +4,7 @@
 // computes NOTHING about whether research qualifies and never computes the credit amount
 // itself — those are § 41(d) facts and Form 6765 elections (the rule cards' caveats).
 //
-// Pure, client-safe, deterministic. Rule cards (law/US-FED/, primary sources verified
+// Pure, client-safe, deterministic. Rule cards (open-law/US-FED/, primary sources verified
 // live 2026-10-01):
 // - us-fed.research-expenditure-amortization — current § 174 (foreign, 15-year, midpoint)
 //   + § 174A (domestic, deductible after 2024, elective >= 60-month amortization) + the

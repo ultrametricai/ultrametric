@@ -134,7 +134,7 @@ describe('mostWantedUntested', () => {
   })
 })
 
-describe('nextUpArenas (committed rankings/arena-roadmap.json)', () => {
+describe('nextUpArenas (committed open-rankings/arena-roadmap.json)', () => {
   const REAL = path.resolve(__dirname, '../../rankings')
 
   it('returns only tier-1 planned entries that are not already live', () => {

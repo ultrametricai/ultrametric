@@ -8,16 +8,16 @@ This repo is home to all the processes you need to run, vendors and tools you ne
 
 ```
 ultrametric/
-├── processes/       every founder process, step by step
-├── rankings/        evidence, verdicts, computed scores
+├── open-processes/       every founder process, step by step
+├── open-rankings/        evidence, verdicts, computed scores
 ├── pipeline/        crawl, probe, judge, derive
 ├── open-modules/    the startup calculations, indexed
 ├── lib/             the code behind modules and loaders
-├── law/             startup law, one rule per record
+├── open-law/             startup law, one rule per record
 ├── citations/       the sources every record cites
 ├── jurisdictions/   countries, states, vendor geography
 ├── open-documents/  the open legal documents catalog
-├── lore/            heuristics, episodes, the library
+├── open-lore/            heuristics, episodes, the library
 ├── coverage/        what is covered, at what maturity
 ├── schemas/         the JSON contracts for every record
 └── governance/      review, evidence, and agent policy
@@ -37,7 +37,7 @@ each one, is it testable, and do the vendor's claims match what we found hands-o
 rankings order products by how automatable they are, and every verdict can be contested.
 
 <!-- arenas:start -->
-**96 rankings** today, 670 products judged head to head — the full index is [ultrametric.ai/arenas](https://ultrametric.ai/arenas), and each ranking's records live under [`rankings/`](rankings/).
+**96 rankings** today, 670 products judged head to head — the full index is [ultrametric.ai/arenas](https://ultrametric.ai/arenas), and each ranking's records live under [`open-rankings/`](open-rankings/).
 <!-- arenas:end -->
 
 [![The overall rankings on ultrametric.ai: companies ranked by agent readiness, with per-market leaderboards behind each row](assets/readme/rankings-overall.png)](https://ultrametric.ai/overall)
@@ -48,7 +48,7 @@ rankings order products by how automatable they are, and every verdict can be co
 
 ## Open processes
 
-Every founder [process](processes/), step by step. Each step is routed agent, form, or
+Every founder [process](open-processes/), step by step. Each step is routed agent, form, or
 human, timed, and marked by how hard it is to undo. The vendors that can run a step are
 listed on it, with their judged scores. See it live at
 [ultrametric.ai/processes](https://ultrametric.ai/processes).
@@ -104,7 +104,7 @@ examples, and boundaries.
 
 The modules and processes read one shared set of company fields: incorporation date,
 authorized shares, par value, cash on hand, the common-share FMV. Each field is
-registered in [`processes/company-fields.json`](processes/company-fields.json), so the
+registered in [`open-processes/company-fields.json`](open-processes/company-fields.json), so the
 same value feeds every module that needs it. Every record shape is published as a JSON
 Schema in [`schemas/`](schemas/).
 
@@ -114,7 +114,7 @@ Schema in [`schemas/`](schemas/).
 
 The documents and records that processes produce and consume: the certificate of
 incorporation, the EIN letter, the cap table. Each is registered in
-[`processes/artifacts.json`](processes/artifacts.json), so every process declares what
+[`open-processes/artifacts.json`](open-processes/artifacts.json), so every process declares what
 it makes and what it needs. See it live at
 [ultrametric.ai/artifacts](https://ultrametric.ai/artifacts).
 
@@ -142,7 +142,7 @@ checked. Known gaps are recorded too. See it live at
 
 ## Situations
 
-[Guides](processes/SITUATIONS.md) for reactive work: a breach is live, a summons lands,
+[Guides](open-processes/SITUATIONS.md) for reactive work: a breach is live, a summons lands,
 a tax notice arrives. Each names its trigger and an urgency clock of hours, days, or
 weeks. See it live at [ultrametric.ai/situations](https://ultrametric.ai/situations).
 
@@ -164,9 +164,9 @@ automatically.
 
 ## Open lore
 
-The [advice](lore/) founders actually pass around, and the [episodes](lore/LORE.md) behind
+The [advice](open-lore/) founders actually pass around, and the [episodes](open-lore/LORE.md) behind
 it: who said it, where it is written down, and how well documented it is. When the
-schools disagree, both sides are recorded. The [library](lore/library.json) collects the
+schools disagree, both sides are recorded. The [library](open-lore/library.json) collects the
 best essays, guides, books, and talks, organized from starting up through getting
 acquired.
 
@@ -183,20 +183,20 @@ acquired.
 ### Example: Getting acquired
 
 The acquisition episodes are recorded lore: WhatsApp, Twitch, and MySpace are in
-`lore/LORE.md`, each with its lesson and sources. The sale math is live; the
+`open-lore/LORE.md`, each with its lesson and sources. The sale math is live; the
 waterfall module computes who gets what at any price. The acquisition playbook itself is
 a mapped, open gap in [`coverage/`](coverage/).
 
 ## Open law
 
-Map the [law](law/) that applies to startups, across jurisdictions, and connect it to
+Map the [law](open-law/) that applies to startups, across jurisdictions, and connect it to
 the calculations and the vendors that act on it. Each legal statement is one dated record
 citing a primary [authority](citations/) (a statute, regulation, or agency page) with the
 exact section. A blog post cannot establish law.
 
 ## Government services and startups
 
-Government [agencies](rankings/government-services/) are judged like vendors: the IRS,
+Government [agencies](open-rankings/government-services/) are judged like vendors: the IRS,
 Companies House, HMRC, the Handelsregister. Per-country boards compare how well each
 agency works for a founder or an agent. See it live at
 [ultrametric.ai/arena/government-services](https://ultrametric.ai/arena/government-services).

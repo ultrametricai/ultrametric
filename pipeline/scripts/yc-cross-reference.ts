@@ -2,9 +2,9 @@
 // YC-classified modern batches) against the FULL YC public directory (all batches, 2006–present)
 // to find which current products are themselves YC alumni. Matches are verified by normalized
 // website domain — never by name — to avoid false positives from unrelated companies that share a
-// product name (see pipeline/yc-shared.ts's normalizeDomain doc). Writes rankings/yc-batches.json
+// product name (see pipeline/yc-shared.ts's normalizeDomain doc). Writes open-rankings/yc-batches.json
 // ({ productId: "S22" }) and stamps the verified ycBatch onto each matched product's
-// rankings/{category}/products.json entry.
+// open-rankings/{category}/products.json entry.
 //
 // Depends on pipeline/scripts/yc-fetch.ts having already populated
 // pipeline/cache/yc/companies-all.json. Run with: tsx pipeline/scripts/yc-cross-reference.ts
@@ -16,7 +16,7 @@ import { batchCode, normalizeDomain, type YcRawCompany } from '../yc-shared'
 
 const ROOT = path.resolve(__dirname, '..', '..')
 const CACHE_DIR = path.join(ROOT, 'pipeline', 'cache', 'yc')
-const YC_BATCHES_PATH = path.join(ROOT, 'rankings', 'yc-batches.json')
+const YC_BATCHES_PATH = path.join(ROOT, 'open-rankings', 'yc-batches.json')
 
 function main() {
   const all = JSON.parse(fs.readFileSync(path.join(CACHE_DIR, 'companies-all.json'), 'utf8')) as YcRawCompany[]
@@ -42,7 +42,7 @@ function main() {
   let totalProducts = 0
 
   for (const category of categories) {
-    const productsPath = path.join(ROOT, 'rankings', category.id, 'products.json')
+    const productsPath = path.join(ROOT, 'open-rankings', category.id, 'products.json')
     const products = readJson(ProductSchema.array(), productsPath)
     totalProducts += products.length
     let changed = false

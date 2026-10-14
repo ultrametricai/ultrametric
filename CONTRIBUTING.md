@@ -35,16 +35,16 @@ a GitHub Action) still has to do the deeper check described below: add the evide
 If you'd rather skip the prefilled link, you can also open an issue manually using the
 [Contest a Verdict](./.github/ISSUE_TEMPLATE/contest-verdict.md) template. Fill in:
 
-- `category` and `product` (must match the ids in `rankings/categories.json` / `rankings/{category}/products.json`)
-- `story id` (from `rankings/{category}/stories.json`)
-- the current verdict (tier + quality, from `rankings/{category}/verdicts.json`)
+- `category` and `product` (must match the ids in `open-rankings/categories.json` / `open-rankings/{category}/products.json`)
+- `story id` (from `open-rankings/{category}/stories.json`)
+- the current verdict (tier + quality, from `open-rankings/{category}/verdicts.json`)
 - your proposed verdict
 - evidence URLs and quotes supporting your proposal
 
 **Flow:**
 
 1. You open the issue with the fields above.
-2. A maintainer reviews it against the cited evidence in `rankings/{category}/evidence/{product}.json`.
+2. A maintainer reviews it against the cited evidence in `open-rankings/{category}/evidence/{product}.json`.
 3. If your evidence is new or better, the maintainer (or you, via a PR — see below) adds it
    to the product's evidence file and re-judges:
    ```bash
@@ -95,7 +95,7 @@ statements. Full governance: [`docs/VENDOR-RESPONSES.md`](./docs/VENDOR-RESPONSE
 If you have a source (docs, changelog, GitHub, a hands-on write-up) that should change a
 verdict, you can propose it directly as a PR:
 
-1. Fork/branch, then edit `rankings/{category}/evidence/{product}.json` to add your evidence
+1. Fork/branch, then edit `open-rankings/{category}/evidence/{product}.json` to add your evidence
    item. Each item needs:
    - `id` — a unique, stable id (convention: `{product}-{tier-prefix}-{n}`, e.g. `claude-code-docs-20`)
    - `tier` — one of `claimed-docs`, `github`, `community`, `probe`
@@ -128,7 +128,7 @@ The judge cache (`pipeline/cache/judge/`) **is committed** to the repo, keyed by
   `judge --product <product>` run will therefore re-send **all** of that product's stories to
   the LLM, not only the one your new evidence supports. Approximate scope: one LLM call per
   story in the category (currently ~42–57 depending on category — see
-  `rankings/{category}/stories.json` length), each a small JSON-mode call. This is expected
+  `open-rankings/{category}/stories.json` length), each a small JSON-mode call. This is expected
   and intentional (it keeps the judge honest about re-evaluating the whole pack); plan
   for it — a single-evidence-item PR is not a single-LLM-call PR.
 
@@ -151,8 +151,8 @@ and you're done. A maintainer takes it from there.
 
 ### 3b. PR path: add yourself directly
 
-One file gets you in: append an entry to `rankings/<arena>/products.json` (ranking ids live in
-`rankings/categories.json`; if no ranking fits, open a [Submit a product](./.github/ISSUE_TEMPLATE/request-a-product.yml)
+One file gets you in: append an entry to `open-rankings/<arena>/products.json` (ranking ids live in
+`open-rankings/categories.json`; if no ranking fits, open a [Submit a product](./.github/ISSUE_TEMPLATE/request-a-product.yml)
 issue proposing a new one instead). A real, current entry for shape reference:
 
 ```jsonc
@@ -268,13 +268,13 @@ auto-publishes anything.
 ## 5. Add a process
 
 The step-by-step founder processes (and the reactive situations) live in
-`processes/corpus.json`, contract in `schemas/operational-process.schema.json`. Start from a
+`open-processes/corpus.json`, contract in `schemas/operational-process.schema.json`. Start from a
 blank, schema-valid record in [`templates/`](templates/), follow the curation rules in
-[`processes/README.md`](processes/README.md) — routing, reversibility, verification checks;
+[`open-processes/README.md`](open-processes/README.md) — routing, reversibility, verification checks;
 a situation additionally carries a `trigger` and an `urgency` tier (see
-[`processes/SITUATIONS.md`](processes/SITUATIONS.md)) — and validate with `pnpm test`, which
+[`open-processes/SITUATIONS.md`](open-processes/SITUATIONS.md)) — and validate with `pnpm test`, which
 tells you immediately whether the record holds up. Chained founder paths go in
-[`processes/chains.json`](processes/). Changes to the shared process schema or catalog
+[`open-processes/chains.json`](open-processes/). Changes to the shared process schema or catalog
 (`content/processes/`) also run `pnpm shared:check`.
 
 <a id="add-a-jurisdiction"></a>
@@ -292,18 +292,18 @@ hold up:
    valuable as positives. These rows drive the geo switcher and "Geos supported" on the
    site.
 2. **A country analog for a process** — add a `geoNotes` entry to the process in
-   [`processes/corpus.json`](processes/): `{country, summary, actionUrl, actionLabel}` with
+   [`open-processes/corpus.json`](open-processes/): `{country, summary, actionUrl, actionLabel}` with
    a live, official actionUrl (Companies House, MCA/NSWS, Handelsregister, INPI…). This
    renders in the top-of-page geo banner and the "Outside the US" block.
 3. **Rule cards for your jurisdiction** — register the jurisdiction in
    [`jurisdictions/registry.json`](jurisdictions/) with a deliberately narrow scope, then
-   add `law/<CODE>/*.json` cards citing primary sources in
+   add `open-law/<CODE>/*.json` cards citing primary sources in
    [`citations/registry.json`](citations/) (statute, regulation, agency guidance; a provider
    blog cannot establish law). One proposition per stable ID.
 4. **A full jurisdiction-scoped workflow** — copy
    [`templates/process.json`](templates/process.json), narrow the applicability dimensions,
    reference your rule cards, gate every external effect on a human approval, add a
-   fictional fixture in [`processes/fixtures/`](processes/fixtures/), and record the
+   fictional fixture in [`open-processes/fixtures/`](open-processes/fixtures/), and record the
    maturity level in [`coverage/coverage.json`](coverage/) (`draft` or `demonstration` to
    start; `reviewed` requires a named domain expert, see the
    [review policy](governance/REVIEW_POLICY.md)).
@@ -334,13 +334,13 @@ pnpm test
 `ANTHROPIC_API_KEY` is only needed for the LLM-driven pipeline stages (`extract`,
 `normalize`, `collect-community`, `judge`) run locally. It is **never** required to work on
 the data, and it must **never** be set on the site's Vercel project — the deployed site
-serves pre-computed static `rankings/` and makes no LLM calls at build or request time.
+serves pre-computed static `open-rankings/` and makes no LLM calls at build or request time.
 
 ## Style: schemas are law
 
 Every data file (`categories.json`, `products.json`, `stories.json`, `evidence/*.json`,
 `verdicts.json`, `rankings.json`) is validated against a Zod schema in `lib/schemas.ts`.
-Before opening a PR that touches any `rankings/` file, run:
+Before opening a PR that touches any `open-rankings/` file, run:
 
 ```bash
 pnpm test

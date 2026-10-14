@@ -179,10 +179,10 @@ export interface AdjacentArena {
 }
 
 // Arena-level adjacency for the "Adjacent arenas" strip: curated clusters first
-// (rankings/adjacent-arenas.json — arenas that share a buyer, e.g. payments↔banking↔accounting),
+// (open-rankings/adjacent-arenas.json — arenas that share a buyer, e.g. payments↔banking↔accounting),
 // then ≥1-shared-domain-theme fill. Theme names rarely coincide across arenas, so curation
 // carries most of the signal; the file is small and reviewed like any data change.
-import adjacencyClusters from '../rankings/adjacent-arenas.json'
+import adjacencyClusters from '../open-rankings/adjacent-arenas.json'
 
 export function adjacentArenas(categories: CategoryData[], data: CategoryData, cap = 4): AdjacentArena[] {
   const byId = new Map(categories.map((c) => [c.category.id, c]))

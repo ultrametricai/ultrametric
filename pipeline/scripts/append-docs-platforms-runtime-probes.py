@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # One-shot helper for the docs-platforms arena bring-up (2026-09-08): appends probe-tier
-# evidence items distilled from the recorded runtime probes in rankings/docs-platforms/proofs/
+# evidence items distilled from the recorded runtime probes in open-rankings/docs-platforms/proofs/
 # (see pipeline/probes/docs-platforms.ts — all 20 recorded probes
 # passed). Run AFTER `pnpm pipeline probe --category docs-platforms` — that stage wholesale-
 # replaces probe-tier evidence and would wipe these items (re-run this script after any probe
@@ -137,7 +137,7 @@ ITEMS = {
 }
 
 for product, items in ITEMS.items():
-    path = f'rankings/docs-platforms/evidence/{product}.json'
+    path = f'open-rankings/docs-platforms/evidence/{product}.json'
     with open(path) as f:
         evidence = json.load(f)
     existing = {e['id'] for e in evidence}

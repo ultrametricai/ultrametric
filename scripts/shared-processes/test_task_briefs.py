@@ -126,11 +126,11 @@ class TaskBriefImportTests(unittest.TestCase):
             work = Path(directory)
             shutil.copytree(ROOT / "scripts/shared-processes", work / "scripts/shared-processes")
             shutil.copytree(ROOT / "content/processes", work / "content/processes")
-            for name in ("processes/corpus.json", "processes/vendor-registry.json", "processes/chains.json"):
+            for name in ("open-processes/corpus.json", "open-processes/vendor-registry.json", "open-processes/chains.json"):
                 dest = work / name
                 dest.parent.mkdir(parents=True, exist_ok=True)
                 shutil.copyfile(ROOT / name, dest)
-            shutil.copytree(ROOT / "processes/equity", work / "processes/equity")
+            shutil.copytree(ROOT / "open-processes/equity", work / "open-processes/equity")
 
             def git(*args):
                 subprocess.run(["git", *args], cwd=work, check=True, capture_output=True)
@@ -159,15 +159,15 @@ class TaskBriefImportTests(unittest.TestCase):
 
             # Commit independent source edits for every authored record, including
             # chain references and equity workflows, without editing the catalog.
-            for name, field in (("processes/corpus.json", "description"),
-                                ("processes/chains.json", "tagline")):
+            for name, field in (("open-processes/corpus.json", "description"),
+                                ("open-processes/chains.json", "tagline")):
                 path = work / name
                 records = json.loads(path.read_text())
                 for record in records:
                     if record["id"] in authored_ids:
                         record[field] += " Synthetic source change for conflict protection."
                 path.write_text(json.dumps(records))
-            for path in (work / "processes/equity").rglob("*.json"):
+            for path in (work / "open-processes/equity").rglob("*.json"):
                 record = json.loads(path.read_text())
                 if record["id"] in authored_ids:
                     record["summary"] += " Synthetic source change for conflict protection."

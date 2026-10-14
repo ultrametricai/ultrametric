@@ -24,7 +24,7 @@ import sys
 NOW = datetime.datetime.now(datetime.timezone.utc).strftime('%Y-%m-%dT%H:%M:%S.000Z')
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SEED = os.path.join(ROOT, 'seeds', 'startup-immigration-supp-evidence.json')
-DATA = os.path.join(os.path.dirname(ROOT), 'rankings', 'startup-immigration')
+DATA = os.path.join(os.path.dirname(ROOT), 'open-rankings', 'startup-immigration')
 CACHE = os.path.join(ROOT, 'cache', 'crawl', 'startup-immigration')
 
 seed = json.load(open(SEED))

@@ -111,7 +111,7 @@ export interface VsAxisOption<V extends string = string> {
   // Compact picker text (the canonical `label` stays the accessible name).
   short: string
   blurb: string
-  // The matching rankings/icp-types.json lens where one exists — a cross-reference, not a data
+  // The matching open-rankings/icp-types.json lens where one exists — a cross-reference, not a data
   // dependency; null where the corpus has no such lens and the option is defined editorially.
   icpId: string | null
   // The option's named modifier, phrased as a visible simulation assumption; null = baseline.
@@ -651,7 +651,7 @@ export const VS_EVENTS: VsEventDef[] = [
 
 // Plausibility gate: the run's decisions (all decision gates active), the journey actually
 // containing the grounded process, and the corpus risk floor. `risks` is the committed
-// processes/corpus.json risk axis, serialized server-side (lib/virtualStartupData.ts).
+// open-processes/corpus.json risk axis, serialized server-side (lib/virtualStartupData.ts).
 export function eligibleVsEvents(
   choices: Choices,
   journeyTaskIds: string[],

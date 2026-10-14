@@ -2,9 +2,9 @@
 // the pure client-safe half; this file owns the node:fs-backed resolution, same split convention
 // as lib/processes.ts vs lib/processSim.ts). Everything built here is a serialization of already-
 // judged/committed data — canonical agent-access verdicts (lib/accessGlyphs.ts), verbatim
-// published-pricing facts (lib/pricing.ts), and the corpus risk axis (processes/corpus.json) —
+// published-pricing facts (lib/pricing.ts), and the corpus risk axis (open-processes/corpus.json) —
 // never a new judgment.
-import popularIds from '../rankings/popular-products.json'
+import popularIds from '../open-rankings/popular-products.json'
 import { ACCESS_COLUMNS, bestAccessVerdict } from './accessGlyphs'
 import { loadCategory } from './data'
 import { hasLogo } from './logos'
@@ -119,7 +119,7 @@ export function buildVsAssistants(dir?: string): VsAssistant[] {
   })
 }
 
-// Registry artifact labels keyed by artifact id (processes/artifacts.json) — the lookup
+// Registry artifact labels keyed by artifact id (open-processes/artifacts.json) — the lookup
 // vsTaskLinkage resolves producesArtifact tags against.
 export function vsArtifactLabels(): Map<string, string> {
   return new Map(loadArtifacts().map((a) => [a.id, a.label]))
@@ -159,7 +159,7 @@ export function vsTaskLinkage(
   return { nodeIds, produces, ...(fork ? { fork } : {}) }
 }
 
-// The corpus risk axis (processes/corpus.json `risk`, 1–5) keyed by task id — the event engine's
+// The corpus risk axis (open-processes/corpus.json `risk`, 1–5) keyed by task id — the event engine's
 // plausibility gate reads it client-side.
 export function buildVsTaskRisks(dir?: string): Record<string, number> {
   return Object.fromEntries(loadProcesses(dir).map((t) => [t.id, t.risk]))
@@ -168,7 +168,7 @@ export function buildVsTaskRisks(dir?: string): Record<string, number> {
 // 'Likely choice' ordering payload (founder round 5, item 7): per role arena, every swap
 // option's committed adoption/popularity signal resolved into a best-first PRESENTATION order
 // (lib/virtualStartup.ts likelyChoiceOrder) plus per-product signal labels — the receipts.
-// Committed data only: rankings/popular-products.json curated membership, rankings/{arena}/
+// Committed data only: open-rankings/popular-products.json curated membership, open-rankings/{arena}/
 // popularity.json stars and npm+PyPI weekly installs. Products with no signal carry no label
 // and keep the judged order at the tail — absence is absence, never a fake rank.
 export function buildVsPopularity(roles: VendorRole[], dir?: string): VsPopularityMap {

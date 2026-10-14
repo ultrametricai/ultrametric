@@ -1,4 +1,4 @@
-// Site-wide change events derived from rankings/{cat}/score-history.jsonl (see lib/scoreHistory.ts
+// Site-wide change events derived from open-rankings/{cat}/score-history.jsonl (see lib/scoreHistory.ts
 // for the file's contract) — what /changelog and pipeline/scripts/generate-weekly-report.ts
 // render. Everything here is derived, never stored: the history files stay the single source of
 // truth, and re-deriving on the same files always yields the same events.

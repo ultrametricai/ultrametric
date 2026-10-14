@@ -56,7 +56,7 @@ const goldenByKey = new Map(goldens.map((g) => [`${g.category}/${g.productId}:${
 let reverted = 0
 let kept = 0
 for (const [cat, pids] of Object.entries(WAVE)) {
-  const file = path.join(ROOT, 'rankings', cat, 'verdicts.json')
+  const file = path.join(ROOT, 'open-rankings', cat, 'verdicts.json')
   const current: VerdictRow[] = JSON.parse(fs.readFileSync(file, 'utf8'))
   const old: VerdictRow[] = JSON.parse(
     execSync(`git show ${OLD_REF}:data/${cat}/verdicts.json`, { cwd: ROOT, maxBuffer: 1 << 28 }).toString('utf8'),

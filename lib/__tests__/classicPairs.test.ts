@@ -1,6 +1,6 @@
 // Classic-pairs machinery: schema/loader behavior on fixtures, classification against a fixture
-// graph, and structural invariants of the REAL rankings/classic-pairs.json (both ids tracked
-// somewhere in rankings/*/products.json, no duplicate or self pairs) — a typo'd id would otherwise
+// graph, and structural invariants of the REAL open-rankings/classic-pairs.json (both ids tracked
+// somewhere in open-rankings/*/products.json, no duplicate or self pairs) — a typo'd id would otherwise
 // render a permanently-unverifiable "expected pairing", which is exactly the dishonesty the
 // feature exists to avoid.
 import fs from 'node:fs'
@@ -12,7 +12,7 @@ import { buildIntegrationGraph, pairKey, type ProductIntegrations } from '../int
 
 const PAIRS = loadClassicPairs() // the real curated file
 
-describe('rankings/classic-pairs.json', () => {
+describe('open-rankings/classic-pairs.json', () => {
   it('parses, with no self-pairs and no duplicate pairs (order-insensitive)', () => {
     const seen = new Set<string>()
     for (const p of PAIRS) {
@@ -25,7 +25,7 @@ describe('rankings/classic-pairs.json', () => {
 
   it('references only tracked product ids', () => {
     const tracked = new Set<string>()
-    const dataDir = path.join(process.cwd(), 'rankings')
+    const dataDir = path.join(process.cwd(), 'open-rankings')
     for (const dir of fs.readdirSync(dataDir)) {
       const file = path.join(dataDir, dir, 'products.json')
       if (!fs.existsSync(file)) continue

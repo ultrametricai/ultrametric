@@ -26,13 +26,13 @@ describe('verify-provenance script', () => {
   })
 
   it('round-trips: a committed rankings.json verifies as VALID (exit 0)', () => {
-    const result = run([path.join('rankings', 'desktop-os', 'rankings.json')])
+    const result = run([path.join('open-rankings', 'desktop-os', 'rankings.json')])
     expect(result.status).toBe(0)
     expect(result.stdout).toContain('VALID')
   })
 
   it('flags a tampered copy as INVALID (exit 1)', () => {
-    const raw = JSON.parse(fs.readFileSync(path.join(repoRoot, 'rankings', 'desktop-os', 'rankings.json'), 'utf8'))
+    const raw = JSON.parse(fs.readFileSync(path.join(repoRoot, 'open-rankings', 'desktop-os', 'rankings.json'), 'utf8'))
     raw.leaderboard[0].score = raw.leaderboard[0].score === 0 ? 1 : 0
     tmpFile = path.join(os.tmpdir(), `pa-tampered-${process.pid}.json`)
     fs.writeFileSync(tmpFile, JSON.stringify(raw))

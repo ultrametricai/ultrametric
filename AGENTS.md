@@ -66,9 +66,9 @@ need it.
 
 ## What this repo is
 
-Ultrametric is the open startup repo: step-by-step founder processes (`processes/`),
-agent-tested vendor rankings (`rankings/`, `pipeline/`), and open, source-cited
-business logic (`lib/openstartup/`, `law/`, `citations/`). The knowledge layer (plain JSON
+Ultrametric is the open startup repo: step-by-step founder processes (`open-processes/`),
+agent-tested vendor rankings (`open-rankings/`, `pipeline/`), and open, source-cited
+business logic (`lib/openstartup/`, `open-law/`, `citations/`). The knowledge layer (plain JSON
 and markdown, schema-validated in CI) is the product. The site that renders it at
 ultrametric.ai is maintained in a private repo, which materializes this repo's open
 surface at a pinned commit via `scripts/sync-open.mjs` and `open-manifest.json`; UI and
@@ -88,20 +88,20 @@ Every data file (`categories.json`, `products.json`, `stories.json`, `evidence/*
 `verdicts.json`, `rankings.json`, rule cards, process records) validates against a
 schema (`lib/schemas.ts`, `schemas/*.schema.json`). If a fact does not fit the schema,
 change the schema deliberately in its own commit; do not stuff it into a free-text
-field. Run `pnpm test` before opening any PR that touches `rankings/`, `processes/`,
-`law/`, `citations/`, or `jurisdictions/`.
+field. Run `pnpm test` before opening any PR that touches `open-rankings/`, `open-processes/`,
+`open-law/`, `citations/`, or `jurisdictions/`.
 
 ## Generated files: do not hand-edit
 
 The evidence doctrine in the house rules is the principle; these are the mechanical
 traps:
 
-- `rankings/<arena>/rankings.json` is derived. Change verdicts or evidence, then run
+- `open-rankings/<arena>/rankings.json` is derived. Change verdicts or evidence, then run
   `pnpm run pipeline derive --category <id>`.
 - The README blocks between `<!-- stats:start -->` / `<!-- arenas:start -->` style
   markers, and the badge SVGs in `public/badges/`, come from `pnpm stats` and
   `node scripts/generate-badges.mjs`. Edit around the markers, never inside them.
-- `rankings/reviews/generated/` regenerates deterministically from the arena data.
+- `open-rankings/reviews/generated/` regenerates deterministically from the arena data.
 
 ## The pipeline
 

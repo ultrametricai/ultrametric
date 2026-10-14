@@ -1,6 +1,6 @@
 // The YC coverage-queue engine: crawls YC's public company directory (keyless yc-oss/api mirror,
 // same source as yc-fetch.ts) batch by batch — most recent first, F26 back toward W16 — and emits
-// rankings/yc-queue.json: a ranked queue of ACTIVE YC companies that (a) are not already tracked in
+// open-rankings/yc-queue.json: a ranked queue of ACTIVE YC companies that (a) are not already tracked in
 // any arena (matched by normalized website domain, never by name), (b) plausibly fit an EXISTING
 // arena, and (c) show a real docs/API surface an agent could be pointed at (quick keyless HTTP
 // checks). The queue is the "always-gaining" loop's input: the weekly yc-coverage.yml workflow
@@ -10,7 +10,7 @@
 // Ranking = batch recency x arena fit x docs surface:
 //   - recency: newest batch in the window = 1.0, decaying linearly to the oldest batch,
 //   - fit: 1.0 when pipeline/scripts/yc-classify.ts already mapped the company to an existing
-//     arena (rankings/yc-map.json), else a DOMAIN_VOCAB keyword match against the one-liner + tags
+//     arena (open-rankings/yc-map.json), else a DOMAIN_VOCAB keyword match against the one-liner + tags
 //     (>= MIN_VOCAB_HITS distinct arena keywords required; scaled by hit count),
 //   - docs surface: fraction of DOCS_PROBE_PATHS that answer < 400 (0 hits still keeps a small
 //     floor — a missing docs subdomain is weak evidence of a missing API).
@@ -34,12 +34,12 @@ import { DOMAIN_VOCAB } from './tag-story-scopes'
 
 const CACHE_DIR = path.join(ROOT, 'pipeline', 'cache', 'yc')
 const FEED_CACHE = path.join(CACHE_DIR, 'companies-all.json')
-const YC_MAP_PATH = path.join(ROOT, 'rankings', 'yc-map.json')
-const QUEUE_PATH = path.join(ROOT, 'rankings', 'yc-queue.json')
+const YC_MAP_PATH = path.join(ROOT, 'open-rankings', 'yc-map.json')
+const QUEUE_PATH = path.join(ROOT, 'open-rankings', 'yc-queue.json')
 // Human bring-up verdicts the crawler must remember: candidates that were verified and REJECTED
 // (dead brand, no agent surface, no honest arena fit) stay out of every future queue instead of
 // resurfacing weekly. Slug -> { date, reason }. Append here when a bring-up excludes a nominee.
-const REJECTIONS_PATH = path.join(ROOT, 'rankings', 'yc-rejections.json')
+const REJECTIONS_PATH = path.join(ROOT, 'open-rankings', 'yc-rejections.json')
 
 // Oldest batch year the founder asked for: "the last 10 years", i.e. Winter 2016 onward.
 const DEFAULT_FROM_YEAR = 2016
@@ -60,7 +60,7 @@ export const YcQueueCandidateSchema = z.object({
   domain: z.string().min(1),
   oneLiner: z.string(),
   arena: z.string().min(1),
-  // 'classified' = yc-classify's LLM mapping in rankings/yc-map.json; 'vocab' = keyless
+  // 'classified' = yc-classify's LLM mapping in open-rankings/yc-map.json; 'vocab' = keyless
   // DOMAIN_VOCAB keyword match (weaker — verify before bring-up).
   fitSource: z.enum(['classified', 'vocab']),
   fitScore: z.number(),
@@ -233,7 +233,7 @@ export function issueBodyFor(queue: YcQueue, top = 10): string {
   const lines: string[] = []
   lines.push(
     `Ranked YC coverage queue (window ${queue.batchWindow.from}-${queue.batchWindow.to}, generated ${queue.generatedAt}). ` +
-      `Full queue: \`rankings/yc-queue.json\` (${queue.candidates.length} candidates). ` +
+      `Full queue: \`open-rankings/yc-queue.json\` (${queue.candidates.length} candidates). ` +
       `Each bring-up runs the full evidence pipeline for its arena — this queue only nominates; it never scores.`,
   )
   lines.push('')
@@ -262,7 +262,7 @@ async function main() {
   // Already-tracked products, by normalized site domain (never by name).
   const trackedDomains = new Set<string>()
   for (const category of categories) {
-    const products = readJson(ProductSchema.array(), path.join(ROOT, 'rankings', category.id, 'products.json'))
+    const products = readJson(ProductSchema.array(), path.join(ROOT, 'open-rankings', category.id, 'products.json'))
     for (const p of products) {
       const d = normalizeDomain(p.urls.site)
       if (d) trackedDomains.add(d)
@@ -275,7 +275,7 @@ async function main() {
     : []
   const classified = new Map(ycMap.map((c) => [c.slug, c]))
 
-  // Bring-up rejections (rankings/yc-rejections.json): human-verified "never nominate again" verdicts.
+  // Bring-up rejections (open-rankings/yc-rejections.json): human-verified "never nominate again" verdicts.
   const rejections: Record<string, { date: string; reason: string }> = fs.existsSync(REJECTIONS_PATH)
     ? JSON.parse(fs.readFileSync(REJECTIONS_PATH, 'utf8'))
     : {}

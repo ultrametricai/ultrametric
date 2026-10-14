@@ -53,7 +53,7 @@ ITEMS = {
 }
 
 for product, items in ITEMS.items():
-    path = f'rankings/ai-code-review/evidence/{product}.json'
+    path = f'open-rankings/ai-code-review/evidence/{product}.json'
     with open(path) as f:
         evidence = json.load(f)
     existing = {e['id'] for e in evidence}

@@ -1,4 +1,4 @@
-// Integrity tests for the committed human-step audit (rankings/human-step-audit.json, generated
+// Integrity tests for the committed human-step audit (open-rankings/human-step-audit.json, generated
 // by pipeline/scripts/audit-human-steps.ts): exact coverage of the corpus's non-agent nodes,
 // enum-valid feasibility, authored (non-generic) reasons, the hand-verified not-drivable set,
 // and a loader smoke test. No LLM/network — same posture as map-step-stories.test.ts.
@@ -24,7 +24,7 @@ const nonAgentNodes = loadProcesses(DATA_DIR).flatMap((t) =>
     .map((n) => ({ key: `${t.id}:${n.id}`, route: n.route as 'form' | 'person' })),
 )
 
-describe('rankings/human-step-audit.json coverage', () => {
+describe('open-rankings/human-step-audit.json coverage', () => {
   it('covers exactly the corpus\'s non-agent nodes — no missing, no stale extras', () => {
     const expected = new Set(nonAgentNodes.map((n) => n.key))
     const actual = new Set(byKey.keys())

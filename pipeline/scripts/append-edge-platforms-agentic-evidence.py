@@ -189,7 +189,7 @@ PROBES = {
 
 def main():
     for product in ('vercel', 'cloudflare'):
-        path = f'rankings/edge-platforms/evidence/{product}.json'
+        path = f'open-rankings/edge-platforms/evidence/{product}.json'
         ev = json.load(open(path))
         existing = {e['id'] for e in ev}
 

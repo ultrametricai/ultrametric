@@ -185,7 +185,7 @@ def record_base(value, path, record_id, summary):
 
 
 def operational(value):
-    path = "processes/corpus.json"
+    path = "open-processes/corpus.json"
     key = value["id"]
     r = record_base(value, path, key, value["description"])
     m = Move(value, f"operational[{key}]", f"records[{key}]")
@@ -205,7 +205,7 @@ def operational(value):
 
 def chain(value):
     key = value["id"]
-    r = record_base(value, "processes/chains.json", key, value["tagline"])
+    r = record_base(value, "open-processes/chains.json", key, value["tagline"])
     m = Move(value, f"chain[{key}]", f"records[{key}]")
     for field, target in [("id", "id"), ("name", "title"), ("tagline", "summary")]:
         m.take(field, target)
@@ -235,9 +235,9 @@ def workflow(value, path):
     return r
 
 
-corpus = SOURCE_FILES["processes/corpus.json"]
-chains = SOURCE_FILES["processes/chains.json"]
-registry = SOURCE_FILES["processes/vendor-registry.json"]
+corpus = SOURCE_FILES["open-processes/corpus.json"]
+chains = SOURCE_FILES["open-processes/chains.json"]
+registry = SOURCE_FILES["open-processes/vendor-registry.json"]
 def slug(value):
     return re.sub(r"[^a-z0-9]+", "-", value.lower()).strip("-")
 TITLES = {p["id"]: p["title"] for p in corpus}
@@ -245,7 +245,7 @@ SLUGS = {slug(p["title"]): p["id"] for p in corpus}
 SLUGS.update({a["slug"]: p["id"] for p in corpus for a in p.get("slugAliases", [])})
 records = [operational(p) for p in corpus] + [chain(c) for c in chains]
 for path, value in SOURCE_FILES.items():
-    if path.startswith("processes/equity/"):
+    if path.startswith("open-processes/equity/"):
         records.append(workflow(value, path))
 def check_vendor_refs(value, record_id):
     if isinstance(value, dict):

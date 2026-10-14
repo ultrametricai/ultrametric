@@ -21,7 +21,7 @@ import { loadStepVendorCalls } from './stepVendorCalls'
 //                    option. Counted separately: NEVER inflates stepsServed.
 //   'canonical'    — a DAG node names it as the canonical call target
 //                    (node.vendor → VENDOR_ARENA / vendorProductId).
-//   'api-calls'    — it has grounded per-step API calls in rankings/step-vendor-calls.json.
+//   'api-calls'    — it has grounded per-step API calls in open-rankings/step-vendor-calls.json.
 export const VENDOR_PROCESS_KINDS = [
   'step-ranked', 'cross-arena', 'computer-use', 'canonical', 'api-calls',
 ] as const
@@ -79,7 +79,7 @@ function dedupeServedSteps(
   })
 }
 
-const DEFAULT_DIR = () => path.join(process.cwd(), 'rankings')
+const DEFAULT_DIR = () => path.join(process.cwd(), 'open-rankings')
 
 // The whole reverse index — vendor key `${arenaId}:${productId}` → sorted appearances — built
 // in ONE pass over the corpus on first call and cached module-level per data dir. The product

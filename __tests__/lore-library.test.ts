@@ -2,12 +2,12 @@ import fs from 'node:fs'
 import path from 'node:path'
 import { describe, expect, it } from 'vitest'
 
-// The lore library gate: lore/library.json is the curated reading list (essays, guides,
+// The lore library gate: open-lore/library.json is the curated reading list (essays, guides,
 // books, talks) organized into sections. Invariants: total schema on sections and entries
 // (no missing or extra fields), unique kebab-case ids, every URL https and unique, every
-// entry's section resolving, loreIds resolving against lore/registry.json, and processIds
-// resolving (read-only) against processes/corpus.json. Deterministic; URL liveness is
-// editorial (lore/README.md) and is verified at authoring time, not here.
+// entry's section resolving, loreIds resolving against open-lore/registry.json, and processIds
+// resolving (read-only) against open-processes/corpus.json. Deterministic; URL liveness is
+// editorial (open-lore/README.md) and is verified at authoring time, not here.
 
 const ROOT = path.join(__dirname, '..')
 
@@ -30,22 +30,22 @@ type LibraryEntry = {
 type Library = { sections: LibrarySection[]; entries: LibraryEntry[] }
 
 const library = JSON.parse(
-  fs.readFileSync(path.join(ROOT, 'lore', 'library.json'), 'utf8'),
+  fs.readFileSync(path.join(ROOT, 'open-lore', 'library.json'), 'utf8'),
 ) as Library
 
 const registry = JSON.parse(
-  fs.readFileSync(path.join(ROOT, 'lore', 'registry.json'), 'utf8'),
+  fs.readFileSync(path.join(ROOT, 'open-lore', 'registry.json'), 'utf8'),
 ) as Array<{ id: string }>
 const loreIds = new Set(registry.map((e) => e.id))
 
 const corpus = JSON.parse(
-  fs.readFileSync(path.join(ROOT, 'processes', 'corpus.json'), 'utf8'),
+  fs.readFileSync(path.join(ROOT, 'open-processes', 'corpus.json'), 'utf8'),
 ) as Array<{ id: string }>
 const processIds = new Set(corpus.map((p) => p.id))
 
 const KEBAB = /^[a-z0-9]+(-[a-z0-9]+)*$/
 
-describe('lore library (lore/library.json)', () => {
+describe('lore library (open-lore/library.json)', () => {
   it('carries exactly sections and entries at the top level', () => {
     expect(Object.keys(library).sort()).toEqual(['entries', 'sections'])
     expect(Array.isArray(library.sections)).toBe(true)
@@ -127,7 +127,7 @@ describe('lore library (lore/library.json)', () => {
     }
   })
 
-  it('loreIds resolve against lore/registry.json without duplicates', () => {
+  it('loreIds resolve against open-lore/registry.json without duplicates', () => {
     for (const e of library.entries) {
       expect(new Set(e.loreIds).size, `entry ${e.id} duplicate loreIds`).toBe(e.loreIds.length)
       for (const id of e.loreIds) {
@@ -136,7 +136,7 @@ describe('lore library (lore/library.json)', () => {
     }
   })
 
-  it('processIds resolve against processes/corpus.json without duplicates', () => {
+  it('processIds resolve against open-processes/corpus.json without duplicates', () => {
     for (const e of library.entries) {
       expect(new Set(e.processIds).size, `entry ${e.id} duplicate processIds`).toBe(e.processIds.length)
       for (const pid of e.processIds) {

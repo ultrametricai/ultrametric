@@ -13,11 +13,11 @@ import { isShutdown } from './shutdown'
 // process and for each step, without assuming the user has a vendor — from what stories the
 // vendors actually support". Everything here is DERIVATION over already-judged data:
 //
-//   rankings/process-step-stories.json  (committed, generated once by
+//   open-rankings/process-step-stories.json  (committed, generated once by
 //   pipeline/scripts/map-step-stories.ts — an LLM pass that maps each covered step onto the
 //   RELEVANT stories of its covering arena, cached/corrected like classify-story-tiers)
 //     ×
-//   rankings/{arena}/verdicts.json      (the judged verdicts — never touched here)
+//   open-rankings/{arena}/verdicts.json      (the judged verdicts — never touched here)
 //     =
 //   per-step vendor scores (lib/scoring.ts's weightedPercent over exactly the mapped stories,
 //   so full=1, partial=0.6, disputed=0.3, none=0, na excluded, story-weighted, 0–100) and a
@@ -58,7 +58,7 @@ export const StepStoryEntrySchema = z.object({
 export const StepStoryMapSchema = StepStoryEntrySchema.array()
 export type StepStoryEntry = z.infer<typeof StepStoryEntrySchema>
 
-const DEFAULT_DIR = () => path.join(process.cwd(), 'rankings')
+const DEFAULT_DIR = () => path.join(process.cwd(), 'open-rankings')
 const mapCache = new Map<string, StepStoryEntry[]>()
 
 // Same tolerant-optional contract as lib/storyTiers.ts: a missing mapping file is an empty

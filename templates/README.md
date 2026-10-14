@@ -5,7 +5,7 @@ vendor review, so nobody reverse-engineers an existing record.
 
 `process.json` starts a jurisdiction-scoped workflow; `vendor-review.json` starts a
 hands-on vendor review. Copy one, narrow the applicability, cite a source for every legal
-assertion, and include a fictional fixture (`processes/fixtures/`).
+assertion, and include a fictional fixture (`open-processes/fixtures/`).
 
 Contribute here:
 

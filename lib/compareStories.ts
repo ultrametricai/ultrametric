@@ -2,7 +2,7 @@
 // Same contract as lib/compare.ts: no node builtins, no zod at runtime (type-only imports), so
 // the client bundle stays lean. The verdict data itself is NEVER server-serialized into the
 // compare page — CompareBuilder fetches each selected arena's static stories.json/verdicts.json
-// (public/data mirrors of rankings/, see scripts/copy-data.mjs) at runtime and feeds the parsed
+// (public/data mirrors of open-rankings/, see scripts/copy-data.mjs) at runtime and feeds the parsed
 // results through these helpers, keeping them unit-testable without fetch or React.
 import type { Verdict } from './schemas'
 import type { StoryTierKind } from './storyTiers'

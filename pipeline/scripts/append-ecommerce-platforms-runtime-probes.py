@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # One-shot helper for the ecommerce-platforms arena bring-up (2026-09-08): appends probe-tier
-# evidence items distilled from the recorded runtime probes in rankings/ecommerce-platforms/proofs/
+# evidence items distilled from the recorded runtime probes in open-rankings/ecommerce-platforms/proofs/
 # (see pipeline/probes/ecommerce-platforms.ts — all 14 recorded
 # probes passed). Run AFTER `pnpm pipeline probe --category ecommerce-platforms` — that stage
 # wholesale-replaces probe-tier evidence and would wipe these items (re-run this script after
@@ -108,7 +108,7 @@ ITEMS = {
 }
 
 for pid, items in ITEMS.items():
-    path = f'rankings/ecommerce-platforms/evidence/{pid}.json'
+    path = f'open-rankings/ecommerce-platforms/evidence/{pid}.json'
     ev = json.load(open(path))
     existing = {e['id'] for e in ev}
     for item in items:
