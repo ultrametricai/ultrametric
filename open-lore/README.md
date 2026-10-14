@@ -86,7 +86,11 @@ talk, the entry is the video. Each entry carries `id`, `section`, `title`, `auth
 `book`, `video`), `url`, `teaches` (one functional sentence on what the work argues or
 shows), `note` (host-level caveats: bot walls, JavaScript-rendered pages, archived
 copies), `loreIds` (registry heuristics the work grounds), and `processIds` (processes
-it bears on). Sections may carry `arenas` and `processIds` of their own: the
+it bears on). A work that is not publicly available (unpublished or withdrawn) carries
+`availability: "not-public"` instead of `url`, may omit `format` (no published form to
+cite), and must carry a `note` stating the unavailability and the evidence found at
+recording time; its `teaches` attributes the topic from the citation and claims no
+content the text cannot be checked for. Sections may carry `arenas` and `processIds` of their own: the
 co-founders section, for example, points at the incorporation, banking, cap-table,
 payroll, domain, and immigration arenas whose vendors the readings assume.
 
