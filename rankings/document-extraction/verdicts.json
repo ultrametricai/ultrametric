@@ -203,14 +203,15 @@
     "productId": "datalab",
     "storyId": "api-interactive-docs",
     "verdict": "partial",
-    "quality": 3,
+    "quality": 4,
     "confidence": "medium",
-    "rationale": "Datalab publishes a structured per-endpoint API reference (convert-document, extract-structured-data, segment-document, run-document-agent, api-health, and others). Nothing in the evidence shows those pages are interactive or offer runnable examples, and the OpenAPI spec probe returned 404. The Forge playground lets users try document processing in a UI without an API key, but it is not an API reference console. Missing for 10: evidence of an interactive try-it console in the API reference, runnable request examples, a published OpenAPI spec, and independent or hands-on corroboration.",
+    "rationale": "Datalab publishes a structured API reference with per-endpoint pages for convert, extract, segment, create-document, run-agent, schema generation, and health, and it offers Forge, a no-key playground for trying document processing in the UI. However, nothing in the evidence shows the API reference itself is interactive or has runnable 'try it' examples, and the OpenAPI spec probes all returned 404. missing for 10: evidence of an interactive try-it console in the API reference, runnable code examples per endpoint, a published OpenAPI spec, independent or hands-on corroboration.",
     "evidenceIds": [
       "datalab-docs-31",
       "datalab-docs-32",
       "datalab-docs-33",
       "datalab-docs-40",
+      "datalab-docs-41",
       "datalab-docs-43",
       "datalab-docs-9",
       "datalab-docs-45",
@@ -230,16 +231,17 @@
     "productId": "datalab",
     "storyId": "api-sandbox",
     "verdict": "partial",
-    "quality": 3,
+    "quality": 4,
     "confidence": "low",
-    "rationale": "Datalab has no documented sandbox or test-mode environment. The closest substitutes are the Forge playground, which lets you upload documents and see results with no API key, and a free monthly allowance for running a proof of concept. Pipelines are versioned before being deployed to production, and published processors can be pinned to a specific version, which loosely separates testing from production. missing for 10: a dedicated sandbox/test environment or test API keys, documented isolation from production data or workflows, and independent or hands-on corroboration.",
+    "rationale": "There is no documented sandbox or test mode, but there are adjacent ways to experiment safely. Forge (the in-app playground) lets you upload a document and see results without an API key. A free monthly allowance supports a proof of concept, and pipelines are versioned before you 'deploy to production', which implies a pre-production stage. missing for 10: an explicit isolated sandbox/test environment or test API keys, separation of test and production data and jobs, mock or non-billed test calls, and independent corroboration.",
     "evidenceIds": [
       "datalab-docs-9",
+      "datalab-docs-23",
+      "datalab-docs-45",
       "datalab-docs-10",
-      "datalab-docs-38",
       "datalab-docs-4",
-      "datalab-docs-40",
-      "datalab-docs-45"
+      "datalab-docs-38",
+      "datalab-docs-40"
     ]
   },
   {
@@ -341,10 +343,10 @@
   {
     "productId": "datalab",
     "storyId": "citations-provenance",
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Datalab's docs say structured extraction returns specific fields \"with citations back to source bounding boxes for auditability.\" Extraction is schema-driven via the /extract API, so the core of field-level provenance is documented. The support rests on a single overview line, though. Missing for 10: explicit documentation of per-field page numbers and source text snippets, a response-format reference showing the citation structure, and independent or hands-on corroboration that citations work as claimed.",
+    "rationale": "Datalab's structured extraction fills a user-provided JSON schema, and the docs claim fields come back with citations to source bounding boxes for auditability. That covers the bounding-box part of the provenance story. The claim is a single landing-page line, though, with no documented response format showing per-field page numbers or source snippets. Missing for 10: explicit per-field page number, source text snippet, a documented citation schema in the extract API reference, and independent or hands-on corroboration.",
     "evidenceIds": [
       "datalab-docs-18",
       "datalab-docs-3",
@@ -440,9 +442,9 @@
     "productId": "datalab",
     "storyId": "handwriting-recognition",
     "verdict": "partial",
-    "quality": 2,
+    "quality": 3,
     "confidence": "low",
-    "rationale": "The evidence never mentions handwriting recognition. The closest support is Track Changes, which extracts redlines and comments from PDFs and scans, plus schema-based field extraction with bounding-box citations; together these only glancingly touch extracting annotations and fields from scanned documents. Missing for 10: explicit handwritten text and field recognition, confidence scores or uncertainty flags on extracted values, documentation of handwritten annotation handling, and independent or hands-on corroboration on handwritten inputs.",
+    "rationale": "The only related evidence is Track Changes, which extracts redlines and comments from PDFs and scans, so annotations on scanned documents are partly covered. Structured extraction fills a JSON schema and cites source bounding boxes, which supports auditing but is not confidence flagging. Missing for 10: any explicit handwriting recognition claim, per-field confidence scores or uncertainty flags, handwritten form-field extraction docs, and independent or hands-on corroboration on handwritten inputs.",
     "evidenceIds": [
       "datalab-docs-6",
       "datalab-docs-15",
@@ -595,9 +597,9 @@
     "productId": "datalab",
     "storyId": "privacy-data-residency",
     "verdict": "partial",
-    "quality": 4,
+    "quality": 3,
     "confidence": "medium",
-    "rationale": "Datalab has no documented region selection for its hosted API. Customers can control data residency only by running the models on infrastructure they control, which requires an Enterprise contract. That self-hosted option is aimed at data-privacy and regulated teams, is offered air-gapped, and ships with a Kubernetes Helm chart. missing for 10: region/residency choice for the hosted cloud service, residency options below the Enterprise tier, documentation of where hosted data is stored, independent corroboration.",
+    "rationale": "The evidence shows no region or residency selector for Datalab's hosted service. Data location can only be controlled by running Datalab's models on your own infrastructure, including air-gapped or Kubernetes/Helm deployments, and that requires an Enterprise contract aimed at regulated, privacy-sensitive teams. This is an indirect, enterprise-gated route to residency rather than a choice users can make themselves. Missing for 10: region selection for the hosted cloud and its file storage, documented residency guarantees (e.g. EU/US data centers), self-serve residency outside Enterprise, and independent corroboration.",
     "evidenceIds": [
       "datalab-docs-13",
       "datalab-supp-1",
@@ -609,26 +611,25 @@
     "productId": "datalab",
     "storyId": "privacy-no-training",
     "verdict": "partial",
-    "quality": 4,
-    "confidence": "medium",
-    "rationale": "No evidence states a no-training policy or a training opt-out for the hosted API. Users can still keep documents away from Datalab by running the models on their own infrastructure: on-prem under an Enterprise contract, aimed at teams that 'require data privacy', or the free open-source Marker/Surya/Chandra. The Team plan also includes a DPA, which may contractually limit data use, though its terms aren't shown. Missing for 10: an explicit statement that customer data is not used for model training, a documented opt-out control for the hosted service, DPA terms covering training use, and independent corroboration.",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "The evidence includes no explicit no-training policy or opt-out toggle. The closest support is indirect: an Enterprise contract lets customers run Datalab's models on infrastructure they control, including air-gapped, which is aimed at teams needing data privacy, and the Team plan includes a DPA whose terms are not described. missing for 10: an explicit statement that customer documents are not used for model training, a self-serve training opt-out control, documented DPA training terms, and a non-Enterprise path to that guarantee.",
     "evidenceIds": [
       "datalab-supp-1",
       "datalab-supp-2",
-      "datalab-docs-13",
-      "datalab-docs-27"
+      "datalab-docs-13"
     ]
   },
   {
     "productId": "datalab",
     "storyId": "privacy-retention-controls",
     "verdict": "partial",
-    "quality": 3,
-    "confidence": "low",
-    "rationale": "The evidence only touches this story indirectly. The SDK offers 'file management' and Datalab provides file storage for reuse across calls, which implies some control over stored files. Customers who need data privacy can run models on infrastructure they control, but only with an Enterprise contract. The Team plan lists a DPA. None of the evidence documents retention periods, auto-deletion, or an explicit delete operation for stored files, checkpoints, or job results. Missing for 10: documented retention policy/windows, explicit file/result deletion API or UI, checkpoint expiry controls, zero-retention option on the hosted API, independent corroboration.",
+    "quality": 4,
+    "confidence": "medium",
+    "rationale": "Datalab's evidence points to some data-control levers. The SDK offers file management for stored documents, and checkpoint persistence is opt-in via save_checkpoint=true. The Team plan includes a BAA/DPA, and Enterprise customers can run the models on-prem or air-gapped on infrastructure they control. However, nothing in the pack documents retention periods, a deletion endpoint, or user-configurable retention for hosted processing. missing for 10: documented retention windows for uploaded files and results, explicit delete APIs for files and checkpoints, configurable or zero-retention settings on the hosted service, independent corroboration.",
     "evidenceIds": [
-      "datalab-docs-37",
       "datalab-docs-2",
+      "datalab-docs-37",
       "datalab-docs-29",
       "datalab-supp-1",
       "datalab-supp-2",
@@ -2006,12 +2007,13 @@
     "productId": "llamaparse",
     "storyId": "handwriting-recognition",
     "verdict": "partial",
-    "quality": 5,
+    "quality": 4,
     "confidence": "medium",
-    "rationale": "LlamaParse's marketing page claims it turns handwriting and checkboxes into clean markdown. The enriched forms pass returns form fields with values, checkbox states and bounding boxes. Nothing in the pack shows confidence scores or flags for uncertain handwritten text, and the handwriting claim rests on a single marketing line. missing for 10: per-field confidence scores or uncertainty flagging, in-depth docs on handwriting recognition and annotation extraction, independent or hands-on corroboration of handwriting accuracy",
+    "rationale": "LlamaParse's marketing page says it turns handwriting and checkboxes into clean markdown, and its enriched forms pass returns form fields with values, checkbox states and bounding boxes. That covers recognizing and extracting handwritten fields. Nothing in the pack shows confidence flagging for uncertain reads, and the handwriting claim is a single marketing line. Missing for 10: per-field or per-token confidence scores or uncertainty flags, documentation of handwriting or annotation recognition beyond a marketing mention, explicit support for annotations or margin notes, independent or hands-on corroboration of handwriting accuracy.",
     "evidenceIds": [
       "llamaparse-docs-25",
-      "llamaparse-docs-22"
+      "llamaparse-docs-22",
+      "llamaparse-docs-2"
     ]
   },
   {
@@ -2050,11 +2052,14 @@
   {
     "productId": "llamaparse",
     "storyId": "low-latency-sync-mode",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "The pack shows a blocking-style SDK call (`client.parsing.parse(..., tier=\"agentic\")`) and webhooks for async job completion, so parse tiers exist. Nothing in the evidence describes a fast synchronous mode that returns in seconds, and no latency figures are documented for any tier. The \"under a minute\" claim refers to onboarding time, not parse latency, so it does not count toward this story.",
-    "evidenceIds": []
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "The SDK example `client.parsing.parse(..., tier=\"agentic\")` returns a result directly, which suggests a blocking synchronous call and selectable tiers. The webhook docs, however, frame jobs as asynchronous work that is polled or notified on completion. Nothing in the pack shows results returning in seconds or latency documented for any tier. missing for 10: a documented fast/low-latency synchronous mode, per-mode or per-tier latency figures, independent or hands-on latency measurements.",
+    "evidenceIds": [
+      "llamaparse-docs-11",
+      "llamaparse-docs-6"
+    ]
   },
   {
     "productId": "llamaparse",
@@ -2351,12 +2356,13 @@
     "productId": "mistral-document-ai",
     "storyId": "agentic-agent-docs",
     "verdict": "full",
-    "quality": 8,
-    "confidence": "high",
-    "rationale": "Hands-on probes confirm that https://docs.mistral.ai/llms.txt returns HTTP 200 with a structured index of Mistral's developer docs. Document AI pages are also served as raw markdown (e.g. /studio/document-processing/overview.md), so an agent can be pointed directly at agent-friendly docs for this product. missing for 10: evidence of an llms-full.txt or Document-AI-specific agent docs, first-party documentation describing the agent-oriented docs offering, independent or community corroboration of agent use.",
+    "quality": 7,
+    "confidence": "medium",
+    "rationale": "A live probe confirms Mistral publishes an llms.txt at docs.mistral.ai (HTTP 200), with a structured index of markdown doc links an agent can follow. However, the markdown variant of the Document AI overview page returned 404, and no OpenAPI spec was found at the probed paths. missing for 10: confirmed llms.txt coverage of Document AI pages, working per-page markdown docs for document processing, a machine-readable OpenAPI spec, independent or hands-on corroboration of agent use.",
     "evidenceIds": [
       "mistral-document-ai-probe-1",
-      "mistral-document-ai-probe-2"
+      "mistral-document-ai-probe-2",
+      "mistral-document-ai-probe-3"
     ]
   },
   {
@@ -2423,10 +2429,10 @@
   {
     "productId": "mistral-document-ai",
     "storyId": "agentic-mcp-client",
-    "verdict": "none",
+    "verdict": "na",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The axis plausibly applies: Mistral Document AI includes an LLM-backed Document QnA capability, and a product like that could conceivably consume external tools via MCP. However, nothing in the evidence pack shows it acting as an MCP client or plugging in MCP servers. The docs cover only OCR, annotations, QnA, SDKs and batching.",
+    "rationale": "Mistral Document AI is a document-processing API covering OCR, annotations and Document QnA, not an agent or assistant that runs tools. Acting as an MCP client is outside that product role. The llms.txt probe links to Mistral's separate Agents & Conversations docs, which belong to a different Mistral product, so nothing in the pack shows Document AI itself consuming MCP servers.",
     "evidenceIds": []
   },
   {
@@ -3134,10 +3140,10 @@
   {
     "productId": "reducto",
     "storyId": "agentic-mcp-client",
-    "verdict": "na",
+    "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Reducto is a document-processing API and SaaS platform, so consuming external MCP servers as a client is outside its product role. The evidence shows only that Reducto runs as an MCP server for other agents (Claude, Cursor and others), which is server-side and cannot be credited to this client-side story. Nothing shows Reducto plugging in third-party MCP tools.",
+    "rationale": "Reducto bills itself as an agentic document platform with agentic parse modes and multi-step workflows, so asking whether it can consume external MCP servers' tools is a fair question. The pack only shows Reducto acting as an MCP server for other clients such as Claude, Cursor and Codex. That is the opposite role and does not count toward this client-side story. Nothing in the pack shows Reducto connecting to or using third-party MCP servers.",
     "evidenceIds": []
   },
   {
@@ -3272,9 +3278,9 @@
     "productId": "reducto",
     "storyId": "api-machine-spec",
     "verdict": "full",
-    "quality": 9,
+    "quality": 8,
     "confidence": "high",
-    "rationale": "A direct probe confirmed a downloadable OpenAPI spec: docs.reducto.ai/openapi.json returns HTTP 200 and contains an \"openapi\" key. A machine-readable llms.txt index is also served, which adds to the spec-discovery story. Missing for 10: first-party documentation describing the spec, its versioning, or confirmation that it covers every endpoint.",
+    "rationale": "A direct probe got HTTP 200 at https://docs.reducto.ai/openapi.json, and the response contains an \"openapi\" key. That confirms a downloadable, machine-readable OpenAPI spec. The llms.txt probe also shows machine-readable docs for agents. Missing for 10: first-party documentation that links to or describes the spec, and verification that it covers all endpoints (parse, extract, split, classify, edit, async)",
     "evidenceIds": [
       "reducto-probe-2",
       "reducto-probe-1"
@@ -3365,11 +3371,14 @@
   {
     "productId": "reducto",
     "storyId": "automation-versioned-workflows",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "Reducto does ship automations: Studio lets you configure multi-step document workflows and deploy them as a callable Pipeline ID. Testing on real documents before deploy is at best a pre-deploy check, not review of changes. Nothing in the evidence describes pipeline versioning, change review or diffs, or rolling back to a prior pipeline version.",
-    "evidenceIds": []
+    "verdict": "partial",
+    "quality": 2,
+    "confidence": "low",
+    "rationale": "Reducto Studio lets you configure multi-step workflows, test them on real documents with the citation viewer, and then deploy them as a Pipeline ID callable from code. That is a pre-deployment review step, but nothing in the pack shows workflow versioning, version history, diffs, or rollback. Missing for 10: pipeline versioning/history, rollback to prior pipeline versions, change review/diff tooling, independent corroboration.",
+    "evidenceIds": [
+      "reducto-docs-34",
+      "reducto-docs-6"
+    ]
   },
   {
     "productId": "reducto",
@@ -4101,11 +4110,14 @@
   {
     "productId": "unstructured",
     "storyId": "automation-rules-engine",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "Unstructured is a document-processing workflow platform, so event-driven automation is a fair axis. The evidence only shows workflows that are created and run on demand through the UI, SDK, or REST API (\"Trigger runs\" means manually starting a job). Nothing shows user-defined rules, schedules, or event triggers such as new files arriving in a source connector. The automatic per-page routing between partition strategies is built-in processing logic, not user-defined rules triggering actions.",
-    "evidenceIds": []
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "Unstructured lets you create, update and run workflows through the Python SDK or REST endpoints, and you can trigger and monitor job runs programmatically. External event systems could therefore call these APIs to start processing, but that requires extra tooling outside the product. The automatic page routing is a fixed internal behavior, not a user-defined rule. Missing for 10: native event-based triggers (e.g. new file arriving in a source connector), user-defined rule/condition configuration, webhooks or schedules, and any independent or hands-on corroboration.",
+    "evidenceIds": [
+      "unstructured-docs-5",
+      "unstructured-docs-7"
+    ]
   },
   {
     "productId": "unstructured",
@@ -4150,11 +4162,15 @@
   {
     "productId": "unstructured",
     "storyId": "citations-provenance",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "Unstructured documents a structured data extractor that outputs values into a user-defined JSON schema (unstructured-docs-26, unstructured-docs-53). Partitioning is described generically as producing 'document elements and metadata' (unstructured-docs-60). Nothing in the evidence shows that extracted fields carry page numbers, bounding boxes, or source snippets for citation and verification.",
-    "evidenceIds": []
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "Partitioning outputs document elements with metadata in a \"contextualized JSON format\", and a by-page chunking strategy implies page awareness, so some element-level provenance is suggested. Nothing in the pack shows that structured-extractor fields carry page numbers, bounding boxes, or source snippets. missing for 10: per-field provenance on schema-extracted values, explicit page-number and bounding-box coordinate metadata, source snippet/citation linkage, documentation of the metadata schema, independent or hands-on corroboration.",
+    "evidenceIds": [
+      "unstructured-docs-32",
+      "unstructured-docs-11",
+      "unstructured-docs-26"
+    ]
   },
   {
     "productId": "unstructured",
@@ -4505,14 +4521,13 @@
     "productId": "unstructured",
     "storyId": "table-structure-extraction",
     "verdict": "partial",
-    "quality": 5,
+    "quality": 4,
     "confidence": "medium",
-    "rationale": "Unstructured documents a table-to-HTML enrichment that uses agentic AI or a VLM to render each detected table as HTML markup after partitioning, with page routing to High Res or VLM partitioning. That covers the core of structured table output. However, nothing in the evidence addresses the complex cases the story is about. Missing for 10: evidence of handling merged cells/rowspan-colspan, nested or multi-level headers, tables spanning multiple pages, markdown table output, and any independent or hands-on corroboration of table fidelity.",
+    "rationale": "Unstructured documents a post-partitioning enrichment that turns each detected table into HTML markup using agentic AI or a VLM. Table HTML also appears as an enrich-job output. However, the evidence says nothing about how faithfully it handles merged cells, nested headers, or tables that span multiple pages, and markdown output is not mentioned. Missing for 10: documented handling of merged cells/rowspan-colspan, nested/multi-level headers, multi-page table stitching, markdown table output, independent or hands-on accuracy corroboration.",
     "evidenceIds": [
       "unstructured-docs-12",
       "unstructured-docs-27",
-      "unstructured-docs-36",
-      "unstructured-docs-10"
+      "unstructured-docs-36"
     ]
   },
   {
