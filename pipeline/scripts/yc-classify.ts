@@ -1,11 +1,11 @@
-// Stage 2 of the YC ingestion lane: for every modern-batch (W23–S26) company in rankings/yc-map.json,
+// Stage 2 of the YC ingestion lane: for every modern-batch (W23–S26) company in open-rankings/yc-map.json,
 // ask the LLM to map it to (a) an EXISTING arena id it genuinely competes in, (b) a proposed new
 // arena it clusters with peers under, or (c) null (not a software product ranked meaningfully —
 // hardware, biotech, services, marketplaces). Batches ~40 companies per call and runs
 // SEQUENTIALLY (not in parallel) so each call can see the running list of already-proposed arena
 // names and reuse one instead of coining a near-duplicate — the #1 risk with LLM-clustered
 // category names is fragmentation ("ai-legal" vs "legal-ai" vs "legaltech-ai" for the same
-// cluster). Checkpoints after every batch (both rankings/yc-map.json and a progress marker in
+// cluster). Checkpoints after every batch (both open-rankings/yc-map.json and a progress marker in
 // pipeline/cache/yc/, gitignored) so a killed/resumed run picks up where it left off instead of
 // re-spending LLM calls. Run with: tsx pipeline/scripts/yc-classify.ts
 import fs from 'node:fs'
@@ -15,9 +15,9 @@ import { type YcCompany, YcMapSchema } from '../../lib/schemas'
 import { llmJson } from '../llm'
 import { ROOT, writeJson } from '../paths'
 
-const YC_MAP_PATH = path.join(ROOT, 'rankings', 'yc-map.json')
+const YC_MAP_PATH = path.join(ROOT, 'open-rankings', 'yc-map.json')
 const PROGRESS_PATH = path.join(ROOT, 'pipeline', 'cache', 'yc', 'classify-progress.json')
-const CATEGORIES_PATH = path.join(ROOT, 'rankings', 'categories.json')
+const CATEGORIES_PATH = path.join(ROOT, 'open-rankings', 'categories.json')
 const BATCH_SIZE = 40
 
 const KEBAB = /^[a-z0-9]+(-[a-z0-9]+)*$/

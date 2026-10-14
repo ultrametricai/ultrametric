@@ -1,6 +1,6 @@
 // Corpus lift stage 2 (docs/FOUNDER-OPS.md): emit the evidence layer in the founder-ops
 // vendor-review interchange shape (schemas/vendor-review.schema.json) — one
-// rankings/reviews/generated/<arena>--<productId>.json per judged product, so external consumers
+// open-rankings/reviews/generated/<arena>--<productId>.json per judged product, so external consumers
 // get the same dated, evidence-graded record the site renders without scraping it.
 //
 // DERIVED, NEVER JUDGED HERE: every field is a deterministic projection of committed data —
@@ -26,7 +26,7 @@ import type { Evidence } from '../../lib/schemas'
 import { VENDOR_GEO_COUNTRY_META, vendorGeoFor, type VendorGeoEntry } from '../../lib/vendorGeo'
 
 const ROOT = path.resolve(__dirname, '..', '..')
-export const REVIEWS_DIR = path.join(ROOT, 'rankings', 'reviews', 'generated')
+export const REVIEWS_DIR = path.join(ROOT, 'open-rankings', 'reviews', 'generated')
 
 export const REVIEWER = 'Ultrametric pipeline (automated, evidence-graded)'
 
@@ -168,7 +168,7 @@ function reviewFor(data: CategoryData, productId: string, geo: VendorGeoEntry[],
 // filename -> file content for EVERY judged product (every leaderboard entry of every populated
 // arena), in categories.json × leaderboard order. Pure projection of the committed data under
 // `dir` — see the header.
-export function buildVendorReviews(dir: string = path.join(ROOT, 'rankings')): Map<string, string> {
+export function buildVendorReviews(dir: string = path.join(ROOT, 'open-rankings')): Map<string, string> {
   const out = new Map<string, string>()
   for (const data of loadAll(dir)) {
     for (const entry of data.rankings.leaderboard) {

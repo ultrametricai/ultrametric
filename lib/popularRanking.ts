@@ -9,7 +9,7 @@
 //   (a) star-tracked products ranked by absolute stars (velocity shown alongside),
 //   (b) package-installed products ranked by weekly npm+PyPI installs (same unit, so the sum
 //       across the two registries is honest),
-//   (c) curated "clearly popular" products with NO public counter (rankings/popular-products.json)
+//   (c) curated "clearly popular" products with NO public counter (open-rankings/popular-products.json)
 //       rendered as an UNRANKED strip — an editorial fact, never a fake number.
 // Missing data is absent, never zero, and none of this ever touches the Overall score (see
 // METHODOLOGY.md "Popularity — a signal, not a score").
@@ -106,7 +106,7 @@ export function youngRocket(p: { stars?: number; starsPerYear?: number }): HotFl
   }
 }
 
-// rankings/hot-products.json — the small curated override for things we KNOW are exploding but the
+// open-rankings/hot-products.json — the small curated override for things we KNOW are exploding but the
 // tracked history is too short to show yet. Every entry must carry its own reason string; the
 // override only fills gaps the data can't see (a mechanical flag always wins in mergeHot).
 export const CuratedHotSchema = z.object({

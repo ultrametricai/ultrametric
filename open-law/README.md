@@ -13,10 +13,10 @@ How a card is consumed: `lib/founderOps.ts` validates every card against
 `jurisdictions/registry.json`, and requires every `source_ids` entry to resolve to an
 `authority` citation in `citations/registry.json` (for `kind: legal`, to a `primary-*`
 authority). Workflows in
-`processes/<domain>/<jurisdiction>/` cite cards in `rule_ids`, e.g.
+`open-processes/<domain>/<jurisdiction>/` cite cards in `rule_ids`, e.g.
 `equity.us-de.83b-election` cites `us-fed.83b-filing-period`.
 
-A trimmed real card (`law/US-FED/us-fed-1120-filing-deadline.json`):
+A trimmed real card (`open-law/US-FED/us-fed-1120-filing-deadline.json`):
 
 ```jsonc
 {

@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # One-shot helper for the email arena bring-up (2026-09-06): appends probe-tier evidence items
-# distilled from the recorded runtime probes in rankings/email/proofs/ (see
+# distilled from the recorded runtime probes in open-rankings/email/proofs/ (see
 # pipeline/probes/email.ts — all 6 recorded probes passed). Run
 # AFTER `pnpm pipeline probe --category email` — that stage wholesale-replaces probe-tier
 # evidence and would wipe these items (re-run this script after any probe refresh).
@@ -54,7 +54,7 @@ ITEMS = {
 }
 
 for pid, items in ITEMS.items():
-    path = f'rankings/email/evidence/{pid}.json'
+    path = f'open-rankings/email/evidence/{pid}.json'
     ev = json.load(open(path))
     existing = {e['id'] for e in ev}
     for item in items:

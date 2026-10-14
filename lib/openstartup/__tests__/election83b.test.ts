@@ -1,5 +1,5 @@
 // Textbook tests for the 83(b) money-math module. Duties: (1) every ruleId in
-// ELECTION_83B_RULE_IDS resolves to a committed, jurisdiction-matched card in law/US-FED/
+// ELECTION_83B_RULE_IDS resolves to a committed, jurisdiction-matched card in open-law/US-FED/
 // with primary sources; (2) ALL SIX published examples of Rev. Proc. 2012-29 § 5 are
 // replayed number-for-number (the IRS's own 25,000-share fact pattern); (3) the rate
 // arithmetic is re-derived by hand in comments. deadlines.ts owns the 30-day clock — the
@@ -18,7 +18,7 @@ import {
 } from '../election83b'
 
 function loadRuleCard(jurisdiction: string, ruleId: string) {
-  const dir = path.join(process.cwd(), 'law', jurisdiction)
+  const dir = path.join(process.cwd(), 'open-law', jurisdiction)
   for (const file of fs.readdirSync(dir).filter((f) => f.endsWith('.json'))) {
     const card = JSON.parse(fs.readFileSync(path.join(dir, file), 'utf8')) as {
       id: string
@@ -35,7 +35,7 @@ describe('every computation resolves to a committed, jurisdiction-matched rule c
   for (const [name, ref] of Object.entries(ELECTION_83B_RULE_IDS)) {
     it(`${name} → ${ref.ruleId}`, () => {
       const card = loadRuleCard(ref.jurisdiction, ref.ruleId)
-      expect(card, `law/${ref.jurisdiction} must contain a card with id ${ref.ruleId}`).not.toBeNull()
+      expect(card, `open-law/${ref.jurisdiction} must contain a card with id ${ref.ruleId}`).not.toBeNull()
       expect(card?.jurisdiction).toBe(ref.jurisdiction)
       expect(card?.kind).toBe('legal')
       expect(card?.source_ids.length).toBeGreaterThan(0)

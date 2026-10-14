@@ -1,7 +1,7 @@
 // Prediction-question generator: for every populated arena whose #1 and #2 are a close race
 // (within lib/predictions.ts's CLOSE_RACE_THRESHOLD Overall score points — the same definition
 // the uncertainty pass uses), open a "Will <#2> overtake <#1> in <arena> by <opensAt+30d>?"
-// question in rankings/predictions.json. Idempotent by arena + unordered product pair: re-running
+// question in open-rankings/predictions.json. Idempotent by arena + unordered product pair: re-running
 // on unchanged data appends nothing, and an arena with an open question for its current top-2
 // pair is skipped (see lib/predictions.ts's generateQuestions). Settlement is a separate,
 // purely mechanical step — see settle-predictions.ts.

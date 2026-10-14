@@ -6,22 +6,23 @@
 
 This repo is home to all the processes you need to run, vendors and tools you need to compare, advice you need to hear, and helpful modules to reduce lock-in. Let's make it easy to start and run a professional startup in the US and other geographies.
 
-```
+<pre>
 ultrametric/
-├── processes/       every founder process, step by step
-├── rankings/        evidence, verdicts, computed scores
-├── pipeline/        crawl, probe, judge, derive
-├── open-modules/    the startup calculations, indexed
-├── lib/             the code behind modules and loaders
-├── law/             startup law, one rule per record
-├── citations/       the sources every record cites
-├── jurisdictions/   countries, states, vendor geography
-├── open-documents/  the open legal documents catalog
-├── lore/            heuristics, episodes, the library
-├── coverage/        what is covered, at what maturity
-├── schemas/         the JSON contracts for every record
-└── governance/      review, evidence, and agent policy
-```
+├── <a href="#open-processes">open-processes</a>/     each founder process as routed, timed steps
+├── <a href="#open-vendor-rankings">open-rankings</a>/      per-market products, stories, evidence, verdicts
+├── <a href="#open-modules">open-modules</a>/       worked guides to each startup calculation
+├── <a href="#open-startup-simulator">open-startup-sim</a>/   what the simulator runs and assumes
+├── <a href="#open-law">open-law</a>/           startup legal rules by jurisdiction, each cited
+├── <a href="#open-lore">open-lore</a>/          founder advice, who said it, the reading library
+├── <a href="#open-docs">open-documents</a>/     openly published legal documents, by use case
+├── pipeline/           the code that crawls, probes, judges, scores
+├── lib/                loaders, scoring, and the calculation code
+├── jurisdictions/      country and state records, vendor availability
+├── citations/          the primary sources the legal records cite
+├── coverage/           what is mapped and what is a known gap
+├── schemas/            the JSON shape every record validates against
+└── governance/         review rules and what agents may do here
+</pre>
 
 <!-- Legacy anchor: external links to #start-here predate the merge into this map. -->
 <a id="start-here"></a>
@@ -37,7 +38,7 @@ each one, is it testable, and do the vendor's claims match what we found hands-o
 rankings order products by how automatable they are, and every verdict can be contested.
 
 <!-- arenas:start -->
-**96 rankings** today, 670 products judged head to head — the full index is [ultrametric.ai/arenas](https://ultrametric.ai/arenas), and each ranking's records live under [`rankings/`](rankings/).
+**96 rankings** today, 670 products judged head to head — the full index is [ultrametric.ai/arenas](https://ultrametric.ai/arenas), and each ranking's records live under [`open-rankings/`](open-rankings/).
 <!-- arenas:end -->
 
 [![The overall rankings on ultrametric.ai: companies ranked by agent readiness, with per-market leaderboards behind each row](assets/readme/rankings-overall.png)](https://ultrametric.ai/overall)
@@ -48,7 +49,7 @@ rankings order products by how automatable they are, and every verdict can be co
 
 ## Open processes
 
-Every founder [process](processes/), step by step. Each step is routed agent, form, or
+Every founder [process](open-processes/), step by step. Each step is routed agent, form, or
 human, timed, and marked by how hard it is to undo. The vendors that can run a step are
 listed on it, with their judged scores. See it live at
 [ultrametric.ai/processes](https://ultrametric.ai/processes).
@@ -104,7 +105,7 @@ examples, and boundaries.
 
 The modules and processes read one shared set of company fields: incorporation date,
 authorized shares, par value, cash on hand, the common-share FMV. Each field is
-registered in [`processes/company-fields.json`](processes/company-fields.json), so the
+registered in [`open-processes/company-fields.json`](open-processes/company-fields.json), so the
 same value feeds every module that needs it. Every record shape is published as a JSON
 Schema in [`schemas/`](schemas/).
 
@@ -114,7 +115,7 @@ Schema in [`schemas/`](schemas/).
 
 The documents and records that processes produce and consume: the certificate of
 incorporation, the EIN letter, the cap table. Each is registered in
-[`processes/artifacts.json`](processes/artifacts.json), so every process declares what
+[`open-processes/artifacts.json`](open-processes/artifacts.json), so every process declares what
 it makes and what it needs. See it live at
 [ultrametric.ai/artifacts](https://ultrametric.ai/artifacts).
 
@@ -140,9 +141,12 @@ checked. Known gaps are recorded too. See it live at
 | Privacy | [DPA](https://commonpaper.com/standards/data-processing-agreement/), [BAA](https://commonpaper.com/standards/business-associate-agreement/), [AI addendum](https://commonpaper.com/standards/ai-addendum/) |
 | Open-source | [Apache ICLA](https://www.apache.org/licenses/icla.pdf), [Developer Certificate of Origin](https://developercertificate.org/) |
 
-## Situations
+<!-- Legacy anchor: inbound links to #situations predate the open- family rename. -->
+<a id="situations"></a>
 
-[Guides](processes/SITUATIONS.md) for reactive work: a breach is live, a summons lands,
+## Open situations
+
+[Guides](open-processes/SITUATIONS.md) for reactive work: a breach is live, a summons lands,
 a tax notice arrives. Each names its trigger and an urgency clock of hours, days, or
 weeks. See it live at [ultrametric.ai/situations](https://ultrametric.ai/situations).
 
@@ -160,13 +164,11 @@ automatically.
 - [Get EIN](https://ultrametric.ai/processes/get-ein) — in the UK, France, Portugal, and Canada the tax ID arrives automatically with incorporation; in Germany it is its own filing with the tax office
 - [Set up an LLC](https://ultrametric.ai/processes/set-up-an-llc) — the analog shifts by country (LLP in the UK and India, UG in Germany, SARL in France) and Canada has no LLC at all
 
-[Add a jurisdiction](CONTRIBUTING.md#add-a-jurisdiction)
-
 ## Open lore
 
-The [advice](lore/) founders actually pass around, and the [episodes](lore/LORE.md) behind
+The [advice](open-lore/) founders actually pass around, and the [episodes](open-lore/LORE.md) behind
 it: who said it, where it is written down, and how well documented it is. When the
-schools disagree, both sides are recorded. The [library](lore/library.json) collects the
+schools disagree, both sides are recorded. The [library](open-lore/library.json) collects the
 best essays, guides, books, and talks, organized from starting up through getting
 acquired.
 
@@ -183,20 +185,20 @@ acquired.
 ### Example: Getting acquired
 
 The acquisition episodes are recorded lore: WhatsApp, Twitch, and MySpace are in
-`lore/LORE.md`, each with its lesson and sources. The sale math is live; the
+`open-lore/LORE.md`, each with its lesson and sources. The sale math is live; the
 waterfall module computes who gets what at any price. The acquisition playbook itself is
 a mapped, open gap in [`coverage/`](coverage/).
 
 ## Open law
 
-Map the [law](law/) that applies to startups, across jurisdictions, and connect it to
+Map the [law](open-law/) that applies to startups, across jurisdictions, and connect it to
 the calculations and the vendors that act on it. Each legal statement is one dated record
 citing a primary [authority](citations/) (a statute, regulation, or agency page) with the
 exact section. A blog post cannot establish law.
 
 ## Government services and startups
 
-Government [agencies](rankings/government-services/) are judged like vendors: the IRS,
+Government [agencies](open-rankings/government-services/) are judged like vendors: the IRS,
 Companies House, HMRC, the Handelsregister. Per-country boards compare how well each
 agency works for a founder or an agent. See it live at
 [ultrametric.ai/arena/government-services](https://ultrametric.ai/arena/government-services).
@@ -214,16 +216,6 @@ A simulated company runs the whole process library end to end. Every step is rou
 agent, form, or human, and everything it generates is visibly marked simulated.
 
 [![The Open Startup simulator mid-run: a simulated company executing the founder processes](assets/readme/startup-sim.png)](https://ultrametric.ai/startup-sim)
-
-## Open skills for startups
-
-`ultrametric init` installs the bundled agent skill
-([install guide](https://docs.ultrametric.ai/cli/install)), so a coding agent can
-retrieve a process, run the agent-routed steps, and save progress from inside your repo.
-Skill collections themselves are a judged market: see it live at
-[ultrametric.ai/arena/agent-skills](https://ultrametric.ai/arena/agent-skills).
-
-[![The Agent Skills ranking on ultrametric.ai, skill collections and plugin catalogs judged head to head](assets/readme/agent-skills.png)](https://ultrametric.ai/arena/agent-skills)
 
 <a id="for-ai-agents"></a>
 <a id="use-it-from-an-agent"></a>

@@ -1,6 +1,6 @@
 // Prediction settlement: purely mechanical, no judgment involved. Re-derives the changelog
 // from the committed score-history files (lib/changelog.ts — the same derivation /changelog
-// renders) and settles every open question in rankings/predictions.json:
+// renders) and settles every open question in open-rankings/predictions.json:
 //   - 'yes' if the challenger's overtake event landed in [opensAt, settlesBy], citing the
 //     exact changelog event in `settledBy`;
 //   - 'no' once the deadline passes without one.

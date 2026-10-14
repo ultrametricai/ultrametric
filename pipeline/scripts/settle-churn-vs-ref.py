@@ -22,14 +22,14 @@ def git_show(path):
         return None
     return json.loads(out.stdout)
 
-old_evidence = git_show(f'rankings/{arena}/evidence/{pid}.json') or []
-old_verdicts = git_show(f'rankings/{arena}/verdicts.json') or []
+old_evidence = git_show(f'open-rankings/{arena}/evidence/{pid}.json') or []
+old_verdicts = git_show(f'open-rankings/{arena}/verdicts.json') or []
 old_ids = {e['id'] for e in old_evidence}
 old_by_story = {v['storyId']: v for v in old_verdicts if v['productId'] == pid}
 
-cur_evidence = json.load(open(f'rankings/{arena}/evidence/{pid}.json'))
+cur_evidence = json.load(open(f'open-rankings/{arena}/evidence/{pid}.json'))
 cur_ids = {e['id'] for e in cur_evidence}
-verdicts_path = f'rankings/{arena}/verdicts.json'
+verdicts_path = f'open-rankings/{arena}/verdicts.json'
 verdicts = json.load(open(verdicts_path))
 
 kept = reverted = unchanged = 0

@@ -1,5 +1,5 @@
 // Regenerates the machine-owned "**Serves:**" line in every module section of
-// open-modules/README.md from processes/business-logic-map.json (the modules' mapped
+// open-modules/README.md from open-processes/business-logic-map.json (the modules' mapped
 // processes plus the per-step function entries), via lib/businessLogicServes.ts. The prose
 // around each line is authored; only the Serves lines are machine-owned. Drift gate:
 // lib/__tests__/businessLogicServes.test.ts (the SITUATIONS.md pattern,

@@ -1,4 +1,4 @@
-// Loader + forward-fill appender for rankings/{cat}/score-history.jsonl — the append-only,
+// Loader + forward-fill appender for open-rankings/{cat}/score-history.jsonl — the append-only,
 // change-only time series of each product's Overall score (aiEra) and agent-readiness (see
 // lib/schemas.ts's ScoreHistoryEntrySchema doc). Seeded from git history by
 // pipeline/scripts/build-score-history.ts; grown by pipeline/stages/derive.ts via
@@ -14,7 +14,7 @@ export { seriesFor, trendDelta }
 
 export const SCORE_HISTORY_FILE = 'score-history.jsonl'
 
-const DEFAULT_DIR = () => path.join(process.cwd(), 'rankings')
+const DEFAULT_DIR = () => path.join(process.cwd(), 'open-rankings')
 
 const historyCache = new Map<string, Map<string, ScoreHistoryEntry[]>>()
 

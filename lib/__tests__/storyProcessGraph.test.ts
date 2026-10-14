@@ -2,7 +2,7 @@
 // other derivation tests: (1) the reverse index reproduces the committed step→stories mapping
 // exactly for sampled arenas, (2) the full DAG is well-formed (every edge endpoint exists, no
 // dangling task/story refs, tags only where they belong), (3) the committed public artifact
-// rankings/graph.json deep-equals a fresh in-process build (determinism across builds — the same
+// open-rankings/graph.json deep-equals a fresh in-process build (determinism across builds — the same
 // recompute contract rankings.json has with pipeline/scripts/recompute-check.ts).
 import fs from 'node:fs'
 import path from 'node:path'
@@ -16,7 +16,7 @@ import {
   storyProcessesForArena,
 } from '@/lib/storyProcessGraph'
 
-const DATA_DIR = path.resolve(__dirname, '../../rankings')
+const DATA_DIR = path.resolve(__dirname, '../../open-rankings')
 const GRAPH_FILE = path.join(DATA_DIR, 'graph.json')
 
 const tasks = loadProcesses(DATA_DIR)
@@ -171,7 +171,7 @@ describe('buildStoryGraph (the backend DAG)', () => {
     }
   })
 
-  it('matches the committed rankings/graph.json byte-for-byte (deterministic across builds)', () => {
+  it('matches the committed open-rankings/graph.json byte-for-byte (deterministic across builds)', () => {
     // The committed artifact was produced by a separate process (pipeline/scripts/
     // generate-story-graph.ts) — deep-equality with this fresh build IS the double-build
     // determinism check, and the drift gate after any corpus/mapping/verdict change.

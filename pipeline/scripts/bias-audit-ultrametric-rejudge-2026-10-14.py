@@ -38,7 +38,7 @@ import json
 import os
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-VERDICTS = os.path.join(os.path.dirname(ROOT), 'rankings', 'agent-skills', 'verdicts.json')
+VERDICTS = os.path.join(os.path.dirname(ROOT), 'open-rankings', 'agent-skills', 'verdicts.json')
 CACHE_DIR = os.path.join(ROOT, 'cache', 'judge', 'agent-skills', 'ultrametric')
 
 MARKER = '2026-10-14 re-judge parity audit'

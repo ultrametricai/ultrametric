@@ -11,7 +11,7 @@ This document is the protocol. The current implementation (v1) is the probe reco
 (`pipeline/stages/probe-record.ts`, with per-arena probe definitions in
 `pipeline/probes/<arena-id>.ts`), the browser-proof pilot
 (`pipeline/scripts/record-browser-proof.ts`), the proof store (`lib/proofs.ts`,
-`rankings/<category>/proofs/`), and the intake form
+`open-rankings/<category>/proofs/`), and the intake form
 (`.github/ISSUE_TEMPLATE/prove-a-story.yml`).
 
 ## 1. Proof specs
@@ -20,7 +20,7 @@ A proof spec is a reproducible recipe for demonstrating one story:
 
 ```jsonc
 {
-  "storyId": "agentic-mcp-server",           // from rankings/<category>/stories.json
+  "storyId": "agentic-mcp-server",           // from open-rankings/<category>/stories.json
   "productId": "claude-code",
   "environment": "docker:node:22-bookworm",  // pinned docker image, or "macos-shell"
   "setup": [                                  // prepare the sandbox (may install things)
@@ -78,10 +78,10 @@ outcome**: `0` = the expected output was observed, non-zero = it wasn't.
 Every executed spec — pass or fail — produces:
 
 ```
-rankings/<category>/proofs/<productId>/<probeId>.txt|.webm   the recording
-rankings/<category>/proofs/<productId>/<probeId>.json        sidecar: {probeId, storyIds, command,
+open-rankings/<category>/proofs/<productId>/<probeId>.txt|.webm   the recording
+open-rankings/<category>/proofs/<productId>/<probeId>.json        sidecar: {probeId, storyIds, command,
                                                          recordedAt, exitCode, kind}
-rankings/<category>/proofs/index.json                        per-category index (adds productId, file)
+open-rankings/<category>/proofs/index.json                        per-category index (adds productId, file)
 ```
 
 Recordings render on the product page ("Probe proofs" section, `components/ProofBlock.tsx`)

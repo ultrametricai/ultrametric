@@ -148,7 +148,7 @@ export function mostWantedUntested(categories: CategoryData[], limit = 10): Most
   return picked
 }
 
-// rankings/arena-roadmap.json entries — validated loosely (the file carries more editorial fields
+// open-rankings/arena-roadmap.json entries — validated loosely (the file carries more editorial fields
 // than the pipeline page needs; unknown keys pass through untouched).
 export const RoadmapEntrySchema = z.looseObject({
   id: z.string().min(1),
@@ -165,7 +165,7 @@ export type RoadmapEntry = z.infer<typeof RoadmapEntrySchema>
 // "Next up": tier-1 roadmap entries still marked planned AND not already live on the site —
 // the roadmap file can lag reality (an arena ships before its status flips), so the live
 // category list is the tie-breaker, not the file.
-export function nextUpArenas(liveArenaIds: ReadonlySet<string>, dataDir = path.join(process.cwd(), 'rankings')): RoadmapEntry[] {
+export function nextUpArenas(liveArenaIds: ReadonlySet<string>, dataDir = path.join(process.cwd(), 'open-rankings')): RoadmapEntry[] {
   const raw = JSON.parse(fs.readFileSync(path.join(dataDir, 'arena-roadmap.json'), 'utf8'))
   const entries = RoadmapEntrySchema.array().parse(raw)
   return entries.filter((e) => e.tier === 1 && e.status === 'planned' && !liveArenaIds.has(e.id))

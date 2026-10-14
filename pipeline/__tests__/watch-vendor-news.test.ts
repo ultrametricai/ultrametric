@@ -11,7 +11,7 @@ import {
 
 // Pure-parsing units for the vendor-news watcher: RSS + Atom + scrape fixtures and the
 // founder's agentic keyword flagging. No network — checkSource/run are exercised only through
-// their pure pieces here (the seeded rankings/vendor-news.json is the integration evidence).
+// their pure pieces here (the seeded open-rankings/vendor-news.json is the integration evidence).
 
 describe('isAgenticTitle', () => {
   it('flags the founder keywords: mcp | agent | ai | llm | assistant | copilot | api v | sdk', () => {

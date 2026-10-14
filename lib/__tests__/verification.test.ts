@@ -141,11 +141,11 @@ describe('isAuthGatedEvidence + cellAuthGated (the auth-wall honesty marker)', (
   })
 
   it('matches the corpus wordings for probe-recorded auth walls', () => {
-    // composio (rankings/mcp-infrastructure/evidence/composio.json)
+    // composio (open-rankings/mcp-infrastructure/evidence/composio.json)
     expect(isAuthGatedEvidence(wall('a', 'PROBE mcp-endpoint (2026-09-05): POST initialize returned HTTP 401 with an OAuth challenge — live and vaults access behind managed auth'))).toBe(true)
-    // mem0 (rankings/ai-memory/evidence/mem0.json)
+    // mem0 (open-rankings/ai-memory/evidence/mem0.json)
     expect(isAuthGatedEvidence(wall('b', 'PROBE runtime: keyless JSON-RPC initialize POST returned HTTP 401 with a `WWW-Authenticate: Bearer` OAuth challenge and protected-resource metadata'))).toBe(true)
-    // glama (rankings/mcp-infrastructure/evidence/glama.json)
+    // glama (open-rankings/mcp-infrastructure/evidence/glama.json)
     expect(isAuthGatedEvidence(wall('c', 'PROBE registry-api: HTTP 401 with a JSON auth challenge ({"error":{"code":"unauthorized","message":"This endpoint requires an API key"}})'))).toBe(true)
     // 403 walls count too
     expect(isAuthGatedEvidence(wall('d', 'PROBE runtime: POST returned HTTP 403 Forbidden with an OAuth challenge'))).toBe(true)

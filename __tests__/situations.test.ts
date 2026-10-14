@@ -4,12 +4,12 @@ import {
   validateSituations,
 } from '@/lib/situationsDoc'
 
-// processes/SITUATIONS.md ↔ corpus drift gate (founder 2026-10-02: the situations concept gets
+// open-processes/SITUATIONS.md ↔ corpus drift gate (founder 2026-10-02: the situations concept gets
 // its own repo surface, generated-or-synced so the list can't go stale — the README-sync
 // pattern open-documents/ uses). The table block is machine-owned (scripts/generate-situations-md.ts);
 // this gate fails on any divergence between the committed block and the live corpus.
 
-describe('processes/SITUATIONS.md', () => {
+describe('open-processes/SITUATIONS.md', () => {
   it('the committed doc passes the drift gate (table block matches the live corpus exactly)', () => {
     expect(validateSituations()).toEqual([])
   })
@@ -43,7 +43,7 @@ describe('situations doc validators (failure modes)', () => {
 
   it('fails when the committed block drifted from the corpus (stale title, missing row, extra row)', () => {
     const stale = table.replace(records[0].title, 'Renamed situation')
-    expect(validateSituationsDoc(stale, records).join(';')).toContain('drifted from processes/corpus.json')
+    expect(validateSituationsDoc(stale, records).join(';')).toContain('drifted from open-processes/corpus.json')
     const missingRow = table.replace(`| \`${records[0].id}\` `, '| `deleted` ')
     expect(validateSituationsDoc(missingRow, records).join(';')).toContain('drifted')
   })

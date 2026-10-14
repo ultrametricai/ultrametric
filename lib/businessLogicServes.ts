@@ -9,7 +9,7 @@ import { SITE_URL } from '@/lib/site'
 // open-modules/README.md "Serves" lines ↔ map sync (founder 2026-10-02: each module's
 // section names the processes/steps it serves, generated-or-synced so it can't go stale — the
 // SITUATIONS.md drift-gate pattern, lib/situationsDoc.ts). The truth lives in
-// processes/business-logic-map.json (modules + the per-step function entries); every module's
+// open-processes/business-logic-map.json (modules + the per-step function entries); every module's
 // section carries exactly one machine-owned line (SERVES_PREFIX), written by
 // scripts/generate-business-logic-serves.ts and byte-compared here
 // (lib/__tests__/businessLogicServes.test.ts). Pure validators take data so failure modes are
@@ -87,7 +87,7 @@ export function validateServesDoc(markdown: string, src: ServesSource): string[]
     const section = markdown.slice(s.start, s.end)
     if (!section.includes(`\n${line}\n`)) {
       errors.push(
-        `${BUSINESS_LOGIC_README}: the Serves line under "### ${s.label}" is missing or has drifted from processes/business-logic-map.json — rerun scripts/generate-business-logic-serves.ts`,
+        `${BUSINESS_LOGIC_README}: the Serves line under "### ${s.label}" is missing or has drifted from open-processes/business-logic-map.json — rerun scripts/generate-business-logic-serves.ts`,
       )
     }
   }

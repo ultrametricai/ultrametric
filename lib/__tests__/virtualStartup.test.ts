@@ -1,6 +1,6 @@
 // Virtual Startup — the decision→journey mapping and the synthetic-data honesty contract
 // (lib/virtualStartup.ts), checked against the LIVE corpus: every journey must be composed of
-// real processes/corpus.json tasks selected via real processes/chains.json chains, and every
+// real open-processes/corpus.json tasks selected via real open-processes/chains.json chains, and every
 // synthetic artifact must be born labeled simulated and replay deterministically from the
 // decision combo.
 import path from 'node:path'
@@ -59,7 +59,7 @@ import {
   type YearTaskSource,
 } from '@/lib/virtualStartup'
 
-const DATA_DIR = path.resolve(__dirname, '../../rankings')
+const DATA_DIR = path.resolve(__dirname, '../../open-rankings')
 
 const chains: VsChain[] = loadChains(DATA_DIR).map(({ id, name, taskIds }) => ({ id, name, taskIds }))
 const corpusById = new Map(loadProcesses(DATA_DIR).map((t) => [t.id, t]))
@@ -94,7 +94,7 @@ const sources: YearTaskSource[] = [...corpusById.values()].map((t) => ({
 const candidates = buildYearCandidates(chains, sources)
 
 describe('decision → journey mapping (against the live corpus)', () => {
-  it('every journey chain exists in processes/chains.json', () => {
+  it('every journey chain exists in open-processes/chains.json', () => {
     const chainIds = new Set(chains.map((c) => c.id))
     for (const id of VS_CHAIN_IDS) expect(chainIds.has(id), `chain ${id} missing`).toBe(true)
   })
@@ -1049,7 +1049,7 @@ describe("'Likely choice' ordering (round 5, item 7) — committed signals, pres
 describe("the 'Apply to YC' composition (founder 2026-10-01, item 6) — against the live corpus", () => {
   it('fund_007 is a real, committed corpus process with https-cited YC sources and honest routes', () => {
     const task = corpusById.get(YC_APPLY_TASK_ID)
-    expect(task, 'the Apply-to-YC process must exist in processes/corpus.json').toBeTruthy()
+    expect(task, 'the Apply-to-YC process must exist in open-processes/corpus.json').toBeTruthy()
     expect(task!.title).toBe('Apply to Y Combinator')
     // Every cited step URL is https and on YC's own domains — the application guidance itself.
     const urls = task!.dag.nodes.flatMap((n) => (n.actionUrl ? [n.actionUrl] : []))

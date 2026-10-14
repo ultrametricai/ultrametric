@@ -2,7 +2,7 @@ import fs from 'node:fs'
 import path from 'node:path'
 
 // Loader + validator for the citation registry (citations/registry.json, one registry of
-// every cited source in two roles) and the distilled law/LAWS.md. Follows the
+// every cited source in two roles) and the distilled open-law/LAWS.md. Follows the
 // lib/founderOps.ts pattern: structural and referential invariants only, returned as a
 // flat error list so the vitest gate (__tests__/citations.test.ts) can assert an empty
 // array. The pure validators take data, not paths, so tests can exercise failure modes
@@ -137,7 +137,7 @@ export function readingCitations(doc: CitationRegistry): ReadingCitation[] {
 // ---------------------------------------------------------------------------
 
 /**
- * Parse law/LAWS.md. Grammar (kept deliberately rigid so drift is caught):
+ * Parse open-law/LAWS.md. Grammar (kept deliberately rigid so drift is caught):
  *   `## <stage>` opens a lifecycle stage;
  *   `### <n>. <title>` opens law n (global, continuous numbering);
  *   a law body must contain exactly one `Sources:` line citing backticked registry ids.
@@ -220,7 +220,7 @@ export function loadCitationRegistry(): CitationRegistry {
 }
 
 export function loadStartupLawsMarkdown(): string {
-  return fs.readFileSync(path.join(ROOT, 'law/LAWS.md'), 'utf8')
+  return fs.readFileSync(path.join(ROOT, 'open-law/LAWS.md'), 'utf8')
 }
 
 /** The full gate: registry invariants + LAWS.md citation resolution. Empty array = pass. */

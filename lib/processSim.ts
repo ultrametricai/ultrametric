@@ -5,7 +5,7 @@
 
 export type StepRoute = 'agent' | 'form' | 'person'
 
-// How often a process actually recurs in a running company (processes/corpus.json `cadence`,
+// How often a process actually recurs in a running company (open-processes/corpus.json `cadence`,
 // validated by lib/processes.ts's ProcessTaskSchema — keep this union and that z.enum in
 // lockstep). Lives here so client components can type against it without pulling node:fs.
 export type Cadence = 'daily' | 'weekly' | 'monthly' | 'quarterly' | 'annual' | 'event-driven' | 'once'
@@ -50,7 +50,7 @@ export const URGENCY_META: Record<Urgency, { label: string; definition: string }
 
 // Reversibility tiers (founder 2026-09-30: "map what is irreversible and what is reversible —
 // consider 'irreversible with pain' as a 3rd option — for ALL processes and process steps").
-// Curated explicitly on every corpus process AND every DAG node (processes/corpus.json,
+// Curated explicitly on every corpus process AND every DAG node (open-processes/corpus.json,
 // validated by lib/processes.ts's ProcessTaskSchema — keep this tuple and that z.enum in
 // lockstep; totality is corpus-tested). The judgment test is "what does undoing actually take":
 //   'reversible'   — freely undoable: drafts, configs, most SaaS setup. A routine external send

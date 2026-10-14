@@ -65,7 +65,7 @@ ITEMS = {
 }
 
 for pid, items in ITEMS.items():
-    path = f'rankings/auth-platforms/evidence/{pid}.json'
+    path = f'open-rankings/auth-platforms/evidence/{pid}.json'
     ev = json.load(open(path))
     existing = {e['id'] for e in ev}
     for eid, url, excerpt in items:

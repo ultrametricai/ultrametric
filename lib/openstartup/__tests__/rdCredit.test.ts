@@ -1,5 +1,5 @@
 // Textbook tests for the R&D tax-mechanics module. Duties: (1) every ruleId in
-// RD_RULE_IDS resolves to a committed, jurisdiction-matched card in law/US-FED/ with
+// RD_RULE_IDS resolves to a committed, jurisdiction-matched card in open-law/US-FED/ with
 // primary sources; (2) the midpoint convention replays the widely published 5-year
 // domestic example ($100,000 -> $10,000 in year one; the 10/20/20/20/20/10 pattern that
 // follows directly from "ratably over the 5-year period beginning with the midpoint of
@@ -21,7 +21,7 @@ import {
 } from '../rdCredit'
 
 function loadRuleCard(jurisdiction: string, ruleId: string) {
-  const dir = path.join(process.cwd(), 'law', jurisdiction)
+  const dir = path.join(process.cwd(), 'open-law', jurisdiction)
   for (const file of fs.readdirSync(dir).filter((f) => f.endsWith('.json'))) {
     const card = JSON.parse(fs.readFileSync(path.join(dir, file), 'utf8')) as {
       id: string
@@ -38,7 +38,7 @@ describe('every computation resolves to a committed, jurisdiction-matched rule c
   for (const [name, ref] of Object.entries(RD_RULE_IDS)) {
     it(`${name} → ${ref.ruleId}`, () => {
       const card = loadRuleCard(ref.jurisdiction, ref.ruleId)
-      expect(card, `law/${ref.jurisdiction} must contain a card with id ${ref.ruleId}`).not.toBeNull()
+      expect(card, `open-law/${ref.jurisdiction} must contain a card with id ${ref.ruleId}`).not.toBeNull()
       expect(card?.jurisdiction).toBe(ref.jurisdiction)
       expect(card?.kind).toBe('legal')
       expect(card?.source_ids.length).toBeGreaterThan(0)

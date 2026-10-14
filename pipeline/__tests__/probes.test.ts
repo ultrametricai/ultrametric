@@ -21,9 +21,9 @@ describe('pipeline/probes registry', () => {
     expect(registeredIds).toEqual(moduleIds)
   })
 
-  it('uses real arena ids from rankings/categories.json as keys', () => {
+  it('uses real arena ids from open-rankings/categories.json as keys', () => {
     const categories = JSON.parse(
-      fs.readFileSync(path.resolve(__dirname, '../../rankings/categories.json'), 'utf8'),
+      fs.readFileSync(path.resolve(__dirname, '../../open-rankings/categories.json'), 'utf8'),
     ) as Array<{ id: string }>
     const arenaIds = new Set(categories.map((c) => c.id))
     for (const key of Object.keys(LOCAL_PROBES)) {

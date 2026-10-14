@@ -1,6 +1,6 @@
 // Cross-arena YC-alumni ranking rows for /yc and /yc/[batch] (same lib-level row-builder shape
 // as lib/icp.ts's buildIcpRanking): every tracked product carrying a verified `ycBatch` stamp
-// (rankings/yc-batches.json via pipeline/scripts/yc-cross-reference.ts — matched by website domain,
+// (open-rankings/yc-batches.json via pipeline/scripts/yc-cross-reference.ts — matched by website domain,
 // never by name), with the three headline scores its arena leaderboard already computed. This is
 // the coverage caveat's data source: only YC companies WE track — not a YC-wide census.
 // Coverage grows batch by batch via pipeline/scripts/yc-coverage-queue.ts.

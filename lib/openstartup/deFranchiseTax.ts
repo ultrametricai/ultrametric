@@ -1,7 +1,7 @@
 // Delaware franchise tax — both published computation methods, exactly (founder directive
 // 2026-10-01: "go super deep on business logic — tax mechanics, everything").
 //
-// Pure, client-safe, deterministic. Every formula here is a dated rule card in law/US-DE/
+// Pure, client-safe, deterministic. Every formula here is a dated rule card in open-law/US-DE/
 // citing the primary sources (8 Del. C. § 503 and the Division of Corporations' own
 // calculation page, corp.delaware.gov/frtaxcalc — both verified live 2026-10-01):
 // - us-de.franchise-tax-authorized-shares-method — the $175/$250/+$85-per-10,000 tiers, the

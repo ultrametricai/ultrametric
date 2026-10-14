@@ -12,7 +12,7 @@
 //     never come back 'drivable'/'assist' — or the batch is re-asked (up to 3 rounds);
 //   - cached per node (pipeline/cache/human-steps/audit.json) by a hash over the node fields +
 //     task title + prompt version, so re-runs are incremental and a mid-run crash resumes for
-//     free; the committed rankings/human-step-audit.json is assembled only when every node is
+//     free; the committed open-rankings/human-step-audit.json is assembled only when every node is
 //     fresh — all 147 or nothing.
 //
 // Usage: tsx pipeline/scripts/audit-human-steps.ts [--task <id>] [--report]
@@ -326,7 +326,7 @@ export async function runAudit({ task }: { task?: string } = {}): Promise<void> 
   const merged = mergeAuditEntries(entries, committed)
   writeJson(auditFile, HumanStepAuditFileSchema.parse(merged))
   const kept = merged.filter((e) => e.preserve === true).length
-  console.log(`audit: wrote ${merged.length} audited steps to rankings/human-step-audit.json (${kept} preserved)`)
+  console.log(`audit: wrote ${merged.length} audited steps to open-rankings/human-step-audit.json (${kept} preserved)`)
 }
 
 function printReport(): void {

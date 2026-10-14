@@ -1,7 +1,7 @@
 # Product families — spike findings and decision log
 
 **Date:** 2026-09-11. **Scope:** break multi-product vendors down product by product
-(`rankings/product-families.json`, rendered at `/family/[id]` — see `lib/families.ts` for the data
+(`open-rankings/product-families.json`, rendered at `/family/[id]` — see `lib/families.ts` for the data
 contract), judge sub-products into existing arenas where one genuinely fits, and stay honest
 everywhere else. No new arenas were created for this work.
 
@@ -262,7 +262,7 @@ from a terminal", "generate and edit images in conversation") — never benchmar
   muse.ai", 2026-09-14) brought Muse up in ai-assistants on its launch-week surface — the
   verdicts are honest about the thinness (#8/9, mostly none/na: login-walled product, no public
   API/docs/llms.txt — /pricing, /api, /docs, /llms.txt all 307 to the auth wall, verified). The
-  muse.ai DOMAIN history is documented in rankings/arena-roadmap.json (video-hosting entry): the
+  muse.ai DOMAIN history is documented in open-rankings/arena-roadmap.json (video-hosting entry): the
   original muse.ai video startup rebranded to Skiv (skiv.com, March 2026) and the domain now
   serves Meta's agent. Still no Meta family — one judged product plus page-only candidates
   doesn't clear the bar; revisit with Muse Code. api.meta.ai answers keyless 401 — probe
@@ -308,7 +308,7 @@ What exists publicly today (every URL fetched, statuses recorded):
 | Ultrametric CLI & MCP (the /v2 product) | mcp-infrastructure? **Not yet.** | page-only | Nothing to judge: npm 404 × 2, repo private, endpoint 410. Listing it as judged would be fabricated capability on our own product — the exact thing the owner-product policy exists to prevent. Watchlist: first-priority bring-up into mcp-infrastructure when a live endpoint + published package exist, with the mandatory adversarial bias audit (foreloop/afk flip-reversion precedent). |
 | Ultrametric (company-records CLI, npm `ultrametric`) | legal-ops? agent-skills? **No.** | page-only | Shipped and real, but legal-ops ranks incorporation/filing platforms — guidance + records would na out of nearly every story (Mercury SAFEs precedent) — and agent-skills ranks skill collections/catalogs, not one vendor-scoped setup tool. Also out of the founder ask's scope; kept distinct per its own npm description. |
 
-Stale-evidence note for the next AFK spike: `rankings/spike-queue.json`'s AFK entry records "no
+Stale-evidence note for the next AFK spike: `open-rankings/spike-queue.json`'s AFK entry records "no
 llms.txt on https://ultrametric.ai (recorded absence)" from 2026-09-25 — `/llms.txt` now serves
 200. Left untouched here (recorded evidence is never rewritten); the next spike pass should
 re-probe and supersede it.

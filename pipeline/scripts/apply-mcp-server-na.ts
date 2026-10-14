@@ -9,7 +9,7 @@
 //
 // EXCLUDES codex (review verdict, reopened): codex ships a real (if experimental, and now
 // deprecated per its own docs) `codex mcp-server` / `codex-mcp-server` binary — see
-// codex-gh-6 / codex-docs-23 in rankings/ai-coding/evidence/codex.json. The axis genuinely
+// codex-gh-6 / codex-docs-23 in open-rankings/ai-coding/evidence/codex.json. The axis genuinely
 // applies to codex, so its `agentic-mcp-server` cell is judged normally by the LLM from that
 // evidence, not forced to na.
 //
@@ -19,7 +19,7 @@
 // dedicated "Use Claude Code as an MCP server" section, and a hands-on keyless probe
 // (`claude mcp serve --help`) confirmed the subcommand is live. The "serving" axis DOES apply
 // to claude-code, so it must be judged normally by the LLM from that evidence (verdict: full,
-// see rankings/ai-coding/verdicts.json), not forced to na. cursor/gemini-cli/github-copilot remain
+// see open-rankings/ai-coding/verdicts.json), not forced to na. cursor/gemini-cli/github-copilot remain
 // forced na — doc search found no equivalent first-party server mode for any of them.
 //
 // Usage: pnpm exec tsx pipeline/scripts/apply-mcp-server-na.ts [--write]

@@ -8,10 +8,10 @@ with no playbook yet; `coverage.json` records which scenarios have workflows, at
 maturity, with known gaps. `lib/founderOps.ts` checks both in CI. No country is called
 covered because a few playbooks exist (`governance/REVIEW_POLICY.md`).
 
-How it maps onto the rest of the repo: the rankings (`rankings/`, live at `/arenas`) are the
+How it maps onto the rest of the repo: the rankings (`open-rankings/`, live at `/arenas`) are the
 vendor-evaluation cut of the same territory; the process library
-(`processes/corpus.json`, live at `/processes`) covers the operating work; the
-jurisdiction-scoped workflows (`processes/<domain>/<jurisdiction>/`) are the source-cited
+(`open-processes/corpus.json`, live at `/processes`) covers the operating work; the
+jurisdiction-scoped workflows (`open-processes/<domain>/<jurisdiction>/`) are the source-cited
 legal layer, and `coverage.json` tracks only that layer.
 
 Contribute here:

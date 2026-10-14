@@ -257,7 +257,7 @@ PROBES = {
 
 def main():
     for product in ('checkout-com', 'mollie', 'airwallex', 'paddle', 'polar'):
-        path = f'rankings/payments/evidence/{product}.json'
+        path = f'open-rankings/payments/evidence/{product}.json'
         ev = json.load(open(path))
         existing = {e['id'] for e in ev}
 

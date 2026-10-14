@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # One-shot helper for the yylo bring-up (issue #19, 2026-09-14): appends probe-tier evidence
-# items distilled from the recorded keyless probes in rankings/software-factory/proofs/yylo/ (see
+# items distilled from the recorded keyless probes in open-rankings/software-factory/proofs/yylo/ (see
 # pipeline/probes/software-factory.ts — both recorded probes passed). Both probes are
 # metadata-only (npm registry view + raw LICENSE fetch): no vendor-submitted code is executed,
 # per the vendor-submission security policy applied to this first community submission.
@@ -33,7 +33,7 @@ ITEMS = {
 
 
 def main() -> None:
-    path = 'rankings/software-factory/evidence/yylo.json'
+    path = 'open-rankings/software-factory/evidence/yylo.json'
     with open(path) as fh:
         evidence = json.load(fh)
     existing = {e['id'] for e in evidence}

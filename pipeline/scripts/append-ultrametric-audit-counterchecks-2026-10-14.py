@@ -16,7 +16,7 @@ import os
 
 RECORDED_AT = '2026-10-14T17:20:10.000Z'
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-EVIDENCE = os.path.join(os.path.dirname(ROOT), 'rankings', 'agent-skills', 'evidence', 'ultrametric.json')
+EVIDENCE = os.path.join(os.path.dirname(ROOT), 'open-rankings', 'agent-skills', 'evidence', 'ultrametric.json')
 
 ITEMS = [
     {

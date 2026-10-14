@@ -5,7 +5,7 @@ import { loadDocumentRegistry, openDocumentById } from '@/lib/documents'
 
 // Step documents (founder spike 2026-10-02, form_001 reference depth; extended the same day —
 // "Processes link to the open documents"): corpus nodes may carry `documents: string[]` — ids
-// into open-documents/registry.json (processes/README.md "Step documents"), now RENDERED as
+// into open-documents/registry.json (open-processes/README.md "Step documents"), now RENDERED as
 // external-link chips on the process pages (components/ProcessDag.tsx). This is the
 // referential-integrity gate the house standard demands for every cross-registry link
 // (producesArtifact → artifacts.json, rule source_ids → citations/): a typo'd document id must
@@ -14,7 +14,7 @@ import { loadDocumentRegistry, openDocumentById } from '@/lib/documents'
 // corpus so jurisdiction-conditional nodes are covered too.
 
 const RAW = JSON.parse(
-  fs.readFileSync(path.resolve(__dirname, '../../processes/corpus.json'), 'utf8'),
+  fs.readFileSync(path.resolve(__dirname, '../../open-processes/corpus.json'), 'utf8'),
 ) as Array<{ id: string; dag: { nodes: Array<{ id: string; documents?: string[] }> } }>
 
 const tagged = RAW.flatMap((t) =>

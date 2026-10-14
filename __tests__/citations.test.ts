@@ -13,7 +13,7 @@ import {
   type ReadingCitation,
 } from '@/lib/citations'
 
-// The citation-registry gates: the committed registry and law/LAWS.md must satisfy every
+// The citation-registry gates: the committed registry and open-law/LAWS.md must satisfy every
 // structural and referential invariant (unique ids across both roles, HTTPS URLs, dated
 // checks, every law citation resolving to a registry record). Deterministic — liveness
 // checks are editorial, recorded via checked_on (see citations/README.md).

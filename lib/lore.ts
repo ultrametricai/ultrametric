@@ -4,7 +4,7 @@ import path from 'node:path'
 import { loadProcesses } from '@/lib/processes'
 import { loadStartupLawsMarkdown, parseStartupLaws, type StartupLaw } from '@/lib/citations'
 
-// Loader + validator for startup lore (lore/LORE.md) — the famous episodes and war
+// Loader + validator for startup lore (open-lore/LORE.md) — the famous episodes and war
 // stories of startup history, curated as sourced records. Follows the LAWS.md precedent
 // exactly: a deliberately rigid markdown grammar parsed here, structural and referential
 // invariants returned as a flat error list, and a vitest gate (__tests__/lore.test.ts)
@@ -54,9 +54,9 @@ export interface LoreEntry {
   lesson: string
   veracity: VeracityGrade
   sources: LoreSource[]
-  /** Law numbers from law/LAWS.md this episode illustrates. */
+  /** Law numbers from open-law/LAWS.md this episode illustrates. */
   relatedLaws: number[]
-  /** Process ids from processes/corpus.json this episode illustrates (verified on main). */
+  /** Process ids from open-processes/corpus.json this episode illustrates (verified on main). */
   relatedProcesses: string[]
   /**
    * Process ids expected from parallel corpus work (e.g. the sit_* situations) that do NOT
@@ -94,7 +94,7 @@ const commaList = (text: string): string[] =>
     .filter((s) => s.length > 0)
 
 /**
- * Parse lore/LORE.md. Grammar (kept deliberately rigid so drift is caught):
+ * Parse open-lore/LORE.md. Grammar (kept deliberately rigid so drift is caught):
  *   `## <theme>` opens a theme;
  *   `### <n>. <title>` opens entry n (global, continuous numbering);
  *   labeled lines (`Id:` backticked slug, `Era:`, `Companies:`/`People:` comma lists,
@@ -302,7 +302,7 @@ export function validateStartupLore(
 const ROOT = process.cwd()
 
 export function loadStartupLoreMarkdown(): string {
-  return fs.readFileSync(path.join(ROOT, 'lore/LORE.md'), 'utf8')
+  return fs.readFileSync(path.join(ROOT, 'open-lore/LORE.md'), 'utf8')
 }
 
 export function loadStartupLore(): LoreEntry[] {
@@ -310,7 +310,7 @@ export function loadStartupLore(): LoreEntry[] {
 }
 
 /**
- * The full gate: LORE.md grammar + invariants, law numbers resolved against law/LAWS.md,
+ * The full gate: LORE.md grammar + invariants, law numbers resolved against open-law/LAWS.md,
  * process ids resolved (read-only) against the corpus loader. Empty array = pass.
  */
 export function validateLore(): string[] {

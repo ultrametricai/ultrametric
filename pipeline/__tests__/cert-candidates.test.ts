@@ -97,7 +97,7 @@ describe('needsRenewal (cert-sweep)', () => {
 })
 
 describe('collectCertCandidates (against the committed registry data)', () => {
-  // Runs on the real rankings/ tree — pure file reads, no network. Locks the queue's contract:
+  // Runs on the real open-rankings/ tree — pure file reads, no network. Locks the queue's contract:
   // every candidate is backed by at least one probe signal, none already hold an active
   // certification, and product ids never repeat across arenas.
   it('emits only uncertified, probe-backed, deduplicated products', () => {

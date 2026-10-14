@@ -8,7 +8,7 @@ import type { Product, Rankings } from './schemas'
 // Derived, never authored: every number here is a mean over the arena's computed Overall
 // scores (leaderboard aiEra) for the judged agencies tagged into each (country, area) cell —
 // change verdicts or evidence and re-derive, never this file's output. Emitted by the derive
-// stage as rankings/<cat>/rollups.json and reproduced byte-for-byte by recompute-check.
+// stage as open-rankings/<cat>/rollups.json and reproduced byte-for-byte by recompute-check.
 
 // The areas a country overall is averaged over. Fixed by design (§5.2): rollups compare only
 // matched areas, so roster composition cannot move a country's overall score; a country gets an
@@ -145,7 +145,7 @@ export function buildRollups(products: Product[], rankings: Rankings): Rollups |
 
 // Tolerant-optional loader, same contract as lib/scoreIntervals.ts's: most arenas have no
 // rollups.json at all, and display code renders no country section when the file is absent.
-export function loadRollups(categoryId: string, dir: string = path.join(process.cwd(), 'rankings')): Rollups | null {
+export function loadRollups(categoryId: string, dir: string = path.join(process.cwd(), 'open-rankings')): Rollups | null {
   const file = path.join(dir, categoryId, 'rollups.json')
   if (!fs.existsSync(file)) return null
   return RollupsSchema.parse(JSON.parse(fs.readFileSync(file, 'utf8')))

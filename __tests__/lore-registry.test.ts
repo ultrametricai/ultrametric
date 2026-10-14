@@ -2,11 +2,11 @@ import fs from 'node:fs'
 import path from 'node:path'
 import { describe, expect, it } from 'vitest'
 
-// The lore registry gate: lore/registry.json carries schooled heuristics as claims with
+// The lore registry gate: open-lore/registry.json carries schooled heuristics as claims with
 // provenance. Invariants: total schema (no missing or extra fields), unique kebab-case ids,
 // every source URL present, tensions resolving to existing ids + symmetric + cross-school,
-// and processIds resolving (read-only) against processes/corpus.json. Deterministic; URL
-// liveness is editorial (lore/README.md).
+// and processIds resolving (read-only) against open-processes/corpus.json. Deterministic; URL
+// liveness is editorial (open-lore/README.md).
 
 const ROOT = path.join(__dirname, '..')
 
@@ -22,17 +22,17 @@ type LoreEntry = {
 }
 
 const registry = JSON.parse(
-  fs.readFileSync(path.join(ROOT, 'lore', 'registry.json'), 'utf8'),
+  fs.readFileSync(path.join(ROOT, 'open-lore', 'registry.json'), 'utf8'),
 ) as LoreEntry[]
 
 const corpus = JSON.parse(
-  fs.readFileSync(path.join(ROOT, 'processes', 'corpus.json'), 'utf8'),
+  fs.readFileSync(path.join(ROOT, 'open-processes', 'corpus.json'), 'utf8'),
 ) as Array<{ id: string }>
 const processIds = new Set(corpus.map((p) => p.id))
 
 const byId = new Map(registry.map((e) => [e.id, e]))
 
-describe('lore registry (lore/registry.json)', () => {
+describe('lore registry (open-lore/registry.json)', () => {
   it('is an array of 25-40 entries', () => {
     expect(Array.isArray(registry)).toBe(true)
     expect(registry.length).toBeGreaterThanOrEqual(25)
@@ -110,7 +110,7 @@ describe('lore registry (lore/registry.json)', () => {
     }
   })
 
-  it('processIds resolve against processes/corpus.json', () => {
+  it('processIds resolve against open-processes/corpus.json', () => {
     for (const e of registry) {
       for (const pid of e.processIds) {
         expect(processIds.has(pid), `entry ${e.id} unknown process id ${pid}`).toBe(true)

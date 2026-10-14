@@ -30,7 +30,7 @@ function githubSlug(heading: string): string {
     .replace(/ /g, '-')
 }
 
-describe('processes/business-logic-map.json totality', () => {
+describe('open-processes/business-logic-map.json totality', () => {
   const map = loadBusinessLogicMap()
   const processIds = new Set(loadProcesses().map((t) => t.id))
 
@@ -80,7 +80,7 @@ describe('processes/business-logic-map.json totality', () => {
   })
 })
 
-describe('processes/business-logic-map.json step-level totality', () => {
+describe('open-processes/business-logic-map.json step-level totality', () => {
   const map = loadBusinessLogicMap()
   const steps = loadBusinessLogicSteps()
   const tasks = new Map(loadProcesses().map((t) => [t.id, t]))

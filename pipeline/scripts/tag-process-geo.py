@@ -102,7 +102,7 @@ NOTES = {
     ],
 }
 
-with open('processes/corpus.json') as f:
+with open('open-processes/corpus.json') as f:
     tasks = json.load(f, object_pairs_hook=OrderedDict)
 
 order = ['IN', 'UK', 'DE', 'FR']
@@ -137,6 +137,6 @@ print(Counter(t['geoScope'] for t in tasks))
 print('notes:', sum(len(t.get('geoNotes', [])) for t in tasks))
 print('note countries:', Counter(n['country'] for t in tasks for n in t.get('geoNotes', [])))
 
-with open('processes/corpus.json', 'w') as f:
+with open('open-processes/corpus.json', 'w') as f:
     json.dump(tasks, f, indent=2)
     f.write('\n')

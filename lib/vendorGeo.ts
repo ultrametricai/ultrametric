@@ -53,11 +53,11 @@ export const VendorGeoEntrySchema = z.object({
 export type VendorGeoEntry = z.infer<typeof VendorGeoEntrySchema>
 export type VendorGeoStatus = VendorGeoEntry['status']
 
-const DEFAULT_DIR = () => path.join(process.cwd(), 'rankings')
+const DEFAULT_DIR = () => path.join(process.cwd(), 'open-rankings')
 
 const cache = new Map<string, VendorGeoEntry[]>()
 
-// Stage 2 of the corpus lift (docs/FOUNDER-OPS.md): the geo evidence moved out of rankings/ into
+// Stage 2 of the corpus lift (docs/FOUNDER-OPS.md): the geo evidence moved out of open-rankings/ into
 // jurisdictions/. `dir` stays the arena-data dir (same convention as lib/processes.ts); the
 // evidence file resolves as a sibling of it, so every call site keeps working unchanged.
 const geoFile = (dir: string) => path.join(dir, '..', 'jurisdictions', 'vendor-geo.json')

@@ -131,7 +131,7 @@ PROBES = [
 
 
 def main():
-    path = 'rankings/team-chat/evidence/buzz.json'
+    path = 'open-rankings/team-chat/evidence/buzz.json'
     ev = json.load(open(path))
     existing = {e['id'] for e in ev}
 

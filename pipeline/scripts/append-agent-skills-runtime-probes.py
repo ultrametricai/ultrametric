@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # One-shot helper for the agent-skills arena bring-up (2026-09-06): appends probe-tier evidence
-# items distilled from the recorded runtime probes in rankings/agent-skills/proofs/ (see
+# items distilled from the recorded runtime probes in open-rankings/agent-skills/proofs/ (see
 # pipeline/probes/agent-skills.ts — all 7 recorded probes passed).
 # 2026-10-14: items now carry preserve: true, so once appended they survive probe-stage
 # refreshes (pipeline/stages/probe.ts mergeProbeEvidence keeps preserved probe-tier rows;
@@ -83,7 +83,7 @@ ITEMS = {
 }
 
 for pid, items in ITEMS.items():
-    path = f'rankings/agent-skills/evidence/{pid}.json'
+    path = f'open-rankings/agent-skills/evidence/{pid}.json'
     ev = json.load(open(path))
     existing = {e['id'] for e in ev}
     for item in items:

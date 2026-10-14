@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # One-shot helper for the data-pipelines arena bring-up (2026-09-08): appends probe-tier
-# evidence items distilled from the recorded runtime probes in rankings/data-pipelines/proofs/
+# evidence items distilled from the recorded runtime probes in open-rankings/data-pipelines/proofs/
 # (see pipeline/probes/data-pipelines.ts — all 11 recorded probes
 # passed). Run AFTER `pnpm pipeline probe --category data-pipelines` — that stage wholesale-
 # replaces probe-tier evidence and would wipe these items (re-run this script after any probe
@@ -103,7 +103,7 @@ ITEMS = {
 }
 
 for product, items in ITEMS.items():
-    path = f'rankings/data-pipelines/evidence/{product}.json'
+    path = f'open-rankings/data-pipelines/evidence/{product}.json'
     with open(path) as f:
         evidence = json.load(f)
     existing = {e['id'] for e in evidence}

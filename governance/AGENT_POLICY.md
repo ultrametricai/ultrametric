@@ -9,7 +9,7 @@ criteria below. A radar candidate (a product surfaced by `pipeline/scripts/vendo
 in a `vendor-radar: candidates` issue) is auto-approved for bring-up when all four hold:
 
 1. **Existing ranking fit** — the product clearly belongs in one existing arena
-   (`rankings/<arena>/`). Creating a new ranking requires a human decision.
+   (`open-rankings/<arena>/`). Creating a new ranking requires a human decision.
 2. **Public docs surface** — a reachable documentation site, API reference, or, for an
    open-source product, a substantive README (installation and usage written for users,
    not a link collection).

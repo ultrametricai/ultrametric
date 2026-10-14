@@ -1,4 +1,4 @@
-// `pnpm stats`: recomputes the rankings/products counts from rankings/ and rewrites the one
+// `pnpm stats`: recomputes the open-rankings/products counts from open-rankings/ and rewrites the one
 // generated block left in README.md, the compact arenas line between
 // <!-- arenas:start --> / <!-- arenas:end -->. The README carries no other generated
 // numbers (founder round 8 removed the stats line and badge row), so this is the only
@@ -9,7 +9,7 @@ import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..')
-const DATA_DIR = path.join(ROOT, 'rankings')
+const DATA_DIR = path.join(ROOT, 'open-rankings')
 const README_PATH = path.join(ROOT, 'README.md')
 
 const ARENAS_START_MARKER = '<!-- arenas:start -->'
@@ -41,7 +41,7 @@ function computeStats() {
 function renderArenasBlock(stats) {
   return [
     ARENAS_START_MARKER,
-    `**${stats.arenas} rankings** today, ${stats.products} products judged head to head — the full index is [ultrametric.ai/arenas](https://ultrametric.ai/arenas), and each ranking's records live under [\`rankings/\`](rankings/).`,
+    `**${stats.arenas} rankings** today, ${stats.products} products judged head to head — the full index is [ultrametric.ai/arenas](https://ultrametric.ai/arenas), and each ranking's records live under [\`open-rankings/\`](open-rankings/).`,
     ARENAS_END_MARKER,
   ].join('\n')
 }

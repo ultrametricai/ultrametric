@@ -18,7 +18,7 @@
 //   - cached per (step, vendor) by a hash over the step text + vendor + evidence ids/urls used
 //     + canonical calls + prompt version (pipeline/cache/step-calls/<arenaId>.json), so re-runs
 //     are incremental and a mid-run crash resumes for free;
-//   - the committed rankings/step-vendor-calls.json is assembled all-or-nothing: unscoped runs
+//   - the committed open-rankings/step-vendor-calls.json is assembled all-or-nothing: unscoped runs
 //     require EVERY enumerated target fresh; scoped runs (--task / --tasks) apply the same rule
 //     per task, committing every task whose full target set is fresh in cache.
 //
@@ -466,7 +466,7 @@ export async function runMapper({ tasks: taskIds }: { tasks?: string[] } = {}): 
   writeJson(path.join(DATA_DIR, 'step-vendor-calls.json'), StepVendorCallsFileSchema.parse(entries))
   const cellsCovered = coveredTasks.reduce((acc, id) => acc + (byTask.get(id)?.length ?? 0), 0)
   console.log(
-    `map-calls: wrote ${entries.length} grounded (step, vendor) entries to rankings/step-vendor-calls.json — ` +
+    `map-calls: wrote ${entries.length} grounded (step, vendor) entries to open-rankings/step-vendor-calls.json — ` +
     `${coveredTasks.length}/${byTask.size} tasks covered (${cellsCovered} cells, ${cellsCovered - entries.length} honest empties omitted)` +
     (staleTasks.length > 0 ? `; NOT covered: ${staleTasks.join(', ')}` : ''),
   )

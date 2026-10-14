@@ -1,7 +1,7 @@
 // Committed-file + loader tests for the step→vendor→API-call mapping. Two layers, same posture
 // as map-step-stories.test.ts: pure-part tests of the generator's validator/hash (no LLM, no
 // network), then schema + referential-integrity validation of the committed
-// rankings/step-vendor-calls.json and a loader smoke test against it.
+// open-rankings/step-vendor-calls.json and a loader smoke test against it.
 import fs from 'node:fs'
 import path from 'node:path'
 import { describe, expect, it } from 'vitest'
@@ -125,7 +125,7 @@ const entries: StepVendorCallEntry[] = hasFile
   ? StepVendorCallsFileSchema.parse(JSON.parse(fs.readFileSync(COMMITTED, 'utf8')))
   : []
 
-describe.skipIf(!hasFile)('committed rankings/step-vendor-calls.json', () => {
+describe.skipIf(!hasFile)('committed open-rankings/step-vendor-calls.json', () => {
   it('is non-empty and zod-valid (parsed above), with every sourceUrl http(s) and every method call-shaped', () => {
     expect(entries.length).toBeGreaterThan(0)
     for (const e of entries) {

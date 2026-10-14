@@ -1,6 +1,6 @@
 // Corpus lift stage 2 (docs/FOUNDER-OPS.md): publish the operational-process corpus contract as
 // a standalone JSON Schema — schemas/operational-process.schema.json — so external consumers can
-// validate processes/corpus.json records without running our TypeScript. The zod schemas in
+// validate open-processes/corpus.json records without running our TypeScript. The zod schemas in
 // lib/processes.ts stay the single source of truth: this file is GENERATED from
 // ProcessTaskSchema via zod's native z.toJSONSchema (no extra dependency — the repo's
 // supply-chain minimumReleaseAge policy rules out adding zod-to-json-schema), and the drift test
@@ -32,7 +32,7 @@ export function operationalProcessSchemaJson(): string {
     $schema,
     title: 'Ultrametric operational process',
     description:
-      'One record of the operational founder-process corpus (processes/corpus.json is an array ' +
+      'One record of the operational founder-process corpus (open-processes/corpus.json is an array ' +
       'of these): a real startup operating process mapped as a DAG whose steps are routed ' +
       'agent/form/person, with curated cadence, geo scope, rank axes, and time estimates. ' +
       'Generated from ProcessTaskSchema in lib/processes.ts by ' +
@@ -43,7 +43,7 @@ export function operationalProcessSchemaJson(): string {
 }
 
 // The vendor-registry contract (SSOT migration, founder audit 2026-09-30): the vendor facts the
-// process pages render moved out of TypeScript into processes/vendor-registry.json; this schema
+// process pages render moved out of TypeScript into open-processes/vendor-registry.json; this schema
 // is generated from the same zod source of truth (VendorRegistrySchema in lib/processes.ts) and
 // drift-tested the same way.
 export function vendorRegistrySchemaJson(): string {
@@ -53,7 +53,7 @@ export function vendorRegistrySchemaJson(): string {
     title: 'Ultrametric process vendor registry',
     description:
       'The vendor registry beside the operational-process corpus ' +
-      '(processes/vendor-registry.json): per corpus vendor key, the arena that judges the ' +
+      '(open-processes/vendor-registry.json): per corpus vendor key, the arena that judges the ' +
       'vendor, its display label where title-casing misfires, its judged product id where it ' +
       'differs from the key, and its verified-live start-here page — with honest curation ' +
       'notes. Generated from VendorRegistrySchema in lib/processes.ts by ' +
@@ -64,7 +64,7 @@ export function vendorRegistrySchemaJson(): string {
 }
 
 // The artifact-registry contract (founder depth wave part 2, 2026-10-01): the canonical
-// business artifacts that flow between processes live in processes/artifacts.json; this schema
+// business artifacts that flow between processes live in open-processes/artifacts.json; this schema
 // is generated from the same zod source of truth (ArtifactRegistrySchema in lib/processes.ts)
 // and drift-tested the same way.
 export function artifactRegistrySchemaJson(): string {
@@ -74,7 +74,7 @@ export function artifactRegistrySchemaJson(): string {
     title: 'Ultrametric process artifact registry',
     description:
       'The artifact vocabulary beside the operational-process corpus ' +
-      '(processes/artifacts.json): the canonical business artifacts that flow between ' +
+      '(open-processes/artifacts.json): the canonical business artifacts that flow between ' +
       'processes — per artifact its id, label, description, one canonical producer process, ' +
       'documented exception producers, a terminal flag for artifacts nothing downstream ' +
       'consumes, and optional per-country geo analogs derived from the committed process ' +
@@ -86,7 +86,7 @@ export function artifactRegistrySchemaJson(): string {
 }
 
 // The company-fields contract (founder 2026-10-07: typed company data fields): the typed
-// company-level values the open modules consume live in processes/company-fields.json; this
+// company-level values the open modules consume live in open-processes/company-fields.json; this
 // schema is generated from the same zod source of truth (CompanyFieldsRegistrySchema in
 // lib/companyFields.ts) and drift-tested the same way.
 export function companyFieldsSchemaJson(): string {
@@ -96,7 +96,7 @@ export function companyFieldsSchemaJson(): string {
     title: 'Ultrametric company data fields',
     description:
       'The typed company-level data fields beside the operational-process corpus ' +
-      '(processes/company-fields.json): per field its id, label, type, the artifact that ' +
+      '(open-processes/company-fields.json): per field its id, label, type, the artifact that ' +
       'establishes it, and the open-module functions that consume it. Generated from ' +
       'CompanyFieldsRegistrySchema in lib/companyFields.ts by ' +
       'scripts/generate-corpus-schemas.ts — edit the zod schema, never this file.',

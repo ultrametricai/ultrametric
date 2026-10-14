@@ -38,7 +38,7 @@ export interface ProcessRow {
   kind: ProcessKind
   trigger: string | null
   urgency: Urgency | null
-  // The five-orderings fields (curated in processes/corpus.json; cadence label/rank resolved
+  // The five-orderings fields (curated in open-processes/corpus.json; cadence label/rank resolved
   // server-side so the client table stays free of the node-only cadence helpers). timeOrder is
   // null on kind 'situation'.
   timeOrder: number | null
@@ -50,7 +50,7 @@ export interface ProcessRow {
   vendors: Array<{ id: string; label: string; arena: string | null; hasLogo: boolean }>
 }
 
-// A curated end-to-end chain (processes/chains.json) as a row in the SAME table (founder
+// A curated end-to-end chain (open-processes/chains.json) as a row in the SAME table (founder
 // 2026-09-29: one view for the processes under the process search — the separate playbooks
 // section is gone). Serialized server-side by lib/processRows.ts buildPlaybookRows.
 export interface PlaybookRow {

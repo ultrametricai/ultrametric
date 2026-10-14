@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # One-shot helper for the data-warehouses arena bring-up (2026-09-06): appends probe-tier
-# evidence items distilled from the recorded runtime probes in rankings/data-warehouses/proofs/
+# evidence items distilled from the recorded runtime probes in open-rankings/data-warehouses/proofs/
 # (see pipeline/probes/data-warehouses.ts — all 11 recorded probes
 # passed). Run AFTER `pnpm pipeline probe --category data-warehouses` — that stage
 # wholesale-replaces probe-tier evidence and would wipe these items (re-run this script after
@@ -92,7 +92,7 @@ ITEMS = {
 }
 
 for pid, items in ITEMS.items():
-    path = f'rankings/data-warehouses/evidence/{pid}.json'
+    path = f'open-rankings/data-warehouses/evidence/{pid}.json'
     ev = json.load(open(path))
     existing = {e['id'] for e in ev}
     for item in items:

@@ -1,6 +1,6 @@
 # Situations — the reactive records in the process corpus
 
-A **situation** is a corpus record with `kind: 'situation'` (`processes/corpus.json`): reactive,
+A **situation** is a corpus record with `kind: 'situation'` (`open-processes/corpus.json`): reactive,
 trigger-driven work that interrupts the founder journey instead of sitting on it. A lawsuit is
 served, a breach is live, a tax notice arrives — nobody plans these into a timeline, so
 situations deliberately carry **no `timeOrder` slot** and never appear on the founder-timeline
@@ -75,9 +75,9 @@ The 22 situations, hottest clock first (urgency, then title — the /situations 
 
 ## How to add one
 
-1. Add the record to `processes/corpus.json` with `kind: 'situation'`, a `trigger` written as
+1. Add the record to `open-processes/corpus.json` with `kind: 'situation'`, a `trigger` written as
    the event, an honest `urgency` tier, **no `timeOrder`**, and the usual DAG/scores/geoScope.
-   Legal claims in descriptions cite dated rule cards in `law/` by id; deadlines cite the
+   Legal claims in descriptions cite dated rule cards in `open-law/` by id; deadlines cite the
    notice or statute, curl-verified like every corpus URL.
 2. Route steps honestly: `agent` only for the mechanical core; signatures under penalty of
    perjury get `legalSignature`; third-party clocks are `person` waits.

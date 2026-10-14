@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # Hot-repos fairness wave (2026-09-15): Stripe-style exhaustive agent-surface evidence pass for
 # RAMP, in BOTH arenas that track it — expense-management and startup-banking (separate packs:
-# rankings/<arena>/evidence/ramp.json). Same supplement recipe as
+# open-rankings/<arena>/evidence/ramp.json). Same supplement recipe as
 # append-payments-fairness-agentic-evidence.py: verbatim passages from CRAWLED/VERIFIED vendor
 # pages that the per-source extraction caps plus the 40-story quota starved out of the packs.
 # This wave's crawl added 12 expense-management and 18 startup-banking agent-surface urls.extra
@@ -223,7 +223,7 @@ PROBES = {
 
 def main():
     for cat in ('expense-management', 'startup-banking'):
-        path = f'rankings/{cat}/evidence/ramp.json'
+        path = f'open-rankings/{cat}/evidence/ramp.json'
         ev = json.load(open(path))
         existing = {e['id'] for e in ev}
 

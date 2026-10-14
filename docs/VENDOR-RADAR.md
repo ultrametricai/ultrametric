@@ -19,7 +19,7 @@ and the affiliation guard — and records
 every candidate's disposition (auto-approved, skipped with the failing criterion and its evidence,
 or needs-human) on the day's candidates issue and in
 `reports/vendor-radar/<date>-triage.json`. Ranking-fit placement is lexical, so every
-auto-approved disposition records the matched arena's `rankings/categories.json` definition in
+auto-approved disposition records the matched arena's `open-rankings/categories.json` definition in
 its evidence and carries "placement: keyword-matched, confirm against arena definition at
 review" in its reason; the bring-up PR body inherits both, and the reviewer confirms the arena
 against its definition before merge.
@@ -58,14 +58,14 @@ that review.
      crosses `GITHUB_MIN_STARS_PER_DAY`.
 2. **Match** each hot item's text (title / tagline / description / topics) against the arena
    taxonomy: `DOMAIN_VOCAB` (`pipeline/scripts/tag-story-scopes.ts` — the same per-arena nouns
-   `yc-coverage-queue.ts` matches with), extended per arena with its `rankings/categories.json`
-   name tokens and its `rankings/arena-sections.json` section-name tokens. `MIN_ARENA_HITS`
+   `yc-coverage-queue.ts` matches with), extended per arena with its `open-rankings/categories.json`
+   name tokens and its `open-rankings/arena-sections.json` section-name tokens. `MIN_ARENA_HITS`
    distinct keyword hits are required — a hot launch that speaks no arena's language is not our
    vendor. Lexical matching is a NOMINATION signal, never a verdict input.
 3. **Dedupe**, so each candidate surfaces exactly once, ever:
-   - every tracked product (`rankings/<arena>/products.json`) by normalized site domain
+   - every tracked product (`open-rankings/<arena>/products.json`) by normalized site domain
      (`pipeline/yc-shared.ts` `normalizeDomain`) and by normalized name/id,
-   - the vendor registry (`rankings/reviews/generated/`) by product id,
+   - the vendor registry (`open-rankings/reviews/generated/`) by product id,
    - the committed seen-ledger **`pipeline/radar-seen.json`**: every candidate ever reported,
      keyed by product domain (or `github:owner/repo` / normalized name when no product domain is
      public). `firstSeen` is the honest date of the run that first reported it — never backdated.
@@ -108,7 +108,7 @@ Instinct and OpenAI-dots bring-ups used (`docs/vendor-research/instinct.md`,
 1. **Research doc** — `docs/vendor-research/<vendor>.md`: what it is, which arena, capability map
    with per-claim source URLs, fetch dates, and evidence tiers (`claimed-docs` / `press` /
    `probe`). No judging, no rankings edits — raw material for the evidence pack.
-2. **Roster PR** — add the product to `rankings/<arena>/products.json` (reviewed like any roster
+2. **Roster PR** — add the product to `open-rankings/<arena>/products.json` (reviewed like any roster
    change; disclosure rules apply if owner-affiliated).
 3. **The deep spike** — a keyed standard-pipeline run on that product/arena:
    `crawl → extract → collect-community → probe → judge → claims → derive` (via

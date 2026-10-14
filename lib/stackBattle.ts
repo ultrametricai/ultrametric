@@ -147,7 +147,7 @@ export function battleVerdict(
 
 // ---- share-URL state (?a=…&b=…) ----
 
-// Each side is either a curated preset id (rankings/ai-stacks.json) or a comma-separated custom
+// Each side is either a curated preset id (open-rankings/ai-stacks.json) or a comma-separated custom
 // product list. Preset ids are matched first — they're kebab-case slugs from a reviewed file,
 // so a collision with a product id would be a data bug, not a runtime ambiguity.
 export type BattleSideState =

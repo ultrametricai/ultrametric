@@ -11,7 +11,7 @@
 //
 // Pure, client-safe, deterministic; UTC ISO-date arithmetic only. Registered in
 // open-modules/README.md; the vitest gate (lib/openstartup/__tests__/grant409aSanity.test.ts)
-// asserts every ruleId in RULE_IDS_409A resolves to a committed card in law/US-FED/.
+// asserts every ruleId in RULE_IDS_409A resolves to a committed card in open-law/US-FED/.
 //
 // Rule cards (all citing IRS final regulations under section 409A — source
 // `irs-final-reg-409a-2007`, Treas. Reg. § 1.409A-1(b)(5)):

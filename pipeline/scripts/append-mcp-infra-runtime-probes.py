@@ -149,7 +149,7 @@ FNS = {
 }
 
 for pid, checks in CHECKS.items():
-    path = f'rankings/mcp-infrastructure/evidence/{pid}.json'
+    path = f'open-rankings/mcp-infrastructure/evidence/{pid}.json'
     ev = json.load(open(path))
     existing_rt = [e for e in ev if e['id'].startswith(f'{pid}-probe-rt-')]
     if existing_rt:

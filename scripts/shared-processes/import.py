@@ -185,7 +185,7 @@ def record_base(value, path, record_id, summary):
 
 
 def operational(value):
-    path = "processes/corpus.json"
+    path = "open-processes/corpus.json"
     key = value["id"]
     r = record_base(value, path, key, value["description"])
     m = Move(value, f"operational[{key}]", f"records[{key}]")
@@ -205,7 +205,7 @@ def operational(value):
 
 def chain(value):
     key = value["id"]
-    r = record_base(value, "processes/chains.json", key, value["tagline"])
+    r = record_base(value, "open-processes/chains.json", key, value["tagline"])
     m = Move(value, f"chain[{key}]", f"records[{key}]")
     for field, target in [("id", "id"), ("name", "title"), ("tagline", "summary")]:
         m.take(field, target)
@@ -235,9 +235,9 @@ def workflow(value, path):
     return r
 
 
-corpus = SOURCE_FILES["processes/corpus.json"]
-chains = SOURCE_FILES["processes/chains.json"]
-registry = SOURCE_FILES["processes/vendor-registry.json"]
+corpus = SOURCE_FILES["open-processes/corpus.json"]
+chains = SOURCE_FILES["open-processes/chains.json"]
+registry = SOURCE_FILES["open-processes/vendor-registry.json"]
 def slug(value):
     return re.sub(r"[^a-z0-9]+", "-", value.lower()).strip("-")
 TITLES = {p["id"]: p["title"] for p in corpus}
@@ -245,7 +245,7 @@ SLUGS = {slug(p["title"]): p["id"] for p in corpus}
 SLUGS.update({a["slug"]: p["id"] for p in corpus for a in p.get("slugAliases", [])})
 records = [operational(p) for p in corpus] + [chain(c) for c in chains]
 for path, value in SOURCE_FILES.items():
-    if path.startswith("processes/equity/"):
+    if path.startswith("open-processes/equity/"):
         records.append(workflow(value, path))
 def check_vendor_refs(value, record_id):
     if isinstance(value, dict):
@@ -276,7 +276,25 @@ for record in records:
     existing = json.loads(target.read_text()) if target.exists() else None
     source_hash = record["source"]["sha256"]
     if prior and prior["sourceHash"] == source_hash and existing is not None:
-        manifest["records"][key] = prior
+        # The source value is unchanged; check whether the generated FORM moved anyway
+        # (an importer change, e.g. the source file rename to open-processes/). The probe
+        # pins the revision to the committed record's, so HEAD churn alone never re-blesses.
+        probe = copy.deepcopy(record)
+        probe["source"]["revision"] = existing["source"]["revision"]
+        if digest(probe) == prior["generatedHash"]:
+            manifest["records"][key] = prior
+            continue
+        # Re-bless the receipt against the new generated baseline. A pure generated file
+        # is rewritten in place; an authored record keeps its guidance and refreshes only
+        # the source-mirrored metadata block (the authored-record conflict rule).
+        changes.append(key)
+        if digest(existing) == prior["generatedHash"]:
+            pending[target] = record
+        else:
+            refreshed = copy.deepcopy(existing)
+            refreshed["source"] = record["source"]
+            pending[target] = refreshed
+        manifest["records"][key] = {"sourceHash": source_hash, "generatedHash": digest(record)}
         continue
     if existing is not None and (prior is None or digest(existing) != prior["generatedHash"]):
         conflicts.append(key)

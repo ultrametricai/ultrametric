@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # One-shot helper for the durable-workflows arena bring-up (2026-09-10): appends probe-tier
-# evidence items distilled from the recorded runtime probes in rankings/durable-workflows/proofs/
+# evidence items distilled from the recorded runtime probes in open-rankings/durable-workflows/proofs/
 # (see pipeline/probes/durable-workflows.ts — all 28 recorded probes passed). Run AFTER
 # `pnpm pipeline probe --category durable-workflows` — that stage wholesale-replaces probe-tier
 # evidence and would wipe these items (re-run this script after any probe refresh). The arena's
@@ -174,7 +174,7 @@ ITEMS = {
 }
 
 for pid, items in ITEMS.items():
-    path = f'rankings/durable-workflows/evidence/{pid}.json'
+    path = f'open-rankings/durable-workflows/evidence/{pid}.json'
     with open(path) as f:
         evidence = json.load(f)
     existing = {e['id'] for e in evidence}

@@ -5,7 +5,7 @@ import { afterEach, describe, expect, it } from 'vitest'
 import { loadCategory, vendorResponseFor } from '@/lib/data'
 import { VendorResponseSchema, VendorResponsesArraySchema, type VendorResponse } from '@/lib/schemas'
 
-const REAL = path.resolve(__dirname, '../../rankings')
+const REAL = path.resolve(__dirname, '../../open-rankings')
 let tmp: string | undefined
 afterEach(() => { if (tmp) fs.rmSync(tmp, { recursive: true, force: true }); tmp = undefined })
 

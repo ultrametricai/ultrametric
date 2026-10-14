@@ -1,9 +1,9 @@
 # Daily keyless fleet-wide snapshot: densifies the time-series datasets every single day,
 # instead of one arena per 6 hours via story-runner's rotation:
 #
-#   rankings/slo-history.jsonl          — agent-surface uptime (pipeline/scripts/slo-check.ts is
+#   open-rankings/slo-history.jsonl          — agent-surface uptime (pipeline/scripts/slo-check.ts is
 #                                     already fleet-wide and fully keyless).
-#   rankings/*/popularity-history.jsonl — stars/downloads time series. `pipeline/cli.ts popularity`
+#   open-rankings/*/popularity-history.jsonl — stars/downloads time series. `pipeline/cli.ts popularity`
 #                                     with no --category runs every arena (pipeline/paths.ts
 #                                     resolveCategories); it appends one history line per product
 #                                     per run even when its 7-day fetch cache is warm, so the
@@ -54,14 +54,14 @@ jobs:
 
       # Keyless and cheap (~300 HTTP checks, ≤3 concurrent, 8s timeout): appends one uptime line
       # per documented agent surface (llms.txt / remote MCP / openapi.json) to
-      # rankings/slo-history.jsonl. Same script story-runner runs 6-hourly — this daily run guarantees
+      # open-rankings/slo-history.jsonl. Same script story-runner runs 6-hourly — this daily run guarantees
       # at least one fleet-wide sample per day even if story-runner is idle or gated.
       - name: Agent-surface SLO check
         run: pnpm tsx pipeline/scripts/slo-check.ts
 
       # Fleet-wide popularity refresh (no --category = every arena). NO LLM CALLS — pure display
-      # signal (see pipeline/stages/popularity.ts). Updates rankings/*/popularity.json when the 7-day
-      # cache is stale and appends today's line to rankings/*/popularity-history.jsonl either way.
+      # signal (see pipeline/stages/popularity.ts). Updates open-rankings/*/popularity.json when the 7-day
+      # cache is stale and appends today's line to open-rankings/*/popularity-history.jsonl either way.
       - name: Popularity refresh (fleet-wide)
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -94,7 +94,7 @@ jobs:
           # fails on a missing label).
           if ! gh pr create \
             --title "daily-snapshot: fleet-wide SLO + popularity" \
-            --body "Automated daily keyless snapshot: agent-surface SLO checks (\`rankings/slo-history.jsonl\`) and fleet-wide popularity history (\`rankings/*/popularity-history.jsonl\` + \`rankings/*/popularity.json\`). No verdicts or rankings touched — display-only time series, safe to merge on green CI." \
+            --body "Automated daily keyless snapshot: agent-surface SLO checks (\`open-rankings/slo-history.jsonl\`) and fleet-wide popularity history (\`open-rankings/*/popularity-history.jsonl\` + \`open-rankings/*/popularity.json\`). No verdicts or rankings touched — display-only time series, safe to merge on green CI." \
             --base main --head "$BRANCH"; then
             gh issue create \
               --title "daily-snapshot: ready on $BRANCH" \

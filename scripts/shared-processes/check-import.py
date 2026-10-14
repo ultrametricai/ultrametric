@@ -16,8 +16,8 @@ with tempfile.TemporaryDirectory() as temporary:
     records = [json.loads(p.read_text()) for p in sorted((output / "records").glob("*.json"))]
     audit = json.loads((output / "legacy-audit.json").read_text())["claims"]
 by_id = {r["id"]: r for r in records}
-corpus = sources["processes/corpus.json"]
-chains = sources["processes/chains.json"]
+corpus = sources["open-processes/corpus.json"]
+chains = sources["open-processes/chains.json"]
 slugs = {re.sub(r"[^a-z0-9]+", "-", p["title"].lower()).strip("-"): p["id"] for p in corpus}
 slugs.update({a["slug"]: p["id"] for p in corpus for a in p.get("slugAliases", [])})
 checks = 0
@@ -122,7 +122,7 @@ for raw in chains:
     equal(r["metadata"], {k: v for k, v in raw.items() if k not in {"id", "name", "tagline", "taskIds"}}, raw["id"] + ".metadata")
 
 for path, raw in sources.items():
-    if not path.startswith("processes/equity/"):
+    if not path.startswith("open-processes/equity/"):
         continue
     r = by_id[raw["id"]]
     equal(r["source"]["sha256"], hashlib.sha256(json.dumps(raw, sort_keys=True, ensure_ascii=False, separators=(",", ":")).encode()).hexdigest(), raw["id"] + ".sourceHash")
@@ -140,8 +140,8 @@ equal(all(r["notes"] == [] for r in records), True, "No invented notes or UM opi
 equal(all(not ({"reviewStatus", "umTake", "decisions"} & set(r)) for r in records), True, "No review workflow, rigid opinion field, or second active decision list")
 equal(all("relation" not in link for r in records for link in r["links"]), True, "No redundant flow label")
 # journeys/chains.json is the recorded import provenance of chain records authored before
-# the file moved to processes/chains.json; both spellings stay covered.
-equal(all(not r["outcomes"] for r in records if r["source"]["path"] in ("processes/corpus.json", "processes/chains.json", "journeys/chains.json")), True, "No invented outcomes")
+# the file moved to open-processes/chains.json; both spellings stay covered.
+equal(all(not r["outcomes"] for r in records if r["source"]["path"] in ("open-processes/corpus.json", "open-processes/chains.json", "journeys/chains.json")), True, "No invented outcomes")
 
 from collections import Counter
 expected_claims = []

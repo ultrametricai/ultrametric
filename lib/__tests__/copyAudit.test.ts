@@ -1,12 +1,12 @@
 import { describe, expect, it } from 'vitest'
 import { copyAuditCounts, loadCopyAudit } from '@/lib/copyAudit'
 
-// Gates for the curated copy audit behind the site's /admin (rankings/copy-audit.json): the
+// Gates for the curated copy audit behind the site's /admin (open-rankings/copy-audit.json): the
 // schema must hold, ids must be unique, and every 'keep' must carry its honesty/legal reason.
 // The cited file and route existence checks run in the private site repo, where app/ and
 // components/ live since the split (the audit cites site surfaces).
 
-describe('copy audit (rankings/copy-audit.json)', () => {
+describe('copy audit (open-rankings/copy-audit.json)', () => {
   const audit = loadCopyAudit()
 
   it('parses against the schema with unique ids', () => {

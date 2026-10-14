@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # Keyless runtime probes for the browser-agents arena bring-up (2026-09): live-checks the hosted
 # MCP endpoint and machine-readable API specs, and appends evidence distilled from the recorded
-# runtime probes in rankings/browser-agents/proofs/ (see pipeline/probes/browser-agents.ts).
+# runtime probes in open-rankings/browser-agents/proofs/ (see pipeline/probes/browser-agents.ts).
 # Mirrors append-mcp-infra-runtime-probes.py: live checks FAIL
 # (exit 1) when an observation no longer matches, so stale claims can't be re-appended.
 #
@@ -108,7 +108,7 @@ CHECKS = {
 FNS = {'openapi': openapi_spec, 'mcp': mcp_oauth_gated}
 
 for pid, checks in CHECKS.items():
-    path = f'rankings/browser-agents/evidence/{pid}.json'
+    path = f'open-rankings/browser-agents/evidence/{pid}.json'
     ev = json.load(open(path))
     existing_rt = [e for e in ev if e['id'].startswith(f'{pid}-probe-rt-')]
     if existing_rt:

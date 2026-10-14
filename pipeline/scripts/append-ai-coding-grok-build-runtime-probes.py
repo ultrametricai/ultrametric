@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # One-shot helper for the grok-build ai-coding bring-up (family-judgement wave, founder GO
 # 2026-10-08). Appends the probe-tier evidence item distilled from the recorded runtime probe
-# in rankings/ai-coding/proofs/grok-build/ (see pipeline/probes/ai-coding.ts — docs-md-mirror
+# in open-rankings/ai-coding/proofs/grok-build/ (see pipeline/probes/ai-coding.ts — docs-md-mirror
 # passed). Run AFTER `pnpm pipeline probe --category ai-coding --product grok-build` (the probe
 # stage wholesale-replaces probe-tier evidence and would wipe this item) — re-run this script
 # after any probe refresh.
@@ -23,7 +23,7 @@ ITEMS = {
 }
 
 for pid, items in ITEMS.items():
-    path = f'rankings/ai-coding/evidence/{pid}.json'
+    path = f'open-rankings/ai-coding/evidence/{pid}.json'
     ev = json.load(open(path))
     existing = {e['id'] for e in ev}
     for item in items:

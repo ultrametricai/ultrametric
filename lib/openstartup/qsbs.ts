@@ -2,7 +2,7 @@
 // logic — tax mechanics, everything").
 //
 // Pure, client-safe, deterministic; UTC ISO-date arithmetic only. Every legal condition
-// cites a dated rule card in law/US-FED/ backed by the verified statutory text
+// cites a dated rule card in open-law/US-FED/ backed by the verified statutory text
 // (26 U.S.C. §§ 1202, 1045 — checked 2026-10-01, INCLUDING the P.L. 119-21 (2025)
 // amendments: the July 4, 2025 "applicable date" splits the regimes, so the $50M/$75M
 // gross-asset ceilings, $10M/$15M caps, and 5-year vs 3/4/5-year tiers are all routed by

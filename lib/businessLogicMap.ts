@@ -4,7 +4,7 @@ import { z } from 'zod'
 import { REPO } from './site'
 
 // Open-modules ↔ process map (founder 2026-10-02, deepened same day): the committed registry
-// processes/business-logic-map.json names which lib/openstartup modules serve which corpus
+// open-processes/business-logic-map.json names which lib/openstartup modules serve which corpus
 // processes — and, per STEP, which module FUNCTION genuinely computes which step's math. The
 // task-level hits render as the process page's bottom 'Open modules' table (founder
 // 2026-10-05, lib/openModulePages.ts processOpenModuleRows — the earlier chip row and its
@@ -30,7 +30,7 @@ export const BusinessLogicModuleSchema = z
     file: z.string().regex(/^lib\/openstartup\/[A-Za-z0-9]+\.ts$/),
     // GitHub's slug for the README heading — the chip's deep-link target.
     anchor: z.string().regex(/^[a-z0-9]+(-+[a-z0-9]+)*$/),
-    // Corpus task ids (processes/corpus.json) this module honestly serves.
+    // Corpus task ids (open-processes/corpus.json) this module honestly serves.
     processes: z.string().min(1).array().min(1),
   })
   .strict()
@@ -59,7 +59,7 @@ export const BusinessLogicMapSchema = z
   })
   .strict()
 
-const mapFile = () => path.join(process.cwd(), 'processes', 'business-logic-map.json')
+const mapFile = () => path.join(process.cwd(), 'open-processes', 'business-logic-map.json')
 type ParsedMap = z.infer<typeof BusinessLogicMapSchema>
 let mapCache: ParsedMap | null = null
 function loadParsedMap(): ParsedMap {

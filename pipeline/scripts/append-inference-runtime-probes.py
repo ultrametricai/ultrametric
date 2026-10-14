@@ -118,7 +118,7 @@ CHECKS = {
 FNS = {'models': models_endpoint, 'status': status_page, 'mcp': mcp_endpoint}
 
 for pid, checks in CHECKS.items():
-    path = f'rankings/inference-providers/evidence/{pid}.json'
+    path = f'open-rankings/inference-providers/evidence/{pid}.json'
     ev = json.load(open(path))
     existing_rt = [e for e in ev if e['id'].startswith(f'{pid}-probe-rt-')]
     if existing_rt:

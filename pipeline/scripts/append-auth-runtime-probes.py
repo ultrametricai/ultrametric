@@ -86,7 +86,7 @@ CHECKS = {
 }
 
 for pid, checks in CHECKS.items():
-    path = f'rankings/auth-platforms/evidence/{pid}.json'
+    path = f'open-rankings/auth-platforms/evidence/{pid}.json'
     ev = json.load(open(path))
     prior = [e for e in ev if e['id'].startswith(f'{pid}-probe-rt-')]
     if prior:

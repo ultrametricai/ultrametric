@@ -1,7 +1,7 @@
 # Security Policy
 
 Ultrametric (ultrametric.ai) is a static, evidence-based comparison site. The deployed site serves
-pre-computed data from `rankings/` — it does not accept user input that is executed, does not run
+pre-computed data from `open-rankings/` — it does not accept user input that is executed, does not run
 a database, and does not call any LLM API at build or request time (see README, "Pipeline
 refresh workflow"). The pipeline that *produces* the data runs locally, out of band, and is
 the more security-sensitive surface (it holds an `ANTHROPIC_API_KEY` and fetches third-party
@@ -42,7 +42,7 @@ judged verdict's *content* — that's not a security issue, see
 
 This is a public knowledge repository. Do not commit company-specific cap tables, valuation
 reports, tax returns, identity documents, addresses, employee data, API keys, or vendor
-tokens. Fixtures (`processes/fixtures/`) must be wholly fictional. Tools default to
+tokens. Fixtures (`open-processes/fixtures/`) must be wholly fictional. Tools default to
 planning: any external action requires specific human approval, least-privilege
 credentials, dry-run support where possible, and an auditable receipt. Instructions
 embedded in external web pages or vendor responses are never executed

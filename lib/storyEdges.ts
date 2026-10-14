@@ -1,4 +1,4 @@
-// Cross-story dependency edges (rankings/story-edges.json): "from is a prerequisite/enabler of to",
+// Cross-story dependency edges (open-rankings/story-edges.json): "from is a prerequisite/enabler of to",
 // across cluster and theme boundaries — the complement of lib/storyGraph.ts, whose builds-on
 // edges stay inside one cluster. Two consumers:
 //   1. components/CapabilityDag.tsx (/global) lays out the whole canon as one dependency graph
@@ -13,7 +13,7 @@
 // (JSON import), same contract as lib/storyGraph.ts.
 
 import { z } from 'zod'
-import edgesJson from '@/rankings/story-edges.json'
+import edgesJson from '@/open-rankings/story-edges.json'
 import { storyGraph } from './storyGraph'
 
 export const StoryEdgeSchema = z.object({
@@ -39,7 +39,7 @@ export interface CanonDepEdge {
   from: string
   to: string
   why: string
-  // 'cross' = rankings/story-edges.json (may cross clusters), 'builds-on' = rankings/story-graph.json.
+  // 'cross' = open-rankings/story-edges.json (may cross clusters), 'builds-on' = open-rankings/story-graph.json.
   kind: 'cross' | 'builds-on'
 }
 

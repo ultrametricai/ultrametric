@@ -1,8 +1,8 @@
 // Vendor news watcher (founder ask 2026-09-23: "monitoring product launches from these vendors
 // and blog posts on agentic changes they've made"): sweep every tracked product for a
 // blog/changelog/news surface, pull its recent post titles, and flag the AGENTIC-RELEVANT ones
-// by keyword into rankings/vendor-news.json. Rendered on the unlinked /ops dashboard, where posts
-// newer than a product's lastSpiked date (rankings/spike-queue.json) form the "re-spike these" list.
+// by keyword into open-rankings/vendor-news.json. Rendered on the unlinked /ops dashboard, where posts
+// newer than a product's lastSpiked date (open-rankings/spike-queue.json) form the "re-spike these" list.
 //
 // Source discovery, cheapest-first and honest:
 //   1. Explicit corpus URLs — any products.json url (site/docs/extra/links) whose path contains
@@ -48,7 +48,7 @@ const USER_AGENT =
   'Mozilla/5.0 (compatible; Ultrametric-news-watcher/1.0; +https://ultrametric.ai)'
 
 // ---------------------------------------------------------------------------
-// State file schema (rankings/vendor-news.json)
+// State file schema (open-rankings/vendor-news.json)
 // ---------------------------------------------------------------------------
 
 export const NewsItemSchema = z.object({
