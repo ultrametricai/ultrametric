@@ -4519,10 +4519,10 @@
   {
     "productId": "ultrametric",
     "storyId": "agent-installs-skill",
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "The docs describe a scriptable install path. The CLI installs via `npm install -g ultrametric@0.4.1`, `ultrametric init --dry-run --json` previews changes before a second command writes the selected skill files, and the CLI can add instructions for Codex and Claude Code. With `--json`, the agent controls completion without an interactive prompt. missing for 10: confirmation that the sign-in link step needs no human browser action for a truly headless end-to-end run, the full non-dry-run init command and flags (elided in the excerpt), and independent or hands-on corroboration that an agent completes the install unattended.",
+    "rationale": "The docs describe a scriptable install path. The CLI installs via `npm install -g ultrametric@0.4.1`, `ultrametric init --dry-run --json` previews changes before a second command writes the selected skill files, and the CLI can add instructions for Codex and Claude Code. With `--json`, the agent controls completion without an interactive prompt. missing for 10: confirmation that the sign-in link step needs no human browser action for a truly headless end-to-end run, the full non-dry-run init command and flags (elided in the excerpt), and independent or hands-on corroboration that an agent completes the install unattended. [2026-10-14 adversarial bias audit (owner-product refresh lane): reverted full 7 -> partial 5 — four peers (anthropic-skills, codex-plugins, mattpocock-skills, superpowers) sit at partial 5 medium with documented install paths whose headless end-to-end completion is not established, and the owner rationale concedes the same gap: the sign-in link step may need a human browser action and the non-dry-run init flags are elided. skills-cli's full 8 stands on an explicitly documented non-interactive CI path plus auth reuse; the owner docs cover only the output half (`--json`), not the auth half, so the cell takes the partial-5 treatment. Ultrametric-affiliation governance, README §9.]",
     "evidenceIds": [
       "ultrametric-docs-6",
       "ultrametric-docs-7",
@@ -4625,9 +4625,9 @@
     "productId": "ultrametric",
     "storyId": "agentic-mcp-server",
     "verdict": "full",
-    "quality": 9,
-    "confidence": "high",
-    "rationale": "Ultrametric is a hosted process service, not an agent itself, so it can serve tools to agents. It documents an official remote MCP server at https://api.ultrametric.ai/mcp with connection steps, auth scopes, and a tools reference (e.g., the `status` tool returning release access and availability), and a probe confirms the MCP docs exist. missing for 10: independent or hands-on corroboration of a working MCP connection beyond first-party docs.",
+    "quality": 7,
+    "confidence": "medium",
+    "rationale": "Ultrametric is a hosted process service, not an agent itself, so it can serve tools to agents. It documents an official remote MCP server at https://api.ultrametric.ai/mcp with connection steps, auth scopes, and a tools reference (e.g., the `status` tool returning release access and availability), and a probe confirms the MCP docs exist. missing for 10: independent or hands-on corroboration of a working MCP connection beyond first-party docs. [2026-10-14 adversarial bias audit (owner-product refresh lane): quality re-capped 9 -> 7 and confidence high -> medium, restoring the 2026-10-08 audit cap the refresh reversed on weaker probe evidence (the refreshed probe row records only that the MCP docs page exists, and the rationale concedes no corroboration of a working connection beyond first-party docs). Counter-check 2026-10-14: POST initialize to the documented https://api.ultrametric.ai/mcp answers 401 {\"code\":\"AUTH_REQUIRED\"} behind the RFC 9728 www-authenticate resource_metadata wall — the same observed state the 2026-10-08 audit graded full 7 medium; a still-never-observed handshake cannot carry q9 high. Ultrametric-affiliation governance, README §9.]",
     "evidenceIds": [
       "ultrametric-docs-5",
       "ultrametric-docs-25",
@@ -4681,9 +4681,9 @@
     "productId": "ultrametric",
     "storyId": "agentic-public-api",
     "verdict": "full",
-    "quality": 8,
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Ultrametric documents an HTTP API reference for reading process guides and working with company context, with a downloadable OpenAPI contract. Concurrency and idempotency are documented through revisions and update keys, and paging uses `nextCursor`. A hosted MCP server and a JSON-mode CLI round out programmatic access. The probe's 404s were only at generic OpenAPI paths, not the documented /contracts/openapi.json, so they do not contradict the claim. Missing for 10: independent or hands-on confirmation that the OpenAPI contract and HTTP endpoints work, and endpoint-level detail in the evidence (auth flow for HTTP, full read/write coverage).",
+    "rationale": "Ultrametric documents an HTTP API reference for reading process guides and working with company context, with a downloadable OpenAPI contract. Concurrency and idempotency are documented through revisions and update keys, and paging uses `nextCursor`. A hosted MCP server and a JSON-mode CLI round out programmatic access. The probe's 404s were only at generic OpenAPI paths, not the documented /contracts/openapi.json, so they do not contradict the claim. Missing for 10: independent or hands-on confirmation that the OpenAPI contract and HTTP endpoints work, and endpoint-level detail in the evidence (auth flow for HTTP, full read/write coverage). [2026-10-14 adversarial bias audit (owner-product refresh lane): quality re-capped 8 -> 6, restoring the 2026-10-08 audit. The upgrade's load-bearing sentence (\"the 404s were only at generic OpenAPI paths, not the documented /contracts/openapi.json, so they do not contradict the claim\") is affirmatively false: the documented path was fetched on 2026-10-08 and re-fetched on 2026-10-14 and answers 404 ({\"code\":\"NOT_FOUND\"} on api.ultrametric.ai, \"Asset not found\" on docs.ultrametric.ai). anthropic-skills' full 8 is the bar for a corroborated public API; the owner's docs claims minus the contradicted contract and with no authenticated call stay at 6. Ultrametric-affiliation governance, README §9.]",
     "evidenceIds": [
       "ultrametric-docs-20",
       "ultrametric-docs-21",
@@ -4700,10 +4700,10 @@
   {
     "productId": "ultrametric",
     "storyId": "agentic-scoped-keys",
-    "verdict": "partial",
-    "quality": 3,
+    "verdict": "none",
+    "quality": 0,
     "confidence": "low",
-    "rationale": "The MCP authentication docs list a named permission scope (`context:protected:read`) for reading protected context, which suggests scoped access for agent connections. Nothing shows a user actually issuing, configuring, or revoking least-privilege credentials for an agent. missing for 10: a documented way to create scoped API keys or tokens, a user-selectable scope list per credential, revocation and rotation, HTTP API credential scoping, and independent or hands-on corroboration.",
+    "rationale": "The MCP authentication docs list a named permission scope (`context:protected:read`) for reading protected context, which suggests scoped access for agent connections. Nothing shows a user actually issuing, configuring, or revoking least-privilege credentials for an agent. missing for 10: a documented way to create scoped API keys or tokens, a user-selectable scope list per credential, revocation and rotation, HTTP API credential scoping, and independent or hands-on corroboration. [2026-10-14 adversarial bias audit (owner-product refresh lane): reverted partial 3 -> none 0, restoring the 2026-10-08 audit on the same two evidence items: one scope name in the MCP auth docs is not an issuance capability, the rationale concedes nothing shows a user issuing, configuring or revoking a scoped credential, and every peer with no issuance surface sits at none/na. Ultrametric-affiliation governance, README §9.]",
     "evidenceIds": [
       "ultrametric-docs-25",
       "ultrametric-docs-19"
@@ -4712,10 +4712,10 @@
   {
     "productId": "ultrametric",
     "storyId": "agentic-sdks",
-    "verdict": "partial",
-    "quality": 3,
+    "verdict": "none",
+    "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence shows no official language SDK. Builders get an HTTP API with a downloadable OpenAPI contract that could be used to generate clients, plus an official CLI with JSON output and a remote MCP server. These are adjacent integration surfaces, not packaged SDKs. The probe's 404s at standard OpenAPI paths do not contradict the documented /contracts/openapi.json location. Missing for 10: any official SDK package in any language, SDK docs or reference, and independent or hands-on corroboration of building against an SDK.",
+    "rationale": "The evidence shows no official language SDK. Builders get an HTTP API with a downloadable OpenAPI contract that could be used to generate clients, plus an official CLI with JSON output and a remote MCP server. These are adjacent integration surfaces, not packaged SDKs. The probe's 404s at standard OpenAPI paths do not contradict the documented /contracts/openapi.json location. Missing for 10: any official SDK package in any language, SDK docs or reference, and independent or hands-on corroboration of building against an SDK. [2026-10-14 adversarial bias audit (owner-product refresh lane): reverted partial 3 -> none 0, restoring the 2026-10-08 audit: the rationale concedes no official SDK exists, and the partial rides on the downloadable OpenAPI contract \"that could be used to generate clients\" — the documented contract path answers 404 on the 2026-10-14 re-fetch (both hosts). A conceded absence plus a contradicted enabler is none, the bar at which four peers sit. Ultrametric-affiliation governance, README §9.]",
     "evidenceIds": [
       "ultrametric-docs-20",
       "ultrametric-docs-21",
@@ -4736,10 +4736,10 @@
   {
     "productId": "ultrametric",
     "storyId": "api-interactive-docs",
-    "verdict": "partial",
-    "quality": 3,
+    "verdict": "none",
+    "quality": 0,
     "confidence": "medium",
-    "rationale": "Ultrametric documents an HTTP API reference for reading process guides and company context, and offers a downloadable OpenAPI contract with request and response schemas. Nothing in the evidence shows an interactive explorer or runnable in-browser examples. The probe's 404s at standard OpenAPI paths don't contradict this, because the documented contract lives at /contracts/openapi.json, which was not probed. Missing for 10: an interactive \"try it\" API explorer, runnable request examples, and independent or hands-on confirmation of the reference's usability.",
+    "rationale": "Ultrametric documents an HTTP API reference for reading process guides and company context, and offers a downloadable OpenAPI contract with request and response schemas. Nothing in the evidence shows an interactive explorer or runnable in-browser examples. The probe's 404s at standard OpenAPI paths don't contradict this, because the documented contract lives at /contracts/openapi.json, which was not probed. Missing for 10: an interactive \"try it\" API explorer, runnable request examples, and independent or hands-on confirmation of the reference's usability. [2026-10-14 adversarial bias audit (owner-product refresh lane): reverted partial 3 -> none 0, restoring the 2026-10-08 audit: the rationale concedes nothing shows an interactive explorer or runnable examples (the story object), and the backing contract 404s at its documented path on the 2026-10-14 re-fetch. Parity: codex-plugins' \"Checkout API reference\" mention was graded none 0 with its OpenAPI 404s counted AGAINST it; the owner product does not get the same 404s explained away. Ultrametric-affiliation governance, README §9.]",
     "evidenceIds": [
       "ultrametric-docs-20",
       "ultrametric-docs-21"
@@ -4748,10 +4748,10 @@
   {
     "productId": "ultrametric",
     "storyId": "api-machine-spec",
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 3,
     "confidence": "medium",
-    "rationale": "The API reference overview tells users to download the OpenAPI contract at /contracts/openapi.json for request and response schemas, which is a machine-readable spec for the HTTP API. The probe got 404s only at generic candidate paths, not the documented /contracts/openapi.json, so it does not contradict the claim. Missing for 10: hands-on confirmation that the documented contract file resolves, and richer documentation of the spec's coverage, versioning, or discoverability (e.g., a .well-known or llms.txt link)",
+    "rationale": "The API reference overview tells users to download the OpenAPI contract at /contracts/openapi.json for request and response schemas, which is a machine-readable spec for the HTTP API. The probe got 404s only at generic candidate paths, not the documented /contracts/openapi.json, so it does not contradict the claim. Missing for 10: hands-on confirmation that the documented contract file resolves, and richer documentation of the spec's coverage, versioning, or discoverability (e.g., a .well-known or llms.txt link) [2026-10-14 adversarial bias audit (owner-product refresh lane): reverted full 7 -> partial 3, restoring the 2026-10-08 audit: the grade rests entirely on the documented /contracts/openapi.json download, and this audit re-fetched that exact path on 2026-10-14 — 404 {\"code\":\"NOT_FOUND\"} on api.ultrametric.ai and 404 on docs.ultrametric.ai — so the rationale's \"does not contradict the claim\" pivot is affirmatively contradicted. What survives is the CLI's keyless JSON Schema output (documented schemaVersion/data envelopes): machine-readable contracts, not a retrievable OpenAPI document. Parity: codex-plugins' 404ing OpenAPI probe produced none 0 on this story. Ultrametric-affiliation governance, README §9.]",
     "evidenceIds": [
       "ultrametric-docs-21",
       "ultrametric-docs-20",
@@ -4761,10 +4761,10 @@
   {
     "productId": "ultrametric",
     "storyId": "api-sandbox",
-    "verdict": "full",
-    "quality": 7,
-    "confidence": "medium",
-    "rationale": "The CLI documents an `--environment` option that accepts `production` or `staging`, and staging is meant for a staging account and test data, so agents can work apart from production. The MCP status tool reports the selected environment, and `init --dry-run` previews project changes before writing them. Missing for 10: how to provision a staging account, whether MCP connections can target staging, explicit data-isolation guarantees, and independent or hands-on corroboration.",
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "The CLI documents an `--environment` option that accepts `production` or `staging`, and staging is meant for a staging account and test data, so agents can work apart from production. The MCP status tool reports the selected environment, and `init --dry-run` previews project changes before writing them. Missing for 10: how to provision a staging account, whether MCP connections can target staging, explicit data-isolation guarantees, and independent or hands-on corroboration. [2026-10-14 adversarial bias audit (owner-product refresh lane): reverted full 7 -> partial 3 low — all four peers with a documented-but-unverified test surface (anthropic-skills' execution container, codex-plugins' local test marketplace, skills-cli's temp-dir trial, superpowers' worktree isolation) sit at partial 3 low; the owner evidence is a documented `--environment staging` flag value with conceded missing provisioning path, isolation guarantees and corroboration. The owner product as the arena's only full on this story fails the parity check. Ultrametric-affiliation governance, README §9.]",
     "evidenceIds": [
       "ultrametric-docs-23",
       "ultrametric-docs-32",
@@ -4851,10 +4851,10 @@
   {
     "productId": "ultrametric",
     "storyId": "browse-searchable-catalog",
-    "verdict": "partial",
-    "quality": 5,
+    "verdict": "none",
+    "quality": 0,
     "confidence": "medium",
-    "rationale": "The docs say you can \"page through the catalog\" of processes, with cursor-based pagination via `nextCursor`. `ultrametric init --dry-run` also previews the selected skill files before writing them, so some browsing before installing is supported. However, this is a thinly described first-party process catalog rather than a clearly documented skills registry or marketplace. Missing for 10: search or filtering of the catalog, a registry, leaderboard or marketplace-style listing with metadata, detailed docs on what catalog entries show, and independent or hands-on corroboration.",
+    "rationale": "The docs say you can \"page through the catalog\" of processes, with cursor-based pagination via `nextCursor`. `ultrametric init --dry-run` also previews the selected skill files before writing them, so some browsing before installing is supported. However, this is a thinly described first-party process catalog rather than a clearly documented skills registry or marketplace. Missing for 10: search or filtering of the catalog, a registry, leaderboard or marketplace-style listing with metadata, detailed docs on what catalog entries show, and independent or hands-on corroboration. [2026-10-14 adversarial bias audit (owner-product refresh lane): reverted partial 5 -> none 0, restoring the 2026-10-08 audit: the story object is a browsable, searchable catalog of skills, and the rationale still concedes the cited catalog is \"a thinly described first-party process catalog rather than a clearly documented skills registry\" with no search or filtering. The only new evidence since the audit is nextCursor pagination of the same process catalog, which addresses neither the object mismatch nor the conceded absence. Ultrametric-affiliation governance, README §9.]",
     "evidenceIds": [
       "ultrametric-docs-10",
       "ultrametric-docs-28",
@@ -4904,10 +4904,10 @@
   {
     "productId": "ultrametric",
     "storyId": "inspect-before-install",
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "`ultrametric init --dry-run --json` previews changes before the second command writes the selected skill files into the project. Those files can be committed and shared, which means they are ordinary local files that can be read and reviewed in full after installation. Missing for 10: detail on what the dry-run preview shows (file list vs. full file contents), any mention of scripts as opposed to instructions, and independent or hands-on corroboration.",
+    "rationale": "`ultrametric init --dry-run --json` previews changes before the second command writes the selected skill files into the project. Those files can be committed and shared, which means they are ordinary local files that can be read and reviewed in full after installation. Missing for 10: detail on what the dry-run preview shows (file list vs. full file contents), any mention of scripts as opposed to instructions, and independent or hands-on corroboration. [2026-10-14 adversarial bias audit (owner-product refresh lane): reverted full 7 -> partial 5, restoring the 2026-10-08 audit: all six peers sit at partial 4-6, the rationale concedes the dry-run preview's content (file list vs. full instruction contents) is undocumented, and the new \"reviewable after installation\" point is not the story (inspect before install). The owner product being the arena's only full again fails the parity check. Ultrametric-affiliation governance, README §9.]",
     "evidenceIds": [
       "ultrametric-docs-8",
       "ultrametric-docs-9",
@@ -4918,9 +4918,9 @@
     "productId": "ultrametric",
     "storyId": "multi-harness-support",
     "verdict": "partial",
-    "quality": 6,
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "The CLI can write Ultrametric instruction and skill files into a project for Codex and Claude Code, via `init` with a dry-run preview. Any agent host that supports remote MCP can connect to the hosted server, and the docs give guidance on when to use the CLI versus MCP. Work carries across agents through shared hosted records. Missing for 10: per-harness instructions for Cursor or other agents beyond Codex and Claude Code, documentation of how the generated files differ per harness, and independent or hands-on corroboration.",
+    "rationale": "The CLI can write Ultrametric instruction and skill files into a project for Codex and Claude Code, via `init` with a dry-run preview. Any agent host that supports remote MCP can connect to the hosted server, and the docs give guidance on when to use the CLI versus MCP. Work carries across agents through shared hosted records. Missing for 10: per-harness instructions for Cursor or other agents beyond Codex and Claude Code, documentation of how the generated files differ per harness, and independent or hands-on corroboration. [2026-10-14 adversarial bias audit (owner-product refresh lane): quality 6 -> 5 — the +1 rests on docs-27/docs-30, which restate the already-judged Codex + Claude Code support; no new harness was added. The arena's fulls (gstack 7, mattpocock-skills/skills-cli 8, superpowers 9) document many harnesses; two documented hosts plus a remote-MCP claim was judged partial 5 on the same facts pre-refresh, and the owner product does not get the higher reading of restated first-party claims. Ultrametric-affiliation governance, README §9.]",
     "evidenceIds": [
       "ultrametric-docs-30",
       "ultrametric-docs-8",
@@ -4962,10 +4962,10 @@
   {
     "productId": "ultrametric",
     "storyId": "openness-api-parity",
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Ultrametric is agent-first. Every documented workflow runs through programmatic surfaces: retrieving and versioning process guides, saving progress, resuming work, record history, and status checks, with structured `--json` output. It offers three interfaces (HTTP API with an OpenAPI contract, remote MCP server, CLI), and the docs say both connections share the same process service and hosted company records. Missing for 10: an explicit first-party statement that the API matches everything a UI can do; a documented endpoint list showing the HTTP API covers writes as well as reads (its overview only says 'read process guides and work with company context'); independent or hands-on confirmation, since the probe did not fetch the OpenAPI contract at its documented /contracts path.",
+    "rationale": "Ultrametric is agent-first. Every documented workflow runs through programmatic surfaces: retrieving and versioning process guides, saving progress, resuming work, record history, and status checks, with structured `--json` output. It offers three interfaces (HTTP API with an OpenAPI contract, remote MCP server, CLI), and the docs say both connections share the same process service and hosted company records. Missing for 10: an explicit first-party statement that the API matches everything a UI can do; a documented endpoint list showing the HTTP API covers writes as well as reads (its overview only says 'read process guides and work with company context'); independent or hands-on confirmation, since the probe did not fetch the OpenAPI contract at its documented /contracts path. [2026-10-14 adversarial bias audit (owner-product refresh lane): reverted full 7 -> partial 6 — the full rests partly on the OpenAPI contract (404 at its documented path on the 2026-10-14 re-fetch) and the rationale concedes both the missing parity statement and that the HTTP surface is described as read-plus-context only. Tying anthropic-skills' full 7 (the arena's corroborated API-first bar) on conceded gaps plus a contradicted contract fails the strict read; the pre-refresh partial 6 stands. Ultrametric-affiliation governance, README §9.]",
     "evidenceIds": [
       "ultrametric-docs-5",
       "ultrametric-docs-7",
@@ -5055,10 +5055,10 @@
   {
     "productId": "ultrametric",
     "storyId": "privacy-no-training",
-    "verdict": "partial",
-    "quality": 3,
+    "verdict": "none",
+    "quality": 0,
     "confidence": "low",
-    "rationale": "Ultrametric says it \"runs no model\" and that work uses the customer's own AI plan, and that `--path` project context stays local during retrieval. That indirectly suggests Ultrametric itself is not a model operator training on user data. However, it hosts company records, and nothing in the evidence states a no-training policy or offers an opt-out control. Missing for 10: an explicit data-use/no-training policy covering hosted company records, a user-facing training opt-out or setting, any statement on sharing data with third parties for training, and independent corroboration.",
+    "rationale": "Ultrametric says it \"runs no model\" and that work uses the customer's own AI plan, and that `--path` project context stays local during retrieval. That indirectly suggests Ultrametric itself is not a model operator training on user data. However, it hosts company records, and nothing in the evidence states a no-training policy or offers an opt-out control. Missing for 10: an explicit data-use/no-training policy covering hosted company records, a user-facing training opt-out or setting, any statement on sharing data with third parties for training, and independent corroboration. [2026-10-14 adversarial bias audit (owner-product refresh lane): reverted partial 3 -> none 0, restoring the 2026-10-08 audit: \"runs no model\" is an architecture statement, not a no-training commitment for hosted company records, and the rationale concedes no data-use policy or opt-out exists. Every peer sits at none/na on the same class of silence. Ultrametric-affiliation governance, README §9.]",
     "evidenceIds": [
       "ultrametric-docs-4",
       "ultrametric-docs-12",
@@ -5137,9 +5137,9 @@
     "productId": "ultrametric",
     "storyId": "selective-install",
     "verdict": "partial",
-    "quality": 4,
+    "quality": 3,
     "confidence": "low",
-    "rationale": "The plugins docs show `ultrametric init --dry-run --json` previewing changes before a second command 'writes the selected skill files', and the CLI can add instructions for Codex and Claude Code. This implies some selection at install time, but it is unclear whether a developer can pick individual skills from the collection or only choose the target agent host. missing for 10: explicit documentation of choosing individual skills from a catalog, a list of the available skills, per-skill install/uninstall commands, and independent or hands-on confirmation of selective install.",
+    "rationale": "The plugins docs show `ultrametric init --dry-run --json` previewing changes before a second command 'writes the selected skill files', and the CLI can add instructions for Codex and Claude Code. This implies some selection at install time, but it is unclear whether a developer can pick individual skills from the collection or only choose the target agent host. missing for 10: explicit documentation of choosing individual skills from a catalog, a list of the available skills, per-skill install/uninstall commands, and independent or hands-on confirmation of selective install. [2026-10-14 adversarial bias audit (owner-product refresh lane): quality 4 -> 3 — the +1 rests on docs-30, which documents choosing the target agent host, not choosing skills, and the rationale concedes it is unclear whether individual skills can be picked at all. anthropic-skills' partial 5 stands on a real per-skill API selection surface; the owner's \"implies some selection\" reading stays at the pre-refresh 3. Ultrametric-affiliation governance, README §9.]",
     "evidenceIds": [
       "ultrametric-docs-8",
       "ultrametric-docs-30",
@@ -5158,10 +5158,10 @@
   {
     "productId": "ultrametric",
     "storyId": "team-distribution",
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Ultrametric's CLI `init` command previews and then writes selected skill files into a project for Codex and Claude Code. The docs say these files can be committed to share the setup with the team, which matches the story's 'files committed to the project' path. Missing for 10: no documented plugin marketplace or centrally managed team-wide distribution, only thin documentation of how teams version and update committed skills, and no independent or hands-on corroboration.",
+    "rationale": "Ultrametric's CLI `init` command previews and then writes selected skill files into a project for Codex and Claude Code. The docs say these files can be committed to share the setup with the team, which matches the story's 'files committed to the project' path. Missing for 10: no documented plugin marketplace or centrally managed team-wide distribution, only thin documentation of how teams version and update committed skills, and no independent or hands-on corroboration. [2026-10-14 adversarial bias audit (owner-product refresh lane): reverted full 7 -> partial 5, restoring the 2026-10-08 audit parity: gstack's dedicated team tooling and superpowers' shared marketplace repo sit at partial 5, and the owner's only path is committing generated skill files, with no team tooling and no hands-on teammate pickup. The arena's fulls (anthropic-skills/codex-plugins 9, mattpocock-skills/skills-cli 8) stand on marketplace or registry distribution. Ultrametric-affiliation governance, README §9.]",
     "evidenceIds": [
       "ultrametric-docs-8",
       "ultrametric-docs-9",
