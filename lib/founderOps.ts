@@ -1,5 +1,6 @@
 import fs from 'node:fs'
 import path from 'node:path'
+import { processDefinitionSchema } from './shared-processes/catalog'
 
 // The founder-ops corpus validator + conservative planner — a faithful TypeScript port of the
 // founder-ops-open starter's tools/validate.py (ingested 2026-09-28), rehomed into the repo's
@@ -71,6 +72,10 @@ function isObj(v: Json | undefined): v is JsonObject {
   return typeof v === 'object' && v !== null && !Array.isArray(v)
 }
 
+function isProcessDefinition(value: Json): boolean {
+  return isObj(value) && value.schemaVersion === 1 && (value.kind === 'process' || value.kind === 'situation')
+}
+
 function read(file: string): Json {
   return JSON.parse(fs.readFileSync(file, 'utf8')) as Json
 }
@@ -107,6 +112,10 @@ function indexed(files: string[], errors: string[], name: string): Map<string, J
       record = read(file)
     } catch {
       errors.push(`${path.relative(ROOT, file)}: unreadable JSON`)
+      continue
+    }
+    if (name === 'process' && isProcessDefinition(record)) {
+      if (!processDefinitionSchema.safeParse(record).success) errors.push(`${path.relative(ROOT, file)}: invalid process definition`)
       continue
     }
     if (!isObj(record) || typeof record.id !== 'string') {
@@ -365,6 +374,7 @@ export function planFounderOps(event: JsonObject, asOf?: Date): FounderOpsPlan {
   const processes = workflowJson(path.join(ROOT, 'open-processes'))
     .map(read)
     .filter(isObj)
+    .filter(record => !isProcessDefinition(record))
   const matches = processes.filter((p) => {
     const scope = isObj(p.applicability) ? p.applicability : {}
     return MATCH_KEYS.every((key) => scope[key] === event[key])
