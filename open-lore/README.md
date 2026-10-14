@@ -1,76 +1,109 @@
 # Startup lore
 
-The heuristics founders actually trade, recorded as sourced claims from named schools
-of thought, with the disagreements between schools kept explicit, and the library of
-essays, guides, books, and talks those claims come from.
+The heuristics founders actually trade, the schools of thought they come from, the
+library of works that ground them, and the episodes of startup history behind both.
+Everything is recorded as a sourced claim: a named author, a citable work, and, where
+schools disagree, the conflict mapped on both sides.
+
+Four files carry it:
+
+| File | What it holds | Gate |
+| --- | --- | --- |
+| [`registry.json`](./registry.json) | Heuristics: one actionable sentence per claim, with school, topic, source, tensions, and cross-links. | `pnpm vitest run __tests__/lore-registry.test.ts --maxWorkers=2` |
+| [`schools.json`](./schools.json) | The schools of thought: who they are and their core position. | `pnpm vitest run __tests__/lore-schools.test.ts --maxWorkers=2` |
+| [`library.json`](./library.json) | The curated reading list, in sections that double as the topic set. | `pnpm vitest run __tests__/lore-library.test.ts --maxWorkers=2` |
+| [`LORE.md`](./LORE.md) | Episodes: the war stories of startup history, graded for veracity. | `pnpm vitest run __tests__/lore.test.ts --maxWorkers=2` |
+
+## Schools
+
+Each registry heuristic belongs to a school. `schools.json` names them, states the
+position the school's registry entries argue, and lists the figures who author those
+entries. The registry takes no side: tensions are recorded between schools, on both
+sides, and the tests enforce that every tension crosses school lines.
+
+| School | Position |
+| --- | --- |
+| Y Combinator | Launch fast, talk to users, and make something people want; weekly growth is the compass, and the founder stays engaged in the details as the company scales. |
+| Lean startup | A startup is a search for a working business model: treat every plan as a hypothesis and test it on real customers before scaling anything. |
+| Blitzscaling | In winner-take-most markets, speed to scale beats efficiency: accept risk, waste, fires left to burn, and stage-fit hires to reach dominant scale first. |
+| Bootstrapper | A profitable, independent company at a sustainable pace is complete success: fund with revenue, keep the team small, charge real prices, and define the outcome yourself. |
+| Effectuation | Expert entrepreneurs start from their means (who they are, what they know, whom they know) and commit only what they can afford to lose, co-creating markets rather than predicting them. |
+| Contrarian | The valuable truths are the ones the consensus rejects: escape competition into monopoly, commit to a definite plan, and engineer distribution deliberately. |
+| Classical | The market, management, and venture canon that predates the current playbooks: market size decides outcomes, dominate a beachhead before expanding, watch for disruption from below, and build the professional systems a scaled company runs on. |
+| Craft | Product quality is the strategy: pick the few attributes that make the product great, get them exactly right for a narrow set of users, and hold off scaling until the market pulls. |
+
+## Topics
+
+The library's sections double as the registry's topic set: every heuristic carries a
+`topic` and every library entry a `section`, drawn from the same list. The coverage of
+any topic and school pair is computable from the data; an empty cell is a place to
+contribute.
+
+| Topic | Covers |
+| --- | --- |
+| Deciding to start | Whether to start a startup at all: the case for building, the cost of the bargain, and the mindset that survives it. |
+| Ideas and markets | Finding an idea worth working on, judging the market it lives in, and choosing the scale of ambition. |
+| Starting up | The first months of a company: the condensed playbooks, the accelerator application, and the mistakes that kill early startups. |
+| Co-founders and founding decisions | Picking co-founders, splitting equity, naming, and the setup decisions made once: incorporation, banking, cap table, visas, and where to build. The readings are US-centric. This section also cross-links the arenas and processes that cover the tools involved. |
+| Finding product-market fit | Talking to users, shipping a minimum product, and measuring whether the market pulls. |
+| Building the product | Scoping the MVP, product design and UX, and the engineers who ship it. |
+| Fundraising | Raising seed and priced rounds: instruments, term sheets, pitching, investor emails, and runway math. The instruments and norms described are US-centric. |
+| Hiring and culture | Recruiting, interviewing, compensation, and the cultures teams are built on. |
+| Operating | Running the company: management systems, founder time, prioritization, and pace. |
+| Growth and distribution | First users, growth loops, channel decay, and when to scale spend and headcount. |
+| Pricing and sales | Setting and raising prices, founder-led selling, and building the first sales team. |
+| Exits and acquisitions | Deciding whether to sell, running an acquisition process, and life after the deal. |
 
 ## Registry
 
-Every entry in `registry.json` is one school's belief about how to build a company, with a
-named author and a citable work behind it. The registry takes no position on which school
-is right; it records the conflicts between entries explicitly, on both sides. The episode
-layer lives alongside it in [`LORE.md`](./LORE.md) (see below); this
-registry records the rules of thumb the schools draw from it.
-
+Every entry in `registry.json` is one school's belief about how to build a company.
 Each record carries: `id` (stable), `heuristic` (one actionable sentence, a faithful
-paraphrase), `school` (`YC`, `lean`, `blitzscaling`, `bootstrapper`, `effectual`,
-`contrarian`, `classical`, `craft`), `source` (author, work, URL), `stance` (always
-`claim`), `tensions` (conflicting entry ids, symmetric and always across schools), and
-`processIds` (the processes in [`open-processes/corpus.json`](../processes/corpus.json) it
-bears on).
+paraphrase), `school` (resolving against `schools.json`), `topic` (resolving against
+the library's sections), `source` (author, work, URL; `note` documents hosts that
+refuse automated fetches, with a reachable alternative), `stance` (always `claim`),
+`tensions` (conflicting entry ids, symmetric and always across schools), `libraryIds`
+(the library entries that ground the claim, symmetric with the library's `loreIds`),
+and `processIds` (the processes in [`open-processes/corpus.json`](../open-processes/corpus.json)
+it bears on).
 
 Contribute here:
 
-1. A real, verifiable source is required: essay, book, or talk by the person the heuristic
-   is attributed to, with a resolving URL (`source.note` documents hosts that refuse
-   automated fetches, with a reachable alternative). A fabricated URL or invented quote is
-   disqualifying.
+1. A real, verifiable source is required: essay, book, or talk by the person the
+   heuristic is attributed to, with a resolving URL. A fabricated URL or invented quote
+   is disqualifying.
 2. Map the tensions: add the id on both sides, across schools.
 3. One actionable sentence per heuristic; `stance` stays `claim`.
-4. Every `processIds` entry must resolve.
+4. Set the `topic`, and cross-link `libraryIds` on both sides where the grounding work
+   is a library entry.
+5. Every `processIds` entry must resolve.
 
-Gate: `pnpm vitest run __tests__/lore-registry.test.ts --maxWorkers=2`.
+## Library
+
+`library.json` is the curated reading list: the canonical essays, guides, books, and
+talks on building a company. Where the definitive version of a lesson is a recorded
+talk, the entry is the video. Each entry carries `id`, `section`, `title`, `author`,
+`year` (when the work itself or its publisher states one), `format` (`essay`, `guide`,
+`book`, `video`), `url`, `teaches` (one functional sentence on what the work argues or
+shows), `note` (host-level caveats: bot walls, JavaScript-rendered pages, archived
+copies), `loreIds` (registry heuristics the work grounds), and `processIds` (processes
+it bears on). Sections may carry `arenas` and `processIds` of their own: the
+co-founders section, for example, points at the incorporation, banking, cap-table,
+payroll, domain, and immigration arenas whose vendors the readings assume.
+
+Contribute here:
+
+1. Every URL is fetched and confirmed to resolve to the claimed work before it lands; a
+   dead host disqualifies the link (find the current home, an archived copy recorded in
+   `note`, or leave the entry out).
+2. `teaches` is one sentence on what the work actually argues or shows; titles stay as
+   published. Founder-affiliated works get the same neutral treatment as every entry.
+3. The bar is the best entries, not the most; the tests bound each section's size.
+4. `loreIds` and `processIds` must resolve, and only record real connections.
 
 ## Episodes
 
 `LORE.md` records the episodes of startup history as sourced entries: a tight factual
 retelling, era, companies and people, a one-sentence lesson, at least one source with a
-what-it-supports note, and a veracity grade on every entry (`first-person` / `documented`
-/ `reported` / `legend`). Disputed tellings keep the dispute in the text; cross-links to
-the laws (`open-law/LAWS.md`) and processes must resolve.
-
-Gate: `pnpm vitest run __tests__/lore.test.ts --maxWorkers=2` (via `lib/lore.ts`).
-
-## Library
-
-`library.json` is the curated reading list: the canonical essays, guides, books, and talks
-on building a company, organized into sections. Where the definitive version of a lesson
-is a recorded talk, the entry is the video. Each entry carries `id`, `section`, `title`,
-`author`, `year` (when the work itself or its publisher states one), `format` (`essay`,
-`guide`, `book`, `video`), `url`, `teaches` (one functional sentence on what the work
-argues or shows), `loreIds` (registry heuristics the work grounds), and `processIds`
-(processes it bears on). Cross-links are recorded only where the connection is real; most
-entries carry none.
-
-| Section | What it teaches | Example entry |
-| --- | --- | --- |
-| Starting up and ideas | Deciding to start, finding an idea worth working on, and the first weeks of a company. | [How to Start a Startup](https://paulgraham.com/start.html) — Paul Graham |
-| Finding product-market fit | Talking to users, shipping a minimum product, and measuring whether the market pulls. | [The Only Thing That Matters](https://pmarchive.com/guide_to_startups_part4.html) — Marc Andreessen |
-| Fundraising | Raising seed and priced rounds: instruments, term sheets, pitching, and runway math. | [How to Raise Money](https://paulgraham.com/fr.html) — Paul Graham |
-| Hiring and culture | Recruiting, interviewing, compensation, and the management systems that scale a team. | [How to Hire](https://blog.samaltman.com/how-to-hire) — Sam Altman |
-| Growth and distribution | First users, growth loops, channel decay, and when to scale spend and headcount. | [Startup = Growth](https://paulgraham.com/growth.html) — Paul Graham |
-| Pricing and sales | Setting and raising prices, founder-led selling, and building the first sales team. | [Why Your Customers Would Be Happier If You Charged More](https://www.kalzumeus.com/2012/09/21/ramit-sethi-and-patrick-mckenzie-on-why-your-customers-would-be-happier-if-you-charged-more/) — Patrick McKenzie with Ramit Sethi |
-| Exits and acquisitions | Deciding whether to sell, running an acquisition process, and life after the deal. | [Notes on the Acquisition Process](https://cdixon.org/2012/09/10/notes-on-the-acquisition-process/) — Chris Dixon |
-
-Contribute here:
-
-1. Every URL is fetched and confirmed to resolve to the claimed work before it lands; a
-   dead host or a page that no longer carries the work disqualifies the link (find the
-   current home or leave the entry out). `note` documents host-level caveats.
-2. `teaches` is one sentence on what the work actually argues or shows; titles stay as
-   published.
-3. Sections hold 8-15 entries; the bar is the best entries, not the most.
-4. `loreIds` and `processIds` must resolve, and only record real connections.
-
-Gate: `pnpm vitest run __tests__/lore-library.test.ts --maxWorkers=2` (shape and
-references; URL liveness is checked at authoring time, the test performs no network I/O).
+what-it-supports note, and a veracity grade on every entry (`first-person` /
+`documented` / `reported` / `legend`). Disputed tellings keep the dispute in the text;
+cross-links to the laws (`open-law/LAWS.md`) and processes must resolve.

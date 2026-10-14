@@ -62,6 +62,15 @@ describe('lore schools (lore/schools.json)', () => {
     }
   })
 
+  it('the lore README schools table matches schools.json', () => {
+    const readme = fs.readFileSync(path.join(ROOT, 'lore', 'README.md'), 'utf8')
+    for (const s of schools) {
+      expect(readme, `lore README missing school row for ${s.id}`).toContain(
+        `| ${s.name} | ${s.position} |`,
+      )
+    }
+  })
+
   it('every figure authors at least one registry entry of that school', () => {
     for (const s of schools) {
       const authors = registry.filter((e) => e.school === s.id).map((e) => e.source.author)
