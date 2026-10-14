@@ -1,15 +1,10 @@
 ![Ultrametric](assets/banner.svg)
 
-Ultrametric ([ultrametric.ai](https://ultrametric.ai)) is the open startup repo: every
-founder [process](#open-processes) step by step, the [tools](#open-vendor-rankings) and
-the [service providers](#startup-ecosystem) around a company (law firms included) ranked
-by how well an agent can drive them, [company law](#open-law) mapped across
-jurisdictions, the [lore](#open-lore) and its library recorded with sources, the open
-[documents and artifacts](#open-artifacts) collected, the startup
-[calculations](#open-modules) as tested code, all of it replayable in the
-[simulator](https://ultrametric.ai/startup-sim) and readable by
-[agents](#install-ultrametric) without keys. The aim: make starting and running a
-company agentic, automated, and standardized across geographies.
+[![Discord](https://img.shields.io/badge/Discord-Join_the_community-5865F2?style=for-the-badge&logo=discord&logoColor=white)](https://discord.gg/3aHky836qP)
+
+**The open repo breaking down every part of the startup journey for the agentic era.**
+
+This repo is home to all the processes you need to run, vendors and tools you need to compare, advice you need to hear, and helpful modules to reduce lock-in. Let's make it easy to start and run a professional startup in the US and other geographies.
 
 ```
 ultrametric/
@@ -28,18 +23,10 @@ ultrametric/
 └── governance/      review, evidence, and agent policy
 ```
 
-**Community:** [Discord](https://discord.com/invite/3aHky836qP) — founders and contributors
-
 <!-- Legacy anchor: external links to #start-here predate the merge into this map. -->
 <a id="start-here"></a>
 
 [![A tour of ultrametric.ai at 4x: the simulator founding a company, a process page, a vendor page, a situation, the overall rankings, government services, and open documents](assets/readme/demo.gif)](https://ultrametric.ai)
-
-## The open startup repo
-
-This repo holds the processes, rankings, law, and calculations a startup runs on, as
-plain JSON and markdown that any founder or agent can read, verify, and correct by pull
-request. The site at ultrametric.ai renders it unchanged.
 
 <a id="vendors"></a>
 
