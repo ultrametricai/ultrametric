@@ -1,11 +1,15 @@
 {
-  "hash": "54fccc1fda2338b47eec5cc3ee99f38a3418285bd104d83afb34d01e3266937c",
+  "hash": "7c39a1242c688efd26f0ca400c0ec76e8e60a5fb6f6441fa488240759355ee34",
   "verdict": {
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "partial",
+    "quality": 3,
     "confidence": "medium",
-    "rationale": "Async job processing is a fair axis for a document-parsing API. Nothing in the evidence documents async parse jobs, status polling endpoints, or completion webhooks. The OCR docs describe only request parameters and input formats, and a hands-on user reported that a 900-page document timed out and had to be split into chunks, which suggests synchronous request handling.",
-    "evidenceIds": [],
+    "rationale": "The only async path in the evidence is that the OCR model supports the batch endpoint (/v1/batch), which implies offloaded jobs, but no doc describes job status polling for it. Community testers describe the standard OCR API as synchronous, and one hit a timeout on a 900-page document and had to split it into chunks, so long parses can block or fail without a workaround. Missing for 10: documented async job submission for single long parses, explicit status-polling docs, completion webhooks/callbacks, and hands-on corroboration of non-blocking large-document processing.",
+    "evidenceIds": [
+      "mistral-document-ai-docs-37",
+      "mistral-document-ai-comm-2",
+      "mistral-document-ai-comm-3"
+    ],
     "productId": "mistral-document-ai",
     "storyId": "async-jobs-webhooks"
   }

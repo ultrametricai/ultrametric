@@ -1,14 +1,15 @@
 {
-  "hash": "7e59ed563e9d0a9a811bbfafeb235d8a057d54ffd002533ef3bb112110e8fcd2",
+  "hash": "324d035bdb9570b21a1f717c8302da652d48d07b4e896ab40dac6ab8d9627914",
   "verdict": {
     "verdict": "partial",
-    "quality": 3,
+    "quality": 4,
     "confidence": "medium",
-    "rationale": "Orama documents an `insertMultiple` function for inserting many records, which avoids blocking the event loop the way a per-document insert loop would. That covers basic batch import only. Nothing in the evidence shows throughput at millions-of-documents scale or any async task or job-status tracking that signals when indexing completes. Missing for 10: evidence of import at millions-of-documents scale, async task/job tracking for indexing completion, a bulk-ingestion API for Orama Cloud data sources, and independent performance corroboration.",
+    "rationale": "Orama documents a bulk-insert path: `insertMultiple` is recommended for large record sets, avoids blocking the event loop, and has a configurable batch size (default 1000). Orama Cloud data sources can also be updated independently. However, the evidence never shows async task or job tracking that reports when indexing completes, and nothing demonstrates throughput at millions of documents. missing for 10: async indexing task/status tracking, evidence of million-document-scale import performance, Cloud bulk-ingestion API docs, independent benchmarks or hands-on corroboration.",
     "evidenceIds": [
       "orama-docs-16",
       "orama-docs-24",
-      "orama-docs-33"
+      "orama-docs-39",
+      "orama-docs-48"
     ],
     "productId": "orama",
     "storyId": "fast-bulk-indexing"

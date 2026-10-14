@@ -1,16 +1,18 @@
 {
-  "hash": "96ef902b52d4dc5f9e05ae510dffb30994909a4c339d701d883fde645a98ad5d",
+  "hash": "8a026bb921fe88fdb52dec2b361f0b052543eecb5cd98318a5c698f348ebb0eb",
   "verdict": {
     "verdict": "partial",
     "quality": 4,
     "confidence": "medium",
-    "rationale": "The OCR layer gives per-page blocks with paragraph-level bounding boxes, structural labels and extracted content in reading order. It also offers block- and word-level confidence scores. Together these provide raw provenance that humans or agents could cite. However, structured field extraction (document_annotation) returns an annotation of the entire document, and nothing shows that individual extracted fields are linked back to a page, bounding box or source snippet. Agents would have to map fields to blocks themselves. Missing for 10: per-field page number, per-field bounding box and source-snippet linkage in document_annotation output, word-level coordinates, and independent corroboration of grounding/citation workflows.",
+    "rationale": "The OCR processor can return a per-page blocks array with paragraph-level bounding boxes, block labels and extracted content, plus page/block/word confidence scores. Users could build page + bbox + snippet citations from those blocks. However, the structured-extraction path (document_annotation into a user-defined JSON schema) returns document-level annotations, with no documented per-field link back to page, box or source span. An early community tester also reported no text bounding boxes, though that likely predates include_blocks. Missing for 10: per-field provenance on structured extraction outputs (page, bbox, source snippet attached to each extracted field), word/span-level grounding of extracted values, and hands-on corroboration that block bboxes are reliable.",
     "evidenceIds": [
       "mistral-document-ai-docs-18",
-      "mistral-document-ai-docs-24",
       "mistral-document-ai-docs-19",
       "mistral-document-ai-docs-21",
-      "mistral-document-ai-docs-20"
+      "mistral-document-ai-docs-33",
+      "mistral-document-ai-docs-20",
+      "mistral-document-ai-docs-40",
+      "mistral-document-ai-comm-4"
     ],
     "productId": "mistral-document-ai",
     "storyId": "citations-provenance"
