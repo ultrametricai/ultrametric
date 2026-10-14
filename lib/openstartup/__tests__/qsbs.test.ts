@@ -147,6 +147,11 @@ describe('qsbsExclusionPercentage (rule us-fed.qsbs-exclusion-percentage)', () =
     expect(qsbsExclusionPercentage(acq, '2030-07-04').percentage).toBe(75)
   })
 
+  it('rejects malformed dates and a disposition before acquisition', () => {
+    expect(() => qsbsExclusionPercentage('2020-1-1', '2026-01-01')).toThrow(RangeError)
+    expect(() => qsbsExclusionPercentage('2020-01-01', '2019-12-31')).toThrow(RangeError)
+  })
+
   it('a too-early sale points at the § 1045 rollover instead of silence', () => {
     expect(qsbsExclusionPercentage('2019-01-01', '2022-01-01').note).toContain('us-fed.qsbs-1045-rollover')
   })
@@ -181,6 +186,18 @@ describe('qsbsPerIssuerCap (rule us-fed.qsbs-per-issuer-cap)', () => {
       qsbsPerIssuerCap({ acquisitionDate: '2020-01-01', basisOfStockDisposed: 0, marriedFilingSeparately: true }).cap,
     ).toBe(5_000_000)
     expect(QSBS_PARAMS.postApplicableDate.capBase).toBe(15_000_000)
+  })
+
+  it('MFS halves the post-applicable-date dollar limb to $7,500,000 (§ 1202(b)(3)(A)(ii))', () => {
+    expect(
+      qsbsPerIssuerCap({ acquisitionDate: '2025-08-01', basisOfStockDisposed: 0, marriedFilingSeparately: true }).cap,
+    ).toBe(7_500_000)
+  })
+
+  it('prior-year gain can exhaust the dollar limb; 10x basis still governs', () => {
+    const r = qsbsPerIssuerCap({ acquisitionDate: '2020-01-01', basisOfStockDisposed: 1000, priorYearEligibleGain: 10_000_000 })
+    expect(r.dollarLimb).toBe(0)
+    expect(r.cap).toBe(10_000)
   })
 })
 
