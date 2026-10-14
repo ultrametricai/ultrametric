@@ -21,8 +21,8 @@ describe('founder-ops corpus validation', () => {
 
   it('collects malformed workflow JSON and invalid process definitions together', () => {
     const readFile = fs.readFileSync.bind(fs)
-    const unreadable = path.join(process.cwd(), 'processes/equity/us-de/409a-valuation.json')
-    const invalid = path.join(process.cwd(), 'processes/generate-a-brand-logo.json')
+    const unreadable = path.join(process.cwd(), 'open-processes/equity/us-de/409a-valuation.json')
+    const invalid = path.join(process.cwd(), 'open-processes/generate-a-brand-logo.json')
     const spy = vi.spyOn(fs, 'readFileSync').mockImplementation((...args: Parameters<typeof fs.readFileSync>) => {
       if (String(args[0]) === unreadable) return '{'
       if (String(args[0]) === invalid) return JSON.stringify({ schemaVersion: 1, kind: 'process', id: 'invalid' })
@@ -30,8 +30,8 @@ describe('founder-ops corpus validation', () => {
     })
     try {
       const errors = validateFounderOps(new Date('2026-10-03T00:00:00Z'))
-      expect(errors).toContain('processes/equity/us-de/409a-valuation.json: unreadable JSON')
-      expect(errors).toContain('processes/generate-a-brand-logo.json: invalid process definition')
+      expect(errors).toContain('open-processes/equity/us-de/409a-valuation.json: unreadable JSON')
+      expect(errors).toContain('open-processes/generate-a-brand-logo.json: invalid process definition')
     } finally {
       spy.mockRestore()
     }
