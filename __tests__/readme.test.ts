@@ -59,7 +59,7 @@ const INTRO = [
   '<!-- Legacy anchor: external links to #start-here predate the merge into this map. -->',
   '<a id="start-here"></a>',
   '',
-  'Supported founders globally: 🌐 🇺🇸 🇬🇧 🇮🇳 🇩🇪 🇫🇷 🇵🇹 🇨🇦',
+  'Supporting founders globally: 🌐 🇺🇸 🇬🇧 🇮🇳 🇩🇪 🇫🇷 🇵🇹 🇨🇦',
   '',
   '[![A tour of ultrametric.ai at 4x: the simulator founding a company, a process page, a vendor page, a situation, the overall rankings, government services, and open documents](assets/readme/demo.gif)](https://ultrametric.ai)',
 ].join('\n')
@@ -202,7 +202,7 @@ describe('README.md structure (founder round 2, 2026-10-12)', () => {
   it('the supported-countries line sits directly above the demo gif and matches the geo switcher', () => {
     // Founder visual+language batch (2026-10-14): globe first, then the full GEO_COUNTRIES
     // set in switcher order (US first). The line is plain prose, no heading.
-    const line = `Supported founders globally: 🌐 ${GEO_COUNTRIES.map((c) => GEO_PREF_META[c].flag).join(' ')}`
+    const line = `Supporting founders globally: 🌐 ${GEO_COUNTRIES.map((c) => GEO_PREF_META[c].flag).join(' ')}`
     expect(readme).toContain(`\n${line}\n\n[![A tour of ultrametric.ai`)
   })
 
