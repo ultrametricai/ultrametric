@@ -2,9 +2,9 @@
 
 [![Discord](https://img.shields.io/badge/Discord-Join_the_community-5865F2?style=for-the-badge&logo=discord&logoColor=white)](https://discord.gg/3aHky836qP)
 
-**The open repo breaking down every part of the startup journey for the agentic era.**
+**The open repo for every part of the startup journey in the agentic era.**
 
-This repo is home to all the processes you need to run, vendors and tools you need to compare, advice you need to hear, and helpful modules to reduce lock-in. Let's make it easy to start and run a professional startup in the US and other geographies.
+Navigate all business processes, compare and select AI native vendors, inform yourself on startup lore, run open modules to become vendor free, save money using open documentation. Help future founders by making PRs to the open artifacts, gaps in open documents or improve the open module logic. Let's make it easy to start and run a startup around the world.
 
 ```
 ultrametric/
