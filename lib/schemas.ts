@@ -140,6 +140,16 @@ export const EvidenceSchema = z.object({
   url: z.string().url(),
   excerpt: z.string().min(1),
   fetchedAt: z.string().datetime(),
+  // Marks a hand-recorded row (audit counter-check, recorded runtime/self-eval probe) that a
+  // scheduled refresh must not clobber: the probe stage merges fresh rows around preserved
+  // probe-tier rows instead of replacing the tier wholesale (pipeline/stages/probe.ts,
+  // mergeProbeEvidence). Root cause: the 2026-10-14 agent-skills regression, where a refresh
+  // replaced the 2026-10-08 audit's recorded counter-checks and the judge restored eleven
+  // generous owner-product grades on the thinner pack. A preserved row is removed only by an
+  // explicit dated script (the audit-correction path). `true` or absent — never `false`.
+  // Not part of cellHash (judge.ts hashes [id, excerpt]), so marking an existing row does not
+  // bust the judge cache.
+  preserve: z.literal(true).optional(),
 })
 
 export const VerdictBaseSchema = z.object({

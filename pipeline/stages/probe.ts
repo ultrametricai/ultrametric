@@ -194,13 +194,42 @@ export async function runProbeChecks(product: Product, fetcher: ProbeFetcher = d
   return results
 }
 
-// CLI stage. Same replace-prior-tier pattern as collect-community.ts: probe items are
-// regenerated wholesale on each run and replace only the product's existing `probe`-tier
-// evidence, leaving claimed-docs/github/community untouched.
-//
-// NOT run as part of this task — this only wires the stage into `pnpm pipeline probe`; the
-// actual run (against real products) and the resulting re-judge are the controller's next
-// step, not this one.
+// Builds the fresh probe-tier rows for one run. Ids are numbered `${productId}-probe-N`,
+// skipping any N already held by a preserved row, so a refresh can never mint an id that
+// collides with (and would shadow) recorded counter-evidence.
+export function buildProbeEvidenceRows(
+  productId: string,
+  results: ProbeResult[],
+  preservedIds: ReadonlySet<string>,
+  now: string,
+): Evidence[] {
+  let n = 0
+  return results.map((r) => {
+    do {
+      n += 1
+    } while (preservedIds.has(`${productId}-probe-${n}`))
+    return { id: `${productId}-probe-${n}`, tier: 'probe', url: r.url, excerpt: r.excerpt, fetchedAt: now }
+  })
+}
+
+// Merge semantics for a probe refresh: unmarked probe-tier rows are regenerated wholesale
+// (the collect-community.ts replace-prior-tier pattern), but rows marked `preserve: true`
+// survive every rerun — they are recorded counter-evidence (audit counter-checks, recorded
+// runtime/self-eval probes), removable only by an explicit dated script, and a refresh that
+// dropped them is exactly how the 2026-10-14 agent-skills regression happened (the judge
+// restored eleven generous owner-product grades on the thinned pack). Fresh rows whose id
+// collides with a preserved row are dropped defensively; buildProbeEvidenceRows avoids
+// minting such ids in the first place. Non-probe tiers pass through untouched.
+export function mergeProbeEvidence(existing: Evidence[], fresh: Evidence[]): Evidence[] {
+  const preserved = existing.filter((e) => e.tier === 'probe' && e.preserve === true)
+  const preservedIds = new Set(preserved.map((e) => e.id))
+  const nonProbe = existing.filter((e) => e.tier !== 'probe')
+  return [...nonProbe, ...fresh.filter((e) => !preservedIds.has(e.id)), ...preserved]
+}
+
+// CLI stage. Probe items are regenerated on each run and merged via mergeProbeEvidence:
+// unmarked probe-tier rows are replaced, preserved rows survive, and
+// claimed-docs/github/community rows are untouched.
 export async function runProbe({ category, product }: { category?: string; product?: string }): Promise<void> {
   let matched = 0
   for (const cat of resolveCategories(category)) {
@@ -213,19 +242,16 @@ export async function runProbe({ category, product }: { category?: string; produ
     for (const p of products) {
       const results = await runProbeChecks(p)
       const now = new Date().toISOString()
-      const probeEvidence: Evidence[] = results.map((r, i) => ({
-        id: `${p.id}-probe-${i + 1}`,
-        tier: 'probe',
-        url: r.url,
-        excerpt: r.excerpt,
-        fetchedAt: now,
-      }))
       const file = path.join(dataDir, 'evidence', `${p.id}.json`)
       const existing = fs.existsSync(file) ? readJson(EvidenceSchema.array(), file) : []
-      writeJson(file, [...existing.filter((e) => e.tier !== 'probe'), ...probeEvidence])
+      const preservedIds = new Set(
+        existing.filter((e) => e.tier === 'probe' && e.preserve === true).map((e) => e.id),
+      )
+      const probeEvidence = buildProbeEvidenceRows(p.id, results, preservedIds, now)
+      writeJson(file, mergeProbeEvidence(existing, probeEvidence))
       const positives = results.filter((r) => r.positive).length
       console.log(
-        `probe: ${cat.id}/${p.id} → ${probeEvidence.length} probe item(s) (${positives} positive, ${probeEvidence.length - positives} negative)`,
+        `probe: ${cat.id}/${p.id} → ${probeEvidence.length} probe item(s) (${positives} positive, ${probeEvidence.length - positives} negative), ${preservedIds.size} preserved row(s) kept`,
       )
     }
   }
