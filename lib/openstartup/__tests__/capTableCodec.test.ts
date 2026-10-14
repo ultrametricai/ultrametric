@@ -40,6 +40,18 @@ describe('encode/decode round trip', () => {
     expect(token).not.toContain('=')
   })
 
+  it('normalizes falsy optional fields: mfn/proRata false and poolShares 0 decode as absent', () => {
+    const events: CapTableEvent[] = [
+      { kind: 'found', founders: [{ name: 'F', shares: 1 }], poolShares: 0 },
+      { kind: 'safe', name: 'S', amount: 1, cap: 10, mfn: false, proRata: false },
+    ]
+    const decoded = decodeCapTableState(encodeCapTableState(events))!
+    expect(decoded[0]).toEqual({ kind: 'found', founders: [{ name: 'F', shares: 1 }], poolShares: undefined })
+    expect(decoded[1]).toEqual({
+      kind: 'safe', name: 'S', amount: 1, cap: 10, discountPct: undefined, mfn: undefined, proRata: undefined,
+    })
+  })
+
   it('is stable for unicode founder names', () => {
     const events: CapTableEvent[] = [{ kind: 'found', founders: [{ name: 'Zoë 🚀', shares: 100 }] }]
     expect(decodeCapTableState(encodeCapTableState(events))).toEqual(events)
