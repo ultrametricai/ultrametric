@@ -648,7 +648,7 @@ describe('permalink — the whole run state round-trips through ?run= (v2), and 
   it("the assistant token 'a' (item 7): round-trips, defaults null, rejects junk — only judged VS_AI_FIRM_IDS decode", () => {
     expect(decodeRunState(encodeRunState(state))!.assistant).toBe('claude')
     expect(decodeRunState(encodeRunState({ ...state, assistant: null }))!.assistant).toBeNull()
-    for (const id of ['chatgpt', 'claude', 'gemini', 'grok', 'muse', 'dots', 'grok-bot', 'kimi', 'perplexity-computer']) {
+    for (const id of ['chatgpt', 'claude', 'gemini', 'grok', 'muse', 'dots', 'grok-bot', 'kimi', 'perplexity-computer', 'instinct', 'perplexity', 'copilot', 'poke', 'martin', 'jo']) {
       expect(decodeRunState(encodeRunState({ ...state, assistant: id }))!.assistant).toBe(id)
     }
     // Not a judged roster id → the whole payload rejects (defensive-decode convention).
@@ -819,6 +819,9 @@ describe('server payloads — canonical verdicts, cited pricing, corpus risks', 
       'chatgpt', 'claude', 'gemini', 'grok', 'muse',
       // Appended with the 2026-10-01 roster expansion — codec 'a' tokens are append-only.
       'dots', 'grok-bot', 'kimi', 'perplexity-computer',
+      // Appended 2026-10-14: the judged ids the list had fallen behind on (staleness,
+      // found verifying Instinct's sim presence; append-only contract preserved).
+      'instinct', 'perplexity', 'copilot', 'poke', 'martin', 'jo',
     ])
     const products = JSON.parse(
       fs.readFileSync(path.join(DATA_DIR, 'ai-assistants', 'products.json'), 'utf8'),
