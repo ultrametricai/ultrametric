@@ -25,7 +25,7 @@ import {
   processSlug, taskCeiling, type DagNode,
 } from '@/lib/processes'
 
-const DATA_DIR = path.resolve(__dirname, '../../rankings')
+const DATA_DIR = path.resolve(__dirname, '../../open-rankings')
 
 interface RawTask {
   id: string

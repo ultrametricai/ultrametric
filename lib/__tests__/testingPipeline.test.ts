@@ -135,7 +135,7 @@ describe('mostWantedUntested', () => {
 })
 
 describe('nextUpArenas (committed open-rankings/arena-roadmap.json)', () => {
-  const REAL = path.resolve(__dirname, '../../rankings')
+  const REAL = path.resolve(__dirname, '../../open-rankings')
 
   it('returns only tier-1 planned entries that are not already live', () => {
     const live = new Set(['agent-frameworks', 'agent-sandboxes', 'team-chat'])

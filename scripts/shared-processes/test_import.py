@@ -12,7 +12,7 @@ class ImportTests(unittest.TestCase):
         self.temp = tempfile.TemporaryDirectory()
         self.root = Path(self.temp.name)
         (self.root / 'scripts/shared-processes').mkdir(parents=True)
-        (self.root / 'processes').mkdir()
+        (self.root / 'open-processes').mkdir()
         for name in ('import.py', 'claim_audit.py', 'source_snapshot.py', 'check-import.py'):
             shutil.copy(SCRIPT / name, self.root / 'scripts/shared-processes' / name)
         self.source = self.root / 'open-processes/corpus.json'
@@ -25,7 +25,7 @@ class ImportTests(unittest.TestCase):
         self.run_import('--write', expected=0)
 
     def commit_sources(self):
-        subprocess.run(['git', 'add', 'processes'], cwd=self.root, check=True)
+        subprocess.run(['git', 'add', 'open-processes'], cwd=self.root, check=True)
         subprocess.run(['git', '-c', 'user.name=Test', '-c', 'user.email=test@example.invalid', '-c', 'commit.gpgsign=false', 'commit', '-qm', 'Synthetic source'], cwd=self.root, check=True)
 
     def check_preservation(self, expected):
@@ -116,7 +116,7 @@ class ImportTests(unittest.TestCase):
             (root / 'scripts/shared-processes').mkdir(parents=True)
             for name in ('import.py', 'claim_audit.py', 'source_snapshot.py'):
                 shutil.copy(SCRIPT / name, root / 'scripts/shared-processes' / name)
-            (root / 'processes').mkdir()
+            (root / 'open-processes').mkdir()
             (root / 'open-processes/corpus.json').write_text(json.dumps(self.records))
             (root / 'open-processes/chains.json').write_text('[]')
             (root / 'open-processes/vendor-registry.json').write_text('{"vendors":{}}')

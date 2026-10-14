@@ -48,7 +48,7 @@ function arena(
 // relay; battle mercury-vs-ramp stored as a=mercury, b=ramp, record 16–28, 28 drawn —
 // re-pinned 2026-10-01 after the opus-5-5 judge migration) ------------
 
-const banking = loadCategory('startup-banking', path.resolve(__dirname, '../../rankings'))
+const banking = loadCategory('startup-banking', path.resolve(__dirname, '../../open-rankings'))
 
 describe('compareRivalsFor', () => {
   it('returns self + 4 leaderboard-adjacent rivals, self flagged and first, rivals in rank order', () => {

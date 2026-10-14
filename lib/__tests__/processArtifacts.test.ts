@@ -17,7 +17,7 @@ import { loadArtifacts, loadProcesses } from '@/lib/processes'
 //      jurisdiction-conditional node) and is consumed by at least one OTHER process — or is
 //      explicitly flagged terminal (both directions enforced).
 
-const DATA_DIR = path.resolve(__dirname, '../../rankings')
+const DATA_DIR = path.resolve(__dirname, '../../open-rankings')
 // The RAW corpus — includes the jurisdiction-conditional nodes loadProcesses strips from the
 // default view, so we can assert no producesArtifact ever hides on a conditional node.
 const RAW = JSON.parse(

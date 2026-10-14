@@ -19,7 +19,7 @@ import {
 } from '@/lib/processRankings'
 import { isShutdown, SHUTDOWN_TAG_TITLE } from '@/lib/shutdown'
 
-const DATA_DIR = path.resolve(__dirname, '../../rankings')
+const DATA_DIR = path.resolve(__dirname, '../../open-rankings')
 
 describe('isShutdown', () => {
   it('is true exactly when the verified note is set', () => {

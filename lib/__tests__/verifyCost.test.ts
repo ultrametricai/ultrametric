@@ -13,7 +13,7 @@ import {
 // spelling of "a real cost exists but no published number does", and the process-level headline
 // is DERIVED (government fees only), never hand-stored.
 
-const DATA_DIR = path.resolve(__dirname, '../../rankings')
+const DATA_DIR = path.resolve(__dirname, '../../open-rankings')
 // RAW corpus — includes the jurisdiction-conditional nodes loadProcesses strips, so the format
 // invariants are total over everything committed.
 const RAW = JSON.parse(

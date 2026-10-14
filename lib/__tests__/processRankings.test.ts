@@ -15,7 +15,7 @@ import {
 import { VERDICT_FACTORS } from '@/lib/scoring'
 import { isShutdown } from '@/lib/shutdown'
 
-const DATA_DIR = path.resolve(__dirname, '../../rankings')
+const DATA_DIR = path.resolve(__dirname, '../../open-rankings')
 
 const tasks = () => loadProcesses(DATA_DIR)
 

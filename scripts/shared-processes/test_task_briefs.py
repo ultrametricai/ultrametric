@@ -136,7 +136,7 @@ class TaskBriefImportTests(unittest.TestCase):
                 subprocess.run(["git", *args], cwd=work, check=True, capture_output=True)
 
             def commit():
-                git("add", "processes")
+                git("add", "open-processes")
                 git("-c", "user.name=Test", "-c", "user.email=test@example.invalid",
                     "-c", "commit.gpgsign=false", "commit", "-qm", "Isolated importer fixture")
 

@@ -276,7 +276,25 @@ for record in records:
     existing = json.loads(target.read_text()) if target.exists() else None
     source_hash = record["source"]["sha256"]
     if prior and prior["sourceHash"] == source_hash and existing is not None:
-        manifest["records"][key] = prior
+        # The source value is unchanged; check whether the generated FORM moved anyway
+        # (an importer change, e.g. the source file rename to open-processes/). The probe
+        # pins the revision to the committed record's, so HEAD churn alone never re-blesses.
+        probe = copy.deepcopy(record)
+        probe["source"]["revision"] = existing["source"]["revision"]
+        if digest(probe) == prior["generatedHash"]:
+            manifest["records"][key] = prior
+            continue
+        # Re-bless the receipt against the new generated baseline. A pure generated file
+        # is rewritten in place; an authored record keeps its guidance and refreshes only
+        # the source-mirrored metadata block (the authored-record conflict rule).
+        changes.append(key)
+        if digest(existing) == prior["generatedHash"]:
+            pending[target] = record
+        else:
+            refreshed = copy.deepcopy(existing)
+            refreshed["source"] = record["source"]
+            pending[target] = refreshed
+        manifest["records"][key] = {"sourceHash": source_hash, "generatedHash": digest(record)}
         continue
     if existing is not None and (prior is None or digest(existing) != prior["generatedHash"]):
         conflicts.append(key)

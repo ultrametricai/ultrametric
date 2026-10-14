@@ -9,7 +9,7 @@ import {
   clusterDomainStories, layerByEdges, significantTokens, tidyGroupLabel,
 } from '@/lib/storyDag'
 
-const DATA_DIR = path.resolve(__dirname, '../../rankings')
+const DATA_DIR = path.resolve(__dirname, '../../open-rankings')
 const payroll = loadCategory('payroll', DATA_DIR)
 const aiCoding = loadCategory('ai-coding', DATA_DIR)
 

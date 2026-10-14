@@ -68,7 +68,7 @@ const NONTECH_FIRST: VsFounderAxes = { technical: 'non-technical', experience: '
 const TECH_SECOND: VsFounderAxes = { technical: 'technical', experience: 'second-timer' }
 const NONTECH_SECOND: VsFounderAxes = { technical: 'non-technical', experience: 'second-timer' }
 
-const DATA_DIR = path.resolve(__dirname, '../../rankings')
+const DATA_DIR = path.resolve(__dirname, '../../open-rankings')
 
 const chains: VsChain[] = loadChains(DATA_DIR).map(({ id, name, taskIds }) => ({ id, name, taskIds }))
 const vsChains = VS_CHAIN_IDS.map((id) => chains.find((c) => c.id === id)!)

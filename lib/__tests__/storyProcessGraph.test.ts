@@ -16,7 +16,7 @@ import {
   storyProcessesForArena,
 } from '@/lib/storyProcessGraph'
 
-const DATA_DIR = path.resolve(__dirname, '../../rankings')
+const DATA_DIR = path.resolve(__dirname, '../../open-rankings')
 const GRAPH_FILE = path.join(DATA_DIR, 'graph.json')
 
 const tasks = loadProcesses(DATA_DIR)
