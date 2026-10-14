@@ -1,7 +1,7 @@
 import { configDefaults, defineConfig } from 'vitest/config'
 import path from 'node:path'
 
-// The open artifact test surface (docs/REPO-SPLIT-PLAN.md, section 3): the root
+// The open artifact test surface (docs/REPO-SPLIT-PLAN.md): the root
 // data-integrity suite, the lib loader/determinism/golden suites, and pipeline correctness.
 // The UI suites run in the private site repo. scripts/content-audit.test.mjs runs under
 // node --test, outside this glob (see docs/repo-split-census.json).

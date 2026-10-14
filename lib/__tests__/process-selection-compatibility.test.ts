@@ -77,7 +77,9 @@ describe('existing judged selection compatibility', () => {
     // products join the candidate lists of the steps mapped to those arenas.
     // Re-pinned at the 2026-10-14 radar bring-up: logo-design-skill joins agent-skills, so the
     // newly judged product joins the candidate lists of the steps mapped to that arena.
-    expect(positiveCount).toBe(2521)
+    // Re-pinned at the AngelList bring-up (2026-10-14): angellist joins equity-management, so
+    // the newly judged product joins the candidate lists of the steps mapped to that arena.
+    expect(positiveCount).toBe(2543)
     expect(zeroCount).toBe(137)
     expect(extraArena).toBe(93)
   })
