@@ -59,14 +59,16 @@
     "productId": "algolia",
     "storyId": "agentic-ai-insights",
     "verdict": "partial",
-    "quality": 3,
-    "confidence": "low",
-    "rationale": "Agent Studio connects an LLM to Algolia and grounds its responses in live index data, and can power content summarizers and conversational search. Recommend provides ML-based suggestions from your data. However, these are building blocks for end-user experiences, not AI-generated insights surfaced to the operator inside the product. The search analytics 'insights' are standard metrics (popular searches, no-result queries, click-through rates), not AI-generated. Missing for 10: in-dashboard AI-generated insights or suggestions about the operator's data (e.g., AI relevance or merchandising recommendations), plus documentation and hands-on corroboration of such a feature.",
+    "quality": 5,
+    "confidence": "medium",
+    "rationale": "Agent Studio connects an LLM to Algolia and grounds responses in live index data. It can be used to build content summarizers, conversational search and shopping assistants that recommend items. Recommend adds ML-based suggestions such as frequently-bought-together and trending items. However, these are tools for building end-user experiences, and the search analytics only provide conventional metrics (popular searches, no-results, CTR), not AI-generated insights for the account owner inside the dashboard. The MCP server exposes analytics to external agents rather than in-product. Missing for 10: AI-generated insights or suggestions surfaced in the Algolia dashboard from the user's own analytics and data, and any independent or hands-on corroboration of Agent Studio's insight quality.",
     "evidenceIds": [
       "algolia-docs-13",
       "algolia-docs-39",
+      "algolia-docs-23",
       "algolia-docs-29",
-      "algolia-docs-9"
+      "algolia-docs-9",
+      "algolia-docs-17"
     ]
   },
   {
@@ -86,15 +88,11 @@
   {
     "productId": "algolia",
     "storyId": "agentic-builtin-assistant",
-    "verdict": "partial",
-    "quality": 3,
-    "confidence": "low",
-    "rationale": "Algolia's Agent Studio is a first-party AI capability inside the product. It connects an LLM to Algolia search and tools and manages the end-to-end workflow. However, it is framed as a builder for customer-facing agents (shopping assistants, summarizers, conversational search), not an assistant the Algolia user delegates their own work to. The agent skills and MCP server are external-agent integrations, not a built-in assistant. Missing for 10: an in-dashboard assistant that takes delegated tasks (e.g. configuring indices, rules or relevance), documentation of what it can do on the user's behalf, and hands-on corroboration.",
-    "evidenceIds": [
-      "algolia-docs-13",
-      "algolia-docs-39",
-      "algolia-docs-24"
-    ]
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "An in-dashboard assistant is a plausible capability for a SaaS search platform, so this axis applies, but the evidence shows no built-in assistant that an Algolia user can hand tasks to. Agent Studio is a builder for end-user-facing assistants such as shopping assistants and conversational search grounded in the customer's indices. The agent skills and MCP server serve external agents rather than providing an in-product assistant.",
+    "evidenceIds": []
   },
   {
     "productId": "algolia",
@@ -128,15 +126,15 @@
     "productId": "algolia",
     "storyId": "agentic-mcp-server",
     "verdict": "full",
-    "quality": 7,
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Algolia's official docs list an \"MCP Server\" section. Its official algolia/skills repo includes an `algolia-mcp` skill for search, analytics, and recommendations via the Algolia MCP server, and a probe confirms the server is documented there. The capability looks official and present, but the evidence is mostly navigation-level mentions. Missing for 10: setup and authentication instructions for connecting an agent, a documented tool/capability list and supported clients, independent or hands-on corroboration that agents connect successfully.",
+    "rationale": "Algolia is a hosted search platform, so an official MCP server applies, and the evidence shows one exists. Its docs index lists an \"MCP Server\" section, the official algolia/skills repo ships an `algolia-mcp` skill for search, analytics, and recommendations via the Algolia MCP server, and the quickstart points agent builders to \"Build with AI\". Missing for 10: setup/connection instructions, the list of exposed tools and auth details, and any independent or hands-on corroboration of connecting an agent.",
     "evidenceIds": [
       "algolia-docs-60",
       "algolia-docs-17",
       "algolia-probe-4",
-      "algolia-docs-25",
-      "algolia-docs-57"
+      "algolia-docs-57",
+      "algolia-docs-25"
     ]
   },
   {
@@ -233,11 +231,17 @@
   {
     "productId": "algolia",
     "storyId": "api-interactive-docs",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "The evidence shows Algolia publishes a REST API reference covering endpoints, auth headers, retry strategy and an API-clients reference page. Nothing in the pack shows that reference is interactive, such as a try-it console or runnable in-browser examples. The OpenAPI probe found no public spec at any candidate path, so the interactive, runnable core of the story is unevidenced.",
-    "evidenceIds": []
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "Algolia documents a REST API reference: the Search API page covers authentication headers and retry strategy, and there is an API reference landing page for the official clients. Nothing in the evidence shows the reference is interactive or offers runnable or try-it examples, and the OpenAPI spec probes all returned 404. missing for 10: interactive try-it console, runnable code examples, machine-readable OpenAPI spec, independent or hands-on corroboration.",
+    "evidenceIds": [
+      "algolia-docs-4",
+      "algolia-docs-31",
+      "algolia-docs-44",
+      "algolia-docs-53",
+      "algolia-probe-3"
+    ]
   },
   {
     "productId": "algolia",
@@ -279,11 +283,17 @@
   {
     "productId": "algolia",
     "storyId": "autocomplete-suggestions",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "The evidence pack never mentions a query-suggestions index, an autocomplete library, or any feature that turns search traffic into served suggestions. The nearby evidence does not cover it: search analytics only report popular searches, InstantSearch is a general search UI with custom widgets, and community posts describe instant as-you-type results rather than suggestions. The axis clearly applies to a hosted search platform, so the lack of evidence makes this 'none'.",
-    "evidenceIds": []
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "The evidence shows only adjacent building blocks: search analytics that capture popular searches, fast search-as-you-type in InstantSearch UIs, and custom widgets. A developer could assemble traffic-backed suggestions from these, but no evidence documents a dedicated query-suggestions or autocomplete capability. Missing for 10: documented Query Suggestions index generation from search traffic, an autocomplete UI component or library, a pipeline from analytics into a suggestions index, and independent hands-on corroboration of suggestion quality.",
+    "evidenceIds": [
+      "algolia-docs-9",
+      "algolia-docs-8",
+      "algolia-docs-35",
+      "algolia-comm-8",
+      "algolia-comm-3"
+    ]
   },
   {
     "productId": "algolia",
@@ -393,17 +403,15 @@
   {
     "productId": "algolia",
     "storyId": "faceted-navigation",
-    "verdict": "full",
-    "quality": 6,
+    "verdict": "partial",
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Algolia's docs list faceted navigation as a product capability ('Browse & Navigation - Category pages, filtering, and faceted navigation'). InstantSearch's refinementList widget lets users refine results by attribute values such as brand, and the quickstart filters by product type. Community comments note category refinement and filtering by type in practice. missing for 10: evidence of live per-facet counts, numeric/range facets, confirmation that multiple facets resolve from a single query, and in-depth faceting API documentation.",
+    "rationale": "Algolia's docs list faceted navigation as a capability (\"Category pages, filtering, and faceted navigation\"). InstantSearch's refinementList widget lets users refine by an attribute such as brand, and the quickstart filters by product type. Faceted attribute filtering is therefore evidenced, but the story's specific elements are not. Missing for 10: evidence of live facet counts, range/numeric filters, multiple facet types returned from a single query, and independent hands-on corroboration of faceting.",
     "evidenceIds": [
       "algolia-docs-42",
       "algolia-docs-34",
       "algolia-docs-18",
-      "algolia-docs-8",
-      "algolia-comm-17",
-      "algolia-comm-2"
+      "algolia-docs-8"
     ]
   },
   {
@@ -608,14 +616,13 @@
     "productId": "algolia",
     "storyId": "realtime-index-updates",
     "verdict": "partial",
-    "quality": 4,
+    "quality": 3,
     "confidence": "low",
-    "rationale": "Algolia's Search API manages individual records in indices, and its data guide is about sending and updating your data to the hosted copy Algolia searches (algolia-docs-4, algolia-docs-54, algolia-docs-48). A community user kept Algolia in sync with Firebase through a single cloud function, which implies record-level updates rather than full reindexes (algolia-comm-16). However, nothing in the pack explicitly documents add/update/delete operations or how quickly changes become searchable. missing for 10: explicit docs for per-record add/partial-update/delete operations, any evidence of near-real-time indexing latency, independent corroboration that changes appear quickly without a reindex.",
+    "rationale": "The Search API is documented as letting you manage indices and records, and Algolia searches a copy of your data that you send to it. This implies record-level writes rather than full reindexes, but the evidence never explicitly describes add, update, or delete operations or how quickly changes become searchable. Missing for 10: explicit documentation of incremental add/partial-update/delete record operations, any near-real-time indexing latency claim, and independent or hands-on corroboration of update propagation speed.",
     "evidenceIds": [
       "algolia-docs-4",
       "algolia-docs-54",
-      "algolia-docs-48",
-      "algolia-comm-16"
+      "algolia-docs-48"
     ]
   },
   {
@@ -787,10 +794,10 @@
   {
     "productId": "elastic",
     "storyId": "agent-search-tool",
-    "verdict": "partial",
+    "verdict": "full",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Elastic publishes an official MCP server for Elasticsearch (elastic/mcp-server-elasticsearch), so agents can reach search indexes through an MCP tool surface. The pack also mentions official skills that teach AI coding agents to work with the Elastic stack. However, nothing documents which tools the server exposes, so query, analytics and index operations as tools are not evidenced. missing for 10: documentation of the MCP server's tool set covering query, aggregations/analytics and index-management operations, maturity or support status of the server, and independent or hands-on corroboration of agents using it.",
+    "rationale": "Elastic publishes an official MCP server repository (elastic/mcp-server-elasticsearch), which gives agents a tool-calling surface over Elasticsearch indexes. Official agent skills for the Elastic stack round this out. However, the evidence only shows that the server exists; it does not say which tools it exposes. Missing for 10: documentation of which query, analytics/aggregation and index-management operations the MCP server exposes, and independent or hands-on corroboration that agents use it successfully.",
     "evidenceIds": [
       "elastic-docs-28",
       "elastic-probe-4",
@@ -1016,25 +1023,20 @@
   {
     "productId": "elastic",
     "storyId": "automation-bulk-operations",
-    "verdict": "partial",
-    "quality": 3,
-    "confidence": "low",
-    "rationale": "The only on-topic evidence is a community indexing tip about disabling the refresh interval during bulk indexing, which implies Elasticsearch supports bulk ingestion of many documents at once. The first-party docs in the pack never describe a bulk API or batch update/delete operations, so support is only glancingly evidenced. Missing for 10: first-party documentation of a bulk API, batch update/delete-by-query operations, evidence of agent/AI-native bulk workflows (e.g., via MCP or clients), and hands-on corroboration.",
-    "evidenceIds": [
-      "elastic-comm-6"
-    ]
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Bulk operations across many items is a fair question for a search engine and data store, so the axis applies. However, nothing in the evidence pack documents batch capabilities such as a bulk indexing API or multi-item update or delete. The cited material covers semantic indexing, hybrid search, serverless autoscaling and the MCP server, and none of it describes acting on many documents at once.",
+    "evidenceIds": []
   },
   {
     "productId": "elastic",
     "storyId": "automation-rules-engine",
-    "verdict": "partial",
-    "quality": 2,
-    "confidence": "low",
-    "rationale": "The axis applies, because event-driven rules and alerting are a fair capability for a search and analytics engine. The only signals are glancing: a community comment implies Elastic offers alerts, but only in paid tiers, and the docs mention inference ingest pipelines that process content automatically at index time. Neither shows a user defining rules that trigger actions. Missing for 10: first-party documentation of a rules or alerting engine (watchers, alerting rules, connectors/actions), event-trigger configuration, action types, AI-native or agent-driven rule definition, and independent hands-on corroboration.",
-    "evidenceIds": [
-      "elastic-comm-1",
-      "elastic-docs-23"
-    ]
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Event-triggered automation rules are a fair axis for a search and analytics engine, but the evidence pack never documents a way to define rules that fire actions on events. The only automatic behaviors shown are built-in: embedding generation when indexing into semantic_text fields, and serverless autoscaling. Neither lets users author rules. A single community remark about not paying for 'alerts' implies such a feature may exist, but it is too indirect to count as evidence of the capability.",
+    "evidenceIds": []
   },
   {
     "productId": "elastic",
@@ -1107,14 +1109,11 @@
   {
     "productId": "elastic",
     "storyId": "fast-bulk-indexing",
-    "verdict": "partial",
-    "quality": 3,
-    "confidence": "low",
-    "rationale": "The only on-topic evidence is a community tip about tuning or disabling the refresh interval during bulk indexing (elastic-comm-6), which implies a bulk-indexing workflow. Serverless docs note that resources scale up automatically during ingest spikes (elastic-docs-33). Nothing in the pack documents a bulk API, throughput at millions of documents, or async task tracking for indexing completion. missing for 10: first-party Bulk API documentation, async task/status tracking for indexing jobs, evidence of throughput at million-document scale, independent hands-on corroboration.",
-    "evidenceIds": [
-      "elastic-comm-6",
-      "elastic-docs-33"
-    ]
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "The evidence pack does not document a bulk indexing API or any async task-tracking mechanism for knowing when indexing completes. The only nearby material is serverless autoscaling for ingest spikes and separate index tiers. Those describe infrastructure scaling, not a bulk-import workflow or completion tracking.",
+    "evidenceIds": []
   },
   {
     "productId": "elastic",
@@ -1298,13 +1297,11 @@
     "productId": "elastic",
     "storyId": "realtime-index-updates",
     "verdict": "partial",
-    "quality": 5,
-    "confidence": "medium",
-    "rationale": "A community indexing tip says Elasticsearch's default refresh interval is 1 second, which implies newly indexed documents become searchable within about a second. The semantic_text docs show content is embedded at index time with no separate pipeline, so documents are indexed incrementally rather than through a batch reindex. missing for 10: first-party documentation of near-real-time search and refresh semantics, explicit evidence that updates and deletes become visible in near real time, and confirmation that no full reindex is needed for those changes.",
+    "quality": 4,
+    "confidence": "low",
+    "rationale": "The only on-topic evidence is a community comment. It says newly indexed documents become searchable after an index refresh, and the refresh interval can be tuned to be 'practically real-time' at some performance cost. It also claims the default refresh is about a minute, which means out-of-the-box visibility is not near real time. Missing for 10: first-party documentation of near-real-time refresh behavior, explicit evidence that updates and deletes become searchable incrementally without a full reindex, and independent hands-on corroboration.",
     "evidenceIds": [
-      "elastic-comm-6",
-      "elastic-docs-1",
-      "elastic-docs-23"
+      "elastic-comm-6"
     ]
   },
   {
@@ -1545,10 +1542,10 @@
   {
     "productId": "meilisearch",
     "storyId": "agentic-mcp-client",
-    "verdict": "na",
+    "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Meilisearch is a search engine and database. In the MCP model it plays the tool-provider role: the evidence shows it ships its own MCP server for AI clients to call. It does not act as an agent that consumes tools from external MCP servers, so this client-side story is a category error. Its MCP server evidence belongs to the separate server story and cannot be credited here.",
+    "rationale": "Meilisearch ships conversational and LLM-backed interfaces, so it is fair to ask whether it can consume tools from external MCP servers. The evidence only documents the reverse direction: an official MCP server that lets external AI clients drive Meilisearch. Nothing shows Meilisearch acting as an MCP client that plugs in other servers' tools.",
     "evidenceIds": []
   },
   {
@@ -1619,14 +1616,14 @@
     "productId": "meilisearch",
     "storyId": "agentic-scoped-keys",
     "verdict": "partial",
-    "quality": 5,
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Meilisearch documents API keys plus tenant tokens, which are short-lived, scoped credentials derived from an API key. Tenant tokens embed filter rules that apply to every search, so a credential handed to an agent can be limited to a subset of data. However, the evidence only shows this scoping for search reads. Nothing shows per-action or per-index permission scoping on API keys, or how credentials are scoped for the native MCP server an agent would use. Missing for 10: documented action/index-level API key permissions, least-privilege credential guidance for agents or the MCP endpoint, scoping of write operations, independent or hands-on corroboration.",
+    "rationale": "Meilisearch documents API keys plus tenant tokens, which are described as short-lived, scoped credentials generated from an API key. Their embedded filters restrict which documents each search request can see, so an agent can be given a time-limited, data-scoped search credential. The evidence only shows scoping of search results, not least-privilege keys limited by action (e.g., read-only vs. write) or by index, and nothing addresses agent-specific credential workflows. Missing for 10: documented action- and index-scoped API key permissions, agent-oriented credential guidance (e.g., for the MCP server), and independent or hands-on corroboration.",
     "evidenceIds": [
       "meilisearch-docs-10",
-      "meilisearch-docs-21",
       "meilisearch-docs-42",
       "meilisearch-docs-55",
+      "meilisearch-docs-21",
       "meilisearch-docs-49",
       "meilisearch-docs-36"
     ]
@@ -1707,15 +1704,14 @@
     "productId": "meilisearch",
     "storyId": "autocomplete-suggestions",
     "verdict": "partial",
-    "quality": 3,
+    "quality": 4,
     "confidence": "medium",
-    "rationale": "Meilisearch documents a facet search endpoint that is 'typically used to power auto-complete and type-ahead interfaces on top of filter menus', and its analytics tracks search queries. However, this autocompletes facet values only. Nothing in the evidence shows query suggestions derived from search traffic or a dedicated suggestions index, and one hands-on user said the only thing they miss is a typeahead feature. Missing for 10: query suggestions generated from real search traffic, a documented suggestions-index pattern or feature, analytics-to-suggestions integration, independent corroboration of autocomplete in practice.",
+    "rationale": "Meilisearch documents a dedicated facet search endpoint that is 'typically used to power auto-complete and type-ahead interfaces', but only over the values of a single facet in filter menus, not general query suggestions. Analytics tracks search queries, yet nothing shows that data feeding suggestions. Missing for 10: query suggestions generated from real search traffic, a documented suggestions-index pattern or feature, autocomplete beyond facet values, and independent or hands-on corroboration.",
     "evidenceIds": [
       "meilisearch-docs-7",
       "meilisearch-docs-27",
       "meilisearch-docs-41",
-      "meilisearch-docs-9",
-      "meilisearch-comm-6"
+      "meilisearch-docs-9"
     ]
   },
   {
@@ -1738,11 +1734,14 @@
   {
     "productId": "meilisearch",
     "storyId": "automation-rules-engine",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "Event-driven automation, such as webhooks or triggers on indexing or task events, is a plausible capability for a search platform, so the axis applies. The pack shows no user-defined event→action rules. 'Dynamic Search Rules' only boost, pin, or bury results per query, and tenant-token filters only scope query results; neither is automation triggered by events. Meilisync and Rails auto-sync are prebuilt data-sync integrations, not configurable rules.",
-    "evidenceIds": []
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "The only evidence of event-driven rules is the pricing page's 'Dynamic Search Rules', which boost, pin or bury results based on each request's context. That is a narrow condition-to-action rule scoped to search ranking, not general event automation. Tenant-token filters and Meilisync database syncing are access control and data sync, not user-defined trigger rules. Missing for 10: general event triggers (e.g. on indexing or task completion), webhook or outbound actions, documentation of how rules are defined, and any independent or hands-on corroboration.",
+    "evidenceIds": [
+      "meilisearch-docs-15",
+      "meilisearch-docs-30"
+    ]
   },
   {
     "productId": "meilisearch",
@@ -1946,20 +1945,21 @@
     "productId": "meilisearch",
     "storyId": "openness-self-host",
     "verdict": "full",
-    "quality": 9,
+    "quality": 10,
     "confidence": "high",
-    "rationale": "First-party docs describe Meilisearch as a single binary with no external dependencies that runs on Linux, macOS, or Windows, on bare metal or in containers. It installs via cURL, Docker, Homebrew, APT, or from source, with official Docker images, Helm charts, and production guidance (reverse proxy, systemd, master key). Independent self-hosters corroborate this: one runs ~80M documents on a Hetzner box, another deployed easily in k8s, and a third used a one-click Docker install that 'just worked'. Missing for 10: replication/high availability is reportedly not in the free tier (clusterization is pitched for Cloud), and the evidence does not state the self-hosted license terms.",
+    "rationale": "First-party docs describe self-hosting the core product: it is a single binary with no external dependencies that runs on Linux, macOS, or Windows, on bare metal or in containers. The docs cover install paths via cURL, Docker, Homebrew, APT, or source, official Docker images and Helm charts, and production guidance (reverse proxy, systemd, master key). Independent users corroborate production self-hosting on Hetzner machines, k8s clusters, and one-click Coolify Docker installs, including large-scale deployments of up to 80M documents.",
     "evidenceIds": [
       "meilisearch-docs-11",
       "meilisearch-docs-12",
-      "meilisearch-docs-44",
+      "meilisearch-docs-18",
       "meilisearch-docs-36",
+      "meilisearch-docs-44",
       "meilisearch-docs-69",
       "meilisearch-docs-73",
-      "meilisearch-comm-16",
+      "meilisearch-comm-4",
+      "meilisearch-comm-15",
       "meilisearch-comm-18",
-      "meilisearch-comm-3",
-      "meilisearch-docs-14"
+      "meilisearch-comm-20"
     ]
   },
   {
@@ -1981,34 +1981,27 @@
   {
     "productId": "meilisearch",
     "storyId": "privacy-data-residency",
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Meilisearch is a dependency-free single binary that runs on any Linux, macOS, or Windows machine, on bare metal, in Docker, or on Kubernetes. Self-hosters therefore control exactly where their documents and embeddings live, as in the community report of running it on a Hetzner box. For the managed cloud, a hands-on user confirms there are selectable regions (Singapore was the closest to them, with no Australian region), but the pack has no first-party documentation of this. Missing for 10: first-party docs on cloud region selection and the available region list, explicit data-residency guarantees or compliance commitments, and Australia/other regions not offered.",
+    "rationale": "Meilisearch documents self-hosting as a single binary on any Linux, macOS, or Windows machine, on bare metal, Docker, or Kubernetes, so users can place their data wherever they choose. For the managed Cloud, region choice is only implied by a community user who found the closest instance was Singapore and wished for an Australian one. missing for 10: first-party documentation of Cloud region selection and a region list, explicit data-residency or compliance guarantees, and broader region coverage (e.g. Australia).",
     "evidenceIds": [
       "meilisearch-docs-11",
-      "meilisearch-docs-19",
       "meilisearch-docs-44",
-      "meilisearch-docs-73",
       "meilisearch-docs-69",
+      "meilisearch-docs-73",
       "meilisearch-comm-17",
-      "meilisearch-comm-16",
       "meilisearch-comm-18"
     ]
   },
   {
     "productId": "meilisearch",
     "storyId": "privacy-no-training",
-    "verdict": "partial",
-    "quality": 3,
-    "confidence": "low",
-    "rationale": "Meilisearch documents self-hosting as a single binary with no external dependencies, runnable on your own machines or containers. That keeps indexed data under the user's control rather than the vendor's, which indirectly guards against it being used for AI training. The evidence contains no explicit no-training policy or training opt-out, and auto-generated embeddings via configured embedders may send documents to outside providers. missing for 10: an explicit vendor policy or contractual commitment that customer data (including Meilisearch Cloud data) is not used to train AI models, documented controls over third-party embedder data use, independent corroboration.",
-    "evidenceIds": [
-      "meilisearch-docs-11",
-      "meilisearch-docs-19",
-      "meilisearch-docs-44",
-      "meilisearch-docs-8"
-    ]
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Meilisearch is a hosted and self-hostable search service that stores customer documents and embeddings, so a policy against training on customer data is a fair question to ask. The pack contains no such policy, training opt-out, or statement on how its Cloud service or the third-party embedding providers it calls handle customer data. Self-hosting as a single binary implies data stays on your own infrastructure, but the evidence never ties this to AI training, so it is not credited here.",
+    "evidenceIds": []
   },
   {
     "productId": "meilisearch",
@@ -2026,13 +2019,11 @@
   {
     "productId": "meilisearch",
     "storyId": "privacy-telemetry-optout",
-    "verdict": "partial",
-    "quality": 3,
-    "confidence": "low",
-    "rationale": "The only on-topic evidence is a community thread (comm-13). It reports that Meilisearch's analytics are on by default, sending a daily ping with a unique identifier, and users argued it should be opt-in. That implies an opt-out exists, but the pack never documents it. The analytics docs describe customer-facing search analytics, not product telemetry, so they do not count here. Missing for 10: first-party documentation of a telemetry opt-out flag or environment variable, a description of what data is collected, a privacy-respecting opt-in default, and hands-on confirmation that disabling it stops the ping.",
-    "evidenceIds": [
-      "meilisearch-comm-13"
-    ]
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Opting out of telemetry is a fair question for a self-hosted search engine, so the axis applies. However, nothing in the pack documents an opt-out flag, environment variable, or setting. The only related item is a community complaint that analytics were on by default (comm-12), which shows tracking existed but not how to disable it. The analytics docs cover customer-facing search-event tracking, not product telemetry.",
+    "evidenceIds": []
   },
   {
     "productId": "meilisearch",
@@ -2081,17 +2072,18 @@
     "productId": "meilisearch",
     "storyId": "scale-headroom",
     "verdict": "partial",
-    "quality": 4,
+    "quality": 3,
     "confidence": "medium",
-    "rationale": "Meilisearch Cloud claims read high availability with 'native support for clusterization' (docs-14), and community users confirm a replicated/distributed version exists in paid tiers (comm-3). The documented self-hosting path, however, is a single binary (docs-11) plus Helm charts (docs-69). Scale evidence is single-node: about 80M documents on one 64GB box (comm-16) and 7M articles (comm-15), with RAM planning difficulties reported on large datasets (comm-5). Missing for 10: documented self-hosted replication/clustering or sharding guides, write high availability, an evidenced path to hundreds of millions of documents, and independent corroboration of the Cloud clustering claim.",
+    "rationale": "The only first-party scaling evidence is a Cloud marketing claim of read high availability with native clusterization, plus Helm charts for Kubernetes deployment. Self-hosting docs describe a single binary with no external dependencies, and no documented clustering or replication path appears for self-hosted deployments. Community reports show one node handling about 80M documents across 13 indexes, but others hit unpredictable RAM use on large datasets, indexing that fell hours behind, and trouble scaling writes. missing for 10: documented self-hosted clustering/replication/sharding guides, write high availability, evidence of a path to hundreds of millions of documents, independent corroboration of Cloud HA clustering.",
     "evidenceIds": [
       "meilisearch-docs-14",
-      "meilisearch-docs-11",
       "meilisearch-docs-69",
-      "meilisearch-comm-3",
-      "meilisearch-comm-16",
+      "meilisearch-docs-11",
       "meilisearch-comm-15",
-      "meilisearch-comm-5"
+      "meilisearch-comm-3",
+      "meilisearch-comm-4",
+      "meilisearch-comm-11",
+      "meilisearch-comm-13"
     ]
   },
   {
@@ -2132,13 +2124,14 @@
     "productId": "meilisearch",
     "storyId": "search-ui-components",
     "verdict": "partial",
-    "quality": 4,
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Meilisearch's official integrations page says you can build search interfaces by pairing Meilisearch with React InstantSearch, a third-party component library rather than one Meilisearch ships itself. The engine provides faceting data meant to power UI navigation, but the evidence never shows ready-made Meilisearch widgets. Missing for 10: a first-party Meilisearch UI component library, documentation of specific search box/results/facet/pagination widgets, coverage of frameworks beyond React, and hands-on corroboration of assembling a full UI this way.",
+    "rationale": "Meilisearch's official integrations page says you can build search interfaces by pairing Meilisearch with React InstantSearch. That is a ready-made UI component library, but it is a third-party library connected via integration rather than Meilisearch's own components. The docs also say faceting powers category navigation in your UI, and one community user reports that getting a frontend multi-index search running was easy. Missing for 10: Meilisearch-built UI component libraries, documentation of specific components (search box, results, facets, pagination), coverage beyond React, and hands-on corroboration of a full interface built with them.",
     "evidenceIds": [
       "meilisearch-docs-72",
       "meilisearch-docs-26",
-      "meilisearch-docs-34"
+      "meilisearch-docs-34",
+      "meilisearch-comm-17"
     ]
   },
   {
@@ -2179,11 +2172,15 @@
   {
     "productId": "meilisearch",
     "storyId": "transparent-pricing",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "The evidence pack never documents per-unit pricing (per search, per record, or per node). The pricing-page excerpts cover only features and a 14-day free trial, and the one community mention describes a generous free tier jumping to a $1200/month plan, which is a fixed tier rather than published unit rates.",
-    "evidenceIds": []
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "Meilisearch has a public pricing page offering a 14-day free trial (meilisearch-docs-56). A community comment cites a free tier followed by a $1200/month plan (meilisearch-comm-2), which suggests published tier prices but not per-unit rates. A user also reports that self-hosted RAM usage was unpredictable and expensive under heavy search traffic (meilisearch-comm-3), which works against cost predictability. Missing for 10: documented per-search, per-record or per-node rates; first-party plan price figures; any usage-based cost calculator or overage terms.",
+    "evidenceIds": [
+      "meilisearch-docs-56",
+      "meilisearch-comm-2",
+      "meilisearch-comm-3"
+    ]
   },
   {
     "productId": "meilisearch",
@@ -2804,11 +2801,15 @@
   {
     "productId": "orama",
     "storyId": "scale-headroom",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "The axis applies to a search engine, but the pack documents no clustering, replication, high-availability setup, or proven capacity at hundreds of millions of documents. The only related material is a managed-cloud tagline ('Run Orama at scale. Managed.'), an on-prem deployment option, and batch inserts via insertMultiple. None of these is a documented scaling path.",
-    "evidenceIds": []
+    "verdict": "partial",
+    "quality": 2,
+    "confidence": "low",
+    "rationale": "The only scale-related evidence is the Orama Cloud tagline \"Run Orama at scale. Managed.\" (orama-probe-1) and an on-premise Orama Cloud deployment option (orama-docs-8). Together these imply a managed scaling path, but no mechanics are documented. insertMultiple guidance addresses event-loop blocking during bulk inserts, not cluster scale. missing for 10: documented clustering/sharding, replication, high-availability/failover configuration, any stated capacity or benchmarks toward hundreds of millions of documents, and independent corroboration of large-scale operation.",
+    "evidenceIds": [
+      "orama-probe-1",
+      "orama-docs-8",
+      "orama-docs-24"
+    ]
   },
   {
     "productId": "orama",
@@ -2999,16 +3000,16 @@
     "productId": "typesense",
     "storyId": "agentic-headless",
     "verdict": "full",
-    "quality": 8,
+    "quality": 7,
     "confidence": "medium",
-    "rationale": "Typesense is a self-hostable server distributed as Docker, Docker Compose, Kubernetes, Linux binary, DEB/RPM packages, and a Terraform module. Its docs include dedicated sections on running tests with Testcontainers and in GitHub Actions, and a probe found an official CLI documented on the install page, so it plainly runs headlessly in CI for automation. Missing for 10: the evidence contains only CI guide section titles rather than detailed content (e.g. workflow configuration), and there is no independent hands-on corroboration of Typesense running in CI pipelines.",
+    "rationale": "Typesense is a headless search server. It documents dedicated guides for running tests with Testcontainers and in GitHub Actions, and it ships Docker, Docker Compose, Kubernetes, Linux binary and Terraform deployment options, so it fits automated and CI pipelines. A community user also reports running it in docker compose. Missing for 10: detailed CI guide content beyond section headings, documentation of the referenced official CLI's automation use, independent hands-on corroboration of CI usage.",
     "evidenceIds": [
       "typesense-docs-16",
       "typesense-docs-5",
       "typesense-docs-6",
-      "typesense-docs-26",
       "typesense-docs-39",
-      "typesense-probe-4"
+      "typesense-probe-4",
+      "typesense-comm-9"
     ]
   },
   {
@@ -3204,10 +3205,10 @@
   {
     "productId": "typesense",
     "storyId": "automation-versioned-workflows",
-    "verdict": "none",
+    "verdict": "na",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Typesense is a search platform with Cloud APIs, an MCP server and a Terraform module, so versioning, reviewing and rolling back configuration or automations is a fair question to ask. However, the evidence never documents versioning, review or rollback of automations. A bare 'Schema Management' heading and a Terraform module for installation do not show it.",
+    "rationale": "Typesense is a search engine: you push data in, then search, rank, filter and curate it. It has no concept of user-defined automations or workflows, so versioning, reviewing and rolling back automations is outside this product category. The evidence (Terraform module, schema management, MCP server for cluster configuration) covers infrastructure and search configuration, not automations.",
     "evidenceIds": []
   },
   {
