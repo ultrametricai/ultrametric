@@ -1,5 +1,5 @@
 {
-  "$comment": "Company data fields (founder 2026-10-07; spec pages + identifier widening 2026-10-08): the typed company-level data values the repo genuinely consumes. Honest derivation rule, widened once and deliberately for the identifier fields: a field exists here only because a committed open-artifacts/registry.json artifact establishes it (producedBy) AND one of two committed consumption paths is real - (a) a committed lib/openstartup exported function takes it (signatures read from the module source; consumedBy names the real exported function and the parameter/property the value enters as), OR (b) a committed corpus process requires-and-carries it: the establishing artifact sits in the requires list of committed open-processes/corpus.json records, which consume the value through the artifact (the EIN entered on the bank KYC and payroll setup, the Delaware file number the annual-report portal keys on). Path-(b) fields carry no consumedBy; their consuming processes are computed from the corpus requires edges, never hand-listed. Never speculative either way. Each field also carries its spec (founder 2026-10-08): format sentence, regex pattern where the authority's format is strict, the authority's own documented example where one exists (never an invented number), the assigning/defining authority, the documents the value appears on, and URL citations for the format claims (every URL fetch-verified when curated). Totality is tested in lib/__tests__/companyFields.test.ts; read back by lib/companyFields.ts; rendered on /fields and /fields/[id], on /artifacts/[id] (Data fields this artifact establishes) and /open-modules/[id] (fields the module consumes). Schema: schemas/company-fields.schema.json.",
+  "$comment": "Company data fields (founder 2026-10-07; spec pages + identifier widening 2026-10-08): the typed company-level data values the repo genuinely consumes. Honest derivation rule, widened once and deliberately for the identifier fields: a field exists here only because a committed open-artifacts/registry.json artifact establishes it (producedBy) AND one of two committed consumption paths is real - (a) a committed lib/openstartup exported function takes it (signatures read from the module source; consumedBy names the real exported function and the parameter/property the value enters as), OR (b) a committed corpus process requires-and-carries it: the establishing artifact sits in the requires list of committed open-processes/corpus.json records, which consume the value through the artifact (the EIN entered on the bank KYC and payroll setup, the Delaware file number the annual-report portal keys on). Path-(b) fields carry no consumedBy; their consuming processes are computed from the corpus requires edges, never hand-listed. Never speculative either way. Each field also carries its spec (founder 2026-10-08): format sentence, regex pattern where the authority's format is strict, the authority's own documented example where one exists (never an invented number), the assigning/defining authority, the documents the value appears on, and URL citations for the format claims (every URL fetch-verified when curated). Totality is tested in lib/__tests__/companyFields.test.ts; read back by lib/companyFields.ts; rendered on /fields and /fields/[id], on /artifacts/[id] (Data fields this artifact establishes) and /open-modules/[id] (fields the module consumes). Schema: schemas/company-fields.schema.json. Geo dimension (founder field-standards order, landed with the open-artifacts/ move 2026-10-14): each field carries `geo` - the universal form (scope: universal) for values set by the company's own records (the same field in every covered country), or a base US instance (label, authority, pattern where the authority documents the format, authority-page sources) plus one entry per covered country (UK/IN/DE/FR/PT/CA), each a government-defined equivalent instance or a recorded absence (no-equivalent / unverified, with the reason and citations where the absence itself is documented). Equivalent sources were fetch-verified when curated or reused from committed corpus geoNote actionUrls (already fetch-verified at corpus curation); bot-walled authorities (mca.gov.in, incometaxindia.gov.in) are documented in the entries they blocked. Totality and pattern/example coherence are vitest-gated in lib/__tests__/companyFields.test.ts; zod source: CompanyFieldGeoSchema in lib/companyFields.ts.",
   "fields": [
     {
       "id": "incorporation-date",
@@ -26,6 +26,94 @@
           {
             "label": "Delaware General Corporation Law, Title 8, Chapter 1, Subchapter I (formation; section 102 certificate contents, section 106 commencement of corporate existence)",
             "url": "https://delcode.delaware.gov/title8/c001/sc01/index.html"
+          }
+        ]
+      },
+      "geo": {
+        "base": {
+          "country": "US",
+          "label": "Date of incorporation (DGCL section 106)",
+          "authority": "Delaware Division of Corporations",
+          "summary": "Corporate existence commences when the certificate is filed; the stamped Certificate of Incorporation fixes the date.",
+          "sources": [
+            {
+              "label": "Delaware General Corporation Law, Title 8, Chapter 1, Subchapter I",
+              "url": "https://delcode.delaware.gov/title8/c001/sc01/index.html"
+            }
+          ]
+        },
+        "equivalents": [
+          {
+            "country": "UK",
+            "label": "Date of incorporation (Companies House certificate)",
+            "authority": "Companies House",
+            "summary": "The certificate of incorporation Companies House issues on registration states the company's date of incorporation.",
+            "sources": [
+              {
+                "label": "GOV.UK, Set up a private limited company",
+                "url": "https://www.gov.uk/limited-company-formation"
+              }
+            ]
+          },
+          {
+            "country": "IN",
+            "label": "Date of incorporation (SPICe+ certificate)",
+            "authority": "Registrar of Companies (MCA)",
+            "summary": "The certificate of incorporation the Registrar of Companies issues on the SPICe+ filing fixes the date.",
+            "sources": [
+              {
+                "label": "National Single Window System (SPICe+ incorporation)",
+                "url": "https://www.nsws.gov.in/"
+              }
+            ]
+          },
+          {
+            "country": "DE",
+            "label": "Handelsregister registration date",
+            "authority": "Registergericht (Handelsregister)",
+            "summary": "The GmbH or UG exists on registration in the Handelsregister; the register entry fixes the date.",
+            "sources": [
+              {
+                "label": "Gemeinsames Registerportal der Laender (Handelsregister)",
+                "url": "https://www.handelsregister.de/"
+              }
+            ]
+          },
+          {
+            "country": "FR",
+            "label": "RCS registration date",
+            "authority": "Registre du commerce et des societes (via the INPI guichet unique)",
+            "summary": "Registration through the guichet unique lands the company in the RCS; the Kbis extract states the registration date.",
+            "sources": [
+              {
+                "label": "INPI guichet unique",
+                "url": "https://procedures.inpi.fr/"
+              }
+            ]
+          },
+          {
+            "country": "PT",
+            "label": "Registo comercial date",
+            "authority": "Registo comercial (IRN)",
+            "summary": "Empresa Online registration creates the company in the commercial registry; the certidao permanente carries the registration date.",
+            "sources": [
+              {
+                "label": "gov.pt, Empresa Online (registo comercial)",
+                "url": "https://www.gov.pt/guias/empresa-online-servicos-do-registo-comercial"
+              }
+            ]
+          },
+          {
+            "country": "CA",
+            "label": "Date of incorporation (CBCA certificate)",
+            "authority": "Corporations Canada",
+            "summary": "Corporations Canada issues the certificate of incorporation on the CBCA filing; the certificate fixes the date.",
+            "sources": [
+              {
+                "label": "Corporations Canada, Federal incorporation",
+                "url": "https://ised-isde.canada.ca/site/corporations-canada/en/federal-incorporation"
+              }
+            ]
           }
         ]
       }
@@ -61,6 +149,100 @@
             "url": "https://www.irs.gov/instructions/i1120"
           }
         ]
+      },
+      "geo": {
+        "base": {
+          "country": "US",
+          "label": "Tax year end (Form SS-4 line 12 / Form 1120)",
+          "authority": "Internal Revenue Service",
+          "summary": "Declared by the company: Form SS-4 line 12 asks for the closing month of the accounting year, and the Form 1120 return covers that tax year.",
+          "sources": [
+            {
+              "label": "IRS Instructions for Form SS-4",
+              "url": "https://www.irs.gov/instructions/iss4"
+            },
+            {
+              "label": "IRS Instructions for Form 1120",
+              "url": "https://www.irs.gov/instructions/i1120"
+            }
+          ]
+        },
+        "equivalents": [
+          {
+            "country": "UK",
+            "label": "Accounting reference date",
+            "authority": "Companies House",
+            "summary": "The company's financial year runs to its accounting reference date, changeable at Companies House: shorten as often as wanted, lengthen to at most 18 months once every 5 years, and never while accounts are overdue.",
+            "sources": [
+              {
+                "label": "GOV.UK, Change your company's year end",
+                "url": "https://www.gov.uk/change-your-companys-year-end"
+              },
+              {
+                "label": "GOV.UK, Company Tax Returns",
+                "url": "https://www.gov.uk/company-tax-returns"
+              }
+            ]
+          },
+          {
+            "country": "IN",
+            "label": "Financial year (April to March)",
+            "authority": "Income Tax Department",
+            "summary": "The tax year runs April to March rather than the calendar year; the company's ITR-6 return covers it.",
+            "sources": [
+              {
+                "label": "Income Tax Department e-filing portal",
+                "url": "https://www.incometax.gov.in/iec/foportal/"
+              }
+            ]
+          },
+          {
+            "country": "DE",
+            "label": "Wirtschaftsjahr",
+            "authority": "Finanzamt",
+            "summary": "Profit is determined by the Wirtschaftsjahr the company regularly closes accounts for; switching to a year deviating from the calendar year is effective for tax only in agreement with the Finanzamt (KStG section 7(4)).",
+            "sources": [
+              {
+                "label": "KStG section 7 (Wirtschaftsjahr)",
+                "url": "https://www.gesetze-im-internet.de/kstg_1977/__7.html"
+              }
+            ]
+          },
+          {
+            "country": "FR",
+            "status": "unverified",
+            "note": "The closing date of the exercice comptable is set in the statuts and the IS declaration covers it, but a government page documenting the year-end rule was not fetch-verified when curated.",
+            "sources": [
+              {
+                "label": "impots.gouv.fr, Espace professionnel",
+                "url": "https://www.impots.gouv.fr/professionnel"
+              }
+            ]
+          },
+          {
+            "country": "PT",
+            "status": "unverified",
+            "note": "The IRC periodo de tributacao defaults to the calendar year with an option to differ, but a government page documenting the rule was not fetch-verified when curated.",
+            "sources": [
+              {
+                "label": "Portal das Financas",
+                "url": "https://www.portaldasfinancas.gov.pt/"
+              }
+            ]
+          },
+          {
+            "country": "CA",
+            "label": "Tax year (fiscal period)",
+            "authority": "Canada Revenue Agency",
+            "summary": "A new corporation chooses its tax year-end with its first T2 return (lines 060 and 061); a fiscal period cannot be longer than 53 weeks (371 days).",
+            "sources": [
+              {
+                "label": "CRA T2 Corporation Income Tax Guide, chapter 1 (tax year)",
+                "url": "https://www.canada.ca/en/revenue-agency/services/forms-publications/publications/t4012/t2-corporation-income-tax-guide-chapter-1-page-1-t2-return.html"
+              }
+            ]
+          }
+        ]
       }
     },
     {
@@ -88,6 +270,89 @@
           {
             "label": "IRS Form 15620, Section 83(b) Election",
             "url": "https://www.irs.gov/pub/irs-pdf/f15620.pdf"
+          }
+        ]
+      },
+      "geo": {
+        "base": {
+          "country": "US",
+          "label": "Date of transfer (Form 15620 box 3)",
+          "authority": "Internal Revenue Service",
+          "summary": "The date the restricted stock is transferred: the 30-day 83(b) election window runs from it, and Form 15620 box 3 reports it.",
+          "sources": [
+            {
+              "label": "IRS Form 15620, Section 83(b) Election",
+              "url": "https://www.irs.gov/pub/irs-pdf/f15620.pdf"
+            }
+          ]
+        },
+        "equivalents": [
+          {
+            "country": "UK",
+            "label": "Date of acquisition (section 431 election window)",
+            "authority": "HM Revenue & Customs",
+            "summary": "The analog date: the joint section 431 ITEPA election on restricted shares must be made within 14 days of acquisition, so the acquisition date plays the role the transfer date plays for the 83(b).",
+            "sources": [
+              {
+                "label": "HMRC, Employment-related securities collection",
+                "url": "https://www.gov.uk/government/collections/employment-related-securities"
+              }
+            ]
+          },
+          {
+            "country": "IN",
+            "status": "no-equivalent",
+            "note": "No 83(b)-style election window runs from a transfer date: founder vesting is contractual, and share awards are taxed as a perquisite under their own rules.",
+            "sources": [
+              {
+                "label": "Income Tax Department e-filing portal",
+                "url": "https://www.incometax.gov.in/iec/foportal/"
+              }
+            ]
+          },
+          {
+            "country": "DE",
+            "status": "no-equivalent",
+            "note": "No election window runs from a transfer date; the statutory lever for startup equity is EStG section 19a deferred taxation, not a filing-deadline race.",
+            "sources": [
+              {
+                "label": "EStG section 19a (deferred taxation of employee equity)",
+                "url": "https://www.gesetze-im-internet.de/estg/__19a.html"
+              }
+            ]
+          },
+          {
+            "country": "FR",
+            "status": "no-equivalent",
+            "note": "No equivalent election date: founder and employee equity are taxed under the BOFiP-governed regimes (BSPCE, free shares), with no deadline running from transfer.",
+            "sources": [
+              {
+                "label": "BOFiP, official tax doctrine",
+                "url": "https://bofip.impots.gouv.fr/"
+              }
+            ]
+          },
+          {
+            "country": "PT",
+            "status": "no-equivalent",
+            "note": "No 83(b)-style window: vesting is drafted contractually, and the 2023 startup law defers qualifying option taxation to liquidity.",
+            "sources": [
+              {
+                "label": "Lei 21/2023 (Portuguese startup law)",
+                "url": "https://diariodarepublica.pt/dr/detalhe/lei/21-2023-213498830"
+              }
+            ]
+          },
+          {
+            "country": "CA",
+            "status": "no-equivalent",
+            "note": "No election deadline runs from the transfer date: founder shares issue at nominal value with CCPC tax deferral.",
+            "sources": [
+              {
+                "label": "CRA, Security options",
+                "url": "https://www.canada.ca/en/revenue-agency/services/tax/businesses/topics/payroll/benefits-allowances/security-options.html"
+              }
+            ]
           }
         ]
       }
@@ -127,6 +392,68 @@
             "url": "https://corp.delaware.gov/frtaxcalc/"
           }
         ]
+      },
+      "geo": {
+        "base": {
+          "country": "US",
+          "label": "Authorized shares (charter)",
+          "authority": "Delaware Division of Corporations (DGCL section 102(a)(4))",
+          "summary": "Stated per class in the Certificate of Incorporation; the authorized-shares franchise-tax method taxes on it.",
+          "sources": [
+            {
+              "label": "Delaware General Corporation Law, Title 8, Chapter 1, Subchapter I",
+              "url": "https://delcode.delaware.gov/title8/c001/sc01/index.html"
+            },
+            {
+              "label": "Delaware Division of Corporations, franchise tax calculator",
+              "url": "https://corp.delaware.gov/frtaxcalc/"
+            }
+          ]
+        },
+        "equivalents": [
+          {
+            "country": "UK",
+            "status": "no-equivalent",
+            "note": "The Companies Act 2006 has no authorised share capital: formation files a statement of capital of the shares actually taken (section 10), so there is no authorized-share ceiling to record.",
+            "sources": [
+              {
+                "label": "Companies Act 2006, section 10 (statement of capital)",
+                "url": "https://www.legislation.gov.uk/ukpga/2006/46/section/10"
+              }
+            ]
+          },
+          {
+            "country": "IN",
+            "status": "unverified",
+            "note": "Authorised share capital is a Companies Act 2013 concept and MCA filing fees scale on it, but mca.gov.in was bot-walled when curated, so the instance could not be verified against the authority's own page."
+          },
+          {
+            "country": "DE",
+            "status": "no-equivalent",
+            "note": "The GmbH has fixed registered capital rather than an authorized pool: the Nennbetraege of all Geschaeftsanteile must sum to the Stammkapital (GmbHG section 5).",
+            "sources": [
+              {
+                "label": "GmbHG section 5 (Stammkapital, Nennbetrag)",
+                "url": "https://www.gesetze-im-internet.de/gmbhg/__5.html"
+              }
+            ]
+          },
+          {
+            "country": "FR",
+            "status": "unverified",
+            "note": "The capital social is stated in the statuts; whether an authorised-capital ceiling analog exists for the SAS was not verified against a government page when curated."
+          },
+          {
+            "country": "PT",
+            "status": "unverified",
+            "note": "The capital social is set in the contrato de sociedade; an authorised-capital analog was not verified against a government page when curated."
+          },
+          {
+            "country": "CA",
+            "status": "unverified",
+            "note": "CBCA articles state the share classes and any maximum number of shares (often unlimited), but no government page documenting an authorized-share count was fetch-verified when curated."
+          }
+        ]
       }
     },
     {
@@ -159,6 +486,76 @@
             "url": "https://corp.delaware.gov/frtaxcalc/"
           }
         ]
+      },
+      "geo": {
+        "base": {
+          "country": "US",
+          "label": "Par value per share",
+          "authority": "Delaware Division of Corporations (DGCL section 102(a)(4))",
+          "summary": "Stated per authorized class in the charter; the assumed-par-value-capital franchise-tax method computes from it.",
+          "sources": [
+            {
+              "label": "Delaware General Corporation Law, Title 8, Chapter 1, Subchapter I",
+              "url": "https://delcode.delaware.gov/title8/c001/sc01/index.html"
+            },
+            {
+              "label": "Delaware Division of Corporations, franchise tax calculator",
+              "url": "https://corp.delaware.gov/frtaxcalc/"
+            }
+          ]
+        },
+        "equivalents": [
+          {
+            "country": "UK",
+            "label": "Nominal value",
+            "authority": "Companies Act 2006 (Companies House filings)",
+            "summary": "Shares in a limited company having a share capital must each have a fixed nominal value; an allotment without one is void (section 542).",
+            "sources": [
+              {
+                "label": "Companies Act 2006, section 542 (fixed nominal value)",
+                "url": "https://www.legislation.gov.uk/ukpga/2006/46/section/542"
+              }
+            ]
+          },
+          {
+            "country": "IN",
+            "status": "unverified",
+            "note": "Shares carry a face value under the Companies Act 2013, but mca.gov.in was bot-walled when curated, so the instance could not be verified against the authority's own page."
+          },
+          {
+            "country": "DE",
+            "label": "Nennbetrag",
+            "authority": "GmbHG (Handelsregister filings)",
+            "summary": "Each Geschaeftsanteil has a Nennbetrag in full euros, the Nennbetraege sum to the Stammkapital, and the minimum Stammkapital is 25,000 euros (GmbHG section 5).",
+            "sources": [
+              {
+                "label": "GmbHG section 5 (Stammkapital, Nennbetrag)",
+                "url": "https://www.gesetze-im-internet.de/gmbhg/__5.html"
+              }
+            ]
+          },
+          {
+            "country": "FR",
+            "status": "unverified",
+            "note": "The valeur nominale of shares exists in French company law but was not verified against a government page when curated."
+          },
+          {
+            "country": "PT",
+            "status": "unverified",
+            "note": "Quotas and shares carry a valor nominal under the Codigo das Sociedades Comerciais, but the rule was not fetch-verified against a government page when curated."
+          },
+          {
+            "country": "CA",
+            "status": "no-equivalent",
+            "note": "CBCA shares are in registered form and without nominal or par value (section 24(1)), so a federal corporation has no par-value field.",
+            "sources": [
+              {
+                "label": "CBCA section 24 (shares without nominal or par value)",
+                "url": "https://laws-lois.justice.gc.ca/eng/acts/C-44/section-24.html"
+              }
+            ]
+          }
+        ]
       }
     },
     {
@@ -187,6 +584,10 @@
             "url": "https://corp.delaware.gov/frtaxcalc/"
           }
         ]
+      },
+      "geo": {
+        "scope": "universal",
+        "note": "Set by board-authorized issuances recorded on the company's own cap table in every covered country; local filings (the Delaware annual franchise tax report, the UK statement of capital) report the count, and the company's register defines it."
       }
     },
     {
@@ -222,6 +623,56 @@
           {
             "label": "26 U.S.C. section 1202 (qualified small business stock; the aggregate-gross-assets condition)",
             "url": "https://www.law.cornell.edu/uscode/text/26/1202"
+          }
+        ]
+      },
+      "geo": {
+        "base": {
+          "country": "US",
+          "label": "Total assets (Form 1120 Schedule L)",
+          "authority": "Delaware Division of Corporations / IRS (IRC section 1202(d))",
+          "summary": "Delaware defines the assumed-par method input as the total assets reported on Form 1120 Schedule L; the QSBS condition reads aggregate gross assets under IRC section 1202(d).",
+          "sources": [
+            {
+              "label": "Delaware Division of Corporations, franchise tax calculator",
+              "url": "https://corp.delaware.gov/frtaxcalc/"
+            },
+            {
+              "label": "26 U.S.C. section 1202 (Cornell LII)",
+              "url": "https://www.law.cornell.edu/uscode/text/26/1202"
+            }
+          ]
+        },
+        "equivalents": [
+          {
+            "country": "UK",
+            "status": "no-equivalent",
+            "note": "Statutory accounts report balance-sheet totals under accounting law, but no committed rule in this country consumes a gross-assets figure the way Delaware's assumed-par method and IRC section 1202(d) do."
+          },
+          {
+            "country": "IN",
+            "status": "no-equivalent",
+            "note": "Statutory accounts report balance-sheet totals under accounting law, but no committed rule in this country consumes a gross-assets figure the way Delaware's assumed-par method and IRC section 1202(d) do."
+          },
+          {
+            "country": "DE",
+            "status": "no-equivalent",
+            "note": "Statutory accounts report balance-sheet totals under accounting law, but no committed rule in this country consumes a gross-assets figure the way Delaware's assumed-par method and IRC section 1202(d) do."
+          },
+          {
+            "country": "FR",
+            "status": "no-equivalent",
+            "note": "Statutory accounts report balance-sheet totals under accounting law, but no committed rule in this country consumes a gross-assets figure the way Delaware's assumed-par method and IRC section 1202(d) do."
+          },
+          {
+            "country": "PT",
+            "status": "no-equivalent",
+            "note": "Statutory accounts report balance-sheet totals under accounting law, but no committed rule in this country consumes a gross-assets figure the way Delaware's assumed-par method and IRC section 1202(d) do."
+          },
+          {
+            "country": "CA",
+            "status": "no-equivalent",
+            "note": "Statutory accounts report balance-sheet totals under accounting law, but no committed rule in this country consumes a gross-assets figure the way Delaware's assumed-par method and IRC section 1202(d) do."
           }
         ]
       }
@@ -262,6 +713,10 @@
             "url": "https://www.holloway.com/g/equity-compensation"
           }
         ]
+      },
+      "geo": {
+        "scope": "universal",
+        "note": "A cap-table convention (the committed reference definition is the YC post-money SAFE's company capitalization), computed from the company's own records; the definition is the same in every covered country."
       }
     },
     {
@@ -295,6 +750,10 @@
             "url": "https://www.holloway.com/g/equity-compensation"
           }
         ]
+      },
+      "geo": {
+        "scope": "universal",
+        "note": "Set by the equity incentive plan's approved share reserve on the company's own cap table; no government defines the value in any covered country."
       }
     },
     {
@@ -328,6 +787,10 @@
             "url": "https://paulgraham.com/aord.html"
           }
         ]
+      },
+      "geo": {
+        "scope": "universal",
+        "note": "Read from the company's own bank records; not a government-defined value in any covered country."
       }
     },
     {
@@ -356,6 +819,10 @@
             "url": "https://paulgraham.com/aord.html"
           }
         ]
+      },
+      "geo": {
+        "scope": "universal",
+        "note": "Read from the company's own accounting ledger as the current run rate; not a government-defined value in any covered country."
       }
     },
     {
@@ -384,6 +851,10 @@
             "url": "https://paulgraham.com/aord.html"
           }
         ]
+      },
+      "geo": {
+        "scope": "universal",
+        "note": "Read from the company's own accounting ledger; not a government-defined value in any covered country."
       }
     },
     {
@@ -416,6 +887,10 @@
             "url": "https://paulgraham.com/aord.html"
           }
         ]
+      },
+      "geo": {
+        "scope": "universal",
+        "note": "Computed from the company's own consecutive monthly revenue figures; not a government-defined value in any covered country."
       }
     },
     {
@@ -447,6 +922,90 @@
           {
             "label": "Internal Revenue Bulletin 2007-19, final regulations under section 409A",
             "url": "https://www.irs.gov/irb/2007-19_IRB"
+          }
+        ]
+      },
+      "geo": {
+        "base": {
+          "country": "US",
+          "label": "FMV per common share (409A)",
+          "authority": "Internal Revenue Service (Treas. Reg. section 1.409A-1(b)(5)(iv)(B))",
+          "summary": "Set by the company's 409A valuation under the independent-appraisal presumption for illiquid startups.",
+          "sources": [
+            {
+              "label": "IRS Internal Revenue Bulletin 2007-19 (section 409A final regulations)",
+              "url": "https://www.irs.gov/irb/2007-19_IRB"
+            }
+          ]
+        },
+        "equivalents": [
+          {
+            "country": "UK",
+            "label": "EMI valuation (agreed with HMRC)",
+            "authority": "HM Revenue & Customs (Shares and Assets Valuation)",
+            "summary": "The analog value: an EMI valuation agreed with HMRC's Shares and Assets Valuation team fixes the market value grants rely on for 90 days.",
+            "sources": [
+              {
+                "label": "HMRC, Employment-related securities collection",
+                "url": "https://www.gov.uk/government/collections/employment-related-securities"
+              }
+            ]
+          },
+          {
+            "country": "IN",
+            "label": "Fair market value (Rule 11UA registered-valuer report)",
+            "authority": "IBBI-registered valuer (Income Tax Rules)",
+            "summary": "Share pricing runs off a report from an IBBI-registered valuer or merchant banker under Rule 11UA; ESOP perquisite tax reads fair market value.",
+            "sources": [
+              {
+                "label": "Insolvency and Bankruptcy Board of India (registered valuers)",
+                "url": "https://ibbi.gov.in/"
+              }
+            ]
+          },
+          {
+            "country": "DE",
+            "status": "no-equivalent",
+            "note": "No statutory safe-harbor appraisal exists for strike prices; pricing is a company-and-advisor judgment, and the statutory lever is EStG section 19a deferred taxation.",
+            "sources": [
+              {
+                "label": "EStG section 19a (deferred taxation of employee equity)",
+                "url": "https://www.gesetze-im-internet.de/estg/__19a.html"
+              }
+            ]
+          },
+          {
+            "country": "FR",
+            "status": "no-equivalent",
+            "note": "No appraisal safe harbor: BSPCE strike prices are set by the issuing company under the BOFiP doctrine.",
+            "sources": [
+              {
+                "label": "BOFiP, official tax doctrine",
+                "url": "https://bofip.impots.gouv.fr/"
+              }
+            ]
+          },
+          {
+            "country": "PT",
+            "status": "no-equivalent",
+            "note": "No appraisal ritual: plans are priced by the company and its advisors, and the 2023 startup law defers qualifying option taxation to liquidity.",
+            "sources": [
+              {
+                "label": "Lei 21/2023 (Portuguese startup law)",
+                "url": "https://diariodarepublica.pt/dr/detalhe/lei/21-2023-213498830"
+              }
+            ]
+          },
+          {
+            "country": "CA",
+            "status": "no-equivalent",
+            "note": "The CRA publishes no appraisal safe harbor; CCPC option rules defer the employee's tax to sale regardless.",
+            "sources": [
+              {
+                "label": "CRA, Security options",
+                "url": "https://www.canada.ca/en/revenue-agency/services/tax/businesses/topics/payroll/benefits-allowances/security-options.html"
+              }
+            ]
           }
         ]
       }
@@ -482,6 +1041,90 @@
             "url": "https://www.irs.gov/irb/2007-19_IRB"
           }
         ]
+      },
+      "geo": {
+        "base": {
+          "country": "US",
+          "label": "409A valuation as-of date",
+          "authority": "Internal Revenue Service (Treas. Reg. section 1.409A-1(b)(5)(iv)(B))",
+          "summary": "The as-of date of the 409A report; the independent-appraisal presumption holds for no more than 12 months absent a material change.",
+          "sources": [
+            {
+              "label": "IRS Internal Revenue Bulletin 2007-19 (section 409A final regulations)",
+              "url": "https://www.irs.gov/irb/2007-19_IRB"
+            }
+          ]
+        },
+        "equivalents": [
+          {
+            "country": "UK",
+            "label": "EMI valuation agreement date",
+            "authority": "HM Revenue & Customs (Shares and Assets Valuation)",
+            "summary": "The agreed EMI valuation fixes market value for 90 days from agreement, so the agreement date carries the staleness window the 409A as-of date carries in the US.",
+            "sources": [
+              {
+                "label": "HMRC, Employment-related securities collection",
+                "url": "https://www.gov.uk/government/collections/employment-related-securities"
+              }
+            ]
+          },
+          {
+            "country": "IN",
+            "label": "Registered-valuer report date",
+            "authority": "IBBI-registered valuer (Income Tax Rules)",
+            "summary": "The Rule 11UA valuation report is dated, and share pricing relies on the report.",
+            "sources": [
+              {
+                "label": "Insolvency and Bankruptcy Board of India (registered valuers)",
+                "url": "https://ibbi.gov.in/"
+              }
+            ]
+          },
+          {
+            "country": "DE",
+            "status": "no-equivalent",
+            "note": "No statutory valuation ritual exists, so there is no valuation date to track; the statutory lever is EStG section 19a deferred taxation.",
+            "sources": [
+              {
+                "label": "EStG section 19a (deferred taxation of employee equity)",
+                "url": "https://www.gesetze-im-internet.de/estg/__19a.html"
+              }
+            ]
+          },
+          {
+            "country": "FR",
+            "status": "no-equivalent",
+            "note": "No statutory valuation ritual exists, so there is no valuation date to track; BSPCE pricing sits under the BOFiP doctrine.",
+            "sources": [
+              {
+                "label": "BOFiP, official tax doctrine",
+                "url": "https://bofip.impots.gouv.fr/"
+              }
+            ]
+          },
+          {
+            "country": "PT",
+            "status": "no-equivalent",
+            "note": "No statutory valuation ritual exists, so there is no valuation date to track; the 2023 startup law defers qualifying option taxation to liquidity.",
+            "sources": [
+              {
+                "label": "Lei 21/2023 (Portuguese startup law)",
+                "url": "https://diariodarepublica.pt/dr/detalhe/lei/21-2023-213498830"
+              }
+            ]
+          },
+          {
+            "country": "CA",
+            "status": "no-equivalent",
+            "note": "No statutory valuation ritual exists, so there is no valuation date to track; CCPC option rules defer the employee's tax to sale.",
+            "sources": [
+              {
+                "label": "CRA, Security options",
+                "url": "https://www.canada.ca/en/revenue-agency/services/tax/businesses/topics/payroll/benefits-allowances/security-options.html"
+              }
+            ]
+          }
+        ]
       }
     },
     {
@@ -514,6 +1157,94 @@
             "url": "https://www.irs.gov/instructions/i941"
           }
         ]
+      },
+      "geo": {
+        "base": {
+          "country": "US",
+          "label": "Wage-paying employer (Form 941 filer)",
+          "authority": "Internal Revenue Service",
+          "summary": "Employers who pay wages subject to withholding file Form 941 quarterly; running payroll is what the flag records.",
+          "sources": [
+            {
+              "label": "IRS Instructions for Form 941",
+              "url": "https://www.irs.gov/instructions/i941"
+            }
+          ]
+        },
+        "equivalents": [
+          {
+            "country": "UK",
+            "label": "PAYE employer registration",
+            "authority": "HM Revenue & Customs",
+            "summary": "Register as an employer for PAYE before the first payday, then report pay through Real Time Information on or before every payment.",
+            "sources": [
+              {
+                "label": "GOV.UK, Register as an employer",
+                "url": "https://www.gov.uk/register-employer"
+              }
+            ]
+          },
+          {
+            "country": "IN",
+            "label": "EPF/ESI employer registration",
+            "authority": "EPFO / ESIC",
+            "summary": "Employer setup spans EPF and ESI registration plus state professional tax; salary TDS deposits monthly against the company's TAN.",
+            "sources": [
+              {
+                "label": "EPFO employer portal",
+                "url": "https://unifiedportal-emp.epfindia.gov.in/epfo/"
+              }
+            ]
+          },
+          {
+            "country": "DE",
+            "label": "Betriebsnummer",
+            "authority": "Bundesagentur fuer Arbeit",
+            "summary": "A Betriebsnummer is required before running payroll, followed by monthly social-insurance reports and wage tax via ELSTER.",
+            "sources": [
+              {
+                "label": "Bundesagentur fuer Arbeit, Betriebsnummern-Service",
+                "url": "https://www.arbeitsagentur.de/unternehmen/betriebsnummern-service"
+              }
+            ]
+          },
+          {
+            "country": "FR",
+            "label": "DPAE + DSN (URSSAF)",
+            "authority": "URSSAF",
+            "summary": "Every hire starts with a DPAE filed with URSSAF; monthly payroll then flows through the DSN, the unified payroll report.",
+            "sources": [
+              {
+                "label": "entreprendre.service-public.fr, DPAE (F23107)",
+                "url": "https://entreprendre.service-public.fr/vosdroits/F23107"
+              }
+            ]
+          },
+          {
+            "country": "PT",
+            "label": "Seguranca Social employer registration",
+            "authority": "Seguranca Social",
+            "summary": "Register as an employer and report each hire before they start, then file the monthly remuneration declaration and withhold income tax.",
+            "sources": [
+              {
+                "label": "Seguranca Social, Empregadores",
+                "url": "https://www.seg-social.pt/empregadores"
+              }
+            ]
+          },
+          {
+            "country": "CA",
+            "label": "Payroll (RP) program account",
+            "authority": "Canada Revenue Agency",
+            "summary": "Open an RP program account on the business number before the first remittance; provincial workers'-compensation registration sits beside it.",
+            "sources": [
+              {
+                "label": "CRA, Payroll",
+                "url": "https://www.canada.ca/en/revenue-agency/services/tax/businesses/topics/payroll.html"
+              }
+            ]
+          }
+        ]
       }
     },
     {
@@ -544,6 +1275,126 @@
             "url": "https://www.irs.gov/publications/p15"
           }
         ]
+      },
+      "geo": {
+        "base": {
+          "country": "US",
+          "label": "EIN (Employer Identification Number)",
+          "authority": "Internal Revenue Service",
+          "summary": "The federal tax identifier, assigned on the SS-4 application: nine digits arranged as two digits, a hyphen, then seven digits.",
+          "pattern": "^[0-9]{2}-[0-9]{7}$",
+          "example": "12-3456789",
+          "sources": [
+            {
+              "label": "IRS Instructions for Form SS-4",
+              "url": "https://www.irs.gov/instructions/iss4"
+            },
+            {
+              "label": "IRS Publication 15",
+              "url": "https://www.irs.gov/publications/p15"
+            }
+          ]
+        },
+        "equivalents": [
+          {
+            "country": "UK",
+            "label": "UTR (Unique Taxpayer Reference)",
+            "authority": "HM Revenue & Customs",
+            "summary": "HMRC issues the company's Corporation Tax UTR automatically after incorporation and posts it to the registered office; GOV.UK documents it as a 10-digit number.",
+            "pattern": "^[0-9]{10}$",
+            "sources": [
+              {
+                "label": "GOV.UK, Find your UTR number",
+                "url": "https://www.gov.uk/find-utr-number"
+              },
+              {
+                "label": "GOV.UK, Corporation Tax",
+                "url": "https://www.gov.uk/corporation-tax"
+              }
+            ]
+          },
+          {
+            "country": "IN",
+            "label": "PAN (Permanent Account Number)",
+            "authority": "Income Tax Department",
+            "summary": "The company's PAN (with TAN) is allotted automatically as part of the SPICe+ incorporation filing and anchors the company on the e-filing portal. The department's PAN format tutorial (incometaxindia.gov.in) was bot-walled when curated, so no pattern is recorded.",
+            "sources": [
+              {
+                "label": "Income Tax Department e-filing portal",
+                "url": "https://www.incometax.gov.in/iec/foportal/"
+              },
+              {
+                "label": "National Single Window System (SPICe+ incorporation)",
+                "url": "https://www.nsws.gov.in/"
+              }
+            ]
+          },
+          {
+            "country": "DE",
+            "label": "Steuernummer",
+            "authority": "Finanzamt (via ELSTER)",
+            "summary": "The tax office issues the Steuernummer after the Fragebogen zur steuerlichen Erfassung is filed on ELSTER. ELSTER documents that the digit count differs per Bundesland, beside a unified 13-digit federal schema, so no single pattern is recorded.",
+            "sources": [
+              {
+                "label": "ELSTER help, Wo ist meine Steuernummer",
+                "url": "https://www.elster.de/eportal/helpGlobal?themaGlobal=wo_ist_meine_steuernummer"
+              },
+              {
+                "label": "ELSTER portal",
+                "url": "https://www.elster.de/eportal/start"
+              }
+            ]
+          },
+          {
+            "country": "FR",
+            "label": "SIREN",
+            "authority": "INSEE (Sirene register)",
+            "summary": "INSEE allots the nine-digit SIREN automatically when the guichet unique registration lands; the 14-digit SIRET appends a five-digit establishment NIC to it.",
+            "pattern": "^[0-9]{9}$",
+            "sources": [
+              {
+                "label": "entreprendre.service-public.gouv.fr, SIREN and SIRET numbers (F32135)",
+                "url": "https://entreprendre.service-public.gouv.fr/vosdroits/F32135"
+              },
+              {
+                "label": "INSEE definition, Siren number",
+                "url": "https://www.insee.fr/en/metadonnees/definition/c2047"
+              }
+            ]
+          },
+          {
+            "country": "PT",
+            "label": "NIPC (Numero de Identificacao de Pessoa Coletiva)",
+            "authority": "Instituto dos Registos e do Notariado (RNPC)",
+            "summary": "The NIPC issued at incorporation identifies the pessoa coletiva and doubles as the company's tax number once the declaracao de inicio de atividade activates it. No format is documented on the fetched authority pages, so no pattern is recorded.",
+            "sources": [
+              {
+                "label": "Justica.gov.pt, Pedir NIPC",
+                "url": "https://justica.gov.pt/Servicos/Pedir-NIPC"
+              },
+              {
+                "label": "Portal das Financas",
+                "url": "https://www.portaldasfinancas.gov.pt/"
+              }
+            ]
+          },
+          {
+            "country": "CA",
+            "label": "Business number (BN)",
+            "authority": "Canada Revenue Agency",
+            "summary": "The business number is the CRA's standard identifier for the legal entity, issued automatically with federal incorporation; program accounts (payroll, GST/HST, corporate tax) attach to it. The fetched CRA page documents no digit format, so no pattern is recorded.",
+            "sources": [
+              {
+                "label": "CRA, When you need a business number or program account",
+                "url": "https://www.canada.ca/en/revenue-agency/services/tax/businesses/topics/registering-your-business/you-need-a-business-number-a-program-account.html"
+              },
+              {
+                "label": "CRA, Registering your business",
+                "url": "https://www.canada.ca/en/revenue-agency/services/tax/businesses/topics/registering-your-business.html"
+              }
+            ]
+          }
+        ]
       }
     },
     {
@@ -569,6 +1420,109 @@
           {
             "label": "Delaware Division of Corporations, Annual Report and Tax Instructions",
             "url": "https://corp.delaware.gov/frtax/"
+          }
+        ]
+      },
+      "geo": {
+        "base": {
+          "country": "US",
+          "label": "Delaware file number",
+          "authority": "Delaware Division of Corporations",
+          "summary": "The numeric file number the Division of Corporations assigns at filing; the annual-report and franchise-tax portal keys on it.",
+          "pattern": "^[0-9]{1,9}$",
+          "sources": [
+            {
+              "label": "Delaware Division of Corporations eCorp tax portal",
+              "url": "https://icis.corp.delaware.gov/ecorp/logintax.aspx"
+            },
+            {
+              "label": "Delaware Division of Corporations, annual report and franchise tax",
+              "url": "https://corp.delaware.gov/frtax/"
+            }
+          ]
+        },
+        "equivalents": [
+          {
+            "country": "UK",
+            "label": "Company registration number (CRN)",
+            "authority": "Companies House",
+            "summary": "Companies House allocates the registered number at incorporation; the certificate of incorporation states the name and registered number of the company. The fetched guidance documents no character format, so no pattern is recorded.",
+            "sources": [
+              {
+                "label": "Companies House guidance, Incorporation and names",
+                "url": "https://www.gov.uk/government/publications/incorporation-and-names/incorporation-and-names"
+              },
+              {
+                "label": "GOV.UK, Set up a private limited company",
+                "url": "https://www.gov.uk/limited-company-formation"
+              }
+            ]
+          },
+          {
+            "country": "IN",
+            "status": "unverified",
+            "note": "The Registrar of Companies allots a Corporate Identity Number (CIN) on the SPICe+ incorporation, but mca.gov.in was bot-walled when curated, so the instance could not be verified against the authority's own page."
+          },
+          {
+            "country": "DE",
+            "label": "Handelsregisternummer (HRA/HRB)",
+            "authority": "Registergericht (Handelsregister)",
+            "summary": "The register court assigns the HRB (or HRA) number when the company registers in the Handelsregister; the joint register portal of the Laender serves every Bundesland's registers. No nationwide format is documented, so no pattern is recorded.",
+            "sources": [
+              {
+                "label": "Gemeinsames Registerportal der Laender (Handelsregister)",
+                "url": "https://www.handelsregister.de/"
+              }
+            ]
+          },
+          {
+            "country": "FR",
+            "label": "SIREN (RCS registration)",
+            "authority": "INSEE (Sirene register)",
+            "summary": "The nine-digit SIREN is the company's registration identifier: INSEE allots it when the guichet unique registration lands, and the RCS entry and Kbis extract carry it.",
+            "pattern": "^[0-9]{9}$",
+            "sources": [
+              {
+                "label": "entreprendre.service-public.gouv.fr, SIREN and SIRET numbers (F32135)",
+                "url": "https://entreprendre.service-public.gouv.fr/vosdroits/F32135"
+              },
+              {
+                "label": "INSEE definition, Siren number",
+                "url": "https://www.insee.fr/en/metadonnees/definition/c2047"
+              }
+            ]
+          },
+          {
+            "country": "PT",
+            "label": "NIPC (registry number)",
+            "authority": "Instituto dos Registos e do Notariado (RNPC)",
+            "summary": "The NIPC issued at incorporation is also the company's registry identifier on the certidao permanente. No format is documented on the fetched authority pages, so no pattern is recorded.",
+            "sources": [
+              {
+                "label": "Justica.gov.pt, Pedir NIPC",
+                "url": "https://justica.gov.pt/Servicos/Pedir-NIPC"
+              },
+              {
+                "label": "gov.pt, Empresa Online (registo comercial)",
+                "url": "https://www.gov.pt/guias/empresa-online-servicos-do-registo-comercial"
+              }
+            ]
+          },
+          {
+            "country": "CA",
+            "label": "Corporation number",
+            "authority": "Corporations Canada",
+            "summary": "Corporations Canada assigns the corporation number at incorporation; it appears on the Corporate Information Sheet sent on the date of incorporation (the one-time corporation key is printed right after it). No digit format is documented, so no pattern is recorded.",
+            "sources": [
+              {
+                "label": "Corporations Canada, Corporation key",
+                "url": "https://ised-isde.canada.ca/site/corporations-canada/en/corporation-key"
+              },
+              {
+                "label": "Corporations Canada, Federal incorporation",
+                "url": "https://ised-isde.canada.ca/site/corporations-canada/en/federal-incorporation"
+              }
+            ]
           }
         ]
       }
