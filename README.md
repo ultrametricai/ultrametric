@@ -8,16 +8,16 @@ Navigate all business processes, compare and select AI native vendors, inform yo
 
 <pre>
 ultrametric/
-├── <a href="#open-processes">open-processes</a>/     each founder process as routed, timed steps
+├── <a href="#open-processes">open-processes</a>/     founder processes and situations as routed, timed steps
 ├── <a href="#open-vendor-rankings">open-rankings</a>/      per-market products, stories, evidence, verdicts
 ├── <a href="#open-modules">open-modules</a>/       worked guides to each startup calculation
 ├── <a href="#open-startup-simulator">open-startup-sim</a>/   what the simulator runs and assumes
-├── <a href="#open-law">open-law</a>/           startup legal rules by jurisdiction
-├── <a href="#open-lore">open-lore</a>/          founder advice, who said it, the reading library
+├── <a href="#open-law">open-law</a>/           startup legal rules by jurisdiction, the distilled laws
+├── <a href="#open-lore">open-lore</a>/          founder advice and stories, who said it, the reading library
 ├── <a href="#open-docs">open-documents</a>/     openly published legal documents, by use case
 ├── <a href="#open-artifacts">open-artifacts</a>/     the business objects processes exchange, with field standards
 ├── rankings-engine/    the code that crawls, probes, judges, scores
-├── lib/                loaders, scoring, and the calculation code
+├── lib/                loaders, scoring, the calculation and simulator code
 ├── jurisdictions/      country and state data, vendor availability
 ├── coverage/           what each area covers and what is missing
 ├── schemas/            the JSON shape each data file validates against
@@ -37,9 +37,15 @@ Supporting founders globally: 🌐 🇺🇸 🇬🇧 🇮🇳 🇩🇪 🇫🇷 
 
 We've looked at all the tools and vendors needed for founders to start and operate their company. Vendors are then ranked in terms of how easy it is for your AI to access and control them. From business banking, to payroll, to gov services for filing tax or your trademark. We want to know what claims match reality and who is the most AI native when it comes to their APIs, CLIs, MCPs and computer use surface area.
 
-<!-- arenas:start -->
-**96 rankings** today, 672 products judged head to head — the full index is [ultrametric.ai/arenas](https://ultrametric.ai/arenas), and each ranking's data lives under [`open-rankings/`](open-rankings/).
-<!-- arenas:end -->
+Example rankings:
+
+- [Online payments](https://ultrametric.ai/arena/payments) — payment processors ranked on how well an agent can integrate and operate them
+- [Startup banking](https://ultrametric.ai/arena/startup-banking) — business bank accounts ranked on agent access, from opening the account to moving money
+- [AI coding agents](https://ultrametric.ai/arena/ai-coding) — the tools that write code, ranked on their own agent surfaces
+- [Local LLM runtimes](https://ultrametric.ai/arena/local-llm-runtimes) — software for running models on your own hardware, ranked on APIs and CLI control
+- [Government services](https://ultrametric.ai/arena/government-services) — the IRS, Companies House, HMRC and other agencies, judged like vendors, compared per country
+
+The [full index of ranked markets](https://ultrametric.ai/arenas) is live, and the data behind each board lives under [`open-rankings/`](open-rankings/).
 
 [![The overall rankings on ultrametric.ai: companies ranked by agent readiness, scored on agent access and built-in AI](assets/readme/rankings-overall.png)](https://ultrametric.ai/overall)
 
@@ -76,27 +82,48 @@ dilution, sale waterfalls, runway, vesting, option tax, and filing deadlines. Th
 lives in [`lib/openstartup/`](lib/openstartup/), and you can run and check it. Formulas
 cite their sources and replay the published worked examples in tests.
 
-| Module | What it computes |
-| --- | --- |
-| [Cap table](open-modules/README.md#cap-table) | Issuance, option pools, SAFE conversion, priced-round price per share, dilution |
-| [Vesting](open-modules/README.md#vesting-mechanics) | Cliff and periodic schedules, back-loaded tranches, acceleration, departures |
-| [83(b) election](open-modules/README.md#83b-election-math) | Tax at grant vs tax at vesting, forfeiture cost |
-| [QSBS (§ 1202)](open-modules/README.md#qsbs--1202) | Eligibility conditions, holding clock, exclusion percentages, per-issuer cap |
-| [Deadlines](open-modules/README.md#deadline-calendar) | The founder compliance calendar, each date citing a rule card |
-| [Convertible notes](open-modules/README.md#convertible-notes) | Interest accrual, cap/discount conversion, maturity paths |
-| [Sale waterfall](open-modules/README.md#liquidity-event-waterfall) | Per-holder proceeds at a sale price |
-| [Anti-dilution](open-modules/README.md#anti-dilution) | Weighted-average and full-ratchet adjustments |
-| [Priced round](open-modules/README.md#priced-round-mechanics) | Pro rata, pool sizing from a hiring plan, down rounds, secondaries |
-| [Round composer](open-modules/README.md#priced-round-composer) | A priced round end to end, term sheet to post-close table |
-| [409A](open-modules/README.md#409a-grant-sanity) | Strike floor, valuation staleness, presumption timing |
-| [Equity comp](open-modules/README.md#offer--equity-comp-scenarios) | Offer grant percentage, option spread, exit scenarios |
-| [Option tax](open-modules/README.md#iso--nso-exercise-tax) | NSO income at exercise, ISO/AMT outcomes, the $100,000 limit, sale outcomes |
-| [Payroll tax](open-modules/README.md#employer-payroll-tax) | Employer FICA/FUTA load, per-employee annual cost |
-| [Delaware franchise tax](open-modules/README.md#delaware-franchise-tax) | Both published methods, the cheaper-method comparison |
-| [R&D tax](open-modules/README.md#rd-tax-mechanics) | § 174 amortization, § 41(h) payroll-offset mechanics |
-| [Runway](open-modules/README.md#runway--burn) | Default-alive trajectories, hiring impact |
-| [Unit economics](open-modules/README.md#unit-economics) | LTV/CAC, burn multiple, Rule of 40, magic number |
-| [Deferred revenue](open-modules/README.md#deferred-revenue-subscriptions) | Subscription revenue recognition, plan-change proration |
+The catalog is organized into four groups; the Serves column names the processes each
+module computes for, written from the committed module-to-process map by
+`scripts/generate-business-logic-serves.ts`.
+
+### Formation & equity
+
+| Module | What it computes | Serves |
+| --- | --- | --- |
+| [Cap table](open-modules/README.md#cap-table) | Issuance, option pools, SAFE conversion, priced-round price per share, dilution | Incorporate C-Corp · Sign the founder agreement & split equity · Set up cap table · Update cap table · Audit cap table · Raise pre-seed (SAFEs) · Close a priced equity round · Issue stock options · Convert SAFEs at the priced round · Handle a co-founder departure |
+| [Vesting](open-modules/README.md#vesting-mechanics) | Cliff and periodic schedules, back-loaded tranches, acceleration, departures | Incorporate C-Corp · Sign the founder agreement & split equity · Issue stock options · Hire first employee · Hire an executive · Handle a co-founder departure |
+| [83(b) election](open-modules/README.md#83b-election-math) | Tax at grant vs tax at vesting, forfeiture cost | Incorporate C-Corp · Sign the founder agreement & split equity · Convert an LLC to a C-Corp |
+| [QSBS (§ 1202)](open-modules/README.md#qsbs--1202) | Eligibility conditions, holding clock, exclusion percentages, per-issuer cap | Incorporate C-Corp · Convert an LLC to a C-Corp |
+| [Equity comp](open-modules/README.md#offer--equity-comp-scenarios) | Offer grant percentage, option spread, exit scenarios | Issue stock options · Hire first employee · Hire an executive |
+| [Option tax](open-modules/README.md#iso--nso-exercise-tax) | NSO income at exercise, ISO/AMT outcomes, the $100,000 limit, sale outcomes | Issue stock options · Offboard employee |
+| [409A](open-modules/README.md#409a-grant-sanity) | Strike floor, valuation staleness, presumption timing | Close a priced equity round · Get a 409A valuation · Issue stock options |
+
+### Fundraising & exits
+
+| Module | What it computes | Serves |
+| --- | --- | --- |
+| [Convertible notes](open-modules/README.md#convertible-notes) | Interest accrual, cap/discount conversion, maturity paths | Raise pre-seed (SAFEs) · Convert SAFEs at the priced round |
+| [Priced round](open-modules/README.md#priced-round-mechanics) | Pro rata, pool sizing from a hiring plan, down rounds, secondaries | Close a priced equity round · Convert SAFEs at the priced round |
+| [Round composer](open-modules/README.md#priced-round-composer) | A priced round end to end, term sheet to post-close table | Close a priced equity round · Convert SAFEs at the priced round |
+| [Anti-dilution](open-modules/README.md#anti-dilution) | Weighted-average and full-ratchet adjustments | Close a priced equity round |
+| [Sale waterfall](open-modules/README.md#liquidity-event-waterfall) | Per-holder proceeds at a sale price | Raise pre-seed (SAFEs) · Close a priced equity round |
+
+### Tax & compliance
+
+| Module | What it computes | Serves |
+| --- | --- | --- |
+| [Deadlines](open-modules/README.md#deadline-calendar) | The founder compliance calendar, each date citing a rule card | Incorporate C-Corp · Sign the founder agreement & split equity · Convert an LLC to a C-Corp · File DE franchise tax · File federal tax return · Cure a Delaware franchise tax delinquency |
+| [Payroll tax](open-modules/README.md#employer-payroll-tax) | Employer FICA/FUTA load, per-employee annual cost | Set up payroll · Hire first employee · Run payroll |
+| [Delaware franchise tax](open-modules/README.md#delaware-franchise-tax) | Both published methods, the cheaper-method comparison | File DE franchise tax · Cure a Delaware franchise tax delinquency |
+| [R&D tax](open-modules/README.md#rd-tax-mechanics) | § 174 amortization, § 41(h) payroll-offset mechanics | Claim the R&D tax credit |
+
+### Finance & runway
+
+| Module | What it computes | Serves |
+| --- | --- | --- |
+| [Runway](open-modules/README.md#runway--burn) | Default-alive trajectories, hiring impact | Track runway · Send the board financial report · Set the annual budget & get board approval |
+| [Unit economics](open-modules/README.md#unit-economics) | LTV/CAC, burn multiple, Rule of 40, magic number | Track runway · Send the board financial report · Prepare a board meeting · Save a churning customer · Roll out a pricing change |
+| [Deferred revenue](open-modules/README.md#deferred-revenue-subscriptions) | Subscription revenue recognition, plan-change proration | Bookkeeping close · Set up subscription billing · Roll out a pricing change |
 
 [`open-modules/README.md`](open-modules/README.md) has each module's contract, worked
 examples, and boundaries.
@@ -150,9 +177,10 @@ checked. Known gaps are recorded too. See it live at
 
 ## Open situations
 
-[Guides](open-processes/SITUATIONS.md) for reactive work: a breach is live, a summons lands,
-a tax notice arrives. Each names its trigger and an urgency clock of hours, days, or
-weeks. See it live at [ultrametric.ai/situations](https://ultrametric.ai/situations).
+[Unplanned events](open-processes/SITUATIONS.md) routed into the process graph: a breach, a
+summons, a tax notice. Each names what triggers it, how fast you must act (hours, days, or
+weeks), and the steps that run, routed agent, form, or human like any process. See it live
+at [ultrametric.ai/situations](https://ultrametric.ai/situations).
 
 [![The situations index on ultrametric.ai, reactive work sorted hottest clock first](assets/readme/situations.png)](https://ultrametric.ai/situations)
 
@@ -203,7 +231,9 @@ a known, open gap.
 Map the [law](open-law/) that applies to startups, across jurisdictions, and connect it to
 the calculations and the vendors that act on it. Each legal statement is one dated rule card
 citing a primary [authority](open-law/citations/) (a statute, regulation, or agency page) with the
-exact section. A blog post cannot establish law. The [domain map](open-law/README.md#the-map)
+exact section. A blog post cannot establish law. The distilled
+[startup laws](open-law/LAWS.md) collect the recurring principles the reading canon keeps
+re-teaching, with sources cited. The [domain map](open-law/README.md#the-map)
 grades each area of US startup law as mapped, partial, or unmapped.
 
 ## Government services and startups

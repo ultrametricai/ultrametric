@@ -32,6 +32,9 @@ const contributing = fs.readFileSync(path.join(ROOT, 'CONTRIBUTING.md'), 'utf8')
 // Fold (2026-10-14): citations/ dissolved into open-law/ and open-lore/, so its tree
 // line is gone, and governance/ was renamed policies/ (the founder-specified last line,
 // keeping the └── connector).
+// Skew audit (2026-10-14): tree lines widened to match folder contents — open-processes
+// also holds the situations, open-law the distilled laws (LAWS.md), open-lore the
+// stories, lib the simulator code. The motto and intro paragraph stay founder-locked.
 const INTRO = [
   '![Ultrametric](assets/banner.svg)',
   '',
@@ -43,16 +46,16 @@ const INTRO = [
   '',
   '<pre>',
   'ultrametric/',
-  '├── <a href="#open-processes">open-processes</a>/     each founder process as routed, timed steps',
+  '├── <a href="#open-processes">open-processes</a>/     founder processes and situations as routed, timed steps',
   '├── <a href="#open-vendor-rankings">open-rankings</a>/      per-market products, stories, evidence, verdicts',
   '├── <a href="#open-modules">open-modules</a>/       worked guides to each startup calculation',
   '├── <a href="#open-startup-simulator">open-startup-sim</a>/   what the simulator runs and assumes',
-  '├── <a href="#open-law">open-law</a>/           startup legal rules by jurisdiction',
-  '├── <a href="#open-lore">open-lore</a>/          founder advice, who said it, the reading library',
+  '├── <a href="#open-law">open-law</a>/           startup legal rules by jurisdiction, the distilled laws',
+  '├── <a href="#open-lore">open-lore</a>/          founder advice and stories, who said it, the reading library',
   '├── <a href="#open-docs">open-documents</a>/     openly published legal documents, by use case',
   '├── <a href="#open-artifacts">open-artifacts</a>/     the business objects processes exchange, with field standards',
   '├── rankings-engine/    the code that crawls, probes, judges, scores',
-  '├── lib/                loaders, scoring, and the calculation code',
+  '├── lib/                loaders, scoring, the calculation and simulator code',
   '├── jurisdictions/      country and state data, vendor availability',
   '├── coverage/           what each area covers and what is missing',
   '├── schemas/            the JSON shape each data file validates against',
@@ -261,33 +264,60 @@ describe('README.md structure (founder round 2, 2026-10-12)', () => {
     expect(hits, `README uses swept vocabulary: ${hits.join(', ')}`).toEqual([])
   })
 
-  it('hand-written prose carries no counts and no dates; numbers live in generated blocks only', () => {
-    // Only the arenas block is generated now (founder round 8); strip it, then scan.
-    const s = '<!-- arenas:start -->'
-    const e = '<!-- arenas:end -->'
-    const stripped = readme.slice(0, readme.indexOf(s)) + readme.slice(readme.indexOf(e) + e.length)
-    expect(stripped).not.toMatch(/\b\d[\d,]* (rankings|products|verdicts|arenas|processes|markets)\b/)
-    expect(stripped).not.toMatch(/\b\d{4}-\d{2}-\d{2}\b/)
+  it('per-directory doc surfaces carry no hand-written catalog counts', () => {
+    // Founder truth pass (2026-10-14): descriptive counts in prose go stale the moment
+    // content grows, so the no-counts rule extends to the open-* doc surfaces. Generated
+    // marker blocks are computed and stay; this scans only the hand-written remainder.
+    const surfaces = [
+      'open-modules/README.md', 'open-processes/README.md', 'open-processes/SITUATIONS.md',
+      'open-documents/README.md', 'open-law/README.md', 'open-lore/LORE.md',
+      'open-startup-sim/README.md', 'open-artifacts/README.md', 'coverage/README.md',
+      'policies/README.md', 'policies/AGENT_POLICY.md', 'policies/REVIEW_POLICY.md',
+    ]
+    const countPattern = /\b\d[\d,]* (rankings|products|verdicts|arenas|processes|markets|situations|modules|documents|cards|records)\b/
+    for (const file of surfaces) {
+      const text = fs
+        .readFileSync(path.join(ROOT, file), 'utf8')
+        // Strip generated blocks (<!-- x:start ... --> … <!-- x:end -->); their counts are computed.
+        .replace(/<!--[^>]*:start[^>]*-->[\s\S]*?<!--[^>]*:end[^>]*-->/g, '')
+      const hit = text.match(countPattern)
+      expect(hit, `${file} carries a hand-written count: "${hit?.[0]}"`).toBeNull()
+    }
+  })
+
+  it('prose carries no counts and no dates anywhere on the page', () => {
+    // The last generated count block (the arenas line) was retired in the founder's
+    // rankings-examples order (2026-10-14), so the no-counts gate scans the whole page.
+    // scripts/update-readme-stats.mjs (`pnpm stats`) applies the same rule as a CLI gate.
+    expect(readme).not.toMatch(/\b\d[\d,]* (rankings|products|verdicts|arenas|processes|markets)\b/)
+    expect(readme).not.toMatch(/\b\d{4}-\d{2}-\d{2}\b/)
   })
 })
 
 describe('README.md section-guide tables (founder round 2)', () => {
-  it('Open modules carries the module guide table with a row per mapped module', () => {
+  it('Open modules carries the grouped module tables with a row per mapped module', () => {
     const section = sectionBody('## Open modules')
     // Founder round 8: two columns (sources moved to prose), and "409A sanity" reads "409A".
-    expect(section).toContain('| Module | What it computes |')
+    // Founder catalog order (2026-10-14): the table splits into the committed groups and
+    // gains the machine-owned Serves column (drift-gated in
+    // lib/__tests__/businessLogicServes.test.ts; cells written by
+    // scripts/generate-business-logic-serves.ts).
+    expect(section).toContain('| Module | What it computes | Serves |')
     expect(section).not.toContain('Source it cites')
     expect(section).not.toContain('409A sanity')
     expect(section).toContain('| [409A](open-modules/README.md#409a-grant-sanity)')
     const map = JSON.parse(
       fs.readFileSync(path.join(ROOT, 'open-processes', 'business-logic-map.json'), 'utf8'),
-    ) as { modules: Record<string, { anchor: string }> }
+    ) as { modules: Record<string, { anchor: string; group: string }> }
     const anchors = Object.values(map.modules).map((m) => m.anchor)
     expect(anchors.length).toBeGreaterThan(0)
     for (const anchor of anchors) {
       expect(section, `module table is missing a link to #${anchor}`).toContain(
         `](open-modules/README.md#${anchor})`,
       )
+    }
+    for (const group of new Set(Object.values(map.modules).map((m) => m.group))) {
+      expect(section, `module catalog is missing the group heading ${group}`).toContain(`### ${group}`)
     }
   })
 
@@ -335,13 +365,14 @@ describe('README.md section-guide tables (founder round 2)', () => {
   })
 })
 
-describe('README.md generated blocks', () => {
-  it('keeps only the arenas marker pair; the stats line, badge row, and CI badge are gone', () => {
-    for (const marker of ['<!-- arenas:start -->', '<!-- arenas:end -->']) {
-      expect(readme).toContain(marker)
-    }
-    // Founder round 8: the generated-stats presence at the Methodology spot was removed.
-    for (const gone of ['<!-- stats:start -->', '<!-- stat-badges:start -->', 'badge.svg']) {
+describe('README.md retired generated blocks', () => {
+  it('carries no generated count blocks; the stats line, arenas line, badge row, and CI badge are gone', () => {
+    // Founder round 8 removed the stats line and badge row; the rankings-examples order
+    // (2026-10-14) retired the arenas line in favor of the curated example list below.
+    for (const gone of [
+      '<!-- stats:start -->', '<!-- stat-badges:start -->',
+      '<!-- arenas:start -->', '<!-- arenas:end -->', 'badge.svg',
+    ]) {
       expect(readme).not.toContain(gone)
     }
     // Founder round 9: the single shields.io exception is the Discord button under the banner.
@@ -351,15 +382,27 @@ describe('README.md generated blocks', () => {
     ])
   })
 
-  it('the arenas block is the compact one-line form, not the old per-market table', () => {
-    const block = readme.slice(
-      readme.indexOf('<!-- arenas:start -->'),
-      readme.indexOf('<!-- arenas:end -->'),
-    )
-    expect(block).not.toContain('| Ranking | Products |')
-    expect(block).not.toContain('|---|')
-    expect(block).toContain('https://ultrametric.ai/arenas')
-    expect(block.trim().split('\n').length).toBe(2)
+  it('the vendor-rankings section carries the curated example list and the full-index link', () => {
+    // The founder's picks (rankings-examples order, 2026-10-14), all verified 200 on the
+    // live site that day. Each bullet links one judged market; the ids pin to the
+    // committed categories below.
+    const section = sectionBody('## Open vendor rankings')
+    const bullets = [...section.matchAll(/^- \[[^\]]+\]\(https:\/\/ultrametric\.ai\/arena\/([a-z-]+)\) — \S/gm)]
+    expect(bullets.map((m) => m[1])).toEqual([
+      'payments', 'startup-banking', 'ai-coding', 'local-llm-runtimes', 'government-services',
+    ])
+    const categories = JSON.parse(
+      fs.readFileSync(path.join(ROOT, 'open-rankings', 'categories.json'), 'utf8'),
+    ) as Array<{ id: string }>
+    const ids = new Set(categories.map((c) => c.id))
+    for (const m of bullets) {
+      expect(ids.has(m[1]), `example ranking ${m[1]} is not a committed category`).toBe(true)
+    }
+    expect(section).toContain('https://ultrametric.ai/arenas')
+    // The founder's vocabulary rule: prose says rankings or markets; "arenas" appears only
+    // inside URLs, never as a displayed word.
+    const prose = section.replace(/\(https:\/\/[^)]+\)/g, '').replace(/\]\([^)]*\)/g, '')
+    expect(prose.toLowerCase()).not.toContain('arena')
   })
 })
 

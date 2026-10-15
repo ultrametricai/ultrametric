@@ -1,12 +1,16 @@
-# Situations — the reactive records in the process corpus
+# Situations — the event-triggered records in the process corpus
 
-A **situation** is a corpus record with `kind: 'situation'` (`open-processes/corpus.json`): reactive,
-trigger-driven work that interrupts the founder journey instead of sitting on it. A lawsuit is
-served, a breach is live, a tax notice arrives — nobody plans these into a timeline, so
-situations deliberately carry **no `timeOrder` slot** and never appear on the founder-timeline
-orderings. Their detail pages render at `/processes/<slug>` (URL stability); their index is
+A **situation** is a corpus record with `kind: 'situation'` (`open-processes/corpus.json`): an
+unplanned event routed into the same process machinery. A lawsuit is served, a breach is live,
+a tax notice arrives: nobody plans these into a timeline, so situations carry **no `timeOrder`
+slot** and never appear on the founder-timeline orderings. Structurally a situation is both an
+entry condition and a process graph. The `trigger` is the entry condition (the concrete event
+that starts the work, where a process has a timeline slot), and from there the record runs the
+ordinary step DAG: steps routed agent / manual form / human, judged vendor options per step,
+open-module compute chips, jurisdiction notes. Their detail pages render at
+`/processes/<slug>` (URL stability); their index is
 [`/situations`](https://ultrametric.ai/situations), which moved them out of the `/processes`
-table (founder 2026-10-02 — that table is processes only now).
+table (founder 2026-10-02: that table is processes only now).
 
 ## The trigger / urgency model
 
@@ -16,7 +20,7 @@ plain processes (schema-enforced in `lib/processes.ts`, kind-conditionally):
 - **`trigger`** — the concrete event that puts a founder here, written as the event, not the
   task ("A process server hands you a summons and complaint", not "handle lawsuits"). It
   renders as the row subtitle on `/situations` and leads the prose on the detail page.
-- **`urgency`** — the honest clock tier once the trigger lands: `hours` (a breach, a frozen
+- **`urgency`** — the clock tier once the trigger lands: `hours` (a breach, a frozen
   operating account, a live DDoS), `days` (served papers, a cease-and-desist), or `weeks` (a
   tax notice, an office action, a franchise-tax delinquency). Tier definitions live in
   `lib/processSim.ts` (`URGENCY_META`) and render as the urgency chip
@@ -25,22 +29,24 @@ plain processes (schema-enforced in `lib/processes.ts`, kind-conditionally):
   or the statute's, cited on the steps; the tier is a reading aid, never a legal clock.
 
 Everything else is the ordinary corpus machinery: a DAG of steps routed agent / manual form /
-human, curated `risk`/`annoyance` scores (situations interleave honestly on those orderings),
-`geoScope`, and jurisdiction notes.
+human, curated `risk`/`annoyance` scores (situations interleave with processes on those
+orderings), `geoScope`, and jurisdiction notes.
 
-## The honest low-ceiling posture
+## The agentic share, and raising it
 
-Situations have a deliberately LOW Agentic %, and that is the point, not a gap to engineer
-away: reading a legal demand, the counsel/CPA judgment call, the response signed under penalty
-of perjury, and the counterparty's processing clock are human by nature (several are
-legally-human signature acts, `legalSignature`). What an agent honestly does is the mechanical
-core — preserve the evidence file, pull the period's records, recompute the asserted mismatch,
-pull the cited marks from TSDR — and the corpus routes exactly those steps `agent`, nothing
-more. Async waits (the IRS processing the response, the examiner's next action) are modeled as
-waits, never promised away. Educational guidance, not legal advice — every situation's
-description says so.
+Situations route steps by what runs today, like any process. Today more of their steps sit
+with humans than on the planned timeline: reading a legal demand, the counsel/CPA judgment
+call, a response signed under penalty of perjury (several steps are signature acts,
+`legalSignature`), and the counterparty's processing clock. The mechanical core already routes
+`agent` (preserve the evidence file, pull the period's records, recompute the asserted
+mismatch, pull the cited marks from TSDR), and raising that share is a goal of the corpus: as
+vendor surfaces and recorded evidence improve, steps move from `person` to `agent` here the
+same way they do on any process. Two step classes stay put by nature rather than by evidence:
+signature acts stay with the signer, and third-party clocks (the IRS processing a response,
+the examiner's next action) are modeled as async waits rather than promised away. Educational
+guidance, not legal advice; every situation's description says so.
 
-## The 22 situations
+## The situations
 
 <!-- situations:table:start (generated — scripts/generate-situations-md.ts) -->
 
@@ -76,11 +82,13 @@ The 22 situations, hottest clock first (urgency, then title — the /situations 
 ## How to add one
 
 1. Add the record to `open-processes/corpus.json` with `kind: 'situation'`, a `trigger` written as
-   the event, an honest `urgency` tier, **no `timeOrder`**, and the usual DAG/scores/geoScope.
-   Legal claims in descriptions cite dated rule cards in `open-law/` by id; deadlines cite the
-   notice or statute, curl-verified like every corpus URL.
-2. Route steps honestly: `agent` only for the mechanical core; signatures under penalty of
-   perjury get `legalSignature`; third-party clocks are `person` waits.
+   the event, the `urgency` tier the clock actually sets, **no `timeOrder`**, and the usual
+   DAG/scores/geoScope. Legal claims in descriptions cite dated rule cards in `open-law/` by id;
+   deadlines cite the notice or statute, curl-verified like every corpus URL.
+2. Route each step by what runs today: `agent` where an agent can genuinely run it; signatures
+   under penalty of perjury get `legalSignature`; third-party clocks are `person` waits. When a
+   vendor surface or new evidence makes a `person` step runnable, rerouting it to `agent` is a
+   correction, with the source that proves it.
 3. Regenerate this file's table: `pnpm exec tsx scripts/generate-situations-md.ts`.
 4. Run the gates — the drift test (`__tests__/situations.test.ts`) fails if this list and the
    corpus disagree, the schema tests enforce the kind-conditional fields, and

@@ -93,7 +93,7 @@ Not listed yet? [Request the product](../.github/ISSUE_TEMPLATE/request-a-produc
 - **Badge**: `public/badges/<productId>-certified.svg` — the shield variant reading
   `CERTIFIED AGENT-READY · <year>` (or AGENT-NATIVE), hotlinkable like the score badges.
 
-## 4. Honesty rules
+## 4. Program rules
 
 - **The suite is the certification.** No judgment calls, no partial credit, no negotiated
   exceptions: the levels are pure functions of check statuses (`certificationLevel` in

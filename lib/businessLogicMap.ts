@@ -22,10 +22,22 @@ import { REPO } from './site'
 // lib/businessLogicServes.ts). Modules with no honest process target are simply absent from
 // the registry, and steps a module merely informs stay task-level; nothing is forced.
 
+// The catalog groups (founder 2026-10-14): both README module tables organize into these,
+// in this order. Membership is committed per module in the map (`group`).
+export const MODULE_GROUPS = [
+  'Formation & equity',
+  'Fundraising & exits',
+  'Tax & compliance',
+  'Finance & runway',
+] as const
+export type ModuleGroup = (typeof MODULE_GROUPS)[number]
+
 export const BusinessLogicModuleSchema = z
   .object({
     // Display name — mirrors the module's `###` heading in open-modules/README.md.
     label: z.string().min(1),
+    // Catalog group — the section of the module tables this module files under.
+    group: z.enum(MODULE_GROUPS),
     // The module source file, repo-relative — must exist (totality-tested).
     file: z.string().regex(/^lib\/openstartup\/[A-Za-z0-9]+\.ts$/),
     // GitHub's slug for the README heading — the chip's deep-link target.

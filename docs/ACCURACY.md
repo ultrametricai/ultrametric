@@ -1,6 +1,6 @@
 # The Accuracy Engine
 
-How Ultrametric keeps 65 rankings / ~350 products from silently rotting: four scheduled loops,
+How Ultrametric keeps the published rankings from silently rotting: four scheduled loops,
 each catching a different failure mode, feeding one work queue, with humans at exactly the
 points where a score could change. This doc is the map; the workflows and scripts it names are
 the source of truth.
@@ -44,7 +44,7 @@ Output: `open-rankings/staleness-report.json` — products and rankings ranked w
 `arenasRanked` (what story-runner's pick step consumes) — and the work-queue issue body.
 Run it yourself: `pnpm tsx rankings-engine/scripts/staleness-scan.ts [--offline] [--category <id>]`.
 
-## Honesty rules in the UI
+## Display rules in the UI
 
 Two failure modes the display layer guards against — both are **display-only**: no rule here
 ever changes a verdict, a quality, or a score.
@@ -73,7 +73,7 @@ score built entirely from zero-evidence none/na cells renders italic *untested*,
 
 **Known remaining gaps** (deliberate — report, don't boil the ocean):
 - `AiEraBadge`'s component-breakdown tooltip still shows raw numbers (a 0 there can be an
-  untested 0) — the columns beside it are honest, the tooltip is next.
+  untested 0) — the columns beside it carry the untested distinction, the tooltip is next.
 - Per-theme scores on the ranking page / `themeScores` in exports (`lib/markdown.ts` llms.md,
   `/compare`, battle pages) render numeric values without the untested distinction.
 - `lib/scoreIntervals.ts`'s internal `isUntested` omits `na` (inconsistent with the canonical
@@ -102,5 +102,5 @@ score built entirely from zero-evidence none/na cells renders italic *untested*,
 
 - Keyless loops never touch verdicts. Only the keyed judge (story-runner, contest-check) can.
 - Every score recomputes deterministically from committed data (`recompute-check.ts`, CI-gated).
-- Display honesty layers (⚿, *untested*) are derived at render time from the same committed
+- The display layers (⚿, *untested*) are derived at render time from the same committed
   evidence — no new stored state, nothing for the engine to keep in sync.

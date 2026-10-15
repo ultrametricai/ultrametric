@@ -49,7 +49,7 @@ Process manifest:
         {
           "vendor": "mercury",           // corpus vendor key (arena-derived entries use the product id)
           "name": "Mercury",
-          "productId": "mercury",        // judged PA product id; null = untracked (honest chip)
+          "productId": "mercury",        // judged PA product id; null = untracked (unlinked chip)
           "arena": "startup-banking",    // null when untracked
           "agentReady": 92,              // arena agent-readiness score; null when unscored
           "mcpEndpoint": "https://mcp.mercury.com/mcp", // allowlisted (lib/mcpEndpoints.ts) or null

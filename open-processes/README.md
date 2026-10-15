@@ -35,9 +35,10 @@ The sections below document the legacy compatibility fields and external registr
 
 # Processes
 
-Every founder process as a step-by-step record, each step routed agent, form, or
-human, timed, and wired to the judged vendor rankings; the fixtures and curation doctrine
-beneath them live here too.
+Every founder process and reactive situation as a step-by-step record, each step routed
+agent, form, or human, timed, and wired to the judged vendor rankings; the fixtures and
+the curation doctrine live here too. The artifact and company-field registries the steps
+exchange live in [`open-artifacts/`](../open-artifacts/).
 
 Canonical DAG definitions such as `generate-a-brand-logo.json` use
 [`schemas/process.schema.json#/$defs/canonical`](../schemas/process.schema.json#/$defs/canonical),
@@ -77,7 +78,7 @@ The two layers keep separate IDs and never silently substitute for each other:
 | [What a library record is](#what-a-library-record-is) | The shape of one process record |
 | [Reversibility](#reversibility) | Classifying how hard each step is to undo |
 | [Verification checks](#verification-checks-verify) | The "how do I know it worked" check on a step |
-| [Cost honesty](#cost-honesty-cost) | Sourced, dated fees; nothing estimated |
+| [Costs](#costs-cost) | Sourced, dated fees; nothing estimated |
 | [Failure modes](#failure-modes-failuremodes--spike-introduced) | What concretely goes wrong, and the recovery |
 | [Step documents](#step-documents-documents) | Steps linked to the open documents they are done on |
 | [Proven runs](#proven-runs-provenruns--the-executed-proof-slot-design-only) | Evidence that a named operator ran a process |
@@ -90,7 +91,7 @@ The two layers keep separate IDs and never silently substitute for each other:
 ## What a library record is
 
 One record per founder process: identity and classification (`phase`, `cadence`,
-`complexity`), an honest Agentic % (`supportLevel` + `supportReason`), the vendors that can
+`complexity`), the Agentic % with its stated reason (`supportLevel` + `supportReason`), the vendors that can
 run it, the step graph, and geo scoping. A trimmed real record (`form_002`, Get EIN):
 
 ```jsonc
@@ -167,7 +168,10 @@ checkable test carry an optional `verify: { how, url? }` (depth wave pt 1, 2026-
   every URL is verified live before it ships — same bar as `actionUrl`. Steps whose check has
   no canonical tool carry `how` alone.
 
-## Cost honesty (`cost`)
+<!-- Legacy anchor: inbound links predate the heading rename. -->
+<a id="cost-honesty-cost"></a>
+
+## Costs (`cost`)
 
 Steps with a real, KNOWABLE cost carry an optional
 `cost: { usd, kind, source, asOf, note? }`. The rules:
@@ -193,7 +197,7 @@ Steps with a real, KNOWABLE cost carry an optional
 
 Introduced by the founder spike (2026-10-02) that took `form_001` to reference depth: steps
 where something concretely goes wrong may carry
-`failureModes: [{ what, then, source? }]` — what the failure is, and what the honest recovery
+`failureModes: [{ what, then, source? }]` — what the failure is, and what the recovery
 is. Curation rules, stricter than coverage:
 
 - **Only sourced or structurally certain entries.** A Delaware name conflict (the §102(a)(1)
@@ -201,7 +205,7 @@ is. Curation rules, stricter than coverage:
   the 'Filed' endorsement), a lost stamped certificate (the published certified-copy fee), the
   missed 83(b) window (jurisdictional, no cure). Never speculation, never a generic "be
   careful".
-- **`then` is the honest recovery** — including the honest *absence* of one: the missed 83(b)
+- **`then` is the recovery as sourced** — including the recorded *absence* of one: the missed 83(b)
   window entry says there is no self-help fix, only a tax-counsel conversation (the
   needs-review posture). Legal claims cite a dated rule card in `open-law/` by id inside the
   prose, the same convention situation descriptions use.
@@ -231,7 +235,7 @@ A process record can carry `provenRuns`: dated evidence that a named operator ac
 process end to end. The shape (`ProvenRunSchema` in `lib/processes.ts`):
 
 - `ranOn` (ISO date), `operator` (a named person/company, never "a user"), `ownerRun`
-  (boolean), `disclosure` (one honest sentence — **required whenever `ownerRun` is true**,
+  (boolean), `disclosure` (one plain sentence — **required whenever `ownerRun` is true**,
   load-enforced: reader trust comes from the disclosure, not from pretending independence);
 - `steps: [{ nodeId, wallClockMinutes?, feesPaidUsd?, note? }]` — the REAL elapsed wall clock
   and the REAL fees paid per step, as run, never the committed estimates re-stated.
@@ -301,7 +305,7 @@ Delaware franchise-tax math to `tax_001` and the `sit_010` delinquency cure, the
 modules to the 83(b)-carrying processes, the cap-table/vesting/round/anti-dilution/waterfall
 family to the founder agreement, option grants, and SAFE/priced rounds. Keyed by module id
 (the `lib/openstartup/` file basename); each entry carries the README heading `label`, its
-GitHub `anchor`, and the `processes` it honestly serves — modules with no honest target
+GitHub `anchor`, and the `processes` it serves — modules with no process target
 are simply absent, nothing is forced.
 
 **The step layer** (founder depth ask, same day): `steps` entries —
@@ -421,7 +425,7 @@ in the PR. Gate: `pnpm test` (`lib/__tests__/processes.test.ts` cross-checks eve
 - **A new jurisdiction-scoped workflow** — copy `templates/process.json` into
   `open-processes/<domain>/<jurisdiction>/`, narrow the applicability dimensions, reference rule
   cards in `open-law/<CODE>/`, gate every external effect on a named human approval, add a
-  fictional fixture in `open-processes/fixtures/`, and record honest maturity in `coverage/coverage.json`.
+  fictional fixture in `open-processes/fixtures/`, and record the maturity grade in `coverage/coverage.json`.
   Gate: `npx vitest run __tests__/founder-ops.test.ts`.
 - **Corrections to an operational process** — step routing (agent / manual form / human),
   Agentic % values, or time estimates in `corpus.json`, with a source or reproduction for the
