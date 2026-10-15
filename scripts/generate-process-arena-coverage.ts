@@ -146,7 +146,7 @@ export function processArenaCoverageMarkdown(): string {
   lines.push('')
   lines.push(
     'Doctrine: every corpus vendor resolves through the registry to a live arena, or is ' +
-      'deliberately untracked (an honest unlinked chip). Gaps below are CURATION work — an arena ' +
+      'deliberately untracked (a recorded unlinked chip). Gaps below are CURATION work — an arena ' +
       'placement needs a judged arena and product to exist first, so nothing here is auto-fixed. ' +
       'Only mechanical gaps (a registry key typo pointing at a nonexistent arena) are fixable ' +
       'without curation; those get their own section.',
@@ -196,7 +196,7 @@ export function processArenaCoverageMarkdown(): string {
   lines.push(`## Deliberately untracked vendors (${a.untrackedRegistered.length})`)
   lines.push('')
   lines.push(
-    'Registry entries without an `arenaId` — honest unlinked chips by design (government ' +
+    'Registry entries without an `arenaId` — unlinked chips by design (government ' +
       'counterparties, suppliers whose market has no judged arena yet). Listed for review, not as ' +
       'gaps; the registry `note` carries the reason where one is recorded.',
   )
@@ -212,7 +212,7 @@ export function processArenaCoverageMarkdown(): string {
   lines.push('')
   lines.push(
     'No vendor on these resolves to an arena and no step claims one directly ' +
-      '(`optionsArenaId`/`extraOptionArenas`). Some are honestly market-less (government and ' +
+      '(`optionsArenaId`/`extraOptionArenas`). Some have no vendor market at all (government and ' +
       'program counterparties — the USPTO is not a vendor market); others mark arenas the site ' +
       'does not judge yet. Curation calls, never auto-placed.',
   )

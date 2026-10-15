@@ -311,9 +311,9 @@ fleet-wide — a judge-scale change, not a capability change.
 ## Score intervals — the ± band on every Overall score
 
 Every Overall score carries a **68% confidence band** ("42 ±3 /100" on product pages; the exact
-low–high band in the score badge's tooltip, including on the homepage mega-table). The band is
-an honest statement of how much the published number could move under the judge noise we have
-actually **measured** — it is *analytic v1*: computed from existing data with **no new judging**.
+low–high band in the score badge's tooltip, including on the homepage mega-table). The band
+states how much the published number could move under the judge noise we have actually
+**measured** — it is *analytic v1*: computed from existing data with **no new judging**.
 
 How it's built (`rankings-engine/scripts/compute-confidence-intervals.ts`, math in
 `lib/scoreIntervals.ts`):
@@ -328,7 +328,7 @@ How it's built (`rankings-engine/scripts/compute-confidence-intervals.ts`, math 
   means "we found nothing either way", not "it failed" — it scores 0 today but could plausibly
   be a `partial` on new evidence. Each such cell flips to `partial` with probability equal to
   the measured any-disagreement rate (~0.20), with quality bounded to the plausible [3, 7]
-  range. Products whose score rests on many untested cells therefore get honestly wider bands.
+  range. Products whose score rests on many untested cells therefore get wider bands.
 - **Applicability is pinned.** `na` cells never resample — the re-judge stability policy
   reverts `na`↔`none` churn that cites no new evidence, so published applicability is
   policy-stable and modeling it as noise would overstate the band.
@@ -487,9 +487,9 @@ model (docs/JUDGE-MIGRATION-2026-09-30-worklist.json records what the fresh judg
 each protected cell). The audit calls for every other owner/affiliated row are recorded in
 docs/JUDGE-MIGRATION-2026-09-30.md.
 
-We think shipping this disclosure — including the fact that the audit itself was run by the
-same vendor's model — is more honest than pretending the conflict doesn't exist. Judge for
-yourself using the cited evidence.
+We ship this disclosure, including the fact that the audit itself was run by the same
+vendor's model, so the conflict is on the record rather than unstated. Judge for yourself
+using the cited evidence.
 
 ---
 

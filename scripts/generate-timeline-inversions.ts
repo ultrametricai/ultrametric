@@ -31,7 +31,7 @@ export function timelineInversionsMarkdown(): string {
   lines.push(
     `Every place the curated \`timeOrder\` founder timeline (${total} processes) orders a ` +
       'CONSUMER before its artifact’s canonical producer. These are reported, not auto-fixed: ' +
-      'each row is either a timeline position to renumber or an honest corpus finding (the first ' +
+      'each row is either a timeline position to renumber or a real corpus finding (the first ' +
       'hire’s option grant really does presuppose a 409A the timeline places later). Deciding ' +
       'which is the founder’s call.',
   )

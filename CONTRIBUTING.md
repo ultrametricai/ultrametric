@@ -127,10 +127,10 @@ The judge cache (`rankings-engine/cache/judge/`) **is committed** to the repo, k
   product changes** — because the hash covers the full pack, not only the changed item. A
   `judge --product <product>` run will therefore re-send **all** of that product's stories to
   the LLM, not only the one your new evidence supports. Approximate scope: one LLM call per
-  story in the category (currently ~42–57 depending on category — see
-  `open-rankings/{category}/stories.json` length), each a small JSON-mode call. This is expected
-  and intentional (it keeps the judge honest about re-evaluating the whole pack); plan
-  for it — a single-evidence-item PR is not a single-LLM-call PR.
+  story in the category (see `open-rankings/{category}/stories.json` for the count), each a
+  small JSON-mode call. This is expected and intentional (the judge re-evaluates the whole
+  pack rather than only the new item); plan for it — a single-evidence-item PR is not a
+  single-LLM-call PR.
 
 <a id="add-your-vendor"></a>
 

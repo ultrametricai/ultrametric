@@ -86,7 +86,7 @@ and source URLs the table omits.
 Add an artifact by following the recipe in `open-processes/README.md` (registry entry,
 producer `produces` + `producesArtifact`, a consumer's `requires` or a `terminal` reason).
 Add a field only on the committed derivation rule above, with a fetch-verified spec. Add a
-geo equivalent only against the government authority's own page, fetched; record the honest
-absence otherwise. Schema changes start in the zod sources (`lib/processes.ts`,
+geo equivalent only against the government authority's own page, fetched; where none
+exists, record the absence. Schema changes start in the zod sources (`lib/processes.ts`,
 `lib/companyFields.ts`) and regenerate with `npx tsx scripts/generate-corpus-schemas.ts`.
 Run `pnpm test` before opening the PR.
