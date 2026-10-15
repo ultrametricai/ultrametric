@@ -3,7 +3,7 @@ import path from 'node:path'
 import { GEO_PREF_META, type GeoCountry } from './geoPreference'
 
 // Loader + validator for the open-documents map (open-documents/registry.json + open-documents/README.md).
-// Same doctrine as lib/citations.ts: structural/referential invariants as a flat error list for
+// Same doctrine as lib/laws.ts: structural/referential invariants as a flat error list for
 // the vitest gate (__tests__/documents.test.ts); pure validators take data so failure modes are
 // testable; no network I/O — URL liveness is an editorial duty recorded via checked_on.
 // Policy enforced socially, stated here for the record: link, never redistribute the documents.

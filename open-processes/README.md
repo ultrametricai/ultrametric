@@ -332,8 +332,8 @@ flowchart TD
   rankings (`/rankings/processes/*`), and the open startup simulator at `/startup-sim`.
 - `chains.json` links process IDs into playbooks (see the Chains section below).
 - `lib/founderOps.ts` validates the jurisdiction-scoped workflow layer (`equity/us-de/*`)
-  against `schemas/process.schema.json`, resolves its rule-card references into `open-law/` and
-  `citations/`, and exposes the exact-dimension planner (`planFounderOps`).
+  against `schemas/process.schema.json`, resolves its rule-card references into `open-law/`
+  (cards and `open-law/citations/`), and exposes the exact-dimension planner (`planFounderOps`).
 
 ## Chains
 

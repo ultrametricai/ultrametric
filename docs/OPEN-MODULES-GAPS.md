@@ -86,7 +86,7 @@ revenue — see "Built" below), the rest assessed with verdicts.
 
 - **Root `README.md`**: add bullets for the three new modules under the open-modules
   section (priced-round composer; unit economics; deferred revenue).
-- **`citations/registry.json`**: consider entries for the four new citations (Skok
+- **`open-lore/citations.json`**: consider entries for the four new citations (Skok
   definitions page, Sacks burn-multiple post, Feld Rule-of-40 post, O'Driscoll magic-number
   post) so modules can cite resource ids like `index-rewarding-talent` does.
 - **Map-only extensions worth considering**: deFranchiseTax → shutdown_001 (true-up step);

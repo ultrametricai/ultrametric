@@ -50,7 +50,6 @@ const INTRO = [
   '├── rankings-engine/    the code that crawls, probes, judges, scores',
   '├── lib/                loaders, scoring, and the calculation code',
   '├── jurisdictions/      country and state data, vendor availability',
-  '├── citations/          the primary sources the legal rules cite',
   '├── coverage/           what is mapped and what is a known gap',
   '├── schemas/            the JSON shape each data file validates against',
   '└── governance/         review rules and what agents may do here',
@@ -177,7 +176,7 @@ describe('README.md structure (founder round 2, 2026-10-12)', () => {
     expect(rows.map((r) => r.dir)).toEqual([
       'open-processes', 'open-rankings', 'open-modules', 'open-startup-sim',
       'open-law', 'open-lore', 'open-documents',
-      'rankings-engine', 'lib', 'jurisdictions', 'citations', 'coverage', 'schemas', 'governance',
+      'rankings-engine', 'lib', 'jurisdictions', 'coverage', 'schemas', 'governance',
     ])
     // Every README anchor a heading or explicit <a id> establishes (GitHub slug form).
     const slug = (h: string) => h.toLowerCase().replace(/[^a-z0-9 -]/g, '').trim().replace(/ /g, '-')

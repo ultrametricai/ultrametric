@@ -5,13 +5,14 @@ library of works that ground them, and the episodes of startup history behind bo
 Everything is recorded as a sourced claim: a named author, a citable work, and, where
 schools disagree, the conflict mapped on both sides.
 
-Four files carry it:
+Five files carry it:
 
 | File | What it holds | Gate |
 | --- | --- | --- |
 | [`registry.json`](./registry.json) | Heuristics: one actionable sentence per claim, with school, topic, source, tensions, and cross-links. | `pnpm vitest run __tests__/lore-registry.test.ts --maxWorkers=2` |
 | [`schools.json`](./schools.json) | The schools of thought: who they are and their core position. | `pnpm vitest run __tests__/lore-schools.test.ts --maxWorkers=2` |
 | [`library.json`](./library.json) | The curated reading list, in sections that double as the topic set. | `pnpm vitest run __tests__/lore-library.test.ts --maxWorkers=2` |
+| [`citations.json`](./citations.json) | Citation-only works the distilled laws cite that are not library-worthy. | `pnpm vitest run __tests__/lore-citations.test.ts --maxWorkers=2` |
 | [`LORE.md`](./LORE.md) | Episodes: the war stories of startup history, graded for veracity. | `pnpm vitest run __tests__/lore.test.ts --maxWorkers=2` |
 
 ## Schools
@@ -103,6 +104,25 @@ Contribute here:
    published. Founder-affiliated works get the same neutral treatment as every entry.
 3. The bar is the best entries, not the most; the tests bound each section's size.
 4. `loreIds` and `processIds` must resolve, and only record real connections.
+
+## Citations
+
+`citations.json` carries the works the distilled laws ([`open-law/LAWS.md`](../open-law/LAWS.md))
+cite that are not library-worthy: resource registries (NVCA model documents, Cooley GO),
+agency portals recorded as reading (IRS EIN, Delaware franchise tax, USPTO basics), and
+umbrella sites (First Round Review, Steve Blank's corpus). Each entry carries `id`,
+`title`/`author` (as published), `url` (HTTPS, verified live on `checked_on`), `kind`,
+`topics`, `note` (why it is canon, with caveats), and `published_on`. The inclusion bar:
+openly readable (no login, no purchase), primary where possible, and canonical, what the
+community actually cites. Candidates that fail live verification are left out rather
+than linked hopefully.
+
+One place per work: a work curated into `library.json` lives there alone (the library
+entry is canonical, and the gate rejects a `citations.json` entry duplicating a library
+id or URL), and LAWS.md cites the library id directly. A `citations.json` entry that
+later earns a library home moves there; repoint the LAWS.md citations in the same
+change. Legal authorities with locators are a different record entirely:
+`open-law/citations/registry.json`.
 
 ## Episodes
 

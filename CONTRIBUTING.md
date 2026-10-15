@@ -298,8 +298,8 @@ hold up:
 3. **Rule cards for your jurisdiction** — register the jurisdiction in
    [`jurisdictions/registry.json`](jurisdictions/) with a deliberately narrow scope, then
    add `open-law/<CODE>/*.json` cards citing primary sources in
-   [`citations/registry.json`](citations/) (statute, regulation, agency guidance; a provider
-   blog cannot establish law). One proposition per stable ID.
+   [`open-law/citations/registry.json`](open-law/citations/) (statute, regulation, agency
+   guidance; a provider blog cannot establish law). One proposition per stable ID.
 4. **A full jurisdiction-scoped workflow** — copy
    [`templates/process.json`](templates/process.json), narrow the applicability dimensions,
    reference your rule cards, gate every external effect on a human approval, add a
