@@ -29,6 +29,10 @@ const contributing = fs.readFileSync(path.join(ROOT, 'CONTRIBUTING.md'), 'utf8')
 // ("episodes" banned; "records" and "every X" rewritten in plain alternatives) reaches
 // into the motto and the layout tree, and the supported-countries line sits directly
 // above the demo gif (globe first, then the geo switcher's country set, US first).
+// Skew audit (2026-10-14): tree lines widened to match folder contents — open-processes
+// also holds the situations, open-law the distilled laws (LAWS.md), open-lore the
+// stories, lib the simulator code, and citations covers the lore's reading sources
+// alongside the legal authorities. The motto and intro paragraph stay founder-locked.
 const INTRO = [
   '![Ultrametric](assets/banner.svg)',
   '',
@@ -40,17 +44,17 @@ const INTRO = [
   '',
   '<pre>',
   'ultrametric/',
-  '├── <a href="#open-processes">open-processes</a>/     each founder process as routed, timed steps',
+  '├── <a href="#open-processes">open-processes</a>/     founder processes and situations as routed, timed steps',
   '├── <a href="#open-vendor-rankings">open-rankings</a>/      per-market products, stories, evidence, verdicts',
   '├── <a href="#open-modules">open-modules</a>/       worked guides to each startup calculation',
   '├── <a href="#open-startup-simulator">open-startup-sim</a>/   what the simulator runs and assumes',
-  '├── <a href="#open-law">open-law</a>/           startup legal rules by jurisdiction',
-  '├── <a href="#open-lore">open-lore</a>/          founder advice, who said it, the reading library',
+  '├── <a href="#open-law">open-law</a>/           startup legal rules by jurisdiction, the distilled laws',
+  '├── <a href="#open-lore">open-lore</a>/          founder advice and stories, who said it, the reading library',
   '├── <a href="#open-docs">open-documents</a>/     openly published legal documents, by use case',
   '├── rankings-engine/    the code that crawls, probes, judges, scores',
-  '├── lib/                loaders, scoring, and the calculation code',
+  '├── lib/                loaders, scoring, the calculation and simulator code',
   '├── jurisdictions/      country and state data, vendor availability',
-  '├── citations/          the primary sources the legal rules cite',
+  '├── citations/          the sources the legal rules and the lore cite',
   '├── coverage/           what is mapped and what is a known gap',
   '├── schemas/            the JSON shape each data file validates against',
   '└── governance/         review rules and what agents may do here',

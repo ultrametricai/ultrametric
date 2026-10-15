@@ -1,7 +1,8 @@
-# Rule cards
+# Open law
 
-Map the law that applies to startups: each file states one legal rule under a stable ID,
-scoped to a jurisdiction and citing a primary source with the exact section.
+Map the law that applies to startups: each rule card states one legal rule under a stable
+ID, scoped to a jurisdiction and citing a primary source with the exact section. The
+domain map (`map.json`) and the distilled startup laws (`LAWS.md`) live here too.
 
 Workflows reference cards by ID, so a statute or agency change traces to every affected
 workflow. `reviewed_on` / `review_due` are editorial check dates, not legal effective
