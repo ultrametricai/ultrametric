@@ -18,7 +18,7 @@ ultrametric/
 ├── rankings-engine/    the code that crawls, probes, judges, scores
 ├── lib/                loaders, scoring, and the calculation code
 ├── jurisdictions/      country and state data, vendor availability
-├── coverage/           what is mapped and what is a known gap
+├── coverage/           what each area covers and what is missing
 ├── schemas/            the JSON shape each data file validates against
 └── policies/           how records are reviewed and what agents may do here
 </pre>

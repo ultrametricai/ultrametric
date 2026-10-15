@@ -11,7 +11,7 @@ workspace, never here.
 
 | Path | Purpose |
 | --- | --- |
-| `coverage/` | Domain taxonomy, lifecycle navigation, machine-readable coverage and gaps |
+| `coverage/` | The cross-area coverage index (`index.json`), the domain taxonomy, and machine-readable workflow coverage |
 | `open-processes/chains.json` | Multi-process founder paths (chains; The Open Startup is the live surface) |
 | `open-processes/` | Jurisdiction-scoped legal workflows + the operational corpus (two layers) |
 | `open-law/<jurisdiction>/` | Canonical, dated legal rule cards with stable IDs |
