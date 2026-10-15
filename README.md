@@ -238,12 +238,31 @@ open gap.
 ## Open law
 
 Map the [law](open-law/) that applies to startups, across jurisdictions, and connect it to
-the calculations and the vendors that act on it. Each legal statement is one dated rule card
-citing a primary [authority](open-law/citations/) (a statute, regulation, or agency page) with the
-exact section. A blog post cannot establish law. The distilled
-[startup laws](open-law/LAWS.md) collect the recurring principles the reading canon keeps
-re-teaching, with sources cited. The [domain map](open-law/README.md#the-map)
-grades each area of US startup law as mapped, partial, or unmapped.
+the processes, calculations, and vendors that act on it. Each legal statement is one dated
+rule card citing a primary [authority](open-law/citations/) (a statute, regulation, or
+agency page) with the exact section. A blog post cannot establish law. The cards are scoped
+by jurisdiction: [federal](open-law/US-FED/), [Delaware](open-law/US-DE/),
+[California](open-law/US-CA/), [Nevada](open-law/US-NV/), [New York](open-law/US-NY/),
+[Texas](open-law/US-TX/), [Washington](open-law/US-WA/), and the [EU](open-law/EU/). The
+distilled [startup laws](open-law/LAWS.md) collect the recurring principles the reading
+canon keeps re-teaching, grouped by lifecycle stage from
+[idea](open-law/LAWS.md#idea-and-validation) through
+[survival](open-law/LAWS.md#survival-and-the-long-game), each citing its sources. The
+[domain map](open-law/README.md#the-map) ties each legal area to the rule cards covering
+it and the processes it governs, graded mapped, partial, or unmapped.
+
+### Example: The 83(b) election
+
+One rule, followed through the repo. The distilled law states the thirty-day window
+([Formation and housekeeping](open-law/LAWS.md#formation-and-housekeeping)); its rule card
+[`us-fed.83b-filing-period`](open-law/US-FED/us-fed-83b-filing-period.json) pins the IRS
+procedure; the [Incorporate C-Corp](https://ultrametric.ai/processes/incorporate-c-corp)
+process signs and files the election as explicit steps, with the jurisdiction-scoped
+workflow [`equity.us-de.83b-election`](open-processes/equity/us-de/83b-election.json)
+requiring a named human approval on the filing; and the
+[83(b) election math module](open-modules/README.md#83b-election-math) computes
+tax-at-grant against tax-at-vesting, replaying the IRS revenue-procedure examples in
+tests.
 
 ## Government services and startups
 

@@ -68,6 +68,35 @@ Contribute here:
 Gate: `npx vitest run __tests__/founder-ops.test.ts` (source resolution, jurisdiction
 matching, ID stability).
 
+## By jurisdiction
+
+The cards live in one directory per jurisdiction, named by the `jurisdiction` codes in
+`jurisdictions/registry.json`.
+
+| Jurisdiction | The cards cover |
+| --- | --- |
+| [US-FED](US-FED/) | 83(b) elections, 409A presumptions and penalties, ISO/AMT and QSBS treatment, securities exemptions and Form D, corporate and payroll filing deadlines, FLSA baselines, I-9 timing, contractor IP assignment, CAN-SPAM, e-signature validity, beneficial-ownership reporting, founder parole |
+| [US-DE](US-DE/) | Incorporation mechanics and certificate contents, board and stockholder written consent, stock and option authorization, both franchise-tax methods, dissolution and post-dissolution continuation |
+| [US-CA](US-CA/) | CCPA business thresholds, final-wages timing, foreign qualification, the Statement of Information, invention-assignment limits, the noncompete void rule, the minimum franchise tax |
+| [US-NV](US-NV/) | The annual list and business license, the commerce-tax threshold |
+| [US-NY](US-NY/) | The wage notice at hire |
+| [US-TX](US-TX/) | Foreign registration, the franchise-tax report |
+| [US-WA](US-WA/) | The noncompete earnings threshold |
+| [EU](EU/) | The GDPR data-subject-access response deadline |
+
+## The 83(b) rule, followed through the repo
+
+The map's cross-links are navigable in both directions; one worked chain: the distilled
+law states the thirty-day election window
+([LAWS.md, Formation and housekeeping](LAWS.md#formation-and-housekeeping)). Its rule card
+[`us-fed.83b-filing-period`](US-FED/us-fed-83b-filing-period.json) pins the statute and
+IRS procedure. The Incorporate C-Corp process signs and files the election as explicit
+steps, and the jurisdiction-scoped workflow
+[`equity.us-de.83b-election`](../open-processes/equity/us-de/83b-election.json) runs it
+with a named human approval on the filing. The
+[83(b) election math module](../open-modules/README.md#83b-election-math) computes
+tax-at-grant against tax-at-vesting and replays the Rev. Proc. 2012-29 examples in tests.
+
 ## Citations
 
 `citations/registry.json` holds the authorities the rule cards cite: each entry is a
@@ -90,7 +119,13 @@ offline.
 ## LAWS.md
 
 `LAWS.md` distills the reading canon into recurring, near-universal startup principles
-grouped by lifecycle stage; every law cites its sources by id — the authorities in
+grouped by lifecycle stage: [idea and validation](LAWS.md#idea-and-validation),
+[formation and housekeeping](LAWS.md#formation-and-housekeeping),
+[product and first users](LAWS.md#product-and-first-users),
+[fundraising and equity](LAWS.md#fundraising-and-equity),
+[growth, people and spending](LAWS.md#growth-people-and-spending), and
+[survival and the long game](LAWS.md#survival-and-the-long-game).
+Every law cites its sources by id — the authorities in
 `citations/registry.json` here and the reading canon in `open-lore/library.json` and
 `open-lore/citations.json` — aphorisms are attributed to their actual origin, and the
 only literal laws (filing deadlines) also carry rule cards here. Gate:
