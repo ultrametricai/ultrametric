@@ -424,7 +424,8 @@ describe('README.md anchors and links', () => {
   })
 
   it('every CONTRIBUTING.md anchor the README links exists', () => {
-    for (const anchor of ['add-your-vendor', 'add-a-process', 'add-an-open-module']) {
+    // Founder 2026-10-15: only the vendor call-to-action stays on the front page.
+    for (const anchor of ['add-your-vendor']) {
       expect(readme).toContain(`(CONTRIBUTING.md#${anchor})`)
       expect(contributing, `CONTRIBUTING.md is missing <a id="${anchor}">`).toContain(`<a id="${anchor}"></a>`)
     }

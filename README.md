@@ -72,8 +72,6 @@ listed on it, with their judged scores. See it live at
 
 [![The Incorporate C-Corp process: the step diagram, each step routed agent, form, or human, with ranked vendor options per step](assets/readme/process-page.png)](https://ultrametric.ai/processes/incorporate-c-corp)
 
-[Add a process](CONTRIBUTING.md#add-a-process)
-
 <!-- Legacy anchor: external links to #business-logic predate the open-modules/ rename. -->
 <a id="business-logic"></a>
 
@@ -137,8 +135,6 @@ authorized shares, par value, cash on hand, the common-share FMV. Each field is
 registered in [`open-artifacts/fields.json`](open-artifacts/fields.json), so the
 same value feeds the modules that need it. The data shapes are published as JSON
 Schemas in [`schemas/`](schemas/).
-
-[Add an open module](CONTRIBUTING.md#add-an-open-module)
 
 ## Open artifacts
 
