@@ -177,9 +177,10 @@ checked. Known gaps are recorded too. See it live at
 
 ## Open situations
 
-[Guides](open-processes/SITUATIONS.md) for reactive work: a breach is live, a summons lands,
-a tax notice arrives. Each names its trigger and an urgency clock of hours, days, or
-weeks. See it live at [ultrametric.ai/situations](https://ultrametric.ai/situations).
+[Unplanned events](open-processes/SITUATIONS.md) routed into the process graph: a breach, a
+summons, a tax notice. Each names what triggers it, how fast you must act (hours, days, or
+weeks), and the steps that run, routed agent, form, or human like any process. See it live
+at [ultrametric.ai/situations](https://ultrametric.ai/situations).
 
 [![The situations index on ultrametric.ai, reactive work sorted hottest clock first](assets/readme/situations.png)](https://ultrametric.ai/situations)
 
