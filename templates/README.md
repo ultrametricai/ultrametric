@@ -13,4 +13,4 @@ Contribute here:
   template gains it too, still blank and still valid.
 - **A new template** — when a record type gets a contribution path, add its blank here.
 
-Gate: `npx vitest run __tests__/founder-ops.test.ts`.
+Gate: `pnpm test __tests__/founder-ops.test.ts`.

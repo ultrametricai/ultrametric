@@ -34,7 +34,7 @@ Contribute here:
 - **Vendor availability in your country** — add `vendor-geo.json` rows
   (`{productId, country, status, sourceUrl, note}`); the source must be the vendor's own
   page or an official register, and negatives ("US entities only") are as valuable as
-  positives. Gate: `npx vitest run lib/__tests__/vendorGeo.test.ts`.
+  positives. Gate: `pnpm test lib/__tests__/vendorGeo.test.ts`.
 - **Register a new jurisdiction** — add it with a narrow scope statement before
   contributing rule cards or workflows for it; a scope is never widened to make a match
-  work. Gate: `npx vitest run __tests__/founder-ops.test.ts`.
+  work. Gate: `pnpm test __tests__/founder-ops.test.ts`.

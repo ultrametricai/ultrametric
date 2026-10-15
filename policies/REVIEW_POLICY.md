@@ -51,7 +51,7 @@ because it has several playbooks — coverage is tracked per scenario and locale
 5. For vendors, use `templates/vendor-review.json` per `open-rankings/reviews/README.md`. Disclose
    affiliations and compensation; record the tested scenario, observed evidence, cost date, and
    negatives. Marketing copy alone is `unverified`.
-6. Run the gates: `npx vitest run __tests__/founder-ops.test.ts` (structure + invariants) and
+6. Run the gates: `pnpm test __tests__/founder-ops.test.ts` (structure + invariants) and
    the full suite before merging. A domain expert must review legal changes; two independent
    reviewers are preferred for high-stakes rules.
 7. An agent contribution includes an audit trail of sources, dates accessed, uncertainty, and

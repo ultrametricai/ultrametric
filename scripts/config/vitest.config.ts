@@ -1,11 +1,14 @@
 import { configDefaults, defineConfig } from 'vitest/config'
 import path from 'node:path'
 
+const root = path.resolve(__dirname, '../..')
+
 // The open artifact test surface (docs/REPO-SPLIT-PLAN.md): the root
 // data-integrity suite, the lib loader/determinism/golden suites, and engine correctness.
 // The UI suites run in the private site repo. scripts/content-audit.test.mjs runs under
 // node --test, outside this glob (see docs/repo-split-census.json).
 export default defineConfig({
+  root,
   test: {
     include: [
       '__tests__/**/*.test.ts',
@@ -22,5 +25,5 @@ export default defineConfig({
     // .coverage/ (gitignored) so the two never collide.
     coverage: { reportsDirectory: './.coverage' },
   },
-  resolve: { alias: { '@': path.resolve(__dirname) } },
+  resolve: { alias: { '@': root } },
 })

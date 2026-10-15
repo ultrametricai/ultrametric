@@ -9,11 +9,11 @@ Five files carry it:
 
 | File | What it holds | Gate |
 | --- | --- | --- |
-| [`registry.json`](./registry.json) | Heuristics: one actionable sentence per claim, with school, topic, source, tensions, and cross-links. | `pnpm vitest run __tests__/lore-registry.test.ts --maxWorkers=2` |
-| [`schools.json`](./schools.json) | The schools of thought: who they are and their core position. | `pnpm vitest run __tests__/lore-schools.test.ts --maxWorkers=2` |
-| [`library.json`](./library.json) | The curated reading list, in sections that double as the topic set. | `pnpm vitest run __tests__/lore-library.test.ts --maxWorkers=2` |
-| [`citations.json`](./citations.json) | Citation-only works the distilled laws cite that are not library-worthy. | `pnpm vitest run __tests__/lore-citations.test.ts --maxWorkers=2` |
-| [`LORE.md`](./LORE.md) | Episodes: the war stories of startup history, graded for veracity. | `pnpm vitest run __tests__/lore.test.ts --maxWorkers=2` |
+| [`registry.json`](./registry.json) | Heuristics: one actionable sentence per claim, with school, topic, source, tensions, and cross-links. | `pnpm test __tests__/lore-registry.test.ts --maxWorkers=2` |
+| [`schools.json`](./schools.json) | The schools of thought: who they are and their core position. | `pnpm test __tests__/lore-schools.test.ts --maxWorkers=2` |
+| [`library.json`](./library.json) | The curated reading list, in sections that double as the topic set. | `pnpm test __tests__/lore-library.test.ts --maxWorkers=2` |
+| [`citations.json`](./citations.json) | Citation-only works the distilled laws cite that are not library-worthy. | `pnpm test __tests__/lore-citations.test.ts --maxWorkers=2` |
+| [`LORE.md`](./LORE.md) | Episodes: the war stories of startup history, graded for veracity. | `pnpm test __tests__/lore.test.ts --maxWorkers=2` |
 
 ## Schools
 

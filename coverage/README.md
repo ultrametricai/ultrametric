@@ -57,7 +57,7 @@ called covered because a few playbooks exist (`policies/REVIEW_POLICY.md`).
 - **Missing domains** — a domain or lifecycle stage missing from `domains.json`, with the
   founder scenario that exposes it; domains without playbooks keep gaps visible.
 
-Gates: `npx vitest run __tests__/coverage.test.ts __tests__/founder-ops.test.ts`.
+Gates: `pnpm test __tests__/coverage.test.ts __tests__/founder-ops.test.ts`.
 
 ## Source-library audit
 

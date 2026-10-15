@@ -60,7 +60,7 @@ is officially representing the community in public spaces.
 Instances of abusive, harassing, or otherwise unacceptable behavior may be
 reported using [GitHub's private vulnerability reporting](../../security/advisories/new)
 on this repository (Security tab → "Report a vulnerability") — the same
-private, maintainers-only channel documented in [SECURITY.md](./SECURITY.md).
+private, maintainers-only channel documented in [SECURITY.md](./.github/SECURITY.md).
 All complaints will be reviewed and investigated promptly and fairly.
 
 All community leaders are obligated to respect the privacy and security of

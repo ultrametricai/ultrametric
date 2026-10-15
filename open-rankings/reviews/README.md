@@ -19,7 +19,7 @@ cross-market view at [ultrametric.ai/overall](https://ultrametric.ai/overall).
   region availability from `jurisdictions/vendor-geo.json` (negatives included), pricing
   facts, ranking dimensions, and affiliation disclosures. Never hand-edit these; fix the
   underlying data and re-run the generator. Gate:
-  `npx vitest run rankings-engine/__tests__/vendorReviews.test.ts` (byte-identical regeneration).
+  `pnpm test rankings-engine/__tests__/vendorReviews.test.ts` (byte-identical regeneration).
 - **This directory** — hands-on human reviews in the same schema (`_blank-example.json` is the
   template in use). Rubric: functional fit, local legal coverage, security and privacy,
   API/export quality, implementation burden, support, total cost, lock-in and portability,
@@ -32,7 +32,7 @@ Contribute here:
 
 - **A hands-on vendor review** — copy `templates/vendor-review.json` into `open-rankings/reviews/`,
   fill the rubric, disclose every affiliation. Gate:
-  `npx vitest run __tests__/founder-ops.test.ts`.
+  `pnpm test __tests__/founder-ops.test.ts`.
 - **Evidence for a judged product** — new doc pages, changelogs, or community sources
   belong in `open-rankings/<arena>/` via the engine (see CONTRIBUTING.md); only the cells whose
   evidence changed are re-judged.
