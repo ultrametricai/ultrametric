@@ -89,4 +89,4 @@ Ultrametric (which operates Ultrametric) also ships products that appear in rank
 Foreloop in `software-factory`, disclosed via the product's `affiliation` field). Responses on
 our own products follow this exact protocol with no shortcuts — `github-org` verification via
 this repository's org, same verbatim cap, same "never moves a verdict" rule — and exist partly
-to demonstrate the feature honestly rather than fabricating third-party statements.
+to demonstrate the feature on a real affiliated product rather than fabricating third-party statements.

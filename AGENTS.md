@@ -6,7 +6,7 @@ These bind every agent and contributor working in this repo.
 
 - Never hand-tune a verdict, score, rank, or leaderboard position. Every ranked number is
   computed from judged evidence by the rankings engine — change the inputs or the code, never the
-  output. Honest negatives stay published.
+  output. Negative results stay published.
 - Every claim cites its evidence (vendor docs, GitHub, community sources, or a recorded
   probe). No citable evidence → no claim. Never fabricate a URL; if a source is bot-walled,
   document that and substitute a reachable one.
@@ -66,9 +66,12 @@ need it.
 
 ## What this repo is
 
-Ultrametric is the open startup repo: step-by-step founder processes (`open-processes/`),
-agent-tested vendor rankings (`open-rankings/`, `rankings-engine/`), and open, source-cited
-business logic (`lib/openstartup/`, `open-law/`). The knowledge layer (plain JSON
+Ultrametric is the open startup repo: step-by-step founder processes and situations
+(`open-processes/`), agent-tested vendor rankings (`open-rankings/`, `rankings-engine/`),
+open, source-cited business logic and law (`lib/openstartup/`, `open-modules/`,
+`open-law/`), startup lore and its reading library (`open-lore/`), openly
+published legal documents (`open-documents/`), and the startup simulator's catalog
+(`open-startup-sim/`). The knowledge layer (plain JSON
 and markdown, schema-validated in CI) is the product. The site that renders it at
 ultrametric.ai is maintained in a private repo, which materializes this repo's open
 surface at a pinned commit via `scripts/sync-open.mjs` and `open-manifest.json`; UI and
@@ -79,7 +82,7 @@ page changes happen there. The README has the full map.
 ```bash
 pnpm install
 pnpm test       # vitest run: schema, scoring, and founder-ops gates
-pnpm stats      # regenerates the README stats/arenas blocks and badges
+pnpm stats      # gates the README: no generated count blocks, no counts in prose
 ```
 
 ## Schemas are law
@@ -98,9 +101,9 @@ traps:
 
 - `open-rankings/<arena>/rankings.json` is derived. Change verdicts or evidence, then run
   `pnpm engine derive --category <id>`.
-- The README blocks between `<!-- stats:start -->` / `<!-- arenas:start -->` style
-  markers, and the badge SVGs in `public/badges/`, come from `pnpm stats` and
-  `node scripts/generate-badges.mjs`. Edit around the markers, never inside them.
+- The README's generated count blocks are retired; `pnpm stats` fails if one reappears
+  or prose carries a count. The badge SVGs in `public/badges/` come from
+  `node scripts/generate-badges.mjs`.
 - `open-rankings/reviews/generated/` regenerates deterministically from the arena data.
 
 ## The rankings engine

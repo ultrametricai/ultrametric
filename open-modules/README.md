@@ -22,27 +22,50 @@ property-tested — **not** independently expert-certified, and the module docs 
 
 ## Module index
 
+The catalog is organized into four groups, committed per module in
+`open-processes/business-logic-map.json` (`group`). The Serves column names the processes
+each module computes for, written from the same map by
+`scripts/generate-business-logic-serves.ts` and drift-gated like the per-module Serves
+lines; edit the map, rerun the script.
+
+### Formation & equity
+
 | Module | What it computes | Serves | Worked-example source | Status |
 | --- | --- | --- | --- | --- |
-| [Cap table](#cap-table) | Issuance, pools, SAFE conversion, priced-round PPS, dilution waterfall | Formation + fundraising + cap-table ops | YC Post-Money Safe User Guide (Appendix II) | verified + property-tested |
-| [Vesting mechanics](#vesting-mechanics) | Cliff/periodic/back-loaded schedules, acceleration, departures | Founder stock, grants, departures | Cooley GO; Amazon 5/15/40/40; FAST grid | verified + property-tested |
-| [83(b) election math](#83b-election-math) | Tax-at-grant vs tax-at-vesting, forfeiture cost | Formation + LLC conversion | Rev. Proc. 2012-29 (all six examples) | verified |
-| [QSBS (§ 1202)](#qsbs--1202) | Eligibility checklist, holding clock, exclusion %, per-issuer cap | Formation + LLC conversion | IRC § 1202 (re-derived caps) | verified, checklist-shaped |
-| [Deadline calendar](#deadline-calendar) | Rule-card-backed due dates and recurring clocks | Tax filings, 83(b) windows | Dated rule cards in `open-law/` | verified, always `needsReview` where dates can move |
-| [Convertible notes](#convertible-notes) | Interest, cap/discount conversion, maturity paths, pricing with notes | Pre-seed + SAFE/note conversion | Cooley GO convertible-debt primers | verified |
-| [Liquidity-event waterfall](#liquidity-event-waterfall) | Per-holder proceeds at a sale price | Fundraising exits sanity | YC User Guide Appendix II Ex. 1 Q3/Q4; Cooley GO glossary | verified + property-tested |
-| [Anti-dilution](#anti-dilution) | NVCA weighted-average / full-ratchet conversion-price adjustments | Priced rounds (down rounds) | NVCA model COD; Springmeyer worked example | verified + property-tested |
-| [Priced-round mechanics](#priced-round-mechanics) | Pro rata, pool-from-hiring-plan, down-round model, secondaries | Priced rounds + SAFE conversion | YC User Guide §E; Rewarding Talent; Springmeyer; Cooley GO | verified |
-| [Priced-round composer](#priced-round-composer) | The round end-to-end: term sheet → wires/issuance → post-close | Priced rounds, pro-forma review | YC Appendix II Ex. 1, replayed end-to-end | verified by composition-equality |
-| [409A grant sanity](#409a-grant-sanity) | Strike floor, staleness, presumptions, refresh triggers, penalty illustration | 409A + option grants | Treas. Reg. § 1.409A rule cards | sanity model — never a valuation |
-| [Offer / equity-comp scenarios](#offer--equity-comp-scenarios) | Grant %, spread, exit scenarios | Offers and exec hires | Holloway equity guide; Rewarding Talent | verified, pre-tax by design |
-| [ISO / NSO exercise tax](#iso--nso-exercise-tax) | NSO income, ISO/AMT outcomes, § 422(d) $100k, dispositions | Option grants + offboarding | Pub 525; Treas. Reg. § 1.422-4(d) Ex. 1–3; Rev. Proc. 2024-40/2025-32 | verified; AMT is illustration-only |
-| [Employer payroll tax](#employer-payroll-tax) | FICA/FUTA employer load, per-employee cost | Payroll setup + runs + hiring | IRS Pub 15 / instructions (pinned maxima) | verified, FEDERAL ONLY |
-| [Delaware franchise tax](#delaware-franchise-tax) | Both published methods, exactly; the March comparison | DE franchise tax + delinquency cure | 8 Del. C. § 503 + Division worked examples | verified |
-| [R&D tax mechanics](#rd-tax-mechanics) | § 174 amortization patterns, § 41(h) offset caps, Form 8974 application | R&D credit claim | IRC § 174/41; Form 8974 instructions | explanation + arithmetic — never a credit computation |
-| [Runway & burn](#runway--burn) | Default-alive trajectories, hiring impact | Runway, board reports, budgets | paulgraham.com/aord.html (model) | verified, hand-derived arithmetic |
-| [Unit economics](#unit-economics) | LTV/CAC, MRR movement, burn multiple, Rule of 40, magic number | Runway KPIs, board decks, churn saves, pricing changes | Skok; Sacks; Feld; O'Driscoll (all verified 2026-10-14) | verified; benchmarks are inputs |
-| [Deferred revenue (subscriptions)](#deferred-revenue-subscriptions) | Straight-line day-count recognition, plan-change proration | Bookkeeping close, billing, pricing migrations | Stripe revenue-recognition subscription examples | verified; ASC 606 judgment excluded |
+| [Cap table](#cap-table) | Issuance, pools, SAFE conversion, priced-round PPS, dilution waterfall | Incorporate C-Corp · Sign the founder agreement & split equity · Set up cap table · Update cap table · Audit cap table · Raise pre-seed (SAFEs) · Close a priced equity round · Issue stock options · Convert SAFEs at the priced round · Handle a co-founder departure | YC Post-Money Safe User Guide (Appendix II) | verified + property-tested |
+| [Vesting mechanics](#vesting-mechanics) | Cliff/periodic/back-loaded schedules, acceleration, departures | Incorporate C-Corp · Sign the founder agreement & split equity · Issue stock options · Hire first employee · Hire an executive · Handle a co-founder departure | Cooley GO; Amazon 5/15/40/40; FAST grid | verified + property-tested |
+| [83(b) election math](#83b-election-math) | Tax-at-grant vs tax-at-vesting, forfeiture cost | Incorporate C-Corp · Sign the founder agreement & split equity · Convert an LLC to a C-Corp | Rev. Proc. 2012-29 (all six examples) | verified |
+| [QSBS (§ 1202)](#qsbs--1202) | Eligibility checklist, holding clock, exclusion %, per-issuer cap | Incorporate C-Corp · Convert an LLC to a C-Corp | IRC § 1202 (re-derived caps) | verified, checklist-shaped |
+| [Offer / equity-comp scenarios](#offer--equity-comp-scenarios) | Grant %, spread, exit scenarios | Issue stock options · Hire first employee · Hire an executive | Holloway equity guide; Rewarding Talent | verified, pre-tax by design |
+| [ISO / NSO exercise tax](#iso--nso-exercise-tax) | NSO income, ISO/AMT outcomes, § 422(d) $100k, dispositions | Issue stock options · Offboard employee | Pub 525; Treas. Reg. § 1.422-4(d) Ex. 1–3; Rev. Proc. 2024-40/2025-32 | verified; AMT is illustration-only |
+| [409A grant sanity](#409a-grant-sanity) | Strike floor, staleness, presumptions, refresh triggers, penalty illustration | Close a priced equity round · Get a 409A valuation · Issue stock options | Treas. Reg. § 1.409A rule cards | sanity model — never a valuation |
+
+### Fundraising & exits
+
+| Module | What it computes | Serves | Worked-example source | Status |
+| --- | --- | --- | --- | --- |
+| [Convertible notes](#convertible-notes) | Interest, cap/discount conversion, maturity paths, pricing with notes | Raise pre-seed (SAFEs) · Convert SAFEs at the priced round | Cooley GO convertible-debt primers | verified |
+| [Priced-round mechanics](#priced-round-mechanics) | Pro rata, pool-from-hiring-plan, down-round model, secondaries | Close a priced equity round · Convert SAFEs at the priced round | YC User Guide §E; Rewarding Talent; Springmeyer; Cooley GO | verified |
+| [Priced-round composer](#priced-round-composer) | The round end-to-end: term sheet → wires/issuance → post-close | Close a priced equity round · Convert SAFEs at the priced round | YC Appendix II Ex. 1, replayed end-to-end | verified by composition-equality |
+| [Anti-dilution](#anti-dilution) | NVCA weighted-average / full-ratchet conversion-price adjustments | Close a priced equity round | NVCA model COD; Springmeyer worked example | verified + property-tested |
+| [Liquidity-event waterfall](#liquidity-event-waterfall) | Per-holder proceeds at a sale price | Raise pre-seed (SAFEs) · Close a priced equity round | YC User Guide Appendix II Ex. 1 Q3/Q4; Cooley GO glossary | verified + property-tested |
+
+### Tax & compliance
+
+| Module | What it computes | Serves | Worked-example source | Status |
+| --- | --- | --- | --- | --- |
+| [Deadline calendar](#deadline-calendar) | Rule-card-backed due dates and recurring clocks | Incorporate C-Corp · Sign the founder agreement & split equity · Convert an LLC to a C-Corp · File DE franchise tax · File federal tax return · Cure a Delaware franchise tax delinquency | Dated rule cards in `open-law/` | verified, always `needsReview` where dates can move |
+| [Employer payroll tax](#employer-payroll-tax) | FICA/FUTA employer load, per-employee cost | Set up payroll · Hire first employee · Run payroll | IRS Pub 15 / instructions (pinned maxima) | verified, FEDERAL ONLY |
+| [Delaware franchise tax](#delaware-franchise-tax) | Both published methods, exactly; the March comparison | File DE franchise tax · Cure a Delaware franchise tax delinquency | 8 Del. C. § 503 + Division worked examples | verified |
+| [R&D tax mechanics](#rd-tax-mechanics) | § 174 amortization patterns, § 41(h) offset caps, Form 8974 application | Claim the R&D tax credit | IRC § 174/41; Form 8974 instructions | explanation + arithmetic — never a credit computation |
+
+### Finance & runway
+
+| Module | What it computes | Serves | Worked-example source | Status |
+| --- | --- | --- | --- | --- |
+| [Runway & burn](#runway--burn) | Default-alive trajectories, hiring impact | Track runway · Send the board financial report · Set the annual budget & get board approval | paulgraham.com/aord.html (model) | verified, hand-derived arithmetic |
+| [Unit economics](#unit-economics) | LTV/CAC, MRR movement, burn multiple, Rule of 40, magic number | Track runway · Send the board financial report · Prepare a board meeting · Save a churning customer · Roll out a pricing change | Skok; Sacks; Feld; O'Driscoll (all verified 2026-10-14) | verified; benchmarks are inputs |
+| [Deferred revenue (subscriptions)](#deferred-revenue-subscriptions) | Straight-line day-count recognition, plan-change proration | Bookkeeping close · Set up subscription billing · Roll out a pricing change | Stripe revenue-recognition subscription examples | verified; ASC 606 judgment excluded |
 
 ## Modules
 
@@ -789,7 +812,7 @@ https://docs.stripe.com/revenue-recognition/examples/subscriptions · Stripe Doc
 
 ## How the modules connect to the processes
 
-`open-processes/business-logic-map.json` is the wiring: task-level (which modules honestly
+`open-processes/business-logic-map.json` is the wiring: task-level (which modules
 serve which processes — the "Open modules" line on live process pages) and
 step-level (which exported FUNCTION computes which step's math — the per-step
 `compute:` chips). The map is curated from both sides and totality-tested both ways in
@@ -836,13 +859,13 @@ books.
   boundaries, Sources). The bar is fixed: pure functions, a citation on every formula's
   doc comment, explicit rounding, worked examples reproduced number-for-number from the
   cited source, and property tests. The assessed candidate backlog — with build/skip/defer
-  verdicts and the citable sources that exist (or honestly don't) — lives in
+  verdicts and the citable sources that exist (or the recorded absence of one) — lives in
   [`docs/OPEN-MODULES-GAPS.md`](../docs/OPEN-MODULES-GAPS.md). Gate:
   `pnpm test lib/openstartup/__tests__/` (and `pnpm test`).
 - **Harden an existing module** — a missed edge case from a cited worked example, a new
   property test, or a correction with the source that proves it (e.g. the YC Post-Money
   Safe User Guide for `capTable.ts`).
-- **Honesty rules** — a module that leans on a legal threshold must reference a dated rule
+- **Legal thresholds** — a module that leans on one must reference a dated rule
   card in `open-law/` and return `needs_review` when locale or date is unknown; results are
   decision support, never authorization. The conservative workflow planner lives in
   `lib/founderOps.ts` and is gated by `__tests__/founder-ops.test.ts`.
