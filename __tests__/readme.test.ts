@@ -261,13 +261,12 @@ describe('README.md structure (founder round 2, 2026-10-12)', () => {
     expect(hits, `README uses swept vocabulary: ${hits.join(', ')}`).toEqual([])
   })
 
-  it('hand-written prose carries no counts and no dates; numbers live in generated blocks only', () => {
-    // Only the arenas block is generated now (founder round 8); strip it, then scan.
-    const s = '<!-- arenas:start -->'
-    const e = '<!-- arenas:end -->'
-    const stripped = readme.slice(0, readme.indexOf(s)) + readme.slice(readme.indexOf(e) + e.length)
-    expect(stripped).not.toMatch(/\b\d[\d,]* (rankings|products|verdicts|arenas|processes|markets)\b/)
-    expect(stripped).not.toMatch(/\b\d{4}-\d{2}-\d{2}\b/)
+  it('prose carries no counts and no dates anywhere on the page', () => {
+    // The last generated count block (the arenas line) was retired in the founder's
+    // rankings-examples order (2026-10-14), so the no-counts gate scans the whole page.
+    // scripts/update-readme-stats.mjs (`pnpm stats`) applies the same rule as a CLI gate.
+    expect(readme).not.toMatch(/\b\d[\d,]* (rankings|products|verdicts|arenas|processes|markets)\b/)
+    expect(readme).not.toMatch(/\b\d{4}-\d{2}-\d{2}\b/)
   })
 })
 
@@ -335,13 +334,14 @@ describe('README.md section-guide tables (founder round 2)', () => {
   })
 })
 
-describe('README.md generated blocks', () => {
-  it('keeps only the arenas marker pair; the stats line, badge row, and CI badge are gone', () => {
-    for (const marker of ['<!-- arenas:start -->', '<!-- arenas:end -->']) {
-      expect(readme).toContain(marker)
-    }
-    // Founder round 8: the generated-stats presence at the Methodology spot was removed.
-    for (const gone of ['<!-- stats:start -->', '<!-- stat-badges:start -->', 'badge.svg']) {
+describe('README.md retired generated blocks', () => {
+  it('carries no generated count blocks; the stats line, arenas line, badge row, and CI badge are gone', () => {
+    // Founder round 8 removed the stats line and badge row; the rankings-examples order
+    // (2026-10-14) retired the arenas line in favor of the curated example list below.
+    for (const gone of [
+      '<!-- stats:start -->', '<!-- stat-badges:start -->',
+      '<!-- arenas:start -->', '<!-- arenas:end -->', 'badge.svg',
+    ]) {
       expect(readme).not.toContain(gone)
     }
     // Founder round 9: the single shields.io exception is the Discord button under the banner.
@@ -351,15 +351,27 @@ describe('README.md generated blocks', () => {
     ])
   })
 
-  it('the arenas block is the compact one-line form, not the old per-market table', () => {
-    const block = readme.slice(
-      readme.indexOf('<!-- arenas:start -->'),
-      readme.indexOf('<!-- arenas:end -->'),
-    )
-    expect(block).not.toContain('| Ranking | Products |')
-    expect(block).not.toContain('|---|')
-    expect(block).toContain('https://ultrametric.ai/arenas')
-    expect(block.trim().split('\n').length).toBe(2)
+  it('the vendor-rankings section carries the curated example list and the full-index link', () => {
+    // The founder's picks (rankings-examples order, 2026-10-14), all verified 200 on the
+    // live site that day. Each bullet links one judged market; the ids pin to the
+    // committed categories below.
+    const section = sectionBody('## Open vendor rankings')
+    const bullets = [...section.matchAll(/^- \[[^\]]+\]\(https:\/\/ultrametric\.ai\/arena\/([a-z-]+)\) — \S/gm)]
+    expect(bullets.map((m) => m[1])).toEqual([
+      'payments', 'startup-banking', 'ai-coding', 'local-llm-runtimes', 'government-services',
+    ])
+    const categories = JSON.parse(
+      fs.readFileSync(path.join(ROOT, 'open-rankings', 'categories.json'), 'utf8'),
+    ) as Array<{ id: string }>
+    const ids = new Set(categories.map((c) => c.id))
+    for (const m of bullets) {
+      expect(ids.has(m[1]), `example ranking ${m[1]} is not a committed category`).toBe(true)
+    }
+    expect(section).toContain('https://ultrametric.ai/arenas')
+    // The founder's vocabulary rule: prose says rankings or markets; "arenas" appears only
+    // inside URLs, never as a displayed word.
+    const prose = section.replace(/\(https:\/\/[^)]+\)/g, '').replace(/\]\([^)]*\)/g, '')
+    expect(prose.toLowerCase()).not.toContain('arena')
   })
 })
 

@@ -79,7 +79,7 @@ page changes happen there. The README has the full map.
 ```bash
 pnpm install
 pnpm test       # vitest run: schema, scoring, and founder-ops gates
-pnpm stats      # regenerates the README stats/arenas blocks and badges
+pnpm stats      # gates the README: no generated count blocks, no counts in prose
 ```
 
 ## Schemas are law
@@ -98,9 +98,9 @@ traps:
 
 - `open-rankings/<arena>/rankings.json` is derived. Change verdicts or evidence, then run
   `pnpm engine derive --category <id>`.
-- The README blocks between `<!-- stats:start -->` / `<!-- arenas:start -->` style
-  markers, and the badge SVGs in `public/badges/`, come from `pnpm stats` and
-  `node scripts/generate-badges.mjs`. Edit around the markers, never inside them.
+- The README's generated count blocks are retired; `pnpm stats` fails if one reappears
+  or prose carries a count. The badge SVGs in `public/badges/` come from
+  `node scripts/generate-badges.mjs`.
 - `open-rankings/reviews/generated/` regenerates deterministically from the arena data.
 
 ## The rankings engine

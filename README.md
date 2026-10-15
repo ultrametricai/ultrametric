@@ -37,9 +37,15 @@ Supporting founders globally: 🌐 🇺🇸 🇬🇧 🇮🇳 🇩🇪 🇫🇷 
 
 We've looked at all the tools and vendors needed for founders to start and operate their company. Vendors are then ranked in terms of how easy it is for your AI to access and control them. From business banking, to payroll, to gov services for filing tax or your trademark. We want to know what claims match reality and who is the most AI native when it comes to their APIs, CLIs, MCPs and computer use surface area.
 
-<!-- arenas:start -->
-**96 rankings** today, 672 products judged head to head — the full index is [ultrametric.ai/arenas](https://ultrametric.ai/arenas), and each ranking's data lives under [`open-rankings/`](open-rankings/).
-<!-- arenas:end -->
+Example rankings:
+
+- [Online payments](https://ultrametric.ai/arena/payments) — payment processors ranked on how well an agent can integrate and operate them
+- [Startup banking](https://ultrametric.ai/arena/startup-banking) — business bank accounts ranked on agent access, from opening the account to moving money
+- [AI coding agents](https://ultrametric.ai/arena/ai-coding) — the tools that write code, ranked on their own agent surfaces
+- [Local LLM runtimes](https://ultrametric.ai/arena/local-llm-runtimes) — software for running models on your own hardware, ranked on APIs and CLI control
+- [Government services](https://ultrametric.ai/arena/government-services) — the IRS, Companies House, HMRC and other agencies, judged like vendors, compared per country
+
+The [full index of ranked markets](https://ultrametric.ai/arenas) is live, and the data behind each board lives under [`open-rankings/`](open-rankings/).
 
 [![The overall rankings on ultrametric.ai: companies ranked by agent readiness, scored on agent access and built-in AI](assets/readme/rankings-overall.png)](https://ultrametric.ai/overall)
 
