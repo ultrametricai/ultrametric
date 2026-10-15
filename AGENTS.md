@@ -66,9 +66,12 @@ need it.
 
 ## What this repo is
 
-Ultrametric is the open startup repo: step-by-step founder processes (`open-processes/`),
-agent-tested vendor rankings (`open-rankings/`, `rankings-engine/`), and open, source-cited
-business logic (`lib/openstartup/`, `open-law/`). The knowledge layer (plain JSON
+Ultrametric is the open startup repo: step-by-step founder processes and situations
+(`open-processes/`), agent-tested vendor rankings (`open-rankings/`, `rankings-engine/`),
+open, source-cited business logic and law (`lib/openstartup/`, `open-modules/`,
+`open-law/`), startup lore and its reading library (`open-lore/`), openly
+published legal documents (`open-documents/`), and the startup simulator's catalog
+(`open-startup-sim/`). The knowledge layer (plain JSON
 and markdown, schema-validated in CI) is the product. The site that renders it at
 ultrametric.ai is maintained in a private repo, which materializes this repo's open
 surface at a pinned commit via `scripts/sync-open.mjs` and `open-manifest.json`; UI and

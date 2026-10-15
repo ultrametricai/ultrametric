@@ -1,8 +1,9 @@
 # Processes
 
-Every founder process as a step-by-step record, each step routed agent, form, or
-human, timed, and wired to the judged vendor rankings; the fixtures and curation doctrine
-beneath them live here too.
+Every founder process and reactive situation as a step-by-step record, each step routed
+agent, form, or human, timed, and wired to the judged vendor rankings; the fixtures and
+the curation doctrine live here too. The artifact and company-field registries the steps
+exchange live in [`open-artifacts/`](../open-artifacts/).
 
 Canonical DAG definitions such as `generate-a-brand-logo.json` use
 [`schemas/process.schema.json#/$defs/canonical`](../schemas/process.schema.json#/$defs/canonical),

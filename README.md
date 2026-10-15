@@ -8,16 +8,16 @@ Navigate all business processes, compare and select AI native vendors, inform yo
 
 <pre>
 ultrametric/
-├── <a href="#open-processes">open-processes</a>/     each founder process as routed, timed steps
+├── <a href="#open-processes">open-processes</a>/     founder processes and situations as routed, timed steps
 ├── <a href="#open-vendor-rankings">open-rankings</a>/      per-market products, stories, evidence, verdicts
 ├── <a href="#open-modules">open-modules</a>/       worked guides to each startup calculation
 ├── <a href="#open-startup-simulator">open-startup-sim</a>/   what the simulator runs and assumes
-├── <a href="#open-law">open-law</a>/           startup legal rules by jurisdiction
-├── <a href="#open-lore">open-lore</a>/          founder advice, who said it, the reading library
+├── <a href="#open-law">open-law</a>/           startup legal rules by jurisdiction, the distilled laws
+├── <a href="#open-lore">open-lore</a>/          founder advice and stories, who said it, the reading library
 ├── <a href="#open-docs">open-documents</a>/     openly published legal documents, by use case
 ├── <a href="#open-artifacts">open-artifacts</a>/     the business objects processes exchange, with field standards
 ├── rankings-engine/    the code that crawls, probes, judges, scores
-├── lib/                loaders, scoring, and the calculation code
+├── lib/                loaders, scoring, the calculation and simulator code
 ├── jurisdictions/      country and state data, vendor availability
 ├── coverage/           what each area covers and what is missing
 ├── schemas/            the JSON shape each data file validates against
@@ -231,7 +231,9 @@ a known, open gap.
 Map the [law](open-law/) that applies to startups, across jurisdictions, and connect it to
 the calculations and the vendors that act on it. Each legal statement is one dated rule card
 citing a primary [authority](open-law/citations/) (a statute, regulation, or agency page) with the
-exact section. A blog post cannot establish law. The [domain map](open-law/README.md#the-map)
+exact section. A blog post cannot establish law. The distilled
+[startup laws](open-law/LAWS.md) collect the recurring principles the reading canon keeps
+re-teaching, with sources cited. The [domain map](open-law/README.md#the-map)
 grades each area of US startup law as mapped, partial, or unmapped.
 
 ## Government services and startups
