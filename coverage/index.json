@@ -3,7 +3,7 @@
   "maturity_grades": {
     "demonstration": "Worked examples that show the shape of the layer; no breadth claim.",
     "partial": "Real coverage across the area, with the remaining gaps tracked in the detail sources.",
-    "broad": "The recurring needs of the area carry records; the detail source lists edge-case gaps."
+    "broad": "The recurring needs of the area carry records; the detail sources list the edge cases and open items."
   },
   "areas": [
     {
@@ -103,6 +103,33 @@
       ]
     },
     {
+      "id": "rankings-engine",
+      "name": "Rankings engine",
+      "maturity": "broad",
+      "summary": "The pipeline that produces the rankings, crawl through derive, with determinism gated by recompute-check and the golden suites. Its own gap is freshness: evidence ages between runs, and the staleness report tracks which arenas and products have drifted past their windows.",
+      "known_gaps": [
+        "Evidence staleness between scheduled runs, tracked per arena and product",
+        "LLM stages run locally only; re-judging without new evidence is declined as wasted spend"
+      ],
+      "detail": [
+        { "path": "open-rankings/staleness-report.json", "tracks": "per-arena and per-product evidence age against the freshness windows" }
+      ]
+    },
+    {
+      "id": "lib",
+      "name": "Code layer",
+      "maturity": "broad",
+      "summary": "Loaders, scoring, calculation modules, and the simulator engine behind the open data. Every suite that gates it is listed in the test census; the user-facing surfaces it feeds are tested in the private site repo.",
+      "known_gaps": [
+        "UI surfaces live and are tested in the private site repo",
+        "Calculation-module gaps are tracked under open-modules, not here"
+      ],
+      "detail": [
+        { "path": "lib/README.md", "tracks": "the layer map: loaders, scoring, modules, simulator engine" },
+        { "path": "docs/repo-split-census.json", "tracks": "every tracked test suite gating the code layer" }
+      ]
+    },
+    {
       "id": "jurisdictions",
       "name": "Jurisdictions",
       "maturity": "demonstration",
@@ -113,6 +140,46 @@
       ],
       "detail": [
         { "path": "jurisdictions/registry.json", "tracks": "per-jurisdiction scope and coverage grade per layer" }
+      ]
+    },
+    {
+      "id": "coverage",
+      "name": "Coverage rollup",
+      "maturity": "partial",
+      "summary": "This index plus the founder-journey files: domains.json maps the journey from formation through exit, including domains with no playbook yet, and coverage.json records which jurisdiction-scoped workflows exist. Most journey domains carry no jurisdiction-scoped playbook.",
+      "known_gaps": [
+        "Most domains in domains.json carry no jurisdiction-scoped playbook",
+        "The index summarizes; an area that moves without an entry update shows up only at review"
+      ],
+      "detail": [
+        { "path": "coverage/domains.json", "tracks": "the founder-journey domains, including those without playbooks" },
+        { "path": "coverage/coverage.json", "tracks": "jurisdiction-scoped workflow coverage per scenario" }
+      ]
+    },
+    {
+      "id": "schemas",
+      "name": "Schema contracts",
+      "maturity": "broad",
+      "summary": "Every committed record validates against a published contract in CI, and the generated schemas are drift-gated byte-identical to their zod sources. A fact that does not fit a schema changes the schema deliberately rather than landing in a free-text field.",
+      "known_gaps": [
+        "Legacy process records remain accepted through the published legacy alternative until the shared-schema transition completes"
+      ],
+      "detail": [
+        { "path": "schemas/README.md", "tracks": "which contracts exist, which are generated, and how to regenerate them" }
+      ]
+    },
+    {
+      "id": "policies",
+      "name": "Policies",
+      "maturity": "partial",
+      "summary": "The review bar, the coverage maturity ladder, and the agent ground rules. The reviewed tier is defined and required for any coverage claim above demonstration; the committed records sit at the example and demonstration tiers.",
+      "known_gaps": [
+        "No committed record claims the reviewed tier; demonstration is the current ceiling",
+        "Policy clarifications land case by case as ambiguities surface"
+      ],
+      "detail": [
+        { "path": "policies/REVIEW_POLICY.md", "tracks": "the maturity ladder and what each tier requires" },
+        { "path": "policies/AGENT_POLICY.md", "tracks": "what agents may do autonomously and what needs human authorization" }
       ]
     }
   ]
