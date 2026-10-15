@@ -221,10 +221,19 @@ acquired.
 
 ### Example: Getting acquired
 
-The acquisition stories are written down: WhatsApp, Twitch, and MySpace are in
-`open-lore/LORE.md`, each with its lesson and sources. The sale math is live; the
-waterfall module computes who gets what at any price. The acquisition playbook itself is
-a known, open gap.
+The rules are extracted from the essays into the [registry](open-lore/registry.json) and
+the [library](open-lore/library.json), each tied to its source. From Justin Kan's
+[The Founder's Guide to Selling Your Company](https://web.archive.org/web/20181123041114/https://justinkan.com/the-founders-guide-to-selling-your-company-a1b2025c9481):
+an offer is real only when it carries an expiration date or a term sheet promised within
+24-48 hours; once committed to a sale, share diligence data freely under an NDA and refuse
+acquirer interviews of your team; leverage ends at the term sheet, so settle the points and
+a short close (target 30 days) before signing. Where the canon disagrees, both sides are
+linked as a tension: Horowitz's case for the fat startup (in a big market, outspending
+beats running lean) against Ries's lean loop, and Kan's sell-from-strength against Cohen's
+rich-versus-king. The acquisition stories (WhatsApp, Twitch, MySpace) are in
+[`open-lore/LORE.md`](open-lore/LORE.md) with lessons and sources, and the waterfall
+module computes who gets what at any price. The acquisition playbook process is a known,
+open gap.
 
 ## Open law
 
