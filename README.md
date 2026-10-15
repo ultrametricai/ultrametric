@@ -8,8 +8,8 @@ Navigate all business processes, compare and select AI native vendors, inform yo
 
 <pre>
 ultrametric/
-├── <a href="#open-processes">open-processes</a>/     founder processes and situations as routed, timed steps
 ├── <a href="#open-vendor-rankings">open-rankings</a>/      per-market products, stories, evidence, verdicts
+├── <a href="#open-processes">open-processes</a>/     founder processes and situations as routed, timed steps
 ├── <a href="#open-modules">open-modules</a>/       worked guides to each startup calculation
 ├── <a href="#open-startup-simulator">open-startup-sim</a>/   what the simulator runs and assumes
 ├── <a href="#open-law">open-law</a>/           startup legal rules by jurisdiction, the distilled laws
@@ -55,7 +55,7 @@ The [full index of ranked markets](https://ultrametric.ai/arenas) is live, and t
 
 ## Open processes
 
-The founder [processes](open-processes/), step by step. Each step is routed agent, form, or
+The founder [processes](open-processes/) are written step by step. Each step is routed agent, form, or
 human, timed, and marked by how hard it is to undo. The vendors that can run a step are
 listed on it, with their judged scores. See it live at
 [ultrametric.ai/processes](https://ultrametric.ai/processes).
@@ -77,7 +77,7 @@ listed on it, with their judged scores. See it live at
 
 ## Open modules
 
-The standard startup calculations, ready to run: cap table math, SAFE conversion,
+The standard startup calculations are ready to run: cap table math, SAFE conversion,
 dilution, sale waterfalls, runway, vesting, option tax, and filing deadlines. The code
 lives in [`lib/openstartup/`](lib/openstartup/), and you can run and check it. Formulas
 cite their sources and replay the published worked examples in tests.
@@ -140,7 +140,7 @@ Schemas in [`schemas/`](schemas/).
 
 ## Open artifacts
 
-The documents and files that processes produce and consume: the certificate of
+Artifacts are the documents and files that processes produce and consume: the certificate of
 incorporation, the EIN letter, the cap table. Each is registered in
 [`open-artifacts/registry.json`](open-artifacts/registry.json), so the processes declare what
 they make and what they need. The typed data fields those artifacts establish (the EIN, the
@@ -157,8 +157,8 @@ is the guide. See it live at
 
 ### Open docs
 
-The openly published startup legal [documents](open-documents/), grouped by what they
-are for. Each entry links the publisher's live page and carries the date it was last
+The openly published startup legal [documents](open-documents/) are collected and grouped
+by what they are for. Each entry links the publisher's live page and carries the date it was last
 checked. Known gaps are recorded too. See it live at
 [ultrametric.ai/open-documents](https://ultrametric.ai/open-documents).
 
@@ -177,7 +177,7 @@ checked. Known gaps are recorded too. See it live at
 
 ## Open situations
 
-[Unplanned events](open-processes/SITUATIONS.md) routed into the process graph: a breach, a
+[Unplanned events](open-processes/SITUATIONS.md) are routed into the process graph: a breach, a
 summons, a tax notice. Each names what triggers it, how fast you must act (hours, days, or
 weeks), and the steps that run, routed agent, form, or human like any process. See it live
 at [ultrametric.ai/situations](https://ultrametric.ai/situations).
@@ -198,8 +198,8 @@ automatically.
 
 ## Open lore
 
-The [advice](open-lore/) founders actually pass around, and the [stories](open-lore/LORE.md) behind
-it: who said it, where it is written down, and how well documented it is. When the
+Lore is the [advice](open-lore/) founders actually pass around and the [stories](open-lore/LORE.md)
+behind it: who said it, where it is written down, and how well documented it is. When the
 schools disagree, both sides are recorded. The [library](open-lore/library.json) collects the
 best essays, guides, books, and talks, organized from deciding to start through getting
 acquired.
@@ -304,14 +304,6 @@ curl https://ultrametric.ai/llms.txt                # the index for agents
 ```
 
 [ultrametric.ai/get-started](https://ultrametric.ai/get-started) · [docs.ultrametric.ai](https://docs.ultrametric.ai)
-
-## Methodology
-
-Scores are computed from dated, cited evidence. An unknown is shown as unknown, not
-zero. Negative results stay published, a score cannot move without new evidence, and the
-founders' own products are disclosed and checked for bias. The full method is in
-[METHODOLOGY.md](./METHODOLOGY.md); see it live at
-[ultrametric.ai/methodology](https://ultrametric.ai/methodology).
 
 ## License
 
