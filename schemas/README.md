@@ -35,5 +35,5 @@ Contribute here:
 - **A schema for a new record type** — only alongside the contribution path that uses it:
   schema, template, validator wiring, and a first record in one PR.
 
-Gates: `npx vitest run __tests__/corpus-schemas.test.ts` and
-`npx vitest run __tests__/founder-ops.test.ts`.
+Gates: `pnpm test __tests__/corpus-schemas.test.ts` and
+`pnpm test __tests__/founder-ops.test.ts`.
