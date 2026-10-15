@@ -39,10 +39,12 @@ We've looked at all the tools and vendors needed for founders to start and opera
 
 Example rankings:
 
-- [Online payments](https://ultrametric.ai/arena/payments) — payment processors ranked on how well an agent can integrate and operate them
 - [Startup banking](https://ultrametric.ai/arena/startup-banking) — business bank accounts ranked on agent access, from opening the account to moving money
-- [AI coding agents](https://ultrametric.ai/arena/ai-coding) — the tools that write code, ranked on their own agent surfaces
-- [Local LLM runtimes](https://ultrametric.ai/arena/local-llm-runtimes) — software for running models on your own hardware, ranked on APIs and CLI control
+- [Cap table & equity](https://ultrametric.ai/arena/equity-management) — cap table platforms ranked on how well an agent can read and update the cap table
+- [Startup legal & incorporation](https://ultrametric.ai/arena/legal-ops) — formation services ranked on agent access to incorporation, filings, and the documents they produce
+- [Online payments](https://ultrametric.ai/arena/payments) — payment processors ranked on how well an agent can integrate and operate them
+- [Email marketing](https://ultrametric.ai/arena/email-marketing) — campaign platforms ranked on agent control of audiences, sends, and results
+- [CRM](https://ultrametric.ai/arena/crm) — customer systems ranked on what an agent can read, write, and automate
 - [Government services](https://ultrametric.ai/arena/government-services) — the IRS, Companies House, HMRC and other agencies, judged like vendors, compared per country
 
 The [full index of ranked markets](https://ultrametric.ai/arenas) is live, and the data behind each board lives under [`open-rankings/`](open-rankings/).
@@ -291,6 +293,30 @@ generates is visibly marked simulated.
 
 <a id="for-ai-agents"></a>
 <a id="use-it-from-an-agent"></a>
+
+## Stages
+
+Each lifecycle stage cuts across the repo: the processes to run, the vendor markets to
+pick from, the modules that do the math, the artifacts produced, and the lore and law
+behind the decisions. Two stages as examples:
+
+### Stage: Formation
+
+- Process: [Incorporate C-Corp](https://ultrametric.ai/processes/incorporate-c-corp) — filing to signed 83(b)
+- Vendors: [startup legal & incorporation](https://ultrametric.ai/arena/legal-ops) and [startup banking](https://ultrametric.ai/arena/startup-banking)
+- Modules: [cap table](open-modules/README.md#cap-table) and [83(b) election math](open-modules/README.md#83b-election-math)
+- Artifacts: the certificate of incorporation and EIN letter in the [registry](open-artifacts/registry.json), establishing the incorporation-date and EIN [fields](open-artifacts/fields.json)
+- Lore: the [library's](open-lore/library.json) co-founders and founding-decisions readings, distilled in [formation and housekeeping](open-law/LAWS.md#formation-and-housekeeping)
+- Law: the [Delaware incorporation cards](open-law/US-DE/) and the [83(b) filing period](open-law/US-FED/us-fed-83b-filing-period.json)
+
+### Stage: Growth
+
+- Processes: [set up email marketing](https://ultrametric.ai/processes/set-up-email-marketing) and [build an SEO & content engine](https://ultrametric.ai/processes/build-an-seo-content-engine)
+- Vendors: [email marketing](https://ultrametric.ai/arena/email-marketing) and [CRM](https://ultrametric.ai/arena/crm)
+- Module: [runway & burn](open-modules/README.md#runway--burn) — default-alive trajectories as spend scales
+- Artifacts: the marketing email audience and subscription billing in the [registry](open-artifacts/registry.json)
+- Lore: the [library's](open-lore/library.json) growth and distribution readings, distilled in [growth, people and spending](open-law/LAWS.md#growth-people-and-spending)
+- Law: the [CAN-SPAM requirements](open-law/US-FED/us-fed-can-spam-requirements.json) on the sends
 
 ## Install Ultrametric
 
