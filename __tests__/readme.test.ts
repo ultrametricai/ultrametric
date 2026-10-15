@@ -271,22 +271,29 @@ describe('README.md structure (founder round 2, 2026-10-12)', () => {
 })
 
 describe('README.md section-guide tables (founder round 2)', () => {
-  it('Open modules carries the module guide table with a row per mapped module', () => {
+  it('Open modules carries the grouped module tables with a row per mapped module', () => {
     const section = sectionBody('## Open modules')
     // Founder round 8: two columns (sources moved to prose), and "409A sanity" reads "409A".
-    expect(section).toContain('| Module | What it computes |')
+    // Founder catalog order (2026-10-14): the table splits into the committed groups and
+    // gains the machine-owned Serves column (drift-gated in
+    // lib/__tests__/businessLogicServes.test.ts; cells written by
+    // scripts/generate-business-logic-serves.ts).
+    expect(section).toContain('| Module | What it computes | Serves |')
     expect(section).not.toContain('Source it cites')
     expect(section).not.toContain('409A sanity')
     expect(section).toContain('| [409A](open-modules/README.md#409a-grant-sanity)')
     const map = JSON.parse(
       fs.readFileSync(path.join(ROOT, 'open-processes', 'business-logic-map.json'), 'utf8'),
-    ) as { modules: Record<string, { anchor: string }> }
+    ) as { modules: Record<string, { anchor: string; group: string }> }
     const anchors = Object.values(map.modules).map((m) => m.anchor)
     expect(anchors.length).toBeGreaterThan(0)
     for (const anchor of anchors) {
       expect(section, `module table is missing a link to #${anchor}`).toContain(
         `](open-modules/README.md#${anchor})`,
       )
+    }
+    for (const group of new Set(Object.values(map.modules).map((m) => m.group))) {
+      expect(section, `module catalog is missing the group heading ${group}`).toContain(`### ${group}`)
     }
   })
 
