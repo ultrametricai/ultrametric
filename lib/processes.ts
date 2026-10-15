@@ -548,7 +548,7 @@ const DEFAULT_DIR = () => path.join(process.cwd(), 'open-rankings')
 // out of open-rankings/ into the founder-ops tree — open-processes/corpus.json and open-processes/chains.json.
 // `dir` stays the ARENA-DATA dir (it keys the caches and resolves the live markets via
 // loadCategory); the corpus files resolve as siblings of it, so every existing call site
-// (DEFAULT_DIR, tests' DATA_DIR, pipeline/paths.ts DATA_DIR — all `<root>/data`) keeps working
+// (DEFAULT_DIR, tests' DATA_DIR, rankings-engine/paths.ts DATA_DIR — all `<root>/data`) keeps working
 // unchanged. These files are checked projections of the canonical definitions.
 const corpusFile = (dir: string) => path.join(dir, '..', 'open-processes', 'corpus.json')
 const chainsFile = (dir: string) => path.join(dir, '..', 'open-processes', 'chains.json')

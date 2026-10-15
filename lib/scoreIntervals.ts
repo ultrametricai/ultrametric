@@ -4,7 +4,7 @@
 //   Per product, each verdict cell gets a noise distribution built from the MEASURED re-roll
 //   statistics in open-rankings/*/uncertainty.json (the multi-judge uncertainty pass re-judged 650+
 //   decisive cells 2 extra times each against unchanged evidence — see
-//   pipeline/scripts/uncertainty-pass.ts):
+//   rankings-engine/scripts/uncertainty-pass.ts):
 //
 //   - Evidenced full/partial/disputed/none cells resample their verdict tier from the measured
 //     cached-tier → re-roll-tier transition rates (e.g. a cached `full` re-rolled to `partial`

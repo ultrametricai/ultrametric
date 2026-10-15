@@ -12,22 +12,21 @@ ultrametric/
 ├── <a href="#open-vendor-rankings">open-rankings</a>/      per-market products, stories, evidence, verdicts
 ├── <a href="#open-modules">open-modules</a>/       worked guides to each startup calculation
 ├── <a href="#open-startup-simulator">open-startup-sim</a>/   what the simulator runs and assumes
-├── <a href="#open-law">open-law</a>/           startup legal rules by jurisdiction, each cited
+├── <a href="#open-law">open-law</a>/           startup legal rules by jurisdiction
 ├── <a href="#open-lore">open-lore</a>/          founder advice, who said it, the reading library
 ├── <a href="#open-docs">open-documents</a>/     openly published legal documents, by use case
-├── pipeline/           the code that crawls, probes, judges, scores
+├── rankings-engine/    the code that crawls, probes, judges, scores
 ├── lib/                loaders, scoring, and the calculation code
 ├── jurisdictions/      country and state data, vendor availability
-├── citations/          the primary sources the legal rules cite
 ├── coverage/           what is mapped and what is a known gap
 ├── schemas/            the JSON shape each data file validates against
-└── governance/         review rules and what agents may do here
+└── policies/           how records are reviewed and what agents may do here
 </pre>
 
 <!-- Legacy anchor: external links to #start-here predate the merge into this map. -->
 <a id="start-here"></a>
 
-Supported founders globally: 🌐 🇺🇸 🇬🇧 🇮🇳 🇩🇪 🇫🇷 🇵🇹 🇨🇦
+Supporting founders globally: 🌐 🇺🇸 🇬🇧 🇮🇳 🇩🇪 🇫🇷 🇵🇹 🇨🇦
 
 [![A tour of ultrametric.ai at 4x: the simulator founding a company, a process page, a vendor page, a situation, the overall rankings, government services, and open documents](assets/readme/demo.gif)](https://ultrametric.ai)
 
@@ -35,12 +34,10 @@ Supported founders globally: 🌐 🇺🇸 🇬🇧 🇮🇳 🇩🇪 🇫🇷 �
 
 ## Open vendor rankings
 
-The tools startups run on, examined through an agentic lens: can an agent actually drive
-each one, is it testable, and do the vendor's claims match what we found hands-on. The
-rankings order products by how automatable they are, and any verdict can be contested.
+We've looked at all the tools and vendors needed for founders to start and operate their company. Vendors are then ranked in terms of how easy it is for your AI to access and control them. From business banking, to payroll, to gov services for filing tax or your trademark. We want to know what claims match reality and who is the most AI native when it comes to their APIs, CLIs, MCPs and computer use surface area.
 
 <!-- arenas:start -->
-**96 rankings** today, 670 products judged head to head — the full index is [ultrametric.ai/arenas](https://ultrametric.ai/arenas), and each ranking's data lives under [`open-rankings/`](open-rankings/).
+**96 rankings** today, 672 products judged head to head — the full index is [ultrametric.ai/arenas](https://ultrametric.ai/arenas), and each ranking's data lives under [`open-rankings/`](open-rankings/).
 <!-- arenas:end -->
 
 [![The overall rankings on ultrametric.ai: companies ranked by agent readiness, scored on agent access and built-in AI](assets/readme/rankings-overall.png)](https://ultrametric.ai/overall)
@@ -200,7 +197,7 @@ a known, open gap.
 
 Map the [law](open-law/) that applies to startups, across jurisdictions, and connect it to
 the calculations and the vendors that act on it. Each legal statement is one dated rule card
-citing a primary [authority](citations/) (a statute, regulation, or agency page) with the
+citing a primary [authority](open-law/citations/) (a statute, regulation, or agency page) with the
 exact section. A blog post cannot establish law. The [domain map](open-law/README.md#the-map)
 grades each area of US startup law as mapped, partial, or unmapped.
 

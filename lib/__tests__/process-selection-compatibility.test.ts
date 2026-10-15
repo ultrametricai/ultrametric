@@ -75,7 +75,11 @@ describe('existing judged selection compatibility', () => {
     // Re-pinned at the radar bring-up with definition-checked placement (2026-10-13): zcode and
     // omnirush-gui join ai-coding and edge0 joins local-llm-runtimes, so the newly judged
     // products join the candidate lists of the steps mapped to those arenas.
-    expect(positiveCount).toBe(2520)
+    // Re-pinned at the 2026-10-14 radar bring-up: logo-design-skill joins agent-skills, so the
+    // newly judged product joins the candidate lists of the steps mapped to that arena.
+    // Re-pinned at the AngelList bring-up (2026-10-14): angellist joins equity-management, so
+    // the newly judged product joins the candidate lists of the steps mapped to that arena.
+    expect(positiveCount).toBe(2543)
     expect(zeroCount).toBe(137)
     expect(extraArena).toBe(93)
   })

@@ -5,7 +5,7 @@ These bind every agent and contributor working in this repo.
 ## Evidence doctrine
 
 - Never hand-tune a verdict, score, rank, or leaderboard position. Every ranked number is
-  computed from judged evidence by the pipeline — change the inputs or the code, never the
+  computed from judged evidence by the rankings engine — change the inputs or the code, never the
   output. Honest negatives stay published.
 - Every claim cites its evidence (vendor docs, GitHub, community sources, or a recorded
   probe). No citable evidence → no claim. Never fabricate a URL; if a source is bot-walled,
@@ -65,8 +65,8 @@ need it.
 ## What this repo is
 
 Ultrametric is the open startup repo: step-by-step founder processes (`open-processes/`),
-agent-tested vendor rankings (`open-rankings/`, `pipeline/`), and open, source-cited
-business logic (`lib/openstartup/`, `open-law/`, `citations/`). The knowledge layer (plain JSON
+agent-tested vendor rankings (`open-rankings/`, `rankings-engine/`), and open, source-cited
+business logic (`lib/openstartup/`, `open-law/`). The knowledge layer (plain JSON
 and markdown, schema-validated in CI) is the product. The site that renders it at
 ultrametric.ai is maintained in a private repo, which materializes this repo's open
 surface at a pinned commit via `scripts/sync-open.mjs` and `open-manifest.json`; UI and
@@ -87,7 +87,7 @@ Every data file (`categories.json`, `products.json`, `stories.json`, `evidence/*
 schema (`lib/schemas.ts`, `schemas/*.schema.json`). If a fact does not fit the schema,
 change the schema deliberately in its own commit; do not stuff it into a free-text
 field. Run `pnpm test` before opening any PR that touches `open-rankings/`, `open-processes/`,
-`open-law/`, `citations/`, or `jurisdictions/`.
+`open-law/`, `open-lore/`, or `jurisdictions/`.
 
 ## Generated files: do not hand-edit
 
@@ -95,19 +95,19 @@ The evidence doctrine in the house rules is the principle; these are the mechani
 traps:
 
 - `open-rankings/<arena>/rankings.json` is derived. Change verdicts or evidence, then run
-  `pnpm run pipeline derive --category <id>`.
+  `pnpm engine derive --category <id>`.
 - The README blocks between `<!-- stats:start -->` / `<!-- arenas:start -->` style
   markers, and the badge SVGs in `public/badges/`, come from `pnpm stats` and
   `node scripts/generate-badges.mjs`. Edit around the markers, never inside them.
 - `open-rankings/reviews/generated/` regenerates deterministically from the arena data.
 
-## The pipeline
+## The rankings engine
 
-`pnpm run pipeline <stage> --category <id> [--product <id>]` runs the stages
+`pnpm engine <stage> --category <id> [--product <id>]` runs the stages
 (crawl, extract, normalize, collect-community, probe, judge, derive, logos,
-popularity). The `run` is required: pnpm 12 ships a built-in `pipeline` command
-that shadows the script in shorthand form. The LLM stages (`extract`, `normalize`, `collect-community`, `judge`)
-need `ANTHROPIC_API_KEY` in a local `.env`. That key is local-pipeline-only: it must
+popularity). `pnpm run pipeline` remains as a deprecated alias for the same entry
+point during the transition. The LLM stages (`extract`, `normalize`, `collect-community`, `judge`)
+need `ANTHROPIC_API_KEY` in a local `.env`. That key is local-engine-only: it must
 never be set on the Vercel project, and the deployed site never calls the Anthropic
 API. Verdicts are cache-keyed on their evidence, so re-judging without new evidence
 reproduces the same verdicts; scope runs with `--product` where possible. After a contributed
@@ -129,8 +129,8 @@ category re-run (see CONTRIBUTING.md).
   transfers. Formulas cite their sources, and worked examples are replayed
   number-for-number in tests.
 - Behavioral rules for agents consuming this data (what you may do autonomously vs.
-  what needs human authorization) are in `governance/AGENT_POLICY.md`; maturity and
-  evidence rules are in `governance/REVIEW_POLICY.md`. Follow both.
+  what needs human authorization) are in `policies/AGENT_POLICY.md`; maturity and
+  evidence rules are in `policies/REVIEW_POLICY.md`. Follow both.
 
 ## Secrets
 

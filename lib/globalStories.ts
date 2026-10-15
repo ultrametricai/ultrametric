@@ -1,5 +1,5 @@
 // Cross-arena view over `scope: 'global'` stories (see lib/schemas.ts's StorySchema and
-// pipeline/scripts/tag-story-scopes.ts): a global story id that appears in TWO OR MORE arenas
+// rankings-engine/scripts/tag-story-scopes.ts): a global story id that appears in TWO OR MORE arenas
 // is comparable across the whole site — "who supports 2FA / an official CLI / webhooks across
 // all software we rank" — and gets its own /global/[story] page (app/global/[story]/page.tsx).
 // The 29 canonical lens ids qualify by construction (injected into every arena); a non-canonical

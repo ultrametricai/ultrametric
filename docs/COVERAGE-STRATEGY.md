@@ -113,7 +113,7 @@ classic battles with huge comparison-search demand (Slack vs Teams, Datadog vs G
 `open-rankings/arena-roadmap.json` — 184 entries: 11 live (mirroring `open-rankings/categories.json`) + 173 planned
 (tier 1: 30, tier 2: 62, tier 3: 81). Each entry: `{id, name, tier, status, g2Equivalent,
 candidateProducts, rationale, aiEraAngle}`. Candidate products are seeds for the arena-builder,
-not final rosters — the seeding stage verifies each product's URLs before it enters the pipeline.
+not final rosters — the seeding stage verifies each product's URLs before it enters the engine.
 Because `scripts/copy-data.mjs` mirrors `open-rankings/` into `public/data/`, the roadmap is automatically
 served at `/data/arena-roadmap.json` for agents to consume.
 
@@ -122,7 +122,7 @@ served at `/data/arena-roadmap.json` for agents to consume.
 ### Existing: story-runner (refresh)
 
 `.github/workflows/story-runner.yml` runs every 6 hours, picks the next **live** ranking by
-`run_number % categories.length`, re-runs the full pipeline (crawl → extract → normalize →
+`run_number % categories.length`, re-runs the full engine pass (crawl → extract → normalize →
 collect-community → probe → judge → claims → popularity → derive), and opens a PR only if data
 changed. The judge's `cellHash` cache (story + evidence + prompt version) means unchanged
 evidence triggers zero LLM calls: a quiet ranking refresh re-judges nothing.
@@ -137,13 +137,13 @@ A second scheduled workflow, `arena-builder.yml`, that converts roadmap entries 
 2. **Seed** — one LLM pass drafts the `categories.json` entry (description, personas, themes —
    themes must include the shared canon: `agenticness`, `openness`, `automation-depth`,
    privacy/security) and `products.json` from `candidateProducts` (official URL, docs URL, repo
-   URL). Every URL is then **fetch-verified** (reusing `pipeline/fetch-page.ts`); products whose
+   URL). Every URL is then **fetch-verified** (reusing `rankings-engine/fetch-page.ts`); products whose
    URLs don't resolve are dropped, and the run fails if fewer than 4 survive. A second pass
    drafts ~70-90 stories following the story shape and group conventions
    (`agent-access` / `agentic-features` / `api-quality` groups under `agenticness`) used by the
    11 live rankings as few-shot examples.
-3. **Run** — the same nine pipeline stages story-runner uses, via `pipeline/cli.ts`.
-4. **Gate** — `pnpm test` + `pipeline/scripts/recompute-check.ts` must pass; the PR body includes
+3. **Run** — the same nine engine stages story-runner uses, via `rankings-engine/cli.ts`.
+4. **Gate** — `pnpm test` + `rankings-engine/scripts/recompute-check.ts` must pass; the PR body includes
    the leaderboard and flags low-evidence cells.
 5. **PR** — branch `arena-builder/<id>`; the PR adds the ranking to `open-rankings/categories.json`, adds
    `open-rankings/<id>/`, and flips the roadmap entry to `status: "live"`. **Never a direct push** — a

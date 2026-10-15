@@ -3,7 +3,7 @@ import path from 'node:path'
 import { z } from 'zod'
 
 // Replayable probe recordings ("proofs") — transcripts/videos captured by the probe-record
-// pipeline stage (pipeline/stages/probe-record.ts) so a verdict's probe-tier evidence comes
+// pipeline stage (rankings-engine/stages/probe-record.ts) so a verdict's probe-tier evidence comes
 // with something a human can watch, not just a citation.
 //
 // Proof metadata deliberately lives HERE, in sidecar JSON files + a per-category index, and

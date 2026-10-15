@@ -10,7 +10,7 @@ import type { VendorGeoLookup } from './geoPreference'
 // accounting — each grounded in the vendor's OWN pages (help center, docs, availability
 // tables), crawl-verified live, honest negatives recorded (Mercury/Brex/Ramp/Gusto really are
 // US-entity-only; Square really has no Germany or India). See
-// pipeline/scripts/build-vendor-geo.py for the crawl method and per-source notes (a couple of
+// rankings-engine/scripts/build-vendor-geo.py for the crawl method and per-source notes (a couple of
 // Zendesk help centers serve 403 to non-browser clients; their content was verified through
 // the same host's public help-center JSON API).
 //

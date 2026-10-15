@@ -171,7 +171,7 @@ nothing.
    artifacts establish; `runway.ts`, `deadlines.ts`, and `grant409aSanity.ts` then compute
    from the company state with zero new math.
 
-All of it stays propose/display-only under `governance/AGENT_POLICY.md`: the model orders
+All of it stays propose/display-only under `policies/AGENT_POLICY.md`: the model orders
 and checks work; it authorizes nothing.
 
 ## Per-artifact record files — split assessment (founder ask 2026-10-08)

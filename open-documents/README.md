@@ -57,20 +57,22 @@ Documents implement laws and pair with guides already cataloged elsewhere — ci
 duplicate rows:
 
 - `irs-form-15620` implements the 83(b) election — rule cards `us-fed-83b-filing-period`,
-  `us-fed-83b-form-and-copies`, `us-fed-83b-revocation` (open-law/US-FED); also a citations row
-  (`irs-form-15620` there points at the same form).
+  `us-fed-83b-form-and-copies`, `us-fed-83b-revocation` (open-law/US-FED); also a reading
+  row in open-lore/citations.json (`irs-form-15620` there points at the same form).
 - Advisor/option grants (`cooley-advisor-agreement`, `fi-fast-advisor`) sit under the 409A
   rule cards (open-law/US-FED) and Delaware option-authorization card (open-law/US-DE).
-- Equity-compensation context: the Holloway Guide and Index Rewarding Talent are reading citations
-  (`holloway-equity-guide`, `index-rewarding-talent`), not duplicated here.
+- Equity-compensation context: the Holloway Guide and Index Rewarding Talent are reading
+  records (`holloway-equity-compensation` in open-lore/library.json,
+  `index-rewarding-talent` in open-lore/citations.json), not duplicated here.
 - The SAFE cap-table arithmetic in `yc-safe-user-guide` is implemented in
   `lib/openstartup/capTable.ts` and replayed in its tests.
 - `eu-scc-international-transfers` and `uk-idta-addendum` are the GDPR Art. 46 / UK GDPR
   transfer mechanisms that the DPAs here (`commonpaper-dpa`, `bonterms-dpa`, `onedpa`)
   incorporate by reference.
-- Resource-registry umbrella rows (`yc-documents`, `cooleygo-documents`, `nvca-model-docs`,
-  `commonpaper-standards`, `bonterms-forms`, `onenda`, `saft-project` in citations/) point at
-  the same publishers; this registry enumerates the individual documents.
+- Resource-registry umbrella rows (`yc-safe-documents` in open-lore/library.json;
+  `cooleygo-documents`, `nvca-model-docs`, `commonpaper-standards`, `bonterms-forms`,
+  `onenda`, `saft-project` in open-lore/citations.json) point at the same publishers;
+  this registry enumerates the individual documents.
 - "Raise on standard documents; negotiate the numbers, not the boilerplate" — law 21 in
   open-law/LAWS.md — is the doctrine behind the fundraising table.
 

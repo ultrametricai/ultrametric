@@ -29,6 +29,9 @@ const contributing = fs.readFileSync(path.join(ROOT, 'CONTRIBUTING.md'), 'utf8')
 // ("episodes" banned; "records" and "every X" rewritten in plain alternatives) reaches
 // into the motto and the layout tree, and the supported-countries line sits directly
 // above the demo gif (globe first, then the geo switcher's country set, US first).
+// Fold (2026-10-14): citations/ dissolved into open-law/ and open-lore/, so its tree
+// line is gone, and governance/ was renamed policies/ (the founder-specified last line,
+// keeping the └── connector).
 const INTRO = [
   '![Ultrametric](assets/banner.svg)',
   '',
@@ -44,22 +47,21 @@ const INTRO = [
   '├── <a href="#open-vendor-rankings">open-rankings</a>/      per-market products, stories, evidence, verdicts',
   '├── <a href="#open-modules">open-modules</a>/       worked guides to each startup calculation',
   '├── <a href="#open-startup-simulator">open-startup-sim</a>/   what the simulator runs and assumes',
-  '├── <a href="#open-law">open-law</a>/           startup legal rules by jurisdiction, each cited',
+  '├── <a href="#open-law">open-law</a>/           startup legal rules by jurisdiction',
   '├── <a href="#open-lore">open-lore</a>/          founder advice, who said it, the reading library',
   '├── <a href="#open-docs">open-documents</a>/     openly published legal documents, by use case',
-  '├── pipeline/           the code that crawls, probes, judges, scores',
+  '├── rankings-engine/    the code that crawls, probes, judges, scores',
   '├── lib/                loaders, scoring, and the calculation code',
   '├── jurisdictions/      country and state data, vendor availability',
-  '├── citations/          the primary sources the legal rules cite',
   '├── coverage/           what is mapped and what is a known gap',
   '├── schemas/            the JSON shape each data file validates against',
-  '└── governance/         review rules and what agents may do here',
+  '└── policies/           how records are reviewed and what agents may do here',
   '</pre>',
   '',
   '<!-- Legacy anchor: external links to #start-here predate the merge into this map. -->',
   '<a id="start-here"></a>',
   '',
-  'Supported founders globally: 🌐 🇺🇸 🇬🇧 🇮🇳 🇩🇪 🇫🇷 🇵🇹 🇨🇦',
+  'Supporting founders globally: 🌐 🇺🇸 🇬🇧 🇮🇳 🇩🇪 🇫🇷 🇵🇹 🇨🇦',
   '',
   '[![A tour of ultrametric.ai at 4x: the simulator founding a company, a process page, a vendor page, a situation, the overall rankings, government services, and open documents](assets/readme/demo.gif)](https://ultrametric.ai)',
 ].join('\n')
@@ -173,11 +175,11 @@ describe('README.md structure (founder round 2, 2026-10-12)', () => {
     const rows = [...tree.matchAll(/^[├└]── (?:<a href="#([a-z-]+)">)?([a-z][a-z-]*)(?:<\/a>)?\/ +\S/gm)].map(
       (m) => ({ anchor: m[1] ?? null, dir: m[2] }),
     )
-    // The founder-specified order: the open catalogs people come for first, governance last.
+    // The founder-specified order: the open catalogs people come for first, policies last.
     expect(rows.map((r) => r.dir)).toEqual([
       'open-processes', 'open-rankings', 'open-modules', 'open-startup-sim',
       'open-law', 'open-lore', 'open-documents',
-      'pipeline', 'lib', 'jurisdictions', 'citations', 'coverage', 'schemas', 'governance',
+      'rankings-engine', 'lib', 'jurisdictions', 'coverage', 'schemas', 'policies',
     ])
     // Every README anchor a heading or explicit <a id> establishes (GitHub slug form).
     const slug = (h: string) => h.toLowerCase().replace(/[^a-z0-9 -]/g, '').trim().replace(/ /g, '-')
@@ -202,7 +204,7 @@ describe('README.md structure (founder round 2, 2026-10-12)', () => {
   it('the supported-countries line sits directly above the demo gif and matches the geo switcher', () => {
     // Founder visual+language batch (2026-10-14): globe first, then the full GEO_COUNTRIES
     // set in switcher order (US first). The line is plain prose, no heading.
-    const line = `Supported founders globally: 🌐 ${GEO_COUNTRIES.map((c) => GEO_PREF_META[c].flag).join(' ')}`
+    const line = `Supporting founders globally: 🌐 ${GEO_COUNTRIES.map((c) => GEO_PREF_META[c].flag).join(' ')}`
     expect(readme).toContain(`\n${line}\n\n[![A tour of ultrametric.ai`)
   })
 
@@ -249,8 +251,10 @@ describe('README.md structure (founder round 2, 2026-10-12)', () => {
   it('avoids "record(s)" and "every X" constructions (founder sweep, 2026-10-14)', () => {
     // Soft sweep: plain alternatives ("the processes", "any verdict", "each data file")
     // replaced them throughout; no exception survived, so the allowed list is empty.
+    // The intro is byte-pinned above (its founder-specified policies/ tree line carries
+    // "records"), so the sweep scans everything after it.
     const allowed: string[] = []
-    const hits = [...readme.matchAll(/\b(records?|every)\b/gi)]
+    const hits = [...readme.replace(INTRO, '').matchAll(/\b(records?|every)\b/gi)]
       .map((m) => m[0])
       .filter((w) => !allowed.includes(w))
     expect(hits, `README uses swept vocabulary: ${hits.join(', ')}`).toEqual([])

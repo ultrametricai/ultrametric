@@ -10,6 +10,12 @@ import { describe, expect, it } from 'vitest'
 // resolving (read-only) against open-processes/corpus.json. Deterministic; URL liveness is
 // editorial (open-lore/README.md) and is verified at authoring time, not here. Registry <->
 // library cross-link symmetry is asserted in lore-registry.test.ts.
+//
+// Unpublished or withdrawn works (schema extension, 2026-10-14): an entry may carry
+// availability: "not-public" instead of a url. Such an entry omits `url` (there is no citable
+// https home) and may omit `format` (no published form to cite); `note` is required and must
+// state that the work is not publicly available, with the evidence found at recording time.
+// Every other entry carries `url` and `format` as before.
 
 const ROOT = path.join(__dirname, '..')
 
@@ -28,12 +34,13 @@ type LibraryEntry = {
   title: string
   author: string
   year?: number
-  format: (typeof FORMATS)[number]
-  url: string
+  format?: (typeof FORMATS)[number]
+  url?: string
   teaches: string
   loreIds: string[]
   processIds: string[]
   note?: string
+  availability?: 'not-public'
 }
 type Library = { sections: LibrarySection[]; entries: LibraryEntry[] }
 
@@ -104,8 +111,8 @@ describe('lore library (open-lore/library.json)', () => {
   })
 
   it('every entry carries the total schema, nothing more, nothing missing', () => {
-    const REQUIRED = ['id', 'section', 'title', 'author', 'format', 'url', 'teaches', 'loreIds', 'processIds']
-    const OPTIONAL = ['year', 'note']
+    const REQUIRED = ['id', 'section', 'title', 'author', 'teaches', 'loreIds', 'processIds']
+    const OPTIONAL = ['year', 'note', 'format', 'url', 'availability']
     for (const e of library.entries) {
       const keys = Object.keys(e)
       const extra = keys.filter((k) => !REQUIRED.includes(k) && !OPTIONAL.includes(k))
@@ -113,9 +120,15 @@ describe('lore library (open-lore/library.json)', () => {
       for (const k of REQUIRED) {
         expect(keys.includes(k), `entry ${e.id} missing ${k}`).toBe(true)
       }
-      for (const k of ['id', 'section', 'title', 'author', 'url', 'teaches'] as const) {
+      for (const k of ['id', 'section', 'title', 'author', 'teaches'] as const) {
         expect(typeof e[k], `entry ${e.id} ${k}`).toBe('string')
         expect(e[k].length, `entry ${e.id} ${k} non-empty`).toBeGreaterThan(0)
+      }
+      if (e.availability === undefined) {
+        // Published works: url and format are required.
+        expect(typeof e.url, `entry ${e.id} url`).toBe('string')
+        expect(e.url!.length, `entry ${e.id} url non-empty`).toBeGreaterThan(0)
+        expect(keys.includes('format'), `entry ${e.id} missing format`).toBe(true)
       }
       if (e.year !== undefined) {
         expect(Number.isInteger(e.year), `entry ${e.id} year integer`).toBe(true)
@@ -126,9 +139,24 @@ describe('lore library (open-lore/library.json)', () => {
         expect(typeof e.note, `entry ${e.id} note`).toBe('string')
         expect(e.note.length, `entry ${e.id} note non-empty`).toBeGreaterThan(0)
       }
-      expect(FORMATS.includes(e.format), `entry ${e.id} format ${e.format}`).toBe(true)
+      if (e.format !== undefined) {
+        expect(FORMATS.includes(e.format), `entry ${e.id} format ${e.format}`).toBe(true)
+      }
       expect(Array.isArray(e.loreIds), `entry ${e.id} loreIds array`).toBe(true)
       expect(Array.isArray(e.processIds), `entry ${e.id} processIds array`).toBe(true)
+    }
+  })
+
+  it('a not-public entry omits url and carries a note stating the availability', () => {
+    for (const e of library.entries) {
+      if (e.availability === undefined) continue
+      expect(e.availability, `entry ${e.id} availability value`).toBe('not-public')
+      expect(e.url, `entry ${e.id} url must be absent when not-public`).toBeUndefined()
+      expect(typeof e.note, `entry ${e.id} note required when not-public`).toBe('string')
+      expect(
+        /not publicly available/i.test(e.note ?? ''),
+        `entry ${e.id} note must state the work is not publicly available`,
+      ).toBe(true)
     }
   })
 
@@ -141,9 +169,10 @@ describe('lore library (open-lore/library.json)', () => {
     }
   })
 
-  it('every URL is https and unique', () => {
+  it('every URL is https and unique (not-public entries carry none)', () => {
     const seen = new Set<string>()
     for (const e of library.entries) {
+      if (e.url === undefined) continue
       expect(e.url, `entry ${e.id} url`).toMatch(/^https:\/\/\S+$/)
       expect(seen.has(e.url), `duplicate url ${e.url}`).toBe(false)
       seen.add(e.url)

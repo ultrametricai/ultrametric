@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-// sync-open.mjs — the repo-split overlay (docs/REPO-SPLIT-PLAN.md, section 2).
+// sync-open.mjs — the repo-split overlay (docs/REPO-SPLIT-PLAN.md).
 //
 // Two modes:
 //

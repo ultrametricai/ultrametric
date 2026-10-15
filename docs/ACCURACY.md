@@ -9,17 +9,17 @@ the source of truth.
 
 | Loop | Schedule (UTC) | Keys | What it does | What it catches |
 |------|----------------|------|--------------|-----------------|
-| **story-runner** (`.github/workflows/story-runner.yml`) | every 6h at :17 | `ANTHROPIC_API_KEY` | Full pipeline (crawl → extract → collect-community → probe → judge → claims → popularity → derive) for ONE ranking per run, plus score intervals, predictions, and the keyless SLO check. Ranking pick: **worst-stale first** from `open-rankings/staleness-report.json` when one stands (one ranking per 6h slot since the report's `generatedAt`), falling back to run-number rotation. | Stale evidence, changed vendor docs, verdicts due a re-judge — the only loop that can move a score. |
+| **story-runner** (`.github/workflows/story-runner.yml`) | every 6h at :17 | `ANTHROPIC_API_KEY` | Full engine pass (crawl → extract → collect-community → probe → judge → claims → popularity → derive) for ONE ranking per run, plus score intervals, predictions, and the keyless SLO check. Ranking pick: **worst-stale first** from `open-rankings/staleness-report.json` when one stands (one ranking per 6h slot since the report's `generatedAt`), falling back to run-number rotation. | Stale evidence, changed vendor docs, verdicts due a re-judge — the only loop that can move a score. |
 | **daily-snapshot** (`daily-snapshot.yml`) | daily 05:43 | none | Fleet-wide keyless SLO check + popularity refresh. | Agent-surface outages (llms.txt / remote MCP / openapi down), momentum drift. |
 | **cert-sweep** (`cert-sweep.yml`) | Mondays 07:29 | none | Re-verifies every standing certification (45-day renew window) + certifies the top 15 queued candidates (`cert-candidates.ts`). | Certified surfaces that regressed; products that newly qualify. |
-| **accuracy-engine** (`accuracy-engine.yml`) | Wednesdays 06:41 | none | Fleet staleness scan (`pipeline/scripts/staleness-scan.ts`), commits `open-rankings/staleness-report.json`, opens the ranked **work-queue issue** (label `story-runner`). | Everything below — the detector for what story-runner's keyed runs should chew through next. |
+| **accuracy-engine** (`accuracy-engine.yml`) | Wednesdays 06:41 | none | Fleet staleness scan (`rankings-engine/scripts/staleness-scan.ts`), commits `open-rankings/staleness-report.json`, opens the ranked **work-queue issue** (label `story-runner`). | Everything below — the detector for what story-runner's keyed runs should chew through next. |
 
 Plus the event-driven lane: **contest-check** (issue-labeled `contest`) re-judges a contested
 cell with the contester's evidence added, and **ci.yml** gates every PR on
 `pnpm test` + `pnpm build` + `recompute-check.ts` (scores must be a deterministic function of
 committed data — always).
 
-## The staleness scan (`pipeline/scripts/staleness-scan.ts`)
+## The staleness scan (`rankings-engine/scripts/staleness-scan.ts`)
 
 Keyless by design — it detects and ranks, it never re-judges. Per product it scores:
 
@@ -42,7 +42,7 @@ Keyless by design — it detects and ranks, it never re-judges. Per product it s
 
 Output: `open-rankings/staleness-report.json` — products and rankings ranked worst-first, plus
 `arenasRanked` (what story-runner's pick step consumes) — and the work-queue issue body.
-Run it yourself: `pnpm tsx pipeline/scripts/staleness-scan.ts [--offline] [--category <id>]`.
+Run it yourself: `pnpm tsx rankings-engine/scripts/staleness-scan.ts [--offline] [--category <id>]`.
 
 ## Honesty rules in the UI
 
@@ -83,7 +83,7 @@ score built entirely from zero-evidence none/na cells renders italic *untested*,
 
 1. **story-runner PRs** — every refresh lands as a PR. Apply the re-judge stability policy
    before merging: a verdict flip citing NO evidence id new to the pack is re-roll noise —
-   revert it (`pipeline/scripts/revert-churn.ts` pattern, METHODOLOGY.md). Exception: a
+   revert it (`rankings-engine/scripts/revert-churn.ts` pattern, METHODOLOGY.md). Exception: a
    labeled judge-model migration wave (e.g. 2026-09-30, sonnet-5 → opus-5-5) is exempt — under
    a judge change every flip cites no new evidence by construction, so the wave is labeled in
    score-history/docs instead of reverted (README §7). Post-migration baselines: compare flips
@@ -103,4 +103,4 @@ score built entirely from zero-evidence none/na cells renders italic *untested*,
 - Keyless loops never touch verdicts. Only the keyed judge (story-runner, contest-check) can.
 - Every score recomputes deterministically from committed data (`recompute-check.ts`, CI-gated).
 - Display honesty layers (⚿, *untested*) are derived at render time from the same committed
-  evidence — no new stored state, nothing for the pipeline to keep in sync.
+  evidence — no new stored state, nothing for the engine to keep in sync.

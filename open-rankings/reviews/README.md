@@ -7,19 +7,19 @@ The evidence itself lives one directory up in `open-rankings/<arena>/`: each pro
 through an agentic lens (can an agent drive it, is it testable, do its claims match what
 hands-on checks found) and ranked by how automatable it is, with dated evidence packs,
 judged verdicts citing evidence ids, and rankings that recompute deterministically with a
-tamper-evident fingerprint (`pipeline/scripts/recompute-check.ts`). Owner-affiliated
+tamper-evident fingerprint (`rankings-engine/scripts/recompute-check.ts`). Owner-affiliated
 products (Foreloop, AFK, Ultrametric) are disclosed on every surface and bias-audited;
-favorable flips without new evidence are reverted (`governance/REVIEW_POLICY.md`). Live
+favorable flips without new evidence are reverted (`policies/REVIEW_POLICY.md`). Live
 views: every ranking at [ultrametric.ai/arenas](https://ultrametric.ai/arenas), the
 cross-market view at [ultrametric.ai/overall](https://ultrametric.ai/overall).
 
 - **`generated/`** — one record per judged product
   (`schemas/vendor-review.schema.json`), emitted deterministically from the committed
-  ranking data by `pipeline/scripts/generate-vendor-reviews.ts`: dated evidence URIs,
+  ranking data by `rankings-engine/scripts/generate-vendor-reviews.ts`: dated evidence URIs,
   region availability from `jurisdictions/vendor-geo.json` (negatives included), pricing
   facts, ranking dimensions, and affiliation disclosures. Never hand-edit these; fix the
   underlying data and re-run the generator. Gate:
-  `npx vitest run pipeline/__tests__/vendorReviews.test.ts` (byte-identical regeneration).
+  `npx vitest run rankings-engine/__tests__/vendorReviews.test.ts` (byte-identical regeneration).
 - **This directory** — hands-on human reviews in the same schema (`_blank-example.json` is the
   template in use). Rubric: functional fit, local legal coverage, security and privacy,
   API/export quality, implementation burden, support, total cost, lock-in and portability,
@@ -34,5 +34,5 @@ Contribute here:
   fill the rubric, disclose every affiliation. Gate:
   `npx vitest run __tests__/founder-ops.test.ts`.
 - **Evidence for a judged product** — new doc pages, changelogs, or community sources
-  belong in `open-rankings/<arena>/` via the pipeline (see CONTRIBUTING.md); only the cells whose
+  belong in `open-rankings/<arena>/` via the engine (see CONTRIBUTING.md); only the cells whose
   evidence changed are re-judged.

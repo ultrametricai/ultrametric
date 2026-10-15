@@ -1,13 +1,16 @@
 import fs from 'node:fs'
 import path from 'node:path'
 import { describe, expect, it } from 'vitest'
+import { z } from 'zod'
 import { CompanyFieldsRegistrySchema } from '@/lib/companyFields'
 import { shape } from '@/lib/founderOps'
 import { ArtifactRegistrySchema, VendorRegistrySchema } from '@/lib/processes'
+import { processDefinitionSchema } from '@/lib/shared-processes/catalog'
 import {
   ARTIFACT_REGISTRY_SCHEMA_FILE, artifactRegistrySchemaJson,
   COMPANY_FIELDS_SCHEMA_FILE, companyFieldsSchemaJson,
   OPERATIONAL_PROCESS_SCHEMA_FILE, operationalProcessSchemaJson,
+  PROCESS_SCHEMA_FILE, processSchemaJson, LEGACY_PROCESS_SCHEMA_FILE,
   VENDOR_REGISTRY_SCHEMA_FILE, vendorRegistrySchemaJson,
 } from '../scripts/generate-corpus-schemas'
 
@@ -22,6 +25,92 @@ import {
 //      the data we ship, not just of the code.
 
 const ROOT = path.resolve(__dirname, '..')
+
+describe('canonical process schema publication', () => {
+  const committed = fs.readFileSync(PROCESS_SCHEMA_FILE, 'utf8')
+  const schema = JSON.parse(committed)
+  const published = z.fromJSONSchema(schema)
+  const logo = () => JSON.parse(fs.readFileSync(path.join(ROOT, 'open-processes/generate-a-brand-logo.json'), 'utf8'))
+
+  it('publishes the canonical validator without drift or omitted fields', () => {
+    expect(processSchemaJson()).toBe(committed)
+    const { $schema, $defs, ...canonical } = z.toJSONSchema(processDefinitionSchema)
+    expect(schema.$schema).toBe($schema)
+    expect(schema.$id).toBe('https://raw.githubusercontent.com/ultrametricai/ultrametric/main/schemas/process.schema.json')
+    expect(schema.oneOf).toEqual([{ $ref: '#/$defs/canonical' }, { $ref: '#/$defs/legacy' }])
+    expect(schema.$defs.canonical).toEqual(canonical)
+    for (const [name, definition] of Object.entries($defs ?? {})) expect(schema.$defs[name]).toEqual(definition)
+    for (const variant of schema.$defs.canonical.anyOf) {
+      expect(variant.required).toContain('entrySteps')
+      expect(variant.properties.schemaVersion.const).toBe(1)
+    }
+  })
+
+  it('preserves the complete canonical logo, including choices, edges, outputs and classifications', () => {
+    const record = logo()
+    expect(published.parse(record)).toEqual(processDefinitionSchema.parse(record))
+    expect(published.parse(record)).toEqual(record)
+    expect(record.metadata.produces).toEqual(['brand-logo'])
+    expect(record.parts.find((part: { id: string }) => part.id === 'n2').metadata.producesArtifact).toBe('brand-logo')
+    expect(record.parts[0].metadata).toEqual({ route: 'agent', reversibility: 'reversible' })
+  })
+
+  it('provides a canonical-only reference with its recursive definitions intact', () => {
+    const canonical = z.fromJSONSchema({ $schema: schema.$schema, $defs: schema.$defs, $ref: '#/$defs/canonical' })
+    expect(canonical.parse(logo())).toEqual(logo())
+    const legacy = JSON.parse(fs.readFileSync(path.join(ROOT, 'open-processes/equity/us-de/409a-valuation.json'), 'utf8'))
+    expect(canonical.safeParse(legacy).success).toBe(false)
+  })
+
+  it('publishes ordered chains with empty graph entries while preserving ordinary entry requirements', () => {
+    const names = JSON.parse(fs.readFileSync(path.join(ROOT, 'open-processes/catalog.json'), 'utf8')).processes
+    for (const name of names) {
+      const record = JSON.parse(fs.readFileSync(path.join(ROOT, 'open-processes', `${name}.json`), 'utf8'))
+      expect(published.parse(record)).toEqual(record)
+      if (record.taskIds) {
+        expect(record.entrySteps).toEqual([])
+        expect(published.safeParse({ ...record, taskIds: [] }).success).toBe(false)
+        expect(published.safeParse({ ...record, entrySteps: [record.parts[0].id] }).success).toBe(false)
+      }
+    }
+  })
+
+  it.each([
+    ['missing entries', (record: ReturnType<typeof logo>) => { delete record.entrySteps }],
+    ['empty entries', (record: ReturnType<typeof logo>) => { record.entrySteps = [] }],
+    ['unknown version', (record: ReturnType<typeof logo>) => { record.schemaVersion = 2 }],
+    ['invalid part kind', (record: ReturnType<typeof logo>) => { record.parts[0].kind = 'unknown' }],
+    ['missing choice identity', (record: ReturnType<typeof logo>) => { delete record.parts[1].options[0].id }],
+    ['missing edge target', (record: ReturnType<typeof logo>) => { delete record.links[0].to }],
+    ['invalid edge option', (record: ReturnType<typeof logo>) => { record.links[1].option = 4 }],
+    ['chain fields on an ordinary graph', (record: ReturnType<typeof logo>) => { record.taskIds = ['brand_002'] }],
+  ])('matches the canonical validator when rejecting %s', (_, mutate) => {
+    const record = logo()
+    mutate(record)
+    expect(processDefinitionSchema.safeParse(record).success).toBe(false)
+    expect(published.safeParse(record).success).toBe(false)
+  })
+
+  it('keeps legacy records valid through the preserved contract and existing URL', () => {
+    const legacy = JSON.parse(fs.readFileSync(LEGACY_PROCESS_SCHEMA_FILE, 'utf8'))
+    const { $schema, $defs, ...legacyDefinition } = legacy
+    expect(schema.$schema).toBe($schema)
+    expect(schema.$defs.legacy).toEqual(legacyDefinition)
+    for (const [name, definition] of Object.entries($defs)) expect(schema.$defs[name]).toEqual(definition)
+    const directory = path.join(ROOT, 'open-processes/equity/us-de')
+    for (const file of fs.readdirSync(directory).filter(file => file.endsWith('.json'))) {
+      const record = JSON.parse(fs.readFileSync(path.join(directory, file), 'utf8'))
+      const errors: string[] = []
+      shape(record, legacy, file, errors)
+      shape(record, schema, file, errors)
+      expect(errors).toEqual([])
+      expect(published.parse(record)).toEqual(z.fromJSONSchema(legacy).parse(record))
+    }
+    const invalid = JSON.parse(fs.readFileSync(path.join(directory, '409a-valuation.json'), 'utf8'))
+    delete invalid.automation_boundary
+    expect(published.safeParse(invalid).success).toBe(false)
+  })
+})
 
 describe('operational-process schema publication', () => {
   const committed = fs.readFileSync(OPERATIONAL_PROCESS_SCHEMA_FILE, 'utf8')

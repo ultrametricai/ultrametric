@@ -40,8 +40,8 @@ run through the CLI today.** That is a finding to render truthfully, not to pape
 
 End to end (all paths verified in code this spike):
 
-1. **Recordings.** `pipeline/stages/probe-record.ts` runs keyless probe commands
-   (`pipeline/probes/<arena>.ts`) on a maintainer machine; with `UM_RECORD=1` each session runs
+1. **Recordings.** `rankings-engine/stages/probe-record.ts` runs keyless probe commands
+   (`rankings-engine/probes/<arena>.ts`) on a maintainer machine; with `UM_RECORD=1` each session runs
    inside BSD `script(1)` (a real pty capture) with a minimal env (PATH/HOME/TERM only, so no
    local keys can reach the child). Transcripts pass `sanitizeForPublication` (`lib/proofs.ts`:
    control-char cleanup, secret redaction, a hard fail on any residual `sk-|key|token` match)
@@ -55,7 +55,7 @@ End to end (all paths verified in code this spike):
    recordings as the "Probe proofs" section ("ran for real on our machines, keyless, secrets
    redacted before publication").
 3. **Live re-runs.** "Live-capable" is mechanical: a recorded probe whose exact command is pure
-   HTTP gets compiled by `pipeline/scripts/generate-live-probe-manifest.ts` into a fixed
+   HTTP gets compiled by `rankings-engine/scripts/generate-live-probe-manifest.ts` into a fixed
    (method, url, headers, body) entry in `open-rankings/live-probes.json`, mirrored into the worker as
    `infra/cloudflare-proxy/live-probes.generated.js`. The "run live" button POSTs
    `/api/try/:arena/:product/:probeId`; the worker (`handleTryProbe` in
@@ -182,7 +182,7 @@ handshake tier.
 2. **Test page** (after the sandbox-selector UI lane lands; its components are off-limits until
    then): `app/experiments/cli-sandbox/page.tsx` (the experiments section is the established
    home for pre-rollout surfaces), rendering the Porkbun composite above with the disclosure.
-   New probes in `pipeline/probes/` for the keyless CLI commands; one demo-account recording
+   New probes in `rankings-engine/probes/` for the keyless CLI commands; one demo-account recording
    session for `process open check-domain-availability`; sidecar `auth` field.
 3. **Founder review** of the test page.
 4. **Fleet rollout**: the `cli` copy command on the ten corpus-mapped tasks' surfaces (process
@@ -223,8 +223,8 @@ handshake tier.
 
 | Change | Files |
 | --- | --- |
-| CLI probe definitions (keyless + demo-account lanes) | `pipeline/probes/` (new module), `pipeline/probes/index.ts` |
-| Sidecar `auth` provenance field | `lib/proofs.ts` (schema, own commit), `pipeline/stages/probe-record.ts`, `pipeline/proof-io.ts`, Microterminal footer |
+| CLI probe definitions (keyless + demo-account lanes) | `rankings-engine/probes/` (new module), `rankings-engine/probes/index.ts` |
+| Sidecar `auth` provenance field | `lib/proofs.ts` (schema, own commit), `rankings-engine/stages/probe-record.ts`, `rankings-engine/proof-io.ts`, Microterminal footer |
 | Copyable `cli` command | `lib/tryitReplay.ts` (type), `lib/tryit.ts` (populate), `components/TryIt/Microterminal.tsx` (render — UI-lane-owned, wait for it to land) |
 | Test page | `app/experiments/cli-sandbox/page.tsx` + test |
 | `'self/ultrametric'` MCP demo key | `lib/mcpDemoCalls.ts` source data (`open-rankings/mcp-demo-calls.json`), `infra/cloudflare-proxy/worker.js` mirror |

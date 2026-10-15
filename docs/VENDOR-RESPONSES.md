@@ -53,7 +53,7 @@ response's optional `url`, which we link but do not mirror.
 
 ## How responses feed re-judges
 
-On the next re-judge of that product (`pnpm run pipeline judge --category <cat> --product
+On the next re-judge of that product (`pnpm engine judge --category <cat> --product
 <product>`, e.g. triggered by a contest or new evidence), the maintainer adds the response's
 statement to the product's evidence file as a **claimed-docs-tier** item carrying a
 `vendor-response` marker in its id (convention: `{product}-vendor-response-{issueNumber}`,

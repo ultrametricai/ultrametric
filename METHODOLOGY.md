@@ -6,7 +6,7 @@ re-judge stability, and bias disclosure. The on-site
 [/methodology](https://ultrametric.ai/methodology) page is a tight one-screen summary of this
 document, and the [README](./README.md#methodology) carries a short summary; this file is the
 source of truth. See also [README.md](./README.md) for the ranking list, data layout, and
-pipeline workflow, and [CONTRIBUTING.md](./CONTRIBUTING.md) for how to contest a verdict.
+engine workflow, and [CONTRIBUTING.md](./CONTRIBUTING.md) for how to contest a verdict.
 
 New to the site and just want plain-language answers ("what does `na` mean," "why does this
 score look low," "how do I disagree")? See **[docs/SCORING.md](./docs/SCORING.md)** — a
@@ -44,13 +44,13 @@ badge tier.
 
 ### Probe harness
 
-`pnpm run pipeline probe` runs a small set of keyless, hands-on checks per product and turns each
+`pnpm engine probe` runs a small set of keyless, hands-on checks per product and turns each
 *definitive* result — positive or negative — into a `probe`-tier evidence item (ambiguous
 results, e.g. a 403 from a WAF, produce no item rather than a guess): whether `/llms.txt`
 resolves, whether the docs URL serves a `.md` variant, whether a conventional OpenAPI spec
 path resolves, and whether the curated `links.mcp`/`links.cli` URLs are live. See
-`pipeline/stages/probe.ts` (`runProbeChecks`) for the exact rules and
-`pipeline/__tests__/probe.test.ts` for coverage with a mocked fetcher (no live network calls
+`rankings-engine/stages/probe.ts` (`runProbeChecks`) for the exact rules and
+`rankings-engine/__tests__/probe.test.ts` for coverage with a mocked fetcher (no live network calls
 in tests). Like `collect-community`, re-running `probe` for a product replaces only its prior
 `probe`-tier items — other tiers are untouched.
 
@@ -79,8 +79,8 @@ the prompt version, or the judge model actually changed.
 ### Judge model & prompt version
 
 The judge is an Anthropic model — `claude-opus-5-5` by default since 2026-09-30 (previously
-`claude-sonnet-5`), overridable via the `UM_JUDGE_MODEL` env var (`pipeline/llm.ts`; the pre-rename `PA_MODEL` spelling still works as a deprecated fallback) — driven by a
-versioned system prompt in `pipeline/stages/judge.ts` (`PROMPT_VERSION`, currently **`v4`**;
+`claude-sonnet-5`), overridable via the `UM_JUDGE_MODEL` env var (`rankings-engine/llm.ts`; the pre-rename `PA_MODEL` spelling still works as a deprecated fallback) — driven by a
+versioned system prompt in `rankings-engine/stages/judge.ts` (`PROMPT_VERSION`, currently **`v4`**;
 the v4 bump marks the judge-model migration — the prompt text is unchanged from v3). Because
 the prompt version AND the judge model id are part of every cell's cache key, changing either
 deliberately invalidates all cached verdicts, so a prompt or model change is always followed
@@ -102,9 +102,9 @@ What each version added:
      content is *about the story's subject* — off-topic negative sentiment (e.g. unrelated
      security news) must not move a verdict or appear in the rationale.
 
-Calibration is gated by `pnpm calibrate` (`pipeline/scripts/calibration-check.ts`), which
+Calibration is gated by `pnpm calibrate` (`rankings-engine/scripts/calibration-check.ts`), which
 re-runs the live judge against a hand-verified golden-cell set
-(`pipeline/golden/golden-cells.json`) and fails on more than 2 tier mismatches.
+(`rankings-engine/golden/golden-cells.json`) and fails on more than 2 tier mismatches.
 
 ## Scoring formula
 
@@ -129,7 +129,7 @@ wrong-axis story is marked `na` and excluded rather than counted against a produ
 ### Claims vs reality — the claims-integrity index
 
 Every product's vendor claims (extracted from its own docs/GitHub materials by
-`pipeline/stages/claims.ts`) are reconciled against our judge's independent verdicts
+`rankings-engine/stages/claims.ts`) are reconciled against our judge's independent verdicts
 (`lib/claims.ts`). Each claim that maps onto a story lands in one of three **testable**
 buckets: *verified* (full/partial verdict backed by corroborated/tested evidence),
 *unverified* (full/partial verdict, but only the vendor's own claim backs it), or
@@ -158,7 +158,7 @@ and each product page's "Claims vs evidence" section opens with its integrity su
 
 Every ranking includes the same 9 canonical "agenticness" stories, injected verbatim (never
 LLM-authored) so agent-readiness is comparable across categories. Defined in
-`pipeline/agentic-stories.ts`:
+`rankings-engine/agentic-stories.ts`:
 
 | Story id | Story | Weight |
 |---|---|---|
@@ -271,12 +271,12 @@ Every story in `open-rankings/{category}/stories.json` optionally carries an `or
 
 | `origin.kind` | Meaning |
 |---|---|
-| `canonical` | one of the 29 fixed agenticness/openness/automation-depth/privacy-posture stories (`pipeline/agentic-stories.ts`), injected verbatim into every category by `normalize.ts`'s `assembleTaxonomy` — never LLM-authored |
+| `canonical` | one of the 29 fixed agenticness/openness/automation-depth/privacy-posture stories (`rankings-engine/agentic-stories.ts`), injected verbatim into every category by `normalize.ts`'s `assembleTaxonomy` — never LLM-authored |
 | `normalized` | assembled into the category's taxonomy by the LLM-driven `normalize` stage; carries the judge `promptVersion` in force at the time |
 | `contest` | added or adjusted via a contest issue (not yet exercised — `contest-check.ts` only appends evidence today, never stories) |
 | `manual` | hand-edited |
 
-`origin` is additive and never participates in `cellHash` (`pipeline/stages/judge.ts`) —
+`origin` is additive and never participates in `cellHash` (`rankings-engine/stages/judge.ts`) —
 stamping or backfilling it can never invalidate the judge cache or change a verdict. Hover a
 story title or matrix cell on any product page to see its origin in the tooltip (e.g.
 "canonical" or "normalized · v2").
@@ -315,7 +315,7 @@ low–high band in the score badge's tooltip, including on the homepage mega-tab
 an honest statement of how much the published number could move under the judge noise we have
 actually **measured** — it is *analytic v1*: computed from existing data with **no new judging**.
 
-How it's built (`pipeline/scripts/compute-confidence-intervals.ts`, math in
+How it's built (`rankings-engine/scripts/compute-confidence-intervals.ts`, math in
 `lib/scoreIntervals.ts`):
 
 - **Per-cell noise comes from measured re-roll statistics, never invented rates.** The
@@ -357,20 +357,20 @@ a different question than everything else on this site: not "is this AI-ready" b
 project still be alive tomorrow" — a reader-requested survival/support signal.
 
 It is **deliberately not part of the Overall score** and never affects rankings, leaderboard
-position, or any battle outcome (`pnpm run pipeline popularity` makes no LLM calls and its output,
+position, or any battle outcome (`pnpm engine popularity` makes no LLM calls and its output,
 `open-rankings/{category}/popularity.json`, isn't read by `lib/scoring.ts`). Popularity measures
 *adoption* — how many people already use something — which is a lagging, momentum-driven
 signal unrelated to whether a product is well-built for AI agents today. A ten-year-old
 framework with a huge install base and a brand-new, better-designed API for agents should not
 outrank each other because of stars; keeping popularity out of the score preserves what the
 score actually means. Coverage is necessarily partial: only products with a `urls.github` or a
-curated npm/PyPI package (`pipeline/popularity-packages.json`) have any numbers at all, and a
+curated npm/PyPI package (`rankings-engine/popularity-packages.json`) have any numbers at all, and a
 missing chip means "no public signal available," not "unpopular."
 
 ## Pricing tiers — an annotation, not a score
 
 Every (product, story) cell the judge ruled **full/partial** carries a pricing-tier annotation
-(`open-rankings/{category}/story-tiers.json`, produced by `pipeline/scripts/classify-story-tiers.ts`):
+(`open-rankings/{category}/story-tiers.json`, produced by `rankings-engine/scripts/classify-story-tiers.ts`):
 **free**, **paid**, **enterprise**, or **unknown** — which plan a buyer needs for that delivered
 capability. It answers the "what can I actually do without paying?" question the verdicts alone
 don't.

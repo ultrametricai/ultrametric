@@ -1,15 +1,15 @@
 # Continuous story-analysis runner: every 6 hours, pick the next arena in rotation and re-run
-# its full evidence pipeline (crawl → extract → collect-community → probe → judge → claims →
+# its full evidence refresh (crawl → extract → collect-community → probe → judge → claims →
 # popularity → derive). The judge's cellHash cache means unchanged evidence costs no LLM calls —
 # only cells whose evidence actually moved get re-judged — so a run on a quiet arena is cheap.
 # Results land as a PR (never a direct push) so every ranking change stays reviewable and the
 # re-judge stability policy (see README) can be applied before merge.
 #
-# Also runs the keyless agent-surface SLO check (pipeline/scripts/slo-check.ts) on every
+# Also runs the keyless agent-surface SLO check (rankings-engine/scripts/slo-check.ts) on every
 # 6-hourly run — that step needs no secrets, so it runs (and its open-rankings/slo-history.jsonl
-# appends get committed) even while the LLM pipeline below is gated.
+# appends get committed) even while the LLM stages below are gated.
 #
-# The LLM pipeline requires the ANTHROPIC_API_KEY repo secret; until it exists those steps are
+# The LLM stages require the ANTHROPIC_API_KEY repo secret; until it exists those steps are
 # skipped (the SLO check still runs).
 name: story-runner
 
@@ -91,7 +91,7 @@ jobs:
           echo "category=$CAT" >> "$GITHUB_OUTPUT"
           echo "Running arena: $CAT"
 
-      - name: Run pipeline for arena
+      - name: Run engine stages for arena
         if: steps.gate.outputs.enabled == 'true'
         env:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
@@ -103,13 +103,13 @@ jobs:
           # taxonomy changes stay a deliberate, human-triggered act.
           for stage in crawl extract collect-community probe judge claims popularity derive; do
             echo "::group::$stage"
-            pnpm tsx pipeline/cli.ts "$stage" --category "$CATEGORY"
+            pnpm tsx rankings-engine/cli.ts "$stage" --category "$CATEGORY"
             echo "::endgroup::"
           done
           # Post-derive: refresh the analytic 68% score intervals for this arena — LLM-free,
           # deterministic (seeded PRNG), and only meaningful after verdicts may have moved.
           echo "::group::score-intervals"
-          pnpm tsx pipeline/scripts/compute-confidence-intervals.ts --category "$CATEGORY"
+          pnpm tsx rankings-engine/scripts/compute-confidence-intervals.ts --category "$CATEGORY"
           echo "::endgroup::"
 
       # Prediction layer (LLM-free): open questions for any new close races the refresh
@@ -121,8 +121,8 @@ jobs:
       - name: Generate + settle predictions
         if: steps.gate.outputs.enabled == 'true'
         run: |
-          pnpm tsx pipeline/scripts/generate-predictions.ts
-          pnpm tsx pipeline/scripts/settle-predictions.ts
+          pnpm tsx rankings-engine/scripts/generate-predictions.ts
+          pnpm tsx rankings-engine/scripts/settle-predictions.ts
 
       # open-rankings/reviews/generated/ is a pure projection of the arena data (rankings generatedAt,
       # evidence packs, pricing, geo). Derive restamps generatedAt on every run, so the
@@ -130,7 +130,7 @@ jobs:
       # against the refreshed data (3 consecutive red runs through 2026-10-12).
       - name: Regenerate vendor-review interchange records
         if: steps.gate.outputs.enabled == 'true'
-        run: pnpm tsx pipeline/scripts/generate-vendor-reviews.ts
+        run: pnpm tsx rankings-engine/scripts/generate-vendor-reviews.ts
 
       # open-rankings/graph.json is the same kind of pure projection (corpus + step-story mapping +
       # judged story→product verdicts). The judge stage above can flip verdicts, which adds,
@@ -141,20 +141,20 @@ jobs:
       # already carry it.
       - name: Regenerate the story graph artifact
         if: steps.gate.outputs.enabled == 'true'
-        run: pnpm tsx pipeline/scripts/generate-story-graph.ts
+        run: pnpm tsx rankings-engine/scripts/generate-story-graph.ts
 
       - name: Tests + recompute check
         if: steps.gate.outputs.enabled == 'true'
         run: |
           pnpm test
-          pnpm tsx pipeline/scripts/recompute-check.ts
+          pnpm tsx rankings-engine/scripts/recompute-check.ts
 
       # Keyless and cheap (~300 HTTP checks, ≤3 concurrent): appends one uptime line per
       # documented agent surface (llms.txt / remote MCP / openapi.json) to
-      # open-rankings/slo-history.jsonl — see pipeline/scripts/slo-check.ts and lib/slo.ts. Deliberately
+      # open-rankings/slo-history.jsonl — see rankings-engine/scripts/slo-check.ts and lib/slo.ts. Deliberately
       # ungated so the 6-hourly cadence builds a real uptime series even without the API key.
       - name: Agent-surface SLO check
-        run: pnpm tsx pipeline/scripts/slo-check.ts
+        run: pnpm tsx rankings-engine/scripts/slo-check.ts
 
       - name: Open PR if anything changed
         env:
@@ -162,10 +162,10 @@ jobs:
           CATEGORY: ${{ steps.pick.outputs.category }}
           RUN_ID: ${{ github.run_id }}
         run: |
-          # When the API-key gate skipped the pipeline, only the SLO check ran and CATEGORY is
+          # When the API-key gate skipped the LLM stages, only the SLO check ran and CATEGORY is
           # empty — branch/PR naming falls back accordingly.
           CATEGORY="${CATEGORY:-slo-only}"
-          if git diff --quiet -- rankings pipeline/cache; then
+          if git diff --quiet -- rankings rankings-engine/cache; then
             echo "No changes for $CATEGORY — done."
             exit 0
           fi
@@ -174,7 +174,7 @@ jobs:
           git config user.name "ultrametric-story-runner"
           git config user.email "noreply@ultrametric.ai"
           git checkout -b "$BRANCH"
-          git add rankings pipeline/cache README.md
+          git add rankings rankings-engine/cache README.md
           git commit -m "chore(story-runner): refresh $CATEGORY evidence + verdicts"
           git push -u origin "$BRANCH"
           # Org policy currently forbids Actions from creating PRs ("Write permissions for

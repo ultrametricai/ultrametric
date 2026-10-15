@@ -70,7 +70,7 @@ export interface SurfaceDef {
 }
 
 // The curated surface list. Canonical ids map 1:1 onto the agent-access lens stories injected
-// into every arena (pipeline/agentic-stories.ts); emerging ids are arena-authored stories that
+// into every arena (rankings-engine/agentic-stories.ts); emerging ids are arena-authored stories that
 // clearly answer "official <surface> exists" — curation is editorial, verdicts are not.
 export const SURFACE_DEFS: SurfaceDef[] = [
   {

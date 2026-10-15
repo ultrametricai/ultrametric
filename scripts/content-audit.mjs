@@ -10,7 +10,7 @@ export const collectionNames = {
   law: 'Rule cards', citations: 'Citations', artifacts: 'Business artifacts',
 }
 
-const roots = ['open-processes', 'open-rankings', 'open-documents', 'lib/openstartup', 'jurisdictions', 'open-law', 'citations', 'coverage']
+const roots = ['open-processes', 'open-rankings', 'open-documents', 'lib/openstartup', 'jurisdictions', 'open-law', 'coverage']
 const recordKey = (collection, id) => `${collection}:${id}`
 const nonempty = value => typeof value === 'string' && value.trim().length > 0
 const isoDate = value => typeof value === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(value) && Number.isFinite(Date.parse(`${value}T00:00:00Z`)) && new Date(`${value}T00:00:00Z`).toISOString().slice(0, 10) === value
@@ -148,24 +148,24 @@ export function buildContentAudit(files, metadata) {
     date(record, value.checked_on, due)
   }
   for (const [collection, file, field] of [
-    ['jurisdictions', 'jurisdictions/registry.json', 'jurisdictions'], ['citations', 'citations/registry.json', 'citations'],
+    ['jurisdictions', 'jurisdictions/registry.json', 'jurisdictions'], ['citations', 'open-law/citations/registry.json', 'citations'],
   ]) {
     for (const value of array(json(file)[field], file)) {
-      const record = add(collection, value.id ?? value.code, value.name ?? value.title, file, [value.role, value.jurisdiction, value.kind])
+      const record = add(collection, value.id ?? value.code, value.name ?? value.title, file, [value.jurisdiction, value.kind])
       if (value.url) link(record, value.url, 'source URL', 'external')
       if (collection === 'jurisdictions') {
         check(record, 'Declared coverage', 'unknown', `${value.coverage ?? 'Not recorded'}: ${value.scope ?? 'scope not recorded'}`)
         if (value.parent) link(record, recordKey('jurisdictions', value.parent), 'parent jurisdiction')
       } else {
+        // The registry at open-law/citations/ holds authority records only; the reading
+        // canon lives in open-lore/ with its own gates.
         date(record, value.checked_on)
-        if (value.role === 'authority') {
-          presence(record, 'Exact provision locator', nonempty(value.locator))
-          if (value.jurisdiction) link(record, recordKey('jurisdictions', value.jurisdiction), 'jurisdiction')
-        }
+        presence(record, 'Exact provision locator', nonempty(value.locator))
+        if (value.jurisdiction) link(record, recordKey('jurisdictions', value.jurisdiction), 'jurisdiction')
       }
     }
   }
-  for (const file of [...files.keys()].filter(file => /^law\/.+\.json$/.test(file)).sort()) {
+  for (const file of [...files.keys()].filter(file => /^open-law\/(?!citations\/).+\.json$/.test(file) && file !== 'open-law/map.json').sort()) {
     const value = json(file)
     const record = add('law', value.id, value.id, file, [value.jurisdiction, value.status])
     presence(record, 'Rule statement', nonempty(value.statement))

@@ -6,13 +6,13 @@ is alive."*
 
 The radar is the LISTENING half of that ask: a keyless daily scan of public launch surfaces that
 reports new, hot, arena-relevant vendors as candidates. The SPIKE half stays exactly what it
-already is — a deliberate, reviewed run of the standard pipeline on a human-approved candidate.
+already is — a deliberate, reviewed run of the standard engine on a human-approved candidate.
 
 ## Approval and the hard limits
 
 Founder authorization (2026-10-13) replaced per-candidate checkbox approval with the criteria in
-`governance/AGENT_POLICY.md` ("Vendor-radar candidate approval"): existing-ranking fit, public
-docs surface, shipped product, no founder affiliation. `pipeline/scripts/radar-triage.ts` applies
+`policies/AGENT_POLICY.md` ("Vendor-radar candidate approval"): existing-ranking fit, public
+docs surface, shipped product, no founder affiliation. `rankings-engine/scripts/radar-triage.ts` applies
 them mechanically — the lexical arena classifier for ranking fit, a docs-surface fetch, the
 waitlist/link-list/placeholder guards plus a star-velocity anomaly floor for shipped-product,
 and the affiliation guard — and records
@@ -31,14 +31,14 @@ Two limits hold in every case:
 - **The radar never touches a founder-affiliated product autonomously.** Affiliated candidates
   route to needs-human for disclosure and a bias audit.
 
-Scores stay pipeline-computed: the bring-up on an auto-approved candidate is a scoped standard
-pipeline run (`crawl → extract → collect-community → probe → judge --product → derive → logos`)
+Scores stay engine-computed: the bring-up on an auto-approved candidate is a scoped standard
+engine run (`crawl → extract → collect-community → probe → judge --product → derive → logos`)
 landing as a reviewed PR, with the skipped list in the PR body. Nothing merges to `main` without
 that review.
 
 ## How it works
 
-`pipeline/scripts/vendor-radar.ts`, run daily by `.github/workflows/vendor-radar.yml`
+`rankings-engine/scripts/vendor-radar.ts`, run daily by `.github/workflows/vendor-radar.yml`
 (cron `31 8 * * *`, offset from the other automation loops):
 
 1. **Scan** three keyless public launch surfaces (a handful of HTTP requests total, polite UA,
@@ -57,16 +57,16 @@ that review.
      `GITHUB_LOOKBACK_DAYS` with ≥ `GITHUB_MIN_STARS` stars, kept only when star velocity
      crosses `GITHUB_MIN_STARS_PER_DAY`.
 2. **Match** each hot item's text (title / tagline / description / topics) against the arena
-   taxonomy: `DOMAIN_VOCAB` (`pipeline/scripts/tag-story-scopes.ts` — the same per-arena nouns
+   taxonomy: `DOMAIN_VOCAB` (`rankings-engine/scripts/tag-story-scopes.ts` — the same per-arena nouns
    `yc-coverage-queue.ts` matches with), extended per arena with its `open-rankings/categories.json`
    name tokens and its `open-rankings/arena-sections.json` section-name tokens. `MIN_ARENA_HITS`
    distinct keyword hits are required — a hot launch that speaks no arena's language is not our
    vendor. Lexical matching is a NOMINATION signal, never a verdict input.
 3. **Dedupe**, so each candidate surfaces exactly once, ever:
    - every tracked product (`open-rankings/<arena>/products.json`) by normalized site domain
-     (`pipeline/yc-shared.ts` `normalizeDomain`) and by normalized name/id,
+     (`rankings-engine/yc-shared.ts` `normalizeDomain`) and by normalized name/id,
    - the vendor registry (`open-rankings/reviews/generated/`) by product id,
-   - the committed seen-ledger **`pipeline/radar-seen.json`**: every candidate ever reported,
+   - the committed seen-ledger **`rankings-engine/radar-seen.json`**: every candidate ever reported,
      keyed by product domain (or `github:owner/repo` / normalized name when no product domain is
      public). `firstSeen` is the honest date of the run that first reported it — never backdated.
 4. **Report**: `reports/vendor-radar/<date>.json` (schema-validated) + `<date>.md`, committed via
@@ -77,18 +77,18 @@ that review.
    candidates, writes `reports/vendor-radar/<date>-triage.json`, and appends the disposition
    table to the issue. When the `ANTHROPIC_API_KEY` repo secret is present, `radar-bringup.ts`
    adds up to 3 auto-approved passers per run to their existing arenas and the workflow runs the
-   scoped pipeline on each, opening a **bring-up PR** with the full disposition table (including
+   scoped engine run on each, opening a **bring-up PR** with the full disposition table (including
    the skipped list) in the body. Without the key, passers stay approved-pending in the triage
    report.
 
 ## Tuning keywords and thresholds
 
-- **Thresholds** are named constants at the top of `pipeline/scripts/vendor-radar.ts`
+- **Thresholds** are named constants at the top of `rankings-engine/scripts/vendor-radar.ts`
   (`HN_MIN_POINTS`, `GITHUB_MIN_STARS_PER_DAY`, `MIN_ARENA_HITS`, `MAX_REPORT_CANDIDATES`, …) and
   are echoed into every report's `thresholds` block, so a threshold change is visible in the
   report diff that follows it.
 - **Keywords**: to make an arena match better, extend its `DOMAIN_VOCAB` entry in
-  `pipeline/scripts/tag-story-scopes.ts` (tight, domain-strong nouns only — generic words swallow
+  `rankings-engine/scripts/tag-story-scopes.ts` (tight, domain-strong nouns only — generic words swallow
   everything; see the vocabulary's own header comment). Arenas without a `DOMAIN_VOCAB` entry
   still match on their `categories.json` name tokens and section-name tokens via
   `buildArenaVocab`.
@@ -97,7 +97,7 @@ that review.
   `skipped.overflow`, and uncapped candidates simply surface on a later run since only REPORTED
   candidates enter the seen-ledger).
 - A candidate that was wrongly skipped can be re-surfaced by deleting its row from
-  `pipeline/radar-seen.json` (a reviewed commit, like everything else).
+  `rankings-engine/radar-seen.json` (a reviewed commit, like everything else).
 
 ## From candidate to judged product (the Instinct/dots precedent)
 
@@ -110,9 +110,9 @@ Instinct and OpenAI-dots bring-ups used (`docs/vendor-research/instinct.md`,
    `probe`). No judging, no rankings edits — raw material for the evidence pack.
 2. **Roster PR** — add the product to `open-rankings/<arena>/products.json` (reviewed like any roster
    change; disclosure rules apply if owner-affiliated).
-3. **The deep spike** — a keyed standard-pipeline run on that product/arena:
+3. **The deep spike** — a keyed standard engine run on that product/arena:
    `crawl → extract → collect-community → probe → judge → claims → derive` (via
-   `pipeline/cli.ts`, story-runner dispatch, or `pipeline/scripts/spike-engine.ts --process`),
+   `rankings-engine/cli.ts`, story-runner dispatch, or `rankings-engine/scripts/spike-engine.ts --process`),
    landing as a PR reviewed under the re-judge stability policy.
 4. Close the candidate's checkbox in the radar issue with a link to the PR.
 
@@ -120,9 +120,9 @@ The radar only ever shortens the time between "it launched" and step 1.
 
 ## Testing
 
-`pipeline/__tests__/vendor-radar.test.ts` — pure units only, no network: fake HN/PH/GitHub
+`rankings-engine/__tests__/vendor-radar.test.ts` — pure units only, no network: fake HN/PH/GitHub
 fixtures → arena matches, hotness thresholds, dedupe against tracked products and the
 seen-ledger, same-key cross-source merging, and the report/issue shape (schema round-trip, the
-criteria-triage line, the no-new-rankings statement). `pipeline/__tests__/radar-triage.test.ts`
+criteria-triage line, the no-new-rankings statement). `rankings-engine/__tests__/radar-triage.test.ts`
 covers the criteria checks the same way: injected fetch results, no network. The committed
 inaugural run under `reports/vendor-radar/` is the end-to-end integration evidence.

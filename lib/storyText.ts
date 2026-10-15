@@ -1,10 +1,10 @@
 // Pure, display-only parsing of user-story text. Every canonical story title is authored in
-// the Connextra frame — "As a(n) {persona}, {clause}" (see pipeline/agentic-stories.ts,
+// the Connextra frame — "As a(n) {persona}, {clause}" (see rankings-engine/agentic-stories.ts,
 // normalize.ts, depth-mine.ts's commonRules) — which reads fine once but is deafeningly
 // repetitive down a list: the arena tables were fifty rows of "As a developer, …". This module
 // splits that frame into a persona label (chip/column/filter material) and a standalone action
 // sentence, WITHOUT ever touching the stored Story.title: judge caching keys on the exact
-// title (pipeline/stages/judge.ts's cellHash includes it), so data files and the canonical
+// title (rankings-engine/stages/judge.ts's cellHash includes it), so data files and the canonical
 // text are never mutated — presentation-layer derivation only.
 //
 // Node-builtin-free and pure so both client components (StoryVerdictsTable, CompareBuilder)

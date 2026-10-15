@@ -5,10 +5,16 @@ import { sharedRecordSchema, validateCatalog, type SharedRecord } from './schema
 
 const slug = z.string().regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/).refine(value => value !== 'v1')
 const identifier = sharedRecordSchema.shape.id
-export const processDefinitionSchema = sharedRecordSchema.extend({
-  entrySteps: z.array(identifier),
-  taskIds: z.array(identifier).min(1).optional(),
-})
+export const processDefinitionSchema = z.union([
+  sharedRecordSchema.omit({ taskIds: true }).extend({
+    entrySteps: z.array(identifier).min(1),
+  }),
+  sharedRecordSchema.extend({
+    entrySteps: z.array(identifier).length(0),
+    taskIds: z.array(identifier).min(1),
+    links: sharedRecordSchema.shape.links.length(0),
+  }),
+])
 export type CatalogProcess = { slug: string; entrySteps: string[]; taskIds?: string[]; record: SharedRecord }
 
 function json(file: string) {
@@ -51,7 +57,8 @@ export function loadProcessCatalog(selection?: { processes: string[] }, root = p
   }
   const selected = new Map<string, CatalogProcess>()
   function read(name: string) {
-    const { entrySteps, taskIds, ...record } = processDefinitionSchema.parse(json(path.join(directory, `${name}.json`)))
+    const definition: SharedRecord & { entrySteps: string[] } = processDefinitionSchema.parse(json(path.join(directory, `${name}.json`)))
+    const { entrySteps, taskIds, ...record } = definition
     if (taskIds) {
       if (entrySteps.length || record.links.length || JSON.stringify(record.parts.map(part => part.kind === 'reference' ? part.ref : null)) !== JSON.stringify(taskIds)) {
         throw new Error(`${record.id}: chain taskIds must match reference parts in order, with no dependency graph`)

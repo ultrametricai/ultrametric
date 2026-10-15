@@ -5,7 +5,7 @@
 // the per-product story map. Structural invariants beyond the schema (every id canonical, the
 // clusters partition the canon exactly, edges stay inside one cluster, no cycles) live in
 // lib/__tests__/storyGraph.test.ts rather than here: the canon ids come from
-// pipeline/agentic-stories.ts, which must not leak into the app bundle.
+// rankings-engine/agentic-stories.ts, which must not leak into the app bundle.
 
 import { z } from 'zod'
 import graphJson from '@/open-rankings/story-graph.json'

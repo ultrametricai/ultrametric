@@ -52,6 +52,15 @@ const OPERATIONAL_CHAINS = path.join('open-processes', 'chains.json')
 // present) run inside validateFounderOps below.
 const LAW_MAP = path.join('open-law', 'map.json')
 
+// The authority citation registry (folded in from the old top-level citations/) lives
+// beside the rule cards that cite it, so the rule walkers skip the subtree; its records
+// validate against schemas/citation.schema.json in the source loop below.
+const LAW_CITATIONS_SUBTREE = path.join('open-law', 'citations') + path.sep
+
+function ruleCardJson(dir: string): string[] {
+  return listJson(dir).filter((f) => !f.endsWith(LAW_MAP) && !f.includes(LAW_CITATIONS_SUBTREE))
+}
+
 // Fictional scenario fixtures live under open-processes/fixtures/ (folded in from the old
 // top-level fixtures/). They validate separately below, so the workflow walker skips the
 // whole subtree like it skips the operational registries.
@@ -246,19 +255,16 @@ export function validateFounderOps(asOf?: Date): string[] {
     }
   }
 
-  const citationsDoc = read(path.join(ROOT, 'citations/registry.json'))
+  const citationsDoc = read(path.join(ROOT, 'open-law/citations/registry.json'))
   const sourceMap = new Map<string, JsonObject>()
   const citationList = isObj(citationsDoc) && Array.isArray(citationsDoc.citations) ? citationsDoc.citations : []
   for (const source of citationList) {
     if (!isObj(source) || typeof source.id !== 'string') {
-      errors.push('citations/registry.json: citation without id')
+      errors.push('open-law/citations/registry.json: citation without id')
       continue
     }
     const sid = source.id
     shape(source, need('citation.schema'), `citation ${sid}`, errors)
-    // Reading-role citations are validated in lib/citations.ts; the rule cards cite the
-    // authority role, so only those enter the source map and the authority checks below.
-    if (source.role !== 'authority') continue
     if (sourceMap.has(sid)) errors.push(`duplicate source id ${sid}`)
     sourceMap.set(sid, source)
     const url = str(source.url) ?? ''
@@ -270,7 +276,7 @@ export function validateFounderOps(asOf?: Date): string[] {
     if (checked && checked > today) errors.push(`source ${sid}: checked date is in the future`)
   }
 
-  const rules = indexed(listJson(path.join(ROOT, 'open-law')).filter((f) => !f.endsWith(LAW_MAP)), errors, 'rule')
+  const rules = indexed(ruleCardJson(path.join(ROOT, 'open-law')), errors, 'rule')
   for (const [rid, rule] of rules) {
     shape(rule, need('rule.schema'), `rule ${rid}`, errors)
     if (!jurisdictions.has(str(rule.jurisdiction) ?? '')) errors.push(`rule ${rid}: unknown jurisdiction`)
@@ -453,11 +459,11 @@ export function planFounderOps(event: JsonObject, asOf?: Date): FounderOpsPlan {
   if (matches.length === 0) {
     return { status: 'unsupported', reason: 'no exact covered scenario', may_execute: false }
   }
-  const ruleMap = indexed(listJson(path.join(ROOT, 'open-law')).filter((f) => !f.endsWith(LAW_MAP)), [], 'rule')
-  const citationsDoc = read(path.join(ROOT, 'citations/registry.json'))
+  const ruleMap = indexed(ruleCardJson(path.join(ROOT, 'open-law')), [], 'rule')
+  const citationsDoc = read(path.join(ROOT, 'open-law/citations/registry.json'))
   const sources = new Map<string, JsonObject>()
   for (const s of isObj(citationsDoc) && Array.isArray(citationsDoc.citations) ? citationsDoc.citations : []) {
-    if (isObj(s) && typeof s.id === 'string' && s.role === 'authority') sources.set(s.id, s)
+    if (isObj(s) && typeof s.id === 'string') sources.set(s.id, s)
   }
   const output: JsonObject[] = matches.map((process) => {
     const due = new Date(`${str(process.review_due)}T00:00:00Z`)

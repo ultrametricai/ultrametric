@@ -3,8 +3,8 @@
 # (keyless — staleness × popularity × founder priority over every judged product), then,
 # when the ANTHROPIC_API_KEY
 # secret exists, spike the top due product: one budget-capped exhaustive pass through the
-# normal pipeline stages (crawl → extract → probe → judge), the churn policy (keep only flips
-# citing newly-added evidence ids), derive, and intervals. See pipeline/scripts/spike-engine.ts
+# normal engine stages (crawl → extract → probe → judge), the churn policy (keep only flips
+# citing newly-added evidence ids), derive, and intervals. See rankings-engine/scripts/spike-engine.ts
 # for the full contract; the founder-visible state renders at the unlinked /queue page.
 #
 # The judge's cellHash cache means an unchanged product costs no LLM calls — a spike on a quiet
@@ -71,7 +71,7 @@ jobs:
       # open-rankings/<arena>/ files — rank mode only rewrites open-rankings/spike-queue.json.
       - name: Rank spike queue
         if: steps.gate.outputs.enabled != 'true'
-        run: pnpm tsx pipeline/scripts/spike-engine.ts --issue-body /tmp/spike-issue.md
+        run: pnpm tsx rankings-engine/scripts/spike-engine.ts --issue-body /tmp/spike-issue.md
 
       # Keyed: rank, then one exhaustive pass on the top due product (or the dispatch target).
       - name: Rank + spike top of queue
@@ -82,22 +82,22 @@ jobs:
           INPUT_PRODUCT: ${{ github.event.inputs.product }}
         run: |
           if [ -n "$INPUT_CATEGORY" ] && [ -n "$INPUT_PRODUCT" ]; then
-            pnpm tsx pipeline/scripts/spike-engine.ts --process --category "$INPUT_CATEGORY" --product "$INPUT_PRODUCT" --issue-body /tmp/spike-issue.md
+            pnpm tsx rankings-engine/scripts/spike-engine.ts --process --category "$INPUT_CATEGORY" --product "$INPUT_PRODUCT" --issue-body /tmp/spike-issue.md
           else
-            pnpm tsx pipeline/scripts/spike-engine.ts --process --issue-body /tmp/spike-issue.md
+            pnpm tsx rankings-engine/scripts/spike-engine.ts --process --issue-body /tmp/spike-issue.md
           fi
 
       # Same contract as story-runner: a keyed spike pass runs derive, which restamps
       # rankings.generatedAt, an input of every vendor-review interchange record. Regenerate
       # before the drift test; a rank-only run regenerates byte-identically (no diff).
       - name: Regenerate vendor-review interchange records
-        run: pnpm tsx pipeline/scripts/generate-vendor-reviews.ts
+        run: pnpm tsx rankings-engine/scripts/generate-vendor-reviews.ts
 
       # Same contract as story-runner: a keyed spike pass re-judges, which can flip
       # story→product verdicts, an input of open-rankings/graph.json. Regenerate before the
       # byte-identity tests; a rank-only run regenerates byte-identically (no diff).
       - name: Regenerate the story graph artifact
-        run: pnpm tsx pipeline/scripts/generate-story-graph.ts
+        run: pnpm tsx rankings-engine/scripts/generate-story-graph.ts
 
       - name: Tests
         run: pnpm test
@@ -107,7 +107,7 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           RUN_ID: ${{ github.run_id }}
         run: |
-          if git diff --quiet -- rankings pipeline/cache; then
+          if git diff --quiet -- rankings rankings-engine/cache; then
             echo "No changes — done."
             exit 0
           fi
@@ -116,14 +116,14 @@ jobs:
           git config user.name "ultrametric-spike-engine"
           git config user.email "noreply@ultrametric.ai"
           git checkout -b "$BRANCH"
-          git add rankings pipeline/cache README.md
+          git add rankings rankings-engine/cache README.md
           git commit -m "chore(spike-engine): queue re-rank + top-of-queue spike pass"
           git push -u origin "$BRANCH"
           # Same org-policy fallback as story-runner: if Actions may not open PRs, leave an
           # issue carrying the compare link so the run is never silently stranded.
           if ! gh pr create \
             --title "spike-engine: queue + spike pass" \
-            --body "Automated spike-engine run (pipeline/scripts/spike-engine.ts). Any verdict flips already passed the churn policy (kept only when citing newly-added evidence ids) — review the queue state at /queue and the diff before merging." \
+            --body "Automated spike-engine run (rankings-engine/scripts/spike-engine.ts). Any verdict flips already passed the churn policy (kept only when citing newly-added evidence ids) — review the queue state at /queue and the diff before merging." \
             --base main --head "$BRANCH"; then
             gh issue create \
               --title "spike-engine: run ready on $BRANCH" \

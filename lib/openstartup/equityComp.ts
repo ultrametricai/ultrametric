@@ -5,7 +5,7 @@
 //
 // Sources for the conventions (cited per function):
 // - The Holloway Guide to Equity Compensation (https://www.holloway.com/g/equity-compensation
-//   — citations/registry.json id `holloway-equity-guide`): option value at exit = shares ×
+//   — open-lore/library.json id `holloway-equity-compensation`): option value at exit = shares ×
 //   (per-share price − strike), the % of fully diluted ownership framing, and the tax
 //   caveats this module deliberately does NOT compute.
 // - Index Ventures, Rewarding Talent (https://www.indexventures.com/rewarding-talent/ —

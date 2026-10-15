@@ -1,5 +1,5 @@
 # Weekly accuracy engine (docs/ACCURACY.md): the KEYLESS staleness pass over the whole fleet.
-# Runs pipeline/scripts/staleness-scan.ts — evidence-age percentiles, live sample-checks of the
+# Runs rankings-engine/scripts/staleness-scan.ts — evidence-age percentiles, live sample-checks of the
 # top-cited evidence URLs, the crawl-gap audit signatures (api-quality gap, the cline agent-docs
 # contradiction), and live llms.txt / documented-MCP flip re-checks — then:
 #
@@ -47,7 +47,7 @@ jobs:
       # The scan itself: keyless, bounded (≤4 concurrent HTTP checks, 8s timeouts, top-cited
       # URLs only). Writes open-rankings/staleness-report.json + the work-queue issue body.
       - name: Fleet staleness scan
-        run: pnpm tsx pipeline/scripts/staleness-scan.ts --issue-body /tmp/staleness-issue.md
+        run: pnpm tsx rankings-engine/scripts/staleness-scan.ts --issue-body /tmp/staleness-issue.md
 
       - name: Tests
         run: pnpm test
@@ -73,7 +73,7 @@ jobs:
           # issue carrying the compare link so the report is never stranded on a branch.
           if ! gh pr create \
             --title "accuracy-engine: weekly staleness report" \
-            --body "Keyless fleet staleness scan (pipeline/scripts/staleness-scan.ts). Merging this report makes story-runner prioritize the worst-stale arenas (see story-runner.yml's pick step). Flips/contradictions listed in the companion work-queue issue need keyed re-judges — this report never changes a verdict." \
+            --body "Keyless fleet staleness scan (rankings-engine/scripts/staleness-scan.ts). Merging this report makes story-runner prioritize the worst-stale arenas (see story-runner.yml's pick step). Flips/contradictions listed in the companion work-queue issue need keyed re-judges — this report never changes a verdict." \
             --base main --head "$BRANCH"; then
             gh issue create \
               --title "accuracy-engine: staleness report ready on $BRANCH" \

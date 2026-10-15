@@ -12,6 +12,9 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
 RECORDS = ROOT / "open-processes"
+# Preserve the reviewed authored membership independently of the guidance under test.
+# sit_012 was authored after the preservation snapshot.
+AUTHORED_IDS = set(json.loads((ROOT / "docs/catalog-task-briefs/preservation-baseline.json").read_text())["recordInvariantHashes"]) | {"sit_012"}
 
 
 def digest(value):
@@ -19,18 +22,11 @@ def digest(value):
                                      separators=(",", ":")).encode()).hexdigest()
 
 
-def has_authored_guidance(record):
-    def walk(parts):
-        return any(part["guidance"] is not None
-                   or any(walk(option["parts"]) for option in part["options"])
-                   for part in parts)
-    return record["guidance"] is not None or walk(record["parts"])
-
-
-def authored_records():
-    records = [json.loads(p.read_text()) for p in RECORDS.glob("*.json")]
-    return {r["id"]: r for r in records if isinstance(r, dict)
-            and r.get("schemaVersion") == 1 and "parts" in r and has_authored_guidance(r)}
+def authored_records(directory=RECORDS):
+    records = [json.loads(p.read_text()) for p in directory.glob("*.json")]
+    by_id = {r["id"]: r for r in records if isinstance(r, dict)
+             and r.get("schemaVersion") == 1 and "parts" in r}
+    return {record_id: by_id[record_id] for record_id in sorted(AUTHORED_IDS)}
 
 
 class TaskBriefContentTests(unittest.TestCase):
@@ -69,8 +65,31 @@ class TaskBriefContentTests(unittest.TestCase):
 
     def test_authored_briefs_are_complete_distinct_and_have_valid_source_links(self):
         records = authored_records()
-        self.assertIn("form_001", records)
+        self.assertEqual(set(records), AUTHORED_IDS)
         self.check_briefs(records)
+
+    def test_rejects_loss_of_every_guidance_field_on_an_authored_record(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            directory = Path(temporary) / "open-processes"
+            shutil.copytree(RECORDS, directory)
+            record = authored_records(directory)["form_001"]
+
+            def clear(parts):
+                for part in parts:
+                    part["guidance"] = None
+                    for option in part["options"]:
+                        clear(option["parts"])
+
+            record["guidance"] = None
+            clear(record["parts"])
+            file = next(p for p in directory.glob("*.json")
+                        if isinstance(value := json.loads(p.read_text()), dict)
+                        and value.get("id") == record["id"])
+            file.write_text(json.dumps(record))
+            records = authored_records(directory)
+            self.assertIn("form_001", records)
+            with self.assertRaises(AssertionError):
+                self.check_briefs(records)
 
     def test_rejects_incomplete_duplicate_briefs_and_invalid_source_links(self):
         formation = authored_records()["form_001"]

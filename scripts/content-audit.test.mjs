@@ -15,7 +15,7 @@ function fixture() {
     'open-rankings/arena/evidence/tool.json': [{ id: 'proof', tier: 'probe' }],
     'open-rankings/reviews/generated/arena--tool.json': { tested_on: '2026-10-01', recheck_due: '2027-01-01', status: 'tested', reviewer: 'Automated pipeline' },
     'open-documents/registry.json': { review_window_days: 120, documents: [{ id: 'form', name: 'Form', license_note: 'Review terms', publisher: 'Example', url: 'https://example.test/form', checked_on: '2026-10-01', jurisdiction: 'Worldwide', use_case: 'formation' }] },
-    'citations/registry.json': { citations: [{ id: 'statute', role: 'authority', title: 'Statute', url: 'https://example.test/law', locator: '§ 1', checked_on: '2026-10-01', jurisdiction: 'US-DE' }] },
+    'open-law/citations/registry.json': { citations: [{ id: 'statute', title: 'Statute', url: 'https://example.test/law', locator: '§ 1', checked_on: '2026-10-01', jurisdiction: 'US-DE' }] },
     'jurisdictions/registry.json': { jurisdictions: [{ code: 'US-DE', name: 'Delaware', coverage: 'partial-example', scope: 'One example' }] },
     'open-law/US-DE/rule.json': { id: 'rule', statement: 'A rule', source_ids: ['statute'], jurisdiction: 'US-DE', status: 'demonstration', reviewed_on: '2026-10-01', review_due: '2027-01-01' },
     'open-processes/artifacts.json': { artifacts: [{ id: 'result', label: 'Result', description: 'Prepared result', producedBy: 'start' }] },
@@ -50,6 +50,18 @@ test('reports unresolved links and unavailable evidence without deleting records
   const report = buildContentAudit(files, metadata)
   assert.equal(record(report, 'situations:start').links.find(item => item.target === 'documents:missing-form').state, 'unresolved')
   assert.equal(record(report, 'vendors:arena/tool').checks.find(item => item.label === 'Verdict evidence').state, 'missing')
+})
+
+test('audits rule cards and their incoming links without treating the law map or citations as rules', () => {
+  const files = fixture()
+  files.set('open-law/map.json', JSON.stringify({ jurisdictions: [] }))
+  change(files, 'open-processes/start.json', value => value.parts[0].references.push({ kind: 'rule', id: 'rule', role: 'governed-by' }))
+  const report = buildContentAudit(files, metadata)
+  const rule = record(report, 'law:rule')
+  assert.equal(rule.inbound, 1)
+  assert.ok(rule.links.some(item => item.target === 'citations:statute' && item.state === 'resolved'))
+  assert.ok(record(report, 'situations:start').links.some(item => item.target === 'law:rule' && item.state === 'resolved'))
+  assert.deepEqual(report.records.filter(item => item.collection === 'law').map(item => item.key), ['law:rule'])
 })
 
 test('distinguishes registered untracked vendors from invalid registry keys', () => {
