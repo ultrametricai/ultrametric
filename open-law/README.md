@@ -64,7 +64,7 @@ Contribute here:
   `reviewed_on` / `review_due`; if the meaning changed, version the ID instead of editing
   it in place.
 
-Gate: `npx vitest run __tests__/founder-ops.test.ts` (source resolution, jurisdiction
+Gate: `pnpm test __tests__/founder-ops.test.ts` (source resolution, jurisdiction
 matching, ID stability).
 
 ## Citations
@@ -93,5 +93,5 @@ grouped by lifecycle stage; every law cites its sources by id — the authoritie
 `citations/registry.json` here and the reading canon in `open-lore/library.json` and
 `open-lore/citations.json` — aphorisms are attributed to their actual origin, and the
 only literal laws (filing deadlines) also carry rule cards here. Gate:
-`npx vitest run __tests__/laws.test.ts` (grammar, numbering, and citation resolution via
+`pnpm test __tests__/laws.test.ts` (grammar, numbering, and citation resolution via
 `lib/laws.ts`).

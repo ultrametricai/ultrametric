@@ -7,7 +7,7 @@ examples.
 Part of [the open startup repo](../README.md#open-modules), separate from law (`open-law/`)
 and the vendor evidence layer (`open-rankings/`). The modules live in
 `lib/openstartup/` and are indexed in the table below
-(`npx vitest run lib/openstartup/__tests__/` runs their gates). Repo-first by design: use
+(`pnpm test lib/openstartup/__tests__/` runs their gates). Repo-first by design: use
 them from tests, scripts, or your own agent.
 
 The bar, fixed for every module: a contract, explicit assumptions, a citation on every
@@ -838,7 +838,7 @@ books.
   cited source, and property tests. The assessed candidate backlog — with build/skip/defer
   verdicts and the citable sources that exist (or honestly don't) — lives in
   [`docs/OPEN-MODULES-GAPS.md`](../docs/OPEN-MODULES-GAPS.md). Gate:
-  `npx vitest run lib/openstartup/__tests__/` (and `pnpm test`).
+  `pnpm test lib/openstartup/__tests__/` (and `pnpm test`).
 - **Harden an existing module** — a missed edge case from a cited worked example, a new
   property test, or a correction with the source that proves it (e.g. the YC Post-Money
   Safe User Guide for `capTable.ts`).
