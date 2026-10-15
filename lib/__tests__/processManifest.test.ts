@@ -48,7 +48,7 @@ describe('stepApprovalRequired — any side-effectful step is gated', () => {
       functionCalls: [{ method: 'GET /api/name-availability?state=DE', type: 'rest' }],
     }))).toBe(false)
     expect(stepApprovalRequired(node({ toolCall: 'company_data_get' }))).toBe(false)
-    expect(stepApprovalRequired(node({}))).toBe(false) // no recorded calls, no risk → nothing to gate
+    expect(stepApprovalRequired(node({}))).toBe(true) // absent binding cannot establish read-only behavior
   })
 
   it('gates api steps with any write call', () => {
@@ -156,7 +156,7 @@ describe('process manifests over the real corpus', () => {
     expect(manifest.process.phase).toBe('formation')
     const byId = new Map(manifest.steps.map((s) => [s.id, s]))
     expect(byId.get('n3')!.kind).toBe('api')
-    expect(byId.get('n3')!.approvalRequired).toBe(false) // read-only availability check
+    expect(byId.get('n3')!.approvalRequired).toBe(true) // private evidence is required for a read-only availability check
     expect(byId.get('n4')!.kind).toBe('computer-use')
     expect(byId.get('n4')!.approvalRequired).toBe(true)
     expect(byId.get('n1')!.vendorOptions.map((o) => o.vendor)).toEqual(

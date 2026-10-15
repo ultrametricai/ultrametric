@@ -9,7 +9,7 @@ Doctrine: every corpus vendor resolves through the registry to a live arena, or 
 - 176 distinct corpus vendor keys across 147 processes
 - 129 arena-tracked · 34 deliberately untracked (registry entry, no arena) · 13 unregistered (gap list below)
 - 0 mechanical gaps (registry arenaId pointing at no arena)
-- 6 of 147 processes resolve to zero arenas (no tracked vendor and no direct arena claim on any step)
+- 7 of 147 processes resolve to zero arenas (no tracked vendor and no direct arena claim on any step)
 
 ## Mechanical gaps (0)
 
@@ -76,13 +76,14 @@ Registry entries without an `arenaId` — unlinked chips by design (government c
 | `statuspage` |  | `prod_011` |
 | `sydecar` |  | `vc_001`, `vc_002`, `vc_003` |
 
-## Processes resolving to zero arenas (6)
+## Processes resolving to zero arenas (7)
 
 No vendor on these resolves to an arena and no step claims one directly (`optionsArenaId`/`extraOptionArenas`). Some have no vendor market at all (government and program counterparties — the USPTO is not a vendor market); others mark arenas the site does not judge yet. Curation calls, never auto-placed.
 
 | Process | kind | vendor references |
 |---|---|---|
 | Set up a password manager `ops_005` | process | `bitwarden`, `dashlane`, `onepassword` |
+| Generate a brand logo `brand_002` | process | — none — |
 | Apply to Y Combinator `fund_007` | process | — none — |
 | Cure a Delaware franchise tax delinquency `sit_010` | situation | — none — |
 | Migrate off a shutting-down vendor `sit_012` | situation | — none — |

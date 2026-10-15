@@ -117,8 +117,8 @@ describe('spot pins (read off the cited primary sources, 2026-10-01)', () => {
     expect(c.note).toMatch(/per class/i)
   })
 
-  it('form_001 filing verifies against the DE entity search; the 83(b) check is the retained proof', () => {
-    expect(node('form_001', 'n4').verify!.url).toContain('icis.corp.delaware.gov')
+  it('form_001 uses authored filing and election verification guidance', () => {
+    expect(node('form_001', 'n4').verify!.url).toBe('https://corp.delaware.gov/howtoform/')
     expect(node('form_001', 'n8').verify!.how).toMatch(/certified-mail/i)
   })
 })

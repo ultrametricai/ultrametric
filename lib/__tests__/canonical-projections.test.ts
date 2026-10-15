@@ -1,0 +1,125 @@
+import { spawnSync } from 'node:child_process'
+import { cpSync, mkdirSync, mkdtempSync, readFileSync, rmSync, symlinkSync, writeFileSync } from 'node:fs'
+import os from 'node:os'
+import path from 'node:path'
+import { afterEach, describe, expect, it } from 'vitest'
+import { loadProcessCatalog } from '../shared-processes/catalog'
+import { recordForExport, recordForInstructions } from '../shared-processes/instructions'
+import { projectChain, projectOperational } from '../shared-processes/projection'
+import { validateCatalog } from '../shared-processes/schema'
+import { buildManifestStep } from '../processManifest'
+import { computeCeiling, loadProcesses } from '../processes'
+import { crossArenaStepRankings } from '../processRankings'
+
+const catalog = loadProcessCatalog().processes
+const temporary: string[] = []
+afterEach(() => temporary.splice(0).forEach(root => rmSync(root, { recursive: true, force: true })))
+const byId = (id: string) => catalog.find(item => item.record.id === id)!
+
+describe('canonical catalog consumer contract', () => {
+  it('retains every historical identity and the existing situation classification', () => {
+    const historical = JSON.parse(readFileSync('content/processes/import-manifest.json', 'utf8')).records
+    expect(catalog.map(item => item.record.id).sort()).toEqual(Object.keys(historical).sort())
+    expect(catalog).toHaveLength(173)
+    expect(catalog.filter(item => item.taskIds)).toHaveLength(24)
+    const situations = catalog.filter(item => item.record.metadata.kind === 'situation')
+    expect(situations).toHaveLength(22)
+    expect(situations.every(item => recordForExport(item).kind === 'situation')).toBe(true)
+    expect(validateCatalog(catalog.map(recordForExport))).toHaveLength(catalog.length)
+  })
+
+  it('exports explicit DAG entries and preserves composition order without creating chain dependencies', () => {
+    const chains = JSON.parse(readFileSync('open-processes/chains.json', 'utf8'))
+    expect(catalog.map(projectChain).filter(Boolean)).toEqual(chains)
+    for (const item of catalog) {
+      const exported = recordForExport(item)
+      if (item.taskIds) {
+        expect(exported.taskIds).toEqual(item.record.parts.map(part => part.ref))
+        expect(exported.entrySteps).toBeUndefined()
+        expect(exported.links).toEqual([])
+        expect(exported.notes.at(-1)?.text).toContain(item.taskIds.join(' → '))
+      } else expect(exported.entrySteps).toEqual(item.entrySteps)
+    }
+    const selected = loadProcessCatalog({ processes: ['first-hire'] }).processes
+    for (const id of byId('first-hire').taskIds!) expect(selected.some(item => item.record.id === id)).toBe(true)
+  })
+
+  it('carries verification, failure recovery, scoped approvals and geography into assembler-visible notes', () => {
+    const formation = recordForExport(byId('form_001'))
+    const text = JSON.stringify(formation.parts.map(part => ({ notes: part.notes, options: part.options })))
+    expect(text).toContain('Verification:')
+    expect(text).toContain('Recovery:')
+    expect(text).toContain('For stripe_atlas:')
+    const geo = formation.notes.find(note => note.text.startsWith('IN (analog):'))!
+    expect(geo.references?.some(ref => ref.kind === 'url' && ref.url === 'https://www.nsws.gov.in/')).toBe(true)
+    expect(formation.notes.some(note => note.text.startsWith('Required context: founder legal names'))).toBe(true)
+    const equity = recordForExport(byId('equity.us-de.409a-valuation'))
+    expect(equity.notes.some(note => note.text.startsWith('Stop condition:'))).toBe(true)
+    expect(equity.parts.some(part => part.notes.some(note => note.text.startsWith('Required approval from ')))).toBe(true)
+    expect(JSON.stringify(equity)).not.toMatch(/"(?:toolCall|functionCalls)"/)
+  })
+
+  it('leaves authored records unchanged when projecting or enriching instructions', () => {
+    const before = JSON.stringify(catalog)
+    for (const item of catalog) {
+      recordForExport(item)
+      projectOperational(item, catalog)
+      projectChain(item)
+    }
+    expect(JSON.stringify(catalog)).toBe(before)
+    const sample = structuredClone(byId('brand_002').record)
+    sample.metadata.supportReason = 'Internal integration availability assertion'
+    sample.metadata.contextNeeded = [{ tool: 'private_connector', query: 'company name', required: true }]
+    const notes = JSON.stringify(recordForInstructions(sample).notes)
+    expect(notes).toContain('Required context: company name')
+    expect(notes).not.toContain('private_connector')
+    expect(notes).not.toContain('Internal integration')
+  })
+
+  it('propagates unknown logo timing and execution kind while preserving known estimates', () => {
+    const task = loadProcesses().find(task => task.id === 'brand_002')!
+    for (const id of ['design-brief', 'inspect-logo']) {
+      const step = task.dag.nodes.find(step => step.id === id)!
+      expect(step.estimatedMinutes).toBeUndefined()
+      expect(buildManifestStep(step).estimatedMinutes).toBeUndefined()
+    }
+    const generate = task.dag.nodes.find(step => step.id === 'n1')!
+    expect(generate.route).toBeUndefined()
+    expect(buildManifestStep(generate).kind).toBe('unclassified')
+    expect(buildManifestStep(generate).approvalRequired).toBe(true)
+    expect(computeCeiling(task.dag.nodes).totalMinutes).toBeUndefined()
+    const known = { ...task, dag: { nodes: [{ ...generate, route: 'agent' as const, estimatedMinutes: 7 }], edges: [] } }
+    expect(computeCeiling(known.dag.nodes).totalMinutes).toBe(7)
+  })
+
+  it('preserves the original explicit logo vendor allowlist and its judged scores and citations', () => {
+    const node = loadProcesses().find(task => task.id === 'brand_002')!.dag.nodes.find(node => node.id === 'n1')!
+    const refs = [{ arenaId: 'ai-assistants', productId: 'chatgpt' }, { arenaId: 'ai-assistants', productId: 'gemini' },
+      { arenaId: 'design-tools', productId: 'canva' }, { arenaId: 'design-tools', productId: 'figma' }]
+    const current = crossArenaStepRankings('brand_002', node)
+    expect(current).toEqual(crossArenaStepRankings('brand_002', { ...node, extraOptionRefs: refs }))
+    expect(current.flatMap(ranking => ranking.vendors.map(vendor => `${ranking.arenaId}/${vendor.productId}`)).sort())
+      .toEqual(refs.map(ref => `${ref.arenaId}/${ref.productId}`).sort())
+  })
+
+  it('checks generated drift without rewriting definitions or accepting an unindexed definition', () => {
+    const root = mkdtempSync(path.join(os.tmpdir(), 'canonical-projection-'))
+    temporary.push(root)
+    for (const file of ['lib/shared-processes/catalog.ts', 'lib/shared-processes/schema.ts', 'lib/shared-processes/projection.ts',
+      'scripts/shared-processes/project.ts', 'open-processes/generate-a-brand-logo.json']) {
+      mkdirSync(path.dirname(path.join(root, file)), { recursive: true })
+      cpSync(file, path.join(root, file))
+    }
+    symlinkSync(path.join(process.cwd(), 'node_modules'), path.join(root, 'node_modules'))
+    writeFileSync(path.join(root, 'open-processes/catalog.json'), JSON.stringify({ processes: ['generate-a-brand-logo'] }))
+    const definition = readFileSync(path.join(root, 'open-processes/generate-a-brand-logo.json'), 'utf8')
+    const run = (...args: string[]) => spawnSync(process.execPath, ['--import', 'tsx', 'scripts/shared-processes/project.ts', ...args], { cwd: root, encoding: 'utf8' })
+    expect(run('--write').status).toBe(0)
+    expect(run().status).toBe(0)
+    writeFileSync(path.join(root, 'open-processes/corpus.json'), '[]\n')
+    expect(run().status).not.toBe(0)
+    expect(readFileSync(path.join(root, 'open-processes/generate-a-brand-logo.json'), 'utf8')).toBe(definition)
+    writeFileSync(path.join(root, 'open-processes/orphan.json'), definition)
+    expect(() => loadProcessCatalog(undefined, root)).toThrow('missing from catalog')
+  })
+})

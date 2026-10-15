@@ -33,12 +33,13 @@ describe('reversibility totality', () => {
     }
   })
 
-  it('classifies every DAG node explicitly, including jurisdiction-conditional ones', () => {
+  it('preserves known node classifications and leaves the canonical chooser unknown', () => {
     let nodes = 0
     for (const t of RAW) {
       for (const n of t.dag.nodes) {
         nodes += 1
-        expect(tiers.has(n.reversibility), `${t.id}/${n.id} node tier`).toBe(true)
+        if (t.id === 'brand_002' && n.id === 'n1') expect(n.reversibility).toBeUndefined()
+        else expect(tiers.has(n.reversibility), `${t.id}/${n.id} node tier`).toBe(true)
       }
     }
     expect(nodes).toBeGreaterThanOrEqual(600)

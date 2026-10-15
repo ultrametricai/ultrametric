@@ -10,7 +10,7 @@ export const collectionNames = {
   law: 'Rule cards', citations: 'Citations', artifacts: 'Business artifacts',
 }
 
-const roots = ['content/processes/records', 'rankings', 'open-documents', 'lib/openstartup', 'processes', 'jurisdictions', 'law', 'open-law/citations', 'coverage']
+const roots = ['open-processes', 'open-rankings', 'open-artifacts', 'open-documents', 'lib/openstartup', 'jurisdictions', 'open-law', 'coverage']
 const recordKey = (collection, id) => `${collection}:${id}`
 const nonempty = value => typeof value === 'string' && value.trim().length > 0
 const isoDate = value => typeof value === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(value) && Number.isFinite(Date.parse(`${value}T00:00:00Z`)) && new Date(`${value}T00:00:00Z`).toISOString().slice(0, 10) === value
@@ -58,7 +58,7 @@ export function buildContentAudit(files, metadata) {
       Object.values(value).forEach(item => walk(item, visit))
     }
   }
-  const shared = [...files.keys()].filter(file => /^content\/processes\/records\/[^/]+\.json$/.test(file)).sort()
+  const shared = [...files.keys()].filter(file => /^open-processes\/[^/]+\.json$/.test(file)).filter(file => { const value = JSON.parse(files.get(file)); return value && !Array.isArray(value) && Array.isArray(value.parts) }).sort()
   if (!shared.length) throw new Error('The shared process catalog is missing.')
   const processKeys = new Map()
   const processRows = shared.map(file => {
@@ -165,7 +165,7 @@ export function buildContentAudit(files, metadata) {
       }
     }
   }
-  for (const file of [...files.keys()].filter(file => /^law\/.+\.json$/.test(file)).sort()) {
+  for (const file of [...files.keys()].filter(file => /^open-law\/(?!citations\/).+\.json$/.test(file) && file !== 'open-law/map.json').sort()) {
     const value = json(file)
     const record = add('law', value.id, value.id, file, [value.jurisdiction, value.status])
     presence(record, 'Rule statement', nonempty(value.statement))

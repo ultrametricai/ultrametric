@@ -22,11 +22,16 @@ function runExport(example: boolean) {
 
 beforeEach(() => {
   root = mkdtempSync(path.join(tmpdir(), 'um-shared-export-'))
-  for (const directory of ['schemas', 'content/processes/records', 'content/processes/examples']) mkdirSync(path.join(root, directory), { recursive: true })
+  for (const directory of ['schemas', 'open-processes', 'content/processes/examples']) mkdirSync(path.join(root, directory), { recursive: true })
   writeFileSync(path.join(root, 'schemas/shared-process.schema.json'), sharedSchemaJson())
   const example = readFileSync(path.join(repo, 'content/processes/examples/staging.json'), 'utf8')
   writeFileSync(path.join(root, 'content/processes/examples/staging.json'), example)
-  for (const record of JSON.parse(example)) writeFileSync(path.join(root, 'content/processes/records', `${record.id}.json`), JSON.stringify(record))
+  const definitions = JSON.parse(example).map((record: { id: string; parts: Array<{ id: string }>; links: Array<{ to: string }> }) => {
+    if (!record.parts.length) record.parts.push({ id: 'synthetic-step', kind: 'step', title: 'Synthetic step', guidance: 'Perform the synthetic check.', when: null, ref: null, options: [], references: [], notes: [], metadata: {} } as typeof record.parts[number])
+    return { ...record, entrySteps: record.parts.filter(part => !record.links.some(link => link.to === part.id)).map(part => part.id) }
+  })
+  for (const record of definitions) writeFileSync(path.join(root, 'open-processes', `${record.id}.json`), JSON.stringify(record))
+  writeFileSync(path.join(root, 'open-processes/catalog.json'), JSON.stringify({ processes: definitions.map((record: { id: string }) => record.id) }))
   execFileSync('git', ['init', '-q'], { cwd: root })
   commit()
 })
@@ -55,16 +60,24 @@ describe('pinned catalog export', () => {
   })
 
   it('preserves the canonical logo entry, graph, guidance and metadata in the normal export', () => {
-    const directory = path.join(root, 'content/processes/records')
+    const directory = path.join(root, 'open-processes')
     rmSync(directory, { recursive: true })
-    cpSync(path.join(repo, 'content/processes/records'), directory, { recursive: true })
+    cpSync(path.join(repo, 'open-processes'), directory, { recursive: true })
     commit()
     const result = runExport(false)
     expect(result.status, result.stderr).toBe(0)
     const artifact = JSON.parse(readFileSync(path.join(root, 'catalog.json'), 'utf8'))
     const canonical = JSON.parse(readFileSync(path.join(repo, 'open-processes/generate-a-brand-logo.json'), 'utf8'))
     const projected = artifact.records.find((record: { id: string }) => record.id === canonical.id)
-    const authored = JSON.parse(readFileSync(path.join(directory, `${canonical.id}.json`), 'utf8'))
-    expect(projected).toEqual({ ...canonical, source: authored.source })
+    expect(projected).toEqual({
+      ...canonical,
+      notes: [...canonical.notes,
+        { text: 'Required artifacts: company-name' },
+        { text: 'Produced artifacts: brand-logo' },
+      ],
+      parts: canonical.parts.map((part: { id: string; notes: unknown[] }) => part.id === 'n2'
+        ? { ...part, notes: [...part.notes, { text: 'Produced artifact: brand-logo' }] }
+        : part),
+    })
   })
 })

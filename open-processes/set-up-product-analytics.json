@@ -1,0 +1,332 @@
+{
+  "schemaVersion": 1,
+  "id": "prod_005",
+  "kind": "process",
+  "title": "Set up product analytics",
+  "summary": "Configure product analytics with event tracking, funnels, and session recording. PostHog is the canonical route; the product-analytics arena ranks the alternatives.",
+  "outcomes": [],
+  "guidance": null,
+  "parts": [
+    {
+      "id": "n1",
+      "kind": "step",
+      "title": "Create a project in your analytics platform",
+      "guidance": "Start with the product questions the team needs to answer, then create the analytics project within its authorized account, budget and data-handling scope. Choose region, retention and access from those requirements. Decide how development traffic will be identified or separated before connecting an SDK. Check that the project receiving a test event is the one the team intends to use for reporting.",
+      "when": null,
+      "ref": null,
+      "options": [],
+      "notes": [],
+      "references": [
+        {
+          "kind": "vendor",
+          "id": "posthog",
+          "role": "stated-vendor"
+        },
+        {
+          "kind": "vendor",
+          "id": "posthog",
+          "role": "candidate"
+        },
+        {
+          "kind": "vendor",
+          "id": "amplitude",
+          "role": "candidate"
+        },
+        {
+          "kind": "vendor",
+          "id": "mixpanel",
+          "role": "candidate"
+        },
+        {
+          "kind": "category",
+          "id": "product-analytics",
+          "role": "rankings"
+        },
+        {
+          "kind": "url",
+          "url": "https://posthog.com/docs/product-analytics",
+          "title": "PostHog product analytics",
+          "description": null,
+          "role": "authored-guidance-source"
+        },
+        {
+          "kind": "url",
+          "url": "https://posthog.com/docs/product-analytics/privacy",
+          "title": "PostHog product analytics privacy controls",
+          "description": null,
+          "role": "authored-guidance-source"
+        }
+      ],
+      "metadata": {
+        "route": "agent",
+        "reversibility": "reversible",
+        "approvalRequired": true,
+        "estimatedMinutes": 10
+      }
+    },
+    {
+      "id": "n2",
+      "kind": "step",
+      "title": "Install SDK in codebase",
+      "guidance": "Install the integration for the actual framework and inspect its collection defaults before enabling it. Configure only the events, identity handling and data collection authorized for the application. Test an anonymous visit, sign-in and sign-out, examining the events and identities received at each stage. Confirm that one person's session does not remain attached to another user's account after a change of user. Check payloads for sensitive fields and keep a way to disable collection.",
+      "when": null,
+      "ref": null,
+      "options": [],
+      "notes": [],
+      "references": [
+        {
+          "kind": "category",
+          "id": "ai-coding",
+          "role": "additional-rankings"
+        },
+        {
+          "kind": "url",
+          "url": "https://posthog.com/docs/product-analytics",
+          "title": "PostHog product analytics",
+          "description": null,
+          "role": "authored-guidance-source"
+        },
+        {
+          "kind": "url",
+          "url": "https://posthog.com/docs/product-analytics/privacy",
+          "title": "PostHog product analytics privacy controls",
+          "description": null,
+          "role": "authored-guidance-source"
+        }
+      ],
+      "metadata": {
+        "route": "agent",
+        "reversibility": "reversible",
+        "producesArtifact": "product-analytics",
+        "approvalRequired": true,
+        "estimatedMinutes": 20,
+        "verify": {
+          "how": "A test event fires and appears in the analytics project's live event stream."
+        }
+      }
+    },
+    {
+      "id": "n3",
+      "kind": "step",
+      "title": "Define key events",
+      "guidance": "Define events at the point the behavior happens: a submitted form and a successfully created account answer different questions. For each event, specify its name, trigger, allowed properties and user or account identifier. Decide how retries and duplicate submissions should appear. Walk a test user through the product and compare payloads with the definitions. Keep the dictionary beside the implementation so a later event change can be distinguished from a real change in customer behavior.",
+      "when": null,
+      "ref": null,
+      "options": [],
+      "notes": [],
+      "references": [
+        {
+          "kind": "vendor",
+          "id": "posthog",
+          "role": "stated-vendor"
+        },
+        {
+          "kind": "url",
+          "url": "https://posthog.com/docs/product-analytics",
+          "title": "PostHog product analytics",
+          "description": null,
+          "role": "authored-guidance-source"
+        }
+      ],
+      "metadata": {
+        "route": "agent",
+        "reversibility": "reversible",
+        "approvalRequired": true,
+        "estimatedMinutes": 15
+      }
+    },
+    {
+      "id": "n4",
+      "kind": "step",
+      "title": "Create dashboards",
+      "guidance": "Build each chart around a decision the team will make. Name its population, unit, time window and filters, and distinguish a count of events from a count of users or accounts. Trace at least one chart back to raw events or a known test cohort. Label freshness and exclusions where they affect interpretation, then share with the intended audience under the project's access rules.",
+      "when": null,
+      "ref": null,
+      "options": [],
+      "notes": [],
+      "references": [
+        {
+          "kind": "vendor",
+          "id": "posthog",
+          "role": "stated-vendor"
+        },
+        {
+          "kind": "url",
+          "url": "https://posthog.com/docs/product-analytics",
+          "title": "PostHog product analytics",
+          "description": null,
+          "role": "authored-guidance-source"
+        }
+      ],
+      "metadata": {
+        "route": "agent",
+        "reversibility": "reversible",
+        "approvalRequired": true,
+        "estimatedMinutes": 15
+      }
+    },
+    {
+      "id": "n5",
+      "kind": "step",
+      "title": "Set up funnels",
+      "guidance": "Choose a real journey with a clear entry and completion event. Set its order, conversion window and identity rule, then test known paths: successful completion, abandonment, repetition and a return visit. Compare the funnel with those users' underlying events. Adjust the definition if alternate valid paths are being counted as abandonment, and label the included population so later comparisons use the same cohort.",
+      "when": null,
+      "ref": null,
+      "options": [],
+      "notes": [],
+      "references": [
+        {
+          "kind": "vendor",
+          "id": "posthog",
+          "role": "stated-vendor"
+        },
+        {
+          "kind": "url",
+          "url": "https://posthog.com/docs/product-analytics",
+          "title": "PostHog product analytics",
+          "description": null,
+          "role": "authored-guidance-source"
+        }
+      ],
+      "metadata": {
+        "route": "agent",
+        "reversibility": "reversible",
+        "approvalRequired": true,
+        "estimatedMinutes": 10
+      }
+    },
+    {
+      "id": "n6",
+      "kind": "step",
+      "title": "Enable session recording",
+      "guidance": "Choose the question a replay should answer and the screens needed to answer it. Configure masking, excluded screens, network capture, retention and viewer access within the authorized privacy scope. Enter fictional sensitive values during a test and inspect the replay and captured requests, including embedded content. If a sensitive surface cannot be masked, exclude or stop recording it using the supported controls. Enable live capture only after the test shows the intended data boundary.",
+      "when": null,
+      "ref": null,
+      "options": [],
+      "notes": [],
+      "references": [
+        {
+          "kind": "vendor",
+          "id": "posthog",
+          "role": "stated-vendor"
+        },
+        {
+          "kind": "url",
+          "url": "https://posthog.com/docs/session-replay/privacy",
+          "title": "PostHog session replay privacy controls",
+          "description": null,
+          "role": "authored-guidance-source"
+        },
+        {
+          "kind": "url",
+          "url": "https://posthog.com/docs/product-analytics/privacy",
+          "title": "PostHog product analytics privacy controls",
+          "description": null,
+          "role": "authored-guidance-source"
+        }
+      ],
+      "metadata": {
+        "route": "agent",
+        "reversibility": "reversible",
+        "approvalRequired": true,
+        "riskLevel": "medium",
+        "estimatedMinutes": 5
+      }
+    }
+  ],
+  "links": [
+    {
+      "from": "n1",
+      "to": "n2",
+      "when": null
+    },
+    {
+      "from": "n2",
+      "to": "n3",
+      "when": null
+    },
+    {
+      "from": "n3",
+      "to": "n4",
+      "when": null
+    },
+    {
+      "from": "n3",
+      "to": "n5",
+      "when": null
+    },
+    {
+      "from": "n2",
+      "to": "n6",
+      "when": null
+    }
+  ],
+  "references": [
+    {
+      "kind": "vendor",
+      "id": "posthog",
+      "role": "involves"
+    }
+  ],
+  "notes": [],
+  "metadata": {
+    "slugAliases": [
+      {
+        "slug": "set-up-posthog",
+        "label": "Set up PostHog"
+      }
+    ],
+    "phase": "product",
+    "cadence": "once",
+    "geoScope": "global",
+    "complexity": "moderate",
+    "reversibility": "reversible",
+    "category": "data_analytics",
+    "supportLevel": "partial",
+    "supportReason": "PostHog's public REST API (live OpenAPI spec, official MCP server) covers project creation and event/dashboard management. Initial instrumentation is a code change — a coding agent can make it, a human reviews the diff.",
+    "contextNeeded": [
+      {
+        "tool": "user_input",
+        "query": "product key events",
+        "tier": "user_input",
+        "required": true
+      },
+      {
+        "tool": "user_input",
+        "query": "product key funnels",
+        "tier": "user_input",
+        "required": true
+      }
+    ],
+    "produces": [
+      "product-analytics"
+    ],
+    "requires": [
+      "code-hosting-org"
+    ],
+    "tags": [
+      "product",
+      "analytics",
+      "setup"
+    ],
+    "activeMinutes": 75,
+    "totalEstimatedMinutes": 75,
+    "hasAsyncSteps": false,
+    "timeOrder": 31,
+    "annoyance": 2,
+    "risk": 1,
+    "growthImpact": 4
+  },
+  "source": {
+    "path": "open-processes/corpus.json",
+    "id": "prod_005",
+    "revision": "4a1ac9b2eea2d4e1ac8cc5a0dfdc7cc5dc6080a1",
+    "sha256": "be7962e4af7ddb76275672d53bf465db7fd08da80494bb395024576d569b0f82"
+  },
+  "entrySteps": [
+    "n1"
+  ],
+  "aliases": [
+    "set-up-posthog"
+  ]
+}

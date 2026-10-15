@@ -98,7 +98,7 @@ export function enumerateAuditTargets(tasks: ProcessTask[]): AuditTarget[] {
   for (const task of tasks) {
     for (const node of task.dag.nodes) {
       const route = node.route
-      if (route === 'agent') continue
+      if (route === 'agent' || route === undefined) continue
       targets.push({
         taskId: task.id,
         nodeId: node.id,

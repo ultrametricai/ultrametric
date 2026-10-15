@@ -76,7 +76,7 @@ const replayBatches = Array.from({ length: Math.ceil(combos.length / REPLAY_BATC
 const routeMixOf = (taskId: string): RouteMix => {
   const mix: RouteMix = { agent: 0, form: 0, person: 0, legalSignature: 0 }
   for (const n of corpusById.get(taskId)!.dag.nodes) {
-    mix[n.route] += 1
+    if (n.route) mix[n.route] += 1
     if (n.legalSignature) mix.legalSignature += 1
   }
   return mix

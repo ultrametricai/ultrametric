@@ -1,6 +1,7 @@
 import fs from 'node:fs'
 import path from 'node:path'
 import { z } from 'zod'
+import { connectionSchema } from './shared-processes/schema'
 import { isPopulated, loadCategory } from './data'
 import { resolveGapStep } from './gapClosers'
 import { GEO_NOTE_KINDS } from './geoPreference'
@@ -58,7 +59,7 @@ export type GeoNoteCountry = (typeof GEO_NOTE_COUNTRIES)[number]
 export const DagNodeBaseSchema = z.object({
   id: z.string().min(1),
   label: z.string().min(1),
-  route: z.enum(['agent', 'form', 'person']),
+  route: z.enum(['agent', 'form', 'person']).optional(),
   vendor: z.string().min(1).optional(),
   // Companies that can perform this step — the market for a "choose/sign up" step. Tracked
   // vendors render as chips linking to their judged product page; untracked ones (e.g. doola)
@@ -106,7 +107,7 @@ export const DagNodeBaseSchema = z.object({
   // so this flag marks only the signature act itself.
   legalSignature: z.boolean().optional(),
   riskLevel: z.enum(['low', 'medium', 'high']).optional(),
-  estimatedMinutes: z.number().min(0),
+  estimatedMinutes: z.number().min(0).optional(),
   async: z.boolean().optional(),
   // Jurisdiction-conditional step (founder 2026-09-25: "allow more options for the processes —
   // ie multi-state situations or California included"): this step only applies when the reader
@@ -196,8 +197,8 @@ export const StepMethodContextSchema = z.object({
 export const StepMethodSchema = z.object({
   id: z.string().regex(/^[a-z0-9]+(-[a-z0-9]+)*$/, 'method id must be kebab-case'),
   label: z.string().min(1),
-  summary: z.string().min(1),
-  context: StepMethodContextSchema,
+  summary: z.string(),
+  context: StepMethodContextSchema.optional(),
   route: z.enum(['agent', 'form', 'person']).optional(),
   vendor: z.string().min(1).optional(),
   vendorOptions: z.string().min(1).array().optional(),
@@ -263,7 +264,7 @@ export const DagNodeSchema = DagNodeBaseSchema.extend({
   // it carried the commitment). Method-variant subSteps (DagNodeBaseSchema) deliberately do NOT
   // carry the field this phase — variants are display-level; the default flow is the judged
   // surface.
-  reversibility: z.enum(REVERSIBILITY_TIERS),
+  reversibility: z.enum(REVERSIBILITY_TIERS).optional(),
   // "How do I know it worked?" — see StepVerifySchema above. Optional: absence means the step
   // has no meaningful external check (drafting, internal decisions), never that one was missed.
   verify: StepVerifySchema.optional(),
@@ -456,7 +457,7 @@ export const ProcessTaskSchema = z.object({
   vendors: z.string().array(),
   dag: z.object({
     nodes: DagNodeSchema.array().min(1),
-    edges: z.object({ from: z.string(), to: z.string() }).array().optional(),
+    edges: connectionSchema.array().optional(),
   }),
   contextNeeded: z.object({
     tool: z.string().min(1),
@@ -480,8 +481,8 @@ export const ProcessTaskSchema = z.object({
   // corpus-wide (design shipped ahead of the first real run; nothing is fabricated).
   provenRuns: ProvenRunSchema.array().min(1).optional(),
   tags: z.string().array(),
-  activeMinutes: z.number().min(0),
-  totalEstimatedMinutes: z.number().min(0),
+  activeMinutes: z.number().min(0).optional(),
+  totalEstimatedMinutes: z.number().min(0).optional(),
   hasAsyncSteps: z.boolean(),
 })
 
@@ -548,7 +549,7 @@ const DEFAULT_DIR = () => path.join(process.cwd(), 'open-rankings')
 // `dir` stays the ARENA-DATA dir (it keys the caches and resolves the live markets via
 // loadCategory); the corpus files resolve as siblings of it, so every existing call site
 // (DEFAULT_DIR, tests' DATA_DIR, rankings-engine/paths.ts DATA_DIR — all `<root>/data`) keeps working
-// unchanged. Content is byte-identical to the pre-move files; paths only.
+// unchanged. These files are checked projections of the canonical definitions.
 const corpusFile = (dir: string) => path.join(dir, '..', 'open-processes', 'corpus.json')
 const chainsFile = (dir: string) => path.join(dir, '..', 'open-processes', 'chains.json')
 
@@ -611,10 +612,10 @@ export function loadProcesses(dir: string = DEFAULT_DIR()): ProcessTask[] {
         const at = `${t.id}/${n.id} method ${m.id}`
         if (methodIds.has(m.id)) throw new Error(`${at}: duplicate method id`)
         methodIds.add(m.id)
-        if (m.context.kind === 'geo' && !m.context.countries?.length) {
+        if (m.context?.kind === 'geo' && !m.context?.countries?.length) {
           throw new Error(`${at}: geo method must carry country codes`)
         }
-        if (m.context.kind !== 'geo' && m.context.countries) {
+        if (m.context?.kind !== 'geo' && m.context?.countries) {
           throw new Error(`${at}: only geo methods carry country codes`)
         }
         const subIds = new Set<string>()
@@ -623,7 +624,7 @@ export function loadProcesses(dir: string = DEFAULT_DIR()): ProcessTask[] {
           subIds.add(s.id)
         }
         if (m.subSteps && m.estimatedMinutes !== undefined) {
-          const sum = m.subSteps.reduce((acc, s) => acc + s.estimatedMinutes, 0)
+          const sum = m.subSteps.every(s => s.estimatedMinutes !== undefined) ? m.subSteps.reduce((acc, s) => acc + s.estimatedMinutes!, 0) : undefined
           if (sum !== m.estimatedMinutes) {
             throw new Error(`${at}: estimatedMinutes ${m.estimatedMinutes} must equal sub-step sum ${sum}`)
           }
@@ -745,7 +746,7 @@ export function chainTasks(chain: ProcessChain, dir: string = DEFAULT_DIR()): Pr
 
 export interface ProcessGap {
   label: string
-  route: 'form' | 'person'
+  route?: 'form' | 'person'
   why: string
 }
 
@@ -754,8 +755,8 @@ export interface ProcessCeiling {
   totalSteps: number
   // % of steps an agent can run today, rounded to a whole number.
   pct: number
-  agentMinutes: number
-  totalMinutes: number
+  agentMinutes: number | undefined
+  totalMinutes: number | undefined
   // Agent-runnable steps that are human-gated (approvalRequired) — counted inside agentSteps
   // (the agent CAN run them), surfaced separately because a human still has to say yes.
   approvalGates: number
@@ -774,13 +775,13 @@ export function computeCeiling(
   let approvalGates = 0
   const gaps: ProcessGap[] = []
   for (const n of nodes) {
-    totalMinutes += n.estimatedMinutes
+    if (n.estimatedMinutes !== undefined) totalMinutes += n.estimatedMinutes
     if (n.route === 'agent') {
       agentSteps += 1
-      agentMinutes += n.estimatedMinutes
+      if (n.estimatedMinutes !== undefined) agentMinutes += n.estimatedMinutes
       if (n.approvalRequired) approvalGates += 1
     } else {
-      gaps.push({ label: n.label, route: n.route, why: gapWhy(n.route) })
+      gaps.push({ label: n.label, route: n.route, why: n.route ? gapWhy(n.route) : 'Execution type not specified' })
     }
   }
   const totalSteps = nodes.length
@@ -788,8 +789,8 @@ export function computeCeiling(
     agentSteps,
     totalSteps,
     pct: totalSteps === 0 ? 0 : Math.round((agentSteps / totalSteps) * 100),
-    agentMinutes,
-    totalMinutes,
+    agentMinutes: nodes.some(n => n.route === undefined || n.route === 'agent' && n.estimatedMinutes === undefined) ? undefined : agentMinutes,
+    totalMinutes: nodes.some(n => n.estimatedMinutes === undefined) ? undefined : totalMinutes,
     approvalGates,
     gaps,
   }

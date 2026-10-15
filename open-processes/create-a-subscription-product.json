@@ -1,0 +1,171 @@
+{
+  "schemaVersion": 1,
+  "id": "opp_003",
+  "kind": "process",
+  "title": "Create a subscription product",
+  "summary": "Create a subscription product and price for recurring billing.",
+  "outcomes": [],
+  "guidance": null,
+  "parts": [
+    {
+      "id": "n1",
+      "kind": "step",
+      "title": "Decide the price point and billing interval",
+      "guidance": "Specify the subscription's included service, charging unit, amount, currency, interval and renewal commitment. Include trial or discount terms and the reviewed tax treatment. Work through a representative checkout and renewal total to expose ambiguity. Settle the commercial choices in one pricing specification that both billing setup and customer-facing copy can follow.",
+      "when": null,
+      "ref": null,
+      "options": [],
+      "notes": [],
+      "references": [],
+      "metadata": {
+        "route": "person",
+        "reversibility": "reversible",
+        "estimatedMinutes": 10
+      }
+    },
+    {
+      "id": "n2",
+      "kind": "step",
+      "title": "Create the product and recurring price in billing",
+      "guidance": "Create the product and recurring price in the billing service's test catalog from the pricing specification. Read back the name, unit, currency, amount and interval, then map the saved identifiers into application configuration. Resolve mismatches before releasing the catalog under billing authority and connecting the price to a live purchase path.",
+      "when": null,
+      "ref": null,
+      "options": [],
+      "notes": [],
+      "references": [
+        {
+          "kind": "vendor",
+          "id": "stripe_billing",
+          "role": "stated-vendor"
+        },
+        {
+          "kind": "vendor",
+          "id": "stripe_billing",
+          "role": "candidate"
+        },
+        {
+          "kind": "vendor",
+          "id": "chargebee",
+          "role": "candidate"
+        },
+        {
+          "kind": "vendor",
+          "id": "recurly",
+          "role": "candidate"
+        },
+        {
+          "kind": "category",
+          "id": "billing-subscriptions",
+          "role": "rankings"
+        },
+        {
+          "kind": "url",
+          "url": "https://docs.stripe.com/products-prices/manage-prices",
+          "title": "Manage products and prices",
+          "description": null,
+          "role": "authored-guidance-source"
+        }
+      ],
+      "metadata": {
+        "route": "agent",
+        "reversibility": "reversible",
+        "estimatedMinutes": 2
+      }
+    },
+    {
+      "id": "n3",
+      "kind": "step",
+      "title": "Run a test subscription end-to-end",
+      "guidance": "Use a fictional customer to complete the intended purchase flow in the billing service's test environment. Check price, invoice, confirmation and application access, then exercise renewal, payment failure and cancellation with supported test tools. Record reproducible identifiers and expected versus observed results. Resolve mismatches before enabling live purchases or real charges.",
+      "when": null,
+      "ref": null,
+      "options": [],
+      "notes": [],
+      "references": [
+        {
+          "kind": "vendor",
+          "id": "stripe_billing",
+          "role": "stated-vendor"
+        },
+        {
+          "kind": "url",
+          "url": "https://docs.stripe.com/billing/testing",
+          "title": "Test your Billing integration",
+          "description": null,
+          "role": "authored-guidance-source"
+        }
+      ],
+      "metadata": {
+        "route": "agent",
+        "reversibility": "reversible",
+        "estimatedMinutes": 3
+      }
+    }
+  ],
+  "links": [
+    {
+      "from": "n1",
+      "to": "n2",
+      "when": null
+    },
+    {
+      "from": "n2",
+      "to": "n3",
+      "when": null
+    }
+  ],
+  "references": [
+    {
+      "kind": "vendor",
+      "id": "stripe_billing",
+      "role": "involves"
+    },
+    {
+      "kind": "vendor",
+      "id": "chargebee",
+      "role": "involves"
+    },
+    {
+      "kind": "vendor",
+      "id": "recurly",
+      "role": "involves"
+    }
+  ],
+  "notes": [],
+  "metadata": {
+    "phase": "growth",
+    "cadence": "event-driven",
+    "geoScope": "global",
+    "complexity": "moderate",
+    "reversibility": "reversible",
+    "category": "opportunity",
+    "supportLevel": "partial",
+    "supportReason": "Products and prices are first-class API objects — an agent creates both in one pass.",
+    "contextNeeded": [],
+    "produces": [],
+    "requires": [
+      "payment-processor"
+    ],
+    "tags": [
+      "opportunity",
+      "stripe",
+      "billing"
+    ],
+    "activeMinutes": 15,
+    "totalEstimatedMinutes": 15,
+    "hasAsyncSteps": false,
+    "timeOrder": 58,
+    "annoyance": 1,
+    "risk": 1,
+    "growthImpact": 3
+  },
+  "source": {
+    "path": "open-processes/corpus.json",
+    "id": "opp_003",
+    "revision": "4a1ac9b2eea2d4e1ac8cc5a0dfdc7cc5dc6080a1",
+    "sha256": "ba2ea38a119934fdf140599d723da4bd83ee6e769867a64d19102b5b9cbe1d63"
+  },
+  "entrySteps": [
+    "n1"
+  ]
+}

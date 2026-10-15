@@ -134,7 +134,8 @@ export type GapResolution =
 // the simulator transcript, and the gap-closer split. Founder 2026-09-21: person steps are no
 // longer framed negatively as "needs a human" — a human OR a computer-use agent handles them;
 // only legally required signature acts (DagNode.legalSignature) are the true human floor.
-export function gapWhy(route: 'form' | 'person'): string {
+export function gapWhy(route: 'form' | 'person' | undefined): string {
+  if (route === undefined) return 'Execution type not specified'
   return route === 'person' ? 'human or computer use' : 'manual form/portal — no API path'
 }
 
@@ -145,7 +146,7 @@ export interface SimStep {
   taskId: string
   taskTitle: string
   label: string
-  route: StepRoute
+  route?: StepRoute
   vendor: string | null
   vendorLabel: string | null
   // Set when the vendor is mapped to an arena — the simulator swaps this step's product.
@@ -162,7 +163,7 @@ export interface SimStep {
   // "true human floor") — the transcript names it instead of the generic gap reason.
   legalSignature: boolean
   riskLevel: 'low' | 'medium' | 'high' | null
-  estimatedMinutes: number
+  estimatedMinutes?: number
   async: boolean
   // Pre-resolved (server-side) agentic workaround for non-agent steps; null for agent steps and
   // for gaps with no honest workaround.

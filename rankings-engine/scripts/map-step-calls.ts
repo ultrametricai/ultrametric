@@ -67,7 +67,7 @@ export interface CallTarget {
   productName: string
   stepKey: string // `${taskId}:${nodeId}`
   label: string
-  route: string
+  route: string | undefined
   taskTitle: string
   canonicalCalls: FunctionCall[]
   evidence: Evidence[]

@@ -14,7 +14,7 @@ import { isShutdown } from './shutdown'
 
 export interface GapStep {
   label: string
-  route: StepRoute
+  route?: StepRoute
   async?: boolean
 }
 
@@ -124,7 +124,7 @@ export type GapClassification =
 // Pure keyword routing — no disk access, so the rules are unit-testable in isolation.
 // Agent steps are never classified (they aren't gaps).
 export function classifyGapStep(step: GapStep): GapClassification {
-  if (step.route === 'agent') return null
+  if (step.route === 'agent' || step.route === undefined) return null
   const l = step.label.toLowerCase()
   if (IRREDUCIBLE_RE.test(l)) return { kind: 'irreducible', reason: IRREDUCIBLE_REASON }
   const rule = CLOSER_RULES.find((r) => r.test(l, step))
@@ -199,13 +199,13 @@ export function resolveGapStep(step: GapStep, dir?: string): GapResolution | nul
 
 export interface ClosableGap {
   label: string
-  route: 'form' | 'person'
+  route?: 'form' | 'person'
   closer: GapCloser
 }
 
 export interface HumanGap {
   label: string
-  route: 'form' | 'person'
+  route?: 'form' | 'person'
   why: string
   // True when the step matched the judgment/identity rule; false = no honest workaround yet.
   irreducible: boolean

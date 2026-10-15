@@ -13,384 +13,782 @@
   ],
   "$defs": {
     "canonical": {
-      "type": "object",
-      "properties": {
-        "schemaVersion": {
-          "type": "number",
-          "const": 1
-        },
-        "id": {
-          "type": "string",
-          "minLength": 1,
-          "maxLength": 160,
-          "pattern": "^[a-zA-Z0-9][a-zA-Z0-9._-]*$"
-        },
-        "kind": {
-          "type": "string",
-          "enum": [
-            "situation",
-            "process"
-          ]
-        },
-        "title": {
-          "type": "string",
-          "minLength": 1,
-          "pattern": "\\S"
-        },
-        "summary": {
-          "type": "string"
-        },
-        "outcomes": {
-          "type": "array",
-          "items": {
-            "type": "string",
-            "minLength": 1,
-            "pattern": "\\S"
-          }
-        },
-        "guidance": {
-          "anyOf": [
-            {
-              "type": "string",
-              "minLength": 1,
-              "pattern": "\\S"
-            },
-            {
-              "type": "null"
-            }
-          ]
-        },
-        "when": {
-          "anyOf": [
-            {
-              "type": "string",
-              "minLength": 1,
-              "pattern": "\\S"
-            },
-            {
-              "type": "null"
-            }
-          ]
-        },
-        "aliases": {
-          "type": "array",
-          "items": {
-            "type": "string",
-            "minLength": 1,
-            "maxLength": 160,
-            "pattern": "^[a-zA-Z0-9][a-zA-Z0-9._-]*$"
-          }
-        },
-        "entrySteps": {
-          "minItems": 1,
-          "type": "array",
-          "items": {
-            "type": "string",
-            "minLength": 1,
-            "maxLength": 160,
-            "pattern": "^[a-zA-Z0-9][a-zA-Z0-9._-]*$"
-          }
-        },
-        "parts": {
-          "type": "array",
-          "items": {
-            "$ref": "#/$defs/__schema0"
-          }
-        },
-        "links": {
-          "type": "array",
-          "items": {
-            "type": "object",
-            "properties": {
-              "from": {
-                "type": "string",
-                "minLength": 1,
-                "maxLength": 160,
-                "pattern": "^[a-zA-Z0-9][a-zA-Z0-9._-]*$"
-              },
-              "to": {
-                "type": "string",
-                "minLength": 1,
-                "maxLength": 160,
-                "pattern": "^[a-zA-Z0-9][a-zA-Z0-9._-]*$"
-              },
-              "option": {
-                "type": "string",
-                "minLength": 1,
-                "maxLength": 160,
-                "pattern": "^[a-zA-Z0-9][a-zA-Z0-9._-]*$"
-              },
-              "when": {
-                "anyOf": [
-                  {
-                    "type": "string",
-                    "minLength": 1,
-                    "pattern": "\\S"
-                  },
-                  {
-                    "type": "null"
-                  }
-                ]
-              }
-            },
-            "required": [
-              "from",
-              "to"
-            ],
-            "additionalProperties": false
-          }
-        },
-        "references": {
-          "type": "array",
-          "items": {
-            "anyOf": [
-              {
-                "type": "object",
-                "properties": {
-                  "kind": {
-                    "type": "string",
-                    "enum": [
-                      "vendor",
-                      "category",
-                      "product",
-                      "rule",
-                      "source",
-                      "guidance"
-                    ]
-                  },
-                  "id": {
-                    "type": "string",
-                    "minLength": 1,
-                    "pattern": "\\S"
-                  },
-                  "role": {
-                    "type": "string",
-                    "minLength": 1,
-                    "pattern": "\\S"
-                  }
-                },
-                "required": [
-                  "kind",
-                  "id",
-                  "role"
-                ],
-                "additionalProperties": false
-              },
-              {
-                "type": "object",
-                "properties": {
-                  "kind": {
-                    "type": "string",
-                    "const": "url"
-                  },
-                  "url": {
-                    "type": "string",
-                    "pattern": "^https?:\\/\\/[^\\s/?#]+(?:[/?#][^\\s]*)?$"
-                  },
-                  "title": {
-                    "anyOf": [
-                      {
-                        "type": "string",
-                        "minLength": 1,
-                        "pattern": "\\S"
-                      },
-                      {
-                        "type": "null"
-                      }
-                    ]
-                  },
-                  "description": {
-                    "anyOf": [
-                      {
-                        "type": "string",
-                        "minLength": 1,
-                        "pattern": "\\S"
-                      },
-                      {
-                        "type": "null"
-                      }
-                    ]
-                  },
-                  "role": {
-                    "type": "string",
-                    "minLength": 1,
-                    "pattern": "\\S"
-                  }
-                },
-                "required": [
-                  "kind",
-                  "url",
-                  "title",
-                  "description",
-                  "role"
-                ],
-                "additionalProperties": false
-              }
-            ]
-          }
-        },
-        "notes": {
-          "type": "array",
-          "items": {
-            "type": "object",
-            "properties": {
-              "text": {
-                "type": "string",
-                "minLength": 1,
-                "pattern": "\\S"
-              },
-              "references": {
-                "type": "array",
-                "items": {
-                  "anyOf": [
-                    {
-                      "type": "object",
-                      "properties": {
-                        "kind": {
-                          "type": "string",
-                          "enum": [
-                            "vendor",
-                            "category",
-                            "product",
-                            "rule",
-                            "source",
-                            "guidance"
-                          ]
-                        },
-                        "id": {
-                          "type": "string",
-                          "minLength": 1,
-                          "pattern": "\\S"
-                        },
-                        "role": {
-                          "type": "string",
-                          "minLength": 1,
-                          "pattern": "\\S"
-                        }
-                      },
-                      "required": [
-                        "kind",
-                        "id",
-                        "role"
-                      ],
-                      "additionalProperties": false
-                    },
-                    {
-                      "type": "object",
-                      "properties": {
-                        "kind": {
-                          "type": "string",
-                          "const": "url"
-                        },
-                        "url": {
-                          "type": "string",
-                          "pattern": "^https?:\\/\\/[^\\s/?#]+(?:[/?#][^\\s]*)?$"
-                        },
-                        "title": {
-                          "anyOf": [
-                            {
-                              "type": "string",
-                              "minLength": 1,
-                              "pattern": "\\S"
-                            },
-                            {
-                              "type": "null"
-                            }
-                          ]
-                        },
-                        "description": {
-                          "anyOf": [
-                            {
-                              "type": "string",
-                              "minLength": 1,
-                              "pattern": "\\S"
-                            },
-                            {
-                              "type": "null"
-                            }
-                          ]
-                        },
-                        "role": {
-                          "type": "string",
-                          "minLength": 1,
-                          "pattern": "\\S"
-                        }
-                      },
-                      "required": [
-                        "kind",
-                        "url",
-                        "title",
-                        "description",
-                        "role"
-                      ],
-                      "additionalProperties": false
-                    }
-                  ]
-                }
-              }
-            },
-            "required": [
-              "text"
-            ],
-            "additionalProperties": false
-          }
-        },
-        "metadata": {
-          "type": "object",
-          "propertyNames": {
-            "type": "string"
-          },
-          "additionalProperties": {
-            "$ref": "#/$defs/__schema3"
-          }
-        },
-        "source": {
+      "anyOf": [
+        {
           "type": "object",
           "properties": {
-            "path": {
-              "type": "string",
-              "minLength": 1,
-              "pattern": "\\S"
+            "schemaVersion": {
+              "type": "number",
+              "const": 1
             },
             "id": {
               "type": "string",
               "minLength": 1,
+              "maxLength": 160,
+              "pattern": "^[a-zA-Z0-9][a-zA-Z0-9._-]*$"
+            },
+            "kind": {
+              "type": "string",
+              "enum": [
+                "situation",
+                "process"
+              ]
+            },
+            "title": {
+              "type": "string",
+              "minLength": 1,
               "pattern": "\\S"
             },
-            "revision": {
-              "type": "string",
-              "pattern": "^[a-f0-9]{40}$"
+            "summary": {
+              "type": "string"
             },
-            "sha256": {
-              "type": "string",
-              "pattern": "^[a-f0-9]{64}$"
+            "outcomes": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1,
+                "pattern": "\\S"
+              }
+            },
+            "guidance": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "minLength": 1,
+                  "pattern": "\\S"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "when": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "minLength": 1,
+                  "pattern": "\\S"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "aliases": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 160,
+                "pattern": "^[a-zA-Z0-9][a-zA-Z0-9._-]*$"
+              }
+            },
+            "entrySteps": {
+              "minItems": 1,
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 160,
+                "pattern": "^[a-zA-Z0-9][a-zA-Z0-9._-]*$"
+              }
+            },
+            "parts": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/__schema0"
+              }
+            },
+            "links": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "from": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 160,
+                    "pattern": "^[a-zA-Z0-9][a-zA-Z0-9._-]*$"
+                  },
+                  "to": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 160,
+                    "pattern": "^[a-zA-Z0-9][a-zA-Z0-9._-]*$"
+                  },
+                  "option": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 160,
+                    "pattern": "^[a-zA-Z0-9][a-zA-Z0-9._-]*$"
+                  },
+                  "when": {
+                    "anyOf": [
+                      {
+                        "type": "string",
+                        "minLength": 1,
+                        "pattern": "\\S"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  }
+                },
+                "required": [
+                  "from",
+                  "to"
+                ],
+                "additionalProperties": false
+              }
+            },
+            "references": {
+              "type": "array",
+              "items": {
+                "anyOf": [
+                  {
+                    "type": "object",
+                    "properties": {
+                      "kind": {
+                        "type": "string",
+                        "enum": [
+                          "vendor",
+                          "category",
+                          "product",
+                          "rule",
+                          "source",
+                          "guidance"
+                        ]
+                      },
+                      "id": {
+                        "type": "string",
+                        "minLength": 1,
+                        "pattern": "\\S"
+                      },
+                      "role": {
+                        "type": "string",
+                        "minLength": 1,
+                        "pattern": "\\S"
+                      }
+                    },
+                    "required": [
+                      "kind",
+                      "id",
+                      "role"
+                    ],
+                    "additionalProperties": false
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "kind": {
+                        "type": "string",
+                        "const": "url"
+                      },
+                      "url": {
+                        "type": "string",
+                        "pattern": "^https?:\\/\\/[^\\s/?#]+(?:[/?#][^\\s]*)?$"
+                      },
+                      "title": {
+                        "anyOf": [
+                          {
+                            "type": "string",
+                            "minLength": 1,
+                            "pattern": "\\S"
+                          },
+                          {
+                            "type": "null"
+                          }
+                        ]
+                      },
+                      "description": {
+                        "anyOf": [
+                          {
+                            "type": "string",
+                            "minLength": 1,
+                            "pattern": "\\S"
+                          },
+                          {
+                            "type": "null"
+                          }
+                        ]
+                      },
+                      "role": {
+                        "type": "string",
+                        "minLength": 1,
+                        "pattern": "\\S"
+                      }
+                    },
+                    "required": [
+                      "kind",
+                      "url",
+                      "title",
+                      "description",
+                      "role"
+                    ],
+                    "additionalProperties": false
+                  }
+                ]
+              }
+            },
+            "notes": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "text": {
+                    "type": "string",
+                    "minLength": 1,
+                    "pattern": "\\S"
+                  },
+                  "references": {
+                    "type": "array",
+                    "items": {
+                      "anyOf": [
+                        {
+                          "type": "object",
+                          "properties": {
+                            "kind": {
+                              "type": "string",
+                              "enum": [
+                                "vendor",
+                                "category",
+                                "product",
+                                "rule",
+                                "source",
+                                "guidance"
+                              ]
+                            },
+                            "id": {
+                              "type": "string",
+                              "minLength": 1,
+                              "pattern": "\\S"
+                            },
+                            "role": {
+                              "type": "string",
+                              "minLength": 1,
+                              "pattern": "\\S"
+                            }
+                          },
+                          "required": [
+                            "kind",
+                            "id",
+                            "role"
+                          ],
+                          "additionalProperties": false
+                        },
+                        {
+                          "type": "object",
+                          "properties": {
+                            "kind": {
+                              "type": "string",
+                              "const": "url"
+                            },
+                            "url": {
+                              "type": "string",
+                              "pattern": "^https?:\\/\\/[^\\s/?#]+(?:[/?#][^\\s]*)?$"
+                            },
+                            "title": {
+                              "anyOf": [
+                                {
+                                  "type": "string",
+                                  "minLength": 1,
+                                  "pattern": "\\S"
+                                },
+                                {
+                                  "type": "null"
+                                }
+                              ]
+                            },
+                            "description": {
+                              "anyOf": [
+                                {
+                                  "type": "string",
+                                  "minLength": 1,
+                                  "pattern": "\\S"
+                                },
+                                {
+                                  "type": "null"
+                                }
+                              ]
+                            },
+                            "role": {
+                              "type": "string",
+                              "minLength": 1,
+                              "pattern": "\\S"
+                            }
+                          },
+                          "required": [
+                            "kind",
+                            "url",
+                            "title",
+                            "description",
+                            "role"
+                          ],
+                          "additionalProperties": false
+                        }
+                      ]
+                    }
+                  }
+                },
+                "required": [
+                  "text"
+                ],
+                "additionalProperties": false
+              }
+            },
+            "metadata": {
+              "type": "object",
+              "propertyNames": {
+                "type": "string"
+              },
+              "additionalProperties": {
+                "$ref": "#/$defs/__schema3"
+              }
+            },
+            "source": {
+              "type": "object",
+              "properties": {
+                "path": {
+                  "type": "string",
+                  "minLength": 1,
+                  "pattern": "\\S"
+                },
+                "id": {
+                  "type": "string",
+                  "minLength": 1,
+                  "pattern": "\\S"
+                },
+                "revision": {
+                  "type": "string",
+                  "pattern": "^[a-f0-9]{40}$"
+                },
+                "sha256": {
+                  "type": "string",
+                  "pattern": "^[a-f0-9]{64}$"
+                }
+              },
+              "required": [
+                "path",
+                "id",
+                "revision",
+                "sha256"
+              ],
+              "additionalProperties": false
             }
           },
           "required": [
-            "path",
+            "schemaVersion",
             "id",
-            "revision",
-            "sha256"
+            "kind",
+            "title",
+            "summary",
+            "outcomes",
+            "guidance",
+            "entrySteps",
+            "parts",
+            "links",
+            "references",
+            "notes",
+            "metadata"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "schemaVersion": {
+              "type": "number",
+              "const": 1
+            },
+            "id": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 160,
+              "pattern": "^[a-zA-Z0-9][a-zA-Z0-9._-]*$"
+            },
+            "kind": {
+              "type": "string",
+              "enum": [
+                "situation",
+                "process"
+              ]
+            },
+            "title": {
+              "type": "string",
+              "minLength": 1,
+              "pattern": "\\S"
+            },
+            "summary": {
+              "type": "string"
+            },
+            "outcomes": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1,
+                "pattern": "\\S"
+              }
+            },
+            "guidance": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "minLength": 1,
+                  "pattern": "\\S"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "when": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "minLength": 1,
+                  "pattern": "\\S"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "aliases": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 160,
+                "pattern": "^[a-zA-Z0-9][a-zA-Z0-9._-]*$"
+              }
+            },
+            "entrySteps": {
+              "minItems": 0,
+              "maxItems": 0,
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 160,
+                "pattern": "^[a-zA-Z0-9][a-zA-Z0-9._-]*$"
+              }
+            },
+            "taskIds": {
+              "minItems": 1,
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 160,
+                "pattern": "^[a-zA-Z0-9][a-zA-Z0-9._-]*$"
+              }
+            },
+            "parts": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/__schema0"
+              }
+            },
+            "links": {
+              "minItems": 0,
+              "maxItems": 0,
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "from": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 160,
+                    "pattern": "^[a-zA-Z0-9][a-zA-Z0-9._-]*$"
+                  },
+                  "to": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 160,
+                    "pattern": "^[a-zA-Z0-9][a-zA-Z0-9._-]*$"
+                  },
+                  "option": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 160,
+                    "pattern": "^[a-zA-Z0-9][a-zA-Z0-9._-]*$"
+                  },
+                  "when": {
+                    "anyOf": [
+                      {
+                        "type": "string",
+                        "minLength": 1,
+                        "pattern": "\\S"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  }
+                },
+                "required": [
+                  "from",
+                  "to"
+                ],
+                "additionalProperties": false
+              }
+            },
+            "references": {
+              "type": "array",
+              "items": {
+                "anyOf": [
+                  {
+                    "type": "object",
+                    "properties": {
+                      "kind": {
+                        "type": "string",
+                        "enum": [
+                          "vendor",
+                          "category",
+                          "product",
+                          "rule",
+                          "source",
+                          "guidance"
+                        ]
+                      },
+                      "id": {
+                        "type": "string",
+                        "minLength": 1,
+                        "pattern": "\\S"
+                      },
+                      "role": {
+                        "type": "string",
+                        "minLength": 1,
+                        "pattern": "\\S"
+                      }
+                    },
+                    "required": [
+                      "kind",
+                      "id",
+                      "role"
+                    ],
+                    "additionalProperties": false
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "kind": {
+                        "type": "string",
+                        "const": "url"
+                      },
+                      "url": {
+                        "type": "string",
+                        "pattern": "^https?:\\/\\/[^\\s/?#]+(?:[/?#][^\\s]*)?$"
+                      },
+                      "title": {
+                        "anyOf": [
+                          {
+                            "type": "string",
+                            "minLength": 1,
+                            "pattern": "\\S"
+                          },
+                          {
+                            "type": "null"
+                          }
+                        ]
+                      },
+                      "description": {
+                        "anyOf": [
+                          {
+                            "type": "string",
+                            "minLength": 1,
+                            "pattern": "\\S"
+                          },
+                          {
+                            "type": "null"
+                          }
+                        ]
+                      },
+                      "role": {
+                        "type": "string",
+                        "minLength": 1,
+                        "pattern": "\\S"
+                      }
+                    },
+                    "required": [
+                      "kind",
+                      "url",
+                      "title",
+                      "description",
+                      "role"
+                    ],
+                    "additionalProperties": false
+                  }
+                ]
+              }
+            },
+            "notes": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "text": {
+                    "type": "string",
+                    "minLength": 1,
+                    "pattern": "\\S"
+                  },
+                  "references": {
+                    "type": "array",
+                    "items": {
+                      "anyOf": [
+                        {
+                          "type": "object",
+                          "properties": {
+                            "kind": {
+                              "type": "string",
+                              "enum": [
+                                "vendor",
+                                "category",
+                                "product",
+                                "rule",
+                                "source",
+                                "guidance"
+                              ]
+                            },
+                            "id": {
+                              "type": "string",
+                              "minLength": 1,
+                              "pattern": "\\S"
+                            },
+                            "role": {
+                              "type": "string",
+                              "minLength": 1,
+                              "pattern": "\\S"
+                            }
+                          },
+                          "required": [
+                            "kind",
+                            "id",
+                            "role"
+                          ],
+                          "additionalProperties": false
+                        },
+                        {
+                          "type": "object",
+                          "properties": {
+                            "kind": {
+                              "type": "string",
+                              "const": "url"
+                            },
+                            "url": {
+                              "type": "string",
+                              "pattern": "^https?:\\/\\/[^\\s/?#]+(?:[/?#][^\\s]*)?$"
+                            },
+                            "title": {
+                              "anyOf": [
+                                {
+                                  "type": "string",
+                                  "minLength": 1,
+                                  "pattern": "\\S"
+                                },
+                                {
+                                  "type": "null"
+                                }
+                              ]
+                            },
+                            "description": {
+                              "anyOf": [
+                                {
+                                  "type": "string",
+                                  "minLength": 1,
+                                  "pattern": "\\S"
+                                },
+                                {
+                                  "type": "null"
+                                }
+                              ]
+                            },
+                            "role": {
+                              "type": "string",
+                              "minLength": 1,
+                              "pattern": "\\S"
+                            }
+                          },
+                          "required": [
+                            "kind",
+                            "url",
+                            "title",
+                            "description",
+                            "role"
+                          ],
+                          "additionalProperties": false
+                        }
+                      ]
+                    }
+                  }
+                },
+                "required": [
+                  "text"
+                ],
+                "additionalProperties": false
+              }
+            },
+            "metadata": {
+              "type": "object",
+              "propertyNames": {
+                "type": "string"
+              },
+              "additionalProperties": {
+                "$ref": "#/$defs/__schema3"
+              }
+            },
+            "source": {
+              "type": "object",
+              "properties": {
+                "path": {
+                  "type": "string",
+                  "minLength": 1,
+                  "pattern": "\\S"
+                },
+                "id": {
+                  "type": "string",
+                  "minLength": 1,
+                  "pattern": "\\S"
+                },
+                "revision": {
+                  "type": "string",
+                  "pattern": "^[a-f0-9]{40}$"
+                },
+                "sha256": {
+                  "type": "string",
+                  "pattern": "^[a-f0-9]{64}$"
+                }
+              },
+              "required": [
+                "path",
+                "id",
+                "revision",
+                "sha256"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "required": [
+            "schemaVersion",
+            "id",
+            "kind",
+            "title",
+            "summary",
+            "outcomes",
+            "guidance",
+            "entrySteps",
+            "taskIds",
+            "parts",
+            "links",
+            "references",
+            "notes",
+            "metadata"
           ],
           "additionalProperties": false
         }
-      },
-      "required": [
-        "schemaVersion",
-        "id",
-        "kind",
-        "title",
-        "summary",
-        "outcomes",
-        "guidance",
-        "entrySteps",
-        "parts",
-        "links",
-        "references",
-        "notes",
-        "metadata"
-      ],
-      "additionalProperties": false
+      ]
     },
     "legacy": {
       "title": "Founder Ops process",

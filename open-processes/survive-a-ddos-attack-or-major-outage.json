@@ -1,0 +1,237 @@
+{
+  "schemaVersion": 1,
+  "id": "sit_011",
+  "kind": "situation",
+  "title": "Survive a DDoS attack or major outage",
+  "summary": "In the first minutes, pick one incident commander and one channel. Then work out what you are in: a volumetric L3/4 flood, an application-layer attack, or a self-inflicted outage that looks like one. Edge mitigation and WAF rules can be agent-driven on the judged edge platforms. What stays human: deciding what to block, talking to customers, the postmortem (its own process: 'Run an incident postmortem'). While an attack is live, a current status page beats silence.",
+  "outcomes": [],
+  "guidance": null,
+  "parts": [
+    {
+      "id": "n1",
+      "kind": "step",
+      "title": "Declare the incident: one commander, one channel, sev1 rules",
+      "guidance": null,
+      "when": null,
+      "ref": null,
+      "options": [],
+      "notes": [],
+      "references": [],
+      "metadata": {
+        "route": "person",
+        "reversibility": "reversible",
+        "estimatedMinutes": 15
+      }
+    },
+    {
+      "id": "n2",
+      "kind": "step",
+      "title": "Identify what you're in: a volumetric L3/4 flood, an L7 application attack, or a self-inflicted outage",
+      "guidance": null,
+      "when": null,
+      "ref": null,
+      "options": [],
+      "notes": [],
+      "references": [],
+      "metadata": {
+        "route": "person",
+        "reversibility": "reversible",
+        "riskLevel": "high",
+        "estimatedMinutes": 30
+      }
+    },
+    {
+      "id": "n3",
+      "kind": "step",
+      "title": "Turn on the edge's DDoS mitigation / under-attack mode",
+      "guidance": null,
+      "when": null,
+      "ref": null,
+      "options": [],
+      "notes": [],
+      "references": [
+        {
+          "kind": "vendor",
+          "id": "cloudflare",
+          "role": "stated-vendor"
+        },
+        {
+          "kind": "vendor",
+          "id": "cloudflare",
+          "role": "candidate"
+        },
+        {
+          "kind": "vendor",
+          "id": "vercel",
+          "role": "candidate"
+        },
+        {
+          "kind": "category",
+          "id": "edge-platforms",
+          "role": "rankings"
+        },
+        {
+          "kind": "url",
+          "url": "https://www.cloudflare.com/under-attack-hotline/",
+          "role": "legacy-action-link",
+          "title": "Cloudflare under-attack hotline",
+          "description": null
+        }
+      ],
+      "metadata": {
+        "route": "agent",
+        "reversibility": "reversible",
+        "estimatedMinutes": 20
+      }
+    },
+    {
+      "id": "n4",
+      "kind": "step",
+      "title": "Rate-limit and block the attack signatures (WAF rules, geo blocks, bot rules)",
+      "guidance": null,
+      "when": null,
+      "ref": null,
+      "options": [],
+      "notes": [],
+      "references": [],
+      "metadata": {
+        "route": "agent",
+        "reversibility": "reversible",
+        "estimatedMinutes": 45
+      }
+    },
+    {
+      "id": "n5",
+      "kind": "step",
+      "title": "Post the status page update — early, honest, updated often",
+      "guidance": null,
+      "when": null,
+      "ref": null,
+      "options": [],
+      "notes": [],
+      "references": [],
+      "metadata": {
+        "route": "agent",
+        "reversibility": "reversible",
+        "estimatedMinutes": 15
+      }
+    },
+    {
+      "id": "n6",
+      "kind": "step",
+      "title": "Tell the affected customers: support channels, and the key accounts directly",
+      "guidance": null,
+      "when": null,
+      "ref": null,
+      "options": [],
+      "notes": [],
+      "references": [],
+      "metadata": {
+        "route": "person",
+        "reversibility": "reversible",
+        "estimatedMinutes": 45
+      }
+    },
+    {
+      "id": "n7",
+      "kind": "step",
+      "title": "Stand down and run the postmortem (its own process: 'Run an incident postmortem')",
+      "guidance": null,
+      "when": null,
+      "ref": null,
+      "options": [],
+      "notes": [],
+      "references": [],
+      "metadata": {
+        "route": "person",
+        "reversibility": "reversible",
+        "estimatedMinutes": 60
+      }
+    }
+  ],
+  "links": [
+    {
+      "from": "n1",
+      "to": "n2",
+      "when": null
+    },
+    {
+      "from": "n2",
+      "to": "n3",
+      "when": null
+    },
+    {
+      "from": "n3",
+      "to": "n4",
+      "when": null
+    },
+    {
+      "from": "n4",
+      "to": "n5",
+      "when": null
+    },
+    {
+      "from": "n5",
+      "to": "n6",
+      "when": null
+    },
+    {
+      "from": "n6",
+      "to": "n7",
+      "when": null
+    }
+  ],
+  "references": [
+    {
+      "kind": "vendor",
+      "id": "cloudflare",
+      "role": "involves"
+    }
+  ],
+  "notes": [],
+  "metadata": {
+    "phase": "product",
+    "kind": "situation",
+    "trigger": "Traffic spikes take the product down: a DDoS attack is live, or a major outage looks like one.",
+    "urgency": "hours",
+    "cadence": "event-driven",
+    "geoScope": "global",
+    "complexity": "complex",
+    "reversibility": "reversible",
+    "category": "infrastructure",
+    "supportLevel": "partial",
+    "supportReason": "Edge mitigation, WAF rules, and status updates are real API surfaces on the judged edge platforms, so an agent can drive them. Incident command, the block-what judgment, and customer communication stay human.",
+    "contextNeeded": [
+      {
+        "tool": "user_input",
+        "query": "edge/DNS provider account and current traffic picture",
+        "tier": "user_input",
+        "required": true
+      }
+    ],
+    "tags": [
+      "situation",
+      "infrastructure",
+      "ddos",
+      "outage",
+      "incident"
+    ],
+    "activeMinutes": 230,
+    "totalEstimatedMinutes": 230,
+    "hasAsyncSteps": false,
+    "annoyance": 4,
+    "risk": 4,
+    "growthImpact": 2,
+    "produces": [],
+    "requires": []
+  },
+  "source": {
+    "path": "open-processes/corpus.json",
+    "id": "sit_011",
+    "revision": "4a1ac9b2eea2d4e1ac8cc5a0dfdc7cc5dc6080a1",
+    "sha256": "cd5cc7694897bcf137796cfbaebe68ce90279f80ca0b7ab3edbddf249b9613b9"
+  },
+  "entrySteps": [
+    "n1"
+  ]
+}
