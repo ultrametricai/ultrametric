@@ -8,7 +8,7 @@ import { areaOfTask, type Area } from './processRows'
 // Company data fields (founder 2026-10-07: "company data fields figured out — e.g. Date of
 // incorporation or things from the repo's business logic"; widened 2026-10-08: "a page that
 // explains the specification of data fields like an EIN"). The registry
-// (open-processes/company-fields.json) is a typed vocabulary of company-LEVEL data values with an
+// (open-artifacts/fields.json) is a typed vocabulary of company-LEVEL data values with an
 // honest derivation rule, widened once and deliberately for the identifier fields: a field
 // exists here only because a committed registry artifact establishes it AND one of two
 // committed consumption paths is real —
@@ -21,7 +21,7 @@ import { areaOfTask, type Area } from './processRows'
 //       consuming processes are COMPUTED from the corpus requires edges, never hand-listed.
 // Each field names:
 //   - type: date | money | number | enum | string (enum fields carry their `values`);
-//   - producedBy: the open-processes/artifacts.json artifact whose creation establishes the value
+//   - producedBy: the open-artifacts/registry.json artifact whose creation establishes the value
 //     (the charter sets the authorized shares; the 409A report sets the common FMV; the IRS
 //     EIN assignment sets the EIN itself);
 //   - consumedBy (path (a) only): the lib/openstartup module functions that take it, each
@@ -97,7 +97,7 @@ export const CompanyFieldSchema = z
     // The closed value set — present exactly when type is 'enum' (vitest-gated pairing).
     values: z.string().min(1).array().min(2).optional(),
     description: z.string().min(1),
-    // The open-processes/artifacts.json artifact whose creation establishes this value.
+    // The open-artifacts/registry.json artifact whose creation establishes this value.
     producedBy: z.string().min(1),
     // Absent exactly for the identifier fields consumed through the artifact requires edges
     // (derivation path (b) above) — the vitest gate holds the either-or honest.
@@ -114,7 +114,7 @@ export const CompanyFieldsRegistrySchema = z
   })
   .strict()
 
-const fieldsFile = () => path.join(process.cwd(), 'open-processes', 'company-fields.json')
+const fieldsFile = () => path.join(process.cwd(), 'open-artifacts', 'fields.json')
 let fieldsCache: CompanyField[] | null = null
 export function loadCompanyFields(): CompanyField[] {
   if (!fieldsCache) {

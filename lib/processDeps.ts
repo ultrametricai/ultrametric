@@ -3,7 +3,7 @@ import { loadArtifacts, loadProcesses, processSlug, type Artifact, type ProcessT
 // The cross-process dependency graph (founder depth wave part 2, 2026-10-01: "typed
 // inputs/outputs between steps, and the cross-process dependency graph"). Built entirely from
 // the committed typed layer — each task's `produces`/`requires` artifact ids against the
-// registry (open-processes/artifacts.json) — never from prose. Edges run canonical producer →
+// registry (open-artifacts/registry.json) — never from prose. Edges run canonical producer →
 // consumer: a task that requires `ein` depends on the registry's canonical producer of `ein`
 // (form_002), even where a documented exception producer (the LLC route) could also satisfy it
 // — one producer per artifact is what keeps this a company-level DAG instead of a market graph.
@@ -229,7 +229,7 @@ export function artifactChipRows(task: ProcessTask, dir?: string): ArtifactChipR
 export interface ProducedArtifactRow {
   id: string
   label: string
-  // The registry's committed description (open-processes/artifacts.json).
+  // The registry's committed description (open-artifacts/registry.json).
   description: string
   // The artifact's site page — /artifacts/{id}.
   href: string

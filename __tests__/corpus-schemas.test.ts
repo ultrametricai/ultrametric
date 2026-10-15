@@ -176,7 +176,7 @@ describe('process artifact-registry schema publication', () => {
   it('the committed registry conforms: shape() on the published schema + the zod source', () => {
     const schema = JSON.parse(committed)
     const registry = JSON.parse(
-      fs.readFileSync(path.join(ROOT, 'open-processes', 'artifacts.json'), 'utf8'),
+      fs.readFileSync(path.join(ROOT, 'open-artifacts', 'registry.json'), 'utf8'),
     )
     const errors: string[] = []
     shape(registry, schema, 'artifact registry', errors)
@@ -200,7 +200,7 @@ describe('company-fields schema publication', () => {
   it('the committed registry conforms: shape() on the published schema + the zod source', () => {
     const schema = JSON.parse(committed)
     const registry = JSON.parse(
-      fs.readFileSync(path.join(ROOT, 'open-processes', 'company-fields.json'), 'utf8'),
+      fs.readFileSync(path.join(ROOT, 'open-artifacts', 'fields.json'), 'utf8'),
     )
     const errors: string[] = []
     shape(registry, schema, 'company fields', errors)

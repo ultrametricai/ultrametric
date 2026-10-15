@@ -119,7 +119,7 @@ export function buildVsAssistants(dir?: string): VsAssistant[] {
   })
 }
 
-// Registry artifact labels keyed by artifact id (open-processes/artifacts.json) — the lookup
+// Registry artifact labels keyed by artifact id (open-artifacts/registry.json) — the lookup
 // vsTaskLinkage resolves producesArtifact tags against.
 export function vsArtifactLabels(): Map<string, string> {
   return new Map(loadArtifacts().map((a) => [a.id, a.label]))

@@ -8,7 +8,7 @@ import { loadDocumentRegistry, openDocumentById } from '@/lib/documents'
 // into open-documents/registry.json (open-processes/README.md "Step documents"), now RENDERED as
 // external-link chips on the process pages (components/ProcessDag.tsx). This is the
 // referential-integrity gate the house standard demands for every cross-registry link
-// (producesArtifact → artifacts.json, rule source_ids → citations/): a typo'd document id must
+// (producesArtifact → open-artifacts/registry.json, rule source_ids → citations/): a typo'd document id must
 // fail loudly, not silently dangle — both ways (corpus id → registry record via the test
 // below, and the render path throws on an unknown id via openDocumentById). Reads the RAW
 // corpus so jurisdiction-conditional nodes are covered too.

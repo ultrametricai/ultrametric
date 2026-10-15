@@ -16,7 +16,7 @@ import { loadArtifacts, loadProcesses } from '../processes'
 // fields; 2026-10-08: spec blocks + the identifier widening). The registry's honesty rule is
 // that a field exists ONLY because a committed artifact establishes it and committed code or a
 // committed corpus process consumes it, so every edge must resolve:
-//   1. producedBy → a real open-processes/artifacts.json artifact;
+//   1. producedBy → a real open-artifacts/registry.json artifact;
 //   2. consumedBy.module → a real business-logic-map module (a real lib/openstartup file);
 //   3. consumedBy.function → a REAL exported function of that module (misspellings fail);
 //   4. a field WITHOUT consumedBy (the widened identifier path) must have its establishing
@@ -32,7 +32,7 @@ const artifactIds = new Set(loadArtifacts().map((a) => a.id))
 const map = loadBusinessLogicMap()
 const requiredArtifactIds = new Set(loadProcesses().flatMap((t) => t.requires))
 
-describe('open-processes/company-fields.json totality', () => {
+describe('open-artifacts/fields.json totality', () => {
   it('is the honest small cut: unique kebab-case ids inside the curated bounds', () => {
     expect(fields.length).toBeGreaterThanOrEqual(10)
     // The bound exists to force this comment (and a fresh signature read) the next time

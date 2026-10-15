@@ -50,6 +50,7 @@ const INTRO = [
   '├── <a href="#open-law">open-law</a>/           startup legal rules by jurisdiction',
   '├── <a href="#open-lore">open-lore</a>/          founder advice, who said it, the reading library',
   '├── <a href="#open-docs">open-documents</a>/     openly published legal documents, by use case',
+  '├── <a href="#open-artifacts">open-artifacts</a>/     the business objects processes exchange, with field standards',
   '├── rankings-engine/    the code that crawls, probes, judges, scores',
   '├── lib/                loaders, scoring, and the calculation code',
   '├── jurisdictions/      country and state data, vendor availability',
@@ -178,7 +179,7 @@ describe('README.md structure (founder round 2, 2026-10-12)', () => {
     // The founder-specified order: the open catalogs people come for first, policies last.
     expect(rows.map((r) => r.dir)).toEqual([
       'open-processes', 'open-rankings', 'open-modules', 'open-startup-sim',
-      'open-law', 'open-lore', 'open-documents',
+      'open-law', 'open-lore', 'open-documents', 'open-artifacts',
       'rankings-engine', 'lib', 'jurisdictions', 'coverage', 'schemas', 'policies',
     ])
     // Every README anchor a heading or explicit <a id> establishes (GitHub slug form).

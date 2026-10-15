@@ -175,8 +175,8 @@ export function buildContentAudit(files, metadata) {
     for (const id of value.source_ids ?? []) link(record, recordKey('citations', id), 'cites')
     link(record, recordKey('jurisdictions', value.jurisdiction), 'jurisdiction')
   }
-  for (const value of array(json('open-processes/artifacts.json').artifacts, 'artifacts')) {
-    const record = add('artifacts', value.id, value.label, 'open-processes/artifacts.json')
+  for (const value of array(json('open-artifacts/registry.json').artifacts, 'artifacts')) {
+    const record = add('artifacts', value.id, value.label, 'open-artifacts/registry.json')
     presence(record, 'Description', nonempty(value.description))
     link(record, processTarget(value.producedBy), 'produced by')
     for (const id of value.alsoProducedBy ?? []) link(record, processTarget(id), 'also produced by')
