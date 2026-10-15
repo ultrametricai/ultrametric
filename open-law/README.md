@@ -10,8 +10,8 @@ reused to change a rule's meaning: version it and note the affected workflows.
 
 How a card is consumed: `lib/founderOps.ts` validates every card against
 `schemas/rule.schema.json`, requires its `jurisdiction` to exist in
-`jurisdictions/registry.json`, and requires every `source_ids` entry to resolve to an
-`authority` citation in `citations/registry.json` (for `kind: legal`, to a `primary-*`
+`jurisdictions/registry.json`, and requires every `source_ids` entry to resolve to a
+citation in `citations/registry.json` here (for `kind: legal`, to a `primary-*`
 authority). Workflows in
 `open-processes/<domain>/<jurisdiction>/` cite cards in `rule_ids`, e.g.
 `equity.us-de.83b-election` cites `us-fed.83b-filing-period`.
@@ -67,11 +67,31 @@ Contribute here:
 Gate: `npx vitest run __tests__/founder-ops.test.ts` (source resolution, jurisdiction
 matching, ID stability).
 
+## Citations
+
+`citations/registry.json` holds the authorities the rule cards cite: each entry is a
+dated record validated against `schemas/citation.schema.json` with publisher, the exact
+section (`locator`), `issued_on` where known, `checked_on`, jurisdiction, and an HTTPS
+link. A legal rule card may only cite `primary-*` authorities; provider blogs can explain
+practice but cannot establish law (`kind: secondary-practice`). The reading canon the
+distilled laws cite lives in `open-lore/` (`library.json` and `citations.json`), not here.
+
+Contribute citations here:
+
+- **Primary authorities for new rule cards** — add entries alongside the
+  `open-law/<CODE>/*.json` cards that cite them.
+- **Re-verification passes** — follow an existing link, confirm the provision still says
+  what the citing record claims, and bump `checked_on` (note it if it moved).
+
+URL liveness is a human editorial check recorded via `checked_on`; the suites stay
+offline.
+
 ## LAWS.md
 
-`LAWS.md` distills the citation registry's reading canon into recurring, near-universal
-startup principles grouped by lifecycle stage; every law cites its
-`citations/registry.json` records by id, aphorisms are attributed to their actual origin,
-and the only literal laws (filing deadlines) also carry rule cards here. Gate:
-`npx vitest run __tests__/citations.test.ts` (grammar, numbering, and citation
-resolution via `lib/citations.ts`).
+`LAWS.md` distills the reading canon into recurring, near-universal startup principles
+grouped by lifecycle stage; every law cites its sources by id — the authorities in
+`citations/registry.json` here and the reading canon in `open-lore/library.json` and
+`open-lore/citations.json` — aphorisms are attributed to their actual origin, and the
+only literal laws (filing deadlines) also carry rule cards here. Gate:
+`npx vitest run __tests__/laws.test.ts` (grammar, numbering, and citation resolution via
+`lib/laws.ts`).

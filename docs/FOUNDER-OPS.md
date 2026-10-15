@@ -15,7 +15,7 @@ workspace, never here.
 | `open-processes/chains.json` | Multi-process founder paths (chains; The Open Startup is the live surface) |
 | `open-processes/` | Jurisdiction-scoped legal workflows + the operational corpus (two layers) |
 | `open-law/<jurisdiction>/` | Canonical, dated legal rule cards with stable IDs |
-| `citations/` | The citation registry: rule-card authorities and the canonical startup reading |
+| `open-law/citations/` | The authority citations the rule cards cite (the reading canon lives in `open-lore/`) |
 | `jurisdictions/` | Registry + overlays; exact-dimension matching, unknown = unsupported |
 | `open-modules/` | The open modules — cited, deterministic calculations (cap table first) |
 | `open-documents/` | The open-documents map: openly licensed legal forms, linked never redistributed |
@@ -23,7 +23,7 @@ workspace, never here.
 | `templates/` | Contribution starting points |
 | `schemas/` | JSON Schema contracts for processes, rules, sources, vendor reviews |
 | `open-processes/fixtures/` | Fictional companies and events only |
-| `governance/` | Review policy, evidence doctrine, agent policy, security |
+| `policies/` | Review policy, evidence doctrine, agent policy, security |
 
 The surfaces over the corpus live beside it: the Next.js site at `app/` (+ `components/`,
 `lib/`, `public/`) and the Cloudflare edge worker at `infra/cloudflare-proxy/` (zone routing,

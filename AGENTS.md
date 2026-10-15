@@ -68,7 +68,7 @@ need it.
 
 Ultrametric is the open startup repo: step-by-step founder processes (`open-processes/`),
 agent-tested vendor rankings (`open-rankings/`, `rankings-engine/`), and open, source-cited
-business logic (`lib/openstartup/`, `open-law/`, `citations/`). The knowledge layer (plain JSON
+business logic (`lib/openstartup/`, `open-law/`). The knowledge layer (plain JSON
 and markdown, schema-validated in CI) is the product. The site that renders it at
 ultrametric.ai is maintained in a private repo, which materializes this repo's open
 surface at a pinned commit via `scripts/sync-open.mjs` and `open-manifest.json`; UI and
@@ -89,7 +89,7 @@ Every data file (`categories.json`, `products.json`, `stories.json`, `evidence/*
 schema (`lib/schemas.ts`, `schemas/*.schema.json`). If a fact does not fit the schema,
 change the schema deliberately in its own commit; do not stuff it into a free-text
 field. Run `pnpm test` before opening any PR that touches `open-rankings/`, `open-processes/`,
-`open-law/`, `citations/`, or `jurisdictions/`.
+`open-law/`, `open-lore/`, or `jurisdictions/`.
 
 ## Generated files: do not hand-edit
 
@@ -131,8 +131,8 @@ category re-run (see CONTRIBUTING.md).
   transfers. Formulas cite their sources, and worked examples are replayed
   number-for-number in tests.
 - Behavioral rules for agents consuming this data (what you may do autonomously vs.
-  what needs human authorization) are in `governance/AGENT_POLICY.md`; maturity and
-  evidence rules are in `governance/REVIEW_POLICY.md`. Follow both.
+  what needs human authorization) are in `policies/AGENT_POLICY.md`; maturity and
+  evidence rules are in `policies/REVIEW_POLICY.md`. Follow both.
 
 ## Secrets
 

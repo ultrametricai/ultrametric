@@ -14,7 +14,7 @@
 #
 # HONESTY: the scan itself changes nothing under open-rankings/, the radar NEVER creates a new
 # ranking, and it NEVER touches a founder-affiliated product autonomously. Approval is
-# criteria-based (governance/AGENT_POLICY.md "Vendor-radar candidate approval", founder
+# criteria-based (policies/AGENT_POLICY.md "Vendor-radar candidate approval", founder
 # authorization 2026-10-13, replacing checkbox approval): radar-triage.ts applies the criteria
 # mechanically (existing-ranking fit via the lexical classifier, docs-surface fetch, shipped-
 # product checks, founder-affiliation guard), records every failing candidate as skipped with
@@ -69,7 +69,7 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: pnpm tsx rankings-engine/scripts/vendor-radar.ts --issue-body /tmp/vendor-radar-issue.md
 
-      # Criteria triage (governance/AGENT_POLICY.md): mechanical checks per candidate — fetches
+      # Criteria triage (policies/AGENT_POLICY.md): mechanical checks per candidate — fetches
       # the docs surface, applies the shipped-product and affiliation guards — and appends the
       # disposition table (auto-approved / skipped-with-reason / needs-human) to the issue body
       # so every candidate's outcome is recorded where it surfaced.
@@ -200,7 +200,7 @@ jobs:
           git commit -m "feat(vendor-radar): scoped bring-up of auto-approved candidates ($DATE)"
           git push -u origin "$BRANCH"
           {
-            echo "Automated bring-up of auto-approved radar candidates (criteria: \`governance/AGENT_POLICY.md\` \"Vendor-radar candidate approval\", founder authorization 2026-10-13). Products added:"
+            echo "Automated bring-up of auto-approved radar candidates (criteria: \`policies/AGENT_POLICY.md\` \"Vendor-radar candidate approval\", founder authorization 2026-10-13). Products added:"
             sed 's/^/- /' /tmp/bringups.txt
             echo
             echo "Debut scores come from the scoped standard engine run (crawl → extract → collect-community → probe → judge --product → derive → logos); no rank was hand-set. The radar created no new ranking and touched no founder-affiliated product."

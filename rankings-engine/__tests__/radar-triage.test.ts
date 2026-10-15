@@ -18,7 +18,7 @@ import {
 } from '../scripts/radar-triage'
 import type { RadarCandidate } from '../scripts/vendor-radar'
 
-// Pure units for the criteria triage (governance/AGENT_POLICY.md "Vendor-radar candidate
+// Pure units for the criteria triage (policies/AGENT_POLICY.md "Vendor-radar candidate
 // approval"): injected fetch results, no network — same convention as vendor-radar.test.ts.
 
 const ARENAS = new Set(['browser-agents', 'ai-coding'])
@@ -151,7 +151,7 @@ describe('triage report + markdown', () => {
     expect(parsed.dispositions).toHaveLength(2)
     const md = buildTriageMarkdown(parsed)
     expect(md).toContain('1 auto-approved · 0 skipped · 1 needs-human')
-    expect(md).toContain('governance/AGENT_POLICY.md')
+    expect(md).toContain('policies/AGENT_POLICY.md')
     expect(md).toContain('| [Driftbase](https://driftbase.dev) → `browser-agents` | auto-approved |')
   })
 })

@@ -18,10 +18,9 @@ ultrametric/
 ├── rankings-engine/    the code that crawls, probes, judges, scores
 ├── lib/                loaders, scoring, and the calculation code
 ├── jurisdictions/      country and state data, vendor availability
-├── citations/          the primary sources the legal rules cite
 ├── coverage/           what is mapped and what is a known gap
 ├── schemas/            the JSON shape each data file validates against
-└── governance/         review rules and what agents may do here
+└── policies/           how records are reviewed and what agents may do here
 </pre>
 
 <!-- Legacy anchor: external links to #start-here predate the merge into this map. -->
@@ -198,7 +197,7 @@ a known, open gap.
 
 Map the [law](open-law/) that applies to startups, across jurisdictions, and connect it to
 the calculations and the vendors that act on it. Each legal statement is one dated rule card
-citing a primary [authority](citations/) (a statute, regulation, or agency page) with the
+citing a primary [authority](open-law/citations/) (a statute, regulation, or agency page) with the
 exact section. A blog post cannot establish law. The [domain map](open-law/README.md#the-map)
 grades each area of US startup law as mapped, partial, or unmapped.
 

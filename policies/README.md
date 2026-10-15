@@ -1,4 +1,4 @@
-# Governance
+# Policies
 
 The policies that bind every record here, and the one place where a maintainer
 must agree before merge.
