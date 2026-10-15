@@ -274,7 +274,7 @@ from a terminal", "generate and edit images in conversation") — never benchmar
 
 ## Wave 4 (2026-09-29): Ultrametric — the owner-product family (founder ask: "try to include Ultrametric into our rankings, for the official CLI/MCP we are building over at /v2")
 
-The maximum-scrutiny case: this is the maintainers' OWN company (governance/REVIEW_POLICY.md
+The maximum-scrutiny case: this is the maintainers' OWN company (policies/REVIEW_POLICY.md
 owner-product rules — affiliation disclosure on every surface, favorable outcomes need
 over-justification). Everything below was crawl-verified on 2026-09-29; no capability is taken
 from our own roadmap language. **Honest verdict: no judged bring-up.** The product the founder

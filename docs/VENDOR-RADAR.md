@@ -11,7 +11,7 @@ already is — a deliberate, reviewed run of the standard engine on a human-appr
 ## Approval and the hard limits
 
 Founder authorization (2026-10-13) replaced per-candidate checkbox approval with the criteria in
-`governance/AGENT_POLICY.md` ("Vendor-radar candidate approval"): existing-ranking fit, public
+`policies/AGENT_POLICY.md` ("Vendor-radar candidate approval"): existing-ranking fit, public
 docs surface, shipped product, no founder affiliation. `rankings-engine/scripts/radar-triage.ts` applies
 them mechanically — the lexical arena classifier for ranking fit, a docs-surface fetch, the
 waitlist/link-list/placeholder guards plus a star-velocity anomaly floor for shipped-product,

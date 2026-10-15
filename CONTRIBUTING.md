@@ -12,7 +12,7 @@ repo with the [site rendering issue form](https://github.com/ultrametricai/ultra
 
 Contributing to the **founder-ops corpus** (jurisdiction-scoped workflows, rule cards, sources,
 vendor reviews, open modules) has its own workflow and review bar — see
-[governance/REVIEW_POLICY.md](governance/REVIEW_POLICY.md) and the templates in
+[policies/REVIEW_POLICY.md](policies/REVIEW_POLICY.md) and the templates in
 [`templates/`](templates/).
 
 **Founders outside the US (or outside Delaware):** the highest-leverage contribution is local
@@ -306,7 +306,7 @@ hold up:
    fictional fixture in [`open-processes/fixtures/`](open-processes/fixtures/), and record the
    maturity level in [`coverage/coverage.json`](coverage/) (`draft` or `demonstration` to
    start; `reviewed` requires a named domain expert, see the
-   [review policy](governance/REVIEW_POLICY.md)).
+   [review policy](policies/REVIEW_POLICY.md)).
 
 US rules are never copied into another jurisdiction, no country is marked covered because
 one workflow exists, and fixtures are fictional by gate. The validator

@@ -20,7 +20,7 @@ ultrametric/
 ├── jurisdictions/      country and state data, vendor availability
 ├── coverage/           what is mapped and what is a known gap
 ├── schemas/            the JSON shape each data file validates against
-└── governance/         review rules and what agents may do here
+└── policies/           how records are reviewed and what agents may do here
 </pre>
 
 <!-- Legacy anchor: external links to #start-here predate the merge into this map. -->

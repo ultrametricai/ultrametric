@@ -15,7 +15,7 @@ The existing workflow and corpus layers retain their own contracts:
    applicability dimensions, dated editorial review, rule-card references, stop conditions,
    and a scoped human approval on every externally-effectful step. Validated by
    `lib/founderOps.ts` inside the normal test gates; status `demonstration`, not
-   production-certified (`governance/REVIEW_POLICY.md` has the maturity ladder).
+   production-certified (`policies/REVIEW_POLICY.md` has the maturity ladder).
 
 2. **The process library** (`corpus.json`, rendered live at
    [ultrametric.ai/processes](https://ultrametric.ai/processes), contract in

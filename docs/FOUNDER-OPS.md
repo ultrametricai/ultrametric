@@ -23,7 +23,7 @@ workspace, never here.
 | `templates/` | Contribution starting points |
 | `schemas/` | JSON Schema contracts for processes, rules, sources, vendor reviews |
 | `open-processes/fixtures/` | Fictional companies and events only |
-| `governance/` | Review policy, evidence doctrine, agent policy, security |
+| `policies/` | Review policy, evidence doctrine, agent policy, security |
 
 The surfaces over the corpus live beside it: the Next.js site at `app/` (+ `components/`,
 `lib/`, `public/`) and the Cloudflare edge worker at `infra/cloudflare-proxy/` (zone routing,

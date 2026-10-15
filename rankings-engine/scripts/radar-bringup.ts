@@ -1,4 +1,4 @@
-// Roster append for auto-approved radar candidates (governance/AGENT_POLICY.md, "Vendor-radar
+// Roster append for auto-approved radar candidates (policies/AGENT_POLICY.md, "Vendor-radar
 // candidate approval", founder authorization 2026-10-13): reads a radar-triage dispositions
 // file and adds each auto-approved candidate to its existing arena's products.json, up to
 // --cap. The append writes roster INPUT only; scores and ranks still come exclusively from the

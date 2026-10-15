@@ -131,8 +131,8 @@ category re-run (see CONTRIBUTING.md).
   transfers. Formulas cite their sources, and worked examples are replayed
   number-for-number in tests.
 - Behavioral rules for agents consuming this data (what you may do autonomously vs.
-  what needs human authorization) are in `governance/AGENT_POLICY.md`; maturity and
-  evidence rules are in `governance/REVIEW_POLICY.md`. Follow both.
+  what needs human authorization) are in `policies/AGENT_POLICY.md`; maturity and
+  evidence rules are in `policies/REVIEW_POLICY.md`. Follow both.
 
 ## Secrets
 
