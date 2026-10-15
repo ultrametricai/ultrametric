@@ -101,6 +101,9 @@ const SUBSECTIONS: Array<[string, string]> = [
   ['## Open artifacts', '### Open docs'],
   ['## Open situations', '### Example: Founder country switch'],
   ['## Open lore', '### Example: Getting acquired'],
+  // Round 11 (founder 2026-10-15): the law section shows the geo scoping, the lifecycle
+  // grouping of the distilled laws, and one rule cross-linked through process and module.
+  ['## Open law', '### Example: The 83(b) election'],
 ]
 
 const sectionBody = (heading: string) => {
