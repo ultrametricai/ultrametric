@@ -121,9 +121,10 @@ export function companyFieldsSchemaJson(): string {
     $schema,
     title: 'Ultrametric company data fields',
     description:
-      'The typed company-level data fields beside the operational-process corpus ' +
-      '(open-artifacts/fields.json): per field its id, label, type, the artifact that ' +
-      'establishes it, and the open-module functions that consume it. Generated from ' +
+      'The typed company-level data field standards (open-artifacts/fields.json): per field ' +
+      'its id, label, type, the artifact that establishes it, the open-module functions that ' +
+      'consume it, and its geo dimension — the base jurisdiction instance plus per-country ' +
+      'government-defined equivalents or recorded absences. Generated from ' +
       'CompanyFieldsRegistrySchema in lib/companyFields.ts by ' +
       'scripts/generate-corpus-schemas.ts — edit the zod schema, never this file.',
     ...rest,
