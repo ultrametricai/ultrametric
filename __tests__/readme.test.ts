@@ -46,8 +46,8 @@ const INTRO = [
   '',
   '<pre>',
   'ultrametric/',
-  '├── <a href="#open-processes">open-processes</a>/     founder processes and situations as routed, timed steps',
   '├── <a href="#open-vendor-rankings">open-rankings</a>/      per-market products, stories, evidence, verdicts',
+  '├── <a href="#open-processes">open-processes</a>/     founder processes and situations as routed, timed steps',
   '├── <a href="#open-modules">open-modules</a>/       worked guides to each startup calculation',
   '├── <a href="#open-startup-simulator">open-startup-sim</a>/   what the simulator runs and assumes',
   '├── <a href="#open-law">open-law</a>/           startup legal rules by jurisdiction, the distilled laws',
@@ -90,7 +90,6 @@ const SECTIONS = [
   '## Startup ecosystem',
   '## Open startup simulator',
   '## Install Ultrametric',
-  '## Methodology',
   '## License',
 ]
 
@@ -182,9 +181,10 @@ describe('README.md structure (founder round 2, 2026-10-12)', () => {
     const rows = [...tree.matchAll(/^[├└]── (?:<a href="#([a-z-]+)">)?([a-z][a-z-]*)(?:<\/a>)?\/ +\S/gm)].map(
       (m) => ({ anchor: m[1] ?? null, dir: m[2] }),
     )
-    // The founder-specified order: the open catalogs people come for first, policies last.
+    // The founder-specified order: the open catalogs people come for first (rankings
+    // leading, founder 2026-10-15), policies last.
     expect(rows.map((r) => r.dir)).toEqual([
-      'open-processes', 'open-rankings', 'open-modules', 'open-startup-sim',
+      'open-rankings', 'open-processes', 'open-modules', 'open-startup-sim',
       'open-law', 'open-lore', 'open-documents', 'open-artifacts',
       'rankings-engine', 'lib', 'jurisdictions', 'coverage', 'schemas', 'policies',
     ])
@@ -417,8 +417,7 @@ describe('README.md anchors and links', () => {
     ]) {
       expect(readme, `missing anchor #${id}`).toContain(`<a id="${id}"></a>`)
     }
-    // #methodology and #open-modules resolve through their headings.
-    expect(readme).toContain('\n## Methodology')
+    // #open-modules resolves through its heading.
     expect(readme).toContain('\n## Open modules')
   })
 
