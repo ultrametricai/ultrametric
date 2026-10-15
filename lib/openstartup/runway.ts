@@ -6,8 +6,8 @@
 // with the arithmetic re-derived in comments.
 //
 // Source for the model (cited per function below): Paul Graham, "Default Alive or Default
-// Dead?" (October 2015, https://paulgraham.com/aord.html — resources/registry.json id
-// `pg-default-alive`): "assuming their expenses remain constant and their revenue growth is
+// Dead?" (October 2015, https://paulgraham.com/aord.html — open-lore/library.json id
+// `pg-default-alive-or-default-dead`): "assuming their expenses remain constant and their revenue growth is
 // what it's been over the last several months, do they make it to profitability on the money
 // they have left?" The essay links Trevor Blackwell's calculator as the reference
 // implementation of exactly this projection (growth.tlb.org — unreachable over HTTPS when

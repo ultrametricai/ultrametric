@@ -15,10 +15,10 @@ function fixture() {
     'open-rankings/arena/evidence/tool.json': [{ id: 'proof', tier: 'probe' }],
     'open-rankings/reviews/generated/arena--tool.json': { tested_on: '2026-10-01', recheck_due: '2027-01-01', status: 'tested', reviewer: 'Automated pipeline' },
     'open-documents/registry.json': { review_window_days: 120, documents: [{ id: 'form', name: 'Form', license_note: 'Review terms', publisher: 'Example', url: 'https://example.test/form', checked_on: '2026-10-01', jurisdiction: 'Worldwide', use_case: 'formation' }] },
-    'citations/registry.json': { citations: [{ id: 'statute', role: 'authority', title: 'Statute', url: 'https://example.test/law', locator: '§ 1', checked_on: '2026-10-01', jurisdiction: 'US-DE' }] },
+    'open-law/citations/registry.json': { citations: [{ id: 'statute', title: 'Statute', url: 'https://example.test/law', locator: '§ 1', checked_on: '2026-10-01', jurisdiction: 'US-DE' }] },
     'jurisdictions/registry.json': { jurisdictions: [{ code: 'US-DE', name: 'Delaware', coverage: 'partial-example', scope: 'One example' }] },
     'open-law/US-DE/rule.json': { id: 'rule', statement: 'A rule', source_ids: ['statute'], jurisdiction: 'US-DE', status: 'demonstration', reviewed_on: '2026-10-01', review_due: '2027-01-01' },
-    'open-processes/artifacts.json': { artifacts: [{ id: 'result', label: 'Result', description: 'Prepared result', producedBy: 'start' }] },
+    'open-artifacts/registry.json': { artifacts: [{ id: 'result', label: 'Result', description: 'Prepared result', producedBy: 'start' }] },
     'open-processes/business-logic-map.json': { modules: { module: { label: 'Module', file: 'lib/openstartup/module.ts', processes: ['start'] } } },
     'coverage/coverage.json': { coverage_claim: 'One demonstration only.', uncovered: ['Other scenarios'], coverage: [] },
   }

@@ -8,7 +8,7 @@ hold, it is flagged as a founder decision rather than added.
 ## The model as committed
 
 The artifact layer is a **type registry**, not an instance store. One record per canonical
-business object (`open-processes/artifacts.json`, zod source `ArtifactSchema` in
+business object (`open-artifacts/registry.json`, zod source `ArtifactSchema` in
 `lib/processes.ts`):
 
 | Field | What it is | Where it is enforced |
@@ -27,7 +27,7 @@ Joins outward from the registry:
   company-level dependency DAG from these edges, derives the topological ordering, reports
   curated-timeline inversions (`docs/TIMELINE-INVERSIONS.md`) and placement slack, and feeds
   the process pages' Produces table and the artifact pages' producer/consumer links.
-- **Company fields**: `open-processes/company-fields.json` names the typed data values an
+- **Company fields**: `open-artifacts/fields.json` names the typed data values an
   artifact establishes (the charter sets the authorized shares and par value, the 409A
   report sets the common FMV and its as-of date) and the exact `lib/openstartup/` function
   parameter each value enters. Rendered both ways (`/artifacts/[id]`, `/open-modules/[id]`),
@@ -63,7 +63,7 @@ just does not name them.
 pinned to a committed corpus step, the same way the birth already is:
 
 ```jsonc
-// open-processes/artifacts.json (proposed, optional)
+// open-artifacts/registry.json (proposed, optional)
 "lifecycle": [
   { "state": "signed", "at": { "task": "form_001", "node": "n8a" } },
   { "state": "filed",  "at": { "task": "form_001", "node": "n8" } }
@@ -91,7 +91,7 @@ consumed by both functions.
 **Design.** Reuse the company-fields join shape rather than inventing a parallel one:
 
 ```jsonc
-// open-processes/artifacts.json (proposed, optional)
+// open-artifacts/registry.json (proposed, optional)
 "clocks": [
   { "module": "grant409aSanity", "function": "fmvAgeCheck", "kind": "staleness" }
 ]
@@ -127,7 +127,7 @@ consumers (the sim, the CLI's saved records, the private UM API database):
 
 Versioning is the `supersedes` chain; staleness is never stored, always recomputed by the
 module that owns it from the instance's field values. Field keys are
-`open-processes/company-fields.json` ids, so an instance is exactly "the values this artifact
+`open-artifacts/fields.json` ids, so an instance is exactly "the values this artifact
 establishes, as held by one company at one time". Public git owns the schema and the type
 layer; instances stay in the API database per the shared-content split.
 
@@ -171,12 +171,12 @@ nothing.
    artifacts establish; `runway.ts`, `deadlines.ts`, and `grant409aSanity.ts` then compute
    from the company state with zero new math.
 
-All of it stays propose/display-only under `governance/AGENT_POLICY.md`: the model orders
+All of it stays propose/display-only under `policies/AGENT_POLICY.md`: the model orders
 and checks work; it authorizes nothing.
 
 ## Per-artifact record files — split assessment (founder ask 2026-10-08)
 
-Assessment only; the founder decides. The question: should `open-processes/artifacts.json` (one
+Assessment only; the founder decides. The question: should `open-artifacts/registry.json` (one
 file, 82 records) become per-id files, so each `/artifacts/[id]` page can deep-link its own
 repo object the way process pages link `content/processes/records/<id>.json`?
 

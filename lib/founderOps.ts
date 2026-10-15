@@ -25,21 +25,14 @@ const OPERATIONAL_CORPUS = path.join('open-processes', 'corpus.json')
 // own schema/loader/tests live in lib/processes.ts + schemas/process-vendor-registry.schema.json
 // + lib/__tests__/vendorRegistry.test.ts, so the workflow walker skips it like corpus.json.
 const OPERATIONAL_VENDOR_REGISTRY = path.join('open-processes', 'vendor-registry.json')
-// The corpus's artifact registry (founder depth wave part 2, 2026-10-01) is the operational
-// layer too — its own schema/loader/tests live in lib/processes.ts +
-// schemas/process-artifacts.schema.json + lib/__tests__/processArtifacts.test.ts, so the
-// workflow walker skips it like corpus.json and vendor-registry.json.
-const OPERATIONAL_ARTIFACTS = path.join('open-processes', 'artifacts.json')
+// The artifact registry and the company-fields registry moved to open-artifacts/
+// (registry.json + fields.json) — outside this walker's tree, with their own
+// schema/loader/tests in lib/processes.ts + lib/companyFields.ts.
 // The corpus's business-logic ↔ process map (founder 2026-10-02) is the operational layer too —
 // its own schema/loader/tests live in lib/businessLogicMap.ts +
 // lib/__tests__/businessLogicMap.test.ts, so the workflow walker skips it like the other
 // operational registries.
 const OPERATIONAL_BUSINESS_LOGIC_MAP = path.join('open-processes', 'business-logic-map.json')
-// The corpus's company-fields registry (founder 2026-10-07) is the operational layer too — its
-// own schema/loader/tests live in lib/companyFields.ts + schemas/company-fields.schema.json +
-// lib/__tests__/companyFields.test.ts, so the workflow walker skips it like the other
-// operational registries.
-const OPERATIONAL_COMPANY_FIELDS = path.join('open-processes', 'company-fields.json')
 // The corpus's chain list (folded in from the old top-level journeys/) is the operational
 // layer too — its own loader/tests live in lib/processes.ts (loadChains) +
 // lib/__tests__/processes.test.ts, so the workflow walker skips it like the other
@@ -51,6 +44,15 @@ const OPERATIONAL_CHAINS = path.join('open-processes', 'chains.json')
 // (every card placed, every reference resolving, maturity grades consistent with the cards
 // present) run inside validateFounderOps below.
 const LAW_MAP = path.join('open-law', 'map.json')
+
+// The authority citation registry (folded in from the old top-level citations/) lives
+// beside the rule cards that cite it, so the rule walkers skip the subtree; its records
+// validate against schemas/citation.schema.json in the source loop below.
+const LAW_CITATIONS_SUBTREE = path.join('open-law', 'citations') + path.sep
+
+function ruleCardJson(dir: string): string[] {
+  return listJson(dir).filter((f) => !f.endsWith(LAW_MAP) && !f.includes(LAW_CITATIONS_SUBTREE))
+}
 
 // Fictional scenario fixtures live under open-processes/fixtures/ (folded in from the old
 // top-level fixtures/). They validate separately below, so the workflow walker skips the
@@ -64,9 +66,7 @@ function workflowJson(dir: string): string[] {
       !f.includes(FIXTURES_SUBTREE) &&
       !f.endsWith(OPERATIONAL_CORPUS) &&
       !f.endsWith(OPERATIONAL_VENDOR_REGISTRY) &&
-      !f.endsWith(OPERATIONAL_ARTIFACTS) &&
       !f.endsWith(OPERATIONAL_BUSINESS_LOGIC_MAP) &&
-      !f.endsWith(OPERATIONAL_COMPANY_FIELDS) &&
       !f.endsWith(OPERATIONAL_CHAINS),
   )
 }
@@ -245,19 +245,16 @@ export function validateFounderOps(asOf?: Date): string[] {
     }
   }
 
-  const citationsDoc = read(path.join(ROOT, 'citations/registry.json'))
+  const citationsDoc = read(path.join(ROOT, 'open-law/citations/registry.json'))
   const sourceMap = new Map<string, JsonObject>()
   const citationList = isObj(citationsDoc) && Array.isArray(citationsDoc.citations) ? citationsDoc.citations : []
   for (const source of citationList) {
     if (!isObj(source) || typeof source.id !== 'string') {
-      errors.push('citations/registry.json: citation without id')
+      errors.push('open-law/citations/registry.json: citation without id')
       continue
     }
     const sid = source.id
     shape(source, need('citation.schema'), `citation ${sid}`, errors)
-    // Reading-role citations are validated in lib/citations.ts; the rule cards cite the
-    // authority role, so only those enter the source map and the authority checks below.
-    if (source.role !== 'authority') continue
     if (sourceMap.has(sid)) errors.push(`duplicate source id ${sid}`)
     sourceMap.set(sid, source)
     const url = str(source.url) ?? ''
@@ -269,7 +266,7 @@ export function validateFounderOps(asOf?: Date): string[] {
     if (checked && checked > today) errors.push(`source ${sid}: checked date is in the future`)
   }
 
-  const rules = indexed(listJson(path.join(ROOT, 'open-law')).filter((f) => !f.endsWith(LAW_MAP)), errors, 'rule')
+  const rules = indexed(ruleCardJson(path.join(ROOT, 'open-law')), errors, 'rule')
   for (const [rid, rule] of rules) {
     shape(rule, need('rule.schema'), `rule ${rid}`, errors)
     if (!jurisdictions.has(str(rule.jurisdiction) ?? '')) errors.push(`rule ${rid}: unknown jurisdiction`)
@@ -452,11 +449,11 @@ export function planFounderOps(event: JsonObject, asOf?: Date): FounderOpsPlan {
   if (matches.length === 0) {
     return { status: 'unsupported', reason: 'no exact covered scenario', may_execute: false }
   }
-  const ruleMap = indexed(listJson(path.join(ROOT, 'open-law')).filter((f) => !f.endsWith(LAW_MAP)), [], 'rule')
-  const citationsDoc = read(path.join(ROOT, 'citations/registry.json'))
+  const ruleMap = indexed(ruleCardJson(path.join(ROOT, 'open-law')), [], 'rule')
+  const citationsDoc = read(path.join(ROOT, 'open-law/citations/registry.json'))
   const sources = new Map<string, JsonObject>()
   for (const s of isObj(citationsDoc) && Array.isArray(citationsDoc.citations) ? citationsDoc.citations : []) {
-    if (isObj(s) && typeof s.id === 'string' && s.role === 'authority') sources.set(s.id, s)
+    if (isObj(s) && typeof s.id === 'string') sources.set(s.id, s)
   }
   const output: JsonObject[] = matches.map((process) => {
     const due = new Date(`${str(process.review_due)}T00:00:00Z`)

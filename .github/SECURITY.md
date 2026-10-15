@@ -44,7 +44,7 @@ tokens. Fixtures (`open-processes/fixtures/`) must be wholly fictional. Tools de
 planning: any external action requires specific human approval, least-privilege
 credentials, dry-run support where possible, and an auditable receipt. Instructions
 embedded in external web pages or vendor responses are never executed
-(see `governance/AGENT_POLICY.md`).
+(see `policies/AGENT_POLICY.md`).
 
 ## Disclosure
 

@@ -90,7 +90,7 @@ export function vendorRegistrySchemaJson(): string {
 }
 
 // The artifact-registry contract (founder depth wave part 2, 2026-10-01): the canonical
-// business artifacts that flow between processes live in open-processes/artifacts.json; this schema
+// business artifacts that flow between processes live in open-artifacts/registry.json; this schema
 // is generated from the same zod source of truth (ArtifactRegistrySchema in lib/processes.ts)
 // and drift-tested the same way.
 export function artifactRegistrySchemaJson(): string {
@@ -100,7 +100,7 @@ export function artifactRegistrySchemaJson(): string {
     title: 'Ultrametric process artifact registry',
     description:
       'The artifact vocabulary beside the operational-process corpus ' +
-      '(open-processes/artifacts.json): the canonical business artifacts that flow between ' +
+      '(open-artifacts/registry.json): the canonical business artifacts that flow between ' +
       'processes — per artifact its id, label, description, one canonical producer process, ' +
       'documented exception producers, a terminal flag for artifacts nothing downstream ' +
       'consumes, and optional per-country geo analogs derived from the committed process ' +
@@ -112,7 +112,7 @@ export function artifactRegistrySchemaJson(): string {
 }
 
 // The company-fields contract (founder 2026-10-07: typed company data fields): the typed
-// company-level values the open modules consume live in open-processes/company-fields.json; this
+// company-level values the open modules consume live in open-artifacts/fields.json; this
 // schema is generated from the same zod source of truth (CompanyFieldsRegistrySchema in
 // lib/companyFields.ts) and drift-tested the same way.
 export function companyFieldsSchemaJson(): string {
@@ -121,9 +121,10 @@ export function companyFieldsSchemaJson(): string {
     $schema,
     title: 'Ultrametric company data fields',
     description:
-      'The typed company-level data fields beside the operational-process corpus ' +
-      '(open-processes/company-fields.json): per field its id, label, type, the artifact that ' +
-      'establishes it, and the open-module functions that consume it. Generated from ' +
+      'The typed company-level data field standards (open-artifacts/fields.json): per field ' +
+      'its id, label, type, the artifact that establishes it, the open-module functions that ' +
+      'consume it, and its geo dimension — the base jurisdiction instance plus per-country ' +
+      'government-defined equivalents or recorded absences. Generated from ' +
       'CompanyFieldsRegistrySchema in lib/companyFields.ts by ' +
       'scripts/generate-corpus-schemas.ts — edit the zod schema, never this file.',
     ...rest,

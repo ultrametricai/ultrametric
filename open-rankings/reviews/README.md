@@ -9,7 +9,7 @@ hands-on checks found) and ranked by how automatable it is, with dated evidence 
 judged verdicts citing evidence ids, and rankings that recompute deterministically with a
 tamper-evident fingerprint (`rankings-engine/scripts/recompute-check.ts`). Owner-affiliated
 products (Foreloop, AFK, Ultrametric) are disclosed on every surface and bias-audited;
-favorable flips without new evidence are reverted (`governance/REVIEW_POLICY.md`). Live
+favorable flips without new evidence are reverted (`policies/REVIEW_POLICY.md`). Live
 views: every ranking at [ultrametric.ai/arenas](https://ultrametric.ai/arenas), the
 cross-market view at [ultrametric.ai/overall](https://ultrametric.ai/overall).
 

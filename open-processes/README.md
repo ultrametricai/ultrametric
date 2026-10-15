@@ -15,7 +15,7 @@ The existing workflow and corpus layers retain their own contracts:
    applicability dimensions, dated editorial review, rule-card references, stop conditions,
    and a scoped human approval on every externally-effectful step. Validated by
    `lib/founderOps.ts` inside the normal test gates; status `demonstration`, not
-   production-certified (`governance/REVIEW_POLICY.md` has the maturity ladder).
+   production-certified (`policies/REVIEW_POLICY.md` has the maturity ladder).
 
 2. **The process library** (`corpus.json`, rendered live at
    [ultrametric.ai/processes](https://ultrametric.ai/processes), contract in
@@ -208,7 +208,13 @@ them.
 
 ## The artifact layer (typed inputs/outputs)
 
-`artifacts.json` (founder depth wave part 2, 2026-10-01) is the vocabulary of canonical
+The artifact registry and the company-fields registry moved out of this directory to
+[`open-artifacts/`](../open-artifacts/README.md): the registry is now
+`open-artifacts/registry.json` and the typed field standards are `open-artifacts/fields.json`.
+The process side of the contract (`produces`/`requires`, node-level `producesArtifact`) stays
+in the corpus here.
+
+The registry (founder depth wave part 2, 2026-10-01) is the vocabulary of canonical
 business artifacts that flow BETWEEN processes — the EIN, the Certificate of Incorporation,
 the bank account, the cap table, the 409A report, the payroll account. Each registry entry:
 `id` (kebab-case), `label`, `description`, `producedBy` (the ONE canonical producer process),
@@ -332,8 +338,8 @@ flowchart TD
   rankings (`/rankings/processes/*`), and the open startup simulator at `/startup-sim`.
 - `chains.json` links process IDs into playbooks (see the Chains section below).
 - `lib/founderOps.ts` validates the jurisdiction-scoped workflow layer (`equity/us-de/*`)
-  against `schemas/process.schema.json`, resolves its rule-card references into `open-law/` and
-  `citations/`, and exposes the exact-dimension planner (`planFounderOps`).
+  against `schemas/process.schema.json`, resolves its rule-card references into `open-law/`
+  (cards and `open-law/citations/`), and exposes the exact-dimension planner (`planFounderOps`).
 
 ## Chains
 
