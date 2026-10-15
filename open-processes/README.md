@@ -208,7 +208,13 @@ them.
 
 ## The artifact layer (typed inputs/outputs)
 
-`artifacts.json` (founder depth wave part 2, 2026-10-01) is the vocabulary of canonical
+The artifact registry and the company-fields registry moved out of this directory to
+[`open-artifacts/`](../open-artifacts/README.md): the registry is now
+`open-artifacts/registry.json` and the typed field standards are `open-artifacts/fields.json`.
+The process side of the contract (`produces`/`requires`, node-level `producesArtifact`) stays
+in the corpus here.
+
+The registry (founder depth wave part 2, 2026-10-01) is the vocabulary of canonical
 business artifacts that flow BETWEEN processes — the EIN, the Certificate of Incorporation,
 the bank account, the cap table, the 409A report, the payroll account. Each registry entry:
 `id` (kebab-case), `label`, `description`, `producedBy` (the ONE canonical producer process),

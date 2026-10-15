@@ -3,20 +3,25 @@ import path from 'node:path'
 import { describe, expect, it } from 'vitest'
 import { loadBusinessLogicMap } from '../businessLogicMap'
 import {
+  FIELD_GEO_COUNTRIES,
+  FIELD_GEO_EQUIVALENT_COUNTRIES,
   companyFieldGroups,
   fieldsConsumedByModule,
   fieldsEstablishedBy,
   findFieldPage,
+  isFieldGeoInstance,
   loadCompanyFields,
   loadFieldPages,
+  type FieldGeoAbsence,
+  type FieldGeoInstance,
 } from '../companyFields'
-import { loadArtifacts, loadProcesses } from '../processes'
+import { GEO_NOTE_COUNTRIES, loadArtifacts, loadProcesses } from '../processes'
 
 // Totality gate for the company-fields registry (founder 2026-10-07: typed company data
 // fields; 2026-10-08: spec blocks + the identifier widening). The registry's honesty rule is
 // that a field exists ONLY because a committed artifact establishes it and committed code or a
 // committed corpus process consumes it, so every edge must resolve:
-//   1. producedBy → a real open-processes/artifacts.json artifact;
+//   1. producedBy → a real open-artifacts/registry.json artifact;
 //   2. consumedBy.module → a real business-logic-map module (a real lib/openstartup file);
 //   3. consumedBy.function → a REAL exported function of that module (misspellings fail);
 //   4. a field WITHOUT consumedBy (the widened identifier path) must have its establishing
@@ -32,7 +37,7 @@ const artifactIds = new Set(loadArtifacts().map((a) => a.id))
 const map = loadBusinessLogicMap()
 const requiredArtifactIds = new Set(loadProcesses().flatMap((t) => t.requires))
 
-describe('open-processes/company-fields.json totality', () => {
+describe('open-artifacts/fields.json totality', () => {
   it('is the honest small cut: unique kebab-case ids inside the curated bounds', () => {
     expect(fields.length).toBeGreaterThanOrEqual(10)
     // The bound exists to force this comment (and a fresh signature read) the next time
@@ -223,5 +228,83 @@ describe('render rows resolve both directions', () => {
     }
     // A module whose functions take no registered company-level field renders nothing.
     expect(fieldsConsumedByModule('unitEconomics')).toEqual([])
+  })
+})
+
+// The geo dimension (founder field-standards order, landed with the open-artifacts/ move
+// 2026-10-14): every field records where its value is defined — the universal form for
+// company-record values, or a US base instance plus one entry per covered country, each a
+// government-defined equivalent or a recorded absence. Totality and coherence gates; the
+// per-country facts themselves live in the registry with their authority-page citations.
+describe('field geo dimension', () => {
+  const bound = fields.filter((f) => !('scope' in f.geo))
+
+  it('the country vocabulary is US plus the geo switcher set, and both forms are in use', () => {
+    expect([...FIELD_GEO_COUNTRIES].sort()).toEqual(['US', ...GEO_NOTE_COUNTRIES].sort())
+    expect([...FIELD_GEO_EQUIVALENT_COUNTRIES].sort()).toEqual([...GEO_NOTE_COUNTRIES].sort())
+    expect(bound.length).toBeGreaterThan(0)
+    expect(fields.length - bound.length).toBeGreaterThan(0)
+  })
+
+  it('every jurisdiction-bound field: US base, each covered country exactly once', () => {
+    for (const f of bound) {
+      const geo = f.geo as Extract<typeof f.geo, { base: unknown }>
+      expect(geo.base.country, `${f.id} base`).toBe('US')
+      const countries = geo.equivalents.map((e) => e.country)
+      expect([...countries].sort(), `${f.id} country coverage`).toEqual(
+        [...FIELD_GEO_EQUIVALENT_COUNTRIES].sort(),
+      )
+    }
+  })
+
+  it('every geo pattern compiles, examples match their own pattern, sources are https', () => {
+    for (const f of bound) {
+      const geo = f.geo as Extract<typeof f.geo, { base: unknown }>
+      for (const entry of [geo.base, ...geo.equivalents]) {
+        if (!isFieldGeoInstance(entry)) {
+          for (const s of entry.sources ?? []) {
+            expect(new URL(s.url).protocol, `${f.id}/${entry.country}: ${s.url}`).toBe('https:')
+          }
+          continue
+        }
+        if (entry.pattern) {
+          expect(() => new RegExp(entry.pattern!), `${f.id}/${entry.country}`).not.toThrow()
+        }
+        if (entry.example) {
+          expect(entry.pattern, `${f.id}/${entry.country}: example without pattern`).toBeDefined()
+          expect(
+            new RegExp(entry.pattern!).test(entry.example),
+            `${f.id}/${entry.country} example`,
+          ).toBe(true)
+        }
+        for (const s of entry.sources) {
+          expect(new URL(s.url).protocol, `${f.id}/${entry.country}: ${s.url}`).toBe('https:')
+        }
+      }
+    }
+  })
+
+  it('pins the founder-named equivalents where verification succeeded', () => {
+    const geoOf = (id: string) =>
+      fields.find((f) => f.id === id)!.geo as {
+        base: FieldGeoInstance
+        equivalents: Array<FieldGeoInstance | FieldGeoAbsence>
+      }
+    const ein = geoOf('ein')
+    expect(ein.base.pattern).toBe('^[0-9]{2}-[0-9]{7}$')
+    const einByCountry = new Map(ein.equivalents.map((e) => [e.country, e]))
+    expect((einByCountry.get('UK') as FieldGeoInstance).label).toContain('UTR')
+    expect((einByCountry.get('UK') as FieldGeoInstance).pattern).toBe('^[0-9]{10}$')
+    expect((einByCountry.get('DE') as FieldGeoInstance).label).toBe('Steuernummer')
+    expect((einByCountry.get('FR') as FieldGeoInstance).pattern).toBe('^[0-9]{9}$')
+    expect((einByCountry.get('IN') as FieldGeoInstance).label).toContain('PAN')
+    expect((einByCountry.get('PT') as FieldGeoInstance).label).toContain('NIPC')
+    expect((einByCountry.get('CA') as FieldGeoInstance).label).toContain('Business number')
+    // The verified CBCA absence: federal shares carry no par value.
+    const par = geoOf('par-value')
+    const parCA = par.equivalents.find((e) => e.country === 'CA')!
+    expect(isFieldGeoInstance(parCA)).toBe(false)
+    expect((parCA as FieldGeoAbsence).status).toBe('no-equivalent')
+    expect((parCA as FieldGeoAbsence).sources?.length).toBeGreaterThan(0)
   })
 })

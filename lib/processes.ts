@@ -247,7 +247,7 @@ export type StepFailureMode = z.infer<typeof StepFailureModeSchema>
 export const DagNodeSchema = DagNodeBaseSchema.extend({
   methods: StepMethodSchema.array().min(1).optional(),
   // The artifact layer, node half (founder depth wave part 2, 2026-10-01: typed inputs/outputs
-  // between steps): the registry artifact (open-processes/artifacts.json) that comes into existence
+  // between steps): the registry artifact (open-artifacts/registry.json) that comes into existence
   // at THIS step — the certificate received, the account opened, the paper signed. OPTIONAL per
   // node, but corpus-tested as the exact node-level image of the task's `produces` list (set
   // equality per task, lib/__tests__/processArtifacts.test.ts), and never on a
@@ -465,7 +465,7 @@ export const ProcessTaskSchema = z.object({
     required: z.boolean(),
   }).array(),
   // The artifact layer, task half (founder depth wave part 2, 2026-10-01): typed inputs/outputs
-  // between processes, as registry artifact ids (open-processes/artifacts.json — loadArtifacts below).
+  // between processes, as registry artifact ids (open-artifacts/registry.json — loadArtifacts below).
   // `contextNeeded` prose stays the human context; this is the machine truth the cross-process
   // dependency graph (lib/processDeps.ts) builds from. Both REQUIRED with no zod default — the
   // whole corpus is explicitly curated (an empty array is an honest "this process produces/needs
@@ -1022,7 +1022,7 @@ export function vendorLabel(vendor: string): string {
 }
 
 // ---------------------------------------------------------------------------
-// Artifact registry (open-processes/artifacts.json) — the canonical business artifacts that flow
+// Artifact registry (open-artifacts/registry.json) — the canonical business artifacts that flow
 // between processes (founder depth wave part 2, 2026-10-01)
 // ---------------------------------------------------------------------------
 
@@ -1099,7 +1099,7 @@ export const ArtifactRegistrySchema = z
   })
   .strict()
 
-const artifactsFile = () => path.join(process.cwd(), 'open-processes', 'artifacts.json')
+const artifactsFile = () => path.join(process.cwd(), 'open-artifacts', 'registry.json')
 let artifactsCache: Artifact[] | null = null
 export function loadArtifacts(): Artifact[] {
   if (!artifactsCache) {

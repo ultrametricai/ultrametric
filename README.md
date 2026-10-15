@@ -15,6 +15,7 @@ ultrametric/
 ├── <a href="#open-law">open-law</a>/           startup legal rules by jurisdiction
 ├── <a href="#open-lore">open-lore</a>/          founder advice, who said it, the reading library
 ├── <a href="#open-docs">open-documents</a>/     openly published legal documents, by use case
+├── <a href="#open-artifacts">open-artifacts</a>/     the business objects processes exchange, with field standards
 ├── rankings-engine/    the code that crawls, probes, judges, scores
 ├── lib/                loaders, scoring, and the calculation code
 ├── jurisdictions/      country and state data, vendor availability
@@ -104,7 +105,7 @@ examples, and boundaries.
 
 The modules and processes read one shared set of company fields: incorporation date,
 authorized shares, par value, cash on hand, the common-share FMV. Each field is
-registered in [`open-processes/company-fields.json`](open-processes/company-fields.json), so the
+registered in [`open-artifacts/fields.json`](open-artifacts/fields.json), so the
 same value feeds the modules that need it. The data shapes are published as JSON
 Schemas in [`schemas/`](schemas/).
 
@@ -114,8 +115,12 @@ Schemas in [`schemas/`](schemas/).
 
 The documents and files that processes produce and consume: the certificate of
 incorporation, the EIN letter, the cap table. Each is registered in
-[`open-processes/artifacts.json`](open-processes/artifacts.json), so the processes declare what
-they make and what they need. See it live at
+[`open-artifacts/registry.json`](open-artifacts/registry.json), so the processes declare what
+they make and what they need. The typed data fields those artifacts establish (the EIN, the
+incorporation date, the file number) are specified in
+[`open-artifacts/fields.json`](open-artifacts/fields.json), each with its format, defining
+authority, and per-country equivalents; [`open-artifacts/README.md`](open-artifacts/README.md)
+is the guide. See it live at
 [ultrametric.ai/artifacts](https://ultrametric.ai/artifacts).
 
 [![The artifacts view on ultrametric.ai: the documents and files founder processes produce and consume](assets/readme/artifacts.png)](https://ultrametric.ai/artifacts)

@@ -6,7 +6,7 @@ import { loadArtifacts, loadProcesses } from '@/lib/processes'
 
 // The artifact layer (founder depth wave part 2, 2026-10-01: typed inputs/outputs between
 // processes). These tests pin the registry's honesty contract — the rules that make
-// open-processes/artifacts.json a corpus-grounded vocabulary instead of a wishlist:
+// open-artifacts/registry.json a corpus-grounded vocabulary instead of a wishlist:
 //   1. TOTALITY — every process carries explicit produces/requires (no zod default hides a
 //      gap), and every artifact id used anywhere resolves in the registry.
 //   2. ONE CANONICAL PRODUCER — each artifact names one producedBy; any other process claiming
@@ -138,7 +138,7 @@ describe('no invented artifacts — committed steps and real consumers', () => {
 // flip of the 2026-10-05 absence pin in app/artifacts/__tests__/page.test.tsx): an artifact may
 // name the open-documents/registry.json records whose registered template genuinely IS its form.
 // Same referential-integrity bar as every cross-registry link (step documents → registry,
-// producesArtifact → artifacts.json): a typo'd id fails loudly, and the mapping stays sparse —
+// producesArtifact → open-artifacts/registry.json): a typo'd id fails loudly, and the mapping stays sparse —
 // honest absence for every artifact with no registered template, never an invented
 // correspondence.
 describe('artifact documents — registered templates', () => {

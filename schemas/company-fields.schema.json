@@ -1,7 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "title": "Ultrametric company data fields",
-  "description": "The typed company-level data fields beside the operational-process corpus (open-processes/company-fields.json): per field its id, label, type, the artifact that establishes it, and the open-module functions that consume it. Generated from CompanyFieldsRegistrySchema in lib/companyFields.ts by scripts/generate-corpus-schemas.ts — edit the zod schema, never this file.",
+  "description": "The typed company-level data field standards (open-artifacts/fields.json): per field its id, label, type, the artifact that establishes it, the open-module functions that consume it, and its geo dimension — the base jurisdiction instance plus per-country government-defined equivalents or recorded absences. Generated from CompanyFieldsRegistrySchema in lib/companyFields.ts by scripts/generate-corpus-schemas.ts — edit the zod schema, never this file.",
   "type": "object",
   "properties": {
     "$comment": {
@@ -131,6 +131,236 @@
               "sources"
             ],
             "additionalProperties": false
+          },
+          "geo": {
+            "anyOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "scope": {
+                    "type": "string",
+                    "const": "universal"
+                  },
+                  "note": {
+                    "type": "string",
+                    "minLength": 1
+                  }
+                },
+                "required": [
+                  "scope",
+                  "note"
+                ],
+                "additionalProperties": false
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "base": {
+                    "type": "object",
+                    "properties": {
+                      "country": {
+                        "type": "string",
+                        "enum": [
+                          "US",
+                          "UK",
+                          "IN",
+                          "DE",
+                          "FR",
+                          "PT",
+                          "CA"
+                        ]
+                      },
+                      "label": {
+                        "type": "string",
+                        "minLength": 1
+                      },
+                      "authority": {
+                        "type": "string",
+                        "minLength": 1
+                      },
+                      "summary": {
+                        "type": "string",
+                        "minLength": 1
+                      },
+                      "pattern": {
+                        "type": "string",
+                        "minLength": 1
+                      },
+                      "example": {
+                        "type": "string",
+                        "minLength": 1
+                      },
+                      "sources": {
+                        "minItems": 1,
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "label": {
+                              "type": "string",
+                              "minLength": 1
+                            },
+                            "url": {
+                              "type": "string",
+                              "format": "uri"
+                            }
+                          },
+                          "required": [
+                            "label",
+                            "url"
+                          ],
+                          "additionalProperties": false
+                        }
+                      }
+                    },
+                    "required": [
+                      "country",
+                      "label",
+                      "authority",
+                      "summary",
+                      "sources"
+                    ],
+                    "additionalProperties": false
+                  },
+                  "equivalents": {
+                    "minItems": 6,
+                    "maxItems": 6,
+                    "type": "array",
+                    "items": {
+                      "anyOf": [
+                        {
+                          "type": "object",
+                          "properties": {
+                            "country": {
+                              "type": "string",
+                              "enum": [
+                                "US",
+                                "UK",
+                                "IN",
+                                "DE",
+                                "FR",
+                                "PT",
+                                "CA"
+                              ]
+                            },
+                            "label": {
+                              "type": "string",
+                              "minLength": 1
+                            },
+                            "authority": {
+                              "type": "string",
+                              "minLength": 1
+                            },
+                            "summary": {
+                              "type": "string",
+                              "minLength": 1
+                            },
+                            "pattern": {
+                              "type": "string",
+                              "minLength": 1
+                            },
+                            "example": {
+                              "type": "string",
+                              "minLength": 1
+                            },
+                            "sources": {
+                              "minItems": 1,
+                              "type": "array",
+                              "items": {
+                                "type": "object",
+                                "properties": {
+                                  "label": {
+                                    "type": "string",
+                                    "minLength": 1
+                                  },
+                                  "url": {
+                                    "type": "string",
+                                    "format": "uri"
+                                  }
+                                },
+                                "required": [
+                                  "label",
+                                  "url"
+                                ],
+                                "additionalProperties": false
+                              }
+                            }
+                          },
+                          "required": [
+                            "country",
+                            "label",
+                            "authority",
+                            "summary",
+                            "sources"
+                          ],
+                          "additionalProperties": false
+                        },
+                        {
+                          "type": "object",
+                          "properties": {
+                            "country": {
+                              "type": "string",
+                              "enum": [
+                                "UK",
+                                "IN",
+                                "DE",
+                                "FR",
+                                "PT",
+                                "CA"
+                              ]
+                            },
+                            "status": {
+                              "type": "string",
+                              "enum": [
+                                "no-equivalent",
+                                "unverified"
+                              ]
+                            },
+                            "note": {
+                              "type": "string",
+                              "minLength": 1
+                            },
+                            "sources": {
+                              "minItems": 1,
+                              "type": "array",
+                              "items": {
+                                "type": "object",
+                                "properties": {
+                                  "label": {
+                                    "type": "string",
+                                    "minLength": 1
+                                  },
+                                  "url": {
+                                    "type": "string",
+                                    "format": "uri"
+                                  }
+                                },
+                                "required": [
+                                  "label",
+                                  "url"
+                                ],
+                                "additionalProperties": false
+                              }
+                            }
+                          },
+                          "required": [
+                            "country",
+                            "status",
+                            "note"
+                          ],
+                          "additionalProperties": false
+                        }
+                      ]
+                    }
+                  }
+                },
+                "required": [
+                  "base",
+                  "equivalents"
+                ],
+                "additionalProperties": false
+              }
+            ]
           }
         },
         "required": [
@@ -139,7 +369,8 @@
           "type",
           "description",
           "producedBy",
-          "spec"
+          "spec",
+          "geo"
         ],
         "additionalProperties": false
       }
