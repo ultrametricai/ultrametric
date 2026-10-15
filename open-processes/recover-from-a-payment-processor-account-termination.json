@@ -1,0 +1,323 @@
+{
+  "schemaVersion": 1,
+  "id": "sit_013",
+  "kind": "situation",
+  "title": "Recover from a payment-processor account termination",
+  "summary": "Your processor is terminating the account. Read the notice: the stated reason, the final processing date, the reserve terms. Processors commonly hold funds against future disputes for a stated period after termination; Stripe's services agreement is public and explains its reserve mechanics, so read yours. Then do three things at once. Export every record while you still have API access. Appeal through the processor's review channel with real evidence. Start underwriting at a backup processor now; onboarding takes days. Moving card data between PCI-compliant processors at the PAN level is a real, supported path, not a workaround. If payouts or renewals will wobble, tell your customers. How long the reserve is held is the processor's call; treat it as a wait.",
+  "outcomes": [],
+  "guidance": null,
+  "parts": [
+    {
+      "id": "n1",
+      "kind": "step",
+      "title": "Read the termination notice: the stated reason, the final processing date, and the reserve/payout-hold terms your services agreement sets",
+      "guidance": null,
+      "when": null,
+      "ref": null,
+      "options": [],
+      "notes": [],
+      "references": [
+        {
+          "kind": "url",
+          "url": "https://stripe.com/legal/ssa",
+          "role": "legacy-action-link",
+          "title": "Stripe Services Agreement (termination & reserves)",
+          "description": null
+        }
+      ],
+      "metadata": {
+        "route": "person",
+        "reversibility": "reversible",
+        "riskLevel": "high",
+        "estimatedMinutes": 30
+      }
+    },
+    {
+      "id": "n2",
+      "kind": "step",
+      "title": "Export everything while API access lasts: charges, customers, subscription state, dispute history, payout records",
+      "guidance": null,
+      "when": null,
+      "ref": null,
+      "options": [],
+      "notes": [],
+      "references": [
+        {
+          "kind": "vendor",
+          "id": "stripe",
+          "role": "stated-vendor"
+        },
+        {
+          "kind": "url",
+          "url": "https://docs.stripe.com/stripe-reports",
+          "role": "legacy-action-link",
+          "title": "Stripe: reports & data exports",
+          "description": null
+        }
+      ],
+      "metadata": {
+        "route": "agent",
+        "reversibility": "reversible",
+        "estimatedMinutes": 60
+      }
+    },
+    {
+      "id": "n3",
+      "kind": "step",
+      "title": "File the appeal through the processor's own review channel, with evidence: business model, fulfillment proof, dispute history",
+      "guidance": null,
+      "when": null,
+      "ref": null,
+      "options": [],
+      "notes": [],
+      "references": [
+        {
+          "kind": "url",
+          "url": "https://support.stripe.com/",
+          "role": "legacy-action-link",
+          "title": "Stripe support (account reviews)",
+          "description": null
+        }
+      ],
+      "metadata": {
+        "route": "person",
+        "reversibility": "reversible",
+        "riskLevel": "high",
+        "estimatedMinutes": 60
+      }
+    },
+    {
+      "id": "n4",
+      "kind": "step",
+      "title": "Choose the backup processor and start its underwriting now — onboarding/KYC runs in days, not hours",
+      "guidance": null,
+      "when": null,
+      "ref": null,
+      "options": [],
+      "notes": [],
+      "references": [
+        {
+          "kind": "vendor",
+          "id": "paddle",
+          "role": "candidate"
+        },
+        {
+          "kind": "vendor",
+          "id": "paypal",
+          "role": "candidate"
+        },
+        {
+          "kind": "vendor",
+          "id": "square",
+          "role": "candidate"
+        },
+        {
+          "kind": "category",
+          "id": "payments",
+          "role": "rankings"
+        }
+      ],
+      "metadata": {
+        "route": "person",
+        "reversibility": "reversible",
+        "estimatedMinutes": 60
+      }
+    },
+    {
+      "id": "n5",
+      "kind": "step",
+      "title": "Request the PAN-level card-data migration to the new processor (a PCI-compliant processor-to-processor transfer)",
+      "guidance": null,
+      "when": null,
+      "ref": null,
+      "options": [],
+      "notes": [],
+      "references": [
+        {
+          "kind": "vendor",
+          "id": "stripe",
+          "role": "stated-vendor"
+        },
+        {
+          "kind": "url",
+          "url": "https://docs.stripe.com/get-started/data-migrations",
+          "role": "legacy-action-link",
+          "title": "Stripe: payments data migrations",
+          "description": null
+        }
+      ],
+      "metadata": {
+        "route": "form",
+        "reversibility": "reversible",
+        "estimatedMinutes": 45
+      }
+    },
+    {
+      "id": "n6",
+      "kind": "step",
+      "title": "Re-point checkout, billing, and webhooks to the new processor behind a flag, and reconcile the first live charges",
+      "guidance": null,
+      "when": null,
+      "ref": null,
+      "options": [],
+      "notes": [],
+      "references": [
+        {
+          "kind": "vendor",
+          "id": "paddle",
+          "role": "candidate"
+        },
+        {
+          "kind": "vendor",
+          "id": "paypal",
+          "role": "candidate"
+        },
+        {
+          "kind": "vendor",
+          "id": "square",
+          "role": "candidate"
+        },
+        {
+          "kind": "category",
+          "id": "payments",
+          "role": "rankings"
+        }
+      ],
+      "metadata": {
+        "route": "agent",
+        "reversibility": "reversible",
+        "riskLevel": "medium",
+        "estimatedMinutes": 120
+      }
+    },
+    {
+      "id": "n7",
+      "kind": "step",
+      "title": "Tell affected customers honestly if payouts, refunds, or renewals will wobble during the cutover",
+      "guidance": null,
+      "when": null,
+      "ref": null,
+      "options": [],
+      "notes": [],
+      "references": [],
+      "metadata": {
+        "route": "person",
+        "reversibility": "painful",
+        "estimatedMinutes": 45
+      }
+    },
+    {
+      "id": "n8",
+      "kind": "step",
+      "title": "Wait out the appeal decision and the reserve release — both run on the processor's stated schedule",
+      "guidance": null,
+      "when": null,
+      "ref": null,
+      "options": [],
+      "notes": [],
+      "references": [],
+      "metadata": {
+        "route": "person",
+        "reversibility": "reversible",
+        "async": true,
+        "estimatedMinutes": 43200
+      }
+    }
+  ],
+  "links": [
+    {
+      "from": "n1",
+      "to": "n2",
+      "when": null
+    },
+    {
+      "from": "n2",
+      "to": "n3",
+      "when": null
+    },
+    {
+      "from": "n3",
+      "to": "n4",
+      "when": null
+    },
+    {
+      "from": "n4",
+      "to": "n5",
+      "when": null
+    },
+    {
+      "from": "n5",
+      "to": "n6",
+      "when": null
+    },
+    {
+      "from": "n6",
+      "to": "n7",
+      "when": null
+    },
+    {
+      "from": "n7",
+      "to": "n8",
+      "when": null
+    }
+  ],
+  "references": [
+    {
+      "kind": "vendor",
+      "id": "stripe",
+      "role": "involves"
+    }
+  ],
+  "notes": [],
+  "metadata": {
+    "phase": "finance",
+    "kind": "situation",
+    "trigger": "Your payment processor emails that your account is terminated or restricted; payouts pause and a final processing date is set.",
+    "urgency": "days",
+    "cadence": "event-driven",
+    "geoScope": "global",
+    "complexity": "complex",
+    "reversibility": "painful",
+    "category": "payments",
+    "supportLevel": "partial",
+    "supportReason": "Data export and the checkout re-point are real API work while access lasts; the appeal, the underwriting conversation at the next processor, and the reserve hold are up to the processors and their timelines.",
+    "contextNeeded": [
+      {
+        "tool": "user_input",
+        "query": "the termination notice (reason, final processing date, reserve terms)",
+        "tier": "user_input",
+        "required": true
+      },
+      {
+        "tool": "user_input",
+        "query": "what runs on the processor: subscriptions, payout cadence, integrations",
+        "tier": "user_input",
+        "required": true
+      }
+    ],
+    "tags": [
+      "situation",
+      "payments",
+      "processor",
+      "termination",
+      "migration"
+    ],
+    "activeMinutes": 420,
+    "totalEstimatedMinutes": 43620,
+    "hasAsyncSteps": true,
+    "annoyance": 5,
+    "risk": 5,
+    "growthImpact": 2,
+    "produces": [],
+    "requires": []
+  },
+  "source": {
+    "path": "open-processes/corpus.json",
+    "id": "sit_013",
+    "revision": "4a1ac9b2eea2d4e1ac8cc5a0dfdc7cc5dc6080a1",
+    "sha256": "3839a0b29d85d8cf020a2ad09ddc6b1fb4d7f881bbca48a612541d38922e9a3d"
+  },
+  "entrySteps": [
+    "n1"
+  ]
+}

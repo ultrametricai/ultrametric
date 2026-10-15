@@ -40,8 +40,10 @@ describe('canonical process schema publication', () => {
     expect(schema.oneOf).toEqual([{ $ref: '#/$defs/canonical' }, { $ref: '#/$defs/legacy' }])
     expect(schema.$defs.canonical).toEqual(canonical)
     for (const [name, definition] of Object.entries($defs ?? {})) expect(schema.$defs[name]).toEqual(definition)
-    expect(schema.$defs.canonical.required).toContain('entrySteps')
-    expect(schema.$defs.canonical.properties.schemaVersion.const).toBe(1)
+    for (const variant of schema.$defs.canonical.anyOf) {
+      expect(variant.required).toContain('entrySteps')
+      expect(variant.properties.schemaVersion.const).toBe(1)
+    }
   })
 
   it('preserves the complete canonical logo, including choices, edges, outputs and classifications', () => {
@@ -60,6 +62,19 @@ describe('canonical process schema publication', () => {
     expect(canonical.safeParse(legacy).success).toBe(false)
   })
 
+  it('publishes ordered chains with empty graph entries while preserving ordinary entry requirements', () => {
+    const names = JSON.parse(fs.readFileSync(path.join(ROOT, 'open-processes/catalog.json'), 'utf8')).processes
+    for (const name of names) {
+      const record = JSON.parse(fs.readFileSync(path.join(ROOT, 'open-processes', `${name}.json`), 'utf8'))
+      expect(published.parse(record)).toEqual(record)
+      if (record.taskIds) {
+        expect(record.entrySteps).toEqual([])
+        expect(published.safeParse({ ...record, taskIds: [] }).success).toBe(false)
+        expect(published.safeParse({ ...record, entrySteps: [record.parts[0].id] }).success).toBe(false)
+      }
+    }
+  })
+
   it.each([
     ['missing entries', (record: ReturnType<typeof logo>) => { delete record.entrySteps }],
     ['empty entries', (record: ReturnType<typeof logo>) => { record.entrySteps = [] }],
@@ -68,7 +83,7 @@ describe('canonical process schema publication', () => {
     ['missing choice identity', (record: ReturnType<typeof logo>) => { delete record.parts[1].options[0].id }],
     ['missing edge target', (record: ReturnType<typeof logo>) => { delete record.links[0].to }],
     ['invalid edge option', (record: ReturnType<typeof logo>) => { record.links[1].option = 4 }],
-    ['unpublished chain fields', (record: ReturnType<typeof logo>) => { record.taskIds = ['brand_002'] }],
+    ['chain fields on an ordinary graph', (record: ReturnType<typeof logo>) => { record.taskIds = ['brand_002'] }],
   ])('matches the canonical validator when rejecting %s', (_, mutate) => {
     const record = logo()
     mutate(record)

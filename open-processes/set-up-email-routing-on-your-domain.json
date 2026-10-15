@@ -1,0 +1,177 @@
+{
+  "schemaVersion": 1,
+  "id": "opp_011",
+  "kind": "process",
+  "title": "Set up email routing on your domain",
+  "summary": "Configure email routing on the company domain so aliases forward to real inboxes.",
+  "outcomes": [],
+  "guidance": null,
+  "parts": [
+    {
+      "id": "n1",
+      "kind": "step",
+      "title": "List the aliases to route (support@, billing@, …)",
+      "guidance": "List each desired address, its purpose, destination, responsible team, and reply identity. Decide whether it needs simple forwarding, distribution to several people, or a shared inbox where responders can see one another's replies. Compare the list with existing addresses to avoid collisions. Resolve unowned addresses and any forwarding outside the company with the mail administrator before configuration.",
+      "when": null,
+      "ref": null,
+      "options": [],
+      "notes": [],
+      "references": [],
+      "metadata": {
+        "route": "agent",
+        "reversibility": "reversible",
+        "estimatedMinutes": 1
+      }
+    },
+    {
+      "id": "n2",
+      "kind": "step",
+      "title": "Configure the routing rules at the mail provider",
+      "guidance": "Configure the aliases, groups, shared inboxes, or forwarding rules supported by the mail provider using the address map. Confirm destination mailboxes exist and give responders the access their roles require. Set the intended reply identity and failure handling, watching for routes that forward back to themselves. Keep exceptions visible where the provider cannot implement the requested behavior; these need a routing decision before the aliases are advertised.",
+      "when": null,
+      "ref": null,
+      "options": [],
+      "notes": [],
+      "references": [
+        {
+          "kind": "vendor",
+          "id": "fastmail",
+          "role": "stated-vendor"
+        },
+        {
+          "kind": "vendor",
+          "id": "fastmail",
+          "role": "candidate"
+        },
+        {
+          "kind": "category",
+          "id": "email",
+          "role": "rankings"
+        },
+        {
+          "kind": "category",
+          "id": "edge-platforms",
+          "role": "additional-rankings"
+        }
+      ],
+      "metadata": {
+        "route": "agent",
+        "reversibility": "reversible",
+        "estimatedMinutes": 2
+      }
+    },
+    {
+      "id": "n3",
+      "kind": "step",
+      "title": "Add the MX and SPF records to DNS",
+      "guidance": "Compare the provider's current DNS instructions with the existing zone and list the exact records to add or change. Domain verification, MX routing, and SPF authentication serve different purposes; preserve other legitimate senders and services when preparing the change. Have the DNS administrator authorize the mail cutover once destination mailboxes are ready. Apply the agreed records, retain the previous values for recovery, and check DNS resolution and the provider's setup status.",
+      "when": null,
+      "ref": null,
+      "options": [],
+      "notes": [],
+      "references": [
+        {
+          "kind": "vendor",
+          "id": "cloudflare",
+          "role": "stated-vendor"
+        },
+        {
+          "kind": "url",
+          "url": "https://learn.microsoft.com/en-us/microsoft-365/admin/setup/add-domain?view=o365-worldwide",
+          "title": "Microsoft 365: Add a custom domain",
+          "description": null,
+          "role": "authored-guidance-source"
+        }
+      ],
+      "metadata": {
+        "route": "agent",
+        "reversibility": "reversible",
+        "estimatedMinutes": 2
+      }
+    },
+    {
+      "id": "n4",
+      "kind": "step",
+      "title": "Send a test to each alias and confirm delivery",
+      "guidance": "Send a message from an outside mailbox to each alias and check the destination, arrival time, and spam folder. Reply from the intended responder and confirm the sender identity the recipient sees. Try an invalid address to check failure handling, and inspect any duplicate delivery or forwarding loop. Note the result per alias so the mail administrator can fix the specific route that failed before the addresses are used by customers.",
+      "when": null,
+      "ref": null,
+      "options": [],
+      "notes": [],
+      "references": [],
+      "metadata": {
+        "route": "agent",
+        "reversibility": "reversible",
+        "estimatedMinutes": 2
+      }
+    }
+  ],
+  "links": [
+    {
+      "from": "n1",
+      "to": "n2",
+      "when": null
+    },
+    {
+      "from": "n2",
+      "to": "n3",
+      "when": null
+    },
+    {
+      "from": "n3",
+      "to": "n4",
+      "when": null
+    }
+  ],
+  "references": [
+    {
+      "kind": "vendor",
+      "id": "fastmail",
+      "role": "involves"
+    },
+    {
+      "kind": "vendor",
+      "id": "cloudflare",
+      "role": "involves"
+    }
+  ],
+  "notes": [],
+  "metadata": {
+    "phase": "operations",
+    "cadence": "once",
+    "geoScope": "global",
+    "complexity": "simple",
+    "reversibility": "reversible",
+    "category": "opportunity",
+    "supportLevel": "partial",
+    "supportReason": "DNS providers expose email-routing configuration over their APIs — an agent wires the aliases.",
+    "contextNeeded": [],
+    "produces": [],
+    "requires": [
+      "domain",
+      "dns-control",
+      "company-email"
+    ],
+    "tags": [
+      "opportunity",
+      "cloudflare",
+      "domains"
+    ],
+    "activeMinutes": 7,
+    "totalEstimatedMinutes": 7,
+    "hasAsyncSteps": false,
+    "timeOrder": 76,
+    "annoyance": 2,
+    "risk": 2,
+    "growthImpact": 1
+  },
+  "source": {
+    "path": "open-processes/corpus.json",
+    "id": "opp_011",
+    "revision": "4a1ac9b2eea2d4e1ac8cc5a0dfdc7cc5dc6080a1",
+    "sha256": "ae06325d04053dbec5966668198a96632b7539bb75f88a1aa833cd5900b0fe2a"
+  },
+  "entrySteps": [
+    "n1"
+  ]
+}

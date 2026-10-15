@@ -1,0 +1,390 @@
+{
+  "schemaVersion": 1,
+  "id": "growth_001",
+  "kind": "process",
+  "title": "Set up subscription billing",
+  "summary": "Configure subscription plans, pricing, and a customer portal for SaaS billing. Stripe is the canonical route; alternatives are ranked in the payments arena.",
+  "outcomes": [],
+  "guidance": null,
+  "parts": [
+    {
+      "id": "n1",
+      "kind": "decision",
+      "title": "Create products",
+      "guidance": "Define the offerings, included features and charging unit, such as an account, seat or measured use. Choose which system owns the catalog and map each offering to application access and financial records. Use those requirements to select a billing approach. Build a draft catalog with stable internal identifiers and customer-facing names for the pricing and subscription tests.",
+      "when": null,
+      "ref": null,
+      "options": [
+        {
+          "id": "default",
+          "title": "Default — Create products",
+          "summary": "Use the payment processor's billing catalog if its documented subscription model supports the required units and intervals. In its test environment, map each internal offering to a product and recurring prices. Save the identifiers used by checkout and access control, and compare the displayed descriptions and charges with the commercial plan before connecting the catalog to live purchases.",
+          "when": null,
+          "parts": [],
+          "notes": [],
+          "references": [
+            {
+              "kind": "vendor",
+              "id": "stripe",
+              "role": "stated-vendor"
+            },
+            {
+              "kind": "url",
+              "url": "https://docs.stripe.com/products-prices/manage-prices",
+              "title": "Manage products and prices",
+              "description": null,
+              "role": "authored-guidance-source"
+            }
+          ],
+          "metadata": {
+            "route": "agent",
+            "reversibility": "reversible",
+            "approvalRequired": true,
+            "riskLevel": "medium",
+            "estimatedMinutes": 10
+          }
+        },
+        {
+          "id": "billing-platform",
+          "title": "Dedicated billing platform",
+          "summary": "Compare a separate billing platform against the required pricing, subscription changes, entitlements and financial exports. Identify which system owns customer, subscription and payment state, and how conflicting records will be reconciled. Demonstrate the required changes with sample subscriptions. Use those results, integration responsibilities and current commercial terms to decide whether the extra platform is justified.",
+          "when": "Complex plans/entitlements independent of the PSP - a dedicated billing layer over the processor",
+          "parts": [],
+          "notes": [],
+          "references": [
+            {
+              "kind": "vendor",
+              "id": "chargebee",
+              "role": "stated-vendor"
+            },
+            {
+              "kind": "vendor",
+              "id": "chargebee",
+              "role": "candidate"
+            },
+            {
+              "kind": "vendor",
+              "id": "recurly",
+              "role": "candidate"
+            },
+            {
+              "kind": "category",
+              "id": "billing-subscriptions",
+              "role": "rankings"
+            }
+          ],
+          "metadata": {
+            "context": {
+              "kind": "vendor"
+            }
+          }
+        },
+        {
+          "id": "merchant-of-record",
+          "title": "Merchant of record (MoR)",
+          "summary": "Read the proposed merchant-of-record agreement for the product, seller entity and customer markets. Map who contracts with customers and handles payments, taxes, refunds, disputes and support, including exclusions and payout terms. Finance and qualified advisers should resolve the seller's remaining obligations before the provider commitment. Test checkout, receipts, cancellation and application access.",
+          "when": "Global self-serve SaaS without a tax footprint - the MoR sells as the seller of record",
+          "parts": [],
+          "notes": [],
+          "references": [
+            {
+              "kind": "vendor",
+              "id": "paddle",
+              "role": "stated-vendor"
+            },
+            {
+              "kind": "vendor",
+              "id": "paddle",
+              "role": "candidate"
+            },
+            {
+              "kind": "url",
+              "url": "https://www.paddle.com/paddle-101",
+              "title": "Paddle 101",
+              "description": null,
+              "role": "authored-guidance-source"
+            }
+          ],
+          "metadata": {
+            "context": {
+              "kind": "vendor"
+            }
+          }
+        }
+      ],
+      "notes": [],
+      "references": [
+        {
+          "kind": "url",
+          "url": "https://docs.stripe.com/products-prices/manage-prices",
+          "title": "Manage products and prices",
+          "description": null,
+          "role": "authored-guidance-source"
+        }
+      ],
+      "metadata": {}
+    },
+    {
+      "id": "n2",
+      "kind": "step",
+      "title": "Configure pricing plans",
+      "guidance": "Build a pricing matrix with currency, amount, interval, charging unit, included usage, trial conditions and discounts. Work through representative quantities and plan changes to expose ambiguous totals or renewal terms. Configure the matrix in a draft or test catalog and compare checkout and invoice previews against it. Resolve any mismatch in the commercial terms before making the prices available to customers.",
+      "when": null,
+      "ref": null,
+      "options": [],
+      "notes": [],
+      "references": [
+        {
+          "kind": "vendor",
+          "id": "stripe",
+          "role": "stated-vendor"
+        },
+        {
+          "kind": "url",
+          "url": "https://docs.stripe.com/products-prices/manage-prices",
+          "title": "Manage products and prices",
+          "description": null,
+          "role": "authored-guidance-source"
+        }
+      ],
+      "metadata": {
+        "route": "agent",
+        "reversibility": "reversible",
+        "producesArtifact": "subscription-billing",
+        "approvalRequired": true,
+        "riskLevel": "medium",
+        "estimatedMinutes": 10
+      }
+    },
+    {
+      "id": "n3",
+      "kind": "step",
+      "title": "Set up customer portal",
+      "guidance": "Choose which actions customers can perform in the billing portal: view invoices, update payment details, change plans or cancel. Match their effective dates and access consequences to the billing policy. Test each enabled action as representative customers, including account isolation and the resulting invoices and access. Provide a support route for unsupported actions, then publish the tested entry point within the agreed release scope.",
+      "when": null,
+      "ref": null,
+      "options": [],
+      "notes": [],
+      "references": [
+        {
+          "kind": "vendor",
+          "id": "stripe",
+          "role": "stated-vendor"
+        },
+        {
+          "kind": "url",
+          "url": "https://docs.stripe.com/customer-management/configure-portal",
+          "title": "Configure the customer portal",
+          "description": null,
+          "role": "authored-guidance-source"
+        }
+      ],
+      "metadata": {
+        "route": "agent",
+        "reversibility": "reversible",
+        "approvalRequired": true,
+        "riskLevel": "medium",
+        "estimatedMinutes": 10
+      }
+    },
+    {
+      "id": "n4",
+      "kind": "step",
+      "title": "Configure webhooks",
+      "guidance": "Map payment, failure and cancellation events to the application state they should change. Follow the provider's current webhook instructions to authenticate events and protect credentials. Exercise duplicate delivery, delayed events and processing failures; repeated or out-of-order notifications must not grant access twice or restore an obsolete state. Link event identifiers to processing results so failed updates can be reconciled before the production destination is enabled.",
+      "when": null,
+      "ref": null,
+      "options": [],
+      "notes": [],
+      "references": [
+        {
+          "kind": "vendor",
+          "id": "stripe",
+          "role": "stated-vendor"
+        },
+        {
+          "kind": "url",
+          "url": "https://docs.stripe.com/webhooks",
+          "title": "Receive Stripe events in your webhook endpoint",
+          "description": null,
+          "role": "authored-guidance-source"
+        }
+      ],
+      "metadata": {
+        "route": "agent",
+        "reversibility": "reversible",
+        "riskLevel": "medium",
+        "estimatedMinutes": 5,
+        "verify": {
+          "how": "A test webhook delivery returns 2xx and shows delivered in the dashboard's webhook logs."
+        }
+      }
+    },
+    {
+      "id": "n5",
+      "kind": "step",
+      "title": "Test subscriptions",
+      "guidance": "In the provider's test environment, exercise purchase, renewal, payment authentication or failure, quantity and plan changes, cancellation and the enabled portal actions. Use fictional customers and supported test payment methods. For each scenario, compare the invoice, notification, application access and stored subscription state with the expected result. Keep reproducible test identifiers and resolve mismatches before allowing live customer billing.",
+      "when": null,
+      "ref": null,
+      "options": [],
+      "notes": [],
+      "references": [
+        {
+          "kind": "vendor",
+          "id": "stripe",
+          "role": "stated-vendor"
+        },
+        {
+          "kind": "url",
+          "url": "https://docs.stripe.com/billing/testing",
+          "title": "Test your Billing integration",
+          "description": null,
+          "role": "authored-guidance-source"
+        }
+      ],
+      "metadata": {
+        "route": "agent",
+        "reversibility": "reversible",
+        "estimatedMinutes": 10
+      }
+    },
+    {
+      "id": "n6",
+      "kind": "step",
+      "title": "Configure dunning",
+      "guidance": "Translate the failed-payment policy into customer notices, retry settings, support escalation and the final billing and access outcome. Check what recovery the provider supports for the selected payment methods and failure types. Test both successful recovery and exhausted retries. Enable the agreed retry schedule and messages only when the observed charges, notices and access changes match that policy.",
+      "when": null,
+      "ref": null,
+      "options": [],
+      "notes": [],
+      "references": [
+        {
+          "kind": "vendor",
+          "id": "stripe",
+          "role": "stated-vendor"
+        },
+        {
+          "kind": "url",
+          "url": "https://docs.stripe.com/billing/revenue-recovery/smart-retries",
+          "title": "Automate payment retries",
+          "description": null,
+          "role": "authored-guidance-source"
+        }
+      ],
+      "metadata": {
+        "route": "agent",
+        "reversibility": "reversible",
+        "approvalRequired": true,
+        "riskLevel": "medium",
+        "estimatedMinutes": 5
+      }
+    }
+  ],
+  "links": [
+    {
+      "from": "n1",
+      "to": "n2",
+      "when": null
+    },
+    {
+      "from": "n2",
+      "to": "n3",
+      "when": null
+    },
+    {
+      "from": "n2",
+      "to": "n4",
+      "when": null
+    },
+    {
+      "from": "n3",
+      "to": "n5",
+      "when": null
+    },
+    {
+      "from": "n4",
+      "to": "n5",
+      "when": null
+    },
+    {
+      "from": "n5",
+      "to": "n6",
+      "when": null
+    }
+  ],
+  "references": [
+    {
+      "kind": "vendor",
+      "id": "stripe",
+      "role": "involves"
+    }
+  ],
+  "notes": [],
+  "metadata": {
+    "slugAliases": [
+      {
+        "slug": "set-up-stripe-subscriptions",
+        "label": "Set up Stripe subscriptions"
+      }
+    ],
+    "phase": "growth",
+    "cadence": "once",
+    "geoScope": "global",
+    "complexity": "moderate",
+    "reversibility": "reversible",
+    "category": "customer_ops",
+    "supportLevel": "full",
+    "supportReason": "Stripe API fully supports product, pricing, subscription, and portal management.",
+    "contextNeeded": [
+      {
+        "tool": "user_input",
+        "query": "billing pricing model",
+        "tier": "user_input",
+        "required": true
+      },
+      {
+        "tool": "user_input",
+        "query": "billing plan tiers",
+        "tier": "user_input",
+        "required": true
+      },
+      {
+        "tool": "user_input",
+        "query": "billing trial period",
+        "tier": "user_input",
+        "required": false
+      }
+    ],
+    "produces": [
+      "subscription-billing"
+    ],
+    "requires": [
+      "payment-processor"
+    ],
+    "tags": [
+      "growth",
+      "billing",
+      "subscriptions"
+    ],
+    "activeMinutes": 50,
+    "totalEstimatedMinutes": 50,
+    "hasAsyncSteps": false,
+    "timeOrder": 57,
+    "annoyance": 3,
+    "risk": 2,
+    "growthImpact": 4
+  },
+  "source": {
+    "path": "open-processes/corpus.json",
+    "id": "growth_001",
+    "revision": "4a1ac9b2eea2d4e1ac8cc5a0dfdc7cc5dc6080a1",
+    "sha256": "dc91760178d90fc002b04353772c4a578d1618b746852c74b8482aff69e72c16"
+  },
+  "entrySteps": [
+    "n1"
+  ],
+  "aliases": [
+    "set-up-stripe-subscriptions"
+  ]
+}

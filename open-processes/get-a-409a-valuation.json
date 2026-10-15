@@ -1,0 +1,395 @@
+{
+  "schemaVersion": 1,
+  "id": "fund_003",
+  "kind": "process",
+  "title": "Get a 409A valuation",
+  "summary": "Commission a 409A valuation to establish fair market value for stock options.",
+  "outcomes": [],
+  "guidance": null,
+  "parts": [
+    {
+      "id": "n1",
+      "kind": "step",
+      "title": "Compile financial statements",
+      "guidance": "Gather the financial statements relevant to the valuation date, with entity, accounting basis and periods identified. Include recent actuals and forecasts, keeping management assumptions distinct from historical results. Reconcile differences from the ledger or board reports and label provisional figures so the analyst understands the financial position being valued.",
+      "when": null,
+      "ref": null,
+      "options": [],
+      "notes": [],
+      "references": [
+        {
+          "kind": "vendor",
+          "id": "quickbooks",
+          "role": "stated-vendor"
+        }
+      ],
+      "metadata": {
+        "route": "agent",
+        "reversibility": "reversible",
+        "estimatedMinutes": 10
+      }
+    },
+    {
+      "id": "n2",
+      "kind": "step",
+      "title": "Gather cap table snapshot",
+      "guidance": "Export capitalization at the proposed valuation date, including share classes, issued holdings, option reserve, grants and convertibles. Tie balances to executed records and include financing terms and side letters that affect rights. Explain pending transactions and differences from earlier exports so the valuation analyst works from a stable, reconciled ownership picture.",
+      "when": null,
+      "ref": null,
+      "options": [],
+      "notes": [],
+      "references": [
+        {
+          "kind": "vendor",
+          "id": "carta",
+          "role": "stated-vendor"
+        }
+      ],
+      "metadata": {
+        "route": "agent",
+        "reversibility": "reversible",
+        "estimatedMinutes": 5
+      }
+    },
+    {
+      "id": "n3",
+      "kind": "decision",
+      "title": "Initiate 409A on Carta",
+      "guidance": "Choose the valuation engagement for the issuer, security and intended transaction under the applicable country’s route. Establish the valuation date, report purpose, data requirements, fee and expected deliverable with the provider and finance. The company representative commissioning the work agrees its scope and terms.",
+      "when": null,
+      "ref": null,
+      "options": [
+        {
+          "id": "default",
+          "title": "Default — Initiate 409A on Carta",
+          "summary": "Scope a US option-valuation engagement around the stock class, valuation date and planned grants. Determine what financial, operating and capitalization information the provider needs and how the company expects to use the report. Finance commissions the agreed work and supplies the relevant private records, with questions about regulatory reliance resolved by the appropriate adviser.",
+          "when": null,
+          "parts": [],
+          "notes": [],
+          "references": [
+            {
+              "kind": "vendor",
+              "id": "carta",
+              "role": "stated-vendor"
+            },
+            {
+              "kind": "url",
+              "url": "https://www.ecfr.gov/current/title-26/chapter-I/subchapter-A/part-1/section-1.409A-1",
+              "title": "26 CFR 1.409A-1",
+              "description": null,
+              "role": "authored-guidance-source"
+            }
+          ],
+          "metadata": {
+            "route": "form",
+            "reversibility": "reversible",
+            "approvalRequired": true,
+            "riskLevel": "medium",
+            "estimatedMinutes": 15
+          }
+        },
+        {
+          "id": "uk-emi-valuation",
+          "title": "UK - EMI valuation with HMRC",
+          "summary": "For a UK EMI grant, establish the shares and rights being valued and calculate the proposed actual and unrestricted market values for HMRC’s VAL231 process. The authorized company representative submits the supported valuation request. Use HMRC’s response to plan the grant within its stated validity and conditions, checking changes in company circumstances that could affect value.",
+          "when": "Pricing options in the United Kingdom",
+          "parts": [],
+          "notes": [],
+          "references": [
+            {
+              "kind": "url",
+              "url": "https://www.gov.uk/government/collections/employment-related-securities",
+              "role": "legacy-action-link",
+              "title": "HMRC - employment related securities",
+              "description": null
+            },
+            {
+              "kind": "url",
+              "url": "https://www.gov.uk/guidance/get-a-share-scheme-valuation-from-hmrc",
+              "title": "HMRC share scheme valuations",
+              "description": null,
+              "role": "authored-guidance-source"
+            },
+            {
+              "kind": "url",
+              "url": "https://www.gov.uk/hmrc-internal-manuals/shares-and-assets-valuation-manual/svm110050",
+              "title": "HMRC SVM110050",
+              "description": null,
+              "role": "authored-guidance-source"
+            }
+          ],
+          "metadata": {
+            "context": {
+              "kind": "geo",
+              "countries": [
+                "UK"
+              ]
+            }
+          }
+        },
+        {
+          "id": "india-registered-valuer",
+          "title": "India - registered-valuer report",
+          "summary": "Describe the Indian transaction, instrument, parties and tax residences to local counsel and the tax adviser. Establish which valuation rules and professional qualifications apply, then commission the relevant report. Reconcile financial inputs and capital rights with the valuer and state the report’s purpose, valuation date and basis for use in this transaction.",
+          "when": "Pricing shares/ESOPs in India",
+          "parts": [],
+          "notes": [],
+          "references": [
+            {
+              "kind": "url",
+              "url": "https://ibbi.gov.in/",
+              "role": "legacy-action-link",
+              "title": "IBBI - registered valuers",
+              "description": null
+            },
+            {
+              "kind": "url",
+              "url": "https://www.indiacode.nic.in/ViewFileUploaded?file=the_companies_act%2C_2013_no._18_of_2013_date_29.08.2013.pdf&path=AC_CG_61_1375_00003_00003_1594717497353%2Factfile%2F",
+              "title": "India Companies Act 2013",
+              "description": null,
+              "role": "authored-guidance-source"
+            }
+          ],
+          "metadata": {
+            "route": "person",
+            "context": {
+              "kind": "geo",
+              "countries": [
+                "IN"
+              ]
+            }
+          }
+        }
+      ],
+      "notes": [],
+      "references": [],
+      "metadata": {}
+    },
+    {
+      "id": "n4",
+      "kind": "step",
+      "title": "Answer valuation questionnaire",
+      "guidance": "Answer the valuation questionnaire using company records and input from the people responsible for forecasts, financing and operations. Explain unusual revenue, customer concentration, material contracts, pending transactions and significant risks where requested. Identify estimates and unanswered questions clearly, then resolve the analyst’s follow-ups against the same information set.",
+      "when": null,
+      "ref": null,
+      "options": [],
+      "notes": [],
+      "references": [],
+      "metadata": {
+        "route": "person",
+        "reversibility": "reversible",
+        "riskLevel": "medium",
+        "estimatedMinutes": 60
+      }
+    },
+    {
+      "id": "n5",
+      "kind": "step",
+      "title": "Wait for valuation report (2-3 weeks)",
+      "guidance": "Track the report against the provider’s agreed delivery date and respond to outstanding questions. Tell the adviser about material financing, forecast or operating changes arising during the engagement so they can assess their effect. Update grant planning if delivery changes. When the report arrives, move it into substantive review with any unresolved questions attached.",
+      "when": null,
+      "ref": null,
+      "options": [],
+      "notes": [],
+      "references": [
+        {
+          "kind": "vendor",
+          "id": "carta",
+          "role": "stated-vendor"
+        },
+        {
+          "kind": "category",
+          "id": "workflow-automation",
+          "role": "additional-rankings"
+        }
+      ],
+      "metadata": {
+        "route": "person",
+        "reversibility": "reversible",
+        "estimatedMinutes": 14400,
+        "async": true
+      }
+    },
+    {
+      "id": "n6",
+      "kind": "step",
+      "title": "Review and accept valuation",
+      "guidance": "Check the report’s entity, stock class, date and capitalization against the information supplied. Ask the adviser to resolve errors, explain important assumptions and account for differences from earlier valuations. Assess any limits on using the result for planned grants. The company’s valuation owner accepts the final report for its agreed purpose, with unresolved reliance questions taken to tax counsel.",
+      "when": null,
+      "ref": null,
+      "options": [],
+      "notes": [],
+      "references": [
+        {
+          "kind": "url",
+          "url": "https://www.ecfr.gov/current/title-26/chapter-I/subchapter-A/part-1/section-1.409A-1",
+          "title": "26 CFR 1.409A-1",
+          "description": null,
+          "role": "authored-guidance-source"
+        }
+      ],
+      "metadata": {
+        "route": "person",
+        "reversibility": "reversible",
+        "producesArtifact": "409a-valuation",
+        "approvalRequired": true,
+        "riskLevel": "high",
+        "estimatedMinutes": 30,
+        "verify": {
+          "how": "The signed 409A report states the FMV and the valuation date — the IRC 409A safe harbor runs 12 months from that date or until a material event."
+        }
+      }
+    }
+  ],
+  "links": [
+    {
+      "from": "n1",
+      "to": "n3",
+      "when": null
+    },
+    {
+      "from": "n2",
+      "to": "n3",
+      "when": null
+    },
+    {
+      "from": "n3",
+      "to": "n4",
+      "when": null
+    },
+    {
+      "from": "n4",
+      "to": "n5",
+      "when": null
+    },
+    {
+      "from": "n5",
+      "to": "n6",
+      "when": null
+    }
+  ],
+  "references": [
+    {
+      "kind": "vendor",
+      "id": "carta",
+      "role": "involves"
+    },
+    {
+      "kind": "vendor",
+      "id": "quickbooks",
+      "role": "involves"
+    }
+  ],
+  "notes": [],
+  "metadata": {
+    "phase": "fundraising",
+    "cadence": "annual",
+    "complexity": "moderate",
+    "reversibility": "reversible",
+    "category": "equity_management",
+    "supportLevel": "partial",
+    "supportReason": "Can initiate through Carta API and provide company financials. Valuation itself is done by third-party appraiser.",
+    "contextNeeded": [
+      {
+        "tool": "accounts.list",
+        "tier": "tools",
+        "required": true
+      },
+      {
+        "tool": "cap_table.summary",
+        "tier": "tools",
+        "required": true
+      },
+      {
+        "tool": "company.get",
+        "query": "last funding round",
+        "tier": "tools",
+        "required": false
+      }
+    ],
+    "produces": [
+      "409a-valuation"
+    ],
+    "requires": [
+      "financial-statements",
+      "cap-table"
+    ],
+    "tags": [
+      "equity",
+      "valuation",
+      "compliance"
+    ],
+    "activeMinutes": 120,
+    "totalEstimatedMinutes": 14520,
+    "hasAsyncSteps": true,
+    "region": "us",
+    "geoScope": "us",
+    "geoNotes": [
+      {
+        "country": "IN",
+        "kind": "analog",
+        "summary": "No 409A, but pricing is still regulated: share issues need a report from an IBBI-registered valuer (Companies Act) or merchant banker (Income-tax Rule 11UA), and ESOP perquisite tax at exercise runs off fair market value.",
+        "actionUrl": "https://ibbi.gov.in/",
+        "actionLabel": "IBBI — registered valuers"
+      },
+      {
+        "country": "UK",
+        "kind": "analog",
+        "summary": "The analog is agreeing an EMI valuation with HMRC's Shares and Assets Valuation team (the VAL231 process, now run through HMRC's ERS guidance): it fixes actual and unrestricted market value for 90 days, so grant options inside that window.",
+        "actionUrl": "https://www.gov.uk/government/collections/employment-related-securities",
+        "actionLabel": "HMRC — employment related securities"
+      },
+      {
+        "country": "DE",
+        "kind": "not-applicable",
+        "summary": "No 409A equivalent: there is no statutory safe-harbor appraisal for option strike prices. German ESOP/VSOP pricing is a company-and-tax-advisor judgment, and the statutory lever that actually matters is §19a EStG's deferred ('dry income') taxation for startup employee equity.",
+        "actionUrl": "https://www.gesetze-im-internet.de/estg/__19a.html",
+        "actionLabel": "EStG §19a — startup equity taxation"
+      },
+      {
+        "country": "FR",
+        "kind": "not-applicable",
+        "summary": "No 409A equivalent: BSPCE strike prices are set by the issuing company with no statutory appraisal or safe harbor — the tax administration's BOFiP doctrine governs eligibility and taxation, so price prudently off the last round with your advisors and document the reasoning.",
+        "actionUrl": "https://bofip.impots.gouv.fr/",
+        "actionLabel": "BOFiP — official tax doctrine (BSPCE)"
+      },
+      {
+        "country": "PT",
+        "kind": "not-applicable",
+        "summary": "No 409A ritual: there is no statutory safe-harbor appraisal for option strike prices — plans are priced by the company and its advisors, and the 2023 Startup Law (Lei 21/2023) regime defers qualifying option taxation to liquidity instead.",
+        "actionUrl": "https://diariodarepublica.pt/dr/detalhe/lei/21-2023-213498830",
+        "actionLabel": "Lei 21/2023 (startup law) — DRE"
+      },
+      {
+        "country": "CA",
+        "kind": "not-applicable",
+        "summary": "No 409A equivalent: CRA publishes no appraisal safe harbor for option pricing — CCPC option rules defer the employee's tax to sale regardless, so the annual-valuation ritual has no Canadian counterpart.",
+        "actionUrl": "https://www.canada.ca/en/revenue-agency/services/tax/businesses/topics/payroll/benefits-allowances/security-options.html",
+        "actionLabel": "CRA — security options"
+      }
+    ],
+    "timeOrder": 54,
+    "annoyance": 5,
+    "risk": 4,
+    "growthImpact": 1,
+    "slugAliases": [
+      {
+        "slug": "409a-valuation",
+        "label": "409A valuation"
+      }
+    ]
+  },
+  "source": {
+    "path": "open-processes/corpus.json",
+    "id": "fund_003",
+    "revision": "4a1ac9b2eea2d4e1ac8cc5a0dfdc7cc5dc6080a1",
+    "sha256": "413bb93564a8d505e0c9ff52b5bc8d0c5a1d2408c38f5a77ee2cc623ad1f4cef"
+  },
+  "entrySteps": [
+    "n1",
+    "n2"
+  ],
+  "aliases": [
+    "409a-valuation"
+  ]
+}
