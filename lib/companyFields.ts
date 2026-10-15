@@ -8,7 +8,7 @@ import { areaOfTask, type Area } from './processRows'
 // Company data fields (founder 2026-10-07: "company data fields figured out — e.g. Date of
 // incorporation or things from the repo's business logic"; widened 2026-10-08: "a page that
 // explains the specification of data fields like an EIN"). The registry
-// (open-processes/company-fields.json) is a typed vocabulary of company-LEVEL data values with an
+// (open-artifacts/fields.json) is a typed vocabulary of company-LEVEL data values with an
 // honest derivation rule, widened once and deliberately for the identifier fields: a field
 // exists here only because a committed registry artifact establishes it AND one of two
 // committed consumption paths is real —
@@ -21,7 +21,7 @@ import { areaOfTask, type Area } from './processRows'
 //       consuming processes are COMPUTED from the corpus requires edges, never hand-listed.
 // Each field names:
 //   - type: date | money | number | enum | string (enum fields carry their `values`);
-//   - producedBy: the open-processes/artifacts.json artifact whose creation establishes the value
+//   - producedBy: the open-artifacts/registry.json artifact whose creation establishes the value
 //     (the charter sets the authorized shares; the 409A report sets the common FMV; the IRS
 //     EIN assignment sets the EIN itself);
 //   - consumedBy (path (a) only): the lib/openstartup module functions that take it, each
@@ -89,6 +89,92 @@ export const CompanyFieldSpecSchema = z
   .strict()
 export type CompanyFieldSpec = z.infer<typeof CompanyFieldSpecSchema>
 
+// ---------------------------------------------------------------------------------------------
+// The geo dimension (founder field-standards order, landed 2026-10-14 with the open-artifacts/
+// move): each field records where its value is defined. The registry's spec block is US-centric
+// (IRS, DGCL, the Delaware Division of Corporations), so the geo structure makes the base
+// jurisdiction explicit and records, per covered country (GEO_NOTE_COUNTRIES — the geo
+// switcher's set), either the real government-defined equivalent (the EIN's UK UTR, the file
+// number's Indian CIN) or the recorded absence. Curation rules, in force when entries land:
+//   - an equivalent exists only where a government authority defines the same kind of value;
+//     every instance cites the authority's own page, fetch-verified when curated;
+//   - `pattern` appears only where the authority documents the format (never inferred from
+//     observed values); `example` only where the authority publishes one;
+//   - a country with no equivalent, or one that could not be verified against an authority
+//     page, is recorded as an absence (`no-equivalent` / `unverified`) with the reason —
+//     recorded absence, never an invented instance;
+//   - fields whose value is set by the company's own records (the bank balance, the ledger
+//     run rate, the cap-table counts) are the same field everywhere: they carry the
+//     `scope: 'universal'` form instead of six restated absences.
+// Totality (each covered country exactly once per jurisdiction-bound field, US base,
+// compiling patterns) is vitest-gated in lib/__tests__/companyFields.test.ts.
+
+// US (the base jurisdiction the specs are written against) plus the geo switcher's countries;
+// the pairing with GEO_NOTE_COUNTRIES in lib/processes.ts is vitest-gated.
+export const FIELD_GEO_COUNTRIES = ['US', 'UK', 'IN', 'DE', 'FR', 'PT', 'CA'] as const
+export type FieldGeoCountry = (typeof FIELD_GEO_COUNTRIES)[number]
+export const FIELD_GEO_EQUIVALENT_COUNTRIES = ['UK', 'IN', 'DE', 'FR', 'PT', 'CA'] as const
+
+// One government-defined instance of the field in one jurisdiction: the value's local name
+// (EIN, UTR, Steuernummer, SIREN), the defining authority, the documented format where the
+// authority publishes one, and the authority's own page as the citation.
+export const FieldGeoInstanceSchema = z
+  .object({
+    country: z.enum(FIELD_GEO_COUNTRIES),
+    // What the value is called in that jurisdiction.
+    label: z.string().min(1),
+    // The government body that assigns or defines it.
+    authority: z.string().min(1),
+    summary: z.string().min(1),
+    // Regex only where the authority documents the format; must compile (vitest-gated).
+    pattern: z.string().min(1).optional(),
+    // The authority's own documented example, verbatim — never an invented value.
+    example: z.string().min(1).optional(),
+    sources: CompanyFieldSpecSourceSchema.array().min(1),
+  })
+  .strict()
+export type FieldGeoInstance = z.infer<typeof FieldGeoInstanceSchema>
+
+// The recorded absence: the covered country has no government-defined equivalent
+// (`no-equivalent`), or an apparent equivalent could not be verified against an authority
+// page when curated (`unverified`). The note carries the reason.
+export const FieldGeoAbsenceSchema = z
+  .object({
+    country: z.enum(FIELD_GEO_EQUIVALENT_COUNTRIES),
+    status: z.enum(['no-equivalent', 'unverified']),
+    note: z.string().min(1),
+    // Citations where the absence itself is documented (the CBCA's shares "without nominal
+    // or par value"; the Companies Act 2006 statement of capital that replaced authorised
+    // capital). Optional: a scoping note needs no external page.
+    sources: CompanyFieldSpecSourceSchema.array().min(1).optional(),
+  })
+  .strict()
+export type FieldGeoAbsence = z.infer<typeof FieldGeoAbsenceSchema>
+
+export function isFieldGeoInstance(
+  entry: FieldGeoInstance | FieldGeoAbsence,
+): entry is FieldGeoInstance {
+  return !('status' in entry)
+}
+
+export const CompanyFieldGeoSchema = z.union([
+  // The company-record fields: the value is set by the company's own books or cap table, so
+  // the field is the same object in every covered country — one note, not six absences.
+  z.object({ scope: z.literal('universal'), note: z.string().min(1) }).strict(),
+  // The jurisdiction-bound fields: the explicit base instance plus one entry per covered
+  // country — a verified equivalent instance or the recorded absence.
+  z
+    .object({
+      base: FieldGeoInstanceSchema,
+      equivalents: z
+        .union([FieldGeoInstanceSchema, FieldGeoAbsenceSchema])
+        .array()
+        .length(FIELD_GEO_EQUIVALENT_COUNTRIES.length),
+    })
+    .strict(),
+])
+export type CompanyFieldGeo = z.infer<typeof CompanyFieldGeoSchema>
+
 export const CompanyFieldSchema = z
   .object({
     id: z.string().regex(/^[a-z0-9]+(-[a-z0-9]+)*$/, 'field id must be kebab-case'),
@@ -97,12 +183,15 @@ export const CompanyFieldSchema = z
     // The closed value set — present exactly when type is 'enum' (vitest-gated pairing).
     values: z.string().min(1).array().min(2).optional(),
     description: z.string().min(1),
-    // The open-processes/artifacts.json artifact whose creation establishes this value.
+    // The open-artifacts/registry.json artifact whose creation establishes this value.
     producedBy: z.string().min(1),
     // Absent exactly for the identifier fields consumed through the artifact requires edges
     // (derivation path (b) above) — the vitest gate holds the either-or honest.
     consumedBy: CompanyFieldConsumerSchema.array().min(1).optional(),
     spec: CompanyFieldSpecSchema,
+    // Where the value is defined: the base jurisdiction instance plus per-country equivalents
+    // or recorded absences, or the universal form for company-record values (see above).
+    geo: CompanyFieldGeoSchema,
   })
   .strict()
 export type CompanyField = z.infer<typeof CompanyFieldSchema>
@@ -114,7 +203,7 @@ export const CompanyFieldsRegistrySchema = z
   })
   .strict()
 
-const fieldsFile = () => path.join(process.cwd(), 'open-processes', 'company-fields.json')
+const fieldsFile = () => path.join(process.cwd(), 'open-artifacts', 'fields.json')
 let fieldsCache: CompanyField[] | null = null
 export function loadCompanyFields(): CompanyField[] {
   if (!fieldsCache) {

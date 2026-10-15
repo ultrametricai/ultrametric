@@ -924,7 +924,7 @@ export interface TopVendorPick {
   runnersUp?: Array<{ productId: string; name: string; score: number }>
 }
 
-// A registry artifact (open-processes/artifacts.json) a corpus step brings into existence — id for
+// A registry artifact (open-artifacts/registry.json) a corpus step brings into existence — id for
 // the /artifacts/{id} link, label for display. Committed registry data, serialized server-side.
 export interface VsProducedArtifact {
   id: string
@@ -947,7 +947,7 @@ export interface VirtualTaskPayload {
   // = the step renders unlinked, nothing else changes.
   nodeIds?: string[]
   // Parallel to steps: the registry artifact the corpus step's producesArtifact tag names, with
-  // its committed label (open-processes/artifacts.json), or null for the many steps without one.
+  // its committed label (open-artifacts/registry.json), or null for the many steps without one.
   // Optional additive field (2026-10-07): absent = no document line ever renders for the task.
   produces?: (VsProducedArtifact | null)[]
   // The task's internal corpus DAG fork, when its edges genuinely diverge: the forking step's

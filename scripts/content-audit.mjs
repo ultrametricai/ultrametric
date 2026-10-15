@@ -10,7 +10,7 @@ export const collectionNames = {
   law: 'Rule cards', citations: 'Citations', artifacts: 'Business artifacts',
 }
 
-const roots = ['open-processes', 'open-rankings', 'open-documents', 'lib/openstartup', 'jurisdictions', 'open-law', 'coverage']
+const roots = ['open-processes', 'open-rankings', 'open-artifacts', 'open-documents', 'lib/openstartup', 'jurisdictions', 'open-law', 'coverage']
 const recordKey = (collection, id) => `${collection}:${id}`
 const nonempty = value => typeof value === 'string' && value.trim().length > 0
 const isoDate = value => typeof value === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(value) && Number.isFinite(Date.parse(`${value}T00:00:00Z`)) && new Date(`${value}T00:00:00Z`).toISOString().slice(0, 10) === value
@@ -175,8 +175,8 @@ export function buildContentAudit(files, metadata) {
     for (const id of value.source_ids ?? []) link(record, recordKey('citations', id), 'cites')
     link(record, recordKey('jurisdictions', value.jurisdiction), 'jurisdiction')
   }
-  for (const value of array(json('open-processes/artifacts.json').artifacts, 'artifacts')) {
-    const record = add('artifacts', value.id, value.label, 'open-processes/artifacts.json')
+  for (const value of array(json('open-artifacts/registry.json').artifacts, 'artifacts')) {
+    const record = add('artifacts', value.id, value.label, 'open-artifacts/registry.json')
     presence(record, 'Description', nonempty(value.description))
     link(record, processTarget(value.producedBy), 'produced by')
     for (const id of value.alsoProducedBy ?? []) link(record, processTarget(id), 'also produced by')
