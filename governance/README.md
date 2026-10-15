@@ -9,7 +9,7 @@ must agree before merge.
 - `AGENT_POLICY.md` — ground rules for agents consuming or contributing to the data.
 
 The data-hygiene doctrine (no real company data, no PII, fictional fixtures only) lives
-in the repo-root `SECURITY.md` alongside the vulnerability policy.
+in [.github/SECURITY.md](../.github/SECURITY.md#data-hygiene) alongside the vulnerability policy.
 
 Contribute here:
 

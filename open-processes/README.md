@@ -381,7 +381,7 @@ in the PR. Gate: `pnpm test` (`lib/__tests__/processes.test.ts` cross-checks eve
   `open-processes/<domain>/<jurisdiction>/`, narrow the applicability dimensions, reference rule
   cards in `open-law/<CODE>/`, gate every external effect on a named human approval, add a
   fictional fixture in `open-processes/fixtures/`, and record honest maturity in `coverage/coverage.json`.
-  Gate: `npx vitest run __tests__/founder-ops.test.ts`.
+  Gate: `pnpm test __tests__/founder-ops.test.ts`.
 - **Corrections to an operational process** — step routing (agent / manual form / human),
   Agentic % values, or time estimates in `corpus.json`, with a source or reproduction for the
   claim. Gate: `pnpm test`.

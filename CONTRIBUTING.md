@@ -310,7 +310,7 @@ hold up:
 
 US rules are never copied into another jurisdiction, no country is marked covered because
 one workflow exists, and fixtures are fictional by gate. The validator
-(`lib/founderOps.ts`, run by `npx vitest run __tests__/founder-ops.test.ts`) enforces
+(`lib/founderOps.ts`, run by `pnpm test __tests__/founder-ops.test.ts`) enforces
 source resolution, jurisdiction matching, approval gates, and accurate coverage reporting.
 
 <a id="add-an-open-module"></a>

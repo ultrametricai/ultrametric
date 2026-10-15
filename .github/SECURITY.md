@@ -1,17 +1,15 @@
 # Security Policy
 
-Ultrametric (ultrametric.ai) is a static, evidence-based comparison site. The deployed site serves
-pre-computed data from `open-rankings/` — it does not accept user input that is executed, does not run
-a database, and does not call any LLM API at build or request time. The rankings engine
-that *produces* the data runs locally, out of band, and is
-the more security-sensitive surface (it holds an `ANTHROPIC_API_KEY` and fetches third-party
-URLs) — see below for what that means for reports.
+This repository contains Ultrametric's public data, schemas, and validation/export tooling.
+The website is maintained in a separate private repository. The rankings engine produces
+data locally and in GitHub Actions, uses an `ANTHROPIC_API_KEY` for model stages, and fetches
+third-party URLs.
 
 ## Reporting a vulnerability
 
 **Please do not open a public GitHub issue for security reports.**
 
-Use [GitHub's private vulnerability reporting](../../security/advisories/new)
+Use [GitHub's private vulnerability reporting](https://github.com/ultrametricai/ultrametric/security/advisories/new)
 (Security tab → "Report a vulnerability") on this repository. This opens a private advisory
 visible only to maintainers until a fix is ready.
 
@@ -36,7 +34,7 @@ In scope:
 
 Out of scope (report, but low priority): purely cosmetic UI bugs, and disagreement with a
 judged verdict's *content* — that's not a security issue, see
-[CONTRIBUTING.md](./CONTRIBUTING.md) for contesting a verdict instead.
+[CONTRIBUTING.md](../CONTRIBUTING.md) for contesting a verdict instead.
 
 ## Data hygiene
 
