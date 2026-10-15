@@ -261,6 +261,27 @@ describe('README.md structure (founder round 2, 2026-10-12)', () => {
     expect(hits, `README uses swept vocabulary: ${hits.join(', ')}`).toEqual([])
   })
 
+  it('per-directory doc surfaces carry no hand-written catalog counts', () => {
+    // Founder truth pass (2026-10-14): descriptive counts in prose go stale the moment
+    // content grows, so the no-counts rule extends to the open-* doc surfaces. Generated
+    // marker blocks are computed and stay; this scans only the hand-written remainder.
+    const surfaces = [
+      'open-modules/README.md', 'open-processes/README.md', 'open-processes/SITUATIONS.md',
+      'open-documents/README.md', 'open-law/README.md', 'open-lore/LORE.md',
+      'open-startup-sim/README.md', 'open-artifacts/README.md', 'coverage/README.md',
+      'policies/README.md', 'policies/AGENT_POLICY.md', 'policies/REVIEW_POLICY.md',
+    ]
+    const countPattern = /\b\d[\d,]* (rankings|products|verdicts|arenas|processes|markets|situations|modules|documents|cards|records)\b/
+    for (const file of surfaces) {
+      const text = fs
+        .readFileSync(path.join(ROOT, file), 'utf8')
+        // Strip generated blocks (<!-- x:start ... --> … <!-- x:end -->); their counts are computed.
+        .replace(/<!--[^>]*:start[^>]*-->[\s\S]*?<!--[^>]*:end[^>]*-->/g, '')
+      const hit = text.match(countPattern)
+      expect(hit, `${file} carries a hand-written count: "${hit?.[0]}"`).toBeNull()
+    }
+  })
+
   it('prose carries no counts and no dates anywhere on the page', () => {
     // The last generated count block (the arenas line) was retired in the founder's
     // rankings-examples order (2026-10-14), so the no-counts gate scans the whole page.

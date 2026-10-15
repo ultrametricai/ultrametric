@@ -812,7 +812,7 @@ https://docs.stripe.com/revenue-recognition/examples/subscriptions · Stripe Doc
 
 ## How the modules connect to the processes
 
-`open-processes/business-logic-map.json` is the wiring: task-level (which modules honestly
+`open-processes/business-logic-map.json` is the wiring: task-level (which modules
 serve which processes — the "Open modules" line on live process pages) and
 step-level (which exported FUNCTION computes which step's math — the per-step
 `compute:` chips). The map is curated from both sides and totality-tested both ways in
@@ -859,13 +859,13 @@ books.
   boundaries, Sources). The bar is fixed: pure functions, a citation on every formula's
   doc comment, explicit rounding, worked examples reproduced number-for-number from the
   cited source, and property tests. The assessed candidate backlog — with build/skip/defer
-  verdicts and the citable sources that exist (or honestly don't) — lives in
+  verdicts and the citable sources that exist (or the recorded absence of one) — lives in
   [`docs/OPEN-MODULES-GAPS.md`](../docs/OPEN-MODULES-GAPS.md). Gate:
   `npx vitest run lib/openstartup/__tests__/` (and `pnpm test`).
 - **Harden an existing module** — a missed edge case from a cited worked example, a new
   property test, or a correction with the source that proves it (e.g. the YC Post-Money
   Safe User Guide for `capTable.ts`).
-- **Honesty rules** — a module that leans on a legal threshold must reference a dated rule
+- **Legal thresholds** — a module that leans on one must reference a dated rule
   card in `open-law/` and return `needs_review` when locale or date is unknown; results are
   decision support, never authorization. The conservative workflow planner lives in
   `lib/founderOps.ts` and is gated by `__tests__/founder-ops.test.ts`.

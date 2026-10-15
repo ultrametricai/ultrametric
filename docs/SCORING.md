@@ -9,7 +9,7 @@ Every score on this site comes from a specific, citable claim about a product �
 docs, its GitHub README, an independent forum post, or something we tested by hand. Nothing is
 scored from "everybody knows Product X does this." If we didn't find a claim for it, the product
 gets no credit for it, even if it's actually true and we just missed it. That's a deliberate
-tradeoff: it means our scores are honest about what we checked, but it also means **scores skew
+tradeoff: it means our scores reflect exactly what we checked, but it also means **scores skew
 low compared to a product's real capability** — see "Why scores look low" below.
 
 ## What a verdict means
@@ -117,7 +117,7 @@ are a starting position we're open to arguing about — see "How to disagree" be
 
 ## Why scores look low
 
-Two honest reasons, not a bug:
+Two reasons, both by design:
 
 1. **We only score what we can cite.** A product can be excellent and still score low here if
    its docs are thin, scattered, or hard to crawl — the judge can't credit a capability it never

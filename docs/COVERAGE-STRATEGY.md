@@ -1,13 +1,13 @@
 # Coverage Strategy: an AI-first taxonomy at G2 scale
 
-This document explains how Ultrametric grows from 11 live rankings to 180+ planned rankings
-(`open-rankings/arena-roadmap.json`), how our taxonomy relates to G2's, why ours is organized differently,
-and the runner architecture that gets us to 100+ live rankings in roughly three months.
+This document explains how Ultrametric grows from the live rankings to the full planned
+roadmap (`open-rankings/arena-roadmap.json`), how our taxonomy relates to G2's, why ours is
+organized differently, and the runner architecture behind the growth plan.
 
 ## 1. The G2 tree, and how we obtained it
 
 We fetched https://www.g2.com/categories directly (September 2026). The page rendered and we
-extracted the top-level groups plus their second-level categories. **Honesty note:** the page is
+extracted the top-level groups plus their second-level categories. **Capture note:** the page is
 very large and our fetch truncated mid-way through the "Digital Advertising Tech" group, so
 second-level detail for the alphabetically later groups was not captured from the live page; the
 names of those remaining top-level groups were reconstructed from G2's own public "Best Software"
@@ -110,8 +110,8 @@ classic battles with huge comparison-search demand (Slack vs Teams, Datadog vs G
 
 ## 3. Roadmap file
 
-`open-rankings/arena-roadmap.json` — 184 entries: 11 live (mirroring `open-rankings/categories.json`) + 173 planned
-(tier 1: 30, tier 2: 62, tier 3: 81). Each entry: `{id, name, tier, status, g2Equivalent,
+`open-rankings/arena-roadmap.json` — one entry per live ranking (mirroring
+`open-rankings/categories.json`) plus the planned set, tiered 1–3. Each entry: `{id, name, tier, status, g2Equivalent,
 candidateProducts, rationale, aiEraAngle}`. Candidate products are seeds for the arena-builder,
 not final rosters — the seeding stage verifies each product's URLs before it enters the engine.
 Because `scripts/copy-data.mjs` mirrors `open-rankings/` into `public/data/`, the roadmap is automatically

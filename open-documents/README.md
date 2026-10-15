@@ -9,7 +9,7 @@ commercial, privacy, and open-source. Policy: **link, never redistribute**; each
 points at the publisher's stable page, verified live on its `checked_on` date (publishers
 rotate asset URLs, so records link the stable page and the note says so).
 
-Honesty notes are part of the record: `license_note` states the actual terms as published and
+`license_note` is part of the record: it states the actual terms as published and
 what still requires counsel. A free form is a starting point — none of these substitute for a
 lawyer on formation filings, financings, employment in a new state or country, token sales,
 data transfers, or board actions.
@@ -47,7 +47,7 @@ re-homed, with reasons:
 - **Ungated option plan / stock option grant templates** — no openly published canonical
   exists: Cooley GO doesn't offer one, and Orrick's equity forms sit behind Tech Studio
   registration (covered by `orrick-tech-studio` with that caveat stated). Clerky's materials
-  are platform-gated. Honest gap, not a missing link.
+  are platform-gated. The gap is recorded; there is no public link to add.
 - **NVCA PIPE and university-licensing documents** — live on the same page but out of scope
   for a startup registry (public-company PIPEs, TTO licensing); deliberately not cataloged.
 
@@ -206,7 +206,7 @@ duplicate rows:
 | `harmony-cla-templates` | [Harmony CLA/CAA templates](https://harmonyagreements.org/) | Project Harmony | License-grant option selection |
 | `linux-dco` | [Developer Certificate of Origin 1.1](https://developercertificate.org/) | Linux Foundation | DCO-vs-CLA IP strategy |
 | `choosealicense` | [Choose a License](https://choosealicense.com/) | GitHub | License fit with commercial strategy |
-| `osi-approved-licenses` | [OSI Approved Licenses list](https://opensource.org/licenses) | Open Source Initiative | Honest labeling of source-available terms |
+| `osi-approved-licenses` | [OSI Approved Licenses list](https://opensource.org/licenses) | Open Source Initiative | Accurate labeling of source-available terms |
 | `spdx-license-list` | [SPDX License List](https://spdx.org/licenses/) | Linux Foundation (SPDX) | Metadata/LICENSE consistency |
 | `contributor-covenant` | [Contributor Covenant](https://www.contributor-covenant.org/) | Organization for Ethical Source | Enforcement process you'll actually run |
 | `cc-license-chooser` | [Creative Commons licenses + chooser](https://creativecommons.org/share-your-work/cclicenses/) | Creative Commons | Content vs code licensing boundaries |

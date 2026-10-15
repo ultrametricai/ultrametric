@@ -6,7 +6,7 @@ These bind every agent and contributor working in this repo.
 
 - Never hand-tune a verdict, score, rank, or leaderboard position. Every ranked number is
   computed from judged evidence by the rankings engine — change the inputs or the code, never the
-  output. Honest negatives stay published.
+  output. Negative results stay published.
 - Every claim cites its evidence (vendor docs, GitHub, community sources, or a recorded
   probe). No citable evidence → no claim. Never fabricate a URL; if a source is bot-walled,
   document that and substitute a reachable one.

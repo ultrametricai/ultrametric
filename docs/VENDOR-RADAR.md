@@ -42,7 +42,7 @@ that review.
 (cron `31 8 * * *`, offset from the other automation loops):
 
 1. **Scan** three keyless public launch surfaces (a handful of HTTP requests total, polite UA,
-   10s timeouts; a source that fails to answer degrades to zero items with an honest `error`
+   10s timeouts; a source that fails to answer degrades to zero items with a recorded `error`
    note in the report — never a fabricated item):
    - **Hacker News** via the Algolia search API (keyless by design): `Show HN` and `"Launch HN"`
      stories from the last `HN_LOOKBACK_DAYS`, plus front-page stories whose title is
@@ -68,7 +68,7 @@ that review.
    - the vendor registry (`open-rankings/reviews/generated/`) by product id,
    - the committed seen-ledger **`rankings-engine/radar-seen.json`**: every candidate ever reported,
      keyed by product domain (or `github:owner/repo` / normalized name when no product domain is
-     public). `firstSeen` is the honest date of the run that first reported it — never backdated.
+     public). `firstSeen` is the date of the run that first reported it — never backdated.
 4. **Report**: `reports/vendor-radar/<date>.json` (schema-validated) + `<date>.md`, committed via
    the usual PR-or-issue flow. When there are NEW candidates the workflow also files (or, on a
    same-day re-run, comments on) a **`vendor-radar: candidates YYYY-MM-DD`** issue
@@ -93,7 +93,7 @@ that review.
   still match on their `categories.json` name tokens and section-name tokens via
   `buildArenaVocab`.
 - **Noise control**: raising `MIN_ARENA_HITS` cuts false positives fleet-wide; the per-report cap
-  `MAX_REPORT_CANDIDATES` keeps the issue readable (overflow is counted honestly in
+  `MAX_REPORT_CANDIDATES` keeps the issue readable (overflow is counted in
   `skipped.overflow`, and uncapped candidates simply surface on a later run since only REPORTED
   candidates enter the seen-ledger).
 - A candidate that was wrongly skipped can be re-surfaced by deleting its row from

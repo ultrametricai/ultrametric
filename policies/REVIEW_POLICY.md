@@ -22,7 +22,7 @@ because it has several playbooks — coverage is tracked per scenario and locale
 ## Evidence doctrine (vendor layer — already enforced in the engine)
 
 - **Everything evidence-driven.** Verdicts, scores, and ranks are computed from cited evidence;
-  they are never hand-tuned. Honest negatives are recorded as probes.
+  they are never hand-tuned. Negative results are recorded as probes.
 - **Churn policy.** A verdict flip is kept only when it cites new evidence IDs; flips without
   new evidence are reverted.
 - **Owner-product bias audits.** Products affiliated with the maintainers (Foreloop, AFK,
