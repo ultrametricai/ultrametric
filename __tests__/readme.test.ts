@@ -89,6 +89,8 @@ const SECTIONS = [
   '## Government services and startups',
   '## Startup ecosystem',
   '## Open startup simulator',
+  // Round 12 (founder 2026-10-15): two lifecycle stages shown as cross-area indexes.
+  '## Stages',
   '## Install Ultrametric',
   '## License',
 ]
@@ -103,6 +105,8 @@ const SUBSECTIONS: Array<[string, string]> = [
   // Round 11 (founder 2026-10-15): the law section shows the geo scoping, the lifecycle
   // grouping of the distilled laws, and one rule cross-linked through process and module.
   ['## Open law', '### Example: The 83(b) election'],
+  ['## Stages', '### Stage: Formation'],
+  ['## Stages', '### Stage: Growth'],
 ]
 
 const sectionBody = (heading: string) => {
@@ -391,9 +395,7 @@ describe('README.md retired generated blocks', () => {
     // committed categories below.
     const section = sectionBody('## Open vendor rankings')
     const bullets = [...section.matchAll(/^- \[[^\]]+\]\(https:\/\/ultrametric\.ai\/arena\/([a-z-]+)\) — \S/gm)]
-    expect(bullets.map((m) => m[1])).toEqual([
-      'payments', 'startup-banking', 'ai-coding', 'local-llm-runtimes', 'government-services',
-    ])
+    expect(bullets.map((m) => m[1])).toEqual(['startup-banking', 'equity-management', 'legal-ops', 'payments', 'email-marketing', 'crm', 'government-services'])
     const categories = JSON.parse(
       fs.readFileSync(path.join(ROOT, 'open-rankings', 'categories.json'), 'utf8'),
     ) as Array<{ id: string }>

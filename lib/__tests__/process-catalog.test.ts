@@ -6,7 +6,9 @@ import path from 'node:path'
 import { loadProcessCatalog, validateFlow } from '../shared-processes/catalog'
 
 const temporary: string[] = []
-afterEach(() => temporary.splice(0).forEach(folder => rmSync(folder, { recursive: true, force: true })))
+// maxRetries guards the macOS ENOTEMPTY race between the exporter child process exiting
+// and its files becoming deletable.
+afterEach(() => temporary.splice(0).forEach(folder => rmSync(folder, { recursive: true, force: true, maxRetries: 5, retryDelay: 100 })))
 describe('process authoring catalog', () => {
   it('preserves every authored logo value through catalog loading', () => {
     const { processes } = loadProcessCatalog({ processes: ['generate-a-brand-logo'] })
