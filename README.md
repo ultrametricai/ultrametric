@@ -219,8 +219,10 @@ acquired.
 
 ### Example: Getting acquired
 
-The rules are extracted from the essays into the [registry](open-lore/registry.json) and
-the [library](open-lore/library.json), each tied to its source. From Justin Kan's
+The mechanics are extracted from the essays, each tied to its source: contested claims in
+the [registry](open-lore/registry.json) with their tensions mapped, uncontested rules in
+[rules.json](open-lore/rules.json), and the works themselves in the
+[library](open-lore/library.json). From Justin Kan's
 [The Founder's Guide to Selling Your Company](https://web.archive.org/web/20181123041114/https://justinkan.com/the-founders-guide-to-selling-your-company-a1b2025c9481):
 an offer is real only when it carries an expiration date or a term sheet promised within
 24-48 hours; once committed to a sale, share diligence data freely under an NDA and refuse
