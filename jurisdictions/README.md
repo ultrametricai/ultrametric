@@ -20,6 +20,10 @@ a neighbor. A real record:
 }
 ```
 
+`coverage` grades what the registry claims for a jurisdiction: each committed entry
+carries `partial-example`, meaning the sourced records cover only the stated scope and are
+worked examples without independent expert sign-off (`policies/REVIEW_POLICY.md`).
+
 `vendor-geo.json` holds one dated, source-cited row per (product, country) for the
 geo-sensitive rankings: loader `lib/vendorGeo.ts`, rendered as "Geos supported" on product
 pages. Evidence only, deliberately not a score:

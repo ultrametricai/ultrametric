@@ -85,6 +85,20 @@ The cards live in one directory per jurisdiction, named by the `jurisdiction` co
 | [EU](EU/) | The GDPR data-subject-access response deadline |
 | [UK](UK/) | Company registration and the certificate of incorporation, the confirmation statement, allotment returns, accounts filing periods, PSC information notices, corporation tax notice and PAYE registration deadlines, the VAT registration threshold, the written statement of particulars, EMI notification |
 
+## Founder-journey workflow files
+
+The founder-journey taxonomy and the jurisdiction-scoped workflow coverage live here,
+beside the law layer that grades them. `workflow-domains.json` names the lifecycle
+domains from formation through exit, each with its topics, including domains with no
+playbook yet. `workflow-coverage.json` records which jurisdiction-scoped workflows
+exist, for which entity and tax jurisdictions, at what maturity, with dated reviews,
+stated limits, and the uncovered scenarios listed in the same file. `lib/founderOps.ts`
+checks both in CI: every workflow in `open-processes/<domain>/<jurisdiction>/` must
+carry a coverage entry, every entry must resolve to a committed workflow, and `reviewed`
+status is accepted only when the workflow itself is reviewed. A new workflow lands with
+its maturity grade recorded in `workflow-coverage.json`; no jurisdiction is called
+covered because a few playbooks exist (`policies/REVIEW_POLICY.md`).
+
 ## The 83(b) rule, followed through the repo
 
 The map's cross-links are navigable in both directions; one worked chain: the distilled

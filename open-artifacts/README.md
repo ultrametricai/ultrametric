@@ -22,7 +22,8 @@ live at [ultrametric.ai/artifacts](https://ultrametric.ai/artifacts) and
 Each `registry.json` entry carries `id`, `label`, `description`, `producedBy` (the one canonical
 producer process), optional `alsoProducedBy` (documented exception producers), optional
 `terminal: true` (nothing downstream consumes it), optional `documents` (registered
-open-documents templates that genuinely are the artifact's form), optional
+[`open-documents/`](../open-documents/README.md) templates that genuinely are the
+artifact's form), optional
 `establishesFieldIds` (the typed fields the artifact establishes), and optional `geo`
 (per-country analogs derived from the committed process geoNotes). The registry is sized from
 the corpus itself: an artifact exists because a committed process step brings it into
@@ -32,6 +33,21 @@ the integrity rules (totality, one producer, consumed-or-terminal, geo URL reuse
 in `lib/__tests__/processArtifacts.test.ts`. Published schema:
 `schemas/process-artifacts.schema.json`. The qualification rules and the how-to-add recipe
 stay with the process-side contract in `open-processes/README.md`.
+
+A trimmed real entry (`certificate-of-incorporation`):
+
+```jsonc
+{
+  "id": "certificate-of-incorporation",
+  "label": "Certificate of Incorporation",
+  "description": "The state-stamped Certificate of Incorporation - proof the C-Corp exists…",
+  "producedBy": "form_001",
+  "alsoProducedBy": ["form_012"],
+  "documents": ["cooley-incorporation-package-de", "orrick-incorporation-toolkit", "de-formation-instructions"],
+  "establishesFieldIds": ["incorporation-date", "authorized-shares", "par-value", "state-file-number"]
+  // …per-country geo analogs trimmed
+}
+```
 
 `establishesFieldIds` is the machine link from an artifact to the `fields.json` fields it
 establishes: the exact inverse of each field's `producedBy` edge, committed on the artifact
