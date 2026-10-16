@@ -355,9 +355,9 @@ untracked, plus the processes whose vendor set resolves to zero arenas.
 
 ## The Incorporate C-Corp step graph
 
-The diagram is `form_001` (Incorporate C-Corp) exactly as committed in `corpus.json`:
-`scripts/generate-process-diagram.mjs` draws it from the record's `dag.nodes` and
-`dag.edges`, nothing invented, and is re-run when the record changes. Glyphs: 🤖 `agent` ·
+The diagram is `form_001` (Incorporate C-Corp) from canonical `incorporate-c-corp.json`:
+`scripts/generate-process-diagram.mjs` draws the unfiltered operational projection's `dag.nodes` and
+`dag.edges`, nothing invented, and is re-run when the definition changes. Glyphs: 🤖 `agent` ·
 📝 `form` (manual web form) · 🧑 `person` · ✍ a `person` step with `legalSignature`
 (legally required human signature).
 

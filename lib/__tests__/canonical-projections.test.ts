@@ -64,6 +64,52 @@ describe('canonical operational readers', () => {
   })
 })
 
+describe('canonical diagram generator', () => {
+  function fixture() {
+    const root = mkdtempSync(path.join(os.tmpdir(), 'canonical-diagram-'))
+    temporary.push(root)
+    for (const directory of ['scripts', 'open-processes']) mkdirSync(path.join(root, directory))
+    for (const directory of ['lib', 'node_modules']) symlinkSync(path.join(process.cwd(), directory), path.join(root, directory))
+    cpSync('scripts/generate-process-diagram.mjs', path.join(root, 'scripts/generate-process-diagram.mjs'))
+    for (const name of ['catalog', ...catalog.map(process => process.slug)]) {
+      cpSync(`open-processes/${name}.json`, path.join(root, 'open-processes', `${name}.json`))
+    }
+    return root
+  }
+
+  const run = (root: string, ...args: string[]) => spawnSync(process.execPath, ['scripts/generate-process-diagram.mjs', ...args], { cwd: root, encoding: 'utf8' })
+
+  it('preserves the default SVG and README embed without compatibility files', () => {
+    const root = fixture()
+    expect(existsSync(path.join(root, 'open-processes/corpus.json'))).toBe(false)
+    expect(existsSync(path.join(root, 'open-processes/chains.json'))).toBe(false)
+    const result = run(root)
+    expect(result.status, result.stderr).toBe(0)
+    const asset = 'open-processes/assets/incorporate-c-corp.svg'
+    expect(readFileSync(path.join(root, asset))).toEqual(readFileSync(asset))
+    expect(readFileSync('open-processes/README.md', 'utf8')).toContain('<img src="assets/incorporate-c-corp.svg" alt="Incorporate C-Corp step graph" width="700">')
+  })
+
+  it('retains process/output arguments, escaping, and failure for an unknown process', () => {
+    const root = fixture()
+    const file = path.join(root, 'open-processes/generate-a-brand-logo.json')
+    const definition = JSON.parse(readFileSync(file, 'utf8'))
+    definition.title = 'Fixture & diagram <review>'
+    definition.parts[0].title = 'Input & review <source>'
+    writeFileSync(file, JSON.stringify(definition))
+    const result = run(root, 'brand_002', 'results/logo.svg')
+    expect(result.status, result.stderr).toBe(0)
+    const svg = readFileSync(path.join(root, 'results/logo.svg'), 'utf8')
+    expect(svg).toContain('aria-label="Fixture &amp; diagram &lt;review&gt; step graph"')
+    expect(svg).toContain('Input &amp; review &lt;source&gt;')
+    expect(existsSync(path.join(root, 'open-processes/assets/incorporate-c-corp.svg'))).toBe(false)
+    const missing = run(root, 'fixture_missing', 'results/missing.svg')
+    expect(missing.status).not.toBe(0)
+    expect(missing.stderr).toContain('process fixture_missing not found')
+    expect(existsSync(path.join(root, 'results/missing.svg'))).toBe(false)
+  })
+})
+
 describe('canonical catalog consumer contract', () => {
   it('retains every historical identity and the existing situation classification', () => {
     const historical = JSON.parse(readFileSync('content/processes/import-manifest.json', 'utf8')).records

@@ -1,6 +1,6 @@
 // Draws one committed process record as an SVG step graph for the open-processes README.
-// Reads the record's dag.nodes and dag.edges from open-processes/corpus.json; nothing is
-// invented here. Deterministic: same corpus in, same bytes out.
+// Reads the unfiltered operational projection of the canonical definition, preserving
+// jurisdiction-conditional nodes. Deterministic: same definition in, same bytes out.
 //
 //   node scripts/generate-process-diagram.mjs [processId] [outPath]
 //
@@ -9,14 +9,18 @@
 import fs from 'node:fs'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
+import { tsImport } from 'tsx/esm/api'
+
+const { loadProcessCatalog } = await tsImport('../lib/shared-processes/catalog.ts', import.meta.url)
+const { projectOperational } = await tsImport('../lib/shared-processes/projection.ts', import.meta.url)
 
 const ROOT = path.join(path.dirname(fileURLToPath(import.meta.url)), '..')
 const processId = process.argv[2] ?? 'form_001'
 const outPath = path.join(ROOT, process.argv[3] ?? 'open-processes/assets/incorporate-c-corp.svg')
 
-const corpus = JSON.parse(fs.readFileSync(path.join(ROOT, 'open-processes', 'corpus.json'), 'utf8'))
-const record = corpus.find((r) => r.id === processId)
-if (!record) throw new Error(`process ${processId} not found in corpus.json`)
+const catalog = loadProcessCatalog(undefined, ROOT).processes
+const record = catalog.map(process => projectOperational(process, catalog)).find(record => record?.id === processId)
+if (!record) throw new Error(`process ${processId} not found in the operational catalog`)
 
 // Route styling mirrors components/ProcessDag.tsx in the site repo.
 const STYLES = {
