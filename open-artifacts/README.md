@@ -22,7 +22,8 @@ live at [ultrametric.ai/artifacts](https://ultrametric.ai/artifacts) and
 Each `registry.json` entry: `id`, `label`, `description`, `producedBy` (the one canonical
 producer process), optional `alsoProducedBy` (documented exception producers), optional
 `terminal: true` (nothing downstream consumes it), optional `documents` (registered
-open-documents templates that genuinely are the artifact's form), and optional `geo`
+open-documents templates that genuinely are the artifact's form), optional
+`establishesFieldIds` (the typed fields the artifact establishes), and optional `geo`
 (per-country analogs derived from the committed process geoNotes). The registry is sized from
 the corpus itself: an artifact exists because a committed process step brings it into
 existence and another committed process consumes it. `lib/processes.ts` (`loadArtifacts`)
@@ -31,6 +32,14 @@ the integrity rules (totality, one producer, consumed-or-terminal, geo URL reuse
 in `lib/__tests__/processArtifacts.test.ts`. Published schema:
 `schemas/process-artifacts.schema.json`. The qualification rules and the how-to-add recipe
 stay with the process-side contract in `open-processes/README.md`.
+
+`establishesFieldIds` is the machine link from an artifact to the `fields.json` fields it
+establishes: the exact inverse of each field's `producedBy` edge, committed on the artifact
+side so both registries carry the connection. The certificate of incorporation lists the
+incorporation date and the charter share inputs; the 409A report lists the common-share FMV
+and its as-of date. Artifacts that establish no registered field carry no key. The pairing
+(referential integrity, the inverse, every field established by its producing artifact) is
+tested in `lib/__tests__/processArtifacts.test.ts`.
 
 ## The field standards
 
