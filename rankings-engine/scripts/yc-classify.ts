@@ -16,7 +16,7 @@ import { llmJson } from '../llm'
 import { ROOT, writeJson } from '../paths'
 
 const YC_MAP_PATH = path.join(ROOT, 'open-rankings', 'yc-map.json')
-const PROGRESS_PATH = path.join(ROOT, 'pipeline', 'cache', 'yc', 'classify-progress.json')
+const PROGRESS_PATH = path.join(ROOT, 'rankings-engine', 'cache', 'yc', 'classify-progress.json')
 const CATEGORIES_PATH = path.join(ROOT, 'open-rankings', 'categories.json')
 const BATCH_SIZE = 40
 

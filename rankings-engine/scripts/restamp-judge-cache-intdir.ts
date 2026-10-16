@@ -62,7 +62,7 @@ for (const [cat, pids] of Object.entries(WAVE)) {
   for (const pid of pids) {
     const evidence = JSON.parse(fs.readFileSync(path.join(ROOT, 'open-rankings', cat, 'evidence', `${pid}.json`), 'utf8'))
     for (const story of stories) {
-      const cacheFile = path.join(ROOT, 'pipeline', 'cache', 'judge', cat, pid, `${story.id}.json`)
+      const cacheFile = path.join(ROOT, 'rankings-engine', 'cache', 'judge', cat, pid, `${story.id}.json`)
       const cached = JSON.parse(fs.readFileSync(cacheFile, 'utf8')) as { hash: string; verdict: unknown }
       const fresh = cellHash(story as never, evidence, PROMPT_VERSION)
       if (cached.hash === fresh) continue

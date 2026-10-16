@@ -79,7 +79,7 @@ function main(): void {
     }
     const violation = validateVerdictRules(verdict, evidence)
     if (violation) throw new Error(`${flip.productId}:${flip.storyId} violates rules: ${violation}`)
-    const cacheFile = path.join('pipeline', 'cache', 'judge', CATEGORY!, flip.productId, `${flip.storyId}.json`)
+    const cacheFile = path.join('rankings-engine', 'cache', 'judge', CATEGORY!, flip.productId, `${flip.storyId}.json`)
     console.log(`${WRITE ? 'WRITE' : 'DRY RUN'}: ${flip.productId}:${flip.storyId} na -> none (hash ${hash.slice(0, 12)}...)`)
     if (WRITE) {
       fs.writeFileSync(cacheFile, JSON.stringify({ hash, verdict }, null, 2) + '\n')

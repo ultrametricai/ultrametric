@@ -64,7 +64,7 @@ function main(): void {
     stats.reverted++
     console.log(`REVERT ${v.productId}:${v.storyId} ${v.verdict}/q${v.quality} -> ${old!.verdict}/q${old!.quality} (no new citation)`)
     if (WRITE) {
-      const cacheFile = path.join(ROOT, 'pipeline', 'cache', 'judge', ARENA, v.productId, `${v.storyId}.json`)
+      const cacheFile = path.join(ROOT, 'rankings-engine', 'cache', 'judge', ARENA, v.productId, `${v.storyId}.json`)
       if (fs.existsSync(cacheFile)) {
         const cached = JSON.parse(fs.readFileSync(cacheFile, 'utf8')) as { hash: string }
         writeJson(cacheFile, { hash: cached.hash, verdict: old })

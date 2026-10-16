@@ -57,7 +57,7 @@ for (const [cat, pids] of Object.entries(WAVE)) {
     console.log(`REVERT ${cat}/${v.productId}:${v.storyId} ${v.verdict}/q${v.quality} -> ${o.verdict}/q${o.quality} (no new citation)`)
     reverted++
     if (WRITE) {
-      const cacheFile = path.join(ROOT, 'pipeline', 'cache', 'judge', cat, v.productId, `${v.storyId}.json`)
+      const cacheFile = path.join(ROOT, 'rankings-engine', 'cache', 'judge', cat, v.productId, `${v.storyId}.json`)
       const cached = JSON.parse(fs.readFileSync(cacheFile, 'utf8')) as { hash: string; verdict: unknown }
       cached.verdict = { ...o }
       fs.writeFileSync(cacheFile, JSON.stringify(cached, null, 2) + '\n')

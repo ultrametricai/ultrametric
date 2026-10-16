@@ -58,7 +58,7 @@ function main(): void {
     const violation = validateVerdictRules(verdict, evidence)
     if (violation) throw new Error(`apply-mcp-server-na: ${productId} verdict violates rules: ${violation}`)
 
-    const cacheFile = path.join('pipeline', 'cache', 'judge', CATEGORY, productId, `${STORY_ID}.json`)
+    const cacheFile = path.join('rankings-engine', 'cache', 'judge', CATEGORY, productId, `${STORY_ID}.json`)
     console.log(`${WRITE ? 'WRITE' : 'DRY RUN'}: ${cacheFile} -> na (hash ${hash.slice(0, 12)}...)`)
     if (WRITE) {
       fs.mkdirSync(path.dirname(cacheFile), { recursive: true })
