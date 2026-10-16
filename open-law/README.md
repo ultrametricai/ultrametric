@@ -30,11 +30,11 @@ together.
 
 | Domain | Covers | Maturity |
 | --- | --- | --- |
-| Formation and corporate governance | Incorporation mechanics and charter contents (Delaware focus), board and stockholder action, stock issuance authority, ongoing state registrations, and beneficial-ownership reporting. | partial |
+| Formation and corporate governance | Incorporation mechanics and charter contents (Delaware and the UK), board and stockholder action, stock issuance authority, ongoing registrations and reports, and beneficial-ownership reporting. | partial |
 | Securities and fundraising | The Securities Act registration requirement and private-offering exemptions, Regulation D conditions, offering notices (Form D and blue sky), and compensatory-issuance exemptions. | partial |
 | Equity and compensation | 409A valuation presumptions and penalties, 83(b) elections and restricted stock, ISO and NSO tax treatment, and QSBS. | mapped |
 | Employment | Hiring and onboarding duties, federal wage and hour baselines, worker classification, restrictive covenants, terminations and layoffs, workplace safety, and benefits. | partial |
-| Tax | Federal corporate income tax and R&D rules, payroll taxes, state entity-level taxes, and sales tax. | partial |
+| Tax | Corporate income tax and R&D rules, payroll taxes, state entity-level taxes, and sales tax and VAT. | partial |
 | Intellectual property | Ownership and assignment of founder, employee, and contractor work product; patents; trademarks; trade secrets; and open source. | partial |
 | Contracts and commercial | Electronic contracting, marketing communications, customer contracts, and dispute deadlines. | partial |
 | Privacy and data protection | US state privacy statutes, federal sectoral privacy law, and EU data protection. | partial |
