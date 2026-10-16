@@ -304,7 +304,7 @@ hold up:
    [`templates/process.json`](templates/process.json), narrow the applicability dimensions,
    reference your rule cards, gate every external effect on a human approval, add a
    fictional fixture in [`open-processes/fixtures/`](open-processes/fixtures/), and record the
-   maturity level in [`coverage/coverage.json`](coverage/) (`draft` or `demonstration` to
+   maturity level in [`open-law/workflow-coverage.json`](open-law/) (`draft` or `demonstration` to
    start; `reviewed` requires a named domain expert, see the
    [review policy](policies/REVIEW_POLICY.md)).
 

@@ -401,7 +401,7 @@ in the PR. Gate: `pnpm test` (`lib/__tests__/processes.test.ts` cross-checks eve
 - **A new jurisdiction-scoped workflow** — copy `templates/process.json` into
   `open-processes/<domain>/<jurisdiction>/`, narrow the applicability dimensions, reference rule
   cards in `open-law/<CODE>/`, gate every external effect on a named human approval, add a
-  fictional fixture in `open-processes/fixtures/`, and record the maturity grade in `coverage/coverage.json`.
+  fictional fixture in `open-processes/fixtures/`, and record the maturity grade in `open-law/workflow-coverage.json`.
   Gate: `pnpm test __tests__/founder-ops.test.ts`.
 - **Corrections to an operational process** — step routing (agent / manual form / human),
   Agentic % values, or time estimates in `corpus.json`, with a source or reproduction for the
@@ -411,3 +411,5 @@ in the PR. Gate: `pnpm test` (`lib/__tests__/processes.test.ts` cross-checks eve
   flag that should be a real consumer. Follow "The artifact layer" rules above (one canonical
   producer, no invented artifacts), regenerate `docs/TIMELINE-INVERSIONS.md`. Gate:
   `pnpm test` (`processArtifacts` + `processDeps` suites).
+
+This area's maturity grade and known gaps are tracked in [`coverage/index.json`](../coverage/index.json).

@@ -50,8 +50,17 @@ const LAW_MAP = path.join('open-law', 'map.json')
 // validate against schemas/citation.schema.json in the source loop below.
 const LAW_CITATIONS_SUBTREE = path.join('open-law', 'citations') + path.sep
 
+// The founder-journey workflow files (folded in from the old coverage/ pair) sit beside
+// the cards they grade; they validate in the workflow loop, not as rule cards.
+const WORKFLOW_FILES = [
+  path.join('open-law', 'workflow-coverage.json'),
+  path.join('open-law', 'workflow-domains.json'),
+]
+
 function ruleCardJson(dir: string): string[] {
-  return listJson(dir).filter((f) => !f.endsWith(LAW_MAP) && !f.includes(LAW_CITATIONS_SUBTREE))
+  return listJson(dir).filter(
+    (f) => !f.endsWith(LAW_MAP) && !f.includes(LAW_CITATIONS_SUBTREE) && !WORKFLOW_FILES.some((w) => f.endsWith(w)),
+  )
 }
 
 // Fictional scenario fixtures live under open-processes/fixtures/ (folded in from the old
@@ -389,7 +398,7 @@ export function validateFounderOps(asOf?: Date): string[] {
     if (!mappedRules.has(rid)) errors.push(`rule ${rid}: absent from the law map (open-law/map.json)`)
   }
 
-  const coverageDoc = read(path.join(ROOT, 'coverage/coverage.json'))
+  const coverageDoc = read(path.join(ROOT, 'open-law/workflow-coverage.json'))
   const coverage = isObj(coverageDoc) && Array.isArray(coverageDoc.coverage) ? coverageDoc.coverage : []
   const covered = new Set<string>()
   for (const itemValue of coverage) {

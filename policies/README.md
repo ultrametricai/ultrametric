@@ -18,3 +18,5 @@ Contribute here:
 - **Doctrine proposals** — changes to what `reviewed` requires or how contests settle
   change how every record is judged, so they land separately with explicit maintainer
   sign-off.
+
+This area's maturity grade and known gaps are tracked in [`coverage/index.json`](../coverage/index.json).

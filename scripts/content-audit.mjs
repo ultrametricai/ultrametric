@@ -241,7 +241,7 @@ export function buildContentAudit(files, metadata) {
       linked: rows.filter(record => record.inbound > 0 || record.links.some(ref => ref.state === 'resolved')).length,
       unresolved: rows.reduce((total, record) => total + record.links.filter(ref => ref.state === 'unresolved').length, 0) }
   })
-  const coverage = json('coverage/coverage.json')
+  const coverage = json('open-law/workflow-coverage.json')
   const scopes = array(coverage.coverage, 'coverage scopes').map(value => ({
     scenario: value.scenario, processKey: processTarget(value.process_id), entityJurisdiction: value.entity_jurisdiction,
     taxJurisdiction: value.tax_jurisdiction, status: value.status, reviewedOn: value.reviewed_on,

@@ -99,3 +99,5 @@ figure; a vendor without published pricing reads "no published pricing".
 The replay tests live in `lib/__tests__/virtualStartup.test.ts`,
 `virtualStartupRun.test.ts`, and `virtualStartupLinkage.test.ts`: journey composition
 against the live corpus, the assumption phrasing, and the permalink codec.
+
+This area's maturity grade and known gaps are tracked in [`coverage/index.json`](../coverage/index.json).
