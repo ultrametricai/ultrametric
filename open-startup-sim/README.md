@@ -100,4 +100,14 @@ The replay tests live in `lib/__tests__/virtualStartup.test.ts`,
 `virtualStartupRun.test.ts`, and `virtualStartupLinkage.test.ts`: journey composition
 against the live corpus, the assumption phrasing, and the permalink codec.
 
+## Contribute here
+
+- **A correction to a disclosed assumption** — change the named constant in
+  `lib/virtualStartupRun.ts` with the reasoning in the PR; the constant stays exported and
+  named, and the UI keeps the words "simulation assumption" (tests enforce the phrase).
+- **A new decision, preset, or seeded event** — compose it in `lib/virtualStartup.ts` from
+  committed corpus processes and chains; steps are not invented and no vendor is re-judged.
+
+Gate: `pnpm test lib/__tests__/virtualStartup.test.ts lib/__tests__/virtualStartupRun.test.ts lib/__tests__/virtualStartupLinkage.test.ts`.
+
 This area's maturity grade and known gaps are tracked in [`coverage/index.json`](../coverage/index.json).

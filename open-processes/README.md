@@ -83,6 +83,7 @@ The two layers keep separate IDs and never silently substitute for each other:
 | [Step documents](#step-documents-documents) | Steps linked to the open documents they are done on |
 | [Proven runs](#proven-runs-provenruns--the-executed-proof-slot-design-only) | Evidence that a named operator ran a process |
 | [The artifact layer](#the-artifact-layer-typed-inputsoutputs) | Typed inputs and outputs between processes |
+| [The vendor registry](#the-vendor-registry-vendor-registryjson) | The vendor facts the process pages render |
 | [The Open-modules map](#the-open-modules-map) | Wiring steps to the calculation modules |
 | [The Incorporate C-Corp step graph](#the-incorporate-c-corp-step-graph) | One committed record as a diagram |
 | [How the site consumes this directory](#how-the-site-consumes-this-directory) | Loaders and the pages they power |
@@ -213,7 +214,8 @@ is. Curation rules, stricter than coverage:
   like every committed URL.
 - **3–6 quality entries per deep process**, not totality — absence means nothing is curated
   yet, never that the step can't fail. Display: one collapsed "⚠ if it goes wrong" line per
-  affected step (`components/ProcessDag.tsx`); no judged number reads the field.
+  affected step, rendered by the site's DAG component (private repo); no judged number reads
+  the field.
 
 ## Step documents (`documents`)
 
@@ -223,9 +225,10 @@ bylaws/stock-paperwork drafting steps, IRS Form 15620 for the 83(b) election). A
 form_001 spike after confirming no prior mechanism linked process steps to the documents
 registry; extended across the library the same day (founder 2026-10-02: SAFEs on the SAFE-prep
 step, the NVCA suite on the definitive-docs step, offer letters, SS-4, the open NDAs/DPAs/
-cloud terms — `scripts/tmp-wire-step-documents.py`) — only where the document is plainly the
+cloud terms) — only where the document is plainly the
 step's instrument, never forced totality. Rendered on the process pages as small external-link
-chips (`components/ProcessDag.tsx`, registry title as label, canonical URL as target).
+chips by the site's DAG component (private repo), registry title as label, canonical URL as
+target.
 Referential integrity is gated both ways (`lib/__tests__/processDocuments.test.ts`) —
 every id must resolve in the registry, and the render lookup throws on an unknown id.
 
@@ -296,6 +299,22 @@ regenerate the derived report: `npx tsx scripts/generate-timeline-inversions.ts`
 row in `docs/TIMELINE-INVERSIONS.md` — the founder's renumbering worklist, never a silent
 re-sort.
 
+## The vendor registry (`vendor-registry.json`)
+
+`vendor-registry.json` is the single source for the vendor facts the process pages render,
+keyed by corpus vendor key (the snake_case keys `corpus.json` uses in
+`vendor`/`vendorOptions`). Per vendor: the live arena that judges it (`arenaId`, absent
+for a deliberately unlinked chip), a display `label` where title-casing the key misfires,
+the judged `productId` where it differs from the key, the vendor's own verified-live
+start-here page (`signupUrl`, curl-verified before listing; a vendor without one is simply
+absent), and a curation `note`. `lib/processes.ts` reads it back (`loadVendorRegistry()`
+and the `VENDOR_ARENA` / `VENDOR_SIGNUP_URL` / `vendorLabel` / `vendorProductId`
+projections); the workflow validator (`lib/founderOps.ts`) deliberately skips it, like
+`corpus.json`. Gate: `pnpm test lib/__tests__/vendorRegistry.test.ts` (the exports stay
+pure projections of the registry). Published schema:
+`schemas/process-vendor-registry.schema.json` (generated from `VendorRegistrySchema` in
+`lib/processes.ts` by `scripts/generate-corpus-schemas.ts`).
+
 ## The Open-modules map
 
 `business-logic-map.json` (founder 2026-10-02; the file name keeps the legacy
@@ -319,7 +338,7 @@ appear in that module's `processes` list.
 
 Read back by `lib/businessLogicMap.ts`; process pages render the task-level hits as a muted
 "Open modules" chip line, and mapped step blocks get a tiny `compute: <module>.<function>`
-chip (`components/ProcessDag.tsx`) whose tooltip carries the `what` clause — both deep-linking
+chip, rendered by the site's DAG component (private repo), whose tooltip carries the `what` clause — both deep-linking
 into `open-modules/README.md` (repo-first — the modules are a library by design, no site
 pages). That README's per-module **Serves** lines are generated from this file
 (`scripts/generate-business-logic-serves.ts`) and drift-gated. Totality gates, both ways:
@@ -349,8 +368,9 @@ The diagram is `form_001` (Incorporate C-Corp) exactly as committed in `corpus.j
 - `lib/processes.ts` `loadProcesses()` reads `corpus.json` at build time — it strips the
   jurisdiction-conditional nodes (they only ever render client-side via the `?juris=` toggle,
   so no judged number moves) and powers `/processes`, every `/processes/<slug>` page
-  (`components/ProcessDag.tsx` renders the step graph above with the same route colors), the process
-  rankings (`/rankings/processes/*`), and the open startup simulator at `/startup-sim`.
+  (the site's DAG component, in the private repo, renders the step graph above with the same
+  route colors), the process rankings (`/rankings/processes/*`), and the open startup
+  simulator at `/startup-sim`.
 - `chains.json` links process IDs into playbooks (see the Chains section below).
 - `lib/founderOps.ts` validates the jurisdiction-scoped workflow layer (`equity/us-de/*`)
   against `schemas/process.schema.json`, resolves its rule-card references into `open-law/`

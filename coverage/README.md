@@ -28,6 +28,10 @@ every pointer must resolve to a committed file, and the index must validate agai
   topic-by-school matrix and its thin cells.
 - `open-documents` — `open-documents/README.md`: exclusions, dead-link corrections, and the
   use cases with no openly published document.
+- `open-artifacts` — its `index.json` entry here carries the headline gaps (bot-walled
+  authority pages, unverified country equivalents); `open-artifacts/fields.json` records the
+  detail per field, where each country entry is either a sourced government equivalent or a
+  `status` of `unverified` / `no-equivalent`.
 - `rankings-engine` — `open-rankings/staleness-report.json`: evidence age per arena and
   product against the freshness windows.
 - `lib` — `lib/README.md` for the layer map; `docs/repo-split-census.json` for the test
@@ -41,12 +45,9 @@ every pointer must resolve to a committed file, and the index must validate agai
 
 ## Founder-journey files
 
-The founder-journey taxonomy and the jurisdiction-scoped workflow coverage live with the
-law layer they grade: `open-law/workflow-domains.json` (formation through exit, including
-domains with no playbook yet) and `open-law/workflow-coverage.json` (which workflows
-exist, at what maturity, with known gaps; `lib/founderOps.ts` checks it in CI). No
-jurisdiction is called covered because a few playbooks exist
-(`policies/REVIEW_POLICY.md`).
+The founder-journey taxonomy (`open-law/workflow-domains.json`) and the
+jurisdiction-scoped workflow coverage (`open-law/workflow-coverage.json`) live with the
+law layer that grades them; [`open-law/README.md`](../open-law/README.md) documents both.
 
 ## Contribute here
 

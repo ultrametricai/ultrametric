@@ -211,4 +211,16 @@ than duplicating rows:
 | `contributor-covenant` | [Contributor Covenant](https://www.contributor-covenant.org/) | Organization for Ethical Source | Enforcement process you'll actually run |
 | `cc-license-chooser` | [Creative Commons licenses + chooser](https://creativecommons.org/share-your-work/cclicenses/) | Creative Commons | Content vs code licensing boundaries |
 
+## Contribute here
+
+- **A new document** — add the record to `registry.json` (the shape above, with the
+  publisher's stable page verified live on `checked_on`) and the matching table row in the
+  right section, with the Document cell linking the record's canonical URL; the gate fails
+  on a missing, extra, or re-typed row.
+- **A re-verification pass** — follow a record's link, confirm the page still serves the
+  claimed document, and bump `checked_on`; a dead link is re-homed with the correction
+  recorded in the exclusions section above.
+
+Gate: `pnpm test __tests__/documents.test.ts`.
+
 This area's maturity grade and known gaps are tracked in [`coverage/index.json`](../coverage/index.json).

@@ -16,6 +16,11 @@ These files carry it:
 | [`rules.json`](./rules.json) | Uncontested mechanics: sourced rules with no published opposing view. | `pnpm test __tests__/lore-rules.test.ts --maxWorkers=2` |
 | [`LORE.md`](./LORE.md) | Episodes: the war stories of startup history, graded for veracity. | `pnpm test __tests__/lore.test.ts --maxWorkers=2` |
 
+`lib/lore.ts` loads and validates the episodes and the citation-only registry, and
+`lib/laws.ts` consumes `library.json` and `citations.json` to resolve the distilled laws'
+citations in [`open-law/LAWS.md`](../open-law/LAWS.md); the gates in the table hold each
+file to its contract.
+
 ## Schools
 
 Each registry heuristic belongs to a school. `schools.json` names them, states the
@@ -66,7 +71,21 @@ refuse automated fetches, with a reachable alternative), `stance` (always `claim
 `tensions` (conflicting entry ids, symmetric and always across schools), `libraryIds`
 (the library entries that ground the claim, symmetric with the library's `loreIds`),
 and `processIds` (the processes in [`open-processes/corpus.json`](../open-processes/corpus.json)
-it bears on).
+it bears on). A real record:
+
+```json
+{
+  "id": "pg-do-things-that-dont-scale",
+  "heuristic": "Recruit your first users manually and give them unscalably good treatment; scalable channels come after the product works.",
+  "school": "YC",
+  "topic": "growth-distribution",
+  "source": { "author": "Paul Graham", "work": "Do Things that Don't Scale", "url": "https://paulgraham.com/ds.html" },
+  "stance": "claim",
+  "tensions": ["hoffman-let-fires-burn"],
+  "libraryIds": ["pg-do-things-that-dont-scale", "rachitsky-first-1000-users"],
+  "processIds": ["growth_004", "growth_010"]
+}
+```
 
 Contribute here:
 
@@ -102,7 +121,8 @@ it bears on). A work that is not publicly available (unpublished or withdrawn) c
 `availability: "not-public"` instead of `url`, may omit `format` (no published form to
 cite), and must carry a `note` stating the unavailability and the evidence found at
 recording time; its `teaches` attributes the topic from the citation and claims no
-content the text cannot be checked for. Sections may carry `arenas` and `processIds` of their own: the
+content the text cannot be checked for. Sections may carry `arenas` (arena ids resolving
+against [`open-rankings/`](../open-rankings/)) and `processIds` of their own: the
 co-founders section, for example, points at the incorporation, banking, cap-table,
 payroll, domain, and immigration arenas whose vendors the readings assume.
 

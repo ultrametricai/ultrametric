@@ -7,6 +7,7 @@ simulator code whose catalogs live in the `open-` directories.
 | Area | What it is |
 | --- | --- |
 | Loaders (`data.ts`, `processes.ts`, `proofs.ts`, and peers) | Read the committed artifacts (`open-rankings/`, `open-processes/`, `open-law/`) and validate them against `schemas.ts` |
+| Founder-ops validator (`founderOps.ts`) | The legal-workflow validator and planner that `open-law/`, the jurisdiction-scoped workflows in `open-processes/`, `jurisdictions/`, and the coverage records route through; exposes the exact-dimension planner `planFounderOps` |
 | Scoring (`scoring.ts`, `rollups.ts`, `provenance.ts`) | Verdicts to numbers: the leaderboard math that the engine's derive stage and `recompute-check` replay |
 | [`openstartup/`](./openstartup/) | The calculation modules (code; docs and the worked-example index in [`open-modules/`](../open-modules/README.md)) |
 | Simulator engine (`virtualStartup.ts`, `virtualStartupRun.ts`, `processSim.ts`) | The startup simulator's run layer (code; catalog and disclosed assumptions in [`open-startup-sim/`](../open-startup-sim/README.md)) |
