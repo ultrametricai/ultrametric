@@ -280,6 +280,7 @@ describe('README.md structure (founder round 2, 2026-10-12)', () => {
       'open-documents/README.md', 'open-law/README.md', 'open-lore/LORE.md',
       'open-startup-sim/README.md', 'open-artifacts/README.md', 'coverage/README.md',
       'policies/README.md', 'policies/AGENT_POLICY.md', 'policies/REVIEW_POLICY.md',
+      'rankings-engine/README.md',
     ]
     const countPattern = /\b\d[\d,]* (rankings|products|verdicts|arenas|processes|markets|situations|modules|documents|cards|records)\b/
     for (const file of surfaces) {
