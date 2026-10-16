@@ -1,11 +1,11 @@
 # Startup lore
 
 The heuristics founders actually trade, the schools of thought they come from, the
-library of works that ground them, and the episodes of startup history behind both.
-Everything is recorded as a sourced claim: a named author, a citable work, and, where
+library of works that ground them, and the episodes of startup history behind both
+live here. Everything is recorded as a sourced claim: a named author, a citable work, and, where
 schools disagree, the conflict mapped on both sides.
 
-Five files carry it:
+These files carry it:
 
 | File | What it holds | Gate |
 | --- | --- | --- |

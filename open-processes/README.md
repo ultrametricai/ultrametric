@@ -35,7 +35,7 @@ The sections below document the legacy compatibility fields and external registr
 
 # Processes
 
-Every founder process and reactive situation as a step-by-step record, each step routed
+Every founder process and reactive situation is a step-by-step record, each step routed
 agent, form, or human, timed, and wired to the judged vendor rankings; the fixtures and
 the curation doctrine live here too. The artifact and company-field registries the steps
 exchange live in [`open-artifacts/`](../open-artifacts/).
@@ -90,7 +90,7 @@ The two layers keep separate IDs and never silently substitute for each other:
 
 ## What a library record is
 
-One record per founder process: identity and classification (`phase`, `cadence`,
+Each record covers one founder process: identity and classification (`phase`, `cadence`,
 `complexity`), the Agentic % with its stated reason (`supportLevel` + `supportReason`), the vendors that can
 run it, the step graph, and geo scoping. A trimmed real record (`form_002`, Get EIN):
 
@@ -358,9 +358,9 @@ The diagram is `form_001` (Incorporate C-Corp) exactly as committed in `corpus.j
 
 ## Chains
 
-Multi-process founder paths, each chaining existing processes into a founder-visible
-playbook (incorporate and launch, the VC raise, month-end close, the agent-run back
-office).
+Chains are multi-process founder paths, each linking existing processes into a
+founder-visible playbook (incorporate and launch, the VC raise, month-end close, the
+agent-run back office).
 
 A chain in `chains.json` is deliberately thin: an id, a name, a one-line tagline, and an
 ordered list of process IDs that must already exist in `corpus.json`; chains never invent

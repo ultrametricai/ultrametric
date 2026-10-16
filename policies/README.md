@@ -1,7 +1,7 @@
 # Policies
 
-The policies that bind every record here, and the one place where a maintainer
-must agree before merge.
+These are the policies that bind every record here, and this is the one place where a
+maintainer must agree before merge.
 
 - `REVIEW_POLICY.md` — the review bar, the coverage maturity ladder (draft → demonstration
   → reviewed), and the evidence doctrine: what counts as evidence, churn rules,

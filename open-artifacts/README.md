@@ -1,7 +1,7 @@
 # Open artifacts
 
-The business objects founder processes produce and consume: the certificate of
-incorporation, the EIN letter, the cap table, the 409A report.
+The business objects founder processes produce and consume are cataloged here: the
+certificate of incorporation, the EIN letter, the cap table, the 409A report.
 
 Two registries live here:
 
@@ -19,7 +19,7 @@ live at [ultrametric.ai/artifacts](https://ultrametric.ai/artifacts) and
 
 ## The artifact registry
 
-Each `registry.json` entry: `id`, `label`, `description`, `producedBy` (the one canonical
+Each `registry.json` entry carries `id`, `label`, `description`, `producedBy` (the one canonical
 producer process), optional `alsoProducedBy` (documented exception producers), optional
 `terminal: true` (nothing downstream consumes it), optional `documents` (registered
 open-documents templates that genuinely are the artifact's form), optional

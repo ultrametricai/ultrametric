@@ -1,6 +1,6 @@
 # Coverage
 
-The cross-area answer to what this repo covers and what is missing. `index.json` carries
+This directory is the cross-area answer to what this repo covers and what is missing. `index.json` carries
 one entry per top-level content area: a maturity grade, a short summary, the headline
 gaps, and pointers to the file where that area tracks its own gaps in detail. The detail
 stays with its area (the law map keeps its grades, the arena roadmap keeps its tiers, the
