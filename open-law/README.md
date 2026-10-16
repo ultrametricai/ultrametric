@@ -41,7 +41,7 @@ together.
 | Immigration | Founder immigration paths and employment-based work visas. | partial |
 | Dissolution and distress | Voluntary dissolution and wind-down, and insolvency paths. | partial |
 
-A trimmed real card (`open-law/US-FED/us-fed-1120-filing-deadline.json`):
+A trimmed real card (`open-law/US-FED/us-fed-1120-filing-deadline.json`) reads:
 
 ```jsonc
 {
@@ -125,9 +125,9 @@ grouped by lifecycle stage: [idea and validation](LAWS.md#idea-and-validation),
 [fundraising and equity](LAWS.md#fundraising-and-equity),
 [growth, people and spending](LAWS.md#growth-people-and-spending), and
 [survival and the long game](LAWS.md#survival-and-the-long-game).
-Every law cites its sources by id — the authorities in
+Every law cites its sources by id (the authorities in
 `citations/registry.json` here and the reading canon in `open-lore/library.json` and
-`open-lore/citations.json` — aphorisms are attributed to their actual origin, and the
+`open-lore/citations.json`), aphorisms are attributed to their actual origin, and the
 only literal laws (filing deadlines) also carry rule cards here. Gate:
 `pnpm test __tests__/laws.test.ts` (grammar, numbering, and citation resolution via
 `lib/laws.ts`).

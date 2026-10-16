@@ -1,6 +1,6 @@
 # Open documents
 
-Every openly licensed or freely published legal document a founder can
+The registry catalogs openly licensed and freely published legal documents a founder can
 actually use, as dated records that link to the publisher's live page rather than copying
 anything here.
 
@@ -10,23 +10,23 @@ points at the publisher's stable page, verified live on its `checked_on` date (p
 rotate asset URLs, so records link the stable page and the note says so).
 
 `license_note` is part of the record: it states the actual terms as published and
-what still requires counsel. A free form is a starting point — none of these substitute for a
+what still requires counsel. A free form is a starting point: none of these substitute for a
 lawyer on formation filings, financings, employment in a new state or country, token sales,
 data transfers, or board actions.
 
-Record shape: `{id, name, publisher, url, license_note, use_case, jurisdiction, format,
+The record shape is `{id, name, publisher, url, license_note, use_case, jurisdiction, format,
 checked_on}` with `use_case` ∈ formation | fundraising | hiring | commercial | governance |
 privacy | open-source. The registry states a `review_window_days` (currently 120): every
-record's `checked_on` must fall within that window before `updated_on` — the currency
-invariant. Gate: `lib/documents.ts` + `__tests__/documents.test.ts` (unique ids, HTTPS, enums,
+record's `checked_on` must fall within that window before `updated_on` (the currency
+invariant). Gate: `lib/documents.ts` + `__tests__/documents.test.ts` (unique ids, HTTPS, enums,
 dated checks, the review window, and this README staying in sync with the registry — every
 record has a table row below, and every row's Document cell links OUT to the record's
 canonical, `checked_on`-dated URL; an unlinked or re-typed URL fails the gate).
 
 ## Exclusions and dead-link corrections (2026-09-30 sweep)
 
-Never a filler or hopeful link — candidates that failed live verification are excluded or
-re-homed, with reasons:
+Candidates that failed live verification are excluded or re-homed rather than linked
+hopefully, with reasons:
 
 - **seriesseed.com** — still unreachable; the canonical live home is the original GitHub repo
   (`series-seed-github`), with Cooley GO's generator as the guided fill.
@@ -53,8 +53,8 @@ re-homed, with reasons:
 
 ## Cross-references (documents ↔ citations ↔ law)
 
-Documents implement laws and pair with guides already cataloged elsewhere — cite ids, don't
-duplicate rows:
+Documents implement laws and pair with guides already cataloged elsewhere; cite ids rather
+than duplicating rows:
 
 - `irs-form-15620` implements the 83(b) election — rule cards `us-fed-83b-filing-period`,
   `us-fed-83b-form-and-copies`, `us-fed-83b-revocation` (open-law/US-FED); also a reading
@@ -73,8 +73,8 @@ duplicate rows:
   `cooleygo-documents`, `nvca-model-docs`, `commonpaper-standards`, `bonterms-forms`,
   `onenda`, `saft-project` in open-lore/citations.json) point at the same publishers;
   this registry enumerates the individual documents.
-- "Raise on standard documents; negotiate the numbers, not the boilerplate" — law 21 in
-  open-law/LAWS.md — is the doctrine behind the fundraising table.
+- "Raise on standard documents; negotiate the numbers, not the boilerplate" (law 21 in
+  open-law/LAWS.md) is the doctrine behind the fundraising table.
 
 ## Formation
 

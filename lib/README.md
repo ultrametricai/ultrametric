@@ -1,8 +1,8 @@
 # lib
 
-The TypeScript layer behind the open data: loaders that read the committed artifacts,
-the scoring that turns verdicts into ranked numbers, and the calculation and simulator
-code whose catalogs live in the `open-` directories.
+The TypeScript layer behind the open data holds the loaders that read the committed
+artifacts, the scoring that turns verdicts into ranked numbers, and the calculation and
+simulator code whose catalogs live in the `open-` directories.
 
 | Area | What it is |
 | --- | --- |

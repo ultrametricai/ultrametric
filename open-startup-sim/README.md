@@ -8,7 +8,7 @@ itself stays in [`lib/`](../lib/).
 
 ## What it simulates
 
-A simulated company composed of real corpus processes
+A simulated company is composed of real corpus processes
 ([`open-processes/corpus.json`](../open-processes/corpus.json) +
 [`open-processes/chains.json`](../open-processes/chains.json)). The reader picks a
 handful of starting decisions; each decision selects which committed chains make up the

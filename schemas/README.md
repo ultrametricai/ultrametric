@@ -1,7 +1,7 @@
 # Schemas
 
-The published JSON Schema contracts the process, rule-card, citation, law-map,
-company-field, artifact, and vendor-review records validate against in CI. The rankings
+These are the published JSON Schema contracts that the process, rule-card, citation,
+law-map, company-field, artifact, and vendor-review records validate against in CI. The rankings
 data (`open-rankings/`) has its contracts in zod (`lib/schemas.ts`).
 
 [`process.schema.json`](process.schema.json) publishes the canonical DAG process shape

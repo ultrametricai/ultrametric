@@ -1,10 +1,10 @@
 # Contributing to Ultrametric
 
 Ultrametric's whole premise is that every score should trace back to cited evidence, and
-that anyone can contest a verdict. This document covers the contribution paths — contest
-a verdict, add evidence, [add your product](#add-your-vendor) to a ranking,
-[submit a stack](#4-submit-a-stack), [add a process](#add-a-process),
-[add a jurisdiction](#add-a-jurisdiction), or [add an open module](#add-an-open-module) —
+that anyone can contest a verdict. This document covers the contribution paths — contesting
+a verdict, adding evidence, [adding your product](#add-your-vendor) to a ranking,
+[submitting a stack](#4-submit-a-stack), [adding a process](#add-a-process),
+[adding a jurisdiction](#add-a-jurisdiction), or [adding an open module](#add-an-open-module) —
 plus local setup and style rules.
 
 UI and page changes are maintained in the private site repo; report rendering bugs on this
@@ -17,7 +17,7 @@ vendor reviews, open modules) has its own workflow and review bar — see
 
 **Founders outside the US (or outside Delaware):** the highest-leverage contribution is local
 knowledge — vendor availability rows for your country, verified country analogs for the
-processes, rule cards for your jurisdiction, full workflows. The four PR shapes, with exact
+processes, rule cards for your jurisdiction, full workflows. The PR shapes, with exact
 file paths and the gates that validate them, are in
 [Add a jurisdiction](#add-a-jurisdiction) below.
 
@@ -139,8 +139,8 @@ The judge cache (`rankings-engine/cache/judge/`) **is committed** to the repo, k
 Founders and vendors: this is how you get your product into a ranking — and how you make sure
 the rankings engine *sees* what you've built. Scores only credit cited evidence, so the single
 biggest failure mode is not "the judge was harsh," it's "the crawl never saw your best pages."
-(Real precedent: both Asana and Linear sat at API-quality **0** — despite shipping OpenAPI specs
-and full rate-limit docs — until their deep developer-docs URLs were added to `urls.extra`.)
+(Real precedent: both Asana and Linear sat at API-quality **0**, despite shipping OpenAPI specs
+and full rate-limit docs, until their deep developer-docs URLs were added to `urls.extra`.)
 
 ### 3a. Quick path: prefilled issue (no repo knowledge needed)
 
@@ -281,9 +281,9 @@ tells you immediately whether the record holds up. Chained founder paths go in
 
 ## 6. Add a jurisdiction
 
-The highest-leverage contribution for founders outside the US. Four PR shapes, smallest
-first; each is schema-validated, so `pnpm test` tells you immediately whether your records
-hold up:
+This is the highest-leverage contribution for founders outside the US. The PR shapes
+follow, smallest first; each is schema-validated, so `pnpm test` tells you immediately
+whether your records hold up:
 
 1. **Vendor availability in your country** — add rows to
    [`jurisdictions/vendor-geo.json`](jurisdictions/): `{productId, country, status:
@@ -318,8 +318,8 @@ source resolution, jurisdiction matching, approval gates, and accurate coverage 
 ## 7. Add an open module
 
 Open modules are pure, source-cited TypeScript under [`lib/openstartup/`](lib/openstartup/).
-The bar — pure functions, a citation on every formula, tests that double as documentation,
-`needs_review` wherever facts decide — and the candidate-module backlog live in
+The bar (pure functions, a citation on every formula, tests that double as documentation,
+`needs_review` wherever facts decide) and the candidate-module backlog live in
 [`open-modules/README.md`](open-modules/README.md).
 
 ## Local setup

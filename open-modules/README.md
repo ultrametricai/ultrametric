@@ -1,6 +1,6 @@
 # Open modules
 
-The startup calculations as code (cap tables, rounds, waterfalls, runway, tax
+The startup calculations are here as code (cap tables, rounds, waterfalls, runway, tax
 mechanics): every module is pure, deterministic, and validated against published worked
 examples.
 
@@ -10,7 +10,7 @@ and the vendor evidence layer (`open-rankings/`). The modules live in
 (`pnpm test lib/openstartup/__tests__/` runs their gates). Repo-first by design: use
 them from tests, scripts, or your own agent.
 
-The bar, fixed for every module: a contract, explicit assumptions, a citation on every
+The bar is fixed for every module: a contract, explicit assumptions, a citation on every
 formula's doc comment (a published guide, form, or primary source — never "everyone
 knows"), explicit rounding, worked examples reproduced number-for-number from the cited
 sources, deterministic tests, and explicit jurisdiction dependencies. An open module may
@@ -22,7 +22,7 @@ property-tested — **not** independently expert-certified, and the module docs 
 
 ## Module index
 
-The catalog is organized into four groups, committed per module in
+The catalog is organized into groups, committed per module in
 `open-processes/business-logic-map.json` (`group`). The Serves column names the processes
 each module computes for, written from the same map by
 `scripts/generate-business-logic-serves.ts` and drift-gated like the per-module Serves
