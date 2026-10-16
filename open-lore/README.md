@@ -131,3 +131,5 @@ retelling, era, companies and people, a one-sentence lesson, at least one source
 what-it-supports note, and a veracity grade on every entry (`first-person` /
 `documented` / `reported` / `legend`). Disputed tellings keep the dispute in the text;
 cross-links to the laws (`open-law/LAWS.md`) and processes must resolve.
+
+This area's maturity grade and known gaps are tracked in [`coverage/index.json`](../coverage/index.json).

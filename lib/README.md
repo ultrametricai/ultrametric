@@ -13,3 +13,5 @@ code whose catalogs live in the `open-` directories.
 | [`shared-processes/`](./shared-processes/) | The shared-record machinery: schema, loaders, and checks for `content/processes/` |
 
 Tests live in `lib/__tests__/` and `lib/openstartup/__tests__/`; `pnpm test` runs them.
+
+This area's maturity grade and known gaps are tracked in [`coverage/index.json`](../coverage/index.json).

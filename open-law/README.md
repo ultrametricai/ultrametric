@@ -131,3 +131,5 @@ Every law cites its sources by id — the authorities in
 only literal laws (filing deadlines) also carry rule cards here. Gate:
 `pnpm test __tests__/laws.test.ts` (grammar, numbering, and citation resolution via
 `lib/laws.ts`).
+
+This area's maturity grade and known gaps are tracked in [`coverage/index.json`](../coverage/index.json).

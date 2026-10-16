@@ -869,3 +869,5 @@ books.
   card in `open-law/` and return `needs_review` when locale or date is unknown; results are
   decision support, never authorization. The conservative workflow planner lives in
   `lib/founderOps.ts` and is gated by `__tests__/founder-ops.test.ts`.
+
+This area's maturity grade and known gaps are tracked in [`coverage/index.json`](../coverage/index.json).

@@ -37,3 +37,5 @@ Contribute here:
 
 Gates: `pnpm test __tests__/corpus-schemas.test.ts` and
 `pnpm test __tests__/founder-ops.test.ts`.
+
+This area's maturity grade and known gaps are tracked in [`coverage/index.json`](../coverage/index.json).

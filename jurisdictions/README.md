@@ -38,3 +38,5 @@ Contribute here:
 - **Register a new jurisdiction** — add it with a narrow scope statement before
   contributing rule cards or workflows for it; a scope is never widened to make a match
   work. Gate: `pnpm test __tests__/founder-ops.test.ts`.
+
+This area's maturity grade and known gaps are tracked in [`coverage/index.json`](../coverage/index.json).

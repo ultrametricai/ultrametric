@@ -90,3 +90,5 @@ geo equivalent only against the government authority's own page, fetched; where 
 exists, record the absence. Schema changes start in the zod sources (`lib/processes.ts`,
 `lib/companyFields.ts`) and regenerate with `npx tsx scripts/generate-corpus-schemas.ts`.
 Run `pnpm test` before opening the PR.
+
+This area's maturity grade and known gaps are tracked in [`coverage/index.json`](../coverage/index.json).

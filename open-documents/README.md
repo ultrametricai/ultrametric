@@ -210,3 +210,5 @@ duplicate rows:
 | `spdx-license-list` | [SPDX License List](https://spdx.org/licenses/) | Linux Foundation (SPDX) | Metadata/LICENSE consistency |
 | `contributor-covenant` | [Contributor Covenant](https://www.contributor-covenant.org/) | Organization for Ethical Source | Enforcement process you'll actually run |
 | `cc-license-chooser` | [Creative Commons licenses + chooser](https://creativecommons.org/share-your-work/cclicenses/) | Creative Commons | Content vs code licensing boundaries |
+
+This area's maturity grade and known gaps are tracked in [`coverage/index.json`](../coverage/index.json).
