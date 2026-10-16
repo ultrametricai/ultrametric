@@ -1085,6 +1085,14 @@ export const ArtifactSchema = z
     // is tested in lib/__tests__/processArtifacts.test.ts; the render path
     // (lib/artifactPages.ts → lib/documents.ts openDocumentById) throws on an unknown id.
     documents: z.string().min(1).array().min(1).optional(),
+    // The typed company fields (open-artifacts/fields.json ids) this artifact establishes —
+    // the machine form of the fields registry's `producedBy` edge, kept as its exact inverse
+    // (the charter sets the incorporation date and the share counts the franchise-tax math
+    // reads; the 409A report sets the common FMV and its as-of date). Deliberately sparse:
+    // an artifact that establishes no registered field carries no key — most do not.
+    // Referential integrity and the producedBy inverse are tested in
+    // lib/__tests__/processArtifacts.test.ts.
+    establishesFieldIds: z.string().min(1).array().min(1).optional(),
     // Per-country analogs of a US-centric artifact (founder 2026-10-07) — at most one entry
     // per covered country, derived from the producing process's committed geoNotes (see
     // ArtifactGeoNoteSchema above). Absent on artifacts that are the same object everywhere.

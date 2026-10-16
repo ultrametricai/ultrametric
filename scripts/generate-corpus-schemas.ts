@@ -103,7 +103,8 @@ export function artifactRegistrySchemaJson(): string {
       '(open-artifacts/registry.json): the canonical business artifacts that flow between ' +
       'processes — per artifact its id, label, description, one canonical producer process, ' +
       'documented exception producers, a terminal flag for artifacts nothing downstream ' +
-      'consumes, and optional per-country geo analogs derived from the committed process ' +
+      'consumes, the typed company fields it establishes (open-artifacts/fields.json ids), ' +
+      'and optional per-country geo analogs derived from the committed process ' +
       'geoNotes. Generated from ArtifactRegistrySchema in lib/processes.ts by ' +
       'scripts/generate-corpus-schemas.ts — edit the zod schema, never this file.',
     ...rest,

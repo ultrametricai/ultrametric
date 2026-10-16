@@ -1,6 +1,7 @@
 import fs from 'node:fs'
 import path from 'node:path'
 import { describe, expect, it } from 'vitest'
+import { loadCompanyFields } from '@/lib/companyFields'
 import { loadDocumentRegistry } from '@/lib/documents'
 import { loadArtifacts, loadProcesses } from '@/lib/processes'
 
@@ -180,6 +181,66 @@ describe('artifact documents — registered templates', () => {
     expect(byId.get('bylaws')!.documents).toEqual(['cooley-incorporation-package-de', 'orrick-incorporation-toolkit'])
     expect(byId.get('executed-nda')!.documents).toContain('onenda')
     expect(byId.get('ein')!.documents).toEqual(['irs-form-ss4'])
+  })
+})
+
+// The field joint (artifact → field linkage): `establishesFieldIds` is the machine form of the
+// fields registry's `producedBy` edge, committed on the artifact side so both registries carry
+// the link. The rules that keep it derived rather than invented:
+//   1. REFERENTIAL INTEGRITY — every listed id resolves in open-artifacts/fields.json, no
+//      duplicates per artifact;
+//   2. EXACT INVERSE — an artifact lists a field exactly when that field's committed
+//      `producedBy` names the artifact (no cross-claims, no decorative links);
+//   3. EVERY FIELD IS ESTABLISHED — each field appears on its producing artifact, except ids
+//      on the documented exceptions list (a field whose producing artifact genuinely left the
+//      registry would be recorded there with its reason; the list is empty today).
+describe('artifact establishesFieldIds — the typed fields an artifact establishes', () => {
+  const fields = loadCompanyFields()
+  const fieldProducer = new Map(fields.map((f) => [f.id, f.producedBy]))
+  // Fields with no producing artifact in the registry, each entry justified in a comment.
+  const UNESTABLISHED_FIELD_EXCEPTIONS: string[] = []
+
+  it('every listed field id resolves in open-artifacts/fields.json, no duplicates per artifact', () => {
+    for (const a of artifacts.filter((x) => x.establishesFieldIds)) {
+      const ids = a.establishesFieldIds!
+      expect(new Set(ids).size, `${a.id}: duplicate field ids`).toBe(ids.length)
+      for (const id of ids) {
+        expect(fieldProducer.has(id), `${a.id}: unknown field id ${id}`).toBe(true)
+      }
+    }
+  })
+
+  it('the link is the exact inverse of the fields registry producedBy edge', () => {
+    for (const a of artifacts) {
+      for (const id of a.establishesFieldIds ?? []) {
+        expect(fieldProducer.get(id), `${a.id} claims ${id}, whose producedBy differs`).toBe(a.id)
+      }
+    }
+  })
+
+  it('every field is established by its producing artifact (documented exceptions only)', () => {
+    for (const f of fields) {
+      if (UNESTABLISHED_FIELD_EXCEPTIONS.includes(f.id)) continue
+      const producer = byId.get(f.producedBy)
+      expect(producer, `${f.id}: producedBy ${f.producedBy} missing from the registry`).toBeDefined()
+      expect(
+        producer!.establishesFieldIds ?? [],
+        `${f.id}: ${f.producedBy} must list it in establishesFieldIds`,
+      ).toContain(f.id)
+    }
+    // The exceptions list stays honest: no entry for a field the registry actually covers.
+    for (const id of UNESTABLISHED_FIELD_EXCEPTIONS) {
+      expect(fieldProducer.has(id), `exception ${id} is not a registry field`).toBe(true)
+    }
+  })
+
+  it('the mapping stays sparse — most artifacts establish no registered field', () => {
+    const linked = artifacts.filter((a) => a.establishesFieldIds)
+    expect(linked.length).toBeGreaterThanOrEqual(5)
+    expect(linked.length).toBeLessThanOrEqual(20)
+    for (const id of ['team-chat', 'domain', 'website', 'company-email']) {
+      expect(byId.get(id)!.establishesFieldIds, `${id} establishes no registered field`).toBeUndefined()
+    }
   })
 })
 
