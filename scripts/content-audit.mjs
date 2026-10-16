@@ -165,7 +165,8 @@ export function buildContentAudit(files, metadata) {
       }
     }
   }
-  for (const file of [...files.keys()].filter(file => /^open-law\/(?!citations\/).+\.json$/.test(file) && file !== 'open-law/map.json').sort()) {
+  const lawRegistries = new Set(['open-law/map.json', 'open-law/workflow-coverage.json', 'open-law/workflow-domains.json'])
+  for (const file of [...files.keys()].filter(file => /^open-law\/(?!citations\/).+\.json$/.test(file) && !lawRegistries.has(file)).sort()) {
     const value = json(file)
     const record = add('law', value.id, value.id, file, [value.jurisdiction, value.status])
     presence(record, 'Rule statement', nonempty(value.statement))
