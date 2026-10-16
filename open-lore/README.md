@@ -13,6 +13,7 @@ These files carry it:
 | [`schools.json`](./schools.json) | The schools of thought: who they are and their core position. | `pnpm test __tests__/lore-schools.test.ts --maxWorkers=2` |
 | [`library.json`](./library.json) | The curated reading list, in sections that double as the topic set. | `pnpm test __tests__/lore-library.test.ts --maxWorkers=2` |
 | [`citations.json`](./citations.json) | Citation-only works the distilled laws cite that are not library-worthy. | `pnpm test __tests__/lore-citations.test.ts --maxWorkers=2` |
+| [`rules.json`](./rules.json) | Uncontested mechanics: sourced rules with no published opposing view. | `pnpm test __tests__/lore-rules.test.ts --maxWorkers=2` |
 | [`LORE.md`](./LORE.md) | Episodes: the war stories of startup history, graded for veracity. | `pnpm test __tests__/lore.test.ts --maxWorkers=2` |
 
 ## Schools
