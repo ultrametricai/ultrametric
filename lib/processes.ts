@@ -1,6 +1,8 @@
 import fs from 'node:fs'
 import path from 'node:path'
 import { z } from 'zod'
+import { loadProcessCatalog } from './shared-processes/catalog'
+import { projectChain, projectOperational } from './shared-processes/projection'
 import { connectionSchema } from './shared-processes/schema'
 import { isPopulated, loadCategory } from './data'
 import { resolveGapStep } from './gapClosers'
@@ -544,14 +546,8 @@ export function processesByCadence(tasks: ProcessTask[]): Array<{ cadence: Caden
 
 const DEFAULT_DIR = () => path.join(process.cwd(), 'open-rankings')
 
-// Stage 2 of the corpus lift (docs/FOUNDER-OPS.md): the operational corpus and the chains moved
-// out of open-rankings/ into the founder-ops tree — open-processes/corpus.json and open-processes/chains.json.
-// `dir` stays the ARENA-DATA dir (it keys the caches and resolves the live markets via
-// loadCategory); the corpus files resolve as siblings of it, so every existing call site
-// (DEFAULT_DIR, tests' DATA_DIR, rankings-engine/paths.ts DATA_DIR — all `<root>/data`) keeps working
-// unchanged. These files are checked projections of the canonical definitions.
-const corpusFile = (dir: string) => path.join(dir, '..', 'open-processes', 'corpus.json')
-const chainsFile = (dir: string) => path.join(dir, '..', 'open-processes', 'chains.json')
+// Arena-data directories select the sibling canonical process catalog.
+const processCatalog = (dir: string) => loadProcessCatalog(undefined, path.join(dir, '..')).processes
 
 // URL slug for a process — kebab-case of the title, same convention as arena/product ids
 // elsewhere on the site (lowercase, hyphen-separated). Uniqueness across the corpus is enforced
@@ -568,7 +564,8 @@ const jurisdictionNodesCache = new Map<string, Map<string, DagNode[]>>()
 export function loadProcesses(dir: string = DEFAULT_DIR()): ProcessTask[] {
   const hit = processesCache.get(dir)
   if (hit) return hit
-  const raw = JSON.parse(fs.readFileSync(corpusFile(dir), 'utf8'))
+  const catalog = processCatalog(dir)
+  const raw = catalog.map(process => projectOperational(process, catalog)).filter(value => value !== null)
   const parsed = ProcessTaskSchema.array().parse(raw)
   // Kind-conditional invariants that zod deliberately doesn't encode (the published JSON schema
   // stays a plain shape): a situation is reactive — it MUST name its trigger and urgency and
@@ -707,12 +704,12 @@ export function slugAliasFor(task: ProcessTask, slug: string): SlugAlias | null 
 
 const chainsCache = new Map<string, ProcessChain[]>()
 
-// Curated chained stories (open-processes/chains.json): ordered runs of real corpus task ids.
+// Canonical chains preserve their ordered task IDs in the operational view.
 // Integrity-checked at load: every taskId must exist in the corpus, chain ids must be unique.
 export function loadChains(dir: string = DEFAULT_DIR()): ProcessChain[] {
   const hit = chainsCache.get(dir)
   if (hit) return hit
-  const raw = JSON.parse(fs.readFileSync(chainsFile(dir), 'utf8'))
+  const raw = processCatalog(dir).map(projectChain).filter(value => value !== null)
   const chains = ProcessChainSchema.array().parse(raw)
   const byId = new Map(loadProcesses(dir).map((t) => [t.id, t]))
   const chainIds = new Set<string>()
