@@ -118,7 +118,7 @@ function main(): void {
   let patched = 0
   let missing = 0
   for (const r of reverts) {
-    const cacheFile = path.join(ROOT, 'pipeline', 'cache', 'judge', CATEGORY, r.productId, `${r.storyId}.json`)
+    const cacheFile = path.join(ROOT, 'rankings-engine', 'cache', 'judge', CATEGORY, r.productId, `${r.storyId}.json`)
     if (!fs.existsSync(cacheFile)) {
       console.warn(`WARN: cache file missing, skipping: ${cacheFile}`)
       missing++

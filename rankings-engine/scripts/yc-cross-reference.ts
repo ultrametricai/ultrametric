@@ -15,7 +15,7 @@ import { readJson, resolveCategories, writeJson } from '../paths'
 import { batchCode, normalizeDomain, type YcRawCompany } from '../yc-shared'
 
 const ROOT = path.resolve(__dirname, '..', '..')
-const CACHE_DIR = path.join(ROOT, 'pipeline', 'cache', 'yc')
+const CACHE_DIR = path.join(ROOT, 'rankings-engine', 'cache', 'yc')
 const YC_BATCHES_PATH = path.join(ROOT, 'open-rankings', 'yc-batches.json')
 
 function main() {

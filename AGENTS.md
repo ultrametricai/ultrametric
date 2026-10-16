@@ -109,10 +109,11 @@ traps:
 ## The rankings engine
 
 `pnpm engine <stage> --category <id> [--product <id>]` runs the stages
-(crawl, extract, normalize, collect-community, probe, judge, derive, logos,
-popularity). `pnpm run pipeline` remains as a deprecated alias for the same entry
-point during the transition. The LLM stages (`extract`, `normalize`, `collect-community`, `judge`)
-need `ANTHROPIC_API_KEY` in a local `.env`. That key is local-engine-only: it must
+(crawl, extract, normalize, collect-community, probe, probe-record, judge, claims,
+pricing, integrations, screenshots, derive, logos, popularity). `pnpm run pipeline`
+remains as a deprecated alias for the same entry point during the transition. The LLM
+stages (`extract`, `normalize`, `collect-community`, `judge`, `claims`, `pricing`,
+`integrations`) need `ANTHROPIC_API_KEY` in a local `.env`. That key is local-engine-only: it must
 never be set on the Vercel project, and the deployed site never calls the Anthropic
 API. Verdicts are cache-keyed on their evidence, so re-judging without new evidence
 reproduces the same verdicts; scope runs with `--product` where possible. After a contributed

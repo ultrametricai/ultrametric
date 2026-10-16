@@ -6,7 +6,9 @@ import { CategorySchema, type Category } from '../lib/schemas'
 export const ROOT = path.resolve(__dirname, '..')
 // PA_DATA_DIR is the deprecated pre-rename spelling, honored as a fallback.
 export const DATA_DIR = process.env.UM_DATA_DIR ?? process.env.PA_DATA_DIR ?? path.join(ROOT, 'open-rankings')
-export const CACHE_DIR = path.join(ROOT, 'pipeline', 'cache')
+// Folded from the pre-rename pipeline/ location (the engine rename, 2026-10-14); the
+// committed judge cache and the gitignored crawl/extract caches both live here.
+export const CACHE_DIR = path.join(ROOT, 'rankings-engine', 'cache')
 
 export function categoryDir(categoryId: string): string {
   return path.join(DATA_DIR, categoryId)

@@ -64,7 +64,7 @@ if (WRITE) {
       evidenceByProduct.set(v.productId, evidence)
     }
     const hash = cellHash(story, evidence, PROMPT_VERSION)
-    const cacheFile = path.join(ROOT, 'pipeline', 'cache', 'judge', CAT, v.productId, `${v.storyId}.json`)
+    const cacheFile = path.join(ROOT, 'rankings-engine', 'cache', 'judge', CAT, v.productId, `${v.storyId}.json`)
     fs.writeFileSync(cacheFile, JSON.stringify({ hash, verdict: v }, null, 2) + '\n')
   }
   console.log('WROTE verdicts.json + cache patches')

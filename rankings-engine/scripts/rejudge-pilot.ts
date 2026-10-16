@@ -42,7 +42,7 @@ if (!category || !out) {
 // Hard isolation guard: the scratch dir must not live anywhere a committed artifact could be
 // clobbered. Refuse open-rankings/ and rankings-engine/cache/ (and anything inside them) outright.
 const outAbs = path.resolve(out)
-for (const forbidden of [path.join(ROOT, 'open-rankings'), path.join(ROOT, 'pipeline', 'cache')]) {
+for (const forbidden of [path.join(ROOT, 'open-rankings'), path.join(ROOT, 'rankings-engine', 'cache')]) {
   if (outAbs === forbidden || outAbs.startsWith(forbidden + path.sep)) {
     throw new Error(`rejudge-pilot: --out ${outAbs} is inside ${forbidden} — pick a scratch location outside the repo's committed trees`)
   }
