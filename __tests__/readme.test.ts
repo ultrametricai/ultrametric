@@ -277,6 +277,7 @@ describe('README.md structure (founder round 2, 2026-10-12)', () => {
     // marker blocks are computed and stay; this scans only the hand-written remainder.
     const surfaces = [
       'open-modules/README.md', 'open-processes/README.md', 'open-processes/SITUATIONS.md',
+      'open-rankings/README.md',
       'open-documents/README.md', 'open-law/README.md', 'open-lore/LORE.md',
       'open-startup-sim/README.md', 'open-artifacts/README.md', 'coverage/README.md',
       'policies/README.md', 'policies/AGENT_POLICY.md', 'policies/REVIEW_POLICY.md',
