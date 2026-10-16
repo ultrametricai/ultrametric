@@ -78,6 +78,16 @@ Contribute here:
    is a library entry.
 5. Every `processIds` entry must resolve.
 
+## Rules
+
+`rules.json` carries the uncontested mechanics the canon teaches: rules with no published
+opposing view, so they cannot live in the registry (every registry entry must map a
+cross-school tension). Each record carries `id`, `rule` (one actionable sentence), `topic`
+(resolving against the library's sections), `source` (same contract as the registry,
+including the archived-copy note for dead hosts), `libraryIds`, and `processIds`. Rule ids
+stay disjoint from registry ids; if an opposing view is later published, the rule moves to
+the registry with its tension mapped. Gate: `__tests__/lore-rules.test.ts`.
+
 ## Library
 
 `library.json` is the curated reading list: the canonical essays, guides, books, and
