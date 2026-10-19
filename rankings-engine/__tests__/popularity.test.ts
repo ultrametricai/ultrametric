@@ -214,6 +214,31 @@ describe('runPopularity (integration, fake fetchers, isolated data dir)', () => 
     expect(written.react.stars).toBe(222)
   })
 
+  it('keeps the cached value for a configured source that fails this run (null = unknown, not zero)', async () => {
+    const dataDir = path.join(tmpDir, 'frontend-frameworks')
+    // react is curated with an npm package; simulate a stale cache holding a measured npmWeekly.
+    fs.writeFileSync(
+      path.join(dataDir, 'popularity.json'),
+      JSON.stringify({ react: { stars: 111, npmWeekly: 333_466, fetchedAt: '2026-08-01T00:00:00.000Z' } }),
+    )
+    const { runPopularity } = await import('@/rankings-engine/stages/popularity')
+    await runPopularity(
+      { category: 'frontend-frameworks', product: 'react' },
+      {
+        github: async () => github({ stars: 222 }),
+        npm: async () => null, // configured source fails this run
+        pypi: async () => null,
+        now: () => new Date('2026-08-27T00:00:00Z'),
+        delayMs: 0,
+      },
+    )
+    const written = PopularityMapSchema.parse(
+      JSON.parse(fs.readFileSync(path.join(dataDir, 'popularity.json'), 'utf8')),
+    )
+    expect(written.react.stars).toBe(222) // fresh fetch wins
+    expect(written.react.npmWeekly).toBe(333_466) // failed source falls back to last measurement
+  })
+
   it('throws for an unknown --product filter', async () => {
     const { runPopularity } = await import('@/rankings-engine/stages/popularity')
     await expect(

@@ -283,6 +283,19 @@ export async function runPopularity(
       }
 
       const derived = derivePopularity({ github, npmWeekly, pypiWeekly }, now)
+      // Per-source fallback: a configured source that fails this run returns null ("unknown,
+      // not zero" — see the fetcher contracts above), so keep the last cached value for that
+      // source instead of dropping it from the record. Without this, one failed npm fetch
+      // erased a product's measured npmWeekly while its pypi number survived (greptile PR 270).
+      if (cached) {
+        if (hasGithub && !github) {
+          for (const key of ['stars', 'forks', 'openIssues', 'starsPerYear', 'daysSincePush'] as const) {
+            if (cached[key] !== undefined) derived[key] = cached[key]
+          }
+        }
+        if (pkgs.npm && npmWeekly === null && cached.npmWeekly !== undefined) derived.npmWeekly = cached.npmWeekly
+        if (pkgs.pypi && pypiWeekly === null && cached.pypiWeekly !== undefined) derived.pypiWeekly = cached.pypiWeekly
+      }
       const entry: Popularity = { ...derived, fetchedAt: now.toISOString() }
       nextMap[p.id] = entry
       historyLines.push({ productId: p.id, ...entry, runAt: now.toISOString() })
