@@ -67,7 +67,7 @@ The 22 situations, hottest clock first (urgency, then title — the /situations 
 | `sit_017` | Recover a suspended ad or platform account | Google Ads, Meta, or another ad/platform account is suspended: campaigns stop and a policy email names the violation. | days | global |
 | `sit_013` | Recover from a payment-processor account termination | Your payment processor emails that your account is terminated or restricted; payouts pause and a final processing date is set. | days | global |
 | `sit_016` | Recover from an app-store rejection or removal | Your app is rejected in review, or pulled from the App Store or Google Play with a policy notice. | days | global |
-| `sit_001` | Respond to a cease-and-desist | A cease-and-desist letter claiming trademark or IP infringement arrives by mail or email. | days | us |
+| `sit_001` | Respond to a cease-and-desist | A cease-and-desist letter claiming trademark or IP infringement arrives by mail or email. | days | global |
 | `sit_022` | Respond to a harassment complaint | An employee reports harassment: by complaint, by email, or in a conversation that just became one. | days | us |
 | `sit_008` | Respond to a lawsuit | You've been served: a process server hands you a summons and complaint naming the company. | days | us |
 | `sit_002` | Unstick a delayed US visa | Your US visa is stuck (221(g) administrative processing after the interview, or a petition sitting past posted times) while the company needs you in Silicon Valley. | days | us |
