@@ -49,6 +49,16 @@ export const PredictionQuestionSchema = z.object({
   outcome: z.enum(['yes', 'no']).optional(),
   /** For 'yes' outcomes: the changelog overtake event that settled it (see settlementRef). */
   settledBy: z.string().min(1).optional(),
+  /** Editorial correction record — why a settlement was annulled or a question reopened. */
+  note: z.string().min(1).optional(),
+  /**
+   * Settlement refs (settlementRef strings) annulled for this question: overtake events whose
+   * underlying score rows were later reverted (e.g. a churn settlement rejecting re-judge
+   * flips that cited no new evidence). settleQuestions never cites a listed event, so a
+   * reopened question cannot mechanically re-settle off the repudiated flip. The annulled ref
+   * stays in the record for audit.
+   */
+  voidedSettlements: z.array(z.string().min(1)).optional(),
 })
 
 export type PredictionQuestion = z.infer<typeof PredictionQuestionSchema>
@@ -155,9 +165,13 @@ export function settleQuestions(
 
     const opens = new Date(q.opensAt).getTime()
     const deadline = new Date(q.settlesBy).getTime()
+    const voided = new Set(q.voidedSettlements ?? [])
     const flip = overtakes.find((e) => {
       const t = new Date(e.date).getTime()
-      return e.categoryId === q.arena && e.productId === q.productA && e.overtookId === q.productB && t >= opens && t <= deadline
+      return (
+        e.categoryId === q.arena && e.productId === q.productA && e.overtookId === q.productB &&
+        t >= opens && t <= deadline && !voided.has(settlementRef(e))
+      )
     })
 
     if (flip) {
