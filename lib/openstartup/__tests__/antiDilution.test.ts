@@ -124,6 +124,38 @@ describe('no adjustment on an at-or-above-price issuance', () => {
   })
 })
 
+describe('a positive adjusted price below the 4-decimal precision stays positive', () => {
+  // Fictional deep-dilution issuance: 1,000,000,000 shares for $30,000 is $0.00003/share.
+  // Rounding that to the module's 4 decimals would yield $0 and poison the conversion-ratio
+  // math downstream ("prices must be > 0"); the sub-precision price is kept unrounded
+  // instead (module header: charters often carry prices to more decimals).
+  const micro: DilutiveIssuance = { newShares: 1_000_000_000, considerationDollars: 30_000 }
+
+  it('full ratchet keeps the sub-precision price instead of rounding it to zero', () => {
+    const cp2 = fullRatchetConversionPrice(2, micro)
+    expect(cp2).toBeGreaterThan(0)
+    expect(cp2).toBeCloseTo(0.00003, 10)
+  })
+
+  it('applyAntiDilution completes on a sub-precision price instead of throwing', () => {
+    const r = applyAntiDilution(SERIES_A, micro, 'full-ratchet')
+    expect(r.conversionPriceAfter).toBeGreaterThan(0)
+    expect(r.conversionPriceAfter).toBeCloseTo(0.00003, 10)
+    expect(r.adjusted).toBe(true)
+    // floor(4,000,000 × $2.00 / $0.00003) = floor(266,666,666,666.67).
+    expect(r.asConvertedAfter).toBe(266_666_666_666)
+  })
+
+  it('the weighted average keeps a sub-precision result positive too', () => {
+    // CP1 $0.00004 (already sub-precision, legal: > 0), base 1,000,000, 9,000,000 new
+    // shares for $90 ($0.00001/share): B = 90/0.00004 = 2,250,000, so
+    // CP2 = 0.00004 × 3,250,000/10,000,000 = $0.000013 — positive, below 4 decimals.
+    const cp2 = weightedAverageConversionPrice(0.00004, 1_000_000, { newShares: 9_000_000, considerationDollars: 90 })
+    expect(cp2).toBeGreaterThan(0)
+    expect(cp2).toBeCloseTo(0.000013, 10)
+  })
+})
+
 describe('ordering invariants (property tests)', () => {
   const cases: { cp1: number; base: number; narrow: number; issuance: DilutiveIssuance }[] = [
     { cp1: 2, base: 12_000_000, narrow: 4_000_000, issuance: DOWN_ROUND },

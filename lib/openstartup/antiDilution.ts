@@ -124,9 +124,20 @@ export interface DilutiveIssuance {
   considerationDollars: number
 }
 
-function validateIssuance(i: DilutiveIssuance): void {
+/** Shared issuance validation — also consumed by round.downRoundModel so an issuance is
+ * checked even when no protected series routes it through applyAntiDilution. */
+export function validateIssuance(i: DilutiveIssuance): void {
   if (!(i.newShares > 0)) throw new RangeError('newShares must be > 0')
   if (!(i.considerationDollars > 0)) throw new RangeError('considerationDollars must be > 0')
+}
+
+/** The module's 4-decimal price rounding, kept positive: a positive price below $0.00005
+ * would round to $0 and break the conversion-ratio math (prices must stay > 0), so a
+ * sub-precision result is returned unrounded (the charter's own precision controls anyway
+ * — module header rounding note). */
+function roundPricePositive(x: number): number {
+  const rounded = roundPrice(x)
+  return rounded > 0 ? rounded : x
 }
 
 /**
@@ -157,7 +168,7 @@ export function weightedAverageConversionPrice(cp1: number, baseShares: number, 
   const newPrice = issuance.considerationDollars / issuance.newShares
   if (newPrice >= cp1) return cp1
   const b = issuance.considerationDollars / cp1
-  return roundPrice((cp1 * (baseShares + b)) / (baseShares + issuance.newShares))
+  return roundPricePositive((cp1 * (baseShares + b)) / (baseShares + issuance.newShares))
 }
 
 /**
@@ -171,7 +182,7 @@ export function fullRatchetConversionPrice(cp1: number, issuance: DilutiveIssuan
   if (!(cp1 > 0)) throw new RangeError('cp1 must be > 0')
   validateIssuance(issuance)
   const newPrice = issuance.considerationDollars / issuance.newShares
-  return newPrice >= cp1 ? cp1 : roundPrice(newPrice)
+  return newPrice >= cp1 ? cp1 : roundPricePositive(newPrice)
 }
 
 // ---------------------------------------------------------------------------
