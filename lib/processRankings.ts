@@ -285,7 +285,19 @@ function rankVendors(
 // The ranked market for one step, by STEP relevance: vendors of the covering arena scored on
 // the step's mapped stories. Null when the step has no covering arena, no committed mapping,
 // or an empty mapping (the UI then falls back to the arena-ordered roster) — never a guess.
+// Capped at STEP_OPTIONS_CAP (the step's option chips); stepRankingFull is the same ranking
+// uncapped, so the chips are always its prefix.
 export function stepRanking(taskId: string, node: DagNode, dir?: string): StepRanking | null {
+  return rankStep(taskId, node, dir, STEP_OPTIONS_CAP)
+}
+
+// The full ranked market for one step: identical eligibility, shutdown, and tie-break rules to
+// stepRanking, with no cap (open-rankings/step-rankings.json is derived from this).
+export function stepRankingFull(taskId: string, node: DagNode, dir?: string): StepRanking | null {
+  return rankStep(taskId, node, dir, Infinity)
+}
+
+function rankStep(taskId: string, node: DagNode, dir: string | undefined, cap: number): StepRanking | null {
   const entry = functionMappingFor(taskId, node, dir)
   if (!entry || entry.storyIds.length === 0) return null
   if (!isPopulated(entry.arenaId, dir)) return null
@@ -298,7 +310,7 @@ export function stepRanking(taskId: string, node: DagNode, dir?: string): StepRa
   // Government-covered steps constrain the roster to the step's own country+area agencies
   // (committed tags — lib/processes.ts governmentStepEligibility); null for every other arena.
   const eligible = governmentStepEligibility(node, entry.arenaId, dir)
-  const vendors = rankVendors(entry.arenaId, stories.map((s) => s.id), dir, eligible).slice(0, STEP_OPTIONS_CAP)
+  const vendors = rankVendors(entry.arenaId, stories.map((s) => s.id), dir, eligible).slice(0, cap)
   if (vendors.length === 0) return null
   return { arenaId: entry.arenaId, arenaName: lookup.arenaName, kind: 'function', stories, vendors }
 }
@@ -318,6 +330,15 @@ export function stepRanking(taskId: string, node: DagNode, dir?: string): StepRa
 // per the governmentStepEligibility contract such a pull would stay unfiltered — the
 // extraOptionRefs allowlist remains the only honest gate there.
 export function crossArenaStepRankings(taskId: string, node: DagNode, dir?: string): StepRanking[] {
+  return rankCrossArena(taskId, node, dir, STEP_OPTIONS_CAP)
+}
+
+// crossArenaStepRankings uncapped: the same gate and order, every qualifying vendor.
+export function crossArenaStepRankingsFull(taskId: string, node: DagNode, dir?: string): StepRanking[] {
+  return rankCrossArena(taskId, node, dir, Infinity)
+}
+
+function rankCrossArena(taskId: string, node: DagNode, dir: string | undefined, cap: number): StepRanking[] {
   const refsByArena = new Map<string, Set<string>>()
   for (const r of node.extraOptionRefs ?? []) {
     const set = refsByArena.get(r.arenaId) ?? new Set<string>()
@@ -339,7 +360,7 @@ export function crossArenaStepRankings(taskId: string, node: DagNode, dir?: stri
     const vendors = rankVendors(entry.arenaId, stories.map((s) => s.id), dir)
       .filter((v) => allowed === null || allowed.has(v.productId))
       .filter((v) => v.score > 0 && v.cites.some((c) => c.verdict === 'full' || c.verdict === 'partial'))
-      .slice(0, STEP_OPTIONS_CAP)
+      .slice(0, cap)
     if (vendors.length === 0) continue
     rankings.push({ arenaId: entry.arenaId, arenaName: lookup.arenaName, kind: 'extra', stories, vendors })
   }

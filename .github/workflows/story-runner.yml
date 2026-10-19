@@ -143,6 +143,13 @@ jobs:
         if: steps.gate.outputs.enabled == 'true'
         run: pnpm tsx rankings-engine/scripts/generate-story-graph.ts
 
+      # open-rankings/step-rankings.json is derived from the same verdicts plus the corpus and
+      # step-story mapping; regenerate it before its drift gates (lib/__tests__/stepRankings.test.ts
+      # and the recompute check below).
+      - name: Regenerate the step rankings artifact
+        if: steps.gate.outputs.enabled == 'true'
+        run: pnpm tsx rankings-engine/scripts/generate-step-rankings.ts
+
       - name: Tests + recompute check
         if: steps.gate.outputs.enabled == 'true'
         run: |
