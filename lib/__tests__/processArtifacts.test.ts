@@ -1,6 +1,6 @@
-import fs from 'node:fs'
 import path from 'node:path'
 import { describe, expect, it } from 'vitest'
+import { operationalSources } from './helpers/operational-sources'
 import { loadCompanyFields } from '@/lib/companyFields'
 import { loadDocumentRegistry } from '@/lib/documents'
 import { loadArtifacts, loadProcesses } from '@/lib/processes'
@@ -19,11 +19,9 @@ import { loadArtifacts, loadProcesses } from '@/lib/processes'
 //      explicitly flagged terminal (both directions enforced).
 
 const DATA_DIR = path.resolve(__dirname, '../../open-rankings')
-// The RAW corpus — includes the jurisdiction-conditional nodes loadProcesses strips from the
+// The Complete canonical projection — includes the jurisdiction-conditional nodes loadProcesses strips from the
 // default view, so we can assert no producesArtifact ever hides on a conditional node.
-const RAW = JSON.parse(
-  fs.readFileSync(path.join(DATA_DIR, '..', 'open-processes', 'corpus.json'), 'utf8'),
-) as Array<{
+const RAW = operationalSources() as Array<{
   id: string
   produces: string[]
   requires: string[]

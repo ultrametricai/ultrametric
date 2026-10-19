@@ -1,6 +1,7 @@
 import fs from 'node:fs'
 import path from 'node:path'
 import { describe, expect, it } from 'vitest'
+import { loadProcesses } from '@/lib/processes'
 
 import { GEO_COUNTRIES, GEO_PREF_META } from '../lib/geoPreference'
 
@@ -450,9 +451,7 @@ describe('README.md anchors and links', () => {
 
 describe('README.md examples pin to the committed records', () => {
   type CorpusRec = { id: string; title: string }
-  const corpus: CorpusRec[] = JSON.parse(
-    fs.readFileSync(path.join(ROOT, 'open-processes', 'corpus.json'), 'utf8'),
-  )
+  const corpus: CorpusRec[] = loadProcesses(path.join(ROOT, 'open-rankings'))
   // Mirrors lib/processes.ts processSlug.
   const slug = (title: string) => title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '')
 

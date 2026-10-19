@@ -1,13 +1,14 @@
 import fs from 'node:fs'
 import path from 'node:path'
 import { describe, expect, it } from 'vitest'
+import { loadProcesses } from '@/lib/processes'
 
 // The lore registry gate: open-lore/registry.json carries schooled heuristics as claims with
 // provenance. Invariants: total schema (no missing or extra fields), unique kebab-case ids,
 // school resolving against open-lore/schools.json, topic resolving against
 // open-lore/library.json sections, every source URL present, tensions resolving to existing
 // ids + symmetric + cross-school, libraryIds symmetric with the library's loreIds, and
-// processIds resolving (read-only) against open-processes/corpus.json. Deterministic; URL
+// processIds resolving (read-only) against canonical operational processes. Deterministic; URL
 // liveness is editorial (open-lore/README.md).
 
 const ROOT = path.join(__dirname, '..')
@@ -29,9 +30,7 @@ const registry = JSON.parse(
   fs.readFileSync(path.join(ROOT, 'open-lore', 'registry.json'), 'utf8'),
 ) as LoreEntry[]
 
-const corpus = JSON.parse(
-  fs.readFileSync(path.join(ROOT, 'open-processes', 'corpus.json'), 'utf8'),
-) as Array<{ id: string }>
+const corpus = loadProcesses(path.join(ROOT, 'open-rankings'))
 const processIds = new Set(corpus.map((p) => p.id))
 
 const library = JSON.parse(
@@ -164,7 +163,7 @@ describe('lore registry (open-lore/registry.json)', () => {
     }
   })
 
-  it('processIds resolve against open-processes/corpus.json', () => {
+  it('processIds resolve against canonical operational processes', () => {
     for (const e of registry) {
       for (const pid of e.processIds) {
         expect(processIds.has(pid), `entry ${e.id} unknown process id ${pid}`).toBe(true)

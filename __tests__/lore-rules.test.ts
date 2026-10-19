@@ -1,6 +1,7 @@
 import fs from 'node:fs'
 import path from 'node:path'
 import { describe, expect, it } from 'vitest'
+import { loadProcesses } from '@/lib/processes'
 
 // The lore rules gate: open-lore/rules.json carries uncontested, sourced mechanics
 // extracted from the reading canon. The registry (lore-registry.test.ts) holds contested
@@ -27,7 +28,7 @@ const library = JSON.parse(fs.readFileSync(path.join(ROOT, 'open-lore', 'library
   sections: Array<{ id: string }>
   entries: Array<{ id: string }>
 }
-const corpus = JSON.parse(fs.readFileSync(path.join(ROOT, 'open-processes', 'corpus.json'), 'utf8')) as Array<{ id: string }>
+const corpus = loadProcesses(path.join(ROOT, 'open-rankings'))
 
 const topicIds = new Set(library.sections.map((s) => s.id))
 const libraryIds = new Set(library.entries.map((e) => e.id))

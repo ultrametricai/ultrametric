@@ -1,6 +1,6 @@
-import fs from 'node:fs'
 import path from 'node:path'
 import { describe, expect, it } from 'vitest'
+import { operationalSources } from './helpers/operational-sources'
 import {
   COST_KINDS, DagNodeSchema, knownCostUsd, loadProcesses, ProcessTaskSchema,
   type DagNode, type ProcessTask, type StepCost, type StepVerify,
@@ -14,11 +14,9 @@ import {
 // is DERIVED (government fees only), never hand-stored.
 
 const DATA_DIR = path.resolve(__dirname, '../../open-rankings')
-// RAW corpus — includes the jurisdiction-conditional nodes loadProcesses strips, so the format
+// Complete canonical projection — includes the jurisdiction-conditional nodes loadProcesses strips, so the format
 // invariants are total over everything committed.
-const RAW = JSON.parse(
-  fs.readFileSync(path.join(DATA_DIR, '..', 'open-processes', 'corpus.json'), 'utf8'),
-) as Array<{
+const RAW = operationalSources() as Array<{
   id: string
   dag: { nodes: Array<{ id: string; route: string; verify?: StepVerify; cost?: StepCost }> }
 }>

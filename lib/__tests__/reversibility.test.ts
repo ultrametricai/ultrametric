@@ -1,6 +1,6 @@
-import fs from 'node:fs'
 import path from 'node:path'
 import { describe, expect, it } from 'vitest'
+import { operationalSources } from './helpers/operational-sources'
 import { loadProcesses, REVERSIBILITY_TIERS, type Reversibility } from '@/lib/processes'
 
 // Reversibility curation (founder 2026-09-30: "map what is irreversible and what is reversible
@@ -12,11 +12,9 @@ import { loadProcesses, REVERSIBILITY_TIERS, type Reversibility } from '@/lib/pr
 // terminations), not drudgery.
 
 const DATA_DIR = path.resolve(__dirname, '../../open-rankings')
-// The RAW corpus — includes the jurisdiction-conditional nodes loadProcesses strips from the
+// The Complete canonical projection — includes the jurisdiction-conditional nodes loadProcesses strips from the
 // default view; the classification must be total over those too.
-const RAW = JSON.parse(
-  fs.readFileSync(path.join(DATA_DIR, '..', 'open-processes', 'corpus.json'), 'utf8'),
-) as Array<{
+const RAW = operationalSources() as Array<{
   id: string
   title: string
   reversibility: Reversibility
