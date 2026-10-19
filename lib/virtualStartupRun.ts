@@ -111,7 +111,7 @@ export interface VsAxisOption<V extends string = string> {
   // Compact picker text (the canonical `label` stays the accessible name).
   short: string
   blurb: string
-  // The matching rankings/icp-types.json lens where one exists — a cross-reference, not a data
+  // The matching open-rankings/icp-types.json lens where one exists — a cross-reference, not a data
   // dependency; null where the corpus has no such lens and the option is defined editorially.
   icpId: string | null
   // The option's named modifier, phrased as a visible simulation assumption; null = baseline.
@@ -215,9 +215,9 @@ export interface OutcomeStepInput {
   taskId: string
   phaseId: string
   chainId: string
-  route: StepRoute
+  route?: StepRoute
   arenaId: string | null
-  estimatedMinutes: number
+  estimatedMinutes?: number
 }
 
 // The journey's launch milestone: the end of the 'launch' phase (the directory launch) when the
@@ -260,7 +260,7 @@ export function journeyOutcomeInputs(
 // The launch day the raw corpus estimates give (pre-launch prefix, unmodified) — the event
 // engine's day span, deliberately independent of picks/axes so the drawn events stay
 // deterministic from (combo, preset, founder axes, seed) alone.
-export function corpusLaunchDay(inputs: OutcomeStepInput[]): number {
+export function corpusLaunchDay(inputs: OutcomeStepInput[]): number | undefined {
   const phaseIds: Array<{ id: string }> = []
   for (const s of inputs) {
     if (phaseIds.length === 0 || phaseIds[phaseIds.length - 1].id !== s.phaseId) phaseIds.push({ id: s.phaseId })
@@ -271,6 +271,7 @@ export function corpusLaunchDay(inputs: OutcomeStepInput[]): number {
   for (const s of inputs) {
     if (s.phaseId === launchPhase) seen = true
     else if (seen) break
+    if (s.estimatedMinutes === undefined) return undefined
     mins += s.estimatedMinutes
   }
   return dayOfMinutes(mins)
@@ -279,7 +280,7 @@ export function corpusLaunchDay(inputs: OutcomeStepInput[]): number {
 export interface StepOutcome {
   key: string
   // Effective simulated minutes after the stack/axis rules below.
-  minutes: number
+  minutes: number | undefined
   // True when the step runs at agent speed: an agent-routed step whose picked vendor has a
   // judged MCP/CLI surface, or an agent-routed step not served by any swappable role (tooling
   // steps with no vendor to swap — unserved steps are unchanged by construction).
@@ -290,19 +291,19 @@ export interface StepOutcome {
 
 export interface StackOutcome {
   steps: StepOutcome[]
-  minutesByKey: Record<string, number>
+  minutesByKey: Record<string, number | undefined>
   totalSteps: number
   agentRunSteps: number
   agentRunPct: number
   // Whole-journey simulated minutes (launch + post-launch operations)…
-  totalMinutes: number
+  totalMinutes: number | undefined
   // …and the pre-launch slice (phases through launchPhaseIdOf) the launch day derives from.
-  launchMinutes: number
-  launchDay: number
+  launchMinutes: number | undefined
+  launchDay: number | undefined
   // The all-manual baseline (every agent-routed step at founder-hours) and the saving vs it —
   // both derived from the same disclosed multiplier, never presented as judged data.
-  allManualMinutes: number
-  founderHoursSavedMinutes: number
+  allManualMinutes: number | undefined
+  founderHoursSavedMinutes: number | undefined
 }
 
 // 1-based simulated day — same convention as lib/virtualStartup.ts dayOf.
@@ -330,11 +331,13 @@ export function computeStackOutcome(
 ): StackOutcome {
   const roleByArena = new Map(roles.map((r) => [r.arenaId, r]))
   const steps: StepOutcome[] = []
-  const minutesByKey: Record<string, number> = {}
+  const minutesByKey: Record<string, number | undefined> = {}
   let agentRunSteps = 0
   let totalMinutes = 0
   let launchMinutes = 0
   let allManualMinutes = 0
+  let unknownTotal = false
+  let unknownLaunch = false
 
   // Pre-launch = every phase up to and including the launch milestone (inputs are in journey
   // order, so the pre-launch slice is a prefix).
@@ -363,7 +366,7 @@ export function computeStackOutcome(
       } else if (hasAgentSurface(surface)) {
         agentRun = true
       } else {
-        minutes = s.estimatedMinutes * FOUNDER_HOURS_MULTIPLIER
+        minutes = s.estimatedMinutes === undefined ? undefined : s.estimatedMinutes * FOUNDER_HOURS_MULTIPLIER
         note = `founder-hours ×${FOUNDER_HOURS_MULTIPLIER} — the picked vendor has no judged MCP/CLI agent surface (simulation assumption)`
       }
     }
@@ -382,15 +385,15 @@ export function computeStackOutcome(
         axisNotes.push(`×${SECOND_TIMER_MULTIPLIER} — repeat entrepreneur on a legal/finance step (simulation assumption)`)
       }
       if (axisNotes.length > 0) {
-        minutes = s.estimatedMinutes * axisMultiplier
+        minutes = s.estimatedMinutes === undefined ? undefined : s.estimatedMinutes * axisMultiplier
         note = axisNotes.join(' · ')
       }
     }
 
     if (agentRun) agentRunSteps += 1
-    totalMinutes += minutes
-    if (preLaunch) launchMinutes += minutes
-    allManualMinutes += s.route === 'agent' ? s.estimatedMinutes * FOUNDER_HOURS_MULTIPLIER : s.estimatedMinutes
+    if (minutes === undefined || s.route === undefined) { unknownTotal = true; if (preLaunch) unknownLaunch = true }
+    else { totalMinutes += minutes; if (preLaunch) launchMinutes += minutes }
+    if (s.estimatedMinutes !== undefined) allManualMinutes += s.route === 'agent' ? s.estimatedMinutes * FOUNDER_HOURS_MULTIPLIER : s.estimatedMinutes
     minutesByKey[s.key] = minutes
     steps.push({ key: s.key, minutes, agentRun, note })
   }
@@ -401,11 +404,11 @@ export function computeStackOutcome(
     totalSteps: inputs.length,
     agentRunSteps,
     agentRunPct: inputs.length > 0 ? Math.round((agentRunSteps / inputs.length) * 100) : 0,
-    totalMinutes,
-    launchMinutes,
-    launchDay: dayOfMinutes(launchMinutes),
-    allManualMinutes,
-    founderHoursSavedMinutes: allManualMinutes - totalMinutes,
+    totalMinutes: unknownTotal ? undefined : totalMinutes,
+    launchMinutes: unknownLaunch ? undefined : launchMinutes,
+    launchDay: unknownLaunch ? undefined : dayOfMinutes(launchMinutes),
+    allManualMinutes: unknownTotal ? undefined : allManualMinutes,
+    founderHoursSavedMinutes: unknownTotal ? undefined : allManualMinutes - totalMinutes,
   }
 }
 
@@ -651,7 +654,7 @@ export const VS_EVENTS: VsEventDef[] = [
 
 // Plausibility gate: the run's decisions (all decision gates active), the journey actually
 // containing the grounded process, and the corpus risk floor. `risks` is the committed
-// processes/corpus.json risk axis, serialized server-side (lib/virtualStartupData.ts).
+// open-processes/corpus.json risk axis, serialized server-side (lib/virtualStartupData.ts).
 export function eligibleVsEvents(
   choices: Choices,
   journeyTaskIds: string[],
@@ -710,9 +713,9 @@ export function drawVsEvents(eligible: VsEventDef[], seedKey: string, journeyDay
 
 // Real corpus minutes of one task, from the serialized journey payloads — Σ step estimates,
 // the same numbers the timeline renders.
-export function taskMinutesById(tasks: Record<string, VirtualTaskPayload>): Record<string, number> {
+export function taskMinutesById(tasks: Record<string, VirtualTaskPayload>): Record<string, number | undefined> {
   return Object.fromEntries(
-    Object.values(tasks).map((t) => [t.id, t.steps.reduce((acc, s) => acc + s.estimatedMinutes, 0)]),
+    Object.values(tasks).map((t) => [t.id, t.steps.every(s => s.estimatedMinutes !== undefined) ? t.steps.reduce((acc, s) => acc + s.estimatedMinutes!, 0) : undefined]),
   )
 }
 
@@ -721,12 +724,12 @@ export interface ResolvedVsEvent {
   day: number
   // The choice taken, or null while the reader hasn't decided (pending events add no time).
   choice: VsEventChoiceDef | null
-  deltaMinutes: number
+  deltaMinutes: number | undefined
 }
 
 export interface VsEventResolution {
   events: ResolvedVsEvent[]
-  deltaMinutes: number
+  deltaMinutes: number | undefined
   dealsLost: number
   decided: number
   // Pick overrides from switch-vendor choices (arenaId → productId) — applied on top of the
@@ -743,27 +746,28 @@ export function resolveVsEvents(
   ctx: {
     roles: VendorRole[]
     selections: Record<string, string>
-    taskMinutes: Record<string, number>
+    taskMinutes: Record<string, number | undefined>
     chains: Array<{ id: string; taskIds: string[] }>
   },
 ): VsEventResolution {
   const events: ResolvedVsEvent[] = []
   const pickOverrides: Record<string, string> = {}
   let deltaMinutes = 0
+  let unknownDelta = false
   let dealsLost = 0
   let decided = 0
 
   for (const { def, day } of drawn) {
     const choice = def.choices.find((c) => c.id === eventChoices[def.id]) ?? null
-    let delta = 0
+    let delta: number | undefined = 0
     if (choice) {
       decided += 1
       const e = choice.effect
       if (e.kind === 'redo-tasks') {
-        delta = e.taskIds.reduce((acc, id) => acc + (ctx.taskMinutes[id] ?? 0), 0)
+        delta = e.taskIds.every(id => ctx.taskMinutes[id] !== undefined) ? e.taskIds.reduce((acc, id) => acc + ctx.taskMinutes[id]!, 0) : undefined
       } else if (e.kind === 'add-chain-time') {
         const chain = ctx.chains.find((c) => c.id === e.chainId)
-        delta = (chain?.taskIds ?? []).reduce((acc, id) => acc + (ctx.taskMinutes[id] ?? 0), 0)
+        delta = chain && chain.taskIds.every(id => ctx.taskMinutes[id] !== undefined) ? chain.taskIds.reduce((acc, id) => acc + ctx.taskMinutes[id]!, 0) : undefined
       } else if (e.kind === 'wait-days') {
         delta = e.days * 24 * 60
       } else if (e.kind === 'lose-deal') {
@@ -777,14 +781,15 @@ export function resolveVsEvents(
           const next = role.alternatives.find((o) => o.id !== current)
           if (next) pickOverrides[e.arenaId] = next.id
         }
-        delta = ctx.taskMinutes[e.redoTaskId] ?? 0
+        delta = ctx.taskMinutes[e.redoTaskId]
       }
     }
-    deltaMinutes += delta
+    if (delta === undefined) unknownDelta = true
+    else deltaMinutes += delta
     events.push({ def, day, choice, deltaMinutes: delta })
   }
 
-  return { events, deltaMinutes, dealsLost, decided, pickOverrides }
+  return { events, deltaMinutes: unknownDelta ? undefined : deltaMinutes, dealsLost, decided, pickOverrides }
 }
 
 // ---------------------------------------------------------------------------

@@ -77,7 +77,7 @@ Deliberately excluded live processes (no same-result corpus task): `company-prof
 Rendering (display-only, never feeds scoring, judged picks untouched):
 - Terminal process rows (`components/VirtualStartup.tsx`, testid `vs-um-cli`): "drive this process from your agent via the Ultrametric CLI/MCP — our own product: `ultrametric process open <id>` · MCP open_process — guide + saved records; your agent does the work", linking `/get-started`, full affiliation sentence as the tooltip. The line sits on the **process** row because the CLI drives whole processes, not individual steps.
 - Vendors tab of the state panel (`components/VsStateGraph.tsx`, testid `vs-sg-umcli`): below the judged list, labeled "first-party · Ultrametric CLI/MCP (ours) — not a judged pick"; the tab count stays judged-only.
-- Disclosures registered in `rankings/copy-audit.json` (`vs-um-cli-disclosure`, `vs-sg-umcli-disclosure`, both `keep`).
+- Disclosures registered in `open-rankings/copy-audit.json` (`vs-um-cli-disclosure`, `vs-sg-umcli-disclosure`, both `keep`).
 - Tests: `lib/__tests__/ultrametricCli.test.ts` (map validation, exclusions, disclosure copy), `components/__tests__/VirtualStartupUmCli.test.tsx` (renders on mapped rows only, affiliation visible, judged picks unaffected).
 
 ## Sources

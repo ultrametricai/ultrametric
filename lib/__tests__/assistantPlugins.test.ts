@@ -1,4 +1,4 @@
-// Assistant-plugin evidence map: the committed rankings/assistant-plugins.json must always validate,
+// Assistant-plugin evidence map: the committed open-rankings/assistant-plugins.json must always validate,
 // every entry must point at a product that actually exists in some arena and at a platform the
 // file itself declares, and the file must be deterministic (stably sorted) so regenerating it
 // produces reviewable diffs. A typo'd productId here would silently orphan recorded evidence —
@@ -15,7 +15,7 @@ import {
 
 const DATA = loadAssistantPlugins() // the real committed file
 
-describe('rankings/assistant-plugins.json', () => {
+describe('open-rankings/assistant-plugins.json', () => {
   it('parses and declares the four assistant platforms exactly once each', () => {
     const ids = DATA.platforms.map((p) => p.id)
     expect(new Set(ids).size).toBe(ids.length)
@@ -31,7 +31,7 @@ describe('rankings/assistant-plugins.json', () => {
 
   it('every entry references a tracked product id', () => {
     const tracked = new Set<string>()
-    const dataDir = path.join(process.cwd(), 'rankings')
+    const dataDir = path.join(process.cwd(), 'open-rankings')
     for (const dir of fs.readdirSync(dataDir)) {
       const file = path.join(dataDir, dir, 'products.json')
       if (!fs.existsSync(file)) continue

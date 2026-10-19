@@ -63,12 +63,12 @@ export function serializeJuris(active: Jurisdiction[]): string | null {
 // the client component never touches the corpus loader.
 export interface JurisdictionStepView {
   label: string
-  route: StepRoute
+  route?: StepRoute
   jurisdictions: Jurisdiction[]
   /** Canonical do-it-yourself page (verified live before listing) — null when none exists. */
   actionUrl: string | null
   actionLabel: string | null
-  estimatedMinutes: number
+  estimatedMinutes?: number
   async: boolean
   /** Internal link when the step's work already lives in its own corpus process. */
   processHref: string | null

@@ -5,7 +5,7 @@ import { loadArtifacts, loadProcesses, processSlug, VENDOR_ARENA, type Artifact,
 import { areaOfTask, AREA_ORDER, type Area } from './processRows'
 
 // /artifacts page family (founder 2026-10-05): one site page per registry artifact
-// (processes/artifacts.json) — what it is (the registry's committed description), who produces
+// (open-artifacts/registry.json) — what it is (the registry's committed description), who produces
 // it (the canonical producer plus the documented alsoProducedBy exceptions), and who needs it
 // (every process whose `requires` carries it — the same edges lib/processDeps.ts builds the
 // cross-process dependency graph from). The vendor section is DERIVED, never curated: the

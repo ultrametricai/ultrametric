@@ -23,7 +23,7 @@
 // - FMV trajectories are labeled hypothetical scenarios. The module never invents an FMV.
 // - The risk statement is the cited one: forfeit after electing and the income inclusion
 //   is never recovered — no deduction, no credit, loss only to the extent amount paid
-//   exceeds amount realized (Rev. Proc. 2012-29 § 4.03, Examples 3 and 6).
+//   exceeds amount realized (Rev. Proc. 2012-29 § 4.03 and § 5, Examples 3 and 6).
 // ---------------------------------------------------------------------------
 
 /** The rule cards this module is allowed to cite. The vitest gate asserts every id
@@ -148,10 +148,10 @@ export function compare83bScenario(
   }
 }
 
-/** The cited risk, verbatim in substance — Rev. Proc. 2012-29 § 4.03 and Examples 3/6:
+/** The cited risk, verbatim in substance — Rev. Proc. 2012-29 § 4.03 (the rule) and § 5, Examples 3 and 6:
  * elect, forfeit, and the inclusion is never recovered. */
 export const FORFEITURE_RISK_STATEMENT =
-  'If elected property is forfeited while substantially nonvested, no deduction is allowed for the forfeiture; the forfeiture is treated as a sale, with loss recognized only to the extent the amount paid exceeds the amount realized, and there is no deduction or credit for taxes paid because of the election (Rev. Proc. 2012-29 § 4.03, Examples 3 and 6 — rule us-fed.83b-scenario-arithmetic).'
+  'If elected property is forfeited while substantially nonvested, no deduction is allowed for the forfeiture; the forfeiture is treated as a sale, with loss recognized only to the extent the amount paid exceeds the amount realized, and there is no deduction or credit for taxes paid because of the election (Rev. Proc. 2012-29 § 4.03 and § 5, Examples 3 and 6 — rule us-fed.83b-scenario-arithmetic).'
 
 export interface ForfeitureOutcome {
   /** Amount paid for the forfeited shares. */

@@ -1,10 +1,10 @@
 // The prediction layer (v1): auto-generated yes/no questions about live close races, settled
-// mechanically from the public changelog. Questions live in rankings/predictions.json (committed,
+// mechanically from the public changelog. Questions live in open-rankings/predictions.json (committed,
 // append-then-settle — see PredictionQuestionSchema below); they are CREATED by
-// pipeline/scripts/generate-predictions.ts whenever an arena's #1 and #2 are within
+// rankings-engine/scripts/generate-predictions.ts whenever an arena's #1 and #2 are within
 // CLOSE_RACE_THRESHOLD Overall score points (the same "close race" definition as
-// pipeline/scripts/uncertainty-pass.ts, via lib/uncertainty.ts's isCloseRace), and SETTLED by
-// pipeline/scripts/settle-predictions.ts against the rank-flip (overtake) events that
+// rankings-engine/scripts/uncertainty-pass.ts, via lib/uncertainty.ts's isCloseRace), and SETTLED by
+// rankings-engine/scripts/settle-predictions.ts against the rank-flip (overtake) events that
 // lib/changelog.ts derives from the committed score history.
 //
 // Honest by construction:
@@ -176,8 +176,8 @@ export function settleQuestions(
 }
 
 // Tolerant-optional loader, same contract as popularity/claims in lib/data.ts: no
-// rankings/predictions.json yet resolves to an empty list, never an error.
-export function loadPredictions(dir: string = path.join(process.cwd(), 'rankings')): PredictionQuestion[] {
+// open-rankings/predictions.json yet resolves to an empty list, never an error.
+export function loadPredictions(dir: string = path.join(process.cwd(), 'open-rankings')): PredictionQuestion[] {
   const file = path.join(dir, PREDICTIONS_FILE)
   if (!fs.existsSync(file)) return []
   return PredictionsArraySchema.parse(JSON.parse(fs.readFileSync(file, 'utf8')))

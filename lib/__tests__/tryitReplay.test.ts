@@ -103,7 +103,7 @@ describe('run-type selector options (founder 2026-10-05)', () => {
   })
 
   it('CORPUS PIN: every product with terminal proofs gets unique labels, each mapping to a real recorded proof', () => {
-    const dataDir = path.join(process.cwd(), 'rankings')
+    const dataDir = path.join(process.cwd(), 'open-rankings')
     const categories = fs.readdirSync(dataDir).filter((c) => fs.existsSync(path.join(dataDir, c, 'proofs', 'index.json')))
     expect(categories.length).toBeGreaterThan(0)
     for (const category of categories) {

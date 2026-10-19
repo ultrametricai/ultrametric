@@ -7,9 +7,9 @@ const n = (id: string) => ({ id })
 const ids = (layers: Array<Array<{ id: string }>>) => layers.map((l) => l.map((x) => x.id))
 
 describe('layerNodes', () => {
-  it('no edges → linear by node order, one layer per node', () => {
-    expect(ids(layerNodes([n('a'), n('b'), n('c')]))).toEqual([['a'], ['b'], ['c']])
-    expect(ids(layerNodes([n('a'), n('b')], []))).toEqual([['a'], ['b']])
+  it('no edges → no invented dependency', () => {
+    expect(ids(layerNodes([n('a'), n('b'), n('c')]))).toEqual([['a', 'b', 'c']])
+    expect(ids(layerNodes([n('a'), n('b')], []))).toEqual([['a', 'b']])
   })
 
   it('a diamond layers its parallel middle: [[a], [b, c], [d]]', () => {

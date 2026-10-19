@@ -55,15 +55,15 @@ export const ProductSchema = z.object({
   })).max(4).optional(),
   // YC batch code (e.g. "S22", "W23", and since YC's 2024 move to four batches a year the
   // Spring/Fall codes "X25"/"F25") for products verified — by website domain, never by name
-  // alone — to be alumni of a Y Combinator batch (see pipeline/scripts/yc-cross-reference.ts and
-  // rankings/yc-batches.json, the source of truth this field is stamped from). Display-only, like
+  // alone — to be alumni of a Y Combinator batch (see rankings-engine/scripts/yc-cross-reference.ts and
+  // open-rankings/yc-batches.json, the source of truth this field is stamped from). Display-only, like
   // PopularitySchema: never fed into scoring (lib/scoring.ts never imports it).
   ycBatch: z.string().regex(/^[WXSF]\d{2}$/, 'ycBatch must look like "S22", "W23", "X25", or "F25"').optional(),
   // Product-family membership (e.g. "stripe" for Stripe, Stripe Terminal, Stripe Atlas): the id
-  // of an entry in rankings/product-families.json (see lib/families.ts, the source of truth for
+  // of an entry in open-rankings/product-families.json (see lib/families.ts, the source of truth for
   // family structure — this field is a denormalized back-reference kept in sync by the families
   // test). Display-only, like ycBatch/PopularitySchema: never fed into scoring, and never part
-  // of the judge's cellHash (pipeline/stages/judge.ts hashes story+evidence only), so stamping
+  // of the judge's cellHash (rankings-engine/stages/judge.ts hashes story+evidence only), so stamping
   // it on existing products never busts the judge cache.
   familyId: z.string().regex(/^[a-z0-9]+(-[a-z0-9]+)*$/, 'familyId must be kebab-case').optional(),
   // Enterprise-motion flag: true only for vendors whose primary go-to-market is enterprise
@@ -89,7 +89,7 @@ export const ProductSchema = z.object({
   // lib/rollups.ts's loader contract); non-government arenas leave them absent.
   country: z.string().regex(/^[A-Z]{2}$/, 'country must be a 2-letter uppercase code').optional(),
   area: z.enum(['company-registry', 'tax', 'ip-office', 'immigration', 'procurement']).optional(),
-  // URLs from `urls` above that the crawl stage must NOT fetch (pipeline/stages/crawl.ts skips
+  // URLs from `urls` above that the crawl stage must NOT fetch (rankings-engine/stages/crawl.ts skips
   // them): hosts that wall keyless agents at robots.txt itself or serve a bot-management
   // interstitial (government-services Phase 2: mca.gov.in, aima.gov.pt, scc.virginia.gov,
   // ohiosos.gov, the sos.state.mn.us Radware page). The URL stays in `urls` because it is the
@@ -100,9 +100,9 @@ export const ProductSchema = z.object({
 })
 
 // Provenance of a story in the taxonomy: 'canonical' for the 29 ids injected verbatim by
-// pipeline/agentic-stories.ts (never LLM-authored), 'normalized' for LLM-assembled stories
+// rankings-engine/agentic-stories.ts (never LLM-authored), 'normalized' for LLM-assembled stories
 // (normalize.ts, or the depth-mining pass's claims-derived stories — see
-// pipeline/scripts/depth-mine.ts), 'mined' for stories distilled from demand-side signal (HN/
+// rankings-engine/scripts/depth-mine.ts), 'mined' for stories distilled from demand-side signal (HN/
 // community discussion) or an expert-buyer gap review (same script), 'contest' for stories
 // ever added/adjusted via a contest issue, 'manual' for hand-edited entries. Optional and
 // additive — never referenced by cellHash (see judge.ts), so stamping/backfilling it must
@@ -121,10 +121,10 @@ export const StorySchema = z.object({
   group: z.string().min(1),
   weight: z.number().int().min(1).max(3),
   origin: StoryOriginSchema.optional(),
-  // How far a story generalizes beyond its own arena (see pipeline/scripts/tag-story-scopes.ts,
+  // How far a story generalizes beyond its own arena (see rankings-engine/scripts/tag-story-scopes.ts,
   // the deterministic tagger that stamps this): 'global' = meaningful for any software product
   // (2FA, "I can use a CLI", pricing transparency, uptime SLA) — the 29 canonical lens stories
-  // are global by definition and carry the tag at the source (pipeline/agentic-stories.ts);
+  // are global by definition and carry the tag at the source (rankings-engine/agentic-stories.ts);
   // 'category' = meaningful only within this arena's domain (treasury yield, payroll runs,
   // proxy rotation); 'product' = written to probe one product's specific claim (claims-derived
   // depth-mine stories that in practice only that product holds). Optional and additive — like
@@ -142,7 +142,7 @@ export const EvidenceSchema = z.object({
   fetchedAt: z.string().datetime(),
   // Marks a hand-recorded row (audit counter-check, recorded runtime/self-eval probe) that a
   // scheduled refresh must not clobber: the probe stage merges fresh rows around preserved
-  // probe-tier rows instead of replacing the tier wholesale (pipeline/stages/probe.ts,
+  // probe-tier rows instead of replacing the tier wholesale (rankings-engine/stages/probe.ts,
   // mergeProbeEvidence). Root cause: the 2026-10-14 agent-skills regression, where a refresh
   // replaced the 2026-10-08 audit's recorded counter-checks and the judge restored eleven
   // generous owner-product grades on the thinner pack. A preserved row is removed only by an
@@ -174,7 +174,7 @@ export const VerdictSchema = VerdictBaseSchema.refine(
 )
 
 // A vendor CLAIM extracted from a product's own claimed-docs/github evidence (see
-// pipeline/stages/claims.ts) — distinct from a Verdict, which is our judge's assessment of
+// rankings-engine/stages/claims.ts) — distinct from a Verdict, which is our judge's assessment of
 // whether the claim actually holds up. `quote` is always copied verbatim from the cited
 // evidence item's own excerpt (never LLM-paraphrased), so every claim is traceable byte-for-byte
 // back to something the vendor's own materials said. `storyIds` maps this claim onto the
@@ -191,8 +191,8 @@ export const ClaimSchema = z.object({
   extractedAt: z.string().datetime(),
 })
 
-// rankings/{cat}/claims/{productId}.json shape: at most 60 distinct capability claims per product
-// (see pipeline/stages/claims.ts's SYSTEM prompt — the LLM consolidates near-duplicate evidence
+// open-rankings/{cat}/claims/{productId}.json shape: at most 60 distinct capability claims per product
+// (see rankings-engine/stages/claims.ts's SYSTEM prompt — the LLM consolidates near-duplicate evidence
 // into one claim per distinct capability, so this cap is a content limit, not a truncation).
 export const ClaimsArraySchema = ClaimSchema.array().min(0).max(60)
 
@@ -239,7 +239,7 @@ export const RankingsSchema = z.object({
   // Provenance watermark stamped by the derive stage (see lib/provenance.ts): identifies the
   // file as Ultrametric's published data and carries an HMAC fingerprint over the rankings
   // content, so republished copies are identifiable and verifiable
-  // (pipeline/scripts/verify-provenance.ts). Optional because buildRankings' raw output is
+  // (rankings-engine/scripts/verify-provenance.ts). Optional because buildRankings' raw output is
   // schema-shaped before the stamp is attached. Keep this key LAST: recompute-check compares
   // JSON.stringify output, and zod emits keys in shape order.
   _provenance: z
@@ -253,11 +253,11 @@ export const RankingsSchema = z.object({
     .optional(),
 })
 
-// One line of rankings/{cat}/score-history.jsonl — the append-only per-product time series of the
+// One line of open-rankings/{cat}/score-history.jsonl — the append-only per-product time series of the
 // two headline scores (Overall score / aiEra + agent-readiness), one line per product per CHANGE
 // (not per run — consecutive identical values are deduped, unlike popularity-history.jsonl's
 // one-line-per-run cadence). Values are stored rounded to 1 decimal so "changed" is a stable,
-// float-noise-free comparison. Seeded by pipeline/scripts/build-score-history.ts (a git-history
+// float-noise-free comparison. Seeded by rankings-engine/scripts/build-score-history.ts (a git-history
 // backfill, so `date` is a commit date with a TZ offset there) and grown forward by the derive
 // stage (which stamps rankings.generatedAt, a UTC instant). Display-only, like popularity —
 // never fed back into scoring.
@@ -273,10 +273,10 @@ export const ScoreHistoryEntrySchema = z.object({
   note: z.string().min(1).optional(),
 })
 
-// Keyless popularity/momentum signal for one product (see pipeline/stages/popularity.ts). Every
+// Keyless popularity/momentum signal for one product (see rankings-engine/stages/popularity.ts). Every
 // field is optional because coverage depends entirely on what's discoverable without an API
 // key: GitHub fields only for products with urls.github, npm/pypi fields only for products
-// mapped in pipeline/popularity-packages.json. This is a *display-only* signal — never fed into
+// mapped in rankings-engine/popularity-packages.json. This is a *display-only* signal — never fed into
 // scoring (see lib/scoring.ts, which never imports this schema) — so it stays lenient rather
 // than mirroring VerdictSchema's strictness.
 export const PopularitySchema = z.object({
@@ -290,12 +290,12 @@ export const PopularitySchema = z.object({
   fetchedAt: z.string().datetime(),
 })
 
-// rankings/{cat}/popularity.json shape: productId -> Popularity. A product absent from the map has
+// open-rankings/{cat}/popularity.json shape: productId -> Popularity. A product absent from the map has
 // no public signals at all (not "zero" — genuinely unknown), which display code must render as
 // muted/absent rather than as a zero value.
 export const PopularityMapSchema = z.record(z.string(), PopularitySchema)
 
-// Multi-judge uncertainty result for one decisive cell — see pipeline/scripts/uncertainty-pass.ts.
+// Multi-judge uncertainty result for one decisive cell — see rankings-engine/scripts/uncertainty-pass.ts.
 // Only computed for cells belonging to a "close race" arena (the #1 and #2 leaderboard products
 // within 3.0 Overall score points of each other) on their agenticness-theme cells (agent-access,
 // agentic-features, api-quality groups — the axes that actually move the Overall score). `judgments`
@@ -310,16 +310,16 @@ export const UncertaintyEntrySchema = z.object({
   agreement: z.enum(['1/3', '2/3', '3/3']),
 })
 
-// rankings/{cat}/uncertainty.json shape: an array of UncertaintyEntry, one per decisive cell that
+// open-rankings/{cat}/uncertainty.json shape: an array of UncertaintyEntry, one per decisive cell that
 // was re-judged. Entirely optional/additive — see lib/data.ts's tolerant-optional load — most
 // categories (not a "close race") will have no uncertainty.json at all, and even a qualifying
 // category only covers its decisive cells, not the full matrix.
 export const UncertaintyArraySchema = UncertaintyEntrySchema.array()
 
 // Analytic 68% confidence band on one product's Overall score (aiEra) and agent-readiness — see
-// pipeline/scripts/compute-confidence-intervals.ts (which writes rankings/{cat}/score-intervals.json)
+// rankings-engine/scripts/compute-confidence-intervals.ts (which writes open-rankings/{cat}/score-intervals.json)
 // and lib/scoreIntervals.ts (the simulation math + tolerant-optional loader). Derived at pipeline
-// time by propagating the MEASURED judge re-roll variance (rankings/*/uncertainty.json) through the
+// time by propagating the MEASURED judge re-roll variance (open-rankings/*/uncertainty.json) through the
 // exact scoring formula via a seeded Monte Carlo — no new judging, display-only, never feeds
 // lib/scoring.ts. Low/high are the 16th/84th percentiles of the simulated score distribution; a
 // null pair means the corresponding published score is itself null (nothing to band).
@@ -332,7 +332,7 @@ export const ScoreIntervalEntrySchema = z.object({
 })
 export type ScoreIntervalEntry = z.infer<typeof ScoreIntervalEntrySchema>
 
-// rankings/{cat}/score-intervals.json shape: one entry per product in the arena. Optional/additive —
+// open-rankings/{cat}/score-intervals.json shape: one entry per product in the arena. Optional/additive —
 // same tolerant contract as uncertainty.json above: an arena that hasn't been through the
 // intervals pass has no file, and display code must render no band at all (never a fabricated
 // one) when the entry or file is absent.
@@ -364,16 +364,16 @@ export const VendorResponseSchema = z.object({
   status: z.enum(['standing', 'superseded']),
 })
 
-// rankings/{cat}/vendor-responses.json shape: an array of VendorResponse. Entirely optional/
+// open-rankings/{cat}/vendor-responses.json shape: an array of VendorResponse. Entirely optional/
 // additive — see lib/data.ts's tolerant-optional load, same "absence is not an error" contract
 // as popularity/claims/uncertainty — most categories have no vendor responses at all. At most
 // one 'standing' response per (productId, storyId) cell (enforced in lib/data.ts); superseded
 // responses stay in the file as the public record.
 export const VendorResponsesArraySchema = VendorResponseSchema.array()
 
-// rankings/yc-map.json shape: one entry per modern-batch (W23–S26) YC company, distilled from the
-// yc-oss/api mirror of YC's public directory (see pipeline/scripts/yc-fetch.ts) plus an
-// LLM-assigned arena mapping (see pipeline/scripts/yc-classify.ts). `mappedArena` is an existing
+// open-rankings/yc-map.json shape: one entry per modern-batch (W23–S26) YC company, distilled from the
+// yc-oss/api mirror of YC's public directory (see rankings-engine/scripts/yc-fetch.ts) plus an
+// LLM-assigned arena mapping (see rankings-engine/scripts/yc-classify.ts). `mappedArena` is an existing
 // categories.json id the company genuinely competes in; `proposedArena` is a kebab-case name for
 // a new arena it clusters with peers under; a company can have at most one of the two set (never
 // both), and both null means "not a software product ranked meaningfully here" (hardware,

@@ -78,6 +78,13 @@ describe('accruedSimpleInterest (simple, actual/basis — the only convention im
     expect(() => accruedSimpleInterest(0, 5, '2025-03-01', '2026-03-01')).toThrow(RangeError)
     expect(() => accruedSimpleInterest(1, -1, '2025-03-01', '2026-03-01')).toThrow(RangeError)
   })
+
+  it('a leap year accrues 366/365ths of the annual rate (actual-day convention)', () => {
+    // 2024-01-01 → 2025-01-01 is 366 days: 500,000 × 5% × 366/365 = 25,068.49.
+    const a = accruedSimpleInterest(500_000, 5, '2024-01-01', '2025-01-01')
+    expect(a.days).toBe(366)
+    expect(a.interest).toBe(25_068.49)
+  })
 })
 
 describe('noteBalance', () => {
@@ -130,6 +137,14 @@ describe('noteConversionPrice (cap and discount "in the alternative" — Cooley 
         expect(p.price).toBeGreaterThan(0)
       }
     }
+  })
+})
+
+describe('noteConversionPrice guards', () => {
+  it('rejects a cap price that rounds to zero at 4 decimals', () => {
+    expect(() =>
+      noteConversionPrice({ roundPps: 1, cap: 40, capCapitalizationShares: 10_000_000 }),
+    ).toThrow(/rounds to zero/)
   })
 })
 
@@ -262,6 +277,22 @@ describe('seriesPricingWithNotes (Cooley GO, Colla: $8M pre, $2M new, $1M notes,
     expect(() =>
       seriesPricingWithNotes({ ...INPUT, noteBalanceConverting: 6_000_000 }),
     ).toThrow(RangeError)
+  })
+})
+
+describe('seriesPricingWithNotes edges', () => {
+  it('a zero note balance collapses every method to the plain round price', () => {
+    const out = seriesPricingWithNotes({
+      preMoney: 8_000_000,
+      newMoney: 2_000_000,
+      noteBalanceConverting: 0,
+      discountPct: 30,
+      preRoundFullyDiluted: 1_000_000,
+    })
+    for (const m of Object.values(out)) {
+      expect(m.pps).toBe(8)
+      expect(m.noteShares).toBe(0)
+    }
   })
 })
 

@@ -7,12 +7,12 @@
 // precomputed with lib/processes.ts computeCeiling arithmetic.
 //
 // DERIVED-ARTIFACT DECISION (this phase): the generated per-step artifacts —
-// rankings/step-prompts.json and rankings/step-vendor-calls.json — key on (taskId, nodeId) and describe
+// open-rankings/step-prompts.json and open-rankings/step-vendor-calls.json — key on (taskId, nodeId) and describe
 // the node's DEFAULT method; method variants are deliberately EXCLUDED from them. A variant
 // panel therefore shows only corpus-committed functionCalls (never a regenerated prompt or
 // per-vendor call table), and the default panel's prompt/vendor-call blocks hide while a
 // variant is selected. Regeneration for variants is a later, unscoped pass per the lane-merge
-// playbook; pipeline/scripts/recompute-check.ts is untouched either way (it covers arena
+// playbook; rankings-engine/scripts/recompute-check.ts is untouched either way (it covers arena
 // rankings only).
 
 import { hasLogo } from './logos'
@@ -99,18 +99,18 @@ export function buildStepMethodViews(
   }
   const variants = methods.map((m): StepMethodView => {
     const subSteps = (m.subSteps ?? []).map((s) => subStepView(s, dir))
-    const derivedMinutes = subSteps.length > 0
-      ? subSteps.reduce((acc, s) => acc + s.estimatedMinutes, 0)
+    const derivedMinutes = subSteps.length > 0 && subSteps.every(s => s.estimatedMinutes !== undefined)
+      ? subSteps.reduce((acc, s) => acc + s.estimatedMinutes!, 0)
       : null
     return {
       id: m.id,
       label: m.label,
       summary: m.summary,
-      context: {
+      context: m.context ? {
         kind: m.context.kind,
         when: m.context.when,
         countries: [...(m.context.countries ?? [])],
-      },
+      } : null,
       route: m.route ?? node.route,
       // Honest time only: the corpus value (load-validated to equal the sub-step sum when both
       // exist), else the sum derived from sub-steps, else nothing.

@@ -10,7 +10,7 @@ export const collectionNames = {
   law: 'Rule cards', citations: 'Citations', artifacts: 'Business artifacts',
 }
 
-const roots = ['content/processes/records', 'rankings', 'open-documents', 'lib/openstartup', 'processes', 'jurisdictions', 'law', 'citations', 'coverage']
+const roots = ['open-processes', 'open-rankings', 'open-artifacts', 'open-documents', 'lib/openstartup', 'jurisdictions', 'open-law', 'coverage']
 const recordKey = (collection, id) => `${collection}:${id}`
 const nonempty = value => typeof value === 'string' && value.trim().length > 0
 const isoDate = value => typeof value === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(value) && Number.isFinite(Date.parse(`${value}T00:00:00Z`)) && new Date(`${value}T00:00:00Z`).toISOString().slice(0, 10) === value
@@ -58,7 +58,7 @@ export function buildContentAudit(files, metadata) {
       Object.values(value).forEach(item => walk(item, visit))
     }
   }
-  const shared = [...files.keys()].filter(file => /^content\/processes\/records\/[^/]+\.json$/.test(file)).sort()
+  const shared = [...files.keys()].filter(file => /^open-processes\/[^/]+\.json$/.test(file)).filter(file => { const value = JSON.parse(files.get(file)); return value && !Array.isArray(value) && Array.isArray(value.parts) }).sort()
   if (!shared.length) throw new Error('The shared process catalog is missing.')
   const processKeys = new Map()
   const processRows = shared.map(file => {
@@ -80,7 +80,7 @@ export function buildContentAudit(files, metadata) {
     return { record, value }
   })
   const processTarget = id => processKeys.get(id) ?? recordKey('processes', id)
-  const registry = json('processes/vendor-registry.json').vendors
+  const registry = json('open-processes/vendor-registry.json').vendors
   if (!registry || typeof registry !== 'object' || Array.isArray(registry)) throw new Error('Invalid vendor registry.')
   const vendorTarget = id => {
     const entry = registry[id]
@@ -88,17 +88,17 @@ export function buildContentAudit(files, metadata) {
     if (!entry.arenaId) return { target: `vendor-registry:${id}`, state: 'unmapped' }
     return { target: recordKey('vendors', `${entry.arenaId}/${entry.productId ?? id.replaceAll('_', '-')}`), state: 'pending' }
   }
-  const categories = array(json('rankings/categories.json'), 'categories')
+  const categories = array(json('open-rankings/categories.json'), 'categories')
   const metrics = []
   let expectedCells = 0
   let presentCells = 0
   for (const category of categories) {
     if (!nonempty(category.id)) throw new Error('A category ID is missing.')
-    const base = `rankings/${category.id}`
+    const base = `open-rankings/${category.id}`
     const products = array(json(`${base}/products.json`), `${base}/products`)
     const stories = array(json(`${base}/stories.json`), `${base}/stories`)
     const verdicts = array(json(`${base}/verdicts.json`), `${base}/verdicts`)
-    const arena = add('arenas', category.id, category.name, 'rankings/categories.json')
+    const arena = add('arenas', category.id, category.name, 'open-rankings/categories.json')
     if (stories.some(story => !nonempty(story.id)) || products.some(product => !nonempty(product.id))) throw new Error(`Missing product or story identity: ${base}`)
     const storyIds = new Set(stories.map(story => story.id))
     const productIds = new Set(products.map(product => product.id))
@@ -124,7 +124,7 @@ export function buildContentAudit(files, metadata) {
       const uncited = cells.filter(item => !['none', 'na'].includes(item.verdict) && (!Array.isArray(item.evidenceIds) || !item.evidenceIds.length)).length
       check(vendor, 'Verdict evidence', cells.length && !dangling && !uncited ? 'present' : 'missing', `${dangling} unresolved evidence references; ${uncited} positive or disputed verdicts without required citations.`)
       presence(vendor, 'Evidence records', evidence.length > 0, `${evidence.length} evidence items; ${evidence.filter(item => item.tier === 'probe').length} recorded as probe tier.`)
-      const reviewFile = `rankings/reviews/generated/${category.id}--${product.id}.json`
+      const reviewFile = `open-rankings/reviews/generated/${category.id}--${product.id}.json`
       if (files.has(reviewFile)) {
         const review = json(reviewFile)
         date(vendor, review.tested_on, review.recheck_due)
@@ -133,7 +133,7 @@ export function buildContentAudit(files, metadata) {
     }
   }
   metrics.push({ label: 'Vendor story verdicts', covered: presentCells, total: expectedCells, meaning: 'Unique product/story cells in the current ranking taxonomies, including negative verdicts.' })
-  const roadmap = array(json('rankings/arena-roadmap.json'), 'arena roadmap')
+  const roadmap = array(json('open-rankings/arena-roadmap.json'), 'arena roadmap')
   metrics.push({ label: 'Rankings in the declared roadmap', covered: roadmap.filter(item => categories.some(category => category.id === item.id)).length, total: roadmap.length, meaning: 'Presence in the category registry; does not establish complete vendor coverage.' })
 
   const documents = json('open-documents/registry.json')
@@ -148,24 +148,25 @@ export function buildContentAudit(files, metadata) {
     date(record, value.checked_on, due)
   }
   for (const [collection, file, field] of [
-    ['jurisdictions', 'jurisdictions/registry.json', 'jurisdictions'], ['citations', 'citations/registry.json', 'citations'],
+    ['jurisdictions', 'jurisdictions/registry.json', 'jurisdictions'], ['citations', 'open-law/citations/registry.json', 'citations'],
   ]) {
     for (const value of array(json(file)[field], file)) {
-      const record = add(collection, value.id ?? value.code, value.name ?? value.title, file, [value.role, value.jurisdiction, value.kind])
+      const record = add(collection, value.id ?? value.code, value.name ?? value.title, file, [value.jurisdiction, value.kind])
       if (value.url) link(record, value.url, 'source URL', 'external')
       if (collection === 'jurisdictions') {
         check(record, 'Declared coverage', 'unknown', `${value.coverage ?? 'Not recorded'}: ${value.scope ?? 'scope not recorded'}`)
         if (value.parent) link(record, recordKey('jurisdictions', value.parent), 'parent jurisdiction')
       } else {
+        // The registry at open-law/citations/ holds authority records only; the reading
+        // canon lives in open-lore/ with its own gates.
         date(record, value.checked_on)
-        if (value.role === 'authority') {
-          presence(record, 'Exact provision locator', nonempty(value.locator))
-          if (value.jurisdiction) link(record, recordKey('jurisdictions', value.jurisdiction), 'jurisdiction')
-        }
+        presence(record, 'Exact provision locator', nonempty(value.locator))
+        if (value.jurisdiction) link(record, recordKey('jurisdictions', value.jurisdiction), 'jurisdiction')
       }
     }
   }
-  for (const file of [...files.keys()].filter(file => /^law\/.+\.json$/.test(file)).sort()) {
+  const lawRegistries = new Set(['open-law/map.json', 'open-law/workflow-coverage.json', 'open-law/workflow-domains.json'])
+  for (const file of [...files.keys()].filter(file => /^open-law\/(?!citations\/).+\.json$/.test(file) && !lawRegistries.has(file)).sort()) {
     const value = json(file)
     const record = add('law', value.id, value.id, file, [value.jurisdiction, value.status])
     presence(record, 'Rule statement', nonempty(value.statement))
@@ -175,15 +176,15 @@ export function buildContentAudit(files, metadata) {
     for (const id of value.source_ids ?? []) link(record, recordKey('citations', id), 'cites')
     link(record, recordKey('jurisdictions', value.jurisdiction), 'jurisdiction')
   }
-  for (const value of array(json('processes/artifacts.json').artifacts, 'artifacts')) {
-    const record = add('artifacts', value.id, value.label, 'processes/artifacts.json')
+  for (const value of array(json('open-artifacts/registry.json').artifacts, 'artifacts')) {
+    const record = add('artifacts', value.id, value.label, 'open-artifacts/registry.json')
     presence(record, 'Description', nonempty(value.description))
     link(record, processTarget(value.producedBy), 'produced by')
     for (const id of value.alsoProducedBy ?? []) link(record, processTarget(id), 'also produced by')
     for (const id of value.documents ?? []) link(record, recordKey('documents', id), 'registered template')
     if (value.terminal) check(record, 'Terminal artifact', 'present', 'No downstream consumer is required by the source.')
   }
-  const modules = json('processes/business-logic-map.json').modules
+  const modules = json('open-processes/business-logic-map.json').modules
   if (!modules || typeof modules !== 'object') throw new Error('Invalid business logic map.')
   const moduleFiles = [...files.keys()].filter(file => /^lib\/openstartup\/[^/]+\.ts$/.test(file)).sort()
   for (const file of moduleFiles) {
@@ -199,7 +200,7 @@ export function buildContentAudit(files, metadata) {
   }
   for (const [id, mapping] of Object.entries(modules)) {
     if (!moduleFiles.includes(mapping.file)) {
-      const record = add('modules', id, mapping.label ?? id, 'processes/business-logic-map.json')
+      const record = add('modules', id, mapping.label ?? id, 'open-processes/business-logic-map.json')
       check(record, 'Module source', 'missing', `Mapped file not found: ${mapping.file}`)
     }
   }
@@ -241,7 +242,7 @@ export function buildContentAudit(files, metadata) {
       linked: rows.filter(record => record.inbound > 0 || record.links.some(ref => ref.state === 'resolved')).length,
       unresolved: rows.reduce((total, record) => total + record.links.filter(ref => ref.state === 'unresolved').length, 0) }
   })
-  const coverage = json('coverage/coverage.json')
+  const coverage = json('open-law/workflow-coverage.json')
   const scopes = array(coverage.coverage, 'coverage scopes').map(value => ({
     scenario: value.scenario, processKey: processTarget(value.process_id), entityJurisdiction: value.entity_jurisdiction,
     taxJurisdiction: value.tax_jurisdiction, status: value.status, reviewedOn: value.reviewed_on,

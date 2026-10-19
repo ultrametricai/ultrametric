@@ -5,22 +5,22 @@ import { buildContentAudit } from './content-audit.mjs'
 const metadata = { sourceRevision: 'a'.repeat(40), sourceDirty: false, generatedAt: '2026-10-02T12:00:00Z' }
 function fixture() {
   const data = {
-    'content/processes/records/start.json': { schemaVersion: 1, id: 'start', kind: 'process', title: 'Start', summary: 'Prepare a result', outcomes: ['A result'], parts: [{ kind: 'step', guidance: 'Prepare it', metadata: { documents: ['form'], produces: ['result'] }, references: [{ kind: 'vendor', id: 'tool', role: 'uses' }] }], metadata: { kind: 'situation' } },
-    'processes/vendor-registry.json': { vendors: { tool: { arenaId: 'arena' } } },
-    'rankings/categories.json': [{ id: 'arena', name: 'An arena' }],
-    'rankings/arena-roadmap.json': [{ id: 'arena' }, { id: 'planned' }],
-    'rankings/arena/products.json': [{ id: 'tool', name: 'Tool' }],
-    'rankings/arena/stories.json': [{ id: 'story' }],
-    'rankings/arena/verdicts.json': [{ productId: 'tool', storyId: 'story', verdict: 'none', evidenceIds: ['proof'] }],
-    'rankings/arena/evidence/tool.json': [{ id: 'proof', tier: 'probe' }],
-    'rankings/reviews/generated/arena--tool.json': { tested_on: '2026-10-01', recheck_due: '2027-01-01', status: 'tested', reviewer: 'Automated pipeline' },
+    'open-processes/start.json': { schemaVersion: 1, id: 'start', kind: 'process', title: 'Start', summary: 'Prepare a result', outcomes: ['A result'], parts: [{ kind: 'step', guidance: 'Prepare it', metadata: { documents: ['form'], produces: ['result'] }, references: [{ kind: 'vendor', id: 'tool', role: 'uses' }] }], metadata: { kind: 'situation' } },
+    'open-processes/vendor-registry.json': { vendors: { tool: { arenaId: 'arena' } } },
+    'open-rankings/categories.json': [{ id: 'arena', name: 'An arena' }],
+    'open-rankings/arena-roadmap.json': [{ id: 'arena' }, { id: 'planned' }],
+    'open-rankings/arena/products.json': [{ id: 'tool', name: 'Tool' }],
+    'open-rankings/arena/stories.json': [{ id: 'story' }],
+    'open-rankings/arena/verdicts.json': [{ productId: 'tool', storyId: 'story', verdict: 'none', evidenceIds: ['proof'] }],
+    'open-rankings/arena/evidence/tool.json': [{ id: 'proof', tier: 'probe' }],
+    'open-rankings/reviews/generated/arena--tool.json': { tested_on: '2026-10-01', recheck_due: '2027-01-01', status: 'tested', reviewer: 'Automated pipeline' },
     'open-documents/registry.json': { review_window_days: 120, documents: [{ id: 'form', name: 'Form', license_note: 'Review terms', publisher: 'Example', url: 'https://example.test/form', checked_on: '2026-10-01', jurisdiction: 'Worldwide', use_case: 'formation' }] },
-    'citations/registry.json': { citations: [{ id: 'statute', role: 'authority', title: 'Statute', url: 'https://example.test/law', locator: '§ 1', checked_on: '2026-10-01', jurisdiction: 'US-DE' }] },
+    'open-law/citations/registry.json': { citations: [{ id: 'statute', title: 'Statute', url: 'https://example.test/law', locator: '§ 1', checked_on: '2026-10-01', jurisdiction: 'US-DE' }] },
     'jurisdictions/registry.json': { jurisdictions: [{ code: 'US-DE', name: 'Delaware', coverage: 'partial-example', scope: 'One example' }] },
-    'law/US-DE/rule.json': { id: 'rule', statement: 'A rule', source_ids: ['statute'], jurisdiction: 'US-DE', status: 'demonstration', reviewed_on: '2026-10-01', review_due: '2027-01-01' },
-    'processes/artifacts.json': { artifacts: [{ id: 'result', label: 'Result', description: 'Prepared result', producedBy: 'start' }] },
-    'processes/business-logic-map.json': { modules: { module: { label: 'Module', file: 'lib/openstartup/module.ts', processes: ['start'] } } },
-    'coverage/coverage.json': { coverage_claim: 'One demonstration only.', uncovered: ['Other scenarios'], coverage: [] },
+    'open-law/US-DE/rule.json': { id: 'rule', statement: 'A rule', source_ids: ['statute'], jurisdiction: 'US-DE', status: 'demonstration', reviewed_on: '2026-10-01', review_due: '2027-01-01' },
+    'open-artifacts/registry.json': { artifacts: [{ id: 'result', label: 'Result', description: 'Prepared result', producedBy: 'start' }] },
+    'open-processes/business-logic-map.json': { modules: { module: { label: 'Module', file: 'lib/openstartup/module.ts', processes: ['start'] } } },
+    'open-law/workflow-coverage.json': { coverage_claim: 'One demonstration only.', uncovered: ['Other scenarios'], coverage: [] },
   }
   const files = new Map(Object.entries(data).map(([file, value]) => [file, JSON.stringify(value)]))
   files.set('lib/openstartup/module.ts', 'export const value = 1')
@@ -41,22 +41,45 @@ test('separates declared situation markers, resolves cross-collection links, and
   assert.deepEqual(report.metrics[0], { label: 'Vendor story verdicts', covered: 1, total: 1, meaning: 'Unique product/story cells in the current ranking taxonomies, including negative verdicts.' })
   assert.equal(record(report, 'documents:form').links[0].state, 'external')
   assert.equal(report.declaredCoverage.claim, 'One demonstration only.')
+  assert.deepEqual(report.declaredCoverage.uncovered, ['Other scenarios'])
 })
 
 test('reports unresolved links and unavailable evidence without deleting records', () => {
   const files = fixture()
-  change(files, 'content/processes/records/start.json', value => value.parts[0].metadata.documents = ['missing-form'])
-  change(files, 'rankings/arena/verdicts.json', value => value[0].evidenceIds = ['missing-proof'])
+  change(files, 'open-processes/start.json', value => value.parts[0].metadata.documents = ['missing-form'])
+  change(files, 'open-rankings/arena/verdicts.json', value => value[0].evidenceIds = ['missing-proof'])
   const report = buildContentAudit(files, metadata)
   assert.equal(record(report, 'situations:start').links.find(item => item.target === 'documents:missing-form').state, 'unresolved')
   assert.equal(record(report, 'vendors:arena/tool').checks.find(item => item.label === 'Verdict evidence').state, 'missing')
 })
 
+test('audits rule cards and their incoming links without treating law registries or citations as rules', () => {
+  const files = fixture()
+  files.set('open-law/map.json', JSON.stringify({ jurisdictions: [] }))
+  files.set('open-law/workflow-domains.json', JSON.stringify({ version: '0.1.0', domains: [{ id: 'formation', name: 'Formation', topics: [] }] }))
+  change(files, 'open-processes/start.json', value => value.parts[0].references.push({ kind: 'rule', id: 'rule', role: 'governed-by' }))
+  const report = buildContentAudit(files, metadata)
+  const rule = record(report, 'law:rule')
+  assert.equal(rule.inbound, 1)
+  assert.ok(rule.links.some(item => item.target === 'citations:statute' && item.state === 'resolved'))
+  assert.ok(record(report, 'situations:start').links.some(item => item.target === 'law:rule' && item.state === 'resolved'))
+  assert.deepEqual(report.records.filter(item => item.collection === 'law').map(item => item.key), ['law:rule'])
+})
+
+test('rejects missing identities in rule cards and unrecognized law JSON files', () => {
+  const malformed = fixture()
+  change(malformed, 'open-law/US-DE/rule.json', value => delete value.id)
+  assert.throws(() => buildContentAudit(malformed, metadata), { message: 'Missing identity: open-law/US-DE/rule.json' })
+  const unknown = fixture()
+  unknown.set('open-law/unknown.json', JSON.stringify({ entries: [] }))
+  assert.throws(() => buildContentAudit(unknown, metadata), { message: 'Missing identity: open-law/unknown.json' })
+})
+
 test('distinguishes registered untracked vendors from invalid registry keys', () => {
   const files = fixture()
-  change(files, 'processes/vendor-registry.json', value => value.vendors.tool = {})
+  change(files, 'open-processes/vendor-registry.json', value => value.vendors.tool = {})
   assert.ok(record(buildContentAudit(files, metadata), 'situations:start').links.some(item => item.state === 'unmapped'))
-  change(files, 'processes/vendor-registry.json', value => delete value.vendors.tool)
+  change(files, 'open-processes/vendor-registry.json', value => delete value.vendors.tool)
   assert.ok(record(buildContentAudit(files, metadata), 'situations:start').links.some(item => item.state === 'unresolved'))
 })
 
@@ -71,18 +94,18 @@ test('reports missing module tests and invalid review dates without claiming exe
 
 test('fails on missing required inputs and duplicate identities', () => {
   const files = fixture()
-  files.delete('rankings/arena/verdicts.json')
+  files.delete('open-rankings/arena/verdicts.json')
   assert.throws(() => buildContentAudit(files, metadata), /Missing required/)
   const duplicate = fixture()
-  duplicate.set('content/processes/records/duplicate.json', duplicate.get('content/processes/records/start.json'))
+  duplicate.set('open-processes/duplicate.json', duplicate.get('open-processes/start.json'))
   assert.throws(() => buildContentAudit(duplicate, metadata), /Duplicate shared/)
 })
 
 test('keeps vendor identities local to their arena and hashes inputs deterministically', () => {
   const files = fixture()
-  change(files, 'rankings/categories.json', value => value.push({ id: 'second', name: 'Second' }))
-  for (const name of ['products', 'stories', 'verdicts']) files.set(`rankings/second/${name}.json`, files.get(`rankings/arena/${name}.json`))
-  files.set('rankings/second/evidence/tool.json', files.get('rankings/arena/evidence/tool.json'))
+  change(files, 'open-rankings/categories.json', value => value.push({ id: 'second', name: 'Second' }))
+  for (const name of ['products', 'stories', 'verdicts']) files.set(`open-rankings/second/${name}.json`, files.get(`open-rankings/arena/${name}.json`))
+  files.set('open-rankings/second/evidence/tool.json', files.get('open-rankings/arena/evidence/tool.json'))
   const report = buildContentAudit(files, metadata)
   assert.equal(report.collections.find(item => item.id === 'vendors').records, 2)
   assert.equal(report.inputDigest, buildContentAudit(new Map([...files].reverse()), metadata).inputDigest)
@@ -93,23 +116,23 @@ test('keeps vendor identities local to their arena and hashes inputs determinist
 
 test('does not treat uncited negative or inapplicable verdicts as invalid evidence', () => {
   const files = fixture()
-  change(files, 'rankings/arena/verdicts.json', value => { value[0].verdict = 'none'; value[0].evidenceIds = [] })
+  change(files, 'open-rankings/arena/verdicts.json', value => { value[0].verdict = 'none'; value[0].evidenceIds = [] })
   assert.equal(record(buildContentAudit(files, metadata), 'vendors:arena/tool').checks.find(item => item.label === 'Verdict evidence').state, 'present')
-  change(files, 'rankings/arena/verdicts.json', value => { value[0].verdict = 'full' })
+  change(files, 'open-rankings/arena/verdicts.json', value => { value[0].verdict = 'full' })
   assert.equal(record(buildContentAudit(files, metadata), 'vendors:arena/tool').checks.find(item => item.label === 'Verdict evidence').state, 'missing')
 })
 
 
 test('rejects a changed shared schema rather than misreading it as the old format', () => {
   const files = fixture()
-  change(files, 'content/processes/records/start.json', value => value.schemaVersion = 2)
+  change(files, 'open-processes/start.json', value => value.schemaVersion = 2)
   assert.throws(() => buildContentAudit(files, metadata), /Unsupported shared schema/)
 })
 
 
 test('preserves process review dates and flags overdue or reversed schedules', () => {
   const files = fixture()
-  change(files, 'content/processes/records/start.json', value => {
+  change(files, 'open-processes/start.json', value => {
     value.metadata.reviewed_on = '2026-09-30'
     value.metadata.review_due = '2026-09-29'
   })
@@ -130,7 +153,7 @@ test('rejects missing or invalid document review windows', () => {
 
 test('preserves each narrow coverage claim and its limits', () => {
   const files = fixture()
-  change(files, 'coverage/coverage.json', value => value.coverage.push({
+  change(files, 'open-law/workflow-coverage.json', value => value.coverage.push({
     scenario: 'One event', process_id: 'start', entity_jurisdiction: 'US-DE', tax_jurisdiction: 'US-FED',
     status: 'example', reviewed_on: '2026-09-30', review_due: '2026-12-30', limits: ['One example only'],
   }))

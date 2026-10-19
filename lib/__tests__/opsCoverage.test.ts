@@ -139,7 +139,7 @@ describe('buildArenaCoverage', () => {
     expect(cov.plannedArenas).toEqual([{ id: 'gamma', name: 'Gamma Arena', tier: 2, status: 'planned' }])
     expect(cov.liveNotPopulated).toEqual(['beta'])
     expect(cov.populatedNotInRoadmap).toEqual([])
-    expect(cov.untrackedVendors).toEqual([]) // fixture resolves no processes/corpus.json — honest empty
+    expect(cov.untrackedVendors).toEqual([]) // fixture resolves no open-processes/corpus.json — honest empty
   })
 })
 

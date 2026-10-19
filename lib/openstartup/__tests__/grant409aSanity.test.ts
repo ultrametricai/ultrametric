@@ -1,6 +1,6 @@
 // Textbook tests for the 409A grant sanity module. Two duties (the deadlines-module
 // pattern): (1) every ruleId in RULE_IDS_409A resolves to a committed, jurisdiction-matched
-// card in law/US-FED/ with primary sources — the module never asserts a legal condition
+// card in open-law/US-FED/ with primary sources — the module never asserts a legal condition
 // without a dated card behind it; (2) the date and price arithmetic is re-derived by hand
 // in comments. There is deliberately NO published valuation example to replay here: the
 // module refuses to value companies (it takes the 409A FMV as input, equityComp's posture),
@@ -25,7 +25,7 @@ import {
 } from '../grant409aSanity'
 
 function loadRuleCard(jurisdiction: string, ruleId: string) {
-  const dir = path.join(process.cwd(), 'law', jurisdiction)
+  const dir = path.join(process.cwd(), 'open-law', jurisdiction)
   for (const file of fs.readdirSync(dir).filter((f) => f.endsWith('.json'))) {
     const card = JSON.parse(fs.readFileSync(path.join(dir, file), 'utf8')) as {
       id: string
@@ -42,7 +42,7 @@ describe('every check resolves to a committed, jurisdiction-matched rule card', 
   for (const [name, ref] of Object.entries(RULE_IDS_409A)) {
     it(`${name} → ${ref.ruleId}`, () => {
       const card = loadRuleCard(ref.jurisdiction, ref.ruleId)
-      expect(card, `law/${ref.jurisdiction} must contain a card with id ${ref.ruleId}`).not.toBeNull()
+      expect(card, `open-law/${ref.jurisdiction} must contain a card with id ${ref.ruleId}`).not.toBeNull()
       expect(card?.jurisdiction).toBe(ref.jurisdiction)
       expect(card?.kind).toBe('legal')
       expect(card?.source_ids.length).toBeGreaterThan(0)
@@ -94,6 +94,17 @@ describe('fmvAgeCheck (rule us-fed.staleness: more than 12 months before the use
     const f = fmvAgeCheck('2025-09-15', '2026-09-16', { materialChangeSinceFmv: false })
     expect(f.level).toBe('fail')
     expect(f.note).toContain('stale after 2026-09-15')
+  })
+
+  it('a Feb 29 FMV date goes stale after Mar 1 (the documented month-addition convention)', () => {
+    const f = fmvAgeCheck('2024-02-29', '2025-03-01', { materialChangeSinceFmv: false })
+    expect(f.staleAfter).toBe('2025-03-01')
+    expect(f.level).toBe('pass') // the boundary day is not "more than 12 months"
+    expect(fmvAgeCheck('2024-02-29', '2025-03-02', { materialChangeSinceFmv: false }).level).toBe('fail')
+  })
+
+  it('staleness outranks the term-sheet flag: a stale FMV fails even with a term sheet', () => {
+    expect(fmvAgeCheck('2025-08-01', '2026-10-05', { termSheetSignedSinceFmv: true }).level).toBe('fail')
   })
 
   it('a signed priced-round term sheet flags even a fresh FMV (User Guide §B.6 convention)', () => {
@@ -355,6 +366,18 @@ describe('penaltyIllustration409a (rule us-fed.409a-penalty-additions, IRC § 40
     expect(p.producesValuation).toBe(false)
     expect(p.ruleId).toBe('us-fed.409a-penalty-additions')
     expect(p.note).toContain('Not a tax computation')
+  })
+
+  it('sums multiple hypothetical underpayment rows', () => {
+    // 50,000 × (7+1)% × 2 + 10,000 × (4+1)% × 1 = 8,000 + 500 = 8,500.
+    const p = penaltyIllustration409a({
+      includibleCompensation: 100_000,
+      hypotheticalUnderpayments: [
+        { underpayment: 50_000, underpaymentRatePct: 7, yearsOutstanding: 2 },
+        { underpayment: 10_000, underpaymentRatePct: 4, yearsOutstanding: 1 },
+      ],
+    })
+    expect(p.premiumInterestIllustration).toBe(8_500)
   })
 
   it('premium interest at (stated rate + 1 point), simple: $50,000 at 7% for 2 years → $8,000', () => {

@@ -3,7 +3,7 @@ import { describe, expect, it } from 'vitest'
 import { loadProcesses } from '@/lib/processes'
 import { ULTRAMETRIC_CLI_DISCLOSURE, ULTRAMETRIC_CLI_STEPS, ultrametricCliFor } from '@/lib/ultrametricCli'
 
-const DATA_DIR = path.resolve(__dirname, '../../rankings')
+const DATA_DIR = path.resolve(__dirname, '../../open-rankings')
 
 // The Ultrametric CLI/MCP step map (founder ask 2026-09-30) is OWNER-PRODUCT surface data:
 // every key must resolve against the live corpus (no stale/invented processes), every command

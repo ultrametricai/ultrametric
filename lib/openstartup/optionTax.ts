@@ -1,7 +1,7 @@
 // ISO vs NSO exercise tax mechanics (founder directive 2026-10-01: "go super deep on
 // business logic — tax mechanics, everything").
 //
-// Pure, client-safe, deterministic. Every formula cites a dated rule card in law/US-FED/
+// Pure, client-safe, deterministic. Every formula cites a dated rule card in open-law/US-FED/
 // backed by primary sources (IRC via verified statutory text, Treasury regulations, IRS
 // publications — see the cards' source_ids); the vitest gate
 // (lib/openstartup/__tests__/optionTax.test.ts) asserts every ruleId resolves to a
@@ -24,7 +24,7 @@
 // - TAX OUTCOMES DEPEND ON FACTS. Every result is needsReview: true, educational, not tax
 //   advice, and never an authorization to exercise, sell, withhold, or file.
 // - Regular-tax and AMT rates/thresholds that change yearly are asOf-dated parameter
-//   objects (AMT_PARAMS_2025, SUPPLEMENTAL_WITHHOLDING_2026) carrying their rule card —
+//   objects (AMT_PARAMS_2025 / AMT_PARAMS_2026, SUPPLEMENTAL_WITHHOLDING_2026) carrying their rule card —
 //   never claimed current.
 // - AMT exposure is a clearly-labeled ILLUSTRATION from explicit hypothetical inputs
 //   (26%/28% two-bracket tentative tax on AMTI net of the phased-out exemption). A real
@@ -46,6 +46,7 @@ export const OPTION_TAX_RULE_IDS = {
   iso100kLimit: { ruleId: 'us-fed.iso-100k-limit', jurisdiction: 'US-FED' },
   isoAmtAdjustment: { ruleId: 'us-fed.iso-amt-adjustment', jurisdiction: 'US-FED' },
   amtExemption: { ruleId: 'us-fed.amt-exemption-2025', jurisdiction: 'US-FED' },
+  amtExemption2026: { ruleId: 'us-fed.amt-exemption-2026', jurisdiction: 'US-FED' },
 } as const
 
 const DISCLAIMER =
@@ -288,7 +289,7 @@ export function iso100kAttribution(grants: readonly IsoGrant[]): IsoLimitReport 
   ordered.sort((a, b) => (a.grantDate === b.grantDate ? 0 : a.grantDate < b.grantDate ? -1 : 1))
   const remainingByYear: Record<number, number> = {}
   const slices: IsoLimitSlice[] = []
-  const years = [...new Set(ordered.flatMap((g) => g.firstExercisable.map((fe) => fe.year)))].sort()
+  const years = [...new Set(ordered.flatMap((g) => g.firstExercisable.map((fe) => fe.year)))].sort((a, b) => a - b)
   for (const year of years) {
     let remaining = ISO_ANNUAL_LIMIT
     for (const grant of ordered) {
@@ -430,8 +431,9 @@ export interface AmtParams {
   asOf: string
   taxYear: number
   ruleId: string
-  /** 25 cents per dollar over the threshold — confirmed by the published complete-phaseout
-   * amounts (threshold + exemption / 0.25 reproduces each one; replayed in the tests). */
+  /** Cents per dollar of AMTI over the threshold, as a fraction — 0.25 for 2025, 0.50 for
+   * 2026 (P.L. 119-21 § 70107). Confirmed by the published complete-phaseout amounts
+   * (threshold + exemption / rate reproduces each one; replayed in the tests). */
   phaseoutRate: number
   lowRate: number
   highRate: number
@@ -456,6 +458,26 @@ export const AMT_PARAMS_2025: AmtParams = {
   },
 }
 
+/** 2026 AMT parameters — rule `us-fed.amt-exemption-2026` (Rev. Proc. 2025-32 § 2.10,
+ * verified against the published PDF 2026-10-14). P.L. 119-21 § 70107 reset the § 55(d)(2)
+ * phaseout thresholds ($500,000 / $1,000,000 joint) and doubled the phaseout rate to 50
+ * cents per dollar. asOf-dated illustration inputs; the amounts adjust annually and are
+ * never claimed current. */
+export const AMT_PARAMS_2026: AmtParams = {
+  asOf: '2026-10-14',
+  taxYear: 2026,
+  ruleId: OPTION_TAX_RULE_IDS.amtExemption2026.ruleId,
+  phaseoutRate: 0.5,
+  lowRate: 0.26,
+  highRate: 0.28,
+  byStatus: {
+    joint: { exemption: 140_200, phaseoutThreshold: 1_000_000, highRateBreakpoint: 244_500 },
+    single: { exemption: 90_100, phaseoutThreshold: 500_000, highRateBreakpoint: 244_500 },
+    marriedFilingSeparately: { exemption: 70_100, phaseoutThreshold: 500_000, highRateBreakpoint: 122_250 },
+    estateOrTrust: { exemption: 31_400, phaseoutThreshold: 104_800, highRateBreakpoint: 244_500 },
+  },
+}
+
 export interface AmtExposureIllustration {
   kind: 'illustration'
   /** Hypothetical AMTI = amtiExcludingIso + isoSpread. */
@@ -475,11 +497,13 @@ export interface AmtExposureIllustration {
 
 /**
  * CLEARLY-LABELED ILLUSTRATION of AMT exposure from explicit hypothetical inputs — rules
- * `us-fed.iso-amt-adjustment` (why the spread is in AMTI) and `us-fed.amt-exemption-2025`
- * (the asOf-dated amounts). Mechanics per § 55(b)(1)/(d): exemption reduced 25 cents per
- * dollar of AMTI over the threshold (floored at 0), then 26% up to the breakpoint and 28%
- * above on the remainder. NOT a Form 6251 computation: capital-gains rate interactions,
- * credits, the § 53 minimum tax credit, and state tax are all outside these inputs.
+ * `us-fed.iso-amt-adjustment` (why the spread is in AMTI) and the asOf-dated amounts card
+ * the params object names (`us-fed.amt-exemption-2026` by default; pass AMT_PARAMS_2025
+ * for a 2025 exercise). Mechanics per § 55(b)(1)/(d): exemption reduced at the year's
+ * published rate per dollar of AMTI over the threshold (floored at 0), then 26% up to the
+ * breakpoint and 28% above on the remainder. NOT a Form 6251 computation: capital-gains
+ * rate interactions, credits, the § 53 minimum tax credit, and state tax are all outside
+ * these inputs.
  */
 export function amtExposureIllustration(inputs: {
   /** Hypothetical AMTI before the ISO adjustment — an explicit input, not derived. */
@@ -492,7 +516,7 @@ export function amtExposureIllustration(inputs: {
 }): AmtExposureIllustration {
   assertNonNegative(inputs.amtiExcludingIso, 'amtiExcludingIso')
   assertNonNegative(inputs.isoSpread, 'isoSpread')
-  const params = inputs.params ?? AMT_PARAMS_2025
+  const params = inputs.params ?? AMT_PARAMS_2026
   const s = params.byStatus[inputs.filingStatus]
   if (!s) throw new RangeError(`unknown filing status ${String(inputs.filingStatus)}`)
   const amti = round2(inputs.amtiExcludingIso + inputs.isoSpread)

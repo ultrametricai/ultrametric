@@ -6,7 +6,7 @@ import { computeHotFlags, loadCuratedHot } from '@/lib/hotProducts'
 // override must always validate, and every hot flag — mechanical or curated — must carry a
 // concrete reason and point at a product that actually exists in some arena.
 describe('committed hot-products data', () => {
-  it('rankings/hot-products.json parses and every curated entry names a real product', () => {
+  it('open-rankings/hot-products.json parses and every curated entry names a real product', () => {
     const curated = loadCuratedHot()
     const known = new Set(loadAll().flatMap((data) => data.products.map((p) => p.id)))
     for (const entry of curated) {

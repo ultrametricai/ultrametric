@@ -2,7 +2,7 @@
 // as abstract technologies in their pros and cons"): the /technologies page ranks ABSTRACT ways
 // of driving software — API, MCP, CLI, webhooks, built-in assistant… — not vendors. The site's
 // doctrine is evidence-first, so every number here is AGGREGATED from committed judged data
-// (rankings/*/verdicts.json + rankings.json via loadAll()); nothing is hand-scored. Only the
+// (open-rankings/*/verdicts.json + rankings.json via loadAll()); nothing is hand-scored. Only the
 // pros/cons prose and the story-id curation per surface are editorial, the same contract as
 // arena descriptions.
 //
@@ -70,7 +70,7 @@ export interface SurfaceDef {
 }
 
 // The curated surface list. Canonical ids map 1:1 onto the agent-access lens stories injected
-// into every arena (pipeline/agentic-stories.ts); emerging ids are arena-authored stories that
+// into every arena (rankings-engine/agentic-stories.ts); emerging ids are arena-authored stories that
 // clearly answer "official <surface> exists" — curation is editorial, verdicts are not.
 export const SURFACE_DEFS: SurfaceDef[] = [
   {
@@ -440,7 +440,7 @@ function computeSurface(def: SurfaceDef, categories: CategoryData[]): SurfaceRow
 //   - "Most mobile" / "Most visual": mobile/desktop/voice surfaces are judged in ≤7 arenas via
 //     arena-authored stories, and no judged story measures "visual" at all — a fleet ranking on
 //     either would be invented, not derived.
-//   - "Fastest growing": rankings/*/score-history.jsonl tracks scores over time but per-story
+//   - "Fastest growing": open-rankings/*/score-history.jsonl tracks scores over time but per-story
 //     verdict history is not committed, so surface growth is not recomputable from this repo.
 export const SURFACE_RANKS = [
   { id: 'adoption', name: 'Most adopted', title: 'Share of all judged products shipping the surface (full or partial verdict)' },

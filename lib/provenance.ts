@@ -1,13 +1,13 @@
 import { createHash, createHmac } from 'node:crypto'
 import type { Rankings } from './schemas'
 
-// Provenance watermark for the published dataset files (rankings/{category}/rankings.json, which
+// Provenance watermark for the published dataset files (open-rankings/{category}/rankings.json, which
 // is also what the /data API and the MCP servers serve verbatim). The HMAC key below is a
 // committed constant, NOT a secret: the point isn't to hide anything, it's that a republished
 // copy of our data carries a fingerprint only our exact bytes produce. Anyone (including us,
 // against a suspected copy) can recompute HMAC(key, arenaId + "\n" + sha256(content)) and check
-// it matches — see pipeline/scripts/verify-provenance.ts. Everything here is a pure function of
-// the rankings content + arena id, so pipeline/scripts/recompute-check.ts stays deterministic.
+// it matches — see rankings-engine/scripts/verify-provenance.ts. Everything here is a pure function of
+// the rankings content + arena id, so rankings-engine/scripts/recompute-check.ts stays deterministic.
 // Legacy-named from the pre-rebrand ProductArena era ON PURPOSE: this string is the HMAC key,
 // so renaming it would invalidate the fingerprint on every published dataset file.
 export const PROVENANCE_KEY = 'productarena-provenance-v1'

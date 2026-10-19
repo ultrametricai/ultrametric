@@ -6,15 +6,15 @@ import { loadProcesses, vendorLabel, VENDOR_ARENA, type DagNode } from './proces
 // dashboard for coverage: how deep we have tested all the vendors, arena coverage, missing
 // vendors, cron job frequency, and monitoring product launches from these vendors").
 //
-// Everything here reads committed repo state at BUILD time — rankings/*/ evidence + verdicts,
-// rankings/spike-queue.json, rankings/arena-roadmap.json, rankings/vendor-news.json, .github/workflows —
+// Everything here reads committed repo state at BUILD time — open-rankings/*/ evidence + verdicts,
+// open-rankings/spike-queue.json, open-rankings/arena-roadmap.json, open-rankings/vendor-news.json, .github/workflows —
 // and returns plain serializable rows for components/OpsDashboard.tsx. None of it is secret
-// (copy-data.mjs already mirrors all of rankings/ world-readable); the /ops admin gate is about
+// (copy-data.mjs already mirrors all of open-rankings/ world-readable); the /ops admin gate is about
 // FOCUS, not secrecy. Reads are deliberately TOLERANT (the /queue page's
 // convention): a missing optional file degrades to an honest empty section, never a build
 // failure. All functions take a data-dir override so tests run on small fixture dirs.
 
-const DEFAULT_DIR = () => path.join(process.cwd(), 'rankings')
+const DEFAULT_DIR = () => path.join(process.cwd(), 'open-rankings')
 
 function readJsonTolerant<T>(file: string): T | null {
   try {
@@ -265,7 +265,7 @@ export function buildArenaCoverage(dir: string = DEFAULT_DIR()): ArenaCoverage {
   try {
     tasks = loadProcesses(dir)
   } catch {
-    // No/invalid corpus (processes/corpus.json) resolved from this dir (fixtures) — census
+    // No/invalid corpus (open-processes/corpus.json) resolved from this dir (fixtures) — census
     // degrades to empty.
   }
 
@@ -375,15 +375,15 @@ export function buildCronHealth(repoRoot: string = process.cwd(), dir: string = 
       'spike-engine.yml keeps no schedule by design: since 2026-09-21 the daily 04:23 UTC spike ' +
       'runs as a session cron — in the founder’s Claude session, gates + commit + deploy in one ' +
       'pass — and the workflow stays dispatch-only as the manual/backup path. The vendor-news ' +
-      'watcher (pipeline/scripts/watch-vendor-news.ts) follows the same convention: session-run, ' +
+      'watcher (rankings-engine/scripts/watch-vendor-news.ts) follows the same convention: session-run, ' +
       'budgeted, resumable.',
     lastRuns: [
-      { label: 'Score history (story-runner / engines)', date: newestScore, source: 'rankings/*/score-history.jsonl' },
-      { label: 'Popularity history (daily-snapshot)', date: newestPopularity, source: 'rankings/*/popularity-history.jsonl' },
-      { label: 'Agent-surface SLO check (daily-snapshot / story-runner)', date: slo, source: 'rankings/slo-history.jsonl' },
-      { label: 'Spike queue re-rank (session cron)', date: spike?.generatedAt ?? null, source: 'rankings/spike-queue.json' },
-      { label: 'Staleness scan (accuracy-engine, Wednesdays)', date: staleness?.generatedAt ?? null, source: 'rankings/staleness-report.json' },
-      { label: 'Vendor news watcher (session cron)', date: news?.generatedAt ?? null, source: 'rankings/vendor-news.json' },
+      { label: 'Score history (story-runner / engines)', date: newestScore, source: 'open-rankings/*/score-history.jsonl' },
+      { label: 'Popularity history (daily-snapshot)', date: newestPopularity, source: 'open-rankings/*/popularity-history.jsonl' },
+      { label: 'Agent-surface SLO check (daily-snapshot / story-runner)', date: slo, source: 'open-rankings/slo-history.jsonl' },
+      { label: 'Spike queue re-rank (session cron)', date: spike?.generatedAt ?? null, source: 'open-rankings/spike-queue.json' },
+      { label: 'Staleness scan (accuracy-engine, Wednesdays)', date: staleness?.generatedAt ?? null, source: 'open-rankings/staleness-report.json' },
+      { label: 'Vendor news watcher (session cron)', date: news?.generatedAt ?? null, source: 'open-rankings/vendor-news.json' },
     ],
   }
 }

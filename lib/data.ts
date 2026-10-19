@@ -14,7 +14,7 @@ export {
 } from './data-helpers'
 import type { CategoryData } from './data-helpers'
 
-const DEFAULT_DIR = () => path.join(process.cwd(), 'rankings')
+const DEFAULT_DIR = () => path.join(process.cwd(), 'open-rankings')
 
 const categoriesCache = new Map<string, Category[]>()
 const categoryCache = new Map<string, CategoryData>()
@@ -123,7 +123,7 @@ export function loadCategory(categoryId: string, dir: string = DEFAULT_DIR()): C
   }
 
   // Optional, same contract as popularity/claims above: not every category is a "close race"
-  // (see pipeline/scripts/uncertainty-pass.ts) or has been through this pass at all.
+  // (see rankings-engine/scripts/uncertainty-pass.ts) or has been through this pass at all.
   const uncertaintyPath = path.join(catDir, 'uncertainty.json')
   const uncertainty = fs.existsSync(uncertaintyPath) ? UncertaintyArraySchema.parse(read('uncertainty.json')) : []
   for (const u of uncertainty) {

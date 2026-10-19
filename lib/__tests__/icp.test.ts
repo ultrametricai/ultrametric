@@ -216,8 +216,8 @@ describe('IcpTypesSchema', () => {
   })
 })
 
-describe('committed rankings/icp-types.json', () => {
-  const REAL = path.resolve(__dirname, '../../rankings')
+describe('committed open-rankings/icp-types.json', () => {
+  const REAL = path.resolve(__dirname, '../../open-rankings')
 
   it('parses and only references personas/themes/groups that exist in live arenas', () => {
     const icps = loadIcpTypes(REAL)

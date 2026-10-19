@@ -2,29 +2,32 @@
 
 [![Discord](https://img.shields.io/badge/Discord-Join_the_community-5865F2?style=for-the-badge&logo=discord&logoColor=white)](https://discord.gg/3aHky836qP)
 
-**The open repo breaking down every part of the startup journey for the agentic era.**
+**The open repo for the whole startup journey in the agentic era.**
 
-This repo is home to all the processes you need to run, vendors and tools you need to compare, advice you need to hear, and helpful modules to reduce lock-in. Let's make it easy to start and run a professional startup in the US and other geographies.
+Navigate all business processes, compare and select AI native vendors, inform yourself on startup lore, run open modules to become vendor free, save money using open documentation. Help future founders by making PRs to the open artifacts, gaps in open documents or improve the open module logic. Let's make it easy to start and run a startup around the world.
 
-```
+<pre>
 ultrametric/
-├── processes/       every founder process, step by step
-├── rankings/        evidence, verdicts, computed scores
-├── pipeline/        crawl, probe, judge, derive
-├── open-modules/    the startup calculations, indexed
-├── lib/             the code behind modules and loaders
-├── law/             startup law, one rule per record
-├── citations/       the sources every record cites
-├── jurisdictions/   countries, states, vendor geography
-├── open-documents/  the open legal documents catalog
-├── lore/            heuristics, episodes, the library
-├── coverage/        what is covered, at what maturity
-├── schemas/         the JSON contracts for every record
-└── governance/      review, evidence, and agent policy
-```
+├── <a href="#open-vendor-rankings">open-rankings</a>/      per-market products, stories, evidence, verdicts
+├── <a href="#open-processes">open-processes</a>/     founder processes and situations as routed, timed steps
+├── <a href="#open-modules">open-modules</a>/       worked guides to each startup calculation
+├── <a href="#open-startup-simulator">open-startup-sim</a>/   what the simulator runs and assumes
+├── <a href="#open-law">open-law</a>/           startup legal rules by jurisdiction, the distilled laws
+├── <a href="#open-lore">open-lore</a>/          founder advice and stories, who said it, the reading library
+├── <a href="#open-docs">open-documents</a>/     openly published legal documents, by use case
+├── <a href="#open-artifacts">open-artifacts</a>/     the business objects processes exchange, with field standards
+├── rankings-engine/    the code that crawls, probes, judges, scores
+├── lib/                loaders, scoring, the calculation and simulator code
+├── jurisdictions/      country and state data, vendor availability
+├── coverage/           what each area covers and what is missing
+├── schemas/            the JSON shape each data file validates against
+└── policies/           how records are reviewed and what agents may do here
+</pre>
 
 <!-- Legacy anchor: external links to #start-here predate the merge into this map. -->
 <a id="start-here"></a>
+
+Supporting founders globally: 🌐 🇺🇸 🇬🇧 🇮🇳 🇩🇪 🇫🇷 🇵🇹 🇨🇦
 
 [![A tour of ultrametric.ai at 4x: the simulator founding a company, a process page, a vendor page, a situation, the overall rankings, government services, and open documents](assets/readme/demo.gif)](https://ultrametric.ai)
 
@@ -32,15 +35,21 @@ ultrametric/
 
 ## Open vendor rankings
 
-The tools startups run on, examined through an agentic lens: can an agent actually drive
-each one, is it testable, and do the vendor's claims match what we found hands-on. The
-rankings order products by how automatable they are, and every verdict can be contested.
+We've looked at all the tools and vendors needed for founders to start and operate their company. Vendors are then ranked in terms of how easy it is for your AI to access and control them. From business banking, to payroll, to gov services for filing tax or your trademark. We want to know what claims match reality and who is the most AI native when it comes to their APIs, CLIs, MCPs and computer use surface area.
 
-<!-- arenas:start -->
-**96 rankings** today, 670 products judged head to head — the full index is [ultrametric.ai/arenas](https://ultrametric.ai/arenas), and each ranking's records live under [`rankings/`](rankings/).
-<!-- arenas:end -->
+Example rankings:
 
-[![The overall rankings on ultrametric.ai: companies ranked by agent readiness, with per-market leaderboards behind each row](assets/readme/rankings-overall.png)](https://ultrametric.ai/overall)
+- [Startup banking](https://ultrametric.ai/arena/startup-banking) — business bank accounts ranked on agent access, from opening the account to moving money
+- [Cap table & equity](https://ultrametric.ai/arena/equity-management) — cap table platforms ranked on how well an agent can read and update the cap table
+- [Startup legal & incorporation](https://ultrametric.ai/arena/legal-ops) — formation services ranked on agent access to incorporation, filings, and the documents they produce
+- [Online payments](https://ultrametric.ai/arena/payments) — payment processors ranked on how well an agent can integrate and operate them
+- [Email marketing](https://ultrametric.ai/arena/email-marketing) — campaign platforms ranked on agent control of audiences, sends, and results
+- [CRM](https://ultrametric.ai/arena/crm) — customer systems ranked on what an agent can read, write, and automate
+- [Government services](https://ultrametric.ai/arena/government-services) — the IRS, Companies House, HMRC and other agencies, judged like vendors, compared per country
+
+The [full index of ranked markets](https://ultrametric.ai/arenas) is live, and the data behind each board lives under [`open-rankings/`](open-rankings/).
+
+[![The overall rankings on ultrametric.ai: companies ranked by agent readiness, scored on agent access and built-in AI](assets/readme/rankings-overall.png)](https://ultrametric.ai/overall)
 
 [Add your vendor](CONTRIBUTING.md#add-your-vendor)
 
@@ -48,12 +57,12 @@ rankings order products by how automatable they are, and every verdict can be co
 
 ## Open processes
 
-Every founder [process](processes/), step by step. Each step is routed agent, form, or
+The founder [processes](open-processes/) are written step by step. Each step is routed agent, form, or
 human, timed, and marked by how hard it is to undo. The vendors that can run a step are
 listed on it, with their judged scores. See it live at
 [ultrametric.ai/processes](https://ultrametric.ai/processes).
 
-[![The founder processes on ultrametric.ai, each with its phase, agentic share, step count, and vendors](assets/readme/processes-index.png)](https://ultrametric.ai/processes)
+[![The founder processes on ultrametric.ai, ranked on the founder timeline, with area and agentic share](assets/readme/processes-index.png)](https://ultrametric.ai/processes)
 
 ### Examples
 
@@ -63,39 +72,58 @@ listed on it, with their judged scores. See it live at
 
 [![The Incorporate C-Corp process: the step diagram, each step routed agent, form, or human, with ranked vendor options per step](assets/readme/process-page.png)](https://ultrametric.ai/processes/incorporate-c-corp)
 
-[Add a process](CONTRIBUTING.md#add-a-process)
-
 <!-- Legacy anchor: external links to #business-logic predate the open-modules/ rename. -->
 <a id="business-logic"></a>
 
 ## Open modules
 
-The standard startup calculations, ready to run: cap table math, SAFE conversion,
+The standard startup calculations are ready to run: cap table math, SAFE conversion,
 dilution, sale waterfalls, runway, vesting, option tax, and filing deadlines. The code
-lives in [`lib/openstartup/`](lib/openstartup/), and you can run and check it. Every
-formula cites its source and replays the published worked examples in tests.
+lives in [`lib/openstartup/`](lib/openstartup/), and you can run and check it. Formulas
+cite their sources and replay the published worked examples in tests.
 
-| Module | What it computes |
-| --- | --- |
-| [Cap table](open-modules/README.md#cap-table) | Issuance, option pools, SAFE conversion, priced-round price per share, dilution |
-| [Vesting](open-modules/README.md#vesting-mechanics) | Cliff and periodic schedules, back-loaded tranches, acceleration, departures |
-| [83(b) election](open-modules/README.md#83b-election-math) | Tax at grant vs tax at vesting, forfeiture cost |
-| [QSBS (§ 1202)](open-modules/README.md#qsbs--1202) | Eligibility conditions, holding clock, exclusion percentages, per-issuer cap |
-| [Deadlines](open-modules/README.md#deadline-calendar) | The founder compliance calendar, each date citing a rule card |
-| [Convertible notes](open-modules/README.md#convertible-notes) | Interest accrual, cap/discount conversion, maturity paths |
-| [Sale waterfall](open-modules/README.md#liquidity-event-waterfall) | Per-holder proceeds at a sale price |
-| [Anti-dilution](open-modules/README.md#anti-dilution) | Weighted-average and full-ratchet adjustments |
-| [Priced round](open-modules/README.md#priced-round-mechanics) | Pro rata, pool sizing from a hiring plan, down rounds, secondaries |
-| [Round composer](open-modules/README.md#priced-round-composer) | A priced round end to end, term sheet to post-close table |
-| [409A](open-modules/README.md#409a-grant-sanity) | Strike floor, valuation staleness, presumption timing |
-| [Equity comp](open-modules/README.md#offer--equity-comp-scenarios) | Offer grant percentage, option spread, exit scenarios |
-| [Option tax](open-modules/README.md#iso--nso-exercise-tax) | NSO income at exercise, ISO/AMT outcomes, the $100,000 limit, sale outcomes |
-| [Payroll tax](open-modules/README.md#employer-payroll-tax) | Employer FICA/FUTA load, per-employee annual cost |
-| [Delaware franchise tax](open-modules/README.md#delaware-franchise-tax) | Both published methods, the cheaper-method comparison |
-| [R&D tax](open-modules/README.md#rd-tax-mechanics) | § 174 amortization, § 41(h) payroll-offset mechanics |
-| [Runway](open-modules/README.md#runway--burn) | Default-alive trajectories, hiring impact |
-| [Unit economics](open-modules/README.md#unit-economics) | LTV/CAC, burn multiple, Rule of 40, magic number |
-| [Deferred revenue](open-modules/README.md#deferred-revenue-subscriptions) | Subscription revenue recognition, plan-change proration |
+The catalog is organized into four groups; the Serves column names the processes each
+module computes for, written from the committed module-to-process map by
+`scripts/generate-business-logic-serves.ts`.
+
+### Formation & equity
+
+| Module | What it computes | Serves |
+| --- | --- | --- |
+| [Cap table](open-modules/README.md#cap-table) | Issuance, option pools, SAFE conversion, priced-round price per share, dilution | Incorporate C-Corp · Sign the founder agreement & split equity · Set up cap table · Update cap table · Audit cap table · Raise pre-seed (SAFEs) · Close a priced equity round · Issue stock options · Convert SAFEs at the priced round · Handle a co-founder departure |
+| [Vesting](open-modules/README.md#vesting-mechanics) | Cliff and periodic schedules, back-loaded tranches, acceleration, departures | Incorporate C-Corp · Sign the founder agreement & split equity · Issue stock options · Hire first employee · Hire an executive · Handle a co-founder departure |
+| [83(b) election](open-modules/README.md#83b-election-math) | Tax at grant vs tax at vesting, forfeiture cost | Incorporate C-Corp · Sign the founder agreement & split equity · Convert an LLC to a C-Corp |
+| [QSBS (§ 1202)](open-modules/README.md#qsbs--1202) | Eligibility conditions, holding clock, exclusion percentages, per-issuer cap | Incorporate C-Corp · Convert an LLC to a C-Corp |
+| [Equity comp](open-modules/README.md#offer--equity-comp-scenarios) | Offer grant percentage, option spread, exit scenarios | Issue stock options · Hire first employee · Hire an executive |
+| [Option tax](open-modules/README.md#iso--nso-exercise-tax) | NSO income at exercise, ISO/AMT outcomes, the $100,000 limit, sale outcomes | Issue stock options · Offboard employee |
+| [409A](open-modules/README.md#409a-grant-sanity) | Strike floor, valuation staleness, presumption timing | Close a priced equity round · Get a 409A valuation · Issue stock options |
+
+### Fundraising & exits
+
+| Module | What it computes | Serves |
+| --- | --- | --- |
+| [Convertible notes](open-modules/README.md#convertible-notes) | Interest accrual, cap/discount conversion, maturity paths | Raise pre-seed (SAFEs) · Convert SAFEs at the priced round |
+| [Priced round](open-modules/README.md#priced-round-mechanics) | Pro rata, pool sizing from a hiring plan, down rounds, secondaries | Close a priced equity round · Convert SAFEs at the priced round |
+| [Round composer](open-modules/README.md#priced-round-composer) | A priced round end to end, term sheet to post-close table | Close a priced equity round · Convert SAFEs at the priced round |
+| [Anti-dilution](open-modules/README.md#anti-dilution) | Weighted-average and full-ratchet adjustments | Close a priced equity round |
+| [Sale waterfall](open-modules/README.md#liquidity-event-waterfall) | Per-holder proceeds at a sale price | Raise pre-seed (SAFEs) · Close a priced equity round |
+
+### Tax & compliance
+
+| Module | What it computes | Serves |
+| --- | --- | --- |
+| [Deadlines](open-modules/README.md#deadline-calendar) | The founder compliance calendar, each date citing a rule card | Incorporate C-Corp · Sign the founder agreement & split equity · Convert an LLC to a C-Corp · File DE franchise tax · File federal tax return · Cure a Delaware franchise tax delinquency |
+| [Payroll tax](open-modules/README.md#employer-payroll-tax) | Employer FICA/FUTA load, per-employee annual cost | Set up payroll · Hire first employee · Run payroll |
+| [Delaware franchise tax](open-modules/README.md#delaware-franchise-tax) | Both published methods, the cheaper-method comparison | File DE franchise tax · Cure a Delaware franchise tax delinquency |
+| [R&D tax](open-modules/README.md#rd-tax-mechanics) | § 174 amortization, § 41(h) payroll-offset mechanics | Claim the R&D tax credit |
+
+### Finance & runway
+
+| Module | What it computes | Serves |
+| --- | --- | --- |
+| [Runway](open-modules/README.md#runway--burn) | Default-alive trajectories, hiring impact | Track runway · Send the board financial report · Set the annual budget & get board approval |
+| [Unit economics](open-modules/README.md#unit-economics) | LTV/CAC, burn multiple, Rule of 40, magic number | Track runway · Send the board financial report · Prepare a board meeting · Save a churning customer · Roll out a pricing change |
+| [Deferred revenue](open-modules/README.md#deferred-revenue-subscriptions) | Subscription revenue recognition, plan-change proration | Bookkeeping close · Set up subscription billing · Roll out a pricing change |
 
 [`open-modules/README.md`](open-modules/README.md) has each module's contract, worked
 examples, and boundaries.
@@ -104,29 +132,31 @@ examples, and boundaries.
 
 The modules and processes read one shared set of company fields: incorporation date,
 authorized shares, par value, cash on hand, the common-share FMV. Each field is
-registered in [`processes/company-fields.json`](processes/company-fields.json), so the
-same value feeds every module that needs it. Every record shape is published as a JSON
-Schema in [`schemas/`](schemas/).
-
-[Add an open module](CONTRIBUTING.md#add-an-open-module)
+registered in [`open-artifacts/fields.json`](open-artifacts/fields.json), so the
+same value feeds the modules that need it. The data shapes are published as JSON
+Schemas in [`schemas/`](schemas/).
 
 ## Open artifacts
 
-The documents and records that processes produce and consume: the certificate of
+Artifacts are the documents and files that processes produce and consume: the certificate of
 incorporation, the EIN letter, the cap table. Each is registered in
-[`processes/artifacts.json`](processes/artifacts.json), so every process declares what
-it makes and what it needs. See it live at
+[`open-artifacts/registry.json`](open-artifacts/registry.json), so the processes declare what
+they make and what they need. The typed data fields those artifacts establish (the EIN, the
+incorporation date, the file number) are specified in
+[`open-artifacts/fields.json`](open-artifacts/fields.json), each with its format, defining
+authority, and per-country equivalents; [`open-artifacts/README.md`](open-artifacts/README.md)
+is the guide. See it live at
 [ultrametric.ai/artifacts](https://ultrametric.ai/artifacts).
 
-[![The artifacts view on ultrametric.ai: the documents and records founder processes produce and consume](assets/readme/artifacts.png)](https://ultrametric.ai/artifacts)
+[![The artifacts view on ultrametric.ai: the documents and files founder processes produce and consume](assets/readme/artifacts.png)](https://ultrametric.ai/artifacts)
 
 <!-- Legacy anchor: inbound links to #open-docs predate the fold under Open artifacts. -->
 <a id="open-docs"></a>
 
 ### Open docs
 
-The openly published startup legal [documents](open-documents/), grouped by what they
-are for. Each entry links the publisher's live page and carries the date it was last
+The openly published startup legal [documents](open-documents/) are collected and grouped
+by what they are for. Each entry links the publisher's live page and carries the date it was last
 checked. Known gaps are recorded too. See it live at
 [ultrametric.ai/open-documents](https://ultrametric.ai/open-documents).
 
@@ -140,11 +170,15 @@ checked. Known gaps are recorded too. See it live at
 | Privacy | [DPA](https://commonpaper.com/standards/data-processing-agreement/), [BAA](https://commonpaper.com/standards/business-associate-agreement/), [AI addendum](https://commonpaper.com/standards/ai-addendum/) |
 | Open-source | [Apache ICLA](https://www.apache.org/licenses/icla.pdf), [Developer Certificate of Origin](https://developercertificate.org/) |
 
-## Situations
+<!-- Legacy anchor: inbound links to #situations predate the open- family rename. -->
+<a id="situations"></a>
 
-[Guides](processes/SITUATIONS.md) for reactive work: a breach is live, a summons lands,
-a tax notice arrives. Each names its trigger and an urgency clock of hours, days, or
-weeks. See it live at [ultrametric.ai/situations](https://ultrametric.ai/situations).
+## Open situations
+
+[Unplanned events](open-processes/SITUATIONS.md) are routed into the process graph: a breach, a
+summons, a tax notice. Each names what triggers it, how fast you must act (hours, days, or
+weeks), and the steps that run, routed agent, form, or human like any process. See it live
+at [ultrametric.ai/situations](https://ultrametric.ai/situations).
 
 [![The situations index on ultrametric.ai, reactive work sorted hottest clock first](assets/readme/situations.png)](https://ultrametric.ai/situations)
 
@@ -160,73 +194,127 @@ automatically.
 - [Get EIN](https://ultrametric.ai/processes/get-ein) — in the UK, France, Portugal, and Canada the tax ID arrives automatically with incorporation; in Germany it is its own filing with the tax office
 - [Set up an LLC](https://ultrametric.ai/processes/set-up-an-llc) — the analog shifts by country (LLP in the UK and India, UG in Germany, SARL in France) and Canada has no LLC at all
 
-[Add a jurisdiction](CONTRIBUTING.md#add-a-jurisdiction)
-
 ## Open lore
 
-The [advice](lore/) founders actually pass around, and the [episodes](lore/LORE.md) behind
-it: who said it, where it is written down, and how well documented it is. When the
-schools disagree, both sides are recorded. The [library](lore/library.json) collects the
-best essays, guides, books, and talks, organized from starting up through getting
+Lore is the [advice](open-lore/) founders actually pass around and the [stories](open-lore/LORE.md)
+behind it: who said it, where it is written down, and how well documented it is. When the
+schools disagree, both sides are recorded. The [library](open-lore/library.json) collects the
+best essays, guides, books, and talks, organized from deciding to start through getting
 acquired.
 
 | Section | What it teaches | Example entry |
 | --- | --- | --- |
-| Starting up and ideas | Deciding to start, finding an idea worth working on, and the first weeks of a company. | [How to Start a Startup](https://paulgraham.com/start.html) — Paul Graham |
+| Deciding to start | Whether to start a startup at all: the case for building, the cost of the bargain, and the mindset that survives it. | [How to Make Wealth](https://paulgraham.com/wealth.html) — Paul Graham |
+| Ideas and markets | Finding an idea worth working on, judging the market it lives in, and choosing the scale of ambition. | [How to Get Startup Ideas](https://paulgraham.com/startupideas.html) — Paul Graham |
+| Starting up | The first months of a company: the condensed playbooks, the accelerator application, and the mistakes that kill early startups. | [How to Start a Startup](https://paulgraham.com/start.html) — Paul Graham |
+| Co-founders and founding decisions | Picking co-founders, splitting equity, naming, and the setup decisions made once: incorporation, banking, cap table, visas, and where to build. The readings are US-centric. | [How to pick a co-founder](https://venturehacks.com/pick-cofounder) — Naval Ravikant |
 | Finding product-market fit | Talking to users, shipping a minimum product, and measuring whether the market pulls. | [The Only Thing That Matters](https://pmarchive.com/guide_to_startups_part4.html) — Marc Andreessen |
-| Fundraising | Raising seed and priced rounds: instruments, term sheets, pitching, and runway math. | [How to Raise Money](https://paulgraham.com/fr.html) — Paul Graham |
-| Hiring and culture | Recruiting, interviewing, compensation, and the management systems that scale a team. | [How to Hire](https://blog.samaltman.com/how-to-hire) — Sam Altman |
+| Building the product | Scoping the MVP, product design and UX, and the engineers who ship it. | [Getting Real](https://basecamp.com/gettingreal) — Jason Fried, David Heinemeier Hansson, and Matt Linderman |
+| Fundraising | Raising seed and priced rounds: instruments, term sheets, pitching, investor emails, and runway math. The instruments and norms described are US-centric. | [How to Raise Money](https://paulgraham.com/fr.html) — Paul Graham |
+| Hiring and culture | Recruiting, interviewing, compensation, and the cultures teams are built on. | [How to Hire](https://blog.samaltman.com/how-to-hire) — Sam Altman |
+| Operating | Running the company: management systems, founder time, prioritization, and pace. | [High Output Management](https://www.penguinrandomhouse.com/books/72467/high-output-management-by-andrew-s-grove-former-chairman-and-ceo-of-intel/) — Andrew S. Grove |
 | Growth and distribution | First users, growth loops, channel decay, and when to scale spend and headcount. | [Startup = Growth](https://paulgraham.com/growth.html) — Paul Graham |
 | Pricing and sales | Setting and raising prices, founder-led selling, and building the first sales team. | [Why Your Customers Would Be Happier If You Charged More](https://www.kalzumeus.com/2012/09/21/ramit-sethi-and-patrick-mckenzie-on-why-your-customers-would-be-happier-if-you-charged-more/) — Patrick McKenzie with Ramit Sethi |
 | Exits and acquisitions | Deciding whether to sell, running an acquisition process, and life after the deal. | [Notes on the Acquisition Process](https://cdixon.org/2012/09/10/notes-on-the-acquisition-process/) — Chris Dixon |
 
 ### Example: Getting acquired
 
-The acquisition episodes are recorded lore: WhatsApp, Twitch, and MySpace are in
-`lore/LORE.md`, each with its lesson and sources. The sale math is live; the
-waterfall module computes who gets what at any price. The acquisition playbook itself is
-a mapped, open gap in [`coverage/`](coverage/).
+The mechanics are extracted from the essays, each tied to its source: contested claims in
+the [registry](open-lore/registry.json) with their tensions mapped, uncontested rules in
+[rules.json](open-lore/rules.json), and the works themselves in the
+[library](open-lore/library.json). From Justin Kan's
+[The Founder's Guide to Selling Your Company](https://web.archive.org/web/20181123041114/https://justinkan.com/the-founders-guide-to-selling-your-company-a1b2025c9481):
+an offer is real only when it carries an expiration date or a term sheet promised within
+24-48 hours; once committed to a sale, share diligence data freely under an NDA and refuse
+acquirer interviews of your team; leverage ends at the term sheet, so settle the points and
+a short close (target 30 days) before signing. Where the canon disagrees, both sides are
+linked as a tension: Horowitz's case for the fat startup (in a big market, outspending
+beats running lean) against Ries's lean loop, and Kan's sell-from-strength against Cohen's
+rich-versus-king. The acquisition stories (WhatsApp, Twitch, MySpace) are in
+[`open-lore/LORE.md`](open-lore/LORE.md) with lessons and sources, and the waterfall
+module computes who gets what at any price. The acquisition playbook process is a known,
+open gap.
 
 ## Open law
 
-Map the [law](law/) that applies to startups, across jurisdictions, and connect it to
-the calculations and the vendors that act on it. Each legal statement is one dated record
-citing a primary [authority](citations/) (a statute, regulation, or agency page) with the
-exact section. A blog post cannot establish law.
+Map the [law](open-law/) that applies to startups, across jurisdictions, and connect it to
+the processes, calculations, and vendors that act on it. Each legal statement is one dated
+rule card citing a primary [authority](open-law/citations/) (a statute, regulation, or
+agency page) with the exact section. A blog post cannot establish law. The cards are scoped
+by jurisdiction: [federal](open-law/US-FED/), [Delaware](open-law/US-DE/),
+[California](open-law/US-CA/), [Nevada](open-law/US-NV/), [New York](open-law/US-NY/),
+[Texas](open-law/US-TX/), [Washington](open-law/US-WA/), and the [EU](open-law/EU/). The
+distilled [startup laws](open-law/LAWS.md) collect the recurring principles the reading
+canon keeps re-teaching, grouped by lifecycle stage from
+[idea](open-law/LAWS.md#idea-and-validation) through
+[survival](open-law/LAWS.md#survival-and-the-long-game), each citing its sources. The
+[domain map](open-law/README.md#the-map) ties each legal area to the rule cards covering
+it and the processes it governs, graded mapped, partial, or unmapped.
+
+### Example: The 83(b) election
+
+One rule, followed through the repo. The distilled law states the thirty-day window
+([Formation and housekeeping](open-law/LAWS.md#formation-and-housekeeping)); its rule card
+[`us-fed.83b-filing-period`](open-law/US-FED/us-fed-83b-filing-period.json) pins the IRS
+procedure; the [Incorporate C-Corp](https://ultrametric.ai/processes/incorporate-c-corp)
+process signs and files the election as explicit steps, with the jurisdiction-scoped
+workflow [`equity.us-de.83b-election`](open-processes/equity/us-de/83b-election.json)
+requiring a named human approval on the filing; and the
+[83(b) election math module](open-modules/README.md#83b-election-math) computes
+tax-at-grant against tax-at-vesting, replaying the IRS revenue-procedure examples in
+tests.
 
 ## Government services and startups
 
-Government [agencies](rankings/government-services/) are judged like vendors: the IRS,
+Government [agencies](open-rankings/government-services/) are judged like vendors: the IRS,
 Companies House, HMRC, the Handelsregister. Per-country boards compare how well each
 agency works for a founder or an agent. See it live at
 [ultrametric.ai/arena/government-services](https://ultrametric.ai/arena/government-services).
+
+[![The government services country board on ultrametric.ai: countries compared through their judged agencies, company registry to immigration](assets/readme/government-services.png)](https://ultrametric.ai/arena/government-services)
 
 ## Startup ecosystem
 
 The service providers around a startup (law firms, immigration counsel, accountants,
 banks) are ranked in their own markets and wired to the process steps they serve. See the
 law firms live at
-[ultrametric.ai/arena/startup-law-firms](https://ultrametric.ai/arena/startup-law-firms).
+[ultrametric.ai/rankings/law-firms](https://ultrametric.ai/rankings/law-firms).
+
+[![The startup law firms ranking on ultrametric.ai: firms scored on venture financing, formation, IP protection, and startup programs, with country availability](assets/readme/law-firms.png)](https://ultrametric.ai/rankings/law-firms)
 
 ## Open startup simulator
 
-A simulated company runs the whole process library end to end. Every step is routed
-agent, form, or human, and everything it generates is visibly marked simulated.
+A simulated company runs the whole process library end to end, and everything it
+generates is visibly marked simulated.
 
 [![The Open Startup simulator mid-run: a simulated company executing the founder processes](assets/readme/startup-sim.png)](https://ultrametric.ai/startup-sim)
 
-## Open skills for startups
-
-`ultrametric init` installs the bundled agent skill
-([install guide](https://docs.ultrametric.ai/cli/install)), so a coding agent can
-retrieve a process, run the agent-routed steps, and save progress from inside your repo.
-Skill collections themselves are a judged market: see it live at
-[ultrametric.ai/arena/agent-skills](https://ultrametric.ai/arena/agent-skills).
-
-[![The Agent Skills ranking on ultrametric.ai, skill collections and plugin catalogs judged head to head](assets/readme/agent-skills.png)](https://ultrametric.ai/arena/agent-skills)
-
 <a id="for-ai-agents"></a>
 <a id="use-it-from-an-agent"></a>
+
+## Stages
+
+Each lifecycle stage cuts across the repo: the processes to run, the vendor markets to
+pick from, the modules that do the math, the artifacts produced, and the lore and law
+behind the decisions. Two stages as examples:
+
+### Stage: Formation
+
+- Process: [Incorporate C-Corp](https://ultrametric.ai/processes/incorporate-c-corp) — filing to signed 83(b)
+- Vendors: [startup legal & incorporation](https://ultrametric.ai/arena/legal-ops) and [startup banking](https://ultrametric.ai/arena/startup-banking)
+- Modules: [cap table](open-modules/README.md#cap-table) and [83(b) election math](open-modules/README.md#83b-election-math)
+- Artifacts: the certificate of incorporation and EIN letter in the [registry](open-artifacts/registry.json), establishing the incorporation-date and EIN [fields](open-artifacts/fields.json)
+- Lore: the [library's](open-lore/library.json) co-founders and founding-decisions readings, distilled in [formation and housekeeping](open-law/LAWS.md#formation-and-housekeeping)
+- Law: the [Delaware incorporation cards](open-law/US-DE/) and the [83(b) filing period](open-law/US-FED/us-fed-83b-filing-period.json)
+
+### Stage: Growth
+
+- Processes: [set up email marketing](https://ultrametric.ai/processes/set-up-email-marketing) and [build an SEO & content engine](https://ultrametric.ai/processes/build-an-seo-content-engine)
+- Vendors: [email marketing](https://ultrametric.ai/arena/email-marketing) and [CRM](https://ultrametric.ai/arena/crm)
+- Module: [runway & burn](open-modules/README.md#runway--burn) — default-alive trajectories as spend scales
+- Artifacts: the marketing email audience and subscription billing in the [registry](open-artifacts/registry.json)
+- Lore: the [library's](open-lore/library.json) growth and distribution readings, distilled in [growth, people and spending](open-law/LAWS.md#growth-people-and-spending)
+- Law: the [CAN-SPAM requirements](open-law/US-FED/us-fed-can-spam-requirements.json) on the sends
 
 ## Install Ultrametric
 
@@ -235,19 +323,11 @@ keys.
 
 ```bash
 npm install -g ultrametric@latest                   # CLI + MCP server + agent skill
-curl https://ultrametric.ai/data/categories.json    # every ranking, raw JSON
+curl https://ultrametric.ai/data/categories.json    # all rankings, raw JSON
 curl https://ultrametric.ai/llms.txt                # the index for agents
 ```
 
 [ultrametric.ai/get-started](https://ultrametric.ai/get-started) · [docs.ultrametric.ai](https://docs.ultrametric.ai)
-
-## Methodology
-
-Every score is computed from dated, cited evidence. An unknown is shown as unknown, not
-zero. Negative results stay published, a score cannot move without new evidence, and the
-founders' own products are disclosed and checked for bias. The full method is in
-[METHODOLOGY.md](./METHODOLOGY.md); see it live at
-[ultrametric.ai/methodology](https://ultrametric.ai/methodology).
 
 ## License
 

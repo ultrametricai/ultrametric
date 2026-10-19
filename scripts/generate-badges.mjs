@@ -1,12 +1,12 @@
 // Embeddable score badges: renders two static shield-style SVGs per ranked product into
 // public/badges/ — `<id>-agent-ready.svg` (the leaderboard's agentReady component) and
 // `<id>-score.svg` (the blended Overall score, internally `aiEra`) — plus one
-// `<id>-certified.svg` per Agent-Ready certification (rankings/<arena>/certifications.json,
+// `<id>-certified.svg` per Agent-Ready certification (open-rankings/<arena>/certifications.json,
 // docs/CERTIFICATION.md). Plain node, no deps.
 //
 // The SVGs are COMMITTED build inputs, not build artifacts (unlike public/data/): they only
 // change when rankings change, so the workflow is "re-run after a re-judge, commit the diff"
-// (see README's pipeline section), keeping `pnpm build` badge-free. Badge consumers hotlink
+// (see README's refresh workflow), keeping `pnpm build` badge-free. Badge consumers hotlink
 // the deployed URL (see app/badges/page.tsx), so a redeploy is what updates everyone's badge.
 //
 // The pure string helpers (textWidth, badgeSvg) are exported for unit tests
@@ -88,7 +88,7 @@ export function badgeSvg({ label, score }) {
  * The certification badge: same shield layout, right panel always emerald (a certification is
  * only ever rendered for an earned, unexpired level — there is no "untested" variant), text
  * "CERTIFIED AGENT-READY · 2026" (or AGENT-NATIVE), year taken from the certification date.
- * See docs/CERTIFICATION.md; the registry entries live in rankings/<arena>/certifications.json.
+ * See docs/CERTIFICATION.md; the registry entries live in open-rankings/<arena>/certifications.json.
  *
  * @param {{ level: 'agent-ready' | 'agent-native', date: string }} cert
  * @returns {string} a complete standalone SVG document
@@ -136,7 +136,7 @@ export function badgeFiles(productId, entry) {
 }
 
 function main() {
-  const dataDir = path.join(ROOT, 'rankings')
+  const dataDir = path.join(ROOT, 'open-rankings')
   const outDir = path.join(ROOT, 'public', 'badges')
   fs.mkdirSync(outDir, { recursive: true })
 

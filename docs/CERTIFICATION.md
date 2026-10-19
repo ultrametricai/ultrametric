@@ -8,8 +8,8 @@ anyone, and expiring after 180 days.
 
 The current implementation: the suite is `ultrametric-cli certify` (the CLI lives in its own
 repo; the maintainer-side implementation the weekly sweep runs is
-`pipeline/scripts/certify.ts`), the
-registry is `rankings/<arena>/certifications.json` (`CertificationSchema` in
+`rankings-engine/scripts/certify.ts`), the
+registry is `open-rankings/<arena>/certifications.json` (`CertificationSchema` in
 `lib/certifications.ts`, loaded tolerant-optionally by `lib/data.ts`), the public listing is
 [/certified](https://ultrametric.ai/certified), intake is the
 [Certification](../.github/ISSUE_TEMPLATE/certification.yml) issue form, and badges come from
@@ -22,7 +22,7 @@ npx ultrametric-cli certify https://docs.your-product.com --report cert-report.j
 ```
 
 Six checks, all keyless, read-only, and run from the operator's machine against public
-surfaces (the same conventions as the pipeline's probe stage, `pipeline/stages/probe.ts`):
+surfaces (the same conventions as the engine's probe stage, `rankings-engine/stages/probe.ts`):
 
 | check | passes when |
 | --- | --- |
@@ -56,8 +56,8 @@ Certification is claims-with-receipts, so the protocol is deliberately symmetric
    command — and diffs the per-check statuses against the submitted report. Content digests
    will legitimately differ for dynamic bodies; the check statuses and level must match. A
    mismatch is discussed on the issue (transient flakes get one re-run), not papered over.
-4. **On a match**, one PR commits: the registry entry in `rankings/<arena>/certifications.json`,
-   the maintainer's re-run report at `rankings/<arena>/cert-reports/<productId>.json` (served at
+4. **On a match**, one PR commits: the registry entry in `open-rankings/<arena>/certifications.json`,
+   the maintainer's re-run report at `open-rankings/<arena>/cert-reports/<productId>.json` (served at
    `/data/<arena>/cert-reports/<productId>.json` like every dataset file — that's the
    `reportUrl`), and the regenerated badge.
 
@@ -93,11 +93,11 @@ Not listed yet? [Request the product](../.github/ISSUE_TEMPLATE/request-a-produc
 - **Badge**: `public/badges/<productId>-certified.svg` — the shield variant reading
   `CERTIFIED AGENT-READY · <year>` (or AGENT-NATIVE), hotlinkable like the score badges.
 
-## 4. Honesty rules
+## 4. Program rules
 
 - **The suite is the certification.** No judgment calls, no partial credit, no negotiated
   exceptions: the levels are pure functions of check statuses (`certificationLevel` in
-  `pipeline/scripts/certify.ts`), and the code is public.
+  `rankings-engine/scripts/certify.ts`), and the code is public.
 - **Failing runs are not secrets.** We don't publish a registry of failures (this program
   certifies, Prove-It disputes), but a maintainer re-run that contradicts a submitted report
   is discussed in the open, on the submission issue.

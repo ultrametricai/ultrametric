@@ -2,9 +2,9 @@
 // WITHOUT any new judging. See README "Score intervals" for the full writeup; the model, exactly:
 //
 //   Per product, each verdict cell gets a noise distribution built from the MEASURED re-roll
-//   statistics in rankings/*/uncertainty.json (the multi-judge uncertainty pass re-judged 650+
+//   statistics in open-rankings/*/uncertainty.json (the multi-judge uncertainty pass re-judged 650+
 //   decisive cells 2 extra times each against unchanged evidence — see
-//   pipeline/scripts/uncertainty-pass.ts):
+//   rankings-engine/scripts/uncertainty-pass.ts):
 //
 //   - Evidenced full/partial/disputed/none cells resample their verdict tier from the measured
 //     cached-tier → re-roll-tier transition rates (e.g. a cached `full` re-rolled to `partial`
@@ -31,7 +31,7 @@
 //
 // Layout mirrors the scoreHistory/scoreTrend split, collapsed into one file: the simulation +
 // measurement helpers up top are pure (no fs — unit-testable, usable from the pipeline script),
-// the tolerant-optional loader for rankings/{cat}/score-intervals.json at the bottom uses node:fs
+// the tolerant-optional loader for open-rankings/{cat}/score-intervals.json at the bottom uses node:fs
 // and is server-only. Client components never import this module — bands reach them as props.
 import fs from 'node:fs'
 import path from 'node:path'
@@ -250,12 +250,12 @@ export function simulateScoreInterval(
 }
 
 // ---------------------------------------------------------------------------
-// Tolerant-optional loader for rankings/{cat}/score-intervals.json (server-only).
+// Tolerant-optional loader for open-rankings/{cat}/score-intervals.json (server-only).
 // ---------------------------------------------------------------------------
 
 export const SCORE_INTERVALS_FILE = 'score-intervals.json'
 
-const DEFAULT_DIR = () => path.join(process.cwd(), 'rankings')
+const DEFAULT_DIR = () => path.join(process.cwd(), 'open-rankings')
 
 const intervalsCache = new Map<string, Map<string, ScoreIntervalEntry>>()
 

@@ -1,5 +1,5 @@
 // Textbook tests for the § 1202 QSBS module. Duties: (1) every ruleId in QSBS_RULE_IDS
-// resolves to a committed, jurisdiction-matched card in law/US-FED/ with primary
+// resolves to a committed, jurisdiction-matched card in open-law/US-FED/ with primary
 // sources; (2) the cap arithmetic replays the standard published worked example (greater
 // of $10M or 10x basis — the example every reputable QSBS explainer uses), re-derived in
 // comments directly from § 1202(b)(1); (3) the regime routing (the July 4, 2025
@@ -21,7 +21,7 @@ import {
 } from '../qsbs'
 
 function loadRuleCard(jurisdiction: string, ruleId: string) {
-  const dir = path.join(process.cwd(), 'law', jurisdiction)
+  const dir = path.join(process.cwd(), 'open-law', jurisdiction)
   for (const file of fs.readdirSync(dir).filter((f) => f.endsWith('.json'))) {
     const card = JSON.parse(fs.readFileSync(path.join(dir, file), 'utf8')) as {
       id: string
@@ -38,7 +38,7 @@ describe('every condition resolves to a committed, jurisdiction-matched rule car
   for (const [name, ref] of Object.entries(QSBS_RULE_IDS)) {
     it(`${name} → ${ref.ruleId}`, () => {
       const card = loadRuleCard(ref.jurisdiction, ref.ruleId)
-      expect(card, `law/${ref.jurisdiction} must contain a card with id ${ref.ruleId}`).not.toBeNull()
+      expect(card, `open-law/${ref.jurisdiction} must contain a card with id ${ref.ruleId}`).not.toBeNull()
       expect(card?.jurisdiction).toBe(ref.jurisdiction)
       expect(card?.kind).toBe('legal')
       expect(card?.source_ids.length).toBeGreaterThan(0)
@@ -147,6 +147,11 @@ describe('qsbsExclusionPercentage (rule us-fed.qsbs-exclusion-percentage)', () =
     expect(qsbsExclusionPercentage(acq, '2030-07-04').percentage).toBe(75)
   })
 
+  it('rejects malformed dates and a disposition before acquisition', () => {
+    expect(() => qsbsExclusionPercentage('2020-1-1', '2026-01-01')).toThrow(RangeError)
+    expect(() => qsbsExclusionPercentage('2020-01-01', '2019-12-31')).toThrow(RangeError)
+  })
+
   it('a too-early sale points at the § 1045 rollover instead of silence', () => {
     expect(qsbsExclusionPercentage('2019-01-01', '2022-01-01').note).toContain('us-fed.qsbs-1045-rollover')
   })
@@ -181,6 +186,18 @@ describe('qsbsPerIssuerCap (rule us-fed.qsbs-per-issuer-cap)', () => {
       qsbsPerIssuerCap({ acquisitionDate: '2020-01-01', basisOfStockDisposed: 0, marriedFilingSeparately: true }).cap,
     ).toBe(5_000_000)
     expect(QSBS_PARAMS.postApplicableDate.capBase).toBe(15_000_000)
+  })
+
+  it('MFS halves the post-applicable-date dollar limb to $7,500,000 (§ 1202(b)(3)(A)(ii))', () => {
+    expect(
+      qsbsPerIssuerCap({ acquisitionDate: '2025-08-01', basisOfStockDisposed: 0, marriedFilingSeparately: true }).cap,
+    ).toBe(7_500_000)
+  })
+
+  it('prior-year gain can exhaust the dollar limb; 10x basis still governs', () => {
+    const r = qsbsPerIssuerCap({ acquisitionDate: '2020-01-01', basisOfStockDisposed: 1000, priorYearEligibleGain: 10_000_000 })
+    expect(r.dollarLimb).toBe(0)
+    expect(r.cap).toBe(10_000)
   })
 })
 

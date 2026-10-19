@@ -209,4 +209,14 @@ describe('downRoundPreview — the anti-dilution clause quantified on the post-c
     const preview = downRoundPreview(replay, issuance, 'full-ratchet')
     expect(preview.adjustments[0].conversionPriceAfter).toBe(0.5)
   })
+
+  it('protects SAFE sub-series only via extraProtected, at their own effective prices', () => {
+    const preview = downRoundPreview(replay, issuance, 'broad-based', [
+      { seriesName: 'Investor A', originalIssuePrice: 0.34, conversionPriceBefore: 0.34, basis: 'broad-based' },
+    ])
+    // The $0.50 issuance is ABOVE Investor A's $0.34 conversion price — no adjustment for
+    // it, while the $1.1144 new-money series still adjusts.
+    expect(preview.adjustments.find((a) => a.seriesName === 'Investor A')!.adjusted).toBe(false)
+    expect(preview.adjustments[0].adjusted).toBe(true)
+  })
 })

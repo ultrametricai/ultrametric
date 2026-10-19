@@ -1,5 +1,5 @@
-// Pure helpers for the multi-judge uncertainty pass (see pipeline/scripts/uncertainty-pass.ts,
-// which collects the raw judgments and writes rankings/{cat}/uncertainty.json, and lib/schemas.ts's
+// Pure helpers for the multi-judge uncertainty pass (see rankings-engine/scripts/uncertainty-pass.ts,
+// which collects the raw judgments and writes open-rankings/{cat}/uncertainty.json, and lib/schemas.ts's
 // UncertaintyEntrySchema for the shape this feeds). Kept free of node:fs/network so it's usable
 // from both the pipeline (Node) and the app (product page "±" marker) and is trivially
 // unit-testable.

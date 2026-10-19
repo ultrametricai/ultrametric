@@ -2,7 +2,7 @@
 // logic — tax mechanics, everything").
 //
 // Pure, client-safe, deterministic; UTC ISO-date arithmetic only. Every legal condition
-// cites a dated rule card in law/US-FED/ backed by the verified statutory text
+// cites a dated rule card in open-law/US-FED/ backed by the verified statutory text
 // (26 U.S.C. §§ 1202, 1045 — checked 2026-10-01, INCLUDING the P.L. 119-21 (2025)
 // amendments: the July 4, 2025 "applicable date" splits the regimes, so the $50M/$75M
 // gross-asset ceilings, $10M/$15M caps, and 5-year vs 3/4/5-year tiers are all routed by
@@ -265,7 +265,7 @@ export function qsbsHoldingClock(inputs: {
     milestones,
     ruleIds,
     needsReview: true,
-    note: `${startNote} Acquisition date also routes the regime (acquired ${post ? 'after' : 'on or before'} the ${QSBS_APPLICABLE_DATE} applicable date). Exact day counting at a milestone boundary is a legal determination. ${DISCLAIMER}`,
+    note: `${startNote} Acquisition date also routes the regime (acquired ${post ? 'after' : 'on or before'} the ${QSBS_APPLICABLE_DATE} applicable date); for nonvested stock without an 83(b) election, § 83 timing can place the acquisition at vesting and move it across the applicable date — a legal determination, routed here by the raw acquisition date. Exact day counting at a milestone boundary is a legal determination. ${DISCLAIMER}`,
   }
 }
 
@@ -367,7 +367,7 @@ export function qsbsPerIssuerCap(inputs: {
     governingLimb: tenTimesBasisLimb > dollarLimb ? 'ten-times-basis' : 'dollar',
     ...QSBS_RULE_IDS.perIssuerCap,
     needsReview: true,
-    note: `Greater of $${dollarLimb.toLocaleString('en-US')} (the ${post ? '$15,000,000 post-applicable-date base, indexed after 2026 — verify the current amount' : '$10,000,000 base'}${inputs.marriedFilingSeparately ? ', halved for MFS' : ''}, less prior-year eligible gain) and 10 x $${inputs.basisOfStockDisposed.toLocaleString('en-US')} basis = $${tenTimesBasisLimb.toLocaleString('en-US')}. Per issuer, per taxpayer, per year. ${DISCLAIMER}`,
+    note: `Greater of $${dollarLimb.toLocaleString('en-US')} (the ${post ? '$15,000,000 post-applicable-date base, indexed after 2026 — verify the current amount' : '$10,000,000 base'}${inputs.marriedFilingSeparately ? ', halved for MFS' : ''}, less prior-year eligible gain) and 10 x $${inputs.basisOfStockDisposed.toLocaleString('en-US')} basis = $${tenTimesBasisLimb.toLocaleString('en-US')}. Per issuer, per taxpayer, per year.${post ? ' § 1202(b)(4)(B) also reduces the $15,000,000 limb by SAME-year eligible gain on the issuer’s pre-applicable-date stock — not an input here, so a mixed-regime seller’s limb can be overstated (rule us-fed.qsbs-per-issuer-cap caveat).' : ''} ${DISCLAIMER}`,
   }
 }
 

@@ -6,7 +6,7 @@ re-judge stability, and bias disclosure. The on-site
 [/methodology](https://ultrametric.ai/methodology) page is a tight one-screen summary of this
 document, and the [README](./README.md#methodology) carries a short summary; this file is the
 source of truth. See also [README.md](./README.md) for the ranking list, data layout, and
-pipeline workflow, and [CONTRIBUTING.md](./CONTRIBUTING.md) for how to contest a verdict.
+engine workflow, and [CONTRIBUTING.md](./CONTRIBUTING.md) for how to contest a verdict.
 
 New to the site and just want plain-language answers ("what does `na` mean," "why does this
 score look low," "how do I disagree")? See **[docs/SCORING.md](./docs/SCORING.md)** — a
@@ -28,7 +28,7 @@ strongest first:
 | `community` | independent forums/reviews/social posts (independent) |
 | `claimed-docs` | vendor site/docs/changelog copy (vendor claim) |
 
-Evidence is stored per product at `rankings/{category}/evidence/{product}.json`, each item with a
+Evidence is stored per product at `open-rankings/{category}/evidence/{product}.json`, each item with a
 stable id, tier, source URL, verbatim excerpt, and fetch timestamp (`fetchedAt`).
 
 A direct, hands-on probe of the product (see "Probe harness" below) outranks a GitHub README,
@@ -44,13 +44,13 @@ badge tier.
 
 ### Probe harness
 
-`pnpm run pipeline probe` runs a small set of keyless, hands-on checks per product and turns each
+`pnpm engine probe` runs a small set of keyless, hands-on checks per product and turns each
 *definitive* result — positive or negative — into a `probe`-tier evidence item (ambiguous
 results, e.g. a 403 from a WAF, produce no item rather than a guess): whether `/llms.txt`
 resolves, whether the docs URL serves a `.md` variant, whether a conventional OpenAPI spec
 path resolves, and whether the curated `links.mcp`/`links.cli` URLs are live. See
-`pipeline/stages/probe.ts` (`runProbeChecks`) for the exact rules and
-`pipeline/__tests__/probe.test.ts` for coverage with a mocked fetcher (no live network calls
+`rankings-engine/stages/probe.ts` (`runProbeChecks`) for the exact rules and
+`rankings-engine/__tests__/probe.test.ts` for coverage with a mocked fetcher (no live network calls
 in tests). Like `collect-community`, re-running `probe` for a product replaces only its prior
 `probe`-tier items — other tiers are untouched.
 
@@ -79,8 +79,8 @@ the prompt version, or the judge model actually changed.
 ### Judge model & prompt version
 
 The judge is an Anthropic model — `claude-opus-5-5` by default since 2026-09-30 (previously
-`claude-sonnet-5`), overridable via the `UM_JUDGE_MODEL` env var (`pipeline/llm.ts`; the pre-rename `PA_MODEL` spelling still works as a deprecated fallback) — driven by a
-versioned system prompt in `pipeline/stages/judge.ts` (`PROMPT_VERSION`, currently **`v4`**;
+`claude-sonnet-5`), overridable via the `UM_JUDGE_MODEL` env var (`rankings-engine/llm.ts`; the pre-rename `PA_MODEL` spelling still works as a deprecated fallback) — driven by a
+versioned system prompt in `rankings-engine/stages/judge.ts` (`PROMPT_VERSION`, currently **`v4`**;
 the v4 bump marks the judge-model migration — the prompt text is unchanged from v3). Because
 the prompt version AND the judge model id are part of every cell's cache key, changing either
 deliberately invalidates all cached verdicts, so a prompt or model change is always followed
@@ -102,9 +102,9 @@ What each version added:
      content is *about the story's subject* — off-topic negative sentiment (e.g. unrelated
      security news) must not move a verdict or appear in the rationale.
 
-Calibration is gated by `pnpm calibrate` (`pipeline/scripts/calibration-check.ts`), which
+Calibration is gated by `pnpm calibrate` (`rankings-engine/scripts/calibration-check.ts`), which
 re-runs the live judge against a hand-verified golden-cell set
-(`pipeline/golden/golden-cells.json`) and fails on more than 2 tier mismatches.
+(`rankings-engine/golden/golden-cells.json`) and fails on more than 2 tier mismatches.
 
 ## Scoring formula
 
@@ -129,7 +129,7 @@ wrong-axis story is marked `na` and excluded rather than counted against a produ
 ### Claims vs reality — the claims-integrity index
 
 Every product's vendor claims (extracted from its own docs/GitHub materials by
-`pipeline/stages/claims.ts`) are reconciled against our judge's independent verdicts
+`rankings-engine/stages/claims.ts`) are reconciled against our judge's independent verdicts
 (`lib/claims.ts`). Each claim that maps onto a story lands in one of three **testable**
 buckets: *verified* (full/partial verdict backed by corroborated/tested evidence),
 *unverified* (full/partial verdict, but only the vendor's own claim backs it), or
@@ -158,7 +158,7 @@ and each product page's "Claims vs evidence" section opens with its integrity su
 
 Every ranking includes the same 9 canonical "agenticness" stories, injected verbatim (never
 LLM-authored) so agent-readiness is comparable across categories. Defined in
-`pipeline/agentic-stories.ts`:
+`rankings-engine/agentic-stories.ts`:
 
 | Story id | Story | Weight |
 |---|---|---|
@@ -266,17 +266,17 @@ probes land, so the fastest way to raise one is to submit reproducible evidence.
 
 ## Story provenance
 
-Every story in `rankings/{category}/stories.json` optionally carries an `origin` field
+Every story in `open-rankings/{category}/stories.json` optionally carries an `origin` field
 (`lib/schemas.ts`'s `StoryOriginSchema`) recording where it came from and when:
 
 | `origin.kind` | Meaning |
 |---|---|
-| `canonical` | one of the 29 fixed agenticness/openness/automation-depth/privacy-posture stories (`pipeline/agentic-stories.ts`), injected verbatim into every category by `normalize.ts`'s `assembleTaxonomy` — never LLM-authored |
+| `canonical` | one of the 29 fixed agenticness/openness/automation-depth/privacy-posture stories (`rankings-engine/agentic-stories.ts`), injected verbatim into every category by `normalize.ts`'s `assembleTaxonomy` — never LLM-authored |
 | `normalized` | assembled into the category's taxonomy by the LLM-driven `normalize` stage; carries the judge `promptVersion` in force at the time |
 | `contest` | added or adjusted via a contest issue (not yet exercised — `contest-check.ts` only appends evidence today, never stories) |
 | `manual` | hand-edited |
 
-`origin` is additive and never participates in `cellHash` (`pipeline/stages/judge.ts`) —
+`origin` is additive and never participates in `cellHash` (`rankings-engine/stages/judge.ts`) —
 stamping or backfilling it can never invalidate the judge cache or change a verdict. Hover a
 story title or matrix cell on any product page to see its origin in the tooltip (e.g.
 "canonical" or "normalized · v2").
@@ -311,15 +311,15 @@ fleet-wide — a judge-scale change, not a capability change.
 ## Score intervals — the ± band on every Overall score
 
 Every Overall score carries a **68% confidence band** ("42 ±3 /100" on product pages; the exact
-low–high band in the score badge's tooltip, including on the homepage mega-table). The band is
-an honest statement of how much the published number could move under the judge noise we have
-actually **measured** — it is *analytic v1*: computed from existing data with **no new judging**.
+low–high band in the score badge's tooltip, including on the homepage mega-table). The band
+states how much the published number could move under the judge noise we have actually
+**measured** — it is *analytic v1*: computed from existing data with **no new judging**.
 
-How it's built (`pipeline/scripts/compute-confidence-intervals.ts`, math in
+How it's built (`rankings-engine/scripts/compute-confidence-intervals.ts`, math in
 `lib/scoreIntervals.ts`):
 
 - **Per-cell noise comes from measured re-roll statistics, never invented rates.** The
-  multi-judge uncertainty pass (`rankings/*/uncertainty.json`, see the re-judge stability policy
+  multi-judge uncertainty pass (`open-rankings/*/uncertainty.json`, see the re-judge stability policy
   above) re-judged 650+ decisive cells twice more against unchanged evidence; ~20% showed some
   disagreement. From those samples we build a cached-tier → re-rolled-tier transition matrix
   (e.g. a `full` cell re-rolls to `partial` ~7% of the time), and every evidenced
@@ -328,7 +328,7 @@ How it's built (`pipeline/scripts/compute-confidence-intervals.ts`, math in
   means "we found nothing either way", not "it failed" — it scores 0 today but could plausibly
   be a `partial` on new evidence. Each such cell flips to `partial` with probability equal to
   the measured any-disagreement rate (~0.20), with quality bounded to the plausible [3, 7]
-  range. Products whose score rests on many untested cells therefore get honestly wider bands.
+  range. Products whose score rests on many untested cells therefore get wider bands.
 - **Applicability is pinned.** `na` cells never resample — the re-judge stability policy
   reverts `na`↔`none` churn that cites no new evidence, so published applicability is
   policy-stable and modeling it as noise would overstate the band.
@@ -338,7 +338,7 @@ How it's built (`pipeline/scripts/compute-confidence-intervals.ts`, math in
   the resulting distribution; agent-readiness gets its own band the same way. The PRNG is
   seeded (mulberry32, keyed per product) — builds are byte-reproducible, no `Math.random`.
 
-Results land in `rankings/{category}/score-intervals.json` (committed, re-run post-derive by the
+Results land in `open-rankings/{category}/score-intervals.json` (committed, re-run post-derive by the
 story-runner). Display is tolerant-optional (`lib/scoreIntervals.ts`): no interval data ⇒ no
 band is ever rendered — never a fabricated one. Fleet-wide as of the first pass the median band
 width is ~4.5 Overall score points.
@@ -357,20 +357,20 @@ a different question than everything else on this site: not "is this AI-ready" b
 project still be alive tomorrow" — a reader-requested survival/support signal.
 
 It is **deliberately not part of the Overall score** and never affects rankings, leaderboard
-position, or any battle outcome (`pnpm run pipeline popularity` makes no LLM calls and its output,
-`rankings/{category}/popularity.json`, isn't read by `lib/scoring.ts`). Popularity measures
+position, or any battle outcome (`pnpm engine popularity` makes no LLM calls and its output,
+`open-rankings/{category}/popularity.json`, isn't read by `lib/scoring.ts`). Popularity measures
 *adoption* — how many people already use something — which is a lagging, momentum-driven
 signal unrelated to whether a product is well-built for AI agents today. A ten-year-old
 framework with a huge install base and a brand-new, better-designed API for agents should not
 outrank each other because of stars; keeping popularity out of the score preserves what the
 score actually means. Coverage is necessarily partial: only products with a `urls.github` or a
-curated npm/PyPI package (`pipeline/popularity-packages.json`) have any numbers at all, and a
+curated npm/PyPI package (`rankings-engine/popularity-packages.json`) have any numbers at all, and a
 missing chip means "no public signal available," not "unpopular."
 
 ## Pricing tiers — an annotation, not a score
 
 Every (product, story) cell the judge ruled **full/partial** carries a pricing-tier annotation
-(`rankings/{category}/story-tiers.json`, produced by `pipeline/scripts/classify-story-tiers.ts`):
+(`open-rankings/{category}/story-tiers.json`, produced by `rankings-engine/scripts/classify-story-tiers.ts`):
 **free**, **paid**, **enterprise**, or **unknown** — which plan a buyer needs for that delivered
 capability. It answers the "what can I actually do without paying?" question the verdicts alone
 don't.
@@ -429,7 +429,7 @@ What we did about it:
   to `partial` (quality 5) after adjudication. The sole citation was a bare, title-only doc
   fragment ("Debug live web applications | Chrome") with no scope or mechanism detail, while
   every competing product's comparable-or-better evidence for the same story capped at
-  `partial`/`none`. The verdict's rationale in `rankings/ai-coding/verdicts.json` documents the
+  `partial`/`none`. The verdict's rationale in `open-rankings/ai-coding/verdicts.json` documents the
   downgrade and the shared-vendor conflict explicitly. This changed Claude Code's overall
   score from 35.5 to 35.2 (it remained the category leader).
 - **A second adversarial review pass, run for v2.4, audited the new api-quality/agent-access
@@ -439,7 +439,7 @@ What we did about it:
   applied to competitors), and one **in** Claude Code's favor, applied to a competitor
   (GitHub Copilot's `agentic-mcp-server` downgraded `partial`→`none`, quality 5→0 — its cited
   evidence showed MCP *client* administration, not an official MCP server offered by the
-  product). Both corrections are recorded in `rankings/ai-coding/verdicts.json` with rationale
+  product). Both corrections are recorded in `open-rankings/ai-coding/verdicts.json` with rationale
   suffixes citing the review.
 - **The audit's calibration samples also found the judge was *harsher* on claude-code in
   several cells**, not just lenient. The clearest example: on
@@ -460,7 +460,7 @@ What we did about it:
     "isolated cloud environments," while Claude Code's cited evidence confirms background/
     cloud execution but never uses the word "isolated." Both were scored `full`, but only one
     product's evidence actually supports that specific qualifier.
-- **Every verdict cites evidence ids** resolvable in `rankings/{category}/evidence/`, so anyone
+- **Every verdict cites evidence ids** resolvable in `open-rankings/{category}/evidence/`, so anyone
   can independently check any verdict against its source. If you disagree with a call, see
   [CONTRIBUTING.md](./CONTRIBUTING.md) — contesting a verdict is a first-class, expected
   workflow, not a one-off.
@@ -487,9 +487,9 @@ model (docs/JUDGE-MIGRATION-2026-09-30-worklist.json records what the fresh judg
 each protected cell). The audit calls for every other owner/affiliated row are recorded in
 docs/JUDGE-MIGRATION-2026-09-30.md.
 
-We think shipping this disclosure — including the fact that the audit itself was run by the
-same vendor's model — is more honest than pretending the conflict doesn't exist. Judge for
-yourself using the cited evidence.
+We ship this disclosure, including the fact that the audit itself was run by the same
+vendor's model, so the conflict is on the record rather than unstated. Judge for yourself
+using the cited evidence.
 
 ---
 

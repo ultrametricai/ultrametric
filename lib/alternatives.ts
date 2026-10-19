@@ -8,7 +8,7 @@ import { battleSlug, stripPersonaPrefix, type CategoryData } from './data-helper
 import type { LeaderboardEntry, Product } from './schemas'
 import { isShutdown } from './shutdown'
 
-// The canonical lens themes injected into EVERY arena (see pipeline/agentic-stories.ts):
+// The canonical lens themes injected into EVERY arena (see rankings-engine/agentic-stories.ts):
 // shared by construction, so they carry zero adjacency signal and are excluded from the
 // shared-theme count below. Domain themes (pricing-limits, dev-experience, onboarding, …)
 // are what make two arenas genuinely adjacent.
@@ -179,10 +179,10 @@ export interface AdjacentArena {
 }
 
 // Arena-level adjacency for the "Adjacent arenas" strip: curated clusters first
-// (rankings/adjacent-arenas.json — arenas that share a buyer, e.g. payments↔banking↔accounting),
+// (open-rankings/adjacent-arenas.json — arenas that share a buyer, e.g. payments↔banking↔accounting),
 // then ≥1-shared-domain-theme fill. Theme names rarely coincide across arenas, so curation
 // carries most of the signal; the file is small and reviewed like any data change.
-import adjacencyClusters from '../rankings/adjacent-arenas.json'
+import adjacencyClusters from '../open-rankings/adjacent-arenas.json'
 
 export function adjacentArenas(categories: CategoryData[], data: CategoryData, cap = 4): AdjacentArena[] {
   const byId = new Map(categories.map((c) => [c.category.id, c]))

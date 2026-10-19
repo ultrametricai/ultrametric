@@ -1,5 +1,5 @@
 // Textbook tests for the R&D tax-mechanics module. Duties: (1) every ruleId in
-// RD_RULE_IDS resolves to a committed, jurisdiction-matched card in law/US-FED/ with
+// RD_RULE_IDS resolves to a committed, jurisdiction-matched card in open-law/US-FED/ with
 // primary sources; (2) the midpoint convention replays the widely published 5-year
 // domestic example ($100,000 -> $10,000 in year one; the 10/20/20/20/20/10 pattern that
 // follows directly from "ratably over the 5-year period beginning with the midpoint of
@@ -21,7 +21,7 @@ import {
 } from '../rdCredit'
 
 function loadRuleCard(jurisdiction: string, ruleId: string) {
-  const dir = path.join(process.cwd(), 'law', jurisdiction)
+  const dir = path.join(process.cwd(), 'open-law', jurisdiction)
   for (const file of fs.readdirSync(dir).filter((f) => f.endsWith('.json'))) {
     const card = JSON.parse(fs.readFileSync(path.join(dir, file), 'utf8')) as {
       id: string
@@ -38,7 +38,7 @@ describe('every computation resolves to a committed, jurisdiction-matched rule c
   for (const [name, ref] of Object.entries(RD_RULE_IDS)) {
     it(`${name} → ${ref.ruleId}`, () => {
       const card = loadRuleCard(ref.jurisdiction, ref.ruleId)
-      expect(card, `law/${ref.jurisdiction} must contain a card with id ${ref.ruleId}`).not.toBeNull()
+      expect(card, `open-law/${ref.jurisdiction} must contain a card with id ${ref.ruleId}`).not.toBeNull()
       expect(card?.jurisdiction).toBe(ref.jurisdiction)
       expect(card?.kind).toBe('legal')
       expect(card?.source_ids.length).toBeGreaterThan(0)
@@ -76,6 +76,14 @@ describe('midpoint amortization (rule us-fed.research-expenditure-amortization)'
     }
   })
 
+  it('a 1-year period is two half-years (the smallest midpoint schedule)', () => {
+    const s = midpointAmortizationSchedule(10_000, 1)
+    expect(s.schedule).toEqual([
+      { year: 1, deduction: 5000 },
+      { year: 2, deduction: 5000 },
+    ])
+  })
+
   it('rejects non-positive amounts and periods', () => {
     expect(() => midpointAmortizationSchedule(0, 5)).toThrow(RangeError)
     expect(() => midpointAmortizationSchedule(100, 0)).toThrow(RangeError)
@@ -103,6 +111,11 @@ describe('qsbPayrollOffsetEligibility (rule us-fed.rd-payroll-offset)', () => {
     const r = qsbPayrollOffsetEligibility({ grossReceiptsCurrentYear: 1_000_000 })
     expect(r.overall).toBe('needs_review')
     expect(r.note).toContain('§ 41(d)')
+  })
+
+  it('rejects negative gross receipts and fractional prior election years', () => {
+    expect(() => qsbPayrollOffsetEligibility({ grossReceiptsCurrentYear: -1 })).toThrow(RangeError)
+    expect(() => qsbPayrollOffsetEligibility({ grossReceiptsCurrentYear: 0, priorElectionYears: 1.5 })).toThrow(RangeError)
   })
 
   it('computable failures flip to not-met: receipts at the ceiling, early receipts, 5 prior elections', () => {
@@ -167,6 +180,16 @@ describe('quarterlyOffsetApplication (Form 8974 mechanics)', () => {
       quarters: [{ label: 'q', employerSocialSecurityTax: 400_000, employerMedicareTax: 0 }],
     })
     expect(r.quarters[0].appliedToSocialSecurity).toBe(250_000) // SS pool exhausted, not liability
+  })
+
+  it('rejects negative quarterly liabilities', () => {
+    expect(() =>
+      quarterlyOffsetApplication({
+        electedAmount: 100_000,
+        taxYearBeginsAfter2022: true,
+        quarters: [{ label: 'q1', employerSocialSecurityTax: -1, employerMedicareTax: 0 }],
+      }),
+    ).toThrow(RangeError)
   })
 
   it('refuses an election above the statutory cap', () => {

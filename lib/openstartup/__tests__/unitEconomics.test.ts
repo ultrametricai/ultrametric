@@ -38,6 +38,12 @@ describe('LTV and CAC (Skok definitions)', () => {
     expect(ltv({ arpa: 500, grossMarginPct: 100, churnRatePct: 2 })).toBe(ltvSimple(500, 2))
   })
 
+  it('ltv guards the gross-margin domain', () => {
+    expect(() => ltv({ arpa: 500, grossMarginPct: 101, churnRatePct: 2 })).toThrow(RangeError)
+    expect(() => ltv({ arpa: 500, grossMarginPct: -1, churnRatePct: 2 })).toThrow(RangeError)
+    expect(ltv({ arpa: 500, grossMarginPct: 0, churnRatePct: 2 })).toBe(0)
+  })
+
   it('cac = S&M ÷ new customers: $120,000 for 30 customers → $4,000', () => {
     expect(cac(120_000, 30)).toBe(4_000)
     expect(() => cac(120_000, 0)).toThrow(RangeError)
@@ -74,6 +80,11 @@ describe('MRR movement (Skok definitions)', () => {
     // and the compounding identity holds for expansion (negative) rates
     expect(annualizedNetChurnPct(-1)).toBeCloseTo((1 - 1.01 ** 12) * 100, 10)
     expect(annualizedNetChurnPct(0)).toBe(0)
+  })
+
+  it('annualizedNetChurnPct rejects rates above 100% and is exact at total churn', () => {
+    expect(() => annualizedNetChurnPct(101)).toThrow(RangeError)
+    expect(annualizedNetChurnPct(100)).toBe(100) // losing everything in month 1 is the whole year
   })
 })
 
@@ -116,6 +127,11 @@ describe('Rule of 40 (Feld, 2015-02-03)', () => {
     const r = ruleOf40({ revenueGrowthPct: 30, profitMarginPct: 5 })
     expect(r.score).toBe(35)
     expect(r.meetsRule).toBe(false)
+  })
+
+  it('burnMultiple and ruleOf40 refuse non-finite inputs', () => {
+    expect(() => burnMultiple({ netBurn: NaN, netNewArr: 1 })).toThrow(RangeError)
+    expect(() => ruleOf40({ revenueGrowthPct: Infinity, profitMarginPct: 0 })).toThrow(RangeError)
   })
 })
 

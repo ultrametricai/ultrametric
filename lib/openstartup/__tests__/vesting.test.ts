@@ -27,7 +27,7 @@ import {
 } from '../vesting'
 
 function loadRuleCard(jurisdiction: string, ruleId: string) {
-  const dir = path.join(process.cwd(), 'law', jurisdiction)
+  const dir = path.join(process.cwd(), 'open-law', jurisdiction)
   for (const file of fs.readdirSync(dir).filter((f) => f.endsWith('.json'))) {
     const card = JSON.parse(fs.readFileSync(path.join(dir, file), 'utf8')) as {
       id: string
@@ -44,7 +44,7 @@ describe('every referenced rule resolves to a committed, jurisdiction-matched ca
   for (const [name, ref] of Object.entries(RULE_IDS_VESTING)) {
     it(`${name} → ${ref.ruleId}`, () => {
       const card = loadRuleCard(ref.jurisdiction, ref.ruleId)
-      expect(card, `law/${ref.jurisdiction} must contain a card with id ${ref.ruleId}`).not.toBeNull()
+      expect(card, `open-law/${ref.jurisdiction} must contain a card with id ${ref.ruleId}`).not.toBeNull()
       expect(card?.jurisdiction).toBe(ref.jurisdiction)
       expect(card?.source_ids.length).toBeGreaterThan(0)
     })
@@ -115,6 +115,34 @@ describe('the standard 4-year / 1-year-cliff monthly schedule (Cooley GO convent
     expect(events[0].date).toBe('2027-01-31') // cliff
     expect(events[1].date).toBe('2027-02-28') // month 13, clamped
     expect(events[2].date).toBe('2027-03-31')
+  })
+})
+
+describe('schedule-shape edges', () => {
+  it('a cliff equal to the total schedule vests everything in one event', () => {
+    const g: VestingGrant = {
+      shares: 1_000,
+      commencement: '2026-01-15',
+      schedule: { kind: 'periodic', totalMonths: 24, cliffMonths: 24, periodMonths: 1 },
+    }
+    const events = vestingEvents(g)
+    expect(events).toHaveLength(1)
+    expect(events[0]).toMatchObject({ date: '2028-01-15', cumulativeVested: 1_000 })
+  })
+
+  it('a period that does not divide totalMonths still ends exactly at totalMonths', () => {
+    const g: VestingGrant = {
+      shares: 1_000,
+      commencement: '2026-01-15',
+      schedule: { kind: 'periodic', totalMonths: 10, cliffMonths: 0, periodMonths: 4 },
+    }
+    const events = vestingEvents(g)
+    expect(events.map((e) => e.monthsFromStart)).toEqual([4, 8, 10])
+    expect(events[events.length - 1].cumulativeVested).toBe(1_000)
+  })
+
+  it('addMonthsClamped with 0 months returns the same date', () => {
+    expect(addMonthsClamped('2026-01-31', 0)).toBe('2026-01-31')
   })
 })
 

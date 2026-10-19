@@ -1,7 +1,7 @@
 // The shutdown founder rule (lib/shutdown.ts; 2026-09-21: "if pulley doesnt exist anymore and
 // shutting down, have a tag for 'shutdown' and dont offer it"): a marked product keeps its
 // rows, verdicts and history (list/rank surfaces tag it) but is never OFFERED — stack picks,
-// step vendor rosters, upgrade advice, gap closers. Pulley (rankings/equity-management, marked
+// step vendor rosters, upgrade advice, gap closers. Pulley (open-rankings/equity-management, marked
 // 2026-09-15) is the real-data probe: it must vanish from every equity-management step vendor
 // list while its arena leaderboard row and step scores stay fully intact.
 import path from 'node:path'
@@ -19,7 +19,7 @@ import {
 } from '@/lib/processRankings'
 import { isShutdown, SHUTDOWN_TAG_TITLE } from '@/lib/shutdown'
 
-const DATA_DIR = path.resolve(__dirname, '../../rankings')
+const DATA_DIR = path.resolve(__dirname, '../../open-rankings')
 
 describe('isShutdown', () => {
   it('is true exactly when the verified note is set', () => {

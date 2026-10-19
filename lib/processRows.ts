@@ -120,7 +120,7 @@ function derivedVendorsFor(t: ProcessTask, seed?: { id: string; label: string; a
 
 // ---- Playbook rows (founder 2026-09-29: "combine playbooks and all processes into one table
 // so we have one view for the processes under the process search"): the curated chains
-// (processes/chains.json) serialized for the SAME table the process rows render in. Founder
+// (open-processes/chains.json) serialized for the SAME table the process rows render in. Founder
 // 2026-09-29 follow-up ("we don't need to say 'playbook' on those playbooks… playbooks are
 // still processes"): no category label and no leading group — in the grouped default each
 // chain row folds into its DOMINANT area (the area of its first constituent process) at that

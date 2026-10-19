@@ -3,7 +3,7 @@
 Founder ask (2026-10-02): *"what open modules can we improve logic-wise? can we go deep
 here and see how they connect to our processes?"* This is the corpus-wide walk: every
 process family checked against the open modules (`lib/openstartup/`,
-registry `open-modules/README.md`, wiring `processes/business-logic-map.json`) for steps
+registry `open-modules/README.md`, wiring `open-processes/business-logic-map.json`) for steps
 with **real computable math that no module served**. The house bar for a BUILD verdict is
 fixed: a citation per formula, a published worked example replayed number-for-number (or an
 honest hand-derived derivation where the canonical source publishes the formula without
@@ -23,7 +23,7 @@ revenue — see "Built" below), the rest assessed with verdicts.
 | 3 | **Deferred-revenue recognition basics** | fin_002 n5 (P&L's subscription revenue split), growth_001 (task level), growth_014 n4 (migration proration) | Stripe Docs, Revenue Recognition subscription examples (verified 2026-10-02): $31 → 17/14; $365 annual → 31/28/31 with deferred 334/306/275; upgrade −30/+40 (April $100) and downgrade −30/+10 (April $70) | **BUILT** — `deferredRevenue.ts`; ASC 606 judgment stays with the accountant, `needsReview` everywhere |
 | 4 | Milestone / performance vesting | fund_004 n4, hr_010 n7 (exec grants often carry performance tranches) | None at the bar. The computable part is trivial bookkeeping (tranche vests when the board certifies the milestone — a boolean the plan documents own); no published worked arithmetic beyond that. Cooley GO / Holloway describe the concept, not a formula. | **SKIP** — no real math to encode; `vesting.ts`'s tranche schedules already carry everything date-shaped |
 | 5 | NSO supplemental-withholding completeness (add FICA-on-spread, state layer) | hr_005 n2, fund_004 | Partially exists: `optionTax.supplementalWithholdingIllustration` already does the published 22%/37% federal rates (rule `us-fed.supplemental-wage-withholding-2026`). Completing it means FICA on the spread (Pub 15/15-B — citable) **plus the state layer, which needs dated state rule cards first**. | **DEFER** — a small extension of `optionTax.ts` once state cards exist; not a new module |
-| 6 | State payroll boundary (CA EDD SUI/ETT/SDI etc.) | qs_063, hr_001, hr_002 — `payrollTax.ts` states the boundary on every result today | EDD publishes current CA rates and wage bases (citable), as do other states — but the house rule is right: **dated rule cards in `law/US-CA/` first**, then the module extension. Rates churn annually; without cards the module would rot silently. | **DEFER** — rules-cards-first work, explicitly anticipated by the payroll module's "Still planned" note |
+| 6 | State payroll boundary (CA EDD SUI/ETT/SDI etc.) | qs_063, hr_001, hr_002 — `payrollTax.ts` states the boundary on every result today | EDD publishes current CA rates and wage bases (citable), as do other states — but the house rule is right: **dated rule cards in `open-law/US-CA/` first**, then the module extension. Rates churn annually; without cards the module would rot silently. | **DEFER** — rules-cards-first work, explicitly anticipated by the payroll module's "Still planned" note |
 | 7 | Invoice / AR aging math | fin_001 n1 (outstanding bills), sales_002 n4 (track payment status) | None at the bar. Aging buckets (0–30/31–60/61–90/90+) are a reporting convention with no canonical published worked example — vendor help pages describe screens, not arithmetic worth citing. The "math" is date bucketing `deadlines.ts` patterns already cover. | **SKIP** — would be decoration, not computation |
 | 8 | Budget vs actuals variance | fin_010, fin_002 n7 (flag anomalies), scale_005 | Variance = actual − budget (and %) is arithmetic beneath the bar; the decision content (which variances matter, thresholds) is benchmark-shaped and the house posture says benchmarks are inputs. No canonical citable worked example. | **SKIP** — `runway.hiringImpact` + `unitEconomics.compareToBenchmark` already cover the computable parts honestly |
 | 9 | SAFE side-letter mechanics | fund_001, fund_006 | Already served: the pro rata side letter IS implemented (capTable pro rata per User Guide §E, Appendix II replayed; `round.proRataShares` / `maintainOwnership`). The other common side letters (information rights, MFN-on-terms) have no computable math. | **DONE / SKIP** — nothing honest left to build |
@@ -86,7 +86,7 @@ revenue — see "Built" below), the rest assessed with verdicts.
 
 - **Root `README.md`**: add bullets for the three new modules under the open-modules
   section (priced-round composer; unit economics; deferred revenue).
-- **`citations/registry.json`**: consider entries for the four new citations (Skok
+- **`open-lore/citations.json`**: consider entries for the four new citations (Skok
   definitions page, Sacks burn-multiple post, Feld Rule-of-40 post, O'Driscoll magic-number
   post) so modules can cite resource ids like `index-rewarding-talent` does.
 - **Map-only extensions worth considering**: deFranchiseTax → shutdown_001 (true-up step);

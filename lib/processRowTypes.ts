@@ -4,7 +4,7 @@ import type { ProcessKind, Urgency } from '@/lib/processSim'
 // Row shapes for the founder-process tables. These types live in lib (not components) so the
 // server-side row builders (lib/processRows.ts, lib/shared-processes/index-rows.ts) and the
 // client table (components/ProcessesTable.tsx) both import them from the artifact side of the
-// repo-split boundary (docs/REPO-SPLIT-PLAN.md, lib hard case): lib never imports from
+// repo-split boundary (docs/REPO-SPLIT-PLAN.md): lib never imports from
 // components.
 
 export interface ProcessRow {
@@ -38,7 +38,7 @@ export interface ProcessRow {
   kind: ProcessKind
   trigger: string | null
   urgency: Urgency | null
-  // The five-orderings fields (curated in processes/corpus.json; cadence label/rank resolved
+  // The five-orderings fields (curated in open-processes/corpus.json; cadence label/rank resolved
   // server-side so the client table stays free of the node-only cadence helpers). timeOrder is
   // null on kind 'situation'.
   timeOrder: number | null
@@ -50,7 +50,7 @@ export interface ProcessRow {
   vendors: Array<{ id: string; label: string; arena: string | null; hasLogo: boolean }>
 }
 
-// A curated end-to-end chain (processes/chains.json) as a row in the SAME table (founder
+// A curated end-to-end chain (open-processes/chains.json) as a row in the SAME table (founder
 // 2026-09-29: one view for the processes under the process search — the separate playbooks
 // section is gone). Serialized server-side by lib/processRows.ts buildPlaybookRows.
 export interface PlaybookRow {
@@ -74,7 +74,7 @@ export interface PlaybookRow {
   pct: number
   agentSteps: number
   totalSteps: number
-  steps: Array<{ label: string; route: 'agent' | 'form' | 'person'; legalSignature: boolean }>
+  steps: Array<{ label: string; route?: 'agent' | 'form' | 'person'; legalSignature: boolean }>
   // The combined vendor cell (founder 2026-10-02: show the vendors, not a 'Go to process' link)
   // — the constituent processes' vendor chips, deduped in journey order, same shape and cap as
   // a process row's.

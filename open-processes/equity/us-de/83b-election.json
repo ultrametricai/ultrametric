@@ -1,0 +1,137 @@
+{
+  "version": "0.1.0",
+  "status": "demonstration",
+  "reviewed_on": "2026-09-28",
+  "review_due": "2026-12-28",
+  "reviewer": "Starter editorial review; independent US tax counsel review pending",
+  "applicability": {
+    "entity_jurisdiction": "US-DE",
+    "tax_jurisdiction": "US-FED",
+    "entity_type": "private-corporation",
+    "event_type": "substantially-nonvested-property-transfer-for-services",
+    "exclusions": [
+      "Mere grant of an unexercised stock option",
+      "Section 83(i) election",
+      "No actual property transfer",
+      "Non-US individual tax treatment",
+      "State and local tax consequences"
+    ]
+  },
+  "trigger": "The actual date substantially nonvested property was transferred to a service provider; do not substitute vesting start, board consent, or document-signing date without review.",
+  "decisions": [
+    {
+      "id": "transfer-date",
+      "question": "What is the legally relevant actual property transfer date and is the property substantially nonvested?",
+      "owner": "recipient-and-tax-counsel"
+    },
+    {
+      "id": "elect-or-not",
+      "question": "Should this specific recipient make an 83(b) election given valuation, tax cost, possible forfeiture, and other circumstances?",
+      "owner": "recipient-with-tax-counsel"
+    },
+    {
+      "id": "deadline-and-address",
+      "question": "What is the filing deadline and correct IRS destination under current official instructions?",
+      "owner": "recipient-with-tax-counsel"
+    }
+  ],
+  "stop_conditions": [
+    "Transfer date is uncertain",
+    "A filing deadline may have passed",
+    "Eligibility or property status is uncertain",
+    "The recipient does not affirmatively choose the election",
+    "The form or IRS address has not been checked against current official instructions"
+  ],
+  "automation_boundary": "An agent may alert and draft but cannot choose, sign, mail, electronically transmit, or send copies for the individual without case-specific authorization.",
+  "rule_ids": [
+    "us-fed.83b-election-effect",
+    "us-fed.83b-filing-period",
+    "us-fed.83b-form-and-copies",
+    "us-fed.83b-revocation"
+  ],
+  "id": "equity.us-de.83b-election",
+  "title": "Consider a section 83(b) election after a restricted-property transfer",
+  "summary": "A time-sensitive planning workflow for a US service provider who received substantially nonvested property for services from a Delaware corporation. The recipient, not the public repository, decides whether to elect and files it.",
+  "outputs": [
+    "Recipient's private decision",
+    "Filed election and proof if chosen",
+    "Private copies and delivery record"
+  ],
+  "steps": [
+    {
+      "mode": "read_only",
+      "owner": "recipient-and-company",
+      "inputs": [
+        "executed-equity-documents",
+        "private-transfer-record"
+      ],
+      "evidence": [
+        "private-transfer-date-memo"
+      ],
+      "approval": null,
+      "id": "record-transfer",
+      "action": "Identify actual transferred property, transfer evidence, consideration paid, restrictions, recipient, and dates in a private record."
+    },
+    {
+      "mode": "prepare_draft",
+      "owner": "recipient-and-tax-counsel",
+      "inputs": [
+        "private-transfer-date-memo"
+      ],
+      "evidence": [
+        "recipient-decision",
+        "deadline-review"
+      ],
+      "approval": null,
+      "id": "get-advice",
+      "action": "Have the recipient and tax counsel assess eligibility, tax consequences, whether to elect, and the official filing deadline; flag the short window immediately."
+    },
+    {
+      "mode": "prepare_draft",
+      "owner": "recipient-with-tax-counsel",
+      "inputs": [
+        "recipient-decision",
+        "deadline-review"
+      ],
+      "evidence": [
+        "signed-election-private-copy"
+      ],
+      "approval": null,
+      "id": "prepare",
+      "action": "If the recipient elects, prepare current Form 15620 or a compliant statement; verify content, signature, address, and copies."
+    },
+    {
+      "mode": "external_effect",
+      "owner": "recipient",
+      "inputs": [
+        "signed-election-private-copy"
+      ],
+      "evidence": [
+        "filing-proof",
+        "dated-private-copy"
+      ],
+      "approval": {
+        "role": "recipient",
+        "scope": "specific election and filing method after tax review"
+      },
+      "id": "file",
+      "action": "Recipient sends the signed election using the currently confirmed IRS filing method and preserves proof of timely filing."
+    },
+    {
+      "mode": "external_effect",
+      "owner": "recipient",
+      "inputs": [
+        "dated-private-copy"
+      ],
+      "evidence": [
+        "copy-delivery-proof"
+      ],
+      "approval": {
+        "role": "recipient",
+        "scope": "specific recipients and minimum necessary information"
+      },
+      "id": "deliver-copies",
+      "action": "Send required copies to the service recipient and, when applicable, a different property transferee; retain private delivery proof."
+    }
+  ]
+}

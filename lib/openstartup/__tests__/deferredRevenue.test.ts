@@ -20,6 +20,14 @@ describe('serviceDays (inclusive whole days — the examples’ convention)', ()
 
   it('rejects malformed and impossible dates, and inverted periods', () => {
     expect(() => serviceDays('2026-1-5', '2026-02-01')).toThrow(RangeError)
+  })
+
+  it('counts leap-year days: 2028 has 366 days and 29 in February', () => {
+    expect(serviceDays('2028-01-01', '2028-12-31')).toBe(366)
+    expect(serviceDays('2028-02-01', '2028-02-29')).toBe(29)
+    const sched = recognitionSchedule({ amount: 366, serviceStart: '2028-01-01', serviceEnd: '2028-12-31' })
+    expect(sched[1]).toEqual({ month: '2028-02', days: 29, recognized: 29 })
+    expect(sched.reduce((s, m) => s + m.recognized, 0)).toBeCloseTo(366, 10)
     expect(() => serviceDays('2026-02-30', '2026-03-01')).toThrow(RangeError)
     expect(() => serviceDays('2026-02-02', '2026-02-01')).toThrow(RangeError)
   })
@@ -92,6 +100,17 @@ describe('prorationOnPlanChange — the upgrade and downgrade examples', () => {
     expect(p.unusedTimeCredit).toBe(30)
     expect(p.remainingTimeCharge).toBe(10)
     expect(p.netDue).toBe(-20)
+  })
+
+  it('prorates at the period boundaries: a day-one change credits the full plan; a last-day change credits one day', () => {
+    const dayOne = prorationOnPlanChange({ ...april, changeDate: '2026-04-01', oldAmount: 90, newAmount: 120 })
+    expect(dayOne.remainingDays).toBe(30)
+    expect(dayOne.unusedTimeCredit).toBe(90)
+    expect(dayOne.remainingTimeCharge).toBe(120)
+    const lastDay = prorationOnPlanChange({ ...april, changeDate: '2026-04-30', oldAmount: 90, newAmount: 120 })
+    expect(lastDay.remainingDays).toBe(1)
+    expect(lastDay.unusedTimeCredit).toBe(3) // 90 × 1/30
+    expect(lastDay.remainingTimeCharge).toBe(4) // 120 × 1/30
   })
 
   it('rejects a change outside the period and negative plan amounts', () => {

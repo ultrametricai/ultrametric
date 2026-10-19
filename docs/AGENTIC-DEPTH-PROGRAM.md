@@ -1,6 +1,6 @@
 # The Agentic Depth Program
 
-**Status: proposed, phased rollout.** This document is the design for Ultrametric's next layer of
+**Status: active — first pilot (see the Pilot log below).** This document is the design for Ultrametric's next layer of
 agent-readiness measurement — a successor to (not a replacement for) the current
 `agentic-*`/`api-*` verdict cells described in [METHODOLOGY.md](../METHODOLOGY.md#the-agenticness-index).
 Those cells ask *"does documentation/evidence say this product has an MCP server / CLI /
@@ -72,7 +72,7 @@ Every suite run produces a **transcript** — the literal requests/responses or 
 invocations and their outputs — stored as evidence, the same way probe-tier evidence works
 today. The transcript, not just a pass/fail bit, is the artifact anyone can audit. The spec
 itself is versioned (`ARENABENCH_VERSION`, mirroring the existing `PROMPT_VERSION` pattern in
-`pipeline/stages/judge.ts`) so suite changes don't silently reshuffle historical scores —
+`rankings-engine/stages/judge.ts`) so suite changes don't silently reshuffle historical scores —
 a version bump is a visible, changelogged event, and old transcripts stay attributed to the
 spec version that produced them.
 
@@ -170,3 +170,34 @@ whether a laggard is catching up or falling further behind.
 Each phase ships independently and is additive to the current site — no phase requires
 retracting or invalidating the existing evidence-tier verdicts, and every ArenaBench/task-trial
 result is itself subject to the same contest mechanism as any other verdict on Ultrametric.
+
+## Pilot log
+
+### 2026-10-14 — Stripe (payments), ArenaBench 0.1.0
+
+First Phase-1 run. The runner lives at `rankings-engine/depth/` (check plans, pure graders, a
+robots-gated recorder, and a `--replay` mode); the snapshot lives at
+`open-rankings/experiments/depth/2026-10-14-stripe/` with one transcript per check plus the
+consulted robots.txt recordings, and `report.json` regrades byte-identically from those
+transcripts in the test suite. Scope was credential-free public surfaces: no account
+creation, no credentials, no payments; auth walls and robots walls are recorded outcomes.
+
+- MCP: L2 verified, L3 partial. The documented endpoint answers a JSON-RPC initialize with
+  the RFC 9728 OAuth challenge (HTTP 401 + `WWW-Authenticate: Bearer resource_metadata=...`),
+  the protected-resource metadata is valid JSON naming one authorization server, and a
+  malformed request is rejected with a JSON error body rather than HTML. The tool-schema
+  lint sits behind the OAuth wall and is recorded as auth-gated.
+- API: L1 verified, L2 walled. api.stripe.com/robots.txt disallows everything for all
+  agents, and robots decisions are absolute for this runner, so the unauthenticated
+  error-shape checks are recorded as robots-disallowed instead of observed. At L3, the
+  published OpenAPI 3.0 spec retrieved from the documented stripe/openapi repo (431 paths,
+  612 operations, all with responses, error envelope declared) and docs llms.txt (471
+  markdown doc mirrors) pass their structural checks; rate-limit and idempotency probes are
+  auth-gated.
+- L4/L5 are auth-gated on both surfaces: task trials need the sandboxed-account
+  infrastructure Phase 3 stands up. CLI, automation, and human-AI UX ladders were not
+  piloted; recorded credential-free CLI proofs already exist at
+  `open-rankings/payments/proofs/stripe/`.
+
+No verdict, score, or ranking changed: depth snapshots stay outside the evidence loop until
+Phase 2 puts rungs on-site.

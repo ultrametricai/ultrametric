@@ -1,10 +1,10 @@
 // Deadline calendar — the recurring founder compliance clock (founder direction 2026-09-29).
 //
 // Pure, client-safe, deterministic: all date math is UTC on ISO `YYYY-MM-DD` strings.
-// EVERY deadline here references a dated rule card in law/ by id — no hardcoded day count
+// EVERY deadline here references a dated rule card in open-law/ by id — no hardcoded day count
 // is asserted without a card whose sources were verified against the live primary source
 // (see open-modules/README.md; the cross-check that each ruleId resolves to a committed
-// card lives in lib/openstartup/__tests__/deadlines.test.ts, which reads law/ from disk).
+// card lives in lib/openstartup/__tests__/deadlines.test.ts, which reads open-law/ from disk).
 //
 // Honest-maturity contract (matches the rule cards' own caveats): this module computes the
 // nominal calendar date stated by the rule and flags `needsReview: true` whenever the true
@@ -25,7 +25,7 @@ export const DEADLINE_RULE_IDS = {
 export interface DeadlineComputation {
   /** Nominal due date, ISO YYYY-MM-DD, straight from the cited rule's day count. */
   due: string
-  /** The law/ card asserting the legal proposition behind `due`. */
+  /** The open-law/ card asserting the legal proposition behind `due`. */
   ruleId: string
   jurisdiction: 'US-FED' | 'US-DE'
   /** True when the real date may differ from `due` (weekend landing, statutory exception,
@@ -82,17 +82,24 @@ export function deFranchiseTaxDue(taxYear: number): DeadlineComputation {
 
 /**
  * Federal corporate income tax return (Form 1120): due the 15th day of the 4th month after
- * the end of the tax year; June 30 fiscal-year corporations use the 3rd month — rule
+ * the end of the tax year; June 30 fiscal-year corporations use the 3rd month, but only for
+ * taxable years beginning on or before 2025-12-31 — the exception sunsets under Pub. L.
+ * 114-41 § 2006(a)(3), so the last 3rd-month June 30 year end is 2026-06-30 — rule
  * `us-fed.1120-filing-deadline` (IRS Instructions for Form 1120, "When To File").
  */
 export function form1120Due(taxYearEnd: string): DeadlineComputation {
   const end = parseIso(taxYearEnd, 'taxYearEnd')
+  // A June 30 taxable year ending 2026-06-30 began 2025-07-01 (on or before 2025-12-31);
+  // later June 30 year ends began after the Pub. L. 114-41 § 2006(a)(3) cutoff.
   const june30 = end.getUTCMonth() === 5 && end.getUTCDate() === 30
-  const monthsAfter = june30 ? 3 : 4
+  const june30Exception = june30 && taxYearEnd <= '2026-06-30'
+  const monthsAfter = june30Exception ? 3 : 4
   const due = iso(new Date(Date.UTC(end.getUTCFullYear(), end.getUTCMonth() + monthsAfter, 15)))
-  const base = june30
-    ? `Form 1120 for the fiscal year ended ${taxYearEnd} — June 30 filers use the 15th day of the 3rd month (statutory exception; verify against the live instructions).`
-    : `Form 1120 for the tax year ended ${taxYearEnd} (15th day of the 4th month).`
+  const base = june30Exception
+    ? `Form 1120 for the fiscal year ended ${taxYearEnd} — June 30 filers use the 15th day of the 3rd month (statutory exception for taxable years beginning on or before 2025-12-31; verify against the live instructions).`
+    : june30
+      ? `Form 1120 for the fiscal year ended ${taxYearEnd} — the June 30 3rd-month exception sunset for taxable years beginning after 2025-12-31 (Pub. L. 114-41 § 2006(a)(3)), so the general 4th-month rule applies; verify against the live instructions.`
+      : `Form 1120 for the tax year ended ${taxYearEnd} (15th day of the 4th month).`
   const flag = weekendFlag(due, base)
   return {
     due,

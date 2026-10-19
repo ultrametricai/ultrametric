@@ -476,6 +476,32 @@ describe('buildCapTable validation', () => {
     expect(r.error?.eventIndex).toBe(2)
   })
 
+  it('rejects uncapped/discount SAFEs whose price-route claims reach the pre-money (no conversion price exists)', () => {
+    // $5m uncapped SAFE on a $4m pre-money: price-route conversion shares live inside the
+    // pre-money fully diluted, so the claim exceeds 100% of it — without the guard the
+    // fixed-point sweep settles on a 4-decimal rounding artifact instead of erroring.
+    const r = buildCapTable([
+      { kind: 'found', founders: [{ name: 'F', shares: 10_000_000 }] },
+      { kind: 'safe', name: 'Big', amount: 5_000_000 },
+      { kind: 'priced', name: 'A', preMoney: 4_000_000, newMoney: 1_000_000 },
+    ])
+    expect(r.error?.eventIndex).toBe(2)
+    // A discount-only SAFE is grossed up: $1m at 20% claims $1.25m of a $1.2m pre-money.
+    const d = buildCapTable([
+      { kind: 'found', founders: [{ name: 'F', shares: 10_000_000 }] },
+      { kind: 'safe', name: 'D', amount: 1_000_000, discountPct: 20 },
+      { kind: 'priced', name: 'A', preMoney: 1_200_000, newMoney: 1_000_000 },
+    ])
+    expect(d.error?.eventIndex).toBe(2)
+    // Under the pre-money the same SAFE still converts normally.
+    const ok = buildCapTable([
+      { kind: 'found', founders: [{ name: 'F', shares: 10_000_000 }] },
+      { kind: 'safe', name: 'D', amount: 1_000_000, discountPct: 20 },
+      { kind: 'priced', name: 'A', preMoney: 12_000_000, newMoney: 1_000_000 },
+    ])
+    expect(ok.error).toBeUndefined()
+  })
+
   it('grants cannot exceed the unissued pool; grants do not change fully diluted', () => {
     const ok = buildCapTable([
       { kind: 'found', founders: [{ name: 'F', shares: 9_000_000 }], poolShares: 1_000_000 },

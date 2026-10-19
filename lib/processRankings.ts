@@ -13,11 +13,11 @@ import { isShutdown } from './shutdown'
 // process and for each step, without assuming the user has a vendor — from what stories the
 // vendors actually support". Everything here is DERIVATION over already-judged data:
 //
-//   rankings/process-step-stories.json  (committed, generated once by
-//   pipeline/scripts/map-step-stories.ts — an LLM pass that maps each covered step onto the
+//   open-rankings/process-step-stories.json  (committed, generated once by
+//   rankings-engine/scripts/map-step-stories.ts — an LLM pass that maps each covered step onto the
 //   RELEVANT stories of its covering arena, cached/corrected like classify-story-tiers)
 //     ×
-//   rankings/{arena}/verdicts.json      (the judged verdicts — never touched here)
+//   open-rankings/{arena}/verdicts.json      (the judged verdicts — never touched here)
 //     =
 //   per-step vendor scores (lib/scoring.ts's weightedPercent over exactly the mapped stories,
 //   so full=1, partial=0.6, disputed=0.3, none=0, na excluded, story-weighted, 0–100) and a
@@ -53,12 +53,13 @@ export const StepStoryEntrySchema = z.object({
   kind: z.enum(STEP_STORY_KINDS),
   arenaId: z.string().min(1),
   storyIds: z.string().min(1).array(),
+  productIds: z.string().min(1).array().min(1).optional(),
 })
 
 export const StepStoryMapSchema = StepStoryEntrySchema.array()
 export type StepStoryEntry = z.infer<typeof StepStoryEntrySchema>
 
-const DEFAULT_DIR = () => path.join(process.cwd(), 'rankings')
+const DEFAULT_DIR = () => path.join(process.cwd(), 'open-rankings')
 const mapCache = new Map<string, StepStoryEntry[]>()
 
 // Same tolerant-optional contract as lib/storyTiers.ts: a missing mapping file is an empty
@@ -111,7 +112,7 @@ export function computerUseMappingsFor(taskId: string, nodeId: string, dir?: str
 
 // The step's ADDITIONAL covering arenas, in declaration order: extraOptionArenas first, then
 // the arenas of explicit extraOptionRefs — deduped, never repeating the primary covering arena.
-// The single source of truth the mapping generator (pipeline/scripts/map-step-stories.ts) and
+// The single source of truth the mapping generator (rankings-engine/scripts/map-step-stories.ts) and
 // every 'extra'-kind consumer share, mirroring coveringArenaId for the 'function' kind.
 export function extraArenasFor(
   node: Pick<DagNode, 'optionsArenaId' | 'vendor' | 'extraOptionArenas' | 'extraOptionRefs'>,
@@ -127,10 +128,19 @@ export function extraArenasFor(
   return out
 }
 
-export function extraMappingsFor(taskId: string, node: DagNode, dir?: string): StepStoryEntry[] {
-  return extraArenasFor(node)
-    .map((arenaId) => mapIndex(dir).get(stepStoryKey(taskId, node.id, 'extra', arenaId)))
-    .filter((e): e is StepStoryEntry => e !== undefined)
+const extraIndexCache = new Map<string, Map<string, StepStoryEntry[]>>()
+export function extraMappingsFor(taskId: string, node: DagNode, dir: string = DEFAULT_DIR()): StepStoryEntry[] {
+  let index = extraIndexCache.get(dir)
+  if (!index) {
+    index = new Map()
+    for (const entry of loadStepStoryMap(dir)) if (entry.kind === 'extra') {
+      const key = `${entry.taskId}:${entry.nodeId}`
+      index.set(key, [...(index.get(key) ?? []), entry])
+    }
+    extraIndexCache.set(dir, index)
+  }
+  const declared = new Set(extraArenasFor(node))
+  return (index.get(`${taskId}:${node.id}`) ?? []).filter(entry => declared.has(entry.arenaId) || entry.productIds?.length)
 }
 
 // ---------------------------------------------------------------------------
@@ -325,7 +335,7 @@ export function crossArenaStepRankings(taskId: string, node: DagNode, dir?: stri
       .filter((s): s is Story => s !== undefined)
       .map((s) => ({ id: s.id, title: s.title, weight: s.weight }))
     if (stories.length === 0) continue
-    const allowed = wholeArena.has(entry.arenaId) ? null : refsByArena.get(entry.arenaId) ?? new Set<string>()
+    const allowed = wholeArena.has(entry.arenaId) ? null : refsByArena.get(entry.arenaId) ?? new Set(entry.productIds ?? [])
     const vendors = rankVendors(entry.arenaId, stories.map((s) => s.id), dir)
       .filter((v) => allowed === null || allowed.has(v.productId))
       .filter((v) => v.score > 0 && v.cites.some((c) => c.verdict === 'full' || c.verdict === 'partial'))
@@ -501,7 +511,7 @@ export function computerUseEligibleProducts(source: ComputerUseSource, dir?: str
 }
 
 // Which steps get computer-use mappings — the single source of truth shared by the mapping
-// generator (pipeline/scripts/map-step-stories.ts) and every consumer, mirroring
+// generator (rankings-engine/scripts/map-step-stories.ts) and every consumer, mirroring
 // coveringArenaId/extraArenasFor for the other kinds. Founder 2026-09-18: "any time 'manual'
 // is seen, see if we can do a computer use process for it" — EVERY non-agent step qualifies
 // (manual form/portal work and human steps alike), not just the irreducible-judgment subset.
@@ -512,7 +522,7 @@ export function computerUseEligibleProducts(source: ComputerUseSource, dir?: str
 // mechanical click may exist, but "could attempt it today" is not an honest frame for a
 // signature only a human may make, so no mapping is generated or consumed for them.
 export function isComputerUseCandidate(node: Pick<DagNode, 'route' | 'legalSignature'>): boolean {
-  return node.route !== 'agent' && !node.legalSignature
+  return (node.route === 'form' || node.route === 'person') && !node.legalSignature
 }
 
 // A temporarily-human step of one task, with node identity (splitGaps only carries labels).

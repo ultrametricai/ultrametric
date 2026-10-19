@@ -16,21 +16,21 @@ import { SITE_URL } from './site'
 //
 // Everything here is a pure function of the corpus (read through lib/processes.ts only) plus
 // the committed arena data — no request-time inputs — so the routes prerender under the static
-// export and the whole module is unit-testable against rankings/.
+// export and the whole module is unit-testable against open-rankings/.
 
-export const MANIFEST_VERSION = 1 as const
+export const MANIFEST_VERSION = 2 as const
 
 // Executor-facing step kind, mapped from the corpus route:
 //   agent  → 'api'          (drive it through recorded API/tool calls — MCP-first)
 //   form   → 'computer-use' (manual portal/form work — a browser agent behind an approval gate)
 //   person → 'human'        (a human or a supervised computer-use agent — render as a checklist
 //                            item; steps flagged legalSignature are strictly human)
-export type ManifestStepKind = 'api' | 'computer-use' | 'human'
+export type ManifestStepKind = 'api' | 'computer-use' | 'human' | 'unclassified'
 
 export function stepKind(route: DagNode['route']): ManifestStepKind {
   if (route === 'agent') return 'api'
   if (route === 'form') return 'computer-use'
-  return 'human'
+  return route === 'person' ? 'human' : 'unclassified'
 }
 
 // One vendor that can perform a step, resolved against the live market. Tracked vendors carry
@@ -80,7 +80,7 @@ export interface ManifestStep {
   // aren't all read-only. The executor must hold for human approval before running these.
   approvalRequired: boolean
   riskLevel: 'low' | 'medium' | 'high' | null
-  estimatedMinutes: number
+  estimatedMinutes?: number
   async: boolean
 }
 
@@ -156,12 +156,12 @@ export function stepApprovalRequired(node: DagNode): boolean {
   if (node.riskLevel === 'medium' || node.riskLevel === 'high') return true
   const kind = stepKind(node.route)
   if (kind === 'human') return false
-  if (kind === 'computer-use') return true
+  if (kind === 'computer-use' || kind === 'unclassified') return true
   const calls = [
     ...(node.functionCalls ?? []).map((fc) => fc.method),
     ...(node.toolCall ? [node.toolCall] : []),
   ]
-  if (calls.length === 0) return false
+  if (calls.length === 0) return true
   return calls.some((m) => !isReadOnlyCall(m))
 }
 
@@ -230,7 +230,7 @@ export function manifestProvenance(): ManifestProvenance {
     source: 'productarena',
     url: SITE_URL,
     generatedFrom:
-      'processes/corpus.json + processes/chains.json (the Ultrametric founder-process corpus), '
+      'open-processes/corpus.json + open-processes/chains.json (the Ultrametric founder-process corpus), '
       + 'resolved against live ranking leaderboards at build time. Regenerate by refetching this '
       + 'manifest URL — it always reflects the currently deployed data, not a pinned data commit.',
     license:

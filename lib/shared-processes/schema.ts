@@ -47,6 +47,7 @@ const partSchema: z.ZodType<Part> = z.lazy(() => z.strictObject({
 export const sharedRecordSchema = z.strictObject({
   schemaVersion: z.literal(1), id, kind: z.enum(['situation', 'process']), title: text, summary: z.string(),
   outcomes: z.array(text), guidance: text.nullable(), when: text.nullable().optional(), aliases: z.array(id).optional(),
+  entrySteps: z.array(id).min(1).optional(), taskIds: z.array(id).min(1).optional(),
   parts: z.array(partSchema), links: z.array(connectionSchema), references: z.array(reference),
   notes: z.array(note), metadata: z.record(z.string(), z.json()),
   source: z.strictObject({ path: text, id: text, revision: z.string().regex(/^[a-f0-9]{40}$/), sha256: z.string().regex(/^[a-f0-9]{64}$/) }).optional(),
@@ -121,8 +122,25 @@ export function validateCatalog(input: unknown): SharedRecord[] {
         adjacency.get(link.from)!.push(link.to)
       }
       acyclic(adjacency, scope)
+      return adjacency
     }
-    graph(record.parts, record.links, record.id)
+    const adjacency = graph(record.parts, record.links, record.id)
+    if (record.entrySteps) {
+      const entries = record.entrySteps
+      const ids = new Set(record.parts.map(part => part.id))
+      const incoming = new Set(record.links.map(link => link.to))
+      if (new Set(entries).size !== entries.length || entries.some(id => !ids.has(id) || incoming.has(id))) {
+        throw new Error(`${record.id}: invalid entry step`)
+      }
+      const reached = new Set<string>()
+      function reach(id: string) {
+        if (reached.has(id)) return
+        reached.add(id)
+        for (const child of adjacency.get(id) ?? []) reach(child)
+      }
+      entries.forEach(reach)
+      if (reached.size !== ids.size) throw new Error(`${record.id}: unreachable step`)
+    }
   }
   acyclic(references, 'Process nesting')
   return records

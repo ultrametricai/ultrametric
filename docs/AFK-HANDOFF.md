@@ -17,8 +17,8 @@ served by `app/processes/[slug]/manifest.json/route.ts` and
 - Per chain (end-to-end playbook): `{SITE_URL}/processes/chains/{chain}/manifest.json`
   (e.g. `.../processes/chains/company-launch/manifest.json`)
 
-Manifests are **public data** — the published corpus (`processes/corpus.json`,
-`processes/chains.json`) reshaped and resolved against the live arena leaderboards at build
+Manifests are **public data** — the published corpus (`open-processes/corpus.json`,
+`open-processes/chains.json`) reshaped and resolved against the live arena leaderboards at build
 time. There is no gating on the JSON; only the "Do via AFK" button is admin-gated. Every process
 and chain page links its manifest in the public "For agents" footer.
 
@@ -49,7 +49,7 @@ Process manifest:
         {
           "vendor": "mercury",           // corpus vendor key (arena-derived entries use the product id)
           "name": "Mercury",
-          "productId": "mercury",        // judged PA product id; null = untracked (honest chip)
+          "productId": "mercury",        // judged PA product id; null = untracked (unlinked chip)
           "arena": "startup-banking",    // null when untracked
           "agentReady": 92,              // arena agent-readiness score; null when unscored
           "mcpEndpoint": "https://mcp.mercury.com/mcp", // allowlisted (lib/mcpEndpoints.ts) or null
@@ -68,7 +68,7 @@ Process manifest:
   "provenance": {
     "source": "productarena",
     "url": "https://ultrametric.ai",
-    "generatedFrom": "processes/corpus.json + processes/chains.json …", // commit-agnostic: refetch, don't pin
+    "generatedFrom": "open-processes/corpus.json + open-processes/chains.json …", // commit-agnostic: refetch, don't pin
     "license": "Ultrametric Data License (DATA-LICENSE) …"
   }
 }
@@ -127,6 +127,13 @@ human approval before running it:
    human on them.
 
 ## Versioning rules
+
+Version 2 permits an absent `estimatedMinutes` when no estimate is authored and adds
+`kind: "unclassified"` when execution mode is unknown. Executors must preserve those unknowns
+and require a classification before execution. Unclassified steps and API steps without
+recorded calls require approval. Private consumers join their version-pinned execution
+bindings before deriving call-based approval behavior; public canonical records contain no
+Ultrametric operation bindings. Version 1 consumers must update before accepting version 2.
 
 - `manifestVersion` is a single integer, bumped **only on breaking changes**: removing or
   renaming a field, changing a field's type or meaning, changing the kind/approval semantics.

@@ -42,7 +42,7 @@ export interface MyStackProduct {
 }
 
 // Same 'a|b' sorted-pair format as lib/integrations.ts's pairKey/verifiedPairKeys (that module
-// is server-only — it reads rankings/ with fs — so the one-liner is mirrored here for the client;
+// is server-only — it reads open-rankings/ with fs — so the one-liner is mirrored here for the client;
 // lib/__tests__/integrations.test.ts cross-checks the two formats against each other).
 export function stackPairKey(a: string, b: string): string {
   return [a, b].sort().join('|')

@@ -3,7 +3,7 @@ import path from 'node:path'
 import { GEO_PREF_META, type GeoCountry } from './geoPreference'
 
 // Loader + validator for the open-documents map (open-documents/registry.json + open-documents/README.md).
-// Same doctrine as lib/citations.ts: structural/referential invariants as a flat error list for
+// Same doctrine as lib/laws.ts: structural/referential invariants as a flat error list for
 // the vitest gate (__tests__/documents.test.ts); pure validators take data so failure modes are
 // testable; no network I/O — URL liveness is an editorial duty recorded via checked_on.
 // Policy enforced socially, stated here for the record: link, never redistribute the documents.
@@ -47,7 +47,7 @@ export interface OpenDocument {
   publisher: string
   /** The judged product this publisher maps to (founder 2026-10-08: vendor rows wear the
    * vendor's logo where we have one). COMMITTED, never guessed: only publishers that ARE a
-   * judged product in rankings/ carry it (Cooley GO → cooley, Orrick → orrick, GitHub → github —
+   * judged product in open-rankings/ carry it (Cooley GO → cooley, Orrick → orrick, GitHub → github —
    * all in their arenas). Rendering resolves it via judgedProductRef (throws on an unknown or
    * ambiguous id, so a typo fails the build) and checks lib/logos hasLogo; unmapped publishers
    * render as plain names — no logo invented. */
@@ -262,7 +262,7 @@ export interface JudgedProductRef {
   name: string
 }
 
-// productId → (arena, name) over every rankings/<arena>/products.json, built once per process (the
+// productId → (arena, name) over every open-rankings/<arena>/products.json, built once per process (the
 // page resolves at most a handful of vendors per build). Ambiguity throws rather than picking
 // an arena: 14 product ids live in two arenas (brex, ramp, square, …) — a publisher mapping to
 // one of those needs a deliberate disambiguation, not a readdir-order coin flip.
@@ -273,9 +273,9 @@ let judgedProductsCache: Map<string, JudgedProductRef | 'ambiguous'> | null = nu
 export function judgedProductRef(productId: string): JudgedProductRef {
   if (judgedProductsCache === null) {
     judgedProductsCache = new Map()
-    const categories = JSON.parse(fs.readFileSync(path.join(ROOT, 'rankings/categories.json'), 'utf8')) as Array<{ id: string }>
+    const categories = JSON.parse(fs.readFileSync(path.join(ROOT, 'open-rankings/categories.json'), 'utf8')) as Array<{ id: string }>
     for (const c of categories) {
-      const productsPath = path.join(ROOT, 'rankings', c.id, 'products.json')
+      const productsPath = path.join(ROOT, 'open-rankings', c.id, 'products.json')
       if (!fs.existsSync(productsPath)) continue
       const products = JSON.parse(fs.readFileSync(productsPath, 'utf8')) as Array<{ id: string; name: string }>
       for (const p of products) {
@@ -284,7 +284,7 @@ export function judgedProductRef(productId: string): JudgedProductRef {
     }
   }
   const ref = judgedProductsCache.get(productId)
-  if (!ref) throw new Error(`Unknown publisherProductId ${productId} — not a judged product in rankings/`)
+  if (!ref) throw new Error(`Unknown publisherProductId ${productId} — not a judged product in open-rankings/`)
   if (ref === 'ambiguous') throw new Error(`Ambiguous publisherProductId ${productId} — the id exists in more than one arena`)
   return ref
 }

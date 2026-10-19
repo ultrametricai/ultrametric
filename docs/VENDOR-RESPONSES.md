@@ -6,7 +6,7 @@ see both. Ultrametric does the same for verdicts. A **vendor response** is a sho
 official statement from a product's vendor about one specific (product, story) verdict,
 published word-for-word next to that verdict.
 
-The current implementation: `rankings/<category>/vendor-responses.json` (optional per ranking),
+The current implementation: `open-rankings/<category>/vendor-responses.json` (optional per ranking),
 validated by `VendorResponseSchema` in `lib/schemas.ts`, loaded with integrity checks in
 `lib/data.ts`, rendered inside the story's expanded row in
 `components/StoryVerdictsTable.tsx`, with a count chip in the product page header. Intake is
@@ -53,7 +53,7 @@ response's optional `url`, which we link but do not mirror.
 
 ## How responses feed re-judges
 
-On the next re-judge of that product (`pnpm run pipeline judge --category <cat> --product
+On the next re-judge of that product (`pnpm engine judge --category <cat> --product
 <product>`, e.g. triggered by a contest or new evidence), the maintainer adds the response's
 statement to the product's evidence file as a **claimed-docs-tier** item carrying a
 `vendor-response` marker in its id (convention: `{product}-vendor-response-{issueNumber}`,
@@ -89,4 +89,4 @@ Ultrametric (which operates Ultrametric) also ships products that appear in rank
 Foreloop in `software-factory`, disclosed via the product's `affiliation` field). Responses on
 our own products follow this exact protocol with no shortcuts — `github-org` verification via
 this repository's org, same verbatim cap, same "never moves a verdict" rule — and exist partly
-to demonstrate the feature honestly rather than fabricating third-party statements.
+to demonstrate the feature on a real affiliated product rather than fabricating third-party statements.

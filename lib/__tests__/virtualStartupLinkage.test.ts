@@ -5,7 +5,7 @@
 //            renders is an anchor the pinned contract already resolves
 //            (lib/__tests__/process-anchor-contract.test.ts covers every corpus node);
 //   item 3 — the produces entries mirror the corpus producesArtifact tags exactly (same steps,
-//            same ids, nothing invented) and every id resolves in processes/artifacts.json with
+//            same ids, nothing invented) and every id resolves in open-artifacts/registry.json with
 //            its committed label;
 //   item 6 — the fork summary names a real divergence: the forking step's label and its direct
 //            successors' labels from the committed dag.edges, with fin_002 (the get-paid spine's

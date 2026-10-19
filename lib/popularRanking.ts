@@ -1,6 +1,6 @@
 // Pure segmentation + hot-detection logic for the /rankings/popular page and the 🔥 chip.
 // Split from lib/hotProducts.ts (the fs composer) the same way lib/popularity.ts is split from
-// pipeline/stages/popularity.ts: no node builtins, so client components and tests import it
+// rankings-engine/stages/popularity.ts: no node builtins, so client components and tests import it
 // without dragging fs into the bundle.
 //
 // FAIRNESS is the design constraint. You cannot rank GitHub stars against a closed SaaS
@@ -9,7 +9,7 @@
 //   (a) star-tracked products ranked by absolute stars (velocity shown alongside),
 //   (b) package-installed products ranked by weekly npm+PyPI installs (same unit, so the sum
 //       across the two registries is honest),
-//   (c) curated "clearly popular" products with NO public counter (rankings/popular-products.json)
+//   (c) curated "clearly popular" products with NO public counter (open-rankings/popular-products.json)
 //       rendered as an UNRANKED strip — an editorial fact, never a fake number.
 // Missing data is absent, never zero, and none of this ever touches the Overall score (see
 // METHODOLOGY.md "Popularity — a signal, not a score").
@@ -106,7 +106,7 @@ export function youngRocket(p: { stars?: number; starsPerYear?: number }): HotFl
   }
 }
 
-// rankings/hot-products.json — the small curated override for things we KNOW are exploding but the
+// open-rankings/hot-products.json — the small curated override for things we KNOW are exploding but the
 // tracked history is too short to show yet. Every entry must carry its own reason string; the
 // override only fills gaps the data can't see (a mechanical flag always wins in mergeHot).
 export const CuratedHotSchema = z.object({

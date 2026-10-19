@@ -1,6 +1,6 @@
 // Textbook tests for the offer / equity-comp scenario module. Conventions cited in the
 // module header (Holloway Guide to Equity Compensation; Index Ventures' Rewarding Talent;
-// the 409A strike-price floor via law/US-FED/us-fed-409a-stock-right-exception.json).
+// the 409A strike-price floor via open-law/US-FED/us-fed-409a-stock-right-exception.json).
 // The worked example is chosen so every number derives by hand:
 //   Company: 10,000,000 fully diluted. Offer: 50,000 options at a $0.40 strike (409A FMV).
 //   Grant size: 50,000 / 10,000,000 = 0.50%.
@@ -26,9 +26,9 @@ import {
 const GRANT: OfferGrant = { optionShares: 50_000, strikePerShare: 0.4, fullyDilutedShares: 10_000_000 }
 
 describe('the 409A strike-price convention is backed by a committed rule card', () => {
-  it('law/US-FED holds us-fed.409a-stock-right-exception with primary sources', () => {
+  it('open-law/US-FED holds us-fed.409a-stock-right-exception with primary sources', () => {
     const card = JSON.parse(
-      fs.readFileSync(path.join(process.cwd(), 'law/US-FED/us-fed-409a-stock-right-exception.json'), 'utf8'),
+      fs.readFileSync(path.join(process.cwd(), 'open-law/US-FED/us-fed-409a-stock-right-exception.json'), 'utf8'),
     ) as { id: string; kind: string; source_ids: string[] }
     expect(card.id).toBe('us-fed.409a-stock-right-exception')
     expect(card.kind).toBe('legal')
@@ -70,6 +70,16 @@ describe('grantExitOutcome (worked example)', () => {
     expect(o.netBeforeTax).toBe(380_000)
     // The proxy is honest about itself: preferences and taxes are out of scope.
     expect(o.needsReview).toBe(true)
+  })
+
+  it('rejects a negative extraDilutionPct', () => {
+    expect(() => grantExitOutcome(GRANT, { label: 'x', exitValuation: 1, extraDilutionPct: -5 })).toThrow(RangeError)
+  })
+
+  it('a zero-strike grant is never under water: net equals gross', () => {
+    const o = grantExitOutcome({ ...GRANT, strikePerShare: 0 }, { label: 'z', exitValuation: 100_000_000 })
+    expect(o.exerciseCost).toBe(0)
+    expect(o.netBeforeTax).toBe(o.grossValue)
   })
 
   it('Exit B: $100M with no further dilution → net $480,000', () => {

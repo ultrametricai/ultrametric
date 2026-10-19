@@ -144,6 +144,19 @@ describe('down-round model — the Springmeyer example end-to-end', () => {
     expect(incl.adjustments[0].conversionPriceAfter).toBeGreaterThan(excl.adjustments[0].conversionPriceAfter)
   })
 
+  it('counts protected preferred in the broad base at its row share count (1:1-before assumption)', () => {
+    // Series A already adjusted once (OIP $2.00, CP before $1.60 → as-converted 5,000,000).
+    // The computed base still uses the 4,000,000-share row: CP2 = 1.6 × (12M + 5M/1.6)/(12M + 5M)
+    // = 1.6 × 15,125,000/17,000,000 = $1.4235. Callers with pre-adjusted series should pass
+    // as-converted rows (module doc comment).
+    const r = downRoundModel(
+      rows,
+      [{ seriesName: 'Series A', originalIssuePrice: 2, conversionPriceBefore: 1.6, basis: 'broad-based' }],
+      downRound,
+    )
+    expect(r.adjustments[0].conversionPriceAfter).toBe(1.4235)
+  })
+
   it('rejects unresolved SAFEs (null shares) and unknown series names', () => {
     const withSafe: CapTableRow[] = [...rows, { id: 's', name: 'SAFE (as-converted est.)', group: 'investor', shares: null, pct: 10 }]
     expect(() => downRoundModel(withSafe, [], downRound)).toThrow(/convert SAFEs first/)

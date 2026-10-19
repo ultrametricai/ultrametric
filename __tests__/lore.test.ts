@@ -8,13 +8,13 @@ import {
   validateLore,
   validateStartupLore,
 } from '@/lib/lore'
-import type { StartupLaw } from '@/lib/citations'
+import type { StartupLaw } from '@/lib/laws'
 
-// The startup-lore gates (LAWS.md precedent): the committed lore/LORE.md must satisfy
+// The startup-lore gates (LAWS.md precedent): the committed open-lore/LORE.md must satisfy
 // every structural and referential invariant — unique ids, a valid veracity grade on every
 // episode, a non-empty lesson, at least one HTTPS source with a what-it-supports note, law
-// numbers resolving against law/LAWS.md, and process ids resolving (read-only) against
-// processes/corpus.json. Deterministic — URL liveness is editorial (citations/README.md).
+// numbers resolving against open-law/LAWS.md, and process ids resolving (read-only) against
+// open-processes/corpus.json. Deterministic — URL liveness is editorial (open-lore/README.md).
 
 describe('lore corpus', () => {
   it('the committed LORE.md passes every invariant', () => {

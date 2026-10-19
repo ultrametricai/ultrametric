@@ -1,7 +1,7 @@
 // Delaware franchise tax — both published computation methods, exactly (founder directive
 // 2026-10-01: "go super deep on business logic — tax mechanics, everything").
 //
-// Pure, client-safe, deterministic. Every formula here is a dated rule card in law/US-DE/
+// Pure, client-safe, deterministic. Every formula here is a dated rule card in open-law/US-DE/
 // citing the primary sources (8 Del. C. § 503 and the Division of Corporations' own
 // calculation page, corp.delaware.gov/frtaxcalc — both verified live 2026-10-01):
 // - us-de.franchise-tax-authorized-shares-method — the $175/$250/+$85-per-10,000 tiers, the
@@ -237,11 +237,11 @@ export interface MethodComparison {
 }
 
 /**
- * The famous March recalculation: the Division bills the Authorized Shares Method by
- * default, and a startup with a large authorized pool but small assets usually owes far
- * less under the Assumed Par Value Capital Method (both rule cards' caveats say exactly
- * this). Computes both published methods and reports which is cheaper. Proposes only —
- * the corporation elects the method on its own annual report filing.
+ * The Division bills the Authorized Shares Method by default, and a startup with a large
+ * authorized pool but small assets usually owes far less under the Assumed Par Value
+ * Capital Method (both rule cards' caveats say exactly this). Computes both published
+ * methods and reports which is cheaper. Proposes only — the corporation elects the method
+ * on its own annual report filing.
  */
 export function compareFranchiseTaxMethods(inputs: AssumedParInputs): MethodComparison {
   const totalAuthorized = inputs.authorizedClasses.reduce((sum, c) => sum + c.shares, 0)

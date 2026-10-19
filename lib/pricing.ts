@@ -1,6 +1,6 @@
-// Pricing transparency index: schema + loader + display helpers for rankings/{cat}/pricing.json —
+// Pricing transparency index: schema + loader + display helpers for open-rankings/{cat}/pricing.json —
 // what agent-driven usage of a product actually costs, normalized into the arena's canonical
-// per-action unit (see PRICING_ARENAS below). Produced by pipeline/stages/pricing.ts, which
+// per-action unit (see PRICING_ARENAS below). Produced by rankings-engine/stages/pricing.ts, which
 // LLM-extracts pricing facts from the vendor's own pricing page under hard honesty rules:
 // every fact carries a verbatim excerpt (verified to appear on the fetched page), the URL it
 // came from, and a fetch date — and the pipeline never converts, averages, or derives a price
@@ -46,7 +46,7 @@ export function allowedUnitsFor(arenaId: string): string[] {
 // states the price — a payments fee like "2.9% + $0.30" keeps both parts verbatim (percent 2.9,
 // amountUsd 0.30) rather than being collapsed into a computed blended figure we never extracted.
 // `excerpt` is a verbatim quote from the fetched page containing the figure (verified by the
-// stage, see pipeline/stages/pricing.ts's excerptFound); `sourceUrl`/`fetchedAt` are stamped by
+// stage, see rankings-engine/stages/pricing.ts's excerptFound); `sourceUrl`/`fetchedAt` are stamped by
 // code from the actual fetch, never typed by the LLM.
 export const PricingFactSchema = z.object({
   unit: z.string().min(1),
@@ -63,7 +63,7 @@ export const PricingFactSchema = z.object({
   message: 'a non-free fact must carry a price (amountUsd > 0 or percent)',
 })
 
-// rankings/{cat}/pricing.json value per product: either ≥1 verified facts, or an honest
+// open-rankings/{cat}/pricing.json value per product: either ≥1 verified facts, or an honest
 // "pricing unclear" record with the reason (JS-shell page, bot wall, no printed unit prices).
 export const ProductPricingSchema = z.union([
   z.object({
@@ -77,7 +77,7 @@ export const ProductPricingSchema = z.union([
   }),
 ])
 
-// rankings/{cat}/pricing.json shape: productId -> ProductPricing. A product absent from the map has
+// open-rankings/{cat}/pricing.json shape: productId -> ProductPricing. A product absent from the map has
 // simply not been through the pricing stage yet — display code renders nothing, not "unclear".
 export const PricingMapSchema = z.record(z.string(), ProductPricingSchema)
 
@@ -91,7 +91,7 @@ export function isPricingUnavailable(entry: ProductPricing): entry is PricingUna
   return 'unavailable' in entry && entry.unavailable === true
 }
 
-const DEFAULT_DIR = () => path.join(process.cwd(), 'rankings')
+const DEFAULT_DIR = () => path.join(process.cwd(), 'open-rankings')
 const pricingCache = new Map<string, PricingMap>()
 
 // Same tolerant-optional contract as lib/data.ts's popularity load: no pricing.json (arena not

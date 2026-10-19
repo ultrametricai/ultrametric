@@ -1,5 +1,5 @@
 // Textbook tests for the 83(b) money-math module. Duties: (1) every ruleId in
-// ELECTION_83B_RULE_IDS resolves to a committed, jurisdiction-matched card in law/US-FED/
+// ELECTION_83B_RULE_IDS resolves to a committed, jurisdiction-matched card in open-law/US-FED/
 // with primary sources; (2) ALL SIX published examples of Rev. Proc. 2012-29 § 5 are
 // replayed number-for-number (the IRS's own 25,000-share fact pattern); (3) the rate
 // arithmetic is re-derived by hand in comments. deadlines.ts owns the 30-day clock — the
@@ -18,7 +18,7 @@ import {
 } from '../election83b'
 
 function loadRuleCard(jurisdiction: string, ruleId: string) {
-  const dir = path.join(process.cwd(), 'law', jurisdiction)
+  const dir = path.join(process.cwd(), 'open-law', jurisdiction)
   for (const file of fs.readdirSync(dir).filter((f) => f.endsWith('.json'))) {
     const card = JSON.parse(fs.readFileSync(path.join(dir, file), 'utf8')) as {
       id: string
@@ -35,7 +35,7 @@ describe('every computation resolves to a committed, jurisdiction-matched rule c
   for (const [name, ref] of Object.entries(ELECTION_83B_RULE_IDS)) {
     it(`${name} → ${ref.ruleId}`, () => {
       const card = loadRuleCard(ref.jurisdiction, ref.ruleId)
-      expect(card, `law/${ref.jurisdiction} must contain a card with id ${ref.ruleId}`).not.toBeNull()
+      expect(card, `open-law/${ref.jurisdiction} must contain a card with id ${ref.ruleId}`).not.toBeNull()
       expect(card?.jurisdiction).toBe(ref.jurisdiction)
       expect(card?.kind).toBe('legal')
       expect(card?.source_ids.length).toBeGreaterThan(0)
@@ -87,6 +87,13 @@ describe('compare83bScenario replays Rev. Proc. 2012-29 Examples 1, 2, 4, 5', ()
     expect(cmp.needsReview).toBe(true)
     expect(cmp.ruleIds).toContain('us-fed.83b-scenario-arithmetic')
     expect(cmp.ruleIds).toContain('us-fed.restricted-property-holding-period')
+  })
+
+  it('an empty vesting scenario: without-election income and basis stay 0 until something vests', () => {
+    const cmp = compare83bScenario(PAID_FACTS, [])
+    expect(cmp.withoutElection.incomeAtVesting).toBe(0)
+    expect(cmp.withoutElection.basis).toBe(0)
+    expect(cmp.withElection.basis).toBe(25_000)
   })
 
   it('rejects a vesting scenario larger than the transfer', () => {
@@ -167,6 +174,14 @@ describe('forfeitureAfterElection replays Examples 3 and 6', () => {
     const f = forfeitureAfterElection({ shares: 25_000, pricePaidPerShare: 0, fmvAtTransferPerShare: 1, repurchasePricePerShare: 0 })
     expect(f.amountRealized).toBe(0)
     expect(f.gainOrLoss).toBe(0) // loss limited to amount paid (0) over amount realized (0)
+    expect(f.unrecoveredInclusion).toBe(25_000)
+  })
+
+  it('a repurchase above the elected basis is a gain measured against basis, with the inclusion still unrecovered', () => {
+    // Paid $1/share, FMV $2 at transfer (inclusion $25,000), repurchased at $3/share:
+    // basis $50,000, realized $75,000 → gain $25,000; the $25,000 inclusion is separate.
+    const f = forfeitureAfterElection({ shares: 25_000, pricePaidPerShare: 1, fmvAtTransferPerShare: 2, repurchasePricePerShare: 3 })
+    expect(f.gainOrLoss).toBe(25_000)
     expect(f.unrecoveredInclusion).toBe(25_000)
   })
 

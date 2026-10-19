@@ -1,0 +1,193 @@
+{
+  "schemaVersion": 1,
+  "id": "opp_007",
+  "kind": "process",
+  "title": "Provision a workspace user",
+  "summary": "Create a workspace account for a new hire (email, drive, groups).",
+  "outcomes": [],
+  "guidance": null,
+  "parts": [
+    {
+      "id": "n1",
+      "kind": "step",
+      "title": "Create the workspace user (email, profile)",
+      "guidance": "Use the onboarding request to verify the person, manager, start date and account name. Check for an existing identity before creating a profile, mailbox or license. Provision through the workspace administrator’s authorized process and deliver activation instructions securely. Coordinate activation with the start conditions so the right person receives one usable company account at the intended time.",
+      "when": null,
+      "ref": null,
+      "options": [],
+      "notes": [],
+      "references": [
+        {
+          "kind": "vendor",
+          "id": "google_workspace",
+          "role": "stated-vendor"
+        },
+        {
+          "kind": "url",
+          "url": "https://admin.google.com/",
+          "role": "legacy-action-link",
+          "title": "Google Admin console",
+          "description": null
+        }
+      ],
+      "metadata": {
+        "route": "agent",
+        "reversibility": "reversible",
+        "approvalRequired": true,
+        "estimatedMinutes": 2
+      }
+    },
+    {
+      "id": "n2",
+      "kind": "step",
+      "title": "Add the user to groups and shared drives",
+      "guidance": "Match the person’s responsibilities to the groups and shared drives they need. Check inherited permissions with group owners, especially for personnel, finance or customer information, before adding membership. Verify essential resources are reachable and resolve exceptional access separately. Assign any temporary or unusual permission a review owner so it can be removed when the work changes.",
+      "when": null,
+      "ref": null,
+      "options": [],
+      "notes": [],
+      "references": [
+        {
+          "kind": "vendor",
+          "id": "google_workspace",
+          "role": "stated-vendor"
+        }
+      ],
+      "metadata": {
+        "route": "agent",
+        "reversibility": "reversible",
+        "estimatedMinutes": 3
+      }
+    },
+    {
+      "id": "n3",
+      "kind": "step",
+      "title": "Provision app access from the identity provider (SSO/SCIM)",
+      "guidance": "Check which requested applications support the identity provider’s configured sign-in and provisioning methods. Apply the app owners’ access decisions through the identity administrator, then inspect the resulting accounts and roles in the target applications. Resolve failed provisioning, duplicate identities and missing licenses individually. An assigned group is only an input; the person needs the intended access in the application itself.",
+      "when": null,
+      "ref": null,
+      "options": [],
+      "notes": [],
+      "references": [
+        {
+          "kind": "vendor",
+          "id": "workos",
+          "role": "candidate"
+        },
+        {
+          "kind": "vendor",
+          "id": "auth0",
+          "role": "candidate"
+        },
+        {
+          "kind": "category",
+          "id": "sso-identity",
+          "role": "rankings"
+        }
+      ],
+      "metadata": {
+        "route": "agent",
+        "reversibility": "reversible",
+        "estimatedMinutes": 5
+      }
+    },
+    {
+      "id": "n4",
+      "kind": "step",
+      "title": "New hire signs in and enrolls MFA",
+      "guidance": "Give the employee the activation route and support contact. They sign in, replace any temporary credential and enroll the authentication methods required by company policy, keeping passwords and recovery secrets private. Check that the intended workspace is accessible and that the employee understands the recovery process. Route enrollment or device failures to the administrator who can resolve them.",
+      "when": null,
+      "ref": null,
+      "options": [],
+      "notes": [],
+      "references": [],
+      "metadata": {
+        "route": "person",
+        "reversibility": "reversible",
+        "estimatedMinutes": 5
+      }
+    }
+  ],
+  "links": [
+    {
+      "from": "n1",
+      "to": "n2",
+      "when": null
+    },
+    {
+      "from": "n2",
+      "to": "n3",
+      "when": null
+    },
+    {
+      "from": "n3",
+      "to": "n4",
+      "when": null
+    }
+  ],
+  "references": [
+    {
+      "kind": "vendor",
+      "id": "google_workspace",
+      "role": "involves"
+    },
+    {
+      "kind": "vendor",
+      "id": "workos",
+      "role": "involves"
+    },
+    {
+      "kind": "vendor",
+      "id": "auth0",
+      "role": "involves"
+    }
+  ],
+  "notes": [],
+  "metadata": {
+    "slugAliases": [
+      {
+        "slug": "provision-a-google-workspace-user",
+        "label": "Provision a Google Workspace user"
+      }
+    ],
+    "phase": "hr",
+    "cadence": "event-driven",
+    "geoScope": "global",
+    "complexity": "moderate",
+    "reversibility": "reversible",
+    "category": "opportunity",
+    "supportLevel": "partial",
+    "supportReason": "Workspace directory APIs expose user provisioning — an agent can create the account; access grants stay approval-gated.",
+    "contextNeeded": [],
+    "produces": [],
+    "requires": [
+      "company-email",
+      "identity-provider",
+      "employment-agreement"
+    ],
+    "tags": [
+      "opportunity",
+      "google",
+      "hr"
+    ],
+    "activeMinutes": 15,
+    "totalEstimatedMinutes": 15,
+    "hasAsyncSteps": false,
+    "timeOrder": 48,
+    "annoyance": 1,
+    "risk": 2,
+    "growthImpact": 1
+  },
+  "source": {
+    "path": "open-processes/corpus.json",
+    "id": "opp_007",
+    "revision": "4a1ac9b2eea2d4e1ac8cc5a0dfdc7cc5dc6080a1",
+    "sha256": "cdbbde3efd4acf2e7070f194b8c37fc7bd1033f43a58568d5c0f6f18beb8b4b7"
+  },
+  "entrySteps": [
+    "n1"
+  ],
+  "aliases": [
+    "provision-a-google-workspace-user"
+  ]
+}

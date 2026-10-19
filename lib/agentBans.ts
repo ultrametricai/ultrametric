@@ -7,7 +7,7 @@ import type { CategoryData } from './data'
 // Ultrametric", no external-site affordance. The vendor-name link elsewhere on the page stays.
 // Derived entirely from committed data (evidence packs + crawlExclude), never a hand list.
 
-// The wall-probe scripts (pipeline/scripts/append-government-services-*-wall-probes.py) record
+// The wall-probe scripts (rankings-engine/scripts/append-government-services-*-wall-probes.py) record
 // a named AI-agent ban in a fixed phrasing: "named ban — <agent> present" / "named bans —
 // <agent> present, …" inside a probe-tier excerpt. Matching that recorded format keeps the
 // flag anchored to dated robots observations, not prose drift.

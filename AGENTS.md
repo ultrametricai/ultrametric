@@ -5,13 +5,13 @@ These bind every agent and contributor working in this repo.
 ## Evidence doctrine
 
 - Never hand-tune a verdict, score, rank, or leaderboard position. Every ranked number is
-  computed from judged evidence by the pipeline — change the inputs or the code, never the
-  output. Honest negatives stay published.
+  computed from judged evidence by the rankings engine; to change a number, change the inputs
+  or the code. Negative results stay published.
 - Every claim cites its evidence (vendor docs, GitHub, community sources, or a recorded
   probe). No citable evidence → no claim. Never fabricate a URL; if a source is bot-walled,
   document that and substitute a reachable one.
-- Products affiliated with the founders are disclosed and bias-audited, never favored.
-- Counts shown on pages are computed at build time, never hand-written. README and doc
+- Products affiliated with the founders are disclosed and bias-audited like any other product.
+- Counts shown on pages are computed at build time. README and doc
   prose carries no counts and no dates that will go stale.
 
 ## Writing voice
@@ -20,7 +20,7 @@ These bind every agent and contributor working in this repo.
   "judged on evidence"-style suffixes, no invented framing ("the three pillars"), no
   conversational tics ("all pure", "the real X").
 
-## Gates — exit codes, never grep'd output
+## Gates
 
 All of these must exit 0 before any merge to main:
 
@@ -31,30 +31,30 @@ All of these must exit 0 before any merge to main:
 5. `pnpm manifest:check` (every tracked path classified in `open-manifest.json`)
 6. `pnpm shared:check` when `content/processes/` or the shared corpus is touched
 
-Never gate an `&&` chain on echoed text — test the tool's exit code.
+Never gate an `&&` chain on echoed text; test the tool's exit code.
 
 ## Workflow
 
 - Every change lands as a branch + pull request. No direct commits to main.
-- Authored records in `content/processes/` are never overwritten by catalog regeneration:
-  refresh only source-mirrored metadata and re-bless the manifest
-  (see `scripts/shared-processes/import.py`, authored-record conflict rule).
+- Author process meaning in `open-processes/<slug>.json`. Regenerate compatibility files
+  with `pnpm shared:project`; never edit generated corpus, chains or equity projections.
 
-## Immutable identifiers — legacy on purpose, never rename
+## Immutable identifiers
+
+The following identifiers are legacy on purpose:
 
 `PROVENANCE_KEY 'productarena-provenance-v1'`; `pa-*` localStorage keys; `pa_session` /
 `pa_state` cookies; recorded probe-evidence strings (`'productarena certify'`,
 `PA_PROBE_OK`, `'productarena-probe'` user agents); `lib/mcpDemoCalls` `'self/productarena'`;
 manifest source `'productarena'`; the `#pa-score` anchor; the `productarena-proxy` worker
-name; `/productarena` redirect routes. These are recorded evidence or deployed state —
+name; `/productarena` redirect routes. These are recorded evidence or deployed state;
 renaming them breaks provenance. New code reads `UM_*` env names first with `PA_*` as
 deprecated fallback; user-facing copy never says "productarena" or "PA".
 
 # Shared process content
 
-The shared situations/process schema and records live in `content/processes/`.
-Keep the old corpus, chains, jurisdiction files, and site loaders working during
-the additive transition. Public Git owns shared process meaning. Private UM
+The canonical situations/process records live in `open-processes/`.
+Corpus, chains and jurisdiction files are checked compatibility projections. Public Git owns shared process meaning. Private UM
 instructions live as versioned additions in the API database. Do not use the
 retired private process repo as a source of authority or copy private guides here.
 Run `pnpm shared:check` and the shared-process tests for schema or catalog changes.
@@ -66,9 +66,12 @@ need it.
 
 ## What this repo is
 
-Ultrametric is the open startup repo: step-by-step founder processes (`processes/`),
-agent-tested vendor rankings (`rankings/`, `pipeline/`), and open, source-cited
-business logic (`lib/openstartup/`, `law/`, `citations/`). The knowledge layer (plain JSON
+Ultrametric is the open startup repo: step-by-step founder processes and situations
+(`open-processes/`), agent-tested vendor rankings (`open-rankings/`, `rankings-engine/`),
+open, source-cited business logic and law (`lib/openstartup/`, `open-modules/`,
+`open-law/`), startup lore and its reading library (`open-lore/`), openly
+published legal documents (`open-documents/`), and the startup simulator's catalog
+(`open-startup-sim/`). The knowledge layer (plain JSON
 and markdown, schema-validated in CI) is the product. The site that renders it at
 ultrametric.ai is maintained in a private repo, which materializes this repo's open
 surface at a pinned commit via `scripts/sync-open.mjs` and `open-manifest.json`; UI and
@@ -79,7 +82,7 @@ page changes happen there. The README has the full map.
 ```bash
 pnpm install
 pnpm test       # vitest run: schema, scoring, and founder-ops gates
-pnpm stats      # regenerates the README stats/arenas blocks and badges
+pnpm stats      # gates the README: no generated count blocks, no counts in prose
 ```
 
 ## Schemas are law
@@ -88,28 +91,29 @@ Every data file (`categories.json`, `products.json`, `stories.json`, `evidence/*
 `verdicts.json`, `rankings.json`, rule cards, process records) validates against a
 schema (`lib/schemas.ts`, `schemas/*.schema.json`). If a fact does not fit the schema,
 change the schema deliberately in its own commit; do not stuff it into a free-text
-field. Run `pnpm test` before opening any PR that touches `rankings/`, `processes/`,
-`law/`, `citations/`, or `jurisdictions/`.
+field. Run `pnpm test` before opening any PR that touches `open-rankings/`, `open-processes/`,
+`open-law/`, `open-lore/`, or `jurisdictions/`.
 
 ## Generated files: do not hand-edit
 
 The evidence doctrine in the house rules is the principle; these are the mechanical
 traps:
 
-- `rankings/<arena>/rankings.json` is derived. Change verdicts or evidence, then run
-  `pnpm run pipeline derive --category <id>`.
-- The README blocks between `<!-- stats:start -->` / `<!-- arenas:start -->` style
-  markers, and the badge SVGs in `public/badges/`, come from `pnpm stats` and
-  `node scripts/generate-badges.mjs`. Edit around the markers, never inside them.
-- `rankings/reviews/generated/` regenerates deterministically from the arena data.
+- `open-rankings/<arena>/rankings.json` is derived. Change verdicts or evidence, then run
+  `pnpm engine derive --category <id>`.
+- The README's generated count blocks are retired; `pnpm stats` fails if one reappears
+  or prose carries a count. The badge SVGs in `public/badges/` come from
+  `node scripts/generate-badges.mjs`.
+- `open-rankings/reviews/generated/` regenerates deterministically from the arena data.
 
-## The pipeline
+## The rankings engine
 
-`pnpm run pipeline <stage> --category <id> [--product <id>]` runs the stages
-(crawl, extract, normalize, collect-community, probe, judge, derive, logos,
-popularity). The `run` is required: pnpm 12 ships a built-in `pipeline` command
-that shadows the script in shorthand form. The LLM stages (`extract`, `normalize`, `collect-community`, `judge`)
-need `ANTHROPIC_API_KEY` in a local `.env`. That key is local-pipeline-only: it must
+`pnpm engine <stage> --category <id> [--product <id>]` runs the stages
+(crawl, extract, normalize, collect-community, probe, probe-record, judge, claims,
+pricing, integrations, screenshots, derive, logos, popularity). `pnpm run pipeline`
+remains as a deprecated alias for the same entry point during the transition. The LLM
+stages (`extract`, `normalize`, `collect-community`, `judge`, `claims`, `pricing`,
+`integrations`) need `ANTHROPIC_API_KEY` in a local `.env`. That key is local-engine-only: it must
 never be set on the Vercel project, and the deployed site never calls the Anthropic
 API. Verdicts are cache-keyed on their evidence, so re-judging without new evidence
 reproduces the same verdicts; scope runs with `--product` where possible. After a contributed
@@ -131,8 +135,8 @@ category re-run (see CONTRIBUTING.md).
   transfers. Formulas cite their sources, and worked examples are replayed
   number-for-number in tests.
 - Behavioral rules for agents consuming this data (what you may do autonomously vs.
-  what needs human authorization) are in `governance/AGENT_POLICY.md`; maturity and
-  evidence rules are in `governance/REVIEW_POLICY.md`. Follow both.
+  what needs human authorization) are in `policies/AGENT_POLICY.md`; maturity and
+  evidence rules are in `policies/REVIEW_POLICY.md`. Follow both.
 
 ## Secrets
 

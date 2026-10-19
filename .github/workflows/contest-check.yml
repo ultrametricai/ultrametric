@@ -3,7 +3,7 @@ name: Contest Check
 # Automates the "add evidence → judge → derive → PR" side of a contested verdict (see
 # CONTRIBUTING.md, "Contest a verdict"). Ships DORMANT: it fails fast with a clear message
 # on the "Verify required secret" step until a maintainer adds the ANTHROPIC_API_KEY repo
-# secret, and it never touches rankings/ if the issue body can't be parsed or validated.
+# secret, and it never touches open-rankings/ if the issue body can't be parsed or validated.
 
 on:
   issues:
@@ -72,7 +72,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           ISSUE_NUMBER: ${{ steps.issue.outputs.number }}
-        run: pnpm tsx pipeline/contest-check.ts --issue "$ISSUE_NUMBER"
+        run: pnpm tsx rankings-engine/contest-check.ts --issue "$ISSUE_NUMBER"
 
       # Best-effort: a missing comment permission (e.g. a fork PR context) should never fail
       # the whole run when the actual contest-check step already succeeded or failed cleanly.

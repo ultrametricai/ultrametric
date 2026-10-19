@@ -15,11 +15,11 @@ import {
 import { VERDICT_FACTORS } from '@/lib/scoring'
 import { isShutdown } from '@/lib/shutdown'
 
-const DATA_DIR = path.resolve(__dirname, '../../rankings')
+const DATA_DIR = path.resolve(__dirname, '../../open-rankings')
 
 const tasks = () => loadProcesses(DATA_DIR)
 
-describe('committed step→story mapping (rankings/process-step-stories.json)', () => {
+describe('committed step→story mapping (open-rankings/process-step-stories.json)', () => {
   it('exists — the rankings feature ships with its mapping', () => {
     expect(fs.existsSync(path.join(DATA_DIR, 'process-step-stories.json'))).toBe(true)
     expect(loadStepStoryMap(DATA_DIR).length).toBeGreaterThan(0)
@@ -61,8 +61,12 @@ describe('committed step→story mapping (rankings/process-step-stories.json)', 
         expect(e.arenaId, `function mapping ${e.taskId}:${e.nodeId} disagrees with the covering arena`)
           .toBe(coveringArenaId(node))
       } else if (e.kind === 'extra') {
-        expect(extraArenasFor(node), `extra mapping ${e.taskId}:${e.nodeId} targets undeclared arena ${e.arenaId}`)
-          .toContain(e.arenaId)
+        if (!extraArenasFor(node).includes(e.arenaId)) {
+          expect(e.productIds?.length, `external extra mapping ${key} needs an explicit product allowlist`).toBeGreaterThan(0)
+        }
+        for (const id of e.productIds ?? []) {
+          expect(loadCategory(e.arenaId, DATA_DIR).products.some(product => product.id === id)).toBe(true)
+        }
       } else {
         // Founder 2026-09-18: every MANUAL step (any non-agent route) is a computer-use
         // candidate — agent steps never are.
@@ -85,7 +89,8 @@ describe('committed step→story mapping (rankings/process-step-stories.json)', 
         if (arenaId && isPopulated(arenaId, DATA_DIR)) {
           expect(functionMappingFor(task.id, node, DATA_DIR), `missing function mapping for ${task.id}:${node.id}`).not.toBeNull()
         }
-        const extraArenas = extraArenasFor(node).filter((a) => isPopulated(a, DATA_DIR))
+        const external = loadStepStoryMap(DATA_DIR).filter(entry => entry.taskId === task.id && entry.nodeId === node.id && entry.kind === 'extra' && entry.productIds?.length)
+        const extraArenas = [...new Set([...extraArenasFor(node), ...external.map(entry => entry.arenaId)])].filter((a) => isPopulated(a, DATA_DIR))
         expect(
           extraMappingsFor(task.id, node, DATA_DIR).map((e) => e.arenaId).sort(),
           `missing extra mapping(s) for ${task.id}:${node.id}`,
@@ -284,13 +289,13 @@ describe('cross-arena step options (extraOptionArenas / extraOptionRefs) — jud
         const rankings = crossArenaStepRankings(task.id, node, DATA_DIR)
         for (const r of rankings) {
           expect(r.kind).toBe('extra')
-          expect(extraArenasFor(node)).toContain(r.arenaId)
+          const mapping = extraMappingsFor(task.id, node, DATA_DIR).find((e) => e.arenaId === r.arenaId)!
+          expect([...extraArenasFor(node), ...(mapping.productIds?.length ? [mapping.arenaId] : [])]).toContain(r.arenaId)
           expect(r.arenaId).not.toBe(coveringArenaId(node))
           const wholeArena = (node.extraOptionArenas ?? []).includes(r.arenaId)
           const allowedRefs = new Set(
-            (node.extraOptionRefs ?? []).filter((x) => x.arenaId === r.arenaId).map((x) => x.productId),
+            [...(node.extraOptionRefs ?? []).filter((x) => x.arenaId === r.arenaId).map((x) => x.productId), ...(mapping.productIds ?? [])],
           )
-          const mapping = extraMappingsFor(task.id, node, DATA_DIR).find((e) => e.arenaId === r.arenaId)!
           expect(mapping.storyIds.length).toBeGreaterThan(0)
           const mapped = new Set(mapping.storyIds)
           expect(r.vendors.length).toBeLessThanOrEqual(STEP_OPTIONS_CAP)
@@ -316,7 +321,8 @@ describe('cross-arena step options (extraOptionArenas / extraOptionRefs) — jud
     for (const task of tasks()) {
       for (const node of task.dag.nodes) {
         const rankings = crossArenaStepRankings(task.id, node, DATA_DIR)
-        for (const ref of node.extraOptionRefs ?? []) {
+        const externalRefs = extraMappingsFor(task.id, node, DATA_DIR).flatMap(entry => (entry.productIds ?? []).map(productId => ({ arenaId: entry.arenaId, productId })))
+        for (const ref of [...(node.extraOptionRefs ?? []), ...externalRefs]) {
           const r = rankings.find((x) => x.arenaId === ref.arenaId)
           expect(
             r?.vendors.some((v) => v.productId === ref.productId),

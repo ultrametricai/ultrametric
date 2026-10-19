@@ -5,7 +5,7 @@
 
 export type StepRoute = 'agent' | 'form' | 'person'
 
-// How often a process actually recurs in a running company (processes/corpus.json `cadence`,
+// How often a process actually recurs in a running company (open-processes/corpus.json `cadence`,
 // validated by lib/processes.ts's ProcessTaskSchema — keep this union and that z.enum in
 // lockstep). Lives here so client components can type against it without pulling node:fs.
 export type Cadence = 'daily' | 'weekly' | 'monthly' | 'quarterly' | 'annual' | 'event-driven' | 'once'
@@ -50,7 +50,7 @@ export const URGENCY_META: Record<Urgency, { label: string; definition: string }
 
 // Reversibility tiers (founder 2026-09-30: "map what is irreversible and what is reversible —
 // consider 'irreversible with pain' as a 3rd option — for ALL processes and process steps").
-// Curated explicitly on every corpus process AND every DAG node (processes/corpus.json,
+// Curated explicitly on every corpus process AND every DAG node (open-processes/corpus.json,
 // validated by lib/processes.ts's ProcessTaskSchema — keep this tuple and that z.enum in
 // lockstep; totality is corpus-tested). The judgment test is "what does undoing actually take":
 //   'reversible'   — freely undoable: drafts, configs, most SaaS setup. A routine external send
@@ -134,7 +134,8 @@ export type GapResolution =
 // the simulator transcript, and the gap-closer split. Founder 2026-09-21: person steps are no
 // longer framed negatively as "needs a human" — a human OR a computer-use agent handles them;
 // only legally required signature acts (DagNode.legalSignature) are the true human floor.
-export function gapWhy(route: 'form' | 'person'): string {
+export function gapWhy(route: 'form' | 'person' | undefined): string {
+  if (route === undefined) return 'Execution type not specified'
   return route === 'person' ? 'human or computer use' : 'manual form/portal — no API path'
 }
 
@@ -145,7 +146,7 @@ export interface SimStep {
   taskId: string
   taskTitle: string
   label: string
-  route: StepRoute
+  route?: StepRoute
   vendor: string | null
   vendorLabel: string | null
   // Set when the vendor is mapped to an arena — the simulator swaps this step's product.
@@ -162,7 +163,7 @@ export interface SimStep {
   // "true human floor") — the transcript names it instead of the generic gap reason.
   legalSignature: boolean
   riskLevel: 'low' | 'medium' | 'high' | null
-  estimatedMinutes: number
+  estimatedMinutes?: number
   async: boolean
   // Pre-resolved (server-side) agentic workaround for non-agent steps; null for agent steps and
   // for gaps with no honest workaround.

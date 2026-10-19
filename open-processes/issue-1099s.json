@@ -1,0 +1,292 @@
+{
+  "schemaVersion": 1,
+  "id": "tax_003",
+  "kind": "process",
+  "title": "Issue 1099s",
+  "summary": "Generate and file 1099-NEC forms for all contractors paid over $600 in the tax year.",
+  "outcomes": [],
+  "guidance": null,
+  "parts": [
+    {
+      "id": "n1",
+      "kind": "step",
+      "title": "Pull contractor payment totals",
+      "guidance": "Reconcile payments by recipient and reporting year across the ledger, bank and payment systems. Identify refunds, duplicates, reimbursements and payment channels. Separate wages and payments potentially reported by settlement entities for the preparer’s review. Apply the actual year’s rules when deciding reportability, then match the resulting schedule to recipient tax documents.",
+      "when": null,
+      "ref": null,
+      "options": [],
+      "notes": [],
+      "references": [
+        {
+          "kind": "vendor",
+          "id": "gusto",
+          "role": "stated-vendor"
+        },
+        {
+          "kind": "url",
+          "url": "https://www.irs.gov/instructions/i1099mec",
+          "title": "IRS 1099-MISC and 1099-NEC instructions",
+          "description": null,
+          "role": "authored-guidance-source"
+        }
+      ],
+      "metadata": {
+        "route": "agent",
+        "reversibility": "reversible",
+        "estimatedMinutes": 5
+      }
+    },
+    {
+      "id": "n2",
+      "kind": "step",
+      "title": "Verify W-9 info on file",
+      "guidance": "Match potentially reportable recipients to signed tax documentation. Check legal name, taxpayer ID, address, classification and relevant exemption information. Obtain missing or inconsistent documents through the company’s secure vendor process and restrict identifier access. Keep unresolved cases for the preparer; invoice names and bank labels may differ from the correct tax recipient.",
+      "when": null,
+      "ref": null,
+      "options": [],
+      "notes": [],
+      "references": [
+        {
+          "kind": "vendor",
+          "id": "gusto",
+          "role": "stated-vendor"
+        },
+        {
+          "kind": "url",
+          "url": "https://www.irs.gov/instructions/i1099mec",
+          "title": "IRS 1099-MISC and 1099-NEC instructions",
+          "description": null,
+          "role": "authored-guidance-source"
+        }
+      ],
+      "metadata": {
+        "route": "agent",
+        "reversibility": "reversible",
+        "riskLevel": "medium",
+        "estimatedMinutes": 5
+      }
+    },
+    {
+      "id": "n3",
+      "kind": "step",
+      "title": "Generate 1099-NEC forms",
+      "guidance": "Determine the appropriate form and reportable amount from the payment schedule and recipient documents using the reporting year’s instructions. Generate draft 1099-NEC forms for that population and reconcile totals. Flag missing identifiers, exceptional payment treatment and separate state requirements before the batch is approved for filing and delivery.",
+      "when": null,
+      "ref": null,
+      "options": [],
+      "notes": [],
+      "references": [
+        {
+          "kind": "vendor",
+          "id": "gusto",
+          "role": "stated-vendor"
+        },
+        {
+          "kind": "url",
+          "url": "https://www.irs.gov/instructions/i1099mec",
+          "title": "IRS 1099-MISC and 1099-NEC instructions",
+          "description": null,
+          "role": "authored-guidance-source"
+        }
+      ],
+      "metadata": {
+        "route": "agent",
+        "reversibility": "reversible",
+        "approvalRequired": true,
+        "riskLevel": "high",
+        "estimatedMinutes": 10
+      }
+    },
+    {
+      "id": "n4",
+      "kind": "step",
+      "title": "Review and approve 1099s",
+      "guidance": "Check recipients, identifiers and amounts against the payment schedule and tax documents. Investigate exclusions, duplicates, corrections and payment-channel exceptions with the preparer. Verify the tax year and filing method, then approve the exact batch and recipient-delivery plan through the company’s reporting process. Any changed data should be reconciled before transmission.",
+      "when": null,
+      "ref": null,
+      "options": [],
+      "notes": [],
+      "references": [
+        {
+          "kind": "url",
+          "url": "https://www.irs.gov/instructions/i1099mec",
+          "title": "IRS 1099-MISC and 1099-NEC instructions",
+          "description": null,
+          "role": "authored-guidance-source"
+        }
+      ],
+      "metadata": {
+        "route": "person",
+        "reversibility": "reversible",
+        "approvalRequired": true,
+        "riskLevel": "high",
+        "estimatedMinutes": 20
+      }
+    },
+    {
+      "id": "n5",
+      "kind": "step",
+      "title": "File with IRS and mail to contractors",
+      "guidance": "File the reviewed batch using the method required for the year and number of returns. Furnish recipient copies through the selected permitted delivery route, including electronic consent where needed. Check agency acceptance and delivery failures, correct rejected records and reconcile separate state submissions. Preserve evidence showing both the filed returns and the copies furnished to recipients.",
+      "when": null,
+      "ref": null,
+      "options": [],
+      "notes": [],
+      "references": [
+        {
+          "kind": "vendor",
+          "id": "gusto",
+          "role": "stated-vendor"
+        },
+        {
+          "kind": "url",
+          "url": "https://www.irs.gov/instructions/i1099mec",
+          "title": "IRS 1099-MISC and 1099-NEC instructions",
+          "description": null,
+          "role": "authored-guidance-source"
+        }
+      ],
+      "metadata": {
+        "route": "agent",
+        "reversibility": "painful",
+        "approvalRequired": true,
+        "riskLevel": "high",
+        "estimatedMinutes": 5,
+        "verify": {
+          "how": "IRIS (or your filing provider) shows the 1099-NEC returns accepted, and recipient copies are postmarked by January 31.",
+          "url": "https://www.irs.gov/filing/e-file-forms-1099-with-iris"
+        }
+      }
+    }
+  ],
+  "links": [
+    {
+      "from": "n1",
+      "to": "n2",
+      "when": null
+    },
+    {
+      "from": "n2",
+      "to": "n3",
+      "when": null
+    },
+    {
+      "from": "n3",
+      "to": "n4",
+      "when": null
+    },
+    {
+      "from": "n4",
+      "to": "n5",
+      "when": null
+    }
+  ],
+  "references": [
+    {
+      "kind": "vendor",
+      "id": "gusto",
+      "role": "involves"
+    },
+    {
+      "kind": "vendor",
+      "id": "quickbooks",
+      "role": "involves"
+    }
+  ],
+  "notes": [],
+  "metadata": {
+    "phase": "compliance",
+    "cadence": "annual",
+    "complexity": "moderate",
+    "reversibility": "painful",
+    "category": "tax_compliance",
+    "supportLevel": "partial",
+    "supportReason": "Gusto can auto-generate 1099s for contractors on their platform. System compiles data and tracks filing deadlines.",
+    "contextNeeded": [
+      {
+        "tool": "vendors.search",
+        "query": "W-9 info",
+        "tier": "tools",
+        "required": true
+      },
+      {
+        "tool": "vendors.search",
+        "query": "payment totals",
+        "tier": "tools",
+        "required": true
+      }
+    ],
+    "produces": [],
+    "requires": [
+      "payroll-account",
+      "contractor-record"
+    ],
+    "tags": [
+      "tax",
+      "contractors",
+      "annual"
+    ],
+    "activeMinutes": 45,
+    "totalEstimatedMinutes": 45,
+    "hasAsyncSteps": false,
+    "region": "us",
+    "geoScope": "us",
+    "geoNotes": [
+      {
+        "country": "IN",
+        "kind": "analog",
+        "summary": "Stronger than 1099s: TDS means you deduct tax at source from contractor and professional fees (s.194C/194J) before paying, deposit it monthly against your TAN, file quarterly TDS returns and issue Form 16A certificates to each payee.",
+        "actionUrl": "https://www.incometax.gov.in/iec/foportal/",
+        "actionLabel": "Income Tax e-filing (TDS)"
+      },
+      {
+        "country": "UK",
+        "kind": "not-applicable",
+        "summary": "No 1099 regime — ordinary contractors self-assess. Your duty is status instead of paperwork: run off-payroll (IR35) determinations (HMRC's CEST tool) once you are a medium company, and the CIS deduction scheme applies only to construction.",
+        "actionUrl": "https://www.gov.uk/guidance/check-employment-status-for-tax",
+        "actionLabel": "HMRC — check employment status (CEST)"
+      },
+      {
+        "country": "FR",
+        "kind": "analog",
+        "summary": "The direct analog is the DAS2: an annual electronic declaration to the tax administration of fees, commissions and honoraria paid to third parties past €2,400 per beneficiary — with stiff penalties for skipping it.",
+        "actionUrl": "https://entreprendre.service-public.gouv.fr/vosdroits/R14651",
+        "actionLabel": "DAS2 — declaration of fees & commissions"
+      },
+      {
+        "country": "DE",
+        "kind": "not-applicable",
+        "summary": "No 1099 regime: contractors invoice you (a §14 UStG-compliant Rechnung, VAT where due) and self-report their income; the payer's duties are the invoice and bookkeeping trail (GoBD) and reverse-charge handling — no information return to the Finanzamt exists for ordinary fees.",
+        "actionUrl": "https://www.gesetze-im-internet.de/ustg_1980/__14.html",
+        "actionLabel": "UStG §14 — invoice requirements"
+      },
+      {
+        "country": "PT",
+        "kind": "not-applicable",
+        "summary": "No 1099 regime: contractors invoice through the tax authority's own e-invoicing rails (recibos verdes / e-Fatura), so AT already sees every payment — the company's duty is keeping the invoice trail, not filing information returns.",
+        "actionUrl": "https://faturas.portaldasfinancas.gov.pt/",
+        "actionLabel": "e-Fatura (Portal das Finanças)"
+      },
+      {
+        "country": "CA",
+        "kind": "analog",
+        "summary": "The analog is the T4A slip: fees for services paid to contractors are reported to the CRA on T4A information returns due by the end of February for the prior calendar year.",
+        "actionUrl": "https://www.canada.ca/en/revenue-agency/services/tax/businesses/topics/payroll/completing-filing-information-returns.html",
+        "actionLabel": "CRA — filing information returns"
+      }
+    ],
+    "timeOrder": 92,
+    "annoyance": 4,
+    "risk": 4,
+    "growthImpact": 1
+  },
+  "source": {
+    "path": "open-processes/corpus.json",
+    "id": "tax_003",
+    "revision": "4a1ac9b2eea2d4e1ac8cc5a0dfdc7cc5dc6080a1",
+    "sha256": "22efdc0073dfa7b968c6676a415d5e112dd41581b72f1f218eac1100020e371b"
+  },
+  "entrySteps": [
+    "n1"
+  ]
+}

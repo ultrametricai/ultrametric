@@ -1,6 +1,6 @@
 // Textbook tests for the ISO/NSO exercise tax-mechanics module. Duties (the
 // deadlines-module pattern): (1) every ruleId in OPTION_TAX_RULE_IDS resolves to a
-// committed, jurisdiction-matched card in law/US-FED/ with primary sources; (2) the
+// committed, jurisdiction-matched card in open-law/US-FED/ with primary sources; (2) the
 // published worked examples are replayed number-for-number — Treas. Reg. § 1.422-4(d)
 // Examples 1-3 for the $100,000 limit, and Rev. Proc. 2024-40 § 2.11's complete-phaseout
 // amounts as the arithmetic check on the AMT exemption phaseout; (3) the remaining
@@ -11,6 +11,7 @@ import fs from 'node:fs'
 import path from 'node:path'
 import {
   AMT_PARAMS_2025,
+  AMT_PARAMS_2026,
   ISO_ANNUAL_LIMIT,
   OPTION_TAX_RULE_IDS,
   SUPPLEMENTAL_WITHHOLDING_2026,
@@ -23,7 +24,7 @@ import {
 } from '../optionTax'
 
 function loadRuleCard(jurisdiction: string, ruleId: string) {
-  const dir = path.join(process.cwd(), 'law', jurisdiction)
+  const dir = path.join(process.cwd(), 'open-law', jurisdiction)
   for (const file of fs.readdirSync(dir).filter((f) => f.endsWith('.json'))) {
     const card = JSON.parse(fs.readFileSync(path.join(dir, file), 'utf8')) as {
       id: string
@@ -40,7 +41,7 @@ describe('every computation resolves to a committed, jurisdiction-matched rule c
   for (const [name, ref] of Object.entries(OPTION_TAX_RULE_IDS)) {
     it(`${name} → ${ref.ruleId}`, () => {
       const card = loadRuleCard(ref.jurisdiction, ref.ruleId)
-      expect(card, `law/${ref.jurisdiction} must contain a card with id ${ref.ruleId}`).not.toBeNull()
+      expect(card, `open-law/${ref.jurisdiction} must contain a card with id ${ref.ruleId}`).not.toBeNull()
       expect(card?.jurisdiction).toBe(ref.jurisdiction)
       expect(card?.kind).toBe('legal')
       expect(card?.source_ids.length).toBeGreaterThan(0)
@@ -87,6 +88,7 @@ describe('supplementalWithholdingIllustration (rule us-fed.supplemental-wage-wit
 
   it('entirely over the threshold: all 37%', () => {
     expect(supplementalWithholdingIllustration(100_000, 2_000_000).withholding).toBe(37_000)
+    expect(supplementalWithholdingIllustration(0).withholding).toBe(0)
   })
 
   it('the published 2026 parameters are the defaults, asOf-dated', () => {
@@ -108,6 +110,12 @@ describe('isoExerciseOutcome (rules us-fed.iso-exercise-no-regular-income, us-fe
     expect(r.ruleIds).toContain('us-fed.iso-amt-adjustment')
   })
 
+  it('an under-water exercise has a $0 AMT adjustment and AMT basis equal to cost', () => {
+    const r = isoExerciseOutcome({ shares: 1000, strikePerShare: 5, fmvPerShare: 1 })
+    expect(r.amtIncomeAdjustment).toBe(0)
+    expect(r.amtBasis).toBe(5000)
+  })
+
   it("the equity lane's early-exercise flag defers the AMT inclusion (§ 83 timing)", () => {
     const r = isoExerciseOutcome({ shares: 10_000, strikePerShare: 0.4, fmvPerShare: 4, substantiallyVestedAtExercise: false })
     expect(r.amtIncomeAdjustment).toBeNull()
@@ -117,6 +125,15 @@ describe('isoExerciseOutcome (rules us-fed.iso-exercise-no-regular-income, us-fe
 })
 
 describe('iso100kAttribution (rule us-fed.iso-100k-limit, Treas. Reg. § 1.422-4(d))', () => {
+  it('same-day grants attribute in input order (stable tie; § 422(d)(2) orders by grant date only)', () => {
+    const r = iso100kAttribution([
+      { id: 'a', grantDate: '2026-01-15', grantDateFmvPerShare: 10, firstExercisable: [{ year: 2026, shares: 6000 }] },
+      { id: 'b', grantDate: '2026-01-15', grantDateFmvPerShare: 10, firstExercisable: [{ year: 2026, shares: 6000 }] },
+    ])
+    expect(r.slices.map((s) => s.grantId)).toEqual(['a', 'b'])
+    expect(r.slices[1]).toMatchObject({ isoValue: 40_000, nsoValue: 20_000 })
+  })
+
   it('Example 1: $100,000 first exercisable each year, every year — all ISO', () => {
     const grants = Array.from({ length: 10 }, (_, i) => ({
       id: `g${2004 + i}`,
@@ -238,6 +255,12 @@ describe('isoDisposition (rule us-fed.iso-holding-periods-disqualifying)', () =>
     expect(r.ordinaryIncome).toBe(4000) // full spread
   })
 
+  it('the two-years-from-grant anniversary is also flagged as a boundary', () => {
+    const r = isoDisposition({ ...BASE, dispositionDate: '2026-01-10', amountRealized: 7000 })
+    expect(r.anniversaryBoundary).toBe(true)
+    expect(r.kind).toBe('disqualifying') // the one-year-from-exercise leg (2026-02-01) is still open
+  })
+
   it('an exact-anniversary disposition is treated as disqualifying and flagged as a boundary', () => {
     const r = isoDisposition({ ...BASE, dispositionDate: '2026-02-01', amountRealized: 7000 })
     expect(r.kind).toBe('disqualifying')
@@ -246,7 +269,7 @@ describe('isoDisposition (rule us-fed.iso-holding-periods-disqualifying)', () =>
   })
 })
 
-describe('amtExposureIllustration (rules us-fed.iso-amt-adjustment, us-fed.amt-exemption-2025)', () => {
+describe('amtExposureIllustration (rules us-fed.iso-amt-adjustment, us-fed.amt-exemption-2025/-2026)', () => {
   it("replays Rev. Proc. 2024-40's complete-phaseout amounts: threshold + exemption / 0.25", () => {
     // Published complete-phaseout AMTI (the exemption hits exactly 0 there):
     const published: Record<string, number> = {
@@ -258,15 +281,48 @@ describe('amtExposureIllustration (rules us-fed.iso-amt-adjustment, us-fed.amt-e
     for (const [status, completeAt] of Object.entries(published) as [keyof typeof AMT_PARAMS_2025.byStatus, number][]) {
       const s = AMT_PARAMS_2025.byStatus[status]
       expect(s.phaseoutThreshold + s.exemption / AMT_PARAMS_2025.phaseoutRate).toBe(completeAt)
-      const r = amtExposureIllustration({ amtiExcludingIso: completeAt, isoSpread: 0, filingStatus: status })
+      const r = amtExposureIllustration({ amtiExcludingIso: completeAt, isoSpread: 0, filingStatus: status, params: AMT_PARAMS_2025 })
       expect(r.exemptionAfterPhaseout).toBe(0)
     }
+  })
+
+  it("replays Rev. Proc. 2025-32 § 2.10's complete-phaseout amounts: threshold + exemption / 0.50 (P.L. 119-21 § 70107), and is the default", () => {
+    const published: Record<string, number> = {
+      joint: 1_280_400,
+      single: 680_200,
+      marriedFilingSeparately: 640_200,
+      estateOrTrust: 167_600,
+    }
+    for (const [status, completeAt] of Object.entries(published) as [keyof typeof AMT_PARAMS_2026.byStatus, number][]) {
+      const s = AMT_PARAMS_2026.byStatus[status]
+      expect(s.phaseoutThreshold + s.exemption / AMT_PARAMS_2026.phaseoutRate).toBe(completeAt)
+      // Default params are the 2026 card.
+      const r = amtExposureIllustration({ amtiExcludingIso: completeAt, isoSpread: 0, filingStatus: status })
+      expect(r.exemptionAfterPhaseout).toBe(0)
+      expect(r.taxYear).toBe(2026)
+      expect(r.ruleIds).toContain('us-fed.amt-exemption-2026')
+    }
+    // One dollar under the single threshold keeps the full $90,100 exemption; one dollar
+    // over phases at 50 cents.
+    expect(
+      amtExposureIllustration({ amtiExcludingIso: 500_000, isoSpread: 0, filingStatus: 'single' }).exemptionAfterPhaseout,
+    ).toBe(90_100)
+    expect(
+      amtExposureIllustration({ amtiExcludingIso: 500_001, isoSpread: 0, filingStatus: 'single' }).exemptionAfterPhaseout,
+    ).toBe(90_099.5)
+  })
+
+  it('a caller-supplied params object overrides the defaults, phaseout rate included', () => {
+    const params = { ...AMT_PARAMS_2025, phaseoutRate: 0.5 }
+    // $100,000 over the 2025 single threshold at 50 cents: 88,100 − 50,000 = 38,100.
+    const r = amtExposureIllustration({ amtiExcludingIso: 726_350, isoSpread: 0, filingStatus: 'single', params })
+    expect(r.exemptionAfterPhaseout).toBe(38_100)
   })
 
   it('below the threshold the full exemption applies; 26% up to the breakpoint', () => {
     // Single, AMTI $200,000 + $0 spread: exemption $88,100; taxable excess $111,900;
     // TMT = 26% x 111,900 = $29,094.
-    const r = amtExposureIllustration({ amtiExcludingIso: 200_000, isoSpread: 0, filingStatus: 'single' })
+    const r = amtExposureIllustration({ amtiExcludingIso: 200_000, isoSpread: 0, filingStatus: 'single', params: AMT_PARAMS_2025 })
     expect(r.exemptionAfterPhaseout).toBe(88_100)
     expect(r.taxableExcess).toBe(111_900)
     expect(r.tentativeMinimumTax).toBe(29_094)
@@ -277,7 +333,7 @@ describe('amtExposureIllustration (rules us-fed.iso-amt-adjustment, us-fed.amt-e
     // Exemption: 88,100 − 0.25 x (750,000 − 626,350) = 88,100 − 30,912.50 = 57,187.50.
     // Taxable excess: 692,812.50. TMT = 0.26 x 239,100 + 0.28 x 453,712.50
     // = 62,166 + 127,039.50 = 189,205.50.
-    const r = amtExposureIllustration({ amtiExcludingIso: 150_000, isoSpread: 600_000, filingStatus: 'single' })
+    const r = amtExposureIllustration({ amtiExcludingIso: 150_000, isoSpread: 600_000, filingStatus: 'single', params: AMT_PARAMS_2025 })
     expect(r.exemptionAfterPhaseout).toBe(57_187.5)
     expect(r.taxableExcess).toBe(692_812.5)
     expect(r.tentativeMinimumTax).toBe(189_205.5)
@@ -286,9 +342,9 @@ describe('amtExposureIllustration (rules us-fed.iso-amt-adjustment, us-fed.amt-e
   })
 
   it('amtOverRegularTax compares against a supplied hypothetical regular tax, floored at 0', () => {
-    const r = amtExposureIllustration({ amtiExcludingIso: 150_000, isoSpread: 600_000, filingStatus: 'single', regularTaxForComparison: 160_000 })
+    const r = amtExposureIllustration({ amtiExcludingIso: 150_000, isoSpread: 600_000, filingStatus: 'single', regularTaxForComparison: 160_000, params: AMT_PARAMS_2025 })
     expect(r.amtOverRegularTax).toBe(29_205.5)
-    const low = amtExposureIllustration({ amtiExcludingIso: 100_000, isoSpread: 0, filingStatus: 'single', regularTaxForComparison: 160_000 })
+    const low = amtExposureIllustration({ amtiExcludingIso: 100_000, isoSpread: 0, filingStatus: 'single', regularTaxForComparison: 160_000, params: AMT_PARAMS_2025 })
     expect(low.amtOverRegularTax).toBe(0)
   })
 

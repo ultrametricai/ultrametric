@@ -14,7 +14,7 @@ import { buildProcessCheckSteps } from '@/lib/processCheckData'
 import { findProcessBySlug } from '@/lib/processes'
 import { functionMappingFor, stepVendorScore } from '@/lib/processRankings'
 
-const DATA_DIR = path.resolve(__dirname, '../../rankings')
+const DATA_DIR = path.resolve(__dirname, '../../open-rankings')
 
 function step(overrides: Partial<ProcessCheckStep>): ProcessCheckStep {
   return {

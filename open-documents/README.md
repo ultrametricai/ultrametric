@@ -1,6 +1,6 @@
 # Open documents
 
-Every openly licensed or freely published legal document a founder can
+The registry catalogs openly licensed and freely published legal documents a founder can
 actually use, as dated records that link to the publisher's live page rather than copying
 anything here.
 
@@ -9,24 +9,24 @@ commercial, privacy, and open-source. Policy: **link, never redistribute**; each
 points at the publisher's stable page, verified live on its `checked_on` date (publishers
 rotate asset URLs, so records link the stable page and the note says so).
 
-Honesty notes are part of the record: `license_note` states the actual terms as published and
-what still requires counsel. A free form is a starting point — none of these substitute for a
+`license_note` is part of the record: it states the actual terms as published and
+what still requires counsel. A free form is a starting point: none of these substitute for a
 lawyer on formation filings, financings, employment in a new state or country, token sales,
 data transfers, or board actions.
 
-Record shape: `{id, name, publisher, url, license_note, use_case, jurisdiction, format,
+The record shape is `{id, name, publisher, url, license_note, use_case, jurisdiction, format,
 checked_on}` with `use_case` ∈ formation | fundraising | hiring | commercial | governance |
 privacy | open-source. The registry states a `review_window_days` (currently 120): every
-record's `checked_on` must fall within that window before `updated_on` — the currency
-invariant. Gate: `lib/documents.ts` + `__tests__/documents.test.ts` (unique ids, HTTPS, enums,
+record's `checked_on` must fall within that window before `updated_on` (the currency
+invariant). Gate: `lib/documents.ts` + `__tests__/documents.test.ts` (unique ids, HTTPS, enums,
 dated checks, the review window, and this README staying in sync with the registry — every
 record has a table row below, and every row's Document cell links OUT to the record's
 canonical, `checked_on`-dated URL; an unlinked or re-typed URL fails the gate).
 
 ## Exclusions and dead-link corrections (2026-09-30 sweep)
 
-Never a filler or hopeful link — candidates that failed live verification are excluded or
-re-homed, with reasons:
+Candidates that failed live verification are excluded or re-homed rather than linked
+hopefully, with reasons:
 
 - **seriesseed.com** — still unreachable; the canonical live home is the original GitHub repo
   (`series-seed-github`), with Cooley GO's generator as the guided fill.
@@ -47,32 +47,34 @@ re-homed, with reasons:
 - **Ungated option plan / stock option grant templates** — no openly published canonical
   exists: Cooley GO doesn't offer one, and Orrick's equity forms sit behind Tech Studio
   registration (covered by `orrick-tech-studio` with that caveat stated). Clerky's materials
-  are platform-gated. Honest gap, not a missing link.
+  are platform-gated. The gap is recorded; there is no public link to add.
 - **NVCA PIPE and university-licensing documents** — live on the same page but out of scope
   for a startup registry (public-company PIPEs, TTO licensing); deliberately not cataloged.
 
 ## Cross-references (documents ↔ citations ↔ law)
 
-Documents implement laws and pair with guides already cataloged elsewhere — cite ids, don't
-duplicate rows:
+Documents implement laws and pair with guides already cataloged elsewhere; cite ids rather
+than duplicating rows:
 
 - `irs-form-15620` implements the 83(b) election — rule cards `us-fed-83b-filing-period`,
-  `us-fed-83b-form-and-copies`, `us-fed-83b-revocation` (law/US-FED); also a citations row
-  (`irs-form-15620` there points at the same form).
+  `us-fed-83b-form-and-copies`, `us-fed-83b-revocation` (open-law/US-FED); also a reading
+  row in open-lore/citations.json (`irs-form-15620` there points at the same form).
 - Advisor/option grants (`cooley-advisor-agreement`, `fi-fast-advisor`) sit under the 409A
-  rule cards (law/US-FED) and Delaware option-authorization card (law/US-DE).
-- Equity-compensation context: the Holloway Guide and Index Rewarding Talent are reading citations
-  (`holloway-equity-guide`, `index-rewarding-talent`), not duplicated here.
+  rule cards (open-law/US-FED) and Delaware option-authorization card (open-law/US-DE).
+- Equity-compensation context: the Holloway Guide and Index Rewarding Talent are reading
+  records (`holloway-equity-compensation` in open-lore/library.json,
+  `index-rewarding-talent` in open-lore/citations.json), not duplicated here.
 - The SAFE cap-table arithmetic in `yc-safe-user-guide` is implemented in
   `lib/openstartup/capTable.ts` and replayed in its tests.
 - `eu-scc-international-transfers` and `uk-idta-addendum` are the GDPR Art. 46 / UK GDPR
   transfer mechanisms that the DPAs here (`commonpaper-dpa`, `bonterms-dpa`, `onedpa`)
   incorporate by reference.
-- Resource-registry umbrella rows (`yc-documents`, `cooleygo-documents`, `nvca-model-docs`,
-  `commonpaper-standards`, `bonterms-forms`, `onenda`, `saft-project` in citations/) point at
-  the same publishers; this registry enumerates the individual documents.
-- "Raise on standard documents; negotiate the numbers, not the boilerplate" — law 21 in
-  law/LAWS.md — is the doctrine behind the fundraising table.
+- Resource-registry umbrella rows (`yc-safe-documents` in open-lore/library.json;
+  `cooleygo-documents`, `nvca-model-docs`, `commonpaper-standards`, `bonterms-forms`,
+  `onenda`, `saft-project` in open-lore/citations.json) point at the same publishers;
+  this registry enumerates the individual documents.
+- "Raise on standard documents; negotiate the numbers, not the boilerplate" (law 21 in
+  open-law/LAWS.md) is the doctrine behind the fundraising table.
 
 ## Formation
 
@@ -132,7 +134,7 @@ duplicate rows:
 
 | id | Document | Publisher | What counsel still does |
 | --- | --- | --- | --- |
-| `orrick-tech-studio` | [Tech Studio forms library (incorporation, financing, equity, consents)](https://www.orrick.com/en/Tech-Studio) | Orrick | Confirm statutory formalities of board action (see `law/US-DE`); some downloads gated by registration |
+| `orrick-tech-studio` | [Tech Studio forms library (incorporation, financing, equity, consents)](https://www.orrick.com/en/Tech-Studio) | Orrick | Confirm statutory formalities of board action (see `open-law/US-DE`); some downloads gated by registration |
 | `orrick-incorporation-toolkit` | [Incorporation Toolkit — charter, bylaws, board/stockholder consents, founder stock](https://www.orrick.com/en/tech-studio/forms/Incorporation-Toolkit) | Orrick | Review before filing; cross-check against the Cooley package |
 | `orrick-cap-table-template` | [Capitalization Table template](https://www.orrick.com/en/tech-studio/forms/Capitalization-Table) | Orrick | Reconcile the ledger with consents and certificates |
 
@@ -204,7 +206,21 @@ duplicate rows:
 | `harmony-cla-templates` | [Harmony CLA/CAA templates](https://harmonyagreements.org/) | Project Harmony | License-grant option selection |
 | `linux-dco` | [Developer Certificate of Origin 1.1](https://developercertificate.org/) | Linux Foundation | DCO-vs-CLA IP strategy |
 | `choosealicense` | [Choose a License](https://choosealicense.com/) | GitHub | License fit with commercial strategy |
-| `osi-approved-licenses` | [OSI Approved Licenses list](https://opensource.org/licenses) | Open Source Initiative | Honest labeling of source-available terms |
+| `osi-approved-licenses` | [OSI Approved Licenses list](https://opensource.org/licenses) | Open Source Initiative | Accurate labeling of source-available terms |
 | `spdx-license-list` | [SPDX License List](https://spdx.org/licenses/) | Linux Foundation (SPDX) | Metadata/LICENSE consistency |
 | `contributor-covenant` | [Contributor Covenant](https://www.contributor-covenant.org/) | Organization for Ethical Source | Enforcement process you'll actually run |
 | `cc-license-chooser` | [Creative Commons licenses + chooser](https://creativecommons.org/share-your-work/cclicenses/) | Creative Commons | Content vs code licensing boundaries |
+
+## Contribute here
+
+- **A new document** — add the record to `registry.json` (the shape above, with the
+  publisher's stable page verified live on `checked_on`) and the matching table row in the
+  right section, with the Document cell linking the record's canonical URL; the gate fails
+  on a missing, extra, or re-typed row.
+- **A re-verification pass** — follow a record's link, confirm the page still serves the
+  claimed document, and bump `checked_on`; a dead link is re-homed with the correction
+  recorded in the exclusions section above.
+
+Gate: `pnpm test __tests__/documents.test.ts`.
+
+This area's maturity grade and known gaps are tracked in [`coverage/index.json`](../coverage/index.json).

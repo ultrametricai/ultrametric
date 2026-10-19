@@ -12,7 +12,7 @@ import {
 } from '@/lib/stepMethods'
 import { loadVendorGeo } from '@/lib/vendorGeo'
 
-const DATA_DIR = path.resolve(__dirname, '../../rankings')
+const DATA_DIR = path.resolve(__dirname, '../../open-rankings')
 
 // Method variants (founder 2026-09-30: "certain processes have steps that are just ONE way to
 // do it when there are multiple methods depending on context — get multiple options selectable
@@ -95,13 +95,13 @@ describe('method-variant corpus integrity', () => {
         .map((e) => `${e.productId}:${e.country}`),
     )
     for (const { task, nodeId, method } of methods) {
-      if (method.context.kind !== 'geo') {
-        expect(method.context.countries, `${task.id}/${nodeId} ${method.id}`).toBeUndefined()
+      if (method.context?.kind !== 'geo') {
+        expect(method.context?.countries, `${task.id}/${nodeId} ${method.id}`).toBeUndefined()
         continue
       }
       const noteCountries = new Set((task.geoNotes ?? []).map((g) => g.country))
       const methodVendors = [...(method.vendor ? [method.vendor] : []), ...(method.vendorOptions ?? [])]
-      for (const c of method.context.countries ?? []) {
+      for (const c of method.context?.countries ?? []) {
         const vendorBacked = methodVendors.some((v) => available.has(`${v.replace(/_/g, '-')}:${c}`))
         expect(
           noteCountries.has(c) || vendorBacked,
@@ -128,12 +128,12 @@ describe('method-variant corpus integrity', () => {
           if (s.actionUrl) expect(s.actionUrl, `${at}/${s.id}`).toMatch(/^https:\/\//)
         }
         if (method.estimatedMinutes !== undefined) {
-          const sum = method.subSteps.reduce((acc, s) => acc + s.estimatedMinutes, 0)
+          const sum = method.subSteps.reduce((acc, s) => acc + s.estimatedMinutes!, 0)
           expect(method.estimatedMinutes, at).toBe(sum)
         }
       }
       // Contexts read as predicates, not marketing: short and present.
-      expect(method.context.when.length, at).toBeGreaterThan(10)
+      if (method.context) expect(method.context.when.length, at).toBeGreaterThan(10)
       expect(method.summary.length, at).toBeGreaterThan(30)
     }
   })
@@ -159,12 +159,12 @@ describe('the founder\'s worked example — validate-the-idea', () => {
       'concierge-mvp', 'customer-interview-sprint', 'preorder-deposit-test', 'waitlist-ad-test',
     ])
     // The right contexts, per the founder's brief.
-    expect(byId.get('customer-interview-sprint')!.context.when).toMatch(/B2B/)
-    expect(byId.get('waitlist-ad-test')!.context.when).toMatch(/[Cc]onsumer/)
-    expect(byId.get('concierge-mvp')!.context.when).toMatch(/[Ss]ervice/)
-    expect(byId.get('preorder-deposit-test')!.context.when).toMatch(/[Hh]ardware/)
+    expect(byId.get('customer-interview-sprint')!.context?.when).toMatch(/B2B/)
+    expect(byId.get('waitlist-ad-test')!.context?.when).toMatch(/[Cc]onsumer/)
+    expect(byId.get('concierge-mvp')!.context?.when).toMatch(/[Ss]ervice/)
+    expect(byId.get('preorder-deposit-test')!.context?.when).toMatch(/[Hh]ardware/)
     for (const m of smoke.methods ?? []) {
-      expect(m.context.kind).toBe('situational')
+      expect(m.context?.kind).toBe('situational')
       expect(m.subSteps!.length).toBeGreaterThanOrEqual(2)
       expect(m.subSteps!.length).toBeLessThanOrEqual(5)
     }

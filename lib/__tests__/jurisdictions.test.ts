@@ -25,7 +25,7 @@ import {
   processSlug, taskCeiling, type DagNode,
 } from '@/lib/processes'
 
-const DATA_DIR = path.resolve(__dirname, '../../rankings')
+const DATA_DIR = path.resolve(__dirname, '../../open-rankings')
 
 interface RawTask {
   id: string
@@ -46,7 +46,7 @@ interface RawTask {
 }
 
 const rawTasks = JSON.parse(
-  fs.readFileSync(path.join(DATA_DIR, '..', 'processes', 'corpus.json'), 'utf8'),
+  fs.readFileSync(path.join(DATA_DIR, '..', 'open-processes', 'corpus.json'), 'utf8'),
 ) as RawTask[]
 const rawConditional = rawTasks.flatMap((t) =>
   t.dag.nodes.filter((n) => n.jurisdictions !== undefined).map((n) => ({ task: t, node: n })),
