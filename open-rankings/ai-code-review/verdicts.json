@@ -3,13 +3,14 @@
     "productId": "coderabbit",
     "storyId": "agentic-agent-docs",
     "verdict": "full",
-    "quality": 8,
+    "quality": 9,
     "confidence": "high",
-    "rationale": "A direct probe found a live llms.txt at docs.coderabbit.ai (HTTP 200) indexing doc pages as .md links. Many cited doc pages are served as clean markdown (.md URLs), and an OpenAPI spec is also published, so an agent can be pointed straight at machine-readable docs. Missing for 10: no first-party documentation describing or promoting the llms.txt/agent-docs feature, and no evidence of an llms-full.txt or a hands-on report of an agent actually consuming these docs.",
+    "rationale": "A direct probe confirms CodeRabbit serves an llms.txt at docs.coderabbit.ai/llms.txt (HTTP 200) that indexes pages as .md links. Many doc pages are cited at their markdown (.md) URLs, so an agent can be pointed at clean, agent-readable docs. Missing for 10: independent or community corroboration of how agents actually use these docs, and evidence of an llms-full.txt or explicit agent-oriented guidance about the docs.",
     "evidenceIds": [
       "coderabbit-probe-1",
-      "coderabbit-probe-2",
       "coderabbit-docs-22",
+      "coderabbit-docs-24",
+      "coderabbit-docs-30",
       "coderabbit-docs-54"
     ]
   },
@@ -401,21 +402,21 @@
     "productId": "coderabbit",
     "storyId": "custom-rules-guidelines",
     "verdict": "full",
-    "quality": 9,
+    "quality": 8,
     "confidence": "high",
-    "rationale": "First-party docs cover every element of the story. Natural-language rules can be scoped to glob paths through path instructions, and ast-grep powers AST-pattern review rules. Guideline files such as CLAUDE.md, AGENTS.md and .cursorrules are auto-detected and applied as review criteria, and external documentation can be pulled in via MCP context. Org-wide central config, chat-taught learnings, and the request-changes workflow that blocks PRs give these rules teeth. Missing for 10: independent or hands-on corroboration that custom rules are reliably enforced (community only says the learning-from-feedback loop 'supposedly' works).",
+    "rationale": "First-party docs cover every rule type in the story. Natural-language rules come through path instructions scoped by glob (docs-8, docs-48) and chat-taught learnings applied to future reviews (docs-7, docs-51). Structural rules come through ast-grep AST patterns (docs-9, docs-49), and in-repo guideline files such as CLAUDE.md and AGENTS.md are auto-detected and applied as review criteria (docs-10). Org-wide rules live in a central .coderabbit.yaml (docs-14), and the request-changes workflow can block PRs on actionable findings (supp-4, docs-47). Missing for 10: independent or hands-on evidence that custom rules are reliably enforced in practice, and explicit documentation for linking external style-guide URLs; MCP docs sources (docs-12) are only an indirect substitute.",
     "evidenceIds": [
       "coderabbit-docs-8",
       "coderabbit-docs-48",
       "coderabbit-docs-9",
       "coderabbit-docs-49",
       "coderabbit-docs-10",
-      "coderabbit-docs-12",
       "coderabbit-docs-7",
       "coderabbit-docs-51",
       "coderabbit-docs-14",
+      "coderabbit-docs-12",
       "coderabbit-supp-4",
-      "coderabbit-comm-4"
+      "coderabbit-docs-47"
     ]
   },
   {
@@ -455,16 +456,17 @@
   {
     "productId": "coderabbit",
     "storyId": "full-repo-context",
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "CodeRabbit documents context-aware reviews that go beyond the hunk. It auto-applies repository guideline files (.cursorrules, CLAUDE.md, AGENTS.md) and learned team preferences as review criteria, which covers existing conventions. Linked-repository analysis detects breaking changes and API mismatches across repo boundaries, which covers related modules and callers. Missing for 10: no explicit first-party description of in-repo call-site or dependency-graph analysis during review, and no independent or hands-on evidence that comments actually reference code outside the diff.",
+    "rationale": "CodeRabbit documents context beyond the diff in several ways. It auto-applies repository guideline files (.cursorrules, CLAUDE.md, AGENTS.md) and learned team preferences as review criteria, which covers existing conventions. Linked multi-repo analysis detects breaking changes and API mismatches across repository boundaries. The only beyond-diff code analysis is AI Deep Scan, which is separately metered and limited to security findings. Beyond the vague 'context-aware' claim, nothing shows that ordinary PR review comments analyze call sites or related modules within the same repository. Missing for 10: explicit documentation of same-repo call-site or dependency-graph analysis during PR review, evidence of how the codebase is indexed for review context, and independent hands-on corroboration that comments reflect code outside the changed hunks.",
     "evidenceIds": [
       "coderabbit-docs-1",
       "coderabbit-docs-10",
       "coderabbit-docs-11",
-      "coderabbit-docs-51",
-      "coderabbit-docs-12"
+      "coderabbit-docs-5",
+      "coderabbit-docs-7",
+      "coderabbit-docs-51"
     ]
   },
   {
@@ -558,9 +560,9 @@
     "productId": "coderabbit",
     "storyId": "openness-full-export",
     "verdict": "partial",
-    "quality": 3,
+    "quality": 4,
     "confidence": "low",
-    "rationale": "Some of what a user leaves behind is already portable. Configuration lives as a `.coderabbit.yaml` file in your own repository, and `@coderabbitai configuration` returns the resolved config as YAML. Review output such as summaries and walkthrough comments is posted directly into PRs on your Git host, so it stays there if you leave. However, nothing in the evidence documents an export feature for CodeRabbit-held data such as learnings, review context, dashboard metrics or Triage state, and the data-retention docs only cover storage and opt-out, not export. Missing for 10: a documented full-account data export, export of learnings and review history in open formats, export of dashboard and Triage data, documented API endpoints for bulk export, and any independent confirmation that users can cleanly leave with their data.",
+    "rationale": "CodeRabbit keeps much of its output in portable places. Configuration lives as a plain `.coderabbit.yaml` in your own repo (central config repo supported), and `@coderabbitai configuration` returns the resolved config as YAML. Review output (summaries, walkthroughs, inline comments) is posted directly to your Git platform, so it stays with you if you leave. However, nothing documents a data-export feature for CodeRabbit-held data such as learnings, review context or dashboard metrics; retention docs cover deletion/opt-out, not export. Missing for 10: documented export of learnings and knowledge-base data, export of dashboard/analytics data, an explicit account-data export or offboarding path, independent corroboration.",
     "evidenceIds": [
       "coderabbit-docs-14",
       "coderabbit-docs-20",
@@ -683,11 +685,15 @@
   {
     "productId": "coderabbit",
     "storyId": "privacy-telemetry-optout",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "Telemetry opt-out is a fair question for a SaaS review tool with a CLI and IDE extensions, but nothing in the evidence describes disabling telemetry or usage tracking. The nearest privacy controls cover something else: the docs say data retention settings apply only to code-related data such as learnings and review context, full retention opt-out exists only on self-hosted Enterprise, and the no-training pledge concerns customer code rather than usage telemetry.",
-    "evidenceIds": []
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "The only related controls in the evidence are an opt-out of all data retention, which applies only to self-hosted Enterprise and covers code-related data like learnings and review context, plus a separately controllable model-output-logging setting; CodeRabbit also states it never trains on customer code. None of these is a documented opt-out of product telemetry or usage tracking, and the dashboard shows usage metrics are collected. missing for 10: an explicit telemetry/usage-tracking opt-out for the cloud service, CLI and IDE extension; documentation of what usage data is collected; independent corroboration.",
+    "evidenceIds": [
+      "coderabbit-supp-2",
+      "coderabbit-supp-1",
+      "coderabbit-supp-3"
+    ]
   },
   {
     "productId": "coderabbit",
@@ -1438,12 +1444,13 @@
   {
     "productId": "cubic",
     "storyId": "privacy-no-training",
-    "verdict": "partial",
-    "quality": 6,
+    "verdict": "full",
+    "quality": 7,
     "confidence": "medium",
-    "rationale": "cubic's privacy docs state that its AI model providers (e.g., OpenAI, Anthropic) contractually commit not to train on customer code or metadata. Organizations can also ask to block AI features entirely for their workspace. However, the guarantee covers only third-party providers, and nothing states whether cubic itself trains its own review models on customer code. Missing for 10: explicit first-party no-training commitment from cubic, a self-serve training opt-out control rather than a request-based block, independent or hands-on verification.",
+    "rationale": "cubic's privacy and security docs state that its AI model providers (e.g., OpenAI, Anthropic) contractually commit not to train or improve their models on code snippets and metadata sent through their APIs. Organizations can also ask cubic to completely block AI features for their workspace, so code is protected from third-party training by default. Missing for 10: an explicit statement on whether cubic trains its own models on customer code, a self-serve opt-out control for the workspace-specific memory/learning from feedback and historical reviews, and independent corroboration of the no-training commitment.",
     "evidenceIds": [
-      "cubic-supp-1"
+      "cubic-supp-1",
+      "cubic-docs-54"
     ]
   },
   {
@@ -1551,10 +1558,10 @@
   {
     "productId": "cubic",
     "storyId": "security-issue-flags",
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "cubic's docs say its PR review scans every pull request for logic errors, style inconsistencies, and potential security vulnerabilities, so security findings sit alongside functional bugs. Ultrareview is positioned for security-sensitive changes, and codebase scans also hunt for vulnerabilities. missing for 10: explicit documentation of specific security classes (injection, leaked secrets, insecure patterns), any independent or hands-on corroboration of security-finding accuracy.",
+    "rationale": "cubic's docs say every PR is scanned for logic errors, style inconsistencies and potential security vulnerabilities, so security findings sit alongside functional bugs (cubic-docs-47, cubic-docs-19). Ultrareview is positioned for security-sensitive changes (cubic-docs-3, cubic-docs-48), and codebase scans hunt for vulnerabilities repo-wide (cubic-docs-12). However, security coverage is only a generic claim, with no specifics on the story's named categories. Missing for 10: explicit documentation of injection-risk detection, leaked-secret detection, and insecure-pattern categories in the diff, plus independent or hands-on corroboration of security-finding accuracy.",
     "evidenceIds": [
       "cubic-docs-47",
       "cubic-docs-19",
@@ -1985,19 +1992,24 @@
   {
     "productId": "cursor-bugbot",
     "storyId": "ide-pre-push-review",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "The evidence describes Bugbot only as a pull-request reviewer: it runs automatically on PR updates or when triggered by a PR comment, and posts its findings as PR comments. The \"Fix in Cursor\" links bring existing PR findings into the editor after the code is already pushed, which is not a pre-push review. One community user's guess that in-IDE review comments were Bugbot is unconfirmed speculation. Nothing documents running the same Bugbot review locally inside the IDE before pushing.",
-    "evidenceIds": []
+    "verdict": "partial",
+    "quality": 2,
+    "confidence": "low",
+    "rationale": "All documented Bugbot reviews run on pull requests (every PR update or a `bugbot run` comment), so they happen after the code is pushed. The 'Fix in Cursor' links only pull PR findings back into the editor afterward. The one hint of pre-push, in-editor review is a community user's vague, unconfirmed recollection of Cursor showing code review comments in the IDE, which they also called subtly wrong. Missing for 10: documented pre-push or local review inside the IDE, confirmation that it matches the PR review's rules and output, and hands-on corroboration.",
+    "evidenceIds": [
+      "cursor-bugbot-docs-1",
+      "cursor-bugbot-docs-2",
+      "cursor-bugbot-docs-3",
+      "cursor-bugbot-comm-3"
+    ]
   },
   {
     "productId": "cursor-bugbot",
     "storyId": "incremental-re-review",
     "verdict": "partial",
-    "quality": 5,
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Docs say Bugbot re-runs automatically on every PR update and reads existing top-level and inline PR comments to avoid duplicate suggestions and build on prior feedback. That covers the re-review trigger and the de-duplication intent. However, nothing documents incremental (since-last-review) diff scoping or tracking and resolving previously flagged issues once fixed. One hands-on report also describes Bugbot re-raising its original recommendation after the user pushed back and reverted the change. missing for 10: documented incremental review of only new commits, explicit tracking or auto-resolution of fixed findings, independent corroboration that old comments are not repeated.",
+    "rationale": "Docs say Bugbot automatically re-reviews on every PR update. They also say it reads existing top-level and inline PR comments to avoid duplicate suggestions and build on prior feedback, which covers the 're-review without repeating old comments' core. Nothing documents explicitly tracking or marking which earlier findings were fixed, or limiting the review to new commits. One community report also describes a reviewer (Bugbot or Claude) arguing against an already-implemented fix, though it is ambiguous which tool did it. Missing for 10: explicit fixed-issue tracking or auto-resolution of addressed comments, documented incremental diff-only review on new commits, independent hands-on corroboration of the deduplication behavior.",
     "evidenceIds": [
       "cursor-bugbot-docs-1",
       "cursor-bugbot-docs-5",
@@ -2189,15 +2201,15 @@
     "productId": "cursor-bugbot",
     "storyId": "repo-config-file",
     "verdict": "partial",
-    "quality": 4,
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Bugbot reads versioned `.cursor/BUGBOT.md` files committed to the repo for project-specific review guidelines, and a verbose run lists which rules were loaded. This covers repo-resident natural-language instructions, but not a structured config. The plural 'files' hints at per-directory scoping without stating it, and effort levels plus org-wide rules are set in billing settings and Bugbot Automations rather than in the repo. Missing for 10: path include/exclude filters, explicitly documented per-path instruction scoping, review profiles defined in the repo config file, and independent corroboration.",
+    "rationale": "Bugbot reads versioned `.cursor/BUGBOT.md` files from the repository for project-specific review guidelines, and `verbose=true` shows which rules were loaded for a review. The plural \"files\" hints at per-directory instructions, but that is not explicitly documented. Effort levels and org-wide rules exist, but the evidence places them in billing/admin settings and Automations rather than the repo config file. missing for 10: path include/exclude filters, explicitly documented per-path instruction scoping, review profiles defined in the versioned repo file, independent corroboration of the config-file workflow.",
     "evidenceIds": [
       "cursor-bugbot-docs-6",
       "cursor-bugbot-docs-7",
       "cursor-bugbot-docs-30",
-      "cursor-bugbot-docs-29",
-      "cursor-bugbot-docs-18"
+      "cursor-bugbot-docs-18",
+      "cursor-bugbot-docs-29"
     ]
   },
   {
@@ -2278,13 +2290,13 @@
   {
     "productId": "graphite",
     "storyId": "agentic-agent-docs",
-    "verdict": "partial",
-    "quality": 6,
+    "verdict": "full",
+    "quality": 7,
     "confidence": "medium",
-    "rationale": "Graphite serves Markdown versions of its docs (get-started.md returns HTTP 200), and those pages point agents to a full documentation index on a Mintlify-hosted llms endpoint, so agent-oriented docs exist. However, the conventional https://graphite.com/llms.txt returns 404, so an agent pointed at the standard location fails, and the index lives on a third-party subdomain. Missing for 10: llms.txt at the canonical domain root, verification that the Mintlify llms index resolves and is complete, any first-party docs describing agent-oriented documentation, and independent or hands-on corroboration.",
+    "rationale": "A probe shows docs pages are served as agent-friendly Markdown (get-started.md returns HTTP 200), and those pages point to a complete documentation index for LLMs on the Mintlify-hosted site, so an agent can be pointed at machine-readable docs. However, the canonical graphite.com/llms.txt returns 404, so the llms index lives only on a third-party docs subdomain. Missing for 10: llms.txt at the canonical graphite.com root, first-party documentation describing the agent-oriented docs, independent or hands-on corroboration of agents consuming the docs.",
     "evidenceIds": [
-      "graphite-probe-1",
-      "graphite-probe-2"
+      "graphite-probe-2",
+      "graphite-probe-1"
     ]
   },
   {
@@ -2428,11 +2440,18 @@
   {
     "productId": "graphite",
     "storyId": "agentic-public-api",
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "partial",
+    "quality": 3,
     "confidence": "medium",
-    "rationale": "The evidence pack contains no documented public HTTP/REST/GraphQL API for Graphite, and every OpenAPI/Swagger probe path returned 404. The documented programmatic surfaces are the gt CLI and the GT MCP server, which are separate CLI and MCP-server capabilities rather than a public API. The webhook mention describes Graphite receiving GitHub webhooks, not exposing its own API.",
-    "evidenceIds": []
+    "rationale": "The evidence shows no documented public REST or GraphQL API: every OpenAPI/Swagger candidate path returned 404. Graphite can still be driven programmatically through its documented gt CLI and its official GT MCP server, which lets AI agents create stacked PRs. Those surfaces give agents only partial, indirect control rather than a general public API. Missing for 10: a documented public HTTP API covering reviews, merge queue, insights and agents; an OpenAPI spec; API auth/token docs; independent corroboration of API use.",
+    "evidenceIds": [
+      "graphite-probe-3",
+      "graphite-docs-30",
+      "graphite-probe-4",
+      "graphite-docs-3",
+      "graphite-probe-5",
+      "graphite-docs-36"
+    ]
   },
   {
     "productId": "graphite",
@@ -2616,25 +2635,24 @@
     "productId": "graphite",
     "storyId": "custom-pre-merge-checks",
     "verdict": "partial",
-    "quality": 5,
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Graphite lets you write custom rules, explicit guidelines that Graphite Agent follows when reviewing code (graphite-docs-5), and the agent automatically reviews every new PR in the selected repos (graphite-docs-19, graphite-docs-4). That covers custom AI review criteria applied on every PR. However, the evidence frames these as review comments and guidelines, not as pass/fail pre-merge checks that gate merging, and it never confirms that rules are written in free-form plain language. missing for 10: evidence that custom rules act as pre-merge status checks that block or gate merges, explicit confirmation that rules are written in plain language (e.g. 'docs updated', 'tests cover new paths'), worked examples, independent or hands-on corroboration.",
+    "rationale": "Graphite Agent automatically reviews every new PR in selected repos (graphite-docs-4, graphite-docs-19). Custom rules let teams define explicit guidelines for that review, with comment exclusions also configurable (graphite-docs-5, graphite-docs-20, graphite-docs-33). The evidence shows these rules shaping review comments, not as discrete pre-merge checks that pass, fail or gate merging. missing for 10: evidence that custom rules are written in plain language with examples like 'docs updated' or 'tests cover new paths', evidence that rules report as pass/fail status checks that block merge, independent or hands-on corroboration.",
     "evidenceIds": [
+      "graphite-docs-4",
       "graphite-docs-5",
       "graphite-docs-19",
-      "graphite-docs-4",
       "graphite-docs-20",
-      "graphite-docs-33",
-      "graphite-docs-27"
+      "graphite-docs-33"
     ]
   },
   {
     "productId": "graphite",
     "storyId": "custom-rules-guidelines",
-    "verdict": "partial",
-    "quality": 5,
+    "verdict": "full",
+    "quality": 7,
     "confidence": "medium",
-    "rationale": "Graphite's AI review customization docs say custom rules let teams define explicit guidelines for Graphite Agent to follow when reviewing code, and comment exclusions let them say where it should not comment. AI Review customizations are also listed as a pricing-tier feature. That covers natural-language team rules, but nothing evidences AST-pattern rules or linked style guides, and nothing independent confirms enforcement quality. Missing for 10: AST/pattern-based rule support, linking external style guides, detail on how rules are authored and scoped, hands-on corroboration that custom rules are enforced.",
+    "rationale": "Graphite documents custom rules that let teams define explicit guidelines for Graphite Agent to follow during AI code review, plus comment exclusions to suppress unwanted feedback. Pricing lists \"AI Review customizations\" as a feature, which covers the core of encoding team review guidelines. missing for 10: explicit evidence of AST/pattern-based rules, support for linking external style guides, detail on the rule format and enforcement behavior, independent or hands-on corroboration that rules are actually enforced.",
     "evidenceIds": [
       "graphite-docs-5",
       "graphite-docs-20",
@@ -4328,19 +4346,11 @@
   {
     "productId": "qodo",
     "storyId": "openness-full-export",
-    "verdict": "partial",
-    "quality": 3,
-    "confidence": "low",
-    "rationale": "Qodo has no documented data-export feature, but some of its data is portable. Configuration can be managed as code in a `.pr_agent.toml` file stored in your own repositories. Reviews surface as native labels and tags inside your Git provider. The MCP and CLI let you programmatically retrieve findings and rules. Missing for 10: a documented bulk export of findings history, rules and governance data in open formats, an export or offboarding guide, a public API spec (OpenAPI probes returned 404), and independent confirmation that users can fully leave with their data.",
-    "evidenceIds": [
-      "qodo-docs-11",
-      "qodo-docs-36",
-      "qodo-docs-8",
-      "qodo-docs-6",
-      "qodo-docs-7",
-      "qodo-docs-15",
-      "qodo-probe-2"
-    ]
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "The evidence pack documents no data-export feature, export formats, or offboarding and account-deletion path for Qodo. Configuration-as-code via .pr_agent.toml, the self-hosted deployment options, and retrieving findings through MCP or the CLI are adjacent capabilities, but none is documented as a way to export all of a user's data (findings history, rules, governance data) in open formats. No public OpenAPI spec was found either.",
+    "evidenceIds": []
   },
   {
     "productId": "qodo",
