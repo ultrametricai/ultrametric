@@ -36,7 +36,7 @@
 // ---------------------------------------------------------------------------
 
 import { type CapTableRow, floorShares, poolIncreaseForRoundTarget, poolIncreaseForTarget, roundPrice } from './capTable'
-import { type AdjustmentBasis, type AdjustmentResult, type DilutiveIssuance, applyAntiDilution } from './antiDilution'
+import { type AdjustmentBasis, type AdjustmentResult, type DilutiveIssuance, applyAntiDilution, validateIssuance } from './antiDilution'
 
 function round2(x: number): number {
   return Math.round(x * 100) / 100
@@ -182,6 +182,12 @@ export interface ProtectedSeriesSpec {
   originalIssuePrice: number
   /** Conversion price before this round (= OIP if never adjusted). */
   conversionPriceBefore: number
+  /** Outstanding PREFERRED shares of the series. Optional while the series still converts
+   * 1:1 (conversionPriceBefore = OIP), where the row's share count is the preferred count.
+   * REQUIRED for a pre-adjusted series (conversionPriceBefore ≠ OIP): its row carries
+   * as-converted shares, and feeding those into the adjustment as preferred would apply
+   * the conversion ratio twice. */
+  preferredShares?: number
   basis: AdjustmentBasis
 }
 
@@ -223,9 +229,10 @@ export interface DownRoundReport {
  *
  * Base convention: the broad base counts each row at its ROW share count, which equals
  * as-converted only while every protected series still converts 1:1 (the engine's issued
- * rows — the documented case). A series already adjusted below its original issue price
- * enters the base undercounted; callers with pre-adjusted series should pass as-converted
- * rows (pinned in the tests).
+ * rows — the documented case). Callers with a pre-adjusted series pass as-converted rows
+ * (so the base counts the series correctly) AND the series' preferred share count on the
+ * spec (so the adjustment never treats as-converted shares as preferred — see
+ * ProtectedSeriesSpec.preferredShares; pinned in the tests).
  */
 export function downRoundModel(
   rows: readonly CapTableRow[],
@@ -236,6 +243,7 @@ export function downRoundModel(
   const concrete = rows.filter((r) => r.shares !== null)
   if (concrete.length !== rows.length) throw new RangeError('rows must have concrete share counts (convert SAFEs first)')
   if (concrete.length === 0) throw new RangeError('at least one row required')
+  validateIssuance(issuance)
   const fdBefore = concrete.reduce((s, r) => s + (r.shares as number), 0)
   if (!(fdBefore > 0)) throw new RangeError('fully diluted before must be > 0')
   const base = concrete.reduce(
@@ -248,10 +256,17 @@ export function downRoundModel(
   for (const spec of protectedSeries) {
     const row = concrete.find((r) => r.name === spec.seriesName)
     if (!row) throw new RangeError(`protected series ${spec.seriesName}: no matching row`)
+    if (spec.preferredShares === undefined && spec.conversionPriceBefore !== spec.originalIssuePrice) {
+      throw new RangeError(
+        `protected series ${spec.seriesName}: preferredShares required when conversionPriceBefore differs from the ` +
+          `original issue price — the row carries as-converted shares, and treating them as preferred would apply the ` +
+          `conversion ratio twice`,
+      )
+    }
     const adj = applyAntiDilution(
       {
         name: spec.seriesName,
-        preferredShares: row.shares as number,
+        preferredShares: spec.preferredShares ?? (row.shares as number),
         originalIssuePrice: spec.originalIssuePrice,
         conversionPriceBefore: spec.conversionPriceBefore,
       },
@@ -355,7 +370,13 @@ export function founderSecondary(
     out.push({ id: `secondary-${buyerName}`, name: buyerName, group: 'investor', shares: n, pct: null })
   }
   const fd = out.reduce((s, r) => s + (r.shares ?? 0), 0)
-  for (const r of out) if (r.shares !== null && fd > 0) r.pct = (r.shares / fd) * 100
+  // Null-share rows (SAFEs shown as-converted-estimate) keep their percentage — a secondary
+  // moves no SAFE ownership — and the concrete rows are scaled by the remainder, the same
+  // §D.5 convention the cap-table engine's snapshots apply, so the table still sums to 100.
+  const estimatePct = out.reduce((s, r) => s + (r.shares === null ? (r.pct ?? 0) : 0), 0)
+  if (estimatePct >= 100) throw new RangeError('null-share (SAFE) estimate percentages reach 100%')
+  const scale = (100 - estimatePct) / 100
+  for (const r of out) if (r.shares !== null && fd > 0) r.pct = (r.shares / fd) * 100 * scale
 
   return {
     rows: out,
