@@ -82,7 +82,7 @@ describe('existing judged selection compatibility', () => {
     // Re-pinned at the validate-the-idea method routing (startup_001): the landing-page step
     // became the method-choice decision, so its vibe-coding function cells and design-tools
     // extra-arena cells leave the contract.
-    expect(positiveCount).toBe(2537)
+    expect(positiveCount).toBe(2538)
     expect(zeroCount).toBe(137)
     expect(extraArena).toBe(90)
   })
