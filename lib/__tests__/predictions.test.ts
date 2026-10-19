@@ -165,6 +165,27 @@ describe('settleQuestions', () => {
     expect(questions).toEqual([done])
   })
 
+  it('never cites a voided settlement ref: a reopened question skips the annulled flip', () => {
+    const annulledRef = settlementRef(overtake() as Extract<ChangeEvent, { kind: 'overtake' }>)
+    const reopened: PredictionQuestion = {
+      ...open,
+      note: 'reopened: the cited overtake came from later-reverted judge churn',
+      voidedSettlements: [annulledRef],
+    }
+    // Inside the window, the only qualifying flip is the annulled one: stays open.
+    const mid = settleQuestions([reopened], [overtake()], midWindow)
+    expect(mid.settled).toEqual([])
+    expect(mid.questions).toEqual([reopened])
+    // A later, non-voided flip still settles 'yes' and is the one cited.
+    const fresh = overtake({ date: '2026-09-25T00:00:00.000Z' })
+    const again = settleQuestions([reopened], [overtake(), fresh], midWindow)
+    expect(again.settled).toHaveLength(1)
+    expect(again.questions[0].settledBy).toBe(settlementRef(fresh as Extract<ChangeEvent, { kind: 'overtake' }>))
+    // Past the deadline with only the annulled flip, it settles 'no' (nothing citable).
+    const late = settleQuestions([reopened], [overtake()], afterDeadline)
+    expect(late.questions[0].outcome).toBe('no')
+  })
+
   it('is idempotent: settling an already-settled batch changes nothing', () => {
     const first = settleQuestions([open], [overtake()], afterDeadline)
     const second = settleQuestions(first.questions, [overtake()], afterDeadline)
