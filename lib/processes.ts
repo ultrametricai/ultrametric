@@ -148,7 +148,10 @@ export const StepVerifySchema = z.object({
 
 export type StepVerify = z.infer<typeof StepVerifySchema>
 
-export const COST_KINDS = ['government-fee', 'typical-vendor-price', 'free'] as const
+// 'optional-government-fee': a published government fee the filer can skip (a certified copy,
+// an expedite surcharge). It carries the same source/asOf contract but stays out of the
+// knownCostUsd headline, which promises the known MINIMUM a founder must pay.
+export const COST_KINDS = ['government-fee', 'optional-government-fee', 'typical-vendor-price', 'free'] as const
 export type CostKind = (typeof COST_KINDS)[number]
 
 // The real, KNOWABLE cost of a step. Honesty contract (open-processes/README.md "Cost honesty"):
@@ -800,9 +803,11 @@ export function taskCeiling(task: ProcessTask): ProcessCeiling {
 // The process's known government fees (depth wave pt 1): the sum of the DATED per-step
 // government fees ONLY — kind 'government-fee' with a published usd number. Derived here, never
 // hand-stored. Vendor prices are deliberately excluded from the headline (a partial vendor sum
-// would imply a completeness the curation doesn't claim), and `usd: null` entries contribute
-// nothing. Computed over the DEFAULT flow (loadProcesses strips jurisdiction-conditional nodes),
-// so the number describes the same Delaware-default view every other committed number does.
+// would imply a completeness the curation doesn't claim), optional government fees
+// ('optional-government-fee': certified copies, expedite surcharges) stay out because the
+// headline is the known MINIMUM, and `usd: null` entries contribute nothing. Computed over the
+// DEFAULT flow (loadProcesses strips jurisdiction-conditional nodes), so the number describes
+// the same Delaware-default view every other committed number does.
 export function knownCostUsd(nodes: Array<Pick<DagNode, 'cost'>>): number {
   let total = 0
   for (const n of nodes) {
