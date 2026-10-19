@@ -1,3 +1,4 @@
+import fs from 'node:fs'
 import path from 'node:path'
 import { describe, expect, it } from 'vitest'
 import {
@@ -48,6 +49,53 @@ describe('step geo resolutions', () => {
         expect(n.label, `${t.id}/${n.id} label stays the global abstraction`).not.toMatch(usInstitutions)
       }
     }
+  })
+
+  it('every rule card cited inside a resolution resolves to a committed law card', () => {
+    const cardIds = new Set<string>()
+    const lawDir = path.join(process.cwd(), 'open-law')
+    for (const entry of fs.readdirSync(lawDir, { withFileTypes: true })) {
+      if (!entry.isDirectory() || entry.name === 'citations') continue
+      for (const file of fs.readdirSync(path.join(lawDir, entry.name))) {
+        if (!file.endsWith('.json')) continue
+        const card = JSON.parse(fs.readFileSync(path.join(lawDir, entry.name, file), 'utf8'))
+        if (card.id) cardIds.add(card.id)
+      }
+    }
+    for (const { task, nodeId, resolution } of allResolutions(loadProcesses(DATA_DIR))) {
+      const prose = `${resolution.label} ${resolution.guidance ?? ''}`
+      for (const match of prose.matchAll(/rule card ([a-z0-9.-]+)/g)) {
+        expect(cardIds.has(match[1]), `${task.id}/${nodeId}/${resolution.country} cites unknown rule card ${match[1]}`).toBe(true)
+      }
+    }
+  })
+
+  // The first wave (founder ask 2026-10-19): the exhibit-A record plus the clearest class-(a)
+  // offenders from the audit, restructured so the step text is the global abstraction and the
+  // US is one resolution among several.
+  it('pins the first-wave restructuring: sit_007, hr_001, sit_019, sit_001, qs_052', () => {
+    const tasks = loadProcesses(DATA_DIR)
+    const byId = (id: string) => tasks.find((t) => t.id === id)!
+    const countries = (id: string, nodeId: string) =>
+      (byId(id).dag.nodes.find((n) => n.id === nodeId)?.geoResolutions ?? []).map((r) => r.country).sort()
+
+    // Exhibit A: the departing-equity settlement resolves in six countries beside the US.
+    expect(byId('sit_007').geoScope).toBe('global')
+    expect(countries('sit_007', 'n4')).toEqual(['CA', 'DE', 'IN', 'PT', 'UK', 'US'])
+    expect(countries('sit_007', 'n3')).toEqual(['FR', 'IN', 'UK', 'US'])
+    // The notice-terms step resolves in every covered country.
+    expect(byId('sit_019').geoScope).toBe('global')
+    expect(countries('sit_019', 'n2')).toEqual(['CA', 'DE', 'FR', 'IN', 'PT', 'UK', 'US'])
+    // First-hire formalities: the I-9/W-4 mechanics moved into the US entry.
+    expect(byId('hr_001').geoScope).toBe('global')
+    expect(countries('hr_001', 'n6')).toEqual(['FR', 'PT', 'UK', 'US'])
+    // The register lookup: TSDR is the US resolution, with the committed IN/PT/CA checks beside it.
+    expect(byId('sit_001').geoScope).toBe('global')
+    expect(countries('sit_001', 'n3')).toEqual(['CA', 'IN', 'PT', 'US'])
+    // A US-only resolution set on a global record is the design working: no other country's
+    // mechanics are committed for the cap-table approval steps, so the abstraction stands.
+    expect(countries('qs_052', 'n2b')).toEqual(['US'])
+    expect(countries('qs_052', 'n3')).toEqual(['US'])
   })
 
   it('non-US entries reuse committed geo knowledge: the entry country also has a process geoNote or the process is global', () => {
