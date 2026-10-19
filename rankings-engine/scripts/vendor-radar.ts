@@ -57,9 +57,11 @@ import { normalizeDomain } from '../yc-shared'
 import { DOMAIN_VOCAB } from './tag-story-scopes'
 import { decodeEntities } from './watch-vendor-news'
 
-export const SEEN_LEDGER_FILE = path.join(ROOT, 'pipeline', 'radar-seen.json')
+// Folded from the pre-rename pipeline/ location (the engine rename, 2026-10-14 — the same fix
+// pattern as CACHE_DIR in rankings-engine/paths.ts); the committed ledger lives here.
+export const SEEN_LEDGER_FILE = path.join(ROOT, 'rankings-engine', 'radar-seen.json')
 export const REPORTS_DIR = path.join(ROOT, 'reports', 'vendor-radar')
-const REVIEWS_DIR = path.join(ROOT, 'vendors', 'reviews', 'generated')
+const REVIEWS_DIR = path.join(DATA_DIR, 'reviews', 'generated')
 
 // --- thresholds (tune here; documented in docs/VENDOR-RADAR.md) -------------------------------
 export const HN_LOOKBACK_DAYS = 7
@@ -388,12 +390,31 @@ export function normalizeName(name: string): string {
 // or dedupe against tracked product domains.
 const AGGREGATOR_HOSTS = new Set(['news.ycombinator.com', 'producthunt.com', 'github.com', 'gist.github.com'])
 
-// Stable identity for the seen-ledger: the product's own domain when public; github:owner/repo
-// for repos without a homepage; the normalized name otherwise (PH posts keylessly expose only
-// their own post URL).
+// Shared project-listing hosts (package registries, app stores, model hubs): a URL there
+// identifies one LISTING, never the product's own domain. Keying on the bare hostname would
+// let the first PyPI-homepaged project swallow every later one (the ledger's old
+// domain:pypi.org entry did exactly that until its one-time keyed migration, 2026-10-19).
+const SHARED_LISTING_HOSTS = new Set([
+  'pypi.org', 'npmjs.com', 'crates.io', 'rubygems.org', 'packagist.org', 'nuget.org',
+  'hub.docker.com', 'marketplace.visualstudio.com', 'apps.apple.com', 'play.google.com',
+  'chromewebstore.google.com', 'huggingface.co',
+])
+
+// `github:owner/repo` key for any github.com repo URL, whatever source surfaced it — the same
+// repo must not key as github:owner/repo from the GitHub scan and name:… from an HN post.
+export function githubRepoKey(url: string | undefined | null): string | null {
+  const m = url?.match(/^https?:\/\/(?:www\.)?github\.com\/([^/?#]+\/[^/?#]+)/i)
+  return m ? `github:${m[1].toLowerCase().replace(/\.git$/, '')}` : null
+}
+
+// Stable identity for the seen-ledger: github:owner/repo for anything living at a repo URL;
+// the product's own domain when public; the normalized name otherwise (PH posts and
+// shared-listing pages keylessly expose no product domain).
 export function candidateKey(c: Pick<RawCandidate, 'kind' | 'name' | 'url' | 'title'>): string {
+  const repoKey = githubRepoKey(c.url)
+  if (repoKey) return repoKey
   const domain = normalizeDomain(c.url)
-  if (domain && !AGGREGATOR_HOSTS.has(domain)) return `domain:${domain}`
+  if (domain && !AGGREGATOR_HOSTS.has(domain) && !SHARED_LISTING_HOSTS.has(domain)) return `domain:${domain}`
   if (c.kind === 'github') return `github:${c.title.toLowerCase()}`
   return `name:${normalizeName(c.name)}`
 }
@@ -401,6 +422,7 @@ export function candidateKey(c: Pick<RawCandidate, 'kind' | 'name' | 'url' | 'ti
 export interface DedupeContext {
   trackedDomains: Set<string> // normalized product site domains across every arena
   trackedNames: Set<string> // normalized product names + ids + registry ids
+  trackedRepos: Set<string> // github:owner/repo keys from every product's urls.github
   seenKeys: Set<string> // rankings-engine/radar-seen.json — everything ever reported
 }
 
@@ -422,7 +444,11 @@ export function assembleCandidates(raw: RawCandidate[], vocab: Map<string, Vocab
     if (matchedArenas.length === 0) continue
     const key = candidateKey(item)
     const domain = key.startsWith('domain:') ? key.slice('domain:'.length) : null
-    if ((domain && ctx.trackedDomains.has(domain)) || ctx.trackedNames.has(normalizeName(item.name))) {
+    if (
+      (domain && ctx.trackedDomains.has(domain))
+      || (key.startsWith('github:') && ctx.trackedRepos.has(key))
+      || ctx.trackedNames.has(normalizeName(item.name))
+    ) {
       skippedTracked++
       continue
     }
@@ -572,23 +598,54 @@ async function scanGithub(now: Date): Promise<{ stat: SourceStat; raw: RawCandid
 // ---------------------------------------------------------------------------------------------
 // Dedupe context loading + ledger IO
 
+// null ONLY when the ledger file does not exist yet (a legitimate first run). A ledger that
+// exists but fails to read/parse/validate THROWS and fails the whole run: silently treating a
+// corrupt ledger as empty would rewrite it with just this run's candidates, wiping the entire
+// seen-history and re-nominating everything ever reported.
 export function loadSeenLedger(file: string = SEEN_LEDGER_FILE): SeenLedger | null {
+  if (!fs.existsSync(file)) return null
   try {
     return SeenLedgerSchema.parse(JSON.parse(fs.readFileSync(file, 'utf8')))
-  } catch {
-    return null
+  } catch (err) {
+    throw new Error(`vendor-radar: seen-ledger at ${file} exists but does not parse/validate — refusing to run (a rewrite would wipe the seen-history). Fix the file first. Cause: ${String(err)}`)
   }
 }
 
-function loadDedupeContext(): DedupeContext {
+// Union of seen-entries across ledgers: one entry per key, earliest firstSeen wins (the honest
+// first-report date), source lists merged. Folds in ledger updates stranded on not-yet-merged
+// vendor-radar/* branches (--merge-seen) so a run never re-nominates a candidate just because
+// an earlier run's PR is still open, and the next merged PR carries the stranded keys to main.
+export function mergeSeenEntries(lists: SeenEntry[][]): SeenEntry[] {
+  const byKey = new Map<string, SeenEntry>()
+  for (const list of lists) {
+    for (const e of list) {
+      const prior = byKey.get(e.key)
+      if (!prior) {
+        byKey.set(e.key, { ...e, sources: [...e.sources] })
+        continue
+      }
+      if (e.firstSeen < prior.firstSeen) {
+        prior.firstSeen = e.firstSeen
+        prior.name = e.name
+      }
+      for (const s of e.sources) if (!prior.sources.includes(s)) prior.sources.push(s)
+    }
+  }
+  return [...byKey.values()].sort((a, b) => a.key.localeCompare(b.key))
+}
+
+function loadDedupeContext(extraSeen: SeenEntry[][]): DedupeContext {
   const trackedDomains = new Set<string>()
   const trackedNames = new Set<string>()
+  const trackedRepos = new Set<string>()
   for (const cat of readCategories()) {
     const file = path.join(DATA_DIR, cat.id, 'products.json')
     if (!fs.existsSync(file)) continue
     for (const p of ProductSchema.array().parse(JSON.parse(fs.readFileSync(file, 'utf8')))) {
       const d = normalizeDomain(p.urls?.site)
       if (d) trackedDomains.add(d)
+      const repoKey = githubRepoKey(p.urls?.github)
+      if (repoKey) trackedRepos.add(repoKey)
       trackedNames.add(normalizeName(p.name))
       trackedNames.add(normalizeName(p.id))
     }
@@ -601,8 +658,10 @@ function loadDedupeContext(): DedupeContext {
       if (product) trackedNames.add(normalizeName(product))
     }
   }
-  const seenKeys = new Set((loadSeenLedger()?.seen ?? []).map((s) => s.key))
-  return { trackedDomains, trackedNames, seenKeys }
+  const seenKeys = new Set(
+    [...(loadSeenLedger()?.seen ?? []), ...extraSeen.flat()].map((s) => s.key),
+  )
+  return { trackedDomains, trackedNames, trackedRepos, seenKeys }
 }
 
 // ---------------------------------------------------------------------------------------------
@@ -613,8 +672,18 @@ export async function run(argv: string[]): Promise<RadarReport> {
     const i = argv.indexOf(flag)
     return i === -1 ? undefined : argv[i + 1]
   }
+  const argAll = (flag: string): string[] =>
+    argv.flatMap((a, i) => (a === flag && argv[i + 1] !== undefined ? [argv[i + 1]] : []))
   const dryRun = argv.includes('--dry-run')
   const issueBodyPath = arg('--issue-body')
+  // Ledgers from not-yet-merged vendor-radar/* branches (the workflow extracts them before the
+  // scan): their keys join the dedupe set and the written ledger, so stranded seen-history
+  // reaches main with the next merged PR instead of being lost.
+  const extraSeen = argAll('--merge-seen').map((f) => {
+    const l = loadSeenLedger(f)
+    if (!l) throw new Error(`vendor-radar: --merge-seen ${f}: no ledger file there`)
+    return l.seen
+  })
   const now = new Date()
   const date = now.toISOString().slice(0, 10)
 
@@ -624,7 +693,7 @@ export async function run(argv: string[]): Promise<RadarReport> {
   const sectionNameByArena = new Map<string, string>()
   for (const s of sections.sections) for (const a of s.arenaIds) sectionNameByArena.set(a, s.name)
   const vocab = buildArenaVocab(readCategories(), sectionNameByArena)
-  const ctx = loadDedupeContext()
+  const ctx = loadDedupeContext(extraSeen)
 
   const [hn, ph, gh] = [await scanHn(now), await scanProductHunt(), await scanGithub(now)]
   const raw = [...hn.raw, ...ph.raw, ...gh.raw]
@@ -668,10 +737,11 @@ export async function run(argv: string[]): Promise<RadarReport> {
     _comment:
       'Seen-ledger for rankings-engine/scripts/vendor-radar.ts: every candidate the radar has ever reported, keyed by product domain (or github:owner/repo / normalized name). A key listed here never surfaces again — firstSeen is the honest date of the run that first reported it.',
     updatedAt: now.toISOString(),
-    seen: [
-      ...(prior?.seen ?? []),
-      ...candidates.map((c) => ({ key: c.key, name: c.name, firstSeen: c.firstSeen, sources: c.sources.map((s) => s.url) })),
-    ].sort((a, b) => a.key.localeCompare(b.key)),
+    seen: mergeSeenEntries([
+      prior?.seen ?? [],
+      ...extraSeen,
+      candidates.map((c) => ({ key: c.key, name: c.name, firstSeen: c.firstSeen, sources: c.sources.map((s) => s.url) })),
+    ]),
   }
   writeJson(SEEN_LEDGER_FILE, SeenLedgerSchema.parse(ledger))
   console.log(`vendor-radar: wrote reports/vendor-radar/${date}.{json,md} + seen-ledger (${ledger.seen.length} entries)`)

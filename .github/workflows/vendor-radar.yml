@@ -60,14 +60,35 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
+      # Seen-ledger updates land on main only when a scan PR merges, so a ledger committed to a
+      # still-open (or abandoned) vendor-radar/* branch would otherwise be invisible to the next
+      # run, re-nominating its candidates. Extract every radar branch's ledger and hand them to
+      # the scan via --merge-seen: stranded keys keep deduping and ride to main with the next
+      # merged PR. Each `git show` is gated on its own exit code.
+      - name: Collect seen-ledgers from open radar branches
+        run: |
+          git fetch origin '+refs/heads/vendor-radar/*:refs/remotes/origin/vendor-radar/*'
+          mkdir -p /tmp/radar-seen
+          : > /tmp/radar-seen/flags
+          for REF in $(git for-each-ref --format='%(refname:short)' 'refs/remotes/origin/vendor-radar/*'); do
+            SAFE=$(echo "$REF" | tr '/' '-')
+            if git show "$REF:rankings-engine/radar-seen.json" > "/tmp/radar-seen/$SAFE.json" 2>/dev/null; then
+              printf ' --merge-seen /tmp/radar-seen/%s.json' "$SAFE" >> /tmp/radar-seen/flags
+            else
+              rm -f "/tmp/radar-seen/$SAFE.json"
+            fi
+          done
+          echo "MERGE_SEEN_FLAGS=$(cat /tmp/radar-seen/flags)" >> "$GITHUB_ENV"
+
       # The scan itself: keyless, bounded (a handful of HTTP requests, 10s timeouts; GH_TOKEN
       # only raises the GitHub search rate limit). Writes reports/vendor-radar/<date>.{json,md},
       # updates rankings-engine/radar-seen.json, and writes the issue body ONLY when there are new
-      # candidates — a quiet day files no issue.
+      # candidates — a quiet day files no issue. A corrupt committed ledger FAILS the run
+      # (vendor-radar.ts loadSeenLedger) instead of silently wiping the seen-history.
       - name: Vendor radar scan
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: pnpm tsx rankings-engine/scripts/vendor-radar.ts --issue-body /tmp/vendor-radar-issue.md
+        run: pnpm tsx rankings-engine/scripts/vendor-radar.ts --issue-body /tmp/vendor-radar-issue.md $MERGE_SEEN_FLAGS
 
       # Criteria triage (policies/AGENT_POLICY.md): mechanical checks per candidate — fetches
       # the docs surface, applies the shipped-product and affiliation guards — and appends the
@@ -129,7 +150,10 @@ jobs:
       # the body file only then). Same-day re-runs UPDATE the existing open issue with a comment
       # instead of filing a duplicate. The body itself carries the honesty block: detection only,
       # never auto-add / auto-judge; approval = checking the box / commenting.
+      # if: always() — a failure in the tests or the report-PR step must not swallow the
+      # candidates issue; the step itself exits 0 when there is no body file to post.
       - name: File or update candidates issue
+        if: always()
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
@@ -196,7 +220,9 @@ jobs:
           pnpm tsx rankings-engine/scripts/generate-story-graph.ts
           pnpm stats
           pnpm test
-          git add rankings rankings-engine/cache vendors/reviews/generated public/badges README.md
+          # open-rankings covers the arena data AND reviews/generated (pre-rename: rankings/ +
+          # vendors/reviews/generated — both gone; git add on a missing pathspec fails the step).
+          git add open-rankings rankings-engine/cache public/badges README.md
           git commit -m "feat(vendor-radar): scoped bring-up of auto-approved candidates ($DATE)"
           git push -u origin "$BRANCH"
           {

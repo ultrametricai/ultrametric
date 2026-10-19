@@ -1,3 +1,6 @@
+import fs from 'node:fs'
+import os from 'node:os'
+import path from 'node:path'
 import { describe, expect, it } from 'vitest'
 import {
   GITHUB_MIN_STARS,
@@ -14,16 +17,20 @@ import {
   ghReposFromJson,
   githubStarsPerDay,
   hnCandidate,
+  githubRepoKey,
   hnItemsFromJson,
   isHotHn,
   isHotRepo,
   isLaunchTitle,
+  loadSeenLedger,
   matchArenas,
+  mergeSeenEntries,
   normalizeName,
   parsePhEntries,
   phCandidate,
   type RadarReport,
   type RawCandidate,
+  type SeenEntry,
 } from '../scripts/vendor-radar'
 
 // Pure units for the vendor radar: fake HN/PH/GitHub items → arena matches, dedupe against the
@@ -186,6 +193,17 @@ describe('candidateKey + normalizeName', () => {
     expect(candidateKey({ kind: 'producthunt', name: 'Mug Buddy', url: 'https://www.producthunt.com/posts/mug-buddy', title: 'Mug Buddy' })).toBe('name:mugbuddy')
   })
 
+  it('a github repo URL keys as github:owner/repo whatever source surfaced it (no per-source drift)', () => {
+    expect(candidateKey({ kind: 'hn', name: 'Driftbase', url: 'https://github.com/acme/driftbase', title: 'Show HN: Driftbase' })).toBe('github:acme/driftbase')
+    expect(githubRepoKey('https://github.com/Acme/Driftbase/tree/main')).toBe('github:acme/driftbase')
+    expect(githubRepoKey('https://driftbase.dev')).toBeNull()
+  })
+
+  it('a shared listing host (pypi, npm, app stores) never becomes a bare-domain key', () => {
+    expect(candidateKey({ kind: 'github', name: 'laya-mlx', url: 'https://pypi.org/project/laya-mlx/', title: 'mizorewww/laya-mlx' })).toBe('github:mizorewww/laya-mlx')
+    expect(candidateKey({ kind: 'hn', name: 'Laya MLX', url: 'https://pypi.org/project/laya-mlx/', title: 'Show HN: Laya MLX' })).toBe('name:layamlx')
+  })
+
   it('normalizeName collapses case and punctuation', () => {
     expect(normalizeName('Drift-Base 2.0')).toBe('driftbase20')
   })
@@ -204,7 +222,12 @@ function raw(partial: Partial<RawCandidate>): RawCandidate {
   }
 }
 
-const EMPTY_CTX = () => ({ trackedDomains: new Set<string>(), trackedNames: new Set<string>(), seenKeys: new Set<string>() })
+const EMPTY_CTX = () => ({
+  trackedDomains: new Set<string>(),
+  trackedNames: new Set<string>(),
+  trackedRepos: new Set<string>(),
+  seenKeys: new Set<string>(),
+})
 
 describe('assembleCandidates', () => {
   it('keeps arena-matched items, drops non-matching ones, stamps firstSeen with the run date', () => {
@@ -220,13 +243,22 @@ describe('assembleCandidates', () => {
     expect(candidates[0].matchedArenas[0].arena).toBe('browser-agents')
   })
 
-  it('dedupes against tracked product domains AND tracked names', () => {
+  it('dedupes against tracked product domains AND tracked names AND tracked github repos', () => {
     const byDomain = assembleCandidates([raw({})], VOCAB, { ...EMPTY_CTX(), trackedDomains: new Set(['driftbase.dev']) }, '2026-10-02')
     expect(byDomain.candidates).toEqual([])
     expect(byDomain.skippedTracked).toBe(1)
     const byName = assembleCandidates([raw({})], VOCAB, { ...EMPTY_CTX(), trackedNames: new Set(['driftbase']) }, '2026-10-02')
     expect(byName.candidates).toEqual([])
     expect(byName.skippedTracked).toBe(1)
+    // 'Driftbase by Acme' misses the exact-name check, but its repo URL matches the roster's urls.github.
+    const byRepo = assembleCandidates(
+      [raw({ name: 'Driftbase by Acme', url: 'https://github.com/acme/driftbase' })],
+      VOCAB,
+      { ...EMPTY_CTX(), trackedRepos: new Set(['github:acme/driftbase']) },
+      '2026-10-02',
+    )
+    expect(byRepo.candidates).toEqual([])
+    expect(byRepo.skippedTracked).toBe(1)
   })
 
   it('dedupes against the seen-ledger so a candidate surfaces exactly once', () => {
@@ -288,5 +320,42 @@ describe('report + issue markdown', () => {
   it('an empty run says so honestly instead of inventing candidates', () => {
     const md = buildMarkdown(reportOf([]))
     expect(md).toContain('No new candidates this run')
+  })
+})
+
+describe('seen-ledger IO', () => {
+  const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'radar-seen-'))
+
+  it('a missing ledger is a legitimate first run (null)', () => {
+    expect(loadSeenLedger(path.join(tmp, 'nope.json'))).toBeNull()
+  })
+
+  it('a corrupt ledger FAILS the run instead of silently wiping the seen-history', () => {
+    const corrupt = path.join(tmp, 'corrupt.json')
+    fs.writeFileSync(corrupt, '{"updatedAt": "2026-10-02"') // truncated JSON
+    expect(() => loadSeenLedger(corrupt)).toThrow(/refusing to run/)
+    const wrongShape = path.join(tmp, 'wrong-shape.json')
+    fs.writeFileSync(wrongShape, JSON.stringify({ updatedAt: 'x', seen: [{ key: 1 }] }))
+    expect(() => loadSeenLedger(wrongShape)).toThrow(/refusing to run/)
+  })
+
+  it('a valid ledger loads', () => {
+    const ok = path.join(tmp, 'ok.json')
+    fs.writeFileSync(ok, JSON.stringify({ updatedAt: 'x', seen: [{ key: 'domain:a.dev', name: 'A', firstSeen: '2026-10-01', sources: ['https://a.dev'] }] }))
+    expect(loadSeenLedger(ok)?.seen).toHaveLength(1)
+  })
+})
+
+describe('mergeSeenEntries', () => {
+  const entry = (key: string, firstSeen: string, sources: string[]): SeenEntry => ({ key, name: key, firstSeen, sources })
+
+  it('unions by key, keeps the earliest firstSeen, merges sources, and sorts', () => {
+    const merged = mergeSeenEntries([
+      [entry('name:b', '2026-10-03', ['https://s1'])],
+      [entry('name:a', '2026-10-02', ['https://s2']), entry('name:b', '2026-10-01', ['https://s1', 'https://s3'])],
+    ])
+    expect(merged.map((e) => e.key)).toEqual(['name:a', 'name:b'])
+    expect(merged[1].firstSeen).toBe('2026-10-01')
+    expect(merged[1].sources).toEqual(['https://s1', 'https://s3'])
   })
 })
