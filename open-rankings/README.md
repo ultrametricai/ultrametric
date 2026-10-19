@@ -135,7 +135,9 @@ vendors of each market:
   `full` or `partial` verdict, within the step's declared arena or product allowlist.
 - Equal scores keep the arena leaderboard's order, and `rank` is the position in that order.
 
-Steps with no covering arena, an empty mapping, or no scored vendor are omitted. The file
+A market is absent when its arena is unpopulated, its mapping is empty, or no vendor scores;
+`primary` is null when only cross-arena markets rank the step, and steps with neither a
+primary nor a cross-arena ranking are omitted. The file
 carries no timestamps, so a rebuild over unchanged inputs is byte-identical; `pnpm test`
 and `pnpm recompute-check` both fail when it drifts from its inputs. Re-run the script
 after any verdict, product, mapping, or process change.
