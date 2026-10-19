@@ -57,9 +57,9 @@ import { normalizeDomain } from '../yc-shared'
 import { DOMAIN_VOCAB } from './tag-story-scopes'
 import { decodeEntities } from './watch-vendor-news'
 
-export const SEEN_LEDGER_FILE = path.join(ROOT, 'pipeline', 'radar-seen.json')
+export const SEEN_LEDGER_FILE = path.join(ROOT, 'rankings-engine', 'radar-seen.json')
 export const REPORTS_DIR = path.join(ROOT, 'reports', 'vendor-radar')
-const REVIEWS_DIR = path.join(ROOT, 'vendors', 'reviews', 'generated')
+const REVIEWS_DIR = path.join(DATA_DIR, 'reviews', 'generated')
 
 // --- thresholds (tune here; documented in docs/VENDOR-RADAR.md) -------------------------------
 export const HN_LOOKBACK_DAYS = 7
