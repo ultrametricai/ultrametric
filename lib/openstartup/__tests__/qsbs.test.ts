@@ -155,6 +155,18 @@ describe('qsbsExclusionPercentage (rule us-fed.qsbs-exclusion-percentage)', () =
   it('a too-early sale points at the § 1045 rollover instead of silence', () => {
     expect(qsbsExclusionPercentage('2019-01-01', '2022-01-01').note).toContain('us-fed.qsbs-1045-rollover')
   })
+
+  it('measures the holding from the clock start when supplied, not the raw acquisition date', () => {
+    // Nonvested stock without an 83(b) election: the clock starts at VESTING (rule
+    // us-fed.restricted-property-holding-period, qsbsHoldingClock). Acquired 2025-08-01,
+    // vested 2028-08-01, sold 2031-09-01: 6+ years from acquisition but only 3 years and a
+    // month from vesting — the 50% tier, not 100%.
+    const r = qsbsExclusionPercentage('2025-08-01', '2031-09-01', '2028-08-01')
+    expect(r.percentage).toBe(50)
+    expect(qsbsExclusionPercentage('2025-08-01', '2031-09-01').percentage).toBe(100)
+    // A clock start before the acquisition is rejected.
+    expect(() => qsbsExclusionPercentage('2025-08-01', '2031-09-01', '2025-07-01')).toThrow(RangeError)
+  })
 })
 
 describe('qsbsPerIssuerCap (rule us-fed.qsbs-per-issuer-cap)', () => {
@@ -245,6 +257,36 @@ describe('qsbsExclusionIllustration — the whole arithmetic, labeled', () => {
   it('is deterministic', () => {
     const inputs = { gain: 1, acquisitionDate: '2019-06-01', dispositionDate: '2026-01-15', basisOfStockDisposed: 1 }
     expect(qsbsExclusionIllustration(inputs)).toEqual(qsbsExclusionIllustration(inputs))
+  })
+
+  it('consumes the 83(b)/vesting facts through the holding clock', () => {
+    // Same facts as the tier test above: acquired 2025-08-01, nonvested, no election,
+    // vested 2028-08-01, sold 2031-09-01 — 50% tier measured from vesting, not the 100%
+    // the raw acquisition date would imply.
+    const r = qsbsExclusionIllustration({
+      gain: 4_000_000,
+      acquisitionDate: '2025-08-01',
+      dispositionDate: '2031-09-01',
+      basisOfStockDisposed: 100_000,
+      substantiallyNonvestedAtAcquisition: true,
+      election83bFiled: false,
+      vestingDate: '2028-08-01',
+    })
+    expect(r.exclusionPercentage).toBe(50)
+    expect(r.excludedGain).toBe(2_000_000)
+    expect(r.ruleIds).toContain('us-fed.restricted-property-holding-period')
+  })
+
+  it('refuses incomplete 83(b)/vesting facts instead of guessing the clock', () => {
+    expect(() =>
+      qsbsExclusionIllustration({
+        gain: 1_000_000,
+        acquisitionDate: '2025-08-01',
+        dispositionDate: '2031-09-01',
+        basisOfStockDisposed: 50_000,
+        substantiallyNonvestedAtAcquisition: true,
+      }),
+    ).toThrow(/clock/)
   })
 })
 
