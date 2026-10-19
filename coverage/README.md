@@ -14,8 +14,9 @@ every pointer must resolve to a committed file, and the index must validate agai
 ## Where each area tracks its own gaps
 
 - `open-processes` — chain membership in `open-processes/chains.json`; jurisdiction-scoped
-  workflow coverage in `open-law/workflow-coverage.json`; the shared-corpus import audit in
-  `content/processes/legacy-audit.json`.
+  workflow coverage in `open-law/workflow-coverage.json`; authored outcomes and guidance
+  in the definitions selected by `open-processes/catalog.json`. Historical import findings
+  remain in the [original audit](https://github.com/ultrametricai/ultrametric/blob/c156feeb4de636e5d2854ddf14b13955c2da85ac/content/processes/legacy-audit.json).
 - `open-rankings` — `open-rankings/arena-roadmap.json`: every arena tiered by priority and
   marked live or planned.
 - `open-modules` — `docs/OPEN-MODULES-GAPS.md`: the corpus-wide candidate table with BUILT,

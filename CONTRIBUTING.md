@@ -267,15 +267,14 @@ auto-publishes anything.
 
 ## 5. Add a process
 
-The step-by-step founder processes (and the reactive situations) live in
-`open-processes/corpus.json`, contract in `schemas/operational-process.schema.json`. Start from a
-blank, schema-valid record in [`templates/`](templates/), follow the curation rules in
-[`open-processes/README.md`](open-processes/README.md) — routing, reversibility, verification checks;
-a situation additionally carries a `trigger` and an `urgency` tier (see
-[`open-processes/SITUATIONS.md`](open-processes/SITUATIONS.md)) — and validate with `pnpm test`, which
-tells you immediately whether the record holds up. Chained founder paths go in
-[`open-processes/chains.json`](open-processes/). Changes to the shared process schema or catalog
-(`content/processes/`) also run `pnpm shared:check`.
+Author step-by-step founder processes and reactive situations in
+`open-processes/<slug>.json`, using the canonical contract in
+`schemas/process.schema.json#/$defs/canonical`. Follow the definition and curation rules
+in [`open-processes/README.md`](open-processes/README.md). Add the slug to
+`open-processes/catalog.json`; chains declare their ordered `taskIds` in the same format.
+Keep stable record, part, and option IDs when editing existing content. Regenerate the
+compatibility outputs with `pnpm shared:project`, then run `pnpm shared:check` and
+`pnpm test`.
 
 <a id="add-a-jurisdiction"></a>
 

@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import { readFileSync } from 'node:fs'
+import importedIdentities from './fixtures/imported-process-identities.json'
 import { loadSharedProcesses } from '../shared-processes/load'
 import { collectDecisions, validateCatalog, type SharedRecord, type Part } from '../shared-processes/schema'
 
@@ -19,7 +20,7 @@ function fixture() {
 
 describe('shared process definitions', () => {
   it('validates the staging example separately from the real catalog', () => {
-    const records = validateCatalog(JSON.parse(readFileSync('content/processes/examples/staging.json', 'utf8')))
+    const records = validateCatalog(JSON.parse(readFileSync('scripts/shared-processes/examples/staging.json', 'utf8')))
     expect(records).toHaveLength(2)
     expect(records.every(record => record.metadata.synthetic === true && record.guidance && record.outcomes.length)).toBe(true)
     expect(collectDecisions(records, 'shared-schema-staging-check')).toHaveLength(1)
@@ -27,8 +28,7 @@ describe('shared process definitions', () => {
   })
   it('validates the authored catalog and accounts for the imported inventory', () => {
     const all = loadSharedProcesses()
-    const imported = JSON.parse(readFileSync('content/processes/import-manifest.json', 'utf8'))
-    expect(all.map(record => record.id)).toEqual(expect.arrayContaining(Object.keys(imported.records)))
+    expect(all.map(record => record.id)).toEqual(expect.arrayContaining(importedIdentities.ids))
   })
   it('supports option branches, shared joins, nesting, and new records without import history', () => {
     const records = validateCatalog(fixture())
