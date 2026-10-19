@@ -5903,7 +5903,7 @@
     ],
     "id": "qs_052",
     "title": "Update cap table",
-    "description": "Keep the cap table current after new SAFEs, grants, or transfers — reconciled and board-approved.",
+    "description": "Keep the cap table current after new SAFEs, grants, or transfers — reconciled and properly approved.",
     "dag": {
       "nodes": [
         {
@@ -5925,8 +5925,16 @@
           "route": "agent",
           "reversibility": "reversible",
           "estimatedMinutes": 5,
+          "geoResolutions": [
+            {
+              "country": "US",
+              "kind": "analog",
+              "label": "Draft the board consent for the changes",
+              "guidance": "A Delaware board or committee acts without a meeting only by unanimous written consent (rule card us-de.board-action-by-written-consent)."
+            }
+          ],
           "id": "n2b",
-          "label": "Draft the board consent for the changes"
+          "label": "Draft the corporate approval the changes require"
         },
         {
           "route": "person",
@@ -5936,8 +5944,15 @@
           "estimatedMinutes": 10,
           "async": true,
           "legalSignature": true,
+          "geoResolutions": [
+            {
+              "country": "US",
+              "kind": "analog",
+              "label": "The board signs the written consent"
+            }
+          ],
           "id": "n3",
-          "label": "Board signs the consent"
+          "label": "The required decision-makers sign the approval"
         }
       ],
       "edges": [
@@ -6798,15 +6813,46 @@
           "async": true,
           "legalSignature": true,
           "verify": {
-            "how": "A completed I-9 with verified documents is on file within 3 business days of the start date (retain it — it is inspectable), plus the signed W-4 in payroll.",
-            "url": "https://www.uscis.gov/i-9-central"
+            "how": "The jurisdiction's required right-to-work verification and tax forms are on file by their statutory deadlines; retain them, they are inspectable."
           },
+          "geoResolutions": [
+            {
+              "country": "US",
+              "kind": "analog",
+              "label": "Employee completes I-9 and W-4",
+              "guidance": "The employee completes and signs I-9 Section 1 by the first day of employment; the employer or authorized representative completes Section 2 within three business days after that first day, or on the first day if employment lasts fewer than three business days (rule card us-fed.i9-verification-deadline). Let the employee choose acceptable documents. Separately, request Form W-4 when work starts and use it for federal withholding on the first wage payment; payroll applies IRS default withholding if a valid W-4 is missing and checks applicable state forms.",
+              "actionUrl": "https://www.uscis.gov/i-9-central",
+              "actionLabel": "USCIS I-9 Central"
+            },
+            {
+              "country": "UK",
+              "kind": "analog",
+              "label": "Right-to-work checks, and the written statement of particulars given by day one",
+              "guidance": "The written statement's principal particulars are due in a single document not later than the beginning of the employment (rule card uk.written-statement-timing); gov.uk's first-hire checklist carries the rest, including employers' liability insurance and PAYE registration before the first payday.",
+              "actionUrl": "https://www.gov.uk/employing-staff",
+              "actionLabel": "Employ someone: step by step"
+            },
+            {
+              "country": "FR",
+              "kind": "analog",
+              "label": "Declare the hire to URSSAF (the DPAE) before the start date",
+              "actionUrl": "https://entreprendre.service-public.fr/vosdroits/F23107",
+              "actionLabel": "DPAE — pre-hire declaration"
+            },
+            {
+              "country": "PT",
+              "kind": "analog",
+              "label": "Report the admission to Segurança Social before the start date",
+              "actionUrl": "https://www.gov.pt/guias/contratar-trabalhadores",
+              "actionLabel": "gov.pt — contratar trabalhadores"
+            }
+          ],
           "vendor": "gusto",
           "extraOptionArenas": [
             "workflow-automation"
           ],
           "id": "n6",
-          "label": "Employee completes I-9 and W-4"
+          "label": "Employee completes the hiring formalities: right-to-work verification and tax withholding forms"
         },
         {
           "route": "form",
@@ -21551,13 +21597,12 @@
     "trigger": "A cease-and-desist letter claiming trademark or IP infringement arrives by mail or email.",
     "urgency": "days",
     "cadence": "event-driven",
-    "region": "us",
-    "geoScope": "us",
+    "geoScope": "global",
     "complexity": "complex",
     "reversibility": "painful",
     "category": "legal",
     "supportLevel": "manual_guide",
-    "supportReason": "Assessing the exposure, choosing the strategy, and writing the response letter are work for counsel and the founder; that is legal judgment, not API calls. An agent can preserve the evidence file and pull the claimed mark's USPTO record; it cannot answer a legal demand for you.",
+    "supportReason": "Assessing the exposure, choosing the strategy, and writing the response letter are work for counsel and the founder; that is legal judgment, not API calls. An agent can preserve the evidence file and pull the claimed mark's register record; it cannot answer a legal demand for you.",
     "contextNeeded": [
       {
         "tool": "user_input",
@@ -21657,10 +21702,38 @@
           "route": "agent",
           "reversibility": "reversible",
           "estimatedMinutes": 20,
-          "actionUrl": "https://tsdr.uspto.gov/",
-          "actionLabel": "USPTO TSDR status lookup",
+          "geoResolutions": [
+            {
+              "country": "US",
+              "kind": "analog",
+              "label": "Pull the claimed mark's record on USPTO TSDR",
+              "actionUrl": "https://tsdr.uspto.gov/",
+              "actionLabel": "USPTO TSDR status lookup"
+            },
+            {
+              "country": "IN",
+              "kind": "analog",
+              "label": "Pull the claimed mark's record on the IP India registry before answering",
+              "actionUrl": "https://ipindia.gov.in/",
+              "actionLabel": "IP India (trade marks registry)"
+            },
+            {
+              "country": "PT",
+              "kind": "analog",
+              "label": "Verify the sender's INPI registrations and capture the letter's own stated deadline",
+              "actionUrl": "https://inpi.justica.gov.pt/",
+              "actionLabel": "INPI — marcas e patentes"
+            },
+            {
+              "country": "CA",
+              "kind": "analog",
+              "label": "Verify the sender's CIPO registrations before the stated date",
+              "actionUrl": "https://ised-isde.canada.ca/site/canadian-intellectual-property-office/en",
+              "actionLabel": "CIPO — trademarks"
+            }
+          ],
           "id": "n3",
-          "label": "Look up the claimed mark on USPTO TSDR: registration status, goods and services, filing dates"
+          "label": "Look up the claimed mark on the trademark register the letter relies on: registration status, goods and services, filing dates"
         },
         {
           "route": "person",
@@ -22715,13 +22788,12 @@
     "trigger": "A co-founder is leaving (resignation or a split) and the vesting, IP, and access mechanics start now.",
     "urgency": "days",
     "cadence": "event-driven",
-    "region": "us",
-    "geoScope": "us",
+    "geoScope": "global",
     "complexity": "complex",
     "reversibility": "irreversible",
     "category": "equity",
     "supportLevel": "manual_guide",
-    "supportReason": "The board consent and the repurchase are signature acts with closing windows, and the departure terms are negotiated between people. An agent can run the vesting math, the access revocation, and the cap-table update.",
+    "supportReason": "The authorization and the equity settlement are signature acts with closing windows, and the departure terms are negotiated between people. An agent can run the vesting math, the access revocation, and the cap-table update.",
     "contextNeeded": [
       {
         "tool": "user_input",
@@ -22800,7 +22872,7 @@
     ],
     "id": "sit_007",
     "title": "Handle a co-founder departure",
-    "description": "Three things protect the company: the vesting math, a board consent, and a deadline. Calculate vested versus unvested shares at the departure date. Have the board accept the resignation and authorize the repurchase of unvested shares. Exercise it inside the window your stock agreement sets, often 90 days from termination; read yours. Confirm the signed IP assignment is on file. Revoke access the same day. Update the cap table. Tell the team once, clearly. Separation agreements and releases are work for employment counsel. Once executed, the repurchase and board consent cannot be undone. Educational guidance, not legal advice.",
+    "description": "Three things protect the company: the equity math, a properly authorized decision, and a deadline. Calculate vested versus unvested equity at the departure date. Have the body your governing documents name accept the resignation and authorize what happens to the unvested equity under the founder agreement. Act inside the window that agreement sets; windows lapse, so read yours. Confirm the signed IP assignment is on file. Revoke access the same day. Update the ownership records. Tell the team once, clearly. Separation agreements and releases are work for employment counsel. Once executed, the equity settlement and its authorization cannot be undone. Educational guidance, not legal advice.",
     "dag": {
       "nodes": [
         {
@@ -22827,23 +22899,99 @@
           "reversibility": "irreversible",
           "riskLevel": "high",
           "estimatedMinutes": 45,
+          "geoResolutions": [
+            {
+              "country": "US",
+              "kind": "analog",
+              "label": "Board consent: accept the resignation, remove officer roles, authorize the unvested-share repurchase",
+              "guidance": "A Delaware board acts without a meeting only by unanimous written consent (rule card us-de.board-action-by-written-consent)."
+            },
+            {
+              "country": "UK",
+              "kind": "analog",
+              "label": "File the director's departure with Companies House on form TM01 and update PSC particulars where ownership crosses thresholds",
+              "actionUrl": "https://www.gov.uk/file-changes-to-a-company-with-companies-house",
+              "actionLabel": "Companies House — file company changes"
+            },
+            {
+              "country": "IN",
+              "kind": "analog",
+              "label": "File the director change with the RoC: DIR-12 within 30 days, with the director's own DIR-11 alongside",
+              "actionUrl": "https://www.nsws.gov.in/",
+              "actionLabel": "India NSWS (MCA filings)"
+            },
+            {
+              "country": "FR",
+              "kind": "analog",
+              "label": "File the officer change through the INPI guichet unique",
+              "actionUrl": "https://procedures.inpi.fr/",
+              "actionLabel": "INPI guichet unique (formalités)"
+            }
+          ],
           "id": "n3",
-          "label": "Board consent: accept the resignation, remove officer roles, authorize the unvested-share repurchase"
+          "label": "Authorize the departure formally: accept the resignation, end officer and director roles, and approve the equity settlement the founder agreement requires"
         },
         {
           "route": "person",
           "reversibility": "irreversible",
           "riskLevel": "high",
           "estimatedMinutes": 60,
+          "geoResolutions": [
+            {
+              "country": "US",
+              "kind": "analog",
+              "label": "Exercise the unvested-share repurchase inside the stock-agreement window, often 90 days from termination"
+            },
+            {
+              "country": "UK",
+              "kind": "analog",
+              "label": "Apply the good-leaver/bad-leaver provisions in the articles and shareholders' agreement; they usually decide what happens to the shares and at what price"
+            },
+            {
+              "country": "DE",
+              "kind": "analog",
+              "label": "GmbH shares move only by notarized deed (§15 GmbHG) and the updated Gesellschafterliste is filed to the Handelsregister",
+              "guidance": "Founder vesting lives in the Gesellschaftervereinbarung, not in statute, so read yours first.",
+              "actionUrl": "https://www.gesetze-im-internet.de/gmbhg/__15.html",
+              "actionLabel": "GmbHG §15 — notarized share transfer"
+            },
+            {
+              "country": "IN",
+              "kind": "analog",
+              "label": "Move the shares on Form SH-4 with stamp duty; founder vesting is a shareholders'-agreement matter enforced through the articles"
+            },
+            {
+              "country": "PT",
+              "kind": "analog",
+              "label": "Quota transfers need written form and registration (no notary since 2006), the registry record is updated online, and the acordo parassocial's leaver clauses set the vesting and clawback math",
+              "actionUrl": "https://www.gov.pt/guias/empresa-online-servicos-do-registo-comercial",
+              "actionLabel": "Empresa Online — registry filings"
+            },
+            {
+              "country": "CA",
+              "kind": "analog",
+              "label": "The shareholders' agreement's leaver provisions govern the vested/unvested split, with a directors' resolution for any repurchase and updated share registers",
+              "guidance": "Since 2024 CBCA corporations also file individuals-with-significant-control changes.",
+              "actionUrl": "https://ised-isde.canada.ca/site/corporations-canada/en",
+              "actionLabel": "Corporations Canada"
+            }
+          ],
           "id": "n4",
-          "label": "Exercise the repurchase inside the stock-agreement window (often 90 days from termination — the window lapses)"
+          "label": "Settle the departing equity inside the founder agreement's window (windows lapse; read yours)"
         },
         {
           "route": "person",
           "reversibility": "reversible",
           "estimatedMinutes": 45,
+          "geoResolutions": [
+            {
+              "country": "US",
+              "kind": "analog",
+              "label": "The signed PIIA (proprietary information and inventions assignment) is the instrument to confirm"
+            }
+          ],
           "id": "n5",
-          "label": "Confirm the IP position: the signed PIIA is on file and the departing founder's work is assigned"
+          "label": "Confirm the IP position: the signed IP assignment is on file and the departing founder's work is assigned"
         },
         {
           "route": "agent",
@@ -24681,8 +24829,7 @@
     "trigger": "A key employee resigns: notice is in hand and the transition starts now.",
     "urgency": "days",
     "cadence": "event-driven",
-    "region": "us",
-    "geoScope": "us",
+    "geoScope": "global",
     "complexity": "moderate",
     "reversibility": "painful",
     "category": "hr",
@@ -24766,7 +24913,7 @@
     ],
     "id": "sit_019",
     "title": "Handle a key employee's resignation",
-    "description": "This is not the co-founder split; that is its own situation. This is the senior engineer or first AE handing in notice. Decide on the merits: counter, or accept a clean exit. Check what the offer letter and handbook say about notice (the US baseline is at-will; your real leverage is goodwill and a good transition plan). Run the equity math. Put the post-termination exercise window in writing to the departing employee. Plans commonly give 90 days, and ISOs lose their tax treatment if exercised more than 3 months after employment ends (IRS Topic 427 cited); a missed window is the classic post-exit dispute. Then knowledge transfer to named successors, same-day offboarding on the last day with final wages on the state's clock (in California, due at quitting after 72 hours' notice, or within 72 hours of a no-notice quit; rule card us-ca.final-wages-timing, Labor Code §§ 202, 203), an exit interview that tells you why people actually leave, and the cap-table and rotation updates. Educational guidance, not legal or tax advice.",
+    "description": "This is not the co-founder split; that is its own situation. This is the senior engineer or first AE handing in notice. Decide on the merits: counter, or accept a clean exit. Check what the contract and handbook say about notice, and what statute or collective agreement sets as the minimum; your real leverage is goodwill and a good transition plan. Run the equity math. Put the post-termination exercise window in writing to the departing employee; a missed window is the classic post-exit dispute, and the tax clock can be statutory (US plans commonly give 90 days, and ISOs lose their tax treatment if exercised more than 3 months after employment ends). Then knowledge transfer to named successors, same-day offboarding on the last day with final wages on the clock your jurisdiction sets (in California, due at quitting after 72 hours' notice, or within 72 hours of a no-notice quit; rule card us-ca.final-wages-timing, Labor Code §§ 202, 203), an exit interview that tells you why people actually leave, and the cap-table and rotation updates. Educational guidance, not legal or tax advice.",
     "dag": {
       "nodes": [
         {
@@ -24780,8 +24927,58 @@
           "route": "person",
           "reversibility": "reversible",
           "estimatedMinutes": 20,
+          "geoResolutions": [
+            {
+              "country": "US",
+              "kind": "analog",
+              "label": "At-will is the baseline, so goodwill and the transition plan are the real levers"
+            },
+            {
+              "country": "UK",
+              "kind": "analog",
+              "label": "A week's statutory minimum notice after a month's service, with contracts usually setting more",
+              "actionUrl": "https://www.acas.org.uk/notice-periods",
+              "actionLabel": "ACAS: notice periods"
+            },
+            {
+              "country": "DE",
+              "kind": "analog",
+              "label": "Kündigungsfristen are statutory: §622 BGB sets four weeks to the 15th or month-end as the baseline, lengthening with tenure",
+              "guidance": "Termination and resignation require wet-ink written form (§623 BGB); the paper is law, not courtesy.",
+              "actionUrl": "https://www.gesetze-im-internet.de/bgb/__622.html",
+              "actionLabel": "BGB §622 — notice periods"
+            },
+            {
+              "country": "FR",
+              "kind": "analog",
+              "label": "The préavis comes from the convention collective more than the Code du travail; check your branch agreement",
+              "actionUrl": "https://www.service-public.fr/particuliers/vosdroits/F2883",
+              "actionLabel": "service-public — démission"
+            },
+            {
+              "country": "IN",
+              "kind": "analog",
+              "label": "Notice runs off the employment contract and the state's Shops & Establishments Act",
+              "actionUrl": "https://labour.gov.in/",
+              "actionLabel": "Ministry of Labour & Employment (India)"
+            },
+            {
+              "country": "PT",
+              "kind": "analog",
+              "label": "Resignation notice is statutory under the Código do Trabalho: 30 days up to two years of service, 60 days beyond",
+              "actionUrl": "https://diariodarepublica.pt/dr/legislacao-consolidada/lei/2009-34546475",
+              "actionLabel": "Código do Trabalho (DRE)"
+            },
+            {
+              "country": "CA",
+              "kind": "analog",
+              "label": "No statutory resignation schedule in most provinces; the contract and common-law reasonable notice govern, while federally regulated employers follow the Canada Labour Code",
+              "actionUrl": "https://www.canada.ca/en/services/jobs/workplace/federal-labour-standards.html",
+              "actionLabel": "Federal labour standards"
+            }
+          ],
           "id": "n2",
-          "label": "Confirm the notice terms from the offer letter and handbook — at-will is the US baseline, so goodwill and the transition plan are the real levers"
+          "label": "Confirm the notice terms: the contract and handbook, plus whatever statute or collective agreement sets the minimum"
         },
         {
           "route": "agent",
@@ -24803,8 +25000,23 @@
           "reversibility": "painful",
           "riskLevel": "high",
           "estimatedMinutes": 20,
+          "geoResolutions": [
+            {
+              "country": "US",
+              "kind": "analog",
+              "label": "The plan's post-termination window plus the ISO 3-month rule set the deadline",
+              "guidance": "Plans commonly give 90 days, and ISOs lose their tax treatment if exercised more than 3 months after employment ends.",
+              "actionUrl": "https://www.irs.gov/taxtopics/tc427",
+              "actionLabel": "IRS Topic 427 (stock options)"
+            },
+            {
+              "country": "UK",
+              "kind": "analog",
+              "label": "EMI options carry their own post-cessation tax rules, so the written-window notice matters just as much"
+            }
+          ],
           "id": "n4",
-          "label": "Put the exercise window in writing to the departing employee — a missed window (and the ISO 3-month rule) is the classic post-exit dispute"
+          "label": "Put the exercise window in writing to the departing employee — a missed window is the classic post-exit dispute"
         },
         {
           "route": "person",
@@ -24817,8 +25029,29 @@
           "route": "agent",
           "reversibility": "reversible",
           "estimatedMinutes": 45,
+          "geoResolutions": [
+            {
+              "country": "US",
+              "kind": "analog",
+              "label": "Final pay on the state's required timeline (rule card us-ca.final-wages-timing for the California clock)"
+            },
+            {
+              "country": "FR",
+              "kind": "analog",
+              "label": "The exit paperwork is mandatory: solde de tout compte, certificat de travail, and the attestation France Travail",
+              "actionUrl": "https://www.service-public.fr/particuliers/vosdroits/F2883",
+              "actionLabel": "service-public — démission"
+            },
+            {
+              "country": "IN",
+              "kind": "analog",
+              "label": "The full-and-final settlement timeline and gratuity after five years' service are the statutory tail",
+              "actionUrl": "https://labour.gov.in/",
+              "actionLabel": "Ministry of Labour & Employment (India)"
+            }
+          ],
           "id": "n6",
-          "label": "Offboard on the last day: access revocation, device return, final pay on the state's required timeline",
+          "label": "Offboard on the last day: access revocation, device return, final pay on the timeline your jurisdiction sets",
           "processRef": "offboard-employee"
         },
         {
