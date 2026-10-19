@@ -61,7 +61,7 @@ The 22 situations, hottest clock first (urgency, then title — the /situations 
 | `sit_011` | Survive a DDoS attack or major outage | Traffic spikes take the product down: a DDoS attack is live, or a major outage looks like one. | hours | global |
 | `sit_020` | Absorb a pulled term sheet | The lead pulls the term sheet, by call or by silence, and the round you planned around is gone. | days | global |
 | `sit_006` | Contain a chargeback or fraud spike | Your dispute rate jumps: a chargeback wave or a card-testing/fraud spike is hitting your payments. | days | global |
-| `sit_007` | Handle a co-founder departure | A co-founder is leaving (resignation or a split) and the vesting, IP, and access mechanics start now. | days | us |
+| `sit_007` | Handle a co-founder departure | A co-founder is leaving (resignation or a split) and the vesting, IP, and access mechanics start now. | days | global |
 | `sit_019` | Handle a key employee's resignation | A key employee resigns: notice is in hand and the transition starts now. | days | us |
 | `sit_014` | Handle a security-vulnerability report | A security researcher (or a customer, or a stranger) reports a vulnerability in your product, responsibly so far. | days | global |
 | `sit_017` | Recover a suspended ad or platform account | Google Ads, Meta, or another ad/platform account is suspended: campaigns stop and a policy email names the violation. | days | global |
