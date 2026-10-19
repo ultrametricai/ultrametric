@@ -41,8 +41,10 @@ describe('open-modules/README.md Serves sync', () => {
     // The deadlines module carries the filing-window step, not election83b.
     expect(line).not.toContain('election83bWindow')
     // A mixed module: one process with a step function, one served at task level only.
+    // fund_001 n6 maps to liquidityWaterfall: the SAFE's §A.3 greater-of choice needs the
+    // waterfall engine (conversionIndifferencePrice is documented one-series, no-SAFE).
     const mixed = renderServesLine('waterfall', src)
-    expect(mixed).toContain('n6 `conversionIndifferencePrice`')
+    expect(mixed).toContain('n6 `liquidityWaterfall`')
     expect(mixed).toContain('/processes/close-a-priced-equity-round')
   })
 })
