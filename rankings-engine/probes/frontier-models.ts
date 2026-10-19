@@ -281,7 +281,8 @@ export const probes: LocalProbe[] = [
     bin: 'curl',
     argv: ['sh', '-c', 'curl -sL --max-time 20 https://docs.x.ai/llms.txt | head -2'],
     displayCommand: 'curl -s https://docs.x.ai/llms.txt | head -2',
-    expect: /# SpaceXAI API Documentation/,
+    // Title updated 2026-10-19: the docs index now opens "# SpaceXSI API Documentation".
+    expect: /# SpaceXSI API Documentation/,
     timeoutMs: 30_000,
   },
   {
@@ -297,14 +298,16 @@ export const probes: LocalProbe[] = [
     timeoutMs: 30_000,
   },
   {
-    // The xAI API endpoint is live and auth-gated: a keyless GET /v1/models returns xAI's
-    // structured unauthenticated:no-credentials JSON, not a WAF page.
+    // The xAI API endpoint is live and auth-gated: a keyless GET /v1/models answers HTTP 401
+    // with xAI's structured unauthenticated:no-credentials JSON, not a WAF page. Recorded with
+    // -i so the 401 status line is part of the proof (the keyless wall IS the expected result;
+    // without it the live replay pinned 200 and permanently failed — greptile PR 209).
     probeId: 'api-auth-gate',
     productId: 'grok',
     storyIds: ['agentic-public-api', 'models-endpoint-discovery'],
     bin: 'curl',
-    argv: ['sh', '-c', 'curl -s --max-time 20 https://api.x.ai/v1/models | head -c 200'],
-    displayCommand: 'curl -s https://api.x.ai/v1/models',
+    argv: ['sh', '-c', 'curl -si --max-time 20 https://api.x.ai/v1/models | grep -E "^HTTP|unauthenticated"'],
+    displayCommand: 'curl -si https://api.x.ai/v1/models | grep -E "^HTTP|unauthenticated"',
     expect: /unauthenticated:no-credentials/,
     timeoutMs: 30_000,
   },

@@ -661,14 +661,15 @@
       "method": "POST",
       "url": "https://www.perplexity.ai/rest/computer/mcp",
       "headers": {
-        "content-type": "application/json"
+        "content-type": "application/json",
+        "accept": "application/json, text/event-stream"
       },
-      "body": "{\"jsonrpc\":\"2.0\",\"id\":1,\"method\":\"initialize\",...}",
+      "body": "{\"jsonrpc\":\"2.0\",\"id\":1,\"method\":\"initialize\",\"params\":{\"protocolVersion\":\"2025-03-26\",\"capabilities\":{},\"clientInfo\":{\"name\":\"probe\",\"version\":\"0.0.1\"}}}",
       "followRedirects": false,
       "includeHeaders": true,
       "expectPattern": "^HTTP|www-authenticate",
       "expectFlags": "i",
-      "displayCommand": "curl -si -X POST https://www.perplexity.ai/rest/computer/mcp -H 'Content-Type: application/json' -d '{\"jsonrpc\":\"2.0\",\"id\":1,\"method\":\"initialize\",...}' | grep -iE \"^HTTP|www-authenticate\"",
+      "displayCommand": "curl -si -X POST https://www.perplexity.ai/rest/computer/mcp -H 'Content-Type: application/json' -H 'Accept: application/json, text/event-stream' -d '{\"jsonrpc\":\"2.0\",\"id\":1,\"method\":\"initialize\",\"params\":{\"protocolVersion\":\"2025-03-26\",\"capabilities\":{},\"clientInfo\":{\"name\":\"probe\",\"version\":\"0.0.1\"}}}' | grep -iE \"^HTTP|www-authenticate\"",
       "expectStatus": 401
     },
     {
@@ -2859,11 +2860,11 @@
       "headers": {},
       "body": null,
       "followRedirects": false,
-      "includeHeaders": false,
-      "expectPattern": null,
+      "includeHeaders": true,
+      "expectPattern": "^HTTP|AuthenticationFailed",
       "expectFlags": "",
-      "displayCommand": "curl -s \"https://management.azure.com/subscriptions?api-version=2022-12-01\"",
-      "expectStatus": 200
+      "displayCommand": "curl -si \"https://management.azure.com/subscriptions?api-version=2022-12-01\" | grep -E \"^HTTP|AuthenticationFailed\"",
+      "expectStatus": 401
     },
     {
       "arena": "cloud-platforms",
@@ -5997,11 +5998,11 @@
       "headers": {},
       "body": null,
       "followRedirects": false,
-      "includeHeaders": false,
-      "expectPattern": null,
+      "includeHeaders": true,
+      "expectPattern": "^HTTP|unauthenticated",
       "expectFlags": "",
-      "displayCommand": "curl -s https://api.x.ai/v1/models",
-      "expectStatus": 200
+      "displayCommand": "curl -si https://api.x.ai/v1/models | grep -E \"^HTTP|unauthenticated\"",
+      "expectStatus": 401
     },
     {
       "arena": "frontier-models",
@@ -7923,14 +7924,14 @@
       "probeId": "spec-page-live",
       "kind": "http-fetch",
       "method": "GET",
-      "url": "https://www.apple.com/newsroom/2025/10/apple-unleashes-m5-…-apple-silicon/",
+      "url": "https://www.apple.com/newsroom/2025/10/apple-unleashes-m5-the-next-big-leap-in-ai-performance-for-apple-silicon/",
       "headers": {},
       "body": null,
       "followRedirects": true,
       "includeHeaders": false,
       "expectPattern": "Neural Accelerator",
       "expectFlags": "",
-      "displayCommand": "curl -sL 'https://www.apple.com/newsroom/2025/10/apple-unleashes-m5-…-apple-silicon/' | grep -o 'Neural Accelerator' | head -1  # Apple's canonical M5 spec source, live",
+      "displayCommand": "curl -sL 'https://www.apple.com/newsroom/2025/10/apple-unleashes-m5-the-next-big-leap-in-ai-performance-for-apple-silicon/' | grep -o 'Neural Accelerator' | head -1  # Apple's canonical M5 spec source, live",
       "expectStatus": 200
     },
     {
@@ -7939,14 +7940,14 @@
       "probeId": "ark-spec-page-live",
       "kind": "http-fetch",
       "method": "GET",
-      "url": "https://www.intel.com/…/sku/240957/…/specifications.html",
+      "url": "https://www.intel.com/content/www/us/en/products/sku/240957/intel-core-ultra-7-processor-258v-12m-cache-up-to-4-80-ghz/specifications.html",
       "headers": {},
       "body": null,
       "followRedirects": true,
       "includeHeaders": false,
       "expectPattern": "258V",
       "expectFlags": "",
-      "displayCommand": "curl -sL 'https://www.intel.com/…/sku/240957/…/specifications.html' | grep -o '258V' | head -1  # Intel ARK spec sheet, live and keyless",
+      "displayCommand": "curl -sL 'https://www.intel.com/content/www/us/en/products/sku/240957/intel-core-ultra-7-processor-258v-12m-cache-up-to-4-80-ghz/specifications.html' | grep -o '258V' | head -1  # Intel ARK spec sheet, live and keyless",
       "expectStatus": 200
     },
     {
@@ -7971,14 +7972,14 @@
       "probeId": "ark-spec-page-live",
       "kind": "http-fetch",
       "method": "GET",
-      "url": "https://www.intel.com/…/sku/241060/…/specifications.html",
+      "url": "https://www.intel.com/content/www/us/en/products/sku/241060/intel-core-ultra-9-processor-285k-36m-cache-up-to-5-70-ghz/specifications.html",
       "headers": {},
       "body": null,
       "followRedirects": true,
       "includeHeaders": false,
       "expectPattern": "285K",
       "expectFlags": "",
-      "displayCommand": "curl -sL 'https://www.intel.com/…/sku/241060/…/specifications.html' | grep -o '285K' | head -1  # Intel ARK spec sheet, live and keyless",
+      "displayCommand": "curl -sL 'https://www.intel.com/content/www/us/en/products/sku/241060/intel-core-ultra-9-processor-285k-36m-cache-up-to-5-70-ghz/specifications.html' | grep -o '285K' | head -1  # Intel ARK spec sheet, live and keyless",
       "expectStatus": 200
     },
     {
