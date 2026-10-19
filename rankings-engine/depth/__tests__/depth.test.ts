@@ -7,6 +7,7 @@ import {
   ARENABENCH_VERSION,
   computeSurfaceLadder,
   type DepthCheckResult,
+  type DepthRequestRecord,
   type DepthTranscript,
 } from '../arenabench'
 import { DEPTH_TARGETS, STRIPE_TARGET, type DepthCheckDef } from '../checks'
@@ -122,6 +123,32 @@ describe('robotsAllows', () => {
   it('empty Disallow and empty files allow everything', () => {
     expect(robotsAllows('User-agent: *\nDisallow:\n', '/x', '*').allowed).toBe(true)
     expect(robotsAllows('', '/x', '*').allowed).toBe(true)
+  })
+
+  it('merges the rules of duplicate groups naming the same agent (RFC 9309 §2.2.1)', () => {
+    const body = 'User-agent: *\nDisallow: /a\n\nUser-agent: *\nDisallow: /b\n'
+    expect(robotsAllows(body, '/a/x', 'ultrametric-depth').allowed).toBe(false)
+    expect(robotsAllows(body, '/b/x', 'ultrametric-depth').allowed).toBe(false)
+    expect(robotsAllows(body, '/c/x', 'ultrametric-depth').allowed).toBe(true)
+    const tokenBody = 'User-agent: ultrametric\nDisallow: /a\n\nUser-agent: ultrametric\nDisallow: /b\n'
+    expect(robotsAllows(tokenBody, '/b/x', 'ultrametric-depth').allowed).toBe(false)
+  })
+})
+
+describe('makeRobotsGate failure handling', () => {
+  it('a failed robots.txt fetch is treated as disallow, never blanket permission', async () => {
+    const gateDown = makeRobotsGate(fetcherFor({ 'GET https://down.example/robots.txt': 'network-error' }), fixedNow, 'stripe')
+    expect(await gateDown.decide('https://down.example/page')).toMatchObject({ consulted: true, allowed: false })
+
+    const gate503 = makeRobotsGate(fetcherFor({ 'GET https://err.example/robots.txt': { status: 503, body: '' } }), fixedNow, 'stripe')
+    const note = await gate503.decide('https://err.example/page')
+    expect(note.allowed).toBe(false)
+    expect(note.detail).toContain('HTTP 503')
+  })
+
+  it('a 404 still means "no robots.txt": everything allowed', async () => {
+    const gate = makeRobotsGate(fetcherFor({}), fixedNow, 'stripe') // default route answers 404
+    expect((await gate.decide('https://none.example/page')).allowed).toBe(true)
   })
 })
 
@@ -281,6 +308,83 @@ describe('runDepth against the mock Stripe world', () => {
     const byCheck = new Map(transcripts.filter((t) => !t.checkId.startsWith('robots-')).map((t) => [t.checkId, t]))
     const robots = transcripts.filter((t) => t.checkId.startsWith('robots-'))
     expect(buildReport(STRIPE_TARGET, byCheck, robots)).toEqual(report)
+  })
+})
+
+describe('recordRequest redirect handling', () => {
+  const redirDef = (url: string): DepthCheckDef => ({
+    id: 'redir',
+    surface: 'api',
+    level: 2,
+    title: 'redir',
+    docUrl: 'https://example.com',
+    requests: [{ url, method: 'GET', robotsApplies: true }],
+    grade: () => ({ outcome: 'pass', detail: '' }),
+  })
+
+  it('a redirect destination on another host is robots-gated before it is fetched', async () => {
+    const calls: string[] = []
+    const fetcher = fetcherFor(
+      {
+        'GET https://a.example/start': { status: 302, body: '', headers: { location: 'https://b.example/dest' } },
+        'GET https://b.example/robots.txt': { body: 'User-agent: *\nDisallow: /\n' },
+        'GET https://b.example/dest': { body: 'must never be fetched' },
+      },
+      calls,
+    ) // a.example/robots.txt hits the 404 default: allowed
+    const gate = makeRobotsGate(fetcher, fixedNow, 'stripe')
+    const t = await recordCheck(redirDef('https://a.example/start'), 'stripe', fetcher, gate, fixedNow)
+    const r = t.requests[0]
+    expect(r.url).toBe('https://b.example/dest')
+    expect(r.redirectedFrom).toEqual(['https://a.example/start'])
+    expect(r.robots).toMatchObject({ consulted: true, allowed: false })
+    expect(r.status).toBeNull()
+    expect(calls).not.toContain('GET https://b.example/dest')
+  })
+
+  it('an allowed redirect chain records the final hop with the chain listed', async () => {
+    const fetcher = fetcherFor({
+      'GET https://a.example/start': { status: 301, body: '', headers: { location: 'https://a.example/final' } },
+      'GET https://a.example/final': { status: 200, body: 'arrived' },
+    })
+    const gate = makeRobotsGate(fetcher, fixedNow, 'stripe')
+    const t = await recordCheck(redirDef('https://a.example/start'), 'stripe', fetcher, gate, fixedNow)
+    expect(t.requests[0]).toMatchObject({
+      url: 'https://a.example/final',
+      status: 200,
+      redirectedFrom: ['https://a.example/start'],
+    })
+  })
+})
+
+describe('grader strictness', () => {
+  const record = (over: Partial<DepthRequestRecord>): DepthRequestRecord => ({
+    url: 'https://x.example/', method: 'GET', status: 200, contentType: 'application/json',
+    bytes: 0, sha256: null, fetchedAt: fixedNow(),
+    robots: { consulted: false, allowed: true, detail: '' }, ...over,
+  })
+  const transcript = (checkId: string, requests: DepthRequestRecord[]): DepthTranscript => ({
+    arenabenchVersion: ARENABENCH_VERSION, checkId, target: 'stripe', requests,
+  })
+  const check = (id: string) => STRIPE_TARGET.checks.find((c) => c.id === id)!
+
+  it('mcp-initialize-handshake: an HTTP 400 whose error body echoes "jsonrpc" is a fail, a 2xx JSON-RPC body a pass', () => {
+    const def = check('mcp-initialize-handshake')
+    const bad = transcript(def.id, [record({ status: 400, body: '{"jsonrpc":"2.0","error":{"code":-32700,"message":"parse error"}}' })])
+    expect(def.grade(bad).outcome).toBe('fail')
+    const ok = transcript(def.id, [record({ status: 200, body: '{"jsonrpc":"2.0","id":1,"result":{}}' })])
+    expect(def.grade(ok).outcome).toBe('pass')
+  })
+
+  it('api-error-shape-consistency: a planned endpoint with no HTTP response fails the check instead of shrinking n/n', () => {
+    const def = check('api-error-shape-consistency')
+    const envelope = JSON.stringify({ error: { message: 'no key', type: 'invalid_request_error' } })
+    const answered = record({ status: 401, body: envelope, url: 'https://api.stripe.com/v1/customers' })
+    const silent = record({ status: null, contentType: null, url: 'https://api.stripe.com/v1/ultrametric-depth-nonexistent' })
+    const graded = def.grade(transcript(def.id, [answered, silent]))
+    expect(graded.outcome).toBe('fail')
+    expect(graded.detail).toContain('1/2 endpoints answered')
+    expect(def.grade(transcript(def.id, [answered, { ...answered, url: 'https://api.stripe.com/v1/nope' }])).outcome).toBe('pass')
   })
 })
 

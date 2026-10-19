@@ -180,7 +180,9 @@ export const STRIPE_TARGET: DepthTarget = {
         if (failure) return failure
         const r = t.requests.find(responded)!
         const challenge = r.headers?.['www-authenticate'] ?? ''
-        if ((r.body ?? '').includes('"jsonrpc"')) {
+        // The JSON-RPC-body pass requires a SUCCESS status: a 4xx/5xx whose error body merely
+        // echoes "jsonrpc" (e.g. an HTTP 400 parse error) is not a completed handshake.
+        if (r.status !== null && r.status >= 200 && r.status < 300 && (r.body ?? '').includes('"jsonrpc"')) {
           return { outcome: 'pass', detail: `initialize answered with a JSON-RPC body (HTTP ${r.status})` }
         }
         if (r.status === 401 && /resource_metadata|oauth/i.test(challenge + (r.body ?? ''))) {
@@ -381,8 +383,17 @@ export const STRIPE_TARGET: DepthTarget = {
       grade(t) {
         const failure = transportFailure(t)
         if (failure) return failure
-        const graded = t.requests.filter(responded).map((r) => gradeStructuredError(r))
-        const failing = graded.find((g) => g.outcome !== 'pass')
+        const answered = t.requests.filter(responded)
+        // Consistency is a claim about EVERY planned endpoint: a timed-out endpoint is
+        // unverified, so it must fail the check, not silently shrink the denominator.
+        if (answered.length < t.requests.length) {
+          const silent = t.requests.filter((r) => r.status === null).map((r) => r.url)
+          return {
+            outcome: 'fail',
+            detail: `${answered.length}/${t.requests.length} endpoints answered; no HTTP response from ${silent.join(', ')}`,
+          }
+        }
+        const failing = answered.map((r) => gradeStructuredError(r)).find((g) => g.outcome !== 'pass')
         if (failing) return failing
         return {
           outcome: 'pass',
