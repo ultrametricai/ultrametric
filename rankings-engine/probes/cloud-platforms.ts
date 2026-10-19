@@ -110,13 +110,16 @@ export const probes: LocalProbe[] = [
     timeoutMs: 30_000,
   },
   {
-    // Azure Resource Manager answers keyless with a structured JSON auth error.
+    // Azure Resource Manager answers keyless with HTTP 401 and a structured JSON auth error.
+    // Recorded with -i so the 401 status line is part of the proof (the keyless wall IS the
+    // expected result; without it the live replay pinned 200 and permanently failed —
+    // greptile PR 209).
     probeId: 'arm-keyless-error',
     productId: 'azure',
     storyIds: ['agentic-public-api', 'agentic-scoped-keys'],
     bin: 'curl',
-    argv: ['sh', '-c', 'curl -s --max-time 20 "https://management.azure.com/subscriptions?api-version=2022-12-01" | head -c 200'],
-    displayCommand: 'curl -s "https://management.azure.com/subscriptions?api-version=2022-12-01"',
+    argv: ['sh', '-c', 'curl -si --max-time 20 "https://management.azure.com/subscriptions?api-version=2022-12-01" | grep -E "^HTTP|AuthenticationFailed"'],
+    displayCommand: 'curl -si "https://management.azure.com/subscriptions?api-version=2022-12-01" | grep -E "^HTTP|AuthenticationFailed"',
     expect: /"code":"AuthenticationFailed"/,
     timeoutMs: 30_000,
   },

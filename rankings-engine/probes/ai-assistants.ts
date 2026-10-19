@@ -251,7 +251,7 @@ export const probes: LocalProbe[] = [
     storyIds: ['agentic-mcp-server'],
     bin: 'curl',
     argv: ['sh', '-c', 'curl -si --max-time 20 -X POST https://www.perplexity.ai/rest/computer/mcp -H \'Content-Type: application/json\' -H \'Accept: application/json, text/event-stream\' -d \'{"jsonrpc":"2.0","id":1,"method":"initialize","params":{"protocolVersion":"2025-03-26","capabilities":{},"clientInfo":{"name":"probe","version":"0.0.1"}}}\' | grep -i -m 3 -E "^HTTP|www-authenticate" | cut -c 1-400'],
-    displayCommand: 'curl -si -X POST https://www.perplexity.ai/rest/computer/mcp -H \'Content-Type: application/json\' -d \'{"jsonrpc":"2.0","id":1,"method":"initialize",...}\' | grep -iE "^HTTP|www-authenticate"',
+    displayCommand: 'curl -si -X POST https://www.perplexity.ai/rest/computer/mcp -H \'Content-Type: application/json\' -H \'Accept: application/json, text/event-stream\' -d \'{"jsonrpc":"2.0","id":1,"method":"initialize","params":{"protocolVersion":"2025-03-26","capabilities":{},"clientInfo":{"name":"probe","version":"0.0.1"}}}\' | grep -iE "^HTTP|www-authenticate"',
     expect: /HTTP\/2 401[\s\S]*www-authenticate: Bearer/i,
     timeoutMs: 60_000,
   },
