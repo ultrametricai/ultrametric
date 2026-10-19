@@ -18,9 +18,9 @@ const DATA_DIR = path.resolve(__dirname, '../../open-rankings')
 // do it when there are multiple methods depending on context — get multiple options selectable
 // by context … sub-DAGs for all DAG choices that have multiple paths"). These tests pin the
 // corpus-wide integrity rules (real vendors/arenas only, geo methods evidence-backed, honest
-// time), the founder's worked example (validate-the-idea's smoke test gains the four
-// context-selectable methods), the view builder, and the guarantee that no committed number
-// moved: methods are display-level, the node's own fields stay the DEFAULT method.
+// time), the founder's worked example (validate-the-idea routes six lore-grounded validation
+// method families off one decision step), the view builder, and the guarantee that no committed
+// number moved: methods are display-level, the node's own fields stay the DEFAULT view.
 
 type MethodAt = { task: ProcessTask; nodeId: string; method: StepMethod }
 
@@ -153,26 +153,30 @@ describe('the founder\'s worked example — validate-the-idea', () => {
   const task = loadProcesses(DATA_DIR).find((t) => t.id === 'startup_001')!
   const smoke = task.dag.nodes.find((n) => n.id === 'n2')!
 
-  it('the smoke-test step gains the four context methods; the landing page stays the default', () => {
+  it('the method decision routes six families, each selected by the founder\'s starting situation', () => {
     const byId = new Map((smoke.methods ?? []).map((m) => [m.id, m]))
     expect([...byId.keys()].sort()).toEqual([
-      'concierge-mvp', 'customer-interview-sprint', 'preorder-deposit-test', 'waitlist-ad-test',
+      'concierge-mvp', 'customer-interview-sprint', 'lean-mvp',
+      'preorder-deposit-test', 'sean-ellis-survey', 'waitlist-ad-test',
     ])
-    // The right contexts, per the founder's brief.
+    // The right starting situations, per the founder's brief.
+    expect(byId.get('customer-interview-sprint')!.context?.when).toMatch(/[Cc]old start/)
     expect(byId.get('customer-interview-sprint')!.context?.when).toMatch(/B2B/)
+    expect(byId.get('lean-mvp')!.context?.when).toMatch(/builder/i)
+    expect(byId.get('concierge-mvp')!.context?.when).toMatch(/hair-on-fire/i)
+    expect(byId.get('sean-ellis-survey')!.context?.when).toMatch(/already live/i)
+    expect(byId.get('preorder-deposit-test')!.context?.when).toMatch(/letter of intent|deposit/i)
     expect(byId.get('waitlist-ad-test')!.context?.when).toMatch(/[Cc]onsumer/)
-    expect(byId.get('concierge-mvp')!.context?.when).toMatch(/[Ss]ervice/)
-    expect(byId.get('preorder-deposit-test')!.context?.when).toMatch(/[Hh]ardware/)
     for (const m of smoke.methods ?? []) {
       expect(m.context?.kind).toBe('situational')
       expect(m.subSteps!.length).toBeGreaterThanOrEqual(2)
       expect(m.subSteps!.length).toBeLessThanOrEqual(5)
     }
-    // The DEFAULT method is the node's own committed fields — unchanged.
-    expect(smoke.label).toBe('Generate a landing-page smoke test')
-    expect(smoke.vendor).toBe('lovable')
+    // The node's own committed fields are the chooser step, no vendor baked in.
+    expect(smoke.label).toBe('Choose the validation method')
+    expect(smoke.vendor).toBeUndefined()
     expect(smoke.route).toBe('agent')
-    expect(smoke.estimatedMinutes).toBe(20)
+    expect(smoke.estimatedMinutes).toBe(10)
   })
 
   it('no committed number moved: the process ceiling and simulator steps are the pre-variant defaults', () => {

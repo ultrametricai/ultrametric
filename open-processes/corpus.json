@@ -14776,7 +14776,7 @@
     "reversibility": "reversible",
     "category": "startup_validation",
     "supportLevel": "partial",
-    "supportReason": "An agent can draft the hypothesis, generate the landing page, and analyze signup data. Customer interviews and the go/no-go decision are judgment work.",
+    "supportReason": "An agent can draft the hypothesis, propose the method that fits the starting situation, build the test assets, and analyze response data. Customer interviews, manual delivery, and the go/no-go decision are judgment work.",
     "contextNeeded": [
       {
         "tool": "user_input",
@@ -14794,8 +14794,8 @@
       "validation",
       "research"
     ],
-    "activeMinutes": 95,
-    "totalEstimatedMinutes": 575,
+    "activeMinutes": 85,
+    "totalEstimatedMinutes": 565,
     "hasAsyncSteps": true,
     "timeOrder": 7,
     "annoyance": 2,
@@ -14808,7 +14808,7 @@
     ],
     "id": "startup_001",
     "title": "Validate the idea",
-    "description": "Pressure-test the idea before building: draft the problem hypothesis, spin up a landing-page smoke test, instrument signups, and talk to real prospects before the go/no-go call.",
+    "description": "Pressure-test the idea before building: draft the problem hypothesis, pick the validation method the starting situation calls for (problem interviews, a lean MVP launch, concierge delivery, a product/market-fit survey, a pre-sale commitment, or a waitlist ad test), run it, and make the go/no-go call on the evidence.",
     "dag": {
       "nodes": [
         {
@@ -14836,39 +14836,18 @@
         {
           "route": "agent",
           "reversibility": "reversible",
-          "estimatedMinutes": 20,
-          "vendor": "lovable",
-          "vendorOptions": [
-            "lovable",
-            "v0",
-            "bolt"
-          ],
-          "optionsArenaId": "vibe-coding",
-          "extraOptionRefs": [
-            {
-              "arenaId": "design-tools",
-              "productId": "framer"
-            },
-            {
-              "arenaId": "design-tools",
-              "productId": "figma"
-            },
-            {
-              "arenaId": "design-tools",
-              "productId": "canva"
-            }
-          ],
+          "estimatedMinutes": 10,
           "id": "n2",
-          "label": "Generate a landing-page smoke test",
+          "label": "Choose the validation method",
           "methods": [
             {
               "route": "person",
               "id": "customer-interview-sprint",
-              "label": "Customer-interview sprint",
+              "label": "Problem-interview sprint",
               "summary": "Interview people who encounter the problem when the main uncertainty is their current behavior, constraints, or buying context. Recruit against a defined customer profile and ask about real experiences before presenting the proposed solution. Compare workarounds, costs, decision-makers, and reasons someone would change. Compare contradictory accounts as well as common patterns. Distinguish predictions about future use from choices people have already made when deciding what to test next.",
               "context": {
                 "kind": "situational",
-                "when": "B2B / enterprise - demand signal comes from conversations with named buyers, not anonymous clicks"
+                "when": "Cold start, including B2B / enterprise - no product and no audience yet, and the demand signal comes from conversations with named prospects, not anonymous clicks"
               },
               "subSteps": [
                 {
@@ -14914,44 +14893,52 @@
               ]
             },
             {
-              "id": "waitlist-ad-test",
-              "label": "Waitlist + ad-spend test",
-              "summary": "Use paid traffic and a waitlist to test response from a reachable target audience. Define the offer, audience, signup criteria, and spending limit before building the campaign. Obtain the budget owner's approval before paid launch, then connect the ad to a working signup page. Compare qualified responses and acquisition cost across the messages or audiences actually tested, checking traffic quality before attributing a weak result to the idea itself.",
+              "route": "agent",
+              "id": "lean-mvp",
+              "label": "Lean MVP launch",
+              "summary": "Ship the smallest real version of the product to users you can already reach, and let actual usage answer the hypothesis. Scope the first version to the single core use the hypothesis names, launch it before it feels finished, and iterate against what real users do rather than what they say. Judge the result on activation and return use within a bounded window, and treat silence as a result worth acting on.",
               "context": {
                 "kind": "situational",
-                "when": "Consumer product - buy a small amount of traffic and measure real waitlist conversion"
+                "when": "A builder with reachable target users - the fastest honest signal is shipping a small real version and watching what people do with it"
               },
               "subSteps": [
                 {
                   "route": "agent",
                   "estimatedMinutes": 20,
                   "vendorOptions": [
+                    "chatgpt",
+                    "claude",
+                    "gemini",
+                    "grok"
+                  ],
+                  "optionsArenaId": "ai-assistants",
+                  "id": "lm1",
+                  "label": "Scope the MVP to the single core use"
+                },
+                {
+                  "route": "agent",
+                  "estimatedMinutes": 480,
+                  "async": true,
+                  "vendorOptions": [
                     "lovable",
                     "v0",
                     "bolt"
                   ],
                   "optionsArenaId": "vibe-coding",
-                  "id": "wl1",
-                  "label": "Publish the waitlist page"
-                },
-                {
-                  "route": "form",
-                  "estimatedMinutes": 45,
-                  "id": "wl2",
-                  "label": "Launch a small paid ad campaign at the target audience"
+                  "id": "lm2",
+                  "label": "Build and launch the first version"
                 },
                 {
                   "route": "agent",
-                  "estimatedMinutes": 15,
-                  "vendor": "posthog",
+                  "estimatedMinutes": 20,
                   "vendorOptions": [
                     "posthog",
                     "amplitude",
                     "mixpanel"
                   ],
                   "optionsArenaId": "product-analytics",
-                  "id": "wl3",
-                  "label": "Measure click-to-signup conversion"
+                  "id": "lm3",
+                  "label": "Measure usage against a bounded demand window"
                 }
               ]
             },
@@ -14962,7 +14949,7 @@
               "summary": "Deliver the proposed outcome manually for a small pilot group to learn what customers value and what the work involves. Agree the service boundary, customer inputs, payment if any, and what a useful result looks like before starting. Keep track of manual tasks and exceptions while delivering. Compare actual customer use, effort, and willingness to continue, then decide which parts deserve a product and which need a different approach.",
               "context": {
                 "kind": "situational",
-                "when": "Service-shaped product - deliver the outcome by hand before building any software"
+                "when": "A hair-on-fire market - users desperate enough to accept manual, imperfect delivery of the outcome today"
               },
               "subSteps": [
                 {
@@ -14989,14 +14976,65 @@
               ]
             },
             {
-              "id": "preorder-deposit-test",
-              "label": "Preorder / deposit test",
-              "summary": "Test a preorder or refundable deposit only with a clear offer and a workable plan for handling customer funds. Explain what is being reserved, fulfillment uncertainty, cancellation terms, and how refunds work. Have the business owner and local adviser review the commitments before launch. Measure completed deposits and refunds, and keep someone responsible for customer questions and outstanding promises if the experiment changes direction or stops.",
+              "route": "form",
+              "id": "sean-ellis-survey",
+              "label": "Product/market-fit survey",
+              "summary": "Put the Sean Ellis question, how would you feel if you could no longer use the product, to users who have genuinely experienced it, and measure the share who answer very disappointed. The score turns an argument about fit into a number the team can track across rounds, and the follow-up answers say which users to build for next. Survey new users each round and read the result against the benefit those users actually report.",
               "context": {
                 "kind": "situational",
-                "when": "Hardware or physical product - a refundable deposit is the only honest demand signal"
+                "when": "The product is already live with active users - the open question is how disappointed they would be to lose it"
               },
               "subSteps": [
+                {
+                  "route": "agent",
+                  "estimatedMinutes": 15,
+                  "vendorOptions": [
+                    "posthog",
+                    "amplitude",
+                    "mixpanel"
+                  ],
+                  "optionsArenaId": "product-analytics",
+                  "id": "se1",
+                  "label": "Define the surveyed population"
+                },
+                {
+                  "route": "form",
+                  "estimatedMinutes": 60,
+                  "async": true,
+                  "id": "se2",
+                  "label": "Run the very-disappointed survey"
+                },
+                {
+                  "route": "agent",
+                  "estimatedMinutes": 30,
+                  "vendorOptions": [
+                    "chatgpt",
+                    "claude",
+                    "gemini",
+                    "grok"
+                  ],
+                  "optionsArenaId": "ai-assistants",
+                  "id": "se3",
+                  "label": "Segment responses and extract the signal"
+                }
+              ]
+            },
+            {
+              "id": "preorder-deposit-test",
+              "label": "Pre-sale commitment test",
+              "summary": "For an enterprise idea the first commitment to seek is a signed letter of intent; for hardware or another physical product it is a refundable deposit. Test a preorder or refundable deposit only with a clear offer and a workable plan for handling customer funds. Explain what is being reserved, fulfillment uncertainty, cancellation terms, and how refunds work. Have the business owner and local adviser review the commitments before launch. Measure completed deposits and refunds, and keep someone responsible for customer questions and outstanding promises if the experiment changes direction or stops.",
+              "context": {
+                "kind": "situational",
+                "when": "A priced product where a commitment is obtainable before building - an enterprise letter of intent, or a refundable deposit on a physical product"
+              },
+              "subSteps": [
+                {
+                  "route": "person",
+                  "estimatedMinutes": 240,
+                  "async": true,
+                  "id": "po0",
+                  "label": "Ask named buyers to commit before building"
+                },
                 {
                   "route": "agent",
                   "estimatedMinutes": 20,
@@ -15023,6 +15061,63 @@
                   "vendor": "stripe",
                   "id": "po3",
                   "label": "Measure deposit conversion and refund rate"
+                }
+              ]
+            },
+            {
+              "id": "waitlist-ad-test",
+              "label": "Waitlist + ad-spend test",
+              "summary": "Use paid traffic and a waitlist to test response from a reachable target audience. Define the offer, audience, signup criteria, and spending limit before building the campaign. Obtain the budget owner's approval before paid launch, then connect the ad to a working signup page. Compare qualified responses and acquisition cost across the messages or audiences actually tested, checking traffic quality before attributing a weak result to the idea itself.",
+              "context": {
+                "kind": "situational",
+                "when": "Consumer product - buy a small amount of traffic and measure real waitlist conversion"
+              },
+              "subSteps": [
+                {
+                  "route": "agent",
+                  "estimatedMinutes": 20,
+                  "vendor": "lovable",
+                  "vendorOptions": [
+                    "lovable",
+                    "v0",
+                    "bolt"
+                  ],
+                  "optionsArenaId": "vibe-coding",
+                  "extraOptionRefs": [
+                    {
+                      "arenaId": "design-tools",
+                      "productId": "framer"
+                    },
+                    {
+                      "arenaId": "design-tools",
+                      "productId": "figma"
+                    },
+                    {
+                      "arenaId": "design-tools",
+                      "productId": "canva"
+                    }
+                  ],
+                  "id": "wl1",
+                  "label": "Publish the waitlist page"
+                },
+                {
+                  "route": "form",
+                  "estimatedMinutes": 45,
+                  "id": "wl2",
+                  "label": "Launch a small paid ad campaign at the target audience"
+                },
+                {
+                  "route": "agent",
+                  "estimatedMinutes": 15,
+                  "vendor": "posthog",
+                  "vendorOptions": [
+                    "posthog",
+                    "amplitude",
+                    "mixpanel"
+                  ],
+                  "optionsArenaId": "product-analytics",
+                  "id": "wl3",
+                  "label": "Measure click-to-signup conversion"
                 }
               ]
             }
@@ -15092,12 +15187,38 @@
         {
           "from": "n2",
           "to": "n3",
-          "when": "The selected experiment uses a digital signup or payment path."
+          "option": "lean-mvp",
+          "when": "The MVP has a digital signup or payment path to instrument."
+        },
+        {
+          "from": "n2",
+          "to": "n3",
+          "option": "preorder-deposit-test",
+          "when": "The preorder page and checkout need conversion instrumentation."
+        },
+        {
+          "from": "n2",
+          "to": "n3",
+          "option": "waitlist-ad-test",
+          "when": "The waitlist page needs click-to-signup instrumentation."
         },
         {
           "from": "n2",
           "to": "n4",
-          "when": "Use interview or manual-delivery evidence; no digital conversion instrumentation is needed."
+          "option": "customer-interview-sprint",
+          "when": "Interview evidence replaces digital conversion instrumentation."
+        },
+        {
+          "from": "n2",
+          "to": "n4",
+          "option": "concierge-mvp",
+          "when": "Manual-delivery records replace digital conversion instrumentation."
+        },
+        {
+          "from": "n2",
+          "to": "n4",
+          "option": "sean-ellis-survey",
+          "when": "The product's existing analytics already measure usage; interviews probe the survey segments."
         },
         {
           "from": "n3",

@@ -79,9 +79,12 @@ describe('existing judged selection compatibility', () => {
     // newly judged product joins the candidate lists of the steps mapped to that arena.
     // Re-pinned at the AngelList bring-up (2026-10-14): angellist joins equity-management, so
     // the newly judged product joins the candidate lists of the steps mapped to that arena.
-    expect(positiveCount).toBe(2543)
+    // Re-pinned at the validate-the-idea method routing (startup_001): the landing-page step
+    // became the method-choice decision, so its vibe-coding function cells and design-tools
+    // extra-arena cells leave the contract.
+    expect(positiveCount).toBe(2537)
     expect(zeroCount).toBe(137)
-    expect(extraArena).toBe(93)
+    expect(extraArena).toBe(90)
   })
 
   it('accepts only contract-listed saved selections and rejects malformed payloads', () => {
