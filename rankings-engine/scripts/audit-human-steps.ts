@@ -218,7 +218,10 @@ export type HumanStepAuditEntry = z.infer<typeof HumanStepAuditEntrySchema>
 // A rerun assembles the whole committed file from the LLM cache — which would clobber any
 // hand-curated entry (the same wholesale-replace class as the probe-stage refresh). Entries
 // marked preserve: true in the committed file win over the cache-derived entry for the same
-// node. Preserved entries for nodes no longer in the corpus drop out (coverage stays exact).
+// node — for the CURATED fields (why, computerUse, computerUseWhy). `route` is source-mirrored
+// corpus metadata, not curation, so a route change in the corpus flows through even on a
+// preserved entry (otherwise a preserved step would keep its old route forever). Preserved
+// entries for nodes no longer in the corpus drop out (coverage stays exact).
 export function mergeAuditEntries(
   assembled: HumanStepAuditEntry[],
   committed: HumanStepAuditEntry[],
@@ -226,7 +229,10 @@ export function mergeAuditEntries(
   const preserved = new Map(
     committed.filter((e) => e.preserve === true).map((e) => [`${e.taskId}:${e.nodeId}`, e]),
   )
-  return assembled.map((e) => preserved.get(`${e.taskId}:${e.nodeId}`) ?? e)
+  return assembled.map((e) => {
+    const curated = preserved.get(`${e.taskId}:${e.nodeId}`)
+    return curated ? { ...curated, route: e.route } : e
+  })
 }
 
 // ---------------------------------------------------------------------------

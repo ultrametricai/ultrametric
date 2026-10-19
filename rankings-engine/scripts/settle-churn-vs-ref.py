@@ -22,8 +22,28 @@ def git_show(path):
         return None
     return json.loads(out.stdout)
 
-old_evidence = git_show(f'open-rankings/{arena}/evidence/{pid}.json') or []
-old_verdicts = git_show(f'open-rankings/{arena}/verdicts.json') or []
+# The arena data directory has been renamed twice (data/ -> rankings/ -> open-rankings/); a
+# baseline ref from an earlier era holds the files under the old spelling (the CACHE_DIR fix
+# pattern in rankings-engine/paths.ts). Resolving only the current name made every pre-rename
+# baseline read None, which turned the whole churn gate into a silent keep-everything no-op.
+PREFIXES = ['open-rankings', 'rankings', 'data']
+
+def git_show_any(rel):
+    for prefix in PREFIXES:
+        data = git_show(f'{prefix}/{rel}')
+        if data is not None:
+            return data
+    return None
+
+old_evidence = git_show_any(f'{arena}/evidence/{pid}.json')
+old_verdicts = git_show_any(f'{arena}/verdicts.json')
+if old_evidence is None or old_verdicts is None:
+    missing = [n for n, v in [('evidence', old_evidence), ('verdicts', old_verdicts)] if v is None]
+    sys.exit(
+        f'settle: {arena}/{pid} — no {" / ".join(missing)} for this arena at {ref} under any known '
+        f'data-directory name ({", ".join(PREFIXES)}); refusing to settle against an empty baseline '
+        f'(every flip would be kept). Pick a ref that contains the arena.'
+    )
 old_ids = {e['id'] for e in old_evidence}
 old_by_story = {v['storyId']: v for v in old_verdicts if v['productId'] == pid}
 
@@ -62,7 +82,8 @@ for v in verdicts:
     cache_file = f'rankings-engine/cache/judge/{arena}/{pid}/{v["storyId"]}.json'
     try:
         cached = json.load(open(cache_file))
-        cached_out = {'hash': cached['hash'], 'verdict': old}
+        # Keep every sibling field (hash, keyVersion) — only the verdict is restored.
+        cached_out = {**cached, 'verdict': old}
         open(cache_file, 'w').write(json.dumps(cached_out, indent=2, ensure_ascii=False) + '\n')
     except FileNotFoundError:
         print(f'  WARN no judge cache at {cache_file} — verdict reverted in verdicts.json only')

@@ -4,6 +4,7 @@ import { z } from 'zod'
 import { type Evidence, EvidenceSchema, type Product, ProductSchema } from '../../lib/schemas'
 import { llmJson } from '../llm'
 import { CACHE_DIR, categoryDir, readJson, resolveCategories, writeJson } from '../paths'
+import { isFullyCrawlExcluded } from './crawl'
 
 export const ExtractionSchema = z.object({
   stories: z
@@ -115,6 +116,13 @@ export async function runExtract({ category, product }: { category?: string; pro
     matched += products.length
 
     for (const p of products) {
+      if (isFullyCrawlExcluded(p)) {
+        // The crawl stage deliberately fetched nothing for this product (fully robots-walled;
+        // its evidence pack is wall probes) — there is no corpus to extract from, and on a
+        // fresh checkout no crawl cache directory will ever exist for it.
+        console.log(`extract: ${cat.id}/${p.id} fully crawlExcluded — nothing to extract`)
+        continue
+      }
       const crawlDir = path.join(CACHE_DIR, 'crawl', cat.id, p.id)
       if (!fs.existsSync(crawlDir)) throw new Error(`extract: no crawl cache for ${cat.id}/${p.id} — run crawl first`)
       const files = fs.readdirSync(crawlDir)

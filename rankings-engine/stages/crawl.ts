@@ -21,6 +21,16 @@ function isRawTextUrl(url: string): boolean {
   }
 }
 
+// Every corpus URL of the product is crawlExclude'd (a fully robots-walled vendor, e.g. the
+// government-services agencies): there is nothing to crawl OR extract — the product's evidence
+// pack is its recorded wall probes. Shared with the extract stage so a fresh checkout does not
+// throw "no crawl cache" for a product the crawl stage deliberately skipped.
+export function isFullyCrawlExcluded(product: Product): boolean {
+  const urls = [product.urls.site, product.urls.docs, product.urls.changelog, product.urls.github, ...(product.urls.extra ?? [])]
+  const excluded = new Set(product.crawlExclude ?? [])
+  return urls.filter((u): u is string => !!u).every((u) => excluded.has(u))
+}
+
 async function crawlProduct(categoryId: string, product: Product): Promise<number> {
   const dir = path.join(CACHE_DIR, 'crawl', categoryId, product.id)
   fs.mkdirSync(dir, { recursive: true })
@@ -59,9 +69,7 @@ export async function runCrawl({ category, product }: { category?: string; produ
     )
     matched += products.length
     for (const p of products) {
-      const urls = [p.urls.site, p.urls.docs, p.urls.changelog, p.urls.github, ...(p.urls.extra ?? [])]
-      const excluded = new Set(p.crawlExclude ?? [])
-      if (urls.filter((u): u is string => !!u).every((u) => excluded.has(u))) {
+      if (isFullyCrawlExcluded(p)) {
         // Fully robots-walled product (every corpus URL excluded): nothing to crawl is the
         // recorded finding, not an error — its evidence pack is wall probes.
         console.log(`crawl: ${cat.id}/${p.id} fully crawlExcluded — nothing fetched`)
