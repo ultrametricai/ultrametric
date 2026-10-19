@@ -26,11 +26,6 @@ const EXCEPTIONS: Array<{ subarea: string; situation: string; reason: string }> 
     reason:
       'A cease-and-desist is a pre-suit demand letter; us-fed.frcp-answer-deadline governs the answer to a served complaint (sit_008 cites it), and the record states there is no statutory response deadline, the letter sets its own.',
   },
-  {
-    subarea: 'work-visas',
-    situation: 'sit_002',
-    reason: 'The sub-area carries no committed rule cards yet (rule_ids is empty); there is nothing to cite.',
-  },
 ]
 
 const mapped = map.domains.flatMap((domain) =>
