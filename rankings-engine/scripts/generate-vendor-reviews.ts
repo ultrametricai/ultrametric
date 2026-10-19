@@ -1,5 +1,5 @@
-// Corpus lift stage 2 (docs/FOUNDER-OPS.md): emit the evidence layer in the founder-ops
-// vendor-review interchange shape (schemas/vendor-review.schema.json) — one
+// Emit the evidence layer in the vendor-review interchange shape
+// (schemas/vendor-review.schema.json), one
 // open-rankings/reviews/generated/<arena>--<productId>.json per judged product, so external consumers
 // get the same dated, evidence-graded record the site renders without scraping it.
 //
