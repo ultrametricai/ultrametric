@@ -398,14 +398,25 @@ export function applyAcceleration(grant: VestingGrant, policy: TriggerPolicy, ev
       policy.trigger === 'single'
         ? 'single trigger requires the sale event'
         : 'double trigger requires BOTH the sale and an involuntary termination without cause on or after it (Cooley GO, "Pulling the Trigger(s)")'
+    // No acceleration, but the grant's OWN schedule still governs: measure vesting at the
+    // latest supplied event date (service-capped at a termination via vestedAsOf). With no
+    // event dates there is nothing to measure — stated, not guessed.
+    const dates = [event.saleOn, event.terminationWithoutCauseOn].filter((d): d is string => d !== undefined)
+    const measuredOn = dates.length > 0 ? dates.reduce((a, b) => (a > b ? a : b)) : undefined
+    const vested = measuredOn === undefined ? 0 : vestedAsOf(grant, measuredOn, event.terminationWithoutCauseOn).vestedShares
     return {
       triggered: false,
-      vestedBeforeAcceleration: 0,
+      vestedBeforeAcceleration: vested,
       acceleratedShares: 0,
-      vestedAfterAcceleration: 0,
-      unvestedRemaining: total,
+      vestedAfterAcceleration: vested,
+      unvestedRemaining: total - vested,
       needsReview: true,
-      note: `Not triggered: ${why}. Vesting continues on schedule.`,
+      note:
+        `Not triggered: ${why}. ` +
+        (measuredOn === undefined
+          ? 'No event dates supplied, so vesting is not measured here; it continues on schedule.'
+          : `On the grant's own schedule, ${vested.toLocaleString('en-US')} of ${total.toLocaleString('en-US')} shares are ` +
+            `vested as of ${measuredOn}${event.terminationWithoutCauseOn !== undefined ? ' (service-based vesting stops at the termination date)' : '; vesting continues on schedule'}.`),
     }
   }
 
