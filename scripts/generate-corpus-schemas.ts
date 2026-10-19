@@ -1,4 +1,4 @@
-// Corpus lift stage 2 (docs/FOUNDER-OPS.md): publish the operational-process corpus contract as
+// Publish the operational-process corpus contract as
 // a standalone JSON Schema — schemas/operational-process.schema.json — so external consumers can
 // validate open-processes/corpus.json records without running our TypeScript. The zod schemas in
 // lib/processes.ts stay the single source of truth: this file is GENERATED from

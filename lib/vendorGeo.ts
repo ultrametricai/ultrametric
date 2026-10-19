@@ -57,9 +57,7 @@ const DEFAULT_DIR = () => path.join(process.cwd(), 'open-rankings')
 
 const cache = new Map<string, VendorGeoEntry[]>()
 
-// Stage 2 of the corpus lift (docs/FOUNDER-OPS.md): the geo evidence moved out of open-rankings/ into
-// jurisdictions/. `dir` stays the arena-data dir (same convention as lib/processes.ts); the
-// evidence file resolves as a sibling of it, so every call site keeps working unchanged.
+// `dir` is the arena-data directory; jurisdiction evidence resolves from its sibling.
 const geoFile = (dir: string) => path.join(dir, '..', 'jurisdictions', 'vendor-geo.json')
 
 export function loadVendorGeo(dir: string = DEFAULT_DIR()): VendorGeoEntry[] {

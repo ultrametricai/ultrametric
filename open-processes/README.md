@@ -376,6 +376,34 @@ The diagram is `form_001` (Incorporate C-Corp) from canonical `incorporate-c-cor
   against `schemas/process.schema.json`, resolves its rule-card references into `open-law/`
   (cards and `open-law/citations/`), and exposes the exact-dimension planner (`planFounderOps`).
 
+## Process manifests
+
+[`lib/processManifest.ts`](../lib/processManifest.ts) builds public manifests from the
+process projections and committed arena data. The site serves one at
+`/processes/{slug}/manifest.json` and composes playbooks at
+`/processes/chains/{chain}/manifest.json`. Each embedded process retains its own manifest URL.
+The builders are checked in
+[`lib/__tests__/processManifest.test.ts`](../lib/__tests__/processManifest.test.ts).
+
+`MANIFEST_VERSION` identifies the contract. Removing or renaming fields, changing their
+types or meaning, or changing step-kind or approval semantics requires a version bump.
+Additive optional fields keep the version. Consumers must reject unsupported versions
+and ignore unknown optional fields. A manifest URL serves the current version; breaking
+changes must update builders, routes, consumer checks, tests and this contract together.
+
+Version 2 preserves missing estimates as an absent `estimatedMinutes` and unknown execution
+modes as `kind: "unclassified"`. Consumers preserve these unknowns and require classification
+before execution. Public canonical records contain no private operation bindings; private
+consumers join their version-pinned bindings before deriving call-based approval behavior.
+
+Executors must obtain explicit human approval for steps marked `approvalRequired`.
+Explicit corpus gates and medium/high risk require approval for every route. Otherwise,
+computer-use and unclassified steps require approval, and API steps require it unless
+recorded calls exist and every call is read-only. Human steps keep the human as actor;
+irreducible judgment, identity and legally required signatures remain human work.
+Serving a manifest does not execute or authorize its steps. The provenance source
+`productarena` is an immutable identifier.
+
 ## Chains
 
 Chains are multi-process founder paths, each linking existing processes into a

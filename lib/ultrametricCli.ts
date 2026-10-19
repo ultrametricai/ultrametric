@@ -2,7 +2,7 @@
 // processes a user can DRIVE through our own shipped `ultrametric` CLI (npm 0.4.1) or the hosted
 // MCP server (https://api.ultrametric.ai/mcp) today.
 //
-// Honesty contract (owner-product rules — see docs/ULTRAMETRIC-CLI-CAPABILITIES.md):
+// First-party display contract:
 //   - Display-only. This map NEVER feeds scoring, never displaces or reorders a judged
 //     top-vendor pick, and every render site must carry a visible first-party disclosure.
 //   - "Drive" is the honest verb: the CLI/MCP serves the process guide and saves run records
