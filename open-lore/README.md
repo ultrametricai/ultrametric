@@ -1,19 +1,25 @@
 # Startup lore
 
 The heuristics founders actually trade, the schools of thought they come from, the
-library of works that ground them, and the episodes of startup history behind both.
-Everything is recorded as a sourced claim: a named author, a citable work, and, where
+library of works that ground them, and the episodes of startup history behind both
+live here. Everything is recorded as a sourced claim: a named author, a citable work, and, where
 schools disagree, the conflict mapped on both sides.
 
-Five files carry it:
+These files carry it:
 
 | File | What it holds | Gate |
 | --- | --- | --- |
-| [`registry.json`](./registry.json) | Heuristics: one actionable sentence per claim, with school, topic, source, tensions, and cross-links. | `pnpm vitest run __tests__/lore-registry.test.ts --maxWorkers=2` |
-| [`schools.json`](./schools.json) | The schools of thought: who they are and their core position. | `pnpm vitest run __tests__/lore-schools.test.ts --maxWorkers=2` |
-| [`library.json`](./library.json) | The curated reading list, in sections that double as the topic set. | `pnpm vitest run __tests__/lore-library.test.ts --maxWorkers=2` |
-| [`citations.json`](./citations.json) | Citation-only works the distilled laws cite that are not library-worthy. | `pnpm vitest run __tests__/lore-citations.test.ts --maxWorkers=2` |
-| [`LORE.md`](./LORE.md) | Episodes: the war stories of startup history, graded for veracity. | `pnpm vitest run __tests__/lore.test.ts --maxWorkers=2` |
+| [`registry.json`](./registry.json) | Heuristics: one actionable sentence per claim, with school, topic, source, tensions, and cross-links. | `pnpm test __tests__/lore-registry.test.ts --maxWorkers=2` |
+| [`schools.json`](./schools.json) | The schools of thought: who they are and their core position. | `pnpm test __tests__/lore-schools.test.ts --maxWorkers=2` |
+| [`library.json`](./library.json) | The curated reading list, in sections that double as the topic set. | `pnpm test __tests__/lore-library.test.ts --maxWorkers=2` |
+| [`citations.json`](./citations.json) | Citation-only works the distilled laws cite that are not library-worthy. | `pnpm test __tests__/lore-citations.test.ts --maxWorkers=2` |
+| [`rules.json`](./rules.json) | Uncontested mechanics: sourced rules with no published opposing view. | `pnpm test __tests__/lore-rules.test.ts --maxWorkers=2` |
+| [`LORE.md`](./LORE.md) | Episodes: the war stories of startup history, graded for veracity. | `pnpm test __tests__/lore.test.ts --maxWorkers=2` |
+
+`lib/lore.ts` loads and validates the episodes and the citation-only registry, and
+`lib/laws.ts` consumes `library.json` and `citations.json` to resolve the distilled laws'
+citations in [`open-law/LAWS.md`](../open-law/LAWS.md); the gates in the table hold each
+file to its contract.
 
 ## Schools
 
@@ -65,7 +71,21 @@ refuse automated fetches, with a reachable alternative), `stance` (always `claim
 `tensions` (conflicting entry ids, symmetric and always across schools), `libraryIds`
 (the library entries that ground the claim, symmetric with the library's `loreIds`),
 and `processIds` (the processes in [`open-processes/corpus.json`](../open-processes/corpus.json)
-it bears on).
+it bears on). A real record:
+
+```json
+{
+  "id": "pg-do-things-that-dont-scale",
+  "heuristic": "Recruit your first users manually and give them unscalably good treatment; scalable channels come after the product works.",
+  "school": "YC",
+  "topic": "growth-distribution",
+  "source": { "author": "Paul Graham", "work": "Do Things that Don't Scale", "url": "https://paulgraham.com/ds.html" },
+  "stance": "claim",
+  "tensions": ["hoffman-let-fires-burn"],
+  "libraryIds": ["pg-do-things-that-dont-scale", "rachitsky-first-1000-users"],
+  "processIds": ["growth_004", "growth_010"]
+}
+```
 
 Contribute here:
 
@@ -77,6 +97,16 @@ Contribute here:
 4. Set the `topic`, and cross-link `libraryIds` on both sides where the grounding work
    is a library entry.
 5. Every `processIds` entry must resolve.
+
+## Rules
+
+`rules.json` carries the uncontested mechanics the canon teaches: rules with no published
+opposing view, so they cannot live in the registry (every registry entry must map a
+cross-school tension). Each record carries `id`, `rule` (one actionable sentence), `topic`
+(resolving against the library's sections), `source` (same contract as the registry,
+including the archived-copy note for dead hosts), `libraryIds`, and `processIds`. Rule ids
+stay disjoint from registry ids; if an opposing view is later published, the rule moves to
+the registry with its tension mapped. Gate: `__tests__/lore-rules.test.ts`.
 
 ## Library
 
@@ -91,7 +121,8 @@ it bears on). A work that is not publicly available (unpublished or withdrawn) c
 `availability: "not-public"` instead of `url`, may omit `format` (no published form to
 cite), and must carry a `note` stating the unavailability and the evidence found at
 recording time; its `teaches` attributes the topic from the citation and claims no
-content the text cannot be checked for. Sections may carry `arenas` and `processIds` of their own: the
+content the text cannot be checked for. Sections may carry `arenas` (arena ids resolving
+against [`open-rankings/`](../open-rankings/)) and `processIds` of their own: the
 co-founders section, for example, points at the incorporation, banking, cap-table,
 payroll, domain, and immigration arenas whose vendors the readings assume.
 
@@ -131,3 +162,5 @@ retelling, era, companies and people, a one-sentence lesson, at least one source
 what-it-supports note, and a veracity grade on every entry (`first-person` /
 `documented` / `reported` / `legend`). Disputed tellings keep the dispute in the text;
 cross-links to the laws (`open-law/LAWS.md`) and processes must resolve.
+
+This area's maturity grade and known gaps are tracked in [`coverage/index.json`](../coverage/index.json).

@@ -1,7 +1,7 @@
 # Open artifacts
 
-The business objects founder processes produce and consume: the certificate of
-incorporation, the EIN letter, the cap table, the 409A report.
+The business objects founder processes produce and consume are cataloged here: the
+certificate of incorporation, the EIN letter, the cap table, the 409A report.
 
 Two registries live here:
 
@@ -19,10 +19,12 @@ live at [ultrametric.ai/artifacts](https://ultrametric.ai/artifacts) and
 
 ## The artifact registry
 
-Each `registry.json` entry: `id`, `label`, `description`, `producedBy` (the one canonical
+Each `registry.json` entry carries `id`, `label`, `description`, `producedBy` (the one canonical
 producer process), optional `alsoProducedBy` (documented exception producers), optional
 `terminal: true` (nothing downstream consumes it), optional `documents` (registered
-open-documents templates that genuinely are the artifact's form), and optional `geo`
+[`open-documents/`](../open-documents/README.md) templates that genuinely are the
+artifact's form), optional
+`establishesFieldIds` (the typed fields the artifact establishes), and optional `geo`
 (per-country analogs derived from the committed process geoNotes). The registry is sized from
 the corpus itself: an artifact exists because a committed process step brings it into
 existence and another committed process consumes it. `lib/processes.ts` (`loadArtifacts`)
@@ -31,6 +33,29 @@ the integrity rules (totality, one producer, consumed-or-terminal, geo URL reuse
 in `lib/__tests__/processArtifacts.test.ts`. Published schema:
 `schemas/process-artifacts.schema.json`. The qualification rules and the how-to-add recipe
 stay with the process-side contract in `open-processes/README.md`.
+
+A trimmed real entry (`certificate-of-incorporation`):
+
+```jsonc
+{
+  "id": "certificate-of-incorporation",
+  "label": "Certificate of Incorporation",
+  "description": "The state-stamped Certificate of Incorporation - proof the C-Corp exists…",
+  "producedBy": "form_001",
+  "alsoProducedBy": ["form_012"],
+  "documents": ["cooley-incorporation-package-de", "orrick-incorporation-toolkit", "de-formation-instructions"],
+  "establishesFieldIds": ["incorporation-date", "authorized-shares", "par-value", "state-file-number"]
+  // …per-country geo analogs trimmed
+}
+```
+
+`establishesFieldIds` is the machine link from an artifact to the `fields.json` fields it
+establishes: the exact inverse of each field's `producedBy` edge, committed on the artifact
+side so both registries carry the connection. The certificate of incorporation lists the
+incorporation date and the charter share inputs; the 409A report lists the common-share FMV
+and its as-of date. Artifacts that establish no registered field carry no key. The pairing
+(referential integrity, the inverse, every field established by its producing artifact) is
+tested in `lib/__tests__/processArtifacts.test.ts`.
 
 ## The field standards
 
@@ -90,3 +115,5 @@ geo equivalent only against the government authority's own page, fetched; where 
 exists, record the absence. Schema changes start in the zod sources (`lib/processes.ts`,
 `lib/companyFields.ts`) and regenerate with `npx tsx scripts/generate-corpus-schemas.ts`.
 Run `pnpm test` before opening the PR.
+
+This area's maturity grade and known gaps are tracked in [`coverage/index.json`](../coverage/index.json).

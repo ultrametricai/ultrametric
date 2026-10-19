@@ -46,8 +46,8 @@ const INTRO = [
   '',
   '<pre>',
   'ultrametric/',
-  '├── <a href="#open-processes">open-processes</a>/     founder processes and situations as routed, timed steps',
   '├── <a href="#open-vendor-rankings">open-rankings</a>/      per-market products, stories, evidence, verdicts',
+  '├── <a href="#open-processes">open-processes</a>/     founder processes and situations as routed, timed steps',
   '├── <a href="#open-modules">open-modules</a>/       worked guides to each startup calculation',
   '├── <a href="#open-startup-simulator">open-startup-sim</a>/   what the simulator runs and assumes',
   '├── <a href="#open-law">open-law</a>/           startup legal rules by jurisdiction, the distilled laws',
@@ -89,8 +89,9 @@ const SECTIONS = [
   '## Government services and startups',
   '## Startup ecosystem',
   '## Open startup simulator',
+  // Round 12 (founder 2026-10-15): two lifecycle stages shown as cross-area indexes.
+  '## Stages',
   '## Install Ultrametric',
-  '## Methodology',
   '## License',
 ]
 
@@ -101,6 +102,11 @@ const SUBSECTIONS: Array<[string, string]> = [
   ['## Open artifacts', '### Open docs'],
   ['## Open situations', '### Example: Founder country switch'],
   ['## Open lore', '### Example: Getting acquired'],
+  // Round 11 (founder 2026-10-15): the law section shows the geo scoping, the lifecycle
+  // grouping of the distilled laws, and one rule cross-linked through process and module.
+  ['## Open law', '### Example: The 83(b) election'],
+  ['## Stages', '### Stage: Formation'],
+  ['## Stages', '### Stage: Growth'],
 ]
 
 const sectionBody = (heading: string) => {
@@ -179,9 +185,10 @@ describe('README.md structure (founder round 2, 2026-10-12)', () => {
     const rows = [...tree.matchAll(/^[├└]── (?:<a href="#([a-z-]+)">)?([a-z][a-z-]*)(?:<\/a>)?\/ +\S/gm)].map(
       (m) => ({ anchor: m[1] ?? null, dir: m[2] }),
     )
-    // The founder-specified order: the open catalogs people come for first, policies last.
+    // The founder-specified order: the open catalogs people come for first (rankings
+    // leading, founder 2026-10-15), policies last.
     expect(rows.map((r) => r.dir)).toEqual([
-      'open-processes', 'open-rankings', 'open-modules', 'open-startup-sim',
+      'open-rankings', 'open-processes', 'open-modules', 'open-startup-sim',
       'open-law', 'open-lore', 'open-documents', 'open-artifacts',
       'rankings-engine', 'lib', 'jurisdictions', 'coverage', 'schemas', 'policies',
     ])
@@ -270,9 +277,11 @@ describe('README.md structure (founder round 2, 2026-10-12)', () => {
     // marker blocks are computed and stay; this scans only the hand-written remainder.
     const surfaces = [
       'open-modules/README.md', 'open-processes/README.md', 'open-processes/SITUATIONS.md',
+      'open-rankings/README.md',
       'open-documents/README.md', 'open-law/README.md', 'open-lore/LORE.md',
       'open-startup-sim/README.md', 'open-artifacts/README.md', 'coverage/README.md',
       'policies/README.md', 'policies/AGENT_POLICY.md', 'policies/REVIEW_POLICY.md',
+      'rankings-engine/README.md',
     ]
     const countPattern = /\b\d[\d,]* (rankings|products|verdicts|arenas|processes|markets|situations|modules|documents|cards|records)\b/
     for (const file of surfaces) {
@@ -388,9 +397,7 @@ describe('README.md retired generated blocks', () => {
     // committed categories below.
     const section = sectionBody('## Open vendor rankings')
     const bullets = [...section.matchAll(/^- \[[^\]]+\]\(https:\/\/ultrametric\.ai\/arena\/([a-z-]+)\) — \S/gm)]
-    expect(bullets.map((m) => m[1])).toEqual([
-      'payments', 'startup-banking', 'ai-coding', 'local-llm-runtimes', 'government-services',
-    ])
+    expect(bullets.map((m) => m[1])).toEqual(['startup-banking', 'equity-management', 'legal-ops', 'payments', 'email-marketing', 'crm', 'government-services'])
     const categories = JSON.parse(
       fs.readFileSync(path.join(ROOT, 'open-rankings', 'categories.json'), 'utf8'),
     ) as Array<{ id: string }>
@@ -414,13 +421,13 @@ describe('README.md anchors and links', () => {
     ]) {
       expect(readme, `missing anchor #${id}`).toContain(`<a id="${id}"></a>`)
     }
-    // #methodology and #open-modules resolve through their headings.
-    expect(readme).toContain('\n## Methodology')
+    // #open-modules resolves through its heading.
     expect(readme).toContain('\n## Open modules')
   })
 
   it('every CONTRIBUTING.md anchor the README links exists', () => {
-    for (const anchor of ['add-your-vendor', 'add-a-process', 'add-an-open-module']) {
+    // Founder 2026-10-15: only the vendor call-to-action stays on the front page.
+    for (const anchor of ['add-your-vendor']) {
       expect(readme).toContain(`(CONTRIBUTING.md#${anchor})`)
       expect(contributing, `CONTRIBUTING.md is missing <a id="${anchor}">`).toContain(`<a id="${anchor}"></a>`)
     }

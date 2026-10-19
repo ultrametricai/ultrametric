@@ -1,6 +1,6 @@
 # Coverage
 
-The cross-area answer to what this repo covers and what is missing. `index.json` carries
+This directory is the cross-area answer to what this repo covers and what is missing. `index.json` carries
 one entry per top-level content area: a maturity grade, a short summary, the headline
 gaps, and pointers to the file where that area tracks its own gaps in detail. The detail
 stays with its area (the law map keeps its grades, the arena roadmap keeps its tiers, the
@@ -14,7 +14,7 @@ every pointer must resolve to a committed file, and the index must validate agai
 ## Where each area tracks its own gaps
 
 - `open-processes` — chain membership in `open-processes/chains.json`; jurisdiction-scoped
-  workflow coverage in `coverage.json` here; the shared-corpus import audit in
+  workflow coverage in `open-law/workflow-coverage.json`; the shared-corpus import audit in
   `content/processes/legacy-audit.json`.
 - `open-rankings` — `open-rankings/arena-roadmap.json`: every arena tiered by priority and
   marked live or planned.
@@ -28,23 +28,26 @@ every pointer must resolve to a committed file, and the index must validate agai
   topic-by-school matrix and its thin cells.
 - `open-documents` — `open-documents/README.md`: exclusions, dead-link corrections, and the
   use cases with no openly published document.
+- `open-artifacts` — its `index.json` entry here carries the headline gaps (bot-walled
+  authority pages, unverified country equivalents); `open-artifacts/fields.json` records the
+  detail per field, where each country entry is either a sourced government equivalent or a
+  `status` of `unverified` / `no-equivalent`.
 - `rankings-engine` — `open-rankings/staleness-report.json`: evidence age per arena and
   product against the freshness windows.
 - `lib` — `lib/README.md` for the layer map; `docs/repo-split-census.json` for the test
   suites that gate it.
 - `jurisdictions` — `jurisdictions/registry.json`: per-jurisdiction scope and coverage
   grade per layer.
-- `coverage` — `domains.json` and `coverage.json` here (the founder-journey files below).
+- `coverage` — `index.json` itself; this directory is purely the rollup.
 - `schemas` — `schemas/README.md`: which contracts exist and which are generated.
 - `policies` — `policies/REVIEW_POLICY.md` and `policies/AGENT_POLICY.md`: the maturity
   ladder and the agent ground rules.
 
 ## Founder-journey files
 
-`domains.json` is the founder-journey taxonomy (formation through exit), including domains
-with no playbook yet. `coverage.json` records which jurisdiction-scoped workflows exist,
-at what maturity, with known gaps; `lib/founderOps.ts` checks it in CI. No jurisdiction is
-called covered because a few playbooks exist (`policies/REVIEW_POLICY.md`).
+The founder-journey taxonomy (`open-law/workflow-domains.json`) and the
+jurisdiction-scoped workflow coverage (`open-law/workflow-coverage.json`) live with the
+law layer that grades them; [`open-law/README.md`](../open-law/README.md) documents both.
 
 ## Contribute here
 
@@ -52,12 +55,12 @@ called covered because a few playbooks exist (`policies/REVIEW_POLICY.md`).
   gets mapped, a module lands), update that area's entry in `index.json`. The drift test
   fails when a new top-level content area lands without an entry.
 - **A coverage entry** — when a jurisdiction-scoped workflow lands, record it in
-  `coverage.json` at `draft` or `demonstration` maturity (`reviewed` requires a named
-  domain expert); the known-gaps field is part of the record.
-- **Missing domains** — a domain or lifecycle stage missing from `domains.json`, with the
+  `open-law/workflow-coverage.json` at `draft` or `demonstration` maturity (`reviewed`
+  requires a named domain expert); the known-gaps field is part of the record.
+- **Missing domains** — a domain or lifecycle stage missing from `open-law/workflow-domains.json`, with the
   founder scenario that exposes it; domains without playbooks keep gaps visible.
 
-Gates: `npx vitest run __tests__/coverage.test.ts __tests__/founder-ops.test.ts`.
+Gates: `pnpm test __tests__/coverage.test.ts __tests__/founder-ops.test.ts`.
 
 ## Source-library audit
 

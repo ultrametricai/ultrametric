@@ -8,7 +8,7 @@ import { YcMapSchema } from '../../lib/schemas'
 import { ROOT, writeJson } from '../paths'
 import { batchCode, MODERN_BATCHES, YC_ALL_COMPANIES_URL, type YcRawCompany } from '../yc-shared'
 
-const CACHE_DIR = path.join(ROOT, 'pipeline', 'cache', 'yc')
+const CACHE_DIR = path.join(ROOT, 'rankings-engine', 'cache', 'yc')
 const YC_MAP_PATH = path.join(ROOT, 'open-rankings', 'yc-map.json')
 
 async function fetchAllCompanies(): Promise<YcRawCompany[]> {

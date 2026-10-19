@@ -1,7 +1,7 @@
 # Schemas
 
-The published JSON Schema contracts the process, rule-card, citation, law-map,
-company-field, artifact, and vendor-review records validate against in CI. The rankings
+These are the published JSON Schema contracts that the process, rule-card, citation,
+law-map, company-field, artifact, and vendor-review records validate against in CI. The rankings
 data (`open-rankings/`) has its contracts in zod (`lib/schemas.ts`).
 
 [`process.schema.json`](process.schema.json) publishes the canonical DAG process shape
@@ -18,10 +18,24 @@ The same URL continues accepting legacy process records through its
 `operational-process.schema.json` describes the existing process corpus;
 `shared-process.schema.json` describes the compatibility export.
 
-Other contracts include `rule.schema.json`, `citation.schema.json` (the citation
-registry's two record roles, authority and reading), and `vendor-review.schema.json`. `operational-process.schema.json` is generated from the zod
-source by `scripts/generate-corpus-schemas.ts` and drift-gated byte-identical; change the
-zod schema and regenerate, never the file.
+Other contracts:
+
+- `rule.schema.json` — one legal rule card (`open-law/<CODE>/*.json`).
+- `citation.schema.json` — the citation registry's two record roles, authority and reading.
+- `vendor-review.schema.json` — the vendor reviews in `open-rankings/reviews/`.
+- `law-map.schema.json` — the domain map over the rule cards (`open-law/map.json`).
+- `coverage-index.schema.json` — the cross-area coverage rollup (`coverage/index.json`).
+- `process-vendor-registry.schema.json` — the vendor facts beside the corpus
+  (`open-processes/vendor-registry.json`).
+- `process-artifacts.schema.json` — the artifact registry (`open-artifacts/registry.json`).
+- `company-fields.schema.json` — the typed company-field standards
+  (`open-artifacts/fields.json`).
+
+`scripts/generate-corpus-schemas.ts` generates `process.schema.json`,
+`operational-process.schema.json`, `process-vendor-registry.schema.json`,
+`process-artifacts.schema.json`, and `company-fields.schema.json` from their zod sources
+(`lib/shared-processes/catalog.ts`, `lib/processes.ts`, `lib/companyFields.ts`), drift-gated
+byte-identical; change the zod schema and regenerate, never the files.
 
 Regenerate the process and corpus schemas with
 `pnpm exec tsx scripts/generate-corpus-schemas.ts`. CI checks byte-identical output
@@ -35,5 +49,7 @@ Contribute here:
 - **A schema for a new record type** — only alongside the contribution path that uses it:
   schema, template, validator wiring, and a first record in one PR.
 
-Gates: `npx vitest run __tests__/corpus-schemas.test.ts` and
-`npx vitest run __tests__/founder-ops.test.ts`.
+Gates: `pnpm test __tests__/corpus-schemas.test.ts` and
+`pnpm test __tests__/founder-ops.test.ts`.
+
+This area's maturity grade and known gaps are tracked in [`coverage/index.json`](../coverage/index.json).

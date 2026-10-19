@@ -165,7 +165,8 @@ export function buildContentAudit(files, metadata) {
       }
     }
   }
-  for (const file of [...files.keys()].filter(file => /^open-law\/(?!citations\/).+\.json$/.test(file) && file !== 'open-law/map.json').sort()) {
+  const lawRegistries = new Set(['open-law/map.json', 'open-law/workflow-coverage.json', 'open-law/workflow-domains.json'])
+  for (const file of [...files.keys()].filter(file => /^open-law\/(?!citations\/).+\.json$/.test(file) && !lawRegistries.has(file)).sort()) {
     const value = json(file)
     const record = add('law', value.id, value.id, file, [value.jurisdiction, value.status])
     presence(record, 'Rule statement', nonempty(value.statement))
@@ -241,7 +242,7 @@ export function buildContentAudit(files, metadata) {
       linked: rows.filter(record => record.inbound > 0 || record.links.some(ref => ref.state === 'resolved')).length,
       unresolved: rows.reduce((total, record) => total + record.links.filter(ref => ref.state === 'unresolved').length, 0) }
   })
-  const coverage = json('coverage/coverage.json')
+  const coverage = json('open-law/workflow-coverage.json')
   const scopes = array(coverage.coverage, 'coverage scopes').map(value => ({
     scenario: value.scenario, processKey: processTarget(value.process_id), entityJurisdiction: value.entity_jurisdiction,
     taxJurisdiction: value.tax_jurisdiction, status: value.status, reviewedOn: value.reviewed_on,

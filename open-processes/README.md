@@ -35,7 +35,7 @@ The sections below document the legacy compatibility fields and external registr
 
 # Processes
 
-Every founder process and reactive situation as a step-by-step record, each step routed
+Every founder process and reactive situation is a step-by-step record, each step routed
 agent, form, or human, timed, and wired to the judged vendor rankings; the fixtures and
 the curation doctrine live here too. The artifact and company-field registries the steps
 exchange live in [`open-artifacts/`](../open-artifacts/).
@@ -83,14 +83,15 @@ The two layers keep separate IDs and never silently substitute for each other:
 | [Step documents](#step-documents-documents) | Steps linked to the open documents they are done on |
 | [Proven runs](#proven-runs-provenruns--the-executed-proof-slot-design-only) | Evidence that a named operator ran a process |
 | [The artifact layer](#the-artifact-layer-typed-inputsoutputs) | Typed inputs and outputs between processes |
+| [The vendor registry](#the-vendor-registry-vendor-registryjson) | The vendor facts the process pages render |
 | [The Open-modules map](#the-open-modules-map) | Wiring steps to the calculation modules |
-| [A real process, drawn](#a-real-process-drawn) | One committed record as a diagram |
+| [The Incorporate C-Corp step graph](#the-incorporate-c-corp-step-graph) | One committed record as a diagram |
 | [How the site consumes this directory](#how-the-site-consumes-this-directory) | Loaders and the pages they power |
 | [What you can contribute here](#what-you-can-contribute-here) | The PR shapes and their gates |
 
 ## What a library record is
 
-One record per founder process: identity and classification (`phase`, `cadence`,
+Each record covers one founder process: identity and classification (`phase`, `cadence`,
 `complexity`), the Agentic % with its stated reason (`supportLevel` + `supportReason`), the vendors that can
 run it, the step graph, and geo scoping. A trimmed real record (`form_002`, Get EIN):
 
@@ -213,7 +214,8 @@ is. Curation rules, stricter than coverage:
   like every committed URL.
 - **3–6 quality entries per deep process**, not totality — absence means nothing is curated
   yet, never that the step can't fail. Display: one collapsed "⚠ if it goes wrong" line per
-  affected step (`components/ProcessDag.tsx`); no judged number reads the field.
+  affected step, rendered by the site's DAG component (private repo); no judged number reads
+  the field.
 
 ## Step documents (`documents`)
 
@@ -223,9 +225,10 @@ bylaws/stock-paperwork drafting steps, IRS Form 15620 for the 83(b) election). A
 form_001 spike after confirming no prior mechanism linked process steps to the documents
 registry; extended across the library the same day (founder 2026-10-02: SAFEs on the SAFE-prep
 step, the NVCA suite on the definitive-docs step, offer letters, SS-4, the open NDAs/DPAs/
-cloud terms — `scripts/tmp-wire-step-documents.py`) — only where the document is plainly the
+cloud terms) — only where the document is plainly the
 step's instrument, never forced totality. Rendered on the process pages as small external-link
-chips (`components/ProcessDag.tsx`, registry title as label, canonical URL as target).
+chips by the site's DAG component (private repo), registry title as label, canonical URL as
+target.
 Referential integrity is gated both ways (`lib/__tests__/processDocuments.test.ts`) —
 every id must resolve in the registry, and the render lookup throws on an unknown id.
 
@@ -296,6 +299,22 @@ regenerate the derived report: `npx tsx scripts/generate-timeline-inversions.ts`
 row in `docs/TIMELINE-INVERSIONS.md` — the founder's renumbering worklist, never a silent
 re-sort.
 
+## The vendor registry (`vendor-registry.json`)
+
+`vendor-registry.json` is the single source for the vendor facts the process pages render,
+keyed by corpus vendor key (the snake_case keys `corpus.json` uses in
+`vendor`/`vendorOptions`). Per vendor: the live arena that judges it (`arenaId`, absent
+for a deliberately unlinked chip), a display `label` where title-casing the key misfires,
+the judged `productId` where it differs from the key, the vendor's own verified-live
+start-here page (`signupUrl`, curl-verified before listing; a vendor without one is simply
+absent), and a curation `note`. `lib/processes.ts` reads it back (`loadVendorRegistry()`
+and the `VENDOR_ARENA` / `VENDOR_SIGNUP_URL` / `vendorLabel` / `vendorProductId`
+projections); the workflow validator (`lib/founderOps.ts`) deliberately skips it, like
+`corpus.json`. Gate: `pnpm test lib/__tests__/vendorRegistry.test.ts` (the exports stay
+pure projections of the registry). Published schema:
+`schemas/process-vendor-registry.schema.json` (generated from `VendorRegistrySchema` in
+`lib/processes.ts` by `scripts/generate-corpus-schemas.ts`).
+
 ## The Open-modules map
 
 `business-logic-map.json` (founder 2026-10-02; the file name keeps the legacy
@@ -319,7 +338,7 @@ appear in that module's `processes` list.
 
 Read back by `lib/businessLogicMap.ts`; process pages render the task-level hits as a muted
 "Open modules" chip line, and mapped step blocks get a tiny `compute: <module>.<function>`
-chip (`components/ProcessDag.tsx`) whose tooltip carries the `what` clause — both deep-linking
+chip, rendered by the site's DAG component (private repo), whose tooltip carries the `what` clause — both deep-linking
 into `open-modules/README.md` (repo-first — the modules are a library by design, no site
 pages). That README's per-module **Serves** lines are generated from this file
 (`scripts/generate-business-logic-serves.ts`) and drift-gated. Totality gates, both ways:
@@ -334,47 +353,24 @@ Coverage companion: `docs/PROCESS-ARENA-COVERAGE.md` (generated by
 every vendor in the library resolving through `vendor-registry.json` to an arena or being deliberately
 untracked, plus the processes whose vendor set resolves to zero arenas.
 
-## A real process, drawn
+## The Incorporate C-Corp step graph
 
-This is `form_001` (Incorporate C-Corp) exactly as committed in `corpus.json` at
-`a4b656235` (2026-09-30) — the mermaid below is generated from that record's `dag.nodes` and
-`dag.edges`, nothing invented. Glyphs: 🤖 `agent` · 📝 `form` (manual web form) · 🧑 `person` ·
-✍ a `person` step with `legalSignature` (legally required human signature).
+The diagram is `form_001` (Incorporate C-Corp) from canonical `incorporate-c-corp.json`:
+`scripts/generate-process-diagram.mjs` draws the unfiltered operational projection's `dag.nodes` and
+`dag.edges`, nothing invented, and is re-run when the definition changes. Glyphs: 🤖 `agent` ·
+📝 `form` (manual web form) · 🧑 `person` · ✍ a `person` step with `legalSignature`
+(legally required human signature).
 
-```mermaid
-flowchart TD
-  n1["🧑 Choose formation service (10m)"]
-  n3["🤖 Check name availability (2m)"]
-  n4["📝 Submit incorporation filing (30m)"]
-  n5["🧑 Receive Certificate of Incorporation (~2d wait)"]
-  n6["📝 Prepare bylaws & initial resolutions (15m)"]
-  n6b["✍ Sign the bylaws and initial board consent (5m)"]
-  n7["📝 Prepare the founder stock issuance (10m)"]
-  n7b["✍ Founders sign the stock purchase agreements (5m)"]
-  n8a["✍ Sign the 83(b) election (5m)"]
-  n8["📝 File 83(b) election with the IRS (15m)"]
-  n1 --> n3 --> n4 --> n5 --> n6 --> n6b --> n7 --> n7b --> n8a --> n8
-  subgraph conditional["Jurisdiction-conditional steps (attached client-side by lib/jurisdictions.ts, never in static ranks)"]
-    jca1["📝 File the Statement and Designation by Foreign Corporation with the CA SOS (30m) — CA"]
-    jmu1["🧑 Appoint a registered agent in each operating state (15m) — multi-state"]
-  end
-  classDef agent fill:#0b2e22,stroke:#34d399,color:#d1fae5
-  classDef form fill:#2e230b,stroke:#fbbf24,color:#fef3c7
-  classDef person fill:#0b2233,stroke:#38bdf8,color:#e0f2fe
-  classDef sig fill:#230b33,stroke:#a78bfa,color:#ede9fe
-  class n3 agent
-  class n4,n6,n7,n8,jca1 form
-  class n1,n5,jmu1 person
-  class n6b,n7b,n8a sig
-```
+<p align="center"><img src="assets/incorporate-c-corp.svg" alt="Incorporate C-Corp step graph" width="700"></p>
 
 ## How the site consumes this directory
 
 - `lib/processes.ts` `loadProcesses()` reads `corpus.json` at build time — it strips the
   jurisdiction-conditional nodes (they only ever render client-side via the `?juris=` toggle,
   so no judged number moves) and powers `/processes`, every `/processes/<slug>` page
-  (`components/ProcessDag.tsx` renders the step graph above with the same route colors), the process
-  rankings (`/rankings/processes/*`), and the open startup simulator at `/startup-sim`.
+  (the site's DAG component, in the private repo, renders the step graph above with the same
+  route colors), the process rankings (`/rankings/processes/*`), and the open startup
+  simulator at `/startup-sim`.
 - `chains.json` links process IDs into playbooks (see the Chains section below).
 - `lib/founderOps.ts` validates the jurisdiction-scoped workflow layer (`equity/us-de/*`)
   against `schemas/process.schema.json`, resolves its rule-card references into `open-law/`
@@ -382,9 +378,9 @@ flowchart TD
 
 ## Chains
 
-Multi-process founder paths, each chaining existing processes into a founder-visible
-playbook (incorporate and launch, the VC raise, month-end close, the agent-run back
-office).
+Chains are multi-process founder paths, each linking existing processes into a
+founder-visible playbook (incorporate and launch, the VC raise, month-end close, the
+agent-run back office).
 
 A chain in `chains.json` is deliberately thin: an id, a name, a one-line tagline, and an
 ordered list of process IDs that must already exist in `corpus.json`; chains never invent
@@ -425,8 +421,8 @@ in the PR. Gate: `pnpm test` (`lib/__tests__/processes.test.ts` cross-checks eve
 - **A new jurisdiction-scoped workflow** — copy `templates/process.json` into
   `open-processes/<domain>/<jurisdiction>/`, narrow the applicability dimensions, reference rule
   cards in `open-law/<CODE>/`, gate every external effect on a named human approval, add a
-  fictional fixture in `open-processes/fixtures/`, and record the maturity grade in `coverage/coverage.json`.
-  Gate: `npx vitest run __tests__/founder-ops.test.ts`.
+  fictional fixture in `open-processes/fixtures/`, and record the maturity grade in `open-law/workflow-coverage.json`.
+  Gate: `pnpm test __tests__/founder-ops.test.ts`.
 - **Corrections to an operational process** — step routing (agent / manual form / human),
   Agentic % values, or time estimates in `corpus.json`, with a source or reproduction for the
   claim. Gate: `pnpm test`.
@@ -435,3 +431,5 @@ in the PR. Gate: `pnpm test` (`lib/__tests__/processes.test.ts` cross-checks eve
   flag that should be a real consumer. Follow "The artifact layer" rules above (one canonical
   producer, no invented artifacts), regenerate `docs/TIMELINE-INVERSIONS.md`. Gate:
   `pnpm test` (`processArtifacts` + `processDeps` suites).
+
+This area's maturity grade and known gaps are tracked in [`coverage/index.json`](../coverage/index.json).

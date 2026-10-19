@@ -20,7 +20,7 @@ function fixture() {
     'open-law/US-DE/rule.json': { id: 'rule', statement: 'A rule', source_ids: ['statute'], jurisdiction: 'US-DE', status: 'demonstration', reviewed_on: '2026-10-01', review_due: '2027-01-01' },
     'open-artifacts/registry.json': { artifacts: [{ id: 'result', label: 'Result', description: 'Prepared result', producedBy: 'start' }] },
     'open-processes/business-logic-map.json': { modules: { module: { label: 'Module', file: 'lib/openstartup/module.ts', processes: ['start'] } } },
-    'coverage/coverage.json': { coverage_claim: 'One demonstration only.', uncovered: ['Other scenarios'], coverage: [] },
+    'open-law/workflow-coverage.json': { coverage_claim: 'One demonstration only.', uncovered: ['Other scenarios'], coverage: [] },
   }
   const files = new Map(Object.entries(data).map(([file, value]) => [file, JSON.stringify(value)]))
   files.set('lib/openstartup/module.ts', 'export const value = 1')
@@ -41,6 +41,7 @@ test('separates declared situation markers, resolves cross-collection links, and
   assert.deepEqual(report.metrics[0], { label: 'Vendor story verdicts', covered: 1, total: 1, meaning: 'Unique product/story cells in the current ranking taxonomies, including negative verdicts.' })
   assert.equal(record(report, 'documents:form').links[0].state, 'external')
   assert.equal(report.declaredCoverage.claim, 'One demonstration only.')
+  assert.deepEqual(report.declaredCoverage.uncovered, ['Other scenarios'])
 })
 
 test('reports unresolved links and unavailable evidence without deleting records', () => {
@@ -52,9 +53,10 @@ test('reports unresolved links and unavailable evidence without deleting records
   assert.equal(record(report, 'vendors:arena/tool').checks.find(item => item.label === 'Verdict evidence').state, 'missing')
 })
 
-test('audits rule cards and their incoming links without treating the law map or citations as rules', () => {
+test('audits rule cards and their incoming links without treating law registries or citations as rules', () => {
   const files = fixture()
   files.set('open-law/map.json', JSON.stringify({ jurisdictions: [] }))
+  files.set('open-law/workflow-domains.json', JSON.stringify({ version: '0.1.0', domains: [{ id: 'formation', name: 'Formation', topics: [] }] }))
   change(files, 'open-processes/start.json', value => value.parts[0].references.push({ kind: 'rule', id: 'rule', role: 'governed-by' }))
   const report = buildContentAudit(files, metadata)
   const rule = record(report, 'law:rule')
@@ -62,6 +64,15 @@ test('audits rule cards and their incoming links without treating the law map or
   assert.ok(rule.links.some(item => item.target === 'citations:statute' && item.state === 'resolved'))
   assert.ok(record(report, 'situations:start').links.some(item => item.target === 'law:rule' && item.state === 'resolved'))
   assert.deepEqual(report.records.filter(item => item.collection === 'law').map(item => item.key), ['law:rule'])
+})
+
+test('rejects missing identities in rule cards and unrecognized law JSON files', () => {
+  const malformed = fixture()
+  change(malformed, 'open-law/US-DE/rule.json', value => delete value.id)
+  assert.throws(() => buildContentAudit(malformed, metadata), { message: 'Missing identity: open-law/US-DE/rule.json' })
+  const unknown = fixture()
+  unknown.set('open-law/unknown.json', JSON.stringify({ entries: [] }))
+  assert.throws(() => buildContentAudit(unknown, metadata), { message: 'Missing identity: open-law/unknown.json' })
 })
 
 test('distinguishes registered untracked vendors from invalid registry keys', () => {
@@ -142,7 +153,7 @@ test('rejects missing or invalid document review windows', () => {
 
 test('preserves each narrow coverage claim and its limits', () => {
   const files = fixture()
-  change(files, 'coverage/coverage.json', value => value.coverage.push({
+  change(files, 'open-law/workflow-coverage.json', value => value.coverage.push({
     scenario: 'One event', process_id: 'start', entity_jurisdiction: 'US-DE', tax_jurisdiction: 'US-FED',
     status: 'example', reviewed_on: '2026-09-30', review_due: '2026-12-30', limits: ['One example only'],
   }))

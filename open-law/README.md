@@ -30,18 +30,18 @@ together.
 
 | Domain | Covers | Maturity |
 | --- | --- | --- |
-| Formation and corporate governance | Incorporation mechanics and charter contents (Delaware focus), board and stockholder action, stock issuance authority, ongoing state registrations, and beneficial-ownership reporting. | partial |
+| Formation and corporate governance | Incorporation mechanics and charter contents (Delaware and the UK), board and stockholder action, stock issuance authority, ongoing registrations and reports, and beneficial-ownership reporting. | partial |
 | Securities and fundraising | The Securities Act registration requirement and private-offering exemptions, Regulation D conditions, offering notices (Form D and blue sky), and compensatory-issuance exemptions. | partial |
-| Equity and compensation | 409A valuation presumptions and penalties, 83(b) elections and restricted stock, ISO and NSO tax treatment, and QSBS. | mapped |
+| Equity and compensation | 409A valuation presumptions and penalties, 83(b) elections and restricted stock, ISO and NSO tax treatment, QSBS, and the UK EMI notification deadline. | partial |
 | Employment | Hiring and onboarding duties, federal wage and hour baselines, worker classification, restrictive covenants, terminations and layoffs, workplace safety, and benefits. | partial |
-| Tax | Federal corporate income tax and R&D rules, payroll taxes, state entity-level taxes, and sales tax. | partial |
+| Tax | Corporate income tax and R&D rules, payroll taxes, state entity-level taxes, and sales tax and VAT. | partial |
 | Intellectual property | Ownership and assignment of founder, employee, and contractor work product; patents; trademarks; trade secrets; and open source. | partial |
 | Contracts and commercial | Electronic contracting, marketing communications, customer contracts, and dispute deadlines. | partial |
 | Privacy and data protection | US state privacy statutes, federal sectoral privacy law, and EU data protection. | partial |
 | Immigration | Founder immigration paths and employment-based work visas. | partial |
 | Dissolution and distress | Voluntary dissolution and wind-down, and insolvency paths. | partial |
 
-A trimmed real card (`open-law/US-FED/us-fed-1120-filing-deadline.json`):
+A trimmed real card (`open-law/US-FED/us-fed-1120-filing-deadline.json`) reads:
 
 ```jsonc
 {
@@ -65,8 +65,52 @@ Contribute here:
   `reviewed_on` / `review_due`; if the meaning changed, version the ID instead of editing
   it in place.
 
-Gate: `npx vitest run __tests__/founder-ops.test.ts` (source resolution, jurisdiction
+Gate: `pnpm test __tests__/founder-ops.test.ts` (source resolution, jurisdiction
 matching, ID stability).
+
+## By jurisdiction
+
+The cards live in one directory per jurisdiction, named by the `jurisdiction` codes in
+`jurisdictions/registry.json`.
+
+| Jurisdiction | The cards cover |
+| --- | --- |
+| [US-FED](US-FED/) | 83(b) elections, 409A presumptions and penalties, ISO/AMT and QSBS treatment, securities exemptions and Form D, corporate and payroll filing deadlines, FLSA baselines, I-9 timing, contractor IP assignment, CAN-SPAM, e-signature validity, beneficial-ownership reporting, founder parole |
+| [US-DE](US-DE/) | Incorporation mechanics and certificate contents, board and stockholder written consent, stock and option authorization, both franchise-tax methods, dissolution and post-dissolution continuation |
+| [US-CA](US-CA/) | CCPA business thresholds, final-wages timing, foreign qualification, the Statement of Information, invention-assignment limits, the noncompete void rule, the minimum franchise tax |
+| [US-NV](US-NV/) | The annual list and business license, the commerce-tax threshold |
+| [US-NY](US-NY/) | The wage notice at hire |
+| [US-TX](US-TX/) | Foreign registration, the franchise-tax report |
+| [US-WA](US-WA/) | The noncompete earnings threshold |
+| [EU](EU/) | The GDPR data-subject-access response deadline |
+| [UK](UK/) | Company registration and the certificate of incorporation, the confirmation statement, allotment returns, accounts filing periods, PSC information notices, corporation tax notice and PAYE registration deadlines, the VAT registration threshold, the written statement of particulars, EMI notification |
+
+## Founder-journey workflow files
+
+The founder-journey taxonomy and the jurisdiction-scoped workflow coverage live here,
+beside the law layer that grades them. `workflow-domains.json` names the lifecycle
+domains from formation through exit, each with its topics, including domains with no
+playbook yet. `workflow-coverage.json` records which jurisdiction-scoped workflows
+exist, for which entity and tax jurisdictions, at what maturity, with dated reviews,
+stated limits, and the uncovered scenarios listed in the same file. `lib/founderOps.ts`
+checks both in CI: every workflow in `open-processes/<domain>/<jurisdiction>/` must
+carry a coverage entry, every entry must resolve to a committed workflow, and `reviewed`
+status is accepted only when the workflow itself is reviewed. A new workflow lands with
+its maturity grade recorded in `workflow-coverage.json`; no jurisdiction is called
+covered because a few playbooks exist (`policies/REVIEW_POLICY.md`).
+
+## The 83(b) rule, followed through the repo
+
+The map's cross-links are navigable in both directions; one worked chain: the distilled
+law states the thirty-day election window
+([LAWS.md, Formation and housekeeping](LAWS.md#formation-and-housekeeping)). Its rule card
+[`us-fed.83b-filing-period`](US-FED/us-fed-83b-filing-period.json) pins the statute and
+IRS procedure. The Incorporate C-Corp process signs and files the election as explicit
+steps, and the jurisdiction-scoped workflow
+[`equity.us-de.83b-election`](../open-processes/equity/us-de/83b-election.json) runs it
+with a named human approval on the filing. The
+[83(b) election math module](../open-modules/README.md#83b-election-math) computes
+tax-at-grant against tax-at-vesting and replays the Rev. Proc. 2012-29 examples in tests.
 
 ## Citations
 
@@ -90,9 +134,17 @@ offline.
 ## LAWS.md
 
 `LAWS.md` distills the reading canon into recurring, near-universal startup principles
-grouped by lifecycle stage; every law cites its sources by id — the authorities in
+grouped by lifecycle stage: [idea and validation](LAWS.md#idea-and-validation),
+[formation and housekeeping](LAWS.md#formation-and-housekeeping),
+[product and first users](LAWS.md#product-and-first-users),
+[fundraising and equity](LAWS.md#fundraising-and-equity),
+[growth, people and spending](LAWS.md#growth-people-and-spending), and
+[survival and the long game](LAWS.md#survival-and-the-long-game).
+Every law cites its sources by id (the authorities in
 `citations/registry.json` here and the reading canon in `open-lore/library.json` and
-`open-lore/citations.json` — aphorisms are attributed to their actual origin, and the
+`open-lore/citations.json`), aphorisms are attributed to their actual origin, and the
 only literal laws (filing deadlines) also carry rule cards here. Gate:
-`npx vitest run __tests__/laws.test.ts` (grammar, numbering, and citation resolution via
+`pnpm test __tests__/laws.test.ts` (grammar, numbering, and citation resolution via
 `lib/laws.ts`).
+
+This area's maturity grade and known gaps are tracked in [`coverage/index.json`](../coverage/index.json).

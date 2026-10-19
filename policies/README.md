@@ -1,7 +1,7 @@
 # Policies
 
-The policies that bind every record here, and the one place where a maintainer
-must agree before merge.
+These are the policies that bind every record here, and this is the one place where a
+maintainer must agree before merge.
 
 - `REVIEW_POLICY.md` — the review bar, the coverage maturity ladder (draft → demonstration
   → reviewed), and the evidence doctrine: what counts as evidence, churn rules,
@@ -9,7 +9,7 @@ must agree before merge.
 - `AGENT_POLICY.md` — ground rules for agents consuming or contributing to the data.
 
 The data-hygiene doctrine (no real company data, no PII, fictional fixtures only) lives
-in the repo-root `SECURITY.md` alongside the vulnerability policy.
+in [.github/SECURITY.md](../.github/SECURITY.md#data-hygiene) alongside the vulnerability policy.
 
 Contribute here:
 
@@ -18,3 +18,5 @@ Contribute here:
 - **Doctrine proposals** — changes to what `reviewed` requires or how contests settle
   change how every record is judged, so they land separately with explicit maintainer
   sign-off.
+
+This area's maturity grade and known gaps are tracked in [`coverage/index.json`](../coverage/index.json).

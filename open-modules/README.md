@@ -1,16 +1,16 @@
 # Open modules
 
-The startup calculations as code (cap tables, rounds, waterfalls, runway, tax
+The startup calculations are here as code (cap tables, rounds, waterfalls, runway, tax
 mechanics): every module is pure, deterministic, and validated against published worked
 examples.
 
 Part of [the open startup repo](../README.md#open-modules), separate from law (`open-law/`)
 and the vendor evidence layer (`open-rankings/`). The modules live in
 `lib/openstartup/` and are indexed in the table below
-(`npx vitest run lib/openstartup/__tests__/` runs their gates). Repo-first by design: use
+(`pnpm test lib/openstartup/__tests__/` runs their gates). Repo-first by design: use
 them from tests, scripts, or your own agent.
 
-The bar, fixed for every module: a contract, explicit assumptions, a citation on every
+The bar is fixed for every module: a contract, explicit assumptions, a citation on every
 formula's doc comment (a published guide, form, or primary source — never "everyone
 knows"), explicit rounding, worked examples reproduced number-for-number from the cited
 sources, deterministic tests, and explicit jurisdiction dependencies. An open module may
@@ -22,7 +22,7 @@ property-tested — **not** independently expert-certified, and the module docs 
 
 ## Module index
 
-The catalog is organized into four groups, committed per module in
+The catalog is organized into groups, committed per module in
 `open-processes/business-logic-map.json` (`group`). The Serves column names the processes
 each module computes for, written from the same map by
 `scripts/generate-business-logic-serves.ts` and drift-gated like the per-module Serves
@@ -861,7 +861,7 @@ books.
   cited source, and property tests. The assessed candidate backlog — with build/skip/defer
   verdicts and the citable sources that exist (or the recorded absence of one) — lives in
   [`docs/OPEN-MODULES-GAPS.md`](../docs/OPEN-MODULES-GAPS.md). Gate:
-  `npx vitest run lib/openstartup/__tests__/` (and `pnpm test`).
+  `pnpm test lib/openstartup/__tests__/` (and `pnpm test`).
 - **Harden an existing module** — a missed edge case from a cited worked example, a new
   property test, or a correction with the source that proves it (e.g. the YC Post-Money
   Safe User Guide for `capTable.ts`).
@@ -869,3 +869,5 @@ books.
   card in `open-law/` and return `needs_review` when locale or date is unknown; results are
   decision support, never authorization. The conservative workflow planner lives in
   `lib/founderOps.ts` and is gated by `__tests__/founder-ops.test.ts`.
+
+This area's maturity grade and known gaps are tracked in [`coverage/index.json`](../coverage/index.json).

@@ -5,13 +5,13 @@ These bind every agent and contributor working in this repo.
 ## Evidence doctrine
 
 - Never hand-tune a verdict, score, rank, or leaderboard position. Every ranked number is
-  computed from judged evidence by the rankings engine — change the inputs or the code, never the
-  output. Negative results stay published.
+  computed from judged evidence by the rankings engine; to change a number, change the inputs
+  or the code. Negative results stay published.
 - Every claim cites its evidence (vendor docs, GitHub, community sources, or a recorded
   probe). No citable evidence → no claim. Never fabricate a URL; if a source is bot-walled,
   document that and substitute a reachable one.
-- Products affiliated with the founders are disclosed and bias-audited, never favored.
-- Counts shown on pages are computed at build time, never hand-written. README and doc
+- Products affiliated with the founders are disclosed and bias-audited like any other product.
+- Counts shown on pages are computed at build time. README and doc
   prose carries no counts and no dates that will go stale.
 
 ## Writing voice
@@ -20,7 +20,7 @@ These bind every agent and contributor working in this repo.
   "judged on evidence"-style suffixes, no invented framing ("the three pillars"), no
   conversational tics ("all pure", "the real X").
 
-## Gates — exit codes, never grep'd output
+## Gates
 
 All of these must exit 0 before any merge to main:
 
@@ -31,7 +31,7 @@ All of these must exit 0 before any merge to main:
 5. `pnpm manifest:check` (every tracked path classified in `open-manifest.json`)
 6. `pnpm shared:check` when `content/processes/` or the shared corpus is touched
 
-Never gate an `&&` chain on echoed text — test the tool's exit code.
+Never gate an `&&` chain on echoed text; test the tool's exit code.
 
 ## Workflow
 
@@ -39,13 +39,15 @@ Never gate an `&&` chain on echoed text — test the tool's exit code.
 - Author process meaning in `open-processes/<slug>.json`. Regenerate compatibility files
   with `pnpm shared:project`; never edit generated corpus, chains or equity projections.
 
-## Immutable identifiers — legacy on purpose, never rename
+## Immutable identifiers
+
+The following identifiers are legacy on purpose:
 
 `PROVENANCE_KEY 'productarena-provenance-v1'`; `pa-*` localStorage keys; `pa_session` /
 `pa_state` cookies; recorded probe-evidence strings (`'productarena certify'`,
 `PA_PROBE_OK`, `'productarena-probe'` user agents); `lib/mcpDemoCalls` `'self/productarena'`;
 manifest source `'productarena'`; the `#pa-score` anchor; the `productarena-proxy` worker
-name; `/productarena` redirect routes. These are recorded evidence or deployed state —
+name; `/productarena` redirect routes. These are recorded evidence or deployed state;
 renaming them breaks provenance. New code reads `UM_*` env names first with `PA_*` as
 deprecated fallback; user-facing copy never says "productarena" or "PA".
 
@@ -107,10 +109,11 @@ traps:
 ## The rankings engine
 
 `pnpm engine <stage> --category <id> [--product <id>]` runs the stages
-(crawl, extract, normalize, collect-community, probe, judge, derive, logos,
-popularity). `pnpm run pipeline` remains as a deprecated alias for the same entry
-point during the transition. The LLM stages (`extract`, `normalize`, `collect-community`, `judge`)
-need `ANTHROPIC_API_KEY` in a local `.env`. That key is local-engine-only: it must
+(crawl, extract, normalize, collect-community, probe, probe-record, judge, claims,
+pricing, integrations, screenshots, derive, logos, popularity). `pnpm run pipeline`
+remains as a deprecated alias for the same entry point during the transition. The LLM
+stages (`extract`, `normalize`, `collect-community`, `judge`, `claims`, `pricing`,
+`integrations`) need `ANTHROPIC_API_KEY` in a local `.env`. That key is local-engine-only: it must
 never be set on the Vercel project, and the deployed site never calls the Anthropic
 API. Verdicts are cache-keyed on their evidence, so re-judging without new evidence
 reproduces the same verdicts; scope runs with `--product` where possible. After a contributed

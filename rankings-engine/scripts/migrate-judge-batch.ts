@@ -61,7 +61,7 @@ function arg(name: string): string | undefined {
 }
 
 const stateDir = path.resolve(arg('state') ?? '/tmp/judge-migration-2026-09-30')
-for (const forbidden of [path.join(ROOT, 'open-rankings'), path.join(ROOT, 'pipeline', 'cache')]) {
+for (const forbidden of [path.join(ROOT, 'open-rankings'), path.join(ROOT, 'rankings-engine', 'cache')]) {
   if (stateDir === forbidden || stateDir.startsWith(forbidden + path.sep)) {
     throw new Error(`migrate-judge-batch: --state ${stateDir} is inside ${forbidden}`)
   }

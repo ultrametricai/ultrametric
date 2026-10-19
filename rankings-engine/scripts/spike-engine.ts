@@ -443,7 +443,7 @@ async function spikeProduct(arena: string, productId: string, urlBudget: number,
     console.log(`REVERT ${arena}/${productId}:${v.storyId} ${v.verdict}/q${v.quality} -> ${old!.verdict}/q${old!.quality} (no new citation)`)
     // Patch the judge cache too (same mechanics as revert-churn-*-wave.ts): keep the current
     // hash, restore the old verdict, so the next judge run doesn't resurrect the churn.
-    const cacheFile = path.join(ROOT, 'pipeline', 'cache', 'judge', arena, productId, `${v.storyId}.json`)
+    const cacheFile = path.join(ROOT, 'rankings-engine', 'cache', 'judge', arena, productId, `${v.storyId}.json`)
     if (fs.existsSync(cacheFile)) {
       const cached = JSON.parse(fs.readFileSync(cacheFile, 'utf8')) as { hash: string }
       writeJson(cacheFile, { hash: cached.hash, verdict: old })

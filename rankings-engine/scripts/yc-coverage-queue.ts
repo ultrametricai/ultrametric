@@ -32,7 +32,7 @@ import { readJson, resolveCategories, writeJson, ROOT } from '../paths'
 import { batchCode, normalizeDomain, YC_ALL_COMPANIES_URL, type YcRawCompany } from '../yc-shared'
 import { DOMAIN_VOCAB } from './tag-story-scopes'
 
-const CACHE_DIR = path.join(ROOT, 'pipeline', 'cache', 'yc')
+const CACHE_DIR = path.join(ROOT, 'rankings-engine', 'cache', 'yc')
 const FEED_CACHE = path.join(CACHE_DIR, 'companies-all.json')
 const YC_MAP_PATH = path.join(ROOT, 'open-rankings', 'yc-map.json')
 const QUEUE_PATH = path.join(ROOT, 'open-rankings', 'yc-queue.json')
