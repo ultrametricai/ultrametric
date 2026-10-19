@@ -28,6 +28,14 @@ describe('cellHash', () => {
     const after = [{ ...ev('e1', 'claimed-docs'), excerpt: 'new excerpt' }]
     expect(cellHash(story, before, 'v1')).not.toBe(cellHash(story, after, 'v1'))
   })
+
+  it('changes when an evidence item keeps its id but its tier or url is corrected (both reach the prompt)', () => {
+    const base = [ev('e1', 'claimed-docs')]
+    const retiered = [{ ...ev('e1', 'claimed-docs'), tier: 'community' as const }]
+    const relinked = [{ ...ev('e1', 'claimed-docs'), url: 'https://x.example/corrected' }]
+    expect(cellHash(story, base, 'v1')).not.toBe(cellHash(story, retiered, 'v1'))
+    expect(cellHash(story, base, 'v1')).not.toBe(cellHash(story, relinked, 'v1'))
+  })
 })
 
 describe('validateVerdictRules', () => {

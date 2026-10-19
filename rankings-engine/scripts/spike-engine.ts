@@ -445,8 +445,9 @@ async function spikeProduct(arena: string, productId: string, urlBudget: number,
     // hash, restore the old verdict, so the next judge run doesn't resurrect the churn.
     const cacheFile = path.join(ROOT, 'rankings-engine', 'cache', 'judge', arena, productId, `${v.storyId}.json`)
     if (fs.existsSync(cacheFile)) {
-      const cached = JSON.parse(fs.readFileSync(cacheFile, 'utf8')) as { hash: string }
-      writeJson(cacheFile, { hash: cached.hash, verdict: old })
+      // Spread the cached entry so sibling fields (hash, keyVersion) survive the rewrite.
+      const cached = JSON.parse(fs.readFileSync(cacheFile, 'utf8')) as Record<string, unknown>
+      writeJson(cacheFile, { ...cached, verdict: old })
     }
     return old!
   })
