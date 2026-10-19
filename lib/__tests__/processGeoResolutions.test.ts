@@ -86,8 +86,10 @@ describe('step geo resolutions', () => {
     // The notice-terms step resolves in every covered country.
     expect(byId('sit_019').geoScope).toBe('global')
     expect(countries('sit_019', 'n2')).toEqual(['CA', 'DE', 'FR', 'IN', 'PT', 'UK', 'US'])
-    // First-hire formalities: the I-9/W-4 mechanics moved into the US entry.
-    expect(byId('hr_001').geoScope).toBe('global')
+    // First-hire formalities: the I-9/W-4 mechanics moved into the US entry. geoScope stays
+    // 'us': the record produces the employment-agreement artifact, whose committed geo entries
+    // require a US-centric producer (lib/__tests__/processArtifacts.test.ts).
+    expect(byId('hr_001').geoScope).toBe('us')
     expect(countries('hr_001', 'n6')).toEqual(['FR', 'PT', 'UK', 'US'])
     // The register lookup: TSDR is the US resolution, with the committed IN/PT/CA checks beside it.
     expect(byId('sit_001').geoScope).toBe('global')
