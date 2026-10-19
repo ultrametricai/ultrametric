@@ -61,9 +61,51 @@ describe('replayPricedRound — Appendix II Example 1, stage by stage', () => {
     expect(replay.error).toBeUndefined()
     expect(replay.termSheet.postMoney).toBe(20_000_000)
     expect(replay.termSheet.newInvestorsPct).toBe(25)
-    // SAFEs on the table: 5% + 10% as-converted, 10% of it holding pro rata.
+    // SAFEs on the table: 5% + 10% as-converted, 10% of it holding pro rata. The pool term
+    // is the round's ACTUAL increase as % of post-close fully diluted — 1,695,000 of
+    // 17,946,424 = 9.4448% — so a poolShares round contributes its real dilution to the
+    // estimate instead of nothing.
     expect(replay.termSheet.dilution).toEqual(
-      estimateRoundDilution({ safesPct: 15, safesWithProRataPct: 10, newInvestorsPct: 25, poolIncreasePct: 0 }),
+      estimateRoundDilution({
+        safesPct: 15,
+        safesWithProRataPct: 10,
+        newInvestorsPct: 25,
+        poolIncreasePct: (1_695_000 / 17_946_424) * 100,
+      }),
+    )
+  })
+
+  it('a poolTargetPct round feeds the estimate the implied INCREASE, not the raw target', () => {
+    // The history already carries a 100,000-share unissued pool, so hitting a 10% post-close
+    // target takes LESS than 10 points of new dilution — the term sheet must say what the
+    // closing will do, not restate the target.
+    const r = replayPricedRound(HISTORY, { name: 'Series A', preMoney: 15_000_000, newMoney: 5_000_000, poolTargetPct: 10 })
+    const impliedPct = (r.closing!.round.poolIncreaseShares / r.postClose!.fullyDilutedShares) * 100
+    expect(impliedPct).toBeLessThan(10)
+    expect(impliedPct).toBeGreaterThan(9)
+    expect(r.termSheet.dilution).toEqual(
+      estimateRoundDilution({ safesPct: 15, safesWithProRataPct: 10, newInvestorsPct: 25, poolIncreasePct: impliedPct }),
+    )
+  })
+
+  it('discount-only SAFEs are not dropped from the estimate', () => {
+    // A $1m 20%-discount SAFE has no cap-determined ownership; its as-converted % comes
+    // from the engine's own §B conversion instead of silently contributing zero.
+    const history: CapTableEvent[] = [
+      { kind: 'found', founders: [{ name: 'F', shares: 10_000_000 }] },
+      { kind: 'safe', name: 'D', amount: 1_000_000, discountPct: 20 },
+    ]
+    const r = replayPricedRound(history, { name: 'A', preMoney: 12_000_000, newMoney: 3_000_000 })
+    const conv = r.closing!.conversions[0]
+    expect(conv.shares).toBeGreaterThan(0)
+    expect(conv.postConversionPct).toBeGreaterThan(0)
+    expect(r.termSheet.dilution).toEqual(
+      estimateRoundDilution({
+        safesPct: conv.postConversionPct,
+        safesWithProRataPct: 0,
+        newInvestorsPct: r.termSheet.newInvestorsPct,
+        poolIncreasePct: 0,
+      }),
     )
   })
 
