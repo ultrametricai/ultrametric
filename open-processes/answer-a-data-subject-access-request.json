@@ -3,7 +3,7 @@
   "id": "sit_015",
   "kind": "situation",
   "title": "Answer a data-subject access request",
-  "summary": "A DSAR looks like an ordinary email. It is a legal request with a statutory deadline. Under GDPR, respond without undue delay and within one month of receipt. You can extend two more months for complex or numerous requests, but only if you tell the requester within the first month (Art. 12(3), rule card eu.gdpr-dsar-response-deadline, EUR-Lex cited). The CCPA gives you 45 days, per the California AG's own page. Verify the requester's identity proportionately. Inventory everything you hold on them: product database, analytics, support desk, email tools, payment processor. Have counsel check the exemptions before anything goes out. An over-disclosure cannot be taken back, which is why sending is the irreversible step. Educational guidance, not legal advice; the controlling deadline is the statute's, verified at the primary source.",
+  "summary": "A DSAR looks like an ordinary email. It is a legal request with a statutory deadline. Under GDPR, respond without undue delay and within one month of receipt. You can extend two more months for complex or numerous requests, but only if you tell the requester within the first month (Art. 12(3), rule card eu.gdpr-dsar-response-deadline, EUR-Lex cited). The CCPA gives you 45 days, per the California AG's own page. Verify the requester's identity proportionately. Inventory everything you hold on them: product database, analytics, support desk, email tools, payment processor. Have counsel check the exemptions before anything goes out. An over-disclosure cannot be taken back, which is why sending is the irreversible step. Where the request is, or includes, deletion (GDPR Art. 17 erasure, CCPA request to delete), the same clock applies: execute the erasure across systems and processors, apply the statutory exceptions, and confirm what was deleted. Educational guidance, not legal advice; the controlling deadline is the statute's, verified at the primary source.",
   "outcomes": [],
   "guidance": null,
   "parts": [
@@ -164,6 +164,38 @@
         "reversibility": "reversible",
         "estimatedMinutes": 45
       }
+    },
+    {
+      "id": "n8",
+      "kind": "step",
+      "title": "Execute the deletion where the request asks for erasure: delete or de-identify across your systems and processors, apply the statutory exceptions (GDPR Art. 17(3), CCPA §1798.105(d)), and record what was deleted and what was retained and why",
+      "guidance": null,
+      "when": null,
+      "ref": null,
+      "options": [],
+      "notes": [],
+      "references": [
+        {
+          "kind": "url",
+          "url": "https://eur-lex.europa.eu/eli/reg/2016/679/oj",
+          "role": "legacy-action-link",
+          "title": "GDPR (EUR-Lex, Art. 17)",
+          "description": null
+        },
+        {
+          "kind": "url",
+          "url": "https://oag.ca.gov/privacy/ccpa",
+          "role": "legacy-action-link",
+          "title": "California AG: CCPA (right to delete)",
+          "description": null
+        }
+      ],
+      "metadata": {
+        "route": "agent",
+        "reversibility": "irreversible",
+        "riskLevel": "high",
+        "estimatedMinutes": 90
+      }
     }
   ],
   "links": [
@@ -180,10 +212,20 @@
     {
       "from": "n3",
       "to": "n4",
-      "when": null
+      "when": "The request seeks access: a copy of the data and the processing details (a request to know)."
+    },
+    {
+      "from": "n3",
+      "to": "n8",
+      "when": "The request is, or includes, deletion: a GDPR Art. 17 erasure request or a CCPA request to delete."
     },
     {
       "from": "n4",
+      "to": "n5",
+      "when": null
+    },
+    {
+      "from": "n8",
       "to": "n5",
       "when": null
     },
@@ -242,8 +284,8 @@
       "ccpa",
       "dsar"
     ],
-    "activeMinutes": 335,
-    "totalEstimatedMinutes": 335,
+    "activeMinutes": 425,
+    "totalEstimatedMinutes": 425,
     "hasAsyncSteps": false,
     "annoyance": 3,
     "risk": 4,

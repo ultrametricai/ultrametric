@@ -352,7 +352,7 @@
           },
           "cost": {
             "usd": 50,
-            "kind": "government-fee",
+            "kind": "optional-government-fee",
             "source": "https://corpfiles.delaware.gov/Fee_Schedule/AugustFee2026.pdf",
             "asOf": "2026-10-01",
             "note": "Optional certified copy of the filed certificate: $50 per document plus $2 per page (expedited $60 same-day / $50 24-hour). The plain stamped copy comes back with the filing itself at no extra fee."
@@ -16755,7 +16755,7 @@
       {
         "country": "CA",
         "kind": "analog",
-        "summary": "A solvent corporation dissolves by shareholder-authorized articles of dissolution filed with Corporations Canada — close the CRA program accounts (payroll, GST/HST) and file the final T2 before the certificate issues.",
+        "summary": "A solvent corporation dissolves by shareholder-authorized articles of dissolution filed with Corporations Canada; the certificate of dissolution ends the final tax year, so the final T2 (due within six months of that year end) and the CRA program-account closures (payroll, GST/HST) follow the certificate.",
         "actionUrl": "https://ised-isde.canada.ca/site/corporations-canada/en/closing-corporation",
         "actionLabel": "Corporations Canada — closing a corporation"
       }
@@ -22239,16 +22239,16 @@
         },
         {
           "from": "n4",
-          "to": "n5",
-          "when": null
-        },
-        {
-          "from": "n5",
           "to": "n6",
           "when": null
         },
         {
           "from": "n6",
+          "to": "n5",
+          "when": null
+        },
+        {
+          "from": "n5",
           "to": "n7",
           "when": null
         },
@@ -22755,6 +22755,11 @@
           "when": null
         },
         {
+          "from": "n1",
+          "to": "n6",
+          "when": null
+        },
+        {
           "from": "n2",
           "to": "n3",
           "when": null
@@ -22771,7 +22776,7 @@
         },
         {
           "from": "n5",
-          "to": "n6",
+          "to": "n7",
           "when": null
         },
         {
@@ -23754,13 +23759,18 @@
           "when": null
         },
         {
-          "from": "n2",
+          "from": "n1",
           "to": "n3",
           "when": null
         },
         {
-          "from": "n3",
+          "from": "n1",
           "to": "n4",
+          "when": null
+        },
+        {
+          "from": "n2",
+          "to": "n5",
           "when": null
         },
         {
@@ -23776,6 +23786,11 @@
         {
           "from": "n6",
           "to": "n7",
+          "when": null
+        },
+        {
+          "from": "n3",
+          "to": "n8",
           "when": null
         },
         {
@@ -23918,12 +23933,12 @@
         },
         {
           "from": "n5",
-          "to": "n6",
+          "to": "n7",
           "when": null
         },
         {
-          "from": "n6",
-          "to": "n7",
+          "from": "n7",
+          "to": "n6",
           "when": null
         }
       ]
@@ -23971,8 +23986,8 @@
       "ccpa",
       "dsar"
     ],
-    "activeMinutes": 335,
-    "totalEstimatedMinutes": 335,
+    "activeMinutes": 425,
+    "totalEstimatedMinutes": 425,
     "hasAsyncSteps": false,
     "annoyance": 3,
     "risk": 4,
@@ -23982,7 +23997,7 @@
     "vendors": [],
     "id": "sit_015",
     "title": "Answer a data-subject access request",
-    "description": "A DSAR looks like an ordinary email. It is a legal request with a statutory deadline. Under GDPR, respond without undue delay and within one month of receipt. You can extend two more months for complex or numerous requests, but only if you tell the requester within the first month (Art. 12(3), rule card eu.gdpr-dsar-response-deadline, EUR-Lex cited). The CCPA gives you 45 days, per the California AG's own page. Verify the requester's identity proportionately. Inventory everything you hold on them: product database, analytics, support desk, email tools, payment processor. Have counsel check the exemptions before anything goes out. An over-disclosure cannot be taken back, which is why sending is the irreversible step. Educational guidance, not legal advice; the controlling deadline is the statute's, verified at the primary source.",
+    "description": "A DSAR looks like an ordinary email. It is a legal request with a statutory deadline. Under GDPR, respond without undue delay and within one month of receipt. You can extend two more months for complex or numerous requests, but only if you tell the requester within the first month (Art. 12(3), rule card eu.gdpr-dsar-response-deadline, EUR-Lex cited). The CCPA gives you 45 days, per the California AG's own page. Verify the requester's identity proportionately. Inventory everything you hold on them: product database, analytics, support desk, email tools, payment processor. Have counsel check the exemptions before anything goes out. An over-disclosure cannot be taken back, which is why sending is the irreversible step. Where the request is, or includes, deletion (GDPR Art. 17 erasure, CCPA request to delete), the same clock applies: execute the erasure across systems and processors, apply the statutory exceptions, and confirm what was deleted. Educational guidance, not legal advice; the controlling deadline is the statute's, verified at the primary source.",
     "dag": {
       "nodes": [
         {
@@ -24048,6 +24063,16 @@
           "estimatedMinutes": 45,
           "id": "n7",
           "label": "Fix the intake: a records-of-processing map and a standing DSAR runbook so the next one is routine"
+        },
+        {
+          "route": "agent",
+          "reversibility": "irreversible",
+          "riskLevel": "high",
+          "estimatedMinutes": 90,
+          "actionUrl": "https://oag.ca.gov/privacy/ccpa",
+          "actionLabel": "California AG: CCPA (right to delete)",
+          "id": "n8",
+          "label": "Execute the deletion where the request asks for erasure: delete or de-identify across your systems and processors, apply the statutory exceptions (GDPR Art. 17(3), CCPA §1798.105(d)), and record what was deleted and what was retained and why"
         }
       ],
       "edges": [
@@ -24064,10 +24089,20 @@
         {
           "from": "n3",
           "to": "n4",
-          "when": null
+          "when": "The request seeks access: a copy of the data and the processing details (a request to know)."
+        },
+        {
+          "from": "n3",
+          "to": "n8",
+          "when": "The request is, or includes, deletion: a GDPR Art. 17 erasure request or a CCPA request to delete."
         },
         {
           "from": "n4",
+          "to": "n5",
+          "when": null
+        },
+        {
+          "from": "n8",
           "to": "n5",
           "when": null
         },
@@ -24205,11 +24240,16 @@
         {
           "from": "n3",
           "to": "n4",
-          "when": null
+          "when": "The rejection or removal is on Apple's App Store."
+        },
+        {
+          "from": "n3",
+          "to": "n5",
+          "when": "The rejection or removal is on Google Play."
         },
         {
           "from": "n4",
-          "to": "n5",
+          "to": "n6",
           "when": null
         },
         {

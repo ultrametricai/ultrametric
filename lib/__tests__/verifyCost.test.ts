@@ -128,11 +128,12 @@ describe('derived known-cost total', () => {
   const byId = new Map(tasks.map((t) => [t.id, t]))
 
   it('sums dated government fees only — free is $0 and vendor prices never leak in', () => {
-    // form_001 (founder spike 2026-10-02 reference depth): $109 DE filing + $50 certified copy
-    // (noted optional on the step) + $5.55 USPS certified mail for the 83(b). The $500 Stripe
-    // Atlas / $427 Clerky vendor stickers are excluded, and the CA foreign-qualification fee
-    // lives on a jurisdiction-conditional node that loadProcesses strips from this default view.
-    expect(knownCostUsd(byId.get('form_001')!.dag.nodes)).toBeCloseTo(164.55, 2)
+    // form_001 (founder spike 2026-10-02 reference depth): $109 DE filing + $5.55 USPS
+    // certified mail for the 83(b). The $50 certified copy is optional-government-fee and stays
+    // out of the minimum, the $500 Stripe Atlas / $427 Clerky vendor stickers are excluded, and
+    // the CA foreign-qualification fee lives on a jurisdiction-conditional node that
+    // loadProcesses strips from this default view.
+    expect(knownCostUsd(byId.get('form_001')!.dag.nodes)).toBeCloseTo(114.55, 2)
     // legal_002: the $350 USPTO fee counts; the usd-null attorney-fee entry contributes nothing.
     expect(knownCostUsd(byId.get('legal_002')!.dag.nodes)).toBe(350)
     // tax_001: the $225 DE minimum (tax + annual report fee).
