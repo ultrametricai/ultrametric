@@ -37,7 +37,7 @@ Never gate an `&&` chain on echoed text; test the tool's exit code.
 
 - Every change lands as a branch + pull request. No direct commits to main.
 - Author process meaning in `open-processes/<slug>.json`. Regenerate compatibility files
-  with `pnpm shared:project`; never edit generated corpus, chains or equity projections.
+  with `pnpm shared:project`; never edit generated equity projections.
 
 ## Immutable identifiers
 
@@ -54,7 +54,7 @@ deprecated fallback; user-facing copy never says "productarena" or "PA".
 # Shared process content
 
 The canonical situations/process records live in `open-processes/`.
-Corpus, chains and jurisdiction files are checked compatibility projections. Public Git owns shared process meaning. Private UM
+Operational and chain readers project canonical definitions in memory. Jurisdiction files are checked compatibility projections. Public Git owns shared process meaning. Private UM
 instructions live as versioned additions in the API database. Do not use the
 retired private process repo as a source of authority or copy private guides here.
 Run `pnpm shared:check` and the shared-process tests for schema or catalog changes.

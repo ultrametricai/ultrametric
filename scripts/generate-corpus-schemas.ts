@@ -1,6 +1,6 @@
 // Publish the operational-process corpus contract as
 // a standalone JSON Schema — schemas/operational-process.schema.json — so external consumers can
-// validate open-processes/corpus.json records without running our TypeScript. The zod schemas in
+// validate operational projections of canonical definitions without running our TypeScript. The zod schemas in
 // lib/processes.ts stay the single source of truth: this file is GENERATED from
 // ProcessTaskSchema via zod's native z.toJSONSchema (no extra dependency — the repo's
 // supply-chain minimumReleaseAge policy rules out adding zod-to-json-schema), and the drift test
@@ -58,8 +58,7 @@ export function operationalProcessSchemaJson(): string {
     $schema,
     title: 'Ultrametric operational process',
     description:
-      'One record of the operational founder-process corpus (open-processes/corpus.json is an array ' +
-      'of these): a real startup operating process mapped as a DAG whose steps are routed ' +
+      'One operational projection of a canonical founder-process definition: a real startup operating process mapped as a DAG whose steps are routed ' +
       'agent/form/person, with curated cadence, geo scope, rank axes, and time estimates. ' +
       'Generated from ProcessTaskSchema in lib/processes.ts by ' +
       'scripts/generate-corpus-schemas.ts — edit the zod schema, never this file.',

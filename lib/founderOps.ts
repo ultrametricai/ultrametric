@@ -1,6 +1,6 @@
 import fs from 'node:fs'
 import path from 'node:path'
-import { processDefinitionSchema } from './shared-processes/catalog'
+import { loadProcessCatalog, processDefinitionSchema } from './shared-processes/catalog'
 
 // The founder-ops corpus validator + conservative planner — a faithful TypeScript port of the
 // founder-ops-open starter's tools/validate.py (ingested 2026-09-28), rehomed into the repo's
@@ -14,16 +14,9 @@ import { processDefinitionSchema } from './shared-processes/catalog'
 const ROOT = process.cwd()
 const MATCH_KEYS = ['entity_jurisdiction', 'tax_jurisdiction', 'entity_type', 'event_type'] as const
 
-// open-processes/ holds TWO layers (see open-processes/README.md): the jurisdiction-scoped legal
-// workflows this validator owns, and — since stage 2 of the corpus lift — the operational
-// corpus (open-processes/corpus.json, the 123-process array behind /processes). The corpus has its
-// own schema, loader and gates (lib/processes.ts, schemas/operational-process.schema.json,
-// lib/__tests__/processes.test.ts), so the workflow walker skips it rather than misreading a
-// task array as a workflow record.
-const OPERATIONAL_CORPUS = path.join('open-processes', 'corpus.json')
-// The corpus's vendor registry (SSOT migration 2026-09-30) is the operational layer too — its
-// own schema/loader/tests live in lib/processes.ts + schemas/process-vendor-registry.schema.json
-// + lib/__tests__/vendorRegistry.test.ts, so the workflow walker skips it like corpus.json.
+// Canonical definitions and generated jurisdiction workflows share this tree.
+// Operational views are projected by lib/processes.ts; registries have separate
+// schemas and gates, so this workflow walker skips them.
 const OPERATIONAL_VENDOR_REGISTRY = path.join('open-processes', 'vendor-registry.json')
 // The artifact registry and the company-fields registry moved to open-artifacts/
 // (registry.json + fields.json) — outside this walker's tree, with their own
@@ -33,12 +26,6 @@ const OPERATIONAL_VENDOR_REGISTRY = path.join('open-processes', 'vendor-registry
 // lib/__tests__/businessLogicMap.test.ts, so the workflow walker skips it like the other
 // operational registries.
 const OPERATIONAL_BUSINESS_LOGIC_MAP = path.join('open-processes', 'business-logic-map.json')
-// The corpus's chain list (folded in from the old top-level journeys/) is the operational
-// layer too — its own loader/tests live in lib/processes.ts (loadChains) +
-// lib/__tests__/processes.test.ts, so the workflow walker skips it like the other
-// operational registries.
-const OPERATIONAL_CHAINS = path.join('open-processes', 'chains.json')
-
 // The startup-law map (open-law/map.json, schemas/law-map.schema.json) is the domain taxonomy
 // OVER the rule cards, not a card itself, so the rule walkers skip it; its own invariants
 // (every card placed, every reference resolving, maturity grades consistent with the cards
@@ -73,10 +60,8 @@ function workflowJson(dir: string): string[] {
   return listJson(dir).filter(
     (f) =>
       !f.includes(FIXTURES_SUBTREE) &&
-      !f.endsWith(OPERATIONAL_CORPUS) &&
       !f.endsWith(OPERATIONAL_VENDOR_REGISTRY) &&
       !f.endsWith(OPERATIONAL_BUSINESS_LOGIC_MAP) &&
-      !f.endsWith(OPERATIONAL_CHAINS) &&
       !f.endsWith(path.join('open-processes', 'catalog.json')),
   )
 }
@@ -341,9 +326,13 @@ export function validateFounderOps(asOf?: Date): string[] {
   const mapDoc = read(path.join(ROOT, LAW_MAP))
   shape(mapDoc, need('law-map.schema'), 'law map', errors)
   const linkableProcessIds = new Set<string>(processes.keys())
-  const corpusDoc = read(path.join(ROOT, OPERATIONAL_CORPUS))
-  if (Array.isArray(corpusDoc)) {
-    for (const p of corpusDoc) if (isObj(p) && typeof p.id === 'string') linkableProcessIds.add(p.id)
+  try {
+    for (const { record, taskIds } of loadProcessCatalog(undefined, ROOT).processes) {
+      if ('phase' in record.metadata && !taskIds) linkableProcessIds.add(record.id)
+    }
+  } catch (error) {
+    // Keep collecting errors from malformed workflows and canonical definitions.
+    errors.push(`canonical catalog: ${error instanceof Error ? error.message : String(error)}`)
   }
   const mappedRules = new Set<string>()
   if (isObj(mapDoc)) {

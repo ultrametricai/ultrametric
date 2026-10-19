@@ -13,7 +13,7 @@ every pointer must resolve to a committed file, and the index must validate agai
 
 ## Where each area tracks its own gaps
 
-- `open-processes` — chain membership in `open-processes/chains.json`; jurisdiction-scoped
+- `open-processes` — chain membership in definitions selected by `open-processes/catalog.json`; jurisdiction-scoped
   workflow coverage in `open-law/workflow-coverage.json`; the shared-corpus import audit in
   `content/processes/legacy-audit.json`.
 - `open-rankings` — `open-rankings/arena-roadmap.json`: every arena tiered by priority and
