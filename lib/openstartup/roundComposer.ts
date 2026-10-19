@@ -173,24 +173,9 @@ export interface PricedRoundReplay {
  * post-close table. Nothing is recomputed — the composer narrates what the engine proved.
  */
 export function replayPricedRound(history: readonly CapTableEvent[], round: ComposerRound): PricedRoundReplay {
-  // Term-sheet stage from the history's own SAFEs (Σ amount/cap — capTable.safeOwnershipPct).
-  let safesPct = 0
-  let safesWithProRataPct = 0
   for (const ev of history) {
     if (ev.kind === 'priced') throw new RangeError('history must stop before the round being replayed')
-    if (ev.kind === 'safe' && ev.cap !== undefined) {
-      const pct = safeOwnershipPct(ev.amount, ev.cap)
-      safesPct += pct
-      if (ev.proRata) safesWithProRataPct += pct
-    }
   }
-  const termSheet = termSheetEconomics({
-    preMoney: round.preMoney,
-    newMoney: round.newMoney,
-    safesPct,
-    safesWithProRataPct,
-    poolIncreasePct: round.poolTargetPct,
-  })
 
   const report = buildCapTable([
     ...history,
@@ -203,6 +188,40 @@ export function replayPricedRound(history: readonly CapTableEvent[], round: Comp
       poolShares: round.poolShares,
     },
   ])
+  const finalSnapshot = report.error ? undefined : report.snapshots[report.snapshots.length - 1]
+  const roundBreakdown = finalSnapshot?.round
+
+  // Term-sheet stage from the history's own SAFEs plus, where only the engine knows the
+  // number, the engine's own results: a capped SAFE's as-converted % is amount/cap
+  // (capTable.safeOwnershipPct — the Quick Start §2 transparency); a discount-only/MFN
+  // SAFE has no cap-determined ownership, so its as-converted % is its actual §B
+  // conversion share; and the pool term is the round's actual increase as % of post-close
+  // fully diluted (poolTargetPct is a TARGET — the increase is what dilutes, and an
+  // existing unissued pool makes it smaller). When the engine rejected an event, the
+  // estimate falls back to the capped SAFEs alone with no pool term.
+  let safesPct = 0
+  let safesWithProRataPct = 0
+  for (const ev of history) {
+    if (ev.kind !== 'safe') continue
+    const pct =
+      ev.cap !== undefined
+        ? safeOwnershipPct(ev.amount, ev.cap)
+        : (roundBreakdown?.conversions.find((c) => c.safeName === ev.name)?.postConversionPct ?? 0)
+    safesPct += pct
+    if (ev.proRata) safesWithProRataPct += pct
+  }
+  const poolIncreasePct =
+    roundBreakdown && finalSnapshot && finalSnapshot.fullyDilutedShares > 0
+      ? (roundBreakdown.poolIncreaseShares / finalSnapshot.fullyDilutedShares) * 100
+      : 0
+  const termSheet = termSheetEconomics({
+    preMoney: round.preMoney,
+    newMoney: round.newMoney,
+    safesPct,
+    safesWithProRataPct,
+    poolIncreasePct,
+  })
+
   const notes = [
     'Composed replay: all share counts, prices, and conversions come from capTable.buildCapTable (YC Post-Money Safe User Guide mechanics, Appendix II replayed in its tests).',
     'SAFE conversions wire nothing at the closing — that cash arrived when each SAFE was signed; only the new cash purchases (and exercised pro rata) are wires to verify.',
@@ -212,8 +231,8 @@ export function replayPricedRound(history: readonly CapTableEvent[], round: Comp
     return { termSheet, snapshots: report.snapshots, error: report.error, needsReview: true, notes }
   }
 
-  const final = report.snapshots[report.snapshots.length - 1]
-  const breakdown = final.round as PricedRoundBreakdown
+  const final = finalSnapshot as Snapshot
+  const breakdown = roundBreakdown as PricedRoundBreakdown
   const conversions = breakdown.conversions
   const proRataTotal = conversions.reduce((s, c) => s + (c.proRataShares ?? 0), 0)
   const newInvestorShares = breakdown.roundShares - proRataTotal

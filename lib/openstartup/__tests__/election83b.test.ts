@@ -159,6 +159,21 @@ describe('scenarioTax83b replays the Examples\' sale arithmetic ($60,000 sale in
       scenarioTax83b({ facts: PAID_FACTS, vestingScenario: VESTING, salePricePerShare: 1, ordinaryRate: 37, capitalGainsRate: 0.2 }),
     ).toThrow(RangeError)
   })
+
+  it('rejects a partial vesting scenario — the two paths would sell unequal share counts', () => {
+    // With only 10,000 of 25,000 shares vested, the with-election path would sell all
+    // 25,000 while the without-election path can sell only the vested 10,000 — the
+    // electionSavings comparison would mix sale quantities, so the scenario is rejected.
+    expect(() =>
+      scenarioTax83b({
+        facts: PAID_FACTS,
+        vestingScenario: [{ label: 'cliff', shares: 10_000, fmvPerShare: 1.6 }],
+        salePricePerShare: 2.4,
+        ordinaryRate: 0.37,
+        capitalGainsRate: 0.2,
+      }),
+    ).toThrow(/vest all/)
+  })
 })
 
 describe('forfeitureAfterElection replays Examples 3 and 6', () => {

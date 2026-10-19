@@ -218,6 +218,9 @@ export interface ScenarioTax83b {
  * Full scenario arithmetic with RATES AS INPUTS — rule `us-fed.83b-scenario-arithmetic`.
  * Sells everything at a hypothetical price after full vesting (both paths assume the sale
  * is beyond the relevant holding periods; character/timing nuances are the caveat's).
+ * The vesting scenario must vest ALL the transferred shares: a partial scenario would have
+ * the two paths sell unequal share counts (unvested shares cannot be sold) and the
+ * electionSavings comparison would mix sale quantities, so it is rejected.
  * Replays Rev. Proc. 2012-29 Examples 1/2 and 4/5 gain arithmetic in the tests.
  */
 export function scenarioTax83b(inputs: {
@@ -236,11 +239,16 @@ export function scenarioTax83b(inputs: {
   assertNonNegative(inputs.salePricePerShare, 'salePricePerShare')
   const cmp = compare83bScenario(facts, inputs.vestingScenario)
   const vestedShares = inputs.vestingScenario.reduce((sum, e) => sum + e.shares, 0)
-  const saleProceedsAll = round2(facts.shares * inputs.salePricePerShare)
-  const saleProceedsVested = round2(vestedShares * inputs.salePricePerShare)
+  if (vestedShares !== facts.shares) {
+    throw new RangeError(
+      `the vesting scenario must vest all ${facts.shares} transferred shares (it vests ${vestedShares}): the sale ` +
+        `comparison sells after full vesting, and a partial scenario would sell unequal share counts across the two paths`,
+    )
+  }
+  const saleProceeds = round2(facts.shares * inputs.salePricePerShare)
 
-  const withGain = round2(saleProceedsAll - cmp.withElection.basis)
-  const withoutGain = round2(saleProceedsVested - cmp.withoutElection.basis)
+  const withGain = round2(saleProceeds - cmp.withElection.basis)
+  const withoutGain = round2(saleProceeds - cmp.withoutElection.basis)
   const withElection = {
     ordinaryTax: round2(cmp.withElection.incomeAtTransfer * inputs.ordinaryRate),
     capitalGain: withGain,
@@ -261,7 +269,7 @@ export function scenarioTax83b(inputs: {
     electionSavings: round2(withoutElection.totalTax - withElection.totalTax),
     ruleIds: cmp.ruleIds,
     needsReview: true,
-    note: `Hypothetical rates applied to hypothetical FMVs; the with-election path sells all ${facts.shares.toLocaleString('en-US')} shares, the without-election path sells the ${vestedShares.toLocaleString('en-US')} scenario-vested shares (unvested shares cannot be sold). Losses are not netted against other income here. ${DISCLAIMER}`,
+    note: `Hypothetical rates applied to hypothetical FMVs; both paths sell all ${facts.shares.toLocaleString('en-US')} shares after the scenario fully vests. Losses are not netted against other income here. ${DISCLAIMER}`,
   }
 }
 

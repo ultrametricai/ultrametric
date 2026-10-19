@@ -502,6 +502,27 @@ describe('buildCapTable validation', () => {
     expect(ok.error).toBeUndefined()
   })
 
+  it('a CAPPED SAFE is held to the same pre-money feasibility guard (the price route is always on its menu)', () => {
+    // $6m on a $100m post-money cap sells only 6% — the §D.2 capped guard passes — but the
+    // SAFE still converts at the MOST advantageous route, and its price-route claim ($6m)
+    // exceeds the $5m pre-money: no conversion price exists, so the round must be refused
+    // instead of settling on a rounding artifact.
+    const r = buildCapTable([
+      { kind: 'found', founders: [{ name: 'F', shares: 10_000_000 }] },
+      { kind: 'safe', name: 'Big', amount: 6_000_000, cap: 100_000_000 },
+      { kind: 'priced', name: 'A', preMoney: 5_000_000, newMoney: 1_000_000 },
+    ])
+    expect(r.error?.eventIndex).toBe(2)
+    expect(r.error?.message).toMatch(/pre-money/)
+    // The same SAFE under a sufficient pre-money converts normally (at its cap route).
+    const ok = buildCapTable([
+      { kind: 'found', founders: [{ name: 'F', shares: 10_000_000 }] },
+      { kind: 'safe', name: 'Big', amount: 6_000_000, cap: 100_000_000 },
+      { kind: 'priced', name: 'A', preMoney: 50_000_000, newMoney: 10_000_000 },
+    ])
+    expect(ok.error).toBeUndefined()
+  })
+
   it('grants cannot exceed the unissued pool; grants do not change fully diluted', () => {
     const ok = buildCapTable([
       { kind: 'found', founders: [{ name: 'F', shares: 9_000_000 }], poolShares: 1_000_000 },

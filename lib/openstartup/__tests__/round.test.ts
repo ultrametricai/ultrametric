@@ -144,17 +144,45 @@ describe('down-round model — the Springmeyer example end-to-end', () => {
     expect(incl.adjustments[0].conversionPriceAfter).toBeGreaterThan(excl.adjustments[0].conversionPriceAfter)
   })
 
-  it('counts protected preferred in the broad base at its row share count (1:1-before assumption)', () => {
-    // Series A already adjusted once (OIP $2.00, CP before $1.60 → as-converted 5,000,000).
-    // The computed base still uses the 4,000,000-share row: CP2 = 1.6 × (12M + 5M/1.6)/(12M + 5M)
-    // = 1.6 × 15,125,000/17,000,000 = $1.4235. Callers with pre-adjusted series should pass
-    // as-converted rows (module doc comment).
+  it('a pre-adjusted series: as-converted rows feed the base, preferredShares feeds the adjustment', () => {
+    // Series A already adjusted once (OIP $2.00, CP before $1.60): its 4,000,000 preferred
+    // convert as 5,000,000 shares, so the row carries 5,000,000 (as-converted — module doc
+    // comment) and the broad base is 8M + 5M = 13M. The adjustment itself runs on the
+    // 4,000,000 PREFERRED shares (NVCA conversion mechanics: as-converted = preferred ×
+    // OIP/CP) — feeding the as-converted count in would convert the holding twice.
+    // CP2 = 1.6 × (13M + 5M/1.6)/(13M + 5M) = 1.6 × 16,125,000/18,000,000 = $1.4333;
+    // as-converted after = floor(4,000,000 × 2/1.4333) = 5,581,525.
+    const adjustedRows: CapTableRow[] = [
+      { id: 'founders', name: 'Founders + pool', group: 'founder', shares: 8_000_000, pct: null },
+      { id: 'series-a', name: 'Series A', group: 'investor', shares: 5_000_000, pct: null },
+    ]
     const r = downRoundModel(
-      rows,
-      [{ seriesName: 'Series A', originalIssuePrice: 2, conversionPriceBefore: 1.6, basis: 'broad-based' }],
+      adjustedRows,
+      [{ seriesName: 'Series A', originalIssuePrice: 2, conversionPriceBefore: 1.6, preferredShares: 4_000_000, basis: 'broad-based' }],
       downRound,
     )
-    expect(r.adjustments[0].conversionPriceAfter).toBe(1.4235)
+    expect(r.adjustments[0].conversionPriceAfter).toBe(1.4333)
+    expect(r.adjustments[0].asConvertedAfter).toBe(5_581_525)
+    expect(r.fullyDilutedAfter).toBe(8_000_000 + 5_581_525 + 5_000_000)
+  })
+
+  it('rejects a pre-adjusted spec without preferredShares — the double-conversion trap', () => {
+    expect(() =>
+      downRoundModel(
+        rows,
+        [{ seriesName: 'Series A', originalIssuePrice: 2, conversionPriceBefore: 1.6, basis: 'broad-based' }],
+        downRound,
+      ),
+    ).toThrow(/preferredShares/)
+  })
+
+  it('rejects a zero-share or zero-dollar issuance even with no protected series (no Infinity price)', () => {
+    expect(() =>
+      downRoundModel(rows, [], { newShares: 0, considerationDollars: 5_000_000, investorName: 'Series B' }),
+    ).toThrow(RangeError)
+    expect(() =>
+      downRoundModel(rows, [], { newShares: 5_000_000, considerationDollars: 0, investorName: 'Series B' }),
+    ).toThrow(RangeError)
   })
 
   it('rejects unresolved SAFEs (null shares) and unknown series names', () => {
@@ -203,5 +231,23 @@ describe('founder secondary (Cooley GO glossary, Secondary Sale)', () => {
     const before = JSON.parse(JSON.stringify(rows))
     founderSecondary(rows, 'Founder', 'New Investor', 1_000_000)
     expect(rows).toEqual(before)
+  })
+
+  it('null-share SAFE rows keep their estimate and the table still sums to 100%', () => {
+    // A capped-SAFE estimate of 10% scales the concrete rows by the 90% remainder (the
+    // cap-table engine's §D.5 snapshot convention): Founder 60%, Series A 30%, SAFE 10%.
+    // After the secondary the SAFE keeps its 10%, Series A keeps its 30%, and the seller's
+    // 60% splits 52.5% / 7.5% between seller and buyer — total still 100%.
+    const withSafe: CapTableRow[] = [
+      { id: 'f', name: 'Founder', group: 'founder', shares: 8_000_000, pct: 60 },
+      { id: 'a', name: 'Series A', group: 'investor', shares: 4_000_000, pct: 30 },
+      { id: 's', name: 'SAFE (as-converted est.)', group: 'investor', shares: null, pct: 10 },
+    ]
+    const r = founderSecondary(withSafe, 'Founder', 'New Investor', 1_000_000)
+    expect(r.rows.find((x) => x.name === 'SAFE (as-converted est.)')?.pct).toBe(10)
+    expect(r.rows.find((x) => x.name === 'Series A')?.pct).toBeCloseTo(30, 9)
+    expect(r.rows.find((x) => x.name === 'Founder')?.pct).toBeCloseTo(52.5, 9)
+    expect(r.rows.find((x) => x.name === 'New Investor')?.pct).toBeCloseTo(7.5, 9)
+    expect(r.rows.reduce((s, x) => s + (x.pct ?? 0), 0)).toBeCloseTo(100, 9)
   })
 })

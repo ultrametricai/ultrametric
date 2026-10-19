@@ -291,15 +291,34 @@ export interface ExclusionPercentageResult {
  * than 5 years (50% general / 75% for 2009-02-18..2010-09-27 acquisitions / 100% for
  * 2010-09-28..2025-07-04); post-applicable-date stock earns 50% at >= 3 years, 75% at
  * >= 4, 100% at >= 5. Below the minimum: 0 (no exclusion).
+ *
+ * Holding is measured from `holdingStart` when supplied — qsbsHoldingClock.clockStart,
+ * i.e. the § 83 timing (rule us-fed.restricted-property-holding-period: vesting for
+ * substantially nonvested stock without an 83(b) election) — and defaults to the
+ * acquisition date. The regime itself stays routed by the raw acquisition date, the
+ * holding-clock module's stated convention.
  */
-export function qsbsExclusionPercentage(acquisitionDate: string, dispositionDate: string): ExclusionPercentageResult {
+export function qsbsExclusionPercentage(
+  acquisitionDate: string,
+  dispositionDate: string,
+  holdingStart?: string,
+): ExclusionPercentageResult {
   assertIsoDate(acquisitionDate, 'acquisitionDate')
   assertIsoDate(dispositionDate, 'dispositionDate')
+  if (holdingStart !== undefined) {
+    assertIsoDate(holdingStart, 'holdingStart')
+    if (holdingStart < acquisitionDate) throw new RangeError('holdingStart must be on or after acquisitionDate')
+  }
   if (dispositionDate < acquisitionDate) throw new RangeError('dispositionDate must be on or after acquisitionDate')
-  const y3 = addUtcMonths(acquisitionDate, 36)
-  const y4 = addUtcMonths(acquisitionDate, 48)
-  const y5 = addUtcMonths(acquisitionDate, 60)
+  const start = holdingStart ?? acquisitionDate
+  const y3 = addUtcMonths(start, 36)
+  const y4 = addUtcMonths(start, 48)
+  const y5 = addUtcMonths(start, 60)
   const base = { ruleId: QSBS_RULE_IDS.exclusionPercentage.ruleId, jurisdiction: 'US-FED' as const, needsReview: true as const }
+  const startClause =
+    start === acquisitionDate
+      ? ''
+      : ` Holding measured from ${start} (the holding-clock start — rule us-fed.restricted-property-holding-period), with the regime routed by the acquisition date.`
 
   if (acquisitionDate > QSBS_APPLICABLE_DATE) {
     const percentage = dispositionDate >= y5 ? 100 : dispositionDate >= y4 ? 75 : dispositionDate >= y3 ? 50 : 0
@@ -308,7 +327,7 @@ export function qsbsExclusionPercentage(acquisitionDate: string, dispositionDate
       regime: 'post-applicable-tiered',
       boundary: dispositionDate === y3 || dispositionDate === y4 || dispositionDate === y5,
       ...base,
-      note: `Acquired after the ${QSBS_APPLICABLE_DATE} applicable date: tiered applicable percentage (50/75/100 at 3/4/5 years). ${percentage === 0 ? 'Held under 3 years — no exclusion.' : `${percentage}% as computed.`} Boundary day counting is a legal determination. ${DISCLAIMER}`,
+      note: `Acquired after the ${QSBS_APPLICABLE_DATE} applicable date: tiered applicable percentage (50/75/100 at 3/4/5 years). ${percentage === 0 ? 'Held under 3 years — no exclusion.' : `${percentage}% as computed.`}${startClause} Boundary day counting is a legal determination. ${DISCLAIMER}`,
     }
   }
   const moreThan5 = dispositionDate > y5
@@ -319,7 +338,7 @@ export function qsbsExclusionPercentage(acquisitionDate: string, dispositionDate
     regime,
     boundary: dispositionDate === y5,
     ...base,
-    note: `Acquired on or before the applicable date: ${pctByRegime[regime]}% exclusion requires holding MORE than 5 years${moreThan5 ? ' — met as computed' : ' — not met as computed (consider § 1045 rollover, rule us-fed.qsbs-1045-rollover)'}. 50%/75% stock carries the § 57(a)(7) AMT preference and 28%-rate-group treatment on the taxed portion (not computed). ${DISCLAIMER}`,
+    note: `Acquired on or before the applicable date: ${pctByRegime[regime]}% exclusion requires holding MORE than 5 years${moreThan5 ? ' — met as computed' : ' — not met as computed (consider § 1045 rollover, rule us-fed.qsbs-1045-rollover)'}.${startClause} 50%/75% stock carries the § 57(a)(7) AMT preference and 28%-rate-group treatment on the taxed portion (not computed). ${DISCLAIMER}`,
   }
 }
 
@@ -386,9 +405,11 @@ export interface QsbsExclusionIllustration {
 
 /**
  * The whole § 1202 arithmetic in one labeled illustration: cap the gain (§ 1202(b)),
- * apply the acquisition-date percentage (§ 1202(a)). The gain, basis, and dates are
- * explicit inputs; eligibility is NOT established here (run qsbsEligibilityChecklist —
- * and even that never establishes it).
+ * apply the acquisition-date percentage (§ 1202(a)), with the holding measured from the
+ * holding-clock start (qsbsHoldingClock — the 83(b)/vesting facts are consumed when the
+ * stock was substantially nonvested at acquisition, and incomplete facts are refused, not
+ * guessed). The gain, basis, and dates are explicit inputs; eligibility is NOT established
+ * here (run qsbsEligibilityChecklist — and even that never establishes it).
  */
 export function qsbsExclusionIllustration(inputs: {
   gain: number
@@ -397,10 +418,26 @@ export function qsbsExclusionIllustration(inputs: {
   basisOfStockDisposed: number
   priorYearEligibleGain?: number
   marriedFilingSeparately?: boolean
+  /** Equity-lane holding facts (see qsbsHoldingClock): set when the stock was
+   * substantially nonvested at acquisition — § 83 timing then places the clock start. */
+  substantiallyNonvestedAtAcquisition?: boolean
+  election83bFiled?: boolean | 'unknown'
+  vestingDate?: string
 }): QsbsExclusionIllustration {
   if (!(inputs.gain >= 0)) throw new RangeError('gain must be >= 0')
+  const clock = qsbsHoldingClock({
+    acquisitionDate: inputs.acquisitionDate,
+    substantiallyNonvestedAtAcquisition: inputs.substantiallyNonvestedAtAcquisition,
+    election83bFiled: inputs.election83bFiled,
+    vestingDate: inputs.vestingDate,
+  })
+  if (clock.clockStart === null) {
+    throw new RangeError(
+      'the holding clock cannot be placed: substantially nonvested stock needs the 83(b)/vesting facts (qsbsHoldingClock)',
+    )
+  }
   const cap = qsbsPerIssuerCap(inputs)
-  const percentage = qsbsExclusionPercentage(inputs.acquisitionDate, inputs.dispositionDate)
+  const percentage = qsbsExclusionPercentage(inputs.acquisitionDate, inputs.dispositionDate, clock.clockStart)
   const eligibleGain = round2(Math.min(inputs.gain, cap.cap))
   const excludedGain = round2((eligibleGain * percentage.percentage) / 100)
   return {
@@ -411,7 +448,7 @@ export function qsbsExclusionIllustration(inputs: {
     taxableGain: round2(inputs.gain - excludedGain),
     cap,
     percentage,
-    ruleIds: [cap.ruleId, percentage.ruleId, QSBS_RULE_IDS.eligibility.ruleId],
+    ruleIds: [cap.ruleId, percentage.ruleId, QSBS_RULE_IDS.eligibility.ruleId, QSBS_RULE_IDS.holdingPeriod.ruleId],
     needsReview: true,
     note: `Assumes the stock IS qualified small business stock — eligibility is a separate, facts-driven question (qsbsEligibilityChecklist, rule us-fed.qsbs-eligibility). Taxed-portion character (28% rate group, § 57(a)(7) AMT preference for 50%/75% stock) is not computed. ${DISCLAIMER}`,
   }

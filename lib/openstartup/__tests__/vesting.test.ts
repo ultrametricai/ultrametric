@@ -315,6 +315,29 @@ describe('acceleration (Cooley GO, "Pulling the Trigger(s)")', () => {
       applyAcceleration(grant, { trigger: 'single', acceleration: { kind: 'monthsOfService', months: 0 } }, { saleOn: '2028-01-15' }),
     ).toThrow(RangeError)
   })
+
+  it('a not-triggered outcome still reports the schedule-vested shares, never zero', () => {
+    const policy = { trigger: 'double' as const, acceleration: { kind: 'full' as const } }
+    // Sale at month 24 with no termination: no trigger, but 2,400,000 shares ARE vested on
+    // the grant's own schedule as of the sale date — the outcome reports them.
+    const saleOnly = applyAcceleration(grant, policy, { saleOn: '2028-01-15' })
+    expect(saleOnly.triggered).toBe(false)
+    expect(saleOnly.acceleratedShares).toBe(0)
+    expect(saleOnly.vestedBeforeAcceleration).toBe(2_400_000)
+    expect(saleOnly.vestedAfterAcceleration).toBe(2_400_000)
+    expect(saleOnly.unvestedRemaining).toBe(2_400_000)
+    // Termination BEFORE the sale (not the double-trigger formulation): vesting is measured
+    // at the later sale date but service-capped at the 2027-01-15 termination (month 12).
+    const early = applyAcceleration(grant, policy, { saleOn: '2028-01-15', terminationWithoutCauseOn: '2027-01-15' })
+    expect(early.triggered).toBe(false)
+    expect(early.vestedAfterAcceleration).toBe(1_200_000)
+    expect(early.unvestedRemaining).toBe(3_600_000)
+    // No event dates at all: nothing to measure — stated in the note, not guessed.
+    const none = applyAcceleration(grant, policy, {})
+    expect(none.triggered).toBe(false)
+    expect(none.vestedAfterAcceleration).toBe(0)
+    expect(none.note).toContain('No event dates')
+  })
 })
 
 describe('refresh / evergreen composition (Rewarding Talent practice: additive new grants)', () => {

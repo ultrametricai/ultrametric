@@ -344,7 +344,7 @@ $10,000,000 in exact cents (the display-rounded price would over-distribute by a
 $534). At $3,000,000 the figures are $0.2670, $149,991, and $299,982; both safes cash out
 and the remaining $2,000,000 goes pro rata to the 9,550,000 outstanding shares.
 
-**Serves:** [Raise pre-seed (SAFEs)](https://ultrametric.ai/processes/raise-pre-seed-safes) (n6 `conversionIndifferencePrice`) · [Close a priced equity round](https://ultrametric.ai/processes/close-a-priced-equity-round)
+**Serves:** [Raise pre-seed (SAFEs)](https://ultrametric.ai/processes/raise-pre-seed-safes) (n6 `liquidityWaterfall`) · [Close a priced equity round](https://ultrametric.ai/processes/close-a-priced-equity-round)
 
 **Honesty boundaries.** The sale price must be net of debt; creditors and convertible
 notes rank senior and are not modeled. Capped participation, stacked seniority, accruing
