@@ -76,10 +76,18 @@ function git(args: string[]): string {
   return execFileSync('git', args, { cwd: ROOT, encoding: 'utf8', maxBuffer: 64 * 1024 * 1024 })
 }
 
+// The directory holding a category's rankings.json has been renamed twice (data/ → rankings/ →
+// open-rankings/); history from before each rename is reachable only under the old spelling.
+// Same fix pattern as CACHE_DIR in rankings-engine/paths.ts: the current name first, the
+// pre-rename names honored as fallbacks.
+const HISTORICAL_DATA_PREFIXES = ['open-rankings', 'rankings', 'data'] as const
+
 // Commits on `ref` that touched `file` (repo-relative), oldest first, as {sha, date} where date
-// is the committer date ('%cI', strict ISO with TZ offset).
+// is the committer date ('%cI', strict ISO with TZ offset). --follow walks the file across the
+// directory renames; without it the log stops at the latest rename and a rerun would truncate
+// the published history to the post-rename era.
 function commitsFor(ref: string, file: string): Array<{ sha: string; date: string }> {
-  const log = git(['log', ref, '--format=%H %cI', '--', file]).trim()
+  const log = git(['log', ref, '--follow', '--format=%H %cI', '--', file]).trim()
   if (log === '') return []
   return log
     .split('\n')
@@ -102,12 +110,17 @@ function main(): void {
     const gitPath = `open-rankings/${cat.id}/rankings.json`
     const snapshots: Snapshot[] = []
     for (const { sha, date } of commitsFor(ref, gitPath)) {
-      let raw: unknown
-      try {
-        raw = JSON.parse(git(['show', `${sha}:${gitPath}`]))
-      } catch {
-        continue // file deleted/absent at this commit, or unparsable — nothing to record
+      // Pre-rename commits hold the file under the old directory name — try each era's path.
+      let raw: unknown | undefined
+      for (const prefix of HISTORICAL_DATA_PREFIXES) {
+        try {
+          raw = JSON.parse(git(['show', `${sha}:${prefix}/${cat.id}/rankings.json`]))
+          break
+        } catch {
+          continue // not under this prefix at this commit, or unparsable — try the next era
+        }
       }
+      if (raw === undefined) continue // absent at this commit under every known prefix
       const entries = snapshotEntries(raw)
       if (entries.length > 0) snapshots.push({ date, entries })
     }

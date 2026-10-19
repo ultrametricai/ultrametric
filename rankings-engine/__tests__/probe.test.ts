@@ -69,6 +69,22 @@ describe('runProbeChecks', () => {
     expect(results.find((r) => r.key === 'openapi')).toBeUndefined()
   })
 
+  it('llms-txt: a code-host vendor\'s OWN docs subdomain (docs.github.com) is probed — only the apex is shared', async () => {
+    const githubProduct: Product = {
+      ...baseProduct,
+      id: 'github',
+      name: 'GitHub',
+      urls: { site: 'https://github.com', docs: 'https://docs.github.com' },
+    }
+    const fetcher = fakeFetcher({
+      'https://docs.github.com/llms.txt': txt('# GitHub Docs\n\nGitHub is a developer platform.'),
+    })
+    const results = await runProbeChecks(githubProduct, fetcher)
+    const llms = results.find((r) => r.key === 'llms-txt')
+    expect(llms?.positive).toBe(true)
+    expect(llms?.url).toBe('https://docs.github.com/llms.txt')
+  })
+
   it('llms-txt: no item when the fetcher throws (network error)', async () => {
     const fetcher: ProbeFetcher = async (url) => {
       if (url === 'https://docs.acme.example/llms.txt') throw new Error('ECONNRESET')

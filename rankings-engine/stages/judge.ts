@@ -14,11 +14,22 @@ import { CACHE_DIR, categoryDir, readJson, resolveCategories, writeJson } from '
 // a first-class cache invalidator instead of silently keeping the previous model's verdicts.
 export const PROMPT_VERSION = 'v4'
 
+// Versions the hashed material itself, independent of prompt/model changes: bumping it makes
+// every cache entry written under an older key format miss cleanly (and re-judge) instead of
+// mismatching against a payload it was never computed over. v2 (2026-10-19) folded each
+// evidence item's tier and url into the hash — both reach the judge prompt (judgePrompt's
+// pack line), so a tier- or url-only evidence correction must invalidate the cached verdict
+// rather than silently reuse it. Committed pre-v2 cache files stay untouched on disk; they
+// simply stop matching.
+export const CELL_HASH_VERSION = 'v2'
+
 export function cellHash(story: Story, evidence: Evidence[], promptVersion: string, judgeModel: string = JUDGE_MODEL): string {
   const payload = JSON.stringify({
+    keyVersion: CELL_HASH_VERSION,
     storyId: story.id,
     title: story.title,
-    evidence: evidence.map((e) => [e.id, e.excerpt]),
+    // Everything about an evidence item that reaches the prompt: id, tier, url, excerpt.
+    evidence: evidence.map((e) => [e.id, e.tier, e.url, e.excerpt]),
     promptVersion,
     // Added with v4 — see the PROMPT_VERSION note. Pre-v4 hashes were computed without this key.
     judgeModel,
@@ -112,8 +123,9 @@ export async function runJudge({ category, product }: { category?: string; produ
         const cacheFile = path.join(CACHE_DIR, 'judge', cat.id, p.id, `${story.id}.json`)
         const hash = cellHash(story, evidence, PROMPT_VERSION)
         if (fs.existsSync(cacheFile)) {
-          const cached = JSON.parse(fs.readFileSync(cacheFile, 'utf8')) as { hash: string }
-          if (cached.hash === hash) continue
+          const cached = JSON.parse(fs.readFileSync(cacheFile, 'utf8')) as { hash: string; keyVersion?: string }
+          // An entry written under an older key format (no/other keyVersion) is a clean miss.
+          if (cached.keyVersion === CELL_HASH_VERSION && cached.hash === hash) continue
         }
 
         let raw = await llmJson({ schema: RawVerdictSchema, system: SYSTEM, prompt: judgePrompt(p.name, story, evidence) })
@@ -131,7 +143,7 @@ export async function runJudge({ category, product }: { category?: string; produ
           violation = validateVerdictRules(verdict, evidence)
         }
         if (violation) throw new Error(`judge: ${cat.id}/${p.id}:${story.id} still violates rules: ${violation}`)
-        writeJson(cacheFile, { hash, verdict })
+        writeJson(cacheFile, { hash, keyVersion: CELL_HASH_VERSION, verdict })
         console.log(`judge: ${cat.id}/${p.id}:${story.id} → ${verdict.verdict} q${verdict.quality}`)
       }
     }
@@ -148,7 +160,14 @@ export async function runJudge({ category, product }: { category?: string; produ
           incomplete = true
           break
         }
-        const cached = JSON.parse(fs.readFileSync(cacheFile, 'utf8')) as { hash: string; verdict: unknown }
+        const cached = JSON.parse(fs.readFileSync(cacheFile, 'utf8')) as { hash: string; keyVersion?: string; verdict: unknown }
+        if (cached.keyVersion !== CELL_HASH_VERSION) {
+          // Pre-CELL_HASH_VERSION entry: a clean miss, not evidence staleness — the matrix is
+          // simply not fully judged under the current key format yet.
+          console.warn(`judge: matrix incomplete for ${cat.id} — ${p.id}:${story.id} cached under an older key format; not writing verdicts.json (re-run judge --category ${cat.id} --product ${p.id})`)
+          incomplete = true
+          break
+        }
         const currentHash = cellHash(story, currentEvidence, PROMPT_VERSION)
         if (cached.hash !== currentHash) {
           throw new Error(`judge: stale cached verdict for ${cat.id}/${p.id}:${story.id} — evidence changed; re-run judge --category ${cat.id} --product ${p.id}`)

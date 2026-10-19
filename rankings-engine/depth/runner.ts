@@ -55,7 +55,10 @@ export const defaultDepthFetcher: CertifyFetcher = async (url, init = {}) => {
     method: init.method ?? 'GET',
     headers: { 'User-Agent': DEPTH_USER_AGENT, ...init.headers },
     body: init.body,
-    redirect: 'follow',
+    // Redirects are followed by recordRequest, one robots-gated hop at a time — a blind
+    // 'follow' here would fetch redirect destinations (possibly on other hosts) without ever
+    // consulting that host's robots.txt, breaking the absolute-robots doctrine.
+    redirect: 'manual',
     signal: AbortSignal.timeout(FETCH_TIMEOUT_MS),
   })
   const body = await res.text()
@@ -91,7 +94,7 @@ export interface RobotsGate {
 }
 
 export function makeRobotsGate(fetcher: CertifyFetcher, now: () => string, targetId: string): RobotsGate {
-  const byOrigin = new Map<string, { body: string | null; transcript: DepthTranscript }>()
+  const byOrigin = new Map<string, { body: string | null; status: number | null; transcript: DepthTranscript }>()
   async function originEntry(origin: string) {
     const cached = byOrigin.get(origin)
     if (cached) return cached
@@ -99,9 +102,11 @@ export function makeRobotsGate(fetcher: CertifyFetcher, now: () => string, targe
     const host = new URL(origin).hostname
     let record: DepthRequestRecord
     let body: string | null = null
+    let status: number | null = null
     const robotsNote: RobotsNote = { consulted: false, allowed: true, detail: 'robots.txt fetch is itself exempt' }
     try {
       const res = await fetcher(url)
+      status = res.status
       if (res.status === 200) body = res.body
       record = {
         url,
@@ -129,6 +134,7 @@ export function makeRobotsGate(fetcher: CertifyFetcher, now: () => string, targe
     }
     const entry = {
       body,
+      status,
       transcript: {
         arenabenchVersion: ARENABENCH_VERSION,
         checkId: `robots-${host.replace(/\./g, '-')}`,
@@ -143,9 +149,19 @@ export function makeRobotsGate(fetcher: CertifyFetcher, now: () => string, targe
     async decide(url: string): Promise<RobotsNote> {
       const u = new URL(url)
       const entry = await originEntry(u.origin)
-      // No robots.txt (non-200 or unreachable) leaves everything allowed.
       if (entry.body === null) {
-        return { consulted: true, allowed: true, detail: `no robots.txt at ${u.origin}` }
+        // A 404/410 is the host SAYING it has no robots.txt: everything is allowed. Any other
+        // failure (network error, 5xx, 401/403, an unparsed redirect) means we could not learn
+        // the host's rules — the absolute-robots doctrine treats that as disallow, never as
+        // blanket permission.
+        if (entry.status === 404 || entry.status === 410) {
+          return { consulted: true, allowed: true, detail: `no robots.txt at ${u.origin}` }
+        }
+        return {
+          consulted: true,
+          allowed: false,
+          detail: `robots.txt at ${u.origin} ${entry.status === null ? 'did not answer' : `answered HTTP ${entry.status}`} — treated as disallow (robots doctrine is absolute)`,
+        }
       }
       const decision = robotsAllows(entry.body, u.pathname + u.search, DEPTH_UA_TOKEN)
       return { consulted: true, allowed: decision.allowed, detail: decision.detail }
@@ -160,53 +176,79 @@ export function makeRobotsGate(fetcher: CertifyFetcher, now: () => string, targe
 // Recording.
 // ---------------------------------------------------------------------------
 
+const MAX_REDIRECT_HOPS = 5
+const REDIRECT_STATUSES = new Set([301, 302, 303, 307, 308])
+
+// Executes one request plan, following redirects manually (defaultDepthFetcher uses
+// redirect: 'manual') so EVERY hop — including cross-host destinations — passes the robots
+// gate before it is fetched. The returned record describes the final hop; `redirectedFrom`
+// lists the prior hop URLs so the transcript shows the chain. A robots-disallowed hop ends
+// the chain unfetched (status null, robots note explains), exactly like a disallowed plan URL.
 async function recordRequest(
   plan: DepthRequestPlan,
   fetcher: CertifyFetcher,
   robotsGate: RobotsGate,
   now: () => string,
 ): Promise<DepthRequestRecord> {
-  const robots: RobotsNote = plan.robotsApplies
-    ? await robotsGate.decide(plan.url)
-    : { consulted: false, allowed: true, detail: 'protocol request, robots.txt not applicable' }
-  const base: DepthRequestRecord = {
-    url: plan.url,
-    method: plan.method,
-    requestBody: plan.body,
-    status: null,
-    contentType: null,
-    bytes: 0,
-    sha256: null,
-    fetchedAt: now(),
-    robots,
+  let url = plan.url
+  let method = plan.method
+  let body = plan.body
+  const hops: string[] = []
+  for (let hop = 0; ; hop++) {
+    const robots: RobotsNote = plan.robotsApplies
+      ? await robotsGate.decide(url)
+      : { consulted: false, allowed: true, detail: 'protocol request, robots.txt not applicable' }
+    const base: DepthRequestRecord = {
+      url,
+      method,
+      requestBody: body,
+      status: null,
+      contentType: null,
+      bytes: 0,
+      sha256: null,
+      fetchedAt: now(),
+      robots,
+      ...(hops.length > 0 ? { redirectedFrom: [...hops] } : {}),
+    }
+    if (!robots.allowed) return base // recorded, never fetched
+    let res: Awaited<ReturnType<CertifyFetcher>>
+    try {
+      res = await fetcher(url, { method, headers: plan.headers, body })
+    } catch {
+      return base // network failure: status stays null
+    }
+    const location = res.headers['location']
+    if (REDIRECT_STATUSES.has(res.status) && location && hop < MAX_REDIRECT_HOPS) {
+      hops.push(url)
+      url = new URL(location, url).toString()
+      // Fetch redirect semantics: 303 (and 301/302 answering a POST) switch to a body-less GET.
+      if (res.status === 303 || ((res.status === 301 || res.status === 302) && method === 'POST')) {
+        method = 'GET'
+        body = undefined
+      }
+      continue
+    }
+    const bytes = Buffer.byteLength(res.body)
+    const headers: Record<string, string> = {}
+    for (const name of HEADER_ALLOWLIST) {
+      if (res.headers[name] !== undefined) headers[name] = sanitizeField(res.headers[name])
+    }
+    const record: DepthRequestRecord = {
+      ...base,
+      status: res.status,
+      contentType: res.contentType,
+      bytes,
+      sha256: sha256Hex(res.body),
+      headers,
+    }
+    if (isTextual(res.contentType) && bytes <= BODY_INLINE_MAX_BYTES) {
+      record.body = sanitizeField(res.body)
+    } else if (isTextual(res.contentType)) {
+      record.bodyExcerpt = sanitizeField(res.body.slice(0, BODY_EXCERPT_CHARS))
+    }
+    if (plan.digest && res.status === 200) record.digest = plan.digest(res.body, url)
+    return record
   }
-  if (!robots.allowed) return base // recorded, never fetched
-  let res: Awaited<ReturnType<CertifyFetcher>>
-  try {
-    res = await fetcher(plan.url, { method: plan.method, headers: plan.headers, body: plan.body })
-  } catch {
-    return base // network failure: status stays null
-  }
-  const bytes = Buffer.byteLength(res.body)
-  const headers: Record<string, string> = {}
-  for (const name of HEADER_ALLOWLIST) {
-    if (res.headers[name] !== undefined) headers[name] = sanitizeField(res.headers[name])
-  }
-  const record: DepthRequestRecord = {
-    ...base,
-    status: res.status,
-    contentType: res.contentType,
-    bytes,
-    sha256: sha256Hex(res.body),
-    headers,
-  }
-  if (isTextual(res.contentType) && bytes <= BODY_INLINE_MAX_BYTES) {
-    record.body = sanitizeField(res.body)
-  } else if (isTextual(res.contentType)) {
-    record.bodyExcerpt = sanitizeField(res.body.slice(0, BODY_EXCERPT_CHARS))
-  }
-  if (plan.digest && res.status === 200) record.digest = plan.digest(res.body, plan.url)
-  return record
 }
 
 export async function recordCheck(

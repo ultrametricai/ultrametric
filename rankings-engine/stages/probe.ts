@@ -46,12 +46,18 @@ function originOf(url: string): string | null {
 // GitHub's platform index, and crediting it to a repo-hosted product produced the llama-cpp
 // false agent-docs contradiction (accuracy-engine work queue 2026-09-30, issue #85).
 // Product-owned pages sites (*.github.io etc.) are deliberately NOT listed.
-const SHARED_CODE_HOSTS = ['github.com', 'gitlab.com', 'bitbucket.org', 'codeberg.org', 'sourceforge.net']
+//
+// Matching is EXACT host, not suffix: third-party products only ever live under the apex
+// (github.com/owner/repo), while a subdomain like docs.github.com or docs.gitlab.com is the
+// host vendor's OWN docs origin — exactly the origin to probe when GitHub/GitLab are
+// themselves the ranked product. Suffix matching silently stripped their positive llms.txt /
+// openapi evidence on every probe refresh.
+const SHARED_CODE_HOSTS = ['github.com', 'gist.github.com', 'gitlab.com', 'bitbucket.org', 'codeberg.org', 'sourceforge.net']
 
 export function isSharedCodeHostOrigin(url: string): boolean {
   try {
     const host = new URL(url).hostname.toLowerCase()
-    return SHARED_CODE_HOSTS.some((h) => host === h || host.endsWith(`.${h}`))
+    return SHARED_CODE_HOSTS.some((h) => host === h)
   } catch {
     return false
   }

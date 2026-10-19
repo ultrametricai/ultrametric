@@ -44,6 +44,9 @@ export interface DepthRequestRecord {
   sha256: string | null
   fetchedAt: string
   robots: RobotsNote
+  /** Prior hop URLs when the plan URL redirected: every hop passed the robots gate before
+   * being fetched, and `url`/`status` describe the final hop. */
+  redirectedFrom?: string[]
   /** Allowlisted response headers (lower-cased names), sanitized values. */
   headers?: Record<string, string>
   body?: string

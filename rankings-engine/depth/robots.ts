@@ -58,29 +58,33 @@ function ruleMatches(rulePath: string, path: string): boolean {
   return rx.test(path)
 }
 
-// Group selection per RFC 9309: the group whose user-agent token is the longest prefix of our
-// product token applies; absent any match, the `*` group; absent that, everything is allowed.
-function selectGroup(groups: RobotsGroup[], userAgentToken: string): RobotsGroup | null {
+// Group selection per RFC 9309: the groups whose user-agent token is the longest prefix of our
+// product token apply; absent any match, the `*` groups; absent those, everything is allowed.
+// RFC 9309 §2.2.1 merges the rules of EVERY group naming the matched agent — a robots.txt that
+// repeats `User-agent: *` (or our token) in separate groups means all of those groups' rules,
+// so returning only the first group would silently drop the later groups' Disallow lines.
+function selectRules(groups: RobotsGroup[], userAgentToken: string): RobotsRule[] | null {
   const token = userAgentToken.toLowerCase()
-  let best: { group: RobotsGroup; len: number } | null = null
+  let bestLen = 0
   for (const g of groups) {
     for (const agent of g.agents) {
-      if (agent === '*') continue
-      if (token.startsWith(agent) && (best === null || agent.length > best.len)) {
-        best = { group: g, len: agent.length }
-      }
+      if (agent !== '*' && token.startsWith(agent) && agent.length > bestLen) bestLen = agent.length
     }
   }
-  if (best) return best.group
-  return groups.find((g) => g.agents.includes('*')) ?? null
+  const applies = bestLen > 0
+    ? (g: RobotsGroup) => g.agents.some((a) => a !== '*' && a.length === bestLen && token.startsWith(a))
+    : (g: RobotsGroup) => g.agents.includes('*')
+  const matched = groups.filter(applies)
+  if (matched.length === 0) return null
+  return matched.flatMap((g) => g.rules)
 }
 
 export function robotsAllows(body: string, path: string, userAgentToken: string): RobotsDecision {
-  const group = selectGroup(parseRobots(body), userAgentToken)
-  if (!group) return { allowed: true, detail: 'no applicable robots.txt group' }
+  const rules = selectRules(parseRobots(body), userAgentToken)
+  if (!rules) return { allowed: true, detail: 'no applicable robots.txt group' }
   // Longest matching rule wins; on a tie, allow wins.
   let best: { rule: RobotsRule; len: number } | null = null
-  for (const rule of group.rules) {
+  for (const rule of rules) {
     if (!ruleMatches(rule.path, path)) continue
     const len = rule.path.length
     if (best === null || len > best.len || (len === best.len && rule.allow && !best.rule.allow)) {

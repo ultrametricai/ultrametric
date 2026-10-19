@@ -80,6 +80,13 @@ describe('mergeAuditEntries', () => {
     expect(merged).toEqual([curated, entry('n2', 'other reason')])
   })
 
+  it('a preserved entry still takes the CURRENT route from the corpus (route is mirrored metadata, not curation)', () => {
+    const curated = entry('n1', 'hand-curated root cause', { preserve: true, route: 'person' })
+    const assembled = [entry('n1', 'freshly generated reason', { route: 'form' })]
+    const merged = mergeAuditEntries(assembled, [curated])
+    expect(merged).toEqual([{ ...curated, route: 'form' }])
+  })
+
   it('unmarked committed entries are refreshed normally, and preserved entries for nodes gone from the corpus drop out', () => {
     const assembled = [entry('n1', 'regenerated')]
     const committed = [entry('n1', 'old'), entry('n9', 'node no longer in corpus', { preserve: true })]
