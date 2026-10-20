@@ -7,8 +7,9 @@ Subject: `ultrametric@0.4.1` (npm `dist-tags.latest`) and the hosted MCP at
 Evidence: `docs/self-eval-probes/run-self-eval-keyless.sh` →
 `docs/self-eval-probes/transcript-self-eval-keyless.txt`, a verbatim session with exit codes,
 captured the same way the vendor spikes capture theirs (`docs/cli-sandbox-spike/`).
-Companions: `docs/ULTRAMETRIC-CLI-CAPABILITIES.md` (shipped-capability audit),
-`docs/CLI-SANDBOX-DESIGN.md` (sandbox design that first recorded the arena defect).
+Companions: `docs/ULTRAMETRIC-CLI-CAPABILITIES.md` (shipped-capability audit) and the
+CLI sandbox design note that first recorded the arena defect (removed from this repo;
+text in git history; its recorded spike evidence stays at `docs/cli-sandbox-spike/`).
 
 First-party disclosure: Ultrametric is our own product. This evaluation applies the same
 keyless-probe discipline the arenas apply to vendors, with the negatives published. Nothing
