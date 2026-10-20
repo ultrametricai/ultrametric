@@ -8,8 +8,8 @@ risks, and the Phase 0/1 execution notes) is in this file's git history.
 
 The public repo `ultrametricai/ultrametric` became the open artifact: the arena
 evidence and rankings (`open-rankings/`), the founder processes (`open-processes/`,
-`content/processes/`), the legal layer (`open-law/`, `jurisdictions/`, `citations/`),
-the lore (`open-lore/`), the document registry (`open-documents/`), the open modules
+`content/processes/`), the legal layer (`open-law/` with its `citations/` registry,
+`jurisdictions/`), the lore (`open-lore/`), the document registry (`open-documents/`), the open modules
 (`open-modules/`, `lib/openstartup/`), the schemas, the pipeline, and their tests.
 The site that renders it at ultrametric.ai moved to a fresh private repo,
 `ultrametricai/ultrametric-app-private`: the Next.js app, components, site-side lib
@@ -44,7 +44,7 @@ an overlay path that collides with a file tracked in the private repo fails the 
 | `processes/` and `journeys/` | `open-processes/` |
 | `rules/` and `law/` | `open-law/` |
 | `lore/` | `open-lore/` |
-| `sources/` and `resources/` | `citations/` |
+| `sources/` and `resources/` | `open-law/citations/` (via the top-level `citations/`, since folded into the law layer) |
 
 Every tracked path in this repo is disposition `open` in `open-manifest.json`;
 `pnpm manifest:check` and `__tests__/repo-split.test.ts` (with

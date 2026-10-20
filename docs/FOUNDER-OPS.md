@@ -1,77 +1,44 @@
-# The founder-ops corpus — architecture and lift plan
+# The founder-ops corpus lift: executed record
 
-Ingested from the founder-ops-open starter (founder, 2026-09-28) and adjusted to this repo:
-Ultrametric is lifting from a vendor-evidence layer into an open operating system for starting
-and running a company — **index → scenario match → source-backed process → private execution
-record**. The public repo stores reusable knowledge, schemas, fictional fixtures, and vendor
-evidence. A company's facts, decisions, documents, and audit log belong in its private
-workspace, never here.
+One-page record of the 2026-09 corpus lift, compressed 2026-10-19 (the
+`docs/REPO-SPLIT-PLAN.md` treatment for executed plans). The full architecture and lift
+plan this file previously held, the tree table, the stage sketches, and the
+service-boundary notes, is in this file's git history.
 
-## The tree
+## What the lift did
 
-| Path | Purpose |
-| --- | --- |
-| `coverage/` | The cross-area coverage index (`index.json`), the domain taxonomy, and machine-readable workflow coverage |
-| `open-processes/chains.json` | Multi-process founder paths (chains; The Open Startup is the live surface) |
-| `open-processes/` | Jurisdiction-scoped legal workflows + the operational corpus (two layers) |
-| `open-law/<jurisdiction>/` | Canonical, dated legal rule cards with stable IDs |
-| `open-law/citations/` | The authority citations the rule cards cite (the reading canon lives in `open-lore/`) |
-| `jurisdictions/` | Registry + overlays; exact-dimension matching, unknown = unsupported |
-| `open-modules/` | The open modules — cited, deterministic calculations (cap table first) |
-| `open-documents/` | The open-documents map: openly licensed legal forms, linked never redistributed |
-| `open-rankings/reviews/` | The scenario-scoped review interchange format over the evidence layer |
-| `templates/` | Contribution starting points |
-| `schemas/` | JSON Schema contracts for processes, rules, sources, vendor reviews |
-| `open-processes/fixtures/` | Fictional companies and events only |
-| `policies/` | Review policy, evidence doctrine, agent policy, security |
+Ingested the founder-ops-open starter (2026-09-28) and lifted Ultrametric from a
+vendor-evidence layer into an open operating layer for starting and running a company:
+index → scenario match → source-backed process → private execution record. The public repo
+stores reusable knowledge, schemas, fictional fixtures, and vendor evidence; a company's
+facts, decisions, documents, and audit log belong in its private workspace.
 
-The surfaces over the corpus live beside it: the Next.js site at `app/` (+ `components/`,
-`lib/`, `public/`) and the Cloudflare edge worker at `infra/cloudflare-proxy/` (zone routing,
-auth, watchlist/stack APIs, live MCP probes). The Ultrametric MCP server and CLI packages moved
-to their own dedicated repo (2026-09-29). Optional vendor/government integrations, if ever
-added, follow the adapter rules in the service-boundary section below — behind scopes, vaults,
-dry-run, idempotency, and a named human approval for any external effect; no connector may
-become a default vendor route.
+## Stages, as executed
 
-Record semantics (from the starter, binding): process IDs are stable and `version` changes on
-substantive edits; `rule_ids` resolve to rule cards which resolve to primary sources with exact
-locators; `reviewed_on`/`review_due` are editorial dates, never legal effective dates
-(`valid_from`/`valid_until` stay null until verified); every `external_effect` step requires a
-named, scoped human approval; the matcher rejects unknown jurisdiction combinations rather than
-guessing. The validator (`lib/founderOps.ts`, gated by `__tests__/founder-ops.test.ts`) checks
-structure and semantic invariants; it does not prove laws true or implement a calendar engine.
-
-## Lift stages
-
-- **Stage 1 — done 2026-09-28.** Tree scaffolded; starter records ingested verbatim (US-FED +
-  US-DE rule cards, the 409A and 83(b) demonstration workflows, sources, registries, fixtures,
-  templates, schemas); validator + planner ported from Python into `lib/founderOps.ts` so the
-  corpus gates run inside vitest; governance merged with the repo's existing evidence doctrine;
-  every directory README bridges to the live implementation. `open-rankings/processes.json`,
-  `open-rankings/process-chains.json`, and the ranking data deliberately did not move (fingerprinted,
-  loader-bound, and under active lanes).
-- **Stage 2 — done 2026-09-28.** Consolidated, byte-identical moves behind the loaders:
-  `open-rankings/processes.json` → `open-processes/corpus.json` and `open-rankings/process-chains.json` →
-  `open-processes/chains.json` (`lib/processes.ts` resolves both as siblings of the ranking-data dir;
-  the founder-ops workflow walker skips `corpus.json`); `open-rankings/vendor-geo.json` →
-  `jurisdictions/vendor-geo.json` (`lib/vendorGeo.ts`). Published the corpus contract as
-  `schemas/operational-process.schema.json`, generated from the zod source of truth by
+- **Stage 1, done 2026-09-28.** Tree scaffolded; starter records ingested verbatim (US-FED
+  and US-DE rule cards, the 409A and 83(b) demonstration workflows, sources, registries,
+  fixtures, templates, schemas); the validator and planner ported from Python into
+  `lib/founderOps.ts` so the corpus gates run inside vitest; governance merged with the
+  repo's evidence doctrine.
+- **Stage 2, done 2026-09-28.** Byte-identical moves behind the loaders: the operational
+  process corpus and chains into `open-processes/`, vendor availability into
+  `jurisdictions/vendor-geo.json`. Published the corpus contract as
+  `schemas/operational-process.schema.json`, generated from the zod source by
   `scripts/generate-corpus-schemas.ts` with a byte-identical drift gate
-  (`__tests__/corpus-schemas.test.ts`). Generated the vendor-review interchange layer:
-  `open-rankings/reviews/generated/<arena>--<productId>.json` for every judged product (578 records)
-  via `rankings-engine/scripts/generate-vendor-reviews.ts` — deterministic projection of the committed
-  open-rankings/evidence/pricing/geo data, owner disclosures always carried
-  (`rankings-engine/__tests__/vendorReviews.test.ts`). Still open from the original stage-2 sketch:
-  folding process geo-scope into `open-law/`, and the on-site workflow-layer surface (a
-  `/founder-ops` or per-process "legal layer" view).
-- **Stage 3 — retired 2026-09-29.** The original plan (physically move the site/CLI/MCP/worker
-  under `apps/` as workspace packages) is moot: the MCP/CLI packages moved to their own
-  dedicated repo, and the site (`app/`) and edge worker (`infra/cloudflare-proxy/`) stay at
-  their current paths. Nothing about the corpus contract ever depended on it.
+  (`__tests__/corpus-schemas.test.ts`), and generated the vendor-review interchange layer
+  (`open-rankings/reviews/generated/`, `rankings-engine/scripts/generate-vendor-reviews.ts`).
+- **Stage 3, retired 2026-09-29.** The planned `apps/` workspace move was moot: the MCP and
+  CLI packages moved to their own dedicated repo, and the site and the Cloudflare edge
+  worker later moved to the private site repo in the 2026-10 repo split
+  ([REPO-SPLIT-PLAN.md](./REPO-SPLIT-PLAN.md)). Nothing about the corpus contract depended
+  on it.
 
-## Suggested service boundary (unchanged from the starter)
+## What stays binding
 
-1. Public catalog and source registry, versioned by Git. 2. Private company graph. 3. Rules and
-planning service emitting plans with uncertainties. 4. Policy engine for human approvals.
-5. Adapter layer with scopes, vaults, dry-run, idempotency. 6. Audit store with receipts and
-post-action verification. The public repo carries no accounts, keys, or default vendor.
+The record semantics the lift ingested are live rules, maintained in AGENTS.md ("Legal and
+founder-ops layer") and `policies/`: stable process IDs with versioned substantive edits,
+rule cards resolving to primary sources with exact locators, editorial review dates that
+are never legal effective dates, a named scoped human approval on every
+externally-effectful step, and a matcher that rejects unknown jurisdiction combinations
+rather than guessing. The validator (`lib/founderOps.ts`, gated by
+`__tests__/founder-ops.test.ts`) enforces the structural half of those rules.
