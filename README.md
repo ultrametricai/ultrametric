@@ -318,11 +318,14 @@ behind the decisions. Two stages as examples:
 
 ## Install Ultrametric
 
-One npm package ships the CLI and MCP server; the data itself needs no install and no
-keys.
+The npm package ships the [CLI and bundled agent skill](https://docs.ultrametric.ai/cli/install).
+MCP clients connect separately to the
+[hosted MCP service](https://docs.ultrametric.ai/mcp/connect). Public data can be
+read directly without installation or keys.
 
 ```bash
-npm install -g ultrametric@latest                   # CLI + MCP server + agent skill
+npm install -g ultrametric@latest                   # CLI + bundled agent skill
+ultrametric init --project                         # install the skill in this project
 curl https://ultrametric.ai/data/categories.json    # all rankings, raw JSON
 curl https://ultrametric.ai/llms.txt                # the index for agents
 ```
