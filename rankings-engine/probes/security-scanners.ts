@@ -65,7 +65,7 @@ export const probes: LocalProbe[] = [
     },
     {
       // Requires the official MCP plugin (`trivy plugin install mcp`) on the recording
-      // machine; without it the probe fails, which is itself a finding (docs/PROVE-IT.md).
+      // machine; without it the probe fails, which is itself a finding (docs/prove-it.md).
       probeId: 'mcp-stdio-handshake',
       productId: 'trivy',
       storyIds: ['agentic-mcp-server'],

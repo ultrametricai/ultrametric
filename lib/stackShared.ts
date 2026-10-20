@@ -1,4 +1,4 @@
-// Pure stack primitives shared across the open/closed boundary (docs/REPO-SPLIT-PLAN.md):
+// Pure stack primitives shared across the open/closed boundary (docs/repo-split-plan.md):
 // the account-stack map shape and pick accessor (read by lib/processCheck.ts and
 // lib/shared-processes/selection-compatibility.ts), the serialized catalog row consumed by
 // lib/stackBattle.ts, and the integration pair-key format. The stateful My Stack store

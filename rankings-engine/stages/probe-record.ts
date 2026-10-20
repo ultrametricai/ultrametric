@@ -18,7 +18,7 @@ import type { LocalProbe } from '../probes/types'
 // Deliberately opt-in and side-effect-light:
 //   - without UM_RECORD=1 it only runs the probes and prints pass/fail (a dry run);
 //   - it never touches open-rankings/<category>/evidence/*.json — proof metadata lives in sidecar JSON
-//     until the schema integration phase (docs/PROVE-IT.md, phase 2), because lib/schemas.ts
+//     until the schema integration phase (docs/prove-it.md, phase 2), because lib/schemas.ts
 //     is owned by another lane;
 //   - probes only run for binaries already installed on PATH, and every child process gets a
 //     minimal env (PATH/HOME/TERM only) so no local API keys can even reach the pty.
@@ -148,7 +148,7 @@ export async function runProbeRecord({ category, product }: { category?: string;
           file: `${probe.productId}/${probe.probeId}.txt`,
         }
         // Failed probes are still published — a claim that doesn't reproduce is a finding,
-        // not a gap (docs/PROVE-IT.md).
+        // not a gap (docs/prove-it.md).
         writeProofArtifact(cat.id, entry, { content: `$ ${probe.displayCommand}\n${outcome.transcript}` })
         entries.push(entry)
       }

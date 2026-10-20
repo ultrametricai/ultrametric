@@ -449,7 +449,7 @@ describe('committed depth pilots', () => {
     const target = DEPTH_TARGETS[committed.target.productId]
     expect(target).toBeDefined()
     // Replay only pilots recorded under the current spec version; older snapshots stay
-    // attributed to their own version (docs/AGENTIC-DEPTH-PROGRAM.md §2).
+    // attributed to their own version (docs/agentic-depth-program.md §2).
     if (committed.arenabenchVersion !== ARENABENCH_VERSION) return
     const byCheck = new Map<string, DepthTranscript>()
     const robots: DepthTranscript[] = []

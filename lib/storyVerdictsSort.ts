@@ -81,7 +81,7 @@ export interface StoryVerdictRow {
   agreement?: UncertaintyEntry['agreement']
   // vendorResponseFor(...) for this cell, or null — the verified official vendor response the
   // expanded row renders (see components/StoryVerdictsTable.tsx's block and
-  // docs/VENDOR-RESPONSES.md). Full VendorResponse shape is already serializable (plain JSON).
+  // docs/vendor-responses.md). Full VendorResponse shape is already serializable (plain JSON).
   vendorResponse: VendorResponse | null
   // Pricing-tier annotation for this cell (lib/storyTiers.ts) — which plan tier the cited
   // evidence says the capability needs. Undefined when the arena/cell was never classified

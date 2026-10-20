@@ -46,13 +46,13 @@ export interface CategoryData {
   // directly.
   uncertainty: UncertaintyEntry[]
   // Verified official vendor responses to specific verdicts — see lib/schemas.ts's
-  // VendorResponseSchema and docs/VENDOR-RESPONSES.md. `open-rankings/{cat}/vendor-responses.json` is
+  // VendorResponseSchema and docs/vendor-responses.md. `open-rankings/{cat}/vendor-responses.json` is
   // optional (most categories have none) — absence resolves to `[]`, same "absence is not an
   // error" contract as popularity/claims/uncertainty above. Use vendorResponseFor(data,
   // productId, storyId) rather than scanning this array directly.
   vendorResponses: VendorResponse[]
   // Agent-Ready certifications earned through the self-serve conformance suite — see
-  // lib/certifications.ts and docs/CERTIFICATION.md. `open-rankings/{cat}/certifications.json` is
+  // lib/certifications.ts and docs/certification.md. `open-rankings/{cat}/certifications.json` is
   // optional (most arenas have none) — absence resolves to `[]`, same "absence is not an
   // error" contract as everything above. Use activeCertificationFor(data.certifications,
   // productId) rather than scanning this array directly: entries past their 180-day expiry

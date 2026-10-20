@@ -27,7 +27,7 @@
 //
 // The triage NEVER creates a ranking and NEVER auto-approves a founder-affiliated product;
 // bring-up of an auto-approved candidate still runs the standard scoped pipeline and lands as
-// a reviewed PR (docs/VENDOR-RADAR.md).
+// a reviewed PR (docs/vendor-radar.md).
 //
 // Invocation:
 //   pnpm tsx rankings-engine/scripts/radar-triage.ts --report reports/vendor-radar/<date>.json \

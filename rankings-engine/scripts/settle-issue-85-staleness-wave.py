@@ -3,7 +3,7 @@
 #
 # Each repair in this wave changes one product's evidence pack and re-judges that pack
 # (the judge cellHash covers the whole pack, so every cell re-rolls). The re-judge
-# stability policy (METHODOLOGY, docs/ACCURACY.md "Human review points") rules that a
+# stability policy (METHODOLOGY, docs/accuracy.md "Human review points") rules that a
 # verdict/quality flip citing NO evidence new to the pack is re-roll noise and is
 # reverted to the pre-wave baseline; flips attributable to added, removed, or
 # materially changed evidence stand.

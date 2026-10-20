@@ -87,8 +87,8 @@ next to the verdict itself (CVE-style) via the
 verified (company-domain email, vendor GitHub org membership, or DNS TXT token), published
 verbatim, and **never change a verdict by themselves** — they enter the evidence pool as
 claimed-docs-tier input for the next re-judge. If your point is demonstrable with keyless,
-reproducible commands, submit a proof spec instead (`docs/PROVE-IT.md`) — recordings beat
-statements. Full governance: [`docs/VENDOR-RESPONSES.md`](./docs/VENDOR-RESPONSES.md).
+reproducible commands, submit a proof spec instead (`docs/prove-it.md`) — recordings beat
+statements. Full governance: [`docs/vendor-responses.md`](./docs/vendor-responses.md).
 
 ## 2. Add evidence (PR flow)
 
@@ -211,7 +211,7 @@ engine-owned; maintainers run the stages on your entry. If you *do* have an
 ### 3c. Make your product probe well (this is the score-moving part)
 
 The rankings engine runs keyless, reproducible probes against public conventions, and the
-[certification suite](./docs/CERTIFICATION.md) checks the same surfaces. Each artifact below
+[certification suite](./docs/certification.md) checks the same surfaces. Each artifact below
 maps directly to scored stories:
 
 | Ship this | Convention the probe checks | What it moves |
@@ -227,7 +227,7 @@ maps directly to scored stories:
 
 Then run the suite yourself before anyone else does:
 `npx ultrametric-cli certify https://docs.your-product.com` (see
-[docs/CERTIFICATION.md](./docs/CERTIFICATION.md) — passing earns a dated, badge-backed
+[docs/certification.md](./docs/certification.md) — passing earns a dated, badge-backed
 certification).
 
 ### 3d. What happens after
@@ -241,8 +241,8 @@ certification).
    because a model had a different day.
 3. **Disagree with a verdict?** Every verdict on the site has a ⚑ contest link (section 1).
    Vendors can also put an official statement on the record (the
-   [vendor-response lane](./docs/VENDOR-RESPONSES.md)) or, better, submit a reproducible proof
-   spec ([docs/PROVE-IT.md](./docs/PROVE-IT.md)) — recordings beat statements.
+   [vendor-response lane](./docs/vendor-responses.md)) or, better, submit a reproducible proof
+   spec ([docs/prove-it.md](./docs/prove-it.md)) — recordings beat statements.
 4. **Keep it fresh**: ship a new API surface? PR the new docs URL into `urls.extra` — coverage
    gaps, not judge harshness, are the #1 cause of undeserved zeros.
 

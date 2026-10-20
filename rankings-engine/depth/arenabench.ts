@@ -1,5 +1,5 @@
 // ArenaBench depth types + ladder math — Agentic Depth Program phase 1
-// (docs/AGENTIC-DEPTH-PROGRAM.md §1–§2). The capability ladder is graded per surface from
+// (docs/agentic-depth-program.md §1–§2). The capability ladder is graded per surface from
 // recorded transcripts; grading is pure over those transcripts so a replay from disk
 // reproduces the report byte-for-byte (rankings-engine/depth/__tests__/depth.test.ts). This module
 // is types + arithmetic only: no network, no filesystem.

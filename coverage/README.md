@@ -19,7 +19,7 @@ every pointer must resolve to a committed file, and the index must validate agai
   remain in the [original audit](https://github.com/ultrametricai/ultrametric/blob/c156feeb4de636e5d2854ddf14b13955c2da85ac/content/processes/legacy-audit.json).
 - `open-rankings` — `open-rankings/arena-roadmap.json`: every arena tiered by priority and
   marked live or planned.
-- `open-modules` — `docs/OPEN-MODULES-GAPS.md`: the corpus-wide candidate table with BUILT,
+- `open-modules` — `docs/open-modules-gaps.md`: the corpus-wide candidate table with BUILT,
   SKIP, and DEFER verdicts.
 - `open-startup-sim` — `open-startup-sim/README.md`: the simulator's scope and its
   disclosed assumptions and multipliers.

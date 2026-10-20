@@ -65,7 +65,7 @@ other vendor claim.
 **If your response contains reproducible proof, don't use this channel** — a statement saying
 "this works, here's the command" is strictly weaker than a recording of the command working.
 Submit a proof spec via the *Prove a story* form instead (see
-[`docs/PROVE-IT.md`](./PROVE-IT.md)); a passing recording becomes probe-tier evidence, the
+[`docs/prove-it.md`](./prove-it.md)); a passing recording becomes probe-tier evidence, the
 strongest we have. A vendor response can, of course, link to a published proof.
 
 ## Supersession rules

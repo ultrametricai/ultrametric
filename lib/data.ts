@@ -134,7 +134,7 @@ export function loadCategory(categoryId: string, dir: string = DEFAULT_DIR()): C
   // Optional, same contract as popularity/claims/uncertainty above: most categories have no
   // verified vendor responses at all. Each response must target a real cell, and a cell can
   // carry at most one 'standing' response (superseded ones stay as the public record — see
-  // docs/VENDOR-RESPONSES.md's supersession rules).
+  // docs/vendor-responses.md's supersession rules).
   const vendorResponsesPath = path.join(catDir, 'vendor-responses.json')
   const vendorResponses = fs.existsSync(vendorResponsesPath)
     ? VendorResponsesArraySchema.parse(read('vendor-responses.json'))

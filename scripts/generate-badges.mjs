@@ -2,7 +2,7 @@
 // public/badges/ — `<id>-agent-ready.svg` (the leaderboard's agentReady component) and
 // `<id>-score.svg` (the blended Overall score, internally `aiEra`) — plus one
 // `<id>-certified.svg` per Agent-Ready certification (open-rankings/<arena>/certifications.json,
-// docs/CERTIFICATION.md). Plain node, no deps.
+// docs/certification.md). Plain node, no deps.
 //
 // The SVGs are COMMITTED build inputs, not build artifacts (unlike public/data/): they only
 // change when rankings change, so the workflow is "re-run after a re-judge, commit the diff"
@@ -88,7 +88,7 @@ export function badgeSvg({ label, score }) {
  * The certification badge: same shield layout, right panel always emerald (a certification is
  * only ever rendered for an earned, unexpired level — there is no "untested" variant), text
  * "CERTIFIED AGENT-READY · 2026" (or AGENT-NATIVE), year taken from the certification date.
- * See docs/CERTIFICATION.md; the registry entries live in open-rankings/<arena>/certifications.json.
+ * See docs/certification.md; the registry entries live in open-rankings/<arena>/certifications.json.
  *
  * @param {{ level: 'agent-ready' | 'agent-native', date: string }} cert
  * @returns {string} a complete standalone SVG document
@@ -166,7 +166,7 @@ function main() {
     }
 
     // Certification badges — one `<id>-certified.svg` per registry entry (see
-    // docs/CERTIFICATION.md). Regenerated on the same "re-run after data changes, commit the
+    // docs/certification.md). Regenerated on the same "re-run after data changes, commit the
     // diff" cadence as the score badges; expiry is enforced by the site's display code, the
     // badge simply carries the certification year.
     const certsFile = path.join(dataDir, category.id, 'certifications.json')

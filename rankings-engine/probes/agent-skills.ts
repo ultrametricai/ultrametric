@@ -145,7 +145,7 @@ export const probes: LocalProbe[] = [
     {
       // Review-before-install: `init --dry-run` previews the two SKILL.md installs (Codex's
       // .agents/skills and Claude Code's .claude/skills) without writing, keyless, in a scratch
-      // dir so no local login or settings leak in (the docs/SELF-EVAL.md method).
+      // dir so no local login or settings leak in (the docs/self-eval.md method).
       probeId: 'init-dry-run-preview',
       productId: 'ultrametric',
       storyIds: ['inspect-before-install', 'multi-harness-support'],
@@ -175,7 +175,7 @@ export const probes: LocalProbe[] = [
     },
     {
       // The hosted MCP's keyless surface, recorded as the finding: initialize is refused with
-      // the documented AUTH_REQUIRED body (the RFC 9728 wall docs/SELF-EVAL.md recorded).
+      // the documented AUTH_REQUIRED body (the RFC 9728 wall docs/self-eval.md recorded).
       // `expect` matches the refusal — a PASS here records the wall, it does not credit a
       // keyless handshake.
       probeId: 'mcp-auth-wall',
@@ -191,7 +191,7 @@ export const probes: LocalProbe[] = [
       timeoutMs: 60_000,
     },
     {
-      // The arena data surface keylessly from any shell — the defect row in docs/SELF-EVAL.md
+      // The arena data surface keylessly from any shell — the defect row in docs/self-eval.md
       // (NETWORK_ERROR on a redirecting data path), re-probed after the worker fix deployed.
       probeId: 'arena-keyless-data',
       productId: 'ultrametric',

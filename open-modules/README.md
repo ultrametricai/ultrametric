@@ -860,7 +860,7 @@ books.
   doc comment, explicit rounding, worked examples reproduced number-for-number from the
   cited source, and property tests. The assessed candidate backlog — with build/skip/defer
   verdicts and the citable sources that exist (or the recorded absence of one) — lives in
-  [`docs/OPEN-MODULES-GAPS.md`](../docs/OPEN-MODULES-GAPS.md). Gate:
+  [`docs/open-modules-gaps.md`](../docs/open-modules-gaps.md). Gate:
   `pnpm test lib/openstartup/__tests__/` (and `pnpm test`).
 - **Harden an existing module** — a missed edge case from a cited worked example, a new
   property test, or a correction with the source that proves it (e.g. the YC Post-Money

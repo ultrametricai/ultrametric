@@ -1,5 +1,5 @@
 // The pure half of the process LENS — "view this process via the vendors I pick" — split out
-// of lib/processLens.ts (docs/REPO-SPLIT-PLAN.md): the lens-state codec, the ?via URL codec,
+// of lib/processLens.ts (docs/repo-split-plan.md): the lens-state codec, the ?via URL codec,
 // and the per-step resolution/summary math. Free of node builtins, React, and the DOM, so the
 // open shared-processes layer (lib/shared-processes/selection-compatibility.ts) can reuse the
 // SAME precedence and shutdown rules the canonical page uses. The storage/subscription layer

@@ -269,7 +269,7 @@ export const ScoreHistoryEntrySchema = z.object({
   // Optional provenance label for entries whose move is NOT an evidence/capability change —
   // e.g. 'judge-migration-2026-09-30: sonnet-5 → opus-5-5 (prompt v4)'. Stamped so the time
   // series shows a labeled discontinuity instead of a silent evidence-looking move (see
-  // docs/OPUS-5-5-JUDGE-PILOT.md §5.4). Absent on ordinary evidence-driven entries.
+  // docs/opus-5-5-judge-pilot.md §5.4). Absent on ordinary evidence-driven entries.
   note: z.string().min(1).optional(),
 })
 
@@ -339,7 +339,7 @@ export type ScoreIntervalEntry = z.infer<typeof ScoreIntervalEntrySchema>
 export const ScoreIntervalsArraySchema = ScoreIntervalEntrySchema.array()
 
 // An official, verified vendor response to one (productId, storyId) verdict — CVE-style: the
-// vendor's own words, published verbatim next to the verdict (see docs/VENDOR-RESPONSES.md and
+// vendor's own words, published verbatim next to the verdict (see docs/vendor-responses.md and
 // components/StoryVerdictsTable.tsx's response block). A response NEVER changes a verdict by
 // itself — it enters the evidence pool as claimed-docs-tier input for the next re-judge.
 // `verification` records how we confirmed the author actually speaks for the vendor (domain

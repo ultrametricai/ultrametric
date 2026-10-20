@@ -2,7 +2,7 @@
 // every story judged none or partial is something the vendor could ship (or evidence better),
 // ranked by how much score headroom it represents. This is the vendor-facing complement to the
 // verdicts table — "here is your to-do list, straight from the evidence" — and it complements
-// the vendor-response lane (docs/VENDOR-RESPONSES.md) and the per-verdict Flag link: if a
+// the vendor-response lane (docs/vendor-responses.md) and the per-verdict Flag link: if a
 // verdict here is wrong, contest it; if it's right, close it.
 //
 // Pure and `node:fs`-free (same contract as lib/data-helpers.ts): callers pass the stories +

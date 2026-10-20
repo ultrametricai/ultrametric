@@ -8,7 +8,7 @@ import { z } from 'zod'
 //
 // Proof metadata deliberately lives HERE, in sidecar JSON files + a per-category index, and
 // NOT in lib/schemas.ts — the evidence schema is owned by another lane; folding proofs into
-// Evidence is phase 2 of docs/PROVE-IT.md. Layout on disk:
+// Evidence is phase 2 of docs/prove-it.md. Layout on disk:
 //
 //   open-rankings/<category>/proofs/<productId>/<probeId>.txt    plain sanitized transcript
 //   open-rankings/<category>/proofs/<productId>/<probeId>.webm   browser recording (kind: 'video')

@@ -17,7 +17,7 @@ const temporary: string[] = []
 afterEach(() => temporary.splice(0).forEach(root => fs.rmSync(root, { recursive: true, force: true })))
 
 describe('process → arena coverage audit', () => {
-  it('docs/PROCESS-ARENA-COVERAGE.md matches what the canonical definitions generate', () => {
+  it('docs/process-arena-coverage.md matches what the canonical definitions generate', () => {
     expect(fs.readFileSync(PROCESS_ARENA_COVERAGE_FILE, 'utf8')).toBe(processArenaCoverageMarkdown())
   })
 
@@ -49,7 +49,7 @@ describe('process → arena coverage audit', () => {
     const run = () => spawnSync(process.execPath, ['--import', 'tsx', 'scripts/generate-process-arena-coverage.ts'], { cwd: root, encoding: 'utf8' })
     const initial = run()
     expect(initial.status, initial.stderr).toBe(0)
-    const report = () => fs.readFileSync(path.join(root, 'docs/PROCESS-ARENA-COVERAGE.md'), 'utf8')
+    const report = () => fs.readFileSync(path.join(root, 'docs/process-arena-coverage.md'), 'utf8')
     expect(report()).toBe(processArenaCoverageMarkdown())
 
     const file = path.join(root, 'open-processes/incorporate-c-corp.json')

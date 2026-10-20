@@ -31,7 +31,7 @@ an overlay path that collides with a file tracked in the private repo fails the 
   has built from the private repo at its `open.lock` pin since.
 - 2026-10-12: site code deleted here (strip PR #253) after every manifest-closed path
   was byte-compared against the private repo; the check and its reconciliations are
-  recorded in [REPO-SPLIT-STRIP-VERIFICATION.md](./REPO-SPLIT-STRIP-VERIFICATION.md).
+  recorded in [repo-split-strip-verification.md](./repo-split-strip-verification.md).
 
 ## Where things moved
 

@@ -314,7 +314,7 @@ export function buildReport(
     version: 1,
     tool: 'arenabench-depth',
     arenabenchVersion: ARENABENCH_VERSION,
-    program: 'docs/AGENTIC-DEPTH-PROGRAM.md',
+    program: 'docs/agentic-depth-program.md',
     phase: 'phase-1-pilot',
     target: { productId: target.productId, categoryId: target.categoryId, vendor: target.vendor },
     scope:

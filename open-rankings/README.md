@@ -20,9 +20,9 @@ The inputs, written by hand or by the engine's evidence stages:
 - `claims/<product>.json` — extracted vendor claims with quotes, source URLs, and the
   story ids they bear on.
 - `proofs/<product>/` — recorded keyless probe transcripts (paired `.json` and `.txt`)
-  behind probe-tier evidence; the protocol is in [`docs/PROVE-IT.md`](../docs/PROVE-IT.md).
+  behind probe-tier evidence; the protocol is in [`docs/prove-it.md`](../docs/prove-it.md).
 - `cert-reports/<product>.json` — conformance-suite reports behind the certification
-  registry; the protocol is in [`docs/CERTIFICATION.md`](../docs/CERTIFICATION.md).
+  registry; the protocol is in [`docs/certification.md`](../docs/certification.md).
 - `verdicts.json` — one judged verdict per product-story cell: verdict tier, quality,
   confidence, rationale, and the evidence ids it cites. `pnpm engine judge` writes it,
   cache-keyed on everything about the evidence pack that reaches the judge prompt (each
@@ -149,10 +149,10 @@ schema. The rubric, disclosure rules, and regeneration gate are in
 `experiments/` holds runtime and prototype output kept structurally separate from the
 evidence-judged markets. `experiments/depth/` holds Agentic Depth Program runs: dated
 per-target reports and transcripts from the runtime conformance and task-trial ladder
-designed in [`docs/AGENTIC-DEPTH-PROGRAM.md`](../docs/AGENTIC-DEPTH-PROGRAM.md).
+designed in [`docs/agentic-depth-program.md`](../docs/agentic-depth-program.md).
 `experiments/computer-use/` holds the computer-use feasibility study, one JSON result and
 screenshot per attempted signup or filing flow, summarized in `feasibility-report.json`
-([`docs/COMPUTER-USE-FEASIBILITY.md`](../docs/COMPUTER-USE-FEASIBILITY.md)). `gpus.json`
+([`docs/computer-use-feasibility.md`](../docs/computer-use-feasibility.md)). `gpus.json`
 and `processors.json` are hardware spec-comparison prototypes curated from vendor spec
 sheets, outside the judged markets.
 

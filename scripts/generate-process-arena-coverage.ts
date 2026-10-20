@@ -3,7 +3,7 @@
 // script walks EVERY vendor reference in the unfiltered operational projection (task.vendors, node.vendor,
 // node.vendorOptions, and the same fields on step methods and their subSteps — a wider net than
 // the node.vendorOptions allowlist test in lib/__tests__/processes.test.ts) and COMMITS the gap
-// list as docs/PROCESS-ARENA-COVERAGE.md, the TIMELINE-INVERSIONS pattern: the drift test
+// list as docs/process-arena-coverage.md, the TIMELINE-INVERSIONS pattern: the drift test
 // (lib/__tests__/processArenaCoverage.test.ts) fails whenever the committed report diverges
 // from what the canonical definitions generate. Report, never auto-fix: an arena placement is a
 // curation act (a judged arena + product must exist first); only MECHANICAL gaps — a registry
@@ -16,7 +16,7 @@ import { loadProcessCatalog } from '../lib/shared-processes/catalog'
 import { projectOperational } from '../lib/shared-processes/projection'
 
 const ROOT = path.resolve(__dirname, '..')
-export const PROCESS_ARENA_COVERAGE_FILE = path.join(ROOT, 'docs', 'PROCESS-ARENA-COVERAGE.md')
+export const PROCESS_ARENA_COVERAGE_FILE = path.join(ROOT, 'docs', 'process-arena-coverage.md')
 
 // The unfiltered operational projection retains jurisdiction-conditional nodes and
 // nested methods, so their vendor references remain part of the audit.

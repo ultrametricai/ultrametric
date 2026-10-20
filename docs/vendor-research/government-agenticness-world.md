@@ -431,7 +431,7 @@ Existing cached verdicts stay valid; the two new stories add cells for all 40 pr
 
 ### 5.4 Judge-run scope at the adopted judge model
 
-Basis: `docs/OPUS-5-5-JUDGE-PILOT.md` (adopted 2026-09-30; `pipeline/llm.ts` default
+Basis: `docs/opus-5-5-judge-pilot.md` (adopted 2026-09-30; `pipeline/llm.ts` default
 `claude-opus-5-5`): measured ~7,600 input + ~460 output tokens per cell. The run can go
 interactive or through the Batch API.
 

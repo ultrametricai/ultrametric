@@ -24,7 +24,7 @@ in a `vendor-radar: candidates` issue) is auto-approved for bring-up when all fo
 A candidate failing any criterion is recorded on the radar issue as skipped, with the
 failing criterion and the evidence (URL fetched, HTTP status, what the page showed).
 Bring-up of an auto-approved candidate still runs the standard scoped engine run
-(`docs/VENDOR-RADAR.md`); auto-approval replaces only the checkbox, not the evidence
+(`docs/vendor-radar.md`); auto-approval replaces only the checkbox, not the evidence
 chain. New-ranking creation and founder-affiliated products require a human in every
 case.
 - Read jurisdiction, entity form, transaction type, worker and tax locations before matching a workflow. Ambiguous facts mean `needs_review`; no matching coverage means `unsupported`.

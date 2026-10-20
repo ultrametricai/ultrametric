@@ -91,7 +91,7 @@ runtime conformance suite and writes dated snapshots under
 `open-rankings/experiments/depth/`. It lives outside `cli.ts` on purpose and touches no
 evidence, verdicts, or rankings, so a slow or flaky depth run cannot destabilize the
 evidence loop. The program design is in
-[`docs/AGENTIC-DEPTH-PROGRAM.md`](../docs/AGENTIC-DEPTH-PROGRAM.md).
+[`docs/agentic-depth-program.md`](../docs/agentic-depth-program.md).
 
 ## Scripts
 

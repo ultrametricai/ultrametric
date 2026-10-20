@@ -43,7 +43,7 @@ indefinitely. The real cost of adoption is not the token bill — it is the migr
 | Rule-violation correction rounds needed | 3 extra calls across 1,036 cells (0.3%); zero cells failed validation |
 
 Context for the 26% disagreement: Sonnet 5 disagrees with **itself** on ~9% of cells on a
-plain re-roll fleet-wide (README §7), and hit 25% on one measured wave (docs/SCORING-REVIEW.md
+plain re-roll fleet-wide (README §7), and hit 25% on one measured wave (docs/scoring-review.md
 §2). So roughly a third to half of the observed cross-model disagreement is ordinary judge
 re-roll noise; the rest is genuine model difference, characterized below.
 
@@ -219,7 +219,7 @@ Calibration/uncertainty passes (which share `PA_MODEL` via
 6. **Docs to update in the same release:** README §7 (judge model name + new prompt version),
    README §9 and `app/methodology/page.tsx` (bias disclosure: judge is still an Anthropic
    model, Anthropic's products in ai-coding/frontier-models re-graded by it — include this
-   pilot's claude-code numbers from §3 verbatim), ACCURACY.md review-point language, and the
+   pilot's claude-code numbers from §3 verbatim), accuracy.md review-point language, and the
    `na`-rate/`disputed`-rate expectations anywhere they're documented (both collapse under
    Opus — downstream consumers like the certification and interval code that key off
    `disputed`/`na` frequencies should be sanity-checked).

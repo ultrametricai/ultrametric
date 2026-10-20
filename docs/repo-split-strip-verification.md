@@ -1,7 +1,7 @@
 # Repo-split strip verification
 
 Record of the pre-deletion check run on 2026-10-12 for the strip PR, the final step of the
-repo-split cutover (docs/REPO-SPLIT-PLAN.md; the full cutover sequence is in that file's git
+repo-split cutover (docs/repo-split-plan.md; the full cutover sequence is in that file's git
 history). Every path marked `closed` in `open-manifest.json` was byte-compared against
 the private site repo (`ultrametricai/ultrametric-app-private`, local clone at its
 `open.lock` pin `36772dcd`, plus its post-split commits) before any deletion here.

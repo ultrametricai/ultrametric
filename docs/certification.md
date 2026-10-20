@@ -1,6 +1,6 @@
 # Agent-Ready Certification: the self-serve conformance suite
 
-Prove-It ([`docs/PROVE-IT.md`](./PROVE-IT.md)) records claims one story at a time. Certification
+Prove-It ([`docs/prove-it.md`](./prove-it.md)) records claims one story at a time. Certification
 is the complement: a **fixed, keyless conformance suite** that any vendor can run against their
 own product in one command, covering the surfaces agents actually depend on. Passing earns a
 **dated certification** with the machine-verifiable report attached — public, re-runnable by
@@ -50,7 +50,7 @@ Certification is claims-with-receipts, so the protocol is deliberately symmetric
 1. **Vendor runs the suite** against their own product and gets `cert-report.json`.
 2. **Vendor submits** it via the [Certification](../.github/ISSUE_TEMPLATE/certification.yml)
    issue form, including the exact command run. Domain verification uses the same methods as
-   vendor responses (`docs/VENDOR-RESPONSES.md`): `domain-email`, `github-org`, or `dns-txt` —
+   vendor responses (`docs/vendor-responses.md`): `domain-email`, `github-org`, or `dns-txt` —
    we certify products, so we verify the submitter speaks for the product's domain.
 3. **A maintainer re-runs the identical command** from our side — the CLI makes that one
    command — and diffs the per-check statuses against the submitted report. Content digests

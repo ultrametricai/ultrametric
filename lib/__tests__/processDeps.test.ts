@@ -13,7 +13,7 @@ import {
 // producer, every producer process exists (both pinned structurally in
 // lib/__tests__/processArtifacts.test.ts and exercised end-to-end here), and the derived
 // topological ordering vs the curated timeOrder timeline — whose divergence is REPORTED as the
-// committed docs/TIMELINE-INVERSIONS.md, drift-tested so it can't go stale silently.
+// committed docs/timeline-inversions.md, drift-tested so it can't go stale silently.
 
 const tasks = loadProcesses()
 
@@ -62,7 +62,7 @@ describe('the company-level dependency DAG', () => {
 })
 
 describe('derived vs curated timeline — the committed renumbering worklist', () => {
-  it('docs/TIMELINE-INVERSIONS.md is byte-identical to what the live corpus generates (no silent staleness)', () => {
+  it('docs/timeline-inversions.md is byte-identical to what the live corpus generates (no silent staleness)', () => {
     expect(timelineInversionsMarkdown()).toBe(fs.readFileSync(TIMELINE_INVERSIONS_FILE, 'utf8'))
   })
 

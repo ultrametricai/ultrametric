@@ -1,6 +1,6 @@
 // Weekly certification sweep (.github/workflows/cert-sweep.yml) — keeps /certified
 // self-sustaining with the same keyless conformance suite vendors run themselves
-// (rankings-engine/scripts/certify.ts, protocol in docs/CERTIFICATION.md). Two passes:
+// (rankings-engine/scripts/certify.ts, protocol in docs/certification.md). Two passes:
 //
 //   1. Re-verify every currently certified product against its committed report's target.
 //      Pass at the same level        → refresh (new date + report) only when the certification

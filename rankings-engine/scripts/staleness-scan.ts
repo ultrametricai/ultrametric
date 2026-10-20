@@ -1,5 +1,5 @@
 // Fleet-wide staleness scanner — the keyless heart of the accuracy engine
-// (.github/workflows/accuracy-engine.yml, docs/ACCURACY.md). For every product it scores four
+// (.github/workflows/accuracy-engine.yml, docs/accuracy.md). For every product it scores four
 // families of staleness signal and writes open-rankings/staleness-report.json ranked worst-first:
 //
 //   1. evidence age        — fetchedAt percentiles of the product's evidence pack: packs whose

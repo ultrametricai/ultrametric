@@ -9,10 +9,10 @@ source of truth. See also [README.md](./README.md) for the ranking list, data la
 engine workflow, and [CONTRIBUTING.md](./CONTRIBUTING.md) for how to contest a verdict.
 
 New to the site and just want plain-language answers ("what does `na` mean," "why does this
-score look low," "how do I disagree")? See **[docs/SCORING.md](./docs/SCORING.md)** — a
+score look low," "how do I disagree")? See **[docs/scoring.md](./docs/scoring.md)** — a
 one-page, jargon-free companion to this technical writeup. For a critical self-assessment of
 the scoring formula's limits (coverage sensitivity, judge noise, blend-weight choices) and the
-improvement roadmap, see [docs/SCORING-REVIEW.md](./docs/SCORING-REVIEW.md).
+improvement roadmap, see [docs/scoring-review.md](./docs/scoring-review.md).
 
 ## Evidence tiers
 
@@ -295,12 +295,12 @@ they actually test. Every revert is recorded in the commit that applies it. A fu
 version will pass the prior verdict as an anchor to reduce this variance at the source.
 
 **2026-09-30 judge-model migration.** The fleet was re-judged sonnet-5 → opus-5-5 on
-2026-09-30 after a full pilot (docs/OPUS-5-5-JUDGE-PILOT.md: 74% exact verdict agreement on
+2026-09-30 after a full pilot (docs/opus-5-5-judge-pilot.md: 74% exact verdict agreement on
 the pilot ranking; 7 of 10 manually adjudicated disagreements favored Opus 5.5's reading of the
 rubric). The prompt text did not change (v4 = v3 text). Every verdict flip and score move in
 that wave reflects the judge change, not product changes — the wave is labeled as such in
 each ranking's `score-history.jsonl` (`note` field) and summarized with before/after
-leaderboards in docs/JUDGE-MIGRATION-2026-09-30.md. The stability policy's
+leaderboards in docs/judge-migration-2026-09-30.md. The stability policy's
 no-new-evidence revert rule was deliberately NOT applied to the migration wave (under a judge
 change every flip cites no new evidence by construction — applying the rule would revert the
 migration itself). Two behavioral shifts to know when comparing to pre-migration data: Opus
@@ -467,7 +467,7 @@ What we did about it:
 
 **2026-09-30 judge-model migration and own-product audit.** On 2026-09-30 the judge migrated
 from `claude-sonnet-5` to `claude-opus-5-5` (same vendor — the conflict above is unchanged)
-and the whole fleet was re-judged; docs/JUDGE-MIGRATION-2026-09-30.md carries the per-ranking
+and the whole fleet was re-judged; docs/judge-migration-2026-09-30.md carries the per-ranking
 before/after leaderboards. In the pilot, an Anthropic judge model re-graded Anthropic's own
 product upward: claude-code had the second-fewest flips (13) but 10 were upgrades, including
 all three of its `disputed` cells going to `full`. Counter-signals, stated plainly: the
@@ -485,7 +485,7 @@ claude-code's rank did not change (#3). The 2026-09-21/24 Foreloop and AFK human
 adjudications were preserved verbatim through the migration — human adjudications outrank any
 model (docs/JUDGE-MIGRATION-2026-09-30-worklist.json records what the fresh judge said on
 each protected cell). The audit calls for every other owner/affiliated row are recorded in
-docs/JUDGE-MIGRATION-2026-09-30.md.
+docs/judge-migration-2026-09-30.md.
 
 We ship this disclosure, including the fact that the audit itself was run by the same
 vendor's model, so the conflict is on the record rather than unstated. Judge for yourself

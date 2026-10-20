@@ -5,7 +5,7 @@ import path from 'node:path'
 import type { ProofIndexEntry } from '../../lib/proofs'
 import { upsertProofIndex, writeProofArtifact } from '../proof-io'
 
-// Browser-proof pilot (docs/PROVE-IT.md): record a short video of a real browser loading a
+// Browser-proof pilot (docs/prove-it.md): record a short video of a real browser loading a
 // vendor's PUBLIC docs page and locating the documented endpoint behind a claimed story —
 // visual, replayable proof that the claim's documentation actually exists, keyless and
 // deterministic. Currently one hardcoded pilot (firecrawl's POST /v2/scrape endpoint for

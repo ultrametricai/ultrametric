@@ -1,6 +1,6 @@
 // The Agent-Ready conformance suite — the same suite vendors run self-serve via
 // `ultrametric-cli certify <url>` (the CLI lives in its own repo; this is the maintainer-side
-// implementation the weekly cert-sweep runs, protocol in docs/CERTIFICATION.md). Every check is
+// implementation the weekly cert-sweep runs, protocol in docs/certification.md). Every check is
 // keyless, read-only, and runs against the vendor's own public surfaces, mirroring the
 // pipeline's probe conventions (rankings-engine/stages/probe.ts): llms.txt, docs .md mirrors, OpenAPI,
 // an MCP initialize handshake, robots.txt, and a structured-errors spot check.

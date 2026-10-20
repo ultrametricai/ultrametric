@@ -1,6 +1,6 @@
 // The derived-vs-curated timeline report (founder depth wave part 2, 2026-10-01): compare the
 // dependency graph's derived ordering (lib/processDeps.ts) against the curated `timeOrder`
-// founder timeline and COMMIT the result as docs/TIMELINE-INVERSIONS.md, so the worklist can't
+// founder timeline and COMMIT the result as docs/timeline-inversions.md, so the worklist can't
 // go stale silently — the drift test (lib/__tests__/processDeps.test.ts) fails whenever the
 // committed report diverges from what the live corpus generates. Report, never auto-fix:
 // renumbering timeOrder is the founder's curation act, not this script's.
@@ -11,7 +11,7 @@ import { placementSlack, timelineInversions } from '../lib/processDeps'
 import { loadProcesses } from '../lib/processes'
 
 const ROOT = path.resolve(__dirname, '..')
-export const TIMELINE_INVERSIONS_FILE = path.join(ROOT, 'docs', 'TIMELINE-INVERSIONS.md')
+export const TIMELINE_INVERSIONS_FILE = path.join(ROOT, 'docs', 'timeline-inversions.md')
 
 // Deterministic: built only from the committed corpus + registry (no dates, no environment
 // reads), so regenerating on an unchanged corpus is byte-identical.
