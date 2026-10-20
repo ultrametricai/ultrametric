@@ -15,13 +15,16 @@ itself.
   source-library audit of the committed records without changing them
   (`coverage/README.md`, "Source-library audit").
 
+- `generate-process-arena-coverage.ts` — prints current process/vendor-to-arena coverage
+  from canonical definitions, the vendor registry, and arena categories to stdout. Run
+  `pnpm exec tsx scripts/generate-process-arena-coverage.ts` to inspect the audit.
+
 ## Generators (outputs are drift-gated; edit the source, never the output)
 
 - `generate-corpus-schemas.ts` — the published JSON Schema contracts in `schemas/` from
   their zod sources.
 - `generate-badges.mjs` — the score-badge SVGs in `public/badges/`.
 - `generate-business-logic-serves.ts` — the Serves lines in `open-modules/README.md`.
-- `generate-process-arena-coverage.ts` — `docs/PROCESS-ARENA-COVERAGE.md`.
 - `generate-process-diagram.mjs` — the step-graph SVG in the `open-processes/` README.
 - `generate-situations-md.ts` — the table block in `open-processes/SITUATIONS.md`.
 - `generate-timeline-inversions.ts` — `docs/TIMELINE-INVERSIONS.md`.

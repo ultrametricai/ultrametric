@@ -851,6 +851,17 @@ step (fin_002 n5) gets its subscription revenue split from
 `deferredRevenue.recognitionReport` — with the accountant-review step still owning the
 books.
 
+## Coverage limits
+
+State payroll, complete option withholding, and final-paycheck calculations remain outside
+the current federal examples. Extensions require dated jurisdiction rule cards and cited
+worked examples before implementation. VC fund capital-call allocation and management-fee
+math remain candidates pending a citable worked example; bespoke fund terms remain inputs.
+
+The module admission requirements below apply to each extension. A workflow step without
+supported arithmetic stays in the process or rule-card layer. Judgment, legal interpretation,
+and authorization remain with the responsible human.
+
 ## What you can contribute here
 
 - **A new open module** — pure TypeScript under `lib/openstartup/` plus an index-table row
@@ -858,9 +869,8 @@ books.
   function table, a Worked example traced from the golden tests, Serves, Honesty
   boundaries, Sources). The bar is fixed: pure functions, a citation on every formula's
   doc comment, explicit rounding, worked examples reproduced number-for-number from the
-  cited source, and property tests. The assessed candidate backlog — with build/skip/defer
-  verdicts and the citable sources that exist (or the recorded absence of one) — lives in
-  [`docs/OPEN-MODULES-GAPS.md`](../docs/OPEN-MODULES-GAPS.md). Gate:
+  cited source, and property tests. See the [coverage limits](#coverage-limits) for the
+  prerequisites of remaining candidates. Gate:
   `pnpm test lib/openstartup/__tests__/` (and `pnpm test`).
 - **Harden an existing module** — a missed edge case from a cited worked example, a new
   property test, or a correction with the source that proves it (e.g. the YC Post-Money

@@ -4,7 +4,7 @@ import type { ProcessKind, Urgency } from '@/lib/processSim'
 // Row shapes for the founder-process tables. These types live in lib (not components) so the
 // server-side row builders (lib/processRows.ts, lib/shared-processes/index-rows.ts) and the
 // client table (components/ProcessesTable.tsx) both import them from the artifact side of the
-// repo-split boundary (docs/REPO-SPLIT-PLAN.md): lib never imports from
+// repo-split boundary: lib never imports from
 // components.
 
 export interface ProcessRow {

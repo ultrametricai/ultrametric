@@ -5,7 +5,7 @@ import fs from 'node:fs'
 import os from 'node:os'
 import path from 'node:path'
 
-// Safety behavior of scripts/sync-open.mjs (docs/REPO-SPLIT-PLAN.md): manifest
+// Safety behavior of scripts/sync-open.mjs: manifest
 // path sanitization, resolved-path collision integrity, and the overlay ledger that removes
 // stale files after a pin bump. Every scenario runs the real script as a subprocess against
 // throwaway temp directories; the gate is the exit code (execFileSync throws on non-zero).
