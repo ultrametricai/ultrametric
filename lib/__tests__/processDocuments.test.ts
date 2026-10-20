@@ -1,6 +1,5 @@
-import fs from 'node:fs'
-import path from 'node:path'
 import { describe, expect, it } from 'vitest'
+import { operationalSources } from './helpers/operational-sources'
 import { loadDocumentRegistry, openDocumentById } from '@/lib/documents'
 
 // Step documents (founder spike 2026-10-02, form_001 reference depth; extended the same day —
@@ -13,9 +12,7 @@ import { loadDocumentRegistry, openDocumentById } from '@/lib/documents'
 // below, and the render path throws on an unknown id via openDocumentById). Reads the RAW
 // corpus so jurisdiction-conditional nodes are covered too.
 
-const RAW = JSON.parse(
-  fs.readFileSync(path.resolve(__dirname, '../../open-processes/corpus.json'), 'utf8'),
-) as Array<{ id: string; dag: { nodes: Array<{ id: string; documents?: string[] }> } }>
+const RAW = operationalSources() as Array<{ id: string; dag: { nodes: Array<{ id: string; documents?: string[] }> } }>
 
 const tagged = RAW.flatMap((t) =>
   t.dag.nodes.filter((n) => n.documents).map((n) => ({ task: t.id, node: n.id, documents: n.documents! })),

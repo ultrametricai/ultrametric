@@ -1,13 +1,14 @@
 import fs from 'node:fs'
 import path from 'node:path'
 import { describe, expect, it } from 'vitest'
+import { loadProcesses } from '@/lib/processes'
 
 // The lore library gate: open-lore/library.json is the curated reading list (essays, guides,
 // books, talks) organized into sections, which double as the lore topic set. Invariants:
 // total schema on sections and entries (no missing or extra fields), unique kebab-case ids,
 // every URL https and unique, every entry's section resolving, loreIds resolving against
 // open-lore/registry.json, section arenas resolving against open-rankings/, and processIds
-// resolving (read-only) against open-processes/corpus.json. Deterministic; URL liveness is
+// resolving (read-only) against canonical operational processes. Deterministic; URL liveness is
 // editorial (open-lore/README.md) and is verified at authoring time, not here. Registry <->
 // library cross-link symmetry is asserted in lore-registry.test.ts.
 //
@@ -53,9 +54,7 @@ const registry = JSON.parse(
 ) as Array<{ id: string }>
 const loreIds = new Set(registry.map((e) => e.id))
 
-const corpus = JSON.parse(
-  fs.readFileSync(path.join(ROOT, 'open-processes', 'corpus.json'), 'utf8'),
-) as Array<{ id: string }>
+const corpus = loadProcesses(path.join(ROOT, 'open-rankings'))
 const processIds = new Set(corpus.map((p) => p.id))
 
 const KEBAB = /^[a-z0-9]+(-[a-z0-9]+)*$/
@@ -202,7 +201,7 @@ describe('lore library (open-lore/library.json)', () => {
     }
   })
 
-  it('processIds resolve against open-processes/corpus.json without duplicates', () => {
+  it('processIds resolve against canonical operational processes without duplicates', () => {
     for (const e of library.entries) {
       expect(new Set(e.processIds).size, `entry ${e.id} duplicate processIds`).toBe(e.processIds.length)
       for (const pid of e.processIds) {

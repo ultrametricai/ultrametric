@@ -1,9 +1,9 @@
 // Jurisdiction-conditional steps (founder 2026-09-25: "allow more options for the processes —
 // ie multi-state situations or California included — so we can see how the processes change").
 // Load-bearing assertions, in the feature's honesty order:
-//   1. corpus integrity on the RAW file: every `jurisdictions` value is from the allowed set,
+//   1. corpus integrity on the complete canonical projection: every `jurisdictions` value is from the allowed set,
 //      conditional nodes are never referenced by edges (they drop cleanly from the DAG flow),
-//      ids stay unique, and every conditional actionUrl is https with a label (the raw file is
+//      ids stay unique, and every conditional actionUrl is https with a label (the complete canonical projection is
 //      checked directly because loadProcesses strips these nodes before the general corpus
 //      tests can see them);
 //   2. DEFAULT-VIEW INVARIANCE: loadProcesses() strips every conditional node, so ceilings,
@@ -13,9 +13,9 @@
 //      math (lib/processes.ts computeCeiling) over the combined node set;
 //   4. the ?juris= codec is tolerant, canonical, and default-eliding.
 
-import fs from 'node:fs'
 import path from 'node:path'
 import { describe, expect, it } from 'vitest'
+import { operationalSources } from './helpers/operational-sources'
 import {
   ceilingWithJurisdictions, JURISDICTIONS, parseJuris, serializeJuris,
   type Jurisdiction, type JurisdictionStepView,
@@ -45,14 +45,12 @@ interface RawTask {
   }
 }
 
-const rawTasks = JSON.parse(
-  fs.readFileSync(path.join(DATA_DIR, '..', 'open-processes', 'corpus.json'), 'utf8'),
-) as RawTask[]
+const rawTasks = operationalSources() as RawTask[]
 const rawConditional = rawTasks.flatMap((t) =>
   t.dag.nodes.filter((n) => n.jurisdictions !== undefined).map((n) => ({ task: t, node: n })),
 )
 
-describe('corpus integrity (raw file — loadProcesses strips these before other tests see them)', () => {
+describe('corpus integrity (complete canonical projection — loadProcesses strips these before other tests see them)', () => {
   it('has conditional steps at the intended scale, and every jurisdictions value is from the allowed set', () => {
     expect(rawConditional.length).toBeGreaterThanOrEqual(8)
     expect(rawConditional.length).toBeLessThanOrEqual(15)
