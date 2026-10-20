@@ -318,19 +318,38 @@ behind the decisions. Two stages as examples:
 
 ## Install Ultrametric
 
-The npm package ships the [CLI and bundled agent skill](https://docs.ultrametric.ai/cli/install).
-MCP clients connect separately to the
-[hosted MCP service](https://docs.ultrametric.ai/mcp/connect). Public data can be
-read directly without installation or keys.
+To read process guides and work with saved company records, use the CLI from a
+terminal or connect your agent through MCP.
+
+### CLI
+
+The CLI requires Node.js 22.12 or later. Install it, sign in through the browser,
+then check the saved session:
 
 ```bash
-npm install -g ultrametric@latest                   # CLI + bundled agent skill
-ultrametric init --project                         # install the skill in this project
-curl https://ultrametric.ai/data/categories.json    # all rankings, raw JSON
-curl https://ultrametric.ai/llms.txt                # the index for agents
+npm install -g ultrametric@latest
+ultrametric auth login
+ultrametric auth status --json
 ```
 
-[ultrametric.ai/get-started](https://ultrametric.ai/get-started) · [docs.ultrametric.ai](https://docs.ultrametric.ai)
+Follow the [CLI installation and sign-in guide](https://docs.ultrametric.ai/cli/install)
+for setup through a terminal agent.
+
+### Hosted MCP
+
+In an AI application that supports remote MCP and OAuth, add this server URL in
+its MCP connection settings:
+
+```text
+https://api.ultrametric.ai/mcp
+```
+
+Complete the application's sign-in flow and choose your Ultrametric account and
+organization. Ask your agent to call Ultrametric's `status` tool to check the
+connection and selected organization.
+
+Follow the [MCP connection guide](https://docs.ultrametric.ai/mcp/connect) for setup
+and the [MCP tool reference](https://docs.ultrametric.ai/mcp/tools) for available operations.
 
 ## License
 
