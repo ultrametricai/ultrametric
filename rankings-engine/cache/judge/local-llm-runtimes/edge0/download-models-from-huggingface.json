@@ -1,18 +1,18 @@
 {
-  "hash": "b2a13f5bd14a46580d196a4eba4e1595254f8ac4140d76bf4fc7f28f79e034aa",
+  "hash": "325b36cbefe8a3e03cc13738717b46a09a3af747ea348d7f7ca560aad6025f48",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 4,
-    "confidence": "low",
-    "rationale": "Edge0 has a model download script (`fetch_models.py --tier edge0-35b`) and per-model 'repos' that bundle the base checkpoint with LoRA and prerouter adapters as one ready-to-run download. Models load transformers-style via `AutoEngine.from_pretrained` from a local path, with the tier auto-detected from `config.json`, and `--no-lora`/`--no-prerouter` run the plain base. However, the evidence never names Hugging Face as the source, and support appears limited to Edge0's own tiered checkpoints rather than arbitrary open models. Missing for 10: explicit Hugging Face Hub integration (pulling by repo ID), evidence of support for arbitrary or third-party open models beyond Edge0 tiers, and independent or hands-on corroboration.",
+    "confidence": "medium",
+    "rationale": "Edge0 ships its own model download path: `scripts/fetch_models.py --tier edge0-35b` fetches bundled \"repos\" that are ready to run in one download, and models can be run locally via `edge0 serve`, a one-shot chat, or `AutoEngine.from_pretrained`. However, the evidence never names Hugging Face as the source. Support also appears limited to curated Edge0 tiers, auto-detected from `config.json`, rather than arbitrary open models. Missing for 10: explicit Hugging Face Hub download/integration, running arbitrary open models beyond the predefined tiers, and independent hands-on corroboration.",
     "evidenceIds": [
       "edge0-gh-4",
       "edge0-gh-5",
+      "edge0-gh-6",
       "edge0-gh-9",
       "edge0-gh-10",
-      "edge0-gh-11",
-      "edge0-gh-14"
+      "edge0-gh-11"
     ],
     "productId": "edge0",
     "storyId": "download-models-from-huggingface"

@@ -12,7 +12,7 @@ New to the site and just want plain-language answers ("what does `na` mean," "wh
 score look low," "how do I disagree")? See **[docs/SCORING.md](./docs/SCORING.md)** — a
 one-page, jargon-free companion to this technical writeup. For a critical self-assessment of
 the scoring formula's limits (coverage sensitivity, judge noise, blend-weight choices) and the
-improvement roadmap, see [docs/SCORING-REVIEW.md](./docs/SCORING-REVIEW.md).
+historical proposals, see the [scoring review](https://github.com/ultrametricai/ultrametric/blob/a548b2576f22ab805ca1ff102e731af4a6d4bd9e/docs/SCORING-REVIEW.md).
 
 ## Evidence tiers
 
@@ -295,7 +295,8 @@ they actually test. Every revert is recorded in the commit that applies it. A fu
 version will pass the prior verdict as an anchor to reduce this variance at the source.
 
 **2026-09-30 judge-model migration.** The fleet was re-judged sonnet-5 → opus-5-5 on
-2026-09-30 after a full pilot (docs/OPUS-5-5-JUDGE-PILOT.md: 74% exact verdict agreement on
+2026-09-30 after a full pilot (the Opus 5.5 judge pilot memo, removed from this repo with its
+text preserved in git history: 74% exact verdict agreement on
 the pilot ranking; 7 of 10 manually adjudicated disagreements favored Opus 5.5's reading of the
 rubric). The prompt text did not change (v4 = v3 text). Every verdict flip and score move in
 that wave reflects the judge change, not product changes — the wave is labeled as such in

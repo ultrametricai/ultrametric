@@ -43,7 +43,7 @@ describe('situations doc validators (failure modes)', () => {
 
   it('fails when the committed block drifted from the corpus (stale title, missing row, extra row)', () => {
     const stale = table.replace(records[0].title, 'Renamed situation')
-    expect(validateSituationsDoc(stale, records).join(';')).toContain('drifted from open-processes/corpus.json')
+    expect(validateSituationsDoc(stale, records).join(';')).toContain('drifted from canonical process definitions')
     const missingRow = table.replace(`| \`${records[0].id}\` `, '| `deleted` ')
     expect(validateSituationsDoc(missingRow, records).join(';')).toContain('drifted')
   })

@@ -6,17 +6,9 @@ import {
 } from './processes'
 import { SITE_URL } from './site'
 
-// Process manifests: the founder-process corpus reshaped into a versioned, machine-readable
-// handoff contract for an executor (the AFK remake — an agent-execution product that RUNs these
-// processes). A manifest is PUBLIC data — it's our published corpus resolved against the live
-// arena leaderboards, nothing more — served at /processes/{slug}/manifest.json and, composed
-// per playbook, at /processes/chains/{chain}/manifest.json. The contract is documented in
-// docs/AFK-HANDOFF.md; bump MANIFEST_VERSION on any breaking shape change (see the doc's
-// versioning rules).
-//
-// Everything here is a pure function of the corpus (read through lib/processes.ts only) plus
-// the committed arena data — no request-time inputs — so the routes prerender under the static
-// export and the whole module is unit-testable against open-rankings/.
+// Public process manifests are derived from lib/processes.ts and committed arena data.
+// The contract and versioning rules live in open-processes/README.md#process-manifests.
+// Breaking shape or approval-semantic changes require a MANIFEST_VERSION bump.
 
 export const MANIFEST_VERSION = 2 as const
 
@@ -147,10 +139,9 @@ function isReadOnlyCall(method: string): boolean {
   return READ_ONLY_RE.test(method.replace(/[._/()-]/g, ' '))
 }
 
-// Side-effect policy (documented in docs/AFK-HANDOFF.md): any side-effectful step must be
-// approval-gated. Explicit corpus gates and flagged risk always win; computer-use steps are
-// always side-effectful (a browser agent acting on a real portal); api steps are gated unless
-// every recorded call reads; human steps need no machine gate — the human IS the actor.
+// Explicit corpus gates and medium/high risk require approval for every route. Otherwise,
+// human steps need no machine gate; computer-use and unclassified steps require approval.
+// API steps require approval unless they have recorded calls and every call is read-only.
 export function stepApprovalRequired(node: DagNode): boolean {
   if (node.approvalRequired) return true
   if (node.riskLevel === 'medium' || node.riskLevel === 'high') return true
@@ -230,7 +221,7 @@ export function manifestProvenance(): ManifestProvenance {
     source: 'productarena',
     url: SITE_URL,
     generatedFrom:
-      'open-processes/corpus.json + open-processes/chains.json (the Ultrametric founder-process corpus), '
+      'canonical definitions selected by open-processes/catalog.json (the Ultrametric founder-process corpus), '
       + 'resolved against live ranking leaderboards at build time. Regenerate by refetching this '
       + 'manifest URL — it always reflects the currently deployed data, not a pinned data commit.',
     license:

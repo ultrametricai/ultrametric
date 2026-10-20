@@ -1,7 +1,7 @@
 # Judge-model migration — 2026-09-30 — sonnet-5 → claude-opus-5-5 (prompt v4)
 
-Fleet re-judge under the new default judge, per the adopted docs/OPUS-5-5-JUDGE-PILOT.md
-recommendation. **Every verdict flip and score move in this wave reflects the judge change,
+Fleet re-judge under the new default judge, per the adopted Opus 5.5 judge pilot memo
+(removed from this repo; text preserved in git history). **Every verdict flip and score move in this wave reflects the judge change,
 not product changes.** The churn policy's no-new-evidence revert rule was deliberately not
 applied (memo §5.4); instead each arena's score-history.jsonl entries from the wave carry
 `"note": "judge-migration-2026-09-30: sonnet-5 → opus-5-5 (prompt v4)"`. Rank moves below

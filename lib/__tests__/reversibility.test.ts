@@ -1,6 +1,6 @@
-import fs from 'node:fs'
 import path from 'node:path'
 import { describe, expect, it } from 'vitest'
+import { operationalSources } from './helpers/operational-sources'
 import { loadProcesses, REVERSIBILITY_TIERS, type Reversibility } from '@/lib/processes'
 
 // Reversibility curation (founder 2026-09-30: "map what is irreversible and what is reversible
@@ -12,15 +12,20 @@ import { loadProcesses, REVERSIBILITY_TIERS, type Reversibility } from '@/lib/pr
 // terminations), not drudgery.
 
 const DATA_DIR = path.resolve(__dirname, '../../open-rankings')
-// The RAW corpus — includes the jurisdiction-conditional nodes loadProcesses strips from the
+// The Complete canonical projection — includes the jurisdiction-conditional nodes loadProcesses strips from the
 // default view; the classification must be total over those too.
-const RAW = JSON.parse(
-  fs.readFileSync(path.join(DATA_DIR, '..', 'open-processes', 'corpus.json'), 'utf8'),
-) as Array<{
+const RAW = operationalSources() as Array<{
   id: string
   title: string
   reversibility: Reversibility
-  dag: { nodes: Array<{ id: string; label: string; reversibility: Reversibility }> }
+  dag: {
+    nodes: Array<{
+      id: string
+      label: string
+      reversibility: Reversibility
+      geoResolutions?: Array<{ country: string; label: string }>
+    }>
+  }
 }>
 
 const tiers = new Set<string>(REVERSIBILITY_TIERS)
@@ -93,8 +98,13 @@ describe('reversibility distribution — irreversible is rare and means it', () 
   })
 
   it('classifies every 83(b) filing step irreversible, consistently', () => {
+    // A restructured step speaks the global abstraction and carries the 83(b) mechanics in its
+    // US geoResolution, so the matcher reads both the label and the US resolution label.
+    const files83b = (n: { label: string; geoResolutions?: Array<{ country: string; label: string }> }) =>
+      /file.*83\(b\)/i.test(n.label) ||
+      (n.geoResolutions ?? []).some((r) => r.country === 'US' && /file.*83\(b\)/i.test(r.label))
     const filings = RAW.flatMap((t) =>
-      t.dag.nodes.filter((n) => /file.*83\(b\)/i.test(n.label)).map((n) => ({ at: `${t.id}/${n.id}`, n })),
+      t.dag.nodes.filter(files83b).map((n) => ({ at: `${t.id}/${n.id}`, n })),
     )
     expect(filings.length).toBeGreaterThanOrEqual(3)
     for (const { at, n } of filings) expect(n.reversibility, at).toBe('irreversible')

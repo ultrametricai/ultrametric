@@ -12,7 +12,7 @@ Blockbuster near-laughter is attributed to the one participant who tells it that
 
 The grammar is machine-checked by `lib/lore.ts` and `__tests__/lore.test.ts`: unique ids,
 valid veracity grades, non-empty lessons, HTTPS sources, law numbers resolving against
-`open-law/LAWS.md`, and process ids resolving against `open-processes/corpus.json`.
+`open-law/LAWS.md`, and process ids resolving against `open-processes/catalog.json`.
 
 ## Founding and origin stories
 

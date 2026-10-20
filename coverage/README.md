@@ -4,7 +4,7 @@ This directory is the cross-area answer to what this repo covers and what is mis
 one entry per top-level content area: a maturity grade, a short summary, the headline
 gaps, and pointers to the file where that area tracks its own gaps in detail. The detail
 stays with its area (the law map keeps its grades, the arena roadmap keeps its tiers, the
-modules audit keeps its verdicts); this directory is the rollup.
+modules README keeps its limits); this directory is the rollup.
 
 `__tests__/coverage.test.ts` keeps the index aligned with reality: the area list must
 match the directories the README layout tree names (each a real tracked directory),
@@ -13,13 +13,16 @@ every pointer must resolve to a committed file, and the index must validate agai
 
 ## Where each area tracks its own gaps
 
-- `open-processes` — chain membership in `open-processes/chains.json`; jurisdiction-scoped
-  workflow coverage in `open-law/workflow-coverage.json`; the shared-corpus import audit in
-  `content/processes/legacy-audit.json`.
+- `open-processes` — chain membership in definitions selected by `open-processes/catalog.json`; jurisdiction-scoped
+  workflow coverage in `open-law/workflow-coverage.json`; authored outcomes and guidance
+  in the definitions selected by `open-processes/catalog.json`. Historical import findings
+  remain in the [original audit](https://github.com/ultrametricai/ultrametric/blob/c156feeb4de636e5d2854ddf14b13955c2da85ac/content/processes/legacy-audit.json).
+  The processes still voiced in US institutions are tracked in
+  `docs/geo-resolution-worklist.json` (gated by `lib/__tests__/processGeoResolutions.test.ts`).
 - `open-rankings` — `open-rankings/arena-roadmap.json`: every arena tiered by priority and
   marked live or planned.
-- `open-modules` — `docs/OPEN-MODULES-GAPS.md`: the corpus-wide candidate table with BUILT,
-  SKIP, and DEFER verdicts.
+- `open-modules` — [coverage limits](../open-modules/README.md#coverage-limits): remaining
+  calculation gaps and the rule-card and worked-example prerequisites for extending them.
 - `open-startup-sim` — `open-startup-sim/README.md`: the simulator's scope and its
   disclosed assumptions and multipliers.
 - `open-law` — `open-law/map.json`: maturity grades per domain and sub-area, with the

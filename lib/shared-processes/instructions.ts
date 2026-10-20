@@ -29,6 +29,9 @@ function instructionalNotes(metadata: Record<string, unknown>): Note[] {
   if (metadata.geoNotes) for (const item of z.array(z.object({ country: z.string(), kind: z.string(), summary: z.string() }).passthrough()).parse(metadata.geoNotes)) {
     add(`${item.country} (${item.kind}): ${item.summary}`, item.actionUrl)
   }
+  if (metadata.geoResolutions) for (const item of z.array(z.object({ country: z.string(), kind: z.string(), label: z.string(), guidance: z.string().optional() }).passthrough()).parse(metadata.geoResolutions)) {
+    add(`${item.country} resolution (${item.kind}): ${item.label}${item.guidance ? ` — ${item.guidance}` : ''}`, item.actionUrl)
+  }
   if (metadata.contextNeeded) for (const item of z.array(z.object({ query: z.string().optional(), required: z.boolean() })).parse(metadata.contextNeeded)) {
     if (item.query) add(`${item.required ? 'Required' : 'Optional'} context: ${item.query}`)
   }

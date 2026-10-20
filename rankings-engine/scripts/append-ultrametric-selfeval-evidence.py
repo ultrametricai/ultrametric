@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # Ultrametric bring-up (agent-skills, 2026-10-08): appends the committed keyless self-eval
-# sweep (docs/self-eval-probes/transcript-self-eval-keyless.txt, recorded 2026-10-07 per
-# docs/SELF-EVAL.md) to the evidence pack as probe-tier items — the supp-evidence precedent
+# sweep (https://github.com/ultrametricai/ultrametric/blob/a548b2576f22ab805ca1ff102e731af4a6d4bd9e/docs/self-eval-probes/transcript-self-eval-keyless.txt, recorded 2026-10-07 per
+# https://github.com/ultrametricai/ultrametric/blob/a548b2576f22ab805ca1ff102e731af4a6d4bd9e/docs/SELF-EVAL.md) to the evidence pack as probe-tier items — the supp-evidence precedent
 # (append-startup-law-firms-docs-evidence.py), with tier 'probe' because every excerpt quotes
 # a recorded keyless session rather than a vendor page. fetchedAt is the recording timestamp,
 # not the append time, so the evidence stays dated to when the probes actually ran (item 9,

@@ -47,7 +47,9 @@ Run it yourself: `pnpm tsx rankings-engine/scripts/staleness-scan.ts [--offline]
 ## Display rules in the UI
 
 Two failure modes the display layer guards against — both are **display-only**: no rule here
-ever changes a verdict, a quality, or a score.
+ever changes a verdict, a quality, or a score. The `lib/` modules named below live in this
+repo; the components that render them (and `infra/cloudflare-proxy/worker.js`) live in the
+private site repo.
 
 **Auth-gated ≠ absent** (`lib/verification.ts` `isAuthGatedEvidence` / `cellAuthGated` /
 `authGatedProbeCount`). When a runtime probe reached a live endpoint and got an explicit
@@ -75,7 +77,8 @@ score built entirely from zero-evidence none/na cells renders italic *untested*,
 - `AiEraBadge`'s component-breakdown tooltip still shows raw numbers (a 0 there can be an
   untested 0) — the columns beside it carry the untested distinction, the tooltip is next.
 - Per-theme scores on the ranking page / `themeScores` in exports (`lib/markdown.ts` llms.md,
-  `/compare`, battle pages) render numeric values without the untested distinction.
+  private site repo; `/compare`, battle pages) render numeric values without the untested
+  distinction.
 - `lib/scoreIntervals.ts`'s internal `isUntested` omits `na` (inconsistent with the canonical
   rule; affects only interval width, not display).
 

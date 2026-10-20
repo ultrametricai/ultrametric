@@ -456,11 +456,13 @@ describe('corpus', () => {
     expect(breach.urgency).toBe('hours')
     expect(breach.reversibility).toBe('irreversible')
     expect(breach.dag.nodes.filter((n) => n.reversibility === 'irreversible').length).toBe(2)
-    // Geo honesty: the breach clocks are US-state statutes with real non-US analogs mapped —
-    // country-total since the totality passes (the CNIL teleservice URL verified live
-    // 2026-10-02 closed the FR gap the first pass couldn't; CNPD and the OPC closed PT/CA
-    // in the 2026-10-03 wave).
-    expect(breach.geoScope).toBe('us-state')
+    // Geo honesty: breach response is a global situation — the clock-mapping, regulator-filing,
+    // and individual-notice steps carry per-country geoResolutions (the US state statutes as one
+    // entry beside the committed GDPR/CERT-In/PIPEDA mechanics), so the record is geoScope
+    // 'global' since the wave-2 restructuring. The notes stay country-total (the CNIL
+    // teleservice URL verified live 2026-10-02 closed the FR gap the first pass couldn't; CNPD
+    // and the OPC closed PT/CA in the 2026-10-03 wave).
+    expect(breach.geoScope).toBe('global')
     expect((breach.geoNotes ?? []).map((n) => n.country).sort()).toEqual(['CA', 'DE', 'FR', 'IN', 'PT', 'UK'])
     expect(breach.geoNotes!.find((n) => n.country === 'FR')!.actionUrl).toContain('cnil.fr')
   })

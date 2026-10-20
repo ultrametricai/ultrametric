@@ -1,6 +1,7 @@
 import fs from 'node:fs'
 import path from 'node:path'
 import { describe, expect, it } from 'vitest'
+import { operationalSources } from '@/lib/__tests__/helpers/operational-sources'
 import { z } from 'zod'
 import { CompanyFieldsRegistrySchema } from '@/lib/companyFields'
 import { shape } from '@/lib/founderOps'
@@ -91,6 +92,21 @@ describe('canonical process schema publication', () => {
     expect(published.safeParse(record).success).toBe(false)
   })
 
+  it('the canonical-definition template stays a valid starting point', () => {
+    // templates/canonical-process.json is the blank contributors copy to author an
+    // open-processes/<slug>.json definition (CONTRIBUTING.md §5). The blank must stay
+    // schema-valid when the canonical contract changes (templates/README.md rule).
+    const template = JSON.parse(fs.readFileSync(path.join(ROOT, 'templates/canonical-process.json'), 'utf8'))
+    expect(processDefinitionSchema.safeParse(template).success).toBe(true)
+    expect(published.safeParse(template).success).toBe(true)
+    // The template models the geo dimension: a step carrying geoResolutions with the
+    // required US analog entry (lib/processes.ts load-enforces this on committed records).
+    const geoStep = template.parts.find((part: { metadata: Record<string, unknown> }) => part.metadata.geoResolutions)
+    expect(geoStep).toBeDefined()
+    const resolutions = geoStep.metadata.geoResolutions as Array<{ country: string; kind: string }>
+    expect(resolutions.find((r) => r.country === 'US')?.kind).toBe('analog')
+  })
+
   it('keeps legacy records valid through the preserved contract and existing URL', () => {
     const legacy = JSON.parse(fs.readFileSync(LEGACY_PROCESS_SCHEMA_FILE, 'utf8'))
     const { $schema, $defs, ...legacyDefinition } = legacy
@@ -139,14 +155,14 @@ describe('operational-process schema publication', () => {
     expect(schema.properties.urgency?.enum).toEqual(['hours', 'days', 'weeks'])
   })
 
-  it('every committed corpus record validates against the published schema via shape()', () => {
+  it('every canonical operational projection validates against the published schema via shape()', () => {
     const schema = JSON.parse(committed)
-    const corpus = JSON.parse(fs.readFileSync(path.join(ROOT, 'open-processes', 'corpus.json'), 'utf8'))
+    const corpus = operationalSources(ROOT)
     expect(Array.isArray(corpus)).toBe(true)
     expect(corpus.length).toBeGreaterThanOrEqual(100)
     const errors: string[] = []
     for (const record of corpus) {
-      shape(record, schema, `process ${record?.id ?? '?'}`, errors)
+      shape(record as Parameters<typeof shape>[0], schema, `process ${(record as { id?: string })?.id ?? '?'}`, errors)
     }
     expect(errors).toEqual([])
   })

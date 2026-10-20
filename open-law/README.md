@@ -9,8 +9,8 @@ workflow. `reviewed_on` / `review_due` are editorial check dates, not legal effe
 dates; unknown `valid_from` / `valid_until` stay null until verified. An ID is never
 reused to change a rule's meaning: version it and note the affected workflows.
 
-How a card is consumed: `lib/founderOps.ts` validates every card against
-`schemas/rule.schema.json`, requires its `jurisdiction` to exist in
+How a card is consumed: `lib/founderOps.ts` validates every card against its in-code
+rule contract (`RuleCardSchema`), requires its `jurisdiction` to exist in
 `jurisdictions/registry.json`, and requires every `source_ids` entry to resolve to a
 citation in `citations/registry.json` here (for `kind: legal`, to a `primary-*`
 authority). Workflows in
@@ -32,7 +32,7 @@ together.
 | --- | --- | --- |
 | Formation and corporate governance | Incorporation mechanics and charter contents (Delaware and the UK), board and stockholder action, stock issuance authority, ongoing registrations and reports, and beneficial-ownership reporting. | partial |
 | Securities and fundraising | The Securities Act registration requirement and private-offering exemptions, Regulation D conditions, offering notices (Form D and blue sky), and compensatory-issuance exemptions. | partial |
-| Equity and compensation | 409A valuation presumptions and penalties, 83(b) elections and restricted stock, ISO and NSO tax treatment, QSBS, and the UK EMI notification deadline. | partial |
+| Equity and compensation | 409A valuation presumptions and penalties, 83(b) elections and restricted stock, ISO and NSO tax treatment, QSBS, and the UK EMI notification deadline and company qualifying limits. | partial |
 | Employment | Hiring and onboarding duties, federal wage and hour baselines, worker classification, restrictive covenants, terminations and layoffs, workplace safety, and benefits. | partial |
 | Tax | Corporate income tax and R&D rules, payroll taxes, state entity-level taxes, and sales tax and VAT. | partial |
 | Intellectual property | Ownership and assignment of founder, employee, and contractor work product; patents; trademarks; trade secrets; and open source. | partial |
@@ -82,8 +82,10 @@ The cards live in one directory per jurisdiction, named by the `jurisdiction` co
 | [US-NY](US-NY/) | The wage notice at hire |
 | [US-TX](US-TX/) | Foreign registration, the franchise-tax report |
 | [US-WA](US-WA/) | The noncompete earnings threshold |
+| [US-VA](US-VA/) | The Consumer Data Protection Act applicability thresholds |
+| [US-CO](US-CO/) | The Colorado Privacy Act applicability thresholds |
 | [EU](EU/) | The GDPR data-subject-access response deadline |
-| [UK](UK/) | Company registration and the certificate of incorporation, the confirmation statement, allotment returns, accounts filing periods, PSC information notices, corporation tax notice and PAYE registration deadlines, the VAT registration threshold, the written statement of particulars, EMI notification |
+| [UK](UK/) | Company registration and the certificate of incorporation, the confirmation statement, allotment returns, accounts filing periods, PSC information notices, corporation tax notice and PAYE registration deadlines, the VAT registration threshold, the written statement of particulars, EMI notification and company qualifying limits |
 
 ## Founder-journey workflow files
 

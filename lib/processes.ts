@@ -246,6 +246,42 @@ export const StepFailureModeSchema = z.object({
 
 export type StepFailureMode = z.infer<typeof StepFailureModeSchema>
 
+// Step-level geo resolutions (founder ask 2026-10-19: US-specific mechanics presented as THE
+// process read as not-possible globally). The step's own label/guidance carry the GLOBAL
+// abstraction that holds anywhere ("settle the departing equity per the founder agreement");
+// geoResolutions carries each country's concrete mechanics for that abstract step, with the US
+// as one explicit entry among the rest rather than the default voice. Same country codes as the
+// corpus geoNotes plus 'US', and the same kind vocabulary (lib/geoPreference.ts GEO_NOTE_KINDS)
+// the geoNotes and the artifacts registry's geo field use, read at step resolution:
+//   'analog'         — the step resolves there as its own concrete mechanics;
+//   'absorbed'       — the step's work happens automatically inside another act there;
+//   'not-applicable' — the step's need genuinely doesn't exist there.
+// Curation: entries come from already-committed geo knowledge (corpus geoNotes, artifact geo
+// entries, dated law cards cited by id inside the prose); a country with no committed mechanics
+// carries no entry, and the abstraction stands there by design. Display-only and additive: no
+// judged number reads the field, and a node without it is exactly the pre-resolution schema.
+// Load-enforced invariants (loadProcesses, kept out of zod so the published JSON schema stays a
+// plain shape): one entry per country per step; a US entry (kind 'analog') is present wherever
+// the field is — the moved-down US mechanics are what make the abstraction honest; actionLabel
+// only alongside actionUrl; no entries on jurisdiction-conditional nodes.
+export const GEO_RESOLUTION_COUNTRIES = ['US', ...GEO_NOTE_COUNTRIES] as const
+export type GeoResolutionCountry = (typeof GEO_RESOLUTION_COUNTRIES)[number]
+
+export const StepGeoResolutionSchema = z.object({
+  country: z.enum(GEO_RESOLUTION_COUNTRIES),
+  kind: z.enum(GEO_NOTE_KINDS),
+  // The country's concrete mechanics for this abstract step — the text that was (or would have
+  // been) the step label in that country's voice.
+  label: z.string().min(1),
+  // The step-level detail in that country: windows, instruments, filings. Optional.
+  guidance: z.string().min(1).optional(),
+  // The canonical page for the mechanics — verified live before listing, like every corpus URL.
+  actionUrl: z.string().url().optional(),
+  actionLabel: z.string().min(1).optional(),
+})
+
+export type StepGeoResolution = z.infer<typeof StepGeoResolutionSchema>
+
 // The full node schema: the base fields (the DEFAULT method) plus optional method variants.
 // COMPAT-ADDITIVE: a node without methods is exactly the pre-variant schema, and no default
 // surface reads methods — computeCeiling, buildSimSteps, the manifest, the rankings and the
@@ -289,6 +325,10 @@ export const DagNodeSchema = DagNodeBaseSchema.extend({
   // corpus-tested both ways (lib/__tests__/processDocuments.test.ts — every id must resolve in
   // the registry, and the render lookup throws on an unknown id).
   documents: z.string().min(1).array().min(1).optional(),
+  // Per-country concrete mechanics for a step whose own text is the global abstraction — see
+  // StepGeoResolutionSchema above. Full-node only (like producesArtifact): method-variant
+  // subSteps stay display-level.
+  geoResolutions: StepGeoResolutionSchema.array().min(1).optional(),
 })
 
 // An old URL slug that must keep working after a rename (founder rule: processes are named
@@ -629,6 +669,33 @@ export function loadProcesses(dir: string = DEFAULT_DIR()): ProcessTask[] {
             throw new Error(`${at}: estimatedMinutes ${m.estimatedMinutes} must equal sub-step sum ${sum}`)
           }
         }
+      }
+    }
+  }
+  // Step geo-resolution invariants that zod deliberately doesn't encode (the published JSON
+  // schema stays a plain shape): one entry per country, the US mechanics present as an explicit
+  // 'analog' entry wherever the field is (the step text stays the global abstraction), URLs
+  // labelled only where they exist, and no entries on jurisdiction-conditional nodes (those are
+  // US-state machinery; a step that only exists inside a US-state toggle has no global voice to
+  // resolve).
+  for (const t of parsed) {
+    for (const n of t.dag.nodes) {
+      const resolutions = n.geoResolutions ?? []
+      if (resolutions.length === 0) continue
+      const at = `${t.id}/${n.id}`
+      if (n.jurisdictions && n.jurisdictions.length > 0) {
+        throw new Error(`${at}: jurisdiction-conditional steps carry no geoResolutions`)
+      }
+      if (new Set(resolutions.map((r) => r.country)).size !== resolutions.length) {
+        throw new Error(`${at}: one geo resolution per country`)
+      }
+      const us = resolutions.find((r) => r.country === 'US')
+      if (!us) throw new Error(`${at}: geo resolutions carry an explicit US entry`)
+      if (us.kind !== 'analog') {
+        throw new Error(`${at}: the US entry is the moved-down concrete mechanics — kind 'analog'`)
+      }
+      for (const r of resolutions) {
+        if (r.actionLabel && !r.actionUrl) throw new Error(`${at}/${r.country}: actionLabel requires actionUrl`)
       }
     }
   }

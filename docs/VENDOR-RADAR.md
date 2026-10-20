@@ -1,16 +1,11 @@
 # Vendor radar
 
-Founder ask (2026-10-02): *"we need a way not to miss new vendors that are hot and coming out —
-listen for new vendor launches and do a deep spike on them when they come out, so this data set
-is alive."*
-
-The radar is the LISTENING half of that ask: a keyless daily scan of public launch surfaces that
-reports new, hot, arena-relevant vendors as candidates. The SPIKE half stays exactly what it
-already is — a deliberate, reviewed run of the standard engine on a human-approved candidate.
+The radar scans public launch surfaces daily for candidates that fit existing arenas.
+Approved candidates enter scoped runs of the rankings engine and land through reviewed PRs.
 
 ## Approval and the hard limits
 
-Founder authorization (2026-10-13) replaced per-candidate checkbox approval with the criteria in
+Candidate approval follows the criteria in
 `policies/AGENT_POLICY.md` ("Vendor-radar candidate approval"): existing-ranking fit, public
 docs surface, shipped product, no founder affiliation. `rankings-engine/scripts/radar-triage.ts` applies
 them mechanically — the lexical arena classifier for ranking fit, a docs-surface fetch, the
@@ -101,11 +96,9 @@ that review.
 
 ## From candidate to judged product (the Instinct/dots precedent)
 
-An auto-approved (or human-approved) radar candidate goes through the same deliberate flow the
-Instinct and OpenAI-dots bring-ups used (`docs/vendor-research/instinct.md`,
-`docs/vendor-research/ai-assistants-candidates.md`):
+An auto-approved or human-approved radar candidate follows this flow:
 
-1. **Research doc** — `docs/vendor-research/<vendor>.md`: what it is, which arena, capability map
+1. **Research notes** — ignored `.pa-tmp/vendor-research/<vendor>.md`: what it is, which arena, capability map
    with per-claim source URLs, fetch dates, and evidence tiers (`claimed-docs` / `press` /
    `probe`). No judging, no rankings edits — raw material for the evidence pack.
 2. **Roster PR** — add the product to `open-rankings/<arena>/products.json` (reviewed like any roster
@@ -114,9 +107,7 @@ Instinct and OpenAI-dots bring-ups used (`docs/vendor-research/instinct.md`,
    `crawl → extract → collect-community → probe → judge → claims → derive` (via
    `rankings-engine/cli.ts`, story-runner dispatch, or `rankings-engine/scripts/spike-engine.ts --process`),
    landing as a PR reviewed under the re-judge stability policy.
-4. Close the candidate's checkbox in the radar issue with a link to the PR.
-
-The radar only ever shortens the time between "it launched" and step 1.
+4. Record the final disposition and PR link on the candidate's issue.
 
 ## Testing
 
