@@ -1,6 +1,7 @@
 // Judge-model migration driver (sonnet-5 → claude-opus-5-5, prompt v3 → v4) — the generalized
-// successor to rankings-engine/scripts/rejudge-pilot.ts, per the adopted docs/OPUS-5-5-JUDGE-PILOT.md
-// recommendation: re-judge the fleet arena-by-arena through the Message Batches API (half
+// successor to rankings-engine/scripts/rejudge-pilot.ts, per the adopted Opus 5.5 judge pilot
+// recommendation (memo in git history; migration record in docs/JUDGE-MIGRATION-2026-09-30.md):
+// re-judge the fleet arena-by-arena through the Message Batches API (half
 // price, no rate-limit contention with story-runner), land each arena atomically (judge cache +
 // verdicts.json + rankings.json + labeled score-history in one commit), and never apply the
 // churn policy's no-new-evidence revert rule to this wave — every flip is the judge change and
