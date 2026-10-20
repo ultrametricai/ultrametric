@@ -57,9 +57,7 @@ describe('lib/ultrametricCli.ts — curated map validation', () => {
   })
 
   it('the excluded hosted processes stay excluded: no corpus task maps to a different-result guide', () => {
-    // These live catalog IDs intentionally have NO corpus mapping (different result or no
-    // corpus task): a mapping appearing for them must come with a corpus task whose result
-    // actually matches — revisit docs/ULTRAMETRIC-CLI-CAPABILITIES.md before changing.
+    // A new mapping requires a verified catalog entry and a corpus task with the same result.
     const excluded = ['company-profile', 'ai-native-assessment', 'branding', 'delaware-review']
     const mapped = new Set(Object.values(ULTRAMETRIC_CLI_STEPS).map((e) => e.processId))
     for (const id of excluded) expect(mapped.has(id), `${id} must stay unmapped`).toBe(false)

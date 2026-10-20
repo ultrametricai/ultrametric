@@ -2,7 +2,7 @@
 # Self-eval probe sweep (2026-10-07, founder ask: "self eval using the probe stuff we built,
 # on the UM CLI/MCP"). Runs EVERY `ultrametric@0.4.1` command keylessly, exactly as a visitor
 # with no account could, plus the hosted MCP's keyless surface, and captures a verbatim
-# transcript with exit codes — the same capture pattern as docs/cli-sandbox-spike/.
+# transcript with exit codes.
 #
 # Isolation: every CLI call gets --data-dir pointed at a scratch directory, so no local
 # login, settings, or logs leak in (the CLI keeps auth.json/settings.json/logs under the

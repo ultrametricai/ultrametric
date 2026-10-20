@@ -22,10 +22,10 @@ function runExport(example: boolean) {
 
 beforeEach(() => {
   root = mkdtempSync(path.join(tmpdir(), 'um-shared-export-'))
-  for (const directory of ['schemas', 'open-processes', 'content/processes/examples']) mkdirSync(path.join(root, directory), { recursive: true })
+  for (const directory of ['schemas', 'open-processes', 'scripts/shared-processes/examples']) mkdirSync(path.join(root, directory), { recursive: true })
   writeFileSync(path.join(root, 'schemas/shared-process.schema.json'), sharedSchemaJson())
-  const example = readFileSync(path.join(repo, 'content/processes/examples/staging.json'), 'utf8')
-  writeFileSync(path.join(root, 'content/processes/examples/staging.json'), example)
+  const example = readFileSync(path.join(repo, 'scripts/shared-processes/examples/staging.json'), 'utf8')
+  writeFileSync(path.join(root, 'scripts/shared-processes/examples/staging.json'), example)
   const definitions = JSON.parse(example).map((record: { id: string; parts: Array<{ id: string }>; links: Array<{ to: string }> }) => {
     if (!record.parts.length) record.parts.push({ id: 'synthetic-step', kind: 'step', title: 'Synthetic step', guidance: 'Perform the synthetic check.', when: null, ref: null, options: [], references: [], notes: [], metadata: {} } as typeof record.parts[number])
     return { ...record, entrySteps: record.parts.filter(part => !record.links.some(link => link.to === part.id)).map(part => part.id) }
@@ -51,12 +51,24 @@ describe('pinned catalog export', () => {
   })
 
   it.each([false, true])('exports the matching schema and committed revision (example=%s)', (example) => {
+    expect(existsSync(path.join(root, 'content/processes'))).toBe(false)
     const result = runExport(example)
     expect(result.status, result.stderr).toBe(0)
     const artifact = JSON.parse(readFileSync(path.join(root, 'catalog.json'), 'utf8'))
     expect(artifact.schema).toEqual(JSON.parse(sharedSchemaJson()))
     expect(artifact.records).toHaveLength(2)
     expect(artifact.sourceRevision).toBe(execFileSync('git', ['rev-parse', 'HEAD'], { cwd: root, encoding: 'utf8' }).trim())
+  })
+
+  it.each([false, true])('rejects an uncommitted example edit (example=%s)', (example) => {
+    const file = path.join(root, 'scripts/shared-processes/examples/staging.json')
+    const records = JSON.parse(readFileSync(file, 'utf8'))
+    records[0].title = 'Uncommitted example edit'
+    writeFileSync(file, JSON.stringify(records))
+    const result = runExport(example)
+    expect(result.status).not.toBe(0)
+    expect(result.stderr).toContain('Commit the shared records and schema before exporting')
+    expect(existsSync(path.join(root, 'catalog.json'))).toBe(false)
   })
 
   it('preserves the canonical logo entry, graph, guidance and metadata in the normal export', () => {

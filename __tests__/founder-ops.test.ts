@@ -2,6 +2,7 @@ import { describe, expect, it, vi } from 'vitest'
 import fs from 'node:fs'
 import path from 'node:path'
 import { planFounderOps, validateFounderOps } from '@/lib/founderOps'
+import * as processCatalog from '@/lib/shared-processes/catalog'
 
 // The founder-ops corpus gates (ingested from the founder-ops-open starter, 2026-09-28): the
 // committed open-law / open-processes / citations / coverage records must satisfy every structural and semantic
@@ -28,12 +29,18 @@ describe('founder-ops corpus validation', () => {
       if (String(args[0]) === invalid) return JSON.stringify({ schemaVersion: 1, kind: 'process', id: 'invalid' })
       return readFile(...args)
     })
+    const catalogSpy = vi.spyOn(processCatalog, 'loadProcessCatalog').mockImplementation(() => {
+      throw new Error('Fixture canonical definition is invalid')
+    })
     try {
       const errors = validateFounderOps(new Date('2026-10-14T00:00:00Z'))
       expect(errors).toContain('open-processes/equity/us-de/409a-valuation.json: unreadable JSON')
       expect(errors).toContain('open-processes/generate-a-brand-logo.json: invalid process definition')
+      expect(errors.some(error => error.startsWith('canonical catalog:'))).toBe(true)
+      expect(errors.some(error => /law map .*: unknown process /.test(error))).toBe(false)
     } finally {
       spy.mockRestore()
+      catalogSpy.mockRestore()
     }
   })
 

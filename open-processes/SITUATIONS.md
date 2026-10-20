@@ -1,6 +1,6 @@
 # Situations — the event-triggered records in the process corpus
 
-A **situation** is a corpus record with `kind: 'situation'` (`open-processes/corpus.json`): an
+A **situation** is a canonical `open-processes/<slug>.json` record with `kind: 'situation'`: an
 unplanned event routed into the same process machinery. A lawsuit is served, a breach is live,
 a tax notice arrives: nobody plans these into a timeline, so situations carry **no `timeOrder`
 slot** and never appear on the founder-timeline orderings. Structurally a situation is both an
@@ -81,9 +81,10 @@ The 22 situations, hottest clock first (urgency, then title — the /situations 
 
 ## How to add one
 
-1. Add the record to `open-processes/corpus.json` with `kind: 'situation'`, a `trigger` written as
-   the event, the `urgency` tier the clock actually sets, **no `timeOrder`**, and the usual
-   DAG/scores/geoScope. Legal claims in descriptions cite dated rule cards in `open-law/` by id;
+1. Add an `open-processes/<slug>.json` definition to `catalog.json` with `kind: 'situation'`.
+   Set `metadata.kind` to the same value, `metadata.trigger` to the event, and
+   `metadata.urgency` to the tier the clock actually sets. Omit `metadata.timeOrder`; retain
+   explicit `entrySteps`, parts, links, scores and geography. Legal claims in descriptions cite dated rule cards in `open-law/` by id;
    deadlines cite the notice or statute, curl-verified like every corpus URL.
 2. Route each step by what runs today: `agent` where an agent can genuinely run it; signatures
    under penalty of perjury get `legalSignature`; third-party clocks are `person` waits. When a
@@ -92,4 +93,4 @@ The 22 situations, hottest clock first (urgency, then title — the /situations 
 3. Regenerate this file's table: `pnpm exec tsx scripts/generate-situations-md.ts`.
 4. Run the gates — the drift test (`__tests__/situations.test.ts`) fails if this list and the
    corpus disagree, the schema tests enforce the kind-conditional fields, and
-   `pnpm shared:check` re-imports the shared record.
+   `pnpm shared:check` validates the canonical catalog and jurisdiction projections.

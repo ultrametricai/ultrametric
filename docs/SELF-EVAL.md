@@ -6,10 +6,12 @@ Subject: `ultrametric@0.4.1` (npm `dist-tags.latest`) and the hosted MCP at
 `https://api.ultrametric.ai/mcp`.
 Evidence: `docs/self-eval-probes/run-self-eval-keyless.sh` →
 `docs/self-eval-probes/transcript-self-eval-keyless.txt`, a verbatim session with exit codes,
-captured the same way the vendor spikes capture theirs (`docs/cli-sandbox-spike/`).
-Companions: `docs/ULTRAMETRIC-CLI-CAPABILITIES.md` (shipped-capability audit) and the
-CLI sandbox design note that first recorded the arena defect (removed from this repo;
-text in git history; its recorded spike evidence stays at `docs/cli-sandbox-spike/`).
+captured using the historical
+[vendor spike scripts](https://github.com/ultrametricai/ultrametric/tree/b14331c1859b7ad92d4c18ec422f1af1fe232b63/docs/cli-sandbox-spike).
+Historical companions: the
+[shipped-capability audit](https://github.com/ultrametricai/ultrametric/blob/b14331c1859b7ad92d4c18ec422f1af1fe232b63/docs/ULTRAMETRIC-CLI-CAPABILITIES.md)
+and [sandbox design](https://github.com/ultrametricai/ultrametric/blob/b14331c1859b7ad92d4c18ec422f1af1fe232b63/docs/CLI-SANDBOX-DESIGN.md)
+that first recorded the arena defect.
 
 First-party disclosure: Ultrametric is our own product. This evaluation applies the same
 keyless-probe discipline the arenas apply to vendors, with the negatives published. Nothing

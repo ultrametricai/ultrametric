@@ -1,8 +1,5 @@
-// Corpus ↔ shared-record identity pins (docs/PR171-EXTRACTION.md, port plan item 3 —
-// extracted from PR #171's process-route-cutover suite and rescoped off the route
-// registry). These guard the additive transition regardless of routing: the shared
-// records in content/processes/ mirror the legacy corpus identities, so chains,
-// jurisdiction files, and site loaders keep resolving while both surfaces exist.
+// Canonical records and their operational projections retain the same stable
+// identities, aliases, story mappings, simulator events, and chain references.
 import { readFileSync } from 'node:fs'
 import { describe, expect, it } from 'vitest'
 import { loadChains, loadProcesses, processSlug } from '../processes'

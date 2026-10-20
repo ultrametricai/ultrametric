@@ -267,15 +267,14 @@ auto-publishes anything.
 
 ## 5. Add a process
 
-The step-by-step founder processes (and the reactive situations) live in
-`open-processes/corpus.json`, contract in `schemas/operational-process.schema.json`. Start from a
-blank, schema-valid record in [`templates/`](templates/), follow the curation rules in
-[`open-processes/README.md`](open-processes/README.md) — routing, reversibility, verification checks;
-a situation additionally carries a `trigger` and an `urgency` tier (see
-[`open-processes/SITUATIONS.md`](open-processes/SITUATIONS.md)) — and validate with `pnpm test`, which
-tells you immediately whether the record holds up. Chained founder paths go in
-[`open-processes/chains.json`](open-processes/). Changes to the shared process schema or catalog
-(`content/processes/`) also run `pnpm shared:check`.
+The step-by-step founder processes and reactive situations live in canonical
+`open-processes/<slug>.json` definitions selected by `open-processes/catalog.json`.
+Follow [`open-processes/README.md`](open-processes/README.md) for explicit graph entries,
+parts, links, routing, reversibility and verification. Situations additionally carry their
+trigger and urgency in metadata (see [`SITUATIONS.md`](open-processes/SITUATIONS.md)).
+Chains use ordered `taskIds` with matching reference parts and empty dependency links.
+Run `pnpm shared:project`, `pnpm shared:check` and `pnpm test`; the projection command
+regenerates only the jurisdiction workflow files.
 
 <a id="add-a-jurisdiction"></a>
 
@@ -292,7 +291,7 @@ whether your records hold up:
    valuable as positives. These rows drive the geo switcher and "Geos supported" on the
    site.
 2. **A country analog for a process** — add a `geoNotes` entry to the process in
-   [`open-processes/corpus.json`](open-processes/): `{country, summary, actionUrl, actionLabel}` with
+   [canonical process metadata](open-processes/): `{country, summary, actionUrl, actionLabel}` with
    a live, official actionUrl (Companies House, MCA/NSWS, Handelsregister, INPI…). This
    renders in the top-of-page geo banner and the "Outside the US" block.
 3. **Rule cards for your jurisdiction** — register the jurisdiction in

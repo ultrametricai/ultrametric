@@ -70,7 +70,7 @@ the library's sections), `source` (author, work, URL; `note` documents hosts tha
 refuse automated fetches, with a reachable alternative), `stance` (always `claim`),
 `tensions` (conflicting entry ids, symmetric and always across schools), `libraryIds`
 (the library entries that ground the claim, symmetric with the library's `loreIds`),
-and `processIds` (the processes in [`open-processes/corpus.json`](../open-processes/corpus.json)
+and `processIds` (the processes in [`open-processes/catalog.json`](../open-processes/catalog.json)
 it bears on). A real record:
 
 ```json
