@@ -438,8 +438,8 @@ in the PR. Gate: `pnpm test` (`lib/__tests__/processes.test.ts` cross-checks eve
 
 ## What you can contribute here
 
-- **A country analog for a process** — add a `metadata.geoNotes` entry to the canonical
-  `open-processes/<slug>.json` definition: `{country, kind, summary, actionUrl, actionLabel}` with a live,
+- **A country analog for a process** — add a `geoNotes` entry to the process's canonical
+  definition (`open-processes/<slug>.json`, under `metadata.geoNotes`): `{country, kind, summary, actionUrl, actionLabel}` with a live,
   official actionUrl (Companies House, MCA/NSWS, Handelsregister, INPI…). `kind` is curated
   from the summary's own truth: `analog` (the need exists there as its own doable process),
   `absorbed` (handled automatically inside another process there — PAN/TAN arrive with the
@@ -454,8 +454,8 @@ in the PR. Gate: `pnpm test` (`lib/__tests__/processes.test.ts` cross-checks eve
   fictional fixture in `open-processes/fixtures/`, and record the maturity grade in `open-law/workflow-coverage.json`.
   Gate: `pnpm test __tests__/founder-ops.test.ts`.
 - **Corrections to an operational process** — step routing (agent / manual form / human),
-  computed agentic shares, or authored estimates in `open-processes/<slug>.json`, with a source or reproduction for the
-  claim. Gate: `pnpm test`.
+  Agentic % values, or time estimates, edited in the canonical `<slug>.json` definition, with a source or reproduction for the claim.
+  Gates: `pnpm test` and `pnpm shared:check`.
 - **An artifact or a typed dependency** — a missing `requires` a committed step genuinely
   consumes, a missing registry artifact a committed step genuinely produces, or a terminal
   flag that should be a real consumer. Follow "The artifact layer" rules above (one canonical

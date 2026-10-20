@@ -92,6 +92,21 @@ describe('canonical process schema publication', () => {
     expect(published.safeParse(record).success).toBe(false)
   })
 
+  it('the canonical-definition template stays a valid starting point', () => {
+    // templates/canonical-process.json is the blank contributors copy to author an
+    // open-processes/<slug>.json definition (CONTRIBUTING.md §5). The blank must stay
+    // schema-valid when the canonical contract changes (templates/README.md rule).
+    const template = JSON.parse(fs.readFileSync(path.join(ROOT, 'templates/canonical-process.json'), 'utf8'))
+    expect(processDefinitionSchema.safeParse(template).success).toBe(true)
+    expect(published.safeParse(template).success).toBe(true)
+    // The template models the geo dimension: a step carrying geoResolutions with the
+    // required US analog entry (lib/processes.ts load-enforces this on committed records).
+    const geoStep = template.parts.find((part: { metadata: Record<string, unknown> }) => part.metadata.geoResolutions)
+    expect(geoStep).toBeDefined()
+    const resolutions = geoStep.metadata.geoResolutions as Array<{ country: string; kind: string }>
+    expect(resolutions.find((r) => r.country === 'US')?.kind).toBe('analog')
+  })
+
   it('keeps legacy records valid through the preserved contract and existing URL', () => {
     const legacy = JSON.parse(fs.readFileSync(LEGACY_PROCESS_SCHEMA_FILE, 'utf8'))
     const { $schema, $defs, ...legacyDefinition } = legacy

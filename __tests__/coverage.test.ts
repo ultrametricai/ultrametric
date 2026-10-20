@@ -3,6 +3,7 @@ import { execFileSync } from 'node:child_process'
 import fs from 'node:fs'
 import path from 'node:path'
 import { z } from 'zod'
+import { GEO_COUNTRIES } from '../lib/geoPreference'
 
 // coverage/index.json is the cross-area rollup: one entry per top-level content area, each
 // pointing at the file where that area tracks its own gaps in detail. These gates stop the
@@ -71,6 +72,41 @@ describe('coverage/index.json', () => {
       expect(fs.statSync(path.join(ROOT, area.id)).isDirectory(), `${area.id} is not a directory`).toBe(true)
       for (const pointer of area.detail) {
         expect(trackedSet.has(pointer.path), `${area.id}: detail source ${pointer.path} is not a tracked file`).toBe(true)
+      }
+    }
+  })
+
+  it('prose names only jurisdictions that exist in-tree', () => {
+    // The staleness class caught in the 2026-10-19 audit: the open-law entry still said
+    // "one EU data-protection card" while the tree carried UK and EU directories. Entry
+    // prose stays functional (no counts, no enumerations), and any jurisdiction a summary
+    // or gap line does name must be backed by committed data: an open-law/<CODE> directory,
+    // a jurisdictions/registry.json code, a corpus geoNotes country, or the geo switcher set.
+    const backed = new Set<string>()
+    for (const entry of fs.readdirSync(path.join(ROOT, 'open-law'), { withFileTypes: true })) {
+      if (entry.isDirectory()) backed.add(entry.name.toUpperCase())
+    }
+    const registry = JSON.parse(fs.readFileSync(path.join(ROOT, 'jurisdictions/registry.json'), 'utf8')) as {
+      jurisdictions: Array<{ code: string }>
+    }
+    for (const { code } of registry.jurisdictions) {
+      backed.add(code.toUpperCase())
+      backed.add(code.toUpperCase().split('-')[0])
+    }
+    const corpus = JSON.parse(fs.readFileSync(path.join(ROOT, 'open-processes/corpus.json'), 'utf8')) as Array<{
+      geoNotes?: Array<{ country: string }>
+    }>
+    for (const record of corpus) for (const note of record.geoNotes ?? []) backed.add(note.country.toUpperCase())
+    for (const country of GEO_COUNTRIES) backed.add(country.toUpperCase())
+    // Two-letter uppercase tokens that are not jurisdictions.
+    const notJurisdictions = new Set(['AI', 'CI', 'ID', 'PR', 'UI', 'VC', 'HR', 'OS'])
+    for (const area of index.areas) {
+      for (const prose of [area.summary, ...area.known_gaps]) {
+        for (const match of prose.matchAll(/\b(US-[A-Z]{2,3}|[A-Z]{2})\b/g)) {
+          const token = match[1]
+          if (notJurisdictions.has(token)) continue
+          expect(backed.has(token), `${area.id} prose names ${token}, which no committed jurisdiction backs`).toBe(true)
+        }
       }
     }
   })

@@ -17,6 +17,8 @@ every pointer must resolve to a committed file, and the index must validate agai
   workflow coverage in `open-law/workflow-coverage.json`; authored outcomes and guidance
   in the definitions selected by `open-processes/catalog.json`. Historical import findings
   remain in the [original audit](https://github.com/ultrametricai/ultrametric/blob/c156feeb4de636e5d2854ddf14b13955c2da85ac/content/processes/legacy-audit.json).
+  The processes still voiced in US institutions are tracked in
+  `docs/geo-resolution-worklist.json` (gated by `lib/__tests__/processGeoResolutions.test.ts`).
 - `open-rankings` — `open-rankings/arena-roadmap.json`: every arena tiered by priority and
   marked live or planned.
 - `open-modules` — `docs/OPEN-MODULES-GAPS.md`: the corpus-wide candidate table with BUILT,

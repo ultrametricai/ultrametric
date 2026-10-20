@@ -9,7 +9,7 @@ published word-for-word next to that verdict.
 The current implementation: `open-rankings/<category>/vendor-responses.json` (optional per ranking),
 validated by `VendorResponseSchema` in `lib/schemas.ts`, loaded with integrity checks in
 `lib/data.ts`, rendered inside the story's expanded row in
-`components/StoryVerdictsTable.tsx`, with a count chip in the product page header. Intake is
+`components/StoryVerdictsTable.tsx` (private site repo), with a count chip in the product page header. Intake is
 the [Vendor response](../.github/ISSUE_TEMPLATE/vendor-response.yml) issue form.
 
 ## The one non-negotiable

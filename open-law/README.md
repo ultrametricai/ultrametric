@@ -9,8 +9,8 @@ workflow. `reviewed_on` / `review_due` are editorial check dates, not legal effe
 dates; unknown `valid_from` / `valid_until` stay null until verified. An ID is never
 reused to change a rule's meaning: version it and note the affected workflows.
 
-How a card is consumed: `lib/founderOps.ts` validates every card against
-`schemas/rule.schema.json`, requires its `jurisdiction` to exist in
+How a card is consumed: `lib/founderOps.ts` validates every card against its in-code
+rule contract (`RuleCardSchema`), requires its `jurisdiction` to exist in
 `jurisdictions/registry.json`, and requires every `source_ids` entry to resolve to a
 citation in `citations/registry.json` here (for `kind: legal`, to a `primary-*`
 authority). Workflows in

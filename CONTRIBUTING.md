@@ -33,7 +33,7 @@ a GitHub Action) still has to do the deeper check described below: add the evide
 `pnpm engine derive --category <category>` to update the verdict.
 
 If you'd rather skip the prefilled link, you can also open an issue manually using the
-[Contest a Verdict](./.github/ISSUE_TEMPLATE/contest-verdict.md) template. Fill in:
+[Contest a Verdict](./.github/ISSUE_TEMPLATE/contest-verdict.yml) template. Fill in:
 
 - `category` and `product` (must match the ids in `open-rankings/categories.json` / `open-rankings/{category}/products.json`)
 - `story id` (from `open-rankings/{category}/stories.json`)
@@ -267,14 +267,43 @@ auto-publishes anything.
 
 ## 5. Add a process
 
-The step-by-step founder processes and reactive situations live in canonical
-`open-processes/<slug>.json` definitions selected by `open-processes/catalog.json`.
-Follow [`open-processes/README.md`](open-processes/README.md) for explicit graph entries,
-parts, links, routing, reversibility and verification. Situations additionally carry their
-trigger and urgency in metadata (see [`SITUATIONS.md`](open-processes/SITUATIONS.md)).
-Chains use ordered `taskIds` with matching reference parts and empty dependency links.
-Run `pnpm shared:project`, `pnpm shared:check` and `pnpm test`; the projection command
-regenerates only the jurisdiction workflow files.
+Each founder process (and each reactive situation) is authored as one canonical
+definition: `open-processes/<slug>.json`, contract in
+[`schemas/process.schema.json`](schemas/process.schema.json) (`#/$defs/canonical`), listed
+in `open-processes/catalog.json`, and consumed directly — there is no
+intermediate corpus file. The jurisdiction-scoped equity workflow files are generated
+projections of the canonical definitions: edit a definition and regenerate them with
+`pnpm shared:project`; editing a projection by hand fails the `pnpm shared:check` drift
+gate.
+
+The flow:
+
+1. Copy [`templates/canonical-process.json`](templates/canonical-process.json) to
+   `open-processes/<slug>.json` and fill it in, following the curation rules in
+   [`open-processes/README.md`](open-processes/README.md): routing, reversibility,
+   verification checks. A situation additionally carries a `trigger` and an `urgency`
+   tier (see [`open-processes/SITUATIONS.md`](open-processes/SITUATIONS.md)). A chained
+   founder path is a canonical definition too: the same record fields plus ordered
+   `taskIds` naming existing processes, with empty `entrySteps` and `links`.
+2. Add the slug to `open-processes/catalog.json` (unlisted definitions fail validation).
+3. Run `pnpm shared:check` and `pnpm test` (add `pnpm shared:project` first when the
+   definition feeds a generated workflow projection), and commit the definition together
+   with any regenerated files.
+
+Two geo fields carry a record's reach beyond the US, both authored in the canonical
+definition's metadata:
+
+- `geoNotes` (record-level) records a country analog for the process as a whole:
+  `{country, kind, summary, actionUrl, actionLabel}` with a live, official `actionUrl`.
+  `kind` is `analog` (the need exists there as its own doable process), `absorbed`
+  (handled automatically inside another act there), or `not-applicable` (the need
+  genuinely doesn't exist there).
+- `geoResolutions` (step-level) makes a step's own text the global abstraction and
+  carries each country's concrete mechanics as entries (`{country, kind, label,
+  guidance?, actionUrl?, actionLabel?}`, same country and kind vocabulary as `geoNotes`).
+  Wherever resolutions exist, the US is one explicit entry with kind `analog`; a country
+  with no committed mechanics carries no entry, and the abstraction stands there by
+  design. Legal claims inside the prose cite dated rule cards in `open-law/` by id.
 
 <a id="add-a-jurisdiction"></a>
 
@@ -290,10 +319,12 @@ whether your records hold up:
    page (or an official register) stating the fact; negatives ("US entities only") are as
    valuable as positives. These rows drive the geo switcher and "Geos supported" on the
    site.
-2. **A country analog for a process** — add a `geoNotes` entry to the process in
-   [canonical process metadata](open-processes/): `{country, summary, actionUrl, actionLabel}` with
-   a live, official actionUrl (Companies House, MCA/NSWS, Handelsregister, INPI…). This
-   renders in the top-of-page geo banner and the "Outside the US" block.
+2. **A country analog for a process** — add a `geoNotes` entry to the process's canonical
+   definition ([`open-processes/<slug>.json`](open-processes/), under `metadata.geoNotes`;
+   see [Add a process](#add-a-process)): `{country, kind, summary, actionUrl, actionLabel}`
+   with a live, official actionUrl (Companies House, MCA/NSWS, Handelsregister, INPI…),
+   then regenerate the projections with `pnpm shared:project`. This renders in the
+   top-of-page geo banner and the "Outside the US" block.
 3. **Rule cards for your jurisdiction** — register the jurisdiction in
    [`jurisdictions/registry.json`](jurisdictions/) with a deliberately narrow scope, then
    add `open-law/<CODE>/*.json` cards citing primary sources in
