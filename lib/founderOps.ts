@@ -326,10 +326,12 @@ export function validateFounderOps(asOf?: Date): string[] {
   const mapDoc = read(path.join(ROOT, LAW_MAP))
   shape(mapDoc, need('law-map.schema'), 'law map', errors)
   const linkableProcessIds = new Set<string>(processes.keys())
+  let catalogLoaded = false
   try {
     for (const { record, taskIds } of loadProcessCatalog(undefined, ROOT).processes) {
       if ('phase' in record.metadata && !taskIds) linkableProcessIds.add(record.id)
     }
+    catalogLoaded = true
   } catch (error) {
     // Keep collecting errors from malformed workflows and canonical definitions.
     errors.push(`canonical catalog: ${error instanceof Error ? error.message : String(error)}`)
@@ -368,7 +370,7 @@ export function validateFounderOps(asOf?: Date): string[] {
         if (maturity !== 'mapped' && gaps.length === 0) errors.push(`law map ${sid}: ${maturity} maturity requires stated gaps`)
         for (const pidValue of Array.isArray(sub.process_ids) ? sub.process_ids : []) {
           const pid = typeof pidValue === 'string' ? pidValue : ''
-          if (!linkableProcessIds.has(pid)) errors.push(`law map ${sid}: unknown process ${pid}`)
+          if (catalogLoaded && !linkableProcessIds.has(pid)) errors.push(`law map ${sid}: unknown process ${pid}`)
         }
       }
       const maturity = str(domain.maturity) ?? ''
