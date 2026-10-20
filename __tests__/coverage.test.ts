@@ -93,10 +93,15 @@ describe('coverage/index.json', () => {
       backed.add(code.toUpperCase())
       backed.add(code.toUpperCase().split('-')[0])
     }
-    const corpus = JSON.parse(fs.readFileSync(path.join(ROOT, 'open-processes/corpus.json'), 'utf8')) as Array<{
-      geoNotes?: Array<{ country: string }>
-    }>
-    for (const record of corpus) for (const note of record.geoNotes ?? []) backed.add(note.country.toUpperCase())
+    const catalog = JSON.parse(fs.readFileSync(path.join(ROOT, 'open-processes/catalog.json'), 'utf8')) as {
+      processes: string[]
+    }
+    for (const slug of catalog.processes) {
+      const definition = JSON.parse(
+        fs.readFileSync(path.join(ROOT, 'open-processes', `${slug}.json`), 'utf8'),
+      ) as { metadata?: { geoNotes?: Array<{ country: string }> } }
+      for (const note of definition.metadata?.geoNotes ?? []) backed.add(note.country.toUpperCase())
+    }
     for (const country of GEO_COUNTRIES) backed.add(country.toUpperCase())
     // Two-letter uppercase tokens that are not jurisdictions.
     const notJurisdictions = new Set(['AI', 'CI', 'ID', 'PR', 'UI', 'VC', 'HR', 'OS'])
