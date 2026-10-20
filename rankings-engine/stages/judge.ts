@@ -9,7 +9,8 @@ import { JUDGE_MODEL, llmJson } from '../llm'
 import { CACHE_DIR, categoryDir, readJson, resolveCategories, writeJson } from '../paths'
 
 // v4 (2026-09-30): the prompt TEXT is unchanged from v3 — the bump marks the judge model
-// migration sonnet-5 → claude-opus-5-5 (docs/OPUS-5-5-JUDGE-PILOT.md, adopted). From v4 on the
+// migration sonnet-5 → claude-opus-5-5 (adopted Opus 5.5 judge pilot; migration record in
+// docs/JUDGE-MIGRATION-2026-09-30.md). From v4 on the
 // judge model id is also folded into the cellHash payload below, so any future model change is
 // a first-class cache invalidator instead of silently keeping the previous model's verdicts.
 export const PROMPT_VERSION = 'v4'

@@ -2,7 +2,8 @@ import Anthropic from '@anthropic-ai/sdk'
 import type { z } from 'zod'
 
 // Default judge/pipeline model. Migrated sonnet-5 → claude-opus-5-5 on 2026-09-30 per the
-// adopted docs/OPUS-5-5-JUDGE-PILOT.md recommendation (founder-ordered re-judge): Opus 5.5
+// adopted Opus 5.5 judge pilot recommendation (memo in git history; migration record in
+// docs/JUDGE-MIGRATION-2026-09-30.md). Founder-ordered re-judge: Opus 5.5
 // follows the v3 rubric's decision procedures more faithfully (7/10 adjudicated flips), at 2.0x
 // Sonnet interactive pricing ($4/$20 per MTok; $2/$10 via the Batch API the migration ran on).
 // The model id is part of the judge cellHash (rankings-engine/stages/judge.ts) — changing UM_JUDGE_MODEL
