@@ -82,8 +82,11 @@ describe('existing judged selection compatibility', () => {
     // Re-pinned at the validate-the-idea method routing (startup_001): the landing-page step
     // became the method-choice decision, so its vibe-coding function cells and design-tools
     // extra-arena cells leave the contract.
-    expect(positiveCount).toBe(2538)
-    expect(zeroCount).toBe(137)
+    // Re-pinned at the judge prompt v5 re-judge (2026-10-19, partial-credit boundary): the
+    // five re-judged arenas' tier flips move some judged step scores to zero, so those
+    // associations leave the positive candidate lists and join the published zero rows.
+    expect(positiveCount).toBe(2520)
+    expect(zeroCount).toBe(155)
     expect(extraArena).toBe(90)
   })
 
