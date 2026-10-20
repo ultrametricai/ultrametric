@@ -1,5 +1,5 @@
 // Display names for theme/group ids — the one user-facing spelling of a kebab-case id.
-// Split out of the icon system (docs/REPO-SPLIT-PLAN.md) because the open corpus derivations
+// Split out of the icon system because the open corpus derivations
 // (lib/checklist.ts, lib/compare.ts, lib/storyDag.ts) label theme groups too; the emoji/icon
 // maps stay with the site. Client-safe and pure (no node builtins, no React).
 
