@@ -218,7 +218,6 @@ export const SURFACE_DEFS: SurfaceDef[] = [
       'mobile-apps-parity',
       'mobile-app-parity',
       'mobile-oncall-app',
-      'mobile-task-management',
       'mobile-code-review-with-agent',
       'mobile-approval-of-decisions',
       'mobile-in-person-capture',

@@ -85,9 +85,13 @@ describe('existing judged selection compatibility', () => {
     // Re-pinned at the judge prompt v5 re-judge (2026-10-19, partial-credit boundary): the
     // five re-judged arenas' tier flips move some judged step scores to zero, so those
     // associations leave the positive candidate lists and join the published zero rows.
-    expect(positiveCount).toBe(2520)
-    expect(zeroCount).toBe(155)
-    expect(extraArena).toBe(90)
+    // Re-pinned at the code-hosting evidence repair (2026-10-20): the arena re-ran its whole
+    // evidence pipeline after the shared-host probe fix, normalize re-canonicalized 41 of its
+    // 72 stories, and the step→story mapping regenerated against the new corpus, so the
+    // code-hosting candidate cells re-partition between the positive and zero rows.
+    expect(positiveCount).toBe(2546)
+    expect(zeroCount).toBe(149)
+    expect(extraArena).toBe(96)
   })
 
   it('accepts only contract-listed saved selections and rejects malformed payloads', () => {
