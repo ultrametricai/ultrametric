@@ -29,7 +29,7 @@ All of these must exit 0 before any merge to main:
 3. `pnpm lint` (0 errors)
 4. `pnpm test --maxWorkers=2`
 5. `pnpm manifest:check` (every tracked path classified in `open-manifest.json`)
-6. `pnpm shared:check` when `content/processes/` or the shared corpus is touched
+6. `pnpm shared:check` when canonical processes or their compatibility projections are touched
 
 Never gate an `&&` chain on echoed text; test the tool's exit code.
 

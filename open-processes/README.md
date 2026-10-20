@@ -26,6 +26,8 @@ The normal `pnpm shared:export --output <catalog.json>` format-1 bundle includes
 records' `entrySteps` and chains' ordered `taskIds`. It promotes selected authored verification,
 recovery, context, geography and approval fields into notes for instruction assemblers.
 Situations retain `kind: "situation"`; consumers must preserve their invocation policy.
+Use `--example` for the fictional branch/rejoin fixture maintained under
+`scripts/shared-processes/examples/`; it is separate from the authored catalog.
 
 Export the format-2 candidate bundle with `pnpm exec tsx scripts/shared-processes/export-candidate.ts
 --output <catalog.json> --lock <catalog.lock>`. Repeat `--process <slug>` to export a selection

@@ -7,8 +7,7 @@ risks, and the Phase 0/1 execution notes) is in this file's git history.
 ## What the split did
 
 The public repo `ultrametricai/ultrametric` became the open artifact: the arena
-evidence and rankings (`open-rankings/`), the founder processes (`open-processes/`,
-`content/processes/`), the legal layer (`open-law/`, `jurisdictions/`, `citations/`),
+evidence and rankings (`open-rankings/`), the founder processes (`open-processes/`), the legal layer (`open-law/`, `jurisdictions/`, `citations/`),
 the lore (`open-lore/`), the document registry (`open-documents/`), the open modules
 (`open-modules/`, `lib/openstartup/`), the schemas, the pipeline, and their tests.
 The site that renders it at ultrametric.ai moved to a fresh private repo,

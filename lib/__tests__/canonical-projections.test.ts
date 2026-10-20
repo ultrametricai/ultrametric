@@ -3,6 +3,7 @@ import { cpSync, existsSync, mkdirSync, mkdtempSync, readFileSync, rmSync, symli
 import os from 'node:os'
 import path from 'node:path'
 import { afterEach, describe, expect, it } from 'vitest'
+import importedIdentities from './fixtures/imported-process-identities.json'
 import { loadProcessCatalog } from '../shared-processes/catalog'
 import { recordForExport, recordForInstructions } from '../shared-processes/instructions'
 import { projectChain, projectOperational } from '../shared-processes/projection'
@@ -116,8 +117,7 @@ describe('canonical diagram generator', () => {
 
 describe('canonical catalog consumer contract', () => {
   it('retains every historical identity and the existing situation classification', () => {
-    const historical = JSON.parse(readFileSync('content/processes/import-manifest.json', 'utf8')).records
-    expect(catalog.map(item => item.record.id).sort()).toEqual(Object.keys(historical).sort())
+    expect(catalog.map(item => item.record.id).sort()).toEqual([...importedIdentities.ids].sort())
     expect(catalog).toHaveLength(173)
     expect(catalog.filter(item => item.taskIds)).toHaveLength(24)
     const situations = catalog.filter(item => item.record.metadata.kind === 'situation')
