@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # Government-services Phase 2 (2026-10-07, founder GO on the §5 world roster in
-# docs/vendor-research/government-agenticness-world.md): records the documented WALLS — and the
+# https://github.com/ultrametricai/ultrametric/blob/a548b2576f22ab805ca1ff102e731af4a6d4bd9e/docs/vendor-research/government-agenticness-world.md): records the documented WALLS — and the
 # few genuinely open machine rails — as probe-tier evidence for the 31 new agencies, as fresh,
 # dated, single keyless GETs with the standard pipeline UA, run by this script itself (the
 # Phase 1 contract from append-government-services-wall-probes.py: every excerpt states what was

@@ -2,8 +2,7 @@ import { describe, expect, it } from 'vitest'
 import { execFileSync } from 'node:child_process'
 import { readFileSync } from 'node:fs'
 
-// Post-split gates (docs/REPO-SPLIT-PLAN.md; stripped per
-// docs/REPO-SPLIT-STRIP-VERIFICATION.md): the committed open-manifest.json and
+// Boundary gates: the committed open-manifest.json and
 // docs/repo-split-census.json must match the live git-tracked tree, so a file added, moved,
 // or deleted without a manifest/census update fails CI instead of drifting silently.
 

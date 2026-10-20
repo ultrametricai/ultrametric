@@ -3,14 +3,13 @@ import path from 'node:path'
 import { z } from 'zod'
 import type { Product, Rankings } from './schemas'
 
-// Country/area rollups for arenas whose products carry ProductSchema's `country`/`area` tags
-// (government-services Phase 2, docs/vendor-research/government-agenticness-world.md §5.2).
+// Country/area rollups for arenas whose products carry ProductSchema's `country`/`area` tags.
 // Derived, never authored: every number here is a mean over the arena's computed Overall
 // scores (leaderboard aiEra) for the judged agencies tagged into each (country, area) cell —
 // change verdicts or evidence and re-derive, never this file's output. Emitted by the derive
 // stage as open-rankings/<cat>/rollups.json and reproduced byte-for-byte by recompute-check.
 
-// The areas a country overall is averaged over. Fixed by design (§5.2): rollups compare only
+// The areas a country overall is averaged over. Rollups compare only
 // matched areas, so roster composition cannot move a country's overall score; a country gets an
 // overall only when every matched area has at least one judged agency. Adding a fifth area
 // later means adding it here AND rostering it for every country in the same change.

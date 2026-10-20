@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-// sync-open.mjs — the repo-split overlay (docs/REPO-SPLIT-PLAN.md).
+// sync-open.mjs — the manifest-driven overlay for the private site repo.
 //
 // Two modes:
 //

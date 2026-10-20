@@ -79,9 +79,8 @@ export const ProductSchema = z.object({
   // live, mark closed, keep the data.
   shutdown: z.string().min(1).max(240).optional(),
   shutdownSource: z.string().url().optional(),
-  // Jurisdiction tags for type:'government' products (government-services Phase 2, founder GO
-  // 2026-10-07 on docs/vendor-research/government-agenticness-world.md §5): `country` is the
-  // dossier's country code (US/UK/IN/DE/FR/PT/CA — UK kept as the dossier spells it), `area`
+  // Jurisdiction tags for type:'government' products: `country` is the committed
+  // country code (US/UK/IN/DE/FR/PT/CA; UK is the established code), `area`
   // the matched service area the agency is judged in. Rollup inputs only (lib/rollups.ts derives
   // country and per-area rankings from these tags plus computed scores) — never hand-feeds a
   // score, never part of the judge cellHash (judge.ts hashes story+evidence only), so tagging

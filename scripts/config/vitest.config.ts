@@ -3,7 +3,7 @@ import path from 'node:path'
 
 const root = path.resolve(__dirname, '../..')
 
-// The open artifact test surface (docs/REPO-SPLIT-PLAN.md): the root
+// The open artifact test surface: the root
 // data-integrity suite, the lib loader/determinism/golden suites, and engine correctness.
 // The UI suites run in the private site repo. scripts/content-audit.test.mjs runs under
 // node --test, outside this glob (see docs/repo-split-census.json).
