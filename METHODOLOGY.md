@@ -12,7 +12,7 @@ New to the site and just want plain-language answers ("what does `na` mean," "wh
 score look low," "how do I disagree")? See **[docs/SCORING.md](./docs/SCORING.md)** — a
 one-page, jargon-free companion to this technical writeup. For a critical self-assessment of
 the scoring formula's limits (coverage sensitivity, judge noise, blend-weight choices) and the
-improvement roadmap, see [docs/SCORING-REVIEW.md](./docs/SCORING-REVIEW.md).
+historical proposals, see the [scoring review](https://github.com/ultrametricai/ultrametric/blob/a548b2576f22ab805ca1ff102e731af4a6d4bd9e/docs/SCORING-REVIEW.md).
 
 ## Evidence tiers
 

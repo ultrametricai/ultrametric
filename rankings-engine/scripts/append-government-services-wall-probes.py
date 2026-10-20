@@ -2,7 +2,7 @@
 # Government-services arena bring-up (2026-10-05): records the documented WALLS as probe-tier
 # evidence — fresh, dated, single keyless GETs with the standard pipeline UA, run by this script
 # itself so every excerpt states what was actually observed, not what the research dossier
-# (docs/vendor-research/government-services-agenticness.md) remembered.
+# (https://github.com/ultrametricai/ultrametric/blob/a548b2576f22ab805ca1ff102e731af4a6d4bd9e/docs/vendor-research/government-services-agenticness.md) remembered.
 #
 # Rules of engagement, enforced in code:
 #   - robots.txt is always fetchable (it is the compliance mechanism itself);
