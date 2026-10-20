@@ -100,6 +100,25 @@ describe('step geo resolutions', () => {
     expect(countries('qs_052', 'n3')).toEqual(['US'])
   })
 
+  // The remaining class-(a) records from the PR #382 audit live in
+  // docs/geo-resolution-worklist.json so the worklist is tracked in-tree, not in a PR body.
+  // Self-verifying both ways: a listed record must still await restructuring (no resolutions
+  // yet), and a restructured record must leave the list in the same PR.
+  it('the geo-resolution worklist names committed records that still await restructuring', () => {
+    const worklist = JSON.parse(
+      fs.readFileSync(path.join(process.cwd(), 'docs', 'geo-resolution-worklist.json'), 'utf8'),
+    ) as { pending: string[] }
+    expect(new Set(worklist.pending).size).toBe(worklist.pending.length)
+    const tasks = loadProcesses(DATA_DIR)
+    const byId = new Map(tasks.map((t) => [t.id, t]))
+    for (const id of worklist.pending) {
+      const task = byId.get(id)
+      expect(task, `worklist id ${id} is not a committed corpus record`).toBeDefined()
+      const resolved = task!.dag.nodes.some((n) => (n.geoResolutions ?? []).length > 0)
+      expect(resolved, `${id} carries geoResolutions; remove it from the worklist`).toBe(false)
+    }
+  })
+
   it('non-US entries reuse committed geo knowledge: the entry country also has a process geoNote or the process is global', () => {
     const tasks = loadProcesses(DATA_DIR)
     for (const t of tasks) {

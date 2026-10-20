@@ -14,7 +14,9 @@ every pointer must resolve to a committed file, and the index must validate agai
 ## Where each area tracks its own gaps
 
 - `open-processes` — chain membership in `open-processes/chains.json`; jurisdiction-scoped
-  workflow coverage in `open-law/workflow-coverage.json`; the shared-corpus import audit in
+  workflow coverage in `open-law/workflow-coverage.json`; the processes still voiced in US
+  institutions in `docs/geo-resolution-worklist.json` (self-verifying via
+  `lib/__tests__/processGeoResolutions.test.ts`); the shared-corpus import audit in
   `content/processes/legacy-audit.json`.
 - `open-rankings` — `open-rankings/arena-roadmap.json`: every arena tiered by priority and
   marked live or planned.
