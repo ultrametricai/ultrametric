@@ -84,8 +84,9 @@ open-rankings/<category>/proofs/<productId>/<probeId>.json        sidecar: {prob
 open-rankings/<category>/proofs/index.json                        per-category index (adds productId, file)
 ```
 
-Recordings render on the product page ("Probe proofs" section, `components/ProofBlock.tsx`)
-and are served raw under `/data/<category>/proofs/…` like every other dataset file.
+Recordings render on the product page ("Probe proofs" section, `components/ProofBlock.tsx`,
+private site repo) and are served raw under `/data/<category>/proofs/…` like every other
+dataset file.
 
 Provenance labels:
 

@@ -7,8 +7,8 @@ run from it. Nothing else crosses the boundary.
 
 Code: `lib/processManifest.ts` (builder, tested in `lib/__tests__/processManifest.test.ts`),
 served by `app/processes/[slug]/manifest.json/route.ts` and
-`app/processes/chains/[chain]/manifest.json/route.ts`. Admin affordance:
-`components/DoViaAfk.tsx`.
+`app/processes/chains/[chain]/manifest.json/route.ts` (private site repo). Admin affordance:
+`components/DoViaAfk.tsx` (private site repo).
 
 ## URLs
 
@@ -146,13 +146,13 @@ Ultrametric operation bindings. Version 1 consumers must update before accepting
 
 ## Admin flag mechanics ("Do via AFK" button)
 
-`components/DoViaAfk.tsx`, rendered on process pages and chain pages next to the header chips.
+`components/DoViaAfk.tsx` (private site repo), rendered on process pages and chain pages next to the header chips.
 The **manifest is public; only this affordance is gated** — non-admins get nothing rendered
 (no hidden markup, no trace in the static HTML, which never includes the button).
 
 Admin means either:
 
-- **Ory allowlist**: a logged-in session (`lib/session.ts` `useSession`) whose email appears in
+- **Ory allowlist**: a logged-in session (`lib/session.ts` `useSession`, private site repo) whose email appears in
   `NEXT_PUBLIC_ADMIN_EMAILS` — comma-separated, case-insensitive, inlined at build time.
   Default is unset, which admits nobody.
 - **Founder's local switch**: `localStorage.setItem('pa-admin', '1')` in devtools shows the
