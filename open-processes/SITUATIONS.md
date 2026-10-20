@@ -56,8 +56,8 @@ The 22 situations, hottest clock first (urgency, then title — the /situations 
 | --- | --- | --- | --- | --- |
 | `sit_018` | Recover a hijacked domain or social account | Your domain, DNS, or a company social/email account is taken over: logins fail, records change, or posts you didn't write appear. | hours | global |
 | `sit_005` | Recover from a frozen bank account or bank failure | Your operating account is frozen by the bank's compliance review, or the bank itself fails. | hours | global |
-| `sit_021` | Report and manage a workplace injury | Someone is hurt at work: an injury on the job just happened and reporting deadlines may already be running. | hours | us-state |
-| `sit_003` | Respond to a data breach | You discover unauthorized access to customer or company data: a breach is live or just happened. | hours | us-state |
+| `sit_021` | Report and manage a workplace injury | Someone is hurt at work: an injury on the job just happened and reporting deadlines may already be running. | hours | global |
+| `sit_003` | Respond to a data breach | You discover unauthorized access to customer or company data: a breach is live or just happened. | hours | global |
 | `sit_011` | Survive a DDoS attack or major outage | Traffic spikes take the product down: a DDoS attack is live, or a major outage looks like one. | hours | global |
 | `sit_020` | Absorb a pulled term sheet | The lead pulls the term sheet, by call or by silence, and the round you planned around is gone. | days | global |
 | `sit_006` | Contain a chargeback or fraud spike | Your dispute rate jumps: a chargeback wave or a card-testing/fraud spike is hitting your payments. | days | global |
@@ -72,7 +72,7 @@ The 22 situations, hottest clock first (urgency, then title — the /situations 
 | `sit_008` | Respond to a lawsuit | You've been served: a process server hands you a summons and complaint naming the company. | days | us |
 | `sit_002` | Unstick a delayed US visa | Your US visa is stuck (221(g) administrative processing after the interview, or a petition sitting past posted times) while the company needs you in Silicon Valley. | days | us |
 | `sit_015` | Answer a data-subject access request | Someone exercises their data rights: a GDPR subject access request or CCPA request to know/delete lands in any inbox. | weeks | global |
-| `sit_004` | Answer an IRS or state tax notice | An IRS or state tax notice arrives claiming a discrepancy, a balance due, or a missing filing. | weeks | us |
+| `sit_004` | Answer a tax-authority notice | A tax-authority notice arrives claiming a discrepancy, a balance due, or a missing filing. | weeks | global |
 | `sit_010` | Cure a Delaware franchise tax delinquency | A Delaware delinquency notice arrives: the March 1 annual report/franchise tax was missed and good standing is gone or going. | weeks | us-state |
 | `sit_012` | Migrate off a shutting-down vendor | A vendor you depend on announces a shutdown or sunsets the product you're built on. | weeks | global |
 | `sit_009` | Respond to a trademark office action | The USPTO examiner issues an office action against your trademark application: refusals or requirements with a response deadline. | weeks | us |

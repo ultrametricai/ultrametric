@@ -18,7 +18,14 @@ const RAW = operationalSources() as Array<{
   id: string
   title: string
   reversibility: Reversibility
-  dag: { nodes: Array<{ id: string; label: string; reversibility: Reversibility }> }
+  dag: {
+    nodes: Array<{
+      id: string
+      label: string
+      reversibility: Reversibility
+      geoResolutions?: Array<{ country: string; label: string }>
+    }>
+  }
 }>
 
 const tiers = new Set<string>(REVERSIBILITY_TIERS)
@@ -91,8 +98,13 @@ describe('reversibility distribution — irreversible is rare and means it', () 
   })
 
   it('classifies every 83(b) filing step irreversible, consistently', () => {
+    // A restructured step speaks the global abstraction and carries the 83(b) mechanics in its
+    // US geoResolution, so the matcher reads both the label and the US resolution label.
+    const files83b = (n: { label: string; geoResolutions?: Array<{ country: string; label: string }> }) =>
+      /file.*83\(b\)/i.test(n.label) ||
+      (n.geoResolutions ?? []).some((r) => r.country === 'US' && /file.*83\(b\)/i.test(r.label))
     const filings = RAW.flatMap((t) =>
-      t.dag.nodes.filter((n) => /file.*83\(b\)/i.test(n.label)).map((n) => ({ at: `${t.id}/${n.id}`, n })),
+      t.dag.nodes.filter(files83b).map((n) => ({ at: `${t.id}/${n.id}`, n })),
     )
     expect(filings.length).toBeGreaterThanOrEqual(3)
     for (const { at, n } of filings) expect(n.reversibility, at).toBe('irreversible')
