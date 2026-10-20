@@ -267,14 +267,14 @@ auto-publishes anything.
 
 ## 5. Add a process
 
-Author step-by-step founder processes and reactive situations in
-`open-processes/<slug>.json`, using the canonical contract in
-`schemas/process.schema.json#/$defs/canonical`. Follow the definition and curation rules
-in [`open-processes/README.md`](open-processes/README.md). Add the slug to
-`open-processes/catalog.json`; chains declare their ordered `taskIds` in the same format.
-Keep stable record, part, and option IDs when editing existing content. Regenerate the
-compatibility outputs with `pnpm shared:project`, then run `pnpm shared:check` and
-`pnpm test`.
+The step-by-step founder processes and reactive situations live in canonical
+`open-processes/<slug>.json` definitions selected by `open-processes/catalog.json`.
+Follow [`open-processes/README.md`](open-processes/README.md) for explicit graph entries,
+parts, links, routing, reversibility and verification. Situations additionally carry their
+trigger and urgency in metadata (see [`SITUATIONS.md`](open-processes/SITUATIONS.md)).
+Chains use ordered `taskIds` with matching reference parts and empty dependency links.
+Run `pnpm shared:project`, `pnpm shared:check` and `pnpm test`; the projection command
+regenerates only the jurisdiction workflow files.
 
 <a id="add-a-jurisdiction"></a>
 
@@ -291,7 +291,7 @@ whether your records hold up:
    valuable as positives. These rows drive the geo switcher and "Geos supported" on the
    site.
 2. **A country analog for a process** — add a `geoNotes` entry to the process in
-   [`open-processes/corpus.json`](open-processes/): `{country, summary, actionUrl, actionLabel}` with
+   [canonical process metadata](open-processes/): `{country, summary, actionUrl, actionLabel}` with
    a live, official actionUrl (Companies House, MCA/NSWS, Handelsregister, INPI…). This
    renders in the top-of-page geo banner and the "Outside the US" block.
 3. **Rule cards for your jurisdiction** — register the jurisdiction in

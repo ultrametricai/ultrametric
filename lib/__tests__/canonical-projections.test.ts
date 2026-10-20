@@ -14,6 +14,7 @@ import {
   ProcessChainSchema, ProcessTaskSchema, processSlug,
 } from '../processes'
 import { crossArenaStepRankings } from '../processRankings'
+import { operationalSources } from './helpers/operational-sources'
 
 const catalog = loadProcessCatalog().processes
 const temporary: string[] = []
@@ -24,7 +25,7 @@ describe('canonical operational readers', () => {
   const root = path.resolve(__dirname, '../..')
 
   it('preserves every projected task, conditional node and ordered chain', () => {
-    const raw = ProcessTaskSchema.array().parse(JSON.parse(readFileSync(path.join(root, 'open-processes/corpus.json'), 'utf8')))
+    const raw = ProcessTaskSchema.array().parse(operationalSources(root))
     const expected = raw.map(task => {
       const conditional = task.dag.nodes.filter(node => node.jurisdictions?.length)
       expect(jurisdictionNodes(task.id)).toEqual(conditional)
@@ -34,7 +35,10 @@ describe('canonical operational readers', () => {
       return { ...task, dag: { nodes, edges: task.dag.edges?.filter(edge => ids.has(edge.from) && ids.has(edge.to)) } }
     })
     expect(loadProcesses()).toEqual(expected)
-    expect(loadChains()).toEqual(ProcessChainSchema.array().parse(JSON.parse(readFileSync(path.join(root, 'open-processes/chains.json'), 'utf8'))))
+    expect(loadChains()).toEqual(ProcessChainSchema.array().parse(catalog.filter(item => item.taskIds).map(item => ({
+      ...item.record.metadata, id: item.record.id, name: item.record.title, tagline: item.record.summary,
+      taskIds: item.record.parts.map(part => part.ref),
+    }))))
   })
 
   it('loads the same views and aliases from canonical files without compatibility files', () => {
@@ -123,8 +127,10 @@ describe('canonical catalog consumer contract', () => {
   })
 
   it('exports explicit DAG entries and preserves composition order without creating chain dependencies', () => {
-    const chains = JSON.parse(readFileSync('open-processes/chains.json', 'utf8'))
-    expect(catalog.map(projectChain).filter(Boolean)).toEqual(chains)
+    expect(catalog.map(projectChain).filter(Boolean)).toEqual(catalog.filter(item => item.taskIds).map(item => ({
+      ...item.record.metadata, id: item.record.id, name: item.record.title, tagline: item.record.summary,
+      taskIds: item.record.parts.map(part => part.ref),
+    })))
     for (const item of catalog) {
       const exported = recordForExport(item)
       if (item.taskIds) {
@@ -206,12 +212,30 @@ describe('canonical catalog consumer contract', () => {
     }
     symlinkSync(path.join(process.cwd(), 'node_modules'), path.join(root, 'node_modules'))
     writeFileSync(path.join(root, 'open-processes/catalog.json'), JSON.stringify({ processes: ['generate-a-brand-logo'] }))
+    const equity = catalog.find(item => item.record.id === 'equity.us-de.409a-valuation')!
+    cpSync(`open-processes/${equity.slug}.json`, path.join(root, 'open-processes', `${equity.slug}.json`))
+    writeFileSync(path.join(root, 'open-processes/catalog.json'), JSON.stringify({ processes: ['generate-a-brand-logo', equity.slug] }))
+    mkdirSync(path.join(root, 'open-processes/equity/us-de'), { recursive: true })
     const definition = readFileSync(path.join(root, 'open-processes/generate-a-brand-logo.json'), 'utf8')
     const run = (...args: string[]) => spawnSync(process.execPath, ['--import', 'tsx', 'scripts/shared-processes/project.ts', ...args], { cwd: root, encoding: 'utf8' })
     expect(run('--write').status).toBe(0)
     expect(run().status).toBe(0)
-    writeFileSync(path.join(root, 'open-processes/corpus.json'), '[]\n')
+    for (const retired of ['corpus.json', 'chains.json']) {
+      const file = path.join(root, 'open-processes', retired)
+      expect(existsSync(file)).toBe(false)
+      writeFileSync(file, '[]\n')
+      for (const args of [[], ['--write']]) {
+        const result = run(...args)
+        expect(result.status).not.toBe(0)
+        expect(result.stderr).toContain('retired projection')
+      }
+      rmSync(file)
+    }
+    const workflow = path.join(root, 'open-processes/equity/us-de/409a-valuation.json')
+    writeFileSync(workflow, '{}\n')
     expect(run().status).not.toBe(0)
+    expect(run('--write').status).toBe(0)
+    expect(run().status).toBe(0)
     expect(readFileSync(path.join(root, 'open-processes/generate-a-brand-logo.json'), 'utf8')).toBe(definition)
     writeFileSync(path.join(root, 'open-processes/orphan.json'), definition)
     expect(() => loadProcessCatalog(undefined, root)).toThrow('missing from catalog')

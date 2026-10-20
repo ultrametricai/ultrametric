@@ -9,8 +9,7 @@ itself stays in [`lib/`](../lib/).
 ## What it simulates
 
 A simulated company is composed of real corpus processes
-([`open-processes/corpus.json`](../open-processes/corpus.json) +
-[`open-processes/chains.json`](../open-processes/chains.json)). The reader picks a
+([canonical catalog](../open-processes/catalog.json)). The reader picks a
 handful of starting decisions; each decision selects which committed chains make up the
 journey, and the timeline replays their steps, each routed agent, form, or human. Vendor
 picks come from the judged rankings (`lib/processRankings.ts` over

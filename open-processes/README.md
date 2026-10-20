@@ -11,9 +11,9 @@ Chains use the same record fields plus ordered `taskIds`. Their reference parts 
 that list exactly. Chains have empty `entrySteps` and `links`: the task list defines composition
 order, while each referenced process supplies its own dependency graph.
 
-`corpus.json`, `chains.json` and the equity workflow files are generated compatibility
-projections. Run `pnpm shared:project` after editing definitions, then `pnpm shared:check`.
-These projections are not authoring inputs. Historical source receipts remain unchanged;
+Operational and chain views are projected in memory by `lib/processes.ts`. The equity
+workflow files remain generated compatibility projections. Run `pnpm shared:project` after
+editing definitions, then `pnpm shared:check`. Equity projections are not authoring inputs. Historical source receipts remain unchanged;
 the export revision and catalog hash identify the current authored content.
 
 Canonical records contain agent-agnostic process meaning. Private consumers preserve and
@@ -55,7 +55,7 @@ The existing workflow and corpus layers retain their own contracts:
    `lib/founderOps.ts` inside the normal test gates; status `demonstration`, not
    production-certified (`policies/REVIEW_POLICY.md` has the maturity ladder).
 
-2. **The process library** (`corpus.json`, rendered live at
+2. **The process library** (canonical definitions in this directory, rendered live at
    [ultrametric.ai/processes](https://ultrametric.ai/processes), contract in
    `schemas/operational-process.schema.json`): step-by-step operating graphs with
    agent/form/human routing, judged vendor rankings per step, each process's agentic
@@ -72,8 +72,9 @@ The existing workflow and corpus layers retain their own contracts:
    and its steps link the primary source. Doctrine: `SITUATIONS.md`.
 
 The two layers keep separate IDs and never silently substitute for each other:
-`lib/processes.ts` `loadProcesses()` reads `corpus.json`, and the workflow validator
-(`lib/founderOps.ts`) deliberately skips it when walking this tree.
+`lib/processes.ts` `loadProcesses()` projects operational definitions from `catalog.json`;
+the workflow validator (`lib/founderOps.ts`) validates canonical definitions and the
+separately generated jurisdiction workflows against their respective schemas.
 
 | Section | What it covers |
 | --- | --- |
@@ -304,15 +305,14 @@ re-sort.
 ## The vendor registry (`vendor-registry.json`)
 
 `vendor-registry.json` is the single source for the vendor facts the process pages render,
-keyed by corpus vendor key (the snake_case keys `corpus.json` uses in
-`vendor`/`vendorOptions`). Per vendor: the live arena that judges it (`arenaId`, absent
+keyed by the snake_case vendor IDs referenced by canonical definitions and projected into
+`vendor`/`vendorOptions`. Per vendor: the live arena that judges it (`arenaId`, absent
 for a deliberately unlinked chip), a display `label` where title-casing the key misfires,
 the judged `productId` where it differs from the key, the vendor's own verified-live
 start-here page (`signupUrl`, curl-verified before listing; a vendor without one is simply
 absent), and a curation `note`. `lib/processes.ts` reads it back (`loadVendorRegistry()`
 and the `VENDOR_ARENA` / `VENDOR_SIGNUP_URL` / `vendorLabel` / `vendorProductId`
-projections); the workflow validator (`lib/founderOps.ts`) deliberately skips it, like
-`corpus.json`. Gate: `pnpm test lib/__tests__/vendorRegistry.test.ts` (the exports stay
+projections); the workflow validator (`lib/founderOps.ts`) deliberately skips the registry. Gate: `pnpm test lib/__tests__/vendorRegistry.test.ts` (the exports stay
 pure projections of the registry). Published schema:
 `schemas/process-vendor-registry.schema.json` (generated from `VendorRegistrySchema` in
 `lib/processes.ts` by `scripts/generate-corpus-schemas.ts`).
@@ -367,13 +367,13 @@ The diagram is `form_001` (Incorporate C-Corp) from canonical `incorporate-c-cor
 
 ## How the site consumes this directory
 
-- `lib/processes.ts` `loadProcesses()` reads `corpus.json` at build time — it strips the
+- `lib/processes.ts` `loadProcesses()` projects canonical definitions at build time — it strips the
   jurisdiction-conditional nodes (they only ever render client-side via the `?juris=` toggle,
   so no judged number moves) and powers `/processes`, every `/processes/<slug>` page
   (the site's DAG component, in the private repo, renders the step graph above with the same
   route colors), the process rankings (`/rankings/processes/*`), and the open startup
   simulator at `/startup-sim`.
-- `chains.json` links process IDs into playbooks (see the Chains section below).
+- `loadChains()` projects canonical chains into ordered playbooks (see the Chains section below).
 - `lib/founderOps.ts` validates the jurisdiction-scoped workflow layer (`equity/us-de/*`)
   against `schemas/process.schema.json`, resolves its rule-card references into `open-law/`
   (cards and `open-law/citations/`), and exposes the exact-dimension planner (`planFounderOps`).
@@ -412,9 +412,9 @@ Chains are multi-process founder paths, each linking existing processes into a
 founder-visible playbook (incorporate and launch, the VC raise, month-end close, the
 agent-run back office).
 
-A chain in `chains.json` is deliberately thin: an id, a name, a one-line tagline, and an
-ordered list of process IDs that must already exist in `corpus.json`; chains never invent
-steps. The real `company-launch` record:
+The `loadChains()` view contains an id, a name, a one-line tagline, and an ordered list
+of process IDs from the canonical catalog. Each referenced process owns its steps.
+The projected `company-launch` record:
 
 ```json
 {
@@ -438,8 +438,8 @@ in the PR. Gate: `pnpm test` (`lib/__tests__/processes.test.ts` cross-checks eve
 
 ## What you can contribute here
 
-- **A country analog for a process** — add a `geoNotes` entry to the process in
-  `open-processes/corpus.json`: `{country, kind, summary, actionUrl, actionLabel}` with a live,
+- **A country analog for a process** — add a `metadata.geoNotes` entry to the canonical
+  `open-processes/<slug>.json` definition: `{country, kind, summary, actionUrl, actionLabel}` with a live,
   official actionUrl (Companies House, MCA/NSWS, Handelsregister, INPI…). `kind` is curated
   from the summary's own truth: `analog` (the need exists there as its own doable process),
   `absorbed` (handled automatically inside another process there — PAN/TAN arrive with the
@@ -454,7 +454,7 @@ in the PR. Gate: `pnpm test` (`lib/__tests__/processes.test.ts` cross-checks eve
   fictional fixture in `open-processes/fixtures/`, and record the maturity grade in `open-law/workflow-coverage.json`.
   Gate: `pnpm test __tests__/founder-ops.test.ts`.
 - **Corrections to an operational process** — step routing (agent / manual form / human),
-  Agentic % values, or time estimates in `corpus.json`, with a source or reproduction for the
+  computed agentic shares, or authored estimates in `open-processes/<slug>.json`, with a source or reproduction for the
   claim. Gate: `pnpm test`.
 - **An artifact or a typed dependency** — a missing `requires` a committed step genuinely
   consumes, a missing registry artifact a committed step genuinely produces, or a terminal

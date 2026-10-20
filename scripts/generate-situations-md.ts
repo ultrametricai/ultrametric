@@ -1,4 +1,4 @@
-// Regenerates the table block in open-processes/SITUATIONS.md from open-processes/corpus.json (the
+// Regenerates the table block in open-processes/SITUATIONS.md from canonical process definitions (the
 // kind=situation records), between the markers lib/situationsDoc.ts defines. The prose around
 // the block is authored; only the block is machine-owned. Drift gate:
 // __tests__/situations.test.ts (same README-sync pattern open-documents/ uses).
