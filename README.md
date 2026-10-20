@@ -318,7 +318,7 @@ behind the decisions. Two stages as examples:
 
 ## Install Ultrametric
 
-To read process guides and work with saved company records, use the CLI from a
+To read process guides and work with saved company information, use the CLI from a
 terminal or connect your agent through MCP.
 
 ### CLI
