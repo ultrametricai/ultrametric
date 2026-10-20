@@ -1,17 +1,16 @@
 {
-  "hash": "d30cb175fe7e4d8232ebac0f75707e3da7f80e7c493699708bac4cdb3ae5b31a",
+  "hash": "eedbea147539d2ac7e3470a8e94527f8fa6953548ffe16f53fb377a92e7825b0",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "vLLM's docs describe continuous batching, advanced scheduling, chunked prefill, prefix caching and PagedAttention KV-memory management for handling many concurrent requests at high GPU utilization. Community users confirm continuous batching and KV caching as a production foundation, though one notes extra batching work was needed to get more performance. However, nothing shows the runtime reserving dedicated capacity for particular agents or sessions, or guaranteeing steady per-session throughput under contention. missing for 10: explicit capacity reservation or per-session/tenant isolation, documented throughput guarantees under concurrent load, independent benchmarks of steady multi-session throughput.",
+    "rationale": "vLLM documents its own mechanisms for keeping throughput high under concurrent load: PagedAttention KV-cache memory management, continuous batching with chunked prefill, and advanced scheduling for peak GPU utilization. A community user confirms they build concurrent request handling on vLLM's KV cache and continuous batching. However, nothing in the evidence shows the runtime reserving dedicated capacity per agent or session, or guaranteeing steady throughput under concurrency. Missing for 10: documented capacity reservation or preallocation, per-session or per-tenant isolation guarantees, and independent evidence of steady throughput under multi-agent concurrency.",
     "evidenceIds": [
       "vllm-docs-2",
       "vllm-docs-3",
       "vllm-docs-16",
-      "vllm-comm-3",
-      "vllm-comm-4"
+      "vllm-comm-3"
     ],
     "productId": "vllm",
     "storyId": "multi-agent-concurrent-throughput"

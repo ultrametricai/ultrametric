@@ -8,12 +8,17 @@ import {
 import { JUDGE_MODEL, llmJson } from '../llm'
 import { CACHE_DIR, categoryDir, readJson, resolveCategories, writeJson } from '../paths'
 
-// v4 (2026-09-30): the prompt TEXT is unchanged from v3 — the bump marks the judge model
-// migration sonnet-5 → claude-opus-5-5 (adopted Opus 5.5 judge pilot; migration record in
-// docs/JUDGE-MIGRATION-2026-09-30.md). From v4 on the
-// judge model id is also folded into the cellHash payload below, so any future model change is
-// a first-class cache invalidator instead of silently keeping the previous model's verdicts.
-export const PROMPT_VERSION = 'v4'
+// v5 (2026-10-19): adds the founder-ratified partial-credit boundary to the prompt — partial
+// requires the product's OWN documented capability for the story being judged; user-side
+// workarounds, host-platform capabilities, developer building blocks, adjacent controls, and
+// claims mapped from a different story earn no credit, and a webhooks story requires
+// registrable outbound HTTP callbacks. Bumping this constant is the designed invalidation
+// path: every cached verdict misses cleanly and re-judges under the new rubric on its next
+// judge touch. (v4, 2026-09-30, marked the sonnet-5 → claude-opus-5-5 judge-model migration;
+// from v4 on the judge model id is folded into the cellHash payload below, so any future
+// model change is a first-class cache invalidator instead of silently keeping the previous
+// model's verdicts.)
+export const PROMPT_VERSION = 'v5'
 
 // Versions the hashed material itself, independent of prompt/model changes: bumping it makes
 // every cache entry written under an older key format miss cleanly (and re-judge) instead of
@@ -71,6 +76,15 @@ export const RawVerdictSchema = VerdictBaseSchema.omit({ productId: true, storyI
 export const SYSTEM = `You are the judge in a head-to-head product-comparison arena. Given ONE user story and ONE product's evidence pack, decide how well the product delivers that story.
 Verdicts: "full" (clearly delivers), "partial" (delivers with significant caveats/extra tools), "none" (the axis applies but no evidence it delivers), "disputed" (vendor claims it but community/hands-on evidence CONCRETELY contradicts — requires citing both sides), "na" (the story's axis does not apply to this product at all).
 "disputed" requires concrete contradicting evidence: a hands-on failure, a specific documented counter-example, or an independent report that the capability does not work as claimed. General community skepticism, worry, or open questions ("do people really trust this?", "is it really secure?") do NOT create a dispute — reflect them in confidence (and at most quality), never by downgrading a documented capability from full/partial to disputed.
+
+## Partial-credit boundary
+"partial" requires the product's OWN documented capability for THIS story, with only its depth or extent unproven. The following earn NO credit toward the story — alone they leave the verdict at "none":
+- User-side workarounds: a user's external tools or manual arrangements that approximate the capability.
+- Host-platform capabilities: features of the platform the product runs on, not of the product itself.
+- Developer building blocks: primitives a developer could use to CONSTRUCT the capability, as opposed to the capability itself.
+- Adjacent controls or features: a related-but-different switch or behavior.
+- Claims mapped from a different story: evidence about another story's capability does not transfer to this one.
+A webhooks story requires documented, registrable outbound HTTP callbacks that a programmatic consumer can receive. Chat-app notifications (Slack/Discord integrations) do NOT qualify.
 
 ## na vs none — decide in this exact order
 1. Set the evidence pack aside. Ask: is this story a fair question for this KIND of product — could a product of this type conceivably ship this capability, such that a buyer comparing products of this kind might reasonably ask it?

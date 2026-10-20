@@ -1,19 +1,20 @@
 {
-  "hash": "369b8400d0b2b52ae1a567bbf3ab36ad372de11b05c9c283af6f4d2264866b8c",
+  "hash": "e822a67e34d9b75d42d5f6a80d4bfdb680b05df3fc0e76ab52cd9c2e8ea46292",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
-    "quality": 6,
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "A hands-on probe shows a headless, promptless skill install: `npx -y skills add openai/plugins --skill plugin-creator -a codex -y --copy` placed a valid skill in ./.agents/skills, which Codex scans automatically. That path relies on third-party tooling, though. The first-party routes are `$skill-installer`, which takes a name or GitHub URL, and `codex plugin marketplace add`, but neither is documented as non-interactive. Plugin installs go through the interactive `/plugins` browser and need a new session before use. missing for 10: a documented first-party non-interactive install command or flag, confirmation that `$skill-installer` runs without prompts, and a headless plugin install path that needs no session restart.",
+    "rationale": "Codex ships its own `$skill-installer` skill, which installs curated skills by name or from a GitHub URL from inside Codex, and an agent can invoke skills. Codex also auto-discovers skill folders under `.agents/skills`, so an installed folder is picked up without manual registration. However, nothing documents that this path runs headlessly without prompts or approvals, and plugin install goes through the interactive `/plugins` browser and needs a new session. The keyless `npx skills add ... -y` probe used third-party tooling, so it is not credited. Missing for 10: documented non-interactive/no-prompt install flag or headless mode for `$skill-installer` or plugin install, a first-party CLI install command for skills/plugins, and hands-on corroboration of an agent-driven end-to-end install with Codex's own tooling.",
     "evidenceIds": [
-      "codex-plugins-probe-rt-2",
-      "codex-plugins-docs-17",
       "codex-plugins-docs-14",
-      "codex-plugins-docs-61",
+      "codex-plugins-docs-21",
       "codex-plugins-docs-34",
-      "codex-plugins-docs-11",
-      "codex-plugins-docs-25"
+      "codex-plugins-docs-42",
+      "codex-plugins-docs-61",
+      "codex-plugins-docs-17",
+      "codex-plugins-docs-25",
+      "codex-plugins-docs-11"
     ],
     "productId": "codex-plugins",
     "storyId": "agent-installs-skill"
