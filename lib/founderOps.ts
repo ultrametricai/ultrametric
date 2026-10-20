@@ -1,5 +1,6 @@
 import fs from 'node:fs'
 import path from 'node:path'
+import { z } from 'zod'
 import { processDefinitionSchema } from './shared-processes/catalog'
 
 // The founder-ops corpus validator + conservative planner — a faithful TypeScript port of the
@@ -233,6 +234,28 @@ function str(v: Json | undefined): string | undefined {
   return typeof v === 'string' ? v : undefined
 }
 
+// The rule-card contract (maintainer decision 2026-10-19): the published
+// schemas/rule.schema.json file was retired because this zod schema is where the shape is
+// enforced; rule cards validate here, inside the normal test gates. One dated legal
+// proposition per card, every field required, nothing extra; the semantic checks (sources
+// resolve to primary authorities, jurisdiction registered, review dates ordered) run in the
+// rule loop below.
+export const RuleCardSchema = z.strictObject({
+  id: z.string(),
+  kind: z.enum(['legal', 'operating-practice']),
+  statement: z.string(),
+  source_ids: z.array(z.string()).min(1),
+  caveat: z.string(),
+  jurisdiction: z.string(),
+  version: z.string(),
+  status: z.enum(['draft', 'demonstration', 'reviewed', 'deprecated']),
+  reviewed_on: z.iso.date(),
+  review_due: z.iso.date(),
+  reviewer: z.string(),
+  valid_from: z.iso.date().nullable(),
+  valid_until: z.iso.date().nullable(),
+})
+
 export function validateFounderOps(asOf?: Date): string[] {
   const today = asOf ?? new Date()
   const errors: string[] = []
@@ -278,7 +301,12 @@ export function validateFounderOps(asOf?: Date): string[] {
 
   const rules = indexed(ruleCardJson(path.join(ROOT, 'open-law')), errors, 'rule')
   for (const [rid, rule] of rules) {
-    shape(rule, need('rule.schema'), `rule ${rid}`, errors)
+    const parsed = RuleCardSchema.safeParse(rule)
+    if (!parsed.success) {
+      for (const issue of parsed.error.issues) {
+        errors.push(`rule ${rid}${issue.path.length ? `.${issue.path.join('.')}` : ''}: ${issue.message}`)
+      }
+    }
     if (!jurisdictions.has(str(rule.jurisdiction) ?? '')) errors.push(`rule ${rid}: unknown jurisdiction`)
     const reviewed = isoDate(rule.reviewed_on, `rule ${rid}.reviewed_on`, errors)
     const due = isoDate(rule.review_due, `rule ${rid}.review_due`, errors)

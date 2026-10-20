@@ -1,6 +1,6 @@
 # Schemas
 
-These are the published JSON Schema contracts that the process, rule-card, citation,
+These are the published JSON Schema contracts that the process, citation,
 law-map, company-field, artifact, and vendor-review records validate against in CI. The rankings
 data (`open-rankings/`) has its contracts in zod (`lib/schemas.ts`).
 
@@ -18,9 +18,13 @@ The same URL continues accepting legacy process records through its
 `operational-process.schema.json` describes the existing process corpus;
 `shared-process.schema.json` describes the compatibility export.
 
+Rule cards (`open-law/<CODE>/*.json`) validate against the in-code contract
+(`RuleCardSchema` in `lib/founderOps.ts`) rather than a published schema file; the
+validator also runs the semantic checks a schema cannot (sources resolve to primary
+authorities, jurisdictions registered, review dates ordered).
+
 Other contracts:
 
-- `rule.schema.json` — one legal rule card (`open-law/<CODE>/*.json`).
 - `citation.schema.json` — the citation registry's two record roles, authority and reading.
 - `vendor-review.schema.json` — the vendor reviews in `open-rankings/reviews/`.
 - `law-map.schema.json` — the domain map over the rule cards (`open-law/map.json`).
