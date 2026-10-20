@@ -172,7 +172,7 @@ jobs:
           # When the API-key gate skipped the LLM stages, only the SLO check ran and CATEGORY is
           # empty — branch/PR naming falls back accordingly.
           CATEGORY="${CATEGORY:-slo-only}"
-          if git diff --quiet -- rankings rankings-engine/cache; then
+          if git diff --quiet -- open-rankings rankings-engine/cache; then
             echo "No changes for $CATEGORY — done."
             exit 0
           fi
@@ -181,7 +181,7 @@ jobs:
           git config user.name "ultrametric-story-runner"
           git config user.email "noreply@ultrametric.ai"
           git checkout -b "$BRANCH"
-          git add rankings rankings-engine/cache README.md
+          git add open-rankings rankings-engine/cache README.md
           git commit -m "chore(story-runner): refresh $CATEGORY evidence + verdicts"
           git push -u origin "$BRANCH"
           # Org policy currently forbids Actions from creating PRs ("Write permissions for
