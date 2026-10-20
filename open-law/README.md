@@ -82,6 +82,8 @@ The cards live in one directory per jurisdiction, named by the `jurisdiction` co
 | [US-NY](US-NY/) | The wage notice at hire |
 | [US-TX](US-TX/) | Foreign registration, the franchise-tax report |
 | [US-WA](US-WA/) | The noncompete earnings threshold |
+| [US-VA](US-VA/) | The Consumer Data Protection Act applicability thresholds |
+| [US-CO](US-CO/) | The Colorado Privacy Act applicability thresholds |
 | [EU](EU/) | The GDPR data-subject-access response deadline |
 | [UK](UK/) | Company registration and the certificate of incorporation, the confirmation statement, allotment returns, accounts filing periods, PSC information notices, corporation tax notice and PAYE registration deadlines, the VAT registration threshold, the written statement of particulars, EMI notification and company qualifying limits |
 
