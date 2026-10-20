@@ -14,8 +14,8 @@ every pointer must resolve to a committed file, and the index must validate agai
 ## Where each area tracks its own gaps
 
 - `open-processes` — chain membership in `open-processes/chains.json`; jurisdiction-scoped
-  workflow coverage in `open-law/workflow-coverage.json`; the shared-corpus import audit in
-  `content/processes/legacy-audit.json`.
+  workflow coverage in `open-law/workflow-coverage.json`; record-level completeness via the
+  source-library audit export (`scripts/content-audit.mjs`, see below).
 - `open-rankings` — `open-rankings/arena-roadmap.json`: every arena tiered by priority and
   marked live or planned.
 - `open-modules` — `docs/OPEN-MODULES-GAPS.md`: the corpus-wide candidate table with BUILT,

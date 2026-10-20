@@ -1,8 +1,8 @@
 # Shared process history
 
 Canonical definitions are authored in [`open-processes/`](../../open-processes/README.md).
-The import manifest and audits here record the historical migration and its original source
-receipts. They are not runtime inputs or editable copies of the canonical definitions.
+The import manifest here records the historical migration and its original source
+receipts. It is not a runtime input or an editable copy of the canonical definitions.
 The synthetic examples remain available for schema tests and `shared:export --example`.
 
 Use `pnpm shared:check` to validate the canonical catalog and its generated projections.
