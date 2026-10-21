@@ -8,6 +8,7 @@ import { attachProvenance } from '../../lib/provenance'
 import { buildRollups, RollupsSchema } from '../../lib/rollups'
 import { ProductSchema, RankingsSchema, StorySchema, VerdictSchema } from '../../lib/schemas'
 import { buildRankings } from '../../lib/scoring'
+import { buildStepRankings, serializeStepRankings } from '../../lib/stepRankings'
 
 const ROOT = path.resolve(__dirname, '..', '..')
 const CATEGORIES = [
@@ -136,6 +137,14 @@ for (const cat of CATEGORIES) {
   results.push(`${cat} ${match ? 'MATCH' : 'MISMATCH'}`)
   if (!match) allMatch = false
 }
+
+// open-rankings/step-rankings.json is derived from every arena's verdicts plus the process
+// corpus and step→story mapping (lib/stepRankings.ts); it must reproduce byte-for-byte too.
+const stepRankingsPath = path.join(ROOT, 'open-rankings', 'step-rankings.json')
+const stepRankingsMatch = fs.existsSync(stepRankingsPath)
+  && fs.readFileSync(stepRankingsPath, 'utf8') === serializeStepRankings(buildStepRankings(path.join(ROOT, 'open-rankings')))
+results.push(`step-rankings ${stepRankingsMatch ? 'MATCH' : 'MISMATCH'}`)
+if (!stepRankingsMatch) allMatch = false
 
 console.log(results.join(' · '))
 console.log(allMatch ? 'ALL DETERMINISTIC' : 'MISMATCH DETECTED')

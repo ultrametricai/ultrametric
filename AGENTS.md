@@ -105,6 +105,8 @@ traps:
   or prose carries a count. The badge SVGs in `public/badges/` come from
   `node scripts/generate-badges.mjs`.
 - `open-rankings/reviews/generated/` regenerates deterministically from the arena data.
+- `open-rankings/step-rankings.json` is derived. After verdict, product, mapping, or process
+  changes, run `pnpm exec tsx rankings-engine/scripts/generate-step-rankings.ts`.
 
 ## The rankings engine
 

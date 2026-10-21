@@ -392,6 +392,56 @@ export const YcCompanySchema = z.object({
 
 export const YcMapSchema = YcCompanySchema.array()
 
+// open-rankings/step-rankings.json — the full per-step vendor rankings derived by
+// rankings-engine/scripts/generate-step-rankings.ts from lib/processRankings.ts's
+// stepRankingFull / crossArenaStepRankingsFull. Every score is weightedPercent over the
+// step's mapped stories (open-rankings/process-step-stories.json) using the arena's judged
+// verdicts; each vendor carries the per-story verdict cites its score is computed from.
+export const StepRankingCiteSchema = z.object({
+  storyId: z.string().min(1),
+  verdict: VerdictBaseSchema.shape.verdict,
+  quality: z.number().min(0).max(10),
+  weight: z.number().positive(),
+})
+
+export const StepRankingVendorSchema = z.object({
+  productId: z.string().min(1),
+  name: z.string().min(1),
+  score: z.number().min(0).max(100),
+  rank: z.number().int().positive(),
+  cites: StepRankingCiteSchema.array().min(1),
+})
+
+export const StepRankingMarketSchema = z.object({
+  arenaId: z.string().min(1),
+  arenaName: z.string().min(1),
+  stories: z.object({ id: z.string().min(1), title: z.string().min(1), weight: z.number().positive() })
+    .array().min(1),
+  // Government-covered steps: the committed country+area tags the roster is restricted to
+  // (lib/processes.ts governmentStepEligibility). Null when the whole arena roster is eligible.
+  eligibility: z.object({ country: z.string().min(1), area: z.string().min(1) }).nullable(),
+  vendors: StepRankingVendorSchema.array().min(1),
+})
+
+export const StepRankingEntrySchema = z.object({
+  taskId: z.string().min(1),
+  nodeId: z.string().min(1),
+  label: z.string().min(1),
+  // The step's covering arena ranking; null when only cross-arena markets rank the step.
+  primary: StepRankingMarketSchema.nullable(),
+  crossArena: StepRankingMarketSchema.array(),
+}).refine((e) => e.primary !== null || e.crossArena.length > 0, {
+  message: 'a step entry needs a primary or cross-arena ranking',
+})
+
+export const StepRankingsFileSchema = z.object({
+  schemaVersion: z.literal(1),
+  // The option-chip cap (lib/processes.ts STEP_OPTIONS_CAP): each market's first optionsCap
+  // vendors are the step's chips on the site.
+  optionsCap: z.number().int().positive(),
+  steps: StepRankingEntrySchema.array(),
+})
+
 export type Category = z.infer<typeof CategorySchema>
 export type Product = z.infer<typeof ProductSchema>
 export type Story = z.infer<typeof StorySchema>
@@ -408,3 +458,5 @@ export type YcCompany = z.infer<typeof YcCompanySchema>
 export type Rankings = z.infer<typeof RankingsSchema>
 export type BattleRecord = Rankings['battles'][number]
 export type LeaderboardEntry = Rankings['leaderboard'][number]
+export type StepRankingsFile = z.infer<typeof StepRankingsFileSchema>
+export type StepRankingMarket = z.infer<typeof StepRankingMarketSchema>
