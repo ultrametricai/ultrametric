@@ -67,6 +67,20 @@ lines; edit the map, rerun the script.
 | [Unit economics](#unit-economics) | LTV/CAC, MRR movement, burn multiple, Rule of 40, magic number | Track runway · Send the board financial report · Prepare a board meeting · Save a churning customer · Roll out a pricing change | Skok; Sacks; Feld; O'Driscoll (all verified 2026-10-14) | verified; benchmarks are inputs |
 | [Deferred revenue (subscriptions)](#deferred-revenue-subscriptions) | Straight-line day-count recognition, plan-change proration | Bookkeeping close · Set up subscription billing · Roll out a pricing change | Stripe revenue-recognition subscription examples | verified; ASC 606 judgment excluded |
 
+## Module registry
+
+[`registry.json`](./registry.json) is the machine-readable index of this catalog: per
+module its entrypoint file, every exported function, a registered entrypoint with a JSON
+Schema for its positional arguments, one runnable example call with its result shape, and
+the status line from the tables above. An agent calling a module starts there instead of
+reading source: look up the entry, build the arguments against `inputSchema`, and call the
+named function. Registered entrypoints validate their input against the same schema and
+raise a `RangeError` naming the function, argument, and field when the structure is wrong;
+semantic rules (ranges, dates, share arithmetic) keep their own named errors. The file is
+generated from the entry specs beside each module by
+`scripts/generate-module-registry.ts` and drift-gated by
+`__tests__/module-registry.test.ts` — edit the specs or the catalog, rerun the script.
+
 ## Modules
 
 Each module entry follows one template: the module file and what it computes in a

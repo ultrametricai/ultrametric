@@ -27,6 +27,9 @@
 // Educational model, not legal advice.
 // ---------------------------------------------------------------------------
 
+import { z } from 'zod'
+import { entrySpec } from './entryValidation'
+
 export const PRICE_DECIMALS = 4
 
 /** Floor to whole shares, with an epsilon nudge so float noise like 588235.249999999
@@ -102,6 +105,49 @@ export type CapTableEvent =
       poolShares?: number
     }
 
+/** Structural schema of VestingSchedule — the registry entry contract (field names and
+ * types; value rules stay in vestedShares). */
+export const VestingScheduleSchema = z.object({
+  totalMonths: z.number(),
+  cliffMonths: z.number(),
+})
+
+/** Structural schema of CapTableEvent — the registry entry contract for buildCapTable and
+ * capTableCodec.encodeCapTableState (open-modules/registry.json). Field names and types
+ * only: semantic rules (positive amounts, pool arithmetic, SAFE guards) stay in the fold,
+ * so a semantically invalid but well-shaped event still reports via CapTableReport.error. */
+export const CapTableEventSchema = z.discriminatedUnion('kind', [
+  z.object({
+    kind: z.literal('found'),
+    founders: z.array(z.object({ name: z.string(), shares: z.number(), vesting: VestingScheduleSchema.optional() })),
+    poolShares: z.number().optional(),
+  }),
+  z.object({ kind: z.literal('pool'), shares: z.number().optional(), targetPct: z.number().optional() }),
+  z.object({ kind: z.literal('grant'), name: z.string(), shares: z.number() }),
+  z.object({
+    kind: z.literal('safe'),
+    name: z.string(),
+    amount: z.number(),
+    cap: z.number().optional(),
+    discountPct: z.number().optional(),
+    mfn: z.boolean().optional(),
+    proRata: z.boolean().optional(),
+  }),
+  z.object({
+    kind: z.literal('priced'),
+    name: z.string(),
+    preMoney: z.number(),
+    newMoney: z.number(),
+    poolTargetPct: z.number().optional(),
+    poolShares: z.number().optional(),
+  }),
+])
+
+/** Registered entrypoint arguments (open-modules/registry.json). */
+export const buildCapTableEntry = entrySpec('buildCapTable', [
+  { name: 'events', schema: z.array(CapTableEventSchema) },
+])
+
 export type RowGroup = 'founder' | 'options' | 'pool' | 'investor'
 
 export interface CapTableRow {
@@ -113,6 +159,15 @@ export interface CapTableRow {
   /** Percent of fully diluted (0–100); null when not yet determinable (uncapped SAFE). */
   pct: number | null
 }
+
+/** Structural schema of CapTableRow — consumed by round.downRoundModel's registry entry. */
+export const CapTableRowSchema = z.object({
+  id: z.string(),
+  name: z.string(),
+  group: z.enum(['founder', 'options', 'pool', 'investor']),
+  shares: z.number().nullable(),
+  pct: z.number().nullable(),
+})
 
 export interface SafeConversion {
   safeName: string
@@ -529,6 +584,7 @@ function snapshotOf(eventIndex: number, label: string, state: EngineState, extra
  * to that point are preserved so the UI can render the last good state.
  */
 export function buildCapTable(events: readonly CapTableEvent[]): CapTableReport {
+  buildCapTableEntry.validate(events)
   const state: EngineState = { rows: [], safes: [] }
   const snapshots: Snapshot[] = []
   let seq = 0

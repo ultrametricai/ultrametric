@@ -35,8 +35,10 @@
 // Educational model, not legal advice.
 // ---------------------------------------------------------------------------
 
-import { type CapTableRow, floorShares, poolIncreaseForRoundTarget, poolIncreaseForTarget, roundPrice } from './capTable'
-import { type AdjustmentBasis, type AdjustmentResult, type DilutiveIssuance, applyAntiDilution, validateIssuance } from './antiDilution'
+import { z } from 'zod'
+import { CapTableRowSchema, type CapTableRow, floorShares, poolIncreaseForRoundTarget, poolIncreaseForTarget, roundPrice } from './capTable'
+import { type AdjustmentBasis, type AdjustmentResult, AdjustmentBasisSchema, type DilutiveIssuance, DilutiveIssuanceSchema, applyAntiDilution, validateIssuance } from './antiDilution'
+import { entrySpec } from './entryValidation'
 
 function round2(x: number): number {
   return Math.round(x * 100) / 100
@@ -191,6 +193,24 @@ export interface ProtectedSeriesSpec {
   basis: AdjustmentBasis
 }
 
+/** Structural schema of ProtectedSeriesSpec — the registry entry contract (field names
+ * and types; the preferred-share and row-matching rules stay in the function). */
+export const ProtectedSeriesSpecSchema = z.object({
+  seriesName: z.string(),
+  originalIssuePrice: z.number(),
+  conversionPriceBefore: z.number(),
+  preferredShares: z.number().optional(),
+  basis: AdjustmentBasisSchema,
+})
+
+/** Registered entrypoint arguments (open-modules/registry.json). */
+export const downRoundModelEntry = entrySpec('downRoundModel', [
+  { name: 'rows', schema: z.array(CapTableRowSchema) },
+  { name: 'protectedSeries', schema: z.array(ProtectedSeriesSpecSchema) },
+  { name: 'issuance', schema: DilutiveIssuanceSchema.extend({ investorName: z.string() }) },
+  { name: 'options', schema: z.object({ includeUnissuedPoolInBase: z.boolean().optional() }), optional: true },
+])
+
 export interface DownRoundHolderRow {
   name: string
   group: CapTableRow['group']
@@ -240,6 +260,7 @@ export function downRoundModel(
   issuance: DilutiveIssuance & { investorName: string },
   options?: { includeUnissuedPoolInBase?: boolean },
 ): DownRoundReport {
+  downRoundModelEntry.validate(rows, protectedSeries, issuance, options)
   const concrete = rows.filter((r) => r.shares !== null)
   if (concrete.length !== rows.length) throw new RangeError('rows must have concrete share counts (convert SAFEs first)')
   if (concrete.length === 0) throw new RangeError('at least one row required')

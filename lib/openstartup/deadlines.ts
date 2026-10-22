@@ -13,6 +13,9 @@
 // the 83(b) "transfer" date). It never extends, waives, or legally determines a deadline.
 // ---------------------------------------------------------------------------
 
+import { z } from 'zod'
+import { entrySpec } from './entryValidation'
+
 /** The rule cards this calendar is allowed to cite. Kept as a single registry so the vitest
  * gate can assert every id resolves to a committed card with the matching jurisdiction. */
 export const DEADLINE_RULE_IDS = {
@@ -150,6 +153,13 @@ export function election83bWindow(transferDate: string): DeadlineComputation & {
   }
 }
 
+/** Registered entrypoint arguments (open-modules/registry.json). */
+export const complianceCalendarEntry = entrySpec('complianceCalendar', [
+  { name: 'fromIso', schema: z.string() },
+  { name: 'toIso', schema: z.string() },
+  { name: 'options', schema: z.object({ hasPayroll: z.boolean().optional() }), optional: true },
+])
+
 export interface CalendarEntry extends DeadlineComputation {
   /** Stable id: `<deadline>-<period>` (e.g. de-franchise-tax-2026, form-941-2027-q1). */
   id: string
@@ -167,6 +177,7 @@ export function complianceCalendar(
   toIso: string,
   options?: { hasPayroll?: boolean },
 ): CalendarEntry[] {
+  complianceCalendarEntry.validate(fromIso, toIso, options)
   const from = parseIso(fromIso, 'from')
   const to = parseIso(toIso, 'to')
   if (from > to) throw new RangeError('from must be <= to')

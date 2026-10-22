@@ -30,6 +30,8 @@
 //   election, or a return position.
 // ---------------------------------------------------------------------------
 
+import { z } from 'zod'
+import { entrySpec } from './entryValidation'
 import { addUtcMonths } from './grant409aSanity'
 
 /** The rule cards this module is allowed to cite. The vitest gate asserts every id
@@ -95,6 +97,23 @@ export interface QsbsEligibilityFacts {
   inExcludedField?: boolean | 'unknown'
 }
 
+const triStateSchema = z.union([z.boolean(), z.literal('unknown')])
+
+/** Structural schema of QsbsEligibilityFacts — the registry entry contract (field names
+ * and types; the checklist's tri-state logic stays in the function). */
+export const QsbsEligibilityFactsSchema = z.object({
+  issuanceDate: z.string(),
+  isCCorporation: triStateSchema.optional(),
+  acquiredAtOriginalIssuance: triStateSchema.optional(),
+  aggregateGrossAssetsAtIssuance: z.number().optional(),
+  inExcludedField: triStateSchema.optional(),
+})
+
+/** Registered entrypoint arguments (open-modules/registry.json). */
+export const qsbsEligibilityChecklistEntry = entrySpec('qsbsEligibilityChecklist', [
+  { name: 'facts', schema: QsbsEligibilityFactsSchema },
+])
+
 export interface QsbsEligibilityReport {
   conditions: QsbsCondition[]
   /** 'not-met' if any condition failed as computed; otherwise ALWAYS needs_review — a
@@ -133,6 +152,7 @@ function triState(
  * which are not even inputs here (the card's caveat).
  */
 export function qsbsEligibilityChecklist(facts: QsbsEligibilityFacts): QsbsEligibilityReport {
+  qsbsEligibilityChecklistEntry.validate(facts)
   assertIsoDate(facts.issuanceDate, 'issuanceDate')
   const post = facts.issuanceDate > QSBS_APPLICABLE_DATE
   const ceiling = post ? QSBS_PARAMS.postApplicableDate.grossAssetCeiling : QSBS_PARAMS.classic.grossAssetCeiling

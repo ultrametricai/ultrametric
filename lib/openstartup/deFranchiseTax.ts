@@ -39,6 +39,9 @@
 //   payment. The "which method is cheaper" comparator proposes, a human files.
 // ---------------------------------------------------------------------------
 
+import { z } from 'zod'
+import { entrySpec } from './entryValidation'
+
 /** The rule cards this module is allowed to cite. The vitest gate asserts every id
  * resolves to a committed card with the matching jurisdiction. */
 export const DE_FRANCHISE_RULE_IDS = {
@@ -150,6 +153,23 @@ export interface AssumedParInputs {
   authorizedClasses: readonly AuthorizedShareClass[]
 }
 
+/** Structural schema of AssumedParInputs — the registry entry contract (field names and
+ * types; value rules, including the no-par refusal, stay in the function). */
+export const AssumedParInputsSchema = z.object({
+  totalGrossAssets: z.number(),
+  totalIssuedShares: z.number(),
+  authorizedClasses: z.array(z.object({ shares: z.number(), parValue: z.number() })),
+})
+
+/** Registered entrypoint arguments (open-modules/registry.json). */
+export const compareFranchiseTaxMethodsEntry = entrySpec('compareFranchiseTaxMethods', [
+  { name: 'inputs', schema: AssumedParInputsSchema },
+])
+
+const assumedParValueCapitalTaxEntry = entrySpec('assumedParValueCapitalTax', [
+  { name: 'inputs', schema: AssumedParInputsSchema },
+])
+
 export interface AssumedParResult extends FranchiseTaxResult {
   /** Gross assets / issued shares, rounded half-up to 6 decimal places (Division step 1). */
   assumedPar: number
@@ -180,6 +200,7 @@ function round2(x: number): number {
  *      over $1,000,000), minimum $400, maximum $200,000.
  */
 export function assumedParValueCapitalTax(inputs: AssumedParInputs): AssumedParResult {
+  assumedParValueCapitalTaxEntry.validate(inputs)
   const p = DE_FRANCHISE_PARAMS
   if (!(inputs.totalGrossAssets > 0)) throw new RangeError('totalGrossAssets must be > 0')
   assertPositiveInt(inputs.totalIssuedShares, 'totalIssuedShares')
@@ -244,6 +265,7 @@ export interface MethodComparison {
  * on its own annual report filing.
  */
 export function compareFranchiseTaxMethods(inputs: AssumedParInputs): MethodComparison {
+  compareFranchiseTaxMethodsEntry.validate(inputs)
   const totalAuthorized = inputs.authorizedClasses.reduce((sum, c) => sum + c.shares, 0)
   const authorized = authorizedSharesMethodTax(totalAuthorized)
   const assumedPar = assumedParValueCapitalTax(inputs)

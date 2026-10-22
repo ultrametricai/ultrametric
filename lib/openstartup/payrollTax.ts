@@ -21,6 +21,9 @@
 // authorizes a deposit, filing, or withholding setup. Educational, not tax advice.
 // ---------------------------------------------------------------------------
 
+import { z } from 'zod'
+import { entrySpec } from './entryValidation'
+
 /** The rule cards this module is allowed to cite. The vitest gate asserts every id
  * resolves to a committed card with the matching jurisdiction. */
 export const PAYROLL_RULE_IDS = {
@@ -158,6 +161,44 @@ export function futaAnnual(
   }
 }
 
+/** Structural schemas of the asOf-dated parameter objects (overrides mirror FICA_2026 /
+ * FUTA_2025 field for field). */
+export const FicaParamsSchema = z.object({
+  asOf: z.string(),
+  taxYear: z.number(),
+  socialSecurityRate: z.number(),
+  socialSecurityWageBase: z.number(),
+  medicareRate: z.number(),
+  additionalMedicareRate: z.number(),
+  additionalMedicareWithholdingThreshold: z.number(),
+  ruleId: z.string(),
+  jurisdiction: z.string(),
+})
+
+export const FutaParamsSchema = z.object({
+  asOf: z.string(),
+  taxYear: z.number(),
+  rate: z.number(),
+  wageBase: z.number(),
+  maxStateCredit: z.number(),
+  ruleId: z.string(),
+  jurisdiction: z.string(),
+})
+
+/** Registered entrypoint arguments (open-modules/registry.json). */
+export const employerPayrollCostAnnualEntry = entrySpec('employerPayrollCostAnnual', [
+  { name: 'annualWages', schema: z.number() },
+  {
+    name: 'options',
+    schema: z.object({
+      stateCreditRate: z.number().optional(),
+      ficaParams: FicaParamsSchema.optional(),
+      futaParams: FutaParamsSchema.optional(),
+    }),
+    optional: true,
+  },
+])
+
 export interface EmployerPayrollCost {
   annualWages: number
   fica: EmployerFicaResult
@@ -182,6 +223,7 @@ export function employerPayrollCostAnnual(
   annualWages: number,
   options?: { stateCreditRate?: number; ficaParams?: typeof FICA_2026; futaParams?: typeof FUTA_2025 },
 ): EmployerPayrollCost {
+  employerPayrollCostAnnualEntry.validate(annualWages, options)
   const fica = employerFicaAnnual(annualWages, options?.ficaParams ?? FICA_2026)
   const futa = futaAnnual(annualWages, { stateCreditRate: options?.stateCreditRate }, options?.futaParams ?? FUTA_2025)
   const federalEmployerTotal = round2(annualWages + fica.employerFicaTotal + futa.netFuta)
