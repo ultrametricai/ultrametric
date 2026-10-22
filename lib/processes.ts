@@ -1,4 +1,5 @@
 import fs from 'node:fs'
+import { executionSchema } from './execution'
 import path from 'node:path'
 import { z } from 'zod'
 import { loadProcessCatalog } from './shared-processes/catalog'
@@ -61,7 +62,9 @@ export type GeoNoteCountry = (typeof GEO_NOTE_COUNTRIES)[number]
 export const DagNodeBaseSchema = z.object({
   id: z.string().min(1),
   label: z.string().min(1),
+  // Deprecated compatibility classification. Use execution for the work's mechanism.
   route: z.enum(['agent', 'form', 'person']).optional(),
+  execution: executionSchema.optional(),
   vendor: z.string().min(1).optional(),
   // Companies that can perform this step — the market for a "choose/sign up" step. Tracked
   // vendors render as chips linking to their judged product page; untracked ones (e.g. doola)
@@ -204,7 +207,9 @@ export const StepMethodSchema = z.object({
   label: z.string().min(1),
   summary: z.string(),
   context: StepMethodContextSchema.optional(),
+  // Deprecated compatibility classification. Use execution for the work's mechanism.
   route: z.enum(['agent', 'form', 'person']).optional(),
+  execution: executionSchema.optional(),
   vendor: z.string().min(1).optional(),
   vendorOptions: z.string().min(1).array().optional(),
   optionsArenaId: z.string().min(1).optional(),
