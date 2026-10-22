@@ -13,7 +13,9 @@ import {
   OPERATIONAL_PROCESS_SCHEMA_FILE, operationalProcessSchemaJson,
   PROCESS_SCHEMA_FILE, processSchemaJson, LEGACY_PROCESS_SCHEMA_FILE,
   VENDOR_REGISTRY_SCHEMA_FILE, vendorRegistrySchemaJson,
+  VENDOR_STATE_SCHEMA_FILE, vendorStateSchemaJson,
 } from '../scripts/generate-corpus-schemas'
+import { VendorStateEntrySchema } from '@/lib/vendorState'
 
 // Corpus lift stage 2: schemas/operational-process.schema.json is GENERATED from the zod source
 // of truth (ProcessTaskSchema in lib/processes.ts) by scripts/generate-corpus-schemas.ts. These
@@ -214,6 +216,30 @@ describe('process artifact-registry schema publication', () => {
     expect(errors).toEqual([])
     expect(() => ArtifactRegistrySchema.parse(registry)).not.toThrow()
     expect(registry.artifacts.length).toBeGreaterThanOrEqual(40)
+  })
+})
+
+// The vendor state-availability schema (per-state vendors workstream, 2026-10-22): same two
+// contracts — no drift, and the committed rows conform to what we publish. The data's SEMANTIC
+// invariants (state codes resolve in jurisdictions/registry.json, products exist in their
+// arenas, one row per (product, state, service)) are corpus-tested in
+// lib/__tests__/vendorState.test.ts; this file pins only the published contract.
+describe('vendor state-availability schema publication', () => {
+  const committed = fs.readFileSync(VENDOR_STATE_SCHEMA_FILE, 'utf8')
+
+  it('regenerating produces byte-identical committed output (no drift)', () => {
+    expect(vendorStateSchemaJson()).toBe(committed)
+  })
+
+  it('the committed rows conform: shape() on the published schema + the zod source', () => {
+    const schema = JSON.parse(committed)
+    const rows = JSON.parse(
+      fs.readFileSync(path.join(ROOT, 'jurisdictions', 'vendor-state.json'), 'utf8'),
+    )
+    const errors: string[] = []
+    shape(rows, schema, 'vendor state availability', errors)
+    expect(errors).toEqual([])
+    expect(() => VendorStateEntrySchema.array().parse(rows)).not.toThrow()
   })
 })
 

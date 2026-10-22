@@ -1059,24 +1059,46 @@ export const GOVERNMENT_ARENA_ID = 'government-services'
 // node-level `jurisdictions` field only marks CA/MULTI conditional steps), but the wired
 // agency is the finer committed signal — geoScope cannot tell a tax step from an IP step.
 //
+// THE STATE DIMENSION (per-state vendors foundation, 2026-10-22): some government-services
+// agencies carry a committed ProductSchema `state` tag (the US state company registries —
+// "US-CA" on the California Secretary of State), and a node may carry a state-level
+// jurisdiction code in its `jurisdictions` field. When both committed signals exist, the pull
+// narrows to the agencies tagged with the step's state: a Delaware filing never lists the
+// California Secretary of State as a candidate. The narrowing never guesses: when the arena
+// rosters no agency tagged with the step's state (federal tax steps, IP steps — their eligible
+// agencies carry no state tag), the country+area set stands unchanged, and a step without a
+// state code behaves exactly as before. A state-tagged step with no resolvable wired agency
+// still narrows on the state tag alone — the committed product tags are the finer signal there.
+//
 // Returns null — UNFILTERED — for every other arena, and for a government-covered step that
 // is not wired to a tagged product of the arena (no canonical vendor, or an untagged
-// product): there the area cannot be honestly derived from committed data, so the pull is
-// left alone rather than guessed. The arena page itself never passes through this path and
-// keeps its full roster.
+// product) and carries no state code: there the area cannot be honestly derived from
+// committed data, so the pull is left alone rather than guessed. The arena page itself never
+// passes through this path and keeps its full roster.
+const STATE_JURISDICTION_CODE = /^US-[A-Z]{2}$/
+
 export function governmentStepEligibility(
-  node: Pick<DagNode, 'vendor'>,
+  node: Pick<DagNode, 'vendor'> & { jurisdictions?: readonly string[] },
   arenaId: string,
   dir?: string,
 ): Set<string> | null {
   if (arenaId !== GOVERNMENT_ARENA_ID) return null
-  if (!node.vendor || VENDOR_ARENA[node.vendor] !== GOVERNMENT_ARENA_ID) return null
   const products = loadCategory(arenaId, dir).products
-  const anchor = products.find((p) => p.id === vendorProductId(node.vendor!))
-  if (!anchor?.country || !anchor.area) return null
-  return new Set(
-    products.filter((p) => p.country === anchor.country && p.area === anchor.area).map((p) => p.id),
-  )
+  const state = node.jurisdictions?.find((j) => STATE_JURISDICTION_CODE.test(j))
+  const wired =
+    node.vendor && VENDOR_ARENA[node.vendor] === GOVERNMENT_ARENA_ID
+      ? products.find((p) => p.id === vendorProductId(node.vendor!))
+      : undefined
+  const anchored =
+    wired?.country && wired.area
+      ? products.filter((p) => p.country === wired.country && p.area === wired.area)
+      : null
+  if (state) {
+    const inState = (anchored ?? products).filter((p) => p.state === state)
+    if (inState.length > 0) return new Set(inState.map((p) => p.id))
+  }
+  if (!anchored) return null
+  return new Set(anchored.map((p) => p.id))
 }
 
 // Pretty display names for corpus vendor keys (snake_case, lowercase). Fallback title-cases.

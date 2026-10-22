@@ -88,6 +88,15 @@ export const ProductSchema = z.object({
   // lib/rollups.ts's loader contract); non-government arenas leave them absent.
   country: z.string().regex(/^[A-Z]{2}$/, 'country must be a 2-letter uppercase code').optional(),
   area: z.enum(['company-registry', 'tax', 'ip-office', 'immigration', 'procurement']).optional(),
+  // US-state tag for type:'government' products whose remit is one state (the state company
+  // registries; later state tax and labor agencies): an ISO 3166-2 code like "US-CA" that must
+  // resolve in jurisdictions/registry.json (corpus-tested in lib/__tests__/vendorState.test.ts).
+  // Only meaningful alongside country 'US'; federal and national agencies leave it absent.
+  // Display/eligibility annotation only (lib/processes.ts governmentStepEligibility narrows a
+  // state-tagged step's candidates with it) — never hand-feeds a score, never part of the judge
+  // cellHash (judge.ts hashes story+evidence only), so tagging existing products never busts
+  // the judge cache.
+  state: z.string().regex(/^US-[A-Z]{2}$/, 'state must be an ISO 3166-2 US code like "US-CA"').optional(),
   // URLs from `urls` above that the crawl stage must NOT fetch (rankings-engine/stages/crawl.ts skips
   // them): hosts that wall keyless agents at robots.txt itself or serve a bot-management
   // interstitial (government-services Phase 2: mca.gov.in, aima.gov.pt, scc.virginia.gov,
