@@ -92,7 +92,7 @@ const SECTIONS = [
   '## Open startup simulator',
   // Round 12 (founder 2026-10-15): two lifecycle stages shown as cross-area indexes.
   '## Stages',
-  '## Install Ultrametric',
+  '## Install Ultrametric into your agent',
   '## License',
 ]
 
@@ -419,6 +419,7 @@ describe('README.md anchors and links', () => {
     for (const id of [
       'start-here', 'processes', 'vendors', 'business-logic', 'situations',
       'add-your-country-or-state', 'open-docs', 'for-ai-agents', 'use-it-from-an-agent',
+      'install-ultrametric',
     ]) {
       expect(readme, `missing anchor #${id}`).toContain(`<a id="${id}"></a>`)
     }

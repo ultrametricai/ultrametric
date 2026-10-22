@@ -316,16 +316,21 @@ behind the decisions. Two stages as examples:
 - Lore: the [library's](open-lore/library.json) growth and distribution readings, distilled in [growth, people and spending](open-law/LAWS.md#growth-people-and-spending)
 - Law: the [CAN-SPAM requirements](open-law/US-FED/us-fed-can-spam-requirements.json) on the sends
 
+<a id="install-ultrametric"></a>
+
 ## Install Ultrametric into your agent
 
-Ultrametric is available as a hosted service to integrate directly into your agent of choice. The MCP or CLI allows agents to find, read, and start processes as well as keep track of company information across agents.
+Ultrametric is available as a hosted service to integrate directly into your agent
+of choice. The MCP or CLI allows agents to find, read, and start processes as well
+as keep track of company information across agents.
 
-The simplest way to get started is to copy and paste `set up https://ultrametric.ai/install` into your agent, it will walk you through the rest. 
+The simplest way to get started is to copy and paste
+`set up https://ultrametric.ai/install` into your agent, it will walk you through
+the rest.
 
 ### CLI
 
-The CLI requires Node.js 22.12 or later. Install it, sign in through the browser,
-then check the saved session:
+The CLI requires Node.js 22.12 or later. Install it and sign in through the browser:
 
 ```bash
 npm install -g ultrametric@latest
