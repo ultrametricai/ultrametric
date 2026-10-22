@@ -448,10 +448,14 @@ describe('corpus', () => {
       expect(JSON.parse(fs.readFileSync(file, 'utf8')).id).toBe(ruleId)
     }
 
-    // The lawsuit's filed pleading and the office action's TEAS filing are signature acts; the
-    // breach's regulator/individual notifications are the honestly-irreversible steps.
+    // The lawsuit's filed pleading and the office action's response filing are signature acts;
+    // the breach's regulator/individual notifications are the honestly-irreversible steps. Since
+    // the wave-3 restructuring the sit_009 filing step speaks the global abstraction and carries
+    // TEAS in its US geoResolution.
     expect(byId('sit_008').dag.nodes.filter((n) => n.legalSignature).length).toBeGreaterThanOrEqual(1)
-    expect(byId('sit_009').dag.nodes.find((n) => n.legalSignature)!.label).toContain('TEAS')
+    const oaFiling = byId('sit_009').dag.nodes.find((n) => n.legalSignature)!
+    expect(oaFiling.label).toContain('file the response')
+    expect(oaFiling.geoResolutions!.find((r) => r.country === 'US')!.label).toContain('TEAS')
     const breach = byId('sit_003')
     expect(breach.urgency).toBe('hours')
     expect(breach.reversibility).toBe('irreversible')
