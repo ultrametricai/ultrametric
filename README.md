@@ -316,10 +316,11 @@ behind the decisions. Two stages as examples:
 - Lore: the [library's](open-lore/library.json) growth and distribution readings, distilled in [growth, people and spending](open-law/LAWS.md#growth-people-and-spending)
 - Law: the [CAN-SPAM requirements](open-law/US-FED/us-fed-can-spam-requirements.json) on the sends
 
-## Install Ultrametric
+## Install Ultrametric into your agent
 
-To read process guides and work with saved company information, use the CLI from a
-terminal or connect your agent through MCP.
+Ultrametric is available as a hosted service to integrate directly into your agent of choice. The MCP or CLI allows agents to find, read, and start processes as well as keep track of company information across agents.
+
+The simplest way to get started is to copy and paste `set up https://ultrametric.ai/install` into your agent, it will walk you through the rest. 
 
 ### CLI
 
@@ -329,7 +330,6 @@ then check the saved session:
 ```bash
 npm install -g ultrametric@latest
 ultrametric auth login
-ultrametric auth status --json
 ```
 
 Follow the [CLI installation and sign-in guide](https://docs.ultrametric.ai/cli/install)
@@ -345,8 +345,7 @@ https://api.ultrametric.ai/mcp
 ```
 
 Complete the application's sign-in flow and choose your Ultrametric account and
-organization. Ask your agent to call Ultrametric's `status` tool to check the
-connection and selected organization.
+organization.
 
 Follow the [MCP connection guide](https://docs.ultrametric.ai/mcp/connect) for setup
 and the [MCP tool reference](https://docs.ultrametric.ai/mcp/tools) for available operations.
