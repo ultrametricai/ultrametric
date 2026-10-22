@@ -1,5 +1,5 @@
 import path from 'node:path'
-import { loadProcesses, processSlug, VENDOR_ARENA, vendorProductId } from './processes'
+import { GOVERNMENT_ARENA_ID, loadProcesses, processSlug, VENDOR_ARENA, vendorProductId } from './processes'
 import { processIcon } from './processIcons'
 import { computerUseOptions, crossArenaStepRankings, processLeaderboard } from './processRankings'
 import { loadStepVendorCalls } from './stepVendorCalls'
@@ -123,6 +123,10 @@ function buildIndex(dir: string): Map<string, VendorProcessAppearance[]> {
     const lb = processLeaderboard(task, dir)
     rankableOf.set(task.id, lb.rankableSteps)
     lb.entries.forEach((e, i) => {
+      // Same eligibility rule as processLeaderboard's entry filter (government agencies are
+      // not competing vendors), enforced here too so the vendor listings never regress if a
+      // future leaderboard variant feeds this index unfiltered.
+      if (e.arenaId === GOVERNMENT_ARENA_ID) return
       const a = cell(e.arenaId, e.productId, task.id)
       a.kinds.add('step-ranked')
       a.functionStepsServed = e.stepsServed

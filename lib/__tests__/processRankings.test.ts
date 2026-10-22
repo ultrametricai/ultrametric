@@ -9,8 +9,8 @@ import {
 import {
   COMPUTER_USE_SOURCES, computerUseEligibleProducts, computerUseMappingsFor, computerUseOptions,
   coveringArenaId, crossArenaStepRankings, extraArenasFor, extraMappingsFor, functionMappingFor,
-  isComputerUseCandidate, loadStepStoryMap, processLeaderboard, stepRanking, stepVendorScore,
-  temporarilyHumanSteps,
+  isComputerUseCandidate, loadStepStoryMap, processLeaderboard, stepRanking, stepRankingFull,
+  stepVendorScore, temporarilyHumanSteps,
 } from '@/lib/processRankings'
 import { VERDICT_FACTORS } from '@/lib/scoring'
 import { isShutdown } from '@/lib/shutdown'
@@ -207,6 +207,72 @@ describe('process leaderboard (coverage × step scores)', () => {
       const ranking = stepRanking(task.id, task.dag.nodes.find((n) => n.id === s.nodeId)!, DATA_DIR)!
       expect(s.top.productId).toBe(ranking.vendors[0].productId)
       expect(s.top.score).toBe(ranking.vendors[0].score)
+    }
+  })
+})
+
+describe('process-leaderboard eligibility (government arenas and supporting steps)', () => {
+  // The five record-keeping steps the corpus marks supporting: true.
+  const SUPPORTING_STEPS = [
+    ['tax_001', 'n5'], ['tax_002', 'n8'], ['shutdown_001', 'n12'], ['fund_002', 'n2'], ['comp_011', 'n5'],
+  ] as const
+
+  it('no government-services product appears as an entry on any process leaderboard', () => {
+    for (const task of tasks()) {
+      const gov = processLeaderboard(task, DATA_DIR).entries.filter((e) => e.arenaId === GOVERNMENT_ARENA_ID)
+      expect(gov, `${task.id} lists government agencies as competing vendors`).toEqual([])
+    }
+  })
+
+  it('a supporting record-keeping step never drags its arena onto the leaderboard: tax_001 (save the confirmation receipt) has no cloud-storage rows', () => {
+    for (const [taskId, nodeId] of SUPPORTING_STEPS) {
+      const task = tasks().find((t) => t.id === taskId)!
+      const node = task.dag.nodes.find((n) => n.id === nodeId)!
+      expect(node.supporting, `${taskId}:${nodeId} must carry the supporting marker`).toBe(true)
+      const rows = processLeaderboard(task, DATA_DIR).entries.filter((e) => e.arenaId === 'cloud-storage')
+      expect(rows, `${taskId}: the supporting step dragged cloud-storage vendors onto the leaderboard`).toEqual([])
+      // The marker is leaderboard-only: the step keeps its own judged market and option chips.
+      expect(stepRanking(taskId, node, DATA_DIR)).not.toBeNull()
+    }
+  })
+
+  it('where document storage IS the substantive work the rows stay: the data-room process (fund_005) keeps its cloud-storage entries', () => {
+    for (const taskId of ['fund_005', 'qs_015']) {
+      const task = tasks().find((t) => t.id === taskId)!
+      expect(task.dag.nodes.some((n) => n.supporting)).toBe(false)
+      const rows = processLeaderboard(task, DATA_DIR).entries.filter((e) => e.arenaId === 'cloud-storage')
+      expect(rows.length, `${taskId} must keep its cloud-storage rows`).toBeGreaterThan(0)
+    }
+  })
+
+  it('eligibility filtering is row removal only: remaining entries and the rankable denominator match the unfiltered aggregation number-for-number', () => {
+    for (const taskId of ['tax_001', 'tax_002', 'shutdown_001', 'fund_002', 'comp_011', 'fund_005', 'form_001']) {
+      const task = tasks().find((t) => t.id === taskId)!
+      const lb = processLeaderboard(task, DATA_DIR)
+      // Rebuild the aggregation over ALL rankable steps — no eligibility filter — from the same
+      // step-level primitive the leaderboard derives from (stepRankingFull keeps agencies and
+      // supporting-step vendors).
+      const unfiltered = new Map<string, number[]>()
+      let rankable = 0
+      for (const node of task.dag.nodes) {
+        const r = stepRankingFull(task.id, node, DATA_DIR)
+        if (!r) continue
+        rankable += 1
+        for (const v of r.vendors) {
+          const key = `${v.arenaId}:${v.productId}`
+          unfiltered.set(key, [...(unfiltered.get(key) ?? []), v.score])
+        }
+      }
+      // Excluded steps stay in the rankable scope: the denominator is the unfiltered count.
+      expect(lb.rankableSteps).toBe(rankable)
+      expect(lb.bestPerStep.length).toBe(rankable)
+      for (const e of lb.entries) {
+        const scores = unfiltered.get(`${e.arenaId}:${e.productId}`)!
+        const sum = scores.reduce((acc, s) => acc + s, 0)
+        expect(e.stepsServed).toBe(scores.length)
+        expect(e.avgStepScore).toBe(Math.round((sum / scores.length) * 10) / 10)
+        expect(e.processScore).toBe(Math.round((sum / rankable) * 10) / 10)
+      }
     }
   })
 })
@@ -557,11 +623,12 @@ describe('government-services step applicability (founder 2026-10-08: scope cand
     expect(govStepVendors).toContain('irs')
     expect(govStepVendors).toContain('eftps')
     expect(govStepVendors).not.toContain('uspto')
+    // Agencies live on the step rosters only — the process leaderboard lists competing
+    // vendors, so no government-services entry appears there at all.
     const lbGov = processLeaderboard(task, DATA_DIR).entries
       .filter((e) => e.arenaId === GOVERNMENT_ARENA_ID)
       .map((e) => e.productId)
-    expect(lbGov).toContain('irs')
-    expect(lbGov).not.toContain('uspto')
+    expect(lbGov).toEqual([])
   })
 
   it('pin: Portugal\'s IRN is absent from the US incorporation steps (form_001), and the trademark filing (legal_002) admits only US IP offices', () => {
