@@ -36,7 +36,7 @@ that review.
 `rankings-engine/scripts/vendor-radar.ts`, run daily by `.github/workflows/vendor-radar.yml`
 (cron `31 8 * * *`, offset from the other automation loops):
 
-1. **Scan** three keyless public launch surfaces (a handful of HTTP requests total, polite UA,
+1. **Scan** four keyless public launch surfaces (a handful of HTTP requests total, polite UA,
    10s timeouts; a source that fails to answer degrades to zero items with a recorded `error`
    note in the report — never a fabricated item):
    - **Hacker News** via the Algolia search API (keyless by design): `Show HN` and `"Launch HN"`
@@ -51,6 +51,12 @@ that review.
      the higher authenticated limit when present): repos created in the last
      `GITHUB_LOOKBACK_DAYS` with ≥ `GITHUB_MIN_STARS` stars, kept only when star velocity
      crosses `GITHUB_MIN_STARS_PER_DAY`.
+   - **YC Launches** via `ycombinator.com/launches.json` (verified keyless 2026-10-21: plain
+     JSON pages of 20 launches with title, tagline, posting date, vote count, and the company's
+     site/batch/tags; `robots.txt` allows `/launches`; the `/launches/rss` and `/launches/feed`
+     paths 404, so the JSON surface is the feed). Launches from the last `YC_LOOKBACK_DAYS` are
+     kept; presence on YC's official launch feed within the window is the signal (the Product
+     Hunt frontpage precedent) and the feed's own vote count rides in the evidence verbatim.
 2. **Match** each hot item's text (title / tagline / description / topics) against the arena
    taxonomy: `DOMAIN_VOCAB` (`rankings-engine/scripts/tag-story-scopes.ts` — the same per-arena nouns
    `yc-coverage-queue.ts` matches with), extended per arena with its `open-rankings/categories.json`
