@@ -1,4 +1,4 @@
-import { describe, expect, it } from 'vitest'
+import { describe, expect, it, vi } from 'vitest'
 import {
   MIN_FIT_HITS,
   findAgenticSignal,
@@ -140,6 +140,17 @@ describe('triageCandidate', () => {
     expect(d.status).toBe('skipped')
     expect(d.criterion).toBe('docs-surface')
     expect(d.reason).toContain('launch post')
+  })
+
+  it('skips candidates whose only URL is a YC launch page, so the launch post never passes product-site checks', async () => {
+    const fetchPage = vi.fn(async () => ({ status: 200, html: '<html>Launch YC: Driftbase — API docs, playwright, webhooks</html>' }))
+    for (const url of ['https://www.ycombinator.com/launches/abc-driftbase', 'https://ycombinator.com/companies/driftbase']) {
+      const d = await triageCandidate(candidate({ url, key: 'name:driftbase' }), ARENAS, io({ fetchPage }))
+      expect(d.status).toBe('skipped')
+      expect(d.criterion).toBe('docs-surface')
+      expect(d.reason).toContain('launch post')
+    }
+    expect(fetchPage).not.toHaveBeenCalled()
   })
 
   it('skips waitlist pages on shipped-product and unreachable sites on docs-surface, recording HTTP evidence', async () => {

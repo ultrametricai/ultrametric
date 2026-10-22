@@ -62,7 +62,14 @@ export const AFFILIATED_PATTERNS = ['ultrametric', 'productarena']
 
 // Launch-post hosts: a page about the launch, not the product. A candidate whose only URL is
 // one of these has no product docs surface we can verify keylessly.
-export const LAUNCH_POST_HOSTS = new Set(['producthunt.com', 'www.producthunt.com', 'news.ycombinator.com'])
+export const LAUNCH_POST_HOSTS = new Set([
+  'producthunt.com',
+  'www.producthunt.com',
+  'news.ycombinator.com',
+  // YC Launches/company pages: yc-fetch falls back to these when a company lists no site.
+  'ycombinator.com',
+  'www.ycombinator.com',
+])
 
 // Lexical placement is a nomination signal, not a classification. The caveat rides on every
 // auto-approved disposition (and through it, the bring-up PR body) until a definition-aware
