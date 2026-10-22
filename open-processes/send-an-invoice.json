@@ -30,12 +30,12 @@
         "execution": {
           "category": "agent-native",
           "basis": "documented-interface",
-          "reviewRequired": false,
-          "rationale": "Stripe documents customer creation with billing fields. Reuse the existing identified record when present, resolve conflicting details with the account owner, and retain authorization for changes.",
+          "rationale": "Stripe's customer API supports billing-record creation from the verified commercial details after existing-record checks.",
           "evidence": [
             "open-processes/send-an-invoice.json#/parts/0/guidance",
             "https://docs.stripe.com/api/customers/create"
-          ]
+          ],
+          "reviewRequired": false
         }
       }
     },
@@ -70,13 +70,13 @@
             "execution": {
               "category": "agent-native",
               "basis": "documented-interface",
-              "reviewRequired": false,
-              "rationale": "Stripe documents draft invoice creation and invoice items. Populate the agreed quantities and terms; issuing the invoice remains with the billing owner in its separate step.",
+              "rationale": "Stripe's invoice and invoice-item APIs support the reviewed line items and terms as a draft invoice.",
               "evidence": [
                 "open-processes/send-an-invoice.json#/parts/1/options/0/summary",
-                "https://docs.stripe.com/api/invoices/create",
-                "https://docs.stripe.com/api/invoiceitems/create"
-              ]
+                "https://docs.stripe.com/api/invoiceitems/create",
+                "https://docs.stripe.com/api/invoices/create"
+              ],
+              "reviewRequired": false
             }
           }
         },
@@ -112,13 +112,13 @@
               ]
             },
             "execution": {
-              "category": "human-online",
-              "basis": "human-work",
-              "rationale": "The documented “India - GST e-invoice (IRN)” work uses digital records, an online service or a remote communication channel and retains its named human owner. Agent assistance does not transfer the human decision, identity or signing responsibility.",
+              "category": null,
+              "basis": "unresolved",
+              "rationale": "The eligible Indian GST submission route and tax treatment must be selected for the supplier and document.",
               "evidence": [
                 "open-processes/send-an-invoice.json#/parts/1/options/1/summary"
               ],
-              "reviewRequired": false
+              "reviewRequired": true
             }
           }
         },
@@ -153,9 +153,9 @@
               ]
             },
             "execution": {
-              "category": "human-online",
-              "basis": "human-work",
-              "rationale": "The documented “UK - statutory VAT invoice” work uses digital records, an online service or a remote communication channel and retains its named human owner. Agent assistance does not transfer the human decision, identity or signing responsibility.",
+              "category": "agent-native",
+              "basis": "local-work",
+              "rationale": "Prepare the UK invoice from supplied transaction facts and the tax owner's settled treatment for issuance review.",
               "evidence": [
                 "open-processes/send-an-invoice.json#/parts/1/options/2/summary"
               ],
@@ -187,13 +187,13 @@
               ]
             },
             "execution": {
-              "category": "human-online",
-              "basis": "human-work",
-              "rationale": "The documented “Germany - s.14 UStG e-invoice” work uses digital records, an online service or a remote communication channel and retains its named human owner. Agent assistance does not transfer the human decision, identity or signing responsibility.",
+              "category": null,
+              "basis": "unresolved",
+              "rationale": "Structured invoice validation and issuance depend on the selected German accounting workflow and format.",
               "evidence": [
                 "open-processes/send-an-invoice.json#/parts/1/options/3/summary"
               ],
-              "reviewRequired": false
+              "reviewRequired": true
             }
           }
         },
@@ -228,13 +228,13 @@
               ]
             },
             "execution": {
-              "category": "human-online",
-              "basis": "human-work",
-              "rationale": "The documented “France - mentions obligatoires” work uses digital records, an online service or a remote communication channel and retains its named human owner. Agent assistance does not transfer the human decision, identity or signing responsibility.",
+              "category": null,
+              "basis": "unresolved",
+              "rationale": "The applicable French electronic-invoicing platform and transaction obligations require accountant confirmation.",
               "evidence": [
                 "open-processes/send-an-invoice.json#/parts/1/options/4/summary"
               ],
-              "reviewRequired": false
+              "reviewRequired": true
             }
           }
         }
@@ -266,13 +266,14 @@
         "riskLevel": "medium",
         "estimatedMinutes": 1,
         "execution": {
-          "category": "human-online",
-          "basis": "human-work",
-          "reviewRequired": false,
-          "rationale": "The supported path for “Send invoice” is a person working through the stated digital records, service or communication channel. Retain the named owners, approvals and expert review. This classification does not claim a verified agent integration or imply that future automation is impossible.",
+          "category": "agent-computer-use",
+          "basis": "browser-evidence",
+          "rationale": "Stripe's invoice dashboard supports finalizing and sending the approved invoice and checking its delivery and payment state.",
           "evidence": [
-            "open-processes/send-an-invoice.json#/parts/2/guidance"
-          ]
+            "open-processes/send-an-invoice.json#/parts/2/guidance",
+            "https://docs.stripe.com/get-started/use-cases/invoices"
+          ],
+          "reviewRequired": false
         }
       }
     },
@@ -297,13 +298,14 @@
         "reversibility": "reversible",
         "estimatedMinutes": 1,
         "execution": {
-          "category": "human-online",
-          "basis": "human-work",
-          "reviewRequired": false,
-          "rationale": "The supported path for “Track payment status” is a person working through the stated digital records, service or communication channel. Retain the named owners, approvals and expert review. This classification does not claim a verified agent integration or imply that future automation is impossible.",
+          "category": "agent-computer-use",
+          "basis": "browser-evidence",
+          "rationale": "Stripe's invoice dashboard exposes paid, open and past-due balances and customer details for reconciliation and collection follow-up.",
           "evidence": [
-            "open-processes/send-an-invoice.json#/parts/3/guidance"
-          ]
+            "open-processes/send-an-invoice.json#/parts/3/guidance",
+            "https://docs.stripe.com/get-started/use-cases/invoices"
+          ],
+          "reviewRequired": false
         }
       }
     }

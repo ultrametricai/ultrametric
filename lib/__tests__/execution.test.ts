@@ -35,12 +35,24 @@ describe('execution assessments', () => {
   })
   it('keeps browser evidence, IRS access limits, physical acts and local tools distinct', () => {
     expect(part('form_001', 'n3').metadata.execution).toMatchObject({ category: 'agent-computer-use', reviewRequired: true })
-    expect(part('form_002', 'n3').metadata.execution).toMatchObject({ category: 'human-online' })
+    expect(part('form_002', 'n3').metadata.execution).toMatchObject({ category: null, basis: 'unresolved', reviewRequired: true })
     expect(part('form_002', 'n3').metadata.execution).toHaveProperty('evidence', expect.arrayContaining(['open-rankings/experiments/computer-use/irs-ein-online.json']))
     expect(part('hr_005', 'n8').metadata.execution).toMatchObject({ category: 'human-offline' })
     const logo = part('brand_002', 'n1')
     expect(logo.options.find(option => option.id === 'design-tool-logo')!.metadata.execution).toMatchObject({ category: 'agent-native', basis: 'local-work' })
     expect(part('qs_050', 'n3').metadata.execution).toHaveProperty('evidence', expect.arrayContaining(['lib/openstartup/runway.ts']))
+  })
+  it('classifies documented controls independently of human permission and personal test receipts', () => {
+    for (const [process, step] of [['comp_001', 'n5'], ['qs_063', 'n4'], ['scale_004', 'n3'], ['sw_011', 'n1']]) {
+      const assessment = part(process, step).metadata.execution as Execution
+      expect(assessment).toMatchObject({ category: 'agent-computer-use', basis: 'browser-evidence' })
+      expect(assessment.evidence.some(source => source.startsWith('https://'))).toBe(true)
+    }
+    expect(part('form_002', 'n2').metadata.execution).toMatchObject({ category: 'agent-native', basis: 'local-work' })
+    expect(part('growth_014', 'n4').metadata.execution).toMatchObject({ category: 'agent-native', basis: 'documented-interface' })
+    // Personal authentication stays with the teammate; a browser restriction alone
+    // is insufficient to turn an unresolved filing into Human Online.
+    expect(part('team_001', 'n2').metadata.execution).toMatchObject({ category: 'human-online', basis: 'human-work' })
   })
   it('resolves every local evidence reference to retained content', () => {
     for (const record of records) for (const scope of scopes(record.parts)) {
