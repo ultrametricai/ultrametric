@@ -233,7 +233,7 @@ export type StepMethod = z.infer<typeof StepMethodSchema>
 // `what` names the failure, `then` the recovery — or the honest "no recovery; this is a
 // conversation with counsel" where that is the truth (needs_review posture). `source` is the
 // primary page/statute/fee schedule backing the entry (curl-verified live, like every corpus
-// URL); legal claims additionally cite a dated rule card in open-law/ by id inside the prose, the
+// URL); legal claims additionally cite a dated law rule in open-law/ by id inside the prose, the
 // situations-house precedent. 3–6 QUALITY entries per deep process, not coverage — see
 // open-processes/README.md "Failure modes". Display: none since founder 2026-10-05 (the collapsed
 // '⚠ if it goes wrong' step line was removed) — the field stays corpus data, carried by the
@@ -257,7 +257,7 @@ export type StepFailureMode = z.infer<typeof StepFailureModeSchema>
 //   'absorbed'       — the step's work happens automatically inside another act there;
 //   'not-applicable' — the step's need genuinely doesn't exist there.
 // Curation: entries come from already-committed geo knowledge (corpus geoNotes, artifact geo
-// entries, dated law cards cited by id inside the prose); a country with no committed mechanics
+// entries, dated law rules cited by id inside the prose); a country with no committed mechanics
 // carries no entry, and the abstraction stands there by design. Display-only and additive: no
 // judged number reads the field, and a node without it is exactly the pre-resolution schema.
 // Load-enforced invariants (loadProcesses, kept out of zod so the published JSON schema stays a
@@ -329,6 +329,14 @@ export const DagNodeSchema = DagNodeBaseSchema.extend({
   // StepGeoResolutionSchema above. Full-node only (like producesArtifact): method-variant
   // subSteps stay display-level.
   geoResolutions: StepGeoResolutionSchema.array().min(1).optional(),
+  // This step is SUPPORT work (filing receipts, archiving executed copies), not the process's
+  // substantive work. Leaderboard assembly (lib/processRankings.ts processLeaderboard) treats a
+  // supporting step as non-primary: its vendors never become leaderboard entries, so a
+  // record-keeping step cannot drag its arena's roster onto a process it doesn't substantively
+  // serve. Everything step-level is untouched — the step keeps its own ranking, its option
+  // chips, and its slot in the rankable denominator, so no remaining vendor's score moves.
+  // Deliberately absent where document storage IS the substantive work (the data-room setup).
+  supporting: z.boolean().optional(),
 })
 
 // An old URL slug that must keep working after a rename (founder rule: processes are named

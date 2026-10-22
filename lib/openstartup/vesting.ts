@@ -61,7 +61,9 @@
 // Educational model, not legal advice.
 // ---------------------------------------------------------------------------
 
+import { z } from 'zod'
 import { floorShares } from './capTable'
+import { entrySpec } from './entryValidation'
 
 /** Rule cards this module references (the vitest gate asserts each resolves to a committed
  * card). Early exercise's 83(b) window is the deadlines module's territory and the tax
@@ -146,6 +148,37 @@ export interface VestingGrant {
    * earlyExerciseSnapshot for the 83(b)/tax-module interface. */
   earlyExercisable?: boolean
 }
+
+/** Structural schema of ScheduleSpec — the registry entry contract (field names and
+ * types; the fraction/months rules stay in validateGrant). */
+export const ScheduleSpecSchema = z.discriminatedUnion('kind', [
+  z.object({
+    kind: z.literal('periodic'),
+    totalMonths: z.number(),
+    cliffMonths: z.number(),
+    periodMonths: z.number().optional(),
+  }),
+  z.object({
+    kind: z.literal('tranches'),
+    tranches: z.array(z.object({ monthsFromStart: z.number(), fraction: z.number() })),
+  }),
+])
+
+/** Structural schema of VestingGrant (open-modules/registry.json). */
+export const VestingGrantSchema = z.object({
+  name: z.string().optional(),
+  shares: z.number(),
+  commencement: z.string(),
+  schedule: ScheduleSpecSchema,
+  earlyExercisable: z.boolean().optional(),
+})
+
+/** Registered entrypoint arguments (open-modules/registry.json). */
+export const vestedAsOfEntry = entrySpec('vestedAsOf', [
+  { name: 'grant', schema: VestingGrantSchema },
+  { name: 'asOf', schema: z.string() },
+  { name: 'terminationOn', schema: z.string(), optional: true },
+])
 
 export interface VestingEvent {
   /** The vesting date (clamped monthly anniversary — module convention). */
@@ -253,6 +286,7 @@ export interface VestedPosition {
  * what remains unvested at departure is what the company may repurchase).
  */
 export function vestedAsOf(grant: VestingGrant, asOf: string, terminationOn?: string): VestedPosition {
+  vestedAsOfEntry.validate(grant, asOf, terminationOn)
   parseIso(asOf, 'asOf')
   if (terminationOn !== undefined) parseIso(terminationOn, 'terminationOn')
   const measuredOn = terminationOn !== undefined && terminationOn < asOf ? terminationOn : asOf

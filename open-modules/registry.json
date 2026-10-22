@@ -1,0 +1,2939 @@
+{
+  "description": "Machine-readable index of the open modules in lib/openstartup/: per module its entrypoint file, exported functions, the registered entrypoint with a JSON Schema for its positional arguments, a runnable example call with its result shape, and the catalog status line from open-modules/README.md. Generated from the entry specs beside each module by scripts/generate-module-registry.ts — edit the specs or the catalog, never this file.",
+  "invalidInput": "Registered entrypoints validate their positional arguments against inputSchema and raise a RangeError naming the function, argument, and field on structurally malformed input; semantic rules (ranges, dates, share arithmetic) raise their own named RangeErrors.",
+  "modules": [
+    {
+      "id": "antiDilution",
+      "title": "Anti-dilution",
+      "file": "lib/openstartup/antiDilution.ts",
+      "readme": "open-modules/README.md#anti-dilution",
+      "status": "verified + property-tested",
+      "exports": [
+        "applyAntiDilution",
+        "asConvertedShares",
+        "broadBase",
+        "conversionRatio",
+        "fullRatchetConversionPrice",
+        "payToPlayConsequence",
+        "toWaterfallSeries",
+        "validateIssuance",
+        "weightedAverageConversionPrice"
+      ],
+      "entrypoint": {
+        "function": "applyAntiDilution",
+        "signature": "applyAntiDilution(series, issuance, basis, broadBaseShares?)",
+        "inputSchema": {
+          "$schema": "https://json-schema.org/draft/2020-12/schema",
+          "type": "array",
+          "description": "Positional arguments of applyAntiDilution",
+          "prefixItems": [
+            {
+              "title": "series",
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string"
+                },
+                "preferredShares": {
+                  "type": "number"
+                },
+                "originalIssuePrice": {
+                  "type": "number"
+                },
+                "conversionPriceBefore": {
+                  "type": "number"
+                }
+              },
+              "required": [
+                "name",
+                "preferredShares",
+                "originalIssuePrice",
+                "conversionPriceBefore"
+              ]
+            },
+            {
+              "title": "issuance",
+              "type": "object",
+              "properties": {
+                "newShares": {
+                  "type": "number"
+                },
+                "considerationDollars": {
+                  "type": "number"
+                }
+              },
+              "required": [
+                "newShares",
+                "considerationDollars"
+              ]
+            },
+            {
+              "title": "basis",
+              "type": "string",
+              "enum": [
+                "broad-based",
+                "narrow-based",
+                "full-ratchet"
+              ]
+            },
+            {
+              "title": "broadBaseShares",
+              "type": "number"
+            }
+          ],
+          "items": false,
+          "minItems": 3,
+          "maxItems": 4
+        },
+        "example": {
+          "args": [
+            {
+              "name": "Series A",
+              "preferredShares": 4000000,
+              "originalIssuePrice": 2,
+              "conversionPriceBefore": 2
+            },
+            {
+              "newShares": 5000000,
+              "considerationDollars": 5000000
+            },
+            "broad-based",
+            12000000
+          ],
+          "resultShape": {
+            "seriesName": "string",
+            "basis": "string",
+            "conversionPriceBefore": "number",
+            "conversionPriceAfter": "number",
+            "conversionRatioAfter": "number",
+            "asConvertedBefore": "number",
+            "asConvertedAfter": "number",
+            "additionalCommonShares": "number",
+            "adjusted": "boolean",
+            "needsReview": "boolean",
+            "note": "string"
+          }
+        }
+      }
+    },
+    {
+      "id": "capTable",
+      "title": "Cap table",
+      "file": "lib/openstartup/capTable.ts",
+      "readme": "open-modules/README.md#cap-table",
+      "status": "verified + property-tested",
+      "exports": [
+        "buildCapTable",
+        "estimateRoundDilution",
+        "floorShares",
+        "maxSafesPctWithProRata",
+        "poolIncreaseForRoundTarget",
+        "poolIncreaseForTarget",
+        "reportToCsv",
+        "reportToMarkdown",
+        "roundPrice",
+        "safeOwnershipPct",
+        "safeProRataAllocationPct",
+        "vestedShares"
+      ],
+      "entrypoint": {
+        "function": "buildCapTable",
+        "signature": "buildCapTable(events)",
+        "inputSchema": {
+          "$schema": "https://json-schema.org/draft/2020-12/schema",
+          "type": "array",
+          "description": "Positional arguments of buildCapTable",
+          "prefixItems": [
+            {
+              "title": "events",
+              "type": "array",
+              "items": {
+                "oneOf": [
+                  {
+                    "type": "object",
+                    "properties": {
+                      "kind": {
+                        "type": "string",
+                        "const": "found"
+                      },
+                      "founders": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "name": {
+                              "type": "string"
+                            },
+                            "shares": {
+                              "type": "number"
+                            },
+                            "vesting": {
+                              "type": "object",
+                              "properties": {
+                                "totalMonths": {
+                                  "type": "number"
+                                },
+                                "cliffMonths": {
+                                  "type": "number"
+                                }
+                              },
+                              "required": [
+                                "totalMonths",
+                                "cliffMonths"
+                              ]
+                            }
+                          },
+                          "required": [
+                            "name",
+                            "shares"
+                          ]
+                        }
+                      },
+                      "poolShares": {
+                        "type": "number"
+                      }
+                    },
+                    "required": [
+                      "kind",
+                      "founders"
+                    ]
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "kind": {
+                        "type": "string",
+                        "const": "pool"
+                      },
+                      "shares": {
+                        "type": "number"
+                      },
+                      "targetPct": {
+                        "type": "number"
+                      }
+                    },
+                    "required": [
+                      "kind"
+                    ]
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "kind": {
+                        "type": "string",
+                        "const": "grant"
+                      },
+                      "name": {
+                        "type": "string"
+                      },
+                      "shares": {
+                        "type": "number"
+                      }
+                    },
+                    "required": [
+                      "kind",
+                      "name",
+                      "shares"
+                    ]
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "kind": {
+                        "type": "string",
+                        "const": "safe"
+                      },
+                      "name": {
+                        "type": "string"
+                      },
+                      "amount": {
+                        "type": "number"
+                      },
+                      "cap": {
+                        "type": "number"
+                      },
+                      "discountPct": {
+                        "type": "number"
+                      },
+                      "mfn": {
+                        "type": "boolean"
+                      },
+                      "proRata": {
+                        "type": "boolean"
+                      }
+                    },
+                    "required": [
+                      "kind",
+                      "name",
+                      "amount"
+                    ]
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "kind": {
+                        "type": "string",
+                        "const": "priced"
+                      },
+                      "name": {
+                        "type": "string"
+                      },
+                      "preMoney": {
+                        "type": "number"
+                      },
+                      "newMoney": {
+                        "type": "number"
+                      },
+                      "poolTargetPct": {
+                        "type": "number"
+                      },
+                      "poolShares": {
+                        "type": "number"
+                      }
+                    },
+                    "required": [
+                      "kind",
+                      "name",
+                      "preMoney",
+                      "newMoney"
+                    ]
+                  }
+                ]
+              }
+            }
+          ],
+          "items": false,
+          "minItems": 1,
+          "maxItems": 1
+        },
+        "note": "Structurally malformed events throw; semantically invalid events (bad amounts, overdrawn pools) report via the returned report.error with earlier snapshots preserved.",
+        "example": {
+          "args": [
+            [
+              {
+                "kind": "found",
+                "founders": [
+                  {
+                    "name": "Founder A",
+                    "shares": 4500000
+                  },
+                  {
+                    "name": "Founder B",
+                    "shares": 4500000
+                  }
+                ],
+                "poolShares": 1000000
+              },
+              {
+                "kind": "safe",
+                "name": "Angel SAFE",
+                "amount": 500000,
+                "cap": 5000000
+              },
+              {
+                "kind": "priced",
+                "name": "Series A",
+                "preMoney": 8000000,
+                "newMoney": 2000000,
+                "poolTargetPct": 10
+              }
+            ]
+          ],
+          "resultShape": {
+            "snapshots": [
+              {
+                "eventIndex": "number",
+                "label": "string",
+                "rows": [
+                  {
+                    "id": "string",
+                    "name": "string",
+                    "group": "string",
+                    "shares": "number",
+                    "pct": "number"
+                  }
+                ],
+                "fullyDilutedShares": "number"
+              },
+              {
+                "eventIndex": "number",
+                "label": "string",
+                "rows": [
+                  {
+                    "id": "string",
+                    "name": "string",
+                    "group": "string",
+                    "shares": "number",
+                    "pct": "number"
+                  },
+                  {
+                    "id": "string",
+                    "name": "string",
+                    "group": "string",
+                    "shares": "null",
+                    "pct": "number"
+                  }
+                ],
+                "fullyDilutedShares": "number"
+              },
+              {
+                "eventIndex": "number",
+                "label": "string",
+                "rows": [
+                  {
+                    "id": "string",
+                    "name": "string",
+                    "group": "string",
+                    "shares": "number",
+                    "pct": "number"
+                  }
+                ],
+                "fullyDilutedShares": "number",
+                "round": {
+                  "roundName": "string",
+                  "pps": "number",
+                  "preMoney": "number",
+                  "newMoney": "number",
+                  "postMoney": "number",
+                  "poolIncreaseShares": "number",
+                  "roundShares": "number",
+                  "conversions": [
+                    {
+                      "safeName": "string",
+                      "amount": "number",
+                      "shares": "number",
+                      "method": "string",
+                      "appliedCap": "number",
+                      "effectivePrice": "number",
+                      "postConversionPct": "number"
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "capTableCodec",
+      "title": "Cap table permalink codec",
+      "file": "lib/openstartup/capTableCodec.ts",
+      "readme": "open-modules/README.md#cap-table",
+      "status": "verified + property-tested",
+      "exports": [
+        "decodeCapTableState",
+        "encodeCapTableState"
+      ],
+      "entrypoint": {
+        "function": "encodeCapTableState",
+        "signature": "encodeCapTableState(events)",
+        "inputSchema": {
+          "$schema": "https://json-schema.org/draft/2020-12/schema",
+          "type": "array",
+          "description": "Positional arguments of encodeCapTableState",
+          "prefixItems": [
+            {
+              "title": "events",
+              "type": "array",
+              "items": {
+                "oneOf": [
+                  {
+                    "type": "object",
+                    "properties": {
+                      "kind": {
+                        "type": "string",
+                        "const": "found"
+                      },
+                      "founders": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "name": {
+                              "type": "string"
+                            },
+                            "shares": {
+                              "type": "number"
+                            },
+                            "vesting": {
+                              "type": "object",
+                              "properties": {
+                                "totalMonths": {
+                                  "type": "number"
+                                },
+                                "cliffMonths": {
+                                  "type": "number"
+                                }
+                              },
+                              "required": [
+                                "totalMonths",
+                                "cliffMonths"
+                              ]
+                            }
+                          },
+                          "required": [
+                            "name",
+                            "shares"
+                          ]
+                        }
+                      },
+                      "poolShares": {
+                        "type": "number"
+                      }
+                    },
+                    "required": [
+                      "kind",
+                      "founders"
+                    ]
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "kind": {
+                        "type": "string",
+                        "const": "pool"
+                      },
+                      "shares": {
+                        "type": "number"
+                      },
+                      "targetPct": {
+                        "type": "number"
+                      }
+                    },
+                    "required": [
+                      "kind"
+                    ]
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "kind": {
+                        "type": "string",
+                        "const": "grant"
+                      },
+                      "name": {
+                        "type": "string"
+                      },
+                      "shares": {
+                        "type": "number"
+                      }
+                    },
+                    "required": [
+                      "kind",
+                      "name",
+                      "shares"
+                    ]
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "kind": {
+                        "type": "string",
+                        "const": "safe"
+                      },
+                      "name": {
+                        "type": "string"
+                      },
+                      "amount": {
+                        "type": "number"
+                      },
+                      "cap": {
+                        "type": "number"
+                      },
+                      "discountPct": {
+                        "type": "number"
+                      },
+                      "mfn": {
+                        "type": "boolean"
+                      },
+                      "proRata": {
+                        "type": "boolean"
+                      }
+                    },
+                    "required": [
+                      "kind",
+                      "name",
+                      "amount"
+                    ]
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "kind": {
+                        "type": "string",
+                        "const": "priced"
+                      },
+                      "name": {
+                        "type": "string"
+                      },
+                      "preMoney": {
+                        "type": "number"
+                      },
+                      "newMoney": {
+                        "type": "number"
+                      },
+                      "poolTargetPct": {
+                        "type": "number"
+                      },
+                      "poolShares": {
+                        "type": "number"
+                      }
+                    },
+                    "required": [
+                      "kind",
+                      "name",
+                      "preMoney",
+                      "newMoney"
+                    ]
+                  }
+                ]
+              }
+            }
+          ],
+          "items": false,
+          "minItems": 1,
+          "maxItems": 1
+        },
+        "note": "decodeCapTableState is the inverse and returns null on any malformed token.",
+        "example": {
+          "args": [
+            [
+              {
+                "kind": "found",
+                "founders": [
+                  {
+                    "name": "Founder A",
+                    "shares": 4500000
+                  }
+                ],
+                "poolShares": 500000
+              },
+              {
+                "kind": "safe",
+                "name": "Angel SAFE",
+                "amount": 500000,
+                "cap": 5000000
+              }
+            ]
+          ],
+          "resultShape": "string"
+        }
+      }
+    },
+    {
+      "id": "convertibleNote",
+      "title": "Convertible notes",
+      "file": "lib/openstartup/convertibleNote.ts",
+      "readme": "open-modules/README.md#convertible-notes",
+      "status": "verified",
+      "exports": [
+        "accruedSimpleInterest",
+        "capImpliedDiscountPct",
+        "convertNote",
+        "daysBetween",
+        "maturityStatus",
+        "noteBalance",
+        "noteConversionPrice",
+        "seriesPricingWithNotes"
+      ],
+      "entrypoint": {
+        "function": "seriesPricingWithNotes",
+        "signature": "seriesPricingWithNotes(input)",
+        "inputSchema": {
+          "$schema": "https://json-schema.org/draft/2020-12/schema",
+          "type": "array",
+          "description": "Positional arguments of seriesPricingWithNotes",
+          "prefixItems": [
+            {
+              "title": "input",
+              "type": "object",
+              "properties": {
+                "preMoney": {
+                  "type": "number"
+                },
+                "newMoney": {
+                  "type": "number"
+                },
+                "noteBalanceConverting": {
+                  "type": "number"
+                },
+                "discountPct": {
+                  "type": "number"
+                },
+                "preRoundFullyDiluted": {
+                  "type": "number"
+                }
+              },
+              "required": [
+                "preMoney",
+                "newMoney",
+                "noteBalanceConverting",
+                "discountPct",
+                "preRoundFullyDiluted"
+              ]
+            }
+          ],
+          "items": false,
+          "minItems": 1,
+          "maxItems": 1
+        },
+        "example": {
+          "args": [
+            {
+              "preMoney": 8000000,
+              "newMoney": 2000000,
+              "noteBalanceConverting": 1000000,
+              "discountPct": 30,
+              "preRoundFullyDiluted": 1000000
+            }
+          ],
+          "resultShape": {
+            "pre-money": {
+              "method": "string",
+              "pps": "number",
+              "conversionPrice": "number",
+              "noteShares": "number",
+              "newMoneyShares": "number",
+              "totalFullyDiluted": "number",
+              "ownershipPct": {
+                "existing": "number",
+                "notes": "number",
+                "newMoney": "number"
+              }
+            },
+            "percentage-ownership": {
+              "method": "string",
+              "pps": "number",
+              "conversionPrice": "number",
+              "noteShares": "number",
+              "newMoneyShares": "number",
+              "totalFullyDiluted": "number",
+              "ownershipPct": {
+                "existing": "number",
+                "notes": "number",
+                "newMoney": "number"
+              }
+            },
+            "dollars-invested": {
+              "method": "string",
+              "pps": "number",
+              "conversionPrice": "number",
+              "noteShares": "number",
+              "newMoneyShares": "number",
+              "totalFullyDiluted": "number",
+              "ownershipPct": {
+                "existing": "number",
+                "notes": "number",
+                "newMoney": "number"
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "id": "deFranchiseTax",
+      "title": "Delaware franchise tax",
+      "file": "lib/openstartup/deFranchiseTax.ts",
+      "readme": "open-modules/README.md#delaware-franchise-tax",
+      "status": "verified",
+      "exports": [
+        "assumedParValueCapitalTax",
+        "authorizedSharesMethodTax",
+        "compareFranchiseTaxMethods",
+        "largeCorporateFilerTax"
+      ],
+      "entrypoint": {
+        "function": "compareFranchiseTaxMethods",
+        "signature": "compareFranchiseTaxMethods(inputs)",
+        "inputSchema": {
+          "$schema": "https://json-schema.org/draft/2020-12/schema",
+          "type": "array",
+          "description": "Positional arguments of compareFranchiseTaxMethods",
+          "prefixItems": [
+            {
+              "title": "inputs",
+              "type": "object",
+              "properties": {
+                "totalGrossAssets": {
+                  "type": "number"
+                },
+                "totalIssuedShares": {
+                  "type": "number"
+                },
+                "authorizedClasses": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "shares": {
+                        "type": "number"
+                      },
+                      "parValue": {
+                        "type": "number"
+                      }
+                    },
+                    "required": [
+                      "shares",
+                      "parValue"
+                    ]
+                  }
+                }
+              },
+              "required": [
+                "totalGrossAssets",
+                "totalIssuedShares",
+                "authorizedClasses"
+              ]
+            }
+          ],
+          "items": false,
+          "minItems": 1,
+          "maxItems": 1
+        },
+        "example": {
+          "args": [
+            {
+              "totalGrossAssets": 1000000,
+              "totalIssuedShares": 485000,
+              "authorizedClasses": [
+                {
+                  "shares": 1000000,
+                  "parValue": 1
+                },
+                {
+                  "shares": 250000,
+                  "parValue": 5
+                }
+              ]
+            }
+          ],
+          "resultShape": {
+            "cheaper": "string",
+            "saving": "number",
+            "authorizedShares": {
+              "method": "string",
+              "tax": "number",
+              "ruleId": "string",
+              "jurisdiction": "string",
+              "asOf": "string",
+              "needsReview": "boolean",
+              "quarterlyInstallmentsLikely": "boolean",
+              "note": "string"
+            },
+            "assumedPar": {
+              "method": "string",
+              "tax": "number",
+              "ruleId": "string",
+              "jurisdiction": "string",
+              "asOf": "string",
+              "needsReview": "boolean",
+              "quarterlyInstallmentsLikely": "boolean",
+              "note": "string",
+              "assumedPar": "number",
+              "assumedParValueCapital": "number",
+              "taxableMillions": "number"
+            },
+            "ruleIds": [
+              "string"
+            ],
+            "needsReview": "boolean",
+            "note": "string"
+          }
+        }
+      }
+    },
+    {
+      "id": "deadlines",
+      "title": "Deadline calendar",
+      "file": "lib/openstartup/deadlines.ts",
+      "readme": "open-modules/README.md#deadline-calendar",
+      "status": "verified, always `needsReview` where dates can move",
+      "exports": [
+        "complianceCalendar",
+        "deFranchiseTaxDue",
+        "election83bWindow",
+        "form1120Due",
+        "form941Due"
+      ],
+      "entrypoint": {
+        "function": "complianceCalendar",
+        "signature": "complianceCalendar(fromIso, toIso, options?)",
+        "inputSchema": {
+          "$schema": "https://json-schema.org/draft/2020-12/schema",
+          "type": "array",
+          "description": "Positional arguments of complianceCalendar",
+          "prefixItems": [
+            {
+              "title": "fromIso",
+              "type": "string"
+            },
+            {
+              "title": "toIso",
+              "type": "string"
+            },
+            {
+              "title": "options",
+              "type": "object",
+              "properties": {
+                "hasPayroll": {
+                  "type": "boolean"
+                }
+              }
+            }
+          ],
+          "items": false,
+          "minItems": 2,
+          "maxItems": 3
+        },
+        "example": {
+          "args": [
+            "2026-01-01",
+            "2026-12-31",
+            {
+              "hasPayroll": true
+            }
+          ],
+          "resultShape": [
+            {
+              "id": "string",
+              "name": "string",
+              "due": "string",
+              "ruleId": "string",
+              "jurisdiction": "string",
+              "needsReview": "boolean",
+              "note": "string"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "deferredRevenue",
+      "title": "Deferred revenue (subscriptions)",
+      "file": "lib/openstartup/deferredRevenue.ts",
+      "readme": "open-modules/README.md#deferred-revenue-subscriptions",
+      "status": "verified; ASC 606 judgment excluded",
+      "exports": [
+        "prorationOnPlanChange",
+        "recognitionReport",
+        "recognitionSchedule",
+        "serviceDays"
+      ],
+      "entrypoint": {
+        "function": "recognitionReport",
+        "signature": "recognitionReport(lines)",
+        "inputSchema": {
+          "$schema": "https://json-schema.org/draft/2020-12/schema",
+          "type": "array",
+          "description": "Positional arguments of recognitionReport",
+          "prefixItems": [
+            {
+              "title": "lines",
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "description": {
+                    "type": "string"
+                  },
+                  "amount": {
+                    "type": "number"
+                  },
+                  "serviceStart": {
+                    "type": "string"
+                  },
+                  "serviceEnd": {
+                    "type": "string"
+                  },
+                  "billedOn": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "amount",
+                  "serviceStart",
+                  "serviceEnd"
+                ]
+              }
+            }
+          ],
+          "items": false,
+          "minItems": 1,
+          "maxItems": 1
+        },
+        "example": {
+          "args": [
+            [
+              {
+                "description": "Monthly subscription",
+                "amount": 31,
+                "serviceStart": "2026-01-15",
+                "serviceEnd": "2026-02-14"
+              }
+            ]
+          ],
+          "resultShape": {
+            "months": [
+              {
+                "month": "string",
+                "billed": "number",
+                "recognized": "number",
+                "deferredEnd": "number"
+              }
+            ],
+            "totalBilled": "number",
+            "totalRecognized": "number",
+            "needsReview": "boolean",
+            "notes": [
+              "string"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "election83b",
+      "title": "83(b) election math",
+      "file": "lib/openstartup/election83b.ts",
+      "readme": "open-modules/README.md#83b-election-math",
+      "status": "verified",
+      "exports": [
+        "compare83bScenario",
+        "earlyExercise83b",
+        "forfeitureAfterElection",
+        "scenarioTax83b"
+      ],
+      "entrypoint": {
+        "function": "compare83bScenario",
+        "signature": "compare83bScenario(facts, vestingScenario)",
+        "inputSchema": {
+          "$schema": "https://json-schema.org/draft/2020-12/schema",
+          "type": "array",
+          "description": "Positional arguments of compare83bScenario",
+          "prefixItems": [
+            {
+              "title": "facts",
+              "type": "object",
+              "properties": {
+                "shares": {
+                  "type": "number"
+                },
+                "pricePaidPerShare": {
+                  "type": "number"
+                },
+                "fmvAtTransferPerShare": {
+                  "type": "number"
+                }
+              },
+              "required": [
+                "shares",
+                "pricePaidPerShare",
+                "fmvAtTransferPerShare"
+              ]
+            },
+            {
+              "title": "vestingScenario",
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "label": {
+                    "type": "string"
+                  },
+                  "shares": {
+                    "type": "number"
+                  },
+                  "fmvPerShare": {
+                    "type": "number"
+                  }
+                },
+                "required": [
+                  "label",
+                  "shares",
+                  "fmvPerShare"
+                ]
+              }
+            }
+          ],
+          "items": false,
+          "minItems": 2,
+          "maxItems": 2
+        },
+        "example": {
+          "args": [
+            {
+              "shares": 25000,
+              "pricePaidPerShare": 1,
+              "fmvAtTransferPerShare": 1
+            },
+            [
+              {
+                "label": "vesting",
+                "shares": 25000,
+                "fmvPerShare": 1.6
+              }
+            ]
+          ],
+          "resultShape": {
+            "withElection": {
+              "incomeAtTransfer": "number",
+              "incomeAtVesting": "number",
+              "basis": "number",
+              "holdingPeriodBegins": "string"
+            },
+            "withoutElection": {
+              "incomeAtTransfer": "number",
+              "incomeAtVesting": "number",
+              "basis": "number",
+              "holdingPeriodBegins": "string"
+            },
+            "zeroSpreadAtTransfer": "boolean",
+            "ruleIds": [
+              "string"
+            ],
+            "jurisdiction": "string",
+            "needsReview": "boolean",
+            "riskStatement": "string",
+            "note": "string"
+          }
+        }
+      }
+    },
+    {
+      "id": "equityComp",
+      "title": "Offer / equity-comp scenarios",
+      "file": "lib/openstartup/equityComp.ts",
+      "readme": "open-modules/README.md#offer--equity-comp-scenarios",
+      "status": "verified, pre-tax by design",
+      "exports": [
+        "commonSharePriceAtExit",
+        "grantExitOutcome",
+        "grantOwnershipPct",
+        "offerScenarioTable",
+        "optionSpread",
+        "vestedExitOutcome"
+      ],
+      "entrypoint": {
+        "function": "offerScenarioTable",
+        "signature": "offerScenarioTable(grant, scenarios)",
+        "inputSchema": {
+          "$schema": "https://json-schema.org/draft/2020-12/schema",
+          "type": "array",
+          "description": "Positional arguments of offerScenarioTable",
+          "prefixItems": [
+            {
+              "title": "grant",
+              "type": "object",
+              "properties": {
+                "optionShares": {
+                  "type": "number"
+                },
+                "strikePerShare": {
+                  "type": "number"
+                },
+                "fullyDilutedShares": {
+                  "type": "number"
+                },
+                "vesting": {
+                  "type": "object",
+                  "properties": {
+                    "totalMonths": {
+                      "type": "number"
+                    },
+                    "cliffMonths": {
+                      "type": "number"
+                    }
+                  },
+                  "required": [
+                    "totalMonths",
+                    "cliffMonths"
+                  ]
+                }
+              },
+              "required": [
+                "optionShares",
+                "strikePerShare",
+                "fullyDilutedShares"
+              ]
+            },
+            {
+              "title": "scenarios",
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "label": {
+                    "type": "string"
+                  },
+                  "exitValuation": {
+                    "type": "number"
+                  },
+                  "extraDilutionPct": {
+                    "type": "number"
+                  }
+                },
+                "required": [
+                  "label",
+                  "exitValuation"
+                ]
+              }
+            }
+          ],
+          "items": false,
+          "minItems": 2,
+          "maxItems": 2
+        },
+        "example": {
+          "args": [
+            {
+              "optionShares": 50000,
+              "strikePerShare": 0.4,
+              "fullyDilutedShares": 10000000
+            },
+            [
+              {
+                "label": "$100M exit",
+                "exitValuation": 100000000,
+                "extraDilutionPct": 20
+              }
+            ]
+          ],
+          "resultShape": [
+            {
+              "label": "string",
+              "exitValuation": "number",
+              "fullyDilutedAtExit": "number",
+              "sharePriceAtExit": "number",
+              "ownershipAtExitPct": "number",
+              "grossValue": "number",
+              "exerciseCost": "number",
+              "netBeforeTax": "number",
+              "needsReview": "boolean"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "grant409aSanity",
+      "title": "409A grant sanity",
+      "file": "lib/openstartup/grant409aSanity.ts",
+      "readme": "open-modules/README.md#409a-grant-sanity",
+      "status": "sanity model — never a valuation",
+      "exports": [
+        "addUtcMonths",
+        "appraisalPresumptionCheck",
+        "checkMethodEligibility",
+        "fmvAgeCheck",
+        "grantSanityReport",
+        "penaltyIllustration409a",
+        "preferredCommonRatioIllustration",
+        "refreshTriggerChecklist",
+        "strikeFloorCheck"
+      ],
+      "entrypoint": {
+        "function": "grantSanityReport",
+        "signature": "grantSanityReport(inputs)",
+        "inputSchema": {
+          "$schema": "https://json-schema.org/draft/2020-12/schema",
+          "type": "array",
+          "description": "Positional arguments of grantSanityReport",
+          "prefixItems": [
+            {
+              "title": "inputs",
+              "type": "object",
+              "properties": {
+                "strikePerShare": {
+                  "type": "number"
+                },
+                "fmvPerShare": {
+                  "type": "number"
+                },
+                "fmvAsOf": {
+                  "type": "string"
+                },
+                "grantOn": {
+                  "type": "string"
+                },
+                "independentAppraisalOn": {
+                  "type": "string"
+                },
+                "termSheetSignedSinceFmv": {
+                  "type": "boolean"
+                },
+                "materialChangeSinceFmv": {
+                  "anyOf": [
+                    {
+                      "type": "boolean"
+                    },
+                    {
+                      "type": "string",
+                      "const": "unknown"
+                    }
+                  ]
+                },
+                "preferredRoundPps": {
+                  "type": "number"
+                }
+              },
+              "required": [
+                "strikePerShare",
+                "fmvPerShare",
+                "fmvAsOf",
+                "grantOn"
+              ]
+            }
+          ],
+          "items": false,
+          "minItems": 1,
+          "maxItems": 1
+        },
+        "example": {
+          "args": [
+            {
+              "strikePerShare": 0.4,
+              "fmvPerShare": 0.4,
+              "fmvAsOf": "2026-06-01",
+              "grantOn": "2026-09-01",
+              "independentAppraisalOn": "2026-06-01"
+            }
+          ],
+          "resultShape": {
+            "findings": [
+              {
+                "check": "string",
+                "level": "string",
+                "ruleId": "string",
+                "jurisdiction": "string",
+                "needsReview": "boolean",
+                "note": "string"
+              },
+              {
+                "check": "string",
+                "level": "string",
+                "ruleId": "string",
+                "jurisdiction": "string",
+                "needsReview": "boolean",
+                "note": "string",
+                "staleAfter": "string"
+              },
+              {
+                "check": "string",
+                "level": "string",
+                "ruleId": "string",
+                "jurisdiction": "string",
+                "needsReview": "boolean",
+                "windowEnds": "string",
+                "note": "string"
+              }
+            ],
+            "worstLevel": "string",
+            "producesValuation": "boolean",
+            "needsReview": "boolean",
+            "disclaimer": "string"
+          }
+        }
+      }
+    },
+    {
+      "id": "optionTax",
+      "title": "ISO / NSO exercise tax",
+      "file": "lib/openstartup/optionTax.ts",
+      "readme": "open-modules/README.md#iso--nso-exercise-tax",
+      "status": "verified; AMT is illustration-only",
+      "exports": [
+        "amtExposureIllustration",
+        "iso100kAttribution",
+        "isoDisposition",
+        "isoExerciseOutcome",
+        "nsoExerciseIncome",
+        "supplementalWithholdingIllustration"
+      ],
+      "entrypoint": {
+        "function": "iso100kAttribution",
+        "signature": "iso100kAttribution(grants)",
+        "inputSchema": {
+          "$schema": "https://json-schema.org/draft/2020-12/schema",
+          "type": "array",
+          "description": "Positional arguments of iso100kAttribution",
+          "prefixItems": [
+            {
+              "title": "grants",
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "string"
+                  },
+                  "grantDate": {
+                    "type": "string"
+                  },
+                  "grantDateFmvPerShare": {
+                    "type": "number"
+                  },
+                  "firstExercisable": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "year": {
+                          "type": "number"
+                        },
+                        "shares": {
+                          "type": "number"
+                        }
+                      },
+                      "required": [
+                        "year",
+                        "shares"
+                      ]
+                    }
+                  }
+                },
+                "required": [
+                  "id",
+                  "grantDate",
+                  "grantDateFmvPerShare",
+                  "firstExercisable"
+                ]
+              }
+            }
+          ],
+          "items": false,
+          "minItems": 1,
+          "maxItems": 1
+        },
+        "example": {
+          "args": [
+            [
+              {
+                "id": "option-1",
+                "grantDate": "2026-04-01",
+                "grantDateFmvPerShare": 10,
+                "firstExercisable": [
+                  {
+                    "year": 2026,
+                    "shares": 6000
+                  }
+                ]
+              },
+              {
+                "id": "option-2",
+                "grantDate": "2026-05-01",
+                "grantDateFmvPerShare": 10,
+                "firstExercisable": [
+                  {
+                    "year": 2026,
+                    "shares": 5000
+                  }
+                ]
+              }
+            ]
+          ],
+          "resultShape": {
+            "slices": [
+              {
+                "grantId": "string",
+                "year": "number",
+                "isoShares": "number",
+                "nsoShares": "number",
+                "isoValue": "number",
+                "nsoValue": "number"
+              }
+            ],
+            "remainingByYear": {
+              "2026": "number"
+            },
+            "limit": "number",
+            "ruleId": "string",
+            "jurisdiction": "string",
+            "needsReview": "boolean",
+            "note": "string"
+          }
+        }
+      }
+    },
+    {
+      "id": "payrollTax",
+      "title": "Employer payroll tax",
+      "file": "lib/openstartup/payrollTax.ts",
+      "readme": "open-modules/README.md#employer-payroll-tax",
+      "status": "verified, FEDERAL ONLY",
+      "exports": [
+        "employerFicaAnnual",
+        "employerPayrollCostAnnual",
+        "futaAnnual"
+      ],
+      "entrypoint": {
+        "function": "employerPayrollCostAnnual",
+        "signature": "employerPayrollCostAnnual(annualWages, options?)",
+        "inputSchema": {
+          "$schema": "https://json-schema.org/draft/2020-12/schema",
+          "type": "array",
+          "description": "Positional arguments of employerPayrollCostAnnual",
+          "prefixItems": [
+            {
+              "title": "annualWages",
+              "type": "number"
+            },
+            {
+              "title": "options",
+              "type": "object",
+              "properties": {
+                "stateCreditRate": {
+                  "type": "number"
+                },
+                "ficaParams": {
+                  "type": "object",
+                  "properties": {
+                    "asOf": {
+                      "type": "string"
+                    },
+                    "taxYear": {
+                      "type": "number"
+                    },
+                    "socialSecurityRate": {
+                      "type": "number"
+                    },
+                    "socialSecurityWageBase": {
+                      "type": "number"
+                    },
+                    "medicareRate": {
+                      "type": "number"
+                    },
+                    "additionalMedicareRate": {
+                      "type": "number"
+                    },
+                    "additionalMedicareWithholdingThreshold": {
+                      "type": "number"
+                    },
+                    "ruleId": {
+                      "type": "string"
+                    },
+                    "jurisdiction": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "asOf",
+                    "taxYear",
+                    "socialSecurityRate",
+                    "socialSecurityWageBase",
+                    "medicareRate",
+                    "additionalMedicareRate",
+                    "additionalMedicareWithholdingThreshold",
+                    "ruleId",
+                    "jurisdiction"
+                  ]
+                },
+                "futaParams": {
+                  "type": "object",
+                  "properties": {
+                    "asOf": {
+                      "type": "string"
+                    },
+                    "taxYear": {
+                      "type": "number"
+                    },
+                    "rate": {
+                      "type": "number"
+                    },
+                    "wageBase": {
+                      "type": "number"
+                    },
+                    "maxStateCredit": {
+                      "type": "number"
+                    },
+                    "ruleId": {
+                      "type": "string"
+                    },
+                    "jurisdiction": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "asOf",
+                    "taxYear",
+                    "rate",
+                    "wageBase",
+                    "maxStateCredit",
+                    "ruleId",
+                    "jurisdiction"
+                  ]
+                }
+              }
+            }
+          ],
+          "items": false,
+          "minItems": 1,
+          "maxItems": 2
+        },
+        "example": {
+          "args": [
+            120000
+          ],
+          "resultShape": {
+            "annualWages": "number",
+            "fica": {
+              "employerSocialSecurity": "number",
+              "employerMedicare": "number",
+              "employerFicaTotal": "number",
+              "employeeAdditionalMedicareWithholding": "number",
+              "taxYear": "number",
+              "asOf": "string",
+              "ruleId": "string",
+              "jurisdiction": "string",
+              "needsReview": "boolean",
+              "note": "string"
+            },
+            "futa": {
+              "futaWages": "number",
+              "grossFuta": "number",
+              "creditApplied": "number",
+              "netFuta": "number",
+              "taxYear": "number",
+              "asOf": "string",
+              "ruleId": "string",
+              "jurisdiction": "string",
+              "needsReview": "boolean",
+              "note": "string"
+            },
+            "federalEmployerTotal": "number",
+            "federalLoadFactor": "number",
+            "ruleIds": [
+              "string"
+            ],
+            "needsReview": "boolean",
+            "outOfScope": "string",
+            "note": "string"
+          }
+        }
+      }
+    },
+    {
+      "id": "qsbs",
+      "title": "QSBS (§ 1202)",
+      "file": "lib/openstartup/qsbs.ts",
+      "readme": "open-modules/README.md#qsbs--1202",
+      "status": "verified, checklist-shaped",
+      "exports": [
+        "qsbsEligibilityChecklist",
+        "qsbsExclusionIllustration",
+        "qsbsExclusionPercentage",
+        "qsbsHoldingClock",
+        "qsbsPerIssuerCap"
+      ],
+      "entrypoint": {
+        "function": "qsbsEligibilityChecklist",
+        "signature": "qsbsEligibilityChecklist(facts)",
+        "inputSchema": {
+          "$schema": "https://json-schema.org/draft/2020-12/schema",
+          "type": "array",
+          "description": "Positional arguments of qsbsEligibilityChecklist",
+          "prefixItems": [
+            {
+              "title": "facts",
+              "type": "object",
+              "properties": {
+                "issuanceDate": {
+                  "type": "string"
+                },
+                "isCCorporation": {
+                  "anyOf": [
+                    {
+                      "type": "boolean"
+                    },
+                    {
+                      "type": "string",
+                      "const": "unknown"
+                    }
+                  ]
+                },
+                "acquiredAtOriginalIssuance": {
+                  "anyOf": [
+                    {
+                      "type": "boolean"
+                    },
+                    {
+                      "type": "string",
+                      "const": "unknown"
+                    }
+                  ]
+                },
+                "aggregateGrossAssetsAtIssuance": {
+                  "type": "number"
+                },
+                "inExcludedField": {
+                  "anyOf": [
+                    {
+                      "type": "boolean"
+                    },
+                    {
+                      "type": "string",
+                      "const": "unknown"
+                    }
+                  ]
+                }
+              },
+              "required": [
+                "issuanceDate"
+              ]
+            }
+          ],
+          "items": false,
+          "minItems": 1,
+          "maxItems": 1
+        },
+        "example": {
+          "args": [
+            {
+              "issuanceDate": "2026-01-15",
+              "isCCorporation": true,
+              "acquiredAtOriginalIssuance": true,
+              "aggregateGrossAssetsAtIssuance": 2000000,
+              "inExcludedField": false
+            }
+          ],
+          "resultShape": {
+            "conditions": [
+              {
+                "condition": "string",
+                "status": "string",
+                "ruleId": "string",
+                "jurisdiction": "string",
+                "note": "string"
+              }
+            ],
+            "overall": "string",
+            "grossAssetCeilingApplied": "number",
+            "needsReview": "boolean",
+            "note": "string"
+          }
+        }
+      }
+    },
+    {
+      "id": "rdCredit",
+      "title": "R&D tax mechanics",
+      "file": "lib/openstartup/rdCredit.ts",
+      "readme": "open-modules/README.md#rd-tax-mechanics",
+      "status": "explanation + arithmetic — never a credit computation",
+      "exports": [
+        "domesticSre2025Treatment",
+        "domesticSre5YearSchedule",
+        "foreignSre15YearSchedule",
+        "midpointAmortizationSchedule",
+        "payrollOffsetElectionCap",
+        "qsbPayrollOffsetEligibility",
+        "quarterlyOffsetApplication"
+      ],
+      "entrypoint": {
+        "function": "quarterlyOffsetApplication",
+        "signature": "quarterlyOffsetApplication(inputs)",
+        "inputSchema": {
+          "$schema": "https://json-schema.org/draft/2020-12/schema",
+          "type": "array",
+          "description": "Positional arguments of quarterlyOffsetApplication",
+          "prefixItems": [
+            {
+              "title": "inputs",
+              "type": "object",
+              "properties": {
+                "electedAmount": {
+                  "type": "number"
+                },
+                "taxYearBeginsAfter2022": {
+                  "type": "boolean"
+                },
+                "quarters": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "label": {
+                        "type": "string"
+                      },
+                      "employerSocialSecurityTax": {
+                        "type": "number"
+                      },
+                      "employerMedicareTax": {
+                        "type": "number"
+                      }
+                    },
+                    "required": [
+                      "label",
+                      "employerSocialSecurityTax",
+                      "employerMedicareTax"
+                    ]
+                  }
+                }
+              },
+              "required": [
+                "electedAmount",
+                "taxYearBeginsAfter2022",
+                "quarters"
+              ]
+            }
+          ],
+          "items": false,
+          "minItems": 1,
+          "maxItems": 1
+        },
+        "example": {
+          "args": [
+            {
+              "electedAmount": 500000,
+              "taxYearBeginsAfter2022": true,
+              "quarters": [
+                {
+                  "label": "2026-Q1",
+                  "employerSocialSecurityTax": 80000,
+                  "employerMedicareTax": 20000
+                },
+                {
+                  "label": "2026-Q2",
+                  "employerSocialSecurityTax": 80000,
+                  "employerMedicareTax": 20000
+                }
+              ]
+            }
+          ],
+          "resultShape": {
+            "electedAmount": "number",
+            "quarters": [
+              {
+                "label": "string",
+                "appliedToSocialSecurity": "number",
+                "appliedToMedicare": "number",
+                "carryforwardAfter": "number"
+              }
+            ],
+            "totalApplied": "number",
+            "remaining": "number",
+            "ruleId": "string",
+            "jurisdiction": "string",
+            "needsReview": "boolean",
+            "note": "string"
+          }
+        }
+      }
+    },
+    {
+      "id": "round",
+      "title": "Priced-round mechanics",
+      "file": "lib/openstartup/round.ts",
+      "readme": "open-modules/README.md#priced-round-mechanics",
+      "status": "verified",
+      "exports": [
+        "downRoundModel",
+        "founderSecondary",
+        "hiringPlanPoolIncrease",
+        "hiringPlanPoolTopUp",
+        "maintainOwnership",
+        "poolTargetFromHiringPlan",
+        "proRataShares"
+      ],
+      "entrypoint": {
+        "function": "downRoundModel",
+        "signature": "downRoundModel(rows, protectedSeries, issuance, options?)",
+        "inputSchema": {
+          "$schema": "https://json-schema.org/draft/2020-12/schema",
+          "type": "array",
+          "description": "Positional arguments of downRoundModel",
+          "prefixItems": [
+            {
+              "title": "rows",
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "string"
+                  },
+                  "name": {
+                    "type": "string"
+                  },
+                  "group": {
+                    "type": "string",
+                    "enum": [
+                      "founder",
+                      "options",
+                      "pool",
+                      "investor"
+                    ]
+                  },
+                  "shares": {
+                    "type": [
+                      "number",
+                      "null"
+                    ]
+                  },
+                  "pct": {
+                    "type": [
+                      "number",
+                      "null"
+                    ]
+                  }
+                },
+                "required": [
+                  "id",
+                  "name",
+                  "group",
+                  "shares",
+                  "pct"
+                ]
+              }
+            },
+            {
+              "title": "protectedSeries",
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "seriesName": {
+                    "type": "string"
+                  },
+                  "originalIssuePrice": {
+                    "type": "number"
+                  },
+                  "conversionPriceBefore": {
+                    "type": "number"
+                  },
+                  "preferredShares": {
+                    "type": "number"
+                  },
+                  "basis": {
+                    "type": "string",
+                    "enum": [
+                      "broad-based",
+                      "narrow-based",
+                      "full-ratchet"
+                    ]
+                  }
+                },
+                "required": [
+                  "seriesName",
+                  "originalIssuePrice",
+                  "conversionPriceBefore",
+                  "basis"
+                ]
+              }
+            },
+            {
+              "title": "issuance",
+              "type": "object",
+              "properties": {
+                "newShares": {
+                  "type": "number"
+                },
+                "considerationDollars": {
+                  "type": "number"
+                },
+                "investorName": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "newShares",
+                "considerationDollars",
+                "investorName"
+              ]
+            },
+            {
+              "title": "options",
+              "type": "object",
+              "properties": {
+                "includeUnissuedPoolInBase": {
+                  "type": "boolean"
+                }
+              }
+            }
+          ],
+          "items": false,
+          "minItems": 3,
+          "maxItems": 4
+        },
+        "example": {
+          "args": [
+            [
+              {
+                "id": "founders",
+                "name": "Founders & pool",
+                "group": "founder",
+                "shares": 8000000,
+                "pct": 66.67
+              },
+              {
+                "id": "series-a",
+                "name": "Series A",
+                "group": "investor",
+                "shares": 4000000,
+                "pct": 33.33
+              }
+            ],
+            [
+              {
+                "seriesName": "Series A",
+                "originalIssuePrice": 2,
+                "conversionPriceBefore": 2,
+                "basis": "broad-based"
+              }
+            ],
+            {
+              "newShares": 5000000,
+              "considerationDollars": 5000000,
+              "investorName": "Series B"
+            }
+          ],
+          "resultShape": {
+            "pps": "number",
+            "rows": [
+              {
+                "name": "string",
+                "group": "string",
+                "sharesBefore": "number",
+                "sharesAfter": "number",
+                "pctBefore": "number",
+                "pctAfter": "number"
+              }
+            ],
+            "adjustments": [
+              {
+                "seriesName": "string",
+                "basis": "string",
+                "conversionPriceBefore": "number",
+                "conversionPriceAfter": "number",
+                "conversionRatioAfter": "number",
+                "asConvertedBefore": "number",
+                "asConvertedAfter": "number",
+                "additionalCommonShares": "number",
+                "adjusted": "boolean",
+                "needsReview": "boolean",
+                "note": "string"
+              }
+            ],
+            "fullyDilutedBefore": "number",
+            "fullyDilutedAfter": "number",
+            "needsReview": "boolean",
+            "notes": [
+              "string"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "roundComposer",
+      "title": "Priced-round composer",
+      "file": "lib/openstartup/roundComposer.ts",
+      "readme": "open-modules/README.md#priced-round-composer",
+      "status": "verified by composition-equality",
+      "exports": [
+        "downRoundPreview",
+        "postCloseLiquidityCheck",
+        "replayPricedRound",
+        "termSheetEconomics"
+      ],
+      "entrypoint": {
+        "function": "replayPricedRound",
+        "signature": "replayPricedRound(history, round)",
+        "inputSchema": {
+          "$schema": "https://json-schema.org/draft/2020-12/schema",
+          "type": "array",
+          "description": "Positional arguments of replayPricedRound",
+          "prefixItems": [
+            {
+              "title": "history",
+              "type": "array",
+              "items": {
+                "oneOf": [
+                  {
+                    "type": "object",
+                    "properties": {
+                      "kind": {
+                        "type": "string",
+                        "const": "found"
+                      },
+                      "founders": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "name": {
+                              "type": "string"
+                            },
+                            "shares": {
+                              "type": "number"
+                            },
+                            "vesting": {
+                              "type": "object",
+                              "properties": {
+                                "totalMonths": {
+                                  "type": "number"
+                                },
+                                "cliffMonths": {
+                                  "type": "number"
+                                }
+                              },
+                              "required": [
+                                "totalMonths",
+                                "cliffMonths"
+                              ]
+                            }
+                          },
+                          "required": [
+                            "name",
+                            "shares"
+                          ]
+                        }
+                      },
+                      "poolShares": {
+                        "type": "number"
+                      }
+                    },
+                    "required": [
+                      "kind",
+                      "founders"
+                    ]
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "kind": {
+                        "type": "string",
+                        "const": "pool"
+                      },
+                      "shares": {
+                        "type": "number"
+                      },
+                      "targetPct": {
+                        "type": "number"
+                      }
+                    },
+                    "required": [
+                      "kind"
+                    ]
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "kind": {
+                        "type": "string",
+                        "const": "grant"
+                      },
+                      "name": {
+                        "type": "string"
+                      },
+                      "shares": {
+                        "type": "number"
+                      }
+                    },
+                    "required": [
+                      "kind",
+                      "name",
+                      "shares"
+                    ]
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "kind": {
+                        "type": "string",
+                        "const": "safe"
+                      },
+                      "name": {
+                        "type": "string"
+                      },
+                      "amount": {
+                        "type": "number"
+                      },
+                      "cap": {
+                        "type": "number"
+                      },
+                      "discountPct": {
+                        "type": "number"
+                      },
+                      "mfn": {
+                        "type": "boolean"
+                      },
+                      "proRata": {
+                        "type": "boolean"
+                      }
+                    },
+                    "required": [
+                      "kind",
+                      "name",
+                      "amount"
+                    ]
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "kind": {
+                        "type": "string",
+                        "const": "priced"
+                      },
+                      "name": {
+                        "type": "string"
+                      },
+                      "preMoney": {
+                        "type": "number"
+                      },
+                      "newMoney": {
+                        "type": "number"
+                      },
+                      "poolTargetPct": {
+                        "type": "number"
+                      },
+                      "poolShares": {
+                        "type": "number"
+                      }
+                    },
+                    "required": [
+                      "kind",
+                      "name",
+                      "preMoney",
+                      "newMoney"
+                    ]
+                  }
+                ]
+              }
+            },
+            {
+              "title": "round",
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string"
+                },
+                "preMoney": {
+                  "type": "number"
+                },
+                "newMoney": {
+                  "type": "number"
+                },
+                "poolTargetPct": {
+                  "type": "number"
+                },
+                "poolShares": {
+                  "type": "number"
+                }
+              },
+              "required": [
+                "name",
+                "preMoney",
+                "newMoney"
+              ]
+            }
+          ],
+          "items": false,
+          "minItems": 2,
+          "maxItems": 2
+        },
+        "example": {
+          "args": [
+            [
+              {
+                "kind": "found",
+                "founders": [
+                  {
+                    "name": "Founder A",
+                    "shares": 4500000
+                  },
+                  {
+                    "name": "Founder B",
+                    "shares": 4500000
+                  }
+                ],
+                "poolShares": 1000000
+              },
+              {
+                "kind": "safe",
+                "name": "Angel SAFE",
+                "amount": 500000,
+                "cap": 5000000
+              }
+            ],
+            {
+              "name": "Series A",
+              "preMoney": 8000000,
+              "newMoney": 2000000,
+              "poolTargetPct": 10
+            }
+          ],
+          "resultShape": {
+            "termSheet": {
+              "postMoney": "number",
+              "newInvestorsPct": "number",
+              "dilution": {
+                "proRataPct": "number",
+                "roundDilutionPct": "number",
+                "safesFinalPct": "number"
+              },
+              "needsReview": "boolean",
+              "note": "string"
+            },
+            "closing": {
+              "round": {
+                "roundName": "string",
+                "pps": "number",
+                "preMoney": "number",
+                "newMoney": "number",
+                "postMoney": "number",
+                "poolIncreaseShares": "number",
+                "roundShares": "number",
+                "conversions": [
+                  {
+                    "safeName": "string",
+                    "amount": "number",
+                    "shares": "number",
+                    "method": "string",
+                    "appliedCap": "number",
+                    "effectivePrice": "number",
+                    "postConversionPct": "number"
+                  }
+                ]
+              },
+              "conversions": [
+                {
+                  "safeName": "string",
+                  "amount": "number",
+                  "shares": "number",
+                  "method": "string",
+                  "appliedCap": "number",
+                  "effectivePrice": "number",
+                  "postConversionPct": "number"
+                }
+              ],
+              "wires": [
+                {
+                  "holder": "string",
+                  "shares": "number",
+                  "dollars": "number"
+                }
+              ],
+              "wireTotal": "number"
+            },
+            "postClose": {
+              "rows": [
+                {
+                  "id": "string",
+                  "name": "string",
+                  "group": "string",
+                  "shares": "number",
+                  "pct": "number"
+                }
+              ],
+              "fullyDilutedShares": "number",
+              "newPreferredShares": "number",
+              "conversionPriceAtClose": "number",
+              "conversionRatioAtClose": "number"
+            },
+            "snapshots": [
+              {
+                "eventIndex": "number",
+                "label": "string",
+                "rows": [
+                  {
+                    "id": "string",
+                    "name": "string",
+                    "group": "string",
+                    "shares": "number",
+                    "pct": "number"
+                  }
+                ],
+                "fullyDilutedShares": "number"
+              },
+              {
+                "eventIndex": "number",
+                "label": "string",
+                "rows": [
+                  {
+                    "id": "string",
+                    "name": "string",
+                    "group": "string",
+                    "shares": "number",
+                    "pct": "number"
+                  },
+                  {
+                    "id": "string",
+                    "name": "string",
+                    "group": "string",
+                    "shares": "null",
+                    "pct": "number"
+                  }
+                ],
+                "fullyDilutedShares": "number"
+              },
+              {
+                "eventIndex": "number",
+                "label": "string",
+                "rows": [
+                  {
+                    "id": "string",
+                    "name": "string",
+                    "group": "string",
+                    "shares": "number",
+                    "pct": "number"
+                  }
+                ],
+                "fullyDilutedShares": "number",
+                "round": {
+                  "roundName": "string",
+                  "pps": "number",
+                  "preMoney": "number",
+                  "newMoney": "number",
+                  "postMoney": "number",
+                  "poolIncreaseShares": "number",
+                  "roundShares": "number",
+                  "conversions": [
+                    {
+                      "safeName": "string",
+                      "amount": "number",
+                      "shares": "number",
+                      "method": "string",
+                      "appliedCap": "number",
+                      "effectivePrice": "number",
+                      "postConversionPct": "number"
+                    }
+                  ]
+                }
+              }
+            ],
+            "needsReview": "boolean",
+            "notes": [
+              "string"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "runway",
+      "title": "Runway & burn",
+      "file": "lib/openstartup/runway.ts",
+      "readme": "open-modules/README.md#runway--burn",
+      "status": "verified, hand-derived arithmetic",
+      "exports": [
+        "defaultAliveReport",
+        "growthAdjustedRunwayMonths",
+        "hiringImpact",
+        "simpleRunwayMonths"
+      ],
+      "entrypoint": {
+        "function": "hiringImpact",
+        "signature": "hiringImpact(input, hires, options?)",
+        "inputSchema": {
+          "$schema": "https://json-schema.org/draft/2020-12/schema",
+          "type": "array",
+          "description": "Positional arguments of hiringImpact",
+          "prefixItems": [
+            {
+              "title": "input",
+              "type": "object",
+              "properties": {
+                "cash": {
+                  "type": "number"
+                },
+                "monthlyRevenue": {
+                  "type": "number"
+                },
+                "monthlyExpenses": {
+                  "type": "number"
+                },
+                "revenueGrowthPctMoM": {
+                  "type": "number"
+                },
+                "expenseGrowthPctMoM": {
+                  "type": "number"
+                }
+              },
+              "required": [
+                "cash",
+                "monthlyRevenue",
+                "monthlyExpenses",
+                "revenueGrowthPctMoM"
+              ]
+            },
+            {
+              "title": "hires",
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "monthlyCost": {
+                    "type": "number"
+                  },
+                  "startMonth": {
+                    "type": "number"
+                  },
+                  "count": {
+                    "type": "number"
+                  }
+                },
+                "required": [
+                  "monthlyCost",
+                  "startMonth"
+                ]
+              }
+            },
+            {
+              "title": "options",
+              "type": "object",
+              "properties": {
+                "horizonMonths": {
+                  "type": "number"
+                }
+              }
+            }
+          ],
+          "items": false,
+          "minItems": 2,
+          "maxItems": 3
+        },
+        "example": {
+          "args": [
+            {
+              "cash": 200000,
+              "monthlyRevenue": 10000,
+              "monthlyExpenses": 30000,
+              "revenueGrowthPctMoM": 10
+            },
+            [
+              {
+                "monthlyCost": 15000,
+                "startMonth": 3
+              }
+            ]
+          ],
+          "resultShape": {
+            "base": {
+              "status": "string",
+              "monthsToProfitability": "number",
+              "monthsToZeroCash": "null",
+              "minCash": "number",
+              "trajectory": [
+                {
+                  "month": "number",
+                  "revenue": "number",
+                  "expenses": "number",
+                  "netBurn": "number",
+                  "endingCash": "number"
+                }
+              ]
+            },
+            "withHires": {
+              "status": "string",
+              "monthsToProfitability": "number",
+              "monthsToZeroCash": "number",
+              "minCash": "number",
+              "trajectory": [
+                {
+                  "month": "number",
+                  "revenue": "number",
+                  "expenses": "number",
+                  "netBurn": "number",
+                  "endingCash": "number"
+                }
+              ]
+            },
+            "runwayDeltaMonths": "null",
+            "becomesDefaultDead": "boolean"
+          }
+        }
+      }
+    },
+    {
+      "id": "unitEconomics",
+      "title": "Unit economics",
+      "file": "lib/openstartup/unitEconomics.ts",
+      "readme": "open-modules/README.md#unit-economics",
+      "status": "verified; benchmarks are inputs",
+      "exports": [
+        "annualizedNetChurnPct",
+        "burnMultiple",
+        "cac",
+        "cacPaybackMonths",
+        "compareToBenchmark",
+        "customerLifetimePeriods",
+        "ltv",
+        "ltvSimple",
+        "ltvToCacRatio",
+        "magicNumber",
+        "netMrrChurnRatePct",
+        "netNewMrr",
+        "ruleOf40"
+      ],
+      "entrypoint": {
+        "function": "burnMultiple",
+        "signature": "burnMultiple(input)",
+        "inputSchema": {
+          "$schema": "https://json-schema.org/draft/2020-12/schema",
+          "type": "array",
+          "description": "Positional arguments of burnMultiple",
+          "prefixItems": [
+            {
+              "title": "input",
+              "type": "object",
+              "properties": {
+                "netBurn": {
+                  "type": "number"
+                },
+                "netNewArr": {
+                  "type": "number"
+                }
+              },
+              "required": [
+                "netBurn",
+                "netNewArr"
+              ]
+            }
+          ],
+          "items": false,
+          "minItems": 1,
+          "maxItems": 1
+        },
+        "example": {
+          "args": [
+            {
+              "netBurn": 2000000,
+              "netNewArr": 1000000
+            }
+          ],
+          "resultShape": {
+            "netBurn": "number",
+            "netNewArr": "number",
+            "needsReview": "boolean",
+            "multiple": "number",
+            "computable": "boolean",
+            "note": "string"
+          }
+        }
+      }
+    },
+    {
+      "id": "vesting",
+      "title": "Vesting mechanics",
+      "file": "lib/openstartup/vesting.ts",
+      "readme": "open-modules/README.md#vesting-mechanics",
+      "status": "verified + property-tested",
+      "exports": [
+        "addMonthsClamped",
+        "applyAcceleration",
+        "cliffVesting",
+        "departureSummary",
+        "earlyExerciseSnapshot",
+        "fastAdvisorGrant",
+        "portfolioVestedAsOf",
+        "vestedAsOf",
+        "vestingEvents"
+      ],
+      "entrypoint": {
+        "function": "vestedAsOf",
+        "signature": "vestedAsOf(grant, asOf, terminationOn?)",
+        "inputSchema": {
+          "$schema": "https://json-schema.org/draft/2020-12/schema",
+          "type": "array",
+          "description": "Positional arguments of vestedAsOf",
+          "prefixItems": [
+            {
+              "title": "grant",
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string"
+                },
+                "shares": {
+                  "type": "number"
+                },
+                "commencement": {
+                  "type": "string"
+                },
+                "schedule": {
+                  "oneOf": [
+                    {
+                      "type": "object",
+                      "properties": {
+                        "kind": {
+                          "type": "string",
+                          "const": "periodic"
+                        },
+                        "totalMonths": {
+                          "type": "number"
+                        },
+                        "cliffMonths": {
+                          "type": "number"
+                        },
+                        "periodMonths": {
+                          "type": "number"
+                        }
+                      },
+                      "required": [
+                        "kind",
+                        "totalMonths",
+                        "cliffMonths"
+                      ]
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "kind": {
+                          "type": "string",
+                          "const": "tranches"
+                        },
+                        "tranches": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "monthsFromStart": {
+                                "type": "number"
+                              },
+                              "fraction": {
+                                "type": "number"
+                              }
+                            },
+                            "required": [
+                              "monthsFromStart",
+                              "fraction"
+                            ]
+                          }
+                        }
+                      },
+                      "required": [
+                        "kind",
+                        "tranches"
+                      ]
+                    }
+                  ]
+                },
+                "earlyExercisable": {
+                  "type": "boolean"
+                }
+              },
+              "required": [
+                "shares",
+                "commencement",
+                "schedule"
+              ]
+            },
+            {
+              "title": "asOf",
+              "type": "string"
+            },
+            {
+              "title": "terminationOn",
+              "type": "string"
+            }
+          ],
+          "items": false,
+          "minItems": 2,
+          "maxItems": 3
+        },
+        "example": {
+          "args": [
+            {
+              "shares": 4800000,
+              "commencement": "2026-01-15",
+              "schedule": {
+                "kind": "periodic",
+                "totalMonths": 48,
+                "cliffMonths": 12,
+                "periodMonths": 1
+              }
+            },
+            "2028-01-15"
+          ],
+          "resultShape": {
+            "vestedShares": "number",
+            "unvestedShares": "number",
+            "measuredOn": "string",
+            "nextVestingDate": "string",
+            "needsReview": "boolean"
+          }
+        }
+      }
+    },
+    {
+      "id": "waterfall",
+      "title": "Liquidity-event waterfall",
+      "file": "lib/openstartup/waterfall.ts",
+      "readme": "open-modules/README.md#liquidity-event-waterfall",
+      "status": "verified + property-tested",
+      "exports": [
+        "allocateCents",
+        "conversionIndifferencePrice",
+        "liquidityWaterfall",
+        "safeLiquidityShares"
+      ],
+      "entrypoint": {
+        "function": "liquidityWaterfall",
+        "signature": "liquidityWaterfall(inputs, price)",
+        "inputSchema": {
+          "$schema": "https://json-schema.org/draft/2020-12/schema",
+          "type": "array",
+          "description": "Positional arguments of liquidityWaterfall",
+          "prefixItems": [
+            {
+              "title": "inputs",
+              "type": "object",
+              "properties": {
+                "holders": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "name": {
+                        "type": "string"
+                      },
+                      "shares": {
+                        "type": "number"
+                      },
+                      "group": {
+                        "type": "string",
+                        "enum": [
+                          "common",
+                          "options"
+                        ]
+                      }
+                    },
+                    "required": [
+                      "name",
+                      "shares"
+                    ]
+                  }
+                },
+                "preferred": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "type": "string"
+                    },
+                    "shares": {
+                      "type": "number"
+                    },
+                    "invested": {
+                      "type": "number"
+                    },
+                    "preferenceMultiple": {
+                      "type": "number"
+                    },
+                    "participating": {
+                      "type": "boolean"
+                    }
+                  },
+                  "required": [
+                    "name",
+                    "shares",
+                    "invested"
+                  ]
+                },
+                "safes": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "name": {
+                        "type": "string"
+                      },
+                      "amount": {
+                        "type": "number"
+                      },
+                      "postMoneyCap": {
+                        "type": "number"
+                      }
+                    },
+                    "required": [
+                      "name",
+                      "amount",
+                      "postMoneyCap"
+                    ]
+                  }
+                },
+                "unissuedPoolShares": {
+                  "type": "number"
+                }
+              },
+              "required": [
+                "holders"
+              ]
+            },
+            {
+              "title": "price",
+              "type": "number"
+            }
+          ],
+          "items": false,
+          "minItems": 2,
+          "maxItems": 2
+        },
+        "example": {
+          "args": [
+            {
+              "holders": [
+                {
+                  "name": "Founders",
+                  "shares": 9250000
+                },
+                {
+                  "name": "Options outstanding",
+                  "shares": 300000,
+                  "group": "options"
+                }
+              ],
+              "safes": [
+                {
+                  "name": "Safe 1",
+                  "amount": 200000,
+                  "postMoneyCap": 4000000
+                },
+                {
+                  "name": "Safe 2",
+                  "amount": 800000,
+                  "postMoneyCap": 8000000
+                }
+              ],
+              "unissuedPoolShares": 450000
+            },
+            10000000
+          ],
+          "resultShape": {
+            "price": "number",
+            "residualShares": "number",
+            "perShare": "number",
+            "rows": [
+              {
+                "name": "string",
+                "kind": "string",
+                "shares": "number",
+                "decision": "string",
+                "preferencePayout": "number",
+                "residualPayout": "number",
+                "total": "number"
+              }
+            ],
+            "safeConversions": [
+              {
+                "name": "string",
+                "shares": "number",
+                "liquidityPrice": "number",
+                "allConvertPerShare": "number",
+                "asConvertedValue": "number",
+                "cashOutAmount": "number",
+                "decision": "string"
+              }
+            ],
+            "unissuedPoolSharesExcluded": "number",
+            "needsReview": "boolean",
+            "notes": [
+              "string"
+            ]
+          }
+        }
+      }
+    }
+  ]
+}

@@ -26,6 +26,9 @@
 // file. State R&D credits are out of scope entirely.
 // ---------------------------------------------------------------------------
 
+import { z } from 'zod'
+import { entrySpec } from './entryValidation'
+
 /** The rule cards this module is allowed to cite. The vitest gate asserts every id
  * resolves to a committed card with the matching jurisdiction. */
 export const RD_RULE_IDS = {
@@ -131,14 +134,14 @@ export function domesticSre2025Treatment(amount: number, election?: { months: nu
       election: { months: election.months, monthlyAmount: round2(amount / election.months) },
       ...RD_RULE_IDS.amortization,
       needsReview: true,
-      note: `§ 174A(c) election: ratable over ${election.months} months beginning with the month benefits are first realized (a fact this module cannot determine). Law in flux — the rule card records the text as of its checked date. ${DISCLAIMER}`,
+      note: `§ 174A(c) election: ratable over ${election.months} months beginning with the month benefits are first realized (a fact this module cannot determine). Law in flux — the law rule records the text as of its checked date. ${DISCLAIMER}`,
     }
   }
   return {
     currentDeduction: amount,
     ...RD_RULE_IDS.amortization,
     needsReview: true,
-    note: `§ 174A(a): domestic research or experimental expenditures for taxable years beginning after 2024 are currently deductible. Law in flux — the rule card records the text as of its checked date; § 280C interactions with the § 41 credit are out of scope. ${DISCLAIMER}`,
+    note: `§ 174A(a): domestic research or experimental expenditures for taxable years beginning after 2024 are currently deductible. Law in flux — the law rule records the text as of its checked date; § 280C interactions with the § 41 credit are out of scope. ${DISCLAIMER}`,
   }
 }
 
@@ -234,6 +237,26 @@ export interface QuarterLiability {
   employerMedicareTax: number
 }
 
+/** Structural schema of QuarterLiability — the registry entry contract (field names and
+ * types; value and ordering rules stay in the function). */
+export const QuarterLiabilitySchema = z.object({
+  label: z.string(),
+  employerSocialSecurityTax: z.number(),
+  employerMedicareTax: z.number(),
+})
+
+/** Registered entrypoint arguments (open-modules/registry.json). */
+export const quarterlyOffsetApplicationEntry = entrySpec('quarterlyOffsetApplication', [
+  {
+    name: 'inputs',
+    schema: z.object({
+      electedAmount: z.number(),
+      taxYearBeginsAfter2022: z.boolean(),
+      quarters: z.array(QuarterLiabilitySchema),
+    }),
+  },
+])
+
 export interface QuarterApplication {
   label: string
   appliedToSocialSecurity: number
@@ -269,6 +292,7 @@ export function quarterlyOffsetApplication(inputs: {
   taxYearBeginsAfter2022: boolean
   quarters: readonly QuarterLiability[]
 }): OffsetApplicationReport {
+  quarterlyOffsetApplicationEntry.validate(inputs)
   assertPositive(inputs.electedAmount, 'electedAmount')
   const cap = payrollOffsetElectionCap(inputs.taxYearBeginsAfter2022)
   if (inputs.electedAmount > cap) {

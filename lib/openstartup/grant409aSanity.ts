@@ -54,7 +54,9 @@
 // needs-review. Educational model, not legal or tax advice.
 // ---------------------------------------------------------------------------
 
+import { z } from 'zod'
 import { roundPrice } from './capTable'
+import { entrySpec } from './entryValidation'
 
 /** The rule cards this module is allowed to cite. The vitest gate asserts every id
  * resolves to a committed card with the matching jurisdiction. */
@@ -255,6 +257,24 @@ export interface GrantSanityInputs {
   preferredRoundPps?: number
 }
 
+/** Structural schema of GrantSanityInputs — the registry entry contract (field names and
+ * types; the check logic stays in the findings). */
+export const GrantSanityInputsSchema = z.object({
+  strikePerShare: z.number(),
+  fmvPerShare: z.number(),
+  fmvAsOf: z.string(),
+  grantOn: z.string(),
+  independentAppraisalOn: z.string().optional(),
+  termSheetSignedSinceFmv: z.boolean().optional(),
+  materialChangeSinceFmv: z.union([z.boolean(), z.literal('unknown')]).optional(),
+  preferredRoundPps: z.number().optional(),
+})
+
+/** Registered entrypoint arguments (open-modules/registry.json). */
+export const grantSanityReportEntry = entrySpec('grantSanityReport', [
+  { name: 'inputs', schema: GrantSanityInputsSchema },
+])
+
 export interface GrantSanityReport {
   findings: (SanityFinding | RatioIllustration)[]
   /** The most severe level across findings (fail > flag > pass). */
@@ -274,6 +294,7 @@ const LEVEL_RANK: Record<SanityLevel, number> = { pass: 0, flag: 1, fail: 2 }
  * README contract).
  */
 export function grantSanityReport(inputs: GrantSanityInputs): GrantSanityReport {
+  grantSanityReportEntry.validate(inputs)
   const findings: (SanityFinding | RatioIllustration)[] = [
     strikeFloorCheck(inputs.strikePerShare, inputs.fmvPerShare),
     fmvAgeCheck(inputs.fmvAsOf, inputs.grantOn, {
@@ -297,7 +318,7 @@ export function grantSanityReport(inputs: GrantSanityInputs): GrantSanityReport 
     producesValuation: false,
     needsReview: true,
     disclaimer:
-      'Sanity checks against dated rule cards — not a valuation, not legal or tax advice, and never an authorization to grant. The 409A FMV is an input this module cannot produce.',
+      'Sanity checks against dated law rules — not a valuation, not legal or tax advice, and never an authorization to grant. The 409A FMV is an input this module cannot produce.',
   }
 }
 

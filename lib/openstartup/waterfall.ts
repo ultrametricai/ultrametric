@@ -49,7 +49,9 @@
 // Educational model, not legal advice.
 // ---------------------------------------------------------------------------
 
+import { z } from 'zod'
 import { floorShares, roundPrice } from './capTable'
+import { entrySpec } from './entryValidation'
 
 function round2(x: number): number {
   return Math.round(x * 100) / 100
@@ -96,6 +98,31 @@ export interface WaterfallInputs {
   /** Reported as excluded from the Liquidity Capitalization (§C.1); never shares in proceeds. */
   unissuedPoolShares?: number
 }
+
+/** Structural schema of WaterfallInputs — the registry entry contract (field names and
+ * types; value rules stay in the function). */
+export const WaterfallInputsSchema = z.object({
+  holders: z.array(
+    z.object({ name: z.string(), shares: z.number(), group: z.enum(['common', 'options']).optional() }),
+  ),
+  preferred: z
+    .object({
+      name: z.string(),
+      shares: z.number(),
+      invested: z.number(),
+      preferenceMultiple: z.number().optional(),
+      participating: z.boolean().optional(),
+    })
+    .optional(),
+  safes: z.array(z.object({ name: z.string(), amount: z.number(), postMoneyCap: z.number() })).optional(),
+  unissuedPoolShares: z.number().optional(),
+})
+
+/** Registered entrypoint arguments (open-modules/registry.json). */
+export const liquidityWaterfallEntry = entrySpec('liquidityWaterfall', [
+  { name: 'inputs', schema: WaterfallInputsSchema },
+  { name: 'price', schema: z.number() },
+])
 
 export type HolderDecision = 'convert' | 'cash-out' | 'preference' | 'participate' | 'as-converted'
 
@@ -281,6 +308,7 @@ function tierTotals(
  *    other stockholders").
  */
 export function liquidityWaterfall(inputs: WaterfallInputs, price: number): WaterfallReport {
+  liquidityWaterfallEntry.validate(inputs, price)
   if (!(price >= 0)) throw new RangeError('price must be >= 0')
   if (inputs.holders.length === 0) throw new RangeError('at least one common/option holder is required')
   for (const h of inputs.holders) {

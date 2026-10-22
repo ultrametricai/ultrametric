@@ -58,7 +58,9 @@
 // model, not legal advice.
 // ---------------------------------------------------------------------------
 
+import { z } from 'zod'
 import { floorShares, roundPrice } from './capTable'
+import { entrySpec } from './entryValidation'
 import type { PreferredSeries } from './waterfall'
 
 // ---------------------------------------------------------------------------
@@ -201,6 +203,32 @@ export interface AdjustableSeries {
   conversionPriceBefore: number
 }
 
+/** Structural schema of DilutiveIssuance — the registry entry contract (shared with
+ * round.downRoundModel; value rules stay in validateIssuance). */
+export const DilutiveIssuanceSchema = z.object({
+  newShares: z.number(),
+  considerationDollars: z.number(),
+})
+
+/** Structural schema of AdjustmentBasis (open-modules/registry.json). */
+export const AdjustmentBasisSchema = z.enum(['broad-based', 'narrow-based', 'full-ratchet'])
+
+/** Structural schema of AdjustableSeries (open-modules/registry.json). */
+export const AdjustableSeriesSchema = z.object({
+  name: z.string(),
+  preferredShares: z.number(),
+  originalIssuePrice: z.number(),
+  conversionPriceBefore: z.number(),
+})
+
+/** Registered entrypoint arguments (open-modules/registry.json). */
+export const applyAntiDilutionEntry = entrySpec('applyAntiDilution', [
+  { name: 'series', schema: AdjustableSeriesSchema },
+  { name: 'issuance', schema: DilutiveIssuanceSchema },
+  { name: 'basis', schema: AdjustmentBasisSchema },
+  { name: 'broadBaseShares', schema: z.number(), optional: true },
+])
+
 export interface AdjustmentResult {
   seriesName: string
   basis: AdjustmentBasis
@@ -232,6 +260,7 @@ export function applyAntiDilution(
   basis: AdjustmentBasis,
   broadBaseShares?: number,
 ): AdjustmentResult {
+  applyAntiDilutionEntry.validate(series, issuance, basis, broadBaseShares)
   if (!(series.preferredShares > 0)) throw new RangeError(`${series.name}: preferredShares must be > 0`)
   if (!(series.originalIssuePrice > 0) || !(series.conversionPriceBefore > 0))
     throw new RangeError(`${series.name}: prices must be > 0`)

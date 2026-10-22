@@ -362,11 +362,11 @@ describe('corpus', () => {
   })
 
   // US state coverage (founder state wave 2026-10-03): where founders actually diverge from the
-  // DE-corp default, the state-scoped records cite dated rule cards against primary sources —
+  // DE-corp default, the state-scoped records cite dated law rules against primary sources —
   // CA SOI + FTB minimum tax, NV annual list/license + commerce tax, TX margin tax + foreign
-  // registration. Same contract as the situations' rule-card pins: the id appears in the
+  // registration. Same contract as the situations' law-rule pins: the id appears in the
   // description AND the card is committed on disk.
-  it('state-coverage records cite their US-CA/US-NV/US-TX rule cards, committed on disk', () => {
+  it('state-coverage records cite their US-CA/US-NV/US-TX law rules, committed on disk', () => {
     const tasks = loadProcesses(DATA_DIR)
     const byId = (id: string) => tasks.find((t) => t.id === id)!
     for (const [pid, dir, ruleId] of [
@@ -432,7 +432,7 @@ describe('corpus', () => {
     expect(taskCeiling(visa).pct, 'a consulate is not an API — the low ceiling is the truth').toBeLessThanOrEqual(25)
 
     // Legal-deadline honesty: where a situation leans on a statute/rule, its description names
-    // the dated rule card (the deadlines.ts pattern) — and the card is committed on disk.
+    // the dated law rule (the deadlines.ts pattern) — and the rule is committed on disk.
     for (const [sid, dir, ruleId] of [
       ['sit_008', 'US-FED', 'us-fed.frcp-answer-deadline'],
       ['sit_009', 'US-FED', 'us-fed.trademark-office-action-response'],
@@ -442,16 +442,20 @@ describe('corpus', () => {
       ['sit_015', 'EU', 'eu.gdpr-dsar-response-deadline'],
       ['sit_021', 'US-FED', 'us-fed.osha-severe-injury-reporting'],
     ] as const) {
-      expect(byId(sid).description, `${sid} cites its rule card`).toContain(ruleId)
+      expect(byId(sid).description, `${sid} cites its law rule`).toContain(ruleId)
       const file = path.join(__dirname, '..', '..', 'open-law', dir, `${ruleId.replace(/\./g, '-')}.json`)
       expect(fs.existsSync(file), `${ruleId} card committed at ${file}`).toBe(true)
       expect(JSON.parse(fs.readFileSync(file, 'utf8')).id).toBe(ruleId)
     }
 
-    // The lawsuit's filed pleading and the office action's TEAS filing are signature acts; the
-    // breach's regulator/individual notifications are the honestly-irreversible steps.
+    // The lawsuit's filed pleading and the office action's response filing are signature acts;
+    // the breach's regulator/individual notifications are the honestly-irreversible steps. Since
+    // the wave-3 restructuring the sit_009 filing step speaks the global abstraction and carries
+    // TEAS in its US geoResolution.
     expect(byId('sit_008').dag.nodes.filter((n) => n.legalSignature).length).toBeGreaterThanOrEqual(1)
-    expect(byId('sit_009').dag.nodes.find((n) => n.legalSignature)!.label).toContain('TEAS')
+    const oaFiling = byId('sit_009').dag.nodes.find((n) => n.legalSignature)!
+    expect(oaFiling.label).toContain('file the response')
+    expect(oaFiling.geoResolutions!.find((r) => r.country === 'US')!.label).toContain('TEAS')
     const breach = byId('sit_003')
     expect(breach.urgency).toBe('hours')
     expect(breach.reversibility).toBe('irreversible')

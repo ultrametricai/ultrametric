@@ -45,7 +45,9 @@
 //   produces. Educational model, not legal advice.
 // ---------------------------------------------------------------------------
 
+import { z } from 'zod'
 import { floorShares, roundPrice } from './capTable'
+import { entrySpec } from './entryValidation'
 
 function round2(x: number): number {
   return Math.round(x * 100) / 100
@@ -330,6 +332,21 @@ export interface NotePricingInputs {
   preRoundFullyDiluted: number
 }
 
+/** Structural schema of NotePricingInputs — the registry entry contract (field names and
+ * types; value rules stay in the function). */
+export const NotePricingInputsSchema = z.object({
+  preMoney: z.number(),
+  newMoney: z.number(),
+  noteBalanceConverting: z.number(),
+  discountPct: z.number(),
+  preRoundFullyDiluted: z.number(),
+})
+
+/** Registered entrypoint arguments (open-modules/registry.json). */
+export const seriesPricingWithNotesEntry = entrySpec('seriesPricingWithNotes', [
+  { name: 'input', schema: NotePricingInputsSchema },
+])
+
 export type PricingMethod = 'pre-money' | 'percentage-ownership' | 'dollars-invested'
 
 export interface MethodOutcome {
@@ -385,6 +402,7 @@ function methodOutcome(method: PricingMethod, ppsRaw: number, input: NotePricing
  * 70/12.5/17.5, 65.71/14.29/20, 68.83/12.99/18.18 ownership splits.
  */
 export function seriesPricingWithNotes(input: NotePricingInputs): Record<PricingMethod, MethodOutcome> {
+  seriesPricingWithNotesEntry.validate(input)
   if (!(input.preMoney > 0) || !(input.newMoney > 0)) throw new RangeError('preMoney and newMoney must be > 0')
   if (!(input.noteBalanceConverting >= 0)) throw new RangeError('noteBalanceConverting must be >= 0')
   if (!(input.discountPct >= 0 && input.discountPct < 100)) throw new RangeError('discountPct must be in [0, 100)')

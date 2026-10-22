@@ -53,7 +53,7 @@ test('reports unresolved links and unavailable evidence without deleting records
   assert.equal(record(report, 'vendors:arena/tool').checks.find(item => item.label === 'Verdict evidence').state, 'missing')
 })
 
-test('audits rule cards and their incoming links without treating law registries or citations as rules', () => {
+test('audits law rules and their incoming links without treating law registries or citations as rules', () => {
   const files = fixture()
   files.set('open-law/map.json', JSON.stringify({ jurisdictions: [] }))
   files.set('open-law/workflow-domains.json', JSON.stringify({ version: '0.1.0', domains: [{ id: 'formation', name: 'Formation', topics: [] }] }))
@@ -66,7 +66,7 @@ test('audits rule cards and their incoming links without treating law registries
   assert.deepEqual(report.records.filter(item => item.collection === 'law').map(item => item.key), ['law:rule'])
 })
 
-test('rejects missing identities in rule cards and unrecognized law JSON files', () => {
+test('rejects missing identities in law rules and unrecognized law JSON files', () => {
   const malformed = fixture()
   change(malformed, 'open-law/US-DE/rule.json', value => delete value.id)
   assert.throws(() => buildContentAudit(malformed, metadata), { message: 'Missing identity: open-law/US-DE/rule.json' })
