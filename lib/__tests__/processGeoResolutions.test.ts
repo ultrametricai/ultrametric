@@ -88,10 +88,11 @@ describe('step geo resolutions', () => {
     // The notice-terms step resolves in every covered country.
     expect(byId('sit_019').geoScope).toBe('global')
     expect(countries('sit_019', 'n2')).toEqual(['CA', 'DE', 'FR', 'IN', 'PT', 'UK', 'US'])
-    // First-hire formalities: the I-9/W-4 mechanics moved into the US entry. geoScope stays
-    // 'us': the record produces the employment-agreement artifact, whose committed geo entries
-    // require a US-centric producer (lib/__tests__/processArtifacts.test.ts).
-    expect(byId('hr_001').geoScope).toBe('us')
+    // First-hire formalities: the I-9/W-4 mechanics moved into the US entry. geoScope flipped
+    // to 'global' with the 2026-10-22 extension of the startup_002 precedent; the
+    // employment-agreement artifact keeps its geo entries under the restructured-global rule
+    // (lib/__tests__/processArtifacts.test.ts).
+    expect(byId('hr_001').geoScope).toBe('global')
     expect(countries('hr_001', 'n6')).toEqual(['FR', 'PT', 'UK', 'US'])
     // The register lookup: TSDR is the US resolution, with the committed IN/PT/CA checks beside it.
     expect(byId('sit_001').geoScope).toBe('global')
@@ -125,10 +126,11 @@ describe('step geo resolutions', () => {
     expect(countries('hr_011', 'n1')).toEqual(['CA', 'DE', 'FR', 'IN', 'PT', 'UK', 'US'])
     expect(byId('vc_001').geoScope).toBe('global')
     expect(byId('opp_012').geoScope).toBe('global')
-    // Artifact-geo keeps these US-scoped (the hr_001 precedent): business-address,
-    // executed-safes, priced-round-closing, trademark-serial all carry committed geo entries.
-    for (const id of ['qs_044', 'fund_001', 'fund_002', 'legal_002']) {
-      expect(byId(id).geoScope, `${id} stays us (artifact geo)`).toBe('us')
+    // The startup_002 precedent extended (maintainer decision 2026-10-22): these read as
+    // global abstractions with the US in step geoResolutions, so they carry scope 'global';
+    // their artifacts keep geo entries under the restructured-global rule in processArtifacts.
+    for (const id of ['qs_044', 'fund_001', 'fund_002', 'fund_004', 'legal_002']) {
+      expect(byId(id).geoScope, `${id} is global (restructured abstraction)`).toBe('global')
     }
     // form_011 reclassified (b): no resolutions, the geo decision options stand.
     expect(byId('form_011').geoScope).toBe('us')
