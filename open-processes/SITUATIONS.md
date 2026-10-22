@@ -84,7 +84,7 @@ The 22 situations, hottest clock first (urgency, then title — the /situations 
 1. Add an `open-processes/<slug>.json` definition to `catalog.json` with `kind: 'situation'`.
    Set `metadata.kind` to the same value, `metadata.trigger` to the event, and
    `metadata.urgency` to the tier the clock actually sets. Omit `metadata.timeOrder`; retain
-   explicit `entrySteps`, parts, links, scores and geography. Legal claims in descriptions cite dated rule cards in `open-law/` by id;
+   explicit `entrySteps`, parts, links, scores and geography. Legal claims in descriptions cite dated law rules in `open-law/` by id;
    deadlines cite the notice or statute, curl-verified like every corpus URL.
 2. Route each step by what runs today: `agent` where an agent can genuinely run it; signatures
    under penalty of perjury get `legalSignature`; third-party clocks are `person` waits. When a

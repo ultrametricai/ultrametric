@@ -76,7 +76,7 @@ export function deFranchiseTaxDue(taxYear: number): DeadlineComputation {
     due,
     ...DEADLINE_RULE_IDS.deFranchiseTax,
     needsReview: true,
-    note: `${flag.note} Amount requires computation (authorized-shares vs assumed-par-value method); $5,000+ prior-year liability adds quarterly installments — see the rule card's caveat.`,
+    note: `${flag.note} Amount requires computation (authorized-shares vs assumed-par-value method); $5,000+ prior-year liability adds quarterly installments — see the rule's caveat.`,
   }
 }
 

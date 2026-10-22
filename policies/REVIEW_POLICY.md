@@ -1,6 +1,6 @@
 # Editorial and governance policy
 
-## Maturity ladder (jurisdiction-scoped workflows and rule cards)
+## Maturity ladder (jurisdiction-scoped workflows and law rules)
 
 - `stub`: mapped need, no actionable workflow.
 - `draft`: structured workflow; sourcing or review incomplete. Not available for agent execution.

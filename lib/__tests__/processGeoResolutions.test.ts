@@ -51,21 +51,23 @@ describe('step geo resolutions', () => {
     }
   })
 
-  it('every rule card cited inside a resolution resolves to a committed law card', () => {
-    const cardIds = new Set<string>()
+  it('every law rule cited inside a resolution resolves to a committed rule in open-law/', () => {
+    const ruleIds = new Set<string>()
     const lawDir = path.join(process.cwd(), 'open-law')
     for (const entry of fs.readdirSync(lawDir, { withFileTypes: true })) {
       if (!entry.isDirectory() || entry.name === 'citations') continue
       for (const file of fs.readdirSync(path.join(lawDir, entry.name))) {
         if (!file.endsWith('.json')) continue
-        const card = JSON.parse(fs.readFileSync(path.join(lawDir, entry.name, file), 'utf8'))
-        if (card.id) cardIds.add(card.id)
+        const rule = JSON.parse(fs.readFileSync(path.join(lawDir, entry.name, file), 'utf8'))
+        if (rule.id) ruleIds.add(rule.id)
       }
     }
+    // "law rule <id>" is the inline citation form ("law rule", not bare "rule", so the grep
+    // stays disjoint from the lore layer's "lore rule <id>" citations).
     for (const { task, nodeId, resolution } of allResolutions(loadProcesses(DATA_DIR))) {
       const prose = `${resolution.label} ${resolution.guidance ?? ''}`
-      for (const match of prose.matchAll(/rule card ([a-z0-9.-]+)/g)) {
-        expect(cardIds.has(match[1]), `${task.id}/${nodeId}/${resolution.country} cites unknown rule card ${match[1]}`).toBe(true)
+      for (const match of prose.matchAll(/law rule ([a-z0-9.-]+)/g)) {
+        expect(ruleIds.has(match[1]), `${task.id}/${nodeId}/${resolution.country} cites unknown law rule ${match[1]}`).toBe(true)
       }
     }
   })
