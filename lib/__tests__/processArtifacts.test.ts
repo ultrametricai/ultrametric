@@ -265,7 +265,13 @@ describe('artifact geo — per-country analogs', () => {
   })
 
   it('geo entries live only on artifacts of US-centric producers — global-scope objects stay absent', () => {
+    // Pinned exception (maintainer decision 2026-10-22): startup_002 flipped to geoScope
+    // 'global' because its steps are the global abstraction and the US mechanics live in
+    // step geoResolutions. The founder-agreement artifact keeps its per-country entries,
+    // which describe the same committed per-country knowledge.
+    const globalProducerExceptions = new Set(['founder-agreement'])
     for (const a of withGeo) {
+      if (globalProducerExceptions.has(a.id)) continue
       const producer = tasksById.get(a.producedBy)!
       expect(
         producer.geoScope === 'us' || producer.geoScope === 'us-state',
