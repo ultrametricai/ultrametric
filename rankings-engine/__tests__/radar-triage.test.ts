@@ -1,6 +1,8 @@
 import { describe, expect, it } from 'vitest'
 import {
   MIN_FIT_HITS,
+  findAgenticSignal,
+  isPlainTextLlms,
   OSS_README_MIN_BYTES,
   PLACEMENT_CAVEAT,
   TriageReportSchema,
@@ -37,13 +39,13 @@ function candidate(overrides: Partial<RadarCandidate> = {}): RadarCandidate {
 
 function io(overrides: Partial<TriageIo> = {}): TriageIo {
   return {
-    fetchPage: async () => ({ status: 200, html: '<a href="/docs">Documentation</a> <a href="/pricing">Pricing</a>' }),
-    fetchRepo: async () => ({ archived: false, fork: false, description: 'a real tool', stars: 900, createdAt: '2026-08-01T00:00:00Z', readmeBytes: 9000, readmeHead: '## Install\nnpm i driftbase' }),
+    fetchPage: async () => ({ status: 200, html: '<a href="/docs">Documentation</a> <a href="/pricing">Pricing</a> API reference' }),
+    fetchRepo: async () => ({ archived: false, fork: false, description: 'a real tool', stars: 900, createdAt: '2026-08-01T00:00:00Z', readmeBytes: 9000, readmeHead: '## Install\nnpm i driftbase\n## API reference' }),
     ...overrides,
   }
 }
 
-const REPO_OK: RepoFacts = { archived: false, fork: false, description: 'browser agent sdk', stars: 900, createdAt: '2026-08-01T00:00:00Z', readmeBytes: 8000, readmeHead: '## Quickstart\npip install x' }
+const REPO_OK: RepoFacts = { archived: false, fork: false, description: 'browser agent sdk', stars: 900, createdAt: '2026-08-01T00:00:00Z', readmeBytes: 8000, readmeHead: '## Quickstart\npip install x\nShips an MCP server.' }
 
 describe('criterion checks', () => {
   it('ranking fit requires MIN_FIT_HITS on an arena that exists — the radar never creates rankings', () => {
@@ -72,6 +74,20 @@ describe('criterion checks', () => {
     expect(findDocsLink('<a href="/docs">Docs</a>', 'https://x.dev')).toBe('https://x.dev/docs')
     expect(findDocsLink('<a href="https://docs.x.dev/start">Docs</a>', 'https://x.dev')).toBe('https://docs.x.dev/start')
     expect(findDocsLink('<a href="/blog">Blog</a>', 'https://x.dev')).toBeNull()
+  })
+
+  it('findAgenticSignal names the matched phrase; plain prose is not an agentic surface', () => {
+    expect(findAgenticSignal('Full API reference for developers')).toBe('API reference')
+    expect(findAgenticSignal('Ships an MCP server out of the box')).toBe('MCP server')
+    expect(findAgenticSignal('See our llms.txt for agents')).toBe('llms.txt')
+    expect(findAgenticSignal('The fastest way to warm your coffee')).toBeNull()
+    expect(findAgenticSignal('We apply AI to your workflow')).toBeNull()
+  })
+
+  it('isPlainTextLlms rejects SPA catch-all HTML and empty bodies', () => {
+    expect(isPlainTextLlms('# Driftbase\n> docs for agents')).toBe(true)
+    expect(isPlainTextLlms('<!DOCTYPE html><html>')).toBe(false)
+    expect(isPlainTextLlms('   ')).toBe(false)
   })
 
   it('founder affiliation matches name and url, routing to a human', () => {
@@ -126,6 +142,54 @@ describe('triageCandidate', () => {
     const dead = await triageCandidate(candidate(), ARENAS, io({ fetchPage: async () => ({ status: 404, html: '' }) }))
     expect(dead).toMatchObject({ status: 'skipped', criterion: 'docs-surface' })
     expect(dead.evidence[0]).toContain('HTTP 404')
+  })
+
+  it('records the agentic surface as a fetched URL + one-line evidence on every auto-approval', async () => {
+    const hosted = await triageCandidate(candidate(), ARENAS, io())
+    expect(hosted.status).toBe('auto-approved')
+    expect(hosted.evidence.some((e) => e.startsWith('agentic-surface: https://driftbase.dev/docs') && e.includes('API reference'))).toBe(true)
+    const oss = await triageCandidate(candidate({ url: 'https://github.com/acme/driftbase', key: 'github:acme/driftbase' }), ARENAS, io())
+    expect(oss.status).toBe('auto-approved')
+    expect(oss.evidence.some((e) => e.startsWith('agentic-surface: https://api.github.com/repos/acme/driftbase/readme') && e.includes('API reference'))).toBe(true)
+  })
+
+  it('skips a hosted product with docs but no agentic surface, recording the llms.txt probe', async () => {
+    const d = await triageCandidate(
+      candidate(),
+      ARENAS,
+      io({
+        fetchPage: async (url) =>
+          url.endsWith('/llms.txt') ? { status: 404, html: '' } : { status: 200, html: '<a href="/docs">Documentation</a> <a href="/pricing">Pricing</a>' },
+      }),
+    )
+    expect(d).toMatchObject({ status: 'skipped', criterion: 'agentic-surface', bringup: null })
+    expect(d.reason).toContain('no citable agentic surface')
+    expect(d.evidence.some((e) => e.includes('/llms.txt — HTTP 404'))).toBe(true)
+  })
+
+  it('a plain-text llms.txt is itself the citable agentic surface', async () => {
+    const d = await triageCandidate(
+      candidate(),
+      ARENAS,
+      io({
+        fetchPage: async (url) =>
+          url.endsWith('/llms.txt')
+            ? { status: 200, html: '# Driftbase\ndocs for agents' }
+            : { status: 200, html: '<a href="/docs">Documentation</a> <a href="/pricing">Pricing</a>' },
+      }),
+    )
+    expect(d.status).toBe('auto-approved')
+    expect(d.evidence.some((e) => e.startsWith('agentic-surface: https://driftbase.dev/llms.txt'))).toBe(true)
+  })
+
+  it('skips an OSS repo whose README names no public API, MCP server, or agent docs', async () => {
+    const d = await triageCandidate(
+      candidate({ url: 'https://github.com/acme/driftbase', key: 'github:acme/driftbase' }),
+      ARENAS,
+      io({ fetchRepo: async () => ({ ...REPO_OK, description: 'a desktop theme pack', readmeHead: '## Quickstart\npip install x' }) }),
+    )
+    expect(d).toMatchObject({ status: 'skipped', criterion: 'agentic-surface', bringup: null })
+    expect(d.reason).toContain('no citable agentic surface')
   })
 
   it('routes star-velocity anomalies to needs-human instead of auto-approving', async () => {

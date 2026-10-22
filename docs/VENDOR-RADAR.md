@@ -7,10 +7,14 @@ Approved candidates enter scoped runs of the rankings engine and land through re
 
 Candidate approval follows the criteria in
 `policies/AGENT_POLICY.md` ("Vendor-radar candidate approval"): existing-ranking fit, public
-docs surface, shipped product, no founder affiliation. `rankings-engine/scripts/radar-triage.ts` applies
+docs surface, shipped product, no founder affiliation, and a citable agentic surface.
+`rankings-engine/scripts/radar-triage.ts` applies
 them mechanically — the lexical arena classifier for ranking fit, a docs-surface fetch, the
 waitlist/link-list/placeholder guards plus a star-velocity anomaly floor for shipped-product,
-and the affiliation guard — and records
+the affiliation guard, and the agentic-surface check (the fetched product/docs page or README
+must name a public API, MCP server, or agent/automation docs, or `/llms.txt` on the product's
+own origin must answer with plain text; the disposition records the fetched URL and a one-line
+evidence note) — and records
 every candidate's disposition (auto-approved, skipped with the failing criterion and its evidence,
 or needs-human) on the day's candidates issue and in
 `reports/vendor-radar/<date>-triage.json`. Ranking-fit placement is lexical, so every
