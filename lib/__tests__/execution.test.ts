@@ -84,6 +84,12 @@ describe('execution assessments', () => {
     expect(availability.rationale).toMatch(/image-code challenge/)
     expect(availability.rationale).toMatch(/existing-entity lookup probe did not test availability/)
   })
+  it('keeps board distribution unresolved when sending evidence omits access and questions', () => {
+    const board = part('fin_010', 'n4')
+    expect(board.references).toContainEqual({ kind: 'vendor', id: 'google_slides', role: 'stated-vendor' })
+    expect(board.metadata.execution).toMatchObject({ category: null, basis: 'unresolved', reviewRequired: true })
+    expect((board.metadata.execution as Execution).rationale).toMatch(/distribution method, document-access checks and collection of directors' questions/)
+  })
   it('resolves every local evidence reference to retained content', () => {
     for (const record of records) for (const scope of scopes(record.parts)) {
       const assessment = scope.metadata.execution as Execution | undefined
