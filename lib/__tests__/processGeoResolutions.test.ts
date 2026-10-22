@@ -102,8 +102,41 @@ describe('step geo resolutions', () => {
     expect(countries('qs_052', 'n3')).toEqual(['US'])
   })
 
-  // The remaining class-(a) records from the PR #382 audit live in
-  // docs/geo-resolution-worklist.json so the worklist is tracked in-tree, not in a PR body.
+  // Wave 3 empties the worklist: the twelve restructured records plus the form_011
+  // reclassification to class (b) (title-scoped national regime, the form_002/opp_002/tax_003
+  // precedent: the LLC is the US entity form, the CA geoNote is not-applicable, and the n3 geo
+  // decision already carries the per-country entity options).
+  it('pins the wave-3 restructuring and the form_011 class-(b) reclassification', () => {
+    const tasks = loadProcesses(DATA_DIR)
+    const byId = (id: string) => tasks.find((t) => t.id === id)!
+    const countries = (id: string, nodeId: string) =>
+      (byId(id).dag.nodes.find((n) => n.id === nodeId)?.geoResolutions ?? []).map((r) => r.country).sort()
+
+    // The deadline steps resolve in every covered country.
+    expect(byId('sit_008').geoScope).toBe('global')
+    expect(countries('sit_008', 'n2')).toEqual(['CA', 'DE', 'FR', 'IN', 'PT', 'UK', 'US'])
+    expect(byId('sit_009').geoScope).toBe('global')
+    expect(countries('sit_009', 'n2')).toEqual(['CA', 'DE', 'FR', 'IN', 'PT', 'UK', 'US'])
+    // The claim rides the tax return everywhere a regime exists; India resolves not-applicable.
+    expect(byId('tax_010').geoScope).toBe('global')
+    expect(countries('tax_010', 'n5')).toEqual(['CA', 'DE', 'FR', 'IN', 'PT', 'UK', 'US'])
+    // The strategy step carries every covered route; the LCA machinery is the US cut.
+    expect(byId('hr_011').geoScope).toBe('global')
+    expect(countries('hr_011', 'n1')).toEqual(['CA', 'DE', 'FR', 'IN', 'PT', 'UK', 'US'])
+    expect(byId('vc_001').geoScope).toBe('global')
+    expect(byId('opp_012').geoScope).toBe('global')
+    // Artifact-geo keeps these US-scoped (the hr_001 precedent): business-address,
+    // executed-safes, priced-round-closing, trademark-serial all carry committed geo entries.
+    for (const id of ['qs_044', 'fund_001', 'fund_002', 'legal_002']) {
+      expect(byId(id).geoScope, `${id} stays us (artifact geo)`).toBe('us')
+    }
+    // form_011 reclassified (b): no resolutions, the geo decision options stand.
+    expect(byId('form_011').geoScope).toBe('us')
+    expect(byId('form_011').dag.nodes.some((n) => (n.geoResolutions ?? []).length > 0)).toBe(false)
+  })
+
+  // The worklist (emptied by wave 3) lives in docs/geo-resolution-worklist.json so new
+  // offenders are tracked in-tree, not in a PR body.
   // Self-verifying both ways: a listed record must still await restructuring (no resolutions
   // yet), and a restructured record must leave the list in the same PR.
   it('the geo-resolution worklist names committed records that still await restructuring', () => {
