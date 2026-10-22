@@ -17,7 +17,7 @@ import path from 'node:path'
 import { describe, expect, it } from 'vitest'
 import { operationalSources } from './helpers/operational-sources'
 import {
-  ceilingWithJurisdictions, JURISDICTIONS, parseJuris, serializeJuris,
+  ceilingWithJurisdictions, JURISDICTION_INPUTS, JURISDICTIONS, parseJuris, serializeJuris,
   type Jurisdiction, type JurisdictionStepView,
 } from '@/lib/jurisdictions'
 import {
@@ -57,7 +57,8 @@ describe('corpus integrity (complete canonical projection — loadProcesses stri
     for (const { task, node } of rawConditional) {
       expect(node.jurisdictions!.length, `${task.id}:${node.id} empty jurisdictions`).toBeGreaterThan(0)
       for (const j of node.jurisdictions!) {
-        expect(JURISDICTIONS, `${task.id}:${node.id} jurisdiction "${j}"`).toContain(j)
+        // Raw committed values: the canonical codes plus the deprecated 'CA' alias.
+        expect(JURISDICTION_INPUTS, `${task.id}:${node.id} jurisdiction "${j}"`).toContain(j)
       }
     }
   })
@@ -129,6 +130,23 @@ describe('default-view invariance', () => {
     expect(jurisdictionNodes('legal_001', DATA_DIR)).toEqual([])
   })
 
+  it('the deprecated CA spelling in committed records loads and normalizes to US-CA', () => {
+    // The raw corpus still carries the original 'CA' spelling on the pre-per-state nodes…
+    expect(
+      rawConditional.some(({ node }) => node.jurisdictions!.includes('CA')),
+      'the committed records keep the deprecated alias (this pin guards the load-time normalization path)',
+    ).toBe(true)
+    // …and every loaded node carries only canonical codes: 'CA' never survives the parse.
+    const loaded = loadProcesses(DATA_DIR).flatMap((t) => jurisdictionNodes(t.id, DATA_DIR))
+    for (const n of loaded) {
+      for (const j of n.jurisdictions ?? []) {
+        expect(JURISDICTIONS, `loaded jurisdiction "${j}"`).toContain(j)
+      }
+    }
+    const ftbStep = jurisdictionNodes('tax_001', DATA_DIR).find((n) => n.label.includes('California'))!
+    expect(ftbStep.jurisdictions).toEqual(['US-CA'])
+  })
+
   it('covers the six branching processes: formation, registered agent, payroll setup, DE franchise tax, state taxes, annual report', () => {
     const counts = Object.fromEntries(
       ['form_001', 'qs_043', 'qs_063', 'tax_001', 'form_005', 'qs_047'].map((id) => [
@@ -157,7 +175,7 @@ describe('ceiling math with/without jurisdictions', () => {
       if (cond.length === 0) continue
       const base = taskCeiling(t)
       const views = jurisdictionStepViews(t.id, DATA_DIR)
-      for (const active of [['CA'], ['MULTI'], ['CA', 'MULTI']] as Jurisdiction[][]) {
+      for (const active of [['US-CA'], ['MULTI'], ['US-CA', 'MULTI'], ['US-TX', 'US-NY']] as Jurisdiction[][]) {
         const activeCond = cond.filter((n) => n.jurisdictions!.some((j) => active.includes(j)))
         const server = computeCeiling([...t.dag.nodes, ...activeCond] as DagNode[])
         const client = ceilingWithJurisdictions(base, views, active)
@@ -178,11 +196,11 @@ describe('ceiling math with/without jurisdictions', () => {
   it('non-agent conditional steps honestly LOWER the ceiling; agent ones raise the numerator', () => {
     const base = { agentSteps: 5, totalSteps: 10, pct: 50 }
     const step = (over: Partial<JurisdictionStepView>): JurisdictionStepView => ({
-      label: 's', route: 'form', jurisdictions: ['CA'], actionUrl: null, actionLabel: null,
+      label: 's', route: 'form', jurisdictions: ['US-CA'], actionUrl: null, actionLabel: null,
       estimatedMinutes: 5, async: false, processHref: null, processTitle: null, ...over,
     })
-    expect(ceilingWithJurisdictions(base, [step({})], ['CA']).pct).toBe(45) // 5/11
-    expect(ceilingWithJurisdictions(base, [step({ route: 'agent' })], ['CA']).agentSteps).toBe(6)
+    expect(ceilingWithJurisdictions(base, [step({})], ['US-CA']).pct).toBe(45) // 5/11
+    expect(ceilingWithJurisdictions(base, [step({ route: 'agent' })], ['US-CA']).agentSteps).toBe(6)
     // Steps of an inactive jurisdiction never count.
     expect(ceilingWithJurisdictions(base, [step({})], ['MULTI']).pct).toBe(50)
   })
@@ -190,20 +208,30 @@ describe('ceiling math with/without jurisdictions', () => {
 
 describe('?juris= codec', () => {
   it('parses tolerantly: lowercase tokens, unknown tokens dropped, canonical order, never a crash', () => {
-    expect(parseJuris('ca')).toEqual(['CA'])
-    expect(parseJuris('multi,ca')).toEqual(['CA', 'MULTI'])
-    expect(parseJuris(' CA , MULTI ')).toEqual(['CA', 'MULTI'])
-    expect(parseJuris('nonsense,ca')).toEqual(['CA'])
+    expect(parseJuris('us-ca')).toEqual(['US-CA'])
+    expect(parseJuris('multi,us-ca')).toEqual(['US-CA', 'MULTI'])
+    expect(parseJuris(' US-CA , MULTI ')).toEqual(['US-CA', 'MULTI'])
+    expect(parseJuris('us-tx,us-ny')).toEqual(['US-NY', 'US-TX'])
+    expect(parseJuris('nonsense,us-ca')).toEqual(['US-CA'])
     expect(parseJuris('nonsense')).toEqual([])
     expect(parseJuris('')).toEqual([])
     expect(parseJuris(null)).toEqual([])
   })
 
+  it('the deprecated CA alias (pre-per-state URLs and stored state) still parses, as US-CA', () => {
+    expect(parseJuris('ca')).toEqual(['US-CA'])
+    expect(parseJuris('multi,ca')).toEqual(['US-CA', 'MULTI'])
+    expect(parseJuris(' CA , MULTI ')).toEqual(['US-CA', 'MULTI'])
+  })
+
   it('serializes canonically and elides the default (null deletes the param)', () => {
     expect(serializeJuris([])).toBeNull()
-    expect(serializeJuris(['CA'])).toBe('ca')
-    expect(serializeJuris(['MULTI', 'CA'])).toBe('ca,multi')
-    // Roundtrip.
+    expect(serializeJuris(['US-CA'])).toBe('us-ca')
+    expect(serializeJuris(['MULTI', 'US-CA'])).toBe('us-ca,multi')
+    // Roundtrip, including through the alias.
     expect(parseJuris(serializeJuris(['MULTI']))).toEqual(['MULTI'])
+    expect(parseJuris(serializeJuris(['US-CA']))).toEqual(['US-CA'])
+    // The deprecated alias is accepted on input, never emitted.
+    expect(JURISDICTIONS).not.toContain('CA')
   })
 })

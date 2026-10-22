@@ -7,7 +7,7 @@ import { connectionSchema } from './shared-processes/schema'
 import { isPopulated, loadCategory } from './data'
 import { resolveGapStep } from './gapClosers'
 import { GEO_NOTE_KINDS } from './geoPreference'
-import { JURISDICTIONS, type Jurisdiction, type JurisdictionStepView } from './jurisdictions'
+import { JURISDICTION_INPUTS, normalizeJurisdiction, type Jurisdiction, type JurisdictionStepView } from './jurisdictions'
 import { hasLogo } from './logos'
 import { isShutdown } from './shutdown'
 import type { Cadence, GapResolution, ProcessKind, Reversibility, SimStep, StepRoute, SwapOption, Urgency, VendorRole } from './processSim'
@@ -113,15 +113,19 @@ export const DagNodeBaseSchema = z.object({
   async: z.boolean().optional(),
   // Jurisdiction-conditional step (founder 2026-09-25: "allow more options for the processes —
   // ie multi-state situations or California included"): this step only applies when the reader
-  // turns the named jurisdiction option on (['CA'] = operating in California, ['MULTI'] =
-  // operating in multiple states). Absence = the step applies everywhere (the Delaware-only
-  // default). loadProcesses() STRIPS conditional nodes at load time, so every static surface —
-  // ceilings, rankings, the simulator, the manifest, the DAG, derived/generated step data —
-  // keeps the byte-identical default view and no judged number moves; the steps only render
-  // client-side via components/JurisdictionToggle.tsx (jurisdictionStepViews below). Task-level
-  // totals (activeMinutes/totalEstimatedMinutes/hasAsyncSteps) describe the DEFAULT flow and
-  // deliberately exclude conditional nodes. Client-safe half in lib/jurisdictions.ts.
-  jurisdictions: z.enum(JURISDICTIONS).array().min(1).optional(),
+  // turns the named jurisdiction option on — a registry US-state code (['US-CA'] = operating in
+  // California, ['US-TX'] = operating in Texas, … the lib/jurisdictions.ts JURISDICTIONS set)
+  // or ['MULTI'] (operating in multiple states). The original two-option enum spelled
+  // California 'CA'; committed records keep that spelling and it normalizes to 'US-CA' here at
+  // parse time (deprecated alias — new records use the registry code). Absence = the step
+  // applies everywhere (the Delaware-only default). loadProcesses() STRIPS conditional nodes at
+  // load time, so every static surface — ceilings, rankings, the simulator, the manifest, the
+  // DAG, derived/generated step data — keeps the byte-identical default view and no judged
+  // number moves; the steps only render client-side via components/JurisdictionToggle.tsx
+  // (jurisdictionStepViews below). Task-level totals (activeMinutes/totalEstimatedMinutes/
+  // hasAsyncSteps) describe the DEFAULT flow and deliberately exclude conditional nodes.
+  // Client-safe half in lib/jurisdictions.ts.
+  jurisdictions: z.enum(JURISDICTION_INPUTS).transform(normalizeJurisdiction).array().min(1).optional(),
   // Internal pointer for a conditional step whose work already lives in its OWN corpus process
   // (the sales-tax-nexus case — link it, never duplicate it): the canonical slug of that
   // process. Display-only; integrity (resolves to a real process) is corpus-tested.
@@ -757,7 +761,7 @@ export function jurisdictionStepViews(taskId: string, dir: string = DEFAULT_DIR(
     return {
       label: n.label,
       route: n.route,
-      jurisdictions: (n.jurisdictions ?? []) as Jurisdiction[],
+      jurisdictions: (n.jurisdictions ?? []) satisfies Jurisdiction[],
       actionUrl: n.actionUrl ?? null,
       actionLabel: n.actionLabel ?? null,
       estimatedMinutes: n.estimatedMinutes,
@@ -1056,7 +1060,7 @@ export const GOVERNMENT_ARENA_ID = 'government-services'
 // construction: a step wired to a foreign agency inherits that agency's own country. The
 // process-level jurisdiction context was checked and corroborates (every government-covered
 // step today sits on a geoScope-'us' process whose wired agency carries country 'US'; the
-// node-level `jurisdictions` field only marks CA/MULTI conditional steps), but the wired
+// node-level `jurisdictions` field only marks state/MULTI conditional steps), but the wired
 // agency is the finer committed signal — geoScope cannot tell a tax step from an IP step.
 //
 // THE STATE DIMENSION (per-state vendors foundation, 2026-10-22): some government-services
