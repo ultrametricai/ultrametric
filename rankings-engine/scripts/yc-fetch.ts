@@ -30,26 +30,33 @@ async function main() {
 
   // Preserve yc-classify's verdicts across refreshes: a re-fetch must never wipe the LLM-assigned
   // mappedArena/proposedArena for companies we already classified (they'd all reset to null and
-  // force a full re-classification spend).
-  const previous = new Map<string, { mappedArena: string | null; proposedArena: string | null }>()
+  // force a full re-classification spend). Companies NOT in the previous map are stamped
+  // pending: true — "awaiting classification", distinct from a judged null/null — so the
+  // coverage queue keeps matching them through its keyless vocab fallback until yc-classify
+  // judges them (lib/schemas.ts YcCompanySchema).
+  const previous = new Map<string, { mappedArena: string | null; proposedArena: string | null; pending?: boolean }>()
   if (fs.existsSync(YC_MAP_PATH)) {
     for (const c of YcMapSchema.parse(JSON.parse(fs.readFileSync(YC_MAP_PATH, 'utf8')))) {
-      previous.set(c.slug, { mappedArena: c.mappedArena, proposedArena: c.proposedArena })
+      previous.set(c.slug, { mappedArena: c.mappedArena, proposedArena: c.proposedArena, pending: c.pending })
     }
   }
 
-  const distilled = modern.map((c) => ({
-    name: c.name,
-    slug: c.slug,
-    batch: c.batch,
-    // A handful of companies ship with no website in the upstream feed — fall back to their YC
-    // company page so every entry still carries a resolvable, schema-valid URL.
-    website: c.website || c.url,
-    oneLiner: c.one_liner ?? '',
-    tags: Array.from(new Set([...(c.tags ?? []), ...(c.industries ?? [])])),
-    mappedArena: previous.get(c.slug)?.mappedArena ?? null,
-    proposedArena: previous.get(c.slug)?.proposedArena ?? null,
-  }))
+  const distilled = modern.map((c) => {
+    const prev = previous.get(c.slug)
+    return {
+      name: c.name,
+      slug: c.slug,
+      batch: c.batch,
+      // A handful of companies ship with no website in the upstream feed — fall back to their YC
+      // company page so every entry still carries a resolvable, schema-valid URL.
+      website: c.website || c.url,
+      oneLiner: c.one_liner ?? '',
+      tags: Array.from(new Set([...(c.tags ?? []), ...(c.industries ?? [])])),
+      mappedArena: prev?.mappedArena ?? null,
+      proposedArena: prev?.proposedArena ?? null,
+      ...(prev ? (prev.pending ? { pending: true } : {}) : { pending: true }),
+    }
+  })
 
   const parsed = YcMapSchema.parse(distilled)
   writeJson(YC_MAP_PATH, parsed)

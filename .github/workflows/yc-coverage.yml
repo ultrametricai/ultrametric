@@ -1,23 +1,32 @@
-# Weekly YC coverage engine: the KEYLESS always-gaining loop that grows YC batch coverage.
-# Runs rankings-engine/scripts/yc-coverage-queue.ts — re-crawls YC's public directory (yc-oss/api
-# mirror), filters to ACTIVE companies that fit an EXISTING arena (yc-classify verdicts where
-# available, DOMAIN_VOCAB keyword match otherwise) and show a real docs/API surface (bounded
-# keyless HTTP checks), and re-ranks open-rankings/yc-queue.json (batch recency x arena fit x docs
-# surface) — then:
+# Weekly YC directory lane (modeled on vendor-radar.yml): runs the full ingestion chain —
+# yc-fetch.ts (keyless yc-oss/api directory mirror → open-rankings/yc-map.json, preserving prior
+# classify verdicts) → yc-classify.ts (LLM arena mapping for modern batches; runs only when the
+# ANTHROPIC_API_KEY repo secret is present, exactly the radar workflow's key handling — the key
+# never appears in the tree) → yc-cross-reference.ts (stamps verified ycBatch onto each matched
+# product's open-rankings/<arena>/products.json entry + open-rankings/yc-batches.json, matched by
+# normalized website domain, never by name) → yc-coverage-queue.ts (re-ranks
+# open-rankings/yc-queue.json: batch recency x arena fit x keyless docs probes) — then:
 #
-#   1. commits the refreshed queue via the usual PR-or-issue flow (merging it is the human
-#      review point — the queue only nominates, it never scores),
-#   2. opens a work-queue issue (label: story-runner, the same label every automation reuses)
-#      listing the next 10 bring-up candidates.
+#   1. hands the queue's top candidates to the SAME criteria triage the radar uses
+#      (radar-triage.ts, policies/AGENT_POLICY.md "Vendor-radar candidate approval"), writing the
+#      dated disposition file beside the radar's own (reports/vendor-radar/<date>-yc-triage.json)
+#      and appending the table to the work-queue issue,
+#   2. regenerates the derived interchange the cross-reference's products.json changes feed
+#      (vendor reviews, story graph, step rankings — the same deterministic trio the radar
+#      workflow regenerates before staging open-rankings/),
+#   3. commits everything via the usual PR-or-issue flow (merging the PR is the human review
+#      point — the lane only nominates and mirrors directory metadata, it never scores),
+#   4. opens the work-queue issue (label: story-runner, the same label every automation reuses)
+#      listing the next bring-up candidates with their triage dispositions.
 #
-# Deliberately keyless: this workflow NOMINATES and RANKS; the actual bring-up (crawl ->
-# extract -> probe -> judge -> claims -> derive -> intervals) happens in keyed runs that work
-# through the issue. The window widens over time — batches back to Winter 2016 — because the
-# queue re-ranks the whole window every run and already-tracked companies drop out on their own.
+# The lane NEVER creates a new ranking and NEVER touches a verdict: bring-ups on triage passers
+# happen in keyed runs that work through the issue (docs/VENDOR-RADAR.md). Without the
+# ANTHROPIC_API_KEY secret the classify stage is skipped and the queue falls back to the keyless
+# DOMAIN_VOCAB match it already supports.
 #
 # Cron offset from the other loops: story-runner '17 */6 * * *', daily-snapshot '43 5 * * *',
-# cert-sweep '29 7 * * 1' (Mondays), accuracy-engine '41 6 * * 3' (Wednesdays) — this runs
-# Fridays 06:53 UTC.
+# cert-sweep '29 7 * * 1' (Mondays), accuracy-engine '41 6 * * 3' (Wednesdays), vendor-radar
+# '31 8 * * *' (daily) — this runs Fridays 06:53 UTC.
 name: yc-coverage
 
 on:
@@ -37,7 +46,7 @@ concurrency:
 jobs:
   run:
     runs-on: ubuntu-latest
-    timeout-minutes: 60
+    timeout-minutes: 90
     steps:
       - uses: actions/checkout@v7
       - uses: pnpm/action-setup@v6
@@ -48,49 +57,112 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
-      # The queue refresh itself: keyless, bounded (<= 12 concurrent HTTP checks, 6s timeouts).
-      # --refetch pulls a fresh directory snapshot; the full 2016+ window keeps widening
-      # coverage backwards while newer batches outrank older ones at equal fit.
+      # Stage 1 — directory fetch: keyless yc-oss/api mirror → rankings-engine/cache/yc/ (gitignored)
+      # + open-rankings/yc-map.json. A re-fetch preserves yc-classify's existing verdicts.
+      - name: Fetch YC directory
+        run: pnpm tsx rankings-engine/scripts/yc-fetch.ts
+
+      # Stage 2 — LLM classification of PENDING companies only (yc-fetch stamps new ones
+      # pending: true in the committed map; judged entries are never re-spent or overwritten, so
+      # a fresh runner repeats no paid calls). Keyed stage: the ANTHROPIC_API_KEY repo secret
+      # gates it (same handling as vendor-radar.yml's bring-up); without the key the stage is
+      # skipped and pending companies keep matching through the keyless DOMAIN_VOCAB fallback in
+      # the queue.
+      - name: Classify companies onto arenas (LLM)
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: |
+          if [ -z "$ANTHROPIC_API_KEY" ]; then
+            echo "ANTHROPIC_API_KEY secret not set — classify skipped; the queue uses the keyless vocab fallback."
+            exit 0
+          fi
+          pnpm tsx rankings-engine/scripts/yc-classify.ts
+
+      # Stage 3 — cross-reference: which tracked products are YC alumni, verified by normalized
+      # website domain. Stamps ycBatch onto open-rankings/<arena>/products.json and rewrites
+      # open-rankings/yc-batches.json.
+      - name: Cross-reference tracked products against the directory
+        run: pnpm tsx rankings-engine/scripts/yc-cross-reference.ts
+
+      # Stage 4 — the ranked coverage queue (keyless, bounded HTTP probes) + the radar-shaped
+      # top-candidates hand-off for the triage step. yc-fetch already refreshed the feed cache
+      # this run, so no --refetch.
       - name: Refresh YC coverage queue
-        run: pnpm tsx rankings-engine/scripts/yc-coverage-queue.ts --refetch --years 2016-2026 --issue-body /tmp/yc-queue-issue.md
+        run: |
+          pnpm tsx rankings-engine/scripts/yc-coverage-queue.ts --years 2016-2026 \
+            --issue-body /tmp/yc-queue-issue.md \
+            --radar-report /tmp/yc-radar-report.json
+
+      # Criteria triage — the same mechanical checks and files the daily radar uses
+      # (policies/AGENT_POLICY.md "Vendor-radar candidate approval": ranking fit, docs surface,
+      # shipped product, no founder affiliation, citable agentic surface). Dispositions land in
+      # reports/vendor-radar/<date>-yc-triage.json and on the work-queue issue.
+      - name: Criteria triage of top candidates
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          DATE=$(date -u +%F)
+          pnpm tsx rankings-engine/scripts/radar-triage.ts \
+            --report /tmp/yc-radar-report.json \
+            --out "reports/vendor-radar/$DATE-yc-triage.json" \
+            --md /tmp/yc-triage.md
+          printf '\n' >> /tmp/yc-queue-issue.md
+          cat /tmp/yc-triage.md >> /tmp/yc-queue-issue.md
+
+      # The cross-reference touches open-rankings/<arena>/products.json, an input of the derived
+      # interchange — regenerate the same deterministic trio the radar workflow does before
+      # staging, so the drift tests stay green.
+      - name: Regenerate derived interchange
+        run: |
+          pnpm tsx rankings-engine/scripts/generate-vendor-reviews.ts
+          pnpm tsx rankings-engine/scripts/generate-story-graph.ts
+          pnpm tsx rankings-engine/scripts/generate-step-rankings.ts
+          pnpm stats
 
       - name: Tests
         run: pnpm test
 
-      - name: Commit queue as PR (or compare-link issue)
+      # porcelain, not `git diff --quiet`: a brand-new dated triage report is UNTRACKED and
+      # invisible to diff (the vendor-radar.yml lesson).
+      - name: Commit lane output as PR (or compare-link issue)
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           RUN_ID: ${{ github.run_id }}
         run: |
-          if git diff --quiet -- rankings; then
-            echo "No queue change — done."
+          if [ -z "$(git status --porcelain -- open-rankings reports)" ]; then
+            echo "No lane change — done."
             exit 0
           fi
           BRANCH="yc-coverage/$RUN_ID"
           git config user.name "ultrametric-yc-coverage"
           git config user.email "noreply@ultrametric.ai"
           git checkout -b "$BRANCH"
-          git add rankings
-          git commit -m "chore(yc-coverage): weekly YC coverage-queue refresh"
+          git add open-rankings reports
+          git commit -m "chore(yc-coverage): weekly YC directory lane refresh"
           git push -u origin "$BRANCH"
-          # Same org-policy fallback as story-runner/accuracy-engine: if Actions may not open
-          # PRs, leave an issue carrying the compare link so the queue is never stranded.
+          # Same org-policy fallback as vendor-radar/story-runner: if Actions may not open PRs,
+          # leave an issue carrying the compare link so the refresh is never stranded.
           if ! gh pr create \
-            --title "yc-coverage: weekly queue refresh" \
-            --body "Keyless YC coverage-queue refresh (rankings-engine/scripts/yc-coverage-queue.ts). The queue nominates active YC companies for bring-up into existing arenas — it never changes a score or verdict. Next candidates are in the companion work-queue issue." \
+            --title "yc-coverage: weekly directory lane refresh" \
+            --body "Weekly YC directory lane (fetch → classify → cross-reference → queue, .github/workflows/yc-coverage.yml): refreshed yc-map/yc-batches/yc-queue, source-mirrored ycBatch stamps on products.json, regenerated derived interchange, and the dated triage dispositions. The lane nominates and mirrors directory metadata — it never changes a score or verdict. Next candidates are in the companion work-queue issue." \
             --base main --head "$BRANCH"; then
             gh issue create \
-              --title "yc-coverage: queue refresh ready on $BRANCH" \
-              --body "The weekly YC coverage queue is committed on [\`$BRANCH\`](https://github.com/${GITHUB_REPOSITORY}/compare/main...$BRANCH) but Actions may not open PRs (org policy). Open the PR from the compare link." \
+              --title "yc-coverage: lane refresh ready on $BRANCH" \
+              --body "The weekly YC directory lane output is committed on [\`$BRANCH\`](https://github.com/${GITHUB_REPOSITORY}/compare/main...$BRANCH) but Actions may not open PRs (org policy). Open the PR from the compare link." \
               --label "story-runner" || echo "issue creation also failed — branch $BRANCH is pushed; see run logs"
           fi
 
-      # The ranked work queue: the next 10 bring-up candidates, for human triage and as the
-      # paper trail the keyed bring-up runs work through.
+      # The ranked work queue + triage dispositions: the paper trail the keyed bring-up runs work
+      # through. if: always() — a failure in the commit step must not swallow the issue.
       - name: Open work-queue issue
+        if: always()
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
+          if [ ! -f /tmp/yc-queue-issue.md ]; then
+            echo "No issue body — nothing to file."
+            exit 0
+          fi
           gh issue create \
             --title "yc-coverage: next bring-up candidates $(date -u +%F)" \
             --body-file /tmp/yc-queue-issue.md \

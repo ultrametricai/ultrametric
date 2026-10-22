@@ -7,10 +7,14 @@ Approved candidates enter scoped runs of the rankings engine and land through re
 
 Candidate approval follows the criteria in
 `policies/AGENT_POLICY.md` ("Vendor-radar candidate approval"): existing-ranking fit, public
-docs surface, shipped product, no founder affiliation. `rankings-engine/scripts/radar-triage.ts` applies
+docs surface, shipped product, no founder affiliation, and a citable agentic surface.
+`rankings-engine/scripts/radar-triage.ts` applies
 them mechanically — the lexical arena classifier for ranking fit, a docs-surface fetch, the
 waitlist/link-list/placeholder guards plus a star-velocity anomaly floor for shipped-product,
-and the affiliation guard — and records
+the affiliation guard, and the agentic-surface check (the fetched product/docs page or README
+must name a public API, MCP server, or agent/automation docs, or `/llms.txt` on the product's
+own origin must answer with plain text; the disposition records the fetched URL and a one-line
+evidence note) — and records
 every candidate's disposition (auto-approved, skipped with the failing criterion and its evidence,
 or needs-human) on the day's candidates issue and in
 `reports/vendor-radar/<date>-triage.json`. Ranking-fit placement is lexical, so every
@@ -36,7 +40,7 @@ that review.
 `rankings-engine/scripts/vendor-radar.ts`, run daily by `.github/workflows/vendor-radar.yml`
 (cron `31 8 * * *`, offset from the other automation loops):
 
-1. **Scan** three keyless public launch surfaces (a handful of HTTP requests total, polite UA,
+1. **Scan** four keyless public launch surfaces (a handful of HTTP requests total, polite UA,
    10s timeouts; a source that fails to answer degrades to zero items with a recorded `error`
    note in the report — never a fabricated item):
    - **Hacker News** via the Algolia search API (keyless by design): `Show HN` and `"Launch HN"`
@@ -51,6 +55,12 @@ that review.
      the higher authenticated limit when present): repos created in the last
      `GITHUB_LOOKBACK_DAYS` with ≥ `GITHUB_MIN_STARS` stars, kept only when star velocity
      crosses `GITHUB_MIN_STARS_PER_DAY`.
+   - **YC Launches** via `ycombinator.com/launches.json` (verified keyless 2026-10-21: plain
+     JSON pages of 20 launches with title, tagline, posting date, vote count, and the company's
+     site/batch/tags; `robots.txt` allows `/launches`; the `/launches/rss` and `/launches/feed`
+     paths 404, so the JSON surface is the feed). Launches from the last `YC_LOOKBACK_DAYS` are
+     kept; presence on YC's official launch feed within the window is the signal (the Product
+     Hunt frontpage precedent) and the feed's own vote count rides in the evidence verbatim.
 2. **Match** each hot item's text (title / tagline / description / topics) against the arena
    taxonomy: `DOMAIN_VOCAB` (`rankings-engine/scripts/tag-story-scopes.ts` — the same per-arena nouns
    `yc-coverage-queue.ts` matches with), extended per arena with its `open-rankings/categories.json`

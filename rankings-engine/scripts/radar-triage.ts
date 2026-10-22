@@ -18,6 +18,13 @@
 //                                repo, a link list, a course, or a placeholder.
 //   4. no founder affiliation  — founder-affiliated products are never auto-approved; they are
 //                                routed to a human (needs-human) for disclosure + bias audit.
+//   5. agentic surface         — a CITABLE agentic surface: a public API, an MCP server, an
+//                                llms.txt, or agent/automation docs. The fetched product or docs
+//                                page must name one (AGENTIC_SIGNAL_RE), or /llms.txt on the
+//                                product's own origin must answer with plain text; for OSS the
+//                                fetched README/description must name one. The disposition
+//                                records the fetched URL and a one-line evidence note; a
+//                                candidate without one is skipped with the reason recorded.
 //
 // Every disposition carries its evidence: the URLs fetched, the HTTP statuses, and what the
 // response showed. A fetch that fails is recorded as the failure it was, never guessed around.
@@ -55,7 +62,14 @@ export const AFFILIATED_PATTERNS = ['ultrametric', 'productarena']
 
 // Launch-post hosts: a page about the launch, not the product. A candidate whose only URL is
 // one of these has no product docs surface we can verify keylessly.
-export const LAUNCH_POST_HOSTS = new Set(['producthunt.com', 'www.producthunt.com', 'news.ycombinator.com'])
+export const LAUNCH_POST_HOSTS = new Set([
+  'producthunt.com',
+  'www.producthunt.com',
+  'news.ycombinator.com',
+  // YC Launches/company pages: yc-fetch falls back to these when a company lists no site.
+  'ycombinator.com',
+  'www.ycombinator.com',
+])
 
 // Lexical placement is a nomination signal, not a classification. The caveat rides on every
 // auto-approved disposition (and through it, the bring-up PR body) until a definition-aware
@@ -68,7 +82,7 @@ export const DispositionSchema = z.object({
   url: z.string(),
   arena: z.string().nullable(), // the arena a passer would be brought up into
   status: z.enum(['auto-approved', 'skipped', 'needs-human']),
-  criterion: z.enum(['ranking-fit', 'docs-surface', 'shipped-product', 'founder-affiliation']).nullable(),
+  criterion: z.enum(['ranking-fit', 'docs-surface', 'shipped-product', 'founder-affiliation', 'agentic-surface']).nullable(),
   reason: z.string(),
   evidence: z.array(z.string()), // URLs fetched + HTTP statuses + what the response showed
   // Roster-ready URLs for an auto-approved candidate (null otherwise): what a bring-up PR
@@ -139,6 +153,7 @@ export interface RepoFacts {
   createdAt: string // ISO date the repo was created
   readmeBytes: number
   readmeHead: string // first ~2000 chars, for substance checks
+  readme: string // the full fetched README (capped), for the agentic-surface scan — a README that documents its API below the badges/screenshots fold still counts
 }
 
 export function starsPerDay(repo: Pick<RepoFacts, 'stars' | 'createdAt'>, now: Date): number {
@@ -182,10 +197,35 @@ export function findDocsLink(html: string, baseUrl: string): string | null {
   }
 }
 
+// Agentic surface signals: explicit namings of a public API, an MCP server, an llms.txt, or
+// agent/automation docs. Checked against fetched text only (product page, docs page, README) so
+// every match is citable as "this fetched URL says this".
+export const AGENTIC_SIGNAL_RE =
+  /\b(api reference|api docs|api documentation|rest(?:ful)? api|graphql api|public api|developer api|mcp server|model context protocol|llms\.txt|agent (?:docs|api|sdk|integration|mode)|automation api)\b/i
+
+// The matched phrase (what the fetched page actually says), or null when the text names no
+// agentic surface.
+export function findAgenticSignal(text: string): string | null {
+  const m = text.match(AGENTIC_SIGNAL_RE)
+  return m ? m[1] : null
+}
+
+// llms.txt guard: SPA/auth catch-alls answer 200 (often HTML, sometimes JSON or a bare
+// "Not Found" string) for every path. A real llms.txt is a markdown document — the spec requires
+// an H1 title line — so the body must carry one and must not read as markup or JSON, and when
+// the server declares a content type it must be text/plain or text/markdown.
+export function isPlainTextLlms(body: string, contentType?: string): boolean {
+  const ct = (contentType ?? '').toLowerCase()
+  if (ct && !/^text\/(plain|markdown)\b/.test(ct)) return false
+  const trimmed = body.trim()
+  if (trimmed.length === 0 || trimmed.startsWith('<') || trimmed.startsWith('{')) return false
+  return /^#\s/m.test(trimmed) // the llms.txt spec's required markdown H1
+}
+
 // --- IO (injectable so tests stay offline) ------------------------------------------------------
 
 export interface TriageIo {
-  fetchPage: (url: string) => Promise<{ status: number; html: string }>
+  fetchPage: (url: string) => Promise<{ status: number; html: string; contentType?: string }>
   fetchRepo: (fullName: string) => Promise<RepoFacts | { error: string }>
 }
 
@@ -198,7 +238,7 @@ export function realTriageIo(): TriageIo {
           redirect: 'follow',
           signal: AbortSignal.timeout(FETCH_TIMEOUT_MS),
         })
-        return { status: res.status, html: res.ok ? await res.text() : '' }
+        return { status: res.status, html: res.ok ? await res.text() : '', contentType: res.headers.get('content-type') ?? '' }
       } catch {
         return { status: 0, html: '' } // status 0 = network-level failure (timeout, DNS, TLS)
       }
@@ -223,6 +263,7 @@ export function realTriageIo(): TriageIo {
           createdAt: typeof j.created_at === 'string' ? j.created_at : new Date(0).toISOString(),
           readmeBytes: Buffer.byteLength(readme),
           readmeHead: readme.slice(0, 2000),
+          readme: readme.slice(0, 200_000), // bound the regex input, keep far past any badge fold
         }
       } catch (err) {
         return { error: String(err) }
@@ -278,13 +319,34 @@ export async function triageCandidate(candidate: RadarCandidate, existingArenas:
         bringup: null,
       }
     }
+    // 5. agentic surface for OSS: the fetched full README or the repo description must name one;
+    // the evidence cites whichever fetched endpoint actually carried the match.
+    const readmeSignal = findAgenticSignal(repo.readme)
+    const descSignal = readmeSignal ? null : findAgenticSignal(repo.description ?? '')
+    const ossSignal = readmeSignal ?? descSignal
+    if (!ossSignal) {
+      return {
+        ...base,
+        arena: fit.arena,
+        status: 'skipped',
+        criterion: 'agentic-surface',
+        reason: 'no citable agentic surface: the fetched README and repo description name no public API, MCP server, llms.txt, or agent/automation docs',
+        evidence,
+        bringup: null,
+      }
+    }
+    evidence.push(
+      readmeSignal
+        ? `agentic-surface: https://api.github.com/repos/${repoName}/readme — fetched, README names "${readmeSignal}"`
+        : `agentic-surface: https://api.github.com/repos/${repoName} — fetched, repo description names "${descSignal}"`,
+    )
     const githubUrl = `https://github.com/${repoName}`
     return {
       ...base,
       arena: fit.arena,
       status: 'auto-approved',
       criterion: null,
-      reason: `existing-arena fit (${fit.arena}), substantive README (${repo.readmeBytes}B), active repo; ${PLACEMENT_CAVEAT}`,
+      reason: `existing-arena fit (${fit.arena}), substantive README (${repo.readmeBytes}B), active repo, agentic surface ("${ossSignal}"); ${PLACEMENT_CAVEAT}`,
       evidence,
       bringup: { site: candidate.url, docs: githubUrl, github: githubUrl, type: 'oss' },
     }
@@ -312,12 +374,43 @@ export async function triageCandidate(candidate: RadarCandidate, existingArenas:
   if (docs.status !== 200) {
     return { ...base, arena: fit.arena, status: 'skipped', criterion: 'docs-surface', reason: `linked docs surface did not answer (HTTP ${docs.status})`, evidence, bringup: null }
   }
+  // 5. agentic surface for hosted products: the fetched docs or product page must name one, or
+  // /llms.txt on the product's own origin must answer with plain text. Every pass cites the
+  // fetched URL it came from.
+  let agentic: { url: string; note: string } | null = null
+  const docsSignal = findAgenticSignal(docs.html)
+  if (docsSignal) {
+    agentic = { url: docsLink, note: `names "${docsSignal}"` }
+  } else {
+    const pageSignal = findAgenticSignal(page.html)
+    if (pageSignal) agentic = { url: candidate.url, note: `names "${pageSignal}"` }
+  }
+  if (!agentic) {
+    const llmsUrl = new URL('/llms.txt', candidate.url).toString()
+    const llms = await io.fetchPage(llmsUrl)
+    evidence.push(`${llmsUrl} — HTTP ${llms.status}${llms.contentType ? `, ${llms.contentType}` : ''}`)
+    if (llms.status === 200 && isPlainTextLlms(llms.html, llms.contentType)) {
+      agentic = { url: llmsUrl, note: `llms.txt answers as ${llms.contentType || 'text'} (${llms.html.length} chars)` }
+    }
+  }
+  if (!agentic) {
+    return {
+      ...base,
+      arena: fit.arena,
+      status: 'skipped',
+      criterion: 'agentic-surface',
+      reason: 'no citable agentic surface: neither the fetched product page nor the docs page names a public API, MCP server, or agent/automation docs, and /llms.txt did not answer with plain text',
+      evidence,
+      bringup: null,
+    }
+  }
+  evidence.push(`agentic-surface: ${agentic.url} — HTTP 200, ${agentic.note}`)
   return {
     ...base,
     arena: fit.arena,
     status: 'auto-approved',
     criterion: null,
-    reason: `existing-arena fit (${fit.arena}), reachable docs surface, shipped product page; ${PLACEMENT_CAVEAT}`,
+    reason: `existing-arena fit (${fit.arena}), reachable docs surface, shipped product page, citable agentic surface; ${PLACEMENT_CAVEAT}`,
     evidence,
     bringup: { site: candidate.url, docs: docsLink, type: 'commercial' },
   }
