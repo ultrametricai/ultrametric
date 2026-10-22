@@ -1898,11 +1898,12 @@
     "verdict": "full",
     "quality": 9,
     "confidence": "high",
-    "rationale": "A hands-on probe confirms a live llms.txt at docs.fireworks.ai that indexes the documentation as markdown pages (probe-1), and doc pages are served as .md with an embedded pointer telling agents to fetch the llms.txt index (probe-2). llms.txt also lists the published OpenAPI specs (supp-openapi-spec), giving agents a machine-readable API surface. missing for 10: no evidence of an llms-full.txt or single-file full-docs dump, no first-party documentation describing the agent-oriented docs features.",
+    "rationale": "A probe confirmed docs.fireworks.ai/llms.txt returns HTTP 200 with a structured docs index. Individual doc pages are served as .md, with an embedded pointer telling agents to fetch the llms.txt index. llms.txt also lists the published OpenAPI specs, giving agents machine-readable API docs. Missing for 10: independent or hands-on corroboration of agents actually consuming these docs effectively.",
     "evidenceIds": [
       "fireworks-ai-probe-1",
       "fireworks-ai-probe-2",
-      "fireworks-ai-supp-openapi-spec"
+      "fireworks-ai-supp-openapi-spec",
+      "fireworks-ai-supp-api-reference"
     ]
   },
   {
@@ -1911,7 +1912,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Fireworks AI is an inference and fine-tuning platform. An in-product feature that analyzes a user's data, such as datasets, usage or deployments, and offers AI-generated insights or suggestions is plausible for this kind of product, so the axis applies. The evidence documents only developer building blocks: model APIs, tool calling, structured outputs and embeddings. It also shows a guided fine-tuning flow and static model-recommendation docs based on internal testing; none of these is an AI-insights feature built on the user's own data inside the product.",
+    "rationale": "Fireworks is an AI inference and fine-tuning platform, so in-product AI insights about a user's own data (usage, deployments, datasets) is a fair axis to ask about. The evidence pack only documents developer building blocks: model APIs, tool calling, structured outputs and vision analysis. Those let developers construct such features, but they are not an in-product insights capability. The guided fine-tuning plan flow is an adjacent feature that generates a training plan from a task description, not insights or suggestions drawn from the user's data.",
     "evidenceIds": []
   },
   {
@@ -1920,7 +1921,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Setting up autonomous background automations is a fair question for an AI inference platform, but the evidence shows no such product capability: no scheduled jobs, triggers, or background agent runtime. The related items don't qualify. Asynchronous batch inference is an adjacent feature, the REST API for automating model and deployment management is a developer building block, and Auto Reload is a billing control. Internal GPU scheduling for fine-tuning is not a user-configured automation.",
+    "rationale": "Fireworks AI is an AI inference and training platform, so background autonomous automations are a plausible axis for it, but the evidence shows no such feature. Asynchronous batch inference, autoscaling, REST API automation of deployments, and tool-calling primitives are adjacent features or developer building blocks. None is a user-configurable automation or agent that runs on its own in the background.",
     "evidenceIds": []
   },
   {
@@ -1929,7 +1930,7 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "The only on-topic evidence is a single homepage line [fireworks-ai-docs-31]: users can 'describe the task, review the plan and cost, approve the run, and get a trained model.' That is an in-product, plan-and-approve delegation flow, but it is limited to fine-tuning, and the evidence never explicitly calls it an AI assistant. Tool calling and the Nexus CLI are developer building blocks or external-tool routing, not a built-in assistant, so they earn no credit. Missing for 10: explicit documentation of a built-in AI assistant, delegation beyond fine-tuning (e.g. deployments, inference setup, debugging), detail on how the assistant plans and executes tasks, and independent or hands-on corroboration.",
+    "rationale": "The only product-native evidence is a guided fine-tuning flow on fireworks.ai: \"Describe the task, review the plan and cost, approve the run, and get a trained model.\" This reads as delegating a task to an in-product agent, but it is a single marketing line limited to training. Tool calling, the Nexus CLI and the API playground are developer building blocks or adjacent features, so they earn no credit. Missing for 10: an explicitly documented built-in AI assistant, coverage beyond fine-tuning, docs on how delegation and approval work, and independent or hands-on corroboration.",
     "evidenceIds": [
       "fireworks-ai-docs-31"
     ]
@@ -1940,14 +1941,14 @@
     "verdict": "full",
     "quality": 8,
     "confidence": "medium",
-    "rationale": "Fireworks is API-first. Its REST API, authenticated with an API key, is documented as letting you \"automate management of models, deployments, datasets, and more,\" and model upload is explicitly framed as \"ideal for automation, CI/CD pipelines, and notebooks.\" The firectl CLI scripts deployments and autoscaling, and a published OpenAPI spec plus async batch inference round out headless use. missing for 10: CI-specific guides or examples (e.g., GitHub Actions or pipeline recipes) beyond the model-upload mention, and independent or hands-on corroboration of headless/CI usage.",
+    "rationale": "Fireworks is API-key driven, and its REST API explicitly 'lets you automate management of models, deployments, datasets, and more'. The docs call programmatic model upload 'ideal for automation, CI/CD pipelines, and notebooks', and the firectl CLI handles deployment creation and autoscaling config from the command line. A published OpenAPI spec and asynchronous batch inference further support unattended pipelines. missing for 10: CI-specific guidance beyond model upload (e.g. pipeline examples, non-interactive firectl auth), independent or hands-on corroboration of headless/CI use.",
     "evidenceIds": [
       "fireworks-ai-docs-64",
       "fireworks-ai-docs-69",
       "fireworks-ai-supp-api-reference",
-      "fireworks-ai-supp-openapi-spec",
       "fireworks-ai-docs-23",
       "fireworks-ai-docs-61",
+      "fireworks-ai-supp-openapi-spec",
       "fireworks-ai-docs-4",
       "fireworks-ai-docs-56"
     ]
@@ -1958,7 +1959,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "An inference API platform could plausibly accept remote MCP servers as tool sources, so this axis applies. The evidence only documents OpenAI-compatible function/tool calling, which is a developer building block and not MCP-client support. Nothing in the pack mentions connecting MCP servers.",
+    "rationale": "An inference API platform could plausibly accept remote MCP servers as tools, so this axis applies. The evidence only documents OpenAI-compatible function calling, which is a developer building block rather than MCP server integration. Nothing in the pack shows Fireworks connecting to or consuming MCP servers.",
     "evidenceIds": []
   },
   {
@@ -1967,16 +1968,16 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Fireworks AI is an inference and training platform, not an agent, so publishing an official MCP server is a fair question and the axis applies. Nothing in the evidence documents a first-party MCP server or hosted MCP endpoint. Tool calling, the Nexus CLI for connecting coding tools, llms.txt and the OpenAPI spec are adjacent features or developer building blocks, so they earn no credit here.",
+    "rationale": "Fireworks AI is an inference and fine-tuning platform, not an agent, so publishing an official MCP server is a fair question and the axis applies. Nothing in the evidence pack documents a first-party MCP server or hosted MCP endpoint. Tool calling, OpenAI-compatible APIs, Nexus CLI, the REST API/OpenAPI spec and llms.txt are adjacent features or developer building blocks and earn no credit for this story.",
     "evidenceIds": []
   },
   {
     "productId": "fireworks-ai",
     "storyId": "agentic-nl-commands",
     "verdict": "partial",
-    "quality": 3,
+    "quality": 4,
     "confidence": "low",
-    "rationale": "The only product-operation evidence is a single marketing line saying users can \"describe the task, review the plan and cost, approve the run, and get a trained model.\" That implies a natural-language guided path for fine-tuning, but it is not documented in any depth. Tool calling and the OpenAI-compatible API are developer building blocks, and Nexus CLI connects coding tools rather than operating Fireworks itself, so neither earns credit. Missing for 10: documented natural-language control of deployments, models and billing; first-party docs detailing the guided fine-tuning flow; independent or hands-on corroboration.",
+    "rationale": "Fireworks' own site describes a guided fine-tuning path where you \"describe the task, review the plan and cost, approve the run\", which is natural-language operation of one product workflow. Tool calling and the OpenAI-compatible API are developer building blocks for building agents, not natural-language control of the platform itself, so they earn no credit here. missing for 10: natural-language control beyond fine-tuning (deployments, autoscaling, models, billing), detailed docs on how the guided path works, independent or hands-on corroboration.",
     "evidenceIds": [
       "fireworks-ai-docs-31"
     ]
@@ -1987,7 +1988,7 @@
     "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Fireworks ships an official CLI, firectl. The docs show it creating deployments with a single command and configuring autoscaling through firectl flags. The docs also mention a first-party Nexus CLI for connecting coding tools to Fireworks models. Missing for 10: installation and command-reference documentation, evidence of agent-friendly features (e.g. machine-readable output or non-interactive auth), and independent or hands-on corroboration.",
+    "rationale": "Fireworks documents an official CLI, firectl, used for deployment creation (`firectl deployment create`) and for configuring autoscaling through firectl flags. Its introduction page also references a Nexus CLI for connecting coding tools to Fireworks models. Coverage is thin: missing for 10: installation/auth docs, a full command reference beyond deployments and autoscaling, agent-friendly features such as machine-readable output, and independent or hands-on corroboration.",
     "evidenceIds": [
       "fireworks-ai-docs-23",
       "fireworks-ai-docs-61",
@@ -2000,16 +2001,18 @@
     "verdict": "full",
     "quality": 9,
     "confidence": "high",
-    "rationale": "Fireworks documents a public REST API with per-endpoint reference pages. The API covers inference (OpenAI-compatible chat completions) and automation of models, deployments, datasets, training and custom-model uploads. A published OpenAPI 3.1 'Gateway REST API' spec is listed in llms.txt. The probe's 404s only hit guessed paths, not the documented gateway.openapi.yaml location, so they do not contradict the spec's existence. Missing for 10: independent or hands-on corroboration of end-to-end programmatic control beyond first-party docs.",
+    "rationale": "Fireworks documents a public REST API for inference and for automating management of models, deployments, datasets and training. It provides per-endpoint reference pages with a live \"Try it\" playground, a published OpenAPI 3.1 spec listed in llms.txt, an OpenAI-compatible endpoint at api.fireworks.ai, and a REST guide for programmatic model upload. The probe 404s only hit generic OpenAPI paths, and the spec is published at gateway.openapi.yaml, so this is not a contradiction. Missing for 10: independent or hands-on corroboration of real API calls (probes confirm only that the docs and llms.txt are reachable).",
     "evidenceIds": [
       "fireworks-ai-supp-api-reference",
       "fireworks-ai-supp-openapi-spec",
+      "fireworks-ai-supp-api-playground",
       "fireworks-ai-docs-69",
       "fireworks-ai-docs-56",
       "fireworks-ai-docs-36",
-      "fireworks-ai-docs-64",
       "fireworks-ai-docs-17",
-      "fireworks-ai-probe-1"
+      "fireworks-ai-docs-64",
+      "fireworks-ai-probe-1",
+      "fireworks-ai-probe-3"
     ]
   },
   {
@@ -2018,7 +2021,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Scoped API credentials are a fair question for an inference API platform, so the axis applies. The evidence only shows that the REST API is accessed with an API key and that accounts can set a monthly spend limit. Nothing documents issuing keys limited to particular models, deployments, permissions or agents. The account-level spend limit is an adjacent control and earns no credit.",
+    "rationale": "Scoped API keys are a fair question for an inference/API platform, so the axis applies. The evidence only shows that the REST API is accessed with an API key and that an account-wide monthly spend limit exists, which is an adjacent control. Nothing documents issuing keys limited by permission, model, deployment, or resource for an agent.",
     "evidenceIds": []
   },
   {
@@ -2027,7 +2030,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence pack documents a REST API, a published OpenAPI spec, OpenAI-compatible endpoints, and the firectl CLI, but never names an official Fireworks SDK library. OpenAI-API compatibility lets users reuse a third-party client, and the OpenAPI spec is a developer building block; neither counts as the product's own official SDK.",
+    "rationale": "The evidence pack never mentions an official Fireworks-published SDK such as a Python or JS client library. It documents only an OpenAI-compatible endpoint, a REST API with a published OpenAPI spec, and the firectl CLI. Using OpenAI's SDK against a compatible endpoint, or generating a client from the OpenAPI spec, counts as an adjacent capability or developer building block, not the product's own official SDK.",
     "evidenceIds": []
   },
   {
@@ -2036,17 +2039,18 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Webhooks are a fair axis for an inference and fine-tuning platform, for example notifications when a batch or training job completes. However, the evidence pack documents no registrable outbound HTTP callbacks. Asynchronous batch inference, the REST management API and the OpenAPI spec are adjacent capabilities and do not show event subscription via webhooks.",
+    "rationale": "Webhooks are a fair question for an inference and fine-tuning platform, for example to get notified when a batch or training job finishes. The evidence pack documents only a REST API, an OpenAPI spec, batch inference and firectl management. None of it shows registrable outbound HTTP callbacks or event subscriptions.",
     "evidenceIds": []
   },
   {
     "productId": "fireworks-ai",
     "storyId": "api-interactive-docs",
-    "verdict": "partial",
-    "quality": 5,
+    "verdict": "full",
+    "quality": 8,
     "confidence": "medium",
-    "rationale": "Fireworks publishes its own REST API reference with per-endpoint pages, such as Create Chat Completion, built from a published OpenAPI 3.1 spec (Gateway REST API v5.10.0) that is listed in llms.txt. The probe's 404s at the standard OpenAPI paths only show the spec lives elsewhere, at gateway.openapi.yaml. Nothing in the evidence confirms the reference is interactive or offers runnable examples. missing for 10: evidence of an in-browser 'try it' playground, runnable code samples per endpoint, independent or hands-on confirmation of interactivity.",
+    "rationale": "Fireworks publishes an API reference with per-endpoint pages, such as Create Chat Completion. These pages render a live in-browser \"Try it\" playground next to the request/response schemas, and they are backed by a published OpenAPI 3.1 spec listed in llms.txt. The conventional openapi.json paths returned 404, but the spec is published at gateway.openapi.yaml, so this does not contradict the claim. Missing for 10: independent or hands-on confirmation that the playground actually executes requests, and evidence that runnable examples cover endpoints beyond chat completions.",
     "evidenceIds": [
+      "fireworks-ai-supp-api-playground",
       "fireworks-ai-supp-api-reference",
       "fireworks-ai-supp-openapi-spec",
       "fireworks-ai-docs-69",
@@ -2058,13 +2062,14 @@
     "storyId": "api-machine-spec",
     "verdict": "full",
     "quality": 8,
-    "confidence": "medium",
-    "rationale": "Fireworks publishes a downloadable OpenAPI 3.1.0 document, the 'Gateway REST API' v5.10.0, at docs.fireworks.ai/gateway.openapi.yaml. It covers account, deployment, model and training endpoints, and llms.txt lists it under '## OpenAPI Specs' alongside anthropic-messages.openapi.json and gateway-extra.openapi.yaml. The probe's 404s on conventional paths such as /openapi.json only show the spec lives at a non-standard path; they do not contradict its existence. Missing for 10: hands-on confirmation that the spec file itself downloads, explicit evidence that the OpenAI-compatible inference endpoints (chat completions) are covered by a spec, and discovery at a conventional well-known path.",
+    "confidence": "high",
+    "rationale": "Fireworks publishes a downloadable OpenAPI 3.1.0 document (\"Gateway REST API\", v5.10.0) at docs.fireworks.ai/gateway.openapi.yaml. It covers account, deployment, model and training endpoints, and llms.txt lists it under \"OpenAPI Specs\" alongside anthropic-messages and gateway-extra specs, so it is machine-discoverable. The probe's 404s on conventional paths such as /openapi.json only show the spec lives at a non-standard path; they do not contradict its existence. Missing for 10: explicit confirmation that the published specs cover the OpenAI-compatible chat/inference endpoints, a spec at conventional/well-known paths, and independent hands-on corroboration of downloading the spec.",
     "evidenceIds": [
       "fireworks-ai-supp-openapi-spec",
-      "fireworks-ai-supp-api-reference",
       "fireworks-ai-probe-1",
-      "fireworks-ai-probe-3"
+      "fireworks-ai-probe-3",
+      "fireworks-ai-supp-api-reference",
+      "fireworks-ai-docs-69"
     ]
   },
   {
@@ -2073,7 +2078,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "A sandbox or test environment isolated from production is a fair question for an API inference platform, so the axis applies. Nothing in the evidence documents a sandbox, test mode, or isolated non-production environment. Serverless being 'perfect for vibe testing and prototyping' and the benchmarking tool for load testing are adjacent features, not isolation from production data.",
+    "rationale": "A sandbox or test environment isolated from production, such as test keys or separate environments or projects, is a fair question for an inference API platform. The evidence pack documents no such capability. The 'Try it' API playground runs against live endpoints, and serverless 'vibe testing and prototyping', the benchmarking tool and scale-to-zero deployments are adjacent features, not an isolated sandbox that protects production data.",
     "evidenceIds": []
   },
   {
@@ -2081,11 +2086,10 @@
     "storyId": "api-versioning-policy",
     "verdict": "partial",
     "quality": 3,
-    "confidence": "medium",
-    "rationale": "Fireworks publishes an OpenAPI 3.1 spec, the \"Gateway REST API\" at version 5.10.0, with /v1/-prefixed endpoints, which shows its API surface is versioned. Nothing in the pack documents a deprecation policy, sunset timelines or a version-support commitment, so only half the story is evidenced. Missing for 10: a documented deprecation policy, deprecation notice/sunset timelines, a version-support guarantee or changelog, and independent corroboration.",
+    "confidence": "low",
+    "rationale": "The published Gateway OpenAPI spec uses /v1/ path-versioned endpoints and carries a spec version number (5.10.0), so there is thin evidence of API versioning. Nothing in the pack documents a deprecation policy, notice periods, or a version lifecycle, and the deprecation half of the story is the part buyers would actually rely on. missing for 10: documented deprecation policy, deprecation notice windows/sunset timelines, explicit API versioning scheme documentation, changelog or version-migration guidance, independent corroboration",
     "evidenceIds": [
-      "fireworks-ai-supp-openapi-spec",
-      "fireworks-ai-supp-api-reference"
+      "fireworks-ai-supp-openapi-spec"
     ]
   },
   {
@@ -2094,7 +2098,7 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Fireworks documents its own batch inference capability, which processes large volumes of requests asynchronously at 50% off serverless prices. That is a genuine first-party bulk operation, but the pack shows only a one-line description and covers inference requests only, not bulk actions on managed resources such as models, deployments or datasets. Missing for 10: details of the batch job workflow (input format, job API, status and result retrieval), bulk management operations across account resources, and independent or hands-on corroboration.",
+    "rationale": "Fireworks documents its own batch inference feature, which processes large volumes of requests asynchronously at 50% off serverless pricing. That is a first-party bulk operation across many items, but the evidence is a single thin mention. Missing for 10: details on batch job submission, status tracking and result retrieval; any bulk operations over managed resources (models, deployments, datasets); independent or hands-on corroboration.",
     "evidenceIds": [
       "fireworks-ai-docs-4",
       "fireworks-ai-docs-20"
@@ -2106,7 +2110,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Event-driven automation rules are a fair question for an AI inference and training platform, but the evidence documents no general rule or trigger system that lets users define event-based actions. The nearest items are adjacent fixed-purpose controls, which don't count: autoscaling replicas on load targets (docs-61) and billing Auto Reload when the balance runs low (docs-70). The REST API's ability to automate management of models and deployments (docs-69) is a building block, not an event-rule engine.",
+    "rationale": "Event-triggered automation rules are a fair question for an AI inference and training platform, but the evidence documents no general facility for user-defined event→action rules. Autoscaling load targets, the Auto Reload balance top-up, tool calling, and the REST API for automating management are adjacent controls or developer building blocks rather than the capability itself.",
     "evidenceIds": []
   },
   {
@@ -2115,7 +2119,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Scheduling recurring jobs is a reasonable thing to ask of an AI inference and training platform, so the axis applies. The evidence shows only asynchronous batch inference, internal GPU scheduling for fine-tuning, and REST API automation primitives. None of these is a documented capability to schedule recurring jobs or workflows; the API primitives are building blocks, not the feature itself.",
+    "rationale": "Recurring job or workflow scheduling is a fair question for an AI inference and training platform, but the evidence never documents cron-style or recurring schedules. Asynchronous batch inference, fine-tuning 'scheduling' (which refers to GPU allocation), and REST API automation are adjacent features or developer building blocks, not a recurring-job capability.",
     "evidenceIds": []
   },
   {
@@ -2124,7 +2128,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Fireworks is an inference and fine-tuning platform whose REST API and firectl let users automate management of models, deployments, and datasets. Versioning, reviewing, and rolling back those automated configurations is a plausible capability for this kind of platform, so the axis applies. However, nothing in the evidence documents versioning, review/approval history, or rollback of automations or deployment configs. Programmatic management APIs are only building blocks and earn no credit.",
+    "rationale": "The evidence shows no first-party way to version, review, or roll back automations or workflows on Fireworks. The REST API for automating model and deployment management is a developer building block, not the capability itself. The guided training flow (\"review the plan and cost, approve the run\") is an adjacent feature for fine-tuning jobs and does not cover versioning or rollback of automations.",
     "evidenceIds": []
   },
   {
@@ -2133,7 +2137,7 @@
     "verdict": "partial",
     "quality": 4,
     "confidence": "medium",
-    "rationale": "Fireworks documents a paid Reserved Throughput offering that 'guarantees availability and uptime up to your reservation level,' which is a first-party availability commitment on a paid tier. However, the evidence never shows a stated uptime percentage, SLA document, or remedy terms. The Priority tier ('less likely to be load shed') and multi-region resilience are adjacent reliability features, not an SLA. missing for 10: a published numeric availability SLA (e.g. 99.9%), enterprise SLA terms or service credits, scope and measurement definitions, independent corroboration.",
+    "rationale": "Fireworks documents a Reserved Throughput offering that it says 'guarantees availability and uptime up to your reservation level' on a paid, pre-purchased tier. That is a first-party availability commitment, but the evidence shows no stated uptime percentage, SLA document, or remedy terms. The Priority tier ('less likely to be load shed') and multi-region resilience are adjacent reliability features, not SLAs. missing for 10: a published numeric uptime SLA (e.g., 99.9%), SLA terms/service credits, enterprise-tier SLA documentation, independent corroboration.",
     "evidenceIds": [
       "fireworks-ai-docs-45"
     ]
@@ -2142,9 +2146,9 @@
     "productId": "fireworks-ai",
     "storyId": "batch-discounted-jobs",
     "verdict": "full",
-    "quality": 8,
+    "quality": 7,
     "confidence": "medium",
-    "rationale": "Fireworks' batch inference guide documents asynchronous processing of large request volumes at 50% off Serverless per-token prices. This directly covers both the async batch submission and the documented discount versus real-time pricing. missing for 10: details on job submission mechanics (input format, job API/status polling, turnaround window), supported-model coverage for batch, independent or hands-on corroboration.",
+    "rationale": "Fireworks has a dedicated batch inference guide that says you can process large volumes of requests asynchronously at 50% off Serverless per-token prices. That directly covers both the async batch capability and the documented discount versus real-time pricing. However, the evidence is a single repeated line from that page, with nothing on how jobs are actually submitted. Missing for 10: details of the job submission workflow (API/CLI endpoints, input file format, job status or result retrieval), turnaround window or SLA, and independent or hands-on corroboration.",
     "evidenceIds": [
       "fireworks-ai-docs-4",
       "fireworks-ai-docs-20"
@@ -2156,13 +2160,10 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Fireworks documents a first-party path for connecting coding tools through Nexus CLI, with Fireworks models selectable directly or via Nexus Auto [docs-59], and markets itself as a drop-in replacement for AI coding [docs-11]. Its OpenAI-compatible endpoint and tool-calling specs let agents be built against it [docs-56, docs-36, docs-42]. However, the evidence shows no named integration guides for specific coding agents or agent frameworks, only a single summary line on Nexus CLI. missing for 10: named per-tool guides for coding agents (e.g. specific IDE/CLI agents), first-party guides for agent frameworks, depth of the Nexus CLI documentation, independent or hands-on corroboration.",
+    "rationale": "Fireworks' own docs include a first-party path for connecting coding tools via Nexus CLI, with a choice of Fireworks models or Nexus Auto (docs-59), and the site markets it for AI coding workloads (docs-11). However, the pack names no specific coding agents and shows no integration guides for agent frameworks. OpenAI compatibility and tool calling are building blocks, not integration guides. Missing for 10: named per-agent setup guides (e.g., specific coding agents), first-party guides for agent frameworks, independent or hands-on corroboration of the Nexus CLI integration.",
     "evidenceIds": [
       "fireworks-ai-docs-59",
-      "fireworks-ai-docs-11",
-      "fireworks-ai-docs-42",
-      "fireworks-ai-docs-56",
-      "fireworks-ai-docs-36"
+      "fireworks-ai-docs-11"
     ]
   },
   {
@@ -2171,12 +2172,11 @@
     "verdict": "partial",
     "quality": 4,
     "confidence": "low",
-    "rationale": "Fireworks markets 'Run the latest open models with a single line of code' and 'instant access to the most popular OSS models' across a catalog of 100+ models. It also documents uploading models from Hugging Face yourself. However, nothing documents how quickly newly released open-weight models land on the platform. missing for 10: documented day-0 or time-to-availability commitments for new releases, concrete examples of recent models added shortly after launch, independent or hands-on corroboration of release speed.",
+    "rationale": "Fireworks markets running \"the latest open models with a single line of code\" and \"instant access to the most popular OSS models\", and its catalog spans 100+ models. These claims point toward fast catalog updates, but nothing documents how quickly new releases actually arrive. The Hugging Face custom-upload path is a separate self-serve capability and is not credited here as platform-provided day-zero availability. missing for 10: documented time-to-availability or day-0 launch commitments for new open-weight releases, concrete examples of models added at release, independent or hands-on corroboration of release speed.",
     "evidenceIds": [
       "fireworks-ai-docs-16",
       "fireworks-ai-docs-12",
-      "fireworks-ai-docs-28",
-      "fireworks-ai-docs-7"
+      "fireworks-ai-docs-28"
     ]
   },
   {
@@ -2185,7 +2185,7 @@
     "verdict": "full",
     "quality": 9,
     "confidence": "high",
-    "rationale": "Fireworks documents on-demand deployments that give dedicated GPUs with 'predictable performance unaffected by other users' and no hard rate limits, which isolates traffic from serverless. It also documents autoscaling configured through firectl, covering replica counts, scale-up/down windows, load targets and scale-to-zero. Missing for 10: independent or hands-on corroboration of dedicated deployment isolation and autoscaling behavior.",
+    "rationale": "Fireworks documents on-demand deployments that run on dedicated GPUs with \"predictable performance unaffected by other users\" and no hard rate limits, which isolates traffic from the shared serverless pool. Autoscaling is documented in detail: replica counts, scale-up/down windows, load targets and scale-to-zero, all set via firectl flags. Missing for 10: independent or hands-on corroboration of the dedicated-deployment isolation and autoscaling behavior.",
     "evidenceIds": [
       "fireworks-ai-docs-21",
       "fireworks-ai-docs-41",
@@ -2202,7 +2202,7 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "The docs say on-demand deployments have \"no hard rate limits\" and \"no rate limits,\" in contrast to serverless. That implies serverless traffic is rate-limited, but the pack never states the actual serverless limits. The Priority tier (less likely to be load shed) and reserved throughput (guaranteed capacity) concern availability, not documented per-tier rate limits, so they earn no credit. Missing for 10: published serverless rate-limit values (RPM/TPM), documentation of how limits scale across usage or spend tiers, guidance on raising limits, and independent corroboration.",
+    "rationale": "Fireworks' docs acknowledge that serverless is rate-limited, while on-demand dedicated deployments have \"no hard rate limits\" / \"no rate limits\". That is only a glancing mention: the pack never states the serverless limits themselves or how they change across usage tiers. Priority tier and reserved throughput are related reliability features, not documented rate limits, so they earn no credit here. Missing for 10: published serverless rate-limit values (RPM/TPM), documentation of how limits scale across usage or spend tiers, and independent corroboration.",
     "evidenceIds": [
       "fireworks-ai-docs-21",
       "fireworks-ai-docs-60"
@@ -2212,18 +2212,17 @@
     "productId": "fireworks-ai",
     "storyId": "drop-in-provider-switch",
     "verdict": "full",
-    "quality": 9,
+    "quality": 8,
     "confidence": "high",
-    "rationale": "Fireworks documents an OpenAI-compatible endpoint and APIs, presented as a drop-in replacement for OpenAI. Clients only need to point at api.fireworks.ai, and tool calling uses OpenAI-compatible tool specifications. A Create Chat Completion reference and an Anthropic-messages OpenAPI spec further support swapping providers without provider-specific code. Missing for 10: independent or hands-on corroboration that agents switch mid-workflow without code changes, and documentation of any parameter-compatibility gaps beyond model-ID changes.",
+    "rationale": "Fireworks' docs repeatedly state it provides an OpenAI-compatible endpoint and APIs, and position it as a drop-in replacement where you point your client at api.fireworks.ai. A Create Chat Completion endpoint is documented, and tool calling uses OpenAI-compatible tool specifications. Together these let an agent swap to or from Fireworks without provider-specific code; extensions like service_tier and x-session-affinity are optional. Missing for 10: independent or hands-on corroboration that switching works without code changes, and documentation of any OpenAI parameters or behaviors that are unsupported or differ.",
     "evidenceIds": [
       "fireworks-ai-docs-56",
       "fireworks-ai-docs-36",
       "fireworks-ai-docs-15",
       "fireworks-ai-docs-11",
-      "fireworks-ai-docs-42",
       "fireworks-ai-docs-17",
-      "fireworks-ai-supp-api-reference",
-      "fireworks-ai-supp-openapi-spec"
+      "fireworks-ai-docs-42",
+      "fireworks-ai-supp-api-reference"
     ]
   },
   {
@@ -2232,7 +2231,7 @@
     "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Fireworks' own docs explicitly offer embeddings and reranking for search and context retrieval, list embeddings among its 100+ supported model types, recommend embedding models, and state that the REST API serves embedding models. That lets a developer build a retrieval pipeline on the same platform used for generation. Missing for 10: endpoint-level detail for embeddings and reranking (API shape, specific reranker models), more than a single thin mention of reranking, and independent or hands-on corroboration.",
+    "rationale": "First-party docs explicitly list embeddings among the supported model types and direct users to \"use embeddings & reranking in search & context retrieval\". The REST API reference also covers embedding models, so both halves of the story are delivered on Fireworks itself, with no second vendor. Missing for 10: detailed embeddings/rerank endpoint documentation (model list, API shape), and independent or hands-on corroboration of reranking quality and retrieval usage.",
     "evidenceIds": [
       "fireworks-ai-docs-37",
       "fireworks-ai-docs-28",
@@ -2246,16 +2245,17 @@
     "verdict": "full",
     "quality": 9,
     "confidence": "high",
-    "rationale": "Fireworks documents supervised and reinforcement fine-tuning of models up to 1T+ parameters on your own existing SFT datasets with no conversion. It also documents deploying the trained result on the same platform with a single firectl command, using either live merge or multi-LoRA, and serving fine-tuned models at base-model prices. A community user's report of running an SFT job on gpt-oss-20b independently confirms the training side. Missing for 10: an explicit list of which base models support fine-tuning, and independent hands-on corroboration of serving a fine-tuned model end-to-end.",
+    "rationale": "First-party docs describe supervised and reinforcement fine-tuning on your own existing SFT datasets, with Fireworks handling the GPUs and you keeping the weights. They also document deploying the trained LoRA on the same platform through live merge or multi-LoRA, using a single firectl command, and serving fine-tuned models at base-model prices. A community user's hands-on SFT run on gpt-oss-20b independently corroborates the training half. Missing for 10: independent or hands-on corroboration of serving the fine-tuned result, and an explicit list of which base models support fine-tuning.",
     "evidenceIds": [
-      "fireworks-ai-docs-26",
       "fireworks-ai-docs-10",
+      "fireworks-ai-docs-26",
       "fireworks-ai-docs-57",
       "fireworks-ai-docs-62",
+      "fireworks-ai-docs-8",
       "fireworks-ai-docs-23",
+      "fireworks-ai-docs-24",
       "fireworks-ai-docs-32",
       "fireworks-ai-docs-39",
-      "fireworks-ai-docs-24",
       "fireworks-ai-docs-71",
       "fireworks-ai-comm-1"
     ]
@@ -2266,13 +2266,13 @@
     "verdict": "full",
     "quality": 8,
     "confidence": "medium",
-    "rationale": "Fireworks documents dedicated 'Fast' serverless variants for latency-sensitive workloads targeting 100+ tokens/sec, plus speculative decoding to cut generation latency. Its docs also describe on-demand dedicated GPUs with lower latency and higher throughput, quantization, sticky routing for prompt-cache hits, no cold starts on serverless, and an open-source benchmarking tool for latency and throughput testing. Missing for 10: explicit time-to-first-token figures or guarantees, and independent or hands-on corroboration of the speed claims.",
+    "rationale": "Fireworks documents several latency and throughput features for latency-sensitive workloads. These include Fast serverless variants targeting 100+ tokens/sec, and dedicated on-demand GPUs promising lower latency and higher throughput. It also offers speculative decoding, quantization, and prompt-cache sticky routing, plus no cold starts on serverless and an open-source tool to benchmark throughput and latency. Missing for 10: explicit time-to-first-token figures or guarantees, and independent or hands-on corroboration of the speed claims.",
     "evidenceIds": [
       "fireworks-ai-docs-34",
       "fireworks-ai-docs-55",
+      "fireworks-ai-docs-41",
       "fireworks-ai-docs-44",
       "fireworks-ai-docs-65",
-      "fireworks-ai-docs-41",
       "fireworks-ai-docs-43",
       "fireworks-ai-docs-25",
       "fireworks-ai-docs-17",
@@ -2285,7 +2285,7 @@
     "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Fireworks documents an open-source benchmarking tool for testing throughput and latency under various load conditions and comparing deployment configurations, which is a load-testing guide. It also publishes a concrete speed target: Fast variants aim for 100+ tokens per second. Missing for 10: published per-model latency/TPS benchmark results or tables, and independent or hands-on corroboration of the speed claims.",
+    "rationale": "Fireworks documents an open-source benchmarking tool for testing throughput and latency under various load conditions and comparing deployment configurations, which is a load-testing guide. It also publishes a speed target: Fast variants aim for 100+ tokens per second. Missing for 10: per-model published tokens-per-second/latency tables or benchmark results, depth of the benchmarking guide beyond summary lines, independent or hands-on corroboration of speed claims.",
     "evidenceIds": [
       "fireworks-ai-docs-9",
       "fireworks-ai-docs-22",
@@ -2300,22 +2300,21 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "A model-deprecation policy is a fair question for a hosted model-serving platform like Fireworks AI, so the axis applies. However, nothing in the evidence pack mentions a deprecation policy, advance-notice windows, or model retirement procedures. The catalog, serverless and deployment docs cover model availability and serving modes, not lifecycle or removal guarantees.",
+    "rationale": "Fireworks AI hosts a catalog of models, so a deprecation policy with advance notice is a fair question to ask of it. Nothing in the evidence pack mentions a deprecation policy, a removal timeline, or advance notice for hosted models. The pack only covers the catalog's size, the serverless and on-demand deployment modes, and model uploads.",
     "evidenceIds": []
   },
   {
     "productId": "fireworks-ai",
     "storyId": "models-endpoint-discovery",
     "verdict": "partial",
-    "quality": 5,
+    "quality": 4,
     "confidence": "medium",
-    "rationale": "Fireworks publishes an OpenAPI 3.1 'Gateway REST API' spec that covers model endpoints under /v1/accounts. Its REST API is documented as letting you 'automate management of models', and it advertises an OpenAI-compatible endpoint, so programmatic model enumeration is plausible from first-party docs. However, no evidence explicitly shows a GET /v1/models-style list endpoint returning the live serverless catalog. Missing for 10: an explicitly documented list-models / GET /v1/models endpoint, evidence that it returns the live public catalog rather than only account-owned models, and hands-on or independent confirmation of agent enumeration.",
+    "rationale": "Fireworks publishes an OpenAPI 3.1 Gateway REST API spec covering model endpoints under /v1/accounts, and its API reference says the REST API lets you automate management of models. That points to programmatic model listing. However, no evidence explicitly shows a GET /v1/models-style endpoint that enumerates the live public serverless catalog, and the 'OpenAI-compatible' claim does not by itself show that a models-list route exists. Missing for 10: an explicitly documented list-models endpoint and its response schema, confirmation that it returns the full live catalog rather than only account-owned models, and hands-on corroboration.",
     "evidenceIds": [
       "fireworks-ai-supp-openapi-spec",
       "fireworks-ai-supp-api-reference",
       "fireworks-ai-docs-69",
-      "fireworks-ai-docs-56",
-      "fireworks-ai-docs-36"
+      "fireworks-ai-docs-56"
     ]
   },
   {
@@ -2324,13 +2323,13 @@
     "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Fireworks' own docs list text, vision, audio, image and embedding models on the same platform. Vision has a dedicated section for analyzing images and documents and appears in its model recommendations and prompt-cache pricing. The API reference also covers language, image and embedding models under one API key. Missing for 10: detailed docs on audio (transcription or speech) endpoints, explicit documentation of image-generation calls, and independent or hands-on corroboration.",
+    "rationale": "Fireworks' own docs list text, vision, audio, image and embedding models on one platform, with a dedicated vision-model path for analyzing images and documents. The API reference also covers language, image and embedding models, and vision appears in serverless pricing and model recommendations. Audio and image generation, however, rest only on a list-level mention. Missing for 10: dedicated documentation of audio (speech/transcription) and image-generation endpoints, and independent or hands-on corroboration of multimodal calls.",
     "evidenceIds": [
       "fireworks-ai-docs-28",
       "fireworks-ai-docs-29",
-      "fireworks-ai-docs-58",
+      "fireworks-ai-supp-api-reference",
       "fireworks-ai-docs-72",
-      "fireworks-ai-supp-api-reference"
+      "fireworks-ai-docs-58"
     ]
   },
   {
@@ -2339,14 +2338,14 @@
     "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Fireworks documents a shared serverless tier with pay-per-token access to 'the most popular OSS models' and 'the latest open models' via api.fireworks.ai, with no GPUs to size. It also lists 100+ supported models across text, vision, audio, image and embeddings, plus a recommended-models guide for open-weight choices. Its docs note that on-demand deployments offer a wider selection than serverless, so the serverless catalog is a subset. missing for 10: no evidence naming which families (Llama, Qwen, DeepSeek, GPT-OSS) are actually on serverless endpoints, no serverless model list showing breadth or currency, no independent corroboration of the serverless catalog.",
+    "rationale": "Fireworks documents serverless, pay-per-token access to popular open-source and open-weight models with no GPUs to size. It also claims 100+ supported models across text, vision, audio, image and embeddings, plus an open-weight recommended-models guide. However, the docs say on-demand deployments offer a wider selection than serverless, so the shared-endpoint catalog is only a subset. missing for 10: explicit evidence that the named families (Llama, Qwen, DeepSeek, GPT-OSS) are on serverless endpoints, a concrete serverless model list showing breadth and currency, independent corroboration.",
     "evidenceIds": [
+      "fireworks-ai-docs-28",
+      "fireworks-ai-docs-52",
       "fireworks-ai-docs-12",
       "fireworks-ai-docs-16",
       "fireworks-ai-docs-17",
-      "fireworks-ai-docs-28",
       "fireworks-ai-docs-36",
-      "fireworks-ai-docs-52",
       "fireworks-ai-docs-58",
       "fireworks-ai-docs-60"
     ]
@@ -2355,16 +2354,16 @@
     "productId": "fireworks-ai",
     "storyId": "openai-compatible-endpoint",
     "verdict": "full",
-    "quality": 8,
-    "confidence": "high",
-    "rationale": "Fireworks' own docs say it provides an OpenAI-compatible endpoint and OpenAI-compatible APIs. They also present it as a drop-in replacement in a \"Migrate from OpenAI\" guide, tell users to point their client at api.fireworks.ai, and note that tool specifications are OpenAI-compatible. Together that directly covers swapping an OpenAI SDK client over to Fireworks. Missing for 10: an explicit documented snippet showing that only base_url and api_key change in the official OpenAI SDK, and independent or hands-on corroboration that existing OpenAI SDK clients work unmodified.",
+    "quality": 7,
+    "confidence": "medium",
+    "rationale": "Fireworks' first-party docs say it offers an OpenAI-compatible endpoint and OpenAI-compatible APIs. They also call it a drop-in replacement for OpenAI ('same API') and tell developers to point their client at api.fireworks.ai. Together this covers the core of swapping the base URL and API key in an existing OpenAI client. Missing for 10: an explicit documented OpenAI SDK snippet showing only base_url and api_key changing, a statement of which OpenAI endpoints or parameters are compatible, and independent or hands-on confirmation that an unmodified OpenAI SDK client works.",
     "evidenceIds": [
       "fireworks-ai-docs-56",
       "fireworks-ai-docs-36",
       "fireworks-ai-docs-15",
       "fireworks-ai-docs-17",
       "fireworks-ai-docs-42",
-      "fireworks-ai-docs-11"
+      "fireworks-ai-supp-api-reference"
     ]
   },
   {
@@ -2373,7 +2372,7 @@
     "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Fireworks documents a REST API that covers inference and also automates management of models, deployments, datasets, and more. A published OpenAPI 3.1 'Gateway REST API' spec covers accounts, deployment, model and training endpoints, alongside REST-based custom model upload for CI/CD and firectl commands for deployment and autoscaling config. The OpenAPI probe 404s only on standard paths; the spec is published at gateway.openapi.yaml and listed in llms.txt, so this is not a contradiction. Missing for 10: an explicit UI–API parity statement, API evidence for billing controls (auto reload, spend limits) and the guided fine-tuning flow, and independent hands-on corroboration.",
+    "rationale": "Fireworks documents a REST API that covers inference and also automates management of models, deployments, datasets and more. A published OpenAPI 3.1 'Gateway REST API' spans accounts, deployments, models and training endpoints, and firectl plus a REST model-upload path support CI/CD automation, so the core control-plane operations are scriptable. The standard OpenAPI paths returning 404 does not contradict this, because the spec is published at gateway.openapi.yaml. Missing for 10: an explicit UI-to-API parity statement; evidence that account and billing controls (auto-reload, spend limits) and the guided fine-tuning flow are API-accessible; independent or hands-on corroboration of parity.",
     "evidenceIds": [
       "fireworks-ai-supp-api-reference",
       "fireworks-ai-docs-69",
@@ -2381,6 +2380,7 @@
       "fireworks-ai-docs-64",
       "fireworks-ai-docs-61",
       "fireworks-ai-docs-23",
+      "fireworks-ai-supp-api-playground",
       "fireworks-ai-probe-3"
     ]
   },
@@ -2390,7 +2390,7 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "Fireworks' docs say fine-tuning users \"keep the resulting weights\", which is a first-party portability claim for trained models. Its use of the standard OpenAI SFT data format and API lowers lock-in. The REST API reportedly automates management of models and datasets, but no download or export mechanism is described. missing for 10: a documented export or download path for fine-tuned weights and uploaded datasets, the formats those exports use (e.g. safetensors or JSONL), export of account data such as logs and batch results, and any independent confirmation that leaving works in practice.",
+    "rationale": "Fireworks' own fine-tuning docs say \"you keep the resulting weights\" (fireworks-ai-docs-62), and training data uses the standard OpenAI SFT format with no conversion (fireworks-ai-docs-57, fireworks-ai-docs-1), which points toward portable, owned artifacts. The REST API also manages models and datasets (fireworks-ai-docs-69), but no documented export or download flow is shown. Missing for 10: documented export/download of fine-tuned weights and their file format, export of uploaded datasets and of batch/inference logs and account data, an account-wide \"export everything\" path, and independent or hands-on corroboration of a clean exit.",
     "evidenceIds": [
       "fireworks-ai-docs-62",
       "fireworks-ai-docs-57",
@@ -2404,7 +2404,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Whether a hosted inference platform's own source is published under an open license is a fair openness question, so the axis applies. The evidence shows no such release of Fireworks' platform source. The open-source benchmarking tool is an adjacent utility, not the product itself, and serving open-weight models concerns third-party models rather than Fireworks' code, so neither earns credit.",
+    "rationale": "Open-source availability is a fair question for a hosted inference platform, so the axis applies. However, nothing in the evidence shows Fireworks' own platform source is published under an open license. The open-source benchmarking tool and the open-weight models it hosts are adjacent artifacts, not the product's source, so they earn no credit.",
     "evidenceIds": []
   },
   {
@@ -2413,7 +2413,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Self-hosting is a fair question for an inference/training platform, since vendors in this category could offer on-prem or bring-your-own-cloud deployments. Every piece of evidence here describes Fireworks as a managed service: clients point at api.fireworks.ai, and Fireworks runs the GPUs on its own global fleet. The open-source benchmarking tool, custom-model uploads and keeping fine-tuned weights are adjacent features, not a self-hostable core product.",
+    "rationale": "Self-hosting is a fair question for an inference platform, but every item in the pack describes a Fernworks-managed service: you call api.fireworks.ai, and Fireworks runs the GPUs and its own global fleet. The only open-source item is a benchmarking tool, not the core product, and there is no evidence of a self-hosted, on-prem or bring-your-own-cloud deployment of the platform.",
     "evidenceIds": []
   },
   {
@@ -2422,11 +2422,11 @@
     "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Fireworks documents a global fleet of deployment regions so users can 'meet data-residency needs' and run multi-region deployments. It also offers a US-only Serverless mode that serves inference exclusively from the US for compliance, so users can choose where workloads run. missing for 10: explicit documentation that stored data (datasets, uploaded models, logs) stays in the chosen region, the list of available regions and how to select them, and independent or hands-on corroboration.",
+    "rationale": "Fireworks documents a global fleet with selectable regions for deployments, explicitly to \"meet data-residency needs\" (docs-51), along with multi-region deployments (docs-67). It also offers a US-only Serverless mode that serves inference exclusively from the US for compliance (docs-46). Missing for 10: evidence that stored data (datasets, fine-tuning artifacts, logs) can be pinned to a chosen region rather than just inference location, a list of available regions or non-US serverless residency options, and independent or hands-on corroboration.",
     "evidenceIds": [
       "fireworks-ai-docs-51",
-      "fireworks-ai-docs-46",
-      "fireworks-ai-docs-67"
+      "fireworks-ai-docs-67",
+      "fireworks-ai-docs-46"
     ]
   },
   {
@@ -2435,7 +2435,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Data-use and training opt-out policy is a fair question for an AI inference platform, but nothing in the evidence pack says customer prompts or outputs are excluded from model training, or offers an opt-out control. The nearby items are adjacent features that earn no credit here: US-only serverless, data residency, and keeping your fine-tuned weights.",
+    "rationale": "Whether customer data is used for model training is a fair privacy question for an inference and fine-tuning platform, so the axis applies. However, the evidence pack contains no statement about training opt-out, zero data retention, or a no-training policy. Adjacent items, such as US-only serverless, data-residency regions, and keeping fine-tuned weights, concern other capabilities and earn no credit here.",
     "evidenceIds": []
   },
   {
@@ -2444,7 +2444,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Data retention and deletion controls are a fair question for an inference and fine-tuning platform, but the evidence pack never documents retention settings, zero-retention modes, or deletion of prompts, datasets, or models. The closest items are adjacent controls: US-only serverless, regional data residency, and generic API management of datasets. None of these establish user-controlled retention or deletion.",
+    "rationale": "Data retention and deletion controls are a fair axis for a model inference and fine-tuning platform. The evidence pack documents no retention policy, zero-data-retention option, or deletion control for prompts, outputs, or datasets. US-only serverless and regional data residency are adjacent controls about where data is processed, not how long it is kept or how it is deleted, and generic API management of datasets is not a documented deletion capability.",
     "evidenceIds": []
   },
   {
@@ -2453,7 +2453,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Opting out of telemetry or usage tracking is a fair privacy question for an inference platform that ships SDKs and CLIs (firectl, Nexus CLI). The evidence pack, however, documents no telemetry opt-out, data-retention control, or usage-tracking setting. US-only Serverless and regional deployments address data residency, an adjacent control that earns no credit for this story.",
+    "rationale": "Opting out of telemetry or usage tracking is a fair question for an inference platform: it could offer data-retention controls or a CLI telemetry switch. The evidence pack documents no such opt-out. US-only serverless and regional data residency are adjacent compliance features, not controls over telemetry or usage tracking, so they earn no credit.",
     "evidenceIds": []
   },
   {
@@ -2462,7 +2462,7 @@
     "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Fireworks documents a prompt cache. Cached input tokens are billed at a discount, by default 50% of the input price on text and vision models. An x-session-affinity sticky-routing header pins repeated requests to the same replica to maximize cache hit rate, which together cover the cost side and give the engineer an explicit lever. Missing for 10: documentation of latency gains from cache hits, cache mechanics (TTL, minimum prefix length, behavior on dedicated deployments), and any independent or hands-on corroboration.",
+    "rationale": "Fireworks documents a prompt cache on serverless. Cached input tokens are billed at a discount (default 50% of input on text and vision), and an x-session-affinity sticky-routing header pins repeated requests to the same replica to maximize cache hit rate. Together these deliver cost reduction on repeated context with a user-facing control. Missing for 10: documented latency improvement from cache hits, cache behavior on dedicated/on-demand deployments, cache TTL or eviction details, and independent or hands-on corroboration.",
     "evidenceIds": [
       "fireworks-ai-docs-72",
       "fireworks-ai-docs-25",
@@ -2475,17 +2475,17 @@
     "verdict": "full",
     "quality": 9,
     "confidence": "high",
-    "rationale": "First-party docs cover uploading custom model weights from Hugging Face, local files, S3 or Azure Blob ([fireworks-ai-docs-7], [fireworks-ai-docs-33]), including programmatic upload via the REST API ([fireworks-ai-docs-64]). LoRA adapters can be served by live merge or by multi-LoRA with dynamic adapter loading at request time ([fireworks-ai-docs-8], [fireworks-ai-docs-24], [fireworks-ai-docs-32]), and a single firectl command creates the deployment ([fireworks-ai-docs-23]). Missing for 10: independent or hands-on corroboration of the custom upload and serving workflow.",
+    "rationale": "First-party docs show you can upload your own models from Hugging Face, local files, S3 or Azure Blob, and do it programmatically through a REST API. LoRA adapters can be served by live merge or by multi-LoRA with dynamic loading at request time, deployed with a single firectl command on dedicated on-demand GPUs, at base-model prices. missing for 10: independent or hands-on corroboration that custom weight and LoRA uploads and serving work as documented.",
     "evidenceIds": [
       "fireworks-ai-docs-7",
       "fireworks-ai-docs-33",
       "fireworks-ai-docs-64",
-      "fireworks-ai-docs-8",
-      "fireworks-ai-docs-39",
-      "fireworks-ai-docs-23",
-      "fireworks-ai-docs-24",
       "fireworks-ai-docs-32",
-      "fireworks-ai-docs-71"
+      "fireworks-ai-docs-39",
+      "fireworks-ai-docs-24",
+      "fireworks-ai-docs-23",
+      "fireworks-ai-docs-71",
+      "fireworks-ai-docs-60"
     ]
   },
   {
@@ -2494,7 +2494,7 @@
     "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Fireworks' pricing page explicitly says users can 'set a monthly spend limit to cap usage', which directly delivers a spending cap that bounds a runaway workload's bill. It also documents Auto Reload for a prepaid balance. The evidence is a single marketing-level line with no configuration docs or hands-on confirmation. missing for 10: documented budget/threshold alerts, detailed docs on how the spend limit is configured and enforced (e.g., hard cutoff behavior, per-project or per-key limits), independent corroboration.",
+    "rationale": "Fireworks' pricing page documents a monthly spend limit that caps usage, which directly addresses a runaway workload producing an unbounded bill. It also describes a balance-based billing model with optional Auto Reload top-ups. The evidence is a single pricing-page sentence, missing for 10: detailed docs on how the spend limit is enforced (hard stop vs. soft), budget or threshold alert notifications, per-project or per-key caps, and independent or hands-on confirmation that the cap works.",
     "evidenceIds": [
       "fireworks-ai-docs-70"
     ]
@@ -2505,7 +2505,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence pack never mentions a public status page or incident history for Fireworks AI. Reliability-adjacent items such as priority tier, reserved throughput uptime guarantees and multi-region resilience are different capabilities and earn no credit. The axis clearly applies to a hosted inference platform, so absence of evidence yields none.",
+    "rationale": "A public status page with incident history is a fair question for a hosted inference platform, but the evidence pack never mentions a status page, uptime history, or incident reports. The reliability items cover priority tiers, reserved throughput and multi-region resilience. These are adjacent features and earn no credit for this story.",
     "evidenceIds": []
   },
   {
@@ -2514,7 +2514,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Nothing in the evidence pack mentions streaming, SSE, `stream: true`, or token-by-token delivery. The OpenAI-compatible endpoint, the drop-in replacement claim, and the Fast serverless mode for interactive apps are adjacent latency features. None of them documents streaming, so they earn no credit for this story.",
+    "rationale": "Nothing in the evidence pack documents token-by-token streaming, a `stream` parameter, or SSE responses. The OpenAI-compatible endpoint, the 'drop-in replacement' claims and the Fast serverless mode for interactive apps are adjacent signals that only imply streaming, so they cannot be credited here.",
     "evidenceIds": []
   },
   {
@@ -2523,7 +2523,7 @@
     "verdict": "full",
     "quality": 9,
     "confidence": "medium",
-    "rationale": "Fireworks' first-party structured-output docs say it can force model output to conform to a JSON schema. They describe two modes: JSON mode, which takes a JSON schema, and Grammar mode, which takes a custom BNF grammar. The stated purpose is responses that are easy to parse, which covers both the schema and grammar branches of the story. Missing for 10: independent or hands-on corroboration that schema enforcement holds reliably in practice across models.",
+    "rationale": "Fireworks' first-party docs describe structured outputs that force responses to conform to a JSON schema, so they parse reliably. The docs name two methods: JSON mode with JSON schemas and Grammar mode with custom BNF grammars. Both the schema and grammar parts of the story are covered. Missing for 10: independent or hands-on corroboration of enforcement reliability.",
     "evidenceIds": [
       "fireworks-ai-docs-3",
       "fireworks-ai-docs-19",
@@ -2536,13 +2536,12 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Fireworks documents first-party tool/function calling using OpenAI-compatible tool specifications, explicitly for building agents that call APIs and take actions. It also offers JSON-schema and grammar-constrained structured outputs that support reliable parsing. The evidence does not show parallel tool calls, multi-step tool loops, or any measure of how faithfully tool calls work on open models. Missing for 10: documented parallel tool calling, documented multi-step/agent-loop tool use, per-model tool-calling support details, independent or hands-on corroboration of tool-call reliability.",
+    "rationale": "Fireworks documents first-party tool/function calling. It says agents can call APIs and take actions through OpenAI-compatible tool specifications, and it offers adjacent JSON-schema/grammar-constrained structured outputs. The evidence does not show the parallel, multi-step or faithful/reliable aspects the story emphasizes. Missing for 10: documentation of parallel tool calls, documentation of multi-step tool loops, evidence of tool-call accuracy or reliability on open models, and independent or hands-on corroboration.",
     "evidenceIds": [
       "fireworks-ai-docs-2",
       "fireworks-ai-docs-42",
-      "fireworks-ai-docs-19",
       "fireworks-ai-docs-66",
-      "fireworks-ai-docs-56"
+      "fireworks-ai-docs-19"
     ]
   },
   {
@@ -2551,14 +2550,14 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Fireworks has a public pricing page with self-serve billing (auto reload, monthly spend limits), and its docs describe serverless per-token pricing with discounts tied to those prices (batch at 50% off, cached input at 50% of input). This shows public per-token pricing exists without a sales step, but no evidence shows actual per-model rates or confirms coverage of every hosted model. missing for 10: an evidenced per-model price list with concrete per-token rates, confirmation that every hosted model is listed publicly, independent corroboration.",
+    "rationale": "Fireworks has a public pricing page with self-serve billing (auto reload, monthly spend limits, fine-tuned models at base-model prices). Its docs refer to pay-per-token serverless pricing and define discounts as fractions of 'Serverless per-token prices' (batch at 50% off, cached input at 50% of input), which implies published per-token rates. However, no actual per-token figures appear in the evidence, and nothing confirms every hosted model has a listed price. Missing for 10: concrete per-model per-token price listings, evidence that coverage spans every hosted model, independent confirmation that prices are visible without contacting sales.",
     "evidenceIds": [
       "fireworks-ai-docs-70",
       "fireworks-ai-docs-71",
       "fireworks-ai-docs-52",
       "fireworks-ai-docs-20",
       "fireworks-ai-docs-72",
-      "fireworks-ai-docs-17"
+      "fireworks-ai-docs-40"
     ]
   },
   {

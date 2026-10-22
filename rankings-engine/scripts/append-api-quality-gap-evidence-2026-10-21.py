@@ -61,17 +61,26 @@ ITEMS = {
         ('betterstack-supp-endpoint-reference', 'https://betterstack.com/docs/uptime/api/list-all-existing-monitors/',
          'Per-endpoint Uptime API reference ("List monitors") with copyable request examples per endpoint: curl --request GET --url "https://incidents.betterstack.com/api/v2/monitors" --header "Authorization: Bearer $TOKEN", including filter variants (by URL, by name) and paginated JSON responses.'),
     ],
+    # The three *-supp-api-playground rows below answer PR #410's review finding: the
+    # api-interactive-docs rationales for attio, fireworks-ai and skyvern cited no
+    # interactivity evidence. Each vendor's endpoint pages render a live "Try it" API
+    # playground (the Mintlify api.playground runtime); each page below was fetched on
+    # 2026-10-21 and shows the visible "Try it" control.
     ('crm', 'attio'): [
         ('attio-supp-openapi-page', 'https://docs.attio.com/rest-api/endpoint-reference',
          '"OpenAPI — Access the OpenAPI specification for the Attio REST API": "Attio exposes a public OpenAPI specification for the Attio REST API. The specification is available" at https://api.attio.com/openapi/api.'),
         ('attio-supp-openapi-document', 'https://api.attio.com/openapi/api',
          'api.attio.com/openapi/api serves the machine-readable OpenAPI document: {"openapi":"3.1.0","info":{"title":"Attio API","version":"2.0.0"}}, describing the public REST endpoints (objects, records, lists, webhooks) with schemas.'),
+        ('attio-supp-api-playground', 'https://docs.attio.com/rest-api/endpoint-reference/objects/list-objects',
+         'Per-endpoint reference pages ("List objects: Lists all system-defined and user-defined objects in your workspace") render a live "Try it" API playground (the Mintlify api.playground runtime), so each documented endpoint can be exercised in-browser.'),
     ],
     ('inference-providers', 'fireworks-ai'): [
         ('fireworks-ai-supp-openapi-spec', 'https://docs.fireworks.ai/gateway.openapi.yaml',
          'Published OpenAPI document ("openapi: 3.1.0", info.title "Gateway REST API", version 5.10.0) covering /v1/accounts, deployment, model and training endpoints; docs.fireworks.ai/llms.txt lists it under "## OpenAPI Specs" together with anthropic-messages.openapi.json and gateway-extra.openapi.yaml.'),
         ('fireworks-ai-supp-api-reference', 'https://docs.fireworks.ai/api-reference/introduction',
          '"Fireworks AI REST API enables you to interact with various language, image and embedding models using an API Key. It also lets you automate management of models, deployments, datasets, and more", with per-endpoint reference pages (e.g. "Create Chat Completion: Create a completion for the provided prompt and parameters").'),
+        ('fireworks-ai-supp-api-playground', 'https://docs.fireworks.ai/api-reference/post-chatcompletions',
+         'The "Create Chat Completion" reference page renders a live "Try it" API playground (the Mintlify api.playground runtime) alongside the request/response schema, so the documented endpoints are runnable in-browser.'),
     ],
     ('inference-providers', 'together-ai'): [
         ('together-ai-supp-openapi-spec', 'https://docs.together.ai/openapi.yaml',
@@ -102,6 +111,8 @@ ITEMS = {
          'api.skyvern.com/openapi.json serves the machine-readable OpenAPI document: {"openapi":"3.1.0","info":{"title":"Skyvern API","description":"API for Skyvern","version":"1.0.0"}}, with run endpoints such as POST /v1/run/tasks.'),
         ('skyvern-supp-api-reference', 'https://www.skyvern.com/docs/api-reference/runs/run-an-agent',
          'Per-endpoint API reference generated from the OpenAPI specification ("## OpenAPI — yaml /api-reference/openapi.json post /v1/run/agents"), covering agents, runs, browser sessions and credentials.'),
+        ('skyvern-supp-api-playground', 'https://www.skyvern.com/docs/api-reference/runs/run-an-agent',
+         'The "Run an agent" reference page renders a live "Try it" API playground (the Mintlify api.playground runtime) for its OpenAPI operation (post /v1/run/agents), so the documented endpoints are runnable in-browser.'),
         ('skyvern-supp-deprecation-policy', 'https://www.skyvern.com/docs/developers/api/versioning-and-deprecation',
          '"Deprecation and sunset policy — When we do deprecate part of the API, this is what you can count on: At least 6 months notice. That is the minimum time between the deprecation announcement and the sunset date on which the endpoint stops serving traffic. Removing an entire major version gets at least 12 months", with "Machine-readable response headers on every response from a deprecated endpoint, following RFC 9745 (Deprecation) and RFC 8594 (Sunset)" and "deprecated: true in the OpenAPI specification".'),
     ],
