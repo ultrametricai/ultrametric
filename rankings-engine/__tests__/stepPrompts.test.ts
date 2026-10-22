@@ -29,7 +29,7 @@ const base: PromptTarget = {
   label: 'Add DNS records',
   route: 'agent',
   async: false,
-  approvalRequired: true,
+  approvalRequired: false,
   actionUrl: null,
   functionCalls: [{ method: 'POST /zones/{id}/dns_records', type: 'rest', description: 'Add SPF/DKIM records' }],
   vendor: 'cloudflare',
@@ -44,6 +44,36 @@ const base: PromptTarget = {
 // ---------------------------------------------------------------------------
 
 describe('validatePrompt', () => {
+  it('requires approval independently of category, route and historical audit', () => {
+    const targets = enumeratePromptTargets(loadProcesses(DATA_DIR))
+    for (const key of ['sw_011:n1', 'sales_001:n5']) {
+      const target = targets.find(t => t.stepKey === key)!
+      expect(target.approvalRequired).toBe(true)
+      expect(target.execution?.category).toBe('agent-computer-use')
+      const body = `${VENDOR_PLACEHOLDER} ${words(150)}`
+      expect(validatePrompt(target, body)).toMatch(/approvalRequired/)
+      expect(validatePrompt(target, `${body} Stop for human sign-off.`)).toBeNull()
+    }
+    for (const category of ['agent-native', 'agent-computer-use', 'human-online', 'human-offline', null] as const) {
+      const execution = { category, basis: category === null ? 'unresolved' as const : category === 'agent-native' ? 'local-work' as const : category === 'agent-computer-use' ? 'browser-evidence' as const : 'human-work' as const, rationale: 'Fixture', evidence: ['fixture'], reviewRequired: category === null }
+      const target = { ...base, approvalRequired: true, execution }
+      const body = `${VENDOR_PLACEHOLDER} The personal act remains a human step. ${words(150)}`
+      expect(validatePrompt(target, body)).toMatch(/sign-off/)
+      expect(validatePrompt(target, `${body} Stop for human sign-off.`)).toBeNull()
+    }
+  })
+
+  it('keeps unresolved generation context unresolved without a manual fallback', () => {
+    const targets = enumeratePromptTargets(loadProcesses(DATA_DIR))
+    for (const key of ['growth_015:n6', 'prod_002:n6']) {
+      const target = targets.find(t => t.stepKey === key)!
+      expect(target.execution?.category).toBeNull()
+      expect(generationPrompt(target)).toContain('EXECUTION NEEDS REVIEW')
+      expect(generationPrompt(target)).not.toContain('this is a manual step')
+      expect(generationPrompt(target)).not.toContain('let me execute')
+    }
+  })
+
   it('preserves assessed human work and unresolved review even on a legacy agent route', () => {
     const human: PromptTarget = { ...base, execution: { category: 'human-online', basis: 'human-work', rationale: 'Human signer', evidence: ['fixture'], reviewRequired: false } }
     expect(validatePrompt(human, `${VENDOR_PLACEHOLDER} ${words(150)}`)).toMatch(/remains a human step/)

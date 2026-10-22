@@ -42,7 +42,7 @@ import { stepVendorCallsFor } from '../../lib/stepVendorCalls'
 import { llmJson } from '../llm'
 import { CACHE_DIR, categoryDir, DATA_DIR, readJson, writeJson } from '../paths'
 
-export const STEP_PROMPT_VERSION = 'v2-execution'
+export const STEP_PROMPT_VERSION = 'v2-execution-approval'
 
 export const MIN_PROMPT_WORDS = 120
 export const MAX_PROMPT_WORDS = 350
@@ -186,8 +186,9 @@ export function validatePrompt(t: PromptTarget, prompt: string): string | null {
     if (!REMAINS_HUMAN_RE.test(prompt)) return 'human execution — include the exact phrase "remains a human step"'
   }
 
-  // Non-agent steps must respect the audit verdict.
-  if (t.route !== 'agent' && t.audit) {
+  // Legacy imports retain their historical audit posture. Assessed content uses
+  // its execution assessment for the actor and its separate approval property.
+  if (!t.execution && t.route !== 'agent' && t.audit) {
     const verdict = t.audit.computerUse
     if (verdict !== 'drivable' && instructsImpersonation(prompt)) {
       return `prompt instructs the agent to act on the human's behalf — the human part must stay human`
@@ -198,6 +199,10 @@ export function validatePrompt(t: PromptTarget, prompt: string): string | null {
     if ((verdict === 'no-screen' || verdict === 'third-party-wait') && !REMAINS_HUMAN_RE.test(prompt)) {
       return `audit verdict is '${verdict}' — the prompt must cover only the preparable/monitorable part and include the exact phrase "remains a human step"`
     }
+  }
+
+  if (t.approvalRequired && !STOP_FOR_HUMAN_RE.test(prompt)) {
+    return 'approvalRequired — include the exact phrase "stop for human sign-off" before applying changes'
   }
 
   if (SECRETS_RE.test(prompt)) {
@@ -215,7 +220,8 @@ Hard rules — a validator rejects violations:
 - If the step context says it HAS A VENDOR MARKET, write the literal placeholder {{vendor}} wherever the vendor/product name would go (it is substituted with my chosen vendor later) and NEVER name a specific vendor for that role. If it says NO vendor market, name the actual service plainly and never write {{vendor}}.
 - Never write an HTTP method + path (like "POST /v3/...") unless that exact endpoint appears in the GROUNDED VENDOR CALLS section — if none are listed, describe the required outcome and request verification of an available interface before taking action.
 - Credentials: at most "use your configured credentials". Never instruct pasting/sharing/embedding API keys, tokens, passwords or secrets.
-- If a HUMAN-STEP AUDIT is given, obey its verdict:
+- If approvalRequired is true, preserve that gate regardless of execution category; include the exact phrase "stop for human sign-off" before changes are applied.
+- For a legacy record without an execution assessment, obey its HUMAN-STEP AUDIT verdict:
   · assist / policy-gate — the agent PREPARES everything (drafts, pre-filled values, a checklist) and then must stop; include the exact phrase "stop for human sign-off" and never tell the agent to sign, accept terms, approve, or submit on my behalf.
   · no-screen / third-party-wait — prompt only the preparable/monitorable part; include the exact phrase "remains a human step" about the part the agent cannot do.
 - Execution categories are Agent Native, Agent Computer Use, Human Online and Human Offline. Signatures, approval, jurisdiction and risk remain independent properties. For human execution, offer preparation and include the exact phrase "remains a human step" about the human act. For a missing, unresolved or reviewRequired assessment, stop for review of the actor and mechanism; include the exact phrase "stop for human sign-off". Missing browser test receipts alone do not imply human execution. A documented browser procedure can support Agent Computer Use; permissions and approvals remain preconditions. Local text/file/code work differs from external operations backed by a documented API, CLI, MCP tool or module. A vendor listing, old route, possible API or speculative audit is not evidence of an executable interface. Do not convert an assessment or remove a gate.
@@ -250,12 +256,13 @@ export function generationPrompt(t: PromptTarget, extra = ''): string {
       ? `GROUNDED VENDOR CALLS (the only endpoints you may quote verbatim):\n${t.groundedCalls.map((c) => `- [${c.vendorName}] ${c.method} (${c.type})${c.description ? ` — ${c.description}` : ''}`).join('\n')}`
       : 'GROUNDED VENDOR CALLS: none — quote no endpoints; describe every operation in words.',
   )
-  if (t.execution ? t.execution.category?.startsWith('human-') || t.execution.reviewRequired : t.route !== 'agent') {
-    lines.push(
-      t.audit
-        ? `HUMAN-STEP AUDIT: verdict '${t.audit.computerUse}'. Why human: ${t.audit.why} Computer-use feasibility: ${t.audit.computerUseWhy}`
-        : 'HUMAN-STEP AUDIT: none on file — this is a manual step; have the agent prepare and let me execute.',
-    )
+  if (!t.execution?.category || t.execution.reviewRequired) {
+    lines.push('EXECUTION NEEDS REVIEW: establish the supported actor, medium and complete method before execution; stop for human sign-off. An unresolved or missing assessment does not establish human or manual execution.')
+  }
+  if (t.audit) {
+    lines.push(t.execution
+      ? `Historical audit context (does not override the execution assessment or approval property): verdict '${t.audit.computerUse}'. ${t.audit.why} ${t.audit.computerUseWhy}`
+      : `HUMAN-STEP AUDIT: verdict '${t.audit.computerUse}'. Why human: ${t.audit.why} Computer-use feasibility: ${t.audit.computerUseWhy}`)
   }
   lines.push(`Write the ${MIN_PROMPT_WORDS}-${MAX_PROMPT_WORDS} word prompt now.${extra}`)
   return lines.join('\n\n')
@@ -313,7 +320,7 @@ export function enumeratePromptTargets(tasks: ProcessTask[]): PromptTarget[] {
           })),
         ),
         storyTitles: storyTitlesFor(task.id, node, storiesCache),
-        audit: node.execution?.category?.startsWith('agent-') ? null : node.route !== 'agent' ? humanStepAudit(task.id, node.id) : null,
+        audit: node.route !== 'agent' ? humanStepAudit(task.id, node.id) : null,
       })
     }
   }

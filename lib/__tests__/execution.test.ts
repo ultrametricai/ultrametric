@@ -54,6 +54,36 @@ describe('execution assessments', () => {
     // is insufficient to turn an unresolved filing into Human Online.
     expect(part('team_001', 'n2').metadata.execution).toMatchObject({ category: 'human-online', basis: 'human-work' })
   })
+  it('requires the retained provider and covers live operations beyond drafting', () => {
+    const contractor = part('hr_003', 'n4').metadata.execution as Execution
+    expect(contractor.category).toBe('agent-computer-use')
+    expect(contractor.evidence.some(source => source.includes('help.letsdeel.com'))).toBe(true)
+    expect(contractor.evidence.some(source => source.includes('docusign.com'))).toBe(false)
+    const kickoff = part('scale_012', 'n5').metadata.execution as Execution
+    expect(kickoff.evidence.some(source => source.includes('slack.dev'))).toBe(true)
+    expect(kickoff.evidence.some(source => source.includes('notion.com'))).toBe(true)
+    const message = part('opp_008', 'n2').metadata.execution as Execution
+    expect(message.category).toBeNull()
+    expect(message.evidence.some(source => source.includes('fastmail.com'))).toBe(true)
+    expect(message.evidence.some(source => source.includes('gmail'))).toBe(false)
+    const groups = part('scale_007', 'n2').metadata.execution as Execution
+    expect(groups.basis).toBe('documented-interface')
+    expect(groups.evidence.some(source => source.includes('developer.okta.com'))).toBe(true)
+    const exports = part('sit_013', 'n2').metadata.execution as Execution
+    expect(exports.category).toBe('agent-native')
+    for (const resource of ['charges', 'customers', 'subscriptions', 'disputes', 'payouts']) {
+      expect(exports.evidence).toContain(`https://docs.stripe.com/api/${resource}/list`)
+    }
+  })
+  it('does not infer an online medium from responsibility or reuse an unrelated probe', () => {
+    for (const [process, step] of [['sit_020', 'n4'], ['sit_022', 'n2']]) {
+      expect(part(process, step).metadata.execution).toMatchObject({ category: null, basis: 'unresolved', reviewRequired: true })
+    }
+    const availability = part('form_001', 'n3').metadata.execution as Execution
+    expect(availability.evidence).toContain('https://icis.corp.delaware.gov/Ecorp/NameReserv/NameReservation.aspx')
+    expect(availability.rationale).toMatch(/image-code challenge/)
+    expect(availability.rationale).toMatch(/existing-entity lookup probe did not test availability/)
+  })
   it('resolves every local evidence reference to retained content', () => {
     for (const record of records) for (const scope of scopes(record.parts)) {
       const assessment = scope.metadata.execution as Execution | undefined
@@ -86,6 +116,6 @@ describe('execution assessments', () => {
     expect(summary.executionCounts['human-online']).toBe(1)
     expect(summary.executionSignatures).toBe(1)
     expect(summary.executionApprovals).toBe(1)
-    expect(graphExecutionType({ id: 'one', title: 'Sign', metadata: record.parts[0].metadata, when: null, scope: 'fixture' }).label).toBe('Human Online')
+    expect(graphExecutionType({ id: 'one', title: 'Sign', metadata: record.parts[0].metadata, when: null, scope: 'fixture' }).label).toBe('Signature — legally human')
   })
 })

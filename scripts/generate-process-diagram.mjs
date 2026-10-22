@@ -22,15 +22,15 @@ const catalog = loadProcessCatalog(undefined, ROOT).processes
 const record = catalog.map(process => projectOperational(process, catalog)).find(record => record?.id === processId)
 if (!record) throw new Error(`process ${processId} not found in the operational catalog`)
 
-// Execution colors are independent of signature and approval properties.
+// Route styling mirrors components/ProcessDag.tsx in the site repo.
 const STYLES = {
-  'agent-native': { fill: '#0b2e22', stroke: '#34d399', text: '#d1fae5', glyph: '🤖' },
-  'agent-computer-use': { fill: '#2e230b', stroke: '#fbbf24', text: '#fef3c7', glyph: '🖥' },
-  'human-online': { fill: '#0b2233', stroke: '#38bdf8', text: '#e0f2fe', glyph: '🧑' },
-  'human-offline': { fill: '#230b33', stroke: '#a78bfa', text: '#ede9fe', glyph: '🚶' },
+  agent: { fill: '#0b2e22', stroke: '#34d399', text: '#d1fae5', glyph: '🤖' },
+  form: { fill: '#2e230b', stroke: '#fbbf24', text: '#fef3c7', glyph: '📝' },
+  person: { fill: '#0b2233', stroke: '#38bdf8', text: '#e0f2fe', glyph: '🧑' },
+  sig: { fill: '#230b33', stroke: '#a78bfa', text: '#ede9fe', glyph: '✍' },
 }
 
-const styleOf = (n) => STYLES[n.execution?.category] ?? { fill: '#20242c', stroke: '#94a3b8', text: '#e2e8f0', glyph: '?' }
+const styleOf = (n) => (n.legalSignature ? STYLES.sig : (STYLES[n.route] ?? STYLES.person))
 const minutesLabel = (m) =>
   m == null ? '' : m >= 1440 ? ` (~${Math.round(m / 1440)}d wait)` : ` (${m}m)`
 const esc = (s) => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
@@ -55,7 +55,7 @@ const parts = []
 let y = PAD_TOP
 const box = (n, x, w, suffix = '') => {
   const s = styleOf(n)
-  const label = `${s.glyph}${n.legalSignature ? ' ✍' : ''} ${n.label}${minutesLabel(n.estimatedMinutes)}${suffix}`
+  const label = `${s.glyph} ${n.label}${minutesLabel(n.estimatedMinutes)}${suffix}`
   // ~7.2px per character at 14px; squeeze long labels to the box instead of overflowing.
   const fit = label.length * 7.2 > w - 16 ? ` textLength="${w - 16}" lengthAdjust="spacingAndGlyphs"` : ''
   parts.push(

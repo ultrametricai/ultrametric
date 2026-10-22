@@ -254,12 +254,13 @@
         "execution": {
           "category": "agent-native",
           "basis": "documented-interface",
-          "rationale": "AWS's CLI documents VPC, route and security-group operations for the scoped network configuration and tests.",
+          "rationale": "AWS CLI operations create the VPC, routes and security groups and apply approved ingress rules. Connection probes from the permitted and excluded locations test the resulting network paths.",
           "evidence": [
             "open-processes/set-up-cloud-infrastructure.json#/parts/2/guidance",
             "https://docs.aws.amazon.com/cli/latest/reference/ec2/create-vpc.html",
             "https://docs.aws.amazon.com/cli/latest/reference/ec2/create-security-group.html",
-            "https://docs.aws.amazon.com/cli/latest/reference/ec2/create-route.html"
+            "https://docs.aws.amazon.com/cli/latest/reference/ec2/create-route.html",
+            "https://docs.aws.amazon.com/cli/latest/reference/ec2/authorize-security-group-ingress.html"
           ],
           "reviewRequired": false
         }
@@ -309,11 +310,12 @@
         "execution": {
           "category": "agent-native",
           "basis": "documented-interface",
-          "rationale": "AWS's CLI documents RDS instance and snapshot operations for the authorized database setup and restore trial.",
+          "rationale": "AWS CLI operations create the RDS instance and snapshot and restore a test instance. Application-side SQL checks cover connection, migration and write/read behavior before relying on the restore path.",
           "evidence": [
             "open-processes/set-up-cloud-infrastructure.json#/parts/3/guidance",
             "https://docs.aws.amazon.com/cli/latest/reference/rds/restore-db-instance-from-db-snapshot.html",
-            "https://docs.aws.amazon.com/cli/latest/reference/rds/create-db-instance.html"
+            "https://docs.aws.amazon.com/cli/latest/reference/rds/create-db-instance.html",
+            "https://docs.aws.amazon.com/cli/latest/reference/rds/create-db-snapshot.html"
           ],
           "reviewRequired": false
         }
@@ -356,11 +358,13 @@
         "execution": {
           "category": "agent-native",
           "basis": "documented-interface",
-          "rationale": "AWS's CLI supports ECS task definitions, services and updates for the versioned container deployment.",
+          "rationale": "AWS CLI operations register task definitions, create and update the ECS service and retrieve its CloudWatch logs. HTTP checks verify the endpoint before and after the version change and rollback.",
           "evidence": [
             "open-processes/set-up-cloud-infrastructure.json#/parts/4/guidance",
             "https://docs.aws.amazon.com/cli/latest/reference/ecs/register-task-definition.html",
-            "https://docs.aws.amazon.com/cli/latest/reference/ecs/create-service.html"
+            "https://docs.aws.amazon.com/cli/latest/reference/ecs/create-service.html",
+            "https://docs.aws.amazon.com/cli/latest/reference/ecs/update-service.html",
+            "https://docs.aws.amazon.com/cli/latest/reference/logs/filter-log-events.html"
           ],
           "reviewRequired": false
         }
@@ -398,11 +402,12 @@
         "execution": {
           "category": "agent-native",
           "basis": "documented-interface",
-          "rationale": "AWS's CLI supports role and policy administration for the approved identity grants and scoped permission tests.",
+          "rationale": "AWS IAM creates roles and scoped policies, and STS role sessions support testing a required and forbidden operation as the resulting identity. Apply the administrator's approved grants and remove diagnostic permissions.",
           "evidence": [
             "open-processes/set-up-cloud-infrastructure.json#/parts/5/guidance",
             "https://docs.aws.amazon.com/en_us/cli/latest/reference/iam/put-role-policy.html",
-            "https://docs.aws.amazon.com/cli/latest/reference/iam/create-role.html"
+            "https://docs.aws.amazon.com/cli/latest/reference/iam/create-role.html",
+            "https://docs.aws.amazon.com/cli/latest/reference/sts/assume-role.html"
           ],
           "reviewRequired": false
         }

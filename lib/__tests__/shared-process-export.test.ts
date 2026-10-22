@@ -81,11 +81,7 @@ describe('pinned catalog export', () => {
     const artifact = JSON.parse(readFileSync(path.join(root, 'catalog.json'), 'utf8'))
     const canonical = JSON.parse(readFileSync(path.join(repo, 'open-processes/generate-a-brand-logo.json'), 'utf8'))
     const projected = artifact.records.find((record: { id: string }) => record.id === canonical.id)
-    // Instruction notes expose the new assessment while preserving authored content.
-    const withoutExecutionNotes = JSON.parse(JSON.stringify(projected), (key, value) =>
-      key === 'notes' ? value.filter((note: { text: string }) => !note.text.startsWith('Execution: ') && note.text !== 'Resolve the recorded execution uncertainty before performing this step.') : value)
-    expect(projected.parts[0].notes.some((note: { text: string }) => note.text.startsWith('Execution: Agent Native.'))).toBe(true)
-    expect(withoutExecutionNotes).toEqual({
+    expect(projected).toEqual({
       ...canonical,
       notes: [...canonical.notes,
         { text: 'Required artifacts: company-name' },

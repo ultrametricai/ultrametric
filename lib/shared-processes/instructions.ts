@@ -1,5 +1,4 @@
 import { z } from 'zod'
-import { executionOf, executionLabel } from '../execution'
 import type { CatalogProcess } from './catalog'
 import type { Note, Option, Part, SharedRecord } from './schema'
 
@@ -57,11 +56,6 @@ function instructionalNotes(metadata: Record<string, unknown>): Note[] {
   if (typeof metadata.trigger === 'string') add(`Trigger: ${metadata.trigger}`)
   for (const [key, label] of [['requires', 'Required artifacts'], ['produces', 'Produced artifacts'], ['inputs', 'Inputs'], ['evidence', 'Evidence to retain']] as const) {
     if (metadata[key] && strings.parse(metadata[key]).length) add(`${label}: ${strings.parse(metadata[key]).join(', ')}`)
-  }
-  const execution = executionOf(metadata)
-  if (execution) {
-    add(`Execution: ${executionLabel(execution)}. ${execution.rationale}`)
-    if (execution.reviewRequired) add('Resolve the recorded execution uncertainty before performing this step.')
   }
   if (metadata.legalSignature === true) add('This step requires a human legal signature or attestation.')
   if (metadata.approvalRequired === true) add('Obtain human approval before performing this step.')

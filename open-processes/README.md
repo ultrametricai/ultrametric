@@ -363,9 +363,9 @@ registry pointers and traversal of conditional and nested vendor references.
 
 The diagram is `form_001` (Incorporate C-Corp) from canonical `incorporate-c-corp.json`:
 `scripts/generate-process-diagram.mjs` draws the unfiltered operational projection's `dag.nodes` and
-`dag.edges`, nothing invented, and is re-run when the definition changes. Glyphs indicate execution: 🤖 Agent Native, 🖥 Agent Computer Use,
-🧑 Human Online, 🚶 Human Offline and ? unresolved. A separate ✍ marks a required
-human signature.
+`dag.edges`, nothing invented, and is re-run when the definition changes. Glyphs: 🤖 `agent` ·
+📝 `form` (manual web form) · 🧑 `person` · ✍ a `person` step with `legalSignature`
+(legally required human signature). Presentation adoption of execution assessments is deferred.
 
 <p align="center"><img src="assets/incorporate-c-corp.svg" alt="Incorporate C-Corp step graph" width="700"></p>
 

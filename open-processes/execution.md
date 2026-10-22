@@ -30,6 +30,12 @@ external submission. A vendor list, historical route, audit prediction or hypoth
 API does not establish an agent interface. An API source for one provider does not prove
 support for the other providers listed on the step. Verify the selected method before use.
 
+Check the full operation sequence against the retained provider and method. Include
+record updates, remote verification, export resource types and release steps when the
+authored work requires them. Local preparation covers a step only when its deliverable
+ends there. A human responsibility establishes the actor; an online category also needs
+evidence of the digital channel. A written decision can be on paper or electronic.
+
 For insufficient or mixed evidence, use `category: null`, `basis: "unresolved"` and
 `reviewRequired: true`. Explain the missing actor, medium or interface in `rationale` and
 retain evidence references. Null records an unresolved assessment; it adds no execution
@@ -88,5 +94,6 @@ requires assessments. Historical generated prompts remain stored and accessible 
 the existing reader.
 Newly generated prompts carry the assessment, which participates in the generation cache
 key. Review wording contradictions individually; changing prompt availability requires
-separate product review. The site adopts the new content labels and properties at its
-content pin without changing DAG node kinds.
+separate product review. Validate `approvalRequired` independently of category and keep
+unresolved work explicitly unresolved in generation context. Presentation adoption is
+deferred to a separate change; existing graph labels, symbols and signature display remain.
