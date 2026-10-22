@@ -1,7 +1,11 @@
 import fs from 'node:fs'
 import path from 'node:path'
 import { describe, expect, it } from 'vitest'
+import { z } from 'zod'
 import { MODULE_REGISTRY_FILE, moduleRegistryJson, REGISTRY_ENTRIES, shapeOf } from '../scripts/generate-module-registry'
+import { buildCapTable } from '../lib/openstartup/capTable'
+import { compareFranchiseTaxMethods } from '../lib/openstartup/deFranchiseTax'
+import { liquidityWaterfall } from '../lib/openstartup/waterfall'
 
 // The open-module call-surface gate (maintainer report 2026-10-21: an agent needed three
 // attempts to call compareFranchiseTaxMethods — no machine-readable entrypoint index, raw
@@ -75,6 +79,42 @@ describe('open-modules/registry.json', () => {
     const registered = committed.modules.map((m) => m.id).sort()
     expect(registered).toEqual(moduleFiles)
     expect(new Set(registered).size).toBe(registered.length)
+  })
+
+  it('every published inputSchema accepts its own example call', () => {
+    for (const mod of committed.modules) {
+      const published = z.fromJSONSchema(mod.entrypoint.inputSchema)
+      const parsed = published.safeParse(mod.entrypoint.example.args)
+      expect(parsed.success, `${mod.id}: example args rejected by the published inputSchema`).toBe(true)
+    }
+  })
+
+  it('the published schema accepts what the modules accept across composition (extra keys pass)', () => {
+    // downRoundModel hands its issuance, investorName included, straight to
+    // applyAntiDilution — the published schema must accept that call, so it is generated
+    // from the input perspective (no additionalProperties: false).
+    const antiDilution = committed.modules.find((m) => m.id === 'antiDilution')!
+    const published = z.fromJSONSchema(antiDilution.entrypoint.inputSchema)
+    const issuanceWithInvestor = { newShares: 5_000_000, considerationDollars: 5_000_000, investorName: 'Series B' }
+    const series = { name: 'Series A', preferredShares: 4_000_000, originalIssuePrice: 2, conversionPriceBefore: 2 }
+    expect(published.safeParse([series, issuanceWithInvestor, 'broad-based', 12_000_000]).success).toBe(true)
+  })
+
+  it('entry validation names the full field path: nested fields, array elements, later arguments', () => {
+    const call = (fn: unknown, ...args: unknown[]) => () => (fn as (...a: unknown[]) => unknown)(...args)
+    // Missing nested field on the first (object) argument — the failure that prompted the
+    // registry: compareFranchiseTaxMethods without authorizedClasses used to reduce over
+    // undefined and throw a raw TypeError.
+    expect(call(compareFranchiseTaxMethods, { totalGrossAssets: 1_000_000, totalIssuedShares: 485_000 })).toThrow(RangeError)
+    expect(call(compareFranchiseTaxMethods, { totalGrossAssets: 1_000_000, totalIssuedShares: 485_000 })).toThrow(
+      /compareFranchiseTaxMethods: inputs\.authorizedClasses/,
+    )
+    // Malformed element inside an argument array: the path names the index and field.
+    expect(call(buildCapTable, [{ kind: 'safe', name: 'Angel SAFE' }])).toThrow(RangeError)
+    expect(call(buildCapTable, [{ kind: 'safe', name: 'Angel SAFE' }])).toThrow(/buildCapTable: events\[0\]\.amount/)
+    // Missing later required argument.
+    expect(call(liquidityWaterfall, { holders: [{ name: 'Founders', shares: 100 }] })).toThrow(RangeError)
+    expect(call(liquidityWaterfall, { holders: [{ name: 'Founders', shares: 100 }] })).toThrow(/liquidityWaterfall: price/)
   })
 
   it('every registered entrypoint rejects missing input with a RangeError naming its first argument', () => {

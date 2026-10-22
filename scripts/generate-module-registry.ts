@@ -273,11 +273,26 @@ export const REGISTRY_ENTRIES: readonly RegistryEntryDef[] = [
 ]
 
 /** The recursive type skeleton of a value: primitives become their typeof name, arrays
- * show their first element's shape, objects map field → shape (undefined fields dropped,
- * matching JSON). The drift test re-runs each example and compares shapes. */
+ * list their DISTINCT element shapes in first-appearance order (so a trajectory of
+ * identical months collapses to one shape while a snapshot list whose last element adds
+ * `round`, or a findings list mixing finding kinds, records every variant), objects map
+ * field → shape (undefined fields dropped, matching JSON). The drift test re-runs each
+ * example and compares shapes. */
 export function shapeOf(value: unknown): unknown {
   if (value === null) return 'null'
-  if (Array.isArray(value)) return value.length === 0 ? [] : [shapeOf(value[0])]
+  if (Array.isArray(value)) {
+    const shapes: unknown[] = []
+    const seen = new Set<string>()
+    for (const element of value) {
+      const shape = shapeOf(element)
+      const key = JSON.stringify(shape)
+      if (!seen.has(key)) {
+        seen.add(key)
+        shapes.push(shape)
+      }
+    }
+    return shapes
+  }
   if (typeof value === 'object') {
     const out: Record<string, unknown> = {}
     for (const [k, v] of Object.entries(value as Record<string, unknown>)) {
@@ -297,12 +312,19 @@ function statusByAnchor(readme: string): Map<string, string> {
   return statuses
 }
 
+// io: 'input' — the published schema is the contract for what a CALLER may pass. Runtime
+// validation tolerates extra keys and keeps the original objects (downRoundModel hands its
+// issuance, investorName included, straight to applyAntiDilution), so the output
+// perspective's additionalProperties: false would reject calls the modules accept. The
+// explicit $schema declares the 2020-12 dialect each standalone inputSchema relies on
+// (prefixItems with items: false reads as reject-everything under draft-07).
 function inputSchemaOf(entry: EntrySpec): Record<string, unknown> {
   const prefixItems = entry.args.map((arg) => {
-    const { $schema: _dropped, ...schema } = z.toJSONSchema(arg.schema)
+    const { $schema: _dropped, ...schema } = z.toJSONSchema(arg.schema, { io: 'input' })
     return { title: arg.name, ...schema }
   })
   return {
+    $schema: 'https://json-schema.org/draft/2020-12/schema',
     type: 'array',
     description: `Positional arguments of ${entry.fn}`,
     prefixItems,
