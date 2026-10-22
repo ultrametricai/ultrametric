@@ -87,6 +87,8 @@ Process-step wiring:
   from founder-process steps to markets, products, stories, and runnable calls.
 - `graph.json`, `story-graph.json`, `story-edges.json` — the story graph and its
   cross-story dependency edges.
+- `step-rankings.json` — the full vendor ranking for each process step, derived (see
+  [Step rankings](#step-rankings)).
 - `human-step-audit.json` — the process steps that stay human, with reasons.
 - `mcp-demo-calls.json`, `mcp-endpoint-pins.json`, `live-probes.json` — the recorded MCP
   demo calls, pinned MCP endpoints, and live-probe definitions.
@@ -108,6 +110,38 @@ Program queues:
 - `yc-map.json`, `yc-batches.json`, `yc-queue.json`, `yc-rejections.json` — YC company
   mapping and the coverage queue built from it.
 
+## Step rankings
+
+`step-rankings.json` ranks vendors for each founder-process step. It is derived by
+`pnpm exec tsx rankings-engine/scripts/generate-step-rankings.ts` from three committed inputs:
+the process corpus, the step-to-story mapping in `process-step-stories.json`, and each
+arena's `verdicts.json`. The mapping is an LLM annotation (written by
+`rankings-engine/scripts/map-step-stories.ts`) that picks which of the covering arena's
+stories bear on a step. The scores come from the judged verdicts: a vendor's step score is
+the story-weighted verdict score over the mapped stories (`weightedPercent` in
+`lib/scoring.ts`, `na` excluded), and each vendor carries the per-story verdict, quality,
+and weight its score is computed from.
+
+Each step entry has a `primary` market (the step's covering arena) and zero or more
+`crossArena` markets (its additional arenas). The rules live in `lib/processRankings.ts`
+and match the option chips the site shows on each step, which are the first `optionsCap`
+vendors of each market:
+
+- Products marked shut down are left out.
+- Steps covered by `government-services` list only agencies whose committed `country` and
+  `area` tags match the agency the step is wired to; the market's `eligibility` field names
+  the tags.
+- Cross-arena markets admit a vendor only with a positive score backed by at least one
+  `full` or `partial` verdict, within the step's declared arena or product allowlist.
+- Equal scores keep the arena leaderboard's order, and `rank` is the position in that order.
+
+A market is absent when its arena is unpopulated, its mapping is empty, or no vendor scores;
+`primary` is null when only cross-arena markets rank the step, and steps with neither a
+primary nor a cross-arena ranking are omitted. The file
+carries no timestamps, so a rebuild over unchanged inputs is byte-identical; `pnpm test`
+and `pnpm recompute-check` both fail when it drifts from its inputs. Re-run the script
+after any verdict, product, mapping, or process change.
+
 ## How the site and CI read it
 
 `lib/data.ts` loads a market: `loadCategory` schema-parses products, stories, verdicts,
@@ -119,7 +153,7 @@ open surface at a pinned commit via `scripts/sync-open.mjs` and `open-manifest.j
 renders it at ultrametric.ai. In CI, `pnpm test` validates each file against its schema
 (`lib/schemas.ts`, `schemas/`), and `pnpm recompute-check` rebuilds the rankings for each
 market from the on-disk inputs and deep-compares them against the committed
-`rankings.json`.
+`rankings.json`, then does the same for `step-rankings.json`.
 
 ## Contribute
 

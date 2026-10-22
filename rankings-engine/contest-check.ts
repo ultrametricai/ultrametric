@@ -4,6 +4,7 @@ import path from 'node:path'
 import { type Evidence, EvidenceSchema, ProductSchema, StorySchema } from '../lib/schemas'
 import { fetchWithRetry, htmlToMarkdown } from './fetch-page'
 import { categoryDir, readJson, resolveCategories, ROOT, writeJson } from './paths'
+import { writeStepRankings } from './scripts/generate-step-rankings'
 import { writeStoryGraph } from './scripts/generate-story-graph'
 import { writeVendorReviews } from './scripts/generate-vendor-reviews'
 import { runDerive } from './stages/derive'
@@ -184,6 +185,10 @@ async function main(): Promise<void> {
   // the graph so the PR passes the byte-identity tests (lib/__tests__/storyProcessGraph.test.ts
   // and shared-canonical-identity.test.ts).
   writeStoryGraph()
+  // Verdicts are also an input of open-rankings/step-rankings.json (per-step vendor scores) —
+  // regenerate so the PR passes its drift gates (lib/__tests__/stepRankings.test.ts and
+  // pnpm recompute-check).
+  writeStepRankings()
 
   const branch = `contest-${issueNumber}`
   git(['checkout', '-b', branch])
@@ -193,6 +198,7 @@ async function main(): Promise<void> {
     path.relative(ROOT, path.join(dataDir, 'verdicts.json')),
     path.relative(ROOT, path.join(dataDir, 'rankings.json')),
     'open-rankings/graph.json',
+    'open-rankings/step-rankings.json',
     'open-rankings/reviews/generated',
   ])
   git([

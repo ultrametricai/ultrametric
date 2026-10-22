@@ -99,6 +99,11 @@ jobs:
       - name: Regenerate the story graph artifact
         run: pnpm tsx rankings-engine/scripts/generate-story-graph.ts
 
+      # Same contract for open-rankings/step-rankings.json (per-step vendor scores over the
+      # judged verdicts); a rank-only run regenerates byte-identically.
+      - name: Regenerate the step rankings artifact
+        run: pnpm tsx rankings-engine/scripts/generate-step-rankings.ts
+
       - name: Tests
         run: pnpm test
 
@@ -107,7 +112,7 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           RUN_ID: ${{ github.run_id }}
         run: |
-          if git diff --quiet -- rankings rankings-engine/cache; then
+          if git diff --quiet -- open-rankings rankings-engine/cache; then
             echo "No changes — done."
             exit 0
           fi
@@ -116,7 +121,7 @@ jobs:
           git config user.name "ultrametric-spike-engine"
           git config user.email "noreply@ultrametric.ai"
           git checkout -b "$BRANCH"
-          git add rankings rankings-engine/cache README.md
+          git add open-rankings rankings-engine/cache README.md
           git commit -m "chore(spike-engine): queue re-rank + top-of-queue spike pass"
           git push -u origin "$BRANCH"
           # Same org-policy fallback as story-runner: if Actions may not open PRs, leave an
