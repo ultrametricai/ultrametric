@@ -1,11 +1,11 @@
 {
-  "hash": "d12bac2dc2b2e1380dac0517eb76abf62bf145dc2a304d5e24e535da784932f5",
+  "hash": "1e3f4f64cd9b92c1c1cd6cc31918c09f4df6ddf48e576c498a9acda72c3242f7",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 6,
     "confidence": "medium",
-    "rationale": "Skyfire lets a developer register a seller service with pricing and accept buyer-issued pay or kya-pay tokens via the `kyapay-token` header. The seller then charges each token through the Charge Token API after delivery, and tokens can be charged repeatedly until their balance runs out, so agents pay per call with no checkout UI and the seller is guaranteed settlement. However, the evidence shows no HTTP 402 challenge-response flow: 402 appears only as the PAYMENT_ERROR returned when an overcharge fails, and seller services require Skyfire approval. Missing for 10: a documented HTTP 402 payment-required challenge/response protocol for unpaid requests, a self-serve (non-approval-gated) seller setup, and independent hands-on corroboration of per-call seller monetization.",
+    "rationale": "Skyfire documents a seller-side way to monetize a service without a checkout UI. Sellers register a priced service, buyer agents present `pay`/`kya-pay` tokens in a `kyapay-token` header, and the seller calls the Charge Token API after delivery, charging repeatedly until the committed balance runs out with guaranteed settlement. However, nothing shows an HTTP 402 payment-required challenge that the seller's API returns to agents; the only 402 in evidence is Skyfire's own API rejecting overcharges. Seller services also require Skyfire approval. missing for 10: a documented HTTP 402 challenge/response flow for seller APIs, explicit per-call metering guidance, independent or hands-on corroboration of seller monetization.",
     "evidenceIds": [
       "skyfire-docs-3",
       "skyfire-docs-4",

@@ -1,19 +1,20 @@
 {
-  "hash": "fac844fb3b298a731060422056d4bc50550b55610f7bce53692dea6e04ef00fb",
+  "hash": "03579f2f54f445ca44de34a8c87e85b913843e750c34830a4a5deeaef85f4518",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "PayPal documents cart creation through its agentic-commerce v1 cart API (POST /merchant-cart with a PayPalCart object, plus a get-cart state read), and Store Sync promises agents can \"create and manage shopping carts.\" The Agent Toolkit/MCP also exposes a create_order function agents call directly, and the ACP path manages checkout sessions per spec. However, the cart API is a reverse API that PayPal Shopping Cart calls on the agent's behalf, access is form-gated, and an explicit update-cart or update-order call is not documented. Missing for 10: an explicitly documented cart/order update endpoint or tool, direct agent-to-cart protocol access, and independent or hands-on corroboration.",
+    "rationale": "Agents can create an order through documented protocol calls: the Agent Toolkit and MCP server expose `create_order`, and Store Sync's cart API (POST /merchant-cart, get cart) lets agents \"create and manage shopping carts\" via PayPal Shopping Cart. ACP and UCP checkout-session paths add further protocol coverage. Caveats: PayPal's service, not the agent, calls the merchant cart endpoints, and Store Sync access is form-gated and limited to US physical goods. missing for 10: an explicitly documented update-cart/update-order call (only create and get endpoints are crawled; \"manage\" implies but does not document updates), independent or hands-on corroboration of agent cart creation and updates.",
     "evidenceIds": [
-      "paypal-ac-supp-cart-reverse-api",
-      "paypal-ac-supp-getcart",
-      "paypal-ac-supp-store-sync",
       "paypal-ac-supp-refund-dispute-tools",
       "paypal-agent-commerce-gh-1",
+      "paypal-ac-supp-store-sync",
+      "paypal-ac-supp-cart-reverse-api",
+      "paypal-ac-supp-getcart",
       "paypal-ac-supp-acp-chatgpt",
-      "paypal-ac-supp-acs-gate"
+      "paypal-ac-supp-agent-toolkit",
+      "paypal-ac-probe-rt-1"
     ],
     "productId": "paypal-agent-commerce",
     "storyId": "agent-cart-create"
