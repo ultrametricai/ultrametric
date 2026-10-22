@@ -22,8 +22,10 @@ Read the title, guidance, option summary, retained sources and applicable method
 classifying. A documented mechanism can support a category without an end-to-end test
 receipt. Record account access, untested behavior and method restrictions in the rationale;
 use `reviewRequired` for a material unresolved limitation. A supported digital human path
-can be Human Online when no agent interface is evidenced, without claiming automation is
-impossible. A preparation tool does not establish execution of a filing, signing act or
+does not establish Human Online by itself. Use Human Online when the authored work
+requires the person to perform a decision, attestation, interaction or other human act
+through a digital channel. Missing agent test receipts do not establish a human requirement.
+A preparation tool does not establish execution of a filing, signing act or
 external submission. A vendor list, historical route, audit prediction or hypothetical
 API does not establish an agent interface. An API source for one provider does not prove
 support for the other providers listed on the step. Verify the selected method before use.
@@ -33,6 +35,23 @@ For insufficient or mixed evidence, use `category: null`, `basis: "unresolved"` 
 retain evidence references. Null records an unresolved assessment; it adds no execution
 category. Keep a partly tested interface review-gated and state the test's exact limits.
 For a step combining online and physical work, retain the graph and record the ambiguity.
+
+A documented sequence of browser controls can support Agent Computer Use without a
+completed agent test. Cite the controls and operation, then distinguish untested execution
+from missing evidence of the mechanism. Account access, scoped permission, subscription
+requirements and human approval are preconditions; they do not turn mechanical browser
+work into Human Online. Identity challenges and signatures require the responsible person's
+participation at that point. If an indivisible step combines a required human act with
+agent work and the category depends on the selected method, record the uncertainty.
+Routine analysis and configuration choices can be agent work; a board vote, personal
+attestation or interpersonal negotiation retains its human actor.
+
+For Agent Native, `local-work` means the stated deliverable can be produced with supplied
+inputs using text, file or code tools, including a repository calculation module.
+`documented-interface` means the external operation is supported by a cited API, CLI or
+MCP tool. Preserve the exact provider
+and operation limits in the rationale; preparation alone does not establish external
+execution, and an interface for one provider does not establish the other providers.
 
 The assessment includes `category`, `basis`, `rationale`, `evidence` and `reviewRequired`.
 Use `local-work` or `documented-interface` for Agent Native, `browser-evidence` for Agent
@@ -65,8 +84,9 @@ The existing kind, routing and approval semantics remain unchanged. Existing con
 may ignore optional fields. Content consumers use the assessment for labels and review
 queues; executor policy changes require a separate reviewed contract change.
 Published schemas accept older records without assessments; the canonical authoring check
-requires assessments. Historical generated prompts remain stored. Readers retain compatible native prompts
-and human prompts whose audit requires preparation and handoff. They withhold prompts
-that contradict the assessment or bypass unresolved review. Newly generated prompts carry
-the assessment and become stale when it changes. The site adopts the new
-content labels and properties at its content pin without changing DAG node kinds.
+requires assessments. Historical generated prompts remain stored and accessible through
+the existing reader.
+Newly generated prompts carry the assessment, which participates in the generation cache
+key. Review wording contradictions individually; changing prompt availability requires
+separate product review. The site adopts the new content labels and properties at its
+content pin without changing DAG node kinds.

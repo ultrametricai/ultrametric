@@ -44,6 +44,15 @@ const base: PromptTarget = {
 // ---------------------------------------------------------------------------
 
 describe('validatePrompt', () => {
+  it('preserves assessed human work and unresolved review even on a legacy agent route', () => {
+    const human: PromptTarget = { ...base, execution: { category: 'human-online', basis: 'human-work', rationale: 'Human signer', evidence: ['fixture'], reviewRequired: false } }
+    expect(validatePrompt(human, `${VENDOR_PLACEHOLDER} ${words(150)}`)).toMatch(/remains a human step/)
+    expect(validatePrompt(human, `${VENDOR_PLACEHOLDER} Signing remains a human step. ${words(150)}`)).toBeNull()
+    const unresolved: PromptTarget = { ...base, execution: { ...human.execution!, category: null, basis: 'unresolved', reviewRequired: true } }
+    expect(validatePrompt(unresolved, `${VENDOR_PLACEHOLDER} ${words(150)}`)).toMatch(/stop for human sign-off/)
+    expect(validatePrompt(unresolved, `${VENDOR_PLACEHOLDER} stop for human sign-off. ${words(150)}`)).toBeNull()
+  })
+
   it('enforces the word range', () => {
     expect(validatePrompt(base, `${VENDOR_PLACEHOLDER} ${words(50)}`)).toMatch(/words/)
     expect(validatePrompt(base, `${VENDOR_PLACEHOLDER} ${words(MAX_PROMPT_WORDS + 10)}`)).toMatch(/words/)
@@ -235,12 +244,14 @@ describe('open-rankings/step-prompts.json', () => {
     }
   })
 
-  it('loader smoke: stepPromptFor resolves committed entries and misses honestly', () => {
+  it('preserves access to all historical prompts during the content migration', () => {
     const first = entries[0]
     expect(stepPromptFor(first.taskId, first.nodeId)).toEqual(first)
+    expect(entries[0]).toEqual(first) // the published history is retained
     // growth_005 graduated to a covered market (optionsArenaId email-apis, 2026-09-23), so its
     // prompts carry the {{vendor}} placeholder instead of a hard-coded SendGrid.
     expect(stepPromptFor('growth_005', 'n1')?.prompt).toMatch(/\{\{vendor\}\}/)
+    for (const entry of entries) expect(stepPromptFor(entry.taskId, entry.nodeId)).toEqual(entry)
     expect(stepPromptFor('no_such_task', 'n1')).toBeNull()
   })
 })
