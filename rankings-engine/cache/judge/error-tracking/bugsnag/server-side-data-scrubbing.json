@@ -1,14 +1,16 @@
 {
-  "hash": "3cfa87cbc6d884eed0ee642b7d0ddf45983ed6e4c8cfab8bbc7d49435635025b",
+  "hash": "68157d3d095e214db94a17e7e02613d46dc64731ffb00f2de03ac4c79dd57ecb",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 3,
     "confidence": "medium",
-    "rationale": "BugSnag documents sensitive-data tooling to redact or remove sensitive data for GDPR/CCPA/HIPAA compliance, which covers part of the PII-scrubbing need. However, that tooling is explicitly retroactive, applied after events are stored, which is the opposite of the story's 'before sensitive payloads ever persist' requirement. missing for 10: server-side scrubbing rules applied at ingest, SDK-level filtering/redaction of keys before sending, any evidence of pre-persistence scrubbing, independent or hands-on corroboration.",
+    "rationale": "BugSnag documents its own sensitive-data management tooling for redacting or removing sensitive data, aimed at GDPR/CCPA/HIPAA compliance. That tooling is explicitly retroactive, so it acts after payloads have persisted. The SDK-side evidence covers only `before notify` callbacks and discard rules that drop whole events by criteria, not field-level PII redaction. Missing for 10: server-side scrubbing rules applied at ingestion before persistence, documented SDK-level field redaction/filtering of PII (e.g. redacted keys), and independent or hands-on corroboration.",
     "evidenceIds": [
       "bugsnag-docs-6",
-      "bugsnag-docs-30"
+      "bugsnag-docs-30",
+      "bugsnag-docs-46",
+      "bugsnag-docs-35"
     ],
     "productId": "bugsnag",
     "storyId": "server-side-data-scrubbing"
