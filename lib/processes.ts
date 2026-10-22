@@ -329,6 +329,14 @@ export const DagNodeSchema = DagNodeBaseSchema.extend({
   // StepGeoResolutionSchema above. Full-node only (like producesArtifact): method-variant
   // subSteps stay display-level.
   geoResolutions: StepGeoResolutionSchema.array().min(1).optional(),
+  // This step is SUPPORT work (filing receipts, archiving executed copies), not the process's
+  // substantive work. Leaderboard assembly (lib/processRankings.ts processLeaderboard) treats a
+  // supporting step as non-primary: its vendors never become leaderboard entries, so a
+  // record-keeping step cannot drag its arena's roster onto a process it doesn't substantively
+  // serve. Everything step-level is untouched — the step keeps its own ranking, its option
+  // chips, and its slot in the rankable denominator, so no remaining vendor's score moves.
+  // Deliberately absent where document storage IS the substantive work (the data-room setup).
+  supporting: z.boolean().optional(),
 })
 
 // An old URL slug that must keep working after a rename (founder rule: processes are named
