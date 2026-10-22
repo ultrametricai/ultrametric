@@ -100,7 +100,7 @@ ITEMS = {
         ('bugsnag-supp-openapi-spec', 'https://api.swaggerhub.com/apis/smartbear-public/bugsnag-data-access-api/2/swagger.json',
          'SwaggerHub-published OpenAPI 3.0.3 document: info.title "BugSnag - Data Access API", description "Allows you to access information about your BugSnag errors, projects, organization and more to build custom integrations using your data."'),
         ('bugsnag-supp-data-access-docs', 'https://developer.smartbear.com/bugsnag/docs/data-access',
-         'The SmartBear developer portal hosts the BugSnag Data Access API reference generated from that OpenAPI spec ("Data Access API ... apiSpec openapi-3.0.3", per-operation pages), alongside dedicated Pagination, Rate Limiting, Authentication and Versioning pages (docs/data-access-versioning).'),
+         '"Allows you to access information about your BugSnag errors, projects, organization and more to build custom integrations using your data" — the portal\'s "Data Access API" reference is generated from the SwaggerHub OpenAPI document ("apiSpec": "openapi-3.0.3") and lists "Pagination", "Rate Limiting", "Authentication" and "Versioning" pages (docs/data-access-versioning).'),
     ],
     ('error-tracking', 'rollbar'): [
         ('rollbar-supp-openapi-spec', 'https://docs.rollbar.com/openapi/62de9e1b6316c304034d006a',

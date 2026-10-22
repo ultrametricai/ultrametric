@@ -5,32 +5,31 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "BugSnag's grouping docs say grouping shows which issues have the biggest impact on users, and a community user praises being able to track how many users a particular bug affects. Session-level impact is documented only as a project-wide stability metric (proportion of error-free sessions), not as a per-issue count. Missing for 10: documented per-issue affected-user and affected-session counts, sorting or prioritizing issues by user/session impact rather than event count, and recent independent corroboration (the community evidence is old).",
+    "rationale": "BugSnag's grouping docs say grouping gives 'a clear view of which issues are having the biggest impact on your users'. A hands-on community user praises being able to track how many users are affected by a particular bug. Stability scoring measures the share of sessions that are error-free, but only at the project level, not per issue. missing for 10: first-party documentation of per-issue affected-user counts, per-issue affected-session counts, sorting or prioritizing the inbox by users/sessions rather than event count, and recent independent corroboration (the community report is old).",
     "evidenceIds": [
       "bugsnag-docs-23",
       "bugsnag-comm-1",
       "bugsnag-docs-26",
-      "bugsnag-docs-5",
-      "bugsnag-docs-20"
+      "bugsnag-docs-5"
     ]
   },
   {
     "productId": "bugsnag",
     "storyId": "agent-triages-errors",
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "BugSnag offers an official MCP server (SmartBear MCP, with OAuth support) and a documented Data Access API. The API has an OpenAPI 3.0.3 spec plus pagination, auth and rate-limit docs, so an agent can programmatically pull errors from production. Triage concepts (error statuses, open/new filters, automated assignment rules) and a Jira/issue-tracker integration exist for filing bugs. However, the evidence does not show that the MCP tools or API expose full stack traces, or that an agent can set triage status or file tracker issues through API/MCP rather than the dashboard integration. Missing for 10: documented MCP tool list covering issue/stack-trace retrieval, API/MCP-driven triage and issue-creation endpoints, independent hands-on corroboration of an agent workflow.",
+    "rationale": "BugSnag documents a Data Access API, published as an OpenAPI 3.0.3 spec, that exposes errors, projects and organization data. A probe also confirms an official SmartBear MCP server, with OAuth 2.0 support for the self-hosted MCP server, so an agent can pull production errors. BugSnag separately offers triage (status actions, automatic assignment rules) and Jira/issue-tracker creation and sync, but the evidence never shows these exposed as agent-callable API or MCP tools. missing for 10: explicit evidence that the API/MCP returns full stack traces and ranks top issues, documented API/MCP tools for triage actions and for filing tracker issues, and independent or hands-on corroboration of the end-to-end agent workflow.",
     "evidenceIds": [
-      "bugsnag-probe-3",
-      "bugsnag-docs-21",
       "bugsnag-docs-49",
       "bugsnag-supp-openapi-spec",
       "bugsnag-supp-data-access-docs",
+      "bugsnag-probe-3",
+      "bugsnag-docs-21",
       "bugsnag-docs-44",
-      "bugsnag-docs-28",
       "bugsnag-docs-41",
-      "bugsnag-docs-23"
+      "bugsnag-docs-23",
+      "bugsnag-docs-28"
     ]
   },
   {
@@ -39,7 +38,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "A direct probe found no llms.txt at docs.bugsnag.com (HTTP 404), and nothing in the pack describes agent-oriented documentation. The SwaggerHub OpenAPI spec and the official MCP server belong to separate stories (machine-readable API spec and MCP server) and earn no credit here.",
+    "rationale": "The probe found no llms.txt at docs.bugsnag.com (HTTP 404), and nothing in the pack documents agent-oriented docs. The SwaggerHub OpenAPI spec and the SmartBear MCP server belong to other stories (API spec, MCP server) and earn no credit for agent-readable documentation. For an error-monitoring SaaS this axis applies, so the absence of evidence means none rather than na.",
     "evidenceIds": []
   },
   {
@@ -48,7 +47,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Nothing in the pack documents AI-generated insights or suggestions inside the BugSnag product. The SmartBear MCP server lets external agents reach BugSnag data, which is a different capability. Error grouping, automatic assignment rules and correlated events are rule-based features, not AI-generated insights. An in-product AI assistant is a plausible capability for an error-monitoring SaaS, so the axis applies and absence of evidence yields none.",
+    "rationale": "The evidence shows no AI-generated insights or suggestions inside BugSnag. Error grouping and automatic assignment are rule-based, and Correlated Events is a related-event lookup. The SmartBear MCP server lets outside agents reach BugSnag data, which is a different capability and earns no credit for in-product AI insights.",
     "evidenceIds": []
   },
   {
@@ -57,10 +56,10 @@
     "verdict": "partial",
     "quality": 4,
     "confidence": "medium",
-    "rationale": "BugSnag documents its own rule-based automation for triage. Users can create rules that automatically assign errors (bugsnag-docs-41, bugsnag-docs-2), and integrations such as PagerDuty create incidents automatically when errors arrive (bugsnag-docs-9), so some configured automations do run unattended in the background. This is narrow, fixed-purpose rule automation rather than a general automation or agent framework. Missing for 10: a general-purpose automation or workflow builder, autonomous agent-driven actions beyond assignment and alerting, scheduling or trigger configuration depth, and independent or hands-on corroboration.",
+    "rationale": "BugSnag documents its own rule-based automation: users can create rules that automatically assign errors during triage, and these run without manual action as events arrive. The PagerDuty integration also opens incidents automatically when errors are reported. These are narrow, predefined triggers rather than general-purpose or agentic automations users can design to run in the background. missing for 10: a general automation/workflow builder with configurable triggers and actions, agentic or AI-driven background tasks, scheduling, and independent or hands-on corroboration of how the automation rules behave.",
     "evidenceIds": [
-      "bugsnag-docs-41",
       "bugsnag-docs-2",
+      "bugsnag-docs-41",
       "bugsnag-docs-9"
     ]
   },
@@ -70,7 +69,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "An in-product AI assistant is a fair question for an error-monitoring SaaS, but nothing in the evidence shows BugSnag shipping one. The official MCP server lets external agents connect to BugSnag and is not a built-in assistant. The rule-based automatic error assignment is non-AI automation, an adjacent feature that earns no credit for this story.",
+    "rationale": "Nothing in the evidence documents a built-in AI assistant inside BugSnag that users can delegate tasks to. The official MCP server (bugsnag-probe-3, bugsnag-docs-21) lets external agents connect to BugSnag, which is a separate capability, and rule-based automatic error assignment is an adjacent, non-AI feature. Neither earns credit for an in-product assistant.",
     "evidenceIds": []
   },
   {
@@ -79,14 +78,14 @@
     "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "BugSnag ships an official CLI, documented under build integrations, for creating releases and uploading files such as source maps from build processes. That is the core headless/CI automation use for an error-monitoring service. A documented Data Access API (OpenAPI spec with authentication, pagination and rate-limiting docs) supports further scripted, non-interactive automation. Missing for 10: explicit CI pipeline setup docs (e.g., GitHub Actions or other CI examples), CLI scope beyond releases and uploads, and independent or hands-on corroboration of CI usage.",
+    "rationale": "BugSnag ships an official CLI under its build-integrations docs that creates releases and builds and uploads files such as source maps. This is a scriptable, non-interactive step suited to build pipelines. A documented Data Access API, with authentication, pagination and rate-limiting pages, enables further headless automation against error and project data. Missing for 10: explicit CI-pipeline documentation (e.g., CI-provider examples or non-interactive auth guidance for the CLI) and independent or hands-on corroboration of CI usage.",
     "evidenceIds": [
       "bugsnag-docs-45",
       "bugsnag-docs-12",
       "bugsnag-probe-4",
-      "bugsnag-supp-openapi-spec",
+      "bugsnag-docs-49",
       "bugsnag-supp-data-access-docs",
-      "bugsnag-docs-49"
+      "bugsnag-supp-openapi-spec"
     ]
   },
   {
@@ -95,7 +94,7 @@
     "verdict": "na",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "BugSnag is an error-monitoring SaaS, not an agent or assistant, so acting as an MCP client that consumes other servers' tools is outside its product role. The evidence only shows the opposite direction: an official SmartBear MCP server that exposes BugSnag data to external agents. Server-side evidence does not make this client-side axis applicable.",
+    "rationale": "BugSnag is an error-monitoring SaaS, not an AI agent or assistant host, so consuming MCP servers (the MCP client role) is outside its product category. The evidence shows only an official MCP server (bugsnag-probe-3, bugsnag-docs-21), which lets other agents connect to BugSnag. That is the separate server-side story and does not make the client axis applicable.",
     "evidenceIds": []
   },
   {
@@ -104,7 +103,7 @@
     "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "BugSnag has an official MCP server in SmartBear's own smartbear-mcp repository (SmartBear is BugSnag's parent). The BugSnag changelog confirms ongoing first-party investment, adding OAuth 2.0 browser-based login for the self-hosted MCP server so agents can connect without manual API tokens. Missing for 10: details of the BugSnag-specific tools and capabilities the server exposes, setup and client-configuration docs in the pack, and independent or hands-on corroboration of agent connections.",
+    "rationale": "A probe found an official MCP server published by BugSnag's parent SmartBear (SmartBear/smartbear-mcp), and BugSnag's own changelog announces OAuth 2.0 browser-login support for its self-hosted MCP server, so agents can connect to BugSnag data. missing for 10: documentation of which BugSnag tools and operations the MCP server exposes, setup and configuration details for agent clients, any hosted (non-self-hosted) endpoint, independent or hands-on corroboration.",
     "evidenceIds": [
       "bugsnag-probe-3",
       "bugsnag-docs-21"
@@ -128,7 +127,7 @@
     "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "BugSnag ships an official, documented BugSnag CLI that creates releases and builds on the dashboard and uploads files (e.g. symbol and mapping files) to improve stacktraces. Its documented scope is limited to build and release integration. missing for 10: CLI commands for querying, triaging or managing errors, any documented agent- or AI-oriented CLI workflows, independent or hands-on corroboration.",
+    "rationale": "BugSnag ships an official, documented BugSnag CLI that creates builds and releases on the dashboard and uploads files such as source maps to improve stack traces. However, the documented scope is limited to build and release tasks rather than broader agent-driven workflows. Missing for 10: evidence the CLI can query or triage errors and projects, machine-readable or agent-friendly output modes, and independent or hands-on corroboration of CLI use.",
     "evidenceIds": [
       "bugsnag-docs-45",
       "bugsnag-docs-12",
@@ -141,7 +140,7 @@
     "verdict": "full",
     "quality": 8,
     "confidence": "high",
-    "rationale": "BugSnag publishes a documented public Data Access API with an OpenAPI 3.0.3 spec on SwaggerHub. The SmartBear developer portal adds per-operation reference pages and dedicated Authentication, Pagination, Rate Limiting and Versioning docs, which is a well-documented programmatic surface. The 404 probes only show the spec isn't hosted at docs.bugsnag.com paths, and do not contradict the SwaggerHub spec. Missing for 10: explicit evidence that the API supports write/control actions (e.g., changing error status or assignment) rather than only data access, and independent or hands-on corroboration of using the API.",
+    "rationale": "BugSnag publishes a documented public Data Access API with an OpenAPI 3.0.3 spec on SwaggerHub. Its developer portal reference is generated from that spec and covers authentication, pagination, rate limiting and versioning, which is a clear programmatic surface an AI-native user or agent can drive. The 404s on docs.bugsnag.com OpenAPI paths only show the spec is hosted elsewhere, not that it is absent. Missing for 10: explicit evidence that the API supports write/action operations (e.g., changing error status or assignment) rather than only data access, and independent or hands-on corroboration of API usage.",
     "evidenceIds": [
       "bugsnag-supp-openapi-spec",
       "bugsnag-supp-data-access-docs",
@@ -155,7 +154,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The axis applies to a SaaS error-monitoring service with a Data Access API, but nothing in the evidence shows scoped or least-privilege credentials. The API docs mention an Authentication page without describing token scopes or permission levels. The MCP server's OAuth 2.0 browser login is an authentication method, an adjacent feature that does not show scoping or least-privilege restrictions for an agent.",
+    "rationale": "The evidence shows API tokens exist, an OAuth 2.0 browser-login option for the self-hosted MCP server, and an \"Authentication\" page in the Data Access API docs. None of it documents scoped, read-only, or least-privilege credentials that could be issued to an agent, and the OAuth login is an adjacent authentication convenience rather than a credential-scoping capability.",
     "evidenceIds": []
   },
   {
@@ -183,7 +182,7 @@
     "verdict": "full",
     "quality": 6,
     "confidence": "medium",
-    "rationale": "BugSnag documents a first-party webhook plugin that sends error and project data as soon as BugSnag receives and processes it. That is a genuine outbound HTTP callback a programmatic consumer can receive, not just the chat-app alerts (Slack, Teams, PagerDuty), which don't count here. The evidence is a single thin doc line, so missing for 10: documentation of which event types can be subscribed to, payload schema, delivery/retry or signing guarantees, and any independent or hands-on corroboration.",
+    "rationale": "BugSnag documents a first-party webhook plugin that forwards error and project data to an HTTP endpoint as soon as BugSnag receives and processes it. That is a registrable outbound HTTP callback a programmatic consumer can receive. The Slack, Teams and PagerDuty integrations are chat or incident notifications, so they earn no credit here. Missing for 10: documentation of selectable event types or subscription filters, payload schema, signing or authentication of deliveries, retry behavior, and any independent or hands-on corroboration.",
     "evidenceIds": [
       "bugsnag-docs-10"
     ]
@@ -194,7 +193,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Nothing in the evidence shows BugSnag's own AI drafting code fixes or opening pull requests. The official MCP server, Data Access API and CLI only expose error data that external agents could use. Those are developer building blocks, not the capability itself. AI-driven fix generation is a fair axis for an error-monitoring platform, so absence of evidence yields none rather than na.",
+    "rationale": "Nothing in the evidence shows BugSnag's own AI drafting code fixes or opening pull requests against a repository. The official MCP server and Data Access API are developer building blocks that an external agent could use, not a first-party fix-and-PR capability. Stack-trace code links and Jira issue sync are adjacent features and do not qualify.",
     "evidenceIds": []
   },
   {
@@ -203,7 +202,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Nothing in the evidence shows BugSnag's own AI analyzing a stack trace, breadcrumbs or commits and proposing a root cause. The official MCP server (bugsnag-probe-3, bugsnag-docs-21) only exposes BugSnag data to external agents, which makes it a building block rather than the platform's AI. Correlated events and error grouping are rule-based features, not AI analysis.",
+    "rationale": "Nothing in the evidence pack shows BugSnag's own AI analyzing stack traces, breadcrumbs, or commits to propose a root cause. Correlated Events and error grouping are non-AI adjacent features. The official MCP server only lets external agents read BugSnag data, which is a building block and earns no credit here.",
     "evidenceIds": []
   },
   {
@@ -212,7 +211,7 @@
     "verdict": "partial",
     "quality": 4,
     "confidence": "medium",
-    "rationale": "BugSnag's own docs show alert destinations: Slack notifications to any channel, PagerDuty incidents created on error activity, and alerts to team communication tools. The pack does not document the routing rules or per-rule thresholds that are the core of this story. missing for 10: email alerting, routing filters by project/environment/severity, per-rule triggers for new issue/frequency spike/affected-user count, independent or hands-on corroboration.",
+    "rationale": "BugSnag documents its own alert integrations: Slack notifications to any channel, PagerDuty incidents created from error activity, and general alerting to team communication tools. That covers the delivery-destination half of the story. The evidence never shows the routing logic or per-rule trigger thresholds that are the core of this alerting-noise story. Missing for 10: routing by project/environment/severity, email alerts, per-rule thresholds for new issue, frequency spike, and affected-user count, and independent corroboration.",
     "evidenceIds": [
       "bugsnag-docs-7",
       "bugsnag-docs-8",
@@ -225,10 +224,10 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "BugSnag publishes an OpenAPI 3.0.3 spec for its Data Access API on SwaggerHub. The SmartBear developer portal hosts a reference generated from that spec, with per-operation pages plus authentication, pagination, rate-limiting and versioning docs, so an explorable API reference exists. The 404s on docs.bugsnag.com OpenAPI paths only show the spec lives elsewhere and do not contradict this. Missing for 10: explicit evidence of interactive try-it/runnable request execution in the reference, runnable code examples per operation, and independent or hands-on corroboration.",
+    "rationale": "BugSnag publishes its Data Access API as an OpenAPI 3.0.3 document on SwaggerHub, and its developer portal has an API reference generated from that spec, with Pagination, Rate Limiting, Authentication and Versioning pages. None of the evidence says the reference is interactive or offers runnable examples such as try-it-out request execution. The 404s on docs.bugsnag.com OpenAPI paths only show the spec is hosted elsewhere, not that it is missing. Missing for 10: explicit evidence of interactive try-it/runnable request examples, code samples per endpoint, independent or hands-on corroboration of the reference experience.",
     "evidenceIds": [
-      "bugsnag-supp-data-access-docs",
       "bugsnag-supp-openapi-spec",
+      "bugsnag-supp-data-access-docs",
       "bugsnag-docs-49"
     ]
   },
@@ -238,11 +237,11 @@
     "verdict": "full",
     "quality": 9,
     "confidence": "high",
-    "rationale": "BugSnag publishes its Data Access API as an OpenAPI 3.0.3 JSON document on SwaggerHub, available at a direct swagger.json URL. The SmartBear developer portal hosts a reference generated from that spec, with pages on authentication, pagination, rate limiting and versioning. The probe 404s only show the spec is not at conventional paths on docs.bugsnag.com; they do not contradict the SwaggerHub-hosted spec. Missing for 10: discoverability of the spec at well-known paths on the docs domain, independent or hands-on corroboration of the spec's completeness.",
+    "rationale": "BugSnag publishes its Data Access API as a downloadable OpenAPI 3.0.3 JSON document on SwaggerHub, and its developer portal reference is generated from that spec, with pages on pagination, rate limiting, authentication and versioning. The probe's 404s on docs.bugsnag.com candidate paths only show the spec lives on SwaggerHub instead; they do not contradict its availability. Missing for 10: no independent or hands-on corroboration of using the spec, and it is not discoverable at conventional paths on the main docs domain.",
     "evidenceIds": [
       "bugsnag-supp-openapi-spec",
-      "bugsnag-docs-49",
       "bugsnag-supp-data-access-docs",
+      "bugsnag-docs-49",
       "bugsnag-probe-2"
     ]
   },
@@ -252,16 +251,16 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "A sandbox or test environment is a reasonable thing to ask of an error-monitoring SaaS with a Data Access API and an MCP server, so the axis applies. However, the evidence pack documents no sandbox, test-mode or isolated non-production environment. The 14-day trial, free plan, on-premise deployment, and release-stage filtering via before-notify callbacks are adjacent features, not a sandbox capability.",
+    "rationale": "A sandbox or test environment is a fair question for an error-monitoring SaaS with an API and an MCP server, so the axis applies. The evidence pack documents no sandbox or test account that keeps an agent away from production data. Nearby items do not qualify: release-stage filtering via before-notify callbacks is an adjacent control, and the 14-day trial, free plan and on-premise option are not isolated sandbox environments.",
     "evidenceIds": []
   },
   {
     "productId": "bugsnag",
     "storyId": "api-versioning-policy",
     "verdict": "partial",
-    "quality": 5,
+    "quality": 4,
     "confidence": "medium",
-    "rationale": "BugSnag's Data Access API is visibly versioned: the SwaggerHub OpenAPI 3.0.3 spec sits under version path /2, and the SmartBear developer portal hosts a dedicated Versioning page next to its Pagination, Rate Limiting and Authentication pages. The evidence never states what that Versioning page says, so a deprecation policy (notice periods, sunset timelines) is unproven. Missing for 10: documented deprecation policy content, evidence of how API versions are selected and retired, independent or hands-on corroboration.",
+    "rationale": "BugSnag ships its own versioned Data Access API. The SwaggerHub OpenAPI 3.0.3 spec is published under a version-2 path, and the developer portal lists a dedicated \"Versioning\" page (docs/data-access-versioning). The pack does not show that page's contents, and nothing documents a deprecation policy, sunset timelines, or migration guarantees, so this half of the story is unevidenced. Missing for 10: a documented deprecation/sunset policy, the actual contents of the versioning page (version selection mechanism and support windows), and independent corroboration of version stability.",
     "evidenceIds": [
       "bugsnag-supp-data-access-docs",
       "bugsnag-supp-openapi-spec",
@@ -274,7 +273,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Nothing in the evidence documents a bulk-action capability, such as selecting many errors to resolve, ignore, or assign at once, or a bulk API endpoint. Automatic assignment rules, keyboard shortcuts, dashboard filters, and retroactive data redaction are adjacent features. The Data Access API is only a developer building block, so none of these earn credit for this story.",
+    "rationale": "Bulk operations across many errors are a fair capability to expect from an error-monitoring SaaS, but the evidence never documents bulk or multi-select actions. The nearest items do not qualify: auto-assignment rules are a related automation feature, keyboard shortcuts for error actions say nothing about acting on many errors at once, retroactive data redaction is a compliance tool, and the Data Access API is a building block for custom integrations rather than a bulk-operations capability.",
     "evidenceIds": []
   },
   {
@@ -283,13 +282,13 @@
     "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "BugSnag's docs say users can create rules that automate error triage by assigning incoming errors automatically, which matches the core of the story. Related event-driven actions are also documented: dashboard discard rules that are enforced automatically, PagerDuty incidents created on error activity, and a webhook plugin that fires as errors are processed. Missing for 10: detailed docs on rule conditions and the range of actions beyond assignment and discard, a general-purpose rule engine for arbitrary actions, and independent or hands-on corroboration.",
+    "rationale": "BugSnag documents user-defined rules that automate triage by assigning errors automatically as they arrive (automatic error assignment). Its integrations act on error activity automatically: PagerDuty incident creation, webhook data forwarding as events are processed, and dashboard discard rules synced to SDKs. Missing for 10: detail on rule conditions and the range of actions beyond assignment, a general-purpose rule/workflow engine, and independent or hands-on corroboration.",
     "evidenceIds": [
       "bugsnag-docs-2",
       "bugsnag-docs-41",
-      "bugsnag-docs-35",
       "bugsnag-docs-9",
-      "bugsnag-docs-10"
+      "bugsnag-docs-10",
+      "bugsnag-docs-35"
     ]
   },
   {
@@ -298,7 +297,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Scheduling recurring jobs or workflows is a fair question for an error-monitoring SaaS, which could offer things like scheduled reports or digests, so the axis applies. However, nothing in the evidence documents scheduling or recurring execution. The automatic error-assignment rules, webhooks and PagerDuty integration are all event-triggered, and the Data Access API is only a building block, so none of them count toward this story.",
+    "rationale": "Scheduling recurring jobs or workflows, such as scheduled reports or digests, is a plausible automation capability for an error-monitoring SaaS, so the axis applies. The evidence shows no scheduling feature. Automatic error-assignment rules, webhooks and PagerDuty or Slack alerts are all event-triggered, and the Data Access API is only a building block a developer could schedule externally, which earns no credit.",
     "evidenceIds": []
   },
   {
@@ -307,7 +306,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "BugSnag documents automation rules, such as automatic error assignment and dashboard discard rules, so this axis applies to it. However, nothing in the evidence shows those rules can be versioned, reviewed through a change history, or rolled back. The 'Versioning' page in the Data Access API docs is about API versioning, an adjacent topic, and earns no credit for this story.",
+    "rationale": "BugSnag documents automations, namely error-assignment rules and dashboard discard rules, so asking whether those automations can be versioned, reviewed and rolled back is a fair question for this product. Nothing in the pack shows version history, change review or rollback for those rules. The Data Access API's \"Versioning\" page covers API versioning, an unrelated feature, and earns no credit.",
     "evidenceIds": []
   },
   {
@@ -316,11 +315,11 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "The evidence shows two thin pieces of BugSnag's own SDK enrichment. The iOS SDK's appHangCallback lets developers add diagnostic context (e.g. current screen) when a hang is detected. Correlated Events groups events by shared user, device and session, which implies user and device context travels with each event. Missing for 10: any documentation of breadcrumbs, custom tags/metadata on every event (not just app hangs), an explicit user-context API, cross-platform coverage, and independent or hands-on corroboration.",
+    "rationale": "The evidence only glancingly touches this story. The iOS SDK's appHangCallback lets developers add diagnostic context, such as the current screen, when a hang is detected. Correlated Events groups events sharing the same user, device or session, which implies user context is attached to events. Before-notify callbacks give per-event hooks, though they are documented only for ignoring errors. Missing for 10: any documentation of breadcrumbs, a general custom tag/metadata API for every event across SDKs, an explicit setUser/user-context API, and independent or hands-on corroboration.",
     "evidenceIds": [
       "bugsnag-docs-33",
       "bugsnag-docs-20",
-      "bugsnag-docs-27"
+      "bugsnag-docs-46"
     ]
   },
   {
@@ -329,7 +328,7 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "BugSnag's docs show automatic grouping: events that share the same error class, file and line of the top in-project stack frame are grouped into one error (bugsnag-docs-1, bugsnag-docs-23), and the dashboard shows the grouping reason (bugsnag-docs-40). Nothing in the pack covers customizing grouping. The automation rules (bugsnag-docs-41) handle error assignment and the before-notify callbacks (bugsnag-docs-46) discard events, so neither is a grouping control. Missing for 10: documented custom grouping rules or fingerprint overrides, merge/unmerge of errors, independent corroboration that grouping works well at scale.",
+    "rationale": "BugSnag's docs describe automatic grouping of events into a single error by error class, file and line number of the top in-project stack frame, and show the reason for each grouping in the error view. The pack has no evidence of user-customizable grouping (custom fingerprints, grouping rules, or merging and splitting errors). Assignment rules and before-notify ignore callbacks are adjacent features, not grouping customization. missing for 10: documented custom grouping/fingerprint overrides, merge/split controls, independent or hands-on corroboration of grouping quality.",
     "evidenceIds": [
       "bugsnag-docs-1",
       "bugsnag-docs-23",
@@ -342,15 +341,14 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "BugSnag documents per-project dashboard views: filtering by release to see which release introduced errors, a timeline with release annotations correlating versions with error-rate changes, a filter for errors introduced in the last 24 hours, stability tracking against targets, and grouping that surfaces the highest-impact issues. Nothing shows an aggregated view across projects or teams, or a dedicated top-regressions view. The Data Access API is only a building block for custom reporting and earns no credit here. Missing for 10: cross-project/cross-team aggregated dashboards, an explicit top-regressions trend view, and independent or hands-on corroboration of trend dashboards.",
+    "rationale": "BugSnag documents per-project dashboard views that cover part of this story. You can filter the dashboard by release to see which release introduced errors, and timeline release annotations correlate new versions with error-rate changes. It also offers an 'introduced in the last 24 hours' view, stability tracking against targets, and grouping that surfaces the highest-impact issues. Nothing shows dashboards that aggregate trends across multiple projects or teams, and there is no explicit top-regressions view. The Data Access API is only a building block for such views and earns no credit. Missing for 10: cross-project/team aggregated dashboards, explicit top-regressions view, independent corroboration of trend dashboards.",
     "evidenceIds": [
       "bugsnag-docs-4",
       "bugsnag-docs-25",
       "bugsnag-docs-3",
       "bugsnag-docs-5",
       "bugsnag-docs-26",
-      "bugsnag-docs-23",
-      "bugsnag-docs-38"
+      "bugsnag-docs-23"
     ]
   },
   {
@@ -359,7 +357,7 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "medium",
-    "rationale": "BugSnag documents its own dashboard filtering: you can filter by release, a shared Release filter now has a \"does not equal\" operator, and there are status-based views such as errors introduced in the last 24 hours. The evidence stops there, so only the release slice of the story is shown, with simple filter operators rather than a query language. missing for 10: cross-project search, filtering by tag/environment/custom metadata properties, a documented query syntax, independent corroboration.",
+    "rationale": "BugSnag documents its own dashboard filtering by release, including a \"does not equal\" operator in the shared Release filter, plus preset error views such as errors introduced in the last 24 hours. That is real but narrow first-party filtering. Missing for 10: cross-project search, filtering by tag, environment/release stage and custom metadata properties, a documented query syntax, and independent or hands-on corroboration.",
     "evidenceIds": [
       "bugsnag-docs-4",
       "bugsnag-docs-38",
@@ -372,8 +370,8 @@
     "storyId": "issue-tracker-sync",
     "verdict": "partial",
     "quality": 4,
-    "confidence": "medium",
-    "rationale": "BugSnag's integrations docs state that you can \"create and sync issues in Jira, or your team's issue tracker,\" which is first-party evidence of linking errors to tickets with some form of sync. Nothing in the evidence documents the two-way status behavior: closing a ticket resolving the error, or a regression reopening it. GitHub Issues and Linear are not named. Missing for 10: explicit two-way status sync documentation, ticket-fix-resolves-error behavior, regression-reopens-ticket behavior, named GitHub Issues and Linear support, independent or hands-on corroboration.",
+    "confidence": "low",
+    "rationale": "BugSnag's integrations docs say it can \"create and sync issues in Jira, or your team's issue tracker,\" which is a first-party issue-tracker linking capability with some sync. The evidence gives no detail on bidirectional status behavior or which other trackers are covered. Missing for 10: explicit two-way status sync (closing the ticket resolves the error), regression reopening the linked ticket, named GitHub Issues and Linear support, in-depth integration docs, and independent corroboration.",
     "evidenceIds": [
       "bugsnag-docs-44"
     ]
@@ -384,12 +382,14 @@
     "verdict": "partial",
     "quality": 6,
     "confidence": "medium",
-    "rationale": "BugSnag's docs show the triage states: the default inbox filter excludes errors that are \"fixed, snoozed or ignored\" (bugsnag-docs-28). Error actions are available from the dashboard and keyboard shortcuts (bugsnag-docs-42), and owner assignment can be automated with rules (bugsnag-docs-2, bugsnag-docs-41). Nothing in the pack shows a resolved error reopening automatically when it regresses, which is a core part of the story. missing for 10: documented automatic reopen of fixed errors on regression, detailed docs on manual assignment and snooze conditions, independent or hands-on corroboration of the triage workflow.",
+    "rationale": "BugSnag's error-status docs show fixed, snoozed and ignored states, with actions available from the dashboard (including keyboard shortcuts) and from Slack. Its automatic error assignment rules cover assigning owners. However, no evidence shows that a fixed error automatically reopens when it regresses, which is a core part of the story. Missing for 10: documented automatic reopen-on-regression behavior, explicit manual assign-owner action docs, independent or hands-on corroboration of the triage workflow.",
     "evidenceIds": [
       "bugsnag-docs-28",
+      "bugsnag-docs-3",
       "bugsnag-docs-42",
       "bugsnag-docs-2",
-      "bugsnag-docs-41"
+      "bugsnag-docs-41",
+      "bugsnag-docs-8"
     ]
   },
   {
@@ -398,12 +398,11 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "BugSnag publishes a documented REST Data Access API. It has an OpenAPI 3.0.3 spec on SwaggerHub and a developer-portal reference with per-operation pages plus Authentication, Pagination, Rate Limiting and Versioning pages. The spec says it covers errors, projects and organization data, so listing and querying errors is supported, but the evidence never shows updating errors, fetching raw events, or permission-scoped tokens. The probe 404s for OpenAPI files on docs.bugsnag.com do not contradict the SwaggerHub-hosted spec. missing for 10: explicit error-update endpoints, raw event retrieval endpoints, evidence of scoped/least-privilege tokens, independent or hands-on corroboration of API usage",
+    "rationale": "BugSnag publishes a documented Data Access REST API as an OpenAPI 3.0.3 spec on SwaggerHub, covering errors, projects and organization data. Its developer portal reference includes Authentication, Pagination, Rate Limiting and Versioning pages, so listing and querying errors is evidenced. The evidence never explicitly shows updating issues, fetching raw individual events, or permission-scoped tokens. The 404s on docs.bugsnag.com OpenAPI paths only mean the spec is hosted elsewhere and do not contradict it. Missing for 10: documented issue update/status-change endpoints, raw event retrieval endpoints, evidence of scoped/least-privilege API tokens, independent hands-on corroboration.",
     "evidenceIds": [
-      "bugsnag-supp-openapi-spec",
-      "bugsnag-supp-data-access-docs",
       "bugsnag-docs-49",
-      "bugsnag-docs-21"
+      "bugsnag-supp-openapi-spec",
+      "bugsnag-supp-data-access-docs"
     ]
   },
   {
@@ -412,12 +411,11 @@
     "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "BugSnag documents JavaScript source-map support for reversing minification (docs-11), and its official CLI uploads files to improve the stack traces in errors (docs-45, probe-4), which covers the CLI path of the story. Because the CLI evidence is generic about which files it uploads, the JS source-map upload path is only implied by combining the two docs. missing for 10: an explicit statement that the CLI uploads JS source maps, any bundler-plugin (webpack/Vite etc.) evidence, documented CI usage, and independent or hands-on corroboration that symbolication works.",
+    "rationale": "BugSnag documents source-map support for reversing JavaScript transformations (minification) in stack traces. Its official CLI is documented for uploading files to improve stacktraces, which covers the CLI path of the story. missing for 10: explicit documentation that the CLI uploads JavaScript source maps specifically, any evidence of a bundler plugin (e.g. webpack/Vite), CI-pipeline usage docs, independent or hands-on corroboration.",
     "evidenceIds": [
       "bugsnag-docs-11",
       "bugsnag-docs-45",
-      "bugsnag-probe-4",
-      "bugsnag-docs-12"
+      "bugsnag-probe-4"
     ]
   },
   {
@@ -426,7 +424,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence documents only BugSnag's automatic grouping: events are grouped by error class, file and line of the top in-project stack frame, and the grouping reason is shown on the error view. Nothing in the pack documents manually merging errors or splitting (unlinking) errors the fingerprinter wrongly collapsed. The error-status-and-actions excerpts mention filters and keyboard shortcuts but no merge or split action, so this applicable capability is unevidenced.",
+    "rationale": "The evidence covers only BugSnag's automatic grouping: events are grouped by error class, file and line of the top in-project frame, and the grouping reason is shown on the error view. Nothing in the pack documents manually merging duplicate errors or splitting/unlinking events that were wrongly grouped. Automation rules and status actions are adjacent triage features and do not count toward this story.",
     "evidenceIds": []
   },
   {
@@ -435,15 +433,15 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "BugSnag ships iOS and Android SDKs, and a hands-on user reports the iOS SDK automatically posts reports on fatal errors. Events carry device context that can be correlated, and errors can be filtered by release. However, the evidence never directly documents Android or NDK native crash capture or the full device/OS/app-version payload attached to crashes. missing for 10: NDK crash capture evidence, explicit Android native crash capture docs, documented OS and app-version metadata on crash events, recent independent corroboration.",
+    "rationale": "BugSnag ships first-party iOS and Android SDKs: the iOS SDK detects app hangs (docs-33), both SDKs are named in docs-35, and a hands-on user says the iOS SDK reports fatal errors automatically (comm-2). Device and release context appear indirectly through device-correlated events (docs-20) and release filtering (docs-4). Missing for 10: any NDK/native C/C++ crash evidence, explicit documentation of Android crash capture, explicit capture of device/OS/app-version metadata on crash events, and in-depth platform docs for native crash handling.",
     "evidenceIds": [
-      "bugsnag-comm-2",
-      "bugsnag-docs-35",
       "bugsnag-docs-33",
+      "bugsnag-docs-35",
+      "bugsnag-comm-2",
       "bugsnag-docs-20",
       "bugsnag-docs-4",
-      "bugsnag-docs-16",
-      "bugsnag-docs-50"
+      "bugsnag-docs-50",
+      "bugsnag-docs-16"
     ]
   },
   {
@@ -452,11 +450,11 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "The official BugSnag CLI is documented as uploading files to improve the stacktraces in your errors (docs-45, probe-4), and the product has iOS and Android SDKs. So a first-party symbol-upload path exists, but the evidence never names which file types it accepts. JavaScript source-map support (docs-11) is a different symbolication story and is not credited here. Missing for 10: explicit documentation of dSYM upload for iOS, ProGuard/R8 mapping upload for Android, native (NDK/ELF) debug symbol upload, evidence that crashes resolve to function names and line numbers, and hands-on corroboration.",
+    "rationale": "BugSnag's own CLI is documented as uploading files to improve the stacktraces in your errors (bugsnag-docs-45, bugsnag-probe-4), and the product targets mobile apps (bugsnag-docs-50). No evidence names dSYM, ProGuard/R8 mapping, or native (NDK/ELF) symbol uploads, and the source-map docs cover JavaScript only, so they don't transfer. missing for 10: explicit dSYM upload docs, ProGuard/R8 mapping upload docs, native/NDK symbol upload docs, evidence of symbolicated function names and line numbers in mobile crashes, independent or hands-on corroboration",
     "evidenceIds": [
       "bugsnag-docs-45",
       "bugsnag-probe-4",
-      "bugsnag-docs-12"
+      "bugsnag-docs-50"
     ]
   },
   {
@@ -481,7 +479,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence pack does not document BugSnag's event-ingestion protocol, such as a public error-reporting or notify HTTP endpoint spec that custom clients could target. The OpenAPI and Data Access API items cover reading error and project data, a different story. Bugsnag.notify() and the 50+ platform libraries are official SDKs, not an open ingestion protocol, so none of this earns credit here.",
+    "rationale": "The evidence pack contains no documentation of a public event-ingestion or error-reporting endpoint or payload spec that custom clients could target. The only API documentation is the Data Access API (OpenAPI spec), which reads errors, projects and organization data rather than ingesting events. `Bugsnag.notify()` and the 50+ platform libraries are official SDK paths, not an open ingestion protocol.",
     "evidenceIds": []
   },
   {
@@ -490,7 +488,7 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "BugSnag publishes an official Data Access API with an OpenAPI 3.0.3 spec and a developer-portal reference covering pagination, rate limiting, authentication and versioning. The API gives programmatic access to errors, projects and organization data. However, nothing documents parity with the UI: the API is described as 'access information … to build custom integrations', and no evidence shows that dashboard actions (status changes, assignment rules, stability targets, discard rules, data redaction) can be performed through it. Missing for 10: an explicit API/UI parity claim, documented write and management operations matching dashboard actions, and independent or hands-on corroboration of coverage.",
+    "rationale": "BugSnag publishes an official Data Access API with an OpenAPI 3.0.3 spec, and the docs portal covers authentication, pagination, rate limiting and versioning. The API is described as accessing information about errors, projects and organization 'and more', so programmatic access clearly exists. Nothing in the pack claims UI parity, and the description is read-oriented ('access information'). Missing for 10: documented UI/API parity, evidence that write actions (error status changes, assignment rules, stability targets, discard rules, settings) are available via API, and independent corroboration of API coverage.",
     "evidenceIds": [
       "bugsnag-supp-openapi-spec",
       "bugsnag-supp-data-access-docs",
@@ -503,7 +501,7 @@
     "verdict": "partial",
     "quality": 4,
     "confidence": "medium",
-    "rationale": "BugSnag publishes its own Data Access API, an OpenAPI 3.0.3 spec with a developer-portal reference and pagination docs. It lets you retrieve your errors, projects and organization data, which is a documented, machine-readable way to get data out. The webhook data-forwarding plugin also exposes error and project data as it arrives. However, nothing documents a dedicated bulk export or account-exit flow, or confirms that every data type can be extracted in an open format. Missing for 10: a documented one-shot full-account export, explicit open-format guarantees (e.g. JSON/CSV dumps), coverage of all data types (events, sessions, performance spans), and hands-on corroboration of migrating off.",
+    "rationale": "BugSnag documents its own Data Access API, published as an OpenAPI 3.0.3 spec with pagination and authentication docs, for retrieving \"errors, projects, organization and more.\" This gives users a first-party, programmatic way to pull their data out, and the webhook data-forwarding plugin streams error and project data as it arrives. However, nothing in the evidence describes a bulk or complete export, names the export format, or covers offboarding; leaving would mean scripting extraction against a rate-limited API. Missing for 10: a documented one-step or bulk export of all account data, an explicit open-format guarantee (e.g. JSON/CSV dumps), coverage of all data types such as performance/spans and sessions, offboarding guidance, and independent or hands-on corroboration of a successful full export.",
     "evidenceIds": [
       "bugsnag-supp-openapi-spec",
       "bugsnag-supp-data-access-docs",
@@ -526,7 +524,7 @@
     "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "BugSnag's own docs describe BugSnag On-premise as a self-hosted version of the product for organizations that want to manage their own data, deployable in existing PCI or HIPAA compliant environments. That is the core product, self-hosted. The evidence is a single summary-level doc line, though. Missing for 10: deployment and installation details, licensing or plan requirements for on-premise, feature parity with the SaaS version, independent or hands-on corroboration.",
+    "rationale": "BugSnag's own docs describe BugSnag On-premise as a self-hosted version of the product for organizations that want to manage their own data, deployable in existing PCI or HIPAA compliant environments. That directly delivers self-hosting of the core product, though the evidence is a single high-level doc statement. The 'Self Hosted MCP Server' item is about MCP tooling, not the core product, so it is not credited. missing for 10: installation/deployment documentation details, feature parity and licensing/plan requirements for on-premise, independent or hands-on corroboration of self-hosted deployments.",
     "evidenceIds": [
       "bugsnag-docs-13"
     ]
@@ -548,7 +546,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The privacy-posture axis applies to a SaaS error-monitoring service that holds customer data, but nothing in the evidence addresses AI model training: there is no opt-out control, no contractual no-training commitment, and no AI data-use policy. Retroactive sensitive-data redaction and the self-hosted On-premise option are adjacent data-control features, not a documented mechanism to stop data from being used for training, so they earn no credit.",
+    "rationale": "An AI-training opt-out is a fair privacy question for a SaaS error-monitoring service that holds customer data, so the axis applies. The pack contains no documented policy or control preventing customer data from being used to train AI models. Retroactive redaction of sensitive data and the self-hosted on-premise option are adjacent data-control features, not an AI-training opt-out, so they earn no credit.",
     "evidenceIds": []
   },
   {
@@ -557,10 +555,11 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "BugSnag documents its own tools for retroactively redacting or removing sensitive data to support GDPR/CCPA/HIPAA compliance, which covers deletion. It also offers an on-premise version for organizations that want to manage their own data. Configurable retention periods are not documented, and discard and event-saving controls only govern what is ingested, not how long it is kept. missing for 10: configurable data retention periods/policies, detail on deletion scope and mechanics (e.g., API or user-level deletion), independent or hands-on corroboration.",
+    "rationale": "BugSnag documents its own tools to redact or remove sensitive data retroactively for GDPR/CCPA/HIPAA compliance, which covers the deletion side of the story. It also offers controls over which events are saved, and a self-hosted On-premise edition for organizations that want to manage their own data. Missing for 10: any documented configurable retention period or automatic expiry policy, detail on deletion scope (per-user or per-project erasure, API-driven deletion), and independent or hands-on corroboration.",
     "evidenceIds": [
       "bugsnag-docs-6",
       "bugsnag-docs-30",
+      "bugsnag-docs-14",
       "bugsnag-docs-13"
     ]
   },
@@ -570,7 +569,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Opting out of vendor telemetry is a fair question for an error-monitoring SaaS that ships SDKs, a CLI, and an MCP server, so the axis applies. The pack has no documented opt-out of BugSnag's own telemetry or usage tracking. The closest items are adjacent features: retroactive redaction of sensitive data, before-notify callbacks that filter which error events get reported, and self-hosted on-premise deployment. None of these is a telemetry or usage-tracking opt-out, so they earn no credit.",
+    "rationale": "Telemetry opt-out is a fair question for an error-monitoring SaaS with SDKs and a CLI, but the evidence pack never documents a way to disable BugSnag's own telemetry or usage tracking. The related evidence covers adjacent controls instead: retroactive redaction of sensitive data, discard rules, before-notify callbacks, and on-premise hosting. These govern the customer's error data, not product telemetry opt-out, so they earn no credit.",
     "evidenceIds": []
   },
   {
@@ -579,11 +578,11 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "BugSnag documents its own quota controls: a daily event quota with two overage options, 'capture every event' or 'rate limiting', where rate limiting can keep an error storm within the quota. It also documents control over which events count toward the quota, via discard rules (now enforced in the Android and iOS SDKs) and before-notify filtering. However, the evidence never shows quotas capped per project or an explicit spend limit or billing cap, so only the predictable-budget half of the story is supported. Missing for 10: per-project event quota caps, explicit spend limits or invoice caps, detail on how rate limiting behaves during overages, and independent or hands-on corroboration.",
+    "rationale": "BugSnag documents controls over which events are saved and counted toward the event quota. It also offers two ways to handle daily quota overages, 'capture every event' or 'rate limiting'; rate limiting bounds what an error storm can consume. Dashboard discard rules can be enforced at the SDK source, and before-notify callbacks can drop events client-side. Missing for 10: explicit per-project event quota caps, an explicit spend limit or billing cap, and independent or hands-on confirmation that overages never produce surprise charges.",
     "evidenceIds": [
       "bugsnag-docs-14",
-      "bugsnag-docs-47",
       "bugsnag-docs-24",
+      "bugsnag-docs-47",
       "bugsnag-docs-46",
       "bugsnag-docs-35"
     ]
@@ -594,7 +593,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence shows a 'fixed' error status, release filtering that identifies which release introduced an error, and generic alert integrations (Slack, PagerDuty, webhooks) triggered by error activity. None of it documents that a fixed error which reappears in a newer release is detected as a regression or alerted on separately from new-issue notifications. These are adjacent features, not the regression-alert capability itself.",
+    "rationale": "The evidence shows BugSnag has a 'fixed' error status, release filtering, and alerting integrations (Slack, PagerDuty, webhooks) for general error activity. Nothing documents a fixed error being reopened when it recurs in a newer release, or a regression-specific alert separate from new-issue notifications. These are adjacent capabilities and earn no credit for this story.",
     "evidenceIds": []
   },
   {
@@ -603,7 +602,7 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "BugSnag documents a stability score defined as the proportion of user sessions that are error-free, with configurable stability targets. Its dashboard can be filtered by release (including a \"does not equal\" operator), and release annotations on the timeline correlate versions with error-rate changes. That covers crash-free-session health and a rough release filter, but not the rest of the story. missing for 10: crash-free users metric, adoption-per-release tracking, an explicit canary-vs-stable release comparison view, and independent or hands-on corroboration.",
+    "rationale": "BugSnag documents a stability score defined as the proportion of user sessions that are error-free, with configurable stability targets. It also documents filtering the dashboard by release (including a \"does not equal\" release filter) and release annotations on the timeline for correlating versions with error-rate changes. That covers crash-free sessions and per-release error views, but the rest of the story is unevidenced. Missing for 10: crash-free users metric, adoption-per-release tracking, an explicit side-by-side canary-vs-stable release comparison, per-release stability breakdown, and independent or hands-on corroboration.",
     "evidenceIds": [
       "bugsnag-docs-26",
       "bugsnag-docs-5",
@@ -619,7 +618,7 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "BugSnag's docs show you can filter by release and identify which release an error was introduced in (bugsnag-docs-4). Release annotations on the timeline correlate versions with error-rate changes (bugsnag-docs-25), the CLI creates builds that enrich releases (bugsnag-docs-12, bugsnag-docs-45), and stack traces link to source lines on some platforms (bugsnag-docs-43). Nothing in the evidence shows commit association or suspect-commit identification on an issue. missing for 10: suspect-commit attribution per issue, documented commit/SCM association with releases, independent or hands-on corroboration.",
+    "rationale": "BugSnag's docs show errors tied to releases: you can filter the dashboard by release, identify which release an error was introduced in, and see release annotations on the timeline. The BugSnag CLI creates builds that enrich releases, and stack traces can link to the line of code on some platforms. Nothing in the evidence shows commit association or a 'suspect commit' feature that points to the likely cause. Missing for 10: suspect-commit identification, explicit linking of errors to commits, and independent or hands-on corroboration of the first-seen release display.",
     "evidenceIds": [
       "bugsnag-docs-4",
       "bugsnag-docs-25",
@@ -634,9 +633,11 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "BugSnag's releases documentation says stack traces will link directly to the line of code, but only on some platforms. Nothing in the pack shows suspect-commit identification, code-owner surfacing, or an explicit repository connection that resolves lines on the default branch. Missing for 10: suspect commits on issues, code owners on issues, documented repo/SCM integration setup, confirmation that links target the exact line on the default branch, broad platform coverage for source linking, independent or hands-on corroboration.",
+    "rationale": "BugSnag's releases docs say stack traces link directly to the line of code on some platforms, and builds can be created via the CLI to enrich releases. That covers only the jump-to-code element, and only partially. Missing for 10: documented repository connection, suspect commits on issues, code owners, linking to the default branch specifically, and broad platform coverage for line links.",
     "evidenceIds": [
-      "bugsnag-docs-43"
+      "bugsnag-docs-43",
+      "bugsnag-docs-12",
+      "bugsnag-docs-45"
     ]
   },
   {
@@ -645,7 +646,7 @@
     "verdict": "full",
     "quality": 9,
     "confidence": "high",
-    "rationale": "The official bugsnag-js SDK automatically detects errors in the browser, Node.js and React Native. It has framework plugins for React, Vue, Angular, Express, Restify and Koa, which covers web frontend, backend and mobile. Docs cite libraries for over 50 platforms and native iOS/Android/Flutter SDKs, and a hands-on user confirms the iOS SDK auto-reports fatal errors within minutes of setup. Missing for 10: explicit evidence of automatic uncaught-error capture for backend languages beyond Node.js, and recent independent hands-on corroboration across platforms.",
+    "rationale": "BugSnag's official bugsnag-js SDK automatically detects errors in the browser, Node.js and React Native, with plugins for React, Vue, Angular, Express, Restify and Koa. That covers web frontend, backend services and mobile in one first-party library. The docs cite error-reporting libraries for over 50 platforms and mention native iOS, Android and Flutter SDKs, and a hands-on user confirms the iOS SDK reports fatal errors automatically and took minutes to add. Missing for 10: first-party detail on automatic uncaught-error capture in native Android/iOS and non-JavaScript backend SDKs, and recent independent corroboration (the hands-on report is old).",
     "evidenceIds": [
       "bugsnag-gh-1",
       "bugsnag-docs-16",
@@ -662,12 +663,10 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "medium",
-    "rationale": "BugSnag documents its own sensitive-data management tooling for redacting or removing sensitive data, aimed at GDPR/CCPA/HIPAA compliance. That tooling is explicitly retroactive, so it acts after payloads have persisted. The SDK-side evidence covers only `before notify` callbacks and discard rules that drop whole events by criteria, not field-level PII redaction. Missing for 10: server-side scrubbing rules applied at ingestion before persistence, documented SDK-level field redaction/filtering of PII (e.g. redacted keys), and independent or hands-on corroboration.",
+    "rationale": "BugSnag documents its own sensitive-data management tools for redacting or removing sensitive data, but only retroactively, after events are stored (bugsnag-docs-6, bugsnag-docs-30). That misses the story's core requirement of scrubbing before payloads persist. SDK `before notify` callbacks and synced discard rules are documented only for ignoring or discarding whole events, not for redacting PII fields, so they are adjacent controls and earn no credit. Missing for 10: server-side scrubbing rules applied at ingestion before persistence, documented SDK-level PII redaction or filtering, and independent corroboration.",
     "evidenceIds": [
       "bugsnag-docs-6",
-      "bugsnag-docs-30",
-      "bugsnag-docs-46",
-      "bugsnag-docs-35"
+      "bugsnag-docs-30"
     ]
   },
   {
@@ -676,7 +675,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Collecting user feedback is a fair axis for an error-monitoring product, but nothing in the evidence pack documents a crash-report dialog, feedback widget, or user-feedback API tied to error events. Adjacent features such as correlated events by user and SDK diagnostic callbacks are not user feedback collection, so they earn no credit.",
+    "rationale": "Collecting user feedback is a fair axis for an error-monitoring product, so it applies here. Nothing in the evidence pack documents a crash-report dialog, feedback widget, or user-feedback API tied to error events. Adjacent features such as user-affected counts, correlated events by user, and Bugsnag.notify() for handled exceptions are not feedback collection and earn no credit.",
     "evidenceIds": []
   },
   {

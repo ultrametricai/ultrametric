@@ -1975,9 +1975,9 @@
     "productId": "fireworks-ai",
     "storyId": "agentic-nl-commands",
     "verdict": "partial",
-    "quality": 4,
+    "quality": 3,
     "confidence": "low",
-    "rationale": "Fireworks' own site describes a guided fine-tuning path where you \"describe the task, review the plan and cost, approve the run\", which is natural-language operation of one product workflow. Tool calling and the OpenAI-compatible API are developer building blocks for building agents, not natural-language control of the platform itself, so they earn no credit here. missing for 10: natural-language control beyond fine-tuning (deployments, autoscaling, models, billing), detailed docs on how the guided path works, independent or hands-on corroboration.",
+    "rationale": "The only product-operation evidence is a single marketing line saying users can \"describe the task, review the plan and cost, approve the run, and get a trained model.\" That implies a natural-language guided path for fine-tuning, but it is not documented in any depth. Tool calling and the OpenAI-compatible API are developer building blocks, and Nexus CLI connects coding tools rather than operating Fireworks itself, so neither earns credit. Missing for 10: documented natural-language control of deployments, models and billing; first-party docs detailing the guided fine-tuning flow; independent or hands-on corroboration.",
     "evidenceIds": [
       "fireworks-ai-docs-31"
     ]
@@ -2146,9 +2146,9 @@
     "productId": "fireworks-ai",
     "storyId": "batch-discounted-jobs",
     "verdict": "full",
-    "quality": 7,
+    "quality": 8,
     "confidence": "medium",
-    "rationale": "Fireworks has a dedicated batch inference guide that says you can process large volumes of requests asynchronously at 50% off Serverless per-token prices. That directly covers both the async batch capability and the documented discount versus real-time pricing. However, the evidence is a single repeated line from that page, with nothing on how jobs are actually submitted. Missing for 10: details of the job submission workflow (API/CLI endpoints, input file format, job status or result retrieval), turnaround window or SLA, and independent or hands-on corroboration.",
+    "rationale": "Fireworks' batch inference guide documents asynchronous processing of large request volumes at 50% off Serverless per-token prices. This directly covers both the async batch submission and the documented discount versus real-time pricing. missing for 10: details on job submission mechanics (input format, job API/status polling, turnaround window), supported-model coverage for batch, independent or hands-on corroboration.",
     "evidenceIds": [
       "fireworks-ai-docs-4",
       "fireworks-ai-docs-20"
@@ -2212,17 +2212,18 @@
     "productId": "fireworks-ai",
     "storyId": "drop-in-provider-switch",
     "verdict": "full",
-    "quality": 8,
+    "quality": 9,
     "confidence": "high",
-    "rationale": "Fireworks' docs repeatedly state it provides an OpenAI-compatible endpoint and APIs, and position it as a drop-in replacement where you point your client at api.fireworks.ai. A Create Chat Completion endpoint is documented, and tool calling uses OpenAI-compatible tool specifications. Together these let an agent swap to or from Fireworks without provider-specific code; extensions like service_tier and x-session-affinity are optional. Missing for 10: independent or hands-on corroboration that switching works without code changes, and documentation of any OpenAI parameters or behaviors that are unsupported or differ.",
+    "rationale": "Fireworks documents an OpenAI-compatible endpoint and APIs, presented as a drop-in replacement for OpenAI. Clients only need to point at api.fireworks.ai, and tool calling uses OpenAI-compatible tool specifications. A Create Chat Completion reference and an Anthropic-messages OpenAPI spec further support swapping providers without provider-specific code. Missing for 10: independent or hands-on corroboration that agents switch mid-workflow without code changes, and documentation of any parameter-compatibility gaps beyond model-ID changes.",
     "evidenceIds": [
       "fireworks-ai-docs-56",
       "fireworks-ai-docs-36",
       "fireworks-ai-docs-15",
       "fireworks-ai-docs-11",
-      "fireworks-ai-docs-17",
       "fireworks-ai-docs-42",
-      "fireworks-ai-supp-api-reference"
+      "fireworks-ai-docs-17",
+      "fireworks-ai-supp-api-reference",
+      "fireworks-ai-supp-openapi-spec"
     ]
   },
   {
@@ -2307,14 +2308,15 @@
     "productId": "fireworks-ai",
     "storyId": "models-endpoint-discovery",
     "verdict": "partial",
-    "quality": 4,
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Fireworks publishes an OpenAPI 3.1 Gateway REST API spec covering model endpoints under /v1/accounts, and its API reference says the REST API lets you automate management of models. That points to programmatic model listing. However, no evidence explicitly shows a GET /v1/models-style endpoint that enumerates the live public serverless catalog, and the 'OpenAI-compatible' claim does not by itself show that a models-list route exists. Missing for 10: an explicitly documented list-models endpoint and its response schema, confirmation that it returns the full live catalog rather than only account-owned models, and hands-on corroboration.",
+    "rationale": "Fireworks publishes an OpenAPI 3.1 'Gateway REST API' spec that covers model endpoints under /v1/accounts. Its REST API is documented as letting you 'automate management of models', and it advertises an OpenAI-compatible endpoint, so programmatic model enumeration is plausible from first-party docs. However, no evidence explicitly shows a GET /v1/models-style list endpoint returning the live serverless catalog. Missing for 10: an explicitly documented list-models / GET /v1/models endpoint, evidence that it returns the live public catalog rather than only account-owned models, and hands-on or independent confirmation of agent enumeration.",
     "evidenceIds": [
       "fireworks-ai-supp-openapi-spec",
       "fireworks-ai-supp-api-reference",
       "fireworks-ai-docs-69",
-      "fireworks-ai-docs-56"
+      "fireworks-ai-docs-56",
+      "fireworks-ai-docs-36"
     ]
   },
   {
@@ -2354,16 +2356,16 @@
     "productId": "fireworks-ai",
     "storyId": "openai-compatible-endpoint",
     "verdict": "full",
-    "quality": 7,
-    "confidence": "medium",
-    "rationale": "Fireworks' first-party docs say it offers an OpenAI-compatible endpoint and OpenAI-compatible APIs. They also call it a drop-in replacement for OpenAI ('same API') and tell developers to point their client at api.fireworks.ai. Together this covers the core of swapping the base URL and API key in an existing OpenAI client. Missing for 10: an explicit documented OpenAI SDK snippet showing only base_url and api_key changing, a statement of which OpenAI endpoints or parameters are compatible, and independent or hands-on confirmation that an unmodified OpenAI SDK client works.",
+    "quality": 8,
+    "confidence": "high",
+    "rationale": "Fireworks' own docs say it provides an OpenAI-compatible endpoint and OpenAI-compatible APIs. They also present it as a drop-in replacement in a \"Migrate from OpenAI\" guide, tell users to point their client at api.fireworks.ai, and note that tool specifications are OpenAI-compatible. Together that directly covers swapping an OpenAI SDK client over to Fireworks. Missing for 10: an explicit documented snippet showing that only base_url and api_key change in the official OpenAI SDK, and independent or hands-on corroboration that existing OpenAI SDK clients work unmodified.",
     "evidenceIds": [
       "fireworks-ai-docs-56",
       "fireworks-ai-docs-36",
       "fireworks-ai-docs-15",
       "fireworks-ai-docs-17",
       "fireworks-ai-docs-42",
-      "fireworks-ai-supp-api-reference"
+      "fireworks-ai-docs-11"
     ]
   },
   {
