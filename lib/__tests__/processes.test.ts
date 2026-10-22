@@ -265,11 +265,11 @@ describe('corpus', () => {
     // with no real analog carries no note, so the band stays wide.
     expect(total).toBeGreaterThanOrEqual(120)
     expect(total).toBeLessThanOrEqual(500)
-    // Global notes exist (the flavored set); the geo-resolution restructures grew that set,
-    // so US-scoped carriers remain at least as common rather than a strict majority.
+    // Both camps stay populated: the geo-resolution restructures moved most note-carriers to
+    // global scope, and the US-scoped core (EIN, payroll setup, state work) keeps its notes.
     expect(globalWithNotes).toBeGreaterThan(0)
     const usWithNotes = tasks.filter((t) => t.geoScope !== 'global' && (t.geoNotes ?? []).length > 0).length
-    expect(usWithNotes).toBeGreaterThanOrEqual(globalWithNotes)
+    expect(usWithNotes).toBeGreaterThan(0)
     // The founder's worked examples: incorporation has all four country analogs, and the
     // founder agreement / equity split (founder example 2026-09-29: "?geo=in currently has
     // no India note") carries all four too — stamp duty in India, share classes in the UK.
