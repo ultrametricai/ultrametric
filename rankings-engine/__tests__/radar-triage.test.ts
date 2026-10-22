@@ -84,10 +84,15 @@ describe('criterion checks', () => {
     expect(findAgenticSignal('We apply AI to your workflow')).toBeNull()
   })
 
-  it('isPlainTextLlms rejects SPA catch-all HTML and empty bodies', () => {
+  it('isPlainTextLlms rejects SPA catch-all HTML, JSON, non-text content types, and empty bodies', () => {
     expect(isPlainTextLlms('# Driftbase\n> docs for agents')).toBe(true)
+    expect(isPlainTextLlms('# Driftbase', 'text/plain; charset=utf-8')).toBe(true)
+    expect(isPlainTextLlms('# Driftbase', 'text/markdown')).toBe(true)
     expect(isPlainTextLlms('<!DOCTYPE html><html>')).toBe(false)
     expect(isPlainTextLlms('   ')).toBe(false)
+    expect(isPlainTextLlms('{"error":"not found"}')).toBe(false) // JSON body, no declared type
+    expect(isPlainTextLlms('# Driftbase', 'application/json')).toBe(false)
+    expect(isPlainTextLlms('# Driftbase', 'text/html; charset=utf-8')).toBe(false)
   })
 
   it('founder affiliation matches name and url, routing to a human', () => {
@@ -167,19 +172,28 @@ describe('triageCandidate', () => {
     expect(d.evidence.some((e) => e.includes('/llms.txt — HTTP 404'))).toBe(true)
   })
 
-  it('a plain-text llms.txt is itself the citable agentic surface', async () => {
+  it('a plain-text llms.txt is itself the citable agentic surface; a JSON catch-all is not', async () => {
+    const page = { status: 200, html: '<a href="/docs">Documentation</a> <a href="/pricing">Pricing</a>' }
     const d = await triageCandidate(
       candidate(),
       ARENAS,
       io({
         fetchPage: async (url) =>
-          url.endsWith('/llms.txt')
-            ? { status: 200, html: '# Driftbase\ndocs for agents' }
-            : { status: 200, html: '<a href="/docs">Documentation</a> <a href="/pricing">Pricing</a>' },
+          url.endsWith('/llms.txt') ? { status: 200, html: '# Driftbase\ndocs for agents', contentType: 'text/plain; charset=utf-8' } : page,
       }),
     )
     expect(d.status).toBe('auto-approved')
-    expect(d.evidence.some((e) => e.startsWith('agentic-surface: https://driftbase.dev/llms.txt'))).toBe(true)
+    expect(d.evidence.some((e) => e.startsWith('agentic-surface: https://driftbase.dev/llms.txt') && e.includes('text/plain'))).toBe(true)
+    const json = await triageCandidate(
+      candidate(),
+      ARENAS,
+      io({
+        fetchPage: async (url) =>
+          url.endsWith('/llms.txt') ? { status: 200, html: '{"hello":"world"}', contentType: 'application/json' } : page,
+      }),
+    )
+    expect(json).toMatchObject({ status: 'skipped', criterion: 'agentic-surface' })
+    expect(json.evidence.some((e) => e.includes('/llms.txt — HTTP 200, application/json'))).toBe(true)
   })
 
   it('skips an OSS repo whose README names no public API, MCP server, or agent docs', async () => {

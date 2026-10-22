@@ -202,17 +202,20 @@ export function findAgenticSignal(text: string): string | null {
   return m ? m[1] : null
 }
 
-// llms.txt guard: SPA/auth catch-alls answer 200 HTML for every path. A real llms.txt is plain
-// text with content; a markup response is the catch-all, not the file.
-export function isPlainTextLlms(body: string): boolean {
+// llms.txt guard: SPA/auth catch-alls answer 200 (often HTML, sometimes JSON) for every path. A
+// real llms.txt is plain text/markdown with content — when the server declares a content type it
+// must be text/plain or text/markdown, and the body must not read as markup or JSON.
+export function isPlainTextLlms(body: string, contentType?: string): boolean {
+  const ct = (contentType ?? '').toLowerCase()
+  if (ct && !/^text\/(plain|markdown)\b/.test(ct)) return false
   const trimmed = body.trim()
-  return trimmed.length > 0 && !trimmed.startsWith('<')
+  return trimmed.length > 0 && !trimmed.startsWith('<') && !trimmed.startsWith('{')
 }
 
 // --- IO (injectable so tests stay offline) ------------------------------------------------------
 
 export interface TriageIo {
-  fetchPage: (url: string) => Promise<{ status: number; html: string }>
+  fetchPage: (url: string) => Promise<{ status: number; html: string; contentType?: string }>
   fetchRepo: (fullName: string) => Promise<RepoFacts | { error: string }>
 }
 
@@ -225,7 +228,7 @@ export function realTriageIo(): TriageIo {
           redirect: 'follow',
           signal: AbortSignal.timeout(FETCH_TIMEOUT_MS),
         })
-        return { status: res.status, html: res.ok ? await res.text() : '' }
+        return { status: res.status, html: res.ok ? await res.text() : '', contentType: res.headers.get('content-type') ?? '' }
       } catch {
         return { status: 0, html: '' } // status 0 = network-level failure (timeout, DNS, TLS)
       }
@@ -367,9 +370,9 @@ export async function triageCandidate(candidate: RadarCandidate, existingArenas:
   if (!agentic) {
     const llmsUrl = new URL('/llms.txt', candidate.url).toString()
     const llms = await io.fetchPage(llmsUrl)
-    evidence.push(`${llmsUrl} — HTTP ${llms.status}`)
-    if (llms.status === 200 && isPlainTextLlms(llms.html)) {
-      agentic = { url: llmsUrl, note: `llms.txt answers with plain text (${llms.html.length} chars)` }
+    evidence.push(`${llmsUrl} — HTTP ${llms.status}${llms.contentType ? `, ${llms.contentType}` : ''}`)
+    if (llms.status === 200 && isPlainTextLlms(llms.html, llms.contentType)) {
+      agentic = { url: llmsUrl, note: `llms.txt answers as ${llms.contentType || 'text'} (${llms.html.length} chars)` }
     }
   }
   if (!agentic) {
