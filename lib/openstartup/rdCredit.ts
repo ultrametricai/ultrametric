@@ -131,14 +131,14 @@ export function domesticSre2025Treatment(amount: number, election?: { months: nu
       election: { months: election.months, monthlyAmount: round2(amount / election.months) },
       ...RD_RULE_IDS.amortization,
       needsReview: true,
-      note: `§ 174A(c) election: ratable over ${election.months} months beginning with the month benefits are first realized (a fact this module cannot determine). Law in flux — the rule card records the text as of its checked date. ${DISCLAIMER}`,
+      note: `§ 174A(c) election: ratable over ${election.months} months beginning with the month benefits are first realized (a fact this module cannot determine). Law in flux — the law rule records the text as of its checked date. ${DISCLAIMER}`,
     }
   }
   return {
     currentDeduction: amount,
     ...RD_RULE_IDS.amortization,
     needsReview: true,
-    note: `§ 174A(a): domestic research or experimental expenditures for taxable years beginning after 2024 are currently deductible. Law in flux — the rule card records the text as of its checked date; § 280C interactions with the § 41 credit are out of scope. ${DISCLAIMER}`,
+    note: `§ 174A(a): domestic research or experimental expenditures for taxable years beginning after 2024 are currently deductible. Law in flux — the law rule records the text as of its checked date; § 280C interactions with the § 41 credit are out of scope. ${DISCLAIMER}`,
   }
 }
 

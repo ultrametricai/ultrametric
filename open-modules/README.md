@@ -16,7 +16,7 @@ knows"), explicit rounding, worked examples reproduced number-for-number from th
 sources, deterministic tests, and explicit jurisdiction dependencies. An open module may
 PROPOSE a result; it must never silently authorize a tax election, equity grant, bank
 transfer, contract, or vendor disclosure. A module that leans on a legal threshold must
-reference a dated rule card in `open-law/` and return `needs_review` when the applicable
+reference a dated law rule in `open-law/` and return `needs_review` when the applicable
 locale or date is unknown. Status, module by module: worked-example-verified and
 property-tested — **not** independently expert-certified, and the module docs say so.
 
@@ -38,7 +38,7 @@ lines; edit the map, rerun the script.
 | [QSBS (§ 1202)](#qsbs--1202) | Eligibility checklist, holding clock, exclusion %, per-issuer cap | Incorporate C-Corp · Convert an LLC to a C-Corp | IRC § 1202 (re-derived caps) | verified, checklist-shaped |
 | [Offer / equity-comp scenarios](#offer--equity-comp-scenarios) | Grant %, spread, exit scenarios | Issue stock options · Hire first employee · Hire an executive | Holloway equity guide; Rewarding Talent | verified, pre-tax by design |
 | [ISO / NSO exercise tax](#iso--nso-exercise-tax) | NSO income, ISO/AMT outcomes, § 422(d) $100k, dispositions | Issue stock options · Offboard employee | Pub 525; Treas. Reg. § 1.422-4(d) Ex. 1–3; Rev. Proc. 2024-40/2025-32 | verified; AMT is illustration-only |
-| [409A grant sanity](#409a-grant-sanity) | Strike floor, staleness, presumptions, refresh triggers, penalty illustration | Close a priced equity round · Get a 409A valuation · Issue stock options | Treas. Reg. § 1.409A rule cards | sanity model — never a valuation |
+| [409A grant sanity](#409a-grant-sanity) | Strike floor, staleness, presumptions, refresh triggers, penalty illustration | Close a priced equity round · Get a 409A valuation · Issue stock options | Treas. Reg. § 1.409A law rules | sanity model — never a valuation |
 
 ### Fundraising & exits
 
@@ -54,7 +54,7 @@ lines; edit the map, rerun the script.
 
 | Module | What it computes | Serves | Worked-example source | Status |
 | --- | --- | --- | --- | --- |
-| [Deadline calendar](#deadline-calendar) | Rule-card-backed due dates and recurring clocks | Incorporate C-Corp · Sign the founder agreement & split equity · Convert an LLC to a C-Corp · File DE franchise tax · File federal tax return · Cure a Delaware franchise tax delinquency | Dated rule cards in `open-law/` | verified, always `needsReview` where dates can move |
+| [Deadline calendar](#deadline-calendar) | Law-rule-backed due dates and recurring clocks | Incorporate C-Corp · Sign the founder agreement & split equity · Convert an LLC to a C-Corp · File DE franchise tax · File federal tax return · Cure a Delaware franchise tax delinquency | Dated law rules in `open-law/` | verified, always `needsReview` where dates can move |
 | [Employer payroll tax](#employer-payroll-tax) | FICA/FUTA employer load, per-employee cost | Set up payroll · Hire first employee · Run payroll | IRS Pub 15 / instructions (pinned maxima) | verified, FEDERAL ONLY |
 | [Delaware franchise tax](#delaware-franchise-tax) | Both published methods, exactly; the March comparison | File DE franchise tax · Cure a Delaware franchise tax delinquency | 8 Del. C. § 503 + Division worked examples | verified |
 | [R&D tax mechanics](#rd-tax-mechanics) | § 174 amortization patterns, § 41(h) offset caps, Form 8974 application | Claim the R&D tax credit | IRC § 174/41; Form 8974 instructions | explanation + arithmetic — never a credit computation |
@@ -164,7 +164,7 @@ Trigger(s)"
 Forbes, 2022-02-08
 (https://www.forbes.com/sites/brucebrumberg/2022/02/08/amazon-apple-google-restricted-stock-grants-evolve-to-retain-top-talent/)
 · Index Ventures, Rewarding Talent (https://www.indexventures.com/rewarding-talent/) ·
-rule card `us-fed.83b-filing-period`.
+law rule `us-fed.83b-filing-period`.
 
 ### 83(b) election math
 
@@ -196,8 +196,8 @@ irrevocable without IRS consent). The 30-day window lives in the deadlines modul
 result carries the cited forfeiture risk: elect, forfeit, and the inclusion is never
 recovered.
 
-**Sources.** Rev. Proc. 2012-29 (https://www.irs.gov/pub/irs-drop/rp-12-29.pdf) · rule
-cards `us-fed.83b-scenario-arithmetic`, `us-fed.83b-election-effect`,
+**Sources.** Rev. Proc. 2012-29 (https://www.irs.gov/pub/irs-drop/rp-12-29.pdf) · law
+rules `us-fed.83b-scenario-arithmetic`, `us-fed.83b-election-effect`,
 `us-fed.83b-filing-period`, `us-fed.83b-revocation`,
 `us-fed.restricted-property-holding-period`.
 
@@ -233,15 +233,15 @@ $15,000,000 limb's same-year interaction with pre-applicable-date dispositions a
 flagged, not computed. The § 1045 rollover is explained and cited, never calculated.
 
 **Sources.** 26 U.S.C. § 1202 (https://www.law.cornell.edu/uscode/text/26/1202) · 26
-U.S.C. § 1045 · IRS Publication 525 (restricted property holding period) · rule cards
+U.S.C. § 1045 · IRS Publication 525 (restricted property holding period) · law rules
 `us-fed.qsbs-eligibility`, `us-fed.qsbs-exclusion-percentage`,
 `us-fed.qsbs-per-issuer-cap`, `us-fed.qsbs-1045-rollover`,
 `us-fed.restricted-property-holding-period`.
 
 ### Deadline calendar
 
-`lib/openstartup/deadlines.ts` — computes nominal compliance due dates from dated rule
-cards in `open-law/` and lays them out as a recurring calendar.
+`lib/openstartup/deadlines.ts` — computes nominal compliance due dates from dated law
+rules in `open-law/` and lays them out as a recurring calendar.
 
 | Function | Inputs | Returns |
 | --- | --- | --- |
@@ -252,7 +252,7 @@ cards in `open-law/` and lays them out as a recurring calendar.
 | `complianceCalendar` | date range, payroll option | sorted entries due inside the range |
 
 **Worked example.** From `lib/openstartup/__tests__/deadlines.test.ts`, where the
-arithmetic is re-derived against the rule cards (the cards cite the IRS instructions and
+arithmetic is re-derived against the law rules (the rules cite the IRS instructions and
 8 Del. C. §§ 502(a)/504(a)). An 83(b) election for a 2026-01-15 transfer: rule
 `us-fed.83b-filing-period` counts the transfer date plus 30 calendar days, so 16
 remaining January days plus 14 February days lands on 2026-02-14. That date is a
@@ -269,7 +269,7 @@ landings do not. The module computes nominal dates and does not extend or legall
 determine a deadline; the 83(b) transfer date is a legal determination, so that window is
 always flagged.
 
-**Sources.** Rule cards `us-de.franchise-tax-annual-report`,
+**Sources.** Law rules `us-de.franchise-tax-annual-report`,
 `us-fed.1120-filing-deadline`, `us-fed.941-quarterly-deadline`,
 `us-fed.83b-filing-period` · IRS Instructions for Form 1120, "When To File"
 (https://www.irs.gov/instructions/i1120) · Pub. L. 114-41 § 2006(a)(3) (the June 30
@@ -480,7 +480,7 @@ Cooley GO definitions via the round and waterfall modules (https://www.cooleygo.
 ### 409A grant sanity
 
 `lib/openstartup/grant409aSanity.ts` — runs grant-timing and strike-floor checks against
-dated 409A rule cards, taking the 409A fair market value as an input it cannot produce.
+dated 409A law rules, taking the 409A fair market value as an input it cannot produce.
 
 | Function | Inputs | Returns |
 | --- | --- | --- |
@@ -511,7 +511,7 @@ scope; the module cannot produce an FMV. Qualification under a presumption (appr
 written-report substance, materiality) is counsel's question, so judgment inputs flag
 rather than pass.
 
-**Sources.** Treas. Reg. § 1.409A-1(b)(5) via rule cards
+**Sources.** Treas. Reg. § 1.409A-1(b)(5) via law rules
 `us-fed.409a-stock-right-exception`, `us-fed.reasonable-method`, `us-fed.staleness`,
 `us-fed.independent-appraisal-presumption`, `us-fed.illiquid-startup-presumption`,
 `us-fed.binding-formula-presumption` · IRC § 409A(a)(1)(B) via
@@ -550,7 +550,7 @@ overstates value; every outcome carries `needsReview`. Everything is pre-tax, an
 
 **Sources.** The Holloway Guide to Equity Compensation
 (https://www.holloway.com/g/equity-compensation) · Index Ventures, Rewarding Talent
-(https://www.indexventures.com/rewarding-talent/) · rule card
+(https://www.indexventures.com/rewarding-talent/) · law rule
 `us-fed.409a-stock-right-exception` (Treas. Reg. § 1.409A-1(b)(5)).
 
 ### ISO / NSO exercise tax
@@ -591,7 +591,7 @@ and exact anniversary day-counting is flagged for counsel.
 **Sources.** Treas. Reg. § 1.422-4 (https://www.law.cornell.edu/cfr/text/26/1.422-4) ·
 Rev. Proc. 2024-40 § 2.11 (https://www.irs.gov/pub/irs-drop/rp-24-40.pdf) · Rev. Proc.
 2025-32 § 2.10 (https://www.irs.gov/pub/irs-drop/rp-25-32.pdf) · IRS Publication 15
-(2026) (https://www.irs.gov/publications/p15) · IRS Publication 525 · rule cards
+(2026) (https://www.irs.gov/publications/p15) · IRS Publication 525 · law rules
 `us-fed.nso-spread-ordinary-income`, `us-fed.supplemental-wage-withholding-2026`,
 `us-fed.iso-exercise-no-regular-income`, `us-fed.iso-holding-periods-disqualifying`,
 `us-fed.iso-100k-limit`, `us-fed.iso-amt-adjustment`, `us-fed.amt-exemption-2025`,
@@ -627,7 +627,7 @@ non-credit-reduction state, a yearly Schedule A determination. Deposit schedules
 
 **Sources.** IRS Publication 15 (2026) — https://www.irs.gov/publications/p15 ·
 Instructions for Form 940 (2025) — https://www.irs.gov/instructions/i940 · SSA
-contribution and benefit base — https://www.ssa.gov/oact/cola/cbb.html · rule cards
+contribution and benefit base — https://www.ssa.gov/oact/cola/cbb.html · law rules
 `us-fed.fica-rates-2026`, `us-fed.futa-2025`.
 
 ### Delaware franchise tax
@@ -661,7 +661,7 @@ asOf date with needsReview set.
 
 **Sources.** Delaware Division of Corporations, "How to Calculate Franchise Taxes" —
 https://corp.delaware.gov/frtaxcalc/ · Annual report and tax instructions —
-https://corp.delaware.gov/paytaxes/ · 8 Del. C. § 503 · rule cards
+https://corp.delaware.gov/paytaxes/ · 8 Del. C. § 503 · law rules
 `us-de.franchise-tax-authorized-shares-method`, `us-de.franchise-tax-assumed-par-method`,
 `us-de.franchise-tax-annual-report`.
 
@@ -698,7 +698,7 @@ and state R&D credits are out of scope.
 
 **Sources.** 26 U.S.C. § 174 and § 174A —
 https://www.law.cornell.edu/uscode/text/26/174A · 26 U.S.C. § 41(h) · Instructions for
-Form 8974 — https://www.irs.gov/instructions/i8974 · rule cards
+Form 8974 — https://www.irs.gov/instructions/i8974 · law rules
 `us-fed.research-expenditure-amortization`, `us-fed.rd-payroll-offset`.
 
 ### Runway & burn
@@ -854,12 +854,12 @@ books.
 ## Coverage limits
 
 State payroll, complete option withholding, and final-paycheck calculations remain outside
-the current federal examples. Extensions require dated jurisdiction rule cards and cited
+the current federal examples. Extensions require dated jurisdiction law rules and cited
 worked examples before implementation. VC fund capital-call allocation and management-fee
 math remain candidates pending a citable worked example; bespoke fund terms remain inputs.
 
 The module admission requirements below apply to each extension. A workflow step without
-supported arithmetic stays in the process or rule-card layer. Judgment, legal interpretation,
+supported arithmetic stays in the process or law-rule layer. Judgment, legal interpretation,
 and authorization remain with the responsible human.
 
 ## What you can contribute here
@@ -875,8 +875,8 @@ and authorization remain with the responsible human.
 - **Harden an existing module** — a missed edge case from a cited worked example, a new
   property test, or a correction with the source that proves it (e.g. the YC Post-Money
   Safe User Guide for `capTable.ts`).
-- **Legal thresholds** — a module that leans on one must reference a dated rule
-  card in `open-law/` and return `needs_review` when locale or date is unknown; results are
+- **Legal thresholds** — a module that leans on one must reference a dated law
+  rule in `open-law/` and return `needs_review` when locale or date is unknown; results are
   decision support, never authorization. The conservative workflow planner lives in
   `lib/founderOps.ts` and is gated by `__tests__/founder-ops.test.ts`.
 

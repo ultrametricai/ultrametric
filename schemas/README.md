@@ -18,7 +18,7 @@ The same URL continues accepting legacy process records through its
 `operational-process.schema.json` describes the existing process corpus;
 `shared-process.schema.json` describes the compatibility export.
 
-Rule cards (`open-law/<CODE>/*.json`) validate against the in-code contract
+Law rules (`open-law/<CODE>/*.json`) validate against the in-code contract
 (`RuleCardSchema` in `lib/founderOps.ts`) rather than a published schema file; the
 validator also runs the semantic checks a schema cannot (sources resolve to primary
 authorities, jurisdictions registered, review dates ordered).
@@ -27,7 +27,7 @@ Other contracts:
 
 - `citation.schema.json` — the citation registry's two record roles, authority and reading.
 - `vendor-review.schema.json` — the vendor reviews in `open-rankings/reviews/`.
-- `law-map.schema.json` — the domain map over the rule cards (`open-law/map.json`).
+- `law-map.schema.json` — the domain map over the law rules (`open-law/map.json`).
 - `coverage-index.schema.json` — the cross-area coverage rollup (`coverage/index.json`).
 - `process-vendor-registry.schema.json` — the vendor facts beside the corpus
   (`open-processes/vendor-registry.json`).

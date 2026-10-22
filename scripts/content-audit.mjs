@@ -7,7 +7,7 @@ import { fileURLToPath } from 'node:url'
 export const collectionNames = {
   processes: 'Processes', situations: 'Situations', vendors: 'Vendor entries', arenas: 'Rankings',
   documents: 'Open documents', modules: 'Module source files', jurisdictions: 'Jurisdictions',
-  law: 'Rule cards', citations: 'Citations', artifacts: 'Business artifacts',
+  law: 'Law rules', citations: 'Citations', artifacts: 'Business artifacts',
 }
 
 const roots = ['open-processes', 'open-rankings', 'open-artifacts', 'open-documents', 'lib/openstartup', 'jurisdictions', 'open-law', 'coverage']

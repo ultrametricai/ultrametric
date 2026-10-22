@@ -112,7 +112,7 @@ module computes for, written from the committed module-to-process map by
 
 | Module | What it computes | Serves |
 | --- | --- | --- |
-| [Deadlines](open-modules/README.md#deadline-calendar) | The founder compliance calendar, each date citing a rule card | Incorporate C-Corp · Sign the founder agreement & split equity · Convert an LLC to a C-Corp · File DE franchise tax · File federal tax return · Cure a Delaware franchise tax delinquency |
+| [Deadlines](open-modules/README.md#deadline-calendar) | The founder compliance calendar, each date citing a law rule | Incorporate C-Corp · Sign the founder agreement & split equity · Convert an LLC to a C-Corp · File DE franchise tax · File federal tax return · Cure a Delaware franchise tax delinquency |
 | [Payroll tax](open-modules/README.md#employer-payroll-tax) | Employer FICA/FUTA load, per-employee annual cost | Set up payroll · Hire first employee · Run payroll |
 | [Delaware franchise tax](open-modules/README.md#delaware-franchise-tax) | Both published methods, the cheaper-method comparison | File DE franchise tax · Cure a Delaware franchise tax delinquency |
 | [R&D tax](open-modules/README.md#rd-tax-mechanics) | § 174 amortization, § 41(h) payroll-offset mechanics | Claim the R&D tax credit |
@@ -239,8 +239,8 @@ open gap.
 
 Map the [law](open-law/) that applies to startups, across jurisdictions, and connect it to
 the processes, calculations, and vendors that act on it. Each legal statement is one dated
-rule card citing a primary [authority](open-law/citations/) (a statute, regulation, or
-agency page) with the exact section. A blog post cannot establish law. The cards are scoped
+rule citing a primary [authority](open-law/citations/) (a statute, regulation, or
+agency page) with the exact section. A blog post cannot establish law. The rules are scoped
 by jurisdiction: [federal](open-law/US-FED/), [Delaware](open-law/US-DE/),
 [California](open-law/US-CA/), [Nevada](open-law/US-NV/), [New York](open-law/US-NY/),
 [Texas](open-law/US-TX/), [Washington](open-law/US-WA/), and the [EU](open-law/EU/). The
@@ -248,13 +248,13 @@ distilled [startup laws](open-law/LAWS.md) collect the recurring principles the 
 canon keeps re-teaching, grouped by lifecycle stage from
 [idea](open-law/LAWS.md#idea-and-validation) through
 [survival](open-law/LAWS.md#survival-and-the-long-game), each citing its sources. The
-[domain map](open-law/README.md#the-map) ties each legal area to the rule cards covering
+[domain map](open-law/README.md#the-map) ties each legal area to the rules covering
 it and the processes it governs, graded mapped, partial, or unmapped.
 
 ### Example: The 83(b) election
 
 One rule, followed through the repo. The distilled law states the thirty-day window
-([Formation and housekeeping](open-law/LAWS.md#formation-and-housekeeping)); its rule card
+([Formation and housekeeping](open-law/LAWS.md#formation-and-housekeeping)); its rule
 [`us-fed.83b-filing-period`](open-law/US-FED/us-fed-83b-filing-period.json) pins the IRS
 procedure; the [Incorporate C-Corp](https://ultrametric.ai/processes/incorporate-c-corp)
 process signs and files the election as explicit steps, with the jurisdiction-scoped

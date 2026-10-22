@@ -3,7 +3,7 @@
   "id": "qs_044",
   "kind": "process",
   "title": "Set up mailing address",
-  "summary": "Get a business mailing address for legal and banking purposes — sign up with a virtual mailbox and complete the USPS authorization.",
+  "summary": "Get a business mailing address for legal and banking purposes — sign up with a virtual mailbox and complete the mail-handling authorization the postal rules require (in the US, the notarized USPS Form 1583).",
   "outcomes": [],
   "guidance": null,
   "parts": [
@@ -64,8 +64,8 @@
     {
       "id": "n4a",
       "kind": "step",
-      "title": "Fill out USPS Form 1583",
-      "guidance": "Complete the current USPS Form 1583 with the applicant, company, address and authorized recipients. Follow the form’s accepted identity and address-document requirements through the provider’s secure process. Resolve inaccurate or missing fields before the applicant completes the live signature-witnessing step. Keep the identity documents and prepared application private.",
+      "title": "Fill out the provider's mail-handling authorization",
+      "guidance": "Complete the authorization the postal rules require with the applicant, company, address and authorized recipients. Follow the accepted identity and address-document requirements through the provider’s secure process. Resolve inaccurate or missing fields before the applicant completes the live signature-witnessing step. Keep the identity documents and prepared application private.",
       "when": null,
       "ref": null,
       "options": [],
@@ -82,14 +82,23 @@
       "metadata": {
         "route": "person",
         "reversibility": "reversible",
-        "estimatedMinutes": 10
+        "estimatedMinutes": 10,
+        "geoResolutions": [
+          {
+            "country": "US",
+            "kind": "analog",
+            "label": "The authorization is the current USPS Form 1583; the CMRA keeps it on file",
+            "actionUrl": "https://about.usps.com/forms/ps1583.pdf",
+            "actionLabel": "USPS Form 1583"
+          }
+        ]
       }
     },
     {
       "id": "n4",
       "kind": "step",
-      "title": "Notarize and sign Form 1583",
-      "guidance": "Use the witnessing route supported by the provider and USPS instructions. Form 1583 permits signature or confirmation before the agent or authorized employee, or acknowledgement before a qualifying notary, with the specified physical or live virtual presence. The applicant completes that process with the required IDs. Resolve any provider rejection before treating the mail authorization as active.",
+      "title": "Sign the mail authorization with the witnessing the rules require",
+      "guidance": "Use the witnessing route the provider and the applicable postal rules support. The applicant completes that process with the required IDs. Resolve any provider rejection before treating the mail authorization as active.",
       "when": null,
       "ref": null,
       "options": [],
@@ -110,13 +119,22 @@
         "legalSignature": true,
         "verify": {
           "how": "The provider accepts the notarized USPS Form 1583 and activates the address — retain the executed form; the CMRA must keep it on file."
-        }
+        },
+        "geoResolutions": [
+          {
+            "country": "US",
+            "kind": "analog",
+            "label": "Form 1583 permits signature or confirmation before the agent or authorized employee, or acknowledgement before a qualifying notary, with the specified physical or live virtual presence",
+            "actionUrl": "https://about.usps.com/forms/ps1583.pdf",
+            "actionLabel": "USPS Form 1583"
+          }
+        ]
       }
     },
     {
       "id": "n3",
       "kind": "step",
-      "title": "Update the address on file (bank, IRS, vendors)",
+      "title": "Update the address on file (bank, tax authority, vendors)",
       "guidance": "Identify where the old address appears and distinguish mailing, physical, registered-office and tax fields. Check each institution’s accepted address types and update method. Authorized account holders submit the changes and verify important notices reach the new destination. Maintain old-mailbox access or forwarding during the transition, and resolve any institution that rejects the new address type.",
       "when": null,
       "ref": null,
@@ -126,7 +144,56 @@
       "metadata": {
         "route": "agent",
         "reversibility": "painful",
-        "estimatedMinutes": 1
+        "estimatedMinutes": 1,
+        "geoResolutions": [
+          {
+            "country": "US",
+            "kind": "analog",
+            "label": "Update the address with the bank, the IRS, and vendors, distinguishing mailing, physical, and registered-agent fields"
+          },
+          {
+            "country": "UK",
+            "kind": "analog",
+            "label": "A registered-office change files at Companies House; post-ECCT the address must be one where documents actually come to the company's attention, and a registered email address is required too",
+            "actionUrl": "https://www.gov.uk/limited-company-formation/company-address",
+            "actionLabel": "Companies House — registered office rules"
+          },
+          {
+            "country": "IN",
+            "kind": "analog",
+            "label": "Registered-office changes file back to the RoC (INC-22), and each state's GST registration wants its own proof-of-address set",
+            "actionUrl": "https://www.nsws.gov.in/",
+            "actionLabel": "India NSWS (MCA filings)"
+          },
+          {
+            "country": "DE",
+            "kind": "analog",
+            "label": "Changes to the inländische Geschäftsanschrift go through the notary to the Handelsregister, and the Impressum needs a ladungsfähige Anschrift",
+            "actionUrl": "https://www.handelsregister.de/",
+            "actionLabel": "Handelsregister (business address)"
+          },
+          {
+            "country": "FR",
+            "kind": "analog",
+            "label": "The siège social flows through the INPI guichet unique onto the RCS",
+            "actionUrl": "https://entreprendre.service-public.fr/vosdroits/F2160",
+            "actionLabel": "Domiciliation d'entreprise (service-public)"
+          },
+          {
+            "country": "PT",
+            "kind": "analog",
+            "label": "Changes to the sede in the commercial registry are filed online",
+            "actionUrl": "https://www.gov.pt/guias/empresa-online-servicos-do-registo-comercial",
+            "actionLabel": "Empresa Online — registry filings"
+          },
+          {
+            "country": "CA",
+            "kind": "analog",
+            "label": "Registered-office changes file online in the incorporating jurisdiction",
+            "actionUrl": "https://ised-isde.canada.ca/site/corporations-canada/en",
+            "actionLabel": "Corporations Canada"
+          }
+        ]
       }
     }
   ],

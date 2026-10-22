@@ -10,14 +10,14 @@ plus local setup and style rules.
 UI and page changes are maintained in the private site repo; report rendering bugs on this
 repo with the [site rendering issue form](https://github.com/ultrametricai/ultrametric/issues/new?template=site-rendering.yml).
 
-Contributing to the **founder-ops corpus** (jurisdiction-scoped workflows, rule cards, sources,
+Contributing to the **founder-ops corpus** (jurisdiction-scoped workflows, law rules, sources,
 vendor reviews, open modules) has its own workflow and review bar — see
 [policies/REVIEW_POLICY.md](policies/REVIEW_POLICY.md) and the templates in
 [`templates/`](templates/).
 
 **Founders outside the US (or outside Delaware):** the highest-leverage contribution is local
 knowledge — vendor availability rows for your country, verified country analogs for the
-processes, rule cards for your jurisdiction, full workflows. The PR shapes, with exact
+processes, law rules for your jurisdiction, full workflows. The PR shapes, with exact
 file paths and the gates that validate them, are in
 [Add a jurisdiction](#add-a-jurisdiction) below.
 
@@ -303,7 +303,8 @@ definition's metadata:
   guidance?, actionUrl?, actionLabel?}`, same country and kind vocabulary as `geoNotes`).
   Wherever resolutions exist, the US is one explicit entry with kind `analog`; a country
   with no committed mechanics carries no entry, and the abstraction stands there by
-  design. Legal claims inside the prose cite dated rule cards in `open-law/` by id.
+  design. Legal claims inside the prose cite dated law rules in `open-law/` by id, in the
+  inline form `law rule <id>`.
 
 <a id="add-a-jurisdiction"></a>
 
@@ -325,14 +326,14 @@ whether your records hold up:
    with a live, official actionUrl (Companies House, MCA/NSWS, Handelsregister, INPI…),
    then regenerate the projections with `pnpm shared:project`. This renders in the
    top-of-page geo banner and the "Outside the US" block.
-3. **Rule cards for your jurisdiction** — register the jurisdiction in
+3. **Law rules for your jurisdiction** — register the jurisdiction in
    [`jurisdictions/registry.json`](jurisdictions/) with a deliberately narrow scope, then
-   add `open-law/<CODE>/*.json` cards citing primary sources in
+   add `open-law/<CODE>/*.json` rules citing primary sources in
    [`open-law/citations/registry.json`](open-law/citations/) (statute, regulation, agency
    guidance; a provider blog cannot establish law). One proposition per stable ID.
 4. **A full jurisdiction-scoped workflow** — copy
    [`templates/process.json`](templates/process.json), narrow the applicability dimensions,
-   reference your rule cards, gate every external effect on a human approval, add a
+   reference your law rules, gate every external effect on a human approval, add a
    fictional fixture in [`open-processes/fixtures/`](open-processes/fixtures/), and record the
    maturity level in [`open-law/workflow-coverage.json`](open-law/) (`draft` or `demonstration` to
    start; `reviewed` requires a named domain expert, see the
