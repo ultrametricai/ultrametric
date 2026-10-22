@@ -1,24 +1,20 @@
 {
-  "hash": "f7750b89c89aa0a80e33687dd12c6dd6fa2f873e0d9f492b1c0041b7fc0679f8",
+  "hash": "035206c6f615bee0bb3f7744358e6fb1fb23744a45243af017fb3fe935d82dba",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Stripe documents the full agent purchase loop. The embedded ACS checkout mode manages the checkout lifecycle, from cart through payment collection, and Stripe creates and routes a scoped Shared Payment Token to the seller. Completion is signalled by `delegated_checkout.requested_session.completed` and the seller's `checkout.session.completed` event. Link CLI separately lets an agent get customer-approved one-time credentials (SPT, virtual card or Link Pay Token) to pay. The agent-builder checkout is private preview, limited to physical goods in the US, Canada and select European countries, and requires a seller-initiated OCA agreement; Link spends need per-request human approval. missing for 10: general availability of the embedded agent checkout, independent or hands-on corroboration of a completed end-to-end agent purchase, clearer end-to-end object documentation (a community comment calls the MPP docs sparse on end-to-end flow).",
+    "rationale": "Stripe documents the whole flow end-to-end. ACS embedded checkout runs the full lifecycle, from cart management through Stripe-created shared payment tokens to completion signalled by the `delegated_checkout.requested_session.completed` webhook. On the seller side, checkout sessions move through incomplete→ready_for_payment→completed and fire `checkout.session.completed`. SPTs carry scoped usage limits and can be revoked, and Link CLI issues one-time-use credentials the agent uses to pay. Missing for 10: hands-on or independent evidence of a completed agent purchase; general availability (ACS is private preview, waitlist/OCA-gated, limited to US/Canada/select EU countries and physical goods).",
     "evidenceIds": [
       "stripe-ac-supp-embedded-checkout-oca",
-      "stripe-agentic-commerce-docs-16",
-      "stripe-agentic-commerce-docs-29",
-      "stripe-ac-supp-spt-limits",
       "stripe-ac-supp-acp-custom-checkout",
       "stripe-ac-supp-order-attribution",
+      "stripe-ac-supp-spt-limits",
       "stripe-ac-supp-link-wallet",
       "stripe-agentic-commerce-docs-30",
       "stripe-agentic-commerce-gh-1",
-      "stripe-ac-supp-chat-commerce",
-      "stripe-ac-probe-rt-4",
-      "stripe-agentic-commerce-comm-10"
+      "stripe-agentic-commerce-docs-15"
     ],
     "productId": "stripe-agentic-commerce",
     "storyId": "agent-checkout-complete"

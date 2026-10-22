@@ -1,17 +1,12 @@
 {
-  "hash": "83324e9d2974a0a07a7a695c94223a2d88aadcaad343887358e0cb659ad40afc",
+  "hash": "21b72046eded4a239c054d4f5d00e1acd6f58c61bb19802ccdf167f45518b1a2",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "partial",
-    "quality": 4,
+    "verdict": "none",
+    "quality": 0,
     "confidence": "medium",
-    "rationale": "The closest scoped agent credential is the ACP delegated payment token: a single-use Braintree nonce \"bound to your merchant ID\" with configurable \"amount and time restrictions\" (paypal-ac-supp-acp-chatgpt, paypal-ac-supp-agent-ready). However, that is a buyer payment credential, not an API credential a user issues to an agent. The general API surface uses OAuth 2 access tokens (paypal-ac-supp-rest-overview), and the remote MCP server requires OAuth bearer auth, but it advertises only openid/email/profile scopes (paypal-ac-probe-rt-1), so there is no evidence of fine-grained API scoping. Missing for 10: user-issued agent-specific API keys or tokens, per-tool or per-API permission scopes for toolkit/MCP access, least-privilege credential management docs, and independent corroboration.",
-    "evidenceIds": [
-      "paypal-ac-supp-acp-chatgpt",
-      "paypal-ac-supp-agent-ready",
-      "paypal-ac-probe-rt-1",
-      "paypal-ac-supp-rest-overview"
-    ],
+    "rationale": "The pack does not document any way for a user to mint API credentials for an agent that are restricted to specific tools, scopes or permissions. The REST APIs use generic OAuth 2 access tokens, and the remote MCP server only advertises openid/email/profile scopes rather than per-API least-privilege scopes. The single-use delegated payment tokens with amount and time limits are buyer payment credentials passed to merchants, an adjacent feature rather than scoped API credentials issued for an agent.",
+    "evidenceIds": [],
     "productId": "paypal-agent-commerce",
     "storyId": "agentic-scoped-keys"
   }

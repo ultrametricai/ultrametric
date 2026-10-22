@@ -3278,14 +3278,14 @@
     "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Stagehand documents a dedicated integrations section where each adapter gives the agent one persistent browser plus `run`, `snapshot` and `screenshot` tools. Documented adapters cover CrewAI (StagehandTool and a server-backed integration), LangChain's Deep Agents, and Claude Code via MCP/stdio. missing for 10: documented Vercel AI SDK adapter, explicit Claude Agent SDK (vs. Claude Code) adapter, independent or hands-on corroboration of the adapters.",
+    "rationale": "Stagehand ships a documented integrations section in which each adapter gives an agent one persistent browser plus `run`, `snapshot` and `screenshot` tools. Dedicated pages cover CrewAI (v4 server-backed integration and the v3 StagehandTool), LangChain's Deep Agents (two deployment patterns), and Claude Code via MCP/stdio. missing for 10: explicit Vercel AI SDK adapter docs, an explicit Claude Agent SDK (rather than Claude Code) integration, a core LangChain adapter beyond Deep Agents, independent hands-on corroboration of the adapters.",
     "evidenceIds": [
       "stagehand-docs-11",
       "stagehand-docs-22",
       "stagehand-docs-24",
       "stagehand-docs-25",
       "stagehand-docs-32",
-      "stagehand-docs-26"
+      "stagehand-docs-31"
     ]
   },
   {
@@ -3294,12 +3294,12 @@
     "verdict": "full",
     "quality": 9,
     "confidence": "high",
-    "rationale": "A live probe confirms an llms.txt served at docs.stagehand.dev (HTTP 200) that indexes markdown versions of the doc pages, and the docs ship an AI-rules page of configs and copy-paste snippets so coding assistants write correct Stagehand v4 code. Pages are also served as .md, as the integration and best-practices URLs show. missing for 10: independent or community corroboration of agents successfully using these docs, evidence of a full-content variant (e.g. llms-full.txt)",
+    "rationale": "A live probe confirms https://docs.stagehand.dev/llms.txt returns HTTP 200 with an index of markdown doc links. Docs pages are served as .md, and a dedicated AI-rules page provides copy-paste rules and configs so coding assistants write correct Stagehand v4 code. missing for 10: no evidence of an llms-full.txt or full-content dump, no independent user report of pointing an agent at these docs",
     "evidenceIds": [
       "stagehand-probe-1",
       "stagehand-docs-23",
       "stagehand-docs-24",
-      "stagehand-docs-26"
+      "stagehand-docs-25"
     ]
   },
   {
@@ -3308,7 +3308,7 @@
     "verdict": "na",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Stagehand is a developer SDK for AI browser automation. It does not hold user data or offer an in-product analytics surface, so \"AI-generated insights and suggestions from my data inside the product\" is a category error for this product type. Its AI extract() and observe() primitives pull structured data from webpages and propose page actions. They serve automation workflows and are not insights drawn from the user's own data, so they do not make this axis applicable.",
+    "rationale": "Stagehand is a developer SDK for AI-driven browser automation. It has no product surface where a user's own data lives, so 'AI-generated insights and suggestions from my data inside the product' is a category mismatch. Its observe() action suggestions and extract() data pulls work on target webpages, not on a user's own dataset, so they don't make this axis applicable.",
     "evidenceIds": []
   },
   {
@@ -3317,30 +3317,28 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Stagehand v3 documents an `agent` that turns high-level tasks into fully autonomous browser workflows, with configurable max steps and an agent fallback. Browserbase-hosted sessions with persistent contexts and a session dashboard let those automations run remotely and be monitored. However, the v4 docs state there is no autonomous loop, so you write the orchestration yourself, and nothing documents scheduling, triggers, or unattended background execution. Missing for 10: scheduling/trigger mechanism for background runs, autonomous agent mode in the current v4 version, independent corroboration of unattended autonomous operation.",
+    "rationale": "Stagehand documents an `agent` that turns high-level tasks into fully autonomous browser workflows, with configurable models, instructions and max steps [stagehand-docs-28]. It also offers deterministic caching of agent-discovered workflows for repeat runs [stagehand-docs-29], persistent browser data across runs [stagehand-docs-7, stagehand-docs-8], and remote Browserbase sessions with replay dashboards [stagehand-docs-9, stagehand-docs-10]. However, Stagehand is an SDK you invoke from your own code, and nothing in the pack shows it can set up automations that run unattended in the background. Missing for 10: built-in scheduling or triggers for background runs, a managed way to set up recurring automations, and independent hands-on corroboration of unattended autonomous operation.",
     "evidenceIds": [
       "stagehand-docs-28",
       "stagehand-docs-29",
       "stagehand-docs-30",
-      "stagehand-docs-26",
+      "stagehand-docs-7",
       "stagehand-docs-8",
-      "stagehand-docs-10",
-      "stagehand-docs-21"
+      "stagehand-docs-9",
+      "stagehand-docs-10"
     ]
   },
   {
     "productId": "stagehand",
     "storyId": "agentic-builtin-assistant",
-    "verdict": "partial",
-    "quality": 5,
+    "verdict": "full",
+    "quality": 7,
     "confidence": "medium",
-    "rationale": "Stagehand's v3 docs describe a built-in `agent` that turns high-level tasks into fully autonomous browser workflows, with configurable model, instructions and max steps, plus agent fallbacks and auto-caching of agent-discovered workflows. However, the current v4 docs state that v4 has no autonomous loop, leaving developers to write the orchestration around act/extract/observe primitives. Delegation to a built-in agent therefore appears tied to the older version. Missing for 10: a built-in autonomous agent in the current v4 release, an in-product interactive assistant experience, and independent hands-on corroboration of delegated task execution.",
+    "rationale": "Stagehand ships a built-in `agent` primitive that turns high-level tasks into fully autonomous browser workflows, with configurable LLM provider and model, custom instructions, and max steps. It also supports caching agent-discovered workflows into deterministic scripts and using the agent as a fallback when a single `act()` becomes a multi-step flow. Missing for 10: agent docs appear only under v3 with no v4 equivalent in the pack, it is a developer SDK primitive rather than an interactive in-product assistant, and there is no independent or hands-on corroboration of agent delegation quality.",
     "evidenceIds": [
       "stagehand-docs-28",
       "stagehand-docs-29",
-      "stagehand-docs-30",
-      "stagehand-docs-26",
-      "stagehand-docs-16"
+      "stagehand-docs-30"
     ]
   },
   {
@@ -3349,27 +3347,24 @@
     "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Stagehand is a programmatic SDK for TypeScript, Python and Go that runs browser automations from code. It can launch remote Browserbase cloud browsers, launch local ones, or attach over CDP, and it supports caching and deterministic replay for repeatable automation runs. That fits non-interactive, scripted execution. missing for 10: explicit documentation of a headless mode/flag, CI pipeline setup guidance or examples, independent hands-on reports of running it in CI.",
+    "rationale": "Stagehand is a code-first SDK (TypeScript, Python, Go) for writing automations, so it runs programmatically with no interactive UI. It can launch remote Browserbase browsers, local browsers, or attach over CDP, and it can cache agent-discovered workflows into deterministic scripts suited to unattended runs. missing for 10: explicit documentation of a headless mode flag, CI pipeline setup guidance or examples, and independent hands-on reports of running it in CI.",
     "evidenceIds": [
       "stagehand-docs-19",
+      "stagehand-docs-20",
       "stagehand-docs-21",
       "stagehand-docs-9",
-      "stagehand-docs-6",
       "stagehand-docs-29",
-      "stagehand-docs-20",
-      "stagehand-docs-10"
+      "stagehand-docs-6"
     ]
   },
   {
     "productId": "stagehand",
     "storyId": "agentic-mcp-client",
-    "verdict": "partial",
-    "quality": 3,
-    "confidence": "low",
-    "rationale": "Stagehand has a first-party 'MCP integrations' best-practices page (stagehand-docs-26), but in v4 there is no autonomous loop: the developer calls the MCP tools and interleaves the results with Stagehand primitives, rather than Stagehand consuming the tools itself. The other MCP evidence describes Stagehand acting as an MCP server for other agents, which does not count toward this client-side story. Missing for 10: native registration of MCP servers so Stagehand (or its agent) can discover and invoke their tools, configuration docs for connecting servers, and independent or hands-on corroboration.",
-    "evidenceIds": [
-      "stagehand-docs-26"
-    ]
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "The evidence shows Stagehand acting as an MCP server that exposes browser tools to other agents such as Claude Code. It also mentions WebMCP for invoking tools that websites expose. Neither is documentation that Stagehand or its agent can connect to external MCP servers and use their tools as a client, so the axis applies but nothing in the pack shows the capability.",
+    "evidenceIds": []
   },
   {
     "productId": "stagehand",
@@ -3377,7 +3372,7 @@
     "verdict": "full",
     "quality": 8,
     "confidence": "high",
-    "rationale": "Stagehand's first-party docs describe giving a Claude Code agent persistent Stagehand browser tools over MCP/stdio. The integration exposes `run`, `snapshot`, and `screenshot` tools from a single server process that keeps page state across calls, and v3 docs also include a dedicated MCP integration section. A team-member HN comment confirms the Stagehand MCP server exists and won Anthropic's MCP hackathon. Missing for 10: detailed installation/configuration steps for the MCP server in the evidence, and independent (non-vendor) hands-on corroboration of connecting an agent through it.",
+    "rationale": "Stagehand is a browser-automation framework, not an agent, so an official MCP server applies. Its own docs describe giving a Claude Code agent persistent Stagehand browser tools over MCP/stdio, served by one server process that keeps page state across the run, snapshot, and screenshot tools. A dedicated MCP integration section also exists, and the team mentions its Stagehand MCP server winning Anthropic's MCP hackathon. Missing for 10: independent hands-on corroboration of the MCP server, and documented setup or compatibility with MCP clients beyond Claude Code.",
     "evidenceIds": [
       "stagehand-docs-11",
       "stagehand-docs-22",
@@ -3392,7 +3387,7 @@
     "verdict": "full",
     "quality": 9,
     "confidence": "high",
-    "rationale": "Stagehand's core primitives take plain-English instructions: act() executes natural-language actions with no selectors, extract() takes an instruction, observe() discovers actions, and the MCP integration controls browsers with commands like \"click the login button\". Community users corroborate the natural-language, self-healing abstraction. missing for 10: independent hands-on evidence of how reliably the natural-language commands work, and clarity that high-level autonomous agent tasking is documented for v3 while v4 has no autonomous loop.",
+    "rationale": "Stagehand's core primitives take plain-English instructions: act() ('Write automation in plain English. No selectors'), extract() with an instruction, observe(), and an autonomous agent that turns high-level tasks into browser workflows. The MCP integration also lets users control browsers with commands like 'click the login button'. Community comments corroborate the self-healing, natural-language-driven approach. missing for 10: independent hands-on corroboration that natural-language commands work reliably in practice (community evidence speaks mostly to self-healing and general usefulness), and evidence of natural-language operation outside SDK code and agent/MCP hosts.",
     "evidenceIds": [
       "stagehand-docs-1",
       "stagehand-docs-16",
@@ -3400,7 +3395,7 @@
       "stagehand-docs-3",
       "stagehand-docs-28",
       "stagehand-docs-31",
-      "stagehand-docs-26",
+      "stagehand-docs-11",
       "stagehand-comm-8",
       "stagehand-comm-1"
     ]
@@ -3411,28 +3406,27 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Stagehand is a browser-automation SDK, so an official CLI is a fair question for it. The evidence documents SDK primitives (act/extract/observe), an MCP/stdio integration for Claude Code, and a quickstart, but none of these describe an official command-line tool. MCP servers and SDK building blocks do not count as a CLI.",
+    "rationale": "Stagehand is a browser-automation SDK, so an official CLI is a fair question for it, but nothing in the evidence documents one. The quickstart, MCP/stdio integrations and AI-rules page describe SDK setup and agent tool servers, not a command-line interface. Those integrations belong to a different story and earn no credit here.",
     "evidenceIds": []
   },
   {
     "productId": "stagehand",
     "storyId": "agentic-public-api",
     "verdict": "full",
-    "quality": 8,
+    "quality": 9,
     "confidence": "high",
-    "rationale": "Stagehand is itself a programmatic SDK. Its documented public API covers `act`, `extract` (with typed output shapes), `observe`, and `agent`, plus reference pages such as `BrowserClipboard`, across TypeScript, Python, and Go. It also adds AI-oriented access via an MCP/stdio integration, an llms.txt index and AI-rules docs, and community users describe building with it hands-on. missing for 10: no machine-readable OpenAPI/REST spec (all probed paths 404), thin independent corroboration of API completeness and stability.",
+    "rationale": "Stagehand is a programmatic SDK whose documented public API is its main interface. The docs cover `act`, `extract` (with typed output shapes), `observe`, `agent`, browser launch and connect methods, and reference pages such as `BrowserClipboard`, across TypeScript, Python and Go. Community users report building on it hands-on. missing for 10: no machine-readable OpenAPI/REST spec (all OpenAPI probes returned 404), and no evidence documenting the server-side API as a standalone HTTP interface.",
     "evidenceIds": [
       "stagehand-docs-2",
       "stagehand-docs-3",
       "stagehand-docs-17",
       "stagehand-docs-19",
+      "stagehand-docs-21",
       "stagehand-docs-27",
       "stagehand-docs-28",
-      "stagehand-docs-11",
-      "stagehand-docs-23",
-      "stagehand-probe-1",
-      "stagehand-probe-2",
-      "stagehand-comm-1"
+      "stagehand-docs-20",
+      "stagehand-comm-1",
+      "stagehand-probe-2"
     ]
   },
   {
@@ -3441,7 +3435,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Stagehand is a browser-automation SDK for agents with server-side components such as caching and Browserbase sessions, so issuing scoped agent credentials is a fair question for it. The evidence pack never documents scoped, least-privilege, or per-agent API keys. The 'network-level security' mention is an adjacent control and does not count toward this story.",
+    "rationale": "Stagehand is a browser-automation framework with a server-side component (server-side caching, Browserbase sessions), so issuing scoped API credentials to agents is a fair question for this kind of product. The evidence pack never documents creating scoped or least-privilege keys or tokens for agents. The 'network-level security' mention is an adjacent feature, not credential scoping.",
     "evidenceIds": []
   },
   {
@@ -3450,14 +3444,15 @@
     "verdict": "full",
     "quality": 8,
     "confidence": "high",
-    "rationale": "Stagehand is itself an official SDK. Its docs claim support across TypeScript, Python, and Go, and explicitly name a 'Stagehand Python SDK' that the CrewAI tool wraps. Building against it is backed by a quickstart, API reference pages, and AI-assistant coding rules for writing correct v4 code. Missing for 10: per-language depth for Go and Python (evidence centers on general v4 docs), and independent or hands-on corroboration specific to the multi-language SDKs.",
+    "rationale": "Stagehand is itself a first-party SDK, documented as offering familiar APIs across TypeScript, Python, and Go. The docs back this with a quickstart, API reference pages, AI coding-assistant rules for v4, and the CrewAI tool wrapping the official Python SDK; community users report hands-on use of the library. Missing for 10: language-specific evidence for the Go SDK and the per-language parity of the Python SDK, and package and versioning details for each SDK.",
     "evidenceIds": [
       "stagehand-docs-19",
       "stagehand-docs-32",
       "stagehand-docs-20",
-      "stagehand-docs-27",
       "stagehand-docs-23",
-      "stagehand-comm-1"
+      "stagehand-docs-27",
+      "stagehand-comm-1",
+      "stagehand-comm-8"
     ]
   },
   {
@@ -3466,7 +3461,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Stagehand has server-side components such as cached act/observe/extract results and Browserbase-hosted sessions, so registrable outbound event webhooks are a plausible capability and the axis applies. Nothing in the evidence documents registering HTTP callbacks for events. The session dashboard and recording features are adjacent observability features, not webhooks, so they earn no credit.",
+    "rationale": "Stagehand has hosted and server-side components (server-side caching, Browserbase sessions), so event subscription via webhooks is a fair question for this kind of product. However, the evidence pack contains no documented, registrable outbound HTTP callbacks. Session observability dashboards, MCP integrations and agent tools are adjacent features and earn no credit toward a webhooks story.",
     "evidenceIds": []
   },
   {
@@ -3475,7 +3470,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Stagehand's docs include static reference pages and copy-paste snippets for coding assistants, but nothing in the pack shows an interactive API explorer or examples that run in the browser. The OpenAPI/Swagger probes all returned 404, which also suggests there is no API playground. A static reference is an adjacent feature, so it earns no credit toward an interactive, runnable reference.",
+    "rationale": "Stagehand's docs include static reference pages (e.g. the clipboard reference), copy-paste snippets for coding assistants, and an llms.txt index. None of the evidence shows an interactive API explorer or runnable in-browser examples, and the OpenAPI/Swagger probe returned 404 on every candidate path. Static reference pages and snippets are adjacent documentation features, not the interactive, runnable reference the story asks for.",
     "evidenceIds": []
   },
   {
@@ -3484,7 +3479,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Stagehand is a browser-automation SDK with server-side components such as caching and Browserbase sessions, so publishing a machine-readable API spec is a fair question for this kind of product. The probe found every candidate OpenAPI/Swagger path returning 404, and no doc describes a downloadable spec. The llms.txt file and the AI-rules page are adjacent LLM-oriented docs, not an API specification, so they earn no credit.",
+    "rationale": "Stagehand is a browser-automation SDK, and its docs mention server-side caching of calls, so publishing a machine-readable API spec is a fair question for it. However, a probe found every common OpenAPI/Swagger path returning 404. The llms.txt file that does exist is a documentation index, not an API specification, so it earns no credit.",
     "evidenceIds": []
   },
   {
@@ -3493,7 +3488,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Stagehand is a browser-automation SDK, and a buyer could fairly ask whether it offers an isolated sandbox or test environment, so the axis applies. The evidence only shows browser launch options (Browserbase, local, CDP attach) and persistent user-data/context handling. These are adjacent features, not a documented sandbox or test mode that keeps runs away from production data.",
+    "rationale": "A sandbox or test environment is a fair question for a browser-automation SDK, but the pack never documents one. Nothing describes a sandbox, staging, or test mode that keeps automation runs away from production data. The browser launch options (Browserbase, local, CDP attach) and persistent user-data and contexts are adjacent session and isolation features, not a sandbox capability for this story.",
     "evidenceIds": []
   },
   {
@@ -3502,11 +3497,12 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "Stagehand keeps parallel documentation trees for major versions v3 and v4, so versioning exists. v4 also documents breaking changes from v3, such as having no autonomous loop compared with v3's `agent`. However, nothing in the pack describes a deprecation policy, support windows or migration timelines. Missing for 10: a documented deprecation policy, a stated versioning/semver commitment, migration and sunset guidance for v3, and independent corroboration of version stability.",
+    "rationale": "The docs are explicitly versioned, with parallel v3 and v4 trees (e.g. /v3/basics/agent, /v4/basics/extract) and AI rules targeting \"Stagehand v4 code\", so major API versions are clearly distinguished. Nothing in the pack describes a deprecation policy, support windows, or migration and breaking-change guarantees. missing for 10: documented deprecation policy, support/sunset timelines for older versions, migration guides between versions, changelog or semver guarantees, independent corroboration.",
     "evidenceIds": [
-      "stagehand-docs-26",
+      "stagehand-docs-23",
       "stagehand-docs-28",
-      "stagehand-docs-23"
+      "stagehand-docs-2",
+      "stagehand-docs-29"
     ]
   },
   {
@@ -3515,7 +3511,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Stagehand is a browser-automation framework, so bulk operations across many items is a fair axis. The evidence shows only single-instruction primitives: act, extract with an output shape, and observe returning actions. It also covers an autonomous agent and WebMCP, which collapses one multi-click flow into a single call. None of these is documented as a capability to apply one operation across many items at once. Looping over observe() results in developer-written orchestration is a building block, not a product-level bulk feature.",
+    "rationale": "Bulk operations are a fair question for a browser-automation framework, so the axis applies. However, the evidence documents only single-call primitives: act/extract/observe operate on one instruction at a time, and the autonomous agent runs multi-step workflows. Nothing shows batch or bulk actions across many items, such as acting on every matched element or running parallel jobs over a list. Agent workflows and WebMCP's 'one call instead of six clicks' are adjacent capabilities and earn no credit.",
     "evidenceIds": []
   },
   {
@@ -3524,7 +3520,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Stagehand is a browser-automation SDK, so event-triggered automation rules are a fair question for it. The evidence documents only imperative primitives (act/extract/observe) and explicitly says v4 \"has no autonomous loop, you are already writing the orchestration.\" Adjacent behaviors like selfHeal re-inference and agent fallbacks are not user-defined event→action rules, and nothing shows a rule or trigger system.",
+    "rationale": "Event-driven triggers are a fair question for a browser-automation framework, so the axis applies. The evidence only shows imperative act/extract/observe calls, autonomous agents, selfHeal re-inference, and agent fallbacks. These are adjacent resilience features, not user-defined rules that fire actions automatically on events.",
     "evidenceIds": []
   },
   {
@@ -3533,7 +3529,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Scheduling recurring runs is a fair question for a browser-automation framework, so the axis applies. However, nothing in the evidence documents cron, scheduled triggers, or recurring workflow execution. Persisting browser data between runs, caching, and integrations with agent frameworks are adjacent features, not scheduling.",
+    "rationale": "Stagehand is a browser-automation SDK, so built-in scheduling of recurring jobs is a fair question, but nothing in the evidence documents cron, timers, or recurring triggers. Persistent user-data directories, caching, and Browserbase contexts help repeated runs but are adjacent features, not scheduling.",
     "evidenceIds": []
   },
   {
@@ -3542,7 +3538,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Stagehand automations are code written against its SDK, but the evidence shows no first-party feature for versioning, reviewing, or rolling back automations. Keeping that code in git is a user-side workaround and earns no credit. The nearby features are adjacent rather than versioning: caching of act/observe/extract results, converting agent workflows into deterministic scripts, and Browserbase session recording and replay.",
+    "rationale": "Versioning, review, and rollback are fair questions for a browser-automation framework, but the evidence pack documents no first-party automation versioning, change review, or rollback. The nearest items are server-side caching, selfHeal re-inference, converting agent runs into deterministic scripts, and Browserbase session replay. These are adjacent features, and keeping scripts in the user's own git repo would be a user-side workaround, so neither earns credit.",
     "evidenceIds": []
   },
   {
@@ -3551,21 +3547,22 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "None of the first-party docs in the pack describe how Stagehand handles captchas: no automatic solving, no human-in-the-loop fallback, and no explicit statement of non-support. The story asks for a documented stance, and the only relevant evidence is one community comment praising 'built in proxies and captcha'. That comment is undocumented, likely refers to the Browserbase host platform, and does not establish a documented stance.",
+    "rationale": "None of the Stagehand documentation in the pack states a captcha stance: no automatic solving, no human-in-the-loop fallback, and no explicit non-support notice. The only mention is one anecdotal HN comment praising 'built in proxies and captcha'. It is not documentation and likely refers to the Browserbase host platform, so it cannot satisfy a story that asks for a documented stance.",
     "evidenceIds": []
   },
   {
     "productId": "stagehand",
     "storyId": "cdp-connect-existing-stack",
     "verdict": "partial",
-    "quality": 3,
-    "confidence": "low",
-    "rationale": "Stagehand documents CDP-level interoperability: `localBrowser.connect` attaches to any running Chromium by URL. It also says you can 'use page methods you already know' and 'familiar APIs', which suggests existing Playwright-style page code can run with little rewriting. However, the CDP attach goes the other way: Stagehand connects to your browser, not your existing Playwright/Puppeteer scripts connecting to Stagehand's or Browserbase's browsers. Missing for 10: documented connection of existing Playwright/Puppeteer clients to Stagehand-managed browsers (e.g., an exposed CDP endpoint), explicit Puppeteer compatibility, migration docs, independent corroboration.",
+    "quality": 5,
+    "confidence": "medium",
+    "rationale": "Stagehand documents attaching over CDP to any running Chromium browser by URL (localBrowser.connect), and it offers familiar Playwright-style page methods. This lets it work alongside an existing CDP-driven browser. However, the evidence never shows existing Playwright or Puppeteer code connecting to Stagehand/Browserbase-launched browsers unchanged, so drop-in reuse without rewriting is only implied. Missing for 10: documented connection of existing Playwright/Puppeteer clients to Stagehand-provisioned browsers (e.g., an exposed CDP/WebSocket endpoint), explicit Puppeteer support, and hands-on corroboration of reusing existing scripts.",
     "evidenceIds": [
       "stagehand-docs-15",
       "stagehand-docs-21",
       "stagehand-docs-4",
-      "stagehand-docs-19"
+      "stagehand-docs-19",
+      "stagehand-comm-8"
     ]
   },
   {
@@ -3574,7 +3571,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Credential handling is a fair question for an agentic browser-automation framework, so the axis applies. However, the evidence pack documents no credential vault, no TOTP/2FA completion, and no mechanism for keeping secrets out of the model's context. Persisting cookies and local storage via user-data directories or Browserbase contexts is an adjacent session-persistence feature and does not count toward this story.",
+    "rationale": "Credential vaulting and agent-driven TOTP/2FA login are a fair question for a browser-automation agent framework, so the axis applies. However, the evidence never mentions a vault, secret masking from the model, or TOTP/2FA handling. The cookie/local-storage persistence and Browserbase contexts are adjacent session-persistence features and earn no credit here.",
     "evidenceIds": []
   },
   {
@@ -3583,7 +3580,7 @@
     "verdict": "full",
     "quality": 8,
     "confidence": "medium",
-    "rationale": "Stagehand's docs say it caches act(), observe() and extract() results to cut LLM costs and speed up automations. The v3 docs describe built-in auto-caching that turns agent-discovered workflows into deterministic scripts running 10-100x faster. Recorded selectors with an optional selfHeal re-inference further show actions are replayed rather than re-prompted. missing for 10: independent or hands-on corroboration of cache replay, and documented detail on cache keys, invalidation and local (non-server-side) caching in v4.",
+    "rationale": "Stagehand documents caching of `act()`, `observe()` and `extract()` results to cut LLM cost and latency [stagehand-docs-6]. It also documents built-in auto-caching that turns agent-discovered workflows into deterministic scripts running 10-100x faster [stagehand-docs-29], with recorded selectors that `selfHeal` only re-infers when they break [stagehand-docs-5]. The older HN remark about regenerating Playwright every run [stagehand-comm-8] describes default self-healing behavior and does not concretely contradict the documented caching. Missing for 10: independent or hands-on confirmation of cache hits and cost savings, clear docs on cache storage and invalidation (local vs. server-side), and explicit export of reusable generated code.",
     "evidenceIds": [
       "stagehand-docs-6",
       "stagehand-docs-29",
@@ -3596,7 +3593,7 @@
     "verdict": "full",
     "quality": 9,
     "confidence": "high",
-    "rationale": "Stagehand's act() drives pages with plain-English instructions instead of selectors, and observe() returns structured actions to validate before acting. Its accessibility-tree page understanding handles iframes and shadow DOM, and the selfHeal option re-infers an action when its recorded selector breaks. A community comment describes Stagehand as self-healing and more resilient to DOM changes than hardcoded Playwright selectors, which supports the claim of surviving site changes. missing for 10: independent hands-on evidence that actions survive real layout and selector changes (the supporting HN comment appears vendor-adjacent), and explicit documentation of separate click/type primitives on described elements beyond act().",
+    "rationale": "Stagehand documents natural-language act() (\"click the login button\"), observe() for discovering actionable elements, and a selfHeal option that re-infers an action when its recorded selector breaks. It is built on accessibility-tree page understanding and handles iframes and shadow DOM automatically. A community comment describes dynamically regenerated actions as resilient to DOM changes. Missing for 10: independent hands-on evidence that actions survive real selector and layout changes, since the resilience comment reads like a maker's claim.",
     "evidenceIds": [
       "stagehand-docs-1",
       "stagehand-docs-16",
@@ -3606,6 +3603,7 @@
       "stagehand-docs-14",
       "stagehand-docs-19",
       "stagehand-docs-33",
+      "stagehand-docs-31",
       "stagehand-comm-8"
     ]
   },
@@ -3615,7 +3613,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Stagehand is a browser-automation framework whose community users mention built-in proxies and captcha handling, so a published acceptable-use or anti-abuse posture is a fair question for this kind of product. No item in the evidence pack points to any acceptable-use policy, terms governing stealth or captcha use, or anti-abuse statement. Absence of evidence for this applicable capability yields none.",
+    "rationale": "A browser-automation product with proxy and captcha capabilities could reasonably publish an acceptable-use or anti-abuse policy, so this axis applies. Nothing in the evidence pack points to such a policy: the docs cover act/extract/observe, caching, browser configuration and integrations. The community comment about built-in proxies and captcha shows these features exist, not any published policy governing their use.",
     "evidenceIds": []
   },
   {
@@ -3624,7 +3622,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "File transfer is a fair axis for a browser-automation framework, but the evidence pack has no documentation of file download handling, file upload (e.g., setting input files), or retrieving downloaded artifacts after a session. Nearby features such as persisted user-data directories (cookies and local storage), clipboard access, screenshots and session replay are different capabilities and earn no credit here.",
+    "rationale": "File download and upload, with artifacts retrievable afterwards, is a fair axis for a browser-automation framework like Stagehand. However, nothing in the evidence pack documents download handling, file-upload actions, or artifact retrieval. The nearby features (clipboard, persisted user-data directories, screenshots, session replay) are adjacent and earn no credit.",
     "evidenceIds": []
   },
   {
@@ -3633,7 +3631,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Stagehand is documented as an SDK (TypeScript/Python/Go) that runs in the developer's own process. Remote browsers can come from Browserbase, but no evidence shows a hosted HTTP endpoint where an agent submits a natural-language task and gets results by polling or webhook. The OpenAPI probe returned 404 on all paths, and the server-side caching and MCP/stdio integrations are adjacent features, not a hosted task-submission API.",
+    "rationale": "Stagehand is documented as an SDK (TypeScript, Python, Go) and MCP/agent-tool integrations in which the user's code drives a browser, whether local or launched on Browserbase. The evidence shows no hosted HTTP endpoint for submitting a natural-language task and retrieving results by polling or registrable webhooks. The OpenAPI probe found no spec at any candidate path. Browserbase-hosted browsers and server-side caching are adjacent capabilities, not a task-submission API.",
     "evidenceIds": []
   },
   {
@@ -3641,10 +3639,11 @@
     "storyId": "live-view-human-takeover",
     "verdict": "partial",
     "quality": 3,
-    "confidence": "medium",
-    "rationale": "Stagehand's own observability docs say Browserbase sessions get real-time visibility through a session dashboard with live screen recording and replay, which covers the 'watch a session live' half of the story. Nothing in the pack shows a human taking control of a running session. Attaching over CDP to a browser you are already running is a building block, not a takeover feature, so it earns no credit. Missing for 10: documented human takeover or interactive control mid-run, a pause/resume handoff between agent and human, and independent or hands-on corroboration of live viewing.",
+    "confidence": "low",
+    "rationale": "Stagehand's own observability docs say the Browserbase session dashboard offers real-time browser screen recording and replay, which covers watching a run live. Browserbase is one of Stagehand's documented first-class browser options, but the live view is Browserbase-hosted, so the credit is limited. Nothing in the pack shows a human can take control of the browser mid-run when the agent gets stuck. Missing for 10: documented human takeover or intervention during a running session, a live view outside the Browserbase dashboard, and independent or hands-on corroboration of live viewing.",
     "evidenceIds": [
-      "stagehand-docs-10"
+      "stagehand-docs-10",
+      "stagehand-docs-21"
     ]
   },
   {
@@ -3653,7 +3652,7 @@
     "verdict": "full",
     "quality": 8,
     "confidence": "medium",
-    "rationale": "Stagehand's browser configuration docs list a first-party local mode, `localBrowser.launch`, alongside Browserbase. They also document attaching over CDP to any Chromium browser already running on your machine (`localBrowser.connect`) and local user-data directories that persist cookies and storage between runs. Missing for 10: an explicit statement that local mode needs no Browserbase or other cloud account, and independent hands-on corroboration of local-only development.",
+    "rationale": "Stagehand documents a local browser mode (`localBrowser.launch`) as an alternative to Browserbase, and an option to attach over CDP (`localBrowser.connect`) to any Chromium browser already running on your machine. Local user-data directories persist cookies and storage across runs. missing for 10: an explicit statement that no Browserbase/cloud account is needed in local mode (server-side caching hints at a cloud dependency for some features), and independent or hands-on corroboration of local-only development.",
     "evidenceIds": [
       "stagehand-docs-21",
       "stagehand-docs-15",
@@ -3664,9 +3663,9 @@
     "productId": "stagehand",
     "storyId": "login-session-persistence",
     "verdict": "full",
-    "quality": 8,
+    "quality": 7,
     "confidence": "medium",
-    "rationale": "Stagehand's user-data best-practices page documents a persistent user data directory. It is created if missing and left in place after shutdown, so the next run starts with the same cookies and local storage. For hosted sessions, Browserbase contexts persist browser data, which together cover reusable logged-in state across runs. Missing for 10: independent or hands-on corroboration that saved sessions actually bypass login walls, and explicit documentation of named or multiple profile management beyond a single directory or context.",
+    "rationale": "Stagehand documents a user-data directory that persists across browser shutdowns, so later runs start with the same cookies and local storage. For Browserbase sessions, it uses contexts to persist browser data, which directly enables skipping logins on reuse. Missing for 10: explicit documentation of named or reusable profile management across multiple agents, any login-specific guidance, and independent or hands-on corroboration that sessions stay authenticated.",
     "evidenceIds": [
       "stagehand-docs-7",
       "stagehand-docs-8"
@@ -3678,7 +3677,7 @@
     "verdict": "partial",
     "quality": 4,
     "confidence": "medium",
-    "rationale": "The v3 agent docs say developers can customize the agent \"by specifying the LLM provider and model,\" which implies some provider choice. That is a single thin mention, scoped to the v3 `agent` primitive, and nothing in the pack shows model-agnosticism across v4's act/extract/observe. missing for 10: a list of supported providers, custom or self-hosted model endpoint configuration, v4 documentation of model selection across all primitives, independent or hands-on corroboration of using non-default providers.",
+    "rationale": "Stagehand's own (v3) agent docs say you can customize the agent by specifying the LLM provider and model, which points to a model-agnostic design rather than lock-in to one vendor. That is the only evidence, though: a single mention scoped to `agent`, with nothing showing which providers are supported or how to plug in your own for act/extract/observe in v4. missing for 10: a list of supported providers, documented bring-your-own/custom LLM client configuration, evidence that provider choice covers act/extract/observe (not just agent) in current v4 docs, independent or hands-on corroboration of using non-default providers.",
     "evidenceIds": [
       "stagehand-docs-28"
     ]
@@ -3686,17 +3685,17 @@
   {
     "productId": "stagehand",
     "storyId": "nl-task-to-completion",
-    "verdict": "partial",
-    "quality": 5,
+    "verdict": "full",
+    "quality": 7,
     "confidence": "medium",
-    "rationale": "Stagehand's v3 docs describe an `agent` that turns high-level tasks into fully autonomous browser workflows, with configurable model and max steps, plus agent fallbacks and caching of agent-discovered workflows. However, the current v4 docs state that v4 has no autonomous loop and the developer writes the orchestration, chaining single-step natural-language `act()`, `observe()` and `extract()` calls. End-to-end goal execution is therefore documented only for the older version. missing for 10: an autonomous goal-to-completion agent in the current v4 release, any hands-on or independent evidence of multi-step form-filling flows completing end to end.",
+    "rationale": "Stagehand's `agent` primitive is documented as turning high-level tasks into fully autonomous browser workflows, with configurable model, instructions, and max steps. Agent fallbacks handle multi-step flows, and natural-language commands like \"fill out the contact form\" are supported, so the core end-to-end NL-goal story is covered. missing for 10: independent or hands-on corroboration of autonomous multi-step completion, agent documentation in the current v4 docs (the agent evidence is v3-only), and detailed evidence of navigation and form-filling reliability across flows.",
     "evidenceIds": [
       "stagehand-docs-28",
       "stagehand-docs-29",
       "stagehand-docs-30",
-      "stagehand-docs-26",
+      "stagehand-docs-31",
       "stagehand-docs-16",
-      "stagehand-docs-31"
+      "stagehand-docs-1"
     ]
   },
   {
@@ -3704,14 +3703,13 @@
     "storyId": "observe-suggest-actions",
     "verdict": "full",
     "quality": 8,
-    "confidence": "medium",
-    "rationale": "Stagehand's own observe() primitive is documented as discovering actionable elements and returning structured actions that can be executed or validated before acting. This directly delivers the preview-before-commit story. v4 has no autonomous loop, so the developer controls when actions run, and integrations expose a snapshot tool for inspecting page state. Missing for 10: in-depth docs on the shape of observe output and on executing an observed action, and independent or hands-on corroboration of the preview workflow.",
+    "confidence": "high",
+    "rationale": "Stagehand's first-party docs describe `observe()` as discovering actionable elements on the current page and returning structured actions that can be executed or validated before acting. That is exactly the preview-before-commit workflow in the story. Integrations also expose a `snapshot` tool for inspecting page state before acting. Missing for 10: detailed documentation of the returned action shape and how an observed action is passed into act(), and independent or hands-on corroboration of observe-then-act usage.",
     "evidenceIds": [
       "stagehand-docs-3",
       "stagehand-docs-18",
-      "stagehand-docs-26",
-      "stagehand-docs-22",
-      "stagehand-docs-6"
+      "stagehand-docs-6",
+      "stagehand-docs-22"
     ]
   },
   {
@@ -3720,16 +3718,19 @@
     "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Stagehand is a code-first SDK. Its core capabilities (act, extract, observe, the agent, caching, browser launch/attach, contexts and clipboard) are documented as programmatic APIs across TypeScript, Python and Go, and are also exposed to agents through MCP tools. That means essentially all of the product's function is reachable without a UI. The only UI in the evidence is the Browserbase session dashboard, which belongs to the host platform, and the evidence does not show whether its replay and recording features have API equivalents. missing for 10: an explicit API/UI parity statement, an API path for the dashboard's observability and replay features, and a machine-readable API spec (OpenAPI probes returned 404).",
+    "rationale": "Stagehand is a code-first SDK with no separate product UI: its documented capabilities are all exposed programmatically. These include act/extract/observe, raw page methods, autonomous agent, caching, user-data persistence, browser launch/attach options, and clipboard, available across TypeScript, Python, and Go, plus MCP tool integrations for agents. The only UI surface mentioned is the Browserbase session dashboard (recording/replay), which belongs to the host platform, and there is no evidence of API parity for it. missing for 10: evidence that dashboard observability features (recording/replay) are reachable via API, a machine-readable API spec (OpenAPI probes all 404), and independent hands-on corroboration of parity.",
     "evidenceIds": [
-      "stagehand-docs-1",
       "stagehand-docs-2",
       "stagehand-docs-3",
+      "stagehand-docs-4",
+      "stagehand-docs-6",
+      "stagehand-docs-7",
+      "stagehand-docs-10",
+      "stagehand-docs-11",
       "stagehand-docs-19",
       "stagehand-docs-21",
-      "stagehand-docs-22",
+      "stagehand-docs-27",
       "stagehand-docs-28",
-      "stagehand-docs-10",
       "stagehand-probe-2"
     ]
   },
@@ -3739,7 +3740,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Stagehand stores user-related data, including server-side caches of act/observe/extract results and Browserbase contexts and session recordings, so data portability is a fair question. The evidence pack documents no export function, no open export format, and no account-exit path. A local user-data directory that persists cookies and local storage is an adjacent behavior, not a data-export capability.",
+    "rationale": "Stagehand keeps some user data on the vendor side, such as server-side caching of act/observe/extract results and Browserbase contexts and session recordings, so data export and portability is a fair question. However, no evidence documents exporting that data in open formats. extract() pulls structured data from third-party webpages, and the local user-data directory is browser profile persistence; neither is a data-export capability for the user's own account data.",
     "evidenceIds": []
   },
   {
@@ -3748,21 +3749,23 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Open-source licensing is a fair question for a browser-automation SDK, so the axis applies. However, nothing in the evidence pack mentions a license, a public source repository, or open-source status. The docs and community items cover only features, integrations and usage.",
+    "rationale": "Whether a browser-automation framework's source is published under an open license is a fair question, so the axis applies. Nothing in the evidence pack mentions an open-source license, a public repository, or source availability. The docs and community items cover APIs, integrations, and usability only.",
     "evidenceIds": []
   },
   {
     "productId": "stagehand",
     "storyId": "openness-self-host",
     "verdict": "partial",
-    "quality": 5,
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Stagehand documents running against your own infrastructure: it can launch a local browser (`localBrowser.launch`) or attach over CDP to any Chromium you already run, with local user-data directories, as an alternative to Browserbase cloud browsers. The pack never states that the product is open source or self-hostable as a whole, and caching is described as server-side, which suggests some features depend on a hosted service. missing for 10: explicit self-hosting/open-source license documentation, confirmation that server-side features (caching, observability) can run self-hosted, independent hands-on corroboration of fully self-hosted deployment.",
+    "rationale": "Stagehand documents running its automation on your own infrastructure. You can launch a local browser (`localBrowser.launch`) or attach over CDP to any Chromium you already run, as an alternative to Browserbase. A local user-data directory persists cookies and storage between runs. Caching is described as server-side, though, and observability, regions and contexts are tied to Browserbase, so not every part of the product is shown to run self-hosted. Missing for 10: an explicit open-source license or self-hosting guide, evidence that caching and observability work without Browserbase, and independent hands-on reports of fully self-hosted deployments.",
     "evidenceIds": [
       "stagehand-docs-21",
       "stagehand-docs-15",
       "stagehand-docs-7",
-      "stagehand-docs-6"
+      "stagehand-docs-6",
+      "stagehand-docs-8",
+      "stagehand-docs-10"
     ]
   },
   {
@@ -3771,21 +3774,20 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence shows Stagehand can launch or attach a single browser via `browserbase.launch`, `localBrowser.launch` or a CDP connect, and that Browserbase offers regions and a session dashboard. Nothing documents running a fleet of concurrent sessions, any concurrency limits, or programmatic fleet-level session management. Launching one browser is a building block rather than the capability, and the dashboard and regions are Browserbase host-platform features, so neither earns credit.",
+    "rationale": "The evidence shows Stagehand can programmatically start a single browser via Browserbase, locally, or over CDP, and offers a session dashboard and region selection. Nothing documents running many sessions concurrently, concurrency limits, or fleet-level session management. Single-session launch is only a building block toward the scale-parallelism capability this story asks for, so it earns no credit.",
     "evidenceIds": []
   },
   {
     "productId": "stagehand",
     "storyId": "privacy-data-residency",
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Stagehand's own browser configuration docs say Browserbase-launched browsers can run in four regions so session data stays in a required jurisdiction. The local and CDP-attach launch options also let users keep browser data on their own machines. missing for 10: residency controls for the server-side act/observe/extract cache, a list of available regions and how to configure them, and independent or hands-on corroboration.",
+    "rationale": "Stagehand's browser configuration docs say Browserbase runs browsers in four regions, so session data can be kept in a required jurisdiction. Stagehand can also launch or attach to a local browser, which keeps browser data on the user's own machine. Region choice is tied to the Browserbase cloud and backed by a single line of documentation. Stagehand also caches act/observe/extract results server-side with no stated residency, so not all data is covered. missing for 10: region list and selection details, residency guarantees for server-side cache and LLM-processed data, independent or hands-on corroboration.",
     "evidenceIds": [
       "stagehand-docs-9",
       "stagehand-docs-21",
-      "stagehand-docs-6",
-      "stagehand-docs-7"
+      "stagehand-docs-6"
     ]
   },
   {
@@ -3794,7 +3796,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Stagehand sends page data to LLMs and caches results server-side, so a training opt-out or no-training guarantee is a fair question for this product. The evidence pack contains no statement about model-training use of customer data or any opt-out. Adjacent items such as regional data residency, local browser mode and server-side caching do not address training use, so they earn no credit.",
+    "rationale": "Stagehand sends page content to LLMs and caches results server-side, so a training opt-out is a fair question for this product. However, the evidence pack contains no documented control or policy preventing user data from being used for model training. Regional data residency (docs-9) is an adjacent control and earns no credit.",
     "evidenceIds": []
   },
   {
@@ -3803,10 +3805,12 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "Stagehand's own docs show an opt-in user data directory that persists cookies and local storage across runs, which gives users some control over whether browser data is retained. Nothing documents deletion controls or retention settings for the server-side cache of act/observe/extract results, and Browserbase contexts and regional data residency are host-platform features. missing for 10: documented retention periods or deletion/purge controls for server-side cached results, explicit data-deletion APIs or settings, and independent or hands-on corroboration.",
+    "rationale": "Stagehand's own docs let users choose whether browser state is retained. A user-data directory persists cookies and local storage across runs, Browserbase contexts persist session data, and region selection keeps session data in a required jurisdiction. Nothing documents deleting data, retention periods, or opting out of the server-side caching of act/observe/extract results. Missing for 10: documented deletion controls, configurable retention windows, a cache opt-out or purge, a data-retention policy, and independent corroboration.",
     "evidenceIds": [
+      "stagehand-docs-6",
       "stagehand-docs-7",
-      "stagehand-docs-6"
+      "stagehand-docs-8",
+      "stagehand-docs-9"
     ]
   },
   {
@@ -3815,7 +3819,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Telemetry opt-out is a fair question for a browser-automation SDK, so the axis applies. The evidence pack contains no mention of telemetry, usage tracking, or any opt-out control. Adjacent items such as server-side caching, local browser launch, and region selection do not amount to a documented telemetry opt-out.",
+    "rationale": "Opting out of telemetry is a fair question for a developer SDK like Stagehand, so the axis applies. Nothing in the evidence pack documents a telemetry or usage-tracking opt-out, such as an environment variable, config flag, or disable switch. The server-side caching and Browserbase observability dashboards are adjacent features, not opt-out controls, and earn no credit.",
     "evidenceIds": []
   },
   {
@@ -3824,7 +3828,7 @@
     "verdict": "full",
     "quality": 8,
     "confidence": "medium",
-    "rationale": "Stagehand's extract() takes a natural-language instruction plus an output shape. Its docs say it validates the result against that shape before returning, so the data comes back already typed rather than as raw text. This directly delivers schema-validated structured extraction. Missing for 10: explicit documentation of Zod/Pydantic schema support and of how validation failures are handled, plus independent or hands-on corroboration of extraction reliability.",
+    "rationale": "Stagehand's first-party docs say extract() pulls structured data from a page using an instruction plus an output shape. The result is validated against that shape before being returned, so callers get typed data rather than raw text. Python support is mentioned, but Zod or Pydantic schemas are not named explicitly. missing for 10: explicit naming of Zod/Pydantic schema support, independent or hands-on corroboration of extraction validation, detail on validation failure handling.",
     "evidenceIds": [
       "stagehand-docs-2",
       "stagehand-docs-17",
@@ -3834,11 +3838,13 @@
   {
     "productId": "stagehand",
     "storyId": "session-replay-recordings",
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "partial",
+    "quality": 4,
     "confidence": "medium",
-    "rationale": "The only replay evidence (stagehand-docs-10) describes screen recording and replay in the Browserbase session dashboard. That is a feature of the host browser platform, not of Stagehand itself, so it earns no credit. The `screenshot` agent tool is an interaction primitive, not a recorded-replay debugging feature, and no step-by-step action timeline is evidenced.",
-    "evidenceIds": []
+    "rationale": "Stagehand's own observability docs say Browserbase sessions get real-time screen recording and replay in the session dashboard. That replay is tied to the Browserbase backend rather than the Stagehand library itself, and nothing shows replay for local or CDP-attached runs. The run-time `screenshot` tool is an agent capability, not a debugging replay, so it earns no credit here. Missing for 10: step-by-step action timelines, screenshot capture tied to failed runs, replay support outside Browserbase, and independent or hands-on corroboration of debugging failed runs from replays.",
+    "evidenceIds": [
+      "stagehand-docs-10"
+    ]
   },
   {
     "productId": "stagehand",
@@ -3846,7 +3852,7 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "A hands-on community user reports that Stagehand has \"built in proxies and captcha\" that help with adversarial sites. The docs only show browser region selection via Browserbase (four regions), which is a latency and jurisdiction feature rather than geo-targeted proxying. No first-party documentation describes stealth fingerprinting or residential proxy configuration. missing for 10: first-party docs on stealth or fingerprint configuration, documented residential and geo-targeted proxy options, configuration examples, and independent corroboration beyond a single community comment.",
+    "rationale": "The only direct evidence is a community user who praises Stagehand's \"built in proxies and captcha\" for adversarial scraping. First-party docs mention only Browserbase's four browser regions, which are pitched for latency and data jurisdiction, not proxy egress or anti-bot use. Missing for 10: first-party documentation of stealth or fingerprinting configuration, residential proxy options, geo-targeted proxy selection, and independent hands-on corroboration that automations avoid bot detection.",
     "evidenceIds": [
       "stagehand-comm-1",
       "stagehand-docs-9"
@@ -3858,7 +3864,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Completion webhooks are a fair question for a browser-automation SDK backed by hosted sessions, so the axis applies. The evidence pack documents no registrable outbound HTTP callbacks for task or session completion. The Browserbase session dashboard and replay feature is an adjacent observability capability, not webhook notifications.",
+    "rationale": "Completion webhooks are a fair question for a browser-automation SDK with hosted sessions, so the axis applies. The pack has no evidence of registrable outbound HTTP callbacks for task or session completion; the Browserbase session dashboard is an adjacent observability feature, not webhooks.",
     "evidenceIds": []
   },
   {
@@ -3867,7 +3873,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Pricing and limits are a fair question for a browser-automation product, especially one tied to Browserbase-hosted sessions and server-side caching. However, nothing in the evidence pack documents per-task or per-browser-hour pricing, rate limits or concurrency limits. Docs on regions, caching and observability do not address cost or quotas.",
+    "rationale": "Pricing and limits are a fair question for Stagehand, which documents hosted Browserbase sessions and server-side caching, so the axis applies. However, nothing in the evidence pack shows per-task or per-browser-hour pricing, or any documented rate or concurrency limits. Caching to reduce LLM costs and regional browsers are adjacent features and earn no credit for this story.",
     "evidenceIds": []
   },
   {
@@ -3876,24 +3882,24 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence describes only DOM and accessibility-tree action paths: act/observe/extract, selectors, self-heal and hybrid accessibility tree trimming. Nothing documents a switchable vision or computer-use mode that acts on screenshots. The integration `screenshot` tool only captures images, which is adjacent rather than an action mode. The HN comment that the team is 'working on a better computer use integration' describes future intent, not a shipped capability.",
+    "rationale": "Nothing in the evidence documents a vision or computer-use action mode that acts on screenshots or coordinates. The integration `screenshot` tool only captures the page, which is an adjacent feature rather than a screenshot-driven action mode. The agent docs describe choosing an LLM provider, not a computer-use mode. The community remark about 'working on a better computer use integration' is a roadmap statement, not a shipped, documented capability.",
     "evidenceIds": []
   },
   {
     "productId": "stagehand",
     "storyId": "workflow-loops-conditionals",
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Stagehand is a code SDK for TypeScript, Python and Go. Its docs say v4 has no autonomous loop, so developers write the orchestration themselves, sequencing act/observe/extract calls with typed, schema-validated outputs. Repeatability is supported by caching, self-healing selectors, and turning agent-discovered workflows into deterministic scripts. Missing for 10: explicit documentation of loops, conditionals and parameterized workflow patterns (these are implied by host-language code rather than shown), and independent hands-on corroboration of repeatable multi-step workflows.",
+    "rationale": "Stagehand is a code SDK (TypeScript, Python, Go) whose own primitives, act(), extract(), observe() and page methods, are composed step by step into automations. Cached and deterministic-script conversion makes those runs repeatable, and agent fallbacks handle multi-step branching. However, the evidence never documents loops, conditionals or parameterization as a workflow feature; that control flow would come only from the host language. missing for 10: documented loop/conditional/parameterized workflow constructs or examples, independent hands-on evidence of composing repeatable multi-step workflows.",
     "evidenceIds": [
-      "stagehand-docs-26",
+      "stagehand-docs-2",
+      "stagehand-docs-3",
+      "stagehand-docs-4",
+      "stagehand-docs-6",
       "stagehand-docs-19",
       "stagehand-docs-29",
-      "stagehand-docs-6",
-      "stagehand-docs-5",
-      "stagehand-docs-17",
-      "stagehand-docs-18"
+      "stagehand-docs-30"
     ]
   },
   {
