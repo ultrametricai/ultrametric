@@ -297,7 +297,7 @@ export function grantSanityReport(inputs: GrantSanityInputs): GrantSanityReport 
     producesValuation: false,
     needsReview: true,
     disclaimer:
-      'Sanity checks against dated rule cards — not a valuation, not legal or tax advice, and never an authorization to grant. The 409A FMV is an input this module cannot produce.',
+      'Sanity checks against dated law rules — not a valuation, not legal or tax advice, and never an authorization to grant. The 409A FMV is an input this module cannot produce.',
   }
 }
 
