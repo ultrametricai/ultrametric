@@ -4,7 +4,7 @@ import { z } from 'zod'
 import { isPopulated, loadCategory } from './data'
 import { classifyGapStep } from './gapClosers'
 import type { DagNode, ProcessTask } from './processes'
-import { governmentStepEligibility, STEP_OPTIONS_CAP, VENDOR_ARENA } from './processes'
+import { GOVERNMENT_ARENA_ID, governmentStepEligibility, STEP_OPTIONS_CAP, VENDOR_ARENA } from './processes'
 import type { Story, Verdict } from './schemas'
 import { weightedPercent } from './scoring'
 import { isShutdown } from './shutdown'
@@ -400,6 +400,8 @@ export interface ProcessLeaderboard {
   // Steps with a covering arena AND a non-empty committed story mapping — the rankable slice.
   rankableSteps: number
   totalSteps: number
+  // Competing vendors only: government-arena rosters and `supporting`-marked steps never
+  // produce entries (see the eligibility filter in processLeaderboard).
   entries: ProcessLeaderboardEntry[]
   // The "best vendor per step" chain, in DAG node order.
   bestPerStep: StepBest[]
@@ -436,6 +438,14 @@ export function processLeaderboard(task: ProcessTask, dir?: string): ProcessLead
 
   const byVendor = new Map<string, ProcessLeaderboardEntry>()
   for (const step of rankedSteps) {
+    // Leaderboard eligibility, applied to the ENTRIES only: government agencies are not
+    // competing vendors (they keep their own arena rankings, their step rosters, and the
+    // governmentStepEligibility constraint above), and a step marked `supporting` is
+    // record-keeping support work, not the process's substantive work — neither feeds the
+    // vendor leaderboard. The step itself stays in the rankable scope (rankableSteps,
+    // bestPerStep), so every remaining vendor's stepsServed, avgStepScore and processScore
+    // are byte-identical to the unfiltered computation.
+    if (step.arenaId === GOVERNMENT_ARENA_ID || step.node.supporting) continue
     for (const v of step.vendors) {
       const key = `${v.arenaId}:${v.productId}`
       const e = byVendor.get(key) ?? {

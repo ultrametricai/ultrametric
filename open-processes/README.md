@@ -50,7 +50,7 @@ The existing workflow and corpus layers retain their own contracts:
 
 1. **Jurisdiction-scoped workflows** (`open-processes/<domain>/<jurisdiction>/*.json`, contract
    in `schemas/legacy-process.schema.json`, also accepted by `schemas/process.schema.json`): source-cited legal/tax workflows with explicit
-   applicability dimensions, dated editorial review, rule-card references, stop conditions,
+   applicability dimensions, dated editorial review, law-rule references, stop conditions,
    and a scoped human approval on every externally-effectful step. Validated by
    `lib/founderOps.ts` inside the normal test gates; status `demonstration`, not
    production-certified (`policies/REVIEW_POLICY.md` has the maturity ladder).
@@ -68,7 +68,7 @@ The existing workflow and corpus layers retain their own contracts:
    arrives, a visa is stuck, a breach is live). A situation is the same machinery plus a
    one-sentence `trigger` and an `urgency` clock (`hours`/`days`/`weeks`), and deliberately
    no `timeOrder` slot: reactive work is not a stop on the founder timeline. Where a
-   situation leans on a legal deadline, its description cites a dated rule card in `open-law/`
+   situation leans on a legal deadline, its description cites a dated law rule in `open-law/`
    and its steps link the primary source. Doctrine: `SITUATIONS.md`.
 
 The two layers keep separate IDs and never silently substitute for each other:
@@ -211,7 +211,7 @@ is. Curation rules, stricter than coverage:
   careful".
 - **`then` is the recovery as sourced** — including the recorded *absence* of one: the missed 83(b)
   window entry says there is no self-help fix, only a tax-counsel conversation (the
-  needs-review posture). Legal claims cite a dated rule card in `open-law/` by id inside the
+  needs-review posture). Legal claims cite a dated law rule in `open-law/` by id inside the
   prose, the same convention situation descriptions use.
 - **`source`** is the primary page/statute/fee schedule backing the entry, curl-verified live
   like every committed URL.
@@ -377,8 +377,8 @@ The diagram is `form_001` (Incorporate C-Corp) from canonical `incorporate-c-cor
   simulator at `/startup-sim`.
 - `loadChains()` projects canonical chains into ordered playbooks (see the Chains section below).
 - `lib/founderOps.ts` validates the jurisdiction-scoped workflow layer (`equity/us-de/*`)
-  against `schemas/process.schema.json`, resolves its rule-card references into `open-law/`
-  (cards and `open-law/citations/`), and exposes the exact-dimension planner (`planFounderOps`).
+  against `schemas/process.schema.json`, resolves its law-rule references into `open-law/`
+  (rules and `open-law/citations/`), and exposes the exact-dimension planner (`planFounderOps`).
 
 ## Process manifests
 

@@ -51,21 +51,23 @@ describe('step geo resolutions', () => {
     }
   })
 
-  it('every rule card cited inside a resolution resolves to a committed law card', () => {
-    const cardIds = new Set<string>()
+  it('every law rule cited inside a resolution resolves to a committed rule in open-law/', () => {
+    const ruleIds = new Set<string>()
     const lawDir = path.join(process.cwd(), 'open-law')
     for (const entry of fs.readdirSync(lawDir, { withFileTypes: true })) {
       if (!entry.isDirectory() || entry.name === 'citations') continue
       for (const file of fs.readdirSync(path.join(lawDir, entry.name))) {
         if (!file.endsWith('.json')) continue
-        const card = JSON.parse(fs.readFileSync(path.join(lawDir, entry.name, file), 'utf8'))
-        if (card.id) cardIds.add(card.id)
+        const rule = JSON.parse(fs.readFileSync(path.join(lawDir, entry.name, file), 'utf8'))
+        if (rule.id) ruleIds.add(rule.id)
       }
     }
+    // "law rule <id>" is the inline citation form ("law rule", not bare "rule", so the grep
+    // stays disjoint from the lore layer's "lore rule <id>" citations).
     for (const { task, nodeId, resolution } of allResolutions(loadProcesses(DATA_DIR))) {
       const prose = `${resolution.label} ${resolution.guidance ?? ''}`
-      for (const match of prose.matchAll(/rule card ([a-z0-9.-]+)/g)) {
-        expect(cardIds.has(match[1]), `${task.id}/${nodeId}/${resolution.country} cites unknown rule card ${match[1]}`).toBe(true)
+      for (const match of prose.matchAll(/law rule ([a-z0-9.-]+)/g)) {
+        expect(ruleIds.has(match[1]), `${task.id}/${nodeId}/${resolution.country} cites unknown law rule ${match[1]}`).toBe(true)
       }
     }
   })
@@ -100,8 +102,41 @@ describe('step geo resolutions', () => {
     expect(countries('qs_052', 'n3')).toEqual(['US'])
   })
 
-  // The remaining class-(a) records from the PR #382 audit live in
-  // docs/geo-resolution-worklist.json so the worklist is tracked in-tree, not in a PR body.
+  // Wave 3 empties the worklist: the twelve restructured records plus the form_011
+  // reclassification to class (b) (title-scoped national regime, the form_002/opp_002/tax_003
+  // precedent: the LLC is the US entity form, the CA geoNote is not-applicable, and the n3 geo
+  // decision already carries the per-country entity options).
+  it('pins the wave-3 restructuring and the form_011 class-(b) reclassification', () => {
+    const tasks = loadProcesses(DATA_DIR)
+    const byId = (id: string) => tasks.find((t) => t.id === id)!
+    const countries = (id: string, nodeId: string) =>
+      (byId(id).dag.nodes.find((n) => n.id === nodeId)?.geoResolutions ?? []).map((r) => r.country).sort()
+
+    // The deadline steps resolve in every covered country.
+    expect(byId('sit_008').geoScope).toBe('global')
+    expect(countries('sit_008', 'n2')).toEqual(['CA', 'DE', 'FR', 'IN', 'PT', 'UK', 'US'])
+    expect(byId('sit_009').geoScope).toBe('global')
+    expect(countries('sit_009', 'n2')).toEqual(['CA', 'DE', 'FR', 'IN', 'PT', 'UK', 'US'])
+    // The claim rides the tax return everywhere a regime exists; India resolves not-applicable.
+    expect(byId('tax_010').geoScope).toBe('global')
+    expect(countries('tax_010', 'n5')).toEqual(['CA', 'DE', 'FR', 'IN', 'PT', 'UK', 'US'])
+    // The strategy step carries every covered route; the LCA machinery is the US cut.
+    expect(byId('hr_011').geoScope).toBe('global')
+    expect(countries('hr_011', 'n1')).toEqual(['CA', 'DE', 'FR', 'IN', 'PT', 'UK', 'US'])
+    expect(byId('vc_001').geoScope).toBe('global')
+    expect(byId('opp_012').geoScope).toBe('global')
+    // Artifact-geo keeps these US-scoped (the hr_001 precedent): business-address,
+    // executed-safes, priced-round-closing, trademark-serial all carry committed geo entries.
+    for (const id of ['qs_044', 'fund_001', 'fund_002', 'legal_002']) {
+      expect(byId(id).geoScope, `${id} stays us (artifact geo)`).toBe('us')
+    }
+    // form_011 reclassified (b): no resolutions, the geo decision options stand.
+    expect(byId('form_011').geoScope).toBe('us')
+    expect(byId('form_011').dag.nodes.some((n) => (n.geoResolutions ?? []).length > 0)).toBe(false)
+  })
+
+  // The worklist (emptied by wave 3) lives in docs/geo-resolution-worklist.json so new
+  // offenders are tracked in-tree, not in a PR body.
   // Self-verifying both ways: a listed record must still await restructuring (no resolutions
   // yet), and a restructured record must leave the list in the same PR.
   it('the geo-resolution worklist names committed records that still await restructuring', () => {

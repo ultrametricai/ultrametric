@@ -5,9 +5,11 @@ import { loadProcessCatalog } from '../lib/shared-processes/catalog'
 
 // The law-map / situation symmetry gate. open-law/map.json routes sub-areas at situations
 // via process_ids; a situation listed there leans on that sub-area's law, so its canonical
-// summary cites one of the sub-area's committed rule cards in the standard form
-// ("rule card <id>", the sit_008/sit_010 pattern). Exceptions are documented below with
-// the reason no committed card governs the record; an exception entry must stay accurate
+// summary cites one of the sub-area's committed rules in the standard form
+// ("law rule <id>", the sit_008/sit_010 pattern; "law rule" rather than bare "rule" so the
+// grep stays disjoint from the lore layer's "lore rule <id>"). Exceptions are documented
+// below with the reason no committed rule governs the record; an exception entry must stay
+// accurate
 // (the pair still mapped, the citation still absent) or it fails and gets removed.
 
 const ROOT = path.join(__dirname, '..')
@@ -43,11 +45,11 @@ describe('law map / situation symmetry (open-law/map.json ↔ canonical process 
     }
   })
 
-  it('every mapped situation cites a rule card from its sub-area, or carries a documented exception', () => {
+  it('every mapped situation cites a law rule from its sub-area, or carries a documented exception', () => {
     expect(mapped.length).toBeGreaterThan(0)
     for (const { subarea, situation } of mapped) {
       const summary = byId.get(situation)?.summary ?? ''
-      const cited = subarea.rule_ids.some((ruleId) => summary.includes(`rule card ${ruleId}`))
+      const cited = subarea.rule_ids.some((ruleId) => summary.includes(`law rule ${ruleId}`))
       const excepted = EXCEPTIONS.some((e) => e.subarea === subarea.id && e.situation === situation)
       expect(
         cited || excepted,
@@ -62,8 +64,8 @@ describe('law map / situation symmetry (open-law/map.json ↔ canonical process 
       const entry = mapped.find((m) => m.subarea.id === e.subarea && m.situation === e.situation)
       expect(entry, `${e.subarea}/${e.situation} is no longer in the map; remove the exception`).toBeTruthy()
       const summary = byId.get(e.situation)?.summary ?? ''
-      const cited = entry!.subarea.rule_ids.some((ruleId) => summary.includes(`rule card ${ruleId}`))
-      expect(cited, `${e.situation} now cites a ${e.subarea} card; remove the exception`).toBe(false)
+      const cited = entry!.subarea.rule_ids.some((ruleId) => summary.includes(`law rule ${ruleId}`))
+      expect(cited, `${e.situation} now cites a ${e.subarea} rule; remove the exception`).toBe(false)
     }
   })
 })

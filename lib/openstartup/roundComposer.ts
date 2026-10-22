@@ -36,10 +36,12 @@
 // table belong to counsel and the company's own records.
 // ---------------------------------------------------------------------------
 
+import { z } from 'zod'
 import {
-  buildCapTable, type CapTableEvent, type CapTableReport, type CapTableRow, estimateRoundDilution,
+  buildCapTable, type CapTableEvent, CapTableEventSchema, type CapTableReport, type CapTableRow, estimateRoundDilution,
   type PricedRoundBreakdown, type SafeConversion, safeOwnershipPct, type Snapshot,
 } from './capTable'
+import { entrySpec } from './entryValidation'
 import { type AdjustmentBasis, conversionRatio, type DilutiveIssuance } from './antiDilution'
 import { type DownRoundReport, downRoundModel, type ProtectedSeriesSpec } from './round'
 import { conversionIndifferencePrice, liquidityWaterfall, type WaterfallReport } from './waterfall'
@@ -125,6 +127,22 @@ export interface ComposerRound {
   poolShares?: number
 }
 
+/** Structural schema of ComposerRound — the registry entry contract (field names and
+ * types; value rules stay in the cap-table engine). */
+export const ComposerRoundSchema = z.object({
+  name: z.string(),
+  preMoney: z.number(),
+  newMoney: z.number(),
+  poolTargetPct: z.number().optional(),
+  poolShares: z.number().optional(),
+})
+
+/** Registered entrypoint arguments (open-modules/registry.json). */
+export const replayPricedRoundEntry = entrySpec('replayPricedRound', [
+  { name: 'history', schema: z.array(CapTableEventSchema) },
+  { name: 'round', schema: ComposerRoundSchema },
+])
+
 export interface WireRow {
   holder: string
   shares: number
@@ -173,6 +191,7 @@ export interface PricedRoundReplay {
  * post-close table. Nothing is recomputed — the composer narrates what the engine proved.
  */
 export function replayPricedRound(history: readonly CapTableEvent[], round: ComposerRound): PricedRoundReplay {
+  replayPricedRoundEntry.validate(history, round)
   for (const ev of history) {
     if (ev.kind === 'priced') throw new RangeError('history must stop before the round being replayed')
   }

@@ -88,7 +88,7 @@ pnpm stats      # gates the README: no generated count blocks, no counts in pros
 ## Schemas are law
 
 Every data file (`categories.json`, `products.json`, `stories.json`, `evidence/*.json`,
-`verdicts.json`, `rankings.json`, rule cards, process records) validates against a
+`verdicts.json`, `rankings.json`, law rules, process records) validates against a
 schema (`lib/schemas.ts`, `schemas/*.schema.json`). If a fact does not fit the schema,
 change the schema deliberately in its own commit; do not stuff it into a free-text
 field. Run `pnpm test` before opening any PR that touches `open-rankings/`, `open-processes/`,
@@ -124,7 +124,7 @@ category re-run (see CONTRIBUTING.md).
 
 ## Legal and founder-ops layer
 
-- Rule cards are dated legal propositions with stable IDs, one proposition per card,
+- Law rules are dated legal propositions with stable IDs, one proposition per rule,
   each citing a primary source with an exact locator. A provider blog cannot
   establish law.
 - `reviewed_on`/`review_due` are editorial dates, not legal effective dates.

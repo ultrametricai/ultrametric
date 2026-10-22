@@ -5,7 +5,7 @@ import { loadProcessCatalog } from '../lib/shared-processes/catalog'
 
 // The lore-citation gate, the situation-law-map pattern applied to startup lore: canonical
 // process guidance cites lore in the standard greppable form ("lore rule <id>", the analog of
-// the law layer's "rule card <id>"). Every citation must resolve to a committed id in
+// the law layer's "law rule <id>"). Every citation must resolve to a committed id in
 // open-lore/rules.json or open-lore/registry.json, so a renamed or removed lore entry cannot
 // leave dangling prose citations. The worked anchor is validate-the-idea (startup_001): each
 // validation method family on its routing decision is grounded in at least one lore citation.

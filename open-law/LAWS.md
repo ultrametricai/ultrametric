@@ -11,7 +11,7 @@ or if the list drifts outside 25–40 laws.
 These are compressions of other people's published work, dated by the cited registries'
 `checked_on` fields. They are heuristics with strong priors, not statutes — the only entries
 here that are literally laws (the 83(b) window, the Delaware franchise tax date) cite primary
-sources and carry rule cards in `open-law/`.
+sources and carry dated rules in `open-law/`.
 
 ## Idea and validation
 
@@ -49,7 +49,7 @@ Sources: `stripe-atlas-guides`, `cooleygo-documents`, `de-how-to-form`
 
 ### 7. The 83(b) window is a law of nature
 Thirty days from the stock transfer to file the election. No extensions, no do-overs, and the
-cost of missing it grows with your success. (Rule card: `us-fed.83b-filing-period`.)
+cost of missing it grows with your success. (Law rule: `us-fed.83b-filing-period`.)
 Sources: `irs-form-15620`
 
 ### 8. Founder stock vests
@@ -145,7 +145,7 @@ Sources: `pg-startup-equals-growth`, `pg-how-to-raise-money`
 
 ### 25. Options need a defensible strike
 Price grants at fair market value under a current 409A valuation — the published convention
-in every serious equity-comp guide, and the tax cliff behind it is real. (Rule card:
+in every serious equity-comp guide, and the tax cliff behind it is real. (Law rule:
 `us-fed.409a-stock-right-exception`; implemented: `lib/openstartup/equityComp.ts`.)
 Sources: `holloway-equity-compensation`, `index-rewarding-talent`
 

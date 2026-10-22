@@ -56,11 +56,11 @@ hopefully, with reasons:
 Documents implement laws and pair with guides already cataloged elsewhere; cite ids rather
 than duplicating rows:
 
-- `irs-form-15620` implements the 83(b) election — rule cards `us-fed-83b-filing-period`,
+- `irs-form-15620` implements the 83(b) election — law rules `us-fed-83b-filing-period`,
   `us-fed-83b-form-and-copies`, `us-fed-83b-revocation` (open-law/US-FED); also a reading
   row in open-lore/citations.json (`irs-form-15620` there points at the same form).
 - Advisor/option grants (`cooley-advisor-agreement`, `fi-fast-advisor`) sit under the 409A
-  rule cards (open-law/US-FED) and Delaware option-authorization card (open-law/US-DE).
+  law rules (open-law/US-FED) and the Delaware option-authorization rule (open-law/US-DE).
 - Equity-compensation context: the Holloway Guide and Index Rewarding Talent are reading
   records (`holloway-equity-compensation` in open-lore/library.json,
   `index-rewarding-talent` in open-lore/citations.json), not duplicated here.

@@ -22,11 +22,11 @@ describe('startup laws (open-law/LAWS.md)', () => {
     expect(validateLaws()).toEqual([])
   })
 
-  it('the authority registry carries the rule cards’ primary sources with unique ids', () => {
+  it('the authority registry carries the law rules’ primary sources with unique ids', () => {
     const registry = loadAuthorityCitations()
     const ids = new Set(registry.citations.map((c) => c.id))
     expect(ids.size).toBe(registry.citations.length)
-    // The rule cards' primary authorities resolve here (schema validation and the
+    // The law rules' primary authorities resolve here (schema validation and the
     // jurisdiction/locator doctrine run in __tests__/founder-ops.test.ts).
     for (const id of ['de-dgcl-503', 'irs-form-15620-2025', 'irs-rp-2025-32']) {
       expect(ids.has(id), `registry must keep ${id}`).toBe(true)

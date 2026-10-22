@@ -22,7 +22,7 @@ every pointer must resolve to a committed file, and the index must validate agai
 - `open-rankings` — `open-rankings/arena-roadmap.json`: every arena tiered by priority and
   marked live or planned.
 - `open-modules` — [coverage limits](../open-modules/README.md#coverage-limits): remaining
-  calculation gaps and the rule-card and worked-example prerequisites for extending them.
+  calculation gaps and the law-rule and worked-example prerequisites for extending them.
 - `open-startup-sim` — `open-startup-sim/README.md`: the simulator's scope and its
   disclosed assumptions and multipliers.
 - `open-law` — `open-law/map.json`: maturity grades per domain and sub-area, with the

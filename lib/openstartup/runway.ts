@@ -25,6 +25,9 @@
 // Educational model, not financial advice: it is the founder's job to know the real numbers.
 // ---------------------------------------------------------------------------
 
+import { z } from 'zod'
+import { entrySpec } from './entryValidation'
+
 function round2(x: number): number {
   return Math.round(x * 100) / 100
 }
@@ -157,6 +160,30 @@ export interface HirePlan {
   count?: number
 }
 
+/** Structural schema of RunwayInputs — the registry entry contract (field names and
+ * types; value rules stay in assertInputs). */
+export const RunwayInputsSchema = z.object({
+  cash: z.number(),
+  monthlyRevenue: z.number(),
+  monthlyExpenses: z.number(),
+  revenueGrowthPctMoM: z.number(),
+  expenseGrowthPctMoM: z.number().optional(),
+})
+
+/** Structural schema of HirePlan (open-modules/registry.json). */
+export const HirePlanSchema = z.object({
+  monthlyCost: z.number(),
+  startMonth: z.number(),
+  count: z.number().optional(),
+})
+
+/** Registered entrypoint arguments (open-modules/registry.json). */
+export const hiringImpactEntry = entrySpec('hiringImpact', [
+  { name: 'input', schema: RunwayInputsSchema },
+  { name: 'hires', schema: z.array(HirePlanSchema) },
+  { name: 'options', schema: z.object({ horizonMonths: z.number().optional() }), optional: true },
+])
+
 export interface HiringImpact {
   base: DefaultAliveReport
   withHires: DefaultAliveReport
@@ -175,6 +202,7 @@ export interface HiringImpact {
  * this function measures exactly that flip.
  */
 export function hiringImpact(input: RunwayInputs, hires: HirePlan[], options?: { horizonMonths?: number }): HiringImpact {
+  hiringImpactEntry.validate(input, hires, options)
   for (const h of hires) {
     if (!(h.monthlyCost > 0)) throw new RangeError('hire monthlyCost must be > 0')
     if (!Number.isInteger(h.startMonth) || h.startMonth < 1) throw new RangeError('hire startMonth must be a month >= 1')

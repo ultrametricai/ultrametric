@@ -1,32 +1,32 @@
 # Open law
 
-Map the law that applies to startups: each rule card states one legal rule under a stable
-ID, scoped to a jurisdiction and citing a primary source with the exact section. The
-domain map (`map.json`) and the distilled startup laws (`LAWS.md`) live here too.
+Map the law that applies to startups: each rule states one legal proposition under a
+stable ID, scoped to a jurisdiction and citing a primary source with the exact section.
+The domain map (`map.json`) and the distilled startup laws (`LAWS.md`) live here too.
 
-Workflows reference cards by ID, so a statute or agency change traces to every affected
+Workflows reference rules by ID, so a statute or agency change traces to every affected
 workflow. `reviewed_on` / `review_due` are editorial check dates, not legal effective
 dates; unknown `valid_from` / `valid_until` stay null until verified. An ID is never
 reused to change a rule's meaning: version it and note the affected workflows.
 
-How a card is consumed: `lib/founderOps.ts` validates every card against its in-code
-rule contract (`RuleCardSchema`), requires its `jurisdiction` to exist in
+How a rule is consumed: `lib/founderOps.ts` validates every rule against its in-code
+contract (`RuleCardSchema`), requires its `jurisdiction` to exist in
 `jurisdictions/registry.json`, and requires every `source_ids` entry to resolve to a
 citation in `citations/registry.json` here (for `kind: legal`, to a `primary-*`
 authority). Workflows in
-`open-processes/<domain>/<jurisdiction>/` cite cards in `rule_ids`, e.g.
+`open-processes/<domain>/<jurisdiction>/` cite rules in `rule_ids`, e.g.
 `equity.us-de.83b-election` cites `us-fed.83b-filing-period`.
 
 ## The map
 
-`map.json` is the domain map over the cards: each domain's sub-areas, the cards covering
+`map.json` is the domain map over the rules: each domain's sub-areas, the rules covering
 each sub-area, the workflow and corpus processes the sub-area governs, an editorial
 maturity grade, and the stated gaps. Grades mean: `mapped` (the recurring rules a startup
-hits carry cards), `partial` (some do; the gaps field lists what is missing), `unmapped`
-(no cards yet; the gaps field lists the rules a startup hits first). `lib/founderOps.ts`
-enforces that every card appears in the map, every reference resolves, and the grades
-agree with the cards present; the table below mirrors `map.json` and a test holds the two
-together.
+hits are committed), `partial` (some are; the gaps field lists what is missing),
+`unmapped` (no rules yet; the gaps field lists the rules a startup hits first).
+`lib/founderOps.ts` enforces that every rule appears in the map, every reference
+resolves, and the grades agree with the rules present; the table below mirrors `map.json`
+and a test holds the two together.
 
 | Domain | Covers | Maturity |
 | --- | --- | --- |
@@ -41,7 +41,7 @@ together.
 | Immigration | Founder immigration paths and employment-based work visas. | partial |
 | Dissolution and distress | Voluntary dissolution and wind-down, and insolvency paths. | partial |
 
-A trimmed real card (`open-law/US-FED/us-fed-1120-filing-deadline.json`) reads:
+A trimmed real rule (`open-law/US-FED/us-fed-1120-filing-deadline.json`) reads:
 
 ```jsonc
 {
@@ -56,12 +56,12 @@ A trimmed real card (`open-law/US-FED/us-fed-1120-filing-deadline.json`) reads:
 
 Contribute here:
 
-- **Cards for a new jurisdiction** — register the jurisdiction first
+- **Rules for a new jurisdiction** — register the jurisdiction first
   (`jurisdictions/registry.json`) with a narrow scope, then add one rule per stable
   ID, citing primary sources. US rules are never copied into another jurisdiction.
-- **Place every new card in `map.json`** — add its ID to the covering sub-area (the
-  validator fails an unplaced card) and restate that sub-area's grade and gaps.
-- **Refresh an existing card** — re-verify against the primary source and bump
+- **Place every new rule in `map.json`** — add its ID to the covering sub-area (the
+  validator fails an unplaced rule) and restate that sub-area's grade and gaps.
+- **Refresh an existing rule** — re-verify against the primary source and bump
   `reviewed_on` / `review_due`; if the meaning changed, version the ID instead of editing
   it in place.
 
@@ -70,10 +70,10 @@ matching, ID stability).
 
 ## By jurisdiction
 
-The cards live in one directory per jurisdiction, named by the `jurisdiction` codes in
+The rules live in one directory per jurisdiction, named by the `jurisdiction` codes in
 `jurisdictions/registry.json`.
 
-| Jurisdiction | The cards cover |
+| Jurisdiction | The rules cover |
 | --- | --- |
 | [US-FED](US-FED/) | 83(b) elections, 409A presumptions and penalties, ISO/AMT and QSBS treatment, securities exemptions and Form D, corporate and payroll filing deadlines, FLSA baselines, I-9 timing, contractor IP assignment, CAN-SPAM, e-signature validity, beneficial-ownership reporting, founder parole |
 | [US-DE](US-DE/) | Incorporation mechanics and certificate contents, board and stockholder written consent, stock and option authorization, both franchise-tax methods, dissolution and post-dissolution continuation |
@@ -105,7 +105,7 @@ covered because a few playbooks exist (`policies/REVIEW_POLICY.md`).
 
 The map's cross-links are navigable in both directions; one worked chain: the distilled
 law states the thirty-day election window
-([LAWS.md, Formation and housekeeping](LAWS.md#formation-and-housekeeping)). Its rule card
+([LAWS.md, Formation and housekeeping](LAWS.md#formation-and-housekeeping)). Its rule
 [`us-fed.83b-filing-period`](US-FED/us-fed-83b-filing-period.json) pins the statute and
 IRS procedure. The Incorporate C-Corp process signs and files the election as explicit
 steps, and the jurisdiction-scoped workflow
@@ -116,17 +116,17 @@ tax-at-grant against tax-at-vesting and replays the Rev. Proc. 2012-29 examples 
 
 ## Citations
 
-`citations/registry.json` holds the authorities the rule cards cite: each entry is a
+`citations/registry.json` holds the authorities the rules cite: each entry is a
 dated record validated against `schemas/citation.schema.json` with publisher, the exact
 section (`locator`), `issued_on` where known, `checked_on`, jurisdiction, and an HTTPS
-link. A legal rule card may only cite `primary-*` authorities; provider blogs can explain
+link. A legal rule may only cite `primary-*` authorities; provider blogs can explain
 practice but cannot establish law (`kind: secondary-practice`). The reading canon the
 distilled laws cite lives in `open-lore/` (`library.json` and `citations.json`), not here.
 
 Contribute citations here:
 
-- **Primary authorities for new rule cards** — add entries alongside the
-  `open-law/<CODE>/*.json` cards that cite them.
+- **Primary authorities for new rules** — add entries alongside the
+  `open-law/<CODE>/*.json` rules that cite them.
 - **Re-verification passes** — follow an existing link, confirm the provision still says
   what the citing record claims, and bump `checked_on` (note it if it moved).
 
@@ -145,7 +145,7 @@ grouped by lifecycle stage: [idea and validation](LAWS.md#idea-and-validation),
 Every law cites its sources by id (the authorities in
 `citations/registry.json` here and the reading canon in `open-lore/library.json` and
 `open-lore/citations.json`), aphorisms are attributed to their actual origin, and the
-only literal laws (filing deadlines) also carry rule cards here. Gate:
+only literal laws (filing deadlines) also carry rules here. Gate:
 `pnpm test __tests__/laws.test.ts` (grammar, numbering, and citation resolution via
 `lib/laws.ts`).
 
