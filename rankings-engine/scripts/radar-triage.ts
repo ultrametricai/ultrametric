@@ -146,6 +146,7 @@ export interface RepoFacts {
   createdAt: string // ISO date the repo was created
   readmeBytes: number
   readmeHead: string // first ~2000 chars, for substance checks
+  readme: string // the full fetched README (capped), for the agentic-surface scan — a README that documents its API below the badges/screenshots fold still counts
 }
 
 export function starsPerDay(repo: Pick<RepoFacts, 'stars' | 'createdAt'>, now: Date): number {
@@ -202,14 +203,16 @@ export function findAgenticSignal(text: string): string | null {
   return m ? m[1] : null
 }
 
-// llms.txt guard: SPA/auth catch-alls answer 200 (often HTML, sometimes JSON) for every path. A
-// real llms.txt is plain text/markdown with content — when the server declares a content type it
-// must be text/plain or text/markdown, and the body must not read as markup or JSON.
+// llms.txt guard: SPA/auth catch-alls answer 200 (often HTML, sometimes JSON or a bare
+// "Not Found" string) for every path. A real llms.txt is a markdown document — the spec requires
+// an H1 title line — so the body must carry one and must not read as markup or JSON, and when
+// the server declares a content type it must be text/plain or text/markdown.
 export function isPlainTextLlms(body: string, contentType?: string): boolean {
   const ct = (contentType ?? '').toLowerCase()
   if (ct && !/^text\/(plain|markdown)\b/.test(ct)) return false
   const trimmed = body.trim()
-  return trimmed.length > 0 && !trimmed.startsWith('<') && !trimmed.startsWith('{')
+  if (trimmed.length === 0 || trimmed.startsWith('<') || trimmed.startsWith('{')) return false
+  return /^#\s/m.test(trimmed) // the llms.txt spec's required markdown H1
 }
 
 // --- IO (injectable so tests stay offline) ------------------------------------------------------
@@ -253,6 +256,7 @@ export function realTriageIo(): TriageIo {
           createdAt: typeof j.created_at === 'string' ? j.created_at : new Date(0).toISOString(),
           readmeBytes: Buffer.byteLength(readme),
           readmeHead: readme.slice(0, 2000),
+          readme: readme.slice(0, 200_000), // bound the regex input, keep far past any badge fold
         }
       } catch (err) {
         return { error: String(err) }
@@ -308,20 +312,27 @@ export async function triageCandidate(candidate: RadarCandidate, existingArenas:
         bringup: null,
       }
     }
-    // 5. agentic surface for OSS: the fetched README/description must name one.
-    const ossSignal = findAgenticSignal(`${repo.description ?? ''} ${repo.readmeHead}`)
+    // 5. agentic surface for OSS: the fetched full README or the repo description must name one;
+    // the evidence cites whichever fetched endpoint actually carried the match.
+    const readmeSignal = findAgenticSignal(repo.readme)
+    const descSignal = readmeSignal ? null : findAgenticSignal(repo.description ?? '')
+    const ossSignal = readmeSignal ?? descSignal
     if (!ossSignal) {
       return {
         ...base,
         arena: fit.arena,
         status: 'skipped',
         criterion: 'agentic-surface',
-        reason: 'no citable agentic surface: the fetched repo description and README head name no public API, MCP server, llms.txt, or agent/automation docs',
+        reason: 'no citable agentic surface: the fetched README and repo description name no public API, MCP server, llms.txt, or agent/automation docs',
         evidence,
         bringup: null,
       }
     }
-    evidence.push(`agentic-surface: https://api.github.com/repos/${repoName}/readme — fetched, names "${ossSignal}"`)
+    evidence.push(
+      readmeSignal
+        ? `agentic-surface: https://api.github.com/repos/${repoName}/readme — fetched, README names "${readmeSignal}"`
+        : `agentic-surface: https://api.github.com/repos/${repoName} — fetched, repo description names "${descSignal}"`,
+    )
     const githubUrl = `https://github.com/${repoName}`
     return {
       ...base,

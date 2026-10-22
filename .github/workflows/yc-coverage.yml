@@ -62,10 +62,12 @@ jobs:
       - name: Fetch YC directory
         run: pnpm tsx rankings-engine/scripts/yc-fetch.ts
 
-      # Stage 2 — LLM classification of still-unclassified modern-batch companies. Keyed stage:
-      # the ANTHROPIC_API_KEY repo secret gates it (same handling as vendor-radar.yml's bring-up);
-      # without the key the stage is skipped and unclassified companies keep matching through the
-      # keyless DOMAIN_VOCAB fallback in the queue.
+      # Stage 2 — LLM classification of PENDING companies only (yc-fetch stamps new ones
+      # pending: true in the committed map; judged entries are never re-spent or overwritten, so
+      # a fresh runner repeats no paid calls). Keyed stage: the ANTHROPIC_API_KEY repo secret
+      # gates it (same handling as vendor-radar.yml's bring-up); without the key the stage is
+      # skipped and pending companies keep matching through the keyless DOMAIN_VOCAB fallback in
+      # the queue.
       - name: Classify companies onto arenas (LLM)
         env:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}

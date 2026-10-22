@@ -40,12 +40,12 @@ function candidate(overrides: Partial<RadarCandidate> = {}): RadarCandidate {
 function io(overrides: Partial<TriageIo> = {}): TriageIo {
   return {
     fetchPage: async () => ({ status: 200, html: '<a href="/docs">Documentation</a> <a href="/pricing">Pricing</a> API reference' }),
-    fetchRepo: async () => ({ archived: false, fork: false, description: 'a real tool', stars: 900, createdAt: '2026-08-01T00:00:00Z', readmeBytes: 9000, readmeHead: '## Install\nnpm i driftbase\n## API reference' }),
+    fetchRepo: async () => ({ archived: false, fork: false, description: 'a real tool', stars: 900, createdAt: '2026-08-01T00:00:00Z', readmeBytes: 9000, readmeHead: '## Install\nnpm i driftbase', readme: '## Install\nnpm i driftbase\n## API reference' }),
     ...overrides,
   }
 }
 
-const REPO_OK: RepoFacts = { archived: false, fork: false, description: 'browser agent sdk', stars: 900, createdAt: '2026-08-01T00:00:00Z', readmeBytes: 8000, readmeHead: '## Quickstart\npip install x\nShips an MCP server.' }
+const REPO_OK: RepoFacts = { archived: false, fork: false, description: 'browser agent sdk', stars: 900, createdAt: '2026-08-01T00:00:00Z', readmeBytes: 8000, readmeHead: '## Quickstart\npip install x', readme: '## Quickstart\npip install x\nShips an MCP server.' }
 
 describe('criterion checks', () => {
   it('ranking fit requires MIN_FIT_HITS on an arena that exists — the radar never creates rankings', () => {
@@ -93,6 +93,7 @@ describe('criterion checks', () => {
     expect(isPlainTextLlms('{"error":"not found"}')).toBe(false) // JSON body, no declared type
     expect(isPlainTextLlms('# Driftbase', 'application/json')).toBe(false)
     expect(isPlainTextLlms('# Driftbase', 'text/html; charset=utf-8')).toBe(false)
+    expect(isPlainTextLlms('Not Found', 'text/plain')).toBe(false) // catch-all string, no H1 — not a document
   })
 
   it('founder affiliation matches name and url, routing to a human', () => {
@@ -158,6 +159,16 @@ describe('triageCandidate', () => {
     expect(oss.evidence.some((e) => e.startsWith('agentic-surface: https://api.github.com/repos/acme/driftbase/readme') && e.includes('API reference'))).toBe(true)
   })
 
+  it('an OSS signal found only in the repo description cites the repo endpoint, not the README', async () => {
+    const d = await triageCandidate(
+      candidate({ url: 'https://github.com/acme/driftbase', key: 'github:acme/driftbase' }),
+      ARENAS,
+      io({ fetchRepo: async () => ({ ...REPO_OK, description: 'hosted MCP server for browsers', readme: '## Quickstart\npip install x' }) }),
+    )
+    expect(d.status).toBe('auto-approved')
+    expect(d.evidence.some((e) => e.startsWith('agentic-surface: https://api.github.com/repos/acme/driftbase —') && e.includes('description names "MCP server"'))).toBe(true)
+  })
+
   it('skips a hosted product with docs but no agentic surface, recording the llms.txt probe', async () => {
     const d = await triageCandidate(
       candidate(),
@@ -200,7 +211,7 @@ describe('triageCandidate', () => {
     const d = await triageCandidate(
       candidate({ url: 'https://github.com/acme/driftbase', key: 'github:acme/driftbase' }),
       ARENAS,
-      io({ fetchRepo: async () => ({ ...REPO_OK, description: 'a desktop theme pack', readmeHead: '## Quickstart\npip install x' }) }),
+      io({ fetchRepo: async () => ({ ...REPO_OK, description: 'a desktop theme pack', readmeHead: '## Quickstart\npip install x', readme: '## Quickstart\npip install x' }) }),
     )
     expect(d).toMatchObject({ status: 'skipped', criterion: 'agentic-surface', bringup: null })
     expect(d.reason).toContain('no citable agentic surface')

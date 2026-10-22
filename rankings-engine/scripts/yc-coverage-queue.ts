@@ -387,9 +387,11 @@ async function main() {
           const text = `${c.one_liner ?? ''} ${(c.tags ?? []).join(' ')} ${(c.industries ?? []).join(' ')}`
           vocabHits = words.filter(({ re }) => re.test(text)).length
         }
-      } else if (cls && (cls.proposedArena || (!cls.mappedArena && !cls.proposedArena))) {
+      } else if (cls && !cls.pending && (cls.proposedArena || (!cls.mappedArena && !cls.proposedArena))) {
         // yc-classify already judged this one: software-without-an-existing-arena, or not
         // rankable software at all. Honest exclusion — don't second-guess it with keywords.
+        // Entries still marked pending (yc-fetch added them, classify has not run — e.g. a
+        // keyless CI run) are NOT judged and fall through to the vocab fallback below.
         noFit++
         continue
       } else {
