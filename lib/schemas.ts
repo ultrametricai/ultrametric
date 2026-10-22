@@ -376,7 +376,11 @@ export const VendorResponsesArraySchema = VendorResponseSchema.array()
 // categories.json id the company genuinely competes in; `proposedArena` is a kebab-case name for
 // a new arena it clusters with peers under; a company can have at most one of the two set (never
 // both), and both null means "not a software product ranked meaningfully here" (hardware,
-// biotech, services, marketplaces — see METHODOLOGY.md).
+// biotech, services, marketplaces — see METHODOLOGY.md). `pending: true` marks a company
+// yc-fetch.ts added that yc-classify.ts has not judged yet: both-null-with-pending means
+// "awaiting classification" (the coverage queue falls back to its keyless vocab match), while
+// both-null-without-pending keeps meaning "judged not rankable". The flag lives in the committed
+// map because the classify progress checkpoint is a gitignored cache a fresh CI runner lacks.
 export const YcCompanySchema = z.object({
   name: z.string().min(1),
   slug: z.string().min(1),
@@ -386,8 +390,11 @@ export const YcCompanySchema = z.object({
   tags: z.array(z.string()),
   mappedArena: z.string().min(1).nullable(),
   proposedArena: z.string().regex(/^[a-z0-9]+(-[a-z0-9]+)*$/, 'proposedArena must be kebab-case').nullable(),
+  pending: z.boolean().optional(),
 }).refine((c) => !(c.mappedArena && c.proposedArena), {
   message: 'a company cannot have both mappedArena and proposedArena set',
+}).refine((c) => !(c.pending && (c.mappedArena || c.proposedArena)), {
+  message: 'a pending (unclassified) company cannot carry an arena verdict',
 })
 
 export const YcMapSchema = YcCompanySchema.array()
