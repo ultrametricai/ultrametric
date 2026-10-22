@@ -6,7 +6,7 @@
 
 Founder authorization (2026-10-13) replaced per-candidate checkbox approval with the
 criteria below. A radar candidate (a product surfaced by `rankings-engine/scripts/vendor-radar.ts`
-in a `vendor-radar: candidates` issue) is auto-approved for bring-up when all four hold:
+in a `vendor-radar: candidates` issue) is auto-approved for bring-up when all five hold:
 
 1. **Existing ranking fit** — the product clearly belongs in one existing arena
    (`open-rankings/<arena>/`). Creating a new ranking requires a human decision.
@@ -20,6 +20,10 @@ in a `vendor-radar: candidates` issue) is auto-approved for bring-up when all fo
 4. **No founder affiliation** — products affiliated with the founders always get human
    review, disclosure, and a bias audit (house rules, evidence doctrine); they are never
    auto-approved.
+5. **Agentic surface** — a citable agentic surface: a public API, an MCP server, an
+   `llms.txt`, or agent/automation docs. The triage records the fetched URL that shows
+   the surface and a one-line evidence note in its disposition; a candidate without one
+   is skipped with the reason recorded.
 
 A candidate failing any criterion is recorded on the radar issue as skipped, with the
 failing criterion and the evidence (URL fetched, HTTP status, what the page showed).

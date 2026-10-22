@@ -1,20 +1,22 @@
 {
-  "hash": "32be3c971ff32c93b15225a5ee7ceb241a9dd4ff7158072ccc92b3a68e508153",
+  "hash": "ddaf2b058853cf54dcd65b5c49c0bff908e19ecd8a3c28d0b97cdb256f6cf572",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Shopify ships an npm-installable UCP CLI with structured commands and a reusable local profile, plus JSON-RPC MCP endpoints authenticated by machine-minted client-credential JWTs. Together these form a scriptable, non-interactive surface, and a runtime probe drove the CLI headlessly to create a real cart. Missing for 10: explicit CI/headless documentation (non-interactive flags, exit codes, CI secret/env configuration beyond UCP_ON_ESCALATION), self-serve webhook setup, and independent corroboration of a full automated checkout run.",
+    "rationale": "Shopify ships an official UCP CLI (`npm install -g @shopify/ucp-cli`) with structured commands for catalog search, carts, checkouts and orders. It reuses a locally initialized profile on every request and authenticates machine-to-machine via JWTs minted from Dev Dashboard client credentials, so it can be scripted without a UI. A runtime probe drove the CLI non-interactively with a self-generated profile to search the live catalog and create a real cart, and the raw JSON-RPC MCP endpoints are also directly scriptable. Missing for 10: explicit CI or non-interactive documentation (CI examples, headless flags, exit-code and output-format guidance), guidance on refreshing the 60-minute tokens in pipelines, and a fully unattended path past buyer escalation, which hands off to a browser.",
     "evidenceIds": [
       "shopify-ucp-supp-ucp-journey",
+      "shopify-ucp-docs-1",
       "shopify-ucp-docs-19",
       "shopify-ucp-docs-20",
       "shopify-ucp-supp-checkout-mcp",
       "shopify-ucp-supp-buyer-handoff",
-      "shopify-ucp-supp-cart-mcp",
-      "shopify-ucp-probe-rt-3",
-      "shopify-ucp-probe-5"
+      "shopify-ucp-supp-storefront-catalog",
+      "shopify-ucp-probe-5",
+      "shopify-ucp-probe-rt-1",
+      "shopify-ucp-probe-rt-3"
     ],
     "productId": "shopify-ucp",
     "storyId": "agentic-headless"

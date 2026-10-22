@@ -1,19 +1,19 @@
 {
-  "hash": "5f949bec1333e24b537ea9e0ae5e5af7e115693a0db7e0c18d59749772cd1563",
+  "hash": "f962b93c2450c03470bf21d890c5d38de0c801cc3bec017972411cb203e785eb",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "PayPal documents every element of the end-to-end flow. Checkout sessions run through the ACP spec and UCP's /checkout-session/{id}/complete endpoint. The delegated credential is a single-use Braintree token bound to merchant ID, amount and time, delivered via `complete_checkout` or the UCP `credential.token` field. Store Sync agents 'complete purchases' with the order landing in the merchant's order management system. However, the flows require Braintree, form-gated or Google-gated access, and Store Sync is limited to US physical goods in USD. Missing for 10: independent or hands-on confirmation of a completed agent purchase, explicit order-confirmation detail for the ACP and UCP paths, and broader eligibility beyond the gated Braintree and US-only scope.",
+    "rationale": "PayPal's own docs cover each step of the story. The ACP path manages checkout sessions per the ACP spec and receives a single-use Braintree delegated payment token through a `complete_checkout` tool. The UCP path delivers a Braintree token in `credential.token` on the `/checkout-session/{id}/complete` call. Store Sync lets agents create carts and complete purchases, with the order landing in the merchant's existing order management system. Access is gated: it requires a Braintree account or a PayPal access request via form, Google enablement for UCP, and Store Sync covers only US physical goods in USD. Missing for 10: hands-on or independent corroboration of a completed agent purchase, explicit documentation of the order-confirmation response returned to the agent, and broader availability beyond the gated, US-only scope.",
     "evidenceIds": [
       "paypal-ac-supp-acp-chatgpt",
       "paypal-ac-supp-ucp-googlepay",
       "paypal-ac-supp-agent-ready",
       "paypal-ac-supp-store-sync",
       "paypal-ac-supp-cart-reverse-api",
-      "paypal-ac-supp-getcart",
-      "paypal-ac-supp-acs-gate"
+      "paypal-ac-supp-acs-gate",
+      "paypal-agent-commerce-docs-5"
     ],
     "productId": "paypal-agent-commerce",
     "storyId": "agent-checkout-complete"

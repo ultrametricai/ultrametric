@@ -28,6 +28,9 @@ import {
   normalizeName,
   parsePhEntries,
   phCandidate,
+  ycCandidate,
+  ycLaunchesFromJson,
+  YC_LOOKBACK_DAYS,
   type RadarReport,
   type RawCandidate,
   type SeenEntry,
@@ -183,6 +186,57 @@ describe('Product Hunt feed parsing', () => {
   it('phCandidate states the keyless-votes honesty line verbatim in its evidence', () => {
     const c = phCandidate(parsePhEntries(PH_FIXTURE)[0])
     expect(c.evidence).toContain('vote counts are not exposed keylessly')
+  })
+})
+
+// Shape verified against the live endpoint 2026-10-21: Algolia-style {hits,...} pages with the
+// company block carrying the product's own URL, batch, and tags.
+const YC_FIXTURE = {
+  hits: [
+    {
+      id: 1, title: 'Driftbase - Browser sessions for AI agents', tagline: 'Headless playwright sessions for agents.',
+      slug: 'abc-driftbase', created_at: '2026-10-01T19:00:00.000Z', total_vote_count: 42,
+      company: { name: 'Driftbase', url: 'https://driftbase.dev', tags: ['AI', 'Developer Tools'], batch: 'Fall 2026' },
+      search_path: 'https://www.ycombinator.com/launches/abc-driftbase',
+    },
+    {
+      id: 2, title: 'Mug Buddy - Coffee, warm', tagline: 'A smart coaster.',
+      slug: 'xyz-mug-buddy', created_at: '2026-08-01T19:00:00.000Z', total_vote_count: 7,
+      company: { name: 'Mug Buddy', tags: [], batch: 'Summer 2026' },
+      search_path: 'https://www.ycombinator.com/launches/xyz-mug-buddy',
+    },
+    { id: 3, title: 'Malformed, no search_path', created_at: '2026-10-01T00:00:00Z' },
+  ],
+  nbHits: 3345, page: 0, nbPages: 50, hitsPerPage: 20,
+}
+
+describe('YC Launches parsing', () => {
+  it('ycLaunchesFromJson keeps well-formed launches with company url/batch/tags, drops malformed ones', () => {
+    const launches = ycLaunchesFromJson(YC_FIXTURE)
+    expect(launches).toHaveLength(2)
+    expect(launches[0]).toMatchObject({ votes: 42, url: 'https://www.ycombinator.com/launches/abc-driftbase' })
+    expect(launches[0].company).toEqual({ name: 'Driftbase', url: 'https://driftbase.dev', batch: 'Fall 2026', tags: ['AI', 'Developer Tools'] })
+    expect(launches[1].company.url).toBeNull()
+  })
+
+  it(`ycCandidate keeps launches within ${YC_LOOKBACK_DAYS}d, verbatim vote/batch evidence, product URL preferred`, () => {
+    const [inWindow, stale] = ycLaunchesFromJson(YC_FIXTURE)
+    const c = ycCandidate(inWindow, NOW)
+    expect(c).not.toBeNull()
+    expect(c?.kind).toBe('yc-launches')
+    expect(c?.name).toBe('Driftbase')
+    expect(c?.url).toBe('https://driftbase.dev')
+    expect(c?.sourceUrl).toBe('https://www.ycombinator.com/launches/abc-driftbase')
+    expect(c?.text).toContain('playwright')
+    expect(c?.evidence).toBe('YC launch, 42 votes (posted 2026-10-01, batch Fall 2026)')
+    expect(ycCandidate(stale, NOW)).toBeNull() // outside the lookback window
+  })
+
+  it('a launch without a company URL keys by name — ycombinator.com is a post host, never a product domain', () => {
+    const stale = ycLaunchesFromJson(YC_FIXTURE)[1]
+    const c = ycCandidate(stale, new Date('2026-08-02T12:00:00Z'))
+    expect(c?.url).toBe('https://www.ycombinator.com/launches/xyz-mug-buddy')
+    expect(candidateKey(c!)).toBe('name:mugbuddy')
   })
 })
 

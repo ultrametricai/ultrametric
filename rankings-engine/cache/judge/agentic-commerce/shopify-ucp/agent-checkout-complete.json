@@ -1,21 +1,20 @@
 {
-  "hash": "9d4b0b718352b075d82423e5ac0bf1fb1fbb3bb29f4297684a6a650ae37af7d6",
+  "hash": "b15dbf89f82e07cbdcb0cf4b320708ce6b7473a6998b32854c20497f4de78469",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 6,
     "confidence": "medium",
-    "rationale": "Shopify documents the full chain. `create_checkout` converts carts into checkout sessions, `complete_checkout` will \"Submit payment and place the order\" once a payment credential is collected (with negotiated payment handlers such as com.google.pay), and UCP/AP2 describes cryptographically signed payment mandates tied to cart state. Confirmed orders are then readable via Order MCP and webhooks. The caveat is that direct completion is restricted to trusted Token-tier agents granted purchase permission; the default flow hands buyers off to the merchant's `continue_url` for payment, and escalations force that handoff. Missing for 10: Shopify-specific docs on how an agent obtains a delegated payment credential, self-serve access to the purchase-completion and order-webhook tiers, and hands-on evidence of a completed checkout (the runtime probe stopped at cart creation).",
+    "rationale": "Shopify documents the full agent purchase chain: create_checkout from a cart, complete_checkout (\"Submit payment and place the order\") once a payment credential is collected, and post-purchase order state via get_order and order webhooks. However, direct completion is restricted to Token-tier \"trusted agents\" whose token is granted purchase permission, and the default documented path hands the buyer off to the merchant storefront via continue_url for payment. Delegated payment credentials appear only as negotiated payment_handlers (e.g., com.google.pay) and as AP2 mandates in the UCP spec. missing for 10: generally available direct checkout completion without trusted-tier gating, Shopify-specific documentation of how a delegated payment credential is minted and passed, hands-on verification beyond cart creation (no checkout or payment probed), self-serve order webhook registration.",
     "evidenceIds": [
       "shopify-ucp-supp-checkout-mcp",
       "shopify-ucp-supp-ucp-journey",
       "shopify-ucp-supp-trust-tiers",
       "shopify-ucp-supp-buyer-handoff",
-      "shopify-ucp-docs-18",
-      "shopify-ucp-docs-31",
-      "shopify-ucp-supp-ucp-governance",
       "shopify-ucp-supp-order-mcp",
       "shopify-ucp-supp-order-webhooks",
+      "shopify-ucp-docs-18",
+      "shopify-ucp-docs-31",
       "shopify-ucp-probe-rt-3"
     ],
     "productId": "shopify-ucp",

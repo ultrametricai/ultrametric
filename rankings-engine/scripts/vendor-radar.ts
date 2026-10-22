@@ -15,6 +15,13 @@
 //      ONE request, with GH_TOKEN used for the higher authenticated limit when present, same
 //      preference as rankings-engine/stages/popularity.ts): repos created in the last
 //      GITHUB_LOOKBACK_DAYS crossing a star-velocity threshold (isHotRepo).
+//   4. YC Launches via ycombinator.com/launches.json (verified keyless 2026-10-21: the endpoint
+//      answers plain JSON — Algolia-style {hits,nbHits,page,nbPages} pages of 20 — with title,
+//      tagline, created_at, total_vote_count, and the company's name/url/batch/tags; robots.txt
+//      allows /launches; /launches/rss and /launches/feed 404, so this JSON surface is the feed).
+//      One-or-two page fetches cover YC_LOOKBACK_DAYS. Presence on YC's official launch feed
+//      within the window is the signal (the Product Hunt frontpage precedent); the vote count is
+//      reported verbatim as evidence, not thresholded.
 //
 // Matching: candidate text (title/tagline/description/topics) is scored lexically against the
 // arena taxonomy — DOMAIN_VOCAB (rankings-engine/scripts/tag-story-scopes.ts, the same per-arena nouns
@@ -71,6 +78,8 @@ export const HN_FAST_MIN_POINTS_PER_HOUR = 8
 export const GITHUB_LOOKBACK_DAYS = 30
 export const GITHUB_MIN_STARS = 200 // query floor — velocity below decides
 export const GITHUB_MIN_STARS_PER_DAY = 25
+export const YC_LOOKBACK_DAYS = 7
+export const YC_LAUNCHES_MAX_PAGES = 2 // 20 launches/page; 2 pages cover the lookback window
 export const MIN_ARENA_HITS = 2 // distinct arena keywords required (yc-coverage-queue precedent)
 export const MAX_MATCHED_ARENAS = 3
 export const MAX_REPORT_CANDIDATES = 30 // issue readability cap; overflow is counted honestly
@@ -80,6 +89,7 @@ const USER_AGENT = 'Mozilla/5.0 (compatible; Ultrametric-vendor-radar/1.0; +http
 const HN_API = 'https://hn.algolia.com/api/v1/search'
 const PH_FEED_URL = 'https://www.producthunt.com/feed'
 const GITHUB_SEARCH_API = 'https://api.github.com/search/repositories'
+const YC_LAUNCHES_URL = 'https://www.ycombinator.com/launches.json'
 
 // ---------------------------------------------------------------------------------------------
 // Schemas: the seen-ledger (committed) and the dated report (committed)
@@ -99,8 +109,13 @@ export const SeenLedgerSchema = z.object({
 })
 export type SeenLedger = z.infer<typeof SeenLedgerSchema>
 
+// 'yc-launches' = the radar's own ycombinator.com/launches.json scan; 'yc-directory' = queue
+// candidates the weekly YC coverage lane hands to the same triage (yc-coverage-queue.ts
+// radarReportFromQueue).
+export const RADAR_SOURCE_KINDS = ['hn', 'producthunt', 'github', 'yc-launches', 'yc-directory'] as const
+
 export const RadarSourceLinkSchema = z.object({
-  kind: z.enum(['hn', 'producthunt', 'github']),
+  kind: z.enum(RADAR_SOURCE_KINDS),
   url: z.string(),
   title: z.string(),
   evidence: z.string(), // verbatim-derived hotness evidence ("Show HN, 132 points in 9h", …)
@@ -126,7 +141,7 @@ export const RadarReportSchema = z.object({
   thresholds: z.record(z.string(), z.number()),
   sources: z
     .object({
-      kind: z.enum(['hn', 'producthunt', 'github']),
+      kind: z.enum(RADAR_SOURCE_KINDS),
       queried: z.string(),
       items: z.number(),
       error: z.string().nullable(),
@@ -206,7 +221,7 @@ export function matchArenas(text: string, vocab: Map<string, VocabWord[]>): Aren
 // Source item shapes + pure per-source candidate extraction (unit-tested, no network)
 
 export interface RawCandidate {
-  kind: 'hn' | 'producthunt' | 'github'
+  kind: (typeof RADAR_SOURCE_KINDS)[number]
   name: string
   url: string // best product URL this source knows
   sourceUrl: string // the launch-surface page (HN item, PH post, GitHub repo)
@@ -379,6 +394,63 @@ export function phCandidate(entry: PhEntry): RawCandidate {
   }
 }
 
+// One launch from ycombinator.com/launches.json — only the fields the radar reads. `url` is the
+// launch post (the feed's search_path); `company.url` is the product's own site when published.
+export interface YcLaunch {
+  title: string
+  tagline: string
+  createdAt: string
+  votes: number
+  url: string
+  company: { name: string; url: string | null; batch: string | null; tags: string[] }
+}
+
+export function ycLaunchesFromJson(json: unknown): YcLaunch[] {
+  const hits = (json as { hits?: unknown[] })?.hits ?? []
+  const out: YcLaunch[] = []
+  for (const h of hits) {
+    const it = h as {
+      title?: string
+      tagline?: string
+      created_at?: string
+      total_vote_count?: number
+      search_path?: string
+      company?: { name?: string; url?: string; batch?: string; tags?: unknown[] }
+    }
+    if (typeof it.title !== 'string' || typeof it.created_at !== 'string' || typeof it.search_path !== 'string') continue
+    out.push({
+      title: it.title,
+      tagline: typeof it.tagline === 'string' ? it.tagline : '',
+      createdAt: it.created_at,
+      votes: typeof it.total_vote_count === 'number' ? it.total_vote_count : 0,
+      url: it.search_path,
+      company: {
+        name: typeof it.company?.name === 'string' ? it.company.name : it.title.split(/\s+[–—:-]\s+/)[0].slice(0, 80),
+        url: typeof it.company?.url === 'string' && it.company.url.startsWith('http') ? it.company.url : null,
+        batch: typeof it.company?.batch === 'string' ? it.company.batch : null,
+        tags: Array.isArray(it.company?.tags) ? it.company.tags.filter((t): t is string => typeof t === 'string') : [],
+      },
+    })
+  }
+  return out
+}
+
+// null when the launch is older than YC_LOOKBACK_DAYS — the feed pages back years, the radar
+// wants the current window. Evidence is verbatim-derived: the feed's own vote count and dates.
+export function ycCandidate(launch: YcLaunch, now: Date): RawCandidate | null {
+  const ageDays = (now.getTime() - Date.parse(launch.createdAt)) / 86_400_000
+  if (!Number.isFinite(ageDays) || ageDays < 0 || ageDays > YC_LOOKBACK_DAYS) return null
+  return {
+    kind: 'yc-launches',
+    name: launch.company.name,
+    url: launch.company.url ?? launch.url,
+    sourceUrl: launch.url,
+    title: launch.title,
+    text: `${launch.title} ${launch.tagline} ${launch.company.tags.join(' ')}`,
+    evidence: `YC launch, ${launch.votes} votes (posted ${launch.createdAt.slice(0, 10)}${launch.company.batch ? `, batch ${launch.company.batch}` : ''})`,
+  }
+}
+
 // ---------------------------------------------------------------------------------------------
 // Keys + dedupe (pure)
 
@@ -387,8 +459,9 @@ export function normalizeName(name: string): string {
 }
 
 // Launch-surface hosts that identify a POST, never a product — they must not become domain keys
-// or dedupe against tracked product domains.
-const AGGREGATOR_HOSTS = new Set(['news.ycombinator.com', 'producthunt.com', 'github.com', 'gist.github.com'])
+// or dedupe against tracked product domains. 'ycombinator.com' covers the YC Launches post pages
+// (normalizeDomain strips www.) exactly as news.ycombinator.com covers HN items.
+const AGGREGATOR_HOSTS = new Set(['news.ycombinator.com', 'ycombinator.com', 'producthunt.com', 'github.com', 'gist.github.com'])
 
 // Shared project-listing hosts (package registries, app stores, model hubs): a URL there
 // identifies one LISTING, never the product's own domain. Keying on the bare hostname would
@@ -526,7 +599,7 @@ async function fetchText(url: string, headers: Record<string, string> = {}): Pro
 }
 
 interface SourceStat {
-  kind: 'hn' | 'producthunt' | 'github'
+  kind: (typeof RADAR_SOURCE_KINDS)[number]
   queried: string
   items: number
   error: string | null
@@ -591,6 +664,35 @@ async function scanGithub(now: Date): Promise<{ stat: SourceStat; raw: RawCandid
     }
   } catch (err) {
     stat.error = String(err)
+  }
+  return { stat, raw }
+}
+
+async function scanYcLaunches(now: Date): Promise<{ stat: SourceStat; raw: RawCandidate[] }> {
+  const stat: SourceStat = {
+    kind: 'yc-launches',
+    queried: `ycombinator.com/launches.json, last ${YC_LOOKBACK_DAYS}d (keyless JSON feed, up to ${YC_LAUNCHES_MAX_PAGES} pages)`,
+    items: 0,
+    error: null,
+  }
+  const raw: RawCandidate[] = []
+  const cutoff = now.getTime() - YC_LOOKBACK_DAYS * 86_400_000
+  for (let page = 0; page < YC_LAUNCHES_MAX_PAGES; page++) {
+    try {
+      const launches = ycLaunchesFromJson(JSON.parse(await fetchText(`${YC_LAUNCHES_URL}?page=${page}`, { Accept: 'application/json' })))
+      if (launches.length === 0) break
+      stat.items += launches.length
+      for (const l of launches) {
+        const c = ycCandidate(l, now)
+        if (c) raw.push(c)
+      }
+      // The feed is newest-first: once a page's oldest launch is out of window, stop paging.
+      const oldest = Math.min(...launches.map((l) => Date.parse(l.createdAt)))
+      if (oldest < cutoff) break
+    } catch (err) {
+      stat.error = stat.error ?? String(err)
+      break
+    }
   }
   return { stat, raw }
 }
@@ -695,30 +797,31 @@ export async function run(argv: string[]): Promise<RadarReport> {
   const vocab = buildArenaVocab(readCategories(), sectionNameByArena)
   const ctx = loadDedupeContext(extraSeen)
 
-  const [hn, ph, gh] = [await scanHn(now), await scanProductHunt(), await scanGithub(now)]
-  const raw = [...hn.raw, ...ph.raw, ...gh.raw]
+  const [hn, ph, gh, yc] = [await scanHn(now), await scanProductHunt(), await scanGithub(now), await scanYcLaunches(now)]
+  const raw = [...hn.raw, ...ph.raw, ...gh.raw, ...yc.raw]
   const { candidates: all, skippedTracked, skippedSeen } = assembleCandidates(raw, vocab, ctx, date)
   const overflow = Math.max(0, all.length - MAX_REPORT_CANDIDATES)
   const candidates = all.slice(0, MAX_REPORT_CANDIDATES)
 
   const report: RadarReport = {
     _comment:
-      'Generated by rankings-engine/scripts/vendor-radar.ts — new-vendor candidates from public launch surfaces (HN Algolia, Product Hunt frontpage feed, GitHub repo search), lexically matched to the arena taxonomy. The radar never creates a new ranking and never touches a founder-affiliated product autonomously. Candidates are triaged against the auto-approval criteria in policies/AGENT_POLICY.md (founder authorization 2026-10-13); the bring-up on auto-approved candidates is a scoped standard engine run landing as a reviewed PR (docs/VENDOR-RADAR.md). Evidence strings are verbatim-derived from each source’s own response.',
+      'Generated by rankings-engine/scripts/vendor-radar.ts — new-vendor candidates from public launch surfaces (HN Algolia, Product Hunt frontpage feed, GitHub repo search, YC Launches JSON feed), lexically matched to the arena taxonomy. The radar never creates a new ranking and never touches a founder-affiliated product autonomously. Candidates are triaged against the auto-approval criteria in policies/AGENT_POLICY.md (founder authorization 2026-10-13); the bring-up on auto-approved candidates is a scoped standard engine run landing as a reviewed PR (docs/VENDOR-RADAR.md). Evidence strings are verbatim-derived from each source’s own response.',
     generatedAt: now.toISOString(),
     date,
     thresholds: {
       HN_LOOKBACK_DAYS, HN_MIN_POINTS, HN_FAST_MIN_POINTS, HN_FAST_MIN_POINTS_PER_HOUR,
       GITHUB_LOOKBACK_DAYS, GITHUB_MIN_STARS, GITHUB_MIN_STARS_PER_DAY,
+      YC_LOOKBACK_DAYS, YC_LAUNCHES_MAX_PAGES,
       MIN_ARENA_HITS, MAX_MATCHED_ARENAS, MAX_REPORT_CANDIDATES,
     },
-    sources: [hn.stat, ph.stat, gh.stat],
+    sources: [hn.stat, ph.stat, gh.stat, yc.stat],
     skipped: { tracked: skippedTracked, alreadySeen: skippedSeen, overflow },
     candidates,
   }
   const markdown = buildMarkdown(report)
 
   console.log(
-    `vendor-radar: ${raw.length} hot launch items (hn ${hn.stat.items}, ph ${ph.stat.items}, gh ${gh.stat.items}) → ` +
+    `vendor-radar: ${raw.length} hot launch items (hn ${hn.stat.items}, ph ${ph.stat.items}, gh ${gh.stat.items}, yc ${yc.stat.items}) → ` +
       `${candidates.length} new candidates (${skippedTracked} tracked, ${skippedSeen} already seen${overflow > 0 ? `, ${overflow} overflow` : ''})`,
   )
   for (const s of report.sources) if (s.error) console.log(`vendor-radar: ${s.kind} degraded — ${s.error}`)

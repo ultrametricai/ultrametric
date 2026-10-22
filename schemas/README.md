@@ -36,11 +36,14 @@ Other contracts:
 - `process-artifacts.schema.json` — the artifact registry (`open-artifacts/registry.json`).
 - `company-fields.schema.json` — the typed company-field standards
   (`open-artifacts/fields.json`).
+- `vendor-state.schema.json` — the vendor US-state availability rows
+  (`jurisdictions/vendor-state.json`).
 
 `scripts/generate-corpus-schemas.ts` generates `process.schema.json`,
 `operational-process.schema.json`, `process-vendor-registry.schema.json`,
-`process-artifacts.schema.json`, and `company-fields.schema.json` from their zod sources
-(`lib/shared-processes/catalog.ts`, `lib/processes.ts`, `lib/companyFields.ts`), drift-gated
+`process-artifacts.schema.json`, `company-fields.schema.json`, and
+`vendor-state.schema.json` from their zod sources (`lib/shared-processes/catalog.ts`,
+`lib/processes.ts`, `lib/companyFields.ts`, `lib/vendorState.ts`), drift-gated
 byte-identical; change the zod schema and regenerate, never the files.
 
 Regenerate the process and corpus schemas with

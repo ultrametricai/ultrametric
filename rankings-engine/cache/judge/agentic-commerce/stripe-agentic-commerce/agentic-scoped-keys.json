@@ -1,19 +1,16 @@
 {
-  "hash": "8b4a73c4724f5b5f3bbe1116cc0ed856188d3c46d13d2492b9776a88ca6246c6",
+  "hash": "5045ff352bd2026853108b8bc666fa5e552fa26b6ca178fb74433f2afab6c175",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "full",
-    "quality": 8,
+    "quality": 7,
     "confidence": "high",
-    "rationale": "Stripe's docs recommend restricted API keys (RAKs) for any key given to an AI agent and use RAK permissions to limit what the agent can do in the account. Per-resource scoping is shown concretely: Product Catalog Imports write is required, or requests return a 403. Shared payment tokens add scoped, expiring, revocable payment credentials with currency, max-amount and expiry limits, and the hosted MCP server is OAuth-gated, which a runtime probe confirms. Missing for 10: detailed documentation of RAK permission granularity and key lifecycle (expiry, rotation, auditing) for agent keys, plus independent or hands-on corroboration of RAK scoping in agent use.",
+    "rationale": "Stripe documents restricted API keys (RAKs) as the recommended key type to give AI agents. It says to use RAK permissions to limit what an agent can do in your account, instead of unrestricted secret keys. Per-resource granularity is shown by the catalog-import case: a restricted key without Product Catalog Imports write permission gets a 403. Shared payment tokens and Link one-time credentials are payment-method scoping rather than API credentials, so they are not credited here. Missing for 10: a documented permission catalog and any expiry or rotation controls for agent keys, and independent or hands-on corroboration of least-privilege enforcement.",
     "evidenceIds": [
       "stripe-agentic-commerce-docs-7",
       "stripe-agentic-commerce-docs-23",
       "stripe-agentic-commerce-docs-34",
-      "stripe-ac-supp-seller-catalog-feed",
-      "stripe-ac-supp-spt-limits",
-      "stripe-agentic-commerce-docs-4",
-      "stripe-ac-probe-rt-1"
+      "stripe-ac-supp-seller-catalog-feed"
     ],
     "productId": "stripe-agentic-commerce",
     "storyId": "agentic-scoped-keys"

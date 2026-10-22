@@ -1,5 +1,6 @@
-// Stage 2 of the YC ingestion lane: for every modern-batch (W23–S26) company in open-rankings/yc-map.json,
-// ask the LLM to map it to (a) an EXISTING arena id it genuinely competes in, (b) a proposed new
+// Stage 2 of the YC ingestion lane: for every PENDING modern-batch (W23–S26) company in
+// open-rankings/yc-map.json (yc-fetch stamps new companies pending: true; judged entries are
+// never re-spent or overwritten), ask the LLM to map it to (a) an EXISTING arena id it genuinely competes in, (b) a proposed new
 // arena it clusters with peers under, or (c) null (not a software product ranked meaningfully —
 // hardware, biotech, services, marketplaces). Batches ~40 companies per call and runs
 // SEQUENTIALLY (not in parallel) so each call can see the running list of already-proposed arena
@@ -79,8 +80,12 @@ async function main() {
   const alreadyProposed = new Set<string>()
   for (const c of map) if (c.proposedArena) alreadyProposed.add(c.proposedArena)
 
-  const pending = map.filter((c) => !done.has(c.slug))
-  console.log(`${map.length} total, ${done.size} already classified, ${pending.length} pending.`)
+  // Work = entries the committed map marks pending (yc-fetch stamps new companies; a judged
+  // entry is never pending — lib/schemas.ts) minus this run's own checkpoint. The committed flag,
+  // not the gitignored progress cache, is the source of truth: a fresh CI runner re-judges
+  // nothing already judged, and judged verdicts are never overwritten.
+  const pending = map.filter((c) => c.pending === true && !done.has(c.slug))
+  console.log(`${map.length} total, ${map.length - pending.length - done.size} already classified, ${pending.length} pending.`)
 
   const batches: YcCompany[][] = []
   for (let i = 0; i < pending.length; i += BATCH_SIZE) batches.push(pending.slice(i, i + BATCH_SIZE))
@@ -106,11 +111,13 @@ async function main() {
 
       company.mappedArena = mappedArena
       company.proposedArena = proposedArena
+      delete company.pending // judged — null/null from here on means "not rankable", not "awaiting"
       if (proposedArena) alreadyProposed.add(proposedArena)
       done.add(r.slug)
     }
-    // Anything the LLM silently dropped from its own response still counts as "attempted" so we
-    // don't retry it forever on a model that consistently mis-sizes its output for one slug.
+    // Anything the LLM silently dropped from its own response still counts as "attempted" within
+    // this run so the loop doesn't retry it forever on a model that consistently mis-sizes its
+    // output for one slug. Its pending flag stays set, so a later run gets another attempt.
     for (const c of batch) done.add(c.slug)
 
     writeJson(YC_MAP_PATH, YcMapSchema.parse(map))
