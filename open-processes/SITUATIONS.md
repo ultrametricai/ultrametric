@@ -69,13 +69,13 @@ The 22 situations, hottest clock first (urgency, then title — the /situations 
 | `sit_016` | Recover from an app-store rejection or removal | Your app is rejected in review, or pulled from the App Store or Google Play with a policy notice. | days | global |
 | `sit_001` | Respond to a cease-and-desist | A cease-and-desist letter claiming trademark or IP infringement arrives by mail or email. | days | global |
 | `sit_022` | Respond to a harassment complaint | An employee reports harassment: by complaint, by email, or in a conversation that just became one. | days | us |
-| `sit_008` | Respond to a lawsuit | You've been served: a process server hands you a summons and complaint naming the company. | days | us |
+| `sit_008` | Respond to a lawsuit | You've been served: a process server hands you a summons and complaint naming the company. | days | global |
 | `sit_002` | Unstick a delayed US visa | Your US visa is stuck (221(g) administrative processing after the interview, or a petition sitting past posted times) while the company needs you in Silicon Valley. | days | us |
 | `sit_015` | Answer a data-subject access request | Someone exercises their data rights: a GDPR subject access request or CCPA request to know/delete lands in any inbox. | weeks | global |
 | `sit_004` | Answer a tax-authority notice | A tax-authority notice arrives claiming a discrepancy, a balance due, or a missing filing. | weeks | global |
 | `sit_010` | Cure a Delaware franchise tax delinquency | A Delaware delinquency notice arrives: the March 1 annual report/franchise tax was missed and good standing is gone or going. | weeks | us-state |
 | `sit_012` | Migrate off a shutting-down vendor | A vendor you depend on announces a shutdown or sunsets the product you're built on. | weeks | global |
-| `sit_009` | Respond to a trademark office action | The USPTO examiner issues an office action against your trademark application: refusals or requirements with a response deadline. | weeks | us |
+| `sit_009` | Respond to a trademark office action | The trademark examiner issues an office action against your application: refusals or requirements with a response deadline. | weeks | global |
 
 <!-- situations:table:end -->
 
