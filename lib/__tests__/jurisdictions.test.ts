@@ -13,6 +13,7 @@
 //      math (lib/processes.ts computeCeiling) over the combined node set;
 //   4. the ?juris= codec is tolerant, canonical, and default-eliding.
 
+import fs from 'node:fs'
 import path from 'node:path'
 import { describe, expect, it } from 'vitest'
 import { operationalSources } from './helpers/operational-sources'
@@ -21,11 +22,12 @@ import {
   type Jurisdiction, type JurisdictionStepView,
 } from '@/lib/jurisdictions'
 import {
-  computeCeiling, findProcessBySlug, jurisdictionNodes, jurisdictionStepViews, loadProcesses,
-  processSlug, taskCeiling, type DagNode,
+  computeCeiling, findProcessBySlug, GOVERNMENT_ARENA_ID, governmentStepEligibility,
+  jurisdictionNodes, jurisdictionStepViews, loadProcesses, processSlug, taskCeiling, type DagNode,
 } from '@/lib/processes'
 
 const DATA_DIR = path.resolve(__dirname, '../../open-rankings')
+const ROOT = path.resolve(__dirname, '../..')
 
 interface RawTask {
   id: string
@@ -52,8 +54,8 @@ const rawConditional = rawTasks.flatMap((t) =>
 
 describe('corpus integrity (complete canonical projection — loadProcesses strips these before other tests see them)', () => {
   it('has conditional steps at the intended scale, and every jurisdictions value is from the allowed set', () => {
-    expect(rawConditional.length).toBeGreaterThanOrEqual(8)
-    expect(rawConditional.length).toBeLessThanOrEqual(15)
+    expect(rawConditional.length).toBeGreaterThanOrEqual(25)
+    expect(rawConditional.length).toBeLessThanOrEqual(45)
     for (const { task, node } of rawConditional) {
       expect(node.jurisdictions!.length, `${task.id}:${node.id} empty jurisdictions`).toBeGreaterThan(0)
       for (const j of node.jurisdictions!) {
@@ -101,6 +103,81 @@ describe('corpus integrity (complete canonical projection — loadProcesses stri
       if (!node.processRef) continue
       expect(findProcessBySlug(node.processRef, DATA_DIR), `${task.id}:${node.id} processRef "${node.processRef}"`).not.toBeNull()
     }
+  })
+})
+
+// The per-state steps (2026-10-22): every state-conditional step's code resolves to a
+// level-state entry in jurisdictions/registry.json and the step carries a cited official page;
+// law-rule ids cited in the step prose are committed on disk; and the state code narrows the
+// government-services candidate pull to the state's own registry agency where one is tagged.
+describe('state-conditional steps', () => {
+  const registry = JSON.parse(
+    fs.readFileSync(path.join(ROOT, 'jurisdictions/registry.json'), 'utf8'),
+  ) as { jurisdictions: Array<{ code: string; level: string }> }
+  const stateCodes = new Set(
+    registry.jurisdictions.filter((j) => j.level === 'state').map((j) => j.code),
+  )
+  const loaded = loadProcesses(DATA_DIR).flatMap((t) =>
+    jurisdictionNodes(t.id, DATA_DIR).map((node) => ({ task: t, node })),
+  )
+  const stateSteps = loaded.filter(({ node }) =>
+    node.jurisdictions!.some((j) => /^US-[A-Z]{2}$/.test(j)),
+  )
+
+  it('every state code resolves to a level:state registry entry, and the step cites an official https page', () => {
+    expect(stateSteps.length).toBeGreaterThan(0)
+    for (const { task, node } of stateSteps) {
+      const key = `${task.id}:${node.id}`
+      for (const j of node.jurisdictions!.filter((code) => code !== 'MULTI')) {
+        expect(stateCodes.has(j), `${key}: ${j} must be registered in jurisdictions/registry.json`).toBe(true)
+      }
+      expect(node.actionUrl, `${key}: a state step carries its official page`).toMatch(/^https:\/\//)
+      // Official domains only: .gov, the states' own .us hosts (sos.state.tx.us et al.), and
+      // the one state agency that runs on .com — the Florida Department of Revenue.
+      const host = new URL(node.actionUrl!).hostname
+      expect(
+        /\.(gov|us)$/.test(host) || host === 'floridarevenue.com',
+        `${key}: ${host} is a government domain`,
+      ).toBe(true)
+    }
+  })
+
+  it('every law rule cited in conditional-step prose is committed on disk under its jurisdiction', () => {
+    // The guidance prose lives in the canonical records (the operational projection carries
+    // label/metadata only), so scan the authored files the same way founders read them.
+    let cited = 0
+    const catalog = JSON.parse(
+      fs.readFileSync(path.join(ROOT, 'open-processes/catalog.json'), 'utf8'),
+    ) as { processes: string[] }
+    for (const slug of catalog.processes) {
+      const record = JSON.parse(
+        fs.readFileSync(path.join(ROOT, 'open-processes', `${slug}.json`), 'utf8'),
+      ) as { parts?: Array<{ id: string; guidance?: string | null; metadata?: { jurisdictions?: string[] } }> }
+      for (const part of record.parts ?? []) {
+        if (!part.metadata?.jurisdictions) continue
+        for (const m of (part.guidance ?? '').matchAll(/law rule (us-[a-z]{2}\.[a-z0-9-]+)/g)) {
+          cited += 1
+          const ruleId = m[1]
+          const dir = ruleId.split('.')[0].toUpperCase()
+          const file = path.join(ROOT, 'open-law', dir, `${ruleId.replace(/\./g, '-')}.json`)
+          expect(fs.existsSync(file), `${slug}:${part.id} cites ${ruleId}; card expected at ${file}`).toBe(true)
+          expect(JSON.parse(fs.readFileSync(file, 'utf8')).id).toBe(ruleId)
+        }
+      }
+    }
+    expect(cited).toBeGreaterThanOrEqual(15)
+  })
+
+  it('a state code narrows the government-services pull to the state registry agency (US-TX admits only texas-sos)', () => {
+    const txStep = jurisdictionNodes('qs_047', DATA_DIR).find((n) => n.jurisdictions?.includes('US-TX'))!
+    expect(txStep).toBeDefined()
+    expect(governmentStepEligibility(txStep, GOVERNMENT_ARENA_ID, DATA_DIR)).toEqual(new Set(['texas-sos']))
+    // The normalized deprecated alias narrows too: the loaded CA step is US-CA.
+    const caStep = jurisdictionNodes('qs_047', DATA_DIR).find((n) => n.jurisdictions?.includes('US-CA'))!
+    expect(governmentStepEligibility(caStep, GOVERNMENT_ARENA_ID, DATA_DIR)).toEqual(new Set(['california-sos']))
+    // MULTI steps never narrow.
+    const multi = jurisdictionNodes('qs_047', DATA_DIR).find((n) => n.jurisdictions?.includes('MULTI'))!
+    expect(governmentStepEligibility(multi, GOVERNMENT_ARENA_ID, DATA_DIR)).toBeNull()
   })
 })
 
@@ -154,7 +231,7 @@ describe('default-view invariance', () => {
         jurisdictionNodes(id, DATA_DIR).length,
       ]),
     )
-    expect(counts).toEqual({ form_001: 2, qs_043: 1, qs_063: 2, tax_001: 1, form_005: 1, qs_047: 2 })
+    expect(counts).toEqual({ form_001: 6, qs_043: 7, qs_063: 6, tax_001: 2, form_005: 3, qs_047: 6 })
   })
 
   it('the sales-tax-nexus MULTI step links the existing process instead of duplicating it', () => {
