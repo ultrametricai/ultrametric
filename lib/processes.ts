@@ -762,6 +762,7 @@ export function jurisdictionStepViews(taskId: string, dir: string = DEFAULT_DIR(
     return {
       label: n.label,
       route: n.route,
+      execution: n.execution,
       jurisdictions: (n.jurisdictions ?? []) as Jurisdiction[],
       actionUrl: n.actionUrl ?? null,
       actionLabel: n.actionLabel ?? null,
@@ -1413,6 +1414,7 @@ export function buildSimSteps(tasks: ProcessTask[], dir?: string): SimStep[] {
       taskTitle: task.title,
       label: n.label,
       route: n.route,
+      execution: n.execution,
       vendor: n.vendor ?? null,
       vendorLabel: n.vendor ? vendorLabel(n.vendor) : null,
       arenaId: (n.vendor && VENDOR_ARENA[n.vendor]) || null,

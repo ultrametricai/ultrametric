@@ -58,8 +58,8 @@ export function operationalProcessSchemaJson(): string {
     $schema,
     title: 'Ultrametric operational process',
     description:
-      'One operational projection of a canonical founder-process definition: a real startup operating process mapped as a DAG whose steps are routed ' +
-      'agent/form/person, with curated cadence, geo scope, rank axes, and time estimates. ' +
+      'One operational projection of a canonical founder-process definition: a real startup operating process mapped as a DAG with evidenced execution assessments, ' +
+      'legacy route compatibility, curated cadence, geo scope, rank axes, and time estimates. ' +
       'Generated from ProcessTaskSchema in lib/processes.ts by ' +
       'scripts/generate-corpus-schemas.ts — edit the zod schema, never this file.',
     ...rest,

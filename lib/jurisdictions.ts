@@ -1,3 +1,4 @@
+import type { Execution } from './execution'
 // Jurisdiction-conditional process steps (founder 2026-09-25: "allow more options for the
 // processes — ie multi-state situations or California included — so we can see how the
 // processes change"). A DAG node may declare `jurisdictions: ['CA'] | ['MULTI']` meaning the
@@ -64,6 +65,7 @@ export function serializeJuris(active: Jurisdiction[]): string | null {
 export interface JurisdictionStepView {
   label: string
   route?: StepRoute
+  execution?: Execution
   jurisdictions: Jurisdiction[]
   /** Canonical do-it-yourself page (verified live before listing) — null when none exists. */
   actionUrl: string | null

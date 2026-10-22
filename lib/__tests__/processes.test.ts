@@ -472,7 +472,10 @@ describe('corpus', () => {
   })
 
   it('contains no scrubbed vendor names and no AFK-app-legacy framing', () => {
-    const raw = JSON.stringify(loadProcesses(DATA_DIR)).toLowerCase()
+    // Primary-source URLs in assessments are evidence, not vendor names in prose.
+    // The execution tests separately validate their local source references.
+    const raw = JSON.stringify(loadProcesses(DATA_DIR), (key, value) =>
+      key === 'execution' ? { ...value, evidence: [] } : value).toLowerCase()
     for (const banned of [
       'searchmarq', 'domscan', 'daytona', 'linear.app',
       // The corpus is a general startup-operations map, not the original AFK app's task list.

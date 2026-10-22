@@ -105,7 +105,7 @@ export function validateCatalog(input: unknown): SharedRecord[] {
         if (allParts.has(part.id)) throw new Error(`${record.id}: duplicate nested part ID ${part.id}`)
         allParts.add(part.id)
         validateExecution(part.metadata, `${scope}/${part.id}`)
-        for (const option of part.options) validateExecution(option.metadata, `${scope}/${part.id}/${option.id}`)
+        for (const option of part.options) validateExecution({ ...part.metadata, ...option.metadata }, `${scope}/${part.id}/${option.id}`)
         if (part.kind === 'reference') {
           if (!part.ref || !byId.has(part.ref)) throw new Error(`${scope}/${part.id}: unresolved process reference`)
           children.push(part.ref)

@@ -1,6 +1,9 @@
+import { executionOf, type ExecutionCategory } from '../execution'
 import type { SharedRecord } from './schema'
 
 export function processSummary(record: SharedRecord, records: SharedRecord[] = []) {
+  const executionCounts: Record<ExecutionCategory, number> = { 'agent-native': 0, 'agent-computer-use': 0, 'human-online': 0, 'human-offline': 0 }
+  let unclassified = 0, reviewRequired = 0, executionApprovals = 0, executionSignatures = 0
   let agent = 0, unverified = 0, approvals = 0, steps = 0, subprocesses = 0, manual = 0, person = 0, signature = 0
   let resolved = true, classified = true
   function visit(current: SharedRecord, ancestors: Set<string>) {
@@ -18,6 +21,13 @@ export function processSummary(record: SharedRecord, records: SharedRecord[] = [
       }
       steps++
       const metadata = part.kind === 'decision' ? part.options.find(option => option.id === 'default')?.metadata ?? part.metadata : part.metadata
+      const contentMetadata = { ...part.metadata, ...part.options.find(option => option.id === 'default')?.metadata }
+      const execution = executionOf(contentMetadata)
+      if (execution?.category) executionCounts[execution.category]++
+      else unclassified++
+      if (execution?.reviewRequired) reviewRequired++
+      if (contentMetadata.approvalRequired === true) executionApprovals++
+      if (contentMetadata.legalSignature === true) executionSignatures++
       if (!metadata || !['agent', 'form', 'person'].includes(String(metadata.route))) { classified = false; continue }
       if (metadata.legalSignature === true) { signature++; continue }
       if (metadata.route === 'form') { manual++; continue }
@@ -29,6 +39,8 @@ export function processSummary(record: SharedRecord, records: SharedRecord[] = [
   visit(record, new Set())
   const supported = resolved && classified
   return {
+    // Additive content counts; legacy route metrics below keep their existing semantics.
+    executionCounts, unclassified, reviewRequired, executionApprovals, executionSignatures,
     automation: null, completionTime: null, cost: null,
     // Same default-path route arithmetic as lib/processes.ts computeCeiling.
     // Retained agent classifications include unverified bindings; this is not

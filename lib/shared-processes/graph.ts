@@ -1,3 +1,4 @@
+import { executionOf, executionLabel } from '../execution'
 import { layerNodes } from '../dagLayers'
 import type { Connection, Part, SharedRecord } from './schema'
 import { regionalDecision } from './regions'
@@ -51,9 +52,12 @@ export function processGraphs(record: SharedRecord, records: SharedRecord[], sel
 }
 
 export function graphExecutionType(node: GraphNode) {
-  if (node.metadata.legalSignature === true) return { label: 'Signature — legally human', symbol: '✎', color: 'text-violet-300' }
-  if (node.metadata.route === 'agent') return { label: (node.sourceScope ?? node.scope) === 'form_001:n3' ? 'Agent · unverified; no verified API or tool binding' : 'Agent classification; execution integration not verified', symbol: '✦', color: (node.sourceScope ?? node.scope) === 'form_001:n3' ? 'text-zinc-400' : 'text-emerald-300' }
-  if (node.metadata.route === 'form') return { label: 'Manual form', symbol: '▤', color: 'text-amber-300' }
-  if (node.metadata.route === 'person') return { label: 'Human or computer use', symbol: '♙', color: 'text-sky-300' }
-  return { label: 'Execution type not specified', symbol: '?', color: 'text-zinc-500' }
+  const execution = executionOf(node.metadata)
+  const styles = {
+    'agent-native': { symbol: '✦', color: 'text-emerald-300' },
+    'agent-computer-use': { symbol: '▤', color: 'text-amber-300' },
+    'human-online': { symbol: '♙', color: 'text-sky-300' },
+    'human-offline': { symbol: '♙', color: 'text-violet-300' },
+  }
+  return { label: executionLabel(execution), ...(execution?.category ? styles[execution.category] : { symbol: '?', color: 'text-zinc-500' }) }
 }

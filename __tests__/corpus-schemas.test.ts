@@ -53,7 +53,7 @@ describe('canonical process schema publication', () => {
     expect(published.parse(record)).toEqual(record)
     expect(record.metadata.produces).toEqual(['brand-logo'])
     expect(record.parts.find((part: { id: string }) => part.id === 'n2').metadata.producesArtifact).toBe('brand-logo')
-    expect(record.parts[0].metadata).toEqual({ route: 'agent', reversibility: 'reversible' })
+    expect(record.parts[0].metadata).toMatchObject({ route: 'agent', reversibility: 'reversible' })
   })
 
   it('provides a canonical-only reference with its recursive definitions intact', () => {

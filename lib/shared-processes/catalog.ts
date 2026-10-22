@@ -84,3 +84,21 @@ export function loadProcessCatalog(selection?: { processes: string[] }, root = p
   validateCatalog(processes.map(process => process.record))
   return { processes }
 }
+
+/** Authoring gate; older imports remain valid additive-schema consumers. */
+export function validateExecutionCoverage(records: SharedRecord[]) {
+  function assess(parts: SharedRecord['parts'], scope: string) {
+    for (const part of parts) {
+      const key = `${scope}/${part.id}`
+      const hasDefault = part.options.some(option => option.id === 'default')
+      if (part.kind !== 'reference' && !hasDefault && part.metadata.execution === undefined) {
+        throw new Error(`${key}: missing execution assessment`)
+      }
+      for (const option of part.options) {
+        if (option.metadata.execution === undefined) throw new Error(`${key}/${option.id}: missing execution assessment`)
+        assess(option.parts, `${key}/${option.id}`)
+      }
+    }
+  }
+  for (const record of records) assess(record.parts, record.id)
+}

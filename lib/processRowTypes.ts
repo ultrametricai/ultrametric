@@ -1,3 +1,4 @@
+import type { Execution } from './execution'
 import type { GeoNotesByCountry } from '@/lib/geoPreference'
 import type { ProcessKind, Urgency } from '@/lib/processSim'
 
@@ -74,7 +75,7 @@ export interface PlaybookRow {
   pct: number
   agentSteps: number
   totalSteps: number
-  steps: Array<{ label: string; route?: 'agent' | 'form' | 'person'; legalSignature: boolean }>
+  steps: Array<{ label: string; route?: 'agent' | 'form' | 'person'; execution?: Execution; legalSignature: boolean }>
   // The combined vendor cell (founder 2026-10-02: show the vendors, not a 'Go to process' link)
   // — the constituent processes' vendor chips, deduped in journey order, same shape and cap as
   // a process row's.

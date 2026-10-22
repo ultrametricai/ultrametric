@@ -28,10 +28,6 @@ export function executionLabel(execution: Execution | undefined): string {
   return execution?.category ? EXECUTION_LABELS[execution.category] : 'Execution needs review'
 }
 
-export function agentExecution(execution: Execution | undefined): boolean {
-  return execution?.category === 'agent-native' || execution?.category === 'agent-computer-use'
-}
-
 export function validateExecution(metadata: Record<string, unknown>, scope: string): void {
   const execution = executionOf(metadata)
   if (!execution) return
