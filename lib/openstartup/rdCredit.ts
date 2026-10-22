@@ -26,6 +26,9 @@
 // file. State R&D credits are out of scope entirely.
 // ---------------------------------------------------------------------------
 
+import { z } from 'zod'
+import { entrySpec } from './entryValidation'
+
 /** The rule cards this module is allowed to cite. The vitest gate asserts every id
  * resolves to a committed card with the matching jurisdiction. */
 export const RD_RULE_IDS = {
@@ -234,6 +237,26 @@ export interface QuarterLiability {
   employerMedicareTax: number
 }
 
+/** Structural schema of QuarterLiability — the registry entry contract (field names and
+ * types; value and ordering rules stay in the function). */
+export const QuarterLiabilitySchema = z.object({
+  label: z.string(),
+  employerSocialSecurityTax: z.number(),
+  employerMedicareTax: z.number(),
+})
+
+/** Registered entrypoint arguments (open-modules/registry.json). */
+export const quarterlyOffsetApplicationEntry = entrySpec('quarterlyOffsetApplication', [
+  {
+    name: 'inputs',
+    schema: z.object({
+      electedAmount: z.number(),
+      taxYearBeginsAfter2022: z.boolean(),
+      quarters: z.array(QuarterLiabilitySchema),
+    }),
+  },
+])
+
 export interface QuarterApplication {
   label: string
   appliedToSocialSecurity: number
@@ -269,6 +292,7 @@ export function quarterlyOffsetApplication(inputs: {
   taxYearBeginsAfter2022: boolean
   quarters: readonly QuarterLiability[]
 }): OffsetApplicationReport {
+  quarterlyOffsetApplicationEntry.validate(inputs)
   assertPositive(inputs.electedAmount, 'electedAmount')
   const cap = payrollOffsetElectionCap(inputs.taxYearBeginsAfter2022)
   if (inputs.electedAmount > cap) {

@@ -26,6 +26,9 @@
 //   exceeds amount realized (Rev. Proc. 2012-29 § 4.03 and § 5, Examples 3 and 6).
 // ---------------------------------------------------------------------------
 
+import { z } from 'zod'
+import { entrySpec } from './entryValidation'
+
 /** The rule cards this module is allowed to cite. The vitest gate asserts every id
  * resolves to a committed card with the matching jurisdiction. */
 export const ELECTION_83B_RULE_IDS = {
@@ -66,6 +69,27 @@ export interface VestingScenarioEvent {
   fmvPerShare: number
 }
 
+/** Structural schema of RestrictedStockFacts — the registry entry contract (field names
+ * and types; value rules stay in the function). */
+export const RestrictedStockFactsSchema = z.object({
+  shares: z.number(),
+  pricePaidPerShare: z.number(),
+  fmvAtTransferPerShare: z.number(),
+})
+
+/** Structural schema of VestingScenarioEvent (open-modules/registry.json). */
+export const VestingScenarioEventSchema = z.object({
+  label: z.string(),
+  shares: z.number(),
+  fmvPerShare: z.number(),
+})
+
+/** Registered entrypoint arguments (open-modules/registry.json). */
+export const compare83bScenarioEntry = entrySpec('compare83bScenario', [
+  { name: 'facts', schema: RestrictedStockFactsSchema },
+  { name: 'vestingScenario', schema: z.array(VestingScenarioEventSchema) },
+])
+
 export interface ElectionPathResult {
   /** Ordinary compensation income in the transfer year. */
   incomeAtTransfer: number
@@ -104,6 +128,7 @@ export function compare83bScenario(
   facts: RestrictedStockFacts,
   vestingScenario: readonly VestingScenarioEvent[],
 ): Comparison83b {
+  compare83bScenarioEntry.validate(facts, vestingScenario)
   if (!Number.isInteger(facts.shares) || facts.shares <= 0) throw new RangeError('shares must be a positive integer')
   assertNonNegative(facts.pricePaidPerShare, 'pricePaidPerShare')
   assertNonNegative(facts.fmvAtTransferPerShare, 'fmvAtTransferPerShare')

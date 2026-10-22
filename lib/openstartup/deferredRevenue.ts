@@ -35,6 +35,8 @@
 // Educational model, not accounting advice.
 // ---------------------------------------------------------------------------
 
+import { z } from 'zod'
+import { entrySpec } from './entryValidation'
 import { allocateCents } from './waterfall'
 
 const DAY_MS = 86_400_000
@@ -96,6 +98,21 @@ export interface RevenueLine {
    * NEXT invoice, after some of their service has already been delivered. */
   billedOn?: string
 }
+
+/** Structural schema of RevenueLine — the registry entry contract (field names and types;
+ * date-order and amount rules stay in the functions). */
+export const RevenueLineSchema = z.object({
+  description: z.string().optional(),
+  amount: z.number(),
+  serviceStart: z.string(),
+  serviceEnd: z.string(),
+  billedOn: z.string().optional(),
+})
+
+/** Registered entrypoint arguments (open-modules/registry.json). */
+export const recognitionReportEntry = entrySpec('recognitionReport', [
+  { name: 'lines', schema: z.array(RevenueLineSchema) },
+])
 
 export interface MonthRecognition {
   /** YYYY-MM. */
@@ -166,6 +183,7 @@ export interface RecognitionReport {
  * needsReview, always.
  */
 export function recognitionReport(lines: readonly RevenueLine[]): RecognitionReport {
+  recognitionReportEntry.validate(lines)
   if (lines.length === 0) throw new RangeError('at least one revenue line required')
   const recognizedByMonth = new Map<string, number>()
   const billedByMonth = new Map<string, number>()

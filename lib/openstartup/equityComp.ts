@@ -25,7 +25,9 @@
 //   in four lines would be wrong. Educational model, not tax or legal advice.
 // ---------------------------------------------------------------------------
 
-import { floorShares, roundPrice, vestedShares, type VestingSchedule } from './capTable'
+import { z } from 'zod'
+import { floorShares, roundPrice, vestedShares, type VestingSchedule, VestingScheduleSchema } from './capTable'
+import { entrySpec } from './entryValidation'
 
 function round2(x: number): number {
   return Math.round(x * 100) / 100
@@ -88,6 +90,28 @@ export interface ExitScenario {
   extraDilutionPct?: number
 }
 
+/** Structural schema of OfferGrant — the registry entry contract (field names and types;
+ * value rules stay in assertGrant). */
+export const OfferGrantSchema = z.object({
+  optionShares: z.number(),
+  strikePerShare: z.number(),
+  fullyDilutedShares: z.number(),
+  vesting: VestingScheduleSchema.optional(),
+})
+
+/** Structural schema of ExitScenario (open-modules/registry.json). */
+export const ExitScenarioSchema = z.object({
+  label: z.string(),
+  exitValuation: z.number(),
+  extraDilutionPct: z.number().optional(),
+})
+
+/** Registered entrypoint arguments (open-modules/registry.json). */
+export const offerScenarioTableEntry = entrySpec('offerScenarioTable', [
+  { name: 'grant', schema: OfferGrantSchema },
+  { name: 'scenarios', schema: z.array(ExitScenarioSchema) },
+])
+
 export interface ExitOutcome {
   label: string
   exitValuation: number
@@ -134,6 +158,7 @@ export function grantExitOutcome(grant: OfferGrant, scenario: ExitScenario): Exi
 
 /** The offer conversation in one table: the same grant across candidate scenarios. */
 export function offerScenarioTable(grant: OfferGrant, scenarios: readonly ExitScenario[]): ExitOutcome[] {
+  offerScenarioTableEntry.validate(grant, scenarios)
   return scenarios.map((s) => grantExitOutcome(grant, s))
 }
 

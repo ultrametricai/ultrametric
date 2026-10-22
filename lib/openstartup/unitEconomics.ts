@@ -46,6 +46,14 @@
 // substitute for the company's own books.
 // ---------------------------------------------------------------------------
 
+import { z } from 'zod'
+import { entrySpec } from './entryValidation'
+
+/** Registered entrypoint arguments (open-modules/registry.json). */
+export const burnMultipleEntry = entrySpec('burnMultiple', [
+  { name: 'input', schema: z.object({ netBurn: z.number(), netNewArr: z.number() }) },
+])
+
 // ---------------------------------------------------------------------------
 // Lifetime and LTV (Skok, SaaS Metrics 2.0 definitions)
 // ---------------------------------------------------------------------------
@@ -165,6 +173,7 @@ export interface BurnMultipleReport {
  * The post's efficiency bands are ITS table — compare via compareToBenchmark.
  */
 export function burnMultiple(input: { netBurn: number; netNewArr: number }): BurnMultipleReport {
+  burnMultipleEntry.validate(input)
   if (!Number.isFinite(input.netBurn) || !Number.isFinite(input.netNewArr)) throw new RangeError('inputs must be finite')
   const base = { netBurn: input.netBurn, netNewArr: input.netNewArr, needsReview: true as const }
   if (input.netNewArr <= 0) {

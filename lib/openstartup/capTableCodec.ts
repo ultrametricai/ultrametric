@@ -6,9 +6,17 @@
 // round-trips identically in the browser and in node tests.
 // ---------------------------------------------------------------------------
 
-import type { CapTableEvent } from './capTable'
+import { z } from 'zod'
+import { CapTableEventSchema, type CapTableEvent } from './capTable'
+import { entrySpec } from './entryValidation'
 
 export const CAP_TABLE_STATE_VERSION = 1
+
+/** Registered entrypoint arguments (open-modules/registry.json). Encode validates its
+ * events structurally; decode stays fully defensive (any malformation returns null). */
+export const encodeCapTableStateEntry = entrySpec('encodeCapTableState', [
+  { name: 'events', schema: z.array(CapTableEventSchema) },
+])
 
 const B64URL = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_'
 
@@ -155,6 +163,7 @@ function fromWire(w: unknown): CapTableEvent | null {
 
 /** Encode the event list as an unpadded base64url token for the ?ct= param. */
 export function encodeCapTableState(events: readonly CapTableEvent[]): string {
+  encodeCapTableStateEntry.validate(events)
   return toBase64Url(JSON.stringify({ v: CAP_TABLE_STATE_VERSION, e: events.map(toWire) }))
 }
 

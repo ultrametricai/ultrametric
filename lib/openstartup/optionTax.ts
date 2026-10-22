@@ -34,6 +34,8 @@
 //   the boundary case is flagged, not decided.
 // ---------------------------------------------------------------------------
 
+import { z } from 'zod'
+import { entrySpec } from './entryValidation'
 import { addUtcMonths } from './grant409aSanity'
 
 /** The rule cards this module is allowed to cite. The vitest gate asserts every id
@@ -241,6 +243,20 @@ export interface IsoGrant {
   firstExercisable: readonly { year: number; shares: number }[]
 }
 
+/** Structural schema of IsoGrant — the registry entry contract (field names and types;
+ * value and date rules stay in the function). */
+export const IsoGrantSchema = z.object({
+  id: z.string(),
+  grantDate: z.string(),
+  grantDateFmvPerShare: z.number(),
+  firstExercisable: z.array(z.object({ year: z.number(), shares: z.number() })),
+})
+
+/** Registered entrypoint arguments (open-modules/registry.json). */
+export const iso100kAttributionEntry = entrySpec('iso100kAttribution', [
+  { name: 'grants', schema: z.array(IsoGrantSchema) },
+])
+
 export interface IsoLimitSlice {
   grantId: string
   year: number
@@ -280,6 +296,7 @@ const ISO_DATE_RE = /^\d{4}-\d{2}-\d{2}$/
  * § 1.422-4(d) Examples 2 and 3 number-for-number.
  */
 export function iso100kAttribution(grants: readonly IsoGrant[]): IsoLimitReport {
+  iso100kAttributionEntry.validate(grants)
   const ordered = [...grants]
   for (const g of ordered) {
     if (!ISO_DATE_RE.test(g.grantDate)) throw new RangeError(`grant ${g.id}: grantDate must be YYYY-MM-DD`)
