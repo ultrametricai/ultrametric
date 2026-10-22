@@ -1,0 +1,92 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Ultrametric vendor state availability",
+  "description": "Vendor US-state service availability evidence (jurisdictions/vendor-state.json): one row per (product, state, service) with a status, an optional price from the vendor’s own pricing page, the vendor’s own state page as the source, and the date it was checked. Display/annotation evidence only; no judged number reads it. Generated from VendorStateEntrySchema in lib/vendorState.ts by scripts/generate-corpus-schemas.ts — edit the zod schema, never this file.",
+  "type": "array",
+  "items": {
+    "type": "object",
+    "properties": {
+      "productId": {
+        "type": "string",
+        "minLength": 1
+      },
+      "arenaId": {
+        "type": "string",
+        "minLength": 1
+      },
+      "state": {
+        "type": "string",
+        "pattern": "^US-[A-Z]{2}$"
+      },
+      "service": {
+        "type": "string",
+        "enum": [
+          "registered-agent",
+          "formation",
+          "foreign-qualification",
+          "annual-report-filing",
+          "payroll-tax-registration",
+          "sales-tax-registration"
+        ]
+      },
+      "status": {
+        "type": "string",
+        "enum": [
+          "available",
+          "unavailable",
+          "partial"
+        ]
+      },
+      "price": {
+        "type": "object",
+        "properties": {
+          "usd": {
+            "type": "number",
+            "minimum": 0
+          },
+          "per": {
+            "type": "string",
+            "enum": [
+              "one-time",
+              "month",
+              "year"
+            ]
+          },
+          "asOf": {
+            "type": "string",
+            "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+          }
+        },
+        "required": [
+          "usd",
+          "per",
+          "asOf"
+        ],
+        "additionalProperties": false
+      },
+      "sourceUrl": {
+        "type": "string",
+        "format": "uri"
+      },
+      "note": {
+        "type": "string",
+        "minLength": 1
+      },
+      "checkedAt": {
+        "type": "string",
+        "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+      }
+    },
+    "required": [
+      "productId",
+      "arenaId",
+      "state",
+      "service",
+      "status",
+      "sourceUrl",
+      "note",
+      "checkedAt"
+    ],
+    "additionalProperties": false
+  }
+}
