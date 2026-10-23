@@ -131,11 +131,14 @@
   {
     "productId": "bvnk",
     "storyId": "agentic-nl-commands",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "Natural-language operation is a fair question for a payments platform, but the pack shows no BVNK feature that accepts natural-language commands. The llms.txt file is LLM-readable documentation, a developer building block rather than an NL interface. The agent-wallet-cli probe documents a CLI but gives no evidence that it takes natural-language input. All other evidence covers conventional Portal/API operations.",
-    "evidenceIds": []
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "BVNK has no documented natural-language interface. The only agent-oriented evidence is an llms.txt docs file and an official 'agent-wallet-cli' repo, which suggest an LLM agent could drive BVNK on a user's behalf. Neither shows users issuing natural-language commands to the product. Missing for 10: a documented natural-language or conversational command interface, any description of what the agent-wallet-cli does, an MCP server or agent integration guide, and hands-on or independent corroboration.",
+    "evidenceIds": [
+      "bvnk-probe-1",
+      "bvnk-probe-2"
+    ]
   },
   {
     "productId": "bvnk",
@@ -172,11 +175,14 @@
   {
     "productId": "bvnk",
     "storyId": "agentic-scoped-keys",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "The axis applies, since a payments API platform could offer scoped keys, but the evidence only shows that BVNK lets you generate Hawk API keys (Auth ID plus Secret Key) from the Integrations page. Nothing documents permission scopes, role restrictions or least-privilege limits on those credentials. The agent-wallet-cli probe also says nothing about scoped credentials, and plain key generation is an adjacent feature that earns no credit.",
-    "evidenceIds": []
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "BVNK documents generating API credentials (a Hawk Auth ID and Secret Key used to sign each request), so an agent can be given its own API key. Nothing in the evidence shows those credentials can be scoped by permission, resource, wallet or amount, which is the heart of this story. Missing for 10: documented permission scopes or role-restricted API keys, per-key resource/wallet/spend limits, agent-specific credential issuance, and independent corroboration.",
+    "evidenceIds": [
+      "bvnk-docs-29",
+      "bvnk-docs-20"
+    ]
   },
   {
     "productId": "bvnk",
@@ -288,11 +294,15 @@
   {
     "productId": "bvnk",
     "storyId": "automation-scheduled-jobs",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "Scheduling recurring payouts or workflows is a plausible capability for a payments platform, so the axis applies. The evidence shows only event-driven automation: payment rules that auto-convert incoming fiat to crypto, and webhooks that fire on account events. Nothing documents time-based scheduling or recurring job configuration, and adjacent automation earns no credit.",
-    "evidenceIds": []
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "Scheduled or recurring automation is a fair axis for a payments API, and it applies here. The only evidence of standing automation is event-driven: payment rules (POST /payment/v1/rules) automatically on-ramp each incoming fiat deposit to a crypto address. That is a repeatable workflow, but it is not time-based scheduling. Missing for 10: time-based scheduling (cron or recurring intervals), scheduled or recurring payouts, management of scheduled jobs, and any hands-on corroboration.",
+    "evidenceIds": [
+      "bvnk-docs-5",
+      "bvnk-docs-14",
+      "bvnk-docs-23"
+    ]
   },
   {
     "productId": "bvnk",
@@ -335,16 +345,18 @@
     "productId": "bvnk",
     "storyId": "fiat-onramp-integration",
     "verdict": "partial",
-    "quality": 5,
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "BVNK documents an API-based fiat-to-crypto onramp. You create virtual accounts in USD, EUR or GBP for your customers, then use `POST /payment/v1/rules` to link a fiat virtual account to a blockchain address so incoming bank transfers are automatically on-ramped. Embedded Wallets let partners offer this under their own branding. There is no evidence of card-funded stablecoin purchases or an embeddable onramp widget; the virtual cards mentioned are for spending stablecoin balances, not buying them. Missing for 10: card-based purchase of stablecoins, a drop-in onramp widget/UI, end-user buy-flow documentation, independent or hands-on corroboration.",
+    "rationale": "BVNK documents an API-driven, bank-transfer onramp. Customers can get fiat virtual accounts in USD, EUR or GBP inside embedded, partner-branded wallets, and a `POST /payment/v1/rules` call auto-converts incoming fiat to crypto and sends it to a blockchain address. Card purchases and a drop-in widget are not evidenced; virtual cards are for spending stablecoin balances, not buying them. Missing for 10: card-funded stablecoin purchases, an embeddable onramp widget/UI, explicit confirmation that rule-based conversion targets stablecoins, independent/hands-on corroboration.",
     "evidenceIds": [
       "bvnk-docs-5",
+      "bvnk-docs-23",
       "bvnk-docs-14",
       "bvnk-docs-12",
       "bvnk-docs-8",
+      "bvnk-docs-25",
       "bvnk-docs-18",
-      "bvnk-docs-25"
+      "bvnk-docs-15"
     ]
   },
   {
@@ -428,11 +440,18 @@
   {
     "productId": "bvnk",
     "storyId": "multi-chain-support",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "The evidence repeatedly says BVNK accepts, sends and holds 'stablecoins' and crypto on blockchain addresses. However, no item names specific stablecoins (USDC, USDT, etc.) or the networks they run on. Nothing shows a documented list of supported coin/chain pairs that a developer could match against what customers hold, so the axis applies but is unevidenced.",
-    "evidenceIds": []
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "BVNK's docs and site say it accepts, sends and holds stablecoins and crypto via blockchain addresses and channels. However, nothing in the pack names specific assets such as USDC or USDT or any supported networks, so a developer cannot yet match coverage to what customers hold. Missing for 10: a documented list of supported stablecoins (USDC, USDT, peers), named supported chains and networks, a per-asset/per-chain support matrix, and independent corroboration.",
+    "evidenceIds": [
+      "bvnk-docs-9",
+      "bvnk-docs-10",
+      "bvnk-docs-13",
+      "bvnk-docs-15",
+      "bvnk-docs-19",
+      "bvnk-docs-33"
+    ]
   },
   {
     "productId": "bvnk",
@@ -695,12 +714,15 @@
     "productId": "circle",
     "storyId": "accept-stablecoin-checkout",
     "verdict": "partial",
-    "quality": 4,
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Circle's only documented payment-acceptance flow is the x402 seller pattern: your API returns 402 Payment Required for unpaid requests and serves the resource once a valid USDC payment is attached, with services listable in the Agent Marketplace. That covers requesting, presenting, and verifying payment, but only for per-request agent payments, not a general customer checkout or payment API. Wallet-creation APIs and generic webhooks are building blocks rather than a payment-acceptance product, so they earn no credit. missing for 10: a documented checkout or payment-intent API for human customers, a create-payment endpoint returning a deposit address or hosted flow, explicit programmatic settlement-confirmation events for received payments, independent or hands-on corroboration.",
+    "rationale": "Circle documents building blocks for accepting stablecoin payments: wallet-creation APIs that can serve as receiving addresses, webhooks that POST on resource state changes for programmatic confirmation, and idempotency keys. The x402 seller flow returns 402 until a valid USDC payment is attached, but it is aimed at charging AI agents per request rather than at customer checkout. A developer must assemble these pieces rather than use a dedicated customer checkout or payment-intent API. Missing for 10: a documented customer-facing checkout/payment-creation API, a hosted payment page or address-presentation flow for end customers, explicit payment-settlement confirmation docs, and independent or hands-on corroboration.",
     "evidenceIds": [
+      "circle-docs-14",
+      "circle-docs-15",
+      "circle-docs-10",
       "circle-docs-21",
-      "circle-docs-22"
+      "circle-docs-25"
     ]
   },
   {
@@ -763,13 +785,15 @@
     "productId": "circle",
     "storyId": "agentic-autonomous-automation",
     "verdict": "partial",
-    "quality": 4,
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Circle documents some native autonomous behavior. Agent Wallets let an AI agent hold funds and transact onchain autonomously within spending policies the user defines. CCTP can also trigger automated actions on the destination chain after assets arrive. However, both are narrow, payment-specific mechanisms rather than a general way to set up background automations, and the agent logic itself must be built by the user. Missing for 10: a general automation or workflow builder, scheduled or recurring background jobs, monitoring and management of running automations, and independent or hands-on corroboration.",
+    "rationale": "Circle supplies building blocks for autonomous background activity: Agent Wallets let an AI agent hold funds and transact onchain autonomously within spending policies, and Agent Nanopayments let agents pay per request for x402 services. CCTP can also trigger automated actions on the destination chain after assets arrive, and webhooks push state changes so an app can react. However, the user must build and host the agent or automation logic. The evidence shows no first-party scheduler, workflow builder, or managed background-automation runtime. Missing for 10: native automation or workflow setup, scheduling or recurring jobs, a managed runtime for background agents, and independent or hands-on corroboration.",
     "evidenceIds": [
       "circle-docs-19",
+      "circle-docs-6",
       "circle-docs-5",
-      "circle-docs-6"
+      "circle-docs-10",
+      "circle-docs-20"
     ]
   },
   {
@@ -876,11 +900,14 @@
   {
     "productId": "circle",
     "storyId": "agentic-scoped-keys",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "Circle is a developer API platform, so scoped API credentials are a fair question. However, the evidence never documents issuing restricted, permission-limited or least-privilege API keys for an agent. Agent Wallet spending policies and keyless x402 payments are adjacent controls on funds and payments, not scoped API credentials, so they earn no credit.",
-    "evidenceIds": []
+    "verdict": "partial",
+    "quality": 4,
+    "confidence": "low",
+    "rationale": "Circle's Agent Wallets let an AI agent hold funds and transact autonomously only 'within spending policies you define', with 'customizable spending controls and built-in compliance guardrails'. That is a form of least-privilege delegation for agents. However, the evidence never describes scoped or restricted API keys or credentials themselves. Missing for 10: scoped/permission-limited API key issuance, per-agent credential scoping docs, revocation/rotation details, independent or hands-on corroboration.",
+    "evidenceIds": [
+      "circle-docs-6",
+      "circle-docs-19"
+    ]
   },
   {
     "productId": "circle",
@@ -982,11 +1009,14 @@
     "productId": "circle",
     "storyId": "automation-rules-engine",
     "verdict": "partial",
-    "quality": 3,
-    "confidence": "low",
-    "rationale": "Circle documents one first-party event-triggered automation: CCTP can trigger automated actions on the destination blockchain after assets arrive. That is a narrow, protocol-specific hook rather than a general rules engine. Webhooks only notify your app so it can react, which makes them a developer building block, and agent spending policies are an adjacent control; neither earns credit here. Missing for 10: a general user-definable rule/trigger system across events, documentation on how rules are configured, coverage beyond CCTP transfers, and hands-on corroboration.",
+    "quality": 4,
+    "confidence": "medium",
+    "rationale": "Circle offers event-driven building blocks rather than a rules engine. Webhooks send HTTP POSTs when a resource changes state so your own application can react [circle-docs-10]. CCTP can trigger automated actions on the destination chain after assets arrive [circle-docs-5]. Agent wallets and Gas Station enforce policies you define [circle-docs-19][circle-docs-2], but these are guardrails rather than event-triggered actions. Missing for 10: a native user-defined rule/automation engine (if-event-then-action configuration), docs on configuring CCTP hooks, and independent or hands-on corroboration.",
     "evidenceIds": [
-      "circle-docs-5"
+      "circle-docs-10",
+      "circle-docs-5",
+      "circle-docs-19",
+      "circle-docs-2"
     ]
   },
   {
@@ -1046,16 +1076,15 @@
     "productId": "circle",
     "storyId": "fiat-settlement-option",
     "verdict": "partial",
-    "quality": 4,
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Circle's own documentation shows the building blocks of fiat settlement. Qualified businesses can use a Circle Mint account to convert USDC to and from USD at no additional cost, and USDC/EURC are redeemable 1:1 for fiat. CPN also lets partners deliver local fiat, with a managed mode in which Circle handles settlement. However, nothing documents an automatic sweep that converts incoming stablecoin receipts into a fiat balance or bank payout, so a merchant's books would still briefly hold USDC. Missing for 10: a documented auto-conversion or auto-settlement setting for incoming stablecoin payments, an explicit flow paying merchant receipts out to the merchant's own bank account, and independent or hands-on corroboration of a fiat-settlement workflow.",
+    "rationale": "Circle documents the pieces for fiat settlement. Circle Mint lets qualified businesses convert USDC to and from USD at no additional cost, and USDC/EURC are redeemable 1:1 for fiat. CPN delivers local fiat payouts through partners, with a managed mode where Circle handles treasury and settlement. However, nothing in the evidence describes a merchant payment-acceptance flow that automatically converts incoming stablecoin receipts into a fiat balance or bank payout. A finance lead would have to assemble this from Mint redemption and payout rails, and Mint requires a qualified-business application. Missing for 10: a documented auto-convert/auto-settle-to-fiat option for incoming crypto payments, a documented bank payout flow for the merchant's own receipts, and independent or hands-on corroboration.",
     "evidenceIds": [
       "circle-docs-13",
       "circle-docs-27",
       "circle-docs-28",
       "circle-docs-12",
-      "circle-docs-30",
-      "circle-docs-21"
+      "circle-docs-30"
     ]
   },
   {
@@ -1094,26 +1123,31 @@
   {
     "productId": "circle",
     "storyId": "kyc-onboarding-api",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "The pack documents no programmatic KYC or KYB endpoint or flow for onboarding customers or recipients. The closest items are adjacent rather than this capability: a compliance API that screens blockchain addresses, a managed CPN mode where Circle handles compliance behind the scenes, and a Circle Mint account that businesses apply for. None of these is a documented identity-verification onboarding flow that clears a counterparty before money moves.",
-    "evidenceIds": []
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "The only programmatic counterparty-clearance capability in the evidence is the Compliance API's address screening, which creates a screening request for a specific blockchain address and chain (circle-docs-26). In CPN's managed mode, Circle says it handles compliance on the integrator's behalf (circle-docs-30). Neither amounts to documented KYC/KYB onboarding endpoints for customers or recipients, and Mint access is described only as an application for qualified businesses (circle-docs-13). missing for 10: documented KYC/KYB endpoints or flows for customers and recipients, identity/business verification status gating before sends and receives, onboarding webhooks or states, independent or hands-on corroboration.",
+    "evidenceIds": [
+      "circle-docs-26",
+      "circle-docs-30",
+      "circle-docs-13"
+    ]
   },
   {
     "productId": "circle",
     "storyId": "machine-payment-protocols",
     "verdict": "full",
-    "quality": 9,
+    "quality": 8,
     "confidence": "high",
-    "rationale": "Circle documents x402 by name, with concrete implementation surfaces. Sellers can make an API return 402 Payment Required and charge agents per request in USDC. Agent Nanopayments let agents pay x402 services in sub-cent USDC. A public Discovery API endpoint finds x402 services, and the CLI and Agent Marketplace support discovering and paying for them. missing for 10: independent or hands-on corroboration of the x402 integration, and any documented support for ACP, MPP, or AP2 beyond x402.",
+    "rationale": "Circle documents x402 by name across several concrete surfaces. Sellers can make an endpoint return 402 Payment Required and serve the resource once a valid USDC payment is attached. A public Discovery API lists x402 services, and Agent Nanopayments plus the CLI let agents pay for x402 services in sub-cent USDC. This is shipped infrastructure, not a blog aspiration. Missing for 10: no independent or hands-on corroboration of the x402 flow, and no evidence of ACP, MPP or AP2 support.",
     "evidenceIds": [
       "circle-docs-7",
       "circle-docs-20",
       "circle-docs-21",
       "circle-docs-22",
       "circle-docs-23",
-      "circle-docs-24"
+      "circle-docs-24",
+      "circle-probe-4"
     ]
   },
   {
@@ -1280,9 +1314,9 @@
     "productId": "circle",
     "storyId": "sanctions-travel-rule",
     "verdict": "partial",
-    "quality": 4,
+    "quality": 3,
     "confidence": "medium",
-    "rationale": "Circle's own Compliance API documents creating a screening request for a specific blockchain address and chain, which is a concrete wallet/address risk-check capability. Beyond that, compliance is mostly waved at: \"built-in compliance guardrails\" for Agent wallets, and CPN Managed mode where \"Circle handles... compliance.\" Neither names sanctions or travel-rule machinery. missing for 10: explicitly named sanctions screening (OFAC/watchlist sources), detail on wallet risk scoring and screening outcomes, any travel-rule handling documentation, independent or hands-on corroboration.",
+    "rationale": "Circle's compliance OpenAPI documents a specific address-screening endpoint (\"Create a screening request for a specific blockchain address and chain\"), which covers wallet risk checks. Elsewhere, compliance is only mentioned in general terms: agent wallets have \"built-in compliance guardrails\" and the managed CPN tier says \"Circle handles... compliance.\" Missing for 10: sanctions screening named explicitly, any travel-rule handling documentation, detail on risk scoring or screening outcomes, independent or hands-on corroboration.",
     "evidenceIds": [
       "circle-docs-26",
       "circle-docs-6",
@@ -1678,20 +1712,26 @@
   {
     "productId": "coinbase-payments",
     "storyId": "api-versioning-policy",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "Nothing in the evidence pack documents API versioning (version headers, path versions, or changelogs) or a formal deprecation policy with timelines and notice periods. The only related item is a guide for migrating from the Commerce Charge API to the Checkouts API. That is product-specific migration guidance, an adjacent feature rather than a versioning or deprecation policy, so it earns no credit.",
-    "evidenceIds": []
+    "verdict": "partial",
+    "quality": 2,
+    "confidence": "low",
+    "rationale": "The only on-topic evidence is a migration guide from the Commerce Charge API to the newer Checkouts API. That shows Coinbase gives migration paths when it supersedes an API, but it is not a versioning scheme or a formal deprecation policy. Missing for 10: explicit API versioning (version headers or paths), a published deprecation policy with timelines or sunset notices, a changelog, and any independent corroboration.",
+    "evidenceIds": [
+      "coinbase-payments-docs-9"
+    ]
   },
   {
     "productId": "coinbase-payments",
     "storyId": "automation-bulk-operations",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "The axis applies, since a payments platform could reasonably offer batch payouts or bulk transfers, but the evidence never documents a batch or bulk operation endpoint. Payouts, disbursements, transfers and checkouts are all described per item, and checkouts are explicitly single-use. The `wallet.activity.multi` webhook subscription that watches up to 100 addresses is an adjacent monitoring feature, not a way to perform operations in bulk, so it earns no credit.",
-    "evidenceIds": []
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "The only concrete multi-item capability is a webhook subscription (`wallet.activity.multi`) that watches up to 100 wallet addresses at once. Payouts and disbursements are documented, but nothing shows batch or bulk submission of many transfers in a single operation. Missing for 10: a documented batch or bulk payouts API, bulk address provisioning, bulk CLI or MCP operations, and independent or hands-on corroboration.",
+    "evidenceIds": [
+      "coinbase-payments-docs-16",
+      "coinbase-payments-docs-23",
+      "coinbase-payments-docs-3"
+    ]
   },
   {
     "productId": "coinbase-payments",
@@ -1728,11 +1768,17 @@
   {
     "productId": "coinbase-payments",
     "storyId": "batch-disbursements",
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "partial",
+    "quality": 4,
     "confidence": "medium",
-    "rationale": "CDP documents payouts and disbursements from a custodial account to onchain addresses, email recipients, or bank rails, and tracks each transfer's lifecycle. However, nothing in the evidence shows a batch or bulk payout endpoint that submits many payouts in one operation with per-item status. Looping single transfers is a user-side workaround and does not count toward the mass-disbursement capability.",
-    "evidenceIds": []
+    "rationale": "CDP documents sending payouts and disbursements from a custodial account to onchain addresses, email recipients, or bank accounts over ACH, Fedwire, Swift, or SEPA, and funding a USD treasury to pay out USDC. Webhooks provide real-time event notifications that could track transfer status. However, nothing shows a batch or bulk payout endpoint that sends many payouts in one documented operation with per-item status, so mass disbursement appears to mean looping over single transfers. Missing for 10: a documented batch/bulk payout API, per-item status reporting within a batch, and independent or hands-on corroboration.",
+    "evidenceIds": [
+      "coinbase-payments-docs-3",
+      "coinbase-payments-docs-23",
+      "coinbase-payments-docs-2",
+      "coinbase-payments-docs-20",
+      "coinbase-payments-docs-15"
+    ]
   },
   {
     "productId": "coinbase-payments",
@@ -2373,11 +2419,15 @@
   {
     "productId": "moonpay",
     "storyId": "automation-rules-engine",
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "partial",
+    "quality": 3,
     "confidence": "medium",
-    "rationale": "A payments platform could plausibly offer user-defined event-triggered automation rules, so this axis applies. The evidence shows no such rules engine. Webhooks (transaction-status alerts, requote events) are building blocks a developer would have to wire into their own logic. The enterprise auto-conversion of incoming fiat to stablecoins is a fixed product behavior, not rules the user defines.",
-    "evidenceIds": []
+    "rationale": "MoonPay documents webhook events that notify your application when account activity occurs, such as `sell_transaction_requote_required`, and the Web SDK streams lifecycle events through `onEvent`. These are building blocks for event-driven automation, but the rules and resulting actions must be written in your own backend code. There is no evidence of a native rule-definition or automation engine. Missing for 10: native rule/trigger configuration, built-in automated actions on events, a documented full event catalog, independent corroboration.",
+    "evidenceIds": [
+      "moonpay-docs-11",
+      "moonpay-docs-12",
+      "moonpay-docs-32"
+    ]
   },
   {
     "productId": "moonpay",
@@ -2446,11 +2496,16 @@
   {
     "productId": "moonpay",
     "storyId": "fiat-settlement-option",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "MoonPay's off-ramp is a user-initiated widget flow for selling crypto to a bank account or card, and its enterprise offering converts incoming fiat into stablecoins, which is the opposite direction. Neither is a documented merchant option to accept crypto payments and auto-convert stablecoin receipts into a fiat balance or bank payout. Manually running receipts through the consumer off-ramp would be a user-side workaround and earns no credit.",
-    "evidenceIds": []
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "MoonPay documents an off-ramp that converts crypto to cash paid to a bank account or Visa card, through a user-driven sell flow with payout method selection and requote webhooks. Nothing in the evidence shows merchant-side acceptance of crypto payments or automatic conversion of stablecoin receipts into a fiat balance or settlement, so the business would hold crypto until someone manually sells it. Missing for 10: merchant crypto-payment acceptance, automatic stablecoin-to-fiat settlement option, fiat merchant balance or scheduled bank payout docs, independent corroboration.",
+    "evidenceIds": [
+      "moonpay-docs-17",
+      "moonpay-docs-23",
+      "moonpay-docs-2",
+      "moonpay-docs-12"
+    ]
   },
   {
     "productId": "moonpay",
@@ -2747,11 +2802,13 @@
   {
     "productId": "moonpay",
     "storyId": "wallet-provisioning-api",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "Programmatic wallet provisioning is a fair question for a crypto payments platform, but the evidence shows no API endpoint for creating per-customer or per-purpose wallets or deposit addresses, and no documented key custody semantics. The one wallet-creation mention (docs-10) describes the hosted widget creating a wallet for an end user from their email during the purchase flow. That is an adjacent, UI-driven feature, not developer API provisioning, so it earns no credit.",
-    "evidenceIds": []
+    "verdict": "partial",
+    "quality": 2,
+    "confidence": "low",
+    "rationale": "The only wallet-related evidence is that MoonPay can create a wallet for a user from their email address during the widget purchase flow. That is user-initiated inside the hosted flow, not provisioned by a developer through an API. Missing for 10: an API endpoint or SDK method for creating per-customer or per-purpose wallets, deposit-address provisioning, documented key custody semantics, and independent corroboration.",
+    "evidenceIds": [
+      "moonpay-docs-10"
+    ]
   },
   {
     "productId": "paxos",
@@ -2776,20 +2833,31 @@
   {
     "productId": "paxos",
     "storyId": "agent-initiated-payments",
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "partial",
+    "quality": 3,
     "confidence": "medium",
-    "rationale": "The evidence documents general stablecoin payment, transfer, and mint/redeem APIs with OAuth client credentials and endpoint-level scopes. None of it describes an agent payment flow or human-configured spend controls such as limits, budgets, or approval thresholds for agent-initiated payouts. Endpoint scopes and generic APIs are adjacent controls and developer building blocks, not the documented capability itself.",
-    "evidenceIds": []
+    "rationale": "Paxos documents API credentials with configurable allowed scopes that restrict which endpoints a client can call, plus programmatic stablecoin transfers, payouts, refunds, and mint/redeem orchestrations. An agent could therefore technically move stablecoins under endpoint-level scoped authority. However, nothing in the evidence describes agent payment flows or human-configured spend controls; the AI-related material (llms.txt, docs assistant) covers developer assistance only. Missing for 10: documented agent-initiated payment/payout flows, human-configured spend limits or budgets, per-transaction approval or policy controls, and independent corroboration.",
+    "evidenceIds": [
+      "paxos-docs-2",
+      "paxos-docs-8",
+      "paxos-docs-15",
+      "paxos-docs-19",
+      "paxos-docs-35"
+    ]
   },
   {
     "productId": "paxos",
     "storyId": "agent-wallet-provisioning",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "Paxos is a stablecoin and crypto platform, so agent wallet custody is a fair question to ask of it. However, the evidence documents no programmatic wallet issuance for agents, no spend policies, and no documented limits on what an agent can move. The only nearby item is OAuth client credentials with endpoint scopes (paxos-docs-2, paxos-docs-48). That is general API access control, an adjacent feature that earns no credit for agent-specific wallet safety.",
-    "evidenceIds": []
+    "verdict": "partial",
+    "quality": 2,
+    "confidence": "low",
+    "rationale": "The only on-point evidence is that Paxos API credentials (Client ID/Secret) can be limited to specific endpoints via allowed scopes, plus programmatic identity creation and transfer APIs. Nothing shows wallets issued per agent or limits on what an agent can move. Missing for 10: programmatic per-agent wallet issuance, spend/transfer policy controls, documented movement limits for agents, and any agent-specific safety guidance or independent corroboration.",
+    "evidenceIds": [
+      "paxos-docs-2",
+      "paxos-docs-5",
+      "paxos-docs-6",
+      "paxos-docs-34"
+    ]
   },
   {
     "productId": "paxos",
@@ -2819,25 +2887,29 @@
     "productId": "paxos",
     "storyId": "agentic-autonomous-automation",
     "verdict": "partial",
-    "quality": 4,
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Paxos documents rule-based orchestrations that trigger automatically when bank transfers arrive and convert fiat to stablecoin without further calls (paxos-docs-41, paxos-docs-8). It also offers an automatic stablecoin-to-fiat conversion option for payments (paxos-docs-13), with webhook events reporting orchestration status as it changes (paxos-docs-26). These are narrow, pre-defined financial-flow automations rather than a general facility for users to build their own background automations. Missing for 10: general user-defined automation or scheduling, documented setup and configuration of orchestration rules beyond mint/redeem flows, agent-oriented autonomous task support, and independent or hands-on corroboration.",
+    "rationale": "Paxos documents rule-based orchestrations that fire automatically when bank transfers arrive and convert fiat to stablecoin (or redeem to bank) without manual steps. Payments can also auto-convert stablecoin to fiat, and webhooks with 24-hour retries let external systems react to platform events asynchronously. These automations are limited to predefined money-movement flows, so the user cannot author general-purpose background automations. Missing for 10: general user-defined automation or workflow builder, scheduled/recurring jobs, agent-driven autonomous execution, independent or hands-on corroboration.",
     "evidenceIds": [
       "paxos-docs-41",
       "paxos-docs-8",
       "paxos-docs-9",
       "paxos-docs-13",
-      "paxos-docs-26"
+      "paxos-docs-26",
+      "paxos-docs-16",
+      "paxos-docs-27"
     ]
   },
   {
     "productId": "paxos",
     "storyId": "agentic-builtin-assistant",
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "partial",
+    "quality": 3,
     "confidence": "medium",
-    "rationale": "Paxos documents no AI assistant inside its platform or Dashboard that can carry out tasks on a user's behalf. The only AI assistance mentioned is a contextual-help feature in the documentation site, which answers API questions and is adjacent to the story rather than task delegation. The llms.txt and llms-full.txt files only provide context for external AI tools, so they are a building block, not a built-in assistant.",
-    "evidenceIds": []
+    "rationale": "Paxos documents AI assistance built into its documentation for contextual help with its APIs. That is a docs Q&A helper, not an assistant inside the platform or Dashboard that takes on and carries out tasks. The llms.txt and llms-full.txt files serve external AI tools and do not count as a built-in assistant. Missing for 10: an in-product (Dashboard/platform) AI assistant, the ability to delegate and execute tasks (e.g., transfers, orders, webhook setup) through it, and any independent or hands-on corroboration.",
+    "evidenceIds": [
+      "paxos-docs-18"
+    ]
   },
   {
     "productId": "paxos",
@@ -2966,11 +3038,18 @@
   {
     "productId": "paxos",
     "storyId": "api-interactive-docs",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "The evidence shows Paxos publishes an API reference with endpoint pages for transfers and fiat transfers, plus a separate Sandbox environment. Nothing documents an interactive 'try it' console or runnable examples inside the reference, and the OpenAPI spec probes all returned 404. A static reference, a standalone sandbox and built-in AI doc assistance are adjacent features, not the interactive, runnable reference the story asks for.",
-    "evidenceIds": []
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "Paxos publishes a structured per-endpoint API reference (transfers, fiat transfers, an introduction with OAuth auth) and a Sandbox environment for testing calls. Nothing shows that the reference itself is interactive or offers runnable examples, and probes for a published OpenAPI spec all returned 404. Missing for 10: evidence of an in-browser 'try it' console or playground, runnable code samples in the reference, an accessible OpenAPI spec, and hands-on corroboration.",
+    "evidenceIds": [
+      "paxos-docs-33",
+      "paxos-docs-35",
+      "paxos-docs-36",
+      "paxos-docs-37",
+      "paxos-docs-22",
+      "paxos-probe-2"
+    ]
   },
   {
     "productId": "paxos",
@@ -3232,11 +3311,17 @@
   {
     "productId": "paxos",
     "storyId": "openness-full-export",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "The evidence pack documents no data-export feature: no bulk export, no account-data download, and no statement of open export formats. The List Transfers and List Events APIs are developer building blocks someone could use to assemble an export, which earns no credit under the partial boundary. Withdrawal and redemption docs cover moving funds off the platform, not exporting data.",
-    "evidenceIds": []
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "There is no dedicated data-export feature. You can pull transfer history and events through paginated List Transfers and List Events APIs, and move assets off-platform by fiat wire/CUBIX withdrawal or on-chain stablecoin redemption, which together approximate exporting data and leaving. missing for 10: documented bulk or full-account data export, explicit open export formats (e.g., CSV/JSON dumps), account closure/offboarding process, a published OpenAPI spec (the probe returned 404), and independent corroboration.",
+    "evidenceIds": [
+      "paxos-docs-35",
+      "paxos-docs-28",
+      "paxos-docs-11",
+      "paxos-docs-9",
+      "paxos-docs-37"
+    ]
   },
   {
     "productId": "paxos",
@@ -3323,9 +3408,9 @@
     "productId": "paxos",
     "storyId": "reserve-yield-programs",
     "verdict": "partial",
-    "quality": 4,
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Paxos docs state that it publishes monthly reports on reserve composition and attestation reports for USDG, and that USDG is redeemable 1:1 for USD. That covers the reserve and attestation part of the story, though only through brief single mentions. Missing for 10: any documented yield or rewards program with eligibility terms and regulatory caveats, detail on reserve composition beyond the existence of the reports, equivalent disclosures for PYUSD and USDP, and independent corroboration.",
+    "rationale": "Paxos docs state that it publishes monthly reserve-composition reports and attestation reports for USDG, and that USDG is fully redeemable 1:1 for USD, which covers the reserve and attestation part of the story. The pack has no evidence of a yield or rewards program, its eligibility, or regulatory caveats. Missing for 10: any documented yield/rewards program with eligibility and regulatory caveats, detail on reserve composition beyond a single mention, and independent corroboration.",
     "evidenceIds": [
       "paxos-docs-43",
       "paxos-docs-42"
@@ -3361,11 +3446,18 @@
   {
     "productId": "paxos",
     "storyId": "stablecoin-issuance",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "The evidence only covers minting and redeeming Paxos's own stablecoins (USDG, PYUSD, USDP), such as USD-to-stablecoin and stablecoin-to-USD orchestrations, plus monthly reserve reports for USDG. These are adjacent features of Paxos-issued assets, not a documented product for a founder to issue their own branded stablecoin. Nothing in the pack describes white-label issuance, issuer-side reserve management, or how access to such a product is gated.",
-    "evidenceIds": []
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "The evidence shows Paxos runs stablecoin infrastructure, but only for its own Paxos-issued coins (USDG, PYUSD, USDP). It documents mint orchestrations (USD to stablecoin), redeem orchestrations (stablecoin to USD to bank), 1:1 USDG redeemability, and monthly reserve-composition and attestation reports. Nothing documents a product that lets a founder issue their own branded stablecoin, so this is only glancing support for the story's core. Missing for 10: a documented branded/white-label issuance product, issuer-side minting and redemption controls for a custom token, reserve management for a client-branded coin, and honestly quoted gating or eligibility requirements.",
+    "evidenceIds": [
+      "paxos-docs-8",
+      "paxos-docs-9",
+      "paxos-docs-41",
+      "paxos-docs-42",
+      "paxos-docs-43",
+      "paxos-docs-44"
+    ]
   },
   {
     "productId": "paxos",
@@ -3515,11 +3607,14 @@
   {
     "productId": "stripe-crypto",
     "storyId": "agentic-autonomous-automation",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "The evidence pack documents no user-configurable automation or background workflow capability for Stripe's crypto and stablecoin product. Recurring stablecoin subscriptions are an adjacent billing feature, not a general automation system. Webhooks, the MCP server, the CLI and agent machine payments are developer building blocks or a different capability, so they earn no credit toward this story.",
-    "evidenceIds": []
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "The closest evidence is stablecoin subscriptions (private preview), which authorize recurring stablecoin withdrawals from customer wallets that then run without manual action. That is a narrow form of background automation, not a general way to set up autonomous automations. Missing for 10: user-configurable automation or workflow tooling, triggers and schedules beyond recurring billing, general availability (subscriptions are private preview only), documentation of how background runs are configured and monitored, and independent or hands-on corroboration.",
+    "evidenceIds": [
+      "stripe-crypto-docs-20",
+      "stripe-crypto-docs-4"
+    ]
   },
   {
     "productId": "stripe-crypto",
@@ -3620,9 +3715,9 @@
     "productId": "stripe-crypto",
     "storyId": "agentic-sdks",
     "verdict": "partial",
-    "quality": 4,
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "The only first-party SDK evidence is the onramp's \"Embedded components onramp (mobile SDK)\" and a passing llms.txt instruction about installing Stripe npm packages. That confirms official SDKs exist for at least part of the crypto surface, but there is no documentation of server-side SDK coverage for stablecoin payments, payouts or financial accounts. The MCP server and CLI are adjacent tools and earn no credit here. missing for 10: documented official server-side SDKs (languages, coverage of stablecoin/crypto APIs), SDK reference docs or examples for crypto endpoints, independent or hands-on corroboration of SDK use.",
+    "rationale": "The evidence shows an official mobile SDK for the Embedded components onramp, and Stripe's llms.txt points to official Stripe npm packages, so official SDKs exist for at least part of the crypto surface. Coverage of the other crypto products (stablecoin payments, payouts, Treasury) through those SDKs is only implied. Missing for 10: documented server-side SDKs (language list, versions) for stablecoin payments, payouts and financial accounts; SDK reference docs specific to the crypto APIs; independent or hands-on corroboration of building with the SDKs.",
     "evidenceIds": [
       "stripe-crypto-docs-14",
       "stripe-crypto-probe-1"
@@ -3699,11 +3794,14 @@
   {
     "productId": "stripe-crypto",
     "storyId": "automation-scheduled-jobs",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "Scheduling recurring jobs or workflows is a fair automation question for a payments platform, so the axis applies. However, the pack documents no job or workflow scheduler. Recurring stablecoin subscriptions and the 'Recurring payments: Yes' entry describe recurring billing, an adjacent feature rather than a way to schedule arbitrary jobs, so they earn no credit.",
-    "evidenceIds": []
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "The only recurring-automation capability in the evidence is Stablecoin subscriptions, which authorize recurring stablecoin withdrawals from customer wallets. This is recurring billing, not general job or workflow scheduling, and it is only in private preview. missing for 10: general-purpose scheduling of recurring jobs or workflows, docs on configuring schedules, generally available (non-preview) support, independent or hands-on corroboration.",
+    "evidenceIds": [
+      "stripe-crypto-docs-20",
+      "stripe-crypto-docs-4"
+    ]
   },
   {
     "productId": "stripe-crypto",
@@ -3717,11 +3815,15 @@
   {
     "productId": "stripe-crypto",
     "storyId": "batch-disbursements",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "The evidence documents stablecoin payouts to Connect accounts, Global Payouts to external wallets, and third-party payouts in 160+ countries. None of it describes a batch or bulk payout API that submits many payouts in one operation with per-item status. Single-payout capability is adjacent and does not count as mass disbursement.",
-    "evidenceIds": []
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "Stripe documents stablecoin (USDC) payouts from a Connect platform to its connected accounts, with Stripe handling fiat-to-USDC conversion. That covers the disbursement use case of paying many recipients. However, nothing in the pack shows a batch or bulk payout API that submits many payouts in one operation, or that reports per-item status. Missing for 10: a documented batch/bulk payout endpoint, per-item status reporting for batch payouts, bulk fiat payout coverage, and independent or hands-on corroboration of mass-disbursement workflows.",
+    "evidenceIds": [
+      "stripe-crypto-docs-8",
+      "stripe-crypto-docs-23",
+      "stripe-crypto-docs-9"
+    ]
   },
   {
     "productId": "stripe-crypto",
