@@ -42,7 +42,7 @@ import { stepVendorCallsFor } from '../../lib/stepVendorCalls'
 import { llmJson } from '../llm'
 import { CACHE_DIR, categoryDir, DATA_DIR, readJson, writeJson } from '../paths'
 
-export const STEP_PROMPT_VERSION = 'v2-execution-approval'
+export const STEP_PROMPT_VERSION = 'v3-execution-signature'
 
 export const MIN_PROMPT_WORDS = 120
 export const MAX_PROMPT_WORDS = 350
@@ -100,6 +100,7 @@ export interface PromptTarget {
   route: DagNode['route']
   async: boolean
   approvalRequired: boolean
+  legalSignature: boolean
   actionUrl: string | null
   functionCalls: Array<{ method: string; type: string; description?: string }>
   vendor: string | null // canonical vendor key, e.g. 'sendgrid'
@@ -118,6 +119,7 @@ export function promptTargetHash(t: PromptTarget, promptVersion: string): string
     execution: t.execution,
     async: t.async,
     approvalRequired: t.approvalRequired,
+    legalSignature: t.legalSignature,
     actionUrl: t.actionUrl,
     functionCalls: t.functionCalls,
     vendor: t.vendor,
@@ -178,6 +180,11 @@ export function validatePrompt(t: PromptTarget, prompt: string): string | null {
     }
   }
 
+  if (t.legalSignature) {
+    if (instructsImpersonation(prompt)) return "prompt instructs the agent to act on the human's behalf — the required signature must stay human"
+    if (!STOP_FOR_HUMAN_RE.test(prompt)) return 'legalSignature — include the exact phrase "stop for human sign-off"'
+    if (!REMAINS_HUMAN_RE.test(prompt)) return 'legalSignature — state that signing "remains a human step"'
+  }
   if (t.execution?.reviewRequired && !STOP_FOR_HUMAN_RE.test(prompt)) {
     return 'execution needs review — include the exact phrase "stop for human sign-off"'
   }
@@ -221,6 +228,7 @@ Hard rules — a validator rejects violations:
 - Never write an HTTP method + path (like "POST /v3/...") unless that exact endpoint appears in the GROUNDED VENDOR CALLS section — if none are listed, describe the required outcome and request verification of an available interface before taking action.
 - Credentials: at most "use your configured credentials". Never instruct pasting/sharing/embedding API keys, tokens, passwords or secrets.
 - If approvalRequired is true, preserve that gate regardless of execution category; include the exact phrase "stop for human sign-off" before changes are applied.
+- If legalSignature is true, the human must sign regardless of execution category. Prepare the materials, include "stop for human sign-off" and state that signing "remains a human step". Never instruct the agent to sign on the human's behalf.
 - For a legacy record without an execution assessment, obey its HUMAN-STEP AUDIT verdict:
   · assist / policy-gate — the agent PREPARES everything (drafts, pre-filled values, a checklist) and then must stop; include the exact phrase "stop for human sign-off" and never tell the agent to sign, accept terms, approve, or submit on my behalf.
   · no-screen / third-party-wait — prompt only the preparable/monitorable part; include the exact phrase "remains a human step" about the part the agent cannot do.
@@ -237,6 +245,7 @@ export function generationPrompt(t: PromptTarget, extra = ''): string {
     `Route: ${t.route}${t.async ? ' (async — the result lands later; the agent should note it must poll/verify)' : ''}${t.approvalRequired ? ' | approvalRequired: a human explicitly approves before changes are applied' : ''}`,
   )
   lines.push(`Execution assessment (authoritative): ${JSON.stringify(t.execution ?? null)}`)
+  if (t.legalSignature) lines.push('legalSignature: a human must perform the signature; prepare the materials, stop for human sign-off, and state that signing remains a human step.')
   if (t.actionUrl) lines.push(`Action URL: ${t.actionUrl}`)
   lines.push(
     hasVendorMarket(t)
@@ -303,6 +312,7 @@ export function enumeratePromptTargets(tasks: ProcessTask[]): PromptTarget[] {
         execution: node.execution,
         async: node.async ?? false,
         approvalRequired: node.approvalRequired ?? false,
+        legalSignature: node.legalSignature ?? false,
         actionUrl: node.actionUrl ?? null,
         functionCalls: (node.functionCalls ?? []).map((c) => ({
           method: c.method,

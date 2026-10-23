@@ -1,4 +1,4 @@
-import { executionOf, type ExecutionCategory } from '../execution'
+import { executionOf, requiresExecutionApproval, type ExecutionCategory } from '../execution'
 import type { SharedRecord } from './schema'
 
 export function processSummary(record: SharedRecord, records: SharedRecord[] = []) {
@@ -26,7 +26,7 @@ export function processSummary(record: SharedRecord, records: SharedRecord[] = [
       if (execution?.category) executionCounts[execution.category]++
       else unclassified++
       if (execution?.reviewRequired) reviewRequired++
-      if (contentMetadata.approvalRequired === true) executionApprovals++
+      if (requiresExecutionApproval(contentMetadata)) executionApprovals++
       if (contentMetadata.legalSignature === true) executionSignatures++
       if (!metadata || !['agent', 'form', 'person'].includes(String(metadata.route))) { classified = false; continue }
       if (metadata.legalSignature === true) { signature++; continue }

@@ -20,6 +20,12 @@ export const executionSchema = z.strictObject({
 })
 export type Execution = z.infer<typeof executionSchema>
 
+const scopedApprovalSchema = z.object({ role: z.string().min(1), scope: z.string().min(1) })
+
+export function requiresExecutionApproval(metadata: Record<string, unknown>): boolean {
+  return metadata.approvalRequired === true || scopedApprovalSchema.safeParse(metadata.approval).success
+}
+
 export function executionOf(metadata: Record<string, unknown>): Execution | undefined {
   return metadata.execution === undefined ? undefined : executionSchema.parse(metadata.execution)
 }

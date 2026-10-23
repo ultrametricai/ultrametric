@@ -30,6 +30,7 @@ const base: PromptTarget = {
   route: 'agent',
   async: false,
   approvalRequired: false,
+  legalSignature: false,
   actionUrl: null,
   functionCalls: [{ method: 'POST /zones/{id}/dns_records', type: 'rest', description: 'Add SPF/DKIM records' }],
   vendor: 'cloudflare',
@@ -44,6 +45,25 @@ const base: PromptTarget = {
 // ---------------------------------------------------------------------------
 
 describe('validatePrompt', () => {
+  it('preserves the human signature boundary independently of category and audit', () => {
+    const signature = enumeratePromptTargets(loadProcesses(DATA_DIR)).find(t => t.stepKey === 'sit_009:n6')!
+    expect(signature.legalSignature).toBe(true)
+    expect(generationPrompt(signature)).toContain('legalSignature: a human must perform the signature')
+    const body = `${signature.arenaId ? VENDOR_PLACEHOLDER : ''} ${words(150)}`
+    expect(validatePrompt(signature, `${body} Stop for human sign-off. Sign on my behalf.`)).toMatch(/human's behalf/)
+    for (const category of ['agent-native', 'agent-computer-use', 'human-online', 'human-offline', null, undefined] as const) {
+      const target: PromptTarget = { ...base, legalSignature: true, execution: category === undefined ? undefined : {
+        category, basis: category === null ? 'unresolved' : category === 'agent-native' ? 'local-work' : category === 'agent-computer-use' ? 'browser-evidence' : 'human-work',
+        rationale: 'Fixture', evidence: ['fixture'], reviewRequired: false,
+      } }
+      const text = `${VENDOR_PLACEHOLDER} ${words(150)}`
+      expect(validatePrompt(target, `${text} Stop for human sign-off. Sign on my behalf.`)).toMatch(/human's behalf/)
+      expect(validatePrompt(target, `${text} Signing remains a human step.`)).toMatch(/sign-off/)
+      expect(validatePrompt(target, `${text} Stop for human sign-off.`)).toMatch(/remains a human step/)
+      expect(validatePrompt(target, `${text} Stop for human sign-off. Do not sign on my behalf. Signing remains a human step.`)).toBeNull()
+    }
+  })
+
   it('requires approval independently of category, route and historical audit', () => {
     const targets = enumeratePromptTargets(loadProcesses(DATA_DIR))
     for (const key of ['sw_011:n1', 'sales_001:n5']) {
@@ -173,6 +193,7 @@ describe('promptTargetHash / generationPrompt / enumeration', () => {
     const h = promptTargetHash(base, STEP_PROMPT_VERSION)
     expect(promptTargetHash({ ...base }, STEP_PROMPT_VERSION)).toBe(h)
     expect(promptTargetHash({ ...base, label: 'Different' }, STEP_PROMPT_VERSION)).not.toBe(h)
+    expect(promptTargetHash({ ...base, legalSignature: true }, STEP_PROMPT_VERSION)).not.toBe(h)
     expect(promptTargetHash(
       { ...base, groundedCalls: [{ vendorName: 'X', method: 'GET /x', type: 'rest' }] },
       STEP_PROMPT_VERSION,

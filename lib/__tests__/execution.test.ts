@@ -1,4 +1,5 @@
 import { readFileSync } from 'node:fs'
+import { execFileSync } from 'node:child_process'
 import { describe, expect, it } from 'vitest'
 import { executionSchema, validateExecution, type Execution } from '../execution'
 import { buildManifestStep, MANIFEST_VERSION } from '../processManifest'
@@ -123,5 +124,21 @@ describe('execution assessments', () => {
     expect(summary.executionSignatures).toBe(1)
     expect(summary.executionApprovals).toBe(1)
     expect(graphExecutionType({ id: 'one', title: 'Sign', metadata: record.parts[0].metadata, when: null, scope: 'fixture' }).label).toBe('Signature — legally human')
+  })
+  it('counts scoped approvals alongside booleans without changing legacy route counts', () => {
+    for (const id of ['equity.us-de.83b-election', 'equity.us-de.409a-valuation']) {
+      expect(processSummary(records.find(record => record.id === id)!).executionApprovals).toBe(2)
+    }
+    const record = structuredClone(records.find(record => record.id === 'brand_002')!)
+    record.parts = [{ ...record.parts[0], options: [], metadata: { route: 'agent', approvalRequired: false, approval: { role: 'signer', scope: 'this filing' } } }]
+    expect(processSummary(record)).toMatchObject({ executionApprovals: 1, approvals: null })
+    record.parts[0].metadata.approvalRequired = true
+    expect(processSummary(record)).toMatchObject({ executionApprovals: 1, approvals: 1 })
+    record.parts[0].metadata = { route: 'agent', approval: {} }
+    expect(processSummary(record).executionApprovals).toBe(0)
+  })
+  it('includes scoped approvals in the execution audit', () => {
+    const report = JSON.parse(execFileSync(process.execPath, ['--import', 'tsx', 'scripts/shared-processes/execution-audit.ts'], { encoding: 'utf8' }))
+    expect(report.explicitApprovals).toBe(257)
   })
 })
