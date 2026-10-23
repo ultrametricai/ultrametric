@@ -120,6 +120,22 @@ checks.append(('de-dor', 'taxpayer-portal-shell', 'https://tax.delaware.gov/', l
     'with; revenue.delaware.gov remains the open crawled surface.')))
 
 
+LAST_HOST = {}
+
+
+def paced_get(url: str):
+    """get() with per-host pacing shared by EVERY request this script makes (robots.txt
+    included), honoring at least 2s between hits to one host — above data.texas.gov's
+    recorded crawl-delay 1."""
+    host = urllib.parse.urlsplit(url).netloc
+    wait = LAST_HOST.get(host, 0) + 2 - time.time()
+    if wait > 0:
+        time.sleep(wait)
+    result = get(url)
+    LAST_HOST[host] = time.time()
+    return result
+
+
 def robots_allows(url: str, cache: dict) -> bool:
     """Re-check the host's CURRENT robots policy before any non-robots GET (a prior manual
     sweep is not permission for a re-run). robots.txt itself is always fetchable — it is the
@@ -130,7 +146,7 @@ def robots_allows(url: str, cache: dict) -> bool:
         return True
     host = parts.netloc
     if host not in cache:
-        status, body = get(f'{parts.scheme}://{host}/robots.txt')
+        status, body = paced_get(f'{parts.scheme}://{host}/robots.txt')
         if status == 404:
             cache[host] = None  # no policy — everything allowed
         elif status == 200:
@@ -149,18 +165,12 @@ def robots_allows(url: str, cache: dict) -> bool:
 
 def run():
     results = []
-    last_host = {}
     robots_cache = {}
     for pid, key, url, expected, build in checks:
         if not robots_allows(url, robots_cache):
             print(f'{pid}/{key}: SKIPPED — current robots policy does not permit fetching {url}')
             continue
-        host = url.split('/')[2]
-        wait = last_host.get(host, 0) + 2 - time.time()
-        if wait > 0:
-            time.sleep(wait)
-        status, body = get(url)
-        last_host[host] = time.time()
+        status, body = paced_get(url)
         if not expected(status, body):
             print(f'{pid}/{key}: OBSERVATION CHANGED ({status_str(status)}) — nothing recorded; '
                   're-verify and author a new dated claim against the new response')
@@ -168,7 +178,6 @@ def run():
         excerpt = build(status, body)
         results.append((pid, key, url, excerpt))
         print(f'{pid}/{key}: {status}')
-        time.sleep(2)
 
     for pid, key, url, excerpt in results:
         path = os.path.join(DATA, f'{pid}.json')
