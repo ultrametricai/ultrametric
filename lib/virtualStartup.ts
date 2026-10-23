@@ -1062,7 +1062,11 @@ const ARTIFACT_GENERATORS: Record<string, (ctx: ArtifactCtx) => Draft[]> = {
   form_011: ({ co }) => [{ label: 'Certificate of Formation', value: `${co.display} — DE file no. 0000000` }],
   // No real EIN starts 00 — the canonical impossible-real placeholder.
   form_002: () => [{ label: 'EIN', value: '00-0000000' }],
-  startup_002: () => [{ label: 'Founder equity', value: '50 / 50 split · 4-year vest, 1-year cliff' }],
+  // Two-founder equity follows the corpus guidance bound to this step (issue #437): near-equal
+  // with one extra share to one founder to prevent deadlock (open-lore/rules.json
+  // altman-one-extra-share, Altman's Startup Playbook) and 4-year/1-year-cliff vesting as the
+  // safety mechanism (open-lore/library.json seibel-how-to-split-equity).
+  startup_002: () => [{ label: 'Founder equity', value: 'near-equal split, one extra share to one founder · 4-year vest, 1-year cliff' }],
   qs_051: ({ choices }) => [{
     label: 'Cap table',
     value: `10,000,000 authorized · ${choices.team === 'cofounders' ? '2 founder holders' : '1 founder holder'}`,
