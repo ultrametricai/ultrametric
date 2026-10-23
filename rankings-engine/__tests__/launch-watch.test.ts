@@ -176,6 +176,26 @@ describe('seen-ledger partition', () => {
     expect(alreadySeen).toBe(0)
   })
 
+  it('launchCandidates keeps every matching headline per key so no later-launch URL is lost upstream', () => {
+    const mercury = { id: 'mercury', name: 'Mercury', arenas: ['startup-banking'] }
+    const rows = launchCandidates(
+      mercury,
+      [
+        { title: 'Announcing Mercury incorporation and registered agent legal filings', url: 'https://mercury.com/blog/incorporation-service' },
+        { title: 'Launching Mercury legal incorporation templates', url: 'https://mercury.com/blog/incorporation-templates' },
+      ],
+      VOCAB,
+      'https://mercury.com/blog',
+    )
+    const legal = rows.filter((c) => c.arena === 'legal-ops')
+    expect(legal.length).toBe(2)
+    const { laterLaunches } = partitionCandidates(legal, new Set([launchKey('mercury', 'legal-ops')]), '2026-11-30')
+    expect(laterLaunches[0].sources.sort()).toEqual([
+      'https://mercury.com/blog/incorporation-service',
+      'https://mercury.com/blog/incorporation-templates',
+    ])
+  })
+
   it('does not re-nominate a seen pair but merges the later launch URL into its ledger entry', () => {
     const seen = new Set([launchKey('mercury', 'legal-ops')])
     const { fresh, laterLaunches, alreadySeen } = partitionCandidates(

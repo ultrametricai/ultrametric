@@ -123,12 +123,21 @@ jobs:
             echo "No auto-approved entries to apply."
             exit 0
           fi
+          # Evidence for EVERY applied entry first, judging second, one derive per arena last:
+          # judge refuses to assemble an arena matrix while any rostered product lacks its
+          # evidence file, so with two entrants in one arena an interleaved loop would throw on
+          # the first judge before the second entrant's extract ran.
           while read -r ARENA PRODUCT; do
-            for STAGE in crawl extract collect-community probe judge; do
+            for STAGE in crawl extract collect-community probe; do
               pnpm engine "$STAGE" --category "$ARENA" --product "$PRODUCT"
             done
-            pnpm engine derive --category "$ARENA"
           done < /tmp/lw-applied.txt
+          while read -r ARENA PRODUCT; do
+            pnpm engine judge --category "$ARENA" --product "$PRODUCT"
+          done < /tmp/lw-applied.txt
+          cut -d' ' -f1 /tmp/lw-applied.txt | sort -u | while read -r ARENA; do
+            pnpm engine derive --category "$ARENA"
+          done
           pnpm tsx rankings-engine/scripts/generate-vendor-reviews.ts
           pnpm tsx rankings-engine/scripts/generate-story-graph.ts
           pnpm tsx rankings-engine/scripts/generate-step-rankings.ts

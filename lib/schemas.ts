@@ -31,6 +31,8 @@ export const ProductSchema = z.object({
     // The vendor's own launch-announcement surface (newsroom, company blog, release notes).
     // Opt-in input to rankings-engine/scripts/launch-watch.ts, which scans it for rostered
     // vendors entering other arenas; seed only URLs verified reachable to a keyless fetch.
+    // NOT a crawl source: the crawl stage skips it (extraction's sourceKey contract is exactly
+    // site|docs|changelog|github|extra-N), so it never feeds claimed-docs evidence.
     news: z.string().url().optional(),
     extra: z.array(z.string().url()).optional(),
   }),

@@ -146,7 +146,8 @@ export function isLaunchHeadline(title: string): boolean {
 }
 
 // ---------------------------------------------------------------------------------------------
-// Candidates: one per (product, target arena) the product is not rostered in
+// Candidates: (headline, target arena) pairs for arenas the product is not rostered in;
+// partitionCandidates reduces them to one REPORTED candidate per (product, arena) key
 
 export interface LaunchCandidate {
   key: string // launch:<productId>:<arena>
@@ -182,17 +183,18 @@ export function launchCandidates(
   vocab: Map<string, VocabWord[]>,
   sourceUrl: string,
 ): LaunchCandidate[] {
-  const byKey = new Map<string, LaunchCandidate>()
+  // Every matching (headline, arena) pair survives here — one key can carry several launch
+  // posts. partitionCandidates picks the strongest headline for a FRESH nomination and merges
+  // every URL of an already-seen key into its ledger entry, so collapsing per key this early
+  // would lose the later-launch links the ledger promises to preserve.
+  const out: LaunchCandidate[] = []
   for (const item of items) {
     if (!isLaunchHeadline(item.title)) continue
     const matches: ArenaMatch[] = matchArenas(matchText(item), vocab)
     for (const m of matches) {
       if (product.arenas.includes(m.arena)) continue // already judged there
-      const key = launchKey(product.id, m.arena)
-      const prior = byKey.get(key)
-      if (prior && prior.hits >= m.hits) continue // keep the strongest headline per pair
-      byKey.set(key, {
-        key,
+      out.push({
+        key: launchKey(product.id, m.arena),
         productId: product.id,
         name: product.name,
         arena: m.arena,
@@ -204,7 +206,7 @@ export function launchCandidates(
       })
     }
   }
-  return [...byKey.values()].sort((a, b) => b.hits - a.hits || a.key.localeCompare(b.key))
+  return out.sort((a, b) => b.hits - a.hits || a.key.localeCompare(b.key))
 }
 
 // Splits this run's candidates against the seen-ledger. A key is REPORTED once: the (product,

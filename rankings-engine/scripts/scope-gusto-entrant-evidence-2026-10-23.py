@@ -19,11 +19,13 @@
 #   startup-banking — the bank account, Money Dashboard, Increase Bank/FDIC disclosure, early-
 #                     beta status, the launch sentence, the wall probe, the community row.
 #
-# Idempotent: dropping an already-dropped id is a no-op. Keyed by (id, excerpt prefix) so a
-# re-numbered pack is never pruned blind — an id whose excerpt does not match aborts. A future
-# `pnpm engine extract` on these entries UNIONS the full release back in; re-run this script
-# after any extract refresh of the gusto entries (the same class of gotcha as the probe-stage
-# replacement, documented there).
+# Idempotent, and keyed by EXCERPT PREFIX, not id: a future `pnpm engine extract` on these
+# entries UNIONS the full release back in under freshly minted ids, so an id-keyed drop would
+# skip the returning claims and quietly restore the inflated scores. Every claimed-docs row
+# whose excerpt starts with a listed prefix is dropped, whatever its id; the ids in the table
+# record which rows the original 2026-10-23 pass removed. Re-run this script after any extract
+# refresh of the gusto entries (the same class of gotcha as the probe-stage replacement,
+# documented there).
 import json
 import os
 import sys
@@ -31,7 +33,7 @@ import sys
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 DATA = os.path.join(os.path.dirname(ROOT), 'open-rankings')
 
-# (arena, id, excerpt prefix) — every row dropped, with the prefix as the safety check.
+# (arena, original id, excerpt prefix) — the prefix is the drop key; the id is provenance.
 DROPS = [
     ('legal-ops', 'gusto-docs-1', "Developers and power users can also connect through Gusto's MCP server"),
     ('legal-ops', 'gusto-docs-2', 'so an agent can prepare what it can before each payroll'),
@@ -82,24 +84,20 @@ def run():
     for arena in ('legal-ops', 'startup-banking'):
         path = os.path.join(DATA, arena, 'evidence', 'gusto.json')
         ev = json.load(open(path))
-        by_id = {e['id']: e for e in ev}
-        drop_ids = set()
-        for a, eid, prefix in DROPS:
-            if a != arena:
-                continue
-            row = by_id.get(eid)
-            if row is None:
-                print(f'{arena}: {eid} already dropped, skipping')
-                continue
-            if not row['excerpt'].startswith(prefix):
-                print(f'abort: {arena}/{eid} excerpt does not start with the expected prefix — pack re-numbered?', file=sys.stderr)
-                return 1
-            drop_ids.add(eid)
-        kept = [e for e in ev if e['id'] not in drop_ids]
-        with open(path, 'w') as f:
-            json.dump(kept, f, indent=2, ensure_ascii=False)
-            f.write('\n')
-        print(f'{arena}: dropped {len(drop_ids)} off-scope rows, kept {len(kept)}')
+        prefixes = [prefix for a, _eid, prefix in DROPS if a == arena]
+        kept, dropped = [], []
+        for e in ev:
+            # claimed-docs/github only: the hand-recorded probe and community rows are in scope
+            # by construction and never carry these prefixes anyway.
+            if e['tier'] in ('claimed-docs', 'github') and any(e['excerpt'].startswith(p) for p in prefixes):
+                dropped.append(e['id'])
+            else:
+                kept.append(e)
+        if dropped:
+            with open(path, 'w') as f:
+                json.dump(kept, f, indent=2, ensure_ascii=False)
+                f.write('\n')
+        print(f'{arena}: dropped {len(dropped)} off-scope rows ({", ".join(dropped) or "none"}), kept {len(kept)}')
     return 0
 
 
