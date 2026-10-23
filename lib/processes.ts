@@ -55,7 +55,7 @@ export type ExtraOptionRef = z.infer<typeof ExtraOptionRefSchema>
 // Declared ahead of the node schema so method contexts can reference it — see the GEO dimension
 // block below (founder ask 2026-09-28) for the full story of these countries (PT and CA joined
 // in the new-countries wave, founder 2026-10-03).
-export const GEO_NOTE_COUNTRIES = ['IN', 'UK', 'DE', 'FR', 'PT', 'CA'] as const
+export const GEO_NOTE_COUNTRIES = ['IN', 'UK', 'DE', 'FR', 'PT', 'CA', 'SG'] as const
 export type GeoNoteCountry = (typeof GEO_NOTE_COUNTRIES)[number]
 
 export const DagNodeBaseSchema = z.object({
@@ -399,6 +399,7 @@ export const GEO_COUNTRY_META: Record<GeoNoteCountry, { label: string; flag: str
   FR: { label: 'France', flag: '🇫🇷' },
   PT: { label: 'Portugal', flag: '🇵🇹' },
   CA: { label: 'Canada', flag: '🇨🇦' },
+  SG: { label: 'Singapore', flag: '🇸🇬' },
 }
 
 // Proven runs (founder spike 2026-10-02 — EXECUTED-PROOF SLOT, design only): a dated record

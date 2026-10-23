@@ -83,17 +83,17 @@ describe('step geo resolutions', () => {
 
     // Exhibit A: the departing-equity settlement resolves in six countries beside the US.
     expect(byId('sit_007').geoScope).toBe('global')
-    expect(countries('sit_007', 'n4')).toEqual(['CA', 'DE', 'IN', 'PT', 'UK', 'US'])
-    expect(countries('sit_007', 'n3')).toEqual(['FR', 'IN', 'UK', 'US'])
+    expect(countries('sit_007', 'n4')).toEqual(['CA', 'DE', 'IN', 'PT', 'SG', 'UK', 'US'])
+    expect(countries('sit_007', 'n3')).toEqual(['FR', 'IN', 'SG', 'UK', 'US'])
     // The notice-terms step resolves in every covered country.
     expect(byId('sit_019').geoScope).toBe('global')
-    expect(countries('sit_019', 'n2')).toEqual(['CA', 'DE', 'FR', 'IN', 'PT', 'UK', 'US'])
+    expect(countries('sit_019', 'n2')).toEqual(['CA', 'DE', 'FR', 'IN', 'PT', 'SG', 'UK', 'US'])
     // First-hire formalities: the I-9/W-4 mechanics moved into the US entry. geoScope flipped
     // to 'global' with the 2026-10-22 extension of the startup_002 precedent; the
     // employment-agreement artifact keeps its geo entries under the restructured-global rule
     // (lib/__tests__/processArtifacts.test.ts).
     expect(byId('hr_001').geoScope).toBe('global')
-    expect(countries('hr_001', 'n6')).toEqual(['FR', 'PT', 'UK', 'US'])
+    expect(countries('hr_001', 'n6')).toEqual(['FR', 'PT', 'SG', 'UK', 'US'])
     // The register lookup: TSDR is the US resolution, with the committed IN/PT/CA checks beside it.
     expect(byId('sit_001').geoScope).toBe('global')
     expect(countries('sit_001', 'n3')).toEqual(['CA', 'IN', 'PT', 'US'])
@@ -115,15 +115,15 @@ describe('step geo resolutions', () => {
 
     // The deadline steps resolve in every covered country.
     expect(byId('sit_008').geoScope).toBe('global')
-    expect(countries('sit_008', 'n2')).toEqual(['CA', 'DE', 'FR', 'IN', 'PT', 'UK', 'US'])
+    expect(countries('sit_008', 'n2')).toEqual(['CA', 'DE', 'FR', 'IN', 'PT', 'SG', 'UK', 'US'])
     expect(byId('sit_009').geoScope).toBe('global')
-    expect(countries('sit_009', 'n2')).toEqual(['CA', 'DE', 'FR', 'IN', 'PT', 'UK', 'US'])
+    expect(countries('sit_009', 'n2')).toEqual(['CA', 'DE', 'FR', 'IN', 'PT', 'SG', 'UK', 'US'])
     // The claim rides the tax return everywhere a regime exists; India resolves not-applicable.
     expect(byId('tax_010').geoScope).toBe('global')
-    expect(countries('tax_010', 'n5')).toEqual(['CA', 'DE', 'FR', 'IN', 'PT', 'UK', 'US'])
+    expect(countries('tax_010', 'n5')).toEqual(['CA', 'DE', 'FR', 'IN', 'PT', 'SG', 'UK', 'US'])
     // The strategy step carries every covered route; the LCA machinery is the US cut.
     expect(byId('hr_011').geoScope).toBe('global')
-    expect(countries('hr_011', 'n1')).toEqual(['CA', 'DE', 'FR', 'IN', 'PT', 'UK', 'US'])
+    expect(countries('hr_011', 'n1')).toEqual(['CA', 'DE', 'FR', 'IN', 'PT', 'SG', 'UK', 'US'])
     expect(byId('vc_001').geoScope).toBe('global')
     expect(byId('opp_012').geoScope).toBe('global')
     // The startup_002 precedent extended (maintainer decision 2026-10-22): these read as

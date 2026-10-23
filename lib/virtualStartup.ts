@@ -34,7 +34,7 @@ import type { Cadence, SimStep } from './processSim'
 // incorporation composition of the C-Corp path (never a fake corpus branch) and frames it with
 // the committed geoNotes country analog (terminal line + entity label).
 export type EntityChoice =
-  | 'c-corp' | 'llc' | 'ltd' | 'gmbh' | 'ug' | 'sas' | 'sarl' | 'pvt-ltd' | 'lda' | 'ca-corp'
+  | 'c-corp' | 'llc' | 'ltd' | 'gmbh' | 'ug' | 'sas' | 'sarl' | 'pvt-ltd' | 'lda' | 'ca-corp' | 'pte-ltd'
 export type FundingChoice = 'bootstrap' | 'seed'
 // Business models (founder round 5, item 2). Codec rule: 'subscriptions'/'invoices' keep indices
 // 0/1; 'marketplace'/'usage'/'ecommerce' append. Only compositions the corpus honestly supports:
@@ -224,6 +224,10 @@ export const ENTITY_META: Record<EntityChoice, EntityMeta> = {
     label: 'Federal corporation (CBCA)', suffix: ' Inc.', country: 'CA',
     filing: { label: 'Certificate of Incorporation', register: 'Corporations Canada no. 0000000 (placeholder)' },
   },
+  'pte-ltd': {
+    label: 'Pte Ltd', suffix: ' Pte. Ltd.', country: 'SG',
+    filing: { label: 'Notice of Incorporation', register: 'ACRA UEN 000000000X (placeholder)' },
+  },
 }
 
 // The Entity dropdown's roster follows the geo selection; the FIRST option per country is the
@@ -237,6 +241,7 @@ export const ENTITY_OPTIONS_BY_COUNTRY: Record<GeoCountry, EntityChoice[]> = {
   IN: ['pvt-ltd'],
   PT: ['lda'],
   CA: ['ca-corp'],
+  SG: ['pte-ltd'],
 }
 
 export function defaultEntityFor(country: GeoCountry): EntityChoice {
@@ -301,6 +306,7 @@ export const DECISIONS: DecisionDef[] = [
       { value: 'pvt-ltd', label: 'Pvt Ltd', detail: 'the same corpus incorporation composition as the C-Corp path (form_001), framed for India with the committed MCA analog — the corpus is US-shaped; no steps invented' },
       { value: 'lda', label: 'Lda', detail: 'the same corpus incorporation composition as the C-Corp path (form_001), framed for Portugal with the committed Empresa Online analog — the corpus is US-shaped; no steps invented' },
       { value: 'ca-corp', label: 'Federal corporation (CBCA)', detail: 'the same corpus incorporation composition as the C-Corp path (form_001), framed for Canada with the committed Corporations Canada analog — the corpus is US-shaped; no steps invented' },
+      { value: 'pte-ltd', label: 'Pte Ltd', detail: 'the same corpus incorporation composition as the C-Corp path (form_001), framed for Singapore with the committed ACRA/Bizfile analog — the corpus is US-shaped; no steps invented' },
     ],
   },
   {
