@@ -86,6 +86,7 @@ The rules live in one directory per jurisdiction, named by the `jurisdiction` co
 | [US-CO](US-CO/) | The Colorado Privacy Act applicability thresholds |
 | [EU](EU/) | The GDPR data-subject-access response deadline |
 | [UK](UK/) | Company registration and the certificate of incorporation, the confirmation statement, allotment returns, accounts filing periods, PSC information notices, corporation tax notice and PAYE registration deadlines, the VAT registration threshold, the written statement of particulars, EMI notification and company qualifying limits |
+| [KR](KR/) | Stock-company incorporation registration and articles contents, the absence of a minimum capital, the representative director, the two-week registry change deadline, corporate tax return deadline and rates, VAT registration and return deadlines, the social-insurance establishment report, written terms of employment, the severance-pay floor, PIPA breach notification, foreign-investment thresholds. Korean originals on law.go.kr are the primary locators, with the KLRI English translation attached where verified |
 
 ## Founder-journey workflow files
 
