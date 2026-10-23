@@ -18,9 +18,11 @@ import {
   launchItemsFromHtml,
   launchKey,
   matchText,
+  partitionCandidates,
+  type LaunchCandidate,
   type LaunchWatchReport,
 } from '../scripts/launch-watch'
-import { buildArenaVocab } from '../scripts/vendor-radar'
+import { buildArenaVocab, mergeSeenEntries } from '../scripts/vendor-radar'
 
 const product = (over: Partial<Product> = {}): Product => ({
   id: 'mercury',
@@ -145,6 +147,56 @@ describe('dispositions', () => {
       dispositions: [dispositionFor({ ...base, hits: 2 }, identity, 'desc', '2026-10-23')],
     }
     expect(TriageReportSchema.parse(report)).toBeTruthy()
+  })
+})
+
+describe('seen-ledger partition', () => {
+  const candidate = (over: Partial<LaunchCandidate> = {}): LaunchCandidate => ({
+    key: launchKey('mercury', 'legal-ops'),
+    productId: 'mercury',
+    name: 'Mercury',
+    arena: 'legal-ops',
+    hits: 2,
+    keywords: ['incorporation', 'legal'],
+    title: 'Announcing Mercury incorporation',
+    url: 'https://mercury.com/blog/incorporation-service',
+    sourceUrl: 'https://mercury.com/blog',
+    ...over,
+  })
+
+  it('reports an unseen pair once and keeps the strongest headline', () => {
+    const { fresh, laterLaunches, alreadySeen } = partitionCandidates(
+      [candidate({ hits: 2 }), candidate({ hits: 3, title: 'Stronger' })],
+      new Set(),
+      '2026-10-23',
+    )
+    expect(fresh).toHaveLength(1)
+    expect(fresh[0].title).toBe('Stronger')
+    expect(laterLaunches).toEqual([])
+    expect(alreadySeen).toBe(0)
+  })
+
+  it('does not re-nominate a seen pair but merges the later launch URL into its ledger entry', () => {
+    const seen = new Set([launchKey('mercury', 'legal-ops')])
+    const { fresh, laterLaunches, alreadySeen } = partitionCandidates(
+      [candidate({ url: 'https://mercury.com/blog/formation-v2' })],
+      seen,
+      '2026-11-30',
+    )
+    expect(fresh).toEqual([])
+    expect(alreadySeen).toBe(1)
+    expect(laterLaunches).toHaveLength(1)
+    expect(laterLaunches[0].key).toBe(launchKey('mercury', 'legal-ops'))
+    expect(laterLaunches[0].sources).toEqual(['https://mercury.com/blog/formation-v2'])
+    // mergeSeenEntries keeps the pair's original firstSeen and unions the sources, so the later
+    // launch lands in the committed ledger diff instead of vanishing.
+    const merged = mergeSeenEntries([
+      [{ key: launchKey('mercury', 'legal-ops'), name: 'Mercury → legal-ops', firstSeen: '2026-10-23', sources: ['https://mercury.com/blog/incorporation-service'] }],
+      laterLaunches,
+    ])
+    expect(merged).toHaveLength(1)
+    expect(merged[0].firstSeen).toBe('2026-10-23')
+    expect(merged[0].sources).toEqual(['https://mercury.com/blog/incorporation-service', 'https://mercury.com/blog/formation-v2'])
   })
 })
 

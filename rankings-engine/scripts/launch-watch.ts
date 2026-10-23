@@ -205,6 +205,36 @@ export function launchCandidates(
   return [...byKey.values()].sort((a, b) => b.hits - a.hits || a.key.localeCompare(b.key))
 }
 
+// Splits this run's candidates against the seen-ledger. A key is REPORTED once: the (product,
+// arena) pair is a single human call, and re-nominating it on every later post naming the same
+// arena would spam the needs-human queue (re-surface a pair deliberately by deleting its ledger
+// row — the radar's documented escape hatch). Later launches are not silently dropped, though:
+// each already-seen candidate comes back as a ledger update that merges its launch URL into the
+// pair's `sources`, so later launches stay visible in the scan PR's ledger diff.
+export function partitionCandidates(
+  all: LaunchCandidate[],
+  seenKeys: Set<string>,
+  date: string,
+): { fresh: LaunchCandidate[]; laterLaunches: SeenEntry[]; alreadySeen: number } {
+  const byKey = new Map<string, LaunchCandidate>()
+  const later = new Map<string, SeenEntry>()
+  let alreadySeen = 0
+  for (const c of [...all].sort((a, b) => b.hits - a.hits || a.key.localeCompare(b.key))) {
+    if (seenKeys.has(c.key)) {
+      alreadySeen++
+      const prior = later.get(c.key)
+      if (prior) {
+        if (!prior.sources.includes(c.url)) prior.sources.push(c.url)
+      } else {
+        later.set(c.key, { key: c.key, name: `${c.name} → ${c.arena}`, firstSeen: date, sources: [c.url] })
+      }
+      continue
+    }
+    if (!byKey.has(c.key)) byKey.set(c.key, c)
+  }
+  return { fresh: [...byKey.values()], laterLaunches: [...later.values()], alreadySeen }
+}
+
 // ---------------------------------------------------------------------------------------------
 // Dispositions: the radar-triage report shape, so needs-human-issue.ts and the PR body machinery
 // consume launch-watch output unchanged.
@@ -439,16 +469,7 @@ export async function run(argv: string[]): Promise<LaunchWatchReport> {
 
   // Dedupe across sources (same key can surface from two news URLs — keep the strongest) and
   // against the seen-ledger.
-  const byKey = new Map<string, LaunchCandidate>()
-  let alreadySeen = 0
-  for (const c of allCandidates.sort((a, b) => b.hits - a.hits || a.key.localeCompare(b.key))) {
-    if (seenKeys.has(c.key)) {
-      alreadySeen++
-      continue
-    }
-    if (!byKey.has(c.key)) byKey.set(c.key, c)
-  }
-  const fresh = [...byKey.values()]
+  const { fresh, laterLaunches, alreadySeen } = partitionCandidates(allCandidates, seenKeys, date)
   const overflow = Math.max(0, fresh.length - LW_MAX_REPORT_CANDIDATES)
   const candidates = fresh.slice(0, LW_MAX_REPORT_CANDIDATES)
 
@@ -500,7 +521,10 @@ export async function run(argv: string[]): Promise<LaunchWatchReport> {
     firstSeen: date,
     sources: [c.url],
   }))
-  const merged = mergeSeenEntries([ledger?.seen ?? [], ...extraSeen, newEntries])
+  // laterLaunches: a later launch into an already-reported pair is not re-nominated (the pair's
+  // human call stands), but its URL merges into the pair's ledger entry, so it stays visible in
+  // the scan PR's ledger diff instead of vanishing.
+  const merged = mergeSeenEntries([ledger?.seen ?? [], ...extraSeen, newEntries, laterLaunches])
   writeJson(SEEN_LEDGER_FILE, {
     ...(ledger?._comment ? { _comment: ledger._comment } : {}),
     updatedAt: now.toISOString(),

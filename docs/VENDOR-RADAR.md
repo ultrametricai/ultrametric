@@ -137,7 +137,11 @@ seeded only where a keyless GET was verified — keeps the launch-shaped headlin
 arenas the vendor is not rostered in.
 
 Candidates are keyed `launch:<productId>:<arena>` in the shared seen-ledger
-(`rankings-engine/radar-seen.json`), so each launch is reported once. Dispositions are written
+(`rankings-engine/radar-seen.json`): the pair is a single human call, so it is nominated once
+rather than on every later post naming the same arena. A later launch into an already-reported
+pair still merges its URL into the pair's ledger entry (visible in the scan PR's ledger diff),
+and deleting the ledger row re-surfaces the pair, the same escape hatch the radar documents
+above. Dispositions are written
 in the radar-triage report shape (`reports/launch-watch/<date>-triage.json`): needs-human rows
 flow through `needs-human-issue.ts --generator launch-watch` into a labeled issue, and
 auto-approved rows (`LW_AUTO_APPROVE_HITS`+ distinct keyword hits; founder-affiliated products
