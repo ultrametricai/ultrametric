@@ -930,10 +930,13 @@ export interface VsRunState {
 const MIN_COMBO_LEN = 9
 
 // Combo ⇄ digit string, one option index per DECISIONS entry (order-stable, one char each).
+// Index chars continue past '9' through the ASCII run (':' = 10, ';' = 11, …) — the AU entity
+// (2026-10-23) made the entity roster 11 options deep. decodeCombo always read charCodeAt - 48,
+// so every existing digit link replays byte-identically; the extension is encode-side only.
 export function encodeCombo(choices: Choices): string {
   return DECISIONS.map((d) => {
     const i = d.options.findIndex((o) => o.value === choices[d.id])
-    return String(Math.max(0, i))
+    return String.fromCharCode(48 + Math.max(0, i))
   }).join('')
 }
 
@@ -961,7 +964,7 @@ export function encodeAssertedCombo(asserted: AssertedChoices): string {
     const v = asserted[d.id]
     if (v === undefined) return '.'
     const i = d.options.findIndex((o) => o.value === v)
-    return String(Math.max(0, i))
+    return String.fromCharCode(48 + Math.max(0, i))
   }).join('')
 }
 

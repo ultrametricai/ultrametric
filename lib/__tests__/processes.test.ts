@@ -275,7 +275,7 @@ describe('corpus', () => {
     // no India note") carries all four too — stamp duty in India, share classes in the UK.
     for (const id of ['form_001', 'startup_002']) {
       const t = tasks.find((x) => x.id === id)!
-      expect((t.geoNotes ?? []).map((n) => n.country).sort(), id).toEqual(['CA', 'DE', 'FR', 'IN', 'PT', 'UK'])
+      expect((t.geoNotes ?? []).map((n) => n.country).sort(), id).toEqual(['AU', 'CA', 'DE', 'FR', 'IN', 'PT', 'UK'])
     }
   })
 
@@ -311,10 +311,10 @@ describe('corpus', () => {
     expect(noteKind('form_002', 'FR')).toBe('absorbed')
     expect(noteKind('form_002', 'DE')).toBe('analog')
     // Incorporation has a true doable analog in every covered country.
-    for (const c of ['IN', 'UK', 'DE', 'FR', 'PT', 'CA']) expect(noteKind('form_001', c), `form_001/${c}`).toBe('analog')
+    for (const c of ['IN', 'UK', 'DE', 'FR', 'PT', 'CA', 'AU']) expect(noteKind('form_001', c), `form_001/${c}`).toBe('analog')
     // No country has a US-style registered-agent industry — the registered office is declared
     // inside formation everywhere.
-    for (const c of ['IN', 'UK', 'DE', 'FR', 'PT', 'CA']) expect(noteKind('qs_043', c), `qs_043/${c}`).toBe('absorbed')
+    for (const c of ['IN', 'UK', 'DE', 'FR', 'PT', 'CA', 'AU']) expect(noteKind('qs_043', c), `qs_043/${c}`).toBe('absorbed')
     // The need genuinely absent: no UK 1099 regime; nothing to foreign-qualify for inside the
     // UK; no German franchise-tax ritual (the IHK-Beitrag arrives automatically).
     expect(noteKind('tax_003', 'UK')).toBe('not-applicable')
@@ -323,18 +323,20 @@ describe('corpus', () => {
   })
 
   // Geo coverage to totality (founder boost 2026-10-02: "close EVERY gap … pin totality:
-  // uncovered = 0"; PT and CA joined the enum in the 2026-10-03 new-countries wave). Every
-  // US-scoped record — processes and situations alike — says what the need becomes in all six
+  // uncovered = 0"; PT and CA joined the enum in the 2026-10-03 new-countries wave, AU in the
+  // 2026-10-23 Australia wave). Every
+  // US-scoped record — processes and situations alike — says what the need becomes in all seven
   // countries, with the honesty carried by the note KIND (a not-applicable note is a closed gap
   // too: sit_002 is inherently US-inbound, Germany has no 409A ritual and no 1099 regime,
-  // Canada has no LLC). The six-country set is the whole enum, so this is the uncovered=0 pin.
-  it('geo totality: every US-scoped record carries all six countries (uncovered = 0)', () => {
+  // Canada and Australia have no LLC). The seven-country set is the whole enum, so this is the
+  // uncovered=0 pin.
+  it('geo totality: every US-scoped record carries all seven countries (uncovered = 0)', () => {
     const tasks = loadProcesses(DATA_DIR)
     for (const t of tasks.filter((x) => x.geoScope !== 'global')) {
       expect(
         (t.geoNotes ?? []).map((n) => n.country).sort(),
-        `${t.id} (${t.title}): six-country geo totality`,
-      ).toEqual(['CA', 'DE', 'FR', 'IN', 'PT', 'UK'])
+        `${t.id} (${t.title}): seven-country geo totality`,
+      ).toEqual(['AU', 'CA', 'DE', 'FR', 'IN', 'PT', 'UK'])
     }
     // The worked decisions of the closing passes, pinned: bank-account analogs exist in the four
     // original countries (vendor-geo-aligned; qs_023 is global-scoped, so PT/CA notes are not
@@ -346,7 +348,7 @@ describe('corpus', () => {
     for (const c of ['IN', 'UK', 'DE', 'FR']) {
       expect(noteKind('qs_023', c), `qs_023/${c}`).toBe('analog')
     }
-    for (const c of ['IN', 'UK', 'DE', 'FR', 'PT', 'CA']) {
+    for (const c of ['IN', 'UK', 'DE', 'FR', 'PT', 'CA', 'AU']) {
       expect(noteKind('sit_002', c), `sit_002/${c}`).toBe('not-applicable')
     }
     expect(noteKind('fund_003', 'DE')).toBe('not-applicable')
@@ -468,7 +470,7 @@ describe('corpus', () => {
     // teleservice URL verified live 2026-10-02 closed the FR gap the first pass couldn't; CNPD
     // and the OPC closed PT/CA in the 2026-10-03 wave).
     expect(breach.geoScope).toBe('global')
-    expect((breach.geoNotes ?? []).map((n) => n.country).sort()).toEqual(['CA', 'DE', 'FR', 'IN', 'PT', 'UK'])
+    expect((breach.geoNotes ?? []).map((n) => n.country).sort()).toEqual(['AU', 'CA', 'DE', 'FR', 'IN', 'PT', 'UK'])
     expect(breach.geoNotes!.find((n) => n.country === 'FR')!.actionUrl).toContain('cnil.fr')
   })
 

@@ -35,6 +35,7 @@ import type { Cadence, SimStep } from './processSim'
 // the committed geoNotes country analog (terminal line + entity label).
 export type EntityChoice =
   | 'c-corp' | 'llc' | 'ltd' | 'gmbh' | 'ug' | 'sas' | 'sarl' | 'pvt-ltd' | 'lda' | 'ca-corp'
+  | 'pty-ltd'
 export type FundingChoice = 'bootstrap' | 'seed'
 // Business models (founder round 5, item 2). Codec rule: 'subscriptions'/'invoices' keep indices
 // 0/1; 'marketplace'/'usage'/'ecommerce' append. Only compositions the corpus honestly supports:
@@ -224,6 +225,10 @@ export const ENTITY_META: Record<EntityChoice, EntityMeta> = {
     label: 'Federal corporation (CBCA)', suffix: ' Inc.', country: 'CA',
     filing: { label: 'Certificate of Incorporation', register: 'Corporations Canada no. 0000000 (placeholder)' },
   },
+  'pty-ltd': {
+    label: 'Pty Ltd', suffix: ' Pty Ltd', country: 'AU',
+    filing: { label: 'Certificate of Registration', register: 'ASIC ACN 000 000 000 (placeholder)' },
+  },
 }
 
 // The Entity dropdown's roster follows the geo selection; the FIRST option per country is the
@@ -237,6 +242,7 @@ export const ENTITY_OPTIONS_BY_COUNTRY: Record<GeoCountry, EntityChoice[]> = {
   IN: ['pvt-ltd'],
   PT: ['lda'],
   CA: ['ca-corp'],
+  AU: ['pty-ltd'],
 }
 
 export function defaultEntityFor(country: GeoCountry): EntityChoice {
@@ -301,6 +307,7 @@ export const DECISIONS: DecisionDef[] = [
       { value: 'pvt-ltd', label: 'Pvt Ltd', detail: 'the same corpus incorporation composition as the C-Corp path (form_001), framed for India with the committed MCA analog — the corpus is US-shaped; no steps invented' },
       { value: 'lda', label: 'Lda', detail: 'the same corpus incorporation composition as the C-Corp path (form_001), framed for Portugal with the committed Empresa Online analog — the corpus is US-shaped; no steps invented' },
       { value: 'ca-corp', label: 'Federal corporation (CBCA)', detail: 'the same corpus incorporation composition as the C-Corp path (form_001), framed for Canada with the committed Corporations Canada analog — the corpus is US-shaped; no steps invented' },
+      { value: 'pty-ltd', label: 'Pty Ltd', detail: 'the same corpus incorporation composition as the C-Corp path (form_001), framed for Australia with the committed ASIC analog — the corpus is US-shaped; no steps invented' },
     ],
   },
   {

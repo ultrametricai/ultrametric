@@ -17,7 +17,7 @@
 // with zero mismatches — geo-conditional UI appears only after the reader (or their stored
 // preference) opts in, and no judged number ever moves.
 
-export const GEO_COUNTRIES = ['US', 'UK', 'IN', 'DE', 'FR', 'PT', 'CA'] as const
+export const GEO_COUNTRIES = ['US', 'UK', 'IN', 'DE', 'FR', 'PT', 'CA', 'AU'] as const
 export type GeoCountry = (typeof GEO_COUNTRIES)[number]
 
 /** The non-default selections — everything a ?geo= param can carry. */
@@ -33,6 +33,7 @@ export const GEO_PREF_META: Record<GeoCountry, { label: string; flag: string; pr
   FR: { label: 'France', flag: '🇫🇷', prose: 'France' },
   PT: { label: 'Portugal', flag: '🇵🇹', prose: 'Portugal' },
   CA: { label: 'Canada', flag: '🇨🇦', prose: 'Canada' },
+  AU: { label: 'Australia', flag: '🇦🇺', prose: 'Australia' },
 }
 
 export const GEO_PARAM = 'geo'
