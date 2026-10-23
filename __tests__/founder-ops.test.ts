@@ -15,7 +15,7 @@ const readFixture = (name: string) =>
 describe('founder-ops corpus validation', () => {
   it('the committed corpus passes every invariant', () => {
     // Pinned to the newest checked_on in open-law/citations/registry.json (2026-10-23 — the
-    // South Korea sources) so the "checked date is in the future" invariant stays
+    // South Korea and New Zealand sources) so the "checked date is in the future" invariant stays
     // meaningful.
     expect(validateFounderOps(new Date('2026-10-23T00:00:00Z'))).toEqual([])
   })

@@ -81,10 +81,11 @@ describe('step geo resolutions', () => {
     const countries = (id: string, nodeId: string) =>
       (byId(id).dag.nodes.find((n) => n.id === nodeId)?.geoResolutions ?? []).map((r) => r.country).sort()
 
-    // Exhibit A: the departing-equity settlement resolves in six countries beside the US.
+    // Exhibit A: the departing-equity settlement resolves in six countries beside the US
+    // (NZ joined both steps in the 2026-10-23 country run: Companies Office register updates).
     expect(byId('sit_007').geoScope).toBe('global')
-    expect(countries('sit_007', 'n4')).toEqual(['CA', 'DE', 'IN', 'PT', 'UK', 'US'])
-    expect(countries('sit_007', 'n3')).toEqual(['FR', 'IN', 'UK', 'US'])
+    expect(countries('sit_007', 'n4')).toEqual(['CA', 'DE', 'IN', 'NZ', 'PT', 'UK', 'US'])
+    expect(countries('sit_007', 'n3')).toEqual(['FR', 'IN', 'NZ', 'UK', 'US'])
     // The notice-terms step resolves in every covered country.
     expect(byId('sit_019').geoScope).toBe('global')
     expect(countries('sit_019', 'n2')).toEqual(['CA', 'DE', 'FR', 'IN', 'KR', 'PT', 'UK', 'US'])
