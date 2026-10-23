@@ -706,8 +706,10 @@ describe('derived step options (optionsArenaId)', () => {
     expect(payrollStep.optionsArenaId).toBe('payroll')
     const chips = stepVendorOptions(payrollStep, DATA_DIR)
     const leaderboard = loadCategory('payroll', DATA_DIR).rankings.leaderboard.map((e) => e.productId)
-    // Every curated payroll option is already in the roster, so the list IS the leaderboard.
-    expect(chips.map((c) => c.productId)).toEqual(leaderboard.slice(0, STEP_OPTIONS_CAP))
+    // The 2026-10-22 bring-up grew payroll past STEP_OPTIONS_CAP: the list is the leaderboard
+    // top N, and the curated option that now falls outside it (justworks) is appended, the same
+    // contract the ai-coding test below pins.
+    expect(chips.map((c) => c.productId)).toEqual([...leaderboard.slice(0, STEP_OPTIONS_CAP), 'justworks'])
     for (const c of chips) {
       expect(c.arenaId).toBe('payroll')
       expect(c.rank).toBeGreaterThanOrEqual(1)

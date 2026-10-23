@@ -89,8 +89,13 @@ describe('existing judged selection compatibility', () => {
     // evidence pipeline after the shared-host probe fix, normalize re-canonicalized 41 of its
     // 72 stories, and the step→story mapping regenerated against the new corpus, so the
     // code-hosting candidate cells re-partition between the positive and zero rows.
-    expect(positiveCount).toBe(2546)
-    expect(zeroCount).toBe(149)
+    // Re-pinned at the 2026-10-22 payroll + equity-management bring-up: nine newly judged
+    // products (adp-run, paychex-flex, quickbooks-payroll, remote, oyster, warp-payroll, check;
+    // eqvista, qapita) join the candidate lists of the steps mapped to those arenas, and the v5
+    // re-judge the two arenas' stale v4 caches demanded re-partitions some incumbent cells
+    // between the positive and zero rows.
+    expect(positiveCount).toBe(2787)
+    expect(zeroCount).toBe(190)
     expect(extraArena).toBe(96)
   })
 
