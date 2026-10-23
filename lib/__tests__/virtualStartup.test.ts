@@ -142,10 +142,10 @@ describe('decision → journey mapping (against the live corpus)', () => {
   it('country-aware entities (round 5, item 1): a non-US entity NEVER creates a corpus branch — task-identical to the C-Corp path; the country frame rides the phase note; codec order pins c-corp/llc at 0/1', () => {
     const entity = DECISIONS.find((d) => d.id === 'entity')!
     // Codec compat: the original values keep indices 0/1; non-US values are appended.
-    expect(entity.options.map((o) => o.value)).toEqual(['c-corp', 'llc', 'ltd', 'gmbh', 'ug', 'sas', 'sarl', 'pvt-ltd', 'lda', 'ca-corp', 'nz-ltd', 'kr-corp'])
+    expect(entity.options.map((o) => o.value)).toEqual(['c-corp', 'llc', 'ltd', 'gmbh', 'ug', 'sas', 'sarl', 'pvt-ltd', 'lda', 'ca-corp', 'nz-ltd', 'kr-chusik-hoesa'])
     // The dropdown roster follows the geo pick; each country's FIRST option is its default-asserted value.
     expect(ENTITY_OPTIONS_BY_COUNTRY).toEqual({
-      US: ['c-corp', 'llc'], UK: ['ltd'], DE: ['gmbh', 'ug'], FR: ['sas', 'sarl'], IN: ['pvt-ltd'], PT: ['lda'], CA: ['ca-corp'], NZ: ['nz-ltd'], KR: ['kr-corp'],
+      US: ['c-corp', 'llc'], UK: ['ltd'], DE: ['gmbh', 'ug'], FR: ['sas', 'sarl'], IN: ['pvt-ltd'], PT: ['lda'], CA: ['ca-corp'], NZ: ['nz-ltd'], KR: ['kr-chusik-hoesa'],
     })
     expect(defaultEntityFor('US')).toBe('c-corp')
     expect(defaultEntityFor('UK')).toBe('ltd')
@@ -155,7 +155,7 @@ describe('decision → journey mapping (against the live corpus)', () => {
     expect(defaultEntityFor('PT')).toBe('lda')
     expect(defaultEntityFor('CA')).toBe('ca-corp')
     expect(defaultEntityFor('NZ')).toBe('nz-ltd')
-    expect(defaultEntityFor('KR')).toBe('kr-corp')
+    expect(defaultEntityFor('KR')).toBe('kr-chusik-hoesa')
     // Every DECISIONS entity value exists in exactly one country roster, and vice versa.
     const rosterValues = Object.values(ENTITY_OPTIONS_BY_COUNTRY).flat()
     expect([...rosterValues].sort()).toEqual(entity.options.map((o) => o.value).sort())
