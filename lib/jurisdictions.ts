@@ -1,8 +1,14 @@
 // Jurisdiction-conditional process steps (founder 2026-09-25: "allow more options for the
 // processes — ie multi-state situations or California included — so we can see how the
-// processes change"). A DAG node may declare `jurisdictions: ['CA'] | ['MULTI']` meaning the
-// step only applies when the reader turns that jurisdiction on; absence = applies everywhere
-// (the Delaware-only default every judged number is computed from).
+// processes change"). A DAG node may declare `jurisdictions` with one or more codes from the
+// set below, meaning the step only applies when the reader turns that jurisdiction on; absence
+// = applies everywhere (the Delaware-only default every judged number is computed from).
+//
+// The codes are ISO 3166-2 US-state codes resolving in jurisdictions/registry.json (the
+// per-state process-variants wave, 2026-10-22) plus the original MULTI (multi-state
+// operations) flag. The original two-option enum spelled California 'CA'; that spelling stays
+// accepted as a DEPRECATED alias and normalizes to 'US-CA' at load (lib/processes.ts) and in
+// the URL codec below, so committed records and stored client state keep working unchanged.
 //
 // This module is the CLIENT-SAFE half (no node:fs — the lib/processSim.ts split convention):
 // the allowed-jurisdiction set, the ?juris= URL/localStorage codec, and the honest client-side
@@ -14,19 +20,88 @@
 
 import type { StepRoute } from './processSim'
 
-export const JURISDICTIONS = ['CA', 'MULTI'] as const
+export const JURISDICTIONS = [
+  'US-CA', 'US-DE', 'US-FL', 'US-NV', 'US-NY', 'US-TX', 'US-WA', 'US-WY', 'MULTI',
+] as const
 export type Jurisdiction = (typeof JURISDICTIONS)[number]
+
+// Deprecated spellings still present in committed records and stored client state. Accepted on
+// input everywhere, normalized to the canonical code, never emitted.
+export const DEPRECATED_JURISDICTION_ALIASES: Record<string, Jurisdiction> = {
+  CA: 'US-CA',
+}
+
+// The zod input vocabulary for node `jurisdictions` (lib/processes.ts): canonical codes plus
+// the deprecated aliases, so the published JSON schema states the full accepted contract.
+export const JURISDICTION_INPUTS = [
+  ...JURISDICTIONS,
+  ...(Object.keys(DEPRECATED_JURISDICTION_ALIASES) as Array<keyof typeof DEPRECATED_JURISDICTION_ALIASES & string>),
+] as const
+export type JurisdictionInput = (typeof JURISDICTION_INPUTS)[number]
+
+export function normalizeJurisdiction(code: JurisdictionInput): Jurisdiction {
+  return DEPRECATED_JURISDICTION_ALIASES[code] ?? (code as Jurisdiction)
+}
 
 export const JURISDICTION_META: Record<
   Jurisdiction,
   { pill: string; badge: string; noun: string; title: string }
 > = {
-  CA: {
+  'US-CA': {
     pill: '+ California',
     badge: 'CA',
     noun: 'CA',
     title:
       'Add the California steps: foreign qualification, EDD employer registration, the $800 FTB minimum franchise tax, the Statement of Information',
+  },
+  'US-DE': {
+    pill: '+ Delaware',
+    badge: 'DE',
+    noun: 'DE',
+    title:
+      'Add the Delaware steps beyond the default flow: the registered-agent change filing (Certificate of Change of Agent, $50)',
+  },
+  'US-FL': {
+    pill: '+ Florida',
+    badge: 'FL',
+    noun: 'FL',
+    title:
+      'Add the Florida steps: foreign qualification, the Sunbiz annual report (due May 1), registered-agent changes, DOR reemployment-tax registration',
+  },
+  'US-NV': {
+    pill: '+ Nevada',
+    badge: 'NV',
+    noun: 'NV',
+    title:
+      'Add the Nevada steps: the annual list of officers and the state business license renewal',
+  },
+  'US-NY': {
+    pill: '+ New York',
+    badge: 'NY',
+    noun: 'NY',
+    title:
+      'Add the New York steps: the Application for Authority, the biennial statement, Article 9-A franchise tax, NYS-100 employer registration',
+  },
+  'US-TX': {
+    pill: '+ Texas',
+    badge: 'TX',
+    noun: 'TX',
+    title:
+      'Add the Texas steps: foreign registration, the franchise tax report and PIR, registered-agent changes, TWC unemployment-tax registration',
+  },
+  'US-WA': {
+    pill: '+ Washington',
+    badge: 'WA',
+    noun: 'WA',
+    title:
+      'Add the Washington steps: foreign registration, DOR business licensing and B&O tax, ESD employer registration',
+  },
+  'US-WY': {
+    pill: '+ Wyoming',
+    badge: 'WY',
+    noun: 'WY',
+    title:
+      'Add the Wyoming steps: registered-agent appointment and change filings ($5)',
   },
   MULTI: {
     pill: '+ Multi-state',
@@ -45,10 +120,14 @@ export const JURIS_STORAGE_KEY = 'pa-jurisdiction'
 
 // Tolerant parse of a ?juris= value (or the stored copy): lowercase tokens, unknown tokens
 // dropped, output deduped in canonical JURISDICTIONS order — never a crash, never an invalid
-// jurisdiction in state.
+// jurisdiction in state. Deprecated alias tokens ('ca', stored before the per-state codes
+// existed) normalize to their canonical code.
 export function parseJuris(raw: string | null): Jurisdiction[] {
   if (!raw) return []
   const tokens = new Set(raw.split(',').map((t) => t.trim().toLowerCase()))
+  for (const [alias, canonical] of Object.entries(DEPRECATED_JURISDICTION_ALIASES)) {
+    if (tokens.has(alias.toLowerCase())) tokens.add(canonical.toLowerCase())
+  }
   return JURISDICTIONS.filter((j) => tokens.has(j.toLowerCase()))
 }
 
