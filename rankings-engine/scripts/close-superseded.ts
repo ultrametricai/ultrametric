@@ -49,11 +49,22 @@ export function supersessionComment(kind: Kind, successor: number): string {
     : `Superseded by #${successor}. Closed automatically by the generator workflow; the dispositions recorded here stay in the committed reports.`
 }
 
+// One listing per prefix, narrowed server-side with an in:title search so the 100-item window
+// applies to the generator's own items, not the whole repo's open queue — a busy tracker cannot
+// push a matching item out of view. Search matching is loose; the startsWith filter in
+// pickSuperseded stays authoritative. Results are unioned by number.
+export function listOpenItems(kind: Kind, prefixes: string[], run: GhRunner): GhItem[] {
+  const byNumber = new Map<number, GhItem>()
+  for (const prefix of prefixes) {
+    const listed = run([kind, 'list', '--state', 'open', '--limit', '100', '--search', `in:title "${prefix}"`, '--json', 'number,title'])
+    for (const item of GhItemSchema.array().parse(JSON.parse(listed))) byNumber.set(item.number, item)
+  }
+  return [...byNumber.values()]
+}
+
 export function closeSuperseded(opts: { kind: Kind; prefixes: string[]; successor: number; run: GhRunner }): GhItem[] {
   const { kind, prefixes, successor, run } = opts
-  const listed = run([kind, 'list', '--state', 'open', '--limit', '100', '--json', 'number,title'])
-  const openItems = GhItemSchema.array().parse(JSON.parse(listed))
-  const stale = pickSuperseded(openItems, prefixes, successor)
+  const stale = pickSuperseded(listOpenItems(kind, prefixes, run), prefixes, successor)
   for (const item of stale) {
     run([kind, 'close', String(item.number), '--comment', supersessionComment(kind, successor)])
   }

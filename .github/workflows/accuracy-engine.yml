@@ -52,9 +52,14 @@ jobs:
         run: pnpm install --frozen-lockfile
 
       # The scan itself: keyless, bounded (≤4 concurrent HTTP checks, 8s timeouts, top-cited
-      # URLs only). Writes open-rankings/staleness-report.json + the work-queue issue body.
+      # URLs only). Writes open-rankings/staleness-report.json, the ranked tables for the report
+      # PR's body (every run), and the work-queue issue body (only when the queue holds
+      # actionable rows).
       - name: Fleet staleness scan
-        run: pnpm tsx rankings-engine/scripts/staleness-scan.ts --issue-body /tmp/staleness-issue.md
+        run: |
+          pnpm tsx rankings-engine/scripts/staleness-scan.ts \
+            --issue-body /tmp/staleness-issue.md \
+            --pr-body /tmp/staleness-tables.md
 
       - name: Tests
         run: pnpm test
@@ -79,13 +84,14 @@ jobs:
           git add open-rankings/staleness-report.json README.md
           git commit -m "chore(accuracy-engine): weekly fleet staleness scan"
           git push -u origin "$BRANCH"
-          # The PR body carries the full work-queue tables; the companion issue below is filed
-          # only when the queue holds actionable rows.
+          # The PR body carries the full work-queue tables on every run (--pr-body is written
+          # unconditionally); the companion issue below is filed only when the queue holds
+          # actionable rows.
           {
             echo "Keyless fleet staleness scan (rankings-engine/scripts/staleness-scan.ts). Merging this report makes story-runner prioritize the worst-stale arenas (see story-runner.yml's pick step). Flips/contradictions need keyed re-judges — this report never changes a verdict."
-            if [ -f /tmp/staleness-issue.md ]; then
+            if [ -f /tmp/staleness-tables.md ]; then
               echo
-              cat /tmp/staleness-issue.md
+              cat /tmp/staleness-tables.md
             fi
           } > /tmp/accuracy-pr-body.md
           # Same org-policy fallback as story-runner: if Actions may not open PRs, leave an

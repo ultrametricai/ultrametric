@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { closeSuperseded, parseArgs, pickSuperseded, supersessionComment, type GhItem } from '../scripts/close-superseded'
+import { closeSuperseded, listOpenItems, parseArgs, pickSuperseded, supersessionComment, type GhItem } from '../scripts/close-superseded'
 
 // Supersession hygiene for the recurring generators: the new issue/PR closes the previous
 // still-open one with a comment naming the successor. The gh runner is injected, so these tests
@@ -39,8 +39,23 @@ describe('supersessionComment', () => {
   })
 })
 
+describe('listOpenItems', () => {
+  it('narrows each listing server-side with an in:title search and unions the results by number', () => {
+    const calls: string[][] = []
+    const run = (args: string[]): string => {
+      calls.push(args)
+      // Loose server-side matching: both queries return an overlapping slice of OPEN.
+      return JSON.stringify(OPEN.slice(0, 3))
+    }
+    const items = listOpenItems('issue', ['vendor-radar: needs-human candidates', 'vendor-radar: candidates'], run)
+    expect(calls[0]).toEqual(['issue', 'list', '--state', 'open', '--limit', '100', '--search', 'in:title "vendor-radar: needs-human candidates"', '--json', 'number,title'])
+    expect(calls[1]).toEqual(['issue', 'list', '--state', 'open', '--limit', '100', '--search', 'in:title "vendor-radar: candidates"', '--json', 'number,title'])
+    expect(items.map((i) => i.number).sort((a, b) => a - b)).toEqual([401, 410, 415])
+  })
+})
+
 describe('closeSuperseded', () => {
-  it('lists open items once, then closes each superseded one with the naming comment', () => {
+  it('lists open items per prefix, then closes each superseded one with the naming comment', () => {
     const calls: string[][] = []
     const run = (args: string[]): string => {
       calls.push(args)
@@ -49,10 +64,10 @@ describe('closeSuperseded', () => {
     }
     const closed = closeSuperseded({ kind: 'issue', prefixes: ['vendor-radar: needs-human candidates', 'vendor-radar: candidates'], successor: 430, run })
     expect(closed.map((i) => i.number)).toEqual([410, 415])
-    expect(calls[0]).toEqual(['issue', 'list', '--state', 'open', '--limit', '100', '--json', 'number,title'])
-    expect(calls[1]).toEqual(['issue', 'close', '410', '--comment', supersessionComment('issue', 430)])
-    expect(calls[2]).toEqual(['issue', 'close', '415', '--comment', supersessionComment('issue', 430)])
-    expect(calls).toHaveLength(3)
+    expect(calls.filter((c) => c[1] === 'list')).toHaveLength(2)
+    expect(calls.at(-2)).toEqual(['issue', 'close', '410', '--comment', supersessionComment('issue', 430)])
+    expect(calls.at(-1)).toEqual(['issue', 'close', '415', '--comment', supersessionComment('issue', 430)])
+    expect(calls).toHaveLength(4)
   })
 
   it('never issues a merge command, only close', () => {
