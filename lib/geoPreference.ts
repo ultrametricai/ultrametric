@@ -13,12 +13,12 @@
 //
 // URL/localStorage contract (lib/urlState.ts conventions, the JurisdictionToggle precedent):
 // the default — 🇺🇸 US — NEVER appears in the URL; ?geo=uk / ?geo=in / ?geo=de / ?geo=fr /
-// ?geo=pt / ?geo=ca / ?geo=nz is the shareable non-default state, mirrored to localStorage under `pa-geo`. Components read it on
+// ?geo=pt / ?geo=ca / ?geo=nz / ?geo=sg is the shareable non-default state, mirrored to localStorage under `pa-geo`. Components read it on
 // MOUNT ONLY, so the static HTML always renders the US default byte-identically and hydrates
 // with zero mismatches — geo-conditional UI appears only after the reader (or their stored
 // preference) opts in, and no judged number ever moves.
 
-export const GEO_COUNTRIES = ['US', 'UK', 'IN', 'DE', 'FR', 'PT', 'CA', 'NZ', 'AU'] as const
+export const GEO_COUNTRIES = ['US', 'UK', 'IN', 'DE', 'FR', 'PT', 'CA', 'NZ', 'SG', 'AU'] as const
 export type GeoCountry = (typeof GEO_COUNTRIES)[number]
 
 /** The non-default selections — everything a ?geo= param can carry. */
@@ -35,6 +35,7 @@ export const GEO_PREF_META: Record<GeoCountry, { label: string; flag: string; pr
   PT: { label: 'Portugal', flag: '🇵🇹', prose: 'Portugal' },
   CA: { label: 'Canada', flag: '🇨🇦', prose: 'Canada' },
   NZ: { label: 'New Zealand', flag: '🇳🇿', prose: 'New Zealand' },
+  SG: { label: 'Singapore', flag: '🇸🇬', prose: 'Singapore' },
   AU: { label: 'Australia', flag: '🇦🇺', prose: 'Australia' },
 }
 
