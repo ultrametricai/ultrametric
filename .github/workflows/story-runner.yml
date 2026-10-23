@@ -165,7 +165,13 @@ jobs:
 
       - name: Open PR if anything changed
         env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          # Prefer the fine-grained PAT when the secret exists: a PR created with the
+          # workflow's GITHUB_TOKEN does not trigger pull_request workflows (GitHub's
+          # recursion guard — bot PRs #430/#433 carry no validation check), so the
+          # required checks never report and the auto-merge opt-in below never
+          # completes. Falls back to GITHUB_TOKEN when the secret is absent; no
+          # secrets are created here.
+          GH_TOKEN: ${{ secrets.UM_BOT_PR_PAT || secrets.GITHUB_TOKEN }}
           CATEGORY: ${{ steps.pick.outputs.category }}
           RUN_ID: ${{ github.run_id }}
         run: |
@@ -187,10 +193,22 @@ jobs:
           # Org policy currently forbids Actions from creating PRs ("Write permissions for
           # workflows are disabled by the organization") — fall back to an issue carrying the
           # compare link so the refresh is never silently stranded on a branch.
-          if ! gh pr create \
+          # Auto-merge opt-in (maintainer authorization 2026-10-23): branch protection
+          # on main holds the merge until validation/ci + Greptile Review pass and
+          # every thread resolves — a reviewer applying the re-judge stability policy
+          # opens a thread, which blocks the merge until it is resolved. Greptile does
+          # not review bot PRs unprompted (PRs #430/#433 each needed a maintainer's
+          # '@greptileai review'), so the comment requests it. Both follow-ups are
+          # best-effort; a failure leaves the PR open for a manual merge.
+          if PR_URL=$(gh pr create \
             --title "story-runner: $CATEGORY refresh" \
             --body "Automated evidence/verdict refresh for \`$CATEGORY\`. Review verdict flips against the re-judge stability policy (README) before merging — no-new-citation flips should be reverted." \
-            --base main --head "$BRANCH"; then
+            --base main --head "$BRANCH"); then
+            gh pr merge --auto --merge "$PR_URL" \
+              || echo "auto-merge opt-in failed (org settings may block GITHUB_TOKEN; fallback: fine-grained PAT secret) — merge $PR_URL manually once checks pass"
+            gh pr comment "$PR_URL" --body "@greptileai review" \
+              || echo "Greptile review request failed — comment '@greptileai review' on $PR_URL manually"
+          else
             gh issue create \
               --title "story-runner: $CATEGORY refresh ready on $BRANCH" \
               --body "The scheduled refresh for \`$CATEGORY\` is committed on [\`$BRANCH\`](https://github.com/${GITHUB_REPOSITORY}/compare/main...$BRANCH) but Actions may not open PRs (org policy). Open the PR from the compare link and review flips per the re-judge stability policy. Enable org Settings → Actions → General → 'Allow GitHub Actions to create and approve pull requests' to remove this manual step." \
