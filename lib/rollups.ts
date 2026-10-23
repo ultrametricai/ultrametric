@@ -31,6 +31,7 @@ export const AREA_NAMES: Record<string, string> = {
   'ip-office': 'IP office',
   immigration: 'Immigration',
   procurement: 'Procurement',
+  employment: 'Employment agency',
 }
 
 const CellSchema = z.object({

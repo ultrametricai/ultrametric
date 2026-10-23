@@ -13,19 +13,21 @@
 //      math (lib/processes.ts computeCeiling) over the combined node set;
 //   4. the ?juris= codec is tolerant, canonical, and default-eliding.
 
+import fs from 'node:fs'
 import path from 'node:path'
 import { describe, expect, it } from 'vitest'
 import { operationalSources } from './helpers/operational-sources'
 import {
-  ceilingWithJurisdictions, JURISDICTIONS, parseJuris, serializeJuris,
+  ceilingWithJurisdictions, JURISDICTION_INPUTS, JURISDICTIONS, parseJuris, serializeJuris,
   type Jurisdiction, type JurisdictionStepView,
 } from '@/lib/jurisdictions'
 import {
-  computeCeiling, findProcessBySlug, jurisdictionNodes, jurisdictionStepViews, loadProcesses,
-  processSlug, taskCeiling, type DagNode,
+  computeCeiling, findProcessBySlug, GOVERNMENT_ARENA_ID, governmentStepEligibility,
+  jurisdictionNodes, jurisdictionStepViews, loadProcesses, processSlug, taskCeiling, type DagNode,
 } from '@/lib/processes'
 
 const DATA_DIR = path.resolve(__dirname, '../../open-rankings')
+const ROOT = path.resolve(__dirname, '../..')
 
 interface RawTask {
   id: string
@@ -52,12 +54,13 @@ const rawConditional = rawTasks.flatMap((t) =>
 
 describe('corpus integrity (complete canonical projection — loadProcesses strips these before other tests see them)', () => {
   it('has conditional steps at the intended scale, and every jurisdictions value is from the allowed set', () => {
-    expect(rawConditional.length).toBeGreaterThanOrEqual(8)
-    expect(rawConditional.length).toBeLessThanOrEqual(15)
+    expect(rawConditional.length).toBeGreaterThanOrEqual(25)
+    expect(rawConditional.length).toBeLessThanOrEqual(45)
     for (const { task, node } of rawConditional) {
       expect(node.jurisdictions!.length, `${task.id}:${node.id} empty jurisdictions`).toBeGreaterThan(0)
       for (const j of node.jurisdictions!) {
-        expect(JURISDICTIONS, `${task.id}:${node.id} jurisdiction "${j}"`).toContain(j)
+        // Raw committed values: the canonical codes plus the deprecated 'CA' alias.
+        expect(JURISDICTION_INPUTS, `${task.id}:${node.id} jurisdiction "${j}"`).toContain(j)
       }
     }
   })
@@ -103,6 +106,86 @@ describe('corpus integrity (complete canonical projection — loadProcesses stri
   })
 })
 
+// The per-state steps (2026-10-22): every state-conditional step's code resolves to a
+// level-state entry in jurisdictions/registry.json and the step carries a cited official page;
+// law-rule ids cited in the step prose are committed on disk; and the state code narrows the
+// government-services candidate pull to the state's own registry agency where one is tagged.
+describe('state-conditional steps', () => {
+  const registry = JSON.parse(
+    fs.readFileSync(path.join(ROOT, 'jurisdictions/registry.json'), 'utf8'),
+  ) as { jurisdictions: Array<{ code: string; level: string }> }
+  const stateCodes = new Set(
+    registry.jurisdictions.filter((j) => j.level === 'state').map((j) => j.code),
+  )
+  const loaded = loadProcesses(DATA_DIR).flatMap((t) =>
+    jurisdictionNodes(t.id, DATA_DIR).map((node) => ({ task: t, node })),
+  )
+  const stateSteps = loaded.filter(({ node }) =>
+    node.jurisdictions!.some((j) => /^US-[A-Z]{2}$/.test(j)),
+  )
+
+  it('every state code resolves to a level:state registry entry, and the step cites an official https page', () => {
+    expect(stateSteps.length).toBeGreaterThan(0)
+    for (const { task, node } of stateSteps) {
+      const key = `${task.id}:${node.id}`
+      for (const j of node.jurisdictions!.filter((code) => code !== 'MULTI')) {
+        expect(stateCodes.has(j), `${key}: ${j} must be registered in jurisdictions/registry.json`).toBe(true)
+      }
+      expect(node.actionUrl, `${key}: a state step carries its official page`).toMatch(/^https:\/\//)
+      // Official domains only: .gov, the states' own .us hosts (sos.state.tx.us et al.), and
+      // the one state agency that runs on .com — the Florida Department of Revenue.
+      const host = new URL(node.actionUrl!).hostname
+      expect(
+        /\.(gov|us)$/.test(host) || host === 'floridarevenue.com',
+        `${key}: ${host} is a government domain`,
+      ).toBe(true)
+    }
+  })
+
+  it('every law rule cited in conditional-step prose is committed on disk under its jurisdiction', () => {
+    // The guidance prose lives in the canonical records (the operational projection carries
+    // label/metadata only), so scan the authored files the same way founders read them.
+    let cited = 0
+    const catalog = JSON.parse(
+      fs.readFileSync(path.join(ROOT, 'open-processes/catalog.json'), 'utf8'),
+    ) as { processes: string[] }
+    for (const slug of catalog.processes) {
+      const record = JSON.parse(
+        fs.readFileSync(path.join(ROOT, 'open-processes', `${slug}.json`), 'utf8'),
+      ) as { parts?: Array<{ id: string; guidance?: string | null; metadata?: { jurisdictions?: string[] } }> }
+      for (const part of record.parts ?? []) {
+        if (!part.metadata?.jurisdictions) continue
+        for (const m of (part.guidance ?? '').matchAll(/law rule (us-[a-z]{2}\.[a-z0-9-]+)/g)) {
+          cited += 1
+          const ruleId = m[1]
+          const dir = ruleId.split('.')[0].toUpperCase()
+          const file = path.join(ROOT, 'open-law', dir, `${ruleId.replace(/\./g, '-')}.json`)
+          expect(fs.existsSync(file), `${slug}:${part.id} cites ${ruleId}; card expected at ${file}`).toBe(true)
+          expect(JSON.parse(fs.readFileSync(file, 'utf8')).id).toBe(ruleId)
+        }
+      }
+    }
+    expect(cited).toBeGreaterThanOrEqual(15)
+  })
+
+  it('a state code narrows the government-services pull to the state registry agency (US-TX admits only texas-sos)', () => {
+    // The registered-agent change (Form 401) IS a Secretary of State filing, so texas-sos is
+    // the honest expectation. Since the state tax/employment agencies joined the roster
+    // (2026-10-22), the SOS-area steps carry committed stated-vendor wiring so their anchored
+    // pull stays the registry; the state tax steps' own resolutions are pinned in
+    // lib/__tests__/vendorState.test.ts.
+    const txStep = jurisdictionNodes('qs_043', DATA_DIR).find((n) => n.jurisdictions?.includes('US-TX'))!
+    expect(txStep).toBeDefined()
+    expect(governmentStepEligibility(txStep, GOVERNMENT_ARENA_ID, DATA_DIR)).toEqual(new Set(['texas-sos']))
+    // The normalized deprecated alias narrows too: the loaded CA step is US-CA.
+    const caStep = jurisdictionNodes('qs_047', DATA_DIR).find((n) => n.jurisdictions?.includes('US-CA'))!
+    expect(governmentStepEligibility(caStep, GOVERNMENT_ARENA_ID, DATA_DIR)).toEqual(new Set(['california-sos']))
+    // MULTI steps never narrow.
+    const multi = jurisdictionNodes('qs_047', DATA_DIR).find((n) => n.jurisdictions?.includes('MULTI'))!
+    expect(governmentStepEligibility(multi, GOVERNMENT_ARENA_ID, DATA_DIR)).toBeNull()
+  })
+})
+
 describe('default-view invariance', () => {
   it('loadProcesses strips every conditional node — no default surface can see one', () => {
     for (const t of loadProcesses(DATA_DIR)) {
@@ -129,6 +212,23 @@ describe('default-view invariance', () => {
     expect(jurisdictionNodes('legal_001', DATA_DIR)).toEqual([])
   })
 
+  it('the deprecated CA spelling in committed records loads and normalizes to US-CA', () => {
+    // The raw corpus still carries the original 'CA' spelling on the pre-per-state nodes…
+    expect(
+      rawConditional.some(({ node }) => node.jurisdictions!.includes('CA')),
+      'the committed records keep the deprecated alias (this pin guards the load-time normalization path)',
+    ).toBe(true)
+    // …and every loaded node carries only canonical codes: 'CA' never survives the parse.
+    const loaded = loadProcesses(DATA_DIR).flatMap((t) => jurisdictionNodes(t.id, DATA_DIR))
+    for (const n of loaded) {
+      for (const j of n.jurisdictions ?? []) {
+        expect(JURISDICTIONS, `loaded jurisdiction "${j}"`).toContain(j)
+      }
+    }
+    const ftbStep = jurisdictionNodes('tax_001', DATA_DIR).find((n) => n.label.includes('California'))!
+    expect(ftbStep.jurisdictions).toEqual(['US-CA'])
+  })
+
   it('covers the six branching processes: formation, registered agent, payroll setup, DE franchise tax, state taxes, annual report', () => {
     const counts = Object.fromEntries(
       ['form_001', 'qs_043', 'qs_063', 'tax_001', 'form_005', 'qs_047'].map((id) => [
@@ -136,7 +236,7 @@ describe('default-view invariance', () => {
         jurisdictionNodes(id, DATA_DIR).length,
       ]),
     )
-    expect(counts).toEqual({ form_001: 2, qs_043: 1, qs_063: 2, tax_001: 1, form_005: 1, qs_047: 2 })
+    expect(counts).toEqual({ form_001: 6, qs_043: 7, qs_063: 6, tax_001: 2, form_005: 3, qs_047: 6 })
   })
 
   it('the sales-tax-nexus MULTI step links the existing process instead of duplicating it', () => {
@@ -157,7 +257,7 @@ describe('ceiling math with/without jurisdictions', () => {
       if (cond.length === 0) continue
       const base = taskCeiling(t)
       const views = jurisdictionStepViews(t.id, DATA_DIR)
-      for (const active of [['CA'], ['MULTI'], ['CA', 'MULTI']] as Jurisdiction[][]) {
+      for (const active of [['US-CA'], ['MULTI'], ['US-CA', 'MULTI'], ['US-TX', 'US-NY']] as Jurisdiction[][]) {
         const activeCond = cond.filter((n) => n.jurisdictions!.some((j) => active.includes(j)))
         const server = computeCeiling([...t.dag.nodes, ...activeCond] as DagNode[])
         const client = ceilingWithJurisdictions(base, views, active)
@@ -178,11 +278,11 @@ describe('ceiling math with/without jurisdictions', () => {
   it('non-agent conditional steps honestly LOWER the ceiling; agent ones raise the numerator', () => {
     const base = { agentSteps: 5, totalSteps: 10, pct: 50 }
     const step = (over: Partial<JurisdictionStepView>): JurisdictionStepView => ({
-      label: 's', route: 'form', jurisdictions: ['CA'], actionUrl: null, actionLabel: null,
+      label: 's', route: 'form', jurisdictions: ['US-CA'], actionUrl: null, actionLabel: null,
       estimatedMinutes: 5, async: false, processHref: null, processTitle: null, ...over,
     })
-    expect(ceilingWithJurisdictions(base, [step({})], ['CA']).pct).toBe(45) // 5/11
-    expect(ceilingWithJurisdictions(base, [step({ route: 'agent' })], ['CA']).agentSteps).toBe(6)
+    expect(ceilingWithJurisdictions(base, [step({})], ['US-CA']).pct).toBe(45) // 5/11
+    expect(ceilingWithJurisdictions(base, [step({ route: 'agent' })], ['US-CA']).agentSteps).toBe(6)
     // Steps of an inactive jurisdiction never count.
     expect(ceilingWithJurisdictions(base, [step({})], ['MULTI']).pct).toBe(50)
   })
@@ -190,20 +290,30 @@ describe('ceiling math with/without jurisdictions', () => {
 
 describe('?juris= codec', () => {
   it('parses tolerantly: lowercase tokens, unknown tokens dropped, canonical order, never a crash', () => {
-    expect(parseJuris('ca')).toEqual(['CA'])
-    expect(parseJuris('multi,ca')).toEqual(['CA', 'MULTI'])
-    expect(parseJuris(' CA , MULTI ')).toEqual(['CA', 'MULTI'])
-    expect(parseJuris('nonsense,ca')).toEqual(['CA'])
+    expect(parseJuris('us-ca')).toEqual(['US-CA'])
+    expect(parseJuris('multi,us-ca')).toEqual(['US-CA', 'MULTI'])
+    expect(parseJuris(' US-CA , MULTI ')).toEqual(['US-CA', 'MULTI'])
+    expect(parseJuris('us-tx,us-ny')).toEqual(['US-NY', 'US-TX'])
+    expect(parseJuris('nonsense,us-ca')).toEqual(['US-CA'])
     expect(parseJuris('nonsense')).toEqual([])
     expect(parseJuris('')).toEqual([])
     expect(parseJuris(null)).toEqual([])
   })
 
+  it('the deprecated CA alias (pre-per-state URLs and stored state) still parses, as US-CA', () => {
+    expect(parseJuris('ca')).toEqual(['US-CA'])
+    expect(parseJuris('multi,ca')).toEqual(['US-CA', 'MULTI'])
+    expect(parseJuris(' CA , MULTI ')).toEqual(['US-CA', 'MULTI'])
+  })
+
   it('serializes canonically and elides the default (null deletes the param)', () => {
     expect(serializeJuris([])).toBeNull()
-    expect(serializeJuris(['CA'])).toBe('ca')
-    expect(serializeJuris(['MULTI', 'CA'])).toBe('ca,multi')
-    // Roundtrip.
+    expect(serializeJuris(['US-CA'])).toBe('us-ca')
+    expect(serializeJuris(['MULTI', 'US-CA'])).toBe('us-ca,multi')
+    // Roundtrip, including through the alias.
     expect(parseJuris(serializeJuris(['MULTI']))).toEqual(['MULTI'])
+    expect(parseJuris(serializeJuris(['US-CA']))).toEqual(['US-CA'])
+    // The deprecated alias is accepted on input, never emitted.
+    expect(JURISDICTIONS).not.toContain('CA')
   })
 })

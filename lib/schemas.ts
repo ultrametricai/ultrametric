@@ -87,7 +87,7 @@ export const ProductSchema = z.object({
   // existing products never busts the judge cache. Both set together or not at all (refined in
   // lib/rollups.ts's loader contract); non-government arenas leave them absent.
   country: z.string().regex(/^[A-Z]{2}$/, 'country must be a 2-letter uppercase code').optional(),
-  area: z.enum(['company-registry', 'tax', 'ip-office', 'immigration', 'procurement']).optional(),
+  area: z.enum(['company-registry', 'tax', 'ip-office', 'immigration', 'procurement', 'employment']).optional(),
   // US-state tag for type:'government' products whose remit is one state (the state company
   // registries; later state tax and labor agencies): an ISO 3166-2 code like "US-CA" that must
   // resolve in jurisdictions/registry.json (corpus-tested in lib/__tests__/vendorState.test.ts).

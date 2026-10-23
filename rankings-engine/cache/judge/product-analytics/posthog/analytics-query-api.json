@@ -1,20 +1,20 @@
 {
-  "hash": "d9ecba37116e3e22b158a033a637d9d9bff4ec8cee2e5430dde0851123532e8f",
+  "hash": "f9dc0d33bc7de1fe8f2afbce67b1684a80a25750515a0c8212d273dbfb7807ca",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "full",
     "quality": 8,
     "confidence": "high",
-    "rationale": "PostHog documents a programmatic SQL query API: POST /api/projects/:project_id/query/ with HogQLQuery, authenticated by a scoped personal API key with Query Read permission. It adds saved Endpoints that each publish an OpenAPI spec, a public openapi.json, CLI-based SQL queries, and batch exports for bulk data. Raw event pulls are constrained, though: the docs say /query is not a supported export mechanism, OFFSET pagination returns HTTP 400, and bulk or recurring extraction must go through scheduled batch exports or file downloads. Missing for 10: a sanctioned bulk raw-event pull via the query API itself (not just keyset-paginated ad-hoc queries), and independent or hands-on corroboration of the query/export API.",
+    "rationale": "PostHog documents a programmatic query API: POST /api/projects/:project_id/query/ with HogQLQuery SQL, authenticated by a Query Read-scoped personal API key, with keyset pagination on timestamp. That covers both analytical queries and pulling event rows back. Batch exports, OpenAPI-specced saved Endpoints, a public openapi.json and `posthog-cli api` SQL access round this out. The docs themselves state that /query is not a supported export mechanism and that OFFSET pagination is rejected for API keys, so bulk raw pulls must go through scheduled batch exports to destinations. missing for 10: a documented bulk raw-event pull over the API itself (bulk export is destination-based), independent or hands-on corroboration of query API usage.",
     "evidenceIds": [
       "posthog-supp-query-endpoint",
+      "posthog-docs-44",
       "posthog-supp-endpoints-openapi",
       "posthog-docs-45",
       "posthog-probe-3",
       "posthog-supp-cli-agent-first",
-      "posthog-docs-44",
       "posthog-docs-17",
-      "posthog-supp-scoped-keys"
+      "posthog-docs-8"
     ],
     "productId": "posthog",
     "storyId": "analytics-query-api"

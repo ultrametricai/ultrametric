@@ -86,7 +86,9 @@ describe('generated vendor-review interchange records', () => {
     const r = JSON.parse(committed.get('payroll--gusto.json')!)
     expect(r.jurisdictions[0]).toBe('US:available')
     expect(r.jurisdictions).toContain('IN:unavailable')
-    expect(r.tested_on).toBe('2026-10-01')
+    // tested_on tracks the arena's rankings generatedAt — re-pinned at the 2026-10-22 payroll
+    // bring-up (seven debuts plus the v5 re-judge the stale incumbent caches demanded).
+    expect(r.tested_on).toBe('2026-10-23')
     expect(r.evidence.length).toBeGreaterThan(0)
   })
 })
