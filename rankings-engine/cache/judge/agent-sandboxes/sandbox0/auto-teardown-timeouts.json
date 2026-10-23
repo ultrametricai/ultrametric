@@ -1,16 +1,16 @@
 {
-  "hash": "630fb6836dcc5a7ae8700ada320d0a2c8ee244bfa122d5d194cc0ef04d3a8c4c",
+  "hash": "7b92e1efac075e00f8ea2565ba74512862c0e6f7692f5fc4f34a7a2420563ff3",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "partial",
-    "quality": 3,
-    "confidence": "low",
-    "rationale": "Sandbox0 documents pausing sandbox compute between tasks. Paused sandboxes incur no compute charges, and billing is per-second, so stopping billing after work is covered. However, no evidence shows a configurable idle or max-lifetime timeout that triggers pause or shutdown automatically. The only 'timeout' mentioned is a route-level service setting, which is a different feature. Missing for 10: documented idle/TTL timeout configuration, automatic shutdown or pause on timeout, and hands-on corroboration.",
+    "verdict": "full",
+    "quality": 8,
+    "confidence": "high",
+    "rationale": "Sandbox0 documents a soft `ttl` that automatically pauses a sandbox on expiry and can be refreshed while work continues, so it lapses when idle. A `hard_ttl` deletes the sandbox and its RootFS state. Paused sandboxes incur no compute charges, only storage, under per-second billing. Missing for 10: independent or hands-on corroboration that timeouts trigger reliably, and automatic idle detection (idleness depends on the client no longer refreshing the TTL).",
     "evidenceIds": [
-      "sandbox0-docs-2",
+      "sandbox0-docs-38",
       "sandbox0-docs-3",
       "sandbox0-docs-36",
-      "sandbox0-probe-1"
+      "sandbox0-docs-2"
     ],
     "productId": "sandbox0",
     "storyId": "auto-teardown-timeouts"
