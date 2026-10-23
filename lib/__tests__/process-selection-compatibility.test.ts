@@ -100,7 +100,11 @@ describe('existing judged selection compatibility', () => {
     // between the positive and zero rows. Counts moved again (2875/198 -> 2877/196) when the
     // PR #428 review's evidence-gap fix (recorded llms.txt probes for eqvista and adp-run,
     // payroll-specific Workforce API lines for quickbooks-payroll) re-judged those packs.
-    expect(positiveCount).toBe(2877)
+    // Re-pinned at the issue #378 bring-up (2026-10-23): proa joins frontend-frameworks (whose
+    // stale v4 caches the arena-wide v5 re-judge refreshed) and replica-skill joins
+    // agent-skills, so the newly judged products join the candidate lists of the steps mapped
+    // to those arenas.
+    expect(positiveCount).toBe(2878)
     expect(zeroCount).toBe(196)
     expect(extraArena).toBe(96)
   })
