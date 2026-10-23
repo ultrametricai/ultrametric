@@ -125,6 +125,29 @@ An auto-approved or human-approved radar candidate follows this flow:
 4. Record the final disposition and PR link on the candidate's needs-human issue when one
    exists; otherwise the committed triage report carries the disposition.
 
+## Launch watch: rostered vendors entering new arenas
+
+The radar's dedupe deliberately skips every tracked vendor, which left a blind spot the Gusto
+formation/banking launch exposed (2026-10-22): a vendor we already rank ships a product that
+belongs in another arena. `rankings-engine/scripts/launch-watch.ts` covers it. Weekly
+(`.github/workflows/launch-watch.yml`, Mondays 09:19 UTC), it fetches each rostered product's
+own launch surface — the opt-in `urls.news` field on `open-rankings/<arena>/products.json`,
+seeded only where a keyless GET was verified — keeps the launch-shaped headlines, runs the same
+`buildArenaVocab`/`matchArenas` fit over each one, and nominates `(product, arena)` pairs for
+arenas the vendor is not rostered in.
+
+Candidates are keyed `launch:<productId>:<arena>` in the shared seen-ledger
+(`rankings-engine/radar-seen.json`), so each launch is reported once. Dispositions are written
+in the radar-triage report shape (`reports/launch-watch/<date>-triage.json`): needs-human rows
+flow through `needs-human-issue.ts --generator launch-watch` into a labeled issue, and
+auto-approved rows (`LW_AUTO_APPROVE_HITS`+ distinct keyword hits; founder-affiliated products
+are always needs-human) ride the scan PR itself — `launch-watch --apply` copies the existing
+product identity into the target arena's roster with a scoped-entry disclosure, and the scoped
+standard engine run on the same branch produces the debut scores. Thresholds are named
+constants echoed into each report's `thresholds` block, like the radar's.
+`rankings-engine/__tests__/launch-watch.test.ts` tests the pure units over inline HTML
+fixtures, no network.
+
 ## Testing
 
 `rankings-engine/__tests__/vendor-radar.test.ts` — pure units only, no network: fake HN/PH/GitHub

@@ -1,0 +1,218 @@
+# Weekly launch watch (maintainer ask 2026-10-23, from the Gusto formation/banking launch:
+# "see rostered vendors' product launches that enter new arenas"): runs the KEYLESS scan in
+# rankings-engine/scripts/launch-watch.ts over each rostered product's own committed
+# launch-announcement surface (the opt-in urls.news field — seeded only where a keyless GET was
+# verified), classifies launch-shaped headlines against the arena taxonomy with the radar's
+# keyword-fit machinery, and nominates (product, arena) pairs for arenas the vendor is NOT yet
+# rostered in. The vendor radar covers new vendors; this covers known vendors entering new
+# arenas. Candidates are keyed launch:<product>:<arena> in the SHARED seen-ledger
+# (rankings-engine/radar-seen.json), so each launch is reported once, and stranded ledgers on
+# open radar or launch-watch branches are folded in via --merge-seen. Then:
+#
+#   1. commits the dated report (reports/launch-watch/<date>.{json,md}) + triage + the updated
+#      seen-ledger via the usual PR-or-issue flow, with the candidates list on the scan PR body,
+#   2. needs-human rows file (or update, on a same-day re-run) a 'launch-watch: needs-human
+#      candidates YYYY-MM-DD' issue (needs-human-issue.ts --generator launch-watch; labels
+#      story-runner + founder-call), then this generator's previous still-open candidates issues
+#      close naming the successor,
+#   3. auto-approved rows (strong keyword fit, never founder-affiliated) RIDE THE SCAN PR:
+#      launch-watch --apply copies the existing product identity into the target arena's roster
+#      (capped), the scoped standard engine run produces the debut scores, and the roster +
+#      engine output commit on the same branch as the report. Gated on the ANTHROPIC_API_KEY
+#      repo secret — without it, auto-approved rows stay approved-pending in the triage report.
+#
+# HONESTY: the scan itself changes nothing under open-rankings/; only --apply touches a roster,
+# every debut score comes from judged evidence, and founder-affiliated products are never
+# auto-approved. Scan PRs are never auto-closed as superseded: the seen-ledger makes reports
+# additive. Merges stay human everywhere.
+#
+# Cron offset from the other loops: story-runner '17 */6 * * *', daily-snapshot '43 5 * * *',
+# cert-sweep '29 7 * * 1' (Mondays), accuracy-engine '41 6 * * 3' (Wednesdays), yc-coverage
+# '53 6 * * 5' (Fridays), vendor-radar '31 8 * * *' (daily) — this runs weekly, Mondays 09:19 UTC.
+name: launch-watch
+
+on:
+  schedule:
+    - cron: '19 9 * * 1'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+  issues: write # for the needs-human issue + the PR→issue fallback (org policy may forbid Actions creating PRs)
+
+concurrency:
+  group: launch-watch
+  cancel-in-progress: false
+
+jobs:
+  scan:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: pnpm/action-setup@v6
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 24.22.0
+          cache: pnpm
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      # The ledger is shared with the vendor radar, so stranded updates can live on either
+      # branch family. Same mechanics as vendor-radar.yml: each `git show` gated on its own
+      # exit code, flags handed to the scan via --merge-seen.
+      - name: Collect seen-ledgers from open radar and launch-watch branches
+        run: |
+          git fetch origin '+refs/heads/vendor-radar/*:refs/remotes/origin/vendor-radar/*' \
+            '+refs/heads/launch-watch/*:refs/remotes/origin/launch-watch/*' || true
+          mkdir -p /tmp/lw-seen
+          : > /tmp/lw-seen/flags
+          for REF in $(git for-each-ref --format='%(refname:short)' 'refs/remotes/origin/vendor-radar/*' 'refs/remotes/origin/launch-watch/*'); do
+            SAFE=$(echo "$REF" | tr '/' '-')
+            if git show "$REF:rankings-engine/radar-seen.json" > "/tmp/lw-seen/$SAFE.json" 2>/dev/null; then
+              printf ' --merge-seen /tmp/lw-seen/%s.json' "$SAFE" >> /tmp/lw-seen/flags
+            else
+              rm -f "/tmp/lw-seen/$SAFE.json"
+            fi
+          done
+          echo "MERGE_SEEN_FLAGS=$(cat /tmp/lw-seen/flags)" >> "$GITHUB_ENV"
+
+      # The scan: keyless, bounded (one GET per committed urls.news surface, 15s timeout,
+      # per-host pacing). Writes reports/launch-watch/<date>.{json,md}, the triage report
+      # (<date>-triage.json), updates the shared seen-ledger, and writes the candidates markdown
+      # ONLY when there are new candidates. A corrupt committed ledger FAILS the run instead of
+      # silently wiping the seen-history.
+      - name: Launch-watch scan
+        run: pnpm tsx rankings-engine/scripts/launch-watch.ts --issue-body /tmp/launch-watch-candidates.md $MERGE_SEEN_FLAGS
+
+      # needs-human-issue.ts writes the issue body ONLY when a candidate needs a human call.
+      - name: Needs-human triage body
+        run: |
+          if [ ! -f /tmp/launch-watch-candidates.md ]; then
+            echo "No new candidates — nothing to triage."
+            exit 0
+          fi
+          DATE=$(date -u +%F)
+          pnpm tsx rankings-engine/scripts/needs-human-issue.ts \
+            --triage "reports/launch-watch/$DATE-triage.json" \
+            --out /tmp/launch-watch-needs-human.md \
+            --generator launch-watch
+
+      # Auto-approved cross-arena entries ride THIS branch: roster append (capped at 2 to bound
+      # judge spend) + the scoped standard engine run per entry. Gated on ANTHROPIC_API_KEY
+      # because extract/collect-community/judge are LLM stages — without the key nothing is
+      # applied and the rows stay approved-pending in the committed triage report.
+      - name: Apply auto-approved cross-arena entries
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: |
+          DATE=$(date -u +%F)
+          TRIAGE="reports/launch-watch/$DATE-triage.json"
+          if [ ! -f "$TRIAGE" ]; then
+            echo "No triage output — nothing to apply."
+            exit 0
+          fi
+          if [ -z "$ANTHROPIC_API_KEY" ]; then
+            echo "ANTHROPIC_API_KEY secret not set — auto-approved rows stay approved-pending in $TRIAGE."
+            exit 0
+          fi
+          pnpm tsx rankings-engine/scripts/launch-watch.ts --apply "$TRIAGE" --cap 2 > /tmp/lw-applied.txt
+          if [ ! -s /tmp/lw-applied.txt ]; then
+            echo "No auto-approved entries to apply."
+            exit 0
+          fi
+          while read -r ARENA PRODUCT; do
+            for STAGE in crawl extract collect-community probe judge; do
+              pnpm engine "$STAGE" --category "$ARENA" --product "$PRODUCT"
+            done
+            pnpm engine derive --category "$ARENA"
+          done < /tmp/lw-applied.txt
+          pnpm tsx rankings-engine/scripts/generate-vendor-reviews.ts
+          pnpm tsx rankings-engine/scripts/generate-story-graph.ts
+          pnpm tsx rankings-engine/scripts/generate-step-rankings.ts
+          pnpm stats
+
+      - name: Tests
+        run: pnpm test
+
+      - name: Commit report + seen-ledger (+ applied entries) as PR (or compare-link issue)
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          RUN_ID: ${{ github.run_id }}
+        run: |
+          # porcelain, not `git diff --quiet`: a brand-new dated report file is UNTRACKED and
+          # invisible to diff. open-rankings and the judge cache only change when --apply ran.
+          if [ -z "$(git status --porcelain -- reports rankings-engine/radar-seen.json open-rankings rankings-engine/cache README.md)" ]; then
+            echo "No report/ledger change — done."
+            exit 0
+          fi
+          BRANCH="launch-watch/$RUN_ID"
+          git config user.name "ultrametric-launch-watch"
+          git config user.email "noreply@ultrametric.ai"
+          git checkout -b "$BRANCH"
+          git add reports rankings-engine/radar-seen.json open-rankings rankings-engine/cache README.md
+          git commit -m "chore(launch-watch): weekly rostered-vendor launch scan"
+          git push -u origin "$BRANCH"
+          {
+            echo "Automated keyless scan of rostered vendors' own launch surfaces (\`rankings-engine/scripts/launch-watch.ts\`): dated report + triage + seen-ledger update. Needs-human dispositions are in the companion 'launch-watch: needs-human candidates' issue; auto-approved cross-arena entries (if any) are applied on this branch together with their scoped engine run, so every debut score comes from judged evidence."
+            if [ -f /tmp/launch-watch-candidates.md ]; then
+              echo
+              cat /tmp/launch-watch-candidates.md
+            fi
+            if [ -s /tmp/lw-applied.txt ]; then
+              echo
+              echo "Applied cross-arena entries:"
+              sed 's/^/- /' /tmp/lw-applied.txt
+            fi
+          } > /tmp/launch-watch-pr-body.md
+          # Org policy may forbid Actions from creating PRs — fall back to an issue carrying the
+          # compare link so the report is never silently stranded on a branch (the vendor-radar
+          # pattern; reuses the existing "story-runner" label).
+          if ! gh pr create \
+            --title "launch-watch: weekly scan $(date -u +%F)" \
+            --body-file /tmp/launch-watch-pr-body.md \
+            --base main --head "$BRANCH"; then
+            gh issue create \
+              --title "launch-watch: report ready on $BRANCH" \
+              --body "The weekly launch-watch report is committed on [\`$BRANCH\`](https://github.com/${GITHUB_REPOSITORY}/compare/main...$BRANCH) but Actions may not open PRs (org policy). Open the PR from the compare link." \
+              --label "story-runner" || echo "issue creation also failed — branch $BRANCH is pushed; see run logs"
+          fi
+
+      # The needs-human issue: filed only when the triage routed candidates to a human. Same-day
+      # re-runs UPDATE the existing open issue with a comment instead of filing a duplicate; the
+      # generator's previous still-open candidates issues then close naming the successor.
+      # if: always() — a failure upstream must not swallow the issue; the step itself exits 0
+      # when there is no body file to post.
+      - name: File or update needs-human issue
+        if: always()
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          if [ ! -f /tmp/launch-watch-needs-human.md ]; then
+            echo "No needs-human candidates — no issue to file."
+            exit 0
+          fi
+          TITLE="launch-watch: needs-human candidates $(date -u +%F)"
+          EXISTING=$(gh issue list --state open --search "in:title \"$TITLE\"" --json number,title \
+            --jq ".[] | select(.title == \"$TITLE\") | .number" | head -n1)
+          if [ -n "$EXISTING" ]; then
+            gh issue comment "$EXISTING" --body-file /tmp/launch-watch-needs-human.md \
+              || { echo "issue update failed — the same dispositions are committed in reports/launch-watch/"; exit 0; }
+            NUM="$EXISTING"
+          else
+            ISSUE_URL=$(gh issue create \
+              --title "$TITLE" \
+              --body-file /tmp/launch-watch-needs-human.md \
+              --label "story-runner") \
+              || { echo "issue creation failed — the same dispositions are committed in reports/launch-watch/"; exit 0; }
+            NUM="${ISSUE_URL##*/}"
+          fi
+          gh label create founder-call --color D93F0B \
+            --description "Generator output waiting on a human decision" --force \
+            && gh issue edit "$NUM" --add-label founder-call \
+            || echo "founder-call labeling failed — issue #$NUM is filed without it"
+          pnpm tsx rankings-engine/scripts/close-superseded.ts --kind issue \
+            --title-prefix "launch-watch: needs-human candidates" \
+            --successor "$NUM" || echo "supersession close failed — see run logs"
