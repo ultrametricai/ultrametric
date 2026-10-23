@@ -11,12 +11,23 @@ const OPEN: GhItem[] = [
   { number: 401, title: 'yc-coverage: next bring-up candidates 2026-10-17' },
   { number: 420, title: 'vendor-radar: report ready on vendor-radar/123' },
   { number: 430, title: 'vendor-radar: needs-human candidates 2026-10-23' },
+  // The standing founder-call list (#378). Its title shares the bare "vendor-radar: candidates"
+  // prefix; only the date-anchored prefixes keep it out of supersession.
+  { number: 378, title: 'vendor-radar: candidates needing a founder call' },
 ]
 
 describe('pickSuperseded', () => {
-  it('matches title prefixes, excludes the successor, and closes oldest-first', () => {
-    const picked = pickSuperseded(OPEN, ['vendor-radar: needs-human candidates', 'vendor-radar: candidates'], 430)
+  it('matches the date-anchored prefixes, excludes the successor, and closes oldest-first', () => {
+    const picked = pickSuperseded(OPEN, ['vendor-radar: needs-human candidates 20', 'vendor-radar: candidates 20'], 430)
     expect(picked.map((i) => i.number)).toEqual([410, 415])
+  })
+
+  it('never matches the standing founder-call list under the date-anchored prefixes', () => {
+    const picked = pickSuperseded(OPEN, ['vendor-radar: needs-human candidates 20', 'vendor-radar: candidates 20'], 430)
+    expect(picked.map((i) => i.number)).not.toContain(378)
+    // The regression this pins: the bare prefix DOES match the founder-call title.
+    const bare = pickSuperseded(OPEN, ['vendor-radar: candidates'], 430)
+    expect(bare.map((i) => i.number)).toContain(378)
   })
 
   it('leaves unrelated generators and non-matching titles open', () => {
@@ -24,7 +35,7 @@ describe('pickSuperseded', () => {
     expect(picked).toEqual([])
     // The compare-link fallback issue ("report ready on …") does not start with the candidates
     // prefixes and stays open: its branch holds an additive dated report.
-    const radar = pickSuperseded(OPEN, ['vendor-radar: candidates'], 430)
+    const radar = pickSuperseded(OPEN, ['vendor-radar: candidates 20'], 430)
     expect(radar.map((i) => i.number)).toEqual([410])
   })
 })
@@ -62,7 +73,7 @@ describe('closeSuperseded', () => {
       if (args[1] === 'list') return JSON.stringify(OPEN)
       return ''
     }
-    const closed = closeSuperseded({ kind: 'issue', prefixes: ['vendor-radar: needs-human candidates', 'vendor-radar: candidates'], successor: 430, run })
+    const closed = closeSuperseded({ kind: 'issue', prefixes: ['vendor-radar: needs-human candidates 20', 'vendor-radar: candidates 20'], successor: 430, run })
     expect(closed.map((i) => i.number)).toEqual([410, 415])
     expect(calls.filter((c) => c[1] === 'list')).toHaveLength(2)
     expect(calls.at(-2)).toEqual(['issue', 'close', '410', '--comment', supersessionComment('issue', 430)])
