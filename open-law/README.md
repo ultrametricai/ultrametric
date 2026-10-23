@@ -121,7 +121,10 @@ tax-at-grant against tax-at-vesting and replays the Rev. Proc. 2012-29 examples 
 dated record validated against `schemas/citation.schema.json` with publisher, the exact
 section (`locator`), `issued_on` where known, `checked_on`, jurisdiction, and an HTTPS
 link. A legal rule may only cite `primary-*` authorities; provider blogs can explain
-practice but cannot establish law (`kind: secondary-practice`). The reading canon the
+practice but cannot establish law (`kind: secondary-practice`). A non-English primary
+source marks its language (`lang`, e.g. `ko` for the Korean originals on law.go.kr) and
+may attach an official-translation pointer (`translation`, e.g. the KLRI English
+translation); the original stays the authoritative locator. The reading canon the
 distilled laws cite lives in `open-lore/` (`library.json` and `citations.json`), not here.
 
 Contribute citations here:
