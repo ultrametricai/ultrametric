@@ -1,5 +1,5 @@
 {
-  "$comment": "Company data fields (founder 2026-10-07; spec pages + identifier widening 2026-10-08): the typed company-level data values the repo genuinely consumes. Honest derivation rule, widened once and deliberately for the identifier fields: a field exists here only because a committed open-artifacts/registry.json artifact establishes it (producedBy) AND one of two committed consumption paths is real - (a) a committed lib/openstartup exported function takes it (signatures read from the module source; consumedBy names the real exported function and the parameter/property the value enters as), OR (b) a committed corpus process requires-and-carries it: the establishing artifact sits in the requires list of committed open-processes/corpus.json records, which consume the value through the artifact (the EIN entered on the bank KYC and payroll setup, the Delaware file number the annual-report portal keys on). Path-(b) fields carry no consumedBy; their consuming processes are computed from the corpus requires edges, never hand-listed. Never speculative either way. Each field also carries its spec (founder 2026-10-08): format sentence, regex pattern where the authority's format is strict, the authority's own documented example where one exists (never an invented number), the assigning/defining authority, the documents the value appears on, and URL citations for the format claims (every URL fetch-verified when curated). Totality is tested in lib/__tests__/companyFields.test.ts; read back by lib/companyFields.ts; rendered on /fields and /fields/[id], on /artifacts/[id] (Data fields this artifact establishes) and /open-modules/[id] (fields the module consumes). Schema: schemas/company-fields.schema.json. Geo dimension (founder field-standards order, landed with the open-artifacts/ move 2026-10-14): each field carries `geo` - the universal form (scope: universal) for values set by the company's own records (the same field in every covered country), or a base US instance (label, authority, pattern where the authority documents the format, authority-page sources) plus one entry per covered country (UK/IN/DE/FR/PT/CA), each a government-defined equivalent instance or a recorded absence (no-equivalent / unverified, with the reason and citations where the absence itself is documented). Equivalent sources were fetch-verified when curated or reused from committed corpus geoNote actionUrls (already fetch-verified at corpus curation); bot-walled authorities (mca.gov.in, incometaxindia.gov.in) are documented in the entries they blocked. Totality and pattern/example coherence are vitest-gated in lib/__tests__/companyFields.test.ts; zod source: CompanyFieldGeoSchema in lib/companyFields.ts.",
+  "$comment": "Company data fields (founder 2026-10-07; spec pages + identifier widening 2026-10-08): the typed company-level data values the repo genuinely consumes. Honest derivation rule, widened once and deliberately for the identifier fields: a field exists here only because a committed open-artifacts/registry.json artifact establishes it (producedBy) AND one of two committed consumption paths is real - (a) a committed lib/openstartup exported function takes it (signatures read from the module source; consumedBy names the real exported function and the parameter/property the value enters as), OR (b) a committed corpus process requires-and-carries it: the establishing artifact sits in the requires list of committed open-processes/corpus.json records, which consume the value through the artifact (the EIN entered on the bank KYC and payroll setup, the Delaware file number the annual-report portal keys on). Path-(b) fields carry no consumedBy; their consuming processes are computed from the corpus requires edges, never hand-listed. Never speculative either way. Each field also carries its spec (founder 2026-10-08): format sentence, regex pattern where the authority's format is strict, the authority's own documented example where one exists (never an invented number), the assigning/defining authority, the documents the value appears on, and URL citations for the format claims (every URL fetch-verified when curated). Totality is tested in lib/__tests__/companyFields.test.ts; read back by lib/companyFields.ts; rendered on /fields and /fields/[id], on /artifacts/[id] (Data fields this artifact establishes) and /open-modules/[id] (fields the module consumes). Schema: schemas/company-fields.schema.json. Geo dimension (founder field-standards order, landed with the open-artifacts/ move 2026-10-14): each field carries `geo` - the universal form (scope: universal) for values set by the company's own records (the same field in every covered country), or a base US instance (label, authority, pattern where the authority documents the format, authority-page sources) plus one entry per covered country (UK/IN/DE/FR/PT/CA/NZ/SG), each a government-defined equivalent instance or a recorded absence (no-equivalent / unverified, with the reason and citations where the absence itself is documented). Equivalent sources were fetch-verified when curated or reused from committed corpus geoNote actionUrls (already fetch-verified at corpus curation); bot-walled authorities (mca.gov.in, incometaxindia.gov.in) are documented in the entries they blocked. Totality and pattern/example coherence are vitest-gated in lib/__tests__/companyFields.test.ts; zod source: CompanyFieldGeoSchema in lib/companyFields.ts.",
   "fields": [
     {
       "id": "incorporation-date",
@@ -124,6 +124,18 @@
               {
                 "label": "Companies Register, Incorporating a company",
                 "url": "https://companies-register.companiesoffice.govt.nz/help-centre/starting-a-company/incorporating-a-company/"
+              }
+            ]
+          },
+          {
+            "country": "SG",
+            "label": "Date of incorporation (ACRA notice of incorporation)",
+            "authority": "Accounting and Corporate Regulatory Authority",
+            "summary": "The notice of incorporation the Registrar issues under Companies Act 1967 section 19(4) states that the company is incorporated on and from the date specified in the notice.",
+            "sources": [
+              {
+                "label": "Companies Act 1967, section 19 (registration and incorporation)",
+                "url": "https://sso.agc.gov.sg/Act/CoA1967?ProvIds=pr19-"
               }
             ]
           }
@@ -264,6 +276,22 @@
                 "url": "https://www.ird.govt.nz/"
               }
             ]
+          },
+          {
+            "country": "SG",
+            "label": "Financial year end (FYE)",
+            "authority": "Accounting and Corporate Regulatory Authority",
+            "summary": "The FYE is furnished to the Registrar in the incorporation application and drives the AGM and annual-return deadlines; it cannot be changed after the annual-return filing deadline has passed.",
+            "sources": [
+              {
+                "label": "ACRA, Choosing a company's financial year end",
+                "url": "https://www.acra.gov.sg/register/business/registering-different-business-structures/local-company/choosing-a-companys-financial-year-end/"
+              },
+              {
+                "label": "ACRA, Deadline & requirements for annual returns",
+                "url": "https://www.acra.gov.sg/manage/companies/legal-requirements-common-offences/filing-annual-returns-companies/deadline-requirements/"
+              }
+            ]
           }
         ]
       }
@@ -387,6 +415,17 @@
                 "url": "https://www.ird.govt.nz/employing-staff/deductions-from-other-payments/employee-share-schemes"
               }
             ]
+          },
+          {
+            "country": "SG",
+            "status": "no-equivalent",
+            "note": "No election deadline runs from the transfer date: Singapore has no 83(b)-style election, and ESOP/ESOW gains are taxed under IRAS's rules at exercise or vesting rather than by reference to a transfer-date filing.",
+            "sources": [
+              {
+                "label": "IRAS, Gains from the exercise of stock options",
+                "url": "https://www.iras.gov.sg/taxes/individual-income-tax/basics-of-individual-income-tax/what-is-taxable-what-is-not/employment-income/gains-from-the-exercise-of-stock-options"
+              }
+            ]
           }
         ]
       }
@@ -491,6 +530,17 @@
             "country": "NZ",
             "status": "unverified",
             "note": "The Companies Register records issued shares and their holders rather than an authorised-capital ceiling, but the Companies Act 1993 share provisions were not fetch-verified when curated (legislation.govt.nz answers automated fetches with an AWS WAF challenge)."
+          },
+          {
+            "country": "SG",
+            "status": "no-equivalent",
+            "note": "The Companies Act 1967 carries no authorised-share ceiling (the minimum issued is one share, with no maximum regime beyond the constitution), so there is no authorized-share count to record.",
+            "sources": [
+              {
+                "label": "ACRA, Deciding on share capital & share types",
+                "url": "https://www.acra.gov.sg/register/business/registering-different-business-structures/local-company/deciding-on-share-capital-share-types/"
+              }
+            ]
           }
         ]
       }
@@ -598,6 +648,17 @@
             "country": "NZ",
             "status": "unverified",
             "note": "NZ shares are generally issued without a nominal (par) value under the Companies Act 1993, but the provision was not fetch-verified when curated (legislation.govt.nz answers automated fetches with an AWS WAF challenge)."
+          },
+          {
+            "country": "SG",
+            "status": "no-equivalent",
+            "note": "Companies Act 1967 section 62A: 'Shares of a company have no par or nominal value', for all shares issued before, on or after 30 January 2006 — so a Singapore company has no par-value field.",
+            "sources": [
+              {
+                "label": "Companies Act 1967, section 62A (no par value shares)",
+                "url": "https://sso.agc.gov.sg/Act/CoA1967?ProvIds=pr62A-"
+              }
+            ]
           }
         ]
       }
@@ -720,6 +781,11 @@
           },
           {
             "country": "NZ",
+            "status": "no-equivalent",
+            "note": "Statutory accounts report balance-sheet totals under accounting law, but no committed rule in this country consumes a gross-assets figure the way Delaware's assumed-par method and IRC section 1202(d) do."
+          },
+          {
+            "country": "SG",
             "status": "no-equivalent",
             "note": "Statutory accounts report balance-sheet totals under accounting law, but no committed rule in this country consumes a gross-assets figure the way Delaware's assumed-par method and IRC section 1202(d) do."
           }
@@ -1066,6 +1132,17 @@
                 "url": "https://www.ird.govt.nz/employing-staff/deductions-from-other-payments/employee-share-schemes"
               }
             ]
+          },
+          {
+            "country": "SG",
+            "status": "no-equivalent",
+            "note": "IRAS publishes no appraisal safe harbor; ESOP/ESOW gains are taxed at exercise or vesting under IRAS's rules, with no 409A-style valuation ritual to produce a defensible common FMV.",
+            "sources": [
+              {
+                "label": "IRAS, Gains from the exercise of stock options",
+                "url": "https://www.iras.gov.sg/taxes/individual-income-tax/basics-of-individual-income-tax/what-is-taxable-what-is-not/employment-income/gains-from-the-exercise-of-stock-options"
+              }
+            ]
           }
         ]
       }
@@ -1192,6 +1269,17 @@
               {
                 "label": "Inland Revenue, Employee share schemes",
                 "url": "https://www.ird.govt.nz/employing-staff/deductions-from-other-payments/employee-share-schemes"
+              }
+            ]
+          },
+          {
+            "country": "SG",
+            "status": "no-equivalent",
+            "note": "No statutory valuation ritual exists, so there is no valuation date to track; ESOP/ESOW gains are taxed at exercise or vesting under IRAS's rules.",
+            "sources": [
+              {
+                "label": "IRAS, Gains from the exercise of stock options",
+                "url": "https://www.iras.gov.sg/taxes/individual-income-tax/basics-of-individual-income-tax/what-is-taxable-what-is-not/employment-income/gains-from-the-exercise-of-stock-options"
               }
             ]
           }
@@ -1324,6 +1412,22 @@
               {
                 "label": "Inland Revenue, Register as an employer",
                 "url": "https://www.ird.govt.nz/employing-staff/register-as-an-employer"
+              }
+            ]
+          },
+          {
+            "country": "SG",
+            "label": "CPF Submission Number (CSN)",
+            "authority": "Central Provident Fund Board",
+            "summary": "Employers apply for a CPF Submission Number to pay CPF contributions for citizen and permanent-resident employees; contributions run monthly from the first wage, and there is no PAYE-style income-tax withholding for resident employees.",
+            "sources": [
+              {
+                "label": "CPF Board, Applying for a CPF Submission Number",
+                "url": "https://www.cpf.gov.sg/employer/making-cpf-contributions/applying-for-a-cpf-submission-number"
+              },
+              {
+                "label": "CPF Board, Who should receive CPF contributions",
+                "url": "https://www.cpf.gov.sg/employer/employer-obligations/who-should-receive-cpf-contributions"
               }
             ]
           }
@@ -1492,6 +1596,22 @@
                 "url": "https://companies-register.companiesoffice.govt.nz/help-centre/starting-a-company/incorporating-a-company/"
               }
             ]
+          },
+          {
+            "country": "SG",
+            "label": "UEN (Unique Entity Number)",
+            "authority": "Accounting and Corporate Regulatory Authority",
+            "summary": "ACRA assigns the Unique Entity Number at registration through Bizfile; it is the company's standard identification number across Singapore government agencies, IRAS included, so no separate tax-ID application exists.",
+            "sources": [
+              {
+                "label": "Bizfile (ACRA business filing portal)",
+                "url": "https://www.bizfile.gov.sg/"
+              },
+              {
+                "label": "ACRA, Registering a local company via Bizfile",
+                "url": "https://www.acra.gov.sg/register/business/registering-different-business-structures/local-company/registering-via-bizfile/"
+              }
+            ]
           }
         ]
       }
@@ -1631,6 +1751,18 @@
               {
                 "label": "Companies Register help centre",
                 "url": "https://companies-register.companiesoffice.govt.nz/help-centre/"
+              }
+            ]
+          },
+          {
+            "country": "SG",
+            "label": "UEN (company registration number)",
+            "authority": "Accounting and Corporate Regulatory Authority",
+            "summary": "The UEN assigned at incorporation is the registration number on the ACRA record and the notice of incorporation; the fetched guidance documents no character format, so no pattern is recorded.",
+            "sources": [
+              {
+                "label": "Bizfile (ACRA business filing portal)",
+                "url": "https://www.bizfile.gov.sg/"
               }
             ]
           }
