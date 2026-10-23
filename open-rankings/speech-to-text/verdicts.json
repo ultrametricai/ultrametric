@@ -1825,17 +1825,18 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Accuracy claims with a checkable methodology are a fair question for a speech-to-text provider, but the evidence pack has no published benchmark, WER methodology, or evaluation dataset. The blind-vote comparison tool and the browser playground let users test on their own audio. That is an adjacent capability, not documented methodology behind published accuracy numbers, so it earns no credit.",
+    "rationale": "The evidence pack contains no published accuracy figures, WER benchmarks, methodology write-ups, or benchmark datasets. The blind-voting comparison tool and the browser Playground let a user test models on their own audio. That is an adjacent feature, not a checkable methodology behind published accuracy claims, so it earns no credit.",
     "evidenceIds": []
   },
   {
     "productId": "gladia",
     "storyId": "agent-cost-estimate",
-    "verdict": "partial",
-    "quality": 3,
-    "confidence": "low",
-    "rationale": "Gladia's pricing page describes usage-based billing tied to audio volume ('pay only for the audio you process', credit top-ups, 50€ free), so cost does scale with audio processed. However, the evidence shows no per-minute or per-hour rate and no itemized add-on prices, so an agent could not actually compute a job's cost from what is shown. Missing for 10: published per-minute/hour rates, itemized add-on pricing (e.g. diarization, translation, PII redaction), and a machine-readable or agent-accessible pricing source.",
+    "verdict": "full",
+    "quality": 8,
+    "confidence": "high",
+    "rationale": "Gladia's pricing page lists async transcription rates per hour by model (0.27€/hr Solaria-1, 0.16€/hr Solaria-3 at 0–100 h/month, falling by volume tier). It also itemizes per-hour add-ons (summarization +0.03€, sentiment +0.02€, translation +0.05€, NER +0.07€, PII redaction +0.07€) and offers a cost calculator, so an agent can compute a job's cost before submitting it. The 'pay only for the audio you process' credit model supports this. Missing for 10: real-time/live per-hour rates not shown in the evidence, a machine-readable pricing source an agent could fetch, and independent corroboration that the published rates match billing.",
     "evidenceIds": [
+      "gladia-docs-30",
       "gladia-docs-27"
     ]
   },
@@ -1845,7 +1846,7 @@
     "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Gladia documents an async pre-recorded API whose quickstart takes a local file or remote URL and \"let[s] the method handle the rest\". Its official CLI reduces the whole flow to setting a key and running `gladia transcribe audio.mp3`, with machine-readable JSON output to stdout. The docs are also agent-readable via llms.txt and .md endpoints, so an agent with a key can plausibly reach a finished transcript unattended. Missing for 10: explicit evidence of the raw REST auth header and the job-creation and result-polling endpoints, a published OpenAPI spec (all probed paths returned 404), and independent hands-on corroboration of a fully unattended run.",
+    "rationale": "Public, agent-readable docs (llms.txt and .md pages both return HTTP 200) document an async pre-recorded quickstart where a method takes a local file, binary data, or remote URL and handles the rest. The official CLI goes from key to transcript in one command (`gladia transcribe audio.mp3`) with machine-readable JSON output for scripts, so an agent holding a key can complete the flow without a human step. missing for 10: explicit evidence of the raw REST auth header, job-creation and result-polling endpoints; a machine-readable OpenAPI spec (all probed paths 404); independent or hands-on confirmation of an end-to-end agent run.",
     "evidenceIds": [
       "gladia-docs-1",
       "gladia-docs-16",
@@ -1864,27 +1865,28 @@
     "verdict": "full",
     "quality": 9,
     "confidence": "high",
-    "rationale": "A hands-on probe confirms docs.gladia.io/llms.txt returns HTTP 200 with a structured index of the docs. Pages are also served as Markdown (.md), and each Markdown page tells agents to fetch the full documentation index at llms.txt, so the docs are clearly built for agent consumption. Missing for 10: no evidence of an llms-full.txt or full-content bundle, and no independent or community confirmation of agents using these docs in practice.",
+    "rationale": "A live probe confirms https://docs.gladia.io/llms.txt returns HTTP 200 with a curated product index. Docs pages are also served as Markdown (.md) with a header directing agents to fetch the llms.txt index, and the docs-1 through docs-13 entries are drawn from that file. Missing for 10: no evidence of an llms-full.txt or single-file full-docs dump, and no machine-readable OpenAPI spec at any probed path.",
     "evidenceIds": [
       "gladia-probe-1",
       "gladia-probe-2",
       "gladia-docs-6",
       "gladia-docs-14",
-      "gladia-docs-23"
+      "gladia-probe-3"
     ]
   },
   {
     "productId": "gladia",
     "storyId": "agentic-ai-insights",
     "verdict": "partial",
-    "quality": 5,
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Gladia documents first-party audio-intelligence features that produce AI-generated insights from a user's own audio: it runs LLMs directly on audio without a third-party service, extracts sentiment and emotion, and enriches transcripts. These are one-line claims delivered as API outputs, with no detail on what insights are produced or how they are surfaced to users. missing for 10: detailed docs on LLM-generated insights (e.g. summaries or prompts on audio), any AI suggestions or recommendations, an in-product insights surface beyond API output, independent or hands-on corroboration.",
+    "rationale": "Gladia documents its own audio-intelligence layer that produces AI-generated insights from the user's audio data. This includes running LLMs directly on audio, sentiment and emotion extraction, and priced summarization and named-entity-recognition add-ons that 'enrich audio'. These are thin one-line mentions, all delivered as API outputs, and nothing shows proactive suggestions or an in-product insights surface. Missing for 10: evidence of AI-generated suggestions or recommendations, detailed docs on the LLM/audio-intelligence prompting feature, an in-product (UI) insights experience beyond API output, independent or hands-on corroboration.",
     "evidenceIds": [
       "gladia-docs-2",
       "gladia-docs-13",
       "gladia-docs-29",
-      "gladia-probe-1"
+      "gladia-docs-30",
+      "gladia-docs-6"
     ]
   },
   {
@@ -1893,7 +1895,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Gladia is a speech-to-text API platform, and such a product could plausibly offer its own background automations, so the axis applies. The evidence only shows third-party automation platforms (Zapier, Make, n8n), async transcription endpoints, and a scriptable CLI. Those are external tools or developer building blocks, not a first-party capability to set up autonomous background automations.",
+    "rationale": "Gladia is a transcription API, and a SaaS of this kind could plausibly offer its own background automations, so the axis applies. The pack shows no first-party capability to set up autonomous automations. Zapier, Make and n8n integrations are third-party platforms, and the pipe-friendly CLI and async API are developer building blocks rather than the capability itself.",
     "evidenceIds": []
   },
   {
@@ -1902,7 +1904,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Gladia is a speech-to-text API platform with a playground, dashboard and desktop app, so an in-product AI assistant is a fair capability to ask about. The evidence shows no built-in assistant that users can delegate tasks to. 'LLMs on your audios' is an audio-intelligence processing feature, and the MCP server and CLI are developer integration surfaces, not an in-product agent.",
+    "rationale": "Gladia is a speech-to-text API with a web dashboard and Playground, so an in-product AI assistant is conceivable and the axis applies. However, no evidence shows an assistant users can delegate tasks to. The 'LLMs directly on your audios' feature is transcript enrichment rather than an in-product agent. The MCP server and CLI serve external agents and scripts, not a built-in assistant.",
     "evidenceIds": []
   },
   {
@@ -1910,14 +1912,14 @@
     "storyId": "agentic-headless",
     "verdict": "full",
     "quality": 8,
-    "confidence": "high",
-    "rationale": "Gladia is API-first, with both async and real-time transcription available programmatically. It also ships an official CLI (`gladia transcribe audio.mp3`) that is explicitly documented as pipe-friendly, writing machine-readable JSON, SRT, or VTT output to stdout 'for scripts and CI'. Together these clearly support headless automation. Missing for 10: independent or hands-on corroboration of CI usage, and documented CI specifics such as non-interactive auth via environment variables and exit-code behavior.",
+    "confidence": "medium",
+    "rationale": "Gladia ships an official CLI (`gladia transcribe audio.mp3`) explicitly billed as pipe-friendly, with machine-readable output (text, JSON, SRT, VTT) to stdout \"for scripts and CI\". The underlying async and real-time API is inherently headless. missing for 10: documented non-interactive auth details for CI (e.g., env-var key handling), concrete CI pipeline examples, and independent or hands-on corroboration.",
     "evidenceIds": [
-      "gladia-docs-1",
       "gladia-docs-23",
       "gladia-docs-24",
       "gladia-docs-25",
       "gladia-probe-5",
+      "gladia-docs-1",
       "gladia-docs-16"
     ]
   },
@@ -1927,18 +1929,19 @@
     "verdict": "na",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Gladia is a speech-to-text and audio-intelligence API, not an agent or LLM host that runs tools, so plugging MCP servers into it as a client is a category error for this kind of product. Its documented official MCP server is the server role and does not make this client-side story apply. Nothing in the evidence shows Gladia consuming external MCP tools.",
+    "rationale": "Gladia is a speech-to-text and audio-intelligence API, not an agent or assistant that calls external tools. Plugging MCP servers into it as a client is a category error for this kind of product. The documented official MCP server is the server role, where Gladia exposes its own tools to agents; that belongs to a separate story and does not make this client axis applicable.",
     "evidenceIds": []
   },
   {
     "productId": "gladia",
     "storyId": "agentic-mcp-server",
     "verdict": "full",
-    "quality": 7,
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Gladia is an audio transcription API platform, not an agent, so publishing an official MCP server is a fair axis. A probe confirms an official MCP server documentation page exists under Gladia's own docs (how-to-use-gladia/mcp.md), next to its official CLI. Missing for 10: details of the exposed tools and capabilities, setup and auth instructions for connecting agents, and independent or hands-on corroboration that agents connect successfully.",
+    "rationale": "Gladia is an audio transcription API, not an agent, so publishing an official MCP server is a fair question for it. A probe confirms an official MCP server documented at docs.gladia.io/chapters/how-to-use-gladia/mcp.md, alongside its official CLI and llms.txt for agents. The pack only confirms the page exists, though, and says nothing about what it contains. missing for 10: details of exposed tools/capabilities, setup and client-connection instructions, transport/auth details, independent or hands-on corroboration of connecting an agent",
     "evidenceIds": [
-      "gladia-probe-4"
+      "gladia-probe-4",
+      "gladia-probe-1"
     ]
   },
   {
@@ -1947,19 +1950,18 @@
     "verdict": "partial",
     "quality": 4,
     "confidence": "low",
-    "rationale": "An official, first-party MCP server is documented (gladia-probe-4), which lets users drive Gladia from an AI assistant in natural language. The evidence is only a bare probe noting the docs page exists, so the server's tools and depth are unproven. The LLM-on-audio feature (gladia-docs-2) applies prompts to transcript content rather than controlling the product, so it adds little here. Missing for 10: a native natural-language command interface in the product itself, documentation of the MCP server's tools and supported operations, and hands-on or independent confirmation that NL-driven operation works end to end.",
+    "rationale": "Gladia has an official MCP server (gladia-probe-4), which would let an AI agent drive Gladia from natural-language requests. However, the pack shows only that the server exists, not which tools it exposes or how natural-language operation works in practice. The rest of the evidence points to a programmatic API and a flag-based CLI (`gladia transcribe audio.mp3`). The 'LLMs on your audios' feature is about analyzing audio content, not about controlling the product. Missing for 10: a documented natural-language interface or assistant for operating the product, details of the MCP tools and the workflows they cover, and hands-on corroboration of natural-language operation.",
     "evidenceIds": [
-      "gladia-probe-4",
-      "gladia-docs-2"
+      "gladia-probe-4"
     ]
   },
   {
     "productId": "gladia",
     "storyId": "agentic-official-cli",
     "verdict": "full",
-    "quality": 9,
+    "quality": 8,
     "confidence": "high",
-    "rationale": "Gladia documents an official CLI. You install it, set your key and run `gladia transcribe audio.mp3`. It writes plain text, JSON, SRT or VTT to stdout, gives pipe-friendly machine-readable output for scripts and CI, and generates shell completion for bash, zsh, fish and powershell. The probe confirms the CLI docs page exists. Missing for 10: independent or hands-on corroboration of the CLI working as documented.",
+    "rationale": "Gladia documents an official CLI: one-command install with API key setup and `gladia transcribe audio.mp3` [gladia-docs-23]. Output can be plain text, JSON, SRT or VTT to stdout [gladia-docs-24], is machine-readable for scripts and CI [gladia-docs-25], and the CLI generates shell completions [gladia-docs-26]. A probe confirmed the dedicated CLI docs page exists [gladia-probe-5]. missing for 10: independent or hands-on corroboration of the CLI, evidence of command coverage beyond pre-recorded transcription (e.g., live streaming or other API features)",
     "evidenceIds": [
       "gladia-docs-23",
       "gladia-docs-24",
@@ -1974,15 +1976,14 @@
     "verdict": "full",
     "quality": 8,
     "confidence": "high",
-    "rationale": "Gladia is API-first. Its docs describe a single API for asynchronous and real-time transcription, with documented request parameters (`model`, `custom_vocabulary_config`) and pre-recorded quickstarts. The live init call returns a session id and connectable URL. Probes confirm the docs are publicly reachable, including llms.txt and markdown versions. Missing for 10: no machine-readable OpenAPI/Swagger spec at the probed paths, and no independent or hands-on corroboration of the API in use.",
+    "rationale": "Gladia is an API-first transcription service. First-party docs describe a public API for both async and real-time transcription, with request parameters such as `model` and custom_vocabulary_config, a live-session init call returning a connectable URL, and quickstarts, and the docs are agent-readable via llms.txt and .md endpoints. missing for 10: a publicly discoverable OpenAPI/Swagger spec (all probed paths returned 404), independent or hands-on corroboration of API use.",
     "evidenceIds": [
       "gladia-docs-1",
+      "gladia-docs-29",
       "gladia-docs-14",
       "gladia-docs-16",
       "gladia-docs-17",
       "gladia-docs-20",
-      "gladia-docs-21",
-      "gladia-docs-29",
       "gladia-probe-1",
       "gladia-probe-2",
       "gladia-probe-3"
@@ -1994,7 +1995,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Scoped API credentials are a fair question for an API service like Gladia, but the evidence never documents API keys with scopes, permissions, or least-privilege restrictions. The live-session init URL that can be passed to clients without exposing credentials is an adjacent ephemeral-session feature, not issuable scoped credentials for an agent, so it earns no credit.",
+    "rationale": "The evidence pack documents no way to issue API keys with restricted scopes, permissions, or least-privilege limits for an agent. The closest item is the live-STT init call returning a session URL that clients can use without exposing credentials. That is an adjacent session-handoff feature, not a scoped-credential capability, so it earns no credit.",
     "evidenceIds": []
   },
   {
@@ -2003,7 +2004,7 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "The pre-recorded quickstart describes a client 'method' that accepts a local file, binary data, or a remote URL and 'handles the rest', with a code-style config object. That implies an official client library, but the pack never explicitly names an SDK, its languages, or its packages. The CLI, MCP server, and no-code integration partners belong to other stories and are not credited here. Missing for 10: explicit documentation of official SDKs, the supported languages and package names, SDK reference docs, and independent or hands-on corroboration.",
+    "rationale": "The pre-recorded quickstart hints at an SDK-style client: you pass a local file, binary data, or remote URL and \"let the method handle the rest,\" and it shows a config object with custom_vocabulary_config. But no official SDK is named, and no languages, package names, or install steps appear. The CLI, MCP server and no-code integration partners are adjacent offerings and earn no credit here. Missing for 10: explicitly named official SDKs with supported languages, install/package documentation, SDK reference docs for async and live APIs, and independent or hands-on corroboration.",
     "evidenceIds": [
       "gladia-docs-16",
       "gladia-docs-17"
@@ -2015,7 +2016,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Webhooks are a fair axis for an asynchronous transcription API, but the evidence pack never documents registrable outbound HTTP callbacks or event subscriptions. The Zapier, Make and n8n integrations are adjacent no-code automation partners, not first-party webhooks, so they earn no credit.",
+    "rationale": "Webhooks are a fair question for an async transcription API, so the axis applies. However, nothing in the evidence pack documents registrable outbound HTTP callbacks or event subscriptions. The Zapier, Make and n8n partner integrations are adjacent automation features, not documented webhooks a programmatic consumer can register, so they earn no credit.",
     "evidenceIds": []
   },
   {
@@ -2024,7 +2025,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence shows a browser Playground for testing Gladia models and features, plus quickstart code snippets. Neither is documented as an interactive API reference with runnable, try-it-now endpoint examples. The Playground is an adjacent feature and earns no credit here, and probes found no OpenAPI or Swagger spec at any candidate path.",
+    "rationale": "The evidence pack does not document an interactive API reference with runnable, try-it-style endpoint examples. The OpenAPI/Swagger probes all returned 404, and the quickstarts show only static code snippets. The browser Playground for testing models is an adjacent product feature, not an interactive API reference, so it earns no credit here.",
     "evidenceIds": []
   },
   {
@@ -2033,7 +2034,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Gladia is an API product, so a downloadable OpenAPI spec is a fair question. However, a probe found that every common OpenAPI/Swagger path on docs.gladia.io returns 404, and no doc in the pack mentions a machine-readable API spec. The llms.txt index, markdown docs, CLI, and MCP server are adjacent features and earn no credit; confidence is medium because the probe only checked standard candidate paths.",
+    "rationale": "Gladia is an API product, so offering a machine-readable API spec is a fair question. However, the probe got 404s on every candidate OpenAPI/Swagger path, and no doc in the pack mentions a downloadable spec. The llms.txt index, the docs-as-markdown pages, the CLI and the MCP server are adjacent AI-native features, not an API specification, so they earn no credit here.",
     "evidenceIds": []
   },
   {
@@ -2042,7 +2043,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "A sandbox or test-mode environment is a fair axis for a transcription API, but the evidence documents no sandbox environment, test API keys, or isolated non-production mode. The browser Playground (gladia-docs-6) and the 50€ free credits (gladia-docs-27) are adjacent features: a UI for trying models and a pricing allowance, not an isolated sandbox environment that keeps tests away from production data.",
+    "rationale": "A sandbox or test-mode environment is a fair question for an API service, so the axis applies, but the evidence shows no isolated sandbox, test keys or separate environment kept apart from production data. The browser Playground for trying models before integrating and the 50€ free credits are adjacent features. Neither is a documented sandbox environment, so they earn no credit.",
     "evidenceIds": []
   },
   {
@@ -2051,7 +2052,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Gladia is an API product, so API versioning and a deprecation policy are fair questions to ask. However, the evidence contains no API version scheme, changelog, or deprecation policy. Selecting a model with `model` (default `solaria-1`) is model choice, an adjacent feature rather than API versioning, so it earns no credit.",
+    "rationale": "Gladia is an API-first transcription service, so API versioning and a deprecation policy are a fair question to ask of it. The evidence pack contains no mention of versioned API endpoints, a changelog, sunset timelines, or a deprecation policy. Selecting a model via the `model` parameter is an adjacent feature, not API versioning, so it earns no credit here.",
     "evidenceIds": []
   },
   {
@@ -2060,7 +2061,7 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "Gladia's docs say it offers an asynchronous transcription API, and the pre-recorded quickstart describes an SDK method that takes a file or URL and 'handles the rest'. That implies job creation with internal waiting, but the pack never shows a status-polling endpoint or a list of job states. missing for 10: documented job-creation endpoint returning a job ID, documented status/polling endpoint, enumerated job states (e.g. queued/processing/done/error), result-retrieval flow, independent or hands-on corroboration.",
+    "rationale": "Gladia documents its own asynchronous transcription API for pre-recorded audio, and the quickstart's SDK method 'handles the rest' after submission. That implies a job is created and awaited, but the pack never shows a polling endpoint or named job states (e.g. queued/processing/done/error). Missing for 10: documented status-polling endpoint, enumerated job states, result-retrieval flow, hands-on corroboration.",
     "evidenceIds": [
       "gladia-docs-1",
       "gladia-docs-16"
@@ -2072,17 +2073,20 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Bulk operations are a fair question for a transcription API, since batch transcription or bulk management of many files is something such a product could ship, so the axis applies. The evidence shows no documented batch or bulk capability: the CLI transcribes one file per command, its pipe-friendly output only lets users write their own loops, and the Zapier/Make/n8n integrations are third-party automation platforms. None of these is the product's own bulk-operation feature.",
+    "rationale": "Bulk or batch processing is a fair question for a transcription API, but the evidence documents only single-file operations: an async API taking one file or URL, and a CLI run as `gladia transcribe audio.mp3`. There is no batch endpoint or multi-item command. A pipe-friendly CLI for scripts and no-code integrations like Zapier, Make and n8n are building blocks or user-side workarounds, and volume-tiered pricing is not a bulk-operation capability, so none of these earns credit.",
     "evidenceIds": []
   },
   {
     "productId": "gladia",
     "storyId": "automation-rules-engine",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "Event-triggered automation rules are a fair axis for an audio-intelligence API, but the evidence shows no first-party rules engine, callbacks, or event-triggered actions. The Zapier, Make, and n8n integrations put the rule logic in third-party automation platforms, so they count as external workarounds rather than Gladia's own capability. Automatic PII redaction is an adjacent processing feature, not user-defined rules.",
-    "evidenceIds": []
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "Gladia's docs point users to official integration partners Zapier, Make and n8n for no-code and workflow automation. That gives a vendor-documented route to event-triggered actions, but the rules would be defined in those third-party tools rather than in Gladia itself, and the evidence describes no native rule engine, triggers or webhooks. missing for 10: a native rules/trigger engine in Gladia, documented webhooks or event callbacks, details on which Gladia events the Zapier/Make/n8n connectors expose, hands-on or independent corroboration",
+    "evidenceIds": [
+      "gladia-docs-3",
+      "gladia-docs-4"
+    ]
   },
   {
     "productId": "gladia",
@@ -2090,7 +2094,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Gladia is a transcription API, so scheduling recurring jobs is a fair question for a product of this kind, but the evidence documents no native scheduling or recurring-job feature. The Zapier, Make and n8n integrations and the script-friendly CLI only let users build schedules in external tools or cron, which is a workaround and earns no credit.",
+    "rationale": "Scheduling recurring jobs is a fair question for an API platform like Gladia, but the evidence shows no first-party scheduler or recurring-job feature. The Zapier, Make and n8n integrations are third-party automation platforms, and a pipe-friendly CLI used from scripts or cron is a user-side workaround. Neither earns credit for this story.",
     "evidenceIds": []
   },
   {
@@ -2099,7 +2103,7 @@
     "verdict": "na",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Gladia is a speech-to-text and audio-intelligence API, not an automation platform. It has no automation or workflow object of its own that could be versioned, reviewed, or rolled back, so the story's axis does not fit this kind of product. Any automations a user builds run on third-party hosts (Zapier, Make, n8n) or in their own scripts via the CLI. Those are host-platform and user-side capabilities and cannot be credited to Gladia.",
+    "rationale": "Gladia is a speech-to-text and audio-intelligence API, not an automation or workflow platform. Versioning, reviewing, and rolling back automations is outside its product category. Its Zapier, Make, and n8n integrations are third-party automation platforms where any such versioning would live, so they do not make this axis apply to Gladia itself.",
     "evidenceIds": []
   },
   {
@@ -2108,7 +2112,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Parallel job concurrency is a fair axis for a transcription API, so the story applies. The evidence only shows that Gladia offers asynchronous and real-time transcription, a CLI and integrations. Nothing documents concurrency limits, parallel job caps or queueing behavior, so none of this counts toward the story.",
+    "rationale": "The evidence shows an asynchronous pre-recorded transcription API and a scriptable CLI, but nothing documents running jobs in parallel, concurrency limits, rate limits, or queueing behavior. Async processing alone is an adjacent feature and does not establish this story, so the verdict is none.",
     "evidenceIds": []
   },
   {
@@ -2117,10 +2121,9 @@
     "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Gladia's pre-recorded quickstart documents a first-party `custom_vocabulary_config` request parameter that takes a list of domain terms (e.g. \"Gladia\", \"Solaria\", \"Salesforce\"), which directly delivers custom vocabulary for names and jargon. Custom spelling is a related post-processing normalizer, so it adds only secondary support. missing for 10: in-depth docs on boost weighting, intensity, pronunciation hints or vocabulary limits; evidence that custom vocabulary works for live/real-time transcription; independent or hands-on accuracy corroboration.",
+    "rationale": "Gladia's pre-recorded quickstart documents a first-party `custom_vocabulary_config` request parameter that takes a vocabulary list of domain terms and names (e.g. \"Gladia\", \"Solaria\", \"Salesforce\"), which directly delivers custom vocabulary for transcription accuracy. Custom spelling is a related normalization feature, not boosting, so it adds little here. missing for 10: documentation of boost intensity or weighting controls, confirmation that custom vocabulary works in live/real-time sessions, limits on vocabulary size, independent or hands-on corroboration of accuracy gains.",
     "evidenceIds": [
-      "gladia-docs-17",
-      "gladia-docs-10"
+      "gladia-docs-17"
     ]
   },
   {
@@ -2129,7 +2132,7 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Gladia documents an asynchronous pre-recorded transcription API for audio and video, and its quickstart says you can pass a local file, binary data, or a remote URL. The CLI also transcribes local files such as `audio.mp3`. However, the evidence contains no published list of accepted formats and no file size or duration limits, which is half the story. Missing for 10: published accepted formats list, documented file size/duration limits, explicit upload endpoint reference (no OpenAPI spec found), independent hands-on corroboration.",
+    "rationale": "Gladia documents an asynchronous pre-recorded transcription API for audio and video. The quickstart says you can pass a local file, binary data, or a remote URL, and the CLI shows `gladia transcribe audio.mp3`, so the core of submitting a local file is covered. However, the evidence never publishes accepted formats or file size or duration limits, and no OpenAPI spec was found. missing for 10: published list of accepted audio/video formats, published file size/duration limits, explicit upload endpoint reference (OpenAPI probes 404), independent hands-on corroboration.",
     "evidenceIds": [
       "gladia-docs-1",
       "gladia-docs-16",
@@ -2143,7 +2146,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Error handling for async jobs is a fair question for a transcription API that offers asynchronous processing (gladia-docs-1), so the axis applies. However, nothing in the evidence pack documents error codes, retry guidance, or fail-fast validation of bad files. The pack covers features, integrations, the CLI and the MCP server, but not job failure semantics.",
+    "rationale": "Error handling for async transcription jobs is a fair axis for a speech-to-text API. However, nothing in the evidence pack describes error codes, retry guidance, or fast-fail behavior for bad or invalid files. The pack covers features, CLI, pricing and models only, so the verdict is none.",
     "evidenceIds": []
   },
   {
@@ -2152,7 +2155,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Gladia offers asynchronous transcription jobs, so attaching caller-supplied identifiers or metadata is a fair question for this product. However, the evidence pack never documents a custom metadata field, nor shows such metadata echoed back in results or webhook payloads. The live session `id` is a Gladia-generated identifier, not user-supplied metadata, so it does not count.",
+    "rationale": "Gladia is an async transcription API, so attaching custom identifiers or metadata to jobs is a fair question for this kind of product. The evidence pack never mentions a custom metadata field, webhook payloads, or echoing client identifiers back in results. The cited items cover transcription features, models, the CLI, the live session id, and pricing, none of which is about user-supplied job metadata.",
     "evidenceIds": []
   },
   {
@@ -2161,7 +2164,7 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "Gladia documents code switching on its default model, solaria-1 (100+ languages), and has a guide for transcribing audio that switches languages. That implies the service identifies which language is being spoken at runtime. However, the guide says to 'use an explicit language list', so candidate languages still appear to be declared rather than fully auto-detected. Missing for 10: explicit documentation of automatic language detection with no language declared, documentation of a detected-language field in the output, and independent or hands-on corroboration.",
+    "rationale": "Gladia documents code switching on its default model across 100+ languages (gladia-docs-15). It also documents transcribing audio that switches languages (gladia-docs-12), which implies the service identifies which language is spoken per segment. However, that same doc tells you to use an explicit language list, and no evidence shows the language can be detected with no declaration at all. missing for 10: explicit documentation of automatic language detection with no language parameter, detected-language output field, async vs live detection behavior, independent or hands-on corroboration.",
     "evidenceIds": [
       "gladia-docs-12",
       "gladia-docs-15"
@@ -2173,12 +2176,12 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "Gladia's docs state language coverage per model: solaria-1 is described as a '100+ languages, async and live, code switching' generalist. They also give a per-feature figure, translation into '100 target languages', and mention configuring an explicit language list for code-switching. That is a first-party, model- and feature-aware statement of coverage, but the pack shows only aggregate counts, not an enumerated list. missing for 10: an actual published list of supported language names/codes, explicit per-model differences across all models, per-feature language matrices (live vs async, diarization, PII, sentiment), independent corroboration.",
+    "rationale": "Gladia's docs state language coverage only as counts: '100+ languages' for the default solaria-1 model on its models page, and '100 target languages' for translation. They also reference configuring an explicit language list for code-switching, which implies a defined set exists. No concrete enumerated list appears in the evidence, and no per-model or per-feature language differences are spelled out beyond these counts. missing for 10: an actual published list of supported languages, explicit per-model language coverage (e.g., Solaria-3 vs Solaria-1), per-feature language differences (live vs async, diarization, PII, translation source/target).",
     "evidenceIds": [
       "gladia-docs-15",
-      "gladia-docs-14",
       "gladia-docs-18",
-      "gladia-docs-12"
+      "gladia-docs-12",
+      "gladia-docs-14"
     ]
   },
   {
@@ -2187,20 +2190,22 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence shows Gladia accepts pre-recorded audio asynchronously via local file, binary data, or remote URL. Nothing in the pack documents that multi-hour recordings are accepted in a single job, or states any maximum duration or file size. The live-transcription 'maximum utterance duration' setting is an adjacent control and earns no credit here.",
+    "rationale": "The evidence shows Gladia accepts pre-recorded files through its async API (a local file, binary data, or a remote URL). Nothing in the pack shows that multi-hour recordings are accepted in a single job, and no maximum duration or file-size limit is documented. Generic file ingestion does not amount to the long-recording and documented-limits capability this story asks for.",
     "evidenceIds": []
   },
   {
     "productId": "gladia",
     "storyId": "model-selection",
     "verdict": "partial",
-    "quality": 4,
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Gladia documents a models page where developers pick a model via the `model` request parameter. The default `solaria-1` is described as a generalist covering 100+ languages, async and live, with code switching, so the choice itself is first-party and documented. The evidence does not show published per-model accuracy, latency, or cost figures: pricing is only described generically as pay-as-you-go credits, and the blind-vote comparison tool is not a published benchmark. Missing for 10: per-model accuracy (e.g. WER) figures, per-model latency figures, per-model pricing, evidence of the other selectable models and how they compare, independent corroboration.",
+    "rationale": "Gladia documents choosing a model via the `model` request parameter, with `solaria-1` as the default, and describes that generalist model (100+ languages, async and live, code switching). Its pricing page publishes per-model costs (Solaria-1 at 0.27€/hr vs Solaria-3 at 0.16€/hr), and a playground and blind-vote tool let developers compare models hands-on. However, the pack contains no published accuracy figures (e.g., WER) or latency numbers per model, so the cost tradeoff is documented but the accuracy and latency tradeoffs are not. Missing for 10: published per-model accuracy benchmarks, published per-model latency figures, a full catalog describing each model's tradeoffs, independent corroboration.",
     "evidenceIds": [
       "gladia-docs-14",
       "gladia-docs-15",
-      "gladia-docs-27"
+      "gladia-docs-30",
+      "gladia-docs-6",
+      "gladia-docs-28"
     ]
   },
   {
@@ -2209,26 +2214,23 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence pack documents speaker diarization and a Twilio telephony integration, but neither is per-channel transcription of stereo or multichannel audio. Diarization separates speakers within mixed audio, which is an adjacent feature and earns no credit. Per-channel transcription is a fair axis for a speech-to-text API, but nothing in the pack shows Gladia offers it.",
+    "rationale": "Per-channel transcription is a fair question for a speech-to-text API, but nothing in the evidence pack documents stereo or multichannel channel separation. Speaker diarization (gladia-docs-19) is a different capability, since it separates speakers by voice rather than by audio channel. The Twilio telephony integration (gladia-docs-5) does not state that each call leg is kept separate, so neither counts toward this story.",
     "evidenceIds": []
   },
   {
     "productId": "gladia",
     "storyId": "openness-api-parity",
     "verdict": "partial",
-    "quality": 6,
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Gladia is API-first: core transcription in both async and live modes, plus features such as PII redaction, translation, diarization, custom vocabulary, sentiment and subtitle export, is documented as request parameters. An official CLI and MCP server add further programmatic access. The browser Playground is framed as a place to test features before integrating, which implies the API offers the same features, but no parity statement exists. Account-level UI functions like credit top-up and the model-comparison arena have no documented API equivalent, and no OpenAPI spec was found at the probed paths. Missing for 10: an explicit API/UI parity statement, API coverage of account/billing/dashboard functions, and a published OpenAPI spec or independent corroboration.",
+    "rationale": "Gladia is API-first: transcription, PII redaction, translation, diarization, custom vocabulary, sentiment analysis, model selection and subtitle export are documented as API features. The Playground is positioned as a browser test bed 'before you integrate', which implies the core UI features exist in the API, and an official CLI and MCP server extend programmatic access. Nothing documents that UI-only functions such as credit top-ups, billing, API key and account management, or Playground and arena actions are available via the API, and no OpenAPI spec could be found to verify coverage. Missing for 10: an explicit API/UI parity statement, API coverage of account/billing/key management, a published OpenAPI spec, independent corroboration.",
     "evidenceIds": [
       "gladia-docs-1",
       "gladia-docs-6",
       "gladia-docs-9",
       "gladia-docs-14",
-      "gladia-docs-17",
       "gladia-docs-18",
       "gladia-docs-19",
-      "gladia-docs-20",
-      "gladia-docs-23",
       "gladia-docs-27",
       "gladia-docs-29",
       "gladia-probe-3",
@@ -2241,8 +2243,8 @@
     "storyId": "openness-full-export",
     "verdict": "partial",
     "quality": 3,
-    "confidence": "medium",
-    "rationale": "Gladia documents getting transcription results in open formats: SRT/VTT subtitle export, and CLI output as plain text, JSON, SRT or VTT. That lets a user take their transcript data out in portable formats. There is no evidence of a bulk export of all account data or of a documented account-exit or offboarding path. Missing for 10: bulk export of all stored data/history, documented account deletion/exit process, independent corroboration.",
+    "confidence": "low",
+    "rationale": "Gladia documents getting transcript outputs in open formats: plain text, JSON, SRT, and VTT via the CLI, plus subtitle export from transcripts. This covers per-job retrieval of the user's core data in non-proprietary formats. Nothing shows an account-wide export or an exit path. Missing for 10: bulk or account-level export of all data (transcription history, files, settings), documented data deletion or account offboarding, and independent corroboration of a full exit.",
     "evidenceIds": [
       "gladia-docs-8",
       "gladia-docs-24",
@@ -2255,7 +2257,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Asking whether a transcription API vendor publishes source under an open license is a fair openness question, so the axis applies. The evidence pack covers only the hosted API, CLI, MCP server, integrations and pricing. Nothing shows any Gladia source code, repository or open license.",
+    "rationale": "Gladia is a hosted transcription API. A vendor of this kind could open-source its product or SDKs, so the axis applies. No item in the evidence pack mentions an open-source license, a public repository, or readable source code. The documented CLI and MCP server do not establish open licensing, and pay-as-you-go pricing points to a proprietary hosted service.",
     "evidenceIds": []
   },
   {
@@ -2264,7 +2266,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Gladia is a hosted transcription API, and self-hosting or on-prem deployment is a fair question for this kind of product, so the axis applies. Nothing in the pack documents a self-hostable or on-prem version. EU data residency, the CLI, the MCP server and partner integrations are adjacent features that all reach the hosted API, so they earn no credit.",
+    "rationale": "Self-hosting is a fair question for a transcription API provider, which could offer on-prem or self-hosted deployment. Gladia's evidence describes only a hosted, usage-priced API, plus client tools (CLI, MCP, desktop dictation app) and EU data residency. EU data residency is an adjacent control, not self-hosting, and nothing documents running the core transcription product on user infrastructure.",
     "evidenceIds": []
   },
   {
@@ -2273,7 +2275,7 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "Gladia's homepage claims \"100% EU data residency,\" a first-party residency guarantee. There is no evidence that users can choose a storage region, and the claim is a single marketing line with no technical documentation. missing for 10: user-selectable region/residency options, documented configuration (API parameter or account setting) for choosing a data location, in-depth residency/compliance docs, independent or hands-on corroboration",
+    "rationale": "Gladia's homepage claims \"100% EU data residency,\" so customer data is kept in a defined region. Nothing in the evidence shows a user can choose among regions, for example per account or per request, so the story's \"choose\" element is unproven and the claim rests on a single marketing line. Missing for 10: user-selectable region or residency configuration, documentation of available regions and how to select them, technical docs on storage location and retention by region, independent corroboration.",
     "evidenceIds": [
       "gladia-docs-29"
     ]
@@ -2284,7 +2286,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Whether customer audio is used to train models is a fair privacy question for a transcription API, so the axis applies. The evidence pack never documents a training opt-out or a no-training guarantee. PII redaction and EU data residency are adjacent privacy features and earn no credit for this story.",
+    "rationale": "Preventing customer audio from being used for model training is a fair privacy question for a transcription API, so the axis applies. The pack never documents a training opt-out or a no-training guarantee. PII redaction and EU data residency are related privacy features, not training-use controls, so they earn no credit.",
     "evidenceIds": []
   },
   {
@@ -2293,7 +2295,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Retention and deletion controls are a fair axis for a cloud transcription API, but the evidence pack shows no retention settings, deletion endpoints, or zero-retention options. PII redaction and EU data residency are adjacent privacy features and do not count as user control over retention or deletion.",
+    "rationale": "The evidence pack does not document any user-facing control over data retention periods or deletion of uploaded audio or transcripts, such as a delete endpoint, retention settings, or a zero-retention mode. PII redaction and EU data residency are adjacent privacy features and do not count as retention or deletion control. The axis applies to a transcription API, so the absence of evidence yields none.",
     "evidenceIds": []
   },
   {
@@ -2302,7 +2304,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Gladia is a SaaS transcription API that also ships a CLI and a desktop app, so a telemetry or usage-tracking opt-out is a fair question. The evidence pack documents no such opt-out control. PII redaction and EU data residency are adjacent privacy features and do not count as a telemetry opt-out.",
+    "rationale": "Gladia ships a CLI, a desktop dictation app (GladiaFlow) and an API, so a telemetry or usage-tracking opt-out is a fair question for this product. The evidence pack never documents such a control. PII redaction and EU data residency are adjacent privacy features and do not count toward this story.",
     "evidenceIds": []
   },
   {
@@ -2311,16 +2313,16 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence pack never mentions automatic punctuation, casing, or number formatting in transcripts, nor any option to turn formatting off. Custom spelling (normalizing spelling variants) and output formats (plain text, JSON, SRT, VTT) are related but different features and earn no credit for this story.",
+    "rationale": "Speech-to-text output formatting is a fair axis for a transcription API, but the evidence pack never mentions punctuation, casing, or number formatting, nor any option to disable them. Custom spelling (normalizing spelling variants) is an adjacent feature and earns no credit toward this story.",
     "evidenceIds": []
   },
   {
     "productId": "gladia",
     "storyId": "speaker-diarization",
-    "verdict": "partial",
-    "quality": 5,
+    "verdict": "full",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Gladia's pre-recorded quickstart lists speaker diarization, which separates the speakers across the conversation, as a feature you can request through the API. Beyond that one line, nothing shows how it is enabled, how speaker labels appear on utterances in the transcript, or whether it works in live mode. Missing for 10: request parameter docs, per-utterance speaker-label output format, live/real-time diarization support, independent or hands-on corroboration.",
+    "rationale": "Gladia's pre-recorded quickstart lists speaker diarization as a request option that will \"separate the speakers across the conversation,\" so the core capability is documented first-party. The evidence is a single brief mention, and it never shows how speakers appear in the transcript output. missing for 10: documented output schema showing per-utterance speaker labels, evidence of diarization in live/real-time mode, configuration details (e.g., speaker count hints), independent or hands-on corroboration.",
     "evidenceIds": [
       "gladia-docs-19"
     ]
@@ -2331,7 +2333,7 @@
     "verdict": "full",
     "quality": 8,
     "confidence": "medium",
-    "rationale": "Gladia documents a live speech-to-text quickstart. An init call returns a connectable URL and session id that clients can stream to and reconnect with, and the service returns partial and final transcripts in real time. Live-specific settings such as silence thresholds and utterance duration are configurable, and the default model supports live mode. Missing for 10: explicit naming of the WebSocket protocol and audio/message format details in the evidence, and independent or hands-on corroboration of real-time latency.",
+    "rationale": "Gladia documents a live STT quickstart. An init call returns a connectable session URL and id that clients can use without exposing credentials, the session supports reconnection without losing context, and results arrive as provisional partial and final transcripts. The docs also cover live-specific configuration such as silence thresholds and maximum utterance duration, and the default model supports live use. Missing for 10: the WebSocket protocol, audio encoding and message schema are not named explicitly in the excerpts, there are no latency figures, and there is no independent or hands-on corroboration of real-time performance.",
     "evidenceIds": [
       "gladia-docs-1",
       "gladia-docs-20",
@@ -2347,11 +2349,10 @@
     "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Gladia's live STT quickstart says partial transcripts are provisional and final transcripts complete an utterance, which distinguishes interim from final results and states what finality means. Configurable silence thresholds and maximum utterance duration also document what triggers an utterance to finalize. The evidence is thin, though: one short sentence on semantics. Missing for 10: the documented message schema or field marking finality, detail on whether partials can be revised or replaced, and independent or hands-on corroboration.",
+    "rationale": "Gladia's live STT quickstart says streaming results come as partial and final transcripts: partials are provisional, and finals complete an utterance. The live docs also cover silence thresholds and maximum utterance duration, which set when an utterance is finalized. missing for 10: the message schema or field names that mark interim versus final events, detail on whether finals can be revised or how partials are superseded, and independent or hands-on corroboration.",
     "evidenceIds": [
       "gladia-docs-22",
-      "gladia-docs-11",
-      "gladia-docs-1"
+      "gladia-docs-11"
     ]
   },
   {
@@ -2360,7 +2361,7 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Gladia's own docs show structured, machine-readable output: the CLI emits JSON, and transcripts are organized into utterances, with live final transcripts completing an utterance and configurable maximum utterance duration. Speaker diarization separates segments by speaker. However, nothing in the evidence shows per-utterance or per-word confidence values or the actual API response schema, and the OpenAPI spec could not be retrieved. missing for 10: documented confidence scores in the response, an explicit JSON response schema for utterances/segments (API, not just CLI), independent hands-on corroboration.",
+    "rationale": "Gladia documents JSON output (CLI offers JSON and machine-readable output). It also documents utterance-level structure: live final transcripts complete an utterance, maximum utterance duration is configurable, and diarization separates speakers. That shows the results are structured rather than a text blob. No evidence shows per-utterance or per-word confidence values or the actual API response schema. missing for 10: documented confidence values in responses, an API response schema showing utterances/segments with timestamps, independent or hands-on corroboration.",
     "evidenceIds": [
       "gladia-docs-24",
       "gladia-docs-25",
@@ -2375,7 +2376,7 @@
     "verdict": "full",
     "quality": 8,
     "confidence": "medium",
-    "rationale": "Gladia's docs index has a dedicated 'Export subtitles (SRT/VTT)' page for generating caption files directly from transcripts. The official CLI also documents SRT and VTT as output formats to stdout, so there is a documented export path. Missing for 10: the specific API request parameters or response fields for subtitle export are not shown in the evidence (the subtitle page is known only by its index entry), and there is no independent or hands-on corroboration.",
+    "rationale": "Gladia's docs index has a dedicated 'Export subtitles (SRT/VTT)' feature for generating caption files directly from transcripts. The official CLI also documents SRT and VTT output to stdout, so a documented path exists. Missing for 10: the specific API parameters or response fields for SRT/VTT export, caption formatting options such as line length and cue duration, and independent or hands-on corroboration.",
     "evidenceIds": [
       "gladia-docs-8",
       "gladia-docs-24",
@@ -2389,18 +2390,19 @@
     "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Gladia's own pre-recorded quickstart documents a Translation option that translates the transcript into one of 100 target languages, which directly meets the story. The evidence is a single feature-list line without parameter or endpoint detail. Missing for 10: request/parameter-level documentation of the translation option, evidence of translation in live/real-time mode, independent or hands-on corroboration of translation output.",
+    "rationale": "Gladia's pre-recorded quickstart documents a Translation feature that translates the transcript into one of 100 target languages. The pricing page lists Translation as a billable add-on (+0.05€/h), which confirms it is a shipped API option. missing for 10: the exact request parameter or config shape for translation, evidence of translation in live/real-time sessions, and independent or hands-on corroboration of translation quality.",
     "evidenceIds": [
-      "gladia-docs-18"
+      "gladia-docs-18",
+      "gladia-docs-30"
     ]
   },
   {
     "productId": "gladia",
     "storyId": "url-ingest",
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Gladia's pre-recorded quickstart says you can pass a local file, binary data, or a remote URL and the method handles the rest, which covers URL-based ingestion without a manual upload. This rests on a single SDK-level mention, so it is not explicit that the service itself fetches the URL. missing for 10: explicit confirmation that signed or presigned URLs work, API-level documentation of the audio_url parameter and server-side fetch behavior, independent or hands-on corroboration.",
+    "rationale": "Gladia's pre-recorded quickstart says the SDK transcription method accepts a local file, binary data, or a remote URL, so URL-based ingestion is a documented first-party capability. That one line does not make clear whether Gladia's service fetches the URL itself or the SDK downloads and uploads it, and signed URLs are never mentioned. missing for 10: explicit confirmation of server-side fetching from an API parameter (e.g. an audio_url field), documented support for signed/presigned URLs, details on URL limits or auth, independent or hands-on corroboration.",
     "evidenceIds": [
       "gladia-docs-16"
     ]
@@ -2411,7 +2413,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Gladia offers asynchronous transcription, so a job-completion webhook is a fair question to ask. However, nothing in the evidence pack documents registrable webhooks or callback URLs that fire when a job completes or fails. The Zapier, Make and n8n integrations are no-code automation partners, not first-party outbound HTTP callbacks, so they earn no credit.",
+    "rationale": "Webhooks are a fair axis for an async transcription API, and Gladia documents asynchronous transcription. However, nothing in the pack mentions a callback URL, registrable webhook, or completion/failure notification. Zapier/Make/n8n integrations are no-code automation partners, not documented outbound HTTP callbacks, so they earn no credit.",
     "evidenceIds": []
   },
   {
@@ -2420,7 +2422,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Word-level timestamps are a fair question for a speech-to-text API, but the evidence pack never documents per-word timing in Gladia's transcript output. SRT/VTT subtitle export and utterance/silence configuration only imply segment-level timing, which is an adjacent feature and earns no credit toward word-level mapping.",
+    "rationale": "Word-level timestamps are a fair axis for a speech-to-text API, but nothing in the evidence documents per-word timing in Gladia's output. SRT/VTT subtitle export and utterance-based live transcripts give segment- or caption-level timing, an adjacent feature that does not show every word mapped to its position.",
     "evidenceIds": []
   },
   {
