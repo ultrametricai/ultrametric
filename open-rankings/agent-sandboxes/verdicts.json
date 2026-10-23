@@ -4701,10 +4701,10 @@
   {
     "productId": "sandbox0",
     "storyId": "agentic-mcp-client",
-    "verdict": "na",
+    "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Sandbox0 is managed sandbox infrastructure that AI agents run inside; it is not itself an agent that consumes tools, so the MCP-client axis is a category error for this kind of product. The 'remote MCP controls' doc (docs-16) is a network policy that governs MCP traffic leaving the sandbox. It does not show the product plugging in MCP servers to use their tools, so it does not make this axis applicable.",
+    "rationale": "Sandbox platforms can plausibly offer MCP integration, such as an MCP gateway for agents running inside sandboxes, so this axis applies. The only MCP mention is 'remote MCP controls over HTTP or HTTPS' under protocol controls. That is an adjacent network-policy control over outbound MCP traffic, not a documented way to plug MCP servers in so the product or its agents can use their tools.",
     "evidenceIds": []
   },
   {
@@ -4859,14 +4859,12 @@
     "productId": "sandbox0",
     "storyId": "automation-rules-engine",
     "verdict": "partial",
-    "quality": 5,
+    "quality": 4,
     "confidence": "medium",
-    "rationale": "Sandbox0 ships a few fixed, user-configurable automatic behaviors: soft and hard TTLs that auto-pause or auto-delete on expiry, auto_resume that wakes a paused sandbox on inbound access, and online RootFS growth. Its webhooks also emit process, lifecycle and file-modification events, but the user must build the reacting action outside the product. There is no general rules engine for defining custom event-to-action triggers. Missing for 10: a user-defined rule/trigger engine with arbitrary conditions and actions, built-in actions triggered by webhook events, and independent or hands-on corroboration.",
+    "rationale": "Sandbox0 documents webhooks that fire on process events, sandbox lifecycle changes, and file modifications. It also documents a configurable auto_resume behavior where inbound access automatically wakes a paused sandbox. Both are first-party, event-driven automatic actions, but the webhooks only notify an external consumer, which must then perform the action. There is no evidence of a user-defined rule engine that maps conditions to in-product actions. Missing for 10: user-definable event→action rules or conditions, event filtering, in-product action execution beyond callbacks, detailed webhook configuration docs, independent corroboration.",
     "evidenceIds": [
       "sandbox0-docs-18",
-      "sandbox0-docs-4",
-      "sandbox0-docs-38",
-      "sandbox0-docs-5"
+      "sandbox0-docs-4"
     ]
   },
   {
@@ -4891,13 +4889,13 @@
     "productId": "sandbox0",
     "storyId": "browser-in-sandbox",
     "verdict": "full",
-    "quality": 7,
+    "quality": 8,
     "confidence": "medium",
-    "rationale": "Sandbox0's coding-agent template ships `sandbox0-browser`, Google Chrome Stable and Playwright CLI for browser automation. It also includes TigerVNC, the Openbox window manager and a built-in noVNC viewer, giving a full graphical desktop inside the sandbox. Custom public or private images can extend the environment further. missing for 10: a dedicated browser/desktop documentation page (the evidence is a single template mention), explicit confirmation of headless-mode usage and resource requirements, and independent or hands-on corroboration.",
+    "rationale": "Sandbox0's coding-agent template ships with `sandbox0-browser`, Google Chrome Stable, Playwright CLI, TigerVNC, the Openbox window manager and a built-in noVNC viewer. That covers both headless-browser automation and a viewable desktop session inside the sandbox. Custom images and software installation give further room to extend the environment. Missing for 10: a dedicated in-depth browser/desktop documentation page (the evidence is a single line in a use-case page), and independent or hands-on corroboration that the browser and desktop work as described.",
     "evidenceIds": [
       "sandbox0-docs-30",
-      "sandbox0-docs-24",
-      "sandbox0-docs-1"
+      "sandbox0-docs-1",
+      "sandbox0-docs-24"
     ]
   },
   {
@@ -5063,13 +5061,14 @@
     "productId": "sandbox0",
     "storyId": "openness-full-export",
     "verdict": "partial",
-    "quality": 3,
+    "quality": 4,
     "confidence": "low",
-    "rationale": "Sandbox0 documents ways to get data out in standard forms: standard SSH clients and `scp` can copy files out of a sandbox, persistent files can be read and managed without resuming compute, and historical logs, metrics and the audit ledger are readable via API. None of this is framed as a complete data-export or exit path. missing for 10: a documented bulk or account-wide export feature, export of snapshots/RootFS/templates in open formats (e.g. OCI images or tarballs), a stated export format for logs and the audit ledger, and any data-portability or offboarding guidance.",
+    "rationale": "Sandbox0's own documented capabilities let users pull data out: persistent files can be read without resuming compute (docs-7), files can be copied out with standard SSH/`scp` (docs-17), and historical logs, metrics and the audit ledger are readable via APIs (docs-19). Templates also build on standard public or private container images, which limits lock-in (docs-24). However, nothing describes a bulk or account-wide export, and nothing confirms snapshots or RootFS can be exported in an open format, so 'export all of my data and leave' is only partly evidenced. Missing for 10: documented bulk/account-level data export, snapshot/RootFS export in open formats (e.g. OCI/tar), explicit offboarding or data-portability documentation, independent corroboration.",
     "evidenceIds": [
-      "sandbox0-docs-17",
       "sandbox0-docs-7",
-      "sandbox0-docs-19"
+      "sandbox0-docs-17",
+      "sandbox0-docs-19",
+      "sandbox0-docs-24"
     ]
   },
   {
@@ -5093,15 +5092,14 @@
   {
     "productId": "sandbox0",
     "storyId": "pause-resume-state",
-    "verdict": "partial",
-    "quality": 6,
+    "verdict": "full",
+    "quality": 7,
     "confidence": "medium",
-    "rationale": "Sandbox0 documents pausing compute and resuming the same sandbox with the full writable root filesystem preserved. Pause can be triggered by soft-TTL expiry, auto_resume can wake a paused sandbox, and pricing bills retained memory as storage. Memory-state preservation, however, is explicitly labeled experimental: it requires opting in with `memory: true` and covers only 'supported' process state, which is a significant caveat for half of the story. Missing for 10: production-grade (non-experimental) memory pause/resume, documentation of which process state is supported, and independent or hands-on corroboration of resume fidelity.",
+    "rationale": "Sandbox0 documents pausing compute and resuming the same sandbox with the whole writable root filesystem preserved, plus auto_resume on inbound access. Memory state can also be kept by opting in with `memory: true`, and pricing lists retained memory as a billed storage item. Missing for 10: memory pause/resume is marked experimental and covers only 'supported' process state, filesystem preservation is tied to successful checkpoints, and there is no independent or hands-on corroboration.",
     "evidenceIds": [
       "sandbox0-docs-2",
       "sandbox0-docs-6",
       "sandbox0-docs-4",
-      "sandbox0-docs-38",
       "sandbox0-docs-36",
       "sandbox0-docs-3"
     ]
@@ -5110,14 +5108,13 @@
     "productId": "sandbox0",
     "storyId": "per-second-billing",
     "verdict": "full",
-    "quality": 9,
+    "quality": 8,
     "confidence": "high",
-    "rationale": "The pricing page states compute is billed by the second (about $0.000004167/GiB-second) with no one-hour minimum, and paused sandboxes incur storage charges only. The sandbox docs confirm paused sandboxes incur no compute charges, and a soft TTL lets idle sandboxes pause automatically, so users pay only for active compute. Missing for 10: independent or hands-on corroboration of actual per-second billing behavior.",
+    "rationale": "The pricing page says compute is billed by the second at about $0.000004167 per GiB-second, with no one-hour compute minimum, and that paused sandboxes incur storage charges only. The sandbox docs separately confirm that paused sandboxes incur no compute charges on Sandbox0 Cloud, and pause/resume lets compute stop between tasks. Missing for 10: clarity on whether billing tracks actual resource use or allocated template resources (and how CPU is metered), and independent or hands-on corroboration of billing behavior.",
     "evidenceIds": [
       "sandbox0-docs-36",
       "sandbox0-docs-3",
       "sandbox0-docs-2",
-      "sandbox0-docs-38",
       "sandbox0-probe-1"
     ]
   },
@@ -5142,18 +5139,11 @@
   {
     "productId": "sandbox0",
     "storyId": "privacy-retention-controls",
-    "verdict": "partial",
-    "quality": 5,
+    "verdict": "none",
+    "quality": 0,
     "confidence": "medium",
-    "rationale": "Sandbox0 documents its own retention and deletion controls for sandbox state. `hard_ttl` expiry durably requests deletion of identity and RootFS state, and the soft `ttl` triggers a pause. Users can choose whether the writable RootFS and process memory are preserved across checkpoints, and can manage persistent files without resuming compute. It does not document deletion or retention controls for snapshots, historical logs, the audit ledger, or account- and team-level data, so the story is only partly covered. missing for 10: explicit on-demand delete APIs for sandboxes/snapshots, retention settings for logs and the audit ledger, account/team data-deletion policy, independent corroboration",
-    "evidenceIds": [
-      "sandbox0-docs-38",
-      "sandbox0-docs-2",
-      "sandbox0-docs-6",
-      "sandbox0-docs-7",
-      "sandbox0-docs-8",
-      "sandbox0-docs-36"
-    ]
+    "rationale": "The evidence covers persistence features such as RootFS preservation across checkpoints, snapshots, forks, file management without resuming compute, and historical logs and audit ledgers. None of it documents data-retention policies, retention windows, or explicit deletion of sandboxes, snapshots, logs, or stored data. Persistence and file management are adjacent features and do not show user control over retention or deletion.",
+    "evidenceIds": []
   },
   {
     "productId": "sandbox0",
@@ -5185,48 +5175,46 @@
     "productId": "sandbox0",
     "storyId": "run-untrusted-code",
     "verdict": "full",
-    "quality": 7,
+    "quality": 8,
     "confidence": "medium",
-    "rationale": "Sandbox0 runs agent code in an isolated cloud computer rather than on the developer's own VM or workstation. Supporting containment controls include outbound network policy, credential injection that keeps raw secrets out of the sandbox, protocol controls, hard TTL deletion, and a signed audit ledger. missing for 10: documentation of the isolation mechanism (e.g. microVM or kernel-level isolation), explicit security guarantees, independent or hands-on corroboration.",
+    "rationale": "Sandbox0's docs describe each sandbox as an isolated cloud computer where an agent can run code. They also document several controls that keep that code away from the user's own systems: running agents in a sandbox instead of on a VM or workstation, `SandboxNetworkPolicy` for outbound traffic, and credential features that keep raw secrets out of the sandbox process. Stateful and stateless execution contexts are documented too. missing for 10: documentation of the isolation technology and its security guarantees (e.g., microVM or kernel-level boundary), independent or hands-on corroboration of the isolation.",
     "evidenceIds": [
       "sandbox0-docs-1",
-      "sandbox0-probe-2",
-      "sandbox0-docs-28",
       "sandbox0-docs-13",
       "sandbox0-docs-15",
-      "sandbox0-docs-16",
-      "sandbox0-docs-19",
-      "sandbox0-docs-38"
+      "sandbox0-docs-21",
+      "sandbox0-docs-28",
+      "sandbox0-probe-2"
     ]
   },
   {
     "productId": "sandbox0",
     "storyId": "secrets-stay-out",
     "verdict": "full",
-    "quality": 8,
+    "quality": 7,
     "confidence": "medium",
-    "rationale": "Sandbox0 runs agent code in an isolated cloud computer, not on the user's host (docs-1, docs-28). Its credential features authenticate outbound traffic without placing raw secret material inside the sandbox process (docs-15), and SandboxNetworkPolicy adds outbound traffic controls (docs-13). Missing for 10: details on the isolation boundary mechanism (e.g. VM or kernel separation), independent or hands-on corroboration that secrets cannot be reached from inside the sandbox.",
+    "rationale": "Sandbox0 runs agent code in an isolated cloud computer separate from the user's host (docs-1). Its credential features authenticate outbound traffic without placing raw secret material inside the sandbox process (docs-15), and outbound traffic can be restricted with SandboxNetworkPolicy (docs-13). Missing for 10: detail on how credential injection works and what isolation boundary is used, plus independent or hands-on corroboration that secrets stay unreachable.",
     "evidenceIds": [
       "sandbox0-docs-1",
       "sandbox0-docs-15",
-      "sandbox0-docs-13",
-      "sandbox0-docs-28"
+      "sandbox0-docs-13"
     ]
   },
   {
     "productId": "sandbox0",
     "storyId": "shell-and-packages",
     "verdict": "full",
-    "quality": 8,
+    "quality": 9,
     "confidence": "medium",
-    "rationale": "Sandbox0's docs say a sandbox is an isolated cloud computer where an agent can \"run code, install software, manage files\". Commands can run through Cmd/REPL contexts or an interactive shell over standard SSH. Supporting features include Docker-in-sandbox and a writable RootFS that grows online and persists across checkpoints, so installed packages survive. Missing for 10: a concrete package-install walkthrough (e.g., apt/pip examples or limits on root/privileges), and independent or hands-on corroboration beyond first-party docs.",
+    "rationale": "First-party docs state that a sandbox is an isolated cloud computer where the agent can run code and install software. They also document an SSH shell and stateful REPL and stateless Cmd process contexts for running commands. Docker-in-sandbox, custom images and an auto-growing RootFS support package installs, and the probe confirmed the docs page is live. Missing for 10: independent or hands-on corroboration of command execution and package installation.",
     "evidenceIds": [
       "sandbox0-docs-1",
       "sandbox0-docs-17",
       "sandbox0-docs-21",
       "sandbox0-docs-22",
       "sandbox0-docs-5",
-      "sandbox0-docs-2"
+      "sandbox0-docs-24",
+      "sandbox0-probe-2"
     ]
   },
   {
@@ -5247,15 +5235,15 @@
     "productId": "sandbox0",
     "storyId": "spinup-via-api",
     "verdict": "partial",
-    "quality": 6,
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Sandbox0 documents isolated cloud sandboxes (docs-1) and official Go/Python/TypeScript SDKs plus a raw HTTP API authenticated with a team API key (docs-37). Its docs describe claiming a sandbox, with a TTL or from a snapshot, as a single operation (docs-38, docs-29), so one-call provisioning is supported. The 'live in seconds' half is unevidenced: no cold-start or provisioning latency figures are given, and the docs say resume 'takes time and requires available capacity' (docs-4). Missing for 10: documented sandbox startup/claim latency, a concrete one-call create example in the SDK docs, independent or hands-on corroboration of time-to-live-environment.",
+    "rationale": "Sandbox0 documents isolated cloud sandboxes provisioned programmatically. It ships official Go, Python and TypeScript SDKs plus a raw HTTP API authenticated with a team API key. New sandboxes can be claimed from templates or snapshots. However, no evidence shows that a single call creates a sandbox, and no startup-latency figures support the 'live in seconds' claim. Missing for 10: a documented one-call create example, cold-start/provisioning time evidence, and independent hands-on corroboration of speed.",
     "evidenceIds": [
       "sandbox0-docs-1",
       "sandbox0-docs-37",
-      "sandbox0-docs-38",
-      "sandbox0-docs-29",
-      "sandbox0-docs-4"
+      "sandbox0-docs-23",
+      "sandbox0-docs-8",
+      "sandbox0-docs-29"
     ]
   },
   {
