@@ -45,8 +45,8 @@ function arena(
 }
 
 // ---- real data: startup-banking (leaderboard ramp, mercury, airwallex, brex, jeeves, wise,
-// relay; battle mercury-vs-ramp stored as a=mercury, b=ramp, record 16–28, 28 drawn —
-// re-pinned 2026-10-01 after the opus-5-5 judge migration) ------------
+// gusto, relay; battle mercury-vs-ramp stored as a=mercury, b=ramp, record 19–30, 23 drawn —
+// re-pinned 2026-10-23 at the gusto debut, whose v5 freshness cascade re-judged the arena) ----
 
 const banking = loadCategory('startup-banking', path.resolve(__dirname, '../../open-rankings'))
 
@@ -70,21 +70,21 @@ describe('compareRivalsFor', () => {
     expect(first[0]).toMatchObject({ productId: 'ramp', isSelf: true, rank: 1 })
     expect(first.slice(1).map((r) => r.rank)).toEqual([2, 3, 4, 5])
 
-    const last = compareRivalsFor(banking, 'relay') // rank #7 of 7
-    expect(last[0]).toMatchObject({ productId: 'relay', isSelf: true, rank: 7 })
-    expect(last.slice(1).map((r) => r.rank)).toEqual([3, 4, 5, 6])
+    const last = compareRivalsFor(banking, 'relay') // rank #8 of 8
+    expect(last[0]).toMatchObject({ productId: 'relay', isSelf: true, rank: 8 })
+    expect(last.slice(1).map((r) => r.rank)).toEqual([4, 5, 6, 7])
   })
 
   it('links each rival to the stored battle slug with the record oriented self-first', () => {
     // open-rankings/startup-banking/rankings.json stores the pair as a=mercury, b=ramp with
-    // record { aWins: 16, bWins: 28, draws: 28 } — assert both orientations read from it.
+    // record { aWins: 19, bWins: 30, draws: 23 } — assert both orientations read from it.
     const fromMercury = compareRivalsFor(banking, 'mercury').find((r) => r.productId === 'ramp')!
     expect(fromMercury.battleSlug).toBe('mercury-vs-ramp')
-    expect(fromMercury.record).toEqual({ wins: 16, losses: 28, draws: 28 })
+    expect(fromMercury.record).toEqual({ wins: 19, losses: 30, draws: 23 })
 
     const fromRamp = compareRivalsFor(banking, 'ramp').find((r) => r.productId === 'mercury')!
     expect(fromRamp.battleSlug).toBe('mercury-vs-ramp') // stored (a, b) order, either direction
-    expect(fromRamp.record).toEqual({ wins: 28, losses: 16, draws: 28 })
+    expect(fromRamp.record).toEqual({ wins: 30, losses: 19, draws: 23 })
   })
 
   it('a 3-product arena yields self + 2 rivals', () => {

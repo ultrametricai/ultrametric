@@ -100,8 +100,13 @@ describe('existing judged selection compatibility', () => {
     // between the positive and zero rows. Counts moved again (2875/198 -> 2877/196) when the
     // PR #428 review's evidence-gap fix (recorded llms.txt probes for eqvista and adp-run,
     // payroll-specific Workforce API lines for quickbooks-payroll) re-judged those packs.
-    expect(positiveCount).toBe(2877)
-    expect(zeroCount).toBe(196)
+    // Re-pinned at the Gusto formation/banking debut (2026-10-23): gusto joins legal-ops and
+    // startup-banking, so the newly judged product joins the candidate lists of the steps mapped
+    // to those arenas (mostly as published zero rows — the offering is formation/banking-scoped,
+    // early beta), and the v5 freshness cascade the debut forced on the two arenas' stale caches
+    // moves two incumbent cells from the positive rows to the zero rows (2877/196 -> 2875/244).
+    expect(positiveCount).toBe(2875)
+    expect(zeroCount).toBe(244)
     expect(extraArena).toBe(96)
   })
 
