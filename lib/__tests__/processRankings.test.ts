@@ -623,6 +623,11 @@ describe('government-services step applicability (founder 2026-10-08: scope cand
     expect(govStepVendors).toContain('irs')
     expect(govStepVendors).toContain('eftps')
     expect(govStepVendors).not.toContain('uspto')
+    // State tax agencies share the US/tax cell but are never substitutes for the federal
+    // anchor (state-agency bring-up 2026-10-22): a federal return cannot be filed with them.
+    for (const id of ['ca-ftb', 'ca-edd', 'ny-dtf', 'tx-comptroller', 'de-dor']) {
+      expect(govStepVendors).not.toContain(id)
+    }
     // Agencies live on the step rosters only — the process leaderboard lists competing
     // vendors, so no government-services entry appears there at all.
     const lbGov = processLeaderboard(task, DATA_DIR).entries
@@ -655,11 +660,26 @@ describe('government-services step applicability (founder 2026-10-08: scope cand
     }
   })
 
-  it('pin: the "or:" row for a government agency obeys the same rule — IRS never suggests a foreign or wrong-area agency', () => {
+  it('pin: the "or:" row for a government agency obeys the same rule — IRS never suggests a foreign, wrong-area, or state agency', () => {
     for (const alt of vendorAlternatives('irs', 99, DATA_DIR)) {
       const p = govProducts().find((x) => x.id === alt.id)!
       expect(p.country).toBe('US')
       expect(p.area).toBe('tax')
+      expect(p.state, `${p.id} is a state agency — not a federal substitute`).toBeUndefined()
+    }
+  })
+
+  it('pin: government-services products never appear as process-leaderboard entries on any task', () => {
+    // Agencies are step-roster candidates only (lib/processRankings.ts excludes the arena from
+    // leaderboard entries). The five state agencies added 2026-10-22 must obey the same rule.
+    const govIds = new Set(govProducts().map((p) => p.id))
+    for (const newId of ['ca-ftb', 'ca-edd', 'ny-dtf', 'tx-comptroller', 'de-dor']) {
+      expect(govIds.has(newId)).toBe(true)
+    }
+    for (const task of tasks()) {
+      for (const e of processLeaderboard(task, DATA_DIR).entries) {
+        expect(e.arenaId, `${task.id} leaderboard lists ${e.productId}`).not.toBe(GOVERNMENT_ARENA_ID)
+      }
     }
   })
 

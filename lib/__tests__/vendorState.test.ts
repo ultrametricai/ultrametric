@@ -2,7 +2,7 @@ import fs from 'node:fs'
 import path from 'node:path'
 import { describe, expect, it } from 'vitest'
 import { loadCategory } from '@/lib/data'
-import { GOVERNMENT_ARENA_ID, governmentStepEligibility } from '@/lib/processes'
+import { GOVERNMENT_ARENA_ID, governmentStepEligibility, jurisdictionNodes } from '@/lib/processes'
 import {
   loadVendorState, VENDOR_STATE_SERVICES, vendorStateFor, vendorStateLookup,
 } from '@/lib/vendorState'
@@ -119,8 +119,9 @@ describe('vendorStateLookup', () => {
   })
 })
 
-// The ProductSchema `state` tag on the government-services roster: US company registries carry
-// their ISO 3166-2 code; federal and non-US agencies carry none.
+// The ProductSchema `state` tag on the government-services roster: US company registries and
+// the state tax/employment agencies carry their ISO 3166-2 code; federal and non-US agencies
+// carry none.
 describe('government-services state tags', () => {
   const products = loadCategory(GOVERNMENT_ARENA_ID, DATA_DIR).products
   const states = registryStates()
@@ -134,6 +135,12 @@ describe('government-services state tags', () => {
 
   it('pins the committed registry-to-state mapping', () => {
     const tag = (id: string) => products.find((p) => p.id === id)?.state
+    // The state tax and employment agencies (state-agency bring-up, 2026-10-22).
+    expect(tag('ca-ftb')).toBe('US-CA')
+    expect(tag('ca-edd')).toBe('US-CA')
+    expect(tag('ny-dtf')).toBe('US-NY')
+    expect(tag('tx-comptroller')).toBe('US-TX')
+    expect(tag('de-dor')).toBe('US-DE')
     expect(tag('delaware-doc')).toBe('US-DE')
     expect(tag('california-sos')).toBe('US-CA')
     expect(tag('new-york-dos')).toBe('US-NY')
@@ -165,30 +172,67 @@ describe('governmentStepEligibility with a state code', () => {
       GOVERNMENT_ARENA_ID,
       DATA_DIR,
     )
-    expect(eligible).toEqual(new Set(['california-sos']))
+    expect(eligible).toEqual(new Set(['california-sos', 'ca-ftb', 'ca-edd']))
   })
 
-  it('each tagged state admits exactly its own registry', () => {
-    for (const [state, id] of [
-      ['US-DE', 'delaware-doc'],
-      ['US-NY', 'new-york-dos'],
-      ['US-TX', 'texas-sos'],
+  it('each tagged state admits exactly its own agencies', () => {
+    for (const [state, ids] of [
+      ['US-DE', ['delaware-doc', 'de-dor']],
+      ['US-NY', ['new-york-dos', 'ny-dtf']],
+      ['US-TX', ['texas-sos', 'tx-comptroller']],
     ] as const) {
       expect(
         governmentStepEligibility({ jurisdictions: [state] }, GOVERNMENT_ARENA_ID, DATA_DIR),
+      ).toEqual(new Set(ids))
+    }
+  })
+
+  it('a step wired to a state agency resolves to exactly the agencies sharing its country, area, and state', () => {
+    // The committed wiring from the #422 state steps: the US-CA payroll registration (qs_063
+    // jca1) is wired to the CA EDD, the CA franchise-tax and TX franchise-tax steps (tax_001)
+    // to the FTB and the Comptroller, the NY steps (form_005/qs_063) to the DTF.
+    for (const [vendor, state, id] of [
+      ['ca_edd', 'US-CA', 'ca-edd'],
+      ['ca_ftb', 'US-CA', 'ca-ftb'],
+      ['ny_dtf', 'US-NY', 'ny-dtf'],
+      ['tx_comptroller', 'US-TX', 'tx-comptroller'],
+    ] as const) {
+      expect(
+        governmentStepEligibility({ vendor, jurisdictions: [state] }, GOVERNMENT_ARENA_ID, DATA_DIR),
       ).toEqual(new Set([id]))
     }
   })
 
-  it('a state code on an area with no state-tagged agencies keeps the country+area set (no guess)', () => {
+  it('a federal-wired step never retargets to a state agency: the country+area set stands (no guess)', () => {
+    // US/tax now rosters state tax agencies, but the anchored set matches the wired agency's
+    // state tag exactly (undefined = federal), so an IRS-wired step with a state code keeps
+    // its federal candidates rather than retargeting to the state's tax agency.
     const base = governmentStepEligibility({ vendor: 'irs' }, GOVERNMENT_ARENA_ID, DATA_DIR)
     const withState = governmentStepEligibility(
       { vendor: 'irs', jurisdictions: ['US-CA'] },
       GOVERNMENT_ARENA_ID,
       DATA_DIR,
     )
-    expect(base).not.toBeNull()
+    expect(base).toEqual(new Set(['irs', 'eftps']))
     expect(withState).toEqual(base)
+  })
+
+  it('the committed #422 state steps resolve to the new agencies where the area matches', () => {
+    // Pulled from the corpus itself (jurisdictionNodes = the conditional steps loadProcesses
+    // strips from the default view), never from a hand-built node: the wiring under test is
+    // the committed stated-vendor reference on each canonical step.
+    const byTask = (taskId: string) => jurisdictionNodes(taskId, DATA_DIR)
+    const resolve = (taskId: string, vendor: string) => {
+      const node = byTask(taskId).find((n) => n.vendor === vendor)
+      expect(node, `${taskId} has a conditional step wired to ${vendor}`).toBeDefined()
+      return governmentStepEligibility(node!, GOVERNMENT_ARENA_ID, DATA_DIR)
+    }
+    expect(resolve('qs_063', 'ca_edd')).toEqual(new Set(['ca-edd']))        // CA payroll registration
+    expect(resolve('qs_063', 'ny_dtf')).toEqual(new Set(['ny-dtf']))        // NY employer registration
+    expect(resolve('tax_001', 'ca_ftb')).toEqual(new Set(['ca-ftb']))       // CA minimum franchise tax
+    expect(resolve('tax_001', 'tx_comptroller')).toEqual(new Set(['tx-comptroller'])) // TX franchise tax
+    expect(resolve('qs_047', 'tx_comptroller')).toEqual(new Set(['tx-comptroller'])) // TX franchise report + PIR
+    expect(resolve('form_005', 'ny_dtf')).toEqual(new Set(['ny-dtf']))      // NY Article 9-A / CT-3
   })
 
   it('steps without a state code behave exactly as before', () => {

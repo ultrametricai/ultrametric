@@ -1074,6 +1074,15 @@ export const GOVERNMENT_ARENA_ID = 'government-services'
 // state code behaves exactly as before. A state-tagged step with no resolvable wired agency
 // still narrows on the state tag alone — the committed product tags are the finer signal there.
 //
+// State agencies are not substitutes for federal ones (state-agency bring-up, 2026-10-22: the
+// roster now carries state TAX and EMPLOYMENT agencies — ca-ftb, ca-edd, ny-dtf,
+// tx-comptroller, de-dor — alongside the federal IRS/EFTPS in the same country+area cells):
+// the anchored set matches the wired agency's `state` tag exactly, undefined meaning federal.
+// A step wired to the IRS never lists the Texas Comptroller, and a step wired to the CA EDD
+// (the US-CA payroll-registration conditional step) resolves to exactly the agencies sharing
+// its country, area, AND state. The committed wiring is the vendor reference on the canonical
+// step (open-processes/vendor-registry.json keys ca_ftb/ca_edd/ny_dtf/tx_comptroller).
+//
 // Returns null — UNFILTERED — for every other arena, and for a government-covered step that
 // is not wired to a tagged product of the arena (no canonical vendor, or an untagged
 // product) and carries no state code: there the area cannot be honestly derived from
@@ -1095,7 +1104,7 @@ export function governmentStepEligibility(
       : undefined
   const anchored =
     wired?.country && wired.area
-      ? products.filter((p) => p.country === wired.country && p.area === wired.area)
+      ? products.filter((p) => p.country === wired.country && p.area === wired.area && p.state === wired.state)
       : null
   if (state) {
     const inState = (anchored ?? products).filter((p) => p.state === state)
