@@ -399,6 +399,7 @@ export const GEO_COUNTRY_META: Record<GeoNoteCountry, { label: string; flag: str
   FR: { label: 'France', flag: '🇫🇷' },
   PT: { label: 'Portugal', flag: '🇵🇹' },
   CA: { label: 'Canada', flag: '🇨🇦' },
+  KR: { label: 'South Korea', flag: '🇰🇷' },
 }
 
 // Proven runs (founder spike 2026-10-02 — EXECUTED-PROOF SLOT, design only): a dated record
