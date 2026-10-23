@@ -30,14 +30,14 @@ and a test holds the two together.
 
 | Domain | Covers | Maturity |
 | --- | --- | --- |
-| Formation and corporate governance | Incorporation mechanics and charter contents (Delaware and the UK), board and stockholder action, stock issuance authority, ongoing registrations and reports, and beneficial-ownership reporting. | partial |
+| Formation and corporate governance | Incorporation mechanics and charter contents (Delaware, the UK, and New Zealand), board and stockholder action, stock issuance authority, ongoing registrations and reports, and beneficial-ownership reporting. | partial |
 | Securities and fundraising | The Securities Act registration requirement and private-offering exemptions, Regulation D conditions, offering notices (Form D and blue sky), and compensatory-issuance exemptions. | partial |
 | Equity and compensation | 409A valuation presumptions and penalties, 83(b) elections and restricted stock, ISO and NSO tax treatment, QSBS, and the UK EMI notification deadline and company qualifying limits. | partial |
 | Employment | Hiring and onboarding duties, federal wage and hour baselines, worker classification, restrictive covenants, terminations and layoffs, workplace safety, and benefits. | partial |
 | Tax | Corporate income tax and R&D rules, payroll taxes, state entity-level taxes, and sales tax and VAT. | partial |
 | Intellectual property | Ownership and assignment of founder, employee, and contractor work product; patents; trademarks; trade secrets; and open source. | partial |
 | Contracts and commercial | Electronic contracting, marketing communications, customer contracts, and dispute deadlines. | partial |
-| Privacy and data protection | US state privacy statutes, federal sectoral privacy law, and EU data protection. | partial |
+| Privacy and data protection | US state privacy statutes, federal sectoral privacy law, EU data protection, and New Zealand privacy. | partial |
 | Immigration | Founder immigration paths and employment-based work visas. | partial |
 | Dissolution and distress | Voluntary dissolution and wind-down, and insolvency paths. | partial |
 
@@ -86,6 +86,7 @@ The rules live in one directory per jurisdiction, named by the `jurisdiction` co
 | [US-CO](US-CO/) | The Colorado Privacy Act applicability thresholds |
 | [EU](EU/) | The GDPR data-subject-access response deadline |
 | [UK](UK/) | Company registration and the certificate of incorporation, the confirmation statement, allotment returns, accounts filing periods, PSC information notices, corporation tax notice and PAYE registration deadlines, the VAT registration threshold, the written statement of particulars, EMI notification and company qualifying limits |
+| [NZ](NZ/) | Company incorporation and the resident-director requirement, the annual return, the company tax rate, the GST registration threshold, employer registration, KiwiSaver auto-enrolment and employer contributions, the written employment agreement and trial periods, the annual-holidays minimum, privacy-breach notification |
 
 ## Founder-journey workflow files
 
