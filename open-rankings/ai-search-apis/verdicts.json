@@ -77,11 +77,15 @@
   {
     "productId": "brave-search-api",
     "storyId": "agentic-autonomous-automation",
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "partial",
+    "quality": 3,
     "confidence": "medium",
-    "rationale": "Scheduled or background automation, such as saved searches, monitors, or alerts, is a plausible feature for a search API, so the axis applies. The evidence shows no first-party scheduling, triggers, or background job capability. The n8n, Dify, and MCP guides describe third-party automation and agent platforms calling the API, which are host-platform or user-side arrangements and earn no credit. Iterative deep research runs within a single streamed request, not as a background automation.",
-    "evidenceIds": []
+    "rationale": "Brave Search API has no native scheduling or background-automation feature of its own. It can only be wired into autonomous workflows through third-party platforms, which Brave documents in official guides: an official community node for the n8n automation platform, and integrations with Dify agent orchestration and OpenClaw agents. Missing for 10: native scheduled or recurring jobs, a background execution or trigger mechanism within the product, any documentation of autonomous runs without an external orchestrator, and hands-on corroboration.",
+    "evidenceIds": [
+      "brave-search-api-docs-14",
+      "brave-search-api-docs-38",
+      "brave-search-api-docs-37"
+    ]
   },
   {
     "productId": "brave-search-api",
@@ -195,11 +199,15 @@
   {
     "productId": "brave-search-api",
     "storyId": "agentic-sdks",
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "partial",
+    "quality": 3,
     "confidence": "medium",
-    "rationale": "The evidence pack never documents an official Brave Search API client SDK in any language. The OpenAI-SDK compatibility on the Answers endpoint relies on a third-party SDK and covers only that endpoint. The MCP server, the n8n node and the Skills are integrations for other stories and earn no credit here.",
-    "evidenceIds": []
+    "rationale": "The evidence shows no first-party Brave SDK library. The only SDK path documented is that the Answers endpoint works with the OpenAI SDK, which covers a single service through a third-party client. The official MCP server, n8n node and agent skills are integrations, not general-purpose SDKs, and the OpenAPI probes returned 404, so no published spec exists to generate clients from. Missing for 10: first-party Brave SDKs in common languages, SDK coverage of web/news/image/video/LLM Context endpoints, a published OpenAPI spec, and independent corroboration of SDK use.",
+    "evidenceIds": [
+      "brave-search-api-docs-54",
+      "brave-search-api-probe-3",
+      "brave-search-api-docs-15"
+    ]
   },
   {
     "productId": "brave-search-api",
@@ -230,11 +238,19 @@
   {
     "productId": "brave-search-api",
     "storyId": "api-machine-spec",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "Machine-readable API specs are a fair question for an HTTP search API, but no OpenAPI or equivalent spec is evidenced. The probe found 404s at every candidate OpenAPI/Swagger path. The llms.txt file and markdown API-reference pages are adjacent documentation formats, not a downloadable API specification, so they earn no credit here.",
-    "evidenceIds": []
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "The probe found no OpenAPI or Swagger file at any of the common paths it checked. Brave does publish machine-readable alternatives: an llms.txt and per-endpoint API reference pages in markdown (e.g. suggestions, spell check, rich search, local POIs). These are a loose stand-in for a formal spec, not a downloadable OpenAPI-equivalent document. Missing for 10: a downloadable OpenAPI/Swagger (or equivalent schema) file, documentation pointing to where such a spec lives, and independent confirmation that agents can consume it.",
+    "evidenceIds": [
+      "brave-search-api-probe-3",
+      "brave-search-api-probe-1",
+      "brave-search-api-docs-47",
+      "brave-search-api-docs-48",
+      "brave-search-api-docs-49",
+      "brave-search-api-docs-50",
+      "brave-search-api-docs-51"
+    ]
   },
   {
     "productId": "brave-search-api",
@@ -1136,11 +1152,15 @@
   {
     "productId": "exa",
     "storyId": "keyword-hybrid-modes",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "Exa documents a per-query search `type` parameter, but the evidence describes it only as latency-quality profiles: ~250 ms instant, Lite, Auto, and 12-40 s deep-reasoning search. Nothing in the pack shows keyword, neural, or hybrid retrieval as selectable modes. That is an adjacent control, not the capability in the story, so it earns no credit.",
-    "evidenceIds": []
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "Exa's docs show that a developer can pick a 'search type' for each query. The available types span latency-quality profiles from ~250 ms instant search to 12-40 s deep-reasoning search, and output_schema works with any type. However, the evidence never names keyword, neural, or hybrid retrieval modes, so per-query choice of retrieval paradigm is only implied. Missing for 10: explicit documentation of keyword, neural and hybrid modes, a parameter reference showing how each mode is selected, and independent or hands-on confirmation of mode switching.",
+    "evidenceIds": [
+      "exa-docs-12",
+      "exa-docs-18",
+      "exa-docs-3"
+    ]
   },
   {
     "productId": "exa",
@@ -1413,11 +1433,19 @@
   {
     "productId": "perplexity-sonar",
     "storyId": "agentic-autonomous-automation",
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "partial",
+    "quality": 3,
     "confidence": "medium",
-    "rationale": "The evidence shows agentic, request-driven capabilities: an Agent API with built-in tools and a sandbox, Pro Search multi-step reasoning, and a Computer MCP server that MCP clients can delegate multi-step work to. None of it documents user-configurable automations that run autonomously in the background, such as scheduled or recurring tasks, triggers, or background job runs. These agent primitives are developer building blocks for constructing automations, not the automation capability itself, so they earn no credit.",
-    "evidenceIds": []
+    "rationale": "The Agent API supplies autonomous building blocks: presets that give a working agent, multi-step tool use (web search, URL fetch, code sandbox), reusable versioned profiles, and model fallback. These let a developer build an agent that runs without supervision inside a request. However, nothing shows first-party background execution, scheduling, triggers or recurring jobs, so users must provide their own scheduler and orchestration. Missing for 10: native scheduled or triggered automations, background/async run mode with status or notifications, and independent or hands-on corroboration of unattended operation.",
+    "evidenceIds": [
+      "perplexity-sonar-docs-28",
+      "perplexity-sonar-docs-30",
+      "perplexity-sonar-docs-31",
+      "perplexity-sonar-docs-5",
+      "perplexity-sonar-docs-35",
+      "perplexity-sonar-docs-34",
+      "perplexity-sonar-docs-36"
+    ]
   },
   {
     "productId": "perplexity-sonar",
@@ -1609,11 +1637,13 @@
   {
     "productId": "perplexity-sonar",
     "storyId": "api-sandbox",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "The evidence shows no separate test or sandbox environment, test mode, or test keys isolated from production. The `sandbox` tool is an isolated code-execution container the agent uses at runtime, which is a different capability. The no-key Playground is a try-it console against the live service, not an isolated test environment, so neither earns credit for this story.",
-    "evidenceIds": []
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "The only evidence near this story is an interactive Playground where developers can try Perplexity Search with no API key required [docs-14]. That allows low-risk experimentation, but it is a try-it console, not a dedicated sandbox or test environment kept separate from production. The documented `sandbox` tool is an isolated code-execution container for agents, not a testing environment for integrations, so it is not credited here. Missing for 10: a dedicated sandbox/test mode or test API keys, isolation from production usage and billing, mock or deterministic responses for integration testing, and independent corroboration.",
+    "evidenceIds": [
+      "perplexity-sonar-docs-14"
+    ]
   },
   {
     "productId": "perplexity-sonar",
@@ -1673,11 +1703,16 @@
   {
     "productId": "perplexity-sonar",
     "storyId": "batch-async-processing",
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "partial",
+    "quality": 3,
     "confidence": "medium",
-    "rationale": "The evidence pack documents no batch-job or asynchronous-job submission endpoint for the Sonar or Agent API. The Python SDK's async client is client-side concurrency, a developer building block. Usage-tier rate limits and multi-query search are adjacent features, not batched or async job processing. The note that \"synchronous and streaming requests keep working\" does not document an async job mode.",
-    "evidenceIds": []
+    "rationale": "The evidence shows only client-side and in-request batching. The official Python SDK offers an asynchronous client, with an optional aiohttp backend for concurrency (gh-4, gh-5), and the Search API advertises multi-query search (docs-17). Tier-based rate limits that rise with spend also support higher volume (docs-16). There is no documented server-side batch endpoint or asynchronous job submission with polling or callbacks for high-volume workloads. Missing for 10: a dedicated batch/async job API with job status and retrieval, batch pricing or limits documentation, and hands-on corroboration of high-volume throughput.",
+    "evidenceIds": [
+      "perplexity-sonar-gh-4",
+      "perplexity-sonar-gh-5",
+      "perplexity-sonar-docs-17",
+      "perplexity-sonar-docs-16"
+    ]
   },
   {
     "productId": "perplexity-sonar",
@@ -1747,11 +1782,15 @@
   {
     "productId": "perplexity-sonar",
     "storyId": "free-tier-prototyping",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "The evidence describes pay-as-you-go pricing with no subscription, and rate-limit tiers that advance as you spend on API credits. Nothing documents a free API tier or free starter credits. The no-API-key interactive Search Playground is an adjacent UI feature, not free programmatic API access, so it earns no credit toward this story.",
-    "evidenceIds": []
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "The only free path in the evidence is the interactive Search Playground, which docs say needs no API key. That allows no-cost experimentation in a browser, not programmatic API prototyping. The rate-limit docs describe tiers that advance as you spend on API credits, which implies paid prepaid credits rather than a free tier. Missing for 10: an explicit free API tier or free signup credits, documented free-usage limits for programmatic calls, free access beyond the Search Playground (e.g. Sonar/Agent API), independent confirmation of free prototyping.",
+    "evidenceIds": [
+      "perplexity-sonar-docs-14",
+      "perplexity-sonar-docs-16",
+      "perplexity-sonar-docs-9"
+    ]
   },
   {
     "productId": "perplexity-sonar",
@@ -1848,11 +1887,15 @@
   {
     "productId": "perplexity-sonar",
     "storyId": "openness-open-license",
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "partial",
+    "quality": 3,
     "confidence": "medium",
-    "rationale": "Source openness is a fair question for a hosted API, but nothing in the evidence shows the Sonar API service itself is published under an open license. The only open pieces are adjacent client-side components: an open-source local MCP server and a public Python SDK repo whose license isn't stated. Neither is the product's own source, so they earn no credit.",
-    "evidenceIds": []
+    "rationale": "Only peripheral pieces are readable. The docs describe the local MCP server as \"open-source\", and the Python SDK (perplexity-py) has a public GitHub repository, though the evidence never names its license. Nothing shows the Sonar API service itself is open source. Missing for 10: source for the core Sonar API/models under an open license, an explicitly stated license (e.g. MIT/Apache) for the SDK and MCP server repositories, and independent confirmation of the licensing terms.",
+    "evidenceIds": [
+      "perplexity-sonar-docs-19",
+      "perplexity-sonar-gh-5",
+      "perplexity-sonar-gh-1"
+    ]
   },
   {
     "productId": "perplexity-sonar",
@@ -1937,11 +1980,15 @@
   {
     "productId": "perplexity-sonar",
     "storyId": "semantic-neural-search",
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "partial",
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "The Search API is documented only as returning real-time, ranked web results with domain, language and region filters. Nothing describes its ranking as meaning-based or semantic, or claims it surfaces results that keyword engines miss. The embeddings endpoint is described as 'for semantic search and RAG pipelines', but it is a developer building block for constructing semantic search, not a semantic search capability itself, so it earns no credit.",
-    "evidenceIds": []
+    "rationale": "Perplexity documents an embeddings endpoint for semantic search and RAG pipelines, plus a Search API that returns ranked web results. However, nothing says the Search API itself ranks by meaning rather than keywords, so semantic search over your own data means building your own index from the embeddings. missing for 10: explicit evidence that the Search API ranks semantically, evidence it finds results keyword engines miss, in-depth embeddings documentation, independent or hands-on corroboration of semantic retrieval quality.",
+    "evidenceIds": [
+      "perplexity-sonar-docs-3",
+      "perplexity-sonar-docs-2",
+      "perplexity-sonar-docs-17"
+    ]
   },
   {
     "productId": "perplexity-sonar",
@@ -2224,11 +2271,15 @@
   {
     "productId": "serpapi",
     "storyId": "automation-bulk-operations",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "Bulk operations are a fair axis for a search API, but the evidence documents no batch or bulk endpoint for submitting many queries in one operation. The `async` submit-and-retrieve-later parameter and the Searches Archive API are building blocks a developer could use to construct bulk workflows, not a bulk capability itself. Comma-separated multi-airport input is an adjacent per-request parameter, and the community idea of running millions of queries is a user-side workaround.",
-    "evidenceIds": []
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "SerpApi has no documented batch endpoint. Its async mode lets a caller submit searches and retrieve them later through the Searches Archive API, so client-side fan-out over many queries is possible. That is a workaround rather than a native bulk operation, and the evidence only implies it. Missing for 10: a native batch/bulk search endpoint, documentation of submitting many queries in one call, rate or concurrency guidance for bulk jobs, and hands-on corroboration of high-volume use.",
+    "evidenceIds": [
+      "serpapi-docs-9",
+      "serpapi-docs-14",
+      "serpapi-docs-13"
+    ]
   },
   {
     "productId": "serpapi",
@@ -2511,11 +2562,14 @@
     "productId": "serpapi",
     "storyId": "privacy-telemetry-optout",
     "verdict": "partial",
-    "quality": 4,
-    "confidence": "low",
-    "rationale": "SerpApi's pricing page documents a ZeroTrace Mode that, when enabled, stops the service from storing search parameters, files, or data, so users have a product-level way to opt out of search logging. That is closer to data-retention control than a general telemetry or usage-tracking opt-out, and the evidence is a single marketing line. Missing for 10: any client/SDK or MCP telemetry opt-out, how ZeroTrace is enabled and which plans include it, whether account-level usage metering or analytics tracking can be disabled, and independent corroboration.",
+    "quality": 5,
+    "confidence": "medium",
+    "rationale": "SerpApi documents a ZeroTrace Mode that, when enabled, stops it from storing search parameters, files, or data, so users can opt out of search-data retention. By default, though, searches are cached and kept in a Searches Archive. Nothing in the evidence covers telemetry or analytics in the SDKs or MCP server, and the plan availability of ZeroTrace is unclear. Missing for 10: explicit telemetry/usage-tracking opt-out controls, ZeroTrace setup and plan-availability details, SDK/MCP telemetry disclosure, independent corroboration.",
     "evidenceIds": [
-      "serpapi-docs-5"
+      "serpapi-docs-5",
+      "serpapi-gh-3",
+      "serpapi-docs-13",
+      "serpapi-docs-14"
     ]
   },
   {
@@ -2568,11 +2622,16 @@
   {
     "productId": "serpapi",
     "storyId": "structured-json-output",
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "partial",
+    "quality": 3,
     "confidence": "medium",
-    "rationale": "SerpApi returns structured JSON in its own predefined, vendor-defined format, with alternative html/md outputs. It also offers a field-selection parameter to trim the payload. Neither is the same as conforming output to a JSON schema the developer supplies, so these are adjacent features that earn no credit. No evidence shows any schema-driven extraction capability.",
-    "evidenceIds": []
+    "rationale": "SerpApi returns structured JSON by default, but in its own fixed, vendor-defined schema rather than one the developer supplies. The only shaping control in evidence is a field-selection parameter that trims which of SerpApi's fields appear in the output. Missing for 10: support for user-supplied JSON schemas, schema-driven extraction or mapping, validation against a custom schema, and independent corroboration.",
+    "evidenceIds": [
+      "serpapi-docs-3",
+      "serpapi-docs-7",
+      "serpapi-probe-1",
+      "serpapi-docs-19"
+    ]
   },
   {
     "productId": "serpapi",
@@ -2660,29 +2719,48 @@
   {
     "productId": "tavily",
     "storyId": "agentic-ai-insights",
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "partial",
+    "quality": 4,
     "confidence": "medium",
-    "rationale": "Tavily generates AI output from public web content: Research reports, qna_search answers, and search context. Nothing in the evidence shows it producing insights or suggestions from the user's own data, such as their usage, logs or projects, inside the product. Web-research answers are a different capability and do not transfer to this story.",
-    "evidenceIds": []
+    "rationale": "Tavily produces AI-generated synthesis. Research builds multi-search analyzed reports, qna_search returns concise answers, and crawl accepts natural-language instructions over user-specified sites. All of this runs on public web content through an API, not as insights or suggestions drawn from the user's own data inside a product interface. Missing for 10: insights over the user's own or private data, an in-product insights/suggestions surface, proactive suggestions, independent or hands-on corroboration.",
+    "evidenceIds": [
+      "tavily-docs-26",
+      "tavily-docs-27",
+      "tavily-gh-8",
+      "tavily-gh-5",
+      "tavily-gh-10",
+      "tavily-docs-3",
+      "tavily-docs-29"
+    ]
   },
   {
     "productId": "tavily",
     "storyId": "agentic-autonomous-automation",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "Tavily is a web-access API, and such a product could plausibly offer scheduled monitors or recurring background jobs, so the axis applies. The evidence only shows on-demand calls (search, extract, crawl, map, research). Async research tasks retrieved by request ID and the async SDK client are developer building blocks, not user-configurable autonomous automations, and no scheduling, triggers or recurring jobs are documented.",
-    "evidenceIds": []
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "The only background-autonomous capability in the evidence is the Research endpoint. It runs a multi-step task on its own, conducting multiple searches and analyzing sources (tavily-docs-26), and the caller polls for status and results by request ID (tavily-docs-28), which implies asynchronous background execution. Nothing shows user-configurable automations such as schedules, triggers, recurring jobs or monitors. Missing for 10: scheduled or recurring automations, event triggers or webhooks, persistent monitoring jobs, independent corroboration of background execution.",
+    "evidenceIds": [
+      "tavily-docs-26",
+      "tavily-docs-28",
+      "tavily-docs-29"
+    ]
   },
   {
     "productId": "tavily",
     "storyId": "agentic-builtin-assistant",
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "partial",
+    "quality": 4,
     "confidence": "medium",
-    "rationale": "Tavily is a web-access API for AI agents. A built-in assistant in its dashboard or console is a fair thing to ask of a SaaS product, but the evidence never documents one. The closest item is the Research endpoint, which runs multi-search research and returns reports. That is a programmatic API capability rather than an in-product assistant you delegate tasks to, so it is adjacent and earns no credit here.",
-    "evidenceIds": []
+    "rationale": "Tavily's Research endpoint lets users hand off a research task to a built-in agentic process. It runs multiple searches, analyzes sources and writes a report, with mini and pro modes, async status retrieval and streaming. That is real task delegation, but it is limited to research and exposed as an API/SDK/CLI call rather than an interactive assistant inside the product. Missing for 10: an interactive in-product assistant (chat or dashboard), delegation beyond web research, and independent or hands-on corroboration.",
+    "evidenceIds": [
+      "tavily-docs-26",
+      "tavily-docs-27",
+      "tavily-docs-28",
+      "tavily-docs-29",
+      "tavily-gh-8",
+      "tavily-docs-38"
+    ]
   },
   {
     "productId": "tavily",
@@ -2797,11 +2875,17 @@
   {
     "productId": "tavily",
     "storyId": "agentic-scoped-keys",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "Tavily is an API service, so least-privilege credentials are a fair question to ask, but the evidence shows no way to restrict a key's permissions. The pack documents API keys with Development and Production environments that only change rate limits, Project IDs and session identifiers that are only for usage attribution, OAuth login, and a keyless mode. None of these are scoped or least-privilege credentials.",
-    "evidenceIds": []
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "The evidence shows an account or organization can hold multiple API keys with per-key usage logs and a usage endpoint, so a separate key per agent is plausible. Project, session and user IDs only support usage attribution, not access restriction. Nothing in the pack shows keys can be limited to specific endpoints, spend caps or permissions. Missing for 10: per-key endpoint/permission scopes, per-key credit or rate caps, documented key creation/revocation for agents, independent corroboration.",
+    "evidenceIds": [
+      "tavily-docs-31",
+      "tavily-docs-30",
+      "tavily-docs-33",
+      "tavily-docs-34",
+      "tavily-docs-10"
+    ]
   },
   {
     "productId": "tavily",
@@ -3116,23 +3200,27 @@
   {
     "productId": "tavily",
     "storyId": "openness-full-export",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "Data portability is a fair question for a SaaS API like Tavily, but the evidence documents no account-data export or offboarding feature. The usage and per-request logs endpoints (tavily-docs-30, tavily-docs-31) are usage-tracking features that sit next to this story; they are not a documented 'export all my data in open formats' capability, so they earn no credit.",
-    "evidenceIds": []
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "Tavily is a largely stateless web-search API whose results come back over the API. Account data can be retrieved programmatically through the usage endpoint, the per-request logs endpoint, and research-result retrieval by request ID. That gives a glancing form of data portability rather than a documented 'export everything and leave' path. Missing for 10: a documented full account data export, an explicit statement of open export formats, account deletion or offboarding docs, and independent corroboration.",
+    "evidenceIds": [
+      "tavily-docs-30",
+      "tavily-docs-31",
+      "tavily-docs-28"
+    ]
   },
   {
     "productId": "tavily",
     "storyId": "openness-open-license",
     "verdict": "partial",
-    "quality": 3,
+    "quality": 2,
     "confidence": "low",
-    "rationale": "Tavily publishes first-party client SDK source on GitHub (tavily-ai/tavily-python), so some of its code is publicly readable. However, the core hosted search, extract, crawl and research service is a closed API, and no evidence states which license the SDK uses. Missing for 10: any stated open-source license (e.g. MIT or Apache) for the SDK, open source for the core search/extract/crawl service, and evidence that the JavaScript SDK, MCP server or CLI source is public.",
+    "rationale": "The only openness evidence is a public GitHub repository for the client SDK (tavily-ai/tavily-python), so some client-side source is readable. Nothing in the pack shows the license for that repo, and nothing indicates the core search, extract, crawl and research service is open source. missing for 10: evidence of an open license (e.g., MIT/Apache) on any repository, published source for the core Tavily service rather than just the SDK client, and independent corroboration of license terms.",
     "evidenceIds": [
       "tavily-gh-1",
       "tavily-gh-2",
-      "tavily-gh-6"
+      "tavily-gh-7"
     ]
   },
   {
