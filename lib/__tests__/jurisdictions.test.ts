@@ -170,8 +170,10 @@ describe('state-conditional steps', () => {
 
   it('a state code narrows the government-services pull to the state registry agency (US-TX admits only texas-sos)', () => {
     // The registered-agent change (Form 401) IS a Secretary of State filing, so texas-sos is
-    // the honest expectation; tax steps get their own expectations once state tax agencies
-    // carry committed tags.
+    // the honest expectation. Since the state tax/employment agencies joined the roster
+    // (2026-10-22), the SOS-area steps carry committed stated-vendor wiring so their anchored
+    // pull stays the registry; the state tax steps' own resolutions are pinned in
+    // lib/__tests__/vendorState.test.ts.
     const txStep = jurisdictionNodes('qs_043', DATA_DIR).find((n) => n.jurisdictions?.includes('US-TX'))!
     expect(txStep).toBeDefined()
     expect(governmentStepEligibility(txStep, GOVERNMENT_ARENA_ID, DATA_DIR)).toEqual(new Set(['texas-sos']))
