@@ -53,6 +53,16 @@ export const OSS_README_MIN_BYTES = 1500 // a README below this cannot document 
 // pattern — the 2026-10 issue sweep found several). Anomalous repos route to needs-human, not
 // auto-approval.
 export const STARS_PER_DAY_ANOMALY = 500
+// Young-repo popularity trip-wires (founder decision 2026-10-23, issue #378): the corrected
+// 2026-10-15..19 triage surfaced repos 2-5 weeks old carrying 3,200-5,200 stars — all below the
+// 500/day floor. A repo younger than YOUNG_REPO_MAX_AGE_DAYS routes to needs-human on popularity
+// grounds when EITHER its sustained rate (stars / repo age days) reaches YOUNG_REPO_STARS_PER_DAY,
+// OR its stars exceed YOUNG_REPO_STARS_PER_CONTRIBUTOR × max(contributors, 1). The contributor
+// ratio fails open: when the contributor count is unavailable, only the rate trip-wire applies —
+// a missing signal never blocks a candidate.
+export const YOUNG_REPO_MAX_AGE_DAYS = 60
+export const YOUNG_REPO_STARS_PER_DAY = 100
+export const YOUNG_REPO_STARS_PER_CONTRIBUTOR = 20
 export const FETCH_TIMEOUT_MS = 15_000
 const USER_AGENT = 'Mozilla/5.0 (compatible; Ultrametric-radar-triage/1.0; +https://ultrametric.ai)'
 
@@ -151,6 +161,7 @@ export interface RepoFacts {
   description: string | null
   stars: number
   createdAt: string // ISO date the repo was created
+  contributors: number | null // distinct contributors per the GitHub API; null = count unavailable (fail-open)
   readmeBytes: number
   readmeHead: string // first ~2000 chars, for substance checks
   readme: string // the full fetched README (capped), for the agentic-surface scan — a README that documents its API below the badges/screenshots fold still counts
@@ -159,6 +170,25 @@ export interface RepoFacts {
 export function starsPerDay(repo: Pick<RepoFacts, 'stars' | 'createdAt'>, now: Date): number {
   const days = Math.max(1, (now.getTime() - Date.parse(repo.createdAt)) / 86_400_000)
   return repo.stars / days
+}
+
+export function repoAgeDays(repo: Pick<RepoFacts, 'createdAt'>, now: Date): number {
+  return (now.getTime() - Date.parse(repo.createdAt)) / 86_400_000
+}
+
+// Young-repo trip-wires (see the YOUNG_REPO_* constants). Returns the tripped reason, or null
+// for repos at or past YOUNG_REPO_MAX_AGE_DAYS and for young repos that trip neither wire.
+// The contributor ratio is checked only when the count is available (fail-open).
+export function youngRepoAnomaly(repo: Pick<RepoFacts, 'stars' | 'createdAt' | 'contributors'>, now: Date): string | null {
+  if (repoAgeDays(repo, now) >= YOUNG_REPO_MAX_AGE_DAYS) return null
+  const velocity = starsPerDay(repo, now)
+  if (velocity >= YOUNG_REPO_STARS_PER_DAY) {
+    return `repo younger than ${YOUNG_REPO_MAX_AGE_DAYS} days sustains ~${Math.round(velocity)} stars/day, at or above the ${YOUNG_REPO_STARS_PER_DAY}/day young-repo floor`
+  }
+  if (repo.contributors !== null && repo.stars > YOUNG_REPO_STARS_PER_CONTRIBUTOR * Math.max(repo.contributors, 1)) {
+    return `repo younger than ${YOUNG_REPO_MAX_AGE_DAYS} days carries ${repo.stars} stars against ${repo.contributors} contributor(s), above the ${YOUNG_REPO_STARS_PER_CONTRIBUTOR}× stars-per-contributor floor`
+  }
+  return null
 }
 
 export function checkOssSubstance(name: string, repo: RepoFacts): { ok: true } | { fail: string; criterion: 'docs-surface' | 'shipped-product' } {
@@ -255,12 +285,27 @@ export function realTriageIo(): TriageIo {
           signal: AbortSignal.timeout(FETCH_TIMEOUT_MS),
         })
         const readme = readmeRes.ok ? await readmeRes.text() : ''
+        // Contributor count for the young-repo stars-per-contributor trip-wire: per_page=1 and
+        // the Link header's rel="last" page number IS the count. Any failure leaves the count
+        // null (fail-open) — a missing signal never blocks a candidate.
+        let contributors: number | null = null
+        try {
+          const contribRes = await fetch(`https://api.github.com/repos/${fullName}/contributors?per_page=1`, { headers, signal: AbortSignal.timeout(FETCH_TIMEOUT_MS) })
+          if (contribRes.ok) {
+            const last = contribRes.headers.get('link')?.match(/[?&]page=(\d+)>;\s*rel="last"/)
+            const body = (await contribRes.json()) as unknown
+            contributors = last ? Number(last[1]) : Array.isArray(body) ? body.length : null
+          }
+        } catch {
+          /* fail-open: contributors stays null */
+        }
         return {
           archived: Boolean(j.archived),
           fork: Boolean(j.fork),
           description: j.description ?? null,
           stars: typeof j.stargazers_count === 'number' ? j.stargazers_count : 0,
           createdAt: typeof j.created_at === 'string' ? j.created_at : new Date(0).toISOString(),
+          contributors,
           readmeBytes: Buffer.byteLength(readme),
           readmeHead: readme.slice(0, 2000),
           readme: readme.slice(0, 200_000), // bound the regex input, keep far past any badge fold
@@ -302,7 +347,9 @@ export async function triageCandidate(candidate: RadarCandidate, existingArenas:
     if ('error' in repo) {
       return { ...base, arena: fit.arena, status: 'skipped', criterion: 'docs-surface', reason: `GitHub repo ${repoName} could not be verified (${repo.error})`, evidence, bringup: null }
     }
-    evidence.push(`github:${repoName} — archived=${repo.archived} fork=${repo.fork} stars=${repo.stars} created=${repo.createdAt.slice(0, 10)} readme=${repo.readmeBytes}B`)
+    evidence.push(
+      `github:${repoName} — archived=${repo.archived} fork=${repo.fork} stars=${repo.stars} created=${repo.createdAt.slice(0, 10)} contributors=${repo.contributors ?? 'unavailable'} readme=${repo.readmeBytes}B`,
+    )
     const substance = checkOssSubstance(candidate.name, repo)
     if ('fail' in substance) {
       return { ...base, arena: fit.arena, status: 'skipped', criterion: substance.criterion, reason: substance.fail, evidence, bringup: null }
@@ -315,6 +362,18 @@ export async function triageCandidate(candidate: RadarCandidate, existingArenas:
         status: 'needs-human',
         criterion: 'shipped-product',
         reason: `star velocity ~${Math.round(velocity)}/day exceeds the ${STARS_PER_DAY_ANOMALY}/day anomaly floor — popularity unverifiable keylessly, human review required`,
+        evidence,
+        bringup: null,
+      }
+    }
+    const young = youngRepoAnomaly(repo, new Date())
+    if (young) {
+      return {
+        ...base,
+        arena: fit.arena,
+        status: 'needs-human',
+        criterion: 'shipped-product',
+        reason: `${young} — popularity unverifiable keylessly, human review required`,
         evidence,
         bringup: null,
       }
