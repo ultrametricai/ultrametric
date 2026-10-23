@@ -57,6 +57,7 @@ const CATEGORIES = [
   'error-tracking',
   'expense-management',
   'feature-flags',
+  'fp-a',
   'fraud-prevention',
   'frontend-frameworks',
   'frontier-models',
