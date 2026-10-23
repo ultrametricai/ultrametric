@@ -8,10 +8,17 @@
 # registry, and the committed seen-ledger (rankings-engine/radar-seen.json), then:
 #
 #   1. commits the dated candidates report (reports/vendor-radar/<date>.{json,md}) + the updated
-#      seen-ledger via the usual PR-or-issue flow,
-#   2. when there ARE new candidates, files (or updates, on a same-day re-run) a
-#      'vendor-radar: candidates YYYY-MM-DD' issue listing them with their evidence links
-#      (label: story-runner, the same label every automation reuses).
+#      seen-ledger via the usual PR-or-issue flow, with the candidates list and the full triage
+#      disposition table (auto-approved + skipped + needs-human) on the scan PR's body,
+#   2. when the triage routed candidates to a human (needs-human rows), files (or updates, on a
+#      same-day re-run) a 'vendor-radar: needs-human candidates YYYY-MM-DD' issue listing just
+#      those rows (labels: story-runner + founder-call), then closes this generator's previous
+#      still-open candidates issues naming the successor. Auto-approved and skipped rows file no
+#      issue (maintainer decision 2026-10-23: generator issues only for human calls).
+#
+# Scan PRs are never auto-closed as superseded: the seen-ledger makes daily reports ADDITIVE
+# (each dated report holds only candidates absent from every earlier one), so no newer scan PR
+# regenerates an older one's content. Merges stay human everywhere.
 #
 # HONESTY: the scan itself changes nothing under open-rankings/, the radar NEVER creates a new
 # ranking, and it NEVER touches a founder-affiliated product autonomously. Approval is
@@ -83,23 +90,24 @@ jobs:
 
       # The scan itself: keyless, bounded (a handful of HTTP requests, 10s timeouts; GH_TOKEN
       # only raises the GitHub search rate limit). Writes reports/vendor-radar/<date>.{json,md},
-      # updates rankings-engine/radar-seen.json, and writes the issue body ONLY when there are new
-      # candidates — a quiet day files no issue. A corrupt committed ledger FAILS the run
-      # (vendor-radar.ts loadSeenLedger) instead of silently wiping the seen-history.
+      # updates rankings-engine/radar-seen.json, and writes the candidates markdown ONLY when there
+      # are new candidates. A corrupt committed ledger FAILS the run (vendor-radar.ts
+      # loadSeenLedger) instead of silently wiping the seen-history.
       - name: Vendor radar scan
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: pnpm tsx rankings-engine/scripts/vendor-radar.ts --issue-body /tmp/vendor-radar-issue.md $MERGE_SEEN_FLAGS
+        run: pnpm tsx rankings-engine/scripts/vendor-radar.ts --issue-body /tmp/vendor-radar-candidates.md $MERGE_SEEN_FLAGS
 
       # Criteria triage (policies/AGENT_POLICY.md): mechanical checks per candidate — fetches
-      # the docs surface, applies the shipped-product and affiliation guards — and appends the
-      # disposition table (auto-approved / skipped-with-reason / needs-human) to the issue body
-      # so every candidate's outcome is recorded where it surfaced.
+      # the docs surface, applies the shipped-product and affiliation guards. The full disposition
+      # table (auto-approved / skipped-with-reason / needs-human) rides the scan PR's body below;
+      # needs-human-issue.ts writes the issue body ONLY when the triage routed a candidate to a
+      # human, so auto-approved and skipped rows file no issue.
       - name: Criteria triage
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          if [ ! -f /tmp/vendor-radar-issue.md ]; then
+          if [ ! -f /tmp/vendor-radar-candidates.md ]; then
             echo "No new candidates — nothing to triage."
             exit 0
           fi
@@ -108,15 +116,23 @@ jobs:
             --report "reports/vendor-radar/$DATE.json" \
             --out "reports/vendor-radar/$DATE-triage.json" \
             --md /tmp/vendor-radar-triage.md
-          printf '\n' >> /tmp/vendor-radar-issue.md
-          cat /tmp/vendor-radar-triage.md >> /tmp/vendor-radar-issue.md
+          pnpm tsx rankings-engine/scripts/needs-human-issue.ts \
+            --triage "reports/vendor-radar/$DATE-triage.json" \
+            --out /tmp/vendor-radar-needs-human.md \
+            --generator vendor-radar
 
       - name: Tests
         run: pnpm test
 
       - name: Commit report + seen-ledger as PR (or compare-link issue)
         env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          # Prefer the fine-grained PAT when the secret exists: a PR created with the
+          # workflow's GITHUB_TOKEN does not trigger pull_request workflows (GitHub's
+          # recursion guard — bot PRs #430/#433 carry no validation check), so the
+          # required checks never report and the auto-merge opt-in below never
+          # completes. Falls back to GITHUB_TOKEN when the secret is absent; no
+          # secrets are created here.
+          GH_TOKEN: ${{ secrets.UM_BOT_PR_PAT || secrets.GITHUB_TOKEN }}
           RUN_ID: ${{ github.run_id }}
         run: |
           # porcelain, not `git diff --quiet`: a brand-new dated report file is UNTRACKED and
@@ -132,48 +148,92 @@ jobs:
           git add reports rankings-engine/radar-seen.json
           git commit -m "chore(vendor-radar): daily launch-surface scan"
           git push -u origin "$BRANCH"
+          # The PR body carries the candidates list and the full triage disposition table —
+          # auto-approved and skipped rows are recorded here, not in an issue.
+          {
+            echo "Automated keyless launch-surface scan (\`rankings-engine/scripts/vendor-radar.ts\`): dated candidates report + seen-ledger update. DETECTION ONLY — no products added, no verdicts touched; needs-human dispositions are in the companion 'vendor-radar: needs-human candidates' issue and a deep spike on approved ones runs via the standard engine stages (docs/VENDOR-RADAR.md)."
+            if [ -f /tmp/vendor-radar-candidates.md ]; then
+              echo
+              cat /tmp/vendor-radar-candidates.md
+            fi
+            if [ -f /tmp/vendor-radar-triage.md ]; then
+              echo
+              cat /tmp/vendor-radar-triage.md
+            fi
+          } > /tmp/vendor-radar-pr-body.md
           # Org policy currently forbids Actions from creating PRs ("Write permissions for
           # workflows are disabled by the organization") — fall back to an issue carrying the
           # compare link so the report is never silently stranded on a branch (mirrors
           # story-runner.yml; reuses its existing "story-runner" label so the fallback never
           # fails on a missing label).
-          if ! gh pr create \
+          # Auto-merge opt-in (maintainer authorization 2026-10-23): branch protection
+          # on main holds the merge until validation/ci + Greptile Review pass and
+          # every thread resolves. Greptile does not review bot PRs unprompted
+          # (PRs #430/#433 each needed a maintainer's '@greptileai review'), so the
+          # comment requests it. Both follow-ups are best-effort; a failure leaves the
+          # PR open for a manual merge.
+          if PR_URL=$(gh pr create \
             --title "vendor-radar: daily scan $(date -u +%F)" \
-            --body "Automated keyless launch-surface scan (\`rankings-engine/scripts/vendor-radar.ts\`): dated candidates report + seen-ledger update. DETECTION ONLY — no products added, no verdicts touched; candidates are listed in the companion 'vendor-radar: candidates' issue and a deep spike on approved ones runs via the standard engine stages (docs/VENDOR-RADAR.md)." \
-            --base main --head "$BRANCH"; then
+            --body-file /tmp/vendor-radar-pr-body.md \
+            --base main --head "$BRANCH"); then
+            gh pr merge --auto --merge "$PR_URL" \
+              || echo "auto-merge opt-in failed (org settings may block GITHUB_TOKEN; fallback: fine-grained PAT secret) — merge $PR_URL manually once checks pass"
+            gh pr comment "$PR_URL" --body "@greptileai review" \
+              || echo "Greptile review request failed — comment '@greptileai review' on $PR_URL manually"
+          else
             gh issue create \
               --title "vendor-radar: report ready on $BRANCH" \
               --body "The daily radar report is committed on [\`$BRANCH\`](https://github.com/${GITHUB_REPOSITORY}/compare/main...$BRANCH) but Actions may not open PRs (org policy). Open the PR from the compare link — the report only records detections, it never changes a score or verdict. Enable org Settings → Actions → General → 'Allow GitHub Actions to create and approve pull requests' to remove this manual step." \
               --label "story-runner" || echo "issue creation also failed — branch $BRANCH is pushed; see run logs"
           fi
 
-      # The candidates issue: filed only when the scan found NEW candidates (the script writes
-      # the body file only then). Same-day re-runs UPDATE the existing open issue with a comment
-      # instead of filing a duplicate. The body itself carries the honesty block: detection only,
-      # never auto-add / auto-judge; approval = checking the box / commenting.
-      # if: always() — a failure in the tests or the report-PR step must not swallow the
-      # candidates issue; the step itself exits 0 when there is no body file to post.
-      - name: File or update candidates issue
+      # The needs-human issue: filed only when the triage routed candidates to a human
+      # (needs-human-issue.ts writes the body file only then); auto-approved and skipped rows
+      # ride the scan PR's body above. Same-day re-runs UPDATE the existing open issue with a
+      # comment instead of filing a duplicate. Once the issue stands, this generator's previous
+      # still-open candidates issues close with a comment naming the successor (supersession;
+      # the dispositions stay in the committed reports/vendor-radar/ triage files).
+      # if: always() — a failure in the tests or the report-PR step must not swallow the issue;
+      # the step itself exits 0 when there is no body file to post.
+      - name: File or update needs-human issue
         if: always()
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          if [ ! -f /tmp/vendor-radar-issue.md ]; then
-            echo "No new candidates — no issue to file."
+          if [ ! -f /tmp/vendor-radar-needs-human.md ]; then
+            echo "No needs-human candidates — no issue to file."
             exit 0
           fi
-          TITLE="vendor-radar: candidates $(date -u +%F)"
+          TITLE="vendor-radar: needs-human candidates $(date -u +%F)"
           EXISTING=$(gh issue list --state open --search "in:title \"$TITLE\"" --json number,title \
             --jq ".[] | select(.title == \"$TITLE\") | .number" | head -n1)
           if [ -n "$EXISTING" ]; then
-            gh issue comment "$EXISTING" --body-file /tmp/vendor-radar-issue.md \
-              || echo "issue update failed — the same report is committed in reports/vendor-radar/"
+            gh issue comment "$EXISTING" --body-file /tmp/vendor-radar-needs-human.md \
+              || { echo "issue update failed — the same dispositions are committed in reports/vendor-radar/"; exit 0; }
+            NUM="$EXISTING"
           else
-            gh issue create \
+            ISSUE_URL=$(gh issue create \
               --title "$TITLE" \
-              --body-file /tmp/vendor-radar-issue.md \
-              --label "story-runner" || echo "issue creation failed — the same report is committed in reports/vendor-radar/"
+              --body-file /tmp/vendor-radar-needs-human.md \
+              --label "story-runner") \
+              || { echo "issue creation failed — the same dispositions are committed in reports/vendor-radar/"; exit 0; }
+            NUM="${ISSUE_URL##*/}"
           fi
+          # founder-call label: ensured first (gh label create --force exits 0 when it already
+          # exists), then added to the filed issue — additive, so the issue stands even if
+          # labeling fails.
+          gh label create founder-call --color D93F0B \
+            --description "Generator output waiting on a human decision" --force \
+            && gh issue edit "$NUM" --add-label founder-call \
+            || echo "founder-call labeling failed — issue #$NUM is filed without it"
+          # Supersession: date-anchored prefixes (every dated issue starts "… 20YY-MM-DD"), so the
+          # standing founder-call list (#378, "vendor-radar: candidates needing a founder call")
+          # never matches. The second prefix covers this generator's pre-2026-10 issue title.
+          # Scan PRs are never closed here — the seen-ledger makes daily reports additive.
+          pnpm tsx rankings-engine/scripts/close-superseded.ts --kind issue \
+            --title-prefix "vendor-radar: needs-human candidates 20" \
+            --title-prefix "vendor-radar: candidates 20" \
+            --successor "$NUM" || echo "supersession close failed — see run logs"
 
       # Bring-up PR for auto-approved passers: roster append (radar-bringup.ts, capped at 3 per
       # run to bound judge spend) + the scoped standard engine run per added product, landing as
@@ -184,7 +244,13 @@ jobs:
       # bring-up PR carries only roster + engine output.
       - name: Bring-up PR for auto-approved passers
         env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          # Prefer the fine-grained PAT when the secret exists: a PR created with the
+          # workflow's GITHUB_TOKEN does not trigger pull_request workflows (GitHub's
+          # recursion guard — bot PRs #430/#433 carry no validation check), so the
+          # required checks never report and the auto-merge opt-in below never
+          # completes. Falls back to GITHUB_TOKEN when the secret is absent; no
+          # secrets are created here.
+          GH_TOKEN: ${{ secrets.UM_BOT_PR_PAT || secrets.GITHUB_TOKEN }}
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
           RUN_ID: ${{ github.run_id }}
         run: |
@@ -236,10 +302,17 @@ jobs:
             echo
             cat /tmp/vendor-radar-triage.md
           } > /tmp/bringup-pr-body.md
-          if ! gh pr create \
+          # Same auto-merge opt-in as the report PR above: review-gated by branch
+          # protection (validation/ci + Greptile Review + thread resolution).
+          if PR_URL=$(gh pr create \
             --title "vendor-radar: bring-up $DATE" \
             --body-file /tmp/bringup-pr-body.md \
-            --base main --head "$BRANCH"; then
+            --base main --head "$BRANCH"); then
+            gh pr merge --auto --merge "$PR_URL" \
+              || echo "auto-merge opt-in failed (org settings may block GITHUB_TOKEN; fallback: fine-grained PAT secret) — merge $PR_URL manually once checks pass"
+            gh pr comment "$PR_URL" --body "@greptileai review" \
+              || echo "Greptile review request failed — comment '@greptileai review' on $PR_URL manually"
+          else
             gh issue create \
               --title "vendor-radar: bring-up ready on $BRANCH" \
               --body "The bring-up is committed on [\`$BRANCH\`](https://github.com/${GITHUB_REPOSITORY}/compare/main...$BRANCH) but PR creation failed — open the PR from the compare link." \

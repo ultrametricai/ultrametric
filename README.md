@@ -27,7 +27,7 @@ ultrametric/
 <!-- Legacy anchor: external links to #start-here predate the merge into this map. -->
 <a id="start-here"></a>
 
-Supporting founders globally: 🌐 🇺🇸 🇬🇧 🇮🇳 🇩🇪 🇫🇷 🇵🇹 🇨🇦
+Supporting founders globally: 🌐 🇺🇸 🇬🇧 🇮🇳 🇩🇪 🇫🇷 🇵🇹 🇨🇦 🇳🇿 🇸🇬 🇦🇺
 
 [![A tour of ultrametric.ai at 4x: the simulator founding a company, a process page, a vendor page, a situation, the overall rankings, government services, and open documents](assets/readme/demo.gif)](https://ultrametric.ai)
 
@@ -186,12 +186,12 @@ at [ultrametric.ai/situations](https://ultrametric.ai/situations).
 ### Example: Founder country switch
 
 Processes and vendor availability adapt to where you operate. The US is the baseline;
-the UK, India, Germany, France, Portugal, and Canada have country analogs with official
+the UK, India, Germany, France, Portugal, Canada, and New Zealand have country analogs with official
 filing links. Adding your country is a pull request that the data checks validate
 automatically.
 
 - [Get EIN](https://ultrametric.ai/processes/get-ein) — in the UK, France, Portugal, and Canada the tax ID arrives automatically with incorporation; in Germany it is its own filing with the tax office
-- [Set up an LLC](https://ultrametric.ai/processes/set-up-an-llc) — the analog shifts by country (LLP in the UK and India, UG in Germany, SARL in France) and Canada has no LLC at all
+- [Set up an LLC](https://ultrametric.ai/processes/set-up-an-llc) — the analog shifts by country (LLP in the UK and India, UG in Germany, SARL in France) and Canada and New Zealand have no LLC at all
 
 ## Open lore
 

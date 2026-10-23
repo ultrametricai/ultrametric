@@ -1,16 +1,15 @@
 {
-  "hash": "c3418f9d8ba3e74cca9f0ffc1958cbee4444e1d830bd974b6103e605b50b4f5f",
+  "hash": "e4f1cbe0f392c903f9e52c5bafaa32200fb416cdb960ec405d896c0306544ee7",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 4,
     "confidence": "medium",
-    "rationale": "The SDK lets developers react to events in code. sandbox.watch() uses native inotify with include filters and an onEvent callback, which supports hot-reload and responsive file processing. Workers can also intercept outbound HTTP from sandboxes. However, these are programmatic callbacks a developer must write, not user-definable automation rules, and they cover only filesystem and outbound-request events. Missing for 10: a declarative rule or trigger configuration, event sources beyond filesystem and outbound HTTP (e.g. lifecycle, schedule or webhook triggers), and documented rule-to-action workflows with independent corroboration.",
+    "rationale": "The SDK's own `sandbox.watch()` API lets a developer register path-scoped rules with include glob patterns, using native inotify, and an `onEvent` callback that runs code automatically when files change. That is a genuine first-party event-to-action mechanism, but it is narrow: it covers only filesystem events and is defined in code rather than as configurable automation rules. Missing for 10: a general rule/trigger engine across event types (process exit, lifecycle, schedule, HTTP), declarative rule configuration, documentation beyond filesystem watching, and any independent or hands-on corroboration.",
     "evidenceIds": [
       "cloudflare-sandbox-docs-4",
       "cloudflare-sandbox-docs-26",
-      "cloudflare-sandbox-docs-33",
-      "cloudflare-sandbox-docs-23"
+      "cloudflare-sandbox-docs-33"
     ],
     "productId": "cloudflare-sandbox",
     "storyId": "automation-rules-engine"

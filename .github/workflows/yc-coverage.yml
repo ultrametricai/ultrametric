@@ -9,15 +9,19 @@
 #
 #   1. hands the queue's top candidates to the SAME criteria triage the radar uses
 #      (radar-triage.ts, policies/AGENT_POLICY.md "Vendor-radar candidate approval"), writing the
-#      dated disposition file beside the radar's own (reports/vendor-radar/<date>-yc-triage.json)
-#      and appending the table to the work-queue issue,
+#      dated disposition file beside the radar's own (reports/vendor-radar/<date>-yc-triage.json),
 #   2. regenerates the derived interchange the cross-reference's products.json changes feed
 #      (vendor reviews, story graph, step rankings — the same deterministic trio the radar
 #      workflow regenerates before staging open-rankings/),
 #   3. commits everything via the usual PR-or-issue flow (merging the PR is the human review
-#      point — the lane only nominates and mirrors directory metadata, it never scores),
-#   4. opens the work-queue issue (label: story-runner, the same label every automation reuses)
-#      listing the next bring-up candidates with their triage dispositions.
+#      point — the lane only nominates and mirrors directory metadata, it never scores), with the
+#      ranked queue + full triage disposition table on the lane PR's body,
+#   4. when the triage routed candidates to a human, opens a needs-human issue (labels:
+#      story-runner + founder-call) listing just those rows, then closes this generator's
+#      previous still-open work-queue issues naming the successor. Auto-approved and skipped
+#      rows file no issue (maintainer decision 2026-10-23: generator issues only for human
+#      calls). Lane PRs are never auto-closed as superseded: each carries an additive dated
+#      triage report a newer PR does not regenerate. Merges stay human everywhere.
 #
 # The lane NEVER creates a new ranking and NEVER touches a verdict: bring-ups on triage passers
 # happen in keyed runs that work through the issue (docs/VENDOR-RADAR.md). Without the
@@ -96,7 +100,8 @@ jobs:
       # Criteria triage — the same mechanical checks and files the daily radar uses
       # (policies/AGENT_POLICY.md "Vendor-radar candidate approval": ranking fit, docs surface,
       # shipped product, no founder affiliation, citable agentic surface). Dispositions land in
-      # reports/vendor-radar/<date>-yc-triage.json and on the work-queue issue.
+      # reports/vendor-radar/<date>-yc-triage.json and on the lane PR's body; needs-human-issue.ts
+      # writes the issue body ONLY when the triage routed a candidate to a human.
       - name: Criteria triage of top candidates
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -108,6 +113,10 @@ jobs:
             --md /tmp/yc-triage.md
           printf '\n' >> /tmp/yc-queue-issue.md
           cat /tmp/yc-triage.md >> /tmp/yc-queue-issue.md
+          pnpm tsx rankings-engine/scripts/needs-human-issue.ts \
+            --triage "reports/vendor-radar/$DATE-yc-triage.json" \
+            --out /tmp/yc-needs-human.md \
+            --generator yc-coverage
 
       # The cross-reference touches open-rankings/<arena>/products.json, an input of the derived
       # interchange — regenerate the same deterministic trio the radar workflow does before
@@ -126,7 +135,13 @@ jobs:
       # invisible to diff (the vendor-radar.yml lesson).
       - name: Commit lane output as PR (or compare-link issue)
         env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          # Prefer the fine-grained PAT when the secret exists: a PR created with the
+          # workflow's GITHUB_TOKEN does not trigger pull_request workflows (GitHub's
+          # recursion guard — bot PRs #430/#433 carry no validation check), so the
+          # required checks never report and the auto-merge opt-in below never
+          # completes. Falls back to GITHUB_TOKEN when the secret is absent; no
+          # secrets are created here.
+          GH_TOKEN: ${{ secrets.UM_BOT_PR_PAT || secrets.GITHUB_TOKEN }}
           RUN_ID: ${{ github.run_id }}
         run: |
           if [ -z "$(git status --porcelain -- open-rankings reports)" ]; then
@@ -140,30 +155,68 @@ jobs:
           git add open-rankings reports
           git commit -m "chore(yc-coverage): weekly YC directory lane refresh"
           git push -u origin "$BRANCH"
+          # The PR body carries the ranked queue and the full triage disposition table —
+          # auto-approved and skipped rows are recorded here, not in an issue.
+          {
+            echo "Weekly YC directory lane (fetch → classify → cross-reference → queue, .github/workflows/yc-coverage.yml): refreshed yc-map/yc-batches/yc-queue, source-mirrored ycBatch stamps on products.json, regenerated derived interchange, and the dated triage dispositions. The lane nominates and mirrors directory metadata — it never changes a score or verdict. Needs-human dispositions are in the companion needs-human issue."
+            if [ -f /tmp/yc-queue-issue.md ]; then
+              echo
+              cat /tmp/yc-queue-issue.md
+            fi
+          } > /tmp/yc-pr-body.md
           # Same org-policy fallback as vendor-radar/story-runner: if Actions may not open PRs,
           # leave an issue carrying the compare link so the refresh is never stranded.
-          if ! gh pr create \
+          # Auto-merge opt-in (maintainer authorization 2026-10-23): branch protection
+          # on main holds the merge until validation/ci + Greptile Review pass and
+          # every thread resolves. Greptile does not review bot PRs unprompted
+          # (PRs #430/#433 each needed a maintainer's '@greptileai review'), so the
+          # comment requests it. Both follow-ups are best-effort; a failure leaves the
+          # PR open for a manual merge.
+          if PR_URL=$(gh pr create \
             --title "yc-coverage: weekly directory lane refresh" \
-            --body "Weekly YC directory lane (fetch → classify → cross-reference → queue, .github/workflows/yc-coverage.yml): refreshed yc-map/yc-batches/yc-queue, source-mirrored ycBatch stamps on products.json, regenerated derived interchange, and the dated triage dispositions. The lane nominates and mirrors directory metadata — it never changes a score or verdict. Next candidates are in the companion work-queue issue." \
-            --base main --head "$BRANCH"; then
+            --body-file /tmp/yc-pr-body.md \
+            --base main --head "$BRANCH"); then
+            gh pr merge --auto --merge "$PR_URL" \
+              || echo "auto-merge opt-in failed (org settings may block GITHUB_TOKEN; fallback: fine-grained PAT secret) — merge $PR_URL manually once checks pass"
+            gh pr comment "$PR_URL" --body "@greptileai review" \
+              || echo "Greptile review request failed — comment '@greptileai review' on $PR_URL manually"
+          else
             gh issue create \
               --title "yc-coverage: lane refresh ready on $BRANCH" \
               --body "The weekly YC directory lane output is committed on [\`$BRANCH\`](https://github.com/${GITHUB_REPOSITORY}/compare/main...$BRANCH) but Actions may not open PRs (org policy). Open the PR from the compare link." \
               --label "story-runner" || echo "issue creation also failed — branch $BRANCH is pushed; see run logs"
           fi
 
-      # The ranked work queue + triage dispositions: the paper trail the keyed bring-up runs work
-      # through. if: always() — a failure in the commit step must not swallow the issue.
-      - name: Open work-queue issue
+      # The needs-human issue: filed only when the triage routed candidates to a human
+      # (needs-human-issue.ts writes the body file only then). The full ranked queue + triage
+      # dispositions ride the lane PR body and the committed files (open-rankings/yc-queue.json,
+      # reports/vendor-radar/<date>-yc-triage.json). Once the issue stands, this generator's
+      # previous still-open work-queue issues close with a comment naming the successor.
+      # if: always() — a failure in the commit step must not swallow the issue.
+      - name: Open needs-human issue
         if: always()
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          if [ ! -f /tmp/yc-queue-issue.md ]; then
-            echo "No issue body — nothing to file."
+          if [ ! -f /tmp/yc-needs-human.md ]; then
+            echo "No needs-human candidates — no issue to file."
             exit 0
           fi
-          gh issue create \
-            --title "yc-coverage: next bring-up candidates $(date -u +%F)" \
-            --body-file /tmp/yc-queue-issue.md \
-            --label "story-runner" || echo "work-queue issue creation failed — the same ranking is committed in open-rankings/yc-queue.json"
+          ISSUE_URL=$(gh issue create \
+            --title "yc-coverage: needs-human candidates $(date -u +%F)" \
+            --body-file /tmp/yc-needs-human.md \
+            --label "story-runner") \
+            || { echo "needs-human issue creation failed — the same dispositions are committed in reports/vendor-radar/"; exit 0; }
+          NUM="${ISSUE_URL##*/}"
+          # founder-call label: ensured first (gh label create --force exits 0 when it already
+          # exists), then added — additive, so the issue stands even if labeling fails.
+          gh label create founder-call --color D93F0B \
+            --description "Generator output waiting on a human decision" --force \
+            && gh issue edit "$NUM" --add-label founder-call \
+            || echo "founder-call labeling failed — issue #$NUM is filed without it"
+          # Supersession: the second prefix covers this generator's pre-2026-10 issue title.
+          # Lane PRs are never closed here — each carries an additive dated triage report.
+          pnpm tsx rankings-engine/scripts/close-superseded.ts --kind issue \
+            --title-prefix "yc-coverage: needs-human candidates" \
+            --title-prefix "yc-coverage: next bring-up candidates" \
+            --successor "$NUM" || echo "supersession close failed — see run logs"

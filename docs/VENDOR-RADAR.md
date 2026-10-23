@@ -10,14 +10,19 @@ Candidate approval follows the criteria in
 docs surface, shipped product, no founder affiliation, and a citable agentic surface.
 `rankings-engine/scripts/radar-triage.ts` applies
 them mechanically — the lexical arena classifier for ranking fit, a docs-surface fetch, the
-waitlist/link-list/placeholder guards plus a star-velocity anomaly floor for shipped-product,
+waitlist/link-list/placeholder guards plus the popularity trip-wires for shipped-product (the
+`STARS_PER_DAY_ANOMALY` sustained-velocity floor at any repo age, and for repos younger than
+`YOUNG_REPO_MAX_AGE_DAYS` the `YOUNG_REPO_STARS_PER_DAY` sustained-rate floor and the
+`YOUNG_REPO_STARS_PER_CONTRIBUTOR` stars-per-contributor ratio, the latter skipped fail-open
+when the GitHub contributor count is unavailable; any trip routes to needs-human),
 the affiliation guard, and the agentic-surface check (the fetched product/docs page or README
 must name a public API, MCP server, or agent/automation docs, or `/llms.txt` on the product's
 own origin must answer with plain text; the disposition records the fetched URL and a one-line
 evidence note) — and records
 every candidate's disposition (auto-approved, skipped with the failing criterion and its evidence,
-or needs-human) on the day's candidates issue and in
-`reports/vendor-radar/<date>-triage.json`. Ranking-fit placement is lexical, so every
+or needs-human) on the day's scan PR body and in
+`reports/vendor-radar/<date>-triage.json`; needs-human dispositions additionally file the day's
+needs-human issue (labels `story-runner` + `founder-call`). Ranking-fit placement is lexical, so every
 auto-approved disposition records the matched arena's `open-rankings/categories.json` definition in
 its evidence and carries "placement: keyword-matched, confirm against arena definition at
 review" in its reason; the bring-up PR body inherits both, and the reviewer confirms the arena
@@ -75,12 +80,16 @@ that review.
      keyed by product domain (or `github:owner/repo` / normalized name when no product domain is
      public). `firstSeen` is the date of the run that first reported it — never backdated.
 4. **Report**: `reports/vendor-radar/<date>.json` (schema-validated) + `<date>.md`, committed via
-   the usual PR-or-issue flow. When there are NEW candidates the workflow also files (or, on a
-   same-day re-run, comments on) a **`vendor-radar: candidates YYYY-MM-DD`** issue
-   (label `story-runner`) listing each candidate with its evidence links and matched arenas.
+   the usual PR-or-issue flow with the candidates list and the full triage disposition table on
+   the scan PR's body.
 5. **Triage + bring-up**: `radar-triage.ts` applies the auto-approval criteria to the day's new
-   candidates, writes `reports/vendor-radar/<date>-triage.json`, and appends the disposition
-   table to the issue. When the `ANTHROPIC_API_KEY` repo secret is present, `radar-bringup.ts`
+   candidates and writes `reports/vendor-radar/<date>-triage.json`. When the triage routed
+   candidates to a human, the workflow files (or, on a same-day re-run, comments on) a
+   **`vendor-radar: needs-human candidates YYYY-MM-DD`** issue (labels `story-runner` +
+   `founder-call`) listing just those rows, then closes the generator's previous still-open
+   candidates issues with a comment naming the successor; auto-approved and skipped rows file no
+   issue. Scan PRs are never auto-closed as superseded, because the seen-ledger makes each dated
+   report additive. When the `ANTHROPIC_API_KEY` repo secret is present, `radar-bringup.ts`
    adds up to 3 auto-approved passers per run to their existing arenas and the workflow runs the
    scoped engine run on each, opening a **bring-up PR** with the full disposition table (including
    the skipped list) in the body. Without the key, passers stay approved-pending in the triage
@@ -98,7 +107,7 @@ that review.
   still match on their `categories.json` name tokens and section-name tokens via
   `buildArenaVocab`.
 - **Noise control**: raising `MIN_ARENA_HITS` cuts false positives fleet-wide; the per-report cap
-  `MAX_REPORT_CANDIDATES` keeps the issue readable (overflow is counted in
+  `MAX_REPORT_CANDIDATES` keeps the scan PR body readable (overflow is counted in
   `skipped.overflow`, and uncapped candidates simply surface on a later run since only REPORTED
   candidates enter the seen-ledger).
 - A candidate that was wrongly skipped can be re-surfaced by deleting its row from
@@ -117,7 +126,37 @@ An auto-approved or human-approved radar candidate follows this flow:
    `crawl → extract → collect-community → probe → judge → claims → derive` (via
    `rankings-engine/cli.ts`, story-runner dispatch, or `rankings-engine/scripts/spike-engine.ts --process`),
    landing as a PR reviewed under the re-judge stability policy.
-4. Record the final disposition and PR link on the candidate's issue.
+4. Record the final disposition and PR link on the candidate's needs-human issue when one
+   exists; otherwise the committed triage report carries the disposition.
+
+## Launch watch: rostered vendors entering new arenas
+
+The radar's dedupe deliberately skips every tracked vendor, which left a blind spot the Gusto
+formation/banking launch exposed (2026-10-22): a vendor we already rank ships a product that
+belongs in another arena. `rankings-engine/scripts/launch-watch.ts` covers it. Weekly
+(`.github/workflows/launch-watch.yml`, Mondays 09:19 UTC), it fetches each rostered product's
+own launch surface — the opt-in `urls.news` field on `open-rankings/<arena>/products.json`,
+seeded only where a keyless GET was verified — keeps the launch-shaped headlines, runs the same
+`buildArenaVocab`/`matchArenas` fit over each one, and nominates `(product, arena)` pairs for
+arenas the vendor is not rostered in.
+
+Candidates are keyed `launch:<productId>:<arena>` in the shared seen-ledger
+(`rankings-engine/radar-seen.json`): a needs-human pair is ledgered when reported (one human
+call per pair, rather than a re-nomination on every later post naming the same arena), while an
+auto-approved pair is ledgered only when a run actually applies it, so a row left behind by the
+apply cap or a missing `ANTHROPIC_API_KEY` re-surfaces until it lands. A later launch into an
+already-ledgered pair still merges its URL into the pair's entry (visible in the scan PR's
+ledger diff), and deleting the ledger row re-surfaces the pair, the same escape hatch the radar
+documents above. Dispositions are written
+in the radar-triage report shape (`reports/launch-watch/<date>-triage.json`): needs-human rows
+flow through `needs-human-issue.ts --generator launch-watch` into a labeled issue, and
+auto-approved rows (`LW_AUTO_APPROVE_HITS`+ distinct keyword hits; founder-affiliated products
+are always needs-human) ride the scan PR itself — `launch-watch --apply` copies the existing
+product identity into the target arena's roster with a scoped-entry disclosure, and the scoped
+standard engine run on the same branch produces the debut scores. Thresholds are named
+constants echoed into each report's `thresholds` block, like the radar's.
+`rankings-engine/__tests__/launch-watch.test.ts` tests the pure units over inline HTML
+fixtures, no network.
 
 ## Testing
 

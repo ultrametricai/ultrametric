@@ -1,21 +1,20 @@
 {
-  "hash": "12e17bc7d53ee3aeec1990ec533bfd04a50bfc951bcde1aaf5ce8b849f4db75a",
+  "hash": "ae264b14c766852c94c3494555d91ccc1b1ac9fa4bf4f3fd6896b288d0ffc677",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
-    "quality": 6,
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "The SDK's `provision` call creates an agent for each of your users in one idempotent call, and each agent runs in its own micro-VM, with secrets injected only into that agent's VM. That covers single-call provisioning of an isolated environment. However, the environment is a persistent hosted agent rather than an ephemeral sandbox, and the only timing claims are 'under 5 minutes' for a first deploy and 'one image pull from live', not a live environment in seconds. Missing for 10: evidenced seconds-level startup time, an ephemeral or general-purpose sandbox primitive, independent or hands-on corroboration of provisioning speed, and a published API spec (OpenAPI probes returned 404).",
+    "rationale": "The SDK documents a single idempotent `provision` call that creates a per-user agent (maritime-docs-2, maritime-docs-45, maritime-docs-18). Each agent runs in its own micro-VM with VM-scoped secret injection, which gives real isolation (maritime-docs-37, maritime-docs-33). However, speed is only documented as 'under 5 minutes' for the quickstart and 'one image pull from live', not seconds (maritime-docs-14, maritime-docs-13), and the product is framed as agent hosting rather than general-purpose sandboxes. Missing for 10: documented seconds-level provisioning or cold-start latency, explicit sandbox-isolation guarantees, an API reference or OpenAPI spec for the provision call (the OpenAPI probe returned 404), and independent or hands-on corroboration.",
     "evidenceIds": [
       "maritime-docs-2",
       "maritime-docs-45",
       "maritime-docs-18",
       "maritime-docs-37",
       "maritime-docs-33",
-      "maritime-docs-5",
-      "maritime-docs-13",
       "maritime-docs-14",
-      "maritime-docs-36"
+      "maritime-docs-13",
+      "maritime-docs-5"
     ],
     "productId": "maritime",
     "storyId": "spinup-via-api"
