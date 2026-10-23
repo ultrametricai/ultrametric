@@ -45,7 +45,10 @@ import json
 import os
 
 ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..'))
-NOW = datetime.datetime.now(datetime.timezone.utc).strftime('%Y-%m-%dT%H:%M:%S.000Z')
+# Every source URL was fetched and its excerpt verified in one pass on 2026-10-22 PT
+# (2026-10-23 05:06 UTC). Pinned so a re-run reproduces the committed rows byte-for-byte
+# instead of restamping old quotes with a fresh date.
+FETCHED_AT = '2026-10-23T05:06:58.000Z'
 
 ITEMS = [
     # builtin-physics — Chaos Physics is first-party and documented.
@@ -192,7 +195,7 @@ def main() -> None:
     for iid, url, excerpt in ITEMS:
         if iid in have:
             continue
-        ev.append({'id': iid, 'tier': 'claimed-docs', 'url': url, 'excerpt': excerpt, 'fetchedAt': NOW})
+        ev.append({'id': iid, 'tier': 'claimed-docs', 'url': url, 'excerpt': excerpt, 'fetchedAt': FETCHED_AT})
         added += 1
     if added:
         with open(ef, 'w') as f:
