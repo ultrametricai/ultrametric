@@ -93,8 +93,15 @@ describe('existing judged selection compatibility', () => {
     // (pipedrive, close, folk, zoho-crm, google-analytics, heap, pendo, statsig) join the
     // candidate lists of the steps mapped to those arenas, and the product-analytics v4-residue
     // re-judge under prompt v5 moves some incumbent step scores into the published zero rows.
-    expect(positiveCount).toBe(2634)
-    expect(zeroCount).toBe(157)
+    // Re-pinned at the 2026-10-22 payroll + equity-management bring-up: nine newly judged
+    // products (adp-run, paychex-flex, quickbooks-payroll, remote, oyster, warp-payroll, check;
+    // eqvista, qapita) join the candidate lists of the steps mapped to those arenas, and the v5
+    // re-judge the two arenas' stale v4 caches demanded re-partitions some incumbent cells
+    // between the positive and zero rows. Counts moved again (2875/198 -> 2877/196) when the
+    // PR #428 review's evidence-gap fix (recorded llms.txt probes for eqvista and adp-run,
+    // payroll-specific Workforce API lines for quickbooks-payroll) re-judged those packs.
+    expect(positiveCount).toBe(2877)
+    expect(zeroCount).toBe(196)
     expect(extraArena).toBe(96)
   })
 
