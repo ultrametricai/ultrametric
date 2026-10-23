@@ -1,19 +1,18 @@
 {
-  "hash": "9e7016fb720998e842727f2a0544e6380654bb020accf919948bd199408cd025",
+  "hash": "f347f7dd2453db55e79b56142150f36320c45dff7cd225965bdf80fd9ce64d1d",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 6,
     "confidence": "medium",
-    "rationale": "Supabase offers several ways to narrow an agent's access. The hosted MCP server can be limited per connection with project_ref (project scope), read_only=true (runs as a read-only Postgres user) and features= (tool groups). The OAuth metadata publishes granular scopes such as database:read and edge_functions:write. The publishable key only reaches what RLS allows. However, the docs admit that personal access tokens (PATs) for CI must currently be granted all scopes, with fine-grained scopes promised only 'in the future'. The secret key bypasses RLS, and a community report notes agents running as service_role with RLS bypassed. Missing for 10: fine-grained PAT scopes for headless/CI agents, documented minting of per-agent credentials tied to custom least-privilege Postgres roles, hands-on corroboration that the OAuth scopes are enforced.",
+    "rationale": "Supabase's API-key model separates an RLS-bounded publishable key from an RLS-bypassing secret key. The MCP server can be scoped per connection to one project (`project_ref`), to a read-only Postgres user (`read_only`), and to selected tool groups (`features`). A live probe shows the OAuth metadata publishes granular scopes such as `database:read` and `projects:write`. However, the docs say CI personal access tokens currently need write access to all scopes ('fine-grained scopes' only 'in the future'), so much of the least privilege comes from connection parameters rather than the credential itself. missing for 10: documented issuance of fine-grained scoped PATs or agent-specific keys, documentation showing the published OAuth scopes are actually enforced per token, and independent or hands-on corroboration of scoped agent credentials.",
     "evidenceIds": [
+      "supabase-supp-api-key-model",
+      "supabase-docs-43",
       "supabase-supp-mcp-config-params",
       "supabase-supp-mcp-agent-security",
       "supabase-probe-10",
-      "supabase-supp-api-key-model",
-      "supabase-docs-43",
-      "supabase-comm-15",
-      "supabase-comm-13"
+      "supabase-supp-llms-agent-resources"
     ],
     "productId": "supabase",
     "storyId": "agentic-scoped-keys"

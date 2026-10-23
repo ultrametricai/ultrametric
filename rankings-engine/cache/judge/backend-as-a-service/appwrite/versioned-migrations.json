@@ -1,18 +1,17 @@
 {
-  "hash": "dfdeed6beb307473e18bec6d9fd5a02ea2fa528065c6e4d1762d3f251da2a32c",
+  "hash": "ea9e61ff3bef62e005cf3af46d5ac2e2fde885478878dee5403ddb255cf7f01f",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
-    "quality": 5,
-    "confidence": "medium",
-    "rationale": "Appwrite's CLI manages project resources, and its JSON config can be split into separate files via `includes` (implying version-controllable resource definitions). The CLI also runs non-interactively and headlessly for CI. Separately, the dedicated PostgreSQL option can be used with Prisma or Drizzle, which brings their migration tooling. However, the evidence never documents ordered, versioned migration files or an explicit schema push/diff workflow, and the 'One-Click migrations' feature is about moving data between platforms, not schema versioning. Missing for 10: explicit documentation that database schema (tables, columns, indexes) lives in version-controlled config or migration files, a documented push/apply command for schema changes, and independent hands-on corroboration.",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "Appwrite's CLI keeps project resources in a JSON config whose top-level resource arrays can be split into separate files that live in a repo (appwrite-docs-13). The CLI also runs non-interactively for CI automation (appwrite-docs-42) and reads the database schema to generate types (appwrite-docs-41, appwrite-docs-55), which suggests declarative schema-as-code. The evidence never explicitly describes pushing schema changes or versioned migrations, and the 'One-Click migrations' feature is about moving data between platforms, so it does not count. missing for 10: explicit documentation of schema push/apply via CLI, ordered versioned migration files, rollback/diff semantics, a documented CI migration workflow, independent corroboration.",
     "evidenceIds": [
-      "appwrite-docs-12",
       "appwrite-docs-13",
       "appwrite-docs-42",
-      "appwrite-docs-46",
+      "appwrite-docs-41",
       "appwrite-docs-55",
-      "appwrite-probe-5"
+      "appwrite-docs-12"
     ],
     "productId": "appwrite",
     "storyId": "versioned-migrations"

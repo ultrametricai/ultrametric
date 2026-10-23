@@ -100,8 +100,13 @@ describe('existing judged selection compatibility', () => {
     // between the positive and zero rows. Counts moved again (2875/198 -> 2877/196) when the
     // PR #428 review's evidence-gap fix (recorded llms.txt probes for eqvista and adp-run,
     // payroll-specific Workforce API lines for quickbooks-payroll) re-judged those packs.
-    expect(positiveCount).toBe(2877)
-    expect(zeroCount).toBe(196)
+    // Re-pinned at the v5 settlement wave 1 (2026-10-23): ten arenas still serving pre-v5
+    // verdicts (cloud-platforms, cloud-storage, virtual-mailboxes, backend-as-a-service,
+    // data-warehouses, infra-as-code, ai-search-apis, sso-identity, customer-data-platforms,
+    // team-chat) re-judged under the v5 partial-credit boundary, moving one judged step
+    // association from the positive candidate lists into the published zero rows.
+    expect(positiveCount).toBe(2876)
+    expect(zeroCount).toBe(197)
     expect(extraArena).toBe(96)
   })
 
