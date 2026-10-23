@@ -45,7 +45,7 @@ function arena(
 }
 
 // ---- real data: startup-banking (leaderboard ramp, mercury, airwallex, brex, jeeves, wise,
-// gusto, relay; battle mercury-vs-ramp stored as a=mercury, b=ramp, record 19–30, 23 drawn —
+// relay, gusto; battle mercury-vs-ramp stored as a=mercury, b=ramp, record 19–30, 23 drawn —
 // re-pinned 2026-10-23 at the gusto debut, whose v5 freshness cascade re-judged the arena) ----
 
 const banking = loadCategory('startup-banking', path.resolve(__dirname, '../../open-rankings'))
@@ -70,8 +70,8 @@ describe('compareRivalsFor', () => {
     expect(first[0]).toMatchObject({ productId: 'ramp', isSelf: true, rank: 1 })
     expect(first.slice(1).map((r) => r.rank)).toEqual([2, 3, 4, 5])
 
-    const last = compareRivalsFor(banking, 'relay') // rank #8 of 8
-    expect(last[0]).toMatchObject({ productId: 'relay', isSelf: true, rank: 8 })
+    const last = compareRivalsFor(banking, 'gusto') // rank #8 of 8 (the scoped 2026-10-23 debut)
+    expect(last[0]).toMatchObject({ productId: 'gusto', isSelf: true, rank: 8 })
     expect(last.slice(1).map((r) => r.rank)).toEqual([4, 5, 6, 7])
   })
 

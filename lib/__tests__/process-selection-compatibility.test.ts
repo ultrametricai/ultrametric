@@ -102,11 +102,13 @@ describe('existing judged selection compatibility', () => {
     // payroll-specific Workforce API lines for quickbooks-payroll) re-judged those packs.
     // Re-pinned at the Gusto formation/banking debut (2026-10-23): gusto joins legal-ops and
     // startup-banking, so the newly judged product joins the candidate lists of the steps mapped
-    // to those arenas (mostly as published zero rows — the offering is formation/banking-scoped,
-    // early beta), and the v5 freshness cascade the debut forced on the two arenas' stale caches
-    // moves two incumbent cells from the positive rows to the zero rows (2877/196 -> 2875/244).
-    expect(positiveCount).toBe(2875)
-    expect(zeroCount).toBe(244)
+    // to those arenas, and the v5 freshness cascade the debut forced on the two arenas' stale
+    // caches moves two incumbent cells from the positive rows to the zero rows
+    // (2877/196 -> 2875/244). Moved again (2875/244 -> 2860/259) when the PR #449 review's
+    // scope fix pruned the off-scope payroll evidence from both gusto packs and re-judged them:
+    // the entry's step cells move from the positive rows to the published zero rows.
+    expect(positiveCount).toBe(2860)
+    expect(zeroCount).toBe(259)
     expect(extraArena).toBe(96)
   })
 
