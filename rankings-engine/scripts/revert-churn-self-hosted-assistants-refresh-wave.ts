@@ -6,7 +6,7 @@
 // of the evidence that actually changed are sampling churn and revert to the pre-roll
 // baseline.
 //
-// Scope: every compliance-automation product the refresh re-judged. Baseline is the commit
+// Scope: every self-hosted-assistants product the refresh re-judged. Baseline is the commit
 // the refresh branched from (BASELINE_REF below). The refresh only ADDED evidence rows
 // (every pack grew, nothing removed), so the changed ids per product are computed
 // mechanically as the pack diff: ids present in the branch's evidence file and absent from
