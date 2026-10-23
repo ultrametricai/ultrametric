@@ -82,10 +82,10 @@ describe('step geo resolutions', () => {
       (byId(id).dag.nodes.find((n) => n.id === nodeId)?.geoResolutions ?? []).map((r) => r.country).sort()
 
     // Exhibit A: the departing-equity settlement resolves in six countries beside the US
-    // (seven since the 2026-10-23 Australia wave).
+    // (NZ and AU joined both steps in the 2026-10-23 country run).
     expect(byId('sit_007').geoScope).toBe('global')
-    expect(countries('sit_007', 'n4')).toEqual(['AU', 'CA', 'DE', 'IN', 'PT', 'UK', 'US'])
-    expect(countries('sit_007', 'n3')).toEqual(['AU', 'FR', 'IN', 'UK', 'US'])
+    expect(countries('sit_007', 'n4')).toEqual(['AU', 'CA', 'DE', 'IN', 'NZ', 'PT', 'UK', 'US'])
+    expect(countries('sit_007', 'n3')).toEqual(['AU', 'FR', 'IN', 'NZ', 'UK', 'US'])
     // The notice-terms step resolves in every covered country.
     expect(byId('sit_019').geoScope).toBe('global')
     expect(countries('sit_019', 'n2')).toEqual(['AU', 'CA', 'DE', 'FR', 'IN', 'PT', 'UK', 'US'])

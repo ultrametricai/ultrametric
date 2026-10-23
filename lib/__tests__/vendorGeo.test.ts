@@ -98,6 +98,14 @@ describe('vendorGeoFor', () => {
     expect(vendorGeoFor('does-not-exist', DATA_DIR)).toEqual([])
   })
 
+  it('scopes rows to the arena they were judged in when arenaId is given', () => {
+    // gusto's committed rows were judged against the payroll offering; the cross-rostered
+    // legal-ops/startup-banking entries must not inherit that reasoning (PR #449 review).
+    expect(vendorGeoFor('gusto', DATA_DIR, 'payroll').length).toBeGreaterThan(0)
+    expect(vendorGeoFor('gusto', DATA_DIR, 'legal-ops')).toEqual([])
+    expect(vendorGeoFor('mercury', DATA_DIR, 'startup-banking').map((r) => r.country)).toEqual(['US', 'UK', 'IN', 'DE', 'FR'])
+  })
+
   it('missing file degrades to no rows, never an error', () => {
     expect(loadVendorGeo(path.resolve(__dirname))).toEqual([])
   })
