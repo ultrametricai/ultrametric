@@ -226,11 +226,13 @@ jobs:
             --description "Generator output waiting on a human decision" --force \
             && gh issue edit "$NUM" --add-label founder-call \
             || echo "founder-call labeling failed — issue #$NUM is filed without it"
-          # Supersession: the second prefix covers this generator's pre-2026-10 issue title.
+          # Supersession: date-anchored prefixes (every dated issue starts "… 20YY-MM-DD"), so the
+          # standing founder-call list (#378, "vendor-radar: candidates needing a founder call")
+          # never matches. The second prefix covers this generator's pre-2026-10 issue title.
           # Scan PRs are never closed here — the seen-ledger makes daily reports additive.
           pnpm tsx rankings-engine/scripts/close-superseded.ts --kind issue \
-            --title-prefix "vendor-radar: needs-human candidates" \
-            --title-prefix "vendor-radar: candidates" \
+            --title-prefix "vendor-radar: needs-human candidates 20" \
+            --title-prefix "vendor-radar: candidates 20" \
             --successor "$NUM" || echo "supersession close failed — see run logs"
 
       # Bring-up PR for auto-approved passers: roster append (radar-bringup.ts, capped at 3 per
