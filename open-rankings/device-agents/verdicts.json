@@ -1750,13 +1750,13 @@
     "verdict": "full",
     "quality": 9,
     "confidence": "high",
-    "rationale": "A live probe confirms https://docs.simular.ai/llms.txt returns HTTP 200 and indexes the developer docs as markdown (.md) pages. A second llms.txt at www.simular.ai carries agent-usable detail: API endpoints, SDK install, approval behavior and guide pointers. An agent can be pointed directly at either. Missing for 10: independent or hands-on corroboration of agents consuming these docs effectively.",
+    "rationale": "A probe confirmed docs.simular.ai/llms.txt returns HTTP 200 with an agent-readable index linking to raw .md doc pages. A second llms.txt at www.simular.ai/llms.txt carries substantive product and API content, such as the agent endpoints and the SDK/MCP overview, so an agent can be pointed straight at curated docs. missing for 10: a machine-readable OpenAPI spec (all candidate paths returned 404) and evidence of a full-content llms-full.txt variant.",
     "evidenceIds": [
       "simular-probe-1",
-      "simular-docs-10",
-      "simular-docs-11",
-      "simular-docs-22",
-      "simular-docs-27"
+      "simular-docs-5",
+      "simular-docs-6",
+      "simular-docs-24",
+      "simular-probe-2"
     ]
   },
   {
@@ -1765,7 +1765,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Simular's Sai is a computer-use agent, so surfacing AI-generated insights or suggestions from a user's data is a fair question for this kind of product. However, the evidence only describes executing plain-English tasks, replaying saved workflows, and offering ready-made workflow templates. Nothing documents the product analyzing the user's data and proactively returning insights or suggestions inside the product, and role playbooks like 'AI bookkeeper' are adjacent workflow content rather than this capability.",
+    "rationale": "Simular's Sai is a computer-use agent that carries out plain-language tasks on cloud or local machines, so in-product AI insights from user data is a fair question to ask of it. However, no evidence shows a documented feature that analyzes the user's data and surfaces insights or suggestions inside the product. The community Calendar-to-Docs digest script and workflow-template success rates are a user-built automation and adjacent metadata, so they earn no credit.",
     "evidenceIds": []
   },
   {
@@ -1774,15 +1774,17 @@
     "verdict": "full",
     "quality": 8,
     "confidence": "medium",
-    "rationale": "Simular's own docs describe recorded workflows that \"Sai reruns on a schedule.\" Tasks run in Sai's own cloud VM, so they do not need your laptop open, and work continues after you close it, with iMessage/Telegram notifications when it needs you. Saved workflows replay as code and self-heal when the UI changes, and an approval step gates sensitive actions, which together cover autonomous background automation. Missing for 10: detailed documentation of how schedules and triggers are configured, and independent or hands-on corroboration of unattended scheduled runs.",
+    "rationale": "Simular's Sai is documented to rerun taught tasks on a schedule (simular-docs-15) and to keep working on cloud computers after you close your laptop, notifying you via iMessage or Telegram when it needs approval (simular-docs-16, simular-docs-22, simular-docs-14). That background autonomy is reinforced by replayable parameterized skills (simular-docs-8), self-healing reruns (simular-docs-9), persistent sessions (simular-docs-19) and up to 5 concurrent cloud computers (simular-docs-13). missing for 10: detailed documentation of schedule/trigger configuration (e.g., cron or event triggers), independent or hands-on corroboration that unattended scheduled runs work reliably.",
     "evidenceIds": [
-      "simular-docs-14",
+      "simular-docs-15",
       "simular-docs-16",
-      "simular-docs-23",
-      "simular-docs-7",
-      "simular-docs-8",
+      "simular-docs-14",
       "simular-docs-22",
-      "simular-docs-19"
+      "simular-docs-8",
+      "simular-docs-9",
+      "simular-docs-19",
+      "simular-docs-13",
+      "simular-docs-1"
     ]
   },
   {
@@ -1791,16 +1793,15 @@
     "verdict": "full",
     "quality": 9,
     "confidence": "medium",
-    "rationale": "Sai is Simular's built-in AI agent. You hand it tasks in plain English and it completes them by operating desktop and web apps [simular-gh-1, simular-docs-24, simular-docs-17]. It runs on its own cloud machine, keeps going after you close the laptop, can be commanded from your phone, sends notifications when it needs you, and asks for approval before sensitive actions [simular-docs-23, simular-docs-16, simular-docs-22]. It also replays saved workflows on a schedule, and you can watch it work as it runs [simular-docs-14, simular-docs-15]. Missing for 10: independent or hands-on corroboration, since all evidence is vendor-authored.",
+    "rationale": "Sai is Simular's core product: users describe work in plain English and the agent carries it out on a cloud computer or their own device across desktop apps, browsers, files and terminals. It asks for approval before sensitive steps, keeps working after the laptop is closed, reports via iMessage/Telegram, and lets users watch it work. Missing for 10: independent or hands-on corroboration of delegation quality and reliability (all evidence is vendor-claimed).",
     "evidenceIds": [
-      "simular-gh-1",
-      "simular-docs-24",
-      "simular-docs-17",
-      "simular-docs-23",
+      "simular-docs-14",
+      "simular-docs-18",
       "simular-docs-16",
       "simular-docs-22",
-      "simular-docs-14",
-      "simular-docs-15"
+      "simular-docs-17",
+      "simular-docs-15",
+      "simular-docs-19"
     ]
   },
   {
@@ -1809,16 +1810,14 @@
     "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Simular documents headless, programmatic operation. The Sai API lets you send a task, stream events and answer approvals over REST, and there is a Python SDK, a standalone simulang CLI and runnable scripts. Tasks run on cloud computers without a laptop open and can rerun on a schedule, which covers unattended automation. missing for 10: explicit CI pipeline integration docs (e.g., GitHub Actions or exit-code/non-interactive behavior), a published OpenAPI spec (probe returned 404), guidance on handling approval prompts in unattended runs, independent or hands-on corroboration.",
+    "rationale": "Simular documents several first-party ways to run Sai without a UI: a REST API, a Python SDK and an MCP server that let your own code send plain-language tasks to cloud computers. The API also streams progress events and accepts programmatic approvals, and there is a standalone simulang CLI and scheduled reruns. That covers headless, programmatic automation, but CI use is only implied and approval prompts may interrupt unattended runs. Missing for 10: explicit CI integration docs or examples (e.g., a CI pipeline recipe), a documented fully non-interactive mode without approval gates, a published OpenAPI spec (probe found none), and independent hands-on corroboration.",
     "evidenceIds": [
       "simular-docs-1",
-      "simular-docs-2",
+      "simular-docs-5",
+      "simular-docs-6",
       "simular-docs-3",
-      "simular-docs-10",
-      "simular-docs-11",
-      "simular-docs-14",
-      "simular-docs-23",
-      "simular-docs-12",
+      "simular-docs-15",
+      "simular-docs-16",
       "simular-probe-2"
     ]
   },
@@ -1828,20 +1827,20 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Simular is a computer-use agent, so consuming MCP servers is a fair axis, but the evidence never shows it acting as an MCP client. The only MCP evidence is the `@simular-ai/sai-mcp` server, which lets other coding agents drive Sai; that is the opposite role and does not count here. The generic 'custom integrations and tooling' line and skills support are adjacent features, not MCP client support.",
+    "rationale": "The evidence shows Simular publishing its own MCP server (@simular-ai/sai-mcp) so other agents like Claude Code can drive Sai. That is the server role and does not show Sai consuming external MCP servers. Skills and the REST API are adjacent extension mechanisms, and nothing documents plugging third-party MCP servers into Sai to use their tools.",
     "evidenceIds": []
   },
   {
     "productId": "simular",
     "storyId": "agentic-mcp-server",
     "verdict": "full",
-    "quality": 7,
+    "quality": 8,
     "confidence": "medium",
-    "rationale": "Sai is itself a computer-use agent, but first-party platform docs name an official MCP server package, `@simular-ai/sai-mcp`, which coding agents (Claude Code, Codex, Cursor) use to drive it. That makes the server axis applicable, and the core of the story is delivered. Supporting docs show the underlying task API that the agent-facing integration exposes. Missing for 10: detailed MCP setup/configuration docs, a list of exposed tools, and independent or hands-on corroboration that the MCP server works as described.",
+    "rationale": "Simular is itself an agent, but its docs explicitly describe a first-party MCP server: the llms.txt says developers and their coding agents get Sai \"through a REST API, a Python SDK and an MCP server,\" and the platform docs give a concrete install command (`claude mcp add sai ... npx -y @simular-ai/sai-mcp`) for connecting coding agents like Claude Code, Codex and Cursor. That makes the server axis applicable and clearly delivered. Missing for 10: documentation of the MCP server's exposed tools/schema and auth details beyond the API key, and independent or hands-on corroboration that the server works as described.",
     "evidenceIds": [
-      "simular-docs-6",
-      "simular-docs-1",
-      "simular-docs-10"
+      "simular-docs-5",
+      "simular-docs-7",
+      "simular-docs-1"
     ]
   },
   {
@@ -1850,13 +1849,13 @@
     "verdict": "full",
     "quality": 9,
     "confidence": "medium",
-    "rationale": "Natural-language operation is Simular's core interaction model. Users can give Sai a task, choose a workflow, or describe an outcome in plain English (docs-24). The GitHub description says to 'give it a task in plain English' and it completes it by clicking and typing (gh-1). Developers can also send plain-language tasks through the API (docs-1), and users can command Sai from their phone (docs-23). Missing for 10: independent or hands-on corroboration that natural-language commands work reliably in practice, since all evidence is vendor-authored.",
+    "rationale": "Natural-language operation is the core of Sai. Users 'describe the work in plain English and Sai does it' (simular-docs-14). The API accepts tasks 'in plain language' (simular-docs-1). Workflow templates are ready-to-run prompts (simular-docs-23), and saving a replayable skill is itself done with a plain-English instruction (simular-docs-8). Missing for 10: independent or hands-on corroboration that natural-language commands work reliably as claimed.",
     "evidenceIds": [
-      "simular-docs-24",
-      "simular-gh-1",
+      "simular-docs-14",
       "simular-docs-1",
       "simular-docs-23",
-      "simular-docs-10"
+      "simular-docs-8",
+      "simular-docs-22"
     ]
   },
   {
@@ -1864,10 +1863,11 @@
     "storyId": "agentic-official-cli",
     "verdict": "partial",
     "quality": 4,
-    "confidence": "medium",
-    "rationale": "Simular's own docs mention a \"standalone simulang CLI\", so an official first-party CLI exists. However, the evidence is a single release-note line with no detail on commands, installation, or whether it can drive Sai tasks directly from the terminal. The Sai API, Python SDK, and MCP server are separate interfaces and earn no credit for this CLI story. Missing for 10: CLI documentation (install, commands, usage), evidence that the CLI drives Sai agent tasks rather than only Simulang scripts, and independent or hands-on corroboration.",
+    "confidence": "low",
+    "rationale": "Simular's docs mention a \"standalone simulang CLI\" alongside simulang-js and a /simulang skill for Claude Code, so a first-party CLI exists and is tied to agent workflows. That is the only mention, though. The main Sai developer surface is listed as a REST API, Python SDK and MCP server, with no CLI, and the npx command is only an MCP-server launcher. Missing for 10: CLI command reference or install docs, coverage of the core Sai agent (cloud computers, tasks, approvals) from the CLI, clarity on whether the CLI is current rather than legacy, and independent or hands-on corroboration.",
     "evidenceIds": [
-      "simular-docs-2"
+      "simular-docs-3",
+      "simular-docs-5"
     ]
   },
   {
@@ -1876,12 +1876,12 @@
     "verdict": "full",
     "quality": 8,
     "confidence": "medium",
-    "rationale": "Simular documents a public Sai API that developers can call from their own code or coding agents. It lists concrete endpoints: POST /v1/agents/message to send a task, GET /v1/agents/events to stream progress, and POST /v1/agents/approve to answer approval requests. A Python SDK (`pip install sai-sdk`) and an MCP server wrapper back this up. The OpenAPI probe returned 404 on every candidate path, but that only shows no machine-readable spec was found; it does not contradict the documented API. missing for 10: a published OpenAPI/machine-readable spec, documentation of authentication and rate limits, independent or hands-on corroboration of the API working as described.",
+    "rationale": "First-party docs describe a public Sai API (REST plus a Python SDK) that developers and coding agents can use to submit plain-language tasks. They name concrete endpoints for streaming events, answering approvals and listing machines, and also document an MCP server installed with an API key. A probe confirms the developer docs site is live, but no OpenAPI spec was found at the usual paths. missing for 10: a published machine-readable OpenAPI/reference spec, explicit documentation of the task-submission endpoint, independent or hands-on corroboration that the API works as described.",
     "evidenceIds": [
       "simular-docs-1",
-      "simular-docs-10",
-      "simular-docs-11",
+      "simular-docs-5",
       "simular-docs-6",
+      "simular-docs-7",
       "simular-probe-1",
       "simular-probe-2"
     ]
@@ -1892,7 +1892,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Simular exposes a Sai API, SDK and MCP server, so issuing scoped credentials is a fair question for this product. However, nothing in the evidence describes API key issuance, permission scopes, or least-privilege credential controls. Human-approval gates on sensitive actions are an adjacent control and earn no credit for this story.",
+    "rationale": "The evidence shows Simular issues an API key (SAI_API_KEY=sapi_...) for driving Sai via REST, SDK and MCP. Nothing indicates those keys can be scoped, permission-limited, or issued per agent with least privilege. Approval prompts before sensitive steps are an adjacent runtime control, not scoped credentials, so they earn no credit here.",
     "evidenceIds": []
   },
   {
@@ -1901,12 +1901,11 @@
     "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Simular's own docs name an official Python SDK (`pip install sai-sdk`) and a JS library (`simulang-js`). Both sit on top of a documented Sai REST API (message, event-stream and approve endpoints) and an official `@simular-ai/sai-mcp` package. Missing for 10: SDK reference depth beyond install lines, a published OpenAPI spec (all probed paths 404), multi-language coverage beyond Python and JS, and independent or hands-on corroboration.",
+    "rationale": "First-party docs state that Sai is exposed to developers through a REST API, a Python SDK and an MCP server. They also list simulang-js and documented API endpoints (events, approve, machines), so official SDK-based integration is clearly offered. Missing for 10: in-depth SDK reference or install/usage documentation, multi-language SDK coverage beyond a single Python SDK mention, a published OpenAPI spec (probe returned 404), and independent or hands-on corroboration.",
     "evidenceIds": [
-      "simular-docs-11",
-      "simular-docs-2",
-      "simular-docs-10",
+      "simular-docs-5",
       "simular-docs-1",
+      "simular-docs-3",
       "simular-docs-6",
       "simular-probe-2"
     ]
@@ -1917,17 +1916,24 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Simular offers a Sai API, so webhooks are a fair question for this product. However, the evidence only shows a client-pulled event stream (GET /v1/agents/events) and iMessage/Telegram notifications. A stream the client polls is not a registrable outbound HTTP callback, and chat-app notifications do not count as webhooks. Nothing in the pack documents registering a webhook URL for events.",
+    "rationale": "The evidence shows no registrable outbound HTTP callbacks. `GET /v1/agents/events` is a client-pulled progress stream, which is an adjacent feature rather than a webhook. iMessage, SMS and Telegram alerts are chat-app notifications and do not qualify. The axis applies to an API-driven agent platform, but nothing in the pack shows webhook subscriptions.",
     "evidenceIds": []
   },
   {
     "productId": "simular",
     "storyId": "api-interactive-docs",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "The evidence lists Sai API endpoints and a Python SDK, but nothing shows an interactive API reference (such as a try-it console or playground) with runnable examples. The OpenAPI/Swagger probes all returned 404. The Simulang Recipes repo offers runnable automation scripts, but that is an adjacent feature, not an interactive API reference.",
-    "evidenceIds": []
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "Simular documents a REST API with specific endpoints (`GET /v1/agents/events`, `POST /v1/agents/approve`, `GET /v1/agents/machines`) on a developer docs site with an llms.txt index. It also offers runnable, cloneable example scripts and copy-paste setup commands. Nothing shows the API reference is interactive (no try-it console or playground), and every probed OpenAPI/Swagger path returned 404, so a generated interactive reference looks unlikely. Missing for 10: an interactive try-it API reference, a published OpenAPI spec, runnable examples embedded in the API reference, and independent corroboration.",
+    "evidenceIds": [
+      "simular-docs-5",
+      "simular-docs-6",
+      "simular-docs-4",
+      "simular-docs-7",
+      "simular-probe-1",
+      "simular-probe-2"
+    ]
   },
   {
     "productId": "simular",
@@ -1935,7 +1941,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Simular documents a REST API (POST /v1/agents/message, GET /v1/agents/events, POST /v1/agents/approve), so this axis applies. However, every probed OpenAPI/Swagger path returned 404, and no evidence points to any downloadable machine-readable spec. The llms.txt file, the prose endpoint list, the Python SDK and the MCP server are adjacent features, not an API specification.",
+    "rationale": "Simular documents a REST API with endpoints such as GET /v1/agents/events, a Python SDK and an MCP server, but nothing in the evidence offers a downloadable OpenAPI or equivalent machine-readable spec. The probe found every common OpenAPI/Swagger path returning 404. The llms.txt file is LLM-oriented documentation, not an API spec, so it earns no credit here.",
     "evidenceIds": []
   },
   {
@@ -1944,33 +1950,31 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Nothing in the evidence documents a sandbox or test mode, test API keys, or a non-production environment for trying Sai without touching real data. The cloud VM and the approval prompts before sensitive actions are adjacent features: the VM isolates execution from the user's laptop, but Sai still works in the user's real apps and logins. Neither separates test runs from production data.",
+    "rationale": "Sandbox testing is a fair question for an agent platform with an API. However, the evidence documents no sandbox or test mode, no test API keys, and no way to keep runs away from production data. Running tasks on isolated cloud Windows computers and requiring approval before sensitive steps are adjacent controls, not a sandbox: the agent still operates on real logged-in apps.",
     "evidenceIds": []
   },
   {
     "productId": "simular",
     "storyId": "api-versioning-policy",
     "verdict": "partial",
-    "quality": 3,
+    "quality": 4,
     "confidence": "low",
-    "rationale": "The Sai API endpoints use a version prefix (POST /v1/agents/message, GET /v1/agents/events, POST /v1/agents/approve), which is the product's own evidence of URL-level API versioning. Nothing in the evidence describes a deprecation policy, sunset timelines, or changelog guarantees, and the OpenAPI probe found no published spec. missing for 10: documented deprecation policy, versioning/compatibility guarantees, changelog or sunset notices, published machine-readable API spec, independent corroboration.",
+    "rationale": "The Sai REST API uses version-prefixed endpoints such as GET /v1/agents/events and /v1/agents/machines, so it is versioned. The docs also label a legacy desktop-automation surface as deprecated and kept for migration only, which shows deprecation happens in practice. There is no evidence of an actual deprecation policy, and no OpenAPI spec was found at any probed path. Missing for 10: a documented deprecation policy (notice periods, sunset timelines, versioning guarantees), a published OpenAPI/versioned API reference, a changelog of version changes, and independent corroboration.",
     "evidenceIds": [
-      "simular-docs-10",
+      "simular-docs-6",
+      "simular-docs-25",
+      "simular-docs-24",
       "simular-probe-2"
     ]
   },
   {
     "productId": "simular",
     "storyId": "automation-bulk-operations",
-    "verdict": "partial",
-    "quality": 3,
-    "confidence": "low",
-    "rationale": "Simular's own docs show multi-item execution: up to 5 cloud computers can run tasks at the same time, and workflows saved as code can be replayed repeatedly or on a schedule. Together these give a plausible but indirect route to processing many items. No evidence describes a first-class bulk operation that applies one action across a batch of items. Missing for 10: a documented bulk or batch operation over many items, item-level batch semantics (lists, CSVs, records), per-item status or error handling in batch runs, and hands-on corroboration of batch processing at scale.",
-    "evidenceIds": [
-      "simular-docs-13",
-      "simular-docs-7",
-      "simular-docs-14"
-    ]
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Nothing in the evidence documents a bulk or batch operation feature, such as applying one action across many items in a single run. The closest items are building blocks the user would have to orchestrate: up to 5 concurrent cloud computers, replayable skills with parameters, and scheduled reruns. None of these is the bulk-operation capability itself, so they earn no credit.",
+    "evidenceIds": []
   },
   {
     "productId": "simular",
@@ -1978,9 +1982,9 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "Sai's own documentation says a taught workflow can rerun automatically on a schedule, which is a first-party automatic trigger, but only a time-based one. Nothing shows user-defined rules that fire actions in response to events. The events API streams task progress outward rather than triggering tasks, and approvals and notifications are adjacent features. Missing for 10: user-definable event-based trigger rules (e.g., on new email, file change, or webhook), documented condition/action rule configuration, and independent or hands-on corroboration of the scheduling trigger.",
+    "rationale": "The only first-party trigger mechanism in the evidence is that a taught task 'reruns on a schedule', which is a time-based trigger rather than user-defined event rules. The events endpoint only streams progress output, and notifications only alert the user; neither triggers actions. Missing for 10: user-definable trigger rules, event sources (e.g. email arrival, file changes, webhooks) that launch tasks, conditional logic, and independent or hands-on corroboration.",
     "evidenceIds": [
-      "simular-docs-14"
+      "simular-docs-15"
     ]
   },
   {
@@ -1989,11 +1993,10 @@
     "verdict": "partial",
     "quality": 4,
     "confidence": "low",
-    "rationale": "Simular's own marketing says Sai can be taught a workflow once and then 'reruns on a schedule' (simular-docs-14). Supporting context: workflows can be saved as code and replayed (simular-docs-7), and Sai runs in a persistent cloud VM that keeps working with your laptop closed (simular-docs-23, simular-docs-16). Scheduling itself rests on a single marketing line with no documentation of how schedules are set up. Missing for 10: documented schedule configuration (cron or interval syntax, time zones), any API or SDK endpoint for creating or managing schedules, schedule management UI docs, and independent or hands-on confirmation that recurring runs work.",
+    "rationale": "Simular's own marketing states that Sai, once taught, 'reruns on a schedule' (simular-docs-15). It also supports saving replayable, parameterized skills (simular-docs-8) and keeps running after you close the laptop (simular-docs-16). That makes recurring execution a first-party claim, but it rests on a single marketing line with no documentation of how schedules are set up or managed. missing for 10: documented schedule configuration (cron/interval syntax, UI or API endpoint for creating and managing schedules), programmatic scheduling via the Sai API/MCP, run history for scheduled jobs, independent or hands-on corroboration.",
     "evidenceIds": [
-      "simular-docs-14",
-      "simular-docs-7",
-      "simular-docs-23",
+      "simular-docs-15",
+      "simular-docs-8",
       "simular-docs-16"
     ]
   },
@@ -2003,7 +2006,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence shows Sai can save a workflow as code and replay it, Simulang automations are runnable scripts, and saved code self-heals when the UI changes. Nothing documents versioning, diff or review of automation changes, or rolling back to a prior version. Keeping those scripts in git would be a user-side workaround, and the code-saving feature is only a building block, so neither earns credit.",
+    "rationale": "Automation versioning, review, and rollback is a fair question for an automation platform, so the axis applies. However, the evidence only shows that automations can be saved as replayable skills or scripts, can self-heal, and can be shared or cloned. Nothing documents version history, diff or review of changes, or rolling back to a prior version. Keeping scripts in a user's own git would be a user-side workaround and earns no credit.",
     "evidenceIds": []
   },
   {
@@ -2012,7 +2015,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Publishing reproducible benchmark results is a fair question for a computer-use agent vendor, so the axis applies. However, nothing in the evidence mentions OSWorld or any other task-completion benchmark scores, methodology, or reproduction details. The open-source framework claim and the self-healing reliability claims are adjacent features, not published benchmark results.",
+    "rationale": "Publishing reproducible task-completion benchmarks such as OSWorld is a fair question for a computer-use agent like Simular, so the axis applies. The evidence pack contains no published benchmark scores, methodology, or reproduction details. Per-template success rates and run counts (simular-docs-23) are an adjacent product metric, not a reproducible benchmark. An open-source agent framework (simular-docs-2) is a building block, not published benchmark results.",
     "evidenceIds": []
   },
   {
@@ -2021,7 +2024,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The only model-related evidence says Sai is 'model-agnostic' and that you can choose the model it plans with. That is model selection, an adjacent control. Nothing documents pointing the agent at your own OpenAI-compatible or custom endpoint (base URL, API key, provider config). The open-source framework mention is a developer building block, not documented endpoint configuration, so it earns no credit.",
+    "rationale": "The only related evidence is a claim that Sai is 'model-agnostic' and lets you choose the model it plans with. That describes picking from offered models, which is an adjacent capability. Nothing documents configuring a custom or OpenAI-compatible endpoint, base URL, or bring-your-own-model setup. The open-source framework mention says nothing about model endpoint configuration either.",
     "evidenceIds": []
   },
   {
@@ -2030,12 +2033,12 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Sai's own docs say the agent runs on a cloud Windows computer and that BYOD supports Mac mini, macOS and Windows devices. The open-source framework is also described as working 'across environments'. So the same agent targets at least two OSes, but per-target support appears only as a single-line mention. Missing for 10: detailed per-OS support documentation (capabilities, limitations, setup per target), any Linux or mobile target support (phone is only a command channel), independent or hands-on corroboration.",
+    "rationale": "Sai's own docs say the same agent runs on macOS and Windows devices via BYOD, plus cloud Windows computers, and the open-source framework is described as working \"across environments.\" Per-target support is only a single marketing-level line, though, with no per-OS documentation of capabilities, limitations or setup. Missing for 10: per-OS documentation of supported features and limitations, Linux or mobile targets, and independent or hands-on corroboration of cross-OS behavior.",
     "evidenceIds": [
       "simular-docs-20",
       "simular-docs-1",
-      "simular-docs-4",
-      "simular-docs-17"
+      "simular-docs-14",
+      "simular-docs-2"
     ]
   },
   {
@@ -2043,8 +2046,8 @@
     "storyId": "diy-hardware-build",
     "verdict": "na",
     "quality": 0,
-    "confidence": "high",
-    "rationale": "Simular is a software computer-use agent that runs on cloud VMs or on the user's own Mac or Windows machine. Hardware rigs with a bill of materials, wiring and firmware flashing fall outside this product category. Nothing in the evidence shows it ships physical hardware kits; BYOD support for a Mac mini only means running the software on an existing computer.",
+    "confidence": "medium",
+    "rationale": "Simular (Sai) is a software computer-use agent that runs on cloud computers or on the user's own Mac or Windows device. Building hardware rigs with a bill of materials, wiring, and firmware flashing is outside this product category. BYOD support means installing software on an existing machine, not assembling hardware, so it does not make this axis applicable.",
     "evidenceIds": []
   },
   {
@@ -2053,13 +2056,13 @@
     "verdict": "full",
     "quality": 8,
     "confidence": "medium",
-    "rationale": "First-party docs say Sai works across the entire operating system: desktop apps, browsers, file systems and terminals. It controls computers through UI, keyboard and mouse, clicking, typing and scrolling in ordinary desktop apps ('if you can click it, Sai can'), on cloud VMs or on the user's own macOS and Windows devices. Missing for 10: explicit documentation of keyboard-shortcut handling, independent or hands-on corroboration of cross-application OS control.",
+    "rationale": "Simular's docs say Sai works across the entire operating system (desktop apps, browsers, file systems, terminals) like a human. Its open-source framework controls computers via UI, keyboard and mouse across environments. It runs on cloud Windows machines or on the user's own macOS/Windows device. missing for 10: independent or hands-on corroboration of cross-app OS control, explicit documentation of keyboard-shortcut handling.",
     "evidenceIds": [
-      "simular-docs-17",
-      "simular-docs-4",
-      "simular-gh-1",
       "simular-docs-18",
-      "simular-docs-20"
+      "simular-docs-2",
+      "simular-docs-20",
+      "simular-docs-12",
+      "simular-docs-1"
     ]
   },
   {
@@ -2068,7 +2071,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Operating a phone is a fair question for a computer-use agent, so the axis applies, but the evidence only shows Sai controlling desktop and web apps on cloud Windows VMs or BYOD Mac/Windows machines by clicking, typing, and scrolling. 'Command Sai through your phone' means using the phone as a remote control, which is an adjacent feature, not operating a phone. The vague 'across environments' claim names no mobile devices or touch gestures, so there is no evidence of tapping, swiping, or typing on a real phone.",
+    "rationale": "Phone control is a fair question for a computer-use agent, but the evidence only shows Sai operating cloud Windows computers and BYOD Mac or Windows devices (desktop apps, browsers, keyboard and mouse). Nothing shows it tapping, swiping or typing on a real phone. Phone-side mentions cover only approval and notification messages over iMessage, SMS or Telegram, which is an adjacent feature and earns no credit.",
     "evidenceIds": []
   },
   {
@@ -2077,7 +2080,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence says Sai 'looks at the screen' and 'understands interfaces through graphic interface', and that users can watch it work. None of it documents how UI elements are actually located (accessibility tree, OCR, set-of-marks, or coordinate grounding), so there is nothing a developer could use to debug misclicks. This is a fair question for a computer-use agent, so the axis applies and the lack of documentation means none.",
+    "rationale": "Simular is a computer-use agent, so how it locates UI elements is a fair question to ask of it. However, the evidence only says it controls computers \"like a human — UI, keyboard, and mouse\" and lets you watch sessions. Nothing documents whether it grounds UI elements via accessibility tree, OCR, set-of-marks, or coordinates, so there is no basis for debugging misclicks. Live-watching transparency and self-healing skills are adjacent features and earn no credit here.",
     "evidenceIds": []
   },
   {
@@ -2085,12 +2088,10 @@
     "storyId": "error-recovery-retry",
     "verdict": "partial",
     "quality": 4,
-    "confidence": "medium",
-    "rationale": "Simular documents self-healing for saved workflows: when a replayed step breaks because the UI changed, the agent takes over from that point (docs-8). That covers recovery from state drift and failed steps. It can also notify the user when it needs help rather than silently stalling (docs-16), though this is escalation, not recovery. The evidence is a single high-level marketing claim, with no documented retry policy and no mention of popup handling. missing for 10: documented retry semantics (counts, backoff, failure states), explicit popup and dialog recovery, recovery behavior for non-saved live tasks, independent or hands-on corroboration.",
+    "confidence": "low",
+    "rationale": "Simular documents one recovery mechanism: saved skill code \"heals itself,\" and when a step breaks because the UI changed, the agent takes over from that point. This addresses failed actions and UI drift, but only as a single marketing-level claim. missing for 10: documented retry semantics (counts, backoff, failure states), explicit popup/dialog handling, recovery from state drift beyond UI changes, API-level error and retry behavior, independent or hands-on corroboration.",
     "evidenceIds": [
-      "simular-docs-8",
-      "simular-docs-7",
-      "simular-docs-16"
+      "simular-docs-9"
     ]
   },
   {
@@ -2099,19 +2100,20 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence says only that Sai and its open-source framework control computers like a human, looking at the screen and clicking, typing and scrolling with keyboard and mouse. Nothing documents how those inputs actually reach the device: there is no mention of USB HID, accessibility APIs, synthetic OS input events, or the injection mechanism on cloud VMs or BYOD Mac/Windows machines. Describing the interaction style is adjacent to this story and does not document the control path.",
+    "rationale": "The evidence only says Simular's agents control computers 'like a human — UI, keyboard, and mouse' and work across the OS 'the way a human would'. Nothing documents the actual control path, such as accessibility APIs, synthesized OS input events or USB HID, or how inputs reach a cloud or BYOD device. For an applicable device-control axis, that leaves this at none.",
     "evidenceIds": []
   },
   {
     "productId": "simular",
     "storyId": "human-approval-gates",
     "verdict": "full",
-    "quality": 8,
+    "quality": 7,
     "confidence": "medium",
-    "rationale": "Simular's docs say Sai asks for human approval before sensitive or irreversible actions, naming sending, paying and deleting. This matches the story's examples directly. The API exposes POST /v1/agents/approve to answer approval requests, and Sai notifies the operator via iMessage or Telegram when it needs them. Missing for 10: independent or hands-on corroboration that the pause reliably fires, and documentation on configuring which actions count as sensitive.",
+    "rationale": "Simular's own docs say Sai asks for approval before sensitive steps. Operators can approve critical steps via iMessage, SMS, or Telegram and are notified when Sai needs them. The API exposes a dedicated `POST /v1/agents/approve` endpoint, and `GET /v1/agents/events` streams progress. Missing for 10: documentation of which action types (payments, sends, deletes) trigger a pause, operator-configurable approval policies, and independent or hands-on corroboration that execution actually blocks until approval.",
     "evidenceIds": [
+      "simular-docs-14",
+      "simular-docs-6",
       "simular-docs-22",
-      "simular-docs-10",
       "simular-docs-16"
     ]
   },
@@ -2121,24 +2123,25 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence says Sai is model-agnostic and lets you choose the planning model, and that it can run on your own device via BYOD. Neither item documents running with a local model or working without a cloud model API. Model choice and local device execution are adjacent capabilities, not offline or local-model inference.",
+    "rationale": "Nothing in the evidence shows Sai running with a local or self-hosted model. The docs say only that Sai is \"model-agnostic\" and lets you choose the planning model, which does not establish that a local model can be used. BYOD (running Sai on your own Mac or Windows device) is about where the agent executes, not where inference happens, so it is an adjacent feature and earns no credit. The open-source framework claim likewise never mentions local model support.",
     "evidenceIds": []
   },
   {
     "productId": "simular",
     "storyId": "multi-step-task-completion",
     "verdict": "full",
-    "quality": 8,
+    "quality": 7,
     "confidence": "medium",
-    "rationale": "Simular documents Sai operating across the whole OS: desktop apps, browsers, file systems and terminals. It continues working after you close the laptop, pings you via iMessage/Telegram only when it needs you, and asks for approval only before sensitive actions. Saved workflows self-heal when a UI change breaks a step. Missing for 10: independent or hands-on corroboration that long cross-app tasks actually complete unattended, and any published success-rate or reliability metrics beyond vendor claims.",
+    "rationale": "Simular documents that Sai works across desktop apps, browsers, file systems and terminals, and that it keeps running after you close the laptop, only pinging you via iMessage or Telegram when it needs you or before sensitive steps. That is the 'no babysitting' behaviour the story asks for. Self-healing saved skills and scheduled reruns that reportedly grow more reliable add to the reliability claim. All of this is vendor-claimed, though. Missing for 10: independent or hands-on corroboration that multi-app tasks actually complete reliably, and published success-rate figures (the workflow templates mention success rates but no numbers appear in evidence).",
     "evidenceIds": [
-      "simular-docs-17",
+      "simular-docs-18",
       "simular-docs-16",
-      "simular-docs-8",
-      "simular-docs-22",
       "simular-docs-14",
+      "simular-docs-9",
+      "simular-docs-15",
+      "simular-docs-12",
       "simular-docs-23",
-      "simular-docs-7"
+      "simular-docs-22"
     ]
   },
   {
@@ -2147,14 +2150,12 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Simular documents a real Sai API: send a task (POST /v1/agents/message), stream progress (GET /v1/agents/events) and answer approvals (POST /v1/agents/approve), plus a Python SDK and an MCP server, so the core task-run loop is programmable. Nothing shows the many UI-side features are reachable through the API: scheduling, saved workflows, skills, marketplace workflows, BYOD device management and settings. The OpenAPI probe found no published spec. Missing for 10: documented API coverage of scheduling, saved workflow/skill management, marketplace and device/account settings, a published OpenAPI spec or explicit parity statement, and independent hands-on corroboration.",
+    "rationale": "Simular documents a REST API, Python SDK and MCP server that give developers 'the same autonomous computer.' The API covers the core loop: submitting plain-language tasks, streaming progress via `GET /v1/agents/events`, answering approval requests via `POST /v1/agents/approve`, and listing machines via `GET /v1/agents/machines`. Nothing in the evidence shows the API matches the UI across the rest of the product. Missing for 10: API coverage of saving and sharing skills, scheduled reruns, workflow templates, BYOD device setup, watching computers live, and notification settings; an explicit UI/API parity statement; a published OpenAPI spec (all probed paths returned 404); independent corroboration.",
     "evidenceIds": [
       "simular-docs-1",
-      "simular-docs-10",
-      "simular-docs-11",
+      "simular-docs-5",
       "simular-docs-6",
-      "simular-docs-14",
-      "simular-docs-21",
+      "simular-docs-7",
       "simular-probe-2"
     ]
   },
@@ -2164,7 +2165,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Data portability is a fair question for a cloud agent SaaS like Simular, so the axis applies. However, the pack documents no user-facing way to export account data (task history, saved workflows, settings, persisted context) in open formats. Saving workflows as Simulang code, the open-source agent framework, and the API/SDK are adjacent features or developer building blocks, not a documented export-and-leave capability.",
+    "rationale": "Data portability is a fair question for a SaaS agent platform, but the pack never documents exporting account data (skills, run history, settings) in open formats or offboarding. The 'invoice_export' item is a user-defined automation example, and the open-source framework and API are adjacent capabilities, not a data-export feature.",
     "evidenceIds": []
   },
   {
@@ -2172,11 +2173,10 @@
     "storyId": "openness-open-license",
     "verdict": "partial",
     "quality": 4,
-    "confidence": "low",
-    "rationale": "Simular's docs describe an open-source framework for computer-control agents (simular-docs-4), and a community Simulang Recipes repo of scripts you can clone (simular-docs-3). The core Sai product, though, is presented as a hosted cloud agent with an API, SDK and MCP server, and nothing shows its source is open. missing for 10: named open license, a link to the source repository, evidence that Sai's own code is published, independent corroboration.",
+    "confidence": "medium",
+    "rationale": "Simular's own docs describe an open-source framework for computer-control agents, so some of the vendor's source is presented as openly readable. There is no evidence that the main Sai product (cloud agent, API, desktop app) is open-source. No license or repository is named, and the clonable community scripts are adjacent material that earns no credit. Missing for 10: named open license, link to a public source repository, evidence that Sai's core code is open, independent confirmation the framework source is readable.",
     "evidenceIds": [
-      "simular-docs-4",
-      "simular-docs-3"
+      "simular-docs-2"
     ]
   },
   {
@@ -2185,12 +2185,10 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Simular documents an open-source framework for computer-control agents (simular-docs-4). Sai also supports BYOD, so users can download it and run it on their own Mac or Windows devices (simular-docs-20). However, the flagship Sai experience is described as running in Simular's cloud VMs (simular-docs-23, simular-docs-1), and nothing shows the backend or orchestration can be fully self-hosted. missing for 10: explicit self-hosting docs for the core Sai service/backend, deployment instructions, independent or hands-on confirmation of a self-hosted setup.",
+    "rationale": "Simular documents a BYOD mode where users download Sai and run it on their own Mac or Windows device \"with control and privacy\", so tasks can execute on user-owned hardware rather than only on Simular's cloud computers. Nothing shows the core Sai service (planning, API, orchestration) can be deployed on user infrastructure; the API and pricing docs describe a hosted platform. The open-source computer-use framework is a separate developer building block, not the core product. Missing for 10: self-hostable deployment of the Sai backend/control plane, installation docs for on-prem or offline operation, independent hands-on corroboration.",
     "evidenceIds": [
-      "simular-docs-4",
       "simular-docs-20",
-      "simular-docs-23",
-      "simular-docs-1"
+      "simular-docs-14"
     ]
   },
   {
@@ -2199,7 +2197,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Data region or residency selection is a fair question for a cloud-hosted agent platform, so the axis applies. However, nothing in the evidence documents choosing a storage region or residency. The BYOD option for running Sai on your own Mac or Windows device is an adjacent execution-environment feature, not a data-residency control, so it earns no credit.",
+    "rationale": "The evidence pack does not document any way to select a storage region or data residency for Simular/Sai cloud computers or account data. The BYOD option to run Sai on your own Mac or Windows device is an adjacent execution-environment choice, not a documented region or residency control, so it earns no credit here.",
     "evidenceIds": []
   },
   {
@@ -2208,7 +2206,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Training-data opt-out is a fair privacy question for an AI agent SaaS like Simular. However, the evidence pack contains no documentation of a no-training policy or an opt-out control. Adjacent features such as model choice (model-agnostic planning), BYOD local devices, and session transparency do not establish that user data is excluded from model training.",
+    "rationale": "Simular is an AI agent service, so a training opt-out or no-training policy is a fair question to ask of it. The evidence pack contains no statement that user data is excluded from model training and no documented opt-out. The BYOD 'control and privacy' claim and the model-agnostic choice are adjacent features, not a training-data control, so they earn no credit.",
     "evidenceIds": []
   },
   {
@@ -2217,7 +2215,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence pack documents no user-facing controls for data retention periods or deletion of stored data. Session persistence of logins and context (simular-docs-19) and approval prompts before the agent performs deleting actions in apps (simular-docs-22) are adjacent behaviors, not retention or deletion controls over the user's own data.",
+    "rationale": "The pack documents no data retention settings, deletion controls, or retention policies. The closest items are adjacent and earn no credit: running Sai on your own device \"with control and privacy\" (BYOD), and session data persisting between sessions.",
     "evidenceIds": []
   },
   {
@@ -2226,7 +2224,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Opting out of telemetry is a fair question for an AI agent product with desktop and cloud components, so the axis applies. Nothing in the evidence pack describes a telemetry or usage-tracking opt-out. The 'full transparency' claim about watching Sai computers work concerns observing the agent, not data collection, so it is an adjacent feature and earns no credit.",
+    "rationale": "Simular ships desktop and cloud agent software, so a telemetry opt-out is a fair question, but nothing in the evidence documents a telemetry or usage-tracking opt-out. The BYOD 'control and privacy' claim and the 'nothing in the blackbox' transparency claim are adjacent privacy features, not an opt-out control.",
     "evidenceIds": []
   },
   {
@@ -2235,12 +2233,12 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "low",
-    "rationale": "Simular's own developer docs cover the pieces of a bring-up path: a Python SDK installed with `pip install sai-sdk`, an API that sends a plain-language task (POST /v1/agents/message) and streams progress (GET /v1/agents/events), and an MCP server for coding agents. Sai then completes the task on a cloud Windows computer. However, no evidence shows a dedicated quickstart that walks from install to a first completed task, and no hands-on report confirms the docs alone are enough. Missing for 10: an evidenced end-to-end quickstart guide (auth/API key setup, first-task walkthrough), any independent or hands-on corroboration of time-to-first-task, and a published API spec (OpenAPI probes returned 404).",
+    "rationale": "The docs show a short bring-up path: a one-line `claude mcp add sai ... npx -y @simular-ai/sai-mcp` install with an API key, then sending a plain-language task that Sai completes on a cloud Windows computer, with progress streamed via `GET /v1/agents/events`. Nothing in the pack shows a dedicated step-by-step quickstart, and no one confirms getting from install to a finished task using the docs alone. missing for 10: an explicit quickstart guide covering install → API key → first task → result, any hands-on or independent confirmation of time-to-first-task, and a published OpenAPI spec (all probed paths returned 404).",
     "evidenceIds": [
       "simular-docs-1",
-      "simular-docs-11",
-      "simular-docs-10",
+      "simular-docs-5",
       "simular-docs-6",
+      "simular-docs-7",
       "simular-probe-1",
       "simular-probe-2"
     ]
@@ -2251,37 +2249,39 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence shows a progress event stream (GET /v1/agents/events), live viewing of Sai computers, and a marketing claim that saved code cuts tokens by up to 90%. None of these documents per-run reporting of success status, duration, or token or dollar cost that an operator could use to compare runs. These are adjacent features and earn no credit for this story.",
+    "rationale": "Nothing in the evidence shows per-run metrics such as success/failure status, duration, or token or dollar cost being reported for an operator's own runs. The closest items are adjacent features that earn no credit: aggregate success rates and run counts on catalog workflow templates, a progress event stream, live viewing of the computers, and a marketing claim that reruns become more cost-efficient.",
     "evidenceIds": []
   },
   {
     "productId": "simular",
     "storyId": "sandboxed-environments",
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Simular documents running Sai on its own cloud virtual machine, a cloud Windows computer driven through the API, so tasks run off your own machine (simular-docs-23, simular-docs-1, simular-docs-13). It separately documents BYOD installs on your own Mac or Windows device (simular-docs-20), so a developer can try the agent on a cloud VM before running it on a real device. Missing for 10: explicit isolation or sandbox guarantees for the cloud VM, container-based execution, a documented workflow for moving from the cloud VM to a BYOD device, and independent or hands-on corroboration.",
+    "rationale": "Simular documents running Sai on hosted cloud Windows computers via the API, and separately on your own device through BYOD on Mac or Windows. A developer could therefore try tasks on a cloud machine before pointing the agent at a real device. However, the evidence never calls these cloud computers sandboxed or isolated VMs, and never describes containers or a deliberate test-then-promote workflow. Missing for 10: explicit sandbox/isolation guarantees for the cloud computers, container or self-hosted VM support, a documented flow for moving from a cloud test run to a real device, and independent hands-on corroboration.",
     "evidenceIds": [
-      "simular-docs-23",
       "simular-docs-1",
+      "simular-docs-14",
       "simular-docs-13",
-      "simular-docs-20"
+      "simular-docs-20",
+      "simular-docs-6"
     ]
   },
   {
     "productId": "simular",
     "storyId": "schedule-trigger-tasks",
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Simular's own materials say Sai can rerun a taught workflow on a schedule (simular-docs-14). Its documented REST API (POST /v1/agents/message), Python SDK and MCP server let external code or agents trigger tasks programmatically rather than only interactively (simular-docs-1, simular-docs-10, simular-docs-11, simular-docs-6). missing for 10: detailed scheduling docs (cron syntax, schedule management), documented inbound event triggers or webhooks beyond calling the API, and independent or hands-on corroboration that scheduled runs work.",
+    "rationale": "Sai's own marketing says a taught task 'reruns on a schedule' (simular-docs-15), and the REST API, Python SDK and MCP server let external code submit tasks non-interactively and stream progress (simular-docs-1, simular-docs-5, simular-docs-6). However, scheduling rests on a single marketing line, and the API is described as running tasks on cloud Windows computers rather than on the user's own device. Missing for 10: documented schedule configuration (cron/recurrence options), native event triggers or inbound webhooks, evidence that API- or schedule-triggered runs work on BYOD devices, and independent hands-on corroboration.",
     "evidenceIds": [
-      "simular-docs-14",
-      "simular-docs-10",
+      "simular-docs-15",
       "simular-docs-1",
-      "simular-docs-11",
+      "simular-docs-5",
       "simular-docs-6",
-      "simular-docs-23"
+      "simular-docs-8",
+      "simular-docs-14",
+      "simular-docs-20"
     ]
   },
   {
@@ -2290,53 +2290,47 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence pack has no documented way for an operator to restrict which apps, surfaces, or accounts Sai may touch. The approval prompts before sensitive actions (sending, paying, deleting) are an adjacent control, not an enforced scope limit. Running in its own cloud VM is isolation, not a configurable allowlist. The docs instead stress that Sai works across the entire operating system: 'If you can click it, Sai can.'",
+    "rationale": "The evidence shows no first-party way to restrict which apps, surfaces, or accounts Sai may touch, such as an allowlist, denylist, or account scoping. Approval prompts before sensitive steps and running on dedicated cloud computers are adjacent controls, not enforced scope limits. The docs instead stress that Sai works across the entire operating system (desktop apps, browsers, file systems, terminals), with logins persisting between sessions.",
     "evidenceIds": []
   },
   {
     "productId": "simular",
     "storyId": "screen-understanding",
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Simular's materials consistently say the agent looks at the screen and acts on it by clicking, typing and scrolling (simular-gh-1). They also say it understands interfaces through the graphical interface rather than APIs (simular-docs-18) and controls computers through the UI like a human (simular-docs-4). Saved workflows consult the model 'where the screen matters' and self-heal when the UI changes, which implies actions are grounded on what is actually displayed (simular-docs-7, simular-docs-8). missing for 10: technical documentation of the screen-capture/vision pipeline and grounding mechanism, independent or hands-on corroboration of perception accuracy.",
+    "rationale": "Simular's docs describe agents that control computers 'like a human' through the UI, keyboard and mouse, across desktop apps and browsers. The agent takes over when a saved step breaks because the UI changed, and it is pitched for cases where you need to 'see what a real user sees', which implies acting on the displayed screen. However, no evidence explicitly documents screen capture, vision-model input or how actions are grounded on screen elements. Missing for 10: explicit documentation of screenshot/vision perception, details of the visual grounding mechanism, and independent or hands-on corroboration.",
     "evidenceIds": [
-      "simular-gh-1",
-      "simular-docs-18",
-      "simular-docs-4",
-      "simular-docs-7",
-      "simular-docs-8"
+      "simular-docs-2",
+      "simular-docs-9",
+      "simular-docs-11",
+      "simular-docs-18"
     ]
   },
   {
     "productId": "simular",
     "storyId": "sdk-embed-agent",
     "verdict": "full",
-    "quality": 7,
+    "quality": 8,
     "confidence": "medium",
-    "rationale": "Simular documents a Sai API for driving device control from a developer's own code. It has REST endpoints to send tasks, stream progress events, and answer approval requests, plus a Python SDK (`pip install sai-sdk`) and simulang-js/CLI tooling, so embedding is directly supported. The evidence for each of these is a single brief line, though, and no published OpenAPI spec was found. missing for 10: a machine-readable API spec (the OpenAPI probes all returned 404), in-depth SDK reference documentation beyond install and endpoint summaries, independent or hands-on corroboration of the integration, and documented API control of BYOD/local devices rather than only cloud Windows computers.",
+    "rationale": "Simular documents a Sai REST API, a Python SDK and an MCP server that let developers drive an autonomous computer from their own code. Concrete endpoints are listed for streaming events, answering approvals and listing machines, and plain-language tasks run on a cloud Windows computer. The OpenAPI probe 404s only show no machine-readable spec is published at the probed paths; they do not contradict the API claims. Missing for 10: independent or hands-on corroboration of the API/SDK, a published OpenAPI spec, and evidence that the API can target BYOD devices as well as cloud machines.",
     "evidenceIds": [
       "simular-docs-1",
-      "simular-docs-10",
-      "simular-docs-11",
-      "simular-docs-2",
-      "simular-docs-4",
-      "simular-probe-1",
+      "simular-docs-5",
+      "simular-docs-6",
+      "simular-docs-7",
+      "simular-docs-14",
       "simular-probe-2"
     ]
   },
   {
     "productId": "simular",
     "storyId": "secure-credential-handling",
-    "verdict": "partial",
-    "quality": 3,
-    "confidence": "low",
-    "rationale": "Sai documents that logins persist between sessions on its own VM or a BYOD device, so the agent can keep working behind authenticated sessions without being re-handed credentials each time. Nothing documents how credentials are entered, isolated from the model, or redacted from logs or transcripts, so the safety half of the story is only implied. Missing for 10: a documented credential vault or human-entered login handoff, an explicit guarantee that secrets never reach model context, log or screenshot redaction, and independent corroboration.",
-    "evidenceIds": [
-      "simular-docs-19",
-      "simular-docs-20",
-      "simular-docs-23"
-    ]
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "The evidence shows Sai can operate web apps behind a login and that logins persist between sessions. It does not document any mechanism that keeps credentials out of the model's context or the run logs, such as a credential vault, secret injection, or redaction. Session persistence and approval prompts are adjacent features, not the credential-isolation guarantee this story asks for.",
+    "evidenceIds": []
   },
   {
     "productId": "simular",
@@ -2344,11 +2338,11 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "Simular's own features give only glancing support for after-the-fact review. Sai can save a completed run as code that captures the steps taken (simular-docs-7), and operators can watch Sai computers work live with \"full transparency\" (simular-docs-15). The events API streams progress during a run (simular-docs-10), but nothing documents retaining that stream for later review. Missing for 10: documented post-run history or replay of each step, recorded screenshots or video of the screens seen, logs of keystrokes and inputs injected, and independent or hands-on corroboration.",
+    "rationale": "The evidence shows run transparency, but mostly live rather than after the fact. Operators can watch Sai computers work ('Nothing in the blackbox'), `GET /v1/agents/events` streams progress, and a completed run can be saved as a replayable skill that captures its steps and parameters. Nothing documents a retained run history, recorded screens, or a log of injected inputs that can be reviewed once a run ends. Missing for 10: a persistent post-run audit log or replay, recorded screenshots or video of screens seen, an itemized record of keyboard and mouse inputs injected, and independent or hands-on corroboration.",
     "evidenceIds": [
-      "simular-docs-7",
-      "simular-docs-15",
-      "simular-docs-10"
+      "simular-docs-17",
+      "simular-docs-6",
+      "simular-docs-8"
     ]
   }
 ]
