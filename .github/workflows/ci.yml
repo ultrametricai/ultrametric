@@ -16,6 +16,7 @@ concurrency:
 
 permissions:
   contents: read
+  pull-requests: read # the docs fast-path decision lists the PR's changed files via `gh pr diff`
 
 jobs:
   validation:
@@ -43,30 +44,89 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
+      # Docs fast path: when EVERY file a PR changes is on the docs-only allowlist
+      # (scripts/docs-fast-path.mjs — derived from what the gates actually read), the
+      # heavy steps below are skipped and the fast-path step runs the gates that DO
+      # read those files. This is a job-level early exit, deliberately not a
+      # path-filter on the workflow trigger: `validation` and `ci` are required
+      # status checks on main, and a path-filtered-out required check never reports,
+      # blocking the PR forever. Fail-closed: pushes to main, any file outside the
+      # allowlist, an empty change list, or a failed file listing all run the full
+      # suite.
+      - name: Docs fast-path decision
+        id: fastpath
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+        run: |
+          DOCS_ONLY=false
+          if [ "$GITHUB_EVENT_NAME" = "pull_request" ]; then
+            # The pulls files endpoint resolves the merge-base server-side (no extra
+            # history needed on the shallow checkout) and, unlike `gh pr diff
+            # --name-only`, reports previous_filename on renames — so renaming a
+            # test-input file INTO docs/ still surfaces its old path and fails the
+            # allowlist. API errors fall through to the full suite.
+            if gh api "repos/$GITHUB_REPOSITORY/pulls/$PR_NUMBER/files" --paginate \
+                 --jq '.[] | .filename, (.previous_filename // empty)' > /tmp/changed-files.txt; then
+              # The endpoint caps at 3000 files; near the cap the list may be
+              # truncated, so a huge PR takes the full suite.
+              if [ "$(wc -l < /tmp/changed-files.txt)" -ge 2900 ]; then
+                echo "change list near the API cap — running the full suite (fail-closed)"
+              elif node scripts/docs-fast-path.mjs /tmp/changed-files.txt; then
+                DOCS_ONLY=true
+              fi
+            else
+              echo "could not list the PR's changed files — running the full suite (fail-closed)"
+            fi
+          fi
+          echo "docs_only=$DOCS_ONLY" >> "$GITHUB_OUTPUT"
+
+      # The classifier's own tests run on BOTH paths: the fast path must never gate on
+      # an untested allowlist.
+      - name: Docs fast-path classifier tests
+        run: node --test scripts/docs-fast-path.test.mjs
+
+      # Fast-path gates: exactly the gates that read the allowlisted files. pnpm stats
+      # gates README prose (no counts, no generated blocks); readme.test.ts and
+      # coverage.test.ts pin README/CONTRIBUTING structure and the assets/readme media.
+      - name: Docs fast-path gates
+        if: steps.fastpath.outputs.docs_only == 'true'
+        run: |
+          pnpm stats
+          pnpm vitest run --config scripts/config/vitest.config.ts __tests__/readme.test.ts __tests__/coverage.test.ts
+
       # Renovate PRs #22 (eslint 10) and #23 (typescript 7) both broke `pnpm lint` while CI
       # stayed green — lint belongs in the gate so dep bumps can't silently break it again.
       - name: Lint
+        if: steps.fastpath.outputs.docs_only != 'true'
         run: pnpm lint
 
       - name: Typecheck
+        if: steps.fastpath.outputs.docs_only != 'true'
         run: pnpm typecheck
 
+      # Runs on both paths: every tracked path (including a brand-new docs file) must
+      # be classified in open-manifest.json, and the check is quick.
       - name: Open-manifest check
         run: pnpm manifest:check
 
       - name: Shared process schema and source drift
+        if: steps.fastpath.outputs.docs_only != 'true'
         run: |
           pnpm shared:check
           python3 scripts/shared-processes/test_import.py
           python3 scripts/shared-processes/check-import.py
 
       - name: Content coverage audit
+        if: steps.fastpath.outputs.docs_only != 'true'
         run: node --test scripts/content-audit.test.mjs
 
       - name: Test
+        if: steps.fastpath.outputs.docs_only != 'true'
         run: pnpm test
 
       - name: Rankings determinism check
+        if: steps.fastpath.outputs.docs_only != 'true'
         run: pnpm tsx rankings-engine/scripts/recompute-check.ts
 
   # Keep the existing check name as the aggregate gate. always() prevents a failed,

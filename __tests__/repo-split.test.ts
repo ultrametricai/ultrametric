@@ -43,13 +43,16 @@ describe('docs/repo-split-census.json', () => {
   it('every test file sits in an open suite (plan section 1 tests table)', () => {
     for (const file of liveTestFiles) {
       const open = file.startsWith('__tests__/') || file.startsWith('lib/') ||
-        file.startsWith('rankings-engine/') || file === 'scripts/content-audit.test.mjs'
+        file.startsWith('rankings-engine/') || file === 'scripts/content-audit.test.mjs' ||
+        file === 'scripts/docs-fast-path.test.mjs'
       expect(open, `${file} is outside the open suites`).toBe(true)
     }
   })
 
-  it('carries the node --test file explicitly (vitest glob blind spot)', () => {
-    expect(census.nodeTestRunner.files).toContain('scripts/content-audit.test.mjs')
-    expect(census.open.files).toContain('scripts/content-audit.test.mjs')
+  it('carries the node --test files explicitly (vitest glob blind spot)', () => {
+    for (const file of ['scripts/content-audit.test.mjs', 'scripts/docs-fast-path.test.mjs']) {
+      expect(census.nodeTestRunner.files).toContain(file)
+      expect(census.open.files).toContain(file)
+    }
   })
 })
