@@ -129,7 +129,9 @@ describe('criterion checks', () => {
     // The rate wire needs no contributor count, so it still fires with the count unavailable.
     expect(youngRepoAnomaly({ stars: 2400, createdAt: daysAgo(20), contributors: null }, now)).not.toBeNull()
     // Repos at or past the age boundary keep the old behavior: only the 500/day floor applies.
-    expect(youngRepoAnomaly({ stars: 30_000, createdAt: daysAgo(YOUNG_REPO_MAX_AGE_DAYS), contributors: 1 }, now)).toBeNull()
+    // The boundary date derives from the same `now` the check reads — a second Date.now() read
+    // would leave the repo a few milliseconds under 60 days and flake the exact-boundary case.
+    expect(youngRepoAnomaly({ stars: 30_000, createdAt: new Date(now.getTime() - YOUNG_REPO_MAX_AGE_DAYS * 86_400_000).toISOString(), contributors: 1 }, now)).toBeNull()
     expect(youngRepoAnomaly({ stars: 30_000, createdAt: daysAgo(120), contributors: 1 }, now)).toBeNull()
   })
 
