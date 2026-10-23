@@ -93,6 +93,7 @@ const CATEGORIES = [
   'self-hosted-assistants',
   'serverless-databases',
   'software-factory',
+  'speech-to-text',
   'sso-identity',
   'stablecoin-payments',
   'startup-banking',
