@@ -51,7 +51,7 @@ describe('?geo= codec', () => {
     expect(serializeGeo('FR')).toBe('fr')
     expect(serializeGeo(null)).toBeNull()
     // Round trip: everything serializable parses back to itself.
-    for (const c of ['UK', 'IN', 'DE', 'FR', 'PT', 'CA', 'NZ'] as const) {
+    for (const c of ['UK', 'IN', 'DE', 'FR', 'PT', 'CA', 'NZ', 'AU'] as const) {
       expect(parseGeo(serializeGeo(c))).toBe(c)
     }
   })
@@ -76,7 +76,7 @@ describe('the GeoChoice codec (countries + the explicit 🌐 Global)', () => {
     expect(serializeGeoChoice(GEO_GLOBAL)).toBe('global')
     expect(serializeGeoChoice('UK')).toBe('uk')
     expect(serializeGeoChoice(null)).toBeNull()
-    for (const c of ['UK', 'IN', 'DE', 'FR', 'PT', 'CA', 'NZ', GEO_GLOBAL] as const) {
+    for (const c of ['UK', 'IN', 'DE', 'FR', 'PT', 'CA', 'NZ', 'AU', GEO_GLOBAL] as const) {
       expect(parseGeoChoice(serializeGeoChoice(c))).toBe(c)
     }
     // Default byte-identical guarantee for existing consumers: a stored/URL 'global' is the
@@ -126,8 +126,8 @@ describe('the shared per-tab store', () => {
 })
 
 describe('display metadata', () => {
-  it('covers all ten countries and all three geo scopes', () => {
-    expect(GEO_COUNTRIES).toEqual(['US', 'UK', 'IN', 'DE', 'FR', 'PT', 'CA', 'NZ', 'SG', 'KR'])
+  it('covers all eleven countries and all three geo scopes', () => {
+    expect(GEO_COUNTRIES).toEqual(['US', 'UK', 'IN', 'DE', 'FR', 'PT', 'CA', 'NZ', 'SG', 'AU', 'KR'])
     for (const c of GEO_COUNTRIES) {
       expect(GEO_PREF_META[c].label).toBeTruthy()
       expect(GEO_PREF_META[c].flag).toBeTruthy()
@@ -184,7 +184,7 @@ describe('hiddenInCountryView (the country-view filter rule)', () => {
   })
 
   it('a US-scoped row with no notes at all hides under every country view', () => {
-    for (const c of ['IN', 'UK', 'DE', 'FR', 'PT', 'CA', 'NZ'] as const) {
+    for (const c of ['IN', 'UK', 'DE', 'FR', 'PT', 'CA', 'NZ', 'AU'] as const) {
       expect(hiddenInCountryView(row('us'), c)).toBe(true)
       expect(hiddenInCountryView(row('us-state'), c)).toBe(true)
     }
