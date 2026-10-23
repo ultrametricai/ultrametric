@@ -2,7 +2,7 @@
 // driver at the top of a particular process page or a vendor, so we know how it works across
 // the globe"). One preference, one country list — the original five are the set the vendor-geo
 // spike judged (lib/vendorGeo.ts); the process geo notes (lib/processes.ts GeoNoteSchema) cover
-// every listed country, PT and CA included (founder new-countries wave 2026-10-03). Vendor geo
+// every listed country, PT and CA (2026-10-03 wave) and KR (2026-10-23 run) included. Vendor geo
 // stays evidence-gated per country: products the spike has not judged are absent, never guessed.
 //
 // This module is the CLIENT-SAFE half (no node:fs — the lib/jurisdictions.ts split convention):
