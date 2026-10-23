@@ -930,10 +930,13 @@ export interface VsRunState {
 const MIN_COMBO_LEN = 9
 
 // Combo ⇄ digit string, one option index per DECISIONS entry (order-stable, one char each).
+// One CHAR, not one decimal digit: index i encodes as charCode 48+i, so 0-9 stay the literal
+// digits every shared link ever used and index 10 (the KR entity, 2026-10-23) encodes as ':' —
+// the decoders below always read charCodeAt-48, so replay is unchanged for every old link.
 export function encodeCombo(choices: Choices): string {
   return DECISIONS.map((d) => {
     const i = d.options.findIndex((o) => o.value === choices[d.id])
-    return String(Math.max(0, i))
+    return String.fromCharCode(48 + Math.max(0, i))
   }).join('')
 }
 
@@ -961,7 +964,7 @@ export function encodeAssertedCombo(asserted: AssertedChoices): string {
     const v = asserted[d.id]
     if (v === undefined) return '.'
     const i = d.options.findIndex((o) => o.value === v)
-    return String(Math.max(0, i))
+    return String.fromCharCode(48 + Math.max(0, i))
   }).join('')
 }
 

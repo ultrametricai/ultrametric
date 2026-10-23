@@ -125,8 +125,8 @@ describe('the shared per-tab store', () => {
 })
 
 describe('display metadata', () => {
-  it('covers all seven countries and all three geo scopes', () => {
-    expect(GEO_COUNTRIES).toEqual(['US', 'UK', 'IN', 'DE', 'FR', 'PT', 'CA'])
+  it('covers all eight countries and all three geo scopes', () => {
+    expect(GEO_COUNTRIES).toEqual(['US', 'UK', 'IN', 'DE', 'FR', 'PT', 'CA', 'KR'])
     for (const c of GEO_COUNTRIES) {
       expect(GEO_PREF_META[c].label).toBeTruthy()
       expect(GEO_PREF_META[c].flag).toBeTruthy()

@@ -579,6 +579,10 @@ describe('permalink — the whole run state round-trips through ?run= (v2), and 
     expect(decodeCombo(digitAt('entity', '7'))!.entity).toBe('pvt-ltd')
     expect(decodeCombo(digitAt('entity', '8'))!.entity).toBe('lda')
     expect(decodeCombo(digitAt('entity', '9'))!.entity).toBe('ca-corp')
+    // KR appends past the decimal digits: index 10 is one char, ':' (charCode 48+10), and it
+    // round-trips through the one-char-per-decision codec.
+    expect(decodeCombo(digitAt('entity', ':'))!.entity).toBe('kr-corp')
+    expect(encodeCombo({ ...DEFAULT_CHOICES, entity: 'kr-corp' })).toBe(digitAt('entity', ':'))
     // Business model: subscriptions/invoices keep 0/1; marketplace/usage/ecommerce append.
     expect(decodeCombo(digitAt('product', '0'))!.product).toBe('subscriptions')
     expect(decodeCombo(digitAt('product', '1'))!.product).toBe('invoices')
