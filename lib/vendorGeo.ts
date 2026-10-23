@@ -74,10 +74,13 @@ export function loadVendorGeo(dir: string = DEFAULT_DIR()): VendorGeoEntry[] {
 const countryRank = (c: VendorGeoCountry) => (VENDOR_GEO_COUNTRIES as readonly string[]).indexOf(c)
 
 // Every judged country row for one product, in canonical US→UK→IN→DE→FR order — [] for the
-// many products the spike hasn't covered (the component renders nothing for them).
-export function vendorGeoFor(productId: string, dir?: string): VendorGeoEntry[] {
+// many products the spike hasn't covered (the component renders nothing for them). Rows are
+// judged against ONE arena's offering (the row's arenaId); pass `arenaId` to scope the result
+// to rows judged for that arena, so a cross-rostered product (gusto in payroll AND legal-ops)
+// never inherits another offering's availability reasoning.
+export function vendorGeoFor(productId: string, dir?: string, arenaId?: string): VendorGeoEntry[] {
   return loadVendorGeo(dir)
-    .filter((e) => e.productId === productId)
+    .filter((e) => e.productId === productId && (!arenaId || e.arenaId === arenaId))
     .sort((a, b) => countryRank(a.country) - countryRank(b.country))
 }
 

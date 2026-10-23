@@ -172,7 +172,10 @@ export function buildVendorReviews(dir: string = path.join(ROOT, 'open-rankings'
   const out = new Map<string, string>()
   for (const data of loadAll(dir)) {
     for (const entry of data.rankings.leaderboard) {
-      const geo = vendorGeoFor(entry.productId, dir)
+      // Arena-scoped: a geo row is judged against one arena's offering, and a cross-rostered
+      // product must not inherit another offering's availability reasoning (PR #449 review:
+      // the gusto legal-ops/startup-banking reviews carried payroll-specific notes).
+      const geo = vendorGeoFor(entry.productId, dir, data.category.id)
       const review = reviewFor(data, entry.productId, geo, dir)
       out.set(`${review.id}.json`, `${JSON.stringify(review, null, 2)}\n`)
     }
