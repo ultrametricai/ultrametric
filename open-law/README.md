@@ -88,6 +88,7 @@ The rules live in one directory per jurisdiction, named by the `jurisdiction` co
 | [UK](UK/) | Company registration and the certificate of incorporation, the confirmation statement, allotment returns, accounts filing periods, PSC information notices, corporation tax notice and PAYE registration deadlines, the VAT registration threshold, the written statement of particulars, EMI notification and company qualifying limits |
 | [NZ](NZ/) | Company incorporation and the resident-director requirement, the annual return, the company tax rate, the GST registration threshold, employer registration, KiwiSaver auto-enrolment and employer contributions, the written employment agreement and trial periods, the annual-holidays minimum, privacy-breach notification |
 | [SG](SG/) | Company registration and the private-company definition, the model constitution, allotment and share-transfer returns, AGM and annual-return deadlines, the registered office, resident director and company secretary requirements, the corporate tax rate and start-up exemption, the GST registration threshold, CPF employer contributions, Employment Act coverage, the Employment Pass qualifying salary, the PDPA breach-notification duty |
+| [KR](KR/) | Stock-company incorporation registration and articles contents, the absence of a minimum capital, the representative director, the two-week registry change deadline, corporate tax return deadline and rates, VAT registration and return deadlines, the social-insurance establishment report, written terms of employment, the severance-pay floor, PIPA breach notification, foreign-investment thresholds. Korean originals on law.go.kr are the primary locators, with the KLRI English translation attached where verified |
 
 ## Founder-journey workflow files
 
@@ -122,7 +123,10 @@ tax-at-grant against tax-at-vesting and replays the Rev. Proc. 2012-29 examples 
 dated record validated against `schemas/citation.schema.json` with publisher, the exact
 section (`locator`), `issued_on` where known, `checked_on`, jurisdiction, and an HTTPS
 link. A legal rule may only cite `primary-*` authorities; provider blogs can explain
-practice but cannot establish law (`kind: secondary-practice`). The reading canon the
+practice but cannot establish law (`kind: secondary-practice`). A non-English primary
+source marks its language (`lang`, e.g. `ko` for the Korean originals on law.go.kr) and
+may attach an official-translation pointer (`translation`, e.g. the KLRI English
+translation); the original stays the authoritative locator. The reading canon the
 distilled laws cite lives in `open-lore/` (`library.json` and `citations.json`), not here.
 
 Contribute citations here:
