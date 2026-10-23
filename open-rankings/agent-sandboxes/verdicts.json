@@ -4624,17 +4624,19 @@
     "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Sandbox0 documents agent-driven provisioning: claiming new sandboxes from templates or snapshots, including in parallel. Agents can execute code through REPL or Cmd contexts in an isolated cloud computer and read results via process contexts and the files API. Its use as the sandbox backend for the OpenAI Agents SDK and LangChain Deep Agents, plus a non-interactive `s0` CLI, supports fully programmatic runs with no human involved. Missing for 10: explicit documentation of a delete/teardown API (only pause is evidenced), detail on how execution output is returned to the agent, a published OpenAPI spec (probe 404), and independent or hands-on corroboration.",
+    "rationale": "Sandbox0 ships Go, Python, and TypeScript SDKs plus a raw HTTP API authenticated by a team API key, along with a non-interactive `s0` CLI, so agents can programmatically claim sandboxes, run code through REPL/Cmd contexts, and read files and logs. First-party adapters for OpenAI Agents SDK and LangChain Deep Agents directly target agent-driven, human-free use. Missing for 10: explicit documentation of sandbox deletion/teardown (only pause is evidenced), a published OpenAPI spec (probe 404), and independent hands-on corroboration of the full end-to-end loop.",
     "evidenceIds": [
       "sandbox0-docs-1",
-      "sandbox0-docs-8",
-      "sandbox0-docs-29",
+      "sandbox0-docs-37",
       "sandbox0-docs-21",
       "sandbox0-docs-7",
+      "sandbox0-docs-19",
       "sandbox0-docs-25",
       "sandbox0-docs-26",
       "sandbox0-docs-27",
-      "sandbox0-probe-4"
+      "sandbox0-docs-29",
+      "sandbox0-docs-2",
+      "sandbox0-probe-3"
     ]
   },
   {
@@ -4643,13 +4645,14 @@
     "verdict": "full",
     "quality": 9,
     "confidence": "high",
-    "rationale": "A live probe confirms https://sandbox0.ai/llms.txt returns HTTP 200 with product-oriented content. A second probe confirms markdown versions of the docs are served (e.g. /docs/sandbox.md), and many doc pages are published as .md files that agents can ingest directly. Missing for 10: no evidence of an llms-full.txt or of how complete the llms.txt index is beyond its header.",
+    "rationale": "A live probe confirms https://sandbox0.ai/llms.txt returns HTTP 200 with substantive product content, and another probe confirms markdown docs such as /docs/sandbox.md. Many docs pages are published as agent-friendly .md URLs (pause-resume.md, files.md, snapshot-restore.md, webhooks.md, and others), so an agent can be pointed at either source. Missing for 10: independent or community corroboration that agents actually consume these docs effectively.",
     "evidenceIds": [
       "sandbox0-probe-1",
       "sandbox0-probe-2",
       "sandbox0-docs-4",
       "sandbox0-docs-3",
-      "sandbox0-docs-6"
+      "sandbox0-docs-6",
+      "sandbox0-docs-7"
     ]
   },
   {
@@ -4658,7 +4661,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Sandbox0 is managed sandbox infrastructure for AI agents. A platform like this could plausibly offer built-in AI-generated insights over its own data, such as metrics or logs, so the axis applies. The evidence documents only infrastructure features: runtime metrics, logs, an audit ledger, and integrations with external agent SDKs. None of it shows the product itself producing AI insights or suggestions from user data.",
+    "rationale": "Sandbox0 is a managed sandbox platform for AI agents. A platform like this could plausibly offer built-in AI-generated insights over its own data, such as usage or logs, so the axis applies. The evidence pack documents no such feature: the runtime metrics, historical logs and audit ledger are raw observability data, not AI-generated insights or suggestions, and the agent framework integrations only make Sandbox0 a backend for customers' own agents.",
     "evidenceIds": []
   },
   {
@@ -4667,12 +4670,12 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Sandbox0 documents a session supervisor for background workers and agent runtimes that outlive an SDK call. It also supports auto_resume, so inbound access can wake a paused sandbox, and Sandbox Functions expose HTTP handlers without a long-lived server. Together these let agent workloads run and be triggered in the background, but this is infrastructure for automations rather than a first-party way to define them; GitHub Actions orchestration relies on an external platform and earns no credit. Missing for 10: a first-party scheduler or cron triggers, a documented way to define and set up automations, and independent or hands-on corroboration of autonomous background runs.",
+    "rationale": "Sandbox0 documents a session supervisor for 'background workers and agent runtimes that must outlive an SDK call', plus pause/resume with auto_resume so inbound access can wake a paused sandbox, and Sandbox Functions that serve HTTP handlers without a long-lived server. Together these give background agents a durable execution substrate and a basic event-driven wake path. However, there is no first-party way to define an automation: no scheduler, cron, or trigger configuration. GitHub Actions orchestration is an external CI workaround and earns no credit here. Missing for 10: native scheduling/cron or trigger-based automation setup, an automation definition and management workflow, and independent or hands-on corroboration of long-running background operation.",
     "evidenceIds": [
       "sandbox0-docs-20",
       "sandbox0-docs-4",
-      "sandbox0-docs-10",
-      "sandbox0-docs-2"
+      "sandbox0-docs-2",
+      "sandbox0-docs-10"
     ]
   },
   {
@@ -4681,7 +4684,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Sandbox0 is infrastructure that hosts a user's own AI agents in isolated cloud sandboxes, and it offers integrations as a backend for the OpenAI Agents SDK and LangChain Deep Agents. That is hosting external agents, not a built-in assistant users can delegate tasks to. A platform of this kind could plausibly ship an in-product assistant, but the evidence pack contains none.",
+    "rationale": "Sandbox0 is sandbox infrastructure that runs the user's own AI agents, for example as a backend for the OpenAI Agents SDK or LangChain Deep Agents. A built-in assistant is still a fair question for a developer platform like this, so the axis applies. Nothing in the evidence shows a first-party AI assistant inside the product that users can delegate tasks to. Hosting external agents is a building block or adjacent capability and earns no credit.",
     "evidenceIds": []
   },
   {
@@ -4689,13 +4692,12 @@
     "storyId": "agentic-headless",
     "verdict": "full",
     "quality": 8,
-    "confidence": "high",
-    "rationale": "Sandbox0 has a dedicated GitHub CI integration page. It says GitHub Actions can run the official `s0` CLI non-interactively for image build/push, template updates and sandbox orchestration. The official CLI is confirmed at github.com/sandbox0-ai/s0, and SDK-driven use (OpenAI Agents SDK, LangChain Deep Agents) adds programmatic, headless operation. Missing for 10: independent or hands-on corroboration of CI runs, and documentation for CI systems beyond GitHub Actions.",
+    "confidence": "medium",
+    "rationale": "Sandbox0 has a dedicated GitHub CI integration doc stating GitHub Actions can run the `s0` CLI non-interactively for image build/push, template updates, and sandbox orchestration. An official CLI exists, and Go/Python/TypeScript SDKs plus a raw HTTP API authenticate headlessly through a team-scoped API key exported as SANDBOX0_TOKEN. Missing for 10: independent or hands-on corroboration of CI runs, and documentation for CI systems beyond GitHub Actions.",
     "evidenceIds": [
       "sandbox0-docs-27",
       "sandbox0-probe-4",
-      "sandbox0-docs-25",
-      "sandbox0-docs-26"
+      "sandbox0-docs-37"
     ]
   },
   {
@@ -4704,7 +4706,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Sandbox platforms can plausibly ship MCP-consumption features, such as gateways that give the agent in a sandbox access to configured MCP servers, so this axis applies. However, the evidence never documents registering or plugging in MCP servers for tool use. The only MCP mention (docs-16) describes protocol controls that govern remote MCP traffic over HTTP/HTTPS. That is an adjacent network-policy feature, not MCP-client tool consumption.",
+    "rationale": "Sandbox platforms can plausibly offer MCP integration, such as an MCP gateway for agents running inside sandboxes, so this axis applies. The only MCP mention is 'remote MCP controls over HTTP or HTTPS' under protocol controls. That is an adjacent network-policy control over outbound MCP traffic, not a documented way to plug MCP servers in so the product or its agents can use their tools.",
     "evidenceIds": []
   },
   {
@@ -4713,7 +4715,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Sandbox0 is a managed sandbox platform, not itself an agent, so publishing an official MCP server is a fair question and the axis applies. The only MCP mention (\"remote MCP controls over HTTP or HTTPS\") describes protocol controls on sandbox network traffic, an adjacent feature rather than a first-party MCP server agents can connect to. The SDK integrations, CLI, and llms.txt are not MCP servers either, so there is no evidence of the capability.",
+    "rationale": "Sandbox0 is a managed sandbox platform, not an agent, so publishing an official MCP server is a fair question for it. The pack shows no such server. The only MCP mention describes 'remote MCP controls' among protocol controls on sandbox traffic, which is an adjacent feature and not a first-party MCP server agents can connect to. The SDKs, CLI and framework integrations cover other stories.",
     "evidenceIds": []
   },
   {
@@ -4722,7 +4724,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Sandbox0 is sandbox infrastructure that AI agents run inside. The evidence documents SDK adapters for OpenAI Agents and LangChain Deep Agents, the `s0` CLI, and llms.txt docs. None of these is a first-party natural-language interface for operating Sandbox0 itself: the agent frameworks are third-party building blocks that supply the natural-language layer, and the CLI and docs are not conversational controls.",
+    "rationale": "Sandbox0 provides sandboxes that AI agents run inside, plus SDKs, a CLI, and backend adapters for OpenAI Agents SDK and LangChain Deep Agents. Nothing in the evidence shows users operating Sandbox0 itself through natural-language commands. The agent-framework integrations are developer building blocks, and the llms.txt and Markdown docs are adjacent features, so neither earns credit.",
     "evidenceIds": []
   },
   {
@@ -4731,7 +4733,7 @@
     "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "An official CLI, `s0`, is documented at the vendor's GitHub repo (sandbox0-ai/s0). The docs show it running non-interactively in GitHub Actions for image build/push, template updates, and sandbox orchestration, which fits automated, agent-driven workflows. Missing for 10: a detailed command reference or coverage of AI-native CLI features (e.g. machine-readable output, agent-oriented commands), and independent or hands-on corroboration of CLI use.",
+    "rationale": "Sandbox0 ships an official CLI, `s0`, hosted in its own GitHub org (sandbox0-ai/s0). The docs say it can run non-interactively in GitHub Actions for image build/push, template updates and sandbox orchestration, which supports automation and agent-driven workflows. Missing for 10: CLI install and command reference docs in the pack, evidence of AI-native features (e.g., machine-readable output or agent-oriented commands), and independent hands-on corroboration.",
     "evidenceIds": [
       "sandbox0-probe-4",
       "sandbox0-docs-27"
@@ -4740,39 +4742,41 @@
   {
     "productId": "sandbox0",
     "storyId": "agentic-public-api",
-    "verdict": "partial",
-    "quality": 6,
+    "verdict": "full",
+    "quality": 7,
     "confidence": "medium",
-    "rationale": "Sandbox0 is clearly built to be driven programmatically. Its docs refer to observability \"APIs\" that read data without waking a sandbox, to SDK calls and a Python SDK adapter, to a non-interactive `s0` CLI for automation, and to webhooks. The docs are also machine-readable (llms.txt and .md pages return HTTP 200). However, no public API reference or OpenAPI spec was found, and every probed OpenAPI/Swagger path returned 404, so the API surface is implied by feature docs rather than shown as a documented reference. Missing for 10: a published API reference or OpenAPI spec, explicit endpoint/auth documentation, and independent hands-on corroboration of API use.",
+    "rationale": "Sandbox0 documents programmatic access through a raw HTTP API and official Go, Python, and TypeScript SDKs, authenticated with team-scoped API keys (SANDBOX0_TOKEN). Its docs describe API-driven operations such as observability APIs, file management, snapshots and forks, plus agent-framework adapters and LLM-readable docs (llms.txt, .md pages). However, no OpenAPI or Swagger spec was found at the probed paths, and the raw HTTP endpoint reference is not shown in the evidence. Missing for 10: a published machine-readable API spec or endpoint reference, independent or hands-on corroboration of API use.",
     "evidenceIds": [
+      "sandbox0-docs-37",
       "sandbox0-docs-19",
-      "sandbox0-docs-20",
+      "sandbox0-docs-7",
       "sandbox0-docs-25",
       "sandbox0-docs-27",
-      "sandbox0-docs-18",
       "sandbox0-probe-1",
       "sandbox0-probe-2",
-      "sandbox0-probe-3",
-      "sandbox0-probe-4"
+      "sandbox0-probe-3"
     ]
   },
   {
     "productId": "sandbox0",
     "storyId": "agentic-scoped-keys",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "Nothing in the evidence shows Sandbox0 issuing scoped or least-privilege API keys or tokens to an agent. The credential feature (docs-15) authenticates the sandbox's outbound traffic without exposing raw secrets. That is an adjacent secret-brokering capability, not scoped credentials for an agent to call the platform API. Team-scoped images and authenticated previews are also unrelated controls.",
-    "evidenceIds": []
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "Sandbox0 documents creating a team-scoped API key for SDK and raw HTTP API use. That is a product-issued credential with some scoping, but nothing shows finer-grained permissions, per-agent keys, or resource-level restrictions that would make it truly least-privilege. The credential features in docs-15 cover injecting outbound secrets into a sandbox, an adjacent capability that is not credited here. Missing for 10: granular permission scopes (read-only vs. write, per-sandbox or per-template), per-agent key issuance, key expiry/rotation/revocation docs, independent corroboration.",
+    "evidenceIds": [
+      "sandbox0-docs-37"
+    ]
   },
   {
     "productId": "sandbox0",
     "storyId": "agentic-sdks",
-    "verdict": "partial",
-    "quality": 4,
+    "verdict": "full",
+    "quality": 8,
     "confidence": "medium",
-    "rationale": "The docs refer to a first-party \"Sandbox0 Python SDK\" with an adapter for OpenAI Agents SDK runs, and mention SDK calls in the session-supervisor docs, so an official SDK does exist. The evidence is only passing references, with no dedicated SDK documentation. Missing for 10: dedicated SDK reference docs, a list of supported languages (e.g. TypeScript/Go), install/usage examples, and independent or hands-on corroboration.",
+    "rationale": "Sandbox0's get-started docs list official SDKs for Go (github.com/sandbox0-ai/sdk-go), Python (pip install sandbox0) and TypeScript (npm install sandbox0), authenticated with a team API key. The Python SDK also ships an adapter that makes Sandbox0 the backend for the OpenAI Agents SDK, and other docs reference SDK-driven workflows. missing for 10: in-depth SDK API reference or examples in the evidence, independent or hands-on corroboration of SDK quality.",
     "evidenceIds": [
+      "sandbox0-docs-37",
       "sandbox0-docs-25",
       "sandbox0-docs-20"
     ]
@@ -4783,7 +4787,7 @@
     "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Sandbox0 has a dedicated webhooks documentation page stating that webhooks let you react to process events, sandbox lifecycle changes, and file modifications. That is a first-party outbound event-subscription capability covering several event types. The evidence is a single summary line, so the details of how subscriptions work are not shown. Missing for 10: documented webhook registration/subscription API or config, payload schema and delivery/retry/signing details, independent or hands-on corroboration.",
+    "rationale": "Sandbox0 has a dedicated first-party webhooks page saying webhooks let you react to process events, sandbox lifecycle changes, and file modifications, which covers the core of subscribing to events via webhooks. The evidence is a single summary line, though, with no detail on how subscriptions work. Missing for 10: documented registration/subscription mechanics (API/SDK endpoints), payload schema, signature verification, retry/delivery guarantees, independent or hands-on corroboration.",
     "evidenceIds": [
       "sandbox0-docs-18"
     ]
@@ -4794,7 +4798,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Sandbox0 is an API-driven sandbox platform, so an interactive API reference is a fair question to ask of it. The evidence shows only prose docs, markdown docs and llms.txt. Nothing documents an interactive API explorer or runnable examples, and the OpenAPI/Swagger probes all returned 404.",
+    "rationale": "The evidence shows prose docs, SDKs, a raw HTTP API, llms.txt and markdown docs, but nothing about an interactive API reference or a 'try it' console with runnable examples. Probes for an OpenAPI or Swagger spec at all standard paths returned 404, so there is no spec-driven interactive reference either. An API reference is a fair axis for a sandbox API platform, so the absence of evidence is 'none', not 'na'.",
     "evidenceIds": []
   },
   {
@@ -4803,7 +4807,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Sandbox0 is an API-driven sandbox platform, so a downloadable API spec is a fair question, but the probe found every common OpenAPI/Swagger path returning 404. Nothing in the docs mentions an OpenAPI or equivalent spec. The llms.txt file and markdown docs are machine-readable documentation, not an API spec, so they earn no credit as an adjacent feature.",
+    "rationale": "Sandbox0 has a raw HTTP API that users can call with a team API key, so a downloadable machine-readable spec is a fair thing to expect. The evidence pack never documents an OpenAPI or equivalent spec, and the probe found that every standard OpenAPI/Swagger path returns 404. llms.txt and the markdown docs are LLM-friendly documentation, not an API spec, so they earn no credit here.",
     "evidenceIds": []
   },
   {
@@ -4812,13 +4816,14 @@
     "verdict": "full",
     "quality": 8,
     "confidence": "medium",
-    "rationale": "Sandbox0's core product is an isolated cloud computer where an AI agent can run code, install software and manage files (sandbox0-docs-1). Network policies restrict outbound traffic so the sandbox can be kept off production systems (sandbox0-docs-13), and credential features avoid placing raw secrets inside the sandbox (sandbox0-docs-15). Snapshots, rollback and forking let agents test against disposable copies of a known state (sandbox0-docs-8, sandbox0-docs-9). Missing for 10: an explicit documented statement on separating sandbox data from production data, and independent or hands-on corroboration of the isolation guarantees.",
+    "rationale": "Sandbox0's core offering is an isolated cloud computer where an AI agent can run code, install software and manage files. Outbound network policy and proxy controls can keep it from reaching production services, and brokered credentials keep raw secrets out of the sandbox. Snapshot, fork and rollback let users test against a copy of a known state without altering the original, and the $5 free credit allows trial use. missing for 10: independent or hands-on corroboration of the isolation, and an explicit test/staging mode for Sandbox0's own API distinct from live billing.",
     "evidenceIds": [
       "sandbox0-docs-1",
-      "sandbox0-docs-13",
-      "sandbox0-docs-15",
       "sandbox0-docs-8",
       "sandbox0-docs-9",
+      "sandbox0-docs-13",
+      "sandbox0-docs-15",
+      "sandbox0-docs-31",
       "sandbox0-probe-2"
     ]
   },
@@ -4828,17 +4833,22 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Sandbox0 is an API-driven sandbox platform, so API versioning and deprecation policy is a fair question for it. However, nothing in the evidence pack mentions API version identifiers, version pinning, or a documented deprecation or sunset policy. Labeling memory pause/resume as 'experimental' is a feature-maturity note, not a versioning or deprecation policy, and the OpenAPI probes all returned 404.",
+    "rationale": "Sandbox0 is a managed sandbox service with SDKs and a raw HTTP API, so API versioning and a deprecation policy are fair questions to ask of it. The evidence pack never mentions API version identifiers, version pinning, or a deprecation or sunset policy. Labeling a feature as experimental (memory pause/resume) is not a deprecation policy, and the OpenAPI probe found no published spec.",
     "evidenceIds": []
   },
   {
     "productId": "sandbox0",
     "storyId": "auto-teardown-timeouts",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "The evidence documents pausing sandbox compute between tasks, and paused sandboxes incur no compute charges on Sandbox0 Cloud. Nothing shows a configurable sandbox timeout or automatic idle shutdown or pause. Manual pause/resume is an adjacent control, and the route-level 'timeout' applies to service HTTP routes, not sandbox lifetime, so neither earns credit for this story.",
-    "evidenceIds": []
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "Sandbox0 documents pausing sandbox compute between tasks. Paused sandboxes incur no compute charges, and billing is per-second, so stopping billing after work is covered. However, no evidence shows a configurable idle or max-lifetime timeout that triggers pause or shutdown automatically. The only 'timeout' mentioned is a route-level service setting, which is a different feature. Missing for 10: documented idle/TTL timeout configuration, automatic shutdown or pause on timeout, and hands-on corroboration.",
+    "evidenceIds": [
+      "sandbox0-docs-2",
+      "sandbox0-docs-3",
+      "sandbox0-docs-36",
+      "sandbox0-probe-1"
+    ]
   },
   {
     "productId": "sandbox0",
@@ -4846,7 +4856,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Bulk operations are a fair axis for a sandbox platform, such as acting on many sandboxes, files, or templates in one call, but the evidence documents no batch or bulk API, CLI, or SDK capability. The nearest items are adjacent and earn no credit: claiming additional sandboxes from a snapshot for parallel tasks is done one claim at a time, and CI-driven `s0` orchestration is a user-side scripting workaround rather than a first-party bulk operation.",
+    "rationale": "Bulk operations across many items are a fair axis for a sandbox platform, for example batch-pausing, deleting or claiming many sandboxes in one call. The evidence documents no batch or bulk API. Claiming additional sandboxes from a snapshot for parallel tasks, and vague 'sandbox orchestration' via the CLI in GitHub Actions, are adjacent per-item capabilities rather than a documented bulk-operation feature.",
     "evidenceIds": []
   },
   {
@@ -4855,7 +4865,7 @@
     "verdict": "partial",
     "quality": 4,
     "confidence": "medium",
-    "rationale": "Sandbox0's own webhooks let users react to process events, sandbox lifecycle changes, and file modifications. Its `auto_resume` setting is a built-in event-to-action trigger that wakes a paused sandbox on inbound access. However, there is no evidence of a user-defined rules engine. Webhooks only notify an external consumer, which must carry out the action itself, and `auto_resume` is a single fixed toggle. Missing for 10: a configurable rule/condition-action engine inside the product, a range of built-in actions beyond waking a sandbox, detailed webhook event-filtering docs, and hands-on corroboration.",
+    "rationale": "Sandbox0 documents webhooks that fire on process events, sandbox lifecycle changes, and file modifications. It also documents a configurable auto_resume behavior where inbound access automatically wakes a paused sandbox. Both are first-party, event-driven automatic actions, but the webhooks only notify an external consumer, which must then perform the action. There is no evidence of a user-defined rule engine that maps conditions to in-product actions. Missing for 10: user-definable event→action rules or conditions, event filtering, in-product action execution beyond callbacks, detailed webhook configuration docs, independent corroboration.",
     "evidenceIds": [
       "sandbox0-docs-18",
       "sandbox0-docs-4"
@@ -4867,29 +4877,25 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Scheduling recurring jobs is a fair question for a managed agent-sandbox platform, but the evidence shows no native scheduler, cron, or recurring-workflow feature. Running `s0` from GitHub Actions is an external-platform workaround, and background workers, auto-resume on inbound traffic, and webhooks are adjacent features, so none of them count toward this story.",
+    "rationale": "Scheduling recurring jobs is a fair question for a managed agent-sandbox platform, but the evidence never documents a native scheduler, cron triggers, or recurring workflow definitions. Several items are adjacent and earn no credit here. Running `s0` from GitHub Actions is an external CI workaround. Background workers via the session supervisor, auto_resume on inbound traffic, and Sandbox Functions are different capabilities from time-based scheduling.",
     "evidenceIds": []
   },
   {
     "productId": "sandbox0",
     "storyId": "automation-versioned-workflows",
-    "verdict": "partial",
-    "quality": 3,
-    "confidence": "low",
-    "rationale": "Sandbox0 documents snapshot/restore that can checkpoint a workspace and roll an existing sandbox back to a known filesystem state. That gives point-in-time versions and rollback for whatever automation code lives in a sandbox. However, nothing describes versioning, diffing, or review of automations themselves (templates, functions, webhooks). Template updates via GitHub Actions rely on the user's own CI rather than a product feature. Missing for 10: explicit version history for automations/templates, review or diff workflow before changes, rollback scoped to automation definitions rather than whole-sandbox filesystem snapshots, independent corroboration.",
-    "evidenceIds": [
-      "sandbox0-docs-8",
-      "sandbox0-docs-2",
-      "sandbox0-docs-9"
-    ]
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "The evidence pack has no first-party capability to version, review, or roll back automation definitions such as templates, functions, or webhook configurations. Snapshot/restore rolls back a sandbox's filesystem state, which is an adjacent feature rather than automation versioning. Running `s0` from GitHub Actions to keep templates under git control is a user-side workaround, not a product capability.",
+    "evidenceIds": []
   },
   {
     "productId": "sandbox0",
     "storyId": "browser-in-sandbox",
     "verdict": "full",
-    "quality": 7,
+    "quality": 8,
     "confidence": "medium",
-    "rationale": "Sandbox0's coding-agents use-case docs describe a template that ships Google Chrome Stable, Playwright CLI, a sandbox0-browser component, TigerVNC, the Openbox window manager and a built-in noVNC viewer. That covers both a headless/automated browser and a viewable desktop environment inside the sandbox. Custom images and installing software inside the sandbox further support this. Missing for 10: in-depth dedicated docs on browser/desktop setup and resource requirements, independent or hands-on corroboration that the browser and VNC desktop work as described.",
+    "rationale": "Sandbox0's coding-agent template ships with `sandbox0-browser`, Google Chrome Stable, Playwright CLI, TigerVNC, the Openbox window manager and a built-in noVNC viewer. That covers both headless-browser automation and a viewable desktop session inside the sandbox. Custom images and software installation give further room to extend the environment. Missing for 10: a dedicated in-depth browser/desktop documentation page (the evidence is a single line in a use-case page), and independent or hands-on corroboration that the browser and desktop work as described.",
     "evidenceIds": [
       "sandbox0-docs-30",
       "sandbox0-docs-1",
@@ -4902,7 +4908,7 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "Sandbox0 documents claiming multiple sandboxes from a snapshot ID for parallel tasks, which is a first-party capability for running sandboxes concurrently. It also notes that resume depends on available capacity, but the pack never states actual concurrency limits or quotas, nor any evidence of large-fleet scale. Missing for 10: documented concurrency limits/quotas per team or plan, evidence of large-scale fleet operation, fleet-management tooling, independent or hands-on corroboration.",
+    "rationale": "Sandbox0 documents claiming additional sandboxes from a snapshot ID to run parallel tasks, which is its own concurrency capability. It also notes that resume depends on available capacity. Nothing in the evidence covers large-fleet scale or states any concurrency limits or quotas, and the route-level rate limits apply to services, not to sandbox concurrency. Missing for 10: documented concurrency limits/quotas per team or region, evidence of large-scale fleet operation, independent or hands-on corroboration of concurrent throughput.",
     "evidenceIds": [
       "sandbox0-docs-29",
       "sandbox0-docs-4"
@@ -4913,26 +4919,25 @@
     "storyId": "custom-images-templates",
     "verdict": "full",
     "quality": 9,
-    "confidence": "high",
-    "rationale": "Sandbox0 documents templates as reusable sandbox blueprints that define the image, default resources, environment, metadata and default network policy. It accepts both public and team-scoped private container images, importing their RootFS before runtime use. Its CLI supports image build/push and template updates from CI. Missing for 10: independent or hands-on corroboration that custom templates and bring-your-own images work as documented.",
+    "confidence": "medium",
+    "rationale": "Sandbox0's docs define templates as reusable blueprints covering image, resources, environment, metadata and network policy. They also state that public and team-scoped private images are imported for runtime use, and that the s0 CLI supports image build/push and template updates in CI. Together these cover both custom templates and bring-your-own-image. Missing for 10: independent or hands-on corroboration of building and using a custom image/template.",
     "evidenceIds": [
       "sandbox0-docs-23",
       "sandbox0-docs-24",
       "sandbox0-docs-27",
-      "sandbox0-docs-5",
-      "sandbox0-docs-30"
+      "sandbox0-docs-5"
     ]
   },
   {
     "productId": "sandbox0",
     "storyId": "expose-public-url",
     "verdict": "partial",
-    "quality": 6,
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Sandbox0 documents several first-party ways to reach services inside a sandbox: Services with route-level auth, CORS, rate limits and path rewrite; Private previews that open loopback-bound HTTP servers to authenticated clients; Sandbox Functions that expose public HTTP handlers; and inbound access that can auto-resume a paused sandbox. However, the evidence never explicitly describes mapping an arbitrary port to a public preview URL, and the documented previews are private and authenticated rather than public. Missing for 10: explicit documentation of port-to-public-URL exposure, URL format/lifecycle details, non-HTTP port support, independent or hands-on corroboration.",
+    "rationale": "Sandbox0 documents inbound exposure of services running inside a sandbox. Private previews let an authenticated client open an HTTP server bound to sandbox loopback (docs-12). Services offer route-level auth, CORS, rate limits and path rewrite (docs-11), and inbound access can auto-resume a paused sandbox (docs-4). However, the evidence never explicitly describes mapping an arbitrary port to a public preview URL: previews are framed as private and authenticated, and Functions expose public handlers rather than a running server's port (docs-10). Missing for 10: explicit documentation of port-to-public-URL exposure, URL format and lifecycle details, and hands-on or independent corroboration.",
     "evidenceIds": [
-      "sandbox0-docs-11",
       "sandbox0-docs-12",
+      "sandbox0-docs-11",
       "sandbox0-docs-10",
       "sandbox0-docs-4"
     ]
@@ -4943,7 +4948,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Startup speed is a fair axis for a cloud sandbox product, but the evidence documents no cold-start or resume latency figures. The only related item says resume 'takes time and requires available capacity' without quantifying it. Snapshot claiming and pause/resume are adjacent features that do not document startup speed, so they earn no credit here.",
+    "rationale": "Cold-start performance is a fair axis for a cloud sandbox service, but the pack contains no documented start or resume latency figures. The only timing-related statement says resume 'takes time and requires available capacity,' which gives no sub-second or few-second claim. Snapshot claiming and pause/resume describe lifecycle features, not documented cold-start times.",
     "evidenceIds": []
   },
   {
@@ -4952,22 +4957,24 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Sandbox0 has a dedicated files doc page saying you can \"read and manage persistent files\" without waking compute, and its overview says agents can \"manage files\". A Python SDK exists, but no evidence ties the file operations to SDK methods or shows upload/download specifically; SSH/scp copying is a separate channel, not an SDK feature. Missing for 10: explicit SDK file read/write/upload/download methods, upload/download coverage, independent or hands-on corroboration.",
+    "rationale": "Sandbox0 has a dedicated files page saying you can \"read and manage persistent files\" without waking compute, and its product overview lists managing files as a core capability. Official Go, Python and TypeScript SDKs exist, so file handling through the SDK is plausible but not shown with specific read/write/upload/download methods. SSH/scp copying is a separate access path and is not credited here. missing for 10: explicit SDK file read/write/upload/download API documentation, code examples, independent or hands-on corroboration.",
     "evidenceIds": [
       "sandbox0-docs-7",
       "sandbox0-docs-1",
-      "sandbox0-docs-25"
+      "sandbox0-docs-37"
     ]
   },
   {
     "productId": "sandbox0",
     "storyId": "free-tier-start",
     "verdict": "full",
-    "quality": 7,
+    "quality": 8,
     "confidence": "medium",
-    "rationale": "Sandbox0's pricing page states \"$5 free credit for new users. No credit card required,\" which meets the story's included-credits path and points to self-serve signup without a sales conversation. The support rests on a single claimed-docs line. Missing for 10: details on what the $5 credit covers and its limits, documentation of the self-serve signup flow, and independent or hands-on confirmation that no sales contact is needed.",
+    "rationale": "The pricing page states \"$5 free credit for new users. No credit card required\", and lists transparent per-second, usage-based rates with no one-hour minimum. The get-started docs show a self-serve path: install the SDK and create a team-scoped API key, with no sales contact mentioned. Missing for 10: independent or hands-on confirmation of the self-serve signup and credit flow, and documentation of how long the credit lasts or what limits apply once it runs out.",
     "evidenceIds": [
-      "sandbox0-docs-31"
+      "sandbox0-docs-31",
+      "sandbox0-docs-36",
+      "sandbox0-docs-37"
     ]
   },
   {
@@ -4976,7 +4983,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "GPU attachment is a fair question for a cloud sandbox product, so the axis applies. The evidence pack never mentions GPUs, accelerators, or GPU-backed instances. The only related item is a generic note that templates define 'default resources', which does not show GPU support.",
+    "rationale": "GPU attachment is a fair question for a cloud sandbox platform, but nothing in the evidence pack mentions GPUs or accelerators. Templates define only generic 'default resources', and pricing is billed solely per GiB-second of compute. Neither is evidence of GPU support.",
     "evidenceIds": []
   },
   {
@@ -4985,24 +4992,27 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "Sandbox0's docs describe each sandbox as an \"isolated cloud computer.\" The ability to run a Docker daemon inside a sandbox hints at VM-like separation, but the docs never name the isolation mechanism or describe it as a hard boundary. Network policy and credential-injection features are adjacent controls and earn no credit here. missing for 10: explicit documentation of the isolation technology (microVM, gVisor or equivalent), description of the kernel/hypervisor boundary and threat model, independent or hands-on corroboration of isolation strength.",
+    "rationale": "The docs describe each sandbox as an 'isolated cloud computer'. Support for running a Docker daemon inside the sandbox hints at VM-like isolation. However, no evidence names the actual isolation mechanism, such as a microVM, gVisor or Kata, or documents the boundary between sandboxes and customer systems. missing for 10: explicit documentation of the isolation technology (microVM or equivalent), description of the sandbox-to-host/tenant security boundary, independent or hands-on corroboration of isolation strength.",
     "evidenceIds": [
       "sandbox0-docs-1",
+      "sandbox0-probe-2",
       "sandbox0-docs-22"
     ]
   },
   {
     "productId": "sandbox0",
     "storyId": "long-running-sessions",
-    "verdict": "partial",
-    "quality": 6,
+    "verdict": "full",
+    "quality": 7,
     "confidence": "medium",
-    "rationale": "Sandbox0 documents long-lived sandboxes. The same sandbox's whole root filesystem is preserved across checkpoints, compute can pause between tasks and resume (including auto_resume on inbound access), and a session supervisor exists for background workers and agent runtimes that must outlive an SDK call. However, nothing states how long a sandbox can keep running continuously, and preserving live process state across a pause is only experimental. missing for 10: documented maximum runtime or timeout limits confirming hours-to-days continuous execution, non-experimental process/memory persistence across pauses, independent or hands-on corroboration of multi-day sessions.",
+    "rationale": "Sandbox0 documents a session supervisor for background workers and agent runtimes that must outlive an SDK call. It also documents persistent sandboxes that preserve the root filesystem across checkpoints, pause between tasks and resume the same sandbox, with auto_resume on inbound access. Per-second compute billing with no one-hour minimum and storage-only charges while paused make multi-hour or multi-day work practical. Missing for 10: no documented maximum session lifetime or idle-timeout policy confirming continuous runs of hours or days; process-state preservation across pause is only experimental; no independent or hands-on corroboration of long-running sessions.",
     "evidenceIds": [
+      "sandbox0-docs-20",
       "sandbox0-docs-2",
       "sandbox0-docs-4",
       "sandbox0-docs-6",
-      "sandbox0-docs-20",
+      "sandbox0-docs-36",
+      "sandbox0-docs-3",
       "sandbox0-probe-1"
     ]
   },
@@ -5010,9 +5020,9 @@
     "productId": "sandbox0",
     "storyId": "multi-language-runtimes",
     "verdict": "partial",
-    "quality": 5,
+    "quality": 4,
     "confidence": "medium",
-    "rationale": "Sandbox0 documents running code in an isolated sandbox, with execution contexts that can be stateful REPLs or stateless commands. Custom public or private images allow arbitrary runtimes to be installed. However, the evidence never names supported languages such as Python or JavaScript, and never describes structured or rich result output. missing for 10: explicitly documented multi-language REPL runtimes (Python, JavaScript, etc.), rich result output such as charts, images or structured data, and independent or hands-on corroboration.",
+    "rationale": "Sandbox0 documents running code in an isolated cloud sandbox (docs-1) through stateful REPL or stateless Cmd contexts (docs-21), and templates built from public or private images (docs-23, docs-24) imply arbitrary language runtimes can be installed. However, the evidence never names supported runtimes such as Python or JavaScript, and never describes structured or rich result output. missing for 10: explicitly documented multi-language runtimes (Python, JavaScript, others), rich result types such as charts, images or structured outputs, and hands-on or independent corroboration.",
     "evidenceIds": [
       "sandbox0-docs-1",
       "sandbox0-docs-21",
@@ -5024,9 +5034,9 @@
     "productId": "sandbox0",
     "storyId": "network-egress-policy",
     "verdict": "full",
-    "quality": 8,
+    "quality": 7,
     "confidence": "medium",
-    "rationale": "Sandbox0 documents a first-party `SandboxNetworkPolicy` resource that controls a sandbox's outbound traffic (docs-13), and templates can set a default network policy (docs-23). Egress can also be routed through a customer-controlled proxy, with HTTP and MCP protocol controls layered on top (docs-14, docs-16), so platform engineers get explicit, policy-based egress control. Missing for 10: detail on allow/deny rule granularity (domains, CIDRs, ports) in the evidence, and independent or hands-on corroboration that the policies are enforced.",
+    "rationale": "Sandbox0 documents a dedicated `SandboxNetworkPolicy` that controls outbound traffic for a sandbox, and templates can set a default network policy, so egress is governed by explicit policy. Proxy-based egress and HTTP request controls add further outbound control. Missing for 10: documented detail on allow/deny rule semantics (domains, IPs, ports), examples of restrict versus allow configurations, and independent or hands-on corroboration.",
     "evidenceIds": [
       "sandbox0-docs-13",
       "sandbox0-docs-23",
@@ -5039,31 +5049,31 @@
     "productId": "sandbox0",
     "storyId": "openness-api-parity",
     "verdict": "partial",
-    "quality": 5,
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Sandbox0 exposes a broad programmatic surface. Its docs describe APIs for observability and for file management without waking compute, plus a Python SDK, a non-interactive `s0` CLI for automation, and webhooks. Lifecycle features such as snapshot, fork, and pause/resume are documented in API-oriented terms. However, nothing documents that the API matches the UI feature for feature, and no OpenAPI spec was found at any probed path. missing for 10: explicit API/UI parity statement, a published OpenAPI or full API reference, independent corroboration that every UI action is API-accessible.",
+    "rationale": "Sandbox0 is clearly API-first. It documents a raw HTTP API with team-scoped API keys, official Go, Python and TypeScript SDKs, and an official `s0` CLI that runs non-interactively in CI. Its docs describe broad programmatic surfaces: history APIs for metrics, logs and audit, files, snapshots and forks, webhooks, network policy and templates. However, no documentation states that the API matches the UI feature-for-feature, and probes for a published OpenAPI spec all returned 404, so full coverage cannot be verified. Missing for 10: an explicit API/UI parity statement, a published OpenAPI/reference spec, and independent hands-on confirmation that every console action is exposed via the API.",
     "evidenceIds": [
-      "sandbox0-docs-7",
+      "sandbox0-docs-37",
       "sandbox0-docs-19",
-      "sandbox0-docs-25",
+      "sandbox0-docs-7",
       "sandbox0-docs-27",
-      "sandbox0-docs-18",
-      "sandbox0-docs-9",
+      "sandbox0-probe-4",
       "sandbox0-probe-3",
-      "sandbox0-probe-4"
+      "sandbox0-docs-18"
     ]
   },
   {
     "productId": "sandbox0",
     "storyId": "openness-full-export",
     "verdict": "partial",
-    "quality": 3,
+    "quality": 4,
     "confidence": "low",
-    "rationale": "Sandbox0 has its own documented ways to get file data out: reading persistent files without resuming compute and copying files over standard SSH/`scp`. Historical logs and the audit ledger are also readable via API. However, nothing documents a dedicated bulk export or an open-format export of snapshots, templates, or account data for leaving the platform. missing for 10: documented account-wide data export, export of snapshots/RootFS images in an open format, export format/portability documentation, independent or hands-on corroboration of a full exit path.",
+    "rationale": "Sandbox0's own documented capabilities let users pull data out: persistent files can be read without resuming compute (docs-7), files can be copied out with standard SSH/`scp` (docs-17), and historical logs, metrics and the audit ledger are readable via APIs (docs-19). Templates also build on standard public or private container images, which limits lock-in (docs-24). However, nothing describes a bulk or account-wide export, and nothing confirms snapshots or RootFS can be exported in an open format, so 'export all of my data and leave' is only partly evidenced. Missing for 10: documented bulk/account-level data export, snapshot/RootFS export in open formats (e.g. OCI/tar), explicit offboarding or data-portability documentation, independent corroboration.",
     "evidenceIds": [
       "sandbox0-docs-7",
       "sandbox0-docs-17",
-      "sandbox0-docs-19"
+      "sandbox0-docs-19",
+      "sandbox0-docs-24"
     ]
   },
   {
@@ -5072,7 +5082,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Source availability under an open license is a fair question for a managed sandbox service, so the axis applies. The evidence shows only that the official CLI is hosted at github.com/sandbox0-ai/s0, with no license stated, and nothing indicates the core platform's source is published. A public repository without a documented open license does not establish this capability.",
+    "rationale": "Open-source availability is a fair question for a managed sandbox platform, so the axis applies. The pack shows only that client tooling has GitHub repos (the Go SDK and the `s0` CLI). It names no license and says nothing about the core platform's source being public, so there is no evidence the product's source is readable under an open license.",
     "evidenceIds": []
   },
   {
@@ -5081,35 +5091,36 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Self-hosting is a fair axis for an agent-sandbox platform, but the pack never documents a self-hosted or on-prem deployment of the core product. Docs describe managed cloud sandboxes, and the 'Sandbox0 Cloud' qualifiers only imply another edition might exist. The open CLI repo and the customer-controlled egress proxy are adjacent features, not self-hosting of the core.",
+    "rationale": "Self-hosting is a fair question for a sandbox infrastructure product, but the evidence pack never documents a self-hosted or on-prem deployment of the core product. The materials describe a managed service, and the qualifier \"Sandbox0 Cloud\" alone does not show that a self-hostable edition exists. The customer-controlled egress proxy is an adjacent networking feature, not self-hosting.",
     "evidenceIds": []
   },
   {
     "productId": "sandbox0",
     "storyId": "pause-resume-state",
-    "verdict": "partial",
-    "quality": 6,
+    "verdict": "full",
+    "quality": 7,
     "confidence": "medium",
-    "rationale": "Sandbox0 documents pausing compute and resuming the same sandbox while preserving the whole writable root filesystem, including auto_resume on inbound access and no compute charges while paused. Memory preservation is only an experimental opt-in (`memory: true`) that covers 'supported process state', which is a significant caveat for the memory half of the story. Missing for 10: generally available (non-experimental) memory/process-state preservation, clarity on which process state is supported, independent or hands-on corroboration of pause/resume fidelity.",
+    "rationale": "Sandbox0 documents pausing compute and resuming the same sandbox with the whole writable root filesystem preserved, plus auto_resume on inbound access. Memory state can also be kept by opting in with `memory: true`, and pricing lists retained memory as a billed storage item. Missing for 10: memory pause/resume is marked experimental and covers only 'supported' process state, filesystem preservation is tied to successful checkpoints, and there is no independent or hands-on corroboration.",
     "evidenceIds": [
       "sandbox0-docs-2",
-      "sandbox0-docs-3",
+      "sandbox0-docs-6",
       "sandbox0-docs-4",
-      "sandbox0-docs-6"
+      "sandbox0-docs-36",
+      "sandbox0-docs-3"
     ]
   },
   {
     "productId": "sandbox0",
     "storyId": "per-second-billing",
-    "verdict": "partial",
-    "quality": 4,
-    "confidence": "medium",
-    "rationale": "Sandbox0 Cloud documents that paused sandboxes incur no compute charges, and the product says it runs \"without always-on compute costs.\" That supports paying only while a sandbox is running, but no evidence states the billing granularity or that charges are metered per second. Missing for 10: documented per-second billing granularity, published per-unit compute rates, and independent or hands-on billing corroboration.",
+    "verdict": "full",
+    "quality": 8,
+    "confidence": "high",
+    "rationale": "The pricing page says compute is billed by the second at about $0.000004167 per GiB-second, with no one-hour compute minimum, and that paused sandboxes incur storage charges only. The sandbox docs separately confirm that paused sandboxes incur no compute charges on Sandbox0 Cloud, and pause/resume lets compute stop between tasks. Missing for 10: clarity on whether billing tracks actual resource use or allocated template resources (and how CPU is metered), and independent or hands-on corroboration of billing behavior.",
     "evidenceIds": [
+      "sandbox0-docs-36",
       "sandbox0-docs-3",
       "sandbox0-docs-2",
-      "sandbox0-probe-1",
-      "sandbox0-docs-31"
+      "sandbox0-probe-1"
     ]
   },
   {
@@ -5118,7 +5129,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Choosing a storage region is a fair question for a managed cloud sandbox platform, so the axis applies, but no evidence documents a user-selectable region or data-residency control. The mention of a \"regional block store\" for image import (sandbox0-docs-24) implies regional infrastructure exists but does not show users can pick where their data lives. The customer-controlled egress proxy is an adjacent network feature, not data residency.",
+    "rationale": "Choosing a storage region is a fair question for a managed cloud sandbox service, but the evidence never documents a user-selectable region or residency option. The mention of a \"regional block store\" for template images implies the infrastructure is regional, not that users can choose where data lives. The customer-controlled egress proxy is an adjacent network control and earns no credit for residency.",
     "evidenceIds": []
   },
   {
@@ -5127,7 +5138,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Sandbox0 is a managed cloud sandbox service for AI agents that handles customer code and files. Asking whether customer data is used for model training is therefore a fair privacy question for this kind of product. The evidence pack contains no data-usage policy, training opt-out, or no-training commitment. Network egress policies, credential isolation, and audit ledgers are adjacent controls and earn no credit for this story.",
+    "rationale": "Sandbox0 is a managed cloud service that holds user workloads and files, so a policy against using customer data for AI training is a fair question to ask of it. However, nothing in the evidence pack addresses AI training data use, opt-out controls, or a no-training commitment. The network policy, credential, and audit features cover different capabilities and do not transfer to this story.",
     "evidenceIds": []
   },
   {
@@ -5136,7 +5147,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence covers persistence features: preserving the root filesystem across checkpoints, snapshots and restore, managing persistent files, and historical logs plus a signed audit ledger. Nothing documents retention periods, retention policies, deletion of sandboxes, snapshots or logs, or data-purge guarantees. File management and persistence are adjacent features, not controls over data retention and deletion, so they earn no credit here.",
+    "rationale": "The evidence covers persistence features such as RootFS preservation across checkpoints, snapshots, forks, file management without resuming compute, and historical logs and audit ledgers. None of it documents data-retention policies, retention windows, or explicit deletion of sandboxes, snapshots, logs, or stored data. Persistence and file management are adjacent features and do not show user control over retention or deletion.",
     "evidenceIds": []
   },
   {
@@ -5145,7 +5156,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Telemetry opt-out is a fair question for a managed sandbox platform that ships an official CLI and SDKs, but nothing in the evidence pack mentions telemetry, usage tracking, or any way to disable them. The observability docs describe customer-facing sandbox metrics, logs, and audit ledgers. Those are a different feature from vendor telemetry and do not count toward this story.",
+    "rationale": "Telemetry opt-out is a fair question for a managed sandbox service with an official CLI and SDKs, so the axis applies. However, nothing in the evidence pack documents any setting or environment variable for disabling telemetry or usage tracking. The observability docs cover customer-facing sandbox metrics, logs, and audit data, which is a related feature rather than a vendor telemetry opt-out.",
     "evidenceIds": []
   },
   {
@@ -5154,28 +5165,28 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Sandbox0 publishes a first-party coding-agents use-case recipe: claim sandboxes from a snapshot for parallel tasks, use a template bundling Chrome, Playwright CLI and a noVNC viewer, and keep agent runtimes alive beyond an SDK call through the session supervisor. That is a documented vendor recipe for running coding agents inside the sandbox, but the evidence never names Claude Code or Codex or shows install and auth steps for them. missing for 10: explicit Claude Code/Codex setup steps (install, credentials, launch), named-agent templates, hands-on or independent corroboration.",
+    "rationale": "Sandbox0 publishes a dedicated coding-agents use-case page. It describes a prebuilt template with browser tooling and snapshot-based parallel sandboxes, plus a documented integration for the coding agent LangChain Deep Agents Code. It also supports long-lived agent runtimes via the session supervisor. None of the evidence names Claude Code or Codex or gives a step-by-step recipe for running them, so delivery of the story as written is only implied. Missing for 10: explicit vendor recipes for Claude Code and Codex, install/auth steps for those agents, independent hands-on corroboration.",
     "evidenceIds": [
       "sandbox0-docs-29",
       "sandbox0-docs-30",
       "sandbox0-docs-28",
-      "sandbox0-docs-20",
-      "sandbox0-docs-1"
+      "sandbox0-docs-26",
+      "sandbox0-docs-20"
     ]
   },
   {
     "productId": "sandbox0",
     "storyId": "run-untrusted-code",
     "verdict": "full",
-    "quality": 7,
+    "quality": 8,
     "confidence": "medium",
-    "rationale": "Sandbox0's docs say each AI agent gets an isolated cloud computer to run code, rather than a cloud VM, VPS or developer workstation. They also document outbound network policy, credential injection that keeps raw secrets out of the sandbox process, and a signed audit ledger, which together cover the core of running untrusted code away from your own infrastructure. missing for 10: documentation of the actual isolation boundary (e.g., microVM/kernel-level isolation guarantees), independent or hands-on corroboration of the isolation claims.",
+    "rationale": "Sandbox0's docs describe each sandbox as an isolated cloud computer where an agent can run code. They also document several controls that keep that code away from the user's own systems: running agents in a sandbox instead of on a VM or workstation, `SandboxNetworkPolicy` for outbound traffic, and credential features that keep raw secrets out of the sandbox process. Stateful and stateless execution contexts are documented too. missing for 10: documentation of the isolation technology and its security guarantees (e.g., microVM or kernel-level boundary), independent or hands-on corroboration of the isolation.",
     "evidenceIds": [
       "sandbox0-docs-1",
-      "sandbox0-docs-28",
       "sandbox0-docs-13",
       "sandbox0-docs-15",
-      "sandbox0-docs-19",
+      "sandbox0-docs-21",
+      "sandbox0-docs-28",
       "sandbox0-probe-2"
     ]
   },
@@ -5185,7 +5196,7 @@
     "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Sandbox0 gives agents an isolated cloud computer rather than running code on the user's host (docs-1). Its credential features authenticate outbound traffic without placing raw secret material inside the sandbox process (docs-15), and outbound traffic is controlled by SandboxNetworkPolicy (docs-13). Together these directly address keeping secrets out of reach of agent-run code. Missing for 10: detail on how credential injection and isolation boundaries work, and independent or hands-on verification that secrets are truly unreachable.",
+    "rationale": "Sandbox0 runs agent code in an isolated cloud computer separate from the user's host (docs-1). Its credential features authenticate outbound traffic without placing raw secret material inside the sandbox process (docs-15), and outbound traffic can be restricted with SandboxNetworkPolicy (docs-13). Missing for 10: detail on how credential injection works and what isolation boundary is used, plus independent or hands-on corroboration that secrets stay unreachable.",
     "evidenceIds": [
       "sandbox0-docs-1",
       "sandbox0-docs-15",
@@ -5198,13 +5209,14 @@
     "verdict": "full",
     "quality": 9,
     "confidence": "medium",
-    "rationale": "First-party docs say a sandbox is an isolated cloud computer where the agent can 'run code, install software, manage files'. Arbitrary shell access comes through standard SSH clients and Cmd/REPL process contexts. Docker-in-Sandbox and a persistent writable root filesystem show that installed packages and system-level changes are supported and kept. Missing for 10: independent or hands-on corroboration that arbitrary commands and package installs work as documented.",
+    "rationale": "First-party docs state that a sandbox is an isolated cloud computer where the agent can run code and install software. They also document an SSH shell and stateful REPL and stateless Cmd process contexts for running commands. Docker-in-sandbox, custom images and an auto-growing RootFS support package installs, and the probe confirmed the docs page is live. Missing for 10: independent or hands-on corroboration of command execution and package installation.",
     "evidenceIds": [
       "sandbox0-docs-1",
       "sandbox0-docs-17",
       "sandbox0-docs-21",
       "sandbox0-docs-22",
-      "sandbox0-docs-2",
+      "sandbox0-docs-5",
+      "sandbox0-docs-24",
       "sandbox0-probe-2"
     ]
   },
@@ -5214,7 +5226,7 @@
     "verdict": "full",
     "quality": 9,
     "confidence": "medium",
-    "rationale": "Sandbox0 has a dedicated snapshot/restore doc page. It covers checkpointing an initialized workspace, claiming new sandboxes from that snapshot, rolling an existing sandbox back, and forking a running or paused sandbox into a new paused sandbox. The coding-agents use case also shows claiming parallel sandboxes from a snapshot ID. missing for 10: independent or hands-on corroboration that snapshot, restore and fork work as documented.",
+    "rationale": "Sandbox0 has a dedicated snapshot/restore doc. It describes checkpointing an initialized workspace, claiming new sandboxes from that snapshot's filesystem state, and rolling an existing sandbox back. It also documents forking a running or paused sandbox, and the coding-agents use case shows claiming parallel sandboxes from a snapshot ID. Missing for 10: independent or hands-on corroboration that snapshot, restore and fork work as documented.",
     "evidenceIds": [
       "sandbox0-docs-8",
       "sandbox0-docs-9",
@@ -5228,16 +5240,13 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Sandbox0 documents isolated cloud sandboxes for agents and describes claiming new sandboxes from templates or snapshots, with a Python SDK and the `s0` CLI available for orchestration. However, no evidence shows a single create call or startup latency, and the docs say resume 'takes time and requires available capacity.' missing for 10: an explicit one-call create API/SDK example, documented provisioning time in seconds, independent or hands-on corroboration of startup speed.",
+    "rationale": "Sandbox0 documents isolated cloud sandboxes provisioned programmatically. It ships official Go, Python and TypeScript SDKs plus a raw HTTP API authenticated with a team API key. New sandboxes can be claimed from templates or snapshots. However, no evidence shows that a single call creates a sandbox, and no startup-latency figures support the 'live in seconds' claim. Missing for 10: a documented one-call create example, cold-start/provisioning time evidence, and independent hands-on corroboration of speed.",
     "evidenceIds": [
       "sandbox0-docs-1",
-      "sandbox0-docs-8",
-      "sandbox0-docs-29",
+      "sandbox0-docs-37",
       "sandbox0-docs-23",
-      "sandbox0-docs-25",
-      "sandbox0-docs-27",
-      "sandbox0-probe-4",
-      "sandbox0-docs-4"
+      "sandbox0-docs-8",
+      "sandbox0-docs-29"
     ]
   },
   {
