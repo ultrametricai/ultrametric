@@ -267,22 +267,34 @@ describe('apply', () => {
     return { dir, triagePath }
   }
 
-  it('copies the existing identity into the target roster once, with a scoped-entry disclosure', () => {
+  it('copies the existing identity into the target roster once, with the launch post crawled and the applied key ledgered', () => {
     const { dir, triagePath } = setup(triageWith('auto-approved'))
-    expect(applyLaunchBringups(triagePath, 2, dir)).toEqual(['legal-ops mercury'])
+    const ledgerFile = path.join(dir, 'seen.json')
+    expect(applyLaunchBringups(triagePath, 2, dir, ledgerFile)).toEqual(['legal-ops mercury'])
     const roster = JSON.parse(fs.readFileSync(path.join(dir, 'legal-ops', 'products.json'), 'utf8')) as Product[]
     expect(roster).toHaveLength(1)
     expect(roster[0].id).toBe('mercury')
     expect(roster[0].urls.site).toBe('https://mercury.com')
+    // the launch post itself is declared for the scoped crawl — the announcement that approved
+    // the entry must reach judging
+    expect(roster[0].urls.extra).toEqual(['https://mercury.com/blog/incorporation-service'])
     expect(roster[0].affiliation).toContain('judged separately in startup-banking')
+    // the APPLIED key is ledgered here (scan ledgers only needs-human rows), so the pair stops
+    // re-surfacing only once it actually landed
+    const ledger = JSON.parse(fs.readFileSync(ledgerFile, 'utf8'))
+    expect(ledger.seen.map((e: { key: string }) => e.key)).toEqual([launchKey('mercury', 'legal-ops')])
     // idempotent: a second apply adds nothing
-    expect(applyLaunchBringups(triagePath, 2, dir)).toEqual([])
+    expect(applyLaunchBringups(triagePath, 2, dir, ledgerFile)).toEqual([])
   })
 
-  it('applies nothing for needs-human rows or a zero cap', () => {
+  it('applies and ledgers nothing for needs-human rows or a zero cap', () => {
     const { dir, triagePath } = setup(triageWith('needs-human'))
-    expect(applyLaunchBringups(triagePath, 2, dir)).toEqual([])
+    const ledgerFile = path.join(dir, 'seen.json')
+    expect(applyLaunchBringups(triagePath, 2, dir, ledgerFile)).toEqual([])
+    expect(fs.existsSync(ledgerFile)).toBe(false)
     const { dir: dir2, triagePath: triagePath2 } = setup(triageWith('auto-approved'))
-    expect(applyLaunchBringups(triagePath2, 0, dir2)).toEqual([])
+    const ledgerFile2 = path.join(dir2, 'seen.json')
+    expect(applyLaunchBringups(triagePath2, 0, dir2, ledgerFile2)).toEqual([])
+    expect(fs.existsSync(ledgerFile2)).toBe(false)
   })
 })

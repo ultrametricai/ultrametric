@@ -134,8 +134,22 @@ jobs:
           pnpm tsx rankings-engine/scripts/generate-step-rankings.ts
           pnpm stats
 
+      # Detection-only runs gate hard on the suite. When --apply added a roster entry, the
+      # corpus-pinned tests (process-selection-compatibility counts, arena leaderboard pins)
+      # legitimately move and need a human re-pin — exactly what the gusto debut on PR #449
+      # required — so an apply run records the red suite on the PR body for the reviewer
+      # instead of silently discarding the whole scan branch. Merges stay gated by CI either way.
       - name: Tests
-        run: pnpm test
+        run: |
+          if pnpm test; then
+            exit 0
+          fi
+          if [ -s /tmp/lw-applied.txt ]; then
+            echo "TESTS_RED=1" >> "$GITHUB_ENV"
+            echo "Test suite is red after the roster apply — corpus-pinned tests need a re-pin in review (recorded on the PR body)."
+            exit 0
+          fi
+          exit 1
 
       - name: Commit report + seen-ledger (+ applied entries) as PR (or compare-link issue)
         env:
@@ -165,6 +179,11 @@ jobs:
               echo
               echo "Applied cross-arena entries:"
               sed 's/^/- /' /tmp/lw-applied.txt
+            fi
+            if [ "$TESTS_RED" = "1" ]; then
+              echo
+              echo "> [!WARNING]"
+              echo "> The test suite is red on this branch: the roster apply moved corpus-pinned assertions (process-selection-compatibility counts, arena leaderboard pins). Re-pin them in review before merging — CI gates the merge either way."
             fi
           } > /tmp/launch-watch-pr-body.md
           # Org policy may forbid Actions from creating PRs — fall back to an issue carrying the

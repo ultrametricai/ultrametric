@@ -18,7 +18,9 @@
 //
 // Output rides the existing radar pipeline:
 //   - candidates are keyed `launch:<productId>:<arena>` in the shared seen-ledger
-//     (rankings-engine/radar-seen.json), so each launch is reported once;
+//     (rankings-engine/radar-seen.json): needs-human pairs are ledgered when reported (one
+//     human call per pair), auto-approved pairs only when actually applied, and a later launch
+//     into a ledgered pair merges its URL into the entry instead of re-nominating it;
 //   - the dated report lands in reports/launch-watch/<date>.{json,md};
 //   - dispositions are written as a radar-triage TriageReport
 //     (reports/launch-watch/<date>-triage.json): needs-human rows flow through
@@ -335,10 +337,20 @@ export function buildMarkdown(report: LaunchWatchReport): string {
 // ---------------------------------------------------------------------------------------------
 // Apply: copy an existing product identity into the target arena's roster (auto-approved rows
 // only, capped). The scoped engine run that follows — not this append — produces the scores.
+// Only APPLIED keys enter the seen-ledger here (the scan ledgers only needs-human rows), so an
+// auto-approved row left behind by the cap or a missing ANTHROPIC_API_KEY stays eligible and
+// re-surfaces on the next scan until a run actually applies it.
 
-export function applyLaunchBringups(triagePath: string, cap: number, dataDir: string = DATA_DIR): string[] {
+export function applyLaunchBringups(
+  triagePath: string,
+  cap: number,
+  dataDir: string = DATA_DIR,
+  ledgerFile: string = SEEN_LEDGER_FILE,
+): string[] {
   const triage = TriageReportSchema.parse(JSON.parse(fs.readFileSync(triagePath, 'utf8')))
   const applied: string[] = []
+  const appliedEntries: SeenEntry[] = []
+  const date = triage.generatedAt.slice(0, 10)
   for (const d of triage.dispositions) {
     if (applied.length >= cap) break
     if (d.status !== 'auto-approved' || !d.bringup || !d.arena) continue
@@ -360,14 +372,26 @@ export function applyLaunchBringups(triagePath: string, cap: number, dataDir: st
         site: sourceEntry.product.urls.site,
         ...(sourceEntry.product.urls.docs ? { docs: sourceEntry.product.urls.docs } : {}),
         ...(sourceEntry.product.urls.news ? { news: sourceEntry.product.urls.news } : {}),
+        // The launch post itself: the crawl stage fetches only declared URLs, so without this
+        // the scoped run would judge the entry without the announcement that approved it.
+        extra: [d.url],
       },
       affiliation:
-        `Cross-arena entry (launch-watch ${triage.generatedAt.slice(0, 10)}): ${sourceEntry.product.name} is judged separately in ` +
+        `Cross-arena entry (launch-watch ${date}): ${sourceEntry.product.name} is judged separately in ` +
         `${sourceEntry.arena}; this entry judges only the offering announced at ${d.url}.`,
     })
     roster.push(entry)
     fs.writeFileSync(targetFile, JSON.stringify(roster, null, 2) + '\n')
     applied.push(`${d.arena} ${productId}`)
+    appliedEntries.push({ key: d.key, name: d.name, firstSeen: date, sources: [d.url] })
+  }
+  if (appliedEntries.length > 0) {
+    const ledger = loadSeenLedger(ledgerFile)
+    writeJson(ledgerFile, {
+      ...(ledger?._comment ? { _comment: ledger._comment } : {}),
+      updatedAt: new Date().toISOString(),
+      seen: mergeSeenEntries([ledger?.seen ?? [], appliedEntries]),
+    })
   }
   return applied
 }
@@ -515,12 +539,20 @@ export async function run(argv: string[]): Promise<LaunchWatchReport> {
   fs.writeFileSync(path.join(LW_REPORTS_DIR, `${date}.md`), markdown + '\n')
   writeJson(path.join(LW_REPORTS_DIR, `${date}-triage.json`), triage)
 
-  const newEntries: SeenEntry[] = candidates.map((c) => ({
-    key: c.key,
-    name: `${c.name} → ${c.arena}`,
-    firstSeen: date,
-    sources: [c.url],
-  }))
+  // Only needs-human rows are ledgered at scan time: the pair is now a human's call and must
+  // not be re-nominated weekly. Auto-approved rows stay OUT of the ledger until a run actually
+  // applies them (applyLaunchBringups ledgers applied keys), so a row left behind by the apply
+  // cap or a missing ANTHROPIC_API_KEY re-surfaces on the next scan instead of silently
+  // expiring half-approved.
+  const statusByKey = new Map(triage.dispositions.map((d) => [d.key, d.status]))
+  const newEntries: SeenEntry[] = candidates
+    .filter((c) => statusByKey.get(c.key) === 'needs-human')
+    .map((c) => ({
+      key: c.key,
+      name: `${c.name} → ${c.arena}`,
+      firstSeen: date,
+      sources: [c.url],
+    }))
   // laterLaunches: a later launch into an already-reported pair is not re-nominated (the pair's
   // human call stands), but its URL merges into the pair's ledger entry, so it stays visible in
   // the scan PR's ledger diff instead of vanishing.

@@ -137,11 +137,13 @@ seeded only where a keyless GET was verified — keeps the launch-shaped headlin
 arenas the vendor is not rostered in.
 
 Candidates are keyed `launch:<productId>:<arena>` in the shared seen-ledger
-(`rankings-engine/radar-seen.json`): the pair is a single human call, so it is nominated once
-rather than on every later post naming the same arena. A later launch into an already-reported
-pair still merges its URL into the pair's ledger entry (visible in the scan PR's ledger diff),
-and deleting the ledger row re-surfaces the pair, the same escape hatch the radar documents
-above. Dispositions are written
+(`rankings-engine/radar-seen.json`): a needs-human pair is ledgered when reported (one human
+call per pair, rather than a re-nomination on every later post naming the same arena), while an
+auto-approved pair is ledgered only when a run actually applies it, so a row left behind by the
+apply cap or a missing `ANTHROPIC_API_KEY` re-surfaces until it lands. A later launch into an
+already-ledgered pair still merges its URL into the pair's entry (visible in the scan PR's
+ledger diff), and deleting the ledger row re-surfaces the pair, the same escape hatch the radar
+documents above. Dispositions are written
 in the radar-triage report shape (`reports/launch-watch/<date>-triage.json`): needs-human rows
 flow through `needs-human-issue.ts --generator launch-watch` into a labeled issue, and
 auto-approved rows (`LW_AUTO_APPROVE_HITS`+ distinct keyword hits; founder-affiliated products
