@@ -66,7 +66,13 @@ jobs:
 
       - name: Commit report as PR (or compare-link issue)
         env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          # Prefer the fine-grained PAT when the secret exists: a PR created with the
+          # workflow's GITHUB_TOKEN does not trigger pull_request workflows (GitHub's
+          # recursion guard — bot PRs #430/#433 carry no validation check), so the
+          # required checks never report and the auto-merge opt-in below never
+          # completes. Falls back to GITHUB_TOKEN when the secret is absent; no
+          # secrets are created here.
+          GH_TOKEN: ${{ secrets.UM_BOT_PR_PAT || secrets.GITHUB_TOKEN }}
           RUN_ID: ${{ github.run_id }}
         run: |
           # The report path is open-rankings/staleness-report.json since the open-rankings
@@ -109,6 +115,16 @@ jobs:
             pnpm tsx rankings-engine/scripts/close-superseded.ts --kind issue \
               --title-prefix "accuracy-engine: staleness report ready on" \
               --successor "${PR_URL##*/}" || echo "fallback-issue supersession close failed — see run logs"
+            # Auto-merge opt-in (maintainer authorization 2026-10-23): branch protection
+            # on main holds the merge until validation/ci + Greptile Review pass and
+            # every thread resolves. Greptile does not review bot PRs unprompted
+            # (PRs #430/#433 each needed a maintainer's '@greptileai review'), so the
+            # comment requests it. Both follow-ups are best-effort; a failure leaves
+            # the PR open for a manual merge.
+            gh pr merge --auto --merge "$PR_URL" \
+              || echo "auto-merge opt-in failed (org settings may block GITHUB_TOKEN; fallback: fine-grained PAT secret) — merge $PR_URL manually once checks pass"
+            gh pr comment "$PR_URL" --body "@greptileai review" \
+              || echo "Greptile review request failed — comment '@greptileai review' on $PR_URL manually"
           else
             ISSUE_URL=$(gh issue create \
               --title "accuracy-engine: staleness report ready on $BRANCH" \
