@@ -30,14 +30,15 @@ import type { Cadence, SimStep } from './processSim'
 
 // Country-aware entity options (founder round 5, item 1). Codec rule: 'c-corp'/'llc' keep their
 // original indices 0/1; every non-US entity value is APPENDED so old digit permalinks replay
-// unchanged ('nz-ltd' and 'kr-chusik-hoesa' are the 11th and 12th slots — the combo codec writes option
-// indices past 9 in base 36, so they encode as 'a' and 'b'; see lib/virtualStartupRun.ts). HONESTY: the step corpus is
+// unchanged ('nz-ltd', 'pte-ltd', and 'kr-chusik-hoesa' are the 11th-13th slots — the combo
+// codec writes option indices past 9 in base 36, so they encode as 'a', 'b', and 'c'; see
+// lib/virtualStartupRun.ts). HONESTY: the step corpus is
 // US-shaped — a non-US entity keeps the EXACT corpus
 // incorporation composition of the C-Corp path (never a fake corpus branch) and frames it with
 // the committed geoNotes country analog (terminal line + entity label).
 export type EntityChoice =
   | 'c-corp' | 'llc' | 'ltd' | 'gmbh' | 'ug' | 'sas' | 'sarl' | 'pvt-ltd' | 'lda' | 'ca-corp'
-  | 'nz-ltd' | 'kr-chusik-hoesa'
+  | 'nz-ltd' | 'pte-ltd' | 'kr-chusik-hoesa'
 export type FundingChoice = 'bootstrap' | 'seed'
 // Business models (founder round 5, item 2). Codec rule: 'subscriptions'/'invoices' keep indices
 // 0/1; 'marketplace'/'usage'/'ecommerce' append. Only compositions the corpus honestly supports:
@@ -231,6 +232,10 @@ export const ENTITY_META: Record<EntityChoice, EntityMeta> = {
     label: 'NZ limited company', suffix: ' Limited', country: 'NZ',
     filing: { label: 'Certificate of Incorporation', register: 'NZ Companies Office no. 0000000 (placeholder)' },
   },
+  'pte-ltd': {
+    label: 'Pte Ltd', suffix: ' Pte. Ltd.', country: 'SG',
+    filing: { label: 'Notice of Incorporation', register: 'ACRA UEN 000000000X (placeholder)' },
+  },
   'kr-chusik-hoesa': {
     label: 'Chusik hoesa (주식회사)', suffix: ' Co., Ltd.', country: 'KR',
     filing: { label: 'Incorporation registration', register: 'Corporate registry no. 000000-0000000 (placeholder)' },
@@ -249,6 +254,7 @@ export const ENTITY_OPTIONS_BY_COUNTRY: Record<GeoCountry, EntityChoice[]> = {
   PT: ['lda'],
   CA: ['ca-corp'],
   NZ: ['nz-ltd'],
+  SG: ['pte-ltd'],
   KR: ['kr-chusik-hoesa'],
 }
 
@@ -315,6 +321,7 @@ export const DECISIONS: DecisionDef[] = [
       { value: 'lda', label: 'Lda', detail: 'the same corpus incorporation composition as the C-Corp path (form_001), framed for Portugal with the committed Empresa Online analog — the corpus is US-shaped; no steps invented' },
       { value: 'ca-corp', label: 'Federal corporation (CBCA)', detail: 'the same corpus incorporation composition as the C-Corp path (form_001), framed for Canada with the committed Corporations Canada analog — the corpus is US-shaped; no steps invented' },
       { value: 'nz-ltd', label: 'NZ limited company', detail: 'the same corpus incorporation composition as the C-Corp path (form_001), framed for New Zealand with the committed Companies Office analog — the corpus is US-shaped; no steps invented' },
+      { value: 'pte-ltd', label: 'Pte Ltd', detail: 'the same corpus incorporation composition as the C-Corp path (form_001), framed for Singapore with the committed ACRA/Bizfile analog — the corpus is US-shaped; no steps invented' },
       { value: 'kr-chusik-hoesa', label: 'Chusik hoesa (주식회사)', detail: 'the same corpus incorporation composition as the C-Corp path (form_001), framed for South Korea with the committed court-registry (IROS) analog — the corpus is US-shaped; no steps invented' },
     ],
   },

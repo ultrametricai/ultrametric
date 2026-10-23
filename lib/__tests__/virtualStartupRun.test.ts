@@ -572,9 +572,10 @@ describe('permalink — the whole run state round-trips through ?run= (v2), and 
       return base.join('')
     }
     // Entity: c-corp/llc keep 0/1; the country entities append as 2–9 (PT/CA took 8/9 in the
-    // 2026-10-03 new-countries wave — old digits still mean what they always meant). NZ and KR
-    // took the 11th and 12th slots (2026-10-23), which write past '9' in base 36 as 'a' and
-    // 'b'; slots 0–9 encode byte-identically to every link a released codec emitted.
+    // 2026-10-03 new-countries wave — old digits still mean what they always meant). NZ took
+    // the 11th slot, SG the 12th, and KR the 13th (2026-10-23), which write past '9' in base 36
+    // as 'a'/'b'/'c';
+    // slots 0–9 encode byte-identically to every link a released codec emitted.
     expect(decodeCombo(digitAt('entity', '0'))!.entity).toBe('c-corp')
     expect(decodeCombo(digitAt('entity', '1'))!.entity).toBe('llc')
     expect(decodeCombo(digitAt('entity', '2'))!.entity).toBe('ltd')
@@ -582,12 +583,13 @@ describe('permalink — the whole run state round-trips through ?run= (v2), and 
     expect(decodeCombo(digitAt('entity', '8'))!.entity).toBe('lda')
     expect(decodeCombo(digitAt('entity', '9'))!.entity).toBe('ca-corp')
     expect(decodeCombo(digitAt('entity', 'a'))!.entity).toBe('nz-ltd')
-    expect(decodeCombo(digitAt('entity', 'b'))!.entity).toBe('kr-chusik-hoesa')
-    expect(decodeCombo(digitAt('entity', 'c'))).toBeNull()
+    expect(decodeCombo(digitAt('entity', 'b'))!.entity).toBe('pte-ltd')
+    expect(decodeCombo(digitAt('entity', 'c'))!.entity).toBe('kr-chusik-hoesa')
+    expect(decodeCombo(digitAt('entity', 'd'))).toBeNull()
     const entitySlot = DECISIONS.findIndex((d) => d.id === 'entity')
     expect(encodeCombo({ ...DEFAULT_CHOICES, entity: 'nz-ltd' })[entitySlot]).toBe('a')
     expect(decodeCombo(encodeCombo({ ...DEFAULT_CHOICES, entity: 'nz-ltd' }))!.entity).toBe('nz-ltd')
-    expect(encodeCombo({ ...DEFAULT_CHOICES, entity: 'kr-chusik-hoesa' })[entitySlot]).toBe('b')
+    expect(encodeCombo({ ...DEFAULT_CHOICES, entity: 'kr-chusik-hoesa' })[entitySlot]).toBe('c')
     expect(decodeCombo(encodeCombo({ ...DEFAULT_CHOICES, entity: 'kr-chusik-hoesa' }))!.entity).toBe('kr-chusik-hoesa')
     // Business model: subscriptions/invoices keep 0/1; marketplace/usage/ecommerce append.
     expect(decodeCombo(digitAt('product', '0'))!.product).toBe('subscriptions')
