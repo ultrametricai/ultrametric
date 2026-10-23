@@ -3,9 +3,9 @@
     "productId": "adp-run",
     "storyId": "accounting-software-sync",
     "verdict": "partial",
-    "quality": 5,
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "ADP's own package docs say RUN can export journal entries into QuickBooks, Xero, Wave, Creative Solutions or a generic output file without re-keying data, which covers the target accounting systems. The evidence describes an export, though, not an automatic or continuous sync, so the 'automatically' part of the story is unproven. API Central is only a developer building block and earns no credit here. Missing for 10: evidence of automatic/scheduled sync rather than export, details on GL account mapping and how the integration works, independent or hands-on corroboration.",
+    "rationale": "ADP's own docs say RUN can export journal entries into QuickBooks, Xero, Wave, Creative Solutions or a generic output file without re-keying data. That is the product's own capability, but it is framed as an export rather than an automatic, ongoing sync. missing for 10: evidence of automatic or scheduled journal-entry sync (versus manual export), details on GL account mapping, independent or hands-on corroboration.",
     "evidenceIds": [
       "adp-run-docs-13"
     ]
@@ -13,11 +13,18 @@
   {
     "productId": "adp-run",
     "storyId": "agent-onboards-new-hire",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "The evidence documents RUN's new-hire onboarding only as UI and employee self-service flows: electronic paperwork, W-4 and direct deposit (adp-run-docs-26), and e-I-9 (adp-run-docs-29). It also describes ADP API Central generically (OAuth, use-case templates, 'automate HR processes'), but nothing shows API endpoints that create an employee, set compensation, or configure tax setup in RUN, so an agent-driven end-to-end hire via API is unevidenced. A generic API-platform claim is not this story's capability and earns no credit.",
-    "evidenceIds": []
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "ADP documents API Central, which offers OAuth 2.0/OpenID Connect access, use-case templates and the stated aim of letting developers 'automate HR processes' with real-time data sharing. That is the product's own programmatic surface, but nothing in the pack shows API operations for creating a worker, setting compensation or configuring tax withholding, or confirms API Central covers RUN. The documented new-hire onboarding (employee self-service paperwork, W-4, electronic I-9) is UI-driven. Missing for 10: documented API endpoints for employee/new-hire creation, for compensation setup and for tax/W-4 setup; confirmation that API Central applies to RUN; hands-on evidence of an agent completing end-to-end onboarding via the API.",
+    "evidenceIds": [
+      "adp-run-docs-33",
+      "adp-run-docs-35",
+      "adp-run-docs-36",
+      "adp-run-docs-39",
+      "adp-run-docs-40",
+      "adp-run-docs-26"
+    ]
   },
   {
     "productId": "adp-run",
@@ -25,7 +32,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Nothing in the evidence shows an API endpoint for previewing a payroll run, or an anomaly report an agent could fetch before approval. RUN's AI-enabled error flagging is an in-product feature with no documented API exposure. API Central offers only generic HR integration building blocks with no payroll-preview capability, so neither counts toward this story.",
+    "rationale": "RUN documents AI-enabled error flagging before mistakes take effect, but only as an in-product feature. API Central is documented only as general HR data integration. Nothing in the evidence shows an API endpoint to preview a payroll run or retrieve flagged anomalies programmatically for an agent before approval, so these are adjacent features and building blocks, not the capability itself.",
     "evidenceIds": []
   },
   {
@@ -34,23 +41,25 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "RUN documents exporting payroll journal entries into QuickBooks, Xero, Wave, Creative Solutions, or a generic output file, which gives an agent an export path to reconcile into a ledger. ADP's separately purchased API Central offers OAuth-secured APIs and use-case templates, but nothing in the evidence ties it to RUN journal or general-ledger data. missing for 10: a documented API endpoint for payroll journal/GL data in RUN, agent-oriented or automated pull of journal exports, any reconciliation tooling, and independent or hands-on corroboration.",
+    "rationale": "RUN documents its own export of payroll journal entries to QuickBooks, Xero, Wave, Creative Solutions, or a generic output file without re-keying, so an agent could ingest the exported data for reconciliation. ADP API Central offers OAuth-secured programmatic data access, but nothing shows it exposes RUN payroll journal or general-ledger data, so the agent-driven API pull is unproven. Missing for 10: a documented API endpoint for RUN journal/GL data, evidence that agents can trigger the export programmatically, reconciliation or matching features, and independent hands-on corroboration.",
     "evidenceIds": [
       "adp-run-docs-13",
+      "adp-run-docs-12",
       "adp-run-docs-33",
       "adp-run-docs-35",
-      "adp-run-docs-36",
       "adp-run-docs-39"
     ]
   },
   {
     "productId": "adp-run",
     "storyId": "agentic-agent-docs",
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "partial",
+    "quality": 4,
     "confidence": "medium",
-    "rationale": "RUN is a SaaS payroll product with a developer ecosystem (API Central), so publishing llms.txt or agent-oriented docs is a fair question and the axis applies. The evidence shows only conventional developer documentation, code samples, and the ADP Assist helper for API Central. These are adjacent features, not docs structured for agent consumption, and nothing mentions llms.txt or agent-oriented docs.",
-    "evidenceIds": []
+    "rationale": "A probe confirms a live llms.txt at adp.com (HTTP 200, text/plain) that names RUN, so an agent has an official entry point. Its content looks like a marketing and routing file (\"Route small-business payroll shoppers straight to RUN-powered offerings\") rather than product or API documentation. The developer docs origin (developers.adp.com) serves only a client-rendered shell to keyless fetches, which is not agent-friendly. Missing for 10: an llms.txt or agent-oriented docs covering RUN product and API details, a machine-readable developer docs origin, and independent or hands-on confirmation that agents can use the file effectively.",
+    "evidenceIds": [
+      "adp-run-probe-1"
+    ]
   },
   {
     "productId": "adp-run",
@@ -58,35 +67,39 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "RUN documents AI-enabled error flagging that scans payroll data to catch common mistakes before they take effect (adp-run-docs-3), which is a genuine in-product AI suggestion drawn from the user's own data. It also documents an AI virtual assistant for payroll and HR questions (adp-run-docs-16), but the evidence does not show that it analyzes the user's data rather than answering general questions. The workforce analytics and salary benchmarking items (adp-run-docs-18, adp-run-docs-32) are not described as AI-generated, so they earn only adjacent credit. Missing for 10: broad AI-generated insights or recommendations from company data beyond error flagging, evidence that the assistant reasons over user data, depth on how the flagging works, and independent or hands-on corroboration.",
+    "rationale": "RUN documents AI-enabled error flagging that reviews the user's own payroll data and catches common mistakes before they cause problems [adp-run-docs-3], which is a narrow form of AI-generated suggestion. It also offers an AI virtual assistant for payroll and HR questions [adp-run-docs-16], but the evidence does not say it reasons over the customer's own data. The salary benchmarking insights [adp-run-docs-32] are described as data-driven, not AI-generated. Missing for 10: documented AI-generated insights or recommendations drawn from the customer's own data beyond error flagging, evidence that the assistant analyzes company-specific data, and independent or hands-on corroboration.",
     "evidenceIds": [
       "adp-run-docs-3",
-      "adp-run-docs-16"
+      "adp-run-docs-16",
+      "adp-run-docs-32"
     ]
   },
   {
     "productId": "adp-run",
     "storyId": "agentic-autonomous-automation",
     "verdict": "partial",
-    "quality": 3,
+    "quality": 4,
     "confidence": "medium",
-    "rationale": "RUN's own RUN & DONE feature puts recurring payroll \"on autopilot,\" and pay is deposited automatically on payday, so one fixed workflow does run unattended in the background. That is a single prebuilt payroll automation, not a way for users to define their own background automations. API Central is a developer building block and AI error flagging is an adjacent feature, so neither earns credit. Missing for 10: user-configurable automation or workflow builder, triggers and schedules beyond payroll, agentic or AI-driven autonomous actions, detailed documentation and independent corroboration of RUN & DONE behavior.",
+    "rationale": "RUN's own RUN & DONE feature puts recurring payroll on autopilot, and pay is deposited and payroll taxes filed automatically, so autonomous background execution exists for payroll. There is no evidence of user-configurable, general-purpose automations or AI agents that act on their own. API Central is a developer building block for constructing integrations, so it earns no credit here. Missing for 10: user-defined automation rules or triggers beyond recurring payroll, agentic AI that takes autonomous actions (the AI features only flag errors, import timesheets and answer questions), and any detailed docs or independent corroboration of how RUN & DONE runs.",
     "evidenceIds": [
       "adp-run-docs-2",
-      "adp-run-docs-10"
+      "adp-run-docs-10",
+      "adp-run-docs-1",
+      "adp-run-docs-14"
     ]
   },
   {
     "productId": "adp-run",
     "storyId": "agentic-builtin-assistant",
     "verdict": "partial",
-    "quality": 4,
+    "quality": 3,
     "confidence": "medium",
-    "rationale": "RUN documents a built-in AI-powered virtual assistant, but it is described only as answering payroll and HR questions, not as carrying out tasks on the user's behalf. Adjacent AI features (timesheet import, error flagging) are automations rather than a delegable assistant, so they add little. missing for 10: evidence the assistant can execute or complete tasks (e.g., run payroll, update records) on request, depth of assistant documentation, independent or hands-on corroboration",
+    "rationale": "RUN documents a built-in, AI-powered virtual assistant (adp-run-docs-16), but it is described only as answering payroll and HR questions, not as carrying out tasks for the user. The other AI features are narrow automations rather than an assistant you delegate to: AI timesheet import (adp-run-docs-17) and AI error flagging (adp-run-docs-3). ADP Assist (adp-run-docs-34) does perform developer tasks, but inside API Central rather than RUN's own interface. Missing for 10: evidence the assistant can take actions such as running payroll, adding employees or generating reports on request; any hands-on or independent corroboration of the assistant.",
     "evidenceIds": [
       "adp-run-docs-16",
       "adp-run-docs-17",
-      "adp-run-docs-3"
+      "adp-run-docs-3",
+      "adp-run-docs-34"
     ]
   },
   {
@@ -95,11 +108,10 @@
     "verdict": "partial",
     "quality": 4,
     "confidence": "low",
-    "rationale": "ADP's API Central offers programmatic, non-UI access: OAuth 2.0/OpenID Connect auth, integration projects, certificates, and use-case templates meant to let developers automate HR processes without file-based imports. That gives a plausible headless automation path, but the evidence never ties API Central to RUN specifically, and it is a separately purchased add-on. RUN & DONE's recurring-payroll autopilot is an adjacent scheduling feature, not headless operation, so it earns no credit. Missing for 10: explicit confirmation that API Central covers RUN, a CLI or CI-oriented tooling, documentation of running payroll actions headlessly end-to-end, and independent or hands-on corroboration.",
+    "rationale": "ADP's API Central is a separately purchased add-on. It offers programmatic integration with OAuth 2.0/OpenID Connect, security certificates, API templates and code samples, and is pitched as letting developers automate HR processes without file-based imports and exports. That gives some non-UI, automatable access path, but the evidence never explicitly ties API Central to RUN, and nothing shows a CLI, service-account/CI usage, or a fully headless payroll run. missing for 10: explicit RUN API coverage, CLI or CI/headless execution docs, non-interactive payroll run evidence, independent hands-on corroboration.",
     "evidenceIds": [
       "adp-run-docs-33",
       "adp-run-docs-35",
-      "adp-run-docs-36",
       "adp-run-docs-39",
       "adp-run-docs-40"
     ]
@@ -110,7 +122,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "RUN ships an AI virtual assistant, so letting it consume tools from external MCP servers is a fair question for this product. The evidence shows no MCP client capability. The app integrations, Clover integration and API Central developer APIs are adjacent features or building blocks and do not count toward this story.",
+    "rationale": "RUN ships an AI virtual assistant, so letting users plug MCP servers into it is a fair question, but nothing in the evidence shows it can act as an MCP client or consume external tools. The integrations, API Central, and llms.txt evidence covers other capabilities and does not transfer to this story.",
     "evidenceIds": []
   },
   {
@@ -119,7 +131,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "RUN Powered by ADP is a payroll/HR SaaS rather than an agent, so publishing an official MCP server is a fair question and the axis applies. The evidence shows API Central (REST APIs with OAuth 2.0, templates, code samples) and AI features such as a virtual assistant, but nothing about an MCP server. API access is a developer building block, not the capability itself, so it earns no credit.",
+    "rationale": "RUN is a payroll SaaS rather than an agent, so publishing an official MCP server is a fair question and the axis applies. The pack shows only API Central (REST APIs with OAuth) and an llms.txt file. Those are adjacent developer building blocks, not an official MCP server an agent can connect to.",
     "evidenceIds": []
   },
   {
@@ -128,7 +140,7 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "RUN documents an AI-powered virtual assistant that answers payroll and HR questions in natural language (adp-run-docs-16), so there is a first-party natural-language interface. However, the evidence shows only question-answering, not natural-language commands that perform actions such as running payroll or changing employee records. ADP Assist for API Central (adp-run-docs-34) is a developer-side tool, and nothing says it accepts natural-language instructions. Missing for 10: evidence that natural-language commands execute product actions (running payroll, adding employees, generating reports), documentation of the assistant's scope and depth, and independent or hands-on corroboration.",
+    "rationale": "RUN documents an AI-powered virtual assistant that answers payroll and HR questions in natural language (adp-run-docs-16), so there is a first-party natural-language interface. There is no evidence that it can carry out actions such as running payroll, adding employees or changing settings, so it supports asking questions rather than operating the product. missing for 10: natural-language commands that execute payroll/HR actions, documentation of the assistant's scope and depth, independent or hands-on corroboration.",
     "evidenceIds": [
       "adp-run-docs-16"
     ]
@@ -139,7 +151,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "An official CLI is a fair question for a SaaS payroll platform with a developer API program, so the axis applies. The evidence documents web, phone and mobile-app access plus the API Central developer portal, but never mentions a command-line tool. API access is an adjacent building block, not an official CLI, so it earns no credit.",
+    "rationale": "An official CLI is a fair question for a SaaS payroll platform with a developer program, so the axis applies. The evidence documents API Central (OAuth, code samples, ADP Assist), web and mobile apps, and phone access, but never an official command-line tool. APIs are developer building blocks and earn no credit toward a CLI story.",
     "evidenceIds": []
   },
   {
@@ -148,7 +160,7 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "ADP documents API Central, a purchasable add-on with self-service API discovery, use-case templates, documentation, code samples, and OAuth 2.0/OpenID Connect authentication. It is meant to automate HR processes and replace file-based imports and exports. However, the evidence never states which RUN payroll operations (running payroll, managing employees) these APIs cover, and access requires a separate paid purchase. A community complaint about multi-day sync lag in the Zenefits–ADP integration is a third-party report, not a concrete failure of API Central. Missing for 10: explicit confirmation that API Central covers RUN, documentation of write/action endpoints for driving payroll, and independent hands-on corroboration of programmatic use.",
+    "rationale": "ADP documents API Central, a purchasable, self-service API product with OAuth 2.0/OpenID Connect authentication, use-case templates, an API discovery tool, documentation and code samples, and the probe confirms a developer docs origin exists. However, the API Central page never explicitly says RUN is covered or which RUN operations (such as running payroll) can be driven through it, and it is a separately purchased add-on. The community complaint about Zenefits-to-ADP sync latency concerns a third-party integration and does not contradict the documented API. Missing for 10: explicit confirmation that API Central covers RUN, documented RUN endpoint scope (e.g., payroll execution and employee writes), publicly readable reference docs, independent hands-on corroboration.",
     "evidenceIds": [
       "adp-run-docs-33",
       "adp-run-docs-34",
@@ -157,7 +169,7 @@
       "adp-run-docs-37",
       "adp-run-docs-39",
       "adp-run-docs-40",
-      "adp-run-comm-3"
+      "adp-run-probe-1"
     ]
   },
   {
@@ -166,10 +178,9 @@
     "verdict": "partial",
     "quality": 4,
     "confidence": "low",
-    "rationale": "ADP's API Central lets developers create integration projects with their own security certificates [adp-run-docs-33, adp-run-docs-38]. Each project gets only the APIs a developer assigns or picks from use-case templates [adp-run-docs-34, adp-run-docs-36, adp-run-docs-37], and access is gated by OAuth 2.0/OpenID Connect [adp-run-docs-35]. Together these suggest credentials scoped per project to selected APIs, but the evidence never describes fine-grained permission scopes (such as read-only or limited data domains) or agent-specific credentials, and does not confirm that API Central covers RUN specifically. Missing for 10: explicit least-privilege scope or permission controls, read/write granularity, credential revocation and rotation details, agent-oriented credential issuance, confirmation that this works with RUN, and independent or hands-on corroboration.",
+    "rationale": "ADP's API Central lets developers create integration projects with security certificates, assign specific APIs to each project (via templates and API discovery), and use OAuth 2.0/OpenID Connect so only authorized systems can access data. Per-project API assignment is a form of credential scoping. However, it is a separately purchased add-on, its availability for RUN specifically is not stated, and nothing describes agent-oriented or fine-grained least-privilege credential issuance. missing for 10: explicit confirmation that API Central works with RUN, documented least-privilege scopes or permission granularity per credential, agent-specific credential guidance, independent or hands-on corroboration.",
     "evidenceIds": [
       "adp-run-docs-33",
-      "adp-run-docs-34",
       "adp-run-docs-35",
       "adp-run-docs-36",
       "adp-run-docs-37",
@@ -182,7 +193,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence describes ADP API Central (OAuth 2.0 / OpenID Connect APIs, use-case templates, generated code samples and code collections). None of it mentions official SDKs or client libraries, and code samples and raw APIs are adjacent features rather than SDKs. It is also not shown that API Central specifically covers RUN, so the applicable SDK axis has no supporting evidence.",
+    "rationale": "The axis applies, since a payroll SaaS platform could plausibly ship official client SDKs, but the evidence never mentions one. ADP's API Central offers REST APIs with OAuth/OpenID Connect, use-case templates, documentation, and generated or collected code samples, but code samples and raw APIs are adjacent developer building blocks, not official SDKs. API Central is also positioned for ADP broadly rather than specifically for RUN.",
     "evidenceIds": []
   },
   {
@@ -191,7 +202,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Webhook event subscriptions are a fair question for a payroll/HR SaaS platform, so the axis applies. The evidence shows only API Central, which offers OAuth-secured APIs, templates and 'real-time data sharing'. Nothing documents registrable outbound HTTP callbacks or event subscriptions, and request-based APIs and app integrations are adjacent features that earn no credit here.",
+    "rationale": "Webhooks are a fair axis for a payroll SaaS with a developer API, so the story applies. The evidence only describes API Central's REST APIs, OAuth, templates and 'real-time data sharing'; it never documents registrable outbound HTTP callbacks or event subscriptions. Those adjacent API features earn no credit toward a webhooks story.",
     "evidenceIds": []
   },
   {
@@ -200,12 +211,13 @@
     "verdict": "partial",
     "quality": 4,
     "confidence": "low",
-    "rationale": "ADP's API Central add-on offers an API discovery tool, self-service documentation, use-case templates, generated code samples and \"code collection samples\" via ADP Assist. Nothing shows an interactive reference where examples can be run in-browser, and API Central is a separately purchased add-on rather than core RUN. Missing for 10: a documented interactive/try-it API console, evidence that examples are runnable rather than just generated code, RUN-specific API reference coverage, and hands-on or independent corroboration.",
+    "rationale": "ADP's API Central, a separately purchased add-on, documents an API discovery tool, generated code samples, and self-service use-case templates with documentation and code collection samples. That is a first-party way to explore APIs with examples. However, nothing shows an interactive reference where examples can be run in-browser, and the probe found developers.adp.com serves only a client-rendered shell. Missing for 10: an interactive API reference or 'try it' console, examples that are actually runnable, independent or hands-on corroboration, and an explicit tie to RUN-specific APIs.",
     "evidenceIds": [
-      "adp-run-docs-33",
       "adp-run-docs-34",
       "adp-run-docs-37",
-      "adp-run-docs-40"
+      "adp-run-docs-40",
+      "adp-run-docs-33",
+      "adp-run-probe-1"
     ]
   },
   {
@@ -214,7 +226,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Downloading a machine-readable API spec is a fair question for a payroll SaaS, so the axis applies. ADP's API Central offers API documentation, code samples, use-case templates and an API discovery tool, but nothing in the evidence mentions a downloadable OpenAPI or equivalent spec. Human-readable docs and code samples are adjacent features and earn no credit for this story.",
+    "rationale": "ADP's API Central offers API documentation, a discovery tool, use-case templates and code samples, but nothing in the evidence says a machine-readable spec (OpenAPI, Swagger or equivalent) can be downloaded. Human-readable docs and code samples are adjacent features, not the capability this story asks for. The developers.adp.com docs origin served only a client-rendered shell to the probe, so it added no evidence either way.",
     "evidenceIds": []
   },
   {
@@ -223,7 +235,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "A payroll SaaS with a developer API (API Central) could plausibly offer a sandbox or test environment, so the axis applies. However, the evidence only covers API Central's integration projects, certificates, templates and code samples. Nothing describes a sandbox, test tenant or non-production environment that keeps testing away from live payroll data.",
+    "rationale": "A sandbox or test environment is a fair question for a payroll platform with a developer API (API Central). However, the evidence covers only integration projects, certificates, templates, code samples and OAuth. Nothing documents a sandbox, test tenant or non-production environment for testing without touching live payroll data.",
     "evidenceIds": []
   },
   {
@@ -232,7 +244,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "A versioning and deprecation policy is a fair question for a payroll SaaS that offers APIs through API Central. However, the evidence only covers API Central's activation, OAuth/OpenID Connect security, use-case templates, and documentation access. Nothing shows API versioning or a documented deprecation policy, and having an API at all is an adjacent capability that earns no credit here.",
+    "rationale": "The axis applies because ADP offers developer APIs through API Central, which covers OAuth/OIDC, templates, documentation and code samples. However, nothing in the evidence pack mentions API versioning or a documented deprecation policy. Merely having APIs is an adjacent capability and earns no credit for this story.",
     "evidenceIds": []
   },
   {
@@ -241,27 +253,25 @@
     "verdict": "full",
     "quality": 8,
     "confidence": "medium",
-    "rationale": "ADP's first-party pages say payroll taxes are \"calculated, filed and paid for you.\" They also say ADP handles tax filing for employees working across multiple state or local jurisdictions in one pay period, and that it pays any fines from its own filing errors. State unemployment insurance management and W-2/1099 e-filing are also listed, though W-2/1099 forms cost extra. Missing for 10: independent or hands-on corroboration of automated filing and remittance, and detailed documentation of jurisdiction coverage and remittance mechanics beyond marketing copy.",
+    "rationale": "ADP's own docs say RUN calculates, files, and pays payroll taxes for you (adp-run-docs-1). They add that RUN handles tax filing for employees working across multiple state or local jurisdictions (adp-run-docs-19), backed by a guarantee to cover penalties from ADP filing errors (adp-run-docs-15), plus SUI management (adp-run-docs-21). No community or hands-on evidence speaks to tax filing either way. missing for 10: in-depth first-party documentation of federal/state/local filing and remittance mechanics (the evidence is marketing-level), independent or hands-on corroboration of the automated tax filing.",
     "evidenceIds": [
       "adp-run-docs-1",
       "adp-run-docs-19",
       "adp-run-docs-15",
-      "adp-run-docs-21",
-      "adp-run-docs-14"
+      "adp-run-docs-21"
     ]
   },
   {
     "productId": "adp-run",
     "storyId": "automation-bulk-operations",
     "verdict": "partial",
-    "quality": 4,
+    "quality": 3,
     "confidence": "low",
-    "rationale": "RUN has a few of its own batch-style capabilities: AI-powered import of employee hours from an existing timesheet file, recurring payroll that pays all employees automatically, automatic direct deposit to each employee, and journal-entry export to accounting tools. These are bulk operations, but only within fixed payroll workflows; nothing shows user-directed bulk edits or actions across many records. API Central is a developer building block and earns no credit here. Missing for 10: general-purpose bulk edit/update of employee or payroll records, documented bulk actions beyond timesheet import and payroll runs, AI-driven bulk operations, independent or hands-on corroboration.",
+    "rationale": "RUN documents a few inherently batch actions: AI-powered import of all employees' hours from an existing timesheet file, payroll runs that deposit pay into each employee's account automatically, and multi-company reports. Beyond these, there is no evidence of general-purpose bulk editing or bulk actions across arbitrary records. missing for 10: a documented bulk-edit or bulk-action capability (e.g., mass updating employee records, pay rates, or deductions), bulk operations exposed programmatically or to AI agents, and independent or hands-on corroboration of the batch features.",
     "evidenceIds": [
       "adp-run-docs-17",
-      "adp-run-docs-2",
       "adp-run-docs-10",
-      "adp-run-docs-13"
+      "adp-run-docs-18"
     ]
   },
   {
@@ -270,7 +280,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "User-defined event-triggered automation rules are a fair axis for a payroll/HR SaaS, but the evidence shows no rule builder or event-trigger configuration. RUN & DONE recurring-payroll autopilot and AI error flagging are fixed vendor behaviors, not rules a user defines. API Central is only a developer building block for constructing integrations, so it earns no credit.",
+    "rationale": "User-defined event-triggered automation rules are a fair axis for a payroll/HR SaaS, but the evidence shows no such capability in RUN. RUN & DONE recurring-payroll autopilot, automatic direct deposit and AI error flagging are fixed built-in behaviors, not rules a user defines. API Central is a developer building block for constructing integrations, not a rules engine.",
     "evidenceIds": []
   },
   {
@@ -279,7 +289,7 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "RUN documents its own recurring automation for payroll: RUN & DONE puts recurring payroll on autopilot, and pay is deposited automatically on payday. This is a domain-specific recurring job rather than general-purpose scheduling of user-defined jobs or workflows. API Central offers integration building blocks but no scheduler. Missing for 10: user-defined scheduling of arbitrary jobs/workflows, configurable schedules or triggers beyond payroll, programmatic or AI-agent control of schedules, independent or hands-on corroboration.",
+    "rationale": "RUN documents its own recurring automation: payroll can be put \"on autopilot\" with RUN & DONE, and pay is deposited automatically on payday. That is a scheduled recurring job, but it covers only payroll. Nothing shows users defining or scheduling their own jobs or workflows. Missing for 10: user-configurable scheduling of arbitrary recurring jobs or workflows, control over schedule cadence and triggers, programmatic or API-based scheduling, any docs on how recurrence is set up, and independent or hands-on corroboration.",
     "evidenceIds": [
       "adp-run-docs-2",
       "adp-run-docs-10"
@@ -291,7 +301,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "RUN ships automation features, including RUN & DONE recurring payroll autopilot and API Central integration projects, so asking whether those automations can be versioned, reviewed, and rolled back is a fair question. However, the evidence contains nothing about version history, change review, or rollback for automations or integrations. AI error flagging catches payroll mistakes but does not version or roll back automation configurations.",
+    "rationale": "RUN is a payroll SaaS with automation features such as RUN & DONE recurring payroll and API Central integration projects, so asking about versioning and rolling back automations is fair. The evidence pack shows no way to version, review changes to, or roll back automations or integration configurations. Templates, AI error flagging and reports are adjacent features and earn no credit.",
     "evidenceIds": []
   },
   {
@@ -300,7 +310,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Nothing in the evidence shows a way to cancel, void, or correct a payroll after it has been submitted and before employees are paid. AI error flagging (adp-run-docs-3) catches mistakes before submission, which is a related feature rather than post-submission cancellation or correction. Expert phone support is a manual workaround, not a product capability.",
+    "rationale": "Cancelling or correcting a submitted payroll is a core axis for a payroll product, but the evidence pack never documents voiding, cancelling, or editing a payroll after submission. AI error flagging before mistakes take effect is a related but different control, and expert phone/chat support is not a self-service correction capability, so neither earns credit.",
     "evidenceIds": []
   },
   {
@@ -309,7 +319,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence shows nothing about proactive alerts that tell a founder when a new hire, new location, or law change creates a compliance obligation. Nearby features do not count toward this story. Automatic labor law poster updates, AI payroll error flagging, and handled multi-state tax filing are different capabilities from obligation alerts.",
+    "rationale": "The evidence pack does not document proactive alerts that tell a founder when a new hire, a new work location, or a law change creates a compliance obligation. Several features are related but count as adjacent, not as this capability: automatic labor-law poster updates, AI error flagging of payroll mistakes, multi-state tax filing handled on the customer's behalf, and access to HR experts. None of these is the alerting capability the story asks for.",
     "evidenceIds": []
   },
   {
@@ -318,7 +328,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Embedded white-label payroll is a fair axis for a payroll service, but the evidence does not show it. API Central (adp-run-docs-33 to 40) is documented as a data-integration API for automating HR processes and replacing file imports and exports. That is an adjacent capability, not a partner API for embedding or reselling ADP payroll under another brand. The community thread mentions Zenefits building on top of ADP, but it describes ADP cutting off that access, not a documented white-label program.",
+    "rationale": "Embedded payroll is a fair question for a payroll product, but the evidence documents no white-label or embedded-payroll partner program. API Central describes integration APIs for syncing HR data and replacing file-based imports and exports, which is an adjacent capability, not running payroll under another product's brand. The community threads about Zenefits sitting on top of ADP describe a third party's arrangement, not a documented ADP offering, so they earn no credit here.",
     "evidenceIds": []
   },
   {
@@ -327,11 +337,10 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "RUN's own docs say pay is automatically deposited into each employee's account on payday, and new hires enter their direct deposit details during electronic onboarding, so direct deposit replaces checks. Nothing in the evidence states the deposit speed (next-day or 2-day) or the payroll submission lead time, which is the 'fast' part of the story. missing for 10: documented next-day/2-day direct deposit timing, payroll submission cutoff/lead-time details, independent or hands-on corroboration of deposit speed.",
+    "rationale": "RUN's own docs show employees are paid by direct deposit instead of checks: pay is automatically deposited into each employee's account on payday, and new hires enter their own direct-deposit details during onboarding. Nothing in the pack documents the fast-funding element of the story, so only half of it is evidenced. Missing for 10: documented next-day or 2-day direct deposit timing or processing lead times, and independent or hands-on corroboration of deposit speed.",
     "evidenceIds": [
       "adp-run-docs-10",
-      "adp-run-docs-26",
-      "adp-run-docs-1"
+      "adp-run-docs-26"
     ]
   },
   {
@@ -340,7 +349,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Pay schedules are a core axis for a payroll product, but nothing in the evidence pack documents setting up multiple pay frequencies (weekly, biweekly, semimonthly, monthly) or assigning different schedules to different teams. Related items such as RUN & DONE recurring payroll, multi-company reports and multi-state pay are adjacent features and earn no credit here.",
+    "rationale": "The evidence covers recurring payroll automation, multi-state pay and multi-company reports, but nothing documents configuring multiple pay frequencies (weekly, biweekly, semimonthly, monthly) or assigning different schedules to different teams. Those adjacent features do not transfer to this story, and pay-schedule configuration is a fair question for a payroll product, so the verdict is none rather than na.",
     "evidenceIds": []
   },
   {
@@ -349,7 +358,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Global payroll and employer-of-record hiring is a fair question for a small-business payroll product, so the axis applies. However, the evidence only shows US-centric payroll: multi-state and local tax filing, W-2/1099 forms, IRS e-filing, state unemployment insurance and Form I-9. Nothing documents employer-of-record services, international entities or paying employees in other countries.",
+    "rationale": "Global payroll and employer-of-record are a fair question for a payroll product, so the axis applies. However, the evidence pack documents only US-centric capabilities: multi-state and local jurisdiction payroll, W-2/1099 filing, Form W-4 and Form I-9. It contains nothing on employing workers in other countries through an employer-of-record or owned entities.",
     "evidenceIds": []
   },
   {
@@ -358,10 +367,10 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "ADP's RUN pages say only that experts can help set up \"payroll, benefits, and more\" and that payroll can be connected with benefits tools to reduce duplicate work. That glancingly suggests benefits linked to payroll, but nothing specifically shows health insurance being offered or administered inside RUN. Missing for 10: documented health plan offering/administration, employee enrollment workflows, automatic premium deduction sync to payroll, and any independent or hands-on corroboration.",
+    "rationale": "RUN's own materials say it can connect payroll with benefits to reduce duplicate work, and that ADP experts help set up benefits. That is a thin, generic claim of benefits linkage rather than documented health-insurance administration. missing for 10: explicit health insurance plan offering, employee enrollment workflow, documented automatic deduction sync to payroll, plan administration details, independent or hands-on corroboration.",
     "evidenceIds": [
-      "adp-run-docs-5",
-      "adp-run-docs-8"
+      "adp-run-docs-8",
+      "adp-run-docs-5"
     ]
   },
   {
@@ -370,7 +379,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Paying international contractors is a fair question for a small-business payroll product, so the axis applies. However, the evidence only shows domestic US capabilities: paying contractors generally, 1099 filing, and multi-state tax handling. Nothing in the pack covers cross-border payments, local-currency payouts, or locally compliant contractor agreements.",
+    "rationale": "The evidence shows RUN can pay contractors and file 1099s, but only within a US context: multi-state jurisdictions, W-2/1099, IRS e-filing. Nothing in the pack covers paying international contractors in local currencies or generating compliant contracts for them. Global contractor payments are a fair axis for a payroll product, so missing evidence yields none rather than na.",
     "evidenceIds": []
   },
   {
@@ -379,7 +388,7 @@
     "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "RUN documents paying employees who work in more than one state or local jurisdiction in the same pay period, with ADP handling the tax filing. It also calculates, files and pays payroll taxes, manages state unemployment insurance including SUI rate audits, and backs its tax filings with a penalty guarantee. missing for 10: evidence that RUN handles state tax account registrations for new states, detail on per-state withholding setup, independent or hands-on corroboration of multi-state accuracy.",
+    "rationale": "RUN documents paying employees who work in more than one state or local jurisdiction in the same pay period, with ADP handling the tax filing [adp-run-docs-19]. It also documents calculating, filing and paying payroll taxes [adp-run-docs-1] and managing state unemployment insurance accounts [adp-run-docs-21]. Missing for 10: evidence that ADP handles state tax registration or account setup for new states, detail on per-state withholding configuration, and independent or hands-on corroboration of multi-state accuracy.",
     "evidenceIds": [
       "adp-run-docs-19",
       "adp-run-docs-1",
@@ -393,27 +402,31 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Off-cycle payroll is a fair question for a small-business payroll product, so the axis applies. However, the evidence only describes running payroll generally (online, by phone, mobile) and automating recurring payroll. Nothing documents off-cycle, bonus, correction, or termination runs outside the regular schedule.",
+    "rationale": "Off-cycle payroll is a fair question for a payroll product, so the axis applies. The evidence only covers general and recurring payroll runs (online, by phone, mobile, RUN & DONE autopilot) and never mentions off-cycle, bonus, correction, or termination runs outside the regular schedule.",
     "evidenceIds": []
   },
   {
     "productId": "adp-run",
     "storyId": "offer-letters-and-documents",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "The evidence shows only electronic self-service new-hire paperwork, such as personal info, direct deposit, W-4 and I-9. It never mentions sending offer letters or arbitrary HR documents for e-signature, or storing signed documents per employee. Electronic onboarding forms are an adjacent feature and do not show e-signature delivery or a document repository.",
-    "evidenceIds": []
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "RUN documents electronic new-hire paperwork: employees complete personal info, direct deposit and Form W-4 before day one, and Form I-9 is completed electronically during onboarding. That covers a thin slice of the story, digital completion of standard HR forms. Nothing in the evidence mentions sending offer letters, e-signature of custom HR documents, or a per-employee document store. missing for 10: offer-letter sending, explicit e-signature capability for arbitrary HR documents, per-employee document storage/retrieval, independent or hands-on corroboration.",
+    "evidenceIds": [
+      "adp-run-docs-26",
+      "adp-run-docs-29"
+    ]
   },
   {
     "productId": "adp-run",
     "storyId": "openness-api-parity",
     "verdict": "partial",
     "quality": 3,
-    "confidence": "medium",
-    "rationale": "ADP documents API Central, a separately purchased add-on with OAuth 2.0/OpenID Connect auth and use-case API templates, which lets developers automate HR processes and share data in real time instead of using file imports. So a first-party API surface exists. Nothing in the evidence shows the API covers everything the RUN UI does, and the templated, use-case-scoped framing suggests coverage is selective, not complete. Missing for 10: documented UI-to-API parity, RUN-specific API coverage of core actions such as running payroll, tax filing, onboarding and reports, an API reference, and independent hands-on corroboration.",
+    "confidence": "low",
+    "rationale": "ADP documents API Central, a self-service API product with OAuth 2.0/OpenID Connect, use-case API templates, an API discovery tool, and code samples for automating HR processes, so a first-party programmatic surface exists. Nothing shows it reaches parity with the RUN UI, and the evidence never explicitly ties API Central to RUN. The RUN docs instead stress UI, phone, mobile and file-export workflows. missing for 10: evidence that API Central covers RUN specifically, documented API coverage of core RUN actions (running payroll, onboarding, tax forms, reports, bill pay), any stated UI–API parity, write-capable endpoint references, independent hands-on corroboration.",
     "evidenceIds": [
       "adp-run-docs-33",
+      "adp-run-docs-34",
       "adp-run-docs-35",
       "adp-run-docs-36",
       "adp-run-docs-37",
@@ -427,10 +440,10 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "RUN documents some of its own export paths. Payroll and HR reports can be viewed, customized and printed online, and journal entries can be exported to QuickBooks, Xero, Wave, Creative Solutions or a generic output file. API Central is a developer building block for data access, not a bulk export feature, so it earns no credit here. Missing for 10: a documented full-account or all-data export, named open formats (CSV/JSON) covering employee, payroll and tax history, an offboarding or leave-the-platform process, and independent corroboration that complete data portability works.",
+    "rationale": "RUN's own docs show narrow export capabilities: journal entries can be exported to accounting tools or a 'generic output file' [adp-run-docs-13], and payroll/HR reports can be viewed, customized and printed online [adp-run-docs-12]. Nothing documents a full-account data export or offboarding path. API Central [adp-run-docs-39] is a developer building block and earns no credit here. missing for 10: documented bulk export of all account data (employees, pay history, tax filings, documents), explicit open formats (CSV/JSON), a documented offboarding/data-portability process, independent or hands-on corroboration.",
     "evidenceIds": [
-      "adp-run-docs-12",
-      "adp-run-docs-13"
+      "adp-run-docs-13",
+      "adp-run-docs-12"
     ]
   },
   {
@@ -439,7 +452,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "high",
-    "rationale": "Whether a software product's source is available under an open license is a fair question for a SaaS payroll platform, so the axis applies. Nothing in the evidence shows RUN's source being published or openly licensed. API Central's paid APIs and generated code samples are integration building blocks, not access to the product's source.",
+    "rationale": "Whether source is available under an open license is a fair question for a payroll/HR SaaS product, since open-source payroll systems exist, so the axis applies. Nothing in the pack shows RUN's source is published or openly licensed. The evidence covers proprietary hosted features, a paid API Central offering and an llms.txt file, none of which concern source availability.",
     "evidenceIds": []
   },
   {
@@ -448,16 +461,16 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Self-hosting is a fair question for payroll/HR software, since on-premises payroll products exist, so the axis applies. The evidence describes RUN only as an ADP-operated online service (web, phone and mobile app, with ADP handling taxes and filings) plus API Central integrations. Nothing documents a self-hostable deployment of the core product.",
+    "rationale": "Self-hosting is a fair question for payroll software, since on-premises payroll systems exist, so the axis applies. The evidence pack only describes RUN as an ADP-operated online service (run payroll online or via the mobile app, with ADP filing taxes) and API Central integrations. Nothing documents a self-hostable or on-premises deployment of the core product.",
     "evidenceIds": []
   },
   {
     "productId": "adp-run",
     "storyId": "pay-employees-and-contractors",
     "verdict": "full",
-    "quality": 7,
+    "quality": 8,
     "confidence": "medium",
-    "rationale": "ADP's own RUN page says the product lets you 'pay employees and contractors' with taxes handled. ADP also creates and e-files both W-2 and 1099 forms, an additional-fee service, which places W-2 and 1099 workers on the same platform. missing for 10: detailed documentation of the contractor payment workflow (onboarding, payment methods for 1099 workers), 1099 filing included in base price rather than as an add-on, independent or hands-on corroboration.",
+    "rationale": "RUN's own docs say you can \"pay employees and contractors\" from the same payroll product. They also say ADP will create, deliver and e-file both W-2 and 1099 forms (for an additional fee), and that workers can view their W-2s/1099s in one place. missing for 10: detailed documentation of the contractor payment workflow (e.g., contractor direct deposit and onboarding), independent or hands-on corroboration, and year-end 1099 filing included in the base price rather than at an extra fee.",
     "evidenceIds": [
       "adp-run-docs-1",
       "adp-run-docs-14",
@@ -470,20 +483,20 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Payroll lifecycle webhooks are a fair question for a payroll platform, so the axis applies. However, the evidence only describes API Central, which offers API templates, OAuth/OpenID Connect and \"real-time data sharing,\" plus app-integration marketing. Nothing documents registrable outbound HTTP callbacks or event subscriptions for payroll processed, employee onboarded or payment failed, and pull APIs are an adjacent capability that earns no credit here.",
+    "rationale": "Webhook subscriptions to payroll lifecycle events are a fair capability to ask of a payroll platform with a developer API, so the axis applies. The evidence only describes API Central's REST API access, OAuth, use-case templates and 'real-time data sharing'. Nothing documents registrable outbound HTTP callbacks or event subscriptions for payroll processed, employee onboarded or payment failed, and adjacent API capabilities do not count.",
     "evidenceIds": []
   },
   {
     "productId": "adp-run",
     "storyId": "payroll-reports-exports",
     "verdict": "partial",
-    "quality": 4,
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "RUN documents viewing, customizing and printing payroll and HR reports online, plus multi-company reports and workforce analytics. That covers payroll reporting in general terms, but payroll registers and gross-to-net reports are never named. The only documented export is journal entries to accounting tools or a generic output file. That is a GL accounting export, not an export of the reports themselves for analysis, so it lends only adjacent support. Missing for 10: explicit payroll register and gross-to-net report types, documented report export to CSV/Excel for analysis, independent or hands-on corroboration.",
+    "rationale": "RUN documents online payroll reports that can be viewed, customized and printed, plus multi-company reports and analytics, so payroll reporting itself is first-party. The only documented export is of journal entries to QuickBooks, Xero, Wave, Creative Solutions or a generic output file, which is accounting output rather than the reports themselves. Missing for 10: explicit payroll register and gross-to-net report types, documented export of reports (e.g. CSV/Excel) for analysis, independent or hands-on corroboration.",
     "evidenceIds": [
       "adp-run-docs-12",
-      "adp-run-docs-18",
-      "adp-run-docs-13"
+      "adp-run-docs-13",
+      "adp-run-docs-18"
     ]
   },
   {
@@ -492,7 +505,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Data region or residency selection is a fair question for a cloud payroll/HR SaaS that holds sensitive employee data, so the axis applies. However, nothing in the evidence pack mentions choosing a storage region or data residency. The available material covers payroll features, integrations, API Central authentication, and unrelated community complaints.",
+    "rationale": "Data residency is a fair question for a cloud payroll/HR SaaS like RUN, so the axis applies. Nothing in the evidence pack mentions choosing a storage region or data-residency controls. The only security-adjacent item, API Central's OAuth/OpenID authentication, is an adjacent control and earns no credit.",
     "evidenceIds": []
   },
   {
@@ -501,7 +514,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "RUN ships AI features (an AI virtual assistant and AI-enabled error flagging), so whether customer data can be kept out of model training is a fair question for this payroll SaaS. Nothing in the evidence pack mentions an AI-training opt-out, data-use controls, or any policy on training with customer data.",
+    "rationale": "RUN ships AI features (AI error flagging, an AI virtual assistant, AI timesheet import), so whether customer data is used to train AI models is a fair question for this product. However, nothing in the evidence documents an opt-out, a no-training commitment, or any data-use control for AI training. The llms.txt probe concerns how LLMs crawl ADP's site, not how customer data is used, so it does not count.",
     "evidenceIds": []
   },
   {
@@ -510,7 +523,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Data retention and deletion controls are a fair privacy question for a payroll/HR SaaS that holds sensitive employee data, so the axis applies. The evidence pack never mentions retention policies, deletion requests, or purge controls. The employee self-service note about viewing up to three years of W-2s/1099s describes record access, not user-controlled retention or deletion.",
+    "rationale": "Data retention and deletion controls are a fair privacy question for a payroll/HR SaaS that holds sensitive employee data, so the axis applies. Nothing in the evidence pack documents user-configurable retention periods, deletion requests, or data purge capabilities. The mention of employees viewing up to three years of W-2s concerns record access, not retention control, and API Central's OAuth access controls are an adjacent feature, not deletion.",
     "evidenceIds": []
   },
   {
@@ -518,8 +531,8 @@
     "storyId": "privacy-telemetry-optout",
     "verdict": "none",
     "quality": 0,
-    "confidence": "high",
-    "rationale": "RUN is a SaaS payroll product with web and mobile apps, so opting out of telemetry and usage tracking is a fair privacy question to ask of it. Nothing in the evidence pack mentions telemetry, analytics or usage-tracking controls, or any opt-out mechanism. The available docs cover payroll features, AI assistants, integrations and API Central authentication, none of which address this story.",
+    "confidence": "medium",
+    "rationale": "Opting out of telemetry and usage tracking is a fair privacy question for a SaaS payroll platform like RUN, so the axis applies. The evidence pack covers payroll, HR, AI assistant and API Central features but has nothing on telemetry controls, usage-tracking opt-outs or analytics consent settings.",
     "evidenceIds": []
   },
   {
@@ -528,7 +541,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "PTO policy management is a fair question for a small-business payroll product, so the axis applies. However, the evidence pack never mentions PTO policies, accrual rules, time-off approvals, or PTO flowing automatically into payroll. Timesheet import and generic time-tracking integrations are adjacent features and earn no credit here.",
+    "rationale": "PTO policy management is a fair question for a small-business payroll product, so the axis applies. However, the evidence pack never mentions PTO policies, accrual rules, time-off approvals, or time off flowing into payroll. The nearest items, connecting payroll to time-tracking tools and importing timesheet hours, are adjacent features and earn no credit for this story.",
     "evidenceIds": []
   },
   {
@@ -537,10 +550,10 @@
     "verdict": "partial",
     "quality": 4,
     "confidence": "medium",
-    "rationale": "RUN's own docs reference ADP retirement accounts that employees can manage from the employee portal. They also say payroll can connect with retirement tools to reduce duplicate work, so a retirement offering tied to payroll is evidenced. However, nothing explicitly documents 401(k) plan setup or contributions syncing automatically each pay run. Missing for 10: explicit documentation of 401(k)/retirement plan setup within RUN, automatic per-payroll contribution sync, plan provider/type details, independent or hands-on corroboration.",
+    "rationale": "RUN's docs say payroll can connect with retirement tools to reduce duplicate work, and that employees can manage ADP retirement accounts through the RUN employee portal. Together these show first-party retirement plans tied to payroll, but nothing explicitly says 401(k) contributions are deducted and synced automatically each pay run. Missing for 10: explicit documentation of per-payroll automatic contribution sync, details on 401(k) plan setup and offering for ops users, independent or hands-on corroboration.",
     "evidenceIds": [
-      "adp-run-docs-25",
       "adp-run-docs-8",
+      "adp-run-docs-25",
       "adp-run-docs-5"
     ]
   },
@@ -550,7 +563,7 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "RUN documents running payroll online, by phone, or on mobile, plus AI import of timesheet hours and AI error flagging before payroll takes effect, with automatic payday deposit. This covers the core of entering hours, catching issues, and submitting. There is no description of a single guided flow with a review of earnings and a preview of totals before submission. Missing for 10: documented earnings review and preview-totals step, evidence the cycle happens in one end-to-end flow, hands-on or independent corroboration of the payroll-run workflow.",
+    "rationale": "RUN documents running payroll online, by phone, or in a mobile app. It also documents AI import of employee hours from existing timesheet files, AI error flagging before mistakes take effect, and automatic deposit on payday. Together these imply an end-to-end cycle, but the evidence never describes a single guided flow with a review-and-preview-totals step before submission. Missing for 10: a documented hours/earnings review screen, a payroll totals preview before submit, a description of the single-flow submission, and hands-on corroboration.",
     "evidenceIds": [
       "adp-run-docs-9",
       "adp-run-docs-17",
@@ -565,7 +578,7 @@
     "verdict": "full",
     "quality": 8,
     "confidence": "medium",
-    "rationale": "RUN documents letting new employees complete their own paperwork electronically before day one, including personal info, direct deposit, and Form W-4 [adp-run-docs-26]. It separately documents completing Form I-9 electronically during new-hire onboarding [adp-run-docs-29], so every element of the story is claimed in first-party docs. missing for 10: independent or hands-on corroboration of the self-serve flow, explicit confirmation that I-9 sits in the same pre-day-one self-serve flow, and clarity on which package tier or add-on includes these features.",
+    "rationale": "RUN's package docs say new employees can fill out their own paperwork electronically before their first day, covering personal info, direct deposit and Form W-4 (adp-run-docs-26). They also say Form I-9 can be completed electronically during new-hire onboarding (adp-run-docs-29). Together these cover all three requested data sets in a self-serve pre-day-one flow. Missing for 10: detail on how the ops user sends or invites the new hire into the flow, clarity on which package tier includes these features, and independent or hands-on corroboration beyond one-line marketing claims.",
     "evidenceIds": [
       "adp-run-docs-26",
       "adp-run-docs-29"
@@ -577,7 +590,7 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "RUN documents its own ability to import employees' hours from an existing timesheet file into payroll using AI (adp-run-docs-17), and it claims payroll can connect with time-tracking tools (adp-run-docs-8). That gets hourly entries into the payroll run, but through a file import or a connected tool rather than a documented native time-to-payroll flow, and overtime is never mentioned. Missing for 10: explicit overtime calculation and flow-through, native or real-time time-entry sync into the payroll run, independent or hands-on corroboration.",
+    "rationale": "RUN documents importing employee hours into payroll from an existing timesheet file using AI (adp-run-docs-17), and says payroll can be connected with time tracking to reduce duplicate work (adp-run-docs-8). That supports hours reaching the payroll run, but via file import or an unspecified connection rather than a clearly documented native, direct flow. missing for 10: any evidence that overtime is captured or calculated and carried into payroll, documentation of a native time-entry-to-payroll sync (not file import), and independent or hands-on corroboration.",
     "evidenceIds": [
       "adp-run-docs-17",
       "adp-run-docs-8"
@@ -587,12 +600,13 @@
     "productId": "adp-run",
     "storyId": "year-end-forms",
     "verdict": "full",
-    "quality": 8,
+    "quality": 7,
     "confidence": "medium",
-    "rationale": "ADP's own docs say it will create and deliver W-2 and 1099 forms and e-file them with the IRS, and employees can view up to three years of W-2s/1099s online. The core story is delivered, though it is a paid add-on and is described only at marketing-page depth. Missing for 10: detailed docs on year-end timing and automation, independent or hands-on corroboration, and inclusion in the base package rather than an additional fee.",
+    "rationale": "ADP's package docs say RUN will create and deliver W-2 and 1099 forms and e-file them with the IRS on the employer's behalf, though this is an add-on with an additional fee. Employees can also view up to three years of W-2s/1099s online, which covers electronic distribution to workers. missing for 10: detailed documentation of the automatic year-end generation and delivery workflow (timing, delivery methods, contractor distribution specifics), independent or hands-on corroboration, and inclusion in the base package rather than as a paid add-on.",
     "evidenceIds": [
       "adp-run-docs-14",
-      "adp-run-docs-25"
+      "adp-run-docs-25",
+      "adp-run-docs-18"
     ]
   },
   {
@@ -4360,7 +4374,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence pack never documents payroll journal entries posting automatically to an accounting ledger, whether QuickBooks or Xero. The closest items are timesheet and schedule syncing to QuickBooks (docs-10) and exporting payroll reports for an accountant (docs-18), which are adjacent features and a manual workaround. Neither counts as automatic journal-entry sync.",
+    "rationale": "Nothing in the evidence documents automatic posting of payroll journal entries to QuickBooks or Xero. The closest items don't qualify: timesheet sync to QuickBooks is a different data flow, report export for an accountant is a manual workaround, and the Workforce API with webhooks is a developer building block rather than a built-in sync.",
     "evidenceIds": []
   },
   {
@@ -4369,7 +4383,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence shows a UI-based hire-and-onboard flow and a general Intuit developer portal with a sandbox and workers' comp code requests. Nothing documents API endpoints for creating employees, setting compensation, or configuring employee tax withholding. Workers' comp code requests and Desktop SDK tooling are adjacent features, not this capability, and no OpenAPI spec was found.",
+    "rationale": "The evidence shows a QuickBooks Workforce API (GraphQL, OAuth, webhooks), but its documented employee use case is only \"View employee information,\" alongside deductions, payslips and pensions. Nothing documents creating an employee, setting compensation, or configuring tax setup via the API. The automated hire-and-onboard flow and employee self-entry of tax info are UI features, not API capabilities, so they earn no credit for an agent-driven onboarding story.",
     "evidenceIds": []
   },
   {
@@ -4378,34 +4392,36 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence shows in-product Payroll AI that spots timesheet inconsistencies, plus a UI step to review and approve payroll before paychecks go out. Neither is an API an external agent could call to run a payroll preview and surface anomalies. The only payroll-related developer evidence covers workers' comp code requests and a sandbox company, and no OpenAPI spec was found. These are adjacent features and developer building blocks, so they earn no credit toward this story.",
+    "rationale": "The QuickBooks Workforce API covers viewing employees, deductions, payslips and pensions, plus webhooks that fire after a company runs payroll, but nothing documents an API call that previews or calculates a pending payroll run. The in-product Payroll AI that spots time-data inconsistencies and the UI step to review and approve auto payroll are adjacent features, not an API-driven preview an agent could run. These are building blocks at most and earn no credit.",
     "evidenceIds": []
   },
   {
     "productId": "quickbooks-payroll",
     "storyId": "agent-reconciles-payroll-journal",
     "verdict": "partial",
-    "quality": 4,
-    "confidence": "low",
-    "rationale": "QuickBooks Payroll documents that payroll reports can be customized, run, and exported (docs-18), and the Intuit developer docs reference payroll-adjacent API requests (workers comp codes) plus a sandbox company, so some data access path exists. Nothing shows a payroll journal endpoint an agent could call, or a documented reconciliation flow into the ledger; the export appears to be a manual UI action. Missing for 10: documented API access to payroll journal or paycheck data, machine-readable or automated export, documented journal-entry posting or reconciliation into the ledger, and hands-on corroboration of an agent workflow.",
+    "quality": 5,
+    "confidence": "medium",
+    "rationale": "QuickBooks Payroll documents exporting customizable payroll reports. It also offers the QuickBooks Workforce API (GraphQL, OAuth) with payslip and deduction workflows, plus webhooks that fire when a company runs payroll, so an agent could programmatically pull pay-run data. However, nothing in the evidence describes payroll journal-entry data specifically or any reconciliation of those entries into a ledger. missing for 10: documented payroll journal/GL-entry endpoint or export, documented ledger posting or reconciliation workflow, published OpenAPI spec (the probe returned 404), independent hands-on corroboration of agent-driven extraction.",
     "evidenceIds": [
       "quickbooks-payroll-docs-18",
-      "quickbooks-payroll-docs-23",
-      "quickbooks-payroll-docs-22",
-      "quickbooks-payroll-probe-1"
+      "quickbooks-payroll-supp-workforce-develop",
+      "quickbooks-payroll-supp-workforce-webhooks",
+      "quickbooks-payroll-supp-workforce-workflows"
     ]
   },
   {
     "productId": "quickbooks-payroll",
     "storyId": "agentic-agent-docs",
     "verdict": "full",
-    "quality": 7,
-    "confidence": "medium",
-    "rationale": "A live probe confirms Intuit publishes an llms.txt at developer.intuit.com (HTTP 200), structured with one section per product and links to follow. It includes payroll-relevant entries such as workers comp code requests, so an agent can be pointed at it. Missing for 10: a payroll-specific llms.txt or agent-oriented doc set (the file is Intuit-wide and leans heavily on Desktop SDK and general QuickBooks content), a machine-readable OpenAPI spec (all probed paths returned 404), and independent or hands-on corroboration of agent use.",
+    "quality": 8,
+    "confidence": "high",
+    "rationale": "A live probe confirms an llms.txt at developer.intuit.com that returns HTTP 200 and is structured for agents, with one section per product. It includes a QuickBooks Workforce API section covering payroll development, webhooks, and workflows such as employees, deductions, and payslips. Missing for 10: a payroll-specific agent doc (the llms.txt is shared across all Intuit developer products), any independent or hands-on corroboration of agents using it, and a machine-readable OpenAPI spec (all probed paths returned 404).",
     "evidenceIds": [
       "quickbooks-payroll-probe-1",
+      "quickbooks-payroll-supp-workforce-develop",
+      "quickbooks-payroll-supp-workforce-workflows",
+      "quickbooks-payroll-supp-workforce-webhooks",
       "quickbooks-payroll-docs-23",
-      "quickbooks-payroll-docs-22",
       "quickbooks-payroll-probe-2"
     ]
   },
@@ -4413,9 +4429,9 @@
     "productId": "quickbooks-payroll",
     "storyId": "agentic-ai-insights",
     "verdict": "partial",
-    "quality": 3,
-    "confidence": "low",
-    "rationale": "First-party marketing says a 'Payroll AI' collects time and attendance data, spots inconsistencies, and texts the admin updates. That is a narrow form of AI-generated insight drawn from the user's own data. Beyond this one claim there is no evidence of broader AI insights or suggestions (e.g., cost trends or recommendations), and the payroll reports in docs-18 are not described as AI-generated. Missing for 10: AI insights beyond time-and-attendance anomaly flagging, in-product suggestion or recommendation surfaces, detailed docs on how the AI works, independent or hands-on corroboration.",
+    "quality": 4,
+    "confidence": "medium",
+    "rationale": "QuickBooks Payroll's own marketing describes a 'Payroll AI' that collects time and attendance data, spots inconsistencies, and texts updates to the admin. That is a first-party, AI-driven insight drawn from the user's data, but it is a single marketing claim limited to anomaly-flagging in timesheet data. The standard payroll reports (docs-18) are not AI-generated and earn no credit. Missing for 10: broader AI insights or suggestions across payroll, tax, and workforce data; in-product AI recommendations beyond inconsistency alerts; detailed documentation of how the AI works; independent or hands-on corroboration.",
     "evidenceIds": [
       "quickbooks-payroll-docs-1"
     ]
@@ -4426,15 +4442,14 @@
     "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "QuickBooks Payroll documents automations that run unattended in the background. Payroll can be set to run automatically after setup, with alerts. A Payroll AI proactively collects time and attendance data, spots inconsistencies and texts the admin. Users can also automate multi-step HR processes and onboarding, and tax filing and 1099 delivery happen automatically. However, auto payroll is limited to salaried direct-deposit employees and includes a review/approve step, and the HR automations are built around approval chains rather than fully autonomous runs. Missing for 10: a general-purpose automation builder beyond the predefined payroll/HR flows, auto payroll for hourly or non-direct-deposit employees, and independent or hands-on corroboration that these automations actually run autonomously.",
+    "rationale": "The product ships its own background automation. Users can set payroll to run automatically after initial setup, with alerts. Auto payroll covers salaried employees on direct deposit, Payroll AI proactively collects time data and texts admins, taxes are calculated, filed and paid automatically, and multi-step HR processes can be automated with custom approval chains. Missing for 10: a general-purpose automation builder (custom triggers/actions) beyond payroll and HR flows, auto payroll covering hourly employees and those not on direct deposit, detail on how configurable the AI agent's autonomy is, and independent or hands-on corroboration.",
     "evidenceIds": [
       "quickbooks-payroll-docs-1",
       "quickbooks-payroll-docs-2",
+      "quickbooks-payroll-docs-3",
       "quickbooks-payroll-docs-9",
       "quickbooks-payroll-docs-15",
-      "quickbooks-payroll-docs-16",
-      "quickbooks-payroll-docs-3",
-      "quickbooks-payroll-docs-7"
+      "quickbooks-payroll-docs-16"
     ]
   },
   {
@@ -4442,8 +4457,8 @@
     "storyId": "agentic-builtin-assistant",
     "verdict": "partial",
     "quality": 4,
-    "confidence": "medium",
-    "rationale": "QuickBooks Payroll documents a built-in 'Payroll AI' that takes on specific work: it collects time and attendance data, flags inconsistencies, and texts the admin with updates. That is the product's own AI handling tasks for the user. The evidence is a single marketing line covering a narrow, proactive workflow, not a general assistant the user can hand arbitrary tasks to. missing for 10: an interactive assistant that accepts user-initiated requests, delegation beyond time/attendance collection, in-depth docs on what the AI can do, independent or hands-on corroboration.",
+    "confidence": "low",
+    "rationale": "First-party marketing describes a built-in 'Payroll AI' that collects time and attendance data, spots inconsistencies, and texts the admin, so a narrow set of payroll prep tasks is handed to an in-product AI. That is the product's own AI capability, but it is a single marketing line, and nothing shows a user can assign arbitrary tasks to it. Auto-payroll scheduling and human experts are rule-based automation and services, not an AI assistant, so they earn no credit. Missing for 10: evidence of a conversational or general-purpose assistant users can direct, documentation of what tasks can be delegated and how, an approval/oversight flow for AI actions, and independent or hands-on corroboration.",
     "evidenceIds": [
       "quickbooks-payroll-docs-1"
     ]
@@ -4452,13 +4467,14 @@
     "productId": "quickbooks-payroll",
     "storyId": "agentic-headless",
     "verdict": "partial",
-    "quality": 3,
-    "confidence": "low",
-    "rationale": "Intuit's developer platform gives some programmatic, non-UI access: a sandbox company comes with every developer profile, and API requests can add, modify or query workers' comp codes. That offers a thin basis for scripted or CI use, but nothing shows payroll itself can be run headlessly. The in-product 'auto payroll' scheduling is an adjacent feature and earns no credit here. Missing for 10: documented API or CLI to run payroll programmatically, CI and headless usage guidance, an OpenAPI spec (probe returned 404), and independent or hands-on corroboration.",
+    "quality": 4,
+    "confidence": "medium",
+    "rationale": "Intuit documents a QuickBooks Workforce API (GraphQL, OAuth, webhooks, samples) and an auto-provisioned sandbox company, which together allow programmatic, UI-free access to payroll data. However, the documented API use cases cover viewing employees and managing deductions, payslips and pensions, not triggering payroll runs. There is also no CLI, no CI guidance, and no OpenAPI spec (probe returned 404). The in-product 'auto payroll' feature is in-app scheduling and gets no credit here. Missing for 10: headless/CLI tooling, documented ability to run payroll via API, CI/automation guides, machine-readable API spec, independent or hands-on corroboration.",
     "evidenceIds": [
+      "quickbooks-payroll-supp-workforce-develop",
+      "quickbooks-payroll-supp-workforce-workflows",
+      "quickbooks-payroll-supp-workforce-webhooks",
       "quickbooks-payroll-docs-22",
-      "quickbooks-payroll-docs-23",
-      "quickbooks-payroll-probe-1",
       "quickbooks-payroll-probe-2"
     ]
   },
@@ -4468,7 +4484,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "QuickBooks Payroll includes a 'Payroll AI' assistant, so letting users connect external MCP servers is a conceivable capability and the axis applies. However, nothing in the evidence shows MCP client support or any way to add external tool servers. The developer API, SDK and llms.txt items are building blocks for third-party apps, not a way to plug MCP servers into the product.",
+    "rationale": "QuickBooks Payroll has an embedded Payroll AI agent, so letting users connect external MCP servers is a fair question for this product. However, the evidence never mentions MCP client support, tool connectors, or any way to plug external servers into the product. The Workforce API, webhooks and SDK docs are developer building blocks for building on top of QuickBooks, not a way for its AI to consume MCP tools, so they earn no credit.",
     "evidenceIds": []
   },
   {
@@ -4477,7 +4493,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "QuickBooks Payroll is a SaaS payroll service, so an official MCP server is a plausible capability and the axis applies. Nothing in the evidence pack mentions an MCP server or MCP endpoint. The developer APIs, SDKs, sandbox and llms.txt are developer building blocks rather than an official MCP server, so they earn no credit here.",
+    "rationale": "QuickBooks Payroll is a SaaS payroll product, not an agent, so an official MCP server is a fair question to ask of it. The evidence pack never mentions an MCP server. The Workforce GraphQL API, webhooks, an llms.txt file and the Desktop SDKs are developer building blocks or adjacent features, not an MCP server, so they earn no credit here.",
     "evidenceIds": []
   },
   {
@@ -4486,7 +4502,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Natural-language operation is a fair axis for a SaaS payroll product, but nothing in the evidence shows users can issue natural-language commands to it. The 'Payroll AI' that collects time data and texts admins is a proactive automation feature, not a natural-language command interface. The developer llms.txt is documentation for LLMs and does not let users operate the product.",
+    "rationale": "The only AI-related evidence describes a 'Payroll AI' that collects time data, flags inconsistencies, and texts the admin updates. That is a proactive, outbound agent feature, not an interface where the user operates the product by issuing natural-language commands, so it is an adjacent feature that earns no credit. The rest of the pack covers payroll features and developer APIs (GraphQL, webhooks, llms.txt), which are building blocks rather than natural-language operation, so the axis applies but is unevidenced.",
     "evidenceIds": []
   },
   {
@@ -4495,75 +4511,93 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "An official CLI is a plausible offering for a SaaS payroll platform, so the axis applies. The evidence shows only a Desktop SDK, the Windows Web Connector app, the SDKTestPlus3 test tool and a sandbox, which are developer building blocks or adjacent tools rather than an official command-line interface. Nothing in the pack documents a CLI for QuickBooks Payroll.",
+    "rationale": "An official CLI is a fair question for a SaaS payroll platform with a developer ecosystem, so the axis applies. The evidence shows a GraphQL Workforce API, webhooks, a Desktop SDK, the Windows Web Connector app and the SDKTestPlus3 test tool, but none of these is an official command-line interface. API and SDK primitives are developer building blocks and earn no credit for this story.",
     "evidenceIds": []
   },
   {
     "productId": "quickbooks-payroll",
     "storyId": "agentic-public-api",
-    "verdict": "partial",
-    "quality": 5,
+    "verdict": "full",
+    "quality": 7,
     "confidence": "medium",
-    "rationale": "Intuit runs a public developer portal (probe confirms an llms.txt describing API and SDK documentation) that offers sandbox companies and includes payroll-adjacent requests to add, modify or query workers' comp codes. However, the evidence never shows payroll-specific API operations such as running payroll, managing employees or retrieving paychecks, and much of the listed tooling targets QuickBooks Desktop. Missing for 10: documented payroll endpoints for running payroll and managing employees, a machine-readable OpenAPI spec (all probed paths returned 404), and hands-on or independent corroboration of driving payroll via the API.",
+    "rationale": "Intuit documents a QuickBooks Workforce API for building payroll tools, with a schema, GraphQL, OAuth, webhooks, samples, a sandbox company, and workflow guides for viewing employee information and managing deductions, payslips, pensions, and workers comp codes. That is a documented public programmatic interface to the payroll product. However, the evidence shows only a subset of payroll operations exposed and no hands-on corroboration. missing for 10: evidence that core actions like running or approving payroll can be done via the API, a machine-readable spec (OpenAPI probes returned 404), confirmation the API is openly available rather than partner-gated, independent or hands-on corroboration.",
     "evidenceIds": [
-      "quickbooks-payroll-probe-1",
+      "quickbooks-payroll-supp-workforce-develop",
+      "quickbooks-payroll-supp-workforce-workflows",
+      "quickbooks-payroll-supp-workforce-webhooks",
       "quickbooks-payroll-docs-22",
       "quickbooks-payroll-docs-23",
-      "quickbooks-payroll-docs-24",
+      "quickbooks-payroll-probe-1",
       "quickbooks-payroll-probe-2"
     ]
   },
   {
     "productId": "quickbooks-payroll",
     "storyId": "agentic-scoped-keys",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "QuickBooks Payroll has a developer platform: a sandbox company, workers' comp code API requests, and the Desktop SDK and Web Connector. However, nothing in the pack documents issuing scoped or least-privilege API credentials, OAuth scopes, or per-agent tokens. Developer building blocks and general API existence do not count toward this story.",
-    "evidenceIds": []
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "The QuickBooks Workforce API documentation lists OAuth as part of its developer offering. That gives a first-party mechanism for issuing delegated API credentials an agent could use. However, the evidence never mentions scopes, permission granularity, or least-privilege restrictions, so the 'scoped' part of the story is only implied. Missing for 10: documented OAuth scopes or permission levels for payroll data, read-only or limited-access credential options, agent-specific token management, and hands-on or independent corroboration.",
+    "evidenceIds": [
+      "quickbooks-payroll-supp-workforce-develop",
+      "quickbooks-payroll-supp-workforce-workflows"
+    ]
   },
   {
     "productId": "quickbooks-payroll",
     "storyId": "agentic-sdks",
     "verdict": "partial",
     "quality": 4,
-    "confidence": "low",
-    "rationale": "Intuit's developer portal describes itself as \"API and SDK documentation for Intuit Developer products.\" It documents a Desktop SDK with test tooling (SDKTestPlus3), automatic sandbox companies, and payroll-adjacent requests such as workers comp codes. However, the named SDK is tied to QuickBooks Desktop rather than clearly to QuickBooks Payroll, and no published OpenAPI spec was found. Missing for 10: a clearly documented official SDK for the Payroll product, modern language SDKs (e.g. Node/Python/Java) in the evidence, a machine-readable API spec, and hands-on or independent corroboration of building payroll integrations.",
+    "confidence": "medium",
+    "rationale": "Intuit's developer docs reference an official QuickBooks Desktop SDK, including custom properties on lists and transactions and the SDKTestPlus3 step-through tool. The payroll-specific QuickBooks Workforce API offers GraphQL, OAuth, webhooks and samples, but no language SDK is documented for it. SDK coverage that clearly targets the payroll product's modern API is therefore thin. Missing for 10: an official payroll/Workforce SDK in named languages, SDK reference documentation, a published OpenAPI spec (probe returned 404), and independent hands-on corroboration.",
     "evidenceIds": [
-      "quickbooks-payroll-probe-1",
       "quickbooks-payroll-docs-25",
       "quickbooks-payroll-docs-26",
-      "quickbooks-payroll-docs-22",
-      "quickbooks-payroll-docs-23",
+      "quickbooks-payroll-supp-workforce-develop",
+      "quickbooks-payroll-supp-workforce-workflows",
+      "quickbooks-payroll-probe-1",
       "quickbooks-payroll-probe-2"
     ]
   },
   {
     "productId": "quickbooks-payroll",
     "storyId": "agentic-webhooks",
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "full",
+    "quality": 7,
     "confidence": "medium",
-    "rationale": "Webhooks are a fair axis for a payroll SaaS with a developer platform, but nothing in the evidence documents registrable outbound HTTP callbacks. The admin text alerts and in-product notifications are adjacent features that do not qualify. The developer docs (llms.txt, sandbox, workers comp code requests, Desktop SDK, Web Connector) never mention webhook subscriptions.",
-    "evidenceIds": []
+    "rationale": "Intuit's developer docs list a dedicated Webhooks page for the QuickBooks Workforce (payroll) API, so integrators can be notified when a connected company runs payroll or adds or updates an employee. Webhooks also appear among the core development building blocks. The in-app alerts and admin texts are user notifications, not programmatic callbacks, so they were not credited. Missing for 10: registration/subscription mechanics, payload and signature/verification details, the full event catalog (the evidence is only truncated llms.txt index summaries), and independent or hands-on corroboration.",
+    "evidenceIds": [
+      "quickbooks-payroll-supp-workforce-webhooks",
+      "quickbooks-payroll-supp-workforce-develop"
+    ]
   },
   {
     "productId": "quickbooks-payroll",
     "storyId": "api-interactive-docs",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "The evidence shows API/SDK documentation indexed via llms.txt, a sandbox company for developers, and SDKTestPlus3, a Windows tool for stepping through Desktop SDK interactions. None of these is an interactive API reference with runnable in-browser examples. The sandbox and the desktop test utility are adjacent building blocks, not the capability itself, and the OpenAPI probe found no published spec at any candidate path.",
-    "evidenceIds": []
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "Intuit's developer docs give the QuickBooks Workforce (payroll) API a schema/GraphQL reference, samples, and use-case examples with testing guidance. Every developer profile also gets a sandbox company to run requests against. Nothing shows an interactive in-browser API explorer or runnable examples, and the OpenAPI/Swagger spec probes all returned 404. missing for 10: an interactive API explorer, runnable in-doc examples, a published machine-readable OpenAPI spec, and hands-on corroboration.",
+    "evidenceIds": [
+      "quickbooks-payroll-supp-workforce-develop",
+      "quickbooks-payroll-supp-workforce-workflows",
+      "quickbooks-payroll-docs-22",
+      "quickbooks-payroll-probe-2",
+      "quickbooks-payroll-probe-1"
+    ]
   },
   {
     "productId": "quickbooks-payroll",
     "storyId": "api-machine-spec",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "Intuit runs a developer platform, so a downloadable API spec is a fair question for this product. However, probes of the standard OpenAPI/Swagger paths all returned 404. The llms.txt file is a documentation index, not a machine-readable API specification, so it does not count toward this story.",
-    "evidenceIds": []
+    "verdict": "partial",
+    "quality": 4,
+    "confidence": "low",
+    "rationale": "Intuit's developer llms.txt says the QuickBooks Workforce (payroll) API is a GraphQL API with a documented 'schema' section, which could serve as a machine-readable equivalent to OpenAPI. However, the evidence never shows that schema as a downloadable artifact, and the probe found no OpenAPI or Swagger file at any standard path. missing for 10: confirmation the GraphQL schema is downloadable (SDL or introspection file), any OpenAPI/Swagger spec, and independent or hands-on corroboration.",
+    "evidenceIds": [
+      "quickbooks-payroll-supp-workforce-develop",
+      "quickbooks-payroll-probe-2",
+      "quickbooks-payroll-probe-1"
+    ]
   },
   {
     "productId": "quickbooks-payroll",
@@ -4571,11 +4605,11 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Intuit's developer docs say every developer profile automatically gets a sandbox company, which lets you test against QuickBooks APIs without touching production data. The same docs reference payroll-related requests such as workers comp codes, suggesting payroll objects are reachable via the API. However, the evidence never confirms that the sandbox supports payroll runs, tax filing, or money-movement simulation. missing for 10: explicit confirmation that payroll features work in the sandbox, documentation of sandbox scope and limits for payroll data, independent or hands-on corroboration.",
+    "rationale": "Intuit's developer docs state that creating a developer profile automatically provisions a sandbox company, and the Workforce (payroll) API docs mention guidance on how to test your app. The evidence does not confirm that the sandbox includes payroll or Workforce API data and flows, so the depth for this product is unproven. Missing for 10: explicit confirmation that the sandbox supports payroll/Workforce API operations, details on sandbox scope and data isolation, independent or hands-on corroboration.",
     "evidenceIds": [
       "quickbooks-payroll-docs-22",
-      "quickbooks-payroll-docs-23",
-      "quickbooks-payroll-probe-1"
+      "quickbooks-payroll-supp-workforce-workflows",
+      "quickbooks-payroll-supp-workforce-develop"
     ]
   },
   {
@@ -4584,7 +4618,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Intuit has developer APIs (sandbox companies, workers' comp code requests, Desktop SDK, an llms.txt index), so this axis applies to a SaaS payroll product. Nothing in the pack documents API versioning or a deprecation policy, and the OpenAPI probe returned 404 on every candidate path. Having APIs does not by itself show versioned APIs with a published deprecation policy.",
+    "rationale": "QuickBooks Payroll has a developer API: the QuickBooks Workforce API with GraphQL, OAuth and webhooks, plus a sandbox company. That makes API versioning and deprecation policy a fair question for this product. However, none of the evidence mentions API versioning, version pinning, changelogs or a documented deprecation or sunset policy, so the capability is unevidenced.",
     "evidenceIds": []
   },
   {
@@ -4593,7 +4627,7 @@
     "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "First-party docs say QuickBooks Payroll will calculate, file, and pay federal and state payroll taxes, with a 100% accurate calculation guarantee. They back this with up to $25,000 in tax penalty protection and expert-run filing, and payroll can be set to run automatically. Missing for 10: local payroll tax calculation/filing/remittance is not mentioned anywhere in the evidence, and there is no independent or hands-on corroboration of automated filing and remittance.",
+    "rationale": "First-party docs state QuickBooks Payroll will calculate, file, and pay federal and state payroll taxes, with guaranteed-accurate calculations and up to $25,000 in tax penalty protection; experts handle tax filing and payroll can run automatically. Local taxes are never mentioned, so a named part of the story is unevidenced. Missing for 10: evidence of local payroll tax calculation, filing, and remittance; independent or hands-on corroboration of automated filing and remittance.",
     "evidenceIds": [
       "quickbooks-payroll-docs-3",
       "quickbooks-payroll-docs-4",
@@ -4605,13 +4639,12 @@
     "productId": "quickbooks-payroll",
     "storyId": "automation-bulk-operations",
     "verdict": "partial",
-    "quality": 5,
+    "quality": 4,
     "confidence": "medium",
-    "rationale": "QuickBooks Payroll documents a first-party bulk update for employee data (docs-11). It also handles many records in one action through auto payroll for salaried employees (docs-9) and unlimited 1099 e-filing with copies sent to contractors automatically (docs-7). These are single marketing-page mentions, and the bulk capability is scoped mainly to employee records. missing for 10: details on the bulk-update workflow and its scope, bulk operations beyond employee data, programmatic or AI-driven batch operations (no API batch evidence, OpenAPI spec 404s), independent or hands-on corroboration.",
+    "rationale": "QuickBooks Payroll documents a first-party bulk update for employee data, and auto payroll runs across salaried employees as a batch. Beyond that single thin mention, there is no evidence of bulk operations across other item types or of programmatic batch endpoints in the Workforce API. Missing for 10: bulk operations beyond employee records, documented API or agent-driven batch operations, detail on bulk-edit depth and limits, independent or hands-on corroboration.",
     "evidenceIds": [
       "quickbooks-payroll-docs-11",
-      "quickbooks-payroll-docs-9",
-      "quickbooks-payroll-docs-7"
+      "quickbooks-payroll-docs-9"
     ]
   },
   {
@@ -4620,11 +4653,10 @@
     "verdict": "partial",
     "quality": 4,
     "confidence": "medium",
-    "rationale": "QuickBooks Payroll documents its own automation: multi-step HR processes such as equipment requests or off-boarding with custom approval chains, automated hire-to-onboard flows, auto payroll for salaried employees, and AI that flags inconsistencies and texts admins. There is no evidence of a general user-defined rule builder in which arbitrary events trigger configurable actions. missing for 10: a documented event-trigger/condition/action rule engine, a list of supported trigger events and actions, user-authored custom rules beyond approval chains, and independent or hands-on corroboration.",
+    "rationale": "QuickBooks Payroll documents its own event-driven automation: custom approval chains that automate multi-step HR processes like equipment requests or off-boarding, an automated hire-to-onboard flow, and Payroll AI that spots timesheet inconsistencies and texts the admin. However, nothing shows a general user-defined rule builder with configurable triggers and actions. Auto payroll is schedule-based, and the Workforce API webhooks are a developer building block, so they earn no credit here. Missing for 10: a documented user-configurable trigger/condition/action rule engine, a choice of event types and actions, AI-assisted rule authoring, and hands-on or independent corroboration.",
     "evidenceIds": [
       "quickbooks-payroll-docs-15",
       "quickbooks-payroll-docs-16",
-      "quickbooks-payroll-docs-9",
       "quickbooks-payroll-docs-1",
       "quickbooks-payroll-docs-2"
     ]
@@ -4635,7 +4667,7 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "QuickBooks Payroll documents its own recurring automation: payroll can be set to run automatically after setup ([docs-2]), and auto payroll runs for salaried direct-deposit employees with review and approval ([docs-9]). It also offers automated multi-step HR workflows with approval chains ([docs-15]), but nothing shows those workflows can be scheduled. The recurring capability is limited to a fixed payroll job, not general user-defined scheduling. Missing for 10: general-purpose scheduling of arbitrary jobs or workflows, schedule configuration details (cadence, triggers), scheduling of HR workflows, API or programmatic schedule control, and independent or hands-on corroboration.",
+    "rationale": "QuickBooks Payroll documents recurring payroll that runs automatically after initial setup, with alerts and review/approval before paychecks go out. This is a genuine first-party recurring job, but it is limited to payroll for salaried employees on direct deposit. Its HR automation with custom approval chains covers multi-step processes, but nothing shows those can be scheduled to recur. Missing for 10: general-purpose scheduling of arbitrary recurring jobs or workflows, scheduling controls for HR or other workflows, programmatic or agent-driven scheduling, and independent or hands-on corroboration.",
     "evidenceIds": [
       "quickbooks-payroll-docs-2",
       "quickbooks-payroll-docs-9",
@@ -4648,7 +4680,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "QuickBooks Payroll does ship automations (auto payroll, automated HR processes with custom approval chains), so the axis applies. However, the evidence shows no capability to version, review changes to, or roll back those automations. Reviewing and approving a payroll run before paychecks go out is an adjacent control, not versioning or rollback of the automation itself.",
+    "rationale": "QuickBooks Payroll does ship automations, such as auto payroll and multi-step HR processes with approval chains, so this axis applies. However, nothing in the evidence shows versioning, change review, or rollback of those automation definitions. The ability to review and approve a payroll run before paychecks go out is an adjacent control over a run's output, not version control over the automation itself.",
     "evidenceIds": []
   },
   {
@@ -4657,7 +4689,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The only related evidence is the auto-payroll claim that users can 'review and approve payroll before paychecks are sent and easily make compensation changes.' That is a pre-approval review gate, an adjacent control, not a documented ability to cancel or correct a payroll after it has been submitted. Nothing in the pack describes voiding, cancelling, reversing or editing a submitted payroll run before the pay date.",
+    "rationale": "The evidence shows only that users can review and approve auto payroll before paychecks are sent and make compensation changes. That is a pre-submission review step, an adjacent control, not the ability to cancel, void, or correct a payroll after it has been submitted. Nothing in the pack documents cancelling or editing a submitted payroll run before the pay date.",
     "evidenceIds": []
   },
   {
@@ -4666,7 +4698,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence shows generic payroll alerts and notifications, AI texts about timesheet inconsistencies, and automated tax filing. None of it documents proactive alerts when a new hire, new work location, or law change creates a compliance obligation. These are adjacent features that earn no credit toward this story.",
+    "rationale": "The evidence shows only generic payroll alerts and notifications (docs-2) and AI texts about time and attendance inconsistencies (docs-1), plus automated tax filing (docs-3). None of these are documented alerts triggered by a new hire, a new location, or a law change creating a compliance obligation. The Workforce API webhooks are developer building blocks, not this capability, so the axis applies but no evidence shows the product delivers it.",
     "evidenceIds": []
   },
   {
@@ -4675,7 +4707,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Embedded, white-label payroll via a partner API is a fair question for a payroll product, so the axis applies. The evidence shows only general Intuit developer tooling: a sandbox company, a workers-comp-code request API, Desktop SDK and Web Connector integration, and Intuit-branded marketing assets. None of it documents a partner API for embedding white-label payroll runs inside a third-party product.",
+    "rationale": "The evidence shows only the QuickBooks Workforce API, which lets third-party apps connect to QuickBooks companies to view employees and manage deductions, payslips, pensions and webhooks. That is an integration API for existing QuickBooks payroll customers, not a white-label embedded payroll offering a developer can ship under its own brand. The developer docs also point to Intuit branding assets, and nothing documents a partner or embedded program, so the adjacent integration API earns no credit for this story.",
     "evidenceIds": []
   },
   {
@@ -4684,7 +4716,7 @@
     "verdict": "full",
     "quality": 8,
     "confidence": "high",
-    "rationale": "QuickBooks Payroll's pricing page documents next-business-day direct deposit (run by 5:00 PM) and same-day direct deposit (run by 7:00 AM). Its docs also confirm direct-deposit paychecks, auto payroll for direct-deposit employees, and employees entering their own direct deposit info, which together cover paying by fast deposit instead of checks. Missing for 10: independent or hands-on corroboration of deposit timing, and clear documentation of which plan tiers include next-day versus same-day deposit.",
+    "rationale": "QuickBooks Payroll documents next-business-day direct deposit when payroll is run by 5:00 PM, and same-day deposit when run by 7:00 AM, which exceeds the story's next-day/2-day bar. Employees enter their own direct deposit details online, and auto payroll can run on direct deposit, so the founder doesn't need to write checks. Missing for 10: independent or hands-on corroboration of deposit timing, and clarity on which plan tiers include next-day versus same-day deposit.",
     "evidenceIds": [
       "quickbooks-payroll-docs-5",
       "quickbooks-payroll-docs-6",
@@ -4698,7 +4730,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Nothing in the evidence pack documents configuring multiple pay schedules or pay frequencies (weekly, biweekly, semimonthly, monthly), or assigning different schedules to different teams. The 'create and share schedules' item refers to employee work and shift scheduling with timesheet approval, which is an adjacent feature. The auto-payroll items describe automatic runs, not pay-frequency configuration, so neither earns credit.",
+    "rationale": "The evidence never documents creating multiple pay schedules (weekly, biweekly, semimonthly, monthly) or assigning different schedules to different teams. The 'create and share schedules' item refers to employee work and shift scheduling with timesheet approval, which is a different feature. Auto payroll for salaried employees is also not evidence of multiple pay frequencies.",
     "evidenceIds": []
   },
   {
@@ -4707,16 +4739,16 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "International employment through employer-of-record or owned-entity global payroll is a fair question for a payroll product, so the axis applies. The evidence pack only documents US payroll: federal and state tax filing, W-2s, 1099-NEC/MISC and US direct deposit timing. It contains nothing about paying employees in other countries, EOR services or multi-country payroll.",
+    "rationale": "Global payroll and employer-of-record hiring are a fair question for a payroll product, so the axis applies. The evidence only describes US-centric payroll: federal and state tax filing, W-2s, 1099s and same-day direct deposit. Nothing shows hiring or paying employees in other countries through an EOR or owned foreign entities.",
     "evidenceIds": []
   },
   {
     "productId": "quickbooks-payroll",
     "storyId": "health-benefits-administration",
     "verdict": "partial",
-    "quality": 5,
+    "quality": 4,
     "confidence": "medium",
-    "rationale": "QuickBooks Payroll's own marketing says users can access team benefits, including healthcare, and manage everything from the payroll account. It also documents setting up and calculating deductions from each paycheck. However, the asterisked healthcare claim suggests it may be an add-on or partner offering, and nothing describes the enrollment workflow or confirms that benefit deductions sync automatically into payroll. Missing for 10: documented health-plan enrollment and administration workflow, explicit automatic sync of premium deductions to payroll, clarity on first-party vs partner-provided coverage, independent or hands-on corroboration.",
+    "rationale": "QuickBooks Payroll's own marketing says teams can access healthcare benefits and \"manage everything from your payroll account\" (docs-17). It also documents setting up and calculating per-paycheck deductions (docs-8), so offering health insurance alongside payroll is claimed. The asterisks on docs-17 suggest the healthcare offering is an add-on or partner service, and nothing describes enrollment administration or automatic syncing of premium deductions into payroll. Missing for 10: documented enrollment workflows (open enrollment, plan selection, eligibility), explicit auto-sync of benefit deductions to payroll, detail on in-house versus partner administration, and independent or hands-on corroboration.",
     "evidenceIds": [
       "quickbooks-payroll-docs-17",
       "quickbooks-payroll-docs-8"
@@ -4728,7 +4760,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Paying international contractors is a fair question for a payroll product, but the evidence covers only US-centric contractor handling: 1099-MISC/NEC e-filing and federal/state tax filing. Nothing in the pack shows local-currency payouts, foreign contractor payments, or compliant international contract generation.",
+    "rationale": "Paying contractors globally is a fair axis for a payroll product, but the evidence shows no international or local-currency contractor payments and no compliant contractor contracts. Contractor support in the pack is limited to US 1099-MISC/NEC filing and federal/state taxes, which does not deliver this story.",
     "evidenceIds": []
   },
   {
@@ -4737,7 +4769,7 @@
     "verdict": "partial",
     "quality": 4,
     "confidence": "low",
-    "rationale": "QuickBooks Payroll documents that it calculates, files, and pays federal and state payroll taxes with a 100% accurate calculation guarantee and penalty protection. That covers state-level withholding for the product itself, but nothing explicitly addresses employees spread across multiple states or state tax registrations. Missing for 10: explicit multi-state employee support, state tax account registration handling, per-state withholding configuration docs, independent or hands-on corroboration.",
+    "rationale": "QuickBooks Payroll's own docs say it will calculate, file, and pay federal and state payroll taxes with guaranteed accuracy, backed by up to $25,000 in tax penalty protection. That covers state withholding. Nothing in the evidence explicitly addresses employees spread across multiple states or state tax registrations. missing for 10: explicit multi-state employee support, per-state tax registration handling, per-state withholding configuration documentation, independent or hands-on corroboration.",
     "evidenceIds": [
       "quickbooks-payroll-docs-3",
       "quickbooks-payroll-docs-4"
@@ -4749,7 +4781,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Off-cycle payroll is a core axis for a payroll product, so the story applies. The evidence only covers regular and automatic payroll runs, same-day or next-day payment timing, and compensation changes. Nothing documents running an extra payroll for bonuses, corrections, or terminations outside the regular schedule, and these adjacent features earn no credit.",
+    "rationale": "The axis applies, since off-cycle runs for bonuses, corrections, or terminations are a standard payroll capability. The evidence pack only documents regular and automatic payroll runs, same-day or next-day funding deadlines, and compensation changes during review. None of this mentions running an off-cycle, bonus, correction, or termination payroll outside the regular schedule, and adjacent payroll-run features don't count toward this story.",
     "evidenceIds": []
   },
   {
@@ -4758,10 +4790,10 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "QuickBooks Payroll documents secure upload and storage of employee documents within individual employee profiles. It also describes an automated hire-and-onboard flow that starts from the offer letter. However, the evidence never says offer letters or HR documents can be sent for e-signature, so the core signing piece is only implied. Missing for 10: explicit e-signature capability for offer letters/HR documents, detail on sending documents to candidates or employees for signing, and independent or hands-on corroboration.",
+    "rationale": "QuickBooks Payroll documents an automated hire-and-onboard flow that starts with offer letters (docs-16). It also documents secure upload and storage of employee documents within individual employee profiles (docs-12), which covers the per-employee storage half of the story. However, no evidence explicitly mentions e-signature, so signing offer letters and HR documents is only implied by the onboarding-flow claim. Missing for 10: explicit e-signature capability for offer letters and HR documents, detail on whether signed documents are stored automatically per employee, independent or hands-on corroboration.",
     "evidenceIds": [
-      "quickbooks-payroll-docs-12",
-      "quickbooks-payroll-docs-16"
+      "quickbooks-payroll-docs-16",
+      "quickbooks-payroll-docs-12"
     ]
   },
   {
@@ -4769,12 +4801,13 @@
     "storyId": "openness-api-parity",
     "verdict": "partial",
     "quality": 3,
-    "confidence": "low",
-    "rationale": "The Intuit developer platform documents a real, product-owned API surface that touches payroll: requests to add, modify or query workers' comp codes, plus a sandbox company and an llms.txt index. Nothing shows that the main UI capabilities are exposed programmatically, such as running payroll, tax filing, onboarding, time tracking, benefits or reports, and no OpenAPI spec was found at the standard paths. Missing for 10: documented API coverage of core payroll runs and pay schedules, employee/HR/onboarding management, tax filing and reporting endpoints, a published API reference or OpenAPI spec showing UI parity, and independent confirmation of parity.",
+    "confidence": "medium",
+    "rationale": "Intuit documents a QuickBooks Workforce API (GraphQL, OAuth, webhooks) with a handful of payroll workflows: viewing employee information, managing deductions, payslips, pensions, and workers' comp codes. However, nothing in the evidence claims or shows API parity with the UI. Core UI capabilities such as running payroll, onboarding, timesheets and scheduling, tax filing, 1099s, benefits, and HR approval chains have no documented API coverage, and employee access appears to be view-only. Missing for 10: any parity claim, evidence of API support for running or approving payroll, onboarding and hiring, time tracking, tax and 1099 filing, benefits, document management, a published OpenAPI spec, and independent corroboration.",
     "evidenceIds": [
-      "quickbooks-payroll-docs-22",
+      "quickbooks-payroll-supp-workforce-develop",
+      "quickbooks-payroll-supp-workforce-workflows",
+      "quickbooks-payroll-supp-workforce-webhooks",
       "quickbooks-payroll-docs-23",
-      "quickbooks-payroll-probe-1",
       "quickbooks-payroll-probe-2"
     ]
   },
@@ -4784,7 +4817,7 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "The product's own docs say users can customize, run, print, or export payroll reports. That is a first-party export capability, but it is limited to reports, and no export format is named. The developer API and SDK material counts only as building blocks, not as a data-portability feature. Missing for 10: a documented full-account data export, named open formats (e.g. CSV/JSON), coverage of employee records, documents and tax filings, offboarding/account-closure export guidance, and independent corroboration.",
+    "rationale": "QuickBooks Payroll documents its own ability to customize, run, print, or export payroll reports (docs-18), which is a thin first-party export path. Nothing shows a complete account export, open file formats, or an offboarding path. The Workforce API that reads employee info and payslips is a developer building block rather than an export feature, and the migration help (docs-20) covers moving data in, not out. Missing for 10: documented full-account data export, named open formats (CSV/JSON), coverage of all data types (employee documents, tax filings, timesheets), an exit/offboarding process, and independent corroboration.",
     "evidenceIds": [
       "quickbooks-payroll-docs-18"
     ]
@@ -4795,7 +4828,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "high",
-    "rationale": "Whether source code is available under an open license is a fair question for any software product, so this axis applies to a payroll SaaS. The evidence pack shows only hosted payroll features, developer APIs and SDKs, a sandbox, and an llms.txt file. None of these are product source released under an open license.",
+    "rationale": "Open-source availability is a fair question for payroll software, so the axis applies. Nothing in the pack shows QuickBooks Payroll's source is published under an open license. The developer API, SDK, sandbox, and llms.txt evidence covers integration building blocks, not readable product source.",
     "evidenceIds": []
   },
   {
@@ -4804,7 +4837,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Self-hosting is a fair question for payroll software, since on-premises payroll systems exist, so the axis applies. However, the evidence describes only a hosted, Intuit-run service with expert setup and automated tax filing. The Desktop SDK and Web Connector references are developer integration tools for QuickBooks Desktop, not a way to self-host the payroll product, so they earn no credit.",
+    "rationale": "Self-hosting is a fair question for payroll software, but the evidence shows no self-hosted or on-premises deployment of QuickBooks Payroll. It is described only as a hosted, Intuit-run service with experts and auto-run payroll. The QuickBooks Desktop SDK and Web Connector references are integration tools, not a way to self-host the payroll product.",
     "evidenceIds": []
   },
   {
@@ -4813,23 +4846,25 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "QuickBooks Payroll clearly pays W-2 employees, with same-day or next-day direct deposit, auto payroll, and W-2 access (docs-5, -6, -9, -13). On the contractor side, the evidence only shows unlimited 1099-MISC/NEC e-filing with copies sent to contractors (docs-7), not actually paying contractors. So the single-platform coverage of both worker types is only partly evidenced. Missing for 10: explicit documentation of contractor payments (direct deposit or payouts to 1099 workers) from the same platform, and independent or hands-on corroboration of mixed W-2/1099 pay runs.",
+    "rationale": "QuickBooks Payroll documents paying W-2 employees by direct deposit, with same-day or next-day options and auto payroll (docs-5, docs-6, docs-9). On the contractor side it documents 1099-NEC/MISC creation, e-filing, and sending copies to contractors in the same platform (docs-7), but the evidence never says it actually pays contractors. missing for 10: explicit documentation of contractor payments (e.g., direct deposit to 1099 workers), confirmation that W-2 and 1099 payments run together in one workflow, independent or hands-on corroboration.",
     "evidenceIds": [
       "quickbooks-payroll-docs-5",
       "quickbooks-payroll-docs-6",
       "quickbooks-payroll-docs-9",
-      "quickbooks-payroll-docs-13",
       "quickbooks-payroll-docs-7"
     ]
   },
   {
     "productId": "quickbooks-payroll",
     "storyId": "payroll-event-webhooks",
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "partial",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Webhooks are a fair question for a payroll SaaS with a developer platform, but the evidence never documents registrable outbound HTTP callbacks for payroll processed, employee onboarded, or payment failed events. The admin alerts, text notifications and onboarding automation it does describe are adjacent features rather than programmatic webhooks, and the developer docs excerpts cover only sandbox, SDK and Web Connector topics.",
-    "evidenceIds": []
+    "rationale": "Intuit's developer docs list a first-party Webhooks page for the QuickBooks Workforce API. It is described as a way to stay informed whenever a connected company runs payroll or adds or updates an employee (snippet truncated), which covers the payroll-processed and likely employee-onboarded events. The evidence is only an llms.txt index snippet, and it never mentions payment-failed events or subscription and payload details. Missing for 10: evidence of payment-failed events, a documented event catalog with subscription/registration and payload details, and independent or hands-on corroboration.",
+    "evidenceIds": [
+      "quickbooks-payroll-supp-workforce-webhooks",
+      "quickbooks-payroll-supp-workforce-develop"
+    ]
   },
   {
     "productId": "quickbooks-payroll",
@@ -4837,7 +4872,7 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "QuickBooks Payroll's own docs say users can customize, run, print, or export payroll reports and share them with an accountant, which covers the generate-and-export core of the story. Nothing in the evidence specifically names payroll registers or gross-to-net reports, export formats, or analysis-ready output. missing for 10: explicit payroll register and gross-to-net report types, documented export formats (e.g. CSV/Excel), independent or hands-on corroboration.",
+    "rationale": "QuickBooks Payroll's own docs say you can customize, run, print, or export a payroll report and share it with an accountant, which covers generating and exporting payroll reports for analysis. The evidence never names payroll registers or gross-to-net reports specifically. Missing for 10: explicit payroll register and gross-to-net report types, export format details (e.g., CSV/Excel), and independent or hands-on corroboration.",
     "evidenceIds": [
       "quickbooks-payroll-docs-18"
     ]
@@ -4848,7 +4883,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Choosing a data storage region is a fair question for a SaaS payroll product, so the axis applies. Nothing in the evidence pack mentions data residency or region selection. Secure document storage (docs-12) is an adjacent feature and earns no credit.",
+    "rationale": "Data residency or region selection is a fair question for a cloud payroll SaaS that stores sensitive employee data, so the axis applies. Nothing in the evidence pack mentions choosing a storage region or residency location. Document storage, employee data management, sandbox companies and the Workforce API are unrelated and earn no credit.",
     "evidenceIds": []
   },
   {
@@ -4857,7 +4892,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "QuickBooks Payroll is a SaaS product that handles sensitive employee data and ships AI features such as Payroll AI, so an AI-training opt-out is a fair question for it. The evidence pack contains no privacy policy, data-usage statement, or opt-out control about AI model training.",
+    "rationale": "QuickBooks Payroll is a SaaS product with its own AI features (Payroll AI collects time and attendance data), so an AI-training opt-out is a fair question. However, nothing in the evidence pack documents a setting, policy, or opt-out that keeps customer data out of AI model training.",
     "evidenceIds": []
   },
   {
@@ -4866,7 +4901,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Data retention and deletion controls are a fair privacy question for a SaaS payroll product, so the axis applies. The evidence covers only adjacent features: managing and bulk-updating employee data, storing documents, and exporting reports. Nothing documents configurable retention periods or user-initiated data deletion.",
+    "rationale": "Data retention and deletion controls are a fair privacy question for a payroll SaaS that holds sensitive employee data, so the axis applies. The evidence pack never mentions retention periods, deletion requests, or data-purge controls. Adjacent features such as managing and bulk-updating employee profiles, storing documents, and exporting reports do not count as retention or deletion controls.",
     "evidenceIds": []
   },
   {
@@ -4875,7 +4910,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Opting out of telemetry and usage tracking is a fair privacy-posture question for a SaaS payroll product, so the axis applies. Nothing in the evidence pack covers telemetry, analytics, usage-tracking controls or privacy opt-out settings. The AI time-and-attendance data collection described in the docs is a product feature, not a tracking opt-out.",
+    "rationale": "Opting out of telemetry and usage tracking is a fair privacy-posture question for a SaaS payroll product, so the axis applies. Nothing in the evidence pack documents a telemetry, analytics, or usage-tracking opt-out control. The 'Payroll AI collects time and attendance data' item concerns payroll functionality, not product telemetry.",
     "evidenceIds": []
   },
   {
@@ -4884,7 +4919,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "PTO policy management is a fair question for a payroll product, but the evidence pack never mentions PTO policies, accrual rules, time-off requests or approvals, or PTO balances flowing into paychecks. Timesheet approvals and custom approval chains for equipment requests and off-boarding are adjacent features and earn no credit for this story.",
+    "rationale": "PTO policies are a fair question for a payroll product, but nothing in the evidence mentions PTO, leave policies, or accruals. The closest items are adjacent features that earn no credit here: timesheet approvals, time and attendance collection, and custom approval chains for HR processes like equipment requests or off-boarding.",
     "evidenceIds": []
   },
   {
@@ -4893,7 +4928,7 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "QuickBooks Payroll's own docs say you can access 401(k) plans and manage them from the payroll account. They also cover setting up and calculating deductions from each paycheck. That covers offering a retirement plan, but nothing explicitly states that contributions sync automatically with each payroll run, and the asterisks on the 401(k) claim suggest it may be a partner add-on. Missing for 10: explicit documentation of automatic per-payroll 401(k) contribution sync, details of the plan provider or integration, independent or hands-on corroboration.",
+    "rationale": "QuickBooks Payroll documents that ops users can access 401(k) plans and manage them from the payroll account. It also documents setting up and calculating deductions from each paycheck, which covers offering a plan and withholding contributions. The evidence does not explicitly state that contributions sync automatically with the plan provider on each payroll run, and the Workforce API pension and deduction endpoints are developer building blocks that earn no credit here. Missing for 10: explicit documentation of automatic per-payroll contribution sync with the 401(k) provider, details of plan providers or setup, independent or hands-on corroboration.",
     "evidenceIds": [
       "quickbooks-payroll-docs-17",
       "quickbooks-payroll-docs-8"
@@ -4902,10 +4937,10 @@
   {
     "productId": "quickbooks-payroll",
     "storyId": "run-payroll-end-to-end",
-    "verdict": "partial",
-    "quality": 5,
+    "verdict": "full",
+    "quality": 7,
     "confidence": "medium",
-    "rationale": "QuickBooks Payroll documents running payroll with same-day or next-day deadlines and letting users review and approve payroll before paychecks are sent. It also documents timesheet approval that syncs to QuickBooks and Payroll AI that collects time data and flags inconsistencies. However, the evidence is marketing-level: the review-approve claim is stated in the context of auto payroll for salaried employees, and nothing describes a single guided run flow. Missing for 10: explicit preview of payroll totals (gross/net, taxes) before submission, documentation of a single end-to-end run flow combining hours review, earnings review and submit, coverage for hourly employees in the review step, and independent or hands-on corroboration.",
+    "rationale": "QuickBooks Payroll documents running payroll with a review-and-approve step before paychecks are sent, including compensation changes (docs-9). It also documents timesheet approval that syncs into QuickBooks (docs-10), Payroll AI that collects time data and flags inconsistencies (docs-1), and submission deadlines for same-day or next-day pay (docs-5, docs-6). missing for 10: explicit documentation of a totals preview screen, explicit confirmation that hours review, earnings review, preview and submit happen in a single flow, and independent or hands-on corroboration of the run-payroll workflow.",
     "evidenceIds": [
       "quickbooks-payroll-docs-9",
       "quickbooks-payroll-docs-10",
@@ -4918,9 +4953,9 @@
     "productId": "quickbooks-payroll",
     "storyId": "self-serve-employee-onboarding",
     "verdict": "partial",
-    "quality": 6,
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "QuickBooks Payroll claims a hire-and-onboard flow that runs \"from offer letter to day one\" (docs-16). Employees can enter their own personal, direct deposit and tax info online or in the app (docs-13), which covers self-serve W-4 and bank-detail collection before start. Nothing in the evidence mentions I-9 collection or verification; the closest item is generic document upload to employee profiles (docs-12), and nothing independent corroborates how the flow works in practice. Missing for 10: documented I-9 collection and verification, explicit W-4 form handling, detail on sending the onboarding invite to the new hire, independent or hands-on corroboration.",
+    "rationale": "QuickBooks Payroll documents a hire-and-onboard flow that runs \"from offer letter to day one,\" and employees can enter their own personal, direct-deposit and tax info online or in the app. That covers the self-serve bank-detail and tax-withholding parts of the story. I-9 collection is never mentioned, and the W-4 form is only implied by the reference to tax info. missing for 10: explicit I-9 collection/verification, explicit W-4 form handling, detail on sending the flow to a new hire before start date, independent or hands-on corroboration.",
     "evidenceIds": [
       "quickbooks-payroll-docs-16",
       "quickbooks-payroll-docs-13",
@@ -4933,10 +4968,10 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "QuickBooks Payroll's own docs say approved timesheets sync to QuickBooks, and that Payroll AI collects time and attendance data so you can run payroll. That supports time entries feeding payroll, but the evidence says \"syncs to QuickBooks\" rather than explicitly showing hours landing on a payroll run, and overtime is never mentioned. Missing for 10: explicit documentation that hourly time entries populate paychecks in the payroll run, overtime calculation or flow-through, and independent or hands-on corroboration.",
+    "rationale": "QuickBooks Payroll's own docs say Payroll AI collects employee time and attendance data so admins can run payroll, and that approved timesheets sync to QuickBooks. That covers the core idea of time data feeding payroll. However, there is no evidence on overtime calculation or hourly-rate handling, and nothing explicitly says approved hours populate the payroll run itself. Missing for 10: documented overtime calculation and rules, explicit evidence that approved hourly entries pre-fill paychecks in the payroll run, independent or hands-on corroboration.",
     "evidenceIds": [
-      "quickbooks-payroll-docs-10",
-      "quickbooks-payroll-docs-1"
+      "quickbooks-payroll-docs-1",
+      "quickbooks-payroll-docs-10"
     ]
   },
   {
@@ -4945,7 +4980,7 @@
     "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "QuickBooks Payroll documents creating and e-filing unlimited 1099-MISC/1099-NEC forms with the IRS and automatically sending copies to contractors. Employees can access their W-2s online or in the app, which implies W-2s are generated and distributed through a self-service portal, and the service also handles federal and state payroll tax filing. Missing for 10: explicit documentation that W-2s are automatically generated and filed at year-end, detail on W-2 distribution beyond portal access, and independent or hands-on corroboration.",
+    "rationale": "The pricing docs explicitly say QuickBooks creates and e-files unlimited 1099-MISC/NEC forms and automatically sends copies to contractors. Employees can access their W-2s online or in the app, which implies W-2s are generated and distributed to them, and QuickBooks says it files payroll taxes on the user's behalf. missing for 10: explicit documentation that W-2s are automatically generated and filed at year-end, detail on W-2 distribution beyond self-service portal access, independent or hands-on corroboration.",
     "evidenceIds": [
       "quickbooks-payroll-docs-7",
       "quickbooks-payroll-docs-13",
