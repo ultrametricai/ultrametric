@@ -89,8 +89,12 @@ describe('existing judged selection compatibility', () => {
     // evidence pipeline after the shared-host probe fix, normalize re-canonicalized 41 of its
     // 72 stories, and the step→story mapping regenerated against the new corpus, so the
     // code-hosting candidate cells re-partition between the positive and zero rows.
-    expect(positiveCount).toBe(2546)
-    expect(zeroCount).toBe(149)
+    // Re-pinned at the crm/product-analytics bring-up (2026-10-22): eight newly judged products
+    // (pipedrive, close, folk, zoho-crm, google-analytics, heap, pendo, statsig) join the
+    // candidate lists of the steps mapped to those arenas, and the product-analytics v4-residue
+    // re-judge under prompt v5 moves some incumbent step scores into the published zero rows.
+    expect(positiveCount).toBe(2634)
+    expect(zeroCount).toBe(157)
     expect(extraArena).toBe(96)
   })
 
