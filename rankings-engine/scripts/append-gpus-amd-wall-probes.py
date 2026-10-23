@@ -51,6 +51,13 @@ for pid, url in FRONT_DOORS.items():
         print(f'{pid}: wall row for {TODAY} already present, skipping')
         continue
     status, note = get(url)
+    if status != 'ERR' and isinstance(status, int) and status < 400:
+        # The front door answered — there is no wall to record. Writing the wall text beside a
+        # successful status would leave false evidence; the correct follow-up is removing the
+        # URL from crawlExclude and re-crawling, not appending a probe row here.
+        print(f'{pid}: {url} answered HTTP {status} — no wall row written; '
+              'remove the crawlExclude entry and re-run the crawl instead')
+        continue
     n = 0
     ids = {e['id'] for e in ev}
     while f'{pid}-probe-{n + 1}' in ids:

@@ -5,11 +5,10 @@
     "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "A live probe found an llms.txt at rocm.docs.amd.com (HTTP 200) that indexes the ROCm documentation, which is the docs ecosystem for the MI325X, so an agent can be pointed at it directly. The file itself notes that the docs are split across multiple projects, and the markdown-rendered doc probe returned 404. Missing for 10: per-page markdown versions of the docs, a single unified llms.txt covering all projects (including instinct.docs.amd.com), first-party documentation of the agent-docs offering, and independent or hands-on corroboration of its usefulness.",
+    "rationale": "A live probe returned HTTP 200 for a ROCm documentation llms.txt at rocm.docs.amd.com/llms.txt, so an agent can be pointed at it to reach the ROCm and Instinct docs that cover the MI325X. The file itself says the docs are split across multiple projects, and the probe for markdown-rendered doc pages returned 404, so the agent-oriented layer is shallow. missing for 10: per-page markdown versions of the docs, evidence that the llms.txt covers the Instinct/MI325X-specific doc projects, independent or hands-on corroboration of agent use.",
     "evidenceIds": [
       "amd-mi325x-probe-1",
-      "amd-mi325x-probe-2",
-      "amd-mi325x-docs-1"
+      "amd-mi325x-probe-2"
     ]
   },
   {
@@ -18,7 +17,7 @@
     "verdict": "na",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The AMD Instinct MI325X is a datacenter GPU accelerator, so in-product AI-generated insights about a user's data is the wrong axis for this kind of product. Nothing in the evidence shows it ships such a capability: its tooling (AMD SMI, Omnistat, Spur, metrics exporter) covers monitoring, profiling and scheduling, not AI-generated insights.",
+    "rationale": "The AMD Instinct MI325X is a data-center GPU accelerator with a supporting software stack (ROCm, SMI, schedulers, Kubernetes tooling). It has no user-facing application layer where AI-generated insights about a user's data would appear, so this story's axis does not fit the product type. Nothing in the pack shows such a feature: the 'AI-native' Spur scheduler handles job scheduling, not data insights.",
     "evidenceIds": []
   },
   {
@@ -27,7 +26,7 @@
     "verdict": "na",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The AMD Instinct MI325X is a GPU accelerator. User-configurable autonomous agentic automations are a software or agent-product axis, so the story is a category error for this kind of hardware. The Spur Slurm-compatible job scheduler and Kubernetes GPU Operator in the ecosystem are cluster workload-management tools, not agentic background automations, so they do not make this axis applicable.",
+    "rationale": "The AMD Instinct MI325X is a datacenter GPU accelerator, so user-configured autonomous background automations (an agentic software capability) are a category error for this product type. The surrounding ecosystem's Spur job scheduler and GPU Operator are cluster workload and infrastructure tooling, not agentic automations, so they do not make this axis apply.",
     "evidenceIds": []
   },
   {
@@ -36,7 +35,7 @@
     "verdict": "na",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The AMD Instinct MI325X is a datacenter GPU accelerator. A built-in AI assistant that a user delegates tasks to is a category error for this kind of hardware. Nothing in the evidence shows the product or its ROCm/Instinct software stack ships such an assistant: Spur's 'AI-native' label describes a job scheduler, not a delegable assistant.",
+    "rationale": "The MI325X is a datacenter GPU accelerator, and a built-in AI assistant that users delegate tasks to is not a capability buyers compare across this kind of hardware, so the axis does not apply. Nothing in the evidence shows the product ships such an assistant: the 'AI-native' Spur job scheduler is a Slurm-compatible scheduler, and llms.txt is documentation for external LLMs, not an in-product agent.",
     "evidenceIds": []
   },
   {
@@ -45,15 +44,15 @@
     "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "AMD's first-party Instinct tooling supports headless, automated operation. It documents a GPU Operator and Device Plugin for Kubernetes, a Container Toolkit for Docker and other runtimes, the AMD SMI user-space tool for managing and monitoring GPUs, scriptable Cluster Validation Suite tests, and the Spur Slurm-compatible job scheduler. Missing for 10: explicit CI-pipeline integration docs or examples, depth beyond one-line doc descriptions, and independent hands-on corroboration of automated or CI usage.",
+    "rationale": "For a datacenter accelerator, headless automated operation is the normal mode. AMD documents its own tooling for it: the AMD SMI user-space management tool, the AMD Container Toolkit for Docker, a Kubernetes GPU Operator and Device Plugin, the Slurm-compatible Spur job scheduler, and scriptable validation suites (ROCm Validation Suite, Cluster Validation Suite test scripts). missing for 10: explicit CI-pipeline integration docs or examples, in-depth (beyond one-line) documentation of non-interactive/scripted usage, independent hands-on corroboration of automated runs.",
     "evidenceIds": [
       "amd-mi325x-docs-8",
+      "amd-mi325x-docs-9",
       "amd-mi325x-docs-11",
       "amd-mi325x-docs-12",
       "amd-mi325x-docs-13",
       "amd-mi325x-docs-15",
-      "amd-mi325x-docs-16",
-      "amd-mi325x-docs-9"
+      "amd-mi325x-docs-16"
     ]
   },
   {
@@ -62,7 +61,7 @@
     "verdict": "na",
     "quality": 0,
     "confidence": "high",
-    "rationale": "The AMD Instinct MI325X is a GPU accelerator with its ROCm software and cluster-management ecosystem, not an agent or application that consumes tools. Plugging in MCP servers as a client is a category error for this kind of product. Nothing in the evidence shows it or its stack acting as an MCP client.",
+    "rationale": "The AMD Instinct MI325X is a datacenter GPU accelerator with the ROCm software stack. Acting as an MCP client that plugs in MCP servers and calls their tools is a role for agents and AI applications, not compute hardware, so this axis is a category error for this kind of product. Nothing in the evidence shows the product or its first-party tooling consuming MCP servers.",
     "evidenceIds": []
   },
   {
@@ -71,7 +70,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The MI325X comes with a large first-party software ecosystem (ROCm, AMD SMI, GPU Operator, Spur scheduler, docs), so an official MCP server for docs or GPU management is a plausible offering and the axis applies. Nothing in the evidence documents an AMD MCP server, though. The llms.txt file and the absent OpenAPI spec are adjacent agent-readiness signals, not an MCP server.",
+    "rationale": "The MI325X ships with an official software ecosystem (ROCm, AMD SMI, GPU Operator, metrics exporter), so an official MCP server for managing or monitoring it is a plausible capability and the axis applies. Nothing in the evidence documents an MCP server. The llms.txt file and the open-source libraries are adjacent features, not an MCP endpoint an agent could connect to.",
     "evidenceIds": []
   },
   {
@@ -80,7 +79,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The MI325X ships with a substantial operations stack (AMD SMI, GPU Operator, Spur scheduler), so a natural-language control interface is a fair question for this product. However, the evidence shows no documented way to operate the GPU or its tooling through natural-language commands. Spur being called 'AI-native' and the existence of an llms.txt for the docs are adjacent features, not natural-language operation, so they earn no credit.",
+    "rationale": "The MI325X ships with a software management ecosystem (AMD SMI, GPU Operator, Spur scheduler, validation suites), so a natural-language operating interface is a fair question to ask of it. Nothing in the evidence shows one. Spur's \"AI-native\" label means it is built for AI workloads, not that it accepts natural-language commands. The llms.txt file only makes the docs readable by LLMs and does not let anyone operate the product.",
     "evidenceIds": []
   },
   {
@@ -88,12 +87,13 @@
     "storyId": "agentic-official-cli",
     "verdict": "partial",
     "quality": 4,
-    "confidence": "low",
-    "rationale": "AMD's Instinct docs list first-party user-space tooling for this GPU, including AMD SMI ('unified user-space tool to manage and monitor GPUs and drivers'), AMD SMI for Virtualization, and the ROCm Validation Suite. That points to official command-style tooling, but the evidence never explicitly calls these tools CLIs and says nothing about AI-native or agent workflows. Missing for 10: explicit documentation that AMD SMI or the other tools are command-line interfaces, a command reference, machine-readable/JSON output or agent-oriented usage, and independent or hands-on corroboration.",
+    "confidence": "medium",
+    "rationale": "AMD documents first-party tooling for Instinct GPUs. AMD SMI is described as a unified user-space tool to manage and monitor GPUs and drivers. Alongside it sit the ROCm Validation Suite and Spur, a Slurm-compatible scheduler, so official operator tooling exists. However, the evidence never explicitly calls these command-line interfaces or describes AI-native/agent-oriented workflows. missing for 10: explicit documentation of a CLI (commands, flags, output formats), machine-readable/scriptable output for agents, AI-native workflow positioning, independent or hands-on corroboration.",
     "evidenceIds": [
       "amd-mi325x-docs-8",
-      "amd-mi325x-docs-18",
-      "amd-mi325x-docs-9"
+      "amd-mi325x-docs-9",
+      "amd-mi325x-docs-16",
+      "amd-mi325x-docs-18"
     ]
   },
   {
@@ -102,11 +102,13 @@
     "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "For a GPU accelerator, the public API is AMD's first-party, open-source ROCm stack. The docs cover the HIP runtime and HIP C++ programming model, math, compute and communication libraries, and AMD SMI for programmatic device management and monitoring, with an llms.txt index for AI consumers. A REST/OpenAPI spec is not expected for hardware, so the 404 openapi probe does not count against it. Missing for 10: concrete API reference detail (e.g. HIP/AMD SMI API reference pages) in the evidence, and independent hands-on confirmation that the APIs work in practice.",
+    "rationale": "For a GPU accelerator, the public programmatic interface is its compute and management stack. The docs show ROCm's documented HIP runtime and programming model, compute libraries, and the AMD SMI tool for managing and monitoring the GPUs. Kubernetes GPU Operator, Prometheus metrics exporter, and container toolkit integrations extend programmatic control. No OpenAPI spec exists, but that suits hardware rather than a web service. Missing for 10: the evidence describes AMD SMI only as a tool, with no explicit management API or library reference; there is no in-depth API reference excerpt; and there is no hands-on or independent corroboration of driving the device programmatically.",
     "evidenceIds": [
       "amd-mi325x-docs-1",
       "amd-mi325x-docs-3",
       "amd-mi325x-docs-8",
+      "amd-mi325x-docs-12",
+      "amd-mi325x-docs-14",
       "amd-mi325x-docs-20",
       "amd-mi325x-probe-1"
     ]
@@ -117,25 +119,25 @@
     "verdict": "na",
     "quality": 0,
     "confidence": "high",
-    "rationale": "The AMD Instinct MI325X is a GPU accelerator, and its documented ecosystem consists of compute libraries, drivers, and cluster and monitoring tooling. It is not a hosted API service that issues credentials, so scoped or least-privilege API keys for agents are a category error for this product type. Nothing in the evidence shows it ships such a credential system.",
+    "rationale": "The AMD Instinct MI325X is a datacenter GPU accelerator, not an API-based service, so issuing scoped or least-privilege API credentials to an agent is a category error for this kind of product. Nothing in the pack shows it shipping any credential-issuance capability. GPU partitioning, SMI management tools and Kubernetes operators are adjacent hardware and infrastructure controls, not API credential scoping.",
     "evidenceIds": []
   },
   {
     "productId": "amd-mi325x",
     "storyId": "agentic-sdks",
     "verdict": "full",
-    "quality": 8,
+    "quality": 7,
     "confidence": "medium",
-    "rationale": "AMD's official ROCm platform is the first-party SDK for Instinct GPUs. Its documentation covers compilers, runtimes, the HIP runtime and HIP C++ programming model, math, compute and communication libraries, profiling and debugging tools, and the AMD SMI management tool. MI325X (gfx942) appears in ROCm's architecture reference, and the docs publish an llms.txt for AI-assisted development. Community questions about whether the stack works in practice are general skepticism, not a concrete counter-example, so they lower confidence rather than the verdict. Missing for 10: independent or hands-on corroboration of building against ROCm/HIP on MI325X, and detail on SDK language bindings, versioning and API reference depth (no OpenAPI or markdown docs found, though neither is essential for a hardware SDK).",
+    "rationale": "AMD documents ROCm as its official open-source SDK for Instinct GPUs. It covers compilers, the HIP runtime, math and compute libraries, communication primitives, and profiling and debugging tools, along with HIP C++ and OpenMP programming models and ROCm-enabled frameworks such as vLLM and SGLang. One commenter's general doubt about the software stack is not a concrete counter-example, so it does not create a dispute. Missing for 10: specific SDK API references and language bindings in the evidence, and independent or hands-on corroboration that building against ROCm on MI325X works.",
     "evidenceIds": [
       "amd-mi325x-docs-1",
       "amd-mi325x-docs-2",
       "amd-mi325x-docs-3",
+      "amd-mi325x-docs-4",
+      "amd-mi325x-docs-5",
       "amd-mi325x-docs-6",
-      "amd-mi325x-docs-8",
       "amd-mi325x-docs-20",
-      "amd-mi325x-docs-21",
-      "amd-mi325x-probe-1"
+      "amd-mi325x-docs-21"
     ]
   },
   {
@@ -144,7 +146,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The MI325X ships with a fleet-management software ecosystem (AMD SMI, GPU Operator, Device Metrics Exporter, the Spur scheduler), so event webhooks are a plausible ask and the axis applies. However, nothing in the evidence documents registrable outbound HTTP callbacks. Prometheus-format metrics export is a pull-based adjacent feature, not webhooks, and the OpenAPI probe found no API surface.",
+    "rationale": "The MI325X ships with first-party management and monitoring software (AMD SMI, GPU Operator, Device Metrics Exporter, Spur scheduler), and such tooling could plausibly offer event webhooks, so the axis applies. However, the evidence shows no registrable outbound HTTP callbacks. Prometheus-format metrics are pull-based, which is an adjacent feature, not webhook subscriptions, and the OpenAPI probes all returned 404.",
     "evidenceIds": []
   },
   {
@@ -153,7 +155,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The axis applies: the MI325X ships with the ROCm software stack, which has programmable APIs (HIP runtime, libraries) that could have an interactive reference. However, the evidence shows only general documentation, recipes and programming-model guides, with no interactive API explorer or runnable in-browser examples. The OpenAPI probe found nothing, and llms.txt is an adjacent docs feature that earns no credit.",
+    "rationale": "The axis applies because the MI325X ships with a documented software ecosystem (ROCm, HIP, AMD SMI) that could plausibly offer an interactive API reference. However, the evidence shows only static documentation, recipes and an llms.txt file, with no interactive explorer or runnable examples. The OpenAPI/Swagger probes all returned 404, so there is no evidence the product delivers this story.",
     "evidenceIds": []
   },
   {
@@ -171,7 +173,7 @@
     "verdict": "na",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The AMD Instinct MI325X is a GPU accelerator. It does not hold or serve production data the way a SaaS or API product does, so a vendor-provided sandbox kept separate from production is a category error for this kind of product. GPU partitioning, virtualization and validation suites are hardware-isolation and diagnostic features. They are not a sandbox-versus-production environment, so they do not make this axis applicable.",
+    "rationale": "The MI325X is a datacenter GPU accelerator, not a data-holding service or API. A sandbox or test-mode environment kept separate from production data is a category error for this kind of product. GPU partitioning, virtualization tooling and hardware validation suites are adjacent hardware-isolation and diagnostic features, not a sandbox environment for testing, so they do not make the axis apply.",
     "evidenceIds": []
   },
   {
@@ -180,7 +182,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The axis applies: the MI325X ships with the ROCm software stack (HIP runtime, libraries, AMD SMI), and such a stack could reasonably publish API versioning and a deprecation policy. However, nothing in the evidence pack mentions versioned APIs, release or compatibility guarantees, or a deprecation policy. The OpenAPI probe returned only 404s, and the llms.txt probe shows only documentation discoverability.",
+    "rationale": "The MI325X ships with a software stack (ROCm, the HIP runtime, AMD SMI, the GPU Operator), so API versioning and a deprecation policy are fair questions for this product. However, nothing in the evidence documents versioned APIs or a deprecation policy. The probes found no OpenAPI spec and only an llms.txt file, which does not address versioning or deprecation.",
     "evidenceIds": []
   },
   {
@@ -189,7 +191,7 @@
     "verdict": "na",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The MI325X is a data-center GPU accelerator. A user-facing 'bulk operations across many items' capability is an application or data-management UX axis, not something a buyer would ask of accelerator hardware. The pack has cluster tooling, such as the GPU Operator for deploying and managing GPUs in Kubernetes, but none of it documents bulk item operations, so the exception for a shipped wrong-axis capability does not apply.",
+    "rationale": "The AMD Instinct MI325X is a GPU accelerator: hardware plus its ROCm software stack. A story about performing bulk operations across many items is an application or data-management workflow axis, which is a category error for this kind of product. The fleet and cluster management tools in the pack (AMD SMI, the Kubernetes GPU Operator, the Spur scheduler) are adjacent infrastructure controls. None is documented as a bulk item-operations capability, so they do not make the axis apply.",
     "evidenceIds": []
   },
   {
@@ -207,7 +209,7 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "A GPU accelerator would not normally be judged on job scheduling, but AMD's Instinct documentation lists Spur, a first-party \"AI-native job scheduler\" that is drop-in compatible with Slurm and does GPU-first scheduling. That brings the axis into scope. The evidence is a single one-line mention: it shows job scheduling but never documents recurring or cron-style schedules or workflow orchestration. Missing for 10: explicit recurring/periodic job scheduling, workflow chaining, detailed Spur documentation, independent or hands-on corroboration.",
+    "rationale": "Scheduling is normally outside a GPU accelerator's scope. However, AMD's own Instinct documentation lists Spur, described as an \"AI-native job scheduler, drop-in compatible with Slurm, with GPU-first scheduling,\" so the axis applies through the first-party ecosystem. The evidence is a single one-line catalog entry: it supports job scheduling but says nothing about recurring or time-based schedules, or about workflow orchestration. Missing for 10: documented recurring/cron-style job scheduling, workflow/DAG chaining, in-depth Spur documentation, independent or hands-on corroboration.",
     "evidenceIds": [
       "amd-mi325x-docs-16"
     ]
@@ -218,7 +220,7 @@
     "verdict": "na",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The AMD Instinct MI325X is a datacenter GPU accelerator with its supporting ROCm and cluster software stack. Versioning, reviewing, and rolling back user automations is a workflow-automation capability, so asking it of GPU hardware is a category error. Nothing in the evidence shows the product shipping such a feature: the Spur scheduler's Raft-based state concerns job scheduling, not automation versioning or rollback.",
+    "rationale": "The AMD Instinct MI325X is a datacenter GPU accelerator with a ROCm software stack. Versioning, reviewing, and rolling back user automations is a workflow-automation capability, so the story is a category error for this kind of product. Nothing in the evidence shows the product ships such a feature: Spur's Raft-based scheduler state and the validation suites are not automation version control, so the axis does not flip to applicable.",
     "evidenceIds": []
   },
   {
@@ -227,13 +229,15 @@
     "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "ROCm's own GPU architecture reference lists the MI325X as a CDNA3 gfx942 target, and the ROCm and Instinct docs present ROCm/HIP as AMD's compute stack optimized for Instinct devices. Together these show the part is a documented ROCm/HIP target. Community skepticism about the software stack cites no concrete failure, so it does not create a dispute. Missing for 10: an explicit ROCm compatibility/support-matrix entry naming MI325X (the evidence is a spec table), and independent or hands-on corroboration of workloads shipping on MI325X.",
+    "rationale": "ROCm's own GPU specifications table lists the MI325X with the LLVM compile target gfx942 (CDNA3). ROCm provides the HIP runtime, compilers and libraries optimized for Instinct devices, and AMD publishes an MI325X-specific system acceptance guide, so the part is documented as a ROCm/HIP target. The community post questioning whether the software stack works in practice is general skepticism, not a concrete failure, so it does not create a dispute. Missing for 10: an explicit entry in a ROCm supported-GPU/compatibility matrix in the evidence, and independent hands-on reports of compiling and running HIP workloads on MI325X.",
     "evidenceIds": [
       "amd-mi325x-docs-21",
+      "amd-mi325x-docs-22",
+      "amd-mi325x-docs-1",
       "amd-mi325x-docs-2",
       "amd-mi325x-docs-3",
       "amd-mi325x-docs-20",
-      "amd-mi325x-docs-1"
+      "amd-mi325x-docs-23"
     ]
   },
   {
@@ -242,26 +246,25 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Media engines and creator-app or ISV driver support are a fair axis for a GPU, so this story applies to the MI325X. The evidence pack covers only ROCm compute, AI/HPC frameworks, cluster management and Kubernetes tooling. Nothing documents AV1/HEVC encode, creator-app acceleration or professional/ISV-certified drivers, and absence of evidence for an applicable capability is 'none'.",
+    "rationale": "Media engines and driver certification are a fair question for a GPU accelerator, since datacenter GPUs can ship hardware encoders, so the axis applies. However, the evidence pack covers only ROCm compute and AI libraries, cluster tooling, and architecture specs. It never mentions AV1/HEVC encode engines, creator-app acceleration, or ISV-certified professional drivers for the MI325X.",
     "evidenceIds": []
   },
   {
     "productId": "amd-mi325x",
     "storyId": "datacenter-scale-out",
-    "verdict": "partial",
-    "quality": 5,
+    "verdict": "full",
+    "quality": 7,
     "confidence": "medium",
-    "rationale": "The Instinct docs cover cluster-scale operation: end-to-end AI cluster validation, a Kubernetes GPU Operator and device plugin, a Slurm-compatible scheduler, cluster-wide utilization profiling, and cloud deployment on Azure. ROCm also ships communication primitives and serving recipes for vLLM and SGLang. However, nothing in the pack documents the MI325X's high-bandwidth interconnect (Infinity Fabric link bandwidth or topology) or specific multi-GPU node and rack configurations; the arch-spec row lists only compute and memory figures. Missing for 10: documented Infinity Fabric/interconnect bandwidth and topology, multi-GPU platform (e.g. 8-GPU node) specifications, rack-scale reference designs, independent or hands-on corroboration of scale-out training.",
+    "rationale": "AMD's MI325X system acceptance guide documents an 8-GPU OAM platform with 2TB of HBM3 and fully-meshed Infinity Fabric connectivity between accelerators. Instinct docs cover cluster-scale deployment through a Cluster Validation Suite, Kubernetes GPU Operator, device plugin, Slurm-compatible scheduler, and cluster-wide profiling. ROCm adds communication primitives plus vLLM/SGLang serving recipes. Missing for 10: documented Infinity Fabric bandwidth figures, MI325X-specific rack-scale/multi-node scale-out reference designs (the cluster tooling is generic Instinct), and independent or hands-on corroboration of datacenter-scale training on this part.",
     "evidenceIds": [
+      "amd-mi325x-docs-23",
       "amd-mi325x-docs-3",
       "amd-mi325x-docs-5",
       "amd-mi325x-docs-11",
       "amd-mi325x-docs-12",
-      "amd-mi325x-docs-13",
       "amd-mi325x-docs-16",
       "amd-mi325x-docs-17",
-      "amd-mi325x-docs-19",
-      "amd-mi325x-docs-21"
+      "amd-mi325x-docs-10"
     ]
   },
   {
@@ -270,7 +273,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Power efficiency is a fair axis for a datacenter GPU, but the evidence pack contains no documented power envelope (TDP/board power) for the MI325X and no independent performance-per-watt testing. The architecture spec row lists only compute-unit and cache figures. Generic monitoring tools (AMD SMI, metrics exporter) are adjacent features and do not document power envelopes or efficiency.",
+    "rationale": "Power efficiency is a fair axis for a datacenter accelerator, but the evidence pack documents no power envelope (TDP/TBP) for the MI325X and contains no independent performance-per-watt testing. The spec rows and the acceptance guide cover only memory, compute units and architecture. Generic monitoring tools such as AMD SMI are an adjacent feature and earn no credit here.",
     "evidenceIds": []
   },
   {
@@ -278,24 +281,24 @@
     "storyId": "high-refresh-4k-gaming",
     "verdict": "na",
     "quality": 0,
-    "confidence": "medium",
-    "rationale": "The MI325X is a CDNA3 datacenter accelerator built for AI and HPC workloads. Its documentation covers ROCm, Kubernetes, cluster validation and inference frameworks, so consumer 4K gaming is the wrong axis for this kind of product rather than an unmet capability. Nothing in the evidence suggests it ships gaming or display capability that would make the axis apply.",
+    "confidence": "high",
+    "rationale": "The MI325X is a datacenter AI/HPC accelerator: an OAM module on the CDNA3 compute architecture, deployed in 8-GPU servers and managed through ROCm, Kubernetes and Slurm tooling. High-refresh 4K gaming is not a question buyers of this kind of product would ask, so the axis does not apply. Nothing in the evidence shows the product shipping gaming capability that would make the axis applicable.",
     "evidenceIds": []
   },
   {
     "productId": "amd-mi325x",
     "storyId": "linux-first-class",
     "verdict": "partial",
-    "quality": 4,
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "AMD's own docs show Linux support for this part. ROCm is described as open source and cross-platform with Linux named first, and the MI325X (gfx942) is listed in the ROCm GPU architecture specs. The Instinct docs add a Linux-centric operations toolchain: AMD SMI for managing GPUs and drivers, Kubernetes GPU Operator and Device Plugin, and Container Toolkit. However, the pack contains no explicit Linux driver release documentation and no independent hands-on Linux testing of the MI325X. Missing for 10: documented Linux driver release notes or versions for MI325X, independent or third-party Linux testing of this part.",
+    "rationale": "AMD's own ROCm documentation describes an open-source stack that supports Linux and lists the MI325X as a supported part (CDNA3/gfx942). AMD also publishes an MI325X system acceptance guide, AMD SMI driver management, and Kubernetes and container tooling that implies Linux deployment. However, the pack contains no explicit Linux driver release notes and no independent hands-on Linux testing of this part. Community comments only question whether the software stack works, which does not create a dispute. Missing for 10: documented Linux driver release history or notes specific to MI325X, independent or third-party Linux testing of MI325X.",
     "evidenceIds": [
       "amd-mi325x-docs-1",
       "amd-mi325x-docs-2",
-      "amd-mi325x-docs-21",
       "amd-mi325x-docs-8",
       "amd-mi325x-docs-12",
-      "amd-mi325x-docs-15"
+      "amd-mi325x-docs-22",
+      "amd-mi325x-docs-23"
     ]
   },
   {
@@ -304,22 +307,24 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "ROCm docs provide full-stack recipes for deploying AI workloads and list vLLM and SGLang as inference stacks. The MI325X (CDNA3, gfx942) appears in ROCm's GPU architecture specs, which places it inside the documented ROCm serving ecosystem. However, nothing in the pack documents low-precision formats (FP8/FP4) for this part, and the serving-stack evidence is ROCm-wide rather than MI325X-specific. Community doubt about whether the software stack works in practice is general skepticism, not a concrete counter-example, so it does not create a dispute. Missing for 10: documented FP8/FP4 support on MI325X, MI325X-specific inference/serving guidance or benchmarks, llama.cpp support evidence, and independent hands-on corroboration.",
+    "rationale": "ROCm is AMD's documented AI stack and lists vLLM and SGLang among its inference recipes. The MI325X appears in ROCm's GPU spec table (CDNA3, gfx942, 256 GiB), which places the part inside that serving ecosystem. Nothing in the pack covers low-precision formats, and the inference recipes are not explicitly tied to the MI325X. Missing for 10: documented FP8/FP4 support for the MI325X, MI325X-specific vLLM/SGLang inference guides or validation, llama.cpp support, and independent hands-on corroboration that LLM serving works on this part.",
     "evidenceIds": [
+      "amd-mi325x-docs-1",
       "amd-mi325x-docs-4",
       "amd-mi325x-docs-5",
-      "amd-mi325x-docs-1",
-      "amd-mi325x-docs-21"
+      "amd-mi325x-docs-22"
     ]
   },
   {
     "productId": "amd-mi325x",
     "storyId": "memory-spec-bandwidth",
     "verdict": "partial",
-    "quality": 3,
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "AMD's ROCm GPU architecture spec table lists the MI325X with a value of 256, which in that table's layout reads as VRAM capacity in GiB, alongside 304 compute units. That is only one of the four requested memory specs, and the vendor product page could not be retrieved to supply the rest. Missing for 10: memory type (e.g., HBM generation), memory bus width, memory bandwidth, and explicit column labeling or corroboration confirming the capacity figure.",
+    "rationale": "First-party AMD docs give the MI325X's capacity: 256 GiB VRAM in the ROCm GPU specs table and 256GB of HBM memory per accelerator in the system acceptance guide, which also names the memory type as HBM3. Nothing in the evidence gives the memory bus width or bandwidth, so only half of the requested spec set is shown. Missing for 10: memory bus width, memory bandwidth figure, a single full memory-spec table for this part.",
     "evidenceIds": [
+      "amd-mi325x-docs-22",
+      "amd-mi325x-docs-23",
       "amd-mi325x-docs-21"
     ]
   },
@@ -329,12 +334,13 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "AMD's ROCm documentation offers full-stack recipes for deploying AI workloads with \"popular ROCm-enabled frameworks\" and names vLLM and SGLang for inference. The ROCm GPU architecture reference lists the MI325X (CDNA3, gfx942), which ties the card to the documented ROCm stack. However, the evidence never names PyTorch or other mainstream training frameworks and shows no compatibility matrix confirming MI325X support; community doubts about the software stack are general skepticism, not a concrete counter-example. Missing for 10: explicit PyTorch/TensorFlow/JAX build documentation, a framework support matrix listing MI325X, hands-on corroboration that frameworks run on MI325X.",
+    "rationale": "ROCm's official docs offer full-stack documentation and recipes for deploying AI workloads with popular ROCm-enabled frameworks, naming vLLM and SGLang for inference. The MI325X appears in ROCm's GPU specification table as gfx942, which ties it to the documented stack. However, the pack never explicitly names PyTorch or shows a framework/OS/version support matrix listing the MI325X. A community comment that AMD's software 'still has to prove' itself is skepticism, not a concrete counter-example, so it does not create a dispute. Missing for 10: explicit PyTorch (and TensorFlow/JAX) official build documentation, a published compatibility matrix naming MI325X, independent hands-on corroboration of frameworks running on MI325X.",
     "evidenceIds": [
       "amd-mi325x-docs-1",
       "amd-mi325x-docs-4",
       "amd-mi325x-docs-5",
-      "amd-mi325x-docs-21"
+      "amd-mi325x-docs-21",
+      "amd-mi325x-docs-22"
     ]
   },
   {
@@ -343,12 +349,13 @@
     "verdict": "partial",
     "quality": 4,
     "confidence": "low",
-    "rationale": "AMD's docs describe ROCm as an open-source GPU computing stack (compilers, HIP runtime, libraries) that runs on Linux, and list the MI325X (gfx942) as a ROCm-supported target. That shows an open user-space stack for this GPU, but the pack never addresses the kernel-level driver itself. missing for 10: vendor documentation of open-source kernel modules or upstream Linux kernel driver support for MI325X, explicit driver-level licensing/source details, independent or hands-on corroboration of running on an open driver.",
+    "rationale": "AMD's docs describe ROCm as an open-source, Linux-supported GPU computing platform covering compilers, runtimes, and the HIP runtime. The MI325X is listed as a supported gfx942 target, so the user-space driver stack is open and vendor-documented for this GPU. However, the pack never explicitly mentions an open-source kernel module (amdgpu) or upstream Linux kernel support for the MI325X. Missing for 10: explicit documentation of open-source kernel modules or upstream Linux kernel driver support for MI325X, and independent or hands-on corroboration of running it on an open driver.",
     "evidenceIds": [
       "amd-mi325x-docs-1",
       "amd-mi325x-docs-2",
       "amd-mi325x-docs-3",
-      "amd-mi325x-docs-21"
+      "amd-mi325x-docs-8",
+      "amd-mi325x-docs-22"
     ]
   },
   {
@@ -357,7 +364,7 @@
     "verdict": "na",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The AMD Instinct MI325X is datacenter GPU hardware managed through a software stack (ROCm, AMD SMI, Kubernetes operator). It has no product UI whose feature set an API could be measured against, so asking whether the API matches the UI is a category error for this kind of product. Nothing in the evidence shows a UI-versus-API surface that would make the axis apply.",
+    "rationale": "The MI325X is a datacenter GPU accelerator, so there is no product UI whose actions could be mirrored by an API; UI/API parity is a SaaS or application axis, not a hardware one. The evidence shows only programmatic and CLI tooling (ROCm libraries, AMD SMI, the Kubernetes GPU Operator, a metrics exporter) and no UI to compare against, so the wrong-axis exception does not apply.",
     "evidenceIds": []
   },
   {
@@ -366,7 +373,7 @@
     "verdict": "na",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The MI325X is a datacenter GPU accelerator with an on-premise software stack (ROCm, SMI, Kubernetes tooling). It does not hold user data in a vendor-hosted account, so \"export all my data and leave\" is a SaaS data-portability question that does not apply to this kind of product. Nothing in the evidence shows a vendor-held data store that could be exported. ROCm being open source is a separate openness and lock-in matter, not data export.",
+    "rationale": "The MI325X is a physical GPU accelerator. It does not host user accounts or hold customer data in a vendor-controlled service, so a data-export-and-leave story is a category error for this kind of product. The open-source ROCm stack and Prometheus-format metrics in the evidence are about software openness and telemetry, not exporting user data, so they do not make this axis applicable.",
     "evidenceIds": []
   },
   {
@@ -375,7 +382,7 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "The MI325X is hardware, so it has no source in the usual sense, but its first-party software stack, ROCm (compilers, HIP runtime, math and communication libraries, profiling tools), is documented as open source and optimized for AMD Instinct devices. That makes much of the code you run on the product readable. However, the evidence names no specific license and gives no repository links, and the hardware design and firmware have no open-source evidence. Missing for 10: named open license terms, links to public source repositories, evidence on firmware or driver openness, independent corroboration.",
+    "rationale": "The MI325X's first-party software stack, ROCm (compilers, HIP runtime, libraries, tools), is documented as open source and optimized for AMD Instinct devices. That gives users readable source for the software layer of this hardware product. The accelerator's hardware design itself is not shown to be open, and the evidence names no specific license or source repository. Missing for 10: named open license terms, links to source repositories, any evidence covering firmware or hardware design openness, and independent corroboration.",
     "evidenceIds": [
       "amd-mi325x-docs-1",
       "amd-mi325x-docs-2",
@@ -389,19 +396,17 @@
     "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "The MI325X is hardware that customers deploy in their own infrastructure. First-party Instinct docs cover the self-hosted path: a Customer Acceptance Guide to configure, validate and baseline GPUs, a Cluster Validation Suite, a Kubernetes GPU Operator and device plugin, a container toolkit, and SMI management tools. All of this sits on the open-source ROCm stack with vLLM and SGLang inference recipes. A community comment doubting availability to ordinary buyers is speculation rather than a documented failure, and another comment cites a purchase price of around $15k, so it does not create a dispute. Missing for 10: first-party procurement or on-prem purchase documentation (the vendor product page was unreachable), and independent hands-on corroboration of a self-hosted MI325X deployment.",
+    "rationale": "The MI325X is hardware that customers install and run in their own infrastructure. First-party docs back this up: a system acceptance guide for an 8x MI325X OAM server, a customer acceptance guide for configuring and validating Instinct GPUs, and an open-source ROCm stack. Tooling for on-prem clusters is also documented, including the Kubernetes GPU Operator, the container toolkit, a Slurm-compatible scheduler and cluster validation suites. One community comment doubts ordinary buyers can obtain the part, but that is speculation, not a concrete counter-example. Missing for 10: independent hands-on reports of self-hosted MI325X deployments, documented procurement and availability paths for on-prem buyers.",
     "evidenceIds": [
+      "amd-mi325x-docs-23",
+      "amd-mi325x-docs-10",
       "amd-mi325x-docs-1",
       "amd-mi325x-docs-2",
-      "amd-mi325x-docs-5",
-      "amd-mi325x-docs-8",
-      "amd-mi325x-docs-10",
-      "amd-mi325x-docs-11",
       "amd-mi325x-docs-12",
-      "amd-mi325x-docs-13",
       "amd-mi325x-docs-15",
-      "amd-mi325x-comm-1",
-      "amd-mi325x-comm-3"
+      "amd-mi325x-docs-16",
+      "amd-mi325x-docs-11",
+      "amd-mi325x-comm-1"
     ]
   },
   {
@@ -410,7 +415,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Published board power, connector requirements and cooling guidance are a fair question for any GPU or accelerator card, so the axis applies. The evidence pack never gives a TDP/TBP, power connector or cooling specification for the MI325X. The only card-specific item is an architecture spec row covering CUs, memory and gfx target, with no power or thermal figures. The vendor product page, which might carry these specs, was unreachable to the crawler.",
+    "rationale": "Published board power, connector requirements, and cooling guidance are a fair axis for any GPU hardware product, including a datacenter OAM accelerator, so the story applies. The evidence pack only gives architecture, VRAM, compute-unit specs, and the OAM form factor. It has no TDP/TBP figure, power-connector details, or cooling guidance for the MI325X, and the vendor product page could not be crawled.",
     "evidenceIds": []
   },
   {
@@ -419,7 +424,7 @@
     "verdict": "na",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The AMD Instinct MI325X is a GPU accelerator with its ROCm software stack, not a hosted service that stores user data, so choosing a storage region or residency is a category error for this kind of product. Any region choice would belong to whoever operates the hardware, such as Azure in the 'Instinct on Azure' guide, which is a host-platform feature and not the product's own. Nothing in the evidence shows the MI325X itself offering data-residency selection.",
+    "rationale": "The MI325X is a physical GPU accelerator with its ROCm software stack, not a hosted service that stores user data. Choosing a storage region or data residency is a cloud/SaaS axis and a category error for this kind of product. The 'Instinct on Azure' mention is a host-platform offering, not a residency control of the product itself.",
     "evidenceIds": []
   },
   {
@@ -428,7 +433,7 @@
     "verdict": "na",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The AMD Instinct MI325X is a datacenter GPU accelerator. It ships with an on-premises software stack (ROCm, drivers, management tools) and is not a hosted service that collects user data. An opt-out from vendor model training is a category error for this kind of product, and nothing in the evidence shows AMD ingesting customer data for training.",
+    "rationale": "The AMD Instinct MI325X is a datacenter GPU accelerator. It runs the customer's own workloads on the customer's own hardware or cloud instances (ROCm, partitioning, Kubernetes tooling), and it is not a service that collects user data. A training-data opt-out is therefore a category error for this kind of product. Nothing in the evidence shows AMD ingesting customer data through the hardware or its software stack, so the axis does not apply.",
     "evidenceIds": []
   },
   {
@@ -437,7 +442,7 @@
     "verdict": "na",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The AMD Instinct MI325X is a GPU accelerator with an on-premises software stack (ROCm, AMD SMI, Kubernetes tooling), not a hosted service that holds user data. Controlling data retention and deletion is therefore a category error for this kind of product. Nothing in the evidence shows AMD itself storing customer data in a way the story would govern.",
+    "rationale": "The AMD Instinct MI325X is a GPU accelerator. Its software stack (ROCm, AMD SMI, GPU Operator) runs on the user's own infrastructure and holds no user data on a vendor service. Controlling data retention and deletion is a privacy axis for hosted services, so it is a category error for this hardware product, and nothing in the evidence shows it ships such a capability.",
     "evidenceIds": []
   },
   {
@@ -446,17 +451,19 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The MI325X ships with a large software stack (ROCm, drivers, AMD SMI, GPU Operator), and whether vendor software phones home is a fair privacy question for that stack, so the axis applies. The pack has no evidence of any telemetry or usage-tracking opt-out. The Device Metrics Exporter and Omnistat are user-side monitoring tools, an adjacent feature that earns no credit, and open-source licensing alone is not an opt-out control.",
+    "rationale": "Telemetry opt-out is a fair question for a GPU platform and its software stack, since drivers, runtimes and tooling could collect usage data. The evidence pack never mentions vendor telemetry, usage tracking, or any opt-out control. ROCm being open source and the Device Metrics Exporter and Omnistat monitoring tools are adjacent features, not a documented telemetry opt-out, so they earn no credit.",
     "evidenceIds": []
   },
   {
     "productId": "amd-mi325x",
     "storyId": "run-70b-local-llm",
-    "verdict": "partial",
-    "quality": 5,
+    "verdict": "full",
+    "quality": 7,
     "confidence": "medium",
-    "rationale": "AMD's GPU architecture spec table lists the MI325X (CDNA3, gfx942) with a 256 figure, which reads as 256 GB of VRAM, enough to hold a 70B-class quantized model on a single GPU. ROCm docs also cover vLLM and SGLang inference recipes, so single-node LLM inference is a documented path. However, the evidence shows no memory-bandwidth figure, the spec row lacks visible column labels, and nothing demonstrates a 70B model actually running. Missing for 10: published memory bandwidth, explicitly labeled VRAM capacity, and first-party or hands-on evidence of 70B quantized inference throughput.",
+    "rationale": "First-party docs publish 256 GiB of HBM3 per MI325X (2TB across an 8-GPU node), which is ample to hold a 70B-class quantized model on a single GPU. ROCm docs also provide inference recipes for vLLM and SGLang, making single-node inference practical. Missing for 10: a published memory-bandwidth figure (none appears in the pack), and independent or hands-on corroboration of actually running 70B-class models.",
     "evidenceIds": [
+      "amd-mi325x-docs-22",
+      "amd-mi325x-docs-23",
       "amd-mi325x-docs-21",
       "amd-mi325x-docs-5",
       "amd-mi325x-docs-4"
@@ -468,7 +475,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Published tensor throughput is a fair question for a datacenter AI accelerator, but the evidence pack contains no TFLOPS or TOPS figures, with or without precision and sparsity stated. The only spec row (gpu-arch-specs) lists architecture, gfx target, memory, compute units and wavefront size, not throughput. The vendor product page, which would likely carry these numbers, was unreachable during the crawl.",
+    "rationale": "Tensor throughput is a core axis for a datacenter accelerator, but the pack never states TFLOPS or TOPS at any precision or sparsity. The ROCm arch-spec table and the system acceptance guide give only architecture, VRAM, compute-unit count, wavefront size, XCD count and HBM capacity, which are adjacent specs and not throughput figures. The vendor product page, the likely source of these numbers, could not be crawled, so this reflects missing evidence rather than a confirmed gap.",
     "evidenceIds": []
   },
   {
@@ -477,7 +484,7 @@
     "verdict": "na",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The MI325X is documented as a CDNA3 (gfx942) datacenter accelerator for AI and HPC workloads, deployed through ROCm, Kubernetes and cluster tooling. Consumer gaming features like FSR or DLSS upscaling and frame generation are a category error for this product type, and nothing in the evidence suggests it ships any gaming capability.",
+    "rationale": "The evidence describes the MI325X as a CDNA3 datacenter accelerator: an OAM module in 8-GPU server configurations, aimed at ROCm AI/HPC workloads, Kubernetes deployment and cluster validation. Gaming upscaling and frame generation (DLSS/FSR) with broad game support is a category error for this kind of compute-only accelerator, and nothing in the evidence shows it ships such a capability.",
     "evidenceIds": []
   },
   {
@@ -2421,10 +2428,10 @@
   {
     "productId": "nvidia-b200",
     "storyId": "upscaling-frame-generation",
-    "verdict": "none",
+    "verdict": "na",
     "quality": 0,
-    "confidence": "medium",
-    "rationale": "The B200 is a GPU, and AI upscaling and frame generation are a fair question for GPUs, so the axis applies. However, the evidence pack documents only data-center AI uses: training, inference, DGX management, NVLink and virtualization. It never mentions DLSS, FSR, frame generation or game support, so there is no evidence the card delivers this story.",
+    "confidence": "high",
+    "rationale": "The NVIDIA B200 is a data-center AI accelerator sold in DGX/HGX systems for training and inference, not a consumer graphics card, so gamer-facing DLSS/FSR upscaling, frame generation and game compatibility are the wrong axis for this product. Nothing in the evidence suggests it ships gaming features that would make the axis apply.",
     "evidenceIds": []
   },
   {
@@ -2929,11 +2936,16 @@
   {
     "productId": "nvidia-h200-sxm",
     "storyId": "agentic-headless",
-    "verdict": "na",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "The NVIDIA H200 is data-center GPU hardware. Running 'the product' headlessly or in CI is a software-tool axis and does not meaningfully apply to a physical accelerator. Ecosystem items such as the Brev CLI, NGC containers and NIM microservices are separate software products, not a headless/CI mode of the GPU itself, so they do not make the axis apply.",
-    "evidenceIds": []
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "The evidence shows the H200 being deployed as data-center and cloud infrastructure. The CUDA Toolkit targets enterprise data centers and cloud platforms, NIM microservices handle deployment, and a community report describes a production API running on H200 SXM, all of which implies unattended, programmatic use. Nothing explicitly documents headless operation or CI-pipeline automation. Missing for 10: explicit docs on headless/CI usage (e.g., containerized GPU runners, driver/CLI automation such as nvidia-smi in pipelines), plus hands-on corroboration of CI workflows.",
+    "evidenceIds": [
+      "nvidia-h200-sxm-docs-10",
+      "nvidia-h200-sxm-docs-9",
+      "nvidia-h200-sxm-docs-15",
+      "nvidia-h200-sxm-comm-1"
+    ]
   },
   {
     "productId": "nvidia-h200-sxm",
@@ -4810,11 +4822,16 @@
   {
     "productId": "nvidia-rtx-pro-6000",
     "storyId": "agentic-headless",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "Headless or CI operation is a fair question for a GPU, since buyers often ask whether a card can run compute in servers or automated pipelines without a display. However, nothing in the pack documents headless operation, server or CI deployment, or automation-runner support for the RTX PRO 6000 itself. The CUDA, NGC container and Helm-chart material describes general ecosystem building blocks. MIG instance partitioning is an adjacent feature, not documented headless or CI support.",
-    "evidenceIds": []
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "Headless, compute-only use in automated pipelines is a fair axis for a GPU. The evidence only implies it. The CUDA toolkit supports building and deploying apps across workstations, data centers and cloud platforms. MIG can split the Max-Q variant into up to four isolated instances, which suits shared or automated workloads. A community multi-card build runs sustained inference at 41k tok/s. Nothing explicitly documents headless or display-less operation or CI integration. Missing for 10: explicit headless/compute-mode documentation, CI runner or container (e.g. GPU-in-Docker) guidance, scriptable management tooling evidence, independent hands-on reports of CI/automation use.",
+    "evidenceIds": [
+      "nvidia-rtx-pro-6000-docs-28",
+      "nvidia-rtx-pro-6000-docs-11",
+      "nvidia-rtx-pro-6000-docs-3",
+      "nvidia-rtx-pro-6000-comm-1"
+    ]
   },
   {
     "productId": "nvidia-rtx-pro-6000",
@@ -4828,10 +4845,10 @@
   {
     "productId": "nvidia-rtx-pro-6000",
     "storyId": "agentic-mcp-server",
-    "verdict": "na",
+    "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The RTX PRO 6000 Blackwell is a physical workstation GPU. Exposing an official MCP server for agents to connect to is a software-service capability, so the question is a category error for this kind of hardware product. The evidence also shows no first-party MCP server: the llms.txt and OpenAPI probes concern NVIDIA's developer portal, not this product, so nothing flips the axis to applicable.",
+    "rationale": "The RTX PRO 6000 is hardware, but it ships with an official software and developer ecosystem (CUDA Toolkit, SDKs, developer portal). An official MCP server for GPU management, telemetry or docs is therefore plausible, so the axis applies. Nothing in the pack shows NVIDIA offers one. The llms.txt file is not an MCP server, and claims about running agents locally describe compute capacity, not agent connectivity.",
     "evidenceIds": []
   },
   {
