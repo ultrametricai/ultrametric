@@ -2,11 +2,18 @@
   {
     "productId": "appwrite",
     "storyId": "agent-branch-migrations",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "The evidence pack does not document database branching or isolated preview environments for schema changes. The branch preview links in Sites (appwrite-docs-51/66) cover web hosting deployments, not database schemas, so they are an adjacent feature. The MCP server, the CLI's project management, and self-hosted Docker instances are building blocks or user-side workarounds, not a first-party schema branch or preview capability.",
-    "evidenceIds": []
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "There is no evidence of database branching or preview databases. The only preview environments documented are for Sites, which give non-production git branches preview links (appwrite-docs-51), and those cover web hosting, not schema. An agent could approximate isolation using the documented MCP server and headless CLI, which can create and manage projects and resources, and the CLI supports a JSON config (appwrite-docs-11, -12, -13, -42). That would mean standing up a separate staging project manually; nothing documents isolated schema testing or promotion to production. Missing for 10: native database branching or preview environments, a documented schema-migration workflow, and a mechanism for promoting schema changes from a branch to production.",
+    "evidenceIds": [
+      "appwrite-docs-51",
+      "appwrite-docs-11",
+      "appwrite-docs-12",
+      "appwrite-docs-13",
+      "appwrite-docs-42",
+      "appwrite-docs-38"
+    ]
   },
   {
     "productId": "appwrite",
@@ -95,10 +102,10 @@
   {
     "productId": "appwrite",
     "storyId": "agentic-mcp-client",
-    "verdict": "none",
+    "verdict": "na",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence shows only that Appwrite publishes its own MCP server (server role) for external agents such as Claude Code, Cursor and Codex to operate on Appwrite projects. Serving tools to other agents is a different capability and cannot be credited to this story. Nothing documents Appwrite itself connecting to or consuming third-party MCP servers, for example through its AI product, Console or Functions, so there is no evidence it delivers this story.",
+    "rationale": "Appwrite is a backend-as-a-service platform, not an AI agent or LLM host, so acting as an MCP client that plugs in external MCP servers to use their tools is outside its product role. The evidence only shows Appwrite running its own MCP server for external clients such as Claude Code and Cursor. That is the server role and does not make this client-side axis applicable.",
     "evidenceIds": []
   },
   {
@@ -168,11 +175,14 @@
   {
     "productId": "appwrite",
     "storyId": "agentic-scoped-keys",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "Appwrite is a backend platform, so issuing scoped API credentials is a fair question to ask. However, nothing in the evidence pack documents API keys with configurable scopes or least-privilege credentials for an agent. The closest items are adjacent rather than qualifying: JWT user-delegation tokens, a single OAuth sign-in for the hosted MCP server, and headless CLI use.",
-    "evidenceIds": []
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "The only relevant evidence is the auth docs on delegating access for a user by passing JWT tokens (appwrite-docs-35). That gives a credential bounded to one user's permissions, which an agent could use, but nothing describes scoped API keys or least-privilege permission scopes for agents. The non-interactive CLI (appwrite-docs-42) shows headless automation, but it says nothing about how its credentials are scoped. Missing for 10: documented scoped/least-privilege API keys, per-key permission scopes, agent-specific credential issuance guidance, key expiry/rotation, and independent corroboration.",
+    "evidenceIds": [
+      "appwrite-docs-35",
+      "appwrite-docs-42"
+    ]
   },
   {
     "productId": "appwrite",
@@ -195,11 +205,14 @@
   {
     "productId": "appwrite",
     "storyId": "agentic-webhooks",
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "partial",
+    "quality": 4,
     "confidence": "medium",
-    "rationale": "The evidence pack never documents registrable outbound HTTP webhooks that an external consumer can subscribe to for Appwrite events. Functions can be triggered *by* incoming webhooks or by server events (appwrite-docs-9, appwrite-docs-64), and the docs mention responding to server events in realtime (appwrite-docs-28). Those are inbound triggers, event-handler building blocks and an adjacent realtime feature, so they earn no credit toward the story.",
-    "evidenceIds": []
+    "rationale": "The evidence shows Appwrite Functions can be triggered by server events and webhooks, and that the platform lets you 'respond to server events in realtime.' That gives event subscription through functions and realtime, but no evidence documents outbound webhook endpoints you register to receive event payloads. Missing for 10: documented outbound webhook configuration, event catalog/payload details, delivery guarantees or signing, independent or hands-on corroboration.",
+    "evidenceIds": [
+      "appwrite-docs-9",
+      "appwrite-docs-28"
+    ]
   },
   {
     "productId": "appwrite",
@@ -294,11 +307,16 @@
   {
     "productId": "appwrite",
     "storyId": "automation-bulk-operations",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "Nothing in the evidence documents a bulk or batch capability, such as bulk row, file, or user create/update/delete, or batch API endpoints. The CLI and MCP server manage resources one at a time, and non-interactive CLI scripting is a user-side workaround rather than a native bulk feature. One-click migrations belong to a different story.",
-    "evidenceIds": []
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "Appwrite's CLI and MCP server can manage rows, files and users, and the CLI runs headless for automation, so an agent could script operations over many items. None of the evidence documents a native bulk create, update or delete capability, so this only glancingly supports the story. Missing for 10: documented bulk or batch APIs for rows/files/users, bulk operations exposed via the MCP server or CLI, and hands-on or independent corroboration of bulk workflows.",
+    "evidenceIds": [
+      "appwrite-docs-12",
+      "appwrite-docs-42",
+      "appwrite-docs-38",
+      "appwrite-docs-11"
+    ]
   },
   {
     "productId": "appwrite",
@@ -328,11 +346,18 @@
   {
     "productId": "appwrite",
     "storyId": "automation-versioned-workflows",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "Appwrite's automation surface is Functions, which can be triggered by events, schedules, and webhooks and deployed via the CLI. The evidence does not document versioning, review, or rollback of function deployments. Git previews and branch review are documented only for Sites (web hosting), an adjacent product that does not transfer to this story. Keeping CLI JSON config under version control would be a user-side workaround, not a product capability.",
-    "evidenceIds": []
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "Appwrite's automations are Functions, triggered by events, webhooks and schedules. They can be created and deployed through the CLI from project config split into JSON files, and the CLI runs headless in CI, so automation definitions can live in version control and ship through a pipeline. Git-push deploys with preview links for review before merge are documented only for Sites, not Functions, and nothing in the evidence covers rolling back a deployment. Missing for 10: native versioning or deployment history for Functions, a review or approval flow for automation changes, rollback to a previous deployment, and independent corroboration.",
+    "evidenceIds": [
+      "appwrite-docs-9",
+      "appwrite-docs-12",
+      "appwrite-docs-13",
+      "appwrite-docs-42",
+      "appwrite-docs-51",
+      "appwrite-gh-1"
+    ]
   },
   {
     "productId": "appwrite",
@@ -525,11 +550,15 @@
   {
     "productId": "appwrite",
     "storyId": "privacy-no-training",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "Nothing in the evidence pack shows an Appwrite policy, setting, or contractual commitment that keeps customer data out of AI model training. The related items are adjacent controls rather than a training opt-out: self-hosting with 'full control over data location', SOC-2/HIPAA compliance, and stripping image metadata. Because this privacy-posture question fairly applies to a backend-as-a-service, the lack of evidence makes the verdict 'none', not 'na'.",
-    "evidenceIds": []
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "The pack has no explicit statement about AI-training use of customer data. The only relevant support is indirect: Appwrite is built for self-hosting on any Docker-capable system, with \"full control over data location\", so data can stay entirely on infrastructure the user manages. That is a workaround rather than a stated privacy commitment. Missing for 10: an explicit no-training policy or opt-out for Appwrite Cloud, documented data-usage terms for its AI features, and independent corroboration.",
+    "evidenceIds": [
+      "appwrite-docs-14",
+      "appwrite-docs-24",
+      "appwrite-docs-34"
+    ]
   },
   {
     "productId": "appwrite",
@@ -852,11 +881,16 @@
   {
     "productId": "convex",
     "storyId": "agentic-scoped-keys",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "Issuing scoped credentials is a fair question for a backend platform like Convex, but the pack never documents scoped, least-privilege API keys or tokens an agent could be given. What it does show doesn't count toward this story. The MCP server's default block on production access is an adjacent safety control. Checking a shared secret from an environment variable, or writing your own authorization rules in code, are developer building blocks rather than a credential-issuance capability.",
-    "evidenceIds": []
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "The only agent-relevant least-privilege control in the evidence is that the official MCP server cannot access production deployments by default, as a safety measure. Beyond that, Convex leaves authorization to developer-built code in functions rather than offering a credential-scoping framework. There is no evidence of issuing scoped or least-privilege API keys or tokens for an agent. Missing for 10: documented scoped API keys or deploy tokens, per-credential permission or role scoping, credential revocation and rotation, and independent or hands-on corroboration.",
+    "evidenceIds": [
+      "convex-docs-28",
+      "convex-docs-10",
+      "convex-docs-25",
+      "convex-docs-32"
+    ]
   },
   {
     "productId": "convex",
@@ -1209,9 +1243,9 @@
     "productId": "convex",
     "storyId": "privacy-data-residency",
     "verdict": "partial",
-    "quality": 4,
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Convex documents a first-party self-hosted backend that runs on your own servers, with the same code as the cloud service. It works with infrastructure such as Fly.io, RDS, Neon and Postgres, so users can control where data physically lives by choosing their own hosting. No evidence shows region or residency selection within the managed Convex cloud. Missing for 10: region/residency choice for cloud deployments, documented data-residency guarantees or region list, independent corroboration.",
+    "rationale": "Region and residency choice is a fair question for a hosted database, but the evidence shows no region selection for Convex's cloud service. The only route to controlling data location is self-hosting: the open-source backend runs on your own servers or providers such as Fly.io, RDS, Neon or Postgres, which lets you place data wherever you want but means operating the backend yourself. missing for 10: documented region/residency selection in Convex Cloud, a list of available regions, data-residency guarantees or compliance documentation tied to location, independent corroboration.",
     "evidenceIds": [
       "convex-docs-8",
       "convex-docs-30",
@@ -1230,11 +1264,15 @@
   {
     "productId": "convex",
     "storyId": "privacy-retention-controls",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "Retention and deletion control is a fair question for a database/backend platform, but the evidence never documents retention policies, TTLs, deletion guarantees, or account/data purge controls. Self-hosting, export, daily backups, and crons are adjacent features or developer building blocks, so they earn no credit for this story.",
-    "evidenceIds": []
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "The evidence only touches the story indirectly. Self-hosting lets you run the same open-source backend on your own servers or Postgres/SQLite, which gives custody of where data lives and how long it persists. The pricing page lists daily backups, a retention-related feature. Nothing documents explicit retention or deletion controls. Missing for 10: documented deletion APIs or document-delete semantics, configurable retention/TTL policies, backup/log retention settings, account/deployment data-deletion guarantees, independent corroboration.",
+    "evidenceIds": [
+      "convex-docs-8",
+      "convex-gh-1",
+      "convex-docs-37"
+    ]
   },
   {
     "productId": "convex",
@@ -1555,11 +1593,15 @@
   {
     "productId": "firebase",
     "storyId": "agentic-scoped-keys",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "Firebase is a backend platform, so issuing scoped credentials for an agent is a fair question, but the evidence pack documents no feature for minting least-privilege or scoped API credentials. The `login:ci` token is a generic non-interactive CLI credential with no scoping described. Security Rules are a data-access policy layer for app users, an adjacent building block rather than scoped credential issuance.",
-    "evidenceIds": []
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "The only related evidence is Firebase Security Rules, which give granular, least-privilege control over what an authenticated identity can access in Firestore, Realtime Database and Cloud Storage. An agent could in principle be given a restricted identity governed by those rules. Nothing in the pack shows issuing scoped API keys, service-account credentials or per-agent tokens. Missing for 10: documented mechanism to mint scoped/least-privilege API credentials or tokens for an agent, scoping of the MCP server/CLI credentials, expiry/revocation controls, and independent corroboration.",
+    "evidenceIds": [
+      "firebase-docs-10",
+      "firebase-docs-18",
+      "firebase-docs-32"
+    ]
   },
   {
     "productId": "firebase",
@@ -1582,11 +1624,15 @@
   {
     "productId": "firebase",
     "storyId": "agentic-webhooks",
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "partial",
+    "quality": 4,
     "confidence": "medium",
-    "rationale": "Webhooks are a fair question for a backend platform like Firebase, so the axis applies. However, the evidence documents no registrable outbound HTTP callbacks that an external consumer can subscribe to. Cloud Functions event triggers (firebase-docs-7, firebase-docs-29) run the developer's own code in response to events, and realtime listeners (firebase-docs-35) are SDK-side sync; both are developer building blocks or adjacent features rather than a webhook subscription capability, so they earn no credit.",
-    "evidenceIds": []
+    "rationale": "Firebase has no documented native webhook subscription. Cloud Functions can run code in response to Firebase and Google Cloud events, such as Authentication and Cloud Storage triggers, and also handle HTTPS requests. A user could write a function that forwards events to their own endpoint, so the story is only achievable through a custom-code workaround. Missing for 10: first-class outbound webhook configuration, documented event catalog for webhook delivery, delivery/retry/signing guarantees, and independent corroboration.",
+    "evidenceIds": [
+      "firebase-docs-7",
+      "firebase-docs-29",
+      "firebase-docs-24"
+    ]
   },
   {
     "productId": "firebase",
@@ -1729,11 +1775,18 @@
   {
     "productId": "firebase",
     "storyId": "automation-versioned-workflows",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "Cloud Functions is Firebase's automation surface, so versioning, reviewing, and rolling back automations is a fair question for this product. The evidence only shows one-command CLI deployment and local emulator testing. Nothing documents version history, a review or approval step, or rollback for functions or other automations. Keeping function code in the user's own source control would be a user-side workaround, and emulator testing is an adjacent feature, so neither earns credit.",
-    "evidenceIds": []
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "Firebase automations are Cloud Functions written as code and deployed from the command line (firebase-docs-7, firebase-docs-8, firebase-gh-1). That implies versioning through external source control. The Local Emulator Suite and Test SDK let you review and test changes without touching production (firebase-docs-9, firebase-docs-24, firebase-docs-31). Missing for 10: any first-party versioning or revision history for functions or automations, a built-in review/approval workflow, a documented rollback mechanism, and independent corroboration.",
+    "evidenceIds": [
+      "firebase-docs-7",
+      "firebase-docs-8",
+      "firebase-gh-1",
+      "firebase-docs-9",
+      "firebase-docs-24",
+      "firebase-docs-31"
+    ]
   },
   {
     "productId": "firebase",
@@ -2052,16 +2105,17 @@
     "productId": "supabase",
     "storyId": "agent-branch-migrations",
     "verdict": "full",
-    "quality": 7,
+    "quality": 8,
     "confidence": "medium",
-    "rationale": "Supabase documents branching as isolated environments, with preview environments per pull request, for testing database schema changes without affecting production. Its official MCP server gives agents `create_branch`, `merge_branch`, `reset_branch`, `rebase_branch` and `delete_branch` alongside `apply_migration`. The MCP security guidance explicitly recommends branching so agents can test changes safely before merging, and a local CLI MCP endpoint offers a second isolated path. missing for 10: MCP branching tools are labeled experimental, no hands-on or independent corroboration of an agent completing a full branch-migrate-test-merge workflow, and test-execution details on branches are thin.",
+    "rationale": "Supabase branching creates separate environments, including per-PR preview environments, for testing database schema changes without touching production. The official MCP server lets an agent drive this end to end: it exposes `create_branch`, `merge_branch`, `reset_branch`, `rebase_branch` and `apply_migration`, and the MCP security docs recommend branching for testing changes safely before merging. A local CLI stack with its own MCP endpoint offers another isolated sandbox. Missing for 10: the MCP branching tool group is labeled experimental, and there is no hands-on or independent corroboration of an agent completing the branch-test-merge workflow.",
     "evidenceIds": [
       "supabase-docs-17",
       "supabase-docs-50",
       "supabase-supp-mcp-tool-groups",
       "supabase-supp-mcp-agent-security",
       "supabase-supp-mcp-config-params",
-      "supabase-supp-ai-tools-stack"
+      "supabase-supp-ai-tools-stack",
+      "supabase-docs-21"
     ]
   },
   {
@@ -2312,11 +2366,17 @@
   {
     "productId": "supabase",
     "storyId": "api-interactive-docs",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "The evidence shows a published Management API OpenAPI spec and per-language reference corpora for LLMs. Neither shows an interactive API explorer or runnable examples. An OpenAPI spec is a building block an explorer could be built on, and static reference text is an adjacent feature, so neither earns credit. No evidence documents a try-it-out console or executable reference examples.",
-    "evidenceIds": []
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "Supabase publishes machine-readable API reference material: a live OpenAPI 3.0 spec for the Management API (probe-verified HTTP 200) and per-language reference corpora (js, python, cli, api, and others) via llms.txt. Auto-generated REST/GraphQL APIs and type generation are also documented. However, nothing in the evidence shows an interactive reference explorer or runnable, try-it-in-browser examples, which are the core of this story. Missing for 10: an interactive API explorer, runnable or executable examples, and independent or hands-on corroboration of an interactive docs experience.",
+    "evidenceIds": [
+      "supabase-probe-3",
+      "supabase-supp-llms-agent-resources",
+      "supabase-probe-1",
+      "supabase-gh-2",
+      "supabase-docs-18"
+    ]
   },
   {
     "productId": "supabase",
@@ -2408,14 +2468,14 @@
   {
     "productId": "supabase",
     "storyId": "automation-bulk-operations",
-    "verdict": "partial",
-    "quality": 5,
+    "verdict": "full",
+    "quality": 7,
     "confidence": "medium",
-    "rationale": "Through the MCP server, an agent can call `execute_sql` and `apply_migration` against a full Postgres database. Set-based SQL can act on many rows at once, and Cron can run SQL snippets on a schedule. However, the evidence never documents bulk operations as such, and these are general SQL capabilities rather than a dedicated bulk feature. missing for 10: explicit documentation of bulk/batch operations (e.g., bulk insert/update via the REST API or client libraries, batch storage operations), agent-facing bulk-operation guidance or safeguards, independent or hands-on corroboration of bulk operations at scale.",
+    "rationale": "Through the official MCP server, an AI agent gets `execute_sql` and `apply_migration` against a full Postgres database, so set-based statements can act on many rows in one call. Supabase Cron and Queues add scheduled and background batch processing that runs SQL or functions inside Postgres. Bulk capability is implied by SQL access rather than documented as a feature, so this is a strong inference, not a stated claim. Missing for 10: explicit documentation of bulk insert/upsert/update APIs or batch endpoints, bulk operations beyond the database (e.g. Storage objects or Auth users), and independent hands-on corroboration of agent-driven bulk operations.",
     "evidenceIds": [
       "supabase-supp-mcp-tool-groups",
-      "supabase-supp-ai-tools-stack",
       "supabase-docs-51",
+      "supabase-supp-ai-tools-stack",
       "supabase-supp-cron",
       "supabase-supp-queues"
     ]
@@ -2515,9 +2575,9 @@
     "productId": "supabase",
     "storyId": "fulltext-search-builtin",
     "verdict": "full",
-    "quality": 9,
-    "confidence": "high",
-    "rationale": "Supabase's first-party full-text search guide documents running full-text search directly in the project's Postgres database, a 'search engine within Postgres', with no external search service. It covers to_tsvector/to_tsquery usage, match operators, and search-column indexing. Missing for 10: independent or hands-on corroboration of full-text search in practice, and no evidence on how search is exposed through the auto-generated client/REST APIs.",
+    "quality": 8,
+    "confidence": "medium",
+    "rationale": "Supabase's first-party guide says Postgres has built-in full-text search, \"like a 'search engine' within Postgres.\" It documents `to_tsvector`/`to_tsquery`, match operators and search-column indexing that run directly against the project database, with no external search service. Every project being a full Postgres database backs this up. Missing for 10: independent or hands-on corroboration of search in practice, and evidence of client-library/API exposure and relevance ranking at scale.",
     "evidenceIds": [
       "supabase-supp-fulltext-search",
       "supabase-docs-41",
@@ -2682,11 +2742,17 @@
   {
     "productId": "supabase",
     "storyId": "privacy-retention-controls",
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "partial",
+    "quality": 4,
     "confidence": "medium",
-    "rationale": "The evidence pack documents no retention-policy or data-deletion controls, such as configurable log or data retention windows, account or project data purge, or deletion guarantees. Backup retention tiers are fixed by plan rather than user-controlled. Self-hosting's general \"full control over your data\", Cron jobs that could run SQL deletes, and CLI telemetry opt-out are adjacent features or developer building blocks, so they earn no credit for this story.",
-    "evidenceIds": []
+    "rationale": "Supabase gives indirect levers rather than first-class retention controls. Self-hosting is positioned for 'full control over your data'. Supabase Cron can run scheduled SQL, so users can build their own deletion jobs. Backup retention windows are fixed by plan (7/14/up to 30 days), with PITR as an add-on, and CLI telemetry can be opted out. Missing for 10: documented configurable retention policies for data, backups and logs; documented project/account data deletion or purge guarantees; any GDPR-style deletion workflow; independent corroboration.",
+    "evidenceIds": [
+      "supabase-docs-3",
+      "supabase-docs-32",
+      "supabase-supp-cron",
+      "supabase-supp-backups-pitr",
+      "supabase-supp-telemetry-optout"
+    ]
   },
   {
     "productId": "supabase",
