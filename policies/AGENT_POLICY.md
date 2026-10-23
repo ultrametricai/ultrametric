@@ -22,7 +22,13 @@ in a dated scan report and on its scan PR) is auto-approved for bring-up when al
 3. **Shipped product** — the product is usable today: an install path, a working
    application, or a signup that grants access. Waitlist and coming-soon pages, demo or
    course repositories, link lists, and placeholder repos without working substance fail
-   this criterion.
+   this criterion. Anomalous popularity routes to human review instead of auto-approval:
+   a repo gaining stars above the sustained anomaly floor at any age, and (founder
+   decision 2026-10-23, issue #378) a repo younger than 60 days whose sustained rate
+   reaches 100 stars/day or whose stars exceed 20× its contributor count. When the
+   contributor count is unavailable the ratio check is skipped (fail-open); a missing
+   signal never blocks a candidate. Thresholds are the named `STARS_PER_DAY_ANOMALY`
+   and `YOUNG_REPO_*` constants in `rankings-engine/scripts/radar-triage.ts`.
 4. **No founder affiliation** — products affiliated with the founders always get human
    review, disclosure, and a bias audit (house rules, evidence doctrine); they are never
    auto-approved.

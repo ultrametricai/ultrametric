@@ -10,7 +10,11 @@ Candidate approval follows the criteria in
 docs surface, shipped product, no founder affiliation, and a citable agentic surface.
 `rankings-engine/scripts/radar-triage.ts` applies
 them mechanically — the lexical arena classifier for ranking fit, a docs-surface fetch, the
-waitlist/link-list/placeholder guards plus a star-velocity anomaly floor for shipped-product,
+waitlist/link-list/placeholder guards plus the popularity trip-wires for shipped-product (the
+`STARS_PER_DAY_ANOMALY` sustained-velocity floor at any repo age, and for repos younger than
+`YOUNG_REPO_MAX_AGE_DAYS` the `YOUNG_REPO_STARS_PER_DAY` sustained-rate floor and the
+`YOUNG_REPO_STARS_PER_CONTRIBUTOR` stars-per-contributor ratio, the latter skipped fail-open
+when the GitHub contributor count is unavailable; any trip routes to needs-human),
 the affiliation guard, and the agentic-surface check (the fetched product/docs page or README
 must name a public API, MCP server, or agent/automation docs, or `/llms.txt` on the product's
 own origin must answer with plain text; the disposition records the fetched URL and a one-line
