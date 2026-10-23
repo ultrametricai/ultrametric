@@ -6,7 +6,7 @@
 
 Founder authorization (2026-10-13) replaced per-candidate checkbox approval with the
 criteria below. A radar candidate (a product surfaced by `rankings-engine/scripts/vendor-radar.ts`
-in a `vendor-radar: candidates` issue) is auto-approved for bring-up when all five hold:
+in a dated scan report and on its scan PR) is auto-approved for bring-up when all five hold:
 
 1. **Existing ranking fit** — the product clearly belongs in one existing arena
    (`open-rankings/<arena>/`). Creating a new ranking requires a human decision.
@@ -25,8 +25,10 @@ in a `vendor-radar: candidates` issue) is auto-approved for bring-up when all fi
    the surface and a one-line evidence note in its disposition; a candidate without one
    is skipped with the reason recorded.
 
-A candidate failing any criterion is recorded on the radar issue as skipped, with the
-failing criterion and the evidence (URL fetched, HTTP status, what the page showed).
+A candidate failing any criterion is recorded in the committed triage report and on the
+scan PR body as skipped, with the failing criterion and the evidence (URL fetched, HTTP
+status, what the page showed). Needs-human dispositions additionally file a
+`founder-call`-labeled issue.
 Bring-up of an auto-approved candidate still runs the standard scoped engine run
 (`docs/VENDOR-RADAR.md`); auto-approval replaces only the checkbox, not the evidence
 chain. New-ranking creation and founder-affiliated products require a human in every

@@ -5,6 +5,7 @@
 import { describe, expect, it } from 'vitest'
 import type { Evidence, Story, Verdict } from '@/lib/schemas'
 import {
+  actionableQueueRows,
   ageDays,
   buildIssueBody,
   hasAgentDocsContradiction,
@@ -257,5 +258,27 @@ describe('buildIssueBody', () => {
     expect(body).toContain('| 1 | acme-pay | payments | 55 | age 120d · 1 dead url · api-quality gap · llms.txt flip |')
     expect(body).toContain('https://acme-pay.example/llms.txt answers HTTP 200 live right now')
     expect(body).not.toContain('undefined')
+  })
+})
+
+describe('actionableQueueRows (the issue gate)', () => {
+  const fleet = (overrides: Partial<StalenessReport['fleet']> = {}): StalenessReport => ({
+    generatedAt: '2026-10-23T00:00:00.000Z',
+    offline: false,
+    fleet: { arenas: 3, products: 40, urlsChecked: 80, deadUrls: 0, apiQualityGaps: 0, agentDocsContradictions: 0, llmsTxtFlips: 0, mcpFlips: 0, ...overrides },
+    arenasRanked: ['payments'],
+    arenas: [{ arena: 'payments', staleness: 41, products: 40 }],
+    products: [],
+  })
+
+  it('is zero for a clean fleet however stale the ages — age alone steers story-runner, not an issue', () => {
+    expect(actionableQueueRows(fleet())).toBe(0)
+  })
+
+  it('counts every actionable family: dead URLs, gaps, contradictions, and both flips', () => {
+    expect(actionableQueueRows(fleet({ deadUrls: 2 }))).toBe(2)
+    expect(actionableQueueRows(fleet({ apiQualityGaps: 1, agentDocsContradictions: 1 }))).toBe(2)
+    expect(actionableQueueRows(fleet({ llmsTxtFlips: 1, mcpFlips: 3 }))).toBe(4)
+    expect(actionableQueueRows(fleet({ deadUrls: 1, apiQualityGaps: 1, agentDocsContradictions: 1, llmsTxtFlips: 1, mcpFlips: 1 }))).toBe(5)
   })
 })

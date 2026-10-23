@@ -39,7 +39,8 @@
 //
 // Output: reports/vendor-radar/<date>.json + .md (the dated candidates report) and the updated
 // seen-ledger. --issue-body <path> additionally writes the markdown ONLY when there are new
-// candidates — .github/workflows/vendor-radar.yml files the day's issue from it.
+// candidates — .github/workflows/vendor-radar.yml puts it on the scan PR's body (the issue it
+// files, via needs-human-issue.ts, carries only the triage's needs-human dispositions).
 //
 // HONESTY: the scan itself detects and reports — nothing under open-rankings/ changes from a scan, the
 // radar NEVER creates a new ranking, and it NEVER touches a founder-affiliated product

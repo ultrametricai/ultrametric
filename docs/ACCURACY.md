@@ -12,7 +12,7 @@ the source of truth.
 | **story-runner** (`.github/workflows/story-runner.yml`) | every 6h at :17 | `ANTHROPIC_API_KEY` | Full engine pass (crawl → extract → collect-community → probe → judge → claims → popularity → derive) for ONE ranking per run, plus score intervals, predictions, and the keyless SLO check. Ranking pick: **worst-stale first** from `open-rankings/staleness-report.json` when one stands (one ranking per 6h slot since the report's `generatedAt`), falling back to run-number rotation. | Stale evidence, changed vendor docs, verdicts due a re-judge — the only loop that can move a score. |
 | **daily-snapshot** (`daily-snapshot.yml`) | daily 05:43 | none | Fleet-wide keyless SLO check + popularity refresh. | Agent-surface outages (llms.txt / remote MCP / openapi down), momentum drift. |
 | **cert-sweep** (`cert-sweep.yml`) | Mondays 07:29 | none | Re-verifies every standing certification (45-day renew window) + certifies the top 15 queued candidates (`cert-candidates.ts`). | Certified surfaces that regressed; products that newly qualify. |
-| **accuracy-engine** (`accuracy-engine.yml`) | Wednesdays 06:41 | none | Fleet staleness scan (`rankings-engine/scripts/staleness-scan.ts`), commits `open-rankings/staleness-report.json`, opens the ranked **work-queue issue** (label `story-runner`). | Everything below — the detector for what story-runner's keyed runs should chew through next. |
+| **accuracy-engine** (`accuracy-engine.yml`) | Wednesdays 06:41 | none | Fleet staleness scan (`rankings-engine/scripts/staleness-scan.ts`), commits `open-rankings/staleness-report.json` as a PR carrying the full work-queue tables (each report PR supersedes the previous open one, closed with a comment naming the successor), and opens the ranked **work-queue issue** (labels `story-runner` + `founder-call`) only when the queue holds actionable rows (dead cited URLs, crawl-gap signatures, live flips). | Everything below — the detector for what story-runner's keyed runs should chew through next. |
 
 Plus the event-driven lane: **contest-check** (issue-labeled `contest`) re-judges a contested
 cell with the contester's evidence added, and **ci.yml** gates every PR on
@@ -41,7 +41,9 @@ Keyless by design — it detects and ranks, it never re-judges. Per product it s
    allowlist) while `agentic-mcp-server` is still none.
 
 Output: `open-rankings/staleness-report.json` — products and rankings ranked worst-first, plus
-`arenasRanked` (what story-runner's pick step consumes) — and the work-queue issue body.
+`arenasRanked` (what story-runner's pick step consumes) — and the work-queue issue body, written
+only when the queue holds actionable rows (`actionableQueueRows`): a clean fleet files no issue,
+and the ranked tables ride the report PR's body either way.
 Run it yourself: `pnpm tsx rankings-engine/scripts/staleness-scan.ts [--offline] [--category <id>]`.
 
 ## Display rules in the UI
@@ -95,9 +97,11 @@ score built entirely from zero-evidence none/na cells renders italic *untested*,
 2. **accuracy-engine report PR** — merging it is what switches story-runner onto the new
    worst-stale ordering. Skim the flips section: anything shocking is worth a manual look
    before the keyed runs get there.
-3. **The work-queue issue** (label `story-runner`, Wednesdays) — the ranked to-do list. Close
-   it once the listed rankings have been through keyed runs; flips that survive a re-judge
-   become verdict changes with new citations, which is the only way a flip may move a score.
+3. **The work-queue issue** (labels `story-runner` + `founder-call`, Wednesdays, filed only when
+   the queue is non-empty) — the ranked to-do list. Close it once the listed rankings have been
+   through keyed runs (the next week's issue also closes it automatically, naming its successor);
+   flips that survive a re-judge become verdict changes with new citations, which is the only way
+   a flip may move a score.
 4. **Contest / vendor-response issues** — external correction channels; vendor responses enter
    the evidence pool but never change a verdict by themselves.
 

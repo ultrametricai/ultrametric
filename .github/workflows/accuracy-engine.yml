@@ -5,8 +5,15 @@
 #
 #   1. commits open-rankings/staleness-report.json via the usual PR-or-issue flow (the report only steers
 #      story-runner's arena pick once it lands on main — merging it is the human review point),
-#   2. opens a ranked work-queue issue (label: story-runner, same label every automation reuses)
-#      listing the worst-stale arenas/products and every detected flip.
+#      with the full work-queue tables on the report PR's body. Each report PR fully regenerates
+#      the previous one's content (the report is rewritten whole every run), so the previous
+#      still-open report PR closes with a comment naming the successor — closed, never merged;
+#      merges stay human,
+#   2. opens a ranked work-queue issue (labels: story-runner + founder-call) ONLY when the queue
+#      is non-empty — staleness-scan.ts writes the issue body only when there are actionable rows
+#      (dead cited URLs, crawl-gap signatures, live flips; maintainer decision 2026-10-23:
+#      generator issues only for human calls). Filing it closes this generator's previous
+#      still-open work-queue issue naming the successor.
 #
 # Deliberately keyless: this workflow DETECTS and RANKS; the actual re-crawl + re-judge happens
 # in story-runner's keyed 6-hourly runs, which read the committed report and pick the
@@ -45,9 +52,14 @@ jobs:
         run: pnpm install --frozen-lockfile
 
       # The scan itself: keyless, bounded (≤4 concurrent HTTP checks, 8s timeouts, top-cited
-      # URLs only). Writes open-rankings/staleness-report.json + the work-queue issue body.
+      # URLs only). Writes open-rankings/staleness-report.json, the ranked tables for the report
+      # PR's body (every run), and the work-queue issue body (only when the queue holds
+      # actionable rows).
       - name: Fleet staleness scan
-        run: pnpm tsx rankings-engine/scripts/staleness-scan.ts --issue-body /tmp/staleness-issue.md
+        run: |
+          pnpm tsx rankings-engine/scripts/staleness-scan.ts \
+            --issue-body /tmp/staleness-issue.md \
+            --pr-body /tmp/staleness-tables.md
 
       - name: Tests
         run: pnpm test
@@ -57,7 +69,10 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           RUN_ID: ${{ github.run_id }}
         run: |
-          if git diff --quiet -- rankings; then
+          # The report path is open-rankings/staleness-report.json since the open-rankings
+          # rename; the pre-rename `rankings` pathspec matched nothing, so this guard always
+          # answered "no change" and the report never reached a PR.
+          if git diff --quiet -- open-rankings/staleness-report.json; then
             echo "No staleness-report change — done."
             exit 0
           fi
@@ -66,28 +81,70 @@ jobs:
           git config user.name "ultrametric-accuracy-engine"
           git config user.email "noreply@ultrametric.ai"
           git checkout -b "$BRANCH"
-          git add rankings README.md
+          git add open-rankings/staleness-report.json README.md
           git commit -m "chore(accuracy-engine): weekly fleet staleness scan"
           git push -u origin "$BRANCH"
+          # The PR body carries the full work-queue tables on every run (--pr-body is written
+          # unconditionally); the companion issue below is filed only when the queue holds
+          # actionable rows.
+          {
+            echo "Keyless fleet staleness scan (rankings-engine/scripts/staleness-scan.ts). Merging this report makes story-runner prioritize the worst-stale arenas (see story-runner.yml's pick step). Flips/contradictions need keyed re-judges — this report never changes a verdict."
+            if [ -f /tmp/staleness-tables.md ]; then
+              echo
+              cat /tmp/staleness-tables.md
+            fi
+          } > /tmp/accuracy-pr-body.md
           # Same org-policy fallback as story-runner: if Actions may not open PRs, leave an
           # issue carrying the compare link so the report is never stranded on a branch.
-          if ! gh pr create \
+          if PR_URL=$(gh pr create \
             --title "accuracy-engine: weekly staleness report" \
-            --body "Keyless fleet staleness scan (rankings-engine/scripts/staleness-scan.ts). Merging this report makes story-runner prioritize the worst-stale arenas (see story-runner.yml's pick step). Flips/contradictions listed in the companion work-queue issue need keyed re-judges — this report never changes a verdict." \
-            --base main --head "$BRANCH"; then
-            gh issue create \
+            --body-file /tmp/accuracy-pr-body.md \
+            --base main --head "$BRANCH"); then
+            # Supersession: this run rewrote open-rankings/staleness-report.json whole, so the
+            # previous still-open report PR's content is fully regenerated here. Close it (never
+            # merge it) naming this PR, and close any stale compare-link fallback issues too.
+            pnpm tsx rankings-engine/scripts/close-superseded.ts --kind pr \
+              --title-prefix "accuracy-engine: weekly staleness report" \
+              --successor "${PR_URL##*/}" || echo "PR supersession close failed — see run logs"
+            pnpm tsx rankings-engine/scripts/close-superseded.ts --kind issue \
+              --title-prefix "accuracy-engine: staleness report ready on" \
+              --successor "${PR_URL##*/}" || echo "fallback-issue supersession close failed — see run logs"
+          else
+            ISSUE_URL=$(gh issue create \
               --title "accuracy-engine: staleness report ready on $BRANCH" \
               --body "The weekly staleness report is committed on [\`$BRANCH\`](https://github.com/${GITHUB_REPOSITORY}/compare/main...$BRANCH) but Actions may not open PRs (org policy). Open the PR from the compare link — story-runner only reads the report once it lands on main." \
-              --label "story-runner" || echo "issue creation also failed — branch $BRANCH is pushed; see run logs"
+              --label "story-runner") \
+              || { echo "issue creation also failed — branch $BRANCH is pushed; see run logs"; exit 0; }
+            pnpm tsx rankings-engine/scripts/close-superseded.ts --kind issue \
+              --title-prefix "accuracy-engine: staleness report ready on" \
+              --successor "${ISSUE_URL##*/}" || echo "fallback-issue supersession close failed — see run logs"
           fi
 
       # The ranked work queue: worst-stale arenas/products + every detected flip, for human
-      # triage and as the paper trail the keyed story-runner runs work through.
-      - name: Open work-queue issue
+      # triage and as the paper trail the keyed story-runner runs work through. Filed only when
+      # the queue is non-empty — staleness-scan.ts writes the body file only when there are
+      # actionable rows (dead cited URLs, crawl-gap signatures, live flips); a clean fleet files
+      # no issue. Filing it closes the previous still-open work-queue issue naming the successor.
+      - name: Open work-queue issue (only when the queue is non-empty)
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          gh issue create \
+          if [ ! -f /tmp/staleness-issue.md ]; then
+            echo "Queue empty — no work-queue issue to file."
+            exit 0
+          fi
+          ISSUE_URL=$(gh issue create \
             --title "accuracy-engine: work queue $(date -u +%F)" \
             --body-file /tmp/staleness-issue.md \
-            --label "story-runner" || echo "work-queue issue creation failed — the same ranking is committed in open-rankings/staleness-report.json"
+            --label "story-runner") \
+            || { echo "work-queue issue creation failed — the same ranking is committed in open-rankings/staleness-report.json"; exit 0; }
+          NUM="${ISSUE_URL##*/}"
+          # founder-call label: ensured first (gh label create --force exits 0 when it already
+          # exists), then added — additive, so the issue stands even if labeling fails.
+          gh label create founder-call --color D93F0B \
+            --description "Generator output waiting on a human decision" --force \
+            && gh issue edit "$NUM" --add-label founder-call \
+            || echo "founder-call labeling failed — issue #$NUM is filed without it"
+          pnpm tsx rankings-engine/scripts/close-superseded.ts --kind issue \
+            --title-prefix "accuracy-engine: work queue" \
+            --successor "$NUM" || echo "supersession close failed — see run logs"
