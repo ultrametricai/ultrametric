@@ -28,6 +28,10 @@ export const ProductSchema = z.object({
     docs: z.string().url().optional(),
     changelog: z.string().url().optional(),
     github: z.string().url().optional(),
+    // The vendor's own launch-announcement surface (newsroom, company blog, release notes).
+    // Opt-in input to rankings-engine/scripts/launch-watch.ts, which scans it for rostered
+    // vendors entering other arenas; seed only URLs verified reachable to a keyless fetch.
+    news: z.string().url().optional(),
     extra: z.array(z.string().url()).optional(),
   }),
   logo: z.string().optional(),
