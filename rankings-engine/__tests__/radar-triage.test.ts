@@ -91,6 +91,10 @@ describe('criterion checks', () => {
     ).toBe('https://docs.x.dev/')
     // A docs URL inside a share/prompt link's query string is not that site's docs surface.
     expect(findDocsLink('<a href="https://chat.example.com/?q=read%20https%3A%2F%2Fdocs.x.dev%2Fllms.txt">Ask</a>', 'https://x.dev')).toBeNull()
+    // Text documents and machine API descriptions stay eligible: only presentation assets skip.
+    expect(findDocsLink('<a href="https://docs.x.dev/llms.txt">llms.txt</a>', 'https://x.dev')).toBe('https://docs.x.dev/llms.txt')
+    expect(findDocsLink('<a href="/docs/index.md">Docs source</a>', 'https://x.dev')).toBe('https://x.dev/docs/index.md')
+    expect(findDocsLink('<a href="/api/docs/openapi.json">OpenAPI</a>', 'https://x.dev')).toBe('https://x.dev/api/docs/openapi.json')
   })
 
   it('findAgenticSignal names the matched phrase; plain prose is not an agentic surface', () => {

@@ -219,8 +219,10 @@ const DOCS_TOKEN = /(?:\/docs\b|\/documentation\b|\/developers?\b|\/api-referenc
 const DOCS_HREF_RE = new RegExp(`href="([^"]*${DOCS_TOKEN.source}[^"]*)"`, 'gi')
 // Static assets are not a docs surface: a bundler-named stylesheet like /assets/docs-XXXX.css
 // matches the /docs token on the hyphen word boundary (found 2026-10-23: Munito AI's triage
-// receipt resolved to a CSS asset, issue #434).
-const STATIC_ASSET_RE = /\.(css|js|mjs|json|svg|png|jpe?g|gif|ico|webp|woff2?|ttf|eot|map|txt|xml)$/i
+// receipt resolved to a CSS asset, issue #434). Only presentation assets are excluded:
+// text documents (llms.txt, .md mirrors) and machine API descriptions (openapi.json) are
+// legitimate docs surfaces.
+const STATIC_ASSET_RE = /\.(css|js|mjs|svg|png|jpe?g|gif|ico|webp|woff2?|ttf|eot|map)$/i
 
 export function findDocsLink(html: string, baseUrl: string): string | null {
   for (const m of html.matchAll(DOCS_HREF_RE)) {
