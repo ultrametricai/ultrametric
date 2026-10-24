@@ -111,8 +111,12 @@ describe('existing judged selection compatibility', () => {
     // when the PR #449 review's scope fix pruned the off-scope payroll evidence from both gusto
     // packs and re-judged them: the entry's step cells move to the published zero rows. Merged
     // with the issue-378 counts at integration (2026-10-23): 2861 positive / 259 zero.
-    expect(positiveCount).toBe(2861)
-    expect(zeroCount).toBe(259)
+    expect(positiveCount).toBe(2860)
+    expect(zeroCount).toBe(260)
+    // Re-pinned at the v5 settlement wave 1 integration (2026-10-23): seven arenas
+    // (cloud-platforms, cloud-storage, virtual-mailboxes, data-warehouses, sso-identity,
+    // customer-data-platforms, team-chat) re-judged under the v5 boundary; the three arenas
+    // the story-runner refreshes had already settled kept main's published verdicts.
     expect(extraArena).toBe(96)
   })
 

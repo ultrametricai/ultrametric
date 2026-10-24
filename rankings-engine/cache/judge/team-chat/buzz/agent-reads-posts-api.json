@@ -1,11 +1,11 @@
 {
-  "hash": "6518902d40fbfc4d064ac5ad9a9dd5be560dca68c63d5fa549628b8ad3ee08f7",
+  "hash": "0c9a9ad4e3d1f252f9c32f1210b1d11e6e9855103bd7d54fa6fb2317f21674ae",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 6,
     "confidence": "medium",
-    "rationale": "Agents can read and post channel messages through official surfaces: the documented NIP-29 relay protocol (group chat kind:9), the Buzz CLI used by the buzz-acp harness, and the managed-agent skill covering messaging. Access control uses per-agent Nostr keypairs plus channel memberships rather than scoped API tokens, and token auth was deliberately removed on the admin API. Probes found no OpenAPI or REST spec. Missing for 10: scoped API tokens with explicit read/write scopes, a documented REST/bot API with a published spec, independent hands-on corroboration of agent read/post flows.",
+    "rationale": "Agents can read and post channel messages through Buzz's own interfaces. The relay speaks NIP-29/NIP-42 directly to clients, the official CLI and the buzz-acp harness let agents listen for @mentions and reply, and the managed buzz-cli skill covers messaging and channels. Each agent gets its own keypair, channel memberships and audit trail, and NIP-AA makes agent access depend on the owner's membership. However, credentials are Nostr keypairs scoped by channel membership rather than scoped API tokens: no permission scopes such as read-only versus post are documented, token auth was deliberately removed from the admin API, and there is no REST/OpenAPI message API. Missing for 10: scoped tokens or per-capability permission scopes, a documented HTTP/REST message read/post API (OpenAPI probes 404), and independent hands-on corroboration.",
     "evidenceIds": [
       "buzz-gh-4",
       "buzz-gh-3",
@@ -16,6 +16,7 @@
       "buzz-supp-nip-aa-agent-auth",
       "buzz-supp-admin-api",
       "buzz-probe-2",
+      "buzz-probe-4",
       "buzz-comm-5"
     ],
     "productId": "buzz",
