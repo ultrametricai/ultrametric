@@ -16,7 +16,7 @@
 // Invocation: pnpm tsx rankings-engine/scripts/latam-candidate-triage.ts [--date YYYY-MM-DD]
 import fs from 'node:fs'
 import path from 'node:path'
-import { readCategories } from '../paths'
+import { DATA_DIR, readCategories } from '../paths'
 import {
   buildTriageMarkdown, findDocsLink, realTriageIo, triageCandidate, TriageReportSchema, type Disposition,
 } from './radar-triage'
@@ -57,7 +57,9 @@ async function main(argv: string[]): Promise<void> {
   const categories = readCategories()
   const existingArenas = new Set(categories.map((c) => c.id))
   const arenaDefinitions = new Map<string, string>(categories.map((c) => [c.id, c.description]))
-  const sections = JSON.parse(fs.readFileSync(path.join(ROOT, 'open-rankings', 'arena-sections.json'), 'utf8')) as {
+  // Same data root as readCategories (UM_DATA_DIR / PA_DATA_DIR override honored), so the
+  // vocabulary never mixes one dataset's categories with another's section names.
+  const sections = JSON.parse(fs.readFileSync(path.join(DATA_DIR, 'arena-sections.json'), 'utf8')) as {
     sections: { name: string; arenaIds: string[] }[]
   }
   const sectionNameByArena = new Map<string, string>()
