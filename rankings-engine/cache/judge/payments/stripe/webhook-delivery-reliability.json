@@ -1,19 +1,18 @@
 {
-  "hash": "4038bb388611cc1201e5e5ad86949a8ae248512018aaaf6a22dab22a961c5f94",
+  "hash": "61e267a034777a71b320bb240e5e502aaab8219f78936f1e9a34e37839179f62",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 4,
     "confidence": "medium",
-    "rationale": "Stripe's docs clearly show real-time webhook delivery to registered HTTPS endpoints for asynchronous payment events. Event destinations extend delivery to Amazon EventBridge and Azure Event Grid with snapshot or thin events, and the Workbench Shell supports `stripe listen` for watching webhook events. However, the pack never evidences the reliability guarantees the story centers on; Smart Retries covers failed payments and idempotency covers API requests, so neither applies to webhook redelivery. Missing for 10: webhook signature verification, automatic delivery retries, a webhook event/delivery log, event replay/resend, and independent or hands-on corroboration.",
+    "rationale": "Stripe's docs show registrable HTTPS webhook endpoints that receive real-time events. Event destinations extend delivery to EventBridge and Azure Event Grid with snapshot or thin event formats, and Workbench can listen for webhook events. That covers the core outbound-callback capability for keeping a system in sync with payment state, but the pack never documents signed deliveries, automatic webhook retries, delivery/event logs, or replay. (Smart Retries applies to failed payments, not webhook delivery, so it earns no credit here.) Missing for 10: webhook signature verification, automatic delivery retries, event/delivery logs, event replay/resend, independent corroboration.",
     "evidenceIds": [
       "stripe-docs-8",
       "stripe-docs-35",
       "stripe-docs-53",
       "stripe-docs-63",
       "stripe-supp-event-destinations",
-      "stripe-supp-workbench-shell",
-      "stripe-docs-75"
+      "stripe-supp-workbench-shell"
     ],
     "productId": "stripe",
     "storyId": "webhook-delivery-reliability"
