@@ -1,16 +1,17 @@
 {
-  "hash": "33f4ca4cb370e381fe8f1ab5599b38bd1ca672537dea9183f08139034c79b708",
+  "hash": "b3618beffe48769661ee9f069e11476a3c2d1f8d00daf99fe05ce7e8ac853c0c",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 4,
     "confidence": "medium",
-    "rationale": "Reflect has a first-party REST API that scripts or CI jobs can call without the app UI, using bearer-token curl calls against reflect.app/api. Documented endpoints can append to daily notes, create notes and list or add links. The surface is narrow, though: end-to-end encryption means the API cannot read note contents, authentication is OAuth2 rather than simple service tokens, and there is no CLI or headless runtime. Deep links (reflect://) depend on the desktop app, so they do not count toward headless use. Missing for 10: an official CLI or headless mode, read access to note contents via API, CI-friendly service or API-key auth, and a sandbox or test environment plus versioning policy for automation.",
+    "rationale": "Reflect's only headless automation path is its first-party REST API. It uses OAuth2/PKCE and bearer-token curl access, with documented endpoints to append to daily notes, create notes, and list or add links, so a script or CI job can drive part of the product without the UI. However, the API cannot serve note contents because of end-to-end encryption, and deep links require the app, so automation is largely write-only. Missing for 10: a CLI or headless runtime, any CI/automation guidance, read access to note contents, a sandbox/test environment, versioning policy, and hands-on corroboration.",
     "evidenceIds": [
-      "reflect-supp-api-surface-bounds",
       "reflect-supp-openpm-spec",
+      "reflect-supp-api-surface-bounds",
       "reflect-docs-17",
-      "reflect-docs-45"
+      "reflect-docs-45",
+      "reflect-docs-59"
     ],
     "productId": "reflect",
     "storyId": "agentic-headless"
