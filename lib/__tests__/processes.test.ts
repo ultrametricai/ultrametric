@@ -265,7 +265,7 @@ describe('corpus', () => {
     // data protection, accounting…). Honest coverage, not completeness theater — a country
     // with no real analog carries no note, so the band stays wide.
     expect(total).toBeGreaterThanOrEqual(120)
-    expect(total).toBeLessThanOrEqual(500)
+    expect(total).toBeLessThanOrEqual(600)
     // Both camps stay populated: the geo-resolution restructures moved most note-carriers to
     // global scope, and the US-scoped core (EIN, payroll setup, state work) keeps its notes.
     expect(globalWithNotes).toBeGreaterThan(0)
@@ -276,7 +276,7 @@ describe('corpus', () => {
     // no India note") carries all four too — stamp duty in India, share classes in the UK.
     for (const id of ['form_001', 'startup_002']) {
       const t = tasks.find((x) => x.id === id)!
-      expect((t.geoNotes ?? []).map((n) => n.country).sort(), id).toEqual(['AU', 'CA', 'DE', 'FR', 'IN', 'KR', 'NZ', 'PT', 'SG', 'UK'])
+      expect((t.geoNotes ?? []).map((n) => n.country).sort(), id).toEqual(['AU', 'CA', 'DE', 'FR', 'HK', 'IN', 'KR', 'NZ', 'PT', 'SG', 'UK'])
     }
   })
 
@@ -313,10 +313,10 @@ describe('corpus', () => {
     expect(noteKind('form_002', 'DE')).toBe('analog')
     expect(noteKind('form_002', 'SG')).toBe('absorbed') // the UEN arrives with ACRA incorporation
     // Incorporation has a true doable analog in every covered country.
-    for (const c of ['IN', 'UK', 'DE', 'FR', 'PT', 'CA', 'NZ', 'SG', 'AU', 'KR']) expect(noteKind('form_001', c), `form_001/${c}`).toBe('analog')
+    for (const c of ['IN', 'UK', 'DE', 'FR', 'PT', 'CA', 'NZ', 'SG', 'AU', 'KR', 'HK']) expect(noteKind('form_001', c), `form_001/${c}`).toBe('analog')
     // No country has a US-style registered-agent industry — the registered office is declared
     // inside formation everywhere.
-    for (const c of ['IN', 'UK', 'DE', 'FR', 'PT', 'CA', 'NZ', 'SG', 'AU', 'KR']) expect(noteKind('qs_043', c), `qs_043/${c}`).toBe('absorbed')
+    for (const c of ['IN', 'UK', 'DE', 'FR', 'PT', 'CA', 'NZ', 'SG', 'AU', 'KR', 'HK']) expect(noteKind('qs_043', c), `qs_043/${c}`).toBe('absorbed')
     // The need genuinely absent: no UK 1099 regime; nothing to foreign-qualify for inside the
     // UK; no German franchise-tax ritual (the IHK-Beitrag arrives automatically).
     expect(noteKind('tax_003', 'UK')).toBe('not-applicable')
@@ -325,21 +325,21 @@ describe('corpus', () => {
   })
 
   // Geo coverage to totality (founder boost 2026-10-02: "close EVERY gap … pin totality:
-  // uncovered = 0"; PT and CA joined the enum in the 2026-10-03 new-countries wave, NZ, SG,
-  // and AU in the 2026-10-23 country run). Every
-  // US-scoped record — processes and situations alike — says what the need becomes in all eight
+  // uncovered = 0"; PT and CA joined the enum in the 2026-10-03 new-countries wave; NZ, SG,
+  // AU, KR, and HK in the 2026-10-23 country runs). Every
+  // US-scoped record — processes and situations alike — says what the need becomes in all eleven
   // countries, with the honesty carried by the note KIND (a not-applicable note is a closed gap
   // too: sit_002 is inherently US-inbound, Germany has no 409A ritual and no 1099 regime,
-  // Canada, New Zealand, and Australia have no LLC). The eight-country set is the whole enum, so
-  // this is the
+  // Canada, New Zealand, Australia, and Hong Kong have no LLC). The eleven-country set is the
+  // whole enum, so this is the
   // uncovered=0 pin.
-  it('geo totality: every US-scoped record carries all ten countries (uncovered = 0)', () => {
+  it('geo totality: every US-scoped record carries all eleven countries (uncovered = 0)', () => {
     const tasks = loadProcesses(DATA_DIR)
     for (const t of tasks.filter((x) => x.geoScope !== 'global')) {
       expect(
         (t.geoNotes ?? []).map((n) => n.country).sort(),
-        `${t.id} (${t.title}): ten-country geo totality`,
-      ).toEqual(['AU', 'CA', 'DE', 'FR', 'IN', 'KR', 'NZ', 'PT', 'SG', 'UK'])
+        `${t.id} (${t.title}): eleven-country geo totality`,
+      ).toEqual(['AU', 'CA', 'DE', 'FR', 'HK', 'IN', 'KR', 'NZ', 'PT', 'SG', 'UK'])
     }
     // The worked decisions of the closing passes, pinned: bank-account analogs exist in the four
     // original countries (vendor-geo-aligned; qs_023 is global-scoped, so PT/CA notes are not
@@ -351,7 +351,7 @@ describe('corpus', () => {
     for (const c of ['IN', 'UK', 'DE', 'FR']) {
       expect(noteKind('qs_023', c), `qs_023/${c}`).toBe('analog')
     }
-    for (const c of ['IN', 'UK', 'DE', 'FR', 'PT', 'CA', 'NZ', 'SG', 'AU', 'KR']) {
+    for (const c of ['IN', 'UK', 'DE', 'FR', 'PT', 'CA', 'NZ', 'SG', 'AU', 'KR', 'HK']) {
       expect(noteKind('sit_002', c), `sit_002/${c}`).toBe('not-applicable')
     }
     expect(noteKind('fund_003', 'DE')).toBe('not-applicable')
@@ -362,6 +362,7 @@ describe('corpus', () => {
     expect(noteKind('fund_003', 'NZ')).toBe('not-applicable') // no NZ 409A equivalent; IR's ESS rules instead
     expect(noteKind('fund_003', 'SG')).toBe('not-applicable') // no IRAS valuation safe harbor; ESOW taxes at exercise
     expect(noteKind('fund_003', 'KR')).toBe('not-applicable') // options run on their own Commercial Act rules, no appraisal ritual
+    expect(noteKind('fund_003', 'HK')).toBe('not-applicable') // salaries tax at exercise per DIPN 38, no appraisal ritual
     expect(noteKind('tax_003', 'DE')).toBe('not-applicable')
     expect(noteKind('tax_003', 'PT')).toBe('not-applicable') // e-Fatura already reports invoices
     expect(noteKind('tax_003', 'CA')).toBe('analog') // the T4A slip is a real information return
@@ -369,6 +370,7 @@ describe('corpus', () => {
     expect(noteKind('tax_003', 'SG')).toBe('not-applicable') // contractors self-assess; IR8A covers employees
     expect(noteKind('form_011', 'CA')).toBe('not-applicable') // Canada has no LLC form at all
     expect(noteKind('form_011', 'NZ')).toBe('not-applicable') // nor does New Zealand
+    expect(noteKind('form_011', 'HK')).toBe('not-applicable') // nor does Hong Kong
     expect(noteKind('qs_045', 'CA')).toBe('analog') // extra-provincial registration genuinely exists
     expect(noteKind('vc_002', 'DE')).toBe('analog') // AIFMD/BaFin is real, doable work
   })
@@ -479,7 +481,7 @@ describe('corpus', () => {
     // teleservice URL verified live 2026-10-02 closed the FR gap the first pass couldn't; CNPD
     // and the OPC closed PT/CA in the 2026-10-03 wave; NZ's NotifyUs and the SG PDPA note joined 2026-10-23).
     expect(breach.geoScope).toBe('global')
-    expect((breach.geoNotes ?? []).map((n) => n.country).sort()).toEqual(['AU', 'CA', 'DE', 'FR', 'IN', 'KR', 'NZ', 'PT', 'SG', 'UK'])
+    expect((breach.geoNotes ?? []).map((n) => n.country).sort()).toEqual(['AU', 'CA', 'DE', 'FR', 'HK', 'IN', 'KR', 'NZ', 'PT', 'SG', 'UK'])
     expect(breach.geoNotes!.find((n) => n.country === 'FR')!.actionUrl).toContain('cnil.fr')
   })
 
