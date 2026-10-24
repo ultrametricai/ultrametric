@@ -76,6 +76,8 @@ describe('generated vendor-review interchange records', () => {
     const r = JSON.parse(committed.get('startup-banking--mercury.json')!)
     expect(r.jurisdictions).toEqual([
       'US:available', 'UK:unavailable', 'IN:unavailable', 'DE:unavailable', 'FR:unavailable',
+      // The 2026-10-23 LatAm wave: the same US-entity lock, judged per country.
+      'BR:unavailable', 'MX:unavailable', 'AR:unavailable', 'CO:unavailable', 'CL:unavailable', 'PE:unavailable',
     ])
     // The judged negatives (the vendor's own eligibility page) are carried as honest ceilings.
     expect(r.limitations.length).toBeGreaterThanOrEqual(4)
