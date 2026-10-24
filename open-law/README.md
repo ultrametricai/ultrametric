@@ -89,6 +89,7 @@ The rules live in one directory per jurisdiction, named by the `jurisdiction` co
 | [NZ](NZ/) | Company incorporation and the resident-director requirement, the annual return, the company tax rate, the GST registration threshold, employer registration, KiwiSaver auto-enrolment and employer contributions, the written employment agreement and trial periods, the annual-holidays minimum, privacy-breach notification |
 | [SG](SG/) | Company registration and the private-company definition, the model constitution, allotment and share-transfer returns, AGM and annual-return deadlines, the registered office, resident director and company secretary requirements, the corporate tax rate and start-up exemption, the GST registration threshold, CPF employer contributions, Employment Act coverage, the Employment Pass qualifying salary, the PDPA breach-notification duty |
 | [KR](KR/) | Stock-company incorporation registration and articles contents, the absence of a minimum capital, the representative director, the two-week registry change deadline, corporate tax return deadline and rates, VAT registration and return deadlines, the social-insurance establishment report, written terms of employment, the severance-pay floor, PIPA breach notification, foreign-investment thresholds. Korean originals on law.go.kr are the primary locators, with the KLRI English translation attached where verified |
+| [EE](EE/) | Private limited company (osaühing) registration through the e-Business Register, the absence of a minimum capital, the contact-person requirement for companies with a foreign address, the six-month annual-report deadline, the distributed-profits income tax, the VAT registration threshold, the written employment contract, employment-register entry before work starts, social tax and unemployment-insurance premiums, the e-residency digital identity, the Personal Data Protection Act national layer beside the EU rules. Estonian originals on riigiteataja.ee are the primary locators, with the state-published Riigi Teataja English translation attached (without legal force; its consolidation coverage is dated per citation) |
 
 ## Founder-journey workflow files
 
@@ -124,9 +125,11 @@ dated record validated against `schemas/citation.schema.json` with publisher, th
 section (`locator`), `issued_on` where known, `checked_on`, jurisdiction, and an HTTPS
 link. A legal rule may only cite `primary-*` authorities; provider blogs can explain
 practice but cannot establish law (`kind: secondary-practice`). A non-English primary
-source marks its language (`lang`, e.g. `ko` for the Korean originals on law.go.kr) and
+source marks its language (`lang`, e.g. `ko` for the Korean originals on law.go.kr, `et`
+for the Estonian originals on riigiteataja.ee) and
 may attach an official-translation pointer (`translation`, e.g. the KLRI English
-translation); the original stays the authoritative locator. The reading canon the
+translation, or Riigi Teataja's own state-published English translations); the original
+stays the authoritative locator. The reading canon the
 distilled laws cite lives in `open-lore/` (`library.json` and `citations.json`), not here.
 
 Contribute citations here:
