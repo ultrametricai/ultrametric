@@ -10,7 +10,25 @@
     "kind": {"enum": ["primary-statute", "primary-regulation", "primary-agency-form", "primary-agency-guidance", "secondary-practice"]},
     "url": {"type": "string", "format": "uri"}, "locator": {"type": "string"},
     "issued_on": {"type": ["string", "null"], "format": "date"}, "checked_on": {"type": "string", "format": "date"},
-    "jurisdiction": {"type": "string"}, "note": {"type": "string"}
+    "jurisdiction": {"type": "string"}, "note": {"type": "string"},
+    "lang": {
+      "type": "string",
+      "description": "Language of the primary source (two-letter code, e.g. 'ko'); absent means English."
+    },
+    "translation": {
+      "type": "object",
+      "description": "An official-translation pointer rendered beside a non-English primary locator (e.g. the KLRI English translation of a Korean statute). The primary url/locator stay authoritative.",
+      "required": ["url"],
+      "properties": {
+        "url": {"type": "string", "format": "uri"},
+        "lang": {"type": "string", "description": "Language of the translation; absent means English."},
+        "publisher": {"type": "string"},
+        "publisher_short": {"type": "string"},
+        "title": {"type": "string"},
+        "checked_on": {"type": "string", "format": "date"}
+      },
+      "additionalProperties": false
+    }
   },
   "additionalProperties": false
 }

@@ -1,17 +1,18 @@
 {
-  "hash": "515cc06a2fa54f923eaaea4e64d2dd4b4d0cd179ed708c746cc250b96ffefade",
+  "hash": "1596550e56e4b1fa1c09dd13ec829ca17cc46020daaae4b6c4abc823c90951bb",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 5,
-    "confidence": "low",
-    "rationale": "Terraform's core workflow runs entirely through the CLI rather than a UI. It is scriptable end to end: plan, apply with `-auto-approve`, import and state commands are all CLI operations, and `-json` gives machine-readable plan, state and streaming run output. However, the only UI the evidence shows is the HCP Terraform workspace UI for viewing and overriding policy results, and nothing documents an API equivalent for it. The OpenAPI probe also found no published spec. Missing for 10: a documented HTTP API covering HCP Terraform UI features such as policy override, a published OpenAPI spec, and independent confirmation of API/UI parity.",
+    "confidence": "medium",
+    "rationale": "Terraform's core workflow is fully programmatic. Plan, apply (with -auto-approve), import, state and test are all CLI commands, and they produce machine-readable JSON via `show -json` and the `-json` UI message stream. The official MCP server also exposes workspace create/update/delete, variables, tags and run management. However, nothing documents an HCP Terraform API, let alone parity with the UI. Some functions, such as viewing and overriding policy enforcement results, are documented only in the workspace UI, and the OpenAPI probes returned 404. Missing for 10: a documented HCP Terraform REST API with an explicit UI-parity claim, API coverage of policy override and other UI-only workspace functions, a published OpenAPI spec, and independent corroboration of parity.",
     "evidenceIds": [
       "terraform-docs-3",
-      "terraform-docs-4",
-      "terraform-docs-6",
-      "terraform-docs-5",
+      "terraform-docs-8",
       "terraform-docs-22",
+      "terraform-docs-48",
+      "terraform-docs-51",
+      "terraform-docs-56",
       "terraform-docs-35",
       "terraform-probe-3",
       "terraform-probe-5"

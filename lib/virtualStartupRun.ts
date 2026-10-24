@@ -929,12 +929,16 @@ export interface VsRunState {
 // never emitted by any released codec and still rejects.
 const MIN_COMBO_LEN = 9
 
-// Combo ⇄ digit string, one option index per DECISIONS entry (order-stable, one char each).
+// Combo ⇄ token string, one option index per DECISIONS entry (order-stable, one char each).
+// Option indices write in base 36 ('0'-'9' then 'a'-'z') since the 2026-10-23 NZ entity took
+// the entity decision past ten options: indices 0-9 encode the exact digits every released
+// codec emitted, so old permalinks replay unchanged, and index 10 ('nz-ltd') encodes as 'a'.
+const encodeOptionIndex = (i: number): string => Math.max(0, i).toString(36)
+// '.' and any other non-alphanumeric parse as NaN, so an invalid slot still rejects.
+const decodeOptionIndex = (ch: string): number => parseInt(ch, 36)
+
 export function encodeCombo(choices: Choices): string {
-  return DECISIONS.map((d) => {
-    const i = d.options.findIndex((o) => o.value === choices[d.id])
-    return String(Math.max(0, i))
-  }).join('')
+  return DECISIONS.map((d) => encodeOptionIndex(d.options.findIndex((o) => o.value === choices[d.id]))).join('')
 }
 
 export function decodeCombo(raw: string): Choices | null {
@@ -946,22 +950,20 @@ export function decodeCombo(raw: string): Choices | null {
       out[d.id] = DEFAULT_CHOICES[d.id]
       continue
     }
-    const idx = raw.charCodeAt(i) - 48
-    const opt = d.options[idx]
+    const opt = d.options[decodeOptionIndex(raw[i])]
     if (!opt) return null
     out[d.id] = opt.value
   }
   return out as Choices
 }
 
-// Asserted combo ⇄ digit-or-dot string: '.' = unasserted (composes as the default), a digit =
-// the asserted option index — so the URL literally omits unasserted decisions (v2 codec).
+// Asserted combo ⇄ token-or-dot string: '.' = unasserted (composes as the default), a base-36
+// token = the asserted option index — so the URL literally omits unasserted decisions (v2 codec).
 export function encodeAssertedCombo(asserted: AssertedChoices): string {
   return DECISIONS.map((d) => {
     const v = asserted[d.id]
     if (v === undefined) return '.'
-    const i = d.options.findIndex((o) => o.value === v)
-    return String(Math.max(0, i))
+    return encodeOptionIndex(d.options.findIndex((o) => o.value === v))
   }).join('')
 }
 
@@ -978,7 +980,7 @@ export function decodeAssertedCombo(raw: string): AssertedChoices | null {
       continue
     }
     if (raw[i] === '.') continue
-    const opt = d.options[raw.charCodeAt(i) - 48]
+    const opt = d.options[decodeOptionIndex(raw[i])]
     if (!opt) return null
     out[d.id] = opt.value
   }

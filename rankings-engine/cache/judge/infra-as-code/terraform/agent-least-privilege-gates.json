@@ -1,19 +1,20 @@
 {
-  "hash": "137643cb4e9f7ea4f458be7fdb34de39dcf15796f74839e276194bccded3ff85",
+  "hash": "c3d6fefb4f1267322f0a3bc29b865af8dfcfd672b429336ded38bbe912471c28",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Terraform provides its own review-gate building blocks. `terraform plan` previews changes, and `-out` saves a plan that `apply` later executes. `apply` interactively prompts for approval unless `-auto-approve` is passed. HCP Terraform policy enforcement validates plans against rules, with results viewable and overridable in the workspace UI. Least-privilege credential scoping for an agent and agent-specific approval workflows are not evidenced. missing for 10: documented least-privilege/scoped credentials for agent-run plans and applies, an explicit agent-oriented approval gate that blocks unapproved applies, independent or hands-on corroboration of an agent-gated workflow",
+    "rationale": "Terraform documents review gates an agent workflow can rely on. Apply prompts for approval before acting, and plans can be saved with -out and applied later after review. HCP Terraform adds policy enforcement (Sentinel/OPA/Terraform policy), and policy results can be overridden in the UI. The official MCP server exposes workspace run management to agents. However, nothing shows least-privilege or scoped credentials for an agent, and the approval prompt can be bypassed with -auto-approve. Missing for 10: documented least-privilege or scoped agent credentials, a documented agent-specific approval gate that cannot be bypassed, and independent or hands-on corroboration of agent plan/apply under policy gates.",
     "evidenceIds": [
-      "terraform-docs-15",
-      "terraform-docs-30",
       "terraform-docs-25",
-      "terraform-docs-17",
+      "terraform-docs-30",
+      "terraform-docs-3",
       "terraform-docs-9",
+      "terraform-docs-54",
       "terraform-docs-35",
-      "terraform-comm-15"
+      "terraform-docs-56",
+      "terraform-docs-43"
     ],
     "productId": "terraform",
     "storyId": "agent-least-privilege-gates"

@@ -1,20 +1,22 @@
 {
-  "hash": "152b83de2630f532821d9a5f4caa9f14780b890cc4175e1365a0d11e24913160",
+  "hash": "43823f9080e3f6b218f99ceeb0f4267dc5532865755c2859aa04d6d744ea02a6",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Hands-on probes show the official CLI installs via npx and runs headlessly, and that `supabase init` scaffolds a project with no login or key. Docs say `supabase start` runs the entire stack, including Auth, locally or in CI. RLS policies are plain SQL, and the CLI-launched local MCP server exposes `apply_migration` and `execute_sql`, so an agent can script schema and policies. Missing for 10: explicit evidence of CLI migration/schema-push commands for applying schema and policies, and independent hands-on corroboration of a full scripted schema+auth+RLS bootstrap (community reports of local-dev rough edges add caution).",
+    "rationale": "Supabase's own CLI covers the headless path: `supabase init` and `supabase start` run the entire stack, Auth included, locally or in CI, and `supabase start` builds the database from migration .sql files. Schema and RLS policies are plain SQL that fit in those migrations. For agent-driven provisioning, the MCP server exposes `create_project` and `apply_migration`, can be authenticated in CI with a personal access token, and the Management API OpenAPI spec is published. Community comments calling local development and migrations a weakness are not a concrete counter-example to this capability. Missing for 10: documented headless configuration of auth providers and settings from the CLI, an end-to-end scripted bootstrap example, and independent hands-on corroboration of agent-driven setup.",
     "evidenceIds": [
-      "supabase-probe-6",
-      "supabase-probe-8",
       "supabase-docs-2",
       "supabase-docs-21",
-      "supabase-docs-6",
+      "supabase-docs-54",
+      "supabase-comm-9",
       "supabase-docs-15",
+      "supabase-supp-mcp-tool-groups",
+      "supabase-supp-mcp-agent-security",
       "supabase-supp-mcp-config-params",
-      "supabase-supp-mcp-tool-groups"
+      "supabase-supp-llms-agent-resources",
+      "supabase-docs-52"
     ],
     "productId": "supabase",
     "storyId": "agent-provisions-backend"

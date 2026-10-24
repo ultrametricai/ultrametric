@@ -1,13 +1,22 @@
 {
-  "hash": "926edd6ab793292c90c1bc42dbdb3ebea1dbfbb12c9a3b914d8a9c57f9f3dc42",
+  "hash": "c0bff145f688217451a444baa2f2b493d4b5af7b63787cc50577464a5644a1c3",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "The axis applies, since an infrastructure tool or its hosted platform could expose a documented public API, but the pack documents no such API. The evidence covers CLI commands with `-json` machine-readable output and an MCP server that only gives AI models access to registry documentation, modules and policies; both are adjacent capabilities that belong to the CLI and MCP stories, not a public API. The OpenAPI probe returned 404 on every candidate path, and nothing in the pack documents an HCP Terraform API.",
-    "evidenceIds": [],
     "productId": "terraform",
-    "storyId": "agentic-public-api"
+    "storyId": "agentic-public-api",
+    "verdict": "partial",
+    "quality": 5,
+    "confidence": "medium",
+    "rationale": "Terraform documents a machine-drivable interface through its CLI rather than a network API. `-json` gives a documented stream of JSON UI messages for plan, apply, refresh and test, `terraform show -json` exposes plan and state as JSON, and `-auto-approve` and `-out` allow non-interactive runs. However, no public HTTP/REST API is evidenced: the OpenAPI probes all returned 404, and the official MCP server covers registry docs, modules and policies rather than driving runs. Missing for 10: a documented public HTTP/REST API (e.g. HCP Terraform API) with OpenAPI spec, API-level run/state operations, and independent corroboration of programmatic use.",
+    "evidenceIds": [
+      "terraform-docs-22",
+      "terraform-docs-34",
+      "terraform-docs-39",
+      "terraform-docs-17",
+      "terraform-docs-30",
+      "terraform-probe-3",
+      "terraform-docs-23",
+      "terraform-probe-5"
+    ]
   }
 }

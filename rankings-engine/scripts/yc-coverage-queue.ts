@@ -4,8 +4,9 @@
 // any arena (matched by normalized website domain, never by name), (b) plausibly fit an EXISTING
 // arena, and (c) show a real docs/API surface an agent could be pointed at (quick keyless HTTP
 // checks). The queue is the "always-gaining" loop's input: the weekly yc-coverage.yml workflow
-// refreshes it and opens a work-queue issue with the next candidates; bring-ups then run the full
-// evidence pipeline per product.
+// refreshes it, puts the ranked queue + triage dispositions on the lane PR's body, and files a
+// needs-human issue only when the triage routed candidates to a human; bring-ups then run the
+// full evidence pipeline per product.
 //
 // Ranking = batch recency x arena fit x docs surface:
 //   - recency: newest batch in the window = 1.0, decaying linearly to the oldest batch,

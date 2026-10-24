@@ -30,11 +30,16 @@ import type { Cadence, SimStep } from './processSim'
 
 // Country-aware entity options (founder round 5, item 1). Codec rule: 'c-corp'/'llc' keep their
 // original indices 0/1; every non-US entity value is APPENDED so old digit permalinks replay
-// unchanged. HONESTY: the step corpus is US-shaped — a non-US entity keeps the EXACT corpus
+// unchanged ('nz-ltd' through 'kr-chusik-hoesa' are the 11th-14th slots — the combo codec
+// writes option indices past 9 in base 36, so they encode as 'a' through 'd'; see
+// lib/virtualStartupRun.ts). HONESTY: the step corpus is
+// US-shaped — a non-US entity keeps the EXACT corpus
 // incorporation composition of the C-Corp path (never a fake corpus branch) and frames it with
 // the committed geoNotes country analog (terminal line + entity label).
 export type EntityChoice =
   | 'c-corp' | 'llc' | 'ltd' | 'gmbh' | 'ug' | 'sas' | 'sarl' | 'pvt-ltd' | 'lda' | 'ca-corp'
+  | 'nz-ltd' | 'pte-ltd'
+  | 'pty-ltd' | 'kr-chusik-hoesa'
 export type FundingChoice = 'bootstrap' | 'seed'
 // Business models (founder round 5, item 2). Codec rule: 'subscriptions'/'invoices' keep indices
 // 0/1; 'marketplace'/'usage'/'ecommerce' append. Only compositions the corpus honestly supports:
@@ -224,6 +229,22 @@ export const ENTITY_META: Record<EntityChoice, EntityMeta> = {
     label: 'Federal corporation (CBCA)', suffix: ' Inc.', country: 'CA',
     filing: { label: 'Certificate of Incorporation', register: 'Corporations Canada no. 0000000 (placeholder)' },
   },
+  'nz-ltd': {
+    label: 'NZ limited company', suffix: ' Limited', country: 'NZ',
+    filing: { label: 'Certificate of Incorporation', register: 'NZ Companies Office no. 0000000 (placeholder)' },
+  },
+  'pte-ltd': {
+    label: 'Pte Ltd', suffix: ' Pte. Ltd.', country: 'SG',
+    filing: { label: 'Notice of Incorporation', register: 'ACRA UEN 000000000X (placeholder)' },
+  },
+  'pty-ltd': {
+    label: 'Pty Ltd', suffix: ' Pty Ltd', country: 'AU',
+    filing: { label: 'Certificate of Registration', register: 'ASIC ACN 000 000 000 (placeholder)' },
+  },
+  'kr-chusik-hoesa': {
+    label: 'Chusik hoesa (주식회사)', suffix: ' Co., Ltd.', country: 'KR',
+    filing: { label: 'Incorporation registration', register: 'Corporate registry no. 000000-0000000 (placeholder)' },
+  },
 }
 
 // The Entity dropdown's roster follows the geo selection; the FIRST option per country is the
@@ -237,6 +258,10 @@ export const ENTITY_OPTIONS_BY_COUNTRY: Record<GeoCountry, EntityChoice[]> = {
   IN: ['pvt-ltd'],
   PT: ['lda'],
   CA: ['ca-corp'],
+  NZ: ['nz-ltd'],
+  SG: ['pte-ltd'],
+  AU: ['pty-ltd'],
+  KR: ['kr-chusik-hoesa'],
 }
 
 export function defaultEntityFor(country: GeoCountry): EntityChoice {
@@ -301,6 +326,10 @@ export const DECISIONS: DecisionDef[] = [
       { value: 'pvt-ltd', label: 'Pvt Ltd', detail: 'the same corpus incorporation composition as the C-Corp path (form_001), framed for India with the committed MCA analog — the corpus is US-shaped; no steps invented' },
       { value: 'lda', label: 'Lda', detail: 'the same corpus incorporation composition as the C-Corp path (form_001), framed for Portugal with the committed Empresa Online analog — the corpus is US-shaped; no steps invented' },
       { value: 'ca-corp', label: 'Federal corporation (CBCA)', detail: 'the same corpus incorporation composition as the C-Corp path (form_001), framed for Canada with the committed Corporations Canada analog — the corpus is US-shaped; no steps invented' },
+      { value: 'nz-ltd', label: 'NZ limited company', detail: 'the same corpus incorporation composition as the C-Corp path (form_001), framed for New Zealand with the committed Companies Office analog — the corpus is US-shaped; no steps invented' },
+      { value: 'pte-ltd', label: 'Pte Ltd', detail: 'the same corpus incorporation composition as the C-Corp path (form_001), framed for Singapore with the committed ACRA/Bizfile analog — the corpus is US-shaped; no steps invented' },
+      { value: 'pty-ltd', label: 'Pty Ltd', detail: 'the same corpus incorporation composition as the C-Corp path (form_001), framed for Australia with the committed ASIC analog — the corpus is US-shaped; no steps invented' },
+      { value: 'kr-chusik-hoesa', label: 'Chusik hoesa (주식회사)', detail: 'the same corpus incorporation composition as the C-Corp path (form_001), framed for South Korea with the committed court-registry (IROS) analog — the corpus is US-shaped; no steps invented' },
     ],
   },
   {
@@ -1062,7 +1091,11 @@ const ARTIFACT_GENERATORS: Record<string, (ctx: ArtifactCtx) => Draft[]> = {
   form_011: ({ co }) => [{ label: 'Certificate of Formation', value: `${co.display} — DE file no. 0000000` }],
   // No real EIN starts 00 — the canonical impossible-real placeholder.
   form_002: () => [{ label: 'EIN', value: '00-0000000' }],
-  startup_002: () => [{ label: 'Founder equity', value: '50 / 50 split · 4-year vest, 1-year cliff' }],
+  // Two-founder equity follows the corpus guidance bound to this step (issue #437): near-equal
+  // with one extra share to one founder to prevent deadlock (open-lore/rules.json
+  // altman-one-extra-share, Altman's Startup Playbook) and 4-year/1-year-cliff vesting as the
+  // safety mechanism (open-lore/library.json seibel-how-to-split-equity).
+  startup_002: () => [{ label: 'Founder equity', value: 'near-equal split, one extra share to one founder · 4-year vest, 1-year cliff' }],
   qs_051: ({ choices }) => [{
     label: 'Cap table',
     value: `10,000,000 authorized · ${choices.team === 'cofounders' ? '2 founder holders' : '1 founder holder'}`,

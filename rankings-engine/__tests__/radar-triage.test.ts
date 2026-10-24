@@ -15,6 +15,10 @@ import {
   isWaitlistOnly,
   triageCandidate,
   triageReport,
+  YOUNG_REPO_MAX_AGE_DAYS,
+  YOUNG_REPO_STARS_PER_CONTRIBUTOR,
+  YOUNG_REPO_STARS_PER_DAY,
+  youngRepoAnomaly,
   type RepoFacts,
   type TriageIo,
 } from '../scripts/radar-triage'
@@ -40,12 +44,14 @@ function candidate(overrides: Partial<RadarCandidate> = {}): RadarCandidate {
 function io(overrides: Partial<TriageIo> = {}): TriageIo {
   return {
     fetchPage: async () => ({ status: 200, html: '<a href="/docs">Documentation</a> <a href="/pricing">Pricing</a> API reference' }),
-    fetchRepo: async () => ({ archived: false, fork: false, description: 'a real tool', stars: 900, createdAt: '2026-08-01T00:00:00Z', readmeBytes: 9000, readmeHead: '## Install\nnpm i driftbase', readme: '## Install\nnpm i driftbase\n## API reference' }),
+    fetchRepo: async () => ({ archived: false, fork: false, description: 'a real tool', stars: 900, createdAt: '2026-08-01T00:00:00Z', contributors: 45, readmeBytes: 9000, readmeHead: '## Install\nnpm i driftbase', readme: '## Install\nnpm i driftbase\n## API reference' }),
     ...overrides,
   }
 }
 
-const REPO_OK: RepoFacts = { archived: false, fork: false, description: 'browser agent sdk', stars: 900, createdAt: '2026-08-01T00:00:00Z', readmeBytes: 8000, readmeHead: '## Quickstart\npip install x', readme: '## Quickstart\npip install x\nShips an MCP server.' }
+const REPO_OK: RepoFacts = { archived: false, fork: false, description: 'browser agent sdk', stars: 900, createdAt: '2026-08-01T00:00:00Z', contributors: 45, readmeBytes: 8000, readmeHead: '## Quickstart\npip install x', readme: '## Quickstart\npip install x\nShips an MCP server.' }
+
+const daysAgo = (n: number): string => new Date(Date.now() - n * 86_400_000).toISOString()
 
 describe('criterion checks', () => {
   it('ranking fit requires MIN_FIT_HITS on an arena that exists — the radar never creates rankings', () => {
@@ -94,6 +100,39 @@ describe('criterion checks', () => {
     expect(isPlainTextLlms('# Driftbase', 'application/json')).toBe(false)
     expect(isPlainTextLlms('# Driftbase', 'text/html; charset=utf-8')).toBe(false)
     expect(isPlainTextLlms('Not Found', 'text/plain')).toBe(false) // catch-all string, no H1 — not a document
+  })
+
+  it('young-repo trip-wire (a): sustained rate at or above the young-repo floor trips, below it does not', () => {
+    const now = new Date()
+    // 20 days old, 2400 stars ≈ 120/day — trips on rate alone even with many contributors.
+    const rate = youngRepoAnomaly({ stars: 2400, createdAt: daysAgo(20), contributors: 500 }, now)
+    expect(rate).toContain(`${YOUNG_REPO_STARS_PER_DAY}/day`)
+    // 20 days old, 1000 stars = 50/day with a healthy contributor base — no trip.
+    expect(youngRepoAnomaly({ stars: 1000, createdAt: daysAgo(20), contributors: 80 }, now)).toBeNull()
+  })
+
+  it('young-repo trip-wire (b): stars above 20× max(contributors, 1) trips, including zero contributors', () => {
+    const now = new Date()
+    // 20 days old, 1500 stars = 75/day (below the rate floor) but only 10 contributors → 1500 > 200.
+    const ratio = youngRepoAnomaly({ stars: 1500, createdAt: daysAgo(20), contributors: 10 }, now)
+    expect(ratio).toContain(`${YOUNG_REPO_STARS_PER_CONTRIBUTOR}× stars-per-contributor`)
+    // max(contributors, 1): zero recorded contributors still divides by 1.
+    expect(youngRepoAnomaly({ stars: 25, createdAt: daysAgo(10), contributors: 0 }, now)).toContain('stars-per-contributor')
+    // 10 days old, 100 stars, 10 contributors → 100 ≤ 200 — no trip.
+    expect(youngRepoAnomaly({ stars: 100, createdAt: daysAgo(10), contributors: 10 }, now)).toBeNull()
+  })
+
+  it('young-repo trip-wires fail open on a missing contributor count and never fire at or past 60 days', () => {
+    const now = new Date()
+    // Contributor count unavailable: the ratio wire is skipped (rate is below its floor) — fail-open.
+    expect(youngRepoAnomaly({ stars: 1500, createdAt: daysAgo(20), contributors: null }, now)).toBeNull()
+    // The rate wire needs no contributor count, so it still fires with the count unavailable.
+    expect(youngRepoAnomaly({ stars: 2400, createdAt: daysAgo(20), contributors: null }, now)).not.toBeNull()
+    // Repos at or past the age boundary keep the old behavior: only the 500/day floor applies.
+    // The boundary date derives from the same `now` the check reads — a second Date.now() read
+    // would leave the repo a few milliseconds under 60 days and flake the exact-boundary case.
+    expect(youngRepoAnomaly({ stars: 30_000, createdAt: new Date(now.getTime() - YOUNG_REPO_MAX_AGE_DAYS * 86_400_000).toISOString(), contributors: 1 }, now)).toBeNull()
+    expect(youngRepoAnomaly({ stars: 30_000, createdAt: daysAgo(120), contributors: 1 }, now)).toBeNull()
   })
 
   it('founder affiliation matches name and url, routing to a human', () => {
@@ -236,6 +275,31 @@ describe('triageCandidate', () => {
     )
     expect(d).toMatchObject({ status: 'needs-human', criterion: 'shipped-product', bringup: null })
     expect(d.reason).toContain('anomaly floor')
+  })
+
+  it('routes young repos tripping either young-repo wire to needs-human on popularity grounds', async () => {
+    const gh = candidate({ url: 'https://github.com/acme/driftbase', key: 'github:acme/driftbase' })
+    // (a) rate: 20 days old at ~120/day (below the 500/day floor, above the young-repo floor).
+    const rate = await triageCandidate(gh, ARENAS, io({ fetchRepo: async () => ({ ...REPO_OK, stars: 2400, createdAt: daysAgo(20), contributors: 500 }) }))
+    expect(rate).toMatchObject({ status: 'needs-human', criterion: 'shipped-product', bringup: null })
+    expect(rate.reason).toContain('young-repo floor')
+    // (b) ratio: 75/day but 1500 stars on 10 contributors.
+    const ratio = await triageCandidate(gh, ARENAS, io({ fetchRepo: async () => ({ ...REPO_OK, stars: 1500, createdAt: daysAgo(20), contributors: 10 }) }))
+    expect(ratio).toMatchObject({ status: 'needs-human', criterion: 'shipped-product', bringup: null })
+    expect(ratio.reason).toContain('stars-per-contributor')
+  })
+
+  it('fails open when the contributor count is unavailable, and keeps the old behavior for repos past 60 days', async () => {
+    const gh = candidate({ url: 'https://github.com/acme/driftbase', key: 'github:acme/driftbase' })
+    // Young repo, ratio would trip, but the count is unavailable and the rate is below its floor:
+    // the candidate proceeds (fail-open) and the evidence records the unavailable count.
+    const open = await triageCandidate(gh, ARENAS, io({ fetchRepo: async () => ({ ...REPO_OK, stars: 1500, createdAt: daysAgo(20), contributors: null }) }))
+    expect(open.status).toBe('auto-approved')
+    expect(open.evidence.some((e) => e.includes('contributors=unavailable'))).toBe(true)
+    // A repo at 60+ days with an extreme stars-per-contributor ratio but sub-500/day velocity
+    // auto-approves exactly as before the young-repo wires existed.
+    const old = await triageCandidate(gh, ARENAS, io({ fetchRepo: async () => ({ ...REPO_OK, stars: 30_000, createdAt: daysAgo(120), contributors: 1 }) }))
+    expect(old.status).toBe('auto-approved')
   })
 
   it('routes founder-affiliated candidates to needs-human before any other check', async () => {

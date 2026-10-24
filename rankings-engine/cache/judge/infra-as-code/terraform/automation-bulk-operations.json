@@ -1,18 +1,21 @@
 {
-  "hash": "ba8f0fba598055d60d960ac5eb966e4ef2666187dbefe830b5e50ac2ed1d91c1",
+  "hash": "aa49cf01a69415eb90c890aa3c0570af5dbfc0b9a5b61fdcad4465b423e154f3",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Terraform's GitHub README says it builds a graph of all resources and parallelizes creation and modification of non-dependent resources. A single plan/apply executes every proposed operation across the whole configuration and can run non-interactively with -auto-approve, so bulk changes across many items are core to how it works. A community user credits it with making operations at scale possible. Missing for 10: documentation of bulk-definition constructs (e.g. count/for_each), selective bulk targeting or bulk state manipulation, and hands-on evidence of large-scale bulk runs.",
+    "rationale": "Terraform's core workflow is bulk operations. A single plan/apply covers every defined resource across providers: it builds a resource graph and parallelizes creation and modification of non-dependent resources, and `-destroy` plans removal of all remote objects. Users also report adding infrastructure in bulk via for_each and dynamic blocks, and say declarative moves and imports are now simple and safe. missing for 10: first-party docs on for_each/count-style bulk instancing, a smooth path for bulk state refactoring (users describe merging hundreds or thousands of resources via state mv as a big job), and evidence that performance holds up at large scale (users report having to split stacks).",
     "evidenceIds": [
       "terraform-gh-1",
-      "terraform-docs-16",
-      "terraform-docs-25",
-      "terraform-docs-17",
-      "terraform-docs-6",
-      "terraform-comm-7"
+      "terraform-docs-44",
+      "terraform-docs-45",
+      "terraform-docs-42",
+      "terraform-docs-51",
+      "terraform-comm-12",
+      "terraform-comm-18",
+      "terraform-comm-5",
+      "terraform-comm-2"
     ],
     "productId": "terraform",
     "storyId": "automation-bulk-operations"

@@ -1,12 +1,15 @@
 {
-  "hash": "01564a912f24f4891b05a0e1fd86a43f0274898da386d0ef10ca5b2ccebb8f9b",
+  "hash": "5a682e2d5fe410b531c15c9d370117b14da1bb3fac6378b490a8c9f6126810c2",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "na",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "LobeChat/LobeHub is an AI assistant and agent platform, which puts it in the MCP client role, so serving tools to other agents through its own MCP server is a different product role. The probe [lobe-chat-probe-4] points to lobehub.com/mcp, but that page is a marketplace directory of 100,000+ third-party MCP servers, not a first-party server that LobeHub runs. The desktop MCP connectors are client-side, and the lhm CLI only publishes marketplace listings. Neither shows LobeHub itself running as an MCP server, so the axis does not apply.",
-    "evidenceIds": [],
+    "verdict": "partial",
+    "quality": 4,
+    "confidence": "low",
+    "rationale": "LobeHub's llms.txt documents a first-party MCP endpoint: discovery at `/.well-known/mcp`, then `/api/mcp` supporting `initialize`, `resources/list` and `resources/read`. An external agent could therefore connect to it. However, the endpoint appears to expose only read-only resources, likely site and marketplace content, rather than tools for operating a user's workspace or agents. The probe's 'official MCP server at /mcp' points to a marketplace directory of third-party servers, and desktop MCP-connector installs are client-side, so neither is credited. Missing for 10: documented tool exposure for acting on workspace/agents, setup and auth docs for connecting an agent, coverage beyond read-only resources, independent or hands-on corroboration.",
+    "evidenceIds": [
+      "lobe-chat-docs-61",
+      "lobe-chat-probe-1"
+    ],
     "productId": "lobe-chat",
     "storyId": "agentic-mcp-server"
   }

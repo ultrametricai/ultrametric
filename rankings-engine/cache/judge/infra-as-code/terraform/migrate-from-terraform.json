@@ -1,18 +1,21 @@
 {
-  "hash": "44af32a94c7836c5d489ebdbb9e52a4b70a96efc01146d8838ea3c6696890a28",
+  "hash": "9ccb46d322d1589e908e8c55ae949be0519b2bb424fde7fe4cc49ffa92a773a3",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Terraform-format configuration and state are this product's native formats. An existing Terraform codebase and its state run directly: the docs describe human-readable configuration files mapped to real resources through workspace state, the terraform state command for modifying state, and remote backends for storing it. Separately, `terraform import` brings unmanaged resources into state. Missing for 10: explicit first-party migration guidance for moving existing state between backends or workspaces, and hands-on corroboration that this works smoothly (one community user calls the local-state-then-re-init backend flow annoying).",
+    "rationale": "Terraform's native format is the Terraform-format codebase and state, so an existing codebase works without conversion. Configuration files are versioned HCL (terraform-docs-1). State maps real-world resources to configuration and can be stored in remote backends and edited with `terraform state` (terraform-docs-20, terraform-docs-33, terraform-docs-6). Resources not yet in state can be brought in with import and import blocks (terraform-docs-5, terraform-docs-50, terraform-comm-18). Community reports confirm codebases carry across versions with only minor HCL changes (terraform-comm-1), and that backend state is adopted by re-running `terraform init` (terraform-comm-16). missing for 10: first-party docs on migrating state between backends or Terraform versions, explicit compatibility guarantees for older codebases and state files, and hands-on accounts of a full migration.",
     "evidenceIds": [
-      "terraform-docs-14",
+      "terraform-docs-1",
       "terraform-docs-20",
-      "terraform-docs-6",
       "terraform-docs-33",
+      "terraform-docs-6",
       "terraform-docs-5",
-      "terraform-comm-5"
+      "terraform-docs-50",
+      "terraform-comm-18",
+      "terraform-comm-1",
+      "terraform-comm-16"
     ],
     "productId": "terraform",
     "storyId": "migrate-from-terraform"

@@ -100,13 +100,23 @@ describe('existing judged selection compatibility', () => {
     // between the positive and zero rows. Counts moved again (2875/198 -> 2877/196) when the
     // PR #428 review's evidence-gap fix (recorded llms.txt probes for eqvista and adp-run,
     // payroll-specific Workforce API lines for quickbooks-payroll) re-judged those packs.
-    // Re-pinned at the v5 settlement wave 1 (2026-10-23): ten arenas still serving pre-v5
-    // verdicts (cloud-platforms, cloud-storage, virtual-mailboxes, backend-as-a-service,
-    // data-warehouses, infra-as-code, ai-search-apis, sso-identity, customer-data-platforms,
-    // team-chat) re-judged under the v5 partial-credit boundary, moving one judged step
-    // association from the positive candidate lists into the published zero rows.
-    expect(positiveCount).toBe(2876)
-    expect(zeroCount).toBe(197)
+// Re-pinned at the issue #378 bring-up (2026-10-23): proa joins frontend-frameworks (whose
+    // stale v4 caches the arena-wide v5 re-judge refreshed) and replica-skill joins
+    // agent-skills, so the newly judged products join the candidate lists of the steps mapped
+    // to those arenas.
+    // Re-pinned at the Gusto formation/banking debut (2026-10-23): gusto joins legal-ops and
+    // startup-banking, so the newly judged product joins the candidate lists of the steps mapped
+    // to those arenas, and the v5 freshness cascade the debut forced on the two arenas' stale
+    // caches moves two incumbent cells from the positive rows to the zero rows. Moved again
+    // when the PR #449 review's scope fix pruned the off-scope payroll evidence from both gusto
+    // packs and re-judged them: the entry's step cells move to the published zero rows. Merged
+    // with the issue-378 counts at integration (2026-10-23): 2861 positive / 259 zero.
+    expect(positiveCount).toBe(2861)
+    expect(zeroCount).toBe(259)
+    // Re-pinned at the v5 settlement wave 1 integration (2026-10-23): seven arenas
+    // (cloud-platforms, cloud-storage, virtual-mailboxes, data-warehouses, sso-identity,
+    // customer-data-platforms, team-chat) re-judged under the v5 boundary; the three arenas
+    // the story-runner refreshes had already settled kept main's published verdicts.
     expect(extraArena).toBe(96)
   })
 
