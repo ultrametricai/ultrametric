@@ -1343,7 +1343,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence shows no native sync to QuickBooks, NetSuite, or Xero. Clara's API guides tell developers to pull transactions, tag them with labels such as GL codes and cost centers, and export them to their own systems or build custom connectors to SAP/Oracle. These are developer building blocks, not a first-party accounting sync with user-controlled GL, class, and department mappings.",
+    "rationale": "The evidence shows no native sync to QuickBooks, NetSuite, or Xero. Clara offers an API to pull transactions and attach labels such as GL codes or cost centers, and it tells developers to 'build custom connectors' to their accounting system. Those are developer building blocks for constructing a sync, not a delivered integration with controllable class and department mappings, so they earn no credit.",
     "evidenceIds": []
   },
   {
@@ -1352,7 +1352,7 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Clara documents pulling transactions via its API and an MCP server for reviewing transactions, and its reconciliation guide describes categorizing transactions with labels that attach GL codes, cost centers, or project IDs, so an agent can read transactions and write coding back. The evidence does not show filtering for uncoded transactions, policy-flag writing, or a review or approval step for agent-pushed coding. Missing for 10: an uncoded-transaction filter, policy flag/violation write-back, a documented review queue for agent-proposed coding, explicit label-write endpoints via MCP, and independent hands-on corroboration.",
+    "rationale": "The Clara API and MCP let an agent retrieve and review transactions, and the reconciliation guide documents categorizing transactions with labels that attach GL codes, cost centers, or project IDs, which covers the pull-and-code core. Nothing documents filtering specifically for uncoded transactions, writing policy flags, or a review queue for agent-proposed coding. missing for 10: a filter for uncoded or unlabeled transactions, an API or MCP path for policy flags, a review/approval workflow for pushed coding, explicit MCP write support for labels, and independent or hands-on corroboration.",
     "evidenceIds": [
       "clara-docs-1",
       "clara-docs-4",
@@ -1368,7 +1368,7 @@
     "verdict": "full",
     "quality": 9,
     "confidence": "high",
-    "rationale": "Probes confirm a live llms.txt (HTTP 200), markdown versions of the doc pages that point agents to the llms.txt index, and a fetchable OpenAPI schema. First-party docs also list an LLM-optimized /llms-api.txt and a dedicated agent-instructions page with guidance such as cautions before money-moving calls. Missing for 10: /llms-api.txt was not itself probed, and there is no hands-on report of an agent actually consuming these docs end-to-end.",
+    "rationale": "Probes confirm a live llms.txt at developers.clara.team (HTTP 200) and markdown docs pages that point agents back to the llms.txt index. The docs also advertise an LLM-optimized /llms-api.txt API reference, a dedicated agent-instructions page with guidance on money-moving operations, and an OpenAPI 3.1 schema for function calling. Missing for 10: no probe confirming /llms-api.txt is actually served, and no independent or community report of agents successfully consuming these docs.",
     "evidenceIds": [
       "clara-probe-1",
       "clara-probe-2",
@@ -1383,11 +1383,13 @@
     "productId": "clara",
     "storyId": "agentic-ai-insights",
     "verdict": "partial",
-    "quality": 3,
-    "confidence": "low",
-    "rationale": "Clara's marketing names an in-product 'Clara Intelligence™' feature offering real-time insights that analyze all company spend. It does not say these insights are AI-generated, and nothing documents suggestions or recommendations. Clara MCP lets an external AI assistant inspect Clara data, but that is an agent integration, not AI insights inside the product. missing for 10: confirmation that insights are AI-generated, documented AI suggestions or recommendations, in-depth docs on the insights feature, independent or hands-on corroboration.",
+    "quality": 5,
+    "confidence": "medium",
+    "rationale": "Clara's own marketing describes Clara Intelligence™ as real-time, AI-powered spend insights, an 'AI partner' that surfaces budget issues before they escalate, and an 'automated CFO agent' with predictive insights. That is a first-party, in-product AI insights capability, but it is backed only by brief homepage and product-page claims. The MCP server is for external assistants rather than in-product insights, so it is not credited here. Missing for 10: detailed docs on what insights and suggestions are generated and from which data, how users access them in the product, and independent or hands-on corroboration.",
     "evidenceIds": [
-      "clara-docs-22"
+      "clara-docs-22",
+      "clara-docs-23",
+      "clara-docs-24"
     ]
   },
   {
@@ -1395,22 +1397,27 @@
     "storyId": "agentic-autonomous-automation",
     "verdict": "partial",
     "quality": 3,
-    "confidence": "medium",
-    "rationale": "Clara has a few narrow, product-owned behaviors that run on their own. Cards can be set to auto-delete on a set end date (enableAutoDeletion), card configurations can enforce time, day-of-week, or merchant restrictions without manual action, and marketing claims \"automated expense reporting, approvals and compliance.\" The webhooks, API and MCP are developer building blocks for constructing automations, not a user-facing automation feature, so they earn no credit here. Missing for 10: a documented user-configurable automation or workflow engine (triggers, conditions, actions), autonomous agent or scheduled-job capability, in-depth docs for the claimed automated approvals and reporting, and independent or hands-on corroboration.",
+    "confidence": "low",
+    "rationale": "Clara has a few product-native background behaviors. Cards can be configured to auto-delete after a period end date (enableAutoDeletion), and the marketing site claims automated expense reporting and approvals plus an 'automated CFO agent' in Clara Intelligence. There is no documented user-facing way to define general automations that run on their own. The API, webhooks and MCP are developer building blocks or on-demand assistant access, not background automation, so they earn no credit. Missing for 10: a documented automation or rule builder for user-defined background workflows, triggers and actions, details on how the CFO agent runs autonomously, and hands-on or independent corroboration.",
     "evidenceIds": [
       "clara-docs-16",
-      "clara-docs-15",
-      "clara-docs-21"
+      "clara-docs-21",
+      "clara-docs-24",
+      "clara-docs-23"
     ]
   },
   {
     "productId": "clara",
     "storyId": "agentic-builtin-assistant",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "Nothing in the evidence shows a built-in, in-product AI assistant that users can hand tasks to. Clara MCP lets an external AI assistant act on Clara data, which is a different, server-side capability. Clara Intelligence is described only as real-time spend insights and analytics, and automated expense reporting is workflow automation; both are adjacent features that earn no credit.",
-    "evidenceIds": []
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "Clara's marketing names a built-in AI layer, 'Clara Intelligence', described as an 'automated CFO agent' and an 'AI partner' that delivers budget insights. This is a first-party in-product assistant, but the evidence frames it mainly as proactive insights rather than a place where users hand off tasks. The Clara MCP guidance concerns external AI assistants acting on Clara data, not a built-in assistant, so it is not credited here. Missing for 10: documentation of what tasks a user can delegate to the in-product assistant, how users invoke and interact with it, which actions it can execute, and independent or hands-on corroboration beyond homepage marketing.",
+    "evidenceIds": [
+      "clara-docs-22",
+      "clara-docs-23",
+      "clara-docs-24"
+    ]
   },
   {
     "productId": "clara",
@@ -1418,23 +1425,24 @@
     "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Clara documents a comprehensive programmatic API that controls cards, transactions, users and invoices, with credentials self-managed from the dashboard and an OpenAPI 3.1 schema for typed clients. It also offers a sandbox for end-to-end integration testing without real financial operations, so it can be driven headlessly for automation without the UI. missing for 10: no official CLI or documented CI/pipeline usage, no explicit non-interactive/service-account auth flow details, no independent or hands-on corroboration of headless/CI runs.",
+    "rationale": "Clara is a SaaS spend platform, so headless automation means driving it through its API. The docs claim programmatic control of every aspect of the platform (cards, transactions, users, invoices) via the API. API credentials are self-managed from the dashboard, and a sandbox lets you test integrations end-to-end without triggering real financial operations, which suits CI. Runnable mTLS client examples and an OpenAPI schema support unattended scripted use. Missing for 10: no official CLI or explicit CI/pipeline guidance, no documented non-interactive service-account or credential-rotation workflow for CI, and no independent or hands-on confirmation of headless use.",
     "evidenceIds": [
       "clara-docs-1",
       "clara-docs-2",
       "clara-docs-6",
+      "clara-docs-7",
       "clara-docs-8",
-      "clara-docs-12",
+      "clara-docs-25",
       "clara-probe-3"
     ]
   },
   {
     "productId": "clara",
     "storyId": "agentic-mcp-client",
-    "verdict": "na",
+    "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Clara is a corporate card and spend-management platform, so consuming external MCP servers as a tool-using client falls outside its product role. Its documented MCP offering (clara-docs-4) is a Clara MCP server that lets outside AI assistants act on Clara data. That is the server role and does not count toward this client-side story. Nothing in the evidence shows Clara itself acting as an agent that connects to third-party MCP servers.",
+    "rationale": "Clara is a spend-management SaaS with built-in AI features (Clara Intelligence, a CFO agent), so letting users plug external MCP servers into it is a fair question. The pack shows no such capability. The only MCP evidence describes Clara MCP, which lets outside AI assistants act on Clara data. That is the server role and does not count toward this client-side story.",
     "evidenceIds": []
   },
   {
@@ -1443,7 +1451,7 @@
     "verdict": "full",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Clara's first-party agent-instructions docs name an official 'Clara MCP' that lets an AI assistant inspect or act on Clara data in natural language, such as listing cards, reviewing transactions and switching companies. This is a documented official MCP server for a SaaS platform, but it rests on a single thin mention, and the surrounding LLM-friendly assets (llms.txt, OpenAPI) are adjacent rather than proof of server depth. Missing for 10: MCP setup/connection instructions, endpoint or transport details, auth flow for the MCP server, full tool list, independent or hands-on corroboration.",
+    "rationale": "Clara is a spend-management SaaS platform, not an agent, so an official MCP server is a fair question. Clara's own agent-instructions docs reference a first-party \"Clara MCP\" that lets an AI assistant inspect or act on Clara data in natural language, such as listing cards, reviewing transactions and switching companies. Evidence for the server beyond that one mention is thin. Missing for 10: MCP connection/setup instructions (endpoint URL or install command), authentication method for the MCP server, a full tool list, and independent or hands-on corroboration that the server works.",
     "evidenceIds": [
       "clara-docs-4"
     ]
@@ -1451,15 +1459,15 @@
   {
     "productId": "clara",
     "storyId": "agentic-nl-commands",
-    "verdict": "partial",
-    "quality": 5,
+    "verdict": "full",
+    "quality": 7,
     "confidence": "medium",
-    "rationale": "Clara's agent instructions document a first-party Clara MCP for cases where a user wants an AI assistant to inspect or act on Clara data in natural language, such as listing cards, reviewing transactions and switching companies. This is a real natural-language operation path, but it runs through an external assistant and the evidence is a single thin mention. The pack also documents agent guardrails for money-moving actions (Pix payments) and LLM-optimized docs that support agent use. Missing for 10: a native in-product natural-language interface, documented MCP tool coverage showing which operations can be done in natural language, and independent or hands-on corroboration.",
+    "rationale": "Clara documents a first-party Clara MCP built for AI assistants to inspect or act on Clara data in natural language, such as listing cards, reviewing transactions and switching companies. Its agent-instructions page adds guardrails for money-moving actions like Pix payments, and the marketing site describes an AI 'CFO agent', so the core of natural-language operation is delivered. missing for 10: a native in-product natural-language command interface (the documented path goes through an external AI assistant), detailed MCP tool coverage and setup docs, and independent or hands-on corroboration.",
     "evidenceIds": [
       "clara-docs-4",
       "clara-docs-5",
-      "clara-docs-3",
-      "clara-probe-1"
+      "clara-docs-24",
+      "clara-docs-23"
     ]
   },
   {
@@ -1468,7 +1476,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Clara is a corporate spend-management SaaS, so an official CLI is a fair axis for it. The evidence documents a REST API, an OpenAPI schema, llms.txt, and an MCP integration, but nothing shows an official command-line tool. Those adjacent developer and agent surfaces do not count as a CLI.",
+    "rationale": "The evidence documents a REST API, an OpenAPI schema, llms.txt, an MCP server, and per-language code examples, but no official command-line tool. These are adjacent developer building blocks and earn no credit toward a CLI story. A spend-management SaaS could plausibly ship an official CLI, so the axis applies and the verdict is none.",
     "evidenceIds": []
   },
   {
@@ -1477,19 +1485,19 @@
     "verdict": "full",
     "quality": 9,
     "confidence": "high",
-    "rationale": "Clara documents a public API that covers corporate spend management end to end: issuing and managing cards, retrieving transactions, handling users and processing invoices. It publishes an OpenAPI 3.1 schema for typed clients and function calling, plus LLM-oriented reference docs, and probes confirm `openapi.json` and `llms.txt` are live. Credentials are self-serve from the dashboard, and a sandbox supports safe end-to-end testing. Missing for 10: independent or hands-on corroboration that live API calls work as documented (probes only confirm the docs and schema are reachable).",
+    "rationale": "Clara documents a public API covering cards, transactions, users and invoices. It publishes an OpenAPI 3.1 schema and LLM-optimized API references; probes confirm the openapi.json, llms.txt and markdown docs are live. Self-serve dashboard credentials, a sandbox, runnable per-language code examples and registrable webhooks make it practical to drive the product programmatically. Missing for 10: independent or hands-on corroboration of actual API calls succeeding beyond the docs probes.",
     "evidenceIds": [
       "clara-docs-1",
       "clara-docs-2",
       "clara-docs-3",
+      "clara-probe-1",
+      "clara-probe-2",
+      "clara-probe-3",
       "clara-docs-6",
       "clara-docs-8",
       "clara-docs-11",
-      "clara-docs-12",
-      "clara-docs-15",
-      "clara-probe-1",
-      "clara-probe-2",
-      "clara-probe-3"
+      "clara-docs-17",
+      "clara-docs-25"
     ]
   },
   {
@@ -1498,7 +1506,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The docs say API credentials are self-served per project from the dashboard and that Clara alerts when projects near expiration. Nothing in the evidence describes permission scopes, read-only keys, or other least-privilege restrictions on those credentials. Card-level spend restrictions and the MCP integration are adjacent features, not scoped API credentials.",
+    "rationale": "The evidence shows API credentials are self-served per project from the Clara dashboard and that projects expire with alerts. Nothing documents permission scopes, read-only keys, or other least-privilege restrictions on those credentials. Card-level spend restrictions (merchant, time, auto-deletion) limit cards, not API credentials, so they don't count toward this story.",
     "evidenceIds": []
   },
   {
@@ -1507,16 +1515,16 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence documents a REST API, a downloadable OpenAPI 3.1 schema \"for typed clients,\" an LLM-optimized API reference, and an MCP server, but no official language SDKs or client libraries. An OpenAPI spec that developers can use to generate their own clients is a building block, not an official SDK, so it earns no credit for this story.",
+    "rationale": "The evidence shows no official, maintained SDK packages for Clara. What it does show are an OpenAPI 3.1 schema that developers could use to generate typed clients, per-language runnable code examples (e.g., a Java HttpClient with mTLS), and LLM-oriented reference files. These are developer building blocks and sample code rather than official SDKs, so they earn no credit toward this story.",
     "evidenceIds": []
   },
   {
     "productId": "clara",
     "storyId": "agentic-webhooks",
     "verdict": "full",
-    "quality": 8,
+    "quality": 7,
     "confidence": "medium",
-    "rationale": "Clara documents registrable webhook subscriptions: you provide a callback URL, the transaction statuses you care about, and a signing secret, and Clara POSTs events to that URL signed with HMAC-SHA256. A sandbox endpoint lets you trigger test events on demand. Missing for 10: documented event types appear limited to transaction statuses, production retry and delivery guarantees are undocumented (sandbox sends one attempt with no retries), and there is no independent or hands-on corroboration.",
+    "rationale": "Clara documents registrable webhook subscriptions: you supply a callback URL, the transaction statuses you care about, and a signing secret, and Clara POSTs HMAC-SHA256-signed events to your URL. A sandbox endpoint can also trigger test webhook events on demand (one attempt, no retries). Missing for 10: evidence of event types beyond transaction statuses, production delivery/retry guarantees, and independent or hands-on corroboration.",
     "evidenceIds": [
       "clara-docs-17",
       "clara-docs-9"
@@ -1528,7 +1536,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Clara is a spend-management platform, so AI expense coding and auditing is an applicable axis, but the evidence pack shows no first-party receipt reading or OCR, no AI-suggested categories or memos, and no duplicate or fraud detection. Labels for GL codes are applied manually or through the API. \"Automated expense reporting… compliance\" and \"Clara Intelligence\" spend insights are vague, adjacent claims. The MCP server and API are building blocks an external agent could use to construct this, which does not count as the product's own capability.",
+    "rationale": "Nothing in the evidence shows Clara's own AI reading receipts, suggesting categories or memos, or flagging duplicate or fraudulent expenses. Labels and GL codes are applied by the user or via the API, and the MCP server only lets an outside assistant act on Clara data, which is a developer building block. Clara Intelligence's spend insights and CFO agent, and the generic \"automated expense reporting… compliance\" claim, are adjacent features that do not cover AI expense coding or auditing.",
     "evidenceIds": []
   },
   {
@@ -1537,22 +1545,24 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence shows no AI assistant that enforces policy conversationally: nothing on chasing missing receipts, explaining declines, or answering pre-spend \"can I expense this?\" questions. Clara MCP lets an external AI assistant inspect or act on Clara data in natural language, and Clara markets generic automated compliance and Clara Intelligence insights. These are adjacent features and developer building blocks, not the conversational policy-enforcement capability itself.",
+    "rationale": "Clara documents an MCP server for natural-language inspection of cards and transactions, and markets an AI 'CFO agent' and 'Financial Analyst' for spend insights. Neither is evidenced as an employee-facing assistant that chases missing receipts, explains declines, or answers 'can I expense this?' before spend. The MCP server is a developer building block, and the AI marketing covers adjacent analytics, so neither earns credit for this story.",
     "evidenceIds": []
   },
   {
     "productId": "clara",
     "storyId": "api-interactive-docs",
     "verdict": "partial",
-    "quality": 3,
-    "confidence": "low",
-    "rationale": "Clara publishes its own API reference (an api-reference section, per-endpoint pages, an LLM-optimized /llms-api.txt, and a probed live OpenAPI 3.1 schema documented for Postman import), backed by a sandbox for safe test calls. No evidence shows that reference is interactive or has in-page runnable examples; Postman is an external tool and earns no credit on its own. Missing for 10: a documented in-browser 'try it' console or playground, runnable code examples in the reference, and hands-on corroboration of interactivity.",
+    "quality": 6,
+    "confidence": "medium",
+    "rationale": "Clara documents an API reference with per-resource pages, a probed OpenAPI 3.1 schema, an LLM-optimized reference, a sandbox for safe testing, and a code-examples page with complete, runnable client examples per language. Nothing in the evidence shows the reference itself is interactive, such as an in-browser try-it console. Postman import is an external-tool workaround and earns no credit for interactivity. Missing for 10: evidence of an interactive in-docs request explorer/playground, runnable examples embedded directly in endpoint reference pages, independent or hands-on corroboration.",
     "evidenceIds": [
+      "clara-docs-25",
       "clara-docs-2",
       "clara-docs-3",
+      "clara-probe-3",
       "clara-docs-8",
       "clara-docs-17",
-      "clara-probe-3"
+      "clara-docs-11"
     ]
   },
   {
@@ -1561,12 +1571,11 @@
     "verdict": "full",
     "quality": 9,
     "confidence": "high",
-    "rationale": "Clara's docs describe a canonical OpenAPI 3.1 schema intended for typed clients, function calling, schema inspection, and Postman import, plus an `/llms-api.txt` endpoint reference. A live probe confirmed that https://developers.clara.team/openapi.json returns HTTP 200 and contains an \"openapi\" key, so the spec is downloadable and machine-readable. Missing for 10: independent or hands-on corroboration of the spec's completeness and accuracy against the live API.",
+    "rationale": "Clara documents a canonical OpenAPI 3.1 schema intended for typed clients, function calling, schema inspection and Postman import, plus an LLM-optimized `/llms-api.txt` API reference. A live probe confirmed `https://developers.clara.team/openapi.json` returns HTTP 200 and contains an \"openapi\" key. missing for 10: independent verification that the spec is complete and accurate across all endpoints and API versions.",
     "evidenceIds": [
       "clara-docs-2",
-      "clara-docs-3",
       "clara-probe-3",
-      "clara-probe-1"
+      "clara-docs-3"
     ]
   },
   {
@@ -1575,7 +1584,7 @@
     "verdict": "full",
     "quality": 8,
     "confidence": "medium",
-    "rationale": "Clara's docs have a dedicated sandbox page for testing integrations end-to-end without affecting real data or triggering real financial operations. They also document sandbox-specific test endpoints such as on-demand webhook events via `/api-test/v3/webhooks/events`. Missing for 10: details on sandbox credentials and how they are separated from production, whether MCP or agent workflows can target the sandbox, and independent or hands-on corroboration.",
+    "rationale": "Clara documents a dedicated sandbox environment for end-to-end integration testing \"without affecting real data or triggering real financial operations\" (clara-docs-8). It also provides sandbox-specific tooling, such as an on-demand test webhook events endpoint under `/api-test/` (clara-docs-9). Missing for 10: details on sandbox credentials, base URL separation and seeded test data, plus any independent or hands-on corroboration that the sandbox works as described.",
     "evidenceIds": [
       "clara-docs-8",
       "clara-docs-9"
@@ -1585,14 +1594,16 @@
     "productId": "clara",
     "storyId": "api-versioning-policy",
     "verdict": "partial",
-    "quality": 3,
+    "quality": 4,
     "confidence": "medium",
-    "rationale": "The evidence shows versioned API paths: v2 docs sections for cards and transactions, and v3 endpoints such as `POST /api/v3/accounts-payable/pix` and `/api-test/v3/webhooks/events`. There is no documented deprecation policy, sunset timeline, or versioning guide. The project-expiration alerts concern credentials, not API versions, so they don't count. Missing for 10: a documented deprecation/sunset policy, a stated versioning strategy and changelog, migration guidance between v2 and v3, and independent corroboration.",
+    "rationale": "The API is visibly versioned: documented paths include /v2/cards, /v2/transactions and /api/v3/accounts-payable/pix, and the published OpenAPI schema backs up a stable, typed contract. However, nothing in the evidence describes a deprecation policy, sunset timelines, or how versions are retired. Project-expiration alerts are a credentials feature, not API deprecation. Missing for 10: a documented deprecation/sunset policy, an explicit versioning strategy, changelog or migration guidance between v2 and v3, and independent corroboration.",
     "evidenceIds": [
       "clara-docs-5",
-      "clara-docs-9",
       "clara-docs-11",
-      "clara-docs-18"
+      "clara-docs-18",
+      "clara-docs-9",
+      "clara-docs-2",
+      "clara-probe-3"
     ]
   },
   {
@@ -1601,7 +1612,7 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "Clara's own marketing says it offers 'automated expense reporting, approvals and compliance' (clara-docs-21), so some approval workflow exists. Nothing in the evidence describes how approvals are structured, and the API docs cover cards, transactions, invoices and webhooks with no approval-workflow endpoints. missing for 10: configurable multi-step chains (manager → budget owner → finance), approver delegation, escalation or timeouts for stalled approvals, any first-party docs on approval routing, independent or hands-on corroboration.",
+    "rationale": "Clara's marketing site claims \"automated expense reporting, approvals and compliance\", so some approval capability is first-party documented. Nothing shows how it works: no multi-level chains (manager → budget owner → finance), no delegation, and no escalation for stalled requests. missing for 10: documented multi-step/sequential approver chains, role-based approvers such as budget owners, approver delegation, automatic escalation or reminders on stalled approvals, and any in-depth docs or hands-on corroboration.",
     "evidenceIds": [
       "clara-docs-21"
     ]
@@ -1612,7 +1623,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Clara is a corporate card and spend management platform, so automatic receipt matching is a fair question for it. However, the evidence never mentions receipt capture, matching receipts to card transactions, e-receipts pulled from integrations, or missing-receipt nudges. The reconciliation guide covers matching transactions to the billing statement, which is a different capability, and the 'automated expense reporting' homepage claim is too generic to count.",
+    "rationale": "Clara is a corporate card and spend management platform, so automatic receipt-to-transaction matching is a fair question for it. The evidence pack never mentions receipt capture, matching receipts to transactions, e-receipts pulled from integrations, or missing-receipt reminders. The reconciliation guide covers matching transactions to the billing statement and labeling them, and the homepage mentions only generic 'automated expense reporting'; neither is about receipts, so neither earns credit.",
     "evidenceIds": []
   },
   {
@@ -1621,7 +1632,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Bulk operations are a fair question for a spend-management platform, but the evidence shows no bulk or batch endpoints and no multi-item actions such as bulk card issuance or batch labeling. The documented API exposes only per-item card CRUD and filtered list retrieval for reconciliation. Looping over those per-item APIs is a developer building block, not a native bulk capability, so it earns no credit.",
+    "rationale": "The evidence documents only per-item API operations: create, update, lock or delete a single card, and list or filter transactions. It shows no batch or bulk endpoint, bulk card issuance, or mass-update capability. Pulling all transactions for a billing period (clara-docs-12) is list retrieval, and looping over single-item endpoints is a developer building block, so neither counts as the product's own bulk-operation capability.",
     "evidenceIds": []
   },
   {
@@ -1630,9 +1641,10 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "The only product-native event-triggered rule in the evidence is card auto-deletion: setting `enableAutoDeletion` with a period end date makes Clara delete the card automatically when the trip ends. The marketing page also vaguely claims \"automated expense reporting, approvals and compliance.\" Webhooks only push events to the user's own endpoint, which is a building block for automation rather than a rules engine. Merchant, time and day-of-week card restrictions are authorization controls, not triggered actions. Missing for 10: a general user-definable rule/trigger→action engine, documented event types and actions for rules, documented approval or policy automation rules, independent or hands-on corroboration.",
+    "rationale": "Clara's own evidence of event-triggered automation is narrow: cards can be configured to auto-delete when a trip period ends (enableAutoDeletion with an endDate), card configurations enforce time, day-of-week and merchant restrictions, and the marketing site claims 'automated expense reporting, approvals and compliance'. Webhook subscriptions only deliver events to the user's own endpoint, so any resulting action has to be built by the developer and earns no credit as a rules engine. Missing for 10: a documented user-definable rule engine (event → condition → action), rules covering transaction or approval events beyond card expiry, documentation of how automated approvals are configured, and independent or hands-on corroboration.",
     "evidenceIds": [
       "clara-docs-16",
+      "clara-docs-15",
       "clara-docs-21"
     ]
   },
@@ -1642,7 +1654,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence shows no first-party way to schedule recurring jobs or workflows. Card time/day-of-week restrictions and auto-deletion at a period end date are adjacent card controls, not a recurring scheduler. Webhooks are event-driven callbacks, and the 'automated expense reporting' line is marketing copy with no documented scheduling capability.",
+    "rationale": "Scheduling recurring jobs or workflows is a fair question for a spend-management SaaS platform, but the evidence never documents one. The closest items are adjacent features, not user-defined recurring schedules: card time and day-of-week restrictions, one-time card auto-deletion on an end date, event-driven webhooks, and generic 'automated expense reporting' marketing.",
     "evidenceIds": []
   },
   {
@@ -1651,7 +1663,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Clara is a spend-management platform that advertises automated expense reporting, approvals, and card restrictions, so versioning and rolling back automations is a fair question for it. However, nothing in the evidence documents versioning, review history, or rollback for automations or configurations. The API, MCP, sandbox, and webhook material covers adjacent capabilities and earns no credit here.",
+    "rationale": "Clara is a spend-management platform with automation features (approval workflows, card configuration rules), so versioning, reviewing and rolling back automations is a fair question to ask. The evidence covers API control, a sandbox and card restriction rules, but nothing on version history, change review or rollback of automations. The sandbox and card configurations are adjacent features and earn no credit.",
     "evidenceIds": []
   },
   {
@@ -1660,7 +1672,7 @@
     "verdict": "partial",
     "quality": 4,
     "confidence": "medium",
-    "rationale": "Clara documents its own accounts-payable surface: the API covers processing invoices, and an AP payment endpoint (`POST /api/v3/accounts-payable/pix`) moves money to payees. The evidence shows only Pix as a payment rail. The approvals mentioned in the docs concern expense reporting, not AP invoice routing. missing for 10: invoice capture details (OCR/inbox), AP approval routing, vendor payment by ACH, check, or wire, independent or hands-on corroboration.",
+    "rationale": "Clara's own docs show an accounts-payable surface: the API can 'process invoices', and there is a money-moving AP payment endpoint (`POST /api/v3/accounts-payable/pix`), so AP lives in the same platform. Vendor payment is evidenced only via Pix, and the approvals mentioned are for expense reporting, not AP routing. Missing for 10: documented invoice capture/OCR detail, AP-specific approval routing, ACH, check, and wire payment rails, independent or hands-on corroboration.",
     "evidenceIds": [
       "clara-docs-1",
       "clara-docs-5"
@@ -1672,7 +1684,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence shows no way to allocate budgets to teams or projects, and no spending limits or approvals tied to such budgets. The closest items are adjacent controls: card time, day and merchant-category restrictions, post-hoc labels for cost centers or project IDs, and a generic marketing line about expense approvals. None of these is budget allocation or budget enforcement, so they earn no credit.",
+    "rationale": "The evidence pack never documents allocating budgets to teams or projects, or card spending limits tied to such budgets. The closest items are adjacent controls: card configurations restrict time, day-of-week and merchant category rather than budget amounts. Labels attach cost centers or project IDs to transactions only after the fact, for reconciliation. 'Approvals' appear only in generic expense-reporting marketing, and the 'chasing budgets' line describes AI insights, not enforcement.",
     "evidenceIds": []
   },
   {
@@ -1681,24 +1693,24 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Clara documents a Card Configurations API that adds merchant-category, time, and day-of-week restrictions to cards, plus card lock/unlock. Category-based restriction is therefore a first-party capability. The docs do not show per-merchant rules, amount or spend limits, or explicit point-of-sale decline or auto-lock when spend falls outside policy. missing for 10: amount/spend-limit controls, individual merchant restrictions, documented automatic decline/auto-lock at point of sale, independent or hands-on corroboration.",
+    "rationale": "Clara documents a Card Configurations API that adds merchant-category, time and day-of-week restrictions to cards, which can be combined. Cards can also be locked or unlocked manually and auto-deleted after an end date. That covers category controls and some lifecycle locking, but the evidence never addresses per-merchant or amount limits, or explicitly states that out-of-policy spend is declined at the point of sale. missing for 10: amount/spend-limit controls, specific-merchant restrictions, explicit point-of-sale decline or auto-lock behavior, independent or hands-on corroboration.",
     "evidenceIds": [
       "clara-docs-15",
-      "clara-docs-11"
+      "clara-docs-11",
+      "clara-docs-16"
     ]
   },
   {
     "productId": "clara",
     "storyId": "continuous-close-coding",
     "verdict": "partial",
-    "quality": 5,
+    "quality": 4,
     "confidence": "medium",
-    "rationale": "Clara documents labels that attach GL codes, cost centers, or project IDs to transactions, and a reconciliation workflow that categorizes transactions and exports them to accounting. Signed transaction webhooks and category-level spend analysis support near-real-time handling, and marketing copy claims automated expense reporting. However, the reconciliation guide frames coding as a billing-period step rather than coding at the point of spend. Missing for 10: receipt capture or matching, memo fields, evidence that coding happens automatically or at the moment of the transaction, and independent or hands-on corroboration.",
+    "rationale": "Clara documents attaching labels (GL codes, cost centers, project IDs) to transactions and a reconciliation guide that pulls billing-period transactions, categorizes them with labels and exports them to accounting. Catching later updates and analyzing spend by category are also supported, and the marketing site claims automated expense reporting. However, the documented coding is a period-end, API-driven step rather than coding at the moment of spend, and receipts and memos are never mentioned. Missing for 10: automatic coding at point of spend, receipt capture/attachment, cardholder memo fields, merchant-to-category auto-mapping rules, independent or hands-on corroboration.",
     "evidenceIds": [
       "clara-docs-12",
       "clara-docs-13",
       "clara-docs-14",
-      "clara-docs-17",
       "clara-docs-19",
       "clara-docs-21"
     ]
@@ -1709,7 +1721,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Audit trails are a fair axis for a corporate spend-management platform, but the evidence never documents a per-expense audit log of edits, approvals, or policy checks. The homepage line on 'approvals and compliance' and the API's last-update date filters are adjacent features, not an audit trail, so they earn no credit.",
+    "rationale": "An audit trail fits a spend-management platform, but the evidence never documents a per-expense history of edits, approvals, and policy checks, or audit-grade log retention. The marketing line about 'approvals and compliance' and the last-update date filters for reconciliation are adjacent features, not an audit-trail capability.",
     "evidenceIds": []
   },
   {
@@ -1718,7 +1730,7 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "Clara's marketing claims \"automated expense reporting, approvals and compliance.\" Its Card Configurations API lets you codify merchant-category, time, and day-of-week restrictions per card, which covers part of the category- and context-based limits. Nothing documents a policy engine that auto-approves in-policy expenses and routes only exceptions to a human. Missing for 10: role-based policy limits, documented auto-approval of in-policy expenses, exception routing to human approvers, approval-workflow configuration docs, independent corroboration.",
+    "rationale": "Clara's marketing claims \"automated expense reporting, approvals and compliance\" (clara-docs-21), and its Card Configurations API can restrict cards by merchant category, time, and day of week (clara-docs-15). That gives only thin, glancing support for codifying policy and automating approvals. Missing for 10: documented policy rules engine with limits by category/role/context, auto-approval of in-policy expenses, exception routing to human approvers, role-based limits, independent or hands-on corroboration.",
     "evidenceIds": [
       "clara-docs-21",
       "clara-docs-15"
@@ -1730,17 +1742,18 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Clara documents a REST API for retrieving and reconciling transactions, with date-range and user filters and a probe-confirmed OpenAPI schema, so the transaction-pull core is clearly delivered. Credentials are self-managed per project from the dashboard and expire, but the evidence never states OAuth or scoped tokens. Expense and receipt endpoints are not documented. missing for 10: receipt retrieval endpoints, expense/expense-report API endpoints, explicit OAuth flow, scoped token permissions, independent hands-on corroboration.",
+    "rationale": "Clara documents a REST API for retrieving and filtering transactions, including billing-period pulls and last-update date ranges, and a probe confirms a live OpenAPI schema. Credentials are self-managed per project from the dashboard and the code examples use mTLS, but nothing shows OAuth flows or scoped tokens, and receipt or expense-report retrieval is not documented. Missing for 10: documented OAuth flow, token scopes/permission granularity, receipt/attachment retrieval endpoints, explicit expense-report endpoints, independent hands-on corroboration.",
     "evidenceIds": [
       "clara-docs-1",
       "clara-docs-2",
-      "clara-docs-6",
-      "clara-docs-7",
+      "clara-probe-3",
       "clara-docs-12",
       "clara-docs-14",
       "clara-docs-18",
       "clara-docs-19",
-      "clara-probe-3"
+      "clara-docs-6",
+      "clara-docs-7",
+      "clara-docs-25"
     ]
   },
   {
@@ -1749,7 +1762,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Out-of-pocket reimbursement is a fair question for a corporate spend management platform, so the axis applies. However, the evidence never documents employee reimbursement submission, direct-deposit payout, or submission-to-payout tracking. The generic 'automated expense reporting, approvals' claim and the accounts-payable Pix endpoint are adjacent features, not this capability.",
+    "rationale": "Reimbursing employee out-of-pocket expenses is a fair question for a corporate spend management platform, so the axis applies. However, the evidence never mentions out-of-pocket submission, employee reimbursement, direct-deposit payouts, or submission-to-payout tracking. The generic 'automated expense reporting, approvals' claim and the accounts-payable Pix payment endpoint are adjacent features, not documented reimbursement capability.",
     "evidenceIds": []
   },
   {
@@ -1758,7 +1771,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Reimbursements are a fair question for a corporate spend management platform, so the axis applies. However, the evidence pack documents no employee reimbursement flow and no foreign-currency or cross-border payouts. The only documented money movement is a domestic Pix accounts-payable payment, and the generic 'automated expense reporting' claim is adjacent, so neither counts toward this story.",
+    "rationale": "Reimbursing employees abroad in local currency is a fair question for a spend-management platform, so the axis applies. However, the evidence shows only cards, transaction reconciliation, generic automated expense reporting, and Pix accounts-payable payments, which are domestic Brazilian payables rather than cross-border employee reimbursement. Nothing documents local-currency or international employee reimbursements, so these adjacent features earn no credit.",
     "evidenceIds": []
   },
   {
@@ -1767,13 +1780,14 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Clara documents creating cards via API, with virtual cards active immediately and no activation step (docs-10, docs-11). That supports issuing cards quickly. It also offers per-card restrictions by time, day-of-week and merchant category, plus auto-deletion. However, physical card issuance is only implied by the card-type field, and no per-card spend-limit amount is explicitly documented. missing for 10: explicit physical card issuance evidence, documented per-card spend limit amounts, dashboard (non-API) issuance flow for founders, independent corroboration.",
+    "rationale": "Clara's docs show card creation via API: virtual cards are active immediately with no activation step, and cards can be created, updated, locked and deleted. A provisioning guide adds time, day-of-week and merchant-category restrictions plus trip-based auto-deletion. However, the evidence never explicitly covers issuing physical cards or setting a per-card spend amount limit; the documented restrictions are time- and merchant-based, not amount-based. missing for 10: explicit physical card issuance, explicit per-card spend limit configuration, dashboard-based (non-API) issuance flow for founders, independent corroboration of minutes-level issuance.",
     "evidenceIds": [
       "clara-docs-10",
       "clara-docs-11",
       "clara-docs-15",
       "clara-docs-16",
-      "clara-docs-1"
+      "clara-docs-1",
+      "clara-probe-1"
     ]
   },
   {
@@ -1782,46 +1796,48 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Mileage and per-diem claims are a fair axis for a corporate spend management platform, but the evidence never mentions mileage logging, map-based distance calculation, or per-diem rates. The generic 'automated expense reporting' marketing line and the trip-card auto-deletion feature are adjacent capabilities and do not demonstrate this one.",
+    "rationale": "Mileage logging and per-diem claims are a fair axis for a corporate spend and expense management platform, so the story applies. However, nothing in the evidence pack mentions mileage tracking, map-based distance calculation, or per-diem rates. The generic 'automated expense reporting' marketing claim does not evidence this specific capability.",
     "evidenceIds": []
   },
   {
     "productId": "clara",
     "storyId": "multi-entity-currency",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "The evidence pack documents no multi-entity, multi-currency, consolidated-reporting, or per-entity-books capability. The only related hint is the MCP agent's ability to switch companies (clara-docs-4), an adjacent feature that shows neither consolidation nor separate entity ledgers. Reconciliation and labeling docs cover GL codes and cost centers within a company, not cross-entity books or currency handling.",
-    "evidenceIds": []
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "The only on-topic evidence is the MCP guidance mentioning \"switching companies\", which hints that one account can hold multiple company entities. Nothing documents multi-currency handling, consolidated cross-entity reporting, or separate per-entity books. Missing for 10: documented multi-entity account structure, multi-currency support, consolidated reporting across entities, per-entity ledgers/books, and any independent or hands-on corroboration.",
+    "evidenceIds": [
+      "clara-docs-4"
+    ]
   },
   {
     "productId": "clara",
     "storyId": "openness-api-parity",
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Clara's docs claim the API gives 'programmatic control over every aspect' of spend management. The documented surface backs much of that: card create/update/lock/delete, card restrictions and auto-deletion, transactions with labels/GL codes, users, invoices, Pix payments, and registrable webhooks. A published OpenAPI schema is confirmed by probe. However, the UI's automated expense reporting, approvals and compliance, and Clara Intelligence insights have no evidenced API equivalents, and parity is vendor-asserted only. missing for 10: API evidence for expense reports/approval workflows and Clara Intelligence analytics, an explicit UI-to-API parity mapping, independent or hands-on corroboration of parity.",
+    "rationale": "Clara claims its API offers 'programmatic control over every aspect' of spend management. The evidence backs this for cards (create, update, lock, delete, configuration restrictions), transactions and labels, users, invoices, Pix payments and webhook subscriptions, all exposed through a published OpenAPI schema and an MCP server. Several UI-facing features have no API evidence: expense reporting, approval workflows and Clara Intelligence insights or the CFO agent, so full UI parity rests only on the vendor's broad claim. missing for 10: API coverage of expense reports, approval workflows, and Clara Intelligence analytics, plus independent verification that UI and API are at parity.",
     "evidenceIds": [
       "clara-docs-1",
       "clara-docs-2",
+      "clara-docs-4",
       "clara-docs-5",
       "clara-docs-11",
       "clara-docs-13",
       "clara-docs-15",
-      "clara-docs-16",
       "clara-docs-17",
+      "clara-probe-3",
       "clara-docs-21",
-      "clara-docs-22",
-      "clara-probe-3"
+      "clara-docs-24"
     ]
   },
   {
     "productId": "clara",
     "storyId": "openness-full-export",
     "verdict": "partial",
-    "quality": 3,
+    "quality": 4,
     "confidence": "low",
-    "rationale": "Clara documents its own API for retrieving transactions, users, cards and invoices as JSON with an OpenAPI 3.1 schema. A reconciliation guide covers pulling all transactions for a billing period and exporting them to an accounting system, including incremental re-export by last-update date. This covers programmatic extraction of core spend data, but there is no documented full-account export or offboarding path. missing for 10: a documented one-click or bulk export of all account data, explicit open file formats (e.g. CSV/JSON archive) for every data type, an account-closure or data-portability process, and independent corroboration.",
+    "rationale": "Clara's own API lets you retrieve transactions, cards, users and invoices programmatically, documented by an OpenAPI 3.1 schema. Its reconciliation guide describes pulling all transactions for a billing period and exporting them to an accounting system. That gives meaningful API-based data portability, but there is no documented complete data export or account offboarding. missing for 10: a documented bulk or complete export of all account data, named open file formats (e.g. CSV/JSON dumps) outside per-endpoint API calls, account closure or data deletion terms, and independent corroboration that a full exit works.",
     "evidenceIds": [
       "clara-docs-1",
       "clara-docs-2",
@@ -1837,7 +1853,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Open-source availability is a fair question for a SaaS spend-management platform, but nothing in the evidence shows Clara's source code published under an open license. The public OpenAPI schema, llms.txt and API docs describe the API, not the product's source code, so they earn no credit.",
+    "rationale": "Whether a spend-management SaaS publishes its source under an open license is a fair openness question, so the axis applies. The evidence shows no public source repository and no open-source license. The public OpenAPI schema, llms.txt and code examples are API documentation and client samples, not the product's source, so they earn no credit.",
     "evidenceIds": []
   },
   {
@@ -1846,7 +1862,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Self-hosting is a fair deployment question for spend-management software, so the axis applies. The evidence only shows a vendor-hosted API, a hosted sandbox, and an MCP integration. Nothing documents a self-hostable or on-prem deployment of the core product.",
+    "rationale": "Self-hosting is a fair question for spend-management software, so the axis applies. Every item in the evidence pack describes Clara as a hosted platform reached through its API, dashboard, MCP and a vendor-run sandbox. Nothing documents a self-hostable deployment of the core product.",
     "evidenceIds": []
   },
   {
@@ -1855,7 +1871,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Data residency and region selection is a fair question for a corporate spend-management SaaS, so the axis applies. Nothing in the evidence pack covers storage regions, residency options, or a customer's ability to choose where data is held. The docs cover only cards, transactions, webhooks, the sandbox and the MCP server, and the Latin America market focus is not a user-selectable storage region.",
+    "rationale": "Data residency and region selection is a fair question for a corporate spend-management SaaS like Clara, so the axis applies. Nothing in the pack documents customer-selectable storage regions or residency controls. The only geographic reference is that Clara serves Latin America, which is not a residency choice.",
     "evidenceIds": []
   },
   {
@@ -1864,7 +1880,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Clara is a spend-management SaaS with AI-facing features (Clara Intelligence, an MCP server, LLM-optimized docs), so a training opt-out is a fair question to ask of it. The evidence pack contains no AI-training opt-out setting, no data-use policy, and no statement that customer data is excluded from model training. None of the cited docs address this subject.",
+    "rationale": "Clara is a spend-management SaaS with AI features (Clara Intelligence, CFO agent), so a training opt-out is a fair question to ask of it. However, the evidence pack contains no documentation of a training opt-out, data-use policy, or AI privacy control. Sandbox isolation and card auto-deletion are adjacent features and do not count toward this story.",
     "evidenceIds": []
   },
   {
@@ -1873,7 +1889,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Data retention and deletion is a fair privacy question for a spend-management SaaS, so the axis applies. However, the evidence only shows card lifecycle operations: deleting cards and auto-deleting trip cards after an end date. These are adjacent card-management features, not documented controls over data retention periods or deletion of stored user and transaction data, so they earn no credit.",
+    "rationale": "The axis applies, since a SaaS spend platform could offer data-retention and deletion controls. The evidence only shows card lifecycle operations: deleting cards and auto-deleting trip cards via enableAutoDeletion. Those are adjacent card-management features, not controls over how long user or transaction data is retained or how it is purged. No retention policy, data-deletion request, or privacy control is documented.",
     "evidenceIds": []
   },
   {
@@ -1882,7 +1898,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Clara is a corporate card and spend-management SaaS with an API, MCP and developer docs, and a buyer could fairly ask whether it lets users opt out of usage tracking or analytics, so the axis applies. Nothing in the evidence pack mentions telemetry, usage tracking, analytics opt-out or related privacy controls; the citations cover cards, transactions, webhooks, sandbox and authentication only.",
+    "rationale": "Opting out of telemetry and usage tracking is a fair privacy-posture question for a SaaS spend-management platform with an API and MCP integration, so the axis applies. The evidence pack covers cards, transactions, webhooks, sandbox, authentication and AI docs, but nothing about telemetry, analytics or usage-tracking opt-out controls.",
     "evidenceIds": []
   },
   {
@@ -1891,14 +1907,15 @@
     "verdict": "full",
     "quality": 8,
     "confidence": "high",
-    "rationale": "Clara's public API documents creating, updating, locking/unlocking and deleting cards (clara-docs-11), including virtual cards that are active immediately (clara-docs-10). A Card Configurations API adds time, day-of-week and merchant-category controls (clara-docs-15), plus period-based auto-deletion (clara-docs-16), and a live OpenAPI schema backs this up (clara-probe-3). Missing for 10: an explicit mention of setting a spending limit at card creation, and independent or hands-on corroboration of the card-issuing endpoints.",
+    "rationale": "Clara's first-party API docs explicitly cover creating, updating, locking/unlocking and deleting cards, including immediate-active virtual card issuance. A Card Configurations API adds time, day-of-week and merchant-category controls, plus auto-deletion by end date. A live OpenAPI schema and runnable code examples back the public API. Missing for 10: explicit evidence of setting a spend limit at card creation, and independent or hands-on corroboration of the card endpoints.",
     "evidenceIds": [
       "clara-docs-11",
       "clara-docs-10",
       "clara-docs-15",
       "clara-docs-16",
       "clara-docs-1",
-      "clara-probe-3"
+      "clara-probe-3",
+      "clara-docs-25"
     ]
   },
   {
@@ -1907,12 +1924,13 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Clara markets 'Clara Intelligence' as real-time insights that centralize and analyze all company spend, which is the product's own capability for this story. The transactions API supports analyzing spend by user, team, or category and monitoring activity in near real-time, and transaction webhooks push events as they happen. However, the team/category breakdown is described as something to build on the API rather than a ready founder-facing view. Missing for 10: documented in-product dashboard with team/category/merchant breakdowns, any evidence of merchant-level spend views, confirmation that the native UI reflects spend same-day, independent or hands-on corroboration.",
+    "rationale": "Clara's own product claims 'Real-time insights that centralize and analyze all company spend' (Clara Intelligence) and 'full visibility' over expenses. Its transactions API documents near-real-time monitoring, analysis by user, team, or category, and transaction-status webhooks. However, the team and category breakdowns appear mainly as things a developer would build dashboards for, not as a documented founder-facing view, and merchant-level breakdown is not evidenced. Missing for 10: documented in-product real-time dashboard sliced by team, category and merchant; merchant-level spend breakdown; evidence of same-day posting latency; independent or hands-on corroboration.",
     "evidenceIds": [
       "clara-docs-22",
+      "clara-docs-21",
       "clara-docs-19",
       "clara-docs-17",
-      "clara-docs-21"
+      "clara-docs-23"
     ]
   },
   {
@@ -1921,7 +1939,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Receipt capture fits a corporate card and spend management platform, so the axis applies. However, the evidence pack contains no mention of photo or email receipt submission, OCR, or automatic receipt-to-transaction matching. The only nearby evidence is a generic 'automated expense reporting' marketing line and transaction labeling for reconciliation, which are adjacent features and earn no credit.",
+    "rationale": "Clara is a corporate card and spend-management platform, so receipt capture is a fair question to ask of it. However, nothing in the evidence mentions photographing receipts, forwarding receipts by email, OCR, or automatically matching a receipt to a transaction. The closest items are a generic 'automated expense reporting' claim and transaction labeling for reconciliation, which are adjacent features and earn no credit for this story.",
     "evidenceIds": []
   },
   {
@@ -1930,7 +1948,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Travel booking is a fair axis for a corporate spend-management platform, but the evidence shows no in-platform flight or hotel booking and no travel policy applied at booking time. The card merchant-category restrictions and trip-based card auto-deletion are adjacent card controls, not a booking capability, so they earn no credit.",
+    "rationale": "Clara is a corporate card and spend management platform, so in-platform travel booking is a fair question for this kind of product. However, the evidence contains no flight or hotel booking capability and no travel policy applied at booking time. Trip-scoped virtual cards with merchant-category restrictions and auto-deletion are adjacent card controls, not in-platform booking, so they earn no credit.",
     "evidenceIds": []
   },
   {
@@ -1939,7 +1957,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence shows no itinerary-linked trip report that pulls in travel bookings, card transactions and receipts. What it does show is adjacent: generic 'automated expense reporting' marketing, trip-scoped virtual cards that auto-delete after an end date, and API labels for project IDs that a developer could use to build such grouping. None of these is the capability itself, so they earn no credit.",
+    "rationale": "Clara markets generic 'automated expense reporting,' but nothing in the evidence shows bookings, card charges, and receipts gathering automatically into a single itinerary-linked trip report. The trip-scoped cards that auto-delete after a trip end date are an adjacent card-provisioning control. Labels with project IDs are a building block a developer could use to construct trip grouping, not the capability itself.",
     "evidenceIds": []
   },
   {
@@ -1948,12 +1966,11 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Clara documents creating virtual cards that are active immediately, and full card lifecycle control (create, update, lock/unlock, delete), so a finance lead can issue a dedicated virtual card per vendor. The Card Configurations API adds merchant-category restrictions and auto-deletion by end date, but category-level MCC controls are not the same as locking a card to one specific merchant. missing for 10: documented single-merchant/vendor locking, explicit SaaS-subscription or procurement card guidance, independent or hands-on corroboration.",
+    "rationale": "Clara documents creating virtual cards via API that are active immediately, with full create/update/lock/delete control. Its Card Configurations API adds merchant-category, time and day-of-week restrictions, so a finance lead can issue a dedicated, category-restricted card per vendor. Restrictions are documented only at merchant-category level, not locked to a single merchant, so the single-vendor isolation promise is only approximated. Missing for 10: merchant-specific (single-vendor) card locking, explicit per-vendor spend limits, SaaS/subscription-oriented guidance, independent or hands-on corroboration.",
     "evidenceIds": [
       "clara-docs-10",
       "clara-docs-11",
-      "clara-docs-15",
-      "clara-docs-16"
+      "clara-docs-15"
     ]
   },
   {
