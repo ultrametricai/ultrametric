@@ -1,18 +1,17 @@
 {
-  "hash": "63743ebb2bee5cc0ce8c1d4ab6c63214d19cd61707de29f883064b5218dd4c30",
+  "hash": "b0201dd4830e17b8bcc2c54d8a3771b5b27ee1e8a49e0056ccb487a768369a95",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Stripe's hosted MCP server lists payouts and balance transactions among its supported methods, and its generic `stripe_api_read` tool can call any GET endpoint, so an agent can pull this data directly. Restricted API keys and OAuth scope that access safely. `stripe_report` can also create payouts and balance report runs as downloadable CSVs, which gives the agent material for deposit-level reconciliation. Missing for 10: explicit documentation of linking each payout's balance transactions back to the underlying charges (e.g., a payout-itemized reconciliation flow), and independent or hands-on corroboration of an agent completing the reconciliation.",
+    "rationale": "Stripe's hosted MCP server lets an agent read any Stripe API GET method, and its documented supported-method list explicitly includes payouts and balance transactions. The `stripe_report` tool can generate balance and payouts report runs as downloadable CSVs, and the payouts docs confirm that payouts move funds from the Stripe balance to the bank account. The evidence does not show the per-deposit linkage, i.e. listing a payout's balance transactions back to their source charges, so reconciliation is only implied. Missing for 10: documented payout-to-charge reconciliation (e.g. filtering balance transactions by payout or a payout reconciliation report), an end-to-end agent reconciliation workflow, and independent or hands-on corroboration.",
     "evidenceIds": [
       "stripe-supp-mcp-tools",
       "stripe-supp-analytics-ai",
       "stripe-docs-34",
       "stripe-docs-52",
-      "stripe-supp-restricted-keys-agents",
-      "stripe-probe-6"
+      "stripe-docs-13"
     ],
     "productId": "stripe",
     "storyId": "agent-reconciles-payouts"

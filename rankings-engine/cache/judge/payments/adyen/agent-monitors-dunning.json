@@ -1,19 +1,17 @@
 {
-  "hash": "0d6ad6cc37d9e6a5d4a04f8ba7206024eaef25c82c2d77374e1fe3ba536d59f4",
+  "hash": "6032d88f25b85c3dc5e8a4a85e9f2e19dbde570f64cadfdb30b877b50f158935",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
-    "quality": 4,
+    "quality": 3,
     "confidence": "medium",
-    "rationale": "Adyen documents the monitoring building blocks: webhooks for asynchronous status changes, with an event log in the Customer Area, and refusal details (`resultCode`, `refusalReason`, `refusalReasonCode`) on unsuccessful payments. An agent could re-submit payments through the Checkout API and generate payment links (also exposed as MCP tools) as an improvised recovery path. However, the idempotency feature only guarantees safe request retries, not retry logic for declined payments, and nothing in the evidence describes dunning or customer outreach. Missing for 10: documented automatic or scheduled retries of failed or recurring payments, dunning or outreach workflows, MCP tools for querying failed payments, and independent or hands-on corroboration.",
+    "rationale": "Adyen documents part of this story. Its API returns `resultCode`, `refusalReason` and `refusalReasonCode` on failed payments, and webhooks push asynchronous status changes, so an agent can observe failures. Nothing in the evidence shows a payment-retry or dunning capability: idempotency keys only make a repeated API request safe, and payment links and the MCP link tools are building blocks a developer would have to assemble into outreach. missing for 10: documented automatic or agent-driven retry of failed payments, dunning workflows or customer outreach, MCP tools for querying failed payments, independent corroboration.",
     "evidenceIds": [
+      "adyen-docs-7",
       "adyen-docs-3",
       "adyen-docs-45",
-      "adyen-docs-7",
-      "adyen-docs-2",
       "adyen-docs-25",
-      "adyen-supp-mcp-tools",
-      "adyen-docs-24"
+      "adyen-supp-mcp-tools"
     ],
     "productId": "adyen",
     "storyId": "agent-monitors-dunning"
