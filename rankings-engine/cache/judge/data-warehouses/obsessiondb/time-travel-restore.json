@@ -1,13 +1,15 @@
 {
-  "hash": "8e6b801cbe6236b57c54a9008cb7a3757af08f82d6e58e821a9e88961203ab84",
+  "hash": "1c8905731ebe1a4081bc6407f67b2d7ffa7f64a6f3b6d5c193f61858730dcff9",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "ObsessionDB documents point-in-time recovery that 'rolls you back to any moment,' which covers restoring accidentally dropped or corrupted tables. There is no evidence of time-travel querying, meaning reading data as of a past timestamp without rolling back. Agent branches cover current production data, not historical states. Missing for 10: documented as-of/time-travel query syntax, details on retention window and restore granularity (per-table vs whole-cluster), in-depth recovery docs, independent or hands-on corroboration.",
+    "rationale": "First-party docs claim point-in-time recovery to any moment, so an accidental table drop becomes a quick cleanup. They also describe a 'time travel' feature that restores the database to an earlier point, backed by automated daily backups and object-storage durability. That covers the restore half of the story. Nothing shows querying data as of a past point without restoring, and recovery appears to work at database level rather than per table. Missing for 10: as-of / historical-snapshot querying, table-granular restore of dropped or corrupted tables, detailed recovery docs (retention window, procedure), independent or hands-on corroboration.",
     "evidenceIds": [
-      "obsessiondb-docs-23"
+      "obsessiondb-docs-23",
+      "obsessiondb-docs-35",
+      "obsessiondb-docs-31"
     ],
     "productId": "obsessiondb",
     "storyId": "time-travel-restore"

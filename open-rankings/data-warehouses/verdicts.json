@@ -2250,14 +2250,15 @@
     "verdict": "full",
     "quality": 8,
     "confidence": "medium",
-    "rationale": "ObsessionDB documents an MCP server for coding agents with OAuth 2.1 authentication and tools to list services and run SQL (docs-7). It also exposes the native ClickHouse protocol and HTTP interface so any CLI or driver works unchanged (docs-5), and CHKit offers agent-drivable typed commands to describe schemas (docs-11). Governance is covered by table/column-scoped roles, full query logging, and isolated read-only agent compute (docs-24, docs-14, docs-12). Missing for 10: an explicitly documented schema/table-discovery tool in the MCP surface (beyond listing services), and independent or hands-on corroboration that the end-to-end agent flow works as claimed.",
+    "rationale": "ObsessionDB documents an official MCP path for coding agents with OAuth 2.1 authentication and tools to list services and run SQL. It also exposes the native ClickHouse protocol and HTTP interface for any CLI or driver, and CHKit offers typed commands to describe schema. Governance is covered by table- and column-level roles, full query logging of agent reads, and isolated read-only agent compute, so the loop runs end to end without a dashboard. Missing for 10: an explicit MCP or API schema-discovery tool (only listing services and CHKit 'describe' are documented), detail on how results are returned to the agent, and independent or hands-on corroboration of the agent workflow.",
     "evidenceIds": [
       "obsessiondb-docs-7",
       "obsessiondb-docs-5",
       "obsessiondb-docs-11",
       "obsessiondb-docs-24",
       "obsessiondb-docs-14",
-      "obsessiondb-docs-12"
+      "obsessiondb-docs-12",
+      "obsessiondb-docs-29"
     ]
   },
   {
@@ -2266,10 +2267,12 @@
     "verdict": "full",
     "quality": 9,
     "confidence": "high",
-    "rationale": "Hands-on probes show a live, properly formatted llms.txt at obsessiondb.com/llms.txt, with an H1 title and a blockquote summary. A markdown rendition of the docs is also served at /docs.md, so an agent can be pointed straight at machine-readable documentation. Missing for 10: evidence of how far the llms.txt index covers the full docs set (e.g., an llms-full.txt or per-page markdown links), since the probe output is truncated.",
+    "rationale": "Hands-on probes confirm a live llms.txt at obsessiondb.com/llms.txt (HTTP 200) with a product summary, and a markdown docs entry point at /docs.md. Further agent-readable .md doc pages are cited (feature-status.md, ingesting-data.md), so an agent can be pointed at agent-oriented docs directly. Missing for 10: evidence of how complete the llms.txt index is or of an llms-full.txt variant, and independent user corroboration of agents consuming it.",
     "evidenceIds": [
       "obsessiondb-probe-1",
-      "obsessiondb-probe-2"
+      "obsessiondb-probe-2",
+      "obsessiondb-docs-33",
+      "obsessiondb-docs-36"
     ]
   },
   {
@@ -2278,7 +2281,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The axis applies to a managed database service, but the evidence shows no in-product feature that generates AI insights or suggestions from user data. What it does document is infrastructure for external agents: an MCP server for coding agents, isolated agent branches and query logging. Its monitoring is user-defined SQL threshold rules, not AI-generated insights. None of this delivers native in-product AI insights.",
+    "rationale": "Nothing in the evidence shows an in-product AI feature that generates insights or suggestions from user data. The MCP server (obsessiondb-docs-7) only lets external coding agents query the database, which is a different story and a building block, not a built-in AI capability. Query stats, monitoring rules and alerting are conventional observability features with no AI component.",
     "evidenceIds": []
   },
   {
@@ -2287,10 +2290,11 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "ObsessionDB documents two background mechanisms of its own. SQL alert rules evaluate on a set interval and fire to reusable Slack or HTTP webhook destinations without user intervention. Large SQL operations also run as background batches of retryable tasks with pause, retry and cancel controls. Both are narrow: alerting rules and user-launched batch jobs, not general-purpose autonomous automations. Missing for 10: general scheduled or recurring jobs (cron-like SQL or pipeline automation), agent-driven autonomous workflows that trigger actions, and independent or hands-on corroboration.",
+    "rationale": "ObsessionDB documents its own background automations. Monitored SQL rules run on a set interval and fire Slack or HTTP webhook destinations. Refreshable materialized views recompute on their own, and large SQL operations can run as background batches of retryable tasks. These are narrow, alerting- and data-pipeline-scoped mechanisms rather than a general automation or agent-scheduling facility. Missing for 10: general-purpose scheduled jobs/workflows, autonomous agent-triggered or agent-run automations, and independent or hands-on corroboration.",
     "evidenceIds": [
       "obsessiondb-docs-21",
       "obsessiondb-docs-22",
+      "obsessiondb-docs-34",
       "obsessiondb-docs-15"
     ]
   },
@@ -2300,7 +2304,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "A managed ClickHouse platform could plausibly ship an in-console AI assistant, so this axis applies. The evidence covers only support for external agents: an MCP server for Claude Code, Cursor and similar tools, CHKit commands an agent can drive, and isolated agent branches with query logging. None of that is a built-in assistant you delegate tasks to inside the product, so it earns no credit here.",
+    "rationale": "A built-in AI assistant is a fair question for a managed database service, so the axis applies. However, the evidence only describes ways for external agents to work with the product: an MCP server for Claude Code, Cursor, Codex and others, CHKit commands an agent can drive, and isolated branches or read-only compute for agent runs. None of these is an assistant built into ObsessionDB that a user can hand tasks to, so they are adjacent capabilities and earn no credit.",
     "evidenceIds": []
   },
   {
@@ -2309,10 +2313,13 @@
     "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "ObsessionDB documents CHKit, a first-party tool with typed commands to describe, validate, test, and deploy schema and pipelines as code, explicitly positioned as something \"an agent can drive, in CI\" with a reviewable diff. The service also exposes the native ClickHouse protocol and HTTP interface, so any client or driver can query it headlessly. Missing for 10: in-depth CHKit/CLI reference docs or CI pipeline examples, a documented programmatic API for provisioning and managing clusters headlessly, and independent or hands-on corroboration of CI usage.",
+    "rationale": "ObsessionDB explicitly claims CHKit offers typed commands to describe, validate, test, and deploy schema and pipelines as code, which 'an agent can drive, in CI'. Its native ClickHouse protocol and HTTP interface let any client or driver run queries non-interactively, and the MCP server exposes tools to run SQL and read monitoring. Missing for 10: in-depth CHKit/CI documentation or examples, documented programmatic API/CLI for cluster provisioning, independent or hands-on corroboration.",
     "evidenceIds": [
       "obsessiondb-docs-11",
-      "obsessiondb-docs-5"
+      "obsessiondb-docs-39",
+      "obsessiondb-docs-5",
+      "obsessiondb-docs-7",
+      "obsessiondb-docs-15"
     ]
   },
   {
@@ -2321,16 +2328,16 @@
     "verdict": "na",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "ObsessionDB is a managed ClickHouse database service, not an agent or AI host, so consuming tools from external MCP servers falls outside its product category. Its documented MCP support (docs-7) is server-side: it exposes database tools to coding agents, which is a different role and cannot be credited to this MCP-client story.",
+    "rationale": "ObsessionDB is a managed ClickHouse database service, not an agent or AI assistant. Plugging in MCP servers so the product can call their tools is an agent-client role, and that is a category error for a database host. The only MCP evidence describes ObsessionDB serving tools to external coding agents (server role), which belongs to a separate story and does not make this client axis applicable.",
     "evidenceIds": []
   },
   {
     "productId": "obsessiondb",
     "storyId": "agentic-mcp-server",
     "verdict": "full",
-    "quality": 9,
+    "quality": 7,
     "confidence": "medium",
-    "rationale": "ObsessionDB is a managed database service, not an agent, so an official MCP server is an applicable axis. First-party docs describe connecting coding agents (Claude Code, Cursor, Codex, VS Code, Zed) to its databases over MCP, with OAuth 2.1 auth and tools to list services, run SQL, and read monitoring. Missing for 10: independent or hands-on corroboration that the MCP server works as described.",
+    "rationale": "ObsessionDB's docs describe an official MCP integration for connecting coding agents (Claude Code, Cursor, Codex, VS Code, Zed) to its databases. It uses OAuth 2.1 with no API keys and provides tools to list services, run SQL and read monitoring. That clearly covers the core of the story, but the evidence is a single docs summary line. missing for 10: in-depth MCP setup/tool reference documentation, independent or hands-on corroboration that the MCP server works as described.",
     "evidenceIds": [
       "obsessiondb-docs-7"
     ]
@@ -2341,7 +2348,7 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "ObsessionDB ships a first-party MCP integration so coding agents (Claude Code, Cursor, Codex, VS Code, Zed) can list services, run SQL and read monitoring through OAuth. That lets users operate parts of the product in natural language, but only through an external agent; there is no evidence of a native natural-language interface in the product itself. CHKit's typed commands are agent-drivable, but they are structured commands rather than natural-language ones. Missing for 10: a native in-product natural-language or text-to-SQL interface, natural-language coverage of management operations beyond the listed MCP tools (e.g. scaling, backups, access control), and hands-on or independent corroboration.",
+    "rationale": "ObsessionDB ships its own MCP server, so coding agents such as Claude Code and Cursor can list services, run SQL and read monitoring for the user (docs-7). That makes natural-language operation possible, but only through an external agent client. CHKit adds typed commands an agent can drive for schema and pipeline changes (docs-11), but there is no evidence of a native natural-language interface in the product itself. Missing for 10: built-in natural-language console or text-to-SQL, natural-language coverage of operations beyond listing, querying and monitoring (e.g., scaling, branching, recovery), and independent or hands-on corroboration.",
     "evidenceIds": [
       "obsessiondb-docs-7",
       "obsessiondb-docs-11"
@@ -2353,9 +2360,10 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "ObsessionDB's own site describes CHKit as typed commands to describe, validate, test, and deploy schema and pipelines as code, which an agent can drive in CI. That is a first-party, agent-oriented command tool, but it is never explicitly called a CLI and covers only schema/pipeline workflows. Compatibility with stock ClickHouse clients is an ecosystem capability, and the MCP server belongs to a separate story, so neither earns credit here. Missing for 10: explicit confirmation that CHKit is an installable official CLI, command reference/install docs, CLI coverage of cluster/service management, independent or hands-on corroboration.",
+    "rationale": "ObsessionDB's own site describes CHKit as giving agents \"typed commands to describe, validate, test, and deploy schema and pipelines as code\" that an agent can drive in CI. That reads as a first-party command-line tool aimed at agentic workflows, but the evidence never explicitly calls it a CLI and covers only schema and pipeline work. missing for 10: explicit confirmation that CHKit is an official CLI with install and command-reference docs, CLI coverage of service, cluster or query management beyond schema and pipelines, and independent or hands-on corroboration.",
     "evidenceIds": [
-      "obsessiondb-docs-11"
+      "obsessiondb-docs-11",
+      "obsessiondb-docs-39"
     ]
   },
   {
@@ -2364,10 +2372,10 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "ObsessionDB documents programmatic access through its own HTTP and native ClickHouse protocol interface, which any client or driver can use to run SQL (docs-5, docs-6). It also exposes an MCP surface with tools to list services, run SQL and read monitoring, plus CHKit typed commands an agent can use to deploy schema and pipelines (docs-7, docs-11). However, no documented public control-plane or REST management API is evidenced for creating and resizing clusters, managing branches, configuring alert rules or administering access. missing for 10: a documented public management/control-plane API (cluster lifecycle, scaling, branching, alerts, access) with API reference docs, and independent corroboration.",
+    "rationale": "ObsessionDB exposes the native ClickHouse protocol and HTTP interface for programmatic SQL access (docs-5, docs-29). An MCP server offers tools to list services, run SQL and read monitoring (docs-7), and CHKit provides agent-drivable typed commands for deploying schema and pipelines (docs-11). However, the evidence never shows a documented public control-plane API (REST or similar) for creating, resizing or managing clusters, alerts or users, so programmatic control is mostly limited to the data plane plus MCP and CLI surfaces. Missing for 10: a documented public management/provisioning API with reference docs, API auth/key model, and independent or hands-on corroboration.",
     "evidenceIds": [
       "obsessiondb-docs-5",
-      "obsessiondb-docs-6",
+      "obsessiondb-docs-29",
       "obsessiondb-docs-7",
       "obsessiondb-docs-11"
     ]
@@ -2378,7 +2386,7 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "ObsessionDB documents agent access over MCP using OAuth 2.1 instead of API keys (docs-7). It also offers roles that scope access down to the table and column (docs-24), and agents can be confined to isolated, read-only compute (docs-12). Together these support least-privilege agent access, but the docs never explicitly describe issuing a scoped credential to a specific agent. missing for 10: explicit docs on issuing per-agent scoped tokens or credentials, evidence that OAuth grants or roles can be restricted per agent (e.g., read-only or table-limited scopes), credential lifecycle (expiry/revocation), independent or hands-on corroboration",
+    "rationale": "Agents connect over MCP with OAuth 2.1 instead of API keys, which is a first-party credential mechanism for agents (docs-7). Access can be scoped with roles down to the table and column (docs-24), and agents run on isolated, read-only compute (docs-12), so least-privilege agent access is plausible. No evidence explicitly shows issuing a scoped, agent-specific credential or token with chosen permissions, or that OAuth grants can be bound to restricted roles. Missing for 10: documented issuance of per-agent scoped tokens/credentials, explicit linkage of OAuth/MCP grants to role scopes, revocation/expiry controls, independent or hands-on corroboration.",
     "evidenceIds": [
       "obsessiondb-docs-7",
       "obsessiondb-docs-24",
@@ -2388,15 +2396,11 @@
   {
     "productId": "obsessiondb",
     "storyId": "agentic-sdks",
-    "verdict": "partial",
-    "quality": 4,
+    "verdict": "none",
+    "quality": 0,
     "confidence": "medium",
-    "rationale": "ObsessionDB documents native ClickHouse protocol and HTTP compatibility, so you build against the existing ClickHouse clients and drivers unchanged rather than an ObsessionDB-specific SDK. CHKit adds typed, agent-drivable schema-as-code commands, but that is a tooling layer, not a language SDK. missing for 10: first-party ObsessionDB-branded SDKs (language libraries or a management-API SDK), SDK reference documentation, and independent or hands-on corroboration of building against them.",
-    "evidenceIds": [
-      "obsessiondb-docs-5",
-      "obsessiondb-docs-6",
-      "obsessiondb-docs-11"
-    ]
+    "rationale": "The evidence pack shows no ObsessionDB-published SDK. ObsessionDB relies on wire compatibility, so existing ClickHouse clients and drivers 'connect unchanged'. Those drivers belong to the upstream ClickHouse ecosystem rather than being SDKs the vendor ships, and CHKit (a schema-as-code CLI) and the MCP server are adjacent capabilities that earn no credit for an SDK story.",
+    "evidenceIds": []
   },
   {
     "productId": "obsessiondb",
@@ -2404,7 +2408,7 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "ObsessionDB documents organization-scoped, reusable HTTP webhook destinations, separate from Slack, that attach to SQL-based monitoring rules with thresholds, intervals and severity. That is a genuine registrable outbound HTTP callback, but the only events it covers are alert-rule firings, not a general event-subscription surface. missing for 10: webhooks for non-alert events (cluster lifecycle, batch job progress/completion, schema deploys), documented payload schema, signing/verification, retry/delivery semantics, independent or hands-on corroboration.",
+    "rationale": "ObsessionDB documents reusable, organization-scoped HTTP webhook destinations that attach to monitored alert rules. Because those rules can be built from any SQL query with an operator, threshold, interval, and severity, a programmatic consumer can receive outbound callbacks when conditions fire. The only events in evidence are these SQL-driven alerts, with no general platform event subscriptions, so this covers roughly half the story. Missing for 10: platform or lifecycle event types (cluster, job, or schema changes), a documented payload schema, delivery guarantees such as retries or signing, a webhook management API, and independent or hands-on corroboration.",
     "evidenceIds": [
       "obsessiondb-docs-22",
       "obsessiondb-docs-21"
@@ -2416,7 +2420,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "A built-in SQL assistant is a fair axis for a managed ClickHouse service, but nothing in the evidence shows an in-product AI assistant that writes, fixes, or explains SQL from natural language. The documented AI features belong to other stories: the MCP server lets external coding agents (Claude Code, Cursor, etc.) run SQL, and CHKit gives agents typed CLI commands. Neither is a built-in assistant inside the product.",
+    "rationale": "A built-in natural-language SQL assistant is a fair question for a managed database console, so the axis applies. The evidence contains no such in-product assistant. The MCP integration (docs-7) lets external coding agents run SQL, and CHKit (docs-11) provides schema-as-code commands; both are adjacent capabilities, not a built-in assistant that writes, fixes, or explains SQL.",
     "evidenceIds": []
   },
   {
@@ -2425,7 +2429,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "An interactive API reference is a fair ask for a managed database service, but nothing in the pack documents one with runnable examples. The available evidence (llms.txt, markdown docs, an MCP server for running SQL, a quickstart) is adjacent and earns no credit toward this story.",
+    "rationale": "An interactive API reference is a fair ask for a managed database service, so the axis applies. The evidence shows prose docs, a quick-start, llms.txt and markdown docs endpoints, and an MCP server, but nothing describes an interactive API reference or runnable, try-it-now examples. Machine-readable docs and MCP tools are adjacent features and earn no credit here.",
     "evidenceIds": []
   },
   {
@@ -2434,7 +2438,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "ObsessionDB is a managed database SaaS, so offering a downloadable OpenAPI or equivalent spec for its management API is a fair question. The pack contains no evidence of such a spec. The llms.txt and docs.md probes are machine-readable documentation, not API specs. The MCP server and the ClickHouse protocol/HTTP compatibility are adjacent capabilities that earn no credit here.",
+    "rationale": "A downloadable OpenAPI-style spec is a fair question for a managed database service, so the axis applies. Nothing in the evidence shows ObsessionDB publishes an OpenAPI or equivalent spec for its management or control-plane API. The llms.txt and docs.md probes are machine-readable documentation, and the MCP server, ClickHouse HTTP interface, and CHKit are adjacent capabilities; none of these is an API spec, so none earns credit here.",
     "evidenceIds": []
   },
   {
@@ -2443,11 +2447,12 @@
     "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "ObsessionDB says each agent run can get its own branch of production data on isolated compute, which can be experimented on and then discarded [docs-13]. It also offers isolated read-only agent compute that can't affect production traffic [docs-12], a free dev instance [docs-10], and CHKit commands to test schema and pipelines in CI [docs-11]. All of this comes from homepage marketing claims rather than detailed documentation. Missing for 10: in-depth docs on how branches are created and how writes are isolated from production, and independent or hands-on corroboration that branching works as claimed.",
+    "rationale": "ObsessionDB documents per-agent branches of production data on isolated compute that agents can experiment on and then discard (docs-13). It also offers isolated read-only agent compute that cannot affect production traffic (docs-12), a free dev instance (docs-10, docs-40), and CHKit commands to test schema and pipelines in CI (docs-11). Together these cover the core of a sandbox that doesn't touch production. Missing for 10: in-depth docs on branch write isolation and copy-on-write semantics over shared S3, setup and lifecycle details for branches, and independent or hands-on corroboration beyond homepage marketing claims.",
     "evidenceIds": [
       "obsessiondb-docs-13",
       "obsessiondb-docs-12",
       "obsessiondb-docs-10",
+      "obsessiondb-docs-40",
       "obsessiondb-docs-11"
     ]
   },
@@ -2457,7 +2462,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "API versioning and a deprecation policy are fair questions for a managed database SaaS, so the axis applies. The evidence pack documents ClickHouse protocol compatibility, an MCP server, CHKit and webhooks, but says nothing about versioned APIs or a documented deprecation policy.",
+    "rationale": "API versioning and deprecation policy are a fair question for a managed database service, so the axis applies. Nothing in the evidence describes versioned management or MCP APIs, version identifiers, or a deprecation or sunset policy. The feature-status page covers ClickHouse feature compatibility, not API lifecycle commitments, and wire-protocol compatibility with ClickHouse is a different capability.",
     "evidenceIds": []
   },
   {
@@ -2466,24 +2471,26 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "ObsessionDB documents full logging of every query an agent runs, with replay of exactly which columns it read. It also exposes the stock ClickHouse observability surface queryable cluster-wide, with drill-down to single executions. That covers a meaningful part of the audit-log half of the story, but the evidence shows no column-level lineage tracing where data originated. missing for 10: column-level data lineage (provenance of derived data), explicit user/identity attribution in audit logs for non-agent users, dedicated audit-log documentation, and independent corroboration.",
+    "rationale": "ObsessionDB documents full query logging for agent runs, with replay of exactly what was read down to the column. It also exposes the stock ClickHouse observability surface and a searchable per-execution stats table, which together cover the 'who ran what' audit half. Nothing documents column-level lineage tracing where data came from; column-level read logging is query auditing, not provenance lineage. Missing for 10: column-level data lineage/provenance, an explicit user-attributed audit log covering all principals (not just agents), independent or hands-on corroboration.",
     "evidenceIds": [
       "obsessiondb-docs-14",
       "obsessiondb-docs-20",
-      "obsessiondb-docs-18"
+      "obsessiondb-docs-32"
     ]
   },
   {
     "productId": "obsessiondb",
     "storyId": "automation-bulk-operations",
     "verdict": "full",
-    "quality": 7,
+    "quality": 8,
     "confidence": "medium",
-    "rationale": "ObsessionDB documents a first-party batch-job feature that runs large SQL operations as batches of retryable tasks. It shows live progress and lets you pause, retry, or cancel while the job runs. Agents can also issue set-based SQL across many rows through the official MCP server's run-SQL tool. Missing for 10: confirmation that agents can launch and control batch jobs via MCP or API, detailed docs on batch-job scope and limits, and independent or hands-on corroboration.",
+    "rationale": "ObsessionDB documents a first-party batch-jobs feature that runs large SQL operations as retryable task batches, with live progress and pause/retry/cancel controls (docs-15). Cross-table partition operations work by reference without copying rows (docs-33), and async inserts buffer many small writes (docs-37). Agents can run SQL over MCP (docs-7), so an AI-native user can reach these bulk paths. Missing for 10: explicit evidence that agents can launch and control batch jobs via MCP or an API, and independent or hands-on corroboration of the bulk-operation features.",
     "evidenceIds": [
       "obsessiondb-docs-15",
+      "obsessiondb-docs-33",
+      "obsessiondb-docs-37",
       "obsessiondb-docs-7",
-      "obsessiondb-docs-11"
+      "obsessiondb-docs-36"
     ]
   },
   {
@@ -2492,20 +2499,25 @@
     "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "ObsessionDB lets users turn any SQL query into a monitored rule with an operator, threshold, interval and severity, starting from templates. Each rule can be attached to reusable Slack or HTTP webhook destinations, so rules fire actions automatically when conditions are met. Missing for 10: native actions beyond notifications/webhooks (e.g., running SQL or scaling compute), true event-driven triggers rather than interval-polled thresholds, detailed docs on rule/webhook payloads, and independent or hands-on corroboration.",
+    "rationale": "ObsessionDB lets users turn any SQL query into a monitored rule with an operator, threshold, interval, severity and templates (docs-21). These rules attach to reusable Slack and HTTP webhook destinations (docs-22), so a condition firing automatically triggers an outbound action. Materialized and refreshable materialized views also run automatically on insert or schedule (docs-34, docs-36). missing for 10: native action types beyond notification and webhook delivery, rules triggered by arbitrary events rather than interval-polled thresholds, detailed docs on rule execution semantics, and independent or hands-on corroboration.",
     "evidenceIds": [
       "obsessiondb-docs-21",
-      "obsessiondb-docs-22"
+      "obsessiondb-docs-22",
+      "obsessiondb-docs-34",
+      "obsessiondb-docs-36"
     ]
   },
   {
     "productId": "obsessiondb",
     "storyId": "automation-scheduled-jobs",
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "partial",
+    "quality": 4,
     "confidence": "medium",
-    "rationale": "The evidence shows no documented way to schedule recurring jobs or workflows. The batch-task runner (docs-15) runs large SQL operations on demand with pause, retry and cancel, but nothing says it can be scheduled. Monitored alert rules evaluated on an interval (docs-21) are an adjacent alerting feature, not general job scheduling, and CHKit pipelines run in an external CI system, so neither earns credit.",
-    "evidenceIds": []
+    "rationale": "ObsessionDB's feature-status docs list refreshable materialized views as supported, and these run SQL on a recurring refresh schedule, a narrow first-party form of recurring jobs. The batch-task runner (docs-15) has pause, retry and cancel controls but no documented scheduling. Interval-based alert rules (docs-21) are monitoring, not general job scheduling. Missing for 10: a general-purpose scheduler for recurring jobs or workflows, cron-style scheduling of batch tasks, a way to set up or manage schedules through agent tooling (MCP or CHKit), and any hands-on or independent corroboration.",
+    "evidenceIds": [
+      "obsessiondb-docs-34",
+      "obsessiondb-docs-15"
+    ]
   },
   {
     "productId": "obsessiondb",
@@ -2513,9 +2525,10 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "CHKit lets users and agents describe, validate, test, and deploy schema and pipelines as code in CI, with a reviewable diff. That covers versioning and review of pipeline automations. Rollback of those automations is not documented: point-in-time recovery rolls back data, not pipeline or automation definitions, so it is an adjacent capability and earns no credit. Missing for 10: documented rollback of deployed pipelines/automations, detail on version history for alert rules and batch jobs, independent or hands-on corroboration of CHKit's workflow.",
+    "rationale": "CHKit is ObsessionDB's own tooling for describing, validating, testing, and deploying schema and pipelines as code, run in CI with a reviewable diff. That covers versioning and review of pipeline automations. Rollback of those automations is not documented: point-in-time recovery and time travel restore data, not automation definitions, so they are adjacent features and earn no credit. Missing for 10: documented rollback of pipelines and automations, explicit version history for automation definitions (alert rules, refreshable views), in-depth CHKit docs, and independent or hands-on corroboration.",
     "evidenceIds": [
-      "obsessiondb-docs-11"
+      "obsessiondb-docs-11",
+      "obsessiondb-docs-39"
     ]
   },
   {
@@ -2524,10 +2537,11 @@
     "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "ObsessionDB documents that it speaks the native ClickHouse protocol and HTTP interface, so ClickHouse clients and drivers connect unchanged. It also names BI and dashboard tools (Grafana, Metabase, Superset, Tableau, DBeaver) that connect without custom glue. missing for 10: explicit mention of JDBC/ODBC drivers, per-tool setup guides for the named BI integrations, independent or hands-on corroboration of BI connectivity.",
+    "rationale": "ObsessionDB docs say it speaks the native ClickHouse protocol and HTTP interface, so every ClickHouse client and driver connects unchanged. They also state that any BI or dashboard tool that connects to ClickHouse connects to ObsessionDB, naming Grafana, Metabase, Superset, Tableau and DBeaver. Missing for 10: explicit mention of JDBC/ODBC drivers, per-tool BI integration guides beyond a list of names, and independent or hands-on corroboration of dashboard connectivity.",
     "evidenceIds": [
       "obsessiondb-docs-5",
       "obsessiondb-docs-8",
+      "obsessiondb-docs-29",
       "obsessiondb-docs-6",
       "obsessiondb-docs-1"
     ]
@@ -2536,13 +2550,13 @@
     "productId": "obsessiondb",
     "storyId": "bulk-load-object-storage",
     "verdict": "partial",
-    "quality": 3,
-    "confidence": "low",
-    "rationale": "The migration docs describe bridging data through object storage, the quickstart includes a 'load data' step, and ingestion behaviors are covered in a checklist. Together these suggest object-storage ingestion is a documented path, but the evidence never names supported formats or a specific load command. missing for 10: explicit CSV/JSON/Parquet format support, a single documented bulk-load command (e.g. a table-function or INSERT…SELECT example), ingestion outside the migration context, independent or hands-on corroboration.",
+    "quality": 5,
+    "confidence": "medium",
+    "rationale": "ObsessionDB's ingestion docs say the s3() and url() table functions work as documented, which gives a single-statement path for loading from cloud object storage. Its migration docs also describe bridging data through object storage. However, the evidence never names CSV, JSON or Parquet, and gives no worked bulk-load command or example, so format coverage and the 'single documented command' depend on deferring to stock ClickHouse docs. Missing for 10: explicit confirmation of CSV/JSON/Parquet support, a first-party documented bulk-load command example, notes on cloud-provider and credential configuration, and independent or hands-on corroboration.",
     "evidenceIds": [
+      "obsessiondb-docs-36",
       "obsessiondb-docs-2",
-      "obsessiondb-docs-3",
-      "obsessiondb-docs-6"
+      "obsessiondb-docs-29"
     ]
   },
   {
@@ -2551,26 +2565,33 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Compliance attestations are a fair axis for a fully managed database service, but nothing in the evidence pack mentions SOC 2, HIPAA, PCI or any other certification or audit report. The security features that are documented (SSO with table/column roles, private networking, BYOC data residency, full query logging) are adjacent controls and earn no credit toward documented attestations.",
+    "rationale": "Compliance attestations are a fair question for a managed database service, so the axis applies. Nothing in the evidence pack mentions SOC 2, HIPAA, PCI, or any other compliance attestation documentation. Adjacent security controls like SSO/roles, private networking, BYOC data residency and query logging do not count as compliance attestations.",
     "evidenceIds": []
   },
   {
     "productId": "obsessiondb",
     "storyId": "connector-ecosystem",
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "partial",
+    "quality": 3,
     "confidence": "medium",
-    "rationale": "The evidence shows no first-party or partner connector catalog for SaaS apps, databases, or ETL/ELT tools. What it does show earns no credit for this story: native ClickHouse protocol compatibility so existing clients connect unchanged is an inherited compatibility claim, not a connector; the BI tools listed (Grafana, Metabase, Tableau) consume data rather than ingest it; and the object-storage path from self-managed ClickHouse is a migration procedure, not a source connector.",
-    "evidenceIds": []
+    "rationale": "ObsessionDB documents its own ingestion paths on an ingesting-data page: INSERT, the Kafka table engine, and the s3() and url() table functions. It also states that every ClickHouse client and driver connects unchanged, which implies but does not document compatibility with ETL tools. That covers streaming and object-storage sources only, not the breadth of connectors the story asks for. missing for 10: first-party or partner connectors for SaaS apps, database replication/CDC connectors, named ETL/ELT tool integrations with documented setup, independent corroboration.",
+    "evidenceIds": [
+      "obsessiondb-docs-36",
+      "obsessiondb-docs-37",
+      "obsessiondb-docs-5",
+      "obsessiondb-docs-29"
+    ]
   },
   {
     "productId": "obsessiondb",
     "storyId": "continuous-transformations",
-    "verdict": "partial",
-    "quality": 3,
-    "confidence": "low",
-    "rationale": "The only on-axis evidence is CHKit's claim to describe, validate, test and deploy 'schema and pipelines as code', which implies the platform hosts pipelines but never says they run continuously or incrementally. The batch SQL task runner (pause/retry/cancel) is for one-off large operations, an adjacent feature that earns no credit for continuous transformation. Materialized views are never mentioned, and 'same SQL' compatibility cannot stand in for documented streaming or incremental capability. missing for 10: documented continuous or incremental transformation mechanism (materialized views, streams, scheduled tasks or continuous queries), detail on how pipelines execute and refresh, hands-on or independent corroboration.",
+    "verdict": "full",
+    "quality": 7,
+    "confidence": "medium",
+    "rationale": "ObsessionDB's feature-status docs confirm that materialized views (incremental on insert) and refreshable materialized views (scheduled re-computation) are supported. The ingestion docs state that the Kafka table engine and materialized views work as documented, which enables continuous streaming transformations inside the platform. CHKit also lets users deploy pipelines as code. missing for 10: in-depth first-party docs on how MVs and refreshable MVs behave on the separated storage layer, details on CHKit pipeline semantics, independent or hands-on corroboration.",
     "evidenceIds": [
+      "obsessiondb-docs-34",
+      "obsessiondb-docs-36",
       "obsessiondb-docs-11"
     ]
   },
@@ -2580,11 +2601,12 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "ObsessionDB says it lets you \"compute your bill before you talk to us\" and compare it one-to-one with current managed ClickHouse spend, which points to a self-serve bill estimator. The free dev tier limits (up to 4 vCPU, 8 GB RAM, no credit card) are also documented. However, the pack contains no actual price rates, so it is unclear how clearly a workload maps to a monthly bill. The free cost audit is a sales-assisted route rather than documented pricing. Missing for 10: published per-unit pricing (compute, storage, egress), documentation of how the bill calculator works, pricing for production/BYOC tiers, independent corroboration that estimates match real bills.",
+    "rationale": "The marketing site says it is \"confident enough to let you compute your bill before you talk to us\" and offers a one-to-one comparison against current managed ClickHouse spend, which points to a self-serve bill estimate. It also documents a free dev tier (up to 4 vCPU / 8 GB, no card) and a free cost audit. However, no actual pricing units, rates, or calculator details appear in the evidence, so a platform engineer cannot yet verify they could build a monthly estimate. Missing for 10: published per-unit compute/storage/egress rates, documented calculator inputs and outputs, pricing for BYOC vs managed tiers, and independent or hands-on confirmation that the estimate matches real bills.",
     "evidenceIds": [
       "obsessiondb-docs-27",
+      "obsessiondb-docs-28",
       "obsessiondb-docs-10",
-      "obsessiondb-docs-28"
+      "obsessiondb-docs-40"
     ]
   },
   {
@@ -2593,7 +2615,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "A third-party dataset marketplace is a fair question for a managed analytical database, so the axis applies. The evidence never mentions a marketplace or third-party datasets. The only related item is cross-cluster data sharing (docs-17), an adjacent feature that does not deliver in-platform enrichment from third-party data.",
+    "rationale": "A third-party dataset marketplace is a fair question for a managed analytical database, but the evidence shows no such marketplace. Cluster-to-cluster data sharing and the s3()/url() ingestion functions are adjacent features or building blocks, not a catalog of third-party datasets for in-platform enrichment.",
     "evidenceIds": []
   },
   {
@@ -2602,7 +2624,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence pack never mentions dbt, a dbt adapter, or vendor dbt documentation. The general claim that every ClickHouse client and driver connects unchanged is adjacent compatibility, not a documented dbt adapter or dbt project support. CHKit is the vendor's own schema-as-code tool, not dbt support.",
+    "rationale": "Nothing in the evidence pack mentions dbt, a dbt adapter, or vendor dbt docs. Generic claims that every ClickHouse client and tool connects unchanged are an adjacent compatibility claim, not documented first-class dbt support. CHKit's schema-as-code tooling is a different product, not a dbt integration.",
     "evidenceIds": []
   },
   {
@@ -2611,25 +2633,26 @@
     "verdict": "full",
     "quality": 8,
     "confidence": "medium",
-    "rationale": "The vendor documents a self-serve dev instance (up to 4 vCPU and 8 GB RAM) with \"No credit card required\" [obsessiondb-docs-10]. It also documents a signup-to-first-query flow of about five minutes (create a cluster, connect any ClickHouse client, load your own data, query) with no sales step [obsessiondb-docs-6]. Pricing can be computed before talking to sales [obsessiondb-docs-27]. Missing for 10: independent or hands-on confirmation that the free dev instance works as described, and documented limits on storage, data volume, and how long the free instance lasts.",
+    "rationale": "The vendor documents a free developer tier: a dev instance of up to 4 vCPU and 8 GB RAM with no credit card required. Its docs describe a self-serve path from signup to first query in about five minutes (create a cluster, connect any ClickHouse client, load data, query), which removes the need for a sales call. missing for 10: independent or hands-on corroboration of the free tier, and documentation of free-tier limits such as storage, duration, or data-volume caps that determine whether an analyst can evaluate at real-data scale.",
     "evidenceIds": [
+      "obsessiondb-docs-40",
       "obsessiondb-docs-10",
-      "obsessiondb-docs-6",
-      "obsessiondb-docs-27"
+      "obsessiondb-docs-6"
     ]
   },
   {
     "productId": "obsessiondb",
     "storyId": "full-sql-surface",
     "verdict": "partial",
-    "quality": 3,
-    "confidence": "low",
-    "rationale": "ObsessionDB's own docs say it runs the official ClickHouse engine with \"same SQL, same clients\" and plain MergeTree DDL. That documents a native SQL surface rather than a bolt-on one. However, nothing in the pack names any of the specific analytical features the story asks for. missing for 10: explicit evidence of window functions, CTEs, semi-structured JSON support, array types/functions, rich date/time types, and independent or hands-on corroboration.",
+    "quality": 5,
+    "confidence": "medium",
+    "rationale": "ObsessionDB documents that it runs the official ClickHouse engine with 'same SQL', so every query works unchanged. That implies the engine's native analytical SQL surface without add-ons, and the docs also confirm materialized views, projections, and dictionaries. However, none of the story's specific elements are named anywhere in the evidence. missing for 10: explicit documentation of window functions, CTEs, JSON/semi-structured types, array types and functions, and date/time types, plus independent or hands-on corroboration.",
     "evidenceIds": [
       "obsessiondb-docs-1",
-      "obsessiondb-docs-9",
+      "obsessiondb-docs-29",
+      "obsessiondb-probe-2",
       "obsessiondb-probe-1",
-      "obsessiondb-probe-2"
+      "obsessiondb-docs-34"
     ]
   },
   {
@@ -2638,7 +2661,7 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "ObsessionDB's own docs say access can be scoped with roles down to the table and column level, with SSO through your own identity provider. That covers the role, table and column parts of the story. Nothing in the pack mentions row-level policies or masking policies, and only a single marketing line backs any of it. Missing for 10: row-level security, column masking policies, in-depth docs on the role/grant model, and independent or hands-on corroboration.",
+    "rationale": "ObsessionDB documents role-based access scoped down to the table and column level, with SSO through your own identity provider. That covers roles plus table- and column-level control. The evidence never mentions row-level policies or data masking, which are half of what the story asks for. Missing for 10: row-level security policies, column masking policies, in-depth access-control documentation, independent or hands-on corroboration.",
     "evidenceIds": [
       "obsessiondb-docs-24"
     ]
@@ -2649,7 +2672,7 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "ObsessionDB documents a first-party data-sharing feature that lets you share data with other clusters without exposing cluster credentials or sharing compute (docs-17). Its compute–storage separation over object storage (docs-9) makes sharing without copying plausible. However, the evidence only says 'other clusters' and never confirms sharing across separate accounts or organizations, or that shared data stays live. Missing for 10: explicit cross-account/cross-organization sharing, explicit zero-copy and live-update semantics, depth documentation on how sharing is set up and governed, independent or hands-on corroboration.",
+    "rationale": "ObsessionDB documents sharing data with other clusters without exposing cluster credentials or sharing compute, which fits zero-copy live sharing on its compute–storage separated architecture. The docs only say 'other clusters', not other accounts or organizations, and give no detail on mechanics or limits. missing for 10: explicit cross-account/cross-organization sharing, documentation of how shares are created, governed and kept live without copying, independent or hands-on corroboration.",
     "evidenceIds": [
       "obsessiondb-docs-17",
       "obsessiondb-docs-9"
@@ -2661,22 +2684,28 @@
     "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "ObsessionDB offers a free dev instance (up to 4 vCPU / 8 GB, no credit card), which is a free sandbox separate from production compute. It also offers branches of production data on isolated compute that can be thrown away, and CHKit commands to validate and test schema and pipelines as code before deploying. Missing for 10: a documented local engine or emulator for offline development, in-depth docs on using the dev tier and branching for transformation workflows, and independent or hands-on corroboration.",
+    "rationale": "ObsessionDB offers a free developer tier: a dev instance with up to 4 vCPU and 8 GB RAM, no credit card required. It also offers per-run branches of production data on isolated compute that can be thrown away, so transformations can be tried without touching production compute. CHKit adds typed validate/test commands for schema and pipelines as code. Missing for 10: no first-party local engine or emulator for offline iteration, branching is documented mainly for agent runs rather than human dev loops, thin detail on dev-tier limits and workflow, no independent or hands-on corroboration.",
     "evidenceIds": [
       "obsessiondb-docs-10",
+      "obsessiondb-docs-40",
       "obsessiondb-docs-13",
       "obsessiondb-docs-11",
-      "obsessiondb-docs-12"
+      "obsessiondb-docs-39"
     ]
   },
   {
     "productId": "obsessiondb",
     "storyId": "managed-continuous-ingestion",
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "partial",
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "ObsessionDB is a managed ClickHouse service, so managed continuous ingestion is a fair axis to judge it on. However, the evidence documents no managed connector or pipe that picks up new files or events as they arrive. The nearest items fall short: a migration checklist that mentions ingestion, CHKit for deploying pipelines-as-code, and batch SQL jobs. None of these is a first-party, continuously running ingestion service that removes the user's own pipeline infrastructure.",
-    "evidenceIds": []
+    "rationale": "The managed service supports the Kafka table engine and materialized views 'as documented' (docs-36), so the service itself can continuously consume event streams without separate pipeline workers. CHKit mentions deploying 'pipelines as code' (docs-11). However, the user must still supply a Kafka source, and s3()/url() are one-shot table functions rather than continuous file watchers. missing for 10: a documented managed continuous file-ingestion capability (auto-ingest on file arrival), a managed connector/ingest service that needs no user-run broker, and hands-on or independent corroboration.",
+    "evidenceIds": [
+      "obsessiondb-docs-36",
+      "obsessiondb-docs-37",
+      "obsessiondb-docs-11",
+      "obsessiondb-docs-34"
+    ]
   },
   {
     "productId": "obsessiondb",
@@ -2684,7 +2713,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "ObsessionDB is a managed ClickHouse warehouse service, so first-party notebooks are a fair question for this kind of product. The evidence documents only external BI/SQL tool connectivity (Grafana, Metabase, Superset, etc.), MCP access for coding agents, and monitoring views. None of that is a first-party notebook mixing SQL and Python with inline results and charts, and connecting third-party tools does not count toward this story.",
+    "rationale": "First-party notebooks are a fair question for a managed analytical database, since warehouse vendors can ship them, so the axis applies. Nothing in the evidence describes a first-party notebook that mixes SQL and Python with inline results or charts. Compatibility with third-party BI and SQL tools (Grafana, Metabase, Superset), the MCP connection for coding agents, and the observability views are adjacent features or host/third-party capabilities, so they earn no credit.",
     "evidenceIds": []
   },
   {
@@ -2693,42 +2722,48 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "ObsessionDB is a managed ClickHouse database. It documents several agent-adjacent features: an MCP server that lets coding agents run SQL, read-only isolated compute for agents, full query logging, and table/column-level roles. None of these is a natural-language question interface for business users, and none is a semantic layer that grounds answers and prevents hallucinated joins. They are building blocks or adjacent controls, not the capability itself, so no evidence shows the product delivers this story.",
+    "rationale": "Natural-language analytics with a governed semantic layer is a fair question for a managed analytical database, since warehouses do ship such features. The evidence, however, shows only an MCP server that lets coding agents run raw SQL, plus column-level roles and query logging. These are developer building blocks and adjacent governance controls, not a business-user natural-language interface or semantic model that grounds answers. No evidence shows ObsessionDB itself delivers semantically-grounded natural-language answers.",
     "evidenceIds": []
   },
   {
     "productId": "obsessiondb",
     "storyId": "open-table-formats",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "ObsessionDB is a managed ClickHouse service, so querying Iceberg, Delta, or Parquet in place is a fair question for it. However, the evidence never mentions open table formats or external file querying. The object-storage references describe its own MergeTree storage layer and a migration path that loads data into it, which is the opposite of in-place querying.",
-    "evidenceIds": []
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "ObsessionDB's docs say the ClickHouse s3() and url() table functions \"work as documented,\" so files in object storage can be read through SQL. However, that mention sits in an ingestion context, and nothing shows querying Iceberg, Delta or even Parquet files in place without loading them. missing for 10: any evidence of Iceberg or Delta Lake table support, explicit Parquet in-place query documentation, docs framing s3() as direct querying rather than ingestion, independent or hands-on corroboration.",
+    "evidenceIds": [
+      "obsessiondb-docs-36",
+      "obsessiondb-docs-29"
+    ]
   },
   {
     "productId": "obsessiondb",
     "storyId": "openness-api-parity",
     "verdict": "partial",
-    "quality": 4,
+    "quality": 3,
     "confidence": "medium",
-    "rationale": "Programmatic access is documented for the data plane: the native ClickHouse protocol and HTTP interface work with every client, and an official MCP server exposes tools to list services, run SQL, and read monitoring. CHKit adds typed commands to deploy schema and pipelines as code. However, no evidence shows a management API covering UI-side operations such as creating or resizing clusters, configuring alert rules and webhook destinations, managing SSO and roles, or controlling batch jobs. Missing for 10: a documented control-plane/management API, an explicit API-UI parity claim, programmatic cluster lifecycle and alerting configuration, and independent corroboration.",
+    "rationale": "ObsessionDB documents several programmatic surfaces. The native ClickHouse protocol and HTTP interface cover all SQL and data operations. Its MCP server offers tools to list services, run SQL and read monitoring. CHKit provides typed commands to deploy schema and pipelines as code. Nothing shows UI-level control-plane actions are exposed via an API, such as creating or resizing clusters, managing alert rules or webhook destinations, roles/SSO, or batch-job controls. missing for 10: a documented management/control-plane API, an explicit statement of API–UI parity, API coverage of cluster lifecycle/alerts/access control, independent corroboration.",
     "evidenceIds": [
       "obsessiondb-docs-5",
       "obsessiondb-docs-7",
       "obsessiondb-docs-11",
-      "obsessiondb-docs-20"
+      "obsessiondb-docs-29"
     ]
   },
   {
     "productId": "obsessiondb",
     "storyId": "openness-full-export",
     "verdict": "partial",
-    "quality": 3,
+    "quality": 4,
     "confidence": "low",
-    "rationale": "ObsessionDB documents plain MergeTree DDL and the native ClickHouse protocol and HTTP interface, so data stays readable by any stock ClickHouse client or engine, which keeps lock-in low. Its migration docs only describe moving data in, not exporting it out. Missing for 10: a documented export or offboarding path, a list of supported open export formats (e.g. Parquet/CSV to your own object storage), a bulk full-account export, and any independent or hands-on confirmation of leaving.",
+    "rationale": "ObsessionDB documents full ClickHouse compatibility: native protocol and HTTP interface, unchanged SQL and clients, plain MergeTree DDL, and the s3()/url() table functions working as documented. That implies data can be pulled out with standard ClickHouse tooling and object storage. However, the migration docs only describe moving data into ObsessionDB, and no export, egress, or offboarding path is documented. missing for 10: explicit documented bulk export of all data, open-format output (e.g., Parquet/CSV to object storage) described as an exit path, export of schema/metadata, independent corroboration of leaving.",
     "evidenceIds": [
       "obsessiondb-docs-5",
+      "obsessiondb-docs-29",
       "obsessiondb-docs-9",
+      "obsessiondb-docs-36",
+      "obsessiondb-docs-1",
       "obsessiondb-docs-2"
     ]
   },
@@ -2738,7 +2773,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Openness of source is a fair question for a managed database service, so the axis applies. However, nothing in the evidence shows ObsessionDB publishing its own code (the rebuilt storage layer, coordination layer, or CHKit) under an open license. Running the upstream official ClickHouse engine is a third-party component, not the product's own source, so it earns no credit.",
+    "rationale": "Openness of source is a fair question for a database service, so the axis applies. However, nothing in the evidence shows ObsessionDB's own code, including its rebuilt storage and coordination layer, published under an open license. The fact that it runs the official ClickHouse engine describes upstream software and earns no credit for this product's source availability.",
     "evidenceIds": []
   },
   {
@@ -2747,8 +2782,9 @@
     "verdict": "partial",
     "quality": 4,
     "confidence": "medium",
-    "rationale": "ObsessionDB presents itself as fully managed ClickHouse hosting. Its one route toward self-hosting is a BYOC mode in which 'your data never leaves your cloud or your hardware,' so the product can run in customer-controlled infrastructure, though nothing shows it is self-operable. The docs on moving a self-managed ClickHouse deployment describe migrating into ObsessionDB, not self-hosting it, so they earn no credit. Missing for 10: a downloadable or open-source distribution, self-managed install/operations docs, clarity on whether BYOC is customer-operated or vendor-operated, and independent corroboration.",
+    "rationale": "ObsessionDB is positioned as fully managed ClickHouse hosting, but it offers a BYOC deployment inside the customer's own AWS or Google Cloud account, and claims that in BYOC data never leaves \"your cloud or your hardware.\" That gives partial self-hosting, with the product running in customer infrastructure. Missing for 10: a documented standalone self-hosted install (on-prem binaries, containers or open-source release) that users run and operate themselves, clear evidence that BYOC is customer-operated rather than vendor-managed, documentation of the \"your hardware\" option, and independent or hands-on corroboration.",
     "evidenceIds": [
+      "obsessiondb-docs-30",
       "obsessiondb-docs-26",
       "obsessiondb-probe-1"
     ]
@@ -2759,8 +2795,9 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "ObsessionDB offers a BYOC deployment mode in which \"your data never leaves your cloud or your hardware,\" which lets a customer control where data physically resides. The evidence never documents choosing a region or residency for the fully managed service, and the BYOC claim is a single thin line. Missing for 10: documented region selection for managed clusters, a list of available regions/residency guarantees (e.g., EU-only), detailed BYOC docs, independent corroboration.",
+    "rationale": "ObsessionDB documents a choice of cloud for fully managed deployments (AWS, Google Cloud or Azure) and a BYOC option inside your own AWS or Google Cloud account where data never leaves your cloud. BYOC gives real control over where data lives, but no region picker or residency guarantee is documented for the managed service. missing for 10: explicit region selection for managed clusters, documented data-residency commitments (e.g. EU/US), a list of available regions, independent corroboration.",
     "evidenceIds": [
+      "obsessiondb-docs-30",
       "obsessiondb-docs-26"
     ]
   },
@@ -2770,7 +2807,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "An AI-training data policy or opt-out is a fair question for a managed database service, so the axis applies. The evidence pack has no statement about AI model training on customer data and no opt-out. BYOC 'data never leaves your cloud' and private networking are adjacent data-residency controls, not a no-training commitment, so they earn no credit.",
+    "rationale": "ObsessionDB is a managed data-hosting service, so a policy against using customer data for AI training is a fair question to ask of it. The evidence pack contains no AI-training opt-out or no-training policy. BYOC data residency, private networking and isolated compute are adjacent privacy controls and do not count as this capability.",
     "evidenceIds": []
   },
   {
@@ -2779,7 +2816,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "The evidence pack has no documented control over data retention or deletion: no retention policies, TTL settings, backup or log retention windows, or account and data purge guarantees. Related items do not count toward this story. BYOC data residency, point-in-time recovery, discardable agent branches and full query logging are adjacent capabilities. Generic MergeTree DDL and batch SQL jobs are only building blocks.",
+    "rationale": "The evidence pack documents backups, point-in-time recovery, time travel, disposable agent branches, and BYOC data residency. None of these is a user-controlled data retention policy (e.g., TTL or log/backup retention windows) or a documented deletion capability. ClickHouse compatibility might imply standard DELETE or TTL support, but this is never stated, so there is no documented capability for this story.",
     "evidenceIds": []
   },
   {
@@ -2788,7 +2825,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Telemetry opt-out is a fair question for a managed database service and its tooling, such as the CHKit CLI. However, nothing in the evidence pack documents any telemetry or usage-tracking opt-out. Adjacent privacy features (BYOC data residency, private networking, SSO/RBAC) are not telemetry controls and earn no credit.",
+    "rationale": "Telemetry and usage-tracking opt-out is a fair privacy question for a managed database service, so the axis applies. The pack has no documented way to disable vendor telemetry or usage tracking. BYOC data residency and full agent query logging are adjacent features and do not count as an opt-out control.",
     "evidenceIds": []
   },
   {
@@ -2797,11 +2834,12 @@
     "verdict": "partial",
     "quality": 6,
     "confidence": "medium",
-    "rationale": "ObsessionDB documents query-level monitoring that drills down to a single execution with its time breakdown and grouped error signatures. It also exposes the full stock ClickHouse observability surface, queryable across the whole cluster, which covers the query-profile half of the story. Execution-plan inspection (e.g. EXPLAIN) is never mentioned and is only implied by 'same SQL' ClickHouse compatibility. Per-query cost or resource attribution is not described either. Missing for 10: explicit execution-plan/EXPLAIN support, per-query resource or cost breakdown, independent or hands-on corroboration.",
+    "rationale": "ObsessionDB documents a searchable query stats table where you can drill down to a single execution, see its time breakdown, and review grouped error signatures. It also exposes the full stock ClickHouse observability surface, queryable across the whole cluster, which gives solid query-profiling support for finding slow or expensive queries. Execution plans (EXPLAIN-style plan inspection) are never explicitly documented and are only implied by the claim that every ClickHouse query works unchanged. missing for 10: explicit execution-plan/EXPLAIN documentation, per-query resource/cost profiling detail, independent or hands-on corroboration.",
     "evidenceIds": [
+      "obsessiondb-docs-32",
       "obsessiondb-docs-18",
       "obsessiondb-docs-20",
-      "obsessiondb-docs-1"
+      "obsessiondb-docs-29"
     ]
   },
   {
@@ -2810,7 +2848,7 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Cost controls are a fair axis for a managed ClickHouse service, but the pack documents no budgets, spend caps, auto-suspend of idle compute, or automatic killing of runaway queries. The closest items are adjacent and earn no credit. SQL-based alert rules with Slack and webhook destinations only notify; they do not stop anything. Pausing or cancelling batch jobs and resizing compute are manual operations, not automatic guards against overnight spend.",
+    "rationale": "Nothing in the evidence shows budgets, spend caps, auto-suspend of idle compute, or automatic termination of runaway queries. The SQL-threshold alert rules and Slack/webhook destinations only notify. Pausing or cancelling bulk jobs and resizing compute are manual operations. These are adjacent features that do not stop spend on their own, so they earn no credit for this story.",
     "evidenceIds": []
   },
   {
@@ -2819,17 +2857,23 @@
     "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "A governed semantic layer is a fair question for a managed analytics database, but the evidence never describes declaring metrics, dimensions, or joins once for queries and AI tools to share. CHKit's schema-as-code (docs-11) and the MCP raw-SQL tools (docs-7) are adjacent features, not a semantic model, so they earn no credit.",
+    "rationale": "A semantic layer is a fair question for a managed analytical database, so the axis applies. The evidence pack documents no feature for declaring metrics, dimensions, and joins once and having queries and AI tools resolve against them. Materialized views, dictionaries, and CHKit schema-as-code are developer building blocks or adjacent features, and the MCP tools only run raw SQL, so none of these earn credit.",
     "evidenceIds": []
   },
   {
     "productId": "obsessiondb",
     "storyId": "streaming-ingest-latency",
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "full",
+    "quality": 7,
     "confidence": "medium",
-    "rationale": "The evidence pack never documents a streaming ingestion API or any write-to-query freshness guarantee. It shows only that ObsessionDB accepts standard ClickHouse native and HTTP client connections, and that the migration checklist flags \"ingestion\" as a behavior that compute–storage separation changes. Generic protocol compatibility is not a documented streaming-ingestion capability with seconds-level visibility, so the axis applies but is unevidenced.",
-    "evidenceIds": []
+    "rationale": "ObsessionDB's documented ingestion page says INSERT, the Kafka table engine, and materialized views all work as documented. It also recommends async inserts so the server buffers small streaming writes into larger parts, and packed storage cuts object writes per part. Together these cover the core of a documented streaming ingestion path. Missing for 10: any stated ingest-to-query latency proving writes become queryable within seconds, independent or hands-on corroboration of streaming freshness, and detail on async-insert flush behavior on the object-storage layer.",
+    "evidenceIds": [
+      "obsessiondb-docs-36",
+      "obsessiondb-docs-37",
+      "obsessiondb-docs-38",
+      "obsessiondb-docs-5",
+      "obsessiondb-docs-3"
+    ]
   },
   {
     "productId": "obsessiondb",
@@ -2837,9 +2881,11 @@
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "ObsessionDB documents point-in-time recovery that 'rolls you back to any moment,' which covers restoring accidentally dropped or corrupted tables. There is no evidence of time-travel querying, meaning reading data as of a past timestamp without rolling back. Agent branches cover current production data, not historical states. Missing for 10: documented as-of/time-travel query syntax, details on retention window and restore granularity (per-table vs whole-cluster), in-depth recovery docs, independent or hands-on corroboration.",
+    "rationale": "First-party docs claim point-in-time recovery to any moment, so an accidental table drop becomes a quick cleanup. They also describe a 'time travel' feature that restores the database to an earlier point, backed by automated daily backups and object-storage durability. That covers the restore half of the story. Nothing shows querying data as of a past point without restoring, and recovery appears to work at database level rather than per table. Missing for 10: as-of / historical-snapshot querying, table-granular restore of dropped or corrupted tables, detailed recovery docs (retention window, procedure), independent or hands-on corroboration.",
     "evidenceIds": [
-      "obsessiondb-docs-23"
+      "obsessiondb-docs-23",
+      "obsessiondb-docs-35",
+      "obsessiondb-docs-31"
     ]
   },
   {

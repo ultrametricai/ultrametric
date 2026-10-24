@@ -1,12 +1,15 @@
 {
-  "hash": "ba840be737a76d49bf6c12d6c31b998506eea40b7028027f7d1cf30c05bd8433",
+  "hash": "24c91d524a264dee6db9b05a04ea1b7624c95b22dc576c8a55b1460b9d28d9d3",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "ObsessionDB is a managed ClickHouse service, so querying Iceberg, Delta, or Parquet in place is a fair question for it. However, the evidence never mentions open table formats or external file querying. The object-storage references describe its own MergeTree storage layer and a migration path that loads data into it, which is the opposite of in-place querying.",
-    "evidenceIds": [],
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "ObsessionDB's docs say the ClickHouse s3() and url() table functions \"work as documented,\" so files in object storage can be read through SQL. However, that mention sits in an ingestion context, and nothing shows querying Iceberg, Delta or even Parquet files in place without loading them. missing for 10: any evidence of Iceberg or Delta Lake table support, explicit Parquet in-place query documentation, docs framing s3() as direct querying rather than ingestion, independent or hands-on corroboration.",
+    "evidenceIds": [
+      "obsessiondb-docs-36",
+      "obsessiondb-docs-29"
+    ],
     "productId": "obsessiondb",
     "storyId": "open-table-formats"
   }

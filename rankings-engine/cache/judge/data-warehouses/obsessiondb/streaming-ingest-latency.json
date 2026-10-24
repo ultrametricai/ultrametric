@@ -1,12 +1,18 @@
 {
-  "hash": "b3e285eb9ae2deae4de03817e26cc1c0948317c02d758929681c6e4853112871",
+  "hash": "dc717f4e756d27178903e81b61e69f0b64da48097766fe01099df911136a1bc5",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "full",
+    "quality": 7,
     "confidence": "medium",
-    "rationale": "The evidence pack never documents a streaming ingestion API or any write-to-query freshness guarantee. It shows only that ObsessionDB accepts standard ClickHouse native and HTTP client connections, and that the migration checklist flags \"ingestion\" as a behavior that compute–storage separation changes. Generic protocol compatibility is not a documented streaming-ingestion capability with seconds-level visibility, so the axis applies but is unevidenced.",
-    "evidenceIds": [],
+    "rationale": "ObsessionDB's documented ingestion page says INSERT, the Kafka table engine, and materialized views all work as documented. It also recommends async inserts so the server buffers small streaming writes into larger parts, and packed storage cuts object writes per part. Together these cover the core of a documented streaming ingestion path. Missing for 10: any stated ingest-to-query latency proving writes become queryable within seconds, independent or hands-on corroboration of streaming freshness, and detail on async-insert flush behavior on the object-storage layer.",
+    "evidenceIds": [
+      "obsessiondb-docs-36",
+      "obsessiondb-docs-37",
+      "obsessiondb-docs-38",
+      "obsessiondb-docs-5",
+      "obsessiondb-docs-3"
+    ],
     "productId": "obsessiondb",
     "storyId": "streaming-ingest-latency"
   }

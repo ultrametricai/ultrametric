@@ -1,12 +1,17 @@
 {
-  "hash": "4dfd96fb5d260b5103b014c7d8a1f23982994962a7a471bd83b30c9bd47f2f41",
+  "hash": "d7ff499ba9c70edfb47729fa8fee831e4416459b7d09d140bb19ce9ac238ea39",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "none",
-    "quality": 0,
+    "verdict": "partial",
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "ObsessionDB is a managed ClickHouse service, so managed continuous ingestion is a fair axis to judge it on. However, the evidence documents no managed connector or pipe that picks up new files or events as they arrive. The nearest items fall short: a migration checklist that mentions ingestion, CHKit for deploying pipelines-as-code, and batch SQL jobs. None of these is a first-party, continuously running ingestion service that removes the user's own pipeline infrastructure.",
-    "evidenceIds": [],
+    "rationale": "The managed service supports the Kafka table engine and materialized views 'as documented' (docs-36), so the service itself can continuously consume event streams without separate pipeline workers. CHKit mentions deploying 'pipelines as code' (docs-11). However, the user must still supply a Kafka source, and s3()/url() are one-shot table functions rather than continuous file watchers. missing for 10: a documented managed continuous file-ingestion capability (auto-ingest on file arrival), a managed connector/ingest service that needs no user-run broker, and hands-on or independent corroboration.",
+    "evidenceIds": [
+      "obsessiondb-docs-36",
+      "obsessiondb-docs-37",
+      "obsessiondb-docs-11",
+      "obsessiondb-docs-34"
+    ],
     "productId": "obsessiondb",
     "storyId": "managed-continuous-ingestion"
   }
