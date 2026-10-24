@@ -1,7 +1,7 @@
 import fs from 'node:fs'
 import path from 'node:path'
 import { z } from 'zod'
-import type { VendorGeoLookup } from './geoPreference'
+import { GEO_COUNTRIES, type GeoSelection, type VendorGeoLookup } from './geoPreference'
 
 // Vendor region-availability EVIDENCE (founder GEO ask 2026-09-28: "do spikes into India, UK,
 // European countries … whether the vendors are tuned for those regions or work globally").
@@ -19,7 +19,12 @@ import type { VendorGeoLookup } from './geoPreference'
 // pages (components/WhereItWorks.tsx), rendered only when rows exist. Missing file = no lines
 // anywhere (honest degrade, never an error).
 
-export const VENDOR_GEO_COUNTRIES = ['US', 'UK', 'IN', 'DE', 'FR'] as const
+// The LatAm countries (BR…PE) joined in the 2026-10-23 LatAm vendor-geo wave (maintainer ask:
+// map vendor availability for Latin American geographies). They are vendor-geo-only countries:
+// rows exist and render on product pages, but the geo switcher (lib/geoPreference.ts
+// GEO_COUNTRIES) does not offer them, because no process geo notes cover them yet — so
+// vendorGeoLookup below ships switcher countries only.
+export const VENDOR_GEO_COUNTRIES = ['US', 'UK', 'IN', 'DE', 'FR', 'BR', 'MX', 'AR', 'CO', 'CL', 'PE'] as const
 export type VendorGeoCountry = (typeof VENDOR_GEO_COUNTRIES)[number]
 
 export const VENDOR_GEO_COUNTRY_META: Record<VendorGeoCountry, { label: string; flag: string }> = {
@@ -28,6 +33,12 @@ export const VENDOR_GEO_COUNTRY_META: Record<VendorGeoCountry, { label: string; 
   IN: { label: 'India', flag: '🇮🇳' },
   DE: { label: 'Germany', flag: '🇩🇪' },
   FR: { label: 'France', flag: '🇫🇷' },
+  BR: { label: 'Brazil', flag: '🇧🇷' },
+  MX: { label: 'Mexico', flag: '🇲🇽' },
+  AR: { label: 'Argentina', flag: '🇦🇷' },
+  CO: { label: 'Colombia', flag: '🇨🇴' },
+  CL: { label: 'Chile', flag: '🇨🇱' },
+  PE: { label: 'Peru', flag: '🇵🇪' },
 }
 
 export const VENDOR_GEO_STATUS_META: Record<VendorGeoStatus, { glyph: string; label: string }> = {
@@ -95,8 +106,15 @@ export function vendorGeoLookup(productIds: Iterable<string>, dir?: string): Ven
   const lookup: VendorGeoLookup = {}
   for (const e of loadVendorGeo(dir)) {
     if (e.country === 'US' || !wanted.has(e.productId)) continue
+    // Only switcher countries annotate: a selection can only ever BE one of GEO_COUNTRIES, so
+    // vendor-geo-only countries (the LatAm set) would ship bytes no component can read.
+    if (!isGeoSelection(e.country)) continue
     const byCountry = (lookup[e.productId] ??= {})
     byCountry[e.country] = { status: e.status, note: e.note, sourceUrl: e.sourceUrl }
   }
   return lookup
+}
+
+function isGeoSelection(country: VendorGeoCountry): country is VendorGeoCountry & GeoSelection {
+  return country !== 'US' && (GEO_COUNTRIES as readonly string[]).includes(country)
 }

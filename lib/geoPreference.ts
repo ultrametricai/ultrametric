@@ -175,9 +175,16 @@ export type VendorGeoByCountry = Partial<Record<GeoSelection, VendorGeoCell>>
 /** Keyed by productId; products the geo spike hasn't judged are simply absent (never guessed). */
 export type VendorGeoLookup = Record<string, VendorGeoByCountry>
 
+// Vendor-geo-only countries (the 2026-10-23 LatAm wave): jurisdictions/vendor-geo.json carries
+// availability rows for these and the "Geos supported" strip renders them, but the geo switcher
+// does not offer them — no process geo notes cover them yet, so a ?geo= selection cannot carry
+// one and vendorGeoLookup never ships their cells.
+export const VENDOR_GEO_ONLY_COUNTRIES = ['BR', 'MX', 'AR', 'CO', 'CL', 'PE'] as const
+export type VendorGeoOnlyCountry = (typeof VENDOR_GEO_ONLY_COUNTRIES)[number]
+
 /** One full "Geos supported" chip row (client-safe shape of lib/vendorGeo.ts entries). */
 export interface VendorGeoStripRow extends VendorGeoCell {
-  country: GeoCountry
+  country: GeoCountry | VendorGeoOnlyCountry
   checkedAt: string
 }
 
