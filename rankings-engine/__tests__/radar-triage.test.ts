@@ -82,6 +82,21 @@ describe('criterion checks', () => {
     expect(findDocsLink('<a href="/blog">Blog</a>', 'https://x.dev')).toBeNull()
   })
 
+  it('docs-link discovery skips static assets and docs URLs quoted in another site\'s query string (issue #434, Munito)', () => {
+    // A bundler-named stylesheet matches the /docs token on the hyphen word boundary.
+    expect(findDocsLink('<link rel="stylesheet" href="/assets/docs-DacSO4We.css">', 'https://x.dev')).toBeNull()
+    // The asset is skipped, not fatal: the real docs link later in the page still wins.
+    expect(
+      findDocsLink('<link rel="stylesheet" href="/assets/docs-DacSO4We.css"><a href="https://docs.x.dev/">Docs</a>', 'https://x.dev'),
+    ).toBe('https://docs.x.dev/')
+    // A docs URL inside a share/prompt link's query string is not that site's docs surface.
+    expect(findDocsLink('<a href="https://chat.example.com/?q=read%20https%3A%2F%2Fdocs.x.dev%2Fllms.txt">Ask</a>', 'https://x.dev')).toBeNull()
+    // Text documents and machine API descriptions stay eligible: only presentation assets skip.
+    expect(findDocsLink('<a href="https://docs.x.dev/llms.txt">llms.txt</a>', 'https://x.dev')).toBe('https://docs.x.dev/llms.txt')
+    expect(findDocsLink('<a href="/docs/index.md">Docs source</a>', 'https://x.dev')).toBe('https://x.dev/docs/index.md')
+    expect(findDocsLink('<a href="/api/docs/openapi.json">OpenAPI</a>', 'https://x.dev')).toBe('https://x.dev/api/docs/openapi.json')
+  })
+
   it('findAgenticSignal names the matched phrase; plain prose is not an agentic surface', () => {
     expect(findAgenticSignal('Full API reference for developers')).toBe('API reference')
     expect(findAgenticSignal('Ships an MCP server out of the box')).toBe('MCP server')

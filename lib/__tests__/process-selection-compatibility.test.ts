@@ -111,8 +111,13 @@ describe('existing judged selection compatibility', () => {
     // when the PR #449 review's scope fix pruned the off-scope payroll evidence from both gusto
     // packs and re-judged them: the entry's step cells move to the published zero rows. Merged
     // with the issue-378 counts at integration (2026-10-23): 2861 positive / 259 zero.
-    expect(positiveCount).toBe(2860)
-    expect(zeroCount).toBe(260)
+    // Re-pinned at the issue #434/#431 bring-up and the issue #401 monday flip (2026-10-23):
+    // munito-ai joins inference-providers and obsessiondb joins data-warehouses, so the newly
+    // judged products join the candidate lists of the steps mapped to those arenas, and the v5
+    // freshness cascade the monday llms.txt re-judge forced on project-management's stale
+    // caches re-partitions some incumbent cells between the positive and zero rows.
+    expect(positiveCount).toBe(2840)
+    expect(zeroCount).toBe(281)
     // Re-pinned at the v5 settlement wave 1 integration (2026-10-23): seven arenas
     // (cloud-platforms, cloud-storage, virtual-mailboxes, data-warehouses, sso-identity,
     // customer-data-platforms, team-chat) re-judged under the v5 boundary; the three arenas
