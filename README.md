@@ -57,8 +57,7 @@ The [full index of ranked markets](https://ultrametric.ai/arenas) is live, and t
 
 ## Open processes
 
-The founder [processes](open-processes/) are written step by step. Each step is routed agent, form, or
-human, timed, and marked by how hard it is to undo. The vendors that can run a step are
+The founder [processes](open-processes/) are written step by step. Each step has an [execution assessment](open-processes/execution.md), is timed, and marked by how hard it is to undo. The vendors that can run a step are
 listed on it, with their judged scores. See it live at
 [ultrametric.ai/processes](https://ultrametric.ai/processes).
 
@@ -70,7 +69,7 @@ listed on it, with their judged scores. See it live at
 - [Get a 409A valuation](https://ultrametric.ai/processes/get-a-409a-valuation) — establish the fair market value for stock options
 - [Set up mailing address](https://ultrametric.ai/processes/set-up-mailing-address) — a business mailing address for legal and banking purposes
 
-[![The Incorporate C-Corp process: the step diagram, each step routed agent, form, or human, with ranked vendor options per step](assets/readme/process-page.png)](https://ultrametric.ai/processes/incorporate-c-corp)
+[![The Incorporate C-Corp process: the step diagram, steps with ranked vendor options](assets/readme/process-page.png)](https://ultrametric.ai/processes/incorporate-c-corp)
 
 <!-- Legacy anchor: external links to #business-logic predate the open-modules/ rename. -->
 <a id="business-logic"></a>

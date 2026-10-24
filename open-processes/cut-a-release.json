@@ -33,7 +33,16 @@
       "metadata": {
         "route": "agent",
         "reversibility": "reversible",
-        "estimatedMinutes": 10
+        "estimatedMinutes": 10,
+        "execution": {
+          "category": "agent-native",
+          "basis": "local-work",
+          "rationale": "Compare Git revisions and draft release notes from the changes that remain in the candidate range.",
+          "evidence": [
+            "open-processes/cut-a-release.json#/parts/0/guidance"
+          ],
+          "reviewRequired": false
+        }
       }
     },
     {
@@ -64,7 +73,19 @@
         "reversibility": "reversible",
         "approvalRequired": true,
         "riskLevel": "medium",
-        "estimatedMinutes": 5
+        "estimatedMinutes": 5,
+        "execution": {
+          "category": "agent-native",
+          "basis": "documented-interface",
+          "rationale": "GitHub's reference API creates and reads the approved tag; workflow and check APIs inspect the triggered builds for that revision. Review release triggers before publishing the tag.",
+          "evidence": [
+            "open-processes/cut-a-release.json#/parts/1/guidance",
+            "https://docs.github.com/en/rest/git/refs#create-a-reference",
+            "https://docs.github.com/en/rest/actions/workflow-runs#list-workflow-runs-for-a-repository",
+            "https://docs.github.com/en/rest/checks/runs#list-check-runs-for-a-git-reference"
+          ],
+          "reviewRequired": false
+        }
       }
     },
     {
@@ -108,7 +129,17 @@
       "metadata": {
         "route": "agent",
         "reversibility": "reversible",
-        "estimatedMinutes": 5
+        "estimatedMinutes": 5,
+        "execution": {
+          "category": "agent-native",
+          "basis": "documented-interface",
+          "rationale": "GitHub's release API supports publishing the approved notes against the correct tag and checking the resulting page.",
+          "evidence": [
+            "open-processes/cut-a-release.json#/parts/2/guidance",
+            "https://docs.github.com/en/rest/releases/releases#create-a-release"
+          ],
+          "reviewRequired": false
+        }
       }
     },
     {
@@ -160,7 +191,16 @@
         "route": "agent",
         "reversibility": "reversible",
         "estimatedMinutes": 30,
-        "async": true
+        "async": true,
+        "execution": {
+          "category": null,
+          "basis": "unresolved",
+          "rationale": "Sentry covers error events, but the required support and on-call correlation uses separate unidentified sources.",
+          "evidence": [
+            "open-processes/cut-a-release.json#/parts/3/guidance"
+          ],
+          "reviewRequired": true
+        }
       }
     },
     {
@@ -191,7 +231,16 @@
       "metadata": {
         "route": "person",
         "reversibility": "reversible",
-        "estimatedMinutes": 15
+        "estimatedMinutes": 15,
+        "execution": {
+          "category": null,
+          "basis": "unresolved",
+          "rationale": "Recovery depends on the deployed platform, migrations and external effects; a generic code revert does not establish the mechanism.",
+          "evidence": [
+            "open-processes/cut-a-release.json#/parts/4/guidance"
+          ],
+          "reviewRequired": true
+        }
       }
     }
   ],

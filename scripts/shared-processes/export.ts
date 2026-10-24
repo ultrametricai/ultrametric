@@ -9,7 +9,7 @@ import { recordForExport } from '../../lib/shared-processes/instructions'
 
 const { values } = parseArgs({ options: { output: { type: 'string' }, example: { type: 'boolean', default: false } } })
 if (!values.output) throw new Error('Use --output <catalog.json>')
-const tracked = ['open-processes', 'schemas/shared-process.schema.json', 'lib/shared-processes', 'scripts/shared-processes/examples', 'scripts/shared-processes/export.ts']
+const tracked = ['open-processes', 'schemas/shared-process.schema.json', 'lib/execution.ts', 'lib/shared-processes', 'scripts/shared-processes/examples', 'scripts/shared-processes/export.ts']
 const dirty = execFileSync('git', ['status', '--porcelain', '--', ...tracked], { encoding: 'utf8' })
 if (dirty.trim()) throw new Error('Commit the shared records and schema before exporting a pinned catalog')
 const sourceRevision = execFileSync('git', ['rev-parse', 'HEAD'], { encoding: 'utf8' }).trim()

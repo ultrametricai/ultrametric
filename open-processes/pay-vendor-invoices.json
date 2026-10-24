@@ -26,7 +26,16 @@
       "metadata": {
         "route": "agent",
         "reversibility": "reversible",
-        "estimatedMinutes": 2
+        "estimatedMinutes": 2,
+        "execution": {
+          "category": null,
+          "basis": "unresolved",
+          "rationale": "QuickBooks bill records need reconciliation with purchasing and acceptance evidence; the approval and purchase-record source operations are not identified.",
+          "evidence": [
+            "open-processes/pay-vendor-invoices.json#/parts/0/guidance"
+          ],
+          "reviewRequired": true
+        }
       }
     },
     {
@@ -48,7 +57,17 @@
       "metadata": {
         "route": "agent",
         "reversibility": "reversible",
-        "estimatedMinutes": 1
+        "estimatedMinutes": 1,
+        "execution": {
+          "category": "agent-native",
+          "basis": "documented-interface",
+          "rationale": "Mercury exposes available and current balances for comparing the proposed run with the finance cash floor.",
+          "evidence": [
+            "open-processes/pay-vendor-invoices.json#/parts/1/guidance",
+            "https://docs.mercury.com/reference/getaccounts"
+          ],
+          "reviewRequired": false
+        }
       }
     },
     {
@@ -75,6 +94,17 @@
         "estimatedMinutes": 5,
         "verify": {
           "how": "Every bill in the run shows paid and the bank debit matches the run total."
+        },
+        "execution": {
+          "category": "agent-native",
+          "basis": "documented-interface",
+          "rationale": "Mercury's send-money and transaction APIs support the approved payments and status readback; the bill references can be reconciled from supplied records.",
+          "evidence": [
+            "open-processes/pay-vendor-invoices.json#/parts/2/guidance",
+            "https://docs.mercury.com/docs/send-money",
+            "https://docs.mercury.com/reference/listtransactions"
+          ],
+          "reviewRequired": false
         }
       }
     },
@@ -97,7 +127,17 @@
       "metadata": {
         "route": "agent",
         "reversibility": "reversible",
-        "estimatedMinutes": 1
+        "estimatedMinutes": 1,
+        "execution": {
+          "category": "agent-native",
+          "basis": "documented-interface",
+          "rationale": "Slack chat.postMessage can publish the approved payment summary and controlled record links to the designated channel.",
+          "evidence": [
+            "open-processes/pay-vendor-invoices.json#/parts/3/guidance",
+            "https://docs.slack.dev/reference/methods/chat.postMessage/"
+          ],
+          "reviewRequired": false
+        }
       }
     }
   ],

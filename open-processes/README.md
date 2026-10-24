@@ -19,8 +19,8 @@ the export revision and catalog hash identify the current authored content.
 Canonical records contain agent-agnostic process meaning. Private consumers preserve and
 pin operational bindings separately; `toolCall` and `functionCalls` are rejected at every
 canonical scope. Missing classifications and durations stay unknown. A complete duration
-aggregate exists only when every contributing estimate is known. Manifest version 2 allows
-missing estimates and unclassified steps, and keeps unbound machine steps approval-gated.
+aggregate exists only when every contributing estimate is known. Manifest version 2 adds optional execution assessments and keeps missing estimates, unresolved
+execution and unbound machine steps explicit. See [execution authoring](execution.md).
 
 The normal `pnpm shared:export --output <catalog.json>` format-1 bundle includes ordinary
 records' `entrySteps` and chains' ordered `taskIds`. It promotes selected authored verification,
@@ -37,8 +37,8 @@ The sections below document the legacy compatibility fields and external registr
 
 # Processes
 
-Every founder process and reactive situation is a step-by-step record, each step routed
-agent, form, or human, timed, and wired to the judged vendor rankings; the fixtures and
+Every founder process and reactive situation is a step-by-step record, each step assessed for execution,
+timed, and wired to the judged vendor rankings; the fixtures and
 the curation doctrine live here too. The artifact and company-field registries the steps
 exchange live in [`open-artifacts/`](../open-artifacts/).
 
@@ -122,9 +122,11 @@ run it, the step graph, and geo scoping. A trimmed real record (`form_002`, Get 
 }
 ```
 
-Every step carries a route: `agent` (an agent can run it), `form` (a manual web form — no
-API), `person` (human judgment or computer use), and `person` steps can additionally be marked
-`legalSignature` — the true human floor, a legally required signature/attestation.
+The historical routes in this abbreviated example are retained in canonical metadata.
+Current execution assessments distinguish Agent Native, Agent Computer Use, Human Online
+and Human Offline. The EIN preparation is local agent work; the IRS online application
+retains its human owner, and storage needs a verified destination. Signature and approval
+requirements remain independent properties. See [execution authoring](execution.md).
 
 ## Reversibility
 
@@ -363,7 +365,7 @@ The diagram is `form_001` (Incorporate C-Corp) from canonical `incorporate-c-cor
 `scripts/generate-process-diagram.mjs` draws the unfiltered operational projection's `dag.nodes` and
 `dag.edges`, nothing invented, and is re-run when the definition changes. Glyphs: 🤖 `agent` ·
 📝 `form` (manual web form) · 🧑 `person` · ✍ a `person` step with `legalSignature`
-(legally required human signature).
+(legally required human signature). Presentation adoption of execution assessments is deferred.
 
 <p align="center"><img src="assets/incorporate-c-corp.svg" alt="Incorporate C-Corp step graph" width="700"></p>
 
@@ -395,9 +397,10 @@ Additive optional fields keep the version. Consumers must reject unsupported ver
 and ignore unknown optional fields. A manifest URL serves the current version; breaking
 changes must update builders, routes, consumer checks, tests and this contract together.
 
-Version 2 preserves missing estimates as an absent `estimatedMinutes` and unknown execution
-modes as `kind: "unclassified"`. Consumers preserve these unknowns and require classification
-before execution. Public canonical records contain no private operation bindings; private
+Version 2 adds optional `execution` content assessments alongside the existing executor
+`kind`. Existing kind, routing and approval semantics remain unchanged. Content consumers
+use the assessment for category labels and review queues. Missing estimates remain absent
+and missing routes retain `kind: "unclassified"`. Public canonical records contain no private operation bindings; private
 consumers join their version-pinned bindings before deriving call-based approval behavior.
 
 Executors must obtain explicit human approval for steps marked `approvalRequired`.

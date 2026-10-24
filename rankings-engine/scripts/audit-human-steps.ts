@@ -1,3 +1,4 @@
+import type { Execution } from '../../lib/execution'
 // Human-step audit: for every non-agent DAG node in the process corpus (route 'form' or
 // 'person'), one LLM pass authors a SPECIFIC root-cause sentence for why the step is human
 // today, plus a computer-use feasibility verdict — replacing the three generic hardcoded
@@ -26,7 +27,7 @@ import { gapWhy } from '../../lib/processSim'
 import { llmJson } from '../llm'
 import { CACHE_DIR, DATA_DIR, writeJson } from '../paths'
 
-export const AUDIT_PROMPT_VERSION = 'v1'
+export const AUDIT_PROMPT_VERSION = 'v2-execution'
 
 // Steps per LLM call — 147 nodes ≈ 13 batches.
 const MAX_STEPS_PER_CALL = 12
@@ -58,6 +59,7 @@ export interface AuditTarget {
   nodeId: string
   stepKey: string // `${taskId}:${nodeId}` — the id the LLM answers with
   label: string
+  execution?: Execution
   route: 'form' | 'person'
   async: boolean
   approvalRequired: boolean
@@ -75,6 +77,7 @@ export function auditHash(t: AuditTarget, promptVersion: string): string {
   const payload = JSON.stringify({
     label: t.label,
     route: t.route,
+    execution: t.execution,
     async: t.async,
     approvalRequired: t.approvalRequired,
     riskLevel: t.riskLevel,
@@ -105,6 +108,7 @@ export function enumerateAuditTargets(tasks: ProcessTask[]): AuditTarget[] {
         stepKey: `${task.id}:${node.id}`,
         label: node.label,
         route,
+        execution: node.execution,
         async: node.async ?? false,
         approvalRequired: node.approvalRequired ?? false,
         riskLevel: node.riskLevel ?? null,
@@ -168,6 +172,7 @@ For each step return:
 - "computerUseWhy": one sentence. For "drivable"/"assist": what exactly the agent would drive (which portal, form, or flow). Otherwise: precisely why computer use cannot substitute.
 
 Rules:
+- This feasibility audit does not assign execution categories or prove an interface works. Preserve the authoritative execution assessment, its uncertainty, human responsibilities and approval properties. Agent Native requires documented tool/API execution or local work; Agent Computer Use requires evidence from the actual browser/computer interface. Human Online and Human Offline distinguish the human medium. Signatures, risk and jurisdiction are properties. Never infer a capability from a hypothetical API or vendor listing.
 - Distinguish capability from authority: "the screens exist" does not make an authority-gated step drivable. Attorney sign-off is a policy gate even though clicking Approve is trivial.
 - Steps marked async:true default to "third-party-wait" — choose a different value ONLY when the step genuinely has an operable surface or gate, and justify it in computerUseWhy.
 - A keyword-classifier hint is provided per step. It is a hint only — override it whenever the step's reality differs.
@@ -180,7 +185,8 @@ export function auditPrompt(targets: AuditTarget[], extra = ''): string {
     .map((t) => {
       const desc = t.taskDescription.length > 180 ? `${t.taskDescription.slice(0, 180)}…` : t.taskDescription
       const facts = [
-        `route: ${t.route}`,
+        `legacy route: ${t.route}`,
+        `execution assessment: ${JSON.stringify(t.execution ?? null)}`,
         `async: ${t.async}`,
         `approvalRequired: ${t.approvalRequired}`,
         t.riskLevel ? `riskLevel: ${t.riskLevel}` : null,

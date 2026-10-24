@@ -29,7 +29,8 @@ const base: PromptTarget = {
   label: 'Add DNS records',
   route: 'agent',
   async: false,
-  approvalRequired: true,
+  approvalRequired: false,
+  legalSignature: false,
   actionUrl: null,
   functionCalls: [{ method: 'POST /zones/{id}/dns_records', type: 'rest', description: 'Add SPF/DKIM records' }],
   vendor: 'cloudflare',
@@ -44,6 +45,64 @@ const base: PromptTarget = {
 // ---------------------------------------------------------------------------
 
 describe('validatePrompt', () => {
+  it('preserves the human signature boundary independently of category and audit', () => {
+    const signature = enumeratePromptTargets(loadProcesses(DATA_DIR)).find(t => t.stepKey === 'sit_009:n6')!
+    expect(signature.legalSignature).toBe(true)
+    expect(generationPrompt(signature)).toContain('legalSignature: a human must perform the signature')
+    const body = `${signature.arenaId ? VENDOR_PLACEHOLDER : ''} ${words(150)}`
+    expect(validatePrompt(signature, `${body} Stop for human sign-off. Sign on my behalf.`)).toMatch(/human's behalf/)
+    for (const category of ['agent-native', 'agent-computer-use', 'human-online', 'human-offline', null, undefined] as const) {
+      const target: PromptTarget = { ...base, legalSignature: true, execution: category === undefined ? undefined : {
+        category, basis: category === null ? 'unresolved' : category === 'agent-native' ? 'local-work' : category === 'agent-computer-use' ? 'browser-evidence' : 'human-work',
+        rationale: 'Fixture', evidence: ['fixture'], reviewRequired: false,
+      } }
+      const text = `${VENDOR_PLACEHOLDER} ${words(150)}`
+      expect(validatePrompt(target, `${text} Stop for human sign-off. Sign on my behalf.`)).toMatch(/human's behalf/)
+      expect(validatePrompt(target, `${text} Signing remains a human step.`)).toMatch(/sign-off/)
+      expect(validatePrompt(target, `${text} Stop for human sign-off.`)).toMatch(/remains a human step/)
+      expect(validatePrompt(target, `${text} Stop for human sign-off. Do not sign on my behalf. Signing remains a human step.`)).toBeNull()
+    }
+  })
+
+  it('requires approval independently of category, route and historical audit', () => {
+    const targets = enumeratePromptTargets(loadProcesses(DATA_DIR))
+    for (const key of ['sw_011:n1', 'sales_001:n5']) {
+      const target = targets.find(t => t.stepKey === key)!
+      expect(target.approvalRequired).toBe(true)
+      expect(target.execution?.category).toBe('agent-computer-use')
+      const body = `${VENDOR_PLACEHOLDER} ${words(150)}`
+      expect(validatePrompt(target, body)).toMatch(/approvalRequired/)
+      expect(validatePrompt(target, `${body} Stop for human sign-off.`)).toBeNull()
+    }
+    for (const category of ['agent-native', 'agent-computer-use', 'human-online', 'human-offline', null] as const) {
+      const execution = { category, basis: category === null ? 'unresolved' as const : category === 'agent-native' ? 'local-work' as const : category === 'agent-computer-use' ? 'browser-evidence' as const : 'human-work' as const, rationale: 'Fixture', evidence: ['fixture'], reviewRequired: category === null }
+      const target = { ...base, approvalRequired: true, execution }
+      const body = `${VENDOR_PLACEHOLDER} The personal act remains a human step. ${words(150)}`
+      expect(validatePrompt(target, body)).toMatch(/sign-off/)
+      expect(validatePrompt(target, `${body} Stop for human sign-off.`)).toBeNull()
+    }
+  })
+
+  it('keeps unresolved generation context unresolved without a manual fallback', () => {
+    const targets = enumeratePromptTargets(loadProcesses(DATA_DIR))
+    for (const key of ['growth_015:n6', 'prod_002:n6']) {
+      const target = targets.find(t => t.stepKey === key)!
+      expect(target.execution?.category).toBeNull()
+      expect(generationPrompt(target)).toContain('EXECUTION NEEDS REVIEW')
+      expect(generationPrompt(target)).not.toContain('this is a manual step')
+      expect(generationPrompt(target)).not.toContain('let me execute')
+    }
+  })
+
+  it('preserves assessed human work and unresolved review even on a legacy agent route', () => {
+    const human: PromptTarget = { ...base, execution: { category: 'human-online', basis: 'human-work', rationale: 'Human signer', evidence: ['fixture'], reviewRequired: false } }
+    expect(validatePrompt(human, `${VENDOR_PLACEHOLDER} ${words(150)}`)).toMatch(/remains a human step/)
+    expect(validatePrompt(human, `${VENDOR_PLACEHOLDER} Signing remains a human step. ${words(150)}`)).toBeNull()
+    const unresolved: PromptTarget = { ...base, execution: { ...human.execution!, category: null, basis: 'unresolved', reviewRequired: true } }
+    expect(validatePrompt(unresolved, `${VENDOR_PLACEHOLDER} ${words(150)}`)).toMatch(/stop for human sign-off/)
+    expect(validatePrompt(unresolved, `${VENDOR_PLACEHOLDER} stop for human sign-off. ${words(150)}`)).toBeNull()
+  })
+
   it('enforces the word range', () => {
     expect(validatePrompt(base, `${VENDOR_PLACEHOLDER} ${words(50)}`)).toMatch(/words/)
     expect(validatePrompt(base, `${VENDOR_PLACEHOLDER} ${words(MAX_PROMPT_WORDS + 10)}`)).toMatch(/words/)
@@ -134,6 +193,7 @@ describe('promptTargetHash / generationPrompt / enumeration', () => {
     const h = promptTargetHash(base, STEP_PROMPT_VERSION)
     expect(promptTargetHash({ ...base }, STEP_PROMPT_VERSION)).toBe(h)
     expect(promptTargetHash({ ...base, label: 'Different' }, STEP_PROMPT_VERSION)).not.toBe(h)
+    expect(promptTargetHash({ ...base, legalSignature: true }, STEP_PROMPT_VERSION)).not.toBe(h)
     expect(promptTargetHash(
       { ...base, groundedCalls: [{ vendorName: 'X', method: 'GET /x', type: 'rest' }] },
       STEP_PROMPT_VERSION,
@@ -235,12 +295,14 @@ describe('open-rankings/step-prompts.json', () => {
     }
   })
 
-  it('loader smoke: stepPromptFor resolves committed entries and misses honestly', () => {
+  it('preserves access to all historical prompts during the content migration', () => {
     const first = entries[0]
     expect(stepPromptFor(first.taskId, first.nodeId)).toEqual(first)
+    expect(entries[0]).toEqual(first) // the published history is retained
     // growth_005 graduated to a covered market (optionsArenaId email-apis, 2026-09-23), so its
     // prompts carry the {{vendor}} placeholder instead of a hard-coded SendGrid.
     expect(stepPromptFor('growth_005', 'n1')?.prompt).toMatch(/\{\{vendor\}\}/)
+    for (const entry of entries) expect(stepPromptFor(entry.taskId, entry.nodeId)).toEqual(entry)
     expect(stepPromptFor('no_such_task', 'n1')).toBeNull()
   })
 })

@@ -205,7 +205,7 @@ describe('canonical catalog consumer contract', () => {
   it('checks generated drift without rewriting definitions or accepting an unindexed definition', () => {
     const root = mkdtempSync(path.join(os.tmpdir(), 'canonical-projection-'))
     temporary.push(root)
-    for (const file of ['lib/shared-processes/catalog.ts', 'lib/shared-processes/schema.ts', 'lib/shared-processes/projection.ts',
+    for (const file of ['lib/execution.ts', 'lib/shared-processes/catalog.ts', 'lib/shared-processes/schema.ts', 'lib/shared-processes/projection.ts',
       'scripts/shared-processes/project.ts', 'open-processes/generate-a-brand-logo.json']) {
       mkdirSync(path.dirname(path.join(root, file)), { recursive: true })
       cpSync(file, path.join(root, file))

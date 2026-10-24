@@ -11,7 +11,9 @@ itself stays in [`lib/`](../lib/).
 A simulated company is composed of real corpus processes
 ([canonical catalog](../open-processes/catalog.json)). The reader picks a
 handful of starting decisions; each decision selects which committed chains make up the
-journey, and the timeline replays their steps, each routed agent, form, or human. Vendor
+journey, and the timeline replays their steps, with legacy agent/form/person routing retained for simulation.
+The additive [execution assessment](../open-processes/execution.md) supplies current content
+categories independently of those simulation fields. Vendor
 picks come from the judged rankings (`lib/processRankings.ts` over
 [`open-rankings/`](../open-rankings/)), resolved server-side; nothing in the simulator
 re-judges a vendor or fabricates a score.

@@ -1,4 +1,5 @@
 import { z } from 'zod'
+import { executionSchema, validateExecution } from '../execution'
 
 const text = z.string().min(1).regex(/\S/)
 const id = z.string().min(1).max(160).regex(/^[a-zA-Z0-9][a-zA-Z0-9._-]*$/)
@@ -7,6 +8,7 @@ const reference = z.union([
   z.strictObject({ kind: z.enum(['vendor', 'category', 'product', 'rule', 'source', 'guidance']), id: text, role: text }),
   z.strictObject({ kind: z.literal('url'), url: webUrl, title: text.nullable(), description: text.nullable(), role: text }),
 ])
+const stepMetadata = z.object({ execution: executionSchema.optional() }).catchall(z.json())
 const note = z.strictObject({ text, references: z.array(reference).optional() })
 export const connectionSchema = z.strictObject({ from: id, to: id, option: id.optional(), when: text.nullable().optional() })
 export type Reference = z.infer<typeof reference>
@@ -37,19 +39,19 @@ export interface Part {
 }
 const optionSchema: z.ZodType<Option> = z.lazy(() => z.strictObject({
   id, title: text, summary: z.string(), when: text.nullable(), parts: z.array(partSchema),
-  links: z.array(connectionSchema).optional(), references: z.array(reference), notes: z.array(note), metadata: z.record(z.string(), z.json()),
+  links: z.array(connectionSchema).optional(), references: z.array(reference), notes: z.array(note), metadata: stepMetadata,
 }))
 const partSchema: z.ZodType<Part> = z.lazy(() => z.strictObject({
   id, kind: z.enum(['step', 'reference', 'decision']), title: text.nullable(), guidance: text.nullable(),
   when: text.nullable(), ref: id.nullable(), options: z.array(optionSchema), references: z.array(reference),
-  notes: z.array(note), metadata: z.record(z.string(), z.json()),
+  notes: z.array(note), metadata: stepMetadata,
 }))
 export const sharedRecordSchema = z.strictObject({
   schemaVersion: z.literal(1), id, kind: z.enum(['situation', 'process']), title: text, summary: z.string(),
   outcomes: z.array(text), guidance: text.nullable(), when: text.nullable().optional(), aliases: z.array(id).optional(),
   entrySteps: z.array(id).min(1).optional(), taskIds: z.array(id).min(1).optional(),
   parts: z.array(partSchema), links: z.array(connectionSchema), references: z.array(reference),
-  notes: z.array(note), metadata: z.record(z.string(), z.json()),
+  notes: z.array(note), metadata: stepMetadata,
   source: z.strictObject({ path: text, id: text, revision: z.string().regex(/^[a-f0-9]{40}$/), sha256: z.string().regex(/^[a-f0-9]{64}$/) }).optional(),
 })
 export type SharedRecord = z.infer<typeof sharedRecordSchema>
@@ -102,6 +104,8 @@ export function validateCatalog(input: unknown): SharedRecord[] {
       for (const part of parts) {
         if (allParts.has(part.id)) throw new Error(`${record.id}: duplicate nested part ID ${part.id}`)
         allParts.add(part.id)
+        validateExecution(part.metadata, `${scope}/${part.id}`)
+        for (const option of part.options) validateExecution({ ...part.metadata, ...option.metadata }, `${scope}/${part.id}/${option.id}`)
         if (part.kind === 'reference') {
           if (!part.ref || !byId.has(part.ref)) throw new Error(`${scope}/${part.id}: unresolved process reference`)
           children.push(part.ref)

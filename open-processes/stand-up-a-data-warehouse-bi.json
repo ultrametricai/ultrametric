@@ -52,7 +52,18 @@
             "producesArtifact": "data-warehouse",
             "approvalRequired": true,
             "riskLevel": "high",
-            "estimatedMinutes": 60
+            "estimatedMinutes": 60,
+            "execution": {
+              "category": null,
+              "basis": "unresolved",
+              "rationale": "Snowflake's create-warehouse and create-database references establish provisioning. The step also requires loading, limited test identities, report queries and measured usage; those operations are not established by the provisioning sources alone.",
+              "evidence": [
+                "open-processes/stand-up-a-data-warehouse-bi.json#/parts/0/options/0/summary",
+                "https://docs.snowflake.com/en/sql-reference/sql/create-warehouse",
+                "https://docs.snowflake.com/en/sql-reference/sql/create-database"
+              ],
+              "reviewRequired": true
+            }
           }
         },
         {
@@ -86,6 +97,16 @@
           "metadata": {
             "context": {
               "kind": "vendor"
+            },
+            "execution": {
+              "category": "agent-native",
+              "basis": "documented-interface",
+              "rationale": "BigQuery's bq CLI supports dataset creation, small loads and bounded query trials under the approved project.",
+              "evidence": [
+                "open-processes/stand-up-a-data-warehouse-bi.json#/parts/0/options/1/summary",
+                "https://docs.cloud.google.com/bigquery/docs/reference/bq-cli-reference"
+              ],
+              "reviewRequired": false
             }
           }
         },
@@ -113,6 +134,16 @@
           "metadata": {
             "context": {
               "kind": "vendor"
+            },
+            "execution": {
+              "category": null,
+              "basis": "unresolved",
+              "rationale": "The MotherDuck connection source establishes a client connection. Loading, changed-record behavior, interoperable export and measured trial cost need operation-specific evidence for the full trial.",
+              "evidence": [
+                "open-processes/stand-up-a-data-warehouse-bi.json#/parts/0/options/2/summary",
+                "https://motherduck.com/docs/key-tasks/authenticating-and-connecting-to-motherduck/connecting-to-motherduck/"
+              ],
+              "reviewRequired": true
             }
           }
         }
@@ -188,7 +219,16 @@
         "reversibility": "reversible",
         "approvalRequired": true,
         "riskLevel": "medium",
-        "estimatedMinutes": 60
+        "estimatedMinutes": 60,
+        "execution": {
+          "category": null,
+          "basis": "unresolved",
+          "rationale": "Segment is listed, but source-specific credentials, event ingestion and payload inspection are not established for the actual applications.",
+          "evidence": [
+            "open-processes/stand-up-a-data-warehouse-bi.json#/parts/1/guidance"
+          ],
+          "reviewRequired": true
+        }
       }
     },
     {
@@ -214,7 +254,16 @@
         "reversibility": "reversible",
         "approvalRequired": true,
         "riskLevel": "high",
-        "estimatedMinutes": 240
+        "estimatedMinutes": 240,
+        "execution": {
+          "category": "agent-native",
+          "basis": "local-work",
+          "rationale": "Develop and test warehouse transformation models against supplied samples with explicit row grain and edge cases.",
+          "evidence": [
+            "open-processes/stand-up-a-data-warehouse-bi.json#/parts/2/guidance"
+          ],
+          "reviewRequired": false
+        }
       }
     },
     {
@@ -245,7 +294,17 @@
         "reversibility": "reversible",
         "approvalRequired": true,
         "riskLevel": "medium",
-        "estimatedMinutes": 30
+        "estimatedMinutes": 30,
+        "execution": {
+          "category": "agent-computer-use",
+          "basis": "browser-evidence",
+          "rationale": "Segment documents warehouse connector setup and batch-loading behavior for the approved destination.",
+          "evidence": [
+            "open-processes/stand-up-a-data-warehouse-bi.json#/parts/3/guidance",
+            "https://www.twilio.com/docs/segment/connections/storage/warehouses.md"
+          ],
+          "reviewRequired": false
+        }
       }
     },
     {
@@ -271,7 +330,16 @@
         "reversibility": "reversible",
         "riskLevel": "medium",
         "estimatedMinutes": 120,
-        "async": true
+        "async": true,
+        "execution": {
+          "category": null,
+          "basis": "unresolved",
+          "rationale": "Failure replay and sync verification require the actual source, connector and warehouse configuration.",
+          "evidence": [
+            "open-processes/stand-up-a-data-warehouse-bi.json#/parts/4/guidance"
+          ],
+          "reviewRequired": true
+        }
       }
     },
     {
@@ -301,7 +369,17 @@
         "route": "agent",
         "reversibility": "reversible",
         "approvalRequired": true,
-        "estimatedMinutes": 120
+        "estimatedMinutes": 120,
+        "execution": {
+          "category": "agent-computer-use",
+          "basis": "browser-evidence",
+          "rationale": "Metabase documents dashboard building, filters and permissions for the approved reporting connection.",
+          "evidence": [
+            "open-processes/stand-up-a-data-warehouse-bi.json#/parts/5/guidance",
+            "https://www.metabase.com/docs/latest/dashboards/introduction"
+          ],
+          "reviewRequired": false
+        }
       }
     },
     {
@@ -326,7 +404,16 @@
         "route": "person",
         "reversibility": "reversible",
         "approvalRequired": true,
-        "estimatedMinutes": 240
+        "estimatedMinutes": 240,
+        "execution": {
+          "category": null,
+          "basis": "unresolved",
+          "rationale": "Metric calculation is local, but publication and controlled drill-through depend on the selected dashboard system.",
+          "evidence": [
+            "open-processes/stand-up-a-data-warehouse-bi.json#/parts/6/guidance"
+          ],
+          "reviewRequired": true
+        }
       }
     }
   ],

@@ -37,7 +37,16 @@
         "reversibility": "reversible",
         "approvalRequired": true,
         "riskLevel": "medium",
-        "estimatedMinutes": 120
+        "estimatedMinutes": 120,
+        "execution": {
+          "category": "agent-native",
+          "basis": "local-work",
+          "rationale": "Design the first infrastructure layout and cost assumptions from the supplied request flows and recovery needs.",
+          "evidence": [
+            "open-processes/set-up-cloud-infrastructure.json#/parts/0/guidance"
+          ],
+          "reviewRequired": false
+        }
       }
     },
     {
@@ -99,7 +108,17 @@
             "reversibility": "reversible",
             "approvalRequired": true,
             "riskLevel": "medium",
-            "estimatedMinutes": 20
+            "estimatedMinutes": 20,
+            "execution": {
+              "category": "agent-computer-use",
+              "basis": "browser-evidence",
+              "rationale": "AWS documents account signup and administrator setup; the owner retains root recovery and billing authorization.",
+              "evidence": [
+                "open-processes/set-up-cloud-infrastructure.json#/parts/1/options/0/summary",
+                "https://docs.aws.amazon.com/accounts/latest/reference/getting-started.html"
+              ],
+              "reviewRequired": false
+            }
           }
         },
         {
@@ -126,6 +145,16 @@
           "metadata": {
             "context": {
               "kind": "vendor"
+            },
+            "execution": {
+              "category": "agent-computer-use",
+              "basis": "browser-evidence",
+              "rationale": "Google Cloud documents project and billing administration; the downstream AWS-specific route remains unresolved.",
+              "evidence": [
+                "open-processes/set-up-cloud-infrastructure.json#/parts/1/options/1/summary",
+                "https://docs.cloud.google.com/resource-manager/docs/creating-managing-projects"
+              ],
+              "reviewRequired": false
             }
           }
         },
@@ -153,6 +182,16 @@
           "metadata": {
             "context": {
               "kind": "vendor"
+            },
+            "execution": {
+              "category": "agent-computer-use",
+              "basis": "browser-evidence",
+              "rationale": "Azure documents subscription administration in the portal; the downstream AWS-specific route remains unresolved.",
+              "evidence": [
+                "open-processes/set-up-cloud-infrastructure.json#/parts/1/options/2/summary",
+                "https://learn.microsoft.com/en-us/azure/cost-management-billing/manage/create-subscription"
+              ],
+              "reviewRequired": false
             }
           }
         }
@@ -211,7 +250,20 @@
         "reversibility": "reversible",
         "approvalRequired": true,
         "riskLevel": "high",
-        "estimatedMinutes": 30
+        "estimatedMinutes": 30,
+        "execution": {
+          "category": "agent-native",
+          "basis": "documented-interface",
+          "rationale": "AWS CLI operations create the VPC, routes and security groups and apply approved ingress rules. Connection probes from the permitted and excluded locations test the resulting network paths.",
+          "evidence": [
+            "open-processes/set-up-cloud-infrastructure.json#/parts/2/guidance",
+            "https://docs.aws.amazon.com/cli/latest/reference/ec2/create-vpc.html",
+            "https://docs.aws.amazon.com/cli/latest/reference/ec2/create-security-group.html",
+            "https://docs.aws.amazon.com/cli/latest/reference/ec2/create-route.html",
+            "https://docs.aws.amazon.com/cli/latest/reference/ec2/authorize-security-group-ingress.html"
+          ],
+          "reviewRequired": false
+        }
       }
     },
     {
@@ -254,7 +306,19 @@
         "reversibility": "reversible",
         "approvalRequired": true,
         "riskLevel": "high",
-        "estimatedMinutes": 30
+        "estimatedMinutes": 30,
+        "execution": {
+          "category": "agent-native",
+          "basis": "documented-interface",
+          "rationale": "AWS CLI operations create the RDS instance and snapshot and restore a test instance. Application-side SQL checks cover connection, migration and write/read behavior before relying on the restore path.",
+          "evidence": [
+            "open-processes/set-up-cloud-infrastructure.json#/parts/3/guidance",
+            "https://docs.aws.amazon.com/cli/latest/reference/rds/restore-db-instance-from-db-snapshot.html",
+            "https://docs.aws.amazon.com/cli/latest/reference/rds/create-db-instance.html",
+            "https://docs.aws.amazon.com/cli/latest/reference/rds/create-db-snapshot.html"
+          ],
+          "reviewRequired": false
+        }
       }
     },
     {
@@ -290,7 +354,20 @@
         "reversibility": "reversible",
         "approvalRequired": true,
         "riskLevel": "high",
-        "estimatedMinutes": 30
+        "estimatedMinutes": 30,
+        "execution": {
+          "category": "agent-native",
+          "basis": "documented-interface",
+          "rationale": "AWS CLI operations register task definitions, create and update the ECS service and retrieve its CloudWatch logs. HTTP checks verify the endpoint before and after the version change and rollback.",
+          "evidence": [
+            "open-processes/set-up-cloud-infrastructure.json#/parts/4/guidance",
+            "https://docs.aws.amazon.com/cli/latest/reference/ecs/register-task-definition.html",
+            "https://docs.aws.amazon.com/cli/latest/reference/ecs/create-service.html",
+            "https://docs.aws.amazon.com/cli/latest/reference/ecs/update-service.html",
+            "https://docs.aws.amazon.com/cli/latest/reference/logs/filter-log-events.html"
+          ],
+          "reviewRequired": false
+        }
       }
     },
     {
@@ -321,7 +398,19 @@
         "reversibility": "reversible",
         "approvalRequired": true,
         "riskLevel": "high",
-        "estimatedMinutes": 20
+        "estimatedMinutes": 20,
+        "execution": {
+          "category": "agent-native",
+          "basis": "documented-interface",
+          "rationale": "AWS IAM creates roles and scoped policies, and STS role sessions support testing a required and forbidden operation as the resulting identity. Apply the administrator's approved grants and remove diagnostic permissions.",
+          "evidence": [
+            "open-processes/set-up-cloud-infrastructure.json#/parts/5/guidance",
+            "https://docs.aws.amazon.com/en_us/cli/latest/reference/iam/put-role-policy.html",
+            "https://docs.aws.amazon.com/cli/latest/reference/iam/create-role.html",
+            "https://docs.aws.amazon.com/cli/latest/reference/sts/assume-role.html"
+          ],
+          "reviewRequired": false
+        }
       }
     },
     {
@@ -365,7 +454,16 @@
         "producesArtifact": "cloud-infrastructure",
         "approvalRequired": true,
         "riskLevel": "medium",
-        "estimatedMinutes": 20
+        "estimatedMinutes": 20,
+        "execution": {
+          "category": null,
+          "basis": "unresolved",
+          "rationale": "AWS is listed, but the monitoring collectors, paging destination and failure/recovery drill are not selected.",
+          "evidence": [
+            "open-processes/set-up-cloud-infrastructure.json#/parts/6/guidance"
+          ],
+          "reviewRequired": true
+        }
       }
     },
     {
@@ -402,7 +500,16 @@
         "route": "agent",
         "reversibility": "reversible",
         "riskLevel": "medium",
-        "estimatedMinutes": 30
+        "estimatedMinutes": 30,
+        "execution": {
+          "category": null,
+          "basis": "unresolved",
+          "rationale": "AWS resources do not identify the application's deployment and rollback path required by this environment test.",
+          "evidence": [
+            "open-processes/set-up-cloud-infrastructure.json#/parts/7/guidance"
+          ],
+          "reviewRequired": true
+        }
       }
     }
   ],
