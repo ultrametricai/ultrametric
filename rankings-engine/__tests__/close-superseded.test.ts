@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { closeSuperseded, listOpenItems, parseArgs, pickSuperseded, supersessionComment, type GhItem } from '../scripts/close-superseded'
+import { closeSuperseded, listOpenItems, parseArgs, pickSuperseded, searchPhrase, supersessionComment, type GhItem } from '../scripts/close-superseded'
 
 // Supersession hygiene for the recurring generators: the new issue/PR closes the previous
 // still-open one with a comment naming the successor. The gh runner is injected, so these tests
@@ -58,10 +58,36 @@ describe('listOpenItems', () => {
       // Loose server-side matching: both queries return an overlapping slice of OPEN.
       return JSON.stringify(OPEN.slice(0, 3))
     }
-    const items = listOpenItems('issue', ['vendor-radar: needs-human candidates', 'vendor-radar: candidates'], run)
+    const items = listOpenItems('issue', ['vendor-radar: needs-human candidates ', 'vendor-radar: candidates '], run)
     expect(calls[0]).toEqual(['issue', 'list', '--state', 'open', '--limit', '100', '--search', 'in:title "vendor-radar: needs-human candidates"', '--json', 'number,title'])
     expect(calls[1]).toEqual(['issue', 'list', '--state', 'open', '--limit', '100', '--search', 'in:title "vendor-radar: candidates"', '--json', 'number,title'])
     expect(items.map((i) => i.number).sort((a, b) => a - b)).toEqual([401, 410, 415])
+  })
+
+  it('drops a trailing partial token from the server-side phrase (the date-anchor regression)', () => {
+    // GitHub search matches whole words: in:title "… candidates 20" finds no title containing
+    // "2026-10-24", which left #467/#472 open past #477. The full prefix stays the startsWith
+    // filter; only the search phrase loses the partial token.
+    const calls: string[][] = []
+    const run = (args: string[]): string => {
+      calls.push(args)
+      return JSON.stringify(OPEN)
+    }
+    listOpenItems('issue', ['vendor-radar: needs-human candidates 20', 'vendor-radar: candidates 20'], run)
+    expect(calls[0][7]).toBe('in:title "vendor-radar: needs-human candidates"')
+    expect(calls[1][7]).toBe('in:title "vendor-radar: candidates"')
+  })
+})
+
+describe('searchPhrase', () => {
+  it('strips the last token of a prefix that ends mid-word, keeps boundary-ended prefixes whole', () => {
+    expect(searchPhrase('vendor-radar: needs-human candidates 20')).toBe('vendor-radar: needs-human candidates')
+    expect(searchPhrase('vendor-radar: needs-human candidates ')).toBe('vendor-radar: needs-human candidates')
+    expect(searchPhrase('accuracy-engine: weekly staleness report')).toBe('accuracy-engine: weekly staleness')
+  })
+
+  it('falls back to the full prefix when stripping would empty the phrase', () => {
+    expect(searchPhrase('vendor-radar:')).toBe('vendor-radar:')
   })
 })
 
