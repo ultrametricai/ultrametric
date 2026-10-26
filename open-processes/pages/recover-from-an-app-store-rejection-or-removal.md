@@ -30,15 +30,21 @@ Review and appeals run inside Apple's and Google's own consoles on their own jud
 2. **Diff your build and metadata against the cited guideline and assemble the evidence: screens, flows, policy docs** — agent-runnable · ~1 h
 3. **Decide the fork: fix and resubmit, or contest — contest only when the reviewer is genuinely wrong about your app** — human · ~30 min
 
-   - If "The rejection or removal is on Apple's App Store.": continue at "Apple path: resubmit the fixed build, or appeal to the App Review Board through the published flow"
-   - If "The rejection or removal is on Google Play.": continue at "Google Play path: follow the published removal/appeal flow in the Play Console help"
+   - If "The rejection or removal is on Apple's App Store": continue at step 4
+   - If "The rejection or removal is on Google Play": continue at step 5
 4. **Apple path: resubmit the fixed build, or appeal to the App Review Board through the published flow** — manual form/portal · ~45 min
+
+   *Follows step 3 (when The rejection or removal is on Apple's App Store).*
 
    - Do it yourself: [Apple: appeal an App Review decision](https://developer.apple.com/contact/app-store/?topic=appeal)
 5. **Google Play path: follow the published removal/appeal flow in the Play Console help** — manual form/portal · ~30 min
 
+   *Follows step 3 (when The rejection or removal is on Google Play).*
+
    - Do it yourself: [Play Console: app removals & appeals](https://support.google.com/googleplay/android-developer/answer/2477981)
 6. **If store revenue is material, tell users honestly what's happening and what still works** — human · ~30 min · hard to undo
+
+   *Follows step 4 or step 5.*
 7. **Wait for the review decision — the clock is the stores'** — human · ~3 d · async wait
 
 ---

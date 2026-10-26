@@ -40,10 +40,14 @@ Notion API and MCP support page/database creation. Fully automatable.
    - Canonical vendor: Notion
 4. **Create process templates** — agent-runnable · ~5 min
 
+   *Follows step 2.*
+
    Document one recurring process the team actually performs, starting with its trigger and required inputs. Describe the actions, decision points, responsible roles, and the output that means the work is finished. Turn that example into a reusable page template without forcing every process into identical sections. Include the maintainer and links to working forms or systems. Ask someone who performs the process to fill the gaps before others begin using the template.
 
    - Canonical vendor: Notion
 5. **Share with team** — agent-runnable · ~2 min · human approval required
+
+   *Follows step 3 or step 4.*
 
    Check that company-wide pages are readable by ordinary teammates and that restricted sections keep their intended audience. Share the landing-page link with a short explanation of where common answers live and how to suggest changes. Ask a teammate to find an answer they currently need; use the result to improve labels or navigation. Make the maintainer visible on important pages so missing or outdated guidance reaches the person who can fix it.
 

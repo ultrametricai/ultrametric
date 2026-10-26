@@ -42,6 +42,8 @@ Status pages, monitors, and DNS are fully API-driven; the SLA’s credit terms n
    - Sources: [Set up a primary DNS zone](https://developers.cloudflare.com/dns/zone-setups/full-setup/setup/) · [Working with SSL certificates](https://vercel.com/docs/domains/working-with-ssl)
 4. **Draft the SLA (uptime target, credits)** — agent-runnable · ~30 min
 
+   *Follows step 1.*
+
    Draft the SLA from the service measurements and customer commitments the company can actually support. Define the covered service, measurement window, outage calculation, exclusions, claim process and proposed remedy. Work through an outage example with engineering and finance, including what data establishes the event and how the credit would be calculated. Mark commercial choices and unresolved terms for counsel, keeping the internal reliability target distinct from the promise proposed for the contract.
 
    - Sources: [Google SRE implementing SLOs](https://sre.google/workbook/implementing-slos/)

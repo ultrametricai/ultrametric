@@ -23,20 +23,28 @@ All data sources (Mercury, QBO, Stripe) have APIs. System compiles metrics, calc
 
 1. **Pull bank balances** — agent-runnable · ~1 min
 
+   *Entry step — no prerequisite step.*
+
    Take a cash snapshot across the company’s accounts at one reporting cut-off. Separate available cash from restricted funds, investments and pending transfers, avoiding double counting of internal transfers. State currencies and the conversion basis for any consolidated total. Reconcile significant changes since the previous board report so the runway calculation starts from an explainable cash figure.
 
    - Canonical vendor: Mercury
 2. **Pull revenue from Stripe** — agent-runnable · ~2 min
+
+   *Entry step — no prerequisite step.*
 
    Pull processor activity for the reporting period, separating charges, refunds, disputes, fees and payouts. Reconcile it to the board’s revenue definition: collections, invoiced amounts and recognized revenue may differ. Use consistent currencies, time zones and comparison periods, and explain adjustments or unmatched amounts before the extract feeds the report.
 
    - Canonical vendor: Stripe
 3. **Pull expenses from QBO** — agent-runnable · ~2 min
 
+   *Entry step — no prerequisite step.*
+
    Pull expenses for the board period from the accounting system, checking entity, accounting basis and close status. Separate recurring operating costs from transfers, financing and unusual items in the analysis. Tie material categories to the ledger and show management adjustments alongside the original total so the founder can explain spending changes accurately.
 
    - Canonical vendor: QuickBooks
 4. **Calculate burn rate and runway** — agent-runnable · ~3 min
+
+   *Follows step 1 or step 2 or step 3.*
 
    Calculate operating cash burn for a stated period, showing one-time items separately. Reconcile usable cash to the balance schedule and model how hiring, collections and committed spending affect future cash. Show a downside case where useful. If the company is generating cash, explain that a simple cash-divided-by-burn ratio does not provide a meaningful runway estimate.
 5. **Compile board report draft** — agent-runnable · ~10 min

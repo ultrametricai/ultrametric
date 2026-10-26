@@ -251,6 +251,68 @@ function referenceLines(references: Reference[], ctx: PageContext): string[] {
 // The step walk
 // ---------------------------------------------------------------------------
 
+// Step numbering follows the graph, not the file: a topological walk from the entry steps
+// (Kahn's algorithm, authored part order as the tiebreak), so a branch never renders after
+// the steps that rejoin it. Validation (lib/shared-processes/catalog.ts validateFlow)
+// guarantees the links are acyclic and every step is reachable; the leftover append is
+// defense in depth only.
+function walkOrder(parts: Part[], links: Connection[]): Part[] {
+  if (links.length === 0 || parts.length < 2) return parts
+  const index = new Map(parts.map((p, i) => [p.id, i]))
+  const byId = new Map(parts.map((p) => [p.id, p]))
+  const incoming = new Map(parts.map((p) => [p.id, 0]))
+  for (const link of links) incoming.set(link.to, (incoming.get(link.to) ?? 0) + 1)
+  const ready = parts.filter((p) => (incoming.get(p.id) ?? 0) === 0).map((p) => p.id)
+  const out: Part[] = []
+  while (ready.length > 0) {
+    ready.sort((a, b) => index.get(a)! - index.get(b)!)
+    const id = ready.shift()!
+    out.push(byId.get(id)!)
+    for (const link of links.filter((l) => l.from === id)) {
+      const left = (incoming.get(link.to) ?? 0) - 1
+      incoming.set(link.to, left)
+      if (left === 0) ready.push(link.to)
+    }
+  }
+  for (const p of parts) if (!out.includes(p)) out.push(p)
+  return out
+}
+
+const trimEnd = (s: string): string => s.replace(/\.\s*$/, '')
+
+// How a step is reached, rendered on the step itself so conditional branches, rejoins, and
+// parallel entries read honestly instead of implying the numbered sequence. Returns null for
+// the plain case: one unconditional edge from the step rendered immediately above.
+function followsLine(
+  part: Part,
+  position: number,
+  ordered: Part[],
+  links: Connection[],
+  numberOf: Map<string, number>,
+  partById: Map<string, Part>,
+): string | null {
+  if (links.length === 0) return null
+  const into = links.filter((l) => l.to === part.id)
+  if (into.length === 0) {
+    const entries = ordered.filter((p) => !links.some((l) => l.to === p.id)).length
+    return position === 0 && entries === 1 ? null : 'Entry step — no prerequisite step.'
+  }
+  const previous = ordered[position - 1]
+  if (into.length === 1 && !into[0].option && !into[0].when && previous && into[0].from === previous.id) {
+    return null
+  }
+  const bySource = new Map<string, string[]>()
+  for (const l of into) {
+    const option = l.option ? partById.get(l.from)?.options.find((o) => o.id === l.option)?.title ?? l.option : null
+    const condition = option ? `option "${trimEnd(option)}"` : l.when ? `when ${trimEnd(l.when)}` : null
+    bySource.set(l.from, [...(bySource.get(l.from) ?? []), ...(condition ? [condition] : [])])
+  }
+  const descriptions = [...bySource.entries()]
+    .sort((a, b) => numberOf.get(a[0])! - numberOf.get(b[0])!)
+    .map(([from, conditions]) => `step ${numberOf.get(from)}${conditions.length > 0 ? ` (${conditions.join(' or ')})` : ''}`)
+  return `Follows ${descriptions.join(' or ')}.`
+}
+
 function optionBlock(option: Option, isDefault: boolean, ctx: PageContext, indent: string): string[] {
   const lines: string[] = []
   const markers = stepMarkers(option.metadata)
@@ -271,14 +333,23 @@ function optionBlock(option: Option, isDefault: boolean, ctx: PageContext, inden
   return lines
 }
 
-function partBlock(part: Part, index: number, record: { links: Connection[]; parts: Part[] }, ctx: PageContext): string[] {
+interface WalkContext {
+  links: Connection[]
+  ordered: Part[]
+  numberOf: Map<string, number>
+  partById: Map<string, Part>
+}
+
+function partBlock(part: Part, position: number, walk: WalkContext, ctx: PageContext): string[] {
   const lines: string[] = []
-  const titleOf = (id: string) => record.parts.find((p) => p.id === id)?.title ?? id
+  const index = position + 1
+  const follows = followsLine(part, position, walk.ordered, walk.links, walk.numberOf, walk.partById)
   if (part.kind === 'reference') {
     const slug = part.ref ? ctx.slugById.get(part.ref) : null
     const title = part.ref ? ctx.titleById.get(part.ref) ?? part.ref : part.id
     const link = slug ? `[${linkText(title)}](${slug}.md)` : title
     lines.push(`${index}. Run ${link}${part.when ? ` (when: ${part.when})` : ''}`)
+    if (follows) lines.push('', `   *${follows}*`)
     return lines
   }
   const defaultOption = part.options.find((o) => o.id === 'default')
@@ -286,6 +357,7 @@ function partBlock(part: Part, index: number, record: { links: Connection[]; par
   const markers = stepMarkers(meta)
   lines.push(`${index}. **${part.title ?? part.id}**${markers.length > 0 ? ` — ${markers.join(' · ')}` : ''}`)
   const detail: string[] = []
+  if (follows) detail.push(`*${follows}*`)
   if (part.when) detail.push(`When: ${linkLawRules(part.when, ctx)}`)
   const body = part.guidance ?? defaultOption?.summary ?? null
   if (body) detail.push(linkLawRules(body, ctx))
@@ -299,12 +371,13 @@ function partBlock(part: Part, index: number, record: { links: Connection[]; par
   bullets.push(...referenceLines([...part.references, ...(defaultOption?.references ?? [])], ctx))
   for (const note of part.notes) bullets.push(linkLawRules(note.text, ctx))
   // Decision branches and conditional edges: the outgoing links that carry an option or a
-  // predicate, rendered where the fork happens.
-  for (const link of record.links.filter((l) => l.from === part.id && (l.option || l.when))) {
+  // predicate, rendered where the fork happens; the target step carries the matching
+  // "Follows" line.
+  for (const link of walk.links.filter((l) => l.from === part.id && (l.option || l.when))) {
     const condition = link.option
       ? part.options.find((o) => o.id === link.option)?.title ?? link.option
       : link.when ?? ''
-    bullets.push(`If "${condition}": continue at "${titleOf(link.to)}"`)
+    bullets.push(`If "${trimEnd(condition)}": continue at step ${walk.numberOf.get(link.to)}`)
   }
   const listed = part.kind === 'decision'
     ? (part.options.length === 1 && defaultOption ? [] : part.options)
@@ -421,15 +494,23 @@ export function renderProcessPage(source: CatalogProcess, ctx: PageContext): str
       lines.push(`${i + 1}. ${chainSlug ? `[${linkText(title)}](${chainSlug}.md)` : title}`)
     })
     lines.push('')
-  } else if (record.parts.length > 0) {
+  }
+  const ordered = walkOrder(record.parts, record.links)
+  if (!taskIds && ordered.length > 0) {
+    const walk: WalkContext = {
+      links: record.links,
+      ordered,
+      numberOf: new Map(ordered.map((p, i) => [p.id, i + 1])),
+      partById: new Map(record.parts.map((p) => [p.id, p])),
+    }
     lines.push('## Steps', '')
-    record.parts.forEach((part, i) => {
-      lines.push(...partBlock(part, i + 1, { links: record.links, parts: record.parts }, ctx))
+    ordered.forEach((part, i) => {
+      lines.push(...partBlock(part, i, walk, ctx))
     })
     lines.push('')
   }
 
-  const country = countrySection({ parts: record.parts, metadata: m }, ctx)
+  const country = countrySection({ parts: ordered, metadata: m }, ctx)
   if (country.length > 0) lines.push(...country, '')
 
   const produces = (Array.isArray(m.produces) ? m.produces : []) as string[]

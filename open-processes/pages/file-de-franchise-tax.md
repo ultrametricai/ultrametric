@@ -23,15 +23,21 @@ Delaware franchise tax portal has no API. System calculates the tax, pre-fills d
 
 1. **Calculate franchise tax** — agent-runnable · ~5 min
 
+   *Entry step — no prerequisite step.*
+
    Confirm the Delaware entity type and year. For a corporation, reconcile authorized and issued shares, par values, gross assets and relevant charter changes to the records. Compare applicable calculation methods using current Division of Corporations instructions, resolving unusual cases with the tax adviser. Preserve the inputs and calculation so the selected amount can be explained and checked against the filing service.
 
    - Sources: [Delaware franchise-tax calculation](https://corp.delaware.gov/frtaxcalc/)
 2. **Gather officer and director info** — agent-runnable · ~2 min
 
+   *Entry step — no prerequisite step.*
+
    Collect the officer, director, business-address and other details requested for this corporation’s annual report. Compare appointments and addresses with the prior report and resolve changes or conflicting records. Check which information will become public before entering personal details. Use the verified current information when preparing the report’s certification.
 
    - Sources: [Delaware annual report and tax](https://corp.delaware.gov/frtax/)
 3. **File on Delaware portal** — manual form/portal · ~20 min · human approval required · hard to undo
+
+   *Follows step 1 or step 2.*
 
    Identify the corporation and reporting year in the official Delaware service using its verified file number. Enter the report details and reconcile the displayed tax with the reviewed calculation. Complete the declaration and submission through the company’s authorized filing route. Save the submitted report and check whether payment is included or outstanding. Resolve portal errors before treating the filing as complete.
 
@@ -56,12 +62,16 @@ Delaware franchise tax portal has no API. System calculates the tax, pre-fills d
    - Sources: [Delaware annual report and tax](https://corp.delaware.gov/frtax/)
 6. **Pay the California minimum franchise tax ($800, FTB)** — manual form/portal · ~15 min · hard to undo · only when operating in CA
 
+   *Entry step — no prerequisite step.*
+
    Assess the corporation’s California facts, tax year and treatment with the tax adviser, including minimum-tax applicability and first-year or other exceptions. Reconcile income-based tax and prior payments separately from the catalog’s stated minimum. Submit any resulting payment through the company’s authorized tax-payment route and retain the calculation and receipt. The California obligation must be established for this company before paying.
 
    - Canonical vendor: California Franchise Tax Board
    - Do it yourself: [FTB — C corporations (the $800 minimum franchise tax)](https://www.ftb.ca.gov/file/business/types/corporations/c-corporations.html)
    - Sources: [California FTB corporations](https://www.ftb.ca.gov/file/business/types/corporations/index.html)
 7. **File the Texas franchise tax report (May 15)** — manual form/portal · ~20 min · hard to undo · only when operating in US-TX
+
+   *Entry step — no prerequisite step.*
 
    Texas has no corporate income tax, but every taxable entity formed or doing business there files the annual franchise (margin) tax report, due May 15; entities at or below the no-tax-due threshold still file the Public Information Report or Ownership Report (law rule [us-tx.franchise-tax-report](../../open-law/US-TX/us-tx-franchise-tax-report.json)). Reconcile the margin computation with the tax adviser, file through the Comptroller's Webfile, and clear any forfeiture notices — forfeiture suspends the entity's right to sue. Keep the filed report and payment evidence with the tax records.
 

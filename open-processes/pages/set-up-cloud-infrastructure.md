@@ -61,17 +61,23 @@ AWS has comprehensive APIs. System can provision via CloudFormation/API, but arc
    - Sources: [Getting started with Amazon RDS](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/CHAP_GettingStarted.html) · [AWS IAM security best practices](https://docs.aws.amazon.com/IAM/latest/UserGuide/best-practices.html)
 5. **Configure ECS cluster** — agent-runnable · ~30 min · human approval required
 
+   *Follows step 3.*
+
    Run a versioned container image with its actual startup command, ports, health check, configuration and resource needs. On AWS, translate these into the chosen ECS task and service setup; use the selected provider's deployment design elsewhere. Create resources within the service owner's authorized account and spending scope. Inspect startup failures and logs, reach the exposed endpoint, then replace the test image with another version and back again. Keep the image and configuration versions paired so recovery restores the intended application.
 
    - Canonical vendor: AWS
    - Sources: [Getting started with Amazon ECS](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/getting-started.html)
 6. **Set up IAM roles** — agent-runnable · ~20 min · human approval required
 
+   *Follows step 3.*
+
    Separate access for people, deployment jobs and the running application. For each identity, list the resources and actions it needs and who may assume its role. Use temporary credentials where supported, and have the cloud or security administrator authorize the resulting grants. Test a required action and a forbidden one from the identity itself. Remove permissions added only for diagnosis once the working policy is understood, and keep credentials out of source control.
 
    - Canonical vendor: AWS
    - Sources: [AWS IAM security best practices](https://docs.aws.amazon.com/IAM/latest/UserGuide/best-practices.html)
 7. **Configure monitoring** — agent-runnable · ~20 min · human approval required
+
+   *Follows step 5.*
 
    Cover failures a user would notice: an unreachable endpoint, failed job, database error or exhausted resource. Choose measurements that distinguish those cases and label them by service and environment. Check what sensitive data enters logs before enabling collection under the service's data-access authority. Route actionable alerts to the responsible responder with a useful diagnostic link. Trigger a controlled failure and recovery; adjust thresholds or routing if the test creates noise without explaining what needs attention.
 

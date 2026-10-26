@@ -44,6 +44,8 @@ GitHub API and MCP fully support org/repo/team management.
    - Sources: [About protected branches](https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/managing-protected-branches/about-protected-branches)
 4. **Create teams and set access** — agent-runnable · ~5 min · human approval required
 
+   *Follows step 2.*
+
    Map contribution, administration and external collaboration to teams with the necessary repository access. Apply the repository owners' approved grants, then inspect effective access for representative members, including permissions inherited through other teams. Look for an ordinary contributor who can administer repositories or an outside collaborator who can see unrelated code. Give each team a membership owner responsible for updating grants during onboarding, role changes and departures.
 
    - Canonical vendor: GitHub

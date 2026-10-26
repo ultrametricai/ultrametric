@@ -65,6 +65,8 @@ Identify the provider account and test/live mode before any catalog change. Keep
 Coordinate the public release date with the approved new-customer and existing-customer policies. A preview can be prepared while required notices are pending; publish only on the agreed schedule and avoid implying that protected existing customers have already changed terms.
 5. **Announce the change to customers** — agent-runnable · ~30 min · hard to undo
 
+   *Follows step 3.*
+
    Write each customer notice for that recipient's actual transition group: old and new terms, effective date, required action and support contact. Follow the contract and jurisdiction review for notice or acceptance requirements. Send the commercial owner's agreed messages to the mapped recipients on the required schedule. Track responses and return disputed or unresolved accounts to the migration owner before their billing change.
 
 Check the actual recipient-to-subscription mapping and fill in the sender, exact effective date, required action and monitored support route. Keep missing dates or contacts as explicit draft gaps. A cohort summary is useful internally but is not a recipient-ready notice. Record delivery/notice evidence and any required acceptance before releasing that recipient’s billing change; failed, late or disputed notices hold the affected account.
@@ -82,6 +84,8 @@ Verify lifecycle status and scheduled changes in both the preview and readback. 
    - Canonical vendor: Stripe Billing
    - Sources: [Change the price of existing subscriptions](https://docs.stripe.com/billing/subscriptions/change-price)
 7. **Monitor churn and MRR through the transition** — agent-runnable · ~15 min
+
+   *Follows step 4 or step 6.*
 
    Compare affected cohorts with the pre-change baseline for recurring revenue, cancellations, downgrades and expansion. Reconcile planned transitions with actual invoices and charges to distinguish implementation errors from customer decisions. Read support complaints alongside the numbers. Report the window, cohort sizes and data gaps, and identify concrete corrections where billing behavior or customer understanding differs from the policy.
 

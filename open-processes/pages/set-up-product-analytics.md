@@ -50,11 +50,15 @@ PostHog's public REST API (live OpenAPI spec, official MCP server) covers projec
    - Sources: [PostHog product analytics](https://posthog.com/docs/product-analytics)
 5. **Set up funnels** — agent-runnable · ~10 min · human approval required
 
+   *Follows step 3.*
+
    Choose a real journey with a clear entry and completion event. Set its order, conversion window and identity rule, then test known paths: successful completion, abandonment, repetition and a return visit. Compare the funnel with those users' underlying events. Adjust the definition if alternate valid paths are being counted as abandonment, and label the included population so later comparisons use the same cohort.
 
    - Canonical vendor: PostHog
    - Sources: [PostHog product analytics](https://posthog.com/docs/product-analytics)
 6. **Enable session recording** — agent-runnable · ~5 min · human approval required
+
+   *Follows step 2.*
 
    Choose the question a replay should answer and the screens needed to answer it. Configure masking, excluded screens, network capture, retention and viewer access within the authorized privacy scope. Enter fictional sensitive values during a test and inspect the replay and captured requests, including embedded content. If a sensitive surface cannot be masked, exclude or stop recording it using the supported controls. Enable live capture only after the test shows the intended data boundary.
 

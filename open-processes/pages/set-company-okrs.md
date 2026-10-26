@@ -31,6 +31,8 @@ Linear/Notion APIs support project and page creation. OKR definition and alignme
    - Canonical vendor: Notion
 3. **Teams define team OKRs** — human · ~4 h · human approval required
 
+   *Follows step 1.*
+
    Have each team identify outcomes it can influence that contribute to the company objectives. Check proposed key results for clear ownership, a measurable baseline, and realistic capacity. Resolve dependencies with other teams before treating a target as a commitment, and identify necessary operational work outside the OKRs. Publish the team plan with its owners and measures so the next review can examine actual progress and the assumptions behind it.
 4. **Create Linear projects for key results** — agent-runnable · ~15 min · human approval required
 

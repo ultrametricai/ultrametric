@@ -37,17 +37,23 @@ Sentry has a full API for project/alert configuration. SDK integration is code-l
    - Sources: [Google SRE implementing SLOs](https://sre.google/workbook/implementing-slos/) · [PagerDuty escalation policies and schedules](https://docs.pagerduty.com/incident-management/schedules/escalation-policies-and-schedules)
 3. **Connect team chat notifications** — agent-runnable · ~5 min · human approval required
 
+   *Follows step 1.*
+
    Connect the error tracker to the designated team channel under the workspace's integration authority. Check channel membership and the diagnostic fields that messages expose. Trigger a synthetic error and confirm the message reaches the right channel with the environment and a working issue link. Identify who picks it up and how to mute or disconnect the integration if it leaks information or floods the channel.
 
    - Canonical vendor: Sentry
    - Sources: [Sentry sensitive data scrubbing](https://docs.sentry.io/platforms/javascript/data-management/sensitive-data/) · [PagerDuty escalation policies and schedules](https://docs.pagerduty.com/incident-management/schedules/escalation-policies-and-schedules)
 4. **Set up release tracking** — agent-runnable · ~5 min
 
+   *Follows step 1.*
+
    Use a release identifier that resolves to the exact build and source revision, and send the environment consistently. Where the code is bundled or compiled, upload the supported source maps or debug files through the authorized build job. Trigger an error in that build and inspect the resulting stack trace: it should name the expected release and show useful source locations.
 
    - Canonical vendor: Sentry
    - Sources: [Set up Sentry releases](https://docs.sentry.io/product/releases/setup/)
 5. **Install SDK in codebase** — agent-runnable · ~10 min · human approval required
+
+   *Follows step 1.*
 
    Follow the SDK instructions for the application's actual framework and runtime version. Decide where initialization runs and which request, user and breadcrumb fields may leave the application under its data-sharing policy. Filter sensitive content before transmission, then trigger a synthetic exception in testing. Inspect both the received payload and stack trace, and check that normal requests still work. Keep the integration easy to disable if it causes failures or sends unexpected data.
 

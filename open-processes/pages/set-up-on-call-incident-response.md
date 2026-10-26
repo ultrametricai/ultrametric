@@ -44,11 +44,15 @@ PagerDuty API fully supports schedules, escalation policies, and service configu
    - Sources: [PagerDuty escalation policies and schedules](https://docs.pagerduty.com/incident-management/schedules/escalation-policies-and-schedules)
 4. **Connect error-tracker alerting** — agent-runnable · ~10 min · human approval required
 
+   *Follows step 1.*
+
    Map urgent error conditions to the right incident service, environment and severity; leave informational errors out of the paging path. Connect the systems within the error-tracker and on-call owners' authorized scope, checking event content for sensitive data. Trigger a synthetic error, verify the incident and acknowledgement, and test its recovery behavior. Check whether repeated events group into an incident or produce separate pages, and adjust the supported routing if duplication obscures the failure.
 
    - Canonical vendor: Sentry
    - Sources: [PagerDuty escalation policies and schedules](https://docs.pagerduty.com/incident-management/schedules/escalation-policies-and-schedules) · [Sentry sensitive data scrubbing](https://docs.sentry.io/platforms/javascript/data-management/sensitive-data/)
 5. **Set up the incident chat channel** — agent-runnable · ~5 min · human approval required
+
+   *Follows step 3.*
 
    Set up the incident channel with a clear place for the current status, lead responder, runbook and decision log. Use the workspace's authorized membership and integration scope, especially where incident details could expose customer information. Run a short drill from alert to discussion and decision. Keep the fallback contact route available outside that chat service for responders to use when chat is unavailable.
 

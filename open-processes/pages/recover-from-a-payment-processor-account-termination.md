@@ -33,12 +33,18 @@ Data export and the checkout re-point are real API work while access lasts; the 
    - Do it yourself: [Stripe: reports & data exports](https://docs.stripe.com/stripe-reports)
 3. **File the appeal through the processor's own review channel, with evidence: business model, fulfillment proof, dispute history** — human · ~1 h
 
+   *Follows step 1.*
+
    - Do it yourself: [Stripe support (account reviews)](https://support.stripe.com/)
 4. **Choose the backup processor and start its underwriting now — onboarding/KYC runs in days, not hours** — human · ~1 h
+
+   *Follows step 1.*
 
    - Vendor options: Paddle, Paypal, Square
    - Ranked market: [payments](../../open-rankings/payments)
 5. **Request the PAN-level card-data migration to the new processor (a PCI-compliant processor-to-processor transfer)** — manual form/portal · ~45 min
+
+   *Follows step 2 or step 4.*
 
    - Canonical vendor: Stripe
    - Do it yourself: [Stripe: payments data migrations](https://docs.stripe.com/get-started/data-migrations)
@@ -48,6 +54,8 @@ Data export and the checkout re-point are real API work while access lasts; the 
    - Ranked market: [payments](../../open-rankings/payments)
 7. **Tell affected customers honestly if payouts, refunds, or renewals will wobble during the cutover** — human · ~45 min · hard to undo
 8. **Wait out the appeal decision and the reserve release — both run on the processor's stated schedule** — human · ~30 d · async wait
+
+   *Follows step 3 or step 7.*
 
 ---
 

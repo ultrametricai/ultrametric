@@ -29,8 +29,10 @@ A time-sensitive planning workflow for a US service provider who received substa
    Ask the recipient’s tax adviser to assess eligibility, current tax cost, forfeiture consequences and whether an election suits the recipient’s circumstances. Use the documented transfer, restrictions, value and amount paid. Check the deadline immediately: IRS instructions specify thirty days after transfer, with the stated weekend and holiday adjustment. The recipient decides whether to elect with a clear understanding of the consequences and available filing window.
 
    - Sources: [IRS Form 15620 and instructions](https://www.irs.gov/pub/irs-pdf/f15620.pdf)
-   - If "The eligible recipient affirmatively chooses the election after tax review.": continue at "If the recipient elects, prepare current Form 15620 or a compliant statement; verify content, signature, address, and copies."
+   - If "The eligible recipient affirmatively chooses the election after tax review": continue at step 3
 3. **If the recipient elects, prepare current Form 15620 or a compliant statement; verify content, signature, address, and copies.** — mode: prepare draft
+
+   *Follows step 2 (when The eligible recipient affirmatively chooses the election after tax review).*
 
    If the recipient elects, complete current Form 15620 or a compliant statement using the taxpayer details, property, transfer date, taxable year, restrictions, value and consideration. Check quantities and arithmetic against the equity records. The recipient reviews and signs the election; the filing copy should be ready for the verified IRS destination, with the required recipients’ copies and the filing deadline identified.
 

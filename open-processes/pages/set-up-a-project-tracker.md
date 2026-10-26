@@ -46,6 +46,8 @@ Linear has a comprehensive GraphQL API and MCP integration. Full workspace setup
    - Canonical vendor: Linear
 5. **Invite team members** — agent-runnable · ~3 min · human approval required
 
+   *Follows step 3.*
+
    Compare the team roster with current tracker members and prepare invitations for the missing people. Match each person to the right team and role, checking administrator permissions and any additional seat cost. Ask the tracker administrator to check the list and seat impact, then send access instructions with the team's workflow guide. Follow up on failed invitations and help the first new member find and update a real assigned task.
 
    - Canonical vendor: Linear

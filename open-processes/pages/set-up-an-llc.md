@@ -102,6 +102,8 @@ Formation services drive the state filing but expose limited APIs. The agent che
    - Sources: [SBA register your business](https://legacy.sba.gov/business-guide/launch-your-business/register-your-business)
 9. **Register for state taxes** — manual form/portal · ~20 min · hard to undo
 
+   *Follows step 7.*
+
    For a US LLC, assess employee locations, operations and sales for state tax accounts separately from foreign qualification. Use the tax adviser’s conclusions to set the account types and effective dates, then authorize the required filings. Capture agency confirmations and recurring obligations. A non-US formation route needs a local registration plan before any US state-tax step is treated as applicable.
 
    - Verify: The state tax authority issues an account or registration number for each tax you registered.

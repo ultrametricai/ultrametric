@@ -31,6 +31,8 @@ Brex/Ramp APIs fully support card limits, policies, and approval workflows.
    - Canonical vendor: Brex
 3. **Set up approval workflows** — agent-runnable · ~10 min · human approval required
 
+   *Follows step 1.*
+
    Configure expense routing by category and amount, with the appropriate reviewer, absence cover and exception route. Keep the requester from silently approving their own spending. Test ordinary, rejected and edited requests to see where they stall or reach the wrong person. Finance owns the approval rules; the administrator maintains them as roles and budgets change.
 
    - Canonical vendor: Brex
@@ -40,6 +42,8 @@ Brex/Ramp APIs fully support card limits, policies, and approval workflows.
 
    - Canonical vendor: Slack
 5. **Document policy and share** — agent-runnable · ~10 min · human approval required
+
+   *Follows step 3.*
 
    Publish the expense policy with its categories, limits, receipt requirements and exception process, using examples of common purchases. Explain submission, review and how employees resolve rejected items. Match the document to the live system settings with the policy owner before sharing it through the employee channel, and make the current policy and contact easy to find.
 

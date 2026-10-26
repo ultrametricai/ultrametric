@@ -31,20 +31,26 @@ Stripe/HubSpot APIs provide data. Email automatable. Actual save conversation is
 
 1. **Pull customer usage data** — agent-runnable · ~2 min
 
+   *Entry step — no prerequisite step.*
+
    Confirm the customer’s stated intent and the correct account/subscription first. If they have made a firm cancellation choice, proceed to the cancellation checks without waiting for usage analysis, a health score or a call. When the customer wants help, compare recent and earlier activity over a defined period, focusing on their intended outcome, active users and unresolved support issues. Build a short account timeline with links to observations and questions about their reason for leaving. Missing telemetry is unknown activity, not proof they stopped using the product.
 
    - Canonical vendor: Stripe
-   - If "The customer wants help evaluating a remedy rather than a direct cancellation.": continue at "Prepare save offer"
-   - If "The customer has made a firm cancellation choice; confirm identity, terms and authority before applying it.": continue at "Apply discount or cancel"
+   - If "The customer wants help evaluating a remedy rather than a direct cancellation": continue at step 3
+   - If "The customer has made a firm cancellation choice; confirm identity, terms and authority before applying it": continue at step 6
 2. **Check CRM health score** — agent-runnable · ~2 min
+
+   *Entry step — no prerequisite step.*
 
    When: The customer wants help evaluating a remedy; skip this step for a firm cancellation request.
 
    Inspect the CRM health score's components, update time and owner. Compare it with recent conversations, renewal context, support history and usage. Correct factual errors and flag unexplained scoring results, separating evidenced risks and customer statements from the account team's interpretation.
 
    - Canonical vendor: HubSpot
-   - If "The customer wants help evaluating a remedy rather than a direct cancellation.": continue at "Prepare save offer"
+   - If "The customer wants help evaluating a remedy rather than a direct cancellation": continue at step 3
 3. **Prepare save offer** — agent-runnable · ~5 min · human approval required
+
+   *Follows step 1 (when The customer wants help evaluating a remedy rather than a direct cancellation) or step 2 (when The customer wants help evaluating a remedy rather than a direct cancellation).*
 
    Match the customer's stated problem to a specific remedy, such as onboarding help, a fix or a plan change. Specify its delivery owner, limits, cost and contract effect. Resolve any feature commitment or discount outside the account team's authority before presenting the offer.
 
@@ -58,14 +64,18 @@ Verify support capacity before proposing an update cadence or delivery date: nam
 Offer a safe continuity step only when it is appropriate for the reported problem, and label an unverified workaround accordingly. Confirm the next update with its responsible owner before promising it; do not default to daily updates until resolution. Preserve the customer’s choice to cancel without another sales step.
 
    - Canonical vendor: Gmail
-   - If "The customer wants a call before deciding.": continue at "Schedule call"
-   - If "The customer has chosen the outcome and does not need a call.": continue at "Apply discount or cancel"
+   - If "The customer wants a call before deciding": continue at step 5
+   - If "The customer has chosen the outcome and does not need a call": continue at step 6
 5. **Schedule call** — human · ~30 min · async wait
+
+   *Follows step 4 (when The customer wants a call before deciding).*
 
    Offer call times with a timezone and an agenda based on the customer's concern. Include the people who can resolve it and send the invitation through the account team's agreed process. Record the accepted slot and preparation notes; an offered time remains tentative until the customer agrees.
 
 Make a call conditional on the customer wanting one. Do not require a meeting to carry out an otherwise authorized cancellation, and do not record an offered slot as accepted.
 6. **Apply discount or cancel** — agent-runnable · ~2 min · human approval required
+
+   *Follows step 1 (when The customer has made a firm cancellation choice; confirm identity, terms and authority before applying it) or step 4 (when The customer has chosen the outcome and does not need a call) or step 5.*
 
    Apply the customer's chosen outcome to the correct subscription and effective date. Check a concession's amount, duration and renewal effect, or a cancellation's access consequences and outstanding charges; treat any refund as a separate decision. Preview the exact change where supported and resolve anything outside billing authority. Apply it once, then read back the subscription and invoice state before confirming completion to the customer.
 

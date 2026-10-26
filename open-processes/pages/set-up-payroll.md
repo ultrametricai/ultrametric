@@ -23,6 +23,8 @@ Provider onboarding is a guided online form (needs EIN and bank account); the jo
 
 1. **Compare payroll providers** — agent-runnable · ~5 min
 
+   *Entry step — no prerequisite step.*
+
    Compare payroll providers using the actual entities, worker locations, pay types, benefits and accounting requirements. Ask them to walk through relevant setup, reporting, corrections and support, including work they leave to the employer. Compare complete costs and implementation needs with finance and the people lead. Identify registration or migration gaps before selecting the provider.
 
    - Vendor options: Gusto, Rippling, Deel, Justworks
@@ -74,6 +76,8 @@ Provider onboarding is a guided online form (needs EIN and bank account); the jo
    - Canonical vendor: Gusto
 4. **Register as a California employer with EDD e-Services** — manual form/portal · ~20 min · hard to undo · only when operating in CA
 
+   *Entry step — no prerequisite step.*
+
    If the payroll specialist determines California registration is required, gather EDD’s requested entity and employment facts and check for an existing account. The authorized representative enrolls or registers through e-Services for Business using the reviewed information. Distinguish portal access from an issued payroll-tax account, and pass confirmed identifiers to payroll. Follow up on pending registration and separately assigned returns or payments.
 
    - Canonical vendor: California EDD
@@ -81,8 +85,12 @@ Provider onboarding is a guided online form (needs EIN and bank account); the jo
    - Sources: [California EDD: Enroll in e-Services for Business](https://edd.ca.gov/en/Payroll_Taxes/Enroll_Employer_e-Services_Business)
 5. **Register for payroll tax in each state where employees work** — manual form/portal · ~30 min · hard to undo · only when operating in MULTI
 
+   *Entry step — no prerequisite step.*
+
    Give the payroll tax specialist the employee work and residence locations, employing entities and planned moves. Determine applicable state and local accounts, checking existing registrations before preparing new applications. Obtain authorization for each required filing, then connect issued identifiers to payroll and reporting responsibilities. Reassess when work locations change; reciprocity and other location-specific facts may affect the setup.
 6. **Register as a New York employer (NYS-100)** — manual form/portal · ~25 min · hard to undo · only when operating in US-NY
+
+   *Entry step — no prerequisite step.*
 
    New York employers register once for unemployment insurance, withholding, and wage reporting by filing the NYS-100 through New York Business Express; the Department of Labor runs the UI account and the Tax Department the withholding account from the same registration. Pass the issued identifiers to payroll, which then files the quarterly NYS-45 combined return. Report each new hire to the Tax Department within 20 days of the hiring date.
 
@@ -91,17 +99,23 @@ Provider onboarding is a guided online form (needs EIN and bank account); the jo
    - Sources: [NY DTF — withholding tax](https://www.tax.ny.gov/bus/wt/wtidx.htm)
 7. **Register for Texas unemployment tax with TWC** — manual form/portal · ~20 min · hard to undo · only when operating in US-TX
 
+   *Entry step — no prerequisite step.*
+
    The Texas Unemployment Compensation Act requires employers to register with the Texas Workforce Commission within 10 days of becoming liable (law rule [us-tx.unemployment-tax-registration](../../open-law/US-TX/us-tx-unemployment-tax-registration.json)), using the free online Unemployment Tax Registration service. Texas has no state individual income tax, so there is no state wage-withholding registration — the TWC account and quarterly wage reports are the Texas payroll obligations. Pass the issued TWC account number to payroll.
 
    - Do it yourself: [TWC — unemployment tax registration](https://www.twc.texas.gov/businesses/unemployment-tax-registration)
    - Sources: [TWC — unemployment tax program](https://www.twc.texas.gov/programs/unemployment-tax)
 8. **Register as a Washington employer via the business license application** — manual form/portal · ~25 min · hard to undo · only when operating in US-WA
 
+   *Entry step — no prerequisite step.*
+
    Washington employer accounts open through the state business license application: hiring (or planning to hire within 90 days) requires the application, which establishes the Employment Security Department unemployment account alongside the Department of Revenue registration. Washington has no state income-tax withholding; payroll instead handles ESD quarterly reports and the state premium programs the ESD employer pages describe. Pass the issued account identifiers to payroll.
 
    - Do it yourself: [WA DOR — apply for a business license](https://dor.wa.gov/open-business/apply-business-license)
    - Sources: [WA ESD — employer taxes](https://esd.wa.gov/employer-taxes)
 9. **Register for Florida reemployment tax (DR-1) and file the quarterly RT-6** — manual form/portal · ~20 min · hard to undo · only when operating in US-FL
+
+   *Entry step — no prerequisite step.*
 
    Florida employers register for reemployment tax with the Department of Revenue through the Florida Business Tax Application (Form DR-1), online or on paper, once the law's liability conditions are met. Florida has no state individual income tax, so there is no state wage-withholding registration — the reemployment account and the Employer's Quarterly Report (Form RT-6) are the Florida payroll obligations. Pass the issued account details to payroll and confirm the first RT-6 cycle.
 

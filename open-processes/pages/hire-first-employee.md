@@ -65,6 +65,8 @@ Gusto's Embedded Payroll API supports onboarding, pay schedules, and payroll; Ca
    - Canonical vendor: Gusto
 6. **Employee completes the hiring formalities: right-to-work verification and tax withholding forms** — human (legally required signature) · ~1 d · async wait
 
+   *Follows step 4.*
+
    Run the start-date formalities your jurisdiction requires: verify the employee's right to work, and collect the tax and withholding forms payroll needs for the first wage payment. The deadlines are statutory and run off the first day of employment, so calendar them against the start date. Keep identity and tax records restricted.
 
    - Verify: The jurisdiction's required right-to-work verification and tax forms are on file by their statutory deadlines; retain them, they are inspectable.
@@ -72,11 +74,15 @@ Gusto's Embedded Payroll API supports onboarding, pay schedules, and payroll; Ca
    - Sources: [USCIS: Completing Section 2](https://www.uscis.gov/i-9-central/completing-form-i-9/completing-section-2-employer-review-and-attestation) · [USCIS: Employment Eligibility Verification](https://www.uscis.gov/i-9) · [USCIS: Instructions for Form I-9](https://www.uscis.gov/sites/default/files/document/forms/i-9instr.pdf) · [IRS: Publication 15 (2026), Employer’s Tax Guide](https://www.irs.gov/publications/p15) · [IRS: Topic 753, Form W-4](https://www.irs.gov/taxtopics/tc753)
 7. **Set up benefits enrollment** — manual form/portal · ~10 min · human approval required
 
+   *Follows step 4.*
+
    Identify the enrollment tasks that apply under the selected plans and employment terms. Check eligibility, coverage start, employee contributions and any dependent information needed. Send the employee the relevant plan materials and enrollment route so they can make their own elections. Resolve incomplete or rejected enrollment with the benefits administrator, then reconcile accepted coverage and payroll deductions before confirming that benefits are active.
 
    - Canonical vendor: Gusto
    - Sources: [DOL: Health plans](https://www.dol.gov/index.php/agencies/ebsa/employers-and-advisers/plan-administration-and-compliance/health-plans)
 8. **Create company email** — manual form/portal · ~5 min · human approval required
+
+   *Follows step 4.*
 
    Use the company’s existing email suite and account-naming convention. Check the employee’s identity, company domain, license and access start date, including any existing account or alias that could conflict. The workspace administrator provisions the account under the normal access process. Send activation instructions securely and check that the employee can sign in and receive mail before handing off the mailbox as ready.
 
@@ -97,6 +103,8 @@ Gusto's Embedded Payroll API supports onboarding, pay schedules, and payroll; Ca
 
    - Canonical vendor: Slack
 10. **Grant stock options** — agent-runnable · ~15 min · human approval required · hard to undo
+
+   *Follows step 3.*
 
    Prepare the proposed award from the offer, current equity plan and grant workflow. Reconcile the recipient, award type, quantity, vesting and pricing support with counsel or the equity administrator. Obtain the required board or delegated approval before issuing documents or changing ownership records. Track execution and acceptance against the approved terms, with the grant linked to its authorization and resulting ledger entry.
 

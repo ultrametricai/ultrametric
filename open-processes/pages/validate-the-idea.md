@@ -36,12 +36,12 @@ An agent can draft the hypothesis, propose the method that fits the starting sit
 
    Match the method to the founder's starting situation instead of defaulting to a favorite technique. The deciding facts: whether anything usable exists yet, whether target users are reachable and how desperate their problem is, whether the product carries a price a customer can commit to before it is built, and whether live usage data already exists. Prove the value hypothesis before spending anything on growth (lore rule griffin-value-before-growth), and run the smallest build-measure-learn loop that can answer the hypothesis's most threatening open question (lore rule ries-build-measure-learn). Record why the chosen method fits the situation, so a negative result reads on the idea rather than on the method.
 
-   - If "Lean MVP launch": continue at "Instrument signup analytics"
-   - If "Pre-sale commitment test": continue at "Instrument signup analytics"
-   - If "Waitlist + ad-spend test": continue at "Instrument signup analytics"
-   - If "Problem-interview sprint": continue at "Run customer interviews"
-   - If "Concierge / manual MVP": continue at "Run customer interviews"
-   - If "Product/market-fit survey": continue at "Run customer interviews"
+   - If "Lean MVP launch": continue at step 4
+   - If "Pre-sale commitment test": continue at step 4
+   - If "Waitlist + ad-spend test": continue at step 4
+   - If "Problem-interview sprint": continue at step 5
+   - If "Concierge / manual MVP": continue at step 5
+   - If "Product/market-fit survey": continue at step 5
 
    Options:
      - **Problem-interview sprint** — human
@@ -102,12 +102,16 @@ An agent can draft the hypothesis, propose the method that fits the starting sit
        - Measure click-to-signup conversion — agent-runnable · ~15 min
 4. **Instrument signup analytics** — agent-runnable · ~10 min
 
+   *Follows step 3 (option "Lean MVP launch" or option "Pre-sale commitment test" or option "Waitlist + ad-spend test").*
+
    For an experiment with a digital signup or payment path, define the events needed to measure the response and exactly what triggers each event. Configure the chosen analytics within the company's agreed data and privacy limits. Make a test submission and inspect the recorded events, removing test traffic from results and noting tracking gaps. Interview-only tests and manual pilots can use their research or delivery records; add digital tracking only if it answers a question the experiment actually has.
 
    - Canonical vendor: PostHog
    - Vendor options: PostHog, Amplitude, Mixpanel
    - Ranked market: [product-analytics](../../open-rankings/product-analytics)
 5. **Run customer interviews** — human · ~8 h · async wait
+
+   *Follows step 3 (option "Problem-interview sprint" or option "Concierge / manual MVP" or option "Product/market-fit survey") or step 4.*
 
    Explore what the experiment's responses mean by talking with people who match the target customer. Ask about the problem, their current solution, and what would need to change for them to adopt the proposed offer. Reuse evidence from an interview sprint if that route already answered these questions, and recruit only for the gaps. Summarize what the conversations explain about observed behavior, keeping stated interest separate from a purchase or use decision.
 6. **Analyze signups and interview notes** — agent-runnable · ~15 min

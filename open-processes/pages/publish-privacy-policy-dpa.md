@@ -61,14 +61,18 @@ Policy generation, site publishing, and DPA signature routing are automatable. C
    - Canonical vendor: Vercel
    - Vendor options: Vercel, Cloudflare
    - Ranked market: [edge-platforms](../../open-rankings/edge-platforms)
-   - If "A customer contract needs a separately signed DPA.": continue at "Set up the DPA e-signature flow"
-   - If "No separately signed DPA is needed.": continue at "Maintain the subprocessor list"
+   - If "A customer contract needs a separately signed DPA": continue at step 4
+   - If "No separately signed DPA is needed": continue at step 5
 4. **Set up the DPA e-signature flow** — agent-runnable · ~15 min
+
+   *Follows step 3 (when A customer contract needs a separately signed DPA).*
 
    Populate the approved DPA with the correct contracting parties, service description and processing schedules. Check whether the customer contract already incorporates it and route requested changes to the legal reviewer. Send the approved agreement to verified signers in the agreed signature order. Link the executed agreement and signature evidence to the customer; an invitation or template link is still pending.
 
    - Canonical vendor: DocuSign
 5. **Maintain the subprocessor list** — agent-runnable · ~10 min
+
+   *Follows step 3 (when No separately signed DPA is needed) or step 4.*
 
    Reconcile the subprocessor list with engineering and procurement records. For each service, verify the legal entity, processing purpose, locations and relevant contract. Review proposed additions against customer notice or objection commitments before changing the public list. Preserve previous versions and completed notices so the privacy owner can explain which processors were disclosed and when.
 

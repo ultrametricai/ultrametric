@@ -55,12 +55,16 @@ Stripe API fully supports product, pricing, subscription, and portal management.
    - Sources: [Configure the customer portal](https://docs.stripe.com/customer-management/configure-portal)
 4. **Configure webhooks** — agent-runnable · ~5 min
 
+   *Follows step 2.*
+
    Map payment, failure and cancellation events to the application state they should change. Follow the provider's current webhook instructions to authenticate events and protect credentials. Exercise duplicate delivery, delayed events and processing failures; repeated or out-of-order notifications must not grant access twice or restore an obsolete state. Link event identifiers to processing results so failed updates can be reconciled before the production destination is enabled.
 
    - Verify: A test webhook delivery returns 2xx and shows delivered in the dashboard's webhook logs.
    - Canonical vendor: Stripe
    - Sources: [Receive Stripe events in your webhook endpoint](https://docs.stripe.com/webhooks)
 5. **Test subscriptions** — agent-runnable · ~10 min
+
+   *Follows step 3 or step 4.*
 
    In the provider's test environment, exercise purchase, renewal, payment authentication or failure, quantity and plan changes, cancellation and the enabled portal actions. Use fictional customers and supported test payment methods. For each scenario, compare the invoice, notification, application access and stored subscription state with the expected result. Keep reproducible test identifiers and resolve mismatches before allowing live customer billing.
 

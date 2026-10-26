@@ -53,11 +53,15 @@ Touring, negotiation, and the lease signature are human end-to-end; the agent mo
    - Canonical vendor: Mercury
 8. **Get the landlord a certificate of insurance** — manual form/portal · ~20 min
 
+   *Follows step 6.*
+
    Send the insurance broker the lease's coverage requirements and the landlord's requested certificate details. Ask the broker to identify whether the existing policy and endorsements meet those requirements, and price any necessary changes for the company's decision. Obtain the resulting certificate and send it through the landlord's required channel. Resolve outstanding coverage questions with the broker, and put renewal or replacement-certificate dates into the premises administration schedule.
 
    - Verify: The landlord accepts the certificate of insurance naming them as additional insured, per the lease's insurance clause.
    - Canonical vendor: Embroker
 9. **Set up internet, utilities, and access** — manual form/portal · ~1 h
+
+   *Follows step 6.*
 
    Plan internet, utilities, keys or badges, and installer access around the possession date and building rules. Check service availability before placing orders and get approval for new contracts or recurring charges. Coordinate the landlord, providers, and move owner so installation can occur when the space is accessible. Before the team moves in, check connectivity and entry, distribute access instructions, and make unresolved service issues visible to the person running the move.
 

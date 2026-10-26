@@ -33,10 +33,10 @@ An agent can pull the period's books and recompute the asserted mismatch; readin
    - Ranked market: [accounting](../../open-rankings/accounting)
 3. **Recompute what the notice asserts against what you filed — most notices are one specific mismatch** — agent-runnable · ~1 h
 4. **Engage your accountant (or tax counsel if the amount or issue is material)** — human · ~45 min
-5. **Respond by the notice's deadline: agree and pay, or contest with documentation** — manual form/portal · ~1 h · hard to undo
+5. **Sign the response where the notice requires a signed statement (some are made under penalty of perjury)** — human (legally required signature) · ~10 min · hard to undo
+6. **Respond by the notice's deadline: agree and pay, or contest with documentation** — manual form/portal · ~1 h · hard to undo
 
    - Do it yourself: [IRS document upload tool](https://www.irs.gov/help/irs-document-upload-tool)
-6. **Sign the response where the notice requires a signed statement (some are made under penalty of perjury)** — human (legally required signature) · ~10 min · hard to undo
 7. **If you disagree with the outcome, weigh a formal objection or appeal with your adviser** — human · ~30 min
 
    - Do it yourself: [IRS Independent Office of Appeals](https://www.irs.gov/appeals)
@@ -48,19 +48,19 @@ An agent can pull the period's books and recompute the asserted mismatch; readin
 
 - Step 1: The type code is the CP or LTR number printed on the notice; the IRS notice directory decodes it ([IRS: understanding your notice or letter](https://www.irs.gov/individuals/understanding-your-irs-notice-or-letter))
 - Step 4: Engage your CPA (or tax counsel if the amount or issue is material)
-- Step 5: The IRS document upload tool covers many notice types; otherwise respond on the channel the notice names ([IRS document upload tool](https://www.irs.gov/help/irs-document-upload-tool))
+- Step 6: The IRS document upload tool covers many notice types; otherwise respond on the channel the notice names ([IRS document upload tool](https://www.irs.gov/help/irs-document-upload-tool))
 - Step 7: The IRS Independent Office of Appeals hears the disagreement ([IRS Independent Office of Appeals](https://www.irs.gov/appeals))
 
 ### India
 
 - Income-tax notices (143(1) mismatches, 139(9) defective returns, 142(1) inquiries) land in the e-filing portal's e-Proceedings and are answered there by the notice's own date — the response flow is electronic end to end against your PAN. ([Income Tax e-filing (e-Proceedings)](https://www.incometax.gov.in/iec/foportal/))
 - Step 1: The section number names the notice type: a 143(1) mismatch, a 139(9) defective return, a 142(1) inquiry ([Income Tax e-filing (e-Proceedings)](https://www.incometax.gov.in/iec/foportal/))
-- Step 5: Answer in the e-filing portal's e-Proceedings by the notice's own date; the response flow is electronic end to end against your PAN ([Income Tax e-filing (e-Proceedings)](https://www.incometax.gov.in/iec/foportal/))
+- Step 6: Answer in the e-filing portal's e-Proceedings by the notice's own date; the response flow is electronic end to end against your PAN ([Income Tax e-filing (e-Proceedings)](https://www.incometax.gov.in/iec/foportal/))
 
 ### United Kingdom
 
 - HMRC's version is the compliance check or a decision letter — respond by the letter's own date, and if you disagree the route is a statutory review and then an appeal to the tax tribunal, most of it on 30-day windows stated in the decision itself. ([HMRC — disagree with a tax decision](https://www.gov.uk/tax-appeals))
-- Step 5: Respond to the compliance check or decision letter by the letter's own date ([HMRC — disagree with a tax decision](https://www.gov.uk/tax-appeals))
+- Step 6: Respond to the compliance check or decision letter by the letter's own date ([HMRC — disagree with a tax decision](https://www.gov.uk/tax-appeals))
 - Step 7: The route is a statutory review and then an appeal to the tax tribunal, most of it on 30-day windows stated in the decision itself ([HMRC — disagree with a tax decision](https://www.gov.uk/tax-appeals))
 
 ### Germany
@@ -72,13 +72,13 @@ An agent can pull the period's books and recompute the asserted mismatch; readin
 ### France
 
 - A proposition de rectification from the DGFiP opens its own stated reply window (30 days, extendable on request), and the réclamation through your espace professionnel on impots.gouv.fr is the formal contest route — answer by the letter's date, with your accountant. ([impots.gouv.fr — espace professionnel](https://www.impots.gouv.fr/professionnel))
-- Step 5: A proposition de rectification opens its own stated reply window (30 days, extendable on request); answer through your espace professionnel with your accountant ([impots.gouv.fr — espace professionnel](https://www.impots.gouv.fr/professionnel))
+- Step 6: A proposition de rectification opens its own stated reply window (30 days, extendable on request); answer through your espace professionnel with your accountant ([impots.gouv.fr — espace professionnel](https://www.impots.gouv.fr/professionnel))
 - Step 7: The réclamation through your espace professionnel on impots.gouv.fr is the formal contest route ([impots.gouv.fr — espace professionnel](https://www.impots.gouv.fr/professionnel))
 
 ### Portugal
 
 - An AT assessment or notice carries its own response window: answer through the portal's e-balcão, and if you disagree the formal route is the reclamação graciosa (120 days) and then judicial review — deadlines bind. ([Portal das Finanças — e-balcão](https://www.portaldasfinancas.gov.pt/))
-- Step 5: Answer through the Portal das Finanças e-balcão inside the notice's own response window ([Portal das Finanças — e-balcão](https://www.portaldasfinancas.gov.pt/))
+- Step 6: Answer through the Portal das Finanças e-balcão inside the notice's own response window ([Portal das Finanças — e-balcão](https://www.portaldasfinancas.gov.pt/))
 - Step 7: The formal route is the reclamação graciosa (120 days) and then judicial review; deadlines bind ([Portal das Finanças — e-balcão](https://www.portaldasfinancas.gov.pt/))
 
 ### Canada

@@ -51,11 +51,15 @@ Mailchimp API fully supports audience, campaign, and automation management.
    - Sources: [CAN-SPAM Act: A Compliance Guide for Business](https://www.ftc.gov/business-guidance/resources/can-spam-act-compliance-guide-business)
 4. **Set up welcome automation** — agent-runnable · ~10 min · human approval required
 
+   *Follows step 2.*
+
    Define welcome-sequence entry, message order, timing and exit rules from the signup promise. Test new signups, repeated profile events, missing personalization, unsubscribes and completed onboarding; existing users should not restart unintentionally. Activate the agreed audience rules and messages after those paths work, with a named person able to pause the sequence and investigate unexpected sends.
 
    - Canonical vendor: Mailchimp
    - Sources: [CAN-SPAM Act: A Compliance Guide for Business](https://www.ftc.gov/business-guidance/resources/can-spam-act-compliance-guide-business)
 5. **Configure signup forms** — agent-runnable · ~10 min · human approval required
+
+   *Follows step 2.*
 
    Ask only for the information the email program needs and explain what subscribers will receive. Implement the reviewed preference and confirmation choices. Test valid, invalid and duplicate submissions through the audience list and welcome sequence, including where opt-outs are stored. Once the site and marketing owners have cleared the form for publication, verify a controlled signup on the live page.
 

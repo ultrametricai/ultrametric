@@ -84,8 +84,10 @@ Document generation, signature routing, and cap table entry are automatable. The
    - Vendor options: Carta, Pulley
    - Ranked market: [equity-management](../../open-rankings/equity-management)
    - Sources: [Delaware General Corporation Law: Stock and dividends](https://delcode.delaware.gov/title8/c001/sc05/index.html) · [Delaware General Corporation Law: Meetings and stockholders](https://delcode.delaware.gov/title8/c001/sc07/index.html)
-   - If "An eligible founder's jurisdiction offers a transfer-date tax election and they have chosen it with tax advice.": continue at "Sign any tax election the jurisdiction requires on the founder stock transfer"
+   - If "An eligible founder's jurisdiction offers a transfer-date tax election and they have chosen it with tax advice": continue at step 6
 6. **Sign any tax election the jurisdiction requires on the founder stock transfer** — human (legally required signature) · ~10 min
+
+   *Follows step 5 (when An eligible founder's jurisdiction offers a transfer-date tax election and they have chosen it with tax advice).*
 
    For an eligible founder whose jurisdiction offers a transfer-date tax election and who has chosen it with their tax adviser, check the completed election against the actual property-transfer records. Verify taxpayer details, property, transfer date, restrictions, value, and amount paid before the taxpayer signs. Give the signed election to the person responsible for timely submission. Escalate unresolved eligibility or transfer-date questions promptly to the tax adviser.
 

@@ -80,10 +80,14 @@ Vanta API supports test monitoring and evidence collection. Policy creation and 
    - Sources: [AICPA SOC suite](https://www.aicpa-cima.com/resources/landing/system-and-organization-controls-soc-suite-of-services)
 7. **Employee security training** — human · ~2 d · async wait
 
+   *Follows step 5.*
+
    Teach staff the security practices they need for their access: handling customer information, reporting suspicious activity and getting help with account problems. Use examples from the company’s actual procedures. Use the agreed audience and invitation process, then track completion and follow up on missing participants. Questions that reveal unclear policy or unusable tools should become specific changes to the program.
 
    - Sources: [AICPA SOC suite](https://www.aicpa-cima.com/resources/landing/system-and-organization-controls-soc-suite-of-services)
 8. **Engage auditor** — human · ~7 d · async wait · human approval required · hard to undo
+
+   *Follows step 6 or step 7.*
 
    Discuss the requested report, system boundary, readiness gaps and evidence inventory with prospective auditors. Check qualifications, independence, scope, fees, evidence expectations and intended recipients. Ask how evidence collected by the compliance platform fits the examination. The company’s authorized representative signs the agreed engagement; control owners can then work from the auditor’s actual request list and scope.
 

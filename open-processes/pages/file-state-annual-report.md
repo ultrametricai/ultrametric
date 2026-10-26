@@ -23,6 +23,8 @@ State filing portals have no API — the filing is manual form work; gathering t
 
 1. **Gather filing details** — agent-runnable · ~5 min
 
+   *Entry step — no prerequisite step.*
+
    Identify the state report, entity type and period from the official record and current instructions. Compare requested addresses, officers or managers and agent details with the company’s records, resolving changes before certification. Keep private information in the filing workspace. Separate this report from any franchise-tax, income-tax or licensing work so the correct task is prepared.
 2. **File the annual report on the state portal** — manual form/portal · ~20 min · hard to undo
 
@@ -35,6 +37,8 @@ State filing portals have no API — the filing is manual form work; gathering t
    Save the submitted report, payment receipt and acceptance evidence under the correct entity and period. If review is pending, track that status until resolved. Update the compliance calendar from the state’s actual next requirement and make the files retrievable by the person responsible for the next cycle.
 4. **File the California Statement of Information (bizfile Online)** — manual form/portal · ~20 min · hard to undo · only when operating in CA
 
+   *Entry step — no prerequisite step.*
+
    Check the California entity’s Statement of Information obligation and filing period in bizfile Online. Establish the authorized filer’s required access and review the requested company details. Complete submission and fees through the entity’s authorized filing route. Save the filed statement and confirmation, then use this entity’s actual next filing schedule.
 
    - Canonical vendor: California Secretary of State
@@ -42,14 +46,20 @@ State filing portals have no API — the filing is manual form work; gathering t
    - Sources: [California Secretary of State bizfile](https://www.sos.ca.gov/business-programs/bizfile)
 5. **File the annual report in each registered state** — manual form/portal · ~30 min · hard to undo · only when operating in MULTI
 
+   *Entry step — no prerequisite step.*
+
    Review the current report or renewal requirements for every registered state and entity type. Determine what is due, the period covered and who will file it, including states with no report due this cycle. Submit approved filings and preserve their individual acceptance records. Check obligations against the official record when a notice is missing.
 6. **File the Nevada annual list and renew the state business license** — manual form/portal · ~20 min · hard to undo · only when operating in US-NV
+
+   *Entry step — no prerequisite step.*
 
    Nevada corporations file the annual list of officers and directors on or before the last day of the anniversary month of incorporation, with the $500 state business license renewal running alongside it and the list fee scaling with authorized stock (law rule [us-nv.annual-list-business-license](../../open-law/US-NV/us-nv-annual-list-business-license.json)). File through SilverFlume, the state business portal, and keep the declaration and receipts with the entity's compliance records. Defaulting corporations face revocation and reinstatement costs.
 
    - Do it yourself: [SilverFlume — Nevada business portal](https://www.nvsilverflume.gov/home)
    - Sources: [NRS Chapter 78 (annual list)](https://www.leg.state.nv.us/NRS/NRS-078.html)
 7. **File the Texas franchise tax report and Public Information Report** — manual form/portal · ~20 min · hard to undo · only when operating in US-TX
+
+   *Entry step — no prerequisite step.*
 
    Texas ties an entity's standing to the annual franchise tax report, due May 15; entities at or below the no-tax-due threshold still file the Public Information Report or Ownership Report (law rule [us-tx.franchise-tax-report](../../open-law/US-TX/us-tx-franchise-tax-report.json)). File through the Comptroller's Webfile and resolve any forfeiture notices promptly — forfeiture cuts off the right to sue and exposes officers to liability. Keep the filed report with the entity's compliance records.
 
@@ -58,6 +68,8 @@ State filing portals have no API — the filing is manual form work; gathering t
    - Sources: [TX SOS business organizations forms](https://www.sos.state.tx.us/corp/forms_boc.shtml)
 8. **File the New York biennial statement ($9)** — manual form/portal · ~15 min · hard to undo · only when operating in US-NY
 
+   *Entry step — no prerequisite step.*
+
    New York corporations file a Biennial Statement with the Department of State every two years under Business Corporation Law § 408, due in the calendar month in which the original Certificate of Incorporation or Application for Authority was filed, with a $9 fee (law rule [us-ny.biennial-statement](../../open-law/US-NY/us-ny-biennial-statement.json)). File through the e-Statement Filing Service using the exact entity name and DOS ID; a missed statement marks the record past due on any certificate of status. The statement cannot be filed before its due month.
 
    - Cost: $9 (government fee, as of 2026-10-22, [dos.ny.gov](https://dos.ny.gov/fee-schedules)). Biennial Statement filing fee under the Business Corporation Law. Conditional step — excluded from the default-flow fee headline by construction.
@@ -65,6 +77,8 @@ State filing portals have no API — the filing is manual form work; gathering t
    - Do it yourself: [NY DOS — biennial statements](https://dos.ny.gov/biennial-statements-business-corporations-and-limited-liability-companies)
    - Sources: [NY DOS fee schedules](https://dos.ny.gov/fee-schedules)
 9. **File the Florida annual report (January 1 – May 1, $150)** — manual form/portal · ~15 min · hard to undo · only when operating in US-FL
+
+   *Entry step — no prerequisite step.*
 
    Florida profit corporations file the Sunbiz annual report between January 1 and May 1 each year after the formation or qualification year, with a $150 fee; after May 1 a $400 late fee is assessed with no waiver provision, and an entity still unfiled by the third Friday in September faces administrative dissolution (law rule [us-fl.annual-report](../../open-law/US-FL/us-fl-annual-report.json)). File online with the document number on record and confirm the emailed filing confirmation. Reinstatement after dissolution costs $600 plus each missed year's report fee.
 

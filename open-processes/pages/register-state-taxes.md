@@ -23,6 +23,8 @@ State tax portals have no APIs. System provides state-specific checklists and pr
 
 1. **Identify required state registrations** — agent-runnable · ~5 min
 
+   *Entry step — no prerequisite step.*
+
    List the company’s state registrations, employee work locations, property, sales and business activities. Have the tax adviser assess income, franchise, withholding, unemployment and sales-tax accounts separately using each relevant agency’s current rules. Record the required account types and effective dates, with missing facts identified. Corporate foreign qualification needs its own assessment; a secretary-of-state registration does not finish tax registration.
 2. **Register with state tax authority** — manual form/portal · ~30 min · human approval required · hard to undo
 
@@ -33,6 +35,8 @@ State tax portals have no APIs. System provides state-specific checklists and pr
    - Canonical vendor: State Secretary of State
 3. **Register for sales tax (if applicable)** — manual form/portal · ~20 min · human approval required · hard to undo
 
+   *Follows step 1.*
+
    For states identified in the reviewed sales-tax assessment, check the registration effective date, product treatment and marketplace arrangements. Prepare the applications from those conclusions and the company’s verified details. The authorized filer submits them and tracks issuance. Use the resulting account numbers and filing schedules when configuring collection and returns, with any pending state kept visibly pending.
 
    - Verify: A sales-tax permit number is issued — required before collecting tax in that state.
@@ -41,9 +45,15 @@ State tax portals have no APIs. System provides state-specific checklists and pr
    - Ranked market: [tax-automation](../../open-rankings/tax-automation)
 4. **Store registration numbers** — agent-runnable · ~2 min
 
+   *Follows step 2 or step 3.*
+
    Enter each issued number with its tax type, jurisdiction, effective date and filing frequency in the restricted compliance register. Attach the agency confirmation and store portal credentials separately. Reconcile issued, pending and rejected applications, then assign notice handling and return preparation to finance or payroll. Give those teams the issued account details needed for their filings.
 5. Run [Register for sales tax where you have nexus](register-for-sales-tax-where-you-have-nexus.md)
+
+   *Entry step — no prerequisite step.*
 6. **Assess New York Article 9-A nexus and file Form CT-3** — manual form/portal · ~30 min · hard to undo · only when operating in US-NY
+
+   *Entry step — no prerequisite step.*
 
    A corporation that does business, employs capital, owns or leases property, maintains an office, or derives receipts from activity in New York State owes the Article 9-A franchise tax; for tax years beginning in 2024 through 2026, deriving $1,283,000 or more of New York receipts is itself sufficient (law rule [us-ny.corporate-franchise-tax-nexus](../../open-law/US-NY/us-ny-corporate-franchise-tax-nexus.json)). Settle the nexus question with the tax adviser, then file Form CT-3 (CT-3-A for a combined group) and pay the highest of the income, capital, and fixed-dollar-minimum bases plus any MTA surcharge. New York City's business corporation tax is a separate analysis.
 
@@ -51,6 +61,8 @@ State tax portals have no APIs. System provides state-specific checklists and pr
    - Do it yourself: [NY DTF — Article 9-A franchise tax](https://www.tax.ny.gov/bus/ct/article9a.htm)
    - Sources: [NY DTF — deriving receipts thresholds](https://www.tax.ny.gov/bus/ct/article9a_deriving_receipts.htm)
 7. **Register with the Washington DOR and report B&O tax** — manual form/portal · ~25 min · hard to undo · only when operating in US-WA
+
+   *Entry step — no prerequisite step.*
 
    Washington levies no corporate income tax; most businesses instead owe the business and occupation (B&O) tax on gross receipts, at a rate set by the activity's classification, with no deduction for costs (law rule [us-wa.business-occupation-tax](../../open-law/US-WA/us-wa-business-occupation-tax.json)). Register through the state business license application, which opens the Department of Revenue account, then report on the excise tax return through My DOR on the assigned filing frequency. Check the small business B&O credit and any city B&O obligations with the tax adviser.
 

@@ -39,8 +39,10 @@ A planning workflow for a private Delaware corporation considering a US service-
    Bring the valuation conclusion, proposed option terms, plan capacity and report version to the board or delegate authorized under the company’s documents. Identify the precise grant scope and any conditions requiring a decision. The resolution should record what was approved and by whom, including the authority of any delegate, so the equity administrator can apply it to the subsequent grant.
 
    - Sources: [Delaware General Corporation Law](https://delcode.delaware.gov/title8/c001/sc05/index.html)
-   - If "Counsel and the authorized decision-maker approve the specific grant.": continue at "Only after counsel and authorized decision-maker approval, issue the specific option and record grant date, exercise price, recipient acceptance, and source report version."
+   - If "Counsel and the authorized decision-maker approve the specific grant": continue at step 5
 5. **Only after counsel and authorized decision-maker approval, issue the specific option and record grant date, exercise price, recipient acceptance, and source report version.** — mode: external effect
+
+   *Follows step 4 (when Counsel and the authorized decision-maker approve the specific grant).*
 
    Issue the specific grant only after the required counsel review and corporate authorization. Match the agreement to the approved recipient, share class and quantity, exercise price, grant date and vesting terms. Obtain recipient acceptance as the agreement requires and reconcile the grant to the equity records. Link the executed agreement, authorization and valuation version so the recorded grant can be traced to its basis.
 

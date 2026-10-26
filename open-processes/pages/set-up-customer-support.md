@@ -34,18 +34,26 @@ Intercom has comprehensive API for messaging and contact management. Initial set
    Place the support widget where customers need help and limit the identity and page data it sends to the agreed fields. Use the provider's current installation instructions. In preview, test keyboard access, display, signed-in identity and conversation creation. After the authorized site release, send a controlled live request and verify it reaches the right inbox without exposing another customer's messages.
 3. **Set up inbox and routing** — agent-runnable · ~15 min · human approval required
 
+   *Follows step 1.*
+
    Route each channel and request type to a responsible person or team. Define reassignment, working hours and urgent-case escalation from the coverage available. Try sample requests from every entry point, including an unmatched case and an unavailable assignee. Check the fallback reaches someone who can act before switching live traffic to the new routing.
 
    - Canonical vendor: Intercom
 4. **Create help center articles** — human · ~1 h · human approval required
 
+   *Follows step 1.*
+
    Write help articles for recurring questions, real product tasks and known failures. Use the current interface and include prerequisites, screenshots and links where they help someone complete the task. Have a support or product reviewer follow the instructions and remove internal or customer information. Publish the reviewed version, check that users can find it, and assign responsibility for updates when the product changes.
 5. **Configure auto-responses** — agent-runnable · ~10 min · human approval required
+
+   *Follows step 3.*
 
    Write automatic replies that match support coverage, with triggers and safeguards against repeated responses. Use response and resolution commitments agreed by the team. Test normal, repeated and out-of-hours requests, then activate the support owner's agreed messages and routing rules.
 
    - Canonical vendor: Intercom
 6. **Add team members** — agent-runnable · ~5 min · human approval required
+
+   *Follows step 3.*
 
    Map named teammates to the support tasks they need, then choose administrator, agent or viewer access accordingly. Check any added seat charges against the support budget before sending the agreed invitations. Verify accepted memberships and a sample assignment. Give the access owner the final membership list so role changes and departures can be handled later.
 

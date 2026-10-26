@@ -36,10 +36,14 @@ HubSpot has a comprehensive API. Full pipeline, property, and template managemen
    - Canonical vendor: HubSpot
 3. **Set up custom properties** — agent-runnable · ~10 min
 
+   *Follows step 1.*
+
    Compare the sales process's information needs with existing CRM properties before creating fields. Define each new field's object, meaning, type, allowed values, source and owner, avoiding unnecessary sensitive data. Try the mapping on sample records and imports. Add the agreed properties and keep a field dictionary that distinguishes missing, unknown and inapplicable values for later integrations.
 
    - Canonical vendor: HubSpot
 4. **Create email templates** — agent-runnable · ~15 min · human approval required
+
+   *Follows step 2.*
 
    Write templates for specific sales moments, using verified claims and personalization that survives missing optional data. Preview sender details, links and audience-specific communication content. Save each template with its intended use; the campaign or account context establishes eligible recipients and commercial terms when sending.
 
@@ -51,6 +55,8 @@ HubSpot has a comprehensive API. Full pipeline, property, and template managemen
    - Canonical vendor: HubSpot
    - Sources: [Connect your personal email](https://knowledge.hubspot.com/connected-email/connect-your-inbox-to-hubspot)
 6. **Import existing contacts** — agent-runnable · ~10 min · human approval required
+
+   *Follows step 3.*
 
    Map the contact export's stable identifiers, fields, ownership and communication preferences to existing CRM records. Decide which rows create records and which update them, resolving duplicates and preserving suppressions. Test a small sample for associations and overwritten fields before running the agreed full import. Reconcile created, updated, skipped and failed counts, then isolate exceptions for targeted correction.
 

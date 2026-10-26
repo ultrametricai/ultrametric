@@ -49,8 +49,10 @@ Changelogs, tags, and release notes are pure API work. Deciding to roll back is 
    - Vendor options: Sentry, Datadog
    - Ranked market: [error-tracking](../../open-rankings/error-tracking)
    - Sources: [Set up Sentry releases](https://docs.sentry.io/product/releases/setup/) · [Google SRE implementing SLOs](https://sre.google/workbook/implementing-slos/)
-   - If "Rollback criteria are met and the authorized release owner chooses rollback as the recovery action.": continue at "Roll back if needed"
+   - If "Rollback criteria are met and the authorized release owner chooses rollback as the recovery action": continue at step 5
 5. **Roll back if needed** — human · ~15 min
+
+   *Follows step 4 (when Rollback criteria are met and the authorized release owner chooses rollback as the recovery action).*
 
    Identify the last working version and compare rollback with the incident's recovery needs. Check whether a database migration, running job or external side effect would remain after code is reverted. Carry out the release owner's chosen recovery action within its authorized scope, then repeat the affected user journey and data checks. Preserve the failure and recovery timeline for investigation, and update the service-status channel with the verified outcome.
 

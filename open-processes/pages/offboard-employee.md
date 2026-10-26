@@ -60,31 +60,43 @@ Gusto handles final paycheck and benefits termination. Account deactivation acro
    - Sources: [DOL: Last paycheck](https://www.dol.gov/general/topic/wages/lastpaycheck?lang=en)
 3. **Terminate benefits** — agent-runnable · ~3 min · human approval required · hard to undo
 
+   *Follows step 1.*
+
    List the employee’s active plans and ask the benefits administrator to determine coverage end dates, continuation rights and required notices from the actual departure facts. Coordinate the authorized changes with payroll deductions and communicate the confirmed coverage details and support contact to the employee. Resolve rejected changes and missing notices so the employee knows when coverage ends and what choices remain.
 
    - Canonical vendor: Gusto
    - Sources: [DOL: Employer guide to COBRA](https://www.dol.gov/agencies/ebsa/about-ebsa/our-activities/resource-center/publications/an-employers-guide-to-group-health-continuation-coverage-under-cobra)
 4. **Deactivate the email account** — agent-runnable · ~2 min · human approval required
 
+   *Follows step 1.*
+
    Agree the account cutoff with the people and security leads. Identify mail, calendars and files that need a business custodian, and address retention or legal holds before deleting anything. At the authorized time, restrict sign-in and revoke sessions through the workspace’s supported process. Transfer necessary business information and check the mail-routing arrangement while respecting the former employee’s privacy.
 
    - Canonical vendor: Gmail
 5. **Remove from the team chat** — agent-runnable · ~2 min · human approval required
+
+   *Follows step 1.*
 
    Identify the employee’s chat accounts, shared external workspaces, channel ownership and integrations. Transfer responsibilities that need a continuing owner, then remove access at the agreed departure time through the workspace administrator. Check membership status afterward and contact any external workspace administrator whose action is still needed. Preserve conversation history according to the company’s retention arrangements.
 
    - Canonical vendor: Slack
 6. **Remove from the code hosting org** — agent-runnable · ~2 min · human approval required
 
+   *Follows step 1.*
+
    Review code-hosting memberships, repository ownership, access tokens and automation tied to the departing person. Transfer maintainership and deployment responsibilities before the agreed access cutoff. The responsible administrator removes memberships and addresses remaining credentials, then checks for access paths outside the main organization. Assign service-account or release ownership gaps to an engineer who can maintain the affected automation and release process.
 
    - Canonical vendor: GitHub
 7. **Notify about equity exercise window** — agent-runnable · ~5 min · human approval required
 
+   *Follows step 1.*
+
    Have the equity administrator and counsel review the person’s actual awards, vesting, departure terms and plan documents. Prepare an individualized notice with verified exercise dates, instructions and a contact for questions. Release the notice after the equity owner checks it against the award records. Track delivery and any disputed terms separately from the employee’s decision whether to exercise.
 
    - Canonical vendor: Carta
 8. **Collect company property** — human · ~1 d · async wait
+
+   *Follows step 1.*
 
    Compare the asset register with the employee’s actual equipment, security keys, cards and other company property. Agree a return method and contact, arranging shipping for remote returns where needed. Check serial numbers and condition on receipt, and distinguish returned items from transfers or unresolved losses. Send remaining issues to the people lead; a missing item does not by itself authorize a payroll deduction.
 

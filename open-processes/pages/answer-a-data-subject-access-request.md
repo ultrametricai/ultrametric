@@ -30,20 +30,26 @@ The data inventory and the export assembly are agent work across your own system
 2. **Verify the requester's identity proportionately — enough to stop impersonation, never a data grab of its own** — human · ~30 min
 3. **Inventory where this person's data lives: product DB, analytics, support desk, email tools, payment processor** — agent-runnable · ~1 h
 
-   - If "The request seeks access: a copy of the data and the processing details (a request to know).": continue at "Assemble the export and draft the response: what you hold, purposes, recipients, retention, sources"
-   - If "The request is, or includes, deletion: a GDPR Art. 17 erasure request or a CCPA request to delete.": continue at "Execute the deletion where the request asks for erasure: delete or de-identify across your systems and processors, apply the statutory exceptions (GDPR Art. 17(3), CCPA §1798.105(d)), and record what was deleted and what was retained and why"
+   - If "The request seeks access: a copy of the data and the processing details (a request to know)": continue at step 4
+   - If "The request is, or includes, deletion: a GDPR Art. 17 erasure request or a CCPA request to delete": continue at step 5
 4. **Assemble the export and draft the response: what you hold, purposes, recipients, retention, sources** — agent-runnable · ~1.5 h
-5. **Review the exemptions with privacy counsel where it's close: third-party data, privilege, trade secrets** — human · ~1 h
+
+   *Follows step 3 (when The request seeks access: a copy of the data and the processing details (a request to know)).*
+5. **Execute the deletion where the request asks for erasure: delete or de-identify across your systems and processors, apply the statutory exceptions (GDPR Art. 17(3), CCPA §1798.105(d)), and record what was deleted and what was retained and why** — agent-runnable · ~1.5 h · irreversible
+
+   *Follows step 3 (when The request is, or includes, deletion: a GDPR Art. 17 erasure request or a CCPA request to delete).*
+
+   - Do it yourself: [GDPR (EUR-Lex, Art. 17)](https://eur-lex.europa.eu/eli/reg/2016/679/oj)
+6. **Review the exemptions with privacy counsel where it's close: third-party data, privilege, trade secrets** — human · ~1 h
+
+   *Follows step 4 or step 5.*
 
    - Vendor options: Cooley, Orrick, Fenwick, Gunderson Dettmer
    - Ranked market: [startup-law-firms](../../open-rankings/startup-law-firms)
-6. **Deliver securely by the deadline and record what was sent (or send the extension notice inside month one)** — manual form/portal · ~30 min · irreversible
+7. **Deliver securely by the deadline and record what was sent (or send the extension notice inside month one)** — manual form/portal · ~30 min · irreversible
 
    - Do it yourself: [California AG: CCPA (45-day clock)](https://oag.ca.gov/privacy/ccpa)
-7. **Fix the intake: a records-of-processing map and a standing DSAR runbook so the next one is routine** — agent-runnable · ~45 min
-8. **Execute the deletion where the request asks for erasure: delete or de-identify across your systems and processors, apply the statutory exceptions (GDPR Art. 17(3), CCPA §1798.105(d)), and record what was deleted and what was retained and why** — agent-runnable · ~1.5 h · irreversible
-
-   - Do it yourself: [GDPR (EUR-Lex, Art. 17)](https://eur-lex.europa.eu/eli/reg/2016/679/oj)
+8. **Fix the intake: a records-of-processing map and a standing DSAR runbook so the next one is routine** — agent-runnable · ~45 min
 
 ## By country
 

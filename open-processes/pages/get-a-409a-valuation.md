@@ -23,15 +23,21 @@ Can initiate through Carta API and provide company financials. Valuation itself 
 
 1. **Compile financial statements** — agent-runnable · ~10 min
 
+   *Entry step — no prerequisite step.*
+
    Gather the financial statements relevant to the valuation date, with entity, accounting basis and periods identified. Include recent actuals and forecasts, keeping management assumptions distinct from historical results. Reconcile differences from the ledger or board reports and label provisional figures so the analyst understands the financial position being valued.
 
    - Canonical vendor: QuickBooks
 2. **Gather cap table snapshot** — agent-runnable · ~5 min
 
+   *Entry step — no prerequisite step.*
+
    Export capitalization at the proposed valuation date, including share classes, issued holdings, option reserve, grants and convertibles. Tie balances to executed records and include financing terms and side letters that affect rights. Explain pending transactions and differences from earlier exports so the valuation analyst works from a stable, reconciled ownership picture.
 
    - Canonical vendor: Carta
 3. **Initiate 409A on Carta** — manual form/portal · ~15 min · human approval required
+
+   *Follows step 1 or step 2.*
 
    Choose the valuation engagement for the issuer, security and intended transaction under the applicable country’s route. Establish the valuation date, report purpose, data requirements, fee and expected deliverable with the provider and finance. The company representative commissioning the work agrees its scope and terms.
 

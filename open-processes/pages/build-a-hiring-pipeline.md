@@ -36,26 +36,36 @@ Lever/Ashby APIs support pipeline and candidate management. Interview design and
    - Sources: [EEOC: Recruiting, hiring or promoting employees](https://www.eeoc.gov/employers/small-business/3-im-recruiting-hiring-or-promoting-employees)
 3. **Configure scorecard templates** — agent-runnable · ~20 min · human approval required
 
+   *Follows step 1.*
+
    Translate interview criteria into role-specific scorecards, giving each interviewer the competencies they can assess. Explain rating levels and ask for evidence, concerns and unanswered questions. Compare sample evaluations with the hiring manager to catch inconsistent interpretation. Make sure the debrief view preserves the reasoning behind ratings so the team can discuss the candidate’s actual fit for the work.
 
    - Canonical vendor: Lever
    - Sources: [EEOC: Recruiting, hiring or promoting employees](https://www.eeoc.gov/employers/small-business/3-im-recruiting-hiring-or-promoting-employees)
 4. **Set up offer approval workflow** — agent-runnable · ~15 min · human approval required
 
+   *Follows step 1.*
+
    Map the actual decision rights for headcount, compensation, equity, unusual terms and offer release. Configure approvers and substitutes around those limits, including what happens when an already approved offer changes. Walk through approval, rejection and revision with recruiting and finance before use. The recruiter should be able to identify which exact terms are cleared to send and which still need a decision.
 
    - Canonical vendor: Lever
 5. **Connect Calendly for scheduling** — manual form/portal · ~15 min · human approval required
+
+   *Follows step 2.*
 
    Connect the scheduling tool using the calendar access authorized by the interviewer and account owners. Configure interview lengths, availability, time zones and candidate messages around the planned stages. Check a booking, reschedule and cancellation, including what personal information appears in invitations. Give candidates and interviewers a support route when conflicts or integration failures require manual scheduling.
 
    - Canonical vendor: Calendly
 6. **Configure Slack hiring channels** — agent-runnable · ~10 min · human approval required
 
+   *Follows step 2.*
+
    Set up hiring channels for the people coordinating each role, with candidate evaluations and compensation kept in the appropriate restricted systems. Check membership and notification content before enabling a recruiting integration. Verify what a candidate update reveals and who can see it. Assign a channel owner to adjust access and close or repurpose the space when hiring pauses or ends.
 
    - Canonical vendor: Slack
 7. **Set up diversity tracking** — agent-runnable · ~15 min · human approval required
+
+   *Follows step 4.*
 
    Define the reporting purpose before choosing demographic fields. Ask the people or privacy lead what collection, notices, access and retention are appropriate in each location. Keep approved reporting data separate from individual selection decisions and control small-group disclosures. Validate the intended aggregates before collection begins, with analysts able to explain the reporting scope and limitations.
 

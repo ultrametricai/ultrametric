@@ -56,6 +56,8 @@ Namecheap and Cloudflare APIs fully support domain/DNS operations. SSL auto-prov
    - Sources: [Working with SSL certificates](https://vercel.com/docs/domains/working-with-ssl)
 6. **Verify SSL** — agent-runnable · ~2 min
 
+   *Follows step 4.*
+
    Open the site over HTTPS on every supported hostname, including redirect sources. Inspect certificate names and validity, then exercise pages and API calls for certificate or mixed-content failures. On Vercel, investigate pending issuance against domain validation, DNS/proxy settings and certificate-authority restrictions. Make traffic-affecting corrections within the domain owner's change scope. Confirm renewal-failure notices reach someone who can repair the configuration.
 
    - Canonical vendor: Cloudflare

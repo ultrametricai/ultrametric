@@ -23,6 +23,8 @@ Clerky/Stripe Atlas have limited APIs. System guides through the process, pre-fi
 
 1. **Choose formation service** — human · ~10 min
 
+   *Entry step — no prerequisite step.*
+
    Compare services against the remaining formation work: Delaware incorporation, registered-agent service, bylaws and initial resolutions, founder stock documents, and handling of an 83(b) election where applicable. Check which items the proposed package includes, which require separate purchases, and what recurring charges follow setup. Distinguish document preparation from actual filing, and confirm how completed records will be delivered. Finish with a selected provider and package, plus a clear list of work that someone else must complete.
 
    - Cost: $500 (typical vendor price, as of 2026-10-01, [stripe.com](https://stripe.com/atlas)). Stripe Atlas's published one-time fee (includes the Delaware government fees and the first year of registered agent service); other services and attorney-led formation differ.
@@ -135,6 +137,8 @@ Clerky/Stripe Atlas have limited APIs. System guides through the process, pre-fi
    - Sources: [Stripe Atlas filing evidence and tracking](https://support.stripe.com/questions/atlas-filing-your-83%28b%29-election-using-auto-83%28b%29) · [Stripe Atlas 83(b) election scope](https://docs.stripe.com/atlas/83b-election) · [Clerky package contents and pricing](https://www.clerky.com/pricing)
 11. **File the Statement and Designation by Foreign Corporation with the CA SOS** — manual form/portal · ~30 min · hard to undo · only when operating in CA
 
+   *Entry step — no prerequisite step.*
+
    If the corporation needs to qualify to do business in California, assemble its exact legal name, formation jurisdiction, principal office addresses and California agent-for-service-of-process details. Obtain the current certificate of good standing required from the jurisdiction where it was formed, and check that the names and jurisdiction agree across the documents. Have an authorized corporate officer approve and sign the Statement and Designation, then submit it through California’s filing service with the required fee. Retain the accepted filing and registration details for the company records.
 
    - Cost: $100 (government fee, as of 2026-10-01, [www.sos.ca.gov](https://www.sos.ca.gov/business-programs/business-entities/forms/corporations-foreign-out-state-or-out-country)). Statement and Designation by Foreign Corporation (stock corporation) filing fee; filed through bizfile Online. Conditional step — excluded from the default-flow fee headline by construction.
@@ -143,10 +147,14 @@ Clerky/Stripe Atlas have limited APIs. System guides through the process, pre-fi
    - Sources: [California Statement and Designation form](https://bpd.cdn.sos.ca.gov/corp/pdf/foreign/s&dc-sn.pdf)
 12. **Appoint a registered agent in each state where you operate** — human · ~15 min · only when operating in MULTI
 
+   *Entry step — no prerequisite step.*
+
    First identify the states in which the corporation must register or qualify; having customers in a state does not by itself settle that question. For each applicable state, check its agent-for-service-of-process requirements and confirm that the chosen agent can receive official notices there. Agree how notices reach the company and who monitors them, then use the agent’s correct details in the relevant state filing. Keep a state-by-state record of appointments, contact details and renewal arrangements so notices are not lost when people or providers change.
 
    - Sources: [SBA state registration and registered agents](https://www.sba.gov/counseling/launch-your-business/)
 13. **File the New York Application for Authority ($225)** — manual form/portal · ~30 min · hard to undo · only when operating in US-NY
+
+   *Entry step — no prerequisite step.*
 
    If the corporation does business in New York, qualify by filing the Application for Authority under Business Corporation Law § 1304 with the Department of State: the $225 fee, a certificate of existence from the home jurisdiction dated within one year, and — if business began before filing — the consent of the State Tax Commission (law rule [us-ny.foreign-qualification](../../open-law/US-NY/us-ny-foreign-qualification.json)). The application designates the Secretary of State as agent for service of process, so keep the forwarding address current. Retain the filing receipt with the company records.
 
@@ -156,6 +164,8 @@ Clerky/Stripe Atlas have limited APIs. System guides through the process, pre-fi
    - Sources: [NY DOS fee schedules](https://dos.ny.gov/fee-schedules)
 14. **File the Texas application for registration (Form 301, $750)** — manual form/portal · ~30 min · hard to undo · only when operating in US-TX
 
+   *Entry step — no prerequisite step.*
+
    A corporation transacting business in Texas registers with the Secretary of State on Form 301 (Application for Registration of a Foreign For-Profit Corporation) for a $750 fee, naming a Texas registered agent who has consented (law rule [us-tx.foreign-registration](../../open-law/US-TX/us-tx-foreign-registration.json)). An unregistered entity cannot maintain suit in Texas courts and owes late filing fees when registration comes more than 90 days after first transacting business, so settle the doing-business question with counsel early. Keep the filed registration with the company records.
 
    - Cost: $750 (government fee, as of 2026-10-22, [www.sos.state.tx.us](https://www.sos.state.tx.us/corp/forms/301_boc.pdf)). Form 301 filing fee as printed on the form. Conditional step — excluded from the default-flow fee headline by construction.
@@ -164,6 +174,8 @@ Clerky/Stripe Atlas have limited APIs. System guides through the process, pre-fi
    - Sources: [TX SOS business organizations forms](https://www.sos.state.tx.us/corp/forms_boc.shtml)
 15. **File the Florida foreign qualification (form CR2E007, $70)** — manual form/portal · ~30 min · hard to undo · only when operating in US-FL
 
+   *Entry step — no prerequisite step.*
+
    A corporation transacting business in Florida registers with the Division of Corporations on the Application by Foreign Corporation for Authorization to Transact Business: the $70 fee ($35 filing plus $35 registered-agent designation), a certificate of existence from the home jurisdiction no more than 90 days old, and a Florida registered agent who signs the acceptance on the form (law rule [us-fl.foreign-qualification](../../open-law/US-FL/us-fl-foreign-qualification.json)). The first Sunbiz annual report then comes due the following January 1 – May 1 window. Retain the acknowledgment letter with the company records.
 
    - Cost: $70 (government fee, as of 2026-10-22, [dos.fl.gov](https://dos.fl.gov/sunbiz/forms/fees/)). Foreign corporation registration: $35 filing fee plus $35 registered agent designation. Conditional step — excluded from the default-flow fee headline by construction.
@@ -171,6 +183,8 @@ Clerky/Stripe Atlas have limited APIs. System guides through the process, pre-fi
    - Do it yourself: [FL Division of Corporations forms (foreign qualification)](https://dos.fl.gov/sunbiz/forms/corporations/)
    - Sources: [FL Division of Corporations fees](https://dos.fl.gov/sunbiz/forms/fees/)
 16. **File the Washington foreign registration statement ($180)** — manual form/portal · ~30 min · hard to undo · only when operating in US-WA
+
+   *Entry step — no prerequisite step.*
 
    A corporation doing business in Washington registers with the Secretary of State through the Corporations and Charities Filing System: the $180 filing fee (plus an online processing fee), a certificate of existence from the home jurisdiction issued no more than 60 days before submission, and registered-agent and principal-office details including the required email addresses (law rule [us-wa.foreign-registration](../../open-law/US-WA/us-wa-foreign-registration.json)). Registration with the Secretary of State is separate from the Department of Revenue business license. Retain the filed statement with the company records.
 

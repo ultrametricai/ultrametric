@@ -23,6 +23,8 @@ System can draft the instruments, track investor pipeline, send follow-ups, and 
 
 1. **Prepare the fundraising instrument documents** — agent-runnable · ~30 min · human approval required
 
+   *Entry step — no prerequisite step.*
+
    Identify the issuer’s jurisdiction, investors, target amount and proposed economics, then draft the appropriate fundraising instrument and term summary. Model ownership outcomes and identify side letters or conversion rights that change them. Flag unresolved legal terms and offering-route questions for counsel, keeping unagreed terms visible so the founders can negotiate and the closing work follows the chosen jurisdiction.
 
    - Canonical vendor: Clerky
@@ -51,6 +53,8 @@ System can draft the instruments, track investor pipeline, send follow-ups, and 
 
        For a proposed French BSA-AIR, assemble the company form, capital documents, investor details and negotiated investment and conversion terms. Show how future financing or other triggers change allocation, then resolve issuance and approval requirements with local counsel. Draft the agreement against that analysis. Track co-investment discussions separately until their actual commitments are documented.
 2. **Create investor pipeline tracker** — agent-runnable · ~10 min
+
+   *Entry step — no prerequisite step.*
 
    Build the investor pipeline with investment focus, contact source, relationship owner, status and next action. Deduplicate related contacts and distinguish a possible introduction from a meeting or investment commitment. Link the relevant pitch materials and keep sensitive notes private. The tracker should show who follows up with each investor and what is needed to move the conversation forward.
 
@@ -83,6 +87,8 @@ System can draft the instruments, track investor pipeline, send follow-ups, and 
 
    Prepare for the meeting around the investor’s focus, the company’s progress and the funding sought. Decide which founder will cover the product, financial needs and proposed terms, and what the team needs to learn from the investor. Afterwards, capture actual feedback, diligence requests and next steps. Treat a new economic proposal as a negotiation until the relevant terms are agreed.
 5. **Send the investment documents for signature** — agent-runnable · ~10 min · human approval required · hard to undo
+
+   *Follows step 1 or step 4.*
 
    Send the finalized instrument and any side letter to the correct investor and authorized company signatory. Match the packet to the agreed investor identity, amount and economic terms; route requested changes back into negotiation before execution. Track both signatures and archive the executed agreement. Keep signature and funding statuses distinct so sending or signing a document does not create an assumed cash receipt.
 

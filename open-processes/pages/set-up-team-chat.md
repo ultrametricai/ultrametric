@@ -41,6 +41,8 @@ Slack API supports channel/user management. Workspace creation is manual. MCP in
    - Canonical vendor: Slack
 4. **Configure notification defaults** — agent-runnable · ~5 min
 
+   *Follows step 2.*
+
    Agree which channels or mentions need prompt attention and which can be read during normal work, taking time zones into account. Set shared defaults where the service supports them and explain the personal settings each teammate controls. Check a representative announcement or mention with a colleague to see whether it arrives as intended. Document whom to contact and how when an urgent issue needs attention.
 
    - Canonical vendor: Slack

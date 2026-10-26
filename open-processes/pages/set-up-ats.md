@@ -48,6 +48,8 @@ ATS platforms have APIs for job/candidate management. Initial configuration and 
    - Sources: [EEOC: Recruiting, hiring or promoting employees](https://www.eeoc.gov/employers/small-business/3-im-recruiting-hiring-or-promoting-employees)
 5. **Connect careers page** — manual form/portal · ~10 min · human approval required
 
+   *Follows step 3.*
+
    Connect the published roles to the company’s careers page using the ATS and website’s supported approach. Check role titles, locations, links and the destination requisition with recruiting before the website owner releases the change. Walk through the application route on desktop and mobile, including submission acknowledgement and recruiter receipt. Assign responsibility for closing or removing filled roles from both places.
 
    - Canonical vendor: Lever

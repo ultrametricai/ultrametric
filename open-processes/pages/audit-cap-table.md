@@ -29,8 +29,12 @@ Verifying ownership and consents is judgment work with attorney sign-off; docume
    Trace each holding and convertible balance to its supporting document and effective transaction. Recalculate class totals, reserve use and fully diluted views using the documented definitions, then compare with the equity platform and legal records. For each discrepancy, identify the affected position, evidence and proposed correction before changing the live data.
 3. **Review board consents** — human · ~30 min
 
+   *Follows step 1.*
+
    Match issuances, grants and other relevant equity actions to their corporate approvals. Have counsel assess authority, signatories, effective timing and terms under the governing documents. Distinguish a missing uploaded consent from an action that lacked authorization, and establish the appropriate remedy for each defect without backdating or fabricating the record.
 4. **Attorney sign-off** — human · ~1 h · async wait · human approval required
+
+   *Follows step 2 or step 3.*
 
    Give the attorney the reconciled cap table, supporting documents and unresolved findings. Obtain a conclusion stating the review’s scope, accepted corrections and legal work still required. Apply supported record corrections through the equity administrator and keep outstanding exceptions visible when sharing the audited table, so readers understand what the legal review actually covered.
 

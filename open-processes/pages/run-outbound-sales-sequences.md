@@ -41,9 +41,11 @@ Reconcile prior conversations and delivery attempts before enrollment. Route an 
    - Vendor options: HubSpot, Attio, Apollo
    - Ranked market: [crm](../../open-rankings/crm)
    - Sources: [CAN-SPAM Act: A Compliance Guide for Business](https://www.ftc.gov/business-guidance/resources/can-spam-act-compliance-guide-business)
-   - If "New eligible contacts need an outreach sequence.": continue at "Draft the sequence copy"
-   - If "An existing conversation needs a response without enrollment in a new sequence.": continue at "Monitor delivery and handle conversations"
+   - If "New eligible contacts need an outreach sequence": continue at step 2
+   - If "An existing conversation needs a response without enrollment in a new sequence": continue at step 4
 2. **Draft the sequence copy** — agent-runnable · ~20 min
+
+   *Follows step 1 (when New eligible contacts need an outreach sequence).*
 
    When: New eligible contacts need an outreach sequence.
 
@@ -68,6 +70,8 @@ Size the initial batch and cadence to the team’s actual response and meeting c
    - UM's HubSpot evidence distinguishes CRM MCP access from the Developer MCP (hubspot-docs-5 and hubspot-docs-6). Its email-templates-sequences verdict records missing enrollment and plan details. Confirm the selected interface exposes the required draft, enrollment and stop operations for this account; general CRM access does not establish sequence-send support. The moore-beachhead lore entry can sharpen a narrow ICP hypothesis, but its competing schools and the company's response evidence should remain visible. Measure valid progression and exclusions, not just drafted emails.
 4. **Monitor delivery and handle conversations** — agent-runnable · ~15 min · async wait · hard to undo
 
+   *Follows step 1 (when An existing conversation needs a response without enrollment in a new sequence) or step 3.*
+
    When: An authorized sequence is running or an existing conversation needs a response.
 
    Handle existing conversations in context within the account team’s agreed authority. For authorized sequences, monitor delivery, replies, bounces and preference changes. Enforce its stop rules, record automated replies separately and route substantive responses to the account owner. Investigate sender or template failures before continuing affected sends. Update CRM dispositions and resolve any proposed audience or copy change outside the agreed campaign scope.
@@ -76,8 +80,10 @@ Maintain an event/disposition ledger keyed to recipient and provider event ident
 
    - Canonical vendor: HubSpot
    - Sources: [CAN-SPAM Act: A Compliance Guide for Business](https://www.ftc.gov/business-guidance/resources/can-spam-act-compliance-guide-business)
-   - If "A substantive response indicates interest in a meeting.": continue at "Book meetings with responders"
+   - If "A substantive response indicates interest in a meeting": continue at step 5
 5. **Book meetings with responders** — agent-runnable · ~5 min
+
+   *Follows step 4 (when A substantive response indicates interest in a meeting).*
 
    When: A substantive response indicates interest in a meeting.
 
@@ -86,8 +92,10 @@ Maintain an event/disposition ledger keyed to recipient and provider event ident
 Only propose a meeting for a substantive response that warrants one. Preserve explicit declines and opt-outs as stopped outcomes; a positive reply or offered time does not establish an accepted meeting.
 
    - Canonical vendor: Calendly
-   - If "The prospect accepts and attends the qualification conversation.": continue at "Qualify on the call"
+   - If "The prospect accepts and attends the qualification conversation": continue at step 6
 6. **Qualify on the call** — human · ~1 h
+
+   *Follows step 5 (when The prospect accepts and attends the qualification conversation).*
 
    When: The prospect has accepted and attended the qualification conversation.
 

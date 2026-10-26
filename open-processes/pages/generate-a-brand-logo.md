@@ -51,9 +51,9 @@ Describe the desired character through shape, typography, and composition. Speci
 The methods below can be operated by an agent using the tools and connections available in its environment. Consult the linked provider documentation for current capabilities.
 
    - Sources: [Images in ChatGPT](https://help.openai.com/en/articles/11084440-images-in-chatgpt) · [Can Claude produce images?](https://support.claude.com/en/articles/9002504-can-claude-produce-images)
-   - If "Generate a logo direction": continue at "Refine the design across its real uses"
-   - If "Refine existing artwork": continue at "Refine the design across its real uses"
-   - If "Edit existing vector artwork": continue at "Refine the design across its real uses"
+   - If "Generate a logo direction": continue at step 3
+   - If "Refine existing artwork": continue at step 3
+   - If "Edit existing vector artwork": continue at step 3
 
    Options:
      - **Generate a logo direction**
@@ -72,6 +72,8 @@ The methods below can be operated by an agent using the tools and connections av
 
        Use a connected vector/design tool or edit the SVG source to make the required adjustment. Preserve the established geometry and typography; verify the resulting artwork.
 3. **Refine the design across its real uses** — agent-runnable
+
+   *Follows step 2 (option "Generate a logo direction" or option "Refine existing artwork" or option "Edit existing vector artwork").*
 
    Inspect the actual artwork and make targeted edits:
 

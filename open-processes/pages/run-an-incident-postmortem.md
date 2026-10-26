@@ -73,6 +73,8 @@ Keep proposed and accepted owners/dates separate, along with the evidence of acc
    - Sources: [Google SRE postmortem culture](https://sre.google/sre-book/postmortem-culture/)
 5. **Publish the status-page write-up and customer comms** — agent-runnable · ~15 min
 
+   *Follows step 3.*
+
    Write the public account from the reviewed incident facts: affected service, user-visible impact, recovery and changes customers need to know about. Reconcile times and completed fixes with the internal record; leave speculative causes and sensitive details out. Publish the incident and communications owners' authorized version to the intended channels. Check the public page and customer links, and give support the same approved account for follow-up questions.
 
    - Canonical vendor: Better Stack

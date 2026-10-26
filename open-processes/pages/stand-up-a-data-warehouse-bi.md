@@ -21,7 +21,21 @@ Snowflake/Segment APIs support configuration. Data modeling and dashboard design
 
 ## Steps
 
-1. **Set up the data warehouse** — manual form/portal · ~1 h · human approval required
+1. **Configure CDP event sources** — agent-runnable · ~1 h · human approval required
+
+   Map each application source to its event names, identifiers and permitted properties. Keep development and production traffic distinguishable. Send synthetic records through the customer-data platform and inspect the actual payload, including timestamps, user/account identity and unexpected personal fields. Enable live collection only within the data owner's approved source and destination scope. Check how a renamed event or duplicate submission will appear before downstream models depend on those fields.
+
+   - Canonical vendor: Segment
+   - Vendor options: Segment
+   - Ranked market: [customer-data-platforms](../../open-rankings/customer-data-platforms)
+   - Sources: [Segment Connections overview](https://www.twilio.com/docs/segment/connections) · [PostHog product analytics privacy controls](https://posthog.com/docs/product-analytics/privacy)
+2. **Connect the CDP to the warehouse** — agent-runnable · ~30 min · human approval required
+
+   Configure the documented connector for the chosen source and warehouse using a limited ingestion identity. Check supported types, destination tables and historical-load behavior before enabling the data owner's authorized transfer scope. Start with a small load and compare source records with destination rows, keys and timestamps. For Segment warehouse connections, evaluate freshness against the documented batch-loading behavior. Establish how operators will detect a failed sync and restart it safely.
+
+   - Canonical vendor: Segment
+   - Sources: [Segment Connections overview](https://www.twilio.com/docs/segment/connections)
+3. **Set up the data warehouse** — manual form/portal · ~1 h · human approval required
 
    Use representative source data and reporting queries to choose the warehouse. Compare expected refresh delay, query behavior, access controls, operating effort and billing model, with data-location constraints explicit. Provision the selected account and initial resources within the data owner's access and budget scope. Start with a limited dataset that can reveal ingestion and modeling problems before copying production history or building executive reports on it.
 
@@ -43,24 +57,10 @@ Snowflake/Segment APIs support configuration. Data modeling and dashboard design
        When: Seed-stage data volumes - a DuckDB-based warehouse over an enterprise platform
 
        Trial MotherDuck with the data volume, queries and client connections the team expects to use. Check its current region, organization access and billing arrangement, then load a representative subset within the data owner's authorized scope. Test a report, a changed source record and an export that another tool can read. Compare measured cost and operating effort with the alternatives using the same workload.
-2. **Configure CDP event sources** — agent-runnable · ~1 h · human approval required
-
-   Map each application source to its event names, identifiers and permitted properties. Keep development and production traffic distinguishable. Send synthetic records through the customer-data platform and inspect the actual payload, including timestamps, user/account identity and unexpected personal fields. Enable live collection only within the data owner's approved source and destination scope. Check how a renamed event or duplicate submission will appear before downstream models depend on those fields.
-
-   - Canonical vendor: Segment
-   - Vendor options: Segment
-   - Ranked market: [customer-data-platforms](../../open-rankings/customer-data-platforms)
-   - Sources: [Segment Connections overview](https://www.twilio.com/docs/segment/connections) · [PostHog product analytics privacy controls](https://posthog.com/docs/product-analytics/privacy)
-3. **Draft the warehouse data models** — agent-runnable · ~4 h · human approval required
+4. **Draft the warehouse data models** — agent-runnable · ~4 h · human approval required
 
    Define what one row represents before joining tables: an account, event, invoice or line item can produce very different totals. Map keys and fields to their sources, and specify how updates, duplicates, late arrivals, missing values and timezones are handled. Build a small sample and trace representative rows through each transformation. Label unsettled definitions for measures such as revenue or active customers and show how each proposed definition changes the result.
 
-   - Sources: [Segment Connections overview](https://www.twilio.com/docs/segment/connections)
-4. **Connect the CDP to the warehouse** — agent-runnable · ~30 min · human approval required
-
-   Configure the documented connector for the chosen source and warehouse using a limited ingestion identity. Check supported types, destination tables and historical-load behavior before enabling the data owner's authorized transfer scope. Start with a small load and compare source records with destination rows, keys and timestamps. For Segment warehouse connections, evaluate freshness against the documented batch-loading behavior. Establish how operators will detect a failed sync and restart it safely.
-
-   - Canonical vendor: Segment
    - Sources: [Segment Connections overview](https://www.twilio.com/docs/segment/connections)
 5. **Verify data pipelines** — agent-runnable · ~2 h · async wait
 

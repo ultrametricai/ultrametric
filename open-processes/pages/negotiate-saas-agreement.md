@@ -23,12 +23,16 @@ System can draft initial templates using company context. Legal review and custo
 
 1. **Draft SaaS agreement template** — agent-runnable · ~30 min · human approval required
 
+   *Entry step — no prerequisite step.*
+
    Draft around the actual service, customers and commercial model. Resolve choices for fees, renewal, support, data handling, liability, suspension and termination with the relevant business and legal reviewers. Reconcile the agreement with order forms, service levels and processing schedules. Keep unagreed terms visible and tie service commitments to the product being sold.
 
    - Produces: SaaS agreement template
    - Vendor options: ChatGPT, Claude, Gemini, Grok
    - Ranked market: [ai-assistants](../../open-rankings/ai-assistants)
 2. **Draft Terms of Service** — agent-runnable · ~30 min · human approval required
+
+   *Entry step — no prerequisite step.*
 
    Write terms for the actual account and purchase flow: contracting entity, audience, billing, acceptable use, termination and how users encounter and accept them. Check factual behavior with product and commercial teams. Identify conflicts with negotiated enterprise terms and send unresolved legal choices for review alongside the proposed acceptance flow.
 
@@ -37,12 +41,16 @@ System can draft initial templates using company context. Legal review and custo
    - Ranked market: [ai-assistants](../../open-rankings/ai-assistants)
 3. **Draft Privacy Policy** — agent-runnable · ~30 min · human approval required
 
+   *Entry step — no prerequisite step.*
+
    Describe the service’s data flows through account creation, billing, support, analytics and customer content. Distinguish processing for the company’s own purposes from processing for customers. Check retention, sharing and deletion statements against implementation, and identify unresolved facts for the relevant teams. Review the resulting notice with the rest of the contracting package.
 
    - Produces: Privacy policy
    - Vendor options: ChatGPT, Claude, Gemini, Grok
    - Ranked market: [ai-assistants](../../open-rankings/ai-assistants)
 4. **Legal counsel review** — human · ~3 d · async wait · human approval required
+
+   *Follows step 1 or step 2 or step 3.*
 
    Review the agreement, website terms, privacy notice, order forms and schedules together with counsel. Resolve conflicting promises and confirm technical claims with product or security specialists. Agree negotiation fallback terms and escalation points with the business owner. Give sales and product the final versions and the conditions under which a further review is needed.
 5. **Publish to website** — manual form/portal · ~15 min · human approval required

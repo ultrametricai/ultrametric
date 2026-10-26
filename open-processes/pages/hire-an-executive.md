@@ -32,15 +32,21 @@ Search, interviews, references, and the board’s comp approval are human end-to
    Check the engagement against the agreed search scope, fees, payment triggers, expenses, exclusivity and termination or replacement terms. Resolve disputed provisions with counsel and the hiring sponsor before the authorized signer executes. Give the search owner the agreed reporting expectations and finance the payment obligations, including any milestones that trigger invoices.
 4. **Benchmark executive comp and equity** — agent-runnable · ~30 min
 
+   *Follows step 1.*
+
    Compare compensation data for similar functions, company stages, geographies and responsibilities. Separate base pay, variable compensation, benefits and equity, identifying whether equity figures mean grant value, ownership percentage or realized value. Check the source period and sample limitations, then model affordability with finance. Present the hiring sponsor a proposed range with its cost, relevant comparisons and source limitations.
 
    - Canonical vendor: Carta
 5. **Interview loop and references** — human · ~7 d · async wait
 
+   *Follows step 3.*
+
    Assign interviews to the executive outcomes and capabilities in the scorecard. Seek concrete examples of decisions, results and working relationships, and collect references through the company’s candidate-consent process. Compare the evidence in the hiring debrief, including conflicting accounts and questions that still need diligence. Give the hiring sponsor a reasoned recommendation with specific risks to resolve before an offer.
 
    - Sources: [EEOC: Recruiting, hiring or promoting employees](https://www.eeoc.gov/employers/small-business/3-im-recruiting-hiring-or-promoting-employees)
 6. **Draft the offer (comp, equity, severance)** — agent-runnable · ~30 min
+
+   *Follows step 4 or step 5.*
 
    Draft the offer from the settled negotiation position: role, reporting line, cash compensation, proposed equity, severance and any change-of-control terms. Identify provisions dependent on board action or separate grant documents. Reconcile the package with counsel and finance, calling out differences from the approved range and unusual commitments. Resolve those decisions before the candidate receives the offer.
 

@@ -31,6 +31,8 @@ With a bank (Mercury, Brex, Relay) or accounting tool (QuickBooks, Xero, Pilot) 
 
 1. **Fetch account balances** — agent-runnable · ~2 min
 
+   *Entry step — no prerequisite step.*
+
    Take a consistent-date snapshot of accounts included in runway. Separate unrestricted operating cash from restricted funds, investments and pending transfers, and state currency conversion assumptions. Reconcile it to the cash schedule and identify stale or inaccessible balances so the calculation uses funds the company can actually draw on.
 
 Retain account identifiers, statement dates, opening/closing balances and the source of each value. Check duplicate records and transfer pairs before combining exports. Reconcile the included accounts individually and in total; do not substitute zero for an inaccessible balance. State the exchange-rate date and source when currencies are combined.
@@ -40,6 +42,8 @@ Retain account identifiers, statement dates, opening/closing balances and the so
    - Ranked market: [startup-banking](../../open-rankings/startup-banking)
 2. **Analyze monthly spend** — agent-runnable · ~5 min
 
+   *Entry step — no prerequisite step.*
+
    Analyze spending and operating receipts over comparable monthly periods, separating recurring activity, unusual purchases, financing and internal transfers. Compare the pattern with upcoming payroll, vendor commitments and collection timing. Explain where historical averages would misrepresent future cash use, then use those adjustments in the forward runway estimate.
 
 Keep a normalized transaction schedule with a stable source-row identifier and classification. Show financing, internal transfers, one-off items and restricted-fund movements separately so the operating cash calculation can be checked. Distinguish a contractual commitment from its expected payment date and a booked receivable from expected collection.
@@ -48,6 +52,8 @@ Keep a normalized transaction schedule with a stable source-row identifier and c
    - Vendor options: Mercury, Brex, Ramp, QuickBooks, Xero
    - Ranked market: [expense-management](../../open-rankings/expense-management)
 3. **Calculate runway** — agent-runnable · ~2 min
+
+   *Follows step 1 or step 2.*
 
    Estimate runway from available cash and explicit spending and collection assumptions. A stable positive monthly cash outflow supports a simple ratio; uneven or positive cash flow calls for a month-by-month projection. Include planned hires and commitments, compare a downside case and identify the first cash constraint so management can see which assumptions require action.
 

@@ -41,6 +41,8 @@ Configure a team password manager for shared credentials and secure sharing. 1Pa
    - Canonical vendor: 1Password
 4. **Configure access groups** — agent-runnable · ~5 min · human approval required
 
+   *Follows step 2.*
+
    Map each role to the vaults and permissions it needs, keeping administration and the ability to grant further access limited to the responsible people. Apply the group memberships and check sensitive finance and production access with their owners. Document how joining, changing roles, and leaving the company affect membership. Assign temporary access an owner and an agreed removal point.
 
    - Canonical vendor: 1Password

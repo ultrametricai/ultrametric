@@ -40,8 +40,12 @@ QuickBooks API and official Intuit MCP server enable transaction categorization,
    - Canonical vendor: QuickBooks
 4. **Review uncategorized items** — human · ~30 min
 
+   *Follows step 2.*
+
    Resolve uncategorized transactions using the original entry, receipt and responsible employee or vendor record. Ask about business purpose, service period and tax treatment where these are unclear. Group missing-document requests by owner and show the accountant which unresolved amounts could affect the close.
 5. **Generate P&L statement** — agent-runnable · ~2 min
+
+   *Follows step 3 or step 4.*
 
    Run the profit-and-loss report for the selected entity, accounting basis and closing period. Compare revenue, payroll and large or negative expense lines with supporting schedules, prior periods and budget. Identify provisional balances and expected adjustments so the accountant can review the result and later board reporting uses the same figures.
 

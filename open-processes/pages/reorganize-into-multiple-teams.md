@@ -43,10 +43,14 @@ Linear GraphQL API fully supports teams, projects, cycles, and labels. Complete 
    - Canonical vendor: Linear
 5. **Create Slack channel integrations** — agent-runnable · ~10 min · human approval required
 
+   *Follows step 1.*
+
    For teams using Slack, choose which tracker events warrant a channel message and where those messages belong. Check channel membership against the linked issues' visibility and review the integration's permissions with the administrators before connecting it. Trigger a representative event and inspect the message, link access, and duplicates. Adjust noisy rules before expanding the integration, and tell the channel owner how to change or disable notifications.
 
    - Canonical vendor: Slack
 6. **Document process in Notion** — agent-runnable · ~15 min · human approval required
+
+   *Follows step 4.*
 
    Document the new operating model in the team's wiki, using Notion if selected. Explain team ownership, intake routes, workflow meanings, planning cadence, and cross-team handoffs, linking the tracker views people should use. Include a concrete example of a request that crosses departments and show who owns each handoff. Ask the involved leads to resolve gaps, then share the guide and identify who updates it as the organization changes.
 

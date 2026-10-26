@@ -56,6 +56,8 @@ Google Admin API supports user/group management. Initial domain setup and billin
    - Canonical vendor: Google Drive
 5. **Configure security settings** — agent-runnable · ~10 min · human approval required
 
+   *Follows step 3.*
+
    Review administrator roles, sign-in protection, recovery methods, and external-sharing settings with the IT owner. Prioritize administrator and sensitive-mailbox access, and establish a recovery path before enforcing settings that could lock people out. Roll changes out to a small group first, checking normal sign-in and the sharing workflows the team relies on. Resolve exceptions, then extend the settings and document who manages recovery, suspicious activity, and future access changes.
 
    - Canonical vendor: Gmail
