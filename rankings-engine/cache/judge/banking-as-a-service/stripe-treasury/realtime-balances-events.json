@@ -1,15 +1,16 @@
 {
-  "hash": "f89fdd85332d79f682ab5187410478b2c9d199fd64534df5f86262f89dfea149",
+  "hash": "d70b1e019ce9471bedc86861fa6b08268077d7fc21e22621db63d64724db0873",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Stripe's docs say every movement of funds into or out of a financial account creates a Transaction object that serves as a ledger entry for reconciliation. They also document a v2.money_management.transaction.created webhook event, so an event-driven mirror is partly supported. The evidence shows only a creation event, and nothing about how balances reflect holds or pending activity. Missing for 10: balance reads that break out holds and pending amounts, webhooks for every transaction state change (posted, voided, returned), and independent or hands-on confirmation of real-time accuracy.",
+    "rationale": "Stripe documents that every movement of funds into or out of a financial account creates a Transaction ledger entry, usable for activity feeds and reconciliation. It also documents an event (v2.money_management.transaction.created) fired when a transaction is created, so there is a first-party event-driven hook into the ledger. The evidence shows only a creation event, not events for every state change, and says nothing about balance breakdowns. Missing for 10: balance reads showing holds/pending vs available funds, webhook events for every transaction state transition (posted, voided, returned), and independent corroboration of real-time mirroring.",
     "evidenceIds": [
       "stripe-treasury-docs-19",
       "stripe-treasury-docs-20",
-      "stripe-treasury-docs-13"
+      "stripe-treasury-docs-13",
+      "stripe-treasury-docs-16"
     ],
     "productId": "stripe-treasury",
     "storyId": "realtime-balances-events"

@@ -574,8 +574,8 @@ describe('permalink — the whole run state round-trips through ?run= (v2), and 
     }
     // Entity: c-corp/llc keep 0/1; the country entities append as 2–9 (PT/CA took 8/9 in the
     // 2026-10-03 new-countries wave — old digits still mean what they always meant). NZ took
-    // the 11th slot, SG the 12th, and AU the 13th (2026-10-23), which write past '9' in base 36
-    // as 'a'/'b'/'c';
+    // the 11th slot, SG the 12th, AU the 13th, KR the 14th, and HK the 15th (2026-10-23), which
+    // write past '9' in base 36 as 'a'/'b'/'c'/'d'/'e';
     // slots 0–9 encode byte-identically to every link a released codec emitted.
     expect(decodeCombo(digitAt('entity', '0'))!.entity).toBe('c-corp')
     expect(decodeCombo(digitAt('entity', '1'))!.entity).toBe('llc')
@@ -587,9 +587,9 @@ describe('permalink — the whole run state round-trips through ?run= (v2), and 
     expect(decodeCombo(digitAt('entity', 'b'))!.entity).toBe('pte-ltd')
     expect(decodeCombo(digitAt('entity', 'c'))!.entity).toBe('pty-ltd')
     expect(decodeCombo(digitAt('entity', 'd'))!.entity).toBe('kr-chusik-hoesa')
-    // Slot 14 ('e') is reserved for the Hong Kong lane (ENTITY_CODEC_SLOTS): it decodes as
-    // invalid until that entity lands, and Estonia holds the coordinated slot 15 ('f').
-    expect(decodeCombo(digitAt('entity', 'e'))).toBeNull()
+    // Hong Kong landed in its coordinated slot 14 ('e'), Estonia in slot 15 ('f')
+    // (ENTITY_CODEC_SLOTS — the maintainer-assigned slots of the parallel country lanes).
+    expect(decodeCombo(digitAt('entity', 'e'))!.entity).toBe('hk-private-limited')
     expect(decodeCombo(digitAt('entity', 'f'))!.entity).toBe('ee-osauhing')
     expect(decodeCombo(digitAt('entity', 'g'))).toBeNull()
     const entitySlot = DECISIONS.findIndex((d) => d.id === 'entity')
@@ -599,6 +599,8 @@ describe('permalink — the whole run state round-trips through ?run= (v2), and 
     expect(decodeCombo(encodeCombo({ ...DEFAULT_CHOICES, entity: 'pty-ltd' }))!.entity).toBe('pty-ltd')
     expect(encodeCombo({ ...DEFAULT_CHOICES, entity: 'kr-chusik-hoesa' })[entitySlot]).toBe('d')
     expect(decodeCombo(encodeCombo({ ...DEFAULT_CHOICES, entity: 'kr-chusik-hoesa' }))!.entity).toBe('kr-chusik-hoesa')
+    expect(encodeCombo({ ...DEFAULT_CHOICES, entity: 'hk-private-limited' })[entitySlot]).toBe('e')
+    expect(decodeCombo(encodeCombo({ ...DEFAULT_CHOICES, entity: 'hk-private-limited' }))!.entity).toBe('hk-private-limited')
     expect(encodeCombo({ ...DEFAULT_CHOICES, entity: 'ee-osauhing' })[entitySlot]).toBe('f')
     expect(decodeCombo(encodeCombo({ ...DEFAULT_CHOICES, entity: 'ee-osauhing' }))!.entity).toBe('ee-osauhing')
     // The slot table stays bijective over the real entity options: one slot per value, no

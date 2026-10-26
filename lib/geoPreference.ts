@@ -3,7 +3,7 @@
 // the globe"). One preference, one country list — the original five are the set the vendor-geo
 // spike judged (lib/vendorGeo.ts); the process geo notes (lib/processes.ts GeoNoteSchema) cover
 // every listed country — PT and CA joined in the founder new-countries wave 2026-10-03; NZ,
-// SG, AU, KR, and EE in the 2026-10-23 country runs. Vendor geo
+// SG, AU, KR, HK, and EE in the 2026-10-23 country runs. Vendor geo
 // stays evidence-gated per country: products the spike has not judged are absent, never guessed.
 //
 // This module is the CLIENT-SAFE half (no node:fs — the lib/jurisdictions.ts split convention):
@@ -13,12 +13,12 @@
 //
 // URL/localStorage contract (lib/urlState.ts conventions, the JurisdictionToggle precedent):
 // the default — 🇺🇸 US — NEVER appears in the URL; ?geo=uk / ?geo=in / ?geo=de / ?geo=fr /
-// ?geo=pt / ?geo=ca / ?geo=nz / ?geo=sg / ?geo=au / ?geo=kr / ?geo=ee is the shareable non-default state, mirrored to localStorage under `pa-geo`. Components read it on
+// ?geo=pt / ?geo=ca / ?geo=nz / ?geo=sg / ?geo=au / ?geo=kr / ?geo=hk / ?geo=ee is the shareable non-default state, mirrored to localStorage under `pa-geo`. Components read it on
 // MOUNT ONLY, so the static HTML always renders the US default byte-identically and hydrates
 // with zero mismatches — geo-conditional UI appears only after the reader (or their stored
 // preference) opts in, and no judged number ever moves.
 
-export const GEO_COUNTRIES = ['US', 'UK', 'IN', 'DE', 'FR', 'PT', 'CA', 'NZ', 'SG', 'AU', 'KR', 'EE'] as const
+export const GEO_COUNTRIES = ['US', 'UK', 'IN', 'DE', 'FR', 'PT', 'CA', 'NZ', 'SG', 'AU', 'KR', 'HK', 'EE'] as const
 export type GeoCountry = (typeof GEO_COUNTRIES)[number]
 
 /** The non-default selections — everything a ?geo= param can carry. */
@@ -38,6 +38,7 @@ export const GEO_PREF_META: Record<GeoCountry, { label: string; flag: string; pr
   SG: { label: 'Singapore', flag: '🇸🇬', prose: 'Singapore' },
   AU: { label: 'Australia', flag: '🇦🇺', prose: 'Australia' },
   KR: { label: 'South Korea', flag: '🇰🇷', prose: 'South Korea' },
+  HK: { label: 'Hong Kong', flag: '🇭🇰', prose: 'Hong Kong' },
   EE: { label: 'Estonia', flag: '🇪🇪', prose: 'Estonia' },
 }
 
@@ -176,9 +177,16 @@ export type VendorGeoByCountry = Partial<Record<GeoSelection, VendorGeoCell>>
 /** Keyed by productId; products the geo spike hasn't judged are simply absent (never guessed). */
 export type VendorGeoLookup = Record<string, VendorGeoByCountry>
 
+// Vendor-geo-only countries (the 2026-10-23 LatAm wave): jurisdictions/vendor-geo.json carries
+// availability rows for these and the "Geos supported" strip renders them, but the geo switcher
+// does not offer them — no process geo notes cover them yet, so a ?geo= selection cannot carry
+// one and vendorGeoLookup never ships their cells.
+export const VENDOR_GEO_ONLY_COUNTRIES = ['BR', 'MX', 'AR', 'CO', 'CL', 'PE'] as const
+export type VendorGeoOnlyCountry = (typeof VENDOR_GEO_ONLY_COUNTRIES)[number]
+
 /** One full "Geos supported" chip row (client-safe shape of lib/vendorGeo.ts entries). */
 export interface VendorGeoStripRow extends VendorGeoCell {
-  country: GeoCountry
+  country: GeoCountry | VendorGeoOnlyCountry
   checkedAt: string
 }
 

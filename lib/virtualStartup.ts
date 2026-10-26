@@ -40,19 +40,20 @@ import type { Cadence, SimStep } from './processSim'
 export type EntityChoice =
   | 'c-corp' | 'llc' | 'ltd' | 'gmbh' | 'ug' | 'sas' | 'sarl' | 'pvt-ltd' | 'lda' | 'ca-corp'
   | 'nz-ltd' | 'pte-ltd'
-  | 'pty-ltd' | 'kr-chusik-hoesa'
+  | 'pty-ltd' | 'kr-chusik-hoesa' | 'hk-private-limited'
   | 'ee-osauhing'
 
 // The entity decision's permalink slots, EXPLICIT rather than options-array positions since the
 // parallel country lanes of 2026-10-23: two lanes appending at once would race for the same
 // base-36 char, so the maintainer assigns slots up front and the codec reads this table for the
 // entity decision only (lib/virtualStartupRun.ts). Slots 0-13 are the shipped history and stay
-// byte-identical to the old findIndex behavior; slot 14 ('e') is reserved for the Hong Kong
-// lane running in parallel and decodes as invalid until that entity lands; Estonia holds slot
+// byte-identical to the old findIndex behavior; slot 14 ('e') is Hong Kong (landed from the
+// parallel lane of the same runs); Estonia holds slot
 // 15 ('f'). Append-only, like DECISIONS: a slot, once published, is an immutable permalink fact.
 export const ENTITY_CODEC_SLOTS: Record<EntityChoice, number> = {
   'c-corp': 0, 'llc': 1, 'ltd': 2, 'gmbh': 3, 'ug': 4, 'sas': 5, 'sarl': 6, 'pvt-ltd': 7,
   'lda': 8, 'ca-corp': 9, 'nz-ltd': 10, 'pte-ltd': 11, 'pty-ltd': 12, 'kr-chusik-hoesa': 13,
+  'hk-private-limited': 14,
   'ee-osauhing': 15,
 }
 export type FundingChoice = 'bootstrap' | 'seed'
@@ -260,6 +261,10 @@ export const ENTITY_META: Record<EntityChoice, EntityMeta> = {
     label: 'Chusik hoesa (주식회사)', suffix: ' Co., Ltd.', country: 'KR',
     filing: { label: 'Incorporation registration', register: 'Corporate registry no. 000000-0000000 (placeholder)' },
   },
+  'hk-private-limited': {
+    label: 'Private company limited by shares', suffix: ' Limited', country: 'HK',
+    filing: { label: 'Certificate of Incorporation', register: 'Companies Registry no. 0000000 (placeholder)' },
+  },
   'ee-osauhing': {
     label: 'Osaühing (OÜ)', suffix: ' OÜ', country: 'EE',
     filing: { label: 'Commercial register entry', register: 'Registry code 00000000 (placeholder)' },
@@ -281,6 +286,7 @@ export const ENTITY_OPTIONS_BY_COUNTRY: Record<GeoCountry, EntityChoice[]> = {
   SG: ['pte-ltd'],
   AU: ['pty-ltd'],
   KR: ['kr-chusik-hoesa'],
+  HK: ['hk-private-limited'],
   EE: ['ee-osauhing'],
 }
 
@@ -350,6 +356,7 @@ export const DECISIONS: DecisionDef[] = [
       { value: 'pte-ltd', label: 'Pte Ltd', detail: 'the same corpus incorporation composition as the C-Corp path (form_001), framed for Singapore with the committed ACRA/Bizfile analog — the corpus is US-shaped; no steps invented' },
       { value: 'pty-ltd', label: 'Pty Ltd', detail: 'the same corpus incorporation composition as the C-Corp path (form_001), framed for Australia with the committed ASIC analog — the corpus is US-shaped; no steps invented' },
       { value: 'kr-chusik-hoesa', label: 'Chusik hoesa (주식회사)', detail: 'the same corpus incorporation composition as the C-Corp path (form_001), framed for South Korea with the committed court-registry (IROS) analog — the corpus is US-shaped; no steps invented' },
+      { value: 'hk-private-limited', label: 'Private company limited by shares', detail: 'the same corpus incorporation composition as the C-Corp path (form_001), framed for Hong Kong with the committed Companies Registry analog — the corpus is US-shaped; no steps invented' },
       { value: 'ee-osauhing', label: 'Osaühing (OÜ)', detail: 'the same corpus incorporation composition as the C-Corp path (form_001), framed for Estonia with the committed e-Business Register analog — the corpus is US-shaped; no steps invented' },
     ],
   },
