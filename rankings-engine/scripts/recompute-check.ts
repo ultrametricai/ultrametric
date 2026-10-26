@@ -33,6 +33,7 @@ const CATEGORIES = [
   'banking-data-apis',
   'billing-subscriptions',
   'browser-agents',
+  'business-phone',
   'card-issuing',
   'cloud-platforms',
   'cloud-storage',

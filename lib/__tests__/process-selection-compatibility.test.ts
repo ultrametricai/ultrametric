@@ -117,8 +117,13 @@ describe('existing judged selection compatibility', () => {
     // steps mapped to those arenas, and the v5 freshness cascade the debuts forced on the
     // three arenas' stale caches re-partitioned some incumbent cells between the positive
     // and zero rows.
-    expect(positiveCount).toBe(3008)
-    expect(zeroCount).toBe(268)
+    // Re-pinned at the non-profit + business-phone bring-up (2026-10-26): the business-phone
+    // debut adds the new choose-provider step's five judged candidates, and completing the
+    // mapping (map-step-stories writes all-or-nothing) settled the stale incumbent cells the
+    // 2026-10-23 waves left behind (form_001:n8 government-services among them), re-partitioning
+    // some rows between the positive and zero sets.
+    expect(positiveCount).toBe(3012)
+    expect(zeroCount).toBe(269)
     // Re-pinned at the v5 settlement wave 1 integration (2026-10-23): seven arenas
     // (cloud-platforms, cloud-storage, virtual-mailboxes, data-warehouses, sso-identity,
     // customer-data-platforms, team-chat) re-judged under the v5 boundary; the three arenas
