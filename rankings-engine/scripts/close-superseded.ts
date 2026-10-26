@@ -49,6 +49,20 @@ export function supersessionComment(kind: Kind, successor: number): string {
     : `Superseded by #${successor}. Closed automatically by the generator workflow; the dispositions recorded here stay in the committed reports.`
 }
 
+// GitHub's issue search matches whole words only: a quoted phrase ending in a partial token
+// finds nothing. The date-anchored prefixes end in exactly such a token ("… candidates 20"
+// against titles containing "2026-10-24"), so searching on the full prefix returned zero
+// items and the authoritative startsWith filter never saw the stale issues (#467/#472
+// outlived #477). The server-side phrase therefore drops the trailing token whenever the
+// prefix does not end on a whitespace boundary; broadening the listing is safe because
+// pickSuperseded's startsWith on the full prefix stays the authoritative filter.
+export function searchPhrase(prefix: string): string {
+  const trimmed = prefix.trimEnd()
+  if (trimmed !== prefix) return trimmed // ends on a boundary: every token is complete
+  const stripped = trimmed.replace(/\S+$/u, '').trimEnd()
+  return stripped.length > 0 ? stripped : trimmed
+}
+
 // One listing per prefix, narrowed server-side with an in:title search so the 100-item window
 // applies to the generator's own items, not the whole repo's open queue — a busy tracker cannot
 // push a matching item out of view. Search matching is loose; the startsWith filter in
@@ -56,7 +70,7 @@ export function supersessionComment(kind: Kind, successor: number): string {
 export function listOpenItems(kind: Kind, prefixes: string[], run: GhRunner): GhItem[] {
   const byNumber = new Map<number, GhItem>()
   for (const prefix of prefixes) {
-    const listed = run([kind, 'list', '--state', 'open', '--limit', '100', '--search', `in:title "${prefix}"`, '--json', 'number,title'])
+    const listed = run([kind, 'list', '--state', 'open', '--limit', '100', '--search', `in:title "${searchPhrase(prefix)}"`, '--json', 'number,title'])
     for (const item of GhItemSchema.array().parse(JSON.parse(listed))) byNumber.set(item.number, item)
   }
   return [...byNumber.values()]
