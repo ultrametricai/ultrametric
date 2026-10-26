@@ -1,0 +1,569 @@
+import fs from 'node:fs'
+import path from 'node:path'
+import { loadProcessCatalog, type CatalogProcess } from './shared-processes/catalog'
+import type { Connection, Option, Part, Reference } from './shared-processes/schema'
+import { formatMinutes, REVERSIBILITY_META, URGENCY_META } from './processSim'
+import { GEO_COUNTRY_META, GEO_NOTE_COUNTRIES } from './processes'
+
+// open-processes/pages/<slug>.md ↔ corpus drift machinery: every canonical record in
+// open-processes/ renders as a committed Markdown page so the corpus reads as guides on
+// GitHub, not raw JSON. Same doctrine as the other generated surfaces (SITUATIONS.md via
+// lib/situationsDoc.ts, the Serves lines via lib/businessLogicServes.ts, step-rankings via
+// lib/stepRankings.ts): the truth lives in the records, the pages are machine-owned
+// (scripts/generate-process-pages.ts), and a drift test (__tests__/process-pages.test.ts)
+// keeps the committed pages byte-identical with a fresh render. Pure derivation — no LLM,
+// no network; every link resolves inside the repo or comes verbatim from the record.
+
+export const PAGES_DIR = 'open-processes/pages'
+export const PROCESSES_README = 'open-processes/README.md'
+export const INDEX_START = '<!-- process-pages:index:start (generated — scripts/generate-process-pages.ts) -->'
+export const INDEX_END = '<!-- process-pages:index:end -->'
+
+type Meta = Record<string, unknown>
+
+const str = (m: Meta, k: string): string | null => (typeof m[k] === 'string' ? (m[k] as string) : null)
+const num = (m: Meta, k: string): number | null => (typeof m[k] === 'number' ? (m[k] as number) : null)
+
+// Markdown link text: keep record prose verbatim except the two characters that break a link.
+const linkText = (s: string): string => s.replace(/\[/g, '\\[').replace(/\]/g, '\\]')
+// Markdown table cell: record prose never carries pipes or newlines today; escape defensively.
+const cell = (s: string): string => s.replace(/\|/g, '\\|').replace(/\s*\n\s*/g, ' ')
+
+const hostname = (url: string): string => {
+  try {
+    return new URL(url).hostname
+  } catch {
+    return url
+  }
+}
+
+// ---------------------------------------------------------------------------
+// Context: the repo-level indexes a page render needs (law rule files, artifact labels,
+// vendor display names, the record graph). All read from the committed tree.
+// ---------------------------------------------------------------------------
+
+export interface PageContext {
+  sources: CatalogProcess[]
+  slugById: Map<string, string>
+  titleById: Map<string, string>
+  /** law rule id → repo-relative path of its rule card (open-law/…). */
+  lawFiles: Map<string, string>
+  /** artifact id → display label + canonical producer record id. */
+  artifacts: Map<string, { label: string; producedBy: string | null }>
+  /** corpus vendor key → display name (vendor-registry label, else title-cased key). */
+  vendorNames: Map<string, string>
+  /** arena id → true when open-rankings/<id>/ exists (links are never fabricated). */
+  arenas: Set<string>
+  /** record id → chains whose taskIds include it. */
+  chainsByTask: Map<string, CatalogProcess[]>
+  /** record id → non-chain records with a reference part pointing at it. */
+  referencedBy: Map<string, CatalogProcess[]>
+}
+
+// Rule cards live as one-proposition JSON files under open-law/ (lib/founderOps.ts validates
+// them); everything else in that tree (map, citations, workflow coverage, LAWS.md) is not a
+// rule card. Index id → path so inline "law rule <id>" prose citations become links.
+function lawRuleFiles(root: string): Map<string, string> {
+  const out = new Map<string, string>()
+  const skip = new Set(['open-law/map.json', 'open-law/workflow-coverage.json', 'open-law/workflow-domains.json'])
+  const visit = (rel: string) => {
+    for (const entry of fs.readdirSync(path.join(root, rel), { withFileTypes: true }).sort((a, b) => a.name.localeCompare(b.name))) {
+      const relPath = `${rel}/${entry.name}`
+      if (entry.isDirectory()) {
+        if (relPath !== 'open-law/citations') visit(relPath)
+      } else if (entry.name.endsWith('.json') && !skip.has(relPath)) {
+        const value = JSON.parse(fs.readFileSync(path.join(root, relPath), 'utf8')) as Meta
+        if (typeof value.id === 'string' && typeof value.statement === 'string') out.set(value.id, relPath)
+      }
+    }
+  }
+  if (fs.existsSync(path.join(root, 'open-law'))) visit('open-law')
+  return out
+}
+
+const titleCase = (key: string): string =>
+  key.split('_').map((w) => (w ? w[0].toUpperCase() + w.slice(1) : w)).join(' ')
+
+export function buildPageContext(root: string = process.cwd()): PageContext {
+  const sources = loadProcessCatalog(undefined, root).processes
+  const slugById = new Map(sources.map((p) => [p.record.id, p.slug]))
+  const titleById = new Map(sources.map((p) => [p.record.id, p.record.title]))
+  const registry = JSON.parse(fs.readFileSync(path.join(root, 'open-artifacts/registry.json'), 'utf8')) as {
+    artifacts: Array<{ id: string; label: string; producedBy?: string }>
+  }
+  const artifacts = new Map(registry.artifacts.map((a) => [a.id, { label: a.label, producedBy: a.producedBy ?? null }]))
+  const vendorRegistry = JSON.parse(fs.readFileSync(path.join(root, 'open-processes/vendor-registry.json'), 'utf8')) as {
+    vendors: Record<string, { label?: string }>
+  }
+  const vendorNames = new Map(
+    Object.entries(vendorRegistry.vendors).map(([key, v]) => [key, v.label ?? titleCase(key)]),
+  )
+  const rankingsDir = path.join(root, 'open-rankings')
+  const arenas = new Set(
+    fs.existsSync(rankingsDir)
+      ? fs.readdirSync(rankingsDir, { withFileTypes: true }).filter((e) => e.isDirectory()).map((e) => e.name)
+      : [],
+  )
+  const chainsByTask = new Map<string, CatalogProcess[]>()
+  const referencedBy = new Map<string, CatalogProcess[]>()
+  for (const source of sources) {
+    for (const taskId of source.taskIds ?? []) {
+      chainsByTask.set(taskId, [...(chainsByTask.get(taskId) ?? []), source])
+    }
+    if (source.taskIds) continue
+    const refs = (parts: Part[]): string[] =>
+      parts.flatMap((p) => [...(p.ref ? [p.ref] : []), ...p.options.flatMap((o) => refs(o.parts))])
+    for (const id of new Set(refs(source.record.parts))) {
+      referencedBy.set(id, [...(referencedBy.get(id) ?? []), source])
+    }
+  }
+  return { sources, slugById, titleById, lawFiles: lawRuleFiles(root), artifacts, vendorNames, arenas, chainsByTask, referencedBy }
+}
+
+// ---------------------------------------------------------------------------
+// Prose helpers
+// ---------------------------------------------------------------------------
+
+// Inline law citations follow the corpus convention "law rule <id>" where <id> is the dotted
+// rule-card id (us-de.franchise-tax-annual-report). Known ids become links to the rule card;
+// an id without a committed card stays plain text — a link is never fabricated.
+const LAW_RULE_RE = /law rules? ([a-z0-9][a-z0-9-]*(?:\.[a-z0-9][a-z0-9-]*)+)/g
+
+export function linkLawRules(text: string, ctx: PageContext): string {
+  return text.replace(LAW_RULE_RE, (match, id: string) => {
+    const file = ctx.lawFiles.get(id)
+    return file ? match.replace(id, `[${id}](../../${file})`) : match
+  })
+}
+
+const ROUTE_LABELS: Record<string, string> = {
+  agent: 'agent-runnable',
+  form: 'manual form/portal',
+  person: 'human',
+}
+
+const SUPPORT_LABELS: Record<string, string> = {
+  full: 'full',
+  partial: 'partial',
+  manual_guide: 'manual guide',
+}
+
+const COST_KIND_LABELS: Record<string, string> = {
+  'government-fee': 'government fee',
+  'optional-government-fee': 'optional government fee',
+  'typical-vendor-price': 'typical vendor price',
+  free: 'free',
+}
+
+const GEO_KIND_LABELS: Record<string, string> = {
+  analog: '',
+  absorbed: 'Absorbed: ',
+  'not-applicable': 'Not applicable: ',
+}
+
+const COUNTRY_ORDER: string[] = ['US', ...GEO_NOTE_COUNTRIES]
+
+const countryLabel = (code: string): string =>
+  code === 'US' ? 'United States' : (GEO_COUNTRY_META as Record<string, { label: string }>)[code]?.label ?? code
+
+// The inline marker string after a step title: routing, clock, and the doors that close.
+function stepMarkers(m: Meta): string[] {
+  const markers: string[] = []
+  const route = str(m, 'route')
+  if (route) {
+    const signature = m.legalSignature === true ? ' (legally required signature)' : ''
+    markers.push(`${ROUTE_LABELS[route] ?? route}${signature}`)
+  }
+  const mode = str(m, 'mode')
+  if (mode) markers.push(`mode: ${mode.replace(/_/g, ' ')}`)
+  const minutes = num(m, 'estimatedMinutes')
+  if (minutes !== null) markers.push(`~${formatMinutes(minutes)}`)
+  if (m.async === true) markers.push('async wait')
+  if (m.approvalRequired === true) markers.push('human approval required')
+  const reversibility = str(m, 'reversibility')
+  if (reversibility && reversibility !== 'reversible') {
+    markers.push(REVERSIBILITY_META[reversibility as keyof typeof REVERSIBILITY_META]?.label ?? reversibility)
+  }
+  if (m.supporting === true) markers.push('support work')
+  const jurisdictions = Array.isArray(m.jurisdictions) ? (m.jurisdictions as string[]) : []
+  if (jurisdictions.length > 0) markers.push(`only when operating in ${jurisdictions.join(', ')}`)
+  return markers
+}
+
+interface CostMeta { usd: number | null; kind: string; source: string; asOf: string; note?: string }
+interface VerifyMeta { how: string; url?: string }
+interface GeoEntry { country: string; kind: string; label?: string; summary?: string; guidance?: string; actionUrl?: string; actionLabel?: string }
+
+function costLine(cost: CostMeta): string {
+  const kind = COST_KIND_LABELS[cost.kind] ?? cost.kind
+  const amount = cost.usd === null ? 'published amount varies' : cost.usd === 0 ? 'free' : `$${cost.usd.toLocaleString('en-US')}`
+  const note = cost.note ? ` ${cost.note}` : ''
+  return `Cost: ${amount} (${kind}, as of ${cost.asOf}, [${hostname(cost.source)}](${cost.source})).${note}`
+}
+
+function verifyLine(verify: VerifyMeta): string {
+  const link = verify.url ? ` ([${hostname(verify.url)}](${verify.url}))` : ''
+  return `Verify: ${verify.how}${link}`
+}
+
+// ---------------------------------------------------------------------------
+// Reference rendering (vendor names, ranked markets, action links, sources, law rules)
+// ---------------------------------------------------------------------------
+
+type UrlRef = Extract<Reference, { kind: 'url' }>
+type IdRef = Extract<Reference, { kind: 'vendor' | 'category' | 'product' | 'rule' | 'source' | 'guidance' }>
+
+function referenceLines(references: Reference[], ctx: PageContext): string[] {
+  const lines: string[] = []
+  const ids = references.filter((r): r is IdRef => r.kind !== 'url')
+  const urls = references.filter((r): r is UrlRef => r.kind === 'url')
+  const vendorName = (id: string) => ctx.vendorNames.get(id) ?? titleCase(id)
+  const stated = ids.filter((r) => r.kind === 'vendor' && r.role === 'stated-vendor').map((r) => vendorName(r.id))
+  if (stated.length > 0) lines.push(`Canonical vendor: ${[...new Set(stated)].join(', ')}`)
+  const candidates = [...new Set(ids.filter((r) => r.kind === 'vendor' && r.role === 'candidate').map((r) => vendorName(r.id)))]
+  if (candidates.length > 0) lines.push(`Vendor options: ${candidates.join(', ')}`)
+  const arenasCited = ids.filter((r) => r.kind === 'category' && r.role === 'rankings').map((r) => r.id)
+  for (const arena of [...new Set(arenasCited)]) {
+    lines.push(ctx.arenas.has(arena) ? `Ranked market: [${arena}](../../open-rankings/${arena})` : `Ranked market: ${arena}`)
+  }
+  const action = urls.find((r) => r.role === 'legacy-action-link')
+  if (action) lines.push(`Do it yourself: [${linkText(action.title ?? hostname(action.url))}](${action.url})`)
+  const seen = new Set<string>(action ? [action.url] : [])
+  const sources: string[] = []
+  for (const r of urls) {
+    if (r.role === 'legacy-action-link' || r.role === 'legacy-signup-link' || seen.has(r.url)) continue
+    seen.add(r.url)
+    sources.push(`[${linkText(r.title ?? hostname(r.url))}](${r.url})`)
+  }
+  if (sources.length > 0) lines.push(`Sources: ${sources.join(' · ')}`)
+  const rules = ids.filter((r) => r.kind === 'rule')
+  if (rules.length > 0) {
+    const linked = rules.map((r) => {
+      const file = ctx.lawFiles.get(r.id)
+      return file ? `[${r.id}](../../${file})` : r.id
+    })
+    lines.push(`Law rules: ${linked.join(', ')}`)
+  }
+  return lines
+}
+
+// ---------------------------------------------------------------------------
+// The step walk
+// ---------------------------------------------------------------------------
+
+function optionBlock(option: Option, isDefault: boolean, ctx: PageContext, indent: string): string[] {
+  const lines: string[] = []
+  const markers = stepMarkers(option.metadata)
+  lines.push(`${indent}- **${option.title}**${markers.length > 0 ? ` — ${markers.join(' · ')}` : ''}`)
+  const paragraphs: string[] = []
+  if (option.when) paragraphs.push(`When: ${linkLawRules(option.when, ctx)}`)
+  if (!isDefault && option.summary) paragraphs.push(linkLawRules(option.summary, ctx))
+  const cost = option.metadata.cost as CostMeta | undefined
+  if (cost && !isDefault) paragraphs.push(costLine(cost))
+  for (const p of paragraphs) lines.push('', `${indent}  ${p}`)
+  if (option.parts.length > 0) {
+    lines.push('')
+    for (const sub of option.parts) {
+      const subMarkers = stepMarkers(sub.metadata)
+      lines.push(`${indent}  - ${sub.title ?? sub.id}${subMarkers.length > 0 ? ` — ${subMarkers.join(' · ')}` : ''}`)
+    }
+  }
+  return lines
+}
+
+function partBlock(part: Part, index: number, record: { links: Connection[]; parts: Part[] }, ctx: PageContext): string[] {
+  const lines: string[] = []
+  const titleOf = (id: string) => record.parts.find((p) => p.id === id)?.title ?? id
+  if (part.kind === 'reference') {
+    const slug = part.ref ? ctx.slugById.get(part.ref) : null
+    const title = part.ref ? ctx.titleById.get(part.ref) ?? part.ref : part.id
+    const link = slug ? `[${linkText(title)}](${slug}.md)` : title
+    lines.push(`${index}. Run ${link}${part.when ? ` (when: ${part.when})` : ''}`)
+    return lines
+  }
+  const defaultOption = part.options.find((o) => o.id === 'default')
+  const meta: Meta = { ...part.metadata, ...defaultOption?.metadata }
+  const markers = stepMarkers(meta)
+  lines.push(`${index}. **${part.title ?? part.id}**${markers.length > 0 ? ` — ${markers.join(' · ')}` : ''}`)
+  const detail: string[] = []
+  if (part.when) detail.push(`When: ${linkLawRules(part.when, ctx)}`)
+  const body = part.guidance ?? defaultOption?.summary ?? null
+  if (body) detail.push(linkLawRules(body, ctx))
+  const bullets: string[] = []
+  const verify = meta.verify as VerifyMeta | undefined
+  if (verify) bullets.push(verifyLine(verify))
+  const cost = meta.cost as CostMeta | undefined
+  if (cost) bullets.push(costLine(cost))
+  const produces = str(meta, 'producesArtifact')
+  if (produces) bullets.push(`Produces: ${ctx.artifacts.get(produces)?.label ?? produces}`)
+  bullets.push(...referenceLines([...part.references, ...(defaultOption?.references ?? [])], ctx))
+  for (const note of part.notes) bullets.push(linkLawRules(note.text, ctx))
+  // Decision branches and conditional edges: the outgoing links that carry an option or a
+  // predicate, rendered where the fork happens.
+  for (const link of record.links.filter((l) => l.from === part.id && (l.option || l.when))) {
+    const condition = link.option
+      ? part.options.find((o) => o.id === link.option)?.title ?? link.option
+      : link.when ?? ''
+    bullets.push(`If "${condition}": continue at "${titleOf(link.to)}"`)
+  }
+  const listed = part.kind === 'decision'
+    ? (part.options.length === 1 && defaultOption ? [] : part.options)
+    : part.options.filter((o) => o.id !== 'default')
+  const optionLines: string[] = []
+  if (listed.length > 0) {
+    optionLines.push(part.kind === 'decision' ? 'Options:' : 'Other methods:')
+    for (const option of listed) optionLines.push(...optionBlock(option, option.id === 'default', ctx, '  '))
+  }
+  if (detail.length > 0 || bullets.length > 0 || optionLines.length > 0) {
+    for (const d of detail) lines.push('', `   ${d}`)
+    if (bullets.length > 0) lines.push('', ...bullets.map((b) => `   - ${b}`))
+    if (optionLines.length > 0) {
+      lines.push('', ...optionLines.map((l) => (l === '' ? '' : `   ${l}`)))
+    }
+  }
+  return lines
+}
+
+// ---------------------------------------------------------------------------
+// Country section: record-level geo notes + step-level geo resolutions, one heading per
+// country in the committed country order (US first, then the geoNotes roster).
+// ---------------------------------------------------------------------------
+
+function countrySection(record: { parts: Part[]; metadata: Meta }, ctx: PageContext): string[] {
+  const notes = (Array.isArray(record.metadata.geoNotes) ? record.metadata.geoNotes : []) as GeoEntry[]
+  const resolutions: Array<{ step: string; entry: GeoEntry }> = []
+  record.parts.forEach((part, i) => {
+    const stepEntries = (Array.isArray(part.metadata.geoResolutions) ? part.metadata.geoResolutions : []) as GeoEntry[]
+    for (const entry of stepEntries) resolutions.push({ step: `Step ${i + 1}`, entry })
+  })
+  if (notes.length === 0 && resolutions.length === 0) return []
+  const lines: string[] = ['## By country']
+  for (const country of COUNTRY_ORDER) {
+    const note = notes.find((n) => n.country === country)
+    const steps = resolutions.filter((r) => r.entry.country === country)
+    if (!note && steps.length === 0) continue
+    lines.push('', `### ${countryLabel(country)}`, '')
+    if (note) {
+      const prefix = GEO_KIND_LABELS[note.kind] ?? ''
+      const link = note.actionUrl ? ` ([${linkText(note.actionLabel ?? hostname(note.actionUrl))}](${note.actionUrl}))` : ''
+      lines.push(`- ${prefix}${linkLawRules(note.summary ?? '', ctx)}${link}`)
+    }
+    for (const { step, entry } of steps) {
+      const prefix = GEO_KIND_LABELS[entry.kind] ?? ''
+      const guidance = entry.guidance ? ` ${linkLawRules(entry.guidance, ctx)}` : ''
+      const link = entry.actionUrl ? ` ([${linkText(entry.actionLabel ?? hostname(entry.actionUrl))}](${entry.actionUrl}))` : ''
+      lines.push(`- ${step}: ${prefix}${entry.label ?? ''}${guidance}${link}`)
+    }
+  }
+  return lines
+}
+
+// ---------------------------------------------------------------------------
+// Whole-page render
+// ---------------------------------------------------------------------------
+
+export function renderProcessPage(source: CatalogProcess, ctx: PageContext): string {
+  const { record, slug, taskIds } = source
+  const m = record.metadata as Meta
+  const lines: string[] = []
+  lines.push(
+    `<!-- Generated by scripts/generate-process-pages.ts from open-processes/${slug}.json — do not hand-edit.`,
+    '     Edit the source record, then run: pnpm exec tsx scripts/generate-process-pages.ts -->',
+    '',
+    `# ${record.title}`,
+    '',
+  )
+  const trigger = str(m, 'trigger')
+  if (trigger) lines.push(`**Trigger:** ${linkLawRules(trigger, ctx)}`, '')
+  if (record.summary) lines.push(linkLawRules(record.summary, ctx), '')
+  if (record.guidance) lines.push(linkLawRules(record.guidance, ctx), '')
+  for (const note of record.notes) lines.push(`> ${linkLawRules(note.text, ctx)}`, '')
+
+  const rows: Array<[string, string]> = []
+  rows.push(['Kind', taskIds ? 'chain' : record.kind])
+  const phase = str(m, 'phase')
+  if (phase) rows.push(['Phase', phase])
+  const cadence = str(m, 'cadence')
+  if (cadence) rows.push(['Cadence', cadence])
+  const geoScope = str(m, 'geoScope')
+  if (geoScope) rows.push(['Geo scope', geoScope])
+  const complexity = str(m, 'complexity')
+  if (complexity) rows.push(['Complexity', complexity.replace(/_/g, ' ')])
+  const reversibility = str(m, 'reversibility')
+  if (reversibility) {
+    rows.push(['Reversibility', REVERSIBILITY_META[reversibility as keyof typeof REVERSIBILITY_META]?.label ?? reversibility])
+  }
+  const urgency = str(m, 'urgency')
+  if (urgency) rows.push(['Urgency', URGENCY_META[urgency as keyof typeof URGENCY_META]?.label ?? urgency])
+  const active = num(m, 'activeMinutes')
+  if (active !== null) rows.push(['Active work', `~${formatMinutes(active)}`])
+  const total = num(m, 'totalEstimatedMinutes')
+  if (total !== null) rows.push(['Elapsed including waits', `~${formatMinutes(total)}`])
+  const supportLevel = str(m, 'supportLevel')
+  if (supportLevel) rows.push(['Agent support', SUPPORT_LABELS[supportLevel] ?? supportLevel])
+  if (rows.length > 0) {
+    lines.push('| Field | Value |', '| --- | --- |', ...rows.map(([k, v]) => `| ${k} | ${cell(v)} |`), '')
+  }
+  const supportReason = str(m, 'supportReason')
+  if (supportReason) lines.push(linkLawRules(supportReason, ctx), '')
+  const recordRefLines = referenceLines(record.references, ctx)
+  if (recordRefLines.length > 0) lines.push(...recordRefLines.map((l) => `- ${l}`), '')
+
+  if (record.outcomes.length > 0) {
+    lines.push('## Outcomes', '', ...record.outcomes.map((o) => `- ${linkLawRules(o, ctx)}`), '')
+  }
+
+  if (taskIds) {
+    lines.push('## Processes in order', '')
+    taskIds.forEach((id, i) => {
+      const chainSlug = ctx.slugById.get(id)
+      const title = ctx.titleById.get(id) ?? id
+      lines.push(`${i + 1}. ${chainSlug ? `[${linkText(title)}](${chainSlug}.md)` : title}`)
+    })
+    lines.push('')
+  } else if (record.parts.length > 0) {
+    lines.push('## Steps', '')
+    record.parts.forEach((part, i) => {
+      lines.push(...partBlock(part, i + 1, { links: record.links, parts: record.parts }, ctx))
+    })
+    lines.push('')
+  }
+
+  const country = countrySection({ parts: record.parts, metadata: m }, ctx)
+  if (country.length > 0) lines.push(...country, '')
+
+  const produces = (Array.isArray(m.produces) ? m.produces : []) as string[]
+  const requires = (Array.isArray(m.requires) ? m.requires : []) as string[]
+  if (produces.length > 0 || requires.length > 0) {
+    lines.push('## Artifacts', '')
+    if (produces.length > 0) {
+      lines.push('Produces:', '', ...produces.map((id) => `- ${ctx.artifacts.get(id)?.label ?? id}`), '')
+    }
+    if (requires.length > 0) {
+      lines.push(
+        'Requires:',
+        '',
+        ...requires.map((id) => {
+          const artifact = ctx.artifacts.get(id)
+          const producer = artifact?.producedBy ? ctx.slugById.get(artifact.producedBy) : null
+          const producerTitle = artifact?.producedBy ? ctx.titleById.get(artifact.producedBy) : null
+          const from = producer && producerTitle ? ` — from [${linkText(producerTitle)}](${producer}.md)` : ''
+          return `- ${artifact?.label ?? id}${from}`
+        }),
+        '',
+      )
+    }
+  }
+
+  const chains = ctx.chainsByTask.get(record.id) ?? []
+  const referrers = (ctx.referencedBy.get(record.id) ?? []).filter((r) => r.record.id !== record.id)
+  if (chains.length > 0 || referrers.length > 0) {
+    lines.push('## Related records', '')
+    for (const chain of chains) lines.push(`- Part of the chain [${linkText(chain.record.title)}](${chain.slug}.md)`)
+    for (const ref of referrers) lines.push(`- Runs as a step of [${linkText(ref.record.title)}](${ref.slug}.md)`)
+    lines.push('')
+  }
+
+  lines.push('---', '', `Source record: [\`open-processes/${slug}.json\`](../${slug}.json)`, '')
+  return lines.join('\n')
+}
+
+// ---------------------------------------------------------------------------
+// The full page set and the README index block
+// ---------------------------------------------------------------------------
+
+/** Every page, keyed by file name inside PAGES_DIR, rendered fresh from the catalog. */
+export function renderAllPages(root: string = process.cwd()): Map<string, string> {
+  const ctx = buildPageContext(root)
+  const pages = new Map<string, string>()
+  for (const source of [...ctx.sources].sort((a, b) => a.slug.localeCompare(b.slug))) {
+    pages.set(`${source.slug}.md`, renderProcessPage(source, ctx))
+  }
+  return pages
+}
+
+/** The exact generated README index block (markers included). */
+export function renderPagesIndex(sources: CatalogProcess[]): string {
+  const byTitle = (a: CatalogProcess, b: CatalogProcess) => a.record.title.localeCompare(b.record.title)
+  const chains = sources.filter((s) => s.taskIds).sort(byTitle)
+  const situations = sources.filter((s) => !s.taskIds && s.record.kind === 'situation').sort(byTitle)
+  const processes = sources.filter((s) => !s.taskIds && s.record.kind === 'process').sort(byTitle)
+  const item = (s: CatalogProcess) => `- [${linkText(s.record.title)}](pages/${s.slug}.md)`
+  return [
+    INDEX_START,
+    '',
+    `One page per canonical record: ${processes.length} processes, ${situations.length} situations, ${chains.length} chains.`,
+    '',
+    '### Processes',
+    '',
+    ...processes.map(item),
+    '',
+    '### Situations',
+    '',
+    ...situations.map(item),
+    '',
+    '### Chains',
+    '',
+    ...chains.map(item),
+    '',
+    INDEX_END,
+  ].join('\n')
+}
+
+// ---------------------------------------------------------------------------
+// Drift gates (pure validators take data so failure modes are testable; fs wrappers below)
+// ---------------------------------------------------------------------------
+
+/** Byte-identity between the committed page set and a fresh render: same file set, same bytes. */
+export function validatePageSet(committed: Map<string, string>, rendered: Map<string, string>): string[] {
+  const errors: string[] = []
+  for (const name of rendered.keys()) {
+    if (!committed.has(name)) errors.push(`${PAGES_DIR}/${name}: missing — rerun scripts/generate-process-pages.ts`)
+  }
+  for (const name of committed.keys()) {
+    if (!rendered.has(name)) errors.push(`${PAGES_DIR}/${name}: stale — no canonical record renders it; rerun scripts/generate-process-pages.ts`)
+  }
+  for (const [name, content] of rendered) {
+    const existing = committed.get(name)
+    if (existing !== undefined && existing !== content) {
+      errors.push(`${PAGES_DIR}/${name}: drifted from its canonical record — rerun scripts/generate-process-pages.ts`)
+    }
+  }
+  return errors
+}
+
+/** The committed README must contain the exact generated index block. */
+export function validatePagesIndexDoc(markdown: string, block: string): string[] {
+  const start = markdown.indexOf(INDEX_START)
+  const end = markdown.indexOf(INDEX_END)
+  if (start === -1 || end === -1 || end < start) {
+    return [`${PROCESSES_README}: missing the generated index markers (${INDEX_START} … ${INDEX_END})`]
+  }
+  if (markdown.slice(start, end + INDEX_END.length) !== block) {
+    return [`${PROCESSES_README}: the generated index block has drifted — rerun scripts/generate-process-pages.ts`]
+  }
+  return []
+}
+
+export function committedPages(root: string = process.cwd()): Map<string, string> {
+  const dir = path.join(root, PAGES_DIR)
+  if (!fs.existsSync(dir)) return new Map()
+  const out = new Map<string, string>()
+  for (const name of fs.readdirSync(dir).filter((n) => n.endsWith('.md')).sort()) {
+    out.set(name, fs.readFileSync(path.join(dir, name), 'utf8'))
+  }
+  return out
+}
+
+/** The full gate over the committed tree. Empty array = pass. */
+export function validateProcessPages(root: string = process.cwd()): string[] {
+  const ctx = buildPageContext(root)
+  const rendered = new Map<string, string>()
+  for (const source of [...ctx.sources].sort((a, b) => a.slug.localeCompare(b.slug))) {
+    rendered.set(`${source.slug}.md`, renderProcessPage(source, ctx))
+  }
+  const errors = validatePageSet(committedPages(root), rendered)
+  const readme = fs.readFileSync(path.join(root, PROCESSES_README), 'utf8')
+  errors.push(...validatePagesIndexDoc(readme, renderPagesIndex(ctx.sources)))
+  return errors
+}
