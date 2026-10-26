@@ -42,7 +42,23 @@ const baseline: VerdictRow[] = JSON.parse(show(`open-rankings/${CATEGORY}/verdic
 const current: VerdictRow[] = JSON.parse(fs.readFileSync(verdictsPath, 'utf8'))
 const baselineEvidence = new Set((JSON.parse(show(`open-rankings/${CATEGORY}/evidence/${PRODUCT}.json`)) as { id: string }[]).map((e) => e.id))
 const currentEvidence = new Set((JSON.parse(fs.readFileSync(evidencePath, 'utf8')) as { id: string }[]).map((e) => e.id))
-const newEvidenceIds = new Set([...currentEvidence].filter((id) => !baselineEvidence.has(id)))
+const baselineItems: { id: string; excerpt: string }[] = JSON.parse(show(`open-rankings/${CATEGORY}/evidence/${PRODUCT}.json`))
+const currentItems: { id: string; excerpt: string }[] = JSON.parse(fs.readFileSync(evidencePath, 'utf8'))
+const norm = (text: string) => text.toLowerCase().replace(/\s+/g, ' ').trim()
+const baselineExcerpts = baselineItems.map((e) => norm(e.excerpt))
+// A "new" evidence id only counts as new substance when its excerpt is not already carried
+// (verbatim or as a containing sentence) by a baseline item — a re-extraction that duplicates
+// an existing sentence under a fresh id cannot launder a score move (PR #484 review,
+// opt-out-handling: the added citation repeats the baseline "compliance tools" sentence).
+const newEvidenceIds = new Set(
+  currentItems
+    .filter((e) => !baselineEvidence.has(e.id))
+    .filter((e) => {
+      const x = norm(e.excerpt)
+      return !baselineExcerpts.some((base) => base.includes(x) || x.includes(base))
+    })
+    .map((e) => e.id),
+)
 
 const byKey = new Map(baseline.map((row) => [`${row.productId}:${row.storyId}`, row]))
 let reverted = 0
