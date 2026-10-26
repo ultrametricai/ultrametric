@@ -223,11 +223,14 @@
   {
     "productId": "anytime-mailbox",
     "storyId": "deposit-terms-clarity",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "The evidence only shows that check deposit exists as a feature at select locations. None of the terms the story asks for are published: no supported banks, no per-deposit fees, no turnaround time, and no policy on what happens to the physical check. Since this story is about published terms rather than whether the feature exists, a bare feature mention does not earn credit.",
-    "evidenceIds": []
+    "verdict": "partial",
+    "quality": 2,
+    "confidence": "low",
+    "rationale": "Anytime Mailbox's own site confirms check deposit exists, but only at select locations, under a bare 'Check Deposit' heading. None of the terms the founder asked about are published in the evidence. missing for 10: list of supported banks, per-deposit fee schedule, deposit turnaround time, disposition of the physical check after deposit (return/shred/store), and any independent corroboration.",
+    "evidenceIds": [
+      "anytime-mailbox-docs-7",
+      "anytime-mailbox-docs-31"
+    ]
   },
   {
     "productId": "anytime-mailbox",
@@ -903,10 +906,10 @@
   {
     "productId": "earth-class-mail",
     "storyId": "openness-self-host",
-    "verdict": "na",
+    "verdict": "none",
     "quality": 0,
     "confidence": "medium",
-    "rationale": "Earth Class Mail is a managed virtual-mail service. Its core product is physical: mail is received at its 53 street addresses, then opened and scanned in facilities it operates. Self-hosting that core is a category error for this kind of service rather than a missing software feature, so the axis does not apply.",
+    "rationale": "Earth Class Mail is a managed virtual-mail service: mail is received at the vendor's 53 street addresses, scanned in facilities it operates, and accessed through its cloud. Self-hosting the software side is a fair question for this kind of SaaS, but the evidence shows no self-hosted, on-premises or open-source deployment option. APIs for integration do not count toward self-hosting.",
     "evidenceIds": []
   },
   {
@@ -946,7 +949,7 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "The product's own docs mention included secure shredding, which is a deletion action for physical mail. They also state fixed retention terms: unlimited cloud storage for digitized mail, and physical mail held up to 30 days for letters and 10 days for packages. That gives only glancing support: the retention windows are vendor-set rather than user-controlled, and nothing describes deleting digital scans or account data. missing for 10: user-configurable retention settings, documented deletion of digitized scans and account data, data export/erasure (e.g., privacy-request) process, API-level deletion controls, independent corroboration.",
+    "rationale": "The evidence offers only a thin deletion control: secure shredding of physical mail is included. Retention is described only as vendor-set defaults (unlimited cloud storage for scans, physical mail held 30 days for letters and 10 for packages), not as settings the user controls. Missing for 10: user-configurable retention periods, deletion of digitized scans and account data, API or programmatic deletion, and independent or hands-on corroboration.",
     "evidenceIds": [
       "earth-class-mail-docs-26",
       "earth-class-mail-docs-25"
@@ -1305,12 +1308,13 @@
     "verdict": "partial",
     "quality": 4,
     "confidence": "medium",
-    "rationale": "Stable's own API documents searching and retrieving MailItems, and each item carries scan data: an image URL, OCR result URLs and a summary. That gives a programmatic way to pull scans and mail metadata out of the platform, but there is no documented bulk or one-click export feature, so the operator would have to script retrieval item by item. missing for 10: a dedicated bulk export of scans as PDFs plus mail history, a documented export format or archive download, an account-exit or data-portability workflow, and independent corroboration that scan files can be retrieved at scale.",
+    "rationale": "Stable's own API documents searching for and retrieving MailItems. Each MailItem object exposes scanDetails with an imageUrl, OCR result URLs and a summary, so an operator can programmatically pull scans and mail metadata off the platform. However, nothing documents a dedicated bulk export, archive download or account-exit data dump. Missing for 10: documented bulk/one-click export of all scans and mail history, explicit PDF export format, offboarding/data-portability guarantees, independent or hands-on corroboration.",
     "evidenceIds": [
       "stable-docs-1",
-      "stable-docs-44",
+      "stable-docs-21",
       "stable-docs-57",
-      "stable-docs-30"
+      "stable-docs-30",
+      "stable-docs-12"
     ]
   },
   {
@@ -1859,18 +1863,11 @@
   {
     "productId": "virtualpostmail",
     "storyId": "automation-bulk-operations",
-    "verdict": "partial",
-    "quality": 3,
-    "confidence": "low",
-    "rationale": "VirtualPostMail documents a few native multi-item actions: depositing multiple checks together, bundling packages into one shipment, and automation rules that handle incoming mail by rule. These are its own capabilities, but they are narrow and say nothing about general bulk selection or actions (e.g., bulk scan, tag, forward or shred) across many mail items. The API is only a vague claim, and the OpenAPI spec could not be found. Missing for 10: general bulk select-and-act on mail items in the UI, documented bulk/batch API endpoints, depth on automation-rule scope, independent or hands-on corroboration.",
-    "evidenceIds": [
-      "virtualpostmail-docs-4",
-      "virtualpostmail-docs-24",
-      "virtualpostmail-docs-2",
-      "virtualpostmail-docs-17",
-      "virtualpostmail-docs-22",
-      "virtualpostmail-probe-3"
-    ]
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Bulk operations on many mail items are a fair capability for a virtual mailbox product, so the axis applies. However, the evidence never documents bulk select or batch actions. Automation rules for incoming mail, depositing multiple checks together, and bundling packages for shipping are adjacent features, not bulk operations across items. The API's 'full control' claim is only a developer building block, and probes found no OpenAPI spec showing batch endpoints.",
+    "evidenceIds": []
   },
   {
     "productId": "virtualpostmail",
@@ -2053,9 +2050,9 @@
     "productId": "virtualpostmail",
     "storyId": "new-mail-webhooks",
     "verdict": "partial",
-    "quality": 4,
+    "quality": 3,
     "confidence": "low",
-    "rationale": "VirtualPostMail documents a first-party Zapier integration ('connect your mail to 5000+ apps') and an API, which plausibly provides event-driven triggers for downstream automation. However, no specific new-mail or scan-complete trigger is named, and no registrable webhooks are documented; real-time email alerts are an adjacent feature and earn no credit. missing for 10: documented webhook endpoints/registration, explicitly named Zapier triggers for new mail and scan completion, API reference docs (OpenAPI probes 404), independent corroboration.",
+    "rationale": "VirtualPostMail documents a first-party Zapier integration that can \"connect your mail to 5000+ apps\", plus a developer API. That implies event-driven automation from mail activity. However, nothing states that Zapier triggers fire specifically on new mail arrival or scan completion, and no registrable webhooks are documented. The OpenAPI probes all returned 404. Missing for 10: documented webhook registration for outbound HTTP callbacks, explicit Zapier trigger list (new mail / scan completed), payload and event docs, hands-on or independent corroboration.",
     "evidenceIds": [
       "virtualpostmail-docs-1",
       "virtualpostmail-docs-23",
@@ -2069,12 +2066,12 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "VirtualPostMail documents on-request mail scanning (docs-19), unlimited cloud storage with 24/7 access (docs-41), and tagging \"so it's easier to find later\" (docs-37). For registered-agent mail, scanned PDFs are stored so you can \"find and organize\" documents (docs-40). Nothing in the evidence mentions OCR or full-text search, so the core of the story is only glancingly supported. Missing for 10: any documented OCR of scans, search by mail content, search or filtering by sender and date, and independent or hands-on corroboration of search behavior.",
+    "rationale": "VirtualPostMail documents on-request mail scanning, PDF storage in unlimited cloud storage, and tagging mail 'so it's easier to find later', and registered-agent documents are stored so you can 'find and organize' them. That gives a scanned, findable archive, but nothing shows OCR or search by sender, content, or date. Missing for 10: any mention of OCR/text extraction, full-text content search, search or filtering by sender and date, and independent or hands-on corroboration.",
     "evidenceIds": [
       "virtualpostmail-docs-19",
-      "virtualpostmail-docs-41",
       "virtualpostmail-docs-37",
-      "virtualpostmail-docs-40"
+      "virtualpostmail-docs-40",
+      "virtualpostmail-docs-41"
     ]
   },
   {
@@ -2171,12 +2168,12 @@
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "VirtualPostMail documents some first-party control over what happens to mail data: unwanted physical mail is shredded on-site with destruction certificates on request, and users can ask that mail not be opened or scanned so no digital copy is created. Scans themselves are kept in 'unlimited cloud storage', and nothing documents deleting them or setting a retention period. Missing for 10: user-controlled deletion of scanned mail from cloud storage, configurable retention periods, account/data deletion process, and API- or automation-driven deletion for AI-native workflows.",
+    "rationale": "VirtualPostMail documents some first-party controls over the user's mail. Unwanted physical mail is shredded on-site, with destruction certificates available on request (docs-43). Users can also ask that mail not be opened or scanned at all, so no digital copy is created (docs-9). Otherwise the evidence only describes 'unlimited cloud storage' of scanned PDFs (docs-34, docs-40), with no user-facing retention controls. Missing for 10: user deletion of scanned digital copies, configurable retention periods, account data deletion/export policy, API-based deletion, and independent corroboration.",
     "evidenceIds": [
       "virtualpostmail-docs-43",
       "virtualpostmail-docs-9",
-      "virtualpostmail-docs-42",
-      "virtualpostmail-docs-41"
+      "virtualpostmail-docs-40",
+      "virtualpostmail-docs-34"
     ]
   },
   {
