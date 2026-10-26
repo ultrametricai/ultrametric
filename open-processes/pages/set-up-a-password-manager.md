@@ -34,7 +34,7 @@ Configure a team password manager for shared credentials and secure sharing. 1Pa
    Create shared vaults around groups that genuinely need the same credentials, such as finance or infrastructure operations. Give each vault an owner and separate highly sensitive accounts from broadly shared tools. Check whether members can view, edit, export, or share items before placing credentials there. Move each existing shared credential to its intended vault and verify access with the people who use it, leaving personal accounts outside the company vaults.
 
    - Canonical vendor: 1Password
-   - Next: continue at step 4
+   - Next: steps 3 and 4 — all follow this step
 3. **Invite team members** — agent-runnable · ~5 min · human approval required
 
    Invite teammates using their verified company addresses and initial access groups. The administrator should check the recipients and permissions before sending invitations, then provide instructions for sign-in, recovery, and moving work credentials into the correct vault. Follow up on incomplete enrollment. Help each person find and update a credential for one of their authorized work accounts.

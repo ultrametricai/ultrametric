@@ -28,7 +28,6 @@ All data sources (Mercury, QBO, Stripe) have APIs. System compiles metrics, calc
    Take a cash snapshot across the company’s accounts at one reporting cut-off. Separate available cash from restricted funds, investments and pending transfers, avoiding double counting of internal transfers. State currencies and the conversion basis for any consolidated total. Reconcile significant changes since the previous board report so the runway calculation starts from an explainable cash figure.
 
    - Canonical vendor: Mercury
-   - Next: continue at step 4
 2. **Pull revenue from Stripe** — agent-runnable · ~2 min
 
    *Entry step — no prerequisite step.*
@@ -36,7 +35,6 @@ All data sources (Mercury, QBO, Stripe) have APIs. System compiles metrics, calc
    Pull processor activity for the reporting period, separating charges, refunds, disputes, fees and payouts. Reconcile it to the board’s revenue definition: collections, invoiced amounts and recognized revenue may differ. Use consistent currencies, time zones and comparison periods, and explain adjustments or unmatched amounts before the extract feeds the report.
 
    - Canonical vendor: Stripe
-   - Next: continue at step 4
 3. **Pull expenses from QBO** — agent-runnable · ~2 min
 
    *Entry step — no prerequisite step.*
@@ -46,7 +44,7 @@ All data sources (Mercury, QBO, Stripe) have APIs. System compiles metrics, calc
    - Canonical vendor: QuickBooks
 4. **Calculate burn rate and runway** — agent-runnable · ~3 min
 
-   *Follows step 1 or step 2 or step 3.*
+   *Follows steps 1, 2 and 3 — all are required first.*
 
    Calculate operating cash burn for a stated period, showing one-time items separately. Reconcile usable cash to the balance schedule and model how hiring, collections and committed spending affect future cash. Show a downside case where useful. If the company is generating cash, explain that a simple cash-divided-by-burn ratio does not provide a meaningful runway estimate.
 5. **Compile board report draft** — agent-runnable · ~10 min

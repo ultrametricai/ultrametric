@@ -29,8 +29,7 @@ Intercom has comprehensive API for messaging and contact management. Initial set
    - Canonical vendor: Intercom
    - Vendor options: Intercom
    - Ranked market: [ai-support-agents](../../open-rankings/ai-support-agents)
-   - Next: continue at step 3
-   - Next: continue at step 4
+   - Next: steps 2, 3 and 4 — all follow this step
 2. **Install Messenger widget** — agent-runnable · ~15 min · human approval required
 
    Place the support widget where customers need help and limit the identity and page data it sends to the agreed fields. Use the provider's current installation instructions. In preview, test keyboard access, display, signed-in identity and conversation creation. After the authorized site release, send a controlled live request and verify it reaches the right inbox without exposing another customer's messages.
@@ -43,8 +42,7 @@ Intercom has comprehensive API for messaging and contact management. Initial set
    Route each channel and request type to a responsible person or team. Define reassignment, working hours and urgent-case escalation from the coverage available. Try sample requests from every entry point, including an unmatched case and an unavailable assignee. Check the fallback reaches someone who can act before switching live traffic to the new routing.
 
    - Canonical vendor: Intercom
-   - Next: continue at step 5
-   - Next: continue at step 6
+   - Next: steps 5 and 6 — all follow this step
 4. **Create help center articles** — human · ~1 h · human approval required
 
    *Follows step 1.*

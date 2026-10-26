@@ -40,7 +40,6 @@ With a bank (Mercury, Brex, Relay) or accounting tool (QuickBooks, Xero, Pilot) 
    - Canonical vendor: Mercury
    - Vendor options: Mercury, Brex, Relay
    - Ranked market: [startup-banking](../../open-rankings/startup-banking)
-   - Next: continue at step 3
 2. **Analyze monthly spend** — agent-runnable · ~5 min
 
    *Entry step — no prerequisite step.*
@@ -54,7 +53,7 @@ With a bank (Mercury, Brex, Relay) or accounting tool (QuickBooks, Xero, Pilot) 
    - Ranked market: [expense-management](../../open-rankings/expense-management)
 3. **Calculate runway** — agent-runnable · ~2 min
 
-   *Follows step 1 or step 2.*
+   *Follows steps 1 and 2 — both are required first.*
 
    Estimate runway from available cash and explicit spending and collection assumptions. A stable positive monthly cash outflow supports a simple ratio; uneven or positive cash flow calls for a month-by-month projection. Include planned hires and commitments, compare a downside case and identify the first cash constraint so management can see which assumptions require action.
 

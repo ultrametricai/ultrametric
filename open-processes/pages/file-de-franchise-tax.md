@@ -28,7 +28,6 @@ Delaware franchise tax portal has no API. System calculates the tax, pre-fills d
    Confirm the Delaware entity type and year. For a corporation, reconcile authorized and issued shares, par values, gross assets and relevant charter changes to the records. Compare applicable calculation methods using current Division of Corporations instructions, resolving unusual cases with the tax adviser. Preserve the inputs and calculation so the selected amount can be explained and checked against the filing service.
 
    - Sources: [Delaware franchise-tax calculation](https://corp.delaware.gov/frtaxcalc/)
-   - Next: continue at step 3
 2. **Gather officer and director info** — agent-runnable · ~2 min
 
    *Entry step — no prerequisite step.*
@@ -38,7 +37,7 @@ Delaware franchise tax portal has no API. System calculates the tax, pre-fills d
    - Sources: [Delaware annual report and tax](https://corp.delaware.gov/frtax/)
 3. **File on Delaware portal** — manual form/portal · ~20 min · human approval required · hard to undo
 
-   *Follows step 1 or step 2.*
+   *Follows steps 1 and 2 — both are required first.*
 
    Identify the corporation and reporting year in the official Delaware service using its verified file number. Enter the report details and reconcile the displayed tax with the reviewed calculation. Complete the declaration and submission through the company’s authorized filing route. Save the submitted report and check whether payment is included or outstanding. Resolve portal errors before treating the filing as complete.
 

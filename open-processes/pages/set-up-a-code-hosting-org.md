@@ -36,7 +36,7 @@ GitHub API and MCP fully support org/repo/team management.
 
    - Canonical vendor: GitHub
    - Sources: [Best practices for GitHub organizations](https://docs.github.com/en/organizations/collaborating-with-groups-in-organizations/best-practices-for-organizations) · [GitHub Actions secure use reference](https://docs.github.com/en/actions/reference/security/secure-use)
-   - Next: continue at step 4
+   - Next: steps 3 and 4 — all follow this step
 3. **Configure branch protection** — agent-runnable · ~5 min · human approval required
 
    Protect the branches used for releases with the team's required reviews and checks. Inspect bypass rights as carefully as the main rule and confirm the chosen repository plan supports the controls. Apply the maintainer's agreed policy, then use test pull requests to check a failed job, a missing review and a normal approved change. Match required check names to real jobs so an accidental mismatch does not block every merge.

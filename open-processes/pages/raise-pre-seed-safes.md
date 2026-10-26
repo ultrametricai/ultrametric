@@ -29,7 +29,6 @@ System can draft the instruments, track investor pipeline, send follow-ups, and 
 
    - Canonical vendor: Clerky
    - Sources: [Y Combinator SAFE documents](https://www.ycombinator.com/safe/)
-   - Next: continue at step 5
 
    Options:
      - **Default — Prepare SAFE documents** — agent-runnable · ~30 min · human approval required
@@ -119,7 +118,7 @@ System can draft the instruments, track investor pipeline, send follow-ups, and 
    Prepare for the meeting around the investor’s focus, the company’s progress and the funding sought. Decide which founder will cover the product, financial needs and proposed terms, and what the team needs to learn from the investor. Afterwards, capture actual feedback, diligence requests and next steps. Treat a new economic proposal as a negotiation until the relevant terms are agreed.
 5. **Send the investment documents for signature** — agent-runnable · ~10 min · human approval required · hard to undo
 
-   *Follows step 1 or step 4.*
+   *Follows steps 1 and 4 — both are required first.*
 
    Send the finalized instrument and any side letter to the correct investor and authorized company signatory. Match the packet to the agreed investor identity, amount and economic terms; route requested changes back into negotiation before execution. Track both signatures and archive the executed agreement. Keep signature and funding statuses distinct so sending or signing a document does not create an assumed cash receipt.
 

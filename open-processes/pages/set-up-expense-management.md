@@ -25,7 +25,7 @@ Brex/Ramp APIs fully support card limits, policies, and approval workflows.
 
    Define eligible expenses, documentation, limits and exceptions from the company’s spending patterns and budget. Distinguish card purchases from reimbursement and work through travel, recurring software and shared purchases with finance and team leads. Agree how exceptions are decided, using realistic examples to expose rules that would be unclear in daily use.
 
-   - Next: continue at step 3
+   - Next: steps 2 and 3 — all follow this step
 2. **Configure card limits per employee** — agent-runnable · ~10 min · human approval required
 
    Set cardholder limits and permitted categories from role, expected spending and the expense policy, checking for existing cards or overlapping access. The finance owner authorizes limits and temporary exceptions before the administrator applies them. Check the resulting settings, tell the cardholder what they can spend and arrange expiry or review of temporary changes.
@@ -40,7 +40,7 @@ Brex/Ramp APIs fully support card limits, policies, and approval workflows.
    Configure expense routing by category and amount, with the appropriate reviewer, absence cover and exception route. Keep the requester from silently approving their own spending. Test ordinary, rejected and edited requests to see where they stall or reach the wrong person. Finance owns the approval rules; the administrator maintains them as roles and budgets change.
 
    - Canonical vendor: Brex
-   - Next: continue at step 5
+   - Next: steps 4 and 5 — all follow this step
 4. **Configure Slack notifications** — agent-runnable · ~5 min
 
    Choose expense events that need notification and a channel whose membership fits the information. The authorized finance administrator connects the service with appropriate permissions and tests delivery, links and duplicate alerts using fictional or suitable test data. Keep sensitive receipts and account details in the finance system, and make each alert point to the action its recipient needs to take.

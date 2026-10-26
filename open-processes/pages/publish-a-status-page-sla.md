@@ -27,7 +27,7 @@ Status pages, monitors, and DNS are fully API-driven; the SLA’s credit terms n
 
    - Vendor options: Better Stack, incident.io, Statuspage
    - Ranked market: [incident-management](../../open-rankings/incident-management)
-   - Next: continue at step 4
+   - Next: steps 2 and 4 — all follow this step
 2. **Create components and wire uptime monitors** — agent-runnable · ~30 min
 
    Name components in terms customers recognize, then map monitors to the user journeys each component represents. Decide when a failed check should page a responder and when it should change public status; those need not be the same action. Activate monitoring and public updates within the service owner's authorized scope. Use a controlled failure and recovery to verify the component, responder and public message, and identify outages the checks would miss.

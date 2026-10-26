@@ -104,7 +104,7 @@ Formation services drive the state filing but expose limited APIs. The agent che
    - Canonical vendor: IRS
    - Do it yourself: [IRS EIN application](https://www.irs.gov/businesses/small-businesses-self-employed/get-an-employer-identification-number)
    - Sources: [SBA register your business](https://legacy.sba.gov/business-guide/launch-your-business/register-your-business)
-   - Next: continue at step 9
+   - Next: steps 8 and 9 — all follow this step
 8. **Open a business bank account** — manual form/portal · ~15 min · hard to undo
 
    Assemble the formation record, governing agreement, tax registration and signatory information requested by the selected bank. Submit identity documents only through its secure process. The designated applicant approves the account terms and application and completes identity checks. After approval, verify the legal account holder, authorized users and access arrangements. Any initial transfer needs its own payment approval.

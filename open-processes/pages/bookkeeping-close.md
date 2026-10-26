@@ -33,13 +33,12 @@ QuickBooks API and official Intuit MCP server enable transaction categorization,
    Categorize transactions using the chart of accounts, supporting invoices or receipts and their business purpose. Match transfers between company accounts to avoid duplicate income or expense. Apply established treatments consistently and send ambiguous capital, revenue, tax or owner transactions to the accountant. Attach the supporting reference to each entry and leave unresolved classifications visible in the draft ledger.
 
    - Canonical vendor: QuickBooks
-   - Next: continue at step 4
+   - Next: steps 3 and 4 — all follow this step
 3. **Reconcile bank statement** — agent-runnable · ~15 min · human approval required
 
    Match cleared bank activity to the ledger at the same closing date. Explain differences through outstanding payments, deposits in transit, fees, duplicates or supported corrections. The bookkeeper should investigate unexplained differences rather than insert a balancing entry. Finish with reconciled balances and a dated list of outstanding items that can be followed into the next period.
 
    - Canonical vendor: QuickBooks
-   - Next: continue at step 5
 4. **Review uncategorized items** — human · ~30 min
 
    *Follows step 2.*
@@ -47,7 +46,7 @@ QuickBooks API and official Intuit MCP server enable transaction categorization,
    Resolve uncategorized transactions using the original entry, receipt and responsible employee or vendor record. Ask about business purpose, service period and tax treatment where these are unclear. Group missing-document requests by owner and show the accountant which unresolved amounts could affect the close.
 5. **Generate P&L statement** — agent-runnable · ~2 min
 
-   *Follows step 3 or step 4.*
+   *Follows steps 3 and 4 — both are required first.*
 
    Run the profit-and-loss report for the selected entity, accounting basis and closing period. Compare revenue, payroll and large or negative expense lines with supporting schedules, prior periods and budget. Identify provisional balances and expected adjustments so the accountant can review the result and later board reporting uses the same figures.
 

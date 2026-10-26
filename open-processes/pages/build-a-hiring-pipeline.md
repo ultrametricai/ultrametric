@@ -26,8 +26,7 @@ Lever/Ashby APIs support pipeline and candidate management. Interview design and
    Design interview stages around the capabilities each role type requires. Assign a purpose, interviewer, evidence and decision owner to every stage, removing duplicate assessments. Define how candidates hear about progress, request accommodations, pause or withdraw. Walk the planned handoffs with hiring managers and recruiting so the process is workable before candidates enter it.
 
    - Sources: [EEOC: Recruiting, hiring or promoting employees](https://www.eeoc.gov/employers/small-business/3-im-recruiting-hiring-or-promoting-employees)
-   - Next: continue at step 3
-   - Next: continue at step 4
+   - Next: steps 2, 3 and 4 — all follow this step
 2. **Create job postings** — agent-runnable · ~30 min · human approval required
 
    Write each posting from the requisition’s responsibilities, location, compensation guidance and essential requirements. Check questions and disclosures with the people lead for the recruiting locations involved, and have the hiring manager settle factual differences before publication. Verify that applications reach the correct recruiter. Keep postings aligned with changes in role scope, budget or hiring status.
@@ -36,8 +35,7 @@ Lever/Ashby APIs support pipeline and candidate management. Interview design and
    - Vendor options: Lever, Ashby
    - Ranked market: [applicant-tracking](../../open-rankings/applicant-tracking)
    - Sources: [EEOC: Recruiting, hiring or promoting employees](https://www.eeoc.gov/employers/small-business/3-im-recruiting-hiring-or-promoting-employees)
-   - Next: continue at step 5
-   - Next: continue at step 6
+   - Next: steps 5 and 6 — all follow this step
 3. **Configure scorecard templates** — agent-runnable · ~20 min · human approval required
 
    *Follows step 1.*

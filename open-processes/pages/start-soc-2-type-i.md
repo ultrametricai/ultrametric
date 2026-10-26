@@ -83,13 +83,12 @@ Vanta API supports test monitoring and evidence collection. Policy creation and 
 
    - Canonical vendor: Vanta
    - Sources: [AICPA SOC suite](https://www.aicpa-cima.com/resources/landing/system-and-organization-controls-soc-suite-of-services)
-   - Next: continue at step 7
+   - Next: steps 6 and 7 — all follow this step
 6. **Remediate failing tests** — agent-runnable · ~8 h · human approval required
 
    Investigate failed checks in the underlying system. Distinguish actual control gaps from stale inventory, connector permissions and unsuitable test settings. Fix confirmed gaps through the normal change process, rerun the check and attach the resulting evidence to the issue. Record accepted exceptions with their rationale and reviewer, and link later passing results to the original failure and its remediation.
 
    - Sources: [AICPA SOC suite](https://www.aicpa-cima.com/resources/landing/system-and-organization-controls-soc-suite-of-services)
-   - Next: continue at step 8
 7. **Employee security training** — human · ~2 d · async wait
 
    *Follows step 5.*
@@ -99,7 +98,7 @@ Vanta API supports test monitoring and evidence collection. Policy creation and 
    - Sources: [AICPA SOC suite](https://www.aicpa-cima.com/resources/landing/system-and-organization-controls-soc-suite-of-services)
 8. **Engage auditor** — human · ~7 d · async wait · human approval required · hard to undo
 
-   *Follows step 6 or step 7.*
+   *Follows steps 6 and 7 — both are required first.*
 
    Discuss the requested report, system boundary, readiness gaps and evidence inventory with prospective auditors. Check qualifications, independence, scope, fees, evidence expectations and intended recipients. Ask how evidence collected by the compliance platform fits the examination. The company’s authorized representative signs the agreed engagement; control owners can then work from the auditor’s actual request list and scope.
 

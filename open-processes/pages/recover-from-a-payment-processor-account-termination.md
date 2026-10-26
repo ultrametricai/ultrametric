@@ -27,19 +27,16 @@ Data export and the checkout re-point are real API work while access lasts; the 
 1. **Read the termination notice: the stated reason, the final processing date, and the reserve/payout-hold terms your services agreement sets** — human · ~30 min
 
    - Do it yourself: [Stripe Services Agreement (termination & reserves)](https://stripe.com/legal/ssa)
-   - Next: continue at step 3
-   - Next: continue at step 4
+   - Next: steps 2, 3 and 4 — all follow this step
 2. **Export everything while API access lasts: charges, customers, subscription state, dispute history, payout records** — agent-runnable · ~1 h
 
    - Canonical vendor: Stripe
    - Do it yourself: [Stripe: reports & data exports](https://docs.stripe.com/stripe-reports)
-   - Next: continue at step 5
 3. **File the appeal through the processor's own review channel, with evidence: business model, fulfillment proof, dispute history** — human · ~1 h
 
    *Follows step 1.*
 
    - Do it yourself: [Stripe support (account reviews)](https://support.stripe.com/)
-   - Next: continue at step 8
 4. **Choose the backup processor and start its underwriting now — onboarding/KYC runs in days, not hours** — human · ~1 h
 
    *Follows step 1.*
@@ -48,7 +45,7 @@ Data export and the checkout re-point are real API work while access lasts; the 
    - Ranked market: [payments](../../open-rankings/payments)
 5. **Request the PAN-level card-data migration to the new processor (a PCI-compliant processor-to-processor transfer)** — manual form/portal · ~45 min
 
-   *Follows step 2 or step 4.*
+   *Follows steps 2 and 4 — both are required first.*
 
    - Canonical vendor: Stripe
    - Do it yourself: [Stripe: payments data migrations](https://docs.stripe.com/get-started/data-migrations)
@@ -59,7 +56,7 @@ Data export and the checkout re-point are real API work while access lasts; the 
 7. **Tell affected customers honestly if payouts, refunds, or renewals will wobble during the cutover** — human · ~45 min · hard to undo
 8. **Wait out the appeal decision and the reserve release — both run on the processor's stated schedule** — human · ~30 d · async wait
 
-   *Follows step 3 or step 7.*
+   *Follows steps 3 and 7 — both are required first.*
 
 ---
 

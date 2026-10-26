@@ -61,8 +61,7 @@ AWS has comprehensive APIs. System can provision via CloudFormation/API, but arc
 
    - Canonical vendor: AWS
    - Sources: [AWS VPC security best practices](https://docs.aws.amazon.com/vpc/latest/userguide/vpc-security-best-practices.md)
-   - Next: continue at step 5
-   - Next: continue at step 6
+   - Next: steps 4, 5 and 6 — all follow this step
 4. **Set up RDS database** — agent-runnable · ~30 min · human approval required
 
    Match the database engine and version to the application's driver, migrations and expected data. For AWS, configure RDS using the chosen capacity, network access, backup and maintenance settings; another cloud needs its own database implementation. Provision within the database owner's access and spending authority. From the application environment, test a connection, a sample migration and a write/read cycle using nonproduction data. Exercise the intended restore procedure before relying on the database for recoverable production storage.

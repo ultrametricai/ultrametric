@@ -30,7 +30,6 @@ System can draft initial templates using company context. Legal review and custo
    - Produces: SaaS agreement template
    - Vendor options: ChatGPT, Claude, Gemini, Grok
    - Ranked market: [ai-assistants](../../open-rankings/ai-assistants)
-   - Next: continue at step 4
 2. **Draft Terms of Service** — agent-runnable · ~30 min · human approval required
 
    *Entry step — no prerequisite step.*
@@ -40,7 +39,6 @@ System can draft initial templates using company context. Legal review and custo
    - Produces: Terms of Service
    - Vendor options: ChatGPT, Claude, Gemini, Grok
    - Ranked market: [ai-assistants](../../open-rankings/ai-assistants)
-   - Next: continue at step 4
 3. **Draft Privacy Policy** — agent-runnable · ~30 min · human approval required
 
    *Entry step — no prerequisite step.*
@@ -52,7 +50,7 @@ System can draft initial templates using company context. Legal review and custo
    - Ranked market: [ai-assistants](../../open-rankings/ai-assistants)
 4. **Legal counsel review** — human · ~3 d · async wait · human approval required
 
-   *Follows step 1 or step 2 or step 3.*
+   *Follows steps 1, 2 and 3 — all are required first.*
 
    Review the agreement, website terms, privacy notice, order forms and schedules together with counsel. Resolve conflicting promises and confirm technical claims with product or security specialists. Agree negotiation fallback terms and escalation points with the business owner. Give sales and product the final versions and the conditions under which a further review is needed.
 5. **Publish to website** — manual form/portal · ~15 min · human approval required

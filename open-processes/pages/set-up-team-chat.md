@@ -34,7 +34,7 @@ Slack API supports channel/user management. Workspace creation is manual. MCP in
    Create a small channel set around the team's actual work: company announcements, active projects, operational questions, and any restricted discussions. Give each channel a short purpose and an owner for keeping it useful. Choose public or private visibility from the content and audience, then add a simple guide showing where a routine question, project update, or urgent issue belongs. Avoid empty channels created for hypothetical future teams.
 
    - Canonical vendor: Slack
-   - Next: continue at step 4
+   - Next: steps 3 and 4 — all follow this step
 3. **Invite team members** — agent-runnable · ~5 min · human approval required
 
    Match the team roster to existing workspace members and prepare the remaining invitations with the correct company addresses and roles. Check guest and administrator access separately from ordinary membership. Have the workspace administrator confirm the invite list before sending, including any extra paid seats. Send newcomers the starting channels and onboarding link, and follow up on failed or unaccepted invitations with the person joining.

@@ -45,8 +45,7 @@ Touring, negotiation, and the lease signature are human end-to-end; the agent mo
    Compare the signature package with counsel's final version, including exhibits, guarantees, and the capacity in which each person signs. Confirm company signing authority and obtain each guarantor's separate agreement to their personal obligations. Execute through the required local process and obtain the completed counterpart. Give finance and the move owner the effective lease, payment obligations, possession conditions, and important notice dates so the signed terms become the operating plan.
 
    - Produces: Office lease
-   - Next: continue at step 8
-   - Next: continue at step 9
+   - Next: steps 7, 8 and 9 — all follow this step
 7. **Wire the security deposit** — agent-runnable · ~10 min · hard to undo
 
    Match the deposit amount, payment condition, and reference to the executed lease. Independently verify the landlord's beneficiary instructions through a trusted contact, especially if bank details have changed. The authorized finance approver must approve the specific transfer before release. Reconcile the bank result with the landlord's acknowledgment and record the deposit in the company's accounts; investigate any shortfall, return, or discrepancy before assuming the payment condition is satisfied.

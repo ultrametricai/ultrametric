@@ -27,7 +27,7 @@ State tax portals have no APIs. System provides state-specific checklists and pr
 
    List the company’s state registrations, employee work locations, property, sales and business activities. Have the tax adviser assess income, franchise, withholding, unemployment and sales-tax accounts separately using each relevant agency’s current rules. Record the required account types and effective dates, with missing facts identified. Corporate foreign qualification needs its own assessment; a secretary-of-state registration does not finish tax registration.
 
-   - Next: continue at step 3
+   - Next: steps 2 and 3 — all follow this step
 2. **Register with state tax authority** — manual form/portal · ~30 min · human approval required · hard to undo
 
    Prepare the approved account registration with the correct agency, legal entity, EIN, activity dates, address and contact. Resolve uncertain start dates and complete the declaration and submission through the entity’s authorized filing route. Save the filed application and track agency requests until the account is issued. Store credentials securely and pass the issued account details to the team responsible for its returns or payments.
@@ -35,7 +35,6 @@ State tax portals have no APIs. System provides state-specific checklists and pr
    - Verify: The state issues a tax account number and the registration shows active in the state's portal.
    - Produces: State tax accounts
    - Canonical vendor: State Secretary of State
-   - Next: continue at step 4
 3. **Register for sales tax (if applicable)** — manual form/portal · ~20 min · human approval required · hard to undo
 
    *Follows step 1.*
@@ -48,7 +47,7 @@ State tax portals have no APIs. System provides state-specific checklists and pr
    - Ranked market: [tax-automation](../../open-rankings/tax-automation)
 4. **Store registration numbers** — agent-runnable · ~2 min
 
-   *Follows step 2 or step 3.*
+   *Follows steps 2 and 3 — both are required first.*
 
    Enter each issued number with its tax type, jurisdiction, effective date and filing frequency in the restricted compliance register. Attach the agency confirmation and store portal credentials separately. Reconcile issued, pending and rejected applications, then assign notice handling and return preparation to finance or payroll. Give those teams the issued account details needed for their filings.
 

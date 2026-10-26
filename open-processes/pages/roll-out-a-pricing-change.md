@@ -58,14 +58,12 @@ Plan modeling, the billing migration, and the comms are automatable over billing
    - Vendor options: Stripe Billing, Chargebee, Recurly
    - Ranked market: [billing-subscriptions](../../open-rankings/billing-subscriptions)
    - Sources: [Manage products and prices](https://docs.stripe.com/products-prices/manage-prices)
-   - Next: continue at step 5
+   - Next: steps 4 and 5 — all follow this step
 4. **Update the site pricing page and docs** — agent-runnable · ~20 min
 
    Use the billing pricing matrix to update the public pricing page, plan comparisons and help material. Explain units, intervals, limits and treatment of existing customers consistently. In preview, follow each purchase link to the intended plan and price. Publish the pricing owner's agreed version, then compare live amounts, destinations and support guidance with the released catalog.
 
    Coordinate the public release date with the approved new-customer and existing-customer policies. A preview can be prepared while required notices are pending; publish only on the agreed schedule and avoid implying that protected existing customers have already changed terms.
-
-   - Next: continue at step 7
 5. **Announce the change to customers** — agent-runnable · ~30 min · hard to undo
 
    *Follows step 3.*
@@ -88,7 +86,7 @@ Plan modeling, the billing migration, and the comms are automatable over billing
    - Sources: [Change the price of existing subscriptions](https://docs.stripe.com/billing/subscriptions/change-price)
 7. **Monitor churn and MRR through the transition** — agent-runnable · ~15 min
 
-   *Follows step 4 or step 6.*
+   *Follows steps 4 and 6 — both are required first.*
 
    Compare affected cohorts with the pre-change baseline for recurring revenue, cancellations, downgrades and expansion. Reconcile planned transitions with actual invoices and charges to distinguish implementation errors from customer decisions. Read support complaints alongside the numbers. Report the window, cohort sizes and data gaps, and identify concrete corrections where billing behavior or customer understanding differs from the policy.
 

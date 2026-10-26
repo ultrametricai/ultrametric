@@ -286,17 +286,42 @@ function walkOrder(parts: Part[], links: Connection[]): Part[] {
 
 const trimEnd = (s: string): string => s.replace(/\.\s*$/, '')
 
+const numberList = (numbers: number[]): string =>
+  numbers.length === 1
+    ? `${numbers[0]}`
+    : `${numbers.slice(0, -1).join(', ')} and ${numbers[numbers.length - 1]}`
+
+// A step is branch-gated when every way to reach it runs through a conditional edge; the
+// marker propagates through single-predecessor chains and resets at a join (a rejoin of all
+// branches happens on every path). Used to tell required parallel predecessors ("steps 1
+// and 2") from alternative branches ("step 4 or step 5"), computed in topological order so
+// predecessors resolve first.
+function branchGated(ordered: Part[], links: Connection[]): Map<string, boolean> {
+  const gated = new Map<string, boolean>()
+  for (const part of ordered) {
+    const into = links.filter((l) => l.to === part.id)
+    gated.set(
+      part.id,
+      (into.length > 0 && into.every((l) => Boolean(l.option || l.when)))
+        || (into.length === 1 && !into[0].option && !into[0].when && gated.get(into[0].from) === true),
+    )
+  }
+  return gated
+}
+
+// Whether a step's multiple unconditional predecessors are all required work (an "and" join)
+// rather than alternative branches rejoining (an "or" join).
+function requiredJoin(into: Connection[], gated: Map<string, boolean>): boolean {
+  return into.length > 1
+    && into.every((l) => !l.option && !l.when)
+    && into.every((l) => gated.get(l.from) !== true)
+}
+
 // How a step is reached, rendered on the step itself so conditional branches, rejoins, and
 // parallel entries read honestly instead of implying the numbered sequence. Returns null for
 // the plain case: one unconditional edge from the step rendered immediately above.
-function followsLine(
-  part: Part,
-  position: number,
-  ordered: Part[],
-  links: Connection[],
-  numberOf: Map<string, number>,
-  partById: Map<string, Part>,
-): string | null {
+function followsLine(part: Part, position: number, walk: WalkContext, ctx: PageContext): string | null {
+  const { links, ordered, numberOf, partById } = walk
   if (links.length === 0) return null
   const into = links.filter((l) => l.to === part.id)
   if (into.length === 0) {
@@ -307,10 +332,14 @@ function followsLine(
   if (into.length === 1 && !into[0].option && !into[0].when && previous && into[0].from === previous.id) {
     return null
   }
+  if (requiredJoin(into, walk.gated)) {
+    const numbers = into.map((l) => numberOf.get(l.from)!).sort((a, b) => a - b)
+    return `Follows steps ${numberList(numbers)} — ${numbers.length > 2 ? 'all' : 'both'} are required first.`
+  }
   const bySource = new Map<string, string[]>()
   for (const l of into) {
     const option = l.option ? partById.get(l.from)?.options.find((o) => o.id === l.option)?.title ?? l.option : null
-    const condition = option ? `option "${trimEnd(option)}"` : l.when ? `when ${trimEnd(l.when)}` : null
+    const condition = option ? `option "${trimEnd(linkLawRules(option, ctx))}"` : l.when ? `when ${trimEnd(linkLawRules(l.when, ctx))}` : null
     bySource.set(l.from, [...(bySource.get(l.from) ?? []), ...(condition ? [condition] : [])])
   }
   const descriptions = [...bySource.entries()]
@@ -362,12 +391,13 @@ interface WalkContext {
   ordered: Part[]
   numberOf: Map<string, number>
   partById: Map<string, Part>
+  gated: Map<string, boolean>
 }
 
 function partBlock(part: Part, position: number, walk: WalkContext, ctx: PageContext): string[] {
   const lines: string[] = []
   const index = position + 1
-  const follows = followsLine(part, position, walk.ordered, walk.links, walk.numberOf, walk.partById)
+  const follows = followsLine(part, position, walk, ctx)
   if (part.kind === 'reference') {
     const slug = part.ref ? ctx.slugById.get(part.ref) : null
     const title = part.ref ? ctx.titleById.get(part.ref) ?? part.ref : part.id
@@ -406,16 +436,24 @@ function partBlock(part: Part, position: number, walk: WalkContext, ctx: PageCon
   // no outgoing edge before the end of the walk marks its path's end. The target step carries
   // the matching "Follows" line.
   const outgoing = walk.links.filter((l) => l.from === part.id)
-  for (const link of outgoing) {
-    const target = walk.numberOf.get(link.to)
-    if (link.option || link.when) {
-      const condition = link.option
-        ? part.options.find((o) => o.id === link.option)?.title ?? link.option
-        : link.when ?? ''
-      bullets.push(`If "${trimEnd(condition)}": continue at step ${target}`)
-    } else if (target !== index + 1) {
+  for (const link of outgoing.filter((l) => l.option || l.when)) {
+    const condition = link.option
+      ? part.options.find((o) => o.id === link.option)?.title ?? link.option
+      : link.when ?? ''
+    bullets.push(`If "${trimEnd(condition)}": continue at step ${walk.numberOf.get(link.to)}`)
+  }
+  const unconditional = outgoing.filter((l) => !l.option && !l.when)
+  if (unconditional.length === 1) {
+    const target = walk.numberOf.get(unconditional[0].to)!
+    // A forward pointer past other steps is honest only when the skipped steps are not
+    // co-required prerequisites of the target; a required join announces itself with its
+    // own "Follows steps … required" line instead.
+    if (target !== index + 1 && !requiredJoin(walk.links.filter((l) => l.to === unconditional[0].to), walk.gated)) {
       bullets.push(`Next: continue at step ${target}`)
     }
+  } else if (unconditional.length > 1) {
+    const numbers = unconditional.map((l) => walk.numberOf.get(l.to)!).sort((a, b) => a - b)
+    bullets.push(`Next: steps ${numberList(numbers)} — all follow this step`)
   }
   const listed = part.kind === 'decision'
     ? (part.options.length === 1 && defaultOption ? [] : part.options)
@@ -547,6 +585,7 @@ export function renderProcessPage(source: CatalogProcess, ctx: PageContext): str
       ordered,
       numberOf: new Map(ordered.map((p, i) => [p.id, i + 1])),
       partById: new Map(record.parts.map((p) => [p.id, p])),
+      gated: branchGated(ordered, record.links),
     }
     lines.push('## Steps', '')
     ordered.forEach((part, i) => {

@@ -48,8 +48,7 @@ Mailchimp API fully supports audience, campaign, and automation management.
    - Produces: Marketing email audience
    - Canonical vendor: Mailchimp
    - Sources: [CAN-SPAM Act: A Compliance Guide for Business](https://www.ftc.gov/business-guidance/resources/can-spam-act-compliance-guide-business)
-   - Next: continue at step 4
-   - Next: continue at step 5
+   - Next: steps 3, 4 and 5 — all follow this step
 3. **Create email templates** — agent-runnable · ~15 min · human approval required
 
    Build templates for the program's actual messages with a recognizable sender, brand assets and clear next action. Add personalization fallbacks and the sender, preference and unsubscribe content required for the audience. Check links, plain text and mobile previews, then save each draft with its intended use.

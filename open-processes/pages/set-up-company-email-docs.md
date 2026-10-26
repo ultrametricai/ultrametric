@@ -54,7 +54,7 @@ Google Admin API supports user/group management. Initial domain setup and billin
 
    - Canonical vendor: Gmail
    - Sources: [Microsoft 365 Business Standard setup](https://learn.microsoft.com/en-us/microsoft-365/admin/setup/setup-business-standard?view=o365-worldwide)
-   - Next: continue at step 5
+   - Next: steps 4 and 5 — all follow this step
 4. **Set up shared drives** — agent-runnable · ~5 min · human approval required
 
    Create shared drives or libraries around who owns the documents and who needs access. Separate general team material from finance, personnel, legal, and other restricted records. Check how the selected platform handles shared ownership and departing users, then assign responsible groups and maintainers. Place a few real documents in their intended locations and check access with a reader and an editor. Publish a short filing guide so new documents land in the right place.

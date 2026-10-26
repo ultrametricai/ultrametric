@@ -39,7 +39,7 @@ Linear has a comprehensive GraphQL API and MCP integration. Full workspace setup
    Create tracker teams where membership, ownership, or workflows genuinely differ. Use projects for concrete initiatives, each with a stated outcome and accountable owner. Link existing tasks to their new projects and team owners. Set visibility for each team and project, and check that teammates can find their active work from the main workspace. Keep unowned initiatives in a visible planning queue until someone takes responsibility.
 
    - Canonical vendor: Linear
-   - Next: continue at step 5
+   - Next: steps 4 and 5 — all follow this step
 4. **Set up labels** — agent-runnable · ~3 min
 
    Choose labels for distinctions the team needs to filter or triage, such as work type or affected product area. Keep status and ownership in their dedicated fields. Give ambiguous labels a short definition and merge near-duplicates. Apply the proposed set to a few current issues with the triage owner; disagreements will reveal which definitions need tightening before the label list spreads.

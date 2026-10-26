@@ -29,12 +29,7 @@ Gusto handles final paycheck and benefits termination. Account deactivation acro
    - Vendor options: Gusto, Rippling, Deel, Justworks
    - Ranked market: [payroll](../../open-rankings/payroll)
    - Sources: [DOL: Last paycheck](https://www.dol.gov/general/topic/wages/lastpaycheck?lang=en)
-   - Next: continue at step 3
-   - Next: continue at step 4
-   - Next: continue at step 5
-   - Next: continue at step 6
-   - Next: continue at step 7
-   - Next: continue at step 8
+   - Next: steps 2, 3, 4, 5, 6, 7 and 8 — all follow this step
 
    Options:
      - **Default — Process the termination in your payroll platform** — agent-runnable · ~5 min · human approval required · irreversible

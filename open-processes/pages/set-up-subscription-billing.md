@@ -57,14 +57,13 @@ Stripe API fully supports product, pricing, subscription, and portal management.
    - Produces: Subscription billing
    - Canonical vendor: Stripe
    - Sources: [Manage products and prices](https://docs.stripe.com/products-prices/manage-prices)
-   - Next: continue at step 4
+   - Next: steps 3 and 4 — all follow this step
 3. **Set up customer portal** — agent-runnable · ~10 min · human approval required
 
    Choose which actions customers can perform in the billing portal: view invoices, update payment details, change plans or cancel. Match their effective dates and access consequences to the billing policy. Test each enabled action as representative customers, including account isolation and the resulting invoices and access. Provide a support route for unsupported actions, then publish the tested entry point within the agreed release scope.
 
    - Canonical vendor: Stripe
    - Sources: [Configure the customer portal](https://docs.stripe.com/customer-management/configure-portal)
-   - Next: continue at step 5
 4. **Configure webhooks** — agent-runnable · ~5 min
 
    *Follows step 2.*
@@ -76,7 +75,7 @@ Stripe API fully supports product, pricing, subscription, and portal management.
    - Sources: [Receive Stripe events in your webhook endpoint](https://docs.stripe.com/webhooks)
 5. **Test subscriptions** — agent-runnable · ~10 min
 
-   *Follows step 3 or step 4.*
+   *Follows steps 3 and 4 — both are required first.*
 
    In the provider's test environment, exercise purchase, renewal, payment authentication or failure, quantity and plan changes, cancellation and the enabled portal actions. Use fictional customers and supported test payment methods. For each scenario, compare the invoice, notification, application access and stored subscription state with the expected result. Keep reproducible test identifiers and resolve mismatches before allowing live customer billing.
 

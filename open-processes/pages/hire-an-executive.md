@@ -25,7 +25,7 @@ Search, interviews, references, and the board’s comp approval are human end-to
 
    Define the executive’s business outcomes, decision authority, reporting relationships and required capabilities. Discuss the cash and equity range with the board or delegated decision makers alongside budget and company stage. Set the search owner and negotiation boundaries, including decisions that must return for approval. Use the agreed scorecard to align the search firm, interviewers and eventual offer.
 
-   - Next: continue at step 4
+   - Next: steps 2 and 4 — all follow this step
 2. **Engage a retained search firm** — human · ~1 h
 
    Compare search firms on relevant placements, the team doing the work, market coverage, conflicts and candidate relationships. Discuss the target role, expected reporting, exclusivity, fees and replacement terms before selecting a firm. Present the commercial proposal and unresolved engagement terms to the hiring sponsor. Share confidential company or candidate information only through the authorized search arrangement.
@@ -41,7 +41,6 @@ Search, interviews, references, and the board’s comp approval are human end-to
    Compare compensation data for similar functions, company stages, geographies and responsibilities. Separate base pay, variable compensation, benefits and equity, identifying whether equity figures mean grant value, ownership percentage or realized value. Check the source period and sample limitations, then model affordability with finance. Present the hiring sponsor a proposed range with its cost, relevant comparisons and source limitations.
 
    - Canonical vendor: Carta
-   - Next: continue at step 6
 5. **Interview loop and references** — human · ~7 d · async wait
 
    *Follows step 3.*
@@ -51,7 +50,7 @@ Search, interviews, references, and the board’s comp approval are human end-to
    - Sources: [EEOC: Recruiting, hiring or promoting employees](https://www.eeoc.gov/employers/small-business/3-im-recruiting-hiring-or-promoting-employees)
 6. **Draft the offer (comp, equity, severance)** — agent-runnable · ~30 min
 
-   *Follows step 4 or step 5.*
+   *Follows steps 4 and 5 — both are required first.*
 
    Draft the offer from the settled negotiation position: role, reporting line, cash compensation, proposed equity, severance and any change-of-control terms. Identify provisions dependent on board action or separate grant documents. Reconcile the package with counsel and finance, calling out differences from the approved range and unusual commitments. Resolve those decisions before the candidate receives the offer.
 

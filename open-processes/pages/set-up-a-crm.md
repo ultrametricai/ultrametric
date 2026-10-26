@@ -29,7 +29,7 @@ HubSpot has a comprehensive API. Full pipeline, property, and template managemen
    - Canonical vendor: HubSpot
    - Vendor options: HubSpot, Attio, Salesforce
    - Ranked market: [crm](../../open-rankings/crm)
-   - Next: continue at step 3
+   - Next: steps 2 and 3 — all follow this step
 2. **Configure deal pipeline** — agent-runnable · ~10 min · human approval required
 
    Define evidence for entering and leaving each deal stage, including won, lost and stalled outcomes. Agree definitions and update ownership with the sales team. Configure the stages, move a sample deal through them and check the resulting reports. Keep the definitions available where teammates manage deals.

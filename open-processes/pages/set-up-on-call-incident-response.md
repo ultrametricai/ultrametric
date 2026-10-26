@@ -30,7 +30,7 @@ PagerDuty API fully supports schedules, escalation policies, and service configu
    - Vendor options: PagerDuty, incident.io, Better Stack
    - Ranked market: [incident-management](../../open-rankings/incident-management)
    - Sources: [PagerDuty escalation policies and schedules](https://docs.pagerduty.com/incident-management/schedules/escalation-policies-and-schedules)
-   - Next: continue at step 4
+   - Next: steps 2 and 4 — all follow this step
 2. **Set up on-call schedules** — agent-runnable · ~15 min · human approval required
 
    Enter the team's agreed rotation, timezones, coverage hours and exceptions. Inspect the rendered schedule across handoffs, leave and upcoming calendar changes. Verify participants' notification methods with a scheduled test they expect. Fix uncovered periods or name the backup arrangement, and make swapping a shift a documented action that updates the actual schedule.

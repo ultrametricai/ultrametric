@@ -63,7 +63,7 @@ Timeline assembly, doc drafting, action filing, and the status-page post are API
    An asynchronous review is sufficient when the necessary participants can resolve the questions and accept follow-ups in the record. Reuse the company’s incident severity, communication policy and service ownership; ask for a meeting when unresolved disagreement or impact warrants it. Keep the review-ready draft usable even when participants are unavailable.
 
    - Sources: [Google SRE postmortem culture](https://sre.google/sre-book/postmortem-culture/)
-   - Next: continue at step 5
+   - Next: steps 4 and 5 — all follow this step
 4. **File follow-up actions in the tracker** — agent-runnable · ~10 min
 
    Turn each accepted improvement into a ticket tied to the failure it addresses. Replace vague work such as “improve alerts” with an observable result, such as a controlled failure reaching the on-call responder with the relevant diagnostic link. Use the agreed owner and priority, distinguishing proposed dates from commitments. Link tickets to the incident and keep deferred actions visible with their reason.

@@ -26,7 +26,7 @@ Linear GraphQL API fully supports teams, projects, cycles, and labels. Complete 
    Map the agreed departments and membership roster onto the tracker, identifying teams that will be retained, renamed, split, or retired. Preserve the ownership of active projects and decide where ongoing work moves before changing the structure. Create the new teams and access groups, then move work using that mapping. Give team leads a view of their resulting backlog and call out tasks that lost an owner or became inaccessible.
 
    - Canonical vendor: Linear
-   - Next: continue at step 5
+   - Next: steps 2 and 5 — all follow this step
 2. **Configure workflow states per team** — agent-runnable · ~15 min · human approval required
 
    Map each department's intake, execution, review, and completion stages. Keep common meanings where cross-team reporting depends on them, and allow different states where the work genuinely differs. Build an old-to-new status mapping for active issues before changing workflows. Walk current tasks through the new states with their team leads, resolve ambiguous transitions, and then move the existing queue so work retains an understandable status.

@@ -37,7 +37,7 @@ Gusto's Embedded Payroll API supports onboarding, pay schedules, and payroll; Ca
    Follow up on the offer actually sent, using any agreed response date or extension. Route negotiation questions to the hiring owner and update the package if terms change. On acceptance, check that the required parties signed the same version and reconfirm the start date. Give onboarding the executed agreement and settled employment details so payroll, equipment and introductions can be arranged.
 
    - Produces: Signed offer / employment agreement
-   - Next: continue at step 10
+   - Next: steps 4 and 10 — all follow this step
 4. **Add the employee in your payroll platform** — agent-runnable · ~5 min · human approval required
 
    Choose the employment arrangement from the person’s work country, the employing entity and the reviewed worker classification. For a direct hire, build the payroll profile from the signed agreement: pay basis, amount, start date, location and manager. Let the employee supply sensitive personal and payment details through onboarding. Payroll should resolve missing registrations or funding setup before activation; an EOR hire or contractor needs its own downstream process.
@@ -46,9 +46,7 @@ Gusto's Embedded Payroll API supports onboarding, pay schedules, and payroll; Ca
    - Vendor options: Gusto, Rippling, Deel, Justworks
    - Ranked market: [payroll](../../open-rankings/payroll)
    - Sources: [IRS: Independent contractor or employee](https://www.irs.gov/businesses/small-businesses-self-employed/independent-contractor-self-employed-or-employee)
-   - Next: continue at step 6
-   - Next: continue at step 7
-   - Next: continue at step 8
+   - Next: steps 5, 6, 7 and 8 — all follow this step
 
    Options:
      - **Default — Add the employee in your payroll platform** — agent-runnable · ~5 min · human approval required
