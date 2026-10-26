@@ -33,12 +33,12 @@ Answer drafting from your policy corpus is highly automatable; the risky answers
 
    Identify the customer, service, deadline, required format and commercial significance. Separate factual questions from contractual commitments, sensitive evidence requests and subjects outside the service scope. Assign the questions to security, privacy, legal or engineering as needed and agree any deadline negotiation with the account owner. Drafting can start with the answerable sections while specialist questions remain assigned.
 
-Count and retain the input row or field identifiers. Agree how to represent supported, qualified, unknown, conflicting and out-of-scope answers in the customer format. An unanswered mandatory field remains a blocker, not a guessed answer.
+   Count and retain the input row or field identifiers. Agree how to represent supported, qualified, unknown, conflicting and out-of-scope answers in the customer format. An unanswered mandatory field remains a blocker, not a guessed answer.
 2. **Pull prior answers and policies from the knowledge base** — agent-runnable · ~15 min
 
    Find prior approved answers, policies, architecture records and audit reports for this service. Check dates and scope before reusing them, and distinguish implemented controls from planned work. Link likely answers to current evidence or an accountable expert. Flag missing evidence and keep confidential reports within their permitted access.
 
-Retain the evidence document/version, relevant section, date and service scope for each reused answer. When sources conflict or an approval is stale, keep both sources in the review queue. A roadmap, draft policy or report for another service does not establish an implemented control.
+   Retain the evidence document/version, relevant section, date and service scope for each reused answer. When sources conflict or an approval is stale, keep both sources in the review queue. A roadmap, draft policy or report for another service does not establish an implemented control.
 
    - Canonical vendor: Vanta
    - Vendor options: Vanta, Conveyor
@@ -48,9 +48,9 @@ Retain the evidence document/version, relevant section, date and service scope f
 
    Answer the customer’s actual questions using current evidence. Add scope or exceptions when a yes-or-no answer would mislead, and leave unsupported claims for the relevant expert. Link consequential answers to their evidence so reviewers can verify them. Keep customer-specific wording distinct from the reusable answer bank, especially when it promises a capability or future action.
 
-Reconcile the output against every input question and required field. Check that formulas, selections and long answers survive saving and reopening. Keep the evidence map and reviewer queue alongside the customer file if its format cannot hold them. Do not turn an assurance report, intended control or support aspiration into a stronger commitment.
+   Reconcile the output against every input question and required field. Check that formulas, selections and long answers survive saving and reopening. Keep the evidence map and reviewer queue alongside the customer file if its format cannot hold them. Do not turn an assurance report, intended control or support aspiration into a stronger commitment.
 
-Match each answer to the control actually in scope: policy intent, configured control, observed operation and independently audited coverage establish different claims. If the customer permits only Yes/No, use the permitted exception channel or ask the reviewer how to disclose the qualification; keep the row unresolved until a truthful supported answer fits the format. An internal evidence citation does not authorize sharing the underlying report.
+   Match each answer to the control actually in scope: policy intent, configured control, observed operation and independently audited coverage establish different claims. If the customer permits only Yes/No, use the permitted exception channel or ask the reviewer how to disclose the qualification; keep the row unresolved until a truthful supported answer fits the format. An internal evidence citation does not authorize sharing the underlying report.
 4. **Security review of the risky answers** — human · ~30 min
 
    Check assertions about encryption, access, backups, incident response, testing and assurance reports against actual systems and records. Route notification, deletion, location and liability commitments to legal or privacy review. Resolve conflicting answers and record qualified wording or exceptions. The accountable reviewer approves the final answers and evidence attachments before they are represented to the customer.
@@ -58,12 +58,12 @@ Match each answer to the control actually in scope: policy intent, configured co
 
    Submit the approved responses in the verified customer portal through the agreed customer-response process. Check for truncated text, altered formatting and new mandatory attestations. Return new representations to their reviewers before submission. Save the actual submitted copy and receipt, then route follow-up questions to the responsible experts.
 
-Confirm the portal tenant, role and upload destination before transmitting data. Determine whether typing or uploading saves remotely; a saved draft is already a disclosure. Verify the persisted fields, attachments and any truncation before the separately approved final submission. If portal access or approval is unavailable, hand over the checked local artifact and leave submission pending.
+   Confirm the portal tenant, role and upload destination before transmitting data. Determine whether typing or uploading saves remotely; a saved draft is already a disclosure. Verify the persisted fields, attachments and any truncation before the separately approved final submission. If portal access or approval is unavailable, hand over the checked local artifact and leave submission pending.
 6. **File the final answers back into the knowledge base** — agent-runnable · ~10 min
 
    Add the submitted answers to the knowledge base with the customer, service scope and supporting evidence. Label negotiated concessions with the customer and agreement to which they apply. Mark which product or policy changes would make an answer stale, and preserve the approved submission as the record of what this customer received.
 
-Store reusable approved answers with their service scope, approver, approval date and evidence version. Keep customer-specific concessions separate. When evidence changes, mark affected reusable answers for review and identify dependent drafts; a previously approved answer does not automatically authorize a new disclosure.
+   Store reusable approved answers with their service scope, approver, approval date and evidence version. Keep customer-specific concessions separate. When evidence changes, mark affected reusable answers for review and identify dependent drafts; a previously approved answer does not automatically authorize a new disclosure.
 
 ## Artifacts
 

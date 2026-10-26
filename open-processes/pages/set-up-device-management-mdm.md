@@ -29,11 +29,16 @@ Policy configuration and compliance reporting run over the MDM’s API; Apple Bu
 
    Options:
      - **Default — Choose an MDM** — human · ~20 min
+
+       Use the general selection path when the fleet spans operating systems or ownership models. Compare services against the real device inventory, identity setup, support capacity, and required controls. Try enrollment, policy application, and recovery on representative devices with IT, and inspect the resulting reports. Choose a service that covers the stated requirements within budget, identifying which device groups or controls will need separate handling.
      - **Mac-native MDM**
 
        When: All-Mac fleet - a Mac-native MDM over the HR-platform bundle
 
        For an Apple-focused fleet, compare the service's supported devices and operating-system versions with the company inventory. Examine its use of Apple's enrollment and management options, then try the required policies and recovery process on representative hardware. Include the work of buying, assigning, replacing, and retiring devices in the comparison. Document any non-Apple or personally owned devices separately so the selected service's coverage is clear before purchase.
+
+       - Vendor options: Kandji, Jamf
+       - Sources: [Apple: Device Enrollment and device management](https://support.apple.com/guide/deployment/device-enrollment-and-device-management-depd1c27dfe6/web)
 2. **Enroll in Apple Business Manager** — manual form/portal · ~2 d · async wait
 
    For the Apple devices in scope, follow Apple's current business enrollment and organization-verification process using a company-controlled administrator account. Gather the requested organization and verification details, and assign someone who can respond to Apple's questions. Once the organization is verified, connect it to the chosen management service using the supported setup. Keep organization verification, device assignment, and device enrollment distinguishable in the rollout checklist; each addresses a different part of getting the fleet managed.

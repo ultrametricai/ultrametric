@@ -29,35 +29,57 @@ Gusto handles final paycheck and benefits termination. Account deactivation acro
    - Vendor options: Gusto, Rippling, Deel, Justworks
    - Ranked market: [payroll](../../open-rankings/payroll)
    - Sources: [DOL: Last paycheck](https://www.dol.gov/general/topic/wages/lastpaycheck?lang=en)
+   - Next: continue at step 3
+   - Next: continue at step 4
+   - Next: continue at step 5
+   - Next: continue at step 6
+   - Next: continue at step 7
+   - Next: continue at step 8
 
    Options:
      - **Default — Process the termination in your payroll platform** — agent-runnable · ~5 min · human approval required · irreversible
+
+       Use the payroll-system route after the people lead has settled the departure process for the work location. Reconcile the last working day, employment end date and final-pay instructions before applying the authorized change. Check its effect on scheduled payroll and benefits tasks. Follow up on remaining settlement items separately from the system’s termination status.
      - **India - notice, gratuity, F&F** — manual form/portal
 
        When: Offboarding an employee in India
 
        Give local counsel and payroll the employee’s work state, establishment type, service history, contract and departure reason. Determine the required process, notice and final settlement under current law, including applicable gratuity and leave treatment. Resolve the calculation and employee communication before issuing termination instructions. Check the current eligibility rules and exceptions against the employee’s service history and circumstances.
+
+       - Do it yourself: [Ministry of Labour & Employment](https://labour.gov.in/)
+       - Sources: [India Ministry of Labour: Labour Codes](https://labour.gov.in/offerings/schemes-and-services/details/labour-codes-gzNzQzMtQWa)
      - **UK - fair reason + Acas process** — human
 
        When: Offboarding an employee in the United Kingdom
 
        Review the departure reason, employment terms and applicable procedure with the people lead and adviser before setting the exit date. Prepare the relevant evidence, meetings or consultation, notice and final-pay calculation. The authorized decision maker settles the outcome and employee communication, including any appeal route. Resolve disputed facts through the employment process before sending the final instructions to payroll.
+
+       - Do it yourself: [Dismissing staff - the rules](https://www.gov.uk/dismiss-staff)
+       - Sources: [Acas: Following a fair dismissal procedure](https://www.acas.org.uk/dismissals/following-a-fair-procedure) · [Acas: Dismissals with and without notice](https://www.acas.org.uk/dismissals/dismissals-with-and-without-notice)
      - **Germany - KSchG + wet-ink notice** — human
 
        When: Offboarding an employee in Germany
 
        Have local counsel assess the contract, service period, establishment circumstances and any employee-representation or special protections. Prepare the appropriate notice and delivery method, including the written-form requirement. The employer’s authorized representative signs through the permitted process. Use the reviewed effective date for payroll and access changes, resolving notice or delivery questions before treating the departure as complete.
+
+       - Do it yourself: [KSchG - dismissal protection law](https://www.gesetze-im-internet.de/kschg/)
+       - Sources: [German Civil Code section 623](https://www.gesetze-im-internet.de/bgb/__623.html)
      - **France - rupture conventionnelle** — manual form/portal
 
        When: Offboarding an employee in France
 
        Consider rupture conventionnelle only where local advice confirms it fits the contract and both parties freely choose mutual termination. Prepare the agreement, indemnity calculation and procedural calendar, including the applicable administrative review. Track those stages before treating the end date as final. A protected employee requires the distinct authorization procedure, and this route does not cover every French departure.
+
+       - Do it yourself: [Rupture conventionnelle](https://entreprendre.service-public.fr/vosdroits/F19030)
+       - Sources: [Service Public: Rupture conventionnelle](https://www.service-public.gouv.fr/particuliers/vosdroits/F19030)
 2. **Calculate final paycheck + PTO payout** — agent-runnable · ~5 min · human approval required
 
    Calculate the proposed final pay from recorded hours, salary, unused leave, expenses, bonuses and other agreed amounts. Have the local payroll specialist resolve payability, permitted deductions and payment timing for the actual contract and location. Present an itemized calculation for payment approval and explain discrepancies to the people lead. Keep disputed amounts separate from items ready for payment.
 
    - Canonical vendor: Gusto
    - Sources: [DOL: Last paycheck](https://www.dol.gov/general/topic/wages/lastpaycheck?lang=en)
+
+   *This path ends here.*
 3. **Terminate benefits** — agent-runnable · ~3 min · human approval required · hard to undo
 
    *Follows step 1.*
@@ -66,6 +88,8 @@ Gusto handles final paycheck and benefits termination. Account deactivation acro
 
    - Canonical vendor: Gusto
    - Sources: [DOL: Employer guide to COBRA](https://www.dol.gov/agencies/ebsa/about-ebsa/our-activities/resource-center/publications/an-employers-guide-to-group-health-continuation-coverage-under-cobra)
+
+   *This path ends here.*
 4. **Deactivate the email account** — agent-runnable · ~2 min · human approval required
 
    *Follows step 1.*
@@ -73,6 +97,8 @@ Gusto handles final paycheck and benefits termination. Account deactivation acro
    Agree the account cutoff with the people and security leads. Identify mail, calendars and files that need a business custodian, and address retention or legal holds before deleting anything. At the authorized time, restrict sign-in and revoke sessions through the workspace’s supported process. Transfer necessary business information and check the mail-routing arrangement while respecting the former employee’s privacy.
 
    - Canonical vendor: Gmail
+
+   *This path ends here.*
 5. **Remove from the team chat** — agent-runnable · ~2 min · human approval required
 
    *Follows step 1.*
@@ -80,6 +106,8 @@ Gusto handles final paycheck and benefits termination. Account deactivation acro
    Identify the employee’s chat accounts, shared external workspaces, channel ownership and integrations. Transfer responsibilities that need a continuing owner, then remove access at the agreed departure time through the workspace administrator. Check membership status afterward and contact any external workspace administrator whose action is still needed. Preserve conversation history according to the company’s retention arrangements.
 
    - Canonical vendor: Slack
+
+   *This path ends here.*
 6. **Remove from the code hosting org** — agent-runnable · ~2 min · human approval required
 
    *Follows step 1.*
@@ -87,6 +115,8 @@ Gusto handles final paycheck and benefits termination. Account deactivation acro
    Review code-hosting memberships, repository ownership, access tokens and automation tied to the departing person. Transfer maintainership and deployment responsibilities before the agreed access cutoff. The responsible administrator removes memberships and addresses remaining credentials, then checks for access paths outside the main organization. Assign service-account or release ownership gaps to an engineer who can maintain the affected automation and release process.
 
    - Canonical vendor: GitHub
+
+   *This path ends here.*
 7. **Notify about equity exercise window** — agent-runnable · ~5 min · human approval required
 
    *Follows step 1.*
@@ -94,6 +124,8 @@ Gusto handles final paycheck and benefits termination. Account deactivation acro
    Have the equity administrator and counsel review the person’s actual awards, vesting, departure terms and plan documents. Prepare an individualized notice with verified exercise dates, instructions and a contact for questions. Release the notice after the equity owner checks it against the award records. Track delivery and any disputed terms separately from the employee’s decision whether to exercise.
 
    - Canonical vendor: Carta
+
+   *This path ends here.*
 8. **Collect company property** — human · ~1 d · async wait
 
    *Follows step 1.*

@@ -28,6 +28,7 @@ Can initiate through Carta API and provide company financials. Valuation itself 
    Gather the financial statements relevant to the valuation date, with entity, accounting basis and periods identified. Include recent actuals and forecasts, keeping management assumptions distinct from historical results. Reconcile differences from the ledger or board reports and label provisional figures so the analyst understands the financial position being valued.
 
    - Canonical vendor: QuickBooks
+   - Next: continue at step 3
 2. **Gather cap table snapshot** — agent-runnable · ~5 min
 
    *Entry step — no prerequisite step.*
@@ -46,16 +47,24 @@ Can initiate through Carta API and provide company financials. Valuation itself 
 
    Options:
      - **Default — Initiate 409A on Carta** — manual form/portal · ~15 min · human approval required
+
+       Scope a US option-valuation engagement around the stock class, valuation date and planned grants. Determine what financial, operating and capitalization information the provider needs and how the company expects to use the report. Finance commissions the agreed work and supplies the relevant private records, with questions about regulatory reliance resolved by the appropriate adviser.
      - **UK - EMI valuation with HMRC**
 
        When: Pricing options in the United Kingdom
 
        For a UK EMI grant, establish the shares and rights being valued and calculate the proposed actual and unrestricted market values for HMRC’s VAL231 process. The authorized company representative submits the supported valuation request. Use HMRC’s response to plan the grant within its stated validity and conditions, checking changes in company circumstances that could affect value.
+
+       - Do it yourself: [HMRC - employment related securities](https://www.gov.uk/government/collections/employment-related-securities)
+       - Sources: [HMRC share scheme valuations](https://www.gov.uk/guidance/get-a-share-scheme-valuation-from-hmrc) · [HMRC SVM110050](https://www.gov.uk/hmrc-internal-manuals/shares-and-assets-valuation-manual/svm110050)
      - **India - registered-valuer report** — human
 
        When: Pricing shares/ESOPs in India
 
        Describe the Indian transaction, instrument, parties and tax residences to local counsel and the tax adviser. Establish which valuation rules and professional qualifications apply, then commission the relevant report. Reconcile financial inputs and capital rights with the valuer and state the report’s purpose, valuation date and basis for use in this transaction.
+
+       - Do it yourself: [IBBI - registered valuers](https://ibbi.gov.in/)
+       - Sources: [India Companies Act 2013](https://www.indiacode.nic.in/ViewFileUploaded?file=the_companies_act%2C_2013_no._18_of_2013_date_29.08.2013.pdf&path=AC_CG_61_1375_00003_00003_1594717497353%2Factfile%2F)
 4. **Answer valuation questionnaire** — human · ~1 h
 
    Answer the valuation questionnaire using company records and input from the people responsible for forecasts, financing and operations. Explain unusual revenue, customer concentration, material contracts, pending transactions and significant risks where requested. Identify estimates and unanswered questions clearly, then resolve the analyst’s follow-ups against the same information set.

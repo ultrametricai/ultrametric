@@ -24,9 +24,13 @@ Verifying ownership and consents is judgment work with attorney sign-off; docume
 1. **Gather all investor documents** — agent-runnable · ~15 min
 
    Collect the executed documents supporting outstanding securities and investor rights, including subscriptions, SAFEs, amendments, side letters, grants, transfers and cancellations. Reconcile the collection to the cap table and financing receipts to locate missing evidence. Distinguish signed records from drafts and request absent documents from the responsible person so the audit covers every recorded position.
+
+   - Next: continue at step 3
 2. **Verify cap table accuracy** — human · ~1 h
 
    Trace each holding and convertible balance to its supporting document and effective transaction. Recalculate class totals, reserve use and fully diluted views using the documented definitions, then compare with the equity platform and legal records. For each discrepancy, identify the affected position, evidence and proposed correction before changing the live data.
+
+   - Next: continue at step 4
 3. **Review board consents** — human · ~30 min
 
    *Follows step 1.*

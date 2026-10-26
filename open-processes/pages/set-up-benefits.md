@@ -34,11 +34,16 @@ Gusto handles benefits enrollment. Plan selection and broker negotiation require
 
    Options:
      - **Default — Get quotes from providers** — human · ~5 d · async wait
+
+       Request standalone benefit quotes using consistent workforce assumptions and desired coverage. Compare the actual terms, employer and employee costs, implementation conditions and renewal basis with the adviser. Resolve differences that prevent a fair comparison before choosing a plan. Base coverage communications on accepted plan terms and confirmed enrollment.
      - **PEO-bundled benefits** — manual form/portal
 
        When: You want benefits bundled with payroll via co-employment - trading control for speed
 
        Compare the PEO’s employment arrangement, benefit plans, service duties, fees and exit terms with standalone alternatives. Review actual coverage and total cost with the adviser, including responsibilities the company retains. Settle the commercial and legal arrangement before committing to the PEO. Carry the reviewed eligibility rules and enrollment conditions into implementation.
+
+       - Canonical vendor: Justworks
+       - Sources: [DOL: Health plans](https://www.dol.gov/index.php/agencies/ebsa/employers-and-advisers/plan-administration-and-compliance/health-plans)
 3. **Select plans and negotiate** — human · ~2 h · human approval required · hard to undo
 
    Compare the quoted plan documents with employee needs, provider access, deductibles, exclusions and contribution costs. Clarify price assumptions, renewal terms and administrative work with the adviser. Take material tradeoffs to the benefits and budget decision makers before committing to the chosen arrangement. Resolve implementation conditions before communicating enrollment dates or coverage promises.

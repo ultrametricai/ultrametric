@@ -50,56 +50,152 @@ An agent can draft the hypothesis, propose the method that fits the starting sit
 
        Interview people who encounter the problem when the main uncertainty is their current behavior, constraints, or buying context. Recruit against a defined customer profile and ask about real experiences before presenting the proposed solution. Compare workarounds, costs, decision-makers, and reasons someone would change. Compare contradictory accounts as well as common patterns. Distinguish predictions about future use from choices people have already made when deciding what to test next.
 
-       - Draft the interview discussion guide — agent-runnable · ~15 min
-       - Recruit 5-10 prospects matching the target customer — human · ~4 h · async wait
-       - Run the interviews — human · ~5 h · async wait
-       - Synthesize notes into demand evidence — agent-runnable · ~30 min
+       - **Draft the interview discussion guide** — agent-runnable · ~15 min
+
+         Write questions that explore the uncertain assumptions in the hypothesis. Ask about the last time the problem occurred, what the person did, what it cost, and who influenced a purchase or change. Follow the Mom Test discipline: ask about the customer's life and past behavior, never pitch, and never ask whether they would buy (lore rule fitzpatrick-mom-test). Use neutral follow-ups and leave reactions to the proposed solution until after the account of actual behavior. Include consent and recording preferences at the start, and a note-taking format that separates the participant's words from the interviewer's interpretation.
+
+         - Vendor options: ChatGPT, Claude, Gemini, Grok
+         - Ranked market: [ai-assistants](../../open-rankings/ai-assistants)
+
+       - **Recruit 5-10 prospects matching the target customer** — human · ~4 h · async wait
+
+         Define screening criteria for the target role, experience, and problem context. Prepare a short invitation explaining the research purpose, expected participation, and any incentive, then agree the outreach list and message with the research lead before sending. The facts you need live outside the building: test the riskiest business-model assumptions directly with customers before building anything (lore rule blank-get-out-of-the-building). Recruit the planned initial group and note how each person qualified. Track gaps in the sample, such as only reaching existing friends or one customer segment, so those limits remain visible in the findings.
+
+       - **Run the interviews** — human · ~5 h · async wait
+
+         Confirm consent and recording preferences, then use the guide to explore specific incidents, workarounds, and decisions. Ask for examples when an answer becomes hypothetical, and avoid steering the participant toward the proposed solution. Capture their account separately from your interpretation. End by clarifying unresolved points and any follow-up they agree to, then finish the notes while the details are fresh and store them with the intended research access.
+
+       - **Synthesize notes into demand evidence** — agent-runnable · ~30 min
+
+         Compare the interviews against the original assumptions, looking for repeated behavior, meaningful differences, and evidence that contradicts the idea. Group findings about the problem, current alternatives, urgency, buying authority, and barriers to change. Link each conclusion to its underlying notes. Expect the plan to change on contact: treat the synthesis as a search for a working business model, not a defense of the original plan (lore rule blank-no-plan-survives). Explain whose experience the sample represents and which questions remain open, then recommend a change to the hypothesis or a specific next test.
+
+         - Vendor options: ChatGPT, Claude, Gemini, Grok
+         - Ranked market: [ai-assistants](../../open-rankings/ai-assistants)
      - **Lean MVP launch** — agent-runnable
 
        When: A builder with reachable target users - the fastest honest signal is shipping a small real version and watching what people do with it
 
        Ship the smallest real version of the product to users you can already reach, and let actual usage answer the hypothesis. Scope the first version to the single core use the hypothesis names, launch it before it feels finished, and iterate against what real users do rather than what they say. Judge the result on activation and return use within a bounded window, and treat silence as a result worth acting on.
 
-       - Scope the MVP to the single core use — agent-runnable · ~20 min
-       - Build and launch the first version — agent-runnable · ~8 h · async wait
-       - Measure usage against a bounded demand window — agent-runnable · ~20 min
+       - **Scope the MVP to the single core use** — agent-runnable · ~20 min
+
+         Cut the plan to the one path that tests the hypothesis: hold the problem tightly and the solution loosely, and aim to build in weeks, not months (lore rule seibel-lean-mvp). Look for the 90/10 solution, the version that delivers most of the value for a fraction of the work (lore rule ralston-90-10-solution). Write down what is deliberately out of scope, so later feedback about missing edges is not mistaken for a verdict on the core.
+
+         - Vendor options: ChatGPT, Claude, Gemini, Grok
+         - Ranked market: [ai-assistants](../../open-rankings/ai-assistants)
+
+       - **Build and launch the first version** — agent-runnable · ~8 h · async wait
+
+         Build the scoped version and put it in front of real users. Launching version 1 is how you learn what you should have been building (lore rule pg-launch-fast), and a first release that feels slightly embarrassing usually means the timing is right (lore rule hoffman-embarrassing-first-launch). Describe what exists accurately, open a feedback channel from day one, and prefer shipping to polishing anything the hypothesis does not test.
+
+         - Vendor options: Lovable, v0, Bolt
+         - Ranked market: [vibe-coding](../../open-rankings/vibe-coding)
+
+       - **Measure usage against a bounded demand window** — agent-runnable · ~20 min
+
+         Decide in advance what demand must look like and how long the launched version gets to show it; about a month is a workable bound for a first read (lore rule levels-one-month-market-test). Watch what users do after the first visit, separating activation and return use from raw signups. Bring the founder the behavior data with the strongest supporting and contradicting evidence, and a recommendation to iterate, narrow the audience, or stop.
+
+         - Vendor options: PostHog, Amplitude, Mixpanel
+         - Ranked market: [product-analytics](../../open-rankings/product-analytics)
      - **Concierge / manual MVP** — human
 
        When: A hair-on-fire market - users desperate enough to accept manual, imperfect delivery of the outcome today
 
        Deliver the proposed outcome manually for a small pilot group to learn what customers value and what the work involves. Agree the service boundary, customer inputs, payment if any, and what a useful result looks like before starting. Keep track of manual tasks and exceptions while delivering. Compare actual customer use, effort, and willingness to continue, then decide which parts deserve a product and which need a different approach.
 
-       - Recruit 2-3 pilot customers — human · ~4 h · async wait
-       - Deliver the service manually end to end — human · ~8 h · async wait
-       - Track effort, outcomes, and willingness to pay — agent-runnable · ~20 min
+       - **Recruit 2-3 pilot customers** — human · ~4 h · async wait
+
+         Find pilot customers who experience the problem now and can provide the inputs needed for manual delivery. Pick pilots by urgency: the hair-on-fire test asks for users whose problem is so dire they will try a half-baked first version (lore rule seibel-hair-on-fire-problems), and a few customers with a burning problem teach more than many with a passing annoyance (lore rule ralston-fire-bad-customers). Explain the proposed service, its limits, customer involvement, and any payment before inviting them to participate. Agree a concrete outcome each customer would find useful and who will provide access or feedback. Select the initial group with the pilot owner, distinguishing requirements shared across customers from individual exceptions.
+
+       - **Deliver the service manually end to end** — human · ~8 h · async wait
+
+         Carry out the agreed work using the customer's permitted inputs and access. Unscalable effort is the point at this stage: serve the pilots by hand (lore rule pg-do-things-that-dont-scale), and set each customer up on the spot instead of sending a link and waiting (lore rule pg-collison-installation). Note the manual tasks, decisions, exceptions, and customer handoffs as they occur, especially work that requires expertise or repeated clarification. Resolve scope changes with the pilot owner and customer before making new commitments. Deliver the result and ask the customer to use or assess it against the agreed outcome, capturing where the service still falls short.
+
+       - **Track effort, outcomes, and willingness to pay** — agent-runnable · ~20 min
+
+         Compare the customer's use and feedback with the time, cost, and exceptions recorded during delivery. Look for work that repeats across pilots and for effort caused by one customer's unusual circumstances. Distinguish an expression of willingness to pay from an actual payment or agreement to continue. Use the findings to decide what should be automated, redesigned, priced differently, or tested with another customer.
+
+         - Canonical vendor: Notion
      - **Product/market-fit survey** — manual form/portal
 
        When: The product is already live with active users - the open question is how disappointed they would be to lose it
 
        Put the Sean Ellis question, how would you feel if you could no longer use the product, to users who have genuinely experienced it, and measure the share who answer very disappointed. The score turns an argument about fit into a number the team can track across rounds, and the follow-up answers say which users to build for next. Survey new users each round and read the result against the benefit those users actually report.
 
-       - Define the surveyed population — agent-runnable · ~15 min
-       - Run the very-disappointed survey — manual form/portal · ~1 h · async wait
-       - Segment responses and extract the signal — agent-runnable · ~30 min
+       - **Define the surveyed population** — agent-runnable · ~15 min
+
+         Select users who have experienced the core product at least twice in the last two weeks, and plan for about 40 respondents before reading the result as directional (lore rule vohra-survey-core-users). Pull the population from product analytics rather than memory, exclude teammates and test accounts, and record the selection criteria with the survey so later rounds stay comparable.
+
+         - Vendor options: PostHog, Amplitude, Mixpanel
+         - Ranked market: [product-analytics](../../open-rankings/product-analytics)
+
+       - **Run the very-disappointed survey** — manual form/portal · ~1 h · async wait
+
+         Ask how the user would feel if they could no longer use the product (very disappointed, somewhat disappointed, not disappointed), what type of person they think benefits most, what the main benefit is, and how the product could improve. The share answering very disappointed is the fit measure, with 40% as the bar before scaling (lore rule vohra-pmf-engine). Keep the survey short, send it while the product experience is recent, and store responses where the team can revisit the raw wording.
+
+       - **Segment responses and extract the signal** — agent-runnable · ~30 min
+
+         Disregard feedback from users who would not be disappointed without the product, and split the somewhat-disappointed by whether the main benefit resonates with them, acting only on the feedback of those for whom it does (lore rule vohra-segment-by-main-benefit). Keep surveying new users, no user twice, and track the very-disappointed share over time as the core product metric (lore rule vohra-track-pmf-score-weekly). Bring the founder the score, the segments, and what holds the near-misses back.
+
+         - Vendor options: ChatGPT, Claude, Gemini, Grok
+         - Ranked market: [ai-assistants](../../open-rankings/ai-assistants)
      - **Pre-sale commitment test**
 
        When: A priced product where a commitment is obtainable before building - an enterprise letter of intent, or a refundable deposit on a physical product
 
        For an enterprise idea the first commitment to seek is a signed letter of intent; for hardware or another physical product it is a refundable deposit. Test a preorder or refundable deposit only with a clear offer and a workable plan for handling customer funds. Explain what is being reserved, fulfillment uncertainty, cancellation terms, and how refunds work. Have the business owner and local adviser review the commitments before launch. Measure completed deposits and refunds, and keep someone responsible for customer questions and outstanding promises if the experiment changes direction or stops.
 
-       - Ask named buyers to commit before building — human · ~4 h · async wait
-       - Publish the preorder page — agent-runnable · ~20 min
-       - Set up the refundable-deposit checkout — agent-runnable · ~15 min
-       - Measure deposit conversion and refund rate — agent-runnable · ~15 min
+       - Sources: [FTC: Selling on the Internet, Prompt Delivery Rules](https://www.ftc.gov/business-guidance/resources/selling-internet-prompt-delivery-rules)
+
+       - **Ask named buyers to commit before building** — human · ~4 h · async wait
+
+         Test an enterprise idea by trying to sell it first: ask the named buyer for a letter of intent saying they will purchase, before writing a line of code (lore rule altman-launch-or-loi-test). Commitments of money, time, or resources from real customers and partners reduce uncertainty more than any analysis (lore rule sarasvathy-stakeholder-precommitments). Record who committed, to what, and under which conditions; a polite expression of interest without a commitment counts as a no for this test.
+
+       - **Publish the preorder page** — agent-runnable · ~20 min
+
+         Draft the preorder page with the item being reserved, the amount paid now, and the proposed delivery and cancellation terms. Have the business owner and the appropriate local adviser review the customer commitments before publication. Make fulfillment uncertainty visible and name a contact for questions. Check that checkout presents the same offer, and associate the page version with each order to support later fulfillment or refund questions.
+
+         - Vendor options: Lovable, v0, Bolt
+         - Ranked market: [vibe-coding](../../open-rankings/vibe-coding)
+         - Sources: [FTC: Selling on the Internet, Prompt Delivery Rules](https://www.ftc.gov/business-guidance/resources/selling-internet-prompt-delivery-rules)
+
+       - **Set up the refundable-deposit checkout** — agent-runnable · ~15 min
+
+         Configure the deposit amount, currency, description, receipt, and refund process in the selected payment service. Check that the service permits the offer and that the company can return funds on the promised terms. Test payment and refund handling using the provider's supported method, then have the payment owner authorize live activation. Make deposits and outstanding refunds traceable to customers so stopping the experiment has a practical financial closeout path.
+
+         - Canonical vendor: Stripe
+         - Ranked market: [payments](../../open-rankings/payments)
+
+       - **Measure deposit conversion and refund rate** — agent-runnable · ~15 min
+
+         Reconcile completed deposits with payment records before calculating conversion from the relevant visitor or checkout population. Separate failed payments and internal tests from customer demand. Track cancellations, completed refunds, and outstanding requests, including why customers asked to leave. Compare those results with acquisition source and the offer shown, then bring the experiment owner both the demand findings and the work or funds needed to satisfy remaining customer obligations.
+
+         - Canonical vendor: Stripe
      - **Waitlist + ad-spend test**
 
        When: Consumer product - buy a small amount of traffic and measure real waitlist conversion
 
        Use paid traffic and a waitlist to test response from a reachable target audience. Define the offer, audience, signup criteria, and spending limit before building the campaign. Obtain the budget owner's approval before paid launch, then connect the ad to a working signup page. Compare qualified responses and acquisition cost across the messages or audiences actually tested, checking traffic quality before attributing a weak result to the idea itself.
 
-       - Publish the waitlist page — agent-runnable · ~20 min
-       - Launch a small paid ad campaign at the target audience — manual form/portal · ~45 min
-       - Measure click-to-signup conversion — agent-runnable · ~15 min
+       - **Publish the waitlist page** — agent-runnable · ~20 min
+
+         Build a page that explains the proposed outcome, who it is for, and what joining the waitlist provides. Write a clear offer and a single next action, decide which action counts as a useful response (a qualified signup or a request to talk), and state product availability accurately. Ask only for information needed for that follow-up and make its handling clear. Check the form, confirmation, and storage destination before publishing the experiment owner's agreed version. Keep the page aligned with the advertisement, and save its URL and offer version so campaign results can be compared with the message visitors actually saw.
+
+         - Canonical vendor: Lovable
+         - Vendor options: Lovable, v0, Bolt
+         - Ranked market: [vibe-coding](../../open-rankings/vibe-coding)
+
+       - **Launch a small paid ad campaign at the target audience** — manual form/portal · ~45 min
+
+         Turn the chosen audience and offer into an accurate advertisement. Set the spending limit, targeting, destination, and stopping conditions, with a named person watching the campaign. Have the budget owner approve the spend before launch. Check that the live ad reaches the working signup page and that campaign identifiers survive the journey. Watch for unexpected spend, irrelevant traffic, or a broken destination before judging demand from the results.
+
+       - **Measure click-to-signup conversion** — agent-runnable · ~15 min
+
+         Compare advertising clicks with page visits and completed signups, investigating discrepancies before calculating conversion. Remove internal submissions, duplicates, and obvious spam. Show the audience or message tested, sample size, spend, and qualified responses alongside the rate. Weigh conversion against depth of signal: a single passionate user of a crude prototype means more than a large waitlist (lore rule taggar-one-passionate-user-signal). Explain whether the result points to an audience problem, a weak offer, or a broken journey, and identify what another test would need to distinguish those explanations.
+
+         - Canonical vendor: PostHog
+         - Vendor options: PostHog, Amplitude, Mixpanel
+         - Ranked market: [product-analytics](../../open-rankings/product-analytics)
 4. **Instrument signup analytics** — agent-runnable · ~10 min
 
    *Follows step 3 (option "Lean MVP launch" or option "Pre-sale commitment test" or option "Waitlist + ad-spend test").*

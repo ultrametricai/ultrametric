@@ -31,11 +31,16 @@ Mailchimp API fully supports audience, campaign, and automation management.
 
    Options:
      - **Default — Create your email marketing account** — manual form/portal · ~10 min · human approval required
+
+       Use a list-oriented workspace for audience-based newsletters or campaigns. Compare required audience size, templates and reporting with current plan limits and cost. Set the sender and audience structure, then test signup, duplicate handling and suppression before importing real contacts.
      - **Event-driven lifecycle email**
 
        When: Product-led SaaS - email keyed to product events, not newsletter blasts
 
        Use event-driven messaging when product activity should start, change or stop a message sequence. Define the events, user identifiers, attributes and suppression rules before choosing a service. With fictional accounts, test missing and repeated events and verify who enters and exits each journey. Resolve data-sharing and audience-eligibility questions before activating customer messages.
+
+       - Canonical vendor: Loops
+       - Vendor options: Loops, Customer.io
 2. **Set up audience list** — agent-runnable · ~10 min · human approval required
 
    Build the audience with each contact's source, preferences, relevant location and evidence of eligibility for this program. Deduplicate records and carry existing opt-outs into the import. Resolve regional requirements and uncertain eligibility before treating a contact as sendable. Test a small import, inspect mapped fields and suppressions, then reconcile imported and excluded counts against the source list.
@@ -43,12 +48,16 @@ Mailchimp API fully supports audience, campaign, and automation management.
    - Produces: Marketing email audience
    - Canonical vendor: Mailchimp
    - Sources: [CAN-SPAM Act: A Compliance Guide for Business](https://www.ftc.gov/business-guidance/resources/can-spam-act-compliance-guide-business)
+   - Next: continue at step 4
+   - Next: continue at step 5
 3. **Create email templates** — agent-runnable · ~15 min · human approval required
 
    Build templates for the program's actual messages with a recognizable sender, brand assets and clear next action. Add personalization fallbacks and the sender, preference and unsubscribe content required for the audience. Check links, plain text and mobile previews, then save each draft with its intended use.
 
    - Canonical vendor: Mailchimp
    - Sources: [CAN-SPAM Act: A Compliance Guide for Business](https://www.ftc.gov/business-guidance/resources/can-spam-act-compliance-guide-business)
+
+   *This path ends here.*
 4. **Set up welcome automation** — agent-runnable · ~10 min · human approval required
 
    *Follows step 2.*
@@ -57,6 +66,8 @@ Mailchimp API fully supports audience, campaign, and automation management.
 
    - Canonical vendor: Mailchimp
    - Sources: [CAN-SPAM Act: A Compliance Guide for Business](https://www.ftc.gov/business-guidance/resources/can-spam-act-compliance-guide-business)
+
+   *This path ends here.*
 5. **Configure signup forms** — agent-runnable · ~10 min · human approval required
 
    *Follows step 2.*

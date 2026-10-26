@@ -26,6 +26,8 @@ State tax portals have no APIs. System provides state-specific checklists and pr
    *Entry step — no prerequisite step.*
 
    List the company’s state registrations, employee work locations, property, sales and business activities. Have the tax adviser assess income, franchise, withholding, unemployment and sales-tax accounts separately using each relevant agency’s current rules. Record the required account types and effective dates, with missing facts identified. Corporate foreign qualification needs its own assessment; a secretary-of-state registration does not finish tax registration.
+
+   - Next: continue at step 3
 2. **Register with state tax authority** — manual form/portal · ~30 min · human approval required · hard to undo
 
    Prepare the approved account registration with the correct agency, legal entity, EIN, activity dates, address and contact. Resolve uncertain start dates and complete the declaration and submission through the entity’s authorized filing route. Save the filed application and track agency requests until the account is issued. Store credentials securely and pass the issued account details to the team responsible for its returns or payments.
@@ -33,6 +35,7 @@ State tax portals have no APIs. System provides state-specific checklists and pr
    - Verify: The state issues a tax account number and the registration shows active in the state's portal.
    - Produces: State tax accounts
    - Canonical vendor: State Secretary of State
+   - Next: continue at step 4
 3. **Register for sales tax (if applicable)** — manual form/portal · ~20 min · human approval required · hard to undo
 
    *Follows step 1.*
@@ -48,6 +51,8 @@ State tax portals have no APIs. System provides state-specific checklists and pr
    *Follows step 2 or step 3.*
 
    Enter each issued number with its tax type, jurisdiction, effective date and filing frequency in the restricted compliance register. Attach the agency confirmation and store portal credentials separately. Reconcile issued, pending and rejected applications, then assign notice handling and return preparation to finance or payroll. Give those teams the issued account details needed for their filings.
+
+   *This path ends here.*
 5. Run [Register for sales tax where you have nexus](register-for-sales-tax-where-you-have-nexus.md)
 
    *Entry step — no prerequisite step.*
@@ -60,6 +65,8 @@ State tax portals have no APIs. System provides state-specific checklists and pr
    - Canonical vendor: New York Department of Taxation and Finance
    - Do it yourself: [NY DTF — Article 9-A franchise tax](https://www.tax.ny.gov/bus/ct/article9a.htm)
    - Sources: [NY DTF — deriving receipts thresholds](https://www.tax.ny.gov/bus/ct/article9a_deriving_receipts.htm)
+
+   *This path ends here.*
 7. **Register with the Washington DOR and report B&O tax** — manual form/portal · ~25 min · hard to undo · only when operating in US-WA
 
    *Entry step — no prerequisite step.*

@@ -35,18 +35,19 @@ With a bank (Mercury, Brex, Relay) or accounting tool (QuickBooks, Xero, Pilot) 
 
    Take a consistent-date snapshot of accounts included in runway. Separate unrestricted operating cash from restricted funds, investments and pending transfers, and state currency conversion assumptions. Reconcile it to the cash schedule and identify stale or inaccessible balances so the calculation uses funds the company can actually draw on.
 
-Retain account identifiers, statement dates, opening/closing balances and the source of each value. Check duplicate records and transfer pairs before combining exports. Reconcile the included accounts individually and in total; do not substitute zero for an inaccessible balance. State the exchange-rate date and source when currencies are combined.
+   Retain account identifiers, statement dates, opening/closing balances and the source of each value. Check duplicate records and transfer pairs before combining exports. Reconcile the included accounts individually and in total; do not substitute zero for an inaccessible balance. State the exchange-rate date and source when currencies are combined.
 
    - Canonical vendor: Mercury
    - Vendor options: Mercury, Brex, Relay
    - Ranked market: [startup-banking](../../open-rankings/startup-banking)
+   - Next: continue at step 3
 2. **Analyze monthly spend** — agent-runnable · ~5 min
 
    *Entry step — no prerequisite step.*
 
    Analyze spending and operating receipts over comparable monthly periods, separating recurring activity, unusual purchases, financing and internal transfers. Compare the pattern with upcoming payroll, vendor commitments and collection timing. Explain where historical averages would misrepresent future cash use, then use those adjustments in the forward runway estimate.
 
-Keep a normalized transaction schedule with a stable source-row identifier and classification. Show financing, internal transfers, one-off items and restricted-fund movements separately so the operating cash calculation can be checked. Distinguish a contractual commitment from its expected payment date and a booked receivable from expected collection.
+   Keep a normalized transaction schedule with a stable source-row identifier and classification. Show financing, internal transfers, one-off items and restricted-fund movements separately so the operating cash calculation can be checked. Distinguish a contractual commitment from its expected payment date and a booked receivable from expected collection.
 
    - Canonical vendor: Mercury
    - Vendor options: Mercury, Brex, Ramp, QuickBooks, Xero
@@ -57,9 +58,9 @@ Keep a normalized transaction schedule with a stable source-row identifier and c
 
    Estimate runway from available cash and explicit spending and collection assumptions. A stable positive monthly cash outflow supports a simple ratio; uneven or positive cash flow calls for a month-by-month projection. Include planned hires and commitments, compare a downside case and identify the first cash constraint so management can see which assumptions require action.
 
-Return opening cash, receipts, outflows and closing cash for each forecast period, with hires and commitments starting in their stated periods. State the cash threshold and identify the first period below it; do not infer an exact depletion day from monthly inputs. Reopen the saved artifact and recalculate both scenarios. For zero or negative net burn, explain the cash-generation assumptions instead of reporting an invalid ratio. List missing inputs that could change the result.
+   Return opening cash, receipts, outflows and closing cash for each forecast period, with hires and commitments starting in their stated periods. State the cash threshold and identify the first period below it; do not infer an exact depletion day from monthly inputs. Reopen the saved artifact and recalculate both scenarios. For zero or negative net burn, explain the cash-generation assumptions instead of reporting an invalid ratio. List missing inputs that could change the result.
 
-Choose a forecast horizon that covers the pending decision and known commitments, and state its end date. Continue across temporarily positive cash-flow months; a later hire, tax payment or renewal can still create a shortfall. Where a large payment precedes collections within a month, inspect the dated cash movements around it and report any earlier cash constraint. If dates are missing, state that month-end balances alone cannot establish liquidity throughout the month. Give the owner the assumptions that change the decision and the next review trigger, such as a missed collection or confirmed hire.
+   Choose a forecast horizon that covers the pending decision and known commitments, and state its end date. Continue across temporarily positive cash-flow months; a later hire, tax payment or renewal can still create a shortfall. Where a large payment precedes collections within a month, inspect the dated cash movements around it and report any earlier cash constraint. If dates are missing, state that month-end balances alone cannot establish liquidity throughout the month. Give the owner the assumptions that change the decision and the next review trigger, such as a missed collection or confirmed hire.
 
    - Vendor options: QuickBooks, Xero, Pilot, Google Sheets
    - Ranked market: [accounting](../../open-rankings/accounting)

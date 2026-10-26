@@ -29,11 +29,15 @@ EOR platforms quote, contract, and run country payroll through APIs; the country
 
    Options:
      - **Default — Choose the EOR and check country employment costs** — human · ~30 min
+
+       Compare the EOR’s proposal for the specific worker and country: legal employer, employment obligations, full cost, company duties and support contacts. Resolve suitability with local advice before engaging the provider or issuing terms. Agree who supplies payroll inputs, answers employee questions and handles changes or termination. Check outstanding conditions before sharing candidate information through the onboarding process.
      - **Own entity - direct local payroll** — manual form/portal
 
        When: You already have a local entity in the hiring country - skip the EOR margin
 
        Assess whether the local entity is ready to employ this person directly. Identify registrations, employment documents, benefits, reporting and ongoing administration with local advisers and payroll. Compare the complete workload and cost with the EOR proposal before choosing the route. An existing entity does not by itself establish employer readiness or make direct employment the cheaper arrangement.
+
+       - Vendor options: Deel, Rippling
 2. **Generate the quote and locally compliant contract** — agent-runnable · ~20 min
 
    Request the country-specific quote and draft using the agreed role and compensation details. Reconcile salary, statutory costs, benefits, fees, deposits and currency assumptions, then review the proposed employment terms with the people lead and local adviser. Resolve discrepancies between the commercial quote and candidate-facing agreement before committing to either. Share candidate information only through the authorized onboarding channel.

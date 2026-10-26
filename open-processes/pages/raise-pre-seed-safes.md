@@ -29,29 +29,42 @@ System can draft the instruments, track investor pipeline, send follow-ups, and 
 
    - Canonical vendor: Clerky
    - Sources: [Y Combinator SAFE documents](https://www.ycombinator.com/safe/)
+   - Next: continue at step 5
 
    Options:
      - **Default — Prepare SAFE documents** — agent-runnable · ~30 min · human approval required
+
+       Use the selected SAFE form’s exact version and definitions to enter investor identity, purchase amount and agreed terms. Check caps, discounts or MFN provisions against the deal and any side letter, and model the dilution. Show deviations from the source form clearly for founder and counsel review before the document moves into execution.
      - **India - iSAFE / CCPS instruments** — manual form/portal
 
        When: Raising the pre-seed in India
 
        Describe the Indian issuer, investor residency, proposed investment and conversion economics for local counsel. Work through which security, valuation, approvals and foreign-investment requirements fit the deal before finalizing an iSAFE or CCPS package. Draft the terms and ownership scenarios with unresolved clauses visible, including the basis for any claimed transaction or investor eligibility.
+
+       - Do it yourself: [Startup India (DPIIT recognition)](https://www.startupindia.gov.in/)
+       - Sources: [India Companies Act section 42](https://www.indiacode.nic.in/show-data?abv=CEN&actid=AC_CEN_22_29_00008_201318_1517807327856&orderno=44&orgactid=undefined&sectionId=1232&sectionno=42&statehandle=123456789%2F1362) · [India Companies Act 2013](https://www.indiacode.nic.in/ViewFileUploaded?file=the_companies_act%2C_2013_no._18_of_2013_date_29.08.2013.pdf&path=AC_CG_61_1375_00003_00003_1594717497353%2Factfile%2F)
      - **UK - ASA + SEIS/EIS assurance** — manual form/portal
 
        When: Raising the pre-seed in the United Kingdom
 
        For a UK ASA, work through the share-issue trigger, longstop, investor rights and intended SEIS or EIS treatment with counsel. HMRC advance assurance is optional; if sought, apply before entering the ASA and include its terms. Set out when funding and share issuance occur under the agreement, keeping company eligibility separate from each investor’s tax position.
+
+       - Do it yourself: [HMRC - apply to use SEIS](https://www.gov.uk/guidance/venture-capital-schemes-apply-to-use-the-seed-enterprise-investment-scheme)
+       - Sources: [HMRC VCM33025](https://www.gov.uk/hmrc-internal-manuals/venture-capital-schemes-manual/vcm33025) · [HMRC VCM12025](https://www.gov.uk/hmrc-internal-manuals/venture-capital-schemes-manual/vcm12025)
      - **Germany - Wandeldarlehen** — manual form/portal
 
        When: Raising the pre-seed in Germany
 
        Draft the German convertible-loan terms: principal, interest, maturity, conversion events, valuation mechanics and investor identities. Model conversion outcomes and ask local counsel to determine the form and approvals required by the actual clauses, including future capital measures. Resolve those issues before execution. Treat any proposed grant application separately, with its own verified programme and transaction eligibility.
+
+       - Do it yourself: [BAFA - INVEST grant for angels](https://www.bafa.de/DE/Wirtschaft/Beratung_Finanzierung/Invest/invest_node.html)
      - **France - BSA-AIR** — manual form/portal
 
        When: Raising the pre-seed in France
 
        For a proposed French BSA-AIR, assemble the company form, capital documents, investor details and negotiated investment and conversion terms. Show how future financing or other triggers change allocation, then resolve issuance and approval requirements with local counsel. Draft the agreement against that analysis. Track co-investment discussions separately until their actual commitments are documented.
+
+       - Do it yourself: [Bpifrance Creation (state investment bank)](https://bpifrance-creation.fr/)
 2. **Create investor pipeline tracker** — agent-runnable · ~10 min
 
    *Entry step — no prerequisite step.*
@@ -69,20 +82,38 @@ System can draft the instruments, track investor pipeline, send follow-ups, and 
 
    Options:
      - **Default — Draft outreach emails** — agent-runnable · ~20 min · human approval required
+
+       Write to the investor’s stated focus or a confirmed reason they may be interested. Explain the product, support progress claims with a few concrete figures, and make a clear request for a conversation. Use materials suitable for that audience and remove confidential customer or financial information outside the intended disclosure. The founder should be able to send the draft without reconstructing the pitch.
      - **Warm-intro outreach** — human
 
        When: You have an existing network into the target investors - warm intros convert best
 
        Use a real connection who can explain why the company fits the investor. Map the relationship, write a short forwardable introduction and ask the connector to check both sides’ interest before joining them. Give the founder enough context to follow up naturally. A warm path is an introduction opportunity; investment interest still needs to be established through the conversation.
 
-       - Map mutual connections to the investor target list — agent-runnable · ~30 min
-       - Draft the forwardable blurb — agent-runnable · ~15 min
-       - Ask connectors for double-opt-in intros — human · ~2 h · async wait
+       - **Map mutual connections to the investor target list** — agent-runnable · ~30 min
+
+         Compare the investor target list with the founders’ actual professional relationships. Identify who knows each investor, how current the connection is and why the investor may fit. Check uncertain links with the relationship owner. Prioritize the strongest introductions and give each connector a specific reason for the request.
+
+         - Vendor options: HubSpot, Attio
+         - Ranked market: [crm](../../open-rankings/crm)
+
+       - **Draft the forwardable blurb** — agent-runnable · ~15 min
+
+         Write a short paragraph the connector can forward unchanged: what the company does, whom it serves, a few supportable progress points and why this investor’s time would be useful. Include a deck link when suitable for that audience. Check the numbers with the founder and tailor the request so the connector can introduce the company without composing a new pitch.
+
+         - Vendor options: ChatGPT, Claude, Gemini, Grok
+         - Ranked market: [ai-assistants](../../open-rankings/ai-assistants)
+
+       - **Ask connectors for double-opt-in intros** — human · ~2 h · async wait
+
+         The founder asks the chosen connector for an introduction using the investor-fit explanation and forwardable blurb. Ask the connector to establish the investor’s interest before joining both parties in a thread. When the introduction arrives, follow up using the context actually provided and update the pipeline with the response and next action.
      - **Platform round (RUV/syndicate)** — manual form/portal
 
        When: Raising from many angels via a platform vehicle rather than direct outreach
 
        Compare a syndicate or pooled vehicle with direct investments on structure, fees, eligibility, decision rights and reporting obligations. Establish with counsel and the platform who handles onboarding, documents, compliance and closing. Build the investor materials around those responsibilities and reconcile commitments, receipts and the company’s ownership entry to the executed records.
+
+       - Vendor options: AngelList
 4. **Conduct investor meetings** — human · ~3.3 d · async wait
 
    Prepare for the meeting around the investor’s focus, the company’s progress and the funding sought. Decide which founder will cover the product, financial needs and proposed terms, and what the team needs to learn from the investor. Afterwards, capture actual feedback, diligence requests and next steps. Treat a new economic proposal as a negotiation until the relevant terms are agreed.

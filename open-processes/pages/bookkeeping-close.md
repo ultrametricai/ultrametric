@@ -33,11 +33,13 @@ QuickBooks API and official Intuit MCP server enable transaction categorization,
    Categorize transactions using the chart of accounts, supporting invoices or receipts and their business purpose. Match transfers between company accounts to avoid duplicate income or expense. Apply established treatments consistently and send ambiguous capital, revenue, tax or owner transactions to the accountant. Attach the supporting reference to each entry and leave unresolved classifications visible in the draft ledger.
 
    - Canonical vendor: QuickBooks
+   - Next: continue at step 4
 3. **Reconcile bank statement** — agent-runnable · ~15 min · human approval required
 
    Match cleared bank activity to the ledger at the same closing date. Explain differences through outstanding payments, deposits in transit, fees, duplicates or supported corrections. The bookkeeper should investigate unexplained differences rather than insert a balancing entry. Finish with reconciled balances and a dated list of outstanding items that can be followed into the next period.
 
    - Canonical vendor: QuickBooks
+   - Next: continue at step 5
 4. **Review uncategorized items** — human · ~30 min
 
    *Follows step 2.*

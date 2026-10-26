@@ -37,6 +37,7 @@ Gusto's Embedded Payroll API supports onboarding, pay schedules, and payroll; Ca
    Follow up on the offer actually sent, using any agreed response date or extension. Route negotiation questions to the hiring owner and update the package if terms change. On acceptance, check that the required parties signed the same version and reconfirm the start date. Give onboarding the executed agreement and settled employment details so payroll, equipment and introductions can be arranged.
 
    - Produces: Signed offer / employment agreement
+   - Next: continue at step 10
 4. **Add the employee in your payroll platform** — agent-runnable · ~5 min · human approval required
 
    Choose the employment arrangement from the person’s work country, the employing entity and the reviewed worker classification. For a direct hire, build the payroll profile from the signed agreement: pay basis, amount, start date, location and manager. Let the employee supply sensitive personal and payment details through onboarding. Payroll should resolve missing registrations or funding setup before activation; an EOR hire or contractor needs its own downstream process.
@@ -45,24 +46,37 @@ Gusto's Embedded Payroll API supports onboarding, pay schedules, and payroll; Ca
    - Vendor options: Gusto, Rippling, Deel, Justworks
    - Ranked market: [payroll](../../open-rankings/payroll)
    - Sources: [IRS: Independent contractor or employee](https://www.irs.gov/businesses/small-businesses-self-employed/independent-contractor-self-employed-or-employee)
+   - Next: continue at step 6
+   - Next: continue at step 7
+   - Next: continue at step 8
 
    Options:
      - **Default — Add the employee in your payroll platform** — agent-runnable · ~5 min · human approval required
+
+       Use direct employee onboarding when the classification and employing entity support it in the person’s work location. Enter the signed pay terms, start date and verified employee details into payroll. Resolve required registrations and employee onboarding tasks with the payroll team before activation, then check the first-pay setup. Keep any missing information assigned to the person who can supply it.
      - **EOR hire (no local employing entity)**
 
        When: The hire is in a country where the company has no employing entity - an employer of record employs them on your behalf
 
        Assess an EOR for the actual country and role with the people lead and local adviser. Compare the legal employer, contract terms, total cost, benefits, funding and termination responsibilities in the provider’s proposal before committing. Coordinate contract execution and start clearance through the selected arrangement. Use the applicable local payroll and employment process in place of the downstream direct-hire tasks.
+
+       - Canonical vendor: Deel
+       - Vendor options: Deel, Rippling, Remote
      - **Contractor-first trial** — agent-runnable
 
        When: The engagement starts as a paid contractor trial before a full-time offer
 
        Review the proposed working relationship before considering a contractor engagement. Define the services, deliverables, independence and payment terms, and have the relevant adviser assess classification. If contracting fits, use the contractor agreement and tax-documentation process. If the role is employment in substance, use an employment route. Calling the arrangement a trial does not establish contractor status.
+
+       - Vendor options: Gusto, Deel
+       - Sources: [IRS: Independent contractor or employee](https://www.irs.gov/businesses/small-businesses-self-employed/independent-contractor-self-employed-or-employee)
 5. **Set up payroll schedule** — agent-runnable · ~10 min · human approval required
 
    Set the pay periods, paydays and input cutoffs around the agreed compensation terms. Check the permitted frequency for the employee’s work location and the provider’s actual funding lead time. Work through the first partial period and any bonus, commission or reimbursement treatment with payroll. Share the resulting calendar with the employee and the managers responsible for submitting changes.
 
    - Canonical vendor: Gusto
+
+   *This path ends here.*
 6. **Employee completes the hiring formalities: right-to-work verification and tax withholding forms** — human (legally required signature) · ~1 d · async wait
 
    *Follows step 4.*
@@ -72,6 +86,8 @@ Gusto's Embedded Payroll API supports onboarding, pay schedules, and payroll; Ca
    - Verify: The jurisdiction's required right-to-work verification and tax forms are on file by their statutory deadlines; retain them, they are inspectable.
    - Canonical vendor: Gusto
    - Sources: [USCIS: Completing Section 2](https://www.uscis.gov/i-9-central/completing-form-i-9/completing-section-2-employer-review-and-attestation) · [USCIS: Employment Eligibility Verification](https://www.uscis.gov/i-9) · [USCIS: Instructions for Form I-9](https://www.uscis.gov/sites/default/files/document/forms/i-9instr.pdf) · [IRS: Publication 15 (2026), Employer’s Tax Guide](https://www.irs.gov/publications/p15) · [IRS: Topic 753, Form W-4](https://www.irs.gov/taxtopics/tc753)
+
+   *This path ends here.*
 7. **Set up benefits enrollment** — manual form/portal · ~10 min · human approval required
 
    *Follows step 4.*
@@ -80,6 +96,8 @@ Gusto's Embedded Payroll API supports onboarding, pay schedules, and payroll; Ca
 
    - Canonical vendor: Gusto
    - Sources: [DOL: Health plans](https://www.dol.gov/index.php/agencies/ebsa/employers-and-advisers/plan-administration-and-compliance/health-plans)
+
+   *This path ends here.*
 8. **Create company email** — manual form/portal · ~5 min · human approval required
 
    *Follows step 4.*
@@ -92,16 +110,23 @@ Gusto's Embedded Payroll API supports onboarding, pay schedules, and payroll; Ca
 
    Options:
      - **Default — Google Admin console** — manual form/portal · ~5 min · human approval required
+
+       In Google Workspace, the authorized user administrator checks the domain, employee name, existing identities and available license before adding the account. Apply the intended organizational settings and security policy, then send activation instructions securely. Check sign-in and mailbox availability. If a service is still provisioning, investigate its status on the existing account.
      - **Microsoft 365 mailbox**
 
        When: The company runs on Outlook/Teams rather than Google Workspace
 
        In Microsoft 365, the authorized administrator creates or reconciles the employee’s account under the company domain. Assign the appropriate location, license and application access, handling administrative privileges as a separate access decision. Send activation instructions securely and check mailbox and service availability. Resolve licensing or provisioning failures before directing the employee to use the account for work.
+
+       - Vendor options: Microsoft 365
+       - Sources: [Microsoft Learn: Add users and assign licenses in Microsoft 365](https://learn.microsoft.com/en-us/microsoft-365/admin/add-users/add-users?view=o365-worldwide)
 9. **Add to the team chat** — agent-runnable · ~2 min · human approval required
 
    Invite the employee using their verified company identity and the access level agreed for their role. Add the team and onboarding channels their manager identifies, checking restricted or externally shared spaces with their owners. Point the employee to communication norms and the support contact. Resolve access problems within the permissions needed for the employee’s work.
 
    - Canonical vendor: Slack
+
+   *This path ends here.*
 10. **Grant stock options** — agent-runnable · ~15 min · human approval required · hard to undo
 
    *Follows step 3.*

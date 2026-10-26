@@ -39,11 +39,15 @@ Tax filing requires a CPA. System compiles financial data, tracks deadlines, coo
 
    Options:
      - **Default — CPA prepares return (2-3 weeks)** — human · ~14 d · async wait
+
+       Work with the engaged CPA on the agreed returns, elections and schedules for this entity and year. Supply reconciled records and answer questions, then review proposed adjustments and remaining issues. Confirm who handles signature authorization, transmission and payment under the engagement so preparation can move into filing without an unassigned responsibility.
      - **Startup tax platform**
 
        When: No CPA relationship - a startup tax platform prepares and files the return
 
        Check that the tax service supports the entity, ownership structure, states, elections and unusual transactions involved. Compare preparation and review responsibility, question handling, price and exclusions. Provide records through its secure process, then reconcile the draft to the books and obtain the required signature authorization. Check imported figures and resulting tax treatment before authorizing filing.
+
+       - Vendor options: Fondo, Pilot
 4. **Review draft return** — human · ~1 h · human approval required
 
    Compare the draft with final books, carryforwards, ownership records and significant transactions. Review tax adjustments, elections, related-party reporting and estimated payments with the preparer. Resolve unfamiliar figures and verify the entity and period before approving the exact return version through the company’s filing process. Treat any payment instruction as a distinct decision.

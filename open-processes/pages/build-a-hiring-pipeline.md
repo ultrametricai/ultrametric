@@ -26,6 +26,8 @@ Lever/Ashby APIs support pipeline and candidate management. Interview design and
    Design interview stages around the capabilities each role type requires. Assign a purpose, interviewer, evidence and decision owner to every stage, removing duplicate assessments. Define how candidates hear about progress, request accommodations, pause or withdraw. Walk the planned handoffs with hiring managers and recruiting so the process is workable before candidates enter it.
 
    - Sources: [EEOC: Recruiting, hiring or promoting employees](https://www.eeoc.gov/employers/small-business/3-im-recruiting-hiring-or-promoting-employees)
+   - Next: continue at step 3
+   - Next: continue at step 4
 2. **Create job postings** — agent-runnable · ~30 min · human approval required
 
    Write each posting from the requisition’s responsibilities, location, compensation guidance and essential requirements. Check questions and disclosures with the people lead for the recruiting locations involved, and have the hiring manager settle factual differences before publication. Verify that applications reach the correct recruiter. Keep postings aligned with changes in role scope, budget or hiring status.
@@ -34,6 +36,8 @@ Lever/Ashby APIs support pipeline and candidate management. Interview design and
    - Vendor options: Lever, Ashby
    - Ranked market: [applicant-tracking](../../open-rankings/applicant-tracking)
    - Sources: [EEOC: Recruiting, hiring or promoting employees](https://www.eeoc.gov/employers/small-business/3-im-recruiting-hiring-or-promoting-employees)
+   - Next: continue at step 5
+   - Next: continue at step 6
 3. **Configure scorecard templates** — agent-runnable · ~20 min · human approval required
 
    *Follows step 1.*
@@ -42,6 +46,8 @@ Lever/Ashby APIs support pipeline and candidate management. Interview design and
 
    - Canonical vendor: Lever
    - Sources: [EEOC: Recruiting, hiring or promoting employees](https://www.eeoc.gov/employers/small-business/3-im-recruiting-hiring-or-promoting-employees)
+
+   *This path ends here.*
 4. **Set up offer approval workflow** — agent-runnable · ~15 min · human approval required
 
    *Follows step 1.*
@@ -49,6 +55,7 @@ Lever/Ashby APIs support pipeline and candidate management. Interview design and
    Map the actual decision rights for headcount, compensation, equity, unusual terms and offer release. Configure approvers and substitutes around those limits, including what happens when an already approved offer changes. Walk through approval, rejection and revision with recruiting and finance before use. The recruiter should be able to identify which exact terms are cleared to send and which still need a decision.
 
    - Canonical vendor: Lever
+   - Next: continue at step 7
 5. **Connect Calendly for scheduling** — manual form/portal · ~15 min · human approval required
 
    *Follows step 2.*
@@ -56,6 +63,8 @@ Lever/Ashby APIs support pipeline and candidate management. Interview design and
    Connect the scheduling tool using the calendar access authorized by the interviewer and account owners. Configure interview lengths, availability, time zones and candidate messages around the planned stages. Check a booking, reschedule and cancellation, including what personal information appears in invitations. Give candidates and interviewers a support route when conflicts or integration failures require manual scheduling.
 
    - Canonical vendor: Calendly
+
+   *This path ends here.*
 6. **Configure Slack hiring channels** — agent-runnable · ~10 min · human approval required
 
    *Follows step 2.*
@@ -63,6 +72,8 @@ Lever/Ashby APIs support pipeline and candidate management. Interview design and
    Set up hiring channels for the people coordinating each role, with candidate evaluations and compensation kept in the appropriate restricted systems. Check membership and notification content before enabling a recruiting integration. Verify what a candidate update reveals and who can see it. Assign a channel owner to adjust access and close or repurpose the space when hiring pauses or ends.
 
    - Canonical vendor: Slack
+
+   *This path ends here.*
 7. **Set up diversity tracking** — agent-runnable · ~15 min · human approval required
 
    *Follows step 4.*

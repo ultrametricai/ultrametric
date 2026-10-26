@@ -27,6 +27,8 @@ Document generation, signature routing, and cap table entry are automatable. The
 
    Options:
      - **Default — Near-equal split with a deciding share** — human · ~1 h
+
+       Split the equity nearly equally, and with two founders have one founder hold a single extra share so a fallout cannot deadlock the company (lore rule altman-one-extra-share). Agree who holds the deciding share together with who is CEO: investors want one clear tiebreaker, and a few months of solo progress before a cofounder joined does not dock their share (lore rule taggar-settle-ceo-before-paperwork).
      - **Exactly equal split** — human · ~1 h
 
        When: Founders who weight the years of work ahead over early differences and settle decision rights outside the split
@@ -46,26 +48,40 @@ Document generation, signature routing, and cap table entry are automatable. The
 
    Options:
      - **Default — Generate founder agreements and IP assignment** — manual form/portal · ~20 min
+
+       Have counsel confirm that the default document set fits the entity and jurisdiction before using it. Translate the agreed founder terms into the agreement, equity documents, and intellectual-property assignment, including schedules for existing work and excluded obligations. Reconcile the package with formation records and the proposed capitalization. Identify the corporate approvals and execution requirements still needed, then put a consistent final package in front of the founders for review.
      - **India - stamped founders' agreement**
 
        When: Founder agreement under Indian law
 
        For an Indian company, give local counsel the agreed founder terms, company articles, equity arrangements, and execution locations. Determine the applicable stamp duty and execution process before finalizing the documents, including whether the proposed terms require changes to the articles. Confirm the duty amount and stamping or payment procedure with the relevant authority. Keep the completed formalities with the signed package so later ownership updates rest on the correct documents.
+
+       - Do it yourself: [Startup India (founder agreement resources)](https://www.startupindia.gov.in/)
+       - Sources: [India Code: Indian Stamp Act, 1899](https://www.indiacode.nic.in/indiacode/bitstream/123456789/20095/1/the_indian_stamp_act%2C_1899.pdf)
      - **UK - shareholders' agreement + articles**
 
        When: Founder agreement under UK law
 
        For a UK company, review the founder arrangements with counsel against the actual articles, share classes, and ownership records. Draft the shareholders' agreement and any necessary constitutional changes together, addressing the founders' chosen departure, transfer, and decision provisions. Identify the approvals and filings required for the transaction. Present the coordinated package to the founders with a clear explanation of what signing does and which corporate actions still need to follow.
+
+       - Do it yourself: [Model articles of association](https://www.gov.uk/guidance/model-articles-of-association-for-limited-companies)
+       - Sources: [GOV.UK: Documents agreeing how to run a company](https://www.gov.uk/limited-company-formation/documents)
      - **Germany - notarized vesting clauses** — human
 
        When: Founder agreement under German law
 
        For a German GmbH, review the proposed ownership and departure terms with German counsel and the notary handling the transaction. Section 15 GmbHG requires notarial form for share transfers and agreements creating an obligation to transfer shares. Have them determine how that applies to the proposed vesting arrangement and reconcile it with the articles and current holdings. Use the notary's execution process for any transfer obligation requiring this form.
+
+       - Vendor options: Beglaubigt.de
+       - Do it yourself: [Bundesnotarkammer (notaries)](https://www.bnotk.de/)
+       - Sources: [German Limited Liability Companies Act](https://www.gesetze-im-internet.de/gmbhg/__15.html)
      - **France - pacte d'associes**
 
        When: Founder agreement under French law
 
        For a French company, review the founders' governance, ownership, departure, and transfer proposals with local counsel alongside the statuts. Decide who will sign the pacte d'associés and how it supplements the constitutional documents. Draft the terms as a coordinated package and identify any related corporate action or execution requirement. Keep the pact and sensitive schedules restricted to their intended audience as the founders review and sign the final arrangement.
+
+       - Do it yourself: [Pacte d'associes - Bpifrance Creation guide](https://bpifrance-creation.fr/encyclopedie/structures-juridiques/entreprendre-a-plusieurs/pacte-dassocies-organisation)
 3. **Route agreements for e-signature** — agent-runnable · ~5 min · human approval required
 
    Prepare the final agreement versions and schedules, matching every signature block to the person and capacity required. Confirm the execution method with counsel for the selected jurisdiction; documents requiring a notary need that route. Have the legal owner confirm the package and recipients before invitations are sent. Track completion by document and return changed terms for review, so a partial or superseded package cannot be mistaken for the agreement the founders signed.

@@ -33,11 +33,11 @@ This is the one process agents run on themselves end-to-end — audit, docs, ski
 
    Try the repository as a new contributor: locate setup instructions, the pinned runtime and package manager, generated files and CI commands. Run the permitted local checks and identify missing configuration, undocumented prerequisites and failures already present. Follow one small feature or bug through the source to see which checks cover it. Return file references and command results for the gaps that would stop an agent from making and verifying a bounded change.
 
-Record the exact runtime/package-manager versions and the commands actually executed, including working directory and exit status. Separate missing prerequisites from code failures, and identify the smallest permitted task the current environment can prove.
+   Record the exact runtime/package-manager versions and the commands actually executed, including working directory and exit status. Separate missing prerequisites from code failures, and identify the smallest permitted task the current environment can prove.
 
-Identify setup steps that run downloaded code, modify shared services or require secrets before executing them. Use the repository’s authorized local setup and record any unavailable dependency without inventing a successful install. Keep the readiness report scoped to the runtime and task actually exercised.
+   Identify setup steps that run downloaded code, modify shared services or require secrets before executing them. Use the repository’s authorized local setup and record any unavailable dependency without inventing a successful install. Keep the readiness report scoped to the runtime and task actually exercised.
 
-Choose a task that fits the request: a real bug when one is evidenced, or a bounded onboarding or maintenance improvement when existing behavior is correct. Use the checks applicable to this repository; absence of a linter or type checker alone does not require adding that stack.
+   Choose a task that fits the request: a real bug when one is evidenced, or a bounded onboarding or maintenance improvement when existing behavior is correct. Use the checks applicable to this repository; absence of a linter or type checker alone does not require adding that stack.
 
    - Vendor options: Claude Code, Codex, Cursor
    - Ranked market: [ai-coding](../../open-rankings/ai-coding)
@@ -50,7 +50,7 @@ Choose a task that fits the request: a real bug when one is evidenced, or a boun
 
    Pick a skill for a demonstrated task the repository needs help with. Read its instructions, installation behavior and dependencies before adding it, checking compatibility with the chosen agent. Install in the intended local or repository scope and trial a harmless example. Any added credential access or external permission needs the responsible owner's authority. Keep the source/version and removal path, and discard skills that conflict with repository rules or add no useful behavior.
 
-Skip installation when no selected skill addresses a demonstrated gap. Keep this choice visible in the handoff; installing more skills is not a completion criterion.
+   Skip installation when no selected skill addresses a demonstrated gap. Keep this choice visible in the handoff; installing more skills is not a completion criterion.
 
    - Canonical vendor: Superpowers
    - Vendor options: Superpowers, skills.sh, gstack
@@ -60,12 +60,12 @@ Skip installation when no selected skill addresses a demonstrated gap. Keep this
 
    Expose the repository’s applicable checks, such as lint, type-checking or tests, as commands that work from the documented setup. Document which checks are inapplicable instead of adding a toolchain solely to fill each category. Check their exit status by running a passing case and a controlled failure, then remove the deliberate failure. Offer a focused command for a small change alongside the required broader gates. Document existing failures and necessary test fixtures so an agent can tell a regression from a broken baseline.
 
-Check that the command exercises the changed behavior and does not hide failures with a successful wrapper exit. Keep the controlled failure outside production and remove it after confirming a nonzero exit. Preserve unrelated baseline failures with their evidence instead of disabling checks to make the trial green.
+   Check that the command exercises the changed behavior and does not hide failures with a successful wrapper exit. Keep the controlled failure outside production and remove it after confirming a nonzero exit. Preserve unrelated baseline failures with their evidence instead of disabling checks to make the trial green.
 5. **Connect MCP servers for the stack’s vendors** — agent-runnable · ~20 min
 
    Connect only the vendor tasks the agent actually needs, using the verified server and the runtime's supported setup. Check the account and granted scopes against the service owner's authorization, then try a harmless read whose result can be independently confirmed. Inspect the tools actually exposed and test the operations the workflow will use. Protect credentials, keep revocation available and define which external writes require separate case-specific authority.
 
-Skip this step when the bounded task does not require a vendor connection. If a required connection is unavailable or needs a new grant, report the missing operation and owner; do not treat a local-only trial as proof of that integration.
+   Skip this step when the bounded task does not require a vendor connection. If a required connection is unavailable or needs a new grant, report the missing operation and owner; do not treat a local-only trial as proof of that integration.
 
    - Canonical vendor: Composio
    - Vendor options: Composio, Smithery
@@ -75,9 +75,9 @@ Skip this step when the bounded task does not require a vendor connection. If a 
 
    Give an agent the agreed bounded task, its expected behavior and the saved repository instructions. For a bug, retain the failing reproduction; for onboarding or maintenance, retain the observed starting behavior and measurable improvement while preserving behavior outside scope. Watch where setup, checks or missing context force it to guess. Review the patch and results, then carry it through the normal review and release path only as far as the task authorizes. Fix the instructions from the friction actually observed.
 
-Have a fresh reader replay the documented setup and applicable focused checks without the original shell history or undocumented files. Retain before/after evidence and any intervention needed. A deliberately induced check failure demonstrates a check, not a product defect. Distinguish a human replay from an agent replay, and record the actual reader/environment; neither establishes success for untested clients.
+   Have a fresh reader replay the documented setup and applicable focused checks without the original shell history or undocumented files. Retain before/after evidence and any intervention needed. A deliberately induced check failure demonstrates a check, not a product defect. Distinguish a human replay from an agent replay, and record the actual reader/environment; neither establishes success for untested clients.
 
-Make the handoff runnable: include the starting revision, local prerequisites, task reproduction, focused validation command and patch location. The fresh replay must execute the documented checks. If a fresh agent session is unavailable, deliver the verified local setup and report agent replay as pending.
+   Make the handoff runnable: include the starting revision, local prerequisites, task reproduction, focused validation command and patch location. The fresh replay must execute the documented checks. If a fresh agent session is unavailable, deliver the verified local setup and report agent replay as pending.
 
    - Vendor options: Claude Code, Codex, Cursor
    - Ranked market: [ai-coding](../../open-rankings/ai-coding)

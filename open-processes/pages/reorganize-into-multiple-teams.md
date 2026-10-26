@@ -26,6 +26,7 @@ Linear GraphQL API fully supports teams, projects, cycles, and labels. Complete 
    Map the agreed departments and membership roster onto the tracker, identifying teams that will be retained, renamed, split, or retired. Preserve the ownership of active projects and decide where ongoing work moves before changing the structure. Create the new teams and access groups, then move work using that mapping. Give team leads a view of their resulting backlog and call out tasks that lost an owner or became inaccessible.
 
    - Canonical vendor: Linear
+   - Next: continue at step 5
 2. **Configure workflow states per team** — agent-runnable · ~15 min · human approval required
 
    Map each department's intake, execution, review, and completion stages. Keep common meanings where cross-team reporting depends on them, and allow different states where the work genuinely differs. Build an old-to-new status mapping for active issues before changing workflows. Walk current tasks through the new states with their team leads, resolve ambiguous transitions, and then move the existing queue so work retains an understandable status.
@@ -41,6 +42,7 @@ Linear GraphQL API fully supports teams, projects, cycles, and labels. Complete 
    Choose a planning cadence that fits each team's workload and release needs. Agree how it handles unplanned work, dependencies, and tasks left unfinished at the end of a cycle. Configure the supported cycle settings and put the next set of work into them. Check capacity and dates with the team lead, then document how unfinished work moves into the next cycle and affects its plan.
 
    - Canonical vendor: Linear
+   - Next: continue at step 6
 5. **Create Slack channel integrations** — agent-runnable · ~10 min · human approval required
 
    *Follows step 1.*
@@ -48,6 +50,8 @@ Linear GraphQL API fully supports teams, projects, cycles, and labels. Complete 
    For teams using Slack, choose which tracker events warrant a channel message and where those messages belong. Check channel membership against the linked issues' visibility and review the integration's permissions with the administrators before connecting it. Trigger a representative event and inspect the message, link access, and duplicates. Adjust noisy rules before expanding the integration, and tell the channel owner how to change or disable notifications.
 
    - Canonical vendor: Slack
+
+   *This path ends here.*
 6. **Document process in Notion** — agent-runnable · ~15 min · human approval required
 
    *Follows step 4.*

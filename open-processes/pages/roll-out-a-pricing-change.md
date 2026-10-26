@@ -33,11 +33,11 @@ Plan modeling, the billing migration, and the comms are automatable over billing
 
    Compare current and proposed pricing against actual customer quantities, discounts, usage and renewal patterns. Show representative invoices and scenarios for customer responses, keeping recurring revenue definitions and currencies consistent. Separate modeled revenue uplift from cash collection. Give the pricing decision-maker the assumptions and sensitivities that materially change the result, especially for customers facing the largest increases.
 
-Retain input subscription IDs and the snapshot date. Reconcile starting and proposed recurring revenue to the customer ledger, using consistent billing intervals and separate currencies unless an explicit conversion is supplied. Show totals for unchanged, migrated and unresolved cohorts; a projected uplift is not collected cash.
+   Retain input subscription IDs and the snapshot date. Reconcile starting and proposed recurring revenue to the customer ledger, using consistent billing intervals and separate currencies unless an explicit conversion is supplied. Show totals for unchanged, migrated and unresolved cohorts; a projected uplift is not collected cash.
 
-Show the approved baseline and a downside scenario separately. Preserve contractual annual terms until the relevant renewal, and represent delayed cohorts in their actual periods. If customer counts, fees or timing are corrected, recompute the model and update the customer ledger, notices and handoff from that same revision.
+   Show the approved baseline and a downside scenario separately. Preserve contractual annual terms until the relevant renewal, and represent delayed cohorts in their actual periods. If customer counts, fees or timing are corrected, recompute the model and update the customer ledger, notices and handoff from that same revision.
 
-Regenerate related outputs together in a staging location and validate the complete set before replacing the last verified revision; a failed run must leave that revision intact and identify the revised attempt as incomplete. After changing an input, rerun verification and reconcile period-specific cohort totals, schedules and summaries, including renewals that move beyond the forecast horizon. Keep fixed baseline test expectations separate from checks valid for changed inputs, and update narrative dates and amounts from the verified revision.
+   Regenerate related outputs together in a staging location and validate the complete set before replacing the last verified revision; a failed run must leave that revision intact and identify the revised attempt as incomplete. After changing an input, rerun verification and reconcile period-specific cohort totals, schedules and summaries, including renewals that move beyond the forecast horizon. Keep fixed baseline test expectations separate from checks valid for changed inputs, and update narrative dates and amounts from the verified revision.
 
    - Canonical vendor: Stripe
    - UM's Stripe Billing evidence includes a proration-preview source (stripe-billing-docs-4), while its proration-correctness and agent-manages-subscriptions verdicts record gaps in calculation details, credits, permissions and hands-on execution. Use those gaps to define the customer's preview and invoice reconciliation checks before rollout. The patio11-charge-more lore entry is a hypothesis about pricing, with an explicit tension against growth-at-speed thinking; test it against this company's value evidence and cohort economics. It does not establish that a price increase is appropriate or authorized.
@@ -45,31 +45,34 @@ Regenerate related outputs together in a staging location and validate the compl
 
    Group customers into retained terms, new pricing and cases needing individual review. Check contracts and commitments with the commercial and legal reviewers for relevant notice, acceptance and renewal conditions. Define effective dates, discount treatment and exception authority. Produce a customer-level migration policy, keeping unresolved accounts out of the change batch until their obligations and treatment are established.
 
-Assign every subscription to exactly one transition group, with the decision source and owner. Store old/new price identifiers, quantity, discount, currency, interval, effective date and required notice or acceptance status. A missing policy decision excludes that account from execution.
+   Assign every subscription to exactly one transition group, with the decision source and owner. Store old/new price identifiers, quantity, discount, currency, interval, effective date and required notice or acceptance status. A missing policy decision excludes that account from execution.
 
-Capture subscription lifecycle status and scheduled changes, including pending cancellation, pause, trial or delinquency. Resolve how each affects eligibility with the billing owner; keep unknown treatment held. Preserve existing cancellation and scheduled-change intent. Count recurring revenue under the stated policy rather than treating every listed amount as an eligible renewal or uplift.
+   Capture subscription lifecycle status and scheduled changes, including pending cancellation, pause, trial or delinquency. Resolve how each affects eligibility with the billing owner; keep unknown treatment held. Preserve existing cancellation and scheduled-change intent. Count recurring revenue under the stated policy rather than treating every listed amount as an eligible renewal or uplift.
 3. **Create the new plans in billing** — agent-runnable · ~20 min
 
    Create the new plans from the pricing matrix in a draft or test catalog, preserving identifiers still used by current subscriptions. Check currency, interval, unit, usage limits and customer wording through checkout and invoice previews. Map each old plan to its intended successor and specify which remain available. Release the new catalog within billing authority; moving subscriptions requires the separate migration policy.
 
-Identify the provider account and test/live mode before any catalog change. Keep test identifiers separate from live identifiers, and preserve a preview artifact showing the intended amount and interval. A local simulator checks the proposed policy only; it does not verify provider-specific proration or tax behavior.
+   Identify the provider account and test/live mode before any catalog change. Keep test identifiers separate from live identifiers, and preserve a preview artifact showing the intended amount and interval. A local simulator checks the proposed policy only; it does not verify provider-specific proration or tax behavior.
 
    - Canonical vendor: Stripe Billing
    - Vendor options: Stripe Billing, Chargebee, Recurly
    - Ranked market: [billing-subscriptions](../../open-rankings/billing-subscriptions)
    - Sources: [Manage products and prices](https://docs.stripe.com/products-prices/manage-prices)
+   - Next: continue at step 5
 4. **Update the site pricing page and docs** — agent-runnable · ~20 min
 
    Use the billing pricing matrix to update the public pricing page, plan comparisons and help material. Explain units, intervals, limits and treatment of existing customers consistently. In preview, follow each purchase link to the intended plan and price. Publish the pricing owner's agreed version, then compare live amounts, destinations and support guidance with the released catalog.
 
-Coordinate the public release date with the approved new-customer and existing-customer policies. A preview can be prepared while required notices are pending; publish only on the agreed schedule and avoid implying that protected existing customers have already changed terms.
+   Coordinate the public release date with the approved new-customer and existing-customer policies. A preview can be prepared while required notices are pending; publish only on the agreed schedule and avoid implying that protected existing customers have already changed terms.
+
+   - Next: continue at step 7
 5. **Announce the change to customers** — agent-runnable · ~30 min · hard to undo
 
    *Follows step 3.*
 
    Write each customer notice for that recipient's actual transition group: old and new terms, effective date, required action and support contact. Follow the contract and jurisdiction review for notice or acceptance requirements. Send the commercial owner's agreed messages to the mapped recipients on the required schedule. Track responses and return disputed or unresolved accounts to the migration owner before their billing change.
 
-Check the actual recipient-to-subscription mapping and fill in the sender, exact effective date, required action and monitored support route. Keep missing dates or contacts as explicit draft gaps. A cohort summary is useful internally but is not a recipient-ready notice. Record delivery/notice evidence and any required acceptance before releasing that recipient’s billing change; failed, late or disputed notices hold the affected account.
+   Check the actual recipient-to-subscription mapping and fill in the sender, exact effective date, required action and monitored support route. Keep missing dates or contacts as explicit draft gaps. A cohort summary is useful internally but is not a recipient-ready notice. Record delivery/notice evidence and any required acceptance before releasing that recipient’s billing change; failed, late or disputed notices hold the affected account.
 
    - Vendor options: Loops, Customer.io, Mailchimp
    - Ranked market: [email-marketing](../../open-rankings/email-marketing)
@@ -77,9 +80,9 @@ Check the actual recipient-to-subscription mapping and fill in the sender, exact
 
    Build the exact subscription batch from the migration policy, excluding grandfathered and unresolved accounts. Preview effective dates, billing periods, discounts, credits and immediate charges with the provider's supported tools. Confirm required notices or acceptance and billing authority for that batch. Apply and reconcile each account; inspect partial failures before retrying so a customer is not charged twice or moved outside the policy.
 
-Retain a per-subscription record of the requested change, preview, approval scope, provider request/receipt identifiers and authoritative readback. After a timeout or partial response, reconcile current state before retrying; use the provider’s supported retry controls. Report changed, unchanged, held, failed and unconfirmed accounts separately, and reconcile their counts to the exact batch before declaring completion.
+   Retain a per-subscription record of the requested change, preview, approval scope, provider request/receipt identifiers and authoritative readback. After a timeout or partial response, reconcile current state before retrying; use the provider’s supported retry controls. Report changed, unchanged, held, failed and unconfirmed accounts separately, and reconcile their counts to the exact batch before declaring completion.
 
-Verify lifecycle status and scheduled changes in both the preview and readback. A price update must preserve cancellation, pause and other scheduled intent unless the exact change is separately authorized. Reconcile these states as well as amounts and dates.
+   Verify lifecycle status and scheduled changes in both the preview and readback. A price update must preserve cancellation, pause and other scheduled intent unless the exact change is separately authorized. Reconcile these states as well as amounts and dates.
 
    - Canonical vendor: Stripe Billing
    - Sources: [Change the price of existing subscriptions](https://docs.stripe.com/billing/subscriptions/change-price)
@@ -89,7 +92,7 @@ Verify lifecycle status and scheduled changes in both the preview and readback. 
 
    Compare affected cohorts with the pre-change baseline for recurring revenue, cancellations, downgrades and expansion. Reconcile planned transitions with actual invoices and charges to distinguish implementation errors from customer decisions. Read support complaints alongside the numbers. Report the window, cohort sizes and data gaps, and identify concrete corrections where billing behavior or customer understanding differs from the policy.
 
-Compare the execution ledger with actual invoices over the stated observation window. Do not claim churn or revenue effects before sufficient observations exist. Hand over remaining monitoring with its owner and schedule only when that follow-up is actually established.
+   Compare the execution ledger with actual invoices over the stated observation window. Do not claim churn or revenue effects before sufficient observations exist. Hand over remaining monitoring with its owner and schedule only when that follow-up is actually established.
 
    - Canonical vendor: Stripe
 

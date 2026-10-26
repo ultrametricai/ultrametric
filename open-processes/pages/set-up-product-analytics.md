@@ -36,18 +36,22 @@ PostHog's public REST API (live OpenAPI spec, official MCP server) covers projec
    - Verify: A test event fires and appears in the analytics project's live event stream.
    - Produces: Product analytics workspace
    - Sources: [PostHog product analytics](https://posthog.com/docs/product-analytics) · [PostHog product analytics privacy controls](https://posthog.com/docs/product-analytics/privacy)
+   - Next: continue at step 6
 3. **Define key events** — agent-runnable · ~15 min · human approval required
 
    Define events at the point the behavior happens: a submitted form and a successfully created account answer different questions. For each event, specify its name, trigger, allowed properties and user or account identifier. Decide how retries and duplicate submissions should appear. Walk a test user through the product and compare payloads with the definitions. Keep the dictionary beside the implementation so a later event change can be distinguished from a real change in customer behavior.
 
    - Canonical vendor: PostHog
    - Sources: [PostHog product analytics](https://posthog.com/docs/product-analytics)
+   - Next: continue at step 5
 4. **Create dashboards** — agent-runnable · ~15 min · human approval required
 
    Build each chart around a decision the team will make. Name its population, unit, time window and filters, and distinguish a count of events from a count of users or accounts. Trace at least one chart back to raw events or a known test cohort. Label freshness and exclusions where they affect interpretation, then share with the intended audience under the project's access rules.
 
    - Canonical vendor: PostHog
    - Sources: [PostHog product analytics](https://posthog.com/docs/product-analytics)
+
+   *This path ends here.*
 5. **Set up funnels** — agent-runnable · ~10 min · human approval required
 
    *Follows step 3.*
@@ -56,6 +60,8 @@ PostHog's public REST API (live OpenAPI spec, official MCP server) covers projec
 
    - Canonical vendor: PostHog
    - Sources: [PostHog product analytics](https://posthog.com/docs/product-analytics)
+
+   *This path ends here.*
 6. **Enable session recording** — agent-runnable · ~5 min · human approval required
 
    *Follows step 2.*

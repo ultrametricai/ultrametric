@@ -25,6 +25,8 @@ The authorization and the equity settlement are signature acts with closing wind
 ## Steps
 
 1. **Agree the departure date and terms in writing** — human · ~1 h · hard to undo
+
+   - Next: continue at step 6
 2. **Run the vesting math: shares vested vs unvested at the departure date** — agent-runnable · ~30 min
 
    - Vendor options: Carta
@@ -32,6 +34,8 @@ The authorization and the equity settlement are signature acts with closing wind
 3. **Authorize the departure formally: accept the resignation, end officer and director roles, and approve the equity settlement the founder agreement requires** — human (legally required signature) · ~45 min · irreversible
 4. **Settle the departing equity inside the founder agreement's window (windows lapse; read yours)** — human · ~1 h · irreversible
 5. **Confirm the IP position: the signed IP assignment is on file and the departing founder's work is assigned** — human · ~45 min
+
+   - Next: continue at step 7
 6. Run [Offboard employee](offboard-employee.md)
 
    *Follows step 1.*

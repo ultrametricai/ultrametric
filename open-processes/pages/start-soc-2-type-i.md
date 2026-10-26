@@ -33,21 +33,31 @@ Vanta API supports test monitoring and evidence collection. Policy creation and 
 
    Options:
      - **Default — Create an account with your compliance platform** — manual form/portal · ~15 min · human approval required
+
+       Use this route for a SOC 2 examination of the selected service. Set up the compliance workspace under company ownership, identify who will run the compliance program and verify the features included in the purchased plan. Use the prospective auditor’s scope to choose integrations and evidence work. The software account supports preparation; the separate audit engagement determines what will be examined.
      - **UK - Cyber Essentials first**
 
        When: Selling to UK buyers - the asked-for framework differs
 
        Obtain the UK customer or tender’s exact requirement, including whether it specifies Cyber Essentials or Cyber Essentials Plus. Use the current NCSC materials to scope the assessment and identify gaps in the technical controls. Choose the certification route and identify its required assessment signatory. Follow a separate Cyber Essentials assessment plan; the later SOC 2 examination steps are not its certification procedure.
+
+       - Do it yourself: [NCSC - Cyber Essentials](https://www.ncsc.gov.uk/cyberessentials/overview)
      - **Germany - ISO 27001 first**
 
        When: Selling to German enterprise - the asked-for framework differs
 
        Ask the German customer for its required certification scope and whether it specifically names IT-Grundschutz. Compare that requirement with the company’s information-security management system and prospective certifier’s process. BSI describes an ISO 27001 route based on IT-Grundschutz with its own examination and certification requirements. Map the chosen route to a separate work plan; the following SOC 2 steps do not supply that certification.
+
+       - Do it yourself: [BSI - IT security authority](https://www.bsi.bund.de/)
+       - Sources: [BSI ISO 27001 on IT-Grundschutz](https://www.bsi.bund.de/EN/Themen/Unternehmen-und-Organisationen/Standards-und-Zertifizierung/Zertifizierung-und-Anerkennung/Zertifizierung-von-Managementsystemen/ISO-27001-Basis-IT-Grundschutz/iso-27001-basis-it-grundschutz_node.html)
      - **France - ISO 27001 / SecNumCloud**
 
        When: Selling to French buyers - the asked-for framework differs
 
        Identify the assurance required by the French customer for the particular service. If it specifies SecNumCloud, examine the ANSSI qualification scope and distinguish your offering from an underlying provider’s qualified cloud service. Record ISO 27001 requirements separately if requested. Build the chosen qualification or certification plan; selecting this option does not convert the following SOC 2 steps into a French qualification workflow.
+
+       - Do it yourself: [ANSSI (cyber.gouv.fr)](https://cyber.gouv.fr/)
+       - Sources: [ANSSI SecNumCloud](https://cyber.gouv.fr/secnumcloud)
 2. **Connect integrations** — manual form/portal · ~30 min · human approval required
 
    Connect the cloud accounts, repositories, identity systems and device inventories inside the proposed audit boundary. Check requested permissions and obtain each system owner’s authorization before granting access. Verify that collection covers the intended accounts and environments, including assets missing from the first import. An empty or stale result needs investigation before it can support a control assessment.
@@ -73,11 +83,13 @@ Vanta API supports test monitoring and evidence collection. Policy creation and 
 
    - Canonical vendor: Vanta
    - Sources: [AICPA SOC suite](https://www.aicpa-cima.com/resources/landing/system-and-organization-controls-soc-suite-of-services)
+   - Next: continue at step 7
 6. **Remediate failing tests** — agent-runnable · ~8 h · human approval required
 
    Investigate failed checks in the underlying system. Distinguish actual control gaps from stale inventory, connector permissions and unsuitable test settings. Fix confirmed gaps through the normal change process, rerun the check and attach the resulting evidence to the issue. Record accepted exceptions with their rationale and reviewer, and link later passing results to the original failure and its remediation.
 
    - Sources: [AICPA SOC suite](https://www.aicpa-cima.com/resources/landing/system-and-organization-controls-soc-suite-of-services)
+   - Next: continue at step 8
 7. **Employee security training** — human · ~2 d · async wait
 
    *Follows step 5.*

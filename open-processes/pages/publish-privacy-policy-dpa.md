@@ -30,26 +30,39 @@ Policy generation, site publishing, and DPA signature routing are automatable. C
 
    Options:
      - **Default — Generate privacy policy and terms** — agent-runnable · ~20 min
+
+       Draft from verified collection points, purposes, recipients, retention, user controls and company contact details. Keep commercial terms separate from the privacy notice so each can be reviewed against its own promises. Reuse approved language only where it still describes the product. Mark unknown facts for their system owners and unresolved legal content for the review step.
      - **India - DPDP Act 2023**
 
        When: Privacy policy for users in India
 
        Map the Indian user interactions, collected data, purposes and responsible entity. For the legal review, compare those facts with the DPDP Act, published Rules, corrigendum and enforcement timeline. Separate provisions already in force from later commencement before choosing notice, consent or operational changes. Use that assessment to adapt the Indian notice; a GDPR template does not establish the applicable Indian duties.
+
+       - Do it yourself: [MeitY (DPDP Act 2023)](https://www.meity.gov.in/)
+       - Sources: [MeitY DPDP Rules 2025](https://www.meity.gov.in/documents/act-and-policies/digital-personal-data-protection-rules-2025-gDOxUjMtQWa?pageTitle=Digital-Personal-Data-Protection-Rules-2025)
      - **UK - UK GDPR + ICO fee** — manual form/portal
 
        When: Privacy policy for users in the United Kingdom
 
        Review the company’s UK processing and role when adapting the notice. Use the ICO fee guidance to assess payment requirements and exemptions separately from the notice itself. If payment is due, the authorized company representative registers and approves payment. Keep the assessment and any receipt with the UK privacy records so policy publication is not mistaken for completing the fee obligation.
+
+       - Do it yourself: [ICO - data protection fee](https://ico.org.uk/for-organisations/data-protection-fee/)
      - **Germany - GDPR + BDSG specifics**
 
        When: Privacy policy for users in Germany
 
        Assess the German processing activities against GDPR and BDSG section 38 DPO triggers. Consider processing activities and the staff involved, including triggers that apply independently of headcount. Resolve the appointment decision in the legal review, then align contact details and escalation responsibilities with it. Keep the basis for the decision so changes in processing or staffing can prompt reassessment.
+
+       - Do it yourself: [BfDI - federal data protection authority](https://www.bfdi.bund.de/)
+       - Sources: [BDSG section 38](https://www.gesetze-im-internet.de/bdsg_2018/__38.html)
      - **France - CNIL cookie rules**
 
        When: Privacy policy for users in France
 
        Inventory cookies, SDKs and other trackers, including what loads before a visitor makes a choice. Check their purposes and claimed exemptions against the current CNIL materials. Test acceptance, refusal and withdrawal in the actual service, then make the notice describe that behavior. Keep the tracker list and test evidence together so later analytics changes can be checked against the same consent setup.
+
+       - Do it yourself: [CNIL](https://www.cnil.fr/)
+       - Sources: [CNIL cookies recommendation](https://www.cnil.fr/sites/default/files/2026-01/recommandation_cookies_consolidee.pdf)
 2. **Review with counsel** — human · ~2 h · async wait
 
    Review the drafts with counsel alongside data flows, customer types, target markets and existing contracts. Highlight sensitive data, children’s use, transfers, analytics and any mismatch between the text and product behavior. Resolve both wording changes and operational changes needed to support the promises. Identify who will implement each unresolved change before the reviewed documents are published.

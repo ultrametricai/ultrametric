@@ -34,11 +34,16 @@ The banking APIs expose payments (wires/ACH) — an agent prepares and creates t
 
    Options:
      - **Default — Create the wire/ACH payment in the bank** — agent-runnable · ~2 min · human approval required
+
+       Enter the verified beneficiary and account details for the chosen wire or ACH route. Select the funding account and check the bank’s displayed fee, delivery estimate and total against the obligation. Use a reference the payee can reconcile, then leave the completed bank instruction in its draft or pending-approval state for the authorized release step.
      - **Cross-border payout**
 
        When: The payee is outside the US - multi-currency rails beat a USD wire
 
        Establish the currency and account format the overseas payee can receive. Compare the full quote, exchange rate, intermediary charges and delivery estimate across eligible routes. Select the quote that fits the obligation, noting its expiry and the amount expected at the recipient. Include those details in the payment awaiting bank approval and reconcile any eventual shortfall or return.
+
+       - Canonical vendor: Wise Business
+       - Vendor options: Wise Business, Airwallex
 3. **Approver releases the payment in the banking dashboard** — human · ~2 min · irreversible
 
    The designated bank approver checks beneficiary, amount, currency, funding account, fees and business purpose in the bank’s trusted interface. Resolve changed instructions and duplicate warnings against the source obligation before authorizing release. Follow the bank’s actual result: processing, rejection or additional review requires follow-up before the payment can be treated as settled.

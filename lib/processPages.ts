@@ -26,6 +26,12 @@ const num = (m: Meta, k: string): number | null => (typeof m[k] === 'number' ? (
 
 // Markdown link text: keep record prose verbatim except the two characters that break a link.
 const linkText = (s: string): string => s.replace(/\[/g, '\\[').replace(/\]/g, '\\]')
+
+// Multiline record prose inside a list item: every continuation line needs the item's content
+// indent or the paragraph/table/code-fence escapes the step it belongs to. Blank lines stay
+// blank (a loose item), non-empty lines get the indent.
+const indented = (text: string, indent: string): string =>
+  text.split('\n').map((line, i) => (i === 0 || line === '' ? line : `${indent}${line}`)).join('\n')
 // Markdown table cell: record prose never carries pipes or newlines today; escape defensively.
 const cell = (s: string): string => s.replace(/\|/g, '\\|').replace(/\s*\n\s*/g, ' ')
 
@@ -313,22 +319,40 @@ function followsLine(
   return `Follows ${descriptions.join(' or ')}.`
 }
 
-function optionBlock(option: Option, isDefault: boolean, ctx: PageContext, indent: string): string[] {
+function optionBlock(
+  option: Option,
+  flags: { isDefault: boolean; summaryShown: boolean },
+  ctx: PageContext,
+  indent: string,
+): string[] {
   const lines: string[] = []
   const markers = stepMarkers(option.metadata)
   lines.push(`${indent}- **${option.title}**${markers.length > 0 ? ` — ${markers.join(' · ')}` : ''}`)
   const paragraphs: string[] = []
   if (option.when) paragraphs.push(`When: ${linkLawRules(option.when, ctx)}`)
-  if (!isDefault && option.summary) paragraphs.push(linkLawRules(option.summary, ctx))
+  if (!flags.summaryShown && option.summary) paragraphs.push(linkLawRules(option.summary, ctx))
   const cost = option.metadata.cost as CostMeta | undefined
-  if (cost && !isDefault) paragraphs.push(costLine(cost))
-  for (const p of paragraphs) lines.push('', `${indent}  ${p}`)
+  if (cost && !flags.isDefault) paragraphs.push(costLine(cost))
+  for (const p of paragraphs) lines.push('', `${indent}  ${indented(p, `${indent}  `)}`)
+  // The default option's references are merged into the step's own bullets; the other methods
+  // carry their own action links, sources, and vendors.
+  const refLines = flags.isDefault ? [] : referenceLines(option.references, ctx)
+  if (refLines.length > 0) {
+    lines.push('', ...refLines.map((r) => `${indent}  - ${indented(r, `${indent}    `)}`))
+  }
   if (option.parts.length > 0) {
     lines.push('')
     for (const sub of option.parts) {
       const subMarkers = stepMarkers(sub.metadata)
-      lines.push(`${indent}  - ${sub.title ?? sub.id}${subMarkers.length > 0 ? ` — ${subMarkers.join(' · ')}` : ''}`)
+      lines.push(`${indent}  - **${sub.title ?? sub.id}**${subMarkers.length > 0 ? ` — ${subMarkers.join(' · ')}` : ''}`)
+      const subDetail: string[] = []
+      if (sub.guidance) subDetail.push(`${indent}    ${indented(linkLawRules(sub.guidance, ctx), `${indent}    `)}`)
+      const subRefs = referenceLines(sub.references, ctx)
+      if (subDetail.length > 0) lines.push('', ...subDetail)
+      if (subRefs.length > 0) lines.push('', ...subRefs.map((r) => `${indent}    - ${indented(r, `${indent}      `)}`))
+      if (subDetail.length > 0 || subRefs.length > 0) lines.push('')
     }
+    while (lines[lines.length - 1] === '') lines.pop()
   }
   return lines
 }
@@ -359,8 +383,15 @@ function partBlock(part: Part, position: number, walk: WalkContext, ctx: PageCon
   const detail: string[] = []
   if (follows) detail.push(`*${follows}*`)
   if (part.when) detail.push(`When: ${linkLawRules(part.when, ctx)}`)
-  const body = part.guidance ?? defaultOption?.summary ?? null
+  const defaultSummary = defaultOption?.summary || null
+  const body = part.guidance ?? defaultSummary
   if (body) detail.push(linkLawRules(body, ctx))
+  // The default option's summary is not always the guidance restated; when it differs it is
+  // part of the record's meaning (the recommended way), so it renders too — as a step
+  // paragraph here, or inside the Options list for decisions.
+  const defaultSummaryShown = !defaultSummary || body === defaultSummary
+  const defaultListed = part.kind === 'decision' && part.options.length > 1
+  if (!defaultSummaryShown && !defaultListed) detail.push(linkLawRules(defaultSummary, ctx))
   const bullets: string[] = []
   const verify = meta.verify as VerifyMeta | undefined
   if (verify) bullets.push(verifyLine(verify))
@@ -370,14 +401,21 @@ function partBlock(part: Part, position: number, walk: WalkContext, ctx: PageCon
   if (produces) bullets.push(`Produces: ${ctx.artifacts.get(produces)?.label ?? produces}`)
   bullets.push(...referenceLines([...part.references, ...(defaultOption?.references ?? [])], ctx))
   for (const note of part.notes) bullets.push(linkLawRules(note.text, ctx))
-  // Decision branches and conditional edges: the outgoing links that carry an option or a
-  // predicate, rendered where the fork happens; the target step carries the matching
-  // "Follows" line.
-  for (const link of walk.links.filter((l) => l.from === part.id && (l.option || l.when))) {
-    const condition = link.option
-      ? part.options.find((o) => o.id === link.option)?.title ?? link.option
-      : link.when ?? ''
-    bullets.push(`If "${trimEnd(condition)}": continue at step ${walk.numberOf.get(link.to)}`)
+  // Branches and non-adjacent continuations: conditional edges render as "If …" where the
+  // fork happens, an unconditional edge that skips ahead renders as "Next", and a step with
+  // no outgoing edge before the end of the walk marks its path's end. The target step carries
+  // the matching "Follows" line.
+  const outgoing = walk.links.filter((l) => l.from === part.id)
+  for (const link of outgoing) {
+    const target = walk.numberOf.get(link.to)
+    if (link.option || link.when) {
+      const condition = link.option
+        ? part.options.find((o) => o.id === link.option)?.title ?? link.option
+        : link.when ?? ''
+      bullets.push(`If "${trimEnd(condition)}": continue at step ${target}`)
+    } else if (target !== index + 1) {
+      bullets.push(`Next: continue at step ${target}`)
+    }
   }
   const listed = part.kind === 'decision'
     ? (part.options.length === 1 && defaultOption ? [] : part.options)
@@ -385,14 +423,19 @@ function partBlock(part: Part, position: number, walk: WalkContext, ctx: PageCon
   const optionLines: string[] = []
   if (listed.length > 0) {
     optionLines.push(part.kind === 'decision' ? 'Options:' : 'Other methods:')
-    for (const option of listed) optionLines.push(...optionBlock(option, option.id === 'default', ctx, '  '))
+    for (const option of listed) {
+      const isDefault = option.id === 'default'
+      optionLines.push(...optionBlock(option, { isDefault, summaryShown: isDefault && defaultSummaryShown }, ctx, '  '))
+    }
   }
-  if (detail.length > 0 || bullets.length > 0 || optionLines.length > 0) {
-    for (const d of detail) lines.push('', `   ${d}`)
-    if (bullets.length > 0) lines.push('', ...bullets.map((b) => `   - ${b}`))
+  const terminal = walk.links.length > 0 && outgoing.length === 0 && position < walk.ordered.length - 1
+  if (detail.length > 0 || bullets.length > 0 || optionLines.length > 0 || terminal) {
+    for (const d of detail) lines.push('', `   ${indented(d, '   ')}`)
+    if (bullets.length > 0) lines.push('', ...bullets.map((b) => `   - ${indented(b, '     ')}`))
     if (optionLines.length > 0) {
       lines.push('', ...optionLines.map((l) => (l === '' ? '' : `   ${l}`)))
     }
+    if (terminal) lines.push('', '   *This path ends here.*')
   }
   return lines
 }
@@ -419,13 +462,13 @@ function countrySection(record: { parts: Part[]; metadata: Meta }, ctx: PageCont
     if (note) {
       const prefix = GEO_KIND_LABELS[note.kind] ?? ''
       const link = note.actionUrl ? ` ([${linkText(note.actionLabel ?? hostname(note.actionUrl))}](${note.actionUrl}))` : ''
-      lines.push(`- ${prefix}${linkLawRules(note.summary ?? '', ctx)}${link}`)
+      lines.push(`- ${indented(`${prefix}${linkLawRules(note.summary ?? '', ctx)}${link}`, '  ')}`)
     }
     for (const { step, entry } of steps) {
       const prefix = GEO_KIND_LABELS[entry.kind] ?? ''
       const guidance = entry.guidance ? ` ${linkLawRules(entry.guidance, ctx)}` : ''
       const link = entry.actionUrl ? ` ([${linkText(entry.actionLabel ?? hostname(entry.actionUrl))}](${entry.actionUrl}))` : ''
-      lines.push(`- ${step}: ${prefix}${entry.label ?? ''}${guidance}${link}`)
+      lines.push(`- ${indented(`${step}: ${prefix}${entry.label ?? ''}${guidance}${link}`, '  ')}`)
     }
   }
   return lines
@@ -450,7 +493,9 @@ export function renderProcessPage(source: CatalogProcess, ctx: PageContext): str
   if (trigger) lines.push(`**Trigger:** ${linkLawRules(trigger, ctx)}`, '')
   if (record.summary) lines.push(linkLawRules(record.summary, ctx), '')
   if (record.guidance) lines.push(linkLawRules(record.guidance, ctx), '')
-  for (const note of record.notes) lines.push(`> ${linkLawRules(note.text, ctx)}`, '')
+  for (const note of record.notes) {
+    lines.push(...linkLawRules(note.text, ctx).split('\n').map((l) => (l === '' ? '>' : `> ${l}`)), '')
+  }
 
   const rows: Array<[string, string]> = []
   rows.push(['Kind', taskIds ? 'chain' : record.kind])
@@ -483,7 +528,7 @@ export function renderProcessPage(source: CatalogProcess, ctx: PageContext): str
   if (recordRefLines.length > 0) lines.push(...recordRefLines.map((l) => `- ${l}`), '')
 
   if (record.outcomes.length > 0) {
-    lines.push('## Outcomes', '', ...record.outcomes.map((o) => `- ${linkLawRules(o, ctx)}`), '')
+    lines.push('## Outcomes', '', ...record.outcomes.map((o) => `- ${indented(linkLawRules(o, ctx), '  ')}`), '')
   }
 
   if (taskIds) {

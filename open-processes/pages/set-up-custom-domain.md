@@ -48,12 +48,15 @@ Namecheap and Cloudflare APIs fully support domain/DNS operations. SSL auto-prov
 
    - Canonical vendor: Cloudflare
    - Sources: [Set up a primary DNS zone](https://developers.cloudflare.com/dns/zone-setups/full-setup/setup/) · [Working with SSL certificates](https://vercel.com/docs/domains/working-with-ssl)
+   - Next: continue at step 6
 5. **Add domain to Vercel** — agent-runnable · ~3 min · human approval required
 
    Attach the hostname to the intended hosting project within the domain and hosting owners' authorized scope. On Vercel, use the validation status and DNS values shown for that specific domain. Set the intended canonical hostname and redirects, then open each customer-facing hostname to verify the project and deployment it serves. Check HTTPS separately: adding the domain starts certificate work, but successful DNS validation is still needed.
 
    - Canonical vendor: Vercel
    - Sources: [Working with SSL certificates](https://vercel.com/docs/domains/working-with-ssl)
+
+   *This path ends here.*
 6. **Verify SSL** — agent-runnable · ~2 min
 
    *Follows step 4.*

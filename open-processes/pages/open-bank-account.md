@@ -31,11 +31,16 @@ The application and KYC upload are online forms (no public API); approval is a b
 
    Options:
      - **Default — Choose a bank** — human · ~10 min
+
+       Verify the institution’s eligibility requirements and the legal entity offering the account. Compare payment capabilities, access controls, fees, service limits and applicable deposit protection with the company’s operating needs. Check significant claims against the actual account terms, then select the account to take into onboarding.
      - **UK/EU - multi-currency account**
 
        When: The company is incorporated in the UK or EU - the US neobanks don't onboard it
 
        For a UK or EU company, compare providers supporting its ownership and business profile. Check available currencies and account details, regulatory status, how balances are held, conversion costs and payment permissions. Match those terms to expected collections and spending, identifying restrictions that would affect operations before choosing the multi-currency account.
+
+       - Canonical vendor: Wise Business
+       - Vendor options: Wise Business, Airwallex
 2. **Complete the online application (company details, tax ID, and founders)** — manual form/portal · ~15 min
 
    Complete the bank application from the formation records and company profile, checking name, addresses, applicable tax identifier, ownership and signers. Resolve inconsistencies or eligibility questions with the company officer responsible for the account. That authorized applicant submits the information and attestations and handles any further documents the bank requests.

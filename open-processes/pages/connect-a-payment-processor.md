@@ -30,16 +30,24 @@ Account activation and KYC are processor-hosted forms; the integration, test cha
 
    Options:
      - **Default — Choose a payment processor** — human · ~10 min
+
+       Check that a direct processor supports the company, business model and required payment methods. Compare fees, reserves, settlement currencies, refunds, disputes and accounting reconciliation. Identify the tax, invoicing and customer obligations the company would retain. Use those findings to select the provider and evaluate its contract before opening the live account.
      - **Merchant of record (MoR)**
 
        When: Selling software globally without a tax/entity footprint - the MoR is the seller of record
 
        Read the merchant-of-record contract to establish who is the seller and how invoicing, tax, refunds and disputes are allocated for the intended products and markets. Compare total cost, payout terms and customer experience with direct processing. Resolve exclusions with finance and counsel so the operating team knows which responsibilities the service takes and which remain with the company.
+
+       - Canonical vendor: Paddle
+       - Vendor options: Paddle
      - **Invoice-first (no checkout)** — agent-runnable
 
        When: B2B with a handful of large contracts - invoice and bank transfer before a checkout exists
 
        For a small number of contract customers, design collection around invoices and bank transfers. Establish the seller, required invoice details, billing terms, currencies and verified payment instructions, then decide how receipts and overdue balances will be tracked. Assign billing and customer-query ownership. Identify what change in sales volume or customer needs would make a checkout integration worthwhile.
+
+       - Vendor options: QuickBooks, Xero
+       - Ranked market: [accounting](../../open-rankings/accounting)
 2. **Activate the account (business details, KYC)** — manual form/portal · ~20 min · async wait
 
    Complete the provider’s onboarding from corporate records: legal entity, ownership, authorized representative, activity and payout account. The company representative submits the application and attestations through the verified channel, supplying requested identity evidence securely. Resolve follow-up questions and check the account’s actual live capabilities and restrictions before treating it as activated.

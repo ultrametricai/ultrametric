@@ -37,6 +37,7 @@ Review and appeals run inside Apple's and Google's own consoles on their own jud
    *Follows step 3 (when The rejection or removal is on Apple's App Store).*
 
    - Do it yourself: [Apple: appeal an App Review decision](https://developer.apple.com/contact/app-store/?topic=appeal)
+   - Next: continue at step 6
 5. **Google Play path: follow the published removal/appeal flow in the Play Console help** — manual form/portal · ~30 min
 
    *Follows step 3 (when The rejection or removal is on Google Play).*

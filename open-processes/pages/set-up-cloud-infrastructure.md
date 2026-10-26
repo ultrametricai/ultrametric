@@ -37,28 +37,40 @@ AWS has comprehensive APIs. System can provision via CloudFormation/API, but arc
 
    Options:
      - **Default — Create AWS account + billing** — manual form/portal · ~20 min · human approval required
+
+       Use the company's AWS account structure and authorized billing arrangement. Protect root credentials and recovery, enable MFA, and establish everyday operator access through federation or appropriately scoped roles. Check that the workload account is the intended one before creating resources. An operator should be able to perform the setup without sharing root credentials; the account owner should retain control of recovery and billing notifications.
      - **Google Cloud account**
 
        When: Standardizing on GCP (BigQuery, GKE, Vertex)
 
        Use the company's Google Cloud organization and authorized billing arrangement to create or select the workload project. Confirm its administrator, project identifier and access roles. Make production and test ownership and spending visible in the chosen project structure, then check operator access and billing contacts. This account setup leaves the downstream AWS-specific VPC, RDS and ECS route unresolved.
+
+       - Canonical vendor: Google Cloud
+       - Sources: [Get started with Google Cloud](https://docs.cloud.google.com/docs/get-started.md.txt)
      - **Microsoft Azure account**
 
        When: Microsoft-stack team or enterprise-agreement pricing
 
        Locate the intended Azure tenant, billing agreement and subscription. Confirm its administrator, access roles and company-controlled recovery contact. Use the authorized subscription structure to separate production and test ownership and make spending visible. Verify that operators can enter the correct tenant and subscription and that billing notices reach maintained company contacts. The downstream AWS-specific VPC, RDS and ECS route remains unresolved for Azure.
+
+       - Canonical vendor: Microsoft Azure
+       - Sources: [Create and scale Azure subscriptions](https://learn.microsoft.com/en-us/azure/cloud-adoption-framework/ready/azure-setup-guide/initial-subscriptions)
 3. **Configure VPC and networking** — agent-runnable · ~30 min · human approval required
 
    Draw the permitted paths between the public entry point, application, database and outside services. Choose address ranges that do not overlap networks this deployment must reach. For AWS, configure the VPC routes and security groups within the infrastructure owner's authorized change scope; use the selected platform's network design on other clouds. Test from the application's actual location: required connections should work, and a probe from an unauthorized location should fail. Keep the prior configuration available when changing live connectivity.
 
    - Canonical vendor: AWS
    - Sources: [AWS VPC security best practices](https://docs.aws.amazon.com/vpc/latest/userguide/vpc-security-best-practices.md)
+   - Next: continue at step 5
+   - Next: continue at step 6
 4. **Set up RDS database** — agent-runnable · ~30 min · human approval required
 
    Match the database engine and version to the application's driver, migrations and expected data. For AWS, configure RDS using the chosen capacity, network access, backup and maintenance settings; another cloud needs its own database implementation. Provision within the database owner's access and spending authority. From the application environment, test a connection, a sample migration and a write/read cycle using nonproduction data. Exercise the intended restore procedure before relying on the database for recoverable production storage.
 
    - Canonical vendor: AWS
    - Sources: [Getting started with Amazon RDS](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/CHAP_GettingStarted.html) · [AWS IAM security best practices](https://docs.aws.amazon.com/IAM/latest/UserGuide/best-practices.html)
+
+   *This path ends here.*
 5. **Configure ECS cluster** — agent-runnable · ~30 min · human approval required
 
    *Follows step 3.*
@@ -67,6 +79,7 @@ AWS has comprehensive APIs. System can provision via CloudFormation/API, but arc
 
    - Canonical vendor: AWS
    - Sources: [Getting started with Amazon ECS](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/getting-started.html)
+   - Next: continue at step 7
 6. **Set up IAM roles** — agent-runnable · ~20 min · human approval required
 
    *Follows step 3.*
@@ -75,6 +88,8 @@ AWS has comprehensive APIs. System can provision via CloudFormation/API, but arc
 
    - Canonical vendor: AWS
    - Sources: [AWS IAM security best practices](https://docs.aws.amazon.com/IAM/latest/UserGuide/best-practices.html)
+
+   *This path ends here.*
 7. **Configure monitoring** — agent-runnable · ~20 min · human approval required
 
    *Follows step 5.*

@@ -35,6 +35,8 @@ The data inventory and the export assembly are agent work across your own system
 4. **Assemble the export and draft the response: what you hold, purposes, recipients, retention, sources** — agent-runnable · ~1.5 h
 
    *Follows step 3 (when The request seeks access: a copy of the data and the processing details (a request to know)).*
+
+   - Next: continue at step 6
 5. **Execute the deletion where the request asks for erasure: delete or de-identify across your systems and processors, apply the statutory exceptions (GDPR Art. 17(3), CCPA §1798.105(d)), and record what was deleted and what was retained and why** — agent-runnable · ~1.5 h · irreversible
 
    *Follows step 3 (when The request is, or includes, deletion: a GDPR Art. 17 erasure request or a CCPA request to delete).*

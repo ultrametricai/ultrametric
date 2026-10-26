@@ -36,6 +36,8 @@ Registered agent services have no public signup API — the designation is an on
    - Verify: The agent's name and Delaware address appear on the entity's record in the Division of Corporations entity search. ([icis.corp.delaware.gov](https://icis.corp.delaware.gov/ecorp/entitysearch/namesearch.aspx))
    - Produces: Registered agent
    - Sources: [SBA register your business](https://legacy.sba.gov/business-guide/launch-your-business/register-your-business)
+
+   *This path ends here.*
 3. **Designate the agent in each additional registered state** — manual form/portal · ~10 min · only when operating in MULTI
 
    *Entry step — no prerequisite step.*
@@ -43,6 +45,8 @@ Registered agent services have no public signup API — the designation is an on
    Check the agent requirements and provider coverage in each additional registration state. Use that state’s correct agent details and appointment process, with the authorized filer approving submission. Verify the accepted designation and route notices to the appropriate company contact. A service subscription elsewhere does not establish an appointment in this state.
 
    - Sources: [SBA register your business](https://legacy.sba.gov/business-guide/launch-your-business/register-your-business)
+
+   *This path ends here.*
 4. **Change the Delaware registered agent (Certificate of Change, $50)** — manual form/portal · ~15 min · hard to undo · only when operating in US-DE
 
    *Entry step — no prerequisite step.*
@@ -53,6 +57,8 @@ Registered agent services have no public signup API — the designation is an on
    - Canonical vendor: Delaware Division of Corporations
    - Do it yourself: [DE Division of Corporations forms](https://corp.delaware.gov/corpforms/)
    - Sources: [Delaware registered agents information](https://corp.delaware.gov/agents/)
+
+   *This path ends here.*
 5. **Designate or change the California agent for service of process (Statement of Information)** — manual form/portal · ~15 min · hard to undo · only when operating in US-CA
 
    *Entry step — no prerequisite step.*
@@ -62,6 +68,8 @@ Registered agent services have no public signup API — the designation is an on
    - Canonical vendor: California Secretary of State
    - Do it yourself: [CA SOS — agents for service of process](https://www.sos.ca.gov/business-programs/business-entities/service-process)
    - Sources: [CA SOS — Statement of Information](https://www.sos.ca.gov/business-programs/business-entities/statements)
+
+   *This path ends here.*
 6. **Update the New York registered agent or process address (Certificate of Change, $30)** — manual form/portal · ~15 min · hard to undo · only when operating in US-NY
 
    *Entry step — no prerequisite step.*
@@ -72,6 +80,8 @@ Registered agent services have no public signup API — the designation is an on
    - Canonical vendor: New York Department of State
    - Do it yourself: [NY DOS — existing corporations](https://dos.ny.gov/existing-corporations-and-businesses)
    - Sources: [NY DOS fee schedules](https://dos.ny.gov/fee-schedules)
+
+   *This path ends here.*
 7. **File Texas Form 401 to change the registered agent or office ($15)** — manual form/portal · ~15 min · hard to undo · only when operating in US-TX
 
    *Entry step — no prerequisite step.*
@@ -82,6 +92,8 @@ Registered agent services have no public signup API — the designation is an on
    - Canonical vendor: Texas Secretary of State
    - Do it yourself: [TX SOS business organizations forms (Form 401)](https://www.sos.state.tx.us/corp/forms_boc.shtml)
    - Sources: [TX SOS registered agent FAQs](https://www.sos.state.tx.us/corp/registeredagentfaqs.shtml)
+
+   *This path ends here.*
 8. **Appoint or change the Wyoming registered agent ($5)** — manual form/portal · ~15 min · hard to undo · only when operating in US-WY
 
    *Entry step — no prerequisite step.*
@@ -91,6 +103,8 @@ Registered agent services have no public signup API — the designation is an on
    - Cost: $5 (government fee, as of 2026-10-22, [sos.wyo.gov](https://sos.wyo.gov/Forms/RA/AppointmentofNewRA.pdf)). Appointment of New Registered Agent and Office filing fee, per the form checklist. Conditional step — excluded from the default-flow fee headline by construction.
    - Do it yourself: [WY SOS registered agent forms](https://sos.wyo.gov/Forms/Default.aspx?root=RA)
    - Sources: [WY SOS — maintaining your business](https://sos.wyo.gov/Business/MaintainBusiness.aspx)
+
+   *This path ends here.*
 9. **Change the Florida registered agent ($35)** — manual form/portal · ~15 min · hard to undo · only when operating in US-FL
 
    *Entry step — no prerequisite step.*

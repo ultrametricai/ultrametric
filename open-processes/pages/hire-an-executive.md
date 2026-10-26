@@ -24,12 +24,16 @@ Search, interviews, references, and the board’s comp approval are human end-to
 1. **Define the role scorecard and comp band with the board** — human · ~1.5 h
 
    Define the executive’s business outcomes, decision authority, reporting relationships and required capabilities. Discuss the cash and equity range with the board or delegated decision makers alongside budget and company stage. Set the search owner and negotiation boundaries, including decisions that must return for approval. Use the agreed scorecard to align the search firm, interviewers and eventual offer.
+
+   - Next: continue at step 4
 2. **Engage a retained search firm** — human · ~1 h
 
    Compare search firms on relevant placements, the team doing the work, market coverage, conflicts and candidate relationships. Discuss the target role, expected reporting, exclusivity, fees and replacement terms before selecting a firm. Present the commercial proposal and unresolved engagement terms to the hiring sponsor. Share confidential company or candidate information only through the authorized search arrangement.
 3. **Sign the search engagement letter** — human (legally required signature) · ~5 min · hard to undo
 
    Check the engagement against the agreed search scope, fees, payment triggers, expenses, exclusivity and termination or replacement terms. Resolve disputed provisions with counsel and the hiring sponsor before the authorized signer executes. Give the search owner the agreed reporting expectations and finance the payment obligations, including any milestones that trigger invoices.
+
+   - Next: continue at step 5
 4. **Benchmark executive comp and equity** — agent-runnable · ~30 min
 
    *Follows step 1.*
@@ -37,6 +41,7 @@ Search, interviews, references, and the board’s comp approval are human end-to
    Compare compensation data for similar functions, company stages, geographies and responsibilities. Separate base pay, variable compensation, benefits and equity, identifying whether equity figures mean grant value, ownership percentage or realized value. Check the source period and sample limitations, then model affordability with finance. Present the hiring sponsor a proposed range with its cost, relevant comparisons and source limitations.
 
    - Canonical vendor: Carta
+   - Next: continue at step 6
 5. **Interview loop and references** — human · ~7 d · async wait
 
    *Follows step 3.*

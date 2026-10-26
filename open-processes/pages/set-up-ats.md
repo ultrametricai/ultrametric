@@ -40,12 +40,15 @@ ATS platforms have APIs for job/candidate management. Initial configuration and 
 
    - Canonical vendor: Lever
    - Sources: [EEOC: Recruiting, hiring or promoting employees](https://www.eeoc.gov/employers/small-business/3-im-recruiting-hiring-or-promoting-employees)
+   - Next: continue at step 5
 4. **Set up scorecard templates** — agent-runnable · ~15 min · human approval required
 
    Build the scorecard around observable job competencies, with examples explaining the rating levels. Assign each criterion to an interviewer and leave room for evidence, concerns and unanswered questions. Walk through a sample response with the hiring manager to expose ambiguous or overlapping criteria. Use the supporting examples in the hiring debrief to explain how each rating was reached.
 
    - Canonical vendor: Lever
    - Sources: [EEOC: Recruiting, hiring or promoting employees](https://www.eeoc.gov/employers/small-business/3-im-recruiting-hiring-or-promoting-employees)
+
+   *This path ends here.*
 5. **Connect careers page** — manual form/portal · ~10 min · human approval required
 
    *Follows step 3.*

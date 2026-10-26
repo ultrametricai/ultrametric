@@ -71,26 +71,39 @@ The term sheet, diligence, and approvals are human; the paperwork routing, signa
 
    Options:
      - **Default — SEC EDGAR online forms** — manual form/portal · ~30 min · hard to undo
+
+       For an offering requiring Form D, reconcile the notice to the executed transaction and first-sale date. Check the company’s EDGAR access and the filing individual’s assigned role. The authorized filer submits the reviewed notice and verifies its status, preserving the filed version and receipt. Identify amendments and state notices separately with counsel so the remaining offering obligations are visible.
      - **India - PAS-3 private placement**
 
        When: Closing the priced round in India
 
        For an Indian allotment, establish the applicable return and filing route with company counsel. Reconcile allottees, securities, consideration, resolutions and required valuation documents to bank and capitalization records. The authorized officer and certifying professional review and file the return through the current MCA process, then resolve any resubmission request. Match the final filing status to the transaction records.
+
+       - Do it yourself: [NSWS (MCA private placement filings)](https://www.nsws.gov.in/)
+       - Sources: [India Companies Act section 42](https://www.indiacode.nic.in/show-data?abv=CEN&actid=AC_CEN_22_29_00008_201318_1517807327856&orderno=44&orgactid=undefined&sectionId=1232&sectionno=42&statehandle=123456789%2F1362)
      - **UK - SH01 return of allotment**
 
        When: Closing the priced round in the United Kingdom
 
        Prepare the UK SH01 from the actual allotment date, share numbers and classes, amounts paid and resulting capital. The authorized officer or filing agent submits it through the current Companies House process and checks the acknowledgment. Reconcile the company’s ownership records to the allotment, and identify any accompanying constitutional or control filings required by the round.
+
+       - Do it yourself: [Companies House - return of allotment (SH01)](https://www.gov.uk/government/publications/return-of-allotment-of-shares-sh01)
      - **Germany - notarized Kapitalerhoehung** — human
 
        When: Closing the priced round in Germany
 
        Work with the German notary and counsel on the resolutions, subscription declarations, contribution evidence and registry submission needed for this capital increase. Reconcile the documents with the articles, financing terms and allocations. The responsible signatories execute the package, and the filing owner tracks the register’s response. Record the increase in capitalization at the effective event counsel identifies.
+
+       - Do it yourself: [Handelsregister (capital increase)](https://www.handelsregister.de/)
+       - Sources: [GmbHG section 55](https://www.gesetze-im-internet.de/gmbhg/__55.html)
      - **France - augmentation de capital**
 
        When: Closing the priced round in France
 
        Determine the French capital-increase procedure from the company’s legal form and articles with counsel. Match allocations and contributions to the resolution, amended articles and required publication or filing documents. The authorized representative completes the applicable formalities and follows any correction request through acceptance. Reconcile the final capital and shareholder records with the completed transaction.
+
+       - Do it yourself: [INPI guichet unique (capital increase)](https://procedures.inpi.fr/)
+       - Sources: [Service Public: augmenter le capital social](https://entreprendre.service-public.gouv.fr/vosdroits/F36607)
 11. **Update the cap table and kick off the valuation refresh** — agent-runnable · ~15 min
 
    Update the equity system for the completed financing, converted instruments, issued shares and option-pool changes, reconciling it to the final closing schedule. The authorized equity owner resolves any difference from the legal documents. Give the valuation adviser the financing terms and other material changes to assess a refresh before later grants; the preferred financing price does not itself establish common-stock value.

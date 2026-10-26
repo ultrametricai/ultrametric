@@ -28,6 +28,7 @@ Delaware franchise tax portal has no API. System calculates the tax, pre-fills d
    Confirm the Delaware entity type and year. For a corporation, reconcile authorized and issued shares, par values, gross assets and relevant charter changes to the records. Compare applicable calculation methods using current Division of Corporations instructions, resolving unusual cases with the tax adviser. Preserve the inputs and calculation so the selected amount can be explained and checked against the filing service.
 
    - Sources: [Delaware franchise-tax calculation](https://corp.delaware.gov/frtaxcalc/)
+   - Next: continue at step 3
 2. **Gather officer and director info** — agent-runnable · ~2 min
 
    *Entry step — no prerequisite step.*
@@ -60,6 +61,8 @@ Delaware franchise tax portal has no API. System calculates the tax, pre-fills d
 
    - Canonical vendor: Google Drive
    - Sources: [Delaware annual report and tax](https://corp.delaware.gov/frtax/)
+
+   *This path ends here.*
 6. **Pay the California minimum franchise tax ($800, FTB)** — manual form/portal · ~15 min · hard to undo · only when operating in CA
 
    *Entry step — no prerequisite step.*
@@ -69,6 +72,8 @@ Delaware franchise tax portal has no API. System calculates the tax, pre-fills d
    - Canonical vendor: California Franchise Tax Board
    - Do it yourself: [FTB — C corporations (the $800 minimum franchise tax)](https://www.ftb.ca.gov/file/business/types/corporations/c-corporations.html)
    - Sources: [California FTB corporations](https://www.ftb.ca.gov/file/business/types/corporations/index.html)
+
+   *This path ends here.*
 7. **File the Texas franchise tax report (May 15)** — manual form/portal · ~20 min · hard to undo · only when operating in US-TX
 
    *Entry step — no prerequisite step.*

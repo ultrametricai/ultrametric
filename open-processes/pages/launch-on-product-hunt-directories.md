@@ -38,16 +38,24 @@ Asset prep and analytics are agent work. The submission portals have no launch A
 
    Options:
      - **Default — Submit to Product Hunt** — manual form/portal · ~15 min · hard to undo
+
+       Complete Product Hunt's current submission form with the launch packet, tested product URL, tagline, imagery and maker identity. Confirm the publication or scheduling decision with the launch owner. Check the resulting listing and have a maker answer genuine questions. Share it within Product Hunt's promotion rules; coordinated voting and incentives for upvotes are prohibited.
      - **Show HN launch** — manual form/portal
 
        When: Developer-tool audience - Show HN reaches it better than Product Hunt
 
        Use Show HN when the maker has a substantive project that people can actually try and is available to discuss it. The guidelines exclude landing pages and signup-only material and ask for an accessible demonstration. Have the maker write, approve and manually post their own submission, starting its title with Show HN, and handle the discussion personally under the current HN rules. Save the post link and feedback; soliciting upvotes or comments is prohibited.
+
+       - Vendor options: Hacker News
+       - Sources: [Show HN Guidelines](https://news.ycombinator.com/showhn.html) · [Hacker News Guidelines](https://news.ycombinator.com/newsguidelines.html)
      - **BetaList pre-launch** — manual form/portal
 
        When: Pre-launch - you want waitlist signups before the product is public
 
        Check BetaList's eligibility for the product and its own-domain landing page; its criteria cover upcoming and recently launched startups. Prepare an accurate description, visuals and working signup or access path. Before the authorized purchase, resolve the package price and refund terms against checkout and the applicable terms, including discrepancies in published guidance. Keep the receipt and editorial status separate from evidence that a feature has been published.
+
+       - Vendor options: BetaList
+       - Sources: [Submission Guidelines](https://betalist.com/criteria) · [Support & FAQ](https://betalist.com/support) · [Submission Terms](https://betalist.com/terms/submissions)
 3. **Submit to startup directories** — manual form/portal · ~20 min
 
    Choose directories that serve the intended audience and check their eligibility, terms and charges. Adapt the launch description without changing its claims or destination. Submit to the agreed destinations within the paid-listing budget. Track each review status and published URL, then check live listings for accurate copy and working links so corrections can be requested where needed.

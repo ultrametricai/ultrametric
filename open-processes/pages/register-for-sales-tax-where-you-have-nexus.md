@@ -46,26 +46,39 @@ Tax platforms watch nexus thresholds, calculate at checkout, and file returns ov
 
    Options:
      - **Default — Streamlined Sales Tax registration** — manual form/portal · ~45 min · hard to undo
+
+       Check which approved state registrations the Streamlined Sales Tax service supports. Review the selected states, entity, effective dates and resulting obligations before submitting through the authorized filing route. Track each state’s issued account and connect it to collection and return preparation. Use the appropriate separate registration process for states or taxes outside the service.
      - **India - GST registration**
 
        When: Indirect-tax registration in India
 
        Assess the seller’s establishment, service, customers and transaction flow with the tax adviser to identify the appropriate Indian GST category. Check whether the non-resident online-services route actually applies. Use current official instructions for business and signatory details and the required filing authorization. After registration, establish the corresponding invoicing and return process from that Indian assessment.
+
+       - Do it yourself: [GST portal registration](https://www.gst.gov.in/)
+       - Sources: [GST portal non-resident online services registration](https://tutorial.gst.gov.in/userguide/registration/Non-Resident_Online_Services_Provider_manual.htm)
      - **UK - one VAT registration (MTD)**
 
        When: Indirect-tax registration in the United Kingdom
 
        Assess establishment, taxable supplies, turnover and customer arrangements under current HMRC rules. Determine whether registration is required or elective and the effective date before preparing the application. Submit through the company’s authorized route, then use the issued registration to set up invoices, digital records and returns. Use the UK assessment to set the account’s tax treatment.
+
+       - Do it yourself: [Register for VAT (Making Tax Digital)](https://www.gov.uk/register-for-vat)
      - **Germany - VAT ID + OSS**
 
        When: Indirect-tax registration in Germany
 
        Review establishment, products, customer status and transaction locations for German and EU VAT. Distinguish domestic registration or identification needs from an eligible One Stop Shop scheme and the transactions it covers. Confirm effective dates before authorized filings and configure invoices and returns accordingly. Keep obligations outside the selected scheme visible; OSS does not replace every national registration.
+
+       - Do it yourself: [BZSt - VAT identification number](https://www.bzst.de/)
+       - Sources: [European Commission VAT One Stop Shop](https://vat-one-stop-shop.ec.europa.eu/index_en)
      - **France - TVA + OSS**
 
        When: Indirect-tax registration in France
 
        Assess French and EU VAT using the seller’s establishment, supplies, customer status and places of supply. Identify any appropriate One Stop Shop scheme alongside remaining national obligations. Resolve the registration plan before authorized submissions, then set invoicing, records and returns to that treatment. Separate scheme-covered transactions from those still requiring French or other national handling.
+
+       - Do it yourself: [impots.gouv.fr - espace professionnel (TVA)](https://www.impots.gouv.fr/professionnel)
+       - Sources: [European Commission VAT One Stop Shop](https://vat-one-stop-shop.ec.europa.eu/index_en)
 5. **Enable tax collection on checkout and invoices** — agent-runnable · ~15 min
 
    Configure products, locations, exemptions and effective dates from the reviewed tax treatment. Test invoices, refunds and representative customer types before enabling the approved production changes. Reconcile early collected tax to expectations and confirm required registrations are in place. Decide how later product or customer-status changes reach the people maintaining tax settings.

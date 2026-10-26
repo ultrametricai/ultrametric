@@ -33,11 +33,13 @@ Notion API and MCP support page/database creation. Fully automatable.
    Organize the wiki around questions teammates repeatedly need answered: how to join, find a decision, operate a service, or run a recurring process. Keep durable instructions separate from meeting history and working drafts. Give each main area a maintainer and make the next level of navigation understandable without knowing who wrote a document. Move existing pages into the structure, repairing important links as you go and leaving a visible queue for unsorted material.
 
    - Canonical vendor: Notion
+   - Next: continue at step 4
 3. **Create meeting notes DB** — agent-runnable · ~3 min
 
    Create a meeting-notes collection with the meeting date, purpose, attendees, notes, and links to decisions and actions. Give each action an owner and agreed due date, and link it to the tracker when work continues there. Group recurring meetings and make past sessions searchable by date and topic. Set access according to the discussion's sensitivity, with personnel and board notes restricted. Use the next meeting to check that participants can find previous decisions and open actions.
 
    - Canonical vendor: Notion
+   - Next: continue at step 5
 4. **Create process templates** — agent-runnable · ~5 min
 
    *Follows step 2.*

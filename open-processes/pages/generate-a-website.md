@@ -33,9 +33,9 @@ A vibe-coding agent generates and deploys the site end to end; the founder revie
 
    Build the site brief from its audience, purpose, pages, company copy, brand assets and main visitor actions. Define any required form destinations and data requirements before choosing a generation or design method. Produce an editable preview with verified claims and identify missing decisions. Compare desktop and mobile behavior against the brief, then hand the source and preview to content and functionality review.
 
-If forms are required, use synthetic data and a controlled local destination during development. Keep private credentials out of client code and generated assets. Record the source/version that produced the preview so later review and publication refer to the same candidate.
+   If forms are required, use synthetic data and a controlled local destination during development. Keep private credentials out of client code and generated assets. Record the source/version that produced the preview so later review and publication refer to the same candidate.
 
-Reuse approved company claims, pricing, asset rights and audience language with source dates. Preserve the current site’s required URLs and redirects when replacing it. Add only the pages and interactions needed for the agreed visitor outcome; a static information or contact-link site need not acquire a form or backend.
+   Reuse approved company claims, pricing, asset rights and audience language with source dates. Preserve the current site’s required URLs and redirects when replacing it. Add only the pages and interactions needed for the agreed visitor outcome; a static information or contact-link site need not acquire a form or backend.
 
    - Vendor options: Lovable, v0, Bolt
    - Ranked market: [vibe-coding](../../open-rankings/vibe-coding)
@@ -43,21 +43,25 @@ Reuse approved company claims, pricing, asset rights and audience language with 
 
    Options:
      - **Default — Generate the website with an agent** — agent-runnable · ~8 min · async wait
+
+       Generate a preview from the page brief, assets, visitor actions and technical constraints. Fix observed problems in copy, navigation and small-screen behavior. Keep credentials and unauthorized private data out of prompts. Deliver the editable project and tested preview, flagging required functionality or publishing capabilities still unproven.
      - **Design-tool site**
 
        When: Design-led marketing site - a design tool publishes it directly
 
        Choose a design-led tool whose current publishing and interaction capabilities fit the site brief. Build the layouts and primary visitor journey from the company assets and page content. Verify domain connection, forms and hosting in the selected tool. Hand over the editable design, tested preview and any remaining publishing requirements.
+
+       - Vendor options: Framer, Figma, Canva
 2. **Review the site before it goes live** — human · ~15 min
 
    Review the preview as a visitor: understand the offer, follow navigation, complete the main action and, when a form is required, try a controlled submission. Check claims, pricing, contact details, asset rights, mobile layout and keyboard access. Verify where form and analytics data go. Resolve failures or name the remaining limitation, then identify the exact version and destination the site owner clears for publication.
 
-Follow a short acceptance script covering each required page, navigation, keyboard access, mobile controls and the primary action. For a form, verify the payload and a receipt at the controlled destination; also test invalid input and a failed response so the site cannot report success when delivery failed. For a link-based action, verify its actual destination and relevant navigation states. Keep any unavailable primary-action destination, including contact, signup or purchase, visibly pending. A well-formed link or mail address alone does not establish a working destination or monitored inbox; record the validation actually available. Inspect the served assets for unintended credentials and network destinations. Retain actual test evidence and unresolved checks rather than substituting a build result for visitor behavior.
+   Follow a short acceptance script covering each required page, navigation, keyboard access, mobile controls and the primary action. For a form, verify the payload and a receipt at the controlled destination; also test invalid input and a failed response so the site cannot report success when delivery failed. For a link-based action, verify its actual destination and relevant navigation states. Keep any unavailable primary-action destination, including contact, signup or purchase, visibly pending. A well-formed link or mail address alone does not establish a working destination or monitored inbox; record the validation actually available. Inspect the served assets for unintended credentials and network destinations. Retain actual test evidence and unresolved checks rather than substituting a build result for visitor behavior.
 3. **Publish to the CDN (edge deploy + SSL)** — agent-runnable · ~3 min · async wait
 
    Publish the site owner's cleared version to the agreed host and domain using its supported workflow. Check deployment settings for exposed secrets or unintended data collection before release. On the live site, verify HTTPS, key pages, redirects and a controlled primary action such as a form submission. Keep the release identifier for recovery, and use the agreed rollback path if a failed check makes the release unusable.
 
-Verify the live domain, release identifier and primary action independently after publishing. A preview receipt cannot establish a production form destination. If any release result is uncertain, inspect the current deployment before retrying and preserve the previously working version for the agreed recovery path.
+   Verify the live domain, release identifier and primary action independently after publishing. A preview receipt cannot establish a production form destination. If any release result is uncertain, inspect the current deployment before retrying and preserve the previously working version for the agreed recovery path.
 
    - Verify: The production domain serves the new site over HTTPS with a valid certificate.
    - Produces: Company website

@@ -54,14 +54,14 @@ Stripe/HubSpot APIs provide data. Email automatable. Actual save conversation is
 
    Match the customer's stated problem to a specific remedy, such as onboarding help, a fix or a plan change. Specify its delivery owner, limits, cost and contract effect. Resolve any feature commitment or discount outside the account team's authority before presenting the offer.
 
-Record the approved amount/duration, delivery owner, staffing or product evidence, and the limit of the account team’s authority. Do not add an SLA, feature delivery date, refund or discount merely to make the offer more persuasive. An unsupported remedy stays in the review queue.
+   Record the approved amount/duration, delivery owner, staffing or product evidence, and the limit of the account team’s authority. Do not add an SLA, feature delivery date, refund or discount merely to make the offer more persuasive. An unsupported remedy stays in the review queue.
 
-Verify support capacity before proposing an update cadence or delivery date: name the available owner, coverage and next update they can actually meet. Keep proposed follow-ups separate from accepted commitments. A report of an unresolved problem or an approaching renewal is not itself cancellation intent.
+   Verify support capacity before proposing an update cadence or delivery date: name the available owner, coverage and next update they can actually meet. Keep proposed follow-ups separate from accepted commitments. A report of an unresolved problem or an approaching renewal is not itself cancellation intent.
 4. **Send retention email** — agent-runnable · ~2 min · human approval required
 
    Send the retention message to the confirmed customer contact within the account team's communication authority. Acknowledge their specific concern, describe the agreed remedy and its limits, and give them a clear way to respond. Use verified account facts and commercial terms. Add the sent message and next follow-up to the CRM so another teammate can continue the conversation accurately.
 
-Offer a safe continuity step only when it is appropriate for the reported problem, and label an unverified workaround accordingly. Confirm the next update with its responsible owner before promising it; do not default to daily updates until resolution. Preserve the customer’s choice to cancel without another sales step.
+   Offer a safe continuity step only when it is appropriate for the reported problem, and label an unverified workaround accordingly. Confirm the next update with its responsible owner before promising it; do not default to daily updates until resolution. Preserve the customer’s choice to cancel without another sales step.
 
    - Canonical vendor: Gmail
    - If "The customer wants a call before deciding": continue at step 5
@@ -72,16 +72,16 @@ Offer a safe continuity step only when it is appropriate for the reported proble
 
    Offer call times with a timezone and an agenda based on the customer's concern. Include the people who can resolve it and send the invitation through the account team's agreed process. Record the accepted slot and preparation notes; an offered time remains tentative until the customer agrees.
 
-Make a call conditional on the customer wanting one. Do not require a meeting to carry out an otherwise authorized cancellation, and do not record an offered slot as accepted.
+   Make a call conditional on the customer wanting one. Do not require a meeting to carry out an otherwise authorized cancellation, and do not record an offered slot as accepted.
 6. **Apply discount or cancel** — agent-runnable · ~2 min · human approval required
 
    *Follows step 1 (when The customer has made a firm cancellation choice; confirm identity, terms and authority before applying it) or step 4 (when The customer has chosen the outcome and does not need a call) or step 5.*
 
    Apply the customer's chosen outcome to the correct subscription and effective date. Check a concession's amount, duration and renewal effect, or a cancellation's access consequences and outstanding charges; treat any refund as a separate decision. Preview the exact change where supported and resolve anything outside billing authority. Apply it once, then read back the subscription and invoice state before confirming completion to the customer.
 
-Keep the account/subscription identifiers, customer decision, authorized operation, preview, request identifier and readback together. After an uncertain result, inspect current subscription state before retrying. Check renewal amount after a temporary concession ends and distinguish a cancellation request from its effective state. Rehearsals must use synthetic subscriptions and remain labeled simulated.
+   Keep the account/subscription identifiers, customer decision, authorized operation, preview, request identifier and readback together. After an uncertain result, inspect current subscription state before retrying. Check renewal amount after a temporary concession ends and distinguish a cancellation request from its effective state. Rehearsals must use synthetic subscriptions and remain labeled simulated.
 
-When the customer requests their data, verify supported export formats and scope, including separate attachments, and the access/export deadline. Provide usable instructions or prepare the export within existing authority, identifying incomplete items. Distinguish retention or deletion timing from continued download access. Handle the authorized cancellation without making the export task or a retention conversation a new prerequisite; any requested timing adjustment must fit the customer’s instructions and terms.
+   When the customer requests their data, verify supported export formats and scope, including separate attachments, and the access/export deadline. Provide usable instructions or prepare the export within existing authority, identifying incomplete items. Distinguish retention or deletion timing from continued download access. Handle the authorized cancellation without making the export task or a retention conversation a new prerequisite; any requested timing adjustment must fit the customer’s instructions and terms.
 
    - Canonical vendor: Stripe
    - Sources: [Modify subscriptions](https://docs.stripe.com/billing/subscriptions/change)

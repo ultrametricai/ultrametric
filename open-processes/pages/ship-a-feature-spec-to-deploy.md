@@ -44,16 +44,22 @@ Agents can draft the spec, cut the issue, implement, open the PR, and deploy thr
 
    Options:
      - **Default — Implement with a coding agent** — agent-runnable · ~2 h
+
+       Use a supervised coding session for a bounded change with a clear expected result. Read the relevant code and repository instructions, implement in an isolated branch, and inspect the diff as the approach develops. Run checks that exercise the behavior being changed. Keep publication and production effects within the delegated authority; resolve new product or access decisions when they arise. Bring the reviewer the resulting patch and any behavior still unverified.
      - **Autonomous cloud-agent run**
 
        When: Well-scoped, well-tested task - hand it to an autonomous agent and review the PR
 
        Choose a cloud-agent run when the task has a precise outcome and checks that can evaluate the returned implementation. Supply the necessary repository context and limited access, and define whether the authorized output is a branch or a pull request. Review the returned diff, dependencies and test results against the expected behavior. Resolve missing evidence or invented requirements before integrating it.
+
+       - Vendor options: Claude Code, Codex
      - **IDE pairing session**
 
        When: Exploratory or design-heavy change - pair in the IDE instead of delegating
 
        Pair in the editor when the work needs exploration or frequent design feedback. Follow one behavior through the code, make a small change and try it before expanding the approach. Use the agent to explain unfamiliar paths and compare alternatives, while keeping product choices with the person responsible for them. Before opening review, remove abandoned experiments and unrelated edits, then run the checks for the approach actually kept.
+
+       - Vendor options: Cursor
 4. **Open the pull request** — agent-runnable · ~5 min
 
    Review the diff against the intended base branch and remove accidental files, secrets and unrelated changes. Explain the concrete before/after behavior in the pull request, link the issue and report checks actually run. Add migration or rollout instructions only where the change needs them. Publish within the maintainer's delegated repository scope, then inspect the hosted diff and CI result; select reviewers who can assess the affected area.

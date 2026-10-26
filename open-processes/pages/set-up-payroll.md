@@ -40,40 +40,78 @@ Provider onboarding is a guided online form (needs EIN and bank account); the jo
 
    Options:
      - **Default — Sign up and configure payroll online** — manual form/portal · ~30 min · async wait
+
+       Configure US payroll from verified employer details, relevant tax accounts, pay schedule, funding method and administrator roles. Reconcile employee work locations and pay types with the payroll specialist. Finance authorizes the funding connection, then payroll reviews the first-run preview and outstanding setup issues. Assign responsibility for returns, payments and corrections from the provider’s actual service scope and the employer’s remaining duties.
      - **EOR - employees outside the US**
 
        When: Employees outside the US and no local entities - an employer of record runs compliant local payroll
 
        Use this route after selecting the country-specific employment arrangement and identifying the EOR as legal employer. Reconcile contract terms, payroll inputs, funding dates and benefits duties with the provider. Finance sets up authorized funding while the people team resolves employee onboarding. Check the first pay and exceptions with the EOR, keeping the company’s remaining responsibilities clear.
+
+       - Canonical vendor: Deel
+       - Vendor options: Deel, Rippling, Remote
      - **UK - PAYE + RTI payroll** — manual form/portal
 
        When: Running payroll for UK employees
 
        Set up the applicable HMRC registration and UK payroll software using verified employer references and employee information. Assign responsibility for calculations, FPS reports, payments and corrections, and review pension duties separately. Use the nested steps to complete registration, check configuration and handle the first submission. Keep reporting, employee payment and amounts due to HMRC distinct in the first-pay plan.
 
-       - Register as an employer with HMRC (PAYE) — manual form/portal · ~30 min
-       - Configure a UK-capable payroll provider — manual form/portal · ~30 min
-       - File the first RTI submission on or before payday — agent-runnable · ~15 min
+       - Do it yourself: [Register as an employer (PAYE)](https://www.gov.uk/register-employer)
+       - Sources: [HMRC: Reporting payroll with an FPS](https://www.gov.uk/running-payroll/reporting-to-hmrc)
+
+       - **Register as an employer with HMRC (PAYE)** — manual form/portal · ~30 min
+
+         Gather HMRC’s requested employer details and first-payday plan, checking for an existing registration. The authorized company representative submits the reviewed application. Pass the confirmed PAYE and Accounts Office references securely to payroll when they arrive. If payday comes before the reference, follow HMRC’s documented handling process and keep the outstanding submission with the payroll owner.
+
+         - Do it yourself: [Register as an employer (PAYE)](https://www.gov.uk/register-employer)
+
+       - **Configure a UK-capable payroll provider** — manual form/portal · ~30 min
+
+         Configure the UK payroll software with verified employer references, starter information, pay schedule and agreed pay components. Assign calculation review, report submission and error correction to the appropriate people. Check the reporting setup using the provider’s supported process and review the first payroll preview. Resolve configuration differences before they become an incorrect payment or HMRC report.
+
+         - Vendor options: Deel, Rippling
+         - Sources: [HMRC: Reporting payroll with an FPS](https://www.gov.uk/running-payroll/reporting-to-hmrc)
+
+       - **File the first RTI submission on or before payday** — agent-runnable · ~15 min
+
+         Compare the first Full Payment Submission with the approved payroll: employees, payments, deductions and pay date. The payroll owner authorizes transmission, ordinarily on or before payday under HMRC guidance. Check the acknowledgement and correct any rejection or inaccurate report. Track this separately from paying employees and settling amounts due to HMRC.
+
+         - Vendor options: Deel, Rippling
+         - Sources: [HMRC: Reporting payroll with an FPS](https://www.gov.uk/running-payroll/reporting-to-hmrc)
      - **India - EPF/ESI employer setup** — manual form/portal
 
        When: Running payroll for employees in India
 
        Give the local payroll specialist the entity, establishments, workforce and compensation structure. Determine applicable EPF, ESI, tax and state requirements from current rules, then prepare the required registrations for the employer’s authorized submission. Reconcile issued identifiers and employee setup before the first payroll. Resolve current Labour Code, tax-transition and threshold questions for the actual employer.
+
+       - Vendor options: Deel, Rippling
+       - Do it yourself: [EPFO employer portal](https://unifiedportal-emp.epfindia.gov.in/epfo/)
+       - Sources: [India Ministry of Labour: Labour Codes](https://labour.gov.in/offerings/schemes-and-services/details/labour-codes-gzNzQzMtQWa) · [Income Tax Department: TDS Compliance FAQs](https://www.incometax.gov.in/iec/foportal/help/all-topics/e-filing-services/%20tds%20compliance-faq)
      - **Germany - Betriebsnummer + social insurance** — manual form/portal
 
        When: Running payroll for employees in Germany
 
        Ask the local payroll adviser which employer identifiers, social-insurance and tax setup the workforce needs. Prepare the Betriebsnummer application using verified entity details and required supporting identifiers, then obtain the employer representative’s authorization to submit. Connect the issued number to payroll and reporting responsibilities. Follow up on any remaining registrations before relying on the setup for the first run.
+
+       - Vendor options: Deel, Rippling
+       - Do it yourself: [Betriebsnummern-Service (Bundesagentur fuer Arbeit)](https://www.arbeitsagentur.de/unternehmen/betriebsnummern-service)
+       - Sources: [Federal Employment Agency: Betriebsnummer application](https://web.arbeitsagentur.de/bno-prod/ui/)
      - **France - DPAE + DSN payroll** — manual form/portal
 
        When: Running payroll for employees in France
 
        Have local payroll determine the applicable pre-employment declaration and reporting setup. Prepare the DPAE from verified employee and start details and submit with employer authorization through the confirmed process. Configure the payroll information needed for DSN and assign routine and event-report responsibilities. Resolve rejected or incomplete filings and outstanding setup before treating administrative onboarding as complete.
+
+       - Vendor options: Deel, Rippling
+       - Do it yourself: [Declaration prealable a l'embauche (DPAE)](https://entreprendre.service-public.fr/vosdroits/F23107)
+       - Sources: [Service Public: DPAE via Net-entreprises](https://entreprendre.service-public.gouv.fr/vosdroits/R14530) · [Service Public: Déclaration sociale nominative](https://entreprendre.service-public.gouv.fr/vosdroits/F34059)
 3. **Connect payroll to the books** — agent-runnable · ~3 min
 
    Map payroll categories to the ledger’s wage, employer-cost, deduction, liability and cash accounts, including department allocations where used. Check integration permissions with the account owners, then compare the first export or journal with the payroll preview. Work through rounding, duplicate postings, reversals and corrections with accounting. The mapping is ready when both systems reconcile and the team knows how to handle adjustments.
 
    - Canonical vendor: Gusto
+
+   *This path ends here.*
 4. **Register as a California employer with EDD e-Services** — manual form/portal · ~20 min · hard to undo · only when operating in CA
 
    *Entry step — no prerequisite step.*
@@ -83,11 +121,15 @@ Provider onboarding is a guided online form (needs EIN and bank account); the jo
    - Canonical vendor: California EDD
    - Do it yourself: [EDD e-Services for Business](https://edd.ca.gov/en/payroll_taxes/e-Services_for_Business/)
    - Sources: [California EDD: Enroll in e-Services for Business](https://edd.ca.gov/en/Payroll_Taxes/Enroll_Employer_e-Services_Business)
+
+   *This path ends here.*
 5. **Register for payroll tax in each state where employees work** — manual form/portal · ~30 min · hard to undo · only when operating in MULTI
 
    *Entry step — no prerequisite step.*
 
    Give the payroll tax specialist the employee work and residence locations, employing entities and planned moves. Determine applicable state and local accounts, checking existing registrations before preparing new applications. Obtain authorization for each required filing, then connect issued identifiers to payroll and reporting responsibilities. Reassess when work locations change; reciprocity and other location-specific facts may affect the setup.
+
+   *This path ends here.*
 6. **Register as a New York employer (NYS-100)** — manual form/portal · ~25 min · hard to undo · only when operating in US-NY
 
    *Entry step — no prerequisite step.*
@@ -97,6 +139,8 @@ Provider onboarding is a guided online form (needs EIN and bank account); the jo
    - Canonical vendor: New York Department of Taxation and Finance
    - Do it yourself: [NY DTF — hiring employees (NYS-100 registration)](https://www.tax.ny.gov/bus/doingbus/hire.htm)
    - Sources: [NY DTF — withholding tax](https://www.tax.ny.gov/bus/wt/wtidx.htm)
+
+   *This path ends here.*
 7. **Register for Texas unemployment tax with TWC** — manual form/portal · ~20 min · hard to undo · only when operating in US-TX
 
    *Entry step — no prerequisite step.*
@@ -105,6 +149,8 @@ Provider onboarding is a guided online form (needs EIN and bank account); the jo
 
    - Do it yourself: [TWC — unemployment tax registration](https://www.twc.texas.gov/businesses/unemployment-tax-registration)
    - Sources: [TWC — unemployment tax program](https://www.twc.texas.gov/programs/unemployment-tax)
+
+   *This path ends here.*
 8. **Register as a Washington employer via the business license application** — manual form/portal · ~25 min · hard to undo · only when operating in US-WA
 
    *Entry step — no prerequisite step.*
@@ -113,6 +159,8 @@ Provider onboarding is a guided online form (needs EIN and bank account); the jo
 
    - Do it yourself: [WA DOR — apply for a business license](https://dor.wa.gov/open-business/apply-business-license)
    - Sources: [WA ESD — employer taxes](https://esd.wa.gov/employer-taxes)
+
+   *This path ends here.*
 9. **Register for Florida reemployment tax (DR-1) and file the quarterly RT-6** — manual form/portal · ~20 min · hard to undo · only when operating in US-FL
 
    *Entry step — no prerequisite step.*

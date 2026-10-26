@@ -28,6 +28,7 @@ Data pull from Mercury/QBO/Stripe automatable. Narrative, strategy, and asks nee
    Collect the board period’s statements, cash, budget and prior forecast from finance. Align cut-off dates, entity scope and accounting basis, identifying provisional accounts. Reconcile the key totals and explain outstanding adjustments before figures enter the deck so the founder can decide how to present any material uncertainty.
 
    - Canonical vendor: Mercury
+   - Next: continue at step 4
 2. **Pull revenue metrics** — agent-runnable · ~5 min
 
    *Entry step — no prerequisite step.*
@@ -35,6 +36,7 @@ Data pull from Mercury/QBO/Stripe automatable. Narrative, strategy, and asks nee
    Gather the board’s revenue measures using consistent definitions and periods. Reconcile recognized revenue, bookings, billings and collections to their source records, and account for cancellations, credits and currency changes in recurring metrics. Explain definition changes and large differences so historical comparisons in the deck mean what readers expect.
 
    - Canonical vendor: Stripe
+   - Next: continue at step 4
 3. **Generate P&L from QBO** — agent-runnable · ~3 min
 
    *Entry step — no prerequisite step.*

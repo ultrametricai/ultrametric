@@ -33,11 +33,16 @@ Google Admin API supports user/group management. Initial domain setup and billin
 
    Options:
      - **Default — Google Workspace signup** — manual form/portal · ~15 min · human approval required
+
+       Use this path when Google Workspace is the chosen platform. Check whether the company domain already belongs to a tenant, then use a company-controlled administrator account to start the selected subscription within the agreed budget. Google's setup flow will provide the current domain-verification and mail-activation instructions. Prepare users and destination mailboxes before changing incoming mail routing, and keep the administration link and recovery arrangements available to the company's IT owner.
      - **Microsoft 365 workspace**
 
        When: The team and its buyers live on Outlook/Teams
 
        Use this path for a Microsoft 365 workspace. Match the subscription to the required applications and user licenses, and check for an existing tenant before creating one. Establish company-controlled administration and the agreed billing arrangement. Follow Microsoft's current domain-connection instructions, provision the people who receive company email, and plan migration of existing mail and files. Keep the mail-routing change separate until the destination mailboxes and the people using them are ready.
+
+       - Vendor options: Microsoft 365
+       - Sources: [Microsoft 365 Business Standard setup](https://learn.microsoft.com/en-us/microsoft-365/admin/setup/setup-business-standard?view=o365-worldwide)
 2. **Verify domain ownership** — manual form/portal · ~15 min
 
    Get the verification value from the workspace's current setup flow and identify the administrator of the company's DNS zone. Add the exact requested record through that administrator, preserving unrelated records, then ask the provider to verify it. If verification fails, compare the saved name and value with the provider's instructions and check public DNS resolution. Successful domain verification establishes control of the domain; incoming email still follows its configured mail-routing records.
@@ -49,11 +54,14 @@ Google Admin API supports user/group management. Initial domain setup and billin
 
    - Canonical vendor: Gmail
    - Sources: [Microsoft 365 Business Standard setup](https://learn.microsoft.com/en-us/microsoft-365/admin/setup/setup-business-standard?view=o365-worldwide)
+   - Next: continue at step 5
 4. **Set up shared drives** — agent-runnable · ~5 min · human approval required
 
    Create shared drives or libraries around who owns the documents and who needs access. Separate general team material from finance, personnel, legal, and other restricted records. Check how the selected platform handles shared ownership and departing users, then assign responsible groups and maintainers. Place a few real documents in their intended locations and check access with a reader and an editor. Publish a short filing guide so new documents land in the right place.
 
    - Canonical vendor: Google Drive
+
+   *This path ends here.*
 5. **Configure security settings** — agent-runnable · ~10 min · human approval required
 
    *Follows step 3.*

@@ -44,26 +44,39 @@ Formation services drive the state filing but expose limited APIs. The agent che
 
    Options:
      - **Default — File Articles of Organization and appoint a registered agent** — manual form/portal · ~20 min · human approval required · hard to undo
+
+       File the selected state’s Articles of Organization or equivalent form using the approved name and management structure. Confirm the registered agent’s details and consent, and decide any available effective-date option before the organizer approves submission and fees. Track the application through registry acceptance and retain the issued formation record. Identify follow-up required by that state separately from services included in the formation package.
      - **India - LLP via MCA FiLLiP**
 
        When: Forming the pass-through entity in India
 
        For an Indian LLP, resolve the partners, designated partners, registered office and business activity using the current MCA route. A local formation professional should verify the required documents and signatures before filing. The partners authorize the application and use the registry response to track acceptance or corrections. Plan the LLP agreement and tax setup separately; the Indian form does not inherit US LLC tax or governance treatment.
+
+       - Do it yourself: [NSWS (MCA LLP incorporation)](https://www.nsws.gov.in/)
+       - Sources: [MCA LLP e-filing](https://www.mca.gov.in/content/mca/global/en/mca/llp-e-filling.html)
      - **UK - LLP at Companies House**
 
        When: Forming the pass-through entity in the United Kingdom
 
        Prepare the UK LLP’s members, designated-member responsibilities, registered office, email and proposed LLP agreement. Use the current Companies House registration route, with submission approved by the authorized members. The certificate and registry record establish the registration outcome. Use the official LLP guidance for the subsequent UK accounting and tax work.
+
+       - Do it yourself: [Set up and run an LLP](https://www.gov.uk/guidance/set-up-and-run-a-limited-liability-partnership-llp)
      - **Germany - UG (haftungsbeschraenkt)** — human
 
        When: Forming the low-capital entity in Germany
 
        Give the German adviser or notary the founders’ identities, ownership, intended activity, office and capital proposal. Review the governing document and GmbHG section 5a capital and reserve rules before choosing the UG form. The founders execute the required local documents through the confirmed procedure. Track capital and registry requirements until registration, then use a German setup plan for subsequent work.
+
+       - Do it yourself: [BMWK founders portal (UG/GmbH)](https://www.existenzgruender.de/)
+       - Sources: [GmbHG section 5a](https://www.gesetze-im-internet.de/gmbhg/__5a.html)
      - **France - SARL/EURL via INPI**
 
        When: Forming the pass-through analog in France
 
        Prepare the chosen SARL or EURL’s owners, management, registered office, capitalization and required formation documents. Resolve the package with the formation adviser before the authorized applicant submits through the guichet unique. Respond to correction requests until the registry processes the filing. Use local governing and tax documents afterward; the remaining US LLC steps do not become applicable merely by selecting this option.
+
+       - Do it yourself: [INPI guichet unique (SARL/EURL)](https://procedures.inpi.fr/)
+       - Sources: [Service Public business formalities](https://entreprendre.service-public.gouv.fr/vosdroits/F24023)
 4. **Receive the stamped Certificate of Formation** — human · ~2 d · async wait
 
    Obtain the registry’s accepted formation record and check the legal name, entity number and filing or effective date. Resolve discrepancies with the filer before using those details for banking and tax setup. Save the issued document in the company records. A provider dashboard or payment receipt remains insufficient evidence that the registry accepted the formation.
@@ -91,6 +104,7 @@ Formation services drive the state filing but expose limited APIs. The agent che
    - Canonical vendor: IRS
    - Do it yourself: [IRS EIN application](https://www.irs.gov/businesses/small-businesses-self-employed/get-an-employer-identification-number)
    - Sources: [SBA register your business](https://legacy.sba.gov/business-guide/launch-your-business/register-your-business)
+   - Next: continue at step 9
 8. **Open a business bank account** — manual form/portal · ~15 min · hard to undo
 
    Assemble the formation record, governing agreement, tax registration and signatory information requested by the selected bank. Submit identity documents only through its secure process. The designated applicant approves the account terms and application and completes identity checks. After approval, verify the legal account holder, authorized users and access arrangements. Any initial transfer needs its own payment approval.
@@ -100,6 +114,8 @@ Formation services drive the state filing but expose limited APIs. The agent che
    - Vendor options: Mercury
    - Ranked market: [startup-banking](../../open-rankings/startup-banking)
    - Sources: [SBA register your business](https://legacy.sba.gov/business-guide/launch-your-business/register-your-business)
+
+   *This path ends here.*
 9. **Register for state taxes** — manual form/portal · ~20 min · hard to undo
 
    *Follows step 7.*

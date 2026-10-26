@@ -45,12 +45,16 @@ Touring, negotiation, and the lease signature are human end-to-end; the agent mo
    Compare the signature package with counsel's final version, including exhibits, guarantees, and the capacity in which each person signs. Confirm company signing authority and obtain each guarantor's separate agreement to their personal obligations. Execute through the required local process and obtain the completed counterpart. Give finance and the move owner the effective lease, payment obligations, possession conditions, and important notice dates so the signed terms become the operating plan.
 
    - Produces: Office lease
+   - Next: continue at step 8
+   - Next: continue at step 9
 7. **Wire the security deposit** — agent-runnable · ~10 min · hard to undo
 
    Match the deposit amount, payment condition, and reference to the executed lease. Independently verify the landlord's beneficiary instructions through a trusted contact, especially if bank details have changed. The authorized finance approver must approve the specific transfer before release. Reconcile the bank result with the landlord's acknowledgment and record the deposit in the company's accounts; investigate any shortfall, return, or discrepancy before assuming the payment condition is satisfied.
 
    - Verify: The bank provides the wire's Fed reference number and the landlord confirms receipt of the deposit.
    - Canonical vendor: Mercury
+
+   *This path ends here.*
 8. **Get the landlord a certificate of insurance** — manual form/portal · ~20 min
 
    *Follows step 6.*
@@ -59,6 +63,8 @@ Touring, negotiation, and the lease signature are human end-to-end; the agent mo
 
    - Verify: The landlord accepts the certificate of insurance naming them as additional insured, per the lease's insurance clause.
    - Canonical vendor: Embroker
+
+   *This path ends here.*
 9. **Set up internet, utilities, and access** — manual form/portal · ~1 h
 
    *Follows step 6.*

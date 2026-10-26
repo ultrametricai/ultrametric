@@ -56,26 +56,40 @@ The trademark offices have no usable filing API. System provides guidance, draft
 
    Options:
      - **Default — USPTO trademark application** — manual form/portal · ~30 min · human approval required · hard to undo
+
+       Submit the reviewed US owner, mark, filing basis, goods/services and evidence through the current USPTO filing service. The applicant or authorized representative must approve the declarations, signature and fees. Save the filed copy and serial number and monitor official correspondence. The receipt records submission; the examination and any further requirements continue afterward.
      - **India - CGPDTM e-filing**
 
        When: Filing the mark in India
 
        Use the approved Indian owner, mark representation, goods/services and supporting evidence in the current IP India filing route. Confirm account and signature requirements from the official instructions. The authorized filer approves the application and fee, then retains the acknowledgement and application number. Monitor the Indian matter through IP India correspondence and status tools.
+
+       - Do it yourself: [Intellectual Property India e-filing](https://ipindiaonline.gov.in/)
+       - Sources: [IP India trademark e-filing](https://ipindiaonline.gov.in/trademarkefiling/user/frmloginNew.aspx)
      - **UK - UK IPO filing**
 
        When: Filing the mark in the United Kingdom
 
        Prepare the intended owner, mark and goods/services for the UK IPO route. Review classes, the current fee and any special application choice before the authorized applicant submits. Keep the acknowledgement and monitor official communications. Record the territory sought and establish a separate filing strategy for requested protection outside the UK.
+
+       - Do it yourself: [UK IPO - register a trade mark](https://www.gov.uk/how-to-register-a-trade-mark)
+       - Sources: [UK IPO trademark application](https://www.gov.uk/how-to-register-a-trade-mark/start-your-application)
      - **Germany - DPMA (or EUIPO) filing**
 
        When: Filing the mark in Germany
 
        Confirm whether the strategy calls for a German national mark or a separate EU route. For the national application, use DPMA’s current service with the reviewed owner, representation and goods/services. The authorized filer approves declarations and fees before submission. Track the DPMA reference number; any EU application remains a separate matter with its own advice and filing evidence.
+
+       - Do it yourself: [DPMA trade mark filing](https://www.dpma.de/marken/index.html)
+       - Sources: [DPMA trademark application](https://www.dpma.de/english/trade_marks/application/index.html)
      - **France - INPI (or EUIPO) filing**
 
        When: Filing the mark in France
 
        Prepare the applicant, mark and goods/services in INPI’s trademark portal. Review the complete summary and coverage before the authorized filer validates and pays, then retain the acknowledgement and national filing number. Monitor INPI correspondence for the matter. Broader EU protection needs a separate strategy; this trademark filing is also distinct from INPI company-formation formalities.
+
+       - Do it yourself: [INPI - depot de marque](https://www.inpi.fr/comprendre-la-propriete-intellectuelle/la-marque)
+       - Sources: [INPI trademark filing](https://www.inpi.fr/realiser-demarches/propriete-intellectuelle/deposer-sa-marque)
 6. **Track application status** — agent-runnable · ~2 min · async wait
 
    Monitor the official status and correspondence for the application number. Record response deadlines and send substantive office actions or oppositions to counsel promptly. Keep the office’s contact information current and preserve responses and filing receipts. When registration or another disposition occurs, hand any maintenance or further action to its responsible person.

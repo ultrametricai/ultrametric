@@ -47,16 +47,24 @@ Snowflake/Segment APIs support configuration. Data modeling and dashboard design
 
    Options:
      - **Default — Set up the data warehouse** — manual form/portal · ~1 h · human approval required
+
+       For Snowflake, choose the account, region, database/schema and warehouse compute settings for the trial workload. Review size, suspension/resumption and query timeouts within the data owner's authorized resource scope. Test loading and reporting with separate limited identities, then inspect query behavior and measured usage. Adjust compute from the observed workload; keep warehouse compute cost visible alongside storage and other costs when comparing the trial with the proposed budget.
      - **BigQuery (GCP-standardized)**
 
        When: GCP-standardized stack - the warehouse is serverless BigQuery
 
        Use the intended Google Cloud project and dataset location, with ingestion and reader permissions limited to their jobs. Check which BigQuery pricing model the company selected before choosing cost controls. For on-demand queries, inspect estimated bytes processed and set suitable limits before running an expensive trial. Test a small load and a representative report under the data owner's authorized scope. Limit ingestion to authorized data locations.
+
+       - Canonical vendor: BigQuery
+       - Sources: [Estimate and control BigQuery costs](https://docs.cloud.google.com/bigquery/docs/best-practices-costs) · [Get started with Google Cloud](https://docs.cloud.google.com/docs/get-started.md.txt)
      - **MotherDuck (small data)**
 
        When: Seed-stage data volumes - a DuckDB-based warehouse over an enterprise platform
 
        Trial MotherDuck with the data volume, queries and client connections the team expects to use. Check its current region, organization access and billing arrangement, then load a representative subset within the data owner's authorized scope. Test a report, a changed source record and an export that another tool can read. Compare measured cost and operating effort with the alternatives using the same workload.
+
+       - Canonical vendor: MotherDuck
+       - Sources: [MotherDuck organizations](https://motherduck.com/docs/key-tasks/managing-organizations/)
 4. **Draft the warehouse data models** — agent-runnable · ~4 h · human approval required
 
    Define what one row represents before joining tables: an account, event, invoice or line item can produce very different totals. Map keys and fields to their sources, and specify how updates, duplicates, late arrivals, missing values and timezones are handled. Build a small sample and trace representative rows through each transformation. Label unsettled definitions for measures such as revenue or active customers and show how each proposed definition changes the result.

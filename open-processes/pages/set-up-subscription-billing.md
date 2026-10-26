@@ -30,16 +30,26 @@ Stripe API fully supports product, pricing, subscription, and portal management.
 
    Options:
      - **Default — Create products** — agent-runnable · ~10 min · human approval required
+
+       Use the payment processor's billing catalog if its documented subscription model supports the required units and intervals. In its test environment, map each internal offering to a product and recurring prices. Save the identifiers used by checkout and access control, and compare the displayed descriptions and charges with the commercial plan before connecting the catalog to live purchases.
      - **Dedicated billing platform**
 
        When: Complex plans/entitlements independent of the PSP - a dedicated billing layer over the processor
 
        Compare a separate billing platform against the required pricing, subscription changes, entitlements and financial exports. Identify which system owns customer, subscription and payment state, and how conflicting records will be reconciled. Demonstrate the required changes with sample subscriptions. Use those results, integration responsibilities and current commercial terms to decide whether the extra platform is justified.
+
+       - Canonical vendor: Chargebee
+       - Vendor options: Chargebee, Recurly
+       - Ranked market: [billing-subscriptions](../../open-rankings/billing-subscriptions)
      - **Merchant of record (MoR)**
 
        When: Global self-serve SaaS without a tax footprint - the MoR sells as the seller of record
 
        Read the proposed merchant-of-record agreement for the product, seller entity and customer markets. Map who contracts with customers and handles payments, taxes, refunds, disputes and support, including exclusions and payout terms. Finance and qualified advisers should resolve the seller's remaining obligations before the provider commitment. Test checkout, receipts, cancellation and application access.
+
+       - Canonical vendor: Paddle
+       - Vendor options: Paddle
+       - Sources: [Paddle 101](https://www.paddle.com/paddle-101)
 2. **Configure pricing plans** — agent-runnable · ~10 min · human approval required
 
    Build a pricing matrix with currency, amount, interval, charging unit, included usage, trial conditions and discounts. Work through representative quantities and plan changes to expose ambiguous totals or renewal terms. Configure the matrix in a draft or test catalog and compare checkout and invoice previews against it. Resolve any mismatch in the commercial terms before making the prices available to customers.
@@ -47,12 +57,14 @@ Stripe API fully supports product, pricing, subscription, and portal management.
    - Produces: Subscription billing
    - Canonical vendor: Stripe
    - Sources: [Manage products and prices](https://docs.stripe.com/products-prices/manage-prices)
+   - Next: continue at step 4
 3. **Set up customer portal** — agent-runnable · ~10 min · human approval required
 
    Choose which actions customers can perform in the billing portal: view invoices, update payment details, change plans or cancel. Match their effective dates and access consequences to the billing policy. Test each enabled action as representative customers, including account isolation and the resulting invoices and access. Provide a support route for unsupported actions, then publish the tested entry point within the agreed release scope.
 
    - Canonical vendor: Stripe
    - Sources: [Configure the customer portal](https://docs.stripe.com/customer-management/configure-portal)
+   - Next: continue at step 5
 4. **Configure webhooks** — agent-runnable · ~5 min
 
    *Follows step 2.*

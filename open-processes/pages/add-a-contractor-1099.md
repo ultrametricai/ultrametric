@@ -37,26 +37,40 @@ Payroll APIs expose contractor onboarding — an agent can add the contractor; t
 
    Options:
      - **Default — Contractor completes their own W-9 and bank details** — human · ~10 min · async wait
+
+       For a payee whose reviewed status calls for US-person documentation, request the current W-9 and payment details through secure onboarding. The contractor supplies and certifies their own tax information; finance resolves identity mismatches, incomplete fields and withholding questions. Send a foreign-person or classification mismatch to the tax reviewer for the appropriate documentation route.
      - **India - PAN + TDS on fees**
 
        When: Engaging a contractor in India
 
        Have the tax adviser assess the payee, services, residency, invoice and payment or credit dates. Collect the required PAN and other documentation securely, then give finance the applicable withholding, reporting and payment instructions. Use the rules governing the actual transaction period, including the tax-law transition where relevant. Resolve GST treatment through its separate applicability review.
+
+       - Do it yourself: [Income Tax e-filing (TDS on fees)](https://www.incometax.gov.in/iec/foportal/)
+       - Sources: [Income Tax Department: TDS Compliance FAQs](https://www.incometax.gov.in/iec/foportal/help/all-topics/e-filing-services/%20tds%20compliance-faq)
      - **UK - IR35 status check (CEST)** — manual form/portal
 
        When: Engaging a contractor in the United Kingdom
 
        Gather the contract, intermediary details and actual working practices for the UK tax-status review, including control of the work and payment terms. The responsible reviewer determines whether the off-payroll rules apply and may use CEST with accurate inputs. Keep its answers and result with the assessment, and resolve an uncertain outcome before configuring payment or issuing a required determination.
+
+       - Do it yourself: [HMRC - check employment status (CEST)](https://www.gov.uk/guidance/check-employment-status-for-tax)
+       - Sources: [HMRC: Check employment status for tax](https://www.gov.uk/guidance/check-employment-status-for-tax?ref=numble)
      - **Germany - Scheinselbstaendigkeit check**
 
        When: Engaging a contractor in Germany
 
        Document the services, supervision, integration into the business and relevant agreements for local classification advice. Assess whether a formal DRV Clearingstelle determination is appropriate and authorize any application and disclosures separately. Give payroll or finance the resulting treatment before setting up contractor payment. One client alone does not determine employment status; the working relationship needs assessment.
+
+       - Do it yourself: [Deutsche Rentenversicherung (status determination)](https://www.deutsche-rentenversicherung.de/)
+       - Sources: [DRV: Status determination procedure](https://www.deutsche-rentenversicherung.de/DRV/DE/Rente/Arbeitnehmer-und-Selbststaendige/03_Selbststaendige/statusfeststellungsverfahren?nn=6a097dd8ca84ce5471c19ad2)
      - **France - URSSAF vigilance attestation** — manual form/portal
 
        When: Engaging a contractor in France
 
        Check with finance or legal whether the vigilance-document obligation applies to this contract and supplier. Where required, obtain the current attestation and verify authenticity through the official channel. Assign responsibility for required renewals during the engagement and resolve missing or inconsistent evidence. Treat this as supplier compliance documentation, not a decision that the person is correctly classified as a contractor.
+
+       - Do it yourself: [URSSAF - attestation de vigilance](https://www.urssaf.fr/accueil/attestation-vigilance.html)
+       - Sources: [Service Public: Attestation de vigilance](https://entreprendre.service-public.gouv.fr/vosdroits/F31422)
 3. **Verify the contractor is payable (W-9 on file, payment method set)** — agent-runnable · ~2 min
 
    Reconcile the payee profile with the contract, accepted tax documents and verified payment destination. Resolve any finance hold and make sure the service owner and invoice approver are assigned. Give the contractor the correct invoice instructions once setup is cleared. Readiness permits the payment workflow to begin; each invoice or transfer still follows the company’s normal approval process.

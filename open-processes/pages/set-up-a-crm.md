@@ -29,11 +29,13 @@ HubSpot has a comprehensive API. Full pipeline, property, and template managemen
    - Canonical vendor: HubSpot
    - Vendor options: HubSpot, Attio, Salesforce
    - Ranked market: [crm](../../open-rankings/crm)
+   - Next: continue at step 3
 2. **Configure deal pipeline** — agent-runnable · ~10 min · human approval required
 
    Define evidence for entering and leaving each deal stage, including won, lost and stalled outcomes. Agree definitions and update ownership with the sales team. Configure the stages, move a sample deal through them and check the resulting reports. Keep the definitions available where teammates manage deals.
 
    - Canonical vendor: HubSpot
+   - Next: continue at step 4
 3. **Set up custom properties** — agent-runnable · ~10 min
 
    *Follows step 1.*
@@ -41,6 +43,7 @@ HubSpot has a comprehensive API. Full pipeline, property, and template managemen
    Compare the sales process's information needs with existing CRM properties before creating fields. Define each new field's object, meaning, type, allowed values, source and owner, avoiding unnecessary sensitive data. Try the mapping on sample records and imports. Add the agreed properties and keep a field dictionary that distinguishes missing, unknown and inapplicable values for later integrations.
 
    - Canonical vendor: HubSpot
+   - Next: continue at step 6
 4. **Create email templates** — agent-runnable · ~15 min · human approval required
 
    *Follows step 2.*
@@ -54,6 +57,8 @@ HubSpot has a comprehensive API. Full pipeline, property, and template managemen
 
    - Canonical vendor: HubSpot
    - Sources: [Connect your personal email](https://knowledge.hubspot.com/connected-email/connect-your-inbox-to-hubspot)
+
+   *This path ends here.*
 6. **Import existing contacts** — agent-runnable · ~10 min · human approval required
 
    *Follows step 3.*

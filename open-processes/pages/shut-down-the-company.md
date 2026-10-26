@@ -51,26 +51,39 @@ The agent drafts the consents, runs the final payroll, cancels vendors, and prep
 
    Options:
      - **Default — Delaware dissolution forms** — manual form/portal · ~30 min · irreversible
+
+       Select the appropriate Delaware dissolution certificate and confirm the corporate approvals supporting it. Reconcile annual-report and franchise-tax requirements for the corporation ending its existence. The authorized officer approves the certificate, timing and payments before submission. Keep the accepted filing and continue the separate work on claims, taxes, distributions and records.
      - **India - STK-2 strike-off or IBC liquidation**
 
        When: Winding up in India
 
        Review the Indian company’s activity, liabilities, assets and filing status with a local professional to determine the available closure route. Assess strike-off or formal liquidation against current requirements before choosing either. Establish the necessary approvals, creditor treatment and tax work, then carry out authorized filings through the local process. The subsequent US forms do not constitute an Indian closure procedure.
+
+       - Do it yourself: [IBBI (voluntary liquidation) / MCA strike-off](https://ibbi.gov.in/)
+       - Sources: [IBBI current liquidation regulations](https://ibbi.gov.in/legal-framework/updated?title=liquidation)
      - **UK - DS01 voluntary strike-off**
 
        When: Winding up in the United Kingdom
 
        Check voluntary strike-off eligibility against the company’s trading, creditor, asset and insolvency position. Resolve required communications and remaining assets and obligations before the authorized directors approve applying. Follow Companies House notices through the actual outcome. If the company is ineligible, assess the appropriate alternative closure route.
+
+       - Do it yourself: [Strike off a company (DS01)](https://www.gov.uk/strike-off-your-company-from-companies-register)
      - **Germany - liquidation + Sperrjahr** — human
 
        When: Winding up in Germany
 
        Confirm the German dissolution decision, liquidators, registry filings and creditor process with local counsel. Assess assets and liabilities and the distribution restrictions in GmbHG section 73 before authorizing payouts. Track liquidation separately from final register removal, keeping the required corporate and registry evidence. Use the local sequence and applicable German tax filings for subsequent closure work.
+
+       - Do it yourself: [Handelsregister (Liquidation & Sperrjahr)](https://www.handelsregister.de/)
+       - Sources: [GmbHG section 73](https://www.gesetze-im-internet.de/gmbhg/__73.html)
      - **France - dissolution then radiation**
 
        When: Winding up in France
 
        Assess whether voluntary dissolution fits the French company’s financial and ownership facts. Follow the appropriate dissolution decision, liquidator’s work, closure accounts and radiation process, with associated tax and social filings identified separately. Obtain the required approvals for submissions and distributions and retain decisions and registry evidence. The local closure sequence governs follow-up, including which tax forms apply.
+
+       - Do it yourself: [INPI guichet unique (dissolution-liquidation)](https://procedures.inpi.fr/)
+       - Sources: [Service Public voluntary dissolution](https://entreprendre.service-public.gouv.fr/vosdroits/F23744)
 6. **Wait for the dissolution to be accepted** — human · ~7 d · async wait
 
    Follow the registry’s acceptance or correction requests and verify the effective dissolution date against the filing. Resolve discrepancies with the filer or counsel and save the accepted record. Continue the applicable tax, creditor and records work under the closure plan. Registry acceptance is one milestone within winding up; it does not establish that remaining obligations are finished.

@@ -35,21 +35,30 @@ Carta integration is planned. Cap table setup requires manual data entry or docu
 
    Options:
      - **Default — Enter founding shares** — manual form/portal · ~15 min
+
+       Enter founding issuances from the final corporate records, matching holders, classes, quantities, consideration, issue dates and vesting or repurchase terms. Reconcile totals to the capitalization authorized and actually issued. Link entries to their documents and resolve unexplained balances before using the table for fundraising or grants.
      - **India - dematerialised shares** — manual form/portal
 
        When: Recording founding shares in India
 
        Have the Indian company secretary establish whether dematerialisation rules apply to the company and securities. Assemble holder identities, classes, quantities and allotment evidence for the required depository or registrar process. The responsible company officer authorizes any instructions affecting holdings. Reconcile the resulting identifiers and balances to the company’s records, keeping unresolved physical or electronic positions visible.
+
+       - Do it yourself: [CDSL (dematerialisation)](https://www.cdslindia.com/)
      - **UK - register of members + PSC**
 
        When: Recording founding shares in the United Kingdom
 
        Reconcile UK founding holdings to the register of members and executed allotments, including member identities, classes, quantities and amounts paid. Assess PSC reporting separately from the relevant rights and confirmed control information. The authorized officer updates registers and submits required Companies House information, keeping the software cap table aligned with the underlying legal records.
+
+       - Do it yourself: [PSC register guidance](https://www.gov.uk/guidance/people-with-significant-control-pscs)
+       - Sources: [Companies Act 2006 section 113](https://www.legislation.gov.uk/ukpga/2006/46/section/113?view=plain) · [Companies House PSC guidance](https://www.gov.uk/government/publications/people-with-significant-control-summary-guidance/summary-guidance-for-companies-register-of-people-with-significant-control-pscs)
      - **Germany - Gesellschafterliste** — human
 
        When: Recording founding shares in Germany
 
        Compare the German GmbH’s founding ownership with formation documents and the filed shareholder list, checking identities, numbered interests, nominal amounts and participation details. Determine who must update the list under the transaction: section 40 gives duties to managing directors and, in relevant cases, an involved notary. Reconcile the working cap table to the resulting filed record.
+
+       - Do it yourself: [s.40 GmbHG - Gesellschafterliste](https://www.gesetze-im-internet.de/gmbhg/__40.html)
 3. **Record investments/SAFEs** — manual form/portal · ~20 min
 
    Record investments from executed agreements and funding evidence, including investor, amount, instrument version, conversion terms and side-letter rights. Keep outstanding convertibles separate from issued equity and identify modeled conversion scenarios as projections. The authorized equity administrator reconciles totals to finance’s receipts and resolves differences between the records and controlling documents.

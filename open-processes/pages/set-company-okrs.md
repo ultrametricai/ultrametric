@@ -24,11 +24,15 @@ Linear/Notion APIs support project and page creation. OKR definition and alignme
 1. **Define company-level objectives** — human · ~2 h · human approval required
 
    Use the strategy, current performance, and business constraints to identify the outcomes leadership wants to change during the planning period. Draft objectives and measurable key results with baselines, targets, and accountable owners. Check that each measure can be obtained and that proposed commitments fit the team's capacity. Resolve conflicting priorities with the company decision-maker, leaving a clear account of what the company is pursuing and what it is choosing to defer.
+
+   - Next: continue at step 3
 2. **Create OKR tracking in Notion** — agent-runnable · ~20 min · human approval required
 
    Create the OKR register in the selected workspace, using Notion when that is the team's home. Give each key result an owner, baseline, target, current value, measurement source, and review cadence. Keep progress data separate from commentary about risks or confidence. Enter the agreed plan and make it easy to see missing updates, then show owners how to update their result and flag a proposed target change without overwriting its history.
 
    - Canonical vendor: Notion
+
+   *This path ends here.*
 3. **Teams define team OKRs** — human · ~4 h · human approval required
 
    *Follows step 1.*

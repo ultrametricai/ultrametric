@@ -35,11 +35,16 @@ Registrar, payment, and DNS APIs cover the whole purchase — quote, register, a
 
    Options:
      - **Default — Register and pay at your registrar** — agent-runnable · ~3 min · async wait · human approval required
+
+       Use the selected registrar's current checkout. Check the exact spelling, company registrant, term, final charge, renewal preference and extension restrictions against the authorized purchase. Resolve any checkout difference that changes that decision. After payment, complete required contact verification and confirm the domain is in the intended account, with the receipt and renewal details available to its owner.
      - **Cloudflare Registrar (at cost)**
 
        When: DNS already runs on Cloudflare - at-cost registration, no markup
 
        Cloudflare Registrar requires Cloudflare nameservers; a requirement to use another DNS provider rules out this option. Check the selected domain's availability and live registration and renewal quote. Complete the authorized purchase and required contact verification, saving the receipt and renewal settings. Confirm the domain appears as registered in the intended account.
+
+       - Canonical vendor: Cloudflare Registrar
+       - Sources: [Register a new domain](https://developers.cloudflare.com/registrar/get-started/register-domain/)
 2. **Provision DNS/SSL** — agent-runnable · ~5 min · async wait
 
    Inspect the existing DNS zone, then use the website host's current instructions to identify the required records. Apply the domain administrator's agreed changes without disturbing email or other services. Verify hostname resolution, the live HTTPS certificate and the chosen root-to-www redirect. Report the observed results and any verification still pending.

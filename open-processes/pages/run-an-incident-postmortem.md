@@ -33,9 +33,9 @@ Timeline assembly, doc drafting, action filing, and the status-page post are API
 
    Build the incident timeline from alerts, deployments, logs, responder notes and support reports using one timezone. Include when users were affected, when the team noticed, what changed during mitigation and how recovery was established. Link disputed timestamps to their evidence and keep estimates visibly uncertain. Ask participants to correct gaps before analysis; keep customer identifiers and credentials out of the shared timeline.
 
-Retain event identifiers, original timestamps/timezones and any demonstrated clock correction. Reconcile the impact start and recovery with user-facing evidence rather than a single green infrastructure metric. Show the covered population and missing observations; do not manufacture a precise affected-user count.
+   Retain event identifiers, original timestamps/timezones and any demonstrated clock correction. Reconcile the impact start and recovery with user-facing evidence rather than a single green infrastructure metric. Show the covered population and missing observations; do not manufacture a precise affected-user count.
 
-Identify evidence that may expire before review. Preserve the necessary logs, metrics and configuration through authorized access with their query/window and source dates, applying the sharing and redaction rules. Record unavailable evidence and retention limits; an expiring dashboard link alone may not support later review.
+   Identify evidence that may expire before review. Preserve the necessary logs, metrics and configuration through authorized access with their query/window and source dates, applying the sharing and redaction rules. Record unavailable evidence and retention limits; an expiring dashboard link alone may not support later review.
 
    - Canonical vendor: incident.io
    - Vendor options: incident.io, PagerDuty
@@ -46,13 +46,13 @@ Identify evidence that may expire before review. Preserve the necessary logs, me
 
    Explain the incident using the timeline: user impact, detection, decisions, contributing conditions and recovery. Describe each decision in the context of the information responders had at the time. Separate a reproduced cause from a plausible hypothesis. For each proposed improvement, explain which observed failure it addresses, such as late detection or a recovery command that failed. List unresolved causal questions for the review.
 
-For each causal statement, identify the supporting observation or reproduction and the competing explanations still open. A nearby deployment is correlation until the evidence supports a causal link. Check duration and detection-delay calculations against the normalized timeline.
+   For each causal statement, identify the supporting observation or reproduction and the competing explanations still open. A nearby deployment is correlation until the evidence supports a causal link. Check duration and detection-delay calculations against the normalized timeline.
 
-Tie every impact calculation to its denominator, time window and source. Distinguish failed attempts, distinct users, eventual success and revenue loss; one does not establish the others. Prioritize the few corrective actions that address evidenced failures and include what new observation would confirm or reject an unresolved hypothesis.
+   Tie every impact calculation to its denominator, time window and source. Distinguish failed attempts, distinct users, eventual success and revenue loss; one does not establish the others. Prioritize the few corrective actions that address evidenced failures and include what new observation would confirm or reject an unresolved hypothesis.
 
-Establish whether metric rows are interval counts, cumulative counters or samples, and whether their windows overlap, before aggregating them. Keep calculations limited to the observed coverage; sparse samples alone cannot establish a continuous alert condition or exact impact interval.
+   Establish whether metric rows are interval counts, cumulative counters or samples, and whether their windows overlap, before aggregating them. Keep calculations limited to the observed coverage; sparse samples alone cannot establish a continuous alert condition or exact impact interval.
 
-Establish each measured interval’s boundaries before inferring an intervention’s immediate effect. A later row timestamp can include observations from before the change; preserve this uncertainty in both the detailed analysis and summaries.
+   Establish each measured interval’s boundaries before inferring an intervention’s immediate effect. A later row timestamp can include observations from before the change; preserve this uncertainty in both the detailed analysis and summaries.
 
    - Canonical vendor: Notion
    - Sources: [Google SRE postmortem culture](https://sre.google/sre-book/postmortem-culture/)
@@ -60,17 +60,20 @@ Establish each measured interval’s boundaries before inferring an intervention
 
    Use the review to resolve disputed timeline entries, test causal explanations and decide which improvements merit work. Bring the responders and owners needed for those questions, with the draft available beforehand. Record disagreements that remain and the actions people actually accept. Review sensitive passages before wider circulation, then update the incident account and its prioritized follow-ups.
 
-An asynchronous review is sufficient when the necessary participants can resolve the questions and accept follow-ups in the record. Reuse the company’s incident severity, communication policy and service ownership; ask for a meeting when unresolved disagreement or impact warrants it. Keep the review-ready draft usable even when participants are unavailable.
+   An asynchronous review is sufficient when the necessary participants can resolve the questions and accept follow-ups in the record. Reuse the company’s incident severity, communication policy and service ownership; ask for a meeting when unresolved disagreement or impact warrants it. Keep the review-ready draft usable even when participants are unavailable.
 
    - Sources: [Google SRE postmortem culture](https://sre.google/sre-book/postmortem-culture/)
+   - Next: continue at step 5
 4. **File follow-up actions in the tracker** — agent-runnable · ~10 min
 
    Turn each accepted improvement into a ticket tied to the failure it addresses. Replace vague work such as “improve alerts” with an observable result, such as a controlled failure reaching the on-call responder with the relevant diagnostic link. Use the agreed owner and priority, distinguishing proposed dates from commitments. Link tickets to the incident and keep deferred actions visible with their reason.
 
-Keep proposed and accepted owners/dates separate, along with the evidence of acceptance. Attach an acceptance test that would detect or prevent the observed failure; use a controlled synthetic replay where feasible. Retain results for tests actually executed; otherwise keep the acceptance test proposed with its owner and unresolved prerequisites. Filing the follow-up backlog does not require implementing every corrective action. A local ticket draft is not a created tracker issue or an implemented fix.
+   Keep proposed and accepted owners/dates separate, along with the evidence of acceptance. Attach an acceptance test that would detect or prevent the observed failure; use a controlled synthetic replay where feasible. Retain results for tests actually executed; otherwise keep the acceptance test proposed with its owner and unresolved prerequisites. Filing the follow-up backlog does not require implementing every corrective action. A local ticket draft is not a created tracker issue or an implemented fix.
 
    - Canonical vendor: Linear
    - Sources: [Google SRE postmortem culture](https://sre.google/sre-book/postmortem-culture/)
+
+   *This path ends here.*
 5. **Publish the status-page write-up and customer comms** — agent-runnable · ~15 min
 
    *Follows step 3.*

@@ -29,12 +29,17 @@ Sentry has a full API for project/alert configuration. SDK integration is code-l
    - Vendor options: Sentry
    - Ranked market: [error-tracking](../../open-rankings/error-tracking)
    - Sources: [Sentry sensitive data scrubbing](https://docs.sentry.io/platforms/javascript/data-management/sensitive-data/) · [Set up Sentry releases](https://docs.sentry.io/product/releases/setup/)
+   - Next: continue at step 3
+   - Next: continue at step 4
+   - Next: continue at step 5
 2. **Configure alert rules** — agent-runnable · ~5 min · human approval required
 
    Choose a failure worth interrupting someone for, such as a broken checkout or errors affecting several users. Set an initial threshold against observed normal behavior and decide how repeated events and recovery are handled. Activate notifications within the service owner's authorized recipient scope. Send a labeled test event: the alert should identify the environment, lead to the issue and make the next diagnostic step clear. Adjust noisy rules after seeing actual traffic.
 
    - Canonical vendor: Sentry
    - Sources: [Google SRE implementing SLOs](https://sre.google/workbook/implementing-slos/) · [PagerDuty escalation policies and schedules](https://docs.pagerduty.com/incident-management/schedules/escalation-policies-and-schedules)
+
+   *This path ends here.*
 3. **Connect team chat notifications** — agent-runnable · ~5 min · human approval required
 
    *Follows step 1.*
@@ -43,6 +48,8 @@ Sentry has a full API for project/alert configuration. SDK integration is code-l
 
    - Canonical vendor: Sentry
    - Sources: [Sentry sensitive data scrubbing](https://docs.sentry.io/platforms/javascript/data-management/sensitive-data/) · [PagerDuty escalation policies and schedules](https://docs.pagerduty.com/incident-management/schedules/escalation-policies-and-schedules)
+
+   *This path ends here.*
 4. **Set up release tracking** — agent-runnable · ~5 min
 
    *Follows step 1.*
@@ -51,6 +58,8 @@ Sentry has a full API for project/alert configuration. SDK integration is code-l
 
    - Canonical vendor: Sentry
    - Sources: [Set up Sentry releases](https://docs.sentry.io/product/releases/setup/)
+
+   *This path ends here.*
 5. **Install SDK in codebase** — agent-runnable · ~10 min · human approval required
 
    *Follows step 1.*

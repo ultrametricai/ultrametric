@@ -27,15 +27,19 @@ Data export and the checkout re-point are real API work while access lasts; the 
 1. **Read the termination notice: the stated reason, the final processing date, and the reserve/payout-hold terms your services agreement sets** — human · ~30 min
 
    - Do it yourself: [Stripe Services Agreement (termination & reserves)](https://stripe.com/legal/ssa)
+   - Next: continue at step 3
+   - Next: continue at step 4
 2. **Export everything while API access lasts: charges, customers, subscription state, dispute history, payout records** — agent-runnable · ~1 h
 
    - Canonical vendor: Stripe
    - Do it yourself: [Stripe: reports & data exports](https://docs.stripe.com/stripe-reports)
+   - Next: continue at step 5
 3. **File the appeal through the processor's own review channel, with evidence: business model, fulfillment proof, dispute history** — human · ~1 h
 
    *Follows step 1.*
 
    - Do it yourself: [Stripe support (account reviews)](https://support.stripe.com/)
+   - Next: continue at step 8
 4. **Choose the backup processor and start its underwriting now — onboarding/KYC runs in days, not hours** — human · ~1 h
 
    *Follows step 1.*

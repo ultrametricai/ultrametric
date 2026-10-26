@@ -33,9 +33,9 @@ List building, sequencing, and scheduling run through CRM APIs behind a human se
 
    Define target companies and contacts by the offer's relevant problem, role, location and exclusions. Build the list from authorized sources, keeping the source of each contact and removing duplicates, customers or suppressions as appropriate. Resolve outreach eligibility for the intended markets before transfer to a sending tool. Hold uncertain contact details or eligibility for review.
 
-Keep stable recipient/account identifiers, evidence dates and an inclusion or exclusion reason for every input row. Reconcile eligible, duplicate, suppressed and held records to the source list. A contact with unresolved identity or eligibility must not enter an activation batch.
+   Keep stable recipient/account identifiers, evidence dates and an inclusion or exclusion reason for every input row. Reconcile eligible, duplicate, suppressed and held records to the source list. A contact with unresolved identity or eligibility must not enter an activation batch.
 
-Reconcile prior conversations and delivery attempts before enrollment. Route an existing reply to its appropriate response or next step instead of restarting a cold sequence. Preserve opt-outs and declines, and hold uncertain prior sends until delivery state is resolved. Reusing the same contact in a new campaign must not erase those states.
+   Reconcile prior conversations and delivery attempts before enrollment. Route an existing reply to its appropriate response or next step instead of restarting a cold sequence. Preserve opt-outs and declines, and hold uncertain prior sends until delivery state is resolved. Reusing the same contact in a new campaign must not erase those states.
 
    - Canonical vendor: HubSpot
    - Vendor options: HubSpot, Attio, Apollo
@@ -51,7 +51,7 @@ Reconcile prior conversations and delivery attempts before enrollment. Route an 
 
    Ground the sequence in a verified reason the offer may help its target group. Make the sender and next step clear, and have each follow-up add useful information. Include the audience's reviewed preference or opt-out handling. Hand exact messages, intended recipients and proposed cadence to launch setup, flagging unresolved claims or contact assumptions.
 
-Include the verified sender name/company and reply route, plus a proposed interval and timezone for each touch. Use a simple progression: relevant observed problem and offer, a new useful detail, then a concrete next step or close. Reuse approved positioning and proof; flag missing evidence instead of inventing revenue loss, testimonials or customer results. If identity or cadence is unknown, deliver labeled drafts and list the exact decisions needed for activation.
+   Include the verified sender name/company and reply route, plus a proposed interval and timezone for each touch. Use a simple progression: relevant observed problem and offer, a new useful detail, then a concrete next step or close. Reuse approved positioning and proof; flag missing evidence instead of inventing revenue loss, testimonials or customer results. If identity or cadence is unknown, deliver labeled drafts and list the exact decisions needed for activation.
 
    - Canonical vendor: HubSpot
    - Sources: [CAN-SPAM Act: A Compliance Guide for Business](https://www.ftc.gov/business-guidance/resources/can-spam-act-compliance-guide-business)
@@ -59,9 +59,9 @@ Include the verified sender name/company and reply route, plus a proposed interv
 
    Load the messages and eligible audience into a draft sequence. Check the authorized sender, personalization, sending window, stop conditions and handling of replies, bounces and opt-outs. Run an internal test through the messages and CRM updates. Activate only the sales owner's agreed recipient set and cadence, with a named person able to pause unexpected sends.
 
-Save a draft identifier or export, the exact approved audience/copy/cadence and the test results. Before any activation, replay synthetic success and failure events through a no-send route, including personalization failure and a last-minute suppression. Draft creation, activation and each send are distinct effects; pausing cannot undo delivered messages.
+   Save a draft identifier or export, the exact approved audience/copy/cadence and the test results. Before any activation, replay synthetic success and failure events through a no-send route, including personalization failure and a last-minute suppression. Draft creation, activation and each send are distinct effects; pausing cannot undo delivered messages.
 
-Size the initial batch and cadence to the team’s actual response and meeting capacity. Record who handles replies; avoid assuming a conversion rate to turn available meeting slots into a promised acquisition result.
+   Size the initial batch and cadence to the team’s actual response and meeting capacity. Record who handles replies; avoid assuming a conversion rate to turn available meeting slots into a promised acquisition result.
 
    - Canonical vendor: HubSpot
    - Vendor options: HubSpot, Attio
@@ -76,7 +76,7 @@ Size the initial batch and cadence to the team’s actual response and meeting c
 
    Handle existing conversations in context within the account team’s agreed authority. For authorized sequences, monitor delivery, replies, bounces and preference changes. Enforce its stop rules, record automated replies separately and route substantive responses to the account owner. Investigate sender or template failures before continuing affected sends. Update CRM dispositions and resolve any proposed audience or copy change outside the agreed campaign scope.
 
-Maintain an event/disposition ledger keyed to recipient and provider event identifiers. Check duplicate and out-of-order events, and re-check suppressions and substantive replies before queued follow-ups. After an uncertain send result, inspect the provider state before retrying so a contact does not receive duplicates. Keep simulated events and actual deliveries distinguishable.
+   Maintain an event/disposition ledger keyed to recipient and provider event identifiers. Check duplicate and out-of-order events, and re-check suppressions and substantive replies before queued follow-ups. After an uncertain send result, inspect the provider state before retrying so a contact does not receive duplicates. Keep simulated events and actual deliveries distinguishable.
 
    - Canonical vendor: HubSpot
    - Sources: [CAN-SPAM Act: A Compliance Guide for Business](https://www.ftc.gov/business-guidance/resources/can-spam-act-compliance-guide-business)
@@ -89,7 +89,7 @@ Maintain an event/disposition ledger keyed to recipient and provider event ident
 
    Reply with an agenda tied to the prospect's interest, available times and a timezone. Confirm participants and the meeting method, send the invitation through the account team's agreed process, and record the accepted slot. Pause overlapping sequence follow-ups.
 
-Only propose a meeting for a substantive response that warrants one. Preserve explicit declines and opt-outs as stopped outcomes; a positive reply or offered time does not establish an accepted meeting.
+   Only propose a meeting for a substantive response that warrants one. Preserve explicit declines and opt-outs as stopped outcomes; a positive reply or offered time does not establish an accepted meeting.
 
    - Canonical vendor: Calendly
    - If "The prospect accepts and attends the qualification conversation": continue at step 6
