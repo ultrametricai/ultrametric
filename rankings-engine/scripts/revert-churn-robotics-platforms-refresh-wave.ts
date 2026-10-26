@@ -2,21 +2,30 @@
 // robotics-platforms refresh (PR #474), per the re-judge stability policy
 // (docs/ACCURACY.md "Human review points" §1) and the committed precedents
 // revert-churn-api-quality-sweep-wave.ts / revert-churn-equity-eqvista-wave.ts: a re-roll
-// citing no new evidence converges back to the committed verdicts, so flips that cite none
-// of the evidence that actually changed are sampling churn and revert to the pre-roll
-// baseline.
+// that does not rest on evidence that actually changed converges back to the committed
+// verdicts; such flips are sampling churn and revert to the pre-roll baseline.
 //
-// Scope: every robotics-platforms product the refresh re-judged. Baseline is the commit
-// the refresh branched from (BASELINE_REF below). The packs grew; the refresh also
-// dropped one re-collected viam community row.
-// Changed ids per product are computed mechanically as the pack diff: ids present in the
-// branch's evidence file and absent from the baseline's. Rule, per cell: if
-// (verdict, quality) changed vs baseline AND the new verdict cites none of that product's
-// new evidence ids, restore the baseline verdict and patch the judge cache in place (same
-// hash, reverted verdict object) so a future judge run does not resurrect the churn. Flips
-// citing new evidence stand. A revert is skipped (and reported) when the baseline verdict
-// cites an id no longer in the pack — restoring it would dangle a citation; such a flip
-// rests on the removal, which is itself an evidence change.
+// Scope: every robotics-platforms product the refresh re-judged. Baseline is the merge-base the
+// refresh branched from; the refresh state is the branch head the bot pushed. This refresh
+// changed evidence three ways: it ADDED rows, it DROPPED one viam community row, and —
+// because collect-community rewrites the comm-N sequence — it REPLACED the excerpt under
+// several community ids (nvidia-isaac, ros2, viam) while keeping the ids. An
+// id-only pack diff therefore undercounts changed evidence (review finding on the first
+// settle pass), so changed ids are computed as: ids added, ids removed, and ids whose
+// excerpt text differs between the two refs.
+//
+// Rule, per cell where the refresh changed (verdict, quality) vs baseline:
+//   - the flip STANDS (refresh verdict kept) when the refresh verdict cites a changed id,
+//     OR the baseline verdict cites a changed-or-removed id (restoring it would attach its
+//     rationale and credit to evidence that no longer says what it cited);
+//   - otherwise the flip is re-roll churn: the baseline verdict is restored in
+//     verdicts.json and the judge cache is patched in place (same hash, reverted verdict
+//     object) so a future judge run does not resurrect the churn.
+// Cells in KEEP were individually re-rolled through the live judge after review and keep
+// the engine's fresh verdict regardless of this rule.
+//
+// The script is idempotent from the two refs: it can re-run on a branch that already
+// carries an earlier settle, un-reverting cells the earlier id-only pass over-reverted.
 //
 // Usage: pnpm exec tsx rankings-engine/scripts/revert-churn-robotics-platforms-refresh-wave.ts [--write]
 
@@ -37,8 +46,13 @@ type VerdictRow = {
   evidenceIds: string[]
 }
 
+type EvidenceItem = { id: string; excerpt?: string }
+
 const CAT = 'robotics-platforms'
 const BASELINE_REF = '9c82f764b9fa' // merge-base of the refresh branch with main (pre-roll state)
+const REFRESH_REF = '5fa31d3865' // the refresh head the bot pushed (post-roll state)
+// Cells re-rolled through the live judge after review; their fresh verdicts stand as produced.
+const KEEP = new Set(['nvidia-isaac:agentic-nl-commands', 'viam:sim-to-real'])
 
 function gitShowJson<T>(ref: string, file: string): T | null {
   try {
@@ -49,59 +63,59 @@ function gitShowJson<T>(ref: string, file: string): T | null {
   }
 }
 
-function readCurrent(): VerdictRow[] {
-  return JSON.parse(fs.readFileSync(path.join(ROOT, 'open-rankings', CAT, 'verdicts.json'), 'utf8'))
-}
-
-function packIdsFor(productId: string): { newIds: Set<string>; currentIds: Set<string> } {
-  const baseItems = gitShowJson<{ id: string }[]>(BASELINE_REF, `open-rankings/${CAT}/evidence/${productId}.json`) ?? []
-  const baseIds = new Set(baseItems.map((i) => i.id))
-  const curFile = path.join(ROOT, 'open-rankings', CAT, 'evidence', `${productId}.json`)
-  const curItems: { id: string }[] = fs.existsSync(curFile) ? JSON.parse(fs.readFileSync(curFile, 'utf8')) : []
-  const currentIds = new Set(curItems.map((i) => i.id))
-  return { newIds: new Set([...currentIds].filter((id) => !baseIds.has(id))), currentIds }
+// Ids whose evidence actually changed between the refs: added, removed, or same-id excerpt
+// replaced (the collect-community rewrite case).
+function changedIdsFor(productId: string): Set<string> {
+  const file = `open-rankings/${CAT}/evidence/${productId}.json`
+  const base = new Map((gitShowJson<EvidenceItem[]>(BASELINE_REF, file) ?? []).map((i) => [i.id, i.excerpt ?? '']))
+  const fresh = new Map((gitShowJson<EvidenceItem[]>(REFRESH_REF, file) ?? []).map((i) => [i.id, i.excerpt ?? '']))
+  const changed = new Set<string>()
+  for (const [id, excerpt] of fresh) if (!base.has(id) || base.get(id) !== excerpt) changed.add(id)
+  for (const id of base.keys()) if (!fresh.has(id)) changed.add(id)
+  return changed
 }
 
 function main(): void {
   const baselineRows = gitShowJson<VerdictRow[]>(BASELINE_REF, `open-rankings/${CAT}/verdicts.json`)
-  if (!baselineRows) throw new Error(`no baseline verdicts at ${BASELINE_REF}`)
+  const refreshRows = gitShowJson<VerdictRow[]>(REFRESH_REF, `open-rankings/${CAT}/verdicts.json`)
+  if (!baselineRows || !refreshRows) throw new Error(`missing verdicts at ${BASELINE_REF} or ${REFRESH_REF}`)
   const baseline = new Map(baselineRows.map((r) => [`${r.productId}:${r.storyId}`, r]))
-  const current = readCurrent()
-  const packByProduct = new Map<string, { newIds: Set<string>; currentIds: Set<string> }>()
+  const refresh = new Map(refreshRows.map((r) => [`${r.productId}:${r.storyId}`, r]))
+  const current: VerdictRow[] = JSON.parse(fs.readFileSync(path.join(ROOT, 'open-rankings', CAT, 'verdicts.json'), 'utf8'))
+  const changedByProduct = new Map<string, Set<string>>()
   let reverted = 0
   let stood = 0
 
   for (let i = 0; i < current.length; i++) {
-    const row = current[i]
-    const base = baseline.get(`${row.productId}:${row.storyId}`)
-    if (!base) continue
-    if (base.verdict === row.verdict && base.quality === row.quality) continue
-    if (!packByProduct.has(row.productId)) packByProduct.set(row.productId, packIdsFor(row.productId))
-    const { newIds, currentIds } = packByProduct.get(row.productId)!
-    if (row.evidenceIds.some((id) => newIds.has(id))) {
-      stood++
-      continue // the flip rests on evidence that actually changed: stands
+    const key = `${current[i].productId}:${current[i].storyId}`
+    if (KEEP.has(key)) continue
+    const base = baseline.get(key)
+    const roll = refresh.get(key)
+    if (!base || !roll) continue
+    if (base.verdict === roll.verdict && base.quality === roll.quality) continue
+    const pid = current[i].productId
+    if (!changedByProduct.has(pid)) changedByProduct.set(pid, changedIdsFor(pid))
+    const changed = changedByProduct.get(pid)!
+    const flipRestsOnChange = roll.evidenceIds.some((id) => changed.has(id)) || base.evidenceIds.some((id) => changed.has(id))
+    const target = flipRestsOnChange ? roll : base
+    if (flipRestsOnChange) stood++
+    else {
+      reverted++
+      console.log(`${CAT}/${key}  ${roll.verdict}(q${roll.quality}) -> baseline ${base.verdict}(q${base.quality})`)
     }
-    if (base.evidenceIds.some((id) => !currentIds.has(id))) {
-      stood++
-      console.log(`${CAT}/${row.productId}:${row.storyId}  SKIP revert: baseline cites removed evidence`)
-      continue
-    }
-    console.log(`${CAT}/${row.productId}:${row.storyId}  ${row.verdict}(q${row.quality}) -> baseline ${base.verdict}(q${base.quality})`)
-    reverted++
-    if (WRITE) {
-      current[i] = { ...base }
-      const cacheFile = path.join(ROOT, 'rankings-engine', 'cache', 'judge', CAT, row.productId, `${row.storyId}.json`)
+    if (WRITE && (current[i].verdict !== target.verdict || current[i].quality !== target.quality || current[i].rationale !== target.rationale)) {
+      current[i] = { ...target }
+      const cacheFile = path.join(ROOT, 'rankings-engine', 'cache', 'judge', CAT, pid, `${current[i].storyId}.json`)
       const cache = JSON.parse(fs.readFileSync(cacheFile, 'utf8')) as { hash: string; keyVersion: string; verdict: VerdictRow }
-      cache.verdict = { ...base }
+      cache.verdict = { ...target }
       fs.writeFileSync(cacheFile, `${JSON.stringify(cache, null, 2)}\n`)
     }
   }
 
-  if (WRITE && reverted) {
+  if (WRITE) {
     fs.writeFileSync(path.join(ROOT, 'open-rankings', CAT, 'verdicts.json'), `${JSON.stringify(current, null, 2)}\n`)
   }
-  console.log(`${CAT}: ${reverted} cell(s) ${WRITE ? 'reverted' : 'would revert'}, ${stood} flip(s) stand on new evidence (baseline ${BASELINE_REF})`)
+  console.log(`${CAT}: ${reverted} churn cell(s) ${WRITE ? 'settled to baseline' : 'would settle to baseline'}, ${stood} flip(s) stand on changed evidence (baseline ${BASELINE_REF}, refresh ${REFRESH_REF})`)
   console.log(WRITE ? 'Applied.' : 'Dry run only — pass --write to apply.')
 }
 

@@ -1734,16 +1734,11 @@
   {
     "productId": "nvidia-isaac",
     "storyId": "nl-to-robot-task",
-    "verdict": "partial",
-    "quality": 3,
-    "confidence": "low",
-    "rationale": "Isaac GR00T is described as a generalist humanoid foundation model that can generalize across common tasks and perform multi-step tasks combining general skills. This is adjacent to task planning and execution, but no evidence says tasks can be expressed in natural language. A community report also notes GR00T demos look very slow. missing for 10: explicit natural-language task input, documented language-to-plan-to-execution workflow, hands-on corroboration of execution quality",
-    "evidenceIds": [
-      "nvidia-isaac-docs-19",
-      "nvidia-isaac-docs-22",
-      "nvidia-isaac-docs-11",
-      "nvidia-isaac-comm-1"
-    ]
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Nothing in the evidence shows that a user can state a robot task in natural language and have Isaac plan and execute it. GR00T is described as generalizing across manipulation tasks and multi-step tasks, but no natural-language task input is documented. The 'AI agent skill' is an adjacent developer tool for upgrading ROS 2 nodes, not robot task planning, so neither earns credit.",
+    "evidenceIds": []
   },
   {
     "productId": "nvidia-isaac",
@@ -2288,17 +2283,11 @@
   {
     "productId": "ros2",
     "storyId": "ci-sim-testing",
-    "verdict": "partial",
-    "quality": 3,
-    "confidence": "low",
-    "rationale": "The evidence shows only building blocks that a CI test setup could use: Gazebo simulation integration, a launch system for bringing up multiple nodes, and rosbag record/play with a Python API for replaying data. Nothing in the pack documents an actual testing framework, CI integration, or simulation-based regression testing workflow. Missing for 10: a documented test framework (e.g. launch-based integration tests), CI/headless execution guidance, an explicit simulation regression-testing workflow, and independent or hands-on corroboration.",
-    "evidenceIds": [
-      "ros2-docs-16",
-      "ros2-docs-6",
-      "ros2-docs-17",
-      "ros2-docs-39",
-      "ros2-comm-9"
-    ]
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "The evidence pack documents a Gazebo simulation tutorial, a launch system and rosbag recording, but these are adjacent features. Nothing describes a testing framework, automated test execution, CI integration, or simulation-based regression testing. With no direct evidence for this applicable axis, the verdict is none.",
+    "evidenceIds": []
   },
   {
     "productId": "ros2",
@@ -2432,16 +2421,11 @@
   {
     "productId": "ros2",
     "storyId": "ml-training-loop",
-    "verdict": "partial",
-    "quality": 3,
+    "verdict": "none",
+    "quality": 0,
     "confidence": "medium",
-    "rationale": "ROS 2 covers only the data-collection front of this loop. It can record and play rosbags, offers a Python API to read and write bags from your own code, and community users credit its data bagging, so collected data could be pulled into a training pipeline with custom code. Nothing in the evidence shows integration with model training or deploying updated models back to a fleet. Missing for 10: training-pipeline integration, a model packaging and versioning workflow, fleet-wide model deployment/OTA rollout, and any independent corroboration of an end-to-end data-to-model loop.",
-    "evidenceIds": [
-      "ros2-docs-17",
-      "ros2-docs-23",
-      "ros2-docs-39",
-      "ros2-comm-9"
-    ]
+    "rationale": "The evidence shows ROS 2 can record and play back robot data as rosbags, including a Python API for reading and writing bags and even storing synthetic training data. Those are data-capture building blocks, though. Nothing in the pack shows ROS 2 feeding that data into model training or deploying an updated model back to a fleet, so the closed-loop pipeline the story asks for is undocumented.",
+    "evidenceIds": []
   },
   {
     "productId": "ros2",
@@ -2693,16 +2677,11 @@
   {
     "productId": "ros2",
     "storyId": "synthetic-data-rl",
-    "verdict": "partial",
-    "quality": 3,
-    "confidence": "low",
-    "rationale": "ROS 2 documents launching simulations with Gazebo, and a community user notes sim comes 'for free' with the ecosystem. Rosbag recording could in principle capture simulated sensor streams, but nothing in the evidence addresses synthetic training data generation or reinforcement learning, let alone at scale. Missing for 10: synthetic data generation tooling, RL training integration, at-scale/parallel simulation, independent corroboration of ML workflows.",
-    "evidenceIds": [
-      "ros2-docs-16",
-      "ros2-comm-9",
-      "ros2-docs-17",
-      "ros2-docs-23"
-    ]
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Simulation-based data generation and RL are a fair axis for a robotics framework, but the evidence shows no first-party capability to generate synthetic training data or run reinforcement learning at scale. The Gazebo tutorial covers launching a separate simulator, and rosbag only stores synthetic data produced by another source. Both are integration or storage building blocks, not the capability itself.",
+    "evidenceIds": []
   },
   {
     "productId": "ros2",
@@ -2947,15 +2926,11 @@
   {
     "productId": "viam",
     "storyId": "api-machine-spec",
-    "verdict": "partial",
-    "quality": 3,
-    "confidence": "low",
-    "rationale": "The probe found no OpenAPI or Swagger spec: all candidate paths returned 404. A community source says Viam is built entirely on gRPC with open-source code on GitHub, which implies machine-readable protobuf service definitions may be obtainable. The evidence never explicitly says those definitions can be downloaded. missing for 10: an explicitly documented downloadable spec (OpenAPI or published .proto/buf schemas), first-party docs pointing to it, coverage of cloud/fleet APIs, and hands-on confirmation.",
-    "evidenceIds": [
-      "viam-probe-2",
-      "viam-comm-3",
-      "viam-gh-1"
-    ]
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Probes of the common OpenAPI and Swagger paths on docs.viam.com all returned 404. The SDKs use a gRPC transport, but no evidence shows downloadable protobuf definitions or any other machine-readable spec. The llms.txt file, CLI JSON I/O and SDK docs are adjacent features, not a downloadable API spec.",
+    "evidenceIds": []
   },
   {
     "productId": "viam",
@@ -3299,15 +3274,14 @@
     "productId": "viam",
     "storyId": "openness-full-export",
     "verdict": "partial",
-    "quality": 6,
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "The Viam CLI documents exporting data \"in a variety of formats\" and running SQL/MQL queries over tabular data with a `--destination` output path, which covers the core of data export. A community report says everything except the cloud app is open source and can run self-hosted, which eases leaving. However, the evidence never names the export formats, so it is unconfirmed they are open, and it does not show that *all* data (configs, datasets, trained models, binary captures) can be exported in bulk. Missing for 10: explicit list of open export formats, evidence of complete bulk export covering configs, models and datasets, documented migration/offboarding path, independent hands-on confirmation of export.",
+    "rationale": "Viam's official CLI documents exporting data \"in a variety of formats\" and running SQL/MQL queries over tabular or binary data, writing results to a local destination path, so captured data can be pulled out programmatically. The docs never name which formats are supported or confirm they are open, and nothing covers exporting everything else or leaving the platform. Missing for 10: named open export formats, evidence the export covers all data (machine configs, datasets, trained models, fleet/org metadata), any documented account-exit or offboarding path, and independent or hands-on corroboration of a full export.",
     "evidenceIds": [
       "viam-docs-23",
       "viam-docs-33",
       "viam-docs-11",
-      "viam-docs-47",
-      "viam-comm-3"
+      "viam-docs-47"
     ]
   },
   {
@@ -3401,14 +3375,11 @@
   {
     "productId": "viam",
     "storyId": "privacy-telemetry-optout",
-    "verdict": "partial",
-    "quality": 3,
-    "confidence": "low",
-    "rationale": "No documented telemetry or usage-tracking opt-out setting appears in the evidence. The only related support is community testimony that the RDK is open source except the cloud app and can run with no outside communication [viam-comm-3], and that robots keep operating offline with locally cached configs [viam-comm-1]. That suggests a self-hosted or offline workaround rather than an actual opt-out control. Missing for 10: a documented telemetry/usage-tracking opt-out flag or setting, first-party docs on what usage data viam-server, the CLI and the app collect, privacy controls in the cloud app, and independent corroboration.",
-    "evidenceIds": [
-      "viam-comm-3",
-      "viam-comm-1"
-    ]
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Viam is a cloud-connected platform with a CLI, SDKs and viam-server, so opting out of vendor telemetry and usage tracking is a fair question for it. The evidence pack contains no documentation of any telemetry or usage-tracking opt-out. The data-capture features it does describe concern the user's own sensor data synced to the Viam cloud, an adjacent feature that earns no credit for this story.",
+    "evidenceIds": []
   },
   {
     "productId": "viam",
