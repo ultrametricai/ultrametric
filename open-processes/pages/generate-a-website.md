@@ -39,6 +39,7 @@ A vibe-coding agent generates and deploys the site end to end; the founder revie
 
    - Vendor options: Lovable, v0, Bolt
    - Ranked market: [vibe-coding](../../open-rankings/vibe-coding)
+   - Cross-arena options: ChatGPT, Claude (ai-assistants); Framer, Figma, Canva (design-tools)
    - Use UM's builder evidence to select for the company's export and maintenance needs. The Lovable pack records code-sync and scanner claims (lovable-docs-2 and lovable-docs-7); these suggest checking that the actual project exports an editable codebase and that the selected plan provides the claimed checks. They do not establish that this site's form, authentication or data flow works. Reuse a suitable existing stack, and inspect the resulting visitor flow and destination independently before any publication decision.
 
    Options:
@@ -67,6 +68,7 @@ A vibe-coding agent generates and deploys the site end to end; the founder revie
    - Produces: Company website
    - Vendor options: Cloudflare, Vercel
    - Ranked market: [edge-platforms](../../open-rankings/edge-platforms)
+   - Cross-arena market: [vibe-coding](../../open-rankings/vibe-coding)
 
 ## Artifacts
 

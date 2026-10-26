@@ -37,6 +37,7 @@ Vanta API supports vendor tracking. Security questionnaire review requires human
 
    Check incoming reports and responses for the actual product, legal entity and relevant period. Follow up on missing evidence or ambiguous answers. Keep confidential material restricted and preserve the original response alongside clarifications. Assessment can proceed with omissions visible; distinguish verified evidence from conclusions still awaiting information.
 
+   - Cross-arena market: [workflow-automation](../../open-rankings/workflow-automation)
    - Sources: [NIST SP 800-53 Rev. 5](https://csrc.nist.gov/pubs/sp/800/53/r5/upd1/final)
 4. **Score and assess responses** — human · ~2 h · human approval required
 

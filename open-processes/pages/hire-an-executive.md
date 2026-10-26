@@ -47,6 +47,7 @@ Search, interviews, references, and the board’s comp approval are human end-to
 
    Assign interviews to the executive outcomes and capabilities in the scorecard. Seek concrete examples of decisions, results and working relationships, and collect references through the company’s candidate-consent process. Compare the evidence in the hiring debrief, including conflicting accounts and questions that still need diligence. Give the hiring sponsor a reasoned recommendation with specific risks to resolve before an offer.
 
+   - Cross-arena market: [applicant-tracking](../../open-rankings/applicant-tracking)
    - Sources: [EEOC: Recruiting, hiring or promoting employees](https://www.eeoc.gov/employers/small-business/3-im-recruiting-hiring-or-promoting-employees)
 6. **Draft the offer (comp, equity, severance)** — agent-runnable · ~30 min
 

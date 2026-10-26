@@ -25,6 +25,7 @@ The trademark offices have no usable filing API. System provides guidance, draft
 
    Define the mark, goods or services and territories, then search for identical and similar wording or designs using the relevant trademark-office tools. Capture potentially relevant marks, owners, status and goods or services, along with the search terms. Send the clearance questions to the legal reviewer. An available domain or empty exact-name search does not clear the mark.
 
+   - Cross-arena options: ChatGPT, Claude, Gemini (ai-assistants)
    - Do it yourself: [USPTO trademark search](https://tmsearch.uspto.gov/search/search-information)
    - Sources: [USPTO trademark process](https://www.uspto.gov/trademarks/basics/trademark-process) · [USPTO trademark tools](https://www.uspto.gov/trademarks)
 2. **Determine filing classes** — agent-runnable · ~10 min
@@ -36,6 +37,7 @@ The trademark offices have no usable filing API. System provides guidance, draft
 
    Draft the identification using the actual offering and the office’s accepted terminology. Match it to the intended filing basis and flag uncertain scope or classifications for the adviser. Check product facts with the people who know the service and retain relevant use evidence or development plans. Avoid claiming unrelated products merely to broaden the wording.
 
+   - Cross-arena options: ChatGPT, Claude, Gemini (ai-assistants)
    - Sources: [USPTO trademark process](https://www.uspto.gov/trademarks/basics/trademark-process) · [USPTO trademark tools](https://www.uspto.gov/trademarks)
 4. **Review with IP attorney** — human · ~2 d · async wait
 

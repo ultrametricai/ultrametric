@@ -27,6 +27,7 @@ Asset prep and analytics are agent work. The submission portals have no launch A
 
    - Vendor options: ChatGPT, Claude, Gemini, Grok
    - Ranked market: [ai-assistants](../../open-rankings/ai-assistants)
+   - Cross-arena options: Canva, Figma (design-tools)
    - Sources: [How to Launch: Preparation](https://www.producthunt.com/launch/before-launch)
 2. **Submit to Product Hunt** — manual form/portal · ~15 min · hard to undo
 

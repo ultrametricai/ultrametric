@@ -27,6 +27,7 @@ Policy generation, site publishing, and DPA signature routing are automatable. C
 
    - Canonical vendor: Vanta
    - Vendor options: Vanta, Termly, iubenda
+   - Cross-arena options: ChatGPT, Claude, Gemini (ai-assistants)
 
    Options:
      - **Default — Generate privacy policy and terms** — agent-runnable · ~20 min
@@ -74,6 +75,7 @@ Policy generation, site publishing, and DPA signature routing are automatable. C
    - Canonical vendor: Vercel
    - Vendor options: Vercel, Cloudflare
    - Ranked market: [edge-platforms](../../open-rankings/edge-platforms)
+   - Cross-arena market: [vibe-coding](../../open-rankings/vibe-coding)
    - If "A customer contract needs a separately signed DPA": continue at step 4
    - If "No separately signed DPA is needed": continue at step 5
 4. **Set up the DPA e-signature flow** — agent-runnable · ~15 min

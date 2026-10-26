@@ -64,6 +64,8 @@ Plan modeling, the billing migration, and the comms are automatable over billing
    Use the billing pricing matrix to update the public pricing page, plan comparisons and help material. Explain units, intervals, limits and treatment of existing customers consistently. In preview, follow each purchase link to the intended plan and price. Publish the pricing owner's agreed version, then compare live amounts, destinations and support guidance with the released catalog.
 
    Coordinate the public release date with the approved new-customer and existing-customer policies. A preview can be prepared while required notices are pending; publish only on the agreed schedule and avoid implying that protected existing customers have already changed terms.
+
+   - Cross-arena market: [vibe-coding](../../open-rankings/vibe-coding)
 5. **Announce the change to customers** — agent-runnable · ~30 min · hard to undo
 
    *Follows step 3.*

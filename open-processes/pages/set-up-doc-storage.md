@@ -39,6 +39,8 @@ Account creation is manual; sharing and document import run over the provider AP
 
    Inventory the source documents, owners, permissions, and links that other work relies on. Choose destinations and decide how to handle duplicates and superseded versions before importing. Move or copy through the provider's supported path, reconciling files and failures as each area completes. Check important documents and links with their users. Keep original sources available until the migration owner accepts the result and authorizes cleanup, especially where document history or permissions did not transfer.
 
+   - Cross-arena options: Poly (notes-knowledge)
+
 ## Artifacts
 
 Produces:

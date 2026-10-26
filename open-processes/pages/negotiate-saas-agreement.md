@@ -57,6 +57,8 @@ System can draft initial templates using company context. Legal review and custo
 
    Release the approved public documents at the intended signup, checkout and account locations. Verify links, mobile rendering, versions and the acceptance record captured by the flow. Keep negotiated customer agreements in the contract repository. Preserve the published release so later product or pricing changes can be compared with the terms users actually saw.
 
+   - Cross-arena market: [vibe-coding](../../open-rankings/vibe-coding)
+
 ## By country
 
 ### Germany

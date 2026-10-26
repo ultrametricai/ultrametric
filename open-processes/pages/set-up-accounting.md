@@ -27,6 +27,7 @@ Choosing and configuring the software is guided form work; connecting bank and c
 
    - Vendor options: QuickBooks, Xero, Pilot
    - Ranked market: [accounting](../../open-rankings/accounting)
+   - Cross-arena options: ChatGPT, Claude, Gemini (ai-assistants)
 2. **Sign up and configure the chart of accounts** — manual form/portal · ~30 min · async wait
 
    Configure the entity, reporting basis, financial year and opening balances with the accountant. Build a chart of accounts that supports the company’s transactions and required reports, avoiding overlapping categories. Set appropriate administrator and reviewer access and test representative postings and reports. Use the local route to resolve statutory requirements before relying on the configuration for live books.

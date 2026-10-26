@@ -56,6 +56,7 @@ The application and KYC upload are online forms (no public API); approval is a b
 
    - Verify: The dashboard shows account and routing numbers and a small inbound test transfer clears.
    - Produces: Business bank account
+   - Cross-arena market: [workflow-automation](../../open-rankings/workflow-automation)
 5. **Connect the bank feed to the books** — agent-runnable · ~3 min
 
    Have the bank-account administrator authorize the supported accounting connection for the intended accounts. Map each feed to the correct ledger account and choose an import date that avoids duplicating existing entries. Compare a sample with the statement and reconcile the first import. Establish who handles failed syncs or access changes before relying on the feed at close.

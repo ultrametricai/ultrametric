@@ -47,6 +47,7 @@ Drafting, publishing, and sitemap submission are agent-runnable. Editorial revie
    - Canonical vendor: Vercel
    - Vendor options: Vercel, Cloudflare
    - Ranked market: [edge-platforms](../../open-rankings/edge-platforms)
+   - Cross-arena market: [vibe-coding](../../open-rankings/vibe-coding)
 5. **Submit sitemap to search engines** — agent-runnable · ~5 min
 
    Check that the sitemap lists the intended canonical public pages and excludes drafts and private content. Validate its format and public URL, then submit or inspect it through the search engine's supported site tools using authorized access. Investigate reported errors. Google treats sitemap submission as a hint, so verify subsequent indexing observations separately from successful submission.

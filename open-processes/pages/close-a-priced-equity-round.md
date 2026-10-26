@@ -36,6 +36,8 @@ The term sheet, diligence, and approvals are human; the paperwork routing, signa
 4. **Investor diligence and Q&A** — human · ~7 d · async wait
 
    Track investor questions against the requested evidence and the team member who can answer them. Verify substantive financial, legal and customer claims with that person, and route sensitive or privileged requests through the appropriate executive or counsel. Share the response through the agreed diligence channel and record whether it resolved the question or left a closing condition outstanding.
+
+   - Cross-arena market: [workflow-automation](../../open-rankings/workflow-automation)
 5. **Counsel drafts the definitive documents** — human · ~3 d
 
    Give counsel the signed term sheet, existing corporate and equity documents, diligence findings and investor allocations. Review the definitive documents together for consistent economics, governance, disclosures and closing conditions. Compare revisions with the negotiated deal and resolve founder decisions as they arise. The resulting package should identify any approvals or conditions still needed before it can be executed and closed.

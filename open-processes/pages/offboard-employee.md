@@ -127,6 +127,8 @@ Gusto handles final paycheck and benefits termination. Account deactivation acro
 
    Compare the asset register with the employee’s actual equipment, security keys, cards and other company property. Agree a return method and contact, arranging shipping for remote returns where needed. Check serial numbers and condition on receipt, and distinguish returned items from transfers or unresolved losses. Send remaining issues to the people lead; a missing item does not by itself authorize a payroll deduction.
 
+   - Cross-arena market: [workflow-automation](../../open-rankings/workflow-automation)
+
 ## By country
 
 ### India

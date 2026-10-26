@@ -42,11 +42,13 @@ Insurance quoting platforms lack APIs. System guides through requirements, compi
    Follow up on outstanding underwriting questions and expected quote dates with the broker. Keep estimates current as markets respond, decline or ask for more information. Resolve material application changes with the applicant before sending them. Move to comparison when the buyer has enough written offers to assess coverage and understands which markets or terms are still pending.
 
    - Canonical vendor: Embroker
+   - Cross-arena market: [workflow-automation](../../open-rankings/workflow-automation)
    - Sources: [SBA business insurance](https://www.sba.gov/business-guide/launch-your-business/get-business-insurance?directory=true)
 5. **Compare quotes and recommend** — agent-runnable · ~10 min
 
    Compare quotes for the same entities, activities, limits and start date. Examine retentions, exclusions, defense terms, endorsements and claims conditions with the broker, including gaps against customer requirements. Present the buyer with the meaningful tradeoffs and unresolved wording. A cheaper premium should be understood alongside what coverage and conditions change.
 
+   - Cross-arena options: ChatGPT, Claude, Gemini (ai-assistants)
    - Sources: [SBA business insurance](https://www.sba.gov/business-guide/launch-your-business/get-business-insurance?directory=true)
 6. **Select and bind coverage** — human · ~15 min · human approval required · hard to undo
 

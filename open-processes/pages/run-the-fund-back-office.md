@@ -30,6 +30,8 @@ The capital-call notices, wire checks, fee transfer, and ledger booking run over
 2. **LPs send the capital call wires** — human · ~3 d · async wait
 
    Send investors the GP-authorized call and a trusted way to verify the fund’s payment instructions. Resolve administrative questions through the fund contact and refer changes in amount or timing to the GP. Each investor’s authorized payer releases its own wire. Track remittance information while keeping promised payments distinct from funds actually received.
+
+   - Cross-arena market: [workflow-automation](../../open-rankings/workflow-automation)
 3. **Verify the capital call wires received** — agent-runnable · ~10 min
 
    Match bank credits to capital calls by investor, amount, currency and reference. Resolve fees, shortfalls, unexpected senders and excess payments with the administrator before allocating receipts. Update capital accounts and unfunded commitments from the reconciled amounts, and give the GP the unpaid or ambiguous items requiring action.

@@ -31,6 +31,7 @@ Carta API can record grants. Board consent and option agreements need human revi
 
    Draft the grant consent from the proposed recipient, share count, option type, exercise price, vesting and intended grant date. Check plan capacity and the valuation supporting the price. Use the applicable corporate approval route, resolving uncertainty with counsel, and highlight deviations from standard terms so the decision-makers can assess the actual grant proposal.
 
+   - Cross-arena options: ChatGPT, Claude, Gemini (ai-assistants)
    - Sources: [Delaware General Corporation Law](https://delcode.delaware.gov/title8/c001/sc05/index.html)
 3. **The required decision-makers approve and sign the grant authorization** — human (legally required signature) · ~2 d · async wait · human approval required
 

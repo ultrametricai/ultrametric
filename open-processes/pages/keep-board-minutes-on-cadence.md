@@ -35,6 +35,8 @@ Scheduling, templates, signature routing, and filing are automatable. The minute
 3. **Hold the meeting and take minutes** — human · ~1 h
 
    Record who attended, what was considered and what was decided. Capture approved resolutions, voting outcomes, conflicts and assigned actions accurately without inventing a transcript. Use recording or transcription only under the agreed participant arrangements. Compare the draft with the chair’s notes and supporting materials, and resolve disputed recollections before the minutes are approved.
+
+   - Cross-arena market: [meeting-ai](../../open-rankings/meeting-ai)
 4. **Circulate minutes for signature** — agent-runnable · ~5 min · human approval required
 
    Follow the company’s applicable approval and signature process for these minutes. Resolve corrections, freeze the final wording and confirm the required signers and their capacities before sending an approved signature request. Track approval separately from signature completion and keep the execution evidence with the minutes. The correct process may not require every director to sign.

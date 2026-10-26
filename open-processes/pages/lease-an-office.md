@@ -30,6 +30,8 @@ Touring, negotiation, and the lease signature are human end-to-end; the agent mo
 3. **Compare proposals and model the all-in cost** — agent-runnable · ~45 min
 
    Compare written proposals over the same occupancy period. Include quoted rent and increases, operating charges, deposits, incentives, fit-out, moving, utilities, and likely exit costs, separating contract amounts from estimates. Show when cash is needed as well as the total cost. Test the model against a smaller team or earlier departure, and use the result to identify the terms finance needs clarified or renegotiated before a preferred space is selected.
+
+   - Cross-arena options: ChatGPT, Claude (ai-assistants)
 4. **Negotiate the LOI (rent, TI, term, exit)** — human · ~2 h
 
    Use the preferred proposal and budget limits to set the company's position on rent, improvements, commencement, term, renewal, and exit flexibility. Have counsel review the letter of intent before it is sent or signed, especially provisions that may create obligations. Negotiate within the company decision-maker's agreed limits and escalate material concessions. Hand the agreed commercial terms and remaining disputes to counsel for the lease, keeping the latest proposal easy to identify.

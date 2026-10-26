@@ -48,6 +48,8 @@ Palette generation, accessibility checks, and token setup are agent-runnable; th
    Keep a required brand accent separately if it cannot serve these roles. Add error, success, warning and chart colors only when the intended UI needs them. A decorative accent need not be the button background. Add print specifications only for a known print use.
 
    If alternatives are needed, show up to three directions with a short reason and actual UI preview. Do not generate alternatives solely to reach three. For an established palette, show the proposed role changes and their reason.
+
+   - Cross-arena options: ChatGPT, Claude (ai-assistants)
 2. **Pick the palette direction** — human · ~5 min
 
    Reuse an existing selection or delegated authority. Otherwise show a recommendation and leave selection open until a choice is established. Draft calculation, preview and saving can proceed while selection is open.
@@ -87,6 +89,7 @@ Palette generation, accessibility checks, and token setup are agent-runnable; th
    - Produces: Brand color palette
    - Vendor options: Figma, Canva
    - Ranked market: [design-tools](../../open-rankings/design-tools)
+   - Cross-arena market: [vibe-coding](../../open-rankings/vibe-coding)
 
 ## Artifacts
 

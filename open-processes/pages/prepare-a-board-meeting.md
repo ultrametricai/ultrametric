@@ -47,11 +47,14 @@ Data pull from Mercury/QBO/Stripe automatable. Narrative, strategy, and asks nee
    *Follows steps 1, 2 and 3 — all are required first.*
 
    Calculate the board’s operating measures from the reconciled financial and revenue data, stating definitions and periods. Explain changes in method and investigate unexpected movements with the metric owner. For burn and runway, distinguish historical cash use from forecast hiring and collections, showing sensitivities that could change the company’s next decisions.
+
+   - Cross-arena options: ChatGPT, Claude, Gemini (ai-assistants)
 5. **Draft board deck** — agent-runnable · ~30 min
 
    Build the deck around progress against the last plan, financial performance, material risks and decisions needed. Explain significant movements with the reviewed metrics and their business causes. Set out management’s recommendations, alternatives and unresolved questions, with supporting detail in an appendix so directors can focus the meeting on the choices that matter.
 
    - Canonical vendor: Google Slides
+   - Cross-arena options: ChatGPT, Claude, Gemini (ai-assistants)
 6. **Founder adds strategy and asks** — human · ~3 h · human approval required
 
    Add the strategic choices management wants the board to discuss, with recommendations, trade-offs and specific requests for help or authority. Check proposed commitments against the cash plan and resolve inconsistent claims with their owners. Decide which sensitive information the board needs and settle the narrative around the decisions the meeting should produce.

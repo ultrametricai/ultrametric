@@ -31,6 +31,7 @@ DNS providers expose email-routing configuration over their APIs — an agent wi
    - Canonical vendor: Fastmail
    - Vendor options: Fastmail
    - Ranked market: [email](../../open-rankings/email)
+   - Cross-arena market: [edge-platforms](../../open-rankings/edge-platforms)
 3. **Add the MX and SPF records to DNS** — agent-runnable · ~2 min
 
    Compare the provider's current DNS instructions with the existing zone and list the exact records to add or change. Domain verification, MX routing, and SPF authentication serve different purposes; preserve other legitimate senders and services when preparing the change. Have the DNS administrator authorize the mail cutover once destination mailboxes are ready. Apply the agreed records, retain the previous values for recovery, and check DNS resolution and the provider's setup status.

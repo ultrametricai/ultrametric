@@ -3,6 +3,7 @@ import path from 'node:path'
 import { loadProcessCatalog, type CatalogProcess } from './shared-processes/catalog'
 import type { Connection, Option, Part, Reference } from './shared-processes/schema'
 import { formatMinutes, REVERSIBILITY_META, URGENCY_META } from './processSim'
+import { JURISDICTION_META, type Jurisdiction } from './jurisdictions'
 import { GEO_COUNTRY_META, GEO_NOTE_COUNTRIES } from './processes'
 
 // open-processes/pages/<slug>.md ↔ corpus drift machinery: every canonical record in
@@ -60,6 +61,8 @@ export interface PageContext {
   vendorNames: Map<string, string>
   /** arena id → true when open-rankings/<id>/ exists (links are never fabricated). */
   arenas: Set<string>
+  /** judged product display name from the arena roster, or null when not on it. */
+  productName: (arenaId: string, productId: string) => string | null
   /** record id → chains whose taskIds include it. */
   chainsByTask: Map<string, CatalogProcess[]>
   /** record id → non-chain records with a reference part pointing at it. */
@@ -110,6 +113,20 @@ export function buildPageContext(root: string = process.cwd()): PageContext {
       ? fs.readdirSync(rankingsDir, { withFileTypes: true }).filter((e) => e.isDirectory()).map((e) => e.name)
       : [],
   )
+  const productCache = new Map<string, Map<string, string>>()
+  const productName = (arenaId: string, productId: string): string | null => {
+    let roster = productCache.get(arenaId)
+    if (!roster) {
+      const file = path.join(rankingsDir, arenaId, 'products.json')
+      roster = new Map(
+        fs.existsSync(file)
+          ? (JSON.parse(fs.readFileSync(file, 'utf8')) as Array<{ id: string; name: string }>).map((p) => [p.id, p.name])
+          : [],
+      )
+      productCache.set(arenaId, roster)
+    }
+    return roster.get(productId) ?? null
+  }
   const chainsByTask = new Map<string, CatalogProcess[]>()
   const referencedBy = new Map<string, CatalogProcess[]>()
   for (const source of sources) {
@@ -123,7 +140,7 @@ export function buildPageContext(root: string = process.cwd()): PageContext {
       referencedBy.set(id, [...(referencedBy.get(id) ?? []), source])
     }
   }
-  return { sources, slugById, titleById, lawFiles: lawRuleFiles(root), artifacts, vendorNames, arenas, chainsByTask, referencedBy }
+  return { sources, slugById, titleById, lawFiles: lawRuleFiles(root), artifacts, vendorNames, arenas, productName, chainsByTask, referencedBy }
 }
 
 // ---------------------------------------------------------------------------
@@ -197,7 +214,11 @@ function stepMarkers(m: Meta): string[] {
   }
   if (m.supporting === true) markers.push('support work')
   const jurisdictions = Array.isArray(m.jurisdictions) ? (m.jurisdictions as string[]) : []
-  if (jurisdictions.length > 0) markers.push(`only when operating in ${jurisdictions.join(', ')}`)
+  if (jurisdictions.length > 0) {
+    const nouns = jurisdictions.map((j) => JURISDICTION_META[j as Jurisdiction]?.noun ?? j)
+      .map((noun) => (noun === 'multi-state' ? 'multi-state' : `in ${noun}`))
+    markers.push(`only when operating ${nouns.join(', ')}`)
+  }
   return markers
 }
 
@@ -236,6 +257,23 @@ function referenceLines(references: Reference[], ctx: PageContext): string[] {
   const arenasCited = ids.filter((r) => r.kind === 'category' && r.role === 'rankings').map((r) => r.id)
   for (const arena of [...new Set(arenasCited)]) {
     lines.push(ctx.arenas.has(arena) ? `Ranked market: [${arena}](../../open-rankings/${arena})` : `Ranked market: ${arena}`)
+  }
+  // Cross-arena references are candidates supplied by the record (the site additionally gates
+  // them on judged verdicts); named here so the choices stay findable without the JSON.
+  const extraArenas = ids.filter((r) => r.kind === 'category' && r.role === 'additional-rankings').map((r) => r.id)
+  for (const arena of [...new Set(extraArenas)]) {
+    lines.push(ctx.arenas.has(arena) ? `Cross-arena market: [${arena}](../../open-rankings/${arena})` : `Cross-arena market: ${arena}`)
+  }
+  const extraProducts = [...new Set(ids.filter((r) => r.kind === 'product' && r.role === 'additional-candidate').map((r) => r.id))]
+  if (extraProducts.length > 0) {
+    const byArena = new Map<string, string[]>()
+    for (const id of extraProducts) {
+      const [arenaId, productId] = id.split('/')
+      const name = (arenaId && productId ? ctx.productName(arenaId, productId) : null) ?? titleCase(productId ?? id)
+      byArena.set(arenaId ?? id, [...(byArena.get(arenaId ?? id) ?? []), name])
+    }
+    const grouped = [...byArena.entries()].map(([arena, names]) => `${names.join(', ')} (${arena})`)
+    lines.push(`Cross-arena options: ${grouped.join('; ')}`)
   }
   const action = urls.find((r) => r.role === 'legacy-action-link')
   if (action) lines.push(`Do it yourself: [${linkText(action.title ?? hostname(action.url))}](${action.url})`)
@@ -403,18 +441,21 @@ function partBlock(part: Part, position: number, walk: WalkContext, ctx: PageCon
   const lines: string[] = []
   const index = position + 1
   const follows = followsLine(part, position, walk, ctx)
-  if (part.kind === 'reference') {
-    const slug = part.ref ? ctx.slugById.get(part.ref) : null
-    const title = part.ref ? ctx.titleById.get(part.ref) ?? part.ref : part.id
-    const link = slug ? `[${linkText(title)}](${slug}.md)` : title
-    lines.push(`${index}. Run ${link}${part.when ? ` (when: ${part.when})` : ''}`)
-    if (follows) lines.push('', `   *${follows}*`)
-    return lines
-  }
+  // A reference part runs another record; it keeps its own title, guidance, and markers (the
+  // jurisdiction restriction, the timing) and links the record it runs.
+  const refTarget = part.kind === 'reference' && part.ref ? part.ref : null
+  const refLink = refTarget
+    ? (() => {
+        const slug = ctx.slugById.get(refTarget)
+        const title = ctx.titleById.get(refTarget) ?? refTarget
+        return slug ? `[${linkText(title)}](${slug}.md)` : title
+      })()
+    : null
   const defaultOption = part.options.find((o) => o.id === 'default')
   const meta: Meta = { ...part.metadata, ...defaultOption?.metadata }
   const markers = stepMarkers(meta)
-  lines.push(`${index}. **${part.title ?? part.id}**${markers.length > 0 ? ` — ${markers.join(' · ')}` : ''}`)
+  const headTitle = part.title ?? (refTarget ? `Run ${ctx.titleById.get(refTarget) ?? refTarget}` : part.id)
+  lines.push(`${index}. **${headTitle}**${markers.length > 0 ? ` — ${markers.join(' · ')}` : ''}`)
   const detail: string[] = []
   if (follows) detail.push(`*${follows}*`)
   if (part.when) detail.push(`When: ${linkLawRules(part.when, ctx)}`)
@@ -428,6 +469,7 @@ function partBlock(part: Part, position: number, walk: WalkContext, ctx: PageCon
   const defaultListed = part.kind === 'decision' && part.options.length > 1
   if (!defaultSummaryShown && !defaultListed) detail.push(linkLawRules(defaultSummary, ctx))
   const bullets: string[] = []
+  if (refLink) bullets.push(`Runs the process ${refLink}`)
   const verify = meta.verify as VerifyMeta | undefined
   if (verify) bullets.push(verifyLine(verify))
   const cost = meta.cost as CostMeta | undefined

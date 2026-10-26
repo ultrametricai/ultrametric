@@ -52,10 +52,16 @@ State tax portals have no APIs. System provides state-specific checklists and pr
    Enter each issued number with its tax type, jurisdiction, effective date and filing frequency in the restricted compliance register. Attach the agency confirmation and store portal credentials separately. Reconcile issued, pending and rejected applications, then assign notice handling and return preparation to finance or payroll. Give those teams the issued account details needed for their filings.
 
    *This path ends here.*
-5. Run [Register for sales tax where you have nexus](register-for-sales-tax-where-you-have-nexus.md)
+5. **Register where you have sales-tax nexus** — human · ~10 min · hard to undo · only when operating multi-state
 
    *Entry step — no prerequisite step.*
-6. **Assess New York Article 9-A nexus and file Form CT-3** — manual form/portal · ~30 min · hard to undo · only when operating in US-NY
+
+   Assess each additional state using actual sales, business presence, product treatment and relevant dates. Identify the state rule and measurement period behind the proposed registration. Resolve whether and when to register with the tax adviser before an application is filed. Connect the issued account to billing and return preparation; a platform already collecting elsewhere does not establish this state’s treatment.
+
+   - Runs the process [Register for sales tax where you have nexus](register-for-sales-tax-where-you-have-nexus.md)
+
+   *This path ends here.*
+6. **Assess New York Article 9-A nexus and file Form CT-3** — manual form/portal · ~30 min · hard to undo · only when operating in NY
 
    *Entry step — no prerequisite step.*
 
@@ -66,7 +72,7 @@ State tax portals have no APIs. System provides state-specific checklists and pr
    - Sources: [NY DTF — deriving receipts thresholds](https://www.tax.ny.gov/bus/ct/article9a_deriving_receipts.htm)
 
    *This path ends here.*
-7. **Register with the Washington DOR and report B&O tax** — manual form/portal · ~25 min · hard to undo · only when operating in US-WA
+7. **Register with the Washington DOR and report B&O tax** — manual form/portal · ~25 min · hard to undo · only when operating in WA
 
    *Entry step — no prerequisite step.*
 

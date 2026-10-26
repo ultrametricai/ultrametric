@@ -31,6 +31,8 @@ Pulling actuals and drafting the model are automatable; the department trade-off
 2. **Draft the operating model and headcount plan** — agent-runnable · ~1 h
 
    Model revenue, staffing dates, compensation, delivery costs and major purchases as monthly cash flows. Tie opening cash and headcount to actuals, and make the assumptions and formulas easy to inspect. Compare the base plan with a downside case so leadership can see which hires or spending choices change the funding requirement.
+
+   - Cross-arena options: ChatGPT, Claude (ai-assistants)
 3. **Review trade-offs with department leads** — human · ~2 h
 
    Discuss each department’s proposed spending against the outcomes it is expected to deliver. Identify essential hires and purchases, milestone-dependent commitments and deferrable work. Resolve overlapping requests and unfunded obligations within the company’s cash constraints, then reflect the agreed trade-offs and decision triggers in the operating model.

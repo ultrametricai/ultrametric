@@ -49,6 +49,7 @@ Status pages, monitors, and DNS are fully API-driven; the SLA’s credit terms n
 
    Draft the SLA from the service measurements and customer commitments the company can actually support. Define the covered service, measurement window, outage calculation, exclusions, claim process and proposed remedy. Work through an outage example with engineering and finance, including what data establishes the event and how the credit would be calculated. Mark commercial choices and unresolved terms for counsel, keeping the internal reliability target distinct from the promise proposed for the contract.
 
+   - Cross-arena options: ChatGPT, Claude (ai-assistants)
    - Sources: [Google SRE implementing SLOs](https://sre.google/workbook/implementing-slos/)
 5. **Counsel reviews the SLA credit terms** — human · ~1 d · async wait
 

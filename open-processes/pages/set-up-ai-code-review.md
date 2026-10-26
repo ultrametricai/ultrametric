@@ -35,6 +35,8 @@ The reviewer installs as a code-host app behind an OAuth consent a human must gr
 3. **Add the reviewer config to the repo** — agent-runnable · ~15 min · human approval required
 
    Add the reviewer's configuration file to each covered repository: review rules, path filters for generated or vendored code, and any language-specific instructions. Keep the config in version control so review behavior changes go through pull requests themselves. A coding agent can draft the file; review it like any other code change.
+
+   - Cross-arena market: [ai-coding](../../open-rankings/ai-coding)
 4. **Open a test pull request and confirm a review lands** — agent-runnable · ~10 min · human approval required
 
    Open a small, intentionally imperfect pull request and confirm the reviewer posts a review on it. Check latency, the quality of the findings, and whether path filters are respected. The review visible on the test pull request is the proof the installation works; fix scope or config before relying on it.

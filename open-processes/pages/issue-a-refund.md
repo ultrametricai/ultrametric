@@ -39,6 +39,7 @@ Refunds are a single API call — an agent can issue one behind an approval gate
 
    Tell the customer the refund amount, currency and actual status through the support or finance contact handling the case. Use a timing estimate only when the provider supports it, and explain any further action needed. Link the reason and refund reference to the customer history and accounting record, following pending or failed refunds until the outcome is clear.
 
+   - Cross-arena market: [email](../../open-rankings/email)
    - Sources: [Stripe refunds documentation](https://docs.stripe.com/refunds)
 
 ## Artifacts

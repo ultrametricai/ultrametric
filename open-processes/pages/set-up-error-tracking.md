@@ -66,6 +66,7 @@ Sentry has a full API for project/alert configuration. SDK integration is code-l
 
    - Verify: A thrown test error arrives in the tracker as an event with the release and environment tagged.
    - Produces: Error tracking project
+   - Cross-arena market: [ai-coding](../../open-rankings/ai-coding)
    - Sources: [Sentry sensitive data scrubbing](https://docs.sentry.io/platforms/javascript/data-management/sensitive-data/) · [Set up Sentry releases](https://docs.sentry.io/product/releases/setup/)
 
 ## Artifacts

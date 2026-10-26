@@ -49,6 +49,7 @@ Requirements, market research, evidence comparison, and agentic trials run end-t
 
    - Vendor options: ChatGPT, Claude, Gemini, Grok
    - Ranked market: [ai-assistants](../../open-rankings/ai-assistants)
+   - Cross-arena market: [ai-research-agents](../../open-rankings/ai-research-agents)
 3. **Compare on evidence and rank against your stack** — agent-runnable · ~20 min
 
    Compare candidates against the buying brief using current evidence, proposed plans, and the integrations the company needs. Show strengths, missing requirements, switching effort, and expected cost. Keep unknowns distinguishable from failed requirements. If using scores, make the criteria and calculations reproducible without altering published vendor rankings. Recommend a shortlist with the important tradeoffs, then turn consequential uncertainties into trial tasks or focused questions for the vendor.
@@ -66,6 +67,8 @@ Requirements, market research, evidence comparison, and agentic trials run end-t
    Save the exact trial input, interface and environment, operation attempted, expected result and observed artifact for each candidate. Include a relevant failure or recovery case, such as a truncated export or lost response, and check a recovered artifact for missing records and relationships. A successful API call or screenshot alone does not establish that the task worked. Stop before new grants, charges or external effects outside the trial authority. An unavailable trial remains untested; retain the prepared test for the owner.
 
    Begin with synthetic data and minimum access. Complete the relevant data review before introducing sensitive company data, even if the full security review is scheduled later. For a write-capable workflow, test an allowed operation, denied out-of-scope access, and a retry or recovery that could duplicate or lose work. Preserve negative findings; a later passing test supersedes only the behavior and configuration it actually retested. Update the final recommendation from the trial findings and commercial/security review. A failed essential requirement must change eligibility or remain an explicit unresolved condition; a pre-trial ranking is not the final decision.
+
+   - Cross-arena market: [browser-agents](../../open-rankings/browser-agents)
 5. **Security and data review** — human · ~45 min · human approval required
 
    Give security and privacy reviewers the intended data flows, permissions, vendor responses, and relevant assessment reports. Examine retention, deletion, access administration, subprocessors, and incident handling for this specific use. Resolve missing evidence with the vendor and record any required configuration or contractual condition. The designated reviewers decide whether the proposed use can proceed, needs changes, or is unsuitable before sensitive company data or a binding contract commits the business.

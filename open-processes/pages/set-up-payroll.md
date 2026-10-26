@@ -29,6 +29,7 @@ Provider onboarding is a guided online form (needs EIN and bank account); the jo
 
    - Vendor options: Gusto, Rippling, Deel, Justworks
    - Ranked market: [payroll](../../open-rankings/payroll)
+   - Cross-arena options: ChatGPT, Claude, Gemini (ai-assistants)
 2. **Sign up and configure payroll online** — manual form/portal · ~30 min · async wait
 
    Choose the setup route from the employing entity and employee work locations. Gather verified company details, existing registrations, funding information and workforce inputs before configuring the provider. Resolve pay schedules, tax responsibilities and payroll access with the responsible team, then review a first-run setup. Keep US and country-specific employment routes distinct; the same account checklist cannot establish every jurisdiction’s requirements.
@@ -123,14 +124,14 @@ Provider onboarding is a guided online form (needs EIN and bank account); the jo
    - Sources: [California EDD: Enroll in e-Services for Business](https://edd.ca.gov/en/Payroll_Taxes/Enroll_Employer_e-Services_Business)
 
    *This path ends here.*
-5. **Register for payroll tax in each state where employees work** — manual form/portal · ~30 min · hard to undo · only when operating in MULTI
+5. **Register for payroll tax in each state where employees work** — manual form/portal · ~30 min · hard to undo · only when operating multi-state
 
    *Entry step — no prerequisite step.*
 
    Give the payroll tax specialist the employee work and residence locations, employing entities and planned moves. Determine applicable state and local accounts, checking existing registrations before preparing new applications. Obtain authorization for each required filing, then connect issued identifiers to payroll and reporting responsibilities. Reassess when work locations change; reciprocity and other location-specific facts may affect the setup.
 
    *This path ends here.*
-6. **Register as a New York employer (NYS-100)** — manual form/portal · ~25 min · hard to undo · only when operating in US-NY
+6. **Register as a New York employer (NYS-100)** — manual form/portal · ~25 min · hard to undo · only when operating in NY
 
    *Entry step — no prerequisite step.*
 
@@ -141,7 +142,7 @@ Provider onboarding is a guided online form (needs EIN and bank account); the jo
    - Sources: [NY DTF — withholding tax](https://www.tax.ny.gov/bus/wt/wtidx.htm)
 
    *This path ends here.*
-7. **Register for Texas unemployment tax with TWC** — manual form/portal · ~20 min · hard to undo · only when operating in US-TX
+7. **Register for Texas unemployment tax with TWC** — manual form/portal · ~20 min · hard to undo · only when operating in TX
 
    *Entry step — no prerequisite step.*
 
@@ -151,7 +152,7 @@ Provider onboarding is a guided online form (needs EIN and bank account); the jo
    - Sources: [TWC — unemployment tax program](https://www.twc.texas.gov/programs/unemployment-tax)
 
    *This path ends here.*
-8. **Register as a Washington employer via the business license application** — manual form/portal · ~25 min · hard to undo · only when operating in US-WA
+8. **Register as a Washington employer via the business license application** — manual form/portal · ~25 min · hard to undo · only when operating in WA
 
    *Entry step — no prerequisite step.*
 
@@ -161,7 +162,7 @@ Provider onboarding is a guided online form (needs EIN and bank account); the jo
    - Sources: [WA ESD — employer taxes](https://esd.wa.gov/employer-taxes)
 
    *This path ends here.*
-9. **Register for Florida reemployment tax (DR-1) and file the quarterly RT-6** — manual form/portal · ~20 min · hard to undo · only when operating in US-FL
+9. **Register for Florida reemployment tax (DR-1) and file the quarterly RT-6** — manual form/portal · ~20 min · hard to undo · only when operating in FL
 
    *Entry step — no prerequisite step.*
 

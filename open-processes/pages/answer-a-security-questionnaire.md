@@ -51,6 +51,8 @@ Answer drafting from your policy corpus is highly automatable; the risky answers
    Reconcile the output against every input question and required field. Check that formulas, selections and long answers survive saving and reopening. Keep the evidence map and reviewer queue alongside the customer file if its format cannot hold them. Do not turn an assurance report, intended control or support aspiration into a stronger commitment.
 
    Match each answer to the control actually in scope: policy intent, configured control, observed operation and independently audited coverage establish different claims. If the customer permits only Yes/No, use the permitted exception channel or ask the reviewer how to disclose the qualification; keep the row unresolved until a truthful supported answer fits the format. An internal evidence citation does not authorize sharing the underlying report.
+
+   - Cross-arena options: ChatGPT, Claude, Gemini (ai-assistants)
 4. **Security review of the risky answers** — human · ~30 min
 
    Check assertions about encryption, access, backups, incident response, testing and assurance reports against actual systems and records. Route notification, deletion, location and liability commitments to legal or privacy review. Resolve conflicting answers and record qualified wording or exceptions. The accountable reviewer approves the final answers and evidence attachments before they are represented to the customer.

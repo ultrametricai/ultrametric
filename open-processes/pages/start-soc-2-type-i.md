@@ -95,6 +95,7 @@ Vanta API supports test monitoring and evidence collection. Policy creation and 
 
    Teach staff the security practices they need for their access: handling customer information, reporting suspicious activity and getting help with account problems. Use examples from the company’s actual procedures. Use the agreed audience and invitation process, then track completion and follow up on missing participants. Questions that reveal unclear policy or unusable tools should become specific changes to the program.
 
+   - Cross-arena market: [workflow-automation](../../open-rankings/workflow-automation)
    - Sources: [AICPA SOC suite](https://www.aicpa-cima.com/resources/landing/system-and-organization-controls-soc-suite-of-services)
 8. **Engage auditor** — human · ~7 d · async wait · human approval required · hard to undo
 

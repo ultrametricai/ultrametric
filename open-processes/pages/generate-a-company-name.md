@@ -31,6 +31,7 @@ An agent generates candidates and scores each on domain availability, social han
 
    Check each candidate's exact domain, priority social handles and similar trademarks for the intended markets and goods or services. Link the searches and date the observations, following the clearance-search guidance of each market's trademark office. Flag material conflicts for a qualified trademark adviser; an available domain or an empty search result does not establish legal clearance.
 
+   - Cross-arena options: ChatGPT, Claude, Gemini (ai-assistants)
    - Sources: [Comprehensive clearance search for similar trademarks](https://www.uspto.gov/trademarks/search/comprehensive-clearance-search-similar-trademarks)
 3. **Present ranked candidates** — agent-runnable · ~1 min
 

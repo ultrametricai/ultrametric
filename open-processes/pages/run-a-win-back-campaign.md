@@ -40,6 +40,7 @@ Cohort building, sequence drafting, and the sends are fully API-driven; the disc
    - Canonical vendor: Customer.io
    - Vendor options: Customer.io, Loops, Mailchimp
    - Ranked market: [email-marketing](../../open-rankings/email-marketing)
+   - Cross-arena options: ChatGPT, Claude (ai-assistants)
    - Sources: [CAN-SPAM Act: A Compliance Guide for Business](https://www.ftc.gov/business-guidance/resources/can-spam-act-compliance-guide-business)
 4. **Approve the discount budget** — human · ~10 min
 

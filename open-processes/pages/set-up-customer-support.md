@@ -34,6 +34,8 @@ Intercom has comprehensive API for messaging and contact management. Initial set
 
    Place the support widget where customers need help and limit the identity and page data it sends to the agreed fields. Use the provider's current installation instructions. In preview, test keyboard access, display, signed-in identity and conversation creation. After the authorized site release, send a controlled live request and verify it reaches the right inbox without exposing another customer's messages.
 
+   - Cross-arena market: [ai-coding](../../open-rankings/ai-coding)
+
    *This path ends here.*
 3. **Set up inbox and routing** — agent-runnable · ~15 min · human approval required
 

@@ -55,6 +55,7 @@ Timeline assembly, doc drafting, action filing, and the status-page post are API
    Establish each measured interval’s boundaries before inferring an intervention’s immediate effect. A later row timestamp can include observations from before the change; preserve this uncertainty in both the detailed analysis and summaries.
 
    - Canonical vendor: Notion
+   - Cross-arena options: ChatGPT, Claude (ai-assistants)
    - Sources: [Google SRE postmortem culture](https://sre.google/sre-book/postmortem-culture/)
 3. **Hold the postmortem review meeting** — human · ~45 min
 

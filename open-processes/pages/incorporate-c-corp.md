@@ -132,6 +132,7 @@ Clerky/Stripe Atlas have limited APIs. System guides through the process, pre-fi
    - Verify: The complete Certificate of Incorporation bearing Delaware’s Filed endorsement is retained and matches the approved filing. Check each recipient’s requirements before ordering a certified copy or certificate of good standing. ([corp.delaware.gov](https://corp.delaware.gov/howtoform/))
    - Cost: $50 (optional government fee, as of 2026-10-01, [corpfiles.delaware.gov](https://corpfiles.delaware.gov/Fee_Schedule/AugustFee2026.pdf)). Optional certified copy of the filed certificate: $50 per document plus $2 per page (expedited $60 same-day / $50 24-hour). The plain stamped copy comes back with the filing itself at no extra fee.
    - Produces: Certificate of Incorporation
+   - Cross-arena market: [workflow-automation](../../open-rankings/workflow-automation)
    - Sources: [Delaware incorporation and bylaws law](https://delcode.delaware.gov/title8/c001/sc01/index.html) · [Delaware formation requirements](https://corp.delaware.gov/howtoform/)
 5. **Prepare bylaws & initial resolutions** — manual form/portal · ~15 min · human approval required
 
@@ -187,7 +188,7 @@ Clerky/Stripe Atlas have limited APIs. System guides through the process, pre-fi
    - Sources: [California Statement and Designation form](https://bpd.cdn.sos.ca.gov/corp/pdf/foreign/s&dc-sn.pdf)
 
    *This path ends here.*
-12. **Appoint a registered agent in each state where you operate** — human · ~15 min · only when operating in MULTI
+12. **Appoint a registered agent in each state where you operate** — human · ~15 min · only when operating multi-state
 
    *Entry step — no prerequisite step.*
 
@@ -196,7 +197,7 @@ Clerky/Stripe Atlas have limited APIs. System guides through the process, pre-fi
    - Sources: [SBA state registration and registered agents](https://www.sba.gov/counseling/launch-your-business/)
 
    *This path ends here.*
-13. **File the New York Application for Authority ($225)** — manual form/portal · ~30 min · hard to undo · only when operating in US-NY
+13. **File the New York Application for Authority ($225)** — manual form/portal · ~30 min · hard to undo · only when operating in NY
 
    *Entry step — no prerequisite step.*
 
@@ -208,7 +209,7 @@ Clerky/Stripe Atlas have limited APIs. System guides through the process, pre-fi
    - Sources: [NY DOS fee schedules](https://dos.ny.gov/fee-schedules)
 
    *This path ends here.*
-14. **File the Texas application for registration (Form 301, $750)** — manual form/portal · ~30 min · hard to undo · only when operating in US-TX
+14. **File the Texas application for registration (Form 301, $750)** — manual form/portal · ~30 min · hard to undo · only when operating in TX
 
    *Entry step — no prerequisite step.*
 
@@ -220,7 +221,7 @@ Clerky/Stripe Atlas have limited APIs. System guides through the process, pre-fi
    - Sources: [TX SOS business organizations forms](https://www.sos.state.tx.us/corp/forms_boc.shtml)
 
    *This path ends here.*
-15. **File the Florida foreign qualification (form CR2E007, $70)** — manual form/portal · ~30 min · hard to undo · only when operating in US-FL
+15. **File the Florida foreign qualification (form CR2E007, $70)** — manual form/portal · ~30 min · hard to undo · only when operating in FL
 
    *Entry step — no prerequisite step.*
 
@@ -232,7 +233,7 @@ Clerky/Stripe Atlas have limited APIs. System guides through the process, pre-fi
    - Sources: [FL Division of Corporations fees](https://dos.fl.gov/sunbiz/forms/fees/)
 
    *This path ends here.*
-16. **File the Washington foreign registration statement ($180)** — manual form/portal · ~30 min · hard to undo · only when operating in US-WA
+16. **File the Washington foreign registration statement ($180)** — manual form/portal · ~30 min · hard to undo · only when operating in WA
 
    *Entry step — no prerequisite step.*
 

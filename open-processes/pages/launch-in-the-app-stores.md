@@ -33,12 +33,14 @@ Build and submission tooling is scriptable end-to-end; Apple’s enrollment iden
 
    Build the listing from the release candidate: screenshots should show the shipped interface, descriptions should match available features, and support links should work. Inventory data collected by the app and included SDKs before completing each store's privacy disclosures. Resolve differences with the product and privacy owners, then preview the intended locales and device presentations. Keep the listing and disclosure version paired with the build submitted for review.
 
+   - Cross-arena options: Figma, Canva (design-tools)
    - Sources: [Apple App Privacy Details](https://developer.apple.com/app-store/app-privacy-details/) · [Prepare your app for Google Play review](https://support.google.com/googleplay/android-developer/answer/9859455?hl=en-GB)
 3. **Automate the build and submission pipeline** — agent-runnable · ~45 min
 
    Make the pipeline trace a source revision to a signed, versioned artifact and its intended store destination. Limit signing material and store credentials to the build jobs that need them. Test the documented upload path using a nonproduction distribution route, checking the artifact identity and what happens when a build or upload fails. Configure submission and release controls under the mobile release owner's authority, including a manual recovery path if automation cannot complete.
 
    - Vendor options: fastlane, Expo
+   - Cross-arena market: [ai-coding](../../open-rankings/ai-coding)
    - Sources: [GitHub Actions secure use reference](https://docs.github.com/en/actions/reference/security/secure-use) · [Apple overview of submitting for review](https://developer.apple.com/help/app-store-connect/manage-submissions-to-app-review/overview-of-submitting-for-review) · [Publish your app on Google Play](https://support.google.com/googleplay/android-developer/answer/9859751?hl=en)
 4. **Submit for review in both consoles** — manual form/portal · ~20 min
 

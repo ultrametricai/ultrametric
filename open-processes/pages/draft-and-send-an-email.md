@@ -24,6 +24,8 @@ Email APIs expose drafting and sending — an agent drafts, a human approves the
 1. **Draft the email for review** — agent-runnable · ~1 min
 
    Draft the email from its purpose, the recipient's context, and the information the sender wants to convey. Make the request and any real deadline easy to find. Check names, amounts, claims, links, and attachment versions against their sources. Present the subject, recipients, body, and attachments together, highlighting unanswered factual questions so the sender can review the complete message before delivery.
+
+   - Cross-arena market: [ai-assistants](../../open-rankings/ai-assistants)
 2. **Send from the company account (approval)** — agent-runnable · ~1 min · human approval required
 
    Have the named sender approve the complete message, recipient list, sending account, and attachments. Recheck reply-all recipients and sensitive material immediately before sending; return substantive changes for review. Send once from the agreed company account and check the resulting status. A queued message or failed attempt still needs attention. Link the sent message in the relevant customer or project record so later follow-up uses the right conversation.

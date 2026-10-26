@@ -63,6 +63,7 @@ Okta API supports user/app management. Individual app SSO configuration varies i
 
    Give staff the new sign-in instructions, enrollment steps and support route. Coordinate rollout timing and approved enforcement through the existing access-change process. Watch for failed logins and access mismatches, using the agreed rollback if needed. Resolve pending users and application exceptions, then hand tenant and group maintenance to the team handling onboarding, transfers and departures.
 
+   - Cross-arena market: [workflow-automation](../../open-rankings/workflow-automation)
    - Sources: [NIST SP 800-53 Rev. 5](https://csrc.nist.gov/pubs/sp/800/53/r5/upd1/final)
 
 ## Artifacts

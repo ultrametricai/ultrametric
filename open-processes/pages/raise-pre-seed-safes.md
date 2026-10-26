@@ -71,6 +71,7 @@ System can draft the instruments, track investor pipeline, send follow-ups, and 
    Build the investor pipeline with investment focus, contact source, relationship owner, status and next action. Deduplicate related contacts and distinguish a possible introduction from a meeting or investment commitment. Link the relevant pitch materials and keep sensitive notes private. The tracker should show who follows up with each investor and what is needed to move the conversation forward.
 
    - Canonical vendor: Notion
+   - Cross-arena options: Attio, HubSpot (crm)
 3. **Draft outreach emails** — agent-runnable · ~20 min · human approval required
 
    Choose direct outreach, introductions or a platform route based on investor fit, available relationships and the offering approach. Draft a concise account of the company, supported progress, proposed raise and requested next step. Tailor the information to the audience and leave a message the founder can send, with any unresolved claim or disclosure question visible.

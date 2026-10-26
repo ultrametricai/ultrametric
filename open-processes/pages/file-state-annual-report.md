@@ -48,14 +48,14 @@ State filing portals have no API — the filing is manual form work; gathering t
    - Sources: [California Secretary of State bizfile](https://www.sos.ca.gov/business-programs/bizfile)
 
    *This path ends here.*
-5. **File the annual report in each registered state** — manual form/portal · ~30 min · hard to undo · only when operating in MULTI
+5. **File the annual report in each registered state** — manual form/portal · ~30 min · hard to undo · only when operating multi-state
 
    *Entry step — no prerequisite step.*
 
    Review the current report or renewal requirements for every registered state and entity type. Determine what is due, the period covered and who will file it, including states with no report due this cycle. Submit approved filings and preserve their individual acceptance records. Check obligations against the official record when a notice is missing.
 
    *This path ends here.*
-6. **File the Nevada annual list and renew the state business license** — manual form/portal · ~20 min · hard to undo · only when operating in US-NV
+6. **File the Nevada annual list and renew the state business license** — manual form/portal · ~20 min · hard to undo · only when operating in NV
 
    *Entry step — no prerequisite step.*
 
@@ -65,7 +65,7 @@ State filing portals have no API — the filing is manual form work; gathering t
    - Sources: [NRS Chapter 78 (annual list)](https://www.leg.state.nv.us/NRS/NRS-078.html)
 
    *This path ends here.*
-7. **File the Texas franchise tax report and Public Information Report** — manual form/portal · ~20 min · hard to undo · only when operating in US-TX
+7. **File the Texas franchise tax report and Public Information Report** — manual form/portal · ~20 min · hard to undo · only when operating in TX
 
    *Entry step — no prerequisite step.*
 
@@ -76,7 +76,7 @@ State filing portals have no API — the filing is manual form work; gathering t
    - Sources: [TX SOS business organizations forms](https://www.sos.state.tx.us/corp/forms_boc.shtml)
 
    *This path ends here.*
-8. **File the New York biennial statement ($9)** — manual form/portal · ~15 min · hard to undo · only when operating in US-NY
+8. **File the New York biennial statement ($9)** — manual form/portal · ~15 min · hard to undo · only when operating in NY
 
    *Entry step — no prerequisite step.*
 
@@ -88,7 +88,7 @@ State filing portals have no API — the filing is manual form work; gathering t
    - Sources: [NY DOS fee schedules](https://dos.ny.gov/fee-schedules)
 
    *This path ends here.*
-9. **File the Florida annual report (January 1 – May 1, $150)** — manual form/portal · ~15 min · hard to undo · only when operating in US-FL
+9. **File the Florida annual report (January 1 – May 1, $150)** — manual form/portal · ~15 min · hard to undo · only when operating in FL
 
    *Entry step — no prerequisite step.*
 

@@ -44,6 +44,7 @@ AI can draft sections from templates. Legal review and company-specific policies
    Tell employees where the handbook lives, which changes affect them and when those changes apply. Explain any acknowledgement process and provide a contact for questions. Check the published link before distribution and arrange accessible or translated material where needed. Route substantive questions to the relevant policy owner and follow up through the company’s actual acknowledgement process.
 
    - Canonical vendor: Gmail
+   - Cross-arena options: Slack (team-chat)
 
 ## By country
 

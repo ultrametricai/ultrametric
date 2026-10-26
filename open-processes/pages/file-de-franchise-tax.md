@@ -27,6 +27,7 @@ Delaware franchise tax portal has no API. System calculates the tax, pre-fills d
 
    Confirm the Delaware entity type and year. For a corporation, reconcile authorized and issued shares, par values, gross assets and relevant charter changes to the records. Compare applicable calculation methods using current Division of Corporations instructions, resolving unusual cases with the tax adviser. Preserve the inputs and calculation so the selected amount can be explained and checked against the filing service.
 
+   - Cross-arena options: ChatGPT, Claude (ai-assistants)
    - Sources: [Delaware franchise-tax calculation](https://corp.delaware.gov/frtaxcalc/)
 2. **Gather officer and director info** — agent-runnable · ~2 min
 
@@ -73,7 +74,7 @@ Delaware franchise tax portal has no API. System calculates the tax, pre-fills d
    - Sources: [California FTB corporations](https://www.ftb.ca.gov/file/business/types/corporations/index.html)
 
    *This path ends here.*
-7. **File the Texas franchise tax report (May 15)** — manual form/portal · ~20 min · hard to undo · only when operating in US-TX
+7. **File the Texas franchise tax report (May 15)** — manual form/portal · ~20 min · hard to undo · only when operating in TX
 
    *Entry step — no prerequisite step.*
 

@@ -184,6 +184,7 @@ An agent can draft the hypothesis, propose the method that fits the starting sit
          - Canonical vendor: Lovable
          - Vendor options: Lovable, v0, Bolt
          - Ranked market: [vibe-coding](../../open-rankings/vibe-coding)
+         - Cross-arena options: Framer, Figma, Canva (design-tools)
 
        - **Launch a small paid ad campaign at the target audience** — manual form/portal · ~45 min
 
@@ -215,6 +216,7 @@ An agent can draft the hypothesis, propose the method that fits the starting sit
    Compare the experiment's offer versions, response data, interviews, and any delivery or payment results with the original success criteria. Resolve obvious data-quality problems and explain differences between customer segments. Separate conclusions supported by observed behavior from interpretations that need another test. Present the strongest supporting and contradictory evidence together, then identify the specific uncertainty that matters most to the founder's next decision.
 
    - Canonical vendor: PostHog
+   - Cross-arena options: ChatGPT, Claude, Gemini (ai-assistants)
 7. **Go/no-go decision** — human · ~30 min
 
    Decide whether to continue, change the hypothesis, run a narrower test, or stop, using the original criteria and the findings together. Commit only what the company can afford to lose at each step when sizing the next test (lore rule sarasvathy-affordable-loss), and budget for validation taking longer than expected rather than spending on growth before fit (lore rule griffin-premature-scaling). Explain what changed the founder's view and what the next commitment of time or money is intended to learn. Assign any promised customer follow-up and outstanding refunds before closing the test. Keep the decision with the experiment record so the next round begins from what the team has learned.

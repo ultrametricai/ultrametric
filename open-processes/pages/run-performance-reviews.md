@@ -37,6 +37,8 @@ BambooHR/Lattice APIs handle review creation and tracking. Review content and ca
 4. **Employees complete self-assessments** — human · ~1 d · async wait
 
    Review the agreed goals and gather examples of outcomes, collaboration, difficulties and learning from the period. Explain changed priorities, unfinished work and their effect on the agreed outcomes. The employee writes their own assessment and identifies support or development they want to discuss. Submit it through the review process, keeping the employee’s account intact if a coordinator helps with formatting or access.
+
+   - Cross-arena market: [workflow-automation](../../open-rankings/workflow-automation)
 5. **Managers write reviews** — human · ~1 d · async wait
 
    Compare the employee’s work with the agreed goals and role expectations, using the self-assessment and relevant feedback. Explain conclusions with examples, distinguish observation from interpretation and propose practical development actions. Resolve sensitive policy questions with the people lead. Bring the draft and unresolved evidence questions to calibration before communicating a final rating or implying a compensation decision.

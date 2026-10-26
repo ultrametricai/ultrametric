@@ -27,6 +27,7 @@ Card applications are fully online with the startup issuers; transaction sync ru
 
    - Vendor options: Brex, Ramp, Mercury
    - Ranked market: [expense-management](../../open-rankings/expense-management)
+   - Cross-arena options: ChatGPT, Claude, Gemini (ai-assistants)
 2. **Apply for the corporate card online** — manual form/portal · ~15 min · async wait
 
    Apply with verified company, ownership and financial information. The officer authorized to accept the card agreement reviews the offered limit, repayment terms, fees and any guarantee or collateral commitment before submitting. If approved, establish administrators and spending controls before issuing cards, and resolve any conditions affecting the account’s use.
@@ -34,6 +35,7 @@ Card applications are fully online with the startup issuers; transaction sync ru
    - Produces: Corporate card
    - Vendor options: Brex, Ramp, Mercury
    - Ranked market: [expense-management](../../open-rankings/expense-management)
+   - Cross-arena market: [workflow-automation](../../open-rankings/workflow-automation)
 3. **Sync card transactions into the books** — agent-runnable · ~3 min
 
    Connect the card account to the correct accounting entity through the authorized administrator. Choose an import date and match existing transactions to prevent duplicates. Map balances, repayments, fees and receipts, then reconcile a statement end to end. Assign responsibility for missing receipts and failed syncs so the connection supports ongoing bookkeeping.

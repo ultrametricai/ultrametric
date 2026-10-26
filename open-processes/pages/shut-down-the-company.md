@@ -39,6 +39,8 @@ The agent drafts the consents, runs the final payroll, cancels vendors, and prep
 4. **Cancel vendor contracts and subscriptions** — agent-runnable · ~45 min · human approval required · hard to undo
 
    Review contracts and subscriptions for termination rights, notice methods, final charges and data exports. Include services holding records needed after closure. Send authorized cancellation notices, retain acknowledgements and verify billing stops. Export necessary records before accounts disappear, and keep essential communications and storage running until their custodians can complete dependent closure work.
+
+   - Cross-arena market: [browser-agents](../../open-rankings/browser-agents)
 5. **File the certificate of dissolution and franchise-tax true-up** — manual form/portal · ~30 min · irreversible
 
    Use the reviewed dissolution route for this entity. For a Delaware corporation, reconcile the certificate with its corporate approvals and the state’s annual-report and franchise-tax requirements. The authorized officer approves the filing, effective timing and payments. Track acceptance and continue winding up. A foreign option requires its local procedure and a fresh plan for the subsequent tax, creditor and distribution work.
@@ -89,6 +91,7 @@ The agent drafts the consents, runs the final payroll, cancels vendors, and prep
    Follow the registry’s acceptance or correction requests and verify the effective dissolution date against the filing. Resolve discrepancies with the filer or counsel and save the accepted record. Continue the applicable tax, creditor and records work under the closure plan. Registry acceptance is one milestone within winding up; it does not establish that remaining obligations are finished.
 
    - Produces: Certificate of dissolution
+   - Cross-arena market: [workflow-automation](../../open-rankings/workflow-automation)
    - Sources: [DGCL dissolution](https://delcode.delaware.gov/title8/c001/sc10/index.html)
 7. **Your accountant prepares the final tax returns** — human · ~7 d · async wait
 

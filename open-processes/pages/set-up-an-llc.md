@@ -82,11 +82,13 @@ Formation services drive the state filing but expose limited APIs. The agent che
    Obtain the registry’s accepted formation record and check the legal name, entity number and filing or effective date. Resolve discrepancies with the filer before using those details for banking and tax setup. Save the issued document in the company records. A provider dashboard or payment receipt remains insufficient evidence that the registry accepted the formation.
 
    - Produces: LLC Certificate of Formation
+   - Cross-arena market: [workflow-automation](../../open-rankings/workflow-automation)
    - Sources: [SBA register your business](https://legacy.sba.gov/business-guide/launch-your-business/register-your-business)
 5. **Draft the operating agreement** — agent-runnable · ~30 min
 
    For a US LLC, draft the members’ agreed contributions, ownership, management, voting, distributions, transfers and departure arrangements into the operating agreement. Highlight unresolved economics and management authority for the members to decide. Check the draft against the formation state and tax plan during legal review before execution. LLP, UG, SARL and EURL options require their appropriate governing documents.
 
+   - Cross-arena options: ChatGPT, Claude (ai-assistants)
    - Sources: [SBA register your business](https://legacy.sba.gov/business-guide/launch-your-business/register-your-business)
 6. **Members sign the operating agreement** — human (legally required signature) · ~5 min
 

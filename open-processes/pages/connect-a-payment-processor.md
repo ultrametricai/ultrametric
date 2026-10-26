@@ -59,6 +59,7 @@ Account activation and KYC are processor-hosted forms; the integration, test cha
    Implement the selected payment flow from the provider’s current documentation, separating test and live credentials and storing secrets in the application’s secret store. Handle final payment states, verification, failures and duplicate requests relevant to the integration. Test those paths and use the project’s production-release process before enabling real transactions, with a clear owner for payment failures.
 
    - Canonical vendor: Stripe
+   - Cross-arena market: [ai-coding](../../open-rankings/ai-coding)
 4. **Run a test charge and confirm the payout schedule** — agent-runnable · ~10 min
 
    Exercise success, decline, authentication, refunds and delayed outcomes in the provider’s documented test environment. Check that application state and accounting references follow the final status. Separately inspect the live payout schedule, bank destination and restrictions. If verifying the live flow requires a production transaction, the finance owner must authorize that charge.

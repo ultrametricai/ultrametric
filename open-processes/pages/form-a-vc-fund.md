@@ -49,15 +49,19 @@ The agent drafts the LPA and the operating agreement and pre-fills every filing;
    Retrieve the registry-returned certificate and compare its name, filing details and effective time with the submission. Resolve discrepancies or conditions with counsel before using it for bank or investor onboarding. Add the final certificate to the fund’s formation records so those relying on it use the registry-returned version.
 
    - Produces: Fund LP certificate
+   - Cross-arena market: [workflow-automation](../../open-rankings/workflow-automation)
    - Sources: [Delaware Revised Uniform Limited Partnership Act](https://delcode.delaware.gov/title6/c017/sc02/index.html)
 5. **Create the simple LPA (limited partnership agreement)** — agent-runnable · ~1 h · human approval required
 
    Draft the LPA with fund counsel from the strategy, GP structure, economics and initial investor terms. Work through commitments, investment authority, fees, distributions, governance and amendment provisions, checking consistency across the agreement. Mark terms still open to negotiation so the GP can settle them before the document goes into execution.
 
    - Vendor options: AngelList, Sydecar
+   - Cross-arena options: ChatGPT, Claude (ai-assistants)
 6. **Create the GP operating agreement** — agent-runnable · ~45 min · human approval required
 
    Draft the GP operating agreement from the principals’ ownership, contributions, decision rights and economic arrangements. Address who can act for the GP, conflicts, departures and allocation of fund-related rights. Reconcile those provisions with the fund agreement and management arrangements, resolving open decisions with the principals and counsel before execution.
+
+   - Cross-arena options: ChatGPT, Claude (ai-assistants)
 7. **GP signs the LPA and the operating agreement** — human (legally required signature) · ~10 min
 
    The relevant principals sign the final LPA and GP operating agreement in the capacities required by each document. Check signatory authority, conditions and consistency with the agreed terms before execution. Establish effectiveness and outstanding actions with counsel, then keep the executed agreements identifiable by entity so administration applies the correct governing terms.

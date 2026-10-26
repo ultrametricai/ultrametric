@@ -28,6 +28,7 @@ Agents can draft the spec, cut the issue, implement, open the PR, and deploy thr
    - Canonical vendor: Notion
    - Vendor options: Notion, Linear
    - Ranked market: [project-management](../../open-rankings/project-management)
+   - Cross-arena options: ChatGPT, Claude, Gemini (ai-assistants)
 2. **Create the tracking issue** — agent-runnable · ~5 min
 
    Create the issue from the spec's concrete outcome and acceptance checks, linking the relevant design or investigation. Use the project's authorized workspace and assignment scope, search for duplicate work, and include only real prerequisites. Keep confidential examples out of broadly visible fields. Link the issue from the implementation branch or pull request so reviewers can follow the requested behavior through to the change.

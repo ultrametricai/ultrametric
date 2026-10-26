@@ -64,6 +64,7 @@ Stripe/HubSpot APIs provide data. Email automatable. Actual save conversation is
    Offer a safe continuity step only when it is appropriate for the reported problem, and label an unverified workaround accordingly. Confirm the next update with its responsible owner before promising it; do not default to daily updates until resolution. Preserve the customer’s choice to cancel without another sales step.
 
    - Canonical vendor: Gmail
+   - Cross-arena market: [email-marketing](../../open-rankings/email-marketing)
    - If "The customer wants a call before deciding": continue at step 5
    - If "The customer has chosen the outcome and does not need a call": continue at step 6
 5. **Schedule call** — human · ~30 min · async wait
@@ -73,6 +74,8 @@ Stripe/HubSpot APIs provide data. Email automatable. Actual save conversation is
    Offer call times with a timezone and an agenda based on the customer's concern. Include the people who can resolve it and send the invitation through the account team's agreed process. Record the accepted slot and preparation notes; an offered time remains tentative until the customer agrees.
 
    Make a call conditional on the customer wanting one. Do not require a meeting to carry out an otherwise authorized cancellation, and do not record an offered slot as accepted.
+
+   - Cross-arena market: [scheduling](../../open-rankings/scheduling)
 6. **Apply discount or cancel** — agent-runnable · ~2 min · human approval required
 
    *Follows step 1 (when The customer has made a firm cancellation choice; confirm identity, terms and authority before applying it) or step 4 (when The customer has chosen the outcome and does not need a call) or step 5.*

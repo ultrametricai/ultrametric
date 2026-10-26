@@ -39,6 +39,8 @@ The agent drafts the subscription documents and the A&R LPA and routes everythin
 4. **Create the A&R LPA (amended & restated, with the final LP schedule)** — agent-runnable · ~45 min · human approval required
 
    Prepare the amended LPA with counsel using final negotiated terms and the investor admission schedule. Reconcile names, commitments, side-letter interactions and changes from the prior agreement. Highlight provisions needing a decision and establish the required signatures or consents so the final document and LP schedule match the intended close.
+
+   - Cross-arena options: ChatGPT, Claude (ai-assistants)
 5. **GP and LPs sign the A&R LPA** — human (legally required signature) · ~1 d · async wait · hard to undo
 
    Identify with counsel who must sign or consent to the amended LPA and when it becomes effective under the existing agreement. Have the required GP and investor representatives execute the final version, following any conditions and counterpart instructions. Resolve missing signatures and record which investors or admissions remain outside the completed amendment.

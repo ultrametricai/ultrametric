@@ -35,6 +35,7 @@ PostHog's public REST API (live OpenAPI spec, official MCP server) covers projec
 
    - Verify: A test event fires and appears in the analytics project's live event stream.
    - Produces: Product analytics workspace
+   - Cross-arena market: [ai-coding](../../open-rankings/ai-coding)
    - Sources: [PostHog product analytics](https://posthog.com/docs/product-analytics) · [PostHog product analytics privacy controls](https://posthog.com/docs/product-analytics/privacy)
    - Next: steps 3 and 6 — all follow this step
 3. **Define key events** — agent-runnable · ~15 min · human approval required

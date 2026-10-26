@@ -37,6 +37,7 @@ Gusto's Embedded Payroll API supports onboarding, pay schedules, and payroll; Ca
    Follow up on the offer actually sent, using any agreed response date or extension. Route negotiation questions to the hiring owner and update the package if terms change. On acceptance, check that the required parties signed the same version and reconfirm the start date. Give onboarding the executed agreement and settled employment details so payroll, equipment and introductions can be arranged.
 
    - Produces: Signed offer / employment agreement
+   - Cross-arena market: [workflow-automation](../../open-rankings/workflow-automation)
    - Next: steps 4 and 10 — all follow this step
 4. **Add the employee in your payroll platform** — agent-runnable · ~5 min · human approval required
 
@@ -83,6 +84,7 @@ Gusto's Embedded Payroll API supports onboarding, pay schedules, and payroll; Ca
 
    - Verify: The jurisdiction's required right-to-work verification and tax forms are on file by their statutory deadlines; retain them, they are inspectable.
    - Canonical vendor: Gusto
+   - Cross-arena market: [workflow-automation](../../open-rankings/workflow-automation)
    - Sources: [USCIS: Completing Section 2](https://www.uscis.gov/i-9-central/completing-form-i-9/completing-section-2-employer-review-and-attestation) · [USCIS: Employment Eligibility Verification](https://www.uscis.gov/i-9) · [USCIS: Instructions for Form I-9](https://www.uscis.gov/sites/default/files/document/forms/i-9instr.pdf) · [IRS: Publication 15 (2026), Employer’s Tax Guide](https://www.irs.gov/publications/p15) · [IRS: Topic 753, Form W-4](https://www.irs.gov/taxtopics/tc753)
 
    *This path ends here.*

@@ -72,6 +72,7 @@ Can initiate through Carta API and provide company financials. Valuation itself 
    Track the report against the provider’s agreed delivery date and respond to outstanding questions. Tell the adviser about material financing, forecast or operating changes arising during the engagement so they can assess their effect. Update grant planning if delivery changes. When the report arrives, move it into substantive review with any unresolved questions attached.
 
    - Canonical vendor: Carta
+   - Cross-arena market: [workflow-automation](../../open-rankings/workflow-automation)
 6. **Review and accept valuation** — human · ~30 min · human approval required
 
    Check the report’s entity, stock class, date and capitalization against the information supplied. Ask the adviser to resolve errors, explain important assumptions and account for differences from earlier valuations. Assess any limits on using the result for planned grants. The company’s valuation owner accepts the final report for its agreed purpose, with unresolved reliance questions taken to tax counsel.

@@ -54,6 +54,7 @@ Scoping prep, environment provisioning, finding triage, and remediation are auto
 
    Reproduce the weakness in an authorized environment and fix its underlying cause. Plan production changes with validation and rollback, using the normal change approval. Add a meaningful regression check where appropriate and attach the deployed version and test result to the finding. If remediation cannot finish, the accountable risk owner must decide on temporary controls and follow-up.
 
+   - Cross-arena market: [ai-coding](../../open-rankings/ai-coding)
    - Sources: [NIST SP 800-115](https://csrc.nist.gov/pubs/sp/800/115/final)
 7. **Request the retest and attestation letter** — manual form/portal · ~15 min
 

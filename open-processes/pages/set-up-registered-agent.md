@@ -38,7 +38,7 @@ Registered agent services have no public signup API — the designation is an on
    - Sources: [SBA register your business](https://legacy.sba.gov/business-guide/launch-your-business/register-your-business)
 
    *This path ends here.*
-3. **Designate the agent in each additional registered state** — manual form/portal · ~10 min · only when operating in MULTI
+3. **Designate the agent in each additional registered state** — manual form/portal · ~10 min · only when operating multi-state
 
    *Entry step — no prerequisite step.*
 
@@ -47,7 +47,7 @@ Registered agent services have no public signup API — the designation is an on
    - Sources: [SBA register your business](https://legacy.sba.gov/business-guide/launch-your-business/register-your-business)
 
    *This path ends here.*
-4. **Change the Delaware registered agent (Certificate of Change, $50)** — manual form/portal · ~15 min · hard to undo · only when operating in US-DE
+4. **Change the Delaware registered agent (Certificate of Change, $50)** — manual form/portal · ~15 min · hard to undo · only when operating in DE
 
    *Entry step — no prerequisite step.*
 
@@ -59,7 +59,7 @@ Registered agent services have no public signup API — the designation is an on
    - Sources: [Delaware registered agents information](https://corp.delaware.gov/agents/)
 
    *This path ends here.*
-5. **Designate or change the California agent for service of process (Statement of Information)** — manual form/portal · ~15 min · hard to undo · only when operating in US-CA
+5. **Designate or change the California agent for service of process (Statement of Information)** — manual form/portal · ~15 min · hard to undo · only when operating in CA
 
    *Entry step — no prerequisite step.*
 
@@ -70,7 +70,7 @@ Registered agent services have no public signup API — the designation is an on
    - Sources: [CA SOS — Statement of Information](https://www.sos.ca.gov/business-programs/business-entities/statements)
 
    *This path ends here.*
-6. **Update the New York registered agent or process address (Certificate of Change, $30)** — manual form/portal · ~15 min · hard to undo · only when operating in US-NY
+6. **Update the New York registered agent or process address (Certificate of Change, $30)** — manual form/portal · ~15 min · hard to undo · only when operating in NY
 
    *Entry step — no prerequisite step.*
 
@@ -82,7 +82,7 @@ Registered agent services have no public signup API — the designation is an on
    - Sources: [NY DOS fee schedules](https://dos.ny.gov/fee-schedules)
 
    *This path ends here.*
-7. **File Texas Form 401 to change the registered agent or office ($15)** — manual form/portal · ~15 min · hard to undo · only when operating in US-TX
+7. **File Texas Form 401 to change the registered agent or office ($15)** — manual form/portal · ~15 min · hard to undo · only when operating in TX
 
    *Entry step — no prerequisite step.*
 
@@ -94,7 +94,7 @@ Registered agent services have no public signup API — the designation is an on
    - Sources: [TX SOS registered agent FAQs](https://www.sos.state.tx.us/corp/registeredagentfaqs.shtml)
 
    *This path ends here.*
-8. **Appoint or change the Wyoming registered agent ($5)** — manual form/portal · ~15 min · hard to undo · only when operating in US-WY
+8. **Appoint or change the Wyoming registered agent ($5)** — manual form/portal · ~15 min · hard to undo · only when operating in WY
 
    *Entry step — no prerequisite step.*
 
@@ -105,7 +105,7 @@ Registered agent services have no public signup API — the designation is an on
    - Sources: [WY SOS — maintaining your business](https://sos.wyo.gov/Business/MaintainBusiness.aspx)
 
    *This path ends here.*
-9. **Change the Florida registered agent ($35)** — manual form/portal · ~15 min · hard to undo · only when operating in US-FL
+9. **Change the Florida registered agent ($35)** — manual form/portal · ~15 min · hard to undo · only when operating in FL
 
    *Entry step — no prerequisite step.*
 

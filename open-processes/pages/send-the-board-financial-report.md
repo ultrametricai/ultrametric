@@ -47,11 +47,14 @@ All data sources (Mercury, QBO, Stripe) have APIs. System compiles metrics, calc
    *Follows steps 1, 2 and 3 — all are required first.*
 
    Calculate operating cash burn for a stated period, showing one-time items separately. Reconcile usable cash to the balance schedule and model how hiring, collections and committed spending affect future cash. Show a downside case where useful. If the company is generating cash, explain that a simple cash-divided-by-burn ratio does not provide a meaningful runway estimate.
+
+   - Cross-arena options: ChatGPT, Claude, Gemini (ai-assistants)
 5. **Compile board report draft** — agent-runnable · ~10 min
 
    Draft the board report around cash, performance against plan, runway and material financial risks. Link figures to the closed accounts or label them provisional. Explain the largest variances in business terms and distinguish actual results from forecasts. Highlight decisions or support needed from directors so the founder can review both the numbers and the discussion they should support.
 
    - Canonical vendor: Notion
+   - Cross-arena options: ChatGPT, Claude, Gemini (ai-assistants)
 6. **Founder reviews and edits** — human · ~30 min
 
    Review the draft’s explanation of revenue, spending and runway against the financial schedules and current strategy. Resolve inconsistent numbers with finance and make forecast assumptions explicit. Decide which sensitive details belong in the main report or restricted appendices, then settle the final version for directors with any material uncertainty clearly described.

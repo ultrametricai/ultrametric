@@ -30,7 +30,10 @@ Delaware's filing and payment run through the state's own portal (no public fili
 2. **Recompute the tax with the assumed-par-value method before panicking at the authorized-shares number** — agent-runnable · ~20 min
 
    - Do it yourself: [Delaware franchise tax calculator](https://corp.delaware.gov/frtaxcalc/)
-3. Run [File DE franchise tax](file-de-franchise-tax.md)
+3. **File the overdue annual report and pay online** — manual form/portal · ~30 min
+
+   - Runs the process [File DE franchise tax](file-de-franchise-tax.md)
+   - Do it yourself: [Delaware: pay franchise tax](https://corp.delaware.gov/paytaxes/)
 4. **Confirm good standing is restored on the state's entity search** — manual form/portal · ~10 min
 
    - Do it yourself: [Delaware entity status search](https://icis.corp.delaware.gov/ecorp2/services/t/getcompanystatus)

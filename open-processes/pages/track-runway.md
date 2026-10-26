@@ -63,6 +63,7 @@ With a bank (Mercury, Brex, Relay) or accounting tool (QuickBooks, Xero, Pilot) 
 
    - Vendor options: QuickBooks, Xero, Pilot, Google Sheets
    - Ranked market: [accounting](../../open-rankings/accounting)
+   - Cross-arena options: ChatGPT, Claude, Gemini (ai-assistants)
    - UM's runway module supplies a source-cited default-alive calculation and hiring scenarios. Check its month-zero convention and growth assumptions against the company's ledger before reuse. The module can stop at the first profitable month; retain the full requested cash calendar separately, including later commitments and irregular collections. The lore registry records competing views: pg-default-alive and sarasvathy-affordable-loss versus hoffman-speed-over-efficiency. Use those claims to make the owner's risk assumptions explicit. Mercury's documentation probes and MCP documentation are routes to investigate; they do not establish access to this company's balances.
 
 ## Artifacts

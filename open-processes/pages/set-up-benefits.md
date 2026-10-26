@@ -25,6 +25,7 @@ Gusto handles benefits enrollment. Plan selection and broker negotiation require
 
    Define the workforce, work locations, benefits goals and employer budget. Compare possible structures with the benefits adviser, including employee costs, administration and existing coverage or contract commitments. Gather only the workforce information needed for that assessment through private channels. Bring the decision makers the meaningful tradeoffs and unknowns before requesting specific plans or promising coverage.
 
+   - Cross-arena options: ChatGPT, Claude, Gemini (ai-assistants)
    - Sources: [DOL: Health plans](https://www.dol.gov/index.php/agencies/ebsa/employers-and-advisers/plan-administration-and-compliance/health-plans)
 2. **Get quotes from providers** — human · ~5 d · async wait
 
@@ -67,6 +68,7 @@ Gusto handles benefits enrollment. Plan selection and broker negotiation require
    Employees review the official materials and enter their own elections, dependent information or waivers in the enrollment system. Help with access and process questions without choosing coverage for them. Reconcile accepted elections with administrator or carrier confirmations and payroll deductions, following up on rejected or missing records. Give employees a way to check their own coverage result.
 
    - Canonical vendor: Gusto
+   - Cross-arena market: [workflow-automation](../../open-rankings/workflow-automation)
    - Sources: [DOL: Health plans](https://www.dol.gov/index.php/agencies/ebsa/employers-and-advisers/plan-administration-and-compliance/health-plans)
 
 ## By country

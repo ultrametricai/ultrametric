@@ -24,6 +24,8 @@ System generates NDA from template, populates company data, and sends via DocuSi
 1. **Generate NDA from template** — agent-runnable · ~1 min
 
    Choose the NDA template that fits the disclosure: parties, purpose and whether information flows one way or both. Populate the legal entities and identify changes needed to scope, permitted recipients or duration. Keep unresolved business and legal choices visible in the draft, with a redline showing departures from the company’s usual terms.
+
+   - Cross-arena options: ChatGPT, Claude, Gemini (ai-assistants)
 2. **Review NDA terms** — human · ~10 min · human approval required
 
    Check the NDA against the planned discussion: confidential-information scope and exclusions, permitted use, recipient access, compelled disclosure and return or destruction duties. Escalate unfamiliar restrictions or rights beyond confidentiality to counsel. Agree acceptable changes with the business owner and identify the signer, then preserve the final negotiated version for execution.

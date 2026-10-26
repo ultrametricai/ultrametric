@@ -31,6 +31,7 @@ Deel has API for contract and payment management. Compliance review needs human 
    Draft the engagement around specific deliverables, acceptance criteria, fees, currency, invoicing and expenses. Use the applicable agreement template and identify both legal parties, ownership of work product, confidentiality, data access and the change or termination process. Check that the wording matches how the contractor will actually work. Send unresolved commercial choices and unusual terms to the business owner and counsel.
 
    - Canonical vendor: Deel
+   - Cross-arena options: ChatGPT, Claude, Gemini (ai-assistants)
 3. **Review agreement with counsel** — human · ~2 d · async wait
 
    Give counsel the agreement, statement of work, classification assessment and countries involved. Highlight negotiated changes, access to customer data, IP expectations and differences between contract wording and daily working practice. Resolve legal questions with counsel and commercial tradeoffs with the business owner. The signing package should reflect those decisions, including any conditions that must be met before work starts.
@@ -50,6 +51,7 @@ Deel has API for contract and payment management. Compliance review needs human 
 
    - Verify: A completed W-8BEN (or W-8BEN-E for entities) is on file before the first payment goes out. ([www.irs.gov](https://www.irs.gov/forms-pubs/about-form-w-8-ben))
    - Canonical vendor: Deel
+   - Cross-arena market: [workflow-automation](../../open-rankings/workflow-automation)
    - Sources: [IRS: Forms and associated taxes for independent contractors](https://www.irs.gov/businesses/small-businesses-self-employed/forms-and-associated-taxes-for-independent-contractors)
 
 ## Related records

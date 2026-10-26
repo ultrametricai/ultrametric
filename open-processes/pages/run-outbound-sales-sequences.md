@@ -54,6 +54,7 @@ List building, sequencing, and scheduling run through CRM APIs behind a human se
    Include the verified sender name/company and reply route, plus a proposed interval and timezone for each touch. Use a simple progression: relevant observed problem and offer, a new useful detail, then a concrete next step or close. Reuse approved positioning and proof; flag missing evidence instead of inventing revenue loss, testimonials or customer results. If identity or cadence is unknown, deliver labeled drafts and list the exact decisions needed for activation.
 
    - Canonical vendor: HubSpot
+   - Cross-arena options: ChatGPT, Claude, Gemini (ai-assistants)
    - Sources: [CAN-SPAM Act: A Compliance Guide for Business](https://www.ftc.gov/business-guidance/resources/can-spam-act-compliance-guide-business)
 3. **Set up and launch the sequence** — agent-runnable · ~15 min · human approval required · hard to undo
 

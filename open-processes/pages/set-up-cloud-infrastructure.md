@@ -67,6 +67,7 @@ AWS has comprehensive APIs. System can provision via CloudFormation/API, but arc
    Match the database engine and version to the application's driver, migrations and expected data. For AWS, configure RDS using the chosen capacity, network access, backup and maintenance settings; another cloud needs its own database implementation. Provision within the database owner's access and spending authority. From the application environment, test a connection, a sample migration and a write/read cycle using nonproduction data. Exercise the intended restore procedure before relying on the database for recoverable production storage.
 
    - Canonical vendor: AWS
+   - Cross-arena market: [edge-platforms](../../open-rankings/edge-platforms)
    - Sources: [Getting started with Amazon RDS](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/CHAP_GettingStarted.html) · [AWS IAM security best practices](https://docs.aws.amazon.com/IAM/latest/UserGuide/best-practices.html)
 
    *This path ends here.*
@@ -77,6 +78,7 @@ AWS has comprehensive APIs. System can provision via CloudFormation/API, but arc
    Run a versioned container image with its actual startup command, ports, health check, configuration and resource needs. On AWS, translate these into the chosen ECS task and service setup; use the selected provider's deployment design elsewhere. Create resources within the service owner's authorized account and spending scope. Inspect startup failures and logs, reach the exposed endpoint, then replace the test image with another version and back again. Keep the image and configuration versions paired so recovery restores the intended application.
 
    - Canonical vendor: AWS
+   - Cross-arena market: [edge-platforms](../../open-rankings/edge-platforms)
    - Sources: [Getting started with Amazon ECS](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/getting-started.html)
    - Next: continue at step 7
 6. **Set up IAM roles** — agent-runnable · ~20 min · human approval required
@@ -97,6 +99,7 @@ AWS has comprehensive APIs. System can provision via CloudFormation/API, but arc
 
    - Produces: Cloud infrastructure
    - Canonical vendor: AWS
+   - Cross-arena market: [observability](../../open-rankings/observability)
    - Sources: [Google SRE implementing SLOs](https://sre.google/workbook/implementing-slos/) · [Sentry sensitive data scrubbing](https://docs.sentry.io/platforms/javascript/data-management/sensitive-data/)
 8. **Test deployment** — agent-runnable · ~30 min
 

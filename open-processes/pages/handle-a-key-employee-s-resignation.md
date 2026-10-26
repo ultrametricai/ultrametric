@@ -34,7 +34,9 @@ The conversations (resignation, transition, exit interview) are irreducibly huma
    - Do it yourself: [IRS Topic 427 (stock options)](https://www.irs.gov/taxtopics/tc427)
 4. **Put the exercise window in writing to the departing employee — a missed window is the classic post-exit dispute** — human · ~20 min · hard to undo
 5. **Plan the knowledge transfer: owned systems, in-flight work, credentials inventory, named successors** — human · ~1.5 h
-6. Run [Offboard employee](offboard-employee.md)
+6. **Offboard on the last day: access revocation, device return, final pay on the timeline your jurisdiction sets** — agent-runnable · ~45 min
+
+   - Runs the process [Offboard employee](offboard-employee.md)
 7. **Run the exit interview — the honest 30 minutes that tells you why people actually leave** — human · ~30 min
 8. **Update the cap table, the org chart, and the on-call rotations** — agent-runnable · ~20 min
 

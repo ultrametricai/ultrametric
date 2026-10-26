@@ -32,6 +32,7 @@ Immigration counsel drives strategy and the filings; the agent assembles the evi
 
    Organize the evidence around counsel’s checklist for the chosen classification. Collect the requested employer, role and candidate documents, identifying translations, evaluations or explanations still needed. Reconcile names, dates and employment facts across the packet, and distinguish supporting evidence from unverified claims. Give counsel an indexed binder and the specific gaps so the petition can be prepared from accurate facts.
 
+   - Cross-arena options: Claude, ChatGPT (ai-assistants)
    - Sources: [USCIS: Instructions for Form I-129](https://www.uscis.gov/sites/default/files/document/forms/i-129instr.pdf)
 3. **Make the labor-market filing the route requires** — manual form/portal · ~30 min · hard to undo
 
