@@ -174,7 +174,7 @@ Formation services drive the state filing but expose limited APIs. The agent che
 
 ### Estonia
 
-- The osaühing (OÜ) is itself the default startup entity: limited liability, no minimum capital beyond one cent per share, formed through the e-Business Register (law rules [ee.private-limited-company-registration](../../open-law/EE/ee-private-limited-company-registration.json), ee.osauhing-no-minimum-capital). ([e-Business Register](https://ariregister.rik.ee/eng))
+- The osaühing (OÜ) is itself the default startup entity: limited liability, no minimum capital beyond one cent per share, formed through the e-Business Register (law rules [ee.private-limited-company-registration](../../open-law/EE/ee-private-limited-company-registration.json), [ee.osauhing-no-minimum-capital](../../open-law/EE/ee-osauhing-no-minimum-capital.json)). ([e-Business Register](https://ariregister.rik.ee/eng))
 
 ## Artifacts
 

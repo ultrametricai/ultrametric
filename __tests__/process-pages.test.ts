@@ -41,6 +41,12 @@ describe('open-processes/pages', () => {
     expect(linkLawRules(unknown, ctx)).toBe(unknown)
   })
 
+  it('links every id in a comma-separated "law rules" citation list', () => {
+    const linked = linkLawRules('(law rules ee.social-tax-rate-and-monthly-return, ee.unemployment-insurance-premiums)', ctx)
+    expect(linked).toContain('[ee.social-tax-rate-and-monthly-return](../../open-law/EE/ee-social-tax-rate-and-monthly-return.json)')
+    expect(linked).toContain('[ee.unemployment-insurance-premiums](../../open-law/EE/ee-unemployment-insurance-premiums.json)')
+  })
+
   it('situation pages lead with their trigger; chains list their constituents in order', () => {
     const situation = ctx.sources.find((s) => !s.taskIds && s.record.kind === 'situation')!
     expect(renderProcessPage(situation, ctx)).toContain('**Trigger:**')

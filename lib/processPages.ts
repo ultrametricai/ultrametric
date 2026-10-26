@@ -130,16 +130,21 @@ export function buildPageContext(root: string = process.cwd()): PageContext {
 // Prose helpers
 // ---------------------------------------------------------------------------
 
-// Inline law citations follow the corpus convention "law rule <id>" where <id> is the dotted
-// rule-card id (us-de.franchise-tax-annual-report). Known ids become links to the rule card;
-// an id without a committed card stays plain text — a link is never fabricated.
-const LAW_RULE_RE = /law rules? ([a-z0-9][a-z0-9-]*(?:\.[a-z0-9][a-z0-9-]*)+)/g
+// Inline law citations follow the corpus convention "law rule <id>" — or "law rules <id>,
+// <id> and <id>" — where each <id> is a dotted rule-card id (us-de.franchise-tax-annual-report).
+// Every known id in the list becomes a link to its rule card; an id without a committed card
+// stays plain text — a link is never fabricated.
+const LAW_ID = String.raw`[a-z0-9][a-z0-9-]*(?:\.[a-z0-9][a-z0-9-]*)+`
+const LAW_RULE_RE = new RegExp(`law rules? ${LAW_ID}(?:(?:,\\s*|,?\\s+and\\s+)${LAW_ID})*`, 'g')
+const LAW_ID_RE = new RegExp(LAW_ID, 'g')
 
 export function linkLawRules(text: string, ctx: PageContext): string {
-  return text.replace(LAW_RULE_RE, (match, id: string) => {
-    const file = ctx.lawFiles.get(id)
-    return file ? match.replace(id, `[${id}](../../${file})`) : match
-  })
+  return text.replace(LAW_RULE_RE, (citation) =>
+    citation.replace(LAW_ID_RE, (id) => {
+      const file = ctx.lawFiles.get(id)
+      return file ? `[${id}](../../${file})` : id
+    }),
+  )
 }
 
 const ROUTE_LABELS: Record<string, string> = {
