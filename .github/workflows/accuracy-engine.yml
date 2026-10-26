@@ -121,8 +121,10 @@ jobs:
             # (PRs #430/#433 each needed a maintainer's '@greptileai review'), so the
             # comment requests it. Both follow-ups are best-effort; a failure leaves
             # the PR open for a manual merge.
-            gh pr merge --auto --merge "$PR_URL" \
-              || echo "auto-merge opt-in failed (org settings may block GITHUB_TOKEN; fallback: fine-grained PAT secret) — merge $PR_URL manually once checks pass"
+            # Auto-merge opt-in paused 2026-10-26: the required-status-checks ruleset is disabled,
+            # so auto-merge lands PRs without CI (observed on a merged bot PR). Re-enable this line
+            # once the ruleset requiring ci/validation/Greptile is active.
+            true # paused: gh pr merge --auto --merge "$PR_URL" || echo "auto-merge opt-in failed (org settings may block GITHUB_TOKEN; fallback: fine-grained PAT secret) — merge $PR_URL manually once checks pass"
             gh pr comment "$PR_URL" --body "@greptileai review" \
               || echo "Greptile review request failed — comment '@greptileai review' on $PR_URL manually"
           else
