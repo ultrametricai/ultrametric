@@ -91,6 +91,7 @@ The rules live in one directory per jurisdiction, named by the `jurisdiction` co
 | [AU](AU/) | Company registration and the ACN certificate, the resident-director and director-ID requirements, the annual review and solvency resolution, share-issue notices, ABN/GST/PAYG withholding registrations, the superannuation guarantee, the Fair Work Information Statement and the unfair-dismissal minimum period, the Privacy Act small-business threshold and notifiable data breaches, the ESS start-up concession |
 | [KR](KR/) | Stock-company incorporation registration and articles contents, the absence of a minimum capital, the representative director, the two-week registry change deadline, corporate tax return deadline and rates, VAT registration and return deadlines, the social-insurance establishment report, written terms of employment, the severance-pay floor, PIPA breach notification, foreign-investment thresholds. Korean originals on law.go.kr are the primary locators, with the KLRI English translation attached where verified |
 | [HK](HK/) | Company registration (Form NNC1) and the certificate of incorporation, the natural-person director, the company secretary, the Hong Kong registered office, the significant controllers register, the annual return (Form NAR1, 42 days), the business registration certificate window, two-tiered profits tax rates, employer's return duties (BIR56A, IR56E, IR56F), the MPF 60-day enrolment deadline, the Employment Ordinance continuous-contract test, the PDPO's voluntary breach-notification position |
+| [EE](EE/) | Private limited company (osaühing) registration through the e-Business Register, the absence of a minimum capital, the contact-person requirement for companies with a foreign address, the six-month annual-report deadline, the distributed-profits income tax, the VAT registration threshold, the written employment contract, employment-register entry before work starts, social tax and unemployment-insurance premiums, the e-residency digital identity, the Personal Data Protection Act national layer beside the EU rules. Estonian originals on riigiteataja.ee are the primary locators, with the state-published Riigi Teataja English translation attached (without legal force; its consolidation coverage is dated per citation) |
 
 ## Founder-journey workflow files
 
@@ -126,9 +127,11 @@ dated record validated against `schemas/citation.schema.json` with publisher, th
 section (`locator`), `issued_on` where known, `checked_on`, jurisdiction, and an HTTPS
 link. A legal rule may only cite `primary-*` authorities; provider blogs can explain
 practice but cannot establish law (`kind: secondary-practice`). A non-English primary
-source marks its language (`lang`, e.g. `ko` for the Korean originals on law.go.kr) and
+source marks its language (`lang`, e.g. `ko` for the Korean originals on law.go.kr, `et`
+for the Estonian originals on riigiteataja.ee) and
 may attach an official-translation pointer (`translation`, e.g. the KLRI English
-translation); the original stays the authoritative locator. The reading canon the
+translation, or Riigi Teataja's own state-published English translations); the original
+stays the authoritative locator. The reading canon the
 distilled laws cite lives in `open-lore/` (`library.json` and `citations.json`), not here.
 
 Contribute citations here:

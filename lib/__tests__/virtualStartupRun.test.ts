@@ -13,6 +13,7 @@ import {
   allChoiceCombos,
   DECISIONS,
   DEFAULT_CHOICES,
+  ENTITY_CODEC_SLOTS,
   journeyPhases,
   journeyTaskIds,
   orderByLikelyChoice,
@@ -586,8 +587,11 @@ describe('permalink — the whole run state round-trips through ?run= (v2), and 
     expect(decodeCombo(digitAt('entity', 'b'))!.entity).toBe('pte-ltd')
     expect(decodeCombo(digitAt('entity', 'c'))!.entity).toBe('pty-ltd')
     expect(decodeCombo(digitAt('entity', 'd'))!.entity).toBe('kr-chusik-hoesa')
+    // Hong Kong landed in its coordinated slot 14 ('e'), Estonia in slot 15 ('f')
+    // (ENTITY_CODEC_SLOTS — the maintainer-assigned slots of the parallel country lanes).
     expect(decodeCombo(digitAt('entity', 'e'))!.entity).toBe('hk-private-limited')
-    expect(decodeCombo(digitAt('entity', 'f'))).toBeNull()
+    expect(decodeCombo(digitAt('entity', 'f'))!.entity).toBe('ee-osauhing')
+    expect(decodeCombo(digitAt('entity', 'g'))).toBeNull()
     const entitySlot = DECISIONS.findIndex((d) => d.id === 'entity')
     expect(encodeCombo({ ...DEFAULT_CHOICES, entity: 'nz-ltd' })[entitySlot]).toBe('a')
     expect(encodeCombo({ ...DEFAULT_CHOICES, entity: 'pte-ltd' })[entitySlot]).toBe('b')
@@ -597,6 +601,16 @@ describe('permalink — the whole run state round-trips through ?run= (v2), and 
     expect(decodeCombo(encodeCombo({ ...DEFAULT_CHOICES, entity: 'kr-chusik-hoesa' }))!.entity).toBe('kr-chusik-hoesa')
     expect(encodeCombo({ ...DEFAULT_CHOICES, entity: 'hk-private-limited' })[entitySlot]).toBe('e')
     expect(decodeCombo(encodeCombo({ ...DEFAULT_CHOICES, entity: 'hk-private-limited' }))!.entity).toBe('hk-private-limited')
+    expect(encodeCombo({ ...DEFAULT_CHOICES, entity: 'ee-osauhing' })[entitySlot]).toBe('f')
+    expect(decodeCombo(encodeCombo({ ...DEFAULT_CHOICES, entity: 'ee-osauhing' }))!.entity).toBe('ee-osauhing')
+    // The slot table stays bijective over the real entity options: one slot per value, no
+    // value sharing a slot, and slots 0-13 equal to the options-array positions they shipped at.
+    const entityValues = DECISIONS.find((d) => d.id === 'entity')!.options.map((o) => o.value)
+    const slots = entityValues.map((v) => ENTITY_CODEC_SLOTS[v as keyof typeof ENTITY_CODEC_SLOTS])
+    expect(new Set(slots).size).toBe(entityValues.length)
+    for (const [i, v] of entityValues.entries()) {
+      if (i <= 13) expect(ENTITY_CODEC_SLOTS[v as keyof typeof ENTITY_CODEC_SLOTS], v).toBe(i)
+    }
     // Business model: subscriptions/invoices keep 0/1; marketplace/usage/ecommerce append.
     expect(decodeCombo(digitAt('product', '0'))!.product).toBe('subscriptions')
     expect(decodeCombo(digitAt('product', '1'))!.product).toBe('invoices')
