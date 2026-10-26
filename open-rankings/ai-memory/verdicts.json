@@ -1520,6 +1520,700 @@
     "evidenceIds": []
   },
   {
+    "productId": "honcho",
+    "storyId": "agent-self-managed-memory",
+    "verdict": "partial",
+    "quality": 5,
+    "confidence": "medium",
+    "rationale": "Honcho ships an official MCP server (hosted or local) that gives MCP-compatible agents persistent memory tools. Its API and SDKs let agents store messages, search, and query representations via `.chat()` and `context()`, so an agent can add to and search memory itself. However, its model relies on background reasoning over ingested messages rather than explicit agent-directed memory edits, and update/delete operations are not evidenced. missing for 10: documented agent-invoked update and delete of memories, an enumerated list of the MCP tools, independent or hands-on corroboration of agents self-managing memory mid-conversation.",
+    "evidenceIds": [
+      "honcho-docs-15",
+      "honcho-docs-16",
+      "honcho-gh-1",
+      "honcho-docs-2",
+      "honcho-docs-3",
+      "honcho-docs-1",
+      "honcho-gh-3"
+    ]
+  },
+  {
+    "productId": "honcho",
+    "storyId": "agentic-agent-docs",
+    "verdict": "full",
+    "quality": 8,
+    "confidence": "high",
+    "rationale": "A live probe confirms https://honcho.dev/llms.txt returns HTTP 200 with an agent-oriented summary of Honcho as a memory layer for AI agents. The same file indexes documentation pages such as 'Migrating from Mem0', so an agent can be pointed at it directly. Missing for 10: evidence of an llms-full.txt or per-page markdown docs (docs.md returned 404), a published OpenAPI spec (all candidate paths 404), and independent or hands-on corroboration of agents using the llms.txt.",
+    "evidenceIds": [
+      "honcho-probe-1",
+      "honcho-docs-20",
+      "honcho-probe-2",
+      "honcho-probe-3"
+    ]
+  },
+  {
+    "productId": "honcho",
+    "storyId": "agentic-ai-insights",
+    "verdict": "full",
+    "quality": 7,
+    "confidence": "medium",
+    "rationale": "Honcho's core function is AI insight from the user's own data. It reasons in the background over stored messages and events, and returns natural-language insights through `.chat()`, `context()` curated reasoning, and the CLI's `honcho peer chat`, which gives \"answers grounded in a peer's full representation — not retrieval, reasoning.\" These insights come through the API, SDK and CLI rather than an in-app user interface. Missing for 10: explicit proactive suggestions/recommendations, an in-product UI surface for viewing insights, independent or hands-on corroboration of insight quality.",
+    "evidenceIds": [
+      "honcho-gh-1",
+      "honcho-docs-1",
+      "honcho-docs-3",
+      "honcho-docs-11",
+      "honcho-docs-4"
+    ]
+  },
+  {
+    "productId": "honcho",
+    "storyId": "agentic-autonomous-automation",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Honcho does reason in the background: it ingests messages and a deriver/Dreamer process builds peer representations. That is fixed, internal memory processing, not a facility for users to define their own automations, schedules, or triggers. This is an adjacent feature that earns no credit, and the evidence shows no user-configurable background automations.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "honcho",
+    "storyId": "agentic-builtin-assistant",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Honcho is a memory layer for AI agents, and a built-in assistant is a plausible feature for a developer platform like this, so the axis applies. However, nothing in the evidence shows an in-product assistant that users can delegate tasks to. The `.chat()` and `honcho peer chat` features are natural-language queries over a peer's stored representation. They are a memory-retrieval primitive that developers build their own agents on, not an assistant that carries out tasks, so they earn no credit.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "honcho",
+    "storyId": "agentic-headless",
+    "verdict": "full",
+    "quality": 7,
+    "confidence": "medium",
+    "rationale": "Honcho's CLI is built for non-interactive use. Every command emits JSON when stdout isn't a TTY (or with --json) and returns structured errors with stable error codes. `honcho start` brings up the full stack via Docker, and `honcho doctor` checks connection and workspace health, which suits scripted runs. Python/TypeScript SDKs, an HTTP API, scoped API keys and a self-hostable core round out programmatic headless operation. Missing for 10: an explicit CI/automation guide or pipeline example, documented non-interactive auth (e.g., env-var credentials), and independent or hands-on corroboration.",
+    "evidenceIds": [
+      "honcho-docs-13",
+      "honcho-docs-10",
+      "honcho-docs-12",
+      "honcho-docs-14",
+      "honcho-docs-21",
+      "honcho-gh-3",
+      "honcho-docs-9",
+      "honcho-docs-16"
+    ]
+  },
+  {
+    "productId": "honcho",
+    "storyId": "agentic-mcp-client",
+    "verdict": "na",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Honcho is a memory and state layer that agents call into. It is not an agent or host application that consumes external tools, so plugging MCP servers in as an MCP client is a category error for this product type. The evidence shows only the opposite role: Honcho ships its own MCP server (hosted at mcp.honcho.dev or run locally) for other AI tools to connect to. That server-side capability does not transfer to this client-side story.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "honcho",
+    "storyId": "agentic-mcp-server",
+    "verdict": "full",
+    "quality": 8,
+    "confidence": "high",
+    "rationale": "Honcho documents an official MCP server that gives any MCP-compatible AI tool persistent memory. It offers a hosted endpoint (mcp.honcho.dev) plus local options over stdio, Streamable HTTP or Docker, and markets cross-tool use with Claude Code, Cursor, Codex and custom agents. Missing for 10: independent or hands-on corroboration of the MCP server working, and documented detail of the exposed tool set or auth setup in the evidence.",
+    "evidenceIds": [
+      "honcho-docs-15",
+      "honcho-docs-16",
+      "honcho-docs-18"
+    ]
+  },
+  {
+    "productId": "honcho",
+    "storyId": "agentic-nl-commands",
+    "verdict": "partial",
+    "quality": 5,
+    "confidence": "medium",
+    "rationale": "Honcho documents natural-language querying of its memory: the `.chat()` API, the `honcho peer chat` CLI command, and natural-language insights from peer representations. It also ships an official MCP server, so MCP-compatible AI tools can read and write Honcho memory on a user's behalf. However, the evidence covers natural-language *querying* of memory, not operating or administering the product itself (workspaces, sessions, configuration) through natural-language commands. Missing for 10: documented natural-language control of product operations beyond memory queries, examples of MCP tool coverage for management actions, and independent or hands-on corroboration.",
+    "evidenceIds": [
+      "honcho-docs-3",
+      "honcho-docs-11",
+      "honcho-gh-1",
+      "honcho-docs-15",
+      "honcho-docs-16",
+      "honcho-docs-17"
+    ]
+  },
+  {
+    "productId": "honcho",
+    "storyId": "agentic-official-cli",
+    "verdict": "full",
+    "quality": 9,
+    "confidence": "medium",
+    "rationale": "Honcho documents an official CLI at honcho.dev/cli. It covers local stack startup (`honcho start`), reasoning queries against a peer's representation (`honcho peer chat`) and health checks (`honcho doctor`). It also has agent-friendly behavior: JSON output when stdout isn't a TTY or `--json` is set, structured errors with stable codes, and a config file shared with plugins and SDKs. Missing for 10: independent or hands-on corroboration that the CLI works as documented.",
+    "evidenceIds": [
+      "honcho-docs-10",
+      "honcho-docs-11",
+      "honcho-docs-12",
+      "honcho-docs-13",
+      "honcho-docs-14"
+    ]
+  },
+  {
+    "productId": "honcho",
+    "storyId": "agentic-public-api",
+    "verdict": "full",
+    "quality": 8,
+    "confidence": "high",
+    "rationale": "Honcho publishes an API reference with autogenerated endpoint pages and interactive examples, including guidance for building integrations in unsupported languages. It also offers Python/TypeScript SDKs over documented operations such as context(), chat(), and search, plus scoped API keys for programmatic access. A public llms.txt adds an agent-readable docs entry point. missing for 10: no machine-readable OpenAPI spec found at standard paths (all probed paths returned 404), no independent or hands-on corroboration of API use.",
+    "evidenceIds": [
+      "honcho-docs-7",
+      "honcho-docs-8",
+      "honcho-gh-1",
+      "honcho-gh-3",
+      "honcho-docs-1",
+      "honcho-docs-3",
+      "honcho-docs-21",
+      "honcho-probe-1",
+      "honcho-probe-3"
+    ]
+  },
+  {
+    "productId": "honcho",
+    "storyId": "agentic-scoped-keys",
+    "verdict": "partial",
+    "quality": 5,
+    "confidence": "medium",
+    "rationale": "Honcho's changelog documents named-scope API keys: a key bound to one named scope and limited to recall and message ingestion, including creating new member sessions. That is a first-party least-privilege credential an agent could be given, but the evidence is a single changelog line with no detail on how keys are issued or how fine-grained permissions can be. Missing for 10: documentation of the key issuance workflow (CLI/API/dashboard), configurable permission granularity beyond recall/ingestion, revocation/rotation and expiry controls, independent or hands-on corroboration.",
+    "evidenceIds": [
+      "honcho-docs-21"
+    ]
+  },
+  {
+    "productId": "honcho",
+    "storyId": "agentic-sdks",
+    "verdict": "full",
+    "quality": 7,
+    "confidence": "medium",
+    "rationale": "Honcho's own GitHub README names official Python and TypeScript SDKs as the way to add memory to a product. The docs reference SDK methods such as `context()` and `.chat()`, say SDKs share the CLI config file, and point to API-reference guidance for languages without an SDK, implying first-party coverage for the supported ones. missing for 10: detailed SDK reference documentation (installation, package names, versioning), SDKs beyond Python/TypeScript, independent or hands-on corroboration of SDK quality.",
+    "evidenceIds": [
+      "honcho-gh-3",
+      "honcho-docs-14",
+      "honcho-docs-7",
+      "honcho-docs-1",
+      "honcho-docs-3"
+    ]
+  },
+  {
+    "productId": "honcho",
+    "storyId": "agentic-webhooks",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Honcho is an API-backed memory service, so outbound webhooks are a fair capability to ask about. The evidence pack never mentions registrable webhook callbacks or event subscriptions. 'Store messages and events' describes inbound ingestion, and the MCP server and CLI JSON output are adjacent features that earn no credit.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "honcho",
+    "storyId": "api-interactive-docs",
+    "verdict": "full",
+    "quality": 7,
+    "confidence": "medium",
+    "rationale": "Honcho's API reference states that its endpoint pages are autogenerated and include interactive examples for testing, which directly matches an explorable reference with runnable examples. The supporting evidence is a single first-party line, and probes found no public OpenAPI spec at the standard paths, which is not a contradiction. missing for 10: hands-on or independent confirmation that the interactive examples actually run, detail on which endpoints and SDK languages the examples cover, and a publicly reachable OpenAPI spec.",
+    "evidenceIds": [
+      "honcho-docs-8",
+      "honcho-docs-7"
+    ]
+  },
+  {
+    "productId": "honcho",
+    "storyId": "api-machine-spec",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "The API reference says its endpoint pages are autogenerated and mentions building integrations in unsupported languages, which hints that a spec exists behind the docs. No evidence documents a downloadable OpenAPI or equivalent file, and probes of the standard OpenAPI/Swagger paths at the root domain all returned 404. llms.txt is an adjacent docs index, not an API spec.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "honcho",
+    "storyId": "api-sandbox",
+    "verdict": "partial",
+    "quality": 5,
+    "confidence": "medium",
+    "rationale": "Honcho's docs describe Workspaces as top-level containers that isolate different applications or environments (honcho-docs-5). Its own CLI's `honcho start` spins up the full stack (API, deriver, Postgres, Redis) locally via Docker (honcho-docs-10, honcho-docs-9), which gives a first-party way to test without touching production data. There is no documented dedicated sandbox or test mode, so this is environment separation rather than a purpose-built sandbox. Missing for 10: a dedicated sandbox/test environment or test-mode API keys, documented guidance on dev-vs-prod workspace separation, and independent or hands-on corroboration.",
+    "evidenceIds": [
+      "honcho-docs-5",
+      "honcho-docs-10",
+      "honcho-docs-9"
+    ]
+  },
+  {
+    "productId": "honcho",
+    "storyId": "api-versioning-policy",
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "The API reference and guides live under a versioned /docs/v3/ path, which implies a versioned API. A public changelog notes backward-compatible, opt-in changes (\"off by default so today's behaviour is unchanged\"), and the CLI promises stable error codes. There is no documented deprecation policy, and the evidence only implies explicit API versioning semantics rather than stating them. missing for 10: a documented deprecation policy (timelines, sunset notices), explicit API versioning semantics (version headers/paths, support windows), and independent corroboration of version stability.",
+    "evidenceIds": [
+      "honcho-docs-7",
+      "honcho-docs-8",
+      "honcho-docs-23",
+      "honcho-docs-13"
+    ]
+  },
+  {
+    "productId": "honcho",
+    "storyId": "assistant-memory-plugins",
+    "verdict": "full",
+    "quality": 7,
+    "confidence": "medium",
+    "rationale": "Honcho ships an official MCP server, hosted at mcp.honcho.dev or run locally, that gives any MCP-compatible AI tool persistent memory. It also offers a Claude Code plugin and a shared ~/.honcho/config.json used by host integrations. Its docs explicitly claim Claude Code, Cursor, Codex and custom agents all read the same understanding of the user. missing for 10: no evidence of ChatGPT connectivity, no independent or hands-on corroboration of cross-tool shared memory.",
+    "evidenceIds": [
+      "honcho-docs-15",
+      "honcho-docs-16",
+      "honcho-docs-17",
+      "honcho-docs-18",
+      "honcho-docs-14",
+      "honcho-docs-19"
+    ]
+  },
+  {
+    "productId": "honcho",
+    "storyId": "async-batch-processing",
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "Honcho stores messages and has its 'deriver' process them in the background, so asynchronous memory processing is its own documented capability (gh-1, docs-10). Nothing in the evidence shows batch ingestion, ingestion at scale, or any way to check the status or progress of background operations. 'honcho doctor' only verifies connection and workspace health, which is an adjacent control and earns no credit. Missing for 10: documented batch/bulk message ingestion endpoint, evidence of ingestion at scale, API or CLI to check status of background deriver/memory operations, and independent corroboration.",
+    "evidenceIds": [
+      "honcho-gh-1",
+      "honcho-docs-10"
+    ]
+  },
+  {
+    "productId": "honcho",
+    "storyId": "automatic-memory-extraction",
+    "verdict": "full",
+    "quality": 7,
+    "confidence": "medium",
+    "rationale": "Honcho's docs say users store raw messages and Honcho reasons over them in the background to build peer representations (gh-1). A dedicated 'deriver' process runs alongside the API (docs-10), and answers come from a reasoned representation rather than raw retrieval (docs-11, docs-1). The Dreamer working-memory feature hints at consolidation but is opt-in and off by default (docs-23). Missing for 10: explicit documentation of how salient facts are selected and extracted, detail on how background consolidation works (Dreamer is opt-in and thinly described), and independent or hands-on corroboration of recall quality.",
+    "evidenceIds": [
+      "honcho-gh-1",
+      "honcho-docs-10",
+      "honcho-docs-11",
+      "honcho-docs-1",
+      "honcho-docs-23",
+      "honcho-docs-4"
+    ]
+  },
+  {
+    "productId": "honcho",
+    "storyId": "automation-bulk-operations",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Bulk operations are a fair question for an API-driven memory platform like Honcho, but the evidence never mentions batch or bulk endpoints, multi-item CLI commands, or mass create/update/delete across messages, peers, or sessions. JSON CLI output and SDKs are only building blocks a user could script around, so they earn no credit.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "honcho",
+    "storyId": "automation-rules-engine",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Honcho is a memory-layer platform, so user-defined event-triggered automation is a fair axis. The evidence only shows built-in background reasoning on stored messages (the deriver) and opt-in Dreamer features. Nothing shows user-defined rules, triggers, or actions that fire on events.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "honcho",
+    "storyId": "automation-scheduled-jobs",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Honcho is a memory platform with background reasoning (the deriver and the opt-in Dreamer), so automation depth is a fair question for it. However, the evidence shows no user-facing way to schedule recurring jobs or workflows. Background derivation and dreaming are internal processing behaviors, not schedulable jobs a user can define, so they earn no credit.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "honcho",
+    "storyId": "automation-versioned-workflows",
+    "verdict": "na",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Honcho is a memory and context layer for AI agents. It stores messages, reasons in the background, and serves peer representations. It is not an automation or workflow product, so there are no user-authored automations to version, review, or roll back, and nothing in the evidence shows it ships such a capability.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "honcho",
+    "storyId": "business-data-ingestion",
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "The only first-party evidence of non-chat ingestion is the GitHub README's mention of storing \"messages and events.\" This suggests Honcho takes in more than chat transcripts, but nothing documents ingesting documents, JSON payloads, or business data. Statements about modeling \"any entity\" and running \"alongside your files\" describe what Honcho represents and how it fits alongside other tools, not what it ingests, so they earn no credit. Missing for 10: documented document/file ingestion, explicit JSON or structured-data ingestion APIs, business-data import paths, and any hands-on or independent corroboration.",
+    "evidenceIds": [
+      "honcho-gh-1"
+    ]
+  },
+  {
+    "productId": "honcho",
+    "storyId": "custom-ontology-schema",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Honcho is a memory layer, so customizing the memory schema is a fair question for it. However, the evidence shows only a fixed model: workspaces, peers and sessions, with background reasoning over peer representations. The claim of state about \"any entity\" and the retrieval-shaping controls (search, token budgets, peer scoping) are adjacent features, not documented ways to define custom entity types, edge types or an ontology.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "honcho",
+    "storyId": "entity-graph-memory",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Honcho documents per-entity state ('build and maintain state about any entity'), peer representations, and multi-peer perspective modeling. Nothing in the evidence shows memories stored as a knowledge graph of entities and relationships, or graph traversal for multi-hop questions. Its reasoning-based peer representations are an adjacent memory architecture, not the graph-entity capability this story asks for.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "honcho",
+    "storyId": "framework-integrations",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "The evidence shows general Python/TypeScript SDKs and a claim that Honcho can be queried from 'any model or framework.' These are developer building blocks, not documented first-party integrations. The named integrations (an MCP server and a Claude Code plugin) target AI tools rather than agent frameworks. Nothing in the pack names LangChain, LangGraph, CrewAI, or the Vercel AI SDK.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "honcho",
+    "storyId": "hybrid-filtered-recall",
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "Honcho's docs claim developers can \"shape retrieval with search, token budgets, summaries, and peer scoping,\" and its README lists search results as a queryable output. That gives some first-party control beyond a single fixed similarity call, with peer scoping acting as a coarse scope filter. Nothing in the pack describes arbitrary metadata filters, keyword or hybrid search modes, or reranking. missing for 10: documented metadata filter syntax, keyword/hybrid search mode options, reranking support, API-level detail on search parameters, independent or hands-on corroboration.",
+    "evidenceIds": [
+      "honcho-docs-2",
+      "honcho-gh-1"
+    ]
+  },
+  {
+    "productId": "honcho",
+    "storyId": "local-embedded-mode",
+    "verdict": "partial",
+    "quality": 5,
+    "confidence": "medium",
+    "rationale": "Honcho documents self-hosting: the open-source core can run on your own infrastructure [honcho-docs-9], `honcho start` brings up the API, deriver, Postgres and Redis locally via Docker [honcho-docs-10], and the MCP server can run locally instead of mcp.honcho.dev [honcho-docs-16]. However, its background reasoning depends on an LLM, and the only model evidence lists OpenAI, Anthropic and a vague 'custom' option [honcho-docs-6], so a fully cloud-free setup with local models is not demonstrated. Missing for 10: an embedded in-process mode, explicit local-model (e.g., Ollama/vLLM) support for the deriver and chat, and hands-on confirmation that it runs fully offline.",
+    "evidenceIds": [
+      "honcho-docs-9",
+      "honcho-docs-10",
+      "honcho-docs-16",
+      "honcho-docs-6"
+    ]
+  },
+  {
+    "productId": "honcho",
+    "storyId": "long-term-memory-add-search",
+    "verdict": "full",
+    "quality": 7,
+    "confidence": "medium",
+    "rationale": "Honcho documents storing conversation messages and querying them later through search results, session context, and peer representations (honcho-gh-1, honcho-docs-2). Its SDKs are positioned for adding memory (honcho-gh-3), and it is described as a persistent memory layer whose context carries across sessions and tools (honcho-docs-1, honcho-docs-18, honcho-probe-1). missing for 10: explicit documentation that search is semantic/vector-based, detailed search API docs, independent or hands-on corroboration of recall quality.",
+    "evidenceIds": [
+      "honcho-gh-1",
+      "honcho-docs-2",
+      "honcho-docs-1",
+      "honcho-gh-3",
+      "honcho-docs-18",
+      "honcho-probe-1",
+      "honcho-docs-15"
+    ]
+  },
+  {
+    "productId": "honcho",
+    "storyId": "low-latency-retrieval-claims",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Honcho makes qualitative speed claims: context() 'returns instantly' and is 'efficient enough to use at every turn'. The evidence pack contains no documented latency targets, SLOs, benchmarks, or measured p50/p95 numbers to back those claims. Retrieval latency is a fair axis for a memory layer, so the absence of evidence yields none rather than na.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "honcho",
+    "storyId": "memory-access-controls",
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "Honcho documents named-scope API keys bound to one scope for recall (read) and message ingestion (write), and workspaces as isolation containers, which is a first-party but coarse form of access control. Peer scoping in retrieval shapes results rather than enforcing permissions, so it earns no credit. missing for 10: roles or policy/ACL models, fine-grained per-peer/session read-write permissions, audit logging of memory access, detailed docs or independent corroboration of the scoped-key model.",
+    "evidenceIds": [
+      "honcho-docs-21",
+      "honcho-docs-5"
+    ]
+  },
+  {
+    "productId": "honcho",
+    "storyId": "memory-deletion-erasure",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Honcho is a memory layer for AI agents, so on-demand deletion of user memories is an applicable axis. However, nothing in the evidence documents delete operations at the single-memory, per-peer, or workspace level, or any erasure workflow. Self-hosting to keep data on your own infrastructure and scoped API keys are adjacent controls, not deletion capabilities.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "honcho",
+    "storyId": "memory-expiration-ttl",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Memory expiry and decay is a fair axis for a memory layer like Honcho, but nothing in the evidence documents TTLs, expiration dates, or recency weighting for memories. The nearest items are retrieval controls (search, token budgets, summaries, peer scoping) and the opt-in Dreamer working memory, and neither is documented as ageing out stale facts.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "honcho",
+    "storyId": "memory-export-portability",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Nothing in the evidence documents a memory export capability: no export endpoint, no dump command, and no documented portable format for representations or messages. Self-hosting on your own Postgres, JSON-formatted CLI output, query APIs and a 'Migrating from Mem0' import guide are all adjacent features or workarounds, not a first-party export of the memory store.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "honcho",
+    "storyId": "memory-update-reconcile",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "The evidence describes background reasoning over stored messages, a deriver process, and agents that 'build and maintain state' about entities. None of it documents how Honcho handles contradicting information: there is no evidence of updating, superseding, or merging memories when they conflict. The opt-in 'Dreamer working memory' mention is too vague to count as a documented conflict-resolution capability.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "honcho",
+    "storyId": "multi-language-sdks",
+    "verdict": "full",
+    "quality": 7,
+    "confidence": "medium",
+    "rationale": "The GitHub README directs developers adding memory to a product to a \"Python or TypeScript SDK\" (honcho-gh-3), so official SDKs exist in both required languages. The docs also point to SDK-style memory calls such as `context()` and `.chat()`, describe SDKs sharing the same config file, and reference building integrations in \"unsupported languages\", which implies a defined set of supported SDK languages. However, nothing shows the two SDKs expose equivalent memory APIs, and the memory methods are never tied to a specific language. Missing for 10: evidence of API parity between the Python and TypeScript SDKs, per-language SDK reference docs or examples, and independent or hands-on corroboration of either SDK.",
+    "evidenceIds": [
+      "honcho-gh-3",
+      "honcho-docs-7",
+      "honcho-docs-14",
+      "honcho-docs-1",
+      "honcho-docs-3"
+    ]
+  },
+  {
+    "productId": "honcho",
+    "storyId": "multimodal-memory-ingestion",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Storing files such as PDFs or images as memory inputs is a fair capability to ask of a memory layer, so the axis applies. However, the evidence only documents ingesting messages and events, and nothing shows file, PDF or image upload or recall from them. The line that Honcho 'runs alongside your existing tools, models, and files' describes how it fits next to other tools, not file ingestion, so it earns no credit.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "honcho",
+    "storyId": "openness-api-parity",
+    "verdict": "partial",
+    "quality": 6,
+    "confidence": "medium",
+    "rationale": "Honcho is API-first. Its core operations are documented through an API reference with autogenerated, interactive endpoint pages, plus Python/TypeScript SDKs (storing messages, querying representations, context(), .chat(), search). A CLI emits JSON with stable error codes, an MCP server is available, and named-scope API keys are documented. However, nothing states that every UI or dashboard action is mirrored in the API, and no UI is described to compare against. missing for 10: explicit statement or evidence of API/UI parity (including admin, workspace and key management), a published OpenAPI spec at a discoverable path (probes returned 404), independent corroboration.",
+    "evidenceIds": [
+      "honcho-gh-1",
+      "honcho-docs-1",
+      "honcho-docs-2",
+      "honcho-docs-3",
+      "honcho-docs-7",
+      "honcho-docs-8",
+      "honcho-gh-3",
+      "honcho-docs-13",
+      "honcho-docs-15",
+      "honcho-docs-21",
+      "honcho-probe-3"
+    ]
+  },
+  {
+    "productId": "honcho",
+    "storyId": "openness-full-export",
+    "verdict": "partial",
+    "quality": 4,
+    "confidence": "low",
+    "rationale": "Honcho's open-source core can be self-hosted with its own Postgres via `honcho start`, so data can stay on your own infrastructure (honcho-docs-9, honcho-docs-10). Its CLI emits structured JSON (honcho-docs-13), which gives a plausible but undocumented path to getting data out. There is no documented export feature, so leaving with all of your data depends on owning the database rather than on an explicit portability tool. Missing for 10: a documented bulk export of messages, peers, sessions and derived representations; a specified open export format; a documented migration-out path; independent or hands-on corroboration.",
+    "evidenceIds": [
+      "honcho-docs-9",
+      "honcho-docs-10",
+      "honcho-docs-13"
+    ]
+  },
+  {
+    "productId": "honcho",
+    "storyId": "openness-open-license",
+    "verdict": "full",
+    "quality": 7,
+    "confidence": "medium",
+    "rationale": "First-party docs state the core is open source at github.com/plastic-labs/honcho and can be self-hosted, and llms.txt describes Honcho as an open-source memory layer; the public GitHub repo is cited directly. The 'core' qualifier suggests some components may not be open. Missing for 10: the specific license is never named, it is unclear which non-core parts are excluded, and there is no independent confirmation of license terms.",
+    "evidenceIds": [
+      "honcho-docs-9",
+      "honcho-probe-1",
+      "honcho-gh-1",
+      "honcho-docs-10"
+    ]
+  },
+  {
+    "productId": "honcho",
+    "storyId": "openness-self-host",
+    "verdict": "full",
+    "quality": 8,
+    "confidence": "high",
+    "rationale": "Honcho's docs say the core is open source on GitHub and that users can \"run the whole thing yourself and keep your data on your own infrastructure.\" The CLI's `honcho start` brings up the API, deriver, Postgres, and Redis via Docker, and the MCP server can also run locally instead of the hosted endpoint. missing for 10: independent or hands-on corroboration of a self-hosted deployment, detailed production self-hosting documentation (configuration, scaling, upgrades).",
+    "evidenceIds": [
+      "honcho-docs-9",
+      "honcho-docs-10",
+      "honcho-docs-16",
+      "honcho-probe-1",
+      "honcho-gh-1"
+    ]
+  },
+  {
+    "productId": "honcho",
+    "storyId": "per-user-memory-isolation",
+    "verdict": "full",
+    "quality": 7,
+    "confidence": "medium",
+    "rationale": "Honcho documents workspaces as top-level containers that isolate different applications or environments. Peers model users, agents and other entities, and retrieval can be shaped with peer scoping. Named-scope API keys bind access to one scope for recall and ingestion, which gives a documented enforcement mechanism against cross-tenant leakage. Missing for 10: explicit documentation that per-user/per-agent peer data is guaranteed isolated from other peers' retrieval, detail on how scoped keys enforce boundaries, and independent or hands-on corroboration of isolation.",
+    "evidenceIds": [
+      "honcho-docs-5",
+      "honcho-docs-2",
+      "honcho-docs-4",
+      "honcho-docs-21",
+      "honcho-gh-2"
+    ]
+  },
+  {
+    "productId": "honcho",
+    "storyId": "privacy-data-residency",
+    "verdict": "partial",
+    "quality": 5,
+    "confidence": "medium",
+    "rationale": "Honcho's own docs say the open-source core can be self-hosted so you keep data on your own infrastructure (honcho-docs-9). `honcho start` runs the API, Postgres and Redis locally via Docker (honcho-docs-10), and the MCP server can also run locally instead of on mcp.honcho.dev (honcho-docs-16). That gives full control over where data lives, but only by running it yourself; there is no evidence that the hosted service lets you pick a region. missing for 10: region selection on the managed cloud, documented data-residency or compliance commitments, independent corroboration of self-hosted residency control.",
+    "evidenceIds": [
+      "honcho-docs-9",
+      "honcho-docs-10",
+      "honcho-docs-16"
+    ]
+  },
+  {
+    "productId": "honcho",
+    "storyId": "privacy-no-training",
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "The only relevant evidence is that Honcho's core is open source and can be fully self-hosted, keeping data on your own infrastructure (honcho-docs-9, honcho-docs-10). That indirectly keeps data out of the vendor's hands, but nothing in the pack states a no-training policy or a training opt-out. Missing for 10: an explicit first-party statement that hosted customer data is not used for model training, a documented training opt-out control for the hosted service, guidance on training exposure via the third-party LLM providers Honcho calls, and independent corroboration.",
+    "evidenceIds": [
+      "honcho-docs-9",
+      "honcho-docs-10"
+    ]
+  },
+  {
+    "productId": "honcho",
+    "storyId": "privacy-retention-controls",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Honcho is a memory layer that stores user data, so retention and deletion controls are a fair question to ask of it. The evidence pack documents no deletion endpoints, retention policies, TTLs or purge commands. Self-hosting to keep data on your own infrastructure, workspace isolation and named-scope API keys are adjacent controls, not first-party retention or deletion capabilities, so they earn no credit.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "honcho",
+    "storyId": "privacy-telemetry-optout",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Opting out of telemetry is a fair question for a memory-layer service and CLI, but the evidence pack documents no telemetry or usage-tracking opt-out setting, environment variable, or policy. Self-hosting to keep data on your own infrastructure (honcho-docs-9) is an adjacent deployment option, not a telemetry control. The off-by-default Dreamer features (honcho-docs-23) are unrelated product features, so neither earns credit.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "honcho",
+    "storyId": "prompt-ready-context-block",
+    "verdict": "full",
+    "quality": 8,
+    "confidence": "medium",
+    "rationale": "Honcho documents a single `context()` call that returns curated reasoning plus conversation history, efficient enough to use every turn (honcho-docs-1, honcho-gh-1). Its docs also advertise shaping retrieval with token budgets and summaries, returning 'the 10K tokens you need, not the 100K you don't' (honcho-docs-2, honcho-docs-24). Missing for 10: API-reference detail tying the token-budget parameter explicitly to `context()`, documentation of the prompt-ready output format, and independent or hands-on corroboration beyond marketing pages.",
+    "evidenceIds": [
+      "honcho-docs-1",
+      "honcho-docs-2",
+      "honcho-docs-24",
+      "honcho-gh-1"
+    ]
+  },
+  {
+    "productId": "honcho",
+    "storyId": "published-memory-benchmarks",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Benchmark results are a fair question for a memory-layer product like Honcho, so the axis applies. The evidence pack has no published LongMemEval, LoCoMo, or other memory-quality benchmark results. The only accuracy-related item is a marketing line about optimizing 'savings and accuracy' (honcho-docs-24), which cites no benchmark data and does not satisfy the story.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "honcho",
+    "storyId": "self-host-oss-deployment",
+    "verdict": "full",
+    "quality": 9,
+    "confidence": "high",
+    "rationale": "First-party docs say the core is open source on GitHub and can be run entirely on your own infrastructure (honcho-docs-9). The CLI's `honcho start` brings up the API, deriver, Postgres and Redis via Docker (honcho-docs-10), and the MCP server can also run locally or in Docker (honcho-docs-16). Missing for 10: independent or hands-on corroboration of self-host deployment, and production deployment guidance beyond the local Docker start.",
+    "evidenceIds": [
+      "honcho-docs-9",
+      "honcho-docs-10",
+      "honcho-docs-16",
+      "honcho-probe-1",
+      "honcho-gh-1"
+    ]
+  },
+  {
+    "productId": "honcho",
+    "storyId": "session-summarization",
+    "verdict": "full",
+    "quality": 7,
+    "confidence": "medium",
+    "rationale": "Honcho documents a context() call that returns curated reasoning plus conversation history 'to maintain continuity,' and lets developers shape retrieval with summaries and token budgets. Session context is also exposed as a queryable output, which directly supports an agent resuming a prior conversation. missing for 10: detailed docs on how session/thread summaries are generated and retrieved (API shape, cross-session scope), and independent or hands-on corroboration.",
+    "evidenceIds": [
+      "honcho-docs-1",
+      "honcho-docs-2",
+      "honcho-gh-1",
+      "honcho-docs-24"
+    ]
+  },
+  {
+    "productId": "honcho",
+    "storyId": "shared-team-memory",
+    "verdict": "partial",
+    "quality": 4,
+    "confidence": "low",
+    "rationale": "Honcho documents several of its own pieces that point toward shared-versus-private memory. It can model state about groups as well as users and agents. Its multi-peer perspective tracks what one peer knows about another, which implies per-peer visibility. Retrieval supports peer scoping, and named-scope API keys can be bound to a single scope that has member sessions. However, none of the evidence explicitly describes choosing which memory to share across a team or group while keeping other memory private. missing for 10: explicit documentation of shared/team memory with selective sharing, a documented privacy or visibility model for per-peer private memory, access-control details beyond scoped keys, independent or hands-on corroboration.",
+    "evidenceIds": [
+      "honcho-docs-4",
+      "honcho-gh-2",
+      "honcho-docs-2",
+      "honcho-docs-21",
+      "honcho-docs-5"
+    ]
+  },
+  {
+    "productId": "honcho",
+    "storyId": "temporal-fact-memory",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Honcho is an AI memory layer, so tracking when facts became valid or invalid is a fair question for it. The evidence covers background reasoning, peer representations, context retrieval and Dreamer working memory. Nothing in the pack mentions temporal validity windows, fact invalidation, or telling current facts apart from outdated ones.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "honcho",
+    "storyId": "transparent-usage-pricing",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Published pricing is a fair question for a hosted memory service like Honcho, so the axis applies. However, the evidence pack has no pricing page, free tier, or per-unit rates. Token-budget savings claims and the open-source self-hosting option are adjacent points, not published pricing, so they earn no credit.",
+    "evidenceIds": []
+  },
+  {
+    "productId": "honcho",
+    "storyId": "voice-realtime-memory",
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "The evidence pack has no documented integration with any real-time voice pipeline such as LiveKit, Pipecat or ElevenLabs. The documented integrations cover MCP, Claude Code and general Python/TypeScript SDKs only. The claim that context() is fast enough to call 'at every turn' is a general latency statement and a developer building block, not a voice integration, so it earns no credit.",
+    "evidenceIds": []
+  },
+  {
     "productId": "letta",
     "storyId": "agent-self-managed-memory",
     "verdict": "partial",
