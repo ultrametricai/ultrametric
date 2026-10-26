@@ -145,6 +145,8 @@ export const PROCESS_ICONS: Record<string, string> = {
   form_002: pi('id-card', 'amber'), // 🆔 Get EIN
   form_005: pi('map', 'amber'), // 🗺️ Register state taxes
   qs_044: pi('mailbox', 'amber'), // 📬 Set up mailing address
+  'set-up-a-non-profit': pi('gift', 'amber'), // 🎁 Set up a non-profit (the giving concept, formation family)
+  'set-up-a-business-phone-number': pi('handset', 'amber'), // 📞 Set up a business phone number
   brand_001: pi('bulb', 'amber'), // 💡 Generate a company name
   brand_002: pi('palette', 'amber'), // 🎨 Generate a brand logo
   brand_003: pi('swatches', 'amber'), // 🌈 Pick a brand color palette

@@ -36,7 +36,7 @@ describe('schema round-trip', () => {
     const parsed = ProcessTaskSchema.array().parse(RAW)
     const count = parsed.flatMap((t) => t.dag.nodes).filter((n) => n.verify).length
     expect(count).toBe(verified.length)
-    expect(loadProcesses(DATA_DIR).length).toBe(147)
+    expect(loadProcesses(DATA_DIR).length).toBe(149)
   })
 
   it('a node re-parses identically through DagNodeSchema (round-trip, nothing dropped)', () => {
