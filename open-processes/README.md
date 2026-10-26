@@ -44,7 +44,7 @@ regenerate. Drift gate: `__tests__/process-pages.test.ts`.
 
 <!-- process-pages:index:start (generated — scripts/generate-process-pages.ts) -->
 
-One page per canonical record: 127 processes, 22 situations, 24 chains.
+One page per canonical record: 129 processes, 22 situations, 24 chains.
 
 ### Processes
 
@@ -131,9 +131,11 @@ One page per canonical record: 127 processes, 22 situations, 24 chains.
 - [Set company OKRs](pages/set-company-okrs.md)
 - [Set the annual budget & get board approval](pages/set-the-annual-budget-get-board-approval.md)
 - [Set up a 401(k)](pages/set-up-a-401-k.md)
+- [Set up a business phone number](pages/set-up-a-business-phone-number.md)
 - [Set up a code hosting org](pages/set-up-a-code-hosting-org.md)
 - [Set up a CRM](pages/set-up-a-crm.md)
 - [Set up a data room](pages/set-up-a-data-room.md)
+- [Set up a non-profit](pages/set-up-a-non-profit.md)
 - [Set up a password manager](pages/set-up-a-password-manager.md)
 - [Set up a project tracker](pages/set-up-a-project-tracker.md)
 - [Set up a team wiki](pages/set-up-a-team-wiki.md)
