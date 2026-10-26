@@ -4,7 +4,8 @@
 // append-business-phone-docs-evidence.py supplement) re-judged the whole ringcentral pack.
 // Stability policy (CONTRIBUTING.md "Stability policy"): on re-judges, any verdict flip that
 // cites NO NEW evidence is reverted as noise. This script applies that ruling against the
-// pre-fix baseline ref: flips citing at least one of the new evidence ids stand
+// pre-fix baseline ref: changes (verdict flips AND quality-only moves, the existing
+// settlement scripts' contract) citing at least one of the new evidence ids stand
 // (agentic-scoped-keys partial→full cites the scopes supplement); flips citing none revert to
 // the baseline verdict row, and the matching judge cache files are patched in place (same
 // hash, reverted verdict object) so a future `pnpm engine judge` run doesn't resurrect the
@@ -49,7 +50,7 @@ let kept = 0
 const settled = current.map((row) => {
   if (row.productId !== PRODUCT) return row
   const base = byKey.get(`${row.productId}:${row.storyId}`)
-  if (!base || base.verdict === row.verdict) return row
+  if (!base || (base.verdict === row.verdict && base.quality === row.quality)) return row
   const citesNew = row.evidenceIds.some((id) => newEvidenceIds.has(id))
   if (citesNew) {
     kept += 1
