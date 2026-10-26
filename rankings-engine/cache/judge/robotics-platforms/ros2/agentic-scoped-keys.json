@@ -1,18 +1,18 @@
 {
-  "hash": "3edc1c847c487e89694f405283f33ada70106390fe0e9b90ec3361f28b260c3d",
+  "hash": "03d56c03754e3ed0f57e85c7ed94c1a270042b72be5c31b3fcc74e4c0597f471",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 4,
     "confidence": "low",
-    "rationale": "ROS 2 has no API-credential system for AI agents. It does offer SROS2/DDS-Security: you create a keystore, and each security enclave carries a single communication policy that authenticates participants and controls communications across the graph. An agent running as a ROS node could therefore get a scoped identity, which partially matches the least-privilege intent. Missing for 10: agent-oriented API credential issuance, documented per-topic/service permission granularity in the evidence, credential rotation/revocation details, and independent or hands-on corroboration.",
+    "rationale": "ROS 2 ships its own credential mechanism through SROS2. You create a keystore with `ros2 security create_keystore`, and each security enclave encapsulates a single policy for protecting communications, with participant authentication and control over communications across the ROS graph. That makes per-participant, policy-scoped credentials plausible for a node acting as an agent. However, the evidence never shows fine-grained least-privilege permissions such as per-topic or per-service allow/deny, and it says nothing about agent-oriented credential issuance or API tokens. Missing for 10: documented per-topic/service permission scoping, credential issuance framed for AI agents, revocation/expiry of scoped credentials, independent or hands-on corroboration.",
     "evidenceIds": [
       "ros2-docs-13",
       "ros2-docs-15",
       "ros2-docs-42",
-      "ros2-docs-49",
-      "ros2-docs-29",
-      "ros2-docs-12"
+      "ros2-docs-65",
+      "ros2-docs-40",
+      "ros2-docs-29"
     ],
     "productId": "ros2",
     "storyId": "agentic-scoped-keys"
