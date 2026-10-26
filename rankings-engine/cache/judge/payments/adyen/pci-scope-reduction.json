@@ -1,18 +1,17 @@
 {
-  "hash": "ca96b5a3df0a3520d561e88f1401b96c78c8fb8dd2badf06f3b71e3485c91b38",
+  "hash": "678730d61c2382ee6775667158e9681cb7d506ddb5ca79cd690ebd85110a3c2a",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 3,
     "confidence": "low",
-    "rationale": "The evidence shows a client-side integration model: a /sessions flow where data goes to your client app, client SDKs for web and mobile, and a client key restricted to allowed origins. Tokenization appears only in agentic contexts: agent platforms 'securely tokenize shopper payment credentials and pass tokens to merchants', ACP delegated payments use encrypted payment data, and Google agent flows pass an encrypted token to Adyen. None of this explicitly states that raw card data bypasses merchant servers or reduces PCI DSS scope. Missing for 10: explicit PCI DSS scope-reduction documentation (e.g. SAQ A eligibility), a statement that card data never touches merchant servers, documented tokenization or client-side encryption for standard card checkout, independent corroboration.",
+    "rationale": "Adyen's sessions flow has the merchant server make only a /sessions request while payment handling runs in the client-side application, authenticated by a client key. This implies card data is captured client-side rather than on merchant servers. Adyen also documents tokenizing and encrypting payment credentials, but only for agentic-commerce flows. missing for 10: explicit documentation that raw card data never reaches merchant servers, any statement on PCI DSS scope reduction or SAQ eligibility, documented card tokenization or stored-payment tokens for standard checkout, and independent or hands-on corroboration.",
     "evidenceIds": [
       "adyen-docs-1",
-      "adyen-docs-14",
       "adyen-docs-44",
-      "adyen-docs-46",
+      "adyen-docs-14",
       "adyen-supp-agentic-protocols-both-sides",
-      "adyen-supp-google-ucp"
+      "adyen-docs-46"
     ],
     "productId": "adyen",
     "storyId": "pci-scope-reduction"

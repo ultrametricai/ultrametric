@@ -1,14 +1,14 @@
 {
-  "hash": "f24f181ed8ba08bab54c912e4d557c23cc58d6a805474d8f84501263be883bcd",
+  "hash": "c78cb981289513e5b55b6cc6416ff0831939c390e113cdbdc805174b39d69e09",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Adyen's first-party docs say the API supports idempotency, so a request can be retried multiple times while the action is performed only once (adyen-docs-25). Developers enable this by sending an idempotency-key header (adyen-docs-4). Only two short doc snippets cover it, so it is unclear whether 'any' request is covered. missing for 10: which endpoints support idempotency, key lifetime/expiry and collision behavior, explicit handling of concurrent or in-flight retries, independent or hands-on corroboration that duplicate charges are prevented.",
+    "rationale": "Adyen's first-party docs describe idempotent processing through an `idempotency-key` request header, and state that the API lets you \"retry a request multiple times while only performing the action once.\" That is the core of the story: safe retries without duplicate charges. The evidence is only two short snippets, though. missing for 10: confirmation that every API endpoint (not just payments) honors the key, documented key retention/expiry window and behavior on conflicting reuse, independent or hands-on corroboration that retries never duplicate charges.",
     "evidenceIds": [
-      "adyen-docs-25",
-      "adyen-docs-4"
+      "adyen-docs-4",
+      "adyen-docs-25"
     ],
     "productId": "adyen",
     "storyId": "idempotent-api-retries"

@@ -1,16 +1,15 @@
 {
-  "hash": "3fbf25d1f360fbae8b33e53775ce96de4aaa70fa6549a4df08a45bcdb4f34403",
+  "hash": "c6086fa1dc1719049672de64df42533254972fb80e5a111f734ca9e6bfb63d5f",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Stripe documents real bulk ingestion through the Agentic Commerce Suite's v2 Product Catalog Import API, which takes CSV feeds up to 4 GB in upsert or replace mode and returns per-row error reports. It also supports bulk reads and exports through stripe_analytics SQL and stripe_report CSV report runs, and bulk fulfillment by listing CheckoutSessions. However, the general agent tooling (MCP stripe_api_write, CLI) operates one API call at a time, and the bulk-write path is limited to catalog data in specific regions. Missing for 10: a general bulk-mutation API or tool for refunds, subscriptions, customers and invoices; agent-facing batch operations through MCP or CLI; independent or hands-on corroboration of bulk workflows.",
+    "rationale": "Stripe documents a real first-party bulk mechanism: the v2 Product Catalog Import API accepts CSV feeds up to 4 GB in upsert or replace mode, reports completion through webhooks, and returns a per-row error CSV. Two narrower bulk behaviors are also documented: report runs that produce downloadable CSVs, and token billing that can apply updated prices to all customers automatically. However, these are confined to specific products (catalog imports are also region-limited) rather than a general bulk-operation facility. missing for 10: general-purpose batch create/update/delete across core resources (customers, subscriptions, refunds, invoices), bulk actions exposed through the MCP/CLI agent tooling, independent or hands-on corroboration.",
     "evidenceIds": [
       "stripe-supp-acs-catalog-import",
-      "stripe-supp-acs-orders-attribution",
       "stripe-supp-analytics-ai",
-      "stripe-supp-mcp-tools"
+      "stripe-supp-token-billing"
     ],
     "productId": "stripe",
     "storyId": "automation-bulk-operations"
