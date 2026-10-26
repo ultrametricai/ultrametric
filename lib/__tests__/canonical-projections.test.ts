@@ -117,8 +117,11 @@ describe('canonical diagram generator', () => {
 
 describe('canonical catalog consumer contract', () => {
   it('retains every historical identity and the existing situation classification', () => {
-    expect(catalog.map(item => item.record.id).sort()).toEqual([...importedIdentities.ids].sort())
-    expect(catalog).toHaveLength(173)
+    // Every historical (imported) identity is retained; records authored after the import
+    // (the non-profit and business-phone-number processes) sit beside them.
+    const retained = new Set(catalog.map(item => item.record.id))
+    for (const id of importedIdentities.ids) expect(retained.has(id), `historical identity ${id}`).toBe(true)
+    expect(catalog).toHaveLength(175)
     expect(catalog.filter(item => item.taskIds)).toHaveLength(24)
     const situations = catalog.filter(item => item.record.metadata.kind === 'situation')
     expect(situations).toHaveLength(22)
