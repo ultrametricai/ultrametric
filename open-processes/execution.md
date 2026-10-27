@@ -29,6 +29,10 @@ A preparation tool does not establish execution of a filing, signing act or
 external submission. A vendor list, historical route, audit prediction or hypothetical
 API does not establish an agent interface. An API source for one provider does not prove
 support for the other providers listed on the step. Verify the selected method before use.
+An unselected provider does not by itself require a null category when primary sources
+establish the same complete execution mechanism for every retained alternative. Cite
+each alternative's operation coverage and preserve its limitations; do not infer shared
+capabilities from a vendor list or from one provider's documentation.
 
 Check the full operation sequence against the retained provider and method. Include
 record updates, remote verification, export resource types and release steps when the

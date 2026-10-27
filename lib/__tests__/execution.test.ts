@@ -98,6 +98,30 @@ describe('execution assessments', () => {
     const german = part('form_001', 'n4').options.find(option => option.id === 'germany-notary-gmbh')!
     expect(german.parts.find(part => part.id === 'de2')!.metadata.execution).toMatchObject({ category: null, reviewRequired: true })
   })
+  it('uses the surrounding selected provider without substituting a reference vendor', () => {
+    const routing = part('opp_011', 'n3')
+    const assessment = routing.metadata.execution as Execution
+    expect(assessment.category).toBe('agent-computer-use')
+    expect(assessment.evidence).toContain('open-processes/set-up-email-routing-on-your-domain.json#/parts/1/references')
+    expect(assessment.evidence.some(source => source.includes('fastmail.help'))).toBe(true)
+    // The general Microsoft reference remains source content, not proof that
+    // this process's selected Fastmail mailbox is a Microsoft mailbox.
+    expect(routing.references.some(ref => ref.kind === 'url' && ref.url.includes('learn.microsoft.com'))).toBe(true)
+    expect(assessment.evidence.some(source => source.includes('learn.microsoft.com'))).toBe(false)
+  })
+  it('covers conversion operations rather than treating a forecast as an issued holding', () => {
+    const conversion = part('fund_006', 'n5').metadata.execution as Execution
+    expect(conversion).toMatchObject({ category: 'agent-computer-use', reviewRequired: true })
+    expect(conversion.evidence.some(source => source.includes('how-to-convert-convertibles-into-certificates'))).toBe(true)
+    expect(conversion.evidence.some(source => source.includes('portfolio-management-safes-and-notes'))).toBe(false)
+    // A provider listing does not override an explicit unsupported-operation
+    // boundary for a different kind of conversion.
+    for (const step of ['n5', 'n7']) {
+      const llc = part('form_012', step).metadata.execution as Execution
+      expect(llc).toMatchObject({ category: null, reviewRequired: true })
+      expect(llc.evidence).toContain('https://help.clerky.com/article/2662-existing-entity')
+    }
+  })
   it('does not infer an online medium from responsibility or reuse an unrelated probe', () => {
     for (const [process, step] of [['sit_020', 'n4'], ['sit_022', 'n2']]) {
       expect(part(process, step).metadata.execution).toMatchObject({ category: null, basis: 'unresolved', reviewRequired: true })
@@ -106,6 +130,28 @@ describe('execution assessments', () => {
     expect(availability.evidence).toContain('https://icis.corp.delaware.gov/Ecorp/NameReserv/NameReservation.aspx')
     expect(availability.rationale).toMatch(/image-code challenge/)
     expect(availability.rationale).toMatch(/existing-entity lookup probe did not test availability/)
+  })
+  it('requires evidence across retained alternatives when their shared mechanism resolves a scope', () => {
+    for (const [process, step] of [['qs_015', 'n3'], ['fund_005', 'n3']]) {
+      const assessment = part(process, step).metadata.execution as Execution
+      expect(assessment).toMatchObject({ category: 'agent-computer-use', reviewRequired: true })
+      for (const provider of ['support.google.com', 'help.dropbox.com', 'www.notion.com']) {
+        expect(assessment.evidence.some(source => source.includes(provider))).toBe(true)
+      }
+    }
+    // Sharing evidence does not establish the separate document-migration operation.
+    expect(part('qs_015', 'n4').metadata.execution).toMatchObject({ category: null })
+  })
+  it('separates provider paper fulfilment from company physical work and retains release approval', () => {
+    const filing = part('tax_003', 'n5')
+    expect(filing.metadata).toMatchObject({ approvalRequired: true, execution: { category: 'agent-computer-use', reviewRequired: true } })
+    expect((filing.metadata.execution as Execution).evidence).toContain('https://support.gusto.com/article/106622233100000/distribute-1099-nec-forms-to-your-contractors')
+    expect(part('qs_043', 'jwy1').metadata.execution).toMatchObject({ category: 'human-offline' })
+    const email = part('growth_002', 'n4')
+    expect(email.metadata.approvalRequired).toBe(true)
+    const evidence = (email.metadata.execution as Execution).evidence
+    expect(evidence.some(source => source.includes('support.google.com/mail'))).toBe(true)
+    expect(evidence).toContain('https://knowledge.hubspot.com/tasks/create-tasks')
   })
   it('keeps board distribution unresolved when sending evidence omits access and questions', () => {
     const board = part('fin_010', 'n4')
