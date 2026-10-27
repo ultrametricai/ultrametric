@@ -19,7 +19,7 @@ the export revision and catalog hash identify the current authored content.
 Canonical records contain agent-agnostic process meaning. Private consumers preserve and
 pin operational bindings separately; `toolCall` and `functionCalls` are rejected at every
 canonical scope. Missing classifications and durations stay unknown. A complete duration
-aggregate exists only when every contributing estimate is known. Manifest version 2 allows
+aggregate exists only when every contributing estimate is known. Manifest version 3 allows
 missing estimates and unclassified steps, and keeps unbound machine steps approval-gated.
 
 The normal `pnpm shared:export --output <catalog.json>` format-1 bundle includes ordinary
@@ -581,31 +581,38 @@ The diagram is `form_001` (Incorporate C-Corp) from canonical `incorporate-c-cor
 
 ## Process manifests
 
-[`lib/processManifest.ts`](../lib/processManifest.ts) builds public manifests from the
-process projections and committed arena data. The site serves one at
-`/processes/{slug}/manifest.json` and composes playbooks at
-`/processes/chains/{chain}/manifest.json`. Each embedded process retains its own manifest URL.
-The builders are checked in
-[`lib/__tests__/processManifest.test.ts`](../lib/__tests__/processManifest.test.ts).
+[`lib/processManifest.ts`](../lib/processManifest.ts) builds public guidance manifests.
+The website serves `/processes/{slug}/manifest.json` and
+`/processes/chains/{chain}/manifest.json`. Each chain member keeps its own manifest URL.
 
-`MANIFEST_VERSION` identifies the contract. Removing or renaming fields, changing their
-types or meaning, or changing step-kind or approval semantics requires a version bump.
-Additive optional fields keep the version. Consumers must reject unsupported versions
-and ignore unknown optional fields. A manifest URL serves the current version; breaking
-changes must update builders, routes, consumer checks, tests and this contract together.
+`manifestVersion: 3` removes `steps[].toolCall`, `steps[].calls`, and vendor
+`mcpEndpoint` bindings. The website also omits canonical operation declarations.
+`executionInstructions.status` is `not-published`; consumers requiring invocation
+instructions must select an authorized private guide version explicitly. An empty
+or absent binding does not establish that a step is executable or read-only.
 
-Version 2 preserves missing estimates as an absent `estimatedMinutes` and unknown execution
-modes as `kind: "unclassified"`. Consumers preserve these unknowns and require classification
-before execution. Public canonical records contain no private operation bindings; private
-consumers join their version-pinned bindings before deriving call-based approval behavior.
+Stable record/part IDs, graph data, source provenance, vendor assessments, route
+assessments, risk, signature requirements, and human approval requirements remain.
+Public vendor research can still describe API/MCP capabilities and cite evidence.
+
+Consumers must reject unsupported manifest versions. URLs serve the current version;
+there is no public compatibility endpoint for retired execution instructions. Additive
+optional fields keep the version; removing fields or changing their meaning requires
+a version bump. Missing estimates and unclassified steps remain unknown; consumers
+require classification before execution.
 
 Executors must obtain explicit human approval for steps marked `approvalRequired`.
-Explicit corpus gates and medium/high risk require approval for every route. Otherwise,
-computer-use and unclassified steps require approval, and API steps require it unless
-recorded calls exist and every call is read-only. Human steps keep the human as actor;
-irreducible judgment, identity and legally required signatures remain human work.
-Serving a manifest does not execute or authorize its steps. The provenance source
-`productarena` is an immutable identifier.
+Explicit corpus gates and medium/high risk require approval for every route.
+Computer-use, unclassified and unbound API steps require approval. Human steps keep
+the human as actor; irreducible judgment, identity and legally required signatures
+remain human work. Serving a manifest does not execute or authorize its steps.
+The provenance source `productarena` remains unchanged.
+
+The legacy `open-rankings/step-prompts.json` export is a retirement notice. Its loader
+and generator fail with `STEP_PROMPTS_RETIRED`; canonical guidance replaces public
+prompt lookup. This change does not retract historical public Git copies or change
+private guide versions. Generic reuse/context improvements, including PR #421, remain
+canonical process work and do not require regenerating execution prompts.
 
 ## Chains
 

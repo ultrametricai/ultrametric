@@ -1,5 +1,4 @@
 import { classifyGapStep } from './gapClosers'
-import { mcpEndpointFor } from './mcpEndpoints'
 import {
   chainTasks, findProcessBySlug, loadChains, processSlug, stepVendorOptions, vendorChipInfo,
   type DagNode, type ProcessChain, type ProcessTask, type VendorChipInfo,
@@ -10,13 +9,10 @@ import { SITE_URL } from './site'
 // The contract and versioning rules live in open-processes/README.md#process-manifests.
 // Breaking shape or approval-semantic changes require a MANIFEST_VERSION bump.
 
-export const MANIFEST_VERSION = 2 as const
+export const MANIFEST_VERSION = 3 as const
+export const EXECUTION_INSTRUCTIONS = { status: 'not-published', replacement: 'explicit-private-guide-version' } as const
 
-// Executor-facing step kind, mapped from the corpus route:
-//   agent  → 'api'          (drive it through recorded API/tool calls — MCP-first)
-//   form   → 'computer-use' (manual portal/form work — a browser agent behind an approval gate)
-//   person → 'human'        (a human or a supervised computer-use agent — render as a checklist
-//                            item; steps flagged legalSignature are strictly human)
+// Route assessments describe capability; they do not supply invocation instructions.
 export type ManifestStepKind = 'api' | 'computer-use' | 'human' | 'unclassified'
 
 export function stepKind(route: DagNode['route']): ManifestStepKind {
@@ -25,25 +21,14 @@ export function stepKind(route: DagNode['route']): ManifestStepKind {
   return route === 'person' ? 'human' : 'unclassified'
 }
 
-// One vendor that can perform a step, resolved against the live market. Tracked vendors carry
-// the judged product id, arena, agent-readiness, an allowlisted remote MCP endpoint when the
-// vendor publishes one (lib/mcpEndpoints.ts — the executor's MCP-first path), and the judged
-// product page. Untracked vendors (doola, irs…) appear honestly with nulls — the executor
-// still knows the market includes them.
+// Vendor assessments remain source-backed public metadata.
 export interface ManifestVendorOption {
   vendor: string
   name: string
   productId: string | null
   arena: string | null
   agentReady: number | null
-  mcpEndpoint: string | null
   paProductUrl: string | null
-}
-
-export interface ManifestCall {
-  method: string
-  type?: 'rest' | 'sdk' | 'graphql' | 'manual'
-  description?: string
 }
 
 export interface ManifestStep {
@@ -52,8 +37,6 @@ export interface ManifestStep {
   kind: ManifestStepKind
   // Original corpus routing, kept alongside `kind` so a consumer can audit the mapping.
   route: DagNode['route']
-  toolCall: string | null
-  calls: ManifestCall[]
   vendorOptions: ManifestVendorOption[]
   // Deep link to perform the step / vendor signup page — forward-compat corpus fields
   // (see DagNodeSchema), passed through whenever present.
@@ -94,11 +77,13 @@ export interface ProcessManifestBody {
 }
 
 export interface ProcessManifest extends ProcessManifestBody {
+  executionInstructions: typeof EXECUTION_INSTRUCTIONS
   manifestVersion: typeof MANIFEST_VERSION
   provenance: ManifestProvenance
 }
 
 export interface ChainManifest {
+  executionInstructions: typeof EXECUTION_INSTRUCTIONS
   manifestVersion: typeof MANIFEST_VERSION
   chain: { slug: string; name: string; tagline: string; manifestUrl: string }
   processes: ProcessManifestBody[]
@@ -163,7 +148,6 @@ function optionFromChip(info: VendorChipInfo): ManifestVendorOption {
     productId: info.productId,
     arena: info.arenaId,
     agentReady: info.agentReady,
-    mcpEndpoint: info.arenaId && info.productId ? mcpEndpointFor(info.arenaId, info.productId) : null,
     paProductUrl: info.arenaId && info.productId
       ? `${SITE_URL}/arena/${info.arenaId}/product/${info.productId}`
       : null,
@@ -197,8 +181,6 @@ export function buildManifestStep(node: DagNode, dir?: string): ManifestStep {
     title: node.label,
     kind: stepKind(node.route),
     route: node.route,
-    toolCall: node.toolCall ?? null,
-    calls: node.functionCalls ?? [],
     vendorOptions: stepVendorChips(node, dir).map(optionFromChip),
     approvalRequired: stepApprovalRequired(node),
     riskLevel: node.riskLevel ?? null,
@@ -243,6 +225,7 @@ function buildProcessBody(task: ProcessTask, dir?: string): ProcessManifestBody 
 export function buildProcessManifest(task: ProcessTask, dir?: string): ProcessManifest {
   return {
     manifestVersion: MANIFEST_VERSION,
+    executionInstructions: EXECUTION_INSTRUCTIONS,
     ...buildProcessBody(task, dir),
     provenance: manifestProvenance(),
   }
@@ -256,6 +239,7 @@ export function processManifestBySlug(slug: string, dir?: string): ProcessManife
 export function buildChainManifest(chain: ProcessChain, dir?: string): ChainManifest {
   return {
     manifestVersion: MANIFEST_VERSION,
+    executionInstructions: EXECUTION_INSTRUCTIONS,
     chain: {
       slug: chain.id,
       name: chain.name,

@@ -83,7 +83,7 @@ Curated layers:
 
 Process-step wiring:
 
-- `step-prompts.json`, `step-vendor-calls.json`, `process-step-stories.json` — the links
+- `step-vendor-calls.json`, `process-step-stories.json` — the links
   from founder-process steps to markets, products, stories, and runnable calls.
 - `graph.json`, `story-graph.json`, `story-edges.json` — the story graph and its
   cross-story dependency edges.
@@ -191,3 +191,8 @@ and `processors.json` are hardware spec-comparison prototypes curated from vendo
 sheets, outside the judged markets.
 
 This area's maturity grade and known gaps are tracked in [`coverage/index.json`](../coverage/index.json).
+
+`step-prompts.json` is a retirement notice. Its legacy execution prompts and generator
+are retired; the loader throws `STEP_PROMPTS_RETIRED`. Read canonical guidance in
+`open-processes/`; select necessary private instructions by explicit guide version.
+Historical Git commits can still contain the retired export.
