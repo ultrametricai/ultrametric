@@ -76,6 +76,7 @@ Requires:
 
 - Part of the chain [Month-end close](month-end-close.md)
 - Part of the chain [The agent-run back office](agent-run-back-office.md)
+- Runs as a step of [Cure a venture-debt covenant default](cure-a-venture-debt-covenant-default.md)
 
 ---
 

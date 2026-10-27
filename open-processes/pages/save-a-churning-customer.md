@@ -106,6 +106,7 @@ Requires:
 ## Related records
 
 - Part of the chain [Run support & keep customers](run-support-and-keep-customers.md)
+- Runs as a step of [Absorb the loss of your biggest customer](absorb-the-loss-of-your-biggest-customer.md)
 
 ---
 

@@ -93,6 +93,10 @@ Assessing the exposure, choosing the strategy, and writing the response letter a
 
 - A demand letter is a pre-suit claim under the Law of Obligations Act: it sets its own deadline, replies usually go through counsel, and an unanswered claim ripens into a court action filed through the courts' e-File system. ([Estonian courts (e-File)](https://www.kohus.ee/en))
 
+## Related records
+
+- Runs as a step of [Respond to a patent demand letter](respond-to-a-patent-demand-letter.md)
+
 ---
 
 Source record: [`open-processes/respond-to-a-cease-and-desist.json`](../respond-to-a-cease-and-desist.json)

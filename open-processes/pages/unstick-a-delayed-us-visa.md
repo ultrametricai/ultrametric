@@ -99,6 +99,10 @@ The status portals are captcha-gated government surfaces, the 221(g) response an
 
 - Not applicable: Inherently US-inbound: the situation is about USCIS and consular queues. Estonian work and residence tracks are their own processes through the Police and Border Guard Board. ([Police and Border Guard Board](https://www.politsei.ee/en))
 
+## Related records
+
+- Runs as a step of [Handle an employee's visa denial or RFE](handle-an-employee-s-visa-denial-or-rfe.md)
+
 ---
 
 Source record: [`open-processes/unstick-a-delayed-us-visa.json`](../unstick-a-delayed-us-visa.json)

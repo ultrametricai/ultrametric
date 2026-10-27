@@ -112,6 +112,7 @@ Requires:
 ## Related records
 
 - Part of the chain [Get the first 10 customers](get-first-10-customers.md)
+- Runs as a step of [Absorb the loss of your biggest customer](absorb-the-loss-of-your-biggest-customer.md)
 
 ---
 
