@@ -1,0 +1,125 @@
+{
+  "module": "capTable",
+  "entrypoint": "buildCapTable",
+  "implementation": {
+    "file": "lib/openstartup/capTable.ts",
+    "sha256": "c6e7bc8dcfd17dad1e618ca5e2a20f7cc2ab574dbd50f385192550d61b3e540f"
+  },
+  "readme": "open-modules/conformance/README.md",
+  "cases": [
+    {
+      "name": "yc-appendix-ii-example-1",
+      "description": "YC Appendix II Example 1 end to end: $5,000,000 Series A at $15,000,000 pre with a 1,695,000-share pool increase. Company Capitalization 10,000,000 / 0.85 = 11,764,705; the SAFEs convert at their caps into 588,235 (5%) and 1,176,470 (10%) shares; PPS = 15,000,000 / 13,459,705 = $1.1144; the round sells 4,486,719 shares with Investor B's pro rata carved out at 448,671; final table 17,946,424 fully diluted with founders at 51.54% and the pool at 10.00%. Expected pins the sixth (final) snapshot; the five earlier snapshots match any value.",
+      "source": "YC Post-Money Safe User Guide, Feb 2023 (PDF linked from https://www.ycombinator.com/documents), Appendix II Example 1",
+      "tolerance": 0.0005,
+      "inputs": [
+        [
+          {
+            "kind": "found",
+            "founders": [
+              {
+                "name": "Founders",
+                "shares": 9250000
+              }
+            ],
+            "poolShares": 750000
+          },
+          {
+            "kind": "grant",
+            "name": "Options outstanding",
+            "shares": 300000
+          },
+          {
+            "kind": "grant",
+            "name": "Promised options",
+            "shares": 350000
+          },
+          {
+            "kind": "safe",
+            "name": "Investor A",
+            "amount": 200000,
+            "cap": 4000000
+          },
+          {
+            "kind": "safe",
+            "name": "Investor B",
+            "amount": 800000,
+            "cap": 8000000,
+            "proRata": true
+          },
+          {
+            "kind": "priced",
+            "name": "Series A",
+            "preMoney": 15000000,
+            "newMoney": 5000000,
+            "poolShares": 1695000
+          }
+        ]
+      ],
+      "expected": {
+        "snapshots": [
+          {},
+          {},
+          {},
+          {},
+          {},
+          {
+            "fullyDilutedShares": 17946424,
+            "rows": [
+              {
+                "id": "founder-Founders",
+                "shares": 9250000,
+                "pct": 51.5423
+              },
+              {
+                "id": "pool",
+                "shares": 1795000,
+                "pct": 10.002
+              },
+              {
+                "id": "grant-Options outstanding",
+                "shares": 300000
+              },
+              {
+                "id": "grant-Promised options",
+                "shares": 350000
+              },
+              {
+                "id": "safe-Investor A",
+                "shares": 588235
+              },
+              {
+                "id": "safe-Investor B",
+                "shares": 1625141
+              },
+              {
+                "id": "round-Series A",
+                "shares": 4038048
+              }
+            ],
+            "round": {
+              "pps": 1.1144,
+              "roundShares": 4486719,
+              "poolIncreaseShares": 1695000,
+              "conversions": [
+                {
+                  "safeName": "Investor A",
+                  "shares": 588235,
+                  "method": "cap",
+                  "effectivePrice": 0.34
+                },
+                {
+                  "safeName": "Investor B",
+                  "shares": 1176470,
+                  "method": "cap",
+                  "effectivePrice": 0.68,
+                  "proRataShares": 448671
+                }
+              ]
+            }
+          }
+        ]
+      }
+    }
+  ]
+}

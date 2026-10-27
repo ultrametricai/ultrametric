@@ -1,0 +1,76 @@
+{
+  "module": "election83b",
+  "entrypoint": "compare83bScenario",
+  "implementation": {
+    "file": "lib/openstartup/election83b.ts",
+    "sha256": "8ee5030f2dafe9d7c3a4959bf45d728822833d1a2061f2158602ad32b3edcd8b"
+  },
+  "readme": "open-modules/conformance/README.md",
+  "cases": [
+    {
+      "name": "rev-proc-2012-29-examples-1-and-2",
+      "description": "Examples 1 and 2 ($25,000 paid at $25,000 FMV): with the election, $0 income at transfer and nothing at vesting, basis $25,000, holding period from transfer; without it, $15,000 compensation at vesting ($40,000 FMV minus $25,000 paid) and basis $40,000.",
+      "source": "Rev. Proc. 2012-29 § 5 (https://www.irs.gov/pub/irs-drop/rp-12-29.pdf): 25,000 shares transferred 2012-04-01, vesting 2014-04-01 at a $40,000 FMV, Examples 1 and 2",
+      "inputs": [
+        {
+          "shares": 25000,
+          "pricePaidPerShare": 1,
+          "fmvAtTransferPerShare": 1
+        },
+        [
+          {
+            "label": "vest 2014-04-01",
+            "shares": 25000,
+            "fmvPerShare": 1.6
+          }
+        ]
+      ],
+      "expected": {
+        "withElection": {
+          "incomeAtTransfer": 0,
+          "incomeAtVesting": 0,
+          "basis": 25000,
+          "holdingPeriodBegins": "transfer"
+        },
+        "withoutElection": {
+          "incomeAtTransfer": 0,
+          "incomeAtVesting": 15000,
+          "basis": 40000,
+          "holdingPeriodBegins": "each vesting event"
+        },
+        "zeroSpreadAtTransfer": true
+      }
+    },
+    {
+      "name": "rev-proc-2012-29-examples-4-and-5",
+      "description": "Examples 4 and 5 ($0 paid for shares worth $25,000): with the election, $25,000 compensation at transfer and basis $25,000; without it, $40,000 compensation at vesting and basis $40,000.",
+      "source": "Rev. Proc. 2012-29 § 5 (https://www.irs.gov/pub/irs-drop/rp-12-29.pdf): 25,000 shares transferred 2012-04-01, vesting 2014-04-01 at a $40,000 FMV, Examples 4 and 5",
+      "inputs": [
+        {
+          "shares": 25000,
+          "pricePaidPerShare": 0,
+          "fmvAtTransferPerShare": 1
+        },
+        [
+          {
+            "label": "vest 2014-04-01",
+            "shares": 25000,
+            "fmvPerShare": 1.6
+          }
+        ]
+      ],
+      "expected": {
+        "withElection": {
+          "incomeAtTransfer": 25000,
+          "incomeAtVesting": 0,
+          "basis": 25000
+        },
+        "withoutElection": {
+          "incomeAtVesting": 40000,
+          "basis": 40000
+        },
+        "zeroSpreadAtTransfer": false
+      }
+    }
+  ]
+}

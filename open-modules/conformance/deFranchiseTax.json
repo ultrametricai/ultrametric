@@ -1,0 +1,72 @@
+{
+  "module": "deFranchiseTax",
+  "entrypoint": "compareFranchiseTaxMethods",
+  "implementation": {
+    "file": "lib/openstartup/deFranchiseTax.ts",
+    "sha256": "176194e210477adca3d929ce77d46a5cd64cc3a82207206e15fc909ebd7c0102"
+  },
+  "readme": "open-modules/conformance/README.md",
+  "cases": [
+    {
+      "name": "division-published-example",
+      "description": "The Division's own example company: $1,000,000 gross assets, 485,000 issued shares, 1,000,000 authorized at $1.00 par plus 250,000 at $5.00 par. Authorized Shares Method on 1,250,000 shares bills $10,790; Assumed Par Value Capital Method carries $1,000,000 / 485,000 to six decimals ($2.061856), builds $3,311,856 of assumed par value capital, rounds up to 4 million, and bills 4 × $400 = $1,600, saving $9,190.",
+      "source": "Delaware Division of Corporations, \"How to Calculate Franchise Taxes\" published examples (https://corp.delaware.gov/frtaxcalc/, verified 2026-10-01); 8 Del. C. § 503",
+      "inputs": [
+        {
+          "totalGrossAssets": 1000000,
+          "totalIssuedShares": 485000,
+          "authorizedClasses": [
+            {
+              "shares": 1000000,
+              "parValue": 1
+            },
+            {
+              "shares": 250000,
+              "parValue": 5
+            }
+          ]
+        }
+      ],
+      "expected": {
+        "authorizedShares": {
+          "tax": 10790
+        },
+        "assumedPar": {
+          "tax": 1600,
+          "assumedPar": 2.061856,
+          "assumedParValueCapital": 3311856,
+          "taxableMillions": 4
+        },
+        "cheaper": "assumed-par-value-capital",
+        "saving": 9190
+      }
+    },
+    {
+      "name": "authorized-shares-cheaper",
+      "description": "The comparison going the other way: 1,000 authorized shares with $50,000,000 of gross assets. The default Authorized Shares bill is the $175 minimum; the assumed-par method reaches $20,000 (assumed par $50,000, capital $50,000,000, 50 × $400), so the default bill wins by $19,825.",
+      "source": "8 Del. C. § 503 arithmetic, hand-derived in lib/openstartup/__tests__/deFranchiseTax.test.ts",
+      "inputs": [
+        {
+          "totalGrossAssets": 50000000,
+          "totalIssuedShares": 1000,
+          "authorizedClasses": [
+            {
+              "shares": 1000,
+              "parValue": 0.01
+            }
+          ]
+        }
+      ],
+      "expected": {
+        "authorizedShares": {
+          "tax": 175
+        },
+        "assumedPar": {
+          "tax": 20000
+        },
+        "cheaper": "authorized-shares",
+        "saving": 19825
+      }
+    }
+  ]
+}
