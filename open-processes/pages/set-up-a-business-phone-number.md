@@ -25,7 +25,7 @@ Number search, purchase, and routing configuration are API surfaces at the progr
 
    Decide who answers before choosing a provider: a team answering shared lines wants a business-phone system with ring groups, voicemail, and a shared message inbox; software answering or dialing wants a programmable telephony API. Compare the shortlisted providers on the team features the chosen type needs — the shared text inbox, ring groups and business-hours routing, voicemail transcription, and CRM integrations — plus number coverage in the countries you need, messaging support, and what the provider exposes to agents and automation. Record the choice and the plan; the number purchase and the compliance registrations happen inside this account.
 
-   - Vendor options: Quo, Dialpad, Aircall, Ringcentral, Twilio
+   - Vendor options: Quo, Dialpad, Aircall, Ringcentral, Twilio, Google Voice, Community Phone
    - Ranked market: [business-phone](../../open-rankings/business-phone)
 
    Options:
