@@ -6,7 +6,7 @@ a tax notice arrives: nobody plans these into a timeline, so situations carry **
 slot** and never appear on the founder-timeline orderings. Structurally a situation is both an
 entry condition and a process graph. The `trigger` is the entry condition (the concrete event
 that starts the work, where a process has a timeline slot), and from there the record runs the
-ordinary step DAG: steps routed agent / manual form / human, judged vendor options per step,
+ordinary step DAG: steps with execution assessments, judged vendor options per step,
 open-module compute chips, jurisdiction notes. Their detail pages render at
 `/processes/<slug>` (URL stability); their index is
 [`/situations`](https://ultrametric.ai/situations), which moved them out of the `/processes`
@@ -28,8 +28,7 @@ plain processes (schema-enforced in `lib/processes.ts`, kind-conditionally):
   hotter clock reads first. Deadlines inside a situation are the NOTICE's own printed deadline
   or the statute's, cited on the steps; the tier is a reading aid, never a legal clock.
 
-Everything else is the ordinary corpus machinery: a DAG of steps routed agent / manual form /
-human, curated `risk`/`annoyance` scores (situations interleave with processes on those
+Everything else is the ordinary corpus machinery: a DAG of steps with execution assessments, curated `risk`/`annoyance` scores (situations interleave with processes on those
 orderings), `geoScope`, and jurisdiction notes.
 
 ## The agentic share, and raising it
@@ -86,10 +85,10 @@ The 22 situations, hottest clock first (urgency, then title — the /situations 
    `metadata.urgency` to the tier the clock actually sets. Omit `metadata.timeOrder`; retain
    explicit `entrySteps`, parts, links, scores and geography. Legal claims in descriptions cite dated law rules in `open-law/` by id;
    deadlines cite the notice or statute, curl-verified like every corpus URL.
-2. Route each step by what runs today: `agent` where an agent can genuinely run it; signatures
-   under penalty of perjury get `legalSignature`; third-party clocks are `person` waits. When a
-   vendor surface or new evidence makes a `person` step runnable, rerouting it to `agent` is a
-   correction, with the source that proves it.
+2. Assess each step and method using [execution authoring](execution.md): Agent Native,
+   Agent Computer Use, Human Online or Human Offline, with cited evidence for the actual
+   work. Keep unknown mechanisms unresolved and review-gated. Preserve signatures,
+   approvals, jurisdictions and third-party dependencies as separate properties.
 3. Regenerate this file's table: `pnpm exec tsx scripts/generate-situations-md.ts`.
 4. Run the gates — the drift test (`__tests__/situations.test.ts`) fails if this list and the
    corpus disagree, the schema tests enforce the kind-conditional fields, and

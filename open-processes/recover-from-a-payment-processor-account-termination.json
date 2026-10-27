@@ -29,7 +29,19 @@
         "route": "person",
         "reversibility": "reversible",
         "riskLevel": "high",
-        "estimatedMinutes": 30
+        "estimatedMinutes": 30,
+        "execution": {
+          "category": "agent-native",
+          "basis": "local-work",
+          "rationale": "Extract the processor notice's reasons, processing cutoff and reserve terms from the supplied agreement and notice.",
+          "evidence": [
+            "open-processes/recover-from-a-payment-processor-account-termination.json#/parts/0/title"
+          ],
+          "reviewRequired": false,
+          "automationEvidence": {
+            "status": "documented"
+          }
+        }
       }
     },
     {
@@ -58,7 +70,25 @@
       "metadata": {
         "route": "agent",
         "reversibility": "reversible",
-        "estimatedMinutes": 60
+        "estimatedMinutes": 60,
+        "execution": {
+          "category": "agent-native",
+          "basis": "documented-interface",
+          "rationale": "Stripe lists charges, customers, subscriptions, disputes and payouts through separate paginated APIs. Export all pages and include canceled subscriptions with status=all while authorized API access lasts; record any inaccessible resource explicitly.",
+          "evidence": [
+            "open-processes/recover-from-a-payment-processor-account-termination.json#/parts/1/title",
+            "https://docs.stripe.com/api/charges/list",
+            "https://docs.stripe.com/api/customers/list",
+            "https://docs.stripe.com/api/subscriptions/list",
+            "https://docs.stripe.com/api/disputes/list",
+            "https://docs.stripe.com/api/payouts/list",
+            "https://docs.stripe.com/api/pagination"
+          ],
+          "reviewRequired": false,
+          "automationEvidence": {
+            "status": "documented"
+          }
+        }
       }
     },
     {
@@ -83,7 +113,21 @@
         "route": "person",
         "reversibility": "reversible",
         "riskLevel": "high",
-        "estimatedMinutes": 60
+        "estimatedMinutes": 60,
+        "execution": {
+          "category": "agent-computer-use",
+          "basis": "browser-evidence",
+          "rationale": "The retained Stripe route provides a review form linked from the closure email into the Dashboard for businesses that believe they were misunderstood or miscategorized. Prepare the factual business and fulfillment evidence for that form under the account owner's authority. The notice controls eligibility and required representations; submitting an appeal does not establish reinstatement or reserve release.",
+          "evidence": [
+            "open-processes/recover-from-a-payment-processor-account-termination.json#/parts/2/title",
+            "open-processes/recover-from-a-payment-processor-account-termination.json#/parts/1/references",
+            "https://support.stripe.com/questions/why-was-my-stripe-account-closed"
+          ],
+          "reviewRequired": true,
+          "automationEvidence": {
+            "status": "documented"
+          }
+        }
       }
     },
     {
@@ -120,7 +164,20 @@
       "metadata": {
         "route": "person",
         "reversibility": "reversible",
-        "estimatedMinutes": 60
+        "estimatedMinutes": 60,
+        "execution": {
+          "category": "human-online",
+          "basis": "human-work",
+          "rationale": "The owner compares replacement processors and completes digital underwriting and verification; the processor's acceptance remains a separate outcome.",
+          "evidence": [
+            "open-processes/recover-from-a-payment-processor-account-termination.json#/parts/3/title",
+            "open-processes/recover-from-a-payment-processor-account-termination.json#/parts/3"
+          ],
+          "reviewRequired": true,
+          "automationEvidence": {
+            "status": "unverified"
+          }
+        }
       }
     },
     {
@@ -149,7 +206,20 @@
       "metadata": {
         "route": "form",
         "reversibility": "reversible",
-        "estimatedMinutes": 45
+        "estimatedMinutes": 45,
+        "execution": {
+          "category": "agent-computer-use",
+          "basis": "browser-evidence",
+          "rationale": "Stripe documents requesting a compliant processor-to-processor payment-data export; the processors perform the protected transfer.",
+          "evidence": [
+            "open-processes/recover-from-a-payment-processor-account-termination.json#/parts/4/title",
+            "https://docs.stripe.com/get-started/data-migrations/pan-export"
+          ],
+          "reviewRequired": false,
+          "automationEvidence": {
+            "status": "documented"
+          }
+        }
       }
     },
     {
@@ -187,7 +257,20 @@
         "route": "agent",
         "reversibility": "reversible",
         "riskLevel": "medium",
-        "estimatedMinutes": 120
+        "estimatedMinutes": 120,
+        "execution": {
+          "category": "human-online",
+          "basis": "human-work",
+          "rationale": "Engineers and finance switch the actual checkout, billing and webhook integrations under the approved flag, then reconcile the first live charges against both systems.",
+          "evidence": [
+            "open-processes/recover-from-a-payment-processor-account-termination.json#/parts/5/title",
+            "open-processes/recover-from-a-payment-processor-account-termination.json#/parts/5"
+          ],
+          "reviewRequired": true,
+          "automationEvidence": {
+            "status": "unverified"
+          }
+        }
       }
     },
     {
@@ -203,7 +286,20 @@
       "metadata": {
         "route": "person",
         "reversibility": "painful",
-        "estimatedMinutes": 45
+        "estimatedMinutes": 45,
+        "execution": {
+          "category": "human-online",
+          "basis": "human-work",
+          "rationale": "The customer team explains the processor transition through direct digital communication and handles affected payout, refund and renewal questions personally.",
+          "evidence": [
+            "open-processes/recover-from-a-payment-processor-account-termination.json#/parts/6/title",
+            "open-processes/recover-from-a-payment-processor-account-termination.json#/parts/6"
+          ],
+          "reviewRequired": true,
+          "automationEvidence": {
+            "status": "unverified"
+          }
+        }
       }
     },
     {
@@ -220,7 +316,21 @@
         "route": "person",
         "reversibility": "reversible",
         "async": true,
-        "estimatedMinutes": 43200
+        "estimatedMinutes": 43200,
+        "execution": {
+          "category": "human-online",
+          "basis": "human-work",
+          "rationale": "The finance owner monitors processor appeal and reserve correspondence, answers requests and reconciles released balances using the available account records.",
+          "evidence": [
+            "open-processes/recover-from-a-payment-processor-account-termination.json#/parts/7/title",
+            "https://support.stripe.com/questions/view-reserve-status-and-details-in-dashboard",
+            "open-processes/recover-from-a-payment-processor-account-termination.json#/parts/7"
+          ],
+          "reviewRequired": true,
+          "automationEvidence": {
+            "status": "unverified"
+          }
+        }
       }
     }
   ],

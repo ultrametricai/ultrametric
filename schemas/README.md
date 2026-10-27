@@ -8,8 +8,10 @@ data (`open-rankings/`) has its contracts in zod (`lib/schemas.ts`).
 at `#/$defs/canonical`: `schemaVersion: 1`, explicit `entrySteps`, `parts`, decision
 `options`, and `links`. It is generated directly from `processDefinitionSchema` in
 `lib/shared-processes/catalog.ts`. Outputs (`produces`, `producesArtifact`) and
-classifications (`route`, `reversibility`) retain their existing locations within
-open-ended `metadata`. Graph identity, reachability and cycle checks also run in
+properties (`reversibility`, approval and signature requirements) retain their existing
+locations within `metadata`. Typed `metadata.execution` describes the execution category,
+evidence and review state; `route` remains historical compatibility data. See
+[execution authoring](../open-processes/execution.md). Graph identity, reachability and cycle checks also run in
 the catalog validators; JSON Schema describes the record structure.
 
 The same URL continues accepting legacy process records through its

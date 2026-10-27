@@ -2,6 +2,7 @@ import { lstatSync, readFileSync, readdirSync } from 'node:fs'
 import path from 'node:path'
 import { z } from 'zod'
 import { sharedRecordSchema, validateCatalog, type SharedRecord } from './schema'
+import { executionOf } from '../execution'
 
 const slug = z.string().regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/).refine(value => value !== 'v1')
 const identifier = sharedRecordSchema.shape.id
@@ -83,4 +84,26 @@ export function loadProcessCatalog(selection?: { processes: string[] }, root = p
   const processes = [...selected.values()]
   validateCatalog(processes.map(process => process.record))
   return { processes }
+}
+
+/** Authoring gate; older imports remain valid additive-schema consumers. */
+export function validateExecutionCoverage(records: SharedRecord[]) {
+  function requireAssessment(metadata: Record<string, unknown>, scope: string) {
+    const execution = executionOf(metadata)
+    if (!execution) throw new Error(`${scope}: missing execution assessment`)
+    if (execution.category === null) throw new Error(`${scope}: canonical execution requires one of the four categories`)
+    if (!execution.automationEvidence) throw new Error(`${scope}: missing automation evidence status`)
+  }
+  function assess(parts: SharedRecord['parts'], scope: string) {
+    for (const part of parts) {
+      const key = `${scope}/${part.id}`
+      const hasDefault = part.options.some(option => option.id === 'default')
+      if (part.kind !== 'reference' && (!hasDefault || part.metadata.execution !== undefined)) requireAssessment(part.metadata, key)
+      for (const option of part.options) {
+        requireAssessment(option.metadata, `${key}/${option.id}`)
+        assess(option.parts, `${key}/${option.id}`)
+      }
+    }
+  }
+  for (const record of records) assess(record.parts, record.id)
 }

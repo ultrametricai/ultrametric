@@ -37,7 +37,19 @@
         "reversibility": "reversible",
         "approvalRequired": true,
         "riskLevel": "medium",
-        "estimatedMinutes": 120
+        "estimatedMinutes": 120,
+        "execution": {
+          "category": "agent-native",
+          "basis": "local-work",
+          "rationale": "Design the first infrastructure layout and cost assumptions from the supplied request flows and recovery needs.",
+          "evidence": [
+            "open-processes/set-up-cloud-infrastructure.json#/parts/0/guidance"
+          ],
+          "reviewRequired": false,
+          "automationEvidence": {
+            "status": "documented"
+          }
+        }
       }
     },
     {
@@ -99,7 +111,20 @@
             "reversibility": "reversible",
             "approvalRequired": true,
             "riskLevel": "medium",
-            "estimatedMinutes": 20
+            "estimatedMinutes": 20,
+            "execution": {
+              "category": "agent-computer-use",
+              "basis": "browser-evidence",
+              "rationale": "AWS documents account signup and administrator setup; the owner retains root recovery and billing authorization.",
+              "evidence": [
+                "open-processes/set-up-cloud-infrastructure.json#/parts/1/options/0/summary",
+                "https://docs.aws.amazon.com/accounts/latest/reference/getting-started.html"
+              ],
+              "reviewRequired": false,
+              "automationEvidence": {
+                "status": "documented"
+              }
+            }
           }
         },
         {
@@ -126,6 +151,19 @@
           "metadata": {
             "context": {
               "kind": "vendor"
+            },
+            "execution": {
+              "category": "agent-computer-use",
+              "basis": "browser-evidence",
+              "rationale": "Google Cloud documents project and billing administration; the downstream AWS-specific route remains unresolved.",
+              "evidence": [
+                "open-processes/set-up-cloud-infrastructure.json#/parts/1/options/1/summary",
+                "https://docs.cloud.google.com/resource-manager/docs/creating-managing-projects"
+              ],
+              "reviewRequired": false,
+              "automationEvidence": {
+                "status": "documented"
+              }
             }
           }
         },
@@ -153,6 +191,19 @@
           "metadata": {
             "context": {
               "kind": "vendor"
+            },
+            "execution": {
+              "category": "agent-computer-use",
+              "basis": "browser-evidence",
+              "rationale": "Azure documents subscription administration in the portal; the downstream AWS-specific route remains unresolved.",
+              "evidence": [
+                "open-processes/set-up-cloud-infrastructure.json#/parts/1/options/2/summary",
+                "https://learn.microsoft.com/en-us/azure/cost-management-billing/manage/create-subscription"
+              ],
+              "reviewRequired": false,
+              "automationEvidence": {
+                "status": "documented"
+              }
             }
           }
         }
@@ -211,7 +262,23 @@
         "reversibility": "reversible",
         "approvalRequired": true,
         "riskLevel": "high",
-        "estimatedMinutes": 30
+        "estimatedMinutes": 30,
+        "execution": {
+          "category": "agent-native",
+          "basis": "documented-interface",
+          "rationale": "AWS CLI operations create the VPC, routes and security groups and apply approved ingress rules. Connection probes from the permitted and excluded locations test the resulting network paths.",
+          "evidence": [
+            "open-processes/set-up-cloud-infrastructure.json#/parts/2/guidance",
+            "https://docs.aws.amazon.com/cli/latest/reference/ec2/create-vpc.html",
+            "https://docs.aws.amazon.com/cli/latest/reference/ec2/create-security-group.html",
+            "https://docs.aws.amazon.com/cli/latest/reference/ec2/create-route.html",
+            "https://docs.aws.amazon.com/cli/latest/reference/ec2/authorize-security-group-ingress.html"
+          ],
+          "reviewRequired": false,
+          "automationEvidence": {
+            "status": "documented"
+          }
+        }
       }
     },
     {
@@ -254,7 +321,22 @@
         "reversibility": "reversible",
         "approvalRequired": true,
         "riskLevel": "high",
-        "estimatedMinutes": 30
+        "estimatedMinutes": 30,
+        "execution": {
+          "category": "agent-native",
+          "basis": "documented-interface",
+          "rationale": "AWS CLI operations create the RDS instance and snapshot and restore a test instance. Application-side SQL checks cover connection, migration and write/read behavior before relying on the restore path.",
+          "evidence": [
+            "open-processes/set-up-cloud-infrastructure.json#/parts/3/guidance",
+            "https://docs.aws.amazon.com/cli/latest/reference/rds/restore-db-instance-from-db-snapshot.html",
+            "https://docs.aws.amazon.com/cli/latest/reference/rds/create-db-instance.html",
+            "https://docs.aws.amazon.com/cli/latest/reference/rds/create-db-snapshot.html"
+          ],
+          "reviewRequired": false,
+          "automationEvidence": {
+            "status": "documented"
+          }
+        }
       }
     },
     {
@@ -290,7 +372,23 @@
         "reversibility": "reversible",
         "approvalRequired": true,
         "riskLevel": "high",
-        "estimatedMinutes": 30
+        "estimatedMinutes": 30,
+        "execution": {
+          "category": "agent-native",
+          "basis": "documented-interface",
+          "rationale": "AWS CLI operations register task definitions, create and update the ECS service and retrieve its CloudWatch logs. HTTP checks verify the endpoint before and after the version change and rollback.",
+          "evidence": [
+            "open-processes/set-up-cloud-infrastructure.json#/parts/4/guidance",
+            "https://docs.aws.amazon.com/cli/latest/reference/ecs/register-task-definition.html",
+            "https://docs.aws.amazon.com/cli/latest/reference/ecs/create-service.html",
+            "https://docs.aws.amazon.com/cli/latest/reference/ecs/update-service.html",
+            "https://docs.aws.amazon.com/cli/latest/reference/logs/filter-log-events.html"
+          ],
+          "reviewRequired": false,
+          "automationEvidence": {
+            "status": "documented"
+          }
+        }
       }
     },
     {
@@ -321,7 +419,22 @@
         "reversibility": "reversible",
         "approvalRequired": true,
         "riskLevel": "high",
-        "estimatedMinutes": 20
+        "estimatedMinutes": 20,
+        "execution": {
+          "category": "agent-native",
+          "basis": "documented-interface",
+          "rationale": "AWS IAM creates roles and scoped policies, and STS role sessions support testing a required and forbidden operation as the resulting identity. Apply the administrator's approved grants and remove diagnostic permissions.",
+          "evidence": [
+            "open-processes/set-up-cloud-infrastructure.json#/parts/5/guidance",
+            "https://docs.aws.amazon.com/en_us/cli/latest/reference/iam/put-role-policy.html",
+            "https://docs.aws.amazon.com/cli/latest/reference/iam/create-role.html",
+            "https://docs.aws.amazon.com/cli/latest/reference/sts/assume-role.html"
+          ],
+          "reviewRequired": false,
+          "automationEvidence": {
+            "status": "documented"
+          }
+        }
       }
     },
     {
@@ -365,7 +478,30 @@
         "producesArtifact": "cloud-infrastructure",
         "approvalRequired": true,
         "riskLevel": "medium",
-        "estimatedMinutes": 20
+        "estimatedMinutes": 20,
+        "execution": {
+          "category": "agent-native",
+          "basis": "documented-interface",
+          "rationale": "The canonical AWS/ECS route supports CloudWatch log collection, labeled metrics, alarm configuration and SNS notifications through documented interfaces. Local application probes and ECS task controls support the failure/recovery drill. Inspect sensitive log output before collection; masking does not cover earlier records. The responder must confirm any new email subscription, and actual signal coverage, diagnostic links and delivery need validation in the authorized environment. Other-cloud alternatives retain their separate unresolved implementation.",
+          "evidence": [
+            "open-processes/set-up-cloud-infrastructure.json#/parts/6/guidance",
+            "open-processes/set-up-cloud-infrastructure.json#/summary",
+            "open-processes/set-up-cloud-infrastructure.json#/parts/4/guidance",
+            "https://docs.aws.amazon.com/AmazonECS/latest/developerguide/using_awslogs.html",
+            "https://docs.aws.amazon.com/AmazonCloudWatch/latest/APIReference/API_PutMetricData.html",
+            "https://docs.aws.amazon.com/AmazonCloudWatchLogs/latest/APIReference/API_PutMetricFilter.html",
+            "https://docs.aws.amazon.com/AmazonCloudWatchLogs/latest/APIReference/API_PutDataProtectionPolicy.html",
+            "https://docs.aws.amazon.com/AmazonCloudWatch/latest/APIReference/API_PutMetricAlarm.html",
+            "https://docs.aws.amazon.com/AmazonCloudWatch/latest/APIReference/API_GetMetricData.html",
+            "https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/Notify_Users_Alarm_Changes.html",
+            "https://docs.aws.amazon.com/cli/latest/reference/ecs/stop-task.html",
+            "https://docs.aws.amazon.com/AmazonECS/latest/developerguide/deployment-type-ecs.html"
+          ],
+          "reviewRequired": true,
+          "automationEvidence": {
+            "status": "documented"
+          }
+        }
       }
     },
     {
@@ -402,7 +538,27 @@
         "route": "agent",
         "reversibility": "reversible",
         "riskLevel": "medium",
-        "estimatedMinutes": 30
+        "estimatedMinutes": 30,
+        "execution": {
+          "category": "agent-native",
+          "basis": "documented-interface",
+          "rationale": "The preceding steps select an AWS ECS service, versioned task configuration and RDS database. ECS interfaces update the deployed revision, stop tasks and report image digests and failures; CloudWatch exposes diagnostic logs. Local request and database probes can check the journey, denied access and recovery to the previous revision. The application-specific assertions, deployment-controller behavior and authorized test environment still require validation; other-cloud alternatives remain unresolved.",
+          "evidence": [
+            "open-processes/set-up-cloud-infrastructure.json#/parts/7/guidance",
+            "open-processes/set-up-cloud-infrastructure.json#/summary",
+            "open-processes/set-up-cloud-infrastructure.json#/parts/3/guidance",
+            "open-processes/set-up-cloud-infrastructure.json#/parts/4/guidance",
+            "https://docs.aws.amazon.com/cli/latest/reference/ecs/update-service.html",
+            "https://docs.aws.amazon.com/cli/latest/reference/ecs/stop-task.html",
+            "https://docs.aws.amazon.com/cli/latest/reference/ecs/describe-tasks.html",
+            "https://docs.aws.amazon.com/cli/latest/reference/logs/filter-log-events.html",
+            "https://docs.aws.amazon.com/AmazonECS/latest/developerguide/deployment-type-ecs.html"
+          ],
+          "reviewRequired": true,
+          "automationEvidence": {
+            "status": "documented"
+          }
+        }
       }
     }
   ],

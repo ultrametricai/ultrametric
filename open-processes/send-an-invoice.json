@@ -26,7 +26,21 @@
       "metadata": {
         "route": "agent",
         "reversibility": "reversible",
-        "estimatedMinutes": 2
+        "estimatedMinutes": 2,
+        "execution": {
+          "category": "agent-native",
+          "basis": "documented-interface",
+          "rationale": "Stripe customer listing supports the existing-record check, and customer creation records the verified billing details when no matching customer exists.",
+          "evidence": [
+            "open-processes/send-an-invoice.json#/parts/0/guidance",
+            "https://docs.stripe.com/api/customers/create",
+            "https://docs.stripe.com/api/customers/list"
+          ],
+          "reviewRequired": false,
+          "automationEvidence": {
+            "status": "documented"
+          }
+        }
       }
     },
     {
@@ -56,7 +70,21 @@
             "reversibility": "reversible",
             "approvalRequired": true,
             "riskLevel": "medium",
-            "estimatedMinutes": 3
+            "estimatedMinutes": 3,
+            "execution": {
+              "category": "agent-native",
+              "basis": "documented-interface",
+              "rationale": "Stripe's invoice and invoice-item APIs support the reviewed line items and terms as a draft invoice.",
+              "evidence": [
+                "open-processes/send-an-invoice.json#/parts/1/options/0/summary",
+                "https://docs.stripe.com/api/invoiceitems/create",
+                "https://docs.stripe.com/api/invoices/create"
+              ],
+              "reviewRequired": false,
+              "automationEvidence": {
+                "status": "documented"
+              }
+            }
           }
         },
         {
@@ -89,6 +117,19 @@
               "countries": [
                 "IN"
               ]
+            },
+            "execution": {
+              "category": "human-online",
+              "basis": "human-work",
+              "rationale": "The authorized billing operator submits the invoice through the selected e-invoice service and checks the returned IRN, signed data and QR information.",
+              "evidence": [
+                "open-processes/send-an-invoice.json#/parts/1/options/1/summary",
+                "open-processes/send-an-invoice.json#/parts/1/options/1"
+              ],
+              "reviewRequired": true,
+              "automationEvidence": {
+                "status": "unverified"
+              }
             }
           }
         },
@@ -121,6 +162,18 @@
               "countries": [
                 "UK"
               ]
+            },
+            "execution": {
+              "category": "agent-native",
+              "basis": "local-work",
+              "rationale": "Prepare the UK invoice from supplied transaction facts and the tax owner's settled treatment for issuance review.",
+              "evidence": [
+                "open-processes/send-an-invoice.json#/parts/1/options/2/summary"
+              ],
+              "reviewRequired": false,
+              "automationEvidence": {
+                "status": "documented"
+              }
             }
           }
         },
@@ -146,6 +199,19 @@
               "countries": [
                 "DE"
               ]
+            },
+            "execution": {
+              "category": "human-online",
+              "basis": "human-work",
+              "rationale": "The billing operator prepares and validates the required digital invoice format and issues it through the supported customer delivery channel.",
+              "evidence": [
+                "open-processes/send-an-invoice.json#/parts/1/options/3/summary",
+                "open-processes/send-an-invoice.json#/parts/1/options/3"
+              ],
+              "reviewRequired": true,
+              "automationEvidence": {
+                "status": "unverified"
+              }
             }
           }
         },
@@ -178,6 +244,19 @@
               "countries": [
                 "FR"
               ]
+            },
+            "execution": {
+              "category": "human-online",
+              "basis": "human-work",
+              "rationale": "The billing operator uses the applicable digital invoicing platform and checks required invoice content, acknowledgements and correction handling.",
+              "evidence": [
+                "open-processes/send-an-invoice.json#/parts/1/options/4/summary",
+                "open-processes/send-an-invoice.json#/parts/1/options/4"
+              ],
+              "reviewRequired": true,
+              "automationEvidence": {
+                "status": "unverified"
+              }
             }
           }
         }
@@ -207,7 +286,21 @@
         "reversibility": "reversible",
         "approvalRequired": true,
         "riskLevel": "medium",
-        "estimatedMinutes": 1
+        "estimatedMinutes": 1,
+        "execution": {
+          "category": "human-online",
+          "basis": "human-work",
+          "rationale": "The billing operator delivers the invoice and required attachments through the customer-facing billing interface and verifies the delivery status.",
+          "evidence": [
+            "open-processes/send-an-invoice.json#/parts/2/guidance",
+            "https://docs.stripe.com/get-started/use-cases/invoices",
+            "open-processes/send-an-invoice.json#/parts/2"
+          ],
+          "reviewRequired": true,
+          "automationEvidence": {
+            "status": "unverified"
+          }
+        }
       }
     },
     {
@@ -229,7 +322,20 @@
       "metadata": {
         "route": "agent",
         "reversibility": "reversible",
-        "estimatedMinutes": 1
+        "estimatedMinutes": 1,
+        "execution": {
+          "category": "agent-computer-use",
+          "basis": "browser-evidence",
+          "rationale": "Stripe's invoice dashboard exposes paid, open and past-due balances and customer details for reconciliation and collection follow-up.",
+          "evidence": [
+            "open-processes/send-an-invoice.json#/parts/3/guidance",
+            "https://docs.stripe.com/get-started/use-cases/invoices"
+          ],
+          "reviewRequired": false,
+          "automationEvidence": {
+            "status": "documented"
+          }
+        }
       }
     }
   ],

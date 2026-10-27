@@ -26,7 +26,21 @@
       "metadata": {
         "route": "agent",
         "reversibility": "reversible",
-        "estimatedMinutes": 2
+        "estimatedMinutes": 2,
+        "execution": {
+          "category": "agent-computer-use",
+          "basis": "browser-evidence",
+          "rationale": "QuickBooks documents reviewing unpaid bills and linked payments and exporting reports and purchase records. The workflow reconciles those records locally, retaining disputed invoices and budget-owner decisions separately.",
+          "evidence": [
+            "open-processes/pay-vendor-invoices.json#/parts/0/guidance",
+            "https://quickbooks.intuit.com/learn-support/en-us/help-article/pay-bills/review-manage-bills-quickbooks-online/L8VbbnAd2_US_en_US",
+            "https://quickbooks.intuit.com/learn-support/en-us/help-article/list-management/export-reports-lists-data-quickbooks-online/L1xleDrLp_US_en_US"
+          ],
+          "reviewRequired": false,
+          "automationEvidence": {
+            "status": "documented"
+          }
+        }
       }
     },
     {
@@ -48,7 +62,20 @@
       "metadata": {
         "route": "agent",
         "reversibility": "reversible",
-        "estimatedMinutes": 1
+        "estimatedMinutes": 1,
+        "execution": {
+          "category": "agent-native",
+          "basis": "documented-interface",
+          "rationale": "Mercury exposes available and current balances for comparing the proposed run with the finance cash floor.",
+          "evidence": [
+            "open-processes/pay-vendor-invoices.json#/parts/1/guidance",
+            "https://docs.mercury.com/reference/getaccounts"
+          ],
+          "reviewRequired": false,
+          "automationEvidence": {
+            "status": "documented"
+          }
+        }
       }
     },
     {
@@ -75,6 +102,21 @@
         "estimatedMinutes": 5,
         "verify": {
           "how": "Every bill in the run shows paid and the bank debit matches the run total."
+        },
+        "execution": {
+          "category": "human-online",
+          "basis": "human-work",
+          "rationale": "The finance operator verifies beneficiary details and investigates changed instructions, obtains the designated approver's authorization, and has the permitted bank user release the payment run. The operator records actual payment references and statuses in the bills and reconciles bank debits; the cited Mercury APIs cover only the banking portion of this combined work.",
+          "evidence": [
+            "open-processes/pay-vendor-invoices.json#/parts/2/guidance",
+            "https://docs.mercury.com/docs/send-money",
+            "https://docs.mercury.com/reference/listtransactions",
+            "open-processes/pay-vendor-invoices.json#/parts/2/metadata/verify"
+          ],
+          "reviewRequired": true,
+          "automationEvidence": {
+            "status": "unverified"
+          }
         }
       }
     },
@@ -97,7 +139,20 @@
       "metadata": {
         "route": "agent",
         "reversibility": "reversible",
-        "estimatedMinutes": 1
+        "estimatedMinutes": 1,
+        "execution": {
+          "category": "agent-native",
+          "basis": "documented-interface",
+          "rationale": "Slack chat.postMessage can publish the approved payment summary and controlled record links to the designated channel.",
+          "evidence": [
+            "open-processes/pay-vendor-invoices.json#/parts/3/guidance",
+            "https://docs.slack.dev/reference/methods/chat.postMessage/"
+          ],
+          "reviewRequired": false,
+          "automationEvidence": {
+            "status": "documented"
+          }
+        }
       }
     }
   ],

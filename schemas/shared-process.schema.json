@@ -334,11 +334,123 @@
     },
     "metadata": {
       "type": "object",
-      "propertyNames": {
-        "type": "string"
+      "properties": {
+        "execution": {
+          "type": "object",
+          "properties": {
+            "category": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "enum": [
+                    "agent-native",
+                    "agent-computer-use",
+                    "human-online",
+                    "human-offline"
+                  ]
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "basis": {
+              "type": "string",
+              "enum": [
+                "local-work",
+                "documented-interface",
+                "browser-evidence",
+                "human-work",
+                "unresolved"
+              ]
+            },
+            "rationale": {
+              "type": "string",
+              "minLength": 1
+            },
+            "evidence": {
+              "minItems": 1,
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1
+              }
+            },
+            "reviewRequired": {
+              "type": "boolean"
+            },
+            "automationEvidence": {
+              "oneOf": [
+                {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "const": "unverified"
+                    }
+                  },
+                  "required": [
+                    "status"
+                  ],
+                  "additionalProperties": false
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "const": "documented"
+                    }
+                  },
+                  "required": [
+                    "status"
+                  ],
+                  "additionalProperties": false
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "const": "observed"
+                    },
+                    "scope": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "observedAt": {
+                      "type": "string",
+                      "format": "date-time",
+                      "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d(?:\\.\\d+)?(?:Z))$"
+                    },
+                    "receipt": {
+                      "type": "string",
+                      "minLength": 1
+                    }
+                  },
+                  "required": [
+                    "status",
+                    "scope",
+                    "observedAt",
+                    "receipt"
+                  ],
+                  "additionalProperties": false
+                }
+              ]
+            }
+          },
+          "required": [
+            "category",
+            "basis",
+            "rationale",
+            "evidence",
+            "reviewRequired"
+          ],
+          "additionalProperties": false
+        }
       },
       "additionalProperties": {
-        "$ref": "#/$defs/__schema3"
+        "$ref": "#/$defs/__schema1"
       }
     },
     "source": {
@@ -731,8 +843,120 @@
               },
               "metadata": {
                 "type": "object",
-                "propertyNames": {
-                  "type": "string"
+                "properties": {
+                  "execution": {
+                    "type": "object",
+                    "properties": {
+                      "category": {
+                        "anyOf": [
+                          {
+                            "type": "string",
+                            "enum": [
+                              "agent-native",
+                              "agent-computer-use",
+                              "human-online",
+                              "human-offline"
+                            ]
+                          },
+                          {
+                            "type": "null"
+                          }
+                        ]
+                      },
+                      "basis": {
+                        "type": "string",
+                        "enum": [
+                          "local-work",
+                          "documented-interface",
+                          "browser-evidence",
+                          "human-work",
+                          "unresolved"
+                        ]
+                      },
+                      "rationale": {
+                        "type": "string",
+                        "minLength": 1
+                      },
+                      "evidence": {
+                        "minItems": 1,
+                        "type": "array",
+                        "items": {
+                          "type": "string",
+                          "minLength": 1
+                        }
+                      },
+                      "reviewRequired": {
+                        "type": "boolean"
+                      },
+                      "automationEvidence": {
+                        "oneOf": [
+                          {
+                            "type": "object",
+                            "properties": {
+                              "status": {
+                                "type": "string",
+                                "const": "unverified"
+                              }
+                            },
+                            "required": [
+                              "status"
+                            ],
+                            "additionalProperties": false
+                          },
+                          {
+                            "type": "object",
+                            "properties": {
+                              "status": {
+                                "type": "string",
+                                "const": "documented"
+                              }
+                            },
+                            "required": [
+                              "status"
+                            ],
+                            "additionalProperties": false
+                          },
+                          {
+                            "type": "object",
+                            "properties": {
+                              "status": {
+                                "type": "string",
+                                "const": "observed"
+                              },
+                              "scope": {
+                                "type": "string",
+                                "minLength": 1
+                              },
+                              "observedAt": {
+                                "type": "string",
+                                "format": "date-time",
+                                "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d(?:\\.\\d+)?(?:Z))$"
+                              },
+                              "receipt": {
+                                "type": "string",
+                                "minLength": 1
+                              }
+                            },
+                            "required": [
+                              "status",
+                              "scope",
+                              "observedAt",
+                              "receipt"
+                            ],
+                            "additionalProperties": false
+                          }
+                        ]
+                      }
+                    },
+                    "required": [
+                      "category",
+                      "basis",
+                      "rationale",
+                      "evidence",
+                      "reviewRequired"
+                    ],
+                    "additionalProperties": false
+                  }
                 },
                 "additionalProperties": {
                   "$ref": "#/$defs/__schema1"
@@ -949,11 +1173,123 @@
         },
         "metadata": {
           "type": "object",
-          "propertyNames": {
-            "type": "string"
+          "properties": {
+            "execution": {
+              "type": "object",
+              "properties": {
+                "category": {
+                  "anyOf": [
+                    {
+                      "type": "string",
+                      "enum": [
+                        "agent-native",
+                        "agent-computer-use",
+                        "human-online",
+                        "human-offline"
+                      ]
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "basis": {
+                  "type": "string",
+                  "enum": [
+                    "local-work",
+                    "documented-interface",
+                    "browser-evidence",
+                    "human-work",
+                    "unresolved"
+                  ]
+                },
+                "rationale": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "evidence": {
+                  "minItems": 1,
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "minLength": 1
+                  }
+                },
+                "reviewRequired": {
+                  "type": "boolean"
+                },
+                "automationEvidence": {
+                  "oneOf": [
+                    {
+                      "type": "object",
+                      "properties": {
+                        "status": {
+                          "type": "string",
+                          "const": "unverified"
+                        }
+                      },
+                      "required": [
+                        "status"
+                      ],
+                      "additionalProperties": false
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "status": {
+                          "type": "string",
+                          "const": "documented"
+                        }
+                      },
+                      "required": [
+                        "status"
+                      ],
+                      "additionalProperties": false
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "status": {
+                          "type": "string",
+                          "const": "observed"
+                        },
+                        "scope": {
+                          "type": "string",
+                          "minLength": 1
+                        },
+                        "observedAt": {
+                          "type": "string",
+                          "format": "date-time",
+                          "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d(?:\\.\\d+)?(?:Z))$"
+                        },
+                        "receipt": {
+                          "type": "string",
+                          "minLength": 1
+                        }
+                      },
+                      "required": [
+                        "status",
+                        "scope",
+                        "observedAt",
+                        "receipt"
+                      ],
+                      "additionalProperties": false
+                    }
+                  ]
+                }
+              },
+              "required": [
+                "category",
+                "basis",
+                "rationale",
+                "evidence",
+                "reviewRequired"
+              ],
+              "additionalProperties": false
+            }
           },
           "additionalProperties": {
-            "$ref": "#/$defs/__schema2"
+            "$ref": "#/$defs/__schema1"
           }
         }
       },
@@ -998,68 +1334,6 @@
           },
           "additionalProperties": {
             "$ref": "#/$defs/__schema1"
-          }
-        }
-      ]
-    },
-    "__schema2": {
-      "anyOf": [
-        {
-          "type": "string"
-        },
-        {
-          "type": "number"
-        },
-        {
-          "type": "boolean"
-        },
-        {
-          "type": "null"
-        },
-        {
-          "type": "array",
-          "items": {
-            "$ref": "#/$defs/__schema2"
-          }
-        },
-        {
-          "type": "object",
-          "propertyNames": {
-            "type": "string"
-          },
-          "additionalProperties": {
-            "$ref": "#/$defs/__schema2"
-          }
-        }
-      ]
-    },
-    "__schema3": {
-      "anyOf": [
-        {
-          "type": "string"
-        },
-        {
-          "type": "number"
-        },
-        {
-          "type": "boolean"
-        },
-        {
-          "type": "null"
-        },
-        {
-          "type": "array",
-          "items": {
-            "$ref": "#/$defs/__schema3"
-          }
-        },
-        {
-          "type": "object",
-          "propertyNames": {
-            "type": "string"
-          },
-          "additionalProperties": {
-            "$ref": "#/$defs/__schema3"
           }
         }
       ]

@@ -18,7 +18,7 @@ describe('process authoring catalog', () => {
     expect(processes[0].record).toEqual(record)
     expect(processes[0].entrySteps).toEqual(entrySteps)
     for (const id of ['design-brief', 'inspect-logo']) {
-      expect(processes[0].record.parts.find(part => part.id === id)?.metadata).toEqual({ route: 'agent', reversibility: 'reversible' })
+      expect(processes[0].record.parts.find(part => part.id === id)?.metadata).toMatchObject({ route: 'agent', reversibility: 'reversible' })
     }
   })
   it('requires explicit entries and connections without inferred order', () => {
@@ -44,7 +44,7 @@ describe('process authoring catalog', () => {
 function exportFixture() {
   const root = mkdtempSync(path.join(os.tmpdir(), 'candidate-export-'))
   temporary.push(root)
-  const files = ['lib/shared-processes/catalog.ts', 'lib/shared-processes/schema.ts', 'lib/shared-processes/json-schema.ts', 'lib/shared-processes/instructions.ts', 'scripts/shared-processes/export-candidate.ts', 'schemas/shared-process.schema.json', 'open-processes/generate-a-brand-logo.json']
+  const files = ['lib/execution.ts', 'lib/shared-processes/catalog.ts', 'lib/shared-processes/schema.ts', 'lib/shared-processes/json-schema.ts', 'lib/shared-processes/instructions.ts', 'scripts/shared-processes/export-candidate.ts', 'schemas/shared-process.schema.json', 'open-processes/generate-a-brand-logo.json']
   for (const file of files) {
     mkdirSync(path.dirname(path.join(root, file)), { recursive: true })
     cpSync(file, path.join(root, file))
@@ -60,7 +60,7 @@ function exportCandidate(root: string) {
   return spawnSync(process.execPath, ['--import', 'tsx', 'scripts/shared-processes/export-candidate.ts', '--process', 'generate-a-brand-logo', '--output', 'catalog.json', '--lock', 'candidate.lock'], { cwd: root, encoding: 'utf8' })
 }
 describe('candidate source pin', () => {
-  it.each(['lib/shared-processes/json-schema.ts', 'lib/shared-processes/instructions.ts', 'scripts/shared-processes/export-candidate.ts'])('rejects uncommitted exporter code in %s', file => {
+  it.each(['lib/execution.ts', 'lib/shared-processes/json-schema.ts', 'lib/shared-processes/instructions.ts', 'scripts/shared-processes/export-candidate.ts'])('rejects uncommitted exporter code in %s', file => {
     const root = exportFixture()
     const source = path.join(root, file)
     writeFileSync(source, readFileSync(source, 'utf8') + '\n')
