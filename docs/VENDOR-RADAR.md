@@ -138,7 +138,9 @@ belongs in another arena. `rankings-engine/scripts/launch-watch.ts` covers it. W
 own launch surface — the opt-in `urls.news` field on `open-rankings/<arena>/products.json`,
 seeded only where a keyless GET was verified — keeps the launch-shaped headlines, runs the same
 `buildArenaVocab`/`matchArenas` fit over each one, and nominates `(product, arena)` pairs for
-arenas the vendor is not rostered in.
+arenas the vendor is not rostered in. Seeding covers the high-change arenas: a rostered product
+there carries `urls.news` wherever its vendor publishes a verifiable changelog, blog, or
+newsroom on its own domain, and bot-walled vendors stay unseeded.
 
 Candidates are keyed `launch:<productId>:<arena>` in the shared seen-ledger
 (`rankings-engine/radar-seen.json`): a needs-human pair is ledgered when reported (one human
