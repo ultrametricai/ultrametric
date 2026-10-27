@@ -101,6 +101,7 @@ Registered agent services have no public signup API — the designation is an on
    Wyoming entities change to a new registered agent with the Secretary of State's Appointment of New Registered Agent and Office form, which carries the agent's signed Consent to Appointment and certifies compliance with W.S. 17-28-101 through 17-28-111 (law rule [us-wy.registered-agent-change](../../open-law/US-WY/us-wy-registered-agent-change.json)). The filing fee is $5, the form is mail-only, and processing can take up to 15 business days — plan agent switches ahead of any filing that depends on the new agent.
 
    - Cost: $5 (government fee, as of 2026-10-22, [sos.wyo.gov](https://sos.wyo.gov/Forms/RA/AppointmentofNewRA.pdf)). Appointment of New Registered Agent and Office filing fee, per the form checklist. Conditional step — excluded from the default-flow fee headline by construction.
+   - Canonical vendor: Wyoming Secretary of State
    - Do it yourself: [WY SOS registered agent forms](https://sos.wyo.gov/Forms/Default.aspx?root=RA)
    - Sources: [WY SOS — maintaining your business](https://sos.wyo.gov/Business/MaintainBusiness.aspx)
 
