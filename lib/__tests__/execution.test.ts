@@ -397,6 +397,70 @@ describe('execution assessments', () => {
     }
     expect(site.rationale).toMatch(/actual production form or other destination and its receipt evidence/)
   })
+  it('grounds the Atlas LLC default without choosing a registry for the earlier name search', () => {
+    const filing = part('form_011', 'n3').options.find(option => option.id === 'default')!
+    expect(filing.metadata).toMatchObject({
+      approvalRequired: true,
+      execution: { category: 'agent-computer-use', reviewRequired: true },
+    })
+    const assessment = filing.metadata.execution as Execution
+    expect(assessment.evidence).toContain('https://docs.stripe.com/atlas/company-types.md')
+    expect(assessment.rationale).toMatch(/Founders approve.*electronic signature/)
+    expect(assessment.rationale).toMatch(/another state's filing/)
+    const issued = part('form_011', 'n4').metadata.execution as Execution
+    expect(issued).toMatchObject({ category: 'agent-computer-use', reviewRequired: true })
+    expect(issued.evidence).toContain('open-processes/set-up-an-llc.json#/parts/2/options/0')
+    expect(issued.rationale).toMatch(/document must establish registry acceptance/)
+    expect(part('form_011', 'n2').metadata.execution).toMatchObject({ category: null })
+    expect(part('form_011', 'n7').metadata.execution).toMatchObject({ category: null })
+  })
+  it('distinguishes personal online launch participation and supported UK accounting setup', () => {
+    const outreach = part('growth_010', 'n4').metadata.execution as Execution
+    expect(outreach).toMatchObject({ category: 'human-online', basis: 'human-work', reviewRequired: true })
+    expect(outreach.evidence).toContain('https://news.ycombinator.com/newsguidelines.html')
+    expect(outreach.rationale).toMatch(/person with product experience/)
+    const accounting = part('qs_073', 'n2').options.find(option => option.id === 'uk-frs')!.metadata.execution as Execution
+    expect(accounting).toMatchObject({ category: 'agent-computer-use', reviewRequired: true })
+    expect(accounting.evidence).toContain('https://central.xero.com/0/article/Enter-conversion-balances-US')
+    expect(accounting.rationale).toMatch(/FRS 105 or FRS 102 1A/)
+    expect(accounting.rationale).toMatch(/accountant determines/)
+    expect(part('qs_073', 'n2').options.find(option => option.id === 'default')!.metadata.execution).toMatchObject({ category: null })
+  })
+  it('keeps partial access evidence separate from application changes and outcomes', () => {
+    const testing = part('scale_007', 'n6').metadata.execution as Execution
+    expect(testing).toMatchObject({ category: null, reviewRequired: true })
+    expect(testing.evidence).toContain('open-processes/set-up-sso-access-management.json#/parts/2/references')
+    expect(testing.rationale).toMatch(/SSO event does not prove the downstream login succeeded/)
+    const access = part('comp_002', 'n4').metadata.execution as Execution
+    expect(access).toMatchObject({ category: null, reviewRequired: true })
+    expect(access.evidence).toContain('https://help.vanta.com/en/articles/11345416-access-reviews')
+    expect(access.rationale).toMatch(/without revoking application access/)
+  })
+  it('distinguishes supported platform closing from the CPA’s personal e-file work', () => {
+    const vehicle = part('fund_001', 'n4').options.find(option => option.id === 'platform-syndicate')!.metadata.execution as Execution
+    expect(vehicle).toMatchObject({ category: 'agent-computer-use', reviewRequired: true })
+    expect(vehicle.evidence).toContain('https://help.angelliststack.com/raise/ruv/closing-an-ruv')
+    expect(vehicle.rationale).toMatch(/investors complete their own signatures and identity checks/)
+    expect(vehicle.rationale).toMatch(/Other syndicate structures/)
+    const filing = part('tax_002', 'n6').metadata.execution as Execution
+    expect(filing).toMatchObject({ category: 'human-online', basis: 'human-work', reviewRequired: true })
+    expect(filing.evidence).toContain('open-processes/file-federal-tax-return.json#/parts/5/metadata/verify')
+    expect(filing.rationale).toMatch(/CPA retains filing responsibility/)
+    expect(filing.rationale).toMatch(/paper attachments or an e-file exception/)
+  })
+  it('requires stored-form evidence and separates network standing from ordinary dispute rates', () => {
+    const waitlist = part('startup_001', 'n2').options.find(option => option.id === 'waitlist-ad-test')!
+    const page = waitlist.parts.find(scope => scope.id === 'wl1')!.metadata.execution as Execution
+    expect(page).toMatchObject({ category: 'agent-computer-use', reviewRequired: true })
+    expect(page.evidence).toContain('https://docs.lovable.dev/features/database')
+    expect(page.rationale).toMatch(/rendered form alone does not prove storage/)
+    expect(page.rationale).toMatch(/Other builder or storage choices/)
+    const monitoring = part('sit_006', 'n6').metadata.execution as Execution
+    expect(monitoring).toMatchObject({ category: 'agent-computer-use', reviewRequired: true })
+    expect(monitoring.evidence).toContain('https://docs.stripe.com/disputes/monitoring-programs')
+    expect(monitoring.rationale).toMatch(/network-reported standing and Stripe estimates/)
+    expect(monitoring.rationale).toMatch(/ordinary dispute rates can omit cases/)
+  })
   it('resolves every local evidence reference to retained content', () => {
     for (const record of records) for (const scope of scopes(record.parts)) {
       const assessment = scope.metadata.execution as Execution | undefined
