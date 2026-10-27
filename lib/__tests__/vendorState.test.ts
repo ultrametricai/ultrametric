@@ -2,7 +2,6 @@ import fs from 'node:fs'
 import path from 'node:path'
 import { describe, expect, it } from 'vitest'
 import { loadCategory } from '@/lib/data'
-import { EvidenceSchema, ProductSchema } from '@/lib/schemas'
 import { GOVERNMENT_ARENA_ID, governmentStepEligibility, jurisdictionNodes } from '@/lib/processes'
 import {
   loadVendorState, VENDOR_STATE_SERVICES, vendorStateFor, vendorStateLookup,
@@ -159,6 +158,13 @@ describe('government-services state tags', () => {
     expect(tag('ny-dtf')).toBe('US-NY')
     expect(tag('tx-comptroller')).toBe('US-TX')
     expect(tag('de-dor')).toBe('US-DE')
+    // The six agencies of the 2026-10-27 bring-up (PR #500).
+    expect(tag('tx-twc')).toBe('US-TX')
+    expect(tag('wa-esd')).toBe('US-WA')
+    expect(tag('wa-dor')).toBe('US-WA')
+    expect(tag('fl-dor')).toBe('US-FL')
+    expect(tag('nevada-sos')).toBe('US-NV')
+    expect(tag('wyoming-sos')).toBe('US-WY')
     expect(tag('delaware-doc')).toBe('US-DE')
     expect(tag('california-sos')).toBe('US-CA')
     expect(tag('new-york-dos')).toBe('US-NY')
@@ -180,46 +186,6 @@ describe('government-services state tags', () => {
   })
 })
 
-// State agencies staged for roster bring-up (2026-10-27): lib/data.ts needs a verdict for every
-// cell, so un-judged agencies wait in a seed file until the maintainer session judges them and
-// moves them into products.json. The staged records must already be valid roster entries.
-// The seed file shrinks as agencies are promoted and is deleted with the last one, so these
-// checks cover whatever is still staged and pass trivially once nothing is.
-const STAGED_FILE = path.join(ROOT, 'rankings-engine/seeds/government-services-state-agencies-pending.json')
-const STAGED_IDS = ['fl-dor', 'nevada-sos', 'tx-twc', 'wa-dor', 'wa-esd', 'wyoming-sos']
-
-describe('staged government-services state agencies', () => {
-  const staged = fs.existsSync(STAGED_FILE)
-    ? (JSON.parse(fs.readFileSync(STAGED_FILE, 'utf8')) as { products: unknown[]; evidence: Record<string, unknown[]> })
-    : { products: [], evidence: {} }
-  const products = ProductSchema.array().parse(staged.products)
-  const rostered = new Set(loadCategory(GOVERNMENT_ARENA_ID, DATA_DIR).products.map((p) => p.id))
-  const states = registryStates()
-
-  it('each staged agency is a valid US state agency not yet on the roster', () => {
-    for (const p of products) {
-      expect(STAGED_IDS, `${p.id} is one of the staged agencies`).toContain(p.id)
-      expect(rostered.has(p.id), `${p.id} is rostered: remove it from the seed file`).toBe(false)
-      expect(p.type).toBe('government')
-      expect(p.country).toBe('US')
-      expect(states.has(p.state!), `${p.id} state ${p.state} must be registered`).toBe(true)
-      expect(p.urls.site).toMatch(/^https:\/\//)
-    }
-  })
-
-  it('crawlExclude entries are corpus URLs and staged evidence parses for staged products', () => {
-    for (const p of products) {
-      const urls = new Set([p.urls.site, p.urls.docs, ...(p.urls.extra ?? [])])
-      for (const u of p.crawlExclude ?? []) expect(urls.has(u), `${p.id} excludes ${u}`).toBe(true)
-    }
-    const ids = new Set(products.map((p) => p.id))
-    for (const [id, rows] of Object.entries(staged.evidence)) {
-      expect(ids.has(id), `${id} evidence belongs to a staged product`).toBe(true)
-      for (const row of EvidenceSchema.array().parse(rows)) expect(row.id.startsWith(`${id}-`)).toBe(true)
-    }
-  })
-})
-
 // The state dimension of governmentStepEligibility: a committed state code on a step narrows
 // the candidate pull to the agencies tagged with that state; everything else is byte-identical
 // to the country+area rule.
@@ -237,7 +203,12 @@ describe('governmentStepEligibility with a state code', () => {
     for (const [state, ids] of [
       ['US-DE', ['delaware-doc', 'de-dor']],
       ['US-NY', ['new-york-dos', 'ny-dtf']],
-      ['US-TX', ['texas-sos', 'tx-comptroller']],
+      ['US-TX', ['texas-sos', 'tx-comptroller', 'tx-twc']],
+      // The 2026-10-27 bring-up states.
+      ['US-WA', ['washington-sos', 'wa-esd', 'wa-dor']],
+      ['US-FL', ['florida-dos', 'fl-dor']],
+      ['US-NV', ['nevada-sos']],
+      ['US-WY', ['wyoming-sos']],
     ] as const) {
       expect(
         governmentStepEligibility({ jurisdictions: [state] }, GOVERNMENT_ARENA_ID, DATA_DIR),
@@ -254,6 +225,13 @@ describe('governmentStepEligibility with a state code', () => {
       ['ca_ftb', 'US-CA', 'ca-ftb'],
       ['ny_dtf', 'US-NY', 'ny-dtf'],
       ['tx_comptroller', 'US-TX', 'tx-comptroller'],
+      // The 2026-10-27 bring-up wiring (PR #500).
+      ['tx_twc', 'US-TX', 'tx-twc'],
+      ['wa_esd', 'US-WA', 'wa-esd'],
+      ['wa_dor', 'US-WA', 'wa-dor'],
+      ['fl_dor', 'US-FL', 'fl-dor'],
+      ['nevada_sos', 'US-NV', 'nevada-sos'],
+      ['wyoming_sos', 'US-WY', 'wyoming-sos'],
     ] as const) {
       expect(
         governmentStepEligibility({ vendor, jurisdictions: [state] }, GOVERNMENT_ARENA_ID, DATA_DIR),
@@ -291,6 +269,13 @@ describe('governmentStepEligibility with a state code', () => {
     expect(resolve('tax_001', 'tx_comptroller')).toEqual(new Set(['tx-comptroller'])) // TX franchise tax
     expect(resolve('qs_047', 'tx_comptroller')).toEqual(new Set(['tx-comptroller'])) // TX franchise report + PIR
     expect(resolve('form_005', 'ny_dtf')).toEqual(new Set(['ny-dtf']))      // NY Article 9-A / CT-3
+    // The 2026-10-27 bring-up: each agency anchors its own state step (PR #500).
+    expect(resolve('qs_063', 'tx_twc')).toEqual(new Set(['tx-twc']))        // TX unemployment-tax registration
+    expect(resolve('qs_063', 'wa_esd')).toEqual(new Set(['wa-esd']))        // WA employer registration
+    expect(resolve('qs_063', 'fl_dor')).toEqual(new Set(['fl-dor']))        // FL reemployment-tax registration
+    expect(resolve('form_005', 'wa_dor')).toEqual(new Set(['wa-dor']))      // WA B&O registration
+    expect(resolve('qs_047', 'nevada_sos')).toEqual(new Set(['nevada-sos'])) // NV annual list
+    expect(resolve('qs_043', 'wyoming_sos')).toEqual(new Set(['wyoming-sos'])) // WY registered-agent change
   })
 
   it('steps without a state code behave exactly as before', () => {
