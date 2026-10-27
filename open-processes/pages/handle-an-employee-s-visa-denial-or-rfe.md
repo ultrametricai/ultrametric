@@ -36,15 +36,18 @@ Notice parsing, the evidence assembly, and the lapse-plan math are agent work fr
 
    When: The notice is an RFE or NOID with a response deadline
 
-   - Next: steps 4 and 5 — all follow this step
+   - If "The classification qualifies for premium processing": continue at step 5
 4. **File the counsel-reviewed response before the printed deadline, and confirm the agency received it** — human · ~30 min · hard to undo
+
+   - Next: continue at step 10
 5. **Consider premium processing where the classification qualifies: it buys adjudicative action on a stated clock, not approval** — manual form/portal · ~30 min
 
-   *Follows step 3.*
+   *Follows step 3 (when The classification qualifies for premium processing).*
 
    When: The classification qualifies for premium processing
 
    - Do it yourself: [USCIS: premium processing eligibility](https://www.uscis.gov/forms/all-forms/how-do-i-request-premium-processing)
+   - Next: continue at step 10
 6. **After a denial, map the alternatives honestly: refile with better evidence, a different classification, motions and appeals, or the role abroad** — human · ~45 min
 
    *Follows step 2.*
@@ -52,12 +55,16 @@ Notice parsing, the evidence assembly, and the lapse-plan math are agent work fr
    When: The petition was denied
 7. **Plan for the lapse like it will happen: the date work must stop, leave options, remote work from abroad, and the EOR path priced in advance** — human · ~1 h
 
-   - Next: steps 8 and 10 — all follow this step
+   - If "Work authorization will lapse and the role can be performed abroad": continue at step 8
+   - Next: continue at step 10
 8. **If the clock wins and the role can be done abroad, keep the person: employ them through an EOR while the next petition runs** — human · ~30 min
+
+   *Follows step 7 (when Work authorization will lapse and the role can be performed abroad).*
 
    When: Work authorization will lapse and the role can be performed abroad
 
    - Runs the process [Hire abroad via an EOR](hire-abroad-via-an-eor.md)
+   - Next: continue at step 10
 9. **If the stuck case is a founder's own visa rather than an employee petition, that is its own situation** — human · ~15 min
 
    *Follows step 1.*
@@ -69,7 +76,7 @@ Notice parsing, the evidence assembly, and the lapse-plan math are agent work fr
    *This path ends here.*
 10. **Wait out the adjudication: the decision arrives on the agency's schedule** — human · ~30 d · async wait
 
-   *Follows steps 4, 5, 7 and 8 — all are required first.*
+   *Follows step 4 or step 5 or step 7 or step 8.*
 
 ## By country
 

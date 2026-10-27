@@ -29,19 +29,22 @@ Claim verification and monitoring run as agent work from supplied links and aler
    - Next: steps 2 and 3 — all follow this step
 2. **Name one spokesperson; everyone else routes inquiries there and posts nothing** — human · ~15 min
 
-   - Next: steps 4 and 5 — all follow this step
+   - If "The coverage contains identified factual errors": continue at step 4
+   - Next: continue at step 5
 3. **Stand up monitoring: alerts and feeds for the story's spread, so responses track reality rather than anxiety** — agent-runnable · ~30 min
 
    *Follows step 1.*
 
    - Do it yourself: [Google Alerts](https://www.google.com/alerts)
+   - Next: continue at step 8
 4. **For factual errors, request corrections through the outlet's own channel, with the evidence attached** — human · ~45 min
 
-   *Follows step 2.*
+   *Follows step 2 (when The coverage contains identified factual errors).*
 
    When: The coverage contains identified factual errors
 
    - Do it yourself: [SPJ Code of Ethics (accuracy and corrections)](https://www.spj.org/spj-code-of-ethics/)
+   - Next: continue at step 8
 5. **Legal review before any public statement that touches a dispute, a regulator, or a named individual** — human · ~30 min
 
    *Follows step 2.*
@@ -49,7 +52,7 @@ Claim verification and monitoring run as agent work from supplied links and aler
 7. **Tell customers and the team the same thing you told the public** — human · ~30 min
 8. **Let the cycle pass: keep monitoring, correct new factual errors, and write the postmortem** — human · ~7 d · async wait
 
-   *Follows steps 3, 4 and 7 — all are required first.*
+   *Follows step 3 or step 4 or step 7.*
 
 ---
 
