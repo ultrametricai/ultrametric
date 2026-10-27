@@ -1,0 +1,59 @@
+{
+  "module": "convertibleNote",
+  "entrypoint": "seriesPricingWithNotes",
+  "implementation": {
+    "file": "lib/openstartup/convertibleNote.ts",
+    "sha256": "e1c571475b2089a271d315b9b0c3b204476c814771bd829b6661b6c1f3d9de6b"
+  },
+  "readme": "open-modules/conformance/README.md",
+  "cases": [
+    {
+      "name": "cooley-three-methods",
+      "description": "The Cooley GO three-method pricing example: $8,000,000 pre-money, $2,000,000 new money, $1,000,000 of notes converting at a 30% discount, 1,000,000 pre-round fully diluted shares. Pre-money method: $8.00 round price, $5.60 conversion price, ownership 70% / 12.5% / 17.5%. Percentage-ownership method: $6.5714 (the article's $6.57), $4.60, ownership 65.71% / 14.29% / 20%. Dollars-invested method: $7.5714 ($7.57), $5.30, ownership 68.83% / 12.99% / 18.18%.",
+      "source": "Cooley GO, \"Calculating Share Price With Outstanding Convertible Notes or Safes\" (Derek Colla; https://www.cooleygo.com/calculating-share-price-outstanding-convertible-notes-or-safes/, last reviewed 2022-01-24)",
+      "tolerance": 0.005,
+      "inputs": [
+        {
+          "preMoney": 8000000,
+          "newMoney": 2000000,
+          "noteBalanceConverting": 1000000,
+          "discountPct": 30,
+          "preRoundFullyDiluted": 1000000
+        }
+      ],
+      "expected": {
+        "pre-money": {
+          "pps": 8,
+          "conversionPrice": 5.6,
+          "noteShares": 178571,
+          "newMoneyShares": 250000,
+          "ownershipPct": {
+            "existing": 70,
+            "notes": 12.5,
+            "newMoney": 17.5
+          }
+        },
+        "percentage-ownership": {
+          "pps": 6.5714,
+          "conversionPrice": 4.6,
+          "noteShares": 217391,
+          "ownershipPct": {
+            "existing": 65.71,
+            "notes": 14.29,
+            "newMoney": 20
+          }
+        },
+        "dollars-invested": {
+          "pps": 7.5714,
+          "conversionPrice": 5.3,
+          "noteShares": 188679,
+          "ownershipPct": {
+            "existing": 68.83,
+            "notes": 12.99,
+            "newMoney": 18.18
+          }
+        }
+      }
+    }
+  ]
+}
