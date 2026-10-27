@@ -61,6 +61,7 @@ State filing portals have no API — the filing is manual form work; gathering t
 
    Nevada corporations file the annual list of officers and directors on or before the last day of the anniversary month of incorporation, with the $500 state business license renewal running alongside it and the list fee scaling with authorized stock (law rule [us-nv.annual-list-business-license](../../open-law/US-NV/us-nv-annual-list-business-license.json)). File through SilverFlume, the state business portal, and keep the declaration and receipts with the entity's compliance records. Defaulting corporations face revocation and reinstatement costs.
 
+   - Canonical vendor: Nevada Secretary of State
    - Do it yourself: [SilverFlume — Nevada business portal](https://www.nvsilverflume.gov/home)
    - Sources: [NRS Chapter 78 (annual list)](https://www.leg.state.nv.us/NRS/NRS-078.html)
 

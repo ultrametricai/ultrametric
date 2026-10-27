@@ -148,6 +148,7 @@ Provider onboarding is a guided online form (needs EIN and bank account); the jo
 
    The Texas Unemployment Compensation Act requires employers to register with the Texas Workforce Commission within 10 days of becoming liable (law rule [us-tx.unemployment-tax-registration](../../open-law/US-TX/us-tx-unemployment-tax-registration.json)), using the free online Unemployment Tax Registration service. Texas has no state individual income tax, so there is no state wage-withholding registration — the TWC account and quarterly wage reports are the Texas payroll obligations. Pass the issued TWC account number to payroll.
 
+   - Canonical vendor: Texas Workforce Commission
    - Do it yourself: [TWC — unemployment tax registration](https://www.twc.texas.gov/businesses/unemployment-tax-registration)
    - Sources: [TWC — unemployment tax program](https://www.twc.texas.gov/programs/unemployment-tax)
 
@@ -158,6 +159,7 @@ Provider onboarding is a guided online form (needs EIN and bank account); the jo
 
    Washington employer accounts open through the state business license application: hiring (or planning to hire within 90 days) requires the application, which establishes the Employment Security Department unemployment account alongside the Department of Revenue registration. Washington has no state income-tax withholding; payroll instead handles ESD quarterly reports and the state premium programs the ESD employer pages describe. Pass the issued account identifiers to payroll.
 
+   - Canonical vendor: Washington Employment Security Department
    - Do it yourself: [WA DOR — apply for a business license](https://dor.wa.gov/open-business/apply-business-license)
    - Sources: [WA ESD — employer taxes](https://esd.wa.gov/employer-taxes)
 
@@ -168,6 +170,7 @@ Provider onboarding is a guided online form (needs EIN and bank account); the jo
 
    Florida employers register for reemployment tax with the Department of Revenue through the Florida Business Tax Application (Form DR-1), online or on paper, once the law's liability conditions are met. Florida has no state individual income tax, so there is no state wage-withholding registration — the reemployment account and the Employer's Quarterly Report (Form RT-6) are the Florida payroll obligations. Pass the issued account details to payroll and confirm the first RT-6 cycle.
 
+   - Canonical vendor: Florida Department of Revenue
    - Do it yourself: [FL DOR — reemployment tax](https://floridarevenue.com/taxes/taxesfees/Pages/reemployment.aspx)
 
 ## By country
