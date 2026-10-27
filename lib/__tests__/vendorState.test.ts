@@ -31,7 +31,10 @@ describe('vendor-state corpus', () => {
   it('every checkedAt is a real date no later than today', () => {
     const today = new Date().toISOString().slice(0, 10)
     for (const e of entries) {
-      expect(Number.isNaN(Date.parse(e.checkedAt)), `${e.productId}/${e.state}/${e.service}`).toBe(false)
+      const parsed = new Date(e.checkedAt)
+      expect(Number.isNaN(parsed.getTime()), `${e.productId}/${e.state}/${e.service}`).toBe(false)
+      // Rejects impossible dates such as 2026-02-30, which Date silently rolls forward.
+      expect(parsed.toISOString().slice(0, 10), `${e.productId}/${e.state}/${e.service} checkedAt`).toBe(e.checkedAt)
       expect(e.checkedAt <= today, `${e.productId}/${e.state}/${e.service} checkedAt`).toBe(true)
     }
   })
