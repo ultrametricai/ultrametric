@@ -64,6 +64,8 @@ export interface VendorStateCell {
   status: VendorStateStatus
   note: string
   sourceUrl: string
+  /** The date the source was last checked (YYYY-MM-DD). */
+  checkedAt: string
   price?: z.infer<typeof VendorStatePriceSchema>
 }
 
@@ -119,6 +121,7 @@ export function vendorStateLookup(
       status: e.status,
       note: e.note,
       sourceUrl: e.sourceUrl,
+      checkedAt: e.checkedAt,
       ...(e.price ? { price: e.price } : {}),
     }
   }
