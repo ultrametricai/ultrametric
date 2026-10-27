@@ -211,11 +211,58 @@ describe('execution assessments', () => {
     expect(evidence.some(source => source.includes('support.google.com/mail'))).toBe(true)
     expect(evidence).toContain('https://knowledge.hubspot.com/tasks/create-tasks')
   })
-  it('keeps board distribution unresolved when sending evidence omits access and questions', () => {
+  it('requires board distribution evidence to cover access and questions as well as sending', () => {
     const board = part('fin_010', 'n4')
     expect(board.references).toContainEqual({ kind: 'vendor', id: 'google_slides', role: 'stated-vendor' })
-    expect(board.metadata.execution).toMatchObject({ category: null, basis: 'unresolved', reviewRequired: true })
-    expect((board.metadata.execution as Execution).rationale).toMatch(/distribution method, document-access checks and collection of directors' questions/)
+    const assessment = board.metadata.execution as Execution
+    expect(assessment).toMatchObject({ category: 'agent-computer-use', basis: 'browser-evidence', reviewRequired: true })
+    expect(assessment.evidence).toEqual(expect.arrayContaining([
+      'https://support.google.com/drive/answer/7166529',
+      'https://support.google.com/docs/answer/65129?hl=en',
+      'https://support.google.com/docs/answer/16722399?hl=en',
+    ]))
+    // Retain the original partial evidence without using it as proof of the
+    // access checks and question collection supplied by the browser workflow.
+    expect(assessment.rationale).toMatch(/Gmail send source covers only message transmission/)
+    expect(part('fin_010', 'n5').metadata.execution).toMatchObject({ category: null })
+  })
+  it('uses the authored code host and preserves review-trigger limitations', () => {
+    for (const [process, step, slug] of [
+      ['sw_011', 'n4', 'set-up-ai-code-review'],
+      ['sw_001', 'n5', 'ship-a-feature-spec-to-deploy'],
+    ]) {
+      const assessment = part(process, step).metadata.execution as Execution
+      expect(assessment).toMatchObject({ category: 'agent-native', basis: 'documented-interface', reviewRequired: true })
+      expect(records.find(record => record.id === process)!.references).toContainEqual({ kind: 'vendor', id: 'github', role: 'involves' })
+      expect(assessment.evidence).toContain(`open-processes/${slug}.json#/references`)
+      for (const provider of ['docs.github.com', 'docs.coderabbit.ai', 'www.greptile.com', 'cursor.com']) {
+        expect(assessment.evidence.some(source => source.includes(provider))).toBe(true)
+      }
+      expect(assessment.rationale).toMatch(/Bugbot.*manual trigger comments/)
+    }
+    expect(part('sw_011', 'n4').metadata.approvalRequired).toBe(true)
+    // The technical test does not select the team's decision-making medium.
+    expect(part('sw_011', 'n5').metadata.execution).toMatchObject({ category: null })
+  })
+  it('separates deadline analysis from reporting and keeps mixed KYC media unresolved', () => {
+    expect(part('sit_021', 'n2').metadata).toMatchObject({
+      riskLevel: 'high',
+      execution: { category: 'agent-native', basis: 'local-work', reviewRequired: true },
+    })
+    expect(part('sit_021', 'n3').metadata.execution).toMatchObject({ category: null })
+    const identity = part('qs_023', 'n5').metadata.execution as Execution
+    expect(identity).toMatchObject({ category: null, reviewRequired: true })
+    expect(identity.evidence).toContain('open-processes/open-bank-account.json#/parts/2/metadata/geoResolutions')
+    expect(identity.rationale).toMatch(/in-person or video KYC/)
+  })
+  it('covers each analytics provider without classifying the separate survey delivery', () => {
+    const survey = part('startup_001', 'n2').options.find(option => option.id === 'sean-ellis-survey')!
+    const population = survey.parts.find(node => node.id === 'se1')!.metadata.execution as Execution
+    expect(population).toMatchObject({ category: 'agent-computer-use', reviewRequired: true })
+    for (const provider of ['posthog.com', 'www.amplitude.com', 'docs.mixpanel.com']) {
+      expect(population.evidence.some(source => source.includes(provider))).toBe(true)
+    }
+    expect(survey.parts.find(node => node.id === 'se2')!.metadata.execution).toMatchObject({ category: null })
   })
   it('distinguishes documented infrastructure operations from browser controls and sample limits', () => {
     const warehouse = part('scale_010', 'n1')
