@@ -77,7 +77,7 @@ describe('execution assessments', () => {
     }
   })
   it('assesses monitoring work separately from the institution deciding its outcome', () => {
-    for (const [process, step] of [['prod_012', 'n5'], ['fund_007', 'n6'], ['sit_002', 'n9'], ['sit_006', 'n7'], ['sit_016', 'n7']]) {
+    for (const [process, step] of [['prod_012', 'n5'], ['fund_007', 'n6'], ['fund_003', 'n5'], ['ins_001', 'n4'], ['sit_002', 'n9'], ['sit_006', 'n7'], ['sit_016', 'n7']]) {
       const node = part(process, step)
       expect(node.metadata.execution).toMatchObject({ category: 'agent-computer-use', basis: 'browser-evidence' })
       expect(node.metadata.async).toBe(true)
@@ -85,6 +85,15 @@ describe('execution assessments', () => {
     }
     // A monitoring label does not prove every channel in a combined workflow.
     expect(part('vc_003', 'n2').metadata.execution).toMatchObject({ category: null, reviewRequired: true })
+  })
+  it('uses the valuation provider correspondence without inventing a mail API', () => {
+    const valuation = part('fund_003', 'n5').metadata.execution as Execution
+    expect(valuation).toMatchObject({ category: 'agent-computer-use', basis: 'browser-evidence', reviewRequired: true })
+    expect(valuation.rationale).toMatch(/questions and clarifications sent by email/)
+    expect(valuation.evidence.some(source => source.includes('how-to-view-your-409a-valuation-status'))).toBe(true)
+    expect(valuation.evidence.some(source => /gmail|graph\.microsoft|api\//.test(source))).toBe(false)
+    // Following up on an offer does not establish that policy's binding route.
+    expect(part('ins_001', 'n6').metadata.execution).toMatchObject({ category: null })
   })
   it('uses explicit filing media and keeps electronic signing a human act', () => {
     expect(part('qs_047', 'jny1').metadata.execution).toMatchObject({ category: 'agent-computer-use' })
@@ -97,6 +106,28 @@ describe('execution assessments', () => {
     }
     const german = part('form_001', 'n4').options.find(option => option.id === 'germany-notary-gmbh')!
     expect(german.parts.find(part => part.id === 'de2')!.metadata.execution).toMatchObject({ category: null, reviewRequired: true })
+  })
+  it('separates documented mail preparation from the applicant witnessing procedure', () => {
+    const preparation = part('qs_044', 'n4a').metadata.execution as Execution
+    expect(preparation).toMatchObject({ category: 'agent-computer-use', reviewRequired: true })
+    for (const provider of ['support.usestable.com', 'help.earthclassmail.com', 'help.virtualpostmail.com']) {
+      expect(preparation.evidence.some(source => source.includes(provider))).toBe(true)
+    }
+    expect(preparation.rationale).toMatch(/applicant supplies personal identity evidence/)
+    expect(part('qs_044', 'n4').metadata).toMatchObject({
+      legalSignature: true,
+      execution: { category: null, basis: 'unresolved', reviewRequired: true },
+    })
+  })
+  it('classifies a documented CLI pipeline without claiming the app-specific trial has run', () => {
+    const pipeline = part('prod_012', 'n3').metadata.execution as Execution
+    expect(pipeline).toMatchObject({ category: 'agent-native', basis: 'documented-interface', reviewRequired: true })
+    for (const provider of ['docs.fastlane.tools', 'docs.expo.dev']) {
+      expect(pipeline.evidence.some(source => source.includes(provider))).toBe(true)
+    }
+    expect(pipeline.rationale).toMatch(/failure tests and manual recovery procedure still require validation/)
+    // Upload tooling does not establish the separate production device trial.
+    expect(part('prod_012', 'n7').metadata.execution).toMatchObject({ category: null })
   })
   it('distinguishes a selected online human workflow from an unresolved execution alternative', () => {
     const review = part('scale_001', 'n5').metadata.execution as Execution
@@ -159,7 +190,7 @@ describe('execution assessments', () => {
     expect(availability.rationale).toMatch(/existing-entity lookup probe did not test availability/)
   })
   it('requires evidence across retained alternatives when their shared mechanism resolves a scope', () => {
-    for (const [process, step] of [['qs_015', 'n3'], ['fund_005', 'n3']]) {
+    for (const [process, step] of [['qs_015', 'n2'], ['qs_015', 'n3'], ['fund_005', 'n3']]) {
       const assessment = part(process, step).metadata.execution as Execution
       expect(assessment).toMatchObject({ category: 'agent-computer-use', reviewRequired: true })
       for (const provider of ['support.google.com', 'help.dropbox.com', 'www.notion.com']) {
