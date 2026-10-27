@@ -54,8 +54,13 @@ The deferral conversations, the bridge, and the fork decision are founder and co
 
    *Follows steps 3, 4 and 5 — all are required first.*
 
-   - Next: steps 7 and 8 — all follow this step
+   - If "the fork decision is an orderly wind-down": continue at step 7
+   - Next: continue at step 8
 7. **If the answer is wind down, start the shutdown while final wages can still be paid on time** — human · ~30 min · hard to undo
+
+   *Follows step 6 (when the fork decision is an orderly wind-down).*
+
+   When: the fork decision is an orderly wind-down
 
    - Runs the process [Shut down the company](shut-down-the-company.md)
 

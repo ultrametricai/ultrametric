@@ -27,21 +27,21 @@ Selection, the releases, and the conversations are counsel and founder work; an 
 ## Steps
 
 1. **Write the business case and the selection criteria before any names: roles not people, then an adverse-impact review of the resulting list** — human · ~1.5 h
-2. **Check the statutory notice floors against your real counts: employees, sites, and the 60-day federal clock** — agent-runnable · ~45 min
+2. **Check the statutory notice and consultation floors against your real counts: employees, sites, and the clocks they start** — agent-runnable · ~45 min
 
-   The federal WARN Act binds employers with 100 or more employees ordering a plant closing or mass layoff: 60 days' written notice to affected employees or their representatives, the state dislocated-worker unit, and the chief elected local official, with the statute's reduced-notice exceptions (law rule [us-fed.warn-notice](../../open-law/US-FED/us-fed-warn-notice.json)). Whether this layoff crosses the headcount and single-site percentage tests is a counsel determination, and state mini-WARN acts set lower floors.
+   Collective dismissals trip statutory notice and consultation duties that turn on headcount, site, and timing, and the floors bind before anything is announced. Compute the counts first, then read the clocks in the committed per-country entries; whether a given reduction crosses a statutory threshold is a counsel determination.
 
    - Do it yourself: [29 U.S.C. § 2102 — WARN notice requirement](https://www.law.cornell.edu/uscode/text/29/2102)
-3. **Plan final pay by state for every affected person: some clocks run at the termination itself** — agent-runnable · ~30 min
+3. **Plan final pay for every affected person on their jurisdiction's clock: some clocks run at the termination itself** — agent-runnable · ~30 min
 
-   California requires final wages, including accrued vacation, at the termination when the employer discharges, with a waiting-time penalty of a day's wages per day late up to 30 days (law rule [us-ca.final-wages-timing](../../open-law/US-CA/us-ca-final-wages-timing.json)). Map each affected person's state and schedule the final-pay runs so no clock is missed on the day.
+   Map each affected person's jurisdiction and schedule the final-pay runs so no clock is missed on the day; the committed per-country entries carry the clocks that bind.
 
    - Vendor options: Gusto, Rippling
    - Ranked market: [payroll](../../open-rankings/payroll)
    - Do it yourself: [California DIR: final pay FAQ](https://www.dir.ca.gov/dlse/faq_paydays.htm)
-4. **Draft severance and releases with the statutory windows built in: 21 or 45 days to consider, 7 to revoke, group disclosures for 40-plus** — human · ~1 h
+4. **Draft severance and releases with the statutory windows built in: consideration periods, revocation rights, and the required disclosures** — human · ~1 h
 
-   A release of federal age-discrimination claims by anyone 40 or older is only knowing and voluntary inside the OWBPA conditions: at least 21 days to consider, 45 days when the waiver rides a group termination program, a 7-day revocation period before effectiveness, and the written group disclosures of the decisional unit, eligibility factors, and the ages and titles selected and not selected (law rule [us-fed.owbpa-release-windows](../../open-law/US-FED/us-fed-owbpa-release-windows.json)). Severance in exchange for the release is the standard trade; counsel drafts it.
+   Severance in exchange for a release is the standard trade, and a release is only as strong as its statutory compliance: many regimes condition enforceability on consideration periods, revocation windows, and written disclosures. Counsel drafts to the windows that bind where each affected person works; the committed per-country entries carry the clocks.
 
    - Do it yourself: [29 U.S.C. § 626(f) — OWBPA waiver conditions](https://www.law.cornell.edu/uscode/text/29/626)
 5. **Plan the day: managers briefed first, affected people told first and in person, the company the same day, benefits and payroll logistics ready** — human · ~1 h · hard to undo
@@ -54,7 +54,9 @@ Selection, the releases, and the conversations are counsel and founder work; an 
 
 ### United States
 
-- Step 2: The WARN Act's 100-employee floor and 60-day notice (law rule us-fed.warn-notice), plus the state mini-WARN acts the rule's caveat flags ([29 U.S.C. § 2102](https://www.law.cornell.edu/uscode/text/29/2102))
+- Step 2: The federal WARN Act binds employers with 100 or more employees ordering a plant closing or mass layoff: 60 days' written notice to affected employees or their representatives, the state dislocated-worker unit, and the chief elected local official, with the statute's reduced-notice exceptions (law rule us-fed.warn-notice); state mini-WARN acts set lower floors ([29 U.S.C. § 2102](https://www.law.cornell.edu/uscode/text/29/2102))
+- Step 3: Final pay runs on each work state's clock: California requires final wages, including accrued vacation, at the termination when the employer discharges, with a waiting-time penalty of a day's wages per day late up to 30 days (law rule us-ca.final-wages-timing) ([California DIR: final pay FAQ](https://www.dir.ca.gov/dlse/faq_paydays.htm))
+- Step 4: A release of federal age-discrimination claims by anyone 40 or older is only knowing and voluntary inside the OWBPA conditions: at least 21 days to consider, 45 days when the waiver rides a group termination program, a 7-day revocation period before effectiveness, and the written group disclosures of the decisional unit, eligibility factors, and the ages and titles selected and not selected (law rule us-fed.owbpa-release-windows) ([29 U.S.C. § 626(f)](https://www.law.cornell.edu/uscode/text/29/626))
 
 ### Australia
 
@@ -63,6 +65,7 @@ Selection, the releases, and the conversations are counsel and founder work; an 
 ### South Korea
 
 - Step 2: Statutory severance is part of the cost of every separation: an employee with a year or more of service is owed roughly 30 days' average wages per year of service (law rule kr.severance-pay)
+- Step 3: Wages and all other amounts settle within 14 days of separation, and statutory severance is owed for a year or more of service (law rule kr.severance-pay)
 
 ---
 

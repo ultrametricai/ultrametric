@@ -29,9 +29,9 @@ Scope, validity, and the notice decision are counsel work; an agent can extract 
 1. **Read the demand: issuer, instrument type, exactly what it names, the printed deadline, and any nondisclosure order attached** — human · ~30 min
 
    - Next: steps 2 and 3 — all follow this step
-2. **Preserve now, separately from producing: hold the named accounts and records, suspend deletion jobs that would touch them, and log the hold** — agent-runnable · ~30 min
+2. **Draft the preservation hold now, separately from producing: exactly what the demand names, the deletion jobs to suspend, and the hold log** — agent-runnable · ~30 min
 
-   Preservation and production are different acts. A § 2703(f) preservation request obliges a provider to take all necessary steps to preserve the named records for 90 days, extended another 90 on a renewed request, pending legal process (law rule [us-fed.sca-preservation-request](../../open-law/US-FED/us-fed-sca-preservation-request.json)). Holding the data is not disclosing it; scope the hold to exactly what the demand names.
+   Preservation and production are different acts. A § 2703(f) preservation request obliges a provider to take all necessary steps to preserve the named records for 90 days, extended another 90 on a renewed request, pending legal process (law rule [us-fed.sca-preservation-request](../../open-law/US-FED/us-fed-sca-preservation-request.json)). Holding the data is not disclosing it; scope the hold to exactly what the demand names. The system owners place the holds and suspend the retention jobs in the live systems from this draft, and the log records what they did and when.
 
    - Do it yourself: [18 U.S.C. § 2703 — required disclosure and preservation](https://www.law.cornell.edu/uscode/text/18/2703)
 3. **Counsel before production or reply: scope, validity, and which instrument reaches which data** — human · ~1 h
