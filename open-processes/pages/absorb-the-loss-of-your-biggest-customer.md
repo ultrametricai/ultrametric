@@ -54,8 +54,6 @@ The reason-finding, the save attempt, and the board conversation are founder wor
    *Follows step 3.*
 
    - Runs the process [Run outbound sales sequences](run-outbound-sales-sequences.md)
-   - Vendor options: HubSpot, Attio
-   - Ranked market: [crm](../../open-rankings/crm)
 
 ---
 
