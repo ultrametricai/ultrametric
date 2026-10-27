@@ -91,7 +91,7 @@ module computes for, written from the committed module-to-process map by
 | --- | --- | --- |
 | [Cap table](open-modules/README.md#cap-table) | Issuance, option pools, SAFE conversion, priced-round price per share, dilution | Incorporate C-Corp · Sign the founder agreement & split equity · Set up cap table · Update cap table · Audit cap table · Raise pre-seed (SAFEs) · Close a priced equity round · Issue stock options · Convert SAFEs at the priced round · Handle a co-founder departure |
 | [Vesting](open-modules/README.md#vesting-mechanics) | Cliff and periodic schedules, back-loaded tranches, acceleration, departures | Incorporate C-Corp · Sign the founder agreement & split equity · Issue stock options · Hire first employee · Hire an executive · Handle a co-founder departure |
-| [83(b) election](open-modules/README.md#83b-election-math) | Tax at grant vs tax at vesting, forfeiture cost | Incorporate C-Corp · Sign the founder agreement & split equity · Convert an LLC to a C-Corp |
+| [83(b) election](open-modules/README.md#83b-election-math) | Tax at grant vs tax at vesting, forfeiture cost | Incorporate C-Corp · Sign the founder agreement & split equity · Convert an LLC to a C-Corp · Recover from a missed 83(b) deadline |
 | [QSBS (§ 1202)](open-modules/README.md#qsbs--1202) | Eligibility conditions, holding clock, exclusion percentages, per-issuer cap | Incorporate C-Corp · Convert an LLC to a C-Corp |
 | [Equity comp](open-modules/README.md#offer--equity-comp-scenarios) | Offer grant percentage, option spread, exit scenarios | Issue stock options · Hire first employee · Hire an executive |
 | [Option tax](open-modules/README.md#iso--nso-exercise-tax) | NSO income at exercise, ISO/AMT outcomes, the $100,000 limit, sale outcomes | Issue stock options · Offboard employee |
@@ -104,7 +104,7 @@ module computes for, written from the committed module-to-process map by
 | [Convertible notes](open-modules/README.md#convertible-notes) | Interest accrual, cap/discount conversion, maturity paths | Raise pre-seed (SAFEs) · Convert SAFEs at the priced round |
 | [Priced round](open-modules/README.md#priced-round-mechanics) | Pro rata, pool sizing from a hiring plan, down rounds, secondaries | Close a priced equity round · Convert SAFEs at the priced round |
 | [Round composer](open-modules/README.md#priced-round-composer) | A priced round end to end, term sheet to post-close table | Close a priced equity round · Convert SAFEs at the priced round |
-| [Anti-dilution](open-modules/README.md#anti-dilution) | Weighted-average and full-ratchet adjustments | Close a priced equity round |
+| [Anti-dilution](open-modules/README.md#anti-dilution) | Weighted-average and full-ratchet adjustments | Close a priced equity round · Take a down round or recap |
 | [Sale waterfall](open-modules/README.md#liquidity-event-waterfall) | Per-holder proceeds at a sale price | Raise pre-seed (SAFEs) · Close a priced equity round |
 
 ### Tax & compliance
@@ -120,7 +120,7 @@ module computes for, written from the committed module-to-process map by
 
 | Module | What it computes | Serves |
 | --- | --- | --- |
-| [Runway](open-modules/README.md#runway--burn) | Default-alive trajectories, hiring impact | Track runway · Send the board financial report · Set the annual budget & get board approval |
+| [Runway](open-modules/README.md#runway--burn) | Default-alive trajectories, hiring impact | Track runway · Send the board financial report · Set the annual budget & get board approval · Avert a missed payroll |
 | [Unit economics](open-modules/README.md#unit-economics) | LTV/CAC, burn multiple, Rule of 40, magic number | Track runway · Send the board financial report · Prepare a board meeting · Save a churning customer · Roll out a pricing change |
 | [Deferred revenue](open-modules/README.md#deferred-revenue-subscriptions) | Subscription revenue recognition, plan-change proration | Bookkeeping close · Set up subscription billing · Roll out a pricing change |
 

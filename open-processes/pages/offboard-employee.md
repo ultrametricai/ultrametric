@@ -179,6 +179,7 @@ Requires:
 
 - Runs as a step of [Handle a co-founder departure](handle-a-co-founder-departure.md)
 - Runs as a step of [Handle a key employee's resignation](handle-a-key-employee-s-resignation.md)
+- Runs as a step of [Run a reduction in force](run-a-reduction-in-force.md)
 
 ---
 

@@ -34,7 +34,7 @@ lines; edit the map, rerun the script.
 | --- | --- | --- | --- | --- |
 | [Cap table](#cap-table) | Issuance, pools, SAFE conversion, priced-round PPS, dilution waterfall | Incorporate C-Corp · Sign the founder agreement & split equity · Set up cap table · Update cap table · Audit cap table · Raise pre-seed (SAFEs) · Close a priced equity round · Issue stock options · Convert SAFEs at the priced round · Handle a co-founder departure | YC Post-Money Safe User Guide (Appendix II) | verified + property-tested |
 | [Vesting mechanics](#vesting-mechanics) | Cliff/periodic/back-loaded schedules, acceleration, departures | Incorporate C-Corp · Sign the founder agreement & split equity · Issue stock options · Hire first employee · Hire an executive · Handle a co-founder departure | Cooley GO; Amazon 5/15/40/40; FAST grid | verified + property-tested |
-| [83(b) election math](#83b-election-math) | Tax-at-grant vs tax-at-vesting, forfeiture cost | Incorporate C-Corp · Sign the founder agreement & split equity · Convert an LLC to a C-Corp | Rev. Proc. 2012-29 (all six examples) | verified |
+| [83(b) election math](#83b-election-math) | Tax-at-grant vs tax-at-vesting, forfeiture cost | Incorporate C-Corp · Sign the founder agreement & split equity · Convert an LLC to a C-Corp · Recover from a missed 83(b) deadline | Rev. Proc. 2012-29 (all six examples) | verified |
 | [QSBS (§ 1202)](#qsbs--1202) | Eligibility checklist, holding clock, exclusion %, per-issuer cap | Incorporate C-Corp · Convert an LLC to a C-Corp | IRC § 1202 (re-derived caps) | verified, checklist-shaped |
 | [Offer / equity-comp scenarios](#offer--equity-comp-scenarios) | Grant %, spread, exit scenarios | Issue stock options · Hire first employee · Hire an executive | Holloway equity guide; Rewarding Talent | verified, pre-tax by design |
 | [ISO / NSO exercise tax](#iso--nso-exercise-tax) | NSO income, ISO/AMT outcomes, § 422(d) $100k, dispositions | Issue stock options · Offboard employee | Pub 525; Treas. Reg. § 1.422-4(d) Ex. 1–3; Rev. Proc. 2024-40/2025-32 | verified; AMT is illustration-only |
@@ -47,7 +47,7 @@ lines; edit the map, rerun the script.
 | [Convertible notes](#convertible-notes) | Interest, cap/discount conversion, maturity paths, pricing with notes | Raise pre-seed (SAFEs) · Convert SAFEs at the priced round | Cooley GO convertible-debt primers | verified |
 | [Priced-round mechanics](#priced-round-mechanics) | Pro rata, pool-from-hiring-plan, down-round model, secondaries | Close a priced equity round · Convert SAFEs at the priced round | YC User Guide §E; Rewarding Talent; Springmeyer; Cooley GO | verified |
 | [Priced-round composer](#priced-round-composer) | The round end-to-end: term sheet → wires/issuance → post-close | Close a priced equity round · Convert SAFEs at the priced round | YC Appendix II Ex. 1, replayed end-to-end | verified by composition-equality |
-| [Anti-dilution](#anti-dilution) | NVCA weighted-average / full-ratchet conversion-price adjustments | Close a priced equity round | NVCA model COD; Springmeyer worked example | verified + property-tested |
+| [Anti-dilution](#anti-dilution) | NVCA weighted-average / full-ratchet conversion-price adjustments | Close a priced equity round · Take a down round or recap | NVCA model COD; Springmeyer worked example | verified + property-tested |
 | [Liquidity-event waterfall](#liquidity-event-waterfall) | Per-holder proceeds at a sale price | Raise pre-seed (SAFEs) · Close a priced equity round | YC User Guide Appendix II Ex. 1 Q3/Q4; Cooley GO glossary | verified + property-tested |
 
 ### Tax & compliance
@@ -63,7 +63,7 @@ lines; edit the map, rerun the script.
 
 | Module | What it computes | Serves | Worked-example source | Status |
 | --- | --- | --- | --- | --- |
-| [Runway & burn](#runway--burn) | Default-alive trajectories, hiring impact | Track runway · Send the board financial report · Set the annual budget & get board approval | paulgraham.com/aord.html (model) | verified, hand-derived arithmetic |
+| [Runway & burn](#runway--burn) | Default-alive trajectories, hiring impact | Track runway · Send the board financial report · Set the annual budget & get board approval · Avert a missed payroll | paulgraham.com/aord.html (model) | verified, hand-derived arithmetic |
 | [Unit economics](#unit-economics) | LTV/CAC, MRR movement, burn multiple, Rule of 40, magic number | Track runway · Send the board financial report · Prepare a board meeting · Save a churning customer · Roll out a pricing change | Skok; Sacks; Feld; O'Driscoll (all verified 2026-10-14) | verified; benchmarks are inputs |
 | [Deferred revenue (subscriptions)](#deferred-revenue-subscriptions) | Straight-line day-count recognition, plan-change proration | Bookkeeping close · Set up subscription billing · Roll out a pricing change | Stripe revenue-recognition subscription examples | verified; ASC 606 judgment excluded |
 
@@ -214,7 +214,7 @@ the election versus $20,000 without. At the test's hypothetical 37% ordinary and
 capital-gains rates: with = 0.20 × 35,000 = $7,000; without = 0.37 × 15,000 +
 0.20 × 20,000 = $9,550; savings $2,550.
 
-**Serves:** [Incorporate C-Corp](https://ultrametric.ai/processes/incorporate-c-corp) (n8a `compare83bScenario`) · [Sign the founder agreement & split equity](https://ultrametric.ai/processes/sign-the-founder-agreement-split-equity) (n4b `compare83bScenario`) · [Convert an LLC to a C-Corp](https://ultrametric.ai/processes/convert-an-llc-to-a-c-corp) (n8a `compare83bScenario`)
+**Serves:** [Incorporate C-Corp](https://ultrametric.ai/processes/incorporate-c-corp) (n8a `compare83bScenario`) · [Sign the founder agreement & split equity](https://ultrametric.ai/processes/sign-the-founder-agreement-split-equity) (n4b `compare83bScenario`) · [Convert an LLC to a C-Corp](https://ultrametric.ai/processes/convert-an-llc-to-a-c-corp) (n8a `compare83bScenario`) · [Recover from a missed 83(b) deadline](https://ultrametric.ai/processes/recover-from-a-missed-83-b-deadline) (n3 `compare83bScenario`)
 
 **Honesty boundaries.** Rates and FMV trajectories are inputs; the module predicts no
 value, applies no current rate table, and authorizes no filing (the election is
@@ -409,7 +409,7 @@ $1.4444. As-converted = floor(8,000,000 ÷ 1.4444) = 5,538,631 shares, the artic
 "5.54 million". The same tests pin broad-based $1.7059 → 4,689,606 and full ratchet
 $1.00 → 8,000,000, and property-test the ordering ratchet ≤ narrow ≤ broad ≤ CP1.
 
-**Serves:** [Close a priced equity round](https://ultrametric.ai/processes/close-a-priced-equity-round) (n1 `weightedAverageConversionPrice`)
+**Serves:** [Close a priced equity round](https://ultrametric.ai/processes/close-a-priced-equity-round) (n1 `weightedAverageConversionPrice`) · [Take a down round or recap](https://ultrametric.ai/processes/take-a-down-round-or-recap) (n3 `weightedAverageConversionPrice`)
 
 **Honesty boundaries.** Price-based adjustments only: exempt-issuance carve-outs are the
 charter's list, applied by the caller first, and pay-to-play consequences are explained
@@ -749,7 +749,7 @@ same company on $100,000 runs out in month 7 (cumulative burn $105,641.12): defa
 The model replays the projection described in "Default Alive or Default Dead?"; the essay
 publishes no numeric example, so the arithmetic is hand-derived in the test comments.
 
-**Serves:** [Track runway](https://ultrametric.ai/processes/track-runway) (n3 `simpleRunwayMonths`, n3 `defaultAliveReport`) · [Send the board financial report](https://ultrametric.ai/processes/send-the-board-financial-report) (n4 `defaultAliveReport`) · [Set the annual budget & get board approval](https://ultrametric.ai/processes/set-the-annual-budget-get-board-approval) (n2 `hiringImpact`)
+**Serves:** [Track runway](https://ultrametric.ai/processes/track-runway) (n3 `simpleRunwayMonths`, n3 `defaultAliveReport`) · [Send the board financial report](https://ultrametric.ai/processes/send-the-board-financial-report) (n4 `defaultAliveReport`) · [Set the annual budget & get board approval](https://ultrametric.ai/processes/set-the-annual-budget-get-board-approval) (n2 `hiringImpact`) · [Avert a missed payroll](https://ultrametric.ai/processes/avert-a-missed-payroll) (n1 `defaultAliveReport`)
 
 **Honesty boundaries.** Growth rates are inputs rather than predictions, and the
 projection answers only the essay's question: whether profitability arrives before zero

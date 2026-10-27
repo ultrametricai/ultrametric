@@ -145,6 +145,7 @@ Requires:
 ## Related records
 
 - Part of the chain [Raise the follow-on round](go-fundraise-follow-on.md)
+- Runs as a step of [Take a down round or recap](take-a-down-round-or-recap.md)
 
 ---
 
