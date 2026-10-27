@@ -52,10 +52,22 @@ agent work and the category depends on the selected method, record the uncertain
 Routine analysis and configuration choices can be agent work; a board vote, personal
 attestation or interpersonal negotiation retains its human actor.
 
+For waiting and follow-up steps, assess the authored work: checking status, answering
+requests, retrieving the result and reconciling records. An institution's decision is a
+completion condition, not evidence that the monitoring work requires a person. Establish
+the actual monitoring and response channels. A title such as "App review" does not make
+the company's step the store reviewer's adjudication.
+
+Read the surrounding method when a signing step follows a specific electronic-envelope
+workflow. Cite that canonical scope as well as the signing interface. Keep required
+signers human; retain uncertainty when the authored method explicitly allows both video
+and physical attendance or requires a jurisdiction-specific execution choice.
+
 For Agent Native, `local-work` means the stated deliverable can be produced with supplied
 inputs using text, file or code tools, including a repository calculation module.
-`documented-interface` means the external operation is supported by a cited API, CLI or
-MCP tool. Preserve the exact provider
+`documented-interface` means the external operation is supported by a cited API or CLI.
+Public assessments describe the method and factual capabilities without runtime bindings
+or orchestration instructions. Preserve the exact provider
 and operation limits in the rationale; preparation alone does not establish external
 execution, and an interface for one provider does not establish the other providers.
 

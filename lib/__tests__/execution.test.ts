@@ -76,6 +76,28 @@ describe('execution assessments', () => {
       expect(exports.evidence).toContain(`https://docs.stripe.com/api/${resource}/list`)
     }
   })
+  it('assesses monitoring work separately from the institution deciding its outcome', () => {
+    for (const [process, step] of [['prod_012', 'n5'], ['fund_007', 'n6']]) {
+      const node = part(process, step)
+      expect(node.metadata.execution).toMatchObject({ category: 'agent-computer-use', basis: 'browser-evidence' })
+      expect(node.metadata.async).toBe(true)
+      expect(node.metadata.route).toBe('person')
+    }
+    // A monitoring label does not prove every channel in a combined workflow.
+    expect(part('vc_003', 'n2').metadata.execution).toMatchObject({ category: null, reviewRequired: true })
+  })
+  it('uses explicit filing media and keeps electronic signing a human act', () => {
+    expect(part('qs_047', 'jny1').metadata.execution).toMatchObject({ category: 'agent-computer-use' })
+    expect(part('qs_043', 'jwy1').metadata.execution).toMatchObject({ category: 'human-offline' })
+    for (const [process, step] of [['fund_002', 'n5b'], ['vendor_011', 'n8'], ['vc_002', 'n3'], ['hr_013', 'n3']]) {
+      const node = part(process, step)
+      expect(node.metadata).toMatchObject({ legalSignature: true, execution: { category: 'human-online', basis: 'human-work' } })
+      expect(() => validateExecution(node.metadata, `${process}/${step}`)).not.toThrow()
+      expect(() => validateExecution({ ...node.metadata, execution: execution('agent-native', 'documented-interface') }, 'signature')).toThrow('human signature')
+    }
+    const german = part('form_001', 'n4').options.find(option => option.id === 'germany-notary-gmbh')!
+    expect(german.parts.find(part => part.id === 'de2')!.metadata.execution).toMatchObject({ category: null, reviewRequired: true })
+  })
   it('does not infer an online medium from responsibility or reuse an unrelated probe', () => {
     for (const [process, step] of [['sit_020', 'n4'], ['sit_022', 'n2']]) {
       expect(part(process, step).metadata.execution).toMatchObject({ category: null, basis: 'unresolved', reviewRequired: true })
