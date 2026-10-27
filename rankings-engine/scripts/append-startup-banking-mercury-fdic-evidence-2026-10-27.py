@@ -78,6 +78,8 @@ def openapi_reverify():
         statuses[u] = status
         if status == 200:
             raise SystemExit(f'openapi re-probe: {u} now returns 200 — a public spec EXISTS; do not append the negative, re-judge with the spec instead')
+        if status != 404:
+            raise SystemExit(f'openapi re-probe: {u} returned {status} (not 404) — inconclusive (wall/timeout/server error); refusing to append the negative')
     status, body = fetch('https://docs.mercury.com/reference/getaccounts')
     if status != 200:
         raise SystemExit(f'openapi re-probe: reference page returned {status}')

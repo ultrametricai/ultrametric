@@ -108,7 +108,14 @@ function matchSnippet(rationale: string): string | null {
     const start = rationale.lastIndexOf('. ', idx)
     const end = rationale.indexOf('. ', idx)
     let sentence = rationale.slice(start < 0 ? 0 : start + 2, end < 0 ? rationale.length : end + 1).trim()
-    if (sentence.length > SNIPPET_MAX) sentence = `${sentence.slice(0, SNIPPET_MAX - 1).trimEnd()}…`
+    if (sentence.length > SNIPPET_MAX) {
+      // Keep a window around the matched absence phrase, not the sentence head: the part
+      // after the match names the missing capability the queue row exists to show.
+      const matchOffset = idx - (start < 0 ? 0 : start + 2)
+      const windowStart = Math.max(0, Math.min(matchOffset - 40, sentence.length - SNIPPET_MAX))
+      const clipped = sentence.slice(windowStart, windowStart + SNIPPET_MAX - 2).trim()
+      sentence = `${windowStart > 0 ? '…' : ''}${clipped}…`
+    }
     return sentence
   }
   return null
