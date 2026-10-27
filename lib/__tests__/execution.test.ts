@@ -19,6 +19,19 @@ const execution = (category: Execution['category'], basis: Execution['basis']): 
 const part = (id: string, step: string) => records.find(record => record.id === id)!.parts.find(part => part.id === step)!
 
 describe('execution assessments', () => {
+  it('separates automation documentation from observed verification without requiring it on legacy imports', () => {
+    const legacy = execution('human-online', 'human-work')
+    expect(executionSchema.parse(legacy).automationEvidence).toBeUndefined()
+    expect(() => validateExecution({ execution: { ...legacy, automationEvidence: { status: 'unverified' } } }, 'fixture')).not.toThrow()
+    const documented = { ...execution('agent-native', 'documented-interface'), automationEvidence: { status: 'documented' } }
+    expect(() => validateExecution({ execution: documented }, 'fixture')).not.toThrow()
+    expect(executionSchema.safeParse({ ...documented, automationEvidence: { status: 'observed' } }).success).toBe(false)
+    const observed = { status: 'observed', scope: 'Fictional read-only status retrieval', observedAt: '2026-01-01T00:00:00Z', receipt: 'fixture-receipt' }
+    expect(() => validateExecution({ execution: { ...documented, automationEvidence: observed } }, 'fixture')).toThrow('receipt')
+    expect(() => validateExecution({ execution: { ...documented, evidence: ['fixture-receipt'], automationEvidence: observed } }, 'fixture')).not.toThrow()
+    expect(() => validateExecution({ execution: { ...documented, automationEvidence: { status: 'unverified' } } }, 'fixture')).toThrow('supported automation evidence')
+    expect(() => validateExecution({ legalSignature: true, execution: { ...documented, evidence: ['fixture-receipt'], automationEvidence: observed } }, 'fixture')).toThrow('human signature')
+  })
   it('requires complete authoring coverage but permits older additive-schema imports', () => {
     expect(() => validateExecutionCoverage(records)).not.toThrow()
     const copied = structuredClone(records)

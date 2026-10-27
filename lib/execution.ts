@@ -9,6 +9,19 @@ export const EXECUTION_LABELS: Record<ExecutionCategory, string> = {
   'human-offline': 'Human Offline',
 }
 
+// Automation evidence is separate from the selected execution category. A
+// documented capability is not an observation of a completed workflow.
+export const automationEvidenceSchema = z.discriminatedUnion('status', [
+  z.strictObject({ status: z.literal('unverified') }),
+  z.strictObject({ status: z.literal('documented') }),
+  z.strictObject({
+    status: z.literal('observed'),
+    scope: z.string().min(1),
+    observedAt: z.iso.datetime(),
+    receipt: z.string().min(1),
+  }),
+])
+
 // An assessment describes the work's mechanism. It never grants authority or
 // proves that a particular user's environment has the required connection.
 export const executionSchema = z.strictObject({
@@ -17,6 +30,7 @@ export const executionSchema = z.strictObject({
   rationale: z.string().min(1),
   evidence: z.array(z.string().min(1)).min(1),
   reviewRequired: z.boolean(),
+  automationEvidence: automationEvidenceSchema.optional(),
 })
 export type Execution = z.infer<typeof executionSchema>
 
@@ -52,5 +66,12 @@ export function validateExecution(metadata: Record<string, unknown>, scope: stri
   }
   if (metadata.legalSignature === true && category?.startsWith('agent-')) {
     throw new Error(`${scope}: an agent cannot perform the required human signature`)
+  }
+  const automation = execution.automationEvidence
+  if (automation?.status === 'observed' && !execution.evidence.includes(automation.receipt)) {
+    throw new Error(`${scope}: observed automation needs its receipt in the evidence list`)
+  }
+  if (category?.startsWith('agent-') && automation?.status === 'unverified') {
+    throw new Error(`${scope}: agent execution needs supported automation evidence`)
   }
 }

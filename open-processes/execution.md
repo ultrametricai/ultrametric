@@ -83,6 +83,17 @@ work. Retain negative results and responsibility boundaries when adding new evid
 
 ## Generation and review
 
+`automationEvidence` records support for automation separately from the selected
+category. `unverified` makes no claim that an agent can complete the whole step;
+existing sources may still support individual operations. `documented` identifies
+a supported local-work or interface mechanism without claiming a completed test.
+`observed` requires the observed `scope`, an ISO UTC `observedAt` timestamp and a
+`receipt` already present in `evidence`. The receipt must establish that observation;
+a provider page or a proposed test is insufficient. A partial observation covers
+only its stated scope. Approval and personal acts remain independent requirements.
+Older imported assessments may omit this additive field. Preserve actual receipts
+and limitations when evidence changes; do not manufacture a test result to classify.
+
 Content generation must emit an assessment for every actionable part and option. Preserve
 stable IDs, titles, descriptions, providers, documents, source evidence, links and graph
 semantics. Classify from the actual work, then check each claim against its cited evidence.
