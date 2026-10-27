@@ -77,7 +77,7 @@ describe('execution assessments', () => {
     }
   })
   it('assesses monitoring work separately from the institution deciding its outcome', () => {
-    for (const [process, step] of [['prod_012', 'n5'], ['fund_007', 'n6']]) {
+    for (const [process, step] of [['prod_012', 'n5'], ['fund_007', 'n6'], ['sit_002', 'n9'], ['sit_006', 'n7'], ['sit_016', 'n7']]) {
       const node = part(process, step)
       expect(node.metadata.execution).toMatchObject({ category: 'agent-computer-use', basis: 'browser-evidence' })
       expect(node.metadata.async).toBe(true)
@@ -89,7 +89,7 @@ describe('execution assessments', () => {
   it('uses explicit filing media and keeps electronic signing a human act', () => {
     expect(part('qs_047', 'jny1').metadata.execution).toMatchObject({ category: 'agent-computer-use' })
     expect(part('qs_043', 'jwy1').metadata.execution).toMatchObject({ category: 'human-offline' })
-    for (const [process, step] of [['fund_002', 'n5b'], ['vendor_011', 'n8'], ['vc_002', 'n3'], ['hr_013', 'n3']]) {
+    for (const [process, step] of [['fund_002', 'n5b'], ['vendor_011', 'n8'], ['vc_002', 'n3'], ['hr_013', 'n3'], ['hr_003', 'n6'], ['form_001', 'n6b']]) {
       const node = part(process, step)
       expect(node.metadata).toMatchObject({ legalSignature: true, execution: { category: 'human-online', basis: 'human-work' } })
       expect(() => validateExecution(node.metadata, `${process}/${step}`)).not.toThrow()
@@ -97,6 +97,33 @@ describe('execution assessments', () => {
     }
     const german = part('form_001', 'n4').options.find(option => option.id === 'germany-notary-gmbh')!
     expect(german.parts.find(part => part.id === 'de2')!.metadata.execution).toMatchObject({ category: null, reviewRequired: true })
+  })
+  it('distinguishes a selected online human workflow from an unresolved execution alternative', () => {
+    const review = part('scale_001', 'n5').metadata.execution as Execution
+    expect(review).toMatchObject({ category: 'human-online', basis: 'human-work' })
+    expect(review.evidence).toContain('open-processes/run-performance-reviews.json#/parts/1/references')
+    expect(review.evidence.some(source => source.includes('help.bamboohr.com'))).toBe(true)
+    // The separately authored calibration meeting has no selected medium.
+    expect(part('scale_001', 'n6').metadata.execution).toMatchObject({ category: null })
+    const signing = part('startup_002', 'n3b')
+    expect(signing.metadata.legalSignature).toBe(true)
+    // A named e-sign provider does not override this process's open notarial route.
+    expect(signing.metadata.execution).toMatchObject({ category: null, reviewRequired: true })
+    expect((signing.metadata.execution as Execution).evidence).toContain('open-processes/sign-the-founder-agreement-split-equity.json#/parts/2/guidance')
+  })
+  it('distinguishes online form preparation from physical filing and unselected alternatives', () => {
+    for (const [process, step] of [['form_001', 'jny1'], ['form_001', 'jfl1'], ['qs_043', 'jfl1']]) {
+      expect(part(process, step).metadata.execution).toMatchObject({ category: 'human-offline', basis: 'human-work' })
+    }
+    const emi = part('fund_003', 'n3').options.find(option => option.id === 'uk-emi-valuation')!
+    expect(emi.metadata.execution).toMatchObject({ category: 'human-offline' })
+    expect((emi.metadata.execution as Execution).evidence).toContain('https://www.gov.uk/government/publications/asset-valuation-request-for-a-share-valuation-val231')
+    const allotment = part('fund_002', 'n8').options.find(option => option.id === 'uk-sh01')!
+    expect(allotment.metadata.execution).toMatchObject({ category: 'agent-computer-use', reviewRequired: true })
+    // An unrelated online Companies House service cannot establish LLP formation.
+    const llp = part('form_011', 'n3').options.find(option => option.id === 'uk-llp')!
+    expect(llp.metadata.execution).toMatchObject({ category: null, reviewRequired: true })
+    expect(part('qs_043', 'jny1').metadata.execution).toMatchObject({ category: null, reviewRequired: true })
   })
   it('uses the surrounding selected provider without substituting a reference vendor', () => {
     const routing = part('opp_011', 'n3')
