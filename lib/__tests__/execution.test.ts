@@ -352,6 +352,51 @@ describe('execution assessments', () => {
       expect(cloud.evidence.some(source => source.includes(provider))).toBe(true)
     }
   })
+  it('covers both billing comparison providers and preserves sandbox restrictions', () => {
+    const comparison = part('growth_001', 'n1').options.find(option => option.id === 'billing-platform')!
+    const assessment = comparison.metadata.execution as Execution
+    expect(assessment).toMatchObject({ category: 'agent-computer-use', basis: 'browser-evidence', reviewRequired: true })
+    for (const provider of ['www.chargebee.com', 'docs.recurly.com']) {
+      expect(assessment.evidence.some(source => source.includes(provider) && source.includes('entitlements'))).toBe(true)
+    }
+    expect(assessment.evidence).toContain('https://docs.recurly.com/recurly-subscriptions/docs/accounts-receivable-export')
+    expect(assessment.rationale).toMatch(/automated exports are unavailable in sandbox mode/)
+    // Provider comparison does not establish the other option's legal review
+    // and application-access implementation.
+    expect(part('growth_001', 'n1').options.find(option => option.id === 'merchant-of-record')!.metadata.execution).toMatchObject({ category: null })
+  })
+  it('inherits the authored ECS method without claiming other clouds or completed trials', () => {
+    for (const step of ['n7', 'n8']) {
+      const assessment = part('prod_001', step).metadata.execution as Execution
+      expect(assessment).toMatchObject({ category: 'agent-native', basis: 'documented-interface', reviewRequired: true })
+      expect(assessment.evidence).toContain('open-processes/set-up-cloud-infrastructure.json#/parts/4/guidance')
+      expect(assessment.evidence).toContain('https://docs.aws.amazon.com/cli/latest/reference/ecs/stop-task.html')
+      expect(assessment.rationale).toMatch(/validation/)
+    }
+    const monitoring = part('prod_001', 'n7').metadata.execution as Execution
+    expect(monitoring.rationale).toMatch(/responder must confirm any new email subscription/)
+    expect(monitoring.rationale).toMatch(/masking does not cover earlier records/)
+    for (const option of part('prod_001', 'n2').options.filter(option => option.id !== 'default')) {
+      // Account administration is already supported; it does not establish
+      // an implementation of the later AWS-specific resource steps.
+      expect(option.metadata.execution).toMatchObject({ category: 'agent-computer-use' })
+      expect(option.summary).toMatch(/downstream AWS-specific.*unresolved/)
+    }
+  })
+  it('uses the selected deployment host while retaining complete release boundaries', () => {
+    const pipeline = part('prod_002', 'n6').metadata.execution as Execution
+    expect(pipeline).toMatchObject({ category: 'agent-computer-use', basis: 'browser-evidence', reviewRequired: true })
+    expect(pipeline.evidence).toContain('open-processes/set-up-ci-cd.json#/summary')
+    expect(pipeline.evidence).toContain('https://vercel.com/docs/instant-rollback')
+    expect(pipeline.rationale).toMatch(/actor subject to branch protection/)
+    expect(pipeline.rationale).toMatch(/does not establish recovery of external data/)
+    const site = part('site_001', 'n2').metadata.execution as Execution
+    expect(site).toMatchObject({ category: null, reviewRequired: true })
+    for (const provider of ['developers.cloudflare.com', 'vercel.com']) {
+      expect(site.evidence.some(source => source.includes(provider))).toBe(true)
+    }
+    expect(site.rationale).toMatch(/actual production form or other destination and its receipt evidence/)
+  })
   it('resolves every local evidence reference to retained content', () => {
     for (const record of records) for (const scope of scopes(record.parts)) {
       const assessment = scope.metadata.execution as Execution | undefined

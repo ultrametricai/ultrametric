@@ -456,11 +456,22 @@
         "riskLevel": "medium",
         "estimatedMinutes": 20,
         "execution": {
-          "category": null,
-          "basis": "unresolved",
-          "rationale": "AWS is listed, but the monitoring collectors, paging destination and failure/recovery drill are not selected.",
+          "category": "agent-native",
+          "basis": "documented-interface",
+          "rationale": "The canonical AWS/ECS route supports CloudWatch log collection, labeled metrics, alarm configuration and SNS notifications through documented interfaces. Local application probes and ECS task controls support the failure/recovery drill. Inspect sensitive log output before collection; masking does not cover earlier records. The responder must confirm any new email subscription, and actual signal coverage, diagnostic links and delivery need validation in the authorized environment. Other-cloud alternatives retain their separate unresolved implementation.",
           "evidence": [
-            "open-processes/set-up-cloud-infrastructure.json#/parts/6/guidance"
+            "open-processes/set-up-cloud-infrastructure.json#/parts/6/guidance",
+            "open-processes/set-up-cloud-infrastructure.json#/summary",
+            "open-processes/set-up-cloud-infrastructure.json#/parts/4/guidance",
+            "https://docs.aws.amazon.com/AmazonECS/latest/developerguide/using_awslogs.html",
+            "https://docs.aws.amazon.com/AmazonCloudWatch/latest/APIReference/API_PutMetricData.html",
+            "https://docs.aws.amazon.com/AmazonCloudWatchLogs/latest/APIReference/API_PutMetricFilter.html",
+            "https://docs.aws.amazon.com/AmazonCloudWatchLogs/latest/APIReference/API_PutDataProtectionPolicy.html",
+            "https://docs.aws.amazon.com/AmazonCloudWatch/latest/APIReference/API_PutMetricAlarm.html",
+            "https://docs.aws.amazon.com/AmazonCloudWatch/latest/APIReference/API_GetMetricData.html",
+            "https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/Notify_Users_Alarm_Changes.html",
+            "https://docs.aws.amazon.com/cli/latest/reference/ecs/stop-task.html",
+            "https://docs.aws.amazon.com/AmazonECS/latest/developerguide/deployment-type-ecs.html"
           ],
           "reviewRequired": true
         }
@@ -502,11 +513,19 @@
         "riskLevel": "medium",
         "estimatedMinutes": 30,
         "execution": {
-          "category": null,
-          "basis": "unresolved",
-          "rationale": "AWS resources do not identify the application's deployment and rollback path required by this environment test.",
+          "category": "agent-native",
+          "basis": "documented-interface",
+          "rationale": "The preceding steps select an AWS ECS service, versioned task configuration and RDS database. ECS interfaces update the deployed revision, stop tasks and report image digests and failures; CloudWatch exposes diagnostic logs. Local request and database probes can check the journey, denied access and recovery to the previous revision. The application-specific assertions, deployment-controller behavior and authorized test environment still require validation; other-cloud alternatives remain unresolved.",
           "evidence": [
-            "open-processes/set-up-cloud-infrastructure.json#/parts/7/guidance"
+            "open-processes/set-up-cloud-infrastructure.json#/parts/7/guidance",
+            "open-processes/set-up-cloud-infrastructure.json#/summary",
+            "open-processes/set-up-cloud-infrastructure.json#/parts/3/guidance",
+            "open-processes/set-up-cloud-infrastructure.json#/parts/4/guidance",
+            "https://docs.aws.amazon.com/cli/latest/reference/ecs/update-service.html",
+            "https://docs.aws.amazon.com/cli/latest/reference/ecs/stop-task.html",
+            "https://docs.aws.amazon.com/cli/latest/reference/ecs/describe-tasks.html",
+            "https://docs.aws.amazon.com/cli/latest/reference/logs/filter-log-events.html",
+            "https://docs.aws.amazon.com/AmazonECS/latest/developerguide/deployment-type-ecs.html"
           ],
           "reviewRequired": true
         }

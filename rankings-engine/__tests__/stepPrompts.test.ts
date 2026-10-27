@@ -85,7 +85,7 @@ describe('validatePrompt', () => {
 
   it('keeps unresolved generation context unresolved without a manual fallback', () => {
     const targets = enumeratePromptTargets(loadProcesses(DATA_DIR))
-    for (const key of ['growth_015:n6', 'prod_002:n6']) {
+    for (const key of ['growth_015:n6', 'site_001:n2']) {
       const target = targets.find(t => t.stepKey === key)!
       expect(target.execution?.category).toBeNull()
       expect(generationPrompt(target)).toContain('EXECUTION NEEDS REVIEW')
