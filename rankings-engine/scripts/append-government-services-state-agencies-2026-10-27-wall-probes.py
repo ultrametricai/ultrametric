@@ -9,21 +9,24 @@
 # Rules of engagement, enforced in code (same as
 # append-government-services-state-agencies-wall-probes.py):
 #   - robots.txt is always fetchable (it is the compliance mechanism itself);
-#   - hosts whose robots are unreadable (403/5xx/transport error, or an HTML bot
-#     interstitial / login shell served in place of a policy) get NOTHING fetched beyond
-#     robots.txt (apps.twc.texas.gov, secure.esd.wa.gov, secure.dor.wa.gov, www.nvsos.gov,
-#     esos.nv.gov);
-#   - beyond robots.txt, a host is GET once, keylessly, only where its robots policy allows
-#     it or where no policy exists (404 — taxapps.floridarevenue.com, wyobiz.wyo.gov's HTML
-#     non-policy, checked live in the 2026-10-27 bring-up sweep before this script was
-#     written).
+#   - every non-robots request is gated on a LIVE robots.txt check at run time: a policy
+#     that is unreadable (403/5xx/transport error) or that disallows the path means the
+#     request is not made and nothing is recorded — an earlier manual sweep cannot
+#     authorize a future request;
+#   - a 404 robots, or a 200 response carrying no machine-readable rules, leaves the path
+#     permitted (the robots-exclusion convention: no valid policy means no restriction),
+#     and the one permitted GET records the surface.
 #
 # Run AFTER extract and the probe stage. Ids continue each product's existing `<pid>-probe-N`
 # numbering; rows carry preserve:true so a later probe-stage refresh merges around them
 # (rankings-engine/stages/probe.ts mergeProbeEvidence) instead of clobbering recorded walls.
 # nevada-sos-probe-1 (the staged 2026-10-27 403 observation) stays as recorded history; the
-# probe-2 row below documents the wall's new shape observed later the same day. Idempotent
-# by excerpt prefix.
+# probe-2 row below documents the wall's new shape observed later the same day.
+#
+# Idempotence is observation-gated: the live response is matched against each row's
+# `expected` BEFORE the duplicate check, so a changed response is always reported loudly
+# (and fails the run) rather than passing as an already-recorded skip — a canned sentence
+# must never outlive the response it described.
 import datetime
 import json
 import os
@@ -31,6 +34,8 @@ import ssl
 import sys
 import urllib.error
 import urllib.request
+import urllib.robotparser
+from urllib.parse import urlsplit
 
 UA = 'Mozilla/5.0 (compatible; Ultrametric/1.0; +https://ultrametric.ai)'
 NOW = datetime.datetime.now(datetime.timezone.utc).strftime('%Y-%m-%dT%H:%M:%S.000Z')
@@ -54,6 +59,26 @@ def get(url: str, timeout: int = 25):
         return 'ERR', str(e)
 
 
+_robots_cache = {}
+
+
+def robots_allows(url: str):
+    """Live robots gate for a non-robots URL: (allowed, reason). One robots GET per host."""
+    host = urlsplit(url).netloc
+    if host not in _robots_cache:
+        _robots_cache[host] = get(f'https://{host}/robots.txt')
+    status, body = _robots_cache[host]
+    if status == 404:
+        return True, 'robots.txt 404 — no policy, path permitted'
+    if status == 200:
+        rp = urllib.robotparser.RobotFileParser()
+        rp.parse(body.splitlines())
+        if rp.can_fetch(UA, url):
+            return True, 'robots.txt readable, path allowed (or no machine-readable rules)'
+        return False, 'robots.txt disallows this path'
+    return False, f'robots.txt unreadable ({status_str(status)}) — nothing fetched beyond robots.txt'
+
+
 def seen(body: str, marker: str) -> str:
     return 'present' if marker.lower() in body.lower() else 'absent'
 
@@ -67,8 +92,7 @@ checks = []  # (productId, key, url, expected(status, body) -> bool, build_excer
 # Each check's excerpt prose states a specific dated observation, so the row is written ONLY
 # when the live response matches the observation the prose describes (`expected`). A changed
 # response is printed loudly and nothing is recorded: the world moved, so a new dated claim
-# must be authored against the new observation — a canned sentence must never outlive the
-# response it described.
+# must be authored against the new observation.
 
 # ---- Texas Workforce Commission ----
 checks.append(('tx-twc', 'uitaxreg-host-wall', 'https://apps.twc.texas.gov/robots.txt', lambda s, b: s == 'ERR', lambda s, b: (
@@ -100,10 +124,10 @@ checks.append(('wa-dor', 'mydor-portal-login-shell', 'https://secure.dor.wa.gov/
 # ---- Florida Department of Revenue ----
 checks.append(('fl-dor', 'taxregistration-app-shell', 'https://taxapps.floridarevenue.com/taxregistration', lambda s, b: s == 200 and 'login' in b.lower(), lambda s, b: (
     f'PROBE online business-tax registration application: HTTP {s} at '
-    f'https://taxapps.floridarevenue.com/taxregistration (observed {TODAY}, standard pipeline UA; robots.txt on '
-    f'this host is 404, so the one permitted GET records the surface; "Login" marker {seen(b, "Login")}) — the '
-    'Florida Business Tax Application the open floridarevenue.com guidance links serves an interactive '
-    'login/entry shell, with registration and reemployment-tax transactions behind an authenticated session.')))
+    f'https://taxapps.floridarevenue.com/taxregistration (observed {TODAY}, standard pipeline UA, after a '
+    f'live robots.txt check on this host; "Login" marker {seen(b, "Login")}) — the Florida Business Tax '
+    'Application the open floridarevenue.com guidance links serves an interactive login/entry shell, with '
+    'registration and reemployment-tax transactions behind an authenticated session.')))
 
 # ---- Nevada Secretary of State ----
 checks.append(('nevada-sos', 'front-door-robots-interstitial', 'https://www.nvsos.gov/robots.txt', lambda s, b: s == 200 and 'incapsula' in b.lower(), lambda s, b: (
@@ -125,26 +149,34 @@ checks.append(('nevada-sos', 'orion-portal-wall', 'https://esos.nv.gov/robots.tx
 # ---- Wyoming Secretary of State ----
 checks.append(('wyoming-sos', 'wyobiz-portal-root', 'https://wyobiz.wyo.gov/', lambda s, b: s == 200, lambda s, b: (
     f'PROBE WyoBiz filing portal root: HTTP {s} at https://wyobiz.wyo.gov/ (observed {TODAY}, standard pipeline '
-    f'UA; robots.txt on this host answers 200 with an HTML document rather than a machine-readable policy, so '
-    'the one permitted root GET records the surface) — the root redirects to the public Business Center page '
-    '(/Business/Default.aspx), which is reachable keylessly; filings, annual reports and registered-agent '
-    'changes sit behind an authenticated account on the same host. No llms.txt, no documented public API.')))
+    'UA, after a live robots.txt check on this host, which answers 200 with an HTML document carrying no '
+    'machine-readable rules) — the root GET lands on the public Business Center page (/Business/Default.aspx), '
+    'reachable keylessly. This single GET establishes only that reachability; no llms.txt and no documented '
+    'public API were found on the agency’s hosts (probe stage, same date).')))
 
-appended = {}
+appended = 0
 skipped = 0
+failed = 0
 for pid, key, url, expected, build in checks:
     f = os.path.join(DATA, f'{pid}.json')
     rows = json.load(open(f))
+    if not url.endswith('/robots.txt'):
+        allowed, reason = robots_allows(url)
+        if not allowed:
+            print(f'!! NOT FETCHED ({reason}): {pid}/{key} {url}')
+            failed += 1
+            continue
     status, body = get(url)
     excerpt = build(status, body)
-    prefix = excerpt.split('(observed')[0]
-    if any(r['excerpt'].split('(observed')[0] == prefix for r in rows if r.get('tier') == 'probe'):
-        print(f'SKIP (already recorded): {pid}/{key}')
-        skipped += 1
-        continue
     if not expected(status, body):
         print(f'!! RESPONSE CHANGED, NOT RECORDED: {pid}/{key} {url} -> {status_str(status)}')
         print(f'   body head: {body[:200]!r}')
+        failed += 1
+        continue
+    prefix = excerpt.split('(observed')[0]
+    if any(r['excerpt'].split('(observed')[0] == prefix for r in rows if r.get('tier') == 'probe'):
+        print(f'SKIP (already recorded, live response still matches): {pid}/{key}')
+        skipped += 1
         continue
     n = 1
     ids = {r['id'] for r in rows}
@@ -160,10 +192,9 @@ for pid, key, url, expected, build in checks:
     })
     with open(f, 'w', encoding='utf-8') as out:
         out.write(json.dumps(rows, indent=2, ensure_ascii=False) + '\n')
-    appended.setdefault(pid, []).append(f'{pid}-probe-{n}')
+    appended += 1
     print(f'APPENDED {pid}-probe-{n}: {key}')
 
-total = sum(len(v) for v in appended.values())
-print(f'done: {total} appended, {skipped} skipped')
-if total + skipped < len(checks):
+print(f'done: {appended} appended, {skipped} skipped, {failed} failed')
+if failed:
     sys.exit(1)
