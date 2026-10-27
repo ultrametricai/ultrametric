@@ -122,7 +122,10 @@ describe('existing judged selection compatibility', () => {
     // mapping (map-step-stories writes all-or-nothing) settled the stale incumbent cells the
     // 2026-10-23 waves left behind (form_001:n8 government-services among them), re-partitioning
     // some rows between the positive and zero sets.
-    expect(positiveCount).toBe(3012)
+    // Re-pinned at the business-phone roster additions (2026-10-27): google-voice and
+    // community-phone debut in business-phone, so the two newly judged products join the
+    // choose-provider step's candidate list.
+    expect(positiveCount).toBe(3014)
     expect(zeroCount).toBe(269)
     // Re-pinned at the v5 settlement wave 1 integration (2026-10-23): seven arenas
     // (cloud-platforms, cloud-storage, virtual-mailboxes, data-warehouses, sso-identity,
