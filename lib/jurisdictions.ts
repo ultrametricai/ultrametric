@@ -1,4 +1,5 @@
 import type { Execution } from './execution'
+import type { StateService } from './shared-processes/schema'
 // Jurisdiction-conditional process steps (founder 2026-09-25: "allow more options for the
 // processes — ie multi-state situations or California included — so we can see how the
 // processes change"). A DAG node may declare `jurisdictions` with one or more codes from the
@@ -146,6 +147,8 @@ export interface JurisdictionStepView {
   route?: StepRoute
   execution?: Execution
   jurisdictions: Jurisdiction[]
+  /** The state-level service this step is (keys jurisdictions/vendor-state.json rows). */
+  service?: StateService
   /** Canonical do-it-yourself page (verified live before listing) — null when none exists. */
   actionUrl: string | null
   actionLabel: string | null
