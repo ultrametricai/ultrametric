@@ -1,0 +1,81 @@
+{
+  "module": "rdCredit",
+  "entrypoint": "quarterlyOffsetApplication",
+  "implementation": {
+    "file": "lib/openstartup/rdCredit.ts",
+    "sha256": "6709959a6c67c9b3ff1dc700003618fe69ef91ebe41f460d711ccf8a36baaa13"
+  },
+  "readme": "open-modules/conformance/README.md",
+  "cases": [
+    {
+      "name": "form-8974-post-2022-two-quarters",
+      "description": "A $500,000 post-2022 election applied over two quarters: each quarter offsets its employer social security liability first (the election's first $250,000 is social-security-only) and Medicare next, carrying $463,000 then $414,000 forward; $86,000 applied in total.",
+      "source": "IRC § 41(h) and the Instructions for Form 8974 (https://www.irs.gov/instructions/i8974, verified 2026-10-01), via rule card us-fed.rd-payroll-offset; arithmetic hand-derived in lib/openstartup/__tests__/rdCredit.test.ts",
+      "inputs": [
+        {
+          "electedAmount": 500000,
+          "taxYearBeginsAfter2022": true,
+          "quarters": [
+            {
+              "label": "2026-Q2",
+              "employerSocialSecurityTax": 30000,
+              "employerMedicareTax": 7000
+            },
+            {
+              "label": "2026-Q3",
+              "employerSocialSecurityTax": 40000,
+              "employerMedicareTax": 9000
+            }
+          ]
+        }
+      ],
+      "expected": {
+        "quarters": [
+          {
+            "label": "2026-Q2",
+            "appliedToSocialSecurity": 30000,
+            "appliedToMedicare": 7000,
+            "carryforwardAfter": 463000
+          },
+          {
+            "label": "2026-Q3",
+            "appliedToSocialSecurity": 40000,
+            "appliedToMedicare": 9000,
+            "carryforwardAfter": 414000
+          }
+        ],
+        "totalApplied": 86000,
+        "remaining": 414000
+      }
+    },
+    {
+      "name": "form-8974-pre-2023-social-security-only",
+      "description": "A pre-2023 $250,000 election is social-security-only: the quarter's $50,000 social security liability is offset and its $20,000 Medicare liability goes untouched.",
+      "source": "IRC § 41(h) and the Instructions for Form 8974 (https://www.irs.gov/instructions/i8974, verified 2026-10-01), via rule card us-fed.rd-payroll-offset",
+      "inputs": [
+        {
+          "electedAmount": 250000,
+          "taxYearBeginsAfter2022": false,
+          "quarters": [
+            {
+              "label": "2022-Q4",
+              "employerSocialSecurityTax": 50000,
+              "employerMedicareTax": 20000
+            }
+          ]
+        }
+      ],
+      "expected": {
+        "quarters": [
+          {
+            "label": "2022-Q4",
+            "appliedToSocialSecurity": 50000,
+            "appliedToMedicare": 0
+          }
+        ],
+        "totalApplied": 50000,
+        "remaining": 200000
+      }
+    }
+  ]
+}

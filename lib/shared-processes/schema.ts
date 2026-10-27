@@ -8,7 +8,21 @@ const reference = z.union([
   z.strictObject({ kind: z.enum(['vendor', 'category', 'product', 'rule', 'source', 'guidance']), id: text, role: text }),
   z.strictObject({ kind: z.literal('url'), url: webUrl, title: text.nullable(), description: text.nullable(), role: text }),
 ])
-const stepMetadata = z.object({ execution: executionSchema.optional() }).catchall(z.json())
+// The state-level services a jurisdiction-conditional step can be. The same set keys the
+// per-state vendor evidence in jurisdictions/vendor-state.json (lib/vendorState.ts), so a step's
+// `service` names the vendor-state rows that describe who can do that step in that state. A
+// step that fits none of these (a state income or gross-receipts tax return, for example)
+// carries no service.
+export const STATE_SERVICES = [
+  'registered-agent',
+  'formation',
+  'foreign-qualification',
+  'annual-report-filing',
+  'payroll-tax-registration',
+  'sales-tax-registration',
+] as const
+export type StateService = (typeof STATE_SERVICES)[number]
+const stepMetadata = z.object({ execution: executionSchema.optional(), service: z.enum(STATE_SERVICES).optional() }).catchall(z.json())
 const note = z.strictObject({ text, references: z.array(reference).optional() })
 export const connectionSchema = z.strictObject({ from: id, to: id, option: id.optional(), when: text.nullable().optional() })
 export type Reference = z.infer<typeof reference>
