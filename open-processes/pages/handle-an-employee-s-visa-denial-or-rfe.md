@@ -36,17 +36,19 @@ Notice parsing, the evidence assembly, and the lapse-plan math are agent work fr
 
    When: The notice is an RFE or NOID with a response deadline
 
-   - If "The classification qualifies for premium processing": continue at step 5
-4. **File the counsel-reviewed response before the printed deadline, and confirm the agency received it** — human · ~30 min · hard to undo
-
-   - Next: continue at step 10
-5. **Consider premium processing where the classification qualifies: it buys adjudicative action on a stated clock, not approval** — manual form/portal · ~30 min
+   - If "The classification qualifies for premium processing": continue at step 4
+   - Next: continue at step 5
+4. **Consider premium processing where the classification qualifies: it buys adjudicative action on a stated clock, not approval** — manual form/portal · ~30 min
 
    *Follows step 3 (when The classification qualifies for premium processing).*
 
    When: The classification qualifies for premium processing
 
    - Do it yourself: [USCIS: premium processing eligibility](https://www.uscis.gov/forms/all-forms/how-do-i-request-premium-processing)
+5. **File the counsel-reviewed response before the printed deadline, and confirm the agency received it** — human · ~30 min · hard to undo
+
+   *Follows step 3 or step 4.*
+
    - Next: continue at step 10
 6. **After a denial, map the alternatives honestly: refile with better evidence, a different classification, motions and appeals, or the role abroad** — human · ~45 min
 
@@ -76,7 +78,7 @@ Notice parsing, the evidence assembly, and the lapse-plan math are agent work fr
    *This path ends here.*
 10. **Wait out the adjudication: the decision arrives on the agency's schedule** — human · ~30 d · async wait
 
-   *Follows step 4 or step 5 or step 7 or step 8.*
+   *Follows step 5 or step 7 or step 8.*
 
 ## By country
 
