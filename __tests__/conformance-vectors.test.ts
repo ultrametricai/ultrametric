@@ -87,6 +87,43 @@ describe('open-modules/conformance/', () => {
     })
   }
 
+  // Every gate above goes through firstMismatch, so the comparator itself must reject —
+  // a comparator that always matched would leave the drift and replay tests green.
+  describe('firstMismatch rejects what it should and accepts what it should', () => {
+    it('accepts a partial object match and ignores unlisted keys', () => {
+      expect(firstMismatch({ a: 1 }, { a: 1, b: 'extra', c: null }, 0)).toBeNull()
+      expect(firstMismatch({}, { anything: true }, 0)).toBeNull()
+    })
+
+    it('rejects a wrong value, naming the path', () => {
+      expect(firstMismatch({ a: { b: 2 } }, { a: { b: 3 } }, 0)).toContain('expected.a.b')
+      expect(firstMismatch({ s: 'convert' }, { s: 'cash-out' }, 0)).toContain('expected.s')
+      expect(firstMismatch({ flag: true }, { flag: false }, 0)).toContain('expected.flag')
+      expect(firstMismatch({ n: null }, { n: 0 }, 0)).toContain('expected.n')
+    })
+
+    it('rejects a missing key and a wrong type', () => {
+      expect(firstMismatch({ a: 1 }, {}, 0)).toContain('expected.a')
+      expect(firstMismatch({ a: 1 }, { a: 'one' }, 0)).toContain('expected a number')
+      expect(firstMismatch({ a: { b: 1 } }, { a: 7 }, 0)).toContain('expected an object')
+      expect(firstMismatch([1], { 0: 1 }, 0)).toContain('expected an array')
+      expect(firstMismatch({ a: 1 }, [1], 0)).toContain('expected an object')
+    })
+
+    it('rejects an array length mismatch and compares elements index by index', () => {
+      expect(firstMismatch([{}, {}], [{}], 0)).toContain('expected length 2')
+      expect(firstMismatch([{ a: 1 }, { a: 2 }], [{ a: 1 }, { a: 99 }], 0)).toContain('expected[1].a')
+      expect(firstMismatch([{}, { a: 2 }], [{ ignored: true }, { a: 2 }], 0)).toBeNull()
+    })
+
+    it('enforces the tolerance: inside passes, outside fails, zero means exact', () => {
+      expect(firstMismatch({ n: 1.7059 }, { n: 1.7061 }, 0.0005)).toBeNull()
+      expect(firstMismatch({ n: 1.7059 }, { n: 1.71 }, 0.0005)).toContain('expected.n')
+      expect(firstMismatch({ n: 1.7059 }, { n: 1.70590001 }, 0)).toContain('expected.n')
+      expect(firstMismatch({ n: 1.7059 }, { n: 1.7059 }, 0)).toBeNull()
+    })
+  })
+
   it('every vector file calls the entrypoint registry.json documents for its module', () => {
     const registry = JSON.parse(fs.readFileSync(path.join(ROOT, 'open-modules', 'registry.json'), 'utf8')) as {
       modules: { id: string; entrypoint: { function: string } }[]
