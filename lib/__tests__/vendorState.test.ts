@@ -2,6 +2,7 @@ import fs from 'node:fs'
 import path from 'node:path'
 import { describe, expect, it } from 'vitest'
 import { loadCategory } from '@/lib/data'
+import { EvidenceSchema, ProductSchema } from '@/lib/schemas'
 import { GOVERNMENT_ARENA_ID, governmentStepEligibility, jurisdictionNodes } from '@/lib/processes'
 import {
   loadVendorState, VENDOR_STATE_SERVICES, vendorStateFor, vendorStateLookup,
@@ -158,6 +159,45 @@ describe('government-services state tags', () => {
     }
     for (const id of ['irs', 'eftps', 'uspto', 'uscis', 'sam-gov']) {
       expect(tag(id), `${id} is federal`).toBeUndefined()
+    }
+  })
+})
+
+// State agencies staged for roster bring-up (2026-10-27): lib/data.ts needs a verdict for every
+// cell, so un-judged agencies wait in a seed file until the maintainer session judges them and
+// moves them into products.json. The staged records must already be valid roster entries.
+describe('staged government-services state agencies', () => {
+  const file = path.join(ROOT, 'rankings-engine/seeds/government-services-state-agencies-pending.json')
+  const staged = JSON.parse(fs.readFileSync(file, 'utf8')) as {
+    products: unknown[]
+    evidence: Record<string, unknown[]>
+  }
+  const products = ProductSchema.array().parse(staged.products)
+  const rostered = new Set(loadCategory(GOVERNMENT_ARENA_ID, DATA_DIR).products.map((p) => p.id))
+  const states = registryStates()
+
+  it('each staged agency is a valid US state agency not yet on the roster', () => {
+    expect(products.map((p) => p.id).sort()).toEqual(
+      ['fl-dor', 'nevada-sos', 'tx-twc', 'wa-dor', 'wa-esd', 'wyoming-sos'],
+    )
+    for (const p of products) {
+      expect(rostered.has(p.id), `${p.id} is rostered: delete it from the seed file`).toBe(false)
+      expect(p.type).toBe('government')
+      expect(p.country).toBe('US')
+      expect(states.has(p.state!), `${p.id} state ${p.state} must be registered`).toBe(true)
+      expect(p.urls.site).toMatch(/^https:\/\//)
+    }
+  })
+
+  it('crawlExclude entries are corpus URLs and staged evidence parses for staged products', () => {
+    for (const p of products) {
+      const urls = new Set([p.urls.site, p.urls.docs, ...(p.urls.extra ?? [])])
+      for (const u of p.crawlExclude ?? []) expect(urls.has(u), `${p.id} excludes ${u}`).toBe(true)
+    }
+    const ids = new Set(products.map((p) => p.id))
+    for (const [id, rows] of Object.entries(staged.evidence)) {
+      expect(ids.has(id), `${id} evidence belongs to a staged product`).toBe(true)
+      for (const row of EvidenceSchema.array().parse(rows)) expect(row.id.startsWith(`${id}-`)).toBe(true)
     }
   })
 })
