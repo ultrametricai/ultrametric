@@ -11,6 +11,9 @@ import type { z } from 'zod'
 // PA_MODEL is the deprecated pre-rename spelling, honored as a fallback.
 export const JUDGE_MODEL = process.env.UM_JUDGE_MODEL ?? process.env.PA_MODEL ?? 'claude-opus-5-5'
 const MODEL = JUDGE_MODEL
+// First-attempt output cap, shared with the batch transport so a batch-judged cell runs
+// under exactly the parameters an interactive first attempt would.
+export const DEFAULT_MAX_TOKENS = 4096
 // 5 attempts total. 3 proved too few in scheduled CI (story-runner, 2026-09: 2 of 3 runs died
 // on "response contained no parseable JSON" with nobody around to retry the job).
 const MAX_RETRIES = 4
@@ -95,7 +98,7 @@ export async function llmJson<T>(opts: {
   // attempts (observed under prompt v3, whose rubric rationales run longer). Escalate the cap
   // on truncation and retry the ORIGINAL prompt (appending half a JSON object only confuses
   // the model).
-  let maxTokens = opts.maxTokens ?? 4096
+  let maxTokens = opts.maxTokens ?? DEFAULT_MAX_TOKENS
   for (let attempt = 0; attempt <= MAX_RETRIES; attempt++) {
     const res = await getClient().messages.create({
       model: MODEL,

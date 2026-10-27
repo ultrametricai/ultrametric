@@ -72,6 +72,23 @@ step-call, step-prompt, and step-story mappings, story-tier classifications, the
 human-step audit, and depth-mining summaries. The raw `crawl/` and `extract/` page
 caches are local only (gitignored).
 
+## Batch judging
+
+`pnpm engine judge --category <id> --batch` routes each cache-miss cell's first verdict
+through the Message Batches API, which runs the same judge model at half the interactive
+per-token price. The batch request is byte-for-byte the interactive first attempt (same
+model, system prompt, cell prompt, and output cap), each request's `custom_id` is the
+cell's hash, and every completed response is parsed, rule-checked, and written through
+the same cache path as an interactive verdict, so a batch-judged cell is
+indistinguishable in the cache from an interactive one. Cells the batch errors,
+truncates, or returns unparseable fall back to the interactive path automatically, and
+rule violations go through the usual interactive correction rounds. Submitted batch ids
+are recorded in a per-scope state file under `cache/judge-batches/` (local only,
+gitignored): an interrupted poll re-attaches to its in-flight batches on the next run
+instead of resubmitting, and the file is cleared once every cell is cached. Interactive
+remains the default transport; `--batch` is opt-in per invocation and suits settlement
+waves where latency does not matter.
+
 ## Seeds and golden cells
 
 - `seeds/community.json` — per-arena lists of public community-thread URLs that
