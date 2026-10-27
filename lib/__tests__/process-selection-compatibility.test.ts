@@ -125,8 +125,10 @@ describe('existing judged selection compatibility', () => {
     // Re-pinned at the business-phone roster additions (2026-10-27): google-voice and
     // community-phone debut in business-phone, so the two newly judged products join the
     // choose-provider step's candidate list.
-    expect(positiveCount).toBe(3014)
-    expect(zeroCount).toBe(269)
+    expect(positiveCount).toBe(2994)
+    expect(zeroCount).toBe(290)
+    // Re-pinned at the issue-closeout integration (2026-10-27): munito-ai and obsessiondb
+    // join their arenas' candidate lists and the monday re-judge moved cells; counts re-probed.
     // Re-pinned at the v5 settlement wave 1 integration (2026-10-23): seven arenas
     // (cloud-platforms, cloud-storage, virtual-mailboxes, data-warehouses, sso-identity,
     // customer-data-platforms, team-chat) re-judged under the v5 boundary; the three arenas
