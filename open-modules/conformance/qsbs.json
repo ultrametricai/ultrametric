@@ -1,0 +1,52 @@
+{
+  "module": "qsbs",
+  "entrypoint": "qsbsEligibilityChecklist",
+  "implementation": {
+    "file": "lib/openstartup/qsbs.ts",
+    "sha256": "535a7555445e9c6552fd1527a7661906d4a87074865ff6e79b548ada8cddd64a"
+  },
+  "readme": "open-modules/conformance/README.md",
+  "cases": [
+    {
+      "name": "post-applicable-date-75m-ceiling",
+      "description": "An issuance after the July 4, 2025 applicable date with $60,000,000 of aggregate gross assets: the $75,000,000 ceiling from P.L. 119-21 applies and the gross-assets condition is met, while the overall verdict stays needs_review (the active-business test is never computable).",
+      "source": "26 U.S.C. § 1202(d)(1) including the P.L. 119-21 (2025) amendments (https://www.law.cornell.edu/uscode/text/26/1202, verified 2026-10-01)",
+      "inputs": [
+        {
+          "issuanceDate": "2025-08-01",
+          "aggregateGrossAssetsAtIssuance": 60000000
+        }
+      ],
+      "expected": {
+        "overall": "needs_review",
+        "grossAssetCeilingApplied": 75000000,
+        "conditions": [
+          {},
+          {},
+          {
+            "status": "met"
+          },
+          {
+            "status": "needs_review"
+          },
+          {}
+        ]
+      }
+    },
+    {
+      "name": "applicable-date-boundary-50m-ceiling",
+      "description": "The same $60,000,000 of gross assets on the applicable date itself (2025-07-04, not after it): the classic $50,000,000 ceiling applies and the checklist reports not-met.",
+      "source": "26 U.S.C. § 1202(d)(1) including the P.L. 119-21 (2025) amendments (https://www.law.cornell.edu/uscode/text/26/1202, verified 2026-10-01)",
+      "inputs": [
+        {
+          "issuanceDate": "2025-07-04",
+          "aggregateGrossAssetsAtIssuance": 60000000
+        }
+      ],
+      "expected": {
+        "overall": "not-met",
+        "grossAssetCeilingApplied": 50000000
+      }
+    }
+  ]
+}

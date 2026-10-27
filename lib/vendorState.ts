@@ -1,6 +1,7 @@
 import fs from 'node:fs'
 import path from 'node:path'
 import { z } from 'zod'
+import { STATE_SERVICES, type StateService } from './shared-processes/schema'
 
 // Vendor US-state availability EVIDENCE (per-state vendors workstream, 2026-10-22): the
 // state-level sibling of jurisdictions/vendor-geo.json. One row per (product, state, service)
@@ -16,15 +17,10 @@ import { z } from 'zod'
 // process and product surfaces, rendered only when rows exist. Missing file = no rows
 // anywhere (honest degrade, never an error).
 
-export const VENDOR_STATE_SERVICES = [
-  'registered-agent',
-  'formation',
-  'foreign-qualification',
-  'annual-report-filing',
-  'payroll-tax-registration',
-  'sales-tax-registration',
-] as const
-export type VendorStateService = (typeof VENDOR_STATE_SERVICES)[number]
+// The service set is shared with the process-step `service` field (lib/shared-processes/schema.ts), so a
+// conditional step's service names exactly the rows that describe it.
+export const VENDOR_STATE_SERVICES = STATE_SERVICES
+export type VendorStateService = StateService
 
 // US state codes only for now — the registry test (not this regex) is what ties each code to a
 // committed jurisdictions/registry.json entry, so a new state needs its registry row first.
@@ -64,6 +60,8 @@ export interface VendorStateCell {
   status: VendorStateStatus
   note: string
   sourceUrl: string
+  /** The date the source was last checked (YYYY-MM-DD). */
+  checkedAt: string
   price?: z.infer<typeof VendorStatePriceSchema>
 }
 
@@ -119,6 +117,7 @@ export function vendorStateLookup(
       status: e.status,
       note: e.note,
       sourceUrl: e.sourceUrl,
+      checkedAt: e.checkedAt,
       ...(e.price ? { price: e.price } : {}),
     }
   }

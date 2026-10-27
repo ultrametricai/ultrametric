@@ -28,6 +28,17 @@ describe('vendor-state corpus', () => {
   const entries = loadVendorState(DATA_DIR)
   const states = registryStates()
 
+  it('every checkedAt is a real date no later than today', () => {
+    const today = new Date().toISOString().slice(0, 10)
+    for (const e of entries) {
+      const parsed = new Date(e.checkedAt)
+      expect(Number.isNaN(parsed.getTime()), `${e.productId}/${e.state}/${e.service}`).toBe(false)
+      // Rejects impossible dates such as 2026-02-30, which Date silently rolls forward.
+      expect(parsed.toISOString().slice(0, 10), `${e.productId}/${e.state}/${e.service} checkedAt`).toBe(e.checkedAt)
+      expect(e.checkedAt <= today, `${e.productId}/${e.state}/${e.service} checkedAt`).toBe(true)
+    }
+  })
+
   it('loads and every row is fully sourced', () => {
     expect(entries.length).toBeGreaterThan(0)
     for (const e of entries) {
@@ -74,6 +85,11 @@ describe('vendor-state corpus', () => {
     expect(status('stripe-atlas', 'US-CA', 'formation')).toBe('unavailable')
     expect(status('clerky', 'US-DE', 'formation')).toBe('available')
     expect(status('firstbase', 'US-WY', 'formation')).toBe('available')
+    // Clerky files foreign qualification directly in CA and NY only; other states go to partners.
+    expect(status('clerky', 'US-CA', 'foreign-qualification')).toBe('available')
+    expect(status('clerky', 'US-TX', 'foreign-qualification')).toBe('partial')
+    // Rippling registers state payroll-tax accounts through its PEO, not payroll alone.
+    expect(status('rippling', 'US-CA', 'payroll-tax-registration')).toBe('partial')
   })
 })
 
@@ -106,6 +122,7 @@ describe('vendorStateLookup', () => {
     expect(atlas.formation?.status).toBe('available')
     expect(atlas.formation?.sourceUrl).toMatch(/^https:\/\//)
     expect(atlas.formation?.note).toMatch(/Delaware/)
+    expect(atlas.formation?.checkedAt).toMatch(/^\d{4}-\d{2}-\d{2}$/)
     // Rows for other states never leak into the selection.
     const ca = vendorStateLookup(['stripe-atlas'], 'US-CA', DATA_DIR)['stripe-atlas']
     expect(ca.formation?.status).toBe('unavailable')
