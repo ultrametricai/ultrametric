@@ -33,13 +33,19 @@ Notice parsing, the evidence assembly, and the lapse-plan math are agent work fr
    - Ranked market: [startup-immigration](../../open-rankings/startup-immigration)
    - Next: steps 3 and 5 — all follow this step
 3. **Assemble the complete evidence file the notice actually asks for: org charts, degrees, contracts, job duties, labeled, in one pass** — agent-runnable · ~1.5 h
+
+   When: The notice is an RFE or NOID with a response deadline
 4. **Consider premium processing where the classification qualifies: it buys adjudicative action on a stated clock, not approval** — manual form/portal · ~30 min
 
    - Do it yourself: [USCIS: premium processing eligibility](https://www.uscis.gov/forms/all-forms/how-do-i-request-premium-processing)
 5. **After a denial, map the alternatives honestly: refile with better evidence, a different classification, motions and appeals, or the role abroad** — human · ~45 min
 
    *Follows step 2.*
+
+   When: The petition was denied
 6. **Plan for the lapse like it will happen: the date work must stop, leave options, remote work from abroad, and the EOR path priced in advance** — human · ~1 h
+
+   - Next: steps 7 and 9 — all follow this step
 7. **If the clock wins and the role can be done abroad, keep the person: employ them through an EOR while the next petition runs** — human · ~30 min
 
    When: Work authorization will lapse and the role can be performed abroad
@@ -56,7 +62,7 @@ Notice parsing, the evidence assembly, and the lapse-plan math are agent work fr
    *This path ends here.*
 9. **Wait out the adjudication: the agency's clock restarts in full when it receives the response** — human · ~30 d · async wait
 
-   *Follows steps 4 and 7 — both are required first.*
+   *Follows steps 4, 6 and 7 — all are required first.*
 
 ## By country
 

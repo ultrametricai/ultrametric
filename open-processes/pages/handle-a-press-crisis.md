@@ -39,6 +39,8 @@ Claim verification and monitoring run as agent work from supplied links and aler
 
    *Follows step 2.*
 
+   When: The coverage contains identified factual errors
+
    - Do it yourself: [SPJ Code of Ethics (accuracy and corrections)](https://www.spj.org/spj-code-of-ethics/)
 5. **Legal review before any public statement that touches a dispute, a regulator, or a named individual** — human · ~30 min
 
