@@ -1,15 +1,18 @@
 {
-  "hash": "1b5b96bf33f92d748fe02553867833d04543c09c7af705ca70afcf33bb2ea8f0",
+  "hash": "49cc729e8427acf417644bfd4dc92a6720738cc7f428229d3f89678906a3a1b2",
   "keyVersion": "v2",
   "verdict": {
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "The Gmail API scopes documentation tells developers to pick the narrowest possible scope and to avoid requesting unneeded ones. It also points to non-sensitive scopes that limit access to specific features [gmail-docs-4, gmail-docs-29], and read-only extraction is a documented use case [gmail-docs-17]. Together these give an agent a least-privilege credential path. Missing for 10: documentation of the actual credential issuance and revocation flow (OAuth client or token creation), any agent-specific or per-agent credential management, a scope catalog in the pack, and independent or hands-on corroboration.",
+    "rationale": "Gmail's API documents OAuth 2.0 scopes and tells developers to pick the narrowest one, including non-sensitive and read-only scopes. OAuth also covers IMAP/SMTP access, so an agent can be given a least-privilege grant. However, the credential is an OAuth app grant set up through a developer flow, not a user-issued agent token, and community reports note scopes can't be limited to a specific label and that Google restricts third-party OAuth apps. Missing for 10: a user-facing way to mint agent-specific credentials, label- or folder-level scoping, documented revocation and audit of agent grants, and hands-on corroboration of the issuance flow.",
     "evidenceIds": [
       "gmail-docs-4",
       "gmail-docs-29",
-      "gmail-docs-17"
+      "gmail-docs-42",
+      "gmail-docs-43",
+      "gmail-comm-7",
+      "gmail-comm-9"
     ],
     "productId": "gmail",
     "storyId": "agentic-scoped-keys"
