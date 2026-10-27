@@ -95,7 +95,23 @@ AWX_FEATURE_CHECKS = [
     'Registered business location Global Accounts FX & Transfers Borderless Cards Payment Links & Plugins Expense Management Bill Pay',
     '** United Kingdom registered businesses only',
     '*European Economic Area countries and Switzerland',
+    # The table rows the available statuses rest on: the fourth cell is the Payment Links &
+    # Plugins column. If Airwallex redraws the table these fragments stop matching and the run
+    # aborts instead of stamping a stale status with a fresh date (PR #503 review).
+    'United States ✔️ ✔️ ✔️ ✔️ ✔️ ✔️',
+    'United Kingdom ✔️ ✔️ ✔️ ✔️** ✔️ ✔️',
+    'Europe ✔️ ✔️ ✔️* ✔️ ✔️ ✔️',
 ]
+
+# Countries whose rows are judged negatives BECAUSE a page omits them: the run aborts if the
+# page starts mentioning them, so a vendor expansion forces a re-read instead of being recorded
+# as still-unavailable (PR #503 review).
+AWX_ELIGIBLE_ABSENT = ['Argentina', 'Colombia', 'Chile', 'Peru']
+SQUARE_AVAILABILITY_SENTENCE = (
+    'Card payment acceptance with the Square app is currently available in the US, Canada, '
+    'Australia, Japan, the United Kingdom, Republic of Ireland, France and Spain.'
+)
+SQUARE_ABSENT = ['India', 'Germany', 'Brazil', 'Mexico', 'Argentina', 'Colombia', 'Chile', 'Peru']
 
 BREX_LOCKED = (
     'US entities only for the expense-management offering: "All Brex applicants are required to '
@@ -222,6 +238,23 @@ def run() -> int:
     for frag in AWX_FEATURE_CHECKS:
         if norm(frag) not in texts[AWX_FEATURES]:
             print(f'abort: product-table fragment not found: {frag}', file=sys.stderr)
+            return 1
+    for country in AWX_ELIGIBLE_ABSENT:
+        if country in texts[AWX_ELIGIBLE]:
+            print(f'abort: {country} now appears on the Airwallex eligible-countries page; '
+                  're-read before recording an unavailable row', file=sys.stderr)
+            return 1
+    # Self-consistency for the Square negatives: the availability sentence is verified verbatim
+    # against the live page above (so a Square expansion that rewrites it aborts the run); this
+    # guard additionally rejects an edit that updates the sentence to one naming a country the
+    # GEO_ROWS below still record as unavailable.
+    if norm(SQUARE_AVAILABILITY_SENTENCE) not in texts[SQUARE_INTL]:
+        print('abort: the Square availability sentence changed; re-read before recording rows', file=sys.stderr)
+        return 1
+    for country in SQUARE_ABSENT:
+        if country in SQUARE_AVAILABILITY_SENTENCE:
+            print(f'abort: {country} is named in the Square availability sentence; '
+                  're-read before recording an unavailable row', file=sys.stderr)
             return 1
 
     for arena, pid, url, quote in EVIDENCE:

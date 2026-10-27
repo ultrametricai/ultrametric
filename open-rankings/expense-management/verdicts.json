@@ -622,11 +622,16 @@
   {
     "productId": "brex",
     "storyId": "accounting-sync-mapping",
-    "verdict": "none",
-    "quality": 0,
-    "confidence": "medium",
-    "rationale": "The only accounting-sync evidence describes automatic expense-data sync with Puzzle, a different accounting product, plus generic one-click setup and close-the-books marketing. Nothing documents sync to QuickBooks, NetSuite, or Xero. Nothing shows user-controlled GL account, class, or department mappings either. That makes the Puzzle sync an adjacent capability that earns no credit for this story.",
-    "evidenceIds": []
+    "verdict": "partial",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "Brex documents its own accounting sync: prepared expense data syncs automatically to Puzzle, with 'one-click' accounting setup and real-time close. The evidence never names QuickBooks, NetSuite, or Xero, and never shows GL account, class, or department mappings that a finance lead controls. Missing for 10: documented QuickBooks/NetSuite/Xero integrations, user-controlled GL/class/department mapping configuration, independent or hands-on corroboration of sync behavior.",
+    "evidenceIds": [
+      "brex-docs-17",
+      "brex-docs-40",
+      "brex-docs-18",
+      "brex-docs-37"
+    ]
   },
   {
     "productId": "brex",
@@ -647,15 +652,16 @@
     "productId": "brex",
     "storyId": "agentic-agent-docs",
     "verdict": "full",
-    "quality": 8,
+    "quality": 9,
     "confidence": "high",
-    "rationale": "A live probe confirms an llms.txt at developer.brex.com/llms.txt (HTTP 200) with a structured table of contents. The developer docs are also served as raw markdown pages (.md guides, OpenAPI reference pages, changelog), and an MCP doc page exists, so an agent can be pointed straight at agent-readable docs. Missing for 10: no machine-readable OpenAPI spec at standard paths (all probed paths 404), no evidence of an llms-full.txt or other expanded agent docs, no independent or hands-on corroboration of agents consuming the docs.",
+    "rationale": "A live probe confirms Brex serves an llms.txt at developer.brex.com/llms.txt (HTTP 200) with a structured table of contents. The developer docs themselves are served as markdown (.md URLs for guides, OpenAPI references, changelog and MCP docs), which gives an agent clean, agent-readable docs to consume. Missing for 10: no evidence of an llms-full.txt or full contents of the index beyond the truncated probe, and no machine-readable OpenAPI spec at standard paths (all probed paths 404).",
     "evidenceIds": [
       "brex-probe-1",
+      "brex-probe-2",
       "brex-docs-1",
-      "brex-docs-4",
       "brex-docs-3",
-      "brex-probe-2"
+      "brex-docs-4",
+      "brex-docs-6"
     ]
   },
   {
@@ -713,19 +719,20 @@
     "productId": "brex",
     "storyId": "agentic-headless",
     "verdict": "partial",
-    "quality": 5,
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Brex documents a token-authenticated REST API that can drive it without the UI. Admins create scoped user tokens in the dashboard and pass them in API headers, with transactions, budgets, expenses and payments APIs plus registrable webhooks. First-party guides cover scripted workflows such as bulk virtual-card creation via Pipedream, scheduled CSV exports via Zapier, and Workato recipes, but nothing addresses CI pipelines or headless runners directly. missing for 10: an official CLI or headless runner, CI-specific documentation or service-account/machine credentials (tokens are created manually in the dashboard), a published machine-readable OpenAPI spec (probe 404), independent hands-on corroboration of headless/CI use.",
+    "rationale": "Brex can be driven without its UI through its documented REST APIs (transactions, budgets, expenses, payments). These use scoped user tokens passed in request headers, and the docs show automation through Pipedream, Zapier, Workato and Postman collections, so unattended programmatic use is supported. However, there is no CLI or CI-specific tooling, and tokens must be created manually in the dashboard. missing for 10: official CLI or headless runner, CI/CD integration guidance, programmatic or service-account credential provisioning, independent hands-on corroboration of automated pipelines.",
     "evidenceIds": [
       "brex-docs-2",
       "brex-docs-26",
       "brex-docs-4",
       "brex-docs-5",
-      "brex-docs-35",
+      "brex-docs-7",
+      "brex-docs-34",
+      "brex-docs-29",
       "brex-docs-30",
       "brex-docs-31",
-      "brex-docs-32",
-      "brex-probe-2"
+      "brex-docs-32"
     ]
   },
   {
@@ -777,9 +784,9 @@
     "productId": "brex",
     "storyId": "agentic-public-api",
     "verdict": "full",
-    "quality": 8,
+    "quality": 9,
     "confidence": "high",
-    "rationale": "Brex documents a broad public REST API covering transactions, budgets, expenses with receipt upload, payments/vendors, onboarding and webhook registration. It uses scoped user tokens created from the dashboard and is backed by a changelog, Postman collections and an llms.txt index, which together let an AI-native user drive core product functions programmatically. Missing for 10: independent or hands-on corroboration that the API works as documented, and a machine-readable OpenAPI spec at a discoverable standard path (the probe found 404s at all candidate locations).",
+    "rationale": "Brex documents a broad public REST API with token-based auth and scopes. It spans transactions, budgets, expenses with receipt upload, payments/vendors, onboarding and webhook registration. A maintained changelog, Postman collections, an llms.txt index and an official MCP server round it out for agent use. missing for 10: independent or hands-on corroboration of API use, and a machine-readable OpenAPI spec at a standard path (the probe returned 404 at common locations, though OpenAPI-based reference docs exist).",
     "evidenceIds": [
       "brex-docs-2",
       "brex-docs-26",
@@ -787,12 +794,13 @@
       "brex-docs-5",
       "brex-docs-7",
       "brex-docs-34",
-      "brex-docs-28",
       "brex-docs-35",
+      "brex-docs-28",
       "brex-docs-19",
       "brex-docs-29",
       "brex-probe-1",
-      "brex-probe-2"
+      "brex-probe-2",
+      "brex-docs-3"
     ]
   },
   {
@@ -852,15 +860,14 @@
     "productId": "brex",
     "storyId": "ai-policy-copilot",
     "verdict": "partial",
-    "quality": 6,
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Brex's own marketing says its AI assistants handle employees' expenses, including \"fetching receipts\" and \"offering policy help\" (brex-docs-23). A review agent \"follows up with anyone out of compliance\" (brex-docs-16), and Brex AI applies spend rules to every transaction (brex-docs-8, brex-docs-41), which covers receipt-chasing and some policy guidance. However, these are thin marketing claims, and other parts of the story are not evidenced. missing for 10: evidence of the assistant explaining card declines, an explicit pre-spend \"can I expense this?\" conversational flow, in-depth first-party docs on the assistant's conversational behavior, independent or hands-on corroboration.",
+    "rationale": "Brex's own AI page says its assistants fetch receipts and offer policy help to employees (brex-docs-23), and that its review agent follows up with anyone out of compliance (brex-docs-16), all based on company policies (brex-docs-41, brex-docs-8). That covers receipt-chasing and general policy guidance, but only through brief marketing claims. Missing for 10: evidence that the assistant explains card declines, explicit pre-spend \"can I expense this?\" answers, detail on the conversational interface, and independent or hands-on corroboration.",
     "evidenceIds": [
       "brex-docs-23",
       "brex-docs-16",
-      "brex-docs-15",
-      "brex-docs-8",
-      "brex-docs-41"
+      "brex-docs-41",
+      "brex-docs-8"
     ]
   },
   {
@@ -953,17 +960,17 @@
     "productId": "brex",
     "storyId": "automation-rules-engine",
     "verdict": "partial",
-    "quality": 6,
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Brex documents its own rule-driven automation. Admins set spend rules and limits that are auto-enforced, including automatically blocking out-of-policy purchases. Multi-level approval flows route automatically based on amount, vendor and role, and AI agents auto-approve or escalate expenses according to policy. However, this is limited to preset spend and approval domains, not a general event-to-action rule builder, and the evidence is marketing-level only (webhooks and Zapier/Workato recipes are external building blocks and earn no credit). Missing for 10: a general-purpose configurable event-trigger/action rule engine, detailed docs on rule configuration, and independent or hands-on corroboration.",
+    "rationale": "Brex documents its own rule-driven automation, but only within spend management. Admins set spend rules and limits that are auto-enforced on every transaction, including automatically blocking out-of-policy purchases. Multi-level approval flows keyed on amount, vendor and role are routed automatically, and a review agent auto-approves low-risk expenses and escalates exceptions. All of this is marketing-level, though, and limited to predefined policy and approval actions rather than a general event-to-action rule builder; webhooks and Zapier/Workato recipes are developer building blocks and third-party tools, not first-party rules. missing for 10: a general-purpose user-defined trigger/action rule engine beyond spend policy and approvals, technical documentation of rule configuration, independent or hands-on corroboration.",
     "evidenceIds": [
       "brex-docs-8",
       "brex-docs-9",
       "brex-docs-11",
-      "brex-docs-36",
       "brex-docs-16",
-      "brex-docs-41",
-      "brex-docs-39"
+      "brex-docs-36",
+      "brex-docs-39",
+      "brex-docs-41"
     ]
   },
   {
@@ -1296,9 +1303,9 @@
     "productId": "brex",
     "storyId": "receipt-capture-ocr",
     "verdict": "partial",
-    "quality": 4,
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Brex documents its own receipt upload with automatic matching to existing expenses (an \"upload receipt and match automatically\" endpoint using a pre-signed S3 URL). Its AI assistants are also claimed to fetch receipts for employees, so the core of filing a receipt against the right transaction is evidenced. However, that matching is documented only as an API flow, not as an employee capture experience. Missing for 10: employee-facing photo capture in the mobile app, email-forwarding receipt intake, explicit OCR/data extraction of receipt fields, and independent or hands-on corroboration of matching accuracy.",
+    "rationale": "Brex documents its own receipt upload with automatic matching to existing expenses (\"Upload receipt and match automatically\"), and its marketing says AI assistants fetch receipts for employees, so the core of filing a receipt against the right transaction is evidenced. The employee-facing capture channels are not: the mobile app evidence covers only card management and spend viewing, nothing describes forwarding receipts by email, and OCR of receipt contents is never stated. missing for 10: documented mobile photo capture of receipts, email-forwarding intake, explicit OCR/data extraction from receipts, independent or hands-on corroboration of match accuracy",
     "evidenceIds": [
       "brex-docs-7",
       "brex-docs-27",
@@ -3836,18 +3843,18 @@
   {
     "productId": "ramp",
     "storyId": "accounting-sync-mapping",
-    "verdict": "full",
-    "quality": 7,
+    "verdict": "partial",
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Ramp documents real-time QuickBooks sync of accounting fields, transactions, reimbursements and bills, with a built-in reconciliation tool. It has dedicated NetSuite and Xero integration pages, single-step multi-entity sync, and automatic coding of receipts to the correct GL account. Accounting categories, tracking categories and departments are exposed as manageable data. Missing for 10: explicit documentation of user-controlled GL/class/department mapping rules, explicit card-transaction sync for NetSuite and Xero (their pages only describe bill flows), and independent or hands-on corroboration.",
+    "rationale": "Ramp's own QuickBooks integration page documents real-time sync of \"accounting fields, transactions, reimbursements\" and more, plus a reconciliation tool. Ramp also says receipts are \"coded to the correct GL account\" and that it handles multi-entity transaction sync. For NetSuite and Xero, however, the integration evidence only describes vendor-bill workflows, not transaction sync. Nothing explicitly shows finance-controlled mapping of GL account, class, or department. missing for 10: documented transaction sync to NetSuite and Xero, explicit user-configurable GL/class/department mapping rules, class mapping evidence, independent or hands-on corroboration.",
     "evidenceIds": [
       "ramp-docs-44",
       "ramp-docs-26",
+      "ramp-docs-32",
+      "ramp-docs-24",
       "ramp-docs-27",
       "ramp-docs-28",
-      "ramp-docs-24",
-      "ramp-docs-32",
-      "ramp-supp-ai-agents-channels"
+      "ramp-docs-21"
     ]
   },
   {
@@ -4086,14 +4093,14 @@
     "productId": "ramp",
     "storyId": "ai-expense-coding",
     "verdict": "full",
-    "quality": 8,
+    "quality": 7,
     "confidence": "medium",
-    "rationale": "Ramp's own docs say it captures receipts at swipe time and fills in memos and categories automatically, codes them to the correct GL account, and runs AI that flags fraud and scans transactions for anomalies in real time. The CLI also exposes memo-suggestions, and bill-pay OCR is claimed at 99% line-item accuracy. missing for 10: explicit duplicate-expense detection, independent or hands-on corroboration of AI coding and fraud-flagging accuracy.",
+    "rationale": "Ramp's own materials say the product captures receipts and auto-fills memos and categories on swipe, codes expenses to the correct GL account, and suggests memos (CLI memo-suggestions). Ramp Intelligence also positions AI agents as flagging fraud and scanning transactions in real time for anomalies, with OCR claimed at 99% line-item accuracy. Missing for 10: explicit duplicate-expense detection, documentation of how fraud and anomaly detection works, and independent or hands-on corroboration of coding accuracy.",
     "evidenceIds": [
       "ramp-docs-8",
-      "ramp-docs-45",
       "ramp-docs-21",
       "ramp-docs-32",
+      "ramp-docs-45",
       "ramp-docs-16",
       "ramp-supp-ramp-agents-product",
       "ramp-supp-cli-agent-mode"
@@ -4165,9 +4172,9 @@
     "productId": "ramp",
     "storyId": "api-versioning-policy",
     "verdict": "partial",
-    "quality": 3,
+    "quality": 4,
     "confidence": "medium",
-    "rationale": "Ramp's Developer API is versioned: the canonical OpenAPI document is titled \"Ramp Developer API\" (v1), and endpoints use version-prefixed paths such as /developer/v1/transactions and /developer/v1/ai-usage/unified. Nothing in the pack documents a deprecation policy, sunset timelines, changelog or breaking-change guarantees, so only half the story is evidenced. Missing for 10: a documented deprecation/sunset policy, a version lifecycle and support window, a changelog or breaking-change notification process, and independent corroboration.",
+    "rationale": "Ramp's Developer API is path-versioned: endpoints sit under /developer/v1/, and the canonical OpenAPI document is published as \"Ramp Developer API\" v1 with 174 paths. Nothing in the evidence documents a deprecation policy, sunset timelines, or version-migration guidance, so only half the story is covered. Missing for 10: documented deprecation/sunset policy, changelog or version-lifecycle guidance, evidence of multiple supported versions or migration paths, independent corroboration.",
     "evidenceIds": [
       "ramp-probe-6",
       "ramp-docs-40",
@@ -4207,16 +4214,11 @@
   {
     "productId": "ramp",
     "storyId": "automation-bulk-operations",
-    "verdict": "partial",
-    "quality": 3,
-    "confidence": "low",
-    "rationale": "Ramp documents a few multi-item actions of its own: syncing transaction and reimbursement data to multiple entities \"in a single step\", pulling full spend exports via its agent channels, and MCP prompts that act across sets of transactions (e.g. finding all transactions missing receipts). The CLI being \"built for scripted loops\" is only a building block for doing bulk work, not a bulk feature itself. missing for 10: documented batch/bulk endpoints or commands (e.g. bulk approve, bulk edit, bulk card issuance), bulk actions exposed via MCP/CLI, limits and semantics of batch operations, independent or hands-on corroboration.",
-    "evidenceIds": [
-      "ramp-docs-24",
-      "ramp-supp-ai-agents-channels",
-      "ramp-docs-29",
-      "ramp-supp-machine-docs"
-    ]
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "The evidence pack documents no bulk or batch action capability, such as mass-approving, bulk-editing or bulk-updating many transactions, bills or cards in one call through the API, MCP or CLI. The CLI being suited to 'scripted loops' is a developer building block, not a bulk feature. The other candidates are adjacent rather than bulk actions: the multi-entity accounting sync, full spend exports, the MCP prompt that drafts reminders for transactions missing receipts, and AI-usage telemetry batch ingestion.",
+    "evidenceIds": []
   },
   {
     "productId": "ramp",
@@ -4273,9 +4275,9 @@
     "productId": "ramp",
     "storyId": "budgets-enforcement",
     "verdict": "full",
-    "quality": 7,
+    "quality": 8,
     "confidence": "medium",
-    "rationale": "Ramp documents Funds as budgets with enforced restrictions: amount, interval (daily, monthly, total), allowed merchant categories, merchants and countries. Its spend-controls layer of \"budgets, templates, and approval workflows\" applies across cards, reimbursements and bills. Marketing pages add pre-spend limit enforcement, team-scoped cards, budget-grounded approval recommendations and rules-based approval routing. missing for 10: explicit evidence of project-level (vs. team) budget allocation and department-level budget rollups, plus independent or hands-on corroboration that limits and approvals actually block over-budget spend.",
+    "rationale": "Ramp documents Funds as budgets with enforced restrictions: amount, interval, allowed merchants, categories and countries. Its spend-controls layer of budgets, templates and approval workflows applies to cards, reimbursements and bills, and spend limits and merchant blocks are enforced before spend happens. Cards can be scoped to individual teams, and approval workflows route by spend amount, team role or category, with request recommendations grounded in budgets. Missing for 10: explicit evidence of project-level (not just team-level) budget allocation and rollup, and independent or hands-on corroboration that enforcement works as described.",
     "evidenceIds": [
       "ramp-docs-41",
       "ramp-supp-spend-controls-agents",
@@ -4347,9 +4349,9 @@
     "productId": "ramp",
     "storyId": "expense-policy-engine",
     "verdict": "full",
-    "quality": 7,
+    "quality": 8,
     "confidence": "medium",
-    "rationale": "Ramp documents codified spend controls: funds restricted by amount, interval, merchant category, merchant and country, plus pre-spend limit enforcement and category blocks. It also documents approval workflows routed by spend amount, team role, vendor type or category, and in-policy expenses that are 'auto-approved because it's within policy', with its agents that 'approve when it's safe' and 'escalate when it's not'. Context-aware rules such as per diem by trip location and duration and travel policy status round out the core story. Missing for 10: in-depth first-party docs on authoring auto-approval rules and role-based expense limits (role mainly appears in notification and routing workflows), and any independent or hands-on corroboration that only exceptions reach a human.",
+    "rationale": "Ramp documents a policy layer. Funds carry restrictions on amount, interval, merchant categories, merchants, and countries (ramp-docs-41, spend-controls). Limits are enforced and risky categories blocked before spend happens (ramp-docs-9). Approval workflows route by spend amount or team role across cards, reimbursements, and bills (ramp-docs-12, ramp-docs-23). In-policy expenses are explicitly auto-approved, while unclear or risky ones escalate to a human (ramp-docs-32, ramp-supp-ramp-agents-product, ramp-docs-10). missing for 10: detailed configuration docs for role-based limit rules and auto-approval thresholds (most evidence is marketing copy), independent or hands-on corroboration.",
     "evidenceIds": [
       "ramp-docs-9",
       "ramp-docs-41",
@@ -4357,27 +4359,28 @@
       "ramp-docs-12",
       "ramp-docs-23",
       "ramp-docs-32",
-      "ramp-supp-ramp-agents-product",
       "ramp-docs-10",
-      "ramp-docs-21",
-      "ramp-docs-19",
-      "ramp-docs-18"
+      "ramp-supp-ramp-agents-product",
+      "ramp-docs-42",
+      "ramp-docs-11",
+      "ramp-docs-21"
     ]
   },
   {
     "productId": "ramp",
     "storyId": "expenses-api-read",
     "verdict": "full",
-    "quality": 7,
+    "quality": 8,
     "confidence": "high",
-    "rationale": "Ramp documents a Developer REST API whose Transactions API is used in getting-started. A live OpenAPI schema lists 174 paths, including /developer/v1/transactions. The API uses OAuth 2.0 with client-credentials, authorization-code and refresh grants, and granular resource:permission scopes such as transactions:read, with least-privilege guidance. Missing for 10: explicitly evidenced REST endpoints for pulling receipts and reimbursements/expenses (these appear only via the CLI and MCP scopes), and independent hands-on corroboration of data retrieval.",
+    "rationale": "Ramp documents a REST Developer API with a Transactions API. Probe-6 confirms a live OpenAPI schema with 174 paths, including /developer/v1/transactions. The API uses OAuth 2.0 (client credentials, authorization code, refresh) with granular resource:permission scopes such as transactions:read and least-privilege guidance. Missing for 10: explicit REST endpoint evidence for retrieving receipts and reimbursements/expenses (shown only via CLI/MCP scopes such as receipts:write and reimbursements:read), and independent developer corroboration of pulling that data.",
     "evidenceIds": [
       "ramp-docs-1",
       "ramp-docs-33",
       "ramp-supp-oauth-scopes",
-      "ramp-docs-2",
       "ramp-probe-6",
-      "ramp-supp-machine-docs"
+      "ramp-supp-machine-docs",
+      "ramp-supp-cli-agent-mode",
+      "ramp-probe-4"
     ]
   },
   {
@@ -4428,9 +4431,9 @@
     "productId": "ramp",
     "storyId": "mileage-per-diem",
     "verdict": "partial",
-    "quality": 5,
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Ramp's reimbursements page claims a Google Maps integration with automatic mileage calculations, which covers map-based mileage logging. Per diem appears only as a travel-booking feature that shows allowable spend and adjusts by trip location and duration; nothing shows an employee claiming a per-diem rate as a reimbursement. missing for 10: evidence of per-diem reimbursement claims (as opposed to travel spend guidance), detailed docs on the mileage logging flow (route entry, rate application, submission), independent or hands-on corroboration of either feature.",
+    "rationale": "Ramp's reimbursements page documents a Google Maps integration for automatic mileage calculations, which covers map-based mileage logging. Ramp Travel documents a per diem that automatically adjusts to trip location and duration, but the evidence frames it as an allowance showing what you can spend, not a per-diem reimbursement claim. Both are single-line marketing claims with no employee-facing workflow detail. Missing for 10: evidence that per-diem rates can be claimed and reimbursed rather than only displayed as a spending allowance, a documented employee mileage-entry workflow (route entry, rate application, submission), and independent or hands-on corroboration.",
     "evidenceIds": [
       "ramp-docs-15",
       "ramp-docs-19",

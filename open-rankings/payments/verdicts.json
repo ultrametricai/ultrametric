@@ -734,30 +734,26 @@
   {
     "productId": "airwallex",
     "storyId": "agent-reconciles-payouts",
-    "verdict": "partial",
-    "quality": 3,
-    "confidence": "low",
-    "rationale": "Airwallex documents first-party agent access to account data: AgentOS (MCP server plus CLI) lets agents read balances and build cashflow reports on the production account, and the CLI exposes a broad slice of the API. Payments settle into the multi-currency Airwallex Wallet rather than straight to a bank, and nothing documents settlement or payout reports that tie each deposit back to its individual charges. missing for 10: documented balance-transaction/settlement API, payout-to-charge reconciliation endpoint or report, evidence of per-deposit reconciliation workflows, independent hands-on corroboration",
-    "evidenceIds": [
-      "awx-supp-agentos",
-      "awx-supp-agentos-mcp",
-      "awx-supp-cli",
-      "airwallex-docs-11"
-    ]
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "The evidence shows agent tooling that can read balances and build cashflow reports (AgentOS, the CLI exposing a broad slice of the API) and shows settlement into a multi-currency wallet. Nothing documents a payout or balance-transaction/settlement API, or any way to reconcile a bank deposit back to its underlying charges. Balance reads and cashflow reports are adjacent features, not reconciliation, so they earn no credit.",
+    "evidenceIds": []
   },
   {
     "productId": "airwallex",
     "storyId": "agentic-agent-docs",
     "verdict": "full",
-    "quality": 10,
+    "quality": 9,
     "confidence": "high",
-    "rationale": "A hands-on probe confirms a live llms.txt at airwallex.com/llms.txt, and the docs also publish their own llms.txt with .md versions of doc pages. Beyond that, Airwallex ships dedicated machine-oriented \"Instructions for AI agents\" pages and an unauthenticated Docs MCP for agent documentation lookups, which together cover pointing an agent at llms.txt or agent-oriented docs.",
+    "rationale": "A live probe confirms llms.txt is served (HTTP 200 at airwallex.com/llms.txt), and the docs also publish /docs/llms.txt with per-page .md versions. Airwallex adds a dedicated 'Instructions for AI agents' page written for machine consumption, plus an unauthenticated Docs MCP that agents can query. Missing for 10: the root /docs.md markdown index returns 404, and there is no independent or hands-on report of agents actually consuming these docs successfully.",
     "evidenceIds": [
       "airwallex-probe-1",
       "airwallex-docs-1",
       "awx-supp-ai-instructions",
       "awx-supp-developer-mcp",
-      "airwallex-docs-2"
+      "airwallex-docs-2",
+      "airwallex-probe-2"
     ]
   },
   {
@@ -773,15 +769,14 @@
     "productId": "airwallex",
     "storyId": "agentic-autonomous-automation",
     "verdict": "partial",
-    "quality": 4,
-    "confidence": "medium",
-    "rationale": "Airwallex documents first-party agent tooling. AgentOS bundles pre-built skills (contract-to-billing, card provisioning, cashflow management) and a hosted remote MCP server that runs 'multi-step financial workflows on your behalf.' It also ships product-native scheduled automation through recurring invoices and multi-frequency subscriptions. However, the AgentOS workflows run inside an external agent client rather than as automations configured and executed in the background by Airwallex, and the CLI's 'wire Airwallex into automated systems' and webhooks are only building blocks. missing for 10: a native automation/rules builder for setting up triggers or schedules, documented unattended background execution of agent workflows, independent hands-on corroboration.",
+    "quality": 3,
+    "confidence": "low",
+    "rationale": "Airwallex documents first-party pieces that touch this story. AgentOS bundles pre-built skills for \"running multi-step financial workflows on your behalf\", and Billing supports recurring invoices and multi-frequency subscriptions that charge on a schedule without manual action. However, the AgentOS workflows execute inside the user's agent client (Claude Code, Cursor, Cowork), and the scheduled billing is a narrow, billing-specific behavior rather than general-purpose automation. The CLI's \"wire Airwallex into automated systems\" and webhooks are developer building blocks, so they earn no credit. Missing for 10: a native user-configurable automation or rules engine, server-side scheduled or triggered agent workflows that run in the background without a client session, and any hands-on or independent corroboration.",
     "evidenceIds": [
       "awx-supp-agentos",
-      "awx-supp-agentos-mcp",
       "airwallex-docs-3",
-      "airwallex-docs-24",
-      "airwallex-docs-25"
+      "airwallex-docs-25",
+      "airwallex-docs-24"
     ]
   },
   {
@@ -886,13 +881,14 @@
     "productId": "airwallex",
     "storyId": "agentic-scoped-keys",
     "verdict": "full",
-    "quality": 7,
+    "quality": 8,
     "confidence": "medium",
-    "rationale": "Airwallex documents scoped API keys that grant only assigned Read or Write permissions on specific APIs instead of full account access, which is the core least-privilege credential an agent needs. The AgentOS MCP adds agent-specific guardrails, with OAuth and no money-out actions by default, and CLI OAuth is restricted to Owner, Admin and Finance Admin roles. Missing for 10: detailed docs on scope granularity, key expiry and rotation, user-selectable scopes for the agent OAuth flow, and independent or hands-on corroboration.",
+    "rationale": "Airwallex documents scoped API keys that grant only the Read or Write permissions you assign on specific APIs, instead of full account access, which is the least-privilege credential the story asks for. Its agent-facing surfaces add their own guardrails: AgentOS MCP authenticates via OAuth and blocks money-out actions by default, and CLI OAuth is limited to Owner/Admin/Finance Admin roles. missing for 10: independent or hands-on corroboration, detail on whether the OAuth grants for the MCP server and CLI can be narrowed per agent, and documentation of credential expiry and revocation.",
     "evidenceIds": [
       "airwallex-docs-4",
       "awx-supp-agentos-mcp",
-      "awx-supp-cli"
+      "awx-supp-cli",
+      "awx-supp-agentos"
     ]
   },
   {
@@ -1003,16 +999,11 @@
   {
     "productId": "airwallex",
     "storyId": "automation-scheduled-jobs",
-    "verdict": "partial",
-    "quality": 3,
-    "confidence": "low",
-    "rationale": "Airwallex's own Billing product runs scheduled recurring operations: recurring invoices and subscriptions with multi-frequency schedules (e.g., annual fees combined with monthly charges). These are domain-specific billing schedules rather than a general scheduler for arbitrary jobs or agent workflows, and AgentOS and the CLI describe multi-step workflows and scripting with no documented scheduling of their own. Missing for 10: general-purpose job/workflow scheduling, scheduling for AgentOS skills or CLI tasks, scheduled transfers or other non-billing recurring actions, and independent or hands-on corroboration.",
-    "evidenceIds": [
-      "airwallex-docs-25",
-      "airwallex-docs-24",
-      "airwallex-docs-13",
-      "awx-supp-billing-suite"
-    ]
+    "verdict": "none",
+    "quality": 0,
+    "confidence": "medium",
+    "rationale": "Nothing in the evidence shows a first-party way to schedule recurring jobs or workflows. AgentOS runs multi-step workflows on demand, and the CLI can 'script repeatable tasks', but any scheduling would rely on the user's external tooling such as cron, which is a user-side workaround. Recurring invoices and multi-frequency subscriptions are domain billing schedules, an adjacent feature rather than a general recurring job or workflow scheduler.",
+    "evidenceIds": []
   },
   {
     "productId": "airwallex",
@@ -1036,14 +1027,14 @@
     "productId": "airwallex",
     "storyId": "embedded-checkout-components",
     "verdict": "full",
-    "quality": 8,
+    "quality": 7,
     "confidence": "medium",
-    "rationale": "Airwallex documents a Drop-in Element, an embedded alternative to its Hosted Payment Page, that is created with createElement(...). It accepts appearance and layout options and adapts input fields to the payment method and country. Its docs also steer developers to the @airwallex/components-sdk and list embedded checkout and elements components for billing. Missing for 10: evidence of native mobile app SDKs (the 'app' part of the story), detail on granular per-field elements for payments, and independent or hands-on corroboration.",
+    "rationale": "Airwallex documents a Drop-in Element for web checkout that embeds in the merchant's own page. It adapts input fields by payment method and country, and accepts appearance and layout options in createElement(...). Billing checkout also offers embedded checkout and elements alongside the hosted page, and the components-sdk is the recommended library. missing for 10: native mobile app SDK evidence for in-app embedding, deeper documentation of customization scope beyond brief snippets, independent or hands-on corroboration.",
     "evidenceIds": [
       "airwallex-docs-8",
       "airwallex-docs-21",
-      "awx-supp-ai-instructions",
       "awx-supp-billing-suite",
+      "awx-supp-ai-instructions",
       "airwallex-docs-18"
     ]
   },
@@ -1060,15 +1051,15 @@
     "productId": "airwallex",
     "storyId": "hosted-checkout-page",
     "verdict": "full",
-    "quality": 7,
+    "quality": 8,
     "confidence": "medium",
-    "rationale": "Airwallex documents a Hosted Payment Page: a secure, pre-built page hosted by Airwallex that accepts multiple payment methods through a single integration, with custom styling to match the merchant's site. The quickstart walks through an end-to-end sandbox payment using it, and Billing adds a hosted billing checkout page and Payment Links. So developers can send customers to a vendor-hosted checkout without building their own payment UI. missing for 10: explicit evidence that the hosted page itself is conversion-optimized (e.g. adaptive fields, local-currency display or conversion data tied to the page), and independent or hands-on corroboration.",
+    "rationale": "Airwallex documents a Hosted Payment Page: a secure, pre-built page hosted by Airwallex that accepts multiple payment methods through one integration, with custom styling rules. The quickstart walks through an end-to-end payment using it, so developers can redirect customers without building their own payment UI. Billing adds a hosted checkout page, and redirect-flow guidance is published. Missing for 10: explicit evidence of conversion-optimization features on the hosted page itself (the conversion material covers the separate Multi-Currency Pricing API), and independent or hands-on corroboration of the hosted checkout.",
     "evidenceIds": [
       "airwallex-docs-7",
       "airwallex-docs-22",
       "airwallex-docs-18",
       "awx-supp-billing-suite",
-      "airwallex-docs-9"
+      "awx-supp-ai-instructions"
     ]
   },
   {
@@ -1084,14 +1075,13 @@
     "productId": "airwallex",
     "storyId": "integrate-from-docs-in-a-day",
     "verdict": "partial",
-    "quality": 6,
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Airwallex documents a quickstart that completes a minimal end-to-end online payment in the sandbox using Airwallex.js and the hosted payment page. It also offers instant self-serve sandbox signup, pre-built Hosted Payment Page and Drop-in Element integrations with a documented createElement(...) call, and an `airwallex-dev` skill that generates integration code. Nothing in the evidence shows copy-paste samples across multiple server languages or SDKs, or that the flow can actually be built in under a day. Missing for 10: multi-language copy-paste code examples or SDKs, hands-on or independent time-to-integrate corroboration.",
+    "rationale": "Airwallex documents a quickstart that completes 'a minimal end-to-end online payment in the sandbox' using Airwallex.js and the hosted payment page. It backs this with instant self-serve sandbox signup, drop-in element configuration via createElement, an airwallex-dev skill that generates integration code, and AI-agent integration notes steering developers to the current SDK. However, nothing in the evidence shows copy-paste samples across multiple server-side languages, and nothing independent confirms a sub-day integration. missing for 10: evidence of multi-language copy-paste code samples/SDKs, hands-on or independent corroboration of under-a-day time-to-first-payment.",
     "evidenceIds": [
       "airwallex-docs-18",
       "awx-supp-sandbox",
       "airwallex-docs-7",
-      "airwallex-docs-8",
       "airwallex-docs-21",
       "awx-supp-developer-mcp",
       "awx-supp-ai-instructions"
@@ -1101,9 +1091,9 @@
     "productId": "airwallex",
     "storyId": "marketplace-split-payments",
     "verdict": "partial",
-    "quality": 4,
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Airwallex documents programmatic creation of connected accounts for businesses and individuals, which covers seller onboarding. It also documents Transfers for paying out funds to third parties. However, nothing shows splitting a single payment between platform and sellers, and the sandbox explicitly excludes Connected Account APIs, which limits testing of the platform flow. Missing for 10: documented payment splitting or platform-fee routing, payouts tied specifically to connected accounts, sandbox support for Connected Account APIs, and independent or hands-on corroboration of a working marketplace build.",
+    "rationale": "Airwallex documents programmatic creation of connected accounts for businesses and individuals, which covers seller onboarding, and Transfers for paying out funds to third parties. Nothing in the evidence shows splitting a single payment between platform and sellers, or payouts tied to connected-account balances. The sandbox also explicitly excludes Connected Account APIs, which limits testing of a platform integration. missing for 10: documented payment-splitting / platform-fee mechanics, explicit per-seller payout flow tied to connected accounts, sandbox support for Connected Account APIs, independent or hands-on corroboration.",
     "evidenceIds": [
       "airwallex-docs-1",
       "airwallex-docs-12",
@@ -1201,9 +1191,9 @@
     "productId": "airwallex",
     "storyId": "pci-scope-reduction",
     "verdict": "partial",
-    "quality": 3,
+    "quality": 4,
     "confidence": "low",
-    "rationale": "Airwallex documents a 'secure, pre-built payment page hosted by Airwallex' and embeddable Drop-in/Airwallex.js elements. These imply card entry happens on Airwallex-controlled surfaces rather than the merchant's servers, but the pack never explicitly addresses PCI DSS scope, tokenization, or card data bypassing merchant systems. Missing for 10: explicit PCI DSS scope-reduction documentation (e.g. SAQ A eligibility), documented card tokenization, confirmation that raw PAN never reaches merchant servers in embedded flows, and independent corroboration.",
+    "rationale": "Airwallex documents its own Hosted Payment Page, described as a secure, pre-built page hosted by Airwallex. It also offers Drop-in Elements that collect payment details, and a quickstart built on Airwallex.js. Together these imply card entry happens on Airwallex-controlled surfaces rather than the merchant's servers. However, none of the evidence explicitly mentions tokenization, PCI DSS scope reduction or SAQ eligibility. Missing for 10: explicit documentation of card tokenization, statements that raw card data never touches merchant servers, PCI DSS scope/SAQ guidance, independent corroboration.",
     "evidenceIds": [
       "airwallex-docs-7",
       "airwallex-docs-8",
@@ -1301,14 +1291,13 @@
     "productId": "airwallex",
     "storyId": "send-hosted-invoices",
     "verdict": "partial",
-    "quality": 5,
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Airwallex Billing documents invoicing with digital payment links across 160+ local payment methods, plus one-time and recurring invoices and hosted billing checkout, which covers sending invoices that customers can pay online. Nothing in the evidence shows automatic payment reminders or dunning for unpaid invoices. Missing for 10: documented automatic invoice reminders, explicit hosted invoice page details, independent or hands-on corroboration.",
+    "rationale": "Airwallex Billing documents generating invoices with digital payment links across 160+ local payment methods, issued as one-time or recurring invoices, on top of hosted billing checkout. That covers sending invoices that customers pay online. Nothing in the evidence documents automatic payment reminders or dunning for unpaid invoices, so a core element of the story is unevidenced. Missing for 10: documented automatic invoice reminders, explicit detail on the hosted invoice page experience, independent or hands-on corroboration.",
     "evidenceIds": [
       "airwallex-docs-14",
       "airwallex-docs-25",
-      "awx-supp-billing-suite",
-      "airwallex-docs-9"
+      "awx-supp-billing-suite"
     ]
   },
   {
@@ -1324,9 +1313,9 @@
     "productId": "airwallex",
     "storyId": "wallets-local-payment-methods",
     "verdict": "partial",
-    "quality": 6,
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "Airwallex documents a Hosted Payment Page that accepts multiple payment methods through a single integration, and a Drop-in Element that adapts its fields to the payment method and country. It also cites 160+ local payment methods (via invoices and payment links), local-method enablement through the Multi-Currency Pricing API, and redirect-flow integration guidance. However, none of the evidence names Apple Pay, Google Pay or BNPL specifically. missing for 10: explicit documentation of Apple Pay and Google Pay wallet support, BNPL methods, named bank-redirect methods in the checkout integration, and independent or hands-on corroboration.",
+    "rationale": "Airwallex documents a Hosted Payment Page that accepts multiple payment methods through a single integration, and a Drop-in Element that adapts its fields to the payment method and country. Its invoices and payment links cite 160+ local payment methods, and the Multi-Currency Pricing API unlocks additional local methods; redirect-flow integration guidance also exists. However, none of the evidence names Apple Pay, Google Pay or BNPL specifically. Missing for 10: explicit documentation of Apple Pay/Google Pay wallet support, explicit BNPL support, explicit bank-redirect method coverage in checkout, independent or hands-on corroboration.",
     "evidenceIds": [
       "airwallex-docs-7",
       "airwallex-docs-8",
@@ -1338,10 +1327,10 @@
   {
     "productId": "airwallex",
     "storyId": "webhook-delivery-reliability",
-    "verdict": "partial",
-    "quality": 6,
+    "verdict": "full",
+    "quality": 7,
     "confidence": "medium",
-    "rationale": "Airwallex documents real-time webhooks and a web app view of delivery status (success, queued, failed). It also lets you re-deliver events after downtime, which covers event logs and replay. Stable event IDs for handling retries imply automatic redelivery, but the evidence never mentions signed payloads or signature verification. Missing for 10: documented webhook signing/signature verification, an explicit automatic retry schedule/policy, programmatic (API) replay or log access, independent or hands-on corroboration.",
+    "rationale": "Airwallex's first-party webhook docs require a 200 acknowledgment and give each event a stable id so retries can be handled safely. The web app lets you inspect delivery status (success, queued, failed) and re-deliver events after downtime or for debugging, which covers retries, event logs and replay. missing for 10: documentation of webhook signature verification, an explicit automatic retry schedule or policy, programmatic (API) replay, and independent or hands-on corroboration.",
     "evidenceIds": [
       "awx-supp-webhooks",
       "airwallex-docs-15"
