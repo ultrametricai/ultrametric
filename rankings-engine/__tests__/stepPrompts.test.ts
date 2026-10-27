@@ -83,15 +83,19 @@ describe('validatePrompt', () => {
     }
   })
 
-  it('keeps unresolved generation context unresolved without a manual fallback', () => {
+  it('carries conservative human classifications and unverified automation without dropping review', () => {
     const targets = enumeratePromptTargets(loadProcesses(DATA_DIR))
     for (const key of ['growth_015:n6', 'site_001:n2']) {
       const target = targets.find(t => t.stepKey === key)!
-      expect(target.execution?.category).toBeNull()
+      expect(target.execution?.category).toBe('human-online')
+      expect(target.execution?.automationEvidence).toEqual({ status: 'unverified' })
       expect(generationPrompt(target)).toContain('EXECUTION NEEDS REVIEW')
       expect(generationPrompt(target)).not.toContain('this is a manual step')
       expect(generationPrompt(target)).not.toContain('let me execute')
     }
+    const legacy: PromptTarget = { ...base, execution: { category: null, basis: 'unresolved', rationale: 'Legacy unresolved import', evidence: ['fixture'], reviewRequired: true } }
+    expect(generationPrompt(legacy)).toContain('An unresolved or missing assessment does not establish human or manual execution.')
+    expect(generationPrompt(legacy)).not.toContain('this is a manual step')
   })
 
   it('preserves assessed human work and unresolved review even on a legacy agent route', () => {
@@ -189,6 +193,17 @@ describe('instructsImpersonation', () => {
 })
 
 describe('promptTargetHash / generationPrompt / enumeration', () => {
+  it('invalidates generation context when automation evidence changes without changing category', () => {
+    const human: PromptTarget = { ...base, execution: {
+      category: 'human-online', basis: 'human-work', rationale: 'Conservative human operation', evidence: ['fixture'], reviewRequired: true,
+      automationEvidence: { status: 'unverified' },
+    } }
+    const documented: PromptTarget = { ...human, execution: { ...human.execution!, automationEvidence: { status: 'documented' } } }
+    expect(promptTargetHash(human, STEP_PROMPT_VERSION)).not.toBe(promptTargetHash(documented, STEP_PROMPT_VERSION))
+    expect(generationPrompt(human)).toContain('"automationEvidence":{"status":"unverified"}')
+    expect(generationPrompt(documented)).toContain('"category":"human-online"')
+    expect(generationPrompt(documented)).toContain('EXECUTION NEEDS REVIEW')
+  })
   it('hash is stable and moves with node fields, grounded calls, the audit, and the version', () => {
     const h = promptTargetHash(base, STEP_PROMPT_VERSION)
     expect(promptTargetHash({ ...base }, STEP_PROMPT_VERSION)).toBe(h)

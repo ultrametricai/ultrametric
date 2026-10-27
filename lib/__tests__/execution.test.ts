@@ -1,7 +1,7 @@
 import { readFileSync } from 'node:fs'
 import { execFileSync } from 'node:child_process'
 import { describe, expect, it } from 'vitest'
-import { executionSchema, validateExecution, type Execution } from '../execution'
+import { EXECUTION_CATEGORIES, executionSchema, validateExecution, type Execution } from '../execution'
 import { buildManifestStep, MANIFEST_VERSION } from '../processManifest'
 import { loadProcesses } from '../processes'
 import { loadProcessCatalog, validateExecutionCoverage } from '../shared-processes/catalog'
@@ -39,6 +39,49 @@ describe('execution assessments', () => {
     expect(() => validateExecutionCoverage(copied)).toThrow('missing execution assessment')
     expect(() => validateExecution({}, 'legacy import')).not.toThrow()
   })
+  it('rejects incomplete canonical classifications without rejecting nullable legacy imports', () => {
+    const copied = structuredClone(records)
+    const target = copied[0].parts[0]
+    target.metadata.execution = execution(null, 'unresolved')
+    expect(() => validateExecution(target.metadata, 'legacy import')).not.toThrow()
+    expect(() => validateExecutionCoverage(copied)).toThrow('four categories')
+    target.metadata.execution = execution('human-online', 'human-work')
+    expect(() => validateExecutionCoverage(copied)).toThrow('automation evidence status')
+    target.metadata.execution = { ...execution('human-online', 'human-work'), automationEvidence: { status: 'unverified' } }
+    expect(() => validateExecutionCoverage(copied)).not.toThrow()
+    const option = copied.flatMap(record => record.parts).flatMap(part => part.options)[0]
+    option.metadata.execution = execution(null, 'unresolved')
+    expect(() => validateExecutionCoverage(copied)).toThrow('four categories')
+  })
+  it('assigns every canonical scope a category independently of automation verification and review', () => {
+    const assessments = records.flatMap(record => scopes(record.parts)).flatMap(scope => scope.metadata.execution ? [scope.metadata.execution as Execution] : [])
+    expect(assessments).toHaveLength(1040)
+    for (const assessment of assessments) {
+      expect(EXECUTION_CATEGORIES).toContain(assessment.category)
+      expect(assessment.automationEvidence).toBeDefined()
+      expect(assessment.automationEvidence?.status).not.toBe('observed')
+    }
+    for (const record of records) for (const scope of scopes(record.parts)) {
+      if (scope.metadata.legalSignature === true) {
+        expect((scope.metadata.execution as Execution).category).toMatch(/^human-/)
+      }
+    }
+    expect(part('opp_008', 'n2').metadata.execution).toMatchObject({ category: 'human-online', automationEvidence: { status: 'unverified' }, reviewRequired: true })
+    expect(part('growth_014', 'n4').metadata.execution).toMatchObject({ category: 'agent-native', automationEvidence: { status: 'documented' } })
+    expect(part('form_001', 'n3').metadata.execution).toMatchObject({ category: 'agent-computer-use', automationEvidence: { status: 'documented' }, reviewRequired: true })
+  })
+  it('accounts for physical work in combined scopes without treating digital evidence gaps as physical', () => {
+    for (const [process, step] of [['sit_019', 'n6'], ['ops_013', 'n3'], ['sit_018', 'n2']]) {
+      expect(part(process, step).metadata.execution).toMatchObject({ category: 'human-offline', basis: 'human-work', automationEvidence: { status: 'unverified' } })
+    }
+    for (const [process, step] of [['growth_015', 'n6'], ['sit_022', 'n2'], ['site_001', 'n2']]) {
+      expect(part(process, step).metadata.execution).toMatchObject({ category: 'human-online', basis: 'human-work', automationEvidence: { status: 'unverified' } })
+    }
+    const eor = part('hr_001', 'n4').options.find(option => option.id === 'eor-hire')!
+    expect(eor.metadata.execution).toMatchObject({ category: 'human-online', automationEvidence: { status: 'unverified' } })
+    const comparison = part('qs_051', 'n2').options.find(option => option.id === 'germany-gesellschafterliste')!
+    expect(comparison.metadata.execution).toMatchObject({ category: 'human-online' })
+  })
   it('rejects properties as categories and unsupported evidence bases', () => {
     for (const category of ['signature', 'approval', 'action', 'choice', 'agent', 'form', 'person']) {
       expect(executionSchema.safeParse({ ...execution(null, 'unresolved'), category }).success).toBe(false)
@@ -49,7 +92,7 @@ describe('execution assessments', () => {
   })
   it('keeps browser evidence, IRS access limits, physical acts and local tools distinct', () => {
     expect(part('form_001', 'n3').metadata.execution).toMatchObject({ category: 'agent-computer-use', reviewRequired: true })
-    expect(part('form_002', 'n3').metadata.execution).toMatchObject({ category: null, basis: 'unresolved', reviewRequired: true })
+    expect(part('form_002', 'n3').metadata.execution).toMatchObject({ category: 'human-online', basis: 'human-work', reviewRequired: true })
     expect(part('form_002', 'n3').metadata.execution).toHaveProperty('evidence', expect.arrayContaining(['open-rankings/experiments/computer-use/irs-ein-online.json']))
     expect(part('hr_005', 'n8').metadata.execution).toMatchObject({ category: 'human-offline' })
     const logo = part('brand_002', 'n1')
@@ -64,8 +107,8 @@ describe('execution assessments', () => {
     }
     expect(part('form_002', 'n2').metadata.execution).toMatchObject({ category: 'agent-native', basis: 'local-work' })
     expect(part('growth_014', 'n4').metadata.execution).toMatchObject({ category: 'agent-native', basis: 'documented-interface' })
-    // Personal authentication stays with the teammate; a browser restriction alone
-    // is insufficient to turn an unresolved filing into Human Online.
+    // Personal authentication stays with the teammate; known browser capability
+    // remains distinct from a human-operated digital path.
     expect(part('team_001', 'n2').metadata.execution).toMatchObject({ category: 'human-online', basis: 'human-work' })
   })
   it('requires the retained provider and covers live operations beyond drafting', () => {
@@ -77,7 +120,7 @@ describe('execution assessments', () => {
     expect(kickoff.evidence.some(source => source.includes('slack.dev'))).toBe(true)
     expect(kickoff.evidence.some(source => source.includes('notion.com'))).toBe(true)
     const message = part('opp_008', 'n2').metadata.execution as Execution
-    expect(message.category).toBeNull()
+    expect(message.category).toBe('human-online')
     expect(message.evidence.some(source => source.includes('fastmail.com'))).toBe(true)
     expect(message.evidence.some(source => source.includes('gmail'))).toBe(false)
     const groups = part('scale_007', 'n2').metadata.execution as Execution
@@ -97,7 +140,7 @@ describe('execution assessments', () => {
       expect(node.metadata.route).toBe('person')
     }
     // A monitoring label does not prove every channel in a combined workflow.
-    expect(part('vc_003', 'n2').metadata.execution).toMatchObject({ category: null, reviewRequired: true })
+    expect(part('vc_003', 'n2').metadata.execution).toMatchObject({ category: 'human-online', reviewRequired: true })
   })
   it('uses the valuation provider correspondence without inventing a mail API', () => {
     const valuation = part('fund_003', 'n5').metadata.execution as Execution
@@ -106,7 +149,7 @@ describe('execution assessments', () => {
     expect(valuation.evidence.some(source => source.includes('how-to-view-your-409a-valuation-status'))).toBe(true)
     expect(valuation.evidence.some(source => /gmail|graph\.microsoft|api\//.test(source))).toBe(false)
     // Following up on an offer does not establish that policy's binding route.
-    expect(part('ins_001', 'n6').metadata.execution).toMatchObject({ category: null })
+    expect(part('ins_001', 'n6').metadata.execution).toMatchObject({ category: 'human-online' })
   })
   it('uses explicit filing media and keeps electronic signing a human act', () => {
     expect(part('qs_047', 'jny1').metadata.execution).toMatchObject({ category: 'agent-computer-use' })
@@ -118,7 +161,7 @@ describe('execution assessments', () => {
       expect(() => validateExecution({ ...node.metadata, execution: execution('agent-native', 'documented-interface') }, 'signature')).toThrow('human signature')
     }
     const german = part('form_001', 'n4').options.find(option => option.id === 'germany-notary-gmbh')!
-    expect(german.parts.find(part => part.id === 'de2')!.metadata.execution).toMatchObject({ category: null, reviewRequired: true })
+    expect(german.parts.find(part => part.id === 'de2')!.metadata.execution).toMatchObject({ category: 'human-offline', reviewRequired: true })
   })
   it('separates documented mail preparation from the applicant witnessing procedure', () => {
     const preparation = part('qs_044', 'n4a').metadata.execution as Execution
@@ -129,7 +172,7 @@ describe('execution assessments', () => {
     expect(preparation.rationale).toMatch(/applicant supplies personal identity evidence/)
     expect(part('qs_044', 'n4').metadata).toMatchObject({
       legalSignature: true,
-      execution: { category: null, basis: 'unresolved', reviewRequired: true },
+      execution: { category: 'human-offline', basis: 'human-work', reviewRequired: true },
     })
   })
   it('classifies a documented CLI pipeline without claiming the app-specific trial has run', () => {
@@ -140,19 +183,19 @@ describe('execution assessments', () => {
     }
     expect(pipeline.rationale).toMatch(/failure tests and manual recovery procedure still require validation/)
     // Upload tooling does not establish the separate production device trial.
-    expect(part('prod_012', 'n7').metadata.execution).toMatchObject({ category: null })
+    expect(part('prod_012', 'n7').metadata.execution).toMatchObject({ category: 'human-offline' })
   })
-  it('distinguishes a selected online human workflow from an unresolved execution alternative', () => {
+  it('uses conservative remote human reviews and preserves personal signing', () => {
     const review = part('scale_001', 'n5').metadata.execution as Execution
     expect(review).toMatchObject({ category: 'human-online', basis: 'human-work' })
     expect(review.evidence).toContain('open-processes/run-performance-reviews.json#/parts/1/references')
     expect(review.evidence.some(source => source.includes('help.bamboohr.com'))).toBe(true)
-    // The separately authored calibration meeting has no selected medium.
-    expect(part('scale_001', 'n6').metadata.execution).toMatchObject({ category: null })
+    // The separately authored calibration meeting uses a feasible remote human path.
+    expect(part('scale_001', 'n6').metadata.execution).toMatchObject({ category: 'human-online' })
     const signing = part('startup_002', 'n3b')
     expect(signing.metadata.legalSignature).toBe(true)
-    // A named e-sign provider does not override this process's open notarial route.
-    expect(signing.metadata.execution).toMatchObject({ category: null, reviewRequired: true })
+    // The human signing path retains any separately required notarial prerequisite.
+    expect(signing.metadata.execution).toMatchObject({ category: 'human-online', reviewRequired: true })
     expect((signing.metadata.execution as Execution).evidence).toContain('open-processes/sign-the-founder-agreement-split-equity.json#/parts/2/guidance')
   })
   it('distinguishes online form preparation from physical filing and unselected alternatives', () => {
@@ -166,8 +209,8 @@ describe('execution assessments', () => {
     expect(allotment.metadata.execution).toMatchObject({ category: 'agent-computer-use', reviewRequired: true })
     // An unrelated online Companies House service cannot establish LLP formation.
     const llp = part('form_011', 'n3').options.find(option => option.id === 'uk-llp')!
-    expect(llp.metadata.execution).toMatchObject({ category: null, reviewRequired: true })
-    expect(part('qs_043', 'jny1').metadata.execution).toMatchObject({ category: null, reviewRequired: true })
+    expect(llp.metadata.execution).toMatchObject({ category: 'human-offline', reviewRequired: true })
+    expect(part('qs_043', 'jny1').metadata.execution).toMatchObject({ category: 'human-offline', reviewRequired: true })
   })
   it('uses the surrounding selected provider without substituting a reference vendor', () => {
     const routing = part('opp_011', 'n3')
@@ -189,13 +232,13 @@ describe('execution assessments', () => {
     // boundary for a different kind of conversion.
     for (const step of ['n5', 'n7']) {
       const llc = part('form_012', step).metadata.execution as Execution
-      expect(llc).toMatchObject({ category: null, reviewRequired: true })
+      expect(llc).toMatchObject({ category: 'human-online', reviewRequired: true })
       expect(llc.evidence).toContain('https://help.clerky.com/article/2662-existing-entity')
     }
   })
-  it('does not infer an online medium from responsibility or reuse an unrelated probe', () => {
+  it('classifies feasible remote human decisions without reusing an unrelated probe', () => {
     for (const [process, step] of [['sit_020', 'n4'], ['sit_022', 'n2']]) {
-      expect(part(process, step).metadata.execution).toMatchObject({ category: null, basis: 'unresolved', reviewRequired: true })
+      expect(part(process, step).metadata.execution).toMatchObject({ category: 'human-online', basis: 'human-work', reviewRequired: true })
     }
     const availability = part('form_001', 'n3').metadata.execution as Execution
     expect(availability.evidence).toContain('https://icis.corp.delaware.gov/Ecorp/NameReserv/NameReservation.aspx')
@@ -211,7 +254,7 @@ describe('execution assessments', () => {
       }
     }
     // Sharing evidence does not establish the separate document-migration operation.
-    expect(part('qs_015', 'n4').metadata.execution).toMatchObject({ category: null })
+    expect(part('qs_015', 'n4').metadata.execution).toMatchObject({ category: 'human-online' })
   })
   it('separates provider paper fulfilment from company physical work and retains release approval', () => {
     const filing = part('tax_003', 'n5')
@@ -237,7 +280,7 @@ describe('execution assessments', () => {
     // Retain the original partial evidence without using it as proof of the
     // access checks and question collection supplied by the browser workflow.
     expect(assessment.rationale).toMatch(/Gmail send source covers only message transmission/)
-    expect(part('fin_010', 'n5').metadata.execution).toMatchObject({ category: null })
+    expect(part('fin_010', 'n5').metadata.execution).toMatchObject({ category: 'human-online' })
   })
   it('uses the authored code host and preserves review-trigger limitations', () => {
     for (const [process, step, slug] of [
@@ -254,28 +297,28 @@ describe('execution assessments', () => {
       expect(assessment.rationale).toMatch(/Bugbot.*manual trigger comments/)
     }
     expect(part('sw_011', 'n4').metadata.approvalRequired).toBe(true)
-    // The technical test does not select the team's decision-making medium.
-    expect(part('sw_011', 'n5').metadata.execution).toMatchObject({ category: null })
+    // A remote team decision remains human even when the technical test is documented.
+    expect(part('sw_011', 'n5').metadata.execution).toMatchObject({ category: 'human-online' })
   })
-  it('separates deadline analysis from reporting and keeps mixed KYC media unresolved', () => {
+  it('separates local deadline analysis from human reporting and identity checks', () => {
     expect(part('sit_021', 'n2').metadata).toMatchObject({
       riskLevel: 'high',
       execution: { category: 'agent-native', basis: 'local-work', reviewRequired: true },
     })
-    expect(part('sit_021', 'n3').metadata.execution).toMatchObject({ category: null })
+    expect(part('sit_021', 'n3').metadata.execution).toMatchObject({ category: 'human-online' })
     const identity = part('qs_023', 'n5').metadata.execution as Execution
-    expect(identity).toMatchObject({ category: null, reviewRequired: true })
+    expect(identity).toMatchObject({ category: 'human-online', reviewRequired: true })
     expect(identity.evidence).toContain('open-processes/open-bank-account.json#/parts/2/metadata/geoResolutions')
-    expect(identity.rationale).toMatch(/in-person or video KYC/)
+    expect(identity.rationale).toMatch(/personal verification/)
   })
-  it('covers each analytics provider without classifying the separate survey delivery', () => {
+  it('distinguishes documented analytics controls from human survey delivery', () => {
     const survey = part('startup_001', 'n2').options.find(option => option.id === 'sean-ellis-survey')!
     const population = survey.parts.find(node => node.id === 'se1')!.metadata.execution as Execution
     expect(population).toMatchObject({ category: 'agent-computer-use', reviewRequired: true })
     for (const provider of ['posthog.com', 'www.amplitude.com', 'docs.mixpanel.com']) {
       expect(population.evidence.some(source => source.includes(provider))).toBe(true)
     }
-    expect(survey.parts.find(node => node.id === 'se2')!.metadata.execution).toMatchObject({ category: null })
+    expect(survey.parts.find(node => node.id === 'se2')!.metadata.execution).toMatchObject({ category: 'human-online' })
   })
   it('distinguishes documented infrastructure operations from browser controls and sample limits', () => {
     const warehouse = part('scale_010', 'n1')
@@ -289,7 +332,7 @@ describe('execution assessments', () => {
     expect(events).toMatchObject({ category: 'agent-computer-use', reviewRequired: true })
     expect(events.rationale).toMatch(/samples incoming events/)
     // Documented source controls do not establish the separate recovery trial.
-    expect(part('scale_010', 'n5').metadata.execution).toMatchObject({ category: null })
+    expect(part('scale_010', 'n5').metadata.execution).toMatchObject({ category: 'human-online' })
     const dashboard = part('scale_010', 'n7').metadata.execution as Execution
     expect(dashboard.evidence).toContain('open-processes/stand-up-a-data-warehouse-bi.json#/parts/5/references')
     expect(dashboard.evidence).toContain('https://www.metabase.com/docs/latest/dashboards/subscriptions')
@@ -304,15 +347,15 @@ describe('execution assessments', () => {
     expect(close.metadata).toMatchObject({ approvalRequired: true, execution: { category: 'human-online' } })
     expect((close.metadata.execution as Execution).evidence).toContain('open-processes/bookkeeping-close.json#/parts/5/references')
     // Nearby finance alerts do not select the employee policy channel.
-    expect(part('scale_004', 'n5').metadata.execution).toMatchObject({ category: null })
+    expect(part('scale_004', 'n5').metadata.execution).toMatchObject({ category: 'human-online' })
   })
-  it('keeps IRS electronic and physical filing alternatives unresolved without a chosen method', () => {
+  it('selects the conservative paper filing route while preserving electronic alternatives', () => {
     for (const [process, step] of [['form_012', 'n8'], ['equity.us-de.83b-election', 'file']]) {
       const assessment = part(process, step).metadata.execution as Execution
-      expect(assessment).toMatchObject({ category: null, basis: 'unresolved', reviewRequired: true })
+      expect(assessment).toMatchObject({ category: 'human-offline', basis: 'human-work', reviewRequired: true })
       expect(assessment.evidence).toContain('https://www.irs.gov/pub/irs-pdf/f15620.pdf')
       expect(assessment.evidence).toContain('https://www.irs.gov/forms-pubs/mobile-friendly-forms')
-      expect(assessment.rationale).toMatch(/personal Online Account/)
+      expect(assessment.rationale).toMatch(/signed-paper/)
     }
   })
   it('grounds online training and filing controls while preserving personal participation', () => {
@@ -321,11 +364,11 @@ describe('execution assessments', () => {
     expect(training.evidence).toContain('open-processes/start-soc-2-type-i.json#/parts/0/options/0/references')
     expect(training.evidence).toContain('https://help.vanta.com/en/articles/11345841-managing-personnel-training-tasks')
     const fillip = part('form_011', 'n3').options.find(option => option.id === 'india-llp-fillip')!.metadata.execution as Execution
-    expect(fillip).toMatchObject({ category: 'agent-computer-use', basis: 'browser-evidence', reviewRequired: true })
-    expect(fillip.rationale).toMatch(/personally apply their own digital signatures/)
+    expect(fillip).toMatchObject({ category: 'human-online', basis: 'human-work', automationEvidence: { status: 'unverified' }, reviewRequired: true })
+    expect(fillip.rationale).toMatch(/personal signatures/)
     expect(fillip.evidence).toContain('https://www.mca.gov.in/content/mca/global/en/mca/dsc-services-v3/acquire-dsc.html')
     // An online employer-number form does not cover the combined payroll registrations.
-    expect(part('qs_063', 'n3').options.find(option => option.id === 'germany-betriebsnummer')!.metadata.execution).toMatchObject({ category: null })
+    expect(part('qs_063', 'n3').options.find(option => option.id === 'germany-betriebsnummer')!.metadata.execution).toMatchObject({ category: 'human-online' })
   })
   it('covers tax imports and recurring filing authority separately from legal conclusions', () => {
     const study = part('tax_011', 'n2').metadata.execution as Execution
@@ -339,7 +382,7 @@ describe('execution assessments', () => {
     expect(filing.evidence.some(source => source.endsWith('/View_an_ACH_debit_confirmation.html'))).toBe(true)
     // A browser directory does not establish the same actor for the retained human community.
     const directories = part('growth_010', 'n3').metadata.execution as Execution
-    expect(directories).toMatchObject({ category: null, reviewRequired: true })
+    expect(directories).toMatchObject({ category: 'human-online', reviewRequired: true })
     expect(directories.evidence).toContain('https://news.ycombinator.com/newsguidelines.html')
   })
   it('uses the selected surrounding provider without claiming its external decision or other operations', () => {
@@ -351,14 +394,14 @@ describe('execution assessments', () => {
     expect(appeal).toMatchObject({ category: 'agent-computer-use', reviewRequired: true })
     expect(appeal.evidence).toContain('https://support.stripe.com/questions/why-was-my-stripe-account-closed')
     expect(appeal.rationale).toMatch(/does not establish reinstatement or reserve release/)
-    expect(part('sit_013', 'n8').metadata.execution).toMatchObject({ category: null })
+    expect(part('sit_013', 'n8').metadata.execution).toMatchObject({ category: 'human-online' })
     const shares = part('qs_051', 'n2').options.find(option => option.id === 'default')!.metadata.execution as Execution
     expect(shares).toMatchObject({ category: 'agent-computer-use', reviewRequired: true })
     for (const provider of ['support.carta.com', 'help.pulley.com']) {
       expect(shares.evidence.some(source => source.includes(provider))).toBe(true)
     }
     // Founding-share import controls do not establish every later investment operation.
-    expect(part('qs_051', 'n3').metadata.execution).toMatchObject({ category: null })
+    expect(part('qs_051', 'n3').metadata.execution).toMatchObject({ category: 'human-online' })
     const cloud = part('sw_001', 'n3').options.find(option => option.id === 'cloud-autonomous-agent')!.metadata.execution as Execution
     expect(cloud).toMatchObject({ category: 'agent-computer-use', basis: 'browser-evidence', reviewRequired: true })
     for (const provider of ['code.claude.com', 'learn.chatgpt.com']) {
@@ -376,7 +419,7 @@ describe('execution assessments', () => {
     expect(assessment.rationale).toMatch(/automated exports are unavailable in sandbox mode/)
     // Provider comparison does not establish the other option's legal review
     // and application-access implementation.
-    expect(part('growth_001', 'n1').options.find(option => option.id === 'merchant-of-record')!.metadata.execution).toMatchObject({ category: null })
+    expect(part('growth_001', 'n1').options.find(option => option.id === 'merchant-of-record')!.metadata.execution).toMatchObject({ category: 'human-online' })
   })
   it('inherits the authored ECS method without claiming other clouds or completed trials', () => {
     for (const step of ['n7', 'n8']) {
@@ -404,11 +447,11 @@ describe('execution assessments', () => {
     expect(pipeline.rationale).toMatch(/actor subject to branch protection/)
     expect(pipeline.rationale).toMatch(/does not establish recovery of external data/)
     const site = part('site_001', 'n2').metadata.execution as Execution
-    expect(site).toMatchObject({ category: null, reviewRequired: true })
+    expect(site).toMatchObject({ category: 'human-online', reviewRequired: true })
     for (const provider of ['developers.cloudflare.com', 'vercel.com']) {
       expect(site.evidence.some(source => source.includes(provider))).toBe(true)
     }
-    expect(site.rationale).toMatch(/actual production form or other destination and its receipt evidence/)
+    expect(site.rationale).toMatch(/live domain and primary-action destination/)
   })
   it('grounds the Atlas LLC default without choosing a registry for the earlier name search', () => {
     const filing = part('form_011', 'n3').options.find(option => option.id === 'default')!
@@ -424,8 +467,8 @@ describe('execution assessments', () => {
     expect(issued).toMatchObject({ category: 'agent-computer-use', reviewRequired: true })
     expect(issued.evidence).toContain('open-processes/set-up-an-llc.json#/parts/2/options/0')
     expect(issued.rationale).toMatch(/document must establish registry acceptance/)
-    expect(part('form_011', 'n2').metadata.execution).toMatchObject({ category: null })
-    expect(part('form_011', 'n7').metadata.execution).toMatchObject({ category: null })
+    expect(part('form_011', 'n2').metadata.execution).toMatchObject({ category: 'human-online' })
+    expect(part('form_011', 'n7').metadata.execution).toMatchObject({ category: 'human-online' })
   })
   it('distinguishes personal online launch participation and supported UK accounting setup', () => {
     const outreach = part('growth_010', 'n4').metadata.execution as Execution
@@ -437,24 +480,24 @@ describe('execution assessments', () => {
     expect(accounting.evidence).toContain('https://central.xero.com/0/article/Enter-conversion-balances-US')
     expect(accounting.rationale).toMatch(/FRS 105 or FRS 102 1A/)
     expect(accounting.rationale).toMatch(/accountant determines/)
-    expect(part('qs_073', 'n2').options.find(option => option.id === 'default')!.metadata.execution).toMatchObject({ category: null })
+    expect(part('qs_073', 'n2').options.find(option => option.id === 'default')!.metadata.execution).toMatchObject({ category: 'human-online' })
   })
   it('keeps partial access evidence separate from application changes and outcomes', () => {
     const testing = part('scale_007', 'n6').metadata.execution as Execution
-    expect(testing).toMatchObject({ category: null, reviewRequired: true })
+    expect(testing).toMatchObject({ category: 'human-online', reviewRequired: true })
     expect(testing.evidence).toContain('open-processes/set-up-sso-access-management.json#/parts/2/references')
-    expect(testing.rationale).toMatch(/SSO event does not prove the downstream login succeeded/)
+    expect(testing.automationEvidence).toEqual({ status: 'unverified' })
     const access = part('comp_002', 'n4').metadata.execution as Execution
-    expect(access).toMatchObject({ category: null, reviewRequired: true })
+    expect(access).toMatchObject({ category: 'human-online', reviewRequired: true })
     expect(access.evidence).toContain('https://help.vanta.com/en/articles/11345416-access-reviews')
-    expect(access.rationale).toMatch(/without revoking application access/)
+    expect(access.automationEvidence).toEqual({ status: 'unverified' })
   })
-  it('distinguishes supported platform closing from the CPA’s personal e-file work', () => {
+  it('keeps combined platform closings and the CPA’s e-file work human', () => {
     const vehicle = part('fund_001', 'n4').options.find(option => option.id === 'platform-syndicate')!.metadata.execution as Execution
-    expect(vehicle).toMatchObject({ category: 'agent-computer-use', reviewRequired: true })
+    expect(vehicle).toMatchObject({ category: 'human-online', basis: 'human-work', automationEvidence: { status: 'unverified' }, reviewRequired: true })
     expect(vehicle.evidence).toContain('https://help.angelliststack.com/raise/ruv/closing-an-ruv')
-    expect(vehicle.rationale).toMatch(/investors complete their own signatures and identity checks/)
-    expect(vehicle.rationale).toMatch(/Other syndicate structures/)
+    expect(vehicle.rationale).toMatch(/personal execution/)
+    expect(vehicle.rationale).toMatch(/other syndicate structures/)
     const filing = part('tax_002', 'n6').metadata.execution as Execution
     expect(filing).toMatchObject({ category: 'human-online', basis: 'human-work', reviewRequired: true })
     expect(filing.evidence).toContain('open-processes/file-federal-tax-return.json#/parts/5/metadata/verify')
@@ -507,7 +550,7 @@ describe('execution assessments', () => {
     expect(filing.rationale).toMatch(/manual browser review/)
     expect(filing.rationale).toMatch(/New disclosures retain their own approval/)
     // Resource review does not prove Vanta can execute a downstream access removal.
-    expect(part('comp_002', 'n4').metadata.execution).toMatchObject({ category: null })
+    expect(part('comp_002', 'n4').metadata.execution).toMatchObject({ category: 'human-online' })
   })
   it('covers design-tool alternatives while preserving the separate production-delivery gap', () => {
     const assessment = part('site_001', 'n1').options.find(option => option.id === 'design-tool-publish')!.metadata.execution as Execution
@@ -516,11 +559,11 @@ describe('execution assessments', () => {
       expect(assessment.evidence.some(source => source.includes(provider))).toBe(true)
     }
     expect(assessment.rationale).toMatch(/anonymous responses/)
-    expect(part('site_001', 'n2').metadata.execution).toMatchObject({ category: null })
+    expect(part('site_001', 'n2').metadata.execution).toMatchObject({ category: 'human-online' })
     const migration = part('qs_015', 'n4').metadata.execution as Execution
-    expect(migration).toMatchObject({ category: null, reviewRequired: true })
-    expect(migration.rationale).toMatch(/permits recorded history or permission losses/)
-    expect(migration.rationale).toMatch(/Poly/)
+    expect(migration).toMatchObject({ category: 'human-online', reviewRequired: true })
+    expect(migration.rationale).toMatch(/reconciles links, access and recorded losses/)
+    expect(migration.automationEvidence).toEqual({ status: 'unverified' })
   })
   it('counts signature and approval as properties alongside execution categories', () => {
     const record = structuredClone(records.find(record => record.id === 'brand_002')!)

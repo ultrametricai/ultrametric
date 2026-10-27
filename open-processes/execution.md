@@ -8,8 +8,8 @@ retain their graph meaning and resolve execution from the referenced process.
 | --- | --- | --- |
 | `agent-native` (Agent Native) | An agent performs the stated work through text, file or code tools, or a documented API/tool interface. | The authored scope for local work, or a primary source for the actual interface and operation. |
 | `agent-computer-use` (Agent Computer Use) | An agent operates an evidenced browser or computer interface. | Documentation or recorded observation of the relevant interface, with its limits and any untested behavior. |
-| `human-online` (Human Online) | A person performs the work through a digital service, document or remote communication channel. | The authored work and its human responsibility and medium. |
-| `human-offline` (Human Offline) | A person performs physical work or attends in person. | The authored requirement for physical presence or action. |
+| `human-online` (Human Online) | A person performs the work through a digital service, document or remote communication channel. | The authored digital work and the responsible person; use a conservative feasible digital method when automation is unestablished. |
+| `human-offline` (Human Offline) | A person performs physical work or attends in person. | The physical action or in-person route required by the chosen feasible method. |
 
 A signature, human approval, jurisdiction, risk, reversibility, asynchronous wait and
 credential requirement are separate properties. Preserve their fields and gates.
@@ -19,42 +19,40 @@ An execution assessment does not grant permission or certify access in a user's 
 ## Assess the whole step
 
 Read the title, guidance, option summary, retained sources and applicable method before
-classifying. A documented mechanism can support a category without an end-to-end test
-receipt. Record account access, untested behavior and method restrictions in the rationale;
-use `reviewRequired` for a material unresolved limitation. A supported digital human path
-does not establish Human Online by itself. Use Human Online when the authored work
-requires the person to perform a decision, attestation, interaction or other human act
-through a digital channel. Missing agent test receipts do not establish a human requirement.
-A preparation tool does not establish execution of a filing, signing act or
-external submission. A vendor list, historical route, audit prediction or hypothetical
-API does not establish an agent interface. An API source for one provider does not prove
-support for the other providers listed on the step. Verify the selected method before use.
-An unselected provider does not by itself require a null category when primary sources
-establish the same complete execution mechanism for every retained alternative. Cite
-each alternative's operation coverage and preserve its limitations; do not infer shared
-capabilities from a vendor list or from one provider's documentation.
+classifying. Assign every canonical scope to one of the four categories. Choose the less
+automated feasible method when alternatives remain open, and state the chosen method in
+the rationale without rewriting the instructions or changing the graph.
 
-Check the full operation sequence against the retained provider and method. Include
-record updates, remote verification, export resource types and release steps when the
-authored work requires them. Local preparation covers a step only when its deliverable
-ends there. A human responsibility establishes the actor; an online category also needs
-evidence of the digital channel. A written decision can be on paper or electronic.
+Human Online covers a person completing ordinary digital work when automation of the
+whole scope is unestablished, as well as personal decisions, attestations, signatures and
+interactions through a digital channel. Remote discussion and shared documents are
+feasible defaults for ordinary business reviews and conversations. They do not establish
+that an agent can make the person's decision. Use Human Offline for actual physical work
+or a supported in-person or paper route; missing API evidence alone is insufficient.
+For a combined scope, account for required personal or physical acts in its classification.
+Keep separately authored preparation and execution steps separate.
 
-For insufficient or mixed evidence, use `category: null`, `basis: "unresolved"` and
-`reviewRequired: true`. Explain the missing actor, medium or interface in `rationale` and
-retain evidence references. Null records an unresolved assessment; it adds no execution
-category. Keep a partly tested interface review-gated and state the test's exact limits.
-For a step combining online and physical work, retain the graph and record the ambiguity.
+A documented mechanism can support an agent category without an end-to-end test receipt.
+A documented sequence of browser controls can support Agent Computer Use; text, file and
+code tools can support Agent Native for local deliverables. Cite the actual mechanism and
+operation. Missing test receipts alone do not invalidate documented capability. Account
+access, scoped permission, subscription requirements and approvals remain preconditions.
+Personal identity challenges and signing acts stay with the responsible person.
 
-A documented sequence of browser controls can support Agent Computer Use without a
-completed agent test. Cite the controls and operation, then distinguish untested execution
-from missing evidence of the mechanism. Account access, scoped permission, subscription
-requirements and human approval are preconditions; they do not turn mechanical browser
-work into Human Online. Identity challenges and signatures require the responsible person's
-participation at that point. If an indivisible step combines a required human act with
-agent work and the category depends on the selected method, record the uncertainty.
-Routine analysis and configuration choices can be agent work; a board vote, personal
-attestation or interpersonal negotiation retains its human actor.
+Check the full operation sequence against the retained provider and method, including
+record updates, resource-specific exports, remote verification and release when required.
+A preparation tool does not establish execution of a filing, signing act or submission.
+A vendor list, historical route, audit prediction or hypothetical API does not establish
+an agent interface. Evidence for one provider does not establish its alternatives.
+When whole-step automation is unestablished, use the feasible human method and record
+`automationEvidence.status: "unverified"`. Retain the sources and relevant limitations.
+
+Use `reviewRequired` for material method, access or evidence limitations. It is independent
+of the execution category and is not a fifth category or a public label. Keep legal
+eligibility, jurisdiction and accepted filing-method checks intact. A conservative paper
+route is a classification choice, not a claim that paper is mandatory for every case.
+If no feasible method exists for the authored work, report the exact impossible
+requirement for content review rather than inventing a capability.
 
 For waiting and follow-up steps, assess the authored work: checking status, answering
 requests, retrieving the result and reconciling records. An institution's decision is a
@@ -64,8 +62,8 @@ the company's step the store reviewer's adjudication.
 
 Read the surrounding method when a signing step follows a specific electronic-envelope
 workflow. Cite that canonical scope as well as the signing interface. Keep required
-signers human; retain uncertainty when the authored method explicitly allows both video
-and physical attendance or requires a jurisdiction-specific execution choice.
+signers human. Where video and physical attendance are both permitted, classify the
+conservative physical route and retain the alternative and its eligibility checks.
 
 For Agent Native, `local-work` means the stated deliverable can be produced with supplied
 inputs using text, file or code tools, including a repository calculation module.
@@ -75,7 +73,8 @@ or orchestration instructions. Preserve the exact provider
 and operation limits in the rationale; preparation alone does not establish external
 execution, and an interface for one provider does not establish the other providers.
 
-The assessment includes `category`, `basis`, `rationale`, `evidence` and `reviewRequired`.
+The assessment includes `category`, `basis`, `rationale`, `evidence`, `reviewRequired`
+and `automationEvidence`.
 Use `local-work` or `documented-interface` for Agent Native, `browser-evidence` for Agent
 Computer Use, and `human-work` for either human category. Evidence references identify
 public source URLs, recorded probes, or canonical JSON pointers containing the actual
@@ -94,7 +93,8 @@ only its stated scope. Approval and personal acts remain independent requirement
 Older imported assessments may omit this additive field. Preserve actual receipts
 and limitations when evidence changes; do not manufacture a test result to classify.
 
-Content generation must emit an assessment for every actionable part and option. Preserve
+Content generation must emit a non-null four-category assessment and automation evidence
+status for every actionable part and option. Preserve
 stable IDs, titles, descriptions, providers, documents, source evidence, links and graph
 semantics. Classify from the actual work, then check each claim against its cited evidence.
 Human decisions and signatures stay with the responsible person. Reassess alternatives
@@ -117,10 +117,11 @@ The existing kind, routing and approval semantics remain unchanged. Existing con
 may ignore optional fields. Content consumers use the assessment for labels and review
 queues; executor policy changes require a separate reviewed contract change.
 Published schemas accept older records without assessments; the canonical authoring check
-requires assessments. Historical generated prompts remain stored and accessible through
+requires a category and evidence status. Legacy null assessments remain importable but
+fail canonical authoring validation. Historical generated prompts remain stored and accessible through
 the existing reader.
 Newly generated prompts carry the assessment, which participates in the generation cache
 key. Review wording contradictions individually; changing prompt availability requires
-separate product review. Validate `approvalRequired` independently of category and keep
-unresolved work explicitly unresolved in generation context. Presentation adoption is
+separate product review. Validate `approvalRequired` independently of category and retain
+method limitations and unverified automation in generation context. Presentation adoption is
 deferred to a separate change; existing graph labels, symbols and signature display remain.

@@ -27,8 +27,15 @@ for (const process of processes) {
   visit(process.record.parts, process.record.id)
 }
 const categories: Record<string, number> = {}
-for (const row of rows) categories[row.execution.category ?? 'unresolved'] = (categories[row.execution.category ?? 'unresolved'] ?? 0) + 1
+const automationEvidence: Record<string, number> = {}
+for (const row of rows) {
+  const category = row.execution.category ?? 'unresolved'
+  const status = row.execution.automationEvidence?.status ?? 'unspecified'
+  categories[category] = (categories[category] ?? 0) + 1
+  automationEvidence[status] = (automationEvidence[status] ?? 0) + 1
+}
 const report = { records: processes.length, assessedRecords: new Set(rows.map(row => row.process)).size, scopes: rows.length, categories,
+  automationEvidence,
   reviewRequired: rows.filter(row => row.execution.reviewRequired).length, signatures: rows.filter(row => row.signature).length,
   explicitApprovals, rows }
 if (values.baseline) {
