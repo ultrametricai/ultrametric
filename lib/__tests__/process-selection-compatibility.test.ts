@@ -111,8 +111,23 @@ describe('existing judged selection compatibility', () => {
     // when the PR #449 review's scope fix pruned the off-scope payroll evidence from both gusto
     // packs and re-judged them: the entry's step cells move to the published zero rows. Merged
     // with the issue-378 counts at integration (2026-10-23): 2861 positive / 259 zero.
-    expect(positiveCount).toBe(2861)
-    expect(zeroCount).toBe(259)
+    // Re-pinned at the wave-2 LatAm bring-up (2026-10-23): eight debuts join payments (dlocal,
+    // ebanx, kushki, mercado-pago, asaas), card-issuing (pomelo), and expense-management
+    // (clara, conta-simples), so the newly judged products join the candidate lists of the
+    // steps mapped to those arenas, and the v5 freshness cascade the debuts forced on the
+    // three arenas' stale caches re-partitioned some incumbent cells between the positive
+    // and zero rows.
+    // Re-pinned at the non-profit + business-phone bring-up (2026-10-26): the business-phone
+    // debut adds the new choose-provider step's five judged candidates, and completing the
+    // mapping (map-step-stories writes all-or-nothing) settled the stale incumbent cells the
+    // 2026-10-23 waves left behind (form_001:n8 government-services among them), re-partitioning
+    // some rows between the positive and zero sets.
+    expect(positiveCount).toBe(3012)
+    expect(zeroCount).toBe(269)
+    // Re-pinned at the v5 settlement wave 1 integration (2026-10-23): seven arenas
+    // (cloud-platforms, cloud-storage, virtual-mailboxes, data-warehouses, sso-identity,
+    // customer-data-platforms, team-chat) re-judged under the v5 boundary; the three arenas
+    // the story-runner refreshes had already settled kept main's published verdicts.
     expect(extraArena).toBe(96)
   })
 

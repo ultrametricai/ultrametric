@@ -1,17 +1,17 @@
 {
-  "hash": "a8ed5cdd173abdcaa89af70e29e4853909fad649e725de1e9d440034a59d05dc",
+  "hash": "7bcd571c3b6c99b545e860c2cc29584ebcdc6d651ba576d2455e88972d51239a",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 6,
     "confidence": "medium",
-    "rationale": "Buzz gives each agent its own Nostr keypair, minted per agent with `buzz-admin generate-key` and enrolled via `add-member`. Each agent also has its own channel memberships and audit trail. NIP-AA ties agent access to the owner's membership, so revoking the owner automatically cuts off the agent, and a community commenter confirms channel-based scoping exists. However, the scoping is identity plus channel membership, not fine-grained API credential scopes, so it only partly meets the least-privilege ask. Missing for 10: per-credential permission scopes (e.g., read-only or action-limited keys), credential expiry/rotation, and an explicitly documented least-privilege grant flow for agent keys.",
+    "rationale": "Buzz has its own per-agent credentials: each agent gets a separate Nostr keypair (\"Mint a separate keypair for each\") with \"their own channel memberships, and their own audit trail.\" Access is scoped through channel membership. NIP-AA ties agent access to the owner's membership, so revoking the owner cuts off the agent automatically, and the git helper reuses the agent's keypair instead of a separate PAT. However, the scoping is membership-based rather than true least-privilege grants; community comments note channel-based scoping but do not contradict it. missing for 10: fine-grained capability/permission scopes per agent credential (e.g., read-only or per-action limits), credential expiry/rotation controls, independent hands-on corroboration of scoping in practice.",
     "evidenceIds": [
       "buzz-gh-4",
       "buzz-supp-acp-harness",
       "buzz-supp-nip-aa-agent-auth",
-      "buzz-supp-owned-agent-guardrails",
       "buzz-supp-git-nostr-credentials",
+      "buzz-supp-owned-agent-guardrails",
       "buzz-comm-5"
     ],
     "productId": "buzz",

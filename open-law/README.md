@@ -30,14 +30,14 @@ and a test holds the two together.
 
 | Domain | Covers | Maturity |
 | --- | --- | --- |
-| Formation and corporate governance | Incorporation mechanics and charter contents (Delaware, the UK, New Zealand, and Singapore), board and stockholder action, stock issuance authority, ongoing registrations and reports, and beneficial-ownership reporting. | partial |
+| Formation and corporate governance | Incorporation mechanics and charter contents (Delaware, the UK, New Zealand, Singapore, and Hong Kong), non-profit and charity formation (US federal recognition, UK registration), board and stockholder action, stock issuance authority, ongoing registrations and reports, and beneficial-ownership reporting. | partial |
 | Securities and fundraising | The Securities Act registration requirement and private-offering exemptions, Regulation D conditions, offering notices (Form D and blue sky), and compensatory-issuance exemptions. | partial |
 | Equity and compensation | 409A valuation presumptions and penalties, 83(b) elections and restricted stock, ISO and NSO tax treatment, QSBS, and the UK EMI notification deadline and company qualifying limits. | partial |
 | Employment | Hiring and onboarding duties, federal wage and hour baselines, worker classification, restrictive covenants, terminations and layoffs, workplace safety, and benefits. | partial |
 | Tax | Corporate income tax and R&D rules, payroll taxes, state entity-level taxes, and sales tax, VAT and GST. | partial |
 | Intellectual property | Ownership and assignment of founder, employee, and contractor work product; patents; trademarks; trade secrets; and open source. | partial |
 | Contracts and commercial | Electronic contracting, marketing communications, customer contracts, and dispute deadlines. | partial |
-| Privacy and data protection | US state privacy statutes, federal sectoral privacy law, EU data protection, New Zealand privacy, and Singapore data protection (PDPA). | partial |
+| Privacy and data protection | US state privacy statutes, federal sectoral privacy law, EU data protection, New Zealand privacy, Singapore data protection (PDPA), Australian privacy, South Korean data protection, and Hong Kong data protection (PDPO). | partial |
 | Immigration | Founder immigration paths and employment-based work visas. | partial |
 | Dissolution and distress | Voluntary dissolution and wind-down, and insolvency paths. | partial |
 
@@ -75,7 +75,7 @@ The rules live in one directory per jurisdiction, named by the `jurisdiction` co
 
 | Jurisdiction | The rules cover |
 | --- | --- |
-| [US-FED](US-FED/) | 83(b) elections, 409A presumptions and penalties, ISO/AMT and QSBS treatment, securities exemptions and Form D, corporate and payroll filing deadlines, FLSA baselines, I-9 timing, contractor IP assignment, CAN-SPAM, e-signature validity, beneficial-ownership reporting, founder parole |
+| [US-FED](US-FED/) | 83(b) elections, 409A presumptions and penalties, ISO/AMT and QSBS treatment, securities exemptions and Form D, corporate and payroll filing deadlines, the 501(c)(3) recognition window and Form 990 automatic revocation, FLSA baselines, I-9 timing, contractor IP assignment, CAN-SPAM, e-signature validity, beneficial-ownership reporting, founder parole |
 | [US-DE](US-DE/) | Incorporation mechanics and certificate contents, board and stockholder written consent, stock and option authorization, both franchise-tax methods, dissolution and post-dissolution continuation |
 | [US-CA](US-CA/) | CCPA business thresholds, final-wages timing, foreign qualification, the Statement of Information, invention-assignment limits, the noncompete void rule, the minimum franchise tax |
 | [US-NV](US-NV/) | The annual list and business license, the commerce-tax threshold |
@@ -85,9 +85,13 @@ The rules live in one directory per jurisdiction, named by the `jurisdiction` co
 | [US-VA](US-VA/) | The Consumer Data Protection Act applicability thresholds |
 | [US-CO](US-CO/) | The Colorado Privacy Act applicability thresholds |
 | [EU](EU/) | The GDPR data-subject-access response deadline |
-| [UK](UK/) | Company registration and the certificate of incorporation, the confirmation statement, allotment returns, accounts filing periods, PSC information notices, corporation tax notice and PAYE registration deadlines, the VAT registration threshold, the written statement of particulars, EMI notification and company qualifying limits |
+| [UK](UK/) | Company registration and the certificate of incorporation, the confirmation statement, allotment returns, accounts filing periods, PSC information notices, corporation tax notice and PAYE registration deadlines, the VAT registration threshold, the written statement of particulars, EMI notification and company qualifying limits, charity registration and CIO formation |
 | [NZ](NZ/) | Company incorporation and the resident-director requirement, the annual return, the company tax rate, the GST registration threshold, employer registration, KiwiSaver auto-enrolment and employer contributions, the written employment agreement and trial periods, the annual-holidays minimum, privacy-breach notification |
 | [SG](SG/) | Company registration and the private-company definition, the model constitution, allotment and share-transfer returns, AGM and annual-return deadlines, the registered office, resident director and company secretary requirements, the corporate tax rate and start-up exemption, the GST registration threshold, CPF employer contributions, Employment Act coverage, the Employment Pass qualifying salary, the PDPA breach-notification duty |
+| [AU](AU/) | Company registration and the ACN certificate, the resident-director and director-ID requirements, the annual review and solvency resolution, share-issue notices, ABN/GST/PAYG withholding registrations, the superannuation guarantee, the Fair Work Information Statement and the unfair-dismissal minimum period, the Privacy Act small-business threshold and notifiable data breaches, the ESS start-up concession |
+| [KR](KR/) | Stock-company incorporation registration and articles contents, the absence of a minimum capital, the representative director, the two-week registry change deadline, corporate tax return deadline and rates, VAT registration and return deadlines, the social-insurance establishment report, written terms of employment, the severance-pay floor, PIPA breach notification, foreign-investment thresholds. Korean originals on law.go.kr are the primary locators, with the KLRI English translation attached where verified |
+| [HK](HK/) | Company registration (Form NNC1) and the certificate of incorporation, the natural-person director, the company secretary, the Hong Kong registered office, the significant controllers register, the annual return (Form NAR1, 42 days), the business registration certificate window, two-tiered profits tax rates, employer's return duties (BIR56A, IR56E, IR56F), the MPF 60-day enrolment deadline, the Employment Ordinance continuous-contract test, the PDPO's voluntary breach-notification position |
+| [EE](EE/) | Private limited company (osaühing) registration through the e-Business Register, the absence of a minimum capital, the contact-person requirement for companies with a foreign address, the six-month annual-report deadline, the distributed-profits income tax, the VAT registration threshold, the written employment contract, employment-register entry before work starts, social tax and unemployment-insurance premiums, the e-residency digital identity, the Personal Data Protection Act national layer beside the EU rules. Estonian originals on riigiteataja.ee are the primary locators, with the state-published Riigi Teataja English translation attached (without legal force; its consolidation coverage is dated per citation) |
 
 ## Founder-journey workflow files
 
@@ -122,7 +126,12 @@ tax-at-grant against tax-at-vesting and replays the Rev. Proc. 2012-29 examples 
 dated record validated against `schemas/citation.schema.json` with publisher, the exact
 section (`locator`), `issued_on` where known, `checked_on`, jurisdiction, and an HTTPS
 link. A legal rule may only cite `primary-*` authorities; provider blogs can explain
-practice but cannot establish law (`kind: secondary-practice`). The reading canon the
+practice but cannot establish law (`kind: secondary-practice`). A non-English primary
+source marks its language (`lang`, e.g. `ko` for the Korean originals on law.go.kr, `et`
+for the Estonian originals on riigiteataja.ee) and
+may attach an official-translation pointer (`translation`, e.g. the KLRI English
+translation, or Riigi Teataja's own state-published English translations); the original
+stays the authoritative locator. The reading canon the
 distilled laws cite lives in `open-lore/` (`library.json` and `citations.json`), not here.
 
 Contribute citations here:

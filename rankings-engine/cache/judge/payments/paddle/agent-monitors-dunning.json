@@ -1,18 +1,20 @@
 {
-  "hash": "2448da7262c32676bdcb0a20d7da1a5b8d2b23cf5ea2100712870e42aab83888",
+  "hash": "ba0063d82999b04d5b00b9d3523748b727e96a4442cb769646a1be1e1774f432",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
-    "quality": 5,
+    "quality": 6,
     "confidence": "medium",
-    "rationale": "Paddle's hosted MCP server explicitly lets agents \"investigate failed payments and resolve billing issues\" and \"configure webhooks\", and real-time webhooks support monitoring. Retries and dunning are mostly Paddle-automated: up to seven retries over 30 days, or Retain's Tactical Retries and email notifications configured in settings. There is no evidence an agent can trigger a retry or send dunning outreach through the API, and Retain cannot be tested in sandbox. Missing for 10: documented failed-payment webhook events, API endpoints for agent-initiated retries or dunning outreach, sandbox testability of Retain, independent or hands-on corroboration.",
+    "rationale": "Paddle documents signed webhooks for real-time account events, a Bearer-auth API, and a hosted MCP server whose stated purpose includes letting agents \"investigate failed payments and resolve billing issues\", so an agent can plausibly monitor payment failures. Retries and dunning are built in: automatic retries up to seven times over 30 days, plus Retain Payment Recovery with Tactical Retries and email notifications. However, that recovery is configured by the merchant and run by Paddle, not driven by the agent, and Retain cannot be tested in sandbox. Missing for 10: documented failed-payment webhook event types, API or MCP endpoints for an agent to trigger retries or send dunning outreach, sandbox testability of Payment Recovery, and independent or hands-on corroboration.",
     "evidenceIds": [
+      "paddle-docs-11",
+      "paddle-docs-12",
       "paddle-supp-mcp-server",
       "paddle-docs-30",
-      "paddle-docs-11",
+      "paddle-supp-mcp-codemode",
       "paddle-supp-dunning",
       "paddle-docs-18",
-      "paddle-supp-mcp-codemode"
+      "paddle-supp-auth-permissions"
     ],
     "productId": "paddle",
     "storyId": "agent-monitors-dunning"

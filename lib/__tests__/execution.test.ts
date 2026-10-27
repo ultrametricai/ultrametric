@@ -55,7 +55,7 @@ describe('execution assessments', () => {
   })
   it('assigns every canonical scope a category independently of automation verification and review', () => {
     const assessments = records.flatMap(record => scopes(record.parts)).flatMap(scope => scope.metadata.execution ? [scope.metadata.execution as Execution] : [])
-    expect(assessments).toHaveLength(1040)
+    expect(assessments).toHaveLength(1061)
     for (const assessment of assessments) {
       expect(EXECUTION_CATEGORIES).toContain(assessment.category)
       expect(assessment.automationEvidence).toBeDefined()
@@ -81,6 +81,38 @@ describe('execution assessments', () => {
     expect(eor.metadata.execution).toMatchObject({ category: 'human-online', automationEvidence: { status: 'unverified' } })
     const comparison = part('qs_051', 'n2').options.find(option => option.id === 'germany-gesellschafterliste')!
     expect(comparison.metadata.execution).toMatchObject({ category: 'human-online' })
+  })
+  it('classifies new phone and nonprofit work without confusing API selection, drafting or personal execution', () => {
+    const phone = 'set-up-a-business-phone-number'
+    const nonprofit = 'set-up-a-non-profit'
+    const apiChoice = part(phone, 'n1').options.find(option => option.id === 'programmable-api')!
+    expect(apiChoice.metadata.execution).toMatchObject({ category: 'human-online', automationEvidence: { status: 'unverified' } })
+    const port = part(phone, 'n2').options.find(option => option.id === 'port-existing')!
+    expect(port.metadata.execution).toMatchObject({ category: 'human-online', reviewRequired: true })
+    expect((port.metadata.execution as Execution).rationale).toMatch(/personally signs/)
+    for (const step of ['n5', 'n6']) {
+      expect(part(phone, step).metadata.execution).toMatchObject({ category: 'human-online', automationEvidence: { status: 'unverified' } })
+    }
+    expect(part(nonprofit, 'n3').metadata.execution).toMatchObject({ category: 'agent-native', basis: 'local-work', reviewRequired: true, automationEvidence: { status: 'documented' } })
+    for (const step of ['n5', 'n7']) {
+      expect(part(nonprofit, step).metadata).toMatchObject({ approvalRequired: true, execution: { category: 'human-online', reviewRequired: true } })
+    }
+  })
+  it('includes provider-side webhook verification and the complete payment run in classification', () => {
+    const webhook = part('growth_001', 'n4').metadata.execution as Execution
+    expect(webhook).toMatchObject({ category: 'agent-computer-use', basis: 'browser-evidence', reviewRequired: true, automationEvidence: { status: 'documented' } })
+    expect(webhook.evidence).toContain('open-processes/set-up-subscription-billing.json#/parts/3/metadata/verify')
+    expect(webhook.evidence).toContain('https://docs.stripe.com/webhooks')
+    const payment = part('fin_001', 'n3')
+    expect(payment.metadata).toMatchObject({ approvalRequired: true, execution: { category: 'human-online', reviewRequired: true, automationEvidence: { status: 'unverified' } } })
+    expect((payment.metadata.execution as Execution).evidence).toContain('open-processes/pay-vendor-invoices.json#/parts/2/metadata/verify')
+  })
+  it('keeps personal declarations and signing inside combined filing scopes human-operated', () => {
+    for (const [process, step, optionId] of [['form_011', 'n3', 'france-sarl-eurl'], ['legal_002', 'n5', 'india-ipindia']]) {
+      const option = part(process, step).options.find(option => option.id === optionId)!
+      expect(option.metadata.execution).toMatchObject({ category: 'human-online', basis: 'human-work', reviewRequired: true, automationEvidence: { status: 'unverified' } })
+      expect((option.metadata.execution as Execution).rationale).toMatch(/personally signs|signing responsibility/)
+    }
   })
   it('rejects properties as categories and unsupported evidence bases', () => {
     for (const category of ['signature', 'approval', 'action', 'choice', 'agent', 'form', 'person']) {
@@ -588,6 +620,6 @@ describe('execution assessments', () => {
   })
   it('includes scoped approvals in the execution audit', () => {
     const report = JSON.parse(execFileSync(process.execPath, ['--import', 'tsx', 'scripts/shared-processes/execution-audit.ts'], { encoding: 'utf8' }))
-    expect(report.explicitApprovals).toBe(257)
+    expect(report.explicitApprovals).toBe(259)
   })
 })

@@ -30,15 +30,32 @@ import type { Cadence, SimStep } from './processSim'
 
 // Country-aware entity options (founder round 5, item 1). Codec rule: 'c-corp'/'llc' keep their
 // original indices 0/1; every non-US entity value is APPENDED so old digit permalinks replay
-// unchanged ('nz-ltd' is the 11th slot — the combo codec writes option indices past 9 in
-// base 36, so it encodes as 'a'; see lib/virtualStartupRun.ts). HONESTY: the step corpus is
+// unchanged ('nz-ltd' through 'kr-chusik-hoesa' are the 11th-14th slots — the combo codec
+// writes option indices past 9 in base 36, so they encode as 'a' through 'd'; see
+// lib/virtualStartupRun.ts and ENTITY_CODEC_SLOTS below for the coordinated slots of the
+// 2026-10-23 country runs). HONESTY: the step corpus is
 // US-shaped — a non-US entity keeps the EXACT corpus
 // incorporation composition of the C-Corp path (never a fake corpus branch) and frames it with
 // the committed geoNotes country analog (terminal line + entity label).
 export type EntityChoice =
   | 'c-corp' | 'llc' | 'ltd' | 'gmbh' | 'ug' | 'sas' | 'sarl' | 'pvt-ltd' | 'lda' | 'ca-corp'
   | 'nz-ltd' | 'pte-ltd'
-  | 'pty-ltd'
+  | 'pty-ltd' | 'kr-chusik-hoesa' | 'hk-private-limited'
+  | 'ee-osauhing'
+
+// The entity decision's permalink slots, EXPLICIT rather than options-array positions since the
+// parallel country lanes of 2026-10-23: two lanes appending at once would race for the same
+// base-36 char, so the maintainer assigns slots up front and the codec reads this table for the
+// entity decision only (lib/virtualStartupRun.ts). Slots 0-13 are the shipped history and stay
+// byte-identical to the old findIndex behavior; slot 14 ('e') is Hong Kong (landed from the
+// parallel lane of the same runs); Estonia holds slot
+// 15 ('f'). Append-only, like DECISIONS: a slot, once published, is an immutable permalink fact.
+export const ENTITY_CODEC_SLOTS: Record<EntityChoice, number> = {
+  'c-corp': 0, 'llc': 1, 'ltd': 2, 'gmbh': 3, 'ug': 4, 'sas': 5, 'sarl': 6, 'pvt-ltd': 7,
+  'lda': 8, 'ca-corp': 9, 'nz-ltd': 10, 'pte-ltd': 11, 'pty-ltd': 12, 'kr-chusik-hoesa': 13,
+  'hk-private-limited': 14,
+  'ee-osauhing': 15,
+}
 export type FundingChoice = 'bootstrap' | 'seed'
 // Business models (founder round 5, item 2). Codec rule: 'subscriptions'/'invoices' keep indices
 // 0/1; 'marketplace'/'usage'/'ecommerce' append. Only compositions the corpus honestly supports:
@@ -240,6 +257,18 @@ export const ENTITY_META: Record<EntityChoice, EntityMeta> = {
     label: 'Pty Ltd', suffix: ' Pty Ltd', country: 'AU',
     filing: { label: 'Certificate of Registration', register: 'ASIC ACN 000 000 000 (placeholder)' },
   },
+  'kr-chusik-hoesa': {
+    label: 'Chusik hoesa (주식회사)', suffix: ' Co., Ltd.', country: 'KR',
+    filing: { label: 'Incorporation registration', register: 'Corporate registry no. 000000-0000000 (placeholder)' },
+  },
+  'hk-private-limited': {
+    label: 'Private company limited by shares', suffix: ' Limited', country: 'HK',
+    filing: { label: 'Certificate of Incorporation', register: 'Companies Registry no. 0000000 (placeholder)' },
+  },
+  'ee-osauhing': {
+    label: 'Osaühing (OÜ)', suffix: ' OÜ', country: 'EE',
+    filing: { label: 'Commercial register entry', register: 'Registry code 00000000 (placeholder)' },
+  },
 }
 
 // The Entity dropdown's roster follows the geo selection; the FIRST option per country is the
@@ -256,6 +285,9 @@ export const ENTITY_OPTIONS_BY_COUNTRY: Record<GeoCountry, EntityChoice[]> = {
   NZ: ['nz-ltd'],
   SG: ['pte-ltd'],
   AU: ['pty-ltd'],
+  KR: ['kr-chusik-hoesa'],
+  HK: ['hk-private-limited'],
+  EE: ['ee-osauhing'],
 }
 
 export function defaultEntityFor(country: GeoCountry): EntityChoice {
@@ -323,6 +355,9 @@ export const DECISIONS: DecisionDef[] = [
       { value: 'nz-ltd', label: 'NZ limited company', detail: 'the same corpus incorporation composition as the C-Corp path (form_001), framed for New Zealand with the committed Companies Office analog — the corpus is US-shaped; no steps invented' },
       { value: 'pte-ltd', label: 'Pte Ltd', detail: 'the same corpus incorporation composition as the C-Corp path (form_001), framed for Singapore with the committed ACRA/Bizfile analog — the corpus is US-shaped; no steps invented' },
       { value: 'pty-ltd', label: 'Pty Ltd', detail: 'the same corpus incorporation composition as the C-Corp path (form_001), framed for Australia with the committed ASIC analog — the corpus is US-shaped; no steps invented' },
+      { value: 'kr-chusik-hoesa', label: 'Chusik hoesa (주식회사)', detail: 'the same corpus incorporation composition as the C-Corp path (form_001), framed for South Korea with the committed court-registry (IROS) analog — the corpus is US-shaped; no steps invented' },
+      { value: 'hk-private-limited', label: 'Private company limited by shares', detail: 'the same corpus incorporation composition as the C-Corp path (form_001), framed for Hong Kong with the committed Companies Registry analog — the corpus is US-shaped; no steps invented' },
+      { value: 'ee-osauhing', label: 'Osaühing (OÜ)', detail: 'the same corpus incorporation composition as the C-Corp path (form_001), framed for Estonia with the committed e-Business Register analog — the corpus is US-shaped; no steps invented' },
     ],
   },
   {

@@ -1,21 +1,18 @@
 {
-  "hash": "88ce0ceb540afb77a3b64ebf1a8299d38c410e1d95f59afd5cbf8229da0d9877",
+  "hash": "080533de3dc840d0f5faa955530e7ce294cb101097f7fef70956fa2028d3c355",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
     "quality": 5,
     "confidence": "medium",
-    "rationale": "Teller is a server-side REST API that a script or CI job can call directly. It uses mTLS client-certificate auth (teller-docs-12), and its balances and transactions endpoints are idempotent and paginated (teller-docs-2, teller-docs-20, teller-docs-21). A sandbox with simulated data and a fixed OTP code of 0000 suits automated tests (teller-docs-8, teller-docs-9), and a community user built an export script on the API (teller-comm-1). However, linking accounts goes through the interactive Teller Connect flow, and webhooks are set up in the dashboard (teller-docs-7, teller-docs-23), so not everything is headless. Missing for 10: an official CLI, documented CI/headless setup guidance, programmatic (non-UI) enrollment and webhook configuration, and independent hands-on CI corroboration.",
+    "rationale": "Teller is an API-first product. Its server-to-server REST endpoints use certificate-based mTLS authentication (machine credentials, no interactive login), and its sandbox uses simulated data with deterministic MFA codes such as OTP '0000', which suits automated testing. A community user's export script shows the API can be scripted. However, account enrollment runs through the user-facing Teller Connect component, and nothing documents CI or headless use. missing for 10: an official CLI or headless enrollment path, CI/automation guidance, an OpenAPI spec (probes 404), and independent hands-on corroboration of CI use.",
     "evidenceIds": [
       "teller-docs-12",
       "teller-docs-8",
       "teller-docs-9",
-      "teller-docs-20",
-      "teller-docs-21",
-      "teller-docs-2",
-      "teller-docs-7",
       "teller-docs-23",
-      "teller-comm-1"
+      "teller-comm-1",
+      "teller-probe-3"
     ],
     "productId": "teller",
     "storyId": "agentic-headless"

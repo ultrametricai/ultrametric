@@ -88,12 +88,45 @@ describe('vendor-geo corpus', () => {
     expect(status('beglaubigt', 'DE')).toBe('available') // the reverse-locked case
     expect(status('beglaubigt', 'US')).toBe('unavailable')
   })
+
+  it('pins the LatAm wave findings (2026-10-23): US-locked stays locked, local players carry their home countries', () => {
+    const status = (pid: string, c: (typeof VENDOR_GEO_COUNTRIES)[number]) =>
+      entries.find((e) => e.productId === pid && e.country === c)?.status
+    const LATAM = ['BR', 'MX', 'AR', 'CO', 'CL', 'PE'] as const
+    // The US-entity-locked banking stack and Gusto payroll stay locked across all six.
+    for (const pid of ['mercury', 'brex', 'ramp', 'relay', 'gusto']) {
+      for (const c of LATAM) expect(status(pid, c), `${pid} ${c} is a judged negative`).toBe('unavailable')
+    }
+    // Square and Mollie enumerate their supported countries; none are in LatAm.
+    for (const pid of ['square', 'mollie']) {
+      for (const c of LATAM) expect(status(pid, c), `${pid} ${c}`).toBe('unavailable')
+    }
+    // The sharp splits the wave surfaced.
+    expect(status('stripe', 'BR')).toBe('available')
+    expect(status('stripe', 'MX')).toBe('available')
+    expect(status('stripe', 'AR')).toBe('unavailable')
+    expect(status('airwallex', 'BR')).toBe('available') // onboarded to the US Airwallex entity
+    expect(status('airwallex', 'AR')).toBe('unavailable')
+    expect(status('justworks', 'AR')).toBe('partial') // contractors only; no Argentina EOR
+    expect(status('justworks', 'BR')).toBe('available')
+    expect(status('quickbooks', 'BR')).toBe('unavailable') // Intuit's own withdrawal notice
+    expect(status('quickbooks', 'MX')).toBe('available')
+    expect(status('polar', 'BR')).toBe('unavailable')
+    expect(status('polar', 'MX')).toBe('available')
+    // The LatAm-native entrants carry their home markets.
+    for (const c of ['BR', 'MX', 'CO'] as const) expect(status('jeeves', c), `jeeves ${c}`).toBe('available')
+    expect(status('belvo', 'BR')).toBe('available')
+    expect(status('belvo', 'MX')).toBe('available')
+    expect(status('belvo', 'CO')).toBe('unavailable')
+    expect(status('stark-bank', 'BR')).toBe('available')
+    expect(status('stark-bank', 'MX')).toBe('unavailable') // Brazil-only by design
+  })
 })
 
 describe('vendorGeoFor', () => {
-  it('returns rows in canonical US→UK→IN→DE→FR order and [] for unspiked products', () => {
+  it('returns rows in canonical US→UK→IN→DE→FR→LatAm order and [] for unspiked products', () => {
     const rows = vendorGeoFor('mercury', DATA_DIR)
-    expect(rows.map((r) => r.country)).toEqual(['US', 'UK', 'IN', 'DE', 'FR'])
+    expect(rows.map((r) => r.country)).toEqual(['US', 'UK', 'IN', 'DE', 'FR', 'BR', 'MX', 'AR', 'CO', 'CL', 'PE'])
     expect(vendorGeoFor('linear', DATA_DIR)).toEqual([])
     expect(vendorGeoFor('does-not-exist', DATA_DIR)).toEqual([])
   })
@@ -103,7 +136,7 @@ describe('vendorGeoFor', () => {
     // legal-ops/startup-banking entries must not inherit that reasoning (PR #449 review).
     expect(vendorGeoFor('gusto', DATA_DIR, 'payroll').length).toBeGreaterThan(0)
     expect(vendorGeoFor('gusto', DATA_DIR, 'legal-ops')).toEqual([])
-    expect(vendorGeoFor('mercury', DATA_DIR, 'startup-banking').map((r) => r.country)).toEqual(['US', 'UK', 'IN', 'DE', 'FR'])
+    expect(vendorGeoFor('mercury', DATA_DIR, 'startup-banking').map((r) => r.country)).toEqual(['US', 'UK', 'IN', 'DE', 'FR', 'BR', 'MX', 'AR', 'CO', 'CL', 'PE'])
   })
 
   it('missing file degrades to no rows, never an error', () => {
@@ -131,6 +164,10 @@ describe('vendorGeoLookup', () => {
     const mercury = lookup.mercury
     // US never ships to the client — the default view annotates nothing.
     expect(Object.keys(mercury)).not.toContain('US')
+    // Vendor-geo-only countries (the LatAm wave) never ship either: no ?geo= selection can
+    // carry them, so their cells would be unreadable client bytes.
+    expect(Object.keys(mercury)).not.toContain('BR')
+    expect(Object.keys(mercury)).not.toContain('MX')
     // The pinned negative: Mercury really does NOT bank a UK entity.
     expect(mercury.UK?.status).toBe('unavailable')
     expect(mercury.UK?.note).toMatch(/United States|US/)
