@@ -43,19 +43,13 @@ Qualifying the approach, the board conversation, and the negotiation are founder
 
    - Vendor options: Cooley, Fenwick, Gunderson Dettmer
    - Ranked market: [startup-law-firms](../../open-rankings/startup-law-firms)
-   - Next: steps 5 and 6 — all follow this step
 5. **Stand up the deal data room with clean permissions, so diligence answers come from one controlled place** — agent-runnable · ~45 min
 
    - Runs the process [Set up a data room](set-up-a-data-room.md)
-   - Next: continue at step 7
 6. **Negotiate the big points before the term sheet: price, structure, and the non-price deal-killers** — human · ~1.5 h · hard to undo
-
-   *Follows step 4.*
 
    Negotiate the business and legal points before signing and push for the shortest closing you can get; after signing you cannot shop the deal and unsettled points default to the acquirer (lore rule kan-leverage-ends-at-term-sheet). Learn the non-price deal-killer terms first (lore rule dixon-deal-killer-terms), and research how this acquirer has behaved between LOI and close before you sign anything (lore rule dixon-research-loi-conduct).
 7. **Prepare the leak playbook now: the need-to-know list, the pre-agreed line with the acquirer, and what employees hear if it breaks** — human · ~30 min · hard to undo
-
-   *Follows step 5 or step 6.*
 
 ---
 
