@@ -1,11 +1,14 @@
+import type Anthropic from '@anthropic-ai/sdk'
 import crypto from 'node:crypto'
 import fs from 'node:fs'
 import path from 'node:path'
+import type { z } from 'zod'
 import {
   type Evidence, EvidenceSchema, ProductSchema, type Story, StorySchema,
   type Verdict, VerdictBaseSchema, VerdictSchema,
 } from '../../lib/schemas'
-import { JUDGE_MODEL, llmJson } from '../llm'
+import { clearBatchState, runMessageBatches } from '../batch-llm'
+import { DEFAULT_MAX_TOKENS, extractJson, JUDGE_MODEL, llmJson } from '../llm'
 import { CACHE_DIR, categoryDir, readJson, resolveCategories, writeJson } from '../paths'
 
 // v5 (2026-10-19): adds the founder-ratified partial-credit boundary to the prompt — partial
@@ -123,9 +126,129 @@ export function judgePrompt(productName: string, story: Story, evidence: Evidenc
   return `Product: ${productName}\n\nUser story: ${story.title}\n(persona: ${story.persona}, theme: ${story.theme})\n\nEvidence pack:\n${pack}\n${extra}`
 }
 
-export async function runJudge({ category, product }: { category?: string; product?: string }): Promise<void> {
+export type RawVerdict = z.infer<typeof RawVerdictSchema>
+
+// One cache-miss (product, story) cell, carrying everything both transports need: the
+// prompt inputs, the cache key, and where the verdict lands.
+export interface JudgeCell {
+  catId: string
+  productId: string
+  productName: string
+  story: Story
+  evidence: Evidence[]
+  hash: string
+  cacheFile: string
+}
+
+// Judges one cell to a rule-clean verdict. `initialRaw` is the batch transport's
+// already-parsed first verdict; when absent the first verdict is fetched interactively.
+// Either way, rule violations go through the same interactive correction rounds — up to
+// three, because one round proved brittle at fleet scale (a model that phrases the
+// rubric clause loosely once tends to comply on the next explicit ask).
+export async function resolveCellVerdict(cell: JudgeCell, initialRaw?: RawVerdict): Promise<Verdict> {
+  let raw = initialRaw
+    ?? await llmJson({ schema: RawVerdictSchema, system: SYSTEM, prompt: judgePrompt(cell.productName, cell.story, cell.evidence) })
+  let verdict: Verdict = { ...raw, productId: cell.productId, storyId: cell.story.id }
+  let violation = validateVerdictRules(verdict, cell.evidence)
+  for (let round = 0; violation && round < 3; round++) {
+    raw = await llmJson({
+      schema: RawVerdictSchema,
+      system: SYSTEM,
+      prompt: judgePrompt(cell.productName, cell.story, cell.evidence, `\nYour previous verdict violated a rule: ${violation}. Correct it. If quality is below 10, the rationale MUST contain the literal phrase "missing for 10:" followed by the specific gaps.`),
+    })
+    verdict = { ...raw, productId: cell.productId, storyId: cell.story.id }
+    violation = validateVerdictRules(verdict, cell.evidence)
+  }
+  if (violation) throw new Error(`judge: ${cell.catId}/${cell.productId}:${cell.story.id} still violates rules: ${violation}`)
+  return verdict
+}
+
+function writeCellCache(cell: JudgeCell, verdict: Verdict): void {
+  writeJson(cell.cacheFile, { hash: cell.hash, keyVersion: CELL_HASH_VERSION, verdict })
+  console.log(`judge: ${cell.catId}/${cell.productId}:${cell.story.id} → ${verdict.verdict} q${verdict.quality}`)
+}
+
+// The batch request for a cell is byte-for-byte the interactive first attempt — same
+// model, output cap, system prompt, and single-user-message shape. Only the transport
+// (and the per-token price) differs.
+export function cellBatchParams(cell: JudgeCell): Anthropic.Messages.MessageCreateParamsNonStreaming {
+  return {
+    model: JUDGE_MODEL,
+    max_tokens: DEFAULT_MAX_TOKENS,
+    system: SYSTEM,
+    messages: [{ role: 'user', content: judgePrompt(cell.productName, cell.story, cell.evidence) }],
+  }
+}
+
+// Parses a batch-completed Message with the same mechanics llmJson applies to an
+// interactive response: truncation is a failure, text blocks are joined, extractJson
+// recovers the object, and the raw verdict must validate against RawVerdictSchema.
+// Returns undefined on any miss — the cell then falls back to the interactive path.
+export function parseBatchVerdict(message: Anthropic.Message): RawVerdict | undefined {
+  if (message.stop_reason === 'max_tokens') return undefined
+  const text = message.content
+    .filter((b): b is Anthropic.TextBlock => b.type === 'text')
+    .map((b) => b.text)
+    .join('')
+  const json = extractJson(text)
+  if (json === undefined) return undefined
+  const parsed = RawVerdictSchema.safeParse(json)
+  return parsed.success ? parsed.data : undefined
+}
+
+// Judges every cell and writes it through the single cache-write path. With
+// `opts.batch`, first verdicts are fetched through the Message Batches API (half the
+// interactive per-token price) with each cell's custom_id set to its cellHash; cells the
+// batch fails, truncates, or returns unparseable fall back to the interactive path
+// automatically, so a batch run converges on exactly the cells an interactive run would
+// have written. Interactive remains the default transport.
+export async function judgeCells(cells: JudgeCell[], opts: { batch?: boolean; stateFile?: string } = {}): Promise<void> {
+  const prefilled = new Map<string, RawVerdict>() // keyed by cacheFile (unique per cell)
+  if (opts.batch && cells.length > 0) {
+    if (!opts.stateFile) throw new Error('judge: batch mode requires a state file for resumability')
+    // custom_id is the cellHash. The hash does not fold in the product id, so two
+    // products with identical evidence packs (e.g. both empty) can collide on one story;
+    // only the first such cell rides the batch, the rest take the interactive path.
+    const byHash = new Map<string, JudgeCell>()
+    for (const cell of cells) {
+      if (byHash.has(cell.hash)) {
+        console.warn(`judge: cellHash collision with ${byHash.get(cell.hash)!.productId} — ${cell.catId}/${cell.productId}:${cell.story.id} will judge interactively`)
+      } else {
+        byHash.set(cell.hash, cell)
+      }
+    }
+    const requests = [...byHash.values()].map((cell) => ({ custom_id: cell.hash, params: cellBatchParams(cell) }))
+    const results = await runMessageBatches({ requests, stateFile: opts.stateFile })
+    for (const [hash, result] of results) {
+      const cell = byHash.get(hash)!
+      if (result.type !== 'succeeded') {
+        console.warn(`judge: batch cell ${cell.catId}/${cell.productId}:${cell.story.id} ${result.type}${result.reason ? ` (${result.reason})` : ''} — falling back to interactive`)
+        continue
+      }
+      const raw = parseBatchVerdict(result.message)
+      if (raw === undefined) {
+        console.warn(`judge: batch cell ${cell.catId}/${cell.productId}:${cell.story.id} returned no valid verdict JSON — falling back to interactive`)
+        continue
+      }
+      prefilled.set(cell.cacheFile, raw)
+    }
+  }
+  for (const cell of cells) {
+    const verdict = await resolveCellVerdict(cell, prefilled.get(cell.cacheFile))
+    writeCellCache(cell, verdict)
+  }
+  // Every cell is cached now; the batch ids have served their purpose.
+  if (opts.batch && opts.stateFile) clearBatchState(opts.stateFile)
+}
+
+export async function runJudge({ category, product, batch }: { category?: string; product?: string; batch?: boolean }): Promise<void> {
   let matched = 0
-  for (const cat of resolveCategories(category)) {
+  const cats = resolveCategories(category)
+
+  // Collect every cache-miss cell across the run's scope first, so batch mode can submit
+  // them as one message batch; the interactive default judges the same list in order.
+  const cells: JudgeCell[] = []
+  for (const cat of cats) {
     const dataDir = categoryDir(cat.id)
     const products = readJson(ProductSchema.array(), path.join(dataDir, 'products.json'))
     const stories = readJson(StorySchema.array(), path.join(dataDir, 'stories.json'))
@@ -142,26 +265,20 @@ export async function runJudge({ category, product }: { category?: string; produ
           // An entry written under an older key format (no/other keyVersion) is a clean miss.
           if (cached.keyVersion === CELL_HASH_VERSION && cached.hash === hash) continue
         }
-
-        let raw = await llmJson({ schema: RawVerdictSchema, system: SYSTEM, prompt: judgePrompt(p.name, story, evidence) })
-        let verdict: Verdict = { ...raw, productId: p.id, storyId: story.id }
-        let violation = validateVerdictRules(verdict, evidence)
-        // Up to three correction rounds — one round proved brittle at fleet scale (a model that
-        // phrases the rubric clause loosely once tends to comply on the next explicit ask).
-        for (let round = 0; violation && round < 3; round++) {
-          raw = await llmJson({
-            schema: RawVerdictSchema,
-            system: SYSTEM,
-            prompt: judgePrompt(p.name, story, evidence, `\nYour previous verdict violated a rule: ${violation}. Correct it. If quality is below 10, the rationale MUST contain the literal phrase "missing for 10:" followed by the specific gaps.`),
-          })
-          verdict = { ...raw, productId: p.id, storyId: story.id }
-          violation = validateVerdictRules(verdict, evidence)
-        }
-        if (violation) throw new Error(`judge: ${cat.id}/${p.id}:${story.id} still violates rules: ${violation}`)
-        writeJson(cacheFile, { hash, keyVersion: CELL_HASH_VERSION, verdict })
-        console.log(`judge: ${cat.id}/${p.id}:${story.id} → ${verdict.verdict} q${verdict.quality}`)
+        cells.push({ catId: cat.id, productId: p.id, productName: p.name, story, evidence, hash, cacheFile })
       }
     }
+  }
+
+  // One state file per (category, product) scope: a re-run of the same interrupted
+  // invocation resumes its in-flight batches instead of resubmitting.
+  const stateFile = path.join(CACHE_DIR, 'judge-batches', `${category ?? 'all'}--${product ?? 'all'}.json`)
+  await judgeCells(cells, { batch, stateFile })
+
+  for (const cat of cats) {
+    const dataDir = categoryDir(cat.id)
+    const products = readJson(ProductSchema.array(), path.join(dataDir, 'products.json'))
+    const stories = readJson(StorySchema.array(), path.join(dataDir, 'stories.json'))
 
     // Assemble verdicts.json from ALL cached cells for this category (not just targets)
     const all: Verdict[] = []
