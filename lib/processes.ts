@@ -4,7 +4,7 @@ import path from 'node:path'
 import { z } from 'zod'
 import { loadProcessCatalog } from './shared-processes/catalog'
 import { projectChain, projectOperational } from './shared-processes/projection'
-import { connectionSchema } from './shared-processes/schema'
+import { connectionSchema, STATE_SERVICES } from './shared-processes/schema'
 import { isPopulated, loadCategory } from './data'
 import { resolveGapStep } from './gapClosers'
 import { GEO_NOTE_KINDS } from './geoPreference'
@@ -130,6 +130,10 @@ export const DagNodeBaseSchema = z.object({
   // hasAsyncSteps) describe the DEFAULT flow and deliberately exclude conditional nodes.
   // Client-safe half in lib/jurisdictions.ts.
   jurisdictions: z.enum(JURISDICTION_INPUTS).transform(normalizeJurisdiction).array().min(1).optional(),
+  // The state-level service a conditional step is (registered agent, foreign qualification,
+  // annual report, payroll-tax or sales-tax registration, formation), keying the per-state
+  // vendor evidence in jurisdictions/vendor-state.json. Annotation only: no judged number reads it.
+  service: z.enum(STATE_SERVICES).optional(),
   // Internal pointer for a conditional step whose work already lives in its OWN corpus process
   // (the sales-tax-nexus case — link it, never duplicate it): the canonical slug of that
   // process. Display-only; integrity (resolves to a real process) is corpus-tested.
@@ -775,6 +779,7 @@ export function jurisdictionStepViews(taskId: string, dir: string = DEFAULT_DIR(
       route: n.route,
       execution: n.execution,
       jurisdictions: (n.jurisdictions ?? []) satisfies Jurisdiction[],
+      ...(n.service ? { service: n.service } : {}),
       actionUrl: n.actionUrl ?? null,
       actionLabel: n.actionLabel ?? null,
       estimatedMinutes: n.estimatedMinutes,
