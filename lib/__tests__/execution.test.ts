@@ -186,6 +186,44 @@ describe('execution assessments', () => {
     expect(board.metadata.execution).toMatchObject({ category: null, basis: 'unresolved', reviewRequired: true })
     expect((board.metadata.execution as Execution).rationale).toMatch(/distribution method, document-access checks and collection of directors' questions/)
   })
+  it('distinguishes documented infrastructure operations from browser controls and sample limits', () => {
+    const warehouse = part('scale_010', 'n1')
+    const snowflake = warehouse.options.find(option => option.id === 'default')!.metadata.execution as Execution
+    expect(snowflake).toMatchObject({ category: 'agent-native', basis: 'documented-interface', reviewRequired: true })
+    expect(snowflake.evidence).toContain('https://docs.snowflake.com/en/sql-reference/organization-usage/usage_in_currency_daily')
+    const motherduck = warehouse.options.find(option => option.id === 'motherduck-small-data')!.metadata.execution as Execution
+    expect(motherduck).toMatchObject({ category: 'agent-computer-use', reviewRequired: true })
+    expect(motherduck.rationale).toMatch(/full database copying is restricted in the web UI/)
+    const events = part('scale_010', 'n2').metadata.execution as Execution
+    expect(events).toMatchObject({ category: 'agent-computer-use', reviewRequired: true })
+    expect(events.rationale).toMatch(/samples incoming events/)
+    // Documented source controls do not establish the separate recovery trial.
+    expect(part('scale_010', 'n5').metadata.execution).toMatchObject({ category: null })
+    const dashboard = part('scale_010', 'n7').metadata.execution as Execution
+    expect(dashboard.evidence).toContain('open-processes/stand-up-a-data-warehouse-bi.json#/parts/5/references')
+    expect(dashboard.evidence).toContain('https://www.metabase.com/docs/latest/dashboards/subscriptions')
+  })
+  it('preserves acceptance and personal judgment in documented communications workflows', () => {
+    const booking = part('growth_012', 'n5').metadata.execution as Execution
+    expect(booking).toMatchObject({ category: 'agent-computer-use', reviewRequired: true })
+    expect(booking.evidence).toContain('https://knowledge.hubspot.com/sequences/unenroll-from-sequence')
+    expect(booking.rationale).toMatch(/reply alone is not acceptance/)
+    expect(part('growth_012', 'n6').metadata.execution).toMatchObject({ category: 'human-online', basis: 'human-work' })
+    const close = part('fin_002', 'n8')
+    expect(close.metadata).toMatchObject({ approvalRequired: true, execution: { category: 'human-online' } })
+    expect((close.metadata.execution as Execution).evidence).toContain('open-processes/bookkeeping-close.json#/parts/5/references')
+    // Nearby finance alerts do not select the employee policy channel.
+    expect(part('scale_004', 'n5').metadata.execution).toMatchObject({ category: null })
+  })
+  it('keeps IRS electronic and physical filing alternatives unresolved without a chosen method', () => {
+    for (const [process, step] of [['form_012', 'n8'], ['equity.us-de.83b-election', 'file']]) {
+      const assessment = part(process, step).metadata.execution as Execution
+      expect(assessment).toMatchObject({ category: null, basis: 'unresolved', reviewRequired: true })
+      expect(assessment.evidence).toContain('https://www.irs.gov/pub/irs-pdf/f15620.pdf')
+      expect(assessment.evidence).toContain('https://www.irs.gov/forms-pubs/mobile-friendly-forms')
+      expect(assessment.rationale).toMatch(/personal Online Account/)
+    }
+  })
   it('resolves every local evidence reference to retained content', () => {
     for (const record of records) for (const scope of scopes(record.parts)) {
       const assessment = scope.metadata.execution as Execution | undefined

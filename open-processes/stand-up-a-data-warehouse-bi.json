@@ -54,13 +54,22 @@
             "riskLevel": "high",
             "estimatedMinutes": 60,
             "execution": {
-              "category": null,
-              "basis": "unresolved",
-              "rationale": "Snowflake's create-warehouse and create-database references establish provisioning. The step also requires loading, limited test identities, report queries and measured usage; those operations are not established by the provisioning sources alone.",
+              "category": "agent-native",
+              "basis": "documented-interface",
+              "rationale": "Snowflake documents SQL/CLI account and warehouse controls, constrained users/roles, staged loading, report queries and query history. Currency-usage views cover compute, storage and transfer costs with reporting delay and reseller restrictions; authorized access and budget limits remain prerequisites.",
               "evidence": [
                 "open-processes/stand-up-a-data-warehouse-bi.json#/parts/0/options/0/summary",
                 "https://docs.snowflake.com/en/sql-reference/sql/create-warehouse",
-                "https://docs.snowflake.com/en/sql-reference/sql/create-database"
+                "https://docs.snowflake.com/en/sql-reference/sql/create-database",
+                "https://docs.snowflake.com/en/user-guide/organizations-manage-accounts-create",
+                "https://docs.snowflake.com/en/developer-guide/snowflake-cli/command-reference/sql-commands/sql",
+                "https://docs.snowflake.com/en/sql-reference/sql/alter-warehouse",
+                "https://docs.snowflake.com/en/user-guide/tutorials/users-and-roles-tutorial",
+                "https://docs.snowflake.com/en/user-guide/data-load-local-file-system-create-stage",
+                "https://docs.snowflake.com/en/user-guide/data-load-local-file-system-copy",
+                "https://docs.snowflake.com/en/sql-reference/account-usage/query_history",
+                "https://docs.snowflake.com/en/sql-reference/account-usage/warehouse_metering_history",
+                "https://docs.snowflake.com/en/sql-reference/organization-usage/usage_in_currency_daily"
               ],
               "reviewRequired": true
             }
@@ -136,12 +145,19 @@
               "kind": "vendor"
             },
             "execution": {
-              "category": null,
-              "basis": "unresolved",
-              "rationale": "The MotherDuck connection source establishes a client connection. Loading, changed-record behavior, interoperable export and measured trial cost need operation-specific evidence for the full trial.",
+              "category": "agent-computer-use",
+              "basis": "browser-evidence",
+              "rationale": "MotherDuck documents browser organization/region and billing controls alongside SQL loading, updates, reporting and export through its client. The trial therefore includes browser work, not just a connection. Use the supported client for local export; full database copying is restricted in the web UI, and usage visibility depends on permissions and plan.",
               "evidence": [
                 "open-processes/stand-up-a-data-warehouse-bi.json#/parts/0/options/2/summary",
-                "https://motherduck.com/docs/key-tasks/authenticating-and-connecting-to-motherduck/connecting-to-motherduck/"
+                "https://motherduck.com/docs/key-tasks/authenticating-and-connecting-to-motherduck/connecting-to-motherduck/",
+                "https://motherduck.com/docs/key-tasks/managing-organizations/",
+                "https://motherduck.com/docs/about-motherduck/billing/managing-billing/",
+                "https://motherduck.com/docs/cookbook/motherduck-ui/",
+                "https://motherduck.com/docs/integrations/file-formats/csv/",
+                "https://motherduck.com/docs/sql-reference/duckdb-sql-reference/duckdb-statements/update/",
+                "https://motherduck.com/docs/key-tasks/database-operations/copying-databases/",
+                "https://motherduck.com/docs/about-motherduck/billing/monitoring-usage/"
               ],
               "reviewRequired": true
             }
@@ -221,11 +237,14 @@
         "riskLevel": "medium",
         "estimatedMinutes": 60,
         "execution": {
-          "category": null,
-          "basis": "unresolved",
-          "rationale": "Segment is listed, but source-specific credentials, event ingestion and payload inspection are not established for the actual applications.",
+          "category": "agent-computer-use",
+          "basis": "browser-evidence",
+          "rationale": "Segment supports source setup and synthetic event ingestion through its HTTP interface, with raw payload inspection in the browser debugger. Separate source credentials distinguish environments; validate renamed events and message IDs. The debugger samples incoming events, so it cannot prove downstream completeness or deduplication.",
           "evidence": [
-            "open-processes/stand-up-a-data-warehouse-bi.json#/parts/1/guidance"
+            "open-processes/stand-up-a-data-warehouse-bi.json#/parts/1/guidance",
+            "https://www.twilio.com/docs/segment/connections/sources/catalog/libraries/server/http-api",
+            "https://www.twilio.com/docs/segment/connections/sources/debugger",
+            "https://www.twilio.com/docs/segment/guides/duplicate-data"
           ],
           "reviewRequired": true
         }
@@ -406,11 +425,16 @@
         "approvalRequired": true,
         "estimatedMinutes": 240,
         "execution": {
-          "category": null,
-          "basis": "unresolved",
-          "rationale": "Metric calculation is local, but publication and controlled drill-through depend on the selected dashboard system.",
+          "category": "agent-computer-use",
+          "basis": "browser-evidence",
+          "rationale": "The preceding step selects Metabase. Its dashboard editor supports report queries, comparisons, explanatory text and detail links; permissions and subscriptions control distribution. Reconcile the supplied finance figures before sharing, and verify drill-through access separately because it requires query-building permissions.",
           "evidence": [
-            "open-processes/stand-up-a-data-warehouse-bi.json#/parts/6/guidance"
+            "open-processes/stand-up-a-data-warehouse-bi.json#/parts/6/guidance",
+            "open-processes/stand-up-a-data-warehouse-bi.json#/parts/5/references",
+            "https://www.metabase.com/docs/latest/dashboards/introduction",
+            "https://www.metabase.com/docs/latest/questions/visualizations/drill-through",
+            "https://www.metabase.com/docs/latest/dashboards/subscriptions",
+            "https://www.metabase.com/docs/latest/permissions/start"
           ],
           "reviewRequired": true
         }
