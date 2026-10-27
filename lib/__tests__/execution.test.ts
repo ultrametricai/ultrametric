@@ -486,6 +486,29 @@ describe('execution assessments', () => {
       expect(step).toEqual(buildManifestStep(legacyNode))
     }
   })
+  it('supports documented browser review without requiring automatic dependency tracking', () => {
+    const filing = part('comp_014', 'n6').metadata.execution as Execution
+    expect(filing).toMatchObject({ category: 'agent-computer-use', basis: 'browser-evidence', reviewRequired: true })
+    expect(filing.evidence).toContain('open-processes/answer-a-security-questionnaire.json#/parts/1/references')
+    expect(filing.evidence).toContain('https://help.vanta.com/en/articles/11345451-completing-spreadsheet-and-document-questionnaires')
+    expect(filing.rationale).toMatch(/manual browser review/)
+    expect(filing.rationale).toMatch(/New disclosures retain their own approval/)
+    // Resource review does not prove Vanta can execute a downstream access removal.
+    expect(part('comp_002', 'n4').metadata.execution).toMatchObject({ category: null })
+  })
+  it('covers design-tool alternatives while preserving the separate production-delivery gap', () => {
+    const assessment = part('site_001', 'n1').options.find(option => option.id === 'design-tool-publish')!.metadata.execution as Execution
+    expect(assessment).toMatchObject({ category: 'agent-computer-use', reviewRequired: true })
+    for (const provider of ['www.framer.com', 'help.figma.com', 'www.canva.com']) {
+      expect(assessment.evidence.some(source => source.includes(provider))).toBe(true)
+    }
+    expect(assessment.rationale).toMatch(/anonymous responses/)
+    expect(part('site_001', 'n2').metadata.execution).toMatchObject({ category: null })
+    const migration = part('qs_015', 'n4').metadata.execution as Execution
+    expect(migration).toMatchObject({ category: null, reviewRequired: true })
+    expect(migration.rationale).toMatch(/permits recorded history or permission losses/)
+    expect(migration.rationale).toMatch(/Poly/)
+  })
   it('counts signature and approval as properties alongside execution categories', () => {
     const record = structuredClone(records.find(record => record.id === 'brand_002')!)
     record.parts = [{ ...record.parts[0], options: [], metadata: { route: 'person', execution: execution('human-online', 'human-work'), legalSignature: true, approvalRequired: true } }]
