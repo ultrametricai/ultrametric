@@ -55,7 +55,7 @@ describe('execution assessments', () => {
   })
   it('assigns every canonical scope a category independently of automation verification and review', () => {
     const assessments = records.flatMap(record => scopes(record.parts)).flatMap(scope => scope.metadata.execution ? [scope.metadata.execution as Execution] : [])
-    expect(assessments).toHaveLength(1061)
+    expect(assessments).toHaveLength(1103)
     for (const assessment of assessments) {
       expect(EXECUTION_CATEGORIES).toContain(assessment.category)
       expect(assessment.automationEvidence).toBeDefined()

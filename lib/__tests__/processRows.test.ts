@@ -63,7 +63,7 @@ describe('phase → area display map (lib/processRows.ts)', () => {
     const rows = buildSituationRows()
     const situations = loadProcesses().filter((t) => t.kind === 'situation')
     expect(rows).toHaveLength(situations.length)
-    expect(rows).toHaveLength(22)
+    expect(rows).toHaveLength(27)
     for (const r of rows) {
       expect(r.kind).toBe('situation')
       expect(r.area).toBe(SITUATIONS_AREA)

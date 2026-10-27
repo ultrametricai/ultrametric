@@ -129,7 +129,7 @@ describe('no invented artifacts — committed steps and real consumers', () => {
   it('the typed layer parses through the site loader (required fields, no defaults)', () => {
     // loadProcesses throws on any record missing produces/requires — totality by construction;
     // the assertions above exist to name offenders precisely.
-    expect(loadProcesses(DATA_DIR).length).toBe(149)
+    expect(loadProcesses(DATA_DIR).length).toBe(154)
   })
 })
 

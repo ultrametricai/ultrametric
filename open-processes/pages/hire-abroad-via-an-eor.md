@@ -71,6 +71,7 @@ Requires:
 ## Related records
 
 - Part of the chain [Go global](go-global.md)
+- Runs as a step of [Handle an employee's visa denial or RFE](handle-an-employee-s-visa-denial-or-rfe.md)
 
 ---
 
