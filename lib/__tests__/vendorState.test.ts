@@ -166,22 +166,23 @@ describe('government-services state tags', () => {
 // State agencies staged for roster bring-up (2026-10-27): lib/data.ts needs a verdict for every
 // cell, so un-judged agencies wait in a seed file until the maintainer session judges them and
 // moves them into products.json. The staged records must already be valid roster entries.
+// The seed file shrinks as agencies are promoted and is deleted with the last one, so these
+// checks cover whatever is still staged and pass trivially once nothing is.
+const STAGED_FILE = path.join(ROOT, 'rankings-engine/seeds/government-services-state-agencies-pending.json')
+const STAGED_IDS = ['fl-dor', 'nevada-sos', 'tx-twc', 'wa-dor', 'wa-esd', 'wyoming-sos']
+
 describe('staged government-services state agencies', () => {
-  const file = path.join(ROOT, 'rankings-engine/seeds/government-services-state-agencies-pending.json')
-  const staged = JSON.parse(fs.readFileSync(file, 'utf8')) as {
-    products: unknown[]
-    evidence: Record<string, unknown[]>
-  }
+  const staged = fs.existsSync(STAGED_FILE)
+    ? (JSON.parse(fs.readFileSync(STAGED_FILE, 'utf8')) as { products: unknown[]; evidence: Record<string, unknown[]> })
+    : { products: [], evidence: {} }
   const products = ProductSchema.array().parse(staged.products)
   const rostered = new Set(loadCategory(GOVERNMENT_ARENA_ID, DATA_DIR).products.map((p) => p.id))
   const states = registryStates()
 
   it('each staged agency is a valid US state agency not yet on the roster', () => {
-    expect(products.map((p) => p.id).sort()).toEqual(
-      ['fl-dor', 'nevada-sos', 'tx-twc', 'wa-dor', 'wa-esd', 'wyoming-sos'],
-    )
     for (const p of products) {
-      expect(rostered.has(p.id), `${p.id} is rostered: delete it from the seed file`).toBe(false)
+      expect(STAGED_IDS, `${p.id} is one of the staged agencies`).toContain(p.id)
+      expect(rostered.has(p.id), `${p.id} is rostered: remove it from the seed file`).toBe(false)
       expect(p.type).toBe('government')
       expect(p.country).toBe('US')
       expect(states.has(p.state!), `${p.id} state ${p.state} must be registered`).toBe(true)
