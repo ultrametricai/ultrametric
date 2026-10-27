@@ -224,6 +224,56 @@ describe('execution assessments', () => {
       expect(assessment.rationale).toMatch(/personal Online Account/)
     }
   })
+  it('grounds online training and filing controls while preserving personal participation', () => {
+    const training = part('comp_001', 'n7').metadata.execution as Execution
+    expect(training).toMatchObject({ category: 'human-online', basis: 'human-work', reviewRequired: true })
+    expect(training.evidence).toContain('open-processes/start-soc-2-type-i.json#/parts/0/options/0/references')
+    expect(training.evidence).toContain('https://help.vanta.com/en/articles/11345841-managing-personnel-training-tasks')
+    const fillip = part('form_011', 'n3').options.find(option => option.id === 'india-llp-fillip')!.metadata.execution as Execution
+    expect(fillip).toMatchObject({ category: 'agent-computer-use', basis: 'browser-evidence', reviewRequired: true })
+    expect(fillip.rationale).toMatch(/personally apply their own digital signatures/)
+    expect(fillip.evidence).toContain('https://www.mca.gov.in/content/mca/global/en/mca/dsc-services-v3/acquire-dsc.html')
+    // An online employer-number form does not cover the combined payroll registrations.
+    expect(part('qs_063', 'n3').options.find(option => option.id === 'germany-betriebsnummer')!.metadata.execution).toMatchObject({ category: null })
+  })
+  it('covers tax imports and recurring filing authority separately from legal conclusions', () => {
+    const study = part('tax_011', 'n2').metadata.execution as Execution
+    expect(study).toMatchObject({ category: 'agent-computer-use', reviewRequired: true })
+    expect(study.evidence).toContain('https://docs.stripe.com/tax/imports')
+    expect(study.rationale).toMatch(/physical presence, marketplace treatment and registration conclusions/)
+    const filing = part('tax_011', 'n6').metadata.execution as Execution
+    expect(filing).toMatchObject({ category: 'agent-computer-use', reviewRequired: true })
+    expect(filing.rationale).toMatch(/Automatic approval/)
+    expect(filing.rationale).toMatch(/authority must be settled before activation/)
+    expect(filing.evidence.some(source => source.endsWith('/View_an_ACH_debit_confirmation.html'))).toBe(true)
+    // A browser directory does not establish the same actor for the retained human community.
+    const directories = part('growth_010', 'n3').metadata.execution as Execution
+    expect(directories).toMatchObject({ category: null, reviewRequired: true })
+    expect(directories.evidence).toContain('https://news.ycombinator.com/newsguidelines.html')
+  })
+  it('uses the selected surrounding provider without claiming its external decision or other operations', () => {
+    const audit = part('comp_002', 'n7').metadata.execution as Execution
+    expect(audit).toMatchObject({ category: 'agent-computer-use', reviewRequired: true })
+    expect(audit.evidence).toContain('open-processes/complete-soc-2-type-ii.json#/parts/1/references')
+    expect(audit.evidence).toContain('https://help.vanta.com/en/articles/12293647-managing-an-information-request-list-irl')
+    const appeal = part('sit_013', 'n3').metadata.execution as Execution
+    expect(appeal).toMatchObject({ category: 'agent-computer-use', reviewRequired: true })
+    expect(appeal.evidence).toContain('https://support.stripe.com/questions/why-was-my-stripe-account-closed')
+    expect(appeal.rationale).toMatch(/does not establish reinstatement or reserve release/)
+    expect(part('sit_013', 'n8').metadata.execution).toMatchObject({ category: null })
+    const shares = part('qs_051', 'n2').options.find(option => option.id === 'default')!.metadata.execution as Execution
+    expect(shares).toMatchObject({ category: 'agent-computer-use', reviewRequired: true })
+    for (const provider of ['support.carta.com', 'help.pulley.com']) {
+      expect(shares.evidence.some(source => source.includes(provider))).toBe(true)
+    }
+    // Founding-share import controls do not establish every later investment operation.
+    expect(part('qs_051', 'n3').metadata.execution).toMatchObject({ category: null })
+    const cloud = part('sw_001', 'n3').options.find(option => option.id === 'cloud-autonomous-agent')!.metadata.execution as Execution
+    expect(cloud).toMatchObject({ category: 'agent-computer-use', basis: 'browser-evidence', reviewRequired: true })
+    for (const provider of ['code.claude.com', 'learn.chatgpt.com']) {
+      expect(cloud.evidence.some(source => source.includes(provider))).toBe(true)
+    }
+  })
   it('resolves every local evidence reference to retained content', () => {
     for (const record of records) for (const scope of scopes(record.parts)) {
       const assessment = scope.metadata.execution as Execution | undefined
