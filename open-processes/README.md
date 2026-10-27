@@ -44,7 +44,7 @@ regenerate. Drift gate: `__tests__/process-pages.test.ts`.
 
 <!-- process-pages:index:start (generated — scripts/generate-process-pages.ts) -->
 
-One page per canonical record: 129 processes, 22 situations, 24 chains.
+One page per canonical record: 129 processes, 27 situations, 24 chains.
 
 ### Processes
 
@@ -181,13 +181,17 @@ One page per canonical record: 129 processes, 22 situations, 24 chains.
 ### Situations
 
 - [Absorb a pulled term sheet](pages/absorb-a-pulled-term-sheet.md)
+- [Absorb the loss of your biggest customer](pages/absorb-the-loss-of-your-biggest-customer.md)
 - [Answer a data-subject access request](pages/answer-a-data-subject-access-request.md)
 - [Answer a tax-authority notice](pages/answer-an-irs-or-state-tax-notice.md)
 - [Contain a chargeback or fraud spike](pages/contain-a-chargeback-or-fraud-spike.md)
 - [Cure a Delaware franchise tax delinquency](pages/cure-a-delaware-franchise-tax-delinquency.md)
+- [Cure a venture-debt covenant default](pages/cure-a-venture-debt-covenant-default.md)
 - [Handle a co-founder departure](pages/handle-a-co-founder-departure.md)
 - [Handle a key employee's resignation](pages/handle-a-key-employee-s-resignation.md)
+- [Handle a press crisis](pages/handle-a-press-crisis.md)
 - [Handle a security-vulnerability report](pages/handle-a-security-vulnerability-report.md)
+- [Handle an employee's visa denial or RFE](pages/handle-an-employee-s-visa-denial-or-rfe.md)
 - [Migrate off a shutting-down vendor](pages/migrate-off-a-shutting-down-vendor.md)
 - [Recover a hijacked domain or social account](pages/recover-a-hijacked-domain-or-social-account.md)
 - [Recover a suspended ad or platform account](pages/recover-a-suspended-ad-or-platform-account.md)
@@ -199,6 +203,7 @@ One page per canonical record: 129 processes, 22 situations, 24 chains.
 - [Respond to a data breach](pages/respond-to-a-data-breach.md)
 - [Respond to a harassment complaint](pages/respond-to-a-harassment-complaint.md)
 - [Respond to a lawsuit](pages/respond-to-a-lawsuit.md)
+- [Respond to a patent demand letter](pages/respond-to-a-patent-demand-letter.md)
 - [Respond to a trademark office action](pages/respond-to-a-trademark-office-action.md)
 - [Survive a DDoS attack or major outage](pages/survive-a-ddos-attack-or-major-outage.md)
 - [Unstick a delayed US visa](pages/unstick-a-delayed-us-visa.md)

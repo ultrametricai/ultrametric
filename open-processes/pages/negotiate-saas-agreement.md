@@ -80,6 +80,7 @@ Requires:
 ## Related records
 
 - Part of the chain [Land the enterprise deal](land-the-enterprise-deal.md)
+- Runs as a step of [Absorb the loss of your biggest customer](absorb-the-loss-of-your-biggest-customer.md)
 
 ---
 
