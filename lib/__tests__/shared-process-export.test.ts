@@ -4,6 +4,7 @@ import { tmpdir } from 'node:os'
 import path from 'node:path'
 import { afterEach, beforeEach, describe, expect, it } from 'vitest'
 import { sharedSchemaJson } from '../shared-processes/json-schema'
+import { sharedRecordSchema } from '../shared-processes/schema'
 
 const repo = process.cwd()
 let root: string
@@ -81,7 +82,7 @@ describe('pinned catalog export', () => {
     expect(existsSync(path.join(root, 'catalog.json'))).toBe(false)
   })
 
-  it('preserves the canonical logo entry, graph, guidance and metadata in the normal export', () => {
+  it('preserves canonical logo content and generic/US tax-identifier boundaries in the normal export', () => {
     const directory = path.join(root, 'open-processes')
     rmSync(directory, { recursive: true })
     cpSync(path.join(repo, 'open-processes'), directory, { recursive: true })
@@ -101,5 +102,26 @@ describe('pinned catalog export', () => {
         ? { ...part, notes: [...part.notes, { text: 'Produced artifact: brand-logo' }] }
         : part),
     })
+    const taxId = sharedRecordSchema.parse(artifact.records.find((record: { id: string }) => record.id === 'form_002'))
+    expect(taxId.title).toBe('Obtain the company tax identifiers')
+    expect(taxId.metadata.geoScope).toBe('global')
+    expect(taxId.aliases).toContain('get-ein')
+    expect(taxId.globalSlug).toBe('obtain-the-company-tax-identifiers')
+    expect(taxId.countryViews).toContainEqual({ country: 'US', title: 'Get an EIN', slug: 'get-ein' })
+    expect(taxId.countryViews).toContainEqual({ country: 'UK', title: 'Confirm the company UTR', slug: 'confirm-the-company-utr-uk' })
+    expect(taxId.guidance).toContain('Never request, collect, or transmit raw SSNs or ITINs in chat, tool arguments, saved company context, or agent-generated artifacts.')
+    expect(taxId.notes.some(note => note.text.startsWith('Required context: confirmation') && note.text.endsWith('do not provide the identifier here'))).toBe(true)
+    for (const part of taxId.parts.slice(0, 2)) {
+      const us = part.notes.find(note => note.text.startsWith('US resolution (analog):'))!
+      expect(us.text).toContain('directly in the official IRS workflow')
+      expect(us.text).toContain('chat or tool arguments')
+    }
+    expect(taxId.parts[1].metadata.execution).toMatchObject({ category: 'human-online', reviewRequired: true })
+    expect(taxId.parts[1].metadata.cost).toBeUndefined()
+    expect(taxId.parts[1].notes.some(note => note.text.startsWith('US completion check:') && note.text.includes('CP 575'))).toBe(true)
+    expect(taxId.parts[1].notes.some(note => note.text.startsWith('US cost: 0 USD'))).toBe(true)
+    expect(taxId.parts[1].notes.some(note => note.text.includes('If the applicant is ineligible for the online assistant'))).toBe(true)
+    expect(taxId.parts[2].guidance).toContain('Exclude raw SSNs and ITINs from saved context and agent-generated artifacts.')
+    expect(JSON.stringify(taxId)).not.toContain('founder ssn')
   })
 })

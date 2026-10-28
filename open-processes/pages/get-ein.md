@@ -5,6 +5,8 @@
 
 Obtain or confirm the tax identifiers needed by the company. Some jurisdictions issue them during incorporation; others require a separate application or tax registration.
 
+Never request, collect, or transmit raw SSNs or ITINs in chat, tool arguments, saved company context, or agent-generated artifacts. The user enters any required personal tax identifier directly in the official tax authority's application or permitted filing channel. Prepare non-sensitive information separately. For personal identifiers, record only readiness or completion status or an authorized non-sensitive secure-location hint; do not retrieve the identifier.
+
 | Field | Value |
 | --- | --- |
 | Kind | process |
@@ -23,7 +25,7 @@ IRS EIN application is a web form with no API. System provides step-by-step guid
 
 1. **Prepare the company tax-registration information** — agent-runnable · ~1 min
 
-   Collect the legal entity details and existing registration records. Determine which tax identifiers were issued at formation and what additional registration is required by the company’s jurisdiction. Keep identifiers and responsible-person details in the private workspace.
+   Collect the legal entity details and existing registration records. Determine which tax identifiers were issued at formation and what additional registration is required by the company’s jurisdiction. Prepare only non-sensitive responsible-person details; the user supplies any required personal tax identifier directly in the official tax authority's workflow, outside chat and tool arguments.
 
    - Sources: [IRS get an EIN](https://www.irs.gov/businesses/small-businesses-self-employed/get-an-employer-identification-number)
 2. **Obtain or confirm the company tax identifiers** — manual form/portal · ~10 min · hard to undo
@@ -37,7 +39,7 @@ IRS EIN application is a web form with no API. System provides step-by-step guid
    - Sources: [IRS get an EIN](https://www.irs.gov/businesses/small-businesses-self-employed/get-an-employer-identification-number)
 3. **Store the tax identifiers in company records** — agent-runnable · ~1 min
 
-   Store the verified identifiers, issuing authority and confirmation privately. Make them available only to authorized users and downstream filings that require them.
+   Store the verified identifiers, issuing authority and confirmation privately. Make them available only to authorized users and downstream filings that require them. Exclude raw SSNs and ITINs from saved context and agent-generated artifacts. If a source confirmation contains them, keep it outside agent retrieval and save only an authorized non-sensitive secure-location hint as a protected reference.
 
    - Sources: [IRS get an EIN](https://www.irs.gov/businesses/small-businesses-self-employed/get-an-employer-identification-number)
 
@@ -45,8 +47,8 @@ IRS EIN application is a web form with no API. System provides step-by-step guid
 
 ### United States
 
-- Step 1: Pre-fill EIN application data Apply for an Employer Identification Number (EIN) from the IRS for the newly incorporated company. Collect the legal name, formation details and address from the accepted entity documents. Identify the responsible party, business activity, tax classification and reason for applying. Check whether an EIN already exists and which IRS application channel the entity can use. Resolve uncertain answers with the responsible person before filing, and keep tax identifiers in the private application workspace.
-- Step 2: Complete IRS SS-4 form online Use the IRS application method for which the entity and responsible party qualify. Review the answers against the prepared facts and current instructions. The authorized representative approves submission; a third-party designee needs signed authorization. Complete the required identity or signature steps and save the IRS confirmation. If the applicant is ineligible for the online assistant, use the appropriate IRS alternative with accurate identity details. ([IRS EIN online application](https://www.irs.gov/businesses/small-businesses-self-employed/apply-for-an-employer-identification-number-ein-online))
+- Step 1: Pre-fill EIN application data Apply for an Employer Identification Number (EIN) from the IRS for the newly incorporated company. Collect the legal name, formation details and address from the accepted entity documents. Identify the responsible party, business activity, tax classification and reason for applying. Check whether an EIN already exists and which IRS application channel the entity can use. Resolve uncertain answers with the responsible person before filing, and leave personal tax-identifier fields for the user to complete directly in the official IRS workflow. Never request or collect raw SSNs or ITINs in chat or tool arguments.
+- Step 2: Complete IRS SS-4 form online Use the IRS application method for which the entity and responsible party qualify. Review the answers against the prepared facts and current instructions. The authorized representative approves submission; a third-party designee needs signed authorization. Complete the required identity or signature steps and save the IRS confirmation. If the applicant is ineligible for the online assistant, use the appropriate IRS alternative with accurate identity details. The user personally enters any required SSN or ITIN directly in the official IRS workflow; never request or collect it in chat or tool arguments. ([IRS EIN online application](https://www.irs.gov/businesses/small-businesses-self-employed/apply-for-an-employer-identification-number-ein-online))
   - Cost: free (free, as of 2026-10-01, [www.irs.gov](https://www.irs.gov/businesses/small-businesses-self-employed/apply-for-an-employer-identification-number-ein-online)). The IRS issues EINs for free; third-party services charge to file on your behalf.
   - Verify: The EIN is issued in the XX-XXXXXXX format at the end of the online session — retain the CP 575 confirmation notice; banks and payroll providers ask for it. ([www.irs.gov](https://www.irs.gov/businesses/small-businesses-self-employed/apply-for-an-employer-identification-number-ein-online))
 
