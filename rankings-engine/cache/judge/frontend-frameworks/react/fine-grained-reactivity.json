@@ -1,16 +1,18 @@
 {
-  "hash": "2986ad6eaf7006183c688c44f7c83d72ce51a484669fad6822888b2b621d74cc",
+  "hash": "cc3a4f75387676069638b2bbda9f1d26472a0b405b6b0c0121fe8605888acc5c",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "partial",
-    "quality": 4,
+    "quality": 5,
     "confidence": "medium",
-    "rationale": "React documents components that manage their own state and re-render to match new data (react-gh-1, react-docs-3, react-docs-24). React Compiler automatically memoizes at build time, replacing manual useMemo/useCallback/React.memo, which narrows what re-runs (react-docs-15). However, the evidence shows component-level re-rendering rather than fine-grained tracking where only the dependent UI code re-runs, and the narrowing depends on an optional build-time compiler. Missing for 10: evidence of fine-grained dependency tracking that re-runs only dependent code, first-party docs on how state declaration (e.g. hooks) scopes updates, independent corroboration of update granularity.",
+    "rationale": "React's own docs show that components manage their own state and that React updates the screen when data changes (react-gh-1, react-docs-3, react-docs-24). React Compiler's automatic memoization, which removes the need for manual useMemo, useCallback and React.memo, reduces unnecessary re-execution, but it is an opt-in build step that safely skips optimization on rule-breaking code (react-docs-15, react-docs-36, react-docs-43). The evidence does not show that only the dependent UI code re-runs; updates happen at component level. Missing for 10: fine-grained dependency tracking so only dependent code re-runs, explicit docs on the state declaration API (e.g., useState), independent corroboration of re-render scope.",
     "evidenceIds": [
       "react-gh-1",
       "react-docs-3",
       "react-docs-24",
-      "react-docs-15"
+      "react-docs-15",
+      "react-docs-36",
+      "react-docs-43"
     ],
     "productId": "react",
     "storyId": "fine-grained-reactivity"

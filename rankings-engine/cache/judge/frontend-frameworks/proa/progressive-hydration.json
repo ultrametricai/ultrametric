@@ -1,16 +1,17 @@
 {
-  "hash": "4537d6525112fc35904b11fed000e0dfeb69d4a0a45d90347f6b77c9d2d16216",
+  "hash": "1ef836c99a52654ba831c3a5f6a93d50b513a3fb77af400a11496223e37d35b4",
   "keyVersion": "v2",
   "verdict": {
     "verdict": "full",
     "quality": 7,
     "confidence": "medium",
-    "rationale": "Proa uses an islands model. Pages are server-rendered, and only components with signals or event handlers ship JavaScript. Each hydrated island gets its own small vanilla-JS module plus seed state on a shared runtime of about 1.3 KB gzipped, so the page hydrates piecemeal rather than as one whole-app bundle. Suspense boundaries also stream ready chunks out of order, so slow data does not block the page. Missing for 10: documented hydration scheduling or priority controls (e.g., on-visible or idle triggers), explicit 'progressive hydration' documentation, and independent time-to-interactive measurements.",
+    "rationale": "Proa uses an islands model. It emits server-rendered HTML plus only the JavaScript each interactive island needs, and each hydrated island gets a small vanilla-JS module and seed state on a shared runtime of about 1.3 KB gzipped. Static components can ship no JS at all, and Suspense streams ready chunks out of order so slow data does not block the page. This covers the core of selective, incremental hydration for faster interactivity, though the evidence comes from first-party docs and the repo only. Missing for 10: documented hydration scheduling or priority strategies (e.g. on-visible or idle hydration), evidence that islands hydrate as streamed chunks arrive, independent or hands-on corroboration of time-to-interactive gains.",
     "evidenceIds": [
       "proa-gh-3",
       "proa-docs-16",
+      "proa-docs-8",
       "proa-docs-17",
-      "proa-docs-8"
+      "proa-docs-35"
     ],
     "productId": "proa",
     "storyId": "progressive-hydration"
