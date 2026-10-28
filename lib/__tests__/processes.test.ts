@@ -26,9 +26,9 @@ const node = (over: Partial<DagNode>): DagNode => ({
 })
 
 describe('corpus', () => {
-  it('loads all 154 records (127 processes + 27 situations) with unique, non-empty slugs', () => {
+  it('loads all 160 records (127 processes + 33 situations) with unique, non-empty slugs', () => {
     const tasks = loadProcesses(DATA_DIR)
-    expect(tasks.length).toBe(154)
+    expect(tasks.length).toBe(160)
     const slugs = tasks.map((t) => processSlug(t.title))
     expect(new Set(slugs).size).toBe(tasks.length)
     for (const s of slugs) expect(s).toMatch(/^[a-z0-9]+(-[a-z0-9]+)*$/)
@@ -419,7 +419,7 @@ describe('corpus', () => {
     const tasks = loadProcesses(DATA_DIR)
     const byId = (id: string) => tasks.find((t) => t.id === id)!
     const situations = tasks.filter((t) => t.kind === 'situation')
-    expect(situations.length).toBe(27)
+    expect(situations.length).toBe(33)
     // Reactive by definition: every situation is event-driven — no situation sits on a calendar.
     for (const t of situations) expect(t.cadence, `${t.id} cadence`).toBe('event-driven')
     // The urgency clock is curated, not uniform — all three tiers exist in the set.

@@ -32,7 +32,7 @@ const tiers = new Set<string>(REVERSIBILITY_TIERS)
 
 describe('reversibility totality', () => {
   it('classifies every process explicitly with a valid tier', () => {
-    expect(RAW.length).toBe(154)
+    expect(RAW.length).toBe(160)
     for (const t of RAW) {
       expect(tiers.has(t.reversibility), `${t.id} task tier`).toBe(true)
     }
@@ -53,7 +53,7 @@ describe('reversibility totality', () => {
   it('parses through the schema (required field, no default)', () => {
     // loadProcesses throws on any unclassified record — this is the totality gate by
     // construction; the assertions above exist to name the offender precisely.
-    expect(loadProcesses(DATA_DIR).length).toBe(154)
+    expect(loadProcesses(DATA_DIR).length).toBe(160)
   })
 })
 

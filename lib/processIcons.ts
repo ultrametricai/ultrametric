@@ -307,6 +307,12 @@ export const PROCESS_ICONS: Record<string, string> = {
   sit_025: pi('megaphone', 'red'), // 📣 Press crisis (the megaphone turned on the company)
   sit_026: pi('clock-alert', 'emerald'), // ⏰ Venture-debt covenant default (the overdue clock, money hue)
   sit_027: pi('hourglass', 'amber'), // ⏳ Employee visa denial/RFE (the wait concept from sit_002, legal hue — the clock is the agency's)
+  sit_028: pi('siren', 'emerald'), // 🚨 Avert a missed payroll (the money emergency, money hue)
+  sit_029: pi('person-out', 'orange'), // 👋 Reduction in force (the leaving-the-company concept hr_005/sit_019 carry, at team scale)
+  sit_030: pi('chart-down', 'violet'), // 📉 Down round or recap (sit_020's falling-chart concept, in the investor hue)
+  sit_031: pi('postbox', 'emerald'), // 📮 Missed 83(b) deadline (the filing that never made the mail, money hue)
+  sit_032: pi('handshake', 'fuchsia'), // 🤝 Acquisition approach (the deal handshake)
+  sit_033: pi('detective', 'amber'), // 🕵️ Government subpoena or data request (law enforcement at the door, legal hue)
 }
 
 export function processIcon(taskId: string): string {

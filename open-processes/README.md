@@ -44,7 +44,7 @@ regenerate. Drift gate: `__tests__/process-pages.test.ts`.
 
 <!-- process-pages:index:start (generated — scripts/generate-process-pages.ts) -->
 
-One page per canonical record: 129 processes, 27 situations, 24 chains.
+One page per canonical record: 129 processes, 33 situations, 24 chains.
 
 ### Processes
 
@@ -184,6 +184,7 @@ One page per canonical record: 129 processes, 27 situations, 24 chains.
 - [Absorb the loss of your biggest customer](pages/absorb-the-loss-of-your-biggest-customer.md)
 - [Answer a data-subject access request](pages/answer-a-data-subject-access-request.md)
 - [Answer a tax-authority notice](pages/answer-an-irs-or-state-tax-notice.md)
+- [Avert a missed payroll](pages/avert-a-missed-payroll.md)
 - [Contain a chargeback or fraud spike](pages/contain-a-chargeback-or-fraud-spike.md)
 - [Cure a Delaware franchise tax delinquency](pages/cure-a-delaware-franchise-tax-delinquency.md)
 - [Cure a venture-debt covenant default](pages/cure-a-venture-debt-covenant-default.md)
@@ -196,16 +197,21 @@ One page per canonical record: 129 processes, 27 situations, 24 chains.
 - [Recover a hijacked domain or social account](pages/recover-a-hijacked-domain-or-social-account.md)
 - [Recover a suspended ad or platform account](pages/recover-a-suspended-ad-or-platform-account.md)
 - [Recover from a frozen bank account or bank failure](pages/recover-from-a-frozen-bank-account-or-bank-failure.md)
+- [Recover from a missed 83(b) deadline](pages/recover-from-a-missed-83-b-deadline.md)
 - [Recover from a payment-processor account termination](pages/recover-from-a-payment-processor-account-termination.md)
 - [Recover from an app-store rejection or removal](pages/recover-from-an-app-store-rejection-or-removal.md)
 - [Report and manage a workplace injury](pages/report-and-manage-a-workplace-injury.md)
 - [Respond to a cease-and-desist](pages/respond-to-a-cease-and-desist.md)
 - [Respond to a data breach](pages/respond-to-a-data-breach.md)
+- [Respond to a government subpoena or data request](pages/respond-to-a-government-subpoena-or-data-request.md)
 - [Respond to a harassment complaint](pages/respond-to-a-harassment-complaint.md)
 - [Respond to a lawsuit](pages/respond-to-a-lawsuit.md)
 - [Respond to a patent demand letter](pages/respond-to-a-patent-demand-letter.md)
 - [Respond to a trademark office action](pages/respond-to-a-trademark-office-action.md)
+- [Respond to an acquisition approach](pages/respond-to-an-acquisition-approach.md)
+- [Run a reduction in force](pages/run-a-reduction-in-force.md)
 - [Survive a DDoS attack or major outage](pages/survive-a-ddos-attack-or-major-outage.md)
+- [Take a down round or recap](pages/take-a-down-round-or-recap.md)
 - [Unstick a delayed US visa](pages/unstick-a-delayed-us-visa.md)
 
 ### Chains

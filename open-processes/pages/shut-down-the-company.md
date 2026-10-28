@@ -202,6 +202,10 @@ Requires:
 - Foreign qualifications — from [Review state registration](review-state-registration.md)
 - Vendor contract — from [Pick the right vendor for the task](pick-the-right-vendor-for-the-task.md)
 
+## Related records
+
+- Runs as a step of [Avert a missed payroll](avert-a-missed-payroll.md)
+
 ---
 
 Source record: [`open-processes/shut-down-the-company.json`](../shut-down-the-company.json)

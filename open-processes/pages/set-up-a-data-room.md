@@ -58,6 +58,7 @@ Requires:
 
 - Part of the chain [Raise a seed round](raise-a-seed-round.md)
 - Part of the chain [Raise the follow-on round](go-fundraise-follow-on.md)
+- Runs as a step of [Respond to an acquisition approach](respond-to-an-acquisition-approach.md)
 
 ---
 
