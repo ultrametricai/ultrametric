@@ -11,7 +11,7 @@ import { validateCatalog } from '../shared-processes/schema'
 import { buildManifestStep } from '../processManifest'
 import {
   computeCeiling, findProcessBySlug, jurisdictionNodes, jurisdictionStepViews, loadChains, loadProcesses,
-  ProcessChainSchema, ProcessTaskSchema, processSlug,
+  ProcessChainSchema, ProcessTaskSchema, processSlug, StepGeoResolutionSchema,
 } from '../processes'
 import { crossArenaStepRankings } from '../processRankings'
 import { operationalSources } from './helpers/operational-sources'
@@ -177,6 +177,44 @@ describe('canonical catalog consumer contract', () => {
     expect(notes).toContain('Required context: company name')
     expect(notes).not.toContain('private_connector')
     expect(notes).not.toContain('Internal integration')
+  })
+
+  it('keeps personal tax identifiers outside generic and US process context', () => {
+    const record = recordForExport(byId('form_002'))
+    expect(record.title).toBe('Obtain the company tax identifiers')
+    expect(record.aliases).toEqual(expect.arrayContaining(['obtain-the-company-tax-identifiers', 'get-ein', 'confirm-the-company-utr-uk']))
+    expect(record.globalSlug).toBe('obtain-the-company-tax-identifiers')
+    expect(record.countryViews).toContainEqual({ country: 'US', title: 'Get an EIN', slug: 'get-ein' })
+    expect(record.countryViews).toContainEqual({ country: 'UK', title: 'Confirm the company UTR', slug: 'confirm-the-company-utr-uk' })
+    expect(record.metadata.geoScope).toBe('global')
+    expect(record.metadata.slugAliases).toContainEqual({ slug: 'get-ein', label: 'Get EIN' })
+    expect(record.entrySteps).toEqual(['n2'])
+    expect(record.parts.map(part => part.id)).toEqual(['n2', 'n3', 'n4'])
+    expect(record.links).toEqual([{ from: 'n2', to: 'n3', when: null }, { from: 'n3', to: 'n4', when: null }])
+    expect(record.guidance).toContain('Never request, collect, or transmit raw SSNs or ITINs in chat, tool arguments, saved company context, or agent-generated artifacts.')
+    expect(record.guidance).toContain("directly in the official tax authority's application or permitted filing channel")
+    expect(record.notes).toContainEqual({ text: "Required context: confirmation that the responsible person can enter any required personal tax identifier directly in the official tax authority's workflow; do not provide the identifier here" })
+    for (const part of record.parts.slice(0, 2)) {
+      const us = StepGeoResolutionSchema.array().parse(part.metadata.geoResolutions).find(row => row.country === 'US')!
+      expect(us.kind).toBe('analog')
+      expect(us.guidance).toContain('directly in the official IRS workflow')
+      expect(us.guidance).toContain('chat or tool arguments')
+      expect(part.notes.some(note => note.text.startsWith('US resolution (analog):') && note.text.includes(us.guidance!))).toBe(true)
+    }
+    const filing = record.parts[1]
+    expect(filing.metadata.verify).toEqual({ how: 'Retain the official confirmation or accepted documents required for this step in the selected jurisdiction; reconcile them with the approved company records.' })
+    expect(filing.metadata.cost).toBeUndefined()
+    const usFiling = StepGeoResolutionSchema.array().parse(filing.metadata.geoResolutions).find(row => row.country === 'US')!
+    expect(usFiling.verify?.how).toContain('CP 575')
+    expect(usFiling.cost?.usd).toBe(0)
+    expect(filing.notes.some(note => note.text.startsWith('US completion check:') && note.text.includes('CP 575'))).toBe(true)
+    expect(filing.notes.some(note => note.text.startsWith('US cost: 0 USD'))).toBe(true)
+    expect(filing.metadata.execution).toMatchObject({ category: 'human-online', basis: 'human-work', reviewRequired: true })
+    expect(JSON.stringify(filing.metadata.execution)).toContain('Existing restrictions on automated access remain')
+    expect(filing.notes.some(note => note.text.includes('If the applicant is ineligible for the online assistant, use the appropriate IRS alternative'))).toBe(true)
+    expect(record.parts[2].guidance).toContain('Exclude raw SSNs and ITINs from saved context and agent-generated artifacts.')
+    expect(record.parts[2].guidance).toContain('keep it outside agent retrieval')
+    expect(JSON.stringify(record)).not.toContain('founder ssn')
   })
 
   it('propagates unknown logo timing and execution kind while preserving known estimates', () => {
