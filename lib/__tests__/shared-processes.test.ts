@@ -96,3 +96,42 @@ describe('shared process definitions', () => {
     expect(() => validateCatalog(records)).toThrow('invalid entry step')
   })
 })
+
+describe('staged country entry points', () => {
+  it('authors ten pilots with distinct global and local URLs and preserves their stable IDs', async () => {
+    const { processCountryEntries } = await import('../shared-processes/country-views')
+    const records = loadSharedProcesses()
+    const pilots = records.filter(record => record.countryViews?.length)
+    expect(pilots).toHaveLength(10)
+    const slugs = new Set<string>()
+    for (const record of pilots) {
+      const views = processCountryEntries(record, record.id)
+      expect(views[0].country).toBe('GLOBAL')
+      expect(views.find(view => view.country === 'US')).toBeDefined()
+      for (const view of views) {
+        expect(slugs.has(view.slug), view.slug).toBe(false)
+        slugs.add(view.slug)
+        expect(view.title.trim().length).toBeGreaterThan(3)
+        if (view.country !== 'US' && view.country !== 'GLOBAL') {
+          expect((record.metadata.geoNotes as Array<{ country: string }>).some(note => note.country === view.country)).toBe(true)
+        }
+      }
+    }
+    for (const id of ['sit_002', 'tax_001', 'fund_003', 'form_011', 'tax_003']) {
+      expect(records.find(record => record.id === id)?.countryViews).toBeUndefined()
+    }
+    const ein = pilots.find(record => record.id === 'form_002')!
+    expect(ein.countryViews?.find(view => view.country === 'US')).toEqual({ country: 'US', title: 'Get an EIN', slug: 'get-ein' })
+    expect(ein.globalSlug).toBe('obtain-the-company-tax-identifiers')
+  })
+
+  it('keeps country-specific completion checks and fees out of shared pilot metadata', () => {
+    for (const record of loadSharedProcesses().filter(record => record.countryViews?.length)) {
+      for (const part of record.parts.filter(part => !part.metadata.jurisdictions)) {
+        const verification = part.metadata.verify as { how: string; url?: string } | undefined
+        if (verification) expect(JSON.stringify(verification), `${record.id}/${part.id}`).not.toMatch(/IRS|XX-XXXXXXX|CP 575|Delaware|USPS/)
+        expect(part.metadata.cost, `${record.id}/${part.id} fee stays in the US resolution`).toBeUndefined()
+      }
+    }
+  })
+})

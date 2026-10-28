@@ -29,7 +29,7 @@ Insurance quoting platforms lack APIs. System guides through requirements, compi
 
 Required artifacts:
 
-- EIN assignment letter — from [Get EIN](get-ein.md)
+- EIN assignment letter — from [Obtain the company tax identifiers](get-ein.md)
 - Business mailing address — from [Set up mailing address](set-up-mailing-address.md)
 
 | Information to gather | Required by the record |

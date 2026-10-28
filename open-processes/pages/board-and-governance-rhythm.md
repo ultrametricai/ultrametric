@@ -24,7 +24,7 @@ Run the linked processes in the recorded chain order. Each process defines its o
 | 1 | [Prepare a board meeting](prepare-a-board-meeting.md) | Accounting ledger; Payment processor account; Team wiki | Not recorded |
 | 2 | [Keep board minutes on cadence](keep-board-minutes-on-cadence.md) | Diligence data room | Signed board minutes |
 | 3 | [Set the annual budget & get board approval](set-the-annual-budget-get-board-approval.md) | Accounting ledger; Financial statements | Board-approved annual budget |
-| 4 | [File state annual report](file-state-annual-report.md) | Certificate of Incorporation | Not recorded |
+| 4 | [File the recurring company registry return](file-state-annual-report.md) | Certificate of Incorporation | Not recorded |
 
 ---
 

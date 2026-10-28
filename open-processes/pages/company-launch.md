@@ -21,8 +21,8 @@ Run the linked processes in the recorded chain order. Each process defines its o
 
 | Order | Process | Requires | Produces |
 | --- | --- | --- | --- |
-| 1 | [Incorporate C-Corp](incorporate-c-corp.md) | Company name; Registered agent | Certificate of Incorporation; Bylaws & initial board consent; Founder stock issuance; Filed 83(b) election |
-| 2 | [Get EIN](get-ein.md) | Certificate of Incorporation | EIN assignment letter |
+| 1 | [Incorporate the company](incorporate-c-corp.md) | Company name; Registered agent | Certificate of Incorporation; Bylaws & initial board consent; Founder stock issuance; Filed 83(b) election |
+| 2 | [Obtain the company tax identifiers](get-ein.md) | Certificate of Incorporation | EIN assignment letter |
 | 3 | [Set up cap table](set-up-cap-table.md) | Founder stock issuance | Cap table record |
 | 4 | [Sign the founder agreement & split equity](sign-the-founder-agreement-split-equity.md) | Cap table record | Founder agreement & IP assignment; Filed 83(b) election |
 | 5 | [Open bank account](open-bank-account.md) | EIN assignment letter; Certificate of Incorporation | Business bank account |

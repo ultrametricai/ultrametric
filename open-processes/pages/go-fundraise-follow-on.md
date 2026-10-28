@@ -24,7 +24,7 @@ Run the linked processes in the recorded chain order. Each process defines its o
 | 1 | [Audit cap table](audit-cap-table.md) | Cap table record; Founder agreement & IP assignment; Executed SAFEs | Not recorded |
 | 2 | [Set up a data room](set-up-a-data-room.md) | Document storage; Certificate of Incorporation; Bylaws & initial board consent; Cap table record; Financial statements; IP assignments (PIIA) | Diligence data room |
 | 3 | [Close a priced equity round](close-a-priced-equity-round.md) | Diligence data room; Cap table record; Business bank account; Signed board minutes | Priced round closing |
-| 4 | [Convert SAFEs at the priced round](convert-safes-at-the-priced-round.md) | Executed SAFEs; Priced round closing; Cap table record | Not recorded |
+| 4 | [Convert fundraising instruments at the priced round](convert-safes-at-the-priced-round.md) | Executed SAFEs; Priced round closing; Cap table record | Not recorded |
 | 5 | [Get a 409A valuation](get-a-409a-valuation.md) | Financial statements; Cap table record | 409A valuation report |
 | 6 | [Update cap table](update-cap-table.md) | Cap table record; Executed SAFEs | Not recorded |
 

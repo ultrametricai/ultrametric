@@ -29,7 +29,7 @@ Account activation and KYC are processor-hosted forms; the integration, test cha
 
 Required artifacts:
 
-- EIN assignment letter — from [Get EIN](get-ein.md)
+- EIN assignment letter — from [Obtain the company tax identifiers](get-ein.md)
 - Business bank account — from [Open bank account](open-bank-account.md)
 
 ## Steps at a glance

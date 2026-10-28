@@ -22,7 +22,7 @@ Run the linked processes in the recorded chain order. Each process defines its o
 | Order | Process | Requires | Produces |
 | --- | --- | --- | --- |
 | 1 | [Set up a data room](set-up-a-data-room.md) | Document storage; Certificate of Incorporation; Bylaws & initial board consent; Cap table record; Financial statements; IP assignments (PIIA) | Diligence data room |
-| 2 | [Raise pre-seed (SAFEs)](raise-pre-seed-safes.md) | Cap table record; Business bank account | Executed SAFEs |
+| 2 | [Raise pre-seed funding](raise-pre-seed-safes.md) | Cap table record; Business bank account | Executed SAFEs |
 | 3 | [Update cap table](update-cap-table.md) | Cap table record; Executed SAFEs | Not recorded |
 
 ---

@@ -70,7 +70,7 @@ Use the recorded prerequisites and conditions to follow the path. Row order is f
 | [3. The required decision-makers approve and sign the grant authorization](#step-3) | human; approval required; signature required; includes waiting | ~2 d | [Step 2](#step-2) |
 | [4. Generate option agreement](#step-4) | agent-runnable; approval required | ~5 min | [Step 3](#step-3) |
 | [5. Send for employee signature](#step-5) | agent-runnable; approval required | ~5 min | [Step 4](#step-4) |
-| [6. Record grant on Carta](#step-6) | agent-runnable; approval required | ~5 min | [Step 5](#step-5) |
+| [6. Record the grant in the equity register](#step-6) | agent-runnable; approval required | ~5 min | [Step 5](#step-5) |
 
 <a id="steps"></a>
 
@@ -135,7 +135,7 @@ The equity administrator sends the final agreement and governing plan to the int
 
 <a id="step-6"></a>
 
-### 6. Record grant on Carta
+### 6. Record the grant in the equity register
 
 agent-runnable · ~5 min · human approval required
 

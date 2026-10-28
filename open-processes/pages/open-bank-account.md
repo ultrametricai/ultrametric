@@ -29,8 +29,8 @@ The application and KYC upload are online forms (no public API); approval is a b
 
 Required artifacts:
 
-- EIN assignment letter — from [Get EIN](get-ein.md)
-- Certificate of Incorporation — from [Incorporate C-Corp](incorporate-c-corp.md)
+- EIN assignment letter — from [Obtain the company tax identifiers](get-ein.md)
+- Certificate of Incorporation — from [Incorporate the company](incorporate-c-corp.md)
 
 | Information to gather | Required by the record |
 | --- | --- |

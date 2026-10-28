@@ -29,7 +29,7 @@ Delaware franchise tax portal has no API. System calculates the tax, pre-fills d
 
 Required artifacts:
 
-- Certificate of Incorporation — from [Incorporate C-Corp](incorporate-c-corp.md)
+- Certificate of Incorporation — from [Incorporate the company](incorporate-c-corp.md)
 - Cap table record — from [Set up cap table](set-up-cap-table.md)
 
 | Information to gather | Required by the record |

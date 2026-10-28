@@ -22,7 +22,7 @@ Run the linked processes in the recorded chain order. Each process defines its o
 | Order | Process | Requires | Produces |
 | --- | --- | --- | --- |
 | 1 | [Hire intl contractor](hire-intl-contractor.md) | Not recorded | Not recorded |
-| 2 | [Add a contractor (1099)](add-a-contractor-1099.md) | Payroll account | Contractor record (W-9 on file) |
+| 2 | [Onboard a contractor](add-a-contractor-1099.md) | Payroll account | Contractor record (W-9 on file) |
 | 3 | [Hire abroad via an EOR](hire-abroad-via-an-eor.md) | Company email workspace | Not recorded |
 
 ---

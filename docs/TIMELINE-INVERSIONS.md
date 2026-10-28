@@ -8,8 +8,8 @@ Every place the curated `timeOrder` founder timeline (160 processes) orders a CO
 
 | # | Consumer (curated position) | needs | Producer (curated position) |
 |---|---|---|---|
-| 1 | Incorporate C-Corp `form_001` (#1) | Company name `company-name` | Generate a company name `brand_001` (#8) |
-| 2 | Incorporate C-Corp `form_001` (#1) | Registered agent `registered-agent` | Set up registered agent `qs_043` (#5) |
+| 1 | Incorporate the company `form_001` (#1) | Company name `company-name` | Generate a company name `brand_001` (#8) |
+| 2 | Incorporate the company `form_001` (#1) | Registered agent `registered-agent` | Set up registered agent `qs_043` (#5) |
 | 3 | Set up an LLC `form_011` (#2) | Company name `company-name` | Generate a company name `brand_001` (#8) |
 | 4 | Sign the founder agreement & split equity `startup_002` (#3) | Cap table record `cap-table` | Set up cap table `qs_051` (#22) |
 | 5 | Validate the idea `startup_001` (#7) | Team wiki `team-wiki` | Set up a team wiki `ops_003` (#20) |
@@ -39,7 +39,7 @@ The complement question: processes the curated timeline places far LATER than th
 | Set up AI code review `sw_011` | #125 | #27 | 98 |
 | Set up SSO & access management `scale_007` | #106 | #16 | 90 |
 | Review state registration `qs_045` | #90 | #2 | 88 |
-| File state annual report `qs_047` | #89 | #2 | 87 |
+| File the recurring company registry return `qs_047` | #89 | #2 | 87 |
 | Run the annual penetration test `comp_013` | #116 | #29 | 87 |
 | Set company OKRs `scale_012` | #105 | #21 | 84 |
 | Set up expense management `scale_004` | #101 | #19 | 82 |
@@ -47,7 +47,7 @@ The complement question: processes the curated timeline places far LATER than th
 | Write the employee handbook `scale_003` | #100 | #21 | 79 |
 | Stand up a data warehouse & BI `scale_010` | #111 | #32 | 79 |
 | Set up on-call & incident response `scale_009` | #108 | #31 | 77 |
-| Convert an LLC to a C-Corp `form_012` | #123 | #47 | 76 |
+| Change the company legal form `form_012` | #123 | #47 | 76 |
 | Set up ATS `hr_004` | #95 | #26 | 69 |
 | Monitor trademark / handle availability `opp_012` | #77 | #9 | 68 |
 | File trademark `legal_002` | #78 | #10 | 68 |

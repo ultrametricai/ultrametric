@@ -2,6 +2,7 @@ import fs from 'node:fs'
 import path from 'node:path'
 import { describe, expect, it } from 'vitest'
 import { loadProcesses } from '@/lib/processes'
+import { loadProcessCatalog } from '@/lib/shared-processes/catalog'
 
 import { GEO_COUNTRIES, GEO_PREF_META } from '../lib/geoPreference'
 
@@ -451,10 +452,9 @@ describe('README.md anchors and links', () => {
 })
 
 describe('README.md examples pin to the committed records', () => {
-  type CorpusRec = { id: string; title: string }
+  type CorpusRec = { id: string; title: string; slugAliases?: Array<{ slug: string }> }
   const corpus: CorpusRec[] = loadProcesses(path.join(ROOT, 'open-rankings'))
   // Mirrors lib/processes.ts processSlug.
-  const slug = (title: string) => title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '')
 
   it('the three example links resolve to real processes via their derived slugs', () => {
     // Founder round 4: the formal picks — Incorporate C-Corp, Get a 409A valuation,
@@ -462,7 +462,9 @@ describe('README.md examples pin to the committed records', () => {
     for (const id of ['form_001', 'fund_003', 'qs_044']) {
       const rec = corpus.find((t) => t.id === id)
       expect(rec, `corpus record ${id} missing`).toBeDefined()
-      const guide = `open-processes/pages/${slug(rec!.title)}.md`
+      const canonical = loadProcessCatalog().processes.find((p) => p.record.id === id)
+      expect(canonical, id).toBeDefined()
+      const guide = `open-processes/pages/${canonical!.slug}.md`
       expect(readme).toContain(`](${guide})`)
       expect(fs.existsSync(path.join(ROOT, guide)), guide).toBe(true)
     }

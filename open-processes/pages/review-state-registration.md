@@ -29,7 +29,7 @@ An agent can map employee locations to registration duties; the foreign-qualific
 
 Required artifacts:
 
-- Certificate of Incorporation — from [Incorporate C-Corp](incorporate-c-corp.md)
+- Certificate of Incorporation — from [Incorporate the company](incorporate-c-corp.md)
 
 ## Geography
 

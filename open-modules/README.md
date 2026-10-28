@@ -32,10 +32,10 @@ lines; edit the map, rerun the script.
 
 | Module | What it computes | Serves | Worked-example source | Status |
 | --- | --- | --- | --- | --- |
-| [Cap table](#cap-table) | Issuance, pools, SAFE conversion, priced-round PPS, dilution waterfall | Incorporate C-Corp · Sign the founder agreement & split equity · Set up cap table · Update cap table · Audit cap table · Raise pre-seed (SAFEs) · Close a priced equity round · Issue stock options · Convert SAFEs at the priced round · Handle a co-founder departure | YC Post-Money Safe User Guide (Appendix II) | verified + property-tested |
-| [Vesting mechanics](#vesting-mechanics) | Cliff/periodic/back-loaded schedules, acceleration, departures | Incorporate C-Corp · Sign the founder agreement & split equity · Issue stock options · Hire first employee · Hire an executive · Handle a co-founder departure | Cooley GO; Amazon 5/15/40/40; FAST grid | verified + property-tested |
-| [83(b) election math](#83b-election-math) | Tax-at-grant vs tax-at-vesting, forfeiture cost | Incorporate C-Corp · Sign the founder agreement & split equity · Convert an LLC to a C-Corp · Recover from a missed 83(b) deadline | Rev. Proc. 2012-29 (all six examples) | verified |
-| [QSBS (§ 1202)](#qsbs--1202) | Eligibility checklist, holding clock, exclusion %, per-issuer cap | Incorporate C-Corp · Convert an LLC to a C-Corp | IRC § 1202 (re-derived caps) | verified, checklist-shaped |
+| [Cap table](#cap-table) | Issuance, pools, SAFE conversion, priced-round PPS, dilution waterfall | Incorporate the company · Sign the founder agreement & split equity · Set up cap table · Update cap table · Audit cap table · Raise pre-seed funding · Close a priced equity round · Issue stock options · Convert fundraising instruments at the priced round · Handle a co-founder departure | YC Post-Money Safe User Guide (Appendix II) | verified + property-tested |
+| [Vesting mechanics](#vesting-mechanics) | Cliff/periodic/back-loaded schedules, acceleration, departures | Incorporate the company · Sign the founder agreement & split equity · Issue stock options · Hire first employee · Hire an executive · Handle a co-founder departure | Cooley GO; Amazon 5/15/40/40; FAST grid | verified + property-tested |
+| [83(b) election math](#83b-election-math) | Tax-at-grant vs tax-at-vesting, forfeiture cost | Incorporate the company · Sign the founder agreement & split equity · Change the company legal form · Recover from a missed 83(b) deadline | Rev. Proc. 2012-29 (all six examples) | verified |
+| [QSBS (§ 1202)](#qsbs--1202) | Eligibility checklist, holding clock, exclusion %, per-issuer cap | Incorporate the company · Change the company legal form | IRC § 1202 (re-derived caps) | verified, checklist-shaped |
 | [Offer / equity-comp scenarios](#offer--equity-comp-scenarios) | Grant %, spread, exit scenarios | Issue stock options · Hire first employee · Hire an executive | Holloway equity guide; Rewarding Talent | verified, pre-tax by design |
 | [ISO / NSO exercise tax](#iso--nso-exercise-tax) | NSO income, ISO/AMT outcomes, § 422(d) $100k, dispositions | Issue stock options · Offboard employee | Pub 525; Treas. Reg. § 1.422-4(d) Ex. 1–3; Rev. Proc. 2024-40/2025-32 | verified; AMT is illustration-only |
 | [409A grant sanity](#409a-grant-sanity) | Strike floor, staleness, presumptions, refresh triggers, penalty illustration | Close a priced equity round · Get a 409A valuation · Issue stock options | Treas. Reg. § 1.409A law rules | sanity model — never a valuation |
@@ -44,17 +44,17 @@ lines; edit the map, rerun the script.
 
 | Module | What it computes | Serves | Worked-example source | Status |
 | --- | --- | --- | --- | --- |
-| [Convertible notes](#convertible-notes) | Interest, cap/discount conversion, maturity paths, pricing with notes | Raise pre-seed (SAFEs) · Convert SAFEs at the priced round | Cooley GO convertible-debt primers | verified |
-| [Priced-round mechanics](#priced-round-mechanics) | Pro rata, pool-from-hiring-plan, down-round model, secondaries | Close a priced equity round · Convert SAFEs at the priced round | YC User Guide §E; Rewarding Talent; Springmeyer; Cooley GO | verified |
-| [Priced-round composer](#priced-round-composer) | The round end-to-end: term sheet → wires/issuance → post-close | Close a priced equity round · Convert SAFEs at the priced round | YC Appendix II Ex. 1, replayed end-to-end | verified by composition-equality |
+| [Convertible notes](#convertible-notes) | Interest, cap/discount conversion, maturity paths, pricing with notes | Raise pre-seed funding · Convert fundraising instruments at the priced round | Cooley GO convertible-debt primers | verified |
+| [Priced-round mechanics](#priced-round-mechanics) | Pro rata, pool-from-hiring-plan, down-round model, secondaries | Close a priced equity round · Convert fundraising instruments at the priced round | YC User Guide §E; Rewarding Talent; Springmeyer; Cooley GO | verified |
+| [Priced-round composer](#priced-round-composer) | The round end-to-end: term sheet → wires/issuance → post-close | Close a priced equity round · Convert fundraising instruments at the priced round | YC Appendix II Ex. 1, replayed end-to-end | verified by composition-equality |
 | [Anti-dilution](#anti-dilution) | NVCA weighted-average / full-ratchet conversion-price adjustments | Close a priced equity round · Take a down round or recap | NVCA model COD; Springmeyer worked example | verified + property-tested |
-| [Liquidity-event waterfall](#liquidity-event-waterfall) | Per-holder proceeds at a sale price | Raise pre-seed (SAFEs) · Close a priced equity round | YC User Guide Appendix II Ex. 1 Q3/Q4; Cooley GO glossary | verified + property-tested |
+| [Liquidity-event waterfall](#liquidity-event-waterfall) | Per-holder proceeds at a sale price | Raise pre-seed funding · Close a priced equity round | YC User Guide Appendix II Ex. 1 Q3/Q4; Cooley GO glossary | verified + property-tested |
 
 ### Tax & compliance
 
 | Module | What it computes | Serves | Worked-example source | Status |
 | --- | --- | --- | --- | --- |
-| [Deadline calendar](#deadline-calendar) | Law-rule-backed due dates and recurring clocks | Incorporate C-Corp · Sign the founder agreement & split equity · Convert an LLC to a C-Corp · File DE franchise tax · File federal tax return · Cure a Delaware franchise tax delinquency | Dated law rules in `open-law/` | verified, always `needsReview` where dates can move |
+| [Deadline calendar](#deadline-calendar) | Law-rule-backed due dates and recurring clocks | Incorporate the company · Sign the founder agreement & split equity · Change the company legal form · File DE franchise tax · File the company income tax return · Cure a Delaware franchise tax delinquency | Dated law rules in `open-law/` | verified, always `needsReview` where dates can move |
 | [Employer payroll tax](#employer-payroll-tax) | FICA/FUTA employer load, per-employee cost | Set up payroll · Hire first employee · Run payroll | IRS Pub 15 / instructions (pinned maxima) | verified, FEDERAL ONLY |
 | [Delaware franchise tax](#delaware-franchise-tax) | Both published methods, exactly; the March comparison | File DE franchise tax · Cure a Delaware franchise tax delinquency | 8 Del. C. § 503 + Division worked examples | verified |
 | [R&D tax mechanics](#rd-tax-mechanics) | § 174 amortization patterns, § 41(h) offset caps, Form 8974 application | Claim the R&D tax credit | IRC § 174/41; Form 8974 instructions | explanation + arithmetic — never a credit computation |
@@ -134,7 +134,7 @@ PPS = 15,000,000 ÷ (11,764,705 + 1,695,000) = $1.1144; new shares =
 floor(5,000,000 ÷ 1.1144) = 4,486,719; Investor B's pro rata = 4,486,719 × 10% = 448,671.
 Final fully diluted: 17,946,424, with founders at 51.54% and the pool at 10.00%.
 
-**Serves:** [Incorporate C-Corp](https://ultrametric.ai/processes/incorporate-c-corp) (n7 `buildCapTable`) · [Sign the founder agreement & split equity](https://ultrametric.ai/processes/sign-the-founder-agreement-split-equity) (n4 `buildCapTable`) · [Set up cap table](https://ultrametric.ai/processes/set-up-cap-table) (n2 `buildCapTable`, n3 `safeOwnershipPct`) · [Update cap table](https://ultrametric.ai/processes/update-cap-table) (n2 `buildCapTable`) · [Audit cap table](https://ultrametric.ai/processes/audit-cap-table) (n2 `buildCapTable`) · [Raise pre-seed (SAFEs)](https://ultrametric.ai/processes/raise-pre-seed-safes) (n6 `safeOwnershipPct`, n8 `buildCapTable`) · [Close a priced equity round](https://ultrametric.ai/processes/close-a-priced-equity-round) (n7 `buildCapTable`) · [Issue stock options](https://ultrametric.ai/processes/issue-stock-options) · [Convert SAFEs at the priced round](https://ultrametric.ai/processes/convert-safes-at-the-priced-round) (n2 `buildCapTable`) · [Handle a co-founder departure](https://ultrametric.ai/processes/handle-a-co-founder-departure) (n7 `buildCapTable`)
+**Serves:** [Incorporate the company](https://ultrametric.ai/processes/incorporate-the-company) (n7 `buildCapTable`) · [Sign the founder agreement & split equity](https://ultrametric.ai/processes/sign-the-founder-agreement-split-equity) (n4 `buildCapTable`) · [Set up cap table](https://ultrametric.ai/processes/set-up-cap-table) (n2 `buildCapTable`, n3 `safeOwnershipPct`) · [Update cap table](https://ultrametric.ai/processes/update-cap-table) (n2 `buildCapTable`) · [Audit cap table](https://ultrametric.ai/processes/audit-cap-table) (n2 `buildCapTable`) · [Raise pre-seed funding](https://ultrametric.ai/processes/raise-pre-seed-funding) (n6 `safeOwnershipPct`, n8 `buildCapTable`) · [Close a priced equity round](https://ultrametric.ai/processes/close-a-priced-equity-round) (n7 `buildCapTable`) · [Issue stock options](https://ultrametric.ai/processes/issue-stock-options) · [Convert fundraising instruments at the priced round](https://ultrametric.ai/processes/convert-fundraising-instruments-at-the-priced-round) (n2 `buildCapTable`) · [Handle a co-founder departure](https://ultrametric.ai/processes/handle-a-co-founder-departure) (n7 `buildCapTable`)
 
 **Honesty boundaries.** The module records what documents say and decides no terms.
 Shares floor and prices round to 4 decimals (the guide's convention), so sub-cent prices
@@ -174,7 +174,7 @@ the final event on 2030-01-15 reaches 4,800,000 exactly. A founder departing 202
 keeps 1,800,000 vested shares (18/48) and 3,000,000 remain subject to the company's
 repurchase right.
 
-**Serves:** [Incorporate C-Corp](https://ultrametric.ai/processes/incorporate-c-corp) · [Sign the founder agreement & split equity](https://ultrametric.ai/processes/sign-the-founder-agreement-split-equity) (n1 `vestingEvents`) · [Issue stock options](https://ultrametric.ai/processes/issue-stock-options) (n4 `vestingEvents`) · [Hire first employee](https://ultrametric.ai/processes/hire-first-employee) (n10 `vestingEvents`) · [Hire an executive](https://ultrametric.ai/processes/hire-an-executive) (n5 `applyAcceleration`) · [Handle a co-founder departure](https://ultrametric.ai/processes/handle-a-co-founder-departure) (n2 `vestedAsOf`, n4 `departureSummary`)
+**Serves:** [Incorporate the company](https://ultrametric.ai/processes/incorporate-the-company) · [Sign the founder agreement & split equity](https://ultrametric.ai/processes/sign-the-founder-agreement-split-equity) (n1 `vestingEvents`) · [Issue stock options](https://ultrametric.ai/processes/issue-stock-options) (n4 `vestingEvents`) · [Hire first employee](https://ultrametric.ai/processes/hire-first-employee) (n10 `vestingEvents`) · [Hire an executive](https://ultrametric.ai/processes/hire-an-executive) (n5 `applyAcceleration`) · [Handle a co-founder departure](https://ultrametric.ai/processes/handle-a-co-founder-departure) (n2 `vestedAsOf`, n4 `departureSummary`)
 
 **Honesty boundaries.** Anniversary clamping and cumulative-floor rounding are stated
 conventions; the plan documents control, so every position carries `needsReview`.
@@ -214,7 +214,7 @@ the election versus $20,000 without. At the test's hypothetical 37% ordinary and
 capital-gains rates: with = 0.20 × 35,000 = $7,000; without = 0.37 × 15,000 +
 0.20 × 20,000 = $9,550; savings $2,550.
 
-**Serves:** [Incorporate C-Corp](https://ultrametric.ai/processes/incorporate-c-corp) (n8a `compare83bScenario`) · [Sign the founder agreement & split equity](https://ultrametric.ai/processes/sign-the-founder-agreement-split-equity) (n4b `compare83bScenario`) · [Convert an LLC to a C-Corp](https://ultrametric.ai/processes/convert-an-llc-to-a-c-corp) (n8a `compare83bScenario`) · [Recover from a missed 83(b) deadline](https://ultrametric.ai/processes/recover-from-a-missed-83-b-deadline) (n3 `compare83bScenario`)
+**Serves:** [Incorporate the company](https://ultrametric.ai/processes/incorporate-the-company) (n8a `compare83bScenario`) · [Sign the founder agreement & split equity](https://ultrametric.ai/processes/sign-the-founder-agreement-split-equity) (n4b `compare83bScenario`) · [Change the company legal form](https://ultrametric.ai/processes/change-the-company-legal-form) (n8a `compare83bScenario`) · [Recover from a missed 83(b) deadline](https://ultrametric.ai/processes/recover-from-a-missed-83-b-deadline) (n3 `compare83bScenario`)
 
 **Honesty boundaries.** Rates and FMV trajectories are inputs; the module predicts no
 value, applies no current rate table, and authorizes no filing (the election is
@@ -251,7 +251,7 @@ min($30,000,000, $20,000,000) = $20,000,000. Excluded: $20,000,000. Taxable: $10
 Stock acquired after the applicable date instead earns 50/75/100 at 3/4/5 years against a
 $15,000,000 base, also pinned in the tests.
 
-**Serves:** [Incorporate C-Corp](https://ultrametric.ai/processes/incorporate-c-corp) (n7 `qsbsEligibilityChecklist`, n7b `qsbsHoldingClock`) · [Convert an LLC to a C-Corp](https://ultrametric.ai/processes/convert-an-llc-to-a-c-corp) (n7 `qsbsEligibilityChecklist`, n7b `qsbsHoldingClock`)
+**Serves:** [Incorporate the company](https://ultrametric.ai/processes/incorporate-the-company) (n7 `qsbsEligibilityChecklist`, n7b `qsbsHoldingClock`) · [Change the company legal form](https://ultrametric.ai/processes/change-the-company-legal-form) (n7 `qsbsEligibilityChecklist`, n7b `qsbsHoldingClock`)
 
 **Honesty boundaries.** The active-business test always returns needs_review, so the
 checklist is never a QSBS opinion. The post-2026 inflation adjustments and the
@@ -288,7 +288,7 @@ Delaware C corporation sorts six entries: Form 941 for 2025 Q4 (2026-01-31), fra
 tax for 2025 (2026-03-01), Form 1120 for 2025 (2026-04-15), then the 941s for Q1 through
 Q3 (2026-04-30, 2026-07-31, 2026-10-31).
 
-**Serves:** [Incorporate C-Corp](https://ultrametric.ai/processes/incorporate-c-corp) (n8 `election83bWindow`) · [Sign the founder agreement & split equity](https://ultrametric.ai/processes/sign-the-founder-agreement-split-equity) (n5 `election83bWindow`) · [Convert an LLC to a C-Corp](https://ultrametric.ai/processes/convert-an-llc-to-a-c-corp) (n8 `election83bWindow`) · [File DE franchise tax](https://ultrametric.ai/processes/file-de-franchise-tax) (n3 `deFranchiseTaxDue`) · [File federal tax return](https://ultrametric.ai/processes/file-federal-tax-return) (n6 `form1120Due`) · [Cure a Delaware franchise tax delinquency](https://ultrametric.ai/processes/cure-a-delaware-franchise-tax-delinquency) (n5 `deFranchiseTaxDue`)
+**Serves:** [Incorporate the company](https://ultrametric.ai/processes/incorporate-the-company) (n8 `election83bWindow`) · [Sign the founder agreement & split equity](https://ultrametric.ai/processes/sign-the-founder-agreement-split-equity) (n5 `election83bWindow`) · [Change the company legal form](https://ultrametric.ai/processes/change-the-company-legal-form) (n8 `election83bWindow`) · [File DE franchise tax](https://ultrametric.ai/processes/file-de-franchise-tax) (n3 `deFranchiseTaxDue`) · [File the company income tax return](https://ultrametric.ai/processes/file-the-company-income-tax-return) (n6 `form1120Due`) · [Cure a Delaware franchise tax delinquency](https://ultrametric.ai/processes/cure-a-delaware-franchise-tax-delinquency) (n5 `deFranchiseTaxDue`)
 
 **Honesty boundaries.** Legal holidays are out of scope: weekend landings flag, holiday
 landings do not. The module computes nominal dates and does not extend or legally
@@ -328,7 +328,7 @@ the method's defining property (new investors hold exactly $2m of a $10m post-mo
 pre-money method ($8.00 / $5.60, 70% / 12.5% / 17.5%) and the dollars-invested method
 ($7.5714 / $5.30, 68.83% / 12.99% / 18.18%) replay the same way.
 
-**Serves:** [Raise pre-seed (SAFEs)](https://ultrametric.ai/processes/raise-pre-seed-safes) · [Convert SAFEs at the priced round](https://ultrametric.ai/processes/convert-safes-at-the-priced-round) (n2 `seriesPricingWithNotes`)
+**Serves:** [Raise pre-seed funding](https://ultrametric.ai/processes/raise-pre-seed-funding) · [Convert fundraising instruments at the priced round](https://ultrametric.ai/processes/convert-fundraising-instruments-at-the-priced-round) (n2 `seriesPricingWithNotes`)
 
 **Honesty boundaries.** Simple interest on an actual-day count only; compounding, 30/360
 conventions, and default interest belong to the note's text. The cap denominator is
@@ -370,7 +370,7 @@ $10,000,000 in exact cents (the display-rounded price would over-distribute by a
 $534). At $3,000,000 the figures are $0.2670, $149,991, and $299,982; both safes cash out
 and the remaining $2,000,000 goes pro rata to the 9,550,000 outstanding shares.
 
-**Serves:** [Raise pre-seed (SAFEs)](https://ultrametric.ai/processes/raise-pre-seed-safes) (n6 `liquidityWaterfall`) · [Close a priced equity round](https://ultrametric.ai/processes/close-a-priced-equity-round)
+**Serves:** [Raise pre-seed funding](https://ultrametric.ai/processes/raise-pre-seed-funding) (n6 `liquidityWaterfall`) · [Close a priced equity round](https://ultrametric.ai/processes/close-a-priced-equity-round)
 
 **Honesty boundaries.** The sale price must be net of debt; creditors and convertible
 notes rank senior and are not modeled. Capped participation, stacked seniority, accruing
@@ -451,7 +451,7 @@ floor(8,000,000 ÷ 1.7059) = 4,689,606 shares, 689,606 more than before. Fully d
 after = 8,000,000 + 4,689,606 + 5,000,000 = 17,689,606: founders fall from 66.67% to
 45.22%, protected Series A holds 26.51%, and the new investor takes 28.27%.
 
-**Serves:** [Close a priced equity round](https://ultrametric.ai/processes/close-a-priced-equity-round) (n1 `maintainOwnership`) · [Convert SAFEs at the priced round](https://ultrametric.ai/processes/convert-safes-at-the-priced-round) (n2 `proRataShares`)
+**Serves:** [Close a priced equity round](https://ultrametric.ai/processes/close-a-priced-equity-round) (n1 `maintainOwnership`) · [Convert fundraising instruments at the priced round](https://ultrametric.ai/processes/convert-fundraising-instruments-at-the-priced-round) (n2 `proRataShares`)
 
 **Honesty boundaries.** Per-role grant benchmarks stay in the published grids and arrive
 as inputs. The computed broad base counts each row at its row share count (the 1:1-before
@@ -490,7 +490,7 @@ diluted 17,946,424; new preferred = 4,486,719 + 588,235 + 1,176,470 = 6,251,424;
 conversion price at close $1.1144 at ratio 1.0. Composition-equality assertions prove the
 replay equals the cap-table engine's own fold.
 
-**Serves:** [Close a priced equity round](https://ultrametric.ai/processes/close-a-priced-equity-round) (n1 `termSheetEconomics`, n7 `replayPricedRound`, n9 `replayPricedRound`) · [Convert SAFEs at the priced round](https://ultrametric.ai/processes/convert-safes-at-the-priced-round) (n4 `replayPricedRound`)
+**Serves:** [Close a priced equity round](https://ultrametric.ai/processes/close-a-priced-equity-round) (n1 `termSheetEconomics`, n7 `replayPricedRound`, n9 `replayPricedRound`) · [Convert fundraising instruments at the priced round](https://ultrametric.ai/processes/convert-fundraising-instruments-at-the-priced-round) (n4 `replayPricedRound`)
 
 **Honesty boundaries.** The liquidity check collapses all round preferred into one pari
 passu 1x non-participating series; per-sub-series preference choices are charter text.

@@ -29,7 +29,7 @@ Carta integration is planned. Cap table setup requires manual data entry or docu
 
 Required artifacts:
 
-- Founder stock issuance — from [Incorporate C-Corp](incorporate-c-corp.md)
+- Founder stock issuance — from [Incorporate the company](incorporate-c-corp.md)
 
 | Information to gather | Required by the record |
 | --- | --- |

@@ -14,7 +14,7 @@ Set up a payroll provider to run payroll, file employment taxes, and administer 
 | Kind | process |
 | Phase | hr |
 | Cadence | once |
-| Geo scope | us |
+| Geo scope | global |
 | Complexity | moderate |
 | Reversibility | hard to undo |
 | Active work | ~8 min |
@@ -29,7 +29,7 @@ Provider onboarding is a guided online form (needs EIN and bank account); the jo
 
 Required artifacts:
 
-- EIN assignment letter — from [Get EIN](get-ein.md)
+- EIN assignment letter — from [Obtain the company tax identifiers](get-ein.md)
 - Business bank account — from [Open bank account](open-bank-account.md)
 - Accounting ledger — from [Set up accounting](set-up-accounting.md)
 - State tax accounts — from [Register state taxes](register-state-taxes.md)
@@ -44,18 +44,19 @@ Country rows describe the guidance recorded here. Local notes and step alternati
 
 | Country | Recorded guidance | Steps with local alternatives or resolutions |
 | --- | --- | --- |
-| [India](#geo-in) | Local analog note; step alternative | [2](#step-2) |
-| [United Kingdom](#geo-uk) | Local analog note; step alternative | [2](#step-2) |
-| [Germany](#geo-de) | Local analog note; step alternative | [2](#step-2) |
-| [France](#geo-fr) | Local analog note; step alternative | [2](#step-2) |
-| [Portugal](#geo-pt) | Local analog note | — |
-| [Canada](#geo-ca) | Local analog note | — |
-| [New Zealand](#geo-nz) | Local analog note | — |
-| [Singapore](#geo-sg) | Local analog note | — |
-| [Australia](#geo-au) | Local analog note | — |
-| [South Korea](#geo-kr) | Local analog note | — |
-| [Hong Kong](#geo-hk) | Local analog note | — |
-| [Estonia](#geo-ee) | Local analog note | — |
+| [United States](#geo-us) | step resolution; step alternative | [2](#step-2) |
+| [India](#geo-in) | Local analog note; step resolution; step alternative | [2](#step-2) |
+| [United Kingdom](#geo-uk) | Local analog note; step resolution; step alternative | [2](#step-2) |
+| [Germany](#geo-de) | Local analog note; step resolution; step alternative | [2](#step-2) |
+| [France](#geo-fr) | Local analog note; step resolution; step alternative | [2](#step-2) |
+| [Portugal](#geo-pt) | Local analog note; step resolution | [2](#step-2) |
+| [Canada](#geo-ca) | Local analog note; step resolution | [2](#step-2) |
+| [New Zealand](#geo-nz) | Local analog note; step resolution | [2](#step-2) |
+| [Singapore](#geo-sg) | Local analog note; step resolution | [2](#step-2) |
+| [Australia](#geo-au) | Local analog note; step resolution | [2](#step-2) |
+| [South Korea](#geo-kr) | Local analog note; step resolution | [2](#step-2) |
+| [Hong Kong](#geo-hk) | Local analog note; step resolution | [2](#step-2) |
+| [Estonia](#geo-ee) | Local analog note; step resolution | [2](#step-2) |
 
 ### State conditions
 
@@ -111,7 +112,7 @@ manual form/portal · ~30 min · async wait
 
 | Option | Applies when |
 | --- | --- |
-| Default — Sign up and configure payroll online | Recorded default |
+| United States — Sign up and configure payroll online | Recorded default |
 | EOR - employees outside the US | Employees outside the US and no local entities - an employer of record runs compliant local payroll |
 | UK - PAYE + RTI payroll | Running payroll for UK employees |
 | India - EPF/ESI employer setup | Running payroll for employees in India |
@@ -127,7 +128,7 @@ Choose the setup route from the employing entity and employee work locations. Ga
 - Ranked market: [payroll](../../open-rankings/payroll)
 
 Options:
-  - **Default — Sign up and configure payroll online** — manual form/portal · ~30 min · async wait
+  - **United States — Sign up and configure payroll online** — manual form/portal · ~30 min · async wait
 
     Configure US payroll from verified employer details, relevant tax accounts, pay schedule, funding method and administrator roles. Reconcile employee work locations and pay types with the payroll specialist. Finance authorizes the funding connection, then payroll reviews the first-run preview and outstanding setup issues. Assign responsibility for returns, payments and corrections from the provider’s actual service scope and the employer’s remaining duties.
   - **EOR - employees outside the US**
@@ -307,77 +308,95 @@ Florida employers register for reemployment tax with the Department of Revenue t
 
 ## Country details
 
+<a id="geo-us"></a>
+
+### United States
+
+- Step 2: Sign up and configure payroll online Configure US payroll from verified employer details, relevant tax accounts, pay schedule, funding method and administrator roles. Reconcile employee work locations and pay types with the payroll specialist. Finance authorizes the funding connection, then payroll reviews the first-run preview and outstanding setup issues. Assign responsibility for returns, payments and corrections from the provider’s actual service scope and the employer’s remaining duties.
+
 <a id="geo-in"></a>
 
 ### India
 
 - Employer setup spans EPF (provident fund) and ESI (state insurance) registration plus state-level professional tax; salary TDS is deposited monthly against the company's TAN. ([EPFO employer portal](https://unifiedportal-emp.epfindia.gov.in/epfo/))
+- Step 2: India - EPF/ESI employer setup Give the local payroll specialist the entity, establishments, workforce and compensation structure. Determine applicable EPF, ESI, tax and state requirements from current rules, then prepare the required registrations for the employer’s authorized submission. Reconcile issued identifiers and employee setup before the first payroll. Resolve current Labour Code, tax-transition and threshold questions for the actual employer. ([EPFO employer portal](https://unifiedportal-emp.epfindia.gov.in/epfo/))
 
 <a id="geo-uk"></a>
 
 ### United Kingdom
 
 - Register as an employer with HMRC for PAYE before the first payday, then report pay through Real Time Information (RTI) — a submission to HMRC on or before every payment — plus pension auto-enrolment duties. ([Register as an employer (PAYE)](https://www.gov.uk/register-employer))
+- Step 2: UK - PAYE + RTI payroll Set up the applicable HMRC registration and UK payroll software using verified employer references and employee information. Assign responsibility for calculations, FPS reports, payments and corrections, and review pension duties separately. Use the nested steps to complete registration, check configuration and handle the first submission. Keep reporting, employee payment and amounts due to HMRC distinct in the first-pay plan. ([Register as an employer (PAYE)](https://www.gov.uk/register-employer))
 
 <a id="geo-de"></a>
 
 ### Germany
 
 - You need a Betriebsnummer (company number) from the Federal Employment Agency before running payroll, then monthly social-insurance reports to each employee's health insurer and wage tax via ELSTER. ([Betriebsnummern-Service (Bundesagentur für Arbeit)](https://www.arbeitsagentur.de/unternehmen/betriebsnummern-service))
+- Step 2: Germany - Betriebsnummer + social insurance Ask the local payroll adviser which employer identifiers, social-insurance and tax setup the workforce needs. Prepare the Betriebsnummer application using verified entity details and required supporting identifiers, then obtain the employer representative’s authorization to submit. Connect the issued number to payroll and reporting responsibilities. Follow up on any remaining registrations before relying on the setup for the first run. ([Betriebsnummern-Service (Bundesagentur fuer Arbeit)](https://www.arbeitsagentur.de/unternehmen/betriebsnummern-service))
 
 <a id="geo-fr"></a>
 
 ### France
 
 - Every hire starts with a DPAE filed with URSSAF before the employee starts; monthly payroll then flows through the DSN (déclaration sociale nominative), France's unified RTI-style payroll report. ([Déclaration préalable à l'embauche (DPAE)](https://entreprendre.service-public.fr/vosdroits/F23107))
+- Step 2: France - DPAE + DSN payroll Have local payroll determine the applicable pre-employment declaration and reporting setup. Prepare the DPAE from verified employee and start details and submit with employer authorization through the confirmed process. Configure the payroll information needed for DSN and assign routine and event-report responsibilities. Resolve rejected or incomplete filings and outstanding setup before treating administrative onboarding as complete. ([Declaration prealable a l'embauche (DPAE)](https://entreprendre.service-public.fr/vosdroits/F23107))
 
 <a id="geo-pt"></a>
 
 ### Portugal
 
 - Register as an employer with Segurança Social and report each hire before they start (comunicação de admissão), then file the monthly remuneration declaration and withhold income tax through the Portal das Finanças. ([Segurança Social — empregadores](https://www.seg-social.pt/empregadores))
+- Step 2: Register as an employer with Segurança Social and report each hire before they start (comunicação de admissão), then file the monthly remuneration declaration and withhold income tax through the Portal das Finanças. ([Segurança Social — empregadores](https://www.seg-social.pt/empregadores))
 
 <a id="geo-ca"></a>
 
 ### Canada
 
 - Open a payroll (RP) program account on the CRA business number before the first remittance, withhold income tax, CPP and EI each pay run, and register with the provincial workers'-compensation board where your employees are. ([CRA — payroll](https://www.canada.ca/en/revenue-agency/services/tax/businesses/topics/payroll.html))
+- Step 2: Open a payroll (RP) program account on the CRA business number before the first remittance, withhold income tax, CPP and EI each pay run, and register with the provincial workers'-compensation board where your employees are. ([CRA — payroll](https://www.canada.ca/en/revenue-agency/services/tax/businesses/topics/payroll.html))
 
 <a id="geo-nz"></a>
 
 ### New Zealand
 
 - Register as an employer with Inland Revenue as soon as you start employing staff (in myIR, or the paper IR334), then run PAYE: deduct tax and KiwiSaver each payday and file employment information with Inland Revenue. ([Register as an employer — Inland Revenue](https://www.ird.govt.nz/employing-staff/register-as-an-employer))
+- Step 2: Register as an employer with Inland Revenue as soon as you start employing staff (in myIR, or the paper IR334), then run PAYE: deduct tax and KiwiSaver each payday and file employment information with Inland Revenue. ([Register as an employer — Inland Revenue](https://www.ird.govt.nz/employing-staff/register-as-an-employer))
 
 <a id="geo-sg"></a>
 
 ### Singapore
 
 - No PAYE: resident employees' income tax is not withheld from salary — the monthly ritual is CPF (due at month end, enforcement from the 14th of the following month) plus annual IR8A/Auto-Inclusion earnings reporting, and IR21 clearance when a foreign employee leaves. ([CPF — apply for a Submission Number](https://www.cpf.gov.sg/employer/making-cpf-contributions/applying-for-a-cpf-submission-number))
+- Step 2: No PAYE: resident employees' income tax is not withheld from salary — the monthly ritual is CPF (due at month end, enforcement from the 14th of the following month) plus annual IR8A/Auto-Inclusion earnings reporting, and IR21 clearance when a foreign employee leaves. ([CPF — apply for a Submission Number](https://www.cpf.gov.sg/employer/making-cpf-contributions/applying-for-a-cpf-submission-number))
 
 <a id="geo-au"></a>
 
 ### Australia
 
 - Register for PAYG withholding by the day you first withhold (law rule [au.payg-withholding-registration](../../open-law/AU/au-payg-withholding-registration.json)), then report each pay event to the ATO through Single Touch Payroll-enabled software and pay superannuation within 7 business days of payday. ([Register for PAYG withholding](https://business.gov.au/registrations/register-for-taxes/register-for-pay-as-you-go-payg-withholding))
+- Step 2: Register for PAYG withholding by the day you first withhold (law rule au.payg-withholding-registration), then report each pay event to the ATO through Single Touch Payroll-enabled software and pay superannuation within 7 business days of payday. ([Register for PAYG withholding](https://business.gov.au/registrations/register-for-taxes/register-for-pay-as-you-go-payg-withholding))
 
 <a id="geo-kr"></a>
 
 ### South Korea
 
 - Payroll setup means wage withholding for the NTS through Hometax plus the four-insurances employer registration, with the employment and industrial-accident establishment report due within 14 days. ([Four social insurances portal (4대사회보험)](https://www.4insure.or.kr/))
+- Step 2: Payroll setup means wage withholding for the NTS through Hometax plus the four-insurances employer registration, with the employment and industrial-accident establishment report due within 14 days. ([Four social insurances portal (4대사회보험)](https://www.4insure.or.kr/))
 
 <a id="geo-hk"></a>
 
 ### Hong Kong
 
 - No PAYE and no wage withholding: employees pay their own salaries tax, so payroll setup is the IR56 reporting cycle with the Inland Revenue Department (IR56E within 3 months of a start, the annual BIR56A/IR56B — law rule [hk.employers-return-obligations](../../open-law/HK/hk-employers-return-obligations.json)) plus MPF contributions each wage period. ([IRD — employer's returns](https://www.ird.gov.hk/eng/tax/ere.htm))
+- Step 2: No PAYE and no wage withholding: employees pay their own salaries tax, so payroll setup is the IR56 reporting cycle with the Inland Revenue Department (IR56E within 3 months of a start, the annual BIR56A/IR56B — law rule hk.employers-return-obligations) plus MPF contributions each wage period. ([IRD — employer's returns](https://www.ird.gov.hk/eng/tax/ere.htm))
 
 <a id="geo-ee"></a>
 
 ### Estonia
 
 - Payroll is a register plus a return: each hire is entered in the employment register before work starts (law rule [ee.employment-register-before-work](../../open-law/EE/ee-employment-register-before-work.json)), and the monthly TSD declares income tax, 33% social tax, and the 1.6%/0.8% unemployment premiums through e-MTA (law rules [ee.social-tax-rate-and-monthly-return](../../open-law/EE/ee-social-tax-rate-and-monthly-return.json), [ee.unemployment-insurance-premiums](../../open-law/EE/ee-unemployment-insurance-premiums.json)). ([Income and social taxes (e-MTA)](https://www.emta.ee/en/business-client/taxes-and-payment/income-and-social-taxes))
+- Step 2: Payroll is a register plus a return: each hire is entered in the employment register before work starts (law rule ee.employment-register-before-work), and the monthly TSD declares income tax, 33% social tax, and the 1.6%/0.8% unemployment premiums through e-MTA (law rules ee.social-tax-rate-and-monthly-return, ee.unemployment-insurance-premiums). ([Income and social taxes (e-MTA)](https://www.emta.ee/en/business-client/taxes-and-payment/income-and-social-taxes))
 
 ## Outputs
 

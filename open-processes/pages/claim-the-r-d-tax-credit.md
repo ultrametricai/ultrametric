@@ -30,7 +30,7 @@ The qualifying-expenditure data pulls from payroll and accounting are automatabl
 Required artifacts:
 
 - Payroll account — from [Set up payroll](set-up-payroll.md)
-- Federal tax return — from [File federal tax return](file-federal-tax-return.md)
+- Federal tax return — from [File the company income tax return](file-federal-tax-return.md)
 
 | Information to gather | Required by the record |
 | --- | --- |

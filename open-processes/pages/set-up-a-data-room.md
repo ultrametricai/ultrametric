@@ -30,8 +30,8 @@ Document collection and permissions are API work; the hosting choice and diligen
 Required artifacts:
 
 - Document storage — from [Set up doc storage](set-up-doc-storage.md)
-- Certificate of Incorporation — from [Incorporate C-Corp](incorporate-c-corp.md)
-- Bylaws & initial board consent — from [Incorporate C-Corp](incorporate-c-corp.md)
+- Certificate of Incorporation — from [Incorporate the company](incorporate-c-corp.md)
+- Bylaws & initial board consent — from [Incorporate the company](incorporate-c-corp.md)
 - Cap table record — from [Set up cap table](set-up-cap-table.md)
 - Financial statements — from [Bookkeeping close](bookkeeping-close.md)
 - IP assignments (PIIA) — from [Get IP assignments signed](get-ip-assignments-signed.md)
