@@ -30,7 +30,8 @@ describe('open-processes/pages', () => {
     const country = page.slice(page.indexOf('### United States'), page.indexOf('### United Kingdom'))
     expect(country).toContain('$500')
     expect(country).toContain('Verify:')
-    const uk = page.slice(page.indexOf('### United Kingdom'), page.indexOf('### India'))
+    const uk = page.slice(page.indexOf('### United Kingdom'), page.indexOf('### Germany'))
+    expect(uk).toContain('Companies House')
     expect(uk).not.toContain('$500')
   })
 
