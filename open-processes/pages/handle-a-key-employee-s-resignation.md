@@ -3,6 +3,10 @@
 
 # Handle a key employee's resignation
 
+[Overview](#overview) · [Before you start](#before-you-start) · [Geography](#geography) · [Steps](#steps-at-a-glance)
+
+## Overview
+
 **Trigger:** A key employee resigns: notice is in hand and the transition starts now.
 
 This is not the co-founder split; that is its own situation. This is the senior engineer or first AE handing in notice. Decide on the merits: counter, or accept a clean exit. Check what the contract and handbook say about notice, and what statute or collective agreement sets as the minimum; your real leverage is goodwill and a good transition plan. Run the equity math. Put the post-termination exercise window in writing to the departing employee; a missed window is the classic post-exit dispute, and the tax clock can be statutory (US plans commonly give 90 days, and ISOs lose their tax treatment if exercised more than 3 months after employment ends). Then knowledge transfer to named successors, same-day offboarding on the last day with final wages on the clock your jurisdiction sets (in California, due at quitting after 72 hours' notice, or within 72 hours of a no-notice quit; law rule [us-ca.final-wages-timing](../../open-law/US-CA/us-ca-final-wages-timing.json), Labor Code §§ 202, 203), an exit interview that tells you why people actually leave, and the cap-table and rotation updates. Educational guidance, not legal or tax advice.
@@ -22,27 +26,122 @@ This is not the co-founder split; that is its own situation. This is the senior 
 
 The conversations (resignation, transition, exit interview) are irreducibly human; an agent can run the vesting math, draft the exercise-window notice, and execute the last-day offboarding checklist.
 
-## Steps
+## Before you start
 
-1. **Take the resignation conversation properly: last day, transition shape, and whether a counter or a clean exit is honest** — human · ~1 h
-2. **Confirm the notice terms: the contract and handbook, plus whatever statute or collective agreement sets the minimum** — human · ~20 min
-3. **Run the equity math: vested vs unvested at the last day, and the plan's post-termination exercise window** — agent-runnable · ~30 min
+| Information to gather | Required by the record |
+| --- | --- |
+| the resignation terms: last day and what was agreed | Yes |
+| the option grant and plan documents (vesting, post-termination window) | Yes |
 
-   - Canonical vendor: Carta
-   - Vendor options: Carta, Pulley
-   - Ranked market: [equity-management](../../open-rankings/equity-management)
-   - Do it yourself: [IRS Topic 427 (stock options)](https://www.irs.gov/taxtopics/tc427)
-4. **Put the exercise window in writing to the departing employee — a missed window is the classic post-exit dispute** — human · ~20 min · hard to undo
-5. **Plan the knowledge transfer: owned systems, in-flight work, credentials inventory, named successors** — human · ~1.5 h
-6. **Offboard on the last day: access revocation, device return, final pay on the timeline your jurisdiction sets** — agent-runnable · ~45 min
+## Geography
 
-   - Runs the process [Offboard employee](offboard-employee.md)
-7. **Run the exit interview — the honest 30 minutes that tells you why people actually leave** — human · ~30 min
-8. **Update the cap table, the org chart, and the on-call rotations** — agent-runnable · ~20 min
+Country rows describe the guidance recorded here. Local notes and step alternatives do not establish a complete country-specific workflow.
 
-   - Canonical vendor: Carta
+| Country | Recorded guidance | Steps with local alternatives or resolutions |
+| --- | --- | --- |
+| [United States](#geo-us) | step resolution | [2](#step-2), [4](#step-4), [6](#step-6) |
+| [India](#geo-in) | Local analog note; step resolution | [2](#step-2), [6](#step-6) |
+| [United Kingdom](#geo-uk) | Local analog note; step resolution | [2](#step-2), [4](#step-4) |
+| [Germany](#geo-de) | Local analog note; step resolution | [2](#step-2) |
+| [France](#geo-fr) | Local analog note; step resolution | [2](#step-2), [6](#step-6) |
+| [Portugal](#geo-pt) | Local analog note; step resolution | [2](#step-2) |
+| [Canada](#geo-ca) | Local analog note; step resolution | [2](#step-2) |
+| [Singapore](#geo-sg) | Local analog note; step resolution | [2](#step-2) |
+| [Australia](#geo-au) | Local analog note; step resolution | [2](#step-2) |
+| [South Korea](#geo-kr) | Local analog note; step resolution | [2](#step-2) |
+| [Hong Kong](#geo-hk) | Local analog note; step resolution | [2](#step-2) |
+| [Estonia](#geo-ee) | Local analog note; step resolution | [2](#step-2) |
 
-## By country
+## Steps at a glance
+
+Use the recorded prerequisites and conditions to follow the path. Row order is for navigation.
+
+| Step | Handled by | Time estimate | Incoming dependencies |
+| --- | --- | --- | --- |
+| [1. Take the resignation conversation properly: last day, transition shape, and whether a counter or a clean exit is honest](#step-1) | human | ~1 h | Entry step |
+| [2. Confirm the notice terms: the contract and handbook, plus whatever statute or collective agreement sets the minimum](#step-2) | human | ~20 min | [Step 1](#step-1) |
+| [3. Run the equity math: vested vs unvested at the last day, and the plan's post-termination exercise window](#step-3) | agent-runnable | ~30 min | [Step 2](#step-2) |
+| [4. Put the exercise window in writing to the departing employee — a missed window is the classic post-exit dispute](#step-4) | human | ~20 min | [Step 3](#step-3) |
+| [5. Plan the knowledge transfer: owned systems, in-flight work, credentials inventory, named successors](#step-5) | human | ~1.5 h | [Step 4](#step-4) |
+| [6. Offboard on the last day: access revocation, device return, final pay on the timeline your jurisdiction sets](#step-6) | agent-runnable | ~45 min | [Step 5](#step-5) |
+| [7. Run the exit interview — the honest 30 minutes that tells you why people actually leave](#step-7) | human | ~30 min | [Step 6](#step-6) |
+| [8. Update the cap table, the org chart, and the on-call rotations](#step-8) | agent-runnable | ~20 min | [Step 7](#step-7) |
+
+<a id="steps"></a>
+
+## Step details
+
+<a id="step-1"></a>
+
+### 1. Take the resignation conversation properly: last day, transition shape, and whether a counter or a clean exit is honest
+
+human · ~1 h
+
+
+<a id="step-2"></a>
+
+### 2. Confirm the notice terms: the contract and handbook, plus whatever statute or collective agreement sets the minimum
+
+human · ~20 min
+
+
+<a id="step-3"></a>
+
+### 3. Run the equity math: vested vs unvested at the last day, and the plan's post-termination exercise window
+
+agent-runnable · ~30 min
+
+
+- Canonical vendor: Carta
+- Vendor options: Carta, Pulley
+- Ranked market: [equity-management](../../open-rankings/equity-management)
+- Do it yourself: [IRS Topic 427 (stock options)](https://www.irs.gov/taxtopics/tc427)
+
+<a id="step-4"></a>
+
+### 4. Put the exercise window in writing to the departing employee — a missed window is the classic post-exit dispute
+
+human · ~20 min · hard to undo
+
+
+<a id="step-5"></a>
+
+### 5. Plan the knowledge transfer: owned systems, in-flight work, credentials inventory, named successors
+
+human · ~1.5 h
+
+
+<a id="step-6"></a>
+
+### 6. Offboard on the last day: access revocation, device return, final pay on the timeline your jurisdiction sets
+
+agent-runnable · ~45 min
+
+
+- Runs the process [Offboard employee](offboard-employee.md)
+
+<a id="step-7"></a>
+
+### 7. Run the exit interview — the honest 30 minutes that tells you why people actually leave
+
+human · ~30 min
+
+
+<a id="step-8"></a>
+
+### 8. Update the cap table, the org chart, and the on-call rotations
+
+agent-runnable · ~20 min
+
+
+- Canonical vendor: Carta
+
+
+<a id="by-country"></a>
+
+## Country details
+
+<a id="geo-us"></a>
 
 ### United States
 
@@ -50,11 +149,15 @@ The conversations (resignation, transition, exit interview) are irreducibly huma
 - Step 4: The plan's post-termination window plus the ISO 3-month rule set the deadline Plans commonly give 90 days, and ISOs lose their tax treatment if exercised more than 3 months after employment ends. ([IRS Topic 427 (stock options)](https://www.irs.gov/taxtopics/tc427))
 - Step 6: Final pay on the state's required timeline (law rule us-ca.final-wages-timing for the California clock)
 
+<a id="geo-in"></a>
+
 ### India
 
 - Notice runs off the employment contract and the state's Shops & Establishments Act; the full-and-final settlement timeline and gratuity after five years' service are the statutory tail — the labour ministry is the canonical starting point. ([Ministry of Labour & Employment (India)](https://labour.gov.in/))
 - Step 2: Notice runs off the employment contract and the state's Shops & Establishments Act ([Ministry of Labour & Employment (India)](https://labour.gov.in/))
 - Step 6: The full-and-final settlement timeline and gratuity after five years' service are the statutory tail ([Ministry of Labour & Employment (India)](https://labour.gov.in/))
+
+<a id="geo-uk"></a>
 
 ### United Kingdom
 
@@ -62,10 +165,14 @@ The conversations (resignation, transition, exit interview) are irreducibly huma
 - Step 2: A week's statutory minimum notice after a month's service, with contracts usually setting more ([ACAS: notice periods](https://www.acas.org.uk/notice-periods))
 - Step 4: EMI options carry their own post-cessation tax rules, so the written-window notice matters just as much
 
+<a id="geo-de"></a>
+
 ### Germany
 
 - Kündigungsfristen are statutory — §622 BGB sets four weeks to the 15th or month-end as the baseline, lengthening with tenure — and termination/resignation requires wet-ink written form (§623 BGB), so the paper is law, not courtesy. ([BGB §622 — notice periods](https://www.gesetze-im-internet.de/bgb/__622.html))
 - Step 2: Kündigungsfristen are statutory: §622 BGB sets four weeks to the 15th or month-end as the baseline, lengthening with tenure Termination and resignation require wet-ink written form (§623 BGB); the paper is law, not courtesy. ([BGB §622 — notice periods](https://www.gesetze-im-internet.de/bgb/__622.html))
+
+<a id="geo-fr"></a>
 
 ### France
 
@@ -73,35 +180,49 @@ The conversations (resignation, transition, exit interview) are irreducibly huma
 - Step 2: The préavis comes from the convention collective more than the Code du travail; check your branch agreement ([service-public — démission](https://www.service-public.fr/particuliers/vosdroits/F2883))
 - Step 6: The exit paperwork is mandatory: solde de tout compte, certificat de travail, and the attestation France Travail ([service-public — démission](https://www.service-public.fr/particuliers/vosdroits/F2883))
 
+<a id="geo-pt"></a>
+
 ### Portugal
 
 - Resignation notice is statutory under the Código do Trabalho — 30 days up to two years of service, 60 days beyond — so the exit timeline is largely fixed by law; confirm equity-plan leaver terms and IP assignment on the way out. ([Código do Trabalho (DRE)](https://diariodarepublica.pt/dr/legislacao-consolidada/lei/2009-34546475))
 - Step 2: Resignation notice is statutory under the Código do Trabalho: 30 days up to two years of service, 60 days beyond ([Código do Trabalho (DRE)](https://diariodarepublica.pt/dr/legislacao-consolidada/lei/2009-34546475))
+
+<a id="geo-ca"></a>
 
 ### Canada
 
 - No statutory resignation schedule in most provinces — the contract and common-law reasonable notice govern — while federally regulated employers follow the Canada Labour Code; the protective mechanics are the same offboarding checklist. ([Federal labour standards](https://www.canada.ca/en/services/jobs/workplace/federal-labour-standards.html))
 - Step 2: No statutory resignation schedule in most provinces; the contract and common-law reasonable notice govern, while federally regulated employers follow the Canada Labour Code ([Federal labour standards](https://www.canada.ca/en/services/jobs/workplace/federal-labour-standards.html))
 
+<a id="geo-sg"></a>
+
 ### Singapore
 
 - Notice is contractual, with the Employment Act's statutory scale as the floor when the contract is silent (1 day under 26 weeks' service up to 4 weeks after five years) — CPF runs through the notice period, and pass holders need the IR21 tax clearance before the final payment. ([MOM — termination of employment](https://www.mom.gov.sg/employment-practices/termination-of-employment))
 - Step 2: Apply the contract's notice period; when the contract is silent the Employment Act scale governs — 1 day under 26 weeks' service, up to 4 weeks after five years ([MOM — termination of employment](https://www.mom.gov.sg/employment-practices/termination-of-employment))
+
+<a id="geo-au"></a>
 
 ### Australia
 
 - Resignation notice comes from the applicable modern award, enterprise agreement, or contract — the Fair Work Act 2009 s 117 minimums govern employer-initiated termination, not the employee's notice. Final pay and unused annual leave follow the award or agreement, and the end-employment checklist is the reference. ([End employment (business.gov.au)](https://business.gov.au/people/employees/ending-employment))
 - Step 2: Resignation notice comes from the modern award or the contract; the Fair Work Act s 117 minimums govern employer-initiated termination, so read the award clause first ([End employment (business.gov.au)](https://business.gov.au/people/employees/ending-employment))
 
+<a id="geo-kr"></a>
+
 ### South Korea
 
 - An open-ended employment ends one month after notice of termination reaches the other party (Civil Act Article 660); on separation, wages and all other amounts settle within 14 days (Labor Standards Act Article 36), plus severance for a year or more of service. ([Civil Act Article 660 (law.go.kr)](https://www.law.go.kr/%EB%B2%95%EB%A0%B9/%EB%AF%BC%EB%B2%95/%EC%A0%9C660%EC%A1%B0))
 - Step 2: One month of notice ends an open-ended employment; contracts can set more Under Civil Act Article 660 a termination notice takes effect one month after it reaches the other party. The resignation letter and the contract fix the actual last day, and final settlement of wages and severance then runs on the 14-day clocks (law rule [kr.severance-pay](../../open-law/KR/kr-severance-pay.json)). ([Civil Act Article 660 (law.go.kr)](https://www.law.go.kr/%EB%B2%95%EB%A0%B9/%EB%AF%BC%EB%B2%95/%EC%A0%9C660%EC%A1%B0))
 
+<a id="geo-hk"></a>
+
 ### Hong Kong
 
 - Notice is contractual with the Employment Ordinance floor: the agreed period but not less than 7 days on a continuous contract, and 1 month where the contract is silent (section 6); every sum due must be paid within 7 days after termination (section 25), and the IR56F/IR56G notifications to the Inland Revenue Department follow. ([Labour Department — Employment Ordinance guide](https://www.labour.gov.hk/eng/legislat/content2.htm))
 - Step 2: Notice runs on the contract with the Employment Ordinance floor: the agreed period but at least 7 days on a continuous contract, and 1 month where the contract is silent Employment Ordinance section 6 sets the notice floors, section 7 allows payment in lieu, and section 25 requires every sum due to be paid within 7 days after the termination date. ([Labour Department — EO guide](https://www.labour.gov.hk/eng/legislat/content2.htm))
+
+<a id="geo-ee"></a>
 
 ### Estonia
 

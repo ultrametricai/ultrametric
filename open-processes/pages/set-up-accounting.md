@@ -3,6 +3,10 @@
 
 # Set up accounting
 
+[Overview](#overview) · [Before you start](#before-you-start) · [Geography](#geography) · [Steps](#steps-at-a-glance) · [Outputs](#outputs)
+
+## Overview
+
 Choose accounting software and configure the chart of accounts so the books can close every month.
 
 | Field | Value |
@@ -19,98 +23,162 @@ Choose accounting software and configure the chart of accounts so the books can 
 
 Choosing and configuring the software is guided form work; connecting bank and card feeds runs on the accounting APIs.
 
-## Steps
+## Before you start
 
-1. **Compare accounting tools** — agent-runnable · ~5 min
+Required artifacts:
 
-   Compare accounting tools for the entities, currencies, reporting basis, tax outputs, invoice volume, payroll and integrations the company needs. Include the accountant and bookkeeper’s requirements for permissions, audit history and exports. Test representative transactions and reports, then identify any statutory or specialist work that remains outside the software before choosing the service.
+- Business bank account — from [Open bank account](open-bank-account.md)
 
-   - Vendor options: QuickBooks, Xero, Pilot
-   - Ranked market: [accounting](../../open-rankings/accounting)
-   - Cross-arena options: ChatGPT, Claude, Gemini (ai-assistants)
-2. **Sign up and configure the chart of accounts** — manual form/portal · ~30 min · async wait
+## Geography
 
-   Configure the entity, reporting basis, financial year and opening balances with the accountant. Build a chart of accounts that supports the company’s transactions and required reports, avoiding overlapping categories. Set appropriate administrator and reviewer access and test representative postings and reports. Use the local route to resolve statutory requirements before relying on the configuration for live books.
+Country rows describe the guidance recorded here. Local notes and step alternatives do not establish a complete country-specific workflow.
 
-   - Produces: Accounting ledger
-   - Vendor options: QuickBooks, Xero, Pilot
-   - Ranked market: [accounting](../../open-rankings/accounting)
+| Country | Recorded guidance | Steps with local alternatives or resolutions |
+| --- | --- | --- |
+| [India](#geo-in) | Local analog note; step alternative | [2](#step-2) |
+| [United Kingdom](#geo-uk) | Local analog note; step alternative | [2](#step-2) |
+| [Germany](#geo-de) | Local analog note; step alternative | [2](#step-2) |
+| [France](#geo-fr) | Local analog note; step alternative | [2](#step-2) |
+| [Singapore](#geo-sg) | Local analog note | — |
 
-   Options:
-     - **Default — Sign up and configure the chart of accounts** — manual form/portal · ~30 min · async wait
+## Steps at a glance
 
-       Set the company’s chart of accounts, reporting year, currencies and access roles in the selected workspace. Map opening balances and recurring transactions to the chart with the accountant. Establish consistent treatments for revenue, payroll, tax, capital and transfers, and check a trial report before importing the full history.
-     - **India - Companies Act books + audit**
+Use the recorded prerequisites and conditions to follow the path. Row order is for navigation.
 
-       When: Setting up the books in India
+| Step | Handled by | Time estimate | Incoming dependencies |
+| --- | --- | --- | --- |
+| [1. Compare accounting tools](#step-1) | agent-runnable | ~5 min | Entry step |
+| [2. Sign up and configure the chart of accounts](#step-2) | manual form/portal; includes waiting | ~30 min | [Step 1](#step-1) |
+| [3. Connect bank and card feeds](#step-3) | agent-runnable | ~3 min | [Step 2](#step-2) |
 
-       Agree the applicable Indian reporting framework, books and audit arrangements with the accountant for the company’s actual form and circumstances. Configure ledger categories, tax mappings, record retention and reporting outputs accordingly. Distinguish bookkeeping and any required independent review, and test a sample period to see whether the system produces the needed accounts.
+<a id="steps"></a>
 
-       - Do it yourself: [ICAI (statutory audit)](https://www.icai.org/)
-       - Sources: [India Companies Act 2013](https://www.indiacode.nic.in/ViewFileUploaded?file=the_companies_act%2C_2013_no._18_of_2013_date_29.08.2013.pdf&path=AC_CG_61_1375_00003_00003_1594717497353%2Factfile%2F)
-     - **UK - FRS 105/102 + statutory accounts**
+## Step details
 
-       When: Setting up the books in the United Kingdom
+<a id="step-1"></a>
 
-       Establish the UK accounting standard and reporting options that apply, including support for any small-company or micro-entity treatment. Configure the chart, year end and accounts outputs with the accountant and reconcile opening balances. Check a sample package against the statutory accounts and tax work, identifying audit work and other tasks that need separate handling.
+### 1. Compare accounting tools
 
-       - Vendor options: Xero
-       - Do it yourself: [Audit exemption for small companies](https://www.gov.uk/audit-exemptions-for-private-limited-companies)
-       - Sources: [GOV.UK annual accounts](https://www.gov.uk/annual-accounts)
-     - **Germany - GoBD books + SKR03/04**
+agent-runnable · ~5 min
 
-       When: Setting up the books in Germany
 
-       Agree the German chart of accounts and bookkeeping workflow with the tax adviser, including invoice handling, corrections, exports and retention. Test traceability from source documents through postings and reports, including structured invoices, against the applicable GoBD requirements. Address gaps in the software or operating procedure before importing the company’s history.
+Compare accounting tools for the entities, currencies, reporting basis, tax outputs, invoice volume, payroll and integrations the company needs. Include the accountant and bookkeeper’s requirements for permissions, audit history and exports. Test representative transactions and reports, then identify any statutory or specialist work that remains outside the software before choosing the service.
 
-       - Do it yourself: [ELSTER (GoBD-compliant bookkeeping)](https://www.elster.de/eportal/start)
-       - Sources: [BMF GoBD amendment](https://www.bundesfinanzministerium.de/Content/DE/Downloads/BMF_Schreiben/Weitere_Steuerthemen/Abgabenordnung/2025-07-14-GoBD-2-aenderung.pdf?__blob=publicationFile&v=3)
-     - **France - Plan Comptable General + FEC**
+- Vendor options: QuickBooks, Xero, Pilot
+- Ranked market: [accounting](../../open-rankings/accounting)
+- Cross-arena options: ChatGPT, Claude, Gemini (ai-assistants)
 
-       When: Setting up the books in France
+<a id="step-2"></a>
 
-       Map the French company’s transactions to the applicable accounting plan and reports with its accountant. Check source-document retention, posting history and FEC export support. Generate a sample FEC and reconcile its structure and contents to the ledger, correcting gaps in the setup before live records depend on it.
+### 2. Sign up and configure the chart of accounts
 
-       - Do it yourself: [ANC - Plan Comptable General](https://www.anc.gouv.fr/)
-       - Sources: [DGFiP computerized accounts](https://www.impots.gouv.fr/les-comptabilites-informatisees)
-3. **Connect bank and card feeds** — agent-runnable · ~3 min
+manual form/portal · ~30 min · async wait
 
-   List bank and card accounts by accounting entity and agree the import start date with the bookkeeper. The authorized account administrator connects each feed to the right ledger account. Detect overlap with manual imports and reconcile sample transactions and opening balances to statements. Set up follow-up for failed feeds so later books remain complete.
+| Option | Applies when |
+| --- | --- |
+| Default — Sign up and configure the chart of accounts | Recorded default |
+| India - Companies Act books + audit | Setting up the books in India |
+| UK - FRS 105/102 + statutory accounts | Setting up the books in the United Kingdom |
+| Germany - GoBD books + SKR03/04 | Setting up the books in Germany |
+| France - Plan Comptable General + FEC | Setting up the books in France |
 
-   - Verify: Bank and card transactions import into the ledger within a day of connecting.
-   - Canonical vendor: QuickBooks
 
-## By country
+Configure the entity, reporting basis, financial year and opening balances with the accountant. Build a chart of accounts that supports the company’s transactions and required reports, avoiding overlapping categories. Set appropriate administrator and reviewer access and test representative postings and reports. Use the local route to resolve statutory requirements before relying on the configuration for live books.
+
+- Produces: Accounting ledger
+- Vendor options: QuickBooks, Xero, Pilot
+- Ranked market: [accounting](../../open-rankings/accounting)
+
+Options:
+  - **Default — Sign up and configure the chart of accounts** — manual form/portal · ~30 min · async wait
+
+    Set the company’s chart of accounts, reporting year, currencies and access roles in the selected workspace. Map opening balances and recurring transactions to the chart with the accountant. Establish consistent treatments for revenue, payroll, tax, capital and transfers, and check a trial report before importing the full history.
+  - **India - Companies Act books + audit**
+
+    When: Setting up the books in India
+
+    Agree the applicable Indian reporting framework, books and audit arrangements with the accountant for the company’s actual form and circumstances. Configure ledger categories, tax mappings, record retention and reporting outputs accordingly. Distinguish bookkeeping and any required independent review, and test a sample period to see whether the system produces the needed accounts.
+
+    - Do it yourself: [ICAI (statutory audit)](https://www.icai.org/)
+    - Sources: [India Companies Act 2013](https://www.indiacode.nic.in/ViewFileUploaded?file=the_companies_act%2C_2013_no._18_of_2013_date_29.08.2013.pdf&path=AC_CG_61_1375_00003_00003_1594717497353%2Factfile%2F)
+  - **UK - FRS 105/102 + statutory accounts**
+
+    When: Setting up the books in the United Kingdom
+
+    Establish the UK accounting standard and reporting options that apply, including support for any small-company or micro-entity treatment. Configure the chart, year end and accounts outputs with the accountant and reconcile opening balances. Check a sample package against the statutory accounts and tax work, identifying audit work and other tasks that need separate handling.
+
+    - Vendor options: Xero
+    - Do it yourself: [Audit exemption for small companies](https://www.gov.uk/audit-exemptions-for-private-limited-companies)
+    - Sources: [GOV.UK annual accounts](https://www.gov.uk/annual-accounts)
+  - **Germany - GoBD books + SKR03/04**
+
+    When: Setting up the books in Germany
+
+    Agree the German chart of accounts and bookkeeping workflow with the tax adviser, including invoice handling, corrections, exports and retention. Test traceability from source documents through postings and reports, including structured invoices, against the applicable GoBD requirements. Address gaps in the software or operating procedure before importing the company’s history.
+
+    - Do it yourself: [ELSTER (GoBD-compliant bookkeeping)](https://www.elster.de/eportal/start)
+    - Sources: [BMF GoBD amendment](https://www.bundesfinanzministerium.de/Content/DE/Downloads/BMF_Schreiben/Weitere_Steuerthemen/Abgabenordnung/2025-07-14-GoBD-2-aenderung.pdf?__blob=publicationFile&v=3)
+  - **France - Plan Comptable General + FEC**
+
+    When: Setting up the books in France
+
+    Map the French company’s transactions to the applicable accounting plan and reports with its accountant. Check source-document retention, posting history and FEC export support. Generate a sample FEC and reconcile its structure and contents to the ledger, correcting gaps in the setup before live records depend on it.
+
+    - Do it yourself: [ANC - Plan Comptable General](https://www.anc.gouv.fr/)
+    - Sources: [DGFiP computerized accounts](https://www.impots.gouv.fr/les-comptabilites-informatisees)
+
+<a id="step-3"></a>
+
+### 3. Connect bank and card feeds
+
+agent-runnable · ~3 min
+
+
+List bank and card accounts by accounting entity and agree the import start date with the bookkeeper. The authorized account administrator connects each feed to the right ledger account. Detect overlap with manual imports and reconcile sample transactions and opening balances to statements. Set up follow-up for failed feeds so later books remain complete.
+
+- Verify: Bank and card transactions import into the ledger within a day of connecting.
+- Canonical vendor: QuickBooks
+
+
+<a id="by-country"></a>
+
+## Country details
+
+<a id="geo-in"></a>
 
 ### India
 
 - Books follow the Companies Act and Indian accounting standards, and — unlike everywhere else — EVERY company needs a statutory audit by a chartered accountant from year one, so the auditor relationship starts with the books. ([ICAI (statutory audit)](https://www.icai.org/))
 
+<a id="geo-uk"></a>
+
 ### United Kingdom
 
 - Statutory accounts for Companies House are unavoidable, but most startups qualify for the small-company audit exemption; FRS 105/102 set the accounting framework your software must map to. ([Audit exemption for small companies](https://www.gov.uk/audit-exemptions-for-private-limited-companies))
+
+<a id="geo-de"></a>
 
 ### Germany
 
 - Bookkeeping must be GoBD-compliant (tamper-evident, German retention rules), the de-facto chart of accounts is DATEV's SKR03/SKR04, and nearly every startup runs the books through a Steuerberater who files via ELSTER. ([ELSTER (GoBD-compliant bookkeeping)](https://www.elster.de/eportal/start))
 
+<a id="geo-fr"></a>
+
 ### France
 
 - France mandates the chart of accounts: the Plan Comptable Général from the ANC is law, and the tax authority can demand your ledger as a standardized FEC file — accounting software must speak both. ([ANC — Plan Comptable Général](https://www.anc.gouv.fr/))
+
+<a id="geo-sg"></a>
 
 ### Singapore
 
 - Statutory financial statements follow SFRS, most startups fit the small-company audit exemption, and the accounts feed the ACRA annual return (XBRL where required) plus the IRAS return — pick software that maps to SFRS. ([ACRA — preparing financial statements](https://www.acra.gov.sg/manage/companies/legal-requirements-common-offences/preparing-financial-statements/))
 
-## Artifacts
+<a id="artifacts"></a>
 
-Produces:
+## Outputs
 
 - Accounting ledger
-
-Requires:
-
-- Business bank account — from [Open bank account](open-bank-account.md)
 
 ## Related records
 

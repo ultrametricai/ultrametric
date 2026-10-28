@@ -3,6 +3,10 @@
 
 # Start SOC 2 Type I
 
+[Overview](#overview) · [Before you start](#before-you-start) · [Geography](#geography) · [Steps](#steps-at-a-glance) · [Outputs](#outputs)
+
+## Overview
+
 Begin SOC 2 Type I compliance journey using Vanta, set up policies, and begin evidence collection.
 
 | Field | Value |
@@ -19,127 +23,234 @@ Begin SOC 2 Type I compliance journey using Vanta, set up policies, and begin ev
 
 Vanta API supports test monitoring and evidence collection. Policy creation and auditor engagement need human input.
 
-## Steps
+## Before you start
 
-1. **Create an account with your compliance platform** — manual form/portal · ~15 min · human approval required
+Required artifacts:
 
-   Identify the assurance report customers have requested and the service it must cover. Compare platforms on integrations with your infrastructure, evidence export, access controls and compatibility with the prospective auditor’s process. Separate subscription, implementation and examination fees. Complete the approved purchase, then create a company-owned workspace with a named administrator and the chosen framework.
+- Identity provider (SSO) — from [Set up SSO & access management](set-up-sso-access-management.md)
 
-   - Produces: Compliance platform
-   - Canonical vendor: Vanta
-   - Vendor options: Vanta, Drata, Secureframe, Oneleet
-   - Ranked market: [compliance-automation](../../open-rankings/compliance-automation)
-   - Sources: [AICPA SOC suite](https://www.aicpa-cima.com/resources/landing/system-and-organization-controls-soc-suite-of-services)
+| Information to gather | Required by the record |
+| --- | --- |
+| company tech stack | Yes |
+| company data handling | Yes |
 
-   Options:
-     - **Default — Create an account with your compliance platform** — manual form/portal · ~15 min · human approval required
+## Geography
 
-       Use this route for a SOC 2 examination of the selected service. Set up the compliance workspace under company ownership, identify who will run the compliance program and verify the features included in the purchased plan. Use the prospective auditor’s scope to choose integrations and evidence work. The software account supports preparation; the separate audit engagement determines what will be examined.
-     - **UK - Cyber Essentials first**
+Country rows describe the guidance recorded here. Local notes and step alternatives do not establish a complete country-specific workflow.
 
-       When: Selling to UK buyers - the asked-for framework differs
+| Country | Recorded guidance | Steps with local alternatives or resolutions |
+| --- | --- | --- |
+| [United Kingdom](#geo-uk) | Local analog note; step alternative | [1](#step-1) |
+| [Germany](#geo-de) | Local analog note; step alternative | [1](#step-1) |
+| [France](#geo-fr) | Local analog note; step alternative | [1](#step-1) |
+| [Singapore](#geo-sg) | Local analog note | — |
 
-       Obtain the UK customer or tender’s exact requirement, including whether it specifies Cyber Essentials or Cyber Essentials Plus. Use the current NCSC materials to scope the assessment and identify gaps in the technical controls. Choose the certification route and identify its required assessment signatory. Follow a separate Cyber Essentials assessment plan; the later SOC 2 examination steps are not its certification procedure.
+## Steps at a glance
 
-       - Do it yourself: [NCSC - Cyber Essentials](https://www.ncsc.gov.uk/cyberessentials/overview)
-     - **Germany - ISO 27001 first**
+Use the recorded prerequisites and conditions to follow the path. Row order is for navigation.
 
-       When: Selling to German enterprise - the asked-for framework differs
+| Step | Handled by | Time estimate | Incoming dependencies |
+| --- | --- | --- | --- |
+| [1. Create an account with your compliance platform](#step-1) | manual form/portal; approval required | ~15 min | Entry step |
+| [2. Connect integrations](#step-2) | manual form/portal; approval required | ~30 min | [Step 1](#step-1) |
+| [3. Generate security policies](#step-3) | agent-runnable; approval required | ~1 h | [Step 2](#step-2) |
+| [4. Review and customize policies](#step-4) | human; approval required | ~8 h | [Step 3](#step-3) |
+| [5. Configure automated tests](#step-5) | agent-runnable; approval required | ~1 h | [Step 4](#step-4) |
+| [6. Remediate failing tests](#step-6) | agent-runnable; approval required | ~8 h | [Step 5](#step-5) |
+| [7. Employee security training](#step-7) | human; includes waiting | ~2 d | [Step 5](#step-5) |
+| [8. Engage auditor](#step-8) | human; approval required; includes waiting | ~7 d | All: [Step 6](#step-6); [Step 7](#step-7) |
+| [9. Complete audit](#step-9) | human; includes waiting | ~14 d | [Step 8](#step-8) |
 
-       Ask the German customer for its required certification scope and whether it specifically names IT-Grundschutz. Compare that requirement with the company’s information-security management system and prospective certifier’s process. BSI describes an ISO 27001 route based on IT-Grundschutz with its own examination and certification requirements. Map the chosen route to a separate work plan; the following SOC 2 steps do not supply that certification.
+<a id="steps"></a>
 
-       - Do it yourself: [BSI - IT security authority](https://www.bsi.bund.de/)
-       - Sources: [BSI ISO 27001 on IT-Grundschutz](https://www.bsi.bund.de/EN/Themen/Unternehmen-und-Organisationen/Standards-und-Zertifizierung/Zertifizierung-und-Anerkennung/Zertifizierung-von-Managementsystemen/ISO-27001-Basis-IT-Grundschutz/iso-27001-basis-it-grundschutz_node.html)
-     - **France - ISO 27001 / SecNumCloud**
+## Step details
 
-       When: Selling to French buyers - the asked-for framework differs
+<a id="step-1"></a>
 
-       Identify the assurance required by the French customer for the particular service. If it specifies SecNumCloud, examine the ANSSI qualification scope and distinguish your offering from an underlying provider’s qualified cloud service. Record ISO 27001 requirements separately if requested. Build the chosen qualification or certification plan; selecting this option does not convert the following SOC 2 steps into a French qualification workflow.
+### 1. Create an account with your compliance platform
 
-       - Do it yourself: [ANSSI (cyber.gouv.fr)](https://cyber.gouv.fr/)
-       - Sources: [ANSSI SecNumCloud](https://cyber.gouv.fr/secnumcloud)
-2. **Connect integrations** — manual form/portal · ~30 min · human approval required
+manual form/portal · ~15 min · human approval required
 
-   Connect the cloud accounts, repositories, identity systems and device inventories inside the proposed audit boundary. Check requested permissions and obtain each system owner’s authorization before granting access. Verify that collection covers the intended accounts and environments, including assets missing from the first import. An empty or stale result needs investigation before it can support a control assessment.
+| Option | Applies when |
+| --- | --- |
+| Default — Create an account with your compliance platform | Recorded default |
+| UK - Cyber Essentials first | Selling to UK buyers - the asked-for framework differs |
+| Germany - ISO 27001 first | Selling to German enterprise - the asked-for framework differs |
+| France - ISO 27001 / SecNumCloud | Selling to French buyers - the asked-for framework differs |
 
-   - Verify: The compliance platform's automated monitoring tests start reporting against each connected system.
-   - Canonical vendor: Vanta
-   - Sources: [AICPA SOC suite](https://www.aicpa-cima.com/resources/landing/system-and-organization-controls-soc-suite-of-services)
-3. **Generate security policies** — agent-runnable · ~1 h · human approval required
 
-   Draft policies from the company’s actual security procedures and architecture. Name who handles access, incidents, releases and other subjects in the agreed control scope, and link to instructions staff can follow. Distinguish current practice from proposed improvements. Leave unresolved operational choices visible for the people who run those systems to answer before the policies are adopted.
+Identify the assurance report customers have requested and the service it must cover. Compare platforms on integrations with your infrastructure, evidence export, access controls and compatibility with the prospective auditor’s process. Separate subscription, implementation and examination fees. Complete the approved purchase, then create a company-owned workspace with a named administrator and the chosen framework.
 
-   - Produces: Security policies
-   - Canonical vendor: Vanta
-   - Sources: [AICPA SOC suite](https://www.aicpa-cima.com/resources/landing/system-and-organization-controls-soc-suite-of-services)
-4. **Review and customize policies** — human · ~8 h · human approval required
+- Produces: Compliance platform
+- Canonical vendor: Vanta
+- Vendor options: Vanta, Drata, Secureframe, Oneleet
+- Ranked market: [compliance-automation](../../open-rankings/compliance-automation)
+- Sources: [AICPA SOC suite](https://www.aicpa-cima.com/resources/landing/system-and-organization-controls-soc-suite-of-services)
 
-   Walk each policy through a realistic new hire, access change, release or incident with the people who would use it. Resolve conflicts with actual tooling, customer commitments and existing agreements. If a promised practice does not exist, revise the policy or assign its implementation. The relevant business and security owners approve the effective version, which staff should be able to find and understand.
+Options:
+  - **Default — Create an account with your compliance platform** — manual form/portal · ~15 min · human approval required
 
-   - Sources: [AICPA SOC suite](https://www.aicpa-cima.com/resources/landing/system-and-organization-controls-soc-suite-of-services)
-5. **Configure automated tests** — agent-runnable · ~1 h · human approval required
+    Use this route for a SOC 2 examination of the selected service. Set up the compliance workspace under company ownership, identify who will run the compliance program and verify the features included in the purchased plan. Use the prospective auditor’s scope to choose integrations and evidence work. The software account supports preparation; the separate audit engagement determines what will be examined.
+  - **UK - Cyber Essentials first**
 
-   For each automated check, identify the control objective, assets covered, expected result and person responsible for failures. Test against a known configuration and verify that stale or missing collection triggers attention. Decide which failures create remediation work and how exceptions are reviewed. Document the human evidence still needed where an automated check cannot demonstrate the whole control.
+    When: Selling to UK buyers - the asked-for framework differs
 
-   - Canonical vendor: Vanta
-   - Sources: [AICPA SOC suite](https://www.aicpa-cima.com/resources/landing/system-and-organization-controls-soc-suite-of-services)
-   - Next: steps 6 and 7 — all follow this step
-6. **Remediate failing tests** — agent-runnable · ~8 h · human approval required
+    Obtain the UK customer or tender’s exact requirement, including whether it specifies Cyber Essentials or Cyber Essentials Plus. Use the current NCSC materials to scope the assessment and identify gaps in the technical controls. Choose the certification route and identify its required assessment signatory. Follow a separate Cyber Essentials assessment plan; the later SOC 2 examination steps are not its certification procedure.
 
-   Investigate failed checks in the underlying system. Distinguish actual control gaps from stale inventory, connector permissions and unsuitable test settings. Fix confirmed gaps through the normal change process, rerun the check and attach the resulting evidence to the issue. Record accepted exceptions with their rationale and reviewer, and link later passing results to the original failure and its remediation.
+    - Do it yourself: [NCSC - Cyber Essentials](https://www.ncsc.gov.uk/cyberessentials/overview)
+  - **Germany - ISO 27001 first**
 
-   - Sources: [AICPA SOC suite](https://www.aicpa-cima.com/resources/landing/system-and-organization-controls-soc-suite-of-services)
-7. **Employee security training** — human · ~2 d · async wait
+    When: Selling to German enterprise - the asked-for framework differs
 
-   *Follows step 5.*
+    Ask the German customer for its required certification scope and whether it specifically names IT-Grundschutz. Compare that requirement with the company’s information-security management system and prospective certifier’s process. BSI describes an ISO 27001 route based on IT-Grundschutz with its own examination and certification requirements. Map the chosen route to a separate work plan; the following SOC 2 steps do not supply that certification.
 
-   Teach staff the security practices they need for their access: handling customer information, reporting suspicious activity and getting help with account problems. Use examples from the company’s actual procedures. Use the agreed audience and invitation process, then track completion and follow up on missing participants. Questions that reveal unclear policy or unusable tools should become specific changes to the program.
+    - Do it yourself: [BSI - IT security authority](https://www.bsi.bund.de/)
+    - Sources: [BSI ISO 27001 on IT-Grundschutz](https://www.bsi.bund.de/EN/Themen/Unternehmen-und-Organisationen/Standards-und-Zertifizierung/Zertifizierung-und-Anerkennung/Zertifizierung-von-Managementsystemen/ISO-27001-Basis-IT-Grundschutz/iso-27001-basis-it-grundschutz_node.html)
+  - **France - ISO 27001 / SecNumCloud**
 
-   - Cross-arena market: [workflow-automation](../../open-rankings/workflow-automation)
-   - Sources: [AICPA SOC suite](https://www.aicpa-cima.com/resources/landing/system-and-organization-controls-soc-suite-of-services)
-8. **Engage auditor** — human · ~7 d · async wait · human approval required · hard to undo
+    When: Selling to French buyers - the asked-for framework differs
 
-   *Follows steps 6 and 7 — both are required first.*
+    Identify the assurance required by the French customer for the particular service. If it specifies SecNumCloud, examine the ANSSI qualification scope and distinguish your offering from an underlying provider’s qualified cloud service. Record ISO 27001 requirements separately if requested. Build the chosen qualification or certification plan; selecting this option does not convert the following SOC 2 steps into a French qualification workflow.
 
-   Discuss the requested report, system boundary, readiness gaps and evidence inventory with prospective auditors. Check qualifications, independence, scope, fees, evidence expectations and intended recipients. Ask how evidence collected by the compliance platform fits the examination. The company’s authorized representative signs the agreed engagement; control owners can then work from the auditor’s actual request list and scope.
+    - Do it yourself: [ANSSI (cyber.gouv.fr)](https://cyber.gouv.fr/)
+    - Sources: [ANSSI SecNumCloud](https://cyber.gouv.fr/secnumcloud)
 
-   - Sources: [AICPA SOC suite](https://www.aicpa-cima.com/resources/landing/system-and-organization-controls-soc-suite-of-services)
-9. **Complete audit** — human · ~14 d · async wait
+<a id="step-2"></a>
 
-   Supply evidence for the auditor’s agreed scope and dates, explaining missing records and exceptions accurately. Management reviews the system description and representations before signing. Check the issued report for factual errors, agree its permitted distribution and assign follow-up for exceptions. Completion is an issued report with its scope and unresolved findings understood by management.
+### 2. Connect integrations
 
-   - Produces: SOC 2 Type I report
-   - Sources: [AICPA SOC suite](https://www.aicpa-cima.com/resources/landing/system-and-organization-controls-soc-suite-of-services)
+manual form/portal · ~30 min · human approval required
 
-## By country
+
+Connect the cloud accounts, repositories, identity systems and device inventories inside the proposed audit boundary. Check requested permissions and obtain each system owner’s authorization before granting access. Verify that collection covers the intended accounts and environments, including assets missing from the first import. An empty or stale result needs investigation before it can support a control assessment.
+
+- Verify: The compliance platform's automated monitoring tests start reporting against each connected system.
+- Canonical vendor: Vanta
+- Sources: [AICPA SOC suite](https://www.aicpa-cima.com/resources/landing/system-and-organization-controls-soc-suite-of-services)
+
+<a id="step-3"></a>
+
+### 3. Generate security policies
+
+agent-runnable · ~1 h · human approval required
+
+
+Draft policies from the company’s actual security procedures and architecture. Name who handles access, incidents, releases and other subjects in the agreed control scope, and link to instructions staff can follow. Distinguish current practice from proposed improvements. Leave unresolved operational choices visible for the people who run those systems to answer before the policies are adopted.
+
+- Produces: Security policies
+- Canonical vendor: Vanta
+- Sources: [AICPA SOC suite](https://www.aicpa-cima.com/resources/landing/system-and-organization-controls-soc-suite-of-services)
+
+<a id="step-4"></a>
+
+### 4. Review and customize policies
+
+human · ~8 h · human approval required
+
+
+Walk each policy through a realistic new hire, access change, release or incident with the people who would use it. Resolve conflicts with actual tooling, customer commitments and existing agreements. If a promised practice does not exist, revise the policy or assign its implementation. The relevant business and security owners approve the effective version, which staff should be able to find and understand.
+
+- Sources: [AICPA SOC suite](https://www.aicpa-cima.com/resources/landing/system-and-organization-controls-soc-suite-of-services)
+
+<a id="step-5"></a>
+
+### 5. Configure automated tests
+
+agent-runnable · ~1 h · human approval required
+
+
+For each automated check, identify the control objective, assets covered, expected result and person responsible for failures. Test against a known configuration and verify that stale or missing collection triggers attention. Decide which failures create remediation work and how exceptions are reviewed. Document the human evidence still needed where an automated check cannot demonstrate the whole control.
+
+- Canonical vendor: Vanta
+- Sources: [AICPA SOC suite](https://www.aicpa-cima.com/resources/landing/system-and-organization-controls-soc-suite-of-services)
+- Next: steps 6 and 7 — all follow this step
+
+<a id="step-6"></a>
+
+### 6. Remediate failing tests
+
+agent-runnable · ~8 h · human approval required
+
+
+Investigate failed checks in the underlying system. Distinguish actual control gaps from stale inventory, connector permissions and unsuitable test settings. Fix confirmed gaps through the normal change process, rerun the check and attach the resulting evidence to the issue. Record accepted exceptions with their rationale and reviewer, and link later passing results to the original failure and its remediation.
+
+- Sources: [AICPA SOC suite](https://www.aicpa-cima.com/resources/landing/system-and-organization-controls-soc-suite-of-services)
+
+<a id="step-7"></a>
+
+### 7. Employee security training
+
+human · ~2 d · async wait
+
+
+*Follows step 5.*
+
+Teach staff the security practices they need for their access: handling customer information, reporting suspicious activity and getting help with account problems. Use examples from the company’s actual procedures. Use the agreed audience and invitation process, then track completion and follow up on missing participants. Questions that reveal unclear policy or unusable tools should become specific changes to the program.
+
+- Cross-arena market: [workflow-automation](../../open-rankings/workflow-automation)
+- Sources: [AICPA SOC suite](https://www.aicpa-cima.com/resources/landing/system-and-organization-controls-soc-suite-of-services)
+
+<a id="step-8"></a>
+
+### 8. Engage auditor
+
+human · ~7 d · async wait · human approval required · hard to undo
+
+
+*Follows steps 6 and 7 — both are required first.*
+
+Discuss the requested report, system boundary, readiness gaps and evidence inventory with prospective auditors. Check qualifications, independence, scope, fees, evidence expectations and intended recipients. Ask how evidence collected by the compliance platform fits the examination. The company’s authorized representative signs the agreed engagement; control owners can then work from the auditor’s actual request list and scope.
+
+- Sources: [AICPA SOC suite](https://www.aicpa-cima.com/resources/landing/system-and-organization-controls-soc-suite-of-services)
+
+<a id="step-9"></a>
+
+### 9. Complete audit
+
+human · ~14 d · async wait
+
+
+Supply evidence for the auditor’s agreed scope and dates, explaining missing records and exceptions accurately. Management reviews the system description and representations before signing. Check the issued report for factual errors, agree its permitted distribution and assign follow-up for exceptions. Completion is an issued report with its scope and unresolved findings understood by management.
+
+- Produces: SOC 2 Type I report
+- Sources: [AICPA SOC suite](https://www.aicpa-cima.com/resources/landing/system-and-organization-controls-soc-suite-of-services)
+
+
+<a id="by-country"></a>
+
+## Country details
+
+<a id="geo-uk"></a>
 
 ### United Kingdom
 
 - UK buyers ask for Cyber Essentials (the NCSC-backed baseline, mandatory for many government contracts) and ISO 27001 more often than SOC 2 — SOC 2 still travels for US-facing sales. ([NCSC — Cyber Essentials](https://www.ncsc.gov.uk/cyberessentials/overview))
 
+<a id="geo-de"></a>
+
 ### Germany
 
 - German enterprise security reviews anchor on ISO 27001 (historically also 'auf Basis von BSI IT-Grundschutz') rather than SOC 2 — plan ISO 27001 if the pipeline is DACH enterprise. ([BSI — IT security authority](https://www.bsi.bund.de/))
+
+<a id="geo-fr"></a>
 
 ### France
 
 - French buyers look for ISO 27001, and cloud vendors selling to the public sector meet ANSSI's SecNumCloud qualification — SOC 2 is a US-market artifact here. ([ANSSI (cyber.gouv.fr)](https://cyber.gouv.fr/))
 
+<a id="geo-sg"></a>
+
 ### Singapore
 
 - Local buyers and government work lean on CSA's Cyber Essentials and Cyber Trust marks more than SOC 2 — SOC 2 still travels for US-facing sales, so startups selling both ways often run both. ([CSA — Cyber Essentials mark](https://www.csa.gov.sg/our-programmes/support-for-enterprises/sg-cyber-safe-programme/cybersecurity-certification-for-organisations/cyber-essentials/))
 
-## Artifacts
+<a id="artifacts"></a>
 
-Produces:
+## Outputs
 
 - Compliance platform
 - Security policies
 - SOC 2 Type I report
-
-Requires:
-
-- Identity provider (SSO) — from [Set up SSO & access management](set-up-sso-access-management.md)
 
 ## Related records
 

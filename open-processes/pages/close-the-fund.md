@@ -3,6 +3,10 @@
 
 # Close the fund
 
+[Overview](#overview) · [Before you start](#before-you-start) · [Geography](#geography) · [Steps](#steps-at-a-glance) · [Outputs](#outputs)
+
+## Overview
+
 Run the fund's closing: subscription documents out to the LPs, LP signatures collected, the amended & restated LPA executed with the final LP schedule, and the first and final close held.
 
 | Field | Value |
@@ -19,99 +23,202 @@ Run the fund's closing: subscription documents out to the LPs, LP signatures col
 
 The agent drafts the subscription documents and the A&R LPA and routes everything for e-signature; the LP and GP signatures are legally human, and the close itself is the GP's call.
 
-## Steps
+## Before you start
 
-1. **Create the subscription documents** — agent-runnable · ~45 min · human approval required
+Required artifacts:
 
-   Draft subscription documents with fund counsel from the offering terms, LPA and investor eligibility analysis. Include the representations, commitments and supporting information required for the actual investors and jurisdictions, reconciling side letters and admission mechanics. Identify what must be completed, signed and accepted for an investor to enter the close.
+- Fund LP certificate — from [Form a VC fund](form-a-vc-fund.md)
+- Fund LPA & GP operating agreement — from [Form a VC fund](form-a-vc-fund.md)
+- Fund bank account — from [Form a VC fund](form-a-vc-fund.md)
 
-   - Vendor options: Passthrough, AngelList, Sydecar
-   - Sources: [SEC Private Funds](https://www.sec.gov/resources-small-businesses/capital-raising-building-blocks/private-funds)
-2. **Send the subscription documents to the LPs for signature** — agent-runnable · ~15 min · human approval required
+| Information to gather | Required by the record |
+| --- | --- |
+| LP list with committed amounts | Yes |
+| target close date | Optional |
 
-   Send each investor the final subscription package for their entity, commitment and authorized signers through the GP’s designated contact. Match side letters and document versions carefully and keep other investors’ terms private. Track missing information and signatures separately from the GP’s acceptance decision so a returned packet is not mistaken for admission.
+## Geography
 
-   - Canonical vendor: DocuSign
-   - Vendor options: DocuSign, Passthrough
-3. **LPs sign the subscription documents** — human (legally required signature) · ~2 d · async wait · hard to undo
+Country rows describe the guidance recorded here. Local notes and step alternatives do not establish a complete country-specific workflow.
 
-   Check returned subscriptions for identity, signing capacity, commitment and required information. Resolve altered terms, eligibility questions and missing documents with counsel or the administrator. The investor’s authorized person signs its representations, and the GP makes any acceptance decision required by the agreement. Update closing status to reflect those separate events.
-4. **Create the A&R LPA (amended & restated, with the final LP schedule)** — agent-runnable · ~45 min · human approval required
+| Country | Recorded guidance | Steps with local alternatives or resolutions |
+| --- | --- | --- |
+| [India](#geo-in) | Local analog note | — |
+| [United Kingdom](#geo-uk) | Local analog note | — |
+| [Germany](#geo-de) | Local analog note | — |
+| [France](#geo-fr) | Local analog note | — |
+| [Portugal](#geo-pt) | Local analog note | — |
+| [Canada](#geo-ca) | Local analog note | — |
+| [New Zealand](#geo-nz) | Local analog note | — |
+| [Singapore](#geo-sg) | Local analog note | — |
+| [Australia](#geo-au) | Local analog note | — |
+| [South Korea](#geo-kr) | Local analog note | — |
+| [Hong Kong](#geo-hk) | Local analog note | — |
+| [Estonia](#geo-ee) | Local analog note | — |
 
-   Prepare the amended LPA with counsel using final negotiated terms and the investor admission schedule. Reconcile names, commitments, side-letter interactions and changes from the prior agreement. Highlight provisions needing a decision and establish the required signatures or consents so the final document and LP schedule match the intended close.
+## Steps at a glance
 
-   - Cross-arena options: ChatGPT, Claude (ai-assistants)
-5. **GP and LPs sign the A&R LPA** — human (legally required signature) · ~1 d · async wait · hard to undo
+Use the recorded prerequisites and conditions to follow the path. Row order is for navigation.
 
-   Identify with counsel who must sign or consent to the amended LPA and when it becomes effective under the existing agreement. Have the required GP and investor representatives execute the final version, following any conditions and counterpart instructions. Resolve missing signatures and record which investors or admissions remain outside the completed amendment.
-6. **Hold the first and final close** — human · ~1 h · human approval required · irreversible
+| Step | Handled by | Time estimate | Incoming dependencies |
+| --- | --- | --- | --- |
+| [1. Create the subscription documents](#step-1) | agent-runnable; approval required | ~45 min | Entry step |
+| [2. Send the subscription documents to the LPs for signature](#step-2) | agent-runnable; approval required | ~15 min | [Step 1](#step-1) |
+| [3. LPs sign the subscription documents](#step-3) | human; signature required; includes waiting | ~2 d | [Step 2](#step-2) |
+| [4. Create the A&R LPA (amended & restated, with the final LP schedule)](#step-4) | agent-runnable; approval required | ~45 min | [Step 3](#step-3) |
+| [5. GP and LPs sign the A&R LPA](#step-5) | human; signature required; includes waiting | ~1 d | [Step 4](#step-4) |
+| [6. Hold the first and final close](#step-6) | human; approval required | ~1 h | [Step 5](#step-5) |
 
-   Establish that subscriptions, approvals, executed documents and investor acceptance meet the conditions for this close. The authorized GP decides to close on the final investor schedule and any permitted outstanding conditions. Give the administrator the effective commitments and terms, and send closing confirmations. Track offering filings and remaining obligations separately from signature completion.
+<a id="steps"></a>
 
-   - Produces: Fund closing
-   - Sources: [SEC Private Funds](https://www.sec.gov/resources-small-businesses/capital-raising-building-blocks/private-funds) · [SEC Filing a Form D Notice](https://www.sec.gov/resources-small-businesses/exempt-offerings/filing-form-d-notice)
+## Step details
 
-## By country
+<a id="step-1"></a>
+
+### 1. Create the subscription documents
+
+agent-runnable · ~45 min · human approval required
+
+
+Draft subscription documents with fund counsel from the offering terms, LPA and investor eligibility analysis. Include the representations, commitments and supporting information required for the actual investors and jurisdictions, reconciling side letters and admission mechanics. Identify what must be completed, signed and accepted for an investor to enter the close.
+
+- Vendor options: Passthrough, AngelList, Sydecar
+- Sources: [SEC Private Funds](https://www.sec.gov/resources-small-businesses/capital-raising-building-blocks/private-funds)
+
+<a id="step-2"></a>
+
+### 2. Send the subscription documents to the LPs for signature
+
+agent-runnable · ~15 min · human approval required
+
+
+Send each investor the final subscription package for their entity, commitment and authorized signers through the GP’s designated contact. Match side letters and document versions carefully and keep other investors’ terms private. Track missing information and signatures separately from the GP’s acceptance decision so a returned packet is not mistaken for admission.
+
+- Canonical vendor: DocuSign
+- Vendor options: DocuSign, Passthrough
+
+<a id="step-3"></a>
+
+### 3. LPs sign the subscription documents
+
+human (legally required signature) · ~2 d · async wait · hard to undo
+
+
+Check returned subscriptions for identity, signing capacity, commitment and required information. Resolve altered terms, eligibility questions and missing documents with counsel or the administrator. The investor’s authorized person signs its representations, and the GP makes any acceptance decision required by the agreement. Update closing status to reflect those separate events.
+
+<a id="step-4"></a>
+
+### 4. Create the A&R LPA (amended & restated, with the final LP schedule)
+
+agent-runnable · ~45 min · human approval required
+
+
+Prepare the amended LPA with counsel using final negotiated terms and the investor admission schedule. Reconcile names, commitments, side-letter interactions and changes from the prior agreement. Highlight provisions needing a decision and establish the required signatures or consents so the final document and LP schedule match the intended close.
+
+- Cross-arena options: ChatGPT, Claude (ai-assistants)
+
+<a id="step-5"></a>
+
+### 5. GP and LPs sign the A&R LPA
+
+human (legally required signature) · ~1 d · async wait · hard to undo
+
+
+Identify with counsel who must sign or consent to the amended LPA and when it becomes effective under the existing agreement. Have the required GP and investor representatives execute the final version, following any conditions and counterpart instructions. Resolve missing signatures and record which investors or admissions remain outside the completed amendment.
+
+<a id="step-6"></a>
+
+### 6. Hold the first and final close
+
+human · ~1 h · human approval required · irreversible
+
+
+Establish that subscriptions, approvals, executed documents and investor acceptance meet the conditions for this close. The authorized GP decides to close on the final investor schedule and any permitted outstanding conditions. Give the administrator the effective commitments and terms, and send closing confirmations. Track offering filings and remaining obligations separately from signature completion.
+
+- Produces: Fund closing
+- Sources: [SEC Private Funds](https://www.sec.gov/resources-small-businesses/capital-raising-building-blocks/private-funds) · [SEC Filing a Form D Notice](https://www.sec.gov/resources-small-businesses/exempt-offerings/filing-form-d-notice)
+
+
+<a id="by-country"></a>
+
+## Country details
+
+<a id="geo-in"></a>
 
 ### India
 
 - Closing mechanics run through the AIF's PPM terms; SEBI expects the first close within 12 months of the PPM being taken on record, and corpus/close details flow into SEBI's periodic AIF reporting. ([SEBI (AIF reporting)](https://www.sebi.gov.in/))
 
+<a id="geo-uk"></a>
+
 ### United Kingdom
 
 - First closing is when the LP formally exists as a fund: the limited partnership (usually PFLP-designated) is registered at Companies House, LP capital commitments are documented in the LPA, and AIFM notifications to the FCA follow the close. ([Set up and run a limited partnership](https://www.gov.uk/guidance/set-up-and-run-a-limited-partnership))
+
+<a id="geo-de"></a>
 
 ### Germany
 
 - Closing a German fund is an AIFMD event: the manager registers with (sub-threshold) or is authorized by BaFin under the KAGB before capital is accepted, and the first close itself is the LPA's closing mechanics with BaFin reporting attached from then on. ([BaFin (KAGB / AIFM supervision)](https://www.bafin.de/))
 
+<a id="geo-fr"></a>
+
 ### France
 
 - French VC funds close under the AMF's regime: the management company is AMF-authorized, the vehicle (FPCI or SLP) is declared to the AMF, and the first close follows the fund's règlement/LPA — AIFMD reporting runs from the close onward. ([AMF (fund management supervision)](https://www.amf-france.org/))
+
+<a id="geo-pt"></a>
 
 ### Portugal
 
 - The close is a CMVM-regulated event: the fund's constitution documents and manager registration sit with the regulator before commitments are accepted, and subscriptions follow the fund regulation's own closing mechanics. ([CMVM — supervised entities](https://www.cmvm.pt/))
 
+<a id="geo-ca"></a>
+
 ### Canada
 
 - LP subscriptions close as exempt distributions: accredited-investor representations under NI 45-106, the amended LPA with the final LP schedule, and the Form 45-106F1 report filed with the regulators within 10 days. ([NI 45-106 — prospectus exemptions (OSC)](https://www.osc.ca/en/securities-law/instruments-rules-policies/4/45-106))
+
+<a id="geo-nz"></a>
 
 ### New Zealand
 
 - The fund vehicle is a limited partnership registered on the Companies Office Limited Partnerships Register (an online application plus a registration fee); the closing itself happens in the limited partnership agreement and the capital commitments, not in a state filing. ([NZ Limited Partnerships Register](https://lp-register.companiesoffice.govt.nz/))
 
+<a id="geo-sg"></a>
+
 ### Singapore
 
 - First close means the vehicle and the licence are real: Singapore funds run as limited partnerships or VCCs, the manager holds MAS fund-management licensing or registration under the Securities and Futures Act, and commitments are documented in the LPA before capital calls. ([MAS — capital-markets licensing](https://www.mas.gov.sg/regulation/capital-markets/apply-for-licensing-or-registration-of-capital-market-entities))
+
+<a id="geo-au"></a>
 
 ### Australia
 
 - First close means the partnership legally exists and is registered: Australian venture funds typically run as VCLPs or ESVCLPs — incorporated limited partnerships registered with Industry Innovation and Science Australia for flow-through treatment and investor incentives — with the manager licensed or authorised under an AFSL. ([ESVCLP registration (business.gov.au)](https://business.gov.au/grants-and-programs/early-stage-venture-capital-limited-partnerships))
 
+<a id="geo-kr"></a>
+
 ### South Korea
 
 - Funds close as venture investment partnerships (벤처투자조합) registered with the Ministry of SMEs and Startups under the Venture Investment Promotion Act; KVIC anchors many of them as the national fund of funds. ([Korea Venture Investment Corp (KVIC)](https://www.kvic.or.kr/))
+
+<a id="geo-hk"></a>
 
 ### Hong Kong
 
 - Hong Kong funds commonly close as limited partnership funds registered with the Companies Registry under the Limited Partnership Fund Ordinance, with the manager licensed or registered with the Securities and Futures Commission for asset management, and commitments documented in the LPA before capital calls. ([Companies Registry — limited partnership funds](https://www.cr.gov.hk/en/legislation/lpf.htm))
 
+<a id="geo-ee"></a>
+
 ### Estonia
 
 - Venture funds commonly close as Estonian limited partnerships (usaldusühing) entered in the commercial register, with the manager's registration or authorisation under the investment-funds rules supervised by Finantsinspektsioon. ([e-Business Register](https://ariregister.rik.ee/eng))
 
-## Artifacts
+<a id="artifacts"></a>
 
-Produces:
+## Outputs
 
 - Fund closing
-
-Requires:
-
-- Fund LP certificate — from [Form a VC fund](form-a-vc-fund.md)
-- Fund LPA & GP operating agreement — from [Form a VC fund](form-a-vc-fund.md)
-- Fund bank account — from [Form a VC fund](form-a-vc-fund.md)
 
 ## Related records
 

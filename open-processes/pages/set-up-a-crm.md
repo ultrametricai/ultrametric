@@ -3,6 +3,10 @@
 
 # Set up a CRM
 
+[Overview](#overview) · [Before you start](#before-you-start) · [Steps](#steps-at-a-glance) · [Outputs](#outputs)
+
+## Overview
+
 Configure the CRM with a custom pipeline, properties, and email templates. HubSpot is the canonical route; the CRM arena ranks the alternatives.
 
 | Field | Value |
@@ -19,64 +23,122 @@ Configure the CRM with a custom pipeline, properties, and email templates. HubSp
 
 HubSpot has a comprehensive API. Full pipeline, property, and template management via API.
 
-## Steps
+## Before you start
 
-1. **Create your CRM account** — manual form/portal · ~10 min · human approval required
-
-   Check for an existing CRM workspace before creating one. Select a plan from the required records, users, integrations, access controls and current cost. Establish company ownership, recovery access and administrators within the sales budget. Set up the workspace, then hand its record structure and access details to the pipeline, field-mapping and import tasks.
-
-   - Produces: CRM workspace
-   - Canonical vendor: HubSpot
-   - Vendor options: HubSpot, Attio, Salesforce
-   - Ranked market: [crm](../../open-rankings/crm)
-   - Next: steps 2 and 3 — all follow this step
-2. **Configure deal pipeline** — agent-runnable · ~10 min · human approval required
-
-   Define evidence for entering and leaving each deal stage, including won, lost and stalled outcomes. Agree definitions and update ownership with the sales team. Configure the stages, move a sample deal through them and check the resulting reports. Keep the definitions available where teammates manage deals.
-
-   - Canonical vendor: HubSpot
-   - Next: continue at step 4
-3. **Set up custom properties** — agent-runnable · ~10 min
-
-   *Follows step 1.*
-
-   Compare the sales process's information needs with existing CRM properties before creating fields. Define each new field's object, meaning, type, allowed values, source and owner, avoiding unnecessary sensitive data. Try the mapping on sample records and imports. Add the agreed properties and keep a field dictionary that distinguishes missing, unknown and inapplicable values for later integrations.
-
-   - Canonical vendor: HubSpot
-   - Next: continue at step 6
-4. **Create email templates** — agent-runnable · ~15 min · human approval required
-
-   *Follows step 2.*
-
-   Write templates for specific sales moments, using verified claims and personalization that survives missing optional data. Preview sender details, links and audience-specific communication content. Save each template with its intended use; the campaign or account context establishes eligible recipients and commercial terms when sending.
-
-   - Canonical vendor: HubSpot
-5. **Connect the email inbox** — manual form/portal · ~5 min · human approval required
-
-   Choose an individual work inbox or shared team address and check the CRM's current connection method and permissions. Connect only with the mailbox owner's agreed access, sending and logging scope. Test an internal exchange and inspect who can see the logged content, especially personal or confidential messages. Give the connection owner the revocation steps and resulting visibility settings.
-
-   - Canonical vendor: HubSpot
-   - Sources: [Connect your personal email](https://knowledge.hubspot.com/connected-email/connect-your-inbox-to-hubspot)
-
-   *This path ends here.*
-6. **Import existing contacts** — agent-runnable · ~10 min · human approval required
-
-   *Follows step 3.*
-
-   Map the contact export's stable identifiers, fields, ownership and communication preferences to existing CRM records. Decide which rows create records and which update them, resolving duplicates and preserving suppressions. Test a small sample for associations and overwritten fields before running the agreed full import. Reconcile created, updated, skipped and failed counts, then isolate exceptions for targeted correction.
-
-   - Canonical vendor: HubSpot
-   - Sources: [Understand the import tool](https://knowledge.hubspot.com/import-and-export/understand-the-import-tool)
-
-## Artifacts
-
-Produces:
-
-- CRM workspace
-
-Requires:
+Required artifacts:
 
 - Company email workspace — from [Set up company email & docs](set-up-company-email-docs.md)
+
+| Information to gather | Required by the record |
+| --- | --- |
+| sales pipeline stages | Yes |
+| sales deal properties | Optional |
+
+## Steps at a glance
+
+Use the recorded prerequisites and conditions to follow the path. Row order is for navigation.
+
+| Step | Handled by | Time estimate | Incoming dependencies |
+| --- | --- | --- | --- |
+| [1. Create your CRM account](#step-1) | manual form/portal; approval required | ~10 min | Entry step |
+| [2. Configure deal pipeline](#step-2) | agent-runnable; approval required | ~10 min | [Step 1](#step-1) |
+| [3. Set up custom properties](#step-3) | agent-runnable | ~10 min | [Step 1](#step-1) |
+| [4. Create email templates](#step-4) | agent-runnable; approval required | ~15 min | [Step 2](#step-2) |
+| [5. Connect the email inbox](#step-5) | manual form/portal; approval required | ~5 min | [Step 4](#step-4) |
+| [6. Import existing contacts](#step-6) | agent-runnable; approval required | ~10 min | [Step 3](#step-3) |
+
+<a id="steps"></a>
+
+## Step details
+
+<a id="step-1"></a>
+
+### 1. Create your CRM account
+
+manual form/portal · ~10 min · human approval required
+
+
+Check for an existing CRM workspace before creating one. Select a plan from the required records, users, integrations, access controls and current cost. Establish company ownership, recovery access and administrators within the sales budget. Set up the workspace, then hand its record structure and access details to the pipeline, field-mapping and import tasks.
+
+- Produces: CRM workspace
+- Canonical vendor: HubSpot
+- Vendor options: HubSpot, Attio, Salesforce
+- Ranked market: [crm](../../open-rankings/crm)
+- Next: steps 2 and 3 — all follow this step
+
+<a id="step-2"></a>
+
+### 2. Configure deal pipeline
+
+agent-runnable · ~10 min · human approval required
+
+
+Define evidence for entering and leaving each deal stage, including won, lost and stalled outcomes. Agree definitions and update ownership with the sales team. Configure the stages, move a sample deal through them and check the resulting reports. Keep the definitions available where teammates manage deals.
+
+- Canonical vendor: HubSpot
+- Next: continue at step 4
+
+<a id="step-3"></a>
+
+### 3. Set up custom properties
+
+agent-runnable · ~10 min
+
+
+*Follows step 1.*
+
+Compare the sales process's information needs with existing CRM properties before creating fields. Define each new field's object, meaning, type, allowed values, source and owner, avoiding unnecessary sensitive data. Try the mapping on sample records and imports. Add the agreed properties and keep a field dictionary that distinguishes missing, unknown and inapplicable values for later integrations.
+
+- Canonical vendor: HubSpot
+- Next: continue at step 6
+
+<a id="step-4"></a>
+
+### 4. Create email templates
+
+agent-runnable · ~15 min · human approval required
+
+
+*Follows step 2.*
+
+Write templates for specific sales moments, using verified claims and personalization that survives missing optional data. Preview sender details, links and audience-specific communication content. Save each template with its intended use; the campaign or account context establishes eligible recipients and commercial terms when sending.
+
+- Canonical vendor: HubSpot
+
+<a id="step-5"></a>
+
+### 5. Connect the email inbox
+
+manual form/portal · ~5 min · human approval required
+
+
+Choose an individual work inbox or shared team address and check the CRM's current connection method and permissions. Connect only with the mailbox owner's agreed access, sending and logging scope. Test an internal exchange and inspect who can see the logged content, especially personal or confidential messages. Give the connection owner the revocation steps and resulting visibility settings.
+
+- Canonical vendor: HubSpot
+- Sources: [Connect your personal email](https://knowledge.hubspot.com/connected-email/connect-your-inbox-to-hubspot)
+
+*This path ends here.*
+
+<a id="step-6"></a>
+
+### 6. Import existing contacts
+
+agent-runnable · ~10 min · human approval required
+
+
+*Follows step 3.*
+
+Map the contact export's stable identifiers, fields, ownership and communication preferences to existing CRM records. Decide which rows create records and which update them, resolving duplicates and preserving suppressions. Test a small sample for associations and overwritten fields before running the agreed full import. Reconcile created, updated, skipped and failed counts, then isolate exceptions for targeted correction.
+
+- Canonical vendor: HubSpot
+- Sources: [Understand the import tool](https://knowledge.hubspot.com/import-and-export/understand-the-import-tool)
+
+
+<a id="artifacts"></a>
+
+## Outputs
+
+- CRM workspace
 
 ## Related records
 

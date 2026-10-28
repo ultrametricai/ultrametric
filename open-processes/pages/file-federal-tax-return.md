@@ -3,6 +3,10 @@
 
 # File federal tax return
 
+[Overview](#overview) · [Before you start](#before-you-start) · [Geography](#geography) · [Steps](#steps-at-a-glance) · [Outputs](#outputs)
+
+## Overview
+
 Prepare the annual federal corporate tax return (Form 1120) and file with the IRS.
 
 | Field | Value |
@@ -19,127 +23,250 @@ Prepare the annual federal corporate tax return (Form 1120) and file with the IR
 
 Tax filing requires a CPA. System compiles financial data, tracks deadlines, coordinates with accountant.
 
-## Steps
+## Before you start
 
-1. **Export financial data from QBO** — agent-runnable · ~5 min
+Required artifacts:
 
-   Export the trial balance, financial statements and transaction detail requested for the entity, period and accounting basis. Reconcile reports to the closed books and bank records, and identify late adjustments or incomplete schedules. Use consistent date filters and report versions so totals reconcile across the exports.
+- EIN assignment letter — from [Get EIN](get-ein.md)
+- Accounting ledger — from [Set up accounting](set-up-accounting.md)
+- Financial statements — from [Bookkeeping close](bookkeeping-close.md)
 
-   - Canonical vendor: QuickBooks
-2. **Send financials to CPA** — agent-runnable · ~5 min · human approval required
+| Information to gather | Required by the record |
+| --- | --- |
+| recent transactions | Yes |
+| 1099s | Yes |
+| cpa | Yes |
 
-   Send the preparer the reconciled exports, prior returns, ownership information and requested transaction records through the agreed secure channel. Include unusual events and known gaps explicitly. Keep an index of what was sent and use a single point of contact for questions and revised files so the final return can be traced to the supplied facts.
+## Geography
 
-   - Canonical vendor: Gmail
-3. **CPA prepares return (2-3 weeks)** — human · ~14 d · async wait
+Country rows describe the guidance recorded here. Local notes and step alternatives do not establish a complete country-specific workflow.
 
-   Answer the preparer’s questions with verified records and review proposed adjustments and elections. Identify unresolved issues, attachments and separate filing or payment dates for this entity. Compare drafts when material figures change. Preparation is ready for review when the return and supporting explanations are complete enough to decide the outstanding items; use the engagement’s actual timing estimate.
+| Country | Recorded guidance | Steps with local alternatives or resolutions |
+| --- | --- | --- |
+| [India](#geo-in) | Local analog note | — |
+| [United Kingdom](#geo-uk) | Local analog note | — |
+| [Germany](#geo-de) | Local analog note | — |
+| [France](#geo-fr) | Local analog note | — |
+| [Portugal](#geo-pt) | Local analog note | — |
+| [Canada](#geo-ca) | Local analog note | — |
+| [New Zealand](#geo-nz) | Local analog note | — |
+| [Singapore](#geo-sg) | Local analog note | — |
+| [Australia](#geo-au) | Local analog note | — |
+| [South Korea](#geo-kr) | Local analog note | — |
+| [Hong Kong](#geo-hk) | Local analog note | — |
+| [Estonia](#geo-ee) | Local analog note | — |
 
-   - Sources: [IRS Form 1120 instructions](https://www.irs.gov/instructions/i1120)
+## Steps at a glance
 
-   Options:
-     - **Default — CPA prepares return (2-3 weeks)** — human · ~14 d · async wait
+Use the recorded prerequisites and conditions to follow the path. Row order is for navigation.
 
-       Work with the engaged CPA on the agreed returns, elections and schedules for this entity and year. Supply reconciled records and answer questions, then review proposed adjustments and remaining issues. Confirm who handles signature authorization, transmission and payment under the engagement so preparation can move into filing without an unassigned responsibility.
-     - **Startup tax platform**
+| Step | Handled by | Time estimate | Incoming dependencies |
+| --- | --- | --- | --- |
+| [1. Export financial data from QBO](#step-1) | agent-runnable | ~5 min | Entry step |
+| [2. Send financials to CPA](#step-2) | agent-runnable; approval required | ~5 min | [Step 1](#step-1) |
+| [3. CPA prepares return (2-3 weeks)](#step-3) | human; includes waiting | ~14 d | [Step 2](#step-2) |
+| [4. Review draft return](#step-4) | human; approval required | ~1 h | [Step 3](#step-3) |
+| [5. Officer signs the e-file authorization (Form 8879-CORP)](#step-5) | human; signature required | ~10 min | [Step 4](#step-4) |
+| [6. CPA files return with IRS](#step-6) | human | ~20 min | [Step 5](#step-5) |
+| [7. Pay any tax due](#step-7) | manual form/portal; approval required | ~10 min | [Step 6](#step-6) |
+| [8. File copy in records](#step-8) | agent-runnable | ~2 min | [Step 7](#step-7) |
 
-       When: No CPA relationship - a startup tax platform prepares and files the return
+<a id="steps"></a>
 
-       Check that the tax service supports the entity, ownership structure, states, elections and unusual transactions involved. Compare preparation and review responsibility, question handling, price and exclusions. Provide records through its secure process, then reconcile the draft to the books and obtain the required signature authorization. Check imported figures and resulting tax treatment before authorizing filing.
+## Step details
 
-       - Vendor options: Fondo, Pilot
-4. **Review draft return** — human · ~1 h · human approval required
+<a id="step-1"></a>
 
-   Compare the draft with final books, carryforwards, ownership records and significant transactions. Review tax adjustments, elections, related-party reporting and estimated payments with the preparer. Resolve unfamiliar figures and verify the entity and period before approving the exact return version through the company’s filing process. Treat any payment instruction as a distinct decision.
+### 1. Export financial data from QBO
 
-   - Sources: [IRS Form 1120 instructions](https://www.irs.gov/instructions/i1120)
-5. **Officer signs the e-file authorization (Form 8879-CORP)** — human (legally required signature) · ~10 min
+agent-runnable · ~5 min
 
-   For a return using Form 8879-CORP, the authorized corporate officer reviews the complete electronic return before signing. Verify the corporation, year, required return figures and any electronic-withdrawal consent against the reviewed draft. Resolve changes with the electronic return originator, then sign and return the authorization securely. Keep it associated with the return it authorizes.
 
-   - Sources: [IRS Form 8879-CORP](https://www.irs.gov/pub/irs-pdf/f8879crp.pdf)
-6. **CPA files return with IRS** — human · ~20 min · hard to undo
+Export the trial balance, financial statements and transaction detail requested for the entity, period and accounting basis. Reconcile reports to the closed books and bank records, and identify late adjustments or incomplete schedules. Use consistent date filters and report versions so totals reconcile across the exports.
 
-   Confirm the preparer has the approved return and required signature authorization before transmission. Obtain the filing acknowledgement and distinguish acceptance from rejection. Resolve rejected submissions promptly, reviewing material corrections before retransmission. Preserve the filed return and acceptance, and check any separately required forms or attachments the preparer identified.
+- Canonical vendor: QuickBooks
 
-   - Verify: The IRS e-file acceptance acknowledgment comes back through the CPA — retain it with the signed copy of the return.
-   - Produces: Federal tax return
-   - Canonical vendor: IRS
-7. **Pay any tax due** — manual form/portal · ~10 min · human approval required · hard to undo
+<a id="step-2"></a>
 
-   Reconcile the balance due with credits, estimated payments and any electronic withdrawal already authorized. Verify taxpayer, period, payment type, amount and due date with the preparer. Use the company’s payment-approval process and check settlement. Match any debit included with filing before paying again, and resolve failed or missing payments against the tax account.
+### 2. Send financials to CPA
 
-   - Verify: IRS Direct Pay or EFTPS issues a payment confirmation number and the payment posts to the business tax account. ([www.irs.gov](https://www.irs.gov/payments))
-   - Canonical vendor: IRS
-   - Do it yourself: [IRS payments](https://www.irs.gov/payments)
-8. **File copy in records** — agent-runnable · ~2 min · support work
+agent-runnable · ~5 min · human approval required
 
-   File the submitted return, schedules, elections, signature authorization, acceptance and payment evidence together. Keep supporting workpapers and explanations of material positions, with drafts clearly separate. Apply the relevant retention and access arrangements so a new preparer can understand the filed position and any later notice or amendment can be investigated.
 
-   - Canonical vendor: Google Drive
-   - Sources: [IRS Form 1120 instructions](https://www.irs.gov/instructions/i1120)
+Send the preparer the reconciled exports, prior returns, ownership information and requested transaction records through the agreed secure channel. Include unusual events and known gaps explicitly. Keep an index of what was sent and use a single point of contact for questions and revised files so the final return can be traced to the supplied facts.
 
-## By country
+- Canonical vendor: Gmail
+
+<a id="step-3"></a>
+
+### 3. CPA prepares return (2-3 weeks)
+
+human · ~14 d · async wait
+
+| Option | Applies when |
+| --- | --- |
+| Default — CPA prepares return (2-3 weeks) | Recorded default |
+| Startup tax platform | No CPA relationship - a startup tax platform prepares and files the return |
+
+
+Answer the preparer’s questions with verified records and review proposed adjustments and elections. Identify unresolved issues, attachments and separate filing or payment dates for this entity. Compare drafts when material figures change. Preparation is ready for review when the return and supporting explanations are complete enough to decide the outstanding items; use the engagement’s actual timing estimate.
+
+- Sources: [IRS Form 1120 instructions](https://www.irs.gov/instructions/i1120)
+
+Options:
+  - **Default — CPA prepares return (2-3 weeks)** — human · ~14 d · async wait
+
+    Work with the engaged CPA on the agreed returns, elections and schedules for this entity and year. Supply reconciled records and answer questions, then review proposed adjustments and remaining issues. Confirm who handles signature authorization, transmission and payment under the engagement so preparation can move into filing without an unassigned responsibility.
+  - **Startup tax platform**
+
+    When: No CPA relationship - a startup tax platform prepares and files the return
+
+    Check that the tax service supports the entity, ownership structure, states, elections and unusual transactions involved. Compare preparation and review responsibility, question handling, price and exclusions. Provide records through its secure process, then reconcile the draft to the books and obtain the required signature authorization. Check imported figures and resulting tax treatment before authorizing filing.
+
+    - Vendor options: Fondo, Pilot
+
+<a id="step-4"></a>
+
+### 4. Review draft return
+
+human · ~1 h · human approval required
+
+
+Compare the draft with final books, carryforwards, ownership records and significant transactions. Review tax adjustments, elections, related-party reporting and estimated payments with the preparer. Resolve unfamiliar figures and verify the entity and period before approving the exact return version through the company’s filing process. Treat any payment instruction as a distinct decision.
+
+- Sources: [IRS Form 1120 instructions](https://www.irs.gov/instructions/i1120)
+
+<a id="step-5"></a>
+
+### 5. Officer signs the e-file authorization (Form 8879-CORP)
+
+human (legally required signature) · ~10 min
+
+
+For a return using Form 8879-CORP, the authorized corporate officer reviews the complete electronic return before signing. Verify the corporation, year, required return figures and any electronic-withdrawal consent against the reviewed draft. Resolve changes with the electronic return originator, then sign and return the authorization securely. Keep it associated with the return it authorizes.
+
+- Sources: [IRS Form 8879-CORP](https://www.irs.gov/pub/irs-pdf/f8879crp.pdf)
+
+<a id="step-6"></a>
+
+### 6. CPA files return with IRS
+
+human · ~20 min · hard to undo
+
+
+Confirm the preparer has the approved return and required signature authorization before transmission. Obtain the filing acknowledgement and distinguish acceptance from rejection. Resolve rejected submissions promptly, reviewing material corrections before retransmission. Preserve the filed return and acceptance, and check any separately required forms or attachments the preparer identified.
+
+- Verify: The IRS e-file acceptance acknowledgment comes back through the CPA — retain it with the signed copy of the return.
+- Produces: Federal tax return
+- Canonical vendor: IRS
+
+<a id="step-7"></a>
+
+### 7. Pay any tax due
+
+manual form/portal · ~10 min · human approval required · hard to undo
+
+
+Reconcile the balance due with credits, estimated payments and any electronic withdrawal already authorized. Verify taxpayer, period, payment type, amount and due date with the preparer. Use the company’s payment-approval process and check settlement. Match any debit included with filing before paying again, and resolve failed or missing payments against the tax account.
+
+- Verify: IRS Direct Pay or EFTPS issues a payment confirmation number and the payment posts to the business tax account. ([www.irs.gov](https://www.irs.gov/payments))
+- Canonical vendor: IRS
+- Do it yourself: [IRS payments](https://www.irs.gov/payments)
+
+<a id="step-8"></a>
+
+### 8. File copy in records
+
+agent-runnable · ~2 min · support work
+
+
+File the submitted return, schedules, elections, signature authorization, acceptance and payment evidence together. Keep supporting workpapers and explanations of material positions, with drafts clearly separate. Apply the relevant retention and access arrangements so a new preparer can understand the filed position and any later notice or amendment can be investigated.
+
+- Canonical vendor: Google Drive
+- Sources: [IRS Form 1120 instructions](https://www.irs.gov/instructions/i1120)
+
+
+<a id="by-country"></a>
+
+## Country details
+
+<a id="geo-in"></a>
 
 ### India
 
 - Companies file the ITR-6 return electronically on the Income Tax e-filing portal; the tax year runs April–March rather than the calendar year. ([Income Tax e-filing (ITR-6)](https://www.incometax.gov.in/iec/foportal/))
 
+<a id="geo-uk"></a>
+
 ### United Kingdom
 
 - The company files a CT600 Company Tax Return with HMRC within 12 months of its accounting period end — plus statutory accounts to Companies House. ([HMRC Company Tax Return (CT600)](https://www.gov.uk/company-tax-returns))
+
+<a id="geo-de"></a>
 
 ### Germany
 
 - Corporation tax (Körperschaftsteuer) plus trade tax (Gewerbesteuer) returns are filed electronically through ELSTER, in practice via a Steuerberater. ([ELSTER — corporate tax returns](https://www.elster.de/eportal/start))
 
+<a id="geo-fr"></a>
+
 ### France
 
 - Corporate income tax (impôt sur les sociétés) is declared and paid through the company's espace professionnel on impots.gouv.fr. ([impots.gouv.fr — espace professionnel](https://www.impots.gouv.fr/professionnel))
+
+<a id="geo-pt"></a>
 
 ### Portugal
 
 - The company files the Modelo 22 (IRC) return electronically through the Portal das Finanças by the end of May for calendar-year companies, plus the IES annual declaration — in practice via a certified accountant (contabilista certificado). ([Portal das Finanças — Modelo 22](https://www.portaldasfinancas.gov.pt/))
 
+<a id="geo-ca"></a>
+
 ### Canada
 
 - The company files a T2 corporation income tax return with the CRA within six months of its fiscal year-end (tax owing is due earlier), plus any provincial corporate returns outside the CRA-administered provinces. ([CRA — corporation income tax (T2)](https://www.canada.ca/en/revenue-agency/services/tax/businesses/topics/corporations.html))
+
+<a id="geo-nz"></a>
 
 ### New Zealand
 
 - Companies complete and send an income tax return (IR4) to Inland Revenue each year, filed through myIR; most companies pay income tax on profit at a flat 28%. ([Income tax for companies — Inland Revenue](https://www.ird.govt.nz/income-tax/income-tax-for-businesses-and-organisations/income-tax-for-companies))
 
+<a id="geo-sg"></a>
+
 ### Singapore
 
 - The company files its corporate income tax return (Form C-S or Form C) with IRAS by 30 November for each year of assessment via the myTax Portal — a flat 17% rate, with the start-up exemption trimming the first three YAs. ([IRAS — Form C-S/Form C overview](https://www.iras.gov.sg/taxes/corporate-income-tax/form-c-s-form-c-s-(lite)-form-c-filing/overview-of-form-c-s-form-c-s-(lite)-form-c))
+
+<a id="geo-au"></a>
 
 ### Australia
 
 - The company lodges an annual company tax return with the ATO for its income year; due dates follow the ATO lodgment program (registered tax agents get extended schedules), and most startups lodge through an agent alongside their activity statements. ([Income tax for business](https://business.gov.au/finance/tax/income-tax-for-business))
 
+<a id="geo-kr"></a>
+
 ### South Korea
 
 - The corporate tax return goes to the NTS within three months from the end of the month in which the business year ends (Corporate Tax Act Article 60), filed through Hometax; local income tax follows to the municipality. ([Hometax (NTS e-filing)](https://www.hometax.go.kr/))
+
+<a id="geo-hk"></a>
 
 ### Hong Kong
 
 - The company files its profits tax return with the Inland Revenue Department when the return issues, by the date it states; corporate profits are taxed on a territorial basis at the two-tiered 8.25%/16.5% rates (law rule [hk.profits-tax-two-tier-rates](../../open-law/HK/hk-profits-tax-two-tier-rates.json)). ([IRD — profits tax](https://www.ird.gov.hk/eng/tax/bus_pft.htm))
 
+<a id="geo-ee"></a>
+
 ### Estonia
 
 - The yearly ritual splits in two: income tax is charged only when profit is distributed and rides the monthly TSD (law rule [ee.corporate-tax-distributed-profits](../../open-law/EE/ee-corporate-tax-distributed-profits.json)), while the annual report to the commercial register, due in six months, is the yearly compliance document (law rule [ee.annual-report-deadline](../../open-law/EE/ee-annual-report-deadline.json)). ([Income and social taxes (e-MTA)](https://www.emta.ee/en/business-client/taxes-and-payment/income-and-social-taxes))
 
-## Artifacts
+<a id="artifacts"></a>
 
-Produces:
+## Outputs
 
 - Federal tax return
-
-Requires:
-
-- EIN assignment letter — from [Get EIN](get-ein.md)
-- Accounting ledger — from [Set up accounting](set-up-accounting.md)
-- Financial statements — from [Bookkeeping close](bookkeeping-close.md)
 
 ## Related records
 

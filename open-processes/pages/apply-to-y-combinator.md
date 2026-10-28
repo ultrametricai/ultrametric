@@ -3,6 +3,10 @@
 
 # Apply to Y Combinator
 
+[Overview](#overview) · [Before you start](#before-you-start) · [Steps](#steps-at-a-glance)
+
+## Overview
+
 Apply to a Y Combinator batch: create the application account, draft the written application (what you're making, progress, founders, equity), record the one-minute founder video, and submit before the batch deadline — steps per YC's own published application guidance. Active times are rough founder-hours derived from that guidance; the decision wait is an async window, modeled, never promised.
 
 | Field | Value |
@@ -19,47 +23,106 @@ Apply to a Y Combinator batch: create the application account, draft the written
 
 The written answers and the founder video are founder work by YC's own design, and submission happens inside YC's application portal (no API). An agent can review drafts against YC's published application advice; it cannot apply for you.
 
-## Steps
+## Before you start
 
-1. **Create the application account** — manual form/portal · ~5 min
-
-   Open the current official YC application route and check whether the company already has an application. The founder responsible for submission creates or takes ownership of the account using a founder-controlled address. Establish who can edit it and open the current batch’s actual questions so the team works on one application.
-
-   - Do it yourself: [YC application portal](https://apply.ycombinator.com/)
-   - Sources: [Y Combinator application](https://www.ycombinator.com/apply)
-2. **Draft the written application (product, progress, founders, equity)** — human · ~3 h
-
-   Answer the current questions with specific facts about the product, users, progress, founders and ownership. Reconcile metrics and equity with company records, explaining estimates and unusual circumstances plainly. Ask founders to check statements about their backgrounds and commitment. Keep unanswered questions visible while editing for the form’s length and clarity.
-
-   - Do it yourself: [Apply to Y Combinator (requirements)](https://www.ycombinator.com/apply)
-3. **Record the one-minute founder video** — human · ~30 min
-
-   Record the founders explaining who they are, what they are building and why, following YC’s current video instructions. Include all founders and speak from a few bullet points. Check sound, visibility and duration, choose the take that communicates clearly, and test the video’s access from the application reviewer’s perspective before attaching it.
-
-   - Sources: [Y Combinator application video](https://www.ycombinator.com/video.html)
-4. **Review the answers against YC's published application advice** — agent-runnable · ~20 min
-
-   Read the complete application against YC’s current instructions and the portal’s questions. Replace vague claims with concrete facts, reconcile metrics, founder roles and ownership across answers, and test demo and video access. Resolve inconsistencies with the founders and incorporate material updates so the submitted account of the company is clear and current.
-
-   - Do it yourself: [How to Apply to Y Combinator](https://www.ycombinator.com/howtoapply)
-   - Sources: [Y Combinator application](https://www.ycombinator.com/apply) · [Y Combinator application video](https://www.ycombinator.com/video.html)
-5. **Submit before the batch deadline** — manual form/portal · ~10 min · human approval required
-
-   Check the current batch and deadline in the official portal, then review the final answers, attachments and contact details. The submitting founder takes responsibility for the application and attestations and sends it through the official route. Verify the resulting status and confirmation; if submission fails, resolve the reported problem before treating the application as received.
-
-   - Do it yourself: [YC application portal](https://apply.ycombinator.com/)
-   - Sources: [Y Combinator application](https://www.ycombinator.com/apply)
-6. **Wait for the decision (interview invitations arrive by email)** — human · ~14 d · async wait
-
-   Check the application account and submission email for status changes or requests, using YC’s current process. Keep material product and traction updates available if the portal permits updates or an interview is offered. The application owner responds to verified requests and coordinates next steps, without assuming this batch follows a previous batch’s invitation timing.
-
-   - Sources: [Y Combinator application](https://www.ycombinator.com/apply)
-
-## Artifacts
-
-Requires:
+Required artifacts:
 
 - Founder agreement & IP assignment — from [Sign the founder agreement & split equity](sign-the-founder-agreement-split-equity.md)
+
+| Information to gather | Required by the record |
+| --- | --- |
+| founder details and equity split | Yes |
+| product description and progress | Yes |
+| demo or product video link | Optional |
+
+## Steps at a glance
+
+Use the recorded prerequisites and conditions to follow the path. Row order is for navigation.
+
+| Step | Handled by | Time estimate | Incoming dependencies |
+| --- | --- | --- | --- |
+| [1. Create the application account](#step-1) | manual form/portal | ~5 min | Entry step |
+| [2. Draft the written application (product, progress, founders, equity)](#step-2) | human | ~3 h | [Step 1](#step-1) |
+| [3. Record the one-minute founder video](#step-3) | human | ~30 min | [Step 2](#step-2) |
+| [4. Review the answers against YC's published application advice](#step-4) | agent-runnable | ~20 min | [Step 3](#step-3) |
+| [5. Submit before the batch deadline](#step-5) | manual form/portal; approval required | ~10 min | [Step 4](#step-4) |
+| [6. Wait for the decision (interview invitations arrive by email)](#step-6) | human; includes waiting | ~14 d | [Step 5](#step-5) |
+
+<a id="steps"></a>
+
+## Step details
+
+<a id="step-1"></a>
+
+### 1. Create the application account
+
+manual form/portal · ~5 min
+
+
+Open the current official YC application route and check whether the company already has an application. The founder responsible for submission creates or takes ownership of the account using a founder-controlled address. Establish who can edit it and open the current batch’s actual questions so the team works on one application.
+
+- Do it yourself: [YC application portal](https://apply.ycombinator.com/)
+- Sources: [Y Combinator application](https://www.ycombinator.com/apply)
+
+<a id="step-2"></a>
+
+### 2. Draft the written application (product, progress, founders, equity)
+
+human · ~3 h
+
+
+Answer the current questions with specific facts about the product, users, progress, founders and ownership. Reconcile metrics and equity with company records, explaining estimates and unusual circumstances plainly. Ask founders to check statements about their backgrounds and commitment. Keep unanswered questions visible while editing for the form’s length and clarity.
+
+- Do it yourself: [Apply to Y Combinator (requirements)](https://www.ycombinator.com/apply)
+
+<a id="step-3"></a>
+
+### 3. Record the one-minute founder video
+
+human · ~30 min
+
+
+Record the founders explaining who they are, what they are building and why, following YC’s current video instructions. Include all founders and speak from a few bullet points. Check sound, visibility and duration, choose the take that communicates clearly, and test the video’s access from the application reviewer’s perspective before attaching it.
+
+- Sources: [Y Combinator application video](https://www.ycombinator.com/video.html)
+
+<a id="step-4"></a>
+
+### 4. Review the answers against YC's published application advice
+
+agent-runnable · ~20 min
+
+
+Read the complete application against YC’s current instructions and the portal’s questions. Replace vague claims with concrete facts, reconcile metrics, founder roles and ownership across answers, and test demo and video access. Resolve inconsistencies with the founders and incorporate material updates so the submitted account of the company is clear and current.
+
+- Do it yourself: [How to Apply to Y Combinator](https://www.ycombinator.com/howtoapply)
+- Sources: [Y Combinator application](https://www.ycombinator.com/apply) · [Y Combinator application video](https://www.ycombinator.com/video.html)
+
+<a id="step-5"></a>
+
+### 5. Submit before the batch deadline
+
+manual form/portal · ~10 min · human approval required
+
+
+Check the current batch and deadline in the official portal, then review the final answers, attachments and contact details. The submitting founder takes responsibility for the application and attestations and sends it through the official route. Verify the resulting status and confirmation; if submission fails, resolve the reported problem before treating the application as received.
+
+- Do it yourself: [YC application portal](https://apply.ycombinator.com/)
+- Sources: [Y Combinator application](https://www.ycombinator.com/apply)
+
+<a id="step-6"></a>
+
+### 6. Wait for the decision (interview invitations arrive by email)
+
+human · ~14 d · async wait
+
+
+Check the application account and submission email for status changes or requests, using YC’s current process. Keep material product and traction updates available if the portal permits updates or an interview is offered. The application owner responds to verified requests and coordinates next steps, without assuming this batch follows a previous batch’s invitation timing.
+
+- Sources: [Y Combinator application](https://www.ycombinator.com/apply)
+
+
+<a id="artifacts"></a>
 
 ---
 

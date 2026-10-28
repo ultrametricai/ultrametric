@@ -3,6 +3,10 @@
 
 # Answer a tax-authority notice
 
+[Overview](#overview) · [Before you start](#before-you-start) · [Geography](#geography) · [Steps](#steps-at-a-glance)
+
+## Overview
+
 **Trigger:** A tax-authority notice arrives claiming a discrepancy, a balance due, or a missing filing.
 
 Most tax notices are not audits. They point at one mismatch and print a response deadline on the first page (in the US, law rule [us-fed.cp2000-response-deadline](../../open-law/US-FED/us-fed-cp2000-response-deadline.json): the CP2000 reply is due by the date listed on the notice). Read the notice code, pull that period's records, and recompute the number they claim is wrong. Then respond by the deadline: agree and pay, or contest with documentation. If the response needs a signed statement, the signature is yours, sometimes under penalty of perjury. Educational guidance, not legal advice. The deadline that matters is printed on your notice; verify it there.
@@ -22,27 +26,121 @@ Most tax notices are not audits. They point at one mismatch and print a response
 
 An agent can pull the period's books and recompute the asserted mismatch; reading the notice, the adviser judgment call, the signed response, and the wait on the tax authority's side are human.
 
-## Steps
+## Before you start
 
-1. **Read the notice: its type code, tax period, amount claimed, and its printed response deadline** — human · ~20 min
+| Information to gather | Required by the record |
+| --- | --- |
+| the notice itself (code, period, amount, deadline) | Yes |
 
-   - Do it yourself: [IRS: understanding your notice or letter](https://www.irs.gov/individuals/understanding-your-irs-notice-or-letter)
-2. **Pull the period's records from your books: the filed return, payroll filings, ledger detail** — agent-runnable · ~45 min
+## Geography
 
-   - Vendor options: QuickBooks, Xero
-   - Ranked market: [accounting](../../open-rankings/accounting)
-3. **Recompute what the notice asserts against what you filed — most notices are one specific mismatch** — agent-runnable · ~1 h
-4. **Engage your accountant (or tax counsel if the amount or issue is material)** — human · ~45 min
-5. **Sign the response where the notice requires a signed statement (some are made under penalty of perjury)** — human (legally required signature) · ~10 min · hard to undo
-6. **Respond by the notice's deadline: agree and pay, or contest with documentation** — manual form/portal · ~1 h · hard to undo
+Country rows describe the guidance recorded here. Local notes and step alternatives do not establish a complete country-specific workflow.
 
-   - Do it yourself: [IRS document upload tool](https://www.irs.gov/help/irs-document-upload-tool)
-7. **If you disagree with the outcome, weigh a formal objection or appeal with your adviser** — human · ~30 min
+| Country | Recorded guidance | Steps with local alternatives or resolutions |
+| --- | --- | --- |
+| [United States](#geo-us) | step resolution | [1](#step-1), [4](#step-4), [6](#step-6), [7](#step-7) |
+| [India](#geo-in) | Local analog note; step resolution | [1](#step-1), [6](#step-6) |
+| [United Kingdom](#geo-uk) | Local analog note; step resolution | [6](#step-6), [7](#step-7) |
+| [Germany](#geo-de) | Local analog note; step resolution | [1](#step-1), [7](#step-7) |
+| [France](#geo-fr) | Local analog note; step resolution | [6](#step-6), [7](#step-7) |
+| [Portugal](#geo-pt) | Local analog note; step resolution | [6](#step-6), [7](#step-7) |
+| [Canada](#geo-ca) | Local analog note; step resolution | [7](#step-7) |
+| [Singapore](#geo-sg) | Local analog note | — |
+| [Australia](#geo-au) | Local analog note | — |
+| [South Korea](#geo-kr) | Local analog note | — |
+| [Hong Kong](#geo-hk) | Local analog note | — |
+| [Estonia](#geo-ee) | Local analog note | — |
 
-   - Do it yourself: [IRS Independent Office of Appeals](https://www.irs.gov/appeals)
-8. **Wait for the tax authority to process the response** — human · ~30 d · async wait
+## Steps at a glance
 
-## By country
+Use the recorded prerequisites and conditions to follow the path. Row order is for navigation.
+
+| Step | Handled by | Time estimate | Incoming dependencies |
+| --- | --- | --- | --- |
+| [1. Read the notice: its type code, tax period, amount claimed, and its printed response deadline](#step-1) | human | ~20 min | Entry step |
+| [2. Pull the period's records from your books: the filed return, payroll filings, ledger detail](#step-2) | agent-runnable | ~45 min | [Step 1](#step-1) |
+| [3. Recompute what the notice asserts against what you filed — most notices are one specific mismatch](#step-3) | agent-runnable | ~1 h | [Step 2](#step-2) |
+| [4. Engage your accountant (or tax counsel if the amount or issue is material)](#step-4) | human | ~45 min | [Step 3](#step-3) |
+| [5. Sign the response where the notice requires a signed statement (some are made under penalty of perjury)](#step-5) | human; signature required | ~10 min | [Step 4](#step-4) |
+| [6. Respond by the notice's deadline: agree and pay, or contest with documentation](#step-6) | manual form/portal | ~1 h | [Step 5](#step-5) |
+| [7. If you disagree with the outcome, weigh a formal objection or appeal with your adviser](#step-7) | human | ~30 min | [Step 6](#step-6) |
+| [8. Wait for the tax authority to process the response](#step-8) | human; includes waiting | ~30 d | [Step 7](#step-7) |
+
+<a id="steps"></a>
+
+## Step details
+
+<a id="step-1"></a>
+
+### 1. Read the notice: its type code, tax period, amount claimed, and its printed response deadline
+
+human · ~20 min
+
+
+- Do it yourself: [IRS: understanding your notice or letter](https://www.irs.gov/individuals/understanding-your-irs-notice-or-letter)
+
+<a id="step-2"></a>
+
+### 2. Pull the period's records from your books: the filed return, payroll filings, ledger detail
+
+agent-runnable · ~45 min
+
+
+- Vendor options: QuickBooks, Xero
+- Ranked market: [accounting](../../open-rankings/accounting)
+
+<a id="step-3"></a>
+
+### 3. Recompute what the notice asserts against what you filed — most notices are one specific mismatch
+
+agent-runnable · ~1 h
+
+
+<a id="step-4"></a>
+
+### 4. Engage your accountant (or tax counsel if the amount or issue is material)
+
+human · ~45 min
+
+
+<a id="step-5"></a>
+
+### 5. Sign the response where the notice requires a signed statement (some are made under penalty of perjury)
+
+human (legally required signature) · ~10 min · hard to undo
+
+
+<a id="step-6"></a>
+
+### 6. Respond by the notice's deadline: agree and pay, or contest with documentation
+
+manual form/portal · ~1 h · hard to undo
+
+
+- Do it yourself: [IRS document upload tool](https://www.irs.gov/help/irs-document-upload-tool)
+
+<a id="step-7"></a>
+
+### 7. If you disagree with the outcome, weigh a formal objection or appeal with your adviser
+
+human · ~30 min
+
+
+- Do it yourself: [IRS Independent Office of Appeals](https://www.irs.gov/appeals)
+
+<a id="step-8"></a>
+
+### 8. Wait for the tax authority to process the response
+
+human · ~30 d · async wait
+
+
+
+<a id="by-country"></a>
+
+## Country details
+
+<a id="geo-us"></a>
 
 ### United States
 
@@ -51,11 +149,15 @@ An agent can pull the period's books and recompute the asserted mismatch; readin
 - Step 6: The IRS document upload tool covers many notice types; otherwise respond on the channel the notice names ([IRS document upload tool](https://www.irs.gov/help/irs-document-upload-tool))
 - Step 7: The IRS Independent Office of Appeals hears the disagreement ([IRS Independent Office of Appeals](https://www.irs.gov/appeals))
 
+<a id="geo-in"></a>
+
 ### India
 
 - Income-tax notices (143(1) mismatches, 139(9) defective returns, 142(1) inquiries) land in the e-filing portal's e-Proceedings and are answered there by the notice's own date — the response flow is electronic end to end against your PAN. ([Income Tax e-filing (e-Proceedings)](https://www.incometax.gov.in/iec/foportal/))
 - Step 1: The section number names the notice type: a 143(1) mismatch, a 139(9) defective return, a 142(1) inquiry ([Income Tax e-filing (e-Proceedings)](https://www.incometax.gov.in/iec/foportal/))
 - Step 6: Answer in the e-filing portal's e-Proceedings by the notice's own date; the response flow is electronic end to end against your PAN ([Income Tax e-filing (e-Proceedings)](https://www.incometax.gov.in/iec/foportal/))
+
+<a id="geo-uk"></a>
 
 ### United Kingdom
 
@@ -63,11 +165,15 @@ An agent can pull the period's books and recompute the asserted mismatch; readin
 - Step 6: Respond to the compliance check or decision letter by the letter's own date ([HMRC — disagree with a tax decision](https://www.gov.uk/tax-appeals))
 - Step 7: The route is a statutory review and then an appeal to the tax tribunal, most of it on 30-day windows stated in the decision itself ([HMRC — disagree with a tax decision](https://www.gov.uk/tax-appeals))
 
+<a id="geo-de"></a>
+
 ### Germany
 
 - A Steuerbescheid from the Finanzamt carries a one-month Einspruch (objection) window under §355 AO — object in time and the assessment stays open while it is re-examined; let the month lapse and it binds. The notice's own Rechtsbehelfsbelehrung states the clock. ([AO §355 — Einspruch deadline](https://www.gesetze-im-internet.de/ao_1977/__355.html))
 - Step 1: A Steuerbescheid's own Rechtsbehelfsbelehrung states the clock that binds ([AO §355 — Einspruch deadline](https://www.gesetze-im-internet.de/ao_1977/__355.html))
 - Step 7: File the Einspruch inside the one-month window under §355 AO; object in time and the assessment stays open, let the month lapse and it binds ([AO §355 — Einspruch deadline](https://www.gesetze-im-internet.de/ao_1977/__355.html))
+
+<a id="geo-fr"></a>
 
 ### France
 
@@ -75,32 +181,46 @@ An agent can pull the period's books and recompute the asserted mismatch; readin
 - Step 6: A proposition de rectification opens its own stated reply window (30 days, extendable on request); answer through your espace professionnel with your accountant ([impots.gouv.fr — espace professionnel](https://www.impots.gouv.fr/professionnel))
 - Step 7: The réclamation through your espace professionnel on impots.gouv.fr is the formal contest route ([impots.gouv.fr — espace professionnel](https://www.impots.gouv.fr/professionnel))
 
+<a id="geo-pt"></a>
+
 ### Portugal
 
 - An AT assessment or notice carries its own response window: answer through the portal's e-balcão, and if you disagree the formal route is the reclamação graciosa (120 days) and then judicial review — deadlines bind. ([Portal das Finanças — e-balcão](https://www.portaldasfinancas.gov.pt/))
 - Step 6: Answer through the Portal das Finanças e-balcão inside the notice's own response window ([Portal das Finanças — e-balcão](https://www.portaldasfinancas.gov.pt/))
 - Step 7: The formal route is the reclamação graciosa (120 days) and then judicial review; deadlines bind ([Portal das Finanças — e-balcão](https://www.portaldasfinancas.gov.pt/))
 
+<a id="geo-ca"></a>
+
 ### Canada
 
 - A CRA notice of assessment or reassessment is contested by filing a notice of objection within 90 days of the notice date — respond inside the window or the assessment binds; the CRA's disputes flow is online. ([CRA — complaints and disputes](https://www.canada.ca/en/revenue-agency/services/about-canada-revenue-agency-cra/complaints-disputes.html))
 - Step 7: Contest a notice of assessment or reassessment by filing a notice of objection within 90 days of the notice date; the CRA's disputes flow is online ([CRA — complaints and disputes](https://www.canada.ca/en/revenue-agency/services/about-canada-revenue-agency-cra/complaints-disputes.html))
 
+<a id="geo-sg"></a>
+
 ### Singapore
 
 - IRAS notices (estimated assessments, queries on the Form C-S/C) are answered through the myTax Portal by the notice's own due date; objections to an assessment follow IRAS's objection process, and the assessed tax stays payable while you object. ([IRAS — corporate income tax](https://www.iras.gov.sg/taxes/corporate-income-tax))
+
+<a id="geo-au"></a>
 
 ### Australia
 
 - ATO review and audit letters set their own response dates; if you disagree with an assessment or decision, the route is a formal objection under Part IVC of the Taxation Administration Act 1953, then review by the Administrative Review Tribunal or appeal to the Federal Court. ([TAA 1953 Part IVC (objections)](https://www.legislation.gov.au/C1953A00001/latest/text))
 
+<a id="geo-kr"></a>
+
 ### South Korea
 
 - NTS notices come with named response tracks (pre-assessment review and the appeal ladder); respond through Hometax or the district tax office named on the notice, inside the window the notice states. ([Hometax (NTS e-filing)](https://www.hometax.go.kr/))
 
+<a id="geo-hk"></a>
+
 ### Hong Kong
 
 - An IRD assessment comes with a hard objection clock: a written objection stating the precise grounds must reach the Commissioner within 1 month after the date of the notice of assessment (Inland Revenue Ordinance section 64), so answer by the date the notice itself states. ([IRO section 64 — objections (e-Legislation)](https://www.elegislation.gov.hk/hk/cap112!en/s64))
+
+<a id="geo-ee"></a>
 
 ### Estonia
 

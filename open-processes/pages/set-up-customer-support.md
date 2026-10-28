@@ -3,6 +3,10 @@
 
 # Set up customer support
 
+[Overview](#overview) · [Before you start](#before-you-start) · [Steps](#steps-at-a-glance) · [Outputs](#outputs)
+
+## Overview
+
 Configure customer messaging, a help center, and ticket management. Intercom is the canonical route; the support arena ranks the alternatives.
 
 | Field | Value |
@@ -19,65 +23,123 @@ Configure customer messaging, a help center, and ticket management. Intercom is 
 
 Intercom has comprehensive API for messaging and contact management. Initial setup and article creation need human input.
 
-## Steps
+## Before you start
 
-1. **Create your support platform account** — manual form/portal · ~15 min · human approval required
-
-   Choose the support workspace from the channels, existing contact addresses, team size and access needs. Check plan costs and how customer conversations and attachments are handled. Set company ownership, recovery access and administrators within the support budget. Before connecting a customer channel, assign who monitors it and what coverage the team can actually provide.
-
-   - Produces: Customer support desk
-   - Canonical vendor: Intercom
-   - Vendor options: Intercom
-   - Ranked market: [ai-support-agents](../../open-rankings/ai-support-agents)
-   - Next: steps 2, 3 and 4 — all follow this step
-2. **Install Messenger widget** — agent-runnable · ~15 min · human approval required
-
-   Place the support widget where customers need help and limit the identity and page data it sends to the agreed fields. Use the provider's current installation instructions. In preview, test keyboard access, display, signed-in identity and conversation creation. After the authorized site release, send a controlled live request and verify it reaches the right inbox without exposing another customer's messages.
-
-   - Cross-arena market: [ai-coding](../../open-rankings/ai-coding)
-
-   *This path ends here.*
-3. **Set up inbox and routing** — agent-runnable · ~15 min · human approval required
-
-   *Follows step 1.*
-
-   Route each channel and request type to a responsible person or team. Define reassignment, working hours and urgent-case escalation from the coverage available. Try sample requests from every entry point, including an unmatched case and an unavailable assignee. Check the fallback reaches someone who can act before switching live traffic to the new routing.
-
-   - Canonical vendor: Intercom
-   - Next: steps 5 and 6 — all follow this step
-4. **Create help center articles** — human · ~1 h · human approval required
-
-   *Follows step 1.*
-
-   Write help articles for recurring questions, real product tasks and known failures. Use the current interface and include prerequisites, screenshots and links where they help someone complete the task. Have a support or product reviewer follow the instructions and remove internal or customer information. Publish the reviewed version, check that users can find it, and assign responsibility for updates when the product changes.
-
-   *This path ends here.*
-5. **Configure auto-responses** — agent-runnable · ~10 min · human approval required
-
-   *Follows step 3.*
-
-   Write automatic replies that match support coverage, with triggers and safeguards against repeated responses. Use response and resolution commitments agreed by the team. Test normal, repeated and out-of-hours requests, then activate the support owner's agreed messages and routing rules.
-
-   - Canonical vendor: Intercom
-
-   *This path ends here.*
-6. **Add team members** — agent-runnable · ~5 min · human approval required
-
-   *Follows step 3.*
-
-   Map named teammates to the support tasks they need, then choose administrator, agent or viewer access accordingly. Check any added seat charges against the support budget before sending the agreed invitations. Verify accepted memberships and a sample assignment. Give the access owner the final membership list so role changes and departures can be handled later.
-
-   - Canonical vendor: Intercom
-
-## Artifacts
-
-Produces:
-
-- Customer support desk
-
-Requires:
+Required artifacts:
 
 - Company website — from [Generate a website](generate-a-website.md)
+
+| Information to gather | Required by the record |
+| --- | --- |
+| team members | Yes |
+| name | Yes |
+
+## Steps at a glance
+
+Use the recorded prerequisites and conditions to follow the path. Row order is for navigation.
+
+| Step | Handled by | Time estimate | Incoming dependencies |
+| --- | --- | --- | --- |
+| [1. Create your support platform account](#step-1) | manual form/portal; approval required | ~15 min | Entry step |
+| [2. Install Messenger widget](#step-2) | agent-runnable; approval required | ~15 min | [Step 1](#step-1) |
+| [3. Set up inbox and routing](#step-3) | agent-runnable; approval required | ~15 min | [Step 1](#step-1) |
+| [4. Create help center articles](#step-4) | human; approval required | ~1 h | [Step 1](#step-1) |
+| [5. Configure auto-responses](#step-5) | agent-runnable; approval required | ~10 min | [Step 3](#step-3) |
+| [6. Add team members](#step-6) | agent-runnable; approval required | ~5 min | [Step 3](#step-3) |
+
+<a id="steps"></a>
+
+## Step details
+
+<a id="step-1"></a>
+
+### 1. Create your support platform account
+
+manual form/portal · ~15 min · human approval required
+
+
+Choose the support workspace from the channels, existing contact addresses, team size and access needs. Check plan costs and how customer conversations and attachments are handled. Set company ownership, recovery access and administrators within the support budget. Before connecting a customer channel, assign who monitors it and what coverage the team can actually provide.
+
+- Produces: Customer support desk
+- Canonical vendor: Intercom
+- Vendor options: Intercom
+- Ranked market: [ai-support-agents](../../open-rankings/ai-support-agents)
+- Next: steps 2, 3 and 4 — all follow this step
+
+<a id="step-2"></a>
+
+### 2. Install Messenger widget
+
+agent-runnable · ~15 min · human approval required
+
+
+Place the support widget where customers need help and limit the identity and page data it sends to the agreed fields. Use the provider's current installation instructions. In preview, test keyboard access, display, signed-in identity and conversation creation. After the authorized site release, send a controlled live request and verify it reaches the right inbox without exposing another customer's messages.
+
+- Cross-arena market: [ai-coding](../../open-rankings/ai-coding)
+
+*This path ends here.*
+
+<a id="step-3"></a>
+
+### 3. Set up inbox and routing
+
+agent-runnable · ~15 min · human approval required
+
+
+*Follows step 1.*
+
+Route each channel and request type to a responsible person or team. Define reassignment, working hours and urgent-case escalation from the coverage available. Try sample requests from every entry point, including an unmatched case and an unavailable assignee. Check the fallback reaches someone who can act before switching live traffic to the new routing.
+
+- Canonical vendor: Intercom
+- Next: steps 5 and 6 — all follow this step
+
+<a id="step-4"></a>
+
+### 4. Create help center articles
+
+human · ~1 h · human approval required
+
+
+*Follows step 1.*
+
+Write help articles for recurring questions, real product tasks and known failures. Use the current interface and include prerequisites, screenshots and links where they help someone complete the task. Have a support or product reviewer follow the instructions and remove internal or customer information. Publish the reviewed version, check that users can find it, and assign responsibility for updates when the product changes.
+
+*This path ends here.*
+
+<a id="step-5"></a>
+
+### 5. Configure auto-responses
+
+agent-runnable · ~10 min · human approval required
+
+
+*Follows step 3.*
+
+Write automatic replies that match support coverage, with triggers and safeguards against repeated responses. Use response and resolution commitments agreed by the team. Test normal, repeated and out-of-hours requests, then activate the support owner's agreed messages and routing rules.
+
+- Canonical vendor: Intercom
+
+*This path ends here.*
+
+<a id="step-6"></a>
+
+### 6. Add team members
+
+agent-runnable · ~5 min · human approval required
+
+
+*Follows step 3.*
+
+Map named teammates to the support tasks they need, then choose administrator, agent or viewer access accordingly. Check any added seat charges against the support budget before sending the agreed invitations. Verify accepted memberships and a sample assignment. Give the access owner the final membership list so role changes and departures can be handled later.
+
+- Canonical vendor: Intercom
+
+
+<a id="artifacts"></a>
+
+## Outputs
+
+- Customer support desk
 
 ## Related records
 

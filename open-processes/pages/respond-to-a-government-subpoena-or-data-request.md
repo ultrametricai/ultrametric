@@ -3,6 +3,10 @@
 
 # Respond to a government subpoena or data request
 
+[Overview](#overview) · [Before you start](#before-you-start) · [Geography](#geography) · [Steps](#steps-at-a-glance)
+
+## Overview
+
 **Trigger:** A government subpoena, court order, or warrant arrives demanding user data or company records, sometimes with a nondisclosure order attached.
 
 Legal process about your users arrives like ordinary mail and binds like none of it. Read the demand first: who issued it, which instrument it is (subpoena, court order, or warrant reach different data under the Stored Communications Act's tiers, law rule [us-fed.sca-provider-disclosure](../../open-law/US-FED/us-fed-sca-provider-disclosure.json)), exactly what it names, the printed deadline, and whether a nondisclosure order rides with it. Preserve immediately and separately from producing: a § 2703(f) request obliges a provider to hold the named records for 90 days, renewable once on a renewed request (law rule [us-fed.sca-preservation-request](../../open-law/US-FED/us-fed-sca-preservation-request.json)). Counsel reviews scope and validity before anything goes out, because voluntary disclosure of content outside the statutory exceptions is prohibited. Whether you may tell the affected user depends on the paperwork: a court can command silence on the § 2705(b) findings (law rule [us-fed.sca-notice-preclusion](../../open-law/US-FED/us-fed-sca-notice-preclusion.json)), and absent such an order your own published law-enforcement guidelines and notice promises govern. Produce exactly what the process compels, record what went out, and check the vendor layer, because your processors and hosts receive demands about your users too. Educational guidance, not legal advice; the demand's own text and counsel control every step here.
@@ -24,38 +28,108 @@ Scope, validity, and the notice decision are counsel work; an agent can extract 
 
 - Law rules: [us-fed.sca-provider-disclosure](../../open-law/US-FED/us-fed-sca-provider-disclosure.json), [us-fed.sca-preservation-request](../../open-law/US-FED/us-fed-sca-preservation-request.json), [us-fed.sca-notice-preclusion](../../open-law/US-FED/us-fed-sca-notice-preclusion.json)
 
-## Steps
+## Before you start
 
-1. **Read the demand: issuer, instrument type, exactly what it names, the printed deadline, and any nondisclosure order attached** — human · ~30 min
+| Information to gather | Required by the record |
+| --- | --- |
+| the demand itself: issuer, instrument, named accounts, deadline, any sealing order | Yes |
+| your published privacy policy and any law-enforcement guidelines with notice promises | Yes |
 
-   - Next: steps 2 and 3 — all follow this step
-2. **Draft the preservation hold now, separately from producing: exactly what the demand names, the deletion jobs to suspend, and the hold log** — agent-runnable · ~30 min
+## Geography
 
-   Preservation and production are different acts. A § 2703(f) preservation request obliges a provider to take all necessary steps to preserve the named records for 90 days, extended another 90 on a renewed request, pending legal process (law rule [us-fed.sca-preservation-request](../../open-law/US-FED/us-fed-sca-preservation-request.json)). Holding the data is not disclosing it; scope the hold to exactly what the demand names. The system owners place the holds and suspend the retention jobs in the live systems from this draft, and the log records what they did and when.
+Country rows describe the guidance recorded here. Local notes and step alternatives do not establish a complete country-specific workflow.
 
-   - Do it yourself: [18 U.S.C. § 2703 — required disclosure and preservation](https://www.law.cornell.edu/uscode/text/18/2703)
-3. **Counsel before production or reply: scope, validity, and which instrument reaches which data** — human · ~1 h
+| Country | Recorded guidance | Steps with local alternatives or resolutions |
+| --- | --- | --- |
+| [United States](#geo-us) | step resolution | [2](#step-2) |
 
-   *Follows step 1.*
+## Steps at a glance
 
-   A provider shall not voluntarily divulge the contents of communications outside the statutory exceptions, and compelled disclosure runs through the warrant, court-order, and subpoena tiers, which reach different classes of data (law rule [us-fed.sca-provider-disclosure](../../open-law/US-FED/us-fed-sca-provider-disclosure.json)). Overbreadth, the wrong instrument for the data sought, and jurisdiction are counsel questions, raised with the issuer before the deadline rather than discovered after production.
+Use the recorded prerequisites and conditions to follow the path. Row order is for navigation.
 
-   - Vendor options: Cooley, Fenwick, Gunderson Dettmer
-   - Ranked market: [startup-law-firms](../../open-rankings/startup-law-firms)
-   - Do it yourself: [18 U.S.C. § 2702 — voluntary disclosure prohibitions](https://www.law.cornell.edu/uscode/text/18/2702)
-4. **Decide user notice with counsel: a § 2705(b) order commands silence; without one, your published guidelines and promises govern** — human · ~30 min · hard to undo
+| Step | Handled by | Time estimate | Incoming dependencies |
+| --- | --- | --- | --- |
+| [1. Read the demand: issuer, instrument type, exactly what it names, the printed deadline, and any nondisclosure order attached](#step-1) | human | ~30 min | Entry step |
+| [2. Draft the preservation hold now, separately from producing: exactly what the demand names, the deletion jobs to suspend, and the hold log](#step-2) | agent-runnable | ~30 min | [Step 1](#step-1) |
+| [3. Counsel before production or reply: scope, validity, and which instrument reaches which data](#step-3) | human | ~1 h | [Step 1](#step-1) |
+| [4. Decide user notice with counsel: a § 2705(b) order commands silence; without one, your published guidelines and promises govern](#step-4) | human | ~30 min | [Step 3](#step-3) |
+| [5. Produce exactly what the process compels, through counsel, by the deadline, and record what was produced](#step-5) | human | ~45 min | All: [Step 4](#step-4); [Step 2](#step-2) |
+| [6. Check the vendor layer: your processors and hosts receive legal process about your users too, so know their notice policies](#step-6) | agent-runnable | ~30 min | [Step 5](#step-5) |
 
-   A court may order the provider not to notify anyone of the demand's existence, for the period the court sets, on the § 2705(b) findings (law rule [us-fed.sca-notice-preclusion](../../open-law/US-FED/us-fed-sca-notice-preclusion.json)). Absent such an order or another sealing obligation, the statute does not itself forbid notifying the affected user; what you promised in your privacy policy and law-enforcement guidelines, and what counsel advises on the specific demand, decide the call. Record the decision and its basis either way.
+<a id="steps"></a>
 
-   - Do it yourself: [18 U.S.C. § 2705 — delayed notice and preclusion orders](https://www.law.cornell.edu/uscode/text/18/2705)
-5. **Produce exactly what the process compels, through counsel, by the deadline, and record what was produced** — human · ~45 min · hard to undo
+## Step details
 
-   *Follows steps 2 and 4 — both are required first.*
-6. **Check the vendor layer: your processors and hosts receive legal process about your users too, so know their notice policies** — agent-runnable · ~30 min
+<a id="step-1"></a>
 
-   The same demand, or a parallel one, can land at your payment processor, cloud host, or email provider. Read each major vendor's law-enforcement guidelines for whether and when they notify customers of process about customer data, and note which vendors would tell you and which would not.
+### 1. Read the demand: issuer, instrument type, exactly what it names, the printed deadline, and any nondisclosure order attached
 
-## By country
+human · ~30 min
+
+
+- Next: steps 2 and 3 — all follow this step
+
+<a id="step-2"></a>
+
+### 2. Draft the preservation hold now, separately from producing: exactly what the demand names, the deletion jobs to suspend, and the hold log
+
+agent-runnable · ~30 min
+
+
+Preservation and production are different acts. A § 2703(f) preservation request obliges a provider to take all necessary steps to preserve the named records for 90 days, extended another 90 on a renewed request, pending legal process (law rule [us-fed.sca-preservation-request](../../open-law/US-FED/us-fed-sca-preservation-request.json)). Holding the data is not disclosing it; scope the hold to exactly what the demand names. The system owners place the holds and suspend the retention jobs in the live systems from this draft, and the log records what they did and when.
+
+- Do it yourself: [18 U.S.C. § 2703 — required disclosure and preservation](https://www.law.cornell.edu/uscode/text/18/2703)
+
+<a id="step-3"></a>
+
+### 3. Counsel before production or reply: scope, validity, and which instrument reaches which data
+
+human · ~1 h
+
+
+*Follows step 1.*
+
+A provider shall not voluntarily divulge the contents of communications outside the statutory exceptions, and compelled disclosure runs through the warrant, court-order, and subpoena tiers, which reach different classes of data (law rule [us-fed.sca-provider-disclosure](../../open-law/US-FED/us-fed-sca-provider-disclosure.json)). Overbreadth, the wrong instrument for the data sought, and jurisdiction are counsel questions, raised with the issuer before the deadline rather than discovered after production.
+
+- Vendor options: Cooley, Fenwick, Gunderson Dettmer
+- Ranked market: [startup-law-firms](../../open-rankings/startup-law-firms)
+- Do it yourself: [18 U.S.C. § 2702 — voluntary disclosure prohibitions](https://www.law.cornell.edu/uscode/text/18/2702)
+
+<a id="step-4"></a>
+
+### 4. Decide user notice with counsel: a § 2705(b) order commands silence; without one, your published guidelines and promises govern
+
+human · ~30 min · hard to undo
+
+
+A court may order the provider not to notify anyone of the demand's existence, for the period the court sets, on the § 2705(b) findings (law rule [us-fed.sca-notice-preclusion](../../open-law/US-FED/us-fed-sca-notice-preclusion.json)). Absent such an order or another sealing obligation, the statute does not itself forbid notifying the affected user; what you promised in your privacy policy and law-enforcement guidelines, and what counsel advises on the specific demand, decide the call. Record the decision and its basis either way.
+
+- Do it yourself: [18 U.S.C. § 2705 — delayed notice and preclusion orders](https://www.law.cornell.edu/uscode/text/18/2705)
+
+<a id="step-5"></a>
+
+### 5. Produce exactly what the process compels, through counsel, by the deadline, and record what was produced
+
+human · ~45 min · hard to undo
+
+
+*Follows steps 2 and 4 — both are required first.*
+
+<a id="step-6"></a>
+
+### 6. Check the vendor layer: your processors and hosts receive legal process about your users too, so know their notice policies
+
+agent-runnable · ~30 min
+
+
+The same demand, or a parallel one, can land at your payment processor, cloud host, or email provider. Read each major vendor's law-enforcement guidelines for whether and when they notify customers of process about customer data, and note which vendors would tell you and which would not.
+
+
+<a id="by-country"></a>
+
+## Country details
+
+<a id="geo-us"></a>
 
 ### United States
 

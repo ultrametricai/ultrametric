@@ -3,6 +3,10 @@
 
 # Run outbound sales sequences
 
+[Overview](#overview) · [Before you start](#before-you-start) · [Steps](#steps-at-a-glance)
+
+## Overview
+
 Stand up outbound: build the target list in the CRM, draft and launch the sequence, monitor replies, book meetings, and qualify on the call.
 
 Agree the offer, recipient eligibility, source permissions, sender and campaign scope before setup. Produce an eligibility ledger and exact draft sequence, then test its state transitions in a no-send environment. A campaign-ready package is complete when exclusions, personalization, cadence and stop rules can be inspected and the tests pass. Activation, actual delivery, accepted meetings and qualified opportunities are separate observed outcomes. Drafts or simulated replies do not establish acquired customers.
@@ -27,87 +31,144 @@ List building, sequencing, and scheduling run through CRM APIs behind a human se
 - A reviewable draft sequence and tested reply, bounce, opt-out and booking behavior.
 - Delivery and CRM progression evidence for authorized execution, or an explicit no-send launch handoff.
 
-## Steps
+## Before you start
 
-1. **Build the target list** — agent-runnable · ~30 min
-
-   Define target companies and contacts by the offer's relevant problem, role, location and exclusions. Build the list from authorized sources, keeping the source of each contact and removing duplicates, customers or suppressions as appropriate. Resolve outreach eligibility for the intended markets before transfer to a sending tool. Hold uncertain contact details or eligibility for review.
-
-   Keep stable recipient/account identifiers, evidence dates and an inclusion or exclusion reason for every input row. Reconcile eligible, duplicate, suppressed and held records to the source list. A contact with unresolved identity or eligibility must not enter an activation batch.
-
-   Reconcile prior conversations and delivery attempts before enrollment. Route an existing reply to its appropriate response or next step instead of restarting a cold sequence. Preserve opt-outs and declines, and hold uncertain prior sends until delivery state is resolved. Reusing the same contact in a new campaign must not erase those states.
-
-   - Canonical vendor: HubSpot
-   - Vendor options: HubSpot, Attio, Apollo
-   - Ranked market: [crm](../../open-rankings/crm)
-   - Sources: [CAN-SPAM Act: A Compliance Guide for Business](https://www.ftc.gov/business-guidance/resources/can-spam-act-compliance-guide-business)
-   - If "New eligible contacts need an outreach sequence": continue at step 2
-   - If "An existing conversation needs a response without enrollment in a new sequence": continue at step 4
-2. **Draft the sequence copy** — agent-runnable · ~20 min
-
-   *Follows step 1 (when New eligible contacts need an outreach sequence).*
-
-   When: New eligible contacts need an outreach sequence.
-
-   Ground the sequence in a verified reason the offer may help its target group. Make the sender and next step clear, and have each follow-up add useful information. Include the audience's reviewed preference or opt-out handling. Hand exact messages, intended recipients and proposed cadence to launch setup, flagging unresolved claims or contact assumptions.
-
-   Include the verified sender name/company and reply route, plus a proposed interval and timezone for each touch. Use a simple progression: relevant observed problem and offer, a new useful detail, then a concrete next step or close. Reuse approved positioning and proof; flag missing evidence instead of inventing revenue loss, testimonials or customer results. If identity or cadence is unknown, deliver labeled drafts and list the exact decisions needed for activation.
-
-   - Canonical vendor: HubSpot
-   - Cross-arena options: ChatGPT, Claude, Gemini (ai-assistants)
-   - Sources: [CAN-SPAM Act: A Compliance Guide for Business](https://www.ftc.gov/business-guidance/resources/can-spam-act-compliance-guide-business)
-3. **Set up and launch the sequence** — agent-runnable · ~15 min · human approval required · hard to undo
-
-   Load the messages and eligible audience into a draft sequence. Check the authorized sender, personalization, sending window, stop conditions and handling of replies, bounces and opt-outs. Run an internal test through the messages and CRM updates. Activate only the sales owner's agreed recipient set and cadence, with a named person able to pause unexpected sends.
-
-   Save a draft identifier or export, the exact approved audience/copy/cadence and the test results. Before any activation, replay synthetic success and failure events through a no-send route, including personalization failure and a last-minute suppression. Draft creation, activation and each send are distinct effects; pausing cannot undo delivered messages.
-
-   Size the initial batch and cadence to the team’s actual response and meeting capacity. Record who handles replies; avoid assuming a conversion rate to turn available meeting slots into a promised acquisition result.
-
-   - Canonical vendor: HubSpot
-   - Vendor options: HubSpot, Attio
-   - Ranked market: [crm](../../open-rankings/crm)
-   - Sources: [CAN-SPAM Act: A Compliance Guide for Business](https://www.ftc.gov/business-guidance/resources/can-spam-act-compliance-guide-business)
-   - UM's HubSpot evidence distinguishes CRM MCP access from the Developer MCP (hubspot-docs-5 and hubspot-docs-6). Its email-templates-sequences verdict records missing enrollment and plan details. Confirm the selected interface exposes the required draft, enrollment and stop operations for this account; general CRM access does not establish sequence-send support. The moore-beachhead lore entry can sharpen a narrow ICP hypothesis, but its competing schools and the company's response evidence should remain visible. Measure valid progression and exclusions, not just drafted emails.
-4. **Monitor delivery and handle conversations** — agent-runnable · ~15 min · async wait · hard to undo
-
-   *Follows step 1 (when An existing conversation needs a response without enrollment in a new sequence) or step 3.*
-
-   When: An authorized sequence is running or an existing conversation needs a response.
-
-   Handle existing conversations in context within the account team’s agreed authority. For authorized sequences, monitor delivery, replies, bounces and preference changes. Enforce its stop rules, record automated replies separately and route substantive responses to the account owner. Investigate sender or template failures before continuing affected sends. Update CRM dispositions and resolve any proposed audience or copy change outside the agreed campaign scope.
-
-   Maintain an event/disposition ledger keyed to recipient and provider event identifiers. Check duplicate and out-of-order events, and re-check suppressions and substantive replies before queued follow-ups. After an uncertain send result, inspect the provider state before retrying so a contact does not receive duplicates. Keep simulated events and actual deliveries distinguishable.
-
-   - Canonical vendor: HubSpot
-   - Sources: [CAN-SPAM Act: A Compliance Guide for Business](https://www.ftc.gov/business-guidance/resources/can-spam-act-compliance-guide-business)
-   - If "A substantive response indicates interest in a meeting": continue at step 5
-5. **Book meetings with responders** — agent-runnable · ~5 min
-
-   *Follows step 4 (when A substantive response indicates interest in a meeting).*
-
-   When: A substantive response indicates interest in a meeting.
-
-   Reply with an agenda tied to the prospect's interest, available times and a timezone. Confirm participants and the meeting method, send the invitation through the account team's agreed process, and record the accepted slot. Pause overlapping sequence follow-ups.
-
-   Only propose a meeting for a substantive response that warrants one. Preserve explicit declines and opt-outs as stopped outcomes; a positive reply or offered time does not establish an accepted meeting.
-
-   - Canonical vendor: Calendly
-   - If "The prospect accepts and attends the qualification conversation": continue at step 6
-6. **Qualify on the call** — human · ~1 h
-
-   *Follows step 5 (when The prospect accepts and attends the qualification conversation).*
-
-   When: The prospect has accepted and attended the qualification conversation.
-
-   Explore the prospect's workflow, desired outcome, stakeholders, constraints and decision process from their stated problem. Explain verified capabilities and escalate new commitments to the responsible owner. Record the prospect's answers, evidence for qualification and agreed next step, separating facts from the salesperson's interpretation.
-
-## Artifacts
-
-Requires:
+Required artifacts:
 
 - CRM workspace — from [Set up a CRM](set-up-a-crm.md)
 - Company email workspace — from [Set up company email & docs](set-up-company-email-docs.md)
+
+| Information to gather | Required by the record |
+| --- | --- |
+| ideal customer profile | Yes |
+
+## Steps at a glance
+
+Use the recorded prerequisites and conditions to follow the path. Row order is for navigation.
+
+| Step | Handled by | Time estimate | Incoming dependencies |
+| --- | --- | --- | --- |
+| [1. Build the target list](#step-1) | agent-runnable | ~30 min | Entry step |
+| [2. Draft the sequence copy](#step-2) | agent-runnable | ~20 min | [Step 1](#step-1) (New eligible contacts need an outreach sequence.) |
+| [3. Set up and launch the sequence](#step-3) | agent-runnable; approval required | ~15 min | [Step 2](#step-2) |
+| [4. Monitor delivery and handle conversations](#step-4) | agent-runnable; includes waiting | ~15 min | Alternatives: [Step 1](#step-1) (An existing conversation needs a response without enrollment in a new sequence.); [Step 3](#step-3) |
+| [5. Book meetings with responders](#step-5) | agent-runnable | ~5 min | [Step 4](#step-4) (A substantive response indicates interest in a meeting.) |
+| [6. Qualify on the call](#step-6) | human | ~1 h | [Step 5](#step-5) (The prospect accepts and attends the qualification conversation.) |
+
+<a id="steps"></a>
+
+## Step details
+
+<a id="step-1"></a>
+
+### 1. Build the target list
+
+agent-runnable · ~30 min
+
+
+Define target companies and contacts by the offer's relevant problem, role, location and exclusions. Build the list from authorized sources, keeping the source of each contact and removing duplicates, customers or suppressions as appropriate. Resolve outreach eligibility for the intended markets before transfer to a sending tool. Hold uncertain contact details or eligibility for review.
+
+Keep stable recipient/account identifiers, evidence dates and an inclusion or exclusion reason for every input row. Reconcile eligible, duplicate, suppressed and held records to the source list. A contact with unresolved identity or eligibility must not enter an activation batch.
+
+Reconcile prior conversations and delivery attempts before enrollment. Route an existing reply to its appropriate response or next step instead of restarting a cold sequence. Preserve opt-outs and declines, and hold uncertain prior sends until delivery state is resolved. Reusing the same contact in a new campaign must not erase those states.
+
+- Canonical vendor: HubSpot
+- Vendor options: HubSpot, Attio, Apollo
+- Ranked market: [crm](../../open-rankings/crm)
+- Sources: [CAN-SPAM Act: A Compliance Guide for Business](https://www.ftc.gov/business-guidance/resources/can-spam-act-compliance-guide-business)
+- If "New eligible contacts need an outreach sequence": continue at step 2
+- If "An existing conversation needs a response without enrollment in a new sequence": continue at step 4
+
+<a id="step-2"></a>
+
+### 2. Draft the sequence copy
+
+agent-runnable · ~20 min
+
+
+*Follows step 1 (when New eligible contacts need an outreach sequence).*
+
+When: New eligible contacts need an outreach sequence.
+
+Ground the sequence in a verified reason the offer may help its target group. Make the sender and next step clear, and have each follow-up add useful information. Include the audience's reviewed preference or opt-out handling. Hand exact messages, intended recipients and proposed cadence to launch setup, flagging unresolved claims or contact assumptions.
+
+Include the verified sender name/company and reply route, plus a proposed interval and timezone for each touch. Use a simple progression: relevant observed problem and offer, a new useful detail, then a concrete next step or close. Reuse approved positioning and proof; flag missing evidence instead of inventing revenue loss, testimonials or customer results. If identity or cadence is unknown, deliver labeled drafts and list the exact decisions needed for activation.
+
+- Canonical vendor: HubSpot
+- Cross-arena options: ChatGPT, Claude, Gemini (ai-assistants)
+- Sources: [CAN-SPAM Act: A Compliance Guide for Business](https://www.ftc.gov/business-guidance/resources/can-spam-act-compliance-guide-business)
+
+<a id="step-3"></a>
+
+### 3. Set up and launch the sequence
+
+agent-runnable · ~15 min · human approval required · hard to undo
+
+
+Load the messages and eligible audience into a draft sequence. Check the authorized sender, personalization, sending window, stop conditions and handling of replies, bounces and opt-outs. Run an internal test through the messages and CRM updates. Activate only the sales owner's agreed recipient set and cadence, with a named person able to pause unexpected sends.
+
+Save a draft identifier or export, the exact approved audience/copy/cadence and the test results. Before any activation, replay synthetic success and failure events through a no-send route, including personalization failure and a last-minute suppression. Draft creation, activation and each send are distinct effects; pausing cannot undo delivered messages.
+
+Size the initial batch and cadence to the team’s actual response and meeting capacity. Record who handles replies; avoid assuming a conversion rate to turn available meeting slots into a promised acquisition result.
+
+- Canonical vendor: HubSpot
+- Vendor options: HubSpot, Attio
+- Ranked market: [crm](../../open-rankings/crm)
+- Sources: [CAN-SPAM Act: A Compliance Guide for Business](https://www.ftc.gov/business-guidance/resources/can-spam-act-compliance-guide-business)
+- UM's HubSpot evidence distinguishes CRM MCP access from the Developer MCP (hubspot-docs-5 and hubspot-docs-6). Its email-templates-sequences verdict records missing enrollment and plan details. Confirm the selected interface exposes the required draft, enrollment and stop operations for this account; general CRM access does not establish sequence-send support. The moore-beachhead lore entry can sharpen a narrow ICP hypothesis, but its competing schools and the company's response evidence should remain visible. Measure valid progression and exclusions, not just drafted emails.
+
+<a id="step-4"></a>
+
+### 4. Monitor delivery and handle conversations
+
+agent-runnable · ~15 min · async wait · hard to undo
+
+
+*Follows step 1 (when An existing conversation needs a response without enrollment in a new sequence) or step 3.*
+
+When: An authorized sequence is running or an existing conversation needs a response.
+
+Handle existing conversations in context within the account team’s agreed authority. For authorized sequences, monitor delivery, replies, bounces and preference changes. Enforce its stop rules, record automated replies separately and route substantive responses to the account owner. Investigate sender or template failures before continuing affected sends. Update CRM dispositions and resolve any proposed audience or copy change outside the agreed campaign scope.
+
+Maintain an event/disposition ledger keyed to recipient and provider event identifiers. Check duplicate and out-of-order events, and re-check suppressions and substantive replies before queued follow-ups. After an uncertain send result, inspect the provider state before retrying so a contact does not receive duplicates. Keep simulated events and actual deliveries distinguishable.
+
+- Canonical vendor: HubSpot
+- Sources: [CAN-SPAM Act: A Compliance Guide for Business](https://www.ftc.gov/business-guidance/resources/can-spam-act-compliance-guide-business)
+- If "A substantive response indicates interest in a meeting": continue at step 5
+
+<a id="step-5"></a>
+
+### 5. Book meetings with responders
+
+agent-runnable · ~5 min
+
+
+*Follows step 4 (when A substantive response indicates interest in a meeting).*
+
+When: A substantive response indicates interest in a meeting.
+
+Reply with an agenda tied to the prospect's interest, available times and a timezone. Confirm participants and the meeting method, send the invitation through the account team's agreed process, and record the accepted slot. Pause overlapping sequence follow-ups.
+
+Only propose a meeting for a substantive response that warrants one. Preserve explicit declines and opt-outs as stopped outcomes; a positive reply or offered time does not establish an accepted meeting.
+
+- Canonical vendor: Calendly
+- If "The prospect accepts and attends the qualification conversation": continue at step 6
+
+<a id="step-6"></a>
+
+### 6. Qualify on the call
+
+human · ~1 h
+
+
+*Follows step 5 (when The prospect accepts and attends the qualification conversation).*
+
+When: The prospect has accepted and attended the qualification conversation.
+
+Explore the prospect's workflow, desired outcome, stakeholders, constraints and decision process from their stated problem. Explain verified capabilities and escalate new commitments to the responsible owner. Record the prospect's answers, evidence for qualification and agreed next step, separating facts from the salesperson's interpretation.
+
+
+<a id="artifacts"></a>
 
 ## Related records
 

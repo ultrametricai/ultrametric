@@ -3,6 +3,10 @@
 
 # Run performance reviews
 
+[Overview](#overview) · [Before you start](#before-you-start) · [Steps](#steps-at-a-glance)
+
+## Overview
+
 Set up quarterly performance review cycle with self-assessments, manager reviews, and calibration.
 
 | Field | Value |
@@ -19,43 +23,109 @@ Set up quarterly performance review cycle with self-assessments, manager reviews
 
 BambooHR/Lattice APIs handle review creation and tracking. Review content and calibration require human judgment.
 
-## Steps
+## Before you start
 
-1. **Define review criteria and competencies** — human · ~2 h · human approval required
-
-   Define observable expectations for each role and seniority level using responsibilities, agreed goals and examples of effective work. Explain what distinguishes performance levels and check that employees can understand the criteria before the review period. Resolve goals that have become obsolete or no longer match the role. The rubric should give employees and managers a common basis for discussing actual work.
-2. **Configure review templates** — agent-runnable · ~30 min · human approval required
-
-   Build forms that collect outcomes, examples, development needs and manager feedback without repeating questions. Set the review period and who can read or edit each response. Walk through employee and manager views to catch confusing questions or inappropriate visibility. Adjust the questions before launch so responses provide useful material for the review conversation.
-
-   - Canonical vendor: BambooHR
-3. **Send self-assessment forms** — agent-runnable · ~10 min · human approval required
-
-   Send the agreed review invitation with the period being assessed, completion date, form link and support contact. Explain who will read the response and how it will be used. Check that people received the right form and can open it, then follow up privately on access problems or missing submissions. Keep individual completion status out of broad team messages.
-
-   - Canonical vendor: BambooHR
-4. **Employees complete self-assessments** — human · ~1 d · async wait
-
-   Review the agreed goals and gather examples of outcomes, collaboration, difficulties and learning from the period. Explain changed priorities, unfinished work and their effect on the agreed outcomes. The employee writes their own assessment and identifies support or development they want to discuss. Submit it through the review process, keeping the employee’s account intact if a coordinator helps with formatting or access.
-
-   - Cross-arena market: [workflow-automation](../../open-rankings/workflow-automation)
-5. **Managers write reviews** — human · ~1 d · async wait
-
-   Compare the employee’s work with the agreed goals and role expectations, using the self-assessment and relevant feedback. Explain conclusions with examples, distinguish observation from interpretation and propose practical development actions. Resolve sensitive policy questions with the people lead. Bring the draft and unresolved evidence questions to calibration before communicating a final rating or implying a compensation decision.
-6. **Calibration meeting** — human · ~2 h · human approval required
-
-   Compare proposed reviews across teams using the same rubric and supporting examples. Discuss inconsistent ratings, changed scope and missing context, and explain any revised conclusion. Apply the agreed review design consistently when comparing employees in different roles. The people lead assigns unresolved cases for follow-up so managers leave with coherent outcomes they can explain in individual conversations.
-7. **Deliver reviews and schedule 1:1s** — agent-runnable · ~15 min · human approval required
-
-   Hold a private review conversation using the completed assessment and its supporting examples. Invite corrections, discuss development needs and agree concrete actions, support and follow-up dates. Handle compensation through its separate decision process. Give the employee a way to respond or challenge factual errors, and carry the agreed actions into subsequent one-to-ones.
-
-   - Canonical vendor: Slack
-
-## Artifacts
-
-Requires:
+Required artifacts:
 
 - Signed offer / employment agreement — from [Hire first employee](hire-first-employee.md)
+
+| Information to gather | Required by the record |
+| --- | --- |
+| team members | Yes |
+| review criteria | Yes |
+| review cycle schedule | Yes |
+
+## Steps at a glance
+
+Use the recorded prerequisites and conditions to follow the path. Row order is for navigation.
+
+| Step | Handled by | Time estimate | Incoming dependencies |
+| --- | --- | --- | --- |
+| [1. Define review criteria and competencies](#step-1) | human; approval required | ~2 h | Entry step |
+| [2. Configure review templates](#step-2) | agent-runnable; approval required | ~30 min | [Step 1](#step-1) |
+| [3. Send self-assessment forms](#step-3) | agent-runnable; approval required | ~10 min | [Step 2](#step-2) |
+| [4. Employees complete self-assessments](#step-4) | human; includes waiting | ~1 d | [Step 3](#step-3) |
+| [5. Managers write reviews](#step-5) | human; includes waiting | ~1 d | [Step 4](#step-4) |
+| [6. Calibration meeting](#step-6) | human; approval required | ~2 h | [Step 5](#step-5) |
+| [7. Deliver reviews and schedule 1:1s](#step-7) | agent-runnable; approval required | ~15 min | [Step 6](#step-6) |
+
+<a id="steps"></a>
+
+## Step details
+
+<a id="step-1"></a>
+
+### 1. Define review criteria and competencies
+
+human · ~2 h · human approval required
+
+
+Define observable expectations for each role and seniority level using responsibilities, agreed goals and examples of effective work. Explain what distinguishes performance levels and check that employees can understand the criteria before the review period. Resolve goals that have become obsolete or no longer match the role. The rubric should give employees and managers a common basis for discussing actual work.
+
+<a id="step-2"></a>
+
+### 2. Configure review templates
+
+agent-runnable · ~30 min · human approval required
+
+
+Build forms that collect outcomes, examples, development needs and manager feedback without repeating questions. Set the review period and who can read or edit each response. Walk through employee and manager views to catch confusing questions or inappropriate visibility. Adjust the questions before launch so responses provide useful material for the review conversation.
+
+- Canonical vendor: BambooHR
+
+<a id="step-3"></a>
+
+### 3. Send self-assessment forms
+
+agent-runnable · ~10 min · human approval required
+
+
+Send the agreed review invitation with the period being assessed, completion date, form link and support contact. Explain who will read the response and how it will be used. Check that people received the right form and can open it, then follow up privately on access problems or missing submissions. Keep individual completion status out of broad team messages.
+
+- Canonical vendor: BambooHR
+
+<a id="step-4"></a>
+
+### 4. Employees complete self-assessments
+
+human · ~1 d · async wait
+
+
+Review the agreed goals and gather examples of outcomes, collaboration, difficulties and learning from the period. Explain changed priorities, unfinished work and their effect on the agreed outcomes. The employee writes their own assessment and identifies support or development they want to discuss. Submit it through the review process, keeping the employee’s account intact if a coordinator helps with formatting or access.
+
+- Cross-arena market: [workflow-automation](../../open-rankings/workflow-automation)
+
+<a id="step-5"></a>
+
+### 5. Managers write reviews
+
+human · ~1 d · async wait
+
+
+Compare the employee’s work with the agreed goals and role expectations, using the self-assessment and relevant feedback. Explain conclusions with examples, distinguish observation from interpretation and propose practical development actions. Resolve sensitive policy questions with the people lead. Bring the draft and unresolved evidence questions to calibration before communicating a final rating or implying a compensation decision.
+
+<a id="step-6"></a>
+
+### 6. Calibration meeting
+
+human · ~2 h · human approval required
+
+
+Compare proposed reviews across teams using the same rubric and supporting examples. Discuss inconsistent ratings, changed scope and missing context, and explain any revised conclusion. Apply the agreed review design consistently when comparing employees in different roles. The people lead assigns unresolved cases for follow-up so managers leave with coherent outcomes they can explain in individual conversations.
+
+<a id="step-7"></a>
+
+### 7. Deliver reviews and schedule 1:1s
+
+agent-runnable · ~15 min · human approval required
+
+
+Hold a private review conversation using the completed assessment and its supporting examples. Invite corrections, discuss development needs and agree concrete actions, support and follow-up dates. Handle compensation through its separate decision process. Give the employee a way to respond or challenge factual errors, and carry the agreed actions into subsequent one-to-ones.
+
+- Canonical vendor: Slack
+
+
+<a id="artifacts"></a>
 
 ## Related records
 

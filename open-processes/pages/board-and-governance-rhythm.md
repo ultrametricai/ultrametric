@@ -3,18 +3,28 @@
 
 # Board & governance rhythm
 
+[Overview](#overview) · [Process sequence](#process-sequence)
+
+## Overview
+
 The corporate record kept clean: the deck prepped from live numbers, the meeting minuted and signed, the annual budget approved by consent, the state annual report filed.
 
 | Field | Value |
 | --- | --- |
 | Kind | chain |
 
-## Processes in order
+<a id="processes-in-order"></a>
 
-1. [Prepare a board meeting](prepare-a-board-meeting.md)
-2. [Keep board minutes on cadence](keep-board-minutes-on-cadence.md)
-3. [Set the annual budget & get board approval](set-the-annual-budget-get-board-approval.md)
-4. [File state annual report](file-state-annual-report.md)
+## Process sequence
+
+Run the linked processes in the recorded chain order. Each process defines its own internal dependencies.
+
+| Order | Process | Requires | Produces |
+| --- | --- | --- | --- |
+| 1 | [Prepare a board meeting](prepare-a-board-meeting.md) | Accounting ledger; Payment processor account; Team wiki | Not recorded |
+| 2 | [Keep board minutes on cadence](keep-board-minutes-on-cadence.md) | Diligence data room | Signed board minutes |
+| 3 | [Set the annual budget & get board approval](set-the-annual-budget-get-board-approval.md) | Accounting ledger; Financial statements | Board-approved annual budget |
+| 4 | [File state annual report](file-state-annual-report.md) | Certificate of Incorporation | Not recorded |
 
 ---
 

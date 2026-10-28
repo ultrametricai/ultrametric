@@ -3,6 +3,10 @@
 
 # Send the board financial report
 
+[Overview](#overview) · [Before you start](#before-you-start) · [Steps](#steps-at-a-glance)
+
+## Overview
+
 Generate monthly board update with financial metrics, burn rate, runway, and key KPIs.
 
 | Field | Value |
@@ -19,58 +23,125 @@ Generate monthly board update with financial metrics, burn rate, runway, and key
 
 All data sources (Mercury, QBO, Stripe) have APIs. System compiles metrics, calculates burn/runway, formats report.
 
-## Steps
+## Before you start
 
-1. **Pull bank balances** — agent-runnable · ~1 min
-
-   *Entry step — no prerequisite step.*
-
-   Take a cash snapshot across the company’s accounts at one reporting cut-off. Separate available cash from restricted funds, investments and pending transfers, avoiding double counting of internal transfers. State currencies and the conversion basis for any consolidated total. Reconcile significant changes since the previous board report so the runway calculation starts from an explainable cash figure.
-
-   - Canonical vendor: Mercury
-2. **Pull revenue from Stripe** — agent-runnable · ~2 min
-
-   *Entry step — no prerequisite step.*
-
-   Pull processor activity for the reporting period, separating charges, refunds, disputes, fees and payouts. Reconcile it to the board’s revenue definition: collections, invoiced amounts and recognized revenue may differ. Use consistent currencies, time zones and comparison periods, and explain adjustments or unmatched amounts before the extract feeds the report.
-
-   - Canonical vendor: Stripe
-3. **Pull expenses from QBO** — agent-runnable · ~2 min
-
-   *Entry step — no prerequisite step.*
-
-   Pull expenses for the board period from the accounting system, checking entity, accounting basis and close status. Separate recurring operating costs from transfers, financing and unusual items in the analysis. Tie material categories to the ledger and show management adjustments alongside the original total so the founder can explain spending changes accurately.
-
-   - Canonical vendor: QuickBooks
-4. **Calculate burn rate and runway** — agent-runnable · ~3 min
-
-   *Follows steps 1, 2 and 3 — all are required first.*
-
-   Calculate operating cash burn for a stated period, showing one-time items separately. Reconcile usable cash to the balance schedule and model how hiring, collections and committed spending affect future cash. Show a downside case where useful. If the company is generating cash, explain that a simple cash-divided-by-burn ratio does not provide a meaningful runway estimate.
-
-   - Cross-arena options: ChatGPT, Claude, Gemini (ai-assistants)
-5. **Compile board report draft** — agent-runnable · ~10 min
-
-   Draft the board report around cash, performance against plan, runway and material financial risks. Link figures to the closed accounts or label them provisional. Explain the largest variances in business terms and distinguish actual results from forecasts. Highlight decisions or support needed from directors so the founder can review both the numbers and the discussion they should support.
-
-   - Canonical vendor: Notion
-   - Cross-arena options: ChatGPT, Claude, Gemini (ai-assistants)
-6. **Founder reviews and edits** — human · ~30 min
-
-   Review the draft’s explanation of revenue, spending and runway against the financial schedules and current strategy. Resolve inconsistent numbers with finance and make forecast assumptions explicit. Decide which sensitive details belong in the main report or restricted appendices, then settle the final version for directors with any material uncertainty clearly described.
-7. **Send to board members** — agent-runnable · ~2 min · human approval required
-
-   Send the final report through the company’s board distribution channel to the current authorized directors and observers. The designated company sender checks access to the report and restricted appendices before distribution. Include the meeting context and any requested preparation, and resolve individual access failures without opening the wider data room.
-
-   - Canonical vendor: Gmail
-
-## Artifacts
-
-Requires:
+Required artifacts:
 
 - Business bank account — from [Open bank account](open-bank-account.md)
 - Payment processor account — from [Connect a payment processor](connect-a-payment-processor.md)
 - Accounting ledger — from [Set up accounting](set-up-accounting.md)
+
+| Information to gather | Required by the record |
+| --- | --- |
+| balances | Yes |
+| revenue | Yes |
+| expenses | Yes |
+| members | Yes |
+
+## Steps at a glance
+
+Use the recorded prerequisites and conditions to follow the path. Row order is for navigation.
+
+| Step | Handled by | Time estimate | Incoming dependencies |
+| --- | --- | --- | --- |
+| [1. Pull bank balances](#step-1) | agent-runnable | ~1 min | Entry step |
+| [2. Pull revenue from Stripe](#step-2) | agent-runnable | ~2 min | Entry step |
+| [3. Pull expenses from QBO](#step-3) | agent-runnable | ~2 min | Entry step |
+| [4. Calculate burn rate and runway](#step-4) | agent-runnable | ~3 min | All: [Step 1](#step-1); [Step 2](#step-2); [Step 3](#step-3) |
+| [5. Compile board report draft](#step-5) | agent-runnable | ~10 min | [Step 4](#step-4) |
+| [6. Founder reviews and edits](#step-6) | human | ~30 min | [Step 5](#step-5) |
+| [7. Send to board members](#step-7) | agent-runnable; approval required | ~2 min | [Step 6](#step-6) |
+
+<a id="steps"></a>
+
+## Step details
+
+<a id="step-1"></a>
+
+### 1. Pull bank balances
+
+agent-runnable · ~1 min
+
+
+*Entry step — no prerequisite step.*
+
+Take a cash snapshot across the company’s accounts at one reporting cut-off. Separate available cash from restricted funds, investments and pending transfers, avoiding double counting of internal transfers. State currencies and the conversion basis for any consolidated total. Reconcile significant changes since the previous board report so the runway calculation starts from an explainable cash figure.
+
+- Canonical vendor: Mercury
+
+<a id="step-2"></a>
+
+### 2. Pull revenue from Stripe
+
+agent-runnable · ~2 min
+
+
+*Entry step — no prerequisite step.*
+
+Pull processor activity for the reporting period, separating charges, refunds, disputes, fees and payouts. Reconcile it to the board’s revenue definition: collections, invoiced amounts and recognized revenue may differ. Use consistent currencies, time zones and comparison periods, and explain adjustments or unmatched amounts before the extract feeds the report.
+
+- Canonical vendor: Stripe
+
+<a id="step-3"></a>
+
+### 3. Pull expenses from QBO
+
+agent-runnable · ~2 min
+
+
+*Entry step — no prerequisite step.*
+
+Pull expenses for the board period from the accounting system, checking entity, accounting basis and close status. Separate recurring operating costs from transfers, financing and unusual items in the analysis. Tie material categories to the ledger and show management adjustments alongside the original total so the founder can explain spending changes accurately.
+
+- Canonical vendor: QuickBooks
+
+<a id="step-4"></a>
+
+### 4. Calculate burn rate and runway
+
+agent-runnable · ~3 min
+
+
+*Follows steps 1, 2 and 3 — all are required first.*
+
+Calculate operating cash burn for a stated period, showing one-time items separately. Reconcile usable cash to the balance schedule and model how hiring, collections and committed spending affect future cash. Show a downside case where useful. If the company is generating cash, explain that a simple cash-divided-by-burn ratio does not provide a meaningful runway estimate.
+
+- Cross-arena options: ChatGPT, Claude, Gemini (ai-assistants)
+
+<a id="step-5"></a>
+
+### 5. Compile board report draft
+
+agent-runnable · ~10 min
+
+
+Draft the board report around cash, performance against plan, runway and material financial risks. Link figures to the closed accounts or label them provisional. Explain the largest variances in business terms and distinguish actual results from forecasts. Highlight decisions or support needed from directors so the founder can review both the numbers and the discussion they should support.
+
+- Canonical vendor: Notion
+- Cross-arena options: ChatGPT, Claude, Gemini (ai-assistants)
+
+<a id="step-6"></a>
+
+### 6. Founder reviews and edits
+
+human · ~30 min
+
+
+Review the draft’s explanation of revenue, spending and runway against the financial schedules and current strategy. Resolve inconsistent numbers with finance and make forecast assumptions explicit. Decide which sensitive details belong in the main report or restricted appendices, then settle the final version for directors with any material uncertainty clearly described.
+
+<a id="step-7"></a>
+
+### 7. Send to board members
+
+agent-runnable · ~2 min · human approval required
+
+
+Send the final report through the company’s board distribution channel to the current authorized directors and observers. The designated company sender checks access to the report and restricted appendices before distribution. Include the meeting context and any requested preparation, and resolve individual access failures without opening the wider data room.
+
+- Canonical vendor: Gmail
+
+
+<a id="artifacts"></a>
 
 ## Related records
 

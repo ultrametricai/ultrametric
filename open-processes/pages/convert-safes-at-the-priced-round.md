@@ -3,6 +3,10 @@
 
 # Convert SAFEs at the priced round
 
+[Overview](#overview) · [Before you start](#before-you-start) · [Geography](#geography) · [Steps](#steps-at-a-glance)
+
+## Overview
+
 When the priced round closes, every outstanding SAFE converts to preferred stock: pull the notes and side letters, model the conversion math (caps, discounts, pro-rata rights), confirm the mechanics with counsel, execute the conversion on the cap-table platform, and tell the new stockholders what they own. The round documents themselves are signed in Close a priced equity round.
 
 | Field | Value |
@@ -19,95 +23,198 @@ When the priced round closes, every outstanding SAFE converts to preferred stock
 
 Cap-table platforms pull the SAFEs, model the conversion, and issue the shares over their APIs; the side-letter judgment, the counsel check, and the lead-investor review of the pro-forma stay human.
 
-## Steps
+## Before you start
 
-1. **Pull the outstanding SAFEs and side letters** — agent-runnable · ~10 min
+Required artifacts:
 
-   Collect all executed outstanding SAFEs, amendments and side letters, reconciling them to bank receipts and equity records. Identify the investor, amount, instrument version, conversion economics and special rights for each. Resolve missing signatures, inconsistent amendments and uncertain status with counsel so the conversion model starts from a complete set of controlling documents.
+- Executed SAFEs — from [Raise pre-seed (SAFEs)](raise-pre-seed-safes.md)
+- Priced round closing — from [Close a priced equity round](close-a-priced-equity-round.md)
+- Cap table record — from [Set up cap table](set-up-cap-table.md)
 
-   - Canonical vendor: Carta
-   - Vendor options: Carta, Pulley
-   - Ranked market: [equity-management](../../open-rankings/equity-management)
-   - Sources: [Y Combinator SAFE documents](https://www.ycombinator.com/safe/)
-2. **Model the conversion (caps, discounts, pro-rata)** — agent-runnable · ~20 min
+| Information to gather | Required by the record |
+| --- | --- |
+| outstanding SAFE terms and side letters | Yes |
+| priced round terms (price, pre-money) | Yes |
 
-   Model each SAFE using its actual conversion definitions and the proposed round terms. Show capitalization inputs, price, cap or discount treatment and any separately exercised participation rights by holder. Test round-size or option-pool changes where they affect allocations, and reconcile totals and rounding. Keep legal interpretations and unresolved assumptions visible for counsel’s review.
+## Geography
 
-   - Canonical vendor: Carta
-3. **Counsel confirms the conversion mechanics** — human · ~1 d · async wait
+Country rows describe the guidance recorded here. Local notes and step alternatives do not establish a complete country-specific workflow.
 
-   Have counsel compare the conversion model with the executed instruments, side letters and financing documents. Resolve differences in instrument versions, capitalization definitions, conversion triggers, rights elections and required consents. Incorporate the agreed interpretation into both the model and closing documents so the allocations rest on the same terms.
-4. **Review the pro-forma cap table with the lead investor** — human · ~1 h
+| Country | Recorded guidance | Steps with local alternatives or resolutions |
+| --- | --- | --- |
+| [India](#geo-in) | Local analog note | — |
+| [United Kingdom](#geo-uk) | Local analog note | — |
+| [Germany](#geo-de) | Local analog note | — |
+| [France](#geo-fr) | Local analog note | — |
+| [Portugal](#geo-pt) | Local analog note | — |
+| [Canada](#geo-ca) | Local analog note | — |
+| [New Zealand](#geo-nz) | Local analog note | — |
+| [Singapore](#geo-sg) | Local analog note | — |
+| [Australia](#geo-au) | Local analog note | — |
+| [South Korea](#geo-kr) | Local analog note | — |
+| [Hong Kong](#geo-hk) | Local analog note | — |
+| [Estonia](#geo-ee) | Local analog note | — |
 
-   Review the pro forma capitalization with the lead investor, showing existing holdings, conversion shares, new-money shares and the proposed option reserve. The founder shares the transaction-relevant table, with assumptions and closing conditions clearly labeled. Reconcile questions and corrections to counsel’s conversion model until the parties have a consistent allocation basis for closing.
-5. **Execute the conversion and issue the preferred shares** — agent-runnable · ~15 min · human approval required · irreversible
+## Steps at a glance
 
-   At closing, use the final conversion schedule and corporate authorizations to issue the specific preferred shares. Establish with counsel that executed documents, holder actions and closing conditions permit the conversion. The authorized equity administrator records the effective conversion and issuance, reconciling balances so a converted SAFE does not remain outstanding alongside its new shares.
+Use the recorded prerequisites and conditions to follow the path. Row order is for navigation.
 
-   - Canonical vendor: Carta
-6. **Notify SAFE holders with their share counts** — agent-runnable · ~10 min
+| Step | Handled by | Time estimate | Incoming dependencies |
+| --- | --- | --- | --- |
+| [1. Pull the outstanding SAFEs and side letters](#step-1) | agent-runnable | ~10 min | Entry step |
+| [2. Model the conversion (caps, discounts, pro-rata)](#step-2) | agent-runnable | ~20 min | [Step 1](#step-1) |
+| [3. Counsel confirms the conversion mechanics](#step-3) | human; includes waiting | ~1 d | [Step 2](#step-2) |
+| [4. Review the pro-forma cap table with the lead investor](#step-4) | human | ~1 h | [Step 3](#step-3) |
+| [5. Execute the conversion and issue the preferred shares](#step-5) | agent-runnable; approval required | ~15 min | [Step 4](#step-4) |
+| [6. Notify SAFE holders with their share counts](#step-6) | agent-runnable | ~10 min | [Step 5](#step-5) |
 
-   The company’s authorized equity contact sends each holder their completed conversion details: instrument, resulting share class and quantity, and access to final documents. Match notices to the closing schedule and keep each holder’s information separate. Resolve reported allocation discrepancies with counsel using the underlying calculation and controlling documents.
+<a id="steps"></a>
 
-   - Canonical vendor: Gmail
+## Step details
 
-## By country
+<a id="step-1"></a>
+
+### 1. Pull the outstanding SAFEs and side letters
+
+agent-runnable · ~10 min
+
+
+Collect all executed outstanding SAFEs, amendments and side letters, reconciling them to bank receipts and equity records. Identify the investor, amount, instrument version, conversion economics and special rights for each. Resolve missing signatures, inconsistent amendments and uncertain status with counsel so the conversion model starts from a complete set of controlling documents.
+
+- Canonical vendor: Carta
+- Vendor options: Carta, Pulley
+- Ranked market: [equity-management](../../open-rankings/equity-management)
+- Sources: [Y Combinator SAFE documents](https://www.ycombinator.com/safe/)
+
+<a id="step-2"></a>
+
+### 2. Model the conversion (caps, discounts, pro-rata)
+
+agent-runnable · ~20 min
+
+
+Model each SAFE using its actual conversion definitions and the proposed round terms. Show capitalization inputs, price, cap or discount treatment and any separately exercised participation rights by holder. Test round-size or option-pool changes where they affect allocations, and reconcile totals and rounding. Keep legal interpretations and unresolved assumptions visible for counsel’s review.
+
+- Canonical vendor: Carta
+
+<a id="step-3"></a>
+
+### 3. Counsel confirms the conversion mechanics
+
+human · ~1 d · async wait
+
+
+Have counsel compare the conversion model with the executed instruments, side letters and financing documents. Resolve differences in instrument versions, capitalization definitions, conversion triggers, rights elections and required consents. Incorporate the agreed interpretation into both the model and closing documents so the allocations rest on the same terms.
+
+<a id="step-4"></a>
+
+### 4. Review the pro-forma cap table with the lead investor
+
+human · ~1 h
+
+
+Review the pro forma capitalization with the lead investor, showing existing holdings, conversion shares, new-money shares and the proposed option reserve. The founder shares the transaction-relevant table, with assumptions and closing conditions clearly labeled. Reconcile questions and corrections to counsel’s conversion model until the parties have a consistent allocation basis for closing.
+
+<a id="step-5"></a>
+
+### 5. Execute the conversion and issue the preferred shares
+
+agent-runnable · ~15 min · human approval required · irreversible
+
+
+At closing, use the final conversion schedule and corporate authorizations to issue the specific preferred shares. Establish with counsel that executed documents, holder actions and closing conditions permit the conversion. The authorized equity administrator records the effective conversion and issuance, reconciling balances so a converted SAFE does not remain outstanding alongside its new shares.
+
+- Canonical vendor: Carta
+
+<a id="step-6"></a>
+
+### 6. Notify SAFE holders with their share counts
+
+agent-runnable · ~10 min
+
+
+The company’s authorized equity contact sends each holder their completed conversion details: instrument, resulting share class and quantity, and access to final documents. Match notices to the closing schedule and keep each holder’s information separate. Resolve reported allocation discrepancies with counsel using the underlying calculation and controlling documents.
+
+- Canonical vendor: Gmail
+
+
+<a id="by-country"></a>
+
+## Country details
+
+<a id="geo-in"></a>
 
 ### India
 
 - Convertibles here are CCDs/CCPS (or iSAFEs on CCPS): conversion is a fresh allotment — board resolution, PAS-3 to the MCA — and foreign-held instruments must be reported to the RBI (FC-GPR on the FIRMS portal) within 30 days. ([RBI (FDI reporting — FIRMS/FC-GPR)](https://www.rbi.org.in/))
 
+<a id="geo-uk"></a>
+
 ### United Kingdom
 
 - ASAs convert at the round as a normal allotment (SH01 to Companies House) — and the conversion deadline is hard law for tax relief: S/EIS requires shares to be issued within the ASA's 6-month longstop. ([HMRC — apply to use EIS](https://www.gov.uk/guidance/venture-capital-schemes-apply-for-the-enterprise-investment-scheme))
+
+<a id="geo-de"></a>
 
 ### Germany
 
 - Wandeldarlehen convert through a notarized capital increase: the loan claim is contributed, the resolution beurkundet, and the new shares exist on registration in the Handelsregister — the notary drives the closing timeline. ([Handelsregister (conversion capital increase)](https://www.handelsregister.de/))
 
+<a id="geo-fr"></a>
+
 ### France
 
 - BSA-AIR holders exercise their warrants at the priced round: the resulting augmentation de capital is decided, the statuts updated, and the capital change filed through the guichet unique. ([INPI guichet unique (BSA-AIR exercise)](https://procedures.inpi.fr/))
+
+<a id="geo-pt"></a>
 
 ### Portugal
 
 - Convertible notes convert through the same mechanics as any raise: a shareholder-resolved capital increase contributing the loan claims, registered at the commercial registry — align the note terms with the registry timeline. ([Empresa Online — registry filings](https://www.gov.pt/guias/empresa-online-servicos-do-registo-comercial))
 
+<a id="geo-ca"></a>
+
 ### Canada
 
 - SAFEs and notes convert at the priced round as part of the private placement: the preferred shares issue under the same NI 45-106 exemptions and land in the post-closing report of exempt distribution. ([NI 45-106 — prospectus exemptions (OSC)](https://www.osc.ca/en/securities-law/instruments-rules-policies/4/45-106))
+
+<a id="geo-nz"></a>
 
 ### New Zealand
 
 - Convertible instruments convert as an ordinary share issue: the board approves the allotment and the new share allocations are updated on the Companies Office register online — the register update is the filing. ([Issuing shares — Companies Register](https://companies-register.companiesoffice.govt.nz/help-centre/shares-and-shareholders/issuing-shares-in-a-company/))
 
+<a id="geo-sg"></a>
+
 ### Singapore
 
 - Convertibles (the YC Singapore-law SAFE and convertible notes are common forms) convert by an ordinary allotment: members' authority where needed, then the return of allotment via Bizfile, effective when ACRA updates the electronic register of members. ([Bizfile (ACRA filings)](https://www.bizfile.gov.sg/))
+
+<a id="geo-au"></a>
 
 ### Australia
 
 - SAFEs convert as an ordinary share issue: board approval under the constitution, entry on the members register, and the share-issue notice lodged with ASIC within 28 days (Corporations Act 2001 s 254X, law rule [au.share-issue-notice](../../open-law/AU/au-share-issue-notice.json)). ([ASIC — share issues and changes](https://asic.gov.au/for-business-and-companies/companies/company-share-and-shareholder-rules-and-changes))
 
+<a id="geo-kr"></a>
+
 ### South Korea
 
 - The SAFE has a statutory form: the conditional equity investment contract (조건부지분인수계약) is a recognized investment type under the Venture Investment Promotion Act, and conversion lands as a new-share issue registered at the court registry within two weeks. ([Venture Investment Promotion Act Article 2 (law.go.kr)](https://www.law.go.kr/%EB%B2%95%EB%A0%B9/%EB%B2%A4%EC%B2%98%ED%88%AC%EC%9E%90%EC%B4%89%EC%A7%84%EC%97%90%EA%B4%80%ED%95%9C%EB%B2%95%EB%A5%A0/%EC%A0%9C2%EC%A1%B0))
+
+<a id="geo-hk"></a>
 
 ### Hong Kong
 
 - No statutory SAFE form exists, so the instrument is whatever the contract says; conversion lands as an ordinary allotment, with the return of allotment delivered to the Companies Registry within one month (Companies Ordinance section 142). ([Companies Ordinance s 142 — return of allotment](https://www.elegislation.gov.hk/hk/cap622!en/s142))
 
+<a id="geo-ee"></a>
+
 ### Estonia
 
 - Convertibles land as a share-capital increase: the shareholders resolve the increase, the new shares are taken up, and the change is entered in the commercial register before the equity exists. ([e-Business Register](https://ariregister.rik.ee/eng))
 
-## Artifacts
-
-Requires:
-
-- Executed SAFEs — from [Raise pre-seed (SAFEs)](raise-pre-seed-safes.md)
-- Priced round closing — from [Close a priced equity round](close-a-priced-equity-round.md)
-- Cap table record — from [Set up cap table](set-up-cap-table.md)
+<a id="artifacts"></a>
 
 ## Related records
 

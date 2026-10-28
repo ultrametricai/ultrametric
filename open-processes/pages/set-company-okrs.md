@@ -3,6 +3,10 @@
 
 # Set company OKRs
 
+[Overview](#overview) · [Before you start](#before-you-start) · [Steps](#steps-at-a-glance)
+
+## Overview
+
 Implement quarterly OKR framework with company, team, and individual objectives tracked in Linear/Notion.
 
 | Field | Value |
@@ -19,42 +23,93 @@ Implement quarterly OKR framework with company, team, and individual objectives 
 
 Linear/Notion APIs support project and page creation. OKR definition and alignment need human facilitation.
 
-## Steps
+## Before you start
 
-1. **Define company-level objectives** — human · ~2 h · human approval required
-
-   Use the strategy, current performance, and business constraints to identify the outcomes leadership wants to change during the planning period. Draft objectives and measurable key results with baselines, targets, and accountable owners. Check that each measure can be obtained and that proposed commitments fit the team's capacity. Resolve conflicting priorities with the company decision-maker, leaving a clear account of what the company is pursuing and what it is choosing to defer.
-
-   - Next: steps 2 and 3 — all follow this step
-2. **Create OKR tracking in Notion** — agent-runnable · ~20 min · human approval required
-
-   Create the OKR register in the selected workspace, using Notion when that is the team's home. Give each key result an owner, baseline, target, current value, measurement source, and review cadence. Keep progress data separate from commentary about risks or confidence. Enter the agreed plan and make it easy to see missing updates, then show owners how to update their result and flag a proposed target change without overwriting its history.
-
-   - Canonical vendor: Notion
-
-   *This path ends here.*
-3. **Teams define team OKRs** — human · ~4 h · human approval required
-
-   *Follows step 1.*
-
-   Have each team identify outcomes it can influence that contribute to the company objectives. Check proposed key results for clear ownership, a measurable baseline, and realistic capacity. Resolve dependencies with other teams before treating a target as a commitment, and identify necessary operational work outside the OKRs. Publish the team plan with its owners and measures so the next review can examine actual progress and the assumptions behind it.
-4. **Create Linear projects for key results** — agent-runnable · ~15 min · human approval required
-
-   Identify the initiatives expected to influence each key result and link existing projects before creating new ones. In the team's tracker, including Linear when selected, connect each initiative to its key result and accountable owner. Define the deliverable and expected contribution so teams can decide what work is worth doing. Review completed project work alongside the measured result, and use the gap between expected and actual progress to decide what to try next.
-
-   - Canonical vendor: Linear
-5. **Send kickoff to team** — agent-runnable · ~5 min · human approval required
-
-   Prepare the kickoff around the agreed company and team objectives, the planning period, and the review rhythm. Explain what changes for current work, who owns each result, and where questions or priority conflicts go. Have the planning lead confirm the final plan and announcement before sending it to the team. Link the OKR register and collect unresolved questions there so answers and later decisions remain attached to the plan people are following.
-
-   - Canonical vendor: Slack
-
-## Artifacts
-
-Requires:
+Required artifacts:
 
 - Team wiki — from [Set up a team wiki](set-up-a-team-wiki.md)
 - Project tracker — from [Set up a project tracker](set-up-a-project-tracker.md)
+
+| Information to gather | Required by the record |
+| --- | --- |
+| team structure | Yes |
+| company objectives | Yes |
+
+## Steps at a glance
+
+Use the recorded prerequisites and conditions to follow the path. Row order is for navigation.
+
+| Step | Handled by | Time estimate | Incoming dependencies |
+| --- | --- | --- | --- |
+| [1. Define company-level objectives](#step-1) | human; approval required | ~2 h | Entry step |
+| [2. Create OKR tracking in Notion](#step-2) | agent-runnable; approval required | ~20 min | [Step 1](#step-1) |
+| [3. Teams define team OKRs](#step-3) | human; approval required | ~4 h | [Step 1](#step-1) |
+| [4. Create Linear projects for key results](#step-4) | agent-runnable; approval required | ~15 min | [Step 3](#step-3) |
+| [5. Send kickoff to team](#step-5) | agent-runnable; approval required | ~5 min | [Step 4](#step-4) |
+
+<a id="steps"></a>
+
+## Step details
+
+<a id="step-1"></a>
+
+### 1. Define company-level objectives
+
+human · ~2 h · human approval required
+
+
+Use the strategy, current performance, and business constraints to identify the outcomes leadership wants to change during the planning period. Draft objectives and measurable key results with baselines, targets, and accountable owners. Check that each measure can be obtained and that proposed commitments fit the team's capacity. Resolve conflicting priorities with the company decision-maker, leaving a clear account of what the company is pursuing and what it is choosing to defer.
+
+- Next: steps 2 and 3 — all follow this step
+
+<a id="step-2"></a>
+
+### 2. Create OKR tracking in Notion
+
+agent-runnable · ~20 min · human approval required
+
+
+Create the OKR register in the selected workspace, using Notion when that is the team's home. Give each key result an owner, baseline, target, current value, measurement source, and review cadence. Keep progress data separate from commentary about risks or confidence. Enter the agreed plan and make it easy to see missing updates, then show owners how to update their result and flag a proposed target change without overwriting its history.
+
+- Canonical vendor: Notion
+
+*This path ends here.*
+
+<a id="step-3"></a>
+
+### 3. Teams define team OKRs
+
+human · ~4 h · human approval required
+
+
+*Follows step 1.*
+
+Have each team identify outcomes it can influence that contribute to the company objectives. Check proposed key results for clear ownership, a measurable baseline, and realistic capacity. Resolve dependencies with other teams before treating a target as a commitment, and identify necessary operational work outside the OKRs. Publish the team plan with its owners and measures so the next review can examine actual progress and the assumptions behind it.
+
+<a id="step-4"></a>
+
+### 4. Create Linear projects for key results
+
+agent-runnable · ~15 min · human approval required
+
+
+Identify the initiatives expected to influence each key result and link existing projects before creating new ones. In the team's tracker, including Linear when selected, connect each initiative to its key result and accountable owner. Define the deliverable and expected contribution so teams can decide what work is worth doing. Review completed project work alongside the measured result, and use the gap between expected and actual progress to decide what to try next.
+
+- Canonical vendor: Linear
+
+<a id="step-5"></a>
+
+### 5. Send kickoff to team
+
+agent-runnable · ~5 min · human approval required
+
+
+Prepare the kickoff around the agreed company and team objectives, the planning period, and the review rhythm. Explain what changes for current work, who owns each result, and where questions or priority conflicts go. Have the planning lead confirm the final plan and announcement before sending it to the team. Link the OKR register and collect unresolved questions there so answers and later decisions remain attached to the plan people are following.
+
+- Canonical vendor: Slack
+
+
+<a id="artifacts"></a>
 
 ---
 

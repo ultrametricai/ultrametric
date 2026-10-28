@@ -3,6 +3,10 @@
 
 # Ship a feature (spec to deploy)
 
+[Overview](#overview) · [Before you start](#before-you-start) · [Steps](#steps-at-a-glance)
+
+## Overview
+
 The whole software-making loop: spec it, track it, implement with a coding agent, open the PR, pass AI and human review, deploy through CI, and verify in production.
 
 | Field | Value |
@@ -19,92 +23,169 @@ The whole software-making loop: spec it, track it, implement with a coding agent
 
 Agents can draft the spec, cut the issue, implement, open the PR, and deploy through CI. Human code review and the merge decision gate the loop.
 
-## Steps
+## Before you start
 
-1. **Write the spec** — agent-runnable · ~30 min
-
-   Describe who needs the feature, the task they are trying to complete and what currently prevents it. Give a before-and-after example with concrete inputs and expected behavior. Turn that example into acceptance checks, including failure or permission cases that could change the design. Define the affected surfaces, compatibility constraints and non-goals. Link the relevant design or code, and separate unresolved product decisions from implementation choices so work can proceed where the intended behavior is already clear.
-
-   - Canonical vendor: Notion
-   - Vendor options: Notion, Linear
-   - Ranked market: [project-management](../../open-rankings/project-management)
-   - Cross-arena options: ChatGPT, Claude, Gemini (ai-assistants)
-2. **Create the tracking issue** — agent-runnable · ~5 min
-
-   Create the issue from the spec's concrete outcome and acceptance checks, linking the relevant design or investigation. Use the project's authorized workspace and assignment scope, search for duplicate work, and include only real prerequisites. Keep confidential examples out of broadly visible fields. Link the issue from the implementation branch or pull request so reviewers can follow the requested behavior through to the change.
-
-   - Canonical vendor: Linear
-   - Sources: [Best practices for GitHub organizations](https://docs.github.com/en/organizations/collaborating-with-groups-in-organizations/best-practices-for-organizations)
-3. **Implement with a coding agent** — agent-runnable · ~2 h
-
-   Give the agent the spec, repository instructions and the code paths likely to matter. Work in an isolated branch and use the repository's checks to test the requested behavior, including failure cases. Let reversible implementation proceed within the delegated scope; escalate product decisions or changes to data, permissions and production effects that were not authorized. Inspect the diff for unrelated edits and invented requirements before preparing it for review.
-
-   - Canonical vendor: Claude Code
-   - Vendor options: Claude Code, Codex, Cursor
-   - Ranked market: [ai-coding](../../open-rankings/ai-coding)
-
-   Options:
-     - **Default — Implement with a coding agent** — agent-runnable · ~2 h
-
-       Use a supervised coding session for a bounded change with a clear expected result. Read the relevant code and repository instructions, implement in an isolated branch, and inspect the diff as the approach develops. Run checks that exercise the behavior being changed. Keep publication and production effects within the delegated authority; resolve new product or access decisions when they arise. Bring the reviewer the resulting patch and any behavior still unverified.
-     - **Autonomous cloud-agent run**
-
-       When: Well-scoped, well-tested task - hand it to an autonomous agent and review the PR
-
-       Choose a cloud-agent run when the task has a precise outcome and checks that can evaluate the returned implementation. Supply the necessary repository context and limited access, and define whether the authorized output is a branch or a pull request. Review the returned diff, dependencies and test results against the expected behavior. Resolve missing evidence or invented requirements before integrating it.
-
-       - Vendor options: Claude Code, Codex
-     - **IDE pairing session**
-
-       When: Exploratory or design-heavy change - pair in the IDE instead of delegating
-
-       Pair in the editor when the work needs exploration or frequent design feedback. Follow one behavior through the code, make a small change and try it before expanding the approach. Use the agent to explain unfamiliar paths and compare alternatives, while keeping product choices with the person responsible for them. Before opening review, remove abandoned experiments and unrelated edits, then run the checks for the approach actually kept.
-
-       - Vendor options: Cursor
-4. **Open the pull request** — agent-runnable · ~5 min
-
-   Review the diff against the intended base branch and remove accidental files, secrets and unrelated changes. Explain the concrete before/after behavior in the pull request, link the issue and report checks actually run. Add migration or rollout instructions only where the change needs them. Publish within the maintainer's delegated repository scope, then inspect the hosted diff and CI result; select reviewers who can assess the affected area.
-
-   - Canonical vendor: GitHub
-   - Sources: [About protected branches](https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/managing-protected-branches/about-protected-branches) · [GitHub Actions secure use reference](https://docs.github.com/en/actions/reference/security/secure-use)
-5. **AI code review pass** — agent-runnable · ~15 min
-
-   Review the actual diff with the approved assistant, giving it the spec and repository rules. Ask for defects with code locations and a reproducible failure or reason, especially around permissions, error handling and missing coverage. Check each finding yourself before applying it. Re-run affected tests after fixes and leave unresolved findings visible for the human reviewer. Complete the repository's required review and merge process after the automated pass.
-
-   - Canonical vendor: CodeRabbit
-   - Vendor options: CodeRabbit, Greptile, Cursor Bugbot
-   - Ranked market: [ai-code-review](../../open-rankings/ai-code-review)
-   - Sources: [About protected branches](https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/managing-protected-branches/about-protected-branches) · [GitHub Actions secure use reference](https://docs.github.com/en/actions/reference/security/secure-use)
-6. **Human review and approval** — human · ~45 min
-
-   Review the final revision against the spec and test evidence. Trace the changed behavior through its callers and failure paths, giving extra attention to data migrations, permission changes and new dependencies. Request a reproduction or additional check where the result remains uncertain. Submit the repository's required review on the revision actually assessed, with unresolved issues clearly stated. If later edits change the reviewed behavior, reassess them before the merge decision.
-
-   - Sources: [About protected branches](https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/managing-protected-branches/about-protected-branches)
-7. **Merge and deploy via CI** — agent-runnable · ~10 min · human approval required
-
-   Check the approved revision, required checks, target branch and deployment environment, including any migration order. Confirm that the recorded authorization covers this merge and deployment; obtain additional approval only for effects outside that scope. Use the protected merge and release path, then follow the resulting build and deployment to its actual status. Match the deployed revision to the reviewed change. If a required stage fails, diagnose it and use the agreed recovery path before continuing.
-
-   - Canonical vendor: GitHub
-   - Vendor options: GitHub, Vercel
-   - Ranked market: [code-hosting](../../open-rankings/code-hosting)
-   - Sources: [About protected branches](https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/managing-protected-branches/about-protected-branches) · [Managing deployment environments](https://docs.github.com/actions/deployment/environments)
-8. **Verify in production** — agent-runnable · ~10 min
-
-   Confirm the intended revision is live, then exercise the feature's main journey and important permission or failure cases with an authorized test account. Verify the integration output or stored state produced by that journey. Compare errors and latency with the release baseline. Give the release responder any unexpected behavior with a reproducible example and deployment identifier so they can decide whether to fix, roll back or continue observing.
-
-   - Canonical vendor: Sentry
-   - Vendor options: Sentry, PostHog
-   - Ranked market: [error-tracking](../../open-rankings/error-tracking)
-   - Sources: [Set up Sentry releases](https://docs.sentry.io/product/releases/setup/) · [Google SRE implementing SLOs](https://sre.google/workbook/implementing-slos/)
-
-## Artifacts
-
-Requires:
+Required artifacts:
 
 - Code hosting organization — from [Set up a code hosting org](set-up-a-code-hosting-org.md)
 - Project tracker — from [Set up a project tracker](set-up-a-project-tracker.md)
 - CI/CD pipeline — from [Set up CI/CD](set-up-ci-cd.md)
 - AI code reviewer — from [Set up AI code review](set-up-ai-code-review.md)
+
+| Information to gather | Required by the record |
+| --- | --- |
+| feature requirements | Yes |
+
+## Steps at a glance
+
+Use the recorded prerequisites and conditions to follow the path. Row order is for navigation.
+
+| Step | Handled by | Time estimate | Incoming dependencies |
+| --- | --- | --- | --- |
+| [1. Write the spec](#step-1) | agent-runnable | ~30 min | Entry step |
+| [2. Create the tracking issue](#step-2) | agent-runnable | ~5 min | [Step 1](#step-1) |
+| [3. Implement with a coding agent](#step-3) | agent-runnable | ~2 h | [Step 2](#step-2) |
+| [4. Open the pull request](#step-4) | agent-runnable | ~5 min | [Step 3](#step-3) |
+| [5. AI code review pass](#step-5) | agent-runnable | ~15 min | [Step 4](#step-4) |
+| [6. Human review and approval](#step-6) | human | ~45 min | [Step 5](#step-5) |
+| [7. Merge and deploy via CI](#step-7) | agent-runnable; approval required | ~10 min | [Step 6](#step-6) |
+| [8. Verify in production](#step-8) | agent-runnable | ~10 min | [Step 7](#step-7) |
+
+<a id="steps"></a>
+
+## Step details
+
+<a id="step-1"></a>
+
+### 1. Write the spec
+
+agent-runnable · ~30 min
+
+
+Describe who needs the feature, the task they are trying to complete and what currently prevents it. Give a before-and-after example with concrete inputs and expected behavior. Turn that example into acceptance checks, including failure or permission cases that could change the design. Define the affected surfaces, compatibility constraints and non-goals. Link the relevant design or code, and separate unresolved product decisions from implementation choices so work can proceed where the intended behavior is already clear.
+
+- Canonical vendor: Notion
+- Vendor options: Notion, Linear
+- Ranked market: [project-management](../../open-rankings/project-management)
+- Cross-arena options: ChatGPT, Claude, Gemini (ai-assistants)
+
+<a id="step-2"></a>
+
+### 2. Create the tracking issue
+
+agent-runnable · ~5 min
+
+
+Create the issue from the spec's concrete outcome and acceptance checks, linking the relevant design or investigation. Use the project's authorized workspace and assignment scope, search for duplicate work, and include only real prerequisites. Keep confidential examples out of broadly visible fields. Link the issue from the implementation branch or pull request so reviewers can follow the requested behavior through to the change.
+
+- Canonical vendor: Linear
+- Sources: [Best practices for GitHub organizations](https://docs.github.com/en/organizations/collaborating-with-groups-in-organizations/best-practices-for-organizations)
+
+<a id="step-3"></a>
+
+### 3. Implement with a coding agent
+
+agent-runnable · ~2 h
+
+| Option | Applies when |
+| --- | --- |
+| Default — Implement with a coding agent | Recorded default |
+| Autonomous cloud-agent run | Well-scoped, well-tested task - hand it to an autonomous agent and review the PR |
+| IDE pairing session | Exploratory or design-heavy change - pair in the IDE instead of delegating |
+
+
+Give the agent the spec, repository instructions and the code paths likely to matter. Work in an isolated branch and use the repository's checks to test the requested behavior, including failure cases. Let reversible implementation proceed within the delegated scope; escalate product decisions or changes to data, permissions and production effects that were not authorized. Inspect the diff for unrelated edits and invented requirements before preparing it for review.
+
+- Canonical vendor: Claude Code
+- Vendor options: Claude Code, Codex, Cursor
+- Ranked market: [ai-coding](../../open-rankings/ai-coding)
+
+Options:
+  - **Default — Implement with a coding agent** — agent-runnable · ~2 h
+
+    Use a supervised coding session for a bounded change with a clear expected result. Read the relevant code and repository instructions, implement in an isolated branch, and inspect the diff as the approach develops. Run checks that exercise the behavior being changed. Keep publication and production effects within the delegated authority; resolve new product or access decisions when they arise. Bring the reviewer the resulting patch and any behavior still unverified.
+  - **Autonomous cloud-agent run**
+
+    When: Well-scoped, well-tested task - hand it to an autonomous agent and review the PR
+
+    Choose a cloud-agent run when the task has a precise outcome and checks that can evaluate the returned implementation. Supply the necessary repository context and limited access, and define whether the authorized output is a branch or a pull request. Review the returned diff, dependencies and test results against the expected behavior. Resolve missing evidence or invented requirements before integrating it.
+
+    - Vendor options: Claude Code, Codex
+  - **IDE pairing session**
+
+    When: Exploratory or design-heavy change - pair in the IDE instead of delegating
+
+    Pair in the editor when the work needs exploration or frequent design feedback. Follow one behavior through the code, make a small change and try it before expanding the approach. Use the agent to explain unfamiliar paths and compare alternatives, while keeping product choices with the person responsible for them. Before opening review, remove abandoned experiments and unrelated edits, then run the checks for the approach actually kept.
+
+    - Vendor options: Cursor
+
+<a id="step-4"></a>
+
+### 4. Open the pull request
+
+agent-runnable · ~5 min
+
+
+Review the diff against the intended base branch and remove accidental files, secrets and unrelated changes. Explain the concrete before/after behavior in the pull request, link the issue and report checks actually run. Add migration or rollout instructions only where the change needs them. Publish within the maintainer's delegated repository scope, then inspect the hosted diff and CI result; select reviewers who can assess the affected area.
+
+- Canonical vendor: GitHub
+- Sources: [About protected branches](https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/managing-protected-branches/about-protected-branches) · [GitHub Actions secure use reference](https://docs.github.com/en/actions/reference/security/secure-use)
+
+<a id="step-5"></a>
+
+### 5. AI code review pass
+
+agent-runnable · ~15 min
+
+
+Review the actual diff with the approved assistant, giving it the spec and repository rules. Ask for defects with code locations and a reproducible failure or reason, especially around permissions, error handling and missing coverage. Check each finding yourself before applying it. Re-run affected tests after fixes and leave unresolved findings visible for the human reviewer. Complete the repository's required review and merge process after the automated pass.
+
+- Canonical vendor: CodeRabbit
+- Vendor options: CodeRabbit, Greptile, Cursor Bugbot
+- Ranked market: [ai-code-review](../../open-rankings/ai-code-review)
+- Sources: [About protected branches](https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/managing-protected-branches/about-protected-branches) · [GitHub Actions secure use reference](https://docs.github.com/en/actions/reference/security/secure-use)
+
+<a id="step-6"></a>
+
+### 6. Human review and approval
+
+human · ~45 min
+
+
+Review the final revision against the spec and test evidence. Trace the changed behavior through its callers and failure paths, giving extra attention to data migrations, permission changes and new dependencies. Request a reproduction or additional check where the result remains uncertain. Submit the repository's required review on the revision actually assessed, with unresolved issues clearly stated. If later edits change the reviewed behavior, reassess them before the merge decision.
+
+- Sources: [About protected branches](https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/managing-protected-branches/about-protected-branches)
+
+<a id="step-7"></a>
+
+### 7. Merge and deploy via CI
+
+agent-runnable · ~10 min · human approval required
+
+
+Check the approved revision, required checks, target branch and deployment environment, including any migration order. Confirm that the recorded authorization covers this merge and deployment; obtain additional approval only for effects outside that scope. Use the protected merge and release path, then follow the resulting build and deployment to its actual status. Match the deployed revision to the reviewed change. If a required stage fails, diagnose it and use the agreed recovery path before continuing.
+
+- Canonical vendor: GitHub
+- Vendor options: GitHub, Vercel
+- Ranked market: [code-hosting](../../open-rankings/code-hosting)
+- Sources: [About protected branches](https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/managing-protected-branches/about-protected-branches) · [Managing deployment environments](https://docs.github.com/actions/deployment/environments)
+
+<a id="step-8"></a>
+
+### 8. Verify in production
+
+agent-runnable · ~10 min
+
+
+Confirm the intended revision is live, then exercise the feature's main journey and important permission or failure cases with an authorized test account. Verify the integration output or stored state produced by that journey. Compare errors and latency with the release baseline. Give the release responder any unexpected behavior with a reproducible example and deployment identifier so they can decide whether to fix, roll back or continue observing.
+
+- Canonical vendor: Sentry
+- Vendor options: Sentry, PostHog
+- Ranked market: [error-tracking](../../open-rankings/error-tracking)
+- Sources: [Set up Sentry releases](https://docs.sentry.io/product/releases/setup/) · [Google SRE implementing SLOs](https://sre.google/workbook/implementing-slos/)
+
+
+<a id="artifacts"></a>
 
 ## Related records
 

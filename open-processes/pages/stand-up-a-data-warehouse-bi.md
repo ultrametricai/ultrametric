@@ -3,6 +3,10 @@
 
 # Stand up a data warehouse & BI
 
+[Overview](#overview) · [Before you start](#before-you-start) · [Steps](#steps-at-a-glance) · [Outputs](#outputs)
+
+## Overview
+
 Configure Snowflake/BigQuery with data pipelines from production systems and Metabase dashboards.
 
 | Field | Value |
@@ -19,84 +23,155 @@ Configure Snowflake/BigQuery with data pipelines from production systems and Met
 
 Snowflake/Segment APIs support configuration. Data modeling and dashboard design need human decisions.
 
-## Steps
+## Before you start
 
-1. **Configure CDP event sources** — agent-runnable · ~1 h · human approval required
-
-   Map each application source to its event names, identifiers and permitted properties. Keep development and production traffic distinguishable. Send synthetic records through the customer-data platform and inspect the actual payload, including timestamps, user/account identity and unexpected personal fields. Enable live collection only within the data owner's approved source and destination scope. Check how a renamed event or duplicate submission will appear before downstream models depend on those fields.
-
-   - Canonical vendor: Segment
-   - Vendor options: Segment
-   - Ranked market: [customer-data-platforms](../../open-rankings/customer-data-platforms)
-   - Sources: [Segment Connections overview](https://www.twilio.com/docs/segment/connections) · [PostHog product analytics privacy controls](https://posthog.com/docs/product-analytics/privacy)
-2. **Connect the CDP to the warehouse** — agent-runnable · ~30 min · human approval required
-
-   Configure the documented connector for the chosen source and warehouse using a limited ingestion identity. Check supported types, destination tables and historical-load behavior before enabling the data owner's authorized transfer scope. Start with a small load and compare source records with destination rows, keys and timestamps. For Segment warehouse connections, evaluate freshness against the documented batch-loading behavior. Establish how operators will detect a failed sync and restart it safely.
-
-   - Canonical vendor: Segment
-   - Sources: [Segment Connections overview](https://www.twilio.com/docs/segment/connections)
-3. **Set up the data warehouse** — manual form/portal · ~1 h · human approval required
-
-   Use representative source data and reporting queries to choose the warehouse. Compare expected refresh delay, query behavior, access controls, operating effort and billing model, with data-location constraints explicit. Provision the selected account and initial resources within the data owner's access and budget scope. Start with a limited dataset that can reveal ingestion and modeling problems before copying production history or building executive reports on it.
-
-   - Produces: Data warehouse & BI
-   - Canonical vendor: Snowflake
-   - Vendor options: Snowflake
-   - Ranked market: [data-warehouses](../../open-rankings/data-warehouses)
-   - Sources: [Snowflake warehouse overview](https://docs.snowflake.com/en/user-guide/warehouses-overview?lang=en) · [Estimate and control BigQuery costs](https://docs.cloud.google.com/bigquery/docs/best-practices-costs) · [MotherDuck organizations](https://motherduck.com/docs/key-tasks/managing-organizations/)
-
-   Options:
-     - **Default — Set up the data warehouse** — manual form/portal · ~1 h · human approval required
-
-       For Snowflake, choose the account, region, database/schema and warehouse compute settings for the trial workload. Review size, suspension/resumption and query timeouts within the data owner's authorized resource scope. Test loading and reporting with separate limited identities, then inspect query behavior and measured usage. Adjust compute from the observed workload; keep warehouse compute cost visible alongside storage and other costs when comparing the trial with the proposed budget.
-     - **BigQuery (GCP-standardized)**
-
-       When: GCP-standardized stack - the warehouse is serverless BigQuery
-
-       Use the intended Google Cloud project and dataset location, with ingestion and reader permissions limited to their jobs. Check which BigQuery pricing model the company selected before choosing cost controls. For on-demand queries, inspect estimated bytes processed and set suitable limits before running an expensive trial. Test a small load and a representative report under the data owner's authorized scope. Limit ingestion to authorized data locations.
-
-       - Canonical vendor: BigQuery
-       - Sources: [Estimate and control BigQuery costs](https://docs.cloud.google.com/bigquery/docs/best-practices-costs) · [Get started with Google Cloud](https://docs.cloud.google.com/docs/get-started.md.txt)
-     - **MotherDuck (small data)**
-
-       When: Seed-stage data volumes - a DuckDB-based warehouse over an enterprise platform
-
-       Trial MotherDuck with the data volume, queries and client connections the team expects to use. Check its current region, organization access and billing arrangement, then load a representative subset within the data owner's authorized scope. Test a report, a changed source record and an export that another tool can read. Compare measured cost and operating effort with the alternatives using the same workload.
-
-       - Canonical vendor: MotherDuck
-       - Sources: [MotherDuck organizations](https://motherduck.com/docs/key-tasks/managing-organizations/)
-4. **Draft the warehouse data models** — agent-runnable · ~4 h · human approval required
-
-   Define what one row represents before joining tables: an account, event, invoice or line item can produce very different totals. Map keys and fields to their sources, and specify how updates, duplicates, late arrivals, missing values and timezones are handled. Build a small sample and trace representative rows through each transformation. Label unsettled definitions for measures such as revenue or active customers and show how each proposed definition changes the result.
-
-   - Sources: [Segment Connections overview](https://www.twilio.com/docs/segment/connections)
-5. **Verify data pipelines** — agent-runnable · ~2 h · async wait
-
-   Reconcile a known source interval after its load should have completed. Compare counts and totals, then inspect duplicates, missing keys, updates and timezone boundaries that aggregate counts can conceal. Replay a controlled failed or delayed load and check whether recovery omits or duplicates records. Investigate discrepancies before dashboards rely on the tables, and expose the last successful refresh so report readers can recognize stale data.
-
-   - Sources: [Segment Connections overview](https://www.twilio.com/docs/segment/connections)
-6. **Set up Metabase dashboards** — agent-runnable · ~2 h · human approval required
-
-   Connect Metabase with the authorized reporting identity and expose the models needed by its audience. Check data permissions and dashboard/collection permissions separately, then view the result as an ordinary reader. Reconcile chart totals with direct warehouse queries and test filters on known records. Share or schedule notifications only for the intended recipients, checking which fields and links they can see in the delivered report.
-
-   - Canonical vendor: Metabase
-   - Sources: [Metabase permissions overview](https://www.metabase.com/docs/latest/permissions/start)
-7. **Create executive dashboard** — human · ~4 h · human approval required
-
-   Select metrics tied to the executive team's recurring decisions, with a definition, period, source and business owner for each. Show the comparison that makes a change interpretable, such as the previous period or plan. Reconcile financial numbers with the finance report before distributing the dashboard through its authorized audience. Label freshness and exclusions, and link unexpected movements to the supporting account, cohort or transaction detail.
-
-   - Sources: [Metabase permissions overview](https://www.metabase.com/docs/latest/permissions/start)
-
-## Artifacts
-
-Produces:
-
-- Data warehouse & BI
-
-Requires:
+Required artifacts:
 
 - Cloud infrastructure — from [Set up cloud infrastructure](set-up-cloud-infrastructure.md)
 - Product analytics workspace — from [Set up product analytics](set-up-product-analytics.md)
+
+| Information to gather | Required by the record |
+| --- | --- |
+| data sources to integrate | Yes |
+| key metrics and KPIs | Yes |
+
+## Steps at a glance
+
+Use the recorded prerequisites and conditions to follow the path. Row order is for navigation.
+
+| Step | Handled by | Time estimate | Incoming dependencies |
+| --- | --- | --- | --- |
+| [1. Configure CDP event sources](#step-1) | agent-runnable; approval required | ~1 h | Entry step |
+| [2. Connect the CDP to the warehouse](#step-2) | agent-runnable; approval required | ~30 min | [Step 1](#step-1) |
+| [3. Set up the data warehouse](#step-3) | manual form/portal; approval required | ~1 h | [Step 2](#step-2) |
+| [4. Draft the warehouse data models](#step-4) | agent-runnable; approval required | ~4 h | [Step 3](#step-3) |
+| [5. Verify data pipelines](#step-5) | agent-runnable; includes waiting | ~2 h | [Step 4](#step-4) |
+| [6. Set up Metabase dashboards](#step-6) | agent-runnable; approval required | ~2 h | [Step 5](#step-5) |
+| [7. Create executive dashboard](#step-7) | human; approval required | ~4 h | [Step 6](#step-6) |
+
+<a id="steps"></a>
+
+## Step details
+
+<a id="step-1"></a>
+
+### 1. Configure CDP event sources
+
+agent-runnable · ~1 h · human approval required
+
+
+Map each application source to its event names, identifiers and permitted properties. Keep development and production traffic distinguishable. Send synthetic records through the customer-data platform and inspect the actual payload, including timestamps, user/account identity and unexpected personal fields. Enable live collection only within the data owner's approved source and destination scope. Check how a renamed event or duplicate submission will appear before downstream models depend on those fields.
+
+- Canonical vendor: Segment
+- Vendor options: Segment
+- Ranked market: [customer-data-platforms](../../open-rankings/customer-data-platforms)
+- Sources: [Segment Connections overview](https://www.twilio.com/docs/segment/connections) · [PostHog product analytics privacy controls](https://posthog.com/docs/product-analytics/privacy)
+
+<a id="step-2"></a>
+
+### 2. Connect the CDP to the warehouse
+
+agent-runnable · ~30 min · human approval required
+
+
+Configure the documented connector for the chosen source and warehouse using a limited ingestion identity. Check supported types, destination tables and historical-load behavior before enabling the data owner's authorized transfer scope. Start with a small load and compare source records with destination rows, keys and timestamps. For Segment warehouse connections, evaluate freshness against the documented batch-loading behavior. Establish how operators will detect a failed sync and restart it safely.
+
+- Canonical vendor: Segment
+- Sources: [Segment Connections overview](https://www.twilio.com/docs/segment/connections)
+
+<a id="step-3"></a>
+
+### 3. Set up the data warehouse
+
+manual form/portal · ~1 h · human approval required
+
+| Option | Applies when |
+| --- | --- |
+| Default — Set up the data warehouse | Recorded default |
+| BigQuery (GCP-standardized) | GCP-standardized stack - the warehouse is serverless BigQuery |
+| MotherDuck (small data) | Seed-stage data volumes - a DuckDB-based warehouse over an enterprise platform |
+
+
+Use representative source data and reporting queries to choose the warehouse. Compare expected refresh delay, query behavior, access controls, operating effort and billing model, with data-location constraints explicit. Provision the selected account and initial resources within the data owner's access and budget scope. Start with a limited dataset that can reveal ingestion and modeling problems before copying production history or building executive reports on it.
+
+- Produces: Data warehouse & BI
+- Canonical vendor: Snowflake
+- Vendor options: Snowflake
+- Ranked market: [data-warehouses](../../open-rankings/data-warehouses)
+- Sources: [Snowflake warehouse overview](https://docs.snowflake.com/en/user-guide/warehouses-overview?lang=en) · [Estimate and control BigQuery costs](https://docs.cloud.google.com/bigquery/docs/best-practices-costs) · [MotherDuck organizations](https://motherduck.com/docs/key-tasks/managing-organizations/)
+
+Options:
+  - **Default — Set up the data warehouse** — manual form/portal · ~1 h · human approval required
+
+    For Snowflake, choose the account, region, database/schema and warehouse compute settings for the trial workload. Review size, suspension/resumption and query timeouts within the data owner's authorized resource scope. Test loading and reporting with separate limited identities, then inspect query behavior and measured usage. Adjust compute from the observed workload; keep warehouse compute cost visible alongside storage and other costs when comparing the trial with the proposed budget.
+  - **BigQuery (GCP-standardized)**
+
+    When: GCP-standardized stack - the warehouse is serverless BigQuery
+
+    Use the intended Google Cloud project and dataset location, with ingestion and reader permissions limited to their jobs. Check which BigQuery pricing model the company selected before choosing cost controls. For on-demand queries, inspect estimated bytes processed and set suitable limits before running an expensive trial. Test a small load and a representative report under the data owner's authorized scope. Limit ingestion to authorized data locations.
+
+    - Canonical vendor: BigQuery
+    - Sources: [Estimate and control BigQuery costs](https://docs.cloud.google.com/bigquery/docs/best-practices-costs) · [Get started with Google Cloud](https://docs.cloud.google.com/docs/get-started.md.txt)
+  - **MotherDuck (small data)**
+
+    When: Seed-stage data volumes - a DuckDB-based warehouse over an enterprise platform
+
+    Trial MotherDuck with the data volume, queries and client connections the team expects to use. Check its current region, organization access and billing arrangement, then load a representative subset within the data owner's authorized scope. Test a report, a changed source record and an export that another tool can read. Compare measured cost and operating effort with the alternatives using the same workload.
+
+    - Canonical vendor: MotherDuck
+    - Sources: [MotherDuck organizations](https://motherduck.com/docs/key-tasks/managing-organizations/)
+
+<a id="step-4"></a>
+
+### 4. Draft the warehouse data models
+
+agent-runnable · ~4 h · human approval required
+
+
+Define what one row represents before joining tables: an account, event, invoice or line item can produce very different totals. Map keys and fields to their sources, and specify how updates, duplicates, late arrivals, missing values and timezones are handled. Build a small sample and trace representative rows through each transformation. Label unsettled definitions for measures such as revenue or active customers and show how each proposed definition changes the result.
+
+- Sources: [Segment Connections overview](https://www.twilio.com/docs/segment/connections)
+
+<a id="step-5"></a>
+
+### 5. Verify data pipelines
+
+agent-runnable · ~2 h · async wait
+
+
+Reconcile a known source interval after its load should have completed. Compare counts and totals, then inspect duplicates, missing keys, updates and timezone boundaries that aggregate counts can conceal. Replay a controlled failed or delayed load and check whether recovery omits or duplicates records. Investigate discrepancies before dashboards rely on the tables, and expose the last successful refresh so report readers can recognize stale data.
+
+- Sources: [Segment Connections overview](https://www.twilio.com/docs/segment/connections)
+
+<a id="step-6"></a>
+
+### 6. Set up Metabase dashboards
+
+agent-runnable · ~2 h · human approval required
+
+
+Connect Metabase with the authorized reporting identity and expose the models needed by its audience. Check data permissions and dashboard/collection permissions separately, then view the result as an ordinary reader. Reconcile chart totals with direct warehouse queries and test filters on known records. Share or schedule notifications only for the intended recipients, checking which fields and links they can see in the delivered report.
+
+- Canonical vendor: Metabase
+- Sources: [Metabase permissions overview](https://www.metabase.com/docs/latest/permissions/start)
+
+<a id="step-7"></a>
+
+### 7. Create executive dashboard
+
+human · ~4 h · human approval required
+
+
+Select metrics tied to the executive team's recurring decisions, with a definition, period, source and business owner for each. Show the comparison that makes a change interpretable, such as the previous period or plan. Reconcile financial numbers with the finance report before distributing the dashboard through its authorized audience. Label freshness and exclusions, and link unexpected movements to the supporting account, cohort or transaction detail.
+
+- Sources: [Metabase permissions overview](https://www.metabase.com/docs/latest/permissions/start)
+
+
+<a id="artifacts"></a>
+
+## Outputs
+
+- Data warehouse & BI
 
 ---
 

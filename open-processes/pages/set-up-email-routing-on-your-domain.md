@@ -3,6 +3,10 @@
 
 # Set up email routing on your domain
 
+[Overview](#overview) · [Before you start](#before-you-start) · [Steps](#steps-at-a-glance)
+
+## Overview
+
 Configure email routing on the company domain so aliases forward to real inboxes.
 
 | Field | Value |
@@ -19,36 +23,75 @@ Configure email routing on the company domain so aliases forward to real inboxes
 
 DNS providers expose email-routing configuration over their APIs — an agent wires the aliases.
 
-## Steps
+## Before you start
 
-1. **List the aliases to route (support@, billing@, …)** — agent-runnable · ~1 min
-
-   List each desired address, its purpose, destination, responsible team, and reply identity. Decide whether it needs simple forwarding, distribution to several people, or a shared inbox where responders can see one another's replies. Compare the list with existing addresses to avoid collisions. Resolve unowned addresses and any forwarding outside the company with the mail administrator before configuration.
-2. **Configure the routing rules at the mail provider** — agent-runnable · ~2 min
-
-   Configure the aliases, groups, shared inboxes, or forwarding rules supported by the mail provider using the address map. Confirm destination mailboxes exist and give responders the access their roles require. Set the intended reply identity and failure handling, watching for routes that forward back to themselves. Keep exceptions visible where the provider cannot implement the requested behavior; these need a routing decision before the aliases are advertised.
-
-   - Canonical vendor: Fastmail
-   - Vendor options: Fastmail
-   - Ranked market: [email](../../open-rankings/email)
-   - Cross-arena market: [edge-platforms](../../open-rankings/edge-platforms)
-3. **Add the MX and SPF records to DNS** — agent-runnable · ~2 min
-
-   Compare the provider's current DNS instructions with the existing zone and list the exact records to add or change. Domain verification, MX routing, and SPF authentication serve different purposes; preserve other legitimate senders and services when preparing the change. Have the DNS administrator authorize the mail cutover once destination mailboxes are ready. Apply the agreed records, retain the previous values for recovery, and check DNS resolution and the provider's setup status.
-
-   - Canonical vendor: Cloudflare
-   - Sources: [Microsoft 365: Add a custom domain](https://learn.microsoft.com/en-us/microsoft-365/admin/setup/add-domain?view=o365-worldwide)
-4. **Send a test to each alias and confirm delivery** — agent-runnable · ~2 min
-
-   Send a message from an outside mailbox to each alias and check the destination, arrival time, and spam folder. Reply from the intended responder and confirm the sender identity the recipient sees. Try an invalid address to check failure handling, and inspect any duplicate delivery or forwarding loop. Note the result per alias so the mail administrator can fix the specific route that failed before the addresses are used by customers.
-
-## Artifacts
-
-Requires:
+Required artifacts:
 
 - Registered domain — from [Buy a domain](buy-a-domain.md)
 - DNS control — from [Buy a domain](buy-a-domain.md)
 - Company email workspace — from [Set up company email & docs](set-up-company-email-docs.md)
+
+## Steps at a glance
+
+Use the recorded prerequisites and conditions to follow the path. Row order is for navigation.
+
+| Step | Handled by | Time estimate | Incoming dependencies |
+| --- | --- | --- | --- |
+| [1. List the aliases to route (support@, billing@, …)](#step-1) | agent-runnable | ~1 min | Entry step |
+| [2. Configure the routing rules at the mail provider](#step-2) | agent-runnable | ~2 min | [Step 1](#step-1) |
+| [3. Add the MX and SPF records to DNS](#step-3) | agent-runnable | ~2 min | [Step 2](#step-2) |
+| [4. Send a test to each alias and confirm delivery](#step-4) | agent-runnable | ~2 min | [Step 3](#step-3) |
+
+<a id="steps"></a>
+
+## Step details
+
+<a id="step-1"></a>
+
+### 1. List the aliases to route (support@, billing@, …)
+
+agent-runnable · ~1 min
+
+
+List each desired address, its purpose, destination, responsible team, and reply identity. Decide whether it needs simple forwarding, distribution to several people, or a shared inbox where responders can see one another's replies. Compare the list with existing addresses to avoid collisions. Resolve unowned addresses and any forwarding outside the company with the mail administrator before configuration.
+
+<a id="step-2"></a>
+
+### 2. Configure the routing rules at the mail provider
+
+agent-runnable · ~2 min
+
+
+Configure the aliases, groups, shared inboxes, or forwarding rules supported by the mail provider using the address map. Confirm destination mailboxes exist and give responders the access their roles require. Set the intended reply identity and failure handling, watching for routes that forward back to themselves. Keep exceptions visible where the provider cannot implement the requested behavior; these need a routing decision before the aliases are advertised.
+
+- Canonical vendor: Fastmail
+- Vendor options: Fastmail
+- Ranked market: [email](../../open-rankings/email)
+- Cross-arena market: [edge-platforms](../../open-rankings/edge-platforms)
+
+<a id="step-3"></a>
+
+### 3. Add the MX and SPF records to DNS
+
+agent-runnable · ~2 min
+
+
+Compare the provider's current DNS instructions with the existing zone and list the exact records to add or change. Domain verification, MX routing, and SPF authentication serve different purposes; preserve other legitimate senders and services when preparing the change. Have the DNS administrator authorize the mail cutover once destination mailboxes are ready. Apply the agreed records, retain the previous values for recovery, and check DNS resolution and the provider's setup status.
+
+- Canonical vendor: Cloudflare
+- Sources: [Microsoft 365: Add a custom domain](https://learn.microsoft.com/en-us/microsoft-365/admin/setup/add-domain?view=o365-worldwide)
+
+<a id="step-4"></a>
+
+### 4. Send a test to each alias and confirm delivery
+
+agent-runnable · ~2 min
+
+
+Send a message from an outside mailbox to each alias and check the destination, arrival time, and spam folder. Reply from the intended responder and confirm the sender identity the recipient sees. Try an invalid address to check failure handling, and inspect any duplicate delivery or forwarding loop. Note the result per alias so the mail administrator can fix the specific route that failed before the addresses are used by customers.
+
+
+<a id="artifacts"></a>
 
 ## Related records
 

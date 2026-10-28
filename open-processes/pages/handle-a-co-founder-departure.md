@@ -3,6 +3,10 @@
 
 # Handle a co-founder departure
 
+[Overview](#overview) · [Before you start](#before-you-start) · [Geography](#geography) · [Steps](#steps-at-a-glance)
+
+## Overview
+
 **Trigger:** A co-founder is leaving (resignation or a split) and the vesting, IP, and access mechanics start now.
 
 Three things protect the company: the equity math, a properly authorized decision, and a deadline. Calculate vested versus unvested equity at the departure date. Have the body your governing documents name accept the resignation and authorize what happens to the unvested equity under the founder agreement. Act inside the window that agreement sets; windows lapse, so read yours. Confirm the signed IP assignment is on file. Revoke access the same day. Update the ownership records. Tell the team once, clearly. Separation agreements and releases are work for employment counsel. Once executed, the equity settlement and its authorization cannot be undone. Educational guidance, not legal advice.
@@ -22,31 +26,127 @@ Three things protect the company: the equity math, a properly authorized decisio
 
 The authorization and the equity settlement are signature acts with closing windows, and the departure terms are negotiated between people. An agent can run the vesting math, the access revocation, and the cap-table update.
 
-## Steps
+## Before you start
 
-1. **Agree the departure date and terms in writing** — human · ~1 h · hard to undo
+| Information to gather | Required by the record |
+| --- | --- |
+| the stock purchase agreement (vesting schedule, repurchase window) | Yes |
+| departure date and agreed terms | Yes |
 
-   - Next: steps 2 and 6 — all follow this step
-2. **Run the vesting math: shares vested vs unvested at the departure date** — agent-runnable · ~30 min
+## Geography
 
-   - Vendor options: Carta
-   - Ranked market: [equity-management](../../open-rankings/equity-management)
-3. **Authorize the departure formally: accept the resignation, end officer and director roles, and approve the equity settlement the founder agreement requires** — human (legally required signature) · ~45 min · irreversible
-4. **Settle the departing equity inside the founder agreement's window (windows lapse; read yours)** — human · ~1 h · irreversible
-5. **Confirm the IP position: the signed IP assignment is on file and the departing founder's work is assigned** — human · ~45 min
-6. **Revoke access the same day: workspace, repos, bank, infra — the offboarding checklist** — agent-runnable · ~30 min
+Country rows describe the guidance recorded here. Local notes and step alternatives do not establish a complete country-specific workflow.
 
-   *Follows step 1.*
+| Country | Recorded guidance | Steps with local alternatives or resolutions |
+| --- | --- | --- |
+| [United States](#geo-us) | step resolution | [3](#step-3), [4](#step-4), [5](#step-5) |
+| [India](#geo-in) | Local analog note; step resolution | [3](#step-3), [4](#step-4) |
+| [United Kingdom](#geo-uk) | Local analog note; step resolution | [3](#step-3), [4](#step-4) |
+| [Germany](#geo-de) | Local analog note; step resolution | [4](#step-4) |
+| [France](#geo-fr) | Local analog note; step resolution | [3](#step-3) |
+| [Portugal](#geo-pt) | Local analog note; step resolution | [4](#step-4) |
+| [Canada](#geo-ca) | Local analog note; step resolution | [4](#step-4) |
+| [New Zealand](#geo-nz) | Local analog note; step resolution | [3](#step-3), [4](#step-4) |
+| [Singapore](#geo-sg) | Local analog note; step resolution | [3](#step-3), [4](#step-4) |
+| [Australia](#geo-au) | Local analog note; step resolution | [3](#step-3), [4](#step-4) |
+| [South Korea](#geo-kr) | Local analog note | — |
+| [Hong Kong](#geo-hk) | Local analog note | — |
+| [Estonia](#geo-ee) | Local analog note | — |
 
-   - Runs the process [Offboard employee](offboard-employee.md)
-7. **Update the cap table and the stakeholder records** — agent-runnable · ~20 min
+## Steps at a glance
 
-   *Follows steps 5 and 6 — both are required first.*
+Use the recorded prerequisites and conditions to follow the path. Row order is for navigation.
 
-   - Canonical vendor: Carta
-8. **Tell the team (and investors where material) — one honest message** — human · ~30 min · hard to undo
+| Step | Handled by | Time estimate | Incoming dependencies |
+| --- | --- | --- | --- |
+| [1. Agree the departure date and terms in writing](#step-1) | human | ~1 h | Entry step |
+| [2. Run the vesting math: shares vested vs unvested at the departure date](#step-2) | agent-runnable | ~30 min | [Step 1](#step-1) |
+| [3. Authorize the departure formally: accept the resignation, end officer and director roles, and approve the equity settlement the founder agreement requires](#step-3) | human; signature required | ~45 min | [Step 2](#step-2) |
+| [4. Settle the departing equity inside the founder agreement's window (windows lapse; read yours)](#step-4) | human | ~1 h | [Step 3](#step-3) |
+| [5. Confirm the IP position: the signed IP assignment is on file and the departing founder's work is assigned](#step-5) | human | ~45 min | [Step 4](#step-4) |
+| [6. Revoke access the same day: workspace, repos, bank, infra — the offboarding checklist](#step-6) | agent-runnable | ~30 min | [Step 1](#step-1) |
+| [7. Update the cap table and the stakeholder records](#step-7) | agent-runnable | ~20 min | All: [Step 5](#step-5); [Step 6](#step-6) |
+| [8. Tell the team (and investors where material) — one honest message](#step-8) | human | ~30 min | [Step 7](#step-7) |
 
-## By country
+<a id="steps"></a>
+
+## Step details
+
+<a id="step-1"></a>
+
+### 1. Agree the departure date and terms in writing
+
+human · ~1 h · hard to undo
+
+
+- Next: steps 2 and 6 — all follow this step
+
+<a id="step-2"></a>
+
+### 2. Run the vesting math: shares vested vs unvested at the departure date
+
+agent-runnable · ~30 min
+
+
+- Vendor options: Carta
+- Ranked market: [equity-management](../../open-rankings/equity-management)
+
+<a id="step-3"></a>
+
+### 3. Authorize the departure formally: accept the resignation, end officer and director roles, and approve the equity settlement the founder agreement requires
+
+human (legally required signature) · ~45 min · irreversible
+
+
+<a id="step-4"></a>
+
+### 4. Settle the departing equity inside the founder agreement's window (windows lapse; read yours)
+
+human · ~1 h · irreversible
+
+
+<a id="step-5"></a>
+
+### 5. Confirm the IP position: the signed IP assignment is on file and the departing founder's work is assigned
+
+human · ~45 min
+
+
+<a id="step-6"></a>
+
+### 6. Revoke access the same day: workspace, repos, bank, infra — the offboarding checklist
+
+agent-runnable · ~30 min
+
+
+*Follows step 1.*
+
+- Runs the process [Offboard employee](offboard-employee.md)
+
+<a id="step-7"></a>
+
+### 7. Update the cap table and the stakeholder records
+
+agent-runnable · ~20 min
+
+
+*Follows steps 5 and 6 — both are required first.*
+
+- Canonical vendor: Carta
+
+<a id="step-8"></a>
+
+### 8. Tell the team (and investors where material) — one honest message
+
+human · ~30 min · hard to undo
+
+
+
+<a id="by-country"></a>
+
+## Country details
+
+<a id="geo-us"></a>
 
 ### United States
 
@@ -54,11 +154,15 @@ The authorization and the equity settlement are signature acts with closing wind
 - Step 4: Exercise the unvested-share repurchase inside the stock-agreement window, often 90 days from termination
 - Step 5: The signed PIIA (proprietary information and inventions assignment) is the instrument to confirm
 
+<a id="geo-in"></a>
+
 ### India
 
 - Director changes file to the RoC on DIR-12 within 30 days (the director's own DIR-11 alongside), share transfers move on Form SH-4 with stamp duty, and founder vesting is a shareholders'-agreement matter enforced through the articles — same mechanics, MCA paperwork. ([India NSWS (MCA filings)](https://www.nsws.gov.in/))
 - Step 3: File the director change with the RoC: DIR-12 within 30 days, with the director's own DIR-11 alongside ([India NSWS (MCA filings)](https://www.nsws.gov.in/))
 - Step 4: Move the shares on Form SH-4 with stamp duty; founder vesting is a shareholders'-agreement matter enforced through the articles
+
+<a id="geo-uk"></a>
 
 ### United Kingdom
 
@@ -66,25 +170,35 @@ The authorization and the equity settlement are signature acts with closing wind
 - Step 3: File the director's departure with Companies House on form TM01 and update PSC particulars where ownership crosses thresholds ([Companies House — file company changes](https://www.gov.uk/file-changes-to-a-company-with-companies-house))
 - Step 4: Apply the good-leaver/bad-leaver provisions in the articles and shareholders' agreement; they usually decide what happens to the shares and at what price
 
+<a id="geo-de"></a>
+
 ### Germany
 
 - GmbH shares move only by notarized deed (§15 GmbHG — the Abtretung requires notarielle Beurkundung) and the updated Gesellschafterliste is filed to the Handelsregister; founder vesting lives in the Gesellschaftervereinbarung, not in statute, so read yours first. ([GmbHG §15 — notarized share transfer](https://www.gesetze-im-internet.de/gmbhg/__15.html))
 - Step 4: GmbH shares move only by notarized deed (§15 GmbHG) and the updated Gesellschafterliste is filed to the Handelsregister Founder vesting lives in the Gesellschaftervereinbarung, not in statute, so read yours first. ([GmbHG §15 — notarized share transfer](https://www.gesetze-im-internet.de/gmbhg/__15.html))
+
+<a id="geo-fr"></a>
 
 ### France
 
 - In a SAS the statuts and the pacte d'associés govern the exit (leaver and forced-transfer clauses); the share movement is recorded in the company's registre de mouvements de titres and officer changes file through the INPI guichet unique. ([INPI guichet unique (formalités)](https://procedures.inpi.fr/))
 - Step 3: File the officer change through the INPI guichet unique ([INPI guichet unique (formalités)](https://procedures.inpi.fr/))
 
+<a id="geo-pt"></a>
+
 ### Portugal
 
 - The exit runs through the acordo parassocial's leaver clauses: quota transfers need written form and registration (no notary since 2006), the registry record is updated online, and the vesting/clawback math is whatever the agreement wrote down. ([Empresa Online — registry filings](https://www.gov.pt/guias/empresa-online-servicos-do-registo-comercial))
 - Step 4: Quota transfers need written form and registration (no notary since 2006), the registry record is updated online, and the acordo parassocial's leaver clauses set the vesting and clawback math ([Empresa Online — registry filings](https://www.gov.pt/guias/empresa-online-servicos-do-registo-comercial))
 
+<a id="geo-ca"></a>
+
 ### Canada
 
 - The USA's leaver provisions govern: vested vs unvested shares at the departure date, a directors' resolution for any repurchase, updated share registers — and since 2024 CBCA corporations also file individuals-with-significant-control changes. ([Corporations Canada](https://ised-isde.canada.ca/site/corporations-canada/en))
 - Step 4: The shareholders' agreement's leaver provisions govern the vested/unvested split, with a directors' resolution for any repurchase and updated share registers Since 2024 CBCA corporations also file individuals-with-significant-control changes. ([Corporations Canada](https://ised-isde.canada.ca/site/corporations-canada/en))
+
+<a id="geo-nz"></a>
 
 ### New Zealand
 
@@ -92,11 +206,15 @@ The authorization and the equity settlement are signature acts with closing wind
 - Step 3: Register the director's departure on the Companies Office register: update the company's director details online so the register stays current ([Updating a director's details — Companies Register](https://companies-register.companiesoffice.govt.nz/help-centre/company-directors/updating-a-directors-details/))
 - Step 4: Move the departing founder's shares under the shareholders'-agreement leaver terms and update the share allocations on the Companies Office register — the online register update is the filing ([Managing share allocations — Companies Register](https://companies-register.companiesoffice.govt.nz/help-centre/shares-and-shareholders/managing-share-allocations/))
 
+<a id="geo-sg"></a>
+
 ### Singapore
 
 - The mechanics run through Bizfile (file the director's cessation with ACRA) and through the constitution and shareholders' agreement — leaver clauses decide the shares, transfers attract stamp duty through IRAS e-Stamping, and a private company's register of members only moves when ACRA updates it. ([Bizfile (ACRA filings)](https://www.bizfile.gov.sg/))
 - Step 3: File the director's cessation with ACRA through Bizfile and update the register of directors ([Bizfile — update position holders](https://www.bizfile.gov.sg/))
 - Step 4: Move the shares per the leaver clauses: an instrument of transfer with stamp duty paid through IRAS e-Stamping, effective when ACRA updates the electronic register of members (law rule sg.share-transfer-constitutive) ([IRAS — stamp duty for shares](https://www.iras.gov.sg/taxes/stamp-duty/for-shares))
+
+<a id="geo-au"></a>
 
 ### Australia
 
@@ -104,13 +222,19 @@ The authorization and the equity settlement are signature acts with closing wind
 - Step 3: Notify ASIC of the director ceasing within 28 days (Corporations Act 2001 s 205B(5)) through the company portal ([ASIC — changes to company details](https://asic.gov.au/for-business/changes-to-your-company/))
 - Step 4: The shareholders' agreement's leaver provisions govern the vested/unvested split; record any transfer or cancellation on the members register and notify ASIC of the share changes ([ASIC — shares](https://asic.gov.au/for-business-and-companies/companies/company-share-and-shareholder-rules-and-changes))
 
+<a id="geo-kr"></a>
+
 ### South Korea
 
 - The departing founder’s shares move under the shareholders’ agreement; where the articles make transfers subject to board approval (Commercial Act Article 335), the buy-back route is pre-wired, and director changes register on the two-week clock. ([Commercial Act Article 335 (law.go.kr)](https://www.law.go.kr/%EB%B2%95%EB%A0%B9/%EC%83%81%EB%B2%95/%EC%A0%9C335%EC%A1%B0))
 
+<a id="geo-hk"></a>
+
 ### Hong Kong
 
 - The mechanics are contractual plus registry filings: the shareholders' agreement's leaver clauses decide the shares, the transfer needs an instrument of transfer and contract notes stamped with the Inland Revenue Department, and the director's cessation is filed with the Companies Registry. ([IRD — stamp duty](https://www.ird.gov.hk/eng/tax/sdu.htm))
+
+<a id="geo-ee"></a>
 
 ### Estonia
 

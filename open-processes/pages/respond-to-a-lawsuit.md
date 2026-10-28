@@ -3,6 +3,10 @@
 
 # Respond to a lawsuit
 
+[Overview](#overview) · [Before you start](#before-you-start) · [Geography](#geography) · [Steps](#steps-at-a-glance)
+
+## Overview
+
 **Trigger:** You've been served: a process server hands you a summons and complaint naming the company.
 
 Being served starts a real deadline, and the served document or the court's own rules state yours. In US federal court the answer is due 21 days after service (FRCP 12(a)(1)(A)(i), law rule [us-fed.frcp-answer-deadline](../../open-law/US-FED/us-fed-frcp-answer-deadline.json)); state and non-US courts set their own clocks. In the first week: record how you were served, calendar the deadline, issue a litigation hold (destroying evidence after that is sanctionable), notify any insurer that might owe you a defense, and engage litigation counsel. The response itself, answer, motion, or negotiate, is your lawyer's craft, filed under the court's signature rules. Educational guidance, not legal advice. The deadline math has exceptions (waived service, a government party); verify with counsel against the rule.
@@ -22,34 +26,140 @@ Being served starts a real deadline, and the served document or the court's own 
 
 Litigation strategy, the insurer conversations, and the signed, filed pleadings are counsel work under court rules. An agent can stand up the litigation hold across your systems; it cannot answer a complaint.
 
-## Steps
+## Before you start
 
-1. **Record exactly when and how you were served — the answer clock starts at service** — human · ~15 min
-2. **Calendar the response deadline the served document and the court's rules set** — human · ~15 min
+| Information to gather | Required by the record |
+| --- | --- |
+| the summons and complaint, and the date/manner of service | Yes |
+| your insurance policies (D&O, E&O, CGL) | Optional |
 
-   - Do it yourself: [Federal Rules of Civil Procedure](https://www.uscourts.gov/rules-policies/current-rules-practice-procedure/federal-rules-civil-procedure)
-3. **Issue the litigation hold: preserve documents, chat, email — spoliation is sanctionable** — agent-runnable · ~45 min
-4. **Notify your insurers — D&O, E&O, or CGL may owe you a defense** — human · ~30 min
-5. **Choose litigation counsel** — human · ~1 h
+## Geography
 
-   - Vendor options: Cooley, Orrick, Fenwick, Gunderson Dettmer
-   - Ranked market: [startup-law-firms](../../open-rankings/startup-law-firms)
-6. **Sign the counsel engagement letter** — human (legally required signature) · ~15 min · hard to undo
-7. **Decide the response with counsel: answer, motion, or negotiate** — human · ~1.5 h
-8. **Counsel files the response before the deadline, signed under the court's rules** — human · ~1 h · hard to undo
-9. **Wait for the next docket event** — human · ~14 d · async wait
+Country rows describe the guidance recorded here. Local notes and step alternatives do not establish a complete country-specific workflow.
 
-## By country
+| Country | Recorded guidance | Steps with local alternatives or resolutions |
+| --- | --- | --- |
+| [United States](#geo-us) | step resolution | [2](#step-2), [8](#step-8) |
+| [India](#geo-in) | Local analog note; step resolution | [2](#step-2) |
+| [United Kingdom](#geo-uk) | Local analog note; step resolution | [2](#step-2), [8](#step-8) |
+| [Germany](#geo-de) | Local analog note; step resolution | [2](#step-2), [8](#step-8) |
+| [France](#geo-fr) | Local analog note; step resolution | [2](#step-2), [8](#step-8) |
+| [Portugal](#geo-pt) | Local analog note; step resolution | [2](#step-2), [8](#step-8) |
+| [Canada](#geo-ca) | Local analog note; step resolution | [2](#step-2) |
+| [Singapore](#geo-sg) | Local analog note; step resolution | [2](#step-2) |
+| [Australia](#geo-au) | Local analog note; step resolution | [2](#step-2) |
+| [South Korea](#geo-kr) | Local analog note; step resolution | [2](#step-2) |
+| [Hong Kong](#geo-hk) | Local analog note; step resolution | [2](#step-2) |
+| [Estonia](#geo-ee) | Local analog note | — |
+
+## Steps at a glance
+
+Use the recorded prerequisites and conditions to follow the path. Row order is for navigation.
+
+| Step | Handled by | Time estimate | Incoming dependencies |
+| --- | --- | --- | --- |
+| [1. Record exactly when and how you were served — the answer clock starts at service](#step-1) | human | ~15 min | Entry step |
+| [2. Calendar the response deadline the served document and the court's rules set](#step-2) | human | ~15 min | [Step 1](#step-1) |
+| [3. Issue the litigation hold: preserve documents, chat, email — spoliation is sanctionable](#step-3) | agent-runnable | ~45 min | [Step 2](#step-2) |
+| [4. Notify your insurers — D&O, E&O, or CGL may owe you a defense](#step-4) | human | ~30 min | [Step 3](#step-3) |
+| [5. Choose litigation counsel](#step-5) | human | ~1 h | [Step 4](#step-4) |
+| [6. Sign the counsel engagement letter](#step-6) | human; signature required | ~15 min | [Step 5](#step-5) |
+| [7. Decide the response with counsel: answer, motion, or negotiate](#step-7) | human | ~1.5 h | [Step 6](#step-6) |
+| [8. Counsel files the response before the deadline, signed under the court's rules](#step-8) | human | ~1 h | [Step 7](#step-7) |
+| [9. Wait for the next docket event](#step-9) | human; includes waiting | ~14 d | [Step 8](#step-8) |
+
+<a id="steps"></a>
+
+## Step details
+
+<a id="step-1"></a>
+
+### 1. Record exactly when and how you were served — the answer clock starts at service
+
+human · ~15 min
+
+
+<a id="step-2"></a>
+
+### 2. Calendar the response deadline the served document and the court's rules set
+
+human · ~15 min
+
+
+- Do it yourself: [Federal Rules of Civil Procedure](https://www.uscourts.gov/rules-policies/current-rules-practice-procedure/federal-rules-civil-procedure)
+
+<a id="step-3"></a>
+
+### 3. Issue the litigation hold: preserve documents, chat, email — spoliation is sanctionable
+
+agent-runnable · ~45 min
+
+
+<a id="step-4"></a>
+
+### 4. Notify your insurers — D&O, E&O, or CGL may owe you a defense
+
+human · ~30 min
+
+
+<a id="step-5"></a>
+
+### 5. Choose litigation counsel
+
+human · ~1 h
+
+
+- Vendor options: Cooley, Orrick, Fenwick, Gunderson Dettmer
+- Ranked market: [startup-law-firms](../../open-rankings/startup-law-firms)
+
+<a id="step-6"></a>
+
+### 6. Sign the counsel engagement letter
+
+human (legally required signature) · ~15 min · hard to undo
+
+
+<a id="step-7"></a>
+
+### 7. Decide the response with counsel: answer, motion, or negotiate
+
+human · ~1.5 h
+
+
+<a id="step-8"></a>
+
+### 8. Counsel files the response before the deadline, signed under the court's rules
+
+human · ~1 h · hard to undo
+
+
+<a id="step-9"></a>
+
+### 9. Wait for the next docket event
+
+human · ~14 d · async wait
+
+
+
+<a id="by-country"></a>
+
+## Country details
+
+<a id="geo-us"></a>
 
 ### United States
 
 - Step 2: 21 days after service in federal court (FRCP 12(a)(1)(A)(i), law rule us-fed.frcp-answer-deadline); state courts set their own, and the summons states yours ([Federal Rules of Civil Procedure](https://www.uscourts.gov/rules-policies/current-rules-practice-procedure/federal-rules-civil-procedure))
 - Step 8: Every pleading is signed under FRCP 11; counsel files the answer or motion on the court's docket ([Federal Rules of Civil Procedure](https://www.uscourts.gov/rules-policies/current-rules-practice-procedure/federal-rules-civil-procedure))
 
+<a id="geo-in"></a>
+
 ### India
 
 - A summons under the CPC sets the date to appear and file the written statement — 30 days, extendable to 90 (and a hard 120-day cap in commercial suits under the Commercial Courts Act); the e-Courts services track the case number end to end. ([eCourts case services](https://ecourts.gov.in/))
 - Step 2: The written statement is due 30 days from the CPC summons, extendable to 90, with a hard 120-day cap in commercial suits ([eCourts case services](https://ecourts.gov.in/))
+
+<a id="geo-uk"></a>
 
 ### United Kingdom
 
@@ -57,11 +167,15 @@ Litigation strategy, the insurer conversations, and the signed, filed pleadings 
 - Step 2: The CPR clock runs from the particulars of claim: 14 days for the defence, 28 with an acknowledgment of service; money claims respond online ([gov.uk — respond to a court claim](https://www.gov.uk/respond-to-court-claim-for-money))
 - Step 8: File the defence on the CPR clock; money claims respond online, and silence ends in default judgment ([gov.uk — respond to a court claim](https://www.gov.uk/respond-to-court-claim-for-money))
 
+<a id="geo-de"></a>
+
 ### Germany
 
 - A served Klage comes with the court's own stated deadlines — typically two weeks to declare the intent to defend (Verteidigungsanzeige) and a further period for the Klageerwiderung; before the Landgericht a lawyer is mandatory (Anwaltszwang), and a missed response risks a Versäumnisurteil. ([Justizportal (German courts)](https://www.justiz.de/))
 - Step 2: The served Klage states the court's own clocks: typically two weeks for the Verteidigungsanzeige, then a further period for the Klageerwiderung ([Justizportal (German courts)](https://www.justiz.de/))
 - Step 8: Before the Landgericht a lawyer is mandatory (Anwaltszwang); a missed response risks a Versäumnisurteil ([Justizportal (German courts)](https://www.justiz.de/))
+
+<a id="geo-fr"></a>
 
 ### France
 
@@ -69,36 +183,50 @@ Litigation strategy, the insurer conversations, and the signed, filed pleadings 
 - Step 2: The assignation itself states the deadline, including the window to appoint an avocat before the tribunal judiciaire ([justice.fr (French courts)](https://www.justice.fr/))
 - Step 8: The avocat files the defence after the constitution d'avocat; default judgment follows silence ([justice.fr (French courts)](https://www.justice.fr/))
 
+<a id="geo-pt"></a>
+
 ### Portugal
 
 - A served citação starts the clock: the contestação (defence) is typically due within 30 days in ordinary civil proceedings, filed by counsel through the courts' electronic system — the justice portal is the entry point. ([Justiça.gov.pt — tribunais](https://justica.gov.pt/))
 - Step 2: The contestação is typically due within 30 days of the citação in ordinary civil proceedings ([Justiça.gov.pt — tribunais](https://justica.gov.pt/))
 - Step 8: Counsel files the contestação through the courts' electronic system ([Justiça.gov.pt — tribunais](https://justica.gov.pt/))
 
+<a id="geo-ca"></a>
+
 ### Canada
 
 - Civil procedure is provincial: the summons states your deadline (Ontario gives 20 days from service in-province for a statement of defence) — retain provincial counsel immediately and preserve documents from day one. ([Canada's court system (Justice)](https://www.justice.gc.ca/eng/csj-sjc/ccs-ajc/index.html))
 - Step 2: Civil procedure is provincial and the summons states the clock: Ontario gives 20 days from in-province service for a statement of defence ([Canada's court system (Justice)](https://www.justice.gc.ca/eng/csj-sjc/ccs-ajc/index.html))
+
+<a id="geo-sg"></a>
 
 ### Singapore
 
 - Civil claims run under the Rules of Court 2021 through the courts' eLitigation system — once served, the windows to file the notice of intention to contest and then the defence are short and strict, so engage counsel immediately. ([Singapore Courts](https://www.judiciary.gov.sg/))
 - Step 2: Map the Rules of Court 2021 deadlines from the date of service — the notice of intention to contest and then the defence run on short, strict windows through the courts' eLitigation system ([Singapore Courts](https://www.judiciary.gov.sg/))
 
+<a id="geo-au"></a>
+
 ### Australia
 
 - Served with an originating process, get an address for service on the record and run the issuing court's clock — each court's rules set the appearance and defence deadlines (the Federal Court Rules 2011 for federal matters), and silence ends in default judgment. ([Federal Court Rules 2011](https://www.legislation.gov.au/F2011L01551/latest/text))
 - Step 2: The originating process and the issuing court's rules set the clock — the Federal Court Rules 2011 govern appearance and defence deadlines federally, state courts run their own — and silence ends in default judgment ([Federal Court Rules 2011](https://www.legislation.gov.au/F2011L01551/latest/text))
+
+<a id="geo-kr"></a>
 
 ### South Korea
 
 - A served complaint starts a 30-day answer deadline (Civil Procedure Act Article 256(1)); filings and service run through the courts’ electronic litigation system (전자소송). ([Electronic litigation (ECFS)](https://ecfs.scourt.go.kr/))
 - Step 2: 30 days from service of the complaint to file the answer Civil Procedure Act Article 256(1) sets the answer deadline at 30 days from service of the complaint copy (the court states this at service), and filings run through the electronic litigation system. ([Electronic litigation (ECFS)](https://ecfs.scourt.go.kr/))
 
+<a id="geo-hk"></a>
+
 ### Hong Kong
 
 - A served High Court writ starts a 14-day clock to file the acknowledgment of service, counting the day of service (Rules of the High Court Order 12 rule 5), with the defence timetable running from there — engage counsel immediately. ([Hong Kong Judiciary](https://www.judiciary.hk/en/home/index.html))
 - Step 2: A served writ starts the 14-day acknowledgment-of-service clock, counting the day of service (Rules of the High Court Order 12 rule 5) File the acknowledgment of service within the 14 days stating an intention to defend; the defence timetable runs from there. ([Hong Kong Judiciary](https://www.judiciary.hk/en/home/index.html))
+
+<a id="geo-ee"></a>
 
 ### Estonia
 

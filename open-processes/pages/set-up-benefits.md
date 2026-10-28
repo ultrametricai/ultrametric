@@ -3,6 +3,10 @@
 
 # Set up benefits
 
+[Overview](#overview) · [Before you start](#before-you-start) · [Geography](#geography) · [Steps](#steps-at-a-glance) · [Outputs](#outputs)
+
+## Overview
+
 Research and enroll company in health insurance, dental, vision, 401k, and other benefits.
 
 | Field | Value |
@@ -19,117 +23,225 @@ Research and enroll company in health insurance, dental, vision, 401k, and other
 
 Gusto handles benefits enrollment. Plan selection and broker negotiation require human decisions.
 
-## Steps
+## Before you start
 
-1. **Research benefits options** — agent-runnable · ~1 h
+Required artifacts:
 
-   Define the workforce, work locations, benefits goals and employer budget. Compare possible structures with the benefits adviser, including employee costs, administration and existing coverage or contract commitments. Gather only the workforce information needed for that assessment through private channels. Bring the decision makers the meaningful tradeoffs and unknowns before requesting specific plans or promising coverage.
+- Payroll account — from [Set up payroll](set-up-payroll.md)
 
-   - Cross-arena options: ChatGPT, Claude, Gemini (ai-assistants)
-   - Sources: [DOL: Health plans](https://www.dol.gov/index.php/agencies/ebsa/employers-and-advisers/plan-administration-and-compliance/health-plans)
-2. **Get quotes from providers** — human · ~5 d · async wait
+| Information to gather | Required by the record |
+| --- | --- |
+| benefits budget per employee | Yes |
+| benefits priorities | Yes |
 
-   Request comparable proposals using the same workforce assumptions, desired benefits and contribution budget. Evaluate standalone quotes or a PEO arrangement with the employment and administrative responsibilities clearly separated. Limit recipient disclosures to the information needed for the quote. Compare coverage conditions, effective dates, employee costs and exclusions before recommending a route.
+## Geography
 
-   - Sources: [DOL: Health plans](https://www.dol.gov/index.php/agencies/ebsa/employers-and-advisers/plan-administration-and-compliance/health-plans)
+Country rows describe the guidance recorded here. Local notes and step alternatives do not establish a complete country-specific workflow.
 
-   Options:
-     - **Default — Get quotes from providers** — human · ~5 d · async wait
+| Country | Recorded guidance | Steps with local alternatives or resolutions |
+| --- | --- | --- |
+| [India](#geo-in) | Local analog note | — |
+| [United Kingdom](#geo-uk) | Local analog note | — |
+| [Germany](#geo-de) | Handled within another local process | — |
+| [France](#geo-fr) | Local analog note | — |
+| [Portugal](#geo-pt) | Handled within another local process | — |
+| [Canada](#geo-ca) | Local analog note | — |
+| [New Zealand](#geo-nz) | Local analog note | — |
+| [Singapore](#geo-sg) | Local analog note | — |
+| [Australia](#geo-au) | Local analog note | — |
+| [South Korea](#geo-kr) | Local analog note | — |
+| [Hong Kong](#geo-hk) | Local analog note | — |
+| [Estonia](#geo-ee) | Handled within another local process | — |
 
-       Request standalone benefit quotes using consistent workforce assumptions and desired coverage. Compare the actual terms, employer and employee costs, implementation conditions and renewal basis with the adviser. Resolve differences that prevent a fair comparison before choosing a plan. Base coverage communications on accepted plan terms and confirmed enrollment.
-     - **PEO-bundled benefits** — manual form/portal
+## Steps at a glance
 
-       When: You want benefits bundled with payroll via co-employment - trading control for speed
+Use the recorded prerequisites and conditions to follow the path. Row order is for navigation.
 
-       Compare the PEO’s employment arrangement, benefit plans, service duties, fees and exit terms with standalone alternatives. Review actual coverage and total cost with the adviser, including responsibilities the company retains. Settle the commercial and legal arrangement before committing to the PEO. Carry the reviewed eligibility rules and enrollment conditions into implementation.
+| Step | Handled by | Time estimate | Incoming dependencies |
+| --- | --- | --- | --- |
+| [1. Research benefits options](#step-1) | agent-runnable | ~1 h | Entry step |
+| [2. Get quotes from providers](#step-2) | human; includes waiting | ~5 d | [Step 1](#step-1) |
+| [3. Select plans and negotiate](#step-3) | human; approval required | ~2 h | [Step 2](#step-2) |
+| [4. Configure benefits in Gusto](#step-4) | agent-runnable; approval required | ~30 min | [Step 3](#step-3) |
+| [5. Announce to team and open enrollment](#step-5) | agent-runnable; approval required | ~10 min | [Step 4](#step-4) |
+| [6. Employees enroll](#step-6) | human; includes waiting | ~5 d | [Step 5](#step-5) |
 
-       - Canonical vendor: Justworks
-       - Sources: [DOL: Health plans](https://www.dol.gov/index.php/agencies/ebsa/employers-and-advisers/plan-administration-and-compliance/health-plans)
-3. **Select plans and negotiate** — human · ~2 h · human approval required · hard to undo
+<a id="steps"></a>
 
-   Compare the quoted plan documents with employee needs, provider access, deductibles, exclusions and contribution costs. Clarify price assumptions, renewal terms and administrative work with the adviser. Take material tradeoffs to the benefits and budget decision makers before committing to the chosen arrangement. Resolve implementation conditions before communicating enrollment dates or coverage promises.
+## Step details
 
-   - Sources: [DOL: Health plans](https://www.dol.gov/index.php/agencies/ebsa/employers-and-advisers/plan-administration-and-compliance/health-plans)
-4. **Configure benefits in Gusto** — agent-runnable · ~30 min · human approval required
+<a id="step-1"></a>
 
-   Configure the selected plans using their actual eligibility, contribution and coverage-start rules. Reconcile employee classes and deduction codes with payroll and the benefits administrator. Check representative enrollment outcomes against the plan documents and resolve discrepancies before activation. After elections begin, compare system records with accepted carrier or administrator enrollment so a saved setting is not mistaken for active coverage.
+### 1. Research benefits options
 
-   - Produces: Benefits plan
-   - Canonical vendor: Gusto
-   - Sources: [DOL: Health plans](https://www.dol.gov/index.php/agencies/ebsa/employers-and-advisers/plan-administration-and-compliance/health-plans)
-5. **Announce to team and open enrollment** — agent-runnable · ~10 min · human approval required
+agent-runnable · ~1 h
 
-   Explain the approved plans, employee costs, enrollment dates and support options using the plan materials. Check the audience and required notices with the benefits administrator, then give employees a working enrollment route. Clarify how they make elections or record waivers and where dependent or health information belongs. Address access problems early enough for employees to make their choices.
 
-   - Canonical vendor: Gusto
-   - Sources: [DOL: Health plans](https://www.dol.gov/index.php/agencies/ebsa/employers-and-advisers/plan-administration-and-compliance/health-plans)
-6. **Employees enroll** — human · ~5 d · async wait
+Define the workforce, work locations, benefits goals and employer budget. Compare possible structures with the benefits adviser, including employee costs, administration and existing coverage or contract commitments. Gather only the workforce information needed for that assessment through private channels. Bring the decision makers the meaningful tradeoffs and unknowns before requesting specific plans or promising coverage.
 
-   Employees review the official materials and enter their own elections, dependent information or waivers in the enrollment system. Help with access and process questions without choosing coverage for them. Reconcile accepted elections with administrator or carrier confirmations and payroll deductions, following up on rejected or missing records. Give employees a way to check their own coverage result.
+- Cross-arena options: ChatGPT, Claude, Gemini (ai-assistants)
+- Sources: [DOL: Health plans](https://www.dol.gov/index.php/agencies/ebsa/employers-and-advisers/plan-administration-and-compliance/health-plans)
 
-   - Canonical vendor: Gusto
-   - Cross-arena market: [workflow-automation](../../open-rankings/workflow-automation)
-   - Sources: [DOL: Health plans](https://www.dol.gov/index.php/agencies/ebsa/employers-and-advisers/plan-administration-and-compliance/health-plans)
+<a id="step-2"></a>
 
-## By country
+### 2. Get quotes from providers
+
+human · ~5 d · async wait
+
+| Option | Applies when |
+| --- | --- |
+| Default — Get quotes from providers | Recorded default |
+| PEO-bundled benefits | You want benefits bundled with payroll via co-employment - trading control for speed |
+
+
+Request comparable proposals using the same workforce assumptions, desired benefits and contribution budget. Evaluate standalone quotes or a PEO arrangement with the employment and administrative responsibilities clearly separated. Limit recipient disclosures to the information needed for the quote. Compare coverage conditions, effective dates, employee costs and exclusions before recommending a route.
+
+- Sources: [DOL: Health plans](https://www.dol.gov/index.php/agencies/ebsa/employers-and-advisers/plan-administration-and-compliance/health-plans)
+
+Options:
+  - **Default — Get quotes from providers** — human · ~5 d · async wait
+
+    Request standalone benefit quotes using consistent workforce assumptions and desired coverage. Compare the actual terms, employer and employee costs, implementation conditions and renewal basis with the adviser. Resolve differences that prevent a fair comparison before choosing a plan. Base coverage communications on accepted plan terms and confirmed enrollment.
+  - **PEO-bundled benefits** — manual form/portal
+
+    When: You want benefits bundled with payroll via co-employment - trading control for speed
+
+    Compare the PEO’s employment arrangement, benefit plans, service duties, fees and exit terms with standalone alternatives. Review actual coverage and total cost with the adviser, including responsibilities the company retains. Settle the commercial and legal arrangement before committing to the PEO. Carry the reviewed eligibility rules and enrollment conditions into implementation.
+
+    - Canonical vendor: Justworks
+    - Sources: [DOL: Health plans](https://www.dol.gov/index.php/agencies/ebsa/employers-and-advisers/plan-administration-and-compliance/health-plans)
+
+<a id="step-3"></a>
+
+### 3. Select plans and negotiate
+
+human · ~2 h · human approval required · hard to undo
+
+
+Compare the quoted plan documents with employee needs, provider access, deductibles, exclusions and contribution costs. Clarify price assumptions, renewal terms and administrative work with the adviser. Take material tradeoffs to the benefits and budget decision makers before committing to the chosen arrangement. Resolve implementation conditions before communicating enrollment dates or coverage promises.
+
+- Sources: [DOL: Health plans](https://www.dol.gov/index.php/agencies/ebsa/employers-and-advisers/plan-administration-and-compliance/health-plans)
+
+<a id="step-4"></a>
+
+### 4. Configure benefits in Gusto
+
+agent-runnable · ~30 min · human approval required
+
+
+Configure the selected plans using their actual eligibility, contribution and coverage-start rules. Reconcile employee classes and deduction codes with payroll and the benefits administrator. Check representative enrollment outcomes against the plan documents and resolve discrepancies before activation. After elections begin, compare system records with accepted carrier or administrator enrollment so a saved setting is not mistaken for active coverage.
+
+- Produces: Benefits plan
+- Canonical vendor: Gusto
+- Sources: [DOL: Health plans](https://www.dol.gov/index.php/agencies/ebsa/employers-and-advisers/plan-administration-and-compliance/health-plans)
+
+<a id="step-5"></a>
+
+### 5. Announce to team and open enrollment
+
+agent-runnable · ~10 min · human approval required
+
+
+Explain the approved plans, employee costs, enrollment dates and support options using the plan materials. Check the audience and required notices with the benefits administrator, then give employees a working enrollment route. Clarify how they make elections or record waivers and where dependent or health information belongs. Address access problems early enough for employees to make their choices.
+
+- Canonical vendor: Gusto
+- Sources: [DOL: Health plans](https://www.dol.gov/index.php/agencies/ebsa/employers-and-advisers/plan-administration-and-compliance/health-plans)
+
+<a id="step-6"></a>
+
+### 6. Employees enroll
+
+human · ~5 d · async wait
+
+
+Employees review the official materials and enter their own elections, dependent information or waivers in the enrollment system. Help with access and process questions without choosing coverage for them. Reconcile accepted elections with administrator or carrier confirmations and payroll deductions, following up on rejected or missing records. Give employees a way to check their own coverage result.
+
+- Canonical vendor: Gusto
+- Cross-arena market: [workflow-automation](../../open-rankings/workflow-automation)
+- Sources: [DOL: Health plans](https://www.dol.gov/index.php/agencies/ebsa/employers-and-advisers/plan-administration-and-compliance/health-plans)
+
+
+<a id="by-country"></a>
+
+## Country details
+
+<a id="geo-in"></a>
 
 ### India
 
 - The statutory floor is ESI health cover for lower-wage employees, EPF retirement, and gratuity; on top, a group mediclaim policy is the standard startup benefit — group health cover for employees has been an IRDAI expectation since 2020. ([Ministry of Labour & Employment](https://labour.gov.in/))
 
+<a id="geo-uk"></a>
+
 ### United Kingdom
 
 - The NHS makes health insurance a perk rather than table stakes; the mandatory piece is pension auto-enrolment, and any private medical or similar benefit is a taxable benefit-in-kind reported to HMRC (P11D or payrolling). ([Expenses and benefits for employers](https://www.gov.uk/employer-reporting-expenses-benefits))
+
+<a id="geo-de"></a>
 
 ### Germany
 
 - Absorbed: Health, pension, care and unemployment insurance are statutory and ride payroll — there is no benefits enrollment project; the discretionary layer is a bAV pension offer (mandatory to offer) and perks like the Deutschlandticket or company fitness. ([Deutsche Rentenversicherung](https://www.deutsche-rentenversicherung.de/))
 
+<a id="geo-fr"></a>
+
 ### France
 
 - Every employer must provide a mutuelle — complementary health insurance at least 50% employer-funded — plus prévoyance cover for cadres; both plug into payroll's DSN rather than an open-enrollment season. ([Mandatory complementary health cover (mutuelle)](https://entreprendre.service-public.fr/vosdroits/F33754))
+
+<a id="geo-pt"></a>
 
 ### Portugal
 
 - Absorbed: Statutory social security (pensions, sickness, unemployment) rides payroll and the SNS provides universal healthcare — there is no benefits-enrollment project; the common extras are meal allowance and private health insurance as perks. ([Segurança Social — empregadores](https://www.seg-social.pt/empregadores))
 
+<a id="geo-ca"></a>
+
 ### Canada
 
 - Provincial medicare covers care, so the real project is the extended-health layer: group benefits (dental, vision, drugs, disability) through an insurer, with CRA's taxable-benefit rules deciding what lands on the T4. ([CRA — benefits and allowances](https://www.canada.ca/en/revenue-agency/services/tax/businesses/topics/payroll/benefits-allowances.html))
+
+<a id="geo-nz"></a>
 
 ### New Zealand
 
 - Public healthcare keeps health insurance a perk rather than table stakes; the mandatory benefit is KiwiSaver — auto-enrolment for eligible new employees plus the compulsory employer contribution of at least 3.5% of gross pay. ([Employer contributions to KiwiSaver — Inland Revenue](https://www.ird.govt.nz/kiwisaver/kiwisaver-employers/contributions-and-deductions/employer-contributions-to-kiwisaver-and-complying-funds))
 
+<a id="geo-sg"></a>
+
 ### Singapore
 
 - CPF is the mandatory piece — employer contributions fund retirement and MediSave — and public healthcare blunts the health-insurance arms race; private medical and similar benefits sit on top as perks, taxed per IRAS's benefit rules. ([CPF — contribution rates](https://www.cpf.gov.sg/employer/employer-obligations/how-much-cpf-contributions-to-pay))
+
+<a id="geo-au"></a>
 
 ### Australia
 
 - Medicare makes private health cover a perk rather than table stakes; the mandatory piece is the 12% superannuation guarantee, and salary-packaged benefits attract fringe benefits tax, registered and reported to the ATO. ([Register for FBT](https://business.gov.au/registrations/register-for-taxes/register-for-fringe-benefits-tax-fbt))
 
+<a id="geo-kr"></a>
+
 ### South Korea
 
 - The statutory benefits stack is the four social insurances (national pension, health, employment, industrial accident), registered once as an employer and run on monthly premiums; the shared portal files all four together. ([Four social insurances portal (4대사회보험)](https://www.4insure.or.kr/))
+
+<a id="geo-hk"></a>
 
 ### Hong Kong
 
 - The statutory stack is lean: MPF employer contributions each wage period, compulsory employees' compensation insurance, and the Employment Ordinance's continuous-contract entitlements (rest days, annual leave, sickness allowance) — private medical sits on top as a perk. ([Labour Department — Employment Ordinance guide](https://www.labour.gov.hk/eng/legislat/content2.htm))
 
+<a id="geo-ee"></a>
+
 ### Estonia
 
 - Absorbed: The statutory benefits stack arrives with payroll: social tax at 33% funds health insurance and pensions, and coverage follows the employment-register entry (law rules [ee.social-tax-rate-and-monthly-return](../../open-law/EE/ee-social-tax-rate-and-monthly-return.json), [ee.employment-register-before-work](../../open-law/EE/ee-employment-register-before-work.json)); nothing is procured plan by plan. ([Health Insurance Fund (Tervisekassa)](https://www.tervisekassa.ee/en))
 
-## Artifacts
+<a id="artifacts"></a>
 
-Produces:
+## Outputs
 
 - Benefits plan
-
-Requires:
-
-- Payroll account — from [Set up payroll](set-up-payroll.md)
 
 ## Related records
 

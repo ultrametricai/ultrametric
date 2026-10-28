@@ -3,6 +3,10 @@
 
 # Register for sales tax where you have nexus
 
+[Overview](#overview) · [Before you start](#before-you-start) · [Geography](#geography) · [Steps](#steps-at-a-glance) · [Outputs](#outputs)
+
+## Overview
+
 Once revenue crosses state thresholds you owe sales tax where your customers are: connect billing to a tax platform, run the nexus study, register with each state’s department of revenue, turn on collection at checkout, and put the filings on autopilot.
 
 | Field | Value |
@@ -19,136 +23,246 @@ Once revenue crosses state thresholds you owe sales tax where your customers are
 
 Tax platforms watch nexus thresholds, calculate at checkout, and file returns over their APIs; the state registration portals are manual form work and the exposure review is a judgment call.
 
-## Steps
+## Before you start
 
-1. **Choose a sales-tax platform** — human · ~15 min
+Required artifacts:
 
-   Identify whether the company needs calculation, nexus assessment, registration, returns, remittance or several services. Compare platforms against its products, customer locations, billing systems and required jurisdictions, including exclusions and adviser involvement. Check integration and data-access needs before purchasing. A supported market in a platform does not determine whether the company must register or its product is taxable there.
+- Payment processor account — from [Connect a payment processor](connect-a-payment-processor.md)
 
-   - Vendor options: Stripe Tax, Avalara, TaxJar, Anrok
-   - Ranked market: [tax-automation](../../open-rankings/tax-automation)
-2. **Connect billing data and run the nexus study** — agent-runnable · ~15 min
+| Information to gather | Required by the record |
+| --- | --- |
+| sales by state | Yes |
 
-   Reconcile imported transactions to billing, including dates, locations, products, refunds and marketplace handling. Add physical business presence to the assessment. Check the platform’s flagged states against current state rules and measurement periods with the tax adviser. Preserve the data snapshot and assumptions; a detected threshold signal still needs a company-specific registration conclusion.
+## Geography
 
-   - Canonical vendor: Stripe Tax
-3. **Review the states where thresholds are crossed** — human · ~30 min
+Country rows describe the guidance recorded here. Local notes and step alternatives do not establish a complete country-specific workflow.
 
-   Examine each flagged state using actual sales, physical presence, product treatment and timing. Check the transactions counted under its rules and any marketplace effect. Resolve effective dates and possible prior-period exposure with the tax adviser before deciding to register. Resolve the flagged facts and record the basis for the registration decision.
-4. **Register with each state’s department of revenue** — manual form/portal · ~45 min · hard to undo
+| Country | Recorded guidance | Steps with local alternatives or resolutions |
+| --- | --- | --- |
+| [India](#geo-in) | Local analog note; step alternative | [4](#step-4) |
+| [United Kingdom](#geo-uk) | Local analog note; step alternative | [4](#step-4) |
+| [Germany](#geo-de) | Local analog note; step alternative | [4](#step-4) |
+| [France](#geo-fr) | Local analog note; step alternative | [4](#step-4) |
+| [Portugal](#geo-pt) | Local analog note | — |
+| [Canada](#geo-ca) | Local analog note | — |
+| [New Zealand](#geo-nz) | Local analog note | — |
+| [Singapore](#geo-sg) | Local analog note | — |
+| [Australia](#geo-au) | Local analog note | — |
+| [South Korea](#geo-kr) | Local analog note | — |
+| [Hong Kong](#geo-hk) | Marked not applicable | — |
+| [Estonia](#geo-ee) | Local analog note | — |
 
-   Prepare the registrations selected in the reviewed tax plan. Check the agency, account type, entity details, activity dates, signer and attachments against current instructions, then submit through the company’s authorized filing route. Track issued accounts and their filing schedules separately from pending cases. VAT or GST alternatives require their own local assessment and procedure.
+## Steps at a glance
 
-   - Verify: Each state issues a sales-tax permit or account number — required before collecting tax there.
-   - Produces: Sales tax registrations
-   - Do it yourself: [Streamlined Sales Tax registration](https://www.streamlinedsalestax.org/)
-   - Sources: [Streamlined Sales Tax remote sellers](https://www.streamlinedsalestax.org/for-businesses/remote-seller-faqs)
+Use the recorded prerequisites and conditions to follow the path. Row order is for navigation.
 
-   Options:
-     - **Default — Streamlined Sales Tax registration** — manual form/portal · ~45 min · hard to undo
+| Step | Handled by | Time estimate | Incoming dependencies |
+| --- | --- | --- | --- |
+| [1. Choose a sales-tax platform](#step-1) | human | ~15 min | Entry step |
+| [2. Connect billing data and run the nexus study](#step-2) | agent-runnable | ~15 min | [Step 1](#step-1) |
+| [3. Review the states where thresholds are crossed](#step-3) | human | ~30 min | [Step 2](#step-2) |
+| [4. Register with each state’s department of revenue](#step-4) | manual form/portal | ~45 min | [Step 3](#step-3) |
+| [5. Enable tax collection on checkout and invoices](#step-5) | agent-runnable | ~15 min | [Step 4](#step-4) |
+| [6. Schedule automated filings and remittance](#step-6) | agent-runnable | ~20 min | [Step 5](#step-5) |
 
-       Check which approved state registrations the Streamlined Sales Tax service supports. Review the selected states, entity, effective dates and resulting obligations before submitting through the authorized filing route. Track each state’s issued account and connect it to collection and return preparation. Use the appropriate separate registration process for states or taxes outside the service.
-     - **India - GST registration**
+<a id="steps"></a>
 
-       When: Indirect-tax registration in India
+## Step details
 
-       Assess the seller’s establishment, service, customers and transaction flow with the tax adviser to identify the appropriate Indian GST category. Check whether the non-resident online-services route actually applies. Use current official instructions for business and signatory details and the required filing authorization. After registration, establish the corresponding invoicing and return process from that Indian assessment.
+<a id="step-1"></a>
 
-       - Do it yourself: [GST portal registration](https://www.gst.gov.in/)
-       - Sources: [GST portal non-resident online services registration](https://tutorial.gst.gov.in/userguide/registration/Non-Resident_Online_Services_Provider_manual.htm)
-     - **UK - one VAT registration (MTD)**
+### 1. Choose a sales-tax platform
 
-       When: Indirect-tax registration in the United Kingdom
+human · ~15 min
 
-       Assess establishment, taxable supplies, turnover and customer arrangements under current HMRC rules. Determine whether registration is required or elective and the effective date before preparing the application. Submit through the company’s authorized route, then use the issued registration to set up invoices, digital records and returns. Use the UK assessment to set the account’s tax treatment.
 
-       - Do it yourself: [Register for VAT (Making Tax Digital)](https://www.gov.uk/register-for-vat)
-     - **Germany - VAT ID + OSS**
+Identify whether the company needs calculation, nexus assessment, registration, returns, remittance or several services. Compare platforms against its products, customer locations, billing systems and required jurisdictions, including exclusions and adviser involvement. Check integration and data-access needs before purchasing. A supported market in a platform does not determine whether the company must register or its product is taxable there.
 
-       When: Indirect-tax registration in Germany
+- Vendor options: Stripe Tax, Avalara, TaxJar, Anrok
+- Ranked market: [tax-automation](../../open-rankings/tax-automation)
 
-       Review establishment, products, customer status and transaction locations for German and EU VAT. Distinguish domestic registration or identification needs from an eligible One Stop Shop scheme and the transactions it covers. Confirm effective dates before authorized filings and configure invoices and returns accordingly. Keep obligations outside the selected scheme visible; OSS does not replace every national registration.
+<a id="step-2"></a>
 
-       - Do it yourself: [BZSt - VAT identification number](https://www.bzst.de/)
-       - Sources: [European Commission VAT One Stop Shop](https://vat-one-stop-shop.ec.europa.eu/index_en)
-     - **France - TVA + OSS**
+### 2. Connect billing data and run the nexus study
 
-       When: Indirect-tax registration in France
+agent-runnable · ~15 min
 
-       Assess French and EU VAT using the seller’s establishment, supplies, customer status and places of supply. Identify any appropriate One Stop Shop scheme alongside remaining national obligations. Resolve the registration plan before authorized submissions, then set invoicing, records and returns to that treatment. Separate scheme-covered transactions from those still requiring French or other national handling.
 
-       - Do it yourself: [impots.gouv.fr - espace professionnel (TVA)](https://www.impots.gouv.fr/professionnel)
-       - Sources: [European Commission VAT One Stop Shop](https://vat-one-stop-shop.ec.europa.eu/index_en)
-5. **Enable tax collection on checkout and invoices** — agent-runnable · ~15 min
+Reconcile imported transactions to billing, including dates, locations, products, refunds and marketplace handling. Add physical business presence to the assessment. Check the platform’s flagged states against current state rules and measurement periods with the tax adviser. Preserve the data snapshot and assumptions; a detected threshold signal still needs a company-specific registration conclusion.
 
-   Configure products, locations, exemptions and effective dates from the reviewed tax treatment. Test invoices, refunds and representative customer types before enabling the approved production changes. Reconcile early collected tax to expectations and confirm required registrations are in place. Decide how later product or customer-status changes reach the people maintaining tax settings.
+- Canonical vendor: Stripe Tax
 
-   - Canonical vendor: Stripe
-6. **Schedule automated filings and remittance** — agent-runnable · ~20 min
+<a id="step-3"></a>
 
-   Use issued accounts and agency-assigned frequencies to schedule returns, including any required zero filings. Reconcile collected tax, refunds and credits before each return. Configure the company’s actual filing and remittance approvals and escalation for failed submissions or debits before enabling recurring actions. Keep acceptance and payment evidence with each return and revisit the schedule when registrations change.
+### 3. Review the states where thresholds are crossed
 
-   - Canonical vendor: Avalara
+human · ~30 min
 
-## By country
+
+Examine each flagged state using actual sales, physical presence, product treatment and timing. Check the transactions counted under its rules and any marketplace effect. Resolve effective dates and possible prior-period exposure with the tax adviser before deciding to register. Resolve the flagged facts and record the basis for the registration decision.
+
+<a id="step-4"></a>
+
+### 4. Register with each state’s department of revenue
+
+manual form/portal · ~45 min · hard to undo
+
+| Option | Applies when |
+| --- | --- |
+| Default — Streamlined Sales Tax registration | Recorded default |
+| India - GST registration | Indirect-tax registration in India |
+| UK - one VAT registration (MTD) | Indirect-tax registration in the United Kingdom |
+| Germany - VAT ID + OSS | Indirect-tax registration in Germany |
+| France - TVA + OSS | Indirect-tax registration in France |
+
+
+Prepare the registrations selected in the reviewed tax plan. Check the agency, account type, entity details, activity dates, signer and attachments against current instructions, then submit through the company’s authorized filing route. Track issued accounts and their filing schedules separately from pending cases. VAT or GST alternatives require their own local assessment and procedure.
+
+- Verify: Each state issues a sales-tax permit or account number — required before collecting tax there.
+- Produces: Sales tax registrations
+- Do it yourself: [Streamlined Sales Tax registration](https://www.streamlinedsalestax.org/)
+- Sources: [Streamlined Sales Tax remote sellers](https://www.streamlinedsalestax.org/for-businesses/remote-seller-faqs)
+
+Options:
+  - **Default — Streamlined Sales Tax registration** — manual form/portal · ~45 min · hard to undo
+
+    Check which approved state registrations the Streamlined Sales Tax service supports. Review the selected states, entity, effective dates and resulting obligations before submitting through the authorized filing route. Track each state’s issued account and connect it to collection and return preparation. Use the appropriate separate registration process for states or taxes outside the service.
+  - **India - GST registration**
+
+    When: Indirect-tax registration in India
+
+    Assess the seller’s establishment, service, customers and transaction flow with the tax adviser to identify the appropriate Indian GST category. Check whether the non-resident online-services route actually applies. Use current official instructions for business and signatory details and the required filing authorization. After registration, establish the corresponding invoicing and return process from that Indian assessment.
+
+    - Do it yourself: [GST portal registration](https://www.gst.gov.in/)
+    - Sources: [GST portal non-resident online services registration](https://tutorial.gst.gov.in/userguide/registration/Non-Resident_Online_Services_Provider_manual.htm)
+  - **UK - one VAT registration (MTD)**
+
+    When: Indirect-tax registration in the United Kingdom
+
+    Assess establishment, taxable supplies, turnover and customer arrangements under current HMRC rules. Determine whether registration is required or elective and the effective date before preparing the application. Submit through the company’s authorized route, then use the issued registration to set up invoices, digital records and returns. Use the UK assessment to set the account’s tax treatment.
+
+    - Do it yourself: [Register for VAT (Making Tax Digital)](https://www.gov.uk/register-for-vat)
+  - **Germany - VAT ID + OSS**
+
+    When: Indirect-tax registration in Germany
+
+    Review establishment, products, customer status and transaction locations for German and EU VAT. Distinguish domestic registration or identification needs from an eligible One Stop Shop scheme and the transactions it covers. Confirm effective dates before authorized filings and configure invoices and returns accordingly. Keep obligations outside the selected scheme visible; OSS does not replace every national registration.
+
+    - Do it yourself: [BZSt - VAT identification number](https://www.bzst.de/)
+    - Sources: [European Commission VAT One Stop Shop](https://vat-one-stop-shop.ec.europa.eu/index_en)
+  - **France - TVA + OSS**
+
+    When: Indirect-tax registration in France
+
+    Assess French and EU VAT using the seller’s establishment, supplies, customer status and places of supply. Identify any appropriate One Stop Shop scheme alongside remaining national obligations. Resolve the registration plan before authorized submissions, then set invoicing, records and returns to that treatment. Separate scheme-covered transactions from those still requiring French or other national handling.
+
+    - Do it yourself: [impots.gouv.fr - espace professionnel (TVA)](https://www.impots.gouv.fr/professionnel)
+    - Sources: [European Commission VAT One Stop Shop](https://vat-one-stop-shop.ec.europa.eu/index_en)
+
+<a id="step-5"></a>
+
+### 5. Enable tax collection on checkout and invoices
+
+agent-runnable · ~15 min
+
+
+Configure products, locations, exemptions and effective dates from the reviewed tax treatment. Test invoices, refunds and representative customer types before enabling the approved production changes. Reconcile early collected tax to expectations and confirm required registrations are in place. Decide how later product or customer-status changes reach the people maintaining tax settings.
+
+- Canonical vendor: Stripe
+
+<a id="step-6"></a>
+
+### 6. Schedule automated filings and remittance
+
+agent-runnable · ~20 min
+
+
+Use issued accounts and agency-assigned frequencies to schedule returns, including any required zero filings. Reconcile collected tax, refunds and credits before each return. Configure the company’s actual filing and remittance approvals and escalation for failed submissions or debits before enabling recurring actions. Keep acceptance and payment evidence with each return and revisit the schedule when registrations change.
+
+- Canonical vendor: Avalara
+
+
+<a id="by-country"></a>
+
+## Country details
+
+<a id="geo-in"></a>
 
 ### India
 
 - GST replaces the per-state sales-tax patchwork with one national regime — registration per state of operation on the GST portal; SaaS sold from abroad falls under the OIDAR rules. ([GST portal registration](https://www.gst.gov.in/))
 
+<a id="geo-uk"></a>
+
 ### United Kingdom
 
 - Instead of per-state sales tax there is one national VAT registration — mandatory past £90k of taxable turnover (or immediately for many non-established sellers) — with returns filed digitally under Making Tax Digital. ([Register for VAT (Making Tax Digital)](https://www.gov.uk/register-for-vat))
+
+<a id="geo-de"></a>
 
 ### Germany
 
 - One German VAT registration (plus a BZSt-issued VAT ID) covers the whole country; for EU-wide B2C digital sales a single OSS (One-Stop-Shop) return replaces per-country registrations. ([BZSt — VAT identification number](https://www.bzst.de/))
 
+<a id="geo-fr"></a>
+
 ### France
 
 - One national TVA registration replaces the state-by-state patchwork — declared and paid through the espace professionnel — and for EU-wide B2C digital sales a single OSS (One-Stop-Shop) return covers every member state. ([impots.gouv.fr — espace professionnel (TVA)](https://www.impots.gouv.fr/professionnel))
+
+<a id="geo-pt"></a>
 
 ### Portugal
 
 - One national VAT registration (activated by the início de atividade declaration) replaces per-state registrations, and EU-wide B2C digital sales consolidate into a single One-Stop-Shop return instead of per-country filings. ([Portal das Finanças — IVA](https://www.portaldasfinancas.gov.pt/))
 
+<a id="geo-ca"></a>
+
 ### Canada
 
 - Genuinely nexus-like: register for GST/HST once worldwide taxable supplies pass the $30,000 small-supplier threshold, then layer the separate provincial registrations — QST in Quebec, PST in BC, Saskatchewan and Manitoba — where your customers are. ([CRA — GST/HST for businesses](https://www.canada.ca/en/revenue-agency/services/tax/businesses/topics/gst-hst-businesses.html))
+
+<a id="geo-nz"></a>
 
 ### New Zealand
 
 - Instead of per-state sales tax there is one national GST registration — compulsory once turnover reaches $60,000 in the last 12 months (or is expected to in the next 12), handled in myIR. ([Registering for GST — Inland Revenue](https://www.ird.govt.nz/gst/registering-for-gst))
 
+<a id="geo-sg"></a>
+
 ### Singapore
 
 - Instead of per-state sales tax there is one national GST registration — compulsory past S$1 million of taxable turnover (law rule [sg.gst-registration-threshold](../../open-law/SG/sg-gst-registration-threshold.json)) — with returns filed through the myTax Portal. ([IRAS — GST registration](https://www.iras.gov.sg/taxes/goods-services-tax-(gst)/gst-registration-deregistration/do-i-need-to-register-for-gst))
+
+<a id="geo-au"></a>
 
 ### Australia
 
 - Instead of per-state sales tax there is one national GST registration — required within 21 days once GST turnover meets the $75,000 threshold (law rule [au.gst-registration-threshold](../../open-law/AU/au-gst-registration-threshold.json)) — with GST then reported on business activity statements. ([Register for GST](https://business.gov.au/registrations/register-for-taxes/register-for-goods-and-services-tax-gst))
 
+<a id="geo-kr"></a>
+
 ### South Korea
 
 - There is no multi-state nexus question: a single national VAT registration covers the country, applied for per place of business with the district tax office within 20 days of starting business (Value-Added Tax Act Article 8) and managed through Hometax. ([Hometax (NTS e-filing)](https://www.hometax.go.kr/))
+
+<a id="geo-hk"></a>
 
 ### Hong Kong
 
 - Not applicable: There is no sales tax, GST or VAT to register for anywhere in Hong Kong — the business taxes are profits tax, stamp duty and the business registration fee — so the nexus question never arises. ([GovHK — business taxes](https://www.gov.hk/en/business/taxes/))
 
+<a id="geo-ee"></a>
+
 ### Estonia
 
 - There is no multi-state nexus question: one national VAT registration covers the country, due within three working days of crossing the 40,000-euro threshold (law rule [ee.vat-registration-threshold](../../open-law/EE/ee-vat-registration-threshold.json)), with the EU OSS available in e-MTA for cross-border B2C supply. ([VAT registration (e-MTA)](https://www.emta.ee/en/business-client/taxes-and-payment/value-added-tax/registration-vat-payer))
 
-## Artifacts
+<a id="artifacts"></a>
 
-Produces:
+## Outputs
 
 - Sales tax registrations
-
-Requires:
-
-- Payment processor account — from [Connect a payment processor](connect-a-payment-processor.md)
 
 ## Related records
 

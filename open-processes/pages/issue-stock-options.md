@@ -3,6 +3,10 @@
 
 # Issue stock options
 
+[Overview](#overview) · [Before you start](#before-you-start) · [Geography](#geography) · [Steps](#steps-at-a-glance) · [Outputs](#outputs)
+
+## Overview
+
 Grant stock options to team members including board approval, option agreements, and Carta recording.
 
 | Field | Value |
@@ -19,43 +23,132 @@ Grant stock options to team members including board approval, option agreements,
 
 Carta API can record grants. Board consent and option agreements need human review. System drafts materials and tracks.
 
-## Steps
+## Before you start
 
-1. **Verify the share valuation supporting the exercise price is current** — agent-runnable · ~2 min
+Required artifacts:
 
-   Compare the proposed option grant with the valuation’s date, stock class and conditions. Check financing discussions, transactions and material developments since that date against the report’s assumptions. If they undermine the basis for the proposed exercise price, resolve the need for a refresh with the valuation adviser and counsel before proceeding with the grant.
+- 409A valuation report — from [Get a 409A valuation](get-a-409a-valuation.md)
+- Cap table record — from [Set up cap table](set-up-cap-table.md)
 
-   - Canonical vendor: Carta
-   - Sources: [26 CFR 1.409A-1](https://www.ecfr.gov/current/title-26/chapter-I/subchapter-A/part-1/section-1.409A-1)
-2. **Draft the corporate approval for the grant** — agent-runnable · ~10 min · human approval required
+| Information to gather | Required by the record |
+| --- | --- |
+| 409a valuation | Yes |
+| option pool | Yes |
+| employee name | Yes |
+| grant shares | Yes |
+| grant vesting schedule | Yes |
 
-   Draft the grant consent from the proposed recipient, share count, option type, exercise price, vesting and intended grant date. Check plan capacity and the valuation supporting the price. Use the applicable corporate approval route, resolving uncertainty with counsel, and highlight deviations from standard terms so the decision-makers can assess the actual grant proposal.
+## Geography
 
-   - Cross-arena options: ChatGPT, Claude, Gemini (ai-assistants)
-   - Sources: [Delaware General Corporation Law](https://delcode.delaware.gov/title8/c001/sc05/index.html)
-3. **The required decision-makers approve and sign the grant authorization** — human (legally required signature) · ~2 d · async wait · human approval required
+Country rows describe the guidance recorded here. Local notes and step alternatives do not establish a complete country-specific workflow.
 
-   The authorized decision-makers review the final grant schedule and sign the required approval through the applicable corporate process. Check recipient, quantity, price, dates and special terms against the proposal. Establish when approval is effective, and bring later changes back through the required decision path before they enter the agreement or equity records.
+| Country | Recorded guidance | Steps with local alternatives or resolutions |
+| --- | --- | --- |
+| [United States](#geo-us) | step resolution | [1](#step-1), [2](#step-2), [3](#step-3) |
+| [India](#geo-in) | Local analog note; step resolution | [3](#step-3) |
+| [United Kingdom](#geo-uk) | Local analog note; step resolution | [1](#step-1) |
+| [Germany](#geo-de) | Local analog note | — |
+| [France](#geo-fr) | Local analog note | — |
+| [Portugal](#geo-pt) | Local analog note; step resolution | [3](#step-3) |
+| [Canada](#geo-ca) | Local analog note; step resolution | [3](#step-3) |
+| [Singapore](#geo-sg) | Local analog note | — |
+| [Australia](#geo-au) | Local analog note | — |
+| [South Korea](#geo-kr) | Local analog note | — |
+| [Hong Kong](#geo-hk) | Local analog note | — |
+| [Estonia](#geo-ee) | Local analog note | — |
 
-   - Sources: [Delaware General Corporation Law](https://delcode.delaware.gov/title8/c001/sc05/index.html)
-4. **Generate option agreement** — agent-runnable · ~5 min · human approval required
+## Steps at a glance
 
-   Populate the option agreement from the effective authorization and governing plan. Match the recipient, security, quantity, price, vesting, exercise terms and dates, including approved deviations. Resolve conflicts between the agreement, plan and consent with counsel. The final package should give the recipient the agreed grant terms and the governing plan they reference.
+Use the recorded prerequisites and conditions to follow the path. Row order is for navigation.
 
-   - Canonical vendor: Carta
-5. **Send for employee signature** — agent-runnable · ~5 min · human approval required · irreversible
+| Step | Handled by | Time estimate | Incoming dependencies |
+| --- | --- | --- | --- |
+| [1. Verify the share valuation supporting the exercise price is current](#step-1) | agent-runnable | ~2 min | Entry step |
+| [2. Draft the corporate approval for the grant](#step-2) | agent-runnable; approval required | ~10 min | [Step 1](#step-1) |
+| [3. The required decision-makers approve and sign the grant authorization](#step-3) | human; approval required; signature required; includes waiting | ~2 d | [Step 2](#step-2) |
+| [4. Generate option agreement](#step-4) | agent-runnable; approval required | ~5 min | [Step 3](#step-3) |
+| [5. Send for employee signature](#step-5) | agent-runnable; approval required | ~5 min | [Step 4](#step-4) |
+| [6. Record grant on Carta](#step-6) | agent-runnable; approval required | ~5 min | [Step 5](#step-5) |
 
-   The equity administrator sends the final agreement and governing plan to the intended recipient for signature. Give the recipient a contact for questions and route requested changes back through the grant’s legal and corporate decision process. Track execution against the agreement’s requirements and link the completed signature record to the grant, distinguishing a sent invitation from acceptance.
+<a id="steps"></a>
 
-   - Canonical vendor: DocuSign
-6. **Record grant on Carta** — agent-runnable · ~5 min · human approval required
+## Step details
 
-   Enter the completed grant in the equity system from its effective authorization and executed documents. Match recipient, quantity, exercise price, grant date, vesting and plan allocation, then reconcile remaining capacity. The authorized equity administrator links the consent, agreement and valuation reference to the entry and resolves discrepancies between the system and the legal records.
+<a id="step-1"></a>
 
-   - Produces: Option grants
-   - Canonical vendor: Carta
+### 1. Verify the share valuation supporting the exercise price is current
 
-## By country
+agent-runnable · ~2 min
+
+
+Compare the proposed option grant with the valuation’s date, stock class and conditions. Check financing discussions, transactions and material developments since that date against the report’s assumptions. If they undermine the basis for the proposed exercise price, resolve the need for a refresh with the valuation adviser and counsel before proceeding with the grant.
+
+- Canonical vendor: Carta
+- Sources: [26 CFR 1.409A-1](https://www.ecfr.gov/current/title-26/chapter-I/subchapter-A/part-1/section-1.409A-1)
+
+<a id="step-2"></a>
+
+### 2. Draft the corporate approval for the grant
+
+agent-runnable · ~10 min · human approval required
+
+
+Draft the grant consent from the proposed recipient, share count, option type, exercise price, vesting and intended grant date. Check plan capacity and the valuation supporting the price. Use the applicable corporate approval route, resolving uncertainty with counsel, and highlight deviations from standard terms so the decision-makers can assess the actual grant proposal.
+
+- Cross-arena options: ChatGPT, Claude, Gemini (ai-assistants)
+- Sources: [Delaware General Corporation Law](https://delcode.delaware.gov/title8/c001/sc05/index.html)
+
+<a id="step-3"></a>
+
+### 3. The required decision-makers approve and sign the grant authorization
+
+human (legally required signature) · ~2 d · async wait · human approval required
+
+
+The authorized decision-makers review the final grant schedule and sign the required approval through the applicable corporate process. Check recipient, quantity, price, dates and special terms against the proposal. Establish when approval is effective, and bring later changes back through the required decision path before they enter the agreement or equity records.
+
+- Sources: [Delaware General Corporation Law](https://delcode.delaware.gov/title8/c001/sc05/index.html)
+
+<a id="step-4"></a>
+
+### 4. Generate option agreement
+
+agent-runnable · ~5 min · human approval required
+
+
+Populate the option agreement from the effective authorization and governing plan. Match the recipient, security, quantity, price, vesting, exercise terms and dates, including approved deviations. Resolve conflicts between the agreement, plan and consent with counsel. The final package should give the recipient the agreed grant terms and the governing plan they reference.
+
+- Canonical vendor: Carta
+
+<a id="step-5"></a>
+
+### 5. Send for employee signature
+
+agent-runnable · ~5 min · human approval required · irreversible
+
+
+The equity administrator sends the final agreement and governing plan to the intended recipient for signature. Give the recipient a contact for questions and route requested changes back through the grant’s legal and corporate decision process. Track execution against the agreement’s requirements and link the completed signature record to the grant, distinguishing a sent invitation from acceptance.
+
+- Canonical vendor: DocuSign
+
+<a id="step-6"></a>
+
+### 6. Record grant on Carta
+
+agent-runnable · ~5 min · human approval required
+
+
+Enter the completed grant in the equity system from its effective authorization and executed documents. Match recipient, quantity, exercise price, grant date, vesting and plan allocation, then reconcile remaining capacity. The authorized equity administrator links the consent, agreement and valuation reference to the entry and resolves discrepancies between the system and the legal records.
+
+- Produces: Option grants
+- Canonical vendor: Carta
+
+
+<a id="by-country"></a>
+
+## Country details
+
+<a id="geo-us"></a>
 
 ### United States
 
@@ -63,64 +156,81 @@ Carta API can record grants. Board consent and option agreements need human revi
 - Step 2: Draft the board consent for the grant A Delaware board acts without a meeting only by unanimous written consent (law rule [us-de.board-action-by-written-consent](../../open-law/US-DE/us-de-board-action-by-written-consent.json)).
 - Step 3: The board (or its authorized delegate) signs the grant consent A Delaware board acts without a meeting only by unanimous written consent (law rule [us-de.board-action-by-written-consent](../../open-law/US-DE/us-de-board-action-by-written-consent.json)).
 
+<a id="geo-in"></a>
+
 ### India
 
 - ESOPs need a shareholders' special resolution under Companies Act s.62(1)(b) and are taxed as a perquisite at exercise on a registered valuation — DPIIT-recognised startups can defer that perquisite tax by up to five years. ([Startup India (ESOP rules & deferral)](https://www.startupindia.gov.in/))
 - Step 3: ESOP grants need a shareholders' special resolution under Companies Act s.62(1)(b) ([Startup India (ESOP rules & deferral)](https://www.startupindia.gov.in/))
+
+<a id="geo-uk"></a>
 
 ### United Kingdom
 
 - UK startups grant EMI options — an HMRC-approved scheme with capital-gains treatment; the company agrees a valuation with HMRC in advance (the rough 409A analog) and notifies grants to HMRC. ([EMI share option scheme](https://www.gov.uk/tax-employee-share-schemes/enterprise-management-incentives-emis))
 - Step 1: Confirm the EMI valuation agreed with HMRC in advance still covers the grant ([EMI share option scheme](https://www.gov.uk/tax-employee-share-schemes/enterprise-management-incentives-emis))
 
+<a id="geo-de"></a>
+
 ### Germany
 
 - Real options were historically tax-hostile, so most startups grant VSOPs (virtual options, cash-settled); § 19a EStG — expanded by the 2024 Zukunftsfinanzierungsgesetz — now defers the dry-income tax on genuine employee shares for qualifying startups. ([§ 19a EStG (deferred taxation of employee equity)](https://www.gesetze-im-internet.de/estg/__19a.html))
 
+<a id="geo-fr"></a>
+
 ### France
 
 - French startups grant BSPCE — founder-company warrants reserved for young companies, with capital-gains-style taxation and no social charges for the employer; the Bpifrance (state investment bank) encyclopedia page is the canonical guide. ([BSPCE — Bpifrance Création guide](https://bpifrance-creation.fr/encyclopedie/financements/recours-a-investisseurs/bons-souscription-parts-createur-dentreprise))
+
+<a id="geo-pt"></a>
 
 ### Portugal
 
 - Options are granted under a company plan with shareholder approval; for IAPMEI-recognised startups the Lei 21/2023 regime defers taxation of qualifying plans to liquidity with a partial exclusion — the lever that makes Portuguese ESOPs workable. ([Lei 21/2023 (startup law) — DRE](https://diariodarepublica.pt/dr/detalhe/lei/21-2023-213498830))
 - Step 3: Options are granted under a company plan with shareholder approval ([Lei 21/2023 (startup law) — DRE](https://diariodarepublica.pt/dr/detalhe/lei/21-2023-213498830))
 
+<a id="geo-ca"></a>
+
 ### Canada
 
 - Grants are board-approved under the plan; for CCPCs the employee's taxable benefit is deferred until the shares are sold and the 110(1)(d) deduction can halve it — CRA's security-options guidance is the canonical reference. ([CRA — security options](https://www.canada.ca/en/revenue-agency/services/tax/businesses/topics/payroll/benefits-allowances/security-options.html))
 - Step 3: Grants are board-approved under the plan ([CRA — security options](https://www.canada.ca/en/revenue-agency/services/tax/businesses/topics/payroll/benefits-allowances/security-options.html))
 
+<a id="geo-sg"></a>
+
 ### Singapore
 
 - No EMI/ISO-style approved scheme: ESOPs are contractual, gains are taxed under IRAS's ESOP/ESOW rules at exercise or vesting, and the shares land by an ordinary allotment filed with ACRA when options exercise. ([IRAS — gains from stock options](https://www.iras.gov.sg/taxes/individual-income-tax/basics-of-individual-income-tax/what-is-taxable-what-is-not/employment-income/gains-from-the-exercise-of-stock-options))
+
+<a id="geo-au"></a>
 
 ### Australia
 
 - Startups grant options under an employee share scheme using the start-up concession — unlisted, under 10 years old, under $50 million aggregated turnover, strike at or above market value (law rule [au.ess-startup-concession](../../open-law/AU/au-ess-startup-concession.json)) — so employees are taxed on disposal under the CGT rules rather than at grant. ([ITAA 1997 s 83A-33 (start-up concession)](https://www.legislation.gov.au/C2004A05138/latest/text))
 
+<a id="geo-kr"></a>
+
 ### South Korea
 
 - Stock options (주식매수선택권) are statutory: granted under articles authorization by special shareholder resolution to directors and employees (Commercial Act Article 340-2), with listed and venture companies carrying their own variants. ([Commercial Act Article 340-2 (law.go.kr)](https://www.law.go.kr/%EB%B2%95%EB%A0%B9/%EC%83%81%EB%B2%95/%EC%A0%9C340%EC%A1%B0%EC%9D%982))
+
+<a id="geo-hk"></a>
 
 ### Hong Kong
 
 - No EMI/ISO-style approved scheme: options are contractual, gains are assessed to salaries tax at exercise under the IRD's share-based benefits practice (DIPN 38), and exercised options land by an ordinary allotment with the return filed at the Companies Registry within a month. ([IRD — DIPN 38 (share-based benefits)](https://www.ird.gov.hk/eng/pdf/dipn38.pdf))
 
+<a id="geo-ee"></a>
+
 ### Estonia
 
 - Options are contractual rather than a statutory scheme: grants are papered under the option agreement, and the Income Tax Act's fringe-benefit rules govern taxation, with an exercise at least three years after grant outside fringe-benefit tax (§ 48(5³)). ([Income and social taxes (e-MTA)](https://www.emta.ee/en/business-client/taxes-and-payment/income-and-social-taxes))
 
-## Artifacts
+<a id="artifacts"></a>
 
-Produces:
+## Outputs
 
 - Option grants
-
-Requires:
-
-- 409A valuation report — from [Get a 409A valuation](get-a-409a-valuation.md)
-- Cap table record — from [Set up cap table](set-up-cap-table.md)
 
 ## Related records
 

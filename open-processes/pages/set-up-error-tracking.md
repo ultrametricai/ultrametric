@@ -3,6 +3,10 @@
 
 # Set up error tracking
 
+[Overview](#overview) · [Before you start](#before-you-start) · [Steps](#steps-at-a-glance) · [Outputs](#outputs)
+
+## Overview
+
 Configure error monitoring, alerting, and release tracking. Sentry is the canonical route; the observability arena ranks the alternatives.
 
 | Field | Value |
@@ -19,66 +23,117 @@ Configure error monitoring, alerting, and release tracking. Sentry is the canoni
 
 Sentry has a full API for project/alert configuration. SDK integration is code-level.
 
-## Steps
+## Before you start
 
-1. **Create a project in your error tracker** — agent-runnable · ~5 min · human approval required
-
-   Create the error-tracking project for the actual application and environments using the application's authorized vendor and data-sharing scope. Set access, retention and event-volume controls for the expected audience and traffic. Establish how test events will be identified and who triages production issues. Give developers the configuration identifier and SDK setup location while keeping management credentials private; the first test event should identify this application and environment.
-
-   - Canonical vendor: Sentry
-   - Vendor options: Sentry
-   - Ranked market: [error-tracking](../../open-rankings/error-tracking)
-   - Sources: [Sentry sensitive data scrubbing](https://docs.sentry.io/platforms/javascript/data-management/sensitive-data/) · [Set up Sentry releases](https://docs.sentry.io/product/releases/setup/)
-   - Next: steps 2, 3, 4 and 5 — all follow this step
-2. **Configure alert rules** — agent-runnable · ~5 min · human approval required
-
-   Choose a failure worth interrupting someone for, such as a broken checkout or errors affecting several users. Set an initial threshold against observed normal behavior and decide how repeated events and recovery are handled. Activate notifications within the service owner's authorized recipient scope. Send a labeled test event: the alert should identify the environment, lead to the issue and make the next diagnostic step clear. Adjust noisy rules after seeing actual traffic.
-
-   - Canonical vendor: Sentry
-   - Sources: [Google SRE implementing SLOs](https://sre.google/workbook/implementing-slos/) · [PagerDuty escalation policies and schedules](https://docs.pagerduty.com/incident-management/schedules/escalation-policies-and-schedules)
-
-   *This path ends here.*
-3. **Connect team chat notifications** — agent-runnable · ~5 min · human approval required
-
-   *Follows step 1.*
-
-   Connect the error tracker to the designated team channel under the workspace's integration authority. Check channel membership and the diagnostic fields that messages expose. Trigger a synthetic error and confirm the message reaches the right channel with the environment and a working issue link. Identify who picks it up and how to mute or disconnect the integration if it leaks information or floods the channel.
-
-   - Canonical vendor: Sentry
-   - Sources: [Sentry sensitive data scrubbing](https://docs.sentry.io/platforms/javascript/data-management/sensitive-data/) · [PagerDuty escalation policies and schedules](https://docs.pagerduty.com/incident-management/schedules/escalation-policies-and-schedules)
-
-   *This path ends here.*
-4. **Set up release tracking** — agent-runnable · ~5 min
-
-   *Follows step 1.*
-
-   Use a release identifier that resolves to the exact build and source revision, and send the environment consistently. Where the code is bundled or compiled, upload the supported source maps or debug files through the authorized build job. Trigger an error in that build and inspect the resulting stack trace: it should name the expected release and show useful source locations.
-
-   - Canonical vendor: Sentry
-   - Sources: [Set up Sentry releases](https://docs.sentry.io/product/releases/setup/)
-
-   *This path ends here.*
-5. **Install SDK in codebase** — agent-runnable · ~10 min · human approval required
-
-   *Follows step 1.*
-
-   Follow the SDK instructions for the application's actual framework and runtime version. Decide where initialization runs and which request, user and breadcrumb fields may leave the application under its data-sharing policy. Filter sensitive content before transmission, then trigger a synthetic exception in testing. Inspect both the received payload and stack trace, and check that normal requests still work. Keep the integration easy to disable if it causes failures or sends unexpected data.
-
-   - Verify: A thrown test error arrives in the tracker as an event with the release and environment tagged.
-   - Produces: Error tracking project
-   - Cross-arena market: [ai-coding](../../open-rankings/ai-coding)
-   - Sources: [Sentry sensitive data scrubbing](https://docs.sentry.io/platforms/javascript/data-management/sensitive-data/) · [Set up Sentry releases](https://docs.sentry.io/product/releases/setup/)
-
-## Artifacts
-
-Produces:
-
-- Error tracking project
-
-Requires:
+Required artifacts:
 
 - Team chat workspace — from [Set up team chat](set-up-team-chat.md)
 - Code hosting organization — from [Set up a code hosting org](set-up-a-code-hosting-org.md)
+
+| Information to gather | Required by the record |
+| --- | --- |
+| repo name | Yes |
+| repo framework | Yes |
+
+## Steps at a glance
+
+Use the recorded prerequisites and conditions to follow the path. Row order is for navigation.
+
+| Step | Handled by | Time estimate | Incoming dependencies |
+| --- | --- | --- | --- |
+| [1. Create a project in your error tracker](#step-1) | agent-runnable; approval required | ~5 min | Entry step |
+| [2. Configure alert rules](#step-2) | agent-runnable; approval required | ~5 min | [Step 1](#step-1) |
+| [3. Connect team chat notifications](#step-3) | agent-runnable; approval required | ~5 min | [Step 1](#step-1) |
+| [4. Set up release tracking](#step-4) | agent-runnable | ~5 min | [Step 1](#step-1) |
+| [5. Install SDK in codebase](#step-5) | agent-runnable; approval required | ~10 min | [Step 1](#step-1) |
+
+<a id="steps"></a>
+
+## Step details
+
+<a id="step-1"></a>
+
+### 1. Create a project in your error tracker
+
+agent-runnable · ~5 min · human approval required
+
+
+Create the error-tracking project for the actual application and environments using the application's authorized vendor and data-sharing scope. Set access, retention and event-volume controls for the expected audience and traffic. Establish how test events will be identified and who triages production issues. Give developers the configuration identifier and SDK setup location while keeping management credentials private; the first test event should identify this application and environment.
+
+- Canonical vendor: Sentry
+- Vendor options: Sentry
+- Ranked market: [error-tracking](../../open-rankings/error-tracking)
+- Sources: [Sentry sensitive data scrubbing](https://docs.sentry.io/platforms/javascript/data-management/sensitive-data/) · [Set up Sentry releases](https://docs.sentry.io/product/releases/setup/)
+- Next: steps 2, 3, 4 and 5 — all follow this step
+
+<a id="step-2"></a>
+
+### 2. Configure alert rules
+
+agent-runnable · ~5 min · human approval required
+
+
+Choose a failure worth interrupting someone for, such as a broken checkout or errors affecting several users. Set an initial threshold against observed normal behavior and decide how repeated events and recovery are handled. Activate notifications within the service owner's authorized recipient scope. Send a labeled test event: the alert should identify the environment, lead to the issue and make the next diagnostic step clear. Adjust noisy rules after seeing actual traffic.
+
+- Canonical vendor: Sentry
+- Sources: [Google SRE implementing SLOs](https://sre.google/workbook/implementing-slos/) · [PagerDuty escalation policies and schedules](https://docs.pagerduty.com/incident-management/schedules/escalation-policies-and-schedules)
+
+*This path ends here.*
+
+<a id="step-3"></a>
+
+### 3. Connect team chat notifications
+
+agent-runnable · ~5 min · human approval required
+
+
+*Follows step 1.*
+
+Connect the error tracker to the designated team channel under the workspace's integration authority. Check channel membership and the diagnostic fields that messages expose. Trigger a synthetic error and confirm the message reaches the right channel with the environment and a working issue link. Identify who picks it up and how to mute or disconnect the integration if it leaks information or floods the channel.
+
+- Canonical vendor: Sentry
+- Sources: [Sentry sensitive data scrubbing](https://docs.sentry.io/platforms/javascript/data-management/sensitive-data/) · [PagerDuty escalation policies and schedules](https://docs.pagerduty.com/incident-management/schedules/escalation-policies-and-schedules)
+
+*This path ends here.*
+
+<a id="step-4"></a>
+
+### 4. Set up release tracking
+
+agent-runnable · ~5 min
+
+
+*Follows step 1.*
+
+Use a release identifier that resolves to the exact build and source revision, and send the environment consistently. Where the code is bundled or compiled, upload the supported source maps or debug files through the authorized build job. Trigger an error in that build and inspect the resulting stack trace: it should name the expected release and show useful source locations.
+
+- Canonical vendor: Sentry
+- Sources: [Set up Sentry releases](https://docs.sentry.io/product/releases/setup/)
+
+*This path ends here.*
+
+<a id="step-5"></a>
+
+### 5. Install SDK in codebase
+
+agent-runnable · ~10 min · human approval required
+
+
+*Follows step 1.*
+
+Follow the SDK instructions for the application's actual framework and runtime version. Decide where initialization runs and which request, user and breadcrumb fields may leave the application under its data-sharing policy. Filter sensitive content before transmission, then trigger a synthetic exception in testing. Inspect both the received payload and stack trace, and check that normal requests still work. Keep the integration easy to disable if it causes failures or sends unexpected data.
+
+- Verify: A thrown test error arrives in the tracker as an event with the release and environment tagged.
+- Produces: Error tracking project
+- Cross-arena market: [ai-coding](../../open-rankings/ai-coding)
+- Sources: [Sentry sensitive data scrubbing](https://docs.sentry.io/platforms/javascript/data-management/sensitive-data/) · [Set up Sentry releases](https://docs.sentry.io/product/releases/setup/)
+
+
+<a id="artifacts"></a>
+
+## Outputs
+
+- Error tracking project
 
 ## Related records
 

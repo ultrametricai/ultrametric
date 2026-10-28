@@ -3,6 +3,10 @@
 
 # File DE franchise tax
 
+[Overview](#overview) · [Before you start](#before-you-start) · [Geography](#geography) · [Steps](#steps-at-a-glance)
+
+## Overview
+
 File the annual Delaware franchise tax and annual report.
 
 | Field | Value |
@@ -19,126 +23,245 @@ File the annual Delaware franchise tax and annual report.
 
 Delaware franchise tax portal has no API. System calculates the tax, pre-fills data, provides step-by-step guidance.
 
-## Steps
+## Before you start
 
-1. **Calculate franchise tax** — agent-runnable · ~5 min
+Required artifacts:
 
-   *Entry step — no prerequisite step.*
+- Certificate of Incorporation — from [Incorporate C-Corp](incorporate-c-corp.md)
+- Cap table record — from [Set up cap table](set-up-cap-table.md)
 
-   Confirm the Delaware entity type and year. For a corporation, reconcile authorized and issued shares, par values, gross assets and relevant charter changes to the records. Compare applicable calculation methods using current Division of Corporations instructions, resolving unusual cases with the tax adviser. Preserve the inputs and calculation so the selected amount can be explained and checked against the filing service.
+| Information to gather | Required by the record |
+| --- | --- |
+| authorized shares | Yes |
+| issued shares | Yes |
+| officers | Yes |
+| directors | Yes |
 
-   - Cross-arena options: ChatGPT, Claude (ai-assistants)
-   - Sources: [Delaware franchise-tax calculation](https://corp.delaware.gov/frtaxcalc/)
-2. **Gather officer and director info** — agent-runnable · ~2 min
+## Geography
 
-   *Entry step — no prerequisite step.*
+Country rows describe the guidance recorded here. Local notes and step alternatives do not establish a complete country-specific workflow.
 
-   Collect the officer, director, business-address and other details requested for this corporation’s annual report. Compare appointments and addresses with the prior report and resolve changes or conflicting records. Check which information will become public before entering personal details. Use the verified current information when preparing the report’s certification.
+| Country | Recorded guidance | Steps with local alternatives or resolutions |
+| --- | --- | --- |
+| [India](#geo-in) | Local analog note | — |
+| [United Kingdom](#geo-uk) | Local analog note | — |
+| [Germany](#geo-de) | Marked not applicable | — |
+| [France](#geo-fr) | Local analog note | — |
+| [Portugal](#geo-pt) | Local analog note | — |
+| [Canada](#geo-ca) | Local analog note | — |
+| [New Zealand](#geo-nz) | Local analog note | — |
+| [Singapore](#geo-sg) | Local analog note | — |
+| [Australia](#geo-au) | Local analog note | — |
+| [South Korea](#geo-kr) | Marked not applicable | — |
+| [Hong Kong](#geo-hk) | Local analog note | — |
+| [Estonia](#geo-ee) | Marked not applicable | — |
 
-   - Sources: [Delaware annual report and tax](https://corp.delaware.gov/frtax/)
-3. **File on Delaware portal** — manual form/portal · ~20 min · human approval required · hard to undo
+### State conditions
 
-   *Follows steps 1 and 2 — both are required first.*
+| Step | Applies when operating in |
+| --- | --- |
+| [6. Pay the California minimum franchise tax ($800, FTB)](#step-6) | CA |
+| [7. File the Texas franchise tax report (May 15)](#step-7) | TX |
 
-   Identify the corporation and reporting year in the official Delaware service using its verified file number. Enter the report details and reconcile the displayed tax with the reviewed calculation. Complete the declaration and submission through the company’s authorized filing route. Save the submitted report and check whether payment is included or outstanding. Resolve portal errors before treating the filing as complete.
+## Steps at a glance
 
-   - Verify: The Delaware portal returns a filing confirmation and the annual report shows filed for the tax year. ([icis.corp.delaware.gov](https://icis.corp.delaware.gov/ecorp/logintax.aspx))
-   - Canonical vendor: State Secretary of State
-   - Do it yourself: [Delaware franchise tax portal](https://icis.corp.delaware.gov/ecorp/logintax.aspx)
-   - Sources: [Delaware annual report and tax](https://corp.delaware.gov/frtax/)
-4. **Pay franchise tax** — manual form/portal · ~5 min · human approval required · hard to undo
+Use the recorded prerequisites and conditions to follow the path. Row order is for navigation.
 
-   Match the tax, report fee, adjustments and prior payments to the state account and reviewed calculation. Verify the entity, period and funding account through the company’s payment-approval process, then submit the payment and check settlement. If filing already collected the amount, reconcile that receipt before paying again. Resolve unexplained balances with the tax adviser or state.
+| Step | Handled by | Time estimate | Incoming dependencies |
+| --- | --- | --- | --- |
+| [1. Calculate franchise tax](#step-1) | agent-runnable | ~5 min | Entry step |
+| [2. Gather officer and director info](#step-2) | agent-runnable | ~2 min | Entry step |
+| [3. File on Delaware portal](#step-3) | manual form/portal; approval required | ~20 min | All: [Step 1](#step-1); [Step 2](#step-2) |
+| [4. Pay franchise tax](#step-4) | manual form/portal; approval required | ~5 min | [Step 3](#step-3) |
+| [5. Save confirmation receipt](#step-5) | agent-runnable | ~1 min | [Step 4](#step-4) |
+| [6. Pay the California minimum franchise tax ($800, FTB)](#step-6) | manual form/portal | ~15 min | Entry step |
+| [7. File the Texas franchise tax report (May 15)](#step-7) | manual form/portal | ~20 min | Entry step |
 
-   - Verify: A payment confirmation number is issued and the entity stays in Good Standing in the Delaware entity search. ([icis.corp.delaware.gov](https://icis.corp.delaware.gov/ecorp/entitysearch/namesearch.aspx))
-   - Cost: $225 (government fee, as of 2026-10-01, [corp.delaware.gov](https://corp.delaware.gov/frtax/)). Minimum: $175 minimum franchise tax (authorized-shares method) plus the $50 annual report filing fee; the assumed-par-value method minimum is $400 plus the $50 fee. Scales with authorized shares.
-   - Canonical vendor: State Secretary of State
-   - Do it yourself: [Pay Delaware franchise tax](https://corp.delaware.gov/paytaxes/)
-   - Sources: [Delaware annual report and tax](https://corp.delaware.gov/frtax/)
-5. **Save confirmation receipt** — agent-runnable · ~1 min · support work
+<a id="steps"></a>
 
-   Save the annual report, calculation, payment receipt and state acknowledgement under the correct year and entity. Reconcile transaction references and amounts to the ledger. Keep pending confirmations or unexplained balances visible, and update the compliance calendar from the verified filing status and next requirement.
+## Step details
 
-   - Canonical vendor: Google Drive
-   - Sources: [Delaware annual report and tax](https://corp.delaware.gov/frtax/)
+<a id="step-1"></a>
 
-   *This path ends here.*
-6. **Pay the California minimum franchise tax ($800, FTB)** — manual form/portal · ~15 min · hard to undo · only when operating in CA
+### 1. Calculate franchise tax
 
-   *Entry step — no prerequisite step.*
+agent-runnable · ~5 min
 
-   Assess the corporation’s California facts, tax year and treatment with the tax adviser, including minimum-tax applicability and first-year or other exceptions. Reconcile income-based tax and prior payments separately from the catalog’s stated minimum. Submit any resulting payment through the company’s authorized tax-payment route and retain the calculation and receipt. The California obligation must be established for this company before paying.
 
-   - Canonical vendor: California Franchise Tax Board
-   - Do it yourself: [FTB — C corporations (the $800 minimum franchise tax)](https://www.ftb.ca.gov/file/business/types/corporations/c-corporations.html)
-   - Sources: [California FTB corporations](https://www.ftb.ca.gov/file/business/types/corporations/index.html)
+*Entry step — no prerequisite step.*
 
-   *This path ends here.*
-7. **File the Texas franchise tax report (May 15)** — manual form/portal · ~20 min · hard to undo · only when operating in TX
+Confirm the Delaware entity type and year. For a corporation, reconcile authorized and issued shares, par values, gross assets and relevant charter changes to the records. Compare applicable calculation methods using current Division of Corporations instructions, resolving unusual cases with the tax adviser. Preserve the inputs and calculation so the selected amount can be explained and checked against the filing service.
 
-   *Entry step — no prerequisite step.*
+- Cross-arena options: ChatGPT, Claude (ai-assistants)
+- Sources: [Delaware franchise-tax calculation](https://corp.delaware.gov/frtaxcalc/)
 
-   Texas has no corporate income tax, but every taxable entity formed or doing business there files the annual franchise (margin) tax report, due May 15; entities at or below the no-tax-due threshold still file the Public Information Report or Ownership Report (law rule [us-tx.franchise-tax-report](../../open-law/US-TX/us-tx-franchise-tax-report.json)). Reconcile the margin computation with the tax adviser, file through the Comptroller's Webfile, and clear any forfeiture notices — forfeiture suspends the entity's right to sue. Keep the filed report and payment evidence with the tax records.
+<a id="step-2"></a>
 
-   - Canonical vendor: Texas Comptroller of Public Accounts
-   - Do it yourself: [TX Comptroller — franchise tax](https://comptroller.texas.gov/taxes/franchise/)
+### 2. Gather officer and director info
 
-## By country
+agent-runnable · ~2 min
+
+
+*Entry step — no prerequisite step.*
+
+Collect the officer, director, business-address and other details requested for this corporation’s annual report. Compare appointments and addresses with the prior report and resolve changes or conflicting records. Check which information will become public before entering personal details. Use the verified current information when preparing the report’s certification.
+
+- Sources: [Delaware annual report and tax](https://corp.delaware.gov/frtax/)
+
+<a id="step-3"></a>
+
+### 3. File on Delaware portal
+
+manual form/portal · ~20 min · human approval required · hard to undo
+
+
+*Follows steps 1 and 2 — both are required first.*
+
+Identify the corporation and reporting year in the official Delaware service using its verified file number. Enter the report details and reconcile the displayed tax with the reviewed calculation. Complete the declaration and submission through the company’s authorized filing route. Save the submitted report and check whether payment is included or outstanding. Resolve portal errors before treating the filing as complete.
+
+- Verify: The Delaware portal returns a filing confirmation and the annual report shows filed for the tax year. ([icis.corp.delaware.gov](https://icis.corp.delaware.gov/ecorp/logintax.aspx))
+- Canonical vendor: State Secretary of State
+- Do it yourself: [Delaware franchise tax portal](https://icis.corp.delaware.gov/ecorp/logintax.aspx)
+- Sources: [Delaware annual report and tax](https://corp.delaware.gov/frtax/)
+
+<a id="step-4"></a>
+
+### 4. Pay franchise tax
+
+manual form/portal · ~5 min · human approval required · hard to undo
+
+
+Match the tax, report fee, adjustments and prior payments to the state account and reviewed calculation. Verify the entity, period and funding account through the company’s payment-approval process, then submit the payment and check settlement. If filing already collected the amount, reconcile that receipt before paying again. Resolve unexplained balances with the tax adviser or state.
+
+- Verify: A payment confirmation number is issued and the entity stays in Good Standing in the Delaware entity search. ([icis.corp.delaware.gov](https://icis.corp.delaware.gov/ecorp/entitysearch/namesearch.aspx))
+- Cost: $225 (government fee, as of 2026-10-01, [corp.delaware.gov](https://corp.delaware.gov/frtax/)). Minimum: $175 minimum franchise tax (authorized-shares method) plus the $50 annual report filing fee; the assumed-par-value method minimum is $400 plus the $50 fee. Scales with authorized shares.
+- Canonical vendor: State Secretary of State
+- Do it yourself: [Pay Delaware franchise tax](https://corp.delaware.gov/paytaxes/)
+- Sources: [Delaware annual report and tax](https://corp.delaware.gov/frtax/)
+
+<a id="step-5"></a>
+
+### 5. Save confirmation receipt
+
+agent-runnable · ~1 min · support work
+
+
+Save the annual report, calculation, payment receipt and state acknowledgement under the correct year and entity. Reconcile transaction references and amounts to the ledger. Keep pending confirmations or unexplained balances visible, and update the compliance calendar from the verified filing status and next requirement.
+
+- Canonical vendor: Google Drive
+- Sources: [Delaware annual report and tax](https://corp.delaware.gov/frtax/)
+
+*This path ends here.*
+
+<a id="step-6"></a>
+
+### 6. Pay the California minimum franchise tax ($800, FTB)
+
+manual form/portal · ~15 min · hard to undo · only when operating in CA
+
+
+*Entry step — no prerequisite step.*
+
+Assess the corporation’s California facts, tax year and treatment with the tax adviser, including minimum-tax applicability and first-year or other exceptions. Reconcile income-based tax and prior payments separately from the catalog’s stated minimum. Submit any resulting payment through the company’s authorized tax-payment route and retain the calculation and receipt. The California obligation must be established for this company before paying.
+
+- Canonical vendor: California Franchise Tax Board
+- Do it yourself: [FTB — C corporations (the $800 minimum franchise tax)](https://www.ftb.ca.gov/file/business/types/corporations/c-corporations.html)
+- Sources: [California FTB corporations](https://www.ftb.ca.gov/file/business/types/corporations/index.html)
+
+*This path ends here.*
+
+<a id="step-7"></a>
+
+### 7. File the Texas franchise tax report (May 15)
+
+manual form/portal · ~20 min · hard to undo · only when operating in TX
+
+
+*Entry step — no prerequisite step.*
+
+Texas has no corporate income tax, but every taxable entity formed or doing business there files the annual franchise (margin) tax report, due May 15; entities at or below the no-tax-due threshold still file the Public Information Report or Ownership Report (law rule [us-tx.franchise-tax-report](../../open-law/US-TX/us-tx-franchise-tax-report.json)). Reconcile the margin computation with the tax adviser, file through the Comptroller's Webfile, and clear any forfeiture notices — forfeiture suspends the entity's right to sue. Keep the filed report and payment evidence with the tax records.
+
+- Canonical vendor: Texas Comptroller of Public Accounts
+- Do it yourself: [TX Comptroller — franchise tax](https://comptroller.texas.gov/taxes/franchise/)
+
+
+<a id="by-country"></a>
+
+## Country details
+
+<a id="geo-in"></a>
 
 ### India
 
 - No franchise tax; the keep-the-company-alive annual ritual is the MCA pair — financial statements (AOC-4) and the annual return (MGT-7/MGT-7A) — filed on MCA V3 (fronted by NSWS; mca.gov.in blocks automated access), with per-day late fees that compound fast. ([NSWS (MCA annual filings)](https://www.nsws.gov.in/))
 
+<a id="geo-uk"></a>
+
 ### United Kingdom
 
 - The closest analog is the confirmation statement: an annual Companies House filing (£34 online) confirming registered details — the same keep-the-company-in-good-standing ritual, but with no tax attached. ([Companies House confirmation statement](https://www.gov.uk/guidance/confirmation-statement-guidance))
+
+<a id="geo-de"></a>
 
 ### Germany
 
 - Not applicable: No franchise tax; the closest mandatory annual levy is the IHK-Beitrag — every trading company is automatically a chamber-of-commerce member and pays a small revenue-based contribution each year, no filing ritual attached. ([DIHK — chamber of commerce (IHK) membership](https://www.dihk.de/))
 
+<a id="geo-fr"></a>
+
 ### France
 
 - The closest analog is the CFE: an annual local business levy assessed per commune on every company (with a first-year exemption), paid through the espace professionnel — France's version of 'you pay something every year just for existing'. ([CFE — cotisation foncière des entreprises](https://entreprendre.service-public.fr/vosdroits/F23547))
+
+<a id="geo-pt"></a>
 
 ### Portugal
 
 - No franchise tax; the keep-the-company-current annual ritual is the IES — one electronic declaration that files the accounts to the registry, the tax annexes to AT and the statistics to INE in a single submission. ([Portal das Finanças — IES](https://www.portaldasfinancas.gov.pt/))
 
+<a id="geo-ca"></a>
+
 ### Canada
 
 - No franchise tax; the analog is the Corporations Canada annual return — a small online filing due within 60 days of the incorporation anniversary (it is not a tax return), and missing it can lead to administrative dissolution. ([Corporations Canada — annual return](https://ised-isde.canada.ca/site/corporations-canada/en/keep-your-corporation-good-shape/annual-return))
+
+<a id="geo-nz"></a>
 
 ### New Zealand
 
 - No franchise tax exists; the closest keep-the-company-in-good-standing ritual is the Companies Office annual return in your allocated filing month ($49.74 plus GST), confirming the register details — not a financial filing. ([Complete your annual return — Companies Register](https://companies-register.companiesoffice.govt.nz/help-centre/company-annual-returns/completing-an-annual-return/))
 
+<a id="geo-sg"></a>
+
 ### Singapore
 
 - No franchise tax: the keep-the-company-in-good-standing ritual is the ACRA annual return, due within 7 months after the financial year end (law rule [sg.annual-return-deadline](../../open-law/SG/sg-annual-return-deadline.json)), filed through Bizfile. ([ACRA — annual return deadlines](https://www.acra.gov.sg/manage/companies/legal-requirements-common-offences/filing-annual-returns-companies/deadline-requirements/))
+
+<a id="geo-au"></a>
 
 ### Australia
 
 - The analog ritual is the ASIC annual review: ASIC issues an annual statement at the review date (the registration anniversary), the annual review fee falls due, and the directors pass a solvency resolution within 2 months (law rule [au.annual-review-solvency-resolution](../../open-law/AU/au-annual-review-solvency-resolution.json)). ([ASIC annual review](https://asic.gov.au/for-business/running-a-company/annual-statements/))
 
+<a id="geo-kr"></a>
+
 ### South Korea
 
 - Not applicable: No franchise-tax ritual exists; the nearest recurring local obligation is the corporate resident tax (주민세) filed with the municipality through WeTax. ([WeTax (local taxes)](https://www.wetax.go.kr/))
+
+<a id="geo-hk"></a>
 
 ### Hong Kong
 
 - No franchise tax exists: the keep-the-company-current rituals are the NAR1 annual return within 42 days after the incorporation anniversary (law rule [hk.annual-return-deadline](../../open-law/HK/hk-annual-return-deadline.json)) and the business registration certificate renewal with the Inland Revenue Department. ([Companies Registry — annual return (private company)](https://www.cr.gov.hk/en/compliance/annual-return/private-company.htm))
 
+<a id="geo-ee"></a>
+
 ### Estonia
 
 - Not applicable: No franchise tax exists: there is no annual state fee for staying incorporated. The recurring commercial-register obligation is the annual report, due six months after the financial year ends (law rule [ee.annual-report-deadline](../../open-law/EE/ee-annual-report-deadline.json)). ([e-Business Register](https://ariregister.rik.ee/eng))
 
-## Artifacts
-
-Requires:
-
-- Certificate of Incorporation — from [Incorporate C-Corp](incorporate-c-corp.md)
-- Cap table record — from [Set up cap table](set-up-cap-table.md)
+<a id="artifacts"></a>
 
 ## Related records
 

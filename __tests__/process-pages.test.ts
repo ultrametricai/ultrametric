@@ -52,11 +52,46 @@ describe('open-processes/pages', () => {
     expect(renderProcessPage(situation, ctx)).toContain('**Trigger:**')
     const chain = ctx.sources.find((s) => s.taskIds)!
     const page = renderProcessPage(chain, ctx)
-    expect(page).toContain('## Processes in order')
+    expect(page).toContain('## Process sequence')
+    expect(page).toContain('| Order | Process | Requires | Produces |')
     for (const id of chain.taskIds!) {
       const slug = ctx.slugById.get(id)!
       expect(page).toContain(`(${slug}.md)`)
     }
+  })
+
+  it('every navigation fragment resolves on the rendered page', () => {
+    for (const [name, page] of committedPages()) {
+      const anchors = new Set([...page.matchAll(/<a id="([^"]+)"><\/a>/g)].map((m) => m[1]))
+      for (const match of page.matchAll(/^#{1,6} (.+)$/gm)) {
+        anchors.add(match[1].toLowerCase().replace(/[^\p{L}\p{N}_ -]/gu, '').replace(/ /g, '-'))
+      }
+      for (const match of page.matchAll(/\]\(#([^)]+)\)/g)) {
+        expect(anchors.has(match[1]), `${name}: #${match[1]}`).toBe(true)
+      }
+    }
+  })
+
+  it('keeps geography scope, state conditions and parallel prerequisites visible', () => {
+    const source = ctx.sources.find((s) => s.slug === 'register-state-taxes')!
+    const page = renderProcessPage(source, ctx)
+    expect(page.indexOf('## Geography')).toBeLessThan(page.indexOf('## Steps at a glance'))
+    expect(page).toContain('Local notes and step alternatives do not establish a complete country-specific workflow.')
+    expect(page).toContain('### State conditions')
+    expect(page).toContain('All: [Step 2](#step-2); [Step 3](#step-3)')
+    expect(page).toContain('<a id="by-country"></a>')
+    expect(page).toContain('<a id="steps"></a>')
+  })
+
+  it('puts required artifacts before the instructions and retains verification and sources', () => {
+    const source = ctx.sources.find((s) => s.slug === 'get-ein')!
+    const page = renderProcessPage(source, ctx)
+    expect(page.indexOf('## Before you start')).toBeLessThan(page.indexOf('## Step details'))
+    expect(page).toContain('[Incorporate C-Corp](incorporate-c-corp.md)')
+    expect(page).toContain('| Information to gather | Required by the record |')
+    expect(page).toContain('- Verify:')
+    expect(page).toContain('## Outputs')
+    expect(page).toContain('https://www.irs.gov/')
   })
 })
 

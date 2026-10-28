@@ -3,6 +3,10 @@
 
 # Set up credit card
 
+[Overview](#overview) · [Before you start](#before-you-start) · [Steps](#steps-at-a-glance) · [Outputs](#outputs)
+
+## Overview
+
 Get a corporate card for company spend — compare issuers, apply online, and sync transactions into the books.
 
 | Field | Value |
@@ -19,37 +23,69 @@ Get a corporate card for company spend — compare issuers, apply online, and sy
 
 Card applications are fully online with the startup issuers; transaction sync runs on their APIs.
 
-## Steps
+## Before you start
 
-1. **Compare card providers** — agent-runnable · ~5 min
-
-   Compare card products against intended cardholders, spending categories, currencies, repayment needs and approval controls. Examine fees, eligibility, credit or deposit requirements, liability and accounting exports in the current terms. Understand the cash implications and any personal guarantee before selecting a product; unresolved financing commitments belong with the company officer who can accept them.
-
-   - Vendor options: Brex, Ramp, Mercury
-   - Ranked market: [expense-management](../../open-rankings/expense-management)
-   - Cross-arena options: ChatGPT, Claude, Gemini (ai-assistants)
-2. **Apply for the corporate card online** — manual form/portal · ~15 min · async wait
-
-   Apply with verified company, ownership and financial information. The officer authorized to accept the card agreement reviews the offered limit, repayment terms, fees and any guarantee or collateral commitment before submitting. If approved, establish administrators and spending controls before issuing cards, and resolve any conditions affecting the account’s use.
-
-   - Produces: Corporate card
-   - Vendor options: Brex, Ramp, Mercury
-   - Ranked market: [expense-management](../../open-rankings/expense-management)
-   - Cross-arena market: [workflow-automation](../../open-rankings/workflow-automation)
-3. **Sync card transactions into the books** — agent-runnable · ~3 min
-
-   Connect the card account to the correct accounting entity through the authorized administrator. Choose an import date and match existing transactions to prevent duplicates. Map balances, repayments, fees and receipts, then reconcile a statement end to end. Assign responsibility for missing receipts and failed syncs so the connection supports ongoing bookkeeping.
-
-## Artifacts
-
-Produces:
-
-- Corporate card
-
-Requires:
+Required artifacts:
 
 - Business bank account — from [Open bank account](open-bank-account.md)
 - Accounting ledger — from [Set up accounting](set-up-accounting.md)
+
+## Steps at a glance
+
+Use the recorded prerequisites and conditions to follow the path. Row order is for navigation.
+
+| Step | Handled by | Time estimate | Incoming dependencies |
+| --- | --- | --- | --- |
+| [1. Compare card providers](#step-1) | agent-runnable | ~5 min | Entry step |
+| [2. Apply for the corporate card online](#step-2) | manual form/portal; includes waiting | ~15 min | [Step 1](#step-1) |
+| [3. Sync card transactions into the books](#step-3) | agent-runnable | ~3 min | [Step 2](#step-2) |
+
+<a id="steps"></a>
+
+## Step details
+
+<a id="step-1"></a>
+
+### 1. Compare card providers
+
+agent-runnable · ~5 min
+
+
+Compare card products against intended cardholders, spending categories, currencies, repayment needs and approval controls. Examine fees, eligibility, credit or deposit requirements, liability and accounting exports in the current terms. Understand the cash implications and any personal guarantee before selecting a product; unresolved financing commitments belong with the company officer who can accept them.
+
+- Vendor options: Brex, Ramp, Mercury
+- Ranked market: [expense-management](../../open-rankings/expense-management)
+- Cross-arena options: ChatGPT, Claude, Gemini (ai-assistants)
+
+<a id="step-2"></a>
+
+### 2. Apply for the corporate card online
+
+manual form/portal · ~15 min · async wait
+
+
+Apply with verified company, ownership and financial information. The officer authorized to accept the card agreement reviews the offered limit, repayment terms, fees and any guarantee or collateral commitment before submitting. If approved, establish administrators and spending controls before issuing cards, and resolve any conditions affecting the account’s use.
+
+- Produces: Corporate card
+- Vendor options: Brex, Ramp, Mercury
+- Ranked market: [expense-management](../../open-rankings/expense-management)
+- Cross-arena market: [workflow-automation](../../open-rankings/workflow-automation)
+
+<a id="step-3"></a>
+
+### 3. Sync card transactions into the books
+
+agent-runnable · ~3 min
+
+
+Connect the card account to the correct accounting entity through the authorized administrator. Choose an import date and match existing transactions to prevent duplicates. Map balances, repayments, fees and receipts, then reconcile a statement end to end. Assign responsibility for missing receipts and failed syncs so the connection supports ongoing bookkeeping.
+
+
+<a id="artifacts"></a>
+
+## Outputs
+
+- Corporate card
 
 ---
 

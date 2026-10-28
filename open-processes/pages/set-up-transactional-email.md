@@ -3,6 +3,10 @@
 
 # Set up transactional email
 
+[Overview](#overview) · [Before you start](#before-you-start) · [Steps](#steps-at-a-glance) · [Outputs](#outputs)
+
+## Overview
+
 Configure transactional email — password resets, receipts, notifications. SendGrid is the canonical route; the email arena ranks the alternatives.
 
 | Field | Value |
@@ -19,56 +23,106 @@ Configure transactional email — password resets, receipts, notifications. Send
 
 SendGrid API fully supports template and sending configuration. Domain verification automatable.
 
-## Steps
+## Before you start
 
-1. **Create your transactional email account** — manual form/portal · ~5 min · human approval required
-
-   Choose a sending account for the application's message types, expected volume and environments. Check current pricing, data handling and credential controls, and establish company ownership within the agreed budget. Separate development and production access where supported and store credentials privately with a rotation owner. Complete domain authentication and controlled delivery tests before enabling customer sends.
-
-   - Canonical vendor: SendGrid
-   - Vendor options: SendGrid
-   - Ranked market: [email-apis](../../open-rankings/email-apis)
-2. **Authenticate sending domain** — agent-runnable · ~10 min · async wait · human approval required
-
-   Choose the sending domain or subdomain with the email administrator after inspecting existing mail services. Generate the authentication records in the selected provider's current setup flow, capturing the exact hosts, types and values. Identify conflicts or selectors already in use and produce the DNS change set for the domain administrator. Authentication is still pending until those records are applied and verified.
-
-   - Produces: Transactional email account
-   - Canonical vendor: SendGrid
-   - Vendor options: SendGrid
-   - Ranked market: [email-apis](../../open-rankings/email-apis)
-   - Sources: [Configure domain authentication](https://www.twilio.com/docs/sendgrid/ui/account-and-settings/how-to-set-up-domain-authentication)
-3. **Add DNS records** — agent-runnable · ~5 min · human approval required
-
-   Apply the mail-authentication change set authorized by the domain administrator to the authoritative DNS zone. Copy the sender's exact record types, hosts and values; check for duplicated domain suffixes and conflicts with existing records. Preserve other website and mail services. Read the records back and run the provider's verification, investigating any failed check before marking the domain authenticated.
-
-   - Verify: SPF, DKIM and DMARC checks pass — the provider's domain verification goes green and a test message's Authentication-Results header shows pass. ([toolbox.googleapps.com](https://toolbox.googleapps.com/apps/checkmx/))
-   - Canonical vendor: Cloudflare
-   - Sources: [Configure domain authentication](https://www.twilio.com/docs/sendgrid/ui/account-and-settings/how-to-set-up-domain-authentication)
-4. **Create email templates** — agent-runnable · ~10 min · human approval required
-
-   Write each transactional message for its application event and the action or confirmation the recipient needs. Define variables, fallbacks and links without exposing secrets or unnecessary personal data. Preview fictional examples, test expired links where relevant, and map finished template versions to their triggers. Review promotional additions separately.
-
-   - Canonical vendor: SendGrid
-   - Vendor options: SendGrid
-   - Ranked market: [email-apis](../../open-rankings/email-apis)
-5. **Test email delivery** — agent-runnable · ~5 min
-
-   Trigger each email type from a controlled application flow to authorized test recipients. Inspect the message, sender, authentication results, links and delivery logs. Exercise failure and bounce handling using the provider's supported test methods. Match application events to message identifiers to find missing or duplicate sends, and resolve those failures before the tested path handles real customer events.
-
-   - Canonical vendor: SendGrid
-   - Vendor options: SendGrid
-   - Ranked market: [email-apis](../../open-rankings/email-apis)
-
-## Artifacts
-
-Produces:
-
-- Transactional email account
-
-Requires:
+Required artifacts:
 
 - Registered domain — from [Buy a domain](buy-a-domain.md)
 - DNS control — from [Buy a domain](buy-a-domain.md)
+
+| Information to gather | Required by the record |
+| --- | --- |
+| domain | Yes |
+
+## Steps at a glance
+
+Use the recorded prerequisites and conditions to follow the path. Row order is for navigation.
+
+| Step | Handled by | Time estimate | Incoming dependencies |
+| --- | --- | --- | --- |
+| [1. Create your transactional email account](#step-1) | manual form/portal; approval required | ~5 min | Entry step |
+| [2. Authenticate sending domain](#step-2) | agent-runnable; approval required; includes waiting | ~10 min | [Step 1](#step-1) |
+| [3. Add DNS records](#step-3) | agent-runnable; approval required | ~5 min | [Step 2](#step-2) |
+| [4. Create email templates](#step-4) | agent-runnable; approval required | ~10 min | [Step 3](#step-3) |
+| [5. Test email delivery](#step-5) | agent-runnable | ~5 min | [Step 4](#step-4) |
+
+<a id="steps"></a>
+
+## Step details
+
+<a id="step-1"></a>
+
+### 1. Create your transactional email account
+
+manual form/portal · ~5 min · human approval required
+
+
+Choose a sending account for the application's message types, expected volume and environments. Check current pricing, data handling and credential controls, and establish company ownership within the agreed budget. Separate development and production access where supported and store credentials privately with a rotation owner. Complete domain authentication and controlled delivery tests before enabling customer sends.
+
+- Canonical vendor: SendGrid
+- Vendor options: SendGrid
+- Ranked market: [email-apis](../../open-rankings/email-apis)
+
+<a id="step-2"></a>
+
+### 2. Authenticate sending domain
+
+agent-runnable · ~10 min · async wait · human approval required
+
+
+Choose the sending domain or subdomain with the email administrator after inspecting existing mail services. Generate the authentication records in the selected provider's current setup flow, capturing the exact hosts, types and values. Identify conflicts or selectors already in use and produce the DNS change set for the domain administrator. Authentication is still pending until those records are applied and verified.
+
+- Produces: Transactional email account
+- Canonical vendor: SendGrid
+- Vendor options: SendGrid
+- Ranked market: [email-apis](../../open-rankings/email-apis)
+- Sources: [Configure domain authentication](https://www.twilio.com/docs/sendgrid/ui/account-and-settings/how-to-set-up-domain-authentication)
+
+<a id="step-3"></a>
+
+### 3. Add DNS records
+
+agent-runnable · ~5 min · human approval required
+
+
+Apply the mail-authentication change set authorized by the domain administrator to the authoritative DNS zone. Copy the sender's exact record types, hosts and values; check for duplicated domain suffixes and conflicts with existing records. Preserve other website and mail services. Read the records back and run the provider's verification, investigating any failed check before marking the domain authenticated.
+
+- Verify: SPF, DKIM and DMARC checks pass — the provider's domain verification goes green and a test message's Authentication-Results header shows pass. ([toolbox.googleapps.com](https://toolbox.googleapps.com/apps/checkmx/))
+- Canonical vendor: Cloudflare
+- Sources: [Configure domain authentication](https://www.twilio.com/docs/sendgrid/ui/account-and-settings/how-to-set-up-domain-authentication)
+
+<a id="step-4"></a>
+
+### 4. Create email templates
+
+agent-runnable · ~10 min · human approval required
+
+
+Write each transactional message for its application event and the action or confirmation the recipient needs. Define variables, fallbacks and links without exposing secrets or unnecessary personal data. Preview fictional examples, test expired links where relevant, and map finished template versions to their triggers. Review promotional additions separately.
+
+- Canonical vendor: SendGrid
+- Vendor options: SendGrid
+- Ranked market: [email-apis](../../open-rankings/email-apis)
+
+<a id="step-5"></a>
+
+### 5. Test email delivery
+
+agent-runnable · ~5 min
+
+
+Trigger each email type from a controlled application flow to authorized test recipients. Inspect the message, sender, authentication results, links and delivery logs. Exercise failure and bounce handling using the provider's supported test methods. Match application events to message identifiers to find missing or duplicate sends, and resolve those failures before the tested path handles real customer events.
+
+- Canonical vendor: SendGrid
+- Vendor options: SendGrid
+- Ranked market: [email-apis](../../open-rankings/email-apis)
+
+
+<a id="artifacts"></a>
+
+## Outputs
+
+- Transactional email account
 
 ---
 

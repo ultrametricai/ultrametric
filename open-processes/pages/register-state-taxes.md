@@ -3,6 +3,10 @@
 
 # Register state taxes
 
+[Overview](#overview) · [Before you start](#before-you-start) · [Geography](#geography) · [Steps](#steps-at-a-glance) · [Outputs](#outputs)
+
+## Overview
+
 Register for state income tax, sales tax, and employment tax in operating states. The regimes diverge hard by state: California layers an $800 minimum franchise tax on every registered corporation (law rule [us-ca.minimum-franchise-tax](../../open-law/US-CA/us-ca-minimum-franchise-tax.json)), Nevada has no corporate income tax but a gross-receipts commerce tax past $4M of in-state revenue (law rule [us-nv.commerce-tax-threshold](../../open-law/US-NV/us-nv-commerce-tax-threshold.json)), and Texas replaces income tax with the margin-based franchise tax (law rule [us-tx.franchise-tax-report](../../open-law/US-TX/us-tx-franchise-tax-report.json)).
 
 | Field | Value |
@@ -19,128 +23,247 @@ Register for state income tax, sales tax, and employment tax in operating states
 
 State tax portals have no APIs. System provides state-specific checklists and pre-fills company data.
 
-## Steps
+## Before you start
 
-1. **Identify required state registrations** — agent-runnable · ~5 min
+Required artifacts:
 
-   *Entry step — no prerequisite step.*
+- EIN assignment letter — from [Get EIN](get-ein.md)
 
-   List the company’s state registrations, employee work locations, property, sales and business activities. Have the tax adviser assess income, franchise, withholding, unemployment and sales-tax accounts separately using each relevant agency’s current rules. Record the required account types and effective dates, with missing facts identified. Corporate foreign qualification needs its own assessment; a secretary-of-state registration does not finish tax registration.
+| Information to gather | Required by the record |
+| --- | --- |
+| ein | Yes |
+| company operating states | Yes |
+| address | Yes |
 
-   - Next: steps 2 and 3 — all follow this step
-2. **Register with state tax authority** — manual form/portal · ~30 min · human approval required · hard to undo
+## Geography
 
-   Prepare the approved account registration with the correct agency, legal entity, EIN, activity dates, address and contact. Resolve uncertain start dates and complete the declaration and submission through the entity’s authorized filing route. Save the filed application and track agency requests until the account is issued. Store credentials securely and pass the issued account details to the team responsible for its returns or payments.
+Country rows describe the guidance recorded here. Local notes and step alternatives do not establish a complete country-specific workflow.
 
-   - Verify: The state issues a tax account number and the registration shows active in the state's portal.
-   - Produces: State tax accounts
-   - Canonical vendor: State Secretary of State
-3. **Register for sales tax (if applicable)** — manual form/portal · ~20 min · human approval required · hard to undo
+| Country | Recorded guidance | Steps with local alternatives or resolutions |
+| --- | --- | --- |
+| [India](#geo-in) | Local analog note | — |
+| [United Kingdom](#geo-uk) | Local analog note | — |
+| [Germany](#geo-de) | Local analog note | — |
+| [France](#geo-fr) | Handled within another local process | — |
+| [Portugal](#geo-pt) | Local analog note | — |
+| [Canada](#geo-ca) | Local analog note | — |
+| [New Zealand](#geo-nz) | Local analog note | — |
+| [Singapore](#geo-sg) | Handled within another local process | — |
+| [Australia](#geo-au) | Local analog note | — |
+| [South Korea](#geo-kr) | Local analog note | — |
+| [Hong Kong](#geo-hk) | Handled within another local process | — |
+| [Estonia](#geo-ee) | Marked not applicable | — |
 
-   *Follows step 1.*
+### State conditions
 
-   For states identified in the reviewed sales-tax assessment, check the registration effective date, product treatment and marketplace arrangements. Prepare the applications from those conclusions and the company’s verified details. The authorized filer submits them and tracks issuance. Use the resulting account numbers and filing schedules when configuring collection and returns, with any pending state kept visibly pending.
+| Step | Applies when operating in |
+| --- | --- |
+| [5. Register where you have sales-tax nexus](#step-5) | multi-state |
+| [6. Assess New York Article 9-A nexus and file Form CT-3](#step-6) | NY |
+| [7. Register with the Washington DOR and report B&O tax](#step-7) | WA |
 
-   - Verify: A sales-tax permit number is issued — required before collecting tax in that state.
-   - Canonical vendor: State Secretary of State
-   - Vendor options: Avalara, Anrok, TaxJar, Stripe Tax
-   - Ranked market: [tax-automation](../../open-rankings/tax-automation)
-4. **Store registration numbers** — agent-runnable · ~2 min
+## Steps at a glance
 
-   *Follows steps 2 and 3 — both are required first.*
+Use the recorded prerequisites and conditions to follow the path. Row order is for navigation.
 
-   Enter each issued number with its tax type, jurisdiction, effective date and filing frequency in the restricted compliance register. Attach the agency confirmation and store portal credentials separately. Reconcile issued, pending and rejected applications, then assign notice handling and return preparation to finance or payroll. Give those teams the issued account details needed for their filings.
+| Step | Handled by | Time estimate | Incoming dependencies |
+| --- | --- | --- | --- |
+| [1. Identify required state registrations](#step-1) | agent-runnable | ~5 min | Entry step |
+| [2. Register with state tax authority](#step-2) | manual form/portal; approval required | ~30 min | [Step 1](#step-1) |
+| [3. Register for sales tax (if applicable)](#step-3) | manual form/portal; approval required | ~20 min | [Step 1](#step-1) |
+| [4. Store registration numbers](#step-4) | agent-runnable | ~2 min | All: [Step 2](#step-2); [Step 3](#step-3) |
+| [5. Register where you have sales-tax nexus](#step-5) | human | ~10 min | Entry step |
+| [6. Assess New York Article 9-A nexus and file Form CT-3](#step-6) | manual form/portal | ~30 min | Entry step |
+| [7. Register with the Washington DOR and report B&O tax](#step-7) | manual form/portal | ~25 min | Entry step |
 
-   *This path ends here.*
-5. **Register where you have sales-tax nexus** — human · ~10 min · hard to undo · only when operating multi-state
+<a id="steps"></a>
 
-   *Entry step — no prerequisite step.*
+## Step details
 
-   Assess each additional state using actual sales, business presence, product treatment and relevant dates. Identify the state rule and measurement period behind the proposed registration. Resolve whether and when to register with the tax adviser before an application is filed. Connect the issued account to billing and return preparation; a platform already collecting elsewhere does not establish this state’s treatment.
+<a id="step-1"></a>
 
-   - Runs the process [Register for sales tax where you have nexus](register-for-sales-tax-where-you-have-nexus.md)
+### 1. Identify required state registrations
 
-   *This path ends here.*
-6. **Assess New York Article 9-A nexus and file Form CT-3** — manual form/portal · ~30 min · hard to undo · only when operating in NY
+agent-runnable · ~5 min
 
-   *Entry step — no prerequisite step.*
 
-   A corporation that does business, employs capital, owns or leases property, maintains an office, or derives receipts from activity in New York State owes the Article 9-A franchise tax; for tax years beginning in 2024 through 2026, deriving $1,283,000 or more of New York receipts is itself sufficient (law rule [us-ny.corporate-franchise-tax-nexus](../../open-law/US-NY/us-ny-corporate-franchise-tax-nexus.json)). Settle the nexus question with the tax adviser, then file Form CT-3 (CT-3-A for a combined group) and pay the highest of the income, capital, and fixed-dollar-minimum bases plus any MTA surcharge. New York City's business corporation tax is a separate analysis.
+*Entry step — no prerequisite step.*
 
-   - Canonical vendor: New York Department of Taxation and Finance
-   - Do it yourself: [NY DTF — Article 9-A franchise tax](https://www.tax.ny.gov/bus/ct/article9a.htm)
-   - Sources: [NY DTF — deriving receipts thresholds](https://www.tax.ny.gov/bus/ct/article9a_deriving_receipts.htm)
+List the company’s state registrations, employee work locations, property, sales and business activities. Have the tax adviser assess income, franchise, withholding, unemployment and sales-tax accounts separately using each relevant agency’s current rules. Record the required account types and effective dates, with missing facts identified. Corporate foreign qualification needs its own assessment; a secretary-of-state registration does not finish tax registration.
 
-   *This path ends here.*
-7. **Register with the Washington DOR and report B&O tax** — manual form/portal · ~25 min · hard to undo · only when operating in WA
+- Next: steps 2 and 3 — all follow this step
 
-   *Entry step — no prerequisite step.*
+<a id="step-2"></a>
 
-   Washington levies no corporate income tax; most businesses instead owe the business and occupation (B&O) tax on gross receipts, at a rate set by the activity's classification, with no deduction for costs (law rule [us-wa.business-occupation-tax](../../open-law/US-WA/us-wa-business-occupation-tax.json)). Register through the state business license application, which opens the Department of Revenue account, then report on the excise tax return through My DOR on the assigned filing frequency. Check the small business B&O credit and any city B&O obligations with the tax adviser.
+### 2. Register with state tax authority
 
-   - Canonical vendor: Washington Department of Revenue
-   - Do it yourself: [WA DOR — business & occupation tax](https://dor.wa.gov/taxes-rates/business-occupation-tax)
-   - Sources: [WA DOR — apply for a business license](https://dor.wa.gov/open-business/apply-business-license)
+manual form/portal · ~30 min · human approval required · hard to undo
 
-## By country
+
+Prepare the approved account registration with the correct agency, legal entity, EIN, activity dates, address and contact. Resolve uncertain start dates and complete the declaration and submission through the entity’s authorized filing route. Save the filed application and track agency requests until the account is issued. Store credentials securely and pass the issued account details to the team responsible for its returns or payments.
+
+- Verify: The state issues a tax account number and the registration shows active in the state's portal.
+- Produces: State tax accounts
+- Canonical vendor: State Secretary of State
+
+<a id="step-3"></a>
+
+### 3. Register for sales tax (if applicable)
+
+manual form/portal · ~20 min · human approval required · hard to undo
+
+
+*Follows step 1.*
+
+For states identified in the reviewed sales-tax assessment, check the registration effective date, product treatment and marketplace arrangements. Prepare the applications from those conclusions and the company’s verified details. The authorized filer submits them and tracks issuance. Use the resulting account numbers and filing schedules when configuring collection and returns, with any pending state kept visibly pending.
+
+- Verify: A sales-tax permit number is issued — required before collecting tax in that state.
+- Canonical vendor: State Secretary of State
+- Vendor options: Avalara, Anrok, TaxJar, Stripe Tax
+- Ranked market: [tax-automation](../../open-rankings/tax-automation)
+
+<a id="step-4"></a>
+
+### 4. Store registration numbers
+
+agent-runnable · ~2 min
+
+
+*Follows steps 2 and 3 — both are required first.*
+
+Enter each issued number with its tax type, jurisdiction, effective date and filing frequency in the restricted compliance register. Attach the agency confirmation and store portal credentials separately. Reconcile issued, pending and rejected applications, then assign notice handling and return preparation to finance or payroll. Give those teams the issued account details needed for their filings.
+
+*This path ends here.*
+
+<a id="step-5"></a>
+
+### 5. Register where you have sales-tax nexus
+
+human · ~10 min · hard to undo · only when operating multi-state
+
+
+*Entry step — no prerequisite step.*
+
+Assess each additional state using actual sales, business presence, product treatment and relevant dates. Identify the state rule and measurement period behind the proposed registration. Resolve whether and when to register with the tax adviser before an application is filed. Connect the issued account to billing and return preparation; a platform already collecting elsewhere does not establish this state’s treatment.
+
+- Runs the process [Register for sales tax where you have nexus](register-for-sales-tax-where-you-have-nexus.md)
+
+*This path ends here.*
+
+<a id="step-6"></a>
+
+### 6. Assess New York Article 9-A nexus and file Form CT-3
+
+manual form/portal · ~30 min · hard to undo · only when operating in NY
+
+
+*Entry step — no prerequisite step.*
+
+A corporation that does business, employs capital, owns or leases property, maintains an office, or derives receipts from activity in New York State owes the Article 9-A franchise tax; for tax years beginning in 2024 through 2026, deriving $1,283,000 or more of New York receipts is itself sufficient (law rule [us-ny.corporate-franchise-tax-nexus](../../open-law/US-NY/us-ny-corporate-franchise-tax-nexus.json)). Settle the nexus question with the tax adviser, then file Form CT-3 (CT-3-A for a combined group) and pay the highest of the income, capital, and fixed-dollar-minimum bases plus any MTA surcharge. New York City's business corporation tax is a separate analysis.
+
+- Canonical vendor: New York Department of Taxation and Finance
+- Do it yourself: [NY DTF — Article 9-A franchise tax](https://www.tax.ny.gov/bus/ct/article9a.htm)
+- Sources: [NY DTF — deriving receipts thresholds](https://www.tax.ny.gov/bus/ct/article9a_deriving_receipts.htm)
+
+*This path ends here.*
+
+<a id="step-7"></a>
+
+### 7. Register with the Washington DOR and report B&O tax
+
+manual form/portal · ~25 min · hard to undo · only when operating in WA
+
+
+*Entry step — no prerequisite step.*
+
+Washington levies no corporate income tax; most businesses instead owe the business and occupation (B&O) tax on gross receipts, at a rate set by the activity's classification, with no deduction for costs (law rule [us-wa.business-occupation-tax](../../open-law/US-WA/us-wa-business-occupation-tax.json)). Register through the state business license application, which opens the Department of Revenue account, then report on the excise tax return through My DOR on the assigned filing frequency. Check the small business B&O credit and any city B&O obligations with the tax adviser.
+
+- Canonical vendor: Washington Department of Revenue
+- Do it yourself: [WA DOR — business & occupation tax](https://dor.wa.gov/taxes-rates/business-occupation-tax)
+- Sources: [WA DOR — apply for a business license](https://dor.wa.gov/open-business/apply-business-license)
+
+
+<a id="by-country"></a>
+
+## Country details
+
+<a id="geo-in"></a>
 
 ### India
 
 - The state layer is real here: GST registration is per state of operation, and professional tax plus shops-and-establishments registration are state acts — the closest thing to US state tax registration. ([GST portal (per-state registration)](https://www.gst.gov.in/))
 
+<a id="geo-uk"></a>
+
 ### United Kingdom
 
 - No states: registering for taxes means one national HMRC registration each — Corporation Tax (the UTR arrives automatically), PAYE when you employ, and VAT past the £90k threshold. ([HMRC — register for VAT](https://www.gov.uk/register-for-vat))
+
+<a id="geo-de"></a>
 
 ### Germany
 
 - The sub-national layer is municipal: a Gewerbeanmeldung (trade registration) with each municipality you operate in, which drives Gewerbesteuer at that municipality's Hebesatz — plus the one federal tax-office registration via ELSTER. ([BMWK founders portal (Gewerbeanmeldung)](https://www.existenzgruender.de/))
 
+<a id="geo-fr"></a>
+
 ### France
 
 - Absorbed: Registrations are national and flow from the guichet unique filing; local business taxes (the CFE) are then assessed per commune automatically — nothing to register state-by-state. ([impots.gouv.fr — espace professionnel](https://www.impots.gouv.fr/professionnel))
+
+<a id="geo-pt"></a>
 
 ### Portugal
 
 - One national layer instead of states: the início de atividade declaration with the tax authority covers corporate tax and VAT in one filing, and Segurança Social employer registration is the separate second rail — nothing to repeat per region. ([Portal das Finanças — início de atividade](https://www.portaldasfinancas.gov.pt/))
 
+<a id="geo-ca"></a>
+
 ### Canada
 
 - The provincial layer is real: GST/HST is federal via the business number, but BC, Saskatchewan and Manitoba run their own PST registrations, Quebec runs QST, and provinces add payroll levies (Ontario's EHT) and workers'-compensation accounts. ([CRA — GST/HST for businesses](https://www.canada.ca/en/revenue-agency/services/tax/businesses/topics/gst-hst-businesses.html))
+
+<a id="geo-nz"></a>
 
 ### New Zealand
 
 - No states: tax registrations are national and run through Inland Revenue's myIR — the company IRD number (requestable inside incorporation), GST past the $60,000 threshold, and employer registration when you start employing. ([myIR — Inland Revenue](https://www.ird.govt.nz/myir))
 
+<a id="geo-sg"></a>
+
 ### Singapore
 
 - Absorbed: No states and no separate income-tax registration: IRAS picks the company up on its UEN automatically; the registrations that exist are GST once past the S$1 million threshold and a CPF Submission Number when you employ. ([CPF — apply for a Submission Number](https://www.cpf.gov.sg/employer/making-cpf-contributions/applying-for-a-cpf-submission-number))
+
+<a id="geo-au"></a>
 
 ### Australia
 
 - Federal registrations (GST, PAYG withholding) attach to the ABN in one ATO flow, but the real state-level tax is payroll tax: each state and territory sets its own threshold and rate, and you register with each revenue office whose threshold your Australia-wide wages cross. ([Payroll Tax Australia](https://www.payrolltax.gov.au/))
 
+<a id="geo-kr"></a>
+
 ### South Korea
 
 - No state layer exists, but local taxes are real: registration licence tax lands at incorporation and the corporate resident tax recurs, both with the municipality through WeTax while national taxes run through Hometax. ([WeTax (local taxes)](https://www.wetax.go.kr/))
+
+<a id="geo-hk"></a>
 
 ### Hong Kong
 
 - Absorbed: No separate tax registration exists: the business registration number from the one-stop incorporation is the Inland Revenue Department file (law rule [hk.business-registration-certificate](../../open-law/HK/hk-business-registration-certificate.json)), the IRD issues the profits tax return itself, and employer duties start with IR56E notifications rather than a registration. ([IRD — business registration](https://www.ird.gov.hk/eng/tax/bre.htm))
 
+<a id="geo-ee"></a>
+
 ### Estonia
 
 - Not applicable: No state or municipal tax registration exists: the registry code works with the Tax and Customs Board from day one and national taxes run through e-MTA; the one recurring local levy, land tax, is assessed on landowners without a company-side registration. ([Income and social taxes (e-MTA)](https://www.emta.ee/en/business-client/taxes-and-payment/income-and-social-taxes))
 
-## Artifacts
+<a id="artifacts"></a>
 
-Produces:
+## Outputs
 
 - State tax accounts
-
-Requires:
-
-- EIN assignment letter — from [Get EIN](get-ein.md)
 
 ---
 

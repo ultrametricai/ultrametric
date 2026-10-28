@@ -3,6 +3,10 @@
 
 # Create an issue from a task
 
+[Overview](#overview) · [Before you start](#before-you-start) · [Steps](#steps-at-a-glance)
+
+## Overview
+
 Create a tracker issue from a task or bug report.
 
 | Field | Value |
@@ -19,29 +23,61 @@ Create a tracker issue from a task or bug report.
 
 Issue creation is a core tracker API (GraphQL + MCP) — a one-call agent step.
 
-## Steps
+## Before you start
 
-1. **Extract the actionable details from the task or bug report** — agent-runnable · ~1 min
-
-   Extract the desired behavior, observed behavior, affected area, and supporting evidence from the task or bug report. For a bug, include reproduction steps, environment, and frequency when known, keeping a suspected cause separate from the observation. For a feature, describe the user outcome and acceptance criteria. Call out the missing detail that would prevent an assignee from starting, and link the original report.
-2. **Create the issue in the tracker** — agent-runnable · ~1 min
-
-   Search for an existing issue describing the same problem or request. If one exists, add the new evidence there; otherwise create the issue in the responsible team's project with the drafted description and relevant attachments. Keep customer information within the appropriate visibility boundary. Return the issue link to the originating task, and check that reproduction details and attachments survived the transfer.
-
-   - Canonical vendor: Linear
-   - Vendor options: Linear, Asana, Notion
-   - Ranked market: [project-management](../../open-rankings/project-management)
-3. **Link context and set priority and labels** — agent-runnable · ~1 min
-
-   Link the specification, reproduction, customer request, or decision that an assignee needs, and check that the team can open it. Use the team's existing labels for work type and affected area. Set priority from demonstrated impact, urgency, and the team's triage policy; escalate an unclear tradeoff to the triage owner. Explain the priority briefly in the issue so later readers can distinguish a deadline from a loud request.
-
-   - Canonical vendor: Linear
-
-## Artifacts
-
-Requires:
+Required artifacts:
 
 - Project tracker — from [Set up a project tracker](set-up-a-project-tracker.md)
+
+## Steps at a glance
+
+Use the recorded prerequisites and conditions to follow the path. Row order is for navigation.
+
+| Step | Handled by | Time estimate | Incoming dependencies |
+| --- | --- | --- | --- |
+| [1. Extract the actionable details from the task or bug report](#step-1) | agent-runnable | ~1 min | Entry step |
+| [2. Create the issue in the tracker](#step-2) | agent-runnable | ~1 min | [Step 1](#step-1) |
+| [3. Link context and set priority and labels](#step-3) | agent-runnable | ~1 min | [Step 2](#step-2) |
+
+<a id="steps"></a>
+
+## Step details
+
+<a id="step-1"></a>
+
+### 1. Extract the actionable details from the task or bug report
+
+agent-runnable · ~1 min
+
+
+Extract the desired behavior, observed behavior, affected area, and supporting evidence from the task or bug report. For a bug, include reproduction steps, environment, and frequency when known, keeping a suspected cause separate from the observation. For a feature, describe the user outcome and acceptance criteria. Call out the missing detail that would prevent an assignee from starting, and link the original report.
+
+<a id="step-2"></a>
+
+### 2. Create the issue in the tracker
+
+agent-runnable · ~1 min
+
+
+Search for an existing issue describing the same problem or request. If one exists, add the new evidence there; otherwise create the issue in the responsible team's project with the drafted description and relevant attachments. Keep customer information within the appropriate visibility boundary. Return the issue link to the originating task, and check that reproduction details and attachments survived the transfer.
+
+- Canonical vendor: Linear
+- Vendor options: Linear, Asana, Notion
+- Ranked market: [project-management](../../open-rankings/project-management)
+
+<a id="step-3"></a>
+
+### 3. Link context and set priority and labels
+
+agent-runnable · ~1 min
+
+
+Link the specification, reproduction, customer request, or decision that an assignee needs, and check that the team can open it. Use the team's existing labels for work type and affected area. Set priority from demonstrated impact, urgency, and the team's triage policy; escalate an unclear tradeoff to the triage owner. Explain the priority briefly in the issue so later readers can distinguish a deadline from a loud request.
+
+- Canonical vendor: Linear
+
+
+<a id="artifacts"></a>
 
 ---
 

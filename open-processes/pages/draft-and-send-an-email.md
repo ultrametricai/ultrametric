@@ -3,6 +3,10 @@
 
 # Draft and send an email
 
+[Overview](#overview) · [Before you start](#before-you-start) · [Steps](#steps-at-a-glance)
+
+## Overview
+
 Draft and send an email from the company account, behind an approval gate.
 
 | Field | Value |
@@ -19,28 +23,60 @@ Draft and send an email from the company account, behind an approval gate.
 
 Email APIs expose drafting and sending — an agent drafts, a human approves the send.
 
-## Steps
+## Before you start
 
-1. **Draft the email for review** — agent-runnable · ~1 min
-
-   Draft the email from its purpose, the recipient's context, and the information the sender wants to convey. Make the request and any real deadline easy to find. Check names, amounts, claims, links, and attachment versions against their sources. Present the subject, recipients, body, and attachments together, highlighting unanswered factual questions so the sender can review the complete message before delivery.
-
-   - Cross-arena market: [ai-assistants](../../open-rankings/ai-assistants)
-2. **Send from the company account (approval)** — agent-runnable · ~1 min · human approval required
-
-   Have the named sender approve the complete message, recipient list, sending account, and attachments. Recheck reply-all recipients and sensitive material immediately before sending; return substantive changes for review. Send once from the agreed company account and check the resulting status. A queued message or failed attempt still needs attention. Link the sent message in the relevant customer or project record so later follow-up uses the right conversation.
-
-   - Vendor options: Fastmail
-   - Ranked market: [email](../../open-rankings/email)
-3. **Watch for a reply and surface it** — agent-runnable · ~1 min · async wait
-
-   Check the sent-message thread in the authorized mailbox for a response. Summarize what the respondent asks for, any deadline they state, and the decision or work now needed, with a direct link to the reply. Route it to the person responsible for the conversation. If there is no reply, report the latest check and whether the agreed follow-up date has arrived; draft a reminder only when it is due.
-
-## Artifacts
-
-Requires:
+Required artifacts:
 
 - Company email workspace — from [Set up company email & docs](set-up-company-email-docs.md)
+
+## Steps at a glance
+
+Use the recorded prerequisites and conditions to follow the path. Row order is for navigation.
+
+| Step | Handled by | Time estimate | Incoming dependencies |
+| --- | --- | --- | --- |
+| [1. Draft the email for review](#step-1) | agent-runnable | ~1 min | Entry step |
+| [2. Send from the company account (approval)](#step-2) | agent-runnable; approval required | ~1 min | [Step 1](#step-1) |
+| [3. Watch for a reply and surface it](#step-3) | agent-runnable; includes waiting | ~1 min | [Step 2](#step-2) |
+
+<a id="steps"></a>
+
+## Step details
+
+<a id="step-1"></a>
+
+### 1. Draft the email for review
+
+agent-runnable · ~1 min
+
+
+Draft the email from its purpose, the recipient's context, and the information the sender wants to convey. Make the request and any real deadline easy to find. Check names, amounts, claims, links, and attachment versions against their sources. Present the subject, recipients, body, and attachments together, highlighting unanswered factual questions so the sender can review the complete message before delivery.
+
+- Cross-arena market: [ai-assistants](../../open-rankings/ai-assistants)
+
+<a id="step-2"></a>
+
+### 2. Send from the company account (approval)
+
+agent-runnable · ~1 min · human approval required
+
+
+Have the named sender approve the complete message, recipient list, sending account, and attachments. Recheck reply-all recipients and sensitive material immediately before sending; return substantive changes for review. Send once from the agreed company account and check the resulting status. A queued message or failed attempt still needs attention. Link the sent message in the relevant customer or project record so later follow-up uses the right conversation.
+
+- Vendor options: Fastmail
+- Ranked market: [email](../../open-rankings/email)
+
+<a id="step-3"></a>
+
+### 3. Watch for a reply and surface it
+
+agent-runnable · ~1 min · async wait
+
+
+Check the sent-message thread in the authorized mailbox for a response. Summarize what the respondent asks for, any deadline they state, and the decision or work now needed, with a direct link to the reply. Route it to the person responsible for the conversation. If there is no reply, report the latest check and whether the agreed follow-up date has arrived; draft a reminder only when it is due.
+
+
+<a id="artifacts"></a>
 
 ---
 

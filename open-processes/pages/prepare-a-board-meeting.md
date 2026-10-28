@@ -3,6 +3,10 @@
 
 # Prepare a board meeting
 
+[Overview](#overview) · [Before you start](#before-you-start) · [Steps](#steps-at-a-glance)
+
+## Overview
+
 Compile board deck with financials, metrics, product updates, hiring plan, and asks.
 
 | Field | Value |
@@ -19,63 +23,137 @@ Compile board deck with financials, metrics, product updates, hiring plan, and a
 
 Data pull from Mercury/QBO/Stripe automatable. Narrative, strategy, and asks need founder input.
 
-## Steps
+## Before you start
 
-1. **Pull financial data** — agent-runnable · ~5 min
-
-   *Entry step — no prerequisite step.*
-
-   Collect the board period’s statements, cash, budget and prior forecast from finance. Align cut-off dates, entity scope and accounting basis, identifying provisional accounts. Reconcile the key totals and explain outstanding adjustments before figures enter the deck so the founder can decide how to present any material uncertainty.
-
-   - Canonical vendor: Mercury
-2. **Pull revenue metrics** — agent-runnable · ~5 min
-
-   *Entry step — no prerequisite step.*
-
-   Gather the board’s revenue measures using consistent definitions and periods. Reconcile recognized revenue, bookings, billings and collections to their source records, and account for cancellations, credits and currency changes in recurring metrics. Explain definition changes and large differences so historical comparisons in the deck mean what readers expect.
-
-   - Canonical vendor: Stripe
-3. **Generate P&L from QBO** — agent-runnable · ~3 min
-
-   *Entry step — no prerequisite step.*
-
-   Run the profit-and-loss report for the board period and entity, checking accounting basis, filters and late entries. Compare it with budget and the previous board pack, resolving material variances with finance. Show management adjustments separately so the deck’s results reconcile to the books.
-
-   - Canonical vendor: QuickBooks
-4. **Calculate KPIs and burn rate** — agent-runnable · ~10 min
-
-   *Follows steps 1, 2 and 3 — all are required first.*
-
-   Calculate the board’s operating measures from the reconciled financial and revenue data, stating definitions and periods. Explain changes in method and investigate unexpected movements with the metric owner. For burn and runway, distinguish historical cash use from forecast hiring and collections, showing sensitivities that could change the company’s next decisions.
-
-   - Cross-arena options: ChatGPT, Claude, Gemini (ai-assistants)
-5. **Draft board deck** — agent-runnable · ~30 min
-
-   Build the deck around progress against the last plan, financial performance, material risks and decisions needed. Explain significant movements with the reviewed metrics and their business causes. Set out management’s recommendations, alternatives and unresolved questions, with supporting detail in an appendix so directors can focus the meeting on the choices that matter.
-
-   - Canonical vendor: Google Slides
-   - Cross-arena options: ChatGPT, Claude, Gemini (ai-assistants)
-6. **Founder adds strategy and asks** — human · ~3 h · human approval required
-
-   Add the strategic choices management wants the board to discuss, with recommendations, trade-offs and specific requests for help or authority. Check proposed commitments against the cash plan and resolve inconsistent claims with their owners. Decide which sensitive information the board needs and settle the narrative around the decisions the meeting should produce.
-7. **Publish to Notion board room** — agent-runnable · ~5 min · human approval required
-
-   The board-workspace owner publishes the final packet with the agenda and meeting version clearly identified. Check page, attachment and inherited permissions for directors and authorized observers, testing access to the actual files. Keep prior meeting packets distinguishable so readers can tell which materials accompanied each discussion.
-
-   - Canonical vendor: Notion
-8. **Send to board members** — agent-runnable · ~5 min · human approval required
-
-   The designated board sender distributes meeting details, the agenda and packet link to the authorized directors, observers and advisers. Identify any preparation or advance decision requested, and restrict sensitive attachments to their intended audience. Resolve access problems individually and collect substantive questions for the meeting owner.
-
-   - Canonical vendor: Gmail
-
-## Artifacts
-
-Requires:
+Required artifacts:
 
 - Accounting ledger — from [Set up accounting](set-up-accounting.md)
 - Payment processor account — from [Connect a payment processor](connect-a-payment-processor.md)
 - Team wiki — from [Set up a team wiki](set-up-a-team-wiki.md)
+
+| Information to gather | Required by the record |
+| --- | --- |
+| balances | Yes |
+| quarterly transactions | Yes |
+| board members | Yes |
+| strategic updates and asks | Yes |
+
+## Steps at a glance
+
+Use the recorded prerequisites and conditions to follow the path. Row order is for navigation.
+
+| Step | Handled by | Time estimate | Incoming dependencies |
+| --- | --- | --- | --- |
+| [1. Pull financial data](#step-1) | agent-runnable | ~5 min | Entry step |
+| [2. Pull revenue metrics](#step-2) | agent-runnable | ~5 min | Entry step |
+| [3. Generate P&L from QBO](#step-3) | agent-runnable | ~3 min | Entry step |
+| [4. Calculate KPIs and burn rate](#step-4) | agent-runnable | ~10 min | All: [Step 1](#step-1); [Step 2](#step-2); [Step 3](#step-3) |
+| [5. Draft board deck](#step-5) | agent-runnable | ~30 min | [Step 4](#step-4) |
+| [6. Founder adds strategy and asks](#step-6) | human; approval required | ~3 h | [Step 5](#step-5) |
+| [7. Publish to Notion board room](#step-7) | agent-runnable; approval required | ~5 min | [Step 6](#step-6) |
+| [8. Send to board members](#step-8) | agent-runnable; approval required | ~5 min | [Step 7](#step-7) |
+
+<a id="steps"></a>
+
+## Step details
+
+<a id="step-1"></a>
+
+### 1. Pull financial data
+
+agent-runnable · ~5 min
+
+
+*Entry step — no prerequisite step.*
+
+Collect the board period’s statements, cash, budget and prior forecast from finance. Align cut-off dates, entity scope and accounting basis, identifying provisional accounts. Reconcile the key totals and explain outstanding adjustments before figures enter the deck so the founder can decide how to present any material uncertainty.
+
+- Canonical vendor: Mercury
+
+<a id="step-2"></a>
+
+### 2. Pull revenue metrics
+
+agent-runnable · ~5 min
+
+
+*Entry step — no prerequisite step.*
+
+Gather the board’s revenue measures using consistent definitions and periods. Reconcile recognized revenue, bookings, billings and collections to their source records, and account for cancellations, credits and currency changes in recurring metrics. Explain definition changes and large differences so historical comparisons in the deck mean what readers expect.
+
+- Canonical vendor: Stripe
+
+<a id="step-3"></a>
+
+### 3. Generate P&L from QBO
+
+agent-runnable · ~3 min
+
+
+*Entry step — no prerequisite step.*
+
+Run the profit-and-loss report for the board period and entity, checking accounting basis, filters and late entries. Compare it with budget and the previous board pack, resolving material variances with finance. Show management adjustments separately so the deck’s results reconcile to the books.
+
+- Canonical vendor: QuickBooks
+
+<a id="step-4"></a>
+
+### 4. Calculate KPIs and burn rate
+
+agent-runnable · ~10 min
+
+
+*Follows steps 1, 2 and 3 — all are required first.*
+
+Calculate the board’s operating measures from the reconciled financial and revenue data, stating definitions and periods. Explain changes in method and investigate unexpected movements with the metric owner. For burn and runway, distinguish historical cash use from forecast hiring and collections, showing sensitivities that could change the company’s next decisions.
+
+- Cross-arena options: ChatGPT, Claude, Gemini (ai-assistants)
+
+<a id="step-5"></a>
+
+### 5. Draft board deck
+
+agent-runnable · ~30 min
+
+
+Build the deck around progress against the last plan, financial performance, material risks and decisions needed. Explain significant movements with the reviewed metrics and their business causes. Set out management’s recommendations, alternatives and unresolved questions, with supporting detail in an appendix so directors can focus the meeting on the choices that matter.
+
+- Canonical vendor: Google Slides
+- Cross-arena options: ChatGPT, Claude, Gemini (ai-assistants)
+
+<a id="step-6"></a>
+
+### 6. Founder adds strategy and asks
+
+human · ~3 h · human approval required
+
+
+Add the strategic choices management wants the board to discuss, with recommendations, trade-offs and specific requests for help or authority. Check proposed commitments against the cash plan and resolve inconsistent claims with their owners. Decide which sensitive information the board needs and settle the narrative around the decisions the meeting should produce.
+
+<a id="step-7"></a>
+
+### 7. Publish to Notion board room
+
+agent-runnable · ~5 min · human approval required
+
+
+The board-workspace owner publishes the final packet with the agenda and meeting version clearly identified. Check page, attachment and inherited permissions for directors and authorized observers, testing access to the actual files. Keep prior meeting packets distinguishable so readers can tell which materials accompanied each discussion.
+
+- Canonical vendor: Notion
+
+<a id="step-8"></a>
+
+### 8. Send to board members
+
+agent-runnable · ~5 min · human approval required
+
+
+The designated board sender distributes meeting details, the agenda and packet link to the authorized directors, observers and advisers. Identify any preparation or advance decision requested, and restrict sensitive attachments to their intended audience. Resolve access problems individually and collect substantive questions for the meeting owner.
+
+- Canonical vendor: Gmail
+
+
+<a id="artifacts"></a>
 
 ## Related records
 

@@ -3,6 +3,10 @@
 
 # Handle an employee's visa denial or RFE
 
+[Overview](#overview) · [Before you start](#before-you-start) · [Geography](#geography) · [Steps](#steps-at-a-glance)
+
+## Overview
+
 **Trigger:** An RFE or a denial lands on an employee's work-visa petition, and their authorization to keep working now has a clock on it.
 
 The notice sets the clock. Read it first: what is questioned, the printed response deadline, and the authorization the employee holds today versus when it lapses. In the US the response window on a request for evidence is capped by regulation at twelve weeks and a notice of intent to deny at thirty days, with no extensions (law rule [us-fed.rfe-noid-response-limits](../../open-law/US-FED/us-fed-rfe-noid-response-limits.json)); the printed deadline controls. The response is one shot, so assemble the complete evidence file with immigration counsel rather than answering thinly. Premium processing, where the classification qualifies, buys adjudicative action within the designated timeframe, not approval (law rule [us-fed.premium-processing-timeframe](../../open-law/US-FED/us-fed-premium-processing-timeframe.json)). After a denial the honest alternatives are case-specific: refiling with better evidence, a different classification (O-1 criteria sit in law rule [us-fed.o1a-extraordinary-ability-criteria](../../open-law/US-FED/us-fed-o1a-extraordinary-ability-criteria.json), cap-exempt H-1B in law rule [us-fed.h1b-cap-exempt-employers](../../open-law/US-FED/us-fed-h1b-cap-exempt-employers.json)), motions and appeals, or employing the person abroad through an EOR while the next petition runs. If work authorization lapses, employment must stop until reverification; that is the I-9 rule, not a judgment call (law rule [us-fed.i9-reverification-employment-lapse](../../open-law/US-FED/us-fed-i9-reverification-employment-lapse.json)). A founder's own stuck visa is its own situation. Educational guidance, not legal or immigration advice. Adjudication runs on the government's clock.
@@ -22,70 +26,171 @@ The notice sets the clock. Read it first: what is questioned, the printed respon
 
 Notice parsing, the evidence assembly, and the lapse-plan math are agent work from supplied documents; the counsel strategy, the filings, and the employment decisions stay with people, and adjudication runs on the government's clock.
 
-## Steps
+## Before you start
 
-1. **Read the notice: what is questioned, the printed response deadline, and the authorization the employee holds today versus when it lapses** — human · ~30 min
+| Information to gather | Required by the record |
+| --- | --- |
+| the RFE, NOID, or denial notice (what is questioned, the printed deadline) | Yes |
+| the employee's current status and authorization end date, plus the petition file | Yes |
 
-   - Next: steps 2 and 9 — all follow this step
-2. **Get immigration counsel on the response strategy the same week: a thin RFE answer is a denial with extra steps** — human · ~45 min
+## Geography
 
-   - Vendor options: Alma, Founder Law, Siskind Susser
-   - Ranked market: [startup-immigration](../../open-rankings/startup-immigration)
-   - Next: steps 3 and 6 — all follow this step
-3. **Assemble the complete evidence file the notice actually asks for: org charts, degrees, contracts, job duties, labeled, in one pass** — agent-runnable · ~1.5 h
+Country rows describe the guidance recorded here. Local notes and step alternatives do not establish a complete country-specific workflow.
 
-   When: The notice is an RFE or NOID with a response deadline
+| Country | Recorded guidance | Steps with local alternatives or resolutions |
+| --- | --- | --- |
+| [United States](#geo-us) | step resolution | [1](#step-1), [7](#step-7) |
+| [United Kingdom](#geo-uk) | step resolution | [1](#step-1), [7](#step-7) |
 
-   - If "The classification qualifies for premium processing": continue at step 4
-   - Next: continue at step 5
-4. **Consider premium processing where the classification qualifies: it buys adjudicative action on a stated clock, not approval** — manual form/portal · ~30 min
+## Steps at a glance
 
-   *Follows step 3 (when The classification qualifies for premium processing).*
+Use the recorded prerequisites and conditions to follow the path. Row order is for navigation.
 
-   When: The classification qualifies for premium processing
+| Step | Handled by | Time estimate | Incoming dependencies |
+| --- | --- | --- | --- |
+| [1. Read the notice: what is questioned, the printed response deadline, and the authorization the employee holds today versus when it lapses](#step-1) | human | ~30 min | Entry step |
+| [2. Get immigration counsel on the response strategy the same week: a thin RFE answer is a denial with extra steps](#step-2) | human | ~45 min | [Step 1](#step-1) |
+| [3. Assemble the complete evidence file the notice actually asks for: org charts, degrees, contracts, job duties, labeled, in one pass](#step-3) | agent-runnable | ~1.5 h | [Step 2](#step-2) |
+| [4. Consider premium processing where the classification qualifies: it buys adjudicative action on a stated clock, not approval](#step-4) | manual form/portal | ~30 min | [Step 3](#step-3) (The classification qualifies for premium processing) |
+| [5. File the counsel-reviewed response before the printed deadline, and confirm the agency received it](#step-5) | human | ~30 min | Alternatives: [Step 4](#step-4); [Step 3](#step-3) |
+| [6. After a denial, map the alternatives honestly: refile with better evidence, a different classification, motions and appeals, or the role abroad](#step-6) | human | ~45 min | [Step 2](#step-2) |
+| [7. Plan for the lapse like it will happen: the date work must stop, leave options, remote work from abroad, and the EOR path priced in advance](#step-7) | human | ~1 h | [Step 6](#step-6) |
+| [8. If the clock wins and the role can be done abroad, keep the person: employ them through an EOR while the next petition runs](#step-8) | human | ~30 min | [Step 7](#step-7) (Work authorization will lapse and the role can be performed abroad) |
+| [9. If the stuck case is a founder's own visa rather than an employee petition, that is its own situation](#step-9) | human | ~15 min | [Step 1](#step-1) |
+| [10. Wait out the adjudication: the decision arrives on the agency's schedule](#step-10) | human; includes waiting | ~30 d | Alternatives: [Step 8](#step-8); [Step 7](#step-7); [Step 5](#step-5) |
 
-   - Do it yourself: [USCIS: premium processing eligibility](https://www.uscis.gov/forms/all-forms/how-do-i-request-premium-processing)
-5. **File the counsel-reviewed response before the printed deadline, and confirm the agency received it** — human · ~30 min · hard to undo
+<a id="steps"></a>
 
-   *Follows step 3 or step 4.*
+## Step details
 
-   - Next: continue at step 10
-6. **After a denial, map the alternatives honestly: refile with better evidence, a different classification, motions and appeals, or the role abroad** — human · ~45 min
+<a id="step-1"></a>
 
-   *Follows step 2.*
+### 1. Read the notice: what is questioned, the printed response deadline, and the authorization the employee holds today versus when it lapses
 
-   When: The petition was denied
-7. **Plan for the lapse like it will happen: the date work must stop, leave options, remote work from abroad, and the EOR path priced in advance** — human · ~1 h
+human · ~30 min
 
-   - If "Work authorization will lapse and the role can be performed abroad": continue at step 8
-   - Next: continue at step 10
-8. **If the clock wins and the role can be done abroad, keep the person: employ them through an EOR while the next petition runs** — human · ~30 min
 
-   *Follows step 7 (when Work authorization will lapse and the role can be performed abroad).*
+- Next: steps 2 and 9 — all follow this step
 
-   When: Work authorization will lapse and the role can be performed abroad
+<a id="step-2"></a>
 
-   - Runs the process [Hire abroad via an EOR](hire-abroad-via-an-eor.md)
-   - Next: continue at step 10
-9. **If the stuck case is a founder's own visa rather than an employee petition, that is its own situation** — human · ~15 min
+### 2. Get immigration counsel on the response strategy the same week: a thin RFE answer is a denial with extra steps
 
-   *Follows step 1.*
+human · ~45 min
 
-   When: The stuck case is the founder's own visa
 
-   - Runs the process [Unstick a delayed US visa](unstick-a-delayed-us-visa.md)
+- Vendor options: Alma, Founder Law, Siskind Susser
+- Ranked market: [startup-immigration](../../open-rankings/startup-immigration)
+- Next: steps 3 and 6 — all follow this step
 
-   *This path ends here.*
-10. **Wait out the adjudication: the decision arrives on the agency's schedule** — human · ~30 d · async wait
+<a id="step-3"></a>
 
-   *Follows step 5 or step 7 or step 8.*
+### 3. Assemble the complete evidence file the notice actually asks for: org charts, degrees, contracts, job duties, labeled, in one pass
 
-## By country
+agent-runnable · ~1.5 h
+
+
+When: The notice is an RFE or NOID with a response deadline
+
+- If "The classification qualifies for premium processing": continue at step 4
+- Next: continue at step 5
+
+<a id="step-4"></a>
+
+### 4. Consider premium processing where the classification qualifies: it buys adjudicative action on a stated clock, not approval
+
+manual form/portal · ~30 min
+
+
+*Follows step 3 (when The classification qualifies for premium processing).*
+
+When: The classification qualifies for premium processing
+
+- Do it yourself: [USCIS: premium processing eligibility](https://www.uscis.gov/forms/all-forms/how-do-i-request-premium-processing)
+
+<a id="step-5"></a>
+
+### 5. File the counsel-reviewed response before the printed deadline, and confirm the agency received it
+
+human · ~30 min · hard to undo
+
+
+*Follows step 3 or step 4.*
+
+- Next: continue at step 10
+
+<a id="step-6"></a>
+
+### 6. After a denial, map the alternatives honestly: refile with better evidence, a different classification, motions and appeals, or the role abroad
+
+human · ~45 min
+
+
+*Follows step 2.*
+
+When: The petition was denied
+
+<a id="step-7"></a>
+
+### 7. Plan for the lapse like it will happen: the date work must stop, leave options, remote work from abroad, and the EOR path priced in advance
+
+human · ~1 h
+
+
+- If "Work authorization will lapse and the role can be performed abroad": continue at step 8
+- Next: continue at step 10
+
+<a id="step-8"></a>
+
+### 8. If the clock wins and the role can be done abroad, keep the person: employ them through an EOR while the next petition runs
+
+human · ~30 min
+
+
+*Follows step 7 (when Work authorization will lapse and the role can be performed abroad).*
+
+When: Work authorization will lapse and the role can be performed abroad
+
+- Runs the process [Hire abroad via an EOR](hire-abroad-via-an-eor.md)
+- Next: continue at step 10
+
+<a id="step-9"></a>
+
+### 9. If the stuck case is a founder's own visa rather than an employee petition, that is its own situation
+
+human · ~15 min
+
+
+*Follows step 1.*
+
+When: The stuck case is the founder's own visa
+
+- Runs the process [Unstick a delayed US visa](unstick-a-delayed-us-visa.md)
+
+*This path ends here.*
+
+<a id="step-10"></a>
+
+### 10. Wait out the adjudication: the decision arrives on the agency's schedule
+
+human · ~30 d · async wait
+
+
+*Follows step 5 or step 7 or step 8.*
+
+
+<a id="by-country"></a>
+
+## Country details
+
+<a id="geo-us"></a>
 
 ### United States
 
 - Step 1: The RFE or NOID prints its deadline; regulation caps the window at twelve weeks for an RFE and thirty days for a NOID, with no extensions (law rule us-fed.rfe-noid-response-limits)
 - Step 7: Work must stop when authorization expires: Form I-9 reverification is due not later than the expiration date (law rule us-fed.i9-reverification-employment-lapse) ([USCIS I-9 Central](https://www.uscis.gov/i-9-central))
+
+<a id="geo-uk"></a>
 
 ### United Kingdom
 

@@ -3,17 +3,27 @@
 
 # Get the first 10 customers
 
+[Overview](#overview) · [Process sequence](#process-sequence)
+
+## Overview
+
 CRM up, outbound out, calls qualified, the first invoices sent.
 
 | Field | Value |
 | --- | --- |
 | Kind | chain |
 
-## Processes in order
+<a id="processes-in-order"></a>
 
-1. [Set up a CRM](set-up-a-crm.md)
-2. [Run outbound sales sequences](run-outbound-sales-sequences.md)
-3. [Send an invoice](send-an-invoice.md)
+## Process sequence
+
+Run the linked processes in the recorded chain order. Each process defines its own internal dependencies.
+
+| Order | Process | Requires | Produces |
+| --- | --- | --- | --- |
+| 1 | [Set up a CRM](set-up-a-crm.md) | Company email workspace | CRM workspace |
+| 2 | [Run outbound sales sequences](run-outbound-sales-sequences.md) | CRM workspace; Company email workspace | Not recorded |
+| 3 | [Send an invoice](send-an-invoice.md) | Payment processor account | Not recorded |
 
 ---
 

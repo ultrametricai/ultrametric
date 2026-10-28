@@ -3,6 +3,10 @@
 
 # Provision a workspace user
 
+[Overview](#overview) · [Before you start](#before-you-start) · [Steps](#steps-at-a-glance)
+
+## Overview
+
 Create a workspace account for a new hire (email, drive, groups).
 
 | Field | Value |
@@ -19,36 +23,75 @@ Create a workspace account for a new hire (email, drive, groups).
 
 Workspace directory APIs expose user provisioning — an agent can create the account; access grants stay approval-gated.
 
-## Steps
+## Before you start
 
-1. **Create the workspace user (email, profile)** — agent-runnable · ~2 min · human approval required
-
-   Use the onboarding request to verify the person, manager, start date and account name. Check for an existing identity before creating a profile, mailbox or license. Provision through the workspace administrator’s authorized process and deliver activation instructions securely. Coordinate activation with the start conditions so the right person receives one usable company account at the intended time.
-
-   - Canonical vendor: Google Workspace
-   - Do it yourself: [Google Admin console](https://admin.google.com/)
-2. **Add the user to groups and shared drives** — agent-runnable · ~3 min
-
-   Match the person’s responsibilities to the groups and shared drives they need. Check inherited permissions with group owners, especially for personnel, finance or customer information, before adding membership. Verify essential resources are reachable and resolve exceptional access separately. Assign any temporary or unusual permission a review owner so it can be removed when the work changes.
-
-   - Canonical vendor: Google Workspace
-3. **Provision app access from the identity provider (SSO/SCIM)** — agent-runnable · ~5 min
-
-   Check which requested applications support the identity provider’s configured sign-in and provisioning methods. Apply the app owners’ access decisions through the identity administrator, then inspect the resulting accounts and roles in the target applications. Resolve failed provisioning, duplicate identities and missing licenses individually. An assigned group is only an input; the person needs the intended access in the application itself.
-
-   - Vendor options: WorkOS, Auth0
-   - Ranked market: [sso-identity](../../open-rankings/sso-identity)
-4. **New hire signs in and enrolls MFA** — human · ~5 min
-
-   Give the employee the activation route and support contact. They sign in, replace any temporary credential and enroll the authentication methods required by company policy, keeping passwords and recovery secrets private. Check that the intended workspace is accessible and that the employee understands the recovery process. Route enrollment or device failures to the administrator who can resolve them.
-
-## Artifacts
-
-Requires:
+Required artifacts:
 
 - Company email workspace — from [Set up company email & docs](set-up-company-email-docs.md)
 - Identity provider (SSO) — from [Set up SSO & access management](set-up-sso-access-management.md)
 - Signed offer / employment agreement — from [Hire first employee](hire-first-employee.md)
+
+## Steps at a glance
+
+Use the recorded prerequisites and conditions to follow the path. Row order is for navigation.
+
+| Step | Handled by | Time estimate | Incoming dependencies |
+| --- | --- | --- | --- |
+| [1. Create the workspace user (email, profile)](#step-1) | agent-runnable; approval required | ~2 min | Entry step |
+| [2. Add the user to groups and shared drives](#step-2) | agent-runnable | ~3 min | [Step 1](#step-1) |
+| [3. Provision app access from the identity provider (SSO/SCIM)](#step-3) | agent-runnable | ~5 min | [Step 2](#step-2) |
+| [4. New hire signs in and enrolls MFA](#step-4) | human | ~5 min | [Step 3](#step-3) |
+
+<a id="steps"></a>
+
+## Step details
+
+<a id="step-1"></a>
+
+### 1. Create the workspace user (email, profile)
+
+agent-runnable · ~2 min · human approval required
+
+
+Use the onboarding request to verify the person, manager, start date and account name. Check for an existing identity before creating a profile, mailbox or license. Provision through the workspace administrator’s authorized process and deliver activation instructions securely. Coordinate activation with the start conditions so the right person receives one usable company account at the intended time.
+
+- Canonical vendor: Google Workspace
+- Do it yourself: [Google Admin console](https://admin.google.com/)
+
+<a id="step-2"></a>
+
+### 2. Add the user to groups and shared drives
+
+agent-runnable · ~3 min
+
+
+Match the person’s responsibilities to the groups and shared drives they need. Check inherited permissions with group owners, especially for personnel, finance or customer information, before adding membership. Verify essential resources are reachable and resolve exceptional access separately. Assign any temporary or unusual permission a review owner so it can be removed when the work changes.
+
+- Canonical vendor: Google Workspace
+
+<a id="step-3"></a>
+
+### 3. Provision app access from the identity provider (SSO/SCIM)
+
+agent-runnable · ~5 min
+
+
+Check which requested applications support the identity provider’s configured sign-in and provisioning methods. Apply the app owners’ access decisions through the identity administrator, then inspect the resulting accounts and roles in the target applications. Resolve failed provisioning, duplicate identities and missing licenses individually. An assigned group is only an input; the person needs the intended access in the application itself.
+
+- Vendor options: WorkOS, Auth0
+- Ranked market: [sso-identity](../../open-rankings/sso-identity)
+
+<a id="step-4"></a>
+
+### 4. New hire signs in and enrolls MFA
+
+human · ~5 min
+
+
+Give the employee the activation route and support contact. They sign in, replace any temporary credential and enroll the authentication methods required by company policy, keeping passwords and recovery secrets private. Check that the intended workspace is accessible and that the employee understands the recovery process. Route enrollment or device failures to the administrator who can resolve them.
+
+
+<a id="artifacts"></a>
 
 ## Related records
 

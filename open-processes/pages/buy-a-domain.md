@@ -3,6 +3,10 @@
 
 # Buy a domain
 
+[Overview](#overview) · [Before you start](#before-you-start) · [Steps](#steps-at-a-glance) · [Outputs](#outputs)
+
+## Overview
+
 Purchase a domain end-to-end: pay via Stripe, register at Name.com, auto-connect DNS/SSL via Cloudflare.
 
 | Field | Value |
@@ -19,50 +23,80 @@ Purchase a domain end-to-end: pay via Stripe, register at Name.com, auto-connect
 
 Registrar, payment, and DNS APIs cover the whole purchase — quote, register, and provision run end to end.
 
-## Steps
+## Before you start
 
-1. **Register and pay at your registrar** — agent-runnable · ~3 min · async wait · human approval required
+Required artifacts:
 
-   Match the checkout to the chosen domain, registrar, registration term and company registrant. Check the final charge and renewal settings against the purchaser's authorization; resolve any changed terms before payment. Complete registration and required contact verification, then confirm the domain appears in the company-controlled account. Save the receipt with the renewal contact and settings.
+- Domain shortlist — from [Check domain availability](check-domain-availability.md)
 
-   - Verify: An RDAP/WHOIS lookup shows the domain registered to you (or your registrar's privacy proxy) with the expected expiry date. ([lookup.icann.org](https://lookup.icann.org/))
-   - Cost: published amount varies (typical vendor price, as of 2026-10-01, [www.cloudflare.com](https://www.cloudflare.com/products/registrar/)). Registration prices vary by TLD and registrar — at-cost registrars publish wholesale pricing; no single sticker price exists.
-   - Produces: Registered domain
-   - Canonical vendor: Name.com
-   - Vendor options: Name.com, Namecheap, Porkbun, GoDaddy
-   - Ranked market: [domain-registrars](../../open-rankings/domain-registrars)
-   - Sources: [Information for Domain Name Registrants](https://www.icann.org/registrants) · [Domain Name Renewals and Expiration](https://www.icann.org/resources/pages/domain-name-renewal-expiration-faqs-2018-12-07-en)
+## Steps at a glance
 
-   Options:
-     - **Default — Register and pay at your registrar** — agent-runnable · ~3 min · async wait · human approval required
+Use the recorded prerequisites and conditions to follow the path. Row order is for navigation.
 
-       Use the selected registrar's current checkout. Check the exact spelling, company registrant, term, final charge, renewal preference and extension restrictions against the authorized purchase. Resolve any checkout difference that changes that decision. After payment, complete required contact verification and confirm the domain is in the intended account, with the receipt and renewal details available to its owner.
-     - **Cloudflare Registrar (at cost)**
+| Step | Handled by | Time estimate | Incoming dependencies |
+| --- | --- | --- | --- |
+| [1. Register and pay at your registrar](#step-1) | agent-runnable; approval required; includes waiting | ~3 min | Entry step |
+| [2. Provision DNS/SSL](#step-2) | agent-runnable; includes waiting | ~5 min | [Step 1](#step-1) |
 
-       When: DNS already runs on Cloudflare - at-cost registration, no markup
+<a id="steps"></a>
 
-       Cloudflare Registrar requires Cloudflare nameservers; a requirement to use another DNS provider rules out this option. Check the selected domain's availability and live registration and renewal quote. Complete the authorized purchase and required contact verification, saving the receipt and renewal settings. Confirm the domain appears as registered in the intended account.
+## Step details
 
-       - Canonical vendor: Cloudflare Registrar
-       - Sources: [Register a new domain](https://developers.cloudflare.com/registrar/get-started/register-domain/)
-2. **Provision DNS/SSL** — agent-runnable · ~5 min · async wait
+<a id="step-1"></a>
 
-   Inspect the existing DNS zone, then use the website host's current instructions to identify the required records. Apply the domain administrator's agreed changes without disturbing email or other services. Verify hostname resolution, the live HTTPS certificate and the chosen root-to-www redirect. Report the observed results and any verification still pending.
+### 1. Register and pay at your registrar
 
-   - Verify: The domain resolves from public DNS and loads over HTTPS with a valid certificate.
-   - Produces: DNS control
-   - Canonical vendor: Cloudflare
+agent-runnable · ~3 min · async wait · human approval required
 
-## Artifacts
+| Option | Applies when |
+| --- | --- |
+| Default — Register and pay at your registrar | Recorded default |
+| Cloudflare Registrar (at cost) | DNS already runs on Cloudflare - at-cost registration, no markup |
 
-Produces:
+
+Match the checkout to the chosen domain, registrar, registration term and company registrant. Check the final charge and renewal settings against the purchaser's authorization; resolve any changed terms before payment. Complete registration and required contact verification, then confirm the domain appears in the company-controlled account. Save the receipt with the renewal contact and settings.
+
+- Verify: An RDAP/WHOIS lookup shows the domain registered to you (or your registrar's privacy proxy) with the expected expiry date. ([lookup.icann.org](https://lookup.icann.org/))
+- Cost: published amount varies (typical vendor price, as of 2026-10-01, [www.cloudflare.com](https://www.cloudflare.com/products/registrar/)). Registration prices vary by TLD and registrar — at-cost registrars publish wholesale pricing; no single sticker price exists.
+- Produces: Registered domain
+- Canonical vendor: Name.com
+- Vendor options: Name.com, Namecheap, Porkbun, GoDaddy
+- Ranked market: [domain-registrars](../../open-rankings/domain-registrars)
+- Sources: [Information for Domain Name Registrants](https://www.icann.org/registrants) · [Domain Name Renewals and Expiration](https://www.icann.org/resources/pages/domain-name-renewal-expiration-faqs-2018-12-07-en)
+
+Options:
+  - **Default — Register and pay at your registrar** — agent-runnable · ~3 min · async wait · human approval required
+
+    Use the selected registrar's current checkout. Check the exact spelling, company registrant, term, final charge, renewal preference and extension restrictions against the authorized purchase. Resolve any checkout difference that changes that decision. After payment, complete required contact verification and confirm the domain is in the intended account, with the receipt and renewal details available to its owner.
+  - **Cloudflare Registrar (at cost)**
+
+    When: DNS already runs on Cloudflare - at-cost registration, no markup
+
+    Cloudflare Registrar requires Cloudflare nameservers; a requirement to use another DNS provider rules out this option. Check the selected domain's availability and live registration and renewal quote. Complete the authorized purchase and required contact verification, saving the receipt and renewal settings. Confirm the domain appears as registered in the intended account.
+
+    - Canonical vendor: Cloudflare Registrar
+    - Sources: [Register a new domain](https://developers.cloudflare.com/registrar/get-started/register-domain/)
+
+<a id="step-2"></a>
+
+### 2. Provision DNS/SSL
+
+agent-runnable · ~5 min · async wait
+
+
+Inspect the existing DNS zone, then use the website host's current instructions to identify the required records. Apply the domain administrator's agreed changes without disturbing email or other services. Verify hostname resolution, the live HTTPS certificate and the chosen root-to-www redirect. Report the observed results and any verification still pending.
+
+- Verify: The domain resolves from public DNS and loads over HTTPS with a valid certificate.
+- Produces: DNS control
+- Canonical vendor: Cloudflare
+
+
+<a id="artifacts"></a>
+
+## Outputs
 
 - Registered domain
 - DNS control
-
-Requires:
-
-- Domain shortlist — from [Check domain availability](check-domain-availability.md)
 
 ## Related records
 

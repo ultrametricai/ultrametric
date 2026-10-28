@@ -3,6 +3,10 @@
 
 # Add a contractor (1099)
 
+[Overview](#overview) · [Before you start](#before-you-start) · [Geography](#geography) · [Steps](#steps-at-a-glance) · [Outputs](#outputs)
+
+## Overview
+
 Onboard a 1099 contractor in payroll so they can be paid and 1099’d at year-end.
 
 | Field | Value |
@@ -19,125 +23,210 @@ Onboard a 1099 contractor in payroll so they can be paid and 1099’d at year-en
 
 Payroll APIs expose contractor onboarding — an agent can add the contractor; the contractor completes their own tax info.
 
-## Steps
+## Before you start
 
-1. **Add the contractor in payroll** — agent-runnable · ~3 min
+Required artifacts:
 
-   Create the contractor payee from the reviewed classification and signed engagement. Check the legal payee, service owner, currency and invoice terms, and keep the profile separate from employee payroll records. Send any authorized onboarding invitation through the payment system so the contractor can supply sensitive details directly. Identify missing documentation before the first invoice arrives.
+- Payroll account — from [Set up payroll](set-up-payroll.md)
 
-   - Canonical vendor: Gusto
-   - Vendor options: Gusto, Rippling, Deel, Justworks
-   - Ranked market: [payroll](../../open-rankings/payroll)
-   - Sources: [IRS: Independent contractor or employee](https://www.irs.gov/businesses/small-businesses-self-employed/independent-contractor-self-employed-or-employee)
-2. **Contractor completes their own W-9 and bank details** — human · ~10 min · async wait
+## Geography
 
-   Select the documentation route from the payee’s residence, legal form, work location and engaging entity. Have the contractor enter tax and payment details through the secure onboarding process. Finance reviews completeness, identity mismatches and the applicable country assessment before enabling payment. Keep the accepted forms restricted; the W-9 route is appropriate only when the payee’s reviewed status calls for US-person documentation.
+Country rows describe the guidance recorded here. Local notes and step alternatives do not establish a complete country-specific workflow.
 
-   - Sources: [IRS: Forms and associated taxes for independent contractors](https://www.irs.gov/businesses/small-businesses-self-employed/forms-and-associated-taxes-for-independent-contractors)
+| Country | Recorded guidance | Steps with local alternatives or resolutions |
+| --- | --- | --- |
+| [India](#geo-in) | Local analog note; step alternative | [2](#step-2) |
+| [United Kingdom](#geo-uk) | Local analog note; step alternative | [2](#step-2) |
+| [Germany](#geo-de) | Local analog note; step alternative | [2](#step-2) |
+| [France](#geo-fr) | Local analog note; step alternative | [2](#step-2) |
+| [Portugal](#geo-pt) | Local analog note | — |
+| [Canada](#geo-ca) | Local analog note | — |
+| [New Zealand](#geo-nz) | Local analog note | — |
+| [Singapore](#geo-sg) | Local analog note | — |
+| [Australia](#geo-au) | Local analog note | — |
+| [South Korea](#geo-kr) | Local analog note | — |
+| [Hong Kong](#geo-hk) | Local analog note | — |
+| [Estonia](#geo-ee) | Local analog note | — |
 
-   Options:
-     - **Default — Contractor completes their own W-9 and bank details** — human · ~10 min · async wait
+## Steps at a glance
 
-       For a payee whose reviewed status calls for US-person documentation, request the current W-9 and payment details through secure onboarding. The contractor supplies and certifies their own tax information; finance resolves identity mismatches, incomplete fields and withholding questions. Send a foreign-person or classification mismatch to the tax reviewer for the appropriate documentation route.
-     - **India - PAN + TDS on fees**
+Use the recorded prerequisites and conditions to follow the path. Row order is for navigation.
 
-       When: Engaging a contractor in India
+| Step | Handled by | Time estimate | Incoming dependencies |
+| --- | --- | --- | --- |
+| [1. Add the contractor in payroll](#step-1) | agent-runnable | ~3 min | Entry step |
+| [2. Contractor completes their own W-9 and bank details](#step-2) | human; includes waiting | ~10 min | [Step 1](#step-1) |
+| [3. Verify the contractor is payable (W-9 on file, payment method set)](#step-3) | agent-runnable | ~2 min | [Step 2](#step-2) |
 
-       Have the tax adviser assess the payee, services, residency, invoice and payment or credit dates. Collect the required PAN and other documentation securely, then give finance the applicable withholding, reporting and payment instructions. Use the rules governing the actual transaction period, including the tax-law transition where relevant. Resolve GST treatment through its separate applicability review.
+<a id="steps"></a>
 
-       - Do it yourself: [Income Tax e-filing (TDS on fees)](https://www.incometax.gov.in/iec/foportal/)
-       - Sources: [Income Tax Department: TDS Compliance FAQs](https://www.incometax.gov.in/iec/foportal/help/all-topics/e-filing-services/%20tds%20compliance-faq)
-     - **UK - IR35 status check (CEST)** — manual form/portal
+## Step details
 
-       When: Engaging a contractor in the United Kingdom
+<a id="step-1"></a>
 
-       Gather the contract, intermediary details and actual working practices for the UK tax-status review, including control of the work and payment terms. The responsible reviewer determines whether the off-payroll rules apply and may use CEST with accurate inputs. Keep its answers and result with the assessment, and resolve an uncertain outcome before configuring payment or issuing a required determination.
+### 1. Add the contractor in payroll
 
-       - Do it yourself: [HMRC - check employment status (CEST)](https://www.gov.uk/guidance/check-employment-status-for-tax)
-       - Sources: [HMRC: Check employment status for tax](https://www.gov.uk/guidance/check-employment-status-for-tax?ref=numble)
-     - **Germany - Scheinselbstaendigkeit check**
+agent-runnable · ~3 min
 
-       When: Engaging a contractor in Germany
 
-       Document the services, supervision, integration into the business and relevant agreements for local classification advice. Assess whether a formal DRV Clearingstelle determination is appropriate and authorize any application and disclosures separately. Give payroll or finance the resulting treatment before setting up contractor payment. One client alone does not determine employment status; the working relationship needs assessment.
+Create the contractor payee from the reviewed classification and signed engagement. Check the legal payee, service owner, currency and invoice terms, and keep the profile separate from employee payroll records. Send any authorized onboarding invitation through the payment system so the contractor can supply sensitive details directly. Identify missing documentation before the first invoice arrives.
 
-       - Do it yourself: [Deutsche Rentenversicherung (status determination)](https://www.deutsche-rentenversicherung.de/)
-       - Sources: [DRV: Status determination procedure](https://www.deutsche-rentenversicherung.de/DRV/DE/Rente/Arbeitnehmer-und-Selbststaendige/03_Selbststaendige/statusfeststellungsverfahren?nn=6a097dd8ca84ce5471c19ad2)
-     - **France - URSSAF vigilance attestation** — manual form/portal
+- Canonical vendor: Gusto
+- Vendor options: Gusto, Rippling, Deel, Justworks
+- Ranked market: [payroll](../../open-rankings/payroll)
+- Sources: [IRS: Independent contractor or employee](https://www.irs.gov/businesses/small-businesses-self-employed/independent-contractor-self-employed-or-employee)
 
-       When: Engaging a contractor in France
+<a id="step-2"></a>
 
-       Check with finance or legal whether the vigilance-document obligation applies to this contract and supplier. Where required, obtain the current attestation and verify authenticity through the official channel. Assign responsibility for required renewals during the engagement and resolve missing or inconsistent evidence. Treat this as supplier compliance documentation, not a decision that the person is correctly classified as a contractor.
+### 2. Contractor completes their own W-9 and bank details
 
-       - Do it yourself: [URSSAF - attestation de vigilance](https://www.urssaf.fr/accueil/attestation-vigilance.html)
-       - Sources: [Service Public: Attestation de vigilance](https://entreprendre.service-public.gouv.fr/vosdroits/F31422)
-3. **Verify the contractor is payable (W-9 on file, payment method set)** — agent-runnable · ~2 min
+human · ~10 min · async wait
 
-   Reconcile the payee profile with the contract, accepted tax documents and verified payment destination. Resolve any finance hold and make sure the service owner and invoice approver are assigned. Give the contractor the correct invoice instructions once setup is cleared. Readiness permits the payment workflow to begin; each invoice or transfer still follows the company’s normal approval process.
+| Option | Applies when |
+| --- | --- |
+| Default — Contractor completes their own W-9 and bank details | Recorded default |
+| India - PAN + TDS on fees | Engaging a contractor in India |
+| UK - IR35 status check (CEST) | Engaging a contractor in the United Kingdom |
+| Germany - Scheinselbstaendigkeit check | Engaging a contractor in Germany |
+| France - URSSAF vigilance attestation | Engaging a contractor in France |
 
-   - Produces: Contractor record (W-9 on file)
-   - Canonical vendor: Gusto
-   - Sources: [IRS: Forms and associated taxes for independent contractors](https://www.irs.gov/businesses/small-businesses-self-employed/forms-and-associated-taxes-for-independent-contractors)
 
-## By country
+Select the documentation route from the payee’s residence, legal form, work location and engaging entity. Have the contractor enter tax and payment details through the secure onboarding process. Finance reviews completeness, identity mismatches and the applicable country assessment before enabling payment. Keep the accepted forms restricted; the W-9 route is appropriate only when the payee’s reviewed status calls for US-person documentation.
+
+- Sources: [IRS: Forms and associated taxes for independent contractors](https://www.irs.gov/businesses/small-businesses-self-employed/forms-and-associated-taxes-for-independent-contractors)
+
+Options:
+  - **Default — Contractor completes their own W-9 and bank details** — human · ~10 min · async wait
+
+    For a payee whose reviewed status calls for US-person documentation, request the current W-9 and payment details through secure onboarding. The contractor supplies and certifies their own tax information; finance resolves identity mismatches, incomplete fields and withholding questions. Send a foreign-person or classification mismatch to the tax reviewer for the appropriate documentation route.
+  - **India - PAN + TDS on fees**
+
+    When: Engaging a contractor in India
+
+    Have the tax adviser assess the payee, services, residency, invoice and payment or credit dates. Collect the required PAN and other documentation securely, then give finance the applicable withholding, reporting and payment instructions. Use the rules governing the actual transaction period, including the tax-law transition where relevant. Resolve GST treatment through its separate applicability review.
+
+    - Do it yourself: [Income Tax e-filing (TDS on fees)](https://www.incometax.gov.in/iec/foportal/)
+    - Sources: [Income Tax Department: TDS Compliance FAQs](https://www.incometax.gov.in/iec/foportal/help/all-topics/e-filing-services/%20tds%20compliance-faq)
+  - **UK - IR35 status check (CEST)** — manual form/portal
+
+    When: Engaging a contractor in the United Kingdom
+
+    Gather the contract, intermediary details and actual working practices for the UK tax-status review, including control of the work and payment terms. The responsible reviewer determines whether the off-payroll rules apply and may use CEST with accurate inputs. Keep its answers and result with the assessment, and resolve an uncertain outcome before configuring payment or issuing a required determination.
+
+    - Do it yourself: [HMRC - check employment status (CEST)](https://www.gov.uk/guidance/check-employment-status-for-tax)
+    - Sources: [HMRC: Check employment status for tax](https://www.gov.uk/guidance/check-employment-status-for-tax?ref=numble)
+  - **Germany - Scheinselbstaendigkeit check**
+
+    When: Engaging a contractor in Germany
+
+    Document the services, supervision, integration into the business and relevant agreements for local classification advice. Assess whether a formal DRV Clearingstelle determination is appropriate and authorize any application and disclosures separately. Give payroll or finance the resulting treatment before setting up contractor payment. One client alone does not determine employment status; the working relationship needs assessment.
+
+    - Do it yourself: [Deutsche Rentenversicherung (status determination)](https://www.deutsche-rentenversicherung.de/)
+    - Sources: [DRV: Status determination procedure](https://www.deutsche-rentenversicherung.de/DRV/DE/Rente/Arbeitnehmer-und-Selbststaendige/03_Selbststaendige/statusfeststellungsverfahren?nn=6a097dd8ca84ce5471c19ad2)
+  - **France - URSSAF vigilance attestation** — manual form/portal
+
+    When: Engaging a contractor in France
+
+    Check with finance or legal whether the vigilance-document obligation applies to this contract and supplier. Where required, obtain the current attestation and verify authenticity through the official channel. Assign responsibility for required renewals during the engagement and resolve missing or inconsistent evidence. Treat this as supplier compliance documentation, not a decision that the person is correctly classified as a contractor.
+
+    - Do it yourself: [URSSAF - attestation de vigilance](https://www.urssaf.fr/accueil/attestation-vigilance.html)
+    - Sources: [Service Public: Attestation de vigilance](https://entreprendre.service-public.gouv.fr/vosdroits/F31422)
+
+<a id="step-3"></a>
+
+### 3. Verify the contractor is payable (W-9 on file, payment method set)
+
+agent-runnable · ~2 min
+
+
+Reconcile the payee profile with the contract, accepted tax documents and verified payment destination. Resolve any finance hold and make sure the service owner and invoice approver are assigned. Give the contractor the correct invoice instructions once setup is cleared. Readiness permits the payment workflow to begin; each invoice or transfer still follows the company’s normal approval process.
+
+- Produces: Contractor record (W-9 on file)
+- Canonical vendor: Gusto
+- Sources: [IRS: Forms and associated taxes for independent contractors](https://www.irs.gov/businesses/small-businesses-self-employed/forms-and-associated-taxes-for-independent-contractors)
+
+
+<a id="by-country"></a>
+
+## Country details
+
+<a id="geo-in"></a>
 
 ### India
 
 - Onboarding a contractor means collecting their PAN and deducting TDS from every payment (s.194C/194J), depositing it monthly and reporting it quarterly — plus checking whether their GST registration applies to your invoices. ([Income Tax e-filing (TDS on fees)](https://www.incometax.gov.in/iec/foportal/))
 
+<a id="geo-uk"></a>
+
 ### United Kingdom
 
 - Before the contract: an IR35/off-payroll status check (HMRC's CEST tool gives a rulable answer) — medium and large clients must issue a status determination statement, and misclassification lands the tax bill on you. ([HMRC — check employment status (CEST)](https://www.gov.uk/guidance/check-employment-status-for-tax))
+
+<a id="geo-de"></a>
 
 ### Germany
 
 - The risk is Scheinselbständigkeit (false self-employment): a one-client contractor working like staff triggers retroactive social contributions — the DRV Clearingstelle runs an official status-determination procedure when in doubt. ([Deutsche Rentenversicherung (status determination)](https://www.deutsche-rentenversicherung.de/))
 
+<a id="geo-fr"></a>
+
 ### France
 
 - Contractors must be registered (micro-entrepreneur or company), and for contracts of €5,000+ you must collect and verify their URSSAF attestation de vigilance every six months — plus requalification risk if they work like an employee. ([URSSAF — attestation de vigilance](https://www.urssaf.fr/accueil/attestation-vigilance.html))
+
+<a id="geo-pt"></a>
 
 ### Portugal
 
 - Contractors invoice through recibos verdes on the tax authority's portal, and the risk is falsos recibos verdes: the labour code presumes employment when the work looks like staff work, with retroactive contributions and fines on reclassification. ([Portal das Finanças — recibos verdes](https://www.portaldasfinancas.gov.pt/))
 
+<a id="geo-ca"></a>
+
 ### Canada
 
 - Status is decided on CRA's employee-vs-self-employed factors (guide RC4110): misclassify and the employer owes retroactive CPP and EI with penalties — settle the relationship's shape before the first invoice. ([CRA RC4110 — employee or self-employed](https://www.canada.ca/en/revenue-agency/services/forms-publications/publications/rc4110/employee-self-employed.html))
+
+<a id="geo-nz"></a>
 
 ### New Zealand
 
 - Contractors invoice and self-assess; the payer's duty appears only for schedular payments (certain labour-heavy work), where you deduct tax from the contractor's pay and file employment information with Inland Revenue. ([Schedular payments — Inland Revenue](https://www.ird.govt.nz/income-tax/withholding-taxes/schedular-payments))
 
+<a id="geo-sg"></a>
+
 ### Singapore
 
 - No 1099 paperwork: resident contractors self-assess with IRAS and the company files nothing for them — the duties that do bite are withholding tax on payments to non-resident professionals and keeping the contract clear of employee features, since CPF follows a contract of service. ([IRAS — withholding tax](https://www.iras.gov.sg/taxes/withholding-tax))
+
+<a id="geo-au"></a>
 
 ### Australia
 
 - Before the contract: confirm the worker is genuinely a contractor — sham contracting is prohibited under the Fair Work Act, and the whole-of-relationship test decides the status. Contractors quote an ABN and handle their own tax, and some are still owed superannuation if paid mainly for their labour. ([Employee or contractor? (business.gov.au)](https://business.gov.au/people/contractors/employee-or-contractor))
 
+<a id="geo-kr"></a>
+
 ### South Korea
 
 - Contractors are onboarded without a 1099 ritual: the payer withholds business-income tax at source and reports the payments to the NTS on payment statements (지급명세서) through Hometax. ([Hometax (NTS e-filing)](https://www.hometax.go.kr/))
+
+<a id="geo-hk"></a>
 
 ### Hong Kong
 
 - Contractors onboard without a 1099 ritual, but the information reporting exists: remuneration paid to persons other than employees (consultants, agents, freelancers) above the form's reporting lines — fees over HK$25,000 a year — is reported to the Inland Revenue Department on Form IR56M with the annual employer's return, and no withholding runs for local payees. ([IRD — employer's returns](https://www.ird.gov.hk/eng/tax/ere.htm))
 
+<a id="geo-ee"></a>
+
 ### Estonia
 
 - There is no 1099 run: fees paid to natural persons for services are withheld and declared on the monthly TSD through e-MTA, and payments to a registered self-employed person (FIE) are the recipient's own business income. ([Income and social taxes (e-MTA)](https://www.emta.ee/en/business-client/taxes-and-payment/income-and-social-taxes))
 
-## Artifacts
+<a id="artifacts"></a>
 
-Produces:
+## Outputs
 
 - Contractor record (W-9 on file)
-
-Requires:
-
-- Payroll account — from [Set up payroll](set-up-payroll.md)
 
 ## Related records
 

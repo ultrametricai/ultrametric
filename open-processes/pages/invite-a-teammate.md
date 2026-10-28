@@ -3,6 +3,10 @@
 
 # Invite a teammate
 
+[Overview](#overview) · [Before you start](#before-you-start) · [Steps](#steps-at-a-glance)
+
+## Overview
+
 Invite a new member to the organization and set their access level.
 
 | Field | Value |
@@ -19,29 +23,61 @@ Invite a new member to the organization and set their access level.
 
 Member invites and access levels are workspace admin APIs — a one-call agent step.
 
-## Steps
+## Before you start
 
-1. **Send the workspace invite with the right access level** — agent-runnable · ~1 min
-
-   Verify the teammate’s email and intended organization against the membership request. Choose the role’s approved access level, checking guest versus member access and default channel exposure. Send the authorized invitation to that identity, investigating an existing account or unexpected domain before creating another. Resolve bounced or misdirected invitations before adding further access.
-
-   - Canonical vendor: Slack
-   - Vendor options: Slack
-   - Ranked market: [team-chat](../../open-rankings/team-chat)
-2. **Teammate accepts the invite and sets up their account** — human · ~5 min · async wait
-
-   The teammate checks the invitation’s organization and completes their own account and authentication setup. Provide the administrator’s support route for an expired invite or wrong identity. Confirm acceptance and a successful sign-in, keeping passwords and recovery details with the teammate. Resolve account problems through the administrator.
-3. **Add them to the right channels and confirm access** — agent-runnable · ~2 min
-
-   Add the teammate to the channels and resources needed for their role, checking restricted or externally shared spaces with their owners. Ask them to open essential documents and channels and introduce the relevant team contacts. Resolve missing access through the responsible owner without expanding permissions more broadly than the work requires.
-
-   - Canonical vendor: Slack
-
-## Artifacts
-
-Requires:
+Required artifacts:
 
 - Team chat workspace — from [Set up team chat](set-up-team-chat.md)
+
+## Steps at a glance
+
+Use the recorded prerequisites and conditions to follow the path. Row order is for navigation.
+
+| Step | Handled by | Time estimate | Incoming dependencies |
+| --- | --- | --- | --- |
+| [1. Send the workspace invite with the right access level](#step-1) | agent-runnable | ~1 min | Entry step |
+| [2. Teammate accepts the invite and sets up their account](#step-2) | human; includes waiting | ~5 min | [Step 1](#step-1) |
+| [3. Add them to the right channels and confirm access](#step-3) | agent-runnable | ~2 min | [Step 2](#step-2) |
+
+<a id="steps"></a>
+
+## Step details
+
+<a id="step-1"></a>
+
+### 1. Send the workspace invite with the right access level
+
+agent-runnable · ~1 min
+
+
+Verify the teammate’s email and intended organization against the membership request. Choose the role’s approved access level, checking guest versus member access and default channel exposure. Send the authorized invitation to that identity, investigating an existing account or unexpected domain before creating another. Resolve bounced or misdirected invitations before adding further access.
+
+- Canonical vendor: Slack
+- Vendor options: Slack
+- Ranked market: [team-chat](../../open-rankings/team-chat)
+
+<a id="step-2"></a>
+
+### 2. Teammate accepts the invite and sets up their account
+
+human · ~5 min · async wait
+
+
+The teammate checks the invitation’s organization and completes their own account and authentication setup. Provide the administrator’s support route for an expired invite or wrong identity. Confirm acceptance and a successful sign-in, keeping passwords and recovery details with the teammate. Resolve account problems through the administrator.
+
+<a id="step-3"></a>
+
+### 3. Add them to the right channels and confirm access
+
+agent-runnable · ~2 min
+
+
+Add the teammate to the channels and resources needed for their role, checking restricted or externally shared spaces with their owners. Ask them to open essential documents and channels and introduce the relevant team contacts. Resolve missing access through the responsible owner without expanding permissions more broadly than the work requires.
+
+- Canonical vendor: Slack
+
+
+<a id="artifacts"></a>
 
 ---
 

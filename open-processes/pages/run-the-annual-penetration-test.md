@@ -3,6 +3,10 @@
 
 # Run the annual penetration test
 
+[Overview](#overview) · [Before you start](#before-you-start) · [Geography](#geography) · [Steps](#steps-at-a-glance) · [Outputs](#outputs)
+
+## Overview
+
 The pen test customers and SOC 2 auditors expect every year: scope it, sign the rules-of-engagement authorization, hand the firm a test environment, then triage the findings into the tracker, fix the criticals, and collect the retest letter for your trust center.
 
 | Field | Value |
@@ -19,66 +23,142 @@ The pen test customers and SOC 2 auditors expect every year: scope it, sign the 
 
 Scoping prep, environment provisioning, finding triage, and remediation are automatable; the testing window belongs to the firm and the authorization signature to you.
 
-## Steps
+## Before you start
 
-1. **Scope the test and pick a firm** — human · ~45 min
+Required artifacts:
 
-   Define the applications, exposed services, authentication roles and risks the test should cover. Compare firms on relevant experience and sensitive-finding handling. Agree targets, exclusions, techniques, environment and deliverables before commissioning the approved engagement. The resulting scope should let testers and system owners identify permitted activity and where additional authorization would be needed.
+- Cloud infrastructure — from [Set up cloud infrastructure](set-up-cloud-infrastructure.md)
+- Project tracker — from [Set up a project tracker](set-up-a-project-tracker.md)
 
-   - Vendor options: Cobalt, Oneleet
-   - Sources: [NIST SP 800-115](https://csrc.nist.gov/pubs/sp/800/115/final)
-2. **Sign the rules-of-engagement authorization** — human (legally required signature) · ~10 min
+| Information to gather | Required by the record |
+| --- | --- |
+| production architecture overview | Yes |
 
-   Set out authorized targets and techniques, test accounts, dates, emergency contacts, stop conditions and data handling in the rules of engagement. Obtain any necessary permission for hosted or shared infrastructure. The authorized company representative signs the agreed scope, which testers and responders should have available when deciding whether activity is permitted or must stop.
+## Geography
 
-   - Sources: [NIST SP 800-115](https://csrc.nist.gov/pubs/sp/800/115/final)
-3. **Provision the test environment and accounts** — agent-runnable · ~30 min
+Country rows describe the guidance recorded here. Local notes and step alternatives do not establish a complete country-specific workflow.
 
-   Provision the accounts, roles and test data specified in the rules of engagement. Verify that the chosen environment represents the behavior under test and that monitoring and recovery arrangements fit the planned techniques. Deliver credentials through the agreed secure channel. Record temporary access and its removal point, then confirm the testers can reach only their authorized targets.
+| Country | Recorded guidance | Steps with local alternatives or resolutions |
+| --- | --- | --- |
+| [India](#geo-in) | Local analog note | — |
 
-   - Sources: [NIST SP 800-115](https://csrc.nist.gov/pubs/sp/800/115/final)
-4. **Testing window** — human · ~7 d · async wait
+## Steps at a glance
 
-   Keep the company test contact available and watch for operational impact during the agreed window. Escalate critical findings and scope questions promptly; expand targets or techniques only under updated authorization. Record interruptions and excluded paths that limit coverage. When testing ends, confirm activity has stopped and remove temporary access as agreed.
+Use the recorded prerequisites and conditions to follow the path. Row order is for navigation.
 
-   - Sources: [NIST SP 800-115](https://csrc.nist.gov/pubs/sp/800/115/final)
-5. **Triage findings into the tracker** — agent-runnable · ~30 min
+| Step | Handled by | Time estimate | Incoming dependencies |
+| --- | --- | --- | --- |
+| [1. Scope the test and pick a firm](#step-1) | human | ~45 min | Entry step |
+| [2. Sign the rules-of-engagement authorization](#step-2) | human; signature required | ~10 min | [Step 1](#step-1) |
+| [3. Provision the test environment and accounts](#step-3) | agent-runnable | ~30 min | [Step 2](#step-2) |
+| [4. Testing window](#step-4) | human; includes waiting | ~7 d | [Step 3](#step-3) |
+| [5. Triage findings into the tracker](#step-5) | agent-runnable | ~30 min | [Step 4](#step-4) |
+| [6. Fix the critical and high findings](#step-6) | agent-runnable | ~4 h | [Step 5](#step-5) |
+| [7. Request the retest and attestation letter](#step-7) | manual form/portal | ~15 min | [Step 6](#step-6) |
 
-   Turn each actionable finding into a restricted issue with affected assets, reproduction evidence, impact and an engineering owner. Assess severity in the company’s context while retaining the tester’s original rating. Link duplicates and send disputed or unverified findings back for clarification. Keep exploit details out of broadly visible projects and preserve the report reference for retesting.
+<a id="steps"></a>
 
-   - Canonical vendor: Linear
-   - Vendor options: Linear, Asana
-   - Ranked market: [project-management](../../open-rankings/project-management)
-   - Sources: [NIST SP 800-115](https://csrc.nist.gov/pubs/sp/800/115/final)
-6. **Fix the critical and high findings** — agent-runnable · ~4 h
+## Step details
 
-   Reproduce the weakness in an authorized environment and fix its underlying cause. Plan production changes with validation and rollback, using the normal change approval. Add a meaningful regression check where appropriate and attach the deployed version and test result to the finding. If remediation cannot finish, the accountable risk owner must decide on temporary controls and follow-up.
+<a id="step-1"></a>
 
-   - Cross-arena market: [ai-coding](../../open-rankings/ai-coding)
-   - Sources: [NIST SP 800-115](https://csrc.nist.gov/pubs/sp/800/115/final)
-7. **Request the retest and attestation letter** — manual form/portal · ~15 min
+### 1. Scope the test and pick a firm
 
-   Send remediation evidence to the testing firm and arrange retesting of the affected findings. Reconcile reopened or partially resolved issues with the internal tracker. Check the final report and any attestation for accurate dates, targets and limitations before the report is authorized for external sharing. Publish only a summary that reflects the actual testing and unresolved findings.
+human · ~45 min
 
-   - Produces: Pen test report & attestation
-   - Sources: [NIST SP 800-115](https://csrc.nist.gov/pubs/sp/800/115/final)
 
-## By country
+Define the applications, exposed services, authentication roles and risks the test should cover. Compare firms on relevant experience and sensitive-finding handling. Agree targets, exclusions, techniques, environment and deliverables before commissioning the approved engagement. The resulting scope should let testers and system owners identify permitted activity and where additional authorization would be needed.
+
+- Vendor options: Cobalt, Oneleet
+- Sources: [NIST SP 800-115](https://csrc.nist.gov/pubs/sp/800/115/final)
+
+<a id="step-2"></a>
+
+### 2. Sign the rules-of-engagement authorization
+
+human (legally required signature) · ~10 min
+
+
+Set out authorized targets and techniques, test accounts, dates, emergency contacts, stop conditions and data handling in the rules of engagement. Obtain any necessary permission for hosted or shared infrastructure. The authorized company representative signs the agreed scope, which testers and responders should have available when deciding whether activity is permitted or must stop.
+
+- Sources: [NIST SP 800-115](https://csrc.nist.gov/pubs/sp/800/115/final)
+
+<a id="step-3"></a>
+
+### 3. Provision the test environment and accounts
+
+agent-runnable · ~30 min
+
+
+Provision the accounts, roles and test data specified in the rules of engagement. Verify that the chosen environment represents the behavior under test and that monitoring and recovery arrangements fit the planned techniques. Deliver credentials through the agreed secure channel. Record temporary access and its removal point, then confirm the testers can reach only their authorized targets.
+
+- Sources: [NIST SP 800-115](https://csrc.nist.gov/pubs/sp/800/115/final)
+
+<a id="step-4"></a>
+
+### 4. Testing window
+
+human · ~7 d · async wait
+
+
+Keep the company test contact available and watch for operational impact during the agreed window. Escalate critical findings and scope questions promptly; expand targets or techniques only under updated authorization. Record interruptions and excluded paths that limit coverage. When testing ends, confirm activity has stopped and remove temporary access as agreed.
+
+- Sources: [NIST SP 800-115](https://csrc.nist.gov/pubs/sp/800/115/final)
+
+<a id="step-5"></a>
+
+### 5. Triage findings into the tracker
+
+agent-runnable · ~30 min
+
+
+Turn each actionable finding into a restricted issue with affected assets, reproduction evidence, impact and an engineering owner. Assess severity in the company’s context while retaining the tester’s original rating. Link duplicates and send disputed or unverified findings back for clarification. Keep exploit details out of broadly visible projects and preserve the report reference for retesting.
+
+- Canonical vendor: Linear
+- Vendor options: Linear, Asana
+- Ranked market: [project-management](../../open-rankings/project-management)
+- Sources: [NIST SP 800-115](https://csrc.nist.gov/pubs/sp/800/115/final)
+
+<a id="step-6"></a>
+
+### 6. Fix the critical and high findings
+
+agent-runnable · ~4 h
+
+
+Reproduce the weakness in an authorized environment and fix its underlying cause. Plan production changes with validation and rollback, using the normal change approval. Add a meaningful regression check where appropriate and attach the deployed version and test result to the finding. If remediation cannot finish, the accountable risk owner must decide on temporary controls and follow-up.
+
+- Cross-arena market: [ai-coding](../../open-rankings/ai-coding)
+- Sources: [NIST SP 800-115](https://csrc.nist.gov/pubs/sp/800/115/final)
+
+<a id="step-7"></a>
+
+### 7. Request the retest and attestation letter
+
+manual form/portal · ~15 min
+
+
+Send remediation evidence to the testing firm and arrange retesting of the affected findings. Reconcile reopened or partially resolved issues with the internal tracker. Check the final report and any attestation for accurate dates, targets and limitations before the report is authorized for external sharing. Publish only a summary that reflects the actual testing and unresolved findings.
+
+- Produces: Pen test report & attestation
+- Sources: [NIST SP 800-115](https://csrc.nist.gov/pubs/sp/800/115/final)
+
+
+<a id="by-country"></a>
+
+## Country details
+
+<a id="geo-in"></a>
 
 ### India
 
 - Security testing here runs through CERT-In's empanelled auditor list, and CERT-In's 2022 directions add real teeth: covered incidents must be reported within six hours — a sharper regime than most customers' annual-pentest ask. ([CERT-In (empanelled auditors)](https://www.cert-in.org.in/))
 
-## Artifacts
+<a id="artifacts"></a>
 
-Produces:
+## Outputs
 
 - Pen test report & attestation
-
-Requires:
-
-- Cloud infrastructure — from [Set up cloud infrastructure](set-up-cloud-infrastructure.md)
-- Project tracker — from [Set up a project tracker](set-up-a-project-tracker.md)
 
 ## Related records
 

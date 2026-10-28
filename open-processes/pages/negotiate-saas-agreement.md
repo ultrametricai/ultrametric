@@ -3,6 +3,10 @@
 
 # Negotiate SaaS agreement
 
+[Overview](#overview) · [Before you start](#before-you-start) · [Geography](#geography) · [Steps](#steps-at-a-glance) · [Outputs](#outputs)
+
+## Overview
+
 Create a standard SaaS subscription agreement, terms of service, and privacy policy.
 
 | Field | Value |
@@ -19,63 +23,127 @@ Create a standard SaaS subscription agreement, terms of service, and privacy pol
 
 System can draft initial templates using company context. Legal review and customer-specific negotiations are person-routed.
 
-## Steps
+## Before you start
 
-1. **Draft SaaS agreement template** — agent-runnable · ~30 min · human approval required
+Required artifacts:
 
-   *Entry step — no prerequisite step.*
+- Company website — from [Generate a website](generate-a-website.md)
 
-   Draft around the actual service, customers and commercial model. Resolve choices for fees, renewal, support, data handling, liability, suspension and termination with the relevant business and legal reviewers. Reconcile the agreement with order forms, service levels and processing schedules. Keep unagreed terms visible and tie service commitments to the product being sold.
+| Information to gather | Required by the record |
+| --- | --- |
+| name | Yes |
+| product pricing model | Yes |
+| company data handling | Yes |
 
-   - Produces: SaaS agreement template
-   - Vendor options: ChatGPT, Claude, Gemini, Grok
-   - Ranked market: [ai-assistants](../../open-rankings/ai-assistants)
-2. **Draft Terms of Service** — agent-runnable · ~30 min · human approval required
+## Geography
 
-   *Entry step — no prerequisite step.*
+Country rows describe the guidance recorded here. Local notes and step alternatives do not establish a complete country-specific workflow.
 
-   Write terms for the actual account and purchase flow: contracting entity, audience, billing, acceptable use, termination and how users encounter and accept them. Check factual behavior with product and commercial teams. Identify conflicts with negotiated enterprise terms and send unresolved legal choices for review alongside the proposed acceptance flow.
+| Country | Recorded guidance | Steps with local alternatives or resolutions |
+| --- | --- | --- |
+| [Germany](#geo-de) | Local analog note | — |
 
-   - Produces: Terms of Service
-   - Vendor options: ChatGPT, Claude, Gemini, Grok
-   - Ranked market: [ai-assistants](../../open-rankings/ai-assistants)
-3. **Draft Privacy Policy** — agent-runnable · ~30 min · human approval required
+## Steps at a glance
 
-   *Entry step — no prerequisite step.*
+Use the recorded prerequisites and conditions to follow the path. Row order is for navigation.
 
-   Describe the service’s data flows through account creation, billing, support, analytics and customer content. Distinguish processing for the company’s own purposes from processing for customers. Check retention, sharing and deletion statements against implementation, and identify unresolved facts for the relevant teams. Review the resulting notice with the rest of the contracting package.
+| Step | Handled by | Time estimate | Incoming dependencies |
+| --- | --- | --- | --- |
+| [1. Draft SaaS agreement template](#step-1) | agent-runnable; approval required | ~30 min | Entry step |
+| [2. Draft Terms of Service](#step-2) | agent-runnable; approval required | ~30 min | Entry step |
+| [3. Draft Privacy Policy](#step-3) | agent-runnable; approval required | ~30 min | Entry step |
+| [4. Legal counsel review](#step-4) | human; approval required; includes waiting | ~3 d | All: [Step 1](#step-1); [Step 2](#step-2); [Step 3](#step-3) |
+| [5. Publish to website](#step-5) | manual form/portal; approval required | ~15 min | [Step 4](#step-4) |
 
-   - Produces: Privacy policy
-   - Vendor options: ChatGPT, Claude, Gemini, Grok
-   - Ranked market: [ai-assistants](../../open-rankings/ai-assistants)
-4. **Legal counsel review** — human · ~3 d · async wait · human approval required
+<a id="steps"></a>
 
-   *Follows steps 1, 2 and 3 — all are required first.*
+## Step details
 
-   Review the agreement, website terms, privacy notice, order forms and schedules together with counsel. Resolve conflicting promises and confirm technical claims with product or security specialists. Agree negotiation fallback terms and escalation points with the business owner. Give sales and product the final versions and the conditions under which a further review is needed.
-5. **Publish to website** — manual form/portal · ~15 min · human approval required
+<a id="step-1"></a>
 
-   Release the approved public documents at the intended signup, checkout and account locations. Verify links, mobile rendering, versions and the acceptance record captured by the flow. Keep negotiated customer agreements in the contract repository. Preserve the published release so later product or pricing changes can be compared with the terms users actually saw.
+### 1. Draft SaaS agreement template
 
-   - Cross-arena market: [vibe-coding](../../open-rankings/vibe-coding)
+agent-runnable · ~30 min · human approval required
 
-## By country
+
+*Entry step — no prerequisite step.*
+
+Draft around the actual service, customers and commercial model. Resolve choices for fees, renewal, support, data handling, liability, suspension and termination with the relevant business and legal reviewers. Reconcile the agreement with order forms, service levels and processing schedules. Keep unagreed terms visible and tie service commitments to the product being sold.
+
+- Produces: SaaS agreement template
+- Vendor options: ChatGPT, Claude, Gemini, Grok
+- Ranked market: [ai-assistants](../../open-rankings/ai-assistants)
+
+<a id="step-2"></a>
+
+### 2. Draft Terms of Service
+
+agent-runnable · ~30 min · human approval required
+
+
+*Entry step — no prerequisite step.*
+
+Write terms for the actual account and purchase flow: contracting entity, audience, billing, acceptable use, termination and how users encounter and accept them. Check factual behavior with product and commercial teams. Identify conflicts with negotiated enterprise terms and send unresolved legal choices for review alongside the proposed acceptance flow.
+
+- Produces: Terms of Service
+- Vendor options: ChatGPT, Claude, Gemini, Grok
+- Ranked market: [ai-assistants](../../open-rankings/ai-assistants)
+
+<a id="step-3"></a>
+
+### 3. Draft Privacy Policy
+
+agent-runnable · ~30 min · human approval required
+
+
+*Entry step — no prerequisite step.*
+
+Describe the service’s data flows through account creation, billing, support, analytics and customer content. Distinguish processing for the company’s own purposes from processing for customers. Check retention, sharing and deletion statements against implementation, and identify unresolved facts for the relevant teams. Review the resulting notice with the rest of the contracting package.
+
+- Produces: Privacy policy
+- Vendor options: ChatGPT, Claude, Gemini, Grok
+- Ranked market: [ai-assistants](../../open-rankings/ai-assistants)
+
+<a id="step-4"></a>
+
+### 4. Legal counsel review
+
+human · ~3 d · async wait · human approval required
+
+
+*Follows steps 1, 2 and 3 — all are required first.*
+
+Review the agreement, website terms, privacy notice, order forms and schedules together with counsel. Resolve conflicting promises and confirm technical claims with product or security specialists. Agree negotiation fallback terms and escalation points with the business owner. Give sales and product the final versions and the conditions under which a further review is needed.
+
+<a id="step-5"></a>
+
+### 5. Publish to website
+
+manual form/portal · ~15 min · human approval required
+
+
+Release the approved public documents at the intended signup, checkout and account locations. Verify links, mobile rendering, versions and the acceptance record captured by the flow. Keep negotiated customer agreements in the contract repository. Preserve the published release so later product or pricing changes can be compared with the terms users actually saw.
+
+- Cross-arena market: [vibe-coding](../../open-rankings/vibe-coding)
+
+
+<a id="by-country"></a>
+
+## Country details
+
+<a id="geo-de"></a>
 
 ### Germany
 
 - German AGB law subjects standard terms to content control EVEN B2B (§§ 305-310 BGB): liability caps and auto-renewal clauses that are routine in US SaaS paper are regularly void here — localize the template, don't just translate it. ([§ 305 BGB — standard terms control](https://www.gesetze-im-internet.de/bgb/__305.html))
 
-## Artifacts
+<a id="artifacts"></a>
 
-Produces:
+## Outputs
 
 - SaaS agreement template
 - Terms of Service
 - Privacy policy
-
-Requires:
-
-- Company website — from [Generate a website](generate-a-website.md)
 
 ## Related records
 

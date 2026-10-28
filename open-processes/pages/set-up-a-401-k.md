@@ -3,6 +3,10 @@
 
 # Set up a 401(k)
 
+[Overview](#overview) · [Before you start](#before-you-start) · [Geography](#geography) · [Steps](#steps-at-a-glance) · [Outputs](#outputs)
+
+## Overview
+
 Stand up the retirement plan (now state-mandated in California and a dozen others): pick a provider, decide the match, sign the plan adoption agreement, connect payroll, and verify the first contribution syncs.
 
 | Field | Value |
@@ -19,104 +23,206 @@ Stand up the retirement plan (now state-mandated in California and a dozen other
 
 Modern 401(k) providers onboard online and sync payroll automatically; the match decision and the plan adoption signature stay with the founder.
 
-## Steps
+## Before you start
 
-1. **Pick a 401(k) provider** — human · ~30 min
+Required artifacts:
 
-   Compare providers against workforce needs, proposed plan design, payroll integration and the team’s administrative capacity. Examine fees, investments, support, data handling and the exact service responsibilities, including duties retained by the employer. Bring the tradeoffs to the plan sponsor before engagement. Identify the payroll, finance and people contacts who will operate the selected arrangement.
+- Payroll account — from [Set up payroll](set-up-payroll.md)
 
-   - Vendor options: Guideline, Human Interest, Gusto
-   - Sources: [DOL: Retirement responsibilities for employers](https://www.dol.gov/index.php/agencies/ebsa/employers-and-advisers/small-business-owners/understanding-your-responsibilities) · [IRS: A plan sponsor’s responsibilities](https://www.irs.gov/retirement-plans/plan-sponsor/a-plan-sponsors-responsibilities)
-2. **Decide employer match and eligibility** — human · ~30 min
+| Information to gather | Required by the record |
+| --- | --- |
+| employer match policy | Yes |
 
-   Model contribution designs against the workforce and budget with the plan adviser. Resolve eligibility, entry dates, compensation definitions, vesting and any automatic-enrollment features under current requirements. Take the cost and design choices to the company’s decision makers before configuration or announcement. Compare the adoption documents with the settled terms, paying attention to selections that differ from provider defaults.
+## Geography
 
-   - Sources: [IRS: A plan sponsor’s responsibilities](https://www.irs.gov/retirement-plans/plan-sponsor/a-plan-sponsors-responsibilities)
-3. **Sign the plan adoption agreement** — human (legally required signature) · ~10 min · hard to undo
+Country rows describe the guidance recorded here. Local notes and step alternatives do not establish a complete country-specific workflow.
 
-   Compare the adoption agreement and underlying plan documents with the chosen contribution formulas, eligibility, effective dates and administrative responsibilities. Resolve discrepancies with the adviser before the authorized sponsor signatory executes. Give payroll and the administrator the implementation details drawn from the signed plan, including the provisions that differ from standard provider settings.
+| Country | Recorded guidance | Steps with local alternatives or resolutions |
+| --- | --- | --- |
+| [India](#geo-in) | Local analog note | — |
+| [United Kingdom](#geo-uk) | Local analog note | — |
+| [Germany](#geo-de) | Local analog note | — |
+| [France](#geo-fr) | Handled within another local process | — |
+| [Portugal](#geo-pt) | Handled within another local process | — |
+| [Canada](#geo-ca) | Local analog note | — |
+| [New Zealand](#geo-nz) | Local analog note | — |
+| [Singapore](#geo-sg) | Handled within another local process | — |
+| [Australia](#geo-au) | Local analog note | — |
+| [South Korea](#geo-kr) | Local analog note | — |
+| [Hong Kong](#geo-hk) | Local analog note | — |
+| [Estonia](#geo-ee) | Handled within another local process | — |
 
-   - Produces: 401(k) plan
-   - Sources: [IRS: Establishing a 401(k) plan](https://www.irs.gov/retirement-plans/irc-401k-plans-establishing-a-401k-plan) · [IRS: A plan sponsor’s responsibilities](https://www.irs.gov/retirement-plans/plan-sponsor/a-plan-sponsors-responsibilities)
-4. **Connect the payroll integration** — agent-runnable · ~20 min
+## Steps at a glance
 
-   Map employee identifiers, eligible compensation, deferrals, employer contributions and any loan repayments between payroll and the plan system. Check integration permissions with the account owners before connecting. Verify the mapping through the provider’s supported test or preview process, paying attention to rejected records and corrections. Agree who reconciles each payroll run to contributions received and allocated by the plan.
+Use the recorded prerequisites and conditions to follow the path. Row order is for navigation.
 
-   - Canonical vendor: Gusto
-   - Vendor options: Gusto, Rippling, Justworks
-   - Ranked market: [payroll](../../open-rankings/payroll)
-   - Sources: [IRS: A plan sponsor’s responsibilities](https://www.irs.gov/retirement-plans/plan-sponsor/a-plan-sponsors-responsibilities)
-5. **Announce enrollment to the team** — agent-runnable · ~10 min
+| Step | Handled by | Time estimate | Incoming dependencies |
+| --- | --- | --- | --- |
+| [1. Pick a 401(k) provider](#step-1) | human | ~30 min | Entry step |
+| [2. Decide employer match and eligibility](#step-2) | human | ~30 min | [Step 1](#step-1) |
+| [3. Sign the plan adoption agreement](#step-3) | human; signature required | ~10 min | [Step 2](#step-2) |
+| [4. Connect the payroll integration](#step-4) | agent-runnable | ~20 min | [Step 3](#step-3) |
+| [5. Announce enrollment to the team](#step-5) | agent-runnable | ~10 min | [Step 4](#step-4) |
+| [6. Verify the first contribution sync](#step-6) | agent-runnable | ~10 min | [Step 5](#step-5) |
 
-   Explain enrollment using the adopted plan’s participant materials: who can act, where to enroll, what choices are available and where questions go. Check the required notices and audience with the plan administrator before sending. Help employees resolve access problems while leaving contribution and investment elections to them. Make the official plan information easy to find beyond the initial announcement.
+<a id="steps"></a>
 
-   - Canonical vendor: Slack
-   - Sources: [IRS: Establishing a 401(k) plan](https://www.irs.gov/retirement-plans/irc-401k-plans-establishing-a-401k-plan) · [DOL: Retirement responsibilities for employers](https://www.dol.gov/index.php/agencies/ebsa/employers-and-advisers/small-business-owners/understanding-your-responsibilities)
-6. **Verify the first contribution sync** — agent-runnable · ~10 min
+## Step details
 
-   Match the first payroll’s deductions and employer contributions to amounts received by the plan and allocated to participant accounts, using the responsible provider’s records. Reconcile participants, pay periods, contribution types and totals, and investigate missing or rejected records promptly. Have the plan owner check deposit timing against applicable requirements and the actual payroll date. Resolve discrepancies beyond any integration success message.
+<a id="step-1"></a>
 
-   - Sources: [DOL: Retirement responsibilities for employers](https://www.dol.gov/index.php/agencies/ebsa/employers-and-advisers/small-business-owners/understanding-your-responsibilities) · [IRS: A plan sponsor’s responsibilities](https://www.irs.gov/retirement-plans/plan-sponsor/a-plan-sponsors-responsibilities)
+### 1. Pick a 401(k) provider
 
-## By country
+human · ~30 min
+
+
+Compare providers against workforce needs, proposed plan design, payroll integration and the team’s administrative capacity. Examine fees, investments, support, data handling and the exact service responsibilities, including duties retained by the employer. Bring the tradeoffs to the plan sponsor before engagement. Identify the payroll, finance and people contacts who will operate the selected arrangement.
+
+- Vendor options: Guideline, Human Interest, Gusto
+- Sources: [DOL: Retirement responsibilities for employers](https://www.dol.gov/index.php/agencies/ebsa/employers-and-advisers/small-business-owners/understanding-your-responsibilities) · [IRS: A plan sponsor’s responsibilities](https://www.irs.gov/retirement-plans/plan-sponsor/a-plan-sponsors-responsibilities)
+
+<a id="step-2"></a>
+
+### 2. Decide employer match and eligibility
+
+human · ~30 min
+
+
+Model contribution designs against the workforce and budget with the plan adviser. Resolve eligibility, entry dates, compensation definitions, vesting and any automatic-enrollment features under current requirements. Take the cost and design choices to the company’s decision makers before configuration or announcement. Compare the adoption documents with the settled terms, paying attention to selections that differ from provider defaults.
+
+- Sources: [IRS: A plan sponsor’s responsibilities](https://www.irs.gov/retirement-plans/plan-sponsor/a-plan-sponsors-responsibilities)
+
+<a id="step-3"></a>
+
+### 3. Sign the plan adoption agreement
+
+human (legally required signature) · ~10 min · hard to undo
+
+
+Compare the adoption agreement and underlying plan documents with the chosen contribution formulas, eligibility, effective dates and administrative responsibilities. Resolve discrepancies with the adviser before the authorized sponsor signatory executes. Give payroll and the administrator the implementation details drawn from the signed plan, including the provisions that differ from standard provider settings.
+
+- Produces: 401(k) plan
+- Sources: [IRS: Establishing a 401(k) plan](https://www.irs.gov/retirement-plans/irc-401k-plans-establishing-a-401k-plan) · [IRS: A plan sponsor’s responsibilities](https://www.irs.gov/retirement-plans/plan-sponsor/a-plan-sponsors-responsibilities)
+
+<a id="step-4"></a>
+
+### 4. Connect the payroll integration
+
+agent-runnable · ~20 min
+
+
+Map employee identifiers, eligible compensation, deferrals, employer contributions and any loan repayments between payroll and the plan system. Check integration permissions with the account owners before connecting. Verify the mapping through the provider’s supported test or preview process, paying attention to rejected records and corrections. Agree who reconciles each payroll run to contributions received and allocated by the plan.
+
+- Canonical vendor: Gusto
+- Vendor options: Gusto, Rippling, Justworks
+- Ranked market: [payroll](../../open-rankings/payroll)
+- Sources: [IRS: A plan sponsor’s responsibilities](https://www.irs.gov/retirement-plans/plan-sponsor/a-plan-sponsors-responsibilities)
+
+<a id="step-5"></a>
+
+### 5. Announce enrollment to the team
+
+agent-runnable · ~10 min
+
+
+Explain enrollment using the adopted plan’s participant materials: who can act, where to enroll, what choices are available and where questions go. Check the required notices and audience with the plan administrator before sending. Help employees resolve access problems while leaving contribution and investment elections to them. Make the official plan information easy to find beyond the initial announcement.
+
+- Canonical vendor: Slack
+- Sources: [IRS: Establishing a 401(k) plan](https://www.irs.gov/retirement-plans/irc-401k-plans-establishing-a-401k-plan) · [DOL: Retirement responsibilities for employers](https://www.dol.gov/index.php/agencies/ebsa/employers-and-advisers/small-business-owners/understanding-your-responsibilities)
+
+<a id="step-6"></a>
+
+### 6. Verify the first contribution sync
+
+agent-runnable · ~10 min
+
+
+Match the first payroll’s deductions and employer contributions to amounts received by the plan and allocated to participant accounts, using the responsible provider’s records. Reconcile participants, pay periods, contribution types and totals, and investigate missing or rejected records promptly. Have the plan owner check deposit timing against applicable requirements and the actual payroll date. Resolve discrepancies beyond any integration success message.
+
+- Sources: [DOL: Retirement responsibilities for employers](https://www.dol.gov/index.php/agencies/ebsa/employers-and-advisers/small-business-owners/understanding-your-responsibilities) · [IRS: A plan sponsor’s responsibilities](https://www.irs.gov/retirement-plans/plan-sponsor/a-plan-sponsors-responsibilities)
+
+
+<a id="by-country"></a>
+
+## Country details
+
+<a id="geo-in"></a>
 
 ### India
 
 - The EPF is the mandatory retirement vehicle once headcount crosses 20 — 12% of basic pay from employer and employee each, administered through the EPFO employer portal. ([EPFO — Employees' Provident Fund](https://unifiedportal-emp.epfindia.gov.in/epfo/))
 
+<a id="geo-uk"></a>
+
 ### United Kingdom
 
 - Not optional like a 401(k): every UK employer must auto-enrol eligible staff into a workplace pension (8% minimum combined contribution) and declare compliance to The Pensions Regulator. ([Pension auto-enrolment (The Pensions Regulator)](https://www.thepensionsregulator.gov.uk/en/employers))
+
+<a id="geo-de"></a>
 
 ### Germany
 
 - State pension contributions ride payroll automatically; the 401(k) analog is betriebliche Altersvorsorge — every employer MUST offer salary conversion (Entgeltumwandlung) with a 15% employer top-up when social charges are saved. ([BetrAVG — occupational pensions law](https://www.gesetze-im-internet.de/betravg/))
 
+<a id="geo-fr"></a>
+
 ### France
 
 - Absorbed: Mandatory complementary pensions (AGIRC-ARRCO) enroll automatically through payroll's DSN — nothing to set up; the optional analog is a PER d'entreprise (collective retirement savings plan) as a perk. ([AGIRC-ARRCO complementary pension](https://www.agirc-arrco.fr/))
+
+<a id="geo-pt"></a>
 
 ### Portugal
 
 - Absorbed: State pension contributions ride the single social-security charge automatically and no occupational plan is mandated — a company PPR (retirement-savings plan) is a voluntary perk rather than an expected setup project. ([Segurança Social — empregadores](https://www.seg-social.pt/empregadores))
 
+<a id="geo-ca"></a>
+
 ### Canada
 
 - CPP rides payroll automatically; the 401(k) analog is the voluntary group RRSP or DPSP most tech employers offer (Quebec alone mandates offering a plan, the VRSP, for established employers with staff there). ([Savings and pension plan administration](https://www.canada.ca/en/services/taxes/savings-and-pension-plans/savings-and-pension-plan-administration.html))
+
+<a id="geo-nz"></a>
 
 ### New Zealand
 
 - Not optional like a 401(k): KiwiSaver rides payroll — automatically enrol new employees aged over 18 and under 65 (the IR346K form) and pay the compulsory employer contribution, currently at least 3.5% of gross salary or wages. ([Starting employees in KiwiSaver — Inland Revenue](https://www.ird.govt.nz/kiwisaver/kiwisaver-employers/starting-employees-in-kiwisaver))
 
+<a id="geo-sg"></a>
+
 ### Singapore
 
 - Absorbed: There is no plan to set up: CPF is the retirement system, and employer contributions for citizen and PR employees ride every payroll month (law rule [sg.cpf-employer-contributions](../../open-law/SG/sg-cpf-employer-contributions.json)) — supplementary schemes are optional extras. ([CPF — contribution rates](https://www.cpf.gov.sg/employer/employer-obligations/how-much-cpf-contributions-to-pay))
+
+<a id="geo-au"></a>
 
 ### Australia
 
 - Not optional: the superannuation guarantee makes employers pay 12% of qualifying earnings into each employee's fund within 7 business days of payday (law rule [au.superannuation-guarantee](../../open-law/AU/au-superannuation-guarantee.json)), with stapled funds and a default MySuper product in place of plan setup. ([Superannuation for employers](https://business.gov.au/finance/superannuation))
 
+<a id="geo-kr"></a>
+
 ### South Korea
 
 - The retirement layer is statutory rather than elective: workers with a year of service accrue severance (퇴직급여), and the employer satisfies the duty with a severance-pay scheme or a DB/DC retirement-pension plan under the Retirement Benefits Act. ([Retirement Benefits Act Article 8 (law.go.kr)](https://www.law.go.kr/%EB%B2%95%EB%A0%B9/%EA%B7%BC%EB%A1%9C%EC%9E%90%ED%87%B4%EC%A7%81%EA%B8%89%EC%97%AC%EB%B3%B4%EC%9E%A5%EB%B2%95/%EC%A0%9C8%EC%A1%B0))
+
+<a id="geo-hk"></a>
 
 ### Hong Kong
 
 - The mandatory second pillar is the MPF: pick a registered scheme and trustee, enrol each employee within the first 60 days (law rule [hk.mpf-enrolment-deadline](../../open-law/HK/hk-mpf-enrolment-deadline.json)), and run contributions each wage period — ORSO schemes are the voluntary top-up layer. ([MPFA — enrol employees](https://www.mpfa.org.hk/en/mpf-system/enrolment-and-termination/employers-enrolment-for-employees))
 
+<a id="geo-ee"></a>
+
 ### Estonia
 
 - Absorbed: Retirement savings ride the state system: the second-pillar funded pension is withheld with the monthly TSD as part of payroll, so no company plan is set up or administered. ([Pensionikeskus (funded pension)](https://www.pensionikeskus.ee/en/))
 
-## Artifacts
+<a id="artifacts"></a>
 
-Produces:
+## Outputs
 
 - 401(k) plan
-
-Requires:
-
-- Payroll account — from [Set up payroll](set-up-payroll.md)
 
 ---
 

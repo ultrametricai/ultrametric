@@ -3,6 +3,10 @@
 
 # Set up SSO & access management
 
+[Overview](#overview) · [Before you start](#before-you-start) · [Steps](#steps-at-a-glance) · [Outputs](#outputs)
+
+## Overview
+
 Set up Okta/Google SSO across all company tools with role-based access, MFA, and provisioning.
 
 | Field | Value |
@@ -19,62 +23,127 @@ Set up Okta/Google SSO across all company tools with role-based access, MFA, and
 
 Okta API supports user/app management. Individual app SSO configuration varies in automation support.
 
-## Steps
+## Before you start
 
-1. **Set up your identity provider tenant** — manual form/portal · ~30 min · human approval required
-
-   Verify company control of the domain and choose the identity tenant for the intended applications. Review licensing, administrator ownership and account recovery before creating the approved account and granting privileged access. Establish protected recovery access before changing production sign-in. Record the tenant identifier so later integrations connect to the correct company environment.
-
-   - Produces: Identity provider (SSO)
-   - Canonical vendor: Okta
-   - Vendor options: Okta, JumpCloud, Microsoft Entra ID, Google Workspace, Rippling IT
-   - Ranked market: [sso-identity](../../open-rankings/sso-identity)
-   - Sources: [NIST SP 800-53 Rev. 5](https://csrc.nist.gov/pubs/sp/800/53/r5/upd1/final)
-2. **Define role-based groups** — agent-runnable · ~20 min · human approval required
-
-   Map actual job responsibilities to required application access. Define separate ordinary, privileged, contractor and service-identity groups where appropriate, with membership criteria and responsible managers. Check overlapping grants and exceptions before creating approved groups. The resulting role-to-access mapping should support onboarding, role changes and departure without giving every user every application.
-
-   - Canonical vendor: Okta
-   - Sources: [NIST SP 800-53 Rev. 5](https://csrc.nist.gov/pubs/sp/800/53/r5/upd1/final)
-3. **Configure SSO for each app** — agent-runnable · ~2 h · human approval required
-
-   Follow each application’s supported federation setup for the correct tenant, claims and user-matching rules. Keep a recovery route while testing the integration with designated accounts. Apply production sign-in changes through the established access-change process. Verify the resulting identity and access level, then record working settings and provider-documented certificate or secret rotation needs.
-
-   - Canonical vendor: Okta
-   - Sources: [NIST SP 800-53 Rev. 5](https://csrc.nist.gov/pubs/sp/800/53/r5/upd1/final)
-4. **Enable MFA policies** — agent-runnable · ~15 min · human approval required
-
-   Choose supported authentication methods based on account risk and plan enrollment, lost-device recovery and emergency access. Pilot the policy with representative users and privileged accounts before approving enforcement and exceptions through the company’s access-control process. Resolve enrollment failures and test the supported recovery route before rollout.
-
-   - Canonical vendor: Okta
-   - Sources: [NIST SP 800-53 Rev. 5](https://csrc.nist.gov/pubs/sp/800/53/r5/upd1/final)
-5. **Provision existing users** — agent-runnable · ~30 min · human approval required
-
-   Match the current employee and contractor roster to existing application identities. Resolve duplicate or shared accounts and verify each person’s approved groups and licenses. With the relevant access approvals, pilot provisioning on a small population before expanding. Investigate missing users and unexpected privileges before expanding provisioning.
-
-   - Canonical vendor: Okta
-   - Sources: [NIST SP 800-53 Rev. 5](https://csrc.nist.gov/pubs/sp/800/53/r5/upd1/final)
-6. **Test SSO across all apps** — human · ~2 h
-
-   Test sign-in, sign-out, recovery, role changes and deprovisioning using representative ordinary, privileged and unauthorized accounts. Verify denial as carefully as successful login. Record failures by application and fix blocking issues before rollout, with any remaining exception decided by the accountable owner. Recovery should work without bypassing the intended access policy.
-
-   - Sources: [NIST SP 800-53 Rev. 5](https://csrc.nist.gov/pubs/sp/800/53/r5/upd1/final)
-7. **Roll out to team** — human · ~8 h · async wait · human approval required
-
-   Give staff the new sign-in instructions, enrollment steps and support route. Coordinate rollout timing and approved enforcement through the existing access-change process. Watch for failed logins and access mismatches, using the agreed rollback if needed. Resolve pending users and application exceptions, then hand tenant and group maintenance to the team handling onboarding, transfers and departures.
-
-   - Cross-arena market: [workflow-automation](../../open-rankings/workflow-automation)
-   - Sources: [NIST SP 800-53 Rev. 5](https://csrc.nist.gov/pubs/sp/800/53/r5/upd1/final)
-
-## Artifacts
-
-Produces:
-
-- Identity provider (SSO)
-
-Requires:
+Required artifacts:
 
 - Company email workspace — from [Set up company email & docs](set-up-company-email-docs.md)
+
+| Information to gather | Required by the record |
+| --- | --- |
+| team members and roles | Yes |
+| access level policies | Yes |
+
+## Steps at a glance
+
+Use the recorded prerequisites and conditions to follow the path. Row order is for navigation.
+
+| Step | Handled by | Time estimate | Incoming dependencies |
+| --- | --- | --- | --- |
+| [1. Set up your identity provider tenant](#step-1) | manual form/portal; approval required | ~30 min | Entry step |
+| [2. Define role-based groups](#step-2) | agent-runnable; approval required | ~20 min | [Step 1](#step-1) |
+| [3. Configure SSO for each app](#step-3) | agent-runnable; approval required | ~2 h | [Step 2](#step-2) |
+| [4. Enable MFA policies](#step-4) | agent-runnable; approval required | ~15 min | [Step 3](#step-3) |
+| [5. Provision existing users](#step-5) | agent-runnable; approval required | ~30 min | [Step 4](#step-4) |
+| [6. Test SSO across all apps](#step-6) | human | ~2 h | [Step 5](#step-5) |
+| [7. Roll out to team](#step-7) | human; approval required; includes waiting | ~8 h | [Step 6](#step-6) |
+
+<a id="steps"></a>
+
+## Step details
+
+<a id="step-1"></a>
+
+### 1. Set up your identity provider tenant
+
+manual form/portal · ~30 min · human approval required
+
+
+Verify company control of the domain and choose the identity tenant for the intended applications. Review licensing, administrator ownership and account recovery before creating the approved account and granting privileged access. Establish protected recovery access before changing production sign-in. Record the tenant identifier so later integrations connect to the correct company environment.
+
+- Produces: Identity provider (SSO)
+- Canonical vendor: Okta
+- Vendor options: Okta, JumpCloud, Microsoft Entra ID, Google Workspace, Rippling IT
+- Ranked market: [sso-identity](../../open-rankings/sso-identity)
+- Sources: [NIST SP 800-53 Rev. 5](https://csrc.nist.gov/pubs/sp/800/53/r5/upd1/final)
+
+<a id="step-2"></a>
+
+### 2. Define role-based groups
+
+agent-runnable · ~20 min · human approval required
+
+
+Map actual job responsibilities to required application access. Define separate ordinary, privileged, contractor and service-identity groups where appropriate, with membership criteria and responsible managers. Check overlapping grants and exceptions before creating approved groups. The resulting role-to-access mapping should support onboarding, role changes and departure without giving every user every application.
+
+- Canonical vendor: Okta
+- Sources: [NIST SP 800-53 Rev. 5](https://csrc.nist.gov/pubs/sp/800/53/r5/upd1/final)
+
+<a id="step-3"></a>
+
+### 3. Configure SSO for each app
+
+agent-runnable · ~2 h · human approval required
+
+
+Follow each application’s supported federation setup for the correct tenant, claims and user-matching rules. Keep a recovery route while testing the integration with designated accounts. Apply production sign-in changes through the established access-change process. Verify the resulting identity and access level, then record working settings and provider-documented certificate or secret rotation needs.
+
+- Canonical vendor: Okta
+- Sources: [NIST SP 800-53 Rev. 5](https://csrc.nist.gov/pubs/sp/800/53/r5/upd1/final)
+
+<a id="step-4"></a>
+
+### 4. Enable MFA policies
+
+agent-runnable · ~15 min · human approval required
+
+
+Choose supported authentication methods based on account risk and plan enrollment, lost-device recovery and emergency access. Pilot the policy with representative users and privileged accounts before approving enforcement and exceptions through the company’s access-control process. Resolve enrollment failures and test the supported recovery route before rollout.
+
+- Canonical vendor: Okta
+- Sources: [NIST SP 800-53 Rev. 5](https://csrc.nist.gov/pubs/sp/800/53/r5/upd1/final)
+
+<a id="step-5"></a>
+
+### 5. Provision existing users
+
+agent-runnable · ~30 min · human approval required
+
+
+Match the current employee and contractor roster to existing application identities. Resolve duplicate or shared accounts and verify each person’s approved groups and licenses. With the relevant access approvals, pilot provisioning on a small population before expanding. Investigate missing users and unexpected privileges before expanding provisioning.
+
+- Canonical vendor: Okta
+- Sources: [NIST SP 800-53 Rev. 5](https://csrc.nist.gov/pubs/sp/800/53/r5/upd1/final)
+
+<a id="step-6"></a>
+
+### 6. Test SSO across all apps
+
+human · ~2 h
+
+
+Test sign-in, sign-out, recovery, role changes and deprovisioning using representative ordinary, privileged and unauthorized accounts. Verify denial as carefully as successful login. Record failures by application and fix blocking issues before rollout, with any remaining exception decided by the accountable owner. Recovery should work without bypassing the intended access policy.
+
+- Sources: [NIST SP 800-53 Rev. 5](https://csrc.nist.gov/pubs/sp/800/53/r5/upd1/final)
+
+<a id="step-7"></a>
+
+### 7. Roll out to team
+
+human · ~8 h · async wait · human approval required
+
+
+Give staff the new sign-in instructions, enrollment steps and support route. Coordinate rollout timing and approved enforcement through the existing access-change process. Watch for failed logins and access mismatches, using the agreed rollback if needed. Resolve pending users and application exceptions, then hand tenant and group maintenance to the team handling onboarding, transfers and departures.
+
+- Cross-arena market: [workflow-automation](../../open-rankings/workflow-automation)
+- Sources: [NIST SP 800-53 Rev. 5](https://csrc.nist.gov/pubs/sp/800/53/r5/upd1/final)
+
+
+<a id="artifacts"></a>
+
+## Outputs
+
+- Identity provider (SSO)
 
 ## Related records
 

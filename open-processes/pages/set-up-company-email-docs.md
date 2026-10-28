@@ -3,6 +3,10 @@
 
 # Set up company email & docs
 
+[Overview](#overview) · [Before you start](#before-you-start) · [Steps](#steps-at-a-glance) · [Outputs](#outputs)
+
+## Overview
+
 Configure the company email, calendar, and docs suite for the team, including admin settings. Google Workspace is the canonical route.
 
 | Field | Value |
@@ -19,68 +23,124 @@ Configure the company email, calendar, and docs suite for the team, including ad
 
 Google Admin API supports user/group management. Initial domain setup and billing are manual.
 
-## Steps
+## Before you start
 
-1. **Create the company email workspace** — manual form/portal · ~15 min · human approval required
-
-   Compare the selected email and document platform with the team's required applications, domain, user count, and existing accounts. Decide who will administer the tenant, manage billing, and recover access if an administrator leaves. Get the budget owner's approval for the subscription, then create or reuse the company workspace. Keep domain verification, mailbox provisioning, and switching incoming mail as separate setup tasks, with an owner for the cutover.
-
-   - Produces: Company email workspace
-   - Canonical vendor: Gmail
-   - Vendor options: Google Workspace, Microsoft 365, Fastmail, Zoho Mail
-   - Do it yourself: [Google Workspace signup](https://workspace.google.com/)
-   - Sources: [Google Workspace: Verify a domain and activate Gmail](https://support.google.com/channelservices/answer/9728923?hl=en)
-
-   Options:
-     - **Default — Google Workspace signup** — manual form/portal · ~15 min · human approval required
-
-       Use this path when Google Workspace is the chosen platform. Check whether the company domain already belongs to a tenant, then use a company-controlled administrator account to start the selected subscription within the agreed budget. Google's setup flow will provide the current domain-verification and mail-activation instructions. Prepare users and destination mailboxes before changing incoming mail routing, and keep the administration link and recovery arrangements available to the company's IT owner.
-     - **Microsoft 365 workspace**
-
-       When: The team and its buyers live on Outlook/Teams
-
-       Use this path for a Microsoft 365 workspace. Match the subscription to the required applications and user licenses, and check for an existing tenant before creating one. Establish company-controlled administration and the agreed billing arrangement. Follow Microsoft's current domain-connection instructions, provision the people who receive company email, and plan migration of existing mail and files. Keep the mail-routing change separate until the destination mailboxes and the people using them are ready.
-
-       - Vendor options: Microsoft 365
-       - Sources: [Microsoft 365 Business Standard setup](https://learn.microsoft.com/en-us/microsoft-365/admin/setup/setup-business-standard?view=o365-worldwide)
-2. **Verify domain ownership** — manual form/portal · ~15 min
-
-   Get the verification value from the workspace's current setup flow and identify the administrator of the company's DNS zone. Add the exact requested record through that administrator, preserving unrelated records, then ask the provider to verify it. If verification fails, compare the saved name and value with the provider's instructions and check public DNS resolution. Successful domain verification establishes control of the domain; incoming email still follows its configured mail-routing records.
-
-   - Sources: [Google Workspace: Verify a domain and activate Gmail](https://support.google.com/channelservices/answer/9728923?hl=en)
-3. **Create user accounts** — agent-runnable · ~10 min · human approval required
-
-   Create individual accounts from the team roster using consistent company addresses and the licenses each role needs. Resolve address collisions and use the platform's appropriate shared-address setup for functions such as billing or support. Give each person their sign-in and recovery instructions through the normal onboarding channel. Confirm that the mailboxes needed for cutover exist and identify any user whose old mail, contacts, or files still need migration.
-
-   - Canonical vendor: Gmail
-   - Sources: [Microsoft 365 Business Standard setup](https://learn.microsoft.com/en-us/microsoft-365/admin/setup/setup-business-standard?view=o365-worldwide)
-   - Next: steps 4 and 5 — all follow this step
-4. **Set up shared drives** — agent-runnable · ~5 min · human approval required
-
-   Create shared drives or libraries around who owns the documents and who needs access. Separate general team material from finance, personnel, legal, and other restricted records. Check how the selected platform handles shared ownership and departing users, then assign responsible groups and maintainers. Place a few real documents in their intended locations and check access with a reader and an editor. Publish a short filing guide so new documents land in the right place.
-
-   - Canonical vendor: Google Drive
-
-   *This path ends here.*
-5. **Configure security settings** — agent-runnable · ~10 min · human approval required
-
-   *Follows step 3.*
-
-   Review administrator roles, sign-in protection, recovery methods, and external-sharing settings with the IT owner. Prioritize administrator and sensitive-mailbox access, and establish a recovery path before enforcing settings that could lock people out. Roll changes out to a small group first, checking normal sign-in and the sharing workflows the team relies on. Resolve exceptions, then extend the settings and document who manages recovery, suspicious activity, and future access changes.
-
-   - Canonical vendor: Gmail
-   - Sources: [CISA: Secure Your Business](https://www.cisa.gov/audiences/small-and-medium-businesses/secure-your-business)
-
-## Artifacts
-
-Produces:
-
-- Company email workspace
-
-Requires:
+Required artifacts:
 
 - Registered domain — from [Buy a domain](buy-a-domain.md)
 - DNS control — from [Buy a domain](buy-a-domain.md)
+
+| Information to gather | Required by the record |
+| --- | --- |
+| domain | Yes |
+| members | Yes |
+
+## Steps at a glance
+
+Use the recorded prerequisites and conditions to follow the path. Row order is for navigation.
+
+| Step | Handled by | Time estimate | Incoming dependencies |
+| --- | --- | --- | --- |
+| [1. Create the company email workspace](#step-1) | manual form/portal; approval required | ~15 min | Entry step |
+| [2. Verify domain ownership](#step-2) | manual form/portal | ~15 min | [Step 1](#step-1) |
+| [3. Create user accounts](#step-3) | agent-runnable; approval required | ~10 min | [Step 2](#step-2) |
+| [4. Set up shared drives](#step-4) | agent-runnable; approval required | ~5 min | [Step 3](#step-3) |
+| [5. Configure security settings](#step-5) | agent-runnable; approval required | ~10 min | [Step 3](#step-3) |
+
+<a id="steps"></a>
+
+## Step details
+
+<a id="step-1"></a>
+
+### 1. Create the company email workspace
+
+manual form/portal · ~15 min · human approval required
+
+| Option | Applies when |
+| --- | --- |
+| Default — Google Workspace signup | Recorded default |
+| Microsoft 365 workspace | The team and its buyers live on Outlook/Teams |
+
+
+Compare the selected email and document platform with the team's required applications, domain, user count, and existing accounts. Decide who will administer the tenant, manage billing, and recover access if an administrator leaves. Get the budget owner's approval for the subscription, then create or reuse the company workspace. Keep domain verification, mailbox provisioning, and switching incoming mail as separate setup tasks, with an owner for the cutover.
+
+- Produces: Company email workspace
+- Canonical vendor: Gmail
+- Vendor options: Google Workspace, Microsoft 365, Fastmail, Zoho Mail
+- Do it yourself: [Google Workspace signup](https://workspace.google.com/)
+- Sources: [Google Workspace: Verify a domain and activate Gmail](https://support.google.com/channelservices/answer/9728923?hl=en)
+
+Options:
+  - **Default — Google Workspace signup** — manual form/portal · ~15 min · human approval required
+
+    Use this path when Google Workspace is the chosen platform. Check whether the company domain already belongs to a tenant, then use a company-controlled administrator account to start the selected subscription within the agreed budget. Google's setup flow will provide the current domain-verification and mail-activation instructions. Prepare users and destination mailboxes before changing incoming mail routing, and keep the administration link and recovery arrangements available to the company's IT owner.
+  - **Microsoft 365 workspace**
+
+    When: The team and its buyers live on Outlook/Teams
+
+    Use this path for a Microsoft 365 workspace. Match the subscription to the required applications and user licenses, and check for an existing tenant before creating one. Establish company-controlled administration and the agreed billing arrangement. Follow Microsoft's current domain-connection instructions, provision the people who receive company email, and plan migration of existing mail and files. Keep the mail-routing change separate until the destination mailboxes and the people using them are ready.
+
+    - Vendor options: Microsoft 365
+    - Sources: [Microsoft 365 Business Standard setup](https://learn.microsoft.com/en-us/microsoft-365/admin/setup/setup-business-standard?view=o365-worldwide)
+
+<a id="step-2"></a>
+
+### 2. Verify domain ownership
+
+manual form/portal · ~15 min
+
+
+Get the verification value from the workspace's current setup flow and identify the administrator of the company's DNS zone. Add the exact requested record through that administrator, preserving unrelated records, then ask the provider to verify it. If verification fails, compare the saved name and value with the provider's instructions and check public DNS resolution. Successful domain verification establishes control of the domain; incoming email still follows its configured mail-routing records.
+
+- Sources: [Google Workspace: Verify a domain and activate Gmail](https://support.google.com/channelservices/answer/9728923?hl=en)
+
+<a id="step-3"></a>
+
+### 3. Create user accounts
+
+agent-runnable · ~10 min · human approval required
+
+
+Create individual accounts from the team roster using consistent company addresses and the licenses each role needs. Resolve address collisions and use the platform's appropriate shared-address setup for functions such as billing or support. Give each person their sign-in and recovery instructions through the normal onboarding channel. Confirm that the mailboxes needed for cutover exist and identify any user whose old mail, contacts, or files still need migration.
+
+- Canonical vendor: Gmail
+- Sources: [Microsoft 365 Business Standard setup](https://learn.microsoft.com/en-us/microsoft-365/admin/setup/setup-business-standard?view=o365-worldwide)
+- Next: steps 4 and 5 — all follow this step
+
+<a id="step-4"></a>
+
+### 4. Set up shared drives
+
+agent-runnable · ~5 min · human approval required
+
+
+Create shared drives or libraries around who owns the documents and who needs access. Separate general team material from finance, personnel, legal, and other restricted records. Check how the selected platform handles shared ownership and departing users, then assign responsible groups and maintainers. Place a few real documents in their intended locations and check access with a reader and an editor. Publish a short filing guide so new documents land in the right place.
+
+- Canonical vendor: Google Drive
+
+*This path ends here.*
+
+<a id="step-5"></a>
+
+### 5. Configure security settings
+
+agent-runnable · ~10 min · human approval required
+
+
+*Follows step 3.*
+
+Review administrator roles, sign-in protection, recovery methods, and external-sharing settings with the IT owner. Prioritize administrator and sensitive-mailbox access, and establish a recovery path before enforcing settings that could lock people out. Roll changes out to a small group first, checking normal sign-in and the sharing workflows the team relies on. Resolve exceptions, then extend the settings and document who manages recovery, suspicious activity, and future access changes.
+
+- Canonical vendor: Gmail
+- Sources: [CISA: Secure Your Business](https://www.cisa.gov/audiences/small-and-medium-businesses/secure-your-business)
+
+
+<a id="artifacts"></a>
+
+## Outputs
+
+- Company email workspace
 
 ## Related records
 

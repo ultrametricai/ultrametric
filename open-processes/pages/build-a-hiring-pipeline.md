@@ -3,6 +3,10 @@
 
 # Build a hiring pipeline
 
+[Overview](#overview) · [Before you start](#before-you-start) · [Steps](#steps-at-a-glance)
+
+## Overview
+
 Configure multi-role hiring with structured interviews, scorecards, offer approval workflows, and diversity tracking.
 
 | Field | Value |
@@ -19,74 +23,140 @@ Configure multi-role hiring with structured interviews, scorecards, offer approv
 
 Lever/Ashby APIs support pipeline and candidate management. Interview design and evaluation criteria need human input.
 
-## Steps
+## Before you start
 
-1. **Define interview stages per role type** — human · ~1 h · human approval required
-
-   Design interview stages around the capabilities each role type requires. Assign a purpose, interviewer, evidence and decision owner to every stage, removing duplicate assessments. Define how candidates hear about progress, request accommodations, pause or withdraw. Walk the planned handoffs with hiring managers and recruiting so the process is workable before candidates enter it.
-
-   - Sources: [EEOC: Recruiting, hiring or promoting employees](https://www.eeoc.gov/employers/small-business/3-im-recruiting-hiring-or-promoting-employees)
-   - Next: steps 2, 3 and 4 — all follow this step
-2. **Create job postings** — agent-runnable · ~30 min · human approval required
-
-   Write each posting from the requisition’s responsibilities, location, compensation guidance and essential requirements. Check questions and disclosures with the people lead for the recruiting locations involved, and have the hiring manager settle factual differences before publication. Verify that applications reach the correct recruiter. Keep postings aligned with changes in role scope, budget or hiring status.
-
-   - Canonical vendor: Lever
-   - Vendor options: Lever, Ashby
-   - Ranked market: [applicant-tracking](../../open-rankings/applicant-tracking)
-   - Sources: [EEOC: Recruiting, hiring or promoting employees](https://www.eeoc.gov/employers/small-business/3-im-recruiting-hiring-or-promoting-employees)
-   - Next: steps 5 and 6 — all follow this step
-3. **Configure scorecard templates** — agent-runnable · ~20 min · human approval required
-
-   *Follows step 1.*
-
-   Translate interview criteria into role-specific scorecards, giving each interviewer the competencies they can assess. Explain rating levels and ask for evidence, concerns and unanswered questions. Compare sample evaluations with the hiring manager to catch inconsistent interpretation. Make sure the debrief view preserves the reasoning behind ratings so the team can discuss the candidate’s actual fit for the work.
-
-   - Canonical vendor: Lever
-   - Sources: [EEOC: Recruiting, hiring or promoting employees](https://www.eeoc.gov/employers/small-business/3-im-recruiting-hiring-or-promoting-employees)
-
-   *This path ends here.*
-4. **Set up offer approval workflow** — agent-runnable · ~15 min · human approval required
-
-   *Follows step 1.*
-
-   Map the actual decision rights for headcount, compensation, equity, unusual terms and offer release. Configure approvers and substitutes around those limits, including what happens when an already approved offer changes. Walk through approval, rejection and revision with recruiting and finance before use. The recruiter should be able to identify which exact terms are cleared to send and which still need a decision.
-
-   - Canonical vendor: Lever
-   - Next: continue at step 7
-5. **Connect Calendly for scheduling** — manual form/portal · ~15 min · human approval required
-
-   *Follows step 2.*
-
-   Connect the scheduling tool using the calendar access authorized by the interviewer and account owners. Configure interview lengths, availability, time zones and candidate messages around the planned stages. Check a booking, reschedule and cancellation, including what personal information appears in invitations. Give candidates and interviewers a support route when conflicts or integration failures require manual scheduling.
-
-   - Canonical vendor: Calendly
-
-   *This path ends here.*
-6. **Configure Slack hiring channels** — agent-runnable · ~10 min · human approval required
-
-   *Follows step 2.*
-
-   Set up hiring channels for the people coordinating each role, with candidate evaluations and compensation kept in the appropriate restricted systems. Check membership and notification content before enabling a recruiting integration. Verify what a candidate update reveals and who can see it. Assign a channel owner to adjust access and close or repurpose the space when hiring pauses or ends.
-
-   - Canonical vendor: Slack
-
-   *This path ends here.*
-7. **Set up diversity tracking** — agent-runnable · ~15 min · human approval required
-
-   *Follows step 4.*
-
-   Define the reporting purpose before choosing demographic fields. Ask the people or privacy lead what collection, notices, access and retention are appropriate in each location. Keep approved reporting data separate from individual selection decisions and control small-group disclosures. Validate the intended aggregates before collection begins, with analysts able to explain the reporting scope and limitations.
-
-   - Canonical vendor: Lever
-   - Sources: [EEOC: Recruiting, hiring or promoting employees](https://www.eeoc.gov/employers/small-business/3-im-recruiting-hiring-or-promoting-employees)
-
-## Artifacts
-
-Requires:
+Required artifacts:
 
 - Applicant tracking system — from [Set up ATS](set-up-ats.md)
 - Team chat workspace — from [Set up team chat](set-up-team-chat.md)
+
+| Information to gather | Required by the record |
+| --- | --- |
+| open roles and job descriptions | Yes |
+| interview stages per role | Yes |
+| hiring team and interviewers | Yes |
+
+## Steps at a glance
+
+Use the recorded prerequisites and conditions to follow the path. Row order is for navigation.
+
+| Step | Handled by | Time estimate | Incoming dependencies |
+| --- | --- | --- | --- |
+| [1. Define interview stages per role type](#step-1) | human; approval required | ~1 h | Entry step |
+| [2. Create job postings](#step-2) | agent-runnable; approval required | ~30 min | [Step 1](#step-1) |
+| [3. Configure scorecard templates](#step-3) | agent-runnable; approval required | ~20 min | [Step 1](#step-1) |
+| [4. Set up offer approval workflow](#step-4) | agent-runnable; approval required | ~15 min | [Step 1](#step-1) |
+| [5. Connect Calendly for scheduling](#step-5) | manual form/portal; approval required | ~15 min | [Step 2](#step-2) |
+| [6. Configure Slack hiring channels](#step-6) | agent-runnable; approval required | ~10 min | [Step 2](#step-2) |
+| [7. Set up diversity tracking](#step-7) | agent-runnable; approval required | ~15 min | [Step 4](#step-4) |
+
+<a id="steps"></a>
+
+## Step details
+
+<a id="step-1"></a>
+
+### 1. Define interview stages per role type
+
+human · ~1 h · human approval required
+
+
+Design interview stages around the capabilities each role type requires. Assign a purpose, interviewer, evidence and decision owner to every stage, removing duplicate assessments. Define how candidates hear about progress, request accommodations, pause or withdraw. Walk the planned handoffs with hiring managers and recruiting so the process is workable before candidates enter it.
+
+- Sources: [EEOC: Recruiting, hiring or promoting employees](https://www.eeoc.gov/employers/small-business/3-im-recruiting-hiring-or-promoting-employees)
+- Next: steps 2, 3 and 4 — all follow this step
+
+<a id="step-2"></a>
+
+### 2. Create job postings
+
+agent-runnable · ~30 min · human approval required
+
+
+Write each posting from the requisition’s responsibilities, location, compensation guidance and essential requirements. Check questions and disclosures with the people lead for the recruiting locations involved, and have the hiring manager settle factual differences before publication. Verify that applications reach the correct recruiter. Keep postings aligned with changes in role scope, budget or hiring status.
+
+- Canonical vendor: Lever
+- Vendor options: Lever, Ashby
+- Ranked market: [applicant-tracking](../../open-rankings/applicant-tracking)
+- Sources: [EEOC: Recruiting, hiring or promoting employees](https://www.eeoc.gov/employers/small-business/3-im-recruiting-hiring-or-promoting-employees)
+- Next: steps 5 and 6 — all follow this step
+
+<a id="step-3"></a>
+
+### 3. Configure scorecard templates
+
+agent-runnable · ~20 min · human approval required
+
+
+*Follows step 1.*
+
+Translate interview criteria into role-specific scorecards, giving each interviewer the competencies they can assess. Explain rating levels and ask for evidence, concerns and unanswered questions. Compare sample evaluations with the hiring manager to catch inconsistent interpretation. Make sure the debrief view preserves the reasoning behind ratings so the team can discuss the candidate’s actual fit for the work.
+
+- Canonical vendor: Lever
+- Sources: [EEOC: Recruiting, hiring or promoting employees](https://www.eeoc.gov/employers/small-business/3-im-recruiting-hiring-or-promoting-employees)
+
+*This path ends here.*
+
+<a id="step-4"></a>
+
+### 4. Set up offer approval workflow
+
+agent-runnable · ~15 min · human approval required
+
+
+*Follows step 1.*
+
+Map the actual decision rights for headcount, compensation, equity, unusual terms and offer release. Configure approvers and substitutes around those limits, including what happens when an already approved offer changes. Walk through approval, rejection and revision with recruiting and finance before use. The recruiter should be able to identify which exact terms are cleared to send and which still need a decision.
+
+- Canonical vendor: Lever
+- Next: continue at step 7
+
+<a id="step-5"></a>
+
+### 5. Connect Calendly for scheduling
+
+manual form/portal · ~15 min · human approval required
+
+
+*Follows step 2.*
+
+Connect the scheduling tool using the calendar access authorized by the interviewer and account owners. Configure interview lengths, availability, time zones and candidate messages around the planned stages. Check a booking, reschedule and cancellation, including what personal information appears in invitations. Give candidates and interviewers a support route when conflicts or integration failures require manual scheduling.
+
+- Canonical vendor: Calendly
+
+*This path ends here.*
+
+<a id="step-6"></a>
+
+### 6. Configure Slack hiring channels
+
+agent-runnable · ~10 min · human approval required
+
+
+*Follows step 2.*
+
+Set up hiring channels for the people coordinating each role, with candidate evaluations and compensation kept in the appropriate restricted systems. Check membership and notification content before enabling a recruiting integration. Verify what a candidate update reveals and who can see it. Assign a channel owner to adjust access and close or repurpose the space when hiring pauses or ends.
+
+- Canonical vendor: Slack
+
+*This path ends here.*
+
+<a id="step-7"></a>
+
+### 7. Set up diversity tracking
+
+agent-runnable · ~15 min · human approval required
+
+
+*Follows step 4.*
+
+Define the reporting purpose before choosing demographic fields. Ask the people or privacy lead what collection, notices, access and retention are appropriate in each location. Keep approved reporting data separate from individual selection decisions and control small-group disclosures. Validate the intended aggregates before collection begins, with analysts able to explain the reporting scope and limitations.
+
+- Canonical vendor: Lever
+- Sources: [EEOC: Recruiting, hiring or promoting employees](https://www.eeoc.gov/employers/small-business/3-im-recruiting-hiring-or-promoting-employees)
+
+
+<a id="artifacts"></a>
 
 ## Related records
 

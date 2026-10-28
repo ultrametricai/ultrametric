@@ -3,6 +3,10 @@
 
 # File state annual report
 
+[Overview](#overview) · [Before you start](#before-you-start) · [Geography](#geography) · [Steps](#steps-at-a-glance)
+
+## Overview
+
 File the annual report and keep the company in good standing with your state of incorporation. The ritual differs by state: California's Statement of Information is due within 90 days of registration and annually after (law rule [us-ca.statement-of-information](../../open-law/US-CA/us-ca-statement-of-information.json)), Nevada's annual list lands by the end of the anniversary month alongside the $500 business-license renewal (law rule [us-nv.annual-list-business-license](../../open-law/US-NV/us-nv-annual-list-business-license.json)), and Texas ties standing to the May 15 franchise tax report (law rule [us-tx.franchise-tax-report](../../open-law/US-TX/us-tx-franchise-tax-report.json)).
 
 | Field | Value |
@@ -19,142 +23,276 @@ File the annual report and keep the company in good standing with your state of 
 
 State filing portals have no API — the filing is manual form work; gathering the details and saving the receipt are agent steps.
 
-## Steps
+## Before you start
 
-1. **Gather filing details** — agent-runnable · ~5 min
+Required artifacts:
 
-   *Entry step — no prerequisite step.*
+- Certificate of Incorporation — from [Incorporate C-Corp](incorporate-c-corp.md)
 
-   Identify the state report, entity type and period from the official record and current instructions. Compare requested addresses, officers or managers and agent details with the company’s records, resolving changes before certification. Keep private information in the filing workspace. Separate this report from any franchise-tax, income-tax or licensing work so the correct task is prepared.
-2. **File the annual report on the state portal** — manual form/portal · ~20 min · hard to undo
+| Information to gather | Required by the record |
+| --- | --- |
+| incorporation_state | Yes |
 
-   Select the correct entity, report and period in the official portal. Compare prefilled information with current company records and identify changes requiring a separate filing. The authorized filer reviews the declaration and approves submission and fees. Preserve the submitted report and check whether it was accepted or needs correction.
+## Geography
 
-   - Verify: The state portal shows the report filed and the entity in good standing for the year.
-   - Vendor options: Northwest Registered Agent, LegalZoom, Harbor Compliance
-3. **Save the confirmation receipt** — agent-runnable · ~2 min
+Country rows describe the guidance recorded here. Local notes and step alternatives do not establish a complete country-specific workflow.
 
-   Save the submitted report, payment receipt and acceptance evidence under the correct entity and period. If review is pending, track that status until resolved. Update the compliance calendar from the state’s actual next requirement and make the files retrievable by the person responsible for the next cycle.
+| Country | Recorded guidance | Steps with local alternatives or resolutions |
+| --- | --- | --- |
+| [India](#geo-in) | Local analog note | — |
+| [United Kingdom](#geo-uk) | Local analog note | — |
+| [Germany](#geo-de) | Local analog note | — |
+| [France](#geo-fr) | Local analog note | — |
+| [Portugal](#geo-pt) | Local analog note | — |
+| [Canada](#geo-ca) | Local analog note | — |
+| [New Zealand](#geo-nz) | Local analog note | — |
+| [Singapore](#geo-sg) | Local analog note | — |
+| [Australia](#geo-au) | Local analog note | — |
+| [South Korea](#geo-kr) | Marked not applicable | — |
+| [Hong Kong](#geo-hk) | Local analog note | — |
+| [Estonia](#geo-ee) | Local analog note | — |
 
-   *This path ends here.*
-4. **File the California Statement of Information (bizfile Online)** — manual form/portal · ~20 min · hard to undo · only when operating in CA
+### State conditions
 
-   *Entry step — no prerequisite step.*
+| Step | Applies when operating in |
+| --- | --- |
+| [4. File the California Statement of Information (bizfile Online)](#step-4) | CA |
+| [5. File the annual report in each registered state](#step-5) | multi-state |
+| [6. File the Nevada annual list and renew the state business license](#step-6) | NV |
+| [7. File the Texas franchise tax report and Public Information Report](#step-7) | TX |
+| [8. File the New York biennial statement ($9)](#step-8) | NY |
+| [9. File the Florida annual report (January 1 – May 1, $150)](#step-9) | FL |
 
-   Check the California entity’s Statement of Information obligation and filing period in bizfile Online. Establish the authorized filer’s required access and review the requested company details. Complete submission and fees through the entity’s authorized filing route. Save the filed statement and confirmation, then use this entity’s actual next filing schedule.
+## Steps at a glance
 
-   - Canonical vendor: California Secretary of State
-   - Do it yourself: [CA SOS — Statement of Information](https://www.sos.ca.gov/business-programs/business-entities/statements)
-   - Sources: [California Secretary of State bizfile](https://www.sos.ca.gov/business-programs/bizfile)
+Use the recorded prerequisites and conditions to follow the path. Row order is for navigation.
 
-   *This path ends here.*
-5. **File the annual report in each registered state** — manual form/portal · ~30 min · hard to undo · only when operating multi-state
+| Step | Handled by | Time estimate | Incoming dependencies |
+| --- | --- | --- | --- |
+| [1. Gather filing details](#step-1) | agent-runnable | ~5 min | Entry step |
+| [2. File the annual report on the state portal](#step-2) | manual form/portal | ~20 min | [Step 1](#step-1) |
+| [3. Save the confirmation receipt](#step-3) | agent-runnable | ~2 min | [Step 2](#step-2) |
+| [4. File the California Statement of Information (bizfile Online)](#step-4) | manual form/portal | ~20 min | Entry step |
+| [5. File the annual report in each registered state](#step-5) | manual form/portal | ~30 min | Entry step |
+| [6. File the Nevada annual list and renew the state business license](#step-6) | manual form/portal | ~20 min | Entry step |
+| [7. File the Texas franchise tax report and Public Information Report](#step-7) | manual form/portal | ~20 min | Entry step |
+| [8. File the New York biennial statement ($9)](#step-8) | manual form/portal | ~15 min | Entry step |
+| [9. File the Florida annual report (January 1 – May 1, $150)](#step-9) | manual form/portal | ~15 min | Entry step |
 
-   *Entry step — no prerequisite step.*
+<a id="steps"></a>
 
-   Review the current report or renewal requirements for every registered state and entity type. Determine what is due, the period covered and who will file it, including states with no report due this cycle. Submit approved filings and preserve their individual acceptance records. Check obligations against the official record when a notice is missing.
+## Step details
 
-   *This path ends here.*
-6. **File the Nevada annual list and renew the state business license** — manual form/portal · ~20 min · hard to undo · only when operating in NV
+<a id="step-1"></a>
 
-   *Entry step — no prerequisite step.*
+### 1. Gather filing details
 
-   Nevada corporations file the annual list of officers and directors on or before the last day of the anniversary month of incorporation, with the $500 state business license renewal running alongside it and the list fee scaling with authorized stock (law rule [us-nv.annual-list-business-license](../../open-law/US-NV/us-nv-annual-list-business-license.json)). File through SilverFlume, the state business portal, and keep the declaration and receipts with the entity's compliance records. Defaulting corporations face revocation and reinstatement costs.
+agent-runnable · ~5 min
 
-   - Canonical vendor: Nevada Secretary of State
-   - Do it yourself: [SilverFlume — Nevada business portal](https://www.nvsilverflume.gov/home)
-   - Sources: [NRS Chapter 78 (annual list)](https://www.leg.state.nv.us/NRS/NRS-078.html)
 
-   *This path ends here.*
-7. **File the Texas franchise tax report and Public Information Report** — manual form/portal · ~20 min · hard to undo · only when operating in TX
+*Entry step — no prerequisite step.*
 
-   *Entry step — no prerequisite step.*
+Identify the state report, entity type and period from the official record and current instructions. Compare requested addresses, officers or managers and agent details with the company’s records, resolving changes before certification. Keep private information in the filing workspace. Separate this report from any franchise-tax, income-tax or licensing work so the correct task is prepared.
 
-   Texas ties an entity's standing to the annual franchise tax report, due May 15; entities at or below the no-tax-due threshold still file the Public Information Report or Ownership Report (law rule [us-tx.franchise-tax-report](../../open-law/US-TX/us-tx-franchise-tax-report.json)). File through the Comptroller's Webfile and resolve any forfeiture notices promptly — forfeiture cuts off the right to sue and exposes officers to liability. Keep the filed report with the entity's compliance records.
+<a id="step-2"></a>
 
-   - Canonical vendor: Texas Comptroller of Public Accounts
-   - Do it yourself: [TX Comptroller — franchise tax](https://comptroller.texas.gov/taxes/franchise/)
-   - Sources: [TX SOS business organizations forms](https://www.sos.state.tx.us/corp/forms_boc.shtml)
+### 2. File the annual report on the state portal
 
-   *This path ends here.*
-8. **File the New York biennial statement ($9)** — manual form/portal · ~15 min · hard to undo · only when operating in NY
+manual form/portal · ~20 min · hard to undo
 
-   *Entry step — no prerequisite step.*
 
-   New York corporations file a Biennial Statement with the Department of State every two years under Business Corporation Law § 408, due in the calendar month in which the original Certificate of Incorporation or Application for Authority was filed, with a $9 fee (law rule [us-ny.biennial-statement](../../open-law/US-NY/us-ny-biennial-statement.json)). File through the e-Statement Filing Service using the exact entity name and DOS ID; a missed statement marks the record past due on any certificate of status. The statement cannot be filed before its due month.
+Select the correct entity, report and period in the official portal. Compare prefilled information with current company records and identify changes requiring a separate filing. The authorized filer reviews the declaration and approves submission and fees. Preserve the submitted report and check whether it was accepted or needs correction.
 
-   - Cost: $9 (government fee, as of 2026-10-22, [dos.ny.gov](https://dos.ny.gov/fee-schedules)). Biennial Statement filing fee under the Business Corporation Law. Conditional step — excluded from the default-flow fee headline by construction.
-   - Canonical vendor: New York Department of State
-   - Do it yourself: [NY DOS — biennial statements](https://dos.ny.gov/biennial-statements-business-corporations-and-limited-liability-companies)
-   - Sources: [NY DOS fee schedules](https://dos.ny.gov/fee-schedules)
+- Verify: The state portal shows the report filed and the entity in good standing for the year.
+- Vendor options: Northwest Registered Agent, LegalZoom, Harbor Compliance
 
-   *This path ends here.*
-9. **File the Florida annual report (January 1 – May 1, $150)** — manual form/portal · ~15 min · hard to undo · only when operating in FL
+<a id="step-3"></a>
 
-   *Entry step — no prerequisite step.*
+### 3. Save the confirmation receipt
 
-   Florida profit corporations file the Sunbiz annual report between January 1 and May 1 each year after the formation or qualification year, with a $150 fee; after May 1 a $400 late fee is assessed with no waiver provision, and an entity still unfiled by the third Friday in September faces administrative dissolution (law rule [us-fl.annual-report](../../open-law/US-FL/us-fl-annual-report.json)). File online with the document number on record and confirm the emailed filing confirmation. Reinstatement after dissolution costs $600 plus each missed year's report fee.
+agent-runnable · ~2 min
 
-   - Cost: $150 (government fee, as of 2026-10-22, [dos.fl.gov](https://dos.fl.gov/sunbiz/forms/fees/)). 'Profit Annual Report (with supplemental fee)'; $550 total when received after May 1. Conditional step — excluded from the default-flow fee headline by construction.
-   - Canonical vendor: Florida Division of Corporations (Sunbiz)
-   - Do it yourself: [Sunbiz — file the annual report](https://dos.fl.gov/sunbiz/manage-business/efile/annual-report/)
-   - Sources: [FL Division of Corporations fees](https://dos.fl.gov/sunbiz/forms/fees/)
 
-## By country
+Save the submitted report, payment receipt and acceptance evidence under the correct entity and period. If review is pending, track that status until resolved. Update the compliance calendar from the state’s actual next requirement and make the files retrievable by the person responsible for the next cycle.
+
+*This path ends here.*
+
+<a id="step-4"></a>
+
+### 4. File the California Statement of Information (bizfile Online)
+
+manual form/portal · ~20 min · hard to undo · only when operating in CA
+
+
+*Entry step — no prerequisite step.*
+
+Check the California entity’s Statement of Information obligation and filing period in bizfile Online. Establish the authorized filer’s required access and review the requested company details. Complete submission and fees through the entity’s authorized filing route. Save the filed statement and confirmation, then use this entity’s actual next filing schedule.
+
+- Canonical vendor: California Secretary of State
+- Do it yourself: [CA SOS — Statement of Information](https://www.sos.ca.gov/business-programs/business-entities/statements)
+- Sources: [California Secretary of State bizfile](https://www.sos.ca.gov/business-programs/bizfile)
+
+*This path ends here.*
+
+<a id="step-5"></a>
+
+### 5. File the annual report in each registered state
+
+manual form/portal · ~30 min · hard to undo · only when operating multi-state
+
+
+*Entry step — no prerequisite step.*
+
+Review the current report or renewal requirements for every registered state and entity type. Determine what is due, the period covered and who will file it, including states with no report due this cycle. Submit approved filings and preserve their individual acceptance records. Check obligations against the official record when a notice is missing.
+
+*This path ends here.*
+
+<a id="step-6"></a>
+
+### 6. File the Nevada annual list and renew the state business license
+
+manual form/portal · ~20 min · hard to undo · only when operating in NV
+
+
+*Entry step — no prerequisite step.*
+
+Nevada corporations file the annual list of officers and directors on or before the last day of the anniversary month of incorporation, with the $500 state business license renewal running alongside it and the list fee scaling with authorized stock (law rule [us-nv.annual-list-business-license](../../open-law/US-NV/us-nv-annual-list-business-license.json)). File through SilverFlume, the state business portal, and keep the declaration and receipts with the entity's compliance records. Defaulting corporations face revocation and reinstatement costs.
+
+- Canonical vendor: Nevada Secretary of State
+- Do it yourself: [SilverFlume — Nevada business portal](https://www.nvsilverflume.gov/home)
+- Sources: [NRS Chapter 78 (annual list)](https://www.leg.state.nv.us/NRS/NRS-078.html)
+
+*This path ends here.*
+
+<a id="step-7"></a>
+
+### 7. File the Texas franchise tax report and Public Information Report
+
+manual form/portal · ~20 min · hard to undo · only when operating in TX
+
+
+*Entry step — no prerequisite step.*
+
+Texas ties an entity's standing to the annual franchise tax report, due May 15; entities at or below the no-tax-due threshold still file the Public Information Report or Ownership Report (law rule [us-tx.franchise-tax-report](../../open-law/US-TX/us-tx-franchise-tax-report.json)). File through the Comptroller's Webfile and resolve any forfeiture notices promptly — forfeiture cuts off the right to sue and exposes officers to liability. Keep the filed report with the entity's compliance records.
+
+- Canonical vendor: Texas Comptroller of Public Accounts
+- Do it yourself: [TX Comptroller — franchise tax](https://comptroller.texas.gov/taxes/franchise/)
+- Sources: [TX SOS business organizations forms](https://www.sos.state.tx.us/corp/forms_boc.shtml)
+
+*This path ends here.*
+
+<a id="step-8"></a>
+
+### 8. File the New York biennial statement ($9)
+
+manual form/portal · ~15 min · hard to undo · only when operating in NY
+
+
+*Entry step — no prerequisite step.*
+
+New York corporations file a Biennial Statement with the Department of State every two years under Business Corporation Law § 408, due in the calendar month in which the original Certificate of Incorporation or Application for Authority was filed, with a $9 fee (law rule [us-ny.biennial-statement](../../open-law/US-NY/us-ny-biennial-statement.json)). File through the e-Statement Filing Service using the exact entity name and DOS ID; a missed statement marks the record past due on any certificate of status. The statement cannot be filed before its due month.
+
+- Cost: $9 (government fee, as of 2026-10-22, [dos.ny.gov](https://dos.ny.gov/fee-schedules)). Biennial Statement filing fee under the Business Corporation Law. Conditional step — excluded from the default-flow fee headline by construction.
+- Canonical vendor: New York Department of State
+- Do it yourself: [NY DOS — biennial statements](https://dos.ny.gov/biennial-statements-business-corporations-and-limited-liability-companies)
+- Sources: [NY DOS fee schedules](https://dos.ny.gov/fee-schedules)
+
+*This path ends here.*
+
+<a id="step-9"></a>
+
+### 9. File the Florida annual report (January 1 – May 1, $150)
+
+manual form/portal · ~15 min · hard to undo · only when operating in FL
+
+
+*Entry step — no prerequisite step.*
+
+Florida profit corporations file the Sunbiz annual report between January 1 and May 1 each year after the formation or qualification year, with a $150 fee; after May 1 a $400 late fee is assessed with no waiver provision, and an entity still unfiled by the third Friday in September faces administrative dissolution (law rule [us-fl.annual-report](../../open-law/US-FL/us-fl-annual-report.json)). File online with the document number on record and confirm the emailed filing confirmation. Reinstatement after dissolution costs $600 plus each missed year's report fee.
+
+- Cost: $150 (government fee, as of 2026-10-22, [dos.fl.gov](https://dos.fl.gov/sunbiz/forms/fees/)). 'Profit Annual Report (with supplemental fee)'; $550 total when received after May 1. Conditional step — excluded from the default-flow fee headline by construction.
+- Canonical vendor: Florida Division of Corporations (Sunbiz)
+- Do it yourself: [Sunbiz — file the annual report](https://dos.fl.gov/sunbiz/manage-business/efile/annual-report/)
+- Sources: [FL Division of Corporations fees](https://dos.fl.gov/sunbiz/forms/fees/)
+
+
+<a id="by-country"></a>
+
+## Country details
+
+<a id="geo-in"></a>
 
 ### India
 
 - The annual-report analog is the MCA annual return (MGT-7/MGT-7A) plus financial statements (AOC-4), due after the AGM each year on MCA V3 (fronted by NSWS — mca.gov.in blocks automated access); late fees accrue per day. ([NSWS (MCA annual return)](https://www.nsws.gov.in/))
 
+<a id="geo-uk"></a>
+
 ### United Kingdom
 
 - The direct analog is the confirmation statement: at least annually, £34 online, confirming registered details to Companies House — miss it and the registrar can strike the company off. ([File your confirmation statement](https://www.gov.uk/file-your-confirmation-statement-with-companies-house))
+
+<a id="geo-de"></a>
 
 ### Germany
 
 - The ritual here is disclosure: every GmbH must file (or for micro-companies deposit) annual accounts electronically for the Unternehmensregister within 12 months of year-end — enforced with automatic Bundesanzeiger fine proceedings. ([Unternehmensregister (annual accounts)](https://www.unternehmensregister.de/))
 
+<a id="geo-fr"></a>
+
 ### France
 
 - The analog is the dépôt des comptes annuels: accounts approved by the shareholders within 6 months of year-end, then filed via the guichet unique to the commercial-court registry (confidentiality options exist for small companies). ([INPI guichet unique (dépôt des comptes)](https://procedures.inpi.fr/))
+
+<a id="geo-pt"></a>
 
 ### Portugal
 
 - The annual keep-in-good-standing filing is the IES: accounts to the registry, tax annexes and statistics in one electronic declaration — miss it and tax-authority fines plus an outdated registry record follow. ([Portal das Finanças — IES](https://www.portaldasfinancas.gov.pt/))
 
+<a id="geo-ca"></a>
+
 ### Canada
 
 - File the annual return with Corporations Canada within 60 days of the anniversary date (a corporate-records filing, not a tax return) — corporations that skip it can be administratively dissolved. ([Corporations Canada — annual return](https://ised-isde.canada.ca/site/corporations-canada/en/keep-your-corporation-good-shape/annual-return))
+
+<a id="geo-nz"></a>
 
 ### New Zealand
 
 - The direct analog is the Companies Office annual return: every year in your allocated filing month, $49.74 plus GST, confirming the register information — miss it and the Registrar may remove the company from the register. ([Complete your annual return — Companies Register](https://companies-register.companiesoffice.govt.nz/help-centre/company-annual-returns/completing-an-annual-return/))
 
+<a id="geo-sg"></a>
+
 ### Singapore
 
 - The direct analog is the ACRA annual return: every company files one each year through Bizfile, within 7 months after the financial year end for non-listed companies — miss it and late penalties and eventual striking off follow. ([ACRA — annual return deadlines](https://www.acra.gov.sg/manage/companies/legal-requirements-common-offences/filing-annual-returns-companies/deadline-requirements/))
+
+<a id="geo-au"></a>
 
 ### Australia
 
 - The direct analog is ASIC's annual statement at the review date: confirm the company's registered details, pay the annual review fee, and have the directors pass the solvency resolution within 2 months of the review date. ([ASIC annual review](https://asic.gov.au/for-business/running-a-company/annual-statements/))
 
+<a id="geo-kr"></a>
+
 ### South Korea
 
 - Not applicable: No annual report or confirmation statement exists: the corporate registry is event-driven, with changes registered within two weeks of occurring (Commercial Act Article 183). ([Internet Registry Office (IROS)](https://www.iros.go.kr/))
+
+<a id="geo-hk"></a>
 
 ### Hong Kong
 
 - The direct analog is the Companies Registry annual return: Form NAR1 within 42 days after the anniversary of incorporation each year (law rule [hk.annual-return-deadline](../../open-law/HK/hk-annual-return-deadline.json)), with escalating registration fees and prosecution exposure if missed. ([Companies Registry — annual return (private company)](https://www.cr.gov.hk/en/compliance/annual-return/private-company.htm))
 
+<a id="geo-ee"></a>
+
 ### Estonia
 
 - The annual report (majandusaasta aruanne) goes to the commercial register within six months after the financial year ends (law rule [ee.annual-report-deadline](../../open-law/EE/ee-annual-report-deadline.json)), prepared and filed through the e-Business Register. ([e-Business Register](https://ariregister.rik.ee/eng))
 
-## Artifacts
-
-Requires:
-
-- Certificate of Incorporation — from [Incorporate C-Corp](incorporate-c-corp.md)
+<a id="artifacts"></a>
 
 ## Related records
 

@@ -3,6 +3,10 @@
 
 # Run an incident postmortem
 
+[Overview](#overview) · [Before you start](#before-you-start) · [Steps](#steps-at-a-glance)
+
+## Overview
+
 After the incident is resolved: assemble the timeline from the incident tooling, draft the blameless write-up, hold the review, file the follow-up actions, and post the public status-page account. Setting up on-call itself lives in On-call & incidents.
 
 Start after containment with a defined incident, service and evidence window. Build a source-linked account of impact, detection, response and recovery, preserving uncertainty and sensitive-data boundaries. A review-ready package contains a checked timeline, causal hypotheses and corrective actions with observable acceptance checks. A completed review, accepted owner/date, tracker ticket or public communication requires its own evidence; drafting those items does not complete them.
@@ -27,70 +31,120 @@ Timeline assembly, doc drafting, action filing, and the status-page post are API
 - A causal analysis separating demonstrated causes from hypotheses and a testable corrective-action backlog.
 - Recorded review decisions and authorized communications when performed, with proposed work and pending approvals kept distinct.
 
-## Steps
+## Before you start
 
-1. **Assemble the incident timeline** — agent-runnable · ~15 min
-
-   Build the incident timeline from alerts, deployments, logs, responder notes and support reports using one timezone. Include when users were affected, when the team noticed, what changed during mitigation and how recovery was established. Link disputed timestamps to their evidence and keep estimates visibly uncertain. Ask participants to correct gaps before analysis; keep customer identifiers and credentials out of the shared timeline.
-
-   Retain event identifiers, original timestamps/timezones and any demonstrated clock correction. Reconcile the impact start and recovery with user-facing evidence rather than a single green infrastructure metric. Show the covered population and missing observations; do not manufacture a precise affected-user count.
-
-   Identify evidence that may expire before review. Preserve the necessary logs, metrics and configuration through authorized access with their query/window and source dates, applying the sharing and redaction rules. Record unavailable evidence and retention limits; an expiring dashboard link alone may not support later review.
-
-   - Canonical vendor: incident.io
-   - Vendor options: incident.io, PagerDuty
-   - Ranked market: [incident-management](../../open-rankings/incident-management)
-   - Sources: [Google SRE postmortem culture](https://sre.google/sre-book/postmortem-culture/)
-   - UM's incident.io evidence documents an editable timeline, postmortem tracking and follow-ups (incident-io-docs-4, incident-io-docs-5 and incident-io-docs-7). Use these as retrieval and handoff leads when the company uses that tool. An editable timeline may include manual narrative; retain original observations and reconcile clock offsets before calculating duration or asserting cause. Vendor postmortem features do not establish this incident's impact, root cause, accepted owner or completed follow-up.
-2. **Draft the blameless postmortem doc** — agent-runnable · ~30 min
-
-   Explain the incident using the timeline: user impact, detection, decisions, contributing conditions and recovery. Describe each decision in the context of the information responders had at the time. Separate a reproduced cause from a plausible hypothesis. For each proposed improvement, explain which observed failure it addresses, such as late detection or a recovery command that failed. List unresolved causal questions for the review.
-
-   For each causal statement, identify the supporting observation or reproduction and the competing explanations still open. A nearby deployment is correlation until the evidence supports a causal link. Check duration and detection-delay calculations against the normalized timeline.
-
-   Tie every impact calculation to its denominator, time window and source. Distinguish failed attempts, distinct users, eventual success and revenue loss; one does not establish the others. Prioritize the few corrective actions that address evidenced failures and include what new observation would confirm or reject an unresolved hypothesis.
-
-   Establish whether metric rows are interval counts, cumulative counters or samples, and whether their windows overlap, before aggregating them. Keep calculations limited to the observed coverage; sparse samples alone cannot establish a continuous alert condition or exact impact interval.
-
-   Establish each measured interval’s boundaries before inferring an intervention’s immediate effect. A later row timestamp can include observations from before the change; preserve this uncertainty in both the detailed analysis and summaries.
-
-   - Canonical vendor: Notion
-   - Cross-arena options: ChatGPT, Claude (ai-assistants)
-   - Sources: [Google SRE postmortem culture](https://sre.google/sre-book/postmortem-culture/)
-3. **Hold the postmortem review meeting** — human · ~45 min
-
-   Use the review to resolve disputed timeline entries, test causal explanations and decide which improvements merit work. Bring the responders and owners needed for those questions, with the draft available beforehand. Record disagreements that remain and the actions people actually accept. Review sensitive passages before wider circulation, then update the incident account and its prioritized follow-ups.
-
-   An asynchronous review is sufficient when the necessary participants can resolve the questions and accept follow-ups in the record. Reuse the company’s incident severity, communication policy and service ownership; ask for a meeting when unresolved disagreement or impact warrants it. Keep the review-ready draft usable even when participants are unavailable.
-
-   - Sources: [Google SRE postmortem culture](https://sre.google/sre-book/postmortem-culture/)
-   - Next: steps 4 and 5 — all follow this step
-4. **File follow-up actions in the tracker** — agent-runnable · ~10 min
-
-   Turn each accepted improvement into a ticket tied to the failure it addresses. Replace vague work such as “improve alerts” with an observable result, such as a controlled failure reaching the on-call responder with the relevant diagnostic link. Use the agreed owner and priority, distinguishing proposed dates from commitments. Link tickets to the incident and keep deferred actions visible with their reason.
-
-   Keep proposed and accepted owners/dates separate, along with the evidence of acceptance. Attach an acceptance test that would detect or prevent the observed failure; use a controlled synthetic replay where feasible. Retain results for tests actually executed; otherwise keep the acceptance test proposed with its owner and unresolved prerequisites. Filing the follow-up backlog does not require implementing every corrective action. A local ticket draft is not a created tracker issue or an implemented fix.
-
-   - Canonical vendor: Linear
-   - Sources: [Google SRE postmortem culture](https://sre.google/sre-book/postmortem-culture/)
-
-   *This path ends here.*
-5. **Publish the status-page write-up and customer comms** — agent-runnable · ~15 min
-
-   *Follows step 3.*
-
-   Write the public account from the reviewed incident facts: affected service, user-visible impact, recovery and changes customers need to know about. Reconcile times and completed fixes with the internal record; leave speculative causes and sensitive details out. Publish the incident and communications owners' authorized version to the intended channels. Check the public page and customer links, and give support the same approved account for follow-up questions.
-
-   - Canonical vendor: Better Stack
-   - Sources: [Google SRE postmortem culture](https://sre.google/sre-book/postmortem-culture/)
-
-## Artifacts
-
-Requires:
+Required artifacts:
 
 - Incident platform — from [Set up on-call & incident response](set-up-on-call-incident-response.md)
 - Project tracker — from [Set up a project tracker](set-up-a-project-tracker.md)
 - Status page — from [Publish a status page & SLA](publish-a-status-page-sla.md)
+
+| Information to gather | Required by the record |
+| --- | --- |
+| incident channel or log | Yes |
+
+## Steps at a glance
+
+Use the recorded prerequisites and conditions to follow the path. Row order is for navigation.
+
+| Step | Handled by | Time estimate | Incoming dependencies |
+| --- | --- | --- | --- |
+| [1. Assemble the incident timeline](#step-1) | agent-runnable | ~15 min | Entry step |
+| [2. Draft the blameless postmortem doc](#step-2) | agent-runnable | ~30 min | [Step 1](#step-1) |
+| [3. Hold the postmortem review meeting](#step-3) | human | ~45 min | [Step 2](#step-2) |
+| [4. File follow-up actions in the tracker](#step-4) | agent-runnable | ~10 min | [Step 3](#step-3) |
+| [5. Publish the status-page write-up and customer comms](#step-5) | agent-runnable | ~15 min | [Step 3](#step-3) |
+
+<a id="steps"></a>
+
+## Step details
+
+<a id="step-1"></a>
+
+### 1. Assemble the incident timeline
+
+agent-runnable · ~15 min
+
+
+Build the incident timeline from alerts, deployments, logs, responder notes and support reports using one timezone. Include when users were affected, when the team noticed, what changed during mitigation and how recovery was established. Link disputed timestamps to their evidence and keep estimates visibly uncertain. Ask participants to correct gaps before analysis; keep customer identifiers and credentials out of the shared timeline.
+
+Retain event identifiers, original timestamps/timezones and any demonstrated clock correction. Reconcile the impact start and recovery with user-facing evidence rather than a single green infrastructure metric. Show the covered population and missing observations; do not manufacture a precise affected-user count.
+
+Identify evidence that may expire before review. Preserve the necessary logs, metrics and configuration through authorized access with their query/window and source dates, applying the sharing and redaction rules. Record unavailable evidence and retention limits; an expiring dashboard link alone may not support later review.
+
+- Canonical vendor: incident.io
+- Vendor options: incident.io, PagerDuty
+- Ranked market: [incident-management](../../open-rankings/incident-management)
+- Sources: [Google SRE postmortem culture](https://sre.google/sre-book/postmortem-culture/)
+- UM's incident.io evidence documents an editable timeline, postmortem tracking and follow-ups (incident-io-docs-4, incident-io-docs-5 and incident-io-docs-7). Use these as retrieval and handoff leads when the company uses that tool. An editable timeline may include manual narrative; retain original observations and reconcile clock offsets before calculating duration or asserting cause. Vendor postmortem features do not establish this incident's impact, root cause, accepted owner or completed follow-up.
+
+<a id="step-2"></a>
+
+### 2. Draft the blameless postmortem doc
+
+agent-runnable · ~30 min
+
+
+Explain the incident using the timeline: user impact, detection, decisions, contributing conditions and recovery. Describe each decision in the context of the information responders had at the time. Separate a reproduced cause from a plausible hypothesis. For each proposed improvement, explain which observed failure it addresses, such as late detection or a recovery command that failed. List unresolved causal questions for the review.
+
+For each causal statement, identify the supporting observation or reproduction and the competing explanations still open. A nearby deployment is correlation until the evidence supports a causal link. Check duration and detection-delay calculations against the normalized timeline.
+
+Tie every impact calculation to its denominator, time window and source. Distinguish failed attempts, distinct users, eventual success and revenue loss; one does not establish the others. Prioritize the few corrective actions that address evidenced failures and include what new observation would confirm or reject an unresolved hypothesis.
+
+Establish whether metric rows are interval counts, cumulative counters or samples, and whether their windows overlap, before aggregating them. Keep calculations limited to the observed coverage; sparse samples alone cannot establish a continuous alert condition or exact impact interval.
+
+Establish each measured interval’s boundaries before inferring an intervention’s immediate effect. A later row timestamp can include observations from before the change; preserve this uncertainty in both the detailed analysis and summaries.
+
+- Canonical vendor: Notion
+- Cross-arena options: ChatGPT, Claude (ai-assistants)
+- Sources: [Google SRE postmortem culture](https://sre.google/sre-book/postmortem-culture/)
+
+<a id="step-3"></a>
+
+### 3. Hold the postmortem review meeting
+
+human · ~45 min
+
+
+Use the review to resolve disputed timeline entries, test causal explanations and decide which improvements merit work. Bring the responders and owners needed for those questions, with the draft available beforehand. Record disagreements that remain and the actions people actually accept. Review sensitive passages before wider circulation, then update the incident account and its prioritized follow-ups.
+
+An asynchronous review is sufficient when the necessary participants can resolve the questions and accept follow-ups in the record. Reuse the company’s incident severity, communication policy and service ownership; ask for a meeting when unresolved disagreement or impact warrants it. Keep the review-ready draft usable even when participants are unavailable.
+
+- Sources: [Google SRE postmortem culture](https://sre.google/sre-book/postmortem-culture/)
+- Next: steps 4 and 5 — all follow this step
+
+<a id="step-4"></a>
+
+### 4. File follow-up actions in the tracker
+
+agent-runnable · ~10 min
+
+
+Turn each accepted improvement into a ticket tied to the failure it addresses. Replace vague work such as “improve alerts” with an observable result, such as a controlled failure reaching the on-call responder with the relevant diagnostic link. Use the agreed owner and priority, distinguishing proposed dates from commitments. Link tickets to the incident and keep deferred actions visible with their reason.
+
+Keep proposed and accepted owners/dates separate, along with the evidence of acceptance. Attach an acceptance test that would detect or prevent the observed failure; use a controlled synthetic replay where feasible. Retain results for tests actually executed; otherwise keep the acceptance test proposed with its owner and unresolved prerequisites. Filing the follow-up backlog does not require implementing every corrective action. A local ticket draft is not a created tracker issue or an implemented fix.
+
+- Canonical vendor: Linear
+- Sources: [Google SRE postmortem culture](https://sre.google/sre-book/postmortem-culture/)
+
+*This path ends here.*
+
+<a id="step-5"></a>
+
+### 5. Publish the status-page write-up and customer comms
+
+agent-runnable · ~15 min
+
+
+*Follows step 3.*
+
+Write the public account from the reviewed incident facts: affected service, user-visible impact, recovery and changes customers need to know about. Reconcile times and completed fixes with the internal record; leave speculative causes and sensitive details out. Publish the incident and communications owners' authorized version to the intended channels. Check the public page and customer links, and give support the same approved account for follow-up questions.
+
+- Canonical vendor: Better Stack
+- Sources: [Google SRE postmortem culture](https://sre.google/sre-book/postmortem-culture/)
+
+
+<a id="artifacts"></a>
 
 ## Related records
 

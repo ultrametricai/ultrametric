@@ -36,9 +36,11 @@ and its referenced records. Commit source changes before exporting a pin.
 ## Record pages
 
 Each canonical record in this directory renders as a Markdown page in [`pages/`](pages):
-the step walk with routing and time estimates, decisions with their options, per-country
-notes and step resolutions, law-rule citations linked to their rule cards, and the
-artifacts the record produces and requires. The pages and the index below are generated
+prerequisites and required inputs, a geography navigation table, a step overview with
+dependencies, linked step instructions with routing and time estimates, decisions with
+their options, and detailed country notes. Law-rule citations link to their rule cards,
+and outputs link the work to the artifacts it produces. Chains show their constituent
+processes with required and produced artifacts. The pages and the index below are generated
 (`pnpm exec tsx scripts/generate-process-pages.ts`); edit the source record, then
 regenerate. Drift gate: `__tests__/process-pages.test.ts`.
 

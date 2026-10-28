@@ -3,6 +3,10 @@
 
 # Run a reduction in force
 
+[Overview](#overview) · [Before you start](#before-you-start) · [Geography](#geography) · [Steps](#steps-at-a-glance)
+
+## Overview
+
 **Trigger:** The decision is made: the plan no longer supports the team, and a reduction in force is how the company survives.
 
 A reduction in force is a legal process wrapped around a painful decision, so do the paperwork in the right order. Write the business case and the selection criteria before any names, and review the resulting list for adverse impact. Check the statutory notice floors early: under the federal WARN Act, an employer with 100 or more employees may not order a plant closing or mass layoff until 60 days after written notice (law rule [us-fed.warn-notice](../../open-law/US-FED/us-fed-warn-notice.json)), and several states run mini-WARN acts with lower thresholds. Plan final pay by state; in California final wages are due at the termination itself, with waiting-time penalties for lateness (law rule [us-ca.final-wages-timing](../../open-law/US-CA/us-ca-final-wages-timing.json)). For anyone 40 or older, a release of federal age claims only works inside the OWBPA windows: at least 21 days to consider (45 for a group program), a 7-day revocation period, and the group disclosures (law rule [us-fed.owbpa-release-windows](../../open-law/US-FED/us-fed-owbpa-release-windows.json)). Then run one humane day: managers briefed first, affected people told first and in person, the company the same day, each offboarding executed cleanly, and the survivors given the real math once. Educational guidance, not legal advice; employment counsel reviews the plan before anyone hears a word.
@@ -24,33 +28,112 @@ Selection, the releases, and the conversations are counsel and founder work; an 
 
 - Law rules: [us-fed.warn-notice](../../open-law/US-FED/us-fed-warn-notice.json), [us-ca.final-wages-timing](../../open-law/US-CA/us-ca-final-wages-timing.json), [us-fed.owbpa-release-windows](../../open-law/US-FED/us-fed-owbpa-release-windows.json)
 
-## Steps
+## Before you start
 
-1. **Write the business case and the selection criteria before any names: roles not people, then an adverse-impact review of the resulting list** — human · ~1.5 h
-2. **Check the statutory notice and consultation floors against your real counts: employees, sites, and the clocks they start** — agent-runnable · ~45 min
+| Information to gather | Required by the record |
+| --- | --- |
+| headcount by site and work state, including part-time status | Yes |
+| the selection criteria and the resulting list, with ages for the OWBPA disclosures | Yes |
 
-   Collective dismissals trip statutory notice and consultation duties that turn on headcount, site, and timing, and the floors bind before anything is announced. Compute the counts first, then read the clocks in the committed per-country entries; whether a given reduction crosses a statutory threshold is a counsel determination.
+## Geography
 
-   - Do it yourself: [29 U.S.C. § 2102 — WARN notice requirement](https://www.law.cornell.edu/uscode/text/29/2102)
-3. **Plan final pay for every affected person on their jurisdiction's clock: some clocks run at the termination itself** — agent-runnable · ~30 min
+Country rows describe the guidance recorded here. Local notes and step alternatives do not establish a complete country-specific workflow.
 
-   Map each affected person's jurisdiction and schedule the final-pay runs so no clock is missed on the day; the committed per-country entries carry the clocks that bind.
+| Country | Recorded guidance | Steps with local alternatives or resolutions |
+| --- | --- | --- |
+| [United States](#geo-us) | step resolution | [2](#step-2), [3](#step-3), [4](#step-4) |
+| [Australia](#geo-au) | step resolution | [2](#step-2) |
+| [South Korea](#geo-kr) | step resolution | [2](#step-2), [3](#step-3) |
 
-   - Vendor options: Gusto, Rippling
-   - Ranked market: [payroll](../../open-rankings/payroll)
-   - Do it yourself: [California DIR: final pay FAQ](https://www.dir.ca.gov/dlse/faq_paydays.htm)
-4. **Draft severance and releases with the statutory windows built in: consideration periods, revocation rights, and the required disclosures** — human · ~1 h
+## Steps at a glance
 
-   Severance in exchange for a release is the standard trade, and a release is only as strong as its statutory compliance: many regimes condition enforceability on consideration periods, revocation windows, and written disclosures. Counsel drafts to the windows that bind where each affected person works; the committed per-country entries carry the clocks.
+Use the recorded prerequisites and conditions to follow the path. Row order is for navigation.
 
-   - Do it yourself: [29 U.S.C. § 626(f) — OWBPA waiver conditions](https://www.law.cornell.edu/uscode/text/29/626)
-5. **Plan the day: managers briefed first, affected people told first and in person, the company the same day, benefits and payroll logistics ready** — human · ~1 h · hard to undo
-6. **Run each offboarding cleanly: access, devices, final pay on the state's clock, benefits paperwork** — agent-runnable · ~1 h
+| Step | Handled by | Time estimate | Incoming dependencies |
+| --- | --- | --- | --- |
+| [1. Write the business case and the selection criteria before any names: roles not people, then an adverse-impact review of the resulting list](#step-1) | human | ~1.5 h | Entry step |
+| [2. Check the statutory notice and consultation floors against your real counts: employees, sites, and the clocks they start](#step-2) | agent-runnable | ~45 min | [Step 1](#step-1) |
+| [3. Plan final pay for every affected person on their jurisdiction's clock: some clocks run at the termination itself](#step-3) | agent-runnable | ~30 min | [Step 2](#step-2) |
+| [4. Draft severance and releases with the statutory windows built in: consideration periods, revocation rights, and the required disclosures](#step-4) | human | ~1 h | [Step 3](#step-3) |
+| [5. Plan the day: managers briefed first, affected people told first and in person, the company the same day, benefits and payroll logistics ready](#step-5) | human | ~1 h | [Step 4](#step-4) |
+| [6. Run each offboarding cleanly: access, devices, final pay on the state's clock, benefits paperwork](#step-6) | agent-runnable | ~1 h | [Step 5](#step-5) |
+| [7. Give the survivors the real math once: what was cut, why, and the plan the smaller team is now running](#step-7) | human | ~45 min | [Step 6](#step-6) |
 
-   - Runs the process [Offboard employee](offboard-employee.md)
-7. **Give the survivors the real math once: what was cut, why, and the plan the smaller team is now running** — human · ~45 min · hard to undo
+<a id="steps"></a>
 
-## By country
+## Step details
+
+<a id="step-1"></a>
+
+### 1. Write the business case and the selection criteria before any names: roles not people, then an adverse-impact review of the resulting list
+
+human · ~1.5 h
+
+
+<a id="step-2"></a>
+
+### 2. Check the statutory notice and consultation floors against your real counts: employees, sites, and the clocks they start
+
+agent-runnable · ~45 min
+
+
+Collective dismissals trip statutory notice and consultation duties that turn on headcount, site, and timing, and the floors bind before anything is announced. Compute the counts first, then read the clocks in the committed per-country entries; whether a given reduction crosses a statutory threshold is a counsel determination.
+
+- Do it yourself: [29 U.S.C. § 2102 — WARN notice requirement](https://www.law.cornell.edu/uscode/text/29/2102)
+
+<a id="step-3"></a>
+
+### 3. Plan final pay for every affected person on their jurisdiction's clock: some clocks run at the termination itself
+
+agent-runnable · ~30 min
+
+
+Map each affected person's jurisdiction and schedule the final-pay runs so no clock is missed on the day; the committed per-country entries carry the clocks that bind.
+
+- Vendor options: Gusto, Rippling
+- Ranked market: [payroll](../../open-rankings/payroll)
+- Do it yourself: [California DIR: final pay FAQ](https://www.dir.ca.gov/dlse/faq_paydays.htm)
+
+<a id="step-4"></a>
+
+### 4. Draft severance and releases with the statutory windows built in: consideration periods, revocation rights, and the required disclosures
+
+human · ~1 h
+
+
+Severance in exchange for a release is the standard trade, and a release is only as strong as its statutory compliance: many regimes condition enforceability on consideration periods, revocation windows, and written disclosures. Counsel drafts to the windows that bind where each affected person works; the committed per-country entries carry the clocks.
+
+- Do it yourself: [29 U.S.C. § 626(f) — OWBPA waiver conditions](https://www.law.cornell.edu/uscode/text/29/626)
+
+<a id="step-5"></a>
+
+### 5. Plan the day: managers briefed first, affected people told first and in person, the company the same day, benefits and payroll logistics ready
+
+human · ~1 h · hard to undo
+
+
+<a id="step-6"></a>
+
+### 6. Run each offboarding cleanly: access, devices, final pay on the state's clock, benefits paperwork
+
+agent-runnable · ~1 h
+
+
+- Runs the process [Offboard employee](offboard-employee.md)
+
+<a id="step-7"></a>
+
+### 7. Give the survivors the real math once: what was cut, why, and the plan the smaller team is now running
+
+human · ~45 min · hard to undo
+
+
+
+<a id="by-country"></a>
+
+## Country details
+
+<a id="geo-us"></a>
 
 ### United States
 
@@ -58,9 +141,13 @@ Selection, the releases, and the conversations are counsel and founder work; an 
 - Step 3: Final pay runs on each work state's clock: California requires final wages, including accrued vacation, at the termination when the employer discharges, with a waiting-time penalty of a day's wages per day late up to 30 days (law rule us-ca.final-wages-timing) ([California DIR: final pay FAQ](https://www.dir.ca.gov/dlse/faq_paydays.htm))
 - Step 4: A release of federal age-discrimination claims by anyone 40 or older is only knowing and voluntary inside the OWBPA conditions: at least 21 days to consider, 45 days when the waiver rides a group termination program, a 7-day revocation period before effectiveness, and the written group disclosures of the decisional unit, eligibility factors, and the ages and titles selected and not selected (law rule us-fed.owbpa-release-windows) ([29 U.S.C. § 626(f)](https://www.law.cornell.edu/uscode/text/29/626))
 
+<a id="geo-au"></a>
+
 ### Australia
 
 - Step 2: Dismissals run under the Fair Work Act: unfair-dismissal exposure begins after the minimum employment period (law rule au.unfair-dismissal-minimum-period), and genuine-redundancy requirements shape the selection and consultation
+
+<a id="geo-kr"></a>
 
 ### South Korea
 

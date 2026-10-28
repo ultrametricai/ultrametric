@@ -3,6 +3,10 @@
 
 # Sign the founder agreement & split equity
 
+[Overview](#overview) · [Before you start](#before-you-start) · [Geography](#geography) · [Steps](#steps-at-a-glance) · [Outputs](#outputs)
+
+## Overview
+
 Put the founding team on paper: agree the split and vesting, generate founder agreements with IP assignment, sign, record on the cap table, and file any tax election the founders' jurisdiction requires on the stock transfer in time.
 
 | Field | Value |
@@ -19,116 +23,226 @@ Put the founding team on paper: agree the split and vesting, generate founder ag
 
 Document generation, signature routing, and cap table entry are automatable. The equity conversation itself and any transfer-date tax election stay human.
 
-## Steps
+## Before you start
 
-1. **Agree the equity split and vesting** — human · ~1 h
+Required artifacts:
 
-   Settle the split early: the conversation gets harder, not easier, as the company progresses (lore rule altman-one-extra-share). Protect whichever split the founders choose with the standard schedule, four-year vesting with a one-year cliff (lore rule seibel-four-year-one-cliff). Discuss the proposed split alongside each founder's contribution, role, time commitment, and any existing equity promise. Work through departures, decision rights, and the effect of future dilution, recording unresolved differences for discussion before drafting. Give company counsel and the founders' advisers the proposed terms for review. The result should be a shared drafting instruction that distinguishes the intended arrangement from shares already issued or transferred.
+- Cap table record — from [Set up cap table](set-up-cap-table.md)
 
-   Options:
-     - **Default — Near-equal split with a deciding share** — human · ~1 h
+| Information to gather | Required by the record |
+| --- | --- |
+| founder names and split | Yes |
 
-       Split the equity nearly equally, and with two founders have one founder hold a single extra share so a fallout cannot deadlock the company (lore rule altman-one-extra-share). Agree who holds the deciding share together with who is CEO: investors want one clear tiebreaker, and a few months of solo progress before a cofounder joined does not dock their share (lore rule taggar-settle-ceo-before-paperwork).
-     - **Exactly equal split** — human · ~1 h
+## Geography
 
-       When: Founders who weight the years of work ahead over early differences and settle decision rights outside the split
+Country rows describe the guidance recorded here. Local notes and step alternatives do not establish a complete country-specific workflow.
 
-       Split the equity equally: a company of great value takes 7 to 10 years to build, so variations in the first year do not justify materially different stakes, and investors read a marginal cofounder stake as someone the CEO does not value (lore rule seibel-equal-split-all-ahead). Carry decision rights in the CEO role and the board rather than the share count (lore rule taggar-settle-ceo-before-paperwork).
-     - **Dynamic contribution-tracked split** — human · ~1 h
+| Country | Recorded guidance | Steps with local alternatives or resolutions |
+| --- | --- | --- |
+| [United States](#geo-us) | step resolution | [6](#step-6), [7](#step-7) |
+| [India](#geo-in) | Local analog note; step resolution; step alternative | [2](#step-2), [7](#step-7) |
+| [United Kingdom](#geo-uk) | Local analog note; step resolution; step alternative | [2](#step-2), [6](#step-6), [7](#step-7) |
+| [Germany](#geo-de) | Local analog note; step resolution; step alternative | [2](#step-2), [7](#step-7) |
+| [France](#geo-fr) | Local analog note; step resolution; step alternative | [2](#step-2), [7](#step-7) |
+| [Portugal](#geo-pt) | Local analog note; step resolution | [7](#step-7) |
+| [Canada](#geo-ca) | Local analog note; step resolution | [7](#step-7) |
+| [New Zealand](#geo-nz) | Local analog note | — |
+| [Singapore](#geo-sg) | Local analog note | — |
+| [Australia](#geo-au) | Local analog note | — |
+| [South Korea](#geo-kr) | Local analog note | — |
+| [Hong Kong](#geo-hk) | Local analog note | — |
+| [Estonia](#geo-ee) | Local analog note | — |
 
-       When: Bootstrapped teams whose relative commitments are uneven or likely to change before funding
+## Steps at a glance
 
-       Keep the split dynamic through the bootstrapping stage: each founder's stake tracks the relative unpaid fair-market value of actual contributions and self-adjusts as people's input changes, then fixes once the company can pay everyone from revenue or a priced round (lore rule moyer-dynamic-equity-split). Have counsel paper the dynamic arrangement explicitly, since standard founder agreement and vesting documents assume the split is set at signing.
-2. **Generate founder agreements and IP assignment** — manual form/portal · ~20 min
+Use the recorded prerequisites and conditions to follow the path. Row order is for navigation.
 
-   Assemble the agreed founder terms, formation documents, current capitalization, and a schedule of relevant intellectual property and prior obligations. Use the selected jurisdiction's drafting path with counsel, keeping disputed ownership or employment restrictions visible. Check names, share terms, consideration, and schedules across the agreement and assignment package. Resolve inconsistencies before the founders review the final terms and the documents move into the appropriate signing process.
+| Step | Handled by | Time estimate | Incoming dependencies |
+| --- | --- | --- | --- |
+| [1. Agree the equity split and vesting](#step-1) | human | ~1 h | Entry step |
+| [2. Generate founder agreements and IP assignment](#step-2) | manual form/portal | ~20 min | [Step 1](#step-1) |
+| [3. Route agreements for e-signature](#step-3) | agent-runnable; approval required | ~5 min | [Step 2](#step-2) |
+| [4. Founders sign the agreements](#step-4) | human; signature required | ~10 min | [Step 3](#step-3) |
+| [5. Record splits on the cap table](#step-5) | manual form/portal | ~10 min | [Step 4](#step-4) |
+| [6. Sign any tax election the jurisdiction requires on the founder stock transfer](#step-6) | human; signature required | ~10 min | [Step 5](#step-5) (An eligible founder's jurisdiction offers a transfer-date tax election and they have chosen it with tax advice.) |
+| [7. File the tax election the jurisdiction requires on a founder stock transfer, where one exists](#step-7) | manual form/portal; includes waiting | ~20 min | [Step 6](#step-6) |
 
-   - Canonical vendor: Clerky
-   - Vendor options: Clerky, Stripe Atlas
+<a id="steps"></a>
 
-   Options:
-     - **Default — Generate founder agreements and IP assignment** — manual form/portal · ~20 min
+## Step details
 
-       Have counsel confirm that the default document set fits the entity and jurisdiction before using it. Translate the agreed founder terms into the agreement, equity documents, and intellectual-property assignment, including schedules for existing work and excluded obligations. Reconcile the package with formation records and the proposed capitalization. Identify the corporate approvals and execution requirements still needed, then put a consistent final package in front of the founders for review.
-     - **India - stamped founders' agreement**
+<a id="step-1"></a>
 
-       When: Founder agreement under Indian law
+### 1. Agree the equity split and vesting
 
-       For an Indian company, give local counsel the agreed founder terms, company articles, equity arrangements, and execution locations. Determine the applicable stamp duty and execution process before finalizing the documents, including whether the proposed terms require changes to the articles. Confirm the duty amount and stamping or payment procedure with the relevant authority. Keep the completed formalities with the signed package so later ownership updates rest on the correct documents.
+human · ~1 h
 
-       - Do it yourself: [Startup India (founder agreement resources)](https://www.startupindia.gov.in/)
-       - Sources: [India Code: Indian Stamp Act, 1899](https://www.indiacode.nic.in/indiacode/bitstream/123456789/20095/1/the_indian_stamp_act%2C_1899.pdf)
-     - **UK - shareholders' agreement + articles**
+| Option | Applies when |
+| --- | --- |
+| Default — Near-equal split with a deciding share | Recorded default |
+| Exactly equal split | Founders who weight the years of work ahead over early differences and settle decision rights outside the split |
+| Dynamic contribution-tracked split | Bootstrapped teams whose relative commitments are uneven or likely to change before funding |
 
-       When: Founder agreement under UK law
 
-       For a UK company, review the founder arrangements with counsel against the actual articles, share classes, and ownership records. Draft the shareholders' agreement and any necessary constitutional changes together, addressing the founders' chosen departure, transfer, and decision provisions. Identify the approvals and filings required for the transaction. Present the coordinated package to the founders with a clear explanation of what signing does and which corporate actions still need to follow.
+Settle the split early: the conversation gets harder, not easier, as the company progresses (lore rule altman-one-extra-share). Protect whichever split the founders choose with the standard schedule, four-year vesting with a one-year cliff (lore rule seibel-four-year-one-cliff). Discuss the proposed split alongside each founder's contribution, role, time commitment, and any existing equity promise. Work through departures, decision rights, and the effect of future dilution, recording unresolved differences for discussion before drafting. Give company counsel and the founders' advisers the proposed terms for review. The result should be a shared drafting instruction that distinguishes the intended arrangement from shares already issued or transferred.
 
-       - Do it yourself: [Model articles of association](https://www.gov.uk/guidance/model-articles-of-association-for-limited-companies)
-       - Sources: [GOV.UK: Documents agreeing how to run a company](https://www.gov.uk/limited-company-formation/documents)
-     - **Germany - notarized vesting clauses** — human
+Options:
+  - **Default — Near-equal split with a deciding share** — human · ~1 h
 
-       When: Founder agreement under German law
+    Split the equity nearly equally, and with two founders have one founder hold a single extra share so a fallout cannot deadlock the company (lore rule altman-one-extra-share). Agree who holds the deciding share together with who is CEO: investors want one clear tiebreaker, and a few months of solo progress before a cofounder joined does not dock their share (lore rule taggar-settle-ceo-before-paperwork).
+  - **Exactly equal split** — human · ~1 h
 
-       For a German GmbH, review the proposed ownership and departure terms with German counsel and the notary handling the transaction. Section 15 GmbHG requires notarial form for share transfers and agreements creating an obligation to transfer shares. Have them determine how that applies to the proposed vesting arrangement and reconcile it with the articles and current holdings. Use the notary's execution process for any transfer obligation requiring this form.
+    When: Founders who weight the years of work ahead over early differences and settle decision rights outside the split
 
-       - Vendor options: Beglaubigt.de
-       - Do it yourself: [Bundesnotarkammer (notaries)](https://www.bnotk.de/)
-       - Sources: [German Limited Liability Companies Act](https://www.gesetze-im-internet.de/gmbhg/__15.html)
-     - **France - pacte d'associes**
+    Split the equity equally: a company of great value takes 7 to 10 years to build, so variations in the first year do not justify materially different stakes, and investors read a marginal cofounder stake as someone the CEO does not value (lore rule seibel-equal-split-all-ahead). Carry decision rights in the CEO role and the board rather than the share count (lore rule taggar-settle-ceo-before-paperwork).
+  - **Dynamic contribution-tracked split** — human · ~1 h
 
-       When: Founder agreement under French law
+    When: Bootstrapped teams whose relative commitments are uneven or likely to change before funding
 
-       For a French company, review the founders' governance, ownership, departure, and transfer proposals with local counsel alongside the statuts. Decide who will sign the pacte d'associés and how it supplements the constitutional documents. Draft the terms as a coordinated package and identify any related corporate action or execution requirement. Keep the pact and sensitive schedules restricted to their intended audience as the founders review and sign the final arrangement.
+    Keep the split dynamic through the bootstrapping stage: each founder's stake tracks the relative unpaid fair-market value of actual contributions and self-adjusts as people's input changes, then fixes once the company can pay everyone from revenue or a priced round (lore rule moyer-dynamic-equity-split). Have counsel paper the dynamic arrangement explicitly, since standard founder agreement and vesting documents assume the split is set at signing.
 
-       - Do it yourself: [Pacte d'associes - Bpifrance Creation guide](https://bpifrance-creation.fr/encyclopedie/structures-juridiques/entreprendre-a-plusieurs/pacte-dassocies-organisation)
-3. **Route agreements for e-signature** — agent-runnable · ~5 min · human approval required
+<a id="step-2"></a>
 
-   Prepare the final agreement versions and schedules, matching every signature block to the person and capacity required. Confirm the execution method with counsel for the selected jurisdiction; documents requiring a notary need that route. Have the legal owner confirm the package and recipients before invitations are sent. Track completion by document and return changed terms for review, so a partial or superseded package cannot be mistaken for the agreement the founders signed.
+### 2. Generate founder agreements and IP assignment
 
-   - Canonical vendor: DocuSign
-4. **Founders sign the agreements** — human (legally required signature) · ~10 min · hard to undo
+manual form/portal · ~20 min
 
-   Each founder reviews the final equity terms, IP assignment, schedules, and personal obligations before signing. Resolve questions with the relevant adviser and check that the package matches the terms agreed for execution. Complete the jurisdiction-appropriate signing process and obtain the full executed set. Identify missing signatures or other formalities explicitly, then give the company legal owner the completed documents for the equity and IP records.
+| Option | Applies when |
+| --- | --- |
+| Default — Generate founder agreements and IP assignment | Recorded default |
+| India - stamped founders' agreement | Founder agreement under Indian law |
+| UK - shareholders' agreement + articles | Founder agreement under UK law |
+| Germany - notarized vesting clauses | Founder agreement under German law |
+| France - pacte d'associes | Founder agreement under French law |
 
-   - Produces: Founder agreement & IP assignment
-5. **Record splits on the cap table** — manual form/portal · ~10 min
 
-   Reconcile the executed equity documents with corporate approvals, consideration, and the actual issuance or transfer details. Resolve unmet legal conditions with counsel before treating proposed allocations as completed ownership changes. The responsible company officer should authorize the entries, then record each holder, class, quantity, transaction date, and restriction. Compare totals with the company records and link the supporting documents so future grants or financings start from supported holdings.
+Assemble the agreed founder terms, formation documents, current capitalization, and a schedule of relevant intellectual property and prior obligations. Use the selected jurisdiction's drafting path with counsel, keeping disputed ownership or employment restrictions visible. Check names, share terms, consideration, and schedules across the agreement and assignment package. Resolve inconsistencies before the founders review the final terms and the documents move into the appropriate signing process.
 
-   - Canonical vendor: Carta
-   - Vendor options: Carta, Pulley
-   - Ranked market: [equity-management](../../open-rankings/equity-management)
-   - Sources: [Delaware General Corporation Law: Stock and dividends](https://delcode.delaware.gov/title8/c001/sc05/index.html) · [Delaware General Corporation Law: Meetings and stockholders](https://delcode.delaware.gov/title8/c001/sc07/index.html)
-   - If "An eligible founder's jurisdiction offers a transfer-date tax election and they have chosen it with tax advice": continue at step 6
-6. **Sign any tax election the jurisdiction requires on the founder stock transfer** — human (legally required signature) · ~10 min
+- Canonical vendor: Clerky
+- Vendor options: Clerky, Stripe Atlas
 
-   *Follows step 5 (when An eligible founder's jurisdiction offers a transfer-date tax election and they have chosen it with tax advice).*
+Options:
+  - **Default — Generate founder agreements and IP assignment** — manual form/portal · ~20 min
 
-   For an eligible founder whose jurisdiction offers a transfer-date tax election and who has chosen it with their tax adviser, check the completed election against the actual property-transfer records. Verify taxpayer details, property, transfer date, restrictions, value, and amount paid before the taxpayer signs. Give the signed election to the person responsible for timely submission. Escalate unresolved eligibility or transfer-date questions promptly to the tax adviser.
+    Have counsel confirm that the default document set fits the entity and jurisdiction before using it. Translate the agreed founder terms into the agreement, equity documents, and intellectual-property assignment, including schedules for existing work and excluded obligations. Reconcile the package with formation records and the proposed capitalization. Identify the corporate approvals and execution requirements still needed, then put a consistent final package in front of the founders for review.
+  - **India - stamped founders' agreement**
 
-   - Sources: [IRS Form 15620 and instructions](https://www.irs.gov/pub/irs-pdf/f15620.pdf)
-7. **File the tax election the jurisdiction requires on a founder stock transfer, where one exists** — manual form/portal · ~20 min · async wait · irreversible
+    When: Founder agreement under Indian law
 
-   For each founder making an election, confirm the property-transfer date and the filing deadline with the tax adviser; the windows are short and fixed. The taxpayer authorizes the reviewed submission and confirms who sends it. Track the signed election, dispatch or other accepted filing evidence, and required copies. Investigate missing submission evidence promptly with the sender and tax adviser.
+    For an Indian company, give local counsel the agreed founder terms, company articles, equity arrangements, and execution locations. Determine the applicable stamp duty and execution process before finalizing the documents, including whether the proposed terms require changes to the articles. Confirm the duty amount and stamping or payment procedure with the relevant authority. Keep the completed formalities with the signed package so later ownership updates rest on the correct documents.
 
-   - Verify: The signed election and the submission evidence the jurisdiction's filing route produces are retained before the deadline; where the tax authority sends no acknowledgment, the dispatch record is the proof of timely filing.
-   - Cost: free (free, as of 2026-10-01, [www.irs.gov](https://www.irs.gov/pub/irs-pdf/f15620.pdf)). No IRS filing fee for an 83(b) election — the cost is certified-mail postage.
-   - Produces: Filed 83(b) election
-   - Canonical vendor: IRS
-   - Do it yourself: [IRS Form 15620 (83(b) election)](https://www.irs.gov/pub/irs-pdf/f15620.pdf)
+    - Do it yourself: [Startup India (founder agreement resources)](https://www.startupindia.gov.in/)
+    - Sources: [India Code: Indian Stamp Act, 1899](https://www.indiacode.nic.in/indiacode/bitstream/123456789/20095/1/the_indian_stamp_act%2C_1899.pdf)
+  - **UK - shareholders' agreement + articles**
 
-## By country
+    When: Founder agreement under UK law
+
+    For a UK company, review the founder arrangements with counsel against the actual articles, share classes, and ownership records. Draft the shareholders' agreement and any necessary constitutional changes together, addressing the founders' chosen departure, transfer, and decision provisions. Identify the approvals and filings required for the transaction. Present the coordinated package to the founders with a clear explanation of what signing does and which corporate actions still need to follow.
+
+    - Do it yourself: [Model articles of association](https://www.gov.uk/guidance/model-articles-of-association-for-limited-companies)
+    - Sources: [GOV.UK: Documents agreeing how to run a company](https://www.gov.uk/limited-company-formation/documents)
+  - **Germany - notarized vesting clauses** — human
+
+    When: Founder agreement under German law
+
+    For a German GmbH, review the proposed ownership and departure terms with German counsel and the notary handling the transaction. Section 15 GmbHG requires notarial form for share transfers and agreements creating an obligation to transfer shares. Have them determine how that applies to the proposed vesting arrangement and reconcile it with the articles and current holdings. Use the notary's execution process for any transfer obligation requiring this form.
+
+    - Vendor options: Beglaubigt.de
+    - Do it yourself: [Bundesnotarkammer (notaries)](https://www.bnotk.de/)
+    - Sources: [German Limited Liability Companies Act](https://www.gesetze-im-internet.de/gmbhg/__15.html)
+  - **France - pacte d'associes**
+
+    When: Founder agreement under French law
+
+    For a French company, review the founders' governance, ownership, departure, and transfer proposals with local counsel alongside the statuts. Decide who will sign the pacte d'associés and how it supplements the constitutional documents. Draft the terms as a coordinated package and identify any related corporate action or execution requirement. Keep the pact and sensitive schedules restricted to their intended audience as the founders review and sign the final arrangement.
+
+    - Do it yourself: [Pacte d'associes - Bpifrance Creation guide](https://bpifrance-creation.fr/encyclopedie/structures-juridiques/entreprendre-a-plusieurs/pacte-dassocies-organisation)
+
+<a id="step-3"></a>
+
+### 3. Route agreements for e-signature
+
+agent-runnable · ~5 min · human approval required
+
+
+Prepare the final agreement versions and schedules, matching every signature block to the person and capacity required. Confirm the execution method with counsel for the selected jurisdiction; documents requiring a notary need that route. Have the legal owner confirm the package and recipients before invitations are sent. Track completion by document and return changed terms for review, so a partial or superseded package cannot be mistaken for the agreement the founders signed.
+
+- Canonical vendor: DocuSign
+
+<a id="step-4"></a>
+
+### 4. Founders sign the agreements
+
+human (legally required signature) · ~10 min · hard to undo
+
+
+Each founder reviews the final equity terms, IP assignment, schedules, and personal obligations before signing. Resolve questions with the relevant adviser and check that the package matches the terms agreed for execution. Complete the jurisdiction-appropriate signing process and obtain the full executed set. Identify missing signatures or other formalities explicitly, then give the company legal owner the completed documents for the equity and IP records.
+
+- Produces: Founder agreement & IP assignment
+
+<a id="step-5"></a>
+
+### 5. Record splits on the cap table
+
+manual form/portal · ~10 min
+
+
+Reconcile the executed equity documents with corporate approvals, consideration, and the actual issuance or transfer details. Resolve unmet legal conditions with counsel before treating proposed allocations as completed ownership changes. The responsible company officer should authorize the entries, then record each holder, class, quantity, transaction date, and restriction. Compare totals with the company records and link the supporting documents so future grants or financings start from supported holdings.
+
+- Canonical vendor: Carta
+- Vendor options: Carta, Pulley
+- Ranked market: [equity-management](../../open-rankings/equity-management)
+- Sources: [Delaware General Corporation Law: Stock and dividends](https://delcode.delaware.gov/title8/c001/sc05/index.html) · [Delaware General Corporation Law: Meetings and stockholders](https://delcode.delaware.gov/title8/c001/sc07/index.html)
+- If "An eligible founder's jurisdiction offers a transfer-date tax election and they have chosen it with tax advice": continue at step 6
+
+<a id="step-6"></a>
+
+### 6. Sign any tax election the jurisdiction requires on the founder stock transfer
+
+human (legally required signature) · ~10 min
+
+
+*Follows step 5 (when An eligible founder's jurisdiction offers a transfer-date tax election and they have chosen it with tax advice).*
+
+For an eligible founder whose jurisdiction offers a transfer-date tax election and who has chosen it with their tax adviser, check the completed election against the actual property-transfer records. Verify taxpayer details, property, transfer date, restrictions, value, and amount paid before the taxpayer signs. Give the signed election to the person responsible for timely submission. Escalate unresolved eligibility or transfer-date questions promptly to the tax adviser.
+
+- Sources: [IRS Form 15620 and instructions](https://www.irs.gov/pub/irs-pdf/f15620.pdf)
+
+<a id="step-7"></a>
+
+### 7. File the tax election the jurisdiction requires on a founder stock transfer, where one exists
+
+manual form/portal · ~20 min · async wait · irreversible
+
+
+For each founder making an election, confirm the property-transfer date and the filing deadline with the tax adviser; the windows are short and fixed. The taxpayer authorizes the reviewed submission and confirms who sends it. Track the signed election, dispatch or other accepted filing evidence, and required copies. Investigate missing submission evidence promptly with the sender and tax adviser.
+
+- Verify: The signed election and the submission evidence the jurisdiction's filing route produces are retained before the deadline; where the tax authority sends no acknowledgment, the dispatch record is the proof of timely filing.
+- Cost: free (free, as of 2026-10-01, [www.irs.gov](https://www.irs.gov/pub/irs-pdf/f15620.pdf)). No IRS filing fee for an 83(b) election — the cost is certified-mail postage.
+- Produces: Filed 83(b) election
+- Canonical vendor: IRS
+- Do it yourself: [IRS Form 15620 (83(b) election)](https://www.irs.gov/pub/irs-pdf/f15620.pdf)
+
+
+<a id="by-country"></a>
+
+## Country details
+
+<a id="geo-us"></a>
 
 ### United States
 
 - Step 6: Sign the section 83(b) election — IRS Form 15620 or a compliant written statement — checked against the stock purchase records Form 15620 or a compliant written statement may make the election, with copies to the company and, if different, the property transferee (law rule [us-fed.83b-form-and-copies](../../open-law/US-FED/us-fed-83b-form-and-copies.json)). ([IRS Form 15620 (83(b) election)](https://www.irs.gov/pub/irs-pdf/f15620.pdf))
 - Step 7: File the 83(b) election with the IRS within 30 days of the stock transfer The Form 15620 instructions require filing no later than 30 days after the property transfer, with a next-business-day postmark rule when day 30 falls on a weekend or legal holiday (law rule [us-fed.83b-filing-period](../../open-law/US-FED/us-fed-83b-filing-period.json)). Online submissions confirm in the founder's IRS Online Account; on the mail rail the date-stamped copy and the certified-mail receipt are the proof of timely filing. ([IRS Form 15620 (83(b) election)](https://www.irs.gov/pub/irs-pdf/f15620.pdf))
 
+<a id="geo-in"></a>
+
 ### India
 
 - The founders' agreement is enforceable contract law — but it must be properly stamped (stamp duty is a state tax, e-stamping in most states) to be usable in court; mirror transfer restrictions and reverse vesting in the articles, since Indian law won't imply them. ([Startup India (founder agreement resources)](https://www.startupindia.gov.in/))
 - Step 7: Not applicable: No 83(b)-style election exists: founder vesting is contractual, and share awards are taxed as a perquisite under their own rules ([Income Tax e-filing portal](https://www.incometax.gov.in/iec/foportal/))
+
+<a id="geo-uk"></a>
 
 ### United Kingdom
 
@@ -136,60 +250,76 @@ Document generation, signature routing, and cap table entry are automatable. The
 - Step 6: Sign the joint section 431 ITEPA election to be taxed on the unrestricted value of restricted shares Made jointly with the company within 14 days of acquisition; HMRC's employment-related securities guidance covers it. ([HMRC — employment related securities](https://www.gov.uk/government/collections/employment-related-securities))
 - Step 7: Complete the joint section 431 election within 14 days of acquisition The UK cousin is the joint section 431 ITEPA election to be taxed on the unrestricted value of restricted shares; HMRC's employment-related securities guidance covers it. ([HMRC — employment related securities](https://www.gov.uk/government/collections/employment-related-securities))
 
+<a id="geo-de"></a>
+
 ### Germany
 
 - GmbH shares only move by notarial deed (§ 15 GmbHG), so founder vesting is drafted as notarized call-option/clawback clauses in the Gesellschaftervereinbarung — plan founder-agreement changes around notary appointments, not signatures. ([Bundesnotarkammer (notaries)](https://www.bnotk.de/))
 - Step 7: Not applicable: No acceleration election exists; the statutory lever for startup equity is § 19a EStG's deferred taxation, not a filing-deadline race ([EStG § 19a — startup equity taxation](https://www.gesetze-im-internet.de/estg/__19a.html))
+
+<a id="geo-fr"></a>
 
 ### France
 
 - The founder agreement is the pacte d'associés — a private contract alongside the statuts (good faith obligations are real under French law); vesting is built from promesses de cession (share-transfer promises), and the SAS's statutory flexibility makes it the vehicle of choice. Guide from Bpifrance, the state investment bank. ([Pacte d'associés — Bpifrance Création guide](https://bpifrance-creation.fr/encyclopedie/structures-juridiques/entreprendre-a-plusieurs/pacte-dassocies-organisation))
 - Step 7: Not applicable: No equivalent election: founder and employee equity are taxed under the regimes the BOFiP doctrine governs, with no filing deadline to race ([BOFiP — official tax doctrine](https://bofip.impots.gouv.fr/))
 
+<a id="geo-pt"></a>
+
 ### Portugal
 
 - The split lives in an acordo parassocial (shareholders' agreement) with vesting drafted as quota call-option/clawback clauses — quota transfers need written form and registry filing but no notary since 2006, and there is no 83(b) concept to race. ([Código das Sociedades Comerciais (DRE)](https://diariodarepublica.pt/dr/legislacao-consolidada/decreto-lei/1986-34443975))
 - Step 7: Not applicable: No 83(b) concept to race: vesting is drafted as quota call-option/clawback clauses, and the 2023 startup law defers qualifying option taxation to liquidity ([Lei 21/2023 (startup law) — DRE](https://diariodarepublica.pt/dr/detalhe/lei/21-2023-213498830))
+
+<a id="geo-ca"></a>
 
 ### Canada
 
 - Founders sign a unanimous shareholder agreement (a CBCA creature) with reverse-vesting on founder shares — and because founder shares are issued at nominal value with CCPC tax deferral, there is no 83(b)-style election deadline to beat. ([CBCA — Canada Business Corporations Act](https://laws-lois.justice.gc.ca/eng/acts/C-44/))
 - Step 7: Not applicable: No election deadline to beat: founder shares are issued at nominal value with CCPC tax deferral ([CRA — security options](https://www.canada.ca/en/revenue-agency/services/tax/businesses/topics/payroll/benefits-allowances/security-options.html))
 
+<a id="geo-nz"></a>
+
 ### New Zealand
 
 - The split lives in a shareholders' agreement plus (optionally) a company constitution; the Companies Office register holds the live share allocations, so vesting events and transfers are updated online — and there is no 83(b) deadline to race. ([Managing share allocations — Companies Register](https://companies-register.companiesoffice.govt.nz/help-centre/shares-and-shareholders/managing-share-allocations/))
+
+<a id="geo-sg"></a>
 
 ### Singapore
 
 - The split lives in a shareholders' agreement plus the constitution — vesting is drafted as compulsory-transfer leaver clauses, there is no 83(b) race (no such election exists), share transfers attract stamp duty through IRAS e-Stamping, and the member register moves only when ACRA updates it. ([IRAS — stamp duty for shares](https://www.iras.gov.sg/taxes/stamp-duty/for-shares))
 
+<a id="geo-au"></a>
+
 ### Australia
 
 - Vesting lives in the shareholders' agreement plus the constitution (the replaceable rules carry no leaver or vesting provisions); founders take ordinary shares recorded on the members register, share issues are notified to ASIC within 28 days, and there is no 83(b) — founder and employee equity tax rides ITAA 1997 Div 83A instead. ([ASIC — shares](https://asic.gov.au/for-business-and-companies/companies/company-share-and-shareholder-rules-and-changes))
+
+<a id="geo-kr"></a>
 
 ### South Korea
 
 - The split lives in a shareholders’ agreement (주주간계약) beside the articles: vesting is drafted as call-option and transfer clauses, and the articles can make share transfers subject to board approval (Commercial Act Article 335). K-Startup carries the government’s founder resources. ([K-Startup portal](https://www.k-startup.go.kr/))
 
+<a id="geo-hk"></a>
+
 ### Hong Kong
 
 - The split lives in a shareholders' agreement plus the articles — vesting drafts as compulsory-transfer leaver clauses, there is no 83(b) race (no such election exists), and share transfers need an instrument of transfer and contract notes stamped with the Inland Revenue Department. ([IRD — stamp duty](https://www.ird.gov.hk/eng/tax/sdu.htm))
+
+<a id="geo-ee"></a>
 
 ### Estonia
 
 - The split lives in a shareholders' agreement beside the articles: vesting is drafted as call-option and transfer clauses, third-party transfers carry the default one-month pre-emption right, and the articles can gate transfers on consent (Commercial Code § 149). ([e-Business Register](https://ariregister.rik.ee/eng))
 
-## Artifacts
+<a id="artifacts"></a>
 
-Produces:
+## Outputs
 
 - Founder agreement & IP assignment
 - Filed 83(b) election
-
-Requires:
-
-- Cap table record — from [Set up cap table](set-up-cap-table.md)
 
 ## Related records
 

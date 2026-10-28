@@ -3,6 +3,10 @@
 
 # Launch in the app stores
 
+[Overview](#overview) · [Before you start](#before-you-start) · [Steps](#steps-at-a-glance)
+
+## Overview
+
 Ship the mobile app: enroll in the Apple Developer Program and Play Console, prepare the listings and privacy labels, automate the build-and-submit pipeline, survive the review (and its rejections), and release with crash monitoring on.
 
 | Field | Value |
@@ -19,59 +23,123 @@ Ship the mobile app: enroll in the Apple Developer Program and Play Console, pre
 
 Build and submission tooling is scriptable end-to-end; Apple’s enrollment identity checks and the review queue are the third party’s clock, and rejection responses are judgment.
 
-## Steps
+## Before you start
 
-1. **Enroll in the Apple Developer Program and Play Console** — manual form/portal · ~45 min
-
-   Set up the company publisher account in each store the app will use. Check current enrollment requirements for the actual entity, and collect requested verification material privately. The authorized business representative handles agreements, fees and identity attestations. Keep account administration and recovery under company control. Track Apple's and Google's verification independently and confirm the release team can access each relevant app record before preparing a submission.
-
-   - Verify: The Apple Developer account shows the membership active and the Play Console shows the developer account verified.
-   - Cost: $99 (typical vendor price, as of 2026-10-01, [developer.apple.com](https://developer.apple.com/support/enrollment/)). Apple Developer Program annual fee; Google Play Console developer registration is a separate one-time fee.
-   - Do it yourself: [Apple Developer Program enrollment](https://developer.apple.com/programs/enroll/)
-   - Sources: [Apple overview of submitting for review](https://developer.apple.com/help/app-store-connect/manage-submissions-to-app-review/overview-of-submitting-for-review) · [Prepare your app for Google Play review](https://support.google.com/googleplay/android-developer/answer/9859455?hl=en-GB)
-2. **Prepare the store listing (copy, screenshots, privacy labels)** — agent-runnable · ~1 h
-
-   Build the listing from the release candidate: screenshots should show the shipped interface, descriptions should match available features, and support links should work. Inventory data collected by the app and included SDKs before completing each store's privacy disclosures. Resolve differences with the product and privacy owners, then preview the intended locales and device presentations. Keep the listing and disclosure version paired with the build submitted for review.
-
-   - Cross-arena options: Figma, Canva (design-tools)
-   - Sources: [Apple App Privacy Details](https://developer.apple.com/app-store/app-privacy-details/) · [Prepare your app for Google Play review](https://support.google.com/googleplay/android-developer/answer/9859455?hl=en-GB)
-3. **Automate the build and submission pipeline** — agent-runnable · ~45 min
-
-   Make the pipeline trace a source revision to a signed, versioned artifact and its intended store destination. Limit signing material and store credentials to the build jobs that need them. Test the documented upload path using a nonproduction distribution route, checking the artifact identity and what happens when a build or upload fails. Configure submission and release controls under the mobile release owner's authority, including a manual recovery path if automation cannot complete.
-
-   - Vendor options: fastlane, Expo
-   - Cross-arena market: [ai-coding](../../open-rankings/ai-coding)
-   - Sources: [GitHub Actions secure use reference](https://docs.github.com/en/actions/reference/security/secure-use) · [Apple overview of submitting for review](https://developer.apple.com/help/app-store-connect/manage-submissions-to-app-review/overview-of-submitting-for-review) · [Publish your app on Google Play](https://support.google.com/googleplay/android-developer/answer/9859751?hl=en)
-4. **Submit for review in both consoles** — manual form/portal · ~20 min
-
-   Match the release owner's authorized build to the correct app record, listing, disclosures and release settings in each store. Try the supplied review credentials and special setup instructions yourself, including any feature reviewers must reach. Submit through the documented path and confirm the build identifier and actual review status. Track Apple and Google build identifiers, review states and release settings separately.
-
-   - Verify: Both consoles move the submission from In Review to Approved / Ready for Sale.
-   - Do it yourself: [Google Play Console](https://play.google.com/console/about/)
-   - Sources: [Apple overview of submitting for review](https://developer.apple.com/help/app-store-connect/manage-submissions-to-app-review/overview-of-submitting-for-review) · [Prepare your app for Google Play review](https://support.google.com/googleplay/android-developer/answer/9859455?hl=en-GB)
-5. **App review (1–3 days, rejections common)** — human · ~2 d · async wait
-
-   Track each submitted build in its store console and keep reviewer access working. Record requests, rejection reasons and approvals separately for Apple and Google, then route feedback to the app owner. Schedule release communications from the actual review outcome. Use the store's documented support path when follow-up is needed.
-
-   - Sources: [Apple overview of submitting for review](https://developer.apple.com/help/app-store-connect/manage-submissions-to-app-review/overview-of-submitting-for-review) · [Publish your app on Google Play](https://support.google.com/googleplay/android-developer/answer/9859751?hl=en)
-6. **Respond to review feedback and resubmit** — human · ~1 h
-
-   Match each review objection to its build, listing field and cited policy. Reproduce the issue where possible; distinguish a code defect from missing reviewer access or a misunderstood feature. Prepare a targeted fix or factual response, and recheck any affected disclosures. Send the app owner's cleared response and resubmit the intended build through the store's workflow. Keep the correspondence tied to that revision so repeated feedback can be compared accurately.
-
-   - Sources: [Apple overview of submitting for review](https://developer.apple.com/help/app-store-connect/manage-submissions-to-app-review/overview-of-submitting-for-review) · [Prepare your app for Google Play review](https://support.google.com/googleplay/android-developer/answer/9859455?hl=en-GB)
-7. **Release and monitor ratings and crashes** — agent-runnable · ~15 min
-
-   Release the version and audience covered by the mobile release owner's authorization. Verify availability in each store, then try both a fresh install and an update from a prior version on representative devices. Watch crashes and the app's critical journeys against the rollout criteria, with support ready for new feedback. Give the release responder enough evidence to pause further rollout or prepare a fix when a problem appears.
-
-   - Canonical vendor: Sentry
-   - Sources: [Publish your app on Google Play](https://support.google.com/googleplay/android-developer/answer/9859751?hl=en) · [Set up Sentry releases](https://docs.sentry.io/product/releases/setup/)
-
-## Artifacts
-
-Requires:
+Required artifacts:
 
 - Brand logo — from [Generate a brand logo](generate-a-brand-logo.md)
 - Privacy policy — from [Publish privacy policy & DPA](publish-privacy-policy-dpa.md)
+
+| Information to gather | Required by the record |
+| --- | --- |
+| app privacy data usage | Yes |
+
+## Steps at a glance
+
+Use the recorded prerequisites and conditions to follow the path. Row order is for navigation.
+
+| Step | Handled by | Time estimate | Incoming dependencies |
+| --- | --- | --- | --- |
+| [1. Enroll in the Apple Developer Program and Play Console](#step-1) | manual form/portal | ~45 min | Entry step |
+| [2. Prepare the store listing (copy, screenshots, privacy labels)](#step-2) | agent-runnable | ~1 h | [Step 1](#step-1) |
+| [3. Automate the build and submission pipeline](#step-3) | agent-runnable | ~45 min | [Step 2](#step-2) |
+| [4. Submit for review in both consoles](#step-4) | manual form/portal | ~20 min | [Step 3](#step-3) |
+| [5. App review (1–3 days, rejections common)](#step-5) | human; includes waiting | ~2 d | [Step 4](#step-4) |
+| [6. Respond to review feedback and resubmit](#step-6) | human | ~1 h | [Step 5](#step-5) |
+| [7. Release and monitor ratings and crashes](#step-7) | agent-runnable | ~15 min | [Step 6](#step-6) |
+
+<a id="steps"></a>
+
+## Step details
+
+<a id="step-1"></a>
+
+### 1. Enroll in the Apple Developer Program and Play Console
+
+manual form/portal · ~45 min
+
+
+Set up the company publisher account in each store the app will use. Check current enrollment requirements for the actual entity, and collect requested verification material privately. The authorized business representative handles agreements, fees and identity attestations. Keep account administration and recovery under company control. Track Apple's and Google's verification independently and confirm the release team can access each relevant app record before preparing a submission.
+
+- Verify: The Apple Developer account shows the membership active and the Play Console shows the developer account verified.
+- Cost: $99 (typical vendor price, as of 2026-10-01, [developer.apple.com](https://developer.apple.com/support/enrollment/)). Apple Developer Program annual fee; Google Play Console developer registration is a separate one-time fee.
+- Do it yourself: [Apple Developer Program enrollment](https://developer.apple.com/programs/enroll/)
+- Sources: [Apple overview of submitting for review](https://developer.apple.com/help/app-store-connect/manage-submissions-to-app-review/overview-of-submitting-for-review) · [Prepare your app for Google Play review](https://support.google.com/googleplay/android-developer/answer/9859455?hl=en-GB)
+
+<a id="step-2"></a>
+
+### 2. Prepare the store listing (copy, screenshots, privacy labels)
+
+agent-runnable · ~1 h
+
+
+Build the listing from the release candidate: screenshots should show the shipped interface, descriptions should match available features, and support links should work. Inventory data collected by the app and included SDKs before completing each store's privacy disclosures. Resolve differences with the product and privacy owners, then preview the intended locales and device presentations. Keep the listing and disclosure version paired with the build submitted for review.
+
+- Cross-arena options: Figma, Canva (design-tools)
+- Sources: [Apple App Privacy Details](https://developer.apple.com/app-store/app-privacy-details/) · [Prepare your app for Google Play review](https://support.google.com/googleplay/android-developer/answer/9859455?hl=en-GB)
+
+<a id="step-3"></a>
+
+### 3. Automate the build and submission pipeline
+
+agent-runnable · ~45 min
+
+
+Make the pipeline trace a source revision to a signed, versioned artifact and its intended store destination. Limit signing material and store credentials to the build jobs that need them. Test the documented upload path using a nonproduction distribution route, checking the artifact identity and what happens when a build or upload fails. Configure submission and release controls under the mobile release owner's authority, including a manual recovery path if automation cannot complete.
+
+- Vendor options: fastlane, Expo
+- Cross-arena market: [ai-coding](../../open-rankings/ai-coding)
+- Sources: [GitHub Actions secure use reference](https://docs.github.com/en/actions/reference/security/secure-use) · [Apple overview of submitting for review](https://developer.apple.com/help/app-store-connect/manage-submissions-to-app-review/overview-of-submitting-for-review) · [Publish your app on Google Play](https://support.google.com/googleplay/android-developer/answer/9859751?hl=en)
+
+<a id="step-4"></a>
+
+### 4. Submit for review in both consoles
+
+manual form/portal · ~20 min
+
+
+Match the release owner's authorized build to the correct app record, listing, disclosures and release settings in each store. Try the supplied review credentials and special setup instructions yourself, including any feature reviewers must reach. Submit through the documented path and confirm the build identifier and actual review status. Track Apple and Google build identifiers, review states and release settings separately.
+
+- Verify: Both consoles move the submission from In Review to Approved / Ready for Sale.
+- Do it yourself: [Google Play Console](https://play.google.com/console/about/)
+- Sources: [Apple overview of submitting for review](https://developer.apple.com/help/app-store-connect/manage-submissions-to-app-review/overview-of-submitting-for-review) · [Prepare your app for Google Play review](https://support.google.com/googleplay/android-developer/answer/9859455?hl=en-GB)
+
+<a id="step-5"></a>
+
+### 5. App review (1–3 days, rejections common)
+
+human · ~2 d · async wait
+
+
+Track each submitted build in its store console and keep reviewer access working. Record requests, rejection reasons and approvals separately for Apple and Google, then route feedback to the app owner. Schedule release communications from the actual review outcome. Use the store's documented support path when follow-up is needed.
+
+- Sources: [Apple overview of submitting for review](https://developer.apple.com/help/app-store-connect/manage-submissions-to-app-review/overview-of-submitting-for-review) · [Publish your app on Google Play](https://support.google.com/googleplay/android-developer/answer/9859751?hl=en)
+
+<a id="step-6"></a>
+
+### 6. Respond to review feedback and resubmit
+
+human · ~1 h
+
+
+Match each review objection to its build, listing field and cited policy. Reproduce the issue where possible; distinguish a code defect from missing reviewer access or a misunderstood feature. Prepare a targeted fix or factual response, and recheck any affected disclosures. Send the app owner's cleared response and resubmit the intended build through the store's workflow. Keep the correspondence tied to that revision so repeated feedback can be compared accurately.
+
+- Sources: [Apple overview of submitting for review](https://developer.apple.com/help/app-store-connect/manage-submissions-to-app-review/overview-of-submitting-for-review) · [Prepare your app for Google Play review](https://support.google.com/googleplay/android-developer/answer/9859455?hl=en-GB)
+
+<a id="step-7"></a>
+
+### 7. Release and monitor ratings and crashes
+
+agent-runnable · ~15 min
+
+
+Release the version and audience covered by the mobile release owner's authorization. Verify availability in each store, then try both a fresh install and an update from a prior version on representative devices. Watch crashes and the app's critical journeys against the rollout criteria, with support ready for new feedback. Give the release responder enough evidence to pause further rollout or prepare a fix when a problem appears.
+
+- Canonical vendor: Sentry
+- Sources: [Publish your app on Google Play](https://support.google.com/googleplay/android-developer/answer/9859751?hl=en) · [Set up Sentry releases](https://docs.sentry.io/product/releases/setup/)
+
+
+<a id="artifacts"></a>
 
 ---
 
